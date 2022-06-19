@@ -23,7 +23,6 @@ jobs:
         with:
           configurePreset: vcpkg
           buildPreset: release-msvc
-      - name:
       - uses: actions/upload-artifact@v2
         with:
           name: build
