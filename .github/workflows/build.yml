@@ -6,8 +6,6 @@ jobs:
   native:
     name: build
     runs-on: windows-2019
-    env:
-      VCPKG_DEFAULT_TRIPLET: x64-windows-static
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,6 +20,10 @@ jobs:
           vcpkgGitCommitId: 3d8f78171a2a37d461077bf8d063256b63e25a4f
       - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
         uses: lukka/run-cmake@v10
+        with:
+          configurePreset: vcpkg
+          buildPreset: release-msvc
+      - name:
       - uses: actions/upload-artifact@v2
         with:
           name: build
