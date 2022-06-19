@@ -21,7 +21,7 @@ jobs:
       - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
         uses: lukka/run-cmake@v10
         with:
-          configurePreset: vcpkg
+          configurePreset: build-release-msvc
           buildPreset: release-msvc
       - uses: actions/upload-artifact@v2
         with:
