@@ -1,0 +1,24 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  native:
+    name: build
+    runs-on: windows-2019
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Gwt cmake
+        uses: lukka/get-cmake@latest
+      - name: Restore artifacts, or setup vcpkg (do not install any package)
+        uses: lukka/run-vcpkg@v10
+      - name: Add msbuild to PATH
+        # This works with 2017+
+        uses: microsoft/setup-msbuild@v1.1
+      - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
+        uses: lukka/run-cmake@v10
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: "contrib/*"
