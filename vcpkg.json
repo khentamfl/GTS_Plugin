@@ -1,5 +1,5 @@
 {
-  "name": "GTSPlugin",
+  "name": "gtsplugin",
   "version-string": "1.0.0",
   "description": "Common Lib SSE plugin for Size Matters.",
   "dependencies": [
