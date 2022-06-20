@@ -8,22 +8,6 @@
     "commonlibsse-ng"
   ],
   "features": {
-      "scripts": {
-          "description": "Install Papyrus sources for this program to develop on top of it."
-      },
-      "scripts-dev": {
-          "description": "Install Papyrus sources necessary to develop scripts for this plugin.",
-          "dependencies": [
-              "bethesda-skyrim-scripts",
-              {
-                  "name": "skse",
-                  "default-features": false,
-                  "features": [
-                      "scripts"
-                  ]
-              }
-          ]
-      },
       "plugin": {
           "description": "Build the SKSE plugin.",
           "dependencies": [
@@ -33,7 +17,6 @@
       }
   },
   "default-features": [
-      "scripts-dev",
       "plugin"
   ]
 }
