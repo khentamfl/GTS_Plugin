@@ -2,7 +2,7 @@
 
 #include <RE/Skyrim.h>
 
-namespace Sample {
+namespace Gts {
 #pragma warning(push)
 #pragma warning(disable : 4251)
     /**
@@ -108,4 +108,4 @@ namespace Sample {
         std::unordered_set<RE::Actor*> _trackedActors;
     };
 #pragma warning(pop)
-}  // namespace Sample
+}  // namespace Gts

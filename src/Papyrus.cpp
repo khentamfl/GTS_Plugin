@@ -1,8 +1,8 @@
 #include "Papyrus.h"
 
-#include <Sample/HitCounterManager.h>
+#include <Gts/HitCounterManager.h>
 
-using namespace Sample;
+using namespace Gts;
 using namespace RE;
 using namespace RE::BSScript;
 using namespace REL;
@@ -83,7 +83,7 @@ namespace {
  * third is the function that will be invoked in C++ to handle it. The callback should return <code>true</code> on
  * success.
  */
-bool Sample::RegisterHitCounter(IVirtualMachine* vm) {
+bool Gts::RegisterHitCounter(IVirtualMachine* vm) {
     vm->RegisterFunction("StartCounting", PapyrusClass, StartCounting);
     vm->RegisterFunction("StopCounting", PapyrusClass, StopCounting);
     vm->RegisterFunction("GetTotalHitCounters", PapyrusClass, GetTotalHitCounters);
@@ -93,7 +93,7 @@ bool Sample::RegisterHitCounter(IVirtualMachine* vm) {
     return true;
 }
 
-void Sample::InitializeHook(Trampoline& trampoline) {
+void Gts::InitializeHook(Trampoline& trampoline) {
     // The trampoline can be used to write a new call instruction at a given address (here the start of the function for
     // HitData::Populate). We use write_code<5> to indicate this is a 5-byte call instruction (rather than the much
     // rarer 6-byte call). We pass in the address of our function that will be called, and a pointer to the trampoline

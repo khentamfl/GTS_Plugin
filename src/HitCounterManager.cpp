@@ -1,8 +1,8 @@
 #include <SKSE/SKSE.h>
-#include <Sample/HitCounterManager.h>
+#include <Gts/HitCounterManager.h>
 
 using namespace RE;
-using namespace Sample;
+using namespace Gts;
 using namespace SKSE;
 
 namespace {

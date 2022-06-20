@@ -3,7 +3,7 @@
 #include <articuno/articuno.h>
 #include <SKSE/SKSE.h>
 
-namespace Sample {
+namespace Gts {
     class Debug {
     public:
         [[nodiscard]] inline spdlog::level::level_enum GetLogLevel() const noexcept {

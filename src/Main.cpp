@@ -1,4 +1,4 @@
-#include <Sample/HitCounterManager.h>
+#include <Gts/HitCounterManager.h>
 
 #include "Config.h"
 #include "Papyrus.h"
@@ -6,7 +6,7 @@
 #include <stddef.h>
 
 using namespace RE::BSScript;
-using namespace Sample;
+using namespace Gts;
 using namespace SKSE;
 using namespace SKSE::log;
 using namespace SKSE::stl;
@@ -39,7 +39,7 @@ namespace {
             log = std::make_shared<spdlog::logger>(
                 "Global", std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true));
         }
-        const auto& debugConfig = Sample::Config::GetSingleton().GetDebug();
+        const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
         log->set_level(debugConfig.GetLogLevel());
         log->flush_on(debugConfig.GetFlushLevel());
 
@@ -67,9 +67,9 @@ namespace {
         log::trace("Initializing cosave serialization...");
         auto* serde = GetSerializationInterface();
         serde->SetUniqueID(_byteswap_ulong('SMPL'));
-        serde->SetSaveCallback(Sample::HitCounterManager::OnGameSaved);
-        serde->SetRevertCallback(Sample::HitCounterManager::OnRevert);
-        serde->SetLoadCallback(Sample::HitCounterManager::OnGameLoaded);
+        serde->SetSaveCallback(Gts::HitCounterManager::OnGameSaved);
+        serde->SetRevertCallback(Gts::HitCounterManager::OnRevert);
+        serde->SetLoadCallback(Gts::HitCounterManager::OnGameLoaded);
         log::trace("Cosave serialization initialized.");
     }
 
@@ -89,7 +89,7 @@ namespace {
      */
     void InitializePapyrus() {
         log::trace("Initializing Papyrus binding...");
-        if (GetPapyrusInterface()->Register(Sample::RegisterHitCounter)) {
+        if (GetPapyrusInterface()->Register(Gts::RegisterHitCounter)) {
             log::debug("Papyrus functions bound.");
         } else {
             stl::report_and_fail("Failure to register Papyrus bindings.");
@@ -118,7 +118,7 @@ namespace {
         trampoline.create(64);
         log::trace("Trampoline initialized.");
 
-        Sample::InitializeHook(trampoline);
+        Gts::InitializeHook(trampoline);
     }
 
     /**

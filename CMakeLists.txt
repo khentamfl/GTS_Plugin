@@ -5,9 +5,9 @@ message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 ## Define project
 ########################################################################################################################
 project(
-        CommonLibSSESamplePlugin
+        GtsPlugin
         VERSION 1.0.0
-        DESCRIPTION "A sample SKSE plugin built with CommonLibSSE."
+        DESCRIPTION "Size Matters Plugin."
         LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -21,7 +21,7 @@ configure_file(
         @ONLY)
 
 set(headers
-        include/Sample/Sample.h)
+        include/GTS/Gts.h)
 
 set(sources
         src/Config.cpp
@@ -77,7 +77,7 @@ target_precompile_headers(${PROJECT_NAME}
         PRIVATE
         src/PCH.h)
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/Sample"
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/Gts"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
 install(TARGETS ${PROJECT_NAME}
