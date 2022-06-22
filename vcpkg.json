@@ -2,11 +2,6 @@
   "name": "gtsplugin",
   "version-string": "1.0.0",
   "description": "Common Lib SSE plugin for Size Matters.",
-  "dependencies": [
-    "xbyak",
-    "span-lite",
-    "commonlibsse-ng"
-  ],
   "features": {
       "plugin": {
           "description": "Build the SKSE plugin.",
