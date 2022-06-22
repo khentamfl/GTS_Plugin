@@ -59,10 +59,6 @@ target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ryml::ryml)
 
-target_precompile_headers(${PROJECT_NAME}
-        PRIVATE
-        src/PCH.h)
-
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/Gts"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
