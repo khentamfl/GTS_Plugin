@@ -38,7 +38,8 @@ namespace {
         }
         log->set_level(spdlog::level::level_enum::info);
         log->flush_on(spdlog::level::level_enum::trace);
-        log::info("Logging started");
+        log->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
+        log->info("Logging started");
         const auto& config = Gts::Config::GetSingleton();
         // const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
         // log->set_level(debugConfig.GetLogLevel());
