@@ -20,10 +20,10 @@ configure_file(
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc
         @ONLY)
 
-set(headers
+file(GLOB headers
         include/GTS/*.h)
 
-set(sources
+file(GLOB sources
         src/*.cpp
 
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
