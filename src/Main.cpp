@@ -56,11 +56,11 @@ namespace {
  * </p>
  */
 SKSEPluginLoad(const LoadInterface* skse) {
-    // InitializeLogging();
+    InitializeLogging();
     //
-    // auto* plugin = PluginDeclaration::GetSingleton();
-    // auto version = plugin->GetVersion();
-    // log::info("{} {} is loading...", plugin->GetName(), version);
+    auto* plugin = PluginDeclaration::GetSingleton();
+    auto version = plugin->GetVersion();
+    log::info("{} {} is loading...", plugin->GetName(), version);
     //
     //
     // Init(skse);
