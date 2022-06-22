@@ -71,7 +71,7 @@ SKSEPluginLoad(const LoadInterface* skse) {
   	task->AddTask([]() {
       auto* console_logger = RE::ConsoleLog::GetSingleton();
   		console_logger->Print("This is a task implemented with a lambda!");
-      log::info("Task Ran.", plugin->GetName());
+      log::info("Task Ran.");
   	});
 
     log::info("{} has finished loading.", plugin->GetName());
