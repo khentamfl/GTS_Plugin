@@ -27,15 +27,15 @@ namespace {
         }
         *path /= PluginDeclaration::GetSingleton()->GetName();
         *path += L".log";
-        //
-        // std::shared_ptr<spdlog::logger> log;
-        // if (IsDebuggerPresent()) {
-        //     log = std::make_shared<spdlog::logger>(
-        //         "Global", std::make_shared<spdlog::sinks::msvc_sink_mt>());
-        // } else {
-        //     log = std::make_shared<spdlog::logger>(
-        //         "Global", std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true));
-        // }
+
+        std::shared_ptr<spdlog::logger> log;
+        if (IsDebuggerPresent()) {
+            log = std::make_shared<spdlog::logger>(
+                "Global", std::make_shared<spdlog::sinks::msvc_sink_mt>());
+        } else {
+            log = std::make_shared<spdlog::logger>(
+                "Global", std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true));
+        }
         // const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
         // log->set_level(debugConfig.GetLogLevel());
         // log->flush_on(debugConfig.GetFlushLevel());
