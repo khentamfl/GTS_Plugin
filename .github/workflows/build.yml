@@ -25,9 +25,5 @@ jobs:
           buildPreset: release-msvc
       - uses: actions/upload-artifact@v2
         with:
-          name: contrib
+          name: GTSPlugin
           path: "contrib/*"
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: "build/*"
