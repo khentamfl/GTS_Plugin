@@ -40,13 +40,12 @@ namespace {
         log->flush_on(spdlog::level::level_enum::trace);
         log->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
         log->info("Logging started");
-        const auto& config = Gts::Config::GetSingleton();
-        // const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
-        // log->set_level(debugConfig.GetLogLevel());
-        // log->flush_on(debugConfig.GetFlushLevel());
-        //
-        // spdlog::set_default_logger(std::move(log));
-        // spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
+        const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
+        log->set_level(debugConfig.GetLogLevel());
+        log->flush_on(debugConfig.GetFlushLevel());
+
+        spdlog::set_default_logger(std::move(log));
+        spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
     }
 }
 
