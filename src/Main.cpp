@@ -36,7 +36,8 @@ namespace {
             log = std::make_shared<spdlog::logger>(
                 "Global", std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true));
         }
-        const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
+        const auto& config = Gts::Config::GetSingleton();
+        // const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
         // log->set_level(debugConfig.GetLogLevel());
         // log->flush_on(debugConfig.GetFlushLevel());
         //

@@ -1,7 +1,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
   <moduleName>GTS Plugin</moduleName>
   <requiredInstallFiles>
-    <folder source="Config" destination="SKSE/Plugins"/>
+    <folder source="Config" destination="SKSE\Plugins"/>
     <folder source="PluginRelease" destination="SKSE\Plugins" priority="0"/>
   </requiredInstallFiles>
 </config>
