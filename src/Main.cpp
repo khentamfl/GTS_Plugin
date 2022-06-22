@@ -3,7 +3,6 @@
 #include <stddef.h>
 
 using namespace RE::BSScript;
-using namespace RE::ConsoleLog;
 using namespace Gts;
 using namespace SKSE;
 using namespace SKSE::log;
@@ -70,7 +69,8 @@ SKSEPluginLoad(const LoadInterface* skse) {
 
   	// using a lambda
   	task->AddTask([]() {
-  		Print("This is a task implemented with a lambda!");
+      auto* console_logger = RE::ConsoleLog::GetSingleton();
+  		console_logger->Print("This is a task implemented with a lambda!");
       log::info("Task Ran.", plugin->GetName());
   	});
 
