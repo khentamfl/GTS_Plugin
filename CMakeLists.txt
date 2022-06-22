@@ -21,32 +21,18 @@ configure_file(
         @ONLY)
 
 set(headers
-        include/GTS/Gts.h)
+        include/GTS/*.h)
 
 set(sources
-        src/Config.cpp
-        src/HitCounterManager.cpp
-        src/Main.cpp
-        src/Papyrus.cpp
+        src/*.cpp
 
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
-
-set(tests
-        test/HitCounterManager.cpp)
 
 source_group(
         TREE ${CMAKE_CURRENT_SOURCE_DIR}
         FILES
         ${headers}
-        ${sources}
-        ${tests})
-
-#########################################################################################################################
-### Build options
-#########################################################################################################################
-message("Options:")
-option(BUILD_TESTS "Build unit tests." OFF)
-message("\tTests: ${BUILD_TESTS}")
+        ${sources})
 
 ########################################################################################################################
 ## Configure target DLL
