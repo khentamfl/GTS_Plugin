@@ -27,21 +27,21 @@ namespace {
         }
         *path /= PluginDeclaration::GetSingleton()->GetName();
         *path += L".log";
-
-        std::shared_ptr<spdlog::logger> log;
-        if (IsDebuggerPresent()) {
-            log = std::make_shared<spdlog::logger>(
-                "Global", std::make_shared<spdlog::sinks::msvc_sink_mt>());
-        } else {
-            log = std::make_shared<spdlog::logger>(
-                "Global", std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true));
-        }
-        const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
-        log->set_level(debugConfig.GetLogLevel());
-        log->flush_on(debugConfig.GetFlushLevel());
-
-        spdlog::set_default_logger(std::move(log));
-        spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
+        //
+        // std::shared_ptr<spdlog::logger> log;
+        // if (IsDebuggerPresent()) {
+        //     log = std::make_shared<spdlog::logger>(
+        //         "Global", std::make_shared<spdlog::sinks::msvc_sink_mt>());
+        // } else {
+        //     log = std::make_shared<spdlog::logger>(
+        //         "Global", std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true));
+        // }
+        // const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
+        // log->set_level(debugConfig.GetLogLevel());
+        // log->flush_on(debugConfig.GetFlushLevel());
+        //
+        // spdlog::set_default_logger(std::move(log));
+        // spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
     }
 }
 
@@ -58,9 +58,9 @@ namespace {
 SKSEPluginLoad(const LoadInterface* skse) {
     InitializeLogging();
     //
-    auto* plugin = PluginDeclaration::GetSingleton();
-    auto version = plugin->GetVersion();
-    log::info("{} {} is loading...", plugin->GetName(), version);
+    //auto* plugin = PluginDeclaration::GetSingleton();
+    //auto version = plugin->GetVersion();
+    //log::info("{} {} is loading...", plugin->GetName(), version);
     //
     //
     // Init(skse);
