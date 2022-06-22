@@ -12,10 +12,10 @@ const Config& Config::GetSingleton() noexcept {
     // static std::latch latch(1);
     if (!initialized.exchange(true)) {
         std::ifstream inputFile(R"(Data\SKSE\Plugins\GtsPlugin.yaml)");
-        if (inputFile.good()) {
-            yaml_source ar(inputFile);
-            ar >> instance;
-        }
+        // if (inputFile.good()) {
+        //     yaml_source ar(inputFile);
+        //     ar >> instance;
+        // }
         // latch.count_down();
     }
     // latch.wait();
