@@ -47,6 +47,71 @@ namespace {
         spdlog::set_default_logger(std::move(log));
         spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
     }
+
+    void poll() {
+      auto task = SKSE::GetTaskInterface();
+
+    	// using a lambda
+    	task->AddTask([]() {
+        log::info("Poll.");
+        auto* console_logger = RE::ConsoleLog::GetSingleton();
+    		console_logger->Print("Poll");
+    	});
+    }
+
+    /**
+     * Register to listen for messages.
+     *
+     * <p>
+     * SKSE has a messaging system to allow for loosely coupled messaging. This means you don't need to know about or
+     * link with a message sender to receive their messages. SKSE itself will send messages for common Skyrim lifecycle
+     * events, such as when SKSE plugins are done loading, or when all ESP plugins are loaded.
+     * </p>
+     *
+     * <p>
+     * Here we register a listener for SKSE itself (because we have not specified a message source). Plugins can send
+     * their own messages that other plugins can listen for as well, although that is not demonstrated in this example
+     * and is not common.
+     * </p>
+     *
+     * <p>
+     * The data included in the message is provided as only a void pointer. It's type depends entirely on the type of
+     * message, and some messages have no data (<code>dataLen</code> will be zero).
+     * </p>
+     */
+    void InitializeMessaging() {
+        if (!GetMessagingInterface()->RegisterListener([](MessagingInterface::Message* message) {
+            switch (message->type) {
+                // Skyrim lifecycle events.
+                case MessagingInterface::kPostLoad: // Called after all plugins have finished running SKSEPlugin_Load.
+                    // It is now safe to do multithreaded operations, or operations against other plugins.
+                case MessagingInterface::kPostPostLoad: // Called after all kPostLoad message handlers have run.
+                case MessagingInterface::kInputLoaded: // Called when all game data has been found.
+                    break;
+                case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
+                    // It is now safe to access form data.
+                    poll();
+                    break;
+
+                // Skyrim game events.
+                case MessagingInterface::kNewGame: // Player starts a new game from main menu.
+                case MessagingInterface::kPreLoadGame: // Player selected a game to load, but it hasn't loaded yet.
+                    // Data will be the name of the loaded save.
+                    poll();
+                    break;
+                case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
+                    // Data will be a boolean indicating whether the load was successful.
+                    poll();
+                    break;
+                case MessagingInterface::kSaveGame: // The player has saved a game.
+                    // Data will be the save name.
+                case MessagingInterface::kDeleteGame: // The player deleted a saved game from within the load menu.
+                    break;
+            }
+        })) {
+            stl::report_and_fail("Unable to register message listener.");
+        }
+    }
 }
 
 /**
@@ -68,15 +133,7 @@ SKSEPluginLoad(const LoadInterface* skse) {
 
 
     Init(skse);
-
-    auto task = SKSE::GetTaskInterface();
-
-  	// using a lambda
-  	task->AddTask([]() {
-      auto* console_logger = RE::ConsoleLog::GetSingleton();
-  		console_logger->Print("This is a task implemented with a lambda!");
-      log::info("Task Ran.");
-  	});
+    InitializeMessaging();
 
     log::info("{} has finished loading.", plugin->GetName());
     return true;
