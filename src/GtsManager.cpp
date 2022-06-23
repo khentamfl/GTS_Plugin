@@ -13,21 +13,8 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 	return instance;
 }
 
-// Poll will call it on the main thread
+// Poll for updates
 void GtsManager::poll() {
-	auto task = SKSE::GetTaskInterface();
-
-	// using a lambdaL
-	task->AddTask([]() {
-		auto& gts = Gts::GtsManager::GetSingleton();
-		gts.run();
-		gts.queued.store(false);
-	});
-}
-
-// Run happens on the main thread, here we can safely do
-// mutliple NiNode effects
-void GtsManager::run() {
 	auto ui = RE::UI::GetSingleton();
 	if (!ui->GameIsPaused()) {
 		log::info("Poll.");
@@ -35,6 +22,8 @@ void GtsManager::run() {
 
 	auto mainmenu = ui->GetMenu<RE::MainMenu>();
 	if (mainmenu) {
+        // If we are on the main menu just abort 
+        // and wait for the save data loaded event
 		this->abort();
 	}
 }
@@ -46,7 +35,6 @@ void GtsManager::loop() {
 	static std::atomic_bool running;
 	static std::latch latch(1);
 	if (!running.exchange(true)) {
-		this->queued.store(false);
 		while (!this->aborted.load()) {
 			if (!this->queued.exchange(true)) {
 				this->poll();

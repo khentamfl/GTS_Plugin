@@ -10,18 +10,13 @@ namespace Gts {
 	class GtsManager {
 public:
 	std::atomic_bool aborted;
-	std::atomic_bool queued;
 
 /**
  * Get the singleton instance of the <code>GtsManager</code>.
  */
 	[[nodiscard]] static GtsManager& GetSingleton() noexcept;
 
-// Queue up another poll (dosen't poll now but queues one for later)
 	void poll();
-
-// Run the code now
-	void run();
 
 	void loop();
 
