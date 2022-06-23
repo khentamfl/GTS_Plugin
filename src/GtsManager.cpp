@@ -22,8 +22,8 @@ void GtsManager::poll() {
 
 	auto mainmenu = ui->GetMenu<RE::MainMenu>();
 	if (mainmenu) {
-        // If we are on the main menu just abort 
-        // and wait for the save data loaded event
+		// If we are on the main menu just abort
+		// and wait for the save data loaded event
 		this->abort();
 	}
 }
@@ -32,17 +32,14 @@ void GtsManager::poll() {
 void GtsManager::loop() {
 	this->aborted.store(false);
 
-	static std::atomic_bool running;
-	static std::latch latch(1);
+	static std::atomic_bool running(false);
 	if (!running.exchange(true)) {
 		while (!this->aborted.load()) {
 			this->poll();
 			std::this_thread::sleep_for(100ms);
 		}
 		running.store(false);
-		latch.count_down();
 	}
-	latch.wait();
 }
 
 void GtsManager::abort() {
