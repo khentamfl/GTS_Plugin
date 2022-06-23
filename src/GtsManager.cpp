@@ -36,9 +36,7 @@ void GtsManager::loop() {
 	static std::latch latch(1);
 	if (!running.exchange(true)) {
 		while (!this->aborted.load()) {
-			if (!this->queued.exchange(true)) {
-				this->poll();
-			}
+			this->poll();
 			std::this_thread::sleep_for(100ms);
 		}
 		running.store(false);
