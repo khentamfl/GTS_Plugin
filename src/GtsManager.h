@@ -9,6 +9,8 @@ namespace Gts {
  */
 	class GtsManager {
 public:
+	std::atomic_bool aborted;
+
 /**
  * Get the singleton instance of the <code>GtsManager</code>.
  */
@@ -19,5 +21,10 @@ public:
 
 // Run the code now
 	void run();
+
+	void loop();
+
+	// Stop looping
+	void abort();
 	};
 }
