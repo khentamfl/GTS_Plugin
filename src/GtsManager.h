@@ -10,6 +10,7 @@ namespace Gts {
 	class GtsManager {
 public:
 	std::atomic_bool aborted;
+	std::atomic_bool queued;
 
 /**
  * Get the singleton instance of the <code>GtsManager</code>.

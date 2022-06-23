@@ -19,7 +19,9 @@ void GtsManager::poll() {
 
 	// using a lambdaL
 	task->AddTask([]() {
-		Gts::GtsManager::GetSingleton().run();;
+		auto& gts = Gts::GtsManager::GetSingleton();
+		gts.run();
+		gts.queued.store(false);
 	});
 }
 
@@ -44,8 +46,11 @@ void GtsManager::loop() {
 	static std::atomic_bool running;
 	static std::latch latch(1);
 	if (!running.exchange(true)) {
+		this->queued.store(false);
 		while (!this->aborted.load()) {
-			this->poll();
+			if (!this->queued.exchange(true)) {
+				this->poll();
+			}
 			std::this_thread::sleep_for(100ms);
 		}
 		running.store(false);
