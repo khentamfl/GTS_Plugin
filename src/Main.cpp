@@ -107,7 +107,9 @@ namespace {
 				case MessagingInterface::kNewGame: // Player starts a new game from main menu.
 				case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
 					// Data will be a boolean indicating whether the load was successful.
-					std::thread t1(task);
+					{
+						std::thread t1(task);
+					}
 					break;
 
 				case MessagingInterface::kPreLoadGame: // Player selected a game to load, but it hasn't loaded yet.
