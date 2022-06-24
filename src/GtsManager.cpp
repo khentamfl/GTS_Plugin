@@ -25,7 +25,7 @@ void GtsManager::find_actors() {
 			log::info("F");
 			auto race = actor->GetRace();
 			log::info("G");
-			auto race_name = race.GetFullName();
+			auto race_name = race->GetFullName();
 			log::info("Actor with race %s found!", race_name);
 		}
 	}
@@ -37,7 +37,7 @@ void GtsManager::poll() {
 	if (!player_char) {
 		return;
 	}
-	if (!player_char.Is3DLoaded()) {
+	if (!player_char->Is3DLoaded()) {
 		return;
 	}
 
