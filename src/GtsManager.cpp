@@ -14,19 +14,18 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 }
 
 void GtsManager::find_actors() {
-	log::info("A");
 	auto process_list = ProcessLists::GetSingleton();
-	log::info("B");
 	for (ActorHandle actor_handle: process_list->highActorHandles)
 	{
 		auto actor = actor_handle.get();
 		if (actor && actor->Is3DLoaded())
 		{
-			log::info("F");
+			auto base_actor = actor->GetActorBase();
+			auto actor_name = base_actor->GetFullName();
+
 			auto race = actor->GetRace();
-			log::info("G");
 			auto race_name = race->GetFullName();
-			log::info("Actor with race %s found!", race_name);
+			log::info("Actor {} with race {} found!", actor_name, race_name);
 		}
 	}
 }
