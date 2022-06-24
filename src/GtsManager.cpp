@@ -17,13 +17,8 @@ void GtsManager::find_actors() {
 	log::info("A");
 	auto process_list = ProcessLists::GetSingleton();
 	log::info("B");
-	for (ActorHandle actor_handle: process_list->highActorHandles)
+	for (ActorHandle actor: process_list->highActorHandles)
 	{
-		log::info("C");
-		NiPointer<TESObjectREFR> actor_ref = TESObjectREFR::LookupByHandle(actor_handle);
-		log::info("D");
-		Actor* actor = skyrim_cast<Actor*>(actor_ref);
-		log::info("E");
 		if (actor && actor->Is3DLoaded())
 		{
 			log::info("F");
@@ -48,6 +43,6 @@ void GtsManager::poll() {
 	auto ui = RE::UI::GetSingleton();
 	if (!ui->GameIsPaused()) {
 		log::info("Poll.");
-		$ this->find_actors ();
+		this->find_actors ();
 	}
 }
