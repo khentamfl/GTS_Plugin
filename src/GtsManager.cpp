@@ -1,33 +1,36 @@
 #include <SKSE/SKSE.h>
 #include <GtsManager.h>
-#include <chrono>
-#include <thread>
+#include <vector>
 
 using namespace Gts;
-using namespace SKSE;
 using namespace RE;
-using namespace std::chrono_literals;
+using namespace SKSE;
+using namespace std;
+
+namespace {
+	/**
+	 * Find actors in ai manager that are loaded
+	 */
+	vector<ActorHandle> find_actors() {
+		vector<ActorHandle> result;
+
+		auto process_list = ProcessLists::GetSingleton();
+		for (ActorHandle actor_handle: process_list->highActorHandles)
+		{
+			auto actor = actor_handle.get();
+			if (actor && actor->Is3DLoaded())
+			{
+				result.push_back(actor_handle);
+			}
+		}
+
+		return result;
+	}
+}
 
 GtsManager& GtsManager::GetSingleton() noexcept {
 	static GtsManager instance;
 	return instance;
-}
-
-void GtsManager::find_actors() {
-	auto process_list = ProcessLists::GetSingleton();
-	for (ActorHandle actor_handle: process_list->highActorHandles)
-	{
-		auto actor = actor_handle.get();
-		if (actor && actor->Is3DLoaded())
-		{
-			auto base_actor = actor->GetActorBase();
-			auto actor_name = base_actor->GetFullName();
-
-			auto race = actor->GetRace();
-			auto race_name = race->GetFullName();
-			log::info("Actor {} with race {} found!", actor_name, race_name);
-		}
-	}
 }
 
 // Poll for updates
@@ -43,6 +46,23 @@ void GtsManager::poll() {
 	auto ui = RE::UI::GetSingleton();
 	if (!ui->GameIsPaused()) {
 		log::info("Poll.");
-		this->find_actors ();
+
+		auto actor_handles = find_actors();
+		for (auto actor_handle: actor_handles) {
+			auto actor = actor_handle.get();
+			auto base_actor = actor->GetActorBase();
+			auto actor_name = base_actor->GetFullName();
+
+			auto race = actor->GetRace();
+			auto race_name = race->GetFullName();
+
+			auto min = actor->GetBoundMin();
+			auto max = actor->GetBoundMax();
+			auto diff = max.z - min.z;
+			auto height = actor->GetBaseHeight() * diff;
+
+			log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
+		}
+
 	}
 }

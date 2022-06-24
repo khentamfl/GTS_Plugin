@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <RE/Skyrim.h>
 
 namespace Gts {
@@ -14,8 +16,6 @@ namespace Gts {
 			 * Get the singleton instance of the <code>GtsManager</code>.
 			 */
 			[[nodiscard]] static GtsManager& GetSingleton() noexcept;
-
-			void find_actors();
 
 			void poll();
 	};
