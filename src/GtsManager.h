@@ -15,6 +15,8 @@ namespace Gts {
 			 */
 			[[nodiscard]] static GtsManager& GetSingleton() noexcept;
 
+			void find_actors();
+
 			void poll();
 	};
 }

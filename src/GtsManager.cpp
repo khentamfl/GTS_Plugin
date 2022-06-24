@@ -22,7 +22,7 @@ void GtsManager::find_actors() {
 		log::info("C");
 		NiPointer<TESObjectREFR> actor_ref = TESObjectREFR::LookupByHandle(actor_handle);
 		log::info("D");
-		Acror* actor = DYNAMIC_CAST(actor_ref, TESObjectREFR, Actor);
+		Actor* actor = skyrim_cast<Actor*>(actor_ref);
 		log::info("E");
 		if (actor && actor->Is3DLoaded())
 		{
