@@ -26,6 +26,38 @@ namespace {
 
 		return result;
 	}
+
+	float get_height(NiPointer<Actor> actor) {
+		auto model = actor->Get3D(false);
+		if (model) {
+			model->UpdateWorldBound();
+		}
+		auto min = actor->GetBoundMin();
+		auto max = actor->GetBoundMax();
+		auto diff = max.z - min.z;
+		auto height = actor->GetBaseHeight() * diff;
+
+		return height;
+	}
+
+	void walking_node(NiPointer<NiAVObject> node) {
+		log::info("Node {}!", node->name);
+	}
+	void walk_nodes(NiPointer<Actor> actor) {
+		auto model = actor->Get3D(false);
+		if (!model) {
+			return;
+		}
+
+		auto node = model->AsNode();
+		if (node) {
+			auto name = node->name;
+			log::info("Root Node {}!", name);
+			for (auto child: node->GetChildren()) {
+				walking_node(child);
+			}
+		}
+	}
 }
 
 GtsManager& GtsManager::GetSingleton() noexcept {
@@ -56,12 +88,11 @@ void GtsManager::poll() {
 			auto race = actor->GetRace();
 			auto race_name = race->GetFullName();
 
-			auto min = actor->GetBoundMin();
-			auto max = actor->GetBoundMax();
-			auto diff = max.z - min.z;
-			auto height = actor->GetBaseHeight() * diff;
+			auto height = get_height(actor);
+
 
 			log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
+			walk_nodes(actor);
 		}
 
 	}
