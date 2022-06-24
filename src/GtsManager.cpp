@@ -17,8 +17,9 @@ void GtsManager::find_actors() {
 	log::info("A");
 	auto process_list = ProcessLists::GetSingleton();
 	log::info("B");
-	for (ActorHandle actor: process_list->highActorHandles)
+	for (ActorHandle actor_handle: process_list->highActorHandles)
 	{
+		auto actor = actor_handle.get();
 		if (actor && actor->Is3DLoaded())
 		{
 			log::info("F");
