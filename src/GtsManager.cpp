@@ -19,29 +19,4 @@ void GtsManager::poll() {
 	if (!ui->GameIsPaused()) {
 		log::info("Poll.");
 	}
-
-	auto mainmenu = ui->GetMenu<RE::MainMenu>();
-	if (mainmenu) {
-		// If we are on the main menu just abort
-		// and wait for the save data loaded event
-		this->abort();
-	}
-}
-
-// Loop is a blocking call that will poll every x seconds
-void GtsManager::loop() {
-	this->aborted.store(false);
-
-	static std::atomic_bool running(false);
-	if (!running.exchange(true)) {
-		while (!this->aborted.load()) {
-			this->poll();
-			std::this_thread::sleep_for(100ms);
-		}
-		running.store(false);
-	}
-}
-
-void GtsManager::abort() {
-	this->aborted.store(true);
 }
