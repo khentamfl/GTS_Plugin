@@ -30,7 +30,19 @@ namespace {
 	float get_height(NiPointer<Actor> actor) {
 		auto model = actor->Get3D(false);
 		if (model) {
+			float previous_radius = model->worldBound.radius;
 			model->UpdateWorldBound();
+			float new_radius = model->worldBound.radius;
+			log::info("Old: {}, New: {}", previous_radius, new_radius);
+			float factor = new_radius/previous_radius;
+			if (fabs(factor - 1.0) > 1e-4) {
+				auto char_controller = actor->GetCharController();
+				if (char_controller) {
+					log::info("Updating collision bounds");
+					char_controller->collisionBound.extents *= factor;
+					char_controller->bumperCollisionBound.extents *= factor;
+				}
+			}
 		}
 		auto min = actor->GetBoundMin();
 		auto max = actor->GetBoundMax();
@@ -42,21 +54,21 @@ namespace {
 
 	void walking_node(NiPointer<NiAVObject> node) {
 		log::info("Node {}!", node->name);
+		auto ni_node = node->AsNode();
+		if (ni_node) {
+			for (auto child: ni_node->GetChildren()) {
+				walking_node(child);
+			}
+		}
 	}
 	void walk_nodes(NiPointer<Actor> actor) {
 		auto model = actor->Get3D(false);
 		if (!model) {
 			return;
 		}
-
-		auto node = model->AsNode();
-		if (node) {
-			auto name = node->name;
-			log::info("Root Node {}!", name);
-			for (auto child: node->GetChildren()) {
-				walking_node(child);
-			}
-		}
+		auto name = model->name;
+		log::info("Root Node {}!", name);
+		walking_node(NiPointer(model));
 	}
 }
 
@@ -91,8 +103,8 @@ void GtsManager::poll() {
 			auto height = get_height(actor);
 
 
-			log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
 			walk_nodes(actor);
+			log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
 		}
 
 	}
