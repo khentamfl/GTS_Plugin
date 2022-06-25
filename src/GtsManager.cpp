@@ -56,8 +56,12 @@ namespace {
 		log::info("Node {}!", node->name);
 		auto ni_node = node->AsNode();
 		if (ni_node) {
-			for (auto child: ni_node->GetChildren()) {
-				walking_node(child);
+			auto children = ni_node->GetChildren();
+			log::info("  Children: {}", children.size());
+			for (auto child: children) {
+				if (child) {
+					walking_node(child);
+				}
 			}
 		}
 	}
@@ -102,7 +106,7 @@ void GtsManager::poll() {
 
 			auto height = get_height(actor);
 
-
+			log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
 			walk_nodes(actor);
 			log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
 		}
