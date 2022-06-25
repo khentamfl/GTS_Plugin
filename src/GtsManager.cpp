@@ -54,15 +54,15 @@ namespace {
 	}
 
 	void walking_node(NiAVObject* node, std::string& indent) {
-        log::info("BEGIN");
+		log::info("BEGIN");
 		if (!node) {
 			return;
 		}
-        log::info("B");
+		log::info("B");
 		auto name = node->name;
-        log::info("C");
+		log::info("C");
 		if (name.data()) {
-            log::info("D");
+			log::info("D");
 			if (!node->name.empty()) {
 				log::info("{}Node {}", indent, node->name);
 			} else {
@@ -71,26 +71,32 @@ namespace {
 		} else {
 			log::info("{}Node <Invalid>", indent);
 		}
-        log::info("E");
+		log::info("E");
 		auto ni_node = node->AsNode();
-        log::info("F");
+		log::info("F");
 		if (ni_node) {
-            log::info("G");
+			log::info("G");
 			auto children = ni_node->GetChildren();
-            log::info("H");
+			log::info("H");
 			if (children.begin()) {
-                log::info("I");
+				log::info("I");
 				if (!children.empty()) {
-                    log::info("J");
-					for (auto child: children) {
+					log::info("J");
+					auto size = children.size();
+					for(std::size_t i = 0; i < size; ++i) {
+						log::info("K");
+						log::info("ENTER {} of {}", i +1, size);
+						auto child = children[i];
+						log::info("L");
 						indent.push_back(' ');
 						indent.push_back(' ');
-                        log::info("K");
+						log::info("M");
 						if (child) {
 							walking_node(child.get(), indent);
 						}
 						indent.pop_back();
 						indent.pop_back();
+						log::info("EXIT {} of {}", i + 1, size);
 					}
 				} else {
 					log::info("{}Empty children", indent);
@@ -99,7 +105,7 @@ namespace {
 				log::info("{}No children", indent);
 			}
 		}
-        log::info("END");
+		log::info("END");
 	}
 	void walk_nodes(Actor* actor) {
 		auto model = actor->Get3D(false);
