@@ -60,7 +60,7 @@ namespace {
 			return;
 		}
 		log::info("B");
-		std::string name = node->name.c_str();
+		std::string name = ""; //node->name.c_str();
 		log::info("C");
 		if (name.data()) {
 			log::info("D");
@@ -77,7 +77,7 @@ namespace {
 		log::info("F");
 		if (ni_node) {
 			log::info("G");
-			auto children = ni_node->GetChildren();
+			const auto children = ni_node->GetChildren();
 			log::info("H");
 			if (children.begin()) {
 				log::info("I");
@@ -142,15 +142,22 @@ void GtsManager::poll() {
 
 	auto ui = RE::UI::GetSingleton();
 	if (!ui->GameIsPaused()) {
+		log::info("Pre Poll");
 		const auto& frame_config = Gts::Config::GetSingleton().GetFrame();
 		auto init_delay = frame_config.GetInitDelay();
-		auto step = frame_config.GetStep();
+		auto step = frame_config.GetStep() + 1; // 1 Based index
+		log::info("Config: delay: {}, step: {}", init_delay, step);
 
 		auto current_frame = this->frame_count.fetch_add(1);
-		if (current_frame <= init_delay) {
+		log::info("Atomic");
+		log::info("Frame: {}", current_frame);
+		if (current_frame < init_delay) {
+			log::info("Delayed");
 			return;
 		}
+		log::info("Not Delayed");
 		if (current_frame % step != 0) {
+			log::info("Skipped");
 			return;
 		}
 

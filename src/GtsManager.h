@@ -18,7 +18,7 @@ namespace Gts {
 			 */
 			[[nodiscard]] static GtsManager& GetSingleton() noexcept;
 
-			std::atomic_int64_t frame_count = std::atomic_int64_t(0);
+			std::atomic_ulong frame_count = std::atomic_int64_t(0);
 
 			void poll();
 	};
