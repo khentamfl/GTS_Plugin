@@ -53,13 +53,13 @@ namespace {
 		return height;
 	}
 
-	void walking_node(NiPointer<NiAVObject> node, std::string& indent) {
+	void walking_node(NiAVObject* node, std::string& indent) {
 		log::info("BEGIN");
 		if (!node) {
 			return;
 		}
 		log::info("B");
-		auto name = node->name;
+		std::string name = node->name;
 		log::info("C");
 		if (name.data()) {
 			log::info("D");
@@ -72,7 +72,7 @@ namespace {
 			log::info("{}Node <Invalid>", indent);
 		}
 		log::info("E");
-		auto ni_node = node->AsNode();
+		NiNode* ni_node = node->AsNode();
 		log::info("F");
 		if (ni_node) {
 			log::info("G");
@@ -83,10 +83,11 @@ namespace {
 				if (!children.empty()) {
 					log::info("J");
 					auto size = children.size();
+					NiAVObject* child;
 					for(std::size_t i = 0; i < size; ++i) {
 						log::info("K");
-						log::info("ENTER {} of {}", i +1, size);
-						auto child = children[i];
+						log::info("ENTER {} of {} for {}", i +1, size, name);
+						child = children[i].get();
 						log::info("L");
 						indent.push_back(' ');
 						indent.push_back(' ');
@@ -96,7 +97,7 @@ namespace {
 						}
 						indent.pop_back();
 						indent.pop_back();
-						log::info("EXIT {} of {}", i + 1, size);
+						log::info("EXIT {} of {} for {}", i + 1, size, name);
 					}
 				} else {
 					log::info("{}Empty children", indent);
@@ -118,7 +119,7 @@ namespace {
 		auto name = model->name;
 		log::info("Root Node {}!", name);
 		std::string indent = "  ";
-		walking_node(model, indent);
+		walking_node(model.get(), indent);
 		log::info("Walk Complete!");
 	}
 }
