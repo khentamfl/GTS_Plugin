@@ -1,6 +1,7 @@
 #include <SKSE/SKSE.h>
 #include <GtsManager.h>
 #include <vector>
+#include <string>
 
 using namespace Gts;
 using namespace RE;
@@ -52,21 +53,22 @@ namespace {
 		return height;
 	}
 
-	void walking_node(NiAVObject* node) {
+	void walking_node(NiAVObject* node, std::string& indent) {
 		if (!node) {
 			return;
 		}
-		log::info("Node {}!", node->name);
+		log::info("{}Node {}!", indent, node->name);
 		auto ni_node = node->AsNode();
 		if (ni_node) {
 			auto children = ni_node->GetChildren();
-			log::info("  Children: {}", children.size());
 			for (auto child: children) {
-				log::info("Trying child");
+				indent.push_back(' ');
+				indent.push_back(' ');
 				if (child) {
-					walking_node(child.get());
+					walking_node(child.get(), indent);
 				}
-				log::info("Child done");
+				indent.pop_back();
+				indent.pop_back();
 			}
 		}
 	}
@@ -77,7 +79,9 @@ namespace {
 		}
 		auto name = model->name;
 		log::info("Root Node {}!", name);
-		walking_node(model);
+		std::string indent = "  ";
+		walking_node(model, indent);
+		log::info("Walk Complete!");
 	}
 }
 
