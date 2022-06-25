@@ -1,4 +1,5 @@
 #include <SKSE/SKSE.h>
+#include <Config.h>
 #include <GtsManager.h>
 #include <vector>
 #include <string>
