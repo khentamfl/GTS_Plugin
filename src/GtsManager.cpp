@@ -27,7 +27,7 @@ namespace {
 		return result;
 	}
 
-	float get_height(NiPointer<Actor> actor) {
+	float get_height(Actor* actor) {
 		auto model = actor->Get3D(false);
 		if (model) {
 			float previous_radius = model->worldBound.radius;
@@ -52,27 +52,32 @@ namespace {
 		return height;
 	}
 
-	void walking_node(NiPointer<NiAVObject> node) {
+	void walking_node(NiAVObject* node) {
+		if (!node) {
+			return;
+		}
 		log::info("Node {}!", node->name);
 		auto ni_node = node->AsNode();
 		if (ni_node) {
 			auto children = ni_node->GetChildren();
 			log::info("  Children: {}", children.size());
 			for (auto child: children) {
+				log::info("Trying child");
 				if (child) {
-					walking_node(child);
+					walking_node(child.get());
 				}
+				log::info("Child done");
 			}
 		}
 	}
-	void walk_nodes(NiPointer<Actor> actor) {
+	void walk_nodes(Actor* actor) {
 		auto model = actor->Get3D(false);
 		if (!model) {
 			return;
 		}
 		auto name = model->name;
 		log::info("Root Node {}!", name);
-		walking_node(NiPointer(model));
+		walking_node(model);
 	}
 }
 
@@ -97,18 +102,23 @@ void GtsManager::poll() {
 
 		auto actor_handles = find_actors();
 		for (auto actor_handle: actor_handles) {
-			auto actor = actor_handle.get();
-			auto base_actor = actor->GetActorBase();
-			auto actor_name = base_actor->GetFullName();
+			auto sptr_actor = actor_handle.get();
+			if (sptr_actor) {
+				auto actor = sptr_actor.get();
+				if (actor) {
+					auto base_actor = actor->GetActorBase();
+					auto actor_name = base_actor->GetFullName();
 
-			auto race = actor->GetRace();
-			auto race_name = race->GetFullName();
+					auto race = actor->GetRace();
+					auto race_name = race->GetFullName();
 
-			auto height = get_height(actor);
+					auto height = get_height(actor);
 
-			log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
-			walk_nodes(actor);
-			log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
+					log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
+					walk_nodes(actor);
+					log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
+				}
+			}
 		}
 
 	}
