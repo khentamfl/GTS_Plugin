@@ -1,3 +1,7 @@
 debug:
   logLevel: info
   flushLevel: trace
+
+frame:
+  initDelay: 0
+  step: 0

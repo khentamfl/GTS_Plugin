@@ -59,7 +59,7 @@ namespace {
 			return;
 		}
 		log::info("B");
-		std::string name = node->name;
+		std::string name = node->name.c_str();
 		log::info("C");
 		if (name.data()) {
 			log::info("D");
@@ -141,11 +141,15 @@ void GtsManager::poll() {
 
 	auto ui = RE::UI::GetSingleton();
 	if (!ui->GameIsPaused()) {
+		const auto& frame_config = Gts::Config::GetSingleton().GetFrame();
+		auto init_delay = frame_config.GetInitDelay();
+		auto step = frame_config.GetStep();
+
 		auto current_frame = this->frame_count.fetch_add(1);
-		if (current_frame <= 10) {
+		if (current_frame <= init_delay) {
 			return;
 		}
-		if (current_frame % 3 != 0) {
+		if (current_frame % step != 0) {
 			return;
 		}
 
