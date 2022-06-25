@@ -108,14 +108,18 @@ namespace {
 		log::info("END");
 	}
 	void walk_nodes(Actor* actor) {
-		if (actor && actor->loadedData && actor->loadedData->data3D) {
-			auto model = actor->loadedData->data3D;
-			auto name = model->name;
-			log::info("Root Node {}!", name);
-			std::string indent = "  ";
-			walking_node(model, indent);
-			log::info("Walk Complete!");
+		if (!actor->Is3DLoaded()) {
+			return;
 		}
+		if (!actor || !actor->loadedData || !actor->loadedData->data3D) {
+			return;
+		}
+		auto model = actor->loadedData->data3D;
+		auto name = model->name;
+		log::info("Root Node {}!", name);
+		std::string indent = "  ";
+		walking_node(model, indent);
+		log::info("Walk Complete!");
 	}
 }
 
