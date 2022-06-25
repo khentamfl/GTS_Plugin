@@ -53,7 +53,7 @@ namespace {
 		return height;
 	}
 
-	void walking_node(NiAVObject* node, std::string& indent) {
+	void walking_node(NiPointer<NiAVObject> node, std::string& indent) {
 		log::info("BEGIN");
 		if (!node) {
 			return;
@@ -92,7 +92,7 @@ namespace {
 						indent.push_back(' ');
 						log::info("M");
 						if (child) {
-							walking_node(child.get(), indent);
+							walking_node(child, indent);
 						}
 						indent.pop_back();
 						indent.pop_back();
@@ -108,15 +108,14 @@ namespace {
 		log::info("END");
 	}
 	void walk_nodes(Actor* actor) {
-		auto model = actor->Get3D(false);
-		if (!model) {
-			return;
+		if (actor && actor->loadedData && actor->loadedData->data3D) {
+			auto model = actor->loadedData->data3D;
+			auto name = model->name;
+			log::info("Root Node {}!", name);
+			std::string indent = "  ";
+			walking_node(model, indent);
+			log::info("Walk Complete!");
 		}
-		auto name = model->name;
-		log::info("Root Node {}!", name);
-		std::string indent = "  ";
-		walking_node(model, indent);
-		log::info("Walk Complete!");
 	}
 }
 
