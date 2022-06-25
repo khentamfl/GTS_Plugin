@@ -57,18 +57,35 @@ namespace {
 		if (!node) {
 			return;
 		}
-		log::info("{}Node {}!", indent, node->name);
+		auto name = node->name;
+		if (name.data()) {
+			if (!node->name.empty()) {
+				log::info("{}Node {}", indent, node->name);
+			} else {
+				log::info("{}Node <Unnamed>", indent);
+			}
+		} else {
+			log::info("{}Node <Invalid>", indent);
+		}
 		auto ni_node = node->AsNode();
 		if (ni_node) {
 			auto children = ni_node->GetChildren();
-			for (auto child: children) {
-				indent.push_back(' ');
-				indent.push_back(' ');
-				if (child) {
-					walking_node(child.get(), indent);
+			if (children.begin()) {
+				if (!children.empty()) {
+					for (auto child: children) {
+						indent.push_back(' ');
+						indent.push_back(' ');
+						if (child) {
+							walking_node(child.get(), indent);
+						}
+						indent.pop_back();
+						indent.pop_back();
+					}
+				} else {
+					log::info("{}Empty children", indent);
 				}
-				indent.pop_back();
-				indent.pop_back();
+			} else {
+				log::info("{}No children", indent);
 			}
 		}
 	}
