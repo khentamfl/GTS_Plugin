@@ -140,6 +140,14 @@ void GtsManager::poll() {
 
 	auto ui = RE::UI::GetSingleton();
 	if (!ui->GameIsPaused()) {
+		auto current_frame = this->frame_count.fetch_add(1);
+		if (current_frame <= 10) {
+			return;
+		}
+		if (current_frame % 3 != 0) {
+			return;
+		}
+
 		log::info("Poll.");
 
 		auto actor_handles = find_actors();
