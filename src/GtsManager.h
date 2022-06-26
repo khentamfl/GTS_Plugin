@@ -21,5 +21,6 @@ namespace Gts {
 			std::atomic_ulong frame_count = std::atomic_int64_t(0);
 
 			void poll();
+			void poll_actor(RE::Actor* actor);
 	};
 }

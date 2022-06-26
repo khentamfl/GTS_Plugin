@@ -40,15 +40,12 @@ namespace Hooks
 		REL::Relocation<std::uintptr_t> PlayerCharacterVtbl{ RE::VTABLE_PlayerCharacter[0] };
 
 		_Update = PlayerCharacterVtbl.write_vfunc(0xAD, Update);
-
 	}
 
 	void HookOnPlayerUpdate::Update(RE::PlayerCharacter* a_this, float a_delta) {
 		_Update(a_this, a_delta);
 
-		auto base_actor = a_this->GetActorBase();
-		auto actor_name = base_actor->GetFullName();
-		logger::info("Update player: {}", actor_name);
+		Gts::GtsManager::GetSingleton().poll_actor(a_this);
 	}
 
 	void HookOnActorUpdate::Hook() {
@@ -62,8 +59,6 @@ namespace Hooks
 	void HookOnActorUpdate::Update(RE::Actor* a_this, float a_delta) {
 		_Update(a_this, a_delta);
 
-		auto base_actor = a_this->GetActorBase();
-		auto actor_name = base_actor->GetFullName();
-		logger::info("Update actor: {}", actor_name);
+		Gts::GtsManager::GetSingleton().poll_actor(a_this);
 	}
 }

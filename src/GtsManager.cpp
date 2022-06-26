@@ -138,20 +138,24 @@ void GtsManager::poll() {
 			auto sptr_actor = actor_handle.get();
 			if (sptr_actor) {
 				auto actor = sptr_actor.get();
-				if (actor) {
-					auto base_actor = actor->GetActorBase();
-					auto actor_name = base_actor->GetFullName();
-
-					auto race = actor->GetRace();
-					auto race_name = race->GetFullName();
-
-					auto height = get_height(actor);
-
-					log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
-					walk_nodes(actor);
-				}
+				poll_actor(actor);
 			}
 		}
 
+	}
+}
+
+void GtsManager::poll_actor(Actor* actor) {
+	if (actor) {
+		auto base_actor = actor->GetActorBase();
+		auto actor_name = base_actor->GetFullName();
+
+		auto race = actor->GetRace();
+		auto race_name = race->GetFullName();
+
+		auto height = get_height(actor);
+
+		log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
+		walk_nodes(actor);
 	}
 }
