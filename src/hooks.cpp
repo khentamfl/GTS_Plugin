@@ -11,6 +11,7 @@ namespace Hooks
 
 		MainUpdateHook::Hook();
 		HookOnPlayerUpdate::Hook();
+		HookOnActorUpdate::Hook();
 
 		logger::info("Gts finished applying hooks...");
 	}
