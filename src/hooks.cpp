@@ -2,6 +2,7 @@
 #include "hooks.h"
 #include "GtsManager.h"
 
+using namespace RE;
 
 namespace Hooks
 {
@@ -12,6 +13,7 @@ namespace Hooks
 		MainUpdateHook::Hook();
 		HookOnPlayerUpdate::Hook();
 		HookOnActorUpdate::Hook();
+		HookbhkCharProxyController::Hook()
 
 		logger::info("Gts finished applying hooks...");
 	}
@@ -60,5 +62,19 @@ namespace Hooks
 		_Update(a_this, a_delta);
 
 		Gts::GtsManager::GetSingleton().poll_actor(a_this);
+	}
+
+	void HookbhkCharProxyController::Hook() {
+		logger::info("Hooking character proxy controller");
+		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_bhkCharProxyController[0] };
+
+		// CharacterInteractionCallback
+		_Orig = ActorVtbl.write_vfunc(0x04, CharacterInteractionCallback);
+
+	}
+
+	void HookbhkCharProxyController::CharacterInteractionCallback(hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) {
+		logger::info("Char char collision");
+		_Orig(a_proxy, a_otherProxy, a_contact);
 	}
 }

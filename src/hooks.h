@@ -1,5 +1,7 @@
 #pragma once
 
+using namespace RE;
+
 namespace Hooks
 {
 	void Install();
@@ -32,6 +34,16 @@ namespace Hooks
 
 			static void Update(RE::Actor* a_this, float a_delta);
 			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class HookbhkCharProxyController
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void CharacterInteractionCallback(hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact);
+			static inline REL::Relocation<decltype(CharacterInteractionCallback)> _Orig;
 	};
 
 }
