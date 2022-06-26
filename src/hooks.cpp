@@ -21,7 +21,7 @@ namespace Hooks
 		logger::info("Gts applying MainUpdateHook");
 
 		auto& trampoline = SKSE::GetTrampoline();
-		trampoline.create(64);
+		trampoline.create(256);
 
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(35551, 36544)};          // main loop
 		_Update = trampoline.write_call<5>(hook.address() + REL::Relocate(0x11F, 0x160), Update);
