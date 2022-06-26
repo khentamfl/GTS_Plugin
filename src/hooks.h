@@ -42,7 +42,7 @@ namespace Hooks
 			static void Hook();
 		private:
 
-			static void CharacterInteractionCallback(hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact);
+			static void CharacterInteractionCallback(bhkCharProxyController* a_this, hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact);
 			static inline REL::Relocation<decltype(CharacterInteractionCallback)> _Orig;
 	};
 

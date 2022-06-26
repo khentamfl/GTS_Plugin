@@ -13,7 +13,7 @@ namespace Hooks
 		MainUpdateHook::Hook();
 		HookOnPlayerUpdate::Hook();
 		HookOnActorUpdate::Hook();
-		HookbhkCharProxyController::Hook()
+		HookbhkCharProxyController::Hook();
 
 		logger::info("Gts finished applying hooks...");
 	}
@@ -73,8 +73,8 @@ namespace Hooks
 
 	}
 
-	void HookbhkCharProxyController::CharacterInteractionCallback(hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) {
+	void HookbhkCharProxyController::CharacterInteractionCallback(bhkCharProxyController* a_this, hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) {
 		logger::info("Char char collision");
-		_Orig(a_proxy, a_otherProxy, a_contact);
+		_Orig(a_this, a_proxy, a_otherProxy, a_contact);
 	}
 }
