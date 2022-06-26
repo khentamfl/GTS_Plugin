@@ -21,7 +21,7 @@ namespace Hooks
 
 		auto& trampoline = SKSE::GetTrampoline();
 
-		REL::Relocation<uintptr_t> hook(REL::RelocationID(35551, 36544));          // main loop
+		REL::Relocation<uintptr_t> hook{REL::RelocationID(35551, 36544)};          // main loop
 		_Update = trampoline.write_call<5>(hook.address() + REL::Relocate(0x11F, 0x160), Update);
 	}
 
