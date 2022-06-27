@@ -117,7 +117,7 @@ namespace {
 
 		if (model) {
 			BSFixedString root_name = "NPC Root [Root]";
-			auto root_node = model->GetObjectByName(root_name);
+			NiAVObject* root_node = model->GetObjectByName(root_name);
 			if (root_node) {
 				auto world_transform = root_node->local;
 				float scale = world_transform.scale;
@@ -205,7 +205,31 @@ void GtsManager::poll() {
 			auto sptr_actor = actor_handle.get();
 			if (sptr_actor) {
 				auto actor = sptr_actor.get();
-				poll_actor(actor);
+
+				auto model = actor->Get3D();
+				auto name = model->name;
+				log::info("MAIN: Model name: {}", name);
+
+				auto base_actor = actor->GetActorBase();
+				auto actor_name = base_actor->GetFullName();
+
+				BSFixedString root_name = "NPC Root [Root]";
+				if (model) {
+
+					NiAVObject* root_node = model->GetObjectByName(root_name);
+					if (root_node) {
+						log::info("Main YES");
+					} else {
+						log::info("Main NO");
+					}
+				}
+
+				NiAVObject* other_root_node = actor->GetNodeByName(root_name);
+				if (other_root_node) {
+					log::info("Main YES OTHER");
+				} else {
+					log::info("Main NO OTHER");
+				}
 			}
 		}
 
@@ -221,8 +245,8 @@ void GtsManager::poll_actor(Actor* actor) {
 		auto race_name = race->GetFullName();
 
 
-		// walk_nodes(actor);
 		// log::info("Updating height of {}", actor_name);
 		update_height(actor);
+		walk_nodes(actor);
 	}
 }

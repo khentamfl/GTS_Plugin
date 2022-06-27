@@ -32,8 +32,7 @@ namespace Hooks
 	void MainUpdateHook::Update(RE::Main* a_this, float a2)
 	{
 		_Update(a_this, a2);
-
-		// logger::info("Update");
+		Gts::GtsManager::GetSingleton().poll();
 	}
 
 
