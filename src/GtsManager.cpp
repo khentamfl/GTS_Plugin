@@ -207,7 +207,6 @@ namespace {
 
 		auto model = actor->Get3D();
 		auto name = model->name;
-		log::info("Model name: {}", name);
 
 		auto base_actor = actor->GetActorBase();
 		auto actor_name = base_actor->GetFullName();
@@ -220,35 +219,20 @@ namespace {
 			if (char_controller) {
 				char_controller->scale = scale;
 				auto base_bound = get_base_bound(actor);
-				// log::info("Updating collision bounds");
 				char_controller->collisionBound.extents = base_bound.extents * scale;
 				char_controller->collisionBound.center = base_bound.center * scale;
-				// log::info("Updating bumper collision bounds");
 				// char_controller->bumperCollisionBound.extents = base_height->bumperCollisionBound.extents * scale;
 				// char_controller->bumperCollisionBound.center = base_height->bumperCollisionBound.center * scale;
-				//
-				char_controller->swimFloatHeight = base_height->swimFloatHeight * scale;
-				log::info("Updated water float height: {}", char_controller->swimFloatHeight);
-				//
-				// char_controller->actorHeight = base_height->actorHeight * scale;
-				// log::info("Updated char height: {}", char_controller->actorHeight);
+				char_controller->swimFloatHeight = height * 0.75;
+				char_controller->actorHeight = height;
 			}else {
 				log::info("No char controller: {}", actor_name);
 			}
 
 			auto ai_process = actor->currentProcess;
 			if (ai_process) {
-				const auto min = actor->GetBoundMin();
-				const auto max = actor->GetBoundMax();
-				const auto diff = max.z - min.z;
-				const auto height = actor->GetBaseHeight() * diff;
-				ai_process->SetCachedHeight(0.0);
-				log::info("Updated cached ai height 1: {}", ai_process->GetCachedHeight());
 				ai_process->SetCachedHeight(height);
-				log::info("Updated cached ai height 2: {}", ai_process->GetCachedHeight());
-
 				ai_process->cachedValues->cachedEyeLevel = height * 0.95;
-				log::info("Updated cached ai eye level: {}", ai_process->cachedValues->cachedEyeLevel);
 			}else {
 				log::info("No ai: {}", actor_name);
 			}
