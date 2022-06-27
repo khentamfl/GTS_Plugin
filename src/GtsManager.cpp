@@ -28,86 +28,7 @@ namespace {
 
 		return result;
 	}
-
-
-	float get_base_height(Actor* actor) {
-		// The NiExtraNodeData has the original bounding box data.
-		// The data in GetCharController is seperate from that in NiExtraNodeData
-		// We can therefore use NiExtraNodeData as the base height.
-		// Caveat the data in GetBoundMin use the NiExtraNodeData
-		// I am not sure if it is better to change NiExtraNodeData so that
-		// GetBoundMin changes or to change the data in GetCharController
-		// that seems to govern the AI and controls
-		//
-		// The bb values on NiExtraNodeData might be shared between all actors of the
-		// same skeleton. Changing on actorA seems to also change on actorB (needs confirm)
-		//
-		// Plan:
-		// Use NiExtraNodeData for base height data
-		// Use GetCharController for current height data
-		//
-		// Return 0.0 if we cannot get base height
-		auto model = actor->Get3D();
-		auto extra_bbx = model->GetExtraData("BBX");
-		if (extra_bbx) {
-			BSBound* bbx = dynamic_cast<BSBound*>(extra_bbx);
-			float height = bbx.extents.z * 2; // Half widths so x2
-			height *= actor->GetBaseHeight();
-			return height;
-		}
-		return 0.0;
-	}
-
-	BSBound get_base_bound(Actor* actor) {
-		// Using NiExtraNodeData, see get_base_height
-		auto model = actor->Get3D();
-		BSBound result;
-		result.name = "BBX";
-		result.center.x = 0.0;
-		result.center.y = 0.0;
-		result.center.z = 0.0;
-		result.extents.x = 0.0;
-		result.extents.y = 0.0;
-		result.extents.z = 0.0;
-		auto extra_bbx = model->GetExtraData("BBX");
-		if (extra_bbx) {
-			BSBound* bbx = dynamic_cast<BSBound*>(extra_bbx);
-			result.center.x = bbx.center.x;
-			result.center.y = bbx.center.y;
-			result.center.z = bbx.center.z;
-			result.extents.x = bbx.extents.x;
-			result.extents.y = bbx.extents.y;
-			result.extents.z = bbx.extents.z;
-
-			float base_scale = actor->GetBaseHeight();
-			result.center *= base_scale;
-			result.extents *= base_scale;
-		}
-		return result;
-	}
-
-	float get_scale(Actor* actor) {
-		auto node = find_node(actor, "NPC Root [Root]");
-		if (node) {
-			float scale = node->world.scale;
-			return scale;
-		}
-		return 1.0;
-	}
-
-	void set_scale(Actor* actor, float scale) {
-		auto node = find_node(actor, "NPC Root [Root]");
-		if (node) {
-			node->world.scale =  scale;
-		}
-	}
-
-	float get_height(Actor* actor) {
-		float scale = get_scale(actor);
-		float base_height = get_base_height(actor);
-		return base_height * scale;
-	}
-
+	
 	void walk_nodes(Actor* actor) {
 		if (!actor->Is3DLoaded()) {
 			return;
@@ -198,6 +119,84 @@ namespace {
 		}
 
 		return nullptr;
+	}
+
+	float get_base_height(Actor* actor) {
+		// The NiExtraNodeData has the original bounding box data.
+		// The data in GetCharController is seperate from that in NiExtraNodeData
+		// We can therefore use NiExtraNodeData as the base height.
+		// Caveat the data in GetBoundMin use the NiExtraNodeData
+		// I am not sure if it is better to change NiExtraNodeData so that
+		// GetBoundMin changes or to change the data in GetCharController
+		// that seems to govern the AI and controls
+		//
+		// The bb values on NiExtraNodeData might be shared between all actors of the
+		// same skeleton. Changing on actorA seems to also change on actorB (needs confirm)
+		//
+		// Plan:
+		// Use NiExtraNodeData for base height data
+		// Use GetCharController for current height data
+		//
+		// Return 0.0 if we cannot get base height
+		auto model = actor->Get3D();
+		auto extra_bbx = model->GetExtraData("BBX");
+		if (extra_bbx) {
+			BSBound* bbx = dynamic_cast<BSBound*>(extra_bbx);
+			float height = bbx->extents.z * 2; // Half widths so x2
+			height *= actor->GetBaseHeight();
+			return height;
+		}
+		return 0.0;
+	}
+
+	BSBound get_base_bound(Actor* actor) {
+		// Using NiExtraNodeData, see get_base_height
+		auto model = actor->Get3D();
+		BSBound result;
+		result.name = "BBX";
+		result.center.x = 0.0;
+		result.center.y = 0.0;
+		result.center.z = 0.0;
+		result.extents.x = 0.0;
+		result.extents.y = 0.0;
+		result.extents.z = 0.0;
+		auto extra_bbx = model->GetExtraData("BBX");
+		if (extra_bbx) {
+			BSBound* bbx = dynamic_cast<BSBound*>(extra_bbx);
+			result.center.x = bbx.center.x;
+			result.center.y = bbx.center.y;
+			result.center.z = bbx.center.z;
+			result.extents.x = bbx.extents.x;
+			result.extents.y = bbx.extents.y;
+			result.extents.z = bbx.extents.z;
+
+			float base_scale = actor->GetBaseHeight();
+			result.center *= base_scale;
+			result.extents *= base_scale;
+		}
+		return result;
+	}
+
+	float get_scale(Actor* actor) {
+		auto node = find_node(actor, "NPC Root [Root]");
+		if (node) {
+			float scale = node->world.scale;
+			return scale;
+		}
+		return 1.0;
+	}
+
+	void set_scale(Actor* actor, float scale) {
+		auto node = find_node(actor, "NPC Root [Root]");
+		if (node) {
+			node->world.scale =  scale;
+		}
+	}
+
+	float get_height(Actor* actor) {
+		float scale = get_scale(actor);
+		float base_height = get_base_height(actor);
+		return base_height * scale;
 	}
 
 	void update_height(Actor* actor) {
