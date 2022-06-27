@@ -29,10 +29,8 @@ namespace Gts {
 			[[nodiscard]] static GtsManager& GetSingleton() noexcept;
 
 			atomic_ulong frame_count = atomic_int64_t(0);
-			BSTHashMap<ObjectRefHandle, BaseHeight> base_heights;
 
 			void poll();
 			void poll_actor(Actor* actor);
-			BaseHeight* get_base_height(Actor* actor);
 	};
 }
