@@ -168,7 +168,7 @@ namespace {
 
 		if (model) {
 			float test_scale = 5.;
-			model.local.scale = test_scale;
+			model->local.scale = test_scale;
 
 			// if (fabs(scale - 1.0) >= 1e-5) {
 			auto char_controller = actor->GetCharController();
@@ -211,6 +211,44 @@ namespace {
 				log::info("Updated cached ai eye level: {}", ai_process->cachedValues->cachedEyeLevel);
 			}else {
 				log::info("No ai: {}", actor_name);
+			}
+
+			log::info("Starting experiment 01");
+			auto extra_bbx = model->GetExtraData("BBX");
+			if (extra_bbx) {
+				log::info("  - Found BBX");
+				BSBound* bbx = dynamic_cast<BSBound*>(extra_bbx);
+				if (char_controller) {
+					if (bbx) {
+						log::info("  - Downcasted");
+
+						log::info("  - BBX Extents: {},{},{}", bbx->extents.x, bbx->extents.y, bbx->extents.z);
+						log::info("  - Controller Extents: {},{},{}", char_controller->collisionBound.extents.x, char_controller->collisionBound.extents.y, char_controller->collisionBound.extents.z);
+						log::info("  - Actor Min Bound: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
+						log::info("  - Actor Max Bound: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
+
+						log::info("  - Adjusting actor version");
+						char_controller->collisionBound.extents *= 2;
+
+						log::info("  - BBX Extents: {},{},{}", bbx->extents.x, bbx->extents.y, bbx->extents.z);
+						log::info("  - Controller Extents: {},{},{}", char_controller->collisionBound.extents.x, char_controller->collisionBound.extents.y, char_controller->collisionBound.extents.z);
+						log::info("  - Actor Min Bound: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
+						log::info("  - Actor Max Bound: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
+
+						log::info("  - Adjusting bbx version");
+						bbx->extents *= 4;
+
+						log::info("  - BBX Extents: {},{},{}", bbx->extents.x, bbx->extents.y, bbx->extents.z);
+						log::info("  - Controller Extents: {},{},{}", char_controller->collisionBound.extents.x, char_controller->collisionBound.extents.y, char_controller->collisionBound.extents.z);
+						log::info("  - Actor Min Bound: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
+						log::info("  - Actor Max Bound: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
+
+					} else {
+						log::info("  - Cannot downcast");
+					}
+				} else {
+					log::info("  - Cannot run no char controller");
+				}
 			}
 			// }
 		} else {
