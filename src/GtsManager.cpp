@@ -29,39 +29,90 @@ namespace {
 		return result;
 	}
 
-	float get_height(Actor* actor) {
-		auto model = actor->Get3D(false);
-		if (model) {
-			float previous_radius = model->worldBound.radius;
-			model->UpdateWorldBound();
-			float new_radius = model->worldBound.radius;
-			log::info("Old: {}, New: {}", previous_radius, new_radius);
-			float factor = new_radius/previous_radius;
-			if (fabs(factor - 1.0) > 1e-4) {
-				auto char_controller = actor->GetCharController();
-				if (char_controller) {
-					log::info("Updating collision bounds");
-					char_controller->collisionBound.extents *= factor;
-					char_controller->bumperCollisionBound.extents *= factor;
-				}
-			}
-		}
-		auto min = actor->GetBoundMin();
-		auto max = actor->GetBoundMax();
-		auto diff = max.z - min.z;
-		auto height = actor->GetBaseHeight() * diff;
 
-		return height;
+	float get_base_height(Actor* actor) {
+		// The NiExtraNodeData has the original bounding box data.
+		// The data in GetCharController is seperate from that in NiExtraNodeData
+		// We can therefore use NiExtraNodeData as the base height.
+		// Caveat the data in GetBoundMin use the NiExtraNodeData
+		// I am not sure if it is better to change NiExtraNodeData so that
+		// GetBoundMin changes or to change the data in GetCharController
+		// that seems to govern the AI and controls
+		//
+		// The bb values on NiExtraNodeData might be shared between all actors of the
+		// same skeleton. Changing on actorA seems to also change on actorB (needs confirm)
+		//
+		// Plan:
+		// Use NiExtraNodeData for base height data
+		// Use GetCharController for current height data
+		//
+		// Return 0.0 if we cannot get base height
+		auto model = actor->Get3D();
+		auto extra_bbx = model->GetExtraData("BBX");
+		if (extra_bbx) {
+			BSBound* bbx = dynamic_cast<BSBound*>(extra_bbx);
+			float height = bbx.extents.z * 2; // Half widths so x2
+			height *= actor->GetBaseHeight();
+			return height;
+		}
+		return 0.0;
+	}
+
+	BSBound get_base_bound(Actor* actor) {
+		// Using NiExtraNodeData, see get_base_height
+		auto model = actor->Get3D();
+		BSBound result;
+		result.name = "BBX";
+		result.center.x = 0.0;
+		result.center.y = 0.0;
+		result.center.z = 0.0;
+		result.extents.x = 0.0;
+		result.extents.y = 0.0;
+		result.extents.z = 0.0;
+		auto extra_bbx = model->GetExtraData("BBX");
+		if (extra_bbx) {
+			BSBound* bbx = dynamic_cast<BSBound*>(extra_bbx);
+			result.center.x = bbx.center.x;
+			result.center.y = bbx.center.y;
+			result.center.z = bbx.center.z;
+			result.extents.x = bbx.extents.x;
+			result.extents.y = bbx.extents.y;
+			result.extents.z = bbx.extents.z;
+
+			float base_scale = actor->GetBaseHeight();
+			result.center *= base_scale;
+			result.extents *= base_scale;
+		}
+		return result;
+	}
+
+	float get_scale(Actor* actor) {
+		auto node = find_node(actor, "NPC Root [Root]");
+		if (node) {
+			float scale = node->world.scale;
+			return scale;
+		}
+		return 1.0;
+	}
+
+	void set_scale(Actor* actor, float scale) {
+		auto node = find_node(actor, "NPC Root [Root]");
+		if (node) {
+			node->world.scale =  scale;
+		}
+	}
+
+	float get_height(Actor* actor) {
+		float scale = get_scale(actor);
+		float base_height = get_base_height(actor);
+		return base_height * scale;
 	}
 
 	void walk_nodes(Actor* actor) {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		if (!actor || !actor->loadedData || !actor->loadedData->data3D) {
-			return;
-		}
-		auto model = actor->loadedData->data3D;
+		auto model = actor->Get3D();
 		auto name = model->name;
 
 		std::deque<NiAVObject*> queue;
@@ -105,10 +156,7 @@ namespace {
 		if (!actor->Is3DLoaded()) {
 			return nullptr;
 		}
-		if (!actor || !actor->loadedData || !actor->loadedData->data3D) {
-			return nullptr;
-		}
-		auto model = actor->loadedData->data3D;
+		auto model = actor->Get3D();
 		auto name = model->name;
 
 		std::deque<NiAVObject*> queue;
@@ -156,9 +204,7 @@ namespace {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		if (!actor || !actor->loadedData || !actor->loadedData->data3D) {
-			return;
-		}
+
 		auto model = actor->Get3D();
 		auto name = model->name;
 		log::info("Model name: {}", name);
@@ -167,28 +213,22 @@ namespace {
 		auto actor_name = base_actor->GetFullName();
 
 		if (model) {
-			float test_scale = 5.;
-			model->local.scale = test_scale;
+			float scale = get_scale(actor);
+			float height = get_height(actor);
 
-			// if (fabs(scale - 1.0) >= 1e-5) {
 			auto char_controller = actor->GetCharController();
 			if (char_controller) {
-				const auto mass = char_controller->scale;
-				log::info("Mass: {}", mass);
-				const auto min = actor->GetBoundMin();
-				const auto max = actor->GetBoundMax();
-				const auto diff = max.z - min.z;
-				const auto height = actor->GetBaseHeight() * diff;
-				log::info("Updated height: {}", height);
+				char_controller->scale = scale;
+				auto base_bound = get_base_bound(actor);
 				// log::info("Updating collision bounds");
-				// char_controller->collisionBound.extents = base_height->collisionBound.extents * scale;
-				// char_controller->collisionBound.center = base_height->collisionBound.center * scale;
+				char_controller->collisionBound.extents = base_bound.extents * scale;
+				char_controller->collisionBound.center = base_bound.center * scale;
 				// log::info("Updating bumper collision bounds");
 				// char_controller->bumperCollisionBound.extents = base_height->bumperCollisionBound.extents * scale;
 				// char_controller->bumperCollisionBound.center = base_height->bumperCollisionBound.center * scale;
 				//
-				// char_controller->swimFloatHeight = base_height->swimFloatHeight * scale;
-				// log::info("Updated water float height: {}", char_controller->swimFloatHeight);
+				char_controller->swimFloatHeight = base_height->swimFloatHeight * scale;
+				log::info("Updated water float height: {}", char_controller->swimFloatHeight);
 				//
 				// char_controller->actorHeight = base_height->actorHeight * scale;
 				// log::info("Updated char height: {}", char_controller->actorHeight);
@@ -211,44 +251,6 @@ namespace {
 				log::info("Updated cached ai eye level: {}", ai_process->cachedValues->cachedEyeLevel);
 			}else {
 				log::info("No ai: {}", actor_name);
-			}
-
-			log::info("Starting experiment 01");
-			auto extra_bbx = model->GetExtraData("BBX");
-			if (extra_bbx) {
-				log::info("  - Found BBX");
-				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
-				if (char_controller) {
-					if (bbx) {
-						log::info("  - Downcasted");
-
-						log::info("  - BBX Extents: {},{},{}", bbx->extents.x, bbx->extents.y, bbx->extents.z);
-						log::info("  - Controller Extents: {},{},{}", char_controller->collisionBound.extents.x, char_controller->collisionBound.extents.y, char_controller->collisionBound.extents.z);
-						log::info("  - Actor Min Bound: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
-						log::info("  - Actor Max Bound: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
-
-						log::info("  - Adjusting actor version");
-						char_controller->collisionBound.extents *= 2;
-
-						log::info("  - BBX Extents: {},{},{}", bbx->extents.x, bbx->extents.y, bbx->extents.z);
-						log::info("  - Controller Extents: {},{},{}", char_controller->collisionBound.extents.x, char_controller->collisionBound.extents.y, char_controller->collisionBound.extents.z);
-						log::info("  - Actor Min Bound: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
-						log::info("  - Actor Max Bound: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
-
-						log::info("  - Adjusting bbx version");
-						bbx->extents *= 4;
-
-						log::info("  - BBX Extents: {},{},{}", bbx->extents.x, bbx->extents.y, bbx->extents.z);
-						log::info("  - Controller Extents: {},{},{}", char_controller->collisionBound.extents.x, char_controller->collisionBound.extents.y, char_controller->collisionBound.extents.z);
-						log::info("  - Actor Min Bound: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
-						log::info("  - Actor Max Bound: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
-
-					} else {
-						log::info("  - Cannot downcast");
-					}
-				} else {
-					log::info("  - Cannot run no char controller");
-				}
 			}
 			// }
 		} else {
