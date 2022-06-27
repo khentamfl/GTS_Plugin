@@ -100,6 +100,58 @@ namespace {
 			}
 		}
 	}
+
+	void update_height(Actor* actor) {
+		if (!actor->Is3DLoaded()) {
+			return;
+		}
+		if (!actor || !actor->loadedData || !actor->loadedData->data3D) {
+			return;
+		}
+		auto model = actor->loadedData->data3D;
+		auto name = model->name;
+
+		if (model) {
+			auto root_node = model->GetObjectByName("NPC Root [Root]");
+			if (root_node) {
+				auto world_transform = root_node->world;
+				float scale = world_transform->scale;
+
+				auto prev_world_transform = root_node->previousWorld;
+				float prev_scale = world_transform->scale;
+
+				if (fabs(scale - prev_scale) >= 1e-5) {
+					auto char_controller = actor->GetCharController();
+					float factor = scale/prev_scale;
+					if (char_controller) {
+						log::info("Updating collision bounds");
+						char_controller->collisionBound.extents *= factor;
+						log::info("Updating bumper collision bounds");
+						char_controller->bumperCollisionBound.extents *= factor;
+
+						char_controller->swimFloatHeight *= factor;
+						log::info("Updated water float height: {}", char_controller->swimFloatHeight);
+
+						char_controller->actorHeight *= factor;
+						log::info("Updated char height: {}", char_controller->actorHeight);
+					}
+
+					auto ai_process = actor->currentProcess;
+					if (ai_process) {
+						const auto min = actor->GetBoundMin();
+						const auto max = actor->GetBoundMax();
+						const auto diff = max.z - min.z;
+						const auto height = actor->GetBaseHeight() * diff;
+						ai_process->SetCachedHeight(height);
+						log::info("Updated cached ai height: {}", ai_process->GetCachedHeight());
+
+						ai_process->cachedValues->cachedEyeLevel *= factor;
+						log::info("Updated cached ai eye level: {}", ai_process->cachedValues->cachedEyeLevel);
+					}
+				}
+			}
+		}
+	}
 }
 
 GtsManager& GtsManager::GetSingleton() noexcept {
@@ -151,9 +203,8 @@ void GtsManager::poll_actor(Actor* actor) {
 		auto race = actor->GetRace();
 		auto race_name = race->GetFullName();
 
-		auto height = get_height(actor);
 
-		log::info("Actor {} with race {} found with height {}!", actor_name, race_name, height);
 		// walk_nodes(actor);
+		update_height(actor);
 	}
 }
