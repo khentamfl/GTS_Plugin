@@ -217,7 +217,7 @@ namespace {
 			auto extra_bbx = model->GetExtraData("BBX");
 			if (extra_bbx) {
 				log::info("  - Found BBX");
-				BSBound* bbx = dynamic_cast<BSBound*>(extra_bbx);
+				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
 				if (char_controller) {
 					if (bbx) {
 						log::info("  - Downcasted");
@@ -310,6 +310,6 @@ void GtsManager::poll_actor(Actor* actor) {
 
 		// log::info("Updating height of {}", actor_name);
 		update_height(actor);
-		walk_nodes(actor);
+		// walk_nodes(actor);
 	}
 }
