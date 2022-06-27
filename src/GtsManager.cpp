@@ -101,7 +101,7 @@ namespace {
 		}
 	}
 
-	void update_height(Actor* actor) {
+	void update_height(Actor* actor, BaseHeight* base_height) {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
@@ -114,27 +114,23 @@ namespace {
 		if (model) {
 			auto root_node = model->GetObjectByName("NPC Root [Root]");
 			if (root_node) {
-				auto world_transform = root_node->world;
+				auto world_transform = root_node->local;
 				float scale = world_transform.scale;
 
-				auto prev_world_transform = root_node->previousWorld;
-				float prev_scale = world_transform.scale;
-
-				if (fabs(scale - prev_scale) >= 1e-5) {
+				if (fabs(scale - 1.0) >= 1e-5) {
 					auto char_controller = actor->GetCharController();
-					float factor = scale/prev_scale;
 					if (char_controller) {
 						log::info("Updating collision bounds");
-						char_controller->collisionBound.extents *= factor;
-						char_controller->collisionBound.center *= factor;
+						char_controller->collisionBound.extents = base_height->collisionBound.extents * scale;
+						char_controller->collisionBound.center = base_height->collisionBound.center * scale;
 						log::info("Updating bumper collision bounds");
-						char_controller->bumperCollisionBound.extents *= factor;
-						char_controller->bumperCollisionBound.center *= factor;
+						char_controller->bumperCollisionBound.extents = base_height->bumperCollisionBound.extents * scale;
+						char_controller->bumperCollisionBound.center = base_height->bumperCollisionBound.center * scale;
 
-						char_controller->swimFloatHeight *= factor;
+						char_controller->swimFloatHeight = base_height->swimFloatHeight * scale;
 						log::info("Updated water float height: {}", char_controller->swimFloatHeight);
 
-						char_controller->actorHeight *= factor;
+						char_controller->actorHeight = base_height->actorHeight * scale;
 						log::info("Updated char height: {}", char_controller->actorHeight);
 					}
 
@@ -147,7 +143,7 @@ namespace {
 						ai_process->SetCachedHeight(height);
 						log::info("Updated cached ai height: {}", ai_process->GetCachedHeight());
 
-						ai_process->cachedValues->cachedEyeLevel *= factor;
+						ai_process->cachedValues->cachedEyeLevel = height * 0.95;
 						log::info("Updated cached ai eye level: {}", ai_process->cachedValues->cachedEyeLevel);
 					}
 				}
@@ -207,6 +203,38 @@ void GtsManager::poll_actor(Actor* actor) {
 
 
 		// walk_nodes(actor);
-		update_height(actor);
+		BaseHeight* base_height = this->get_base_height(actor);
+		if (base_height) {
+			log::info("Updating height of {}", actor_name);
+			update_height(actor, base_height);
+		}
 	}
+}
+
+BaseHeight* GtsManager::get_base_height(RE::Actor* actor) {
+	auto umap = this->base_heights;
+	BaseHeight* result;
+	auto handle = actor->GetHandle();
+	if (umap.find(handle) != umap.end()) {
+		result = &umap[handle];
+	} else {
+		result = nullptr;
+	}
+
+	// Try to insert
+	if (!result) {
+		auto char_controller = actor->GetCharController();
+		if (char_controller) {
+			BaseHeight base_height{
+				.collisionBound = char_controller->collisionBound,
+				.bumperCollisionBound = char_controller->bumperCollisionBound,
+				.swimFloatHeight = char_controller->swimFloatHeight,
+				.actorHeight = char_controller->actorHeight,
+			};
+			this->base_heights[handle] = base_height;
+			result = &this->base_heights[handle];
+		}
+	}
+
+	return result;
 }
