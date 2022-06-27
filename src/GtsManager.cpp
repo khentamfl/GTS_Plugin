@@ -101,6 +101,57 @@ namespace {
 		}
 	}
 
+	NiAVObject* find_node(Actor* actor, string& node_name) {
+		if (!actor->Is3DLoaded()) {
+			return nullptr;
+		}
+		if (!actor || !actor->loadedData || !actor->loadedData->data3D) {
+			return nullptr;
+		}
+		auto model = actor->loadedData->data3D;
+		auto name = model->name;
+
+		std::deque<NiAVObject*> queue;
+		queue.push_back(model.get());
+
+
+		while (!queue.empty()) {
+			auto currentnode = queue.front();
+			queue.pop_front();
+			try {
+				if (currentnode) {
+					auto ninode = currentnode->AsNode();
+					if (ninode) {
+						for (auto child: ninode->GetChildren()) {
+							// Bredth first search
+							queue.push_back(child.get());
+							// Depth first search
+							//queue.push_front(child.get());
+						}
+					}
+					// Do smth
+					if  (currentnode->name.c_str() == node_name) {
+						return currentnode;
+					}
+				}
+			}
+			catch (const std::overflow_error& e) {
+				log::info("Overflow: {}", e.what());
+			} // this executes if f() throws std::overflow_error (same type rule)
+			catch (const std::runtime_error& e) {
+				log::info("Underflow: {}", e.what());
+			} // this executes if f() throws std::underflow_error (base class rule)
+			catch (const std::exception& e) {
+				log::info("Exception: {}", e.what());
+			} // this executes if f() throws std::logic_error (base class rule)
+			catch (...) {
+				log::info("Exception Other");
+			}
+		}
+
+		return nullptr;
+	}
+
 	void update_height(Actor* actor) {
 		if (!actor->Is3DLoaded()) {
 			return;
@@ -116,8 +167,8 @@ namespace {
 		auto actor_name = base_actor->GetFullName();
 
 		if (model) {
-			BSFixedString root_name = "NPC Root [Root]";
-			NiAVObject* root_node = model->GetObjectByName(root_name);
+			string root_name = "NPC Root [Root]";
+			NiAVObject* root_node = find_node(actor, root_name);
 			if (root_node) {
 				auto world_transform = root_node->local;
 				float scale = world_transform.scale;
@@ -206,30 +257,7 @@ void GtsManager::poll() {
 			if (sptr_actor) {
 				auto actor = sptr_actor.get();
 
-				auto model = actor->Get3D();
-				auto name = model->name;
-				log::info("MAIN: Model name: {}", name);
-
-				auto base_actor = actor->GetActorBase();
-				auto actor_name = base_actor->GetFullName();
-
-				BSFixedString root_name = "NPC Root [Root]";
-				if (model) {
-
-					NiAVObject* root_node = model->GetObjectByName(root_name);
-					if (root_node) {
-						log::info("Main YES");
-					} else {
-						log::info("Main NO");
-					}
-				}
-
-				NiAVObject* other_root_node = actor->GetNodeByName(root_name);
-				if (other_root_node) {
-					log::info("Main YES OTHER");
-				} else {
-					log::info("Main NO OTHER");
-				}
+				// Do smth
 			}
 		}
 
