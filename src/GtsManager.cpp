@@ -108,8 +108,9 @@ namespace {
 		if (!actor || !actor->loadedData || !actor->loadedData->data3D) {
 			return;
 		}
-		auto model = actor->loadedData->data3D;
+		auto model = actor->Get3D();
 		auto name = model->name;
+		log::info("Model name: {}", name);
 
 		auto base_actor = actor->GetActorBase();
 		auto actor_name = base_actor->GetFullName();
