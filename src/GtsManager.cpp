@@ -115,10 +115,10 @@ namespace {
 			auto root_node = model->GetObjectByName("NPC Root [Root]");
 			if (root_node) {
 				auto world_transform = root_node->world;
-				float scale = world_transform->scale;
+				float scale = world_transform.scale;
 
 				auto prev_world_transform = root_node->previousWorld;
-				float prev_scale = world_transform->scale;
+				float prev_scale = world_transform.scale;
 
 				if (fabs(scale - prev_scale) >= 1e-5) {
 					auto char_controller = actor->GetCharController();
@@ -126,8 +126,10 @@ namespace {
 					if (char_controller) {
 						log::info("Updating collision bounds");
 						char_controller->collisionBound.extents *= factor;
+						char_controller->collisionBound.center *= factor;
 						log::info("Updating bumper collision bounds");
 						char_controller->bumperCollisionBound.extents *= factor;
+						char_controller->bumperCollisionBound.center *= factor;
 
 						char_controller->swimFloatHeight *= factor;
 						log::info("Updated water float height: {}", char_controller->swimFloatHeight);
