@@ -33,7 +33,7 @@ namespace Hooks
 	{
 		_Update(a_this, a2);
 
-		logger::info("Update");
+		// logger::info("Update");
 	}
 
 
