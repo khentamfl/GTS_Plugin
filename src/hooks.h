@@ -46,4 +46,14 @@ namespace Hooks
 			static inline REL::Relocation<decltype(CharacterInteractionCallback)> _Orig;
 	};
 
+	class HookhkpCharacterProxyListener
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void CharacterInteractionCallback(hkpCharacterProxyListener* a_this, hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact);
+			static inline REL::Relocation<decltype(CharacterInteractionCallback)> _Orig;
+	};
+
 }

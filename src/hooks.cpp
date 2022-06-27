@@ -77,4 +77,18 @@ namespace Hooks
 		logger::info("Char char collision");
 		_Orig(a_this, a_proxy, a_otherProxy, a_contact);
 	}
+
+	void HookhkpCharacterProxyListener::Hook() {
+		logger::info("Hooking character proxy listener");
+		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_hkpCharacterProxyListener[0] };
+
+		// CharacterInteractionCallback
+		_Orig = ActorVtbl.write_vfunc(0x04, CharacterInteractionCallback);
+
+	}
+
+	void HookhkpCharacterProxyListener::CharacterInteractionCallback(hkpCharacterProxyListener* a_this, hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) {
+		logger::info("Char char collision listener");
+		_Orig(a_this, a_proxy, a_otherProxy, a_contact);
+	}
 }
