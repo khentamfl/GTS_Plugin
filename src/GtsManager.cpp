@@ -111,49 +111,60 @@ namespace {
 		auto model = actor->loadedData->data3D;
 		auto name = model->name;
 
+		auto base_actor = actor->GetActorBase();
+		auto actor_name = base_actor->GetFullName();
+
 		if (model) {
 			auto root_node = model->GetObjectByName("NPC Root [Root]");
 			if (root_node) {
 				auto world_transform = root_node->local;
 				float scale = world_transform.scale;
 
-				if (fabs(scale - 1.0) >= 1e-5) {
-					auto char_controller = actor->GetCharController();
-					if (char_controller) {
-						char_controller->scale = 10.;
-						const auto min = actor->GetBoundMin();
-						const auto max = actor->GetBoundMax();
-						const auto diff = max.z - min.z;
-						const auto height = actor->GetBaseHeight() * diff;
-						log::info("Updated height: {}", height);
-						// log::info("Updating collision bounds");
-						// char_controller->collisionBound.extents = base_height->collisionBound.extents * scale;
-						// char_controller->collisionBound.center = base_height->collisionBound.center * scale;
-						// log::info("Updating bumper collision bounds");
-						// char_controller->bumperCollisionBound.extents = base_height->bumperCollisionBound.extents * scale;
-						// char_controller->bumperCollisionBound.center = base_height->bumperCollisionBound.center * scale;
-						//
-						// char_controller->swimFloatHeight = base_height->swimFloatHeight * scale;
-						// log::info("Updated water float height: {}", char_controller->swimFloatHeight);
-						//
-						// char_controller->actorHeight = base_height->actorHeight * scale;
-						// log::info("Updated char height: {}", char_controller->actorHeight);
-					}
-
-					auto ai_process = actor->currentProcess;
-					if (ai_process) {
-						const auto min = actor->GetBoundMin();
-						const auto max = actor->GetBoundMax();
-						const auto diff = max.z - min.z;
-						const auto height = actor->GetBaseHeight() * diff;
-						ai_process->SetCachedHeight(height);
-						log::info("Updated cached ai height: {}", ai_process->GetCachedHeight());
-
-						ai_process->cachedValues->cachedEyeLevel = height * 0.95;
-						log::info("Updated cached ai eye level: {}", ai_process->cachedValues->cachedEyeLevel);
-					}
+				// if (fabs(scale - 1.0) >= 1e-5) {
+				auto char_controller = actor->GetCharController();
+				if (char_controller) {
+					char_controller->scale = 10.;
+					const auto min = actor->GetBoundMin();
+					const auto max = actor->GetBoundMax();
+					const auto diff = max.z - min.z;
+					const auto height = actor->GetBaseHeight() * diff;
+					log::info("Updated height: {}", height);
+					// log::info("Updating collision bounds");
+					// char_controller->collisionBound.extents = base_height->collisionBound.extents * scale;
+					// char_controller->collisionBound.center = base_height->collisionBound.center * scale;
+					// log::info("Updating bumper collision bounds");
+					// char_controller->bumperCollisionBound.extents = base_height->bumperCollisionBound.extents * scale;
+					// char_controller->bumperCollisionBound.center = base_height->bumperCollisionBound.center * scale;
+					//
+					// char_controller->swimFloatHeight = base_height->swimFloatHeight * scale;
+					// log::info("Updated water float height: {}", char_controller->swimFloatHeight);
+					//
+					// char_controller->actorHeight = base_height->actorHeight * scale;
+					// log::info("Updated char height: {}", char_controller->actorHeight);
+				}else {
+					log::info("No char controller: {}", actor_name);
 				}
+
+				auto ai_process = actor->currentProcess;
+				if (ai_process) {
+					const auto min = actor->GetBoundMin();
+					const auto max = actor->GetBoundMax();
+					const auto diff = max.z - min.z;
+					const auto height = actor->GetBaseHeight() * diff;
+					ai_process->SetCachedHeight(height);
+					log::info("Updated cached ai height: {}", ai_process->GetCachedHeight());
+
+					ai_process->cachedValues->cachedEyeLevel = height * 0.95;
+					log::info("Updated cached ai eye level: {}", ai_process->cachedValues->cachedEyeLevel);
+				}else {
+					log::info("No ai: {}", actor_name);
+				}
+			} else {
+				log::info("No root: {}", actor_name);
 			}
+			// }
+		} else {
+			log::info("No model: {}", actor_name);
 		}
 	}
 }
@@ -209,7 +220,7 @@ void GtsManager::poll_actor(Actor* actor) {
 
 
 		// walk_nodes(actor);
-		log::info("Updating height of {}", actor_name);
+		// log::info("Updating height of {}", actor_name);
 		update_height(actor);
 	}
 }
