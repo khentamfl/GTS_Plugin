@@ -116,7 +116,8 @@ namespace {
 		auto actor_name = base_actor->GetFullName();
 
 		if (model) {
-			auto root_node = model->GetObjectByName("NPC Root [Root]");
+			BSFixedString root_name = "NPC Root [Root]";
+			auto root_node = model->GetObjectByName(root_name);
 			if (root_node) {
 				auto world_transform = root_node->local;
 				float scale = world_transform.scale;
