@@ -199,7 +199,8 @@ namespace {
 				new_extra_bbx.name = extra_bbx->name;
 				new_extra_bbx.center = extra_bbx->center;
 				new_extra_bbx.extents = extra_bbx->extents;
-				model->AddExtraData("BBX",  new_extra_bbx);
+				//model->AddExtraData("BBX",  new_extra_bbx);
+				model->InsertExtraData(new_extra_bbx);
 			}
 		}
 	}
