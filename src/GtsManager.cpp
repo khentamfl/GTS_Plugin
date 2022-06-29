@@ -186,6 +186,24 @@ namespace {
 		}
 	}
 
+	void clone_bound(Actor* actor) {
+		// This is the bound on the NiExtraNodeData
+		// This data is shared between all skeletons and this hopes to correct this
+		auto model = actor->Get3D();
+		if (model) {
+			auto extra_bbx = model->GetExtraData("BBX");
+			if (extra_bbx) {
+				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
+				model->RemoveExtraData("BBX");
+				auto new_extra_bbx = NiExtraData::Create<BSBound>();
+				new_extra_bbx.name = extra_bbx->name;
+				new_extra_bbx.center = extra_bbx->center;
+				new_extra_bbx.extents = extra_bbx->extents;
+				model->AddExtraData("BBX",  new_extra_bbx);
+			}
+		}
+	}
+
 	BSBound* get_bound(Actor* actor) {
 		// This is the bound on the NiExtraNodeData
 		auto model = actor->Get3D();
@@ -221,6 +239,7 @@ namespace {
 					log::info("No char controller: {}", actor_name);
 					return;
 				}
+				clone_bound(actor);
 				auto bsbound = get_bound(actor);
 				if (!bsbound) {
 					log::info("No bound: {}", actor_name);
@@ -330,6 +349,7 @@ ActorExtraData* GtsManager::get_actor_extra_data(Actor* actor) {
 	auto key = actor->GetFormID();
 	if (umap.find(key) == umap.end()) {
 		// Try to add
+		log::info("Init bounding box");
 		ActorExtraData result;
 
 		auto bsbound = get_bound(actor);
@@ -348,6 +368,7 @@ ActorExtraData* GtsManager::get_actor_extra_data(Actor* actor) {
 		result.initialised = false;
 		umap[key] = result;
 	}
+	log::info("Success add");
 	return &umap[key];
 }
 
