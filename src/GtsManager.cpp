@@ -196,9 +196,9 @@ namespace {
 				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
 				model->RemoveExtraData("BBX");
 				auto new_extra_bbx = NiExtraData::Create<BSBound>();
-				new_extra_bbx.name = extra_bbx->name;
-				new_extra_bbx.center = extra_bbx->center;
-				new_extra_bbx.extents = extra_bbx->extents;
+				new_extra_bbx->name = bbx->name;
+				new_extra_bbx->center = bbx->center;
+				new_extra_bbx->extents = bbx->extents;
 				//model->AddExtraData("BBX",  new_extra_bbx);
 				model->InsertExtraData(new_extra_bbx);
 			}
