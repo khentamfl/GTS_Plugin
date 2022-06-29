@@ -165,25 +165,38 @@ namespace {
 		log::info("Set REF Scale: {}, {}", actor->refScale, static_cast<float>(actor->refScale));
 	}
 
-	void set_model_scale(Actor* actor, float target_scale) {
+	bool set_model_scale(Actor* actor, float target_scale) {
 		// This will set the scale of the model root (not the root npc node)
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
 		auto model = actor->Get3D();
 		if (!model) {
-			return;
+			return false;
 		}
 		model->local.scale = target_scale;
+		return true;
 	}
 
-	void set_npcnode_scale(Actor* actor, float target_scale) {
+	bool set_npcnode_scale(Actor* actor, float target_scale) {
 		// This will set the scale of the root npc node
 		string node_name = "NPC Root [Root]";
 		auto node = find_node(actor, node_name);
 		if (node) {
 			node->local.scale = target_scale;
+			return true;
 		}
+		return false;
+	}
+
+	float get_npcnode_scale(Actor* actor) {
+		// This will set the scale of the root npc node
+		string node_name = "NPC Root [Root]";
+		auto node = find_node(actor, node_name);
+		if (node) {
+			return node->local.scale;
+		}
+		return 0.0;
 	}
 
 	void clone_bound(Actor* actor) {
@@ -260,7 +273,10 @@ namespace {
 				float scale = Gts::Config::GetSingleton().GetTest().GetScale();
 
 				// Model stuff
-				set_npcnode_scale(actor, scale);
+				if (!set_npcnode_scale(actor, scale)) {
+					log::info("Unable to set scale");
+					return;
+				}
 				auto bumper = get_bumper(actor);
 				if (bumper) {
 					bumper->local.translate = base_height_data.bumper_transform.translate * scale;
@@ -299,6 +315,7 @@ namespace {
 				actor->DoReset3D(false);
 
 				// Done
+				log::info("New scale: {}", get_npcnode_scale(actor));
 				log::info("New Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
 				actor_data->initialised = true;
 			}
