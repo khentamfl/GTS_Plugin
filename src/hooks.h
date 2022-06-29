@@ -1,22 +1,23 @@
 #pragma once
 
 using namespace RE;
+using namespace SKSE;
 
 namespace Hooks
 {
 	void Install();
 
-	class MainUpdateHook
+	class Hook_MainUpdate
 	{
 		public:
-			static void Hook();
+			static void Hook(Trampoline& trampoline);
 
 		private:
 			static void Update(RE::Main* a_this, float a2);
 			static inline REL::Relocation<decltype(Update)> _Update;
 	};
 
-	class HookOnPlayerUpdate
+	class Hook_OnPlayerUpdate
 	{
 		public:
 			static void Hook();
@@ -26,7 +27,7 @@ namespace Hooks
 			static inline REL::Relocation<decltype(Update)> _Update;
 	};
 
-	class HookOnActorUpdate
+	class Hook_OnActorUpdate
 	{
 		public:
 			static void Hook();
@@ -36,7 +37,7 @@ namespace Hooks
 			static inline REL::Relocation<decltype(Update)> _Update;
 	};
 
-	class HookbhkCharProxyController
+	class Hook_bhkCharProxyController
 	{
 		public:
 			static void Hook();
@@ -46,7 +47,7 @@ namespace Hooks
 			static inline REL::Relocation<decltype(CharacterInteractionCallback)> _Orig;
 	};
 
-	class HookhkpCharacterProxyListener
+	class Hook_hkpCharacterProxyListener
 	{
 		public:
 			static void Hook();
@@ -55,5 +56,7 @@ namespace Hooks
 			static void CharacterInteractionCallback(hkpCharacterProxyListener* a_this, hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact);
 			static inline REL::Relocation<decltype(CharacterInteractionCallback)> _Orig;
 	};
+
+
 
 }

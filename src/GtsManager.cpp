@@ -28,7 +28,31 @@ namespace {
 
 		return result;
 	}
-	
+
+	float unit_to_meter(float unit) {
+		// Game reports that the height of a slaughterfish is 0.31861934
+		// From inspecting the bounding box of the slaughterfish and applying
+		// base actor scales the unit height is 22.300568
+		// Assuming 0.31861934 is meters and that bouding box is in model unit space
+		// then the conversion factor is 70
+		// Slaughterfish was chosen because it has scales of 1.0 (and was in my worldspace)
+		// The scaling factor of 70 also applies to actor heights (once you remove)
+		// face specific height scaling
+		return unit / 70.0;
+	}
+
+	float meter_to_unit(float meter) {
+		// Game reports that the height of a slaughterfish is 0.31861934
+		// From inspecting the bounding box of the slaughterfish and applying
+		// base actor scales the unit height is 22.300568
+		// Assuming 0.31861934 is meters and that bouding box is in model unit space
+		// then the conversion factor is 70
+		// Slaughterfish was chosen because it has scales of 1.0 (and was in my worldspace)
+		// The scaling factor of 70 also applies to actor heights (once you remove)
+		// face specific height scaling
+		return meter * 70.0;
+	}
+
 	void walk_nodes(Actor* actor) {
 		if (!actor->Is3DLoaded()) {
 			return;
@@ -37,7 +61,7 @@ namespace {
 		auto name = model->name;
 
 		std::deque<NiAVObject*> queue;
-		queue.push_back(model.get());
+		queue.push_back(model);
 
 
 		while (!queue.empty()) {
@@ -55,20 +79,20 @@ namespace {
 						}
 					}
 					// Do smth
-					log::info("Node {}", currentnode->name);
+					log::trace("Node {}", currentnode->name);
 				}
 			}
 			catch (const std::overflow_error& e) {
-				log::info("Overflow: {}", e.what());
+				log::warn("Overflow: {}", e.what());
 			} // this executes if f() throws std::overflow_error (same type rule)
 			catch (const std::runtime_error& e) {
-				log::info("Underflow: {}", e.what());
+				log::warn("Underflow: {}", e.what());
 			} // this executes if f() throws std::underflow_error (base class rule)
 			catch (const std::exception& e) {
-				log::info("Exception: {}", e.what());
+				log::warn("Exception: {}", e.what());
 			} // this executes if f() throws std::logic_error (base class rule)
 			catch (...) {
-				log::info("Exception Other");
+				log::warn("Exception Other");
 			}
 		}
 	}
@@ -81,7 +105,7 @@ namespace {
 		auto name = model->name;
 
 		std::deque<NiAVObject*> queue;
-		queue.push_back(model.get());
+		queue.push_back(model);
 
 
 		while (!queue.empty()) {
@@ -105,20 +129,28 @@ namespace {
 				}
 			}
 			catch (const std::overflow_error& e) {
-				log::info("Overflow: {}", e.what());
+				log::warn("Overflow: {}", e.what());
 			} // this executes if f() throws std::overflow_error (same type rule)
 			catch (const std::runtime_error& e) {
-				log::info("Underflow: {}", e.what());
+				log::warn("Underflow: {}", e.what());
 			} // this executes if f() throws std::underflow_error (base class rule)
 			catch (const std::exception& e) {
-				log::info("Exception: {}", e.what());
+				log::warn("Exception: {}", e.what());
 			} // this executes if f() throws std::logic_error (base class rule)
 			catch (...) {
-				log::info("Exception Other");
+				log::warn("Exception Other");
 			}
 		}
 
 		return nullptr;
+	}
+
+	float get_height_min_max(Actor* actor) {
+		const auto min = actor->GetBoundMin();
+		const auto max = actor->GetBoundMax();
+		const auto diff = max.z - min.z;
+		const auto height = actor->GetBaseHeight() * diff;
+		return height;
 	}
 
 	float get_base_height(Actor* actor) {
@@ -141,7 +173,7 @@ namespace {
 		auto model = actor->Get3D();
 		auto extra_bbx = model->GetExtraData("BBX");
 		if (extra_bbx) {
-			BSBound* bbx = dynamic_cast<BSBound*>(extra_bbx);
+			BSBound* bbx = static_cast<BSBound*>(extra_bbx);
 			float height = bbx->extents.z * 2; // Half widths so x2
 			height *= actor->GetBaseHeight();
 			return height;
@@ -149,36 +181,40 @@ namespace {
 		return 0.0;
 	}
 
-	BSBound get_base_bound(Actor* actor) {
+	struct CachedBound {
+		string name;
+		float center[3];
+		float extents[3];
+	};
+
+	CachedBound get_base_bound(Actor* actor) {
 		// Using NiExtraNodeData, see get_base_height
 		auto model = actor->Get3D();
-		BSBound result;
+		CachedBound result;
 		result.name = "BBX";
-		result.center.x = 0.0;
-		result.center.y = 0.0;
-		result.center.z = 0.0;
-		result.extents.x = 0.0;
-		result.extents.y = 0.0;
-		result.extents.z = 0.0;
+		result.center[0] = 0.0;
+		result.center[1] = 0.0;
+		result.center[2] = 0.0;
+		result.extents[0] = 0.0;
+		result.extents[1] = 0.0;
+		result.extents[2] = 0.0;
 		auto extra_bbx = model->GetExtraData("BBX");
 		if (extra_bbx) {
-			BSBound* bbx = dynamic_cast<BSBound*>(extra_bbx);
-			result.center.x = bbx.center.x;
-			result.center.y = bbx.center.y;
-			result.center.z = bbx.center.z;
-			result.extents.x = bbx.extents.x;
-			result.extents.y = bbx.extents.y;
-			result.extents.z = bbx.extents.z;
-
+			BSBound* bbx = static_cast<BSBound*>(extra_bbx);
 			float base_scale = actor->GetBaseHeight();
-			result.center *= base_scale;
-			result.extents *= base_scale;
+			result.center[0] = bbx->center.x * base_scale;
+			result.center[1] = bbx->center.y * base_scale;
+			result.center[2] = bbx->center.z * base_scale;
+			result.extents[0] = bbx->extents.x * base_scale;
+			result.extents[1] = bbx->extents.y * base_scale;
+			result.extents[2] = bbx->extents.z * base_scale;
 		}
 		return result;
 	}
 
 	float get_scale(Actor* actor) {
-		auto node = find_node(actor, "NPC Root [Root]");
+		string node_name = "NPC Root [Root]";
+		auto node = find_node(actor, node_name);
 		if (node) {
 			float scale = node->world.scale;
 			return scale;
@@ -187,7 +223,8 @@ namespace {
 	}
 
 	void set_scale(Actor* actor, float scale) {
-		auto node = find_node(actor, "NPC Root [Root]");
+		string node_name = "NPC Root [Root]";
+		auto node = find_node(actor, node_name);
 		if (node) {
 			node->world.scale =  scale;
 		}
@@ -204,40 +241,64 @@ namespace {
 			return;
 		}
 
-		auto model = actor->Get3D();
-		auto name = model->name;
-
 		auto base_actor = actor->GetActorBase();
 		auto actor_name = base_actor->GetFullName();
+		log::trace("Updating height of: {}", actor_name);
 
-		if (model) {
-			float scale = get_scale(actor);
-			float height = get_height(actor);
+		float scale = get_scale(actor);
+		log::trace("Actor scale: {}", scale);
+		float base_height = get_base_height(actor);
+		log::trace("Actor base height: {}", base_height);
+		float height = get_height(actor);
+		log::trace("Actor height: {}", height);
+		float height_min_max = get_height_min_max(actor);
+		log::trace("Actor height min max: {}", height_min_max);
 
-			auto char_controller = actor->GetCharController();
-			if (char_controller) {
-				char_controller->scale = scale;
-				auto base_bound = get_base_bound(actor);
-				char_controller->collisionBound.extents = base_bound.extents * scale;
-				char_controller->collisionBound.center = base_bound.center * scale;
-				// char_controller->bumperCollisionBound.extents = base_height->bumperCollisionBound.extents * scale;
-				// char_controller->bumperCollisionBound.center = base_height->bumperCollisionBound.center * scale;
-				char_controller->swimFloatHeight = height * 0.75;
-				char_controller->actorHeight = height;
-			}else {
-				log::info("No char controller: {}", actor_name);
+		log::trace("Getting base bounds");
+		auto base_bound = get_base_bound(actor);
+
+		float refScale = static_cast<float>(actor->refScale) / 100.0F;
+		log::info("REF Scale: {}", refScale);
+		const auto& test_config = Gts::Config::GetSingleton().GetTest();
+		float target_scale = test_config.GetScale();
+		if (fabs(refScale - target_scale) > 1e-5) {
+			actor->refScale = static_cast<std::uint16_t>(target_scale * 100.0F);
+			actor->DoReset3D(false);
+		}
+		log::info("Set REF Scale: {}, {}", actor->refScale, static_cast<float>(actor->refScale));
+
+
+		log::trace("Getting character controller");
+		auto char_controller = actor->GetCharController();
+		if (char_controller) {
+			log::trace("Current height data");
+			log::trace("  - Scale: {}", char_controller->scale);
+			log::trace("  - Height: {}", char_controller->actorHeight);
+			log::trace("  - SwimFloat: {}", char_controller->swimFloatHeight);
+
+			char_controller->scale = scale;
+			char_controller->collisionBound.extents.x = base_bound.extents[0] * scale;
+			char_controller->collisionBound.extents.y = base_bound.extents[1] * scale;
+			char_controller->collisionBound.extents.z = base_bound.extents[2] * scale;
+			char_controller->collisionBound.center.x = base_bound.center[0] * scale;
+			char_controller->collisionBound.center.y = base_bound.center[1] * scale;
+			char_controller->collisionBound.center.z = base_bound.center[2] * scale;
+			char_controller->actorHeight = unit_to_meter(height);
+			if (char_controller->swimFloatHeight > 1e-4) {
+				// Fishes have a value of 0.0
+				char_controller->swimFloatHeight = unit_to_meter(height * (1.6/1.8288));
 			}
+			log::trace("Data updated");
+		}else {
+			log::debug("No char controller: {}", actor_name);
+		}
 
-			auto ai_process = actor->currentProcess;
-			if (ai_process) {
-				ai_process->SetCachedHeight(height);
-				ai_process->cachedValues->cachedEyeLevel = height * 0.95;
-			}else {
-				log::info("No ai: {}", actor_name);
-			}
-			// }
-		} else {
-			log::info("No model: {}", actor_name);
+		auto ai_process = actor->currentProcess;
+		if (ai_process) {
+			ai_process->SetCachedHeight(height);
+			ai_process->cachedValues->cachedEyeLevel = height * 0.95;
+		}else {
+			log::debug("No ai: {}", actor_name);
 		}
 	}
 }
@@ -293,7 +354,7 @@ void GtsManager::poll_actor(Actor* actor) {
 		auto race_name = race->GetFullName();
 
 
-		// log::info("Updating height of {}", actor_name);
+		// log::trace("Updating height of {}", actor_name);
 		update_height(actor);
 		// walk_nodes(actor);
 	}

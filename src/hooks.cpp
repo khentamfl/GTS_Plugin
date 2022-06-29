@@ -10,46 +10,48 @@ namespace Hooks
 	{
 		logger::info("Gts applying hooks...");
 
-		MainUpdateHook::Hook();
-		HookOnPlayerUpdate::Hook();
-		HookOnActorUpdate::Hook();
-		HookbhkCharProxyController::Hook();
+		auto& trampoline = SKSE::GetTrampoline();
+		trampoline.create(256);
+
+		Hook_MainUpdate::Hook(trampoline);
+		Hook_OnPlayerUpdate::Hook();
+		Hook_OnActorUpdate::Hook();
+		Hook_bhkCharProxyController::Hook();
+		Hook_hkpCharacterProxyListener::Hook();
 
 		logger::info("Gts finished applying hooks...");
 	}
 
-	void MainUpdateHook::Hook()
+	// Main
+	void Hook_MainUpdate::Hook(Trampoline& trampoline)
 	{
-		logger::info("Gts applying MainUpdateHook");
-
-		auto& trampoline = SKSE::GetTrampoline();
-		trampoline.create(256);
-
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(35551, 36544)};          // main loop
+		logger::info("Gts applying Main Update Hook at {}", hook.address());
 		_Update = trampoline.write_call<5>(hook.address() + REL::Relocate(0x11F, 0x160), Update);
 	}
 
-	void MainUpdateHook::Update(RE::Main* a_this, float a2)
+	void Hook_MainUpdate::Update(RE::Main* a_this, float a2)
 	{
 		_Update(a_this, a2);
 		Gts::GtsManager::GetSingleton().poll();
 	}
 
-
-	void HookOnPlayerUpdate::Hook() {
+	// PLayer update
+	void Hook_OnPlayerUpdate::Hook() {
 		logger::info("Hooking player update");
 		REL::Relocation<std::uintptr_t> PlayerCharacterVtbl{ RE::VTABLE_PlayerCharacter[0] };
 
 		_Update = PlayerCharacterVtbl.write_vfunc(0xAD, Update);
 	}
 
-	void HookOnPlayerUpdate::Update(RE::PlayerCharacter* a_this, float a_delta) {
+	void Hook_OnPlayerUpdate::Update(RE::PlayerCharacter* a_this, float a_delta) {
 		_Update(a_this, a_delta);
 
-		Gts::GtsManager::GetSingleton().poll_actor(a_this);
+		//Gts::GtsManager::GetSingleton().poll_actor(a_this);
 	}
 
-	void HookOnActorUpdate::Hook() {
+	// Actor update
+	void Hook_OnActorUpdate::Hook() {
 		logger::info("Hooking character update");
 		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
 
@@ -57,13 +59,14 @@ namespace Hooks
 
 	}
 
-	void HookOnActorUpdate::Update(RE::Actor* a_this, float a_delta) {
+	void Hook_OnActorUpdate::Update(RE::Actor* a_this, float a_delta) {
 		_Update(a_this, a_delta);
 
 		Gts::GtsManager::GetSingleton().poll_actor(a_this);
 	}
 
-	void HookbhkCharProxyController::Hook() {
+	// bhkCharProxyController
+	void Hook_bhkCharProxyController::Hook() {
 		logger::info("Hooking character proxy controller");
 		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_bhkCharProxyController[0] };
 
@@ -72,12 +75,13 @@ namespace Hooks
 
 	}
 
-	void HookbhkCharProxyController::CharacterInteractionCallback(bhkCharProxyController* a_this, hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) {
+	void Hook_bhkCharProxyController::CharacterInteractionCallback(bhkCharProxyController* a_this, hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) {
 		logger::info("Char char collision");
 		_Orig(a_this, a_proxy, a_otherProxy, a_contact);
 	}
 
-	void HookhkpCharacterProxyListener::Hook() {
+	// hkpCharacterProxyListener
+	void Hook_hkpCharacterProxyListener::Hook() {
 		logger::info("Hooking character proxy listener");
 		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_hkpCharacterProxyListener[0] };
 
@@ -86,8 +90,9 @@ namespace Hooks
 
 	}
 
-	void HookhkpCharacterProxyListener::CharacterInteractionCallback(hkpCharacterProxyListener* a_this, hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) {
+	void Hook_hkpCharacterProxyListener::CharacterInteractionCallback(hkpCharacterProxyListener* a_this, hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) {
 		logger::info("Char char collision listener");
 		_Orig(a_this, a_proxy, a_otherProxy, a_contact);
 	}
+
 }

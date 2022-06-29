@@ -74,6 +74,30 @@ namespace Gts {
 			friend class articuno::access;
 	};
 
+	class Test {
+		public:
+			[[nodiscard]] inline float GetScale() const noexcept {
+				return _scale;
+			}
+
+		private:
+			articuno_serialize(ar) {
+				ar <=> articuno::kv(_scale, "scale");
+			}
+
+			articuno_deserialize(ar) {
+				*this = Test();
+				float scale;
+				if (ar <=> articuno::kv(scale, "scale")) {
+					_scale = scale;
+				}
+			}
+
+			float _scale = 25.0;
+
+			friend class articuno::access;
+	};
+
 	class Config {
 		public:
 			[[nodiscard]] inline const Debug& GetDebug() const noexcept {
@@ -84,17 +108,22 @@ namespace Gts {
 				return _frame;
 			}
 
+			[[nodiscard]] inline const Test& GetTest() const noexcept {
+				return _test;
+			}
+
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
 
 		private:
 			articuno_serde(ar) {
 				ar <=> articuno::kv(_debug, "debug");
 				ar <=> articuno::kv(_frame, "frame");
+				ar <=> articuno::kv(_test, "test");
 			}
 
 			Debug _debug;
-
 			Frame _frame;
+			Test _test;
 
 			friend class articuno::access;
 	};

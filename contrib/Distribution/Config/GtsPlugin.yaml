@@ -5,3 +5,6 @@ debug:
 frame:
   initDelay: 0
   step: 0
+
+test:
+  scale: 25.0
