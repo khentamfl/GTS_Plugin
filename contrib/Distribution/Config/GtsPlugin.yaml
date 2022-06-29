@@ -7,4 +7,4 @@ frame:
   step: 0
 
 test:
-  scale: 25.0
+  scale: 5.0

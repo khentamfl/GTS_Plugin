@@ -25,6 +25,7 @@ namespace Gts {
 		CachedBound bumperCollisionBound;
 		float actorHeight;
 		float swimFloatHeightRatio;
+		NiTransform bumper_transform;
 	};
 
 	struct ActorExtraData {

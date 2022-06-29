@@ -15,6 +15,8 @@ WIP
 - [ ] Accurate Body Collision that inflicts size effects on contact
 - [ ] Proper headtracking
 - [ ] Ability to edit HitBoxes so it'll be possible to have Giant Enemies/Have more accurate hitbox
+  - AABB was shared between all actors of the same skeleton
+  - Found a way to clone the AABB and make them unique to each actor
 - [ ] Ability to spawn dust effect explosions literally under the feet, not under center of character. Ideally even scale them.
 - [ ] Maybe proper High-Heel module that dynamically adjusts high heel size based on Root scale? Ray-Track from feet to
 - [ ] In the perfect scenario, repair Animation Speed based on size (A pain to do, not sure if it's worth it. A lot of people have already tried it)

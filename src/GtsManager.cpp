@@ -218,6 +218,10 @@ namespace {
 		return nullptr;
 	}
 
+	NiAVObject* get_bumper(Actor* actor) {
+		return find_node(actor, "CharacterBumper");
+	}
+
 	void update_height(Actor* actor) {
 		if (!actor) {
 			return;
@@ -229,12 +233,14 @@ namespace {
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (actor_data) {
 			if (!actor_data->initialised) {
+				// Get base data
 				auto& base_height_data = actor_data->base_height;
 
 				auto base_actor = actor->GetActorBase();
 				auto actor_name = base_actor->GetFullName();
 				log::info("Updating height of: {}", actor_name);
 
+				// Get nessecary data and exit early if not present
 				auto char_controller = actor->GetCharController();
 				if (!char_controller) {
 					log::info("No char controller: {}", actor_name);
@@ -248,8 +254,19 @@ namespace {
 				}
 				auto ai_process = actor->currentProcess;
 
+				// Start
 				log::info("Current Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
 				float scale = Gts::Config::GetSingleton().GetTest().GetScale();
+
+				// Model stuff
+				set_npcnode_scale(actor, scale);
+				auto bumper = get_bumper(actor);
+				if (bumper) {
+					bumper->local.translate = base_height_data.bumper_transform.translate * scale;
+					bumper->local.scale = base_height_data.bumper_transform.scale * scale;
+				}
+
+				// Character controller stuff
 				char_controller->scale = scale;
 				uncache_bound(&base_height_data.collisionBound, &char_controller->collisionBound);
 				char_controller->collisionBound.extents *= scale;
@@ -261,6 +278,7 @@ namespace {
 				bsbound->extents *= scale;
 				bsbound->center *= scale;
 
+				// Ai Proccess stuff
 				float model_height = bsbound->extents.z * 2 * actor->GetBaseHeight();
 				float meter_height = unit_to_meter(model_height);
 				char_controller->actorHeight = meter_height;
@@ -271,7 +289,7 @@ namespace {
 				}
 				log::info("Data updated");
 
-
+				// 3D resets
 				if (ai_process) {
 					ai_process->Update3DModel(actor);
 				} else {
@@ -279,9 +297,8 @@ namespace {
 				}
 				actor->DoReset3D(false);
 
+				// Done
 				log::info("New Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
-
-				set_model_scale(actor, scale);
 				actor_data->initialised = true;
 			}
 		}
@@ -346,9 +363,10 @@ void GtsManager::poll_actor(Actor* actor) {
 }
 
 ActorExtraData* GtsManager::get_actor_extra_data(Actor* actor) {
-	auto& umap = this->actor_data;
 	auto key = actor->GetFormID();
-	if (umap.find(key) == umap.end()) {
+	try {
+		this->actor_data.at(key);
+	} catch (const std::out_of_range& oor) {
 		// Try to add
 		log::info("Init bounding box");
 		ActorExtraData result;
@@ -366,11 +384,14 @@ ActorExtraData* GtsManager::get_actor_extra_data(Actor* actor) {
 		cache_bound(&char_controller->bumperCollisionBound, &result.base_height.bumperCollisionBound);
 		result.base_height.actorHeight = char_controller->actorHeight;
 		result.base_height.swimFloatHeightRatio = char_controller->swimFloatHeight / char_controller->actorHeight;
+		auto bumper = get_bumper(actor);
+		if (bumper) {
+			result.base_height.bumper_transform = bumper->local;
+		}
 		result.initialised = false;
-		umap[key] = result;
+		this->actor_data[key] = result;
 	}
-	log::info("Success add");
-	return &umap[key];
+	return &this->actor_data[key];
 }
 
 void Gts::cache_bound(BSBound* src, CachedBound* dst) {
