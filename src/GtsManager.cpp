@@ -37,7 +37,7 @@ namespace {
 		// then the conversion factor is 70
 		// Slaughterfish was chosen because it has scales of 1.0 (and was in my worldspace)
 		// The scaling factor of 70 also applies to actor heights (once you remove)
-		// face specific height scaling
+		// race specific height scaling
 		return unit / 70.0;
 	}
 
@@ -49,7 +49,7 @@ namespace {
 		// then the conversion factor is 70
 		// Slaughterfish was chosen because it has scales of 1.0 (and was in my worldspace)
 		// The scaling factor of 70 also applies to actor heights (once you remove)
-		// face specific height scaling
+		// race specific height scaling
 		return meter * 70.0;
 	}
 
@@ -102,8 +102,15 @@ namespace {
 			return nullptr;
 		}
 		auto model = actor->Get3D();
-		auto name = model->name;
+		if (!model) {
+			return nullptr;
+		}
+		auto game_lookup = model->GetNodeByName(node_name);
+		if (game_lookup) {
+			return game_lookup;
+		}
 
+		// Game lookup failed we try and find it manually
 		std::deque<NiAVObject*> queue;
 		queue.push_back(model);
 
@@ -143,6 +150,40 @@ namespace {
 		}
 
 		return nullptr;
+	}
+
+	void set_ref_scale(Actor* actor, float target_scale) {
+		// This is how the game sets scale with the `SetScale` command
+		// It is limited to x10 and messes up all sorts of things like actor damage
+		// and anim speeds
+		float refScale = static_cast<float>(actor->refScale) / 100.0F;
+		log::info("REF Scale: {}", refScale);
+		if (fabs(refScale - target_scale) > 1e-5) {
+			actor->refScale = static_cast<std::uint16_t>(target_scale * 100.0F);
+			actor->DoReset3D(false);
+		}
+		log::info("Set REF Scale: {}, {}", actor->refScale, static_cast<float>(actor->refScale));
+	}
+
+	void set_base_scale(Actor* actor, float target_scale) {
+		// This will set the scale of the model root (not the root npc node)
+		if (!actor->Is3DLoaded()) {
+			return;
+		}
+		auto model = actor->Get3D();
+		if (!model) {
+			return;
+		}
+		model->local.scale = target_scale;
+	}
+
+	void set_npcnode_scale(Actor* actor, float target_scale) {
+		// This will set the scale of the root npc node
+		string node_name = "NPC Root [Root]";
+		auto node = find_node(actor, node_name);
+		if (node) {
+			node->local.scale = target_scale;
+		}
 	}
 
 	float get_height_min_max(Actor* actor) {
@@ -257,15 +298,7 @@ namespace {
 		log::trace("Getting base bounds");
 		auto base_bound = get_base_bound(actor);
 
-		float refScale = static_cast<float>(actor->refScale) / 100.0F;
-		log::info("REF Scale: {}", refScale);
-		const auto& test_config = Gts::Config::GetSingleton().GetTest();
-		float target_scale = test_config.GetScale();
-		if (fabs(refScale - target_scale) > 1e-5) {
-			actor->refScale = static_cast<std::uint16_t>(target_scale * 100.0F);
-			actor->DoReset3D(false);
-		}
-		log::info("Set REF Scale: {}, {}", actor->refScale, static_cast<float>(actor->refScale));
+
 
 
 		log::trace("Getting character controller");
