@@ -366,7 +366,7 @@ void GtsManager::poll_actor(Actor* actor) {
 ActorExtraData* GtsManager::get_actor_extra_data(Actor* actor) {
 	auto key = actor->GetFormID();
 	try {
-		this->actor_data.at(key);
+		auto no_discard = this->actor_data.at(key);
 	} catch (const std::out_of_range& oor) {
 		// Try to add
 		log::info("Init bounding box");
