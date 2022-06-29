@@ -351,7 +351,7 @@ ActorExtraData* GtsManager::get_actor_extra_data(Actor* actor) {
 	return &umap[key];
 }
 
-void cache_bound(BSBound* src, CachedBound* dst) {
+void Gts::cache_bound(BSBound* src, CachedBound* dst) {
 	dst->center[0] = src->center.x;
 	dst->center[1] = src->center.y;
 	dst->center[2] = src->center.z;
@@ -359,7 +359,7 @@ void cache_bound(BSBound* src, CachedBound* dst) {
 	dst->extents[1] = src->extents.y;
 	dst->extents[2] = src->extents.z;
 }
-void uncache_bound(CachedBound* src, BSBound* dst) {
+void Gts::uncache_bound(CachedBound* src, BSBound* dst) {
 	dst->center.x = src->center[0];
 	dst->center.y = src->center[1];
 	dst->center.z = src->center[2];
