@@ -168,7 +168,7 @@ namespace {
 	bool set_model_scale(Actor* actor, float target_scale) {
 		// This will set the scale of the model root (not the root npc node)
 		if (!actor->Is3DLoaded()) {
-			return;
+			return false;
 		}
 		auto model = actor->Get3D();
 		if (!model) {
@@ -269,7 +269,10 @@ namespace {
 				auto ai_process = actor->currentProcess;
 
 				// Start
+				log::info("Current scale: {}", get_npcnode_scale(actor));
 				log::info("Current Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
+				log::info("Current Bound min: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
+				log::info("Current Bound max: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
 				float scale = Gts::Config::GetSingleton().GetTest().GetScale();
 
 				// Model stuff
@@ -317,6 +320,8 @@ namespace {
 				// Done
 				log::info("New scale: {}", get_npcnode_scale(actor));
 				log::info("New Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
+				log::info("New Bound min: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
+				log::info("New Bound max: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
 				actor_data->initialised = true;
 			}
 		}
