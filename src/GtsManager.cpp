@@ -105,9 +105,9 @@ namespace {
 		if (!model) {
 			return nullptr;
 		}
-		auto game_lookup = model->GetNodeByName(node_name);
-		if (game_lookup) {
-			return game_lookup;
+		auto node_lookup = model->GetObjectByName(node_name);
+		if (node_lookup) {
+			return node_lookup;
 		}
 
 		// Game lookup failed we try and find it manually
@@ -165,7 +165,7 @@ namespace {
 		log::info("Set REF Scale: {}, {}", actor->refScale, static_cast<float>(actor->refScale));
 	}
 
-	void set_base_scale(Actor* actor, float target_scale) {
+	void set_model_scale(Actor* actor, float target_scale) {
 		// This will set the scale of the model root (not the root npc node)
 		if (!actor->Is3DLoaded()) {
 			return;
@@ -186,152 +186,84 @@ namespace {
 		}
 	}
 
-	float get_height_min_max(Actor* actor) {
-		const auto min = actor->GetBoundMin();
-		const auto max = actor->GetBoundMax();
-		const auto diff = max.z - min.z;
-		const auto height = actor->GetBaseHeight() * diff;
-		return height;
-	}
-
-	float get_base_height(Actor* actor) {
-		// The NiExtraNodeData has the original bounding box data.
-		// The data in GetCharController is seperate from that in NiExtraNodeData
-		// We can therefore use NiExtraNodeData as the base height.
-		// Caveat the data in GetBoundMin use the NiExtraNodeData
-		// I am not sure if it is better to change NiExtraNodeData so that
-		// GetBoundMin changes or to change the data in GetCharController
-		// that seems to govern the AI and controls
-		//
-		// The bb values on NiExtraNodeData might be shared between all actors of the
-		// same skeleton. Changing on actorA seems to also change on actorB (needs confirm)
-		//
-		// Plan:
-		// Use NiExtraNodeData for base height data
-		// Use GetCharController for current height data
-		//
-		// Return 0.0 if we cannot get base height
+	BSBound* get_bound(Actor* actor) {
+		// This is the bound on the NiExtraNodeData
 		auto model = actor->Get3D();
-		auto extra_bbx = model->GetExtraData("BBX");
-		if (extra_bbx) {
-			BSBound* bbx = static_cast<BSBound*>(extra_bbx);
-			float height = bbx->extents.z * 2; // Half widths so x2
-			height *= actor->GetBaseHeight();
-			return height;
+		if (model) {
+			auto extra_bbx = model->GetExtraData("BBX");
+			if (extra_bbx) {
+				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
+				return bbx;
+			}
 		}
-		return 0.0;
-	}
-
-	struct CachedBound {
-		string name;
-		float center[3];
-		float extents[3];
-	};
-
-	CachedBound get_base_bound(Actor* actor) {
-		// Using NiExtraNodeData, see get_base_height
-		auto model = actor->Get3D();
-		CachedBound result;
-		result.name = "BBX";
-		result.center[0] = 0.0;
-		result.center[1] = 0.0;
-		result.center[2] = 0.0;
-		result.extents[0] = 0.0;
-		result.extents[1] = 0.0;
-		result.extents[2] = 0.0;
-		auto extra_bbx = model->GetExtraData("BBX");
-		if (extra_bbx) {
-			BSBound* bbx = static_cast<BSBound*>(extra_bbx);
-			float base_scale = actor->GetBaseHeight();
-			result.center[0] = bbx->center.x * base_scale;
-			result.center[1] = bbx->center.y * base_scale;
-			result.center[2] = bbx->center.z * base_scale;
-			result.extents[0] = bbx->extents.x * base_scale;
-			result.extents[1] = bbx->extents.y * base_scale;
-			result.extents[2] = bbx->extents.z * base_scale;
-		}
-		return result;
-	}
-
-	float get_scale(Actor* actor) {
-		string node_name = "NPC Root [Root]";
-		auto node = find_node(actor, node_name);
-		if (node) {
-			float scale = node->world.scale;
-			return scale;
-		}
-		return 1.0;
-	}
-
-	void set_scale(Actor* actor, float scale) {
-		string node_name = "NPC Root [Root]";
-		auto node = find_node(actor, node_name);
-		if (node) {
-			node->world.scale =  scale;
-		}
-	}
-
-	float get_height(Actor* actor) {
-		float scale = get_scale(actor);
-		float base_height = get_base_height(actor);
-		return base_height * scale;
+		return nullptr;
 	}
 
 	void update_height(Actor* actor) {
+		if (!actor) {
+			return;
+		}
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
 
-		auto base_actor = actor->GetActorBase();
-		auto actor_name = base_actor->GetFullName();
-		log::trace("Updating height of: {}", actor_name);
+		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
+		if (actor_data) {
+			if (!actor_data->initialised) {
+				auto& base_height_data = actor_data->base_height;
 
-		float scale = get_scale(actor);
-		log::trace("Actor scale: {}", scale);
-		float base_height = get_base_height(actor);
-		log::trace("Actor base height: {}", base_height);
-		float height = get_height(actor);
-		log::trace("Actor height: {}", height);
-		float height_min_max = get_height_min_max(actor);
-		log::trace("Actor height min max: {}", height_min_max);
+				auto base_actor = actor->GetActorBase();
+				auto actor_name = base_actor->GetFullName();
+				log::info("Updating height of: {}", actor_name);
 
-		log::trace("Getting base bounds");
-		auto base_bound = get_base_bound(actor);
+				auto char_controller = actor->GetCharController();
+				if (!char_controller) {
+					log::info("No char controller: {}", actor_name);
+					return;
+				}
+				auto bsbound = get_bound(actor);
+				if (!bsbound) {
+					log::info("No bound: {}", actor_name);
+					return;
+				}
+				auto ai_process = actor->currentProcess;
+
+				log::info("Current Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
+				float scale = Gts::Config::GetSingleton().GetTest().GetScale();
+				char_controller->scale = scale;
+				uncache_bound(&base_height_data.collisionBound, &char_controller->collisionBound);
+				char_controller->collisionBound.extents *= scale;
+				char_controller->collisionBound.center *= scale;
+				uncache_bound(&base_height_data.bumperCollisionBound, &char_controller->bumperCollisionBound);
+				char_controller->bumperCollisionBound.extents *= scale;
+				char_controller->bumperCollisionBound.center *= scale;
+				uncache_bound(&base_height_data.collisionBound, bsbound);
+				bsbound->extents *= scale;
+				bsbound->center *= scale;
+
+				float model_height = bsbound->extents.z * 2 * actor->GetBaseHeight();
+				float meter_height = unit_to_meter(model_height);
+				char_controller->actorHeight = meter_height;
+				char_controller->swimFloatHeight = meter_height * base_height_data.swimFloatHeightRatio;
+				if (ai_process) {
+					ai_process->SetCachedHeight(model_height);
+					ai_process->cachedValues->cachedEyeLevel = model_height * 0.95;
+				}
+				log::info("Data updated");
 
 
+				if (ai_process) {
+					ai_process->Update3DModel(actor);
+				} else {
+					log::info("No ai: {}", actor_name);
+				}
+				actor->DoReset3D(false);
 
+				log::info("New Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
 
-		log::trace("Getting character controller");
-		auto char_controller = actor->GetCharController();
-		if (char_controller) {
-			log::trace("Current height data");
-			log::trace("  - Scale: {}", char_controller->scale);
-			log::trace("  - Height: {}", char_controller->actorHeight);
-			log::trace("  - SwimFloat: {}", char_controller->swimFloatHeight);
-
-			char_controller->scale = scale;
-			char_controller->collisionBound.extents.x = base_bound.extents[0] * scale;
-			char_controller->collisionBound.extents.y = base_bound.extents[1] * scale;
-			char_controller->collisionBound.extents.z = base_bound.extents[2] * scale;
-			char_controller->collisionBound.center.x = base_bound.center[0] * scale;
-			char_controller->collisionBound.center.y = base_bound.center[1] * scale;
-			char_controller->collisionBound.center.z = base_bound.center[2] * scale;
-			char_controller->actorHeight = unit_to_meter(height);
-			if (char_controller->swimFloatHeight > 1e-4) {
-				// Fishes have a value of 0.0
-				char_controller->swimFloatHeight = unit_to_meter(height * (1.6/1.8288));
+				set_model_scale(actor, scale);
+				actor_data->initialised = true;
 			}
-			log::trace("Data updated");
-		}else {
-			log::debug("No char controller: {}", actor_name);
-		}
-
-		auto ai_process = actor->currentProcess;
-		if (ai_process) {
-			ai_process->SetCachedHeight(height);
-			ai_process->cachedValues->cachedEyeLevel = height * 0.95;
-		}else {
-			log::debug("No ai: {}", actor_name);
 		}
 	}
 }
@@ -391,4 +323,47 @@ void GtsManager::poll_actor(Actor* actor) {
 		update_height(actor);
 		// walk_nodes(actor);
 	}
+}
+
+ActorExtraData* GtsManager::get_actor_extra_data(Actor* actor) {
+	auto& umap = this->actor_data;
+	auto key = actor->GetFormID();
+	if (umap.find(key) == umap.end()) {
+		// Try to add
+		ActorExtraData result;
+
+		auto bsbound = get_bound(actor);
+		if (!bsbound) {
+			return nullptr;
+		}
+		auto char_controller = actor->GetCharController();
+		if (!char_controller) {
+			return nullptr;
+		}
+
+		cache_bound(bsbound, &result.base_height.collisionBound);
+		cache_bound(&char_controller->bumperCollisionBound, &result.base_height.bumperCollisionBound);
+		result.base_height.actorHeight = char_controller->actorHeight;
+		result.base_height.swimFloatHeightRatio = char_controller->swimFloatHeight / char_controller->actorHeight;
+		result.initialised = false;
+		umap[key] = result;
+	}
+	return &umap[key];
+}
+
+void cache_bound(BSBound* src, CachedBound* dst) {
+	dst->center[0] = src->center.x;
+	dst->center[1] = src->center.y;
+	dst->center[2] = src->center.z;
+	dst->extents[0] = src->extents.x;
+	dst->extents[1] = src->extents.y;
+	dst->extents[2] = src->extents.z;
+}
+void uncache_bound(CachedBound* src, BSBound* dst) {
+	dst->center.x = src->center[0];
+	dst->center.y = src->center[1];
+	dst->center.z = src->center[2];
+	dst->extents.x = src->extents[0];
+	dst->extents.y = src->extents[1];
+	dst->extents.z = src->extents[2];
 }

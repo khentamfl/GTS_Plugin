@@ -17,32 +17,19 @@ namespace Gts {
 		float extents[3];
 	};
 
-	void cache_bound(BSBound* src, CachedBound* dst) {
-		dst->center[0] = src->center.x;
-		dst->center[1] = src->center.y;
-		dst->center[2] = src->center.z;
-		dst->extents[0] = src->extents.x;
-		dst->extents[1] = src->extents.y;
-		dst->extents[2] = src->extents.z;
-	}
-	void uncache_bound(CachedBound* src, BSBound* dst) {
-		dst->center[0] = src->center.x;
-		dst->center[1] = src->center.y;
-		dst->center[2] = src->center.z;
-		dst->extents[0] = src->extents.x;
-		dst->extents[1] = src->extents.y;
-		dst->extents[2] = src->extents.z;
-	}
+	void cache_bound(BSBound* src, CachedBound* dst);
+	void uncache_bound(CachedBound* src, BSBound* dst);
 
 	struct BaseHeight {
 		CachedBound collisionBound;
 		CachedBound bumperCollisionBound;
-		float swimFloatHeight;
 		float actorHeight;
+		float swimFloatHeightRatio;
 	};
 
 	struct ActorExtraData {
 		BaseHeight base_height;
+		bool initialised;
 	};
 	/**
 	 * The class which tracks gts size effects.
@@ -60,5 +47,6 @@ namespace Gts {
 
 			void poll();
 			void poll_actor(Actor* actor);
+			ActorExtraData* get_actor_extra_data(Actor* actor);
 	};
 }
