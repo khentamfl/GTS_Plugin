@@ -20,6 +20,9 @@ namespace Hooks
 		Hook_hkpCharacterProxyListener::Hook();
 
 		logger::info("Gts finished applying hooks...");
+
+		REL::Relocation<uintptr_t> get_size_fun(REL::RelocationID(19238, 19664));
+		logger::info("Get Scale is at {}", get_size_fun.address());
 	}
 
 	// Main

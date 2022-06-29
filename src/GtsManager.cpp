@@ -219,7 +219,8 @@ namespace {
 	}
 
 	NiAVObject* get_bumper(Actor* actor) {
-		return find_node(actor, "CharacterBumper");
+		string node_name = "CharacterBumper";
+		return find_node(actor, node_name);
 	}
 
 	void update_height(Actor* actor) {
