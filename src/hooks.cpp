@@ -114,7 +114,7 @@ namespace Hooks
 		logger::info("GetPositionImpl");
 		_GetPositionImpl(a_this, a_pos, a_applyCenterOffset);
 		float output[4];
-		_mm_storeu_ps(&output[0], a_pos);
+		_mm_storeu_ps(&output[0], a_pos.quad);
 		logger::info("pos={},{},{},{}", output[0], output[1], output[2], output[3]);
 	}
 
@@ -122,7 +122,7 @@ namespace Hooks
 		logger::info("SetPositionImpl");
 		_SetPositionImpl(a_this, a_pos, a_applyCenterOffset, a_forceWarp);
 		float output[4];
-		_mm_storeu_ps(&output[0], a_pos);
+		_mm_storeu_ps(&output[0], a_pos.quad);
 		logger::info("pos={},{},{},{}", output[0], output[1], output[2], output[3]);
 	}
 
@@ -133,10 +133,10 @@ namespace Hooks
 		float col_b[4];
 		float col_c[4];
 		float col_d[4];
-		_mm_storeu_ps(&col_a[0], a_tranform.rotation.col0);
-		_mm_storeu_ps(&col_b[0], a_tranform.rotation.col1);
-		_mm_storeu_ps(&col_c[0], a_tranform.rotation.col2);
-		_mm_storeu_ps(&col_d[0], a_tranform.translation);
+		_mm_storeu_ps(&col_a[0], a_tranform.rotation.col0.quad);
+		_mm_storeu_ps(&col_b[0], a_tranform.rotation.col1.quad);
+		_mm_storeu_ps(&col_c[0], a_tranform.rotation.col2.quad);
+		_mm_storeu_ps(&col_d[0], a_tranform.translation.quad);
 		logger::info("pos={},{},{},{}", col_a[0], col_b[0], col_c[0], col_d[0]);
 		logger::info("pos={},{},{},{}", col_a[1], col_b[1], col_c[1], col_d[1]);
 		logger::info("pos={},{},{},{}", col_a[2], col_b[2], col_c[2], col_d[2]);
@@ -150,10 +150,10 @@ namespace Hooks
 		float col_b[4];
 		float col_c[4];
 		float col_d[4];
-		_mm_storeu_ps(&col_a[0], a_tranform.rotation.col0);
-		_mm_storeu_ps(&col_b[0], a_tranform.rotation.col1);
-		_mm_storeu_ps(&col_c[0], a_tranform.rotation.col2);
-		_mm_storeu_ps(&col_d[0], a_tranform.translation);
+		_mm_storeu_ps(&col_a[0], a_tranform.rotation.col0.quad);
+		_mm_storeu_ps(&col_b[0], a_tranform.rotation.col1.quad);
+		_mm_storeu_ps(&col_c[0], a_tranform.rotation.col2.quad);
+		_mm_storeu_ps(&col_d[0], a_tranform.translation.quad);
 		logger::info("pos={},{},{},{}", col_a[0], col_b[0], col_c[0], col_d[0]);
 		logger::info("pos={},{},{},{}", col_a[1], col_b[1], col_c[1], col_d[1]);
 		logger::info("pos={},{},{},{}", col_a[2], col_b[2], col_c[2], col_d[2]);
