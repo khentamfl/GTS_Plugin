@@ -249,6 +249,7 @@ namespace {
 			return get_ref_scale(actor);
 			break;
 		}
+        return 0.0;
 	}
 
 	bool set_scale(Actor* actor, float scale) {
@@ -264,9 +265,8 @@ namespace {
 			get_ref_scale(actor);
 			return true;
 			break;
-        default:
-            return false;
 		}
+        return false;
 	}
 
 	void clone_bound(Actor* actor) {
