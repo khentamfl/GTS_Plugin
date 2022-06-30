@@ -249,7 +249,7 @@ namespace {
 			return get_ref_scale(actor);
 			break;
 		}
-        return 0.0;
+		return 0.0;
 	}
 
 	bool set_scale(Actor* actor, float scale) {
@@ -266,7 +266,7 @@ namespace {
 			return true;
 			break;
 		}
-        return false;
+		return false;
 	}
 
 	void clone_bound(Actor* actor) {
@@ -406,14 +406,6 @@ namespace {
 					log::info("No ai: {}", actor_name);
 				}
 				// actor->DoReset3D(false);
-				actor->UpdateCharacterControllerSimulationSettings(char_controller);
-				auto char_controller = actor->GetCharController();
-				if (!char_controller) {
-					log::info("No char controller: {}", actor_name);
-					return;
-				}
-
-
 
 				// Done
 				switch (size_method) {
@@ -438,23 +430,23 @@ namespace {
 				actor_data->initialised = true;
 			}
 
-			auto char_controller = actor->GetCharController();
-			if (char_controller) {
-				// Havok Direct SCALE
-				hkTransform fill_me;
-				auto char_controller_transform = char_controller->GetTransformImpl(fill_me);
-				auto translation = char_controller_transform.translation;
-				float output[4];
-				_mm_storeu_ps(&output, translation);
-				log::info("Char Controler transform: pos={},{},{},{}", output[0], output[1], output[2], output[3]);
-				// Time to cheat the transform
-				// There's no scale on the hk transform there are two ways to get it
-				// 1. Put the scale in the w of the translation
-				// 2. Put the scale in the cross diagnoal of the rotation
-				auto multi = _mm_set_ps(1.0, 1.0, 1.0, scale);
-				auto result = _mm_mul_ps(translation, multi);
-				char_controller_transform.translation = result;
-			}
+			// auto char_controller = actor->GetCharController();
+			// if (char_controller) {
+			// 	// Havok Direct SCALE
+			// 	hkTransform fill_me;
+			// 	auto char_controller_transform = char_controller->GetTransformImpl(fill_me);
+			// 	auto translation = char_controller_transform.translation;
+			// 	float output[4];
+			// 	_mm_storeu_ps(&output, translation);
+			// 	log::info("Char Controler transform: pos={},{},{},{}", output[0], output[1], output[2], output[3]);
+			// 	// Time to cheat the transform
+			// 	// There's no scale on the hk transform there are two ways to get it
+			// 	// 1. Put the scale in the w of the translation
+			// 	// 2. Put the scale in the cross diagnoal of the rotation
+			// 	auto multi = _mm_set_ps(1.0, 1.0, 1.0, scale);
+			// 	auto result = _mm_mul_ps(translation, multi);
+			// 	char_controller_transform.translation = result;
+			// }
 		}
 	}
 }

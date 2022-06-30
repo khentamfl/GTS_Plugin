@@ -57,6 +57,24 @@ namespace Hooks
 			static inline REL::Relocation<decltype(CharacterInteractionCallback)> _Orig;
 	};
 
+	class Hook_bhkCharacterController
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void GetPositionImpl(bhkCharacterController* a_this, hkVector4& a_pos, bool a_applyCenterOffset);
+			static inline REL::Relocation<decltype(GetPositionImpl)> _GetPositionImpl;
+
+			static void SetPositionImpl(bhkCharacterController* a_this, const hkVector4& a_pos, bool a_applyCenterOffset, bool a_forceWarp);
+			static inline REL::Relocation<decltype(SetPositionImpl)> _SetPositionImpl;
+
+			static void  GetTransformImpl(bhkCharacterController* a_this, hkTransform& a_tranform);
+			static inline REL::Relocation<decltype(GetTransformImpl)> _GetTransformImpl;
+
+			static void  SetTransformImpl(bhkCharacterController* a_this, const hkTransform& a_tranform);
+			static inline REL::Relocation<decltype(SetTransformImpl)> _SetTransformImpl;
+	};
 
 
 }

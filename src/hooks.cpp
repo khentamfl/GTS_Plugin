@@ -18,6 +18,7 @@ namespace Hooks
 		Hook_OnActorUpdate::Hook();
 		Hook_bhkCharProxyController::Hook();
 		Hook_hkpCharacterProxyListener::Hook();
+		Hook_bhkCharacterController::Hook();
 
 		logger::info("Gts finished applying hooks...");
 
@@ -96,6 +97,67 @@ namespace Hooks
 	void Hook_hkpCharacterProxyListener::CharacterInteractionCallback(hkpCharacterProxyListener* a_this, hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) {
 		logger::info("Char char collision listener");
 		_Orig(a_this, a_proxy, a_otherProxy, a_contact);
+	}
+
+	// hkpCharacterProxyListener
+	void Hook_bhkCharacterController::Hook() {
+		logger::info("Hooking Hook_bhkCharacterController");
+		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_bhkCharacterController[0] };
+
+		_GetPositionImpl = Vtbl.write_vfunc(0x02, GetPositionImpl);
+		_SetPositionImpl = Vtbl.write_vfunc(0x03, SetPositionImpl);
+		_GetTransformImpl = Vtbl.write_vfunc(0x04, GetTransformImpl);
+		_SetTransformImpl = Vtbl.write_vfunc(0x05, SetTransformImpl);
+	}
+
+	void Hook_bhkCharacterController::GetPositionImpl(bhkCharacterController* a_this, hkVector4& a_pos, bool a_applyCenterOffset) {
+		logger::info("GetPositionImpl");
+		_GetPositionImpl(a_this, a_pos, a_applyCenterOffset);
+		float output[4];
+		_mm_storeu_ps(&output[0], a_pos);
+		logger::info("pos={},{},{},{}", output[0], output[1], output[2], output[3]);
+	}
+
+	void Hook_bhkCharacterController::SetPositionImpl(bhkCharacterController* a_this, const hkVector4& a_pos, bool a_applyCenterOffset, bool a_forceWarp) {
+		logger::info("SetPositionImpl");
+		_SetPositionImpl(a_this, a_pos, a_applyCenterOffset, a_forceWarp);
+		float output[4];
+		_mm_storeu_ps(&output[0], a_pos);
+		logger::info("pos={},{},{},{}", output[0], output[1], output[2], output[3]);
+	}
+
+	void Hook_bhkCharacterController::GetTransformImpl(bhkCharacterController* a_this, hkTransform& a_tranform) {
+		logger::info("GetTransformImpl");
+		_GetTransformImpl(a_this, a_tranform);
+		float col_a[4];
+		float col_b[4];
+		float col_c[4];
+		float col_d[4];
+		_mm_storeu_ps(&col_a[0], a_tranform.rotation.col0);
+		_mm_storeu_ps(&col_b[0], a_tranform.rotation.col1);
+		_mm_storeu_ps(&col_c[0], a_tranform.rotation.col2);
+		_mm_storeu_ps(&col_d[0], a_tranform.translation);
+		logger::info("pos={},{},{},{}", col_a[0], col_b[0], col_c[0], col_d[0]);
+		logger::info("pos={},{},{},{}", col_a[1], col_b[1], col_c[1], col_d[1]);
+		logger::info("pos={},{},{},{}", col_a[2], col_b[2], col_c[2], col_d[2]);
+		logger::info("pos={},{},{},{}", col_a[3], col_b[3], col_c[3], col_d[3]);
+	}
+
+	void Hook_bhkCharacterController::SetTransformImpl(bhkCharacterController* a_this, const hkTransform& a_tranform) {
+		logger::info("GetTransformImpl");
+		_SetTransformImpl(a_this, a_tranform);
+		float col_a[4];
+		float col_b[4];
+		float col_c[4];
+		float col_d[4];
+		_mm_storeu_ps(&col_a[0], a_tranform.rotation.col0);
+		_mm_storeu_ps(&col_b[0], a_tranform.rotation.col1);
+		_mm_storeu_ps(&col_c[0], a_tranform.rotation.col2);
+		_mm_storeu_ps(&col_d[0], a_tranform.translation);
+		logger::info("pos={},{},{},{}", col_a[0], col_b[0], col_c[0], col_d[0]);
+		logger::info("pos={},{},{},{}", col_a[1], col_b[1], col_c[1], col_d[1]);
+		logger::info("pos={},{},{},{}", col_a[2], col_b[2], col_c[2], col_d[2]);
+		logger::info("pos={},{},{},{}", col_a[3], col_b[3], col_c[3], col_d[3]);
 	}
 
 }
