@@ -301,6 +301,11 @@ namespace {
 					bumper->local.scale = base_height_data.bumper_transform.scale * scale;
 				}
 
+				// Current Gts Stuff
+				ActorValue favor_active = ActorValue::kFavorActive;
+				actor->SetBaseActorValue(favor_active, scale + 1.0);
+				actor->SetActorValue(favor_active, scale + 1.0);
+
 				// Character controller stuff
 				char_controller->scale = scale;
 				uncache_bound(&base_height_data.collisionBound, &char_controller->collisionBound);
