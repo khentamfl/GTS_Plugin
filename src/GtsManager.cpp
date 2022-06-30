@@ -184,6 +184,16 @@ namespace {
 		auto node = find_node(actor, node_name);
 		if (node) {
 			node->local.scale = target_scale;
+			auto task = SKSE::GetTaskInterface();
+			task->AddTask([node]() {
+				if (node) {
+					log::info("Updating world node data on main thread");
+					NiUpdateData ctx;
+					ctx.flags |= NiUpdateData::Flag::kDirty;
+					node->UpdateWorldData(&ctx);
+					node->UpdateWorldBound();
+				}
+			});
 			return true;
 		}
 		return false;
