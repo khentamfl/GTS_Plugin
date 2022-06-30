@@ -313,7 +313,9 @@ namespace {
 					log::info("No char controller: {}", actor_name);
 					return;
 				}
-				clone_bound(actor);
+				if (!actor_data->initialised) {
+					clone_bound(actor);
+				}
 				auto bsbound = get_bound(actor);
 				if (!bsbound) {
 					log::info("No bound: {}", actor_name);
