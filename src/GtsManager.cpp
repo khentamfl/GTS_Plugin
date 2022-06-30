@@ -266,6 +266,11 @@ namespace {
 					log::info("No bound: {}", actor_name);
 					return;
 				}
+				auto model = actor->Get3D();
+				if (!model) {
+					log::info("No model: {}", actor_name);
+					return;
+				}
 				auto ai_process = actor->currentProcess;
 
 				// Start
@@ -310,12 +315,17 @@ namespace {
 				log::info("Data updated");
 
 				// 3D resets
-				if (ai_process) {
-					ai_process->Update3DModel(actor);
-				} else {
-					log::info("No ai: {}", actor_name);
-				}
-				actor->DoReset3D(false);
+				auto task = SKSE::GetTaskInterface();
+				task->AddTask([model]() {
+					if (model) {
+						log::info("Updating world data on main thread");
+						NiUpdateData ctx;
+						ctx.flags |= NiUpdateData::Flag::kDirty;
+						model->UpdateWorldData(&ctx);
+						model->UpdateWorldBound();
+					}
+				});
+
 
 				// Done
 				log::info("New scale: {}", get_npcnode_scale(actor));
