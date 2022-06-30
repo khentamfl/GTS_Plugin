@@ -45,6 +45,7 @@ namespace Gts {
 
 			atomic_ulong frame_count = atomic_int64_t(0);
 			unordered_map<FormID, ActorExtraData> actor_data;
+			float test_scale;
 
 			void poll();
 			void poll_actor(Actor* actor);

@@ -3,6 +3,7 @@
 #include <GtsManager.h>
 #include <vector>
 #include <string>
+#include <Windows.h>
 
 using namespace Gts;
 using namespace RE;
@@ -209,6 +210,23 @@ namespace {
 		return 0.0;
 	}
 
+	float get_model_scale(Actor* actor) {
+		// This will set the scale of the root npc node
+		if (!actor->Is3DLoaded()) {
+			return 0.0;
+		}
+		auto model = actor->Get3D();
+		if (!model) {
+			return 0.0;
+		}
+		return model->local.scale;
+	}
+
+	float get_ref_scale(Actor* actor) {
+		// This will set the scale of the root npc node
+		return static_cast<float>(actor->refScale) / 100.0F;
+	}
+
 	void clone_bound(Actor* actor) {
 		// This is the bound on the NiExtraNodeData
 		// This data is shared between all skeletons and this hopes to correct this
@@ -246,6 +264,12 @@ namespace {
 		return find_node(actor, node_name);
 	}
 
+	enum SizeMethod {
+		ModelScale = 0,
+		RootScale = 1,
+		RefScale = 2,
+	};
+
 	void update_height(Actor* actor) {
 		if (!actor) {
 			return;
@@ -254,9 +278,28 @@ namespace {
 			return;
 		}
 
+		auto size_method = SizeMethod::ModelScale;
+		float scale = GtsManager::GetSingleton().test_scale;
+
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (actor_data) {
-			if (!actor_data->initialised) {
+			float current_scale;
+			switch (size_method) {
+			case SizeMethod::ModelScale:
+				current_scale = get_model_scale(actor);
+				break;
+			case SizeMethod::RootScale:
+				current_scale = get_npcnode_scale(actor);
+				break;
+			case SizeMethod::RefScale:
+				current_scale = get_ref_scale(actor);
+				break;
+			}
+			if (current_scale <= 1e-5) {
+				return;
+			}
+
+			if (fabs(current_scale - scale) > 1e-5) {
 				// Get base data
 				auto& base_height_data = actor_data->base_height;
 
@@ -288,23 +331,36 @@ namespace {
 				log::info("Current Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
 				log::info("Current Bound min: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
 				log::info("Current Bound max: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
-				float scale = Gts::Config::GetSingleton().GetTest().GetScale();
+
 
 				// Model stuff
-				if (!set_npcnode_scale(actor, scale)) {
-					log::info("Unable to set scale");
-					return;
-				}
-				auto bumper = get_bumper(actor);
-				if (bumper) {
-					bumper->local.translate = base_height_data.bumper_transform.translate * scale;
-					bumper->local.scale = base_height_data.bumper_transform.scale * scale;
+				switch (size_method) {
+				case SizeMethod::ModelScale:
+					if (!set_model_scale(actor, scale)) {
+						log::info("Unable to set scale");
+						return;
+					}
+					break;
+				case SizeMethod::RootScale:
+					if (!set_npcnode_scale(actor, scale)) {
+						log::info("Unable to set scale");
+						return;
+					}
+					break;
+				case SizeMethod::RefScale:
+					set_ref_scale(actor, scale);
+					break;
 				}
 
-				// Current Gts Stuff
-				ActorValue favor_active = ActorValue::kFavorActive;
-				actor->SetBaseActorValue(favor_active, scale + 1.0);
-				actor->SetActorValue(favor_active, scale + 1.0);
+				if (size_method == SizeMethod::RootScale) {
+					// Root scale is the only one that dosent update the bumper
+					// itself, so we do it manually
+					auto bumper = get_bumper(actor);
+					if (bumper) {
+						bumper->local.translate = base_height_data.bumper_transform.translate * scale;
+						bumper->local.scale = base_height_data.bumper_transform.scale * scale;
+					}
+				}
 
 				// Character controller stuff
 				char_controller->scale = scale;
@@ -355,6 +411,15 @@ namespace {
 
 GtsManager& GtsManager::GetSingleton() noexcept {
 	static GtsManager instance;
+
+	static std::atomic_bool initialized;
+	static std::latch latch(1);
+	if (!initialized.exchange(true)) {
+		instance.test_scale = Gts::Config::GetSingleton().GetTest().GetScale();
+		latch.count_down();
+	}
+	latch.wait();
+
 	return instance;
 }
 
@@ -382,16 +447,12 @@ void GtsManager::poll() {
 			return;
 		}
 
-		auto actor_handles = find_actors();
-		for (auto actor_handle: actor_handles) {
-			auto sptr_actor = actor_handle.get();
-			if (sptr_actor) {
-				auto actor = sptr_actor.get();
-
-				// Do smth
-			}
+		if (GetKeyState('[') & 0x80000) {
+			this->test_scale += 0.1;
 		}
-
+		else if ((this->test_scale > 0.11) && (GetKeyState('[') & 0x80000)) {
+			this->test_scale -= 0.1;
+		}
 	}
 }
 
