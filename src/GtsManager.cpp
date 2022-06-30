@@ -388,6 +388,12 @@ namespace {
 				log::info("Data updated");
 
 				// 3D resets
+				if (ai_process) {
+					ai_process->Update3DModel(actor);
+				} else {
+					log::info("No ai: {}", actor_name);
+				}
+				actor->DoReset3D(false);
 				auto task = SKSE::GetTaskInterface();
 				task->AddTask([model]() {
 					if (model) {
