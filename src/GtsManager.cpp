@@ -236,6 +236,37 @@ namespace {
 		return static_cast<float>(actor->refScale) / 100.0F;
 	}
 
+	float get_scale(Actor* actor) {
+		auto& size_method = GtsManager::GetSingleton().size_method;
+		switch (size_method) {
+		case SizeMethod::ModelScale:
+			return get_model_scale(actor);
+			break;
+		case SizeMethod::RootScale:
+			return get_npcnode_scale(actor);
+			break;
+		case SizeMethod::RefScale:
+			return get_ref_scale(actor);
+			break;
+		}
+	}
+
+	bool set_scale(Actor* actor, float scale) {
+		auto& size_method = GtsManager::GetSingleton().size_method;
+		switch (size_method) {
+		case SizeMethod::ModelScale:
+			return set_model_scale(actor, scale);
+			break;
+		case SizeMethod::RootScale:
+			return set_npcnode_scale(actor, scale);
+			break;
+		case SizeMethod::RefScale:
+			get_ref_scale(actor);
+			return true;
+			break;
+		}
+	}
+
 	void clone_bound(Actor* actor) {
 		// This is the bound on the NiExtraNodeData
 		// This data is shared between all skeletons and this hopes to correct this
@@ -273,12 +304,6 @@ namespace {
 		return find_node(actor, node_name);
 	}
 
-	enum SizeMethod {
-		ModelScale = 0,
-		RootScale = 1,
-		RefScale = 2,
-	};
-
 	void update_height(Actor* actor) {
 		if (!actor) {
 			return;
@@ -287,23 +312,12 @@ namespace {
 			return;
 		}
 
-		auto size_method = SizeMethod::ModelScale;
+		auto size_method = GtsManager::GetSingleton().size_method;
 		float scale = GtsManager::GetSingleton().test_scale;
 
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (actor_data) {
-			float current_scale;
-			switch (size_method) {
-			case SizeMethod::ModelScale:
-				current_scale = get_model_scale(actor);
-				break;
-			case SizeMethod::RootScale:
-				current_scale = get_npcnode_scale(actor);
-				break;
-			case SizeMethod::RefScale:
-				current_scale = get_ref_scale(actor);
-				break;
-			}
+			float current_scale = get_scale(actor);
 			if (current_scale <= 1e-5) {
 				return;
 			}
@@ -345,22 +359,9 @@ namespace {
 
 
 				// Model stuff
-				switch (size_method) {
-				case SizeMethod::ModelScale:
-					if (!set_model_scale(actor, scale)) {
-						log::info("Unable to set scale");
-						return;
-					}
-					break;
-				case SizeMethod::RootScale:
-					if (!set_npcnode_scale(actor, scale)) {
-						log::info("Unable to set scale");
-						return;
-					}
-					break;
-				case SizeMethod::RefScale:
-					set_ref_scale(actor, scale);
-					break;
+				if (!set_scale(actor, scale)) {
+					log::info("Unable to set scale");
+					return;
 				}
 
 				if (size_method == SizeMethod::RootScale) {
@@ -437,6 +438,7 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 	static std::latch latch(1);
 	if (!initialized.exchange(true)) {
 		instance.test_scale = Gts::Config::GetSingleton().GetTest().GetScale();
+		instance.size_method = SizeMethod::ModelScale;
 		latch.count_down();
 	}
 	latch.wait();
@@ -469,18 +471,15 @@ void GtsManager::poll() {
 		}
 
 		// Key presses
-		auto input_manager = BSInputDeviceManager::GetSingleton();
-		if (input_manager) {
-			auto keyboard = input_manager->GetKeyboard();
-			if (keyboard) {
-				if (keyboard->IsPressed(0xDB)) { // VK_OEM_4 	0xDB 	Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '[{' key
-					log::info("Size UP");
-					this->test_scale += 0.1;
-				}
-				else if ((this->test_scale > 0.11) && (keyboard->IsPressed(0xDD))) { // Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ']}' key
-					log::info("Size Down");
-					this->test_scale -= 0.1;
-				}
+		auto keyboard = this->get_keyboard();
+		if (keyboard) {
+			if (keyboard->IsPressed(BSKeyboardDevice::Keys::kBracketLeft)) {
+				log::info("Size UP");
+				this->test_scale += 0.1;
+			}
+			else if ((this->test_scale > 0.11) && (keyboard->IsPressed(BSKeyboardDevice::Keys::kBracketRight))) {
+				log::info("Size Down");
+				this->test_scale -= 0.1;
 			}
 		}
 	}
@@ -548,4 +547,14 @@ void Gts::uncache_bound(CachedBound* src, BSBound* dst) {
 	dst->extents.x = src->extents[0];
 	dst->extents.y = src->extents[1];
 	dst->extents.z = src->extents[2];
+}
+
+BSWin32KeyboardDevice* GtsManager::get_keyboard() {
+	if (!this->keyboard) {
+		auto input_manager = BSInputDeviceManager::GetSingleton();
+		if (input_manager) {
+			this->keyboard = input_manager->GetKeyboard();
+		}
+	}
+	return this->keyboard;
 }

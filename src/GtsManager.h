@@ -11,6 +11,12 @@ using namespace RE;
 
 namespace Gts {
 
+	enum SizeMethod {
+		ModelScale = 0,
+		RootScale = 1,
+		RefScale = 2,
+	};
+
 	struct CachedBound {
 		string name;
 		float center[3];
@@ -46,9 +52,14 @@ namespace Gts {
 			atomic_ulong frame_count = atomic_int64_t(0);
 			unordered_map<FormID, ActorExtraData> actor_data;
 			float test_scale;
+			SizeMethod size_method;
+			BSWin32KeyboardDevice* keyboard;
+
 
 			void poll();
 			void poll_actor(Actor* actor);
 			ActorExtraData* get_actor_extra_data(Actor* actor);
+			BSWin32KeyboardDevice* get_keyboard();
+
 	};
 }
