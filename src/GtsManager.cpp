@@ -329,7 +329,7 @@ namespace {
 				auto ai_process = actor->currentProcess;
 
 				// Start
-				log::info("Current scale: {}", get_npcnode_scale(actor));
+				log::info("Current scale: {}", current_scale);
 				log::info("Current Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
 				log::info("Current Bound min: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
 				log::info("Current Bound max: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
@@ -407,7 +407,22 @@ namespace {
 
 
 				// Done
-				log::info("New scale: {}", get_npcnode_scale(actor));
+				switch (size_method) {
+				case SizeMethod::ModelScale:
+					current_scale = get_model_scale(actor);
+					break;
+				case SizeMethod::RootScale:
+					current_scale = get_npcnode_scale(actor);
+					break;
+				case SizeMethod::RefScale:
+					current_scale = get_ref_scale(actor);
+					break;
+				}
+				if (current_scale <= 1e-5) {
+					return;
+				}
+
+				log::info("New scale: {}", current_scale);
 				log::info("New Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
 				log::info("New Bound min: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
 				log::info("New Bound max: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
@@ -454,11 +469,13 @@ void GtsManager::poll() {
 		if ((current_frame - init_delay) % step != 0) {
 			return;
 		}
-
-		if (GetKeyState('[') & 0x80000) {
+		log::info("Polling key changes");
+		if (GetAsyncKeyState('[') & 0x80000) {
+			log::info("Size UP");
 			this->test_scale += 0.1;
 		}
-		else if ((this->test_scale > 0.11) && (GetKeyState('[') & 0x80000)) {
+		else if ((this->test_scale > 0.11) && (GetAsyncKeyState('[') & 0x80000)) {
+			log::info("Size Down");
 			this->test_scale -= 0.1;
 		}
 	}
