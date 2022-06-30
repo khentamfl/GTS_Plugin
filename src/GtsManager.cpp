@@ -3,7 +3,6 @@
 #include <GtsManager.h>
 #include <vector>
 #include <string>
-#include <Windows.h>
 
 using namespace Gts;
 using namespace RE;
@@ -469,14 +468,21 @@ void GtsManager::poll() {
 		if ((current_frame - init_delay) % step != 0) {
 			return;
 		}
-		log::info("Polling key changes");
-		if (GetAsyncKeyState('[') & 0x80000) {
-			log::info("Size UP");
-			this->test_scale += 0.1;
-		}
-		else if ((this->test_scale > 0.11) && (GetAsyncKeyState('[') & 0x80000)) {
-			log::info("Size Down");
-			this->test_scale -= 0.1;
+
+		// Key presses
+		auto input_manager = BSInputDeviceManager::GetSingleton();
+		if (input_manager) {
+			auto keyboard = input_manager->GetKeyboard();
+			if (keyboard) {
+				if (keyboard->IsPressed(0xDB)) { // VK_OEM_4 	0xDB 	Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '[{' key
+					log::info("Size UP");
+					this->test_scale += 0.1;
+				}
+				else if ((this->test_scale > 0.11) && (keyboard->IsPressed(0xDD))) { // Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ']}' key
+					log::info("Size Down");
+					this->test_scale -= 0.1;
+				}
+			}
 		}
 	}
 }
