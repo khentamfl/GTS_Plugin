@@ -393,7 +393,7 @@ namespace {
 				} else {
 					log::info("No ai: {}", actor_name);
 				}
-				actor->DoReset3D(false);
+				// actor->DoReset3D(false);
 				auto task = SKSE::GetTaskInterface();
 				task->AddTask([model]() {
 					if (model) {
