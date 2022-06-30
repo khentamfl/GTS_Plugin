@@ -175,6 +175,16 @@ namespace {
 			return false;
 		}
 		model->local.scale = target_scale;
+		auto task = SKSE::GetTaskInterface();
+		task->AddTask([model]() {
+			if (model) {
+				log::info("Updating world model data on main thread");
+				NiUpdateData ctx;
+				// ctx.flags |= NiUpdateData::Flag::kDirty;
+				model->UpdateWorldData(&ctx);
+				model->UpdateWorldBound();
+			}
+		});
 		return true;
 	}
 
@@ -189,7 +199,7 @@ namespace {
 				if (node) {
 					log::info("Updating world node data on main thread");
 					NiUpdateData ctx;
-					ctx.flags |= NiUpdateData::Flag::kDirty;
+					// ctx.flags |= NiUpdateData::Flag::kDirty;
 					node->UpdateWorldData(&ctx);
 					node->UpdateWorldBound();
 				}
@@ -393,17 +403,6 @@ namespace {
 					log::info("No ai: {}", actor_name);
 				}
 				// actor->DoReset3D(false);
-				auto task = SKSE::GetTaskInterface();
-				task->AddTask([model]() {
-					if (model) {
-						log::info("Updating world data on main thread");
-						NiUpdateData ctx;
-						ctx.flags |= NiUpdateData::Flag::kDirty;
-						model->UpdateWorldData(&ctx);
-						model->UpdateWorldBound();
-					}
-				});
-
 
 				// Done
 				switch (size_method) {
