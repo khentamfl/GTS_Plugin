@@ -264,8 +264,9 @@ namespace {
 			get_ref_scale(actor);
 			return true;
 			break;
+        default:
+            return false;
 		}
-        return false;
 	}
 
 	void clone_bound(Actor* actor) {
