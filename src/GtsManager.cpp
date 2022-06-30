@@ -265,6 +265,7 @@ namespace {
 			return true;
 			break;
 		}
+        return false;
 	}
 
 	void clone_bound(Actor* actor) {
