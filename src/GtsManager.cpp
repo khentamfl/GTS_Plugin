@@ -91,6 +91,7 @@ namespace {
 				uncache_bound(&base_height_data.collisionBound, bsbound);
 				bsbound->extents *= scale;
 				bsbound->center *= scale;
+        actor->UpdateCharacterControllerSimulationSettings(*char_controller);
 
 				// Ai Proccess stuff
 				float model_height = bsbound->extents.z * 2 * actor->GetBaseHeight();
