@@ -20,15 +20,24 @@ namespace {
 
 		auto size_method = GtsManager::GetSingleton().size_method;
 		float scale = GtsManager::GetSingleton().test_scale;
+        if (scale < 1e-5) {
+            scale = get_scale(actor);
+        }
 
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (actor_data) {
-			float current_scale = get_scale(actor);
-			if (current_scale <= 1e-5) {
+            auto char_controller = actor->GetCharController();
+			if (!char_controller) {
+				log::info("No char controller: {}", actor_name);
+				return;
+			}
+                
+			float prev_scale = char_controller->scale;
+			if (scale <= 1e-5) {
 				return;
 			}
 
-			if (fabs(current_scale - scale) > 1e-5) {
+			if (fabs(prev_scale - scale) > 1e-5) {
 				// Get base data
 				auto& base_height_data = actor_data->base_height;
 
@@ -37,11 +46,6 @@ namespace {
 				log::info("Updating height of: {}", actor_name);
 
 				// Get nessecary data and exit early if not present
-				auto char_controller = actor->GetCharController();
-				if (!char_controller) {
-					log::info("No char controller: {}", actor_name);
-					return;
-				}
 				//if (!actor_data->initialised) {
 				//	clone_bound(actor);
 				//}
@@ -58,7 +62,7 @@ namespace {
 				auto ai_process = actor->currentProcess;
 
 				// Start
-				log::info("Current scale: {}", current_scale);
+				log::info("Current scale: {}", prev_scale);
 				log::info("Current Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
 				log::info("Current Bound min: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
 				log::info("Current Bound max: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
@@ -113,7 +117,7 @@ namespace {
 				// actor->DoReset3D(false);
 
 				// Done
-				current_scale = get_scale(actor);
+				float current_scale = get_scale(actor);
 
 				log::info("New scale: {}", current_scale);
 				log::info("New Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
@@ -122,23 +126,7 @@ namespace {
 				actor_data->initialised = true;
 			}
 
-      auto char_controller = actor->GetCharController();
-      if (char_controller) {
-        hkTransform fill_me;
-        char_controller->GetTransformImpl(fill_me);
-        float col_a[4];
-    		float col_b[4];
-    		float col_c[4];
-    		float col_d[4];
-    		_mm_storeu_ps(&col_a[0], fill_me.rotation.col0.quad);
-    		_mm_storeu_ps(&col_b[0], fill_me.rotation.col1.quad);
-    		_mm_storeu_ps(&col_c[0], fill_me.rotation.col2.quad);
-    		_mm_storeu_ps(&col_d[0], fill_me.translation.quad);
-    		logger::info("fill_me={},{},{},{}", col_a[0], col_b[0], col_c[0], col_d[0]);
-    		logger::info("fill_me={},{},{},{}", col_a[1], col_b[1], col_c[1], col_d[1]);
-    		logger::info("fill_me={},{},{},{}", col_a[2], col_b[2], col_c[2], col_d[2]);
-    		logger::info("fill_me={},{},{},{}", col_a[3], col_b[3], col_c[3], col_d[3]);
-      }
+            //
 
 			// auto char_controller = actor->GetCharController();
 			// if (char_controller) {
@@ -168,7 +156,7 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 	static std::latch latch(1);
 	if (!initialized.exchange(true)) {
 		instance.test_scale = Gts::Config::GetSingleton().GetTest().GetScale();
-		instance.size_method = SizeMethod::ModelScale;
+		instance.size_method = SizeMethod::RootScale;
 		latch.count_down();
 	}
 	latch.wait();
