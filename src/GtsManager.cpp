@@ -10,302 +10,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	/**
-	 * Find actors in ai manager that are loaded
-	 */
-	vector<ActorHandle> find_actors() {
-		vector<ActorHandle> result;
-
-		auto process_list = ProcessLists::GetSingleton();
-		for (ActorHandle actor_handle: process_list->highActorHandles)
-		{
-			auto actor = actor_handle.get();
-			if (actor && actor->Is3DLoaded())
-			{
-				result.push_back(actor_handle);
-			}
-		}
-
-		return result;
-	}
-
-	float unit_to_meter(float unit) {
-		// Game reports that the height of a slaughterfish is 0.31861934
-		// From inspecting the bounding box of the slaughterfish and applying
-		// base actor scales the unit height is 22.300568
-		// Assuming 0.31861934 is meters and that bouding box is in model unit space
-		// then the conversion factor is 70
-		// Slaughterfish was chosen because it has scales of 1.0 (and was in my worldspace)
-		// The scaling factor of 70 also applies to actor heights (once you remove)
-		// race specific height scaling
-		return unit / 70.0;
-	}
-
-	float meter_to_unit(float meter) {
-		// Game reports that the height of a slaughterfish is 0.31861934
-		// From inspecting the bounding box of the slaughterfish and applying
-		// base actor scales the unit height is 22.300568
-		// Assuming 0.31861934 is meters and that bouding box is in model unit space
-		// then the conversion factor is 70
-		// Slaughterfish was chosen because it has scales of 1.0 (and was in my worldspace)
-		// The scaling factor of 70 also applies to actor heights (once you remove)
-		// race specific height scaling
-		return meter * 70.0;
-	}
-
-	void walk_nodes(Actor* actor) {
-		if (!actor->Is3DLoaded()) {
-			return;
-		}
-		auto model = actor->Get3D();
-		auto name = model->name;
-
-		std::deque<NiAVObject*> queue;
-		queue.push_back(model);
-
-
-		while (!queue.empty()) {
-			auto currentnode = queue.front();
-			queue.pop_front();
-			try {
-				if (currentnode) {
-					auto ninode = currentnode->AsNode();
-					if (ninode) {
-						for (auto child: ninode->GetChildren()) {
-							// Bredth first search
-							queue.push_back(child.get());
-							// Depth first search
-							//queue.push_front(child.get());
-						}
-					}
-					// Do smth
-					log::trace("Node {}", currentnode->name);
-				}
-			}
-			catch (const std::overflow_error& e) {
-				log::warn("Overflow: {}", e.what());
-			} // this executes if f() throws std::overflow_error (same type rule)
-			catch (const std::runtime_error& e) {
-				log::warn("Underflow: {}", e.what());
-			} // this executes if f() throws std::underflow_error (base class rule)
-			catch (const std::exception& e) {
-				log::warn("Exception: {}", e.what());
-			} // this executes if f() throws std::logic_error (base class rule)
-			catch (...) {
-				log::warn("Exception Other");
-			}
-		}
-	}
-
-	NiAVObject* find_node(Actor* actor, string& node_name) {
-		if (!actor->Is3DLoaded()) {
-			return nullptr;
-		}
-		auto model = actor->Get3D();
-		if (!model) {
-			return nullptr;
-		}
-		auto node_lookup = model->GetObjectByName(node_name);
-		if (node_lookup) {
-			return node_lookup;
-		}
-
-		// Game lookup failed we try and find it manually
-		std::deque<NiAVObject*> queue;
-		queue.push_back(model);
-
-
-		while (!queue.empty()) {
-			auto currentnode = queue.front();
-			queue.pop_front();
-			try {
-				if (currentnode) {
-					auto ninode = currentnode->AsNode();
-					if (ninode) {
-						for (auto child: ninode->GetChildren()) {
-							// Bredth first search
-							queue.push_back(child.get());
-							// Depth first search
-							//queue.push_front(child.get());
-						}
-					}
-					// Do smth
-					if  (currentnode->name.c_str() == node_name) {
-						return currentnode;
-					}
-				}
-			}
-			catch (const std::overflow_error& e) {
-				log::warn("Overflow: {}", e.what());
-			} // this executes if f() throws std::overflow_error (same type rule)
-			catch (const std::runtime_error& e) {
-				log::warn("Underflow: {}", e.what());
-			} // this executes if f() throws std::underflow_error (base class rule)
-			catch (const std::exception& e) {
-				log::warn("Exception: {}", e.what());
-			} // this executes if f() throws std::logic_error (base class rule)
-			catch (...) {
-				log::warn("Exception Other");
-			}
-		}
-
-		return nullptr;
-	}
-
-	void set_ref_scale(Actor* actor, float target_scale) {
-		// This is how the game sets scale with the `SetScale` command
-		// It is limited to x10 and messes up all sorts of things like actor damage
-		// and anim speeds
-		float refScale = static_cast<float>(actor->refScale) / 100.0F;
-		log::info("REF Scale: {}", refScale);
-		if (fabs(refScale - target_scale) > 1e-5) {
-			actor->refScale = static_cast<std::uint16_t>(target_scale * 100.0F);
-			actor->DoReset3D(false);
-		}
-		log::info("Set REF Scale: {}, {}", actor->refScale, static_cast<float>(actor->refScale));
-	}
-
-	bool set_model_scale(Actor* actor, float target_scale) {
-		// This will set the scale of the model root (not the root npc node)
-		if (!actor->Is3DLoaded()) {
-			return false;
-		}
-		auto model = actor->Get3D();
-		if (!model) {
-			return false;
-		}
-		model->local.scale = target_scale;
-		auto task = SKSE::GetTaskInterface();
-		task->AddTask([model]() {
-			if (model) {
-				log::info("Updating world model data on main thread");
-				NiUpdateData ctx;
-				// ctx.flags |= NiUpdateData::Flag::kDirty;
-				model->UpdateWorldData(&ctx);
-				model->UpdateWorldBound();
-			}
-		});
-		return true;
-	}
-
-	bool set_npcnode_scale(Actor* actor, float target_scale) {
-		// This will set the scale of the root npc node
-		string node_name = "NPC Root [Root]";
-		auto node = find_node(actor, node_name);
-		if (node) {
-			node->local.scale = target_scale;
-			auto task = SKSE::GetTaskInterface();
-			task->AddTask([node]() {
-				if (node) {
-					log::info("Updating world node data on main thread");
-					NiUpdateData ctx;
-					// ctx.flags |= NiUpdateData::Flag::kDirty;
-					node->UpdateWorldData(&ctx);
-					node->UpdateWorldBound();
-				}
-			});
-			return true;
-		}
-		return false;
-	}
-
-	float get_npcnode_scale(Actor* actor) {
-		// This will set the scale of the root npc node
-		string node_name = "NPC Root [Root]";
-		auto node = find_node(actor, node_name);
-		if (node) {
-			return node->local.scale;
-		}
-		return 0.0;
-	}
-
-	float get_model_scale(Actor* actor) {
-		// This will set the scale of the root npc node
-		if (!actor->Is3DLoaded()) {
-			return 0.0;
-		}
-		auto model = actor->Get3D();
-		if (!model) {
-			return 0.0;
-		}
-		return model->local.scale;
-	}
-
-	float get_ref_scale(Actor* actor) {
-		// This will set the scale of the root npc node
-		return static_cast<float>(actor->refScale) / 100.0F;
-	}
-
-	float get_scale(Actor* actor) {
-		auto& size_method = GtsManager::GetSingleton().size_method;
-		switch (size_method) {
-		case SizeMethod::ModelScale:
-			return get_model_scale(actor);
-			break;
-		case SizeMethod::RootScale:
-			return get_npcnode_scale(actor);
-			break;
-		case SizeMethod::RefScale:
-			return get_ref_scale(actor);
-			break;
-		}
-		return 0.0;
-	}
-
-	bool set_scale(Actor* actor, float scale) {
-		auto& size_method = GtsManager::GetSingleton().size_method;
-		switch (size_method) {
-		case SizeMethod::ModelScale:
-			return set_model_scale(actor, scale);
-			break;
-		case SizeMethod::RootScale:
-			return set_npcnode_scale(actor, scale);
-			break;
-		case SizeMethod::RefScale:
-			get_ref_scale(actor);
-			return true;
-			break;
-		}
-		return false;
-	}
-
-	void clone_bound(Actor* actor) {
-		// This is the bound on the NiExtraNodeData
-		// This data is shared between all skeletons and this hopes to correct this
-		auto model = actor->Get3D();
-		if (model) {
-			auto extra_bbx = model->GetExtraData("BBX");
-			if (extra_bbx) {
-				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
-				model->RemoveExtraData("BBX");
-				auto new_extra_bbx = NiExtraData::Create<BSBound>();
-				new_extra_bbx->name = bbx->name;
-				new_extra_bbx->center = bbx->center;
-				new_extra_bbx->extents = bbx->extents;
-				//model->AddExtraData("BBX",  new_extra_bbx);
-				model->InsertExtraData(new_extra_bbx);
-			}
-		}
-	}
-
-	BSBound* get_bound(Actor* actor) {
-		// This is the bound on the NiExtraNodeData
-		auto model = actor->Get3D();
-		if (model) {
-			auto extra_bbx = model->GetExtraData("BBX");
-			if (extra_bbx) {
-				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
-				return bbx;
-			}
-		}
-		return nullptr;
-	}
-
-	NiAVObject* get_bumper(Actor* actor) {
-		string node_name = "CharacterBumper";
-		return find_node(actor, node_name);
-	}
-
 	void update_height(Actor* actor) {
 		if (!actor) {
 			return;
@@ -408,20 +112,7 @@ namespace {
 				// actor->DoReset3D(false);
 
 				// Done
-				switch (size_method) {
-				case SizeMethod::ModelScale:
-					current_scale = get_model_scale(actor);
-					break;
-				case SizeMethod::RootScale:
-					current_scale = get_npcnode_scale(actor);
-					break;
-				case SizeMethod::RefScale:
-					current_scale = get_ref_scale(actor);
-					break;
-				}
-				if (current_scale <= 1e-5) {
-					return;
-				}
+				current_scale = get_scale(actor);
 
 				log::info("New scale: {}", current_scale);
 				log::info("New Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
@@ -429,6 +120,24 @@ namespace {
 				log::info("New Bound max: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
 				actor_data->initialised = true;
 			}
+
+      auto char_controller = actor->GetCharController();
+      if (char_controller) {
+        hkTransform fill_me;
+        char_controller->GetTransformImpl(fill_me);
+        float col_a[4];
+    		float col_b[4];
+    		float col_c[4];
+    		float col_d[4];
+    		_mm_storeu_ps(&col_a[0], fill_me.rotation.col0.quad);
+    		_mm_storeu_ps(&col_b[0], fill_me.rotation.col1.quad);
+    		_mm_storeu_ps(&col_c[0], fill_me.rotation.col2.quad);
+    		_mm_storeu_ps(&col_d[0], fill_me.translation.quad);
+    		logger::info("fill_me={},{},{},{}", col_a[0], col_b[0], col_c[0], col_d[0]);
+    		logger::info("fill_me={},{},{},{}", col_a[1], col_b[1], col_c[1], col_d[1]);
+    		logger::info("fill_me={},{},{},{}", col_a[2], col_b[2], col_c[2], col_d[2]);
+    		logger::info("fill_me={},{},{},{}", col_a[3], col_b[3], col_c[3], col_d[3]);
+      }
 
 			// auto char_controller = actor->GetCharController();
 			// if (char_controller) {

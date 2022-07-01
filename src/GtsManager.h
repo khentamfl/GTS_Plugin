@@ -1,21 +1,18 @@
 #pragma once
-
 #include <vector>
 #include <atomic>
 #include <unordered_map>
 
 #include <RE/Skyrim.h>
 
+#include "scale.h"
+#include "node.h"
+#include "util.h"
+
 using namespace std;
 using namespace RE;
 
 namespace Gts {
-
-	enum SizeMethod {
-		ModelScale = 0,
-		RootScale = 1,
-		RefScale = 2,
-	};
 
 	struct CachedBound {
 		string name;
