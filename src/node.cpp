@@ -102,4 +102,41 @@ namespace Gts {
 
 		return nullptr;
 	}
+
+  void clone_bound(Actor* actor) {
+		// This is the bound on the NiExtraNodeData
+		// This data is shared between all skeletons and this hopes to correct this
+		auto model = actor->Get3D();
+		if (model) {
+			auto extra_bbx = model->GetExtraData("BBX");
+			if (extra_bbx) {
+				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
+				model->RemoveExtraData("BBX");
+				auto new_extra_bbx = NiExtraData::Create<BSBound>();
+				new_extra_bbx->name = bbx->name;
+				new_extra_bbx->center = bbx->center;
+				new_extra_bbx->extents = bbx->extents;
+				//model->AddExtraData("BBX",  new_extra_bbx);
+				model->InsertExtraData(new_extra_bbx);
+			}
+		}
+	}
+
+	BSBound* get_bound(Actor* actor) {
+		// This is the bound on the NiExtraNodeData
+		auto model = actor->Get3D();
+		if (model) {
+			auto extra_bbx = model->GetExtraData("BBX");
+			if (extra_bbx) {
+				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
+				return bbx;
+			}
+		}
+		return nullptr;
+	}
+
+	NiAVObject* get_bumper(Actor* actor) {
+		string node_name = "CharacterBumper";
+		return find_node(actor, node_name);
+	}
 }
