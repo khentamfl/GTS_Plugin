@@ -1,5 +1,7 @@
 #include "node.h"
 
+using namespace SKSE;
+
 namespace Gts {
   void walk_nodes(Actor* actor) {
 		if (!actor->Is3DLoaded()) {

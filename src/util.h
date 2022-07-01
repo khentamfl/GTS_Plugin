@@ -3,6 +3,7 @@
 
 using namespace std;
 using namespace RE;
+using namespace SKSE;
 
 namespace Gts {
   vector<ActorHandle> find_actors();
