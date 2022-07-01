@@ -1,6 +1,7 @@
 #include "node.h"
 
 using namespace SKSE;
+using namespace Gts;
 
 namespace Gts {
   void walk_nodes(Actor* actor) {
@@ -46,6 +47,7 @@ namespace Gts {
 			}
 		}
 	}
+
 	NiAVObject* find_node(Actor* actor, string& node_name) {
 		if (!actor->Is3DLoaded()) {
 			return nullptr;

@@ -1,4 +1,8 @@
 #include "scale.h"
+#include "util.h"
+#include "GtsManager.h"
+
+using namespace Gts;
 
 namespace Gts {
   void set_ref_scale(Actor* actor, float target_scale) {

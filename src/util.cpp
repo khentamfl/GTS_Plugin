@@ -1,5 +1,7 @@
 #include "util.h"
 
+using namespace Gts;
+
 namespace Gts {
   /**
 	 * Find actors in ai manager that are loaded
