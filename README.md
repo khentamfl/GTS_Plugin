@@ -1,9 +1,10 @@
+[![CI](https://github.com/QuantumEntangledAndy/GTS_Plugin/actions/workflows/build.yml/badge.svg)](https://github.com/QuantumEntangledAndy/GTS_Plugin/actions/workflows/build.yml)
+
 # Size Matters SKSE64 Plugin
 
 This is the source for the Gianttess mod Size matters SKSE plugin.
 
 WIP
-
 
 ---
 
