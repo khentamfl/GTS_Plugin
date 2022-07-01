@@ -26,6 +26,9 @@ namespace {
 
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (actor_data) {
+            auto base_actor = actor->GetActorBase();
+            auto actor_name = base_actor->GetFullName();
+            
             auto char_controller = actor->GetCharController();
 			if (!char_controller) {
 				log::info("No char controller: {}", actor_name);
@@ -41,11 +44,8 @@ namespace {
 				// Get base data
 				auto& base_height_data = actor_data->base_height;
 
-				auto base_actor = actor->GetActorBase();
-				auto actor_name = base_actor->GetFullName();
 				log::info("Updating height of: {}", actor_name);
 
-				// Get nessecary data and exit early if not present
 				//if (!actor_data->initialised) {
 				//	clone_bound(actor);
 				//}
