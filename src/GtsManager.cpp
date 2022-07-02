@@ -19,12 +19,15 @@ namespace {
 		}
 		auto base_actor = actor->GetActorBase();
 		auto actor_name = base_actor->GetFullName();
+        if (!actor_name) {
+            return;
+        }
         
         bool follower = actor->VisitFactions([actor_name](TESFaction* a_faction, std::int8_t a_rank) {
             if (!faction) {
                 return false;
             }
-            auto name = faction>GetFullName();
+            auto name = a_faction>GetFullName();
             log::info("{} is a mamber of {}", actor_name, name);
             return false;
         });
