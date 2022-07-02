@@ -29,6 +29,7 @@ namespace {
 				return;
 			}
 
+			bool needs_update = false;
 			float prev_scale = char_controller->scale;
 			auto size_method = GtsManager::GetSingleton().size_method;
 			float scale = GtsManager::GetSingleton().test_scale;
@@ -36,11 +37,16 @@ namespace {
 			// We reply on the gts mod to manage them
 			if (scale < 1e-5) {
 				scale = get_scale(actor);
+				if (fabs(prev_scale - scale) > 1e-5) {
+					needs_update = true;
+				}
 			} else {
 				// If non zero we set the scales ourself
-				if (fabs(prev_scale - scale) > 1e-5) {
+				float current_scale = get_scale(actor);
+				if (fabs(prev_scale - scale) > 1e-5 || fabs(current_scale - scale) > 1e-5) {
 					if (!set_scale(actor, scale)) {
 						log::info("Unable to set scale");
+						needs_update = true;
 						return;
 					}
 				}
@@ -49,9 +55,7 @@ namespace {
 				return;
 			}
 
-
-
-			if (fabs(prev_scale - scale) > 1e-5) {
+			if (needs_update) {
 				// Get base data
 				auto& base_height_data = actor_data->base_height;
 
