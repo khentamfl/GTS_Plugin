@@ -41,7 +41,7 @@ namespace {
 		float test_scale = GtsManager::GetSingleton().test_scale;
 		if (test_scale > 1e-5) {
 			if (fabs(test_scale - scale) > 1e-5) {
-				if (!set_scale(actor, scale)) {
+				if (!set_scale(actor, test_scale)) {
 					log::info("Unable to set test scale");
 					return;
 				}
