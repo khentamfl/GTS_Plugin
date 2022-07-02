@@ -17,6 +17,8 @@ namespace {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
+		auto base_actor = actor->GetActorBase();
+		auto actor_name = base_actor->GetFullName();
 
 		// Check all data is loaded
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
@@ -31,7 +33,7 @@ namespace {
 		auto& base_height_data = actor_data->base_height;
 
 		// Get scales
-		float prev_height = actor_data.prev_height; // On last update by this script
+		float prev_height = actor_data->prev_height; // On last update by this script
 		float scale = get_scale(actor);
 
 		// Test scale
@@ -40,7 +42,6 @@ namespace {
 			if (fabs(test_scale - scale) > 1e-5) {
 				if (!set_scale(actor, scale)) {
 					log::info("Unable to set test scale");
-					needs_update = true;
 					return;
 				}
 				scale = get_scale(actor);
@@ -60,9 +61,6 @@ namespace {
 		auto& test_config = Gts::Config::GetSingleton().GetTest();
 
 		// Ready start updating
-		auto base_actor = actor->GetActorBase();
-		auto actor_name = base_actor->GetFullName();
-
 		if (test_config.CloneBound()) {
 			if (!actor_data->initialised) {
 				clone_bound(actor);
@@ -118,7 +116,7 @@ namespace {
 				node->UpdateWorldData(&ctx);
 			}
 		});
-		if (test_config.UpdateWprldBound()) {
+		if (test_config.UpdateWorldBound()) {
 			task->AddTask([node]() {
 				if (node) {
 					node->UpdateWorldBound();
@@ -140,6 +138,34 @@ namespace {
 					node->UpdateRigidConstraints(true);
 				}
 			});
+		}
+		if (!actor_data->initialised) {
+			log::info("Query Experiments");
+			auto var_a = char_controller->shapes[0].get();
+			if (var_a) {
+				auto& ref_a = *var_a;
+				log::info("char_controller.shapes[0]: {}", typeid(ref_a).name());
+			}
+			auto var_b = char_controller->shapes[1].get();
+			if (var_b) {
+				auto& ref_b = *var_b;
+				log::info("char_controller.shapes[1]: {}", typeid(ref_b).name());
+			}
+			auto var_c = char_controller->supportBody.get();
+			if (var_c) {
+				auto& ref_c = *var_c;
+				log::info("char_controller.supportBody: {}", typeid(ref_c).name());
+			}
+			auto var_d = char_controller->bumpedBody.get();
+			if (var_d) {
+				auto& ref_d = *var_d;
+				log::info("char_controller.bumpedBody: {}", typeid(ref_d).name());
+			}
+			auto var_e = char_controller->bumpedCharCollisionObject.get();
+			if (var_e) {
+				auto& ref_e = *var_e;
+				log::info("char_controller.bumpedCharCollisionObject: {}", typeid(ref_e).name());
+			}
 		}
 		actor_data->initialised = true;
 	}
@@ -163,8 +189,6 @@ namespace {
 	// 	auto result = _mm_mul_ps(translation, multi);
 	// 	char_controller_transform.translation = result;
 	// }
-}
-}
 }
 
 GtsManager& GtsManager::GetSingleton() noexcept {
