@@ -18,12 +18,6 @@ namespace {
 			return;
 		}
 
-		auto size_method = GtsManager::GetSingleton().size_method;
-		float scale = GtsManager::GetSingleton().test_scale;
-		if (scale < 1e-5) {
-			scale = get_scale(actor);
-		}
-
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (actor_data) {
 			auto base_actor = actor->GetActorBase();
@@ -36,9 +30,26 @@ namespace {
 			}
 
 			float prev_scale = char_controller->scale;
+			auto size_method = GtsManager::GetSingleton().size_method;
+			float scale = GtsManager::GetSingleton().test_scale;
+			// If zero we are not using the test scales.
+			// We reply on the gts mod to manage them
+			if (scale < 1e-5) {
+				scale = get_scale(actor);
+			} else {
+				// If non zero we set the scales ourself
+				if (fabs(prev_scale - scale) > 1e-5) {
+					if (!set_scale(actor, scale)) {
+						log::info("Unable to set scale");
+						return;
+					}
+				}
+			}
 			if (scale <= 1e-5) {
 				return;
 			}
+
+
 
 			if (fabs(prev_scale - scale) > 1e-5) {
 				// Get base data
@@ -66,13 +77,6 @@ namespace {
 				log::info("Current Bounding box: {},{},{}", bsbound->extents.x, bsbound->extents.y, bsbound->extents.z);
 				log::info("Current Bound min: {},{},{}", actor->GetBoundMin().x, actor->GetBoundMin().y, actor->GetBoundMin().z);
 				log::info("Current Bound max: {},{},{}", actor->GetBoundMax().x, actor->GetBoundMax().y, actor->GetBoundMax().z);
-
-
-				// Model stuff
-				if (!set_scale(actor, scale)) {
-					log::info("Unable to set scale");
-					return;
-				}
 
 				if (size_method == SizeMethod::RootScale) {
 					// Root scale is the only one that dosent update the bumper
@@ -115,6 +119,7 @@ namespace {
 					log::info("No ai: {}", actor_name);
 				}
 				actor->Update3DModel();
+				auto task = SKSE::GetTaskInterface();
 				auto node = actor->Get3D();
 				task->AddTask([node]() {
 					if (node) {
@@ -169,7 +174,7 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 	static std::latch latch(1);
 	if (!initialized.exchange(true)) {
 		instance.test_scale = Gts::Config::GetSingleton().GetTest().GetScale();
-		instance.size_method = SizeMethod::RootScale;
+		instance.size_method = SizeMethod::All;
 		latch.count_down();
 	}
 	latch.wait();

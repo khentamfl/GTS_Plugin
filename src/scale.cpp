@@ -5,7 +5,7 @@
 using namespace Gts;
 
 namespace Gts {
-  void set_ref_scale(Actor* actor, float target_scale) {
+	void set_ref_scale(Actor* actor, float target_scale) {
 		// This is how the game sets scale with the `SetScale` command
 		// It is limited to x10 and messes up all sorts of things like actor damage
 		// and anim speeds
@@ -101,6 +101,9 @@ namespace Gts {
 		case SizeMethod::RefScale:
 			return get_ref_scale(actor);
 			break;
+		case SizeMethod::All:
+			return get_ref_scale(actor) * get_model_scale(actor) * get_npcnode_scale(actor);
+			break;
 		}
 		return 0.0;
 	}
@@ -117,6 +120,9 @@ namespace Gts {
 		case SizeMethod::RefScale:
 			get_ref_scale(actor);
 			return true;
+			break;
+		case SizeMethod::All:
+			return set_model_scale(actor, scale);
 			break;
 		}
 		return false;
