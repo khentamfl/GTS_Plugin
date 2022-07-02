@@ -27,7 +27,7 @@ namespace {
             if (!a_faction) {
                 return false;
             }
-            auto name = a_faction>GetFullName();
+            auto name = a_faction->GetFullName();
             log::info("{} is a mamber of {}", actor_name, name);
             return false;
         });
