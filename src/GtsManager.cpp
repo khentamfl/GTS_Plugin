@@ -113,23 +113,23 @@ namespace {
 				log::info("Data updated");
 
 				// 3D resets
-				if (ai_process) {
-					ai_process->Update3DModel(actor);
-				} else {
-					log::info("No ai: {}", actor_name);
-				}
-				actor->Update3DModel();
+				// if (ai_process) {
+				// 	ai_process->Update3DModel(actor);
+				// } else {
+				// 	log::info("No ai: {}", actor_name);
+				// }
+				// actor->Update3DModel();
 				auto task = SKSE::GetTaskInterface();
 				auto node = actor->Get3D();
 				task->AddTask([node]() {
 					if (node) {
 						log::info("Updating world models data on main thread");
 						NiUpdateData ctx;
-						// ctx.flags |= NiUpdateData::Flag::kDirty;
+						ctx.flags |= NiUpdateData::Flag::kDirty;
 						node->UpdateWorldData(&ctx);
 						node->UpdateWorldBound();
-						node->UpdateRigidDownwardPass(ctx, 0);
-						node->UpdateDownwardPass(ctx, 0);
+						node->UpdateRigidDownwardPass(ctx, 100);
+						node->UpdateDownwardPass(ctx, 100);
 						node->UpdateRigidConstraints(true);
 					}
 				});
