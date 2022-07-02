@@ -19,7 +19,15 @@ namespace {
 		}
 		auto base_actor = actor->GetActorBase();
 		auto actor_name = base_actor->GetFullName();
-
+        
+        bool follower = actor->VisitFactions([actor_name](TESFaction* a_faction, std::int8_t a_rank) {
+            if (!faction) {
+                return false;
+            }
+            auto name = faction>GetFullName();
+            log::info("{} is a mamber of {}", actor_name, name);
+            return false;
+        });
 		// Check all data is loaded
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (!actor_data) {
@@ -59,6 +67,8 @@ namespace {
 		if (scale <= 1e-5) {
 			return;
 		}
+        
+        log::info("Scale changed from {} to {}. Updating",prev_height,scale);
 
 		auto& test_config = Gts::Config::GetSingleton().GetTest();
 
