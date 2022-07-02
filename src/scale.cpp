@@ -122,7 +122,7 @@ namespace Gts {
 			return true;
 			break;
 		case SizeMethod::All:
-			return set_model_scale(actor, scale);
+			return set_model_scale(actor, scale/(get_ref_scale(actor)*get_npcnode_scale(actor)));
 			break;
 		}
 		return false;

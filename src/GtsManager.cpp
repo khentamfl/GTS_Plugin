@@ -140,6 +140,7 @@ namespace {
 			});
 		}
 		actor_data->initialised = true;
+        actor_data->prev_height = scale;
 	}
 
 	//
