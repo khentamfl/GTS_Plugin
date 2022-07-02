@@ -117,12 +117,12 @@ namespace {
 				log::info("Data updated");
 
 				// 3D resets
-				// if (ai_process) {
-				// 	ai_process->Update3DModel(actor);
-				// } else {
-				// 	log::info("No ai: {}", actor_name);
-				// }
-				// actor->Update3DModel();
+				if (ai_process) {
+					ai_process->Update3DModel(actor);
+				} else {
+					log::info("No ai: {}", actor_name);
+				}
+				actor->Update3DModel();
 				auto task = SKSE::GetTaskInterface();
 				auto node = actor->Get3D();
 				task->AddTask([node]() {
