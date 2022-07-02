@@ -23,14 +23,10 @@ namespace {
             return;
         }
         
-        bool follower = actor->VisitFactions([actor_name](TESFaction* a_faction, std::int8_t a_rank) {
-            if (!a_faction) {
-                return false;
-            }
-            auto name = a_faction->GetFullName();
-            log::info("{} is a mamber of {}", actor_name, name);
-            return false;
-        });
+        bool follower = actor->IsPlayerTeammate();
+        if (!follower) {
+            return;
+        }
 		// Check all data is loaded
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (!actor_data) {
