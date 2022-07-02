@@ -23,6 +23,7 @@ namespace {
 		// Check all data is loaded
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (!actor_data) {
+            log::info("No actor data cached");
 			return;
 		}
 		auto char_controller = actor->GetCharController();
@@ -45,6 +46,7 @@ namespace {
 					return;
 				}
 				scale = get_scale(actor);
+                log::info("Scale set to {} for {}", scale, actor_name);
 			}
 		}
 
@@ -141,6 +143,7 @@ namespace {
 		}
 		actor_data->initialised = true;
         actor_data->prev_height = scale;
+        log::info("height set for {)", actor_name);
 	}
 
 	//
