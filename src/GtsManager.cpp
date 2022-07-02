@@ -61,9 +61,9 @@ namespace {
 
 				log::info("Updating height of: {}", actor_name);
 
-				//if (!actor_data->initialised) {
-				//	clone_bound(actor);
-				//}
+				if (!actor_data->initialised) {
+	clone_bound(actor);
+}
 				auto bsbound = get_bound(actor);
 				if (!bsbound) {
 					log::info("No bound: {}", actor_name);
