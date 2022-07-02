@@ -20,21 +20,21 @@ namespace {
 
 		auto size_method = GtsManager::GetSingleton().size_method;
 		float scale = GtsManager::GetSingleton().test_scale;
-        if (scale < 1e-5) {
-            scale = get_scale(actor);
-        }
+		if (scale < 1e-5) {
+			scale = get_scale(actor);
+		}
 
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (actor_data) {
-            auto base_actor = actor->GetActorBase();
-            auto actor_name = base_actor->GetFullName();
-            
-            auto char_controller = actor->GetCharController();
+			auto base_actor = actor->GetActorBase();
+			auto actor_name = base_actor->GetFullName();
+
+			auto char_controller = actor->GetCharController();
 			if (!char_controller) {
 				log::info("No char controller: {}", actor_name);
 				return;
 			}
-                
+
 			float prev_scale = char_controller->scale;
 			if (scale <= 1e-5) {
 				return;
@@ -95,7 +95,7 @@ namespace {
 				uncache_bound(&base_height_data.collisionBound, bsbound);
 				bsbound->extents *= scale;
 				bsbound->center *= scale;
-        actor->UpdateCharacterControllerSimulationSettings(*char_controller);
+				actor->UpdateCharacterControllerSimulationSettings(*char_controller);
 
 				// Ai Proccess stuff
 				float model_height = bsbound->extents.z * 2 * actor->GetBaseHeight();
@@ -114,7 +114,20 @@ namespace {
 				} else {
 					log::info("No ai: {}", actor_name);
 				}
-				// actor->DoReset3D(false);
+				actor->Update3DModel();
+				auto node = actor->Get3D();
+				task->AddTask([node]() {
+					if (node) {
+						log::info("Updating world models data on main thread");
+						NiUpdateData ctx;
+						// ctx.flags |= NiUpdateData::Flag::kDirty;
+						node->UpdateWorldData(&ctx);
+						node->UpdateWorldBound();
+						node->UpdateRigidDownwardPass(ctx, 0);
+						node->UpdateDownwardPass(ctx, 0);
+						node->UpdateRigidConstraints(true);
+					}
+				});
 
 				// Done
 				float current_scale = get_scale(actor);
@@ -126,7 +139,7 @@ namespace {
 				actor_data->initialised = true;
 			}
 
-            //
+			//
 
 			// auto char_controller = actor->GetCharController();
 			// if (char_controller) {
@@ -195,9 +208,12 @@ void GtsManager::poll() {
 				log::info("Size UP");
 				this->test_scale += 0.1;
 			}
-			else if ((this->test_scale > 0.11) && (keyboard->IsPressed(BSKeyboardDevice::Keys::kBracketRight))) {
+			else if (keyboard->IsPressed(BSKeyboardDevice::Keys::kBracketRight)) {
 				log::info("Size Down");
 				this->test_scale -= 0.1;
+			}
+			if (this->test_scale < 0.0) {
+				this->test_scale = 0.0; // 0.is disabled
 			}
 		} else {
 			log::info("No keyboard!");
