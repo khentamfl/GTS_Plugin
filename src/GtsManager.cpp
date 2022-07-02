@@ -24,7 +24,7 @@ namespace {
         }
         
         bool follower = actor->VisitFactions([actor_name](TESFaction* a_faction, std::int8_t a_rank) {
-            if (!faction) {
+            if (!a_faction) {
                 return false;
             }
             auto name = a_faction>GetFullName();
