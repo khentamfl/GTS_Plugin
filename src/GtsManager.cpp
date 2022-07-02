@@ -62,7 +62,6 @@ namespace {
 		// Ready start updating
 		auto base_actor = actor->GetActorBase();
 		auto actor_name = base_actor->GetFullName();
-		log::info("Updating height of: {}", actor_name);
 
 		if (test_config.CloneBound()) {
 			if (!actor_data->initialised) {
@@ -114,7 +113,6 @@ namespace {
 		auto node = actor->Get3D();
 		task->AddTask([node]() {
 			if (node) {
-				log::info("Updating world models data on main thread");
 				NiUpdateData ctx;
 				ctx.flags |= NiUpdateData::Flag::kDirty;
 				node->UpdateWorldData(&ctx);
@@ -211,6 +209,7 @@ void GtsManager::poll() {
 		// Key presses
 		auto keyboard = this->get_keyboard();
 		if (keyboard) {
+			log::info("Querying keyboard");
 			if (keyboard->IsPressed(BSKeyboardDevice::Keys::kBracketLeft)) {
 				log::info("Size UP");
 				this->test_scale += 0.1;
