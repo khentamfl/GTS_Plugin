@@ -34,6 +34,7 @@ namespace Gts {
 
 	struct ActorExtraData {
 		BaseHeight base_height;
+		float prev_height;
 		bool initialised;
 	};
 	/**
