@@ -19,18 +19,18 @@ namespace {
 		}
 		auto base_actor = actor->GetActorBase();
 		auto actor_name = base_actor->GetFullName();
-        if (!actor_name) {
-            return;
-        }
-        
-        bool follower = actor->IsPlayerTeammate();
-        if (!follower) {
-            return;
-        }
+		if (!actor_name) {
+			return;
+		}
+
+		bool follower = actor->IsPlayerTeammate();
+		if (!follower) {
+			return;
+		}
 		// Check all data is loaded
 		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
 		if (!actor_data) {
-            log::info("No actor data cached");
+			log::info("No actor data cached");
 			return;
 		}
 		auto char_controller = actor->GetCharController();
@@ -53,7 +53,7 @@ namespace {
 					return;
 				}
 				scale = get_scale(actor);
-                log::info("Scale set to {} for {}", scale, actor_name);
+				log::info("Scale set to {} for {}", scale, actor_name);
 			}
 		}
 
@@ -66,8 +66,8 @@ namespace {
 		if (scale <= 1e-5) {
 			return;
 		}
-        
-        log::info("Scale changed from {} to {}. Updating",prev_height,scale);
+
+		log::info("Scale changed from {} to {}. Updating",prev_height,scale);
 
 		auto& test_config = Gts::Config::GetSingleton().GetTest();
 
@@ -112,7 +112,6 @@ namespace {
 			log::info("No model: {}", actor_name);
 			return;
 		}
-		auto ai_process = actor->currentProcess;
 
 		// 3D resets
 		if (test_config.Update3DModel()) {
@@ -150,9 +149,18 @@ namespace {
 				}
 			});
 		}
+		if (test_config.SetBhkPosition()) {
+			hkTransform transform;
+			char_controller->GetTransformImpl(transform);
+			transform.rotation.col0.quad = _mm_mul_ps(transform.rotation.col0.quad, _mm_set_ps(scale,   1.0,   1.0, 1.0));
+			transform.rotation.col1.quad = _mm_mul_ps(transform.rotation.col1.quad, _mm_set_ps(1.0,   scale,   1.0, 1.0));
+			transform.rotation.col2.quad = _mm_mul_ps(transform.rotation.col2.quad, _mm_set_ps(1.0,     1.0, scale, 1.0));
+			char_controller->SetTransformImpl(transform);
+		}
+
 		actor_data->initialised = true;
-        actor_data->prev_height = scale;
-        log::info("height set for {)", actor_name);
+		actor_data->prev_height = scale;
+		log::info("height set for {)", actor_name);
 	}
 
 	//
@@ -218,7 +226,6 @@ void GtsManager::poll() {
 		// Key presses
 		auto keyboard = this->get_keyboard();
 		if (keyboard) {
-			log::info("Querying keyboard");
 			if (keyboard->IsPressed(BSKeyboardDevice::Keys::kBracketLeft)) {
 				log::info("Size UP");
 				this->test_scale += 0.1;

@@ -79,35 +79,38 @@ namespace Gts {
 			[[nodiscard]] inline float GetScale() const noexcept {
 				return _scale;
 			}
-			[[nodiscard]] inline float CloneBound() const noexcept {
+			[[nodiscard]] inline bool CloneBound() const noexcept {
 				return _clone_bound;
 			}
-			[[nodiscard]] inline float UpdateModelBound() const noexcept {
+			[[nodiscard]] inline bool UpdateModelBound() const noexcept {
 				return _update_model_bound;
 			}
-			[[nodiscard]] inline float UpdateCharControllerBound() const noexcept {
+			[[nodiscard]] inline bool UpdateCharControllerBound() const noexcept {
 				return _update_char_bound;
 			}
-			[[nodiscard]] inline float UpdateModelBumper() const noexcept {
+			[[nodiscard]] inline bool UpdateModelBumper() const noexcept {
 				return _update_model_bumper;
 			}
-			[[nodiscard]] inline float UpdateCharControllerBumper() const noexcept {
+			[[nodiscard]] inline bool UpdateCharControllerBumper() const noexcept {
 				return _update_char_bumper;
 			}
-			[[nodiscard]] inline float UpdateCharControllerScale() const noexcept {
+			[[nodiscard]] inline bool UpdateCharControllerScale() const noexcept {
 				return _update_char_scale;
 			}
-			[[nodiscard]] inline float Update3DModel() const noexcept {
+			[[nodiscard]] inline bool Update3DModel() const noexcept {
 				return _update_3d_model;
 			}
-			[[nodiscard]] inline float UpdateRigid() const noexcept {
+			[[nodiscard]] inline bool UpdateRigid() const noexcept {
 				return _update_rigid_model;
 			}
-			[[nodiscard]] inline float UpdateRigidConstraints() const noexcept {
+			[[nodiscard]] inline bool UpdateRigidConstraints() const noexcept {
 				return _update_rigid_constraint_model;
 			}
-			[[nodiscard]] inline float UpdateWorldBound() const noexcept {
+			[[nodiscard]] inline bool UpdateWorldBound() const noexcept {
 				return _update_world_bound;
+			}
+			[[nodiscard]] inline bool SetBhkPosition() const noexcept {
+				return _set_bhk_position;
 			}
 
 		private:
@@ -157,9 +160,13 @@ namespace Gts {
 				if (ar <=> articuno::kv(update_rigid_constraint_model, "updateRigidConstraintsModel")) {
 					_update_rigid_constraint_model = update_rigid_constraint_model;
 				}
-				bool _update_world_bound;
-				if (ar <=> articuno::kv(_update_world_bound, "updateWorldBound")) {
-					_update_world_bound = _update_world_bound;
+				bool update_world_bound;
+				if (ar <=> articuno::kv(update_world_bound, "updateWorldBound")) {
+					_update_world_bound = update_world_bound;
+				}
+				bool set_bhk_position;
+				if (ar <=> articuno::kv(set_bhk_position, "setBhkPosition")) {
+					_set_bhk_position = set_bhk_position;
 				}
 			}
 
@@ -174,6 +181,7 @@ namespace Gts {
 			bool _update_rigid_model = true;
 			bool _update_rigid_constraint_model = true;
 			bool _update_world_bound = true;
+			bool _set_bhk_position = true;
 
 			friend class articuno::access;
 	};
