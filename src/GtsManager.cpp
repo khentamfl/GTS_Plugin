@@ -158,9 +158,9 @@ namespace {
 			char_controller->SetTransformImpl(transform);
 		}
 
-    if (!actor_data->initialised) {
-      query_nodes(actor);
-    }
+		if (!actor_data->initialised) {
+			query_nodes(actor);
+		}
 		actor_data->initialised = true;
 		actor_data->prev_height = scale;
 		log::info("height set for {)", actor_name);
@@ -287,6 +287,7 @@ ActorExtraData* GtsManager::get_actor_extra_data(Actor* actor) {
 		if (bumper) {
 			result.base_height.bumper_transform = bumper->local;
 		}
+		result.prev_height = get_scale(actor);
 		result.initialised = false;
 		this->actor_data[key] = result;
 	}
