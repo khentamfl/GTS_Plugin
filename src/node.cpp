@@ -147,7 +147,7 @@ namespace Gts {
 											// Here be dragons
 											hkpCapsuleShape* capsule = const_cast<hkpCapsuleShape*>(orig_capsule);
 											log::info("  - Capsule found: {}", typeid(*orig_capsule).name());
-											float scale_factor = new_scale / prev_scale;
+											float scale_factor = new_scale * 100.0 / prev_scale;
 											hkVector4 vec_scale = hkVector4(scale_factor);
 											capsule->vertexA = capsule->vertexA * vec_scale;
 											capsule->vertexB = capsule->vertexB * vec_scale;
