@@ -158,6 +158,9 @@ namespace {
 			char_controller->SetTransformImpl(transform);
 		}
 
+    if (!actor_data->initialised) {
+      query_nodes(actor);
+    }
 		actor_data->initialised = true;
 		actor_data->prev_height = scale;
 		log::info("height set for {)", actor_name);

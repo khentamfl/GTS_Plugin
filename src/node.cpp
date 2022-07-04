@@ -105,17 +105,12 @@ namespace Gts {
 
 	void query_nodes(Actor* actor) {
 		if (!actor->Is3DLoaded()) {
-			return nullptr;
+			return;
 		}
 		auto model = actor->Get3D();
 		if (!model) {
-			return nullptr;
+			return;
 		}
-		auto node_lookup = model->GetObjectByName(node_name);
-		if (node_lookup) {
-			return node_lookup;
-		}
-
 		// Game lookup failed we try and find it manually
 		std::deque<NiAVObject*> queue;
 		queue.push_back(model);
@@ -138,13 +133,16 @@ namespace Gts {
 					// Do smth
 					auto collision_object = currentnode->GetCollisionObject();
 					if (collision_object) {
-						auto rigid_body = collision_object->GetRigidBody();
-						if (rigid_body) {
-
+						auto bhk_rigid_body = collision_object->GetRigidBody();
+						if (bhk_rigid_body) {
+              hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
+              if (hkp_rigidbody_ref) {
+                hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
+                if (hkp_rigidbody) {
+                  log::info("Its a hkp rigid body: {}", typeid(*hkp_rigidbody).name());
+                }
+              }
 						}
-					}
-					if  (currentnode->name.c_str() == node_name) {
-						return currentnode;
 					}
 				}
 			}
