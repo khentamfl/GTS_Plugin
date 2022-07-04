@@ -103,7 +103,7 @@ namespace Gts {
 		return nullptr;
 	}
 
-	void query_nodes(Actor* actor) {
+	void scale_hkpnodes(Actor* actor, float prev_scale, float new_scale) {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
@@ -141,7 +141,16 @@ namespace Gts {
 								if (hkp_rigidbody) {
 									auto shape = hkp_rigidbody->GetShape();
 									if (shape) {
-										log::info("Shape found: {}", typeid(*shape).name());
+										log::info("Shape found: {} for {}", typeid(*shape).name(), currentnode->name.c_str());
+										if (shape->type == hkpShapeType::kCapsule) {
+											const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
+											log::info("  - Capsule found: {}", typeid(*capsule).name());
+											float scale_factor = new_scale / prev_scale;
+											hkVector4 vec_scale = hkVector4(scale_factor);
+											capsule->vertexA *= vec_scale;
+											capsule->vertexB *= vec_scale;
+											capsule->radius *= scale_factor;
+										}
 									}
 								}
 							}

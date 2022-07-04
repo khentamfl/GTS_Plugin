@@ -159,7 +159,7 @@ namespace {
 		}
 
 		if (!actor_data->initialised) {
-			query_nodes(actor);
+			scale_hkpnodes(actor, actor_data->prev_height, scale);
 		}
 		actor_data->initialised = true;
 		actor_data->prev_height = scale;
