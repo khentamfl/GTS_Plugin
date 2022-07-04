@@ -144,6 +144,18 @@ namespace Gts {
 										log::info("Shape found: {} for {}", typeid(*shape).name(), currentnode->name.c_str());
 										if (shape->type == hkpShapeType::kCapsule) {
 											const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);
+											hkTransform identity;
+											identity.rotation.col0 = hkVector4(1.0,0.0,0.0,0.0);
+											identity.rotation.col1 = hkVector4(0.0,1.0,0.0,0.0);
+											identity.rotation.col2 = hkVector4(0.0,0.0,1.0,0.0);
+											identity.translation   = hkVector4(0.0,0.0,0.0,1.0);
+											hkAabb out;
+											orig_capsule->GetAabbImpl(identity, 1e-3, out);
+											float min[4];
+											float max[4];
+											_mm_store_ps(&min[0], out.min.quad);
+											_mm_store_ps(&max[0], out.max.quad);
+											log::info(" - Current bounds: {},{},{}<{},{},{}", min[0], min[1],min[2], max[0],max[1],max[2]);
 											// Here be dragons
 											hkpCapsuleShape* capsule = const_cast<hkpCapsuleShape*>(orig_capsule);
 											log::info("  - Capsule found: {}", typeid(*orig_capsule).name());
@@ -152,6 +164,12 @@ namespace Gts {
 											capsule->vertexA = capsule->vertexA * vec_scale;
 											capsule->vertexB = capsule->vertexB * vec_scale;
 											capsule->radius *= scale_factor;
+
+											capsule->GetAabbImpl(identity, 1e-3, out);
+											_mm_store_ps(&min[0], out.min.quad);
+											_mm_store_ps(&max[0], out.max.quad);
+											log::info(" - New bounds: {},{},{}<{},{},{}", min[0], min[1],min[2], max[0],max[1],max[2]);
+
 											hkp_rigidbody->SetShape(capsule);
 										}
 									}
