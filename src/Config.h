@@ -112,6 +112,9 @@ namespace Gts {
 			[[nodiscard]] inline bool SetBhkPosition() const noexcept {
 				return _set_bhk_position;
 			}
+			[[nodiscard]] inline bool ScaleHkpCapsules() const noexcept {
+				return _scale_hkp_capsules;
+			}
 
 		private:
 			articuno_serialize(ar) {
@@ -168,6 +171,10 @@ namespace Gts {
 				if (ar <=> articuno::kv(set_bhk_position, "setBhkPosition")) {
 					_set_bhk_position = set_bhk_position;
 				}
+				bool scale_hkp_capsules;
+				if (ar <=> articuno::kv(scale_hkp_capsules, "scaleHkpCapsules")) {
+					_scale_hkp_capsules = scale_hkp_capsules;
+				}
 			}
 
 			float _scale = 5.0;
@@ -182,6 +189,7 @@ namespace Gts {
 			bool _update_rigid_constraint_model = true;
 			bool _update_world_bound = true;
 			bool _set_bhk_position = true;
+			bool _scale_hkp_capsules = true;
 
 			friend class articuno::access;
 	};

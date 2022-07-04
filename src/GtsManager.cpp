@@ -158,7 +158,7 @@ namespace {
 			char_controller->SetTransformImpl(transform);
 		}
 
-		if (!actor_data->initialised) {
+		if (test_config.ScaleHkpCapsules()) {
 			scale_hkpnodes(actor, actor_data->prev_height, scale);
 		}
 		actor_data->initialised = true;

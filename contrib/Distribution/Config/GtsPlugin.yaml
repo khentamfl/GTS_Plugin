@@ -31,4 +31,6 @@ test:
   # Run update world bounds on the NiNodes
   updateWorldBound: true
   # Reset the transform of the bhkCharacterController
-  setBhkPosition: true
+  setBhkPosition: false
+  # Scale the hkp capsules
+  scaleHkpCapsules: true
