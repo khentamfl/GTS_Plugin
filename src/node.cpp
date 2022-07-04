@@ -135,13 +135,16 @@ namespace Gts {
 					if (collision_object) {
 						auto bhk_rigid_body = collision_object->GetRigidBody();
 						if (bhk_rigid_body) {
-              hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
-              if (hkp_rigidbody_ref) {
-                hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
-                if (hkp_rigidbody) {
-                  log::info("Its a hkp rigid body: {}", typeid(*hkp_rigidbody).name());
-                }
-              }
+							hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
+							if (hkp_rigidbody_ref) {
+								hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
+								if (hkp_rigidbody) {
+									auto shape = hkp_rigidbody->GetShape();
+									if (shape) {
+										log::info("Shape found: {}", typeid(*shape).name());
+									}
+								}
+							}
 						}
 					}
 				}
