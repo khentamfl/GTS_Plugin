@@ -152,6 +152,7 @@ namespace Gts {
 											capsule->vertexA = capsule->vertexA * vec_scale;
 											capsule->vertexB = capsule->vertexB * vec_scale;
 											capsule->radius *= scale_factor;
+											hkp_rigidbody->SetShape(capsule);
 										}
 									}
 								}
