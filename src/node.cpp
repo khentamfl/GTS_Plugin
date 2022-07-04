@@ -144,15 +144,14 @@ namespace Gts {
 										log::info("Shape found: {} for {}", typeid(*shape).name(), currentnode->name.c_str());
 										if (shape->type == hkpShapeType::kCapsule) {
 											const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);
-											hkpCapsuleShape* capsule = new hkpCapsuleShape;
-											*capsule = *orig_capsule;
-											log::info("  - Capsule found: {}", typeid(*capsule).name());
+											// Here be dragons
+											hkpCapsuleShape* capsule = const_cast<hkpCapsuleShape*>(orig_capsule);
+											log::info("  - Capsule found: {}", typeid(*orig_capsule).name());
 											float scale_factor = new_scale / prev_scale;
 											hkVector4 vec_scale = hkVector4(scale_factor);
 											capsule->vertexA = capsule->vertexA * vec_scale;
 											capsule->vertexB = capsule->vertexB * vec_scale;
 											capsule->radius *= scale_factor;
-											hkp_rigidbody->SetShape(capsule);
 										}
 									}
 								}
