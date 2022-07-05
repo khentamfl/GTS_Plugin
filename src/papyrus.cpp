@@ -17,10 +17,6 @@ namespace {
 		return get_scale(actor);
 	}
 
-	bool SetModelScale(Actor* actor, float scale) {
-		return set_scale(actor, scale);
-	}
-
 	float GetTestScale() {
 		return GtsManager::GetSingleton().test_scale;
 	}
