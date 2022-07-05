@@ -10,18 +10,18 @@ using namespace RE::BSScript;
 namespace {
 	constexpr std::string_view PapyrusClass = "GtsPlugin";
 
-	bool SetModelScale(Actor* actor, float scale) {
+	bool SetModelScale(StaticFunctionTag*, Actor* actor, float scale) {
 		return set_scale(actor, scale);
 	}
-	float GetModelScale(Actor* actor) {
+	float GetModelScale(StaticFunctionTag*, Actor* actor) {
 		return get_scale(actor);
 	}
 
-	float GetTestScale(Actor* actor) {
+	float GetTestScale(StaticFunctionTag*) {
 		return GtsManager::GetSingleton().test_scale;
 	}
 
-	bool SetTestScale(Actor* actor, float scale) {
+	bool SetTestScale(StaticFunctionTag*, float scale) {
 		GtsManager::GetSingleton().test_scale = scale;
 		return true;
 	}
