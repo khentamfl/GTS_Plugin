@@ -21,8 +21,9 @@ namespace {
 		return GtsManager::GetSingleton().test_scale;
 	}
 
-	void SetTestScale(float scale) {
+	bool SetTestScale(float scale) {
 		GtsManager::GetSingleton().test_scale = scale;
+		return true;
 	}
 }
 
