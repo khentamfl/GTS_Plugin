@@ -1,6 +1,7 @@
 #include "Config.h"
 #include "GtsManager.h"
 #include "hooks.h"
+#include "papyrus.h"
 
 #include <stddef.h>
 #include <thread>
@@ -93,9 +94,11 @@ namespace {
 				// It is now safe to do multithreaded operations, or operations against other plugins.
 				case MessagingInterface::kPostPostLoad: // Called after all kPostLoad message handlers have run.
 				case MessagingInterface::kInputLoaded: // Called when all game data has been found.
+					break;
 				case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
-				// It is now safe to access form data.
-
+					// It is now safe to access form data.
+					Hooks::Install();
+					break;
 				// Skyrim game events.
 				case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
 				// Data will be a boolean indicating whether the load was successful.
@@ -112,6 +115,15 @@ namespace {
 		{
 			stl::report_and_fail("Unable to register message listener.");
 		}
+	}
+}
+
+void InitializePapyrus() {
+	log::trace("Initializing Papyrus binding...");
+	if (GetPapyrusInterface()->Register(Gts::register_papyrus)) {
+		log::debug("Papyrus functions bound.");
+	} else {
+		stl::report_and_fail("Failure to register Papyrus bindings.");
 	}
 }
 
@@ -137,7 +149,6 @@ SKSEPluginLoad(const LoadInterface * skse)
 
 	Init(skse);
 	InitializeMessaging();
-	Hooks::Install();
 
 	log::info("{} has finished loading.", plugin->GetName());
 	return(true);

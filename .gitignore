@@ -535,4 +535,3 @@ build/
 
 contrib/Distribution/**/*.dll
 contrib/Distribution/**/*.pdb
-contrib/Distribution/**/*.pex
