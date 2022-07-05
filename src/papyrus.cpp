@@ -17,11 +17,11 @@ namespace {
 		return get_scale(actor);
 	}
 
-	float GetTestScale() {
+	float GetTestScale(Actor* actor) {
 		return GtsManager::GetSingleton().test_scale;
 	}
 
-	bool SetTestScale(float scale) {
+	bool SetTestScale(Actor* actor, float scale) {
 		GtsManager::GetSingleton().test_scale = scale;
 		return true;
 	}
