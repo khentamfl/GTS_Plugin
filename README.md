@@ -27,3 +27,16 @@ WIP
 - [ ] Blood on the feet after crushing (Not sure how to do it at all)
 - [ ] Vore anim
 - [ ] Vore belly
+
+## Easier Things
+- [ ] Scale
+  - [x] Change scale in papyrus
+  - [ ] Get height in meters of any actor
+  - [ ] Get volume of any actor
+- [ ] Mechanics  
+  - [ ] Apply size effects to near by actor
+  - [ ] Move away from favor active
+- [ ] Walk/Jump events
+  - [ ] Camera distance to event
+  - [ ] Camera shake
+  - [ ] Feet sounds
