@@ -159,7 +159,7 @@ namespace Gts {
 											// Here be dragons
 											hkpCapsuleShape* capsule = const_cast<hkpCapsuleShape*>(orig_capsule);
 											log::info("  - Capsule found: {}", typeid(*orig_capsule).name());
-											float scale_factor = new_scale * 100.0 / prev_scale;
+											float scale_factor = new_scale / prev_scale;
 											hkVector4 vec_scale = hkVector4(scale_factor);
 											capsule->vertexA = capsule->vertexA * vec_scale;
 											capsule->vertexB = capsule->vertexB * vec_scale;
@@ -169,6 +169,10 @@ namespace Gts {
 											_mm_store_ps(&min[0], out.min.quad);
 											_mm_store_ps(&max[0], out.max.quad);
 											log::info(" - New bounds: {},{},{}<{},{},{}", min[0], min[1],min[2], max[0],max[1],max[2]);
+											log::info(" - pad28: {}", orig_capsule->pad28);
+											log::info(" - pad2C: {}", orig_capsule->pad2C);
+											log::info(" - float(pad28): {}", static_cast<float>(orig_capsule->pad28));
+											log::info(" - float(pad2C): {}", static_cast<float>(orig_capsule->pad2C));
 
 											hkp_rigidbody->SetShape(capsule);
 										}

@@ -161,6 +161,55 @@ namespace {
 		if (test_config.ScaleHkpCapsules()) {
 			scale_hkpnodes(actor, actor_data->prev_height, scale);
 		}
+
+		if (!actor_data->initialised) {
+			log::info("Experiment 03");
+			log::info("  - Shape 00");
+			auto shape00 = char_controller->shapes[0].get();
+			if (shape00) {
+				log::info("    - Exists: {}", typeid(*shape00).name());
+				auto hkp = shape00->referencedObject.get();
+				if (hkp) {
+					log::info("    - HKP: {}", typeid(*hkp).name());
+				}
+			}
+			log::info("  - Shape 01");
+			auto shape01 = char_controller->shapes[1].get();
+			if (shape00) {
+				log::info("    - Exists: {}", typeid(*shape01).name());
+				auto hkp = shape00->referencedObject.get();
+				if (hkp) {
+					log::info("    - HKP: {}", typeid(*hkp).name());
+				}
+			}
+			log::info("  - supportBody");
+			auto supportBody = char_controller->supportBody.get();
+			if (supportBody) {
+				log::info("    - Exists: {}", typeid(*supportBody).name());
+				auto shape = supportBody->GetShape();
+				if (shape) {
+					log::info("    - Shape: {}", typeid(*shape).name());
+				}
+			}
+			log::info("  - bumpedBody");
+			auto bumpedBody = char_controller->bumpedBody.get();
+			if (bumpedBody) {
+				log::info("    - Exists: {}", typeid(*bumpedBody).name());
+				auto shape = bumpedBody->GetShape();
+				if (shape) {
+					log::info("    - Shape: {}", typeid(*shape).name());
+				}
+			}
+			log::info("  - bumpedCharCollisionObject");
+			auto bumpedCharCollisionObject = char_controller->bumpedCharCollisionObject.get();
+			if (bumpedCharCollisionObject) {
+				log::info("    - Exists: {}", typeid(*bumpedCharCollisionObject).name());
+				auto shape = bumpedCharCollisionObject->GetShape();
+				if (shape) {
+					log::info("    - Shape: {}", typeid(*shape).name());
+				}
+			}
+		}
 		actor_data->initialised = true;
 		actor_data->prev_height = scale;
 		log::info("height set for {)", actor_name);
