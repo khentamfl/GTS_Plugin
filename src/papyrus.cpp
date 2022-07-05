@@ -1,5 +1,6 @@
 #include "papyrus.h"
 #include "scale.h"
+#include "GtsManager.h"
 
 using namespace SKSE;
 using namespace Gts;
@@ -15,12 +16,26 @@ namespace {
 	float GetModelScale(Actor* actor) {
 		return get_scale(actor);
 	}
+
+	bool SetModelScale(Actor* actor, float scale) {
+		return set_scale(actor, scale);
+	}
+
+	float GetTestScale() {
+		return GtsManager::GetSingleton().test_scale;
+	}
+
+	void SetTestScale(float scale) {
+		GtsManager::GetSingleton().test_scale = scale;
+	}
 }
 
 namespace Gts {
 	bool register_papyrus(IVirtualMachine* vm) {
 		vm->RegisterFunction("SetModelScale", PapyrusClass, SetModelScale);
 		vm->RegisterFunction("GetModelScale", PapyrusClass, GetModelScale);
+		vm->RegisterFunction("SetTestScale", PapyrusClass, SetTestScale);
+		vm->RegisterFunction("GetTestScale", PapyrusClass, GetTestScale);
 
 		return true;
 	}

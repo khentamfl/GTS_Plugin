@@ -5,5 +5,7 @@
     <folder source="PluginRelease" destination="SKSE\Plugins" priority="0"/>
     <folder source="Papyrus" destination="Scripts" priority="0"/>
     <folder source="PapyrusSource" destination="Source\Scripts" priority="0"/>
+    <folder source="esps" destination="" priority="0"/>
+    <folder source="mcm" destination="MCM\Config\GtsSizeMatters" priority="0"/>
   </requiredInstallFiles>
 </config>

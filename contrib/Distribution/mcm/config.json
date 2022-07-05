@@ -1,0 +1,40 @@
+{
+  "modName": "GtsSizeMatters",        // Your plugin name, without the extension.
+  "displayName": "Size Matters",      // The name to be displayed in the MCM menu.
+  "minMcmVersion": 9,                 // (Optional) The minimum required MCM Helper version code.
+  "cursorFillMode": "topToBottom",    // (Optional) Specify whether controls fill top-to-bottom or left-to-right.
+  "content": [...],                   // (Optional) The contents of the mod configuration menu.
+  "pages": [{                         // (Optional) Subpages of the config menu.
+    "pageDisplayName": "Main Page",   // The display name of the page.
+    "content": [
+      {
+        "text": "Key Binds",
+        "type": "header"
+      },
+      {
+        "id": "grow_player_hk",
+        "text": "Grow Player",
+        "type": "keymap",
+        "help": "Grows the player using the plugin."
+      },
+      {
+        "id": "shrink_player_hk",
+        "text": "Shrink Player",
+        "type": "keymap",
+        "help": "Shrinks the player using the plugin."
+      },
+      {
+        "id": "grow_follower_hk",
+        "text": "Grow Followers",
+        "type": "keymap",
+        "help": "Grows all followers using the plugin."
+      },
+      {
+        "id": "shrink_follower_hk",
+        "text": "Shrink Followers",
+        "type": "keymap",
+        "help": "Shrinks all followers using the plugin."
+      }
+    ]
+  }]
+}
