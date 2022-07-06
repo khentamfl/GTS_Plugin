@@ -132,7 +132,7 @@ void InitializeSerialization() {
 void InitializePapyrus() {
 	log::trace("Initializing Papyrus binding...");
 	if (GetPapyrusInterface()->Register(Gts::register_papyrus)) {
-		log::debug("Papyrus functions bound.");
+		log::info("Papyrus functions bound.");
 	} else {
 		stl::report_and_fail("Failure to register Papyrus bindings.");
 	}
@@ -161,6 +161,7 @@ SKSEPluginLoad(const LoadInterface * skse)
 	Init(skse);
 	InitializeMessaging();
 	InitializePapyrus();
+    InitializeSerialization();
 
 	log::info("{} has finished loading.", plugin->GetName());
 	return(true);
