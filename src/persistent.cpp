@@ -54,7 +54,7 @@ namespace Gts {
 					data.max_scale = max_scale;
 					auto* actor = TESForm::LookupByID<Actor>(newActorFormID);
 					if (actor) {
-						GetSingleton()._actor_data.try_emplace(actor, data);
+						GetSingleton()._actor_data.insert_or_assign(actor, data);
 					} else {
 						log::warn("Actor ID {:X} could not be found after loading the save.", newActorFormID);
 					}
