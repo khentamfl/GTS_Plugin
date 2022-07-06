@@ -1,4 +1,4 @@
-#include "transiant.h"
+#include "transient.h"
 #include "node.h"
 #include "util.h"
 
@@ -7,12 +7,12 @@ using namespace RE;
 
 
 namespace Gts {
-	Transiant& Transiant::GetSingleton() {
-		static Transiant instance;
+	Transient& Transient::GetSingleton() {
+		static Transient instance;
 		return instance;
 	}
 
-	TempActorData* Transiant::GetActorData(Actor* actor) {
+	TempActorData* Transient::GetActorData(Actor* actor) {
 		if (!actor) {
 			return nullptr;
 		}

@@ -1,5 +1,6 @@
 #include "papyrus.h"
 #include "scale.h"
+#include "persistent.h"
 #include "GtsManager.h"
 
 using namespace SKSE;
@@ -11,19 +12,122 @@ namespace {
 	constexpr std::string_view PapyrusClass = "GtsPlugin";
 
 	bool SetModelScale(StaticFunctionTag*, Actor* actor, float scale) {
-		return set_scale(actor, scale);
+		bool result = false;
+		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		if (actor_data) {
+			result = set_model_scale(actor, scale);
+			actor_data->visual_scale = scale;
+			actor_data->visual_scale_v = 0.0;
+			actor_data->target_scale = scale;
+		}
+		return result;
 	}
 	float GetModelScale(StaticFunctionTag*, Actor* actor) {
-		return get_scale(actor);
+		if (!actor) {
+			return 0.0;
+		}
+		auto result = get_model_scale(actor);
+		return result;
+	}
+	bool ModModelScale(StaticFunctionTag*, Actor* actor, float amt) {
+		bool result = false;
+		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		if (actor_data) {
+			auto scale = get_model_scale(actor) + amt;
+			result = set_model_scale(actor, scale);
+			actor_data->visual_scale = scale;
+			actor_data->visual_scale_v = 0.0;
+			actor_data->target_scale = scale;
+		}
+		return result;
 	}
 
-	float GetTestScale(StaticFunctionTag*) {
-		return GtsManager::GetSingleton().test_scale;
+	void SetTargetScale(StaticFunctionTag*, Actor* actor, float scale) {
+		if (!actor) {
+			return;
+		}
+		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		if (actor_data) {
+			actor_data->target_scale = scale;
+		}
 	}
 
-	bool SetTestScale(StaticFunctionTag*, float scale) {
-		GtsManager::GetSingleton().test_scale = scale;
-		return true;
+	float GetTargetScale(StaticFunctionTag*, Actor* actor) {
+		if (!actor) {
+			return 0.0;
+		}
+		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		if (actor_data) {
+			return actor_data->target_scale;
+		}
+		return 0.0;
+	}
+
+	void ModTargetScale(StaticFunctionTag*, Actor* actor, float amt) {
+		if (!actor) {
+			return;
+		}
+		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		if (actor_data) {
+			actor_data->target_scale += amt;
+		}
+	}
+
+	void SetMaxScale(StaticFunctionTag*, Actor* actor, float scale) {
+		if (!actor) {
+			return;
+		}
+		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		if (actor_data) {
+			actor_data->max_scale = scale;
+		}
+	}
+
+	float GetMaxScale(StaticFunctionTag*, Actor* actor) {
+		if (!actor) {
+			return 0.0;
+		}
+		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		if (actor_data) {
+			return actor_data->max_scale;
+		}
+		return 0.0;
+	}
+
+	void ModMaxScale(StaticFunctionTag*, Actor* actor, float amt) {
+		if (!actor) {
+			return;
+		}
+		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		if (actor_data) {
+			actor_data->max_scale += amt;
+		}
+	}
+
+	float GetVisualScale(StaticFunctionTag*, Actor* actor) {
+		if (!actor) {
+			return 0.0;
+		}
+		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		if (actor_data) {
+			return actor_data->visual_scale;
+		}
+		return 0.0;
+	}
+
+	void ModTeammateScale(StaticFunctionTag*, float amt) {
+		for (auto actor_handle: find_actors()) {
+			auto actor = actor_handle.get();
+			if (!actor) {
+				continue;
+			}
+			if (actor->IsPlayerTeammate()) {
+				auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+				if (actor_data) {
+					actor_data->target_scale += amt;
+				}
+			}
+		}
 	}
 }
 
@@ -31,8 +135,19 @@ namespace Gts {
 	bool register_papyrus(IVirtualMachine* vm) {
 		vm->RegisterFunction("SetModelScale", PapyrusClass, SetModelScale);
 		vm->RegisterFunction("GetModelScale", PapyrusClass, GetModelScale);
-		vm->RegisterFunction("SetTestScale", PapyrusClass, SetTestScale);
-		vm->RegisterFunction("GetTestScale", PapyrusClass, GetTestScale);
+		vm->RegisterFunction("ModModelScale", PapyrusClass, ModModelScale);
+
+		vm->RegisterFunction("SetTargetScale", PapyrusClass, SetTargetScale);
+		vm->RegisterFunction("GetTargetScale", PapyrusClass, GetTargetScale);
+		vm->RegisterFunction("ModTargetScale", PapyrusClass, ModTargetScale);
+
+		vm->RegisterFunction("SetMaxScale", PapyrusClass, SetMaxScale);
+		vm->RegisterFunction("GetMaxScale", PapyrusClass, GetMaxScale);
+		vm->RegisterFunction("ModMaxScale", PapyrusClass, ModMaxScale);
+
+		vm->RegisterFunction("GetVisualScale", PapyrusClass, GetVisualScale);
+
+		vm->RegisterFunction("ModTeammateScale", PapyrusClass, ModTeammateScale);
 
 		return true;
 	}

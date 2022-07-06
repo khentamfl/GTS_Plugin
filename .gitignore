@@ -533,5 +533,7 @@ FodyWeavers.xsd
 
 build/
 
+contrib/Distribution/esps/*
+!contrib/Distribution/esps/*.esp
 contrib/Distribution/**/*.dll
 contrib/Distribution/**/*.pdb

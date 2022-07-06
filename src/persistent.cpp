@@ -1,4 +1,4 @@
-#include "persistant.h"
+#include "persistent.h"
 #include "scale.h"
 
 using namespace SKSE;
@@ -9,17 +9,17 @@ namespace {
 }
 
 namespace Gts {
-	Persistant& Persistant::GetSingleton() {
-		static Persistant instance;
+	Persistent& Persistent::GetSingleton() {
+		static Persistent instance;
 		return instance;
 	}
 
-	void Persistant::OnRevert(SerializationInterface*) {
+	void Persistent::OnRevert(SerializationInterface*) {
 		std::unique_lock lock(GetSingleton()._lock);
 		GetSingleton()._actor_data.clear();
 	}
 
-	void Persistant::OnGameLoaded(SerializationInterface* serde) {
+	void Persistent::OnGameLoaded(SerializationInterface* serde) {
 		std::uint32_t type;
 		std::uint32_t size;
 		std::uint32_t version;
@@ -66,7 +66,7 @@ namespace Gts {
 		}
 	}
 
-	void Persistant::OnGameSaved(SerializationInterface* serde) {
+	void Persistent::OnGameSaved(SerializationInterface* serde) {
 		std::unique_lock lock(GetSingleton()._lock);
 
 		if (!serde->OpenRecord(ActorDataRecord, 0)) {
@@ -87,7 +87,7 @@ namespace Gts {
 		}
 	}
 
-	ActorData* Persistant::GetActorData(Actor* actor) {
+	ActorData* Persistent::GetActorData(Actor* actor) {
 		auto key = actor;
 		ActorData* result = nullptr;
 		try {

@@ -14,8 +14,8 @@ namespace Hooks
 		trampoline.create(256);
 
 		Hook_MainUpdate::Hook(trampoline);
-		Hook_OnPlayerUpdate::Hook();
-		Hook_OnActorUpdate::Hook();
+		// Hook_OnPlayerUpdate::Hook();
+		// Hook_OnActorUpdate::Hook();
 		// Hook_bhkCharProxyController::Hook();
 		// Hook_hkpCharacterProxyListener::Hook();
 		// Hook_bhkCharacterController::Hook();
@@ -66,7 +66,7 @@ namespace Hooks
 	void Hook_OnActorUpdate::Update(RE::Actor* a_this, float a_delta) {
 		_Update(a_this, a_delta);
 
-		Gts::GtsManager::GetSingleton().poll_actor(a_this);
+		// Gts::GtsManager::GetSingleton().poll_actor(a_this);
 	}
 
 	// bhkCharProxyController

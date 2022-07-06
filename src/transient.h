@@ -11,9 +11,9 @@ namespace Gts {
 		float base_height;
 	};
 
-	class Transiant {
+	class Transient {
 		public:
-			[[nodiscard]] static Transiant& GetSingleton() noexcept;
+			[[nodiscard]] static Transient& GetSingleton() noexcept;
 
 			TempActorData* GetActorData(Actor* actor);
 		private:

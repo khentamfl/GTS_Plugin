@@ -48,11 +48,11 @@ namespace Gts {
 		}
 	}
 
-	NiAVObject* find_node(Actor* actor, string& node_name) {
+	NiAVObject* find_node(Actor* actor, string& node_name, bool first_person) {
 		if (!actor->Is3DLoaded()) {
 			return nullptr;
 		}
-		auto model = actor->Get3D();
+		auto model = actor->Get3D(first_person);
 		if (!model) {
 			return nullptr;
 		}

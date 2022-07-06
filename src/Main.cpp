@@ -2,7 +2,7 @@
 #include "GtsManager.h"
 #include "hooks.h"
 #include "papyrus.h"
-#include "persistant.h"
+#include "persistent.h"
 
 #include <stddef.h>
 #include <thread>
@@ -123,9 +123,9 @@ void InitializeSerialization() {
 	log::trace("Initializing cosave serialization...");
 	auto* serde = GetSerializationInterface();
 	serde->SetUniqueID(_byteswap_ulong('GTSP'));
-	serde->SetSaveCallback(Persistant::OnGameSaved);
-	serde->SetRevertCallback(Persistant::OnRevert);
-	serde->SetLoadCallback(Persistant::OnGameLoaded);
+	serde->SetSaveCallback(Persistent::OnGameSaved);
+	serde->SetRevertCallback(Persistent::OnRevert);
+	serde->SetLoadCallback(Persistent::OnGameLoaded);
 	log::info("Cosave serialization initialized.");
 }
 

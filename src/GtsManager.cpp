@@ -2,7 +2,7 @@
 #include <Config.h>
 #include <GtsManager.h>
 #include <persistent.h>
-#include <transiant.h>
+#include <transient.h>
 #include <vector>
 #include <string>
 
@@ -28,7 +28,7 @@ namespace {
 		critically_damped(
 			persi_actor_data->visual_scale,
 			persi_actor_data->visual_scale_v,
-			persi_actor_data->target_scale,
+			min(persi_actor_data->target_scale, persi_actor_data->max_scale),
 			0.05,
 			*g_delta_time
 			);
@@ -61,6 +61,16 @@ namespace {
 
 		log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
+		NiUpdateData ctx;
+		auto model = Actor->Get3D();
+		// We are on the main thread so we can update this now
+		if (model) {
+			model->UpdateWorldData(&ctx);
+		}
+		auto first_model = Actor->Get3D(true);
+		if (first_model) {
+			first_model->UpdateWorldData(&ctx);
+		}
 	}
 }
 
@@ -107,8 +117,8 @@ void GtsManager::poll() {
 			if (!actor) {
 				continue;
 			}
-			auto temp_data = Transiant::GetSingleton().GetActorData(actor);
-			auto saved_data = Persistant::GetSingleton().GetActorData(actor);
+			auto temp_data = Transient::GetSingleton().GetActorData(actor);
+			auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 			smooth_height_change(actor, saved_data, temp_data);
 			update_height(actor, saved_data, temp_data);
 		}
