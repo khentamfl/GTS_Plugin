@@ -7,7 +7,7 @@ using namespace RE;
 
 
 namespace Gts {
-	Transient& Transient::GetSingleton() {
+	Transient& Transient::GetSingleton() noexcept {
 		static Transient instance;
 		return instance;
 	}

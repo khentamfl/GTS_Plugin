@@ -117,7 +117,7 @@ namespace {
 
 	void ModTeammateScale(StaticFunctionTag*, float amt) {
 		for (auto actor_handle: find_actors()) {
-			auto actor = actor_handle.get();
+			auto actor = actor_handle.get().get();
 			if (!actor) {
 				continue;
 			}

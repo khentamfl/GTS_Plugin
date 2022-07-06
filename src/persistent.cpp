@@ -9,7 +9,7 @@ namespace {
 }
 
 namespace Gts {
-	Persistent& Persistent::GetSingleton() {
+	Persistent& Persistent::GetSingleton() noexcept {
 		static Persistent instance;
 		return instance;
 	}
@@ -27,7 +27,7 @@ namespace Gts {
 		while (serde->GetNextRecordInfo(type, version, size)) {
 			if (type == ActorDataRecord) {
 				std::size_t size;
-				serde->ReadRecordData(&hitCountsSize, sizeof(hitCountsSize));
+				serde->ReadRecordData(&size, sizeof(size));
 				for (; size > 0; --size) {
 					RE::FormID actorFormID;
 					serde->ReadRecordData(&actorFormID, sizeof(actorFormID));
@@ -54,7 +54,7 @@ namespace Gts {
 					data.max_scale = max_scale;
 					auto* actor = TESForm::LookupByID<Actor>(newActorFormID);
 					if (actor) {
-						GetSingleton()._actor_data.try_emplace(actor, hitCount);
+						GetSingleton()._actor_data.try_emplace(actor, data);
 					} else {
 						log::warn("Actor ID {:X} could not be found after loading the save.", newActorFormID);
 					}
