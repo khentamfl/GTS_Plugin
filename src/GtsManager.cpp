@@ -122,6 +122,23 @@ void GtsManager::poll() {
 			smooth_height_change(actor, saved_data, temp_data);
 			update_height(actor, saved_data, temp_data);
 		}
+        
+        auto camera = PlayerCamera::GetSingleton();
+        if (camera) {
+            log::info("Camera Position: {},{},{}", camera->pos.x,camera->pos.y,camera->pos.z);
+            auto target = camera->cameraTarget.get().get();
+            if (target) {
+                auto base_actor = target->GetBaseActor();
+                auto name = base_actor->GetFullName();
+                log::info("Camera Target: {}", name);
+            }
+            auto camera_node = camera->cameraRoot.get();
+            if (camera_node) {
+                auto node_name = camera_node->c_str();
+                auto world = camera_node->world.translate;
+                log::info("Camera Node: {} at {},{},{}", node_name, world.x, world.y, world.z);
+            }
+        }
 	}
 }
 
