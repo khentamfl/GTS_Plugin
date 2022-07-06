@@ -100,7 +100,7 @@ namespace Gts {
 			new_data.visual_scale = scale;
 			new_data.visual_scale_v = 0.0;
 			new_data.target_scale = scale;
-			new_data.max_scale = scale;
+			new_data.max_scale = 65535.0;
 			this->_actor_data[key] = new_data;
 			result = &this->_actor_data.at(key);
 		}
