@@ -34,6 +34,10 @@ namespace Gts {
 				result.push_back(actor_handle);
 			}
 		}
+        auto player = PlayerCharacter::GetSingleton();
+        if (player && player->Is3DLoaded()) {
+            result.push_back(player->GetHandle());
+        }
 
 		return result;
 	}
