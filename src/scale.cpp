@@ -15,7 +15,6 @@ namespace Gts {
 			actor->refScale = static_cast<std::uint16_t>(target_scale * 100.0F);
 			actor->DoReset3D(false);
 		}
-		log::info("Set REF Scale: {}, {}", actor->refScale, static_cast<float>(actor->refScale));
 	}
 
 	bool set_model_scale(Actor* actor, float target_scale) {
@@ -23,51 +22,84 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return false;
 		}
-		auto model = actor->Get3D();
-		if (!model) {
-			return false;
+		bool result = false;
+
+		auto model = actor->Get3D(false);
+		if (model) {
+			result = true;
+			model->local.scale = target_scale;
+			auto task = SKSE::GetTaskInterface();
+			task->AddTask([model]() {
+				if (model) {
+					NiUpdateData ctx;
+					// ctx.flags |= NiUpdateData::Flag::kDirty;
+					model->UpdateWorldData(&ctx);
+				}
+			});
 		}
-		model->local.scale = target_scale;
-		auto task = SKSE::GetTaskInterface();
-		task->AddTask([model]() {
-			if (model) {
-				log::info("Updating world model data on main thread");
-				NiUpdateData ctx;
-				// ctx.flags |= NiUpdateData::Flag::kDirty;
-				model->UpdateWorldData(&ctx);
-				model->UpdateWorldBound();
-			}
-		});
-		return true;
+
+		auto first_model = actor->Get3D(true);
+		if (first_model) {
+			result = true;
+			first_model->local.scale = target_scale;
+			auto task = SKSE::GetTaskInterface();
+			task->AddTask([first_model]() {
+				if (first_model) {
+					NiUpdateData ctx;
+					// ctx.flags |= NiUpdateData::Flag::kDirty;
+					first_model->UpdateWorldData(&ctx);
+				}
+			});
+		}
+		return result;
 	}
 
 	bool set_npcnode_scale(Actor* actor, float target_scale) {
 		// This will set the scale of the root npc node
 		string node_name = "NPC Root [Root]";
-		auto node = find_node(actor, node_name);
+		bool result = false;
+		auto node = find_node(actor, node_name, false);
 		if (node) {
+			result = true;
 			node->local.scale = target_scale;
 			auto task = SKSE::GetTaskInterface();
 			task->AddTask([node]() {
 				if (node) {
-					log::info("Updating world node data on main thread");
 					NiUpdateData ctx;
 					// ctx.flags |= NiUpdateData::Flag::kDirty;
 					node->UpdateWorldData(&ctx);
-					node->UpdateWorldBound();
 				}
 			});
-			return true;
 		}
-		return false;
+
+		auto first_node = find_node(actor, node_name, true);
+		if (first_node) {
+			result = true;
+			first_node->local.scale = target_scale;
+			auto task = SKSE::GetTaskInterface();
+			task->AddTask([first_node]() {
+				if (first_node) {
+					NiUpdateData ctx;
+					// ctx.flags |= NiUpdateData::Flag::kDirty;
+					first_node->UpdateWorldData(&ctx);
+				}
+			});
+		}
+
+
+		return result;
 	}
 
 	float get_npcnode_scale(Actor* actor) {
 		// This will set the scale of the root npc node
 		string node_name = "NPC Root [Root]";
-		auto node = find_node(actor, node_name);
+		auto node = find_node(actor, node_name, false);
 		if (node) {
 			return node->local.scale;
+		}
+		auto first_node = find_node(actor, node_name, true);
+		if (first_node) {
+			return first_node->local.scale;
 		}
 		return 0.0;
 	}
@@ -77,11 +109,15 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return 0.0;
 		}
-		auto model = actor->Get3D();
-		if (!model) {
-			return 0.0;
+		auto model = actor->Get3D(false);
+		if (model) {
+			return model->local.scale;
 		}
-		return model->local.scale;
+		auto first_model = actor->Get3D(true);
+		if (first_model) {
+			return first_model->local.scale;
+		}
+		return 0.0;
 	}
 
 	float get_ref_scale(Actor* actor) {
