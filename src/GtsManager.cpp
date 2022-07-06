@@ -90,6 +90,9 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 
 // Poll for updates
 void GtsManager::poll() {
+    if (!this->enabled){
+        return;
+    }
 	auto player_char = RE::PlayerCharacter::GetSingleton();
 	if (!player_char) {
 		return;

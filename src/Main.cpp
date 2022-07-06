@@ -92,7 +92,7 @@ namespace {
 			{
 				// Skyrim lifecycle events.
 				case MessagingInterface::kPostLoad: // Called after all plugins have finished running SKSEPlugin_Load.
-				// It is now safe to do multithreaded operations, or operations against other plugins.
+				    // It is now safe to do multithreaded operations, or operations against other plugins.
 				case MessagingInterface::kPostPostLoad: // Called after all kPostLoad message handlers have run.
 				case MessagingInterface::kInputLoaded: // Called when all game data has been found.
 					break;
@@ -102,13 +102,18 @@ namespace {
 					break;
 				// Skyrim game events.
 				case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
-				// Data will be a boolean indicating whether the load was successful.
-
+				    // Data will be a boolean indicating whether the load was successful.
+                    GtsManager::GetSingleton().enabled = true;
+                    break;
 				case MessagingInterface::kNewGame: // Player starts a new game from main menu.
+                    GtsManager::GetSingleton().enabled = true;
+                    break;
 				case MessagingInterface::kPreLoadGame: // Player selected a game to load, but it hasn't loaded yet.
-				// Data will be the name of the loaded save.
+				    // Data will be the name of the loaded save.
+                    GtsManager::GetSingleton().enabled = false;
+                    break;
 				case MessagingInterface::kSaveGame: // The player has saved a game.
-				// Data will be the save name.
+				    // Data will be the save name.
 				case MessagingInterface::kDeleteGame: // The player deleted a saved game from within the load menu.
 					break;
 			}
