@@ -40,6 +40,8 @@ namespace Gts {
 					serde->ReadRecordData(&native_scale, sizeof(native_scale));
 					float visual_scale;
 					serde->ReadRecordData(&visual_scale, sizeof(visual_scale));
+					float visual_scale_v;
+					serde->ReadRecordData(&visual_scale_v, sizeof(visual_scale_v));
 					float target_scale;
 					serde->ReadRecordData(&target_scale, sizeof(target_scale));
 					float max_scale;
@@ -47,6 +49,7 @@ namespace Gts {
 					ActorData data;
 					data.native_scale = native_scale;
 					data.visual_scale = visual_scale;
+					data.visual_scale_v = visual_scale_v;
 					data.target_scale = target_scale;
 					data.max_scale = max_scale;
 					auto* actor = TESForm::LookupByID<Actor>(newActorFormID);
@@ -78,6 +81,7 @@ namespace Gts {
 			serde->WriteRecordData(form_id, sizeof(form_id));
 			serde->WriteRecordData(&data.native_scale, sizeof(data.native_scale));
 			serde->WriteRecordData(&data.visual_scale, sizeof(data.visual_scale));
+			serde->WriteRecordData(&data.visual_scale_v, sizeof(data.visual_scale_v));
 			serde->WriteRecordData(&data.target_scale, sizeof(data.target_scale));
 			serde->WriteRecordData(&data.max_scale, sizeof(data.max_scale));
 		}
@@ -94,6 +98,7 @@ namespace Gts {
 			auto scale = get_scale(actor);
 			new_data.native_scale = scale;
 			new_data.visual_scale = scale;
+			new_data.visual_scale_v = 0.0;
 			new_data.target_scale = scale;
 			new_data.max_scale = scale;
 			this->_actor_data[key] = new_data;

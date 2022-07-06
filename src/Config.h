@@ -74,126 +74,6 @@ namespace Gts {
 			friend class articuno::access;
 	};
 
-	class Test {
-		public:
-			[[nodiscard]] inline float GetScale() const noexcept {
-				return _scale;
-			}
-			[[nodiscard]] inline bool CloneBound() const noexcept {
-				return _clone_bound;
-			}
-			[[nodiscard]] inline bool UpdateModelBound() const noexcept {
-				return _update_model_bound;
-			}
-			[[nodiscard]] inline bool UpdateCharControllerBound() const noexcept {
-				return _update_char_bound;
-			}
-			[[nodiscard]] inline bool UpdateModelBumper() const noexcept {
-				return _update_model_bumper;
-			}
-			[[nodiscard]] inline bool UpdateCharControllerBumper() const noexcept {
-				return _update_char_bumper;
-			}
-			[[nodiscard]] inline bool UpdateCharControllerScale() const noexcept {
-				return _update_char_scale;
-			}
-			[[nodiscard]] inline bool Update3DModel() const noexcept {
-				return _update_3d_model;
-			}
-			[[nodiscard]] inline bool UpdateRigid() const noexcept {
-				return _update_rigid_model;
-			}
-			[[nodiscard]] inline bool UpdateRigidConstraints() const noexcept {
-				return _update_rigid_constraint_model;
-			}
-			[[nodiscard]] inline bool UpdateWorldBound() const noexcept {
-				return _update_world_bound;
-			}
-			[[nodiscard]] inline bool SetBhkPosition() const noexcept {
-				return _set_bhk_position;
-			}
-			[[nodiscard]] inline bool ScaleHkpCapsules() const noexcept {
-				return _scale_hkp_capsules;
-			}
-
-		private:
-			articuno_serialize(ar) {
-				ar <=> articuno::kv(_scale, "scale");
-			}
-
-			articuno_deserialize(ar) {
-				*this = Test();
-				float scale;
-				if (ar <=> articuno::kv(scale, "scale")) {
-					_scale = scale;
-				}
-				bool clone_bound;
-				if (ar <=> articuno::kv(clone_bound, "cloneBound")) {
-					_clone_bound = clone_bound;
-				}
-				bool update_model_bound;
-				if (ar <=> articuno::kv(update_model_bound, "updateModelBound")) {
-					_update_model_bound = update_model_bound;
-				}
-				bool update_char_bound;
-				if (ar <=> articuno::kv(update_char_bound, "updateCharControllerBound")) {
-					_update_char_bound = update_char_bound;
-				}
-				bool update_model_bumper;
-				if (ar <=> articuno::kv(update_model_bumper, "updateModelBumper")) {
-					_update_model_bumper = update_model_bumper;
-				}
-				bool update_char_bumper;
-				if (ar <=> articuno::kv(update_char_bumper, "updateCharControllerBumper")) {
-					_update_char_bumper = update_char_bumper;
-				}
-				bool update_char_scale;
-				if (ar <=> articuno::kv(update_char_scale, "updateCharControllerScale")) {
-					_update_char_scale = update_char_scale;
-				}
-				bool update_3d_model;
-				if (ar <=> articuno::kv(clone_bound, "update3DModel")) {
-					_update_3d_model = update_3d_model;
-				}
-				bool update_rigid_model;
-				if (ar <=> articuno::kv(update_rigid_model, "updateRigidModel")) {
-					_update_rigid_model = update_rigid_model;
-				}
-				bool update_rigid_constraint_model;
-				if (ar <=> articuno::kv(update_rigid_constraint_model, "updateRigidConstraintsModel")) {
-					_update_rigid_constraint_model = update_rigid_constraint_model;
-				}
-				bool update_world_bound;
-				if (ar <=> articuno::kv(update_world_bound, "updateWorldBound")) {
-					_update_world_bound = update_world_bound;
-				}
-				bool set_bhk_position;
-				if (ar <=> articuno::kv(set_bhk_position, "setBhkPosition")) {
-					_set_bhk_position = set_bhk_position;
-				}
-				bool scale_hkp_capsules;
-				if (ar <=> articuno::kv(scale_hkp_capsules, "scaleHkpCapsules")) {
-					_scale_hkp_capsules = scale_hkp_capsules;
-				}
-			}
-
-			float _scale = 5.0;
-			bool _clone_bound = true;
-			bool _update_model_bound = true;
-			bool _update_char_bound = true;
-			bool _update_model_bumper = true;
-			bool _update_char_bumper = true;
-			bool _update_char_scale = true;
-			bool _update_3d_model = false;
-			bool _update_rigid_model = true;
-			bool _update_rigid_constraint_model = true;
-			bool _update_world_bound = true;
-			bool _set_bhk_position = true;
-			bool _scale_hkp_capsules = true;
-
-			friend class articuno::access;
-	};
-
 	class Config {
 		public:
 			[[nodiscard]] inline const Debug& GetDebug() const noexcept {
@@ -204,22 +84,16 @@ namespace Gts {
 				return _frame;
 			}
 
-			[[nodiscard]] inline const Test& GetTest() const noexcept {
-				return _test;
-			}
-
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
 
 		private:
 			articuno_serde(ar) {
 				ar <=> articuno::kv(_debug, "debug");
 				ar <=> articuno::kv(_frame, "frame");
-				ar <=> articuno::kv(_test, "test");
 			}
 
 			Debug _debug;
 			Frame _frame;
-			Test _test;
 
 			friend class articuno::access;
 	};

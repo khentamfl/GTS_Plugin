@@ -45,4 +45,20 @@ namespace Gts {
 		// race specific height scaling
 		return meter * 70.0;
 	}
+
+	void critically_damped(
+	float& x,
+	float& v,
+	float x_goal,
+	float halflife,
+	float dt)
+	{
+	    float y = halflife_to_damping(halflife) / 2.0f;
+	    float j0 = x - x_goal;
+	    float j1 = v + j0*y;
+	    float eydt = fast_negexp(y*dt);
+
+	    x = eydt*(j0 + j1*dt) + x_goal;
+	    v = eydt*(v - j1*y*dt);
+	}
 }

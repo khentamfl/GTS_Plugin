@@ -1,6 +1,8 @@
 #include <SKSE/SKSE.h>
 #include <Config.h>
 #include <GtsManager.h>
+#include <persistent.h>
+#include <transiant.h>
 #include <vector>
 #include <string>
 
@@ -10,230 +12,56 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	void update_height(Actor* actor) {
+	void smooth_height_change(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
 			return;
 		}
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		auto base_actor = actor->GetActorBase();
-		auto actor_name = base_actor->GetFullName();
-		if (!actor_name) {
+		if (!trans_actor_data) {
 			return;
 		}
-
-		bool follower = actor->IsPlayerTeammate();
-		if (!follower) {
+		if (!persi_actor_data) {
 			return;
 		}
-		// Check all data is loaded
-		auto actor_data = GtsManager::GetSingleton().get_actor_extra_data(actor);
-		if (!actor_data) {
-			log::info("No actor data cached");
+		critically_damped(
+			persi_actor_data->visual_scale,
+			persi_actor_data->visual_scale_v,
+			persi_actor_data->target_scale,
+			0.05,
+			*g_delta_time
+			);
+	}
+	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+		if (!actor) {
 			return;
 		}
-		auto char_controller = actor->GetCharController();
-		if (!char_controller) {
-			log::info("No char controller: {}", actor_name);
+		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		auto& base_height_data = actor_data->base_height;
-
-		// Get scales
-		float prev_height = actor_data->prev_height; // On last update by this script
+		if (!trans_actor_data) {
+			return;
+		}
+		if (!persi_actor_data) {
+			return;
+		}
 		float scale = get_scale(actor);
+		float visual_scale = persi_actor_data->visual_scale;
 
-		// Test scale
-		float test_scale = GtsManager::GetSingleton().test_scale;
-		if (test_scale > 1e-5) {
-			if (fabs(test_scale - scale) > 1e-5) {
-				if (!set_scale(actor, test_scale)) {
-					log::info("Unable to set test scale");
-					return;
-				}
-				scale = get_scale(actor);
-				log::info("Scale set to {} for {}", scale, actor_name);
-			}
-		}
-
-		// Has scaled changed?
-		if (fabs(prev_height - scale) <= 1e-5) {
+		// Is scale correct already?
+		if (fabs(visual_scale - scale) <= 1e-5) {
 			return;
 		}
 
 		// Is scale too small
-		if (scale <= 1e-5) {
+		if (visual_scale <= 1e-5) {
 			return;
 		}
 
-		log::info("Scale changed from {} to {}. Updating",prev_height,scale);
-
-		auto& test_config = Gts::Config::GetSingleton().GetTest();
-
-		// Ready start updating
-		if (test_config.CloneBound()) {
-			if (!actor_data->initialised) {
-				clone_bound(actor);
-			}
-		}
-		if (test_config.UpdateModelBound()) {
-			auto bsbound = get_bound(actor);
-			if (!bsbound) {
-				log::info("No bound: {}", actor_name);
-				return;
-			}
-			uncache_bound(&base_height_data.collisionBound, bsbound);
-			bsbound->extents *= scale;
-			bsbound->center *= scale;
-		}
-		if (test_config.UpdateCharControllerBound()) {
-			uncache_bound(&base_height_data.collisionBound, &char_controller->collisionBound);
-			char_controller->collisionBound.extents *= scale;
-			char_controller->collisionBound.center *= scale;
-		}
-		if (test_config.UpdateModelBumper()) {
-			auto bumper = get_bumper(actor);
-			if (bumper) {
-				bumper->local.translate = base_height_data.bumper_transform.translate * scale;
-				bumper->local.scale = base_height_data.bumper_transform.scale * scale;
-			}
-		}
-		if (test_config.UpdateCharControllerBumper()) {
-			uncache_bound(&base_height_data.bumperCollisionBound, &char_controller->bumperCollisionBound);
-			char_controller->bumperCollisionBound.extents *= scale;
-			char_controller->bumperCollisionBound.center *= scale;
-		}
-		if (test_config.UpdateCharControllerScale()) {
-			char_controller->scale = scale;
-		}
-		auto model = actor->Get3D();
-		if (!model) {
-			log::info("No model: {}", actor_name);
-			return;
-		}
-
-		// 3D resets
-		if (test_config.Update3DModel()) {
-			actor->Update3DModel();
-		}
-		auto task = SKSE::GetTaskInterface();
-		auto node = actor->Get3D();
-		task->AddTask([node]() {
-			if (node) {
-				NiUpdateData ctx;
-				ctx.flags |= NiUpdateData::Flag::kDirty;
-				node->UpdateWorldData(&ctx);
-			}
-		});
-		if (test_config.UpdateWorldBound()) {
-			task->AddTask([node]() {
-				if (node) {
-					node->UpdateWorldBound();
-				}
-			});
-		}
-		if (test_config.UpdateRigid()) {
-			task->AddTask([node]() {
-				if (node) {
-					NiUpdateData ctx;
-					ctx.flags |= NiUpdateData::Flag::kDirty;
-					node->UpdateRigidDownwardPass(ctx, 0);
-				}
-			});
-		}
-		if (test_config.UpdateRigidConstraints()) {
-			task->AddTask([node]() {
-				if (node) {
-					node->UpdateRigidConstraints(true);
-				}
-			});
-		}
-		if (test_config.SetBhkPosition()) {
-			hkTransform transform;
-			char_controller->GetTransformImpl(transform);
-			transform.rotation.col0.quad = _mm_mul_ps(transform.rotation.col0.quad, _mm_set_ps(scale,   1.0,   1.0, 1.0));
-			transform.rotation.col1.quad = _mm_mul_ps(transform.rotation.col1.quad, _mm_set_ps(1.0,   scale,   1.0, 1.0));
-			transform.rotation.col2.quad = _mm_mul_ps(transform.rotation.col2.quad, _mm_set_ps(1.0,     1.0, scale, 1.0));
-			char_controller->SetTransformImpl(transform);
-		}
-
-		if (test_config.ScaleHkpCapsules()) {
-			scale_hkpnodes(actor, actor_data->prev_height, scale);
-		}
-
-		if (!actor_data->initialised) {
-			log::info("Experiment 03");
-			log::info("  - Shape 00");
-			auto shape00 = char_controller->shapes[0].get();
-			if (shape00) {
-				log::info("    - Exists: {}", typeid(*shape00).name());
-				auto hkp = shape00->referencedObject.get();
-				if (hkp) {
-					log::info("    - HKP: {}", typeid(*hkp).name());
-				}
-			}
-			log::info("  - Shape 01");
-			auto shape01 = char_controller->shapes[1].get();
-			if (shape00) {
-				log::info("    - Exists: {}", typeid(*shape01).name());
-				auto hkp = shape00->referencedObject.get();
-				if (hkp) {
-					log::info("    - HKP: {}", typeid(*hkp).name());
-				}
-			}
-			log::info("  - supportBody");
-			auto supportBody = char_controller->supportBody.get();
-			if (supportBody) {
-				log::info("    - Exists: {}", typeid(*supportBody).name());
-				auto shape = supportBody->GetShape();
-				if (shape) {
-					log::info("    - Shape: {}", typeid(*shape).name());
-				}
-			}
-			log::info("  - bumpedBody");
-			auto bumpedBody = char_controller->bumpedBody.get();
-			if (bumpedBody) {
-				log::info("    - Exists: {}", typeid(*bumpedBody).name());
-				auto shape = bumpedBody->GetShape();
-				if (shape) {
-					log::info("    - Shape: {}", typeid(*shape).name());
-				}
-			}
-			log::info("  - bumpedCharCollisionObject");
-			auto bumpedCharCollisionObject = char_controller->bumpedCharCollisionObject.get();
-			if (bumpedCharCollisionObject) {
-				log::info("    - Exists: {}", typeid(*bumpedCharCollisionObject).name());
-				auto shape = bumpedCharCollisionObject->GetShape();
-				if (shape) {
-					log::info("    - Shape: {}", typeid(*shape).name());
-				}
-			}
-		}
-		actor_data->initialised = true;
-		actor_data->prev_height = scale;
-		log::info("height set for {)", actor_name);
+		log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
+		set_scale(actor, visual_scale);
 	}
-
-	//
-
-	// auto char_controller = actor->GetCharController();
-	// if (char_controller) {
-	// 	// Havok Direct SCALE
-	// 	hkTransform fill_me;
-	// 	auto char_controller_transform = char_controller->GetTransformImpl(fill_me);
-	// 	auto translation = char_controller_transform.translation;
-	// 	float output[4];
-	// 	_mm_storeu_ps(&output, translation);
-	// 	log::info("Char Controler transform: pos={},{},{},{}", output[0], output[1], output[2], output[3]);
-	// 	// Time to cheat the transform
-	// 	// There's no scale on the hk transform there are two ways to get it
-	// 	// 1. Put the scale in the w of the translation
-	// 	// 2. Put the scale in the cross diagnoal of the rotation
-	// 	auto multi = _mm_set_ps(1.0, 1.0, 1.0, scale);
-	// 	auto result = _mm_mul_ps(translation, multi);
-	// 	char_controller_transform.translation = result;
-	// }
 }
 
 GtsManager& GtsManager::GetSingleton() noexcept {
@@ -242,7 +70,6 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 	static std::atomic_bool initialized;
 	static std::latch latch(1);
 	if (!initialized.exchange(true)) {
-		instance.test_scale = Gts::Config::GetSingleton().GetTest().GetScale();
 		instance.size_method = SizeMethod::All;
 		latch.count_down();
 	}
@@ -275,89 +102,17 @@ void GtsManager::poll() {
 			return;
 		}
 
-		// Key presses
-		auto keyboard = this->get_keyboard();
-		if (keyboard) {
-			if (keyboard->IsPressed(BSKeyboardDevice::Keys::kBracketLeft)) {
-				log::info("Size UP");
-				this->test_scale += 0.1;
+		for (auto actor_handle: find_actors()) {
+			auto actor = actor_handle.get();
+			if (!actor) {
+				continue;
 			}
-			else if (keyboard->IsPressed(BSKeyboardDevice::Keys::kBracketRight)) {
-				log::info("Size Down");
-				this->test_scale -= 0.1;
-			}
-			if (this->test_scale < 0.0) {
-				this->test_scale = 0.0; // 0.is disabled
-			}
-		} else {
-			log::info("No keyboard!");
+			auto temp_data = Transiant::GetSingleton().GetActorData(actor);
+			auto saved_data = Persistant::GetSingleton().GetActorData(actor);
+			smooth_height_change(actor, saved_data, temp_data);
+			update_height(actor, saved_data, temp_data);
 		}
 	}
-}
-
-void GtsManager::poll_actor(Actor* actor) {
-	if (actor) {
-		auto base_actor = actor->GetActorBase();
-		auto actor_name = base_actor->GetFullName();
-
-		auto race = actor->GetRace();
-		auto race_name = race->GetFullName();
-
-
-		// log::trace("Updating height of {}", actor_name);
-		update_height(actor);
-		// walk_nodes(actor);
-	}
-}
-
-ActorExtraData* GtsManager::get_actor_extra_data(Actor* actor) {
-	auto key = actor->GetFormID();
-	try {
-		auto no_discard = this->actor_data.at(key);
-	} catch (const std::out_of_range& oor) {
-		// Try to add
-		log::info("Init bounding box");
-		ActorExtraData result;
-
-		auto bsbound = get_bound(actor);
-		if (!bsbound) {
-			return nullptr;
-		}
-		auto char_controller = actor->GetCharController();
-		if (!char_controller) {
-			return nullptr;
-		}
-
-		cache_bound(bsbound, &result.base_height.collisionBound);
-		cache_bound(&char_controller->bumperCollisionBound, &result.base_height.bumperCollisionBound);
-		result.base_height.actorHeight = char_controller->actorHeight;
-		result.base_height.swimFloatHeightRatio = char_controller->swimFloatHeight / char_controller->actorHeight;
-		auto bumper = get_bumper(actor);
-		if (bumper) {
-			result.base_height.bumper_transform = bumper->local;
-		}
-		result.prev_height = get_scale(actor);
-		result.initialised = false;
-		this->actor_data[key] = result;
-	}
-	return &this->actor_data[key];
-}
-
-void Gts::cache_bound(BSBound* src, CachedBound* dst) {
-	dst->center[0] = src->center.x;
-	dst->center[1] = src->center.y;
-	dst->center[2] = src->center.z;
-	dst->extents[0] = src->extents.x;
-	dst->extents[1] = src->extents.y;
-	dst->extents[2] = src->extents.z;
-}
-void Gts::uncache_bound(CachedBound* src, BSBound* dst) {
-	dst->center.x = src->center[0];
-	dst->center.y = src->center[1];
-	dst->center.z = src->center[2];
-	dst->extents.x = src->extents[0];
-	dst->extents.y = src->extents[1];
-	dst->extents.z = src->extents[2];
 }
 
 BSWin32KeyboardDevice* GtsManager::get_keyboard() {

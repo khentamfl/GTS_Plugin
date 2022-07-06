@@ -1,0 +1,33 @@
+#include "transiant.h"
+#include "node.h"
+#include "util.h"
+
+using namespace SKSE;
+using namespace RE;
+
+
+namespace Gts {
+	Transiant& Transiant::GetSingleton() {
+		static Transiant instance;
+		return instance;
+	}
+
+	TempActorData* Transiant::GetActorData(Actor* actor) {
+		if (!actor) {
+			return nullptr;
+		}
+		auto key = actor;
+		try {
+			auto no_discard = this->_actor_data.at(key);
+		} catch (const std::out_of_range& oor) {
+			// Try to add
+			TempActorData result;
+			auto bound = get_bound(actor);
+			float base_height_unit = bound.extents[2] * get_scale(actor);
+			float base_height_meters = unit_to_meter(base_height_unit);
+			result.base_height = base_height_meters;
+			this->_actor_data[key] = result;
+		}
+		return &this->_actor_data[key];
+	}
+}
