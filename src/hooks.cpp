@@ -17,8 +17,8 @@ namespace Hooks
 		Hook_OnPlayerUpdate::Hook();
 		Hook_OnActorUpdate::Hook();
 		// Hook_bhkCharProxyController::Hook();
-// Hook_hkpCharacterProxyListener::Hook();
-// Hook_bhkCharacterController::Hook();
+		// Hook_hkpCharacterProxyListener::Hook();
+		// Hook_bhkCharacterController::Hook();
 
 		logger::info("Gts finished applying hooks...");
 
