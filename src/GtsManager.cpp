@@ -62,12 +62,12 @@ namespace {
 		log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
 		NiUpdateData ctx;
-		auto model = Actor->Get3D();
+		auto model = actor->Get3D(false);
 		// We are on the main thread so we can update this now
 		if (model) {
 			model->UpdateWorldData(&ctx);
 		}
-		auto first_model = Actor->Get3D(true);
+		auto first_model = actor->Get3D(true);
 		if (first_model) {
 			first_model->UpdateWorldData(&ctx);
 		}
@@ -113,7 +113,7 @@ void GtsManager::poll() {
 		}
 
 		for (auto actor_handle: find_actors()) {
-			auto actor = actor_handle.get();
+			auto actor = actor_handle.get().get();
 			if (!actor) {
 				continue;
 			}
