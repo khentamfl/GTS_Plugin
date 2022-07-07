@@ -3,42 +3,52 @@
 using namespace Gts;
 
 namespace {
-    // Spring code from https://theorangeduck.com/page/spring-roll-call
-    float halflife_to_damping(float halflife, float eps = 1e-5f)
-    {
-        return (4.0f * 0.69314718056f) / (halflife + eps);
-    }
-        
-    float damping_to_halflife(float damping, float eps = 1e-5f)
-    {
-        return (4.0f * 0.69314718056f) / (damping + eps);
-    }
-    float fast_negexp(float x)
-    {
-        return 1.0f / (1.0f + x + 0.48f*x*x + 0.235f*x*x*x);
-    }
+	// Spring code from https://theorangeduck.com/page/spring-roll-call
+	float halflife_to_damping(float halflife, float eps = 1e-5f)
+	{
+		return (4.0f * 0.69314718056f) / (halflife + eps);
+	}
+
+	float damping_to_halflife(float damping, float eps = 1e-5f)
+	{
+		return (4.0f * 0.69314718056f) / (damping + eps);
+	}
+	float fast_negexp(float x)
+	{
+		return 1.0f / (1.0f + x + 0.48f*x*x + 0.235f*x*x*x);
+	}
 }
 namespace Gts {
-  /**
+	/**
 	 * Find actors in ai manager that are loaded
 	 */
-	vector<ActorHandle> find_actors() {
-		vector<ActorHandle> result;
+	vector<Actor*> find_actors() {
+		log::info("+ find_actors");
+		vector<Actor*> result;
 
 		auto process_list = ProcessLists::GetSingleton();
 		for (ActorHandle actor_handle: process_list->highActorHandles)
 		{
-			auto actor = actor_handle.get();
+			if (!actor_handle) {
+				continue;
+			}
+			auto actor_smartptr = actor_handle.get();
+			if (!actor_smartptr) {
+				continue;
+			}
+
+			Actor* actor = actor_smartptr.get();
+			// auto actor = actor_handle.get().get();
 			if (actor && actor->Is3DLoaded())
 			{
-				result.push_back(actor_handle);
+				result.push_back(actor);
 			}
 		}
-        auto player = PlayerCharacter::GetSingleton();
-        if (player && player->Is3DLoaded()) {
-            result.push_back(player->GetHandle());
-        }
-
+		auto player = PlayerCharacter::GetSingleton();
+		if (player && player->Is3DLoaded()) {
+			result.push_back(player);
+		}
+		log::info("- find_actors");
 		return result;
 	}
 
@@ -67,18 +77,18 @@ namespace Gts {
 	}
 
 	void critically_damped(
-	float& x,
-	float& v,
-	float x_goal,
-	float halflife,
-	float dt)
+		float& x,
+		float& v,
+		float x_goal,
+		float halflife,
+		float dt)
 	{
-	    float y = halflife_to_damping(halflife) / 2.0f;
-	    float j0 = x - x_goal;
-	    float j1 = v + j0*y;
-	    float eydt = fast_negexp(y*dt);
+		float y = halflife_to_damping(halflife) / 2.0f;
+		float j0 = x - x_goal;
+		float j1 = v + j0*y;
+		float eydt = fast_negexp(y*dt);
 
-	    x = eydt*(j0 + j1*dt) + x_goal;
-	    v = eydt*(v - j1*y*dt);
+		x = eydt*(j0 + j1*dt) + x_goal;
+		v = eydt*(v - j1*y*dt);
 	}
 }

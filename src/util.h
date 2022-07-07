@@ -9,7 +9,7 @@ using namespace SKSE;
 namespace Gts {
 	inline static float* g_delta_time = (float*)REL::RelocationID(523660, 410199).address();
 
-	vector<ActorHandle> find_actors();
+	vector<Actor*> find_actors();
 	float unit_to_meter(float unit);
 	float meter_to_unit(float meter);
 	void critically_damped(

@@ -116,9 +116,11 @@ namespace {
 	}
 
 	void ModTeammateScale(StaticFunctionTag*, float amt) {
-		for (auto actor_handle: find_actors()) {
-			auto actor = actor_handle.get().get();
+		for (auto actor: find_actors()) {
 			if (!actor) {
+				continue;
+			}
+			if (!actor->Is3DLoaded()) {
 				continue;
 			}
 			if (actor->IsPlayerTeammate()) {

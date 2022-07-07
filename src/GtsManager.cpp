@@ -118,8 +118,7 @@ void GtsManager::poll() {
 			return;
 		}
 		log::info("  + Walking Actors");
-		for (auto actor_handle: find_actors()) {
-			auto actor = actor_handle.get().get();
+		for (auto actor: find_actors()) {
 			if (!actor) {
 				continue;
 			}
