@@ -65,7 +65,7 @@ namespace Gts {
 						}
 					}
 				} else {
-					log::info("Disregarding version 0 cosave info.")
+					log::info("Disregarding version 0 cosave info.");
 				}
 			} else {
 				log::warn("Unknown record type in cosave.");
