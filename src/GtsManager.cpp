@@ -76,6 +76,10 @@ namespace {
 	}
 
 	void update_actor(Actor* actor) {
+		log::info("+ Update actor");
+		auto base_actor = actor->GetActorBase();
+		auto name = base_actor->GetFullName();
+		log::info("  - Name: {}", name);
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 		log::info("    + smooth_height_change");
@@ -84,6 +88,7 @@ namespace {
 		log::info("  + update_height");
 		update_height(actor, saved_data, temp_data);
 		log::info("  - update_height");
+		log::info("- Update actor");
 	}
 }
 
@@ -145,7 +150,13 @@ void GtsManager::poll() {
 		}
 		log::info("  - Walking Actors");
 		log::info("  + Update player");
-		update_actor(player_char);
+		auto player_form_id = player_char->formID;
+		Actor* player_actor = TESForm::LookupByID<Actor>(player_form_id);
+		if (player_actor) {
+			update_actor(player_actor);
+		} else {
+			log::warn("Failed to rep player as an actor");
+		}
 		log::info("  - Update player");
 	}
 	log::info("- Poll");
