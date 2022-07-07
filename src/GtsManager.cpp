@@ -46,7 +46,9 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
+		log::info("    + get_scale");
 		float scale = get_scale(actor);
+		log::info("    - get_scale");
 		float visual_scale = persi_actor_data->visual_scale;
 
 		// Is scale correct already?
@@ -115,7 +117,7 @@ void GtsManager::poll() {
 		if ((current_frame - init_delay) % step != 0) {
 			return;
 		}
-
+		log::info("  + Walking Actors");
 		for (auto actor_handle: find_actors()) {
 			auto actor = actor_handle.get().get();
 			if (!actor) {
@@ -126,9 +128,14 @@ void GtsManager::poll() {
 			}
 			auto temp_data = Transient::GetSingleton().GetActorData(actor);
 			auto saved_data = Persistent::GetSingleton().GetActorData(actor);
+			log::info("    + smooth_height_change");
 			smooth_height_change(actor, saved_data, temp_data);
+			log::info("  - smooth_height_change");
+			log::info("  + update_height");
 			update_height(actor, saved_data, temp_data);
+			log::info("  - update_height");
 		}
+		log::info("  - Walking Actors");
 
 		auto camera = PlayerCamera::GetSingleton();
 		if (camera) {
