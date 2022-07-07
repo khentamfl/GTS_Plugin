@@ -33,8 +33,12 @@ jobs:
         shell: bash
         run: |
           mkdir contrib/Distribution/Plugin || exit 1
-          cp contrib/Distribution/PluginDebug/* contrib/Distribution/Plugin
-          cp contrib/Distribution/PluginRelease/* contrib/Distribution/Plugin
+          if [ -d contrib/Distribution/PluginDebug ]; then
+            cp contrib/Distribution/PluginDebug/* contrib/Distribution/Plugin/
+          fi
+          if [ -d contrib/Distribution/PluginRelease ]; then
+            cp contrib/Distribution/PluginRelease/* contrib/Distribution/Plugin/
+          fi
       - uses: actions/upload-artifact@v2
         with:
           name: GTSPlugin
