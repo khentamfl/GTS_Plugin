@@ -27,14 +27,16 @@ jobs:
       - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
         uses: lukka/run-cmake@v10
         with:
-          configurePreset: build-debug-msvc
-          buildPreset: debug-msvc
+          configurePreset: build-release-msvc
+          buildPreset: release-msvc
       - name: Copy Plugin
         shell: bash
         run: |
           mkdir contrib/Distribution/Plugin || exit 1
           if [ -d contrib/Distribution/PluginDebug ]; then
-            cp contrib/Distribution/PluginDebug/* contrib/Distribution/Plugin/
+            if [ ! -d contrib/Distribution/PluginRelease ]; then
+              cp contrib/Distribution/PluginDebug/* contrib/Distribution/Plugin/
+            fi
           fi
           if [ -d contrib/Distribution/PluginRelease ]; then
             cp contrib/Distribution/PluginRelease/* contrib/Distribution/Plugin/
