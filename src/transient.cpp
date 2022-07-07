@@ -22,6 +22,12 @@ namespace Gts {
 			auto no_discard = this->_actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
 			// Try to add
+			if (!actor) {
+				return nullptr;
+			}
+			if (!actor->Is3DLoaded()) {
+				return nullptr;
+			}
 			TempActorData result;
 			auto bound = get_bound(actor);
 			float base_height_unit = bound->extents[2] * get_scale(actor);

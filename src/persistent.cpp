@@ -15,11 +15,14 @@ namespace Gts {
 	}
 
 	void Persistent::OnRevert(SerializationInterface*) {
+		log::info("+ Reverting cosave");
 		std::unique_lock lock(GetSingleton()._lock);
 		GetSingleton()._actor_data.clear();
+		log::info("- Reverting cosave");
 	}
 
 	void Persistent::OnGameLoaded(SerializationInterface* serde) {
+		log::info("+ Loading cosave");
 		std::uint32_t type;
 		std::uint32_t size;
 		std::uint32_t version;
@@ -64,9 +67,11 @@ namespace Gts {
 				__assume(false);
 			}
 		}
+		log::info("- Loading cosave");
 	}
 
 	void Persistent::OnGameSaved(SerializationInterface* serde) {
+		log::info("+ Saving cosave");
 		std::unique_lock lock(GetSingleton()._lock);
 
 		if (!serde->OpenRecord(ActorDataRecord, 0)) {
@@ -85,15 +90,23 @@ namespace Gts {
 			serde->WriteRecordData(&data.target_scale, sizeof(data.target_scale));
 			serde->WriteRecordData(&data.max_scale, sizeof(data.max_scale));
 		}
+		log::info("- Saving cosave");
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
+		log::info("+ Persistent::GetActorData");
 		auto key = actor;
 		ActorData* result = nullptr;
 		try {
 			result = &this->_actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
 			// Add new
+			if (!actor) {
+				return nullptr;
+			}
+			if (!actor->Is3DLoaded()) {
+				return nullptr;
+			}
 			ActorData new_data;
 			auto scale = get_scale(actor);
 			new_data.native_scale = scale;
@@ -104,6 +117,7 @@ namespace Gts {
 			this->_actor_data[key] = new_data;
 			result = &this->_actor_data.at(key);
 		}
+		log::info("- Persistent::GetActorData");
 		return result;
 	}
 }

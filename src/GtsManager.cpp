@@ -90,9 +90,10 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 
 // Poll for updates
 void GtsManager::poll() {
-    if (!this->enabled){
-        return;
-    }
+	log::info("+ Poll");
+	if (!this->enabled) {
+		return;
+	}
 	auto player_char = RE::PlayerCharacter::GetSingleton();
 	if (!player_char) {
 		return;
@@ -120,29 +121,33 @@ void GtsManager::poll() {
 			if (!actor) {
 				continue;
 			}
+			if (!actor->Is3DLoaded()) {
+				continue;
+			}
 			auto temp_data = Transient::GetSingleton().GetActorData(actor);
 			auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 			smooth_height_change(actor, saved_data, temp_data);
 			update_height(actor, saved_data, temp_data);
 		}
-        
-        auto camera = PlayerCamera::GetSingleton();
-        if (camera) {
-            log::info("Camera Position: {},{},{}", camera->pos.x,camera->pos.y,camera->pos.z);
-            auto target = camera->cameraTarget.get().get();
-            if (target) {
-                auto base_actor = target->GetActorBase();
-                auto name = base_actor->GetFullName();
-                log::info("Camera Target: {}", name);
-            }
-            auto camera_node = camera->cameraRoot.get();
-            if (camera_node) {
-                auto node_name = camera_node->name.c_str();
-                auto world = camera_node->world.translate;
-                log::info("Camera Node: {} at {},{},{}", node_name, world.x, world.y, world.z);
-            }
-        }
+
+		auto camera = PlayerCamera::GetSingleton();
+		if (camera) {
+			log::info("Camera Position: {},{},{}", camera->pos.x,camera->pos.y,camera->pos.z);
+			auto target = camera->cameraTarget.get().get();
+			if (target) {
+				auto base_actor = target->GetActorBase();
+				auto name = base_actor->GetFullName();
+				log::info("Camera Target: {}", name);
+			}
+			auto camera_node = camera->cameraRoot.get();
+			if (camera_node) {
+				auto node_name = camera_node->name.c_str();
+				auto world = camera_node->world.translate;
+				log::info("Camera Node: {} at {},{},{}", node_name, world.x, world.y, world.z);
+			}
+		}
 	}
+	log::info("- Poll");
 }
 
 BSWin32KeyboardDevice* GtsManager::get_keyboard() {
