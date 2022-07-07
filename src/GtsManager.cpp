@@ -74,6 +74,17 @@ namespace {
 			first_model->UpdateWorldData(&ctx);
 		}
 	}
+
+	void update_actor(Actor* actor) {
+		auto temp_data = Transient::GetSingleton().GetActorData(actor);
+		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
+		log::info("    + smooth_height_change");
+		smooth_height_change(actor, saved_data, temp_data);
+		log::info("  - smooth_height_change");
+		log::info("  + update_height");
+		update_height(actor, saved_data, temp_data);
+		log::info("  - update_height");
+	}
 }
 
 GtsManager& GtsManager::GetSingleton() noexcept {
@@ -130,43 +141,12 @@ void GtsManager::poll() {
 			if (!actor->Is3DLoaded()) {
 				continue;
 			}
-			auto temp_data = Transient::GetSingleton().GetActorData(actor);
-			auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-			log::info("    + smooth_height_change");
-			smooth_height_change(actor, saved_data, temp_data);
-			log::info("  - smooth_height_change");
-			log::info("  + update_height");
-			update_height(actor, saved_data, temp_data);
-			log::info("  - update_height");
+			update_actor(actor);
 		}
 		log::info("  - Walking Actors");
-
-		auto camera = PlayerCamera::GetSingleton();
-		if (camera) {
-			log::info("Camera Position: {},{},{}", camera->pos.x,camera->pos.y,camera->pos.z);
-			auto target = camera->cameraTarget.get().get();
-			if (target) {
-				auto base_actor = target->GetActorBase();
-				auto name = base_actor->GetFullName();
-				log::info("Camera Target: {}", name);
-			}
-			auto camera_node = camera->cameraRoot.get();
-			if (camera_node) {
-				auto node_name = camera_node->name.c_str();
-				auto world = camera_node->world.translate;
-				log::info("Camera Node: {} at {},{},{}", node_name, world.x, world.y, world.z);
-			}
-		}
+		log::info("  + Update player");
+		update_actor(player_char);
+		log::info("  - Update player");
 	}
 	log::info("- Poll");
-}
-
-BSWin32KeyboardDevice* GtsManager::get_keyboard() {
-	if (!this->keyboard) {
-		auto input_manager = BSInputDeviceManager::GetSingleton();
-		if (input_manager) {
-			this->keyboard = input_manager->GetKeyboard();
-		}
-	}
-	return this->keyboard;
 }

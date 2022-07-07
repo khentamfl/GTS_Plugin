@@ -27,12 +27,9 @@ namespace Gts {
 
 			atomic_ulong frame_count = atomic_int64_t(0);
 			SizeMethod size_method;
-			BSWin32KeyboardDevice* keyboard;
-            bool enabled = false;
-
+			bool enabled = false;
 
 			void poll();
-			BSWin32KeyboardDevice* get_keyboard();
 
 	};
 }
