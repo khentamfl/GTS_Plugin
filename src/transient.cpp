@@ -40,6 +40,9 @@ namespace Gts {
 			TempActorData result;
 			log::info("  - getting bound");
 			auto bound = get_bound(actor);
+            if (!bound) {
+                return nullptr;
+            }
 			log::info("  - getting scale");
 			auto scale = get_scale(actor);
 			if (scale < 0.0) {
