@@ -2,7 +2,7 @@
   <moduleName>GTS Plugin</moduleName>
   <requiredInstallFiles>
     <folder source="Config" destination="SKSE\Plugins"/>
-    <folder source="PluginRelease" destination="SKSE\Plugins" priority="0"/>
+    <folder source="Plugin" destination="SKSE\Plugins" priority="0"/>
     <file source="Papyrus\GtsPlugin.pex" destination="Scripts" priority="0"/>
     <file source="PapyrusSource\GtsPlugin.psc" destination="Source\Scripts" priority="0"/>
   </requiredInstallFiles>

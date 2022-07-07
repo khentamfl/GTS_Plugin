@@ -29,6 +29,12 @@ jobs:
         with:
           configurePreset: build-debug-msvc
           buildPreset: debug-msvc
+      - name: Copy Plugin
+        shell: bash
+        run: |
+          mkdir contrib/Distribution/Plugin || exit 1
+          cp contrib/Distribution/PluginDebug/* contrib/Distribution/Plugin
+          cp contrib/Distribution/PluginRelease/* contrib/Distribution/Plugin
       - uses: actions/upload-artifact@v2
         with:
           name: GTSPlugin
