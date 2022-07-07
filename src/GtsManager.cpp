@@ -118,7 +118,12 @@ void GtsManager::poll() {
 			return;
 		}
 		log::info("  + Walking Actors");
-		for (auto actor: find_actors()) {
+		auto actors = find_actors();
+		int i = 0;
+		int count = actors.size();
+		for (auto actor: actors) {
+			log::info("Iter {} of {}", i, count);
+			i += 1;
 			if (!actor) {
 				continue;
 			}
