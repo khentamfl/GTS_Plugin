@@ -5,32 +5,3 @@ debug:
 frame:
   initDelay: 0
   step: 0
-
-test:
-  # Test scale value all NPCs will become this, set to 0.0 to disable
-  scale: 5.0
-  # Clone each characters Bounding box in the NiNode Extra Data
-  cloneBound: false
-  # Update the bounding box in the NiNode Extra Data
-  updateModelBound: false
-  # Update the character controllers copy of the bounding box
-  updateCharControllerBound: false
-  # Update the bumper in the NiNodes
-  updateModelBumper: false
-  # Update the character controllers copy of the bumper
-  updateCharControllerBumper: false
-  # Update the characters controllers value of scale
-  updateCharControllerScale: true
-  # Run Update3D on the actor (seems to be a full reset)
-  # Set update3DModel to false as it seems to reload and undo our changes
-  update3DModel: false
-  # Run update rigid bodies on the NiNodes
-  updateRigidModel: true
-  # Run update rigid body constrains on the NiNodes
-  updateRigidConstraintsModel: true
-  # Run update world bounds on the NiNodes
-  updateWorldBound: true
-  # Reset the transform of the bhkCharacterController
-  setBhkPosition: false
-  # Scale the hkp capsules
-  scaleHkpCapsules: true
