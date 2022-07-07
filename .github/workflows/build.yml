@@ -27,8 +27,8 @@ jobs:
       - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
         uses: lukka/run-cmake@v10
         with:
-          configurePreset: build-release-msvc
-          buildPreset: release-msvc
+          configurePreset: build-debug-msvc
+          buildPreset: debug-msvc
       - uses: actions/upload-artifact@v2
         with:
           name: GTSPlugin
