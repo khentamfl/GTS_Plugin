@@ -129,6 +129,19 @@ namespace {
 			}
 		}
 	}
+
+	float GetDistanceToCamera(StaticFunctionTag*, Actor* actor) {
+		if (actor) {
+			auto camera = PlayerCamera::GetSingleton();
+			if (!camera) {
+				auto point_a = actor->GetPosition();
+				auto point_b = camera->pos;
+				auto delta = point_a - point_b;
+				return delta.Length();
+			}
+		}
+		return 3.4028237E38; // Max float
+	}
 }
 
 namespace Gts {
@@ -148,6 +161,8 @@ namespace Gts {
 		vm->RegisterFunction("GetVisualScale", PapyrusClass, GetVisualScale);
 
 		vm->RegisterFunction("ModTeammateScale", PapyrusClass, ModTeammateScale);
+
+		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
 
 		return true;
 	}

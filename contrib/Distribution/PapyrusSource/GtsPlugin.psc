@@ -53,3 +53,8 @@ Float function GetVisualScale(Actor target) global native
 ;
 ; This will mod the target scale of all teammates nearby
 function ModTeammateScale(Float amount) global native
+
+; Get Distance To Camera
+;
+; This will get the distance to the camera
+Float function GetDistanceToCamera(Actor target) global native
