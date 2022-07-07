@@ -46,12 +46,10 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		log::info("    + get_scale");
 		float scale = get_scale(actor);
 		if (scale < 0.0) {
 			return;
 		}
-		log::info("    - get_scale");
 		float visual_scale = persi_actor_data->visual_scale;
 
 		// Is scale correct already?
@@ -84,13 +82,11 @@ namespace {
 		auto name = base_actor->GetFullName();
 		log::info("  - Name: {}", name);
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
+		log::info(" - Transient Found");
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-		log::info("    + smooth_height_change");
+		log::info(" - Persistent Found");
 		smooth_height_change(actor, saved_data, temp_data);
-		log::info("  - smooth_height_change");
-		log::info("  + update_height");
 		update_height(actor, saved_data, temp_data);
-		log::info("  - update_height");
 		log::info("- Update actor");
 	}
 }
@@ -111,7 +107,6 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 
 // Poll for updates
 void GtsManager::poll() {
-	log::info("+ Poll");
 	if (!this->enabled) {
 		return;
 	}
@@ -136,12 +131,10 @@ void GtsManager::poll() {
 		if ((current_frame - init_delay) % step != 0) {
 			return;
 		}
-		log::info("  + Walking Actors");
 		auto actors = find_actors();
 		int i = 0;
 		int count = actors.size();
 		for (auto actor: actors) {
-			log::info("Iter {} of {}", i, count);
 			i += 1;
 			if (!actor) {
 				continue;
@@ -151,16 +144,10 @@ void GtsManager::poll() {
 			}
 			update_actor(actor);
 		}
-		log::info("  - Walking Actors");
-		log::info("  + Update player");
 		auto player_form_id = player_char->formID;
 		Actor* player_actor = TESForm::LookupByID<Actor>(player_form_id);
 		if (player_actor) {
 			update_actor(player_actor);
-		} else {
-			log::warn("Failed to rep player as an actor");
 		}
-		log::info("  - Update player");
 	}
-	log::info("- Poll");
 }

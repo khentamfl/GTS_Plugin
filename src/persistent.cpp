@@ -15,14 +15,11 @@ namespace Gts {
 	}
 
 	void Persistent::OnRevert(SerializationInterface*) {
-		log::info("+ Reverting cosave");
 		std::unique_lock lock(GetSingleton()._lock);
 		GetSingleton()._actor_data.clear();
-		log::info("- Reverting cosave");
 	}
 
 	void Persistent::OnGameLoaded(SerializationInterface* serde) {
-		log::info("+ Loading cosave");
 		std::uint32_t type;
 		std::uint32_t size;
 		std::uint32_t version;
@@ -72,11 +69,9 @@ namespace Gts {
 				__assume(false);
 			}
 		}
-		log::info("- Loading cosave");
 	}
 
 	void Persistent::OnGameSaved(SerializationInterface* serde) {
-		log::info("+ Saving cosave");
 		std::unique_lock lock(GetSingleton()._lock);
 
 		if (!serde->OpenRecord(ActorDataRecord, 1)) {
@@ -101,11 +96,9 @@ namespace Gts {
 			serde->WriteRecordData(&target_scale, sizeof(target_scale));
 			serde->WriteRecordData(&max_scale, sizeof(max_scale));
 		}
-		log::info("- Saving cosave");
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
-		log::info("+ Persistent::GetActorData");
 		auto key = actor;
 		ActorData* result = nullptr;
 		try {
@@ -131,7 +124,6 @@ namespace Gts {
 			this->_actor_data[key] = new_data;
 			result = &this->_actor_data.at(key);
 		}
-		log::info("- Persistent::GetActorData");
 		return result;
 	}
 }
