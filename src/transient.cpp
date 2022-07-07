@@ -30,7 +30,11 @@ namespace Gts {
 			}
 			TempActorData result;
 			auto bound = get_bound(actor);
-			float base_height_unit = bound->extents[2] * get_scale(actor);
+			auto scale = get_scale(actor);
+			if (scale < 0.0) {
+				return nullptr;
+			}
+			float base_height_unit = bound->extents[2] * scale;
 			float base_height_meters = unit_to_meter(base_height_unit);
 			result.base_height = base_height_meters;
 			this->_actor_data[key] = result;

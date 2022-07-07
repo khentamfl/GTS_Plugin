@@ -120,6 +120,9 @@ namespace Gts {
 			}
 			ActorData new_data;
 			auto scale = get_scale(actor);
+			if (scale < 0.0) {
+				return nullptr;
+			}
 			new_data.native_scale = scale;
 			new_data.visual_scale = scale;
 			new_data.visual_scale_v = 0.0;

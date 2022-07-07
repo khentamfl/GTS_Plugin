@@ -48,6 +48,9 @@ namespace {
 		}
 		log::info("    + get_scale");
 		float scale = get_scale(actor);
+		if (scale < 0.0) {
+			return;
+		}
 		log::info("    - get_scale");
 		float visual_scale = persi_actor_data->visual_scale;
 

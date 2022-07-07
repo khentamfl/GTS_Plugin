@@ -101,13 +101,13 @@ namespace Gts {
 		if (first_node) {
 			return first_node->local.scale;
 		}
-		return 0.0;
+		return -1.0;
 	}
 
 	float get_model_scale(Actor* actor) {
 		// This will set the scale of the root npc node
 		if (!actor->Is3DLoaded()) {
-			return 0.0;
+			return -1.0;
 		}
 		auto model = actor->Get3D(false);
 		if (model) {
@@ -117,7 +117,7 @@ namespace Gts {
 		if (first_model) {
 			return first_model->local.scale;
 		}
-		return 0.0;
+		return -1.0;
 	}
 
 	float get_ref_scale(Actor* actor) {
@@ -138,10 +138,22 @@ namespace Gts {
 			return get_ref_scale(actor);
 			break;
 		case SizeMethod::All:
+			float ref_scale = get_ref_scale(actor);
+			if (ref_scale < 0.0) {
+				break;
+			}
+			float mode_scale = get_model_scale(actor);
+			if (mode_scale < 0.0) {
+				break;
+			}
+			float node_scale = get_npcnode_scale(actor);
+			if (node_scale < 0.0) {
+				break;
+			}
 			return get_ref_scale(actor) * get_model_scale(actor) * get_npcnode_scale(actor);
 			break;
 		}
-		return 0.0;
+		return -1.0;
 	}
 
 	bool set_scale(Actor* actor, float scale) {
