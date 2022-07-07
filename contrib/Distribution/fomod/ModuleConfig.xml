@@ -3,9 +3,50 @@
   <requiredInstallFiles>
     <folder source="Config" destination="SKSE\Plugins"/>
     <folder source="PluginRelease" destination="SKSE\Plugins" priority="0"/>
-    <folder source="Papyrus" destination="Scripts" priority="0"/>
-    <folder source="PapyrusSource" destination="Source\Scripts" priority="0"/>
-    <folder source="esps" destination="" priority="0"/>
-    <folder source="mcm" destination="MCM\Config\GtsSizeMatters" priority="0"/>
+    <file source="Papyrus\GtsPlugin.pex" destination="Scripts" priority="0"/>
+    <file source="PapyrusSource\GtsPlugin.psc" destination="Source\Scripts" priority="0"/>
   </requiredInstallFiles>
+  <installSteps order="Explicit">
+    <installStep name="Developer Options">
+      <optionalFileGroups order="Explicit">
+        <group name="Build Type" type="SelectExactlyOne">
+          <plugins order="Explicit">
+            <plugin name="without">
+              <description>Install without the test esp.</description>
+              <conditionFlags>
+                <flag name="esp">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended"/>
+              </typeDescriptor>
+            </plugin>
+            <plugin name="with">
+              <description>Install the test esp</description>
+              <conditionFlags>
+                <flag name="esp">Off</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional"/>
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+  </installSteps>
+  <conditionalFileInstalls>
+		<patterns>
+			<pattern>
+				<dependencies operator="And">
+					<flagDependency flag="esp" value="On"/>
+				</dependencies>
+				<files>
+          <folder source="esps" destination="" priority="0"/>
+          <folder source="mcm" destination="MCM\Config\GtsSizeMatters" priority="0"/>
+          <folder source="Papyrus" destination="Scripts" priority="0"/>
+          <folder source="PapyrusSource" destination="Source\Scripts" priority="0"/>
+				</files>
+			</pattern>
+		</patterns>
+	</conditionalFileInstalls>
 </config>
