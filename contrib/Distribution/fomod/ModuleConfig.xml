@@ -7,23 +7,23 @@
     <file source="PapyrusSource\GtsPlugin.psc" destination="Source\Scripts\GtsPlugin.psc" priority="0"/>
   </requiredInstallFiles>
   <installSteps order="Explicit">
-    <installStep name="Developer Options">
+    <installStep name="Test ESP">
       <optionalFileGroups order="Explicit">
         <group name="Build Type" type="SelectExactlyOne">
           <plugins order="Explicit">
-            <plugin name="without">
+            <plugin name="Without test ESP">
               <description>Install without the test esp.</description>
               <conditionFlags>
-                <flag name="esp">On</flag>
+                <flag name="esp">Off</flag>
               </conditionFlags>
               <typeDescriptor>
                 <type name="Recommended"/>
               </typeDescriptor>
             </plugin>
-            <plugin name="with">
+            <plugin name="With test ESP">
               <description>Install the test esp</description>
               <conditionFlags>
-                <flag name="esp">Off</flag>
+                <flag name="esp">On</flag>
               </conditionFlags>
               <typeDescriptor>
                 <type name="Optional"/>
