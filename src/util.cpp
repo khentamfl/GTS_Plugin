@@ -46,7 +46,10 @@ namespace Gts {
 		}
 		auto player = PlayerCharacter::GetSingleton();
 		if (player && player->Is3DLoaded()) {
-			result.push_back(player);
+			auto player_actor = skyrim_cast<Actor*>(player);
+			if (player_actor) {
+				result.push_back(player_actor);
+			}
 		}
 		log::info("- find_actors");
 		return result;
