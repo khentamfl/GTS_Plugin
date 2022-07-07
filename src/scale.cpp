@@ -142,15 +142,15 @@ namespace Gts {
 			if (ref_scale < 0.0) {
 				break;
 			}
-			float mode_scale = get_model_scale(actor);
-			if (mode_scale < 0.0) {
+			float model_scale = get_model_scale(actor);
+			if (model_scale < 0.0) {
 				break;
 			}
 			float node_scale = get_npcnode_scale(actor);
 			if (node_scale < 0.0) {
 				break;
 			}
-			return get_ref_scale(actor) * get_model_scale(actor) * get_npcnode_scale(actor);
+			return ref_scale * model_scale * node_scale;
 			break;
 		}
 		return -1.0;
