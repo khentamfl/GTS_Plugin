@@ -3,8 +3,8 @@
   <requiredInstallFiles>
     <folder source="Config" destination="SKSE\Plugins"/>
     <folder source="Plugin" destination="SKSE\Plugins" priority="0"/>
-    <file source="Papyrus\GtsPlugin.pex" destination="Scripts" priority="0"/>
-    <file source="PapyrusSource\GtsPlugin.psc" destination="Source\Scripts" priority="0"/>
+    <file source="Papyrus\GtsPlugin.pex" destination="Scripts\GtsPlugin.pex" priority="0"/>
+    <file source="PapyrusSource\GtsPlugin.psc" destination="Source\Scripts\GtsPlugin.psc" priority="0"/>
   </requiredInstallFiles>
   <installSteps order="Explicit">
     <installStep name="Developer Options">
