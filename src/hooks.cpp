@@ -47,12 +47,26 @@ namespace Hooks
 		REL::Relocation<std::uintptr_t> PlayerCharacterVtbl{ RE::VTABLE_PlayerCharacter[0] };
 
 		_Update = PlayerCharacterVtbl.write_vfunc(0xAD, Update);
+        _UpdateAnimation = PlayerCharacterVtbl.write_vfunc(0x7D, UpdateAnimation);
 	}
 
 	void Hook_OnPlayerUpdate::Update(RE::PlayerCharacter* a_this, float a_delta) {
 		_Update(a_this, a_delta);
 
 		Gts::GtsManager::GetSingleton().poll_actor(a_this);
+	}
+    
+    void Hook_OnPlayerUpdate::UpdateAnimation(RE::PlayerCharacter* a_this, float a_delta) {
+        float anim_speed = 1.0;
+        if (GtsManager::GetSingleton().enabled) {
+            auto saved_data = Persistent::GetSingleton().GetActorData(a_this);
+            if (saved_data) {
+                if (saved_data.anim_speed > 0) {
+                    anim_speed = saved_data.anim_speed;
+                }
+            }
+        }
+		_UpdateAnimation(a_this, a_delta * anim_speed);
 	}
 
 	// Actor update
@@ -61,13 +75,26 @@ namespace Hooks
 		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
 
 		_Update = ActorVtbl.write_vfunc(0xAD, Update);
-
+        _UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
 	}
 
 	void Hook_OnActorUpdate::Update(RE::Actor* a_this, float a_delta) {
 		_Update(a_this, a_delta);
 
 		Gts::GtsManager::GetSingleton().poll_actor(a_this);
+	}
+    
+    void Hook_OnActorUpdate::UpdateAnimation(RE::Actor* a_this, float a_delta) {
+		float anim_speed = 1.0;
+        if (GtsManager::GetSingleton().enabled) {
+            auto saved_data = Persistent::GetSingleton().GetActorData(a_this);
+            if (saved_data) {
+                if (saved_data.anim_speed > 0) {
+                    anim_speed = saved_data.anim_speed;
+                }
+            }
+        }
+		_UpdateAnimation(a_this, a_delta * anim_speed);
 	}
 
 	// bhkCharProxyController

@@ -34,12 +34,24 @@ namespace {
 		}
 		return false;
 	}
+    
+    bool SetAnimSpeed(StaticFunctionTag*, Actor* actor, float animspeed) {
+		if (actor) {
+			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+    		if (actor_data) {
+    			actor_data->anim_speed = animspeed;
+                return true;
+    		}
+		}
+		return false;
+	}
 }
 
 namespace Gts {
 	bool register_papyrus(IVirtualMachine* vm) {
 		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
         vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
+        vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
 		register_papyrus_scale(vm);
 		return true;
 	}

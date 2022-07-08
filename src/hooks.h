@@ -26,6 +26,9 @@ namespace Hooks
 
 			static void Update(RE::PlayerCharacter* a_this, float a_delta);
 			static inline REL::Relocation<decltype(Update)> _Update;
+            
+            static void UpdateAnimation(RE::PlayerCharacter* a_this, float a_delta);
+            static inline REL::Relocation<decltype(UpdateAnimation)> _UpdateAnimation;
 	};
 
 	class Hook_OnActorUpdate
@@ -36,6 +39,9 @@ namespace Hooks
 
 			static void Update(RE::Actor* a_this, float a_delta);
 			static inline REL::Relocation<decltype(Update)> _Update;
+            
+            static void UpdateAnimation(RE::Actor* a_this, float a_delta);
+            static inline REL::Relocation<decltype(UpdateAnimation)> _UpdateAnimation;
 	};
 
 	class Hook_bhkCharProxyController

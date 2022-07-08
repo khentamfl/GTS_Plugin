@@ -14,6 +14,7 @@ namespace Gts {
 		float target_scale;
 		float max_scale;
         float half_life;
+        float anim_speed;
 	};
 	class Persistent {
 		public:
