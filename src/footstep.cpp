@@ -15,7 +15,7 @@ namespace Gts {
 		if (!manager) {
 			return false;
 		}
-		manager->AddEventSink(self);
+		manager->AddEventSink(this);
 		return true;
 	}
 
