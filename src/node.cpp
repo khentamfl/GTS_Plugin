@@ -141,7 +141,7 @@ namespace Gts {
 								if (hkp_rigidbody) {
 									auto shape = hkp_rigidbody->GetShape();
 									if (shape) {
-										log::info("Shape found: {} for {}", typeid(*shape).name(), currentnode->name.c_str());
+										log::trace("Shape found: {} for {}", typeid(*shape).name(), currentnode->name.c_str());
 										if (shape->type == hkpShapeType::kCapsule) {
 											const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);
 											hkTransform identity;
@@ -155,10 +155,10 @@ namespace Gts {
 											float max[4];
 											_mm_store_ps(&min[0], out.min.quad);
 											_mm_store_ps(&max[0], out.max.quad);
-											log::info(" - Current bounds: {},{},{}<{},{},{}", min[0], min[1],min[2], max[0],max[1],max[2]);
+											log::trace(" - Current bounds: {},{},{}<{},{},{}", min[0], min[1],min[2], max[0],max[1],max[2]);
 											// Here be dragons
 											hkpCapsuleShape* capsule = const_cast<hkpCapsuleShape*>(orig_capsule);
-											log::info("  - Capsule found: {}", typeid(*orig_capsule).name());
+											log::trace("  - Capsule found: {}", typeid(*orig_capsule).name());
 											float scale_factor = new_scale / prev_scale;
 											hkVector4 vec_scale = hkVector4(scale_factor);
 											capsule->vertexA = capsule->vertexA * vec_scale;
@@ -168,11 +168,11 @@ namespace Gts {
 											capsule->GetAabbImpl(identity, 1e-3, out);
 											_mm_store_ps(&min[0], out.min.quad);
 											_mm_store_ps(&max[0], out.max.quad);
-											log::info(" - New bounds: {},{},{}<{},{},{}", min[0], min[1],min[2], max[0],max[1],max[2]);
-											log::info(" - pad28: {}", orig_capsule->pad28);
-											log::info(" - pad2C: {}", orig_capsule->pad2C);
-											log::info(" - float(pad28): {}", static_cast<float>(orig_capsule->pad28));
-											log::info(" - float(pad2C): {}", static_cast<float>(orig_capsule->pad2C));
+											log::trace(" - New bounds: {},{},{}<{},{},{}", min[0], min[1],min[2], max[0],max[1],max[2]);
+											log::trace(" - pad28: {}", orig_capsule->pad28);
+											log::trace(" - pad2C: {}", orig_capsule->pad2C);
+											log::trace(" - float(pad28): {}", static_cast<float>(orig_capsule->pad28));
+											log::trace(" - float(pad2C): {}", static_cast<float>(orig_capsule->pad2C));
 
 											hkp_rigidbody->SetShape(capsule);
 										}
@@ -229,7 +229,7 @@ namespace Gts {
 				return bbx;
 			}
 		}
-        auto model_first = actor->Get3D(true);
+		auto model_first = actor->Get3D(true);
 		if (model_first) {
 			auto extra_bbx = model_first->GetExtraData("BBX");
 			if (extra_bbx) {

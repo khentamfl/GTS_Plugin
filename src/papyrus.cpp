@@ -116,6 +116,7 @@ namespace {
 	}
 
 	void ModTeammateScale(StaticFunctionTag*, float amt) {
+		log::info("+ ModTeammateScale");
 		for (auto actor: find_actors()) {
 			if (!actor) {
 				continue;
@@ -123,19 +124,23 @@ namespace {
 			if (!actor->Is3DLoaded()) {
 				continue;
 			}
+			log::info("  - ModTeammateScale For: {}", actor->GetActorBase()->GetFullName());
 			if (actor->IsPlayerTeammate()) {
+				log::info("  - Is teammate");
 				auto actor_data = Persistent::GetSingleton().GetActorData(actor);
 				if (actor_data) {
+					log::info("  - Has Data");
 					actor_data->target_scale += amt;
 				}
 			}
 		}
+		log::info("- ModTeammateScale");
 	}
 
 	float GetDistanceToCamera(StaticFunctionTag*, Actor* actor) {
 		if (actor) {
 			auto camera = PlayerCamera::GetSingleton();
-			if (!camera) {
+			if (camera) {
 				auto point_a = actor->GetPosition();
 				auto point_b = camera->pos;
 				auto delta = point_a - point_b;

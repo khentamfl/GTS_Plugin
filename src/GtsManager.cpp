@@ -77,17 +77,12 @@ namespace {
 	}
 
 	void update_actor(Actor* actor) {
-		log::info("+ Update actor");
 		auto base_actor = actor->GetActorBase();
 		auto name = base_actor->GetFullName();
-		log::info("  - Name: {}", name);
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
-		log::info(" - Transient Found");
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-		log::info(" - Persistent Found");
 		smooth_height_change(actor, saved_data, temp_data);
 		update_height(actor, saved_data, temp_data);
-		log::info("- Update actor");
 	}
 }
 
@@ -143,11 +138,6 @@ void GtsManager::poll() {
 				continue;
 			}
 			update_actor(actor);
-		}
-		auto player_form_id = player_char->formID;
-		Actor* player_actor = TESForm::LookupByID<Actor>(player_form_id);
-		if (player_actor) {
-			update_actor(player_actor);
 		}
 	}
 }

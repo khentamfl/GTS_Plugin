@@ -2,7 +2,20 @@
 	"modName": "GtsSizeMatters",
 	"displayName": "Size Matters",
 	"minMcmVersion": 9,
-	"cursorFillMode": "topToBottom",
+	"content": [
+    {
+      "text": "Size Matter!",
+      "type": "header"
+    },
+		{
+      "text": "Welcome to the Gianttess Size Matters Menu!",
+      "type": "text"
+    },
+		{
+      "text": "This is a simple test esp, that utilises the newer features in the new native plugin.",
+      "type": "text"
+    }
+	],
 	"pages": [{
 		"pageDisplayName": "Main Page",
 		"content": [{
