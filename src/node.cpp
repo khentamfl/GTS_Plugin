@@ -221,9 +221,17 @@ namespace Gts {
 
 	BSBound* get_bound(Actor* actor) {
 		// This is the bound on the NiExtraNodeData
-		auto model = actor->Get3D();
+		auto model = actor->Get3D(false);
 		if (model) {
 			auto extra_bbx = model->GetExtraData("BBX");
+			if (extra_bbx) {
+				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
+				return bbx;
+			}
+		}
+        auto model_first = actor->Get3D(true);
+		if (model_first) {
+			auto extra_bbx = model_first->GetExtraData("BBX");
 			if (extra_bbx) {
 				BSBound* bbx = static_cast<BSBound*>(extra_bbx);
 				return bbx;
