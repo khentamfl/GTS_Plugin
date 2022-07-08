@@ -108,10 +108,8 @@ namespace {
 					{
 						GtsManager::GetSingleton().enabled = true;
 						auto footmanager = FootStepManager::GetSingleton();
-						if (footmanager) {
-							if (!footmanager.RegisterSink()) {
-								log::info("Failed to register footstep event sink");
-							}
+						if (!footmanager.RegisterSink()) {
+							log::info("Failed to register footstep event sink");
 						}
 					}
 					break;
