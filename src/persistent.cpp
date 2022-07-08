@@ -26,7 +26,7 @@ namespace Gts {
 
 		while (serde->GetNextRecordInfo(type, version, size)) {
 			if (type == ActorDataRecord) {
-				if (version == 1) {
+				if (version >= 1) {
 					std::size_t count;
 					serde->ReadRecordData(&count, sizeof(count));
 					for (; count > 0; --count) {
@@ -47,6 +47,12 @@ namespace Gts {
 						serde->ReadRecordData(&target_scale, sizeof(target_scale));
 						float max_scale;
 						serde->ReadRecordData(&max_scale, sizeof(max_scale));
+                        float half_life;
+                        if (version >= 2) {
+    						serde->ReadRecordData(&half_life, sizeof(half_life));
+                        } else {
+                            half_life = 0.05;
+                        }
 						ActorData data;
 						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale);
 						data.native_scale = native_scale;
@@ -54,6 +60,7 @@ namespace Gts {
 						data.visual_scale_v = visual_scale_v;
 						data.target_scale = target_scale;
 						data.max_scale = max_scale;
+                        data.half_life = half_life;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
@@ -79,7 +86,7 @@ namespace Gts {
 	void Persistent::OnGameSaved(SerializationInterface* serde) {
 		std::unique_lock lock(GetSingleton()._lock);
 
-		if (!serde->OpenRecord(ActorDataRecord, 1)) {
+		if (!serde->OpenRecord(ActorDataRecord, 2)) {
 			log::error("Unable to open record to write cosave data.");
 			return;
 		}
@@ -93,6 +100,7 @@ namespace Gts {
 			float visual_scale_v = data.visual_scale_v;
 			float target_scale = data.target_scale;
 			float max_scale = data.max_scale;
+            float half_life = data.half_life;
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
@@ -100,6 +108,7 @@ namespace Gts {
 			serde->WriteRecordData(&visual_scale_v, sizeof(visual_scale_v));
 			serde->WriteRecordData(&target_scale, sizeof(target_scale));
 			serde->WriteRecordData(&max_scale, sizeof(max_scale));
+            serde->WriteRecordData(&half_life, sizeof(half_life));
 		}
 	}
 
@@ -129,6 +138,7 @@ namespace Gts {
 			new_data.visual_scale_v = 0.0;
 			new_data.target_scale = scale;
 			new_data.max_scale = 65535.0;
+            new_data.half_life = 0.05;
 			this->_actor_data[key] = new_data;
 			result = &this->_actor_data.at(key);
 		}

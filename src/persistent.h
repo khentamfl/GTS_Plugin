@@ -13,6 +13,7 @@ namespace Gts {
 		float visual_scale_v;
 		float target_scale;
 		float max_scale;
+        float half_life;
 	};
 	class Persistent {
 		public:

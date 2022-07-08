@@ -29,7 +29,7 @@ namespace {
 			persi_actor_data->visual_scale,
 			persi_actor_data->visual_scale_v,
 			min(persi_actor_data->target_scale, persi_actor_data->max_scale),
-			0.05,
+			persi_actor_data->half_life,
 			*g_delta_time
 			);
 	}
@@ -79,6 +79,7 @@ namespace {
 	void update_actor(Actor* actor) {
 		auto base_actor = actor->GetActorBase();
 		auto name = base_actor->GetFullName();
+        log::info("Update actor: {}", name);
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 		smooth_height_change(actor, saved_data, temp_data);
