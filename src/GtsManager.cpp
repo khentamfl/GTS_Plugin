@@ -142,3 +142,37 @@ void GtsManager::poll() {
 		}
 	}
 }
+
+void GtsManager::poll_actor(Actor* actor) {
+    if (!actor) {
+        return;
+    }
+    if (!actor->Is3DLoaded()) {
+		return;
+	}
+    auto base_actor = actor->GetActorBase();
+	auto name = base_actor->GetFullName();
+    log::info("Update actor on ActorUpdate: {}", name);
+	auto saved_data = Persistent::GetSingleton().GetActorData(actor);
+    if (!saved_data) {
+        return;
+    }
+	float scale = get_scale(actor);
+	if (scale < 0.0) {
+		return;
+	}
+	float visual_scale = saved_data->visual_scale;
+
+	// Is scale correct already?
+	if (fabs(visual_scale - scale) <= 1e-5) {
+		return;
+	}
+
+	// Is scale too small
+	if (visual_scale <= 1e-5) {
+		return;
+	}
+
+	log::info("Scale changed from {} to {}. Updating on ActorUpdate",scale, visual_scale);
+	set_scale(actor, visual_scale);
+}
