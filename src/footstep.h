@@ -7,14 +7,10 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class FootStepManager : public BSTEventSink<BGSFootstepEvent>  {
+	class FootStepManager {
 		public:
 			[[nodiscard]] static FootStepManager& GetSingleton() noexcept;
 
 			void HookProcessEvent(const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource);
-
-			BSEventNotifyControl ProcessEvent(const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) override;
-
-			bool RegisterSink();
 	};
 }

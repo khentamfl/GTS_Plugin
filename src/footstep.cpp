@@ -24,29 +24,4 @@ namespace Gts {
 		}
 		log::info("- Foot step event Hook");
 	}
-
-	bool FootStepManager::RegisterSink() {
-		auto manager = BGSFootstepManager::GetSingleton();
-		if (!manager) {
-			return false;
-		}
-		manager->AddEventSink(this);
-		return true;
-	}
-
-	BSEventNotifyControl FootStepManager::ProcessEvent(const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
-		log::info("+ Foot step event Skyrim");
-		if (a_event) {
-			auto actor = a_event->actor.get().get();
-			if (actor) {
-				auto base_actor = actor->GetActorBase();
-				log::info("  - Event for: {}", base_actor->GetFullName());
-			}
-			log::info("  - Tag: {}", a_event->tag);
-			log::info("- Foot step event Skyrim");
-		} else {
-			log::info("  - No event data supplied");
-		}
-		return BSEventNotifyControl::kContinue;
-	}
 }
