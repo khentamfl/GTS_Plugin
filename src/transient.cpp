@@ -17,7 +17,7 @@ namespace Gts {
 		if (!actor) {
 			return nullptr;
 		}
-		auto key = actor;
+		auto key = actor->formID;
 		try {
 			auto no_discard = this->_actor_data.at(key);
 		} catch (const std::out_of_range& oor) {

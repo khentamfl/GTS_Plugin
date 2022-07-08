@@ -54,9 +54,14 @@ namespace Gts {
 						data.visual_scale_v = visual_scale_v;
 						data.target_scale = target_scale;
 						data.max_scale = max_scale;
-						auto* actor = TESForm::LookupByID<Actor>(newActorFormID);
-						if (actor) {
-							GetSingleton()._actor_data.insert_or_assign(actor, data);
+						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
+						if (actor_form) {
+							Actor* actor = skyrim_cast<Actor*>(actor_form);
+							if (actor) {
+								GetSingleton()._actor_data.insert_or_assign(actor, data);
+							} else {
+								log::warn("Actor ID {:X} could not be found after loading the save.", newActorFormID);
+							}
 						} else {
 							log::warn("Actor ID {:X} could not be found after loading the save.", newActorFormID);
 						}
@@ -81,8 +86,8 @@ namespace Gts {
 
 		auto count = GetSingleton()._actor_data.size();
 		serde->WriteRecordData(&count, sizeof(count));
-		for (auto const& [actor, data] : GetSingleton()._actor_data) {
-			FormID form_id = actor->formID;
+		for (auto const& [form_id_t, data] : GetSingleton()._actor_data) {
+			FormID form_id = form_id_t;
 			float native_scale = data.native_scale;
 			float visual_scale = data.visual_scale;
 			float visual_scale_v = data.visual_scale_v;
@@ -99,7 +104,10 @@ namespace Gts {
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
-		auto key = actor;
+		if (!actor) {
+			return nullptr;
+		}
+		auto key = actor->FormID;
 		ActorData* result = nullptr;
 		try {
 			result = &this->_actor_data.at(key);

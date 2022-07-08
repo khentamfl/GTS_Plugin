@@ -26,6 +26,6 @@ namespace Gts {
 			Persistent() = default;
 
 			mutable std::mutex _lock;
-			std::unordered_map<RE::Actor*, ActorData> _actor_data;
+			std::unordered_map<FormID, ActorData> _actor_data;
 	};
 }

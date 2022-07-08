@@ -20,6 +20,6 @@ namespace Gts {
 		private:
 
 			mutable std::mutex _lock;
-			std::unordered_map<RE::Actor*, TempActorData> _actor_data;
+			std::unordered_map<FormID, TempActorData> _actor_data;
 	};
 }
