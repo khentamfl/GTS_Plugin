@@ -110,6 +110,8 @@ namespace {
 						auto footmanager = FootStepManager::GetSingleton();
 						if (!footmanager.RegisterSink()) {
 							log::info("Failed to register footstep event sink");
+						} else {
+							log::info("Footstep sink registered");
 						}
 					}
 					break;
@@ -119,6 +121,8 @@ namespace {
 						auto footmanager = FootStepManager::GetSingleton();
 						if (!footmanager.RegisterSink()) {
 							log::info("Failed to register footstep event sink");
+						} else {
+							log::info("Footstep sink registered");
 						}
 					}
 					break;
