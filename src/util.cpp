@@ -45,7 +45,7 @@ namespace Gts {
 		}
 		auto player = PlayerCharacter::GetSingleton();
 		if (player && player->Is3DLoaded()) {
-			result.push_back(player_actor);
+			result.push_back(player);
 		}
 		return result;
 	}
