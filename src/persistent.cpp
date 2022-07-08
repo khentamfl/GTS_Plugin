@@ -58,7 +58,7 @@ namespace Gts {
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
 							if (actor) {
-								GetSingleton()._actor_data.insert_or_assign(actor, data);
+								GetSingleton()._actor_data.insert_or_assign(newActorFormID, data);
 							} else {
 								log::warn("Actor ID {:X} could not be found after loading the save.", newActorFormID);
 							}
@@ -107,7 +107,7 @@ namespace Gts {
 		if (!actor) {
 			return nullptr;
 		}
-		auto key = actor->FormID;
+		auto key = actor->formID;
 		ActorData* result = nullptr;
 		try {
 			result = &this->_actor_data.at(key);
