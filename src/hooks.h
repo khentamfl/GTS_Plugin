@@ -84,7 +84,7 @@ namespace Hooks
 		private:
 
 			static BSEventNotifyControl ProcessEvent(BGSImpactManager* a_this, const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource);
-			static inline REL::Relocation<decltype(BSEventNotifyControl)> _ProcessEvent;
+			static inline REL::Relocation<decltype(ProcessEvent)> _ProcessEvent;
 	};
 
 

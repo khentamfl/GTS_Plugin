@@ -10,7 +10,7 @@ namespace Gts {
 		return instance;
 	}
 
-	void HookProcessEvent(const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
+	void FootStepManager::HookProcessEvent(const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
 		log::info("+ Foot step event");
 		auto actor = a_event->actor.get().get();
 		if (actor) {

@@ -165,11 +165,11 @@ namespace Hooks
 		logger::info("Hooking Hook_BGSImpactManager");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_BGSImpactManager[0] };
 
-		_ProcessEvent = Vtbl.write_vfunc(0x01, GetPositionImpl);
+		_ProcessEvent = Vtbl.write_vfunc(0x01, ProcessEvent);
 	}
 
 	BSEventNotifyControl Hook_BGSImpactManager::ProcessEvent(BGSImpactManager* a_this, const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
-		FootStepManager::GetSingleton().HookProcessEvent(a_event, a_eventSource);
+		Gts::FootStepManager::GetSingleton().HookProcessEvent(a_event, a_eventSource);
 		auto result = _ProcessEvent(a_this, a_event, a_eventSource);
 		return result;
 	}
