@@ -1,6 +1,6 @@
-
 #include "hooks.h"
 #include "GtsManager.h"
+#include "footstep.h"
 
 using namespace RE;
 
@@ -158,6 +158,20 @@ namespace Hooks
 		logger::info("pos={},{},{},{}", col_a[1], col_b[1], col_c[1], col_d[1]);
 		logger::info("pos={},{},{},{}", col_a[2], col_b[2], col_c[2], col_d[2]);
 		logger::info("pos={},{},{},{}", col_a[3], col_b[3], col_c[3], col_d[3]);
+	}
+
+	// BGSImpactManager
+	void Hook_BGSImpactManager::Hook() {
+		logger::info("Hooking Hook_BGSImpactManager");
+		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_BGSImpactManager[0] };
+
+		_ProcessEvent = Vtbl.write_vfunc(0x01, GetPositionImpl);
+	}
+
+	BSEventNotifyControl Hook_BGSImpactManager::ProcessEvent(BGSImpactManager* a_this, const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
+		FootStepManager::GetSingleton().HookProcessEvent(a_event, a_eventSource);
+		auto result = _ProcessEvent(a_this, a_event, a_eventSource);
+		return result;
 	}
 
 }

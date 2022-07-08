@@ -25,6 +25,7 @@ file(GLOB headers
 
 file(GLOB sources
         src/*.cpp
+        src/*/*.cpp
 
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 

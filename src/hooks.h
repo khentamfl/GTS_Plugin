@@ -1,6 +1,6 @@
 #pragma once
 // Hooks into skyrim engine
-// 
+//
 using namespace RE;
 using namespace SKSE;
 
@@ -75,6 +75,16 @@ namespace Hooks
 
 			static void  SetTransformImpl(bhkCharacterController* a_this, const hkTransform& a_tranform);
 			static inline REL::Relocation<decltype(SetTransformImpl)> _SetTransformImpl;
+	};
+
+	class Hook_BGSImpactManager
+	{
+		public:
+			static void Hook();
+		private:
+
+			static BSEventNotifyControl ProcessEvent(BGSImpactManager* a_this, const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource);
+			static inline REL::Relocation<decltype(BSEventNotifyControl)> _ProcessEvent;
 	};
 
 

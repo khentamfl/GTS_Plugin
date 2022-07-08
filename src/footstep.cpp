@@ -10,16 +10,7 @@ namespace Gts {
 		return instance;
 	}
 
-	bool FootStepManager::RegisterSink() {
-		auto manager = BGSFootstepManager::GetSingleton();
-		if (!manager) {
-			return false;
-		}
-		manager->AddEventSink(this);
-		return true;
-	}
-
-	BSEventNotifyControl ProcessEvent(const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
+	void HookProcessEvent(const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
 		log::info("+ Foot step event");
 		auto actor = a_event->actor.get().get();
 		if (actor) {
@@ -28,7 +19,5 @@ namespace Gts {
 		}
 		log::info("  - Tag: {}", a_event->tag);
 		log::info("- Foot step event");
-
-		return BSEventNotifyControl::kContinue;
 	}
 }
