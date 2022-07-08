@@ -1,5 +1,6 @@
 #include "hooks.h"
 #include "GtsManager.h"
+#include "persistent.h"
 #include "footstep.h"
 
 using namespace RE;
