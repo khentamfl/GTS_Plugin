@@ -19,6 +19,7 @@ namespace Hooks
 		// Hook_bhkCharProxyController::Hook();
 		// Hook_hkpCharacterProxyListener::Hook();
 		// Hook_bhkCharacterController::Hook();
+		Hook_BGSImpactManager::Hook();
 
 		logger::info("Gts finished applying hooks...");
 
