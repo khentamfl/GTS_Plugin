@@ -62,8 +62,8 @@ namespace Hooks
         if (Gts::GtsManager::GetSingleton().enabled) {
             auto saved_data = Gts::Persistent::GetSingleton().GetActorData(a_this);
             if (saved_data) {
-                if (saved_data.anim_speed > 0) {
-                    anim_speed = saved_data.anim_speed;
+                if (saved_data->anim_speed > 0.0) {
+                    anim_speed = saved_data->anim_speed;
                 }
             }
         }
@@ -90,8 +90,8 @@ namespace Hooks
         if (Gts::GtsManager::GetSingleton().enabled) {
             auto saved_data = Gts::Persistent::GetSingleton().GetActorData(a_this);
             if (saved_data) {
-                if (saved_data.anim_speed > 0) {
-                    anim_speed = saved_data.anim_speed;
+                if (saved_data->anim_speed > 0.0) {
+                    anim_speed = saved_data->anim_speed;
                 }
             }
         }
