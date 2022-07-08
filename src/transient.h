@@ -9,6 +9,7 @@ using namespace RE;
 namespace Gts {
 	struct TempActorData {
 		float base_height;
+		float base_volume;
 	};
 
 	class Transient {

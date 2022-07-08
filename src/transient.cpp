@@ -39,7 +39,13 @@ namespace Gts {
 			}
 			float base_height_unit = bound->extents[2] * scale;
 			float base_height_meters = unit_to_meter(base_height_unit);
+
+			// Volume scales cubically
+			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
+			float base_volume_meters = unit_to_meter(base_volume);
+
 			result.base_height = base_height_meters;
+			result.base_volume = base_volume_meters;
 			this->_actor_data[key] = result;
 		}
 		return &this->_actor_data[key];
