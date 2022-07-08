@@ -105,18 +105,20 @@ namespace {
 				// Skyrim game events.
 				case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
 					// Data will be a boolean indicating whether the load was successful.
-					GtsManager::GetSingleton().enabled = true;
-					auto footmanager = FootStepManager::GetSingleton();
-					if (footmanager) {
-						if (!footmanager.RegisterSink()) {
-							log::info("Failed to register footstep event sink");
+					{
+						GtsManager::GetSingleton().enabled = true;
+						auto footmanager = FootStepManager::GetSingleton();
+						if (footmanager) {
+							if (!footmanager.RegisterSink()) {
+								log::info("Failed to register footstep event sink");
+							}
 						}
 					}
 					break;
 				case MessagingInterface::kNewGame: // Player starts a new game from main menu.
-					GtsManager::GetSingleton().enabled = true;
-					auto footmanager = FootStepManager::GetSingleton();
-					if (footmanager) {
+					{
+						GtsManager::GetSingleton().enabled = true;
+						auto footmanager = FootStepManager::GetSingleton();
 						if (!footmanager.RegisterSink()) {
 							log::info("Failed to register footstep event sink");
 						}
