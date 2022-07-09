@@ -4,9 +4,9 @@
 			"id": "grow_player_hk",
 			"desc": "Grow the player",
 			"action": {
-				"type": "CallGlobalFunction",
+				"type": "CallFunction",
 				"form": "GtsSizeMatters.esp|5900",
-				"script": "GtsSM_HotKeys",
+				"scriptName": "GtsSM_HotKeys",
 				"function": "GrowPlayer",
 				"params": []
 			}
@@ -15,9 +15,9 @@
 			"id": "shrink_player_hk",
 			"desc": "Shrink the player",
 			"action": {
-				"type": "CallGlobalFunction",
+				"type": "CallFunction",
 				"form": "GtsSizeMatters.esp|5900",
-				"script": "GtsSM_HotKeys",
+				"scriptName": "GtsSM_HotKeys",
 				"function": "ShrinkPlayer",
 				"params": []
 			}
@@ -26,9 +26,9 @@
 			"id": "grow_follower_hk",
 			"desc": "Grow all followers",
 			"action": {
-				"type": "CallGlobalFunction",
+				"type": "CallFunction",
 				"form": "GtsSizeMatters.esp|5900",
-				"script": "GtsSM_HotKeys",
+				"scriptName": "GtsSM_HotKeys",
 				"function": "GrowFollowers",
 				"params": []
 			}
@@ -37,9 +37,9 @@
 			"id": "shrink_follower_hk",
 			"desc": "Shrink all followers",
 			"action": {
-				"type": "CallGlobalFunction",
+				"type": "CallFunction",
 				"form": "GtsSizeMatters.esp|5900",
-				"script": "GtsSM_HotKeys",
+				"scriptName": "GtsSM_HotKeys",
 				"function": "ShrinkFollowers",
 				"params": []
 			}
