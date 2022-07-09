@@ -65,13 +65,17 @@ namespace {
 	}
 
 	void ModTargetScale(StaticFunctionTag*, Actor* actor, float amt) {
+		log::info("+ ModTargetScale");
 		if (!actor) {
+			log::info("  - Actor invalid");
 			return;
 		}
 		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
 		if (actor_data) {
+			log::info("  - Data valid");
 			actor_data->target_scale += amt;
 		}
+		log::info("- ModTargetScale");
 	}
 
 	void SetMaxScale(StaticFunctionTag*, Actor* actor, float scale) {
@@ -117,7 +121,6 @@ namespace {
 	}
 
 	void ModTeammateScale(StaticFunctionTag*, float amt) {
-		log::info("+ ModTeammateScale");
 		for (auto actor: find_actors()) {
 			if (!actor) {
 				continue;
@@ -125,17 +128,13 @@ namespace {
 			if (!actor->Is3DLoaded()) {
 				continue;
 			}
-			log::info("  - ModTeammateScale For: {}", actor->GetActorBase()->GetFullName());
 			if (actor->IsPlayerTeammate()) {
-				log::info("  - Is teammate");
 				auto actor_data = Persistent::GetSingleton().GetActorData(actor);
 				if (actor_data) {
-					log::info("  - Has Data");
 					actor_data->target_scale += amt;
 				}
 			}
 		}
-		log::info("- ModTeammateScale");
 	}
 }
 
