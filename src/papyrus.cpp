@@ -3,6 +3,7 @@
 #include "persistent.h"
 #include "GtsManager.h"
 #include "papyrus/scale.h"
+#include "papyrus/events.h"
 
 using namespace SKSE;
 using namespace Gts;
@@ -23,25 +24,25 @@ namespace {
 		}
 		return 3.4028237E38; // Max float
 	}
-    
-    bool SetGrowthHalfLife(StaticFunctionTag*, Actor* actor, float halflife) {
+
+	bool SetGrowthHalfLife(StaticFunctionTag*, Actor* actor, float halflife) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-    		if (actor_data) {
-    			actor_data->half_life = halflife;
-                return true;
-    		}
+			if (actor_data) {
+				actor_data->half_life = halflife;
+				return true;
+			}
 		}
 		return false;
 	}
-    
-    bool SetAnimSpeed(StaticFunctionTag*, Actor* actor, float animspeed) {
+
+	bool SetAnimSpeed(StaticFunctionTag*, Actor* actor, float animspeed) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-    		if (actor_data) {
-    			actor_data->anim_speed = animspeed;
-                return true;
-    		}
+			if (actor_data) {
+				actor_data->anim_speed = animspeed;
+				return true;
+			}
 		}
 		return false;
 	}
@@ -50,9 +51,10 @@ namespace {
 namespace Gts {
 	bool register_papyrus(IVirtualMachine* vm) {
 		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
-        vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
-        vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
+		vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
+		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
 		register_papyrus_scale(vm);
+		register_papyrus_events(vm);
 		return true;
 	}
 }

@@ -1,5 +1,6 @@
 #include "footstep.h"
 #include "scale.h"
+#include "modevent.h"
 
 using namespace SKSE;
 using namespace RE;
@@ -19,6 +20,9 @@ namespace Gts {
 				log::info("  - Event for: {}", base_actor->GetFullName());
 			}
 			log::info("  - Tag: {}", a_event->tag);
+			auto event_manager = ModEventManager::GetSingleton();
+			std::string tag = a_event->tag.c_str();
+			event_manager.m_onfootstep.QueueEvent(actor,tag);
 		} else {
 			log::info("  - No event data supplied");
 		}
