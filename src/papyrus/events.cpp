@@ -11,10 +11,16 @@ namespace {
 	constexpr std::string_view PapyrusClass = "GtsEvent";
 
 	void RegisterOnFootstep(StaticFunctionTag*, TESForm* form) {
+		if (!form) {
+			return;
+		}
 		auto event_manager = ModEventManager::GetSingleton();
 		event_manager.m_onfootstep.Register(form);
 	}
 	void UnRegisterOnFootstep(StaticFunctionTag*, TESForm* form) {
+		if (!form) {
+			return;
+		}
 		auto event_manager = ModEventManager::GetSingleton();
 		event_manager.m_onfootstep.Unregister(form);
 	}

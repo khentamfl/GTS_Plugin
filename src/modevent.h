@@ -9,9 +9,11 @@ using namespace RE;
 namespace Gts {
 	class ModEventManager {
 		public:
+			using OnFootstep = RegistrationSet<Actor*, std::string>;
+
 			[[nodiscard]] static ModEventManager& GetSingleton() noexcept;
 
-			RegistrationSet<Actor*, std::string> m_onfootstep;
+			OnFootstep m_onfootstep;
 		private:
 			ModEventManager();
 	};

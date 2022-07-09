@@ -77,8 +77,6 @@ namespace {
 	}
 
 	void update_actor(Actor* actor) {
-		auto base_actor = actor->GetActorBase();
-		auto name = base_actor->GetFullName();
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 		smooth_height_change(actor, saved_data, temp_data);
@@ -149,8 +147,6 @@ void GtsManager::poll_actor(Actor* actor) {
 	if (!actor->Is3DLoaded()) {
 		return;
 	}
-	auto base_actor = actor->GetActorBase();
-	auto name = base_actor->GetFullName();
 	auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 	if (!saved_data) {
 		return;
