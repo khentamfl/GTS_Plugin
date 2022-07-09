@@ -4,6 +4,10 @@
 #include "GtsManager.h"
 #include "papyrus/scale.h"
 #include "papyrus/events.h"
+#include <math.h>
+#include <sstream>
+#include <iomanip>
+
 
 using namespace SKSE;
 using namespace Gts;
@@ -46,6 +50,23 @@ namespace {
 		}
 		return false;
 	}
+
+	// From https://stackoverflow.com/questions/17211122/formatting-n-significant-digits-in-c-without-scientific-notation
+	std::string format(double f, int n)
+	{
+		if (f == 0) {
+			return "0";
+		}
+		int d = (int)::ceil(::log10(f < 0 ? -f : f)); /*digits before decimal point*/
+		double order = ::pow(10., n - d);
+		std::stringstream ss;
+		ss << std::fixed << std::setprecision(std::max(n - d, 0)) << round(f * order) / order;
+		return ss.str();
+	}
+
+	std::string SigFig(StaticFunctionTag*, Float number, int sf) {
+		return format(number, sf);
+	}
 }
 
 namespace Gts {
@@ -53,6 +74,7 @@ namespace Gts {
 		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
 		vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
+		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
 		register_papyrus_scale(vm);
 		register_papyrus_events(vm);
 		return true;

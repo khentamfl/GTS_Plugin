@@ -16,3 +16,12 @@ Bool function SetGrowthHalfLife(Actor target, Float halflife) global native
 ;
 ; Value is saved into the cosave
 Bool function SetAnimSpeed(Actor target, Float animspeed) global native
+
+; Format a number to a string with specified significant figures
+;
+; Uses sprintf
+;
+; e.g.
+; String formatted_number = SigFig(10.2323, 3)
+; ; formatted_number should now be 10.2
+String function SigFig(Float number, Int sf) global native
