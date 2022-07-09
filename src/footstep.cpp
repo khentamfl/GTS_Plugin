@@ -19,10 +19,12 @@ namespace Gts {
 				auto base_actor = actor->GetActorBase();
 				log::info("  - Event for: {}", base_actor->GetFullName());
 			}
-			log::info("  - Tag: {}", a_event->tag);
-			auto event_manager = ModEventManager::GetSingleton();
 			std::string tag = a_event->tag.c_str();
+			log::info("  - Tag: {}", tag);
+			auto event_manager = ModEventManager::GetSingleton();
+			log::info("Queueing event");
 			event_manager.m_onfootstep.QueueEvent(actor,tag);
+			log::info("Queued event");
 		} else {
 			log::info("  - No event data supplied");
 		}
