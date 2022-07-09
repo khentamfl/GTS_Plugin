@@ -89,7 +89,6 @@ namespace {
 	void InitializeMessaging()
 	{
 		if (!GetMessagingInterface()->RegisterListener([](MessagingInterface::Message *message) {
-			log::info("+ GetMessagingInterface");
 			switch (message->type)
 			{
 				// Skyrim lifecycle events.
@@ -123,7 +122,6 @@ namespace {
 				case MessagingInterface::kDeleteGame: // The player deleted a saved game from within the load menu.
 					break;
 			}
-			log::info("- GetMessagingInterface");
 		}))
 		{
 			stl::report_and_fail("Unable to register message listener.");
