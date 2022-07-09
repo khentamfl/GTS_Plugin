@@ -23,7 +23,7 @@ namespace Gts {
 			log::info("  - Tag: {}", tag);
 			auto event_manager = ModEventManager::GetSingleton();
 			log::info("Queueing event");
-			event_manager.m_onfootstep.QueueEvent(actor,tag);
+			event_manager.m_onfootstep.SendEvent(actor,tag);
 			log::info("Queued event");
 		} else {
 			log::info("  - No event data supplied");
