@@ -28,7 +28,7 @@ namespace Gts {
 			ActorData* GetActorData(Actor* actor);
 
 			bool highheel_correction = true;
-			SizeMethod scale_method = SizeMethod::Model;
+			SizeMethod scale_method = SizeMethod::ModelScale;
 		private:
 			Persistent() = default;
 
