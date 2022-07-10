@@ -75,7 +75,7 @@ namespace {
 		}
 		return result;
 	}
-	bool ModModelScale(StaticFunctionTag*, Actor* actor, float amt) {
+	bool ModNodeScale(StaticFunctionTag*, Actor* actor, float amt) {
 		bool result = false;
 		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
 		if (actor_data) {
@@ -124,7 +124,17 @@ namespace {
 
 	// Configurable scale
 	void SetScaleMethod(StaticFunctionTag*, int size_method) {
-		GtsManager::GetSingleton().size_method = size_method;
+		switch (size_method) {
+		case 0:
+			GtsManager::GetSingleton().size_method = SizeMethod::ModelScale;
+			break;
+		case 1:
+			GtsManager::GetSingleton().size_method = SizeMethod::RootScale;
+			break;
+		case 2:
+			GtsManager::GetSingleton().size_method = SizeMethod::RefScale;
+			break;
+		}
 	}
 	int GetScaleMethod(StaticFunctionTag*, SizeMethod size_method) {
 		return GtsManager::GetSingleton().size_method;
