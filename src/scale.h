@@ -11,7 +11,6 @@ namespace Gts {
 		ModelScale = 0,
 		RootScale = 1,
 		RefScale = 2,
-		All = 3,
 	};
 
 	void set_ref_scale(Actor* actor, float target_scale);

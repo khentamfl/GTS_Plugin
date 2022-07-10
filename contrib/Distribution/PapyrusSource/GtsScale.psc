@@ -9,12 +9,61 @@ Float function GetModelScale(Actor target) global native
 
 Bool function ModModelScale(Actor target, Float amount) global native
 
+; Npc Node scale
+;
+; These directly and immediatly set the scale of the NPC Root node
+Bool function SetNodeScale(Actor target, Float scale) global native
+
+Float function GetNodeScale(Actor target) global native
+
+Bool function ModNodeScale(Actor target, Float amount) global native
+
+; Ref scale
+;
+; These directly and immediatly set the scale of the form
+Bool function SetRefScale(Actor target, Float scale) global native
+
+Float function GetRefScale(Actor target) global native
+
+Bool function ModRefScale(Actor target, Float amount) global native
+
+; All scale
+;
+; These directly and immediatly set the combined scale
+;
+; Get scale works as:
+;   GetRefScale * GetNodeScale * GetModelScale
+;
+; Set scale works by making
+;   GetRefScale * GetNodeScale * GetModelScale = value
+;
+; To do this it adjusts one of the scales (Model scale by default)
+;
+; You can control which scale is adjusted using
+; SetScaleMethod
+Bool function SetScale(Actor target, Float scale) global native
+
+Float function GetScale(Actor target) global native
+
+Bool function ModScale(Actor target, Float amount) global native
+
+; Set the method used in All SetScale
+; 0 - Model Scale
+; 1 - Npc Node Scale
+; 2 - Ref Scale
+Function SetScaleMethod(Int method)  global native
+
+Function GetScaleMethod()  global native
+
 
 ; Target Scale
 ;
 ; These will be the target scale which is achieved on the main loop over the
 ; next few frames gradually
 ; Use this to alter the current scale
+;
+; It works using the SetScale method
+;   You can adjust which scale is adjusted using SetScaleMethod
 ;
 ; Target scale is saved into the COSAVE and will persist
 function SetTargetScale(Actor target, Float scale) global native

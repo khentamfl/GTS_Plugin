@@ -30,7 +30,7 @@ namespace Gts {
 			bool enabled = false;
 
 			void poll();
-            void poll_actor(Actor* actor);
+			void poll_actor(Actor* actor);
 
 	};
 }

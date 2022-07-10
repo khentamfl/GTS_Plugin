@@ -125,51 +125,33 @@ namespace Gts {
 	}
 
 	float get_scale(Actor* actor) {
-		auto& size_method = GtsManager::GetSingleton().size_method;
-		switch (size_method) {
-		case SizeMethod::ModelScale:
-			return get_model_scale(actor);
-			break;
-		case SizeMethod::RootScale:
-			return get_npcnode_scale(actor);
-			break;
-		case SizeMethod::RefScale:
-			return get_ref_scale(actor);
-			break;
-		case SizeMethod::All:
-			float ref_scale = get_ref_scale(actor);
-			if (ref_scale < 0.0) {
-				break;
-			}
-			float model_scale = get_model_scale(actor);
-			if (model_scale < 0.0) {
-				break;
-			}
-			float node_scale = get_npcnode_scale(actor);
-			if (node_scale < 0.0) {
-				break;
-			}
-			return ref_scale * model_scale * node_scale;
-			break;
+		float ref_scale = get_ref_scale(actor);
+		if (ref_scale < 0.0) {
+			return -1.0;
 		}
-		return -1.0;
+		float model_scale = get_model_scale(actor);
+		if (model_scale < 0.0) {
+			return -1.0;
+		}
+		float node_scale = get_npcnode_scale(actor);
+		if (node_scale < 0.0) {
+			return -1.0;
+		}
+		return ref_scale * model_scale * node_scale;
 	}
 
 	bool set_scale(Actor* actor, float scale) {
 		auto& size_method = GtsManager::GetSingleton().size_method;
 		switch (size_method) {
 		case SizeMethod::ModelScale:
-			return set_model_scale(actor, scale);
+			return set_model_scale(actor, scale/(get_ref_scale(actor)*get_npcnode_scale(actor)));
 			break;
 		case SizeMethod::RootScale:
-			return set_npcnode_scale(actor, scale);
+			return set_npcnode_scale(actor, scale/(get_ref_scale(actor)*get_model_scale(actor)));
 			break;
 		case SizeMethod::RefScale:
-			get_ref_scale(actor);
+			set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
 			return true;
-			break;
-		case SizeMethod::All:
-			return set_model_scale(actor, scale/(get_ref_scale(actor)*get_npcnode_scale(actor)));
 			break;
 		}
 		return false;
