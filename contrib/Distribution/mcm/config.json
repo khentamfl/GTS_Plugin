@@ -46,6 +46,16 @@
 			    "function": "SetScaleMethod",
 			    "params": ["{value}"]
 			  }
+			},
+			{
+			  "text": "Enable High Heel Correction",
+			  "type": "toggle",
+				"action": {
+			    "type": "CallGlobalFunction",
+			    "script": "GtsPlugin",
+			    "function": "EnableHighHeelCorrection",
+			    "params": ["{value}"]
+			  }
 			}
 		]
 	}]
