@@ -1,4 +1,5 @@
 #include "persistent.h"
+#include "GtsManager.h"
 #include "scale.h"
 
 using namespace SKSE;
@@ -6,6 +7,7 @@ using namespace RE;
 
 namespace {
 	inline const auto ActorDataRecord = _byteswap_ulong('ACTD');
+	inline const auto ScaleMethodRecord = _byteswap_ulong('SCMD');
 }
 
 namespace Gts {
@@ -47,18 +49,18 @@ namespace Gts {
 						serde->ReadRecordData(&target_scale, sizeof(target_scale));
 						float max_scale;
 						serde->ReadRecordData(&max_scale, sizeof(max_scale));
-                        float half_life;
-                        if (version >= 2) {
-    						serde->ReadRecordData(&half_life, sizeof(half_life));
-                        } else {
-                            half_life = 0.05;
-                        }
-                        float anim_speed;
-                        if (version >= 3) {
-    						serde->ReadRecordData(&anim_speed, sizeof(anim_speed));
-                        } else {
-                            anim_speed = 1.0;
-                        }
+						float half_life;
+						if (version >= 2) {
+							serde->ReadRecordData(&half_life, sizeof(half_life));
+						} else {
+							half_life = 0.05;
+						}
+						float anim_speed;
+						if (version >= 3) {
+							serde->ReadRecordData(&anim_speed, sizeof(anim_speed));
+						} else {
+							anim_speed = 1.0;
+						}
 						ActorData data;
 						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale);
 						data.native_scale = native_scale;
@@ -66,8 +68,8 @@ namespace Gts {
 						data.visual_scale_v = visual_scale_v;
 						data.target_scale = target_scale;
 						data.max_scale = max_scale;
-                        data.half_life = half_life;
-                        data.anim_speed = anim_speed;
+						data.half_life = half_life;
+						data.anim_speed = anim_speed;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
@@ -83,6 +85,20 @@ namespace Gts {
 				} else {
 					log::info("Disregarding version 0 cosave info.");
 				}
+			} else if (type == ScaleMethodRecord) {
+				int size_method;
+				serde->ReadRecordData(&size_method, sizeof(size_method));
+				switch (size_method) {
+				case 0:
+					GtsManager::GetSingleton().size_method = SizeMethod::ModelScale;
+					break;
+				case 1:
+					GtsManager::GetSingleton().size_method = SizeMethod::RootScale;
+					break;
+				case 2:
+					GtsManager::GetSingleton().size_method = SizeMethod::RefScale;
+					break;
+				}
 			} else {
 				log::warn("Unknown record type in cosave.");
 				__assume(false);
@@ -94,7 +110,7 @@ namespace Gts {
 		std::unique_lock lock(GetSingleton()._lock);
 
 		if (!serde->OpenRecord(ActorDataRecord, 3)) {
-			log::error("Unable to open record to write cosave data.");
+			log::error("Unable to open actor data record to write cosave data.");
 			return;
 		}
 
@@ -107,8 +123,8 @@ namespace Gts {
 			float visual_scale_v = data.visual_scale_v;
 			float target_scale = data.target_scale;
 			float max_scale = data.max_scale;
-            float half_life = data.half_life;
-            float anim_speed = data.anim_speed;
+			float half_life = data.half_life;
+			float anim_speed = data.anim_speed;
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
@@ -116,9 +132,17 @@ namespace Gts {
 			serde->WriteRecordData(&visual_scale_v, sizeof(visual_scale_v));
 			serde->WriteRecordData(&target_scale, sizeof(target_scale));
 			serde->WriteRecordData(&max_scale, sizeof(max_scale));
-            serde->WriteRecordData(&half_life, sizeof(half_life));
-            serde->WriteRecordData(&anim_speed, sizeof(anim_speed));
+			serde->WriteRecordData(&half_life, sizeof(half_life));
+			serde->WriteRecordData(&anim_speed, sizeof(anim_speed));
 		}
+
+		if (!serde->OpenRecord(ScaleMethodRecord, 0)) {
+			log::error("Unable to open scale method record to write cosave data.");
+			return;
+		}
+
+		int size_method = GtsManager::GetSingleton().size_method;
+		serde->WriteRecordData(&size_method, sizeof(size_method));
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
@@ -147,8 +171,8 @@ namespace Gts {
 			new_data.visual_scale_v = 0.0;
 			new_data.target_scale = scale;
 			new_data.max_scale = 65535.0;
-            new_data.half_life = 0.05;
-            new_data.anim_speed = 1.0;
+			new_data.half_life = 0.05;
+			new_data.anim_speed = 1.0;
 			this->_actor_data[key] = new_data;
 			result = &this->_actor_data.at(key);
 		}
