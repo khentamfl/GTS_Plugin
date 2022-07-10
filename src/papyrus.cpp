@@ -44,7 +44,7 @@ namespace {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
 			if (actor_data) {
-				return actor_data->half_life
+				return actor_data->half_life;
 			}
 		}
 		return 0.05;
