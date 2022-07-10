@@ -20,7 +20,7 @@ namespace {
 		if (!npc_node) {
 			return 0.0;
 		}
-		return npc_node.local.translate.z;
+		return npc_node->local.translate.z;
 	}
 }
 
@@ -50,13 +50,13 @@ namespace Gts {
 		new_hh -= base_heel;
 		// Now to set it for third person
 		std::string node_name = "NPC Root [Root]";
-		auto npc_root_node = find_node(actor, std::string(node_name), false);
+		auto npc_root_node = find_node(actor, node_name, false);
 		if (npc_root_node) {
-			npc_root_node.local.translate.z = new_hh;
+			npc_root_node->local.translate.z = new_hh;
 		}
-		auto npc_root_node_fp = find_node(actor, std::string(node_name), true);
+		auto npc_root_node_fp = find_node(actor, node_name, true);
 		if (npc_root_node_fp) {
-			npc_root_node_fp.local.translate.z = new_hh;
+			npc_root_node_fp->local.translate.z = new_hh;
 		}
 	}
 }
