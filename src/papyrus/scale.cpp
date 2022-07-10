@@ -75,18 +75,6 @@ namespace {
 		}
 		return result;
 	}
-	bool ModNodeScale(StaticFunctionTag*, Actor* actor, float amt) {
-		bool result = false;
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		if (actor_data) {
-			auto scale = get_model_scale(actor) + amt;
-			result = set_model_scale(actor, scale);
-			actor_data->visual_scale = scale;
-			actor_data->visual_scale_v = 0.0;
-			actor_data->target_scale = scale;
-		}
-		return result;
-	}
 
 	// Ref scale
 	bool SetRefScale(StaticFunctionTag*, Actor* actor, float scale) {
