@@ -31,6 +31,21 @@
 				"text": "Shrink Followers",
 				"type": "keymap",
 				"help": "Shrinks all followers using the plugin."
+			},
+			{
+			  "text": "Set Scale Method",
+			  "type": "enum",
+			  "help": "The method used for adjusting scales.",
+			  "valueOptions": {
+			    "options": ["Model", "NPC Root Node", "Ref Scale"],
+			    "shortNames": ["0", "1", "2"]
+			  },
+				"action": {
+			    "type": "CallGlobalFunction",
+			    "script": "GtsScale",
+			    "function": "SetScaleMethod",
+			    "params": ["{value}"]
+			  }
 			}
 		]
 	}]

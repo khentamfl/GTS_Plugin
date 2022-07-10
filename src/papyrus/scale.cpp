@@ -114,12 +114,15 @@ namespace {
 	void SetScaleMethod(StaticFunctionTag*, int size_method) {
 		switch (size_method) {
 		case 0:
+			log::info("Scale method set to Model");
 			GtsManager::GetSingleton().size_method = SizeMethod::ModelScale;
 			break;
 		case 1:
+			log::info("Scale method set to Root");
 			GtsManager::GetSingleton().size_method = SizeMethod::RootScale;
 			break;
 		case 2:
+			log::info("Scale method set to Ref");
 			GtsManager::GetSingleton().size_method = SizeMethod::RefScale;
 			break;
 		}
