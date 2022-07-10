@@ -115,20 +115,20 @@ namespace {
 		switch (size_method) {
 		case 0:
 			log::info("Scale method set to Model");
-			GtsManager::GetSingleton().size_method = SizeMethod::ModelScale;
+			Persistent::GetSingleton().size_method = SizeMethod::ModelScale;
 			break;
 		case 1:
 			log::info("Scale method set to Root");
-			GtsManager::GetSingleton().size_method = SizeMethod::RootScale;
+			Persistent::GetSingleton().size_method = SizeMethod::RootScale;
 			break;
 		case 2:
 			log::info("Scale method set to Ref");
-			GtsManager::GetSingleton().size_method = SizeMethod::RefScale;
+			Persistent::GetSingleton().size_method = SizeMethod::RefScale;
 			break;
 		}
 	}
 	int GetScaleMethod(StaticFunctionTag*, SizeMethod size_method) {
-		return GtsManager::GetSingleton().size_method;
+		return Persistent::GetSingleton().size_method;
 	}
 	bool SetScale(StaticFunctionTag*, Actor* actor, float scale) {
 		bool result = false;

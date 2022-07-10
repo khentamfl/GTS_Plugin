@@ -90,7 +90,6 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 	static std::atomic_bool initialized;
 	static std::latch latch(1);
 	if (!initialized.exchange(true)) {
-		instance.size_method = SizeMethod::ModelScale;
 		latch.count_down();
 	}
 	latch.wait();

@@ -2,6 +2,7 @@
 #include "node.h"
 #include "scale.h"
 #include "GtsManager.h"
+#include "persistent.h"
 
 using namespace RE;
 using namespace Gts;
@@ -26,6 +27,9 @@ namespace {
 namespace Gts {
 	void apply_high_heel_scale(Actor* actor) {
 		if (!actor) {
+			return;
+		}
+		if (!Persistent::GetSingleton().highheel_correction) {
 			return;
 		}
 		float base_heel = base_highheel(actor);

@@ -1,10 +1,12 @@
 #pragma once
 // Module that holds data that is persistent across saves
 #include <SKSE/SKSE.h>
+#include "scale.h";
 
 using namespace std;
 using namespace SKSE;
 using namespace RE;
+using namespace Gts;
 
 namespace Gts {
 	struct ActorData {
@@ -13,8 +15,8 @@ namespace Gts {
 		float visual_scale_v;
 		float target_scale;
 		float max_scale;
-        float half_life;
-        float anim_speed;
+		float half_life;
+		float anim_speed;
 	};
 	class Persistent {
 		public:
@@ -24,6 +26,9 @@ namespace Gts {
 			static void OnGameLoaded(SKSE::SerializationInterface* serde);
 
 			ActorData* GetActorData(Actor* actor);
+
+			bool highheel_correction = true;
+			SizeMethod scale_method = SizeMethod::Model;
 		private:
 			Persistent() = default;
 

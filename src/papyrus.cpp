@@ -67,6 +67,10 @@ namespace {
 	std::string SigFig(StaticFunctionTag*, float number, int sf) {
 		return format(number, sf);
 	}
+
+	void EnableHighHeelCorrection(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().highheel_correction = enabled;
+	}
 }
 
 namespace Gts {
@@ -75,6 +79,7 @@ namespace Gts {
 		vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
+		vm->RegisterFunction("EnableHighHeelCorrection", PapyrusClass, EnableHighHeelCorrection);
 		register_papyrus_scale(vm);
 		register_papyrus_events(vm);
 		return true;

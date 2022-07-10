@@ -1,6 +1,7 @@
 #include "scale.h"
 #include "util.h"
 #include "GtsManager.h"
+#include "persistent.h"
 #include "highheel.h"
 
 using namespace Gts;
@@ -143,7 +144,7 @@ namespace Gts {
 	}
 
 	bool set_scale(Actor* actor, float scale) {
-		auto& size_method = GtsManager::GetSingleton().size_method;
+		auto& size_method = Persistent::GetSingleton().size_method;
 		switch (size_method) {
 		case SizeMethod::ModelScale:
 			return set_model_scale(actor, scale/(get_ref_scale(actor)*get_npcnode_scale(actor)));

@@ -25,3 +25,8 @@ Bool function SetAnimSpeed(Actor target, Float animspeed) global native
 ; String formatted_number = SigFig(10.2323, 3)
 ; ; formatted_number should now be 10.2
 String function SigFig(Float number, Int sf) global native
+
+; Controls if the HH correction method is enabled or not
+;
+; Value is saved into the cosave
+Function EnableHighHeelCorrection(Bool enabled) global native

@@ -8,6 +8,7 @@ using namespace RE;
 namespace {
 	inline const auto ActorDataRecord = _byteswap_ulong('ACTD');
 	inline const auto ScaleMethodRecord = _byteswap_ulong('SCMD');
+	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
 }
 
 namespace Gts {
@@ -90,15 +91,19 @@ namespace Gts {
 				serde->ReadRecordData(&size_method, sizeof(size_method));
 				switch (size_method) {
 				case 0:
-					GtsManager::GetSingleton().size_method = SizeMethod::ModelScale;
+					GetSingleton().size_method = SizeMethod::ModelScale;
 					break;
 				case 1:
-					GtsManager::GetSingleton().size_method = SizeMethod::RootScale;
+					GetSingleton().size_method = SizeMethod::RootScale;
 					break;
 				case 2:
-					GtsManager::GetSingleton().size_method = SizeMethod::RefScale;
+					GetSingleton().size_method = SizeMethod::RefScale;
 					break;
 				}
+			} else if (type == HighHeelCorrectionRecord) {
+				bool highheel_correction;
+				serde->ReadRecordData(&highheel_correction, sizeof(highheel_correction));
+				GetSingleton().highheel_correction = highheel_correction;
 			} else {
 				log::warn("Unknown record type in cosave.");
 				__assume(false);
@@ -141,8 +146,17 @@ namespace Gts {
 			return;
 		}
 
-		int size_method = GtsManager::GetSingleton().size_method;
+		int size_method = GetSingleton().size_method;
 		serde->WriteRecordData(&size_method, sizeof(size_method));
+
+		if (!serde->OpenRecord(HighHeelCorrectionRecord, 0)) {
+			log::error("Unable to open high heel correction record to write cosave data.");
+			return;
+		}
+
+		int highheel_correction = GetSingleton().highheel_correction;
+		serde->WriteRecordData(&highheel_correction, sizeof(highheel_correction));
+
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {

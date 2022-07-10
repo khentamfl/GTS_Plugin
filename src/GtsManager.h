@@ -26,7 +26,6 @@ namespace Gts {
 			[[nodiscard]] static GtsManager& GetSingleton() noexcept;
 
 			atomic_ulong frame_count = atomic_int64_t(0);
-			SizeMethod size_method;
 			bool enabled = false;
 
 			void poll();
