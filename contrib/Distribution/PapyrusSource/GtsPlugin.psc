@@ -10,6 +10,7 @@ Float function GetDistanceToCamera(Actor target) global native
 ;
 ; Value is saved into the cosave
 Bool function SetGrowthHalfLife(Actor target, Float halflife) global native
+Float function GetGrowthHalfLife(Actor target) global native
 
 ; This sets the speed at which anims are played
 ; 1.0 is normal speed while 2.0 is twice as fast
@@ -30,3 +31,4 @@ String function SigFig(Float number, Int sf) global native
 ;
 ; Value is saved into the cosave
 Function EnableHighHeelCorrection(Bool enabled) global native
+Bool Function GetHighHeelCorrection() global native
