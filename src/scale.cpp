@@ -1,6 +1,7 @@
 #include "scale.h"
 #include "util.h"
 #include "GtsManager.h"
+#include "highheel.h"
 
 using namespace Gts;
 
@@ -84,7 +85,8 @@ namespace Gts {
 				}
 			});
 		}
-
+		// Only needs to be done on npcnode changes
+		apply_high_heel_scale(actor);
 
 		return result;
 	}
