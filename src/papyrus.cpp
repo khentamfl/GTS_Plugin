@@ -64,7 +64,7 @@ namespace {
 		return ss.str();
 	}
 
-	std::string SigFig(StaticFunctionTag*, Float number, int sf) {
+	std::string SigFig(StaticFunctionTag*, float number, int sf) {
 		return format(number, sf);
 	}
 }
