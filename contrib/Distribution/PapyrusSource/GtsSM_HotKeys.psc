@@ -10,6 +10,10 @@ Function ShrinkPlayer()
   GtsScale.ModTargetScale(PlayerRef, -0.1)
 EndFunction
 
+Function PlayerGrowthHalfLife(Float rate)
+  GtsPlugin.SetGrowthHalfLife(PlayerRef, rate)
+EndFunction
+
 
 Function GrowFollowers()
   GtsScale.ModTeammateScale(0.1)

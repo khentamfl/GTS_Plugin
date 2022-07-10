@@ -56,6 +56,24 @@
 			    "function": "EnableHighHeelCorrection",
 			    "params": ["{value}"]
 			  }
+			},
+			{
+			  "text": "Player Growth Half Life",
+			  "type": "slider",
+				"help": "The half life of the player's growth",
+				"valueOptions": {
+			    "min": 0.0,
+			    "max": 2.0,
+			    "step": 0.01,
+			    "formatString": "{2}"
+			  },
+				"action": {
+			    "type": "CallFunction",
+					"form": "GtsSizeMatters.esp|5900",
+					"scriptName": "GtsSM_HotKeys",
+			    "function": "PlayerGrowthHalfLife",
+			    "params": ["{value}"]
+			  }
 			}
 		]
 	}]
