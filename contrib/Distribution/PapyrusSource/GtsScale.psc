@@ -53,7 +53,7 @@ Bool function ModScale(Actor target, Float amount) global native
 ; 2 - Ref Scale
 Function SetScaleMethod(Int method)  global native
 
-Function GetScaleMethod()  global native
+Int Function GetScaleMethod()  global native
 
 
 ; Target Scale
