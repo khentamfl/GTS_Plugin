@@ -1,7 +1,7 @@
 #pragma once
 // Module that holds data that is persistent across saves
 #include <SKSE/SKSE.h>
-#include "scale.h";
+#include "scale.h"
 
 using namespace std;
 using namespace SKSE;
@@ -28,7 +28,7 @@ namespace Gts {
 			ActorData* GetActorData(Actor* actor);
 
 			bool highheel_correction = true;
-			SizeMethod scale_method = SizeMethod::ModelScale;
+			SizeMethod size_method = SizeMethod::ModelScale;
 		private:
 			Persistent() = default;
 

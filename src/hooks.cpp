@@ -47,8 +47,8 @@ namespace Hooks
 		logger::info("Hooking player update");
 		REL::Relocation<std::uintptr_t> PlayerCharacterVtbl{ RE::VTABLE_PlayerCharacter[0] };
 
-		_// Update = PlayerCharacterVtbl.write_vfunc(0xAD, Update);
-		        _UpdateAnimation = PlayerCharacterVtbl.write_vfunc(0x7D, UpdateAnimation);
+		// _Update = PlayerCharacterVtbl.write_vfunc(0xAD, Update);
+		_UpdateAnimation = PlayerCharacterVtbl.write_vfunc(0x7D, UpdateAnimation);
 	}
 
 	void Hook_OnPlayerUpdate::Update(RE::PlayerCharacter* a_this, float a_delta) {
