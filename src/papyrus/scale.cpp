@@ -127,8 +127,23 @@ namespace {
 			break;
 		}
 	}
-	int GetScaleMethod(StaticFunctionTag*, SizeMethod size_method) {
-		return Persistent::GetSingleton().size_method;
+	int GetScaleMethod(StaticFunctionTag*) {
+		switch (Persistent::GetSingleton().size_method) {
+		case SizeMethod::ModelScale:
+			log::info("Scale method is Model");
+			return 0;
+			break;
+		case SizeMethod::RootScale:
+			log::info("Scale method is Root");
+			return 1;
+			break;
+		case SizeMethod::RefScale:
+			log::info("Scale method is Ref");
+			return 2;
+			break;
+		}
+		log::error("Scale method is invalid");
+		return ersistent::GetSingleton().size_method;
 	}
 	bool SetScale(StaticFunctionTag*, Actor* actor, float scale) {
 		bool result = false;
