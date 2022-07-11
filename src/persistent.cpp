@@ -63,7 +63,7 @@ namespace Gts {
 							anim_speed = 1.0;
 						}
 						ActorData data;
-						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale);
+						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed);
 						data.native_scale = native_scale;
 						data.visual_scale = visual_scale;
 						data.visual_scale_v = visual_scale_v;
@@ -130,7 +130,7 @@ namespace Gts {
 			float max_scale = data.max_scale;
 			float half_life = data.half_life;
 			float anim_speed = data.anim_speed;
-			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale);
+			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
 			serde->WriteRecordData(&visual_scale, sizeof(visual_scale));
