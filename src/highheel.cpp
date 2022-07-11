@@ -63,8 +63,8 @@ namespace Gts {
 		scale /= npc_scale(actor);
 		// Trying also refscale
 		// This maybe applied on the indirectly (maybe via animation) to the NPC node
-		float ref_scale = get_ref_scale(actor);
-		scale /= ref_scale;
+		// float ref_scale = get_ref_scale(actor);
+		// scale /= ref_scale;
 		float new_hh = scale * base_heel;
 		log::info("New HH (Unadjusted): {}", new_hh);
 		// We are going to translate NPC Root [Root]
