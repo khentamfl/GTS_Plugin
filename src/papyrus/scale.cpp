@@ -114,15 +114,15 @@ namespace {
 	void SetScaleMethod(StaticFunctionTag*, int size_method) {
 		switch (size_method) {
 		case 0:
-			log::info("Scale method set to Model");
+			// log::info("Scale method set to Model");
 			Persistent::GetSingleton().size_method = SizeMethod::ModelScale;
 			break;
 		case 1:
-			log::info("Scale method set to Root");
+			// log::info("Scale method set to Root");
 			Persistent::GetSingleton().size_method = SizeMethod::RootScale;
 			break;
 		case 2:
-			log::info("Scale method set to Ref");
+			// log::info("Scale method set to Ref");
 			Persistent::GetSingleton().size_method = SizeMethod::RefScale;
 			break;
 		}
@@ -130,15 +130,15 @@ namespace {
 	int GetScaleMethod(StaticFunctionTag*) {
 		switch (Persistent::GetSingleton().size_method) {
 		case SizeMethod::ModelScale:
-			log::info("Scale method is Model");
+			// log::info("Scale method is Model");
 			return 0;
 			break;
 		case SizeMethod::RootScale:
-			log::info("Scale method is Root");
+			// log::info("Scale method is Root");
 			return 1;
 			break;
 		case SizeMethod::RefScale:
-			log::info("Scale method is Ref");
+			// log::info("Scale method is Ref");
 			return 2;
 			break;
 		}

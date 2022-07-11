@@ -28,9 +28,11 @@ namespace {
 		float target_scale = min(persi_actor_data->target_scale, persi_actor_data->max_scale);
 		float minimum_scale_delta = 0.005; // 0.5%
 		if (fabs(target_scale - persi_actor_data->visual_scale) < minimum_scale_delta) {
+            log::info("Snapping scale to: {}", target_scale);
 			persi_actor_data->visual_scale = target_scale;
 			persi_actor_data->visual_scale_v = 0.0;
 		} else {
+            log::info("Smooth Scale updating from: {}", persi_actor_data->visual_scale);
 			critically_damped(
 				persi_actor_data->visual_scale,
 				persi_actor_data->visual_scale_v,
@@ -38,6 +40,7 @@ namespace {
 				persi_actor_data->half_life,
 				*g_delta_time
 				);
+            log::info("Smooth Scale updated to: {}", persi_actor_data->visual_scale);
 		}
 	}
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
