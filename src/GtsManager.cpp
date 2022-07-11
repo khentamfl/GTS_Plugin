@@ -72,14 +72,25 @@ namespace {
 		log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
 		NiUpdateData ctx;
-		auto model = actor->Get3D(false);
-		// We are on the main thread so we can update this now
-		if (model) {
-			model->UpdateWorldData(&ctx);
-		}
-		auto first_model = actor->Get3D(true);
-		if (first_model) {
-			first_model->UpdateWorldData(&ctx);
+		for (bool person: [false, true]) {
+			NiAVObject* model = nullptr;
+			switch (Persistent::GetSingleton().size_method) {
+				case SizeMethod::ModelScale:
+				{
+					model = actor->Get3D(person);
+					break;
+				}
+				case SizeMethod::RootScale:
+				{
+					string node_name = "NPC Root [Root]";
+					model = find_node(actor, node_name, person);
+					break;
+				}
+			}
+			// We are on the main thread so we can update this now
+			if (model) {
+				model->UpdateWorldData(&ctx);
+			}
 		}
 	}
 
