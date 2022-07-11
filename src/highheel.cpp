@@ -60,7 +60,11 @@ namespace Gts {
 		// undo the scale of the node between
 		// [NPC..NPC Root Node)
 		// ...Which is just NPC
-		scale *= (1.0 / npc_scale(actor));
+		scale /= npc_scale(actor);
+		// Trying also refscale
+		// This maybe applied on the indirectly (maybe via animation) to the NPC node
+		float ref_scale = get_ref_scale(actor);
+		scale /= ref_scale;
 		float new_hh = scale * base_heel;
 		log::info("New HH (Unadjusted): {}", new_hh);
 		// We are going to translate NPC Root [Root]
