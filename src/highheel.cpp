@@ -20,7 +20,7 @@ namespace {
 		if (!npc_node) {
 			return 0.0;
 		}
-        log::info("NPC Scale", npc_node->local.scale);
+        log::info("NPC Scale {}", npc_node->local.scale);
 		return npc_node->local.translate.z;
 	}
 }
