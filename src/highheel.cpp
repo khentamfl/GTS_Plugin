@@ -8,6 +8,40 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+	void experiment(Actor* actor) {
+		if (!actor) {
+			return;
+		}
+		std::string node_name = "NPC";
+		auto npc_node = find_node(actor, node_name, false);
+		if (!npc_node) {
+			npc_node = find_node(actor, node_name, true);
+		}
+		if (!npc_node) {
+			return;
+		}
+		std::string rootnode_name = "NPC Root [Root]";
+		auto rootnpc_node = find_node(actor, rootnode_name, false);
+		if (!rootnpc_node) {
+			rootnpc_node = find_node(actor, rootnode_name, true);
+		}
+		if (!rootnpc_node) {
+			return;
+		}
+		float current_hh = npc_node->local.translate.z;
+		log::info("== Experiment HH ==");
+		log::info("- HH size: {}", current_hh);
+		auto world_pos = rootnpc_node->world.translate;
+		log::info("- NPC Root World Pos: {},{},{}", world_pos.x, world_pos.y, world_pos.z);
+		log::info("- Removing hh");
+		npc_node->local.translate.z = 0.0;
+		auto ref_world_pos = rootnpc_node->world.translate;
+		log::info("- NPC Root World Pos: {},{},{}", ref_world_pos.x, ref_world_pos.y, ref_world_pos.z);
+		auto delta = world_pos - ref_world_pos;
+		log::info("- Delta: {},{},{}", delta.x, delta.y, delta.z);
+		log::info("- Reapplying hh");
+		npc_node->local.translate.z = current_hh;
+	}
 	float base_highheel(Actor* actor) {
 		if (!actor) {
 			return 0.0;
@@ -48,6 +82,7 @@ namespace Gts {
 		if (!Persistent::GetSingleton().highheel_correction) {
 			return;
 		}
+		experiment(actor);
 		float base_heel = base_highheel(actor);
 		log::info("Base HH: {}", base_heel);
 		// If there is any scale on the ModelScale
