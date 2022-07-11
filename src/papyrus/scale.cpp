@@ -143,7 +143,7 @@ namespace {
 			break;
 		}
 		log::error("Scale method is invalid");
-		return ersistent::GetSingleton().size_method;
+		return Persistent::GetSingleton().size_method;
 	}
 	bool SetScale(StaticFunctionTag*, Actor* actor, float scale) {
 		bool result = false;

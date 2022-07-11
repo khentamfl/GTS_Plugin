@@ -3,6 +3,7 @@ Scriptname GtsSMConfigMenu extends MCM_ConfigBase
 Actor Property PlayerRef Auto
 
 Event OnConfigInit()
+    PlayerRef = Game.GetPlayer()
     GtsScale.SetScaleMethod(GetModSettingInt("iScaleMethod:Main"))
     GtsPlugin.EnableHighHeelCorrection(GetModSettingBool("bEnableHighHeels:Main"))
     GtsPlugin.SetGrowthHalfLife(PlayerRef, GetModSettingFloat("fPlayerGrowthHalfLife:Main"))

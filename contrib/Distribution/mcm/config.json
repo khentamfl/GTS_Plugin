@@ -1,88 +1,96 @@
 {
-	"modName": "GtsSizeMatters",
-	"displayName": "Size Matters",
-	"minMcmVersion": 9,
-	"pages": [{
-		"pageDisplayName": "Main Page",
-		"content": [{
-				"text": "Key Binds",
-				"type": "header"
-			},
-			{
-				"id": "grow_player_hk",
-				"text": "Grow Player",
-				"type": "keymap",
-				"help": "Grows the player using the plugin."
-			},
-			{
-				"id": "shrink_player_hk",
-				"text": "Shrink Player",
-				"type": "keymap",
-				"help": "Shrinks the player using the plugin."
-			},
-			{
-				"id": "grow_follower_hk",
-				"text": "Grow Followers",
-				"type": "keymap",
-				"help": "Grows all followers using the plugin."
-			},
-			{
-				"id": "shrink_follower_hk",
-				"text": "Shrink Followers",
-				"type": "keymap",
-				"help": "Shrinks all followers using the plugin."
-			},
-			{
-              "id": "iScaleMethod:Main",
-			  "text": "Set Scale Method",
-			  "type": "enum",
-			  "help": "The method used for adjusting scales.",
-			  "valueOptions": {
-			    "options": ["Model", "NPC Root Node", "Ref Scale"],
-			    "shortNames": ["0", "1", "2"],
-                "sourceType": "ModSettingFloat"
-              },
-			  "action": {
-			    "type": "CallGlobalFunction",
-			    "script": "GtsScale",
-			    "function": "SetScaleMethod",
-			    "params": ["{value}"]
-			  }
-			},
-			{
-              "id": "bEnableHighHeels:Main",
-			  "text": "Enable High Heel Correction",
-              "valueOptions": {
-                  "sourceType": "ModSettingBool"
-              },
-			  "type": "toggle",
-				"action": {
-			    "type": "CallGlobalFunction",
-			    "script": "GtsPlugin",
-			    "function": "EnableHighHeelCorrection",
-			    "params": ["{value}"]
-			  }
-			},
-			{
-              "id": "fPlayerGrowthHalfLife:Main",
-			  "text": "Player Growth Half Life",
-			  "type": "slider",
-				"help": "The half life of the player's growth",
-				"valueOptions": {
-			    "min": 0.0,
-			    "max": 2.0,
-			    "step": 0.01,
-			    "formatString": "{2}",
-                "sourceType": "ModSettingBool"
-			  },
-				"action": {
-			    "type": "CallFunction",
-					"form": "GtsSizeMatters.esp|5900",
-					"scriptName": "GtsSM_HotKeys",
-			    "function": "PlayerGrowthHalfLife",
-			    "params": ["{value}"]
-			  }
-			}
-		]
-	}]
+  "modName": "GtsSizeMatters",
+  "displayName": "Size Matters",
+  "minMcmVersion": 9,
+  "pages": [{
+    "pageDisplayName": "Main Page",
+    "content": [{
+        "text": "Key Binds",
+        "type": "header"
+      },
+      {
+        "id": "grow_player_hk",
+        "text": "Grow Player",
+        "type": "keymap",
+        "help": "Grows the player using the plugin."
+      },
+      {
+        "id": "shrink_player_hk",
+        "text": "Shrink Player",
+        "type": "keymap",
+        "help": "Shrinks the player using the plugin."
+      },
+      {
+        "id": "grow_follower_hk",
+        "text": "Grow Followers",
+        "type": "keymap",
+        "help": "Grows all followers using the plugin."
+      },
+      {
+        "id": "shrink_follower_hk",
+        "text": "Shrink Followers",
+        "type": "keymap",
+        "help": "Shrinks all followers using the plugin."
+      },
+      {
+        "text": "Options",
+        "type": "header"
+      },
+      {
+        "id": "iScaleMethod:Main",
+        "text": "Set Scale Method",
+        "type": "enum",
+        "help": "The method used for adjusting scales.",
+        "valueOptions": {
+          "options": ["Model", "NPC Root Node", "Ref Scale"],
+          "shortNames": ["Model", "NPC", "Ref"],
+          "sourceType": "ModSettingFloat"
+        },
+        "action": {
+          "type": "CallGlobalFunction",
+          "script": "GtsScale",
+          "function": "SetScaleMethod",
+          "params": ["{value}"]
+        }
+      },
+      {
+        "id": "bEnableHighHeels:Main",
+        "text": "Enable High Heel Correction",
+        "valueOptions": {
+          "sourceType": "ModSettingBool"
+        },
+        "type": "toggle",
+        "action": {
+          "type": "CallGlobalFunction",
+          "script": "GtsPlugin",
+          "function": "EnableHighHeelCorrection",
+          "params": ["{value}"]
+        }
+      },
+      {
+        "text": "Experiments",
+        "type": "header"
+      },
+      {
+        "id": "fPlayerGrowthHalfLife:Main",
+        "text": "Player Growth Half Life",
+        "type": "slider",
+        "help": "The half life of the player's growth",
+        "valueOptions": {
+          "min": 0.0,
+          "max": 2.0,
+          "step": 0.01,
+          "formatString": "{2}",
+          "sourceType": "ModSettingBool"
+        },
+        "action": {
+          "type": "CallFunction",
+          "form": "GtsSizeMatters.esp|5900",
+          "scriptName": "GtsSM_HotKeys",
+          "function": "PlayerGrowthHalfLife",
+          "params": ["{value}"]
+        }
+      }
+    ]
+  }]
 }
