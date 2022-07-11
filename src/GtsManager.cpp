@@ -71,7 +71,7 @@ namespace {
 
 		log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
-		NiUpdateData ctx;
+		
 		for (bool person: {false, true}) {
 			NiAVObject* model = nullptr;
 			switch (Persistent::GetSingleton().size_method) {
@@ -89,6 +89,7 @@ namespace {
 			}
 			// We are on the main thread so we can update this now
 			if (model) {
+                NiUpdateData ctx;
 				model->UpdateWorldData(&ctx);
 			}
 		}
