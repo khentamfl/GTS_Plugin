@@ -268,13 +268,13 @@ namespace Gts {
 		vm->RegisterFunction("ModNodeScale", PapyrusClass, ModNodeScale);
 
 		vm->RegisterFunction("SetRefScale", PapyrusClass, SetRefScale);
-		vm->RegisterFunction("SetRefScale", PapyrusClass, SetRefScale);
+		vm->RegisterFunction("GetRefScale", PapyrusClass, GetRefScale);
 		vm->RegisterFunction("ModRefScale", PapyrusClass, ModRefScale);
 
 		vm->RegisterFunction("SetScaleMethod", PapyrusClass, SetScaleMethod);
 		vm->RegisterFunction("GetScaleMethod", PapyrusClass, GetScaleMethod);
 		vm->RegisterFunction("SetScale", PapyrusClass, SetScale);
-		vm->RegisterFunction("SetScale", PapyrusClass, SetScale);
+		vm->RegisterFunction("GetScale", PapyrusClass, GetScale);
 		vm->RegisterFunction("ModScale", PapyrusClass, ModScale);
 
 		vm->RegisterFunction("SetTargetScale", PapyrusClass, SetTargetScale);
