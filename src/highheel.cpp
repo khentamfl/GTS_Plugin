@@ -21,22 +21,17 @@ namespace {
 			return 0.0;
 		}
 		log::info("NPC Scale {}", npc_node->local.scale);
-		return npc_node->local.translate.z;
-	}
-
-	float npc_scale(Actor* actor) {
-		if (!actor) {
-			return 1.0;
-		}
-		std::string node_name = "NPC";
-		auto npc_node = find_node(actor, node_name, false);
-		if (!npc_node) {
-			npc_node = find_node(actor, node_name, true);
-		}
-		if (!npc_node) {
-			return 1.0;
-		}
-		return npc_node->local.scale;
+		float parent_hh = npc_node->local.translate.z;
+        // we are going to apply this to the child of this node
+        // which is NPCRoot Node. we need to put this height
+        // in child space
+		float child_hh = parent_hh / npc_node->local.scale;
+		// Trying also refscale
+		// This is maybe applied indirectly (maybe via animation) to the NPC node
+		// float ref_scale = get_ref_scale(actor);
+        // log::info("refscale: {}", ref_scale);
+		// child_hh /= ref_scale;
+        return child_hh;
 	}
 }
 
@@ -56,15 +51,6 @@ namespace Gts {
 		// therefore we just grab the effects of the npc node
 		// scale
 		float scale = get_npcnode_scale(actor);
-		// We also have to account for and
-		// undo the scale of the node between
-		// [NPC..NPC Root Node)
-		// ...Which is just NPC
-		scale /= npc_scale(actor);
-		// Trying also refscale
-		// This maybe applied on the indirectly (maybe via animation) to the NPC node
-		// float ref_scale = get_ref_scale(actor);
-		// scale /= ref_scale;
 		float new_hh = scale * base_heel;
 		log::info("New HH (Unadjusted): {}", new_hh);
 		// We are going to translate NPC Root [Root]
