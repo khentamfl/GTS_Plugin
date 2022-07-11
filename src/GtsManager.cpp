@@ -72,7 +72,7 @@ namespace {
 		log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
 		NiUpdateData ctx;
-		for (bool person: [false, true]) {
+		for (bool person: {false, true}) {
 			NiAVObject* model = nullptr;
 			switch (Persistent::GetSingleton().size_method) {
 				case SizeMethod::ModelScale:
