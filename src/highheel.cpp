@@ -33,6 +33,7 @@ namespace Gts {
 			return;
 		}
 		float base_heel = base_highheel(actor);
+		log::info("Base HH: {}", base_heel);
 		// If there is any scale on the ModelScale
 		// or refscale then it already corrects the
 		// high heels
@@ -40,6 +41,7 @@ namespace Gts {
 		// scale
 		float scale = get_npcnode_scale(actor);
 		float new_hh = scale * base_heel;
+		log::info("New HH (Unadjusted): {}", new_hh);
 		// We are going to translate NPC Root [Root]
 		// rather than NPC node
 		// This will  leave the NPC node as having a
@@ -48,6 +50,7 @@ namespace Gts {
 		// from the new_hh height that we will apply to
 		// NPC Root [Root] only a correction
 		new_hh -= base_heel;
+		log::info("New HH (Adjusted): {}", new_hh);
 		// Now to set it for third person
 		std::string node_name = "NPC Root [Root]";
 		auto npc_root_node = find_node(actor, node_name, false);
