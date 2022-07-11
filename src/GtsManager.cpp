@@ -25,13 +25,20 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		critically_damped(
-			persi_actor_data->visual_scale,
-			persi_actor_data->visual_scale_v,
-			min(persi_actor_data->target_scale, persi_actor_data->max_scale),
-			persi_actor_data->half_life,
-			*g_delta_time
-			);
+		float target_scale = min(persi_actor_data->target_scale, persi_actor_data->max_scale);
+		float minimum_scale_delta = 0.005; // 0.5%
+		if (fabs(target_scale - persi_actor_data->visual_scale) < minimum_scale_delta) {
+			persi_actor_data->visual_scale = target_scale;
+			persi_actor_data->visual_scale_v = 0.0;
+		} else {
+			critically_damped(
+				persi_actor_data->visual_scale,
+				persi_actor_data->visual_scale_v,
+				target_scale,
+				persi_actor_data->half_life,
+				*g_delta_time
+				);
+		}
 	}
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
