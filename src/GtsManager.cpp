@@ -31,13 +31,13 @@ namespace {
 		}
 		float minimum_scale_delta = 0.005; // 0.5%
 		if (fabs(target_scale - persi_actor_data->visual_scale) < minimum_scale_delta) {
-			if (actors->formID == 0x14) {
+			if (actor->formID == 0x14) {
 				log::info("Snapping scale to: {}", target_scale);
 			}
 			persi_actor_data->visual_scale = target_scale;
 			persi_actor_data->visual_scale_v = 0.0;
 		} else {
-			if (actors->formID == 0x14) {
+			if (actor->formID == 0x14) {
 				log::info("Smooth Scale updating from: {}", persi_actor_data->visual_scale);
 			}
 			critically_damped(
@@ -47,7 +47,7 @@ namespace {
 				persi_actor_data->half_life,
 				*g_delta_time
 				);
-			if (actors->formID == 0x14) {
+			if (actor->formID == 0x14) {
 				log::info("Smooth Scale updated to: {}", persi_actor_data->visual_scale);
 			}
 		}
