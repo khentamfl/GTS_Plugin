@@ -83,7 +83,7 @@ namespace Gts {
 		float scaled_error = maximal_error*scale;
 		float scaled_error_delta = scaled_error - maximal_error;
 		log::info("Scaled maximal error delta: {}", scaled_error_delta);
-		new_hh += scaled_error_delta;
+		new_hh -= scaled_error_delta;
 		log::info("New HH (Error corrected): {}", new_hh);
 		// Now to set it for third person
 		std::string node_name = "NPC Root [Root]";
