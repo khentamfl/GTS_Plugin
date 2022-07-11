@@ -15,16 +15,10 @@ namespace {
 		std::string node_name = "NPC";
 		auto npc_node = find_node(actor, node_name, false);
 		if (!npc_node) {
-			npc_node = find_node(actor, node_name, true);
-		}
-		if (!npc_node) {
 			return;
 		}
 		std::string rootnode_name = "NPC Root [Root]";
 		auto rootnpc_node = find_node(actor, rootnode_name, false);
-		if (!rootnpc_node) {
-			rootnpc_node = find_node(actor, rootnode_name, true);
-		}
 		if (!rootnpc_node) {
 			return;
 		}
@@ -35,12 +29,18 @@ namespace {
 		log::info("- NPC Root World Pos: {},{},{}", world_pos.x, world_pos.y, world_pos.z);
 		log::info("- Removing hh");
 		npc_node->local.translate.z = 0.0;
+        NiUpdateData ctx;
+		// ctx.flags |= NiUpdateData::Flag::kDirty;
+        npc_node->UpdateWorldData(&ctx);
 		auto ref_world_pos = rootnpc_node->world.translate;
 		log::info("- NPC Root World Pos: {},{},{}", ref_world_pos.x, ref_world_pos.y, ref_world_pos.z);
 		auto delta = world_pos - ref_world_pos;
 		log::info("- Delta: {},{},{}", delta.x, delta.y, delta.z);
 		log::info("- Reapplying hh");
 		npc_node->local.translate.z = current_hh;
+        NiUpdateData ctx2;
+		// ctx.flags |= NiUpdateData::Flag::kDirty;
+        npc_node->UpdateWorldData(&ctx2);
 	}
 	float base_highheel(Actor* actor) {
 		if (!actor) {
