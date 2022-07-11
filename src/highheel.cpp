@@ -76,12 +76,22 @@ namespace Gts {
 		// NPC Root [Root] only a correction
 		new_hh -= base_heel;
 		log::info("New HH (Adjusted): {}", new_hh);
+		// The true foot position should lie between
+		// base_heel and (base_heel -1) because most meshes put it slighly under the floor
+		// We apply maximal error approximations to remove the scaled error
+		float maximal_error = -1.0;
+		float scaled_error = maximal_error*scale;
+		float scaled_error_delta = scaled_error - maximal_error;
+		log::info("Scaled maximal error delta: {}", scaled_error_delta);
+		new_hh += scaled_error_delta;
+		log::info("New HH (Error corrected): {}", new_hh);
 		// Now to set it for third person
 		std::string node_name = "NPC Root [Root]";
 		auto npc_root_node = find_node(actor, node_name, false);
 		if (npc_root_node) {
 			npc_root_node->local.translate.z = new_hh;
 		}
+		// Now to set it for first person
 		auto npc_root_node_fp = find_node(actor, node_name, true);
 		if (npc_root_node_fp) {
 			npc_root_node_fp->local.translate.z = new_hh;
