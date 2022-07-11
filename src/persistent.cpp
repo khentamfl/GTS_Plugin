@@ -90,15 +90,15 @@ namespace Gts {
 				int size_method;
 				serde->ReadRecordData(&size_method, sizeof(size_method));
 				switch (size_method) {
-				case 0:
-					GetSingleton().size_method = SizeMethod::ModelScale;
-					break;
-				case 1:
-					GetSingleton().size_method = SizeMethod::RootScale;
-					break;
-				case 2:
-					GetSingleton().size_method = SizeMethod::RefScale;
-					break;
+					case 0:
+						GetSingleton().size_method = SizeMethod::ModelScale;
+						break;
+					case 1:
+						GetSingleton().size_method = SizeMethod::RootScale;
+						break;
+					case 2:
+						GetSingleton().size_method = SizeMethod::RefScale;
+						break;
 				}
 			} else if (type == HighHeelCorrectionRecord) {
 				bool highheel_correction;
@@ -130,7 +130,7 @@ namespace Gts {
 			float max_scale = data.max_scale;
 			float half_life = data.half_life;
 			float anim_speed = data.anim_speed;
-			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed);
+			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
 			serde->WriteRecordData(&visual_scale, sizeof(visual_scale));
