@@ -58,47 +58,13 @@ namespace Gts {
 		if (!Persistent::GetSingleton().highheel_correction) {
 			return;
 		}
-		float new_hh = 0.0;
-		bool experiment = false;
-		std::string node_name = "NPC Root [Root]";
-		if (experiment) {
-			float base_heel = 8.0;
-			float scale = get_npcnode_scale(actor);
-			new_hh = scale * base_heel;
-			node_name = "NPC";
-			log::info("NPC Node Z: {}", npcnode_z(actor));
-		} else {
-			float base_heel = base_highheel(actor);
-			log::info("Base HH: {}", base_heel);
-			// If there is any scale on the ModelScale
-			// or refscale then it already corrects the
-			// high heels
-			// therefore we just grab the effects of the npc node
-			// scale
-			float scale = get_npcnode_scale(actor);
-			new_hh = scale * base_heel;
-			log::info("New HH (Unadjusted): {}", new_hh);
-			// We are going to translate NPC Root [Root]
-			// rather than NPC node
-			// This will  leave the NPC node as having a
-			// the base high heel height
-			// But so we don't double it up we subtract base_heel
-			// from the new_hh height that we will apply to
-			// NPC Root [Root] only a correction
-			new_hh -= base_heel;
-			log::info("New HH (Adjusted): {}", new_hh);
-			// The true foot position should lie between
-			// base_heel and (base_heel -1) because most meshes put it slighly under the floor
-			// We apply maximal error approximations to remove the scaled error
-			// float maximal_error = -1.0;
-			// float scaled_error = maximal_error*scale;
-			// float scaled_error_delta = scaled_error - maximal_error;
-			// log::info("Scaled maximal error delta: {}", scaled_error_delta);
-			// new_hh -= scaled_error_delta;
-			log::info("New HH (Error corrected): {}", new_hh);
-			// Now to set it for third person
+		float base_hh = get_hh_offset(actor);
+		float scale = get_npcnode_scale(actor);
+		if (scale < 0.0) {
+			return;
 		}
-
+		float new_hh =base_hh * scale;
+		std::string node_name = "NPC";
 		for (bool person: {false, true}) {
 			auto npc_root_node = find_node(actor, node_name, person);
 			if (npc_root_node) {

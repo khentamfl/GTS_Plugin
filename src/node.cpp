@@ -1,7 +1,9 @@
 #include "node.h"
+#include <nlohmann/json.hpp>
 
 using namespace SKSE;
 using namespace Gts;
+using json = nlohmann::json;
 
 namespace Gts {
 	void walk_nodes(Actor* actor) {
@@ -243,5 +245,53 @@ namespace Gts {
 	NiAVObject* get_bumper(Actor* actor) {
 		string node_name = "CharacterBumper";
 		return find_node(actor, node_name);
+	}
+
+	float get_hh_offset(Actor* actor) {
+		if (!actor) {
+			return 0.0;
+		}
+		float result = 0.0;
+		auto shoes = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+		if (shoes) {
+			auto actor_base = actor->GetActorBase();
+			if (actor_base) {
+				auto race = actor_base->GetRace();
+				auto arma = shoes->GetArmorAddonByMask(race, BGSBipedObjectForm::BipedObjectSlot::kFeet);
+				if (arma) {
+					actor->VisitArmorAddon(shoes, arma, [&](bool isFP, NiAVObject& armorNode) {
+						// Legacy method
+						auto hh_legacy_data = armorNode.GetExtraData("HH_OFFSET");
+						if (hh_legacy_data) {
+							NiFloatExtraData* hh_float_data = static_cast<NiFloatExtraData*>(hh_legacy_data);
+							if (hh_float_data) {
+								result = hh_float_data->value;
+								return;
+							}
+						}
+						// Modern method
+						auto sdta_data = armorNode.GetExtraData("SDTA");
+						if (sdta_data) {
+							NiStringExtraData* extra_offset_data = static_cast<NiStringExtraData*>(sdta_data);
+							if (extra_offset_data) {
+								std::string data = extra_offset_data->value;
+								// Formatted as json of the form
+								// [{"name":"NPC","pos":[0, 0,%f]}]"
+								auto json = json::parse(data);
+								if (json) {
+									if (json["name"] == "NPC") {
+										auto pos = json["pos"];
+										if (pos.is_array() && pos.size() == 3) {
+											result = pos[2].get<float>();
+										}
+									}
+								}
+							}
+						}
+					});
+				}
+			}
+		}
+		return result;
 	}
 }
