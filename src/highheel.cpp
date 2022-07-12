@@ -52,7 +52,7 @@ namespace Gts {
 		log::info("Base HH: {}", base_hh);
 		float scale = root_node->local.scale;
 		log::info("NPC Root Scale: {}", scale);
-		float = new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale);
+		float new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale);
 		log::info("CME Body.z = {}", new_hh);
 		for (bool person: {false, true}) {
 			auto npc_root_node = find_node(actor, "CME Body [Body]", person);
