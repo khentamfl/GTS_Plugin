@@ -56,8 +56,8 @@ namespace {
 				return found;
 			}
 		}
+		return nullptr;
 	}
-	return nullptr;
 }
 
 namespace Gts {
@@ -108,7 +108,7 @@ namespace Gts {
 			node_name = "CME Body [Body]";
 		}
 
-		if (node_name) {
+		if (!node_name.empty()) {
 			for (bool person: {false, true}) {
 				auto npc_root_node = find_node(actor, node_name, person);
 				if (npc_root_node) {
