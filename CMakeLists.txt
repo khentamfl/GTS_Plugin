@@ -40,7 +40,6 @@ source_group(
 ########################################################################################################################
 find_package(CommonLibSSE CONFIG REQUIRED)
 find_package(ryml CONFIG REQUIRED)
-find_package(nlohmann_json 3.10.5 REQUIRED)
 find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
 
 add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
@@ -59,8 +58,7 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        ryml::ryml
-        nlohmann_json::nlohmann_json)
+        ryml::ryml)
 
 target_precompile_headers(${PROJECT_NAME}
         PRIVATE

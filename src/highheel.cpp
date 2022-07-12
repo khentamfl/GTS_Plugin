@@ -68,54 +68,40 @@ namespace Gts {
 		if (!Persistent::GetSingleton().highheel_correction) {
 			return;
 		}
-		int method = 1;
 
-		float new_hh = 0.0;
-		std::string node_name;
-		if (method == 0) {
-			float base_hh = get_hh_offset(actor);
-			log::info("Paresed hh offset: {}", base_hh);
-			float scale = get_npcnode_scale(actor);
-			if (scale < 0.0) {
-				return;
-			}
-			new_hh =base_hh * scale;
-			node_name = "NPC";
-		} else if (method == 1) {
-			NiAVObject* npc_node = find_any_node(actor, "NPC");
-			if (!npc_node) {
-				return;
-			}
-
-			NiAVObject* root_node = find_any_node(actor, "NPC Root [Root]");
-			if (!root_node) {
-				return;
-			}
-
-			NiAVObject* com_node = find_any_node(actor, "NPC COM [COM ]");
-			if (!com_node) {
-				return;
-			}
-
-			NiAVObject* body_node = find_any_node(actor, "CME Body [Body]");
-			if (!body_node) {
-				return;
-			}
-
-			float base_hh = npc_node->local.translate.z;
-			float scale = root_node->local.scale;
-			new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale);
-			node_name = "CME Body [Body]";
+		NiAVObject* npc_node = find_any_node(actor, "NPC");
+		if (!npc_node) {
+			return;
 		}
 
-		if (!node_name.empty()) {
-			for (bool person: {false, true}) {
-				auto npc_root_node = find_node(actor, node_name, person);
-				if (npc_root_node) {
-					npc_root_node->local.translate.z = new_hh;
-					NiUpdateData ctx;
-					npc_root_node->UpdateWorldData(&ctx);
-				}
+		NiAVObject* root_node = find_any_node(actor, "NPC Root [Root]");
+		if (!root_node) {
+			return;
+		}
+
+		NiAVObject* com_node = find_any_node(actor, "NPC COM [COM ]");
+		if (!com_node) {
+			return;
+		}
+
+		NiAVObject* body_node = find_any_node(actor, "CME Body [Body]");
+		if (!body_node) {
+			return;
+		}
+
+		float base_hh = npc_node->local.translate.z;
+		log::info("Base HH: {}", base_hh);
+		float scale = root_node->local.scale;
+		log::info("NPC Root Scale: {}", scale);
+		float = new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale);
+		log::info("CME Body.z = {}", new_hh);
+		for (bool person: {false, true}) {
+			auto npc_root_node = find_node(actor, "CME Body [Body]", person);
+			if (npc_root_node) {
+				npc_root_node->local.translate.z = new_hh;
+				NiUpdateData ctx;
+				npc_root_node->UpdateWorldData(&ctx);
+				log::info("CME updated");
 			}
 		}
 	}
