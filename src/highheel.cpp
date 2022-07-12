@@ -59,7 +59,7 @@ namespace Gts {
 			return;
 		}
 		float new_hh = 0.0;
-		bool experiment = true;
+		bool experiment = false;
 		std::string node_name = "NPC Root [Root]";
 		if (experiment) {
 			float base_heel = 8.0;
@@ -90,11 +90,11 @@ namespace Gts {
 			// The true foot position should lie between
 			// base_heel and (base_heel -1) because most meshes put it slighly under the floor
 			// We apply maximal error approximations to remove the scaled error
-			float maximal_error = -1.0;
-			float scaled_error = maximal_error*scale;
-			float scaled_error_delta = scaled_error - maximal_error;
-			log::info("Scaled maximal error delta: {}", scaled_error_delta);
-			new_hh -= scaled_error_delta;
+			// float maximal_error = -1.0;
+			// float scaled_error = maximal_error*scale;
+			// float scaled_error_delta = scaled_error - maximal_error;
+			// log::info("Scaled maximal error delta: {}", scaled_error_delta);
+			// new_hh -= scaled_error_delta;
 			log::info("New HH (Error corrected): {}", new_hh);
 			// Now to set it for third person
 		}
