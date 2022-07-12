@@ -4,6 +4,7 @@
 #include "GtsManager.h"
 #include "persistent.h"
 #include "transient.h"
+#include "utils.h"
 
 using namespace RE;
 using namespace Gts;
@@ -28,42 +29,39 @@ namespace Gts {
 		if (!temp_data) {
 			return;
 		}
+		log::info("High heels for: {}", actor_name(actor));
 
 
 		float new_hh = 0.0;
 		float last_hh_adjustment = temp_data->last_hh_adjustment;
 		if (!Persistent::GetSingleton().highheel_correction) {
-			if (last_hh_adjustment > 1e-5) {
-				NiAVObject* body_node = find_any_node(actor, "CME Body [Body]");
-				if (!body_node) {
-					return;
-				}
-
-				float current_cme = body_node->local.translate.z;
-				if ((current_cme - last_hh_adjustment) > 1e-5) {
-					new_hh = current_cme - last_hh_adjustment;
-				}
+			if (fabs(last_hh_adjustment) > 1e-5) {
+				log::info("Last hh adjustment to turn it off");
 			} else {
 				return;
 			}
 		} else {
 			NiAVObject* npc_node = find_any_node(actor, "NPC");
 			if (!npc_node) {
+				log::info("NPC node missing");
 				return;
 			}
 
 			NiAVObject* root_node = find_any_node(actor, "NPC Root [Root]");
 			if (!root_node) {
+				log::info("NPC Root node missing");
 				return;
 			}
 
 			NiAVObject* com_node = find_any_node(actor, "NPC COM [COM ]");
 			if (!com_node) {
+				log::info("NPC COM node missing");
 				return;
 			}
 
 			NiAVObject* body_node = find_any_node(actor, "CME Body [Body]");
 			if (!body_node) {
+				log::info("CME Body node missing");
 				return;
 			}
 
@@ -76,7 +74,7 @@ namespace Gts {
 		}
 
 		if (fabs(last_hh_adjustment - new_hh) > 1e-5) {
-			temp_data->last_hh_adjustment = new_hh;
+			bool adjusted = true;
 			for (bool person: {false, true}) {
 				auto npc_root_node = find_node(actor, "CME Body [Body]", person);
 				if (npc_root_node) {
@@ -84,7 +82,13 @@ namespace Gts {
 					NiUpdateData ctx;
 					npc_root_node->UpdateWorldData(&ctx);
 					log::info("CME updated");
+				} else {
+					log::info("Cannot set node: CME Body: First Person: {}", person);
+					adjusted = false;
 				}
+			}
+			if (adjusted) {
+				temp_data->last_hh_adjustment = new_hh;
 			}
 		}
 	}
