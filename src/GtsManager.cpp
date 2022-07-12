@@ -3,6 +3,7 @@
 #include <GtsManager.h>
 #include <persistent.h>
 #include <transient.h>
+#include <highheel.h>
 #include <vector>
 #include <string>
 
@@ -103,6 +104,7 @@ namespace {
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 		smooth_height_change(actor, saved_data, temp_data);
 		update_height(actor, saved_data, temp_data);
+		apply_high_heel_scale(actor, temp_data);
 	}
 }
 

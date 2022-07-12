@@ -10,6 +10,7 @@ namespace Gts {
 	struct TempActorData {
 		float base_height;
 		float base_volume;
+		float last_hh_adjustment;
 	};
 
 	class Transient {
