@@ -113,34 +113,28 @@ namespace {
 	// Configurable scale
 	void SetScaleMethod(StaticFunctionTag*, int size_method) {
 		switch (size_method) {
-		case 0:
-			// log::info("Scale method set to Model");
-			Persistent::GetSingleton().size_method = SizeMethod::ModelScale;
-			break;
-		case 1:
-			// log::info("Scale method set to Root");
-			Persistent::GetSingleton().size_method = SizeMethod::RootScale;
-			break;
-		case 2:
-			// log::info("Scale method set to Ref");
-			Persistent::GetSingleton().size_method = SizeMethod::RefScale;
-			break;
+			case 0:
+				Persistent::GetSingleton().size_method = SizeMethod::ModelScale;
+				break;
+			case 1:
+				Persistent::GetSingleton().size_method = SizeMethod::RootScale;
+				break;
+			case 2:
+				Persistent::GetSingleton().size_method = SizeMethod::RefScale;
+				break;
 		}
 	}
 	int GetScaleMethod(StaticFunctionTag*) {
 		switch (Persistent::GetSingleton().size_method) {
-		case SizeMethod::ModelScale:
-			// log::info("Scale method is Model");
-			return 0;
-			break;
-		case SizeMethod::RootScale:
-			// log::info("Scale method is Root");
-			return 1;
-			break;
-		case SizeMethod::RefScale:
-			// log::info("Scale method is Ref");
-			return 2;
-			break;
+			case SizeMethod::ModelScale:
+				return 0;
+				break;
+			case SizeMethod::RootScale:
+				return 1;
+				break;
+			case SizeMethod::RefScale:
+				return 2;
+				break;
 		}
 		log::error("Scale method is invalid");
 		return Persistent::GetSingleton().size_method;
@@ -199,17 +193,13 @@ namespace {
 	}
 
 	void ModTargetScale(StaticFunctionTag*, Actor* actor, float amt) {
-		log::info("+ ModTargetScale");
 		if (!actor) {
-			log::info("  - Actor invalid");
 			return;
 		}
 		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
 		if (actor_data) {
-			log::info("  - Data valid");
 			actor_data->target_scale += amt;
 		}
-		log::info("- ModTargetScale");
 	}
 
 	void SetMaxScale(StaticFunctionTag*, Actor* actor, float scale) {
