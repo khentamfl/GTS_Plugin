@@ -50,7 +50,7 @@ namespace Gts {
 		}
 	}
 
-	NiAVObject* find_node(Actor* actor, string& node_name, bool first_person) {
+	NiAVObject* find_node(Actor* actor, std::string_view node_name, bool first_person) {
 		if (!actor->Is3DLoaded()) {
 			return nullptr;
 		}
