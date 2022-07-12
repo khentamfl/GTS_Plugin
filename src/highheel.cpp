@@ -33,6 +33,21 @@ namespace {
 		// child_hh /= ref_scale;
 		return child_hh;
 	}
+
+	float npcnode_z(Actor* actor) {
+		if (!actor) {
+			return 0.0;
+		}
+		std::string node_name = "NPC Root [Root]";
+		auto npc_node = find_node(actor, node_name, false);
+		if (!npc_node) {
+			npc_node = find_node(actor, node_name, true);
+		}
+		if (!npc_node) {
+			return 0.0;
+		}
+		return npc_node->local.translate.z;
+	}
 }
 
 namespace Gts {
@@ -51,6 +66,7 @@ namespace Gts {
 			float scale = get_npcnode_scale(actor);
 			new_hh = scale * base_heel;
 			node_name = "NPC";
+			log::info("NPC Node Z: {}", npcnode_z(actor));
 		} else {
 			float base_heel = base_highheel(actor);
 			log::info("Base HH: {}", base_heel);
