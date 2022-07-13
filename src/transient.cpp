@@ -51,4 +51,9 @@ namespace Gts {
 		}
 		return &this->_actor_data[key];
 	}
+
+	void Clear() {
+		std::unique_lock lock(this._lock);
+		this._actor_data.clear();
+	}
 }

@@ -18,6 +18,8 @@ namespace Gts {
 			[[nodiscard]] static Transient& GetSingleton() noexcept;
 
 			TempActorData* GetActorData(Actor* actor);
+
+			void Clear();
 		private:
 
 			mutable std::mutex _lock;
