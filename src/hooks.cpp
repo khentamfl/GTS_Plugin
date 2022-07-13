@@ -73,7 +73,7 @@ namespace Hooks
 	// Actor update
 	void Hook_OnActorUpdate::Hook() {
 		logger::info("Hooking character update");
-		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
+		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Actor[0] };
 
 		// _Update = ActorVtbl.write_vfunc(0xAD, Update);
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
