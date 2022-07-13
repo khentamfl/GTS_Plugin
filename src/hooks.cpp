@@ -1,6 +1,7 @@
 #include "hooks.h"
 #include "GtsManager.h"
 #include "persistent.h"
+#include "util.h"
 #include "footstep.h"
 
 using namespace RE;
@@ -91,6 +92,7 @@ namespace Hooks
 			auto saved_data = Gts::Persistent::GetSingleton().GetActorData(a_this);
 			if (saved_data) {
 				if (saved_data->anim_speed > 0.0) {
+					log::info("Adjusting anim speed for: {} to {}", actor_name(a_this), saved_data->anim_speed);
 					anim_speed = saved_data->anim_speed;
 				}
 			}
