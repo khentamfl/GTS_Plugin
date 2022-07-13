@@ -4,7 +4,7 @@
 #include "GtsManager.h"
 #include "persistent.h"
 #include "transient.h"
-#include "utils.h"
+#include "util.h"
 
 using namespace RE;
 using namespace Gts;
