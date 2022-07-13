@@ -3,6 +3,7 @@
 #include "hooks.h"
 #include "papyrus.h"
 #include "persistent.h"
+#include "transient.h"
 #include "footstep.h"
 
 #include <stddef.h>
