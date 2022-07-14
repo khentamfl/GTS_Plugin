@@ -21,7 +21,7 @@ namespace Hooks
 		Hook_Player::Hook();
 		Hook_Actor::Hook();
 		Hook_Character::Hook();
-        Hook_TESObjectREFR::Hook();
+        // Hook_TESObjectREFR::Hook();
 		Hook_BGSImpactManager::Hook();
 
 		logger::info("Gts finished applying hooks...");
