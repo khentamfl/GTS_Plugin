@@ -30,6 +30,6 @@ namespace Gts {
 		float dt);
         
     inline bool logit(Actor* actor) {
-        return (actor->formID == 0x14 || actor->IsTeammate())
+        return (actor->formID == 0x14 || actor->IsPlayerTeammate());
     }
 }
