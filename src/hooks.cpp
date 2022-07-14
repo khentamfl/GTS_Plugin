@@ -1,5 +1,6 @@
 #include "hooks.h"
 #include "hooks/main.h"
+#include "hooks/frame_update.h"
 #include "hooks/actor.h"
 #include "hooks/character.h"
 #include "hooks/playercharacter.h"
