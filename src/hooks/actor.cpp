@@ -1,4 +1,6 @@
 #include "hooks/actor.h"
+#include "util.h"
+#include "GtsManager.h"
 
 using namespace RE;
 using namespace SKSE;

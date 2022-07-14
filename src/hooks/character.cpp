@@ -1,4 +1,7 @@
 #include "hooks/character.h"
+#include "util.h"
+#include "GtsManager.h"
+
 
 using namespace RE;
 
