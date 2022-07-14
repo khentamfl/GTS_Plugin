@@ -193,7 +193,7 @@ namespace Gts {
 		return result;
 	}
     
-    ActorData* GetData(TESObjectREFR* refr) {
+    ActorData* Persistent::GetData(TESObjectREFR* refr) {
         if (!refr) {
 			return nullptr;
 		}
