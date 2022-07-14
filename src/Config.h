@@ -86,7 +86,7 @@ namespace Gts {
 
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
 
-			[[nodiscard]] inline const int GetExperiment() noexcept {
+			[[nodiscard]] inline int GetExperiment() const noexcept {
 				return _experiment;
 			}
 
