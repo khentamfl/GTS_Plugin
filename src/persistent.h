@@ -26,6 +26,7 @@ namespace Gts {
 			static void OnGameLoaded(SKSE::SerializationInterface* serde);
 
 			ActorData* GetActorData(Actor* actor);
+            ActorData* GetData(TESObjectREFR* refr);
 
 			bool highheel_correction = true;
 			SizeMethod size_method = SizeMethod::ModelScale;

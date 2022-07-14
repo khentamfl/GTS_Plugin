@@ -192,4 +192,18 @@ namespace Gts {
 		}
 		return result;
 	}
+    
+    ActorData* GetData(TESObjectREFR* refr) {
+        if (!refr) {
+			return nullptr;
+		}
+		auto key = refr->formID;
+		ActorData* result = nullptr;
+		try {
+			result = &this->_actor_data.at(key);
+		} catch (const std::out_of_range& oor) {
+            return nullptr;
+        }
+        return result;
+    }
 }
