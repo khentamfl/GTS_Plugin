@@ -1,6 +1,11 @@
 #include "hooks/PlayerCharacter.h"
+#include "util.h"
+#include "GtsManager.h"
+#include "persistent.h"
 
 using namespace RE;
+using namespace SKSE;
+using namespace Gts;
 
 namespace Hooks
 {
