@@ -3,6 +3,7 @@
 #include "hooks/actor.h"
 #include "hooks/character.h"
 #include "hooks/playercharacter.h"
+#include "hooks/tesobjectrefr.h"
 #include "hooks/impact.h"
 
 using namespace RE;
@@ -20,6 +21,7 @@ namespace Hooks
 		Hook_Player::Hook();
 		Hook_Actor::Hook();
 		Hook_Character::Hook();
+        // Hook_TESObjectREFR::Hook();
 		Hook_BGSImpactManager::Hook();
 
 		logger::info("Gts finished applying hooks...");
