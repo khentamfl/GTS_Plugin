@@ -1,14 +1,16 @@
 #include "hooks/character.h"
 #include "util.h"
 #include "GtsManager.h"
-
+#include "persistent.h"
 
 using namespace RE;
+using namespace SKSE;
+using namespace Gts;
 
 namespace Hooks
 {
 	void Hook_Character::Hook() {
-		logger::info("Hooking Actor");
+		logger::info("Hooking Character");
 		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
 
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
