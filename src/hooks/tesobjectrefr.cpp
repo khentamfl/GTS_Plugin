@@ -9,14 +9,14 @@ using namespace Gts;
 
 namespace Hooks
 {
-	void Hook_Character::Hook() {
+	void Hook_TESObjectREFR::Hook() {
 		logger::info("Hooking TESObjectRefr");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_TESObjectREFR[0] };
 
 		_UpdateAnimation = Vtbl.write_vfunc(0x7D, UpdateAnimation);
 	}
 
-	void Hook_Character::UpdateAnimation(RE::TESObjectREFR* a_this, float a_delta) {
+	void Hook_TESObjectREFR::UpdateAnimation(RE::TESObjectREFR* a_this, float a_delta) {
 		log::info("Hook TESObjectREFR Anim", a_this->GetDisplayFullName());
 		float anim_speed = 1.0;
 		if (Gts::GtsManager::GetSingleton().enabled) {
