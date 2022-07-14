@@ -86,14 +86,20 @@ namespace Gts {
 
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
 
+			[[nodiscard]] inline const int GetExperiment() noexcept {
+				return _experiment;
+			}
+
 		private:
 			articuno_serde(ar) {
 				ar <=> articuno::kv(_debug, "debug");
 				ar <=> articuno::kv(_frame, "frame");
+				ar <=> articuno::kv(_experiment, "experiment");
 			}
 
 			Debug _debug;
 			Frame _frame;
+			int _experiment;
 
 			friend class articuno::access;
 	};

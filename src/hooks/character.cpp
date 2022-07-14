@@ -1,4 +1,5 @@
 #include "hooks/character.h"
+#include "Config.h"
 
 using namespace RE;
 
@@ -6,7 +7,8 @@ namespace Hooks
 {
 	void Hook_Character::Hook() {
 		logger::info("Hooking Actor");
-		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
+		auto index = Config::GetSingleton().GetExperiment();
+		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[index] };
 
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
 	}
