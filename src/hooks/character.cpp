@@ -16,7 +16,7 @@ namespace Hooks
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
 	}
 
-	void Hook_Character::UpdateAnimation(RE::Actor* a_this, float a_delta) {
+	void Hook_Character::UpdateAnimation(RE::Character* a_this, float a_delta) {
 		log::info("Hook Character Anim: {}", actor_name(a_this));
 		float anim_speed = 1.0;
 		if (Gts::GtsManager::GetSingleton().enabled) {
