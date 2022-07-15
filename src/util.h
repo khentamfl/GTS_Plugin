@@ -28,8 +28,10 @@ namespace Gts {
 		float x_goal,
 		float halflife,
 		float dt);
-        
-    inline bool logit(Actor* actor) {
-        return (actor->formID == 0x14 || actor->IsPlayerTeammate());
-    }
+
+	void experiment001(Character* character);
+
+	inline bool logit(Actor* actor) {
+		return (actor->formID == 0x14 || actor->IsPlayerTeammate());
+	}
 }

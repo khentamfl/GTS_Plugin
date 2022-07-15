@@ -89,4 +89,9 @@ namespace Gts {
 		x = eydt*(j0 + j1*dt) + x_goal;
 		v = eydt*(v - j1*y*dt);
 	}
+
+	void experiment001(Character* character) {
+		character->UpdateAnimation(3.141);
+		character->Update(1.413);
+	}
 }
