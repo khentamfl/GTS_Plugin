@@ -13,9 +13,7 @@ namespace Hooks
 {
 	void Hook_Character::Hook() {
 		logger::info("Hooking Character");
-		auto index = Config::GetSingleton().GetExperiment();
-		logger::info("  - Hooking table {}", index);
-		REL::Relocation<std::uintptr_t> ActorVtbl{ Character::VTABLE[index] };
+		REL::Relocation<std::uintptr_t> ActorVtbl{ Character::VTABLE[0] };
 
 		_Update = ActorVtbl.write_vfunc(0xAD, Update);
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
@@ -23,7 +21,7 @@ namespace Hooks
 
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
 		float anim_speed = 1.0;
-		logger::info("Charcter Update");
+		logger::info("Charcter Update: {}", actor_name(a_this));
 		if (Gts::GtsManager::GetSingleton().enabled) {
 			auto saved_data = Gts::Persistent::GetSingleton().GetData(a_this);
 			if (saved_data) {
