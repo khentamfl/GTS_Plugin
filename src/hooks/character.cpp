@@ -13,13 +13,13 @@ namespace Hooks
 {
 	void Hook_Character::Hook() {
 		logger::info("Hooking Character");
-		REL::Relocation<std::uintptr_t> ActorVtbl{ Character::VTABLE[0] };
+		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
 
-		// _Update = ActorVtbl.write_vfunc(0xAD, Update);
+		_Update = ActorVtbl.write_vfunc(0xAD, Update);
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
 	}
 
-	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
+	void Hook_Character::Update(RE::Actor* a_this, float a_delta) {
         //if (a_delta > 1e-5) {
         //	logger::info("Charcter Update: {} by {}", actor_name(a_this), a_delta);
         //	if (Gts::GtsManager::GetSingleton().enabled) {
@@ -34,7 +34,7 @@ namespace Hooks
 		Update(a_this, a_delta);
 	}
 
-	void Hook_Character::UpdateAnimation(RE::Character* a_this, float a_delta) {
+	void Hook_Character::UpdateAnimation(RE::Actor* a_this, float a_delta) {
 		log::info("Hook Character Anim: {}", actor_name(a_this));
 		float anim_speed = 1.0;
 		if (Gts::GtsManager::GetSingleton().enabled) {
