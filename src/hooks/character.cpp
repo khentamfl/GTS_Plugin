@@ -14,9 +14,16 @@ namespace Hooks
 	void Hook_Character::Hook() {
 		logger::info("Hooking Character");
 		auto index = Config::GetSingleton().GetExperiment();
-		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[index] };
+		logger::info("  - Hooking table {}", index);
+		REL::Relocation<std::uintptr_t> ActorVtbl{ Character::VTABLE[index] };
 
+		_Update = ActorVtbl.write_vfunc(0xAD, Update);
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
+	}
+
+	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
+		log::info("Hook Character Update: {}", actor_name(a_this));
+		Update(a_this, a_delta);
 	}
 
 	void Hook_Character::UpdateAnimation(RE::Character* a_this, float a_delta) {
