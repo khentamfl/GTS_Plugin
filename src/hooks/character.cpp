@@ -15,7 +15,7 @@ namespace Hooks
 		logger::info("Hooking Character");
 		REL::Relocation<std::uintptr_t> ActorVtbl{ Character::VTABLE[0] };
 
-		_Update = ActorVtbl.write_vfunc(0xAD, Update);
+		// _Update = ActorVtbl.write_vfunc(0xAD, Update);
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
 	}
 
