@@ -100,7 +100,6 @@ namespace {
 						break;
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 						// It is now safe to access form data.
-						Hooks::Install();
 						break;
 					// Skyrim game events.
 					case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
@@ -173,6 +172,7 @@ SKSEPluginLoad(const LoadInterface * skse)
 
 	Init(skse);
 	InitializeMessaging();
+    Hooks::Install();
 	InitializePapyrus();
 	InitializeSerialization();
 
