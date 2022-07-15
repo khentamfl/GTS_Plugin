@@ -23,6 +23,7 @@ namespace Hooks
 
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
 		float anim_speed = 1.0;
+		logger::info("Charcter Update");
 		if (Gts::GtsManager::GetSingleton().enabled) {
 			auto saved_data = Gts::Persistent::GetSingleton().GetData(a_this);
 			if (saved_data) {
