@@ -15,8 +15,8 @@ namespace Hooks
 	{
 		logger::info("Gts applying hooks...");
 
-		auto& trampoline = SKSE::GetTrampoline();
-		trampoline.create(256);
+		//auto& trampoline = SKSE::GetTrampoline();
+		// trampoline.create(256);
 
 		// Hook_MainUpdate::Hook(trampoline);
 		//Hook_FrameUpdate::Hook(trampoline);
