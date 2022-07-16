@@ -171,10 +171,10 @@ SKSEPluginLoad(const LoadInterface * skse)
 
 
 	Init(skse);
-	InitializeMessaging();
-    Hooks::Install();
-	InitializePapyrus();
-	InitializeSerialization();
+	//InitializeMessaging();
+	Hooks::Install();
+	//InitializePapyrus();
+	//InitializeSerialization();
 
 	log::info("{} has finished loading.", plugin->GetName());
 	return(true);
