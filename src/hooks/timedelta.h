@@ -10,7 +10,7 @@ namespace Hooks
 			static void Hook();
 		private:
 
-			static void PollChannelUpdateImpl(RE::BSAnimationGraphChannel* a_this, bool poll);
+			static void PollChannelUpdateImpl(RE::BSAnimationGraphChannel* a_this, std::uint32_t poll);
 			static inline REL::Relocation<decltype(PollChannelUpdateImpl)> _PollChannelUpdateImpl;
 	};
 }

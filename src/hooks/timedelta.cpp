@@ -16,8 +16,8 @@ namespace Hooks
 		_PollChannelUpdateImpl = Vtbl.write_vfunc(0x01, PollChannelUpdateImpl);
 	}
 
-	void Hook_TimeDelta::PollChannelUpdateImplu(RE::BSAnimationGraphChannel* a_this, bool poll) {
-		log::info("Hook Time Delta: {}", poll);
+	void Hook_TimeDelta::PollChannelUpdateImpl(RE::BSAnimationGraphChannel* a_this, std::uint32_t poll) {
+		log::info("Hook Time Delta: {}", reinterpret_cast<bool &>(poll));
         log::info("Hook Time Delta (int): {}", reinterpret_cast<int &>(poll));
         log::info("Hook Time Delta (float): {}", reinterpret_cast<float &>(poll));
 		
