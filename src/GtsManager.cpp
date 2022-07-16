@@ -154,6 +154,25 @@ namespace {
 			log::info("  - channelName: {}", channelName);
 		}
 	}
+    
+    void experiment004(Actor* actor) {
+		if (!actor) {
+			return;
+		}
+		auto middlehighprocess = actor->currentProcess->middleHigh;
+		if (!middlehighprocess) {
+			return;
+		}
+        auto variables = middlehighprocess->animationVariableCache;
+        if (variables) {
+            return;
+        }
+        log::info("Actor {} has variables", actor_name(actor));
+        for (auto variable: variables->variableCache) {
+            std::string name = variable.variableName.c_str();
+            log::info("  - Variable name {}", name);
+        }
+    }
 
 	void update_actor(Actor* actor) {
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
@@ -162,6 +181,7 @@ namespace {
 		update_height(actor, saved_data, temp_data);
 		apply_high_heel_scale(actor, temp_data);
 		experiment003(actor);
+        experiment004(actor);
 	}
 }
 
