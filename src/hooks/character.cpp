@@ -19,19 +19,20 @@ namespace Hooks
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
 	}
 
-	void Hook_Character::Update(RE::Actor* a_this, float a_delta) {
-        //if (a_delta > 1e-5) {
-        //	logger::info("Charcter Update: {} by {}", actor_name(a_this), a_delta);
-        //	if (Gts::GtsManager::GetSingleton().enabled) {
-        //		auto saved_data = Gts::Persistent::GetSingleton().GetData(a_this);
-        //		if (saved_data) {
-        //			if (saved_data->anim_speed > 0.0) {
-        //				a_delta *= saved_data->anim_speed;
-        //			}
-        //		}
-        //	}
-        //}
-		Update(a_this, a_delta);
+	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
+		float anim_speed = 1.0;
+		if (a_delta > 1e-5) {
+			logger::info("Charcter Update: {} by {}", actor_name(a_this), a_delta);
+			if (Gts::GtsManager::GetSingleton().enabled) {
+				auto saved_data = Gts::Persistent::GetSingleton().GetData(a_this);
+				if (saved_data) {
+					if (saved_data->anim_speed > 0.0) {
+						anim_speed = saved_data->anim_speed;
+					}
+				}
+			}
+		}
+		Update(a_this, a_delta * anim_speed);
 	}
 
 	void Hook_Character::UpdateAnimation(RE::Actor* a_this, float a_delta) {
