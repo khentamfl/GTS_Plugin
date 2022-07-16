@@ -32,7 +32,7 @@ namespace Hooks
 				}
 			}
 		}
-		Update(a_this, a_delta * anim_speed);
+		_Update(a_this, a_delta * anim_speed);
 	}
 
 	void Hook_Character::UpdateAnimation(RE::Actor* a_this, float a_delta) {
