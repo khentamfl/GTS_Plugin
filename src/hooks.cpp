@@ -3,6 +3,7 @@
 #include "hooks/actor.h"
 #include "hooks/playercharacter.h"
 #include "hooks/impact.h"
+#include "hooks/timedelta.h"
 
 using namespace RE;
 
@@ -19,6 +20,7 @@ namespace Hooks
 		Hook_Player::Hook();
 		Hook_Actor::Hook();
 		Hook_BGSImpactManager::Hook();
+        Hook_TimeDelta::Hook();
 
 		logger::info("Gts finished applying hooks...");
 	}
