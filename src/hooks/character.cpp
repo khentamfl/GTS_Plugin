@@ -1,0 +1,73 @@
+#include "hooks/character.h"
+#include "util.h"
+#include "GtsManager.h"
+#include "persistent.h"
+
+using namespace RE;
+using namespace SKSE;
+using namespace Gts;
+
+namespace {
+    void experiment003(Actor* actor) {
+		if (!actor) {
+			return;
+		}
+		auto middlehighprocess = actor->currentProcess->middleHigh;
+		if (!middlehighprocess) {
+			return;
+		}
+		auto thisAGmanager = middlehighprocess->animationGraphManager.get();
+		if (!thisAGmanager) {
+			return;
+		}
+
+		log::info("Actor {} bound channels", actor_name(actor));
+		for (auto boundChannel: thisAGmanager->boundChannels) {
+			std::string channelName = boundChannel->channelName.c_str();
+			log::info("  - channelName: {}", channelName);
+			log::info("  - Value (int): {}", boundChannel->value);
+			log::info("  - Value (float): {}", reinterpret_cast<float &>(boundChannel->value));
+            if (channelName == "TimeDelta") {
+                float& value = reinterpret_cast<float &>(boundChannel->value);
+                value *= 0.12;
+                log::info("  - New Value (float) multipled by 0.12: {}", reinterpret_cast<float &>(boundChannel->value));
+            }
+		}
+		log::info("Actor {} bumped channels", actor_name(actor));
+		for (auto bumpedChannel: thisAGmanager->bumpedChannels) {
+			std::string channelName = bumpedChannel->channelName.c_str();
+			log::info("  - channelName: {}", channelName);
+			log::info("  - Value (int): {}", bumpedChannel->value);
+			log::info("  - Value (float): {}", reinterpret_cast<float &>(bumpedChannel->value));
+		}
+	}
+}
+namespace Hooks
+{
+	void Hook_Character::Hook() {
+		logger::info("Hooking Character");
+		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
+
+		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
+        _ModifyAnimationUpdateData = ActorVtbl.write_vfunc(0x79, ModifyAnimationUpdateData);
+        _Update = ActorVtbl.write_vfunc(0xAD, Update);
+	}
+    
+    void Hook_Character::Update(RE::Actor* a_this, float a_delta) {
+		log::info("Hook Character Update: {}", actor_name(a_this));
+		_Update(a_this, a_delta);
+        experiment003(a_this);
+	}
+
+	void Hook_Character::UpdateAnimation(RE::Actor* a_this, float a_delta) {
+		log::info("Hook Character Anim: {}", actor_name(a_this));
+		_UpdateAnimation(a_this, a_delta);
+	}
+    
+    void Hook_Character::ModifyAnimationUpdateData(RE::Actor* a_this, BSAnimationUpdateData& a_data) {
+        log::info("Hook Character Anim Update Modify: {}", actor_name(a_this));
+		_ModifyAnimationUpdateData(a_this, a_data);
+        experiment003(a_this);
+    }
+    
+}
