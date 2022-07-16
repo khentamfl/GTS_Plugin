@@ -18,13 +18,13 @@ namespace Hooks
 		auto& trampoline = SKSE::GetTrampoline();
 		trampoline.create(256);
 
-		Hook_MainUpdate::Hook(trampoline);
+		// Hook_MainUpdate::Hook(trampoline);
 		//Hook_FrameUpdate::Hook(trampoline);
-		Hook_Player::Hook();
+		// Hook_Player::Hook();
 		// Hook_Actor::Hook();
 		Hook_Character::Hook();
 		// Hook_TESObjectREFR::Hook();
-		Hook_BGSImpactManager::Hook();
+		// Hook_BGSImpactManager::Hook();
 
 		logger::info("Gts finished applying hooks...");
 	}
