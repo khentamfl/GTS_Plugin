@@ -147,7 +147,7 @@ void GtsManager::poll() {
 		if ((current_frame - init_delay) % step != 0) {
 			return;
 		}
-		log::info("Poll");
+
 		auto actors = find_actors();
 		int i = 0;
 		int count = actors.size();
