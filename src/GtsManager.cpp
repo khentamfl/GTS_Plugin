@@ -99,12 +99,45 @@ namespace {
 		}
 	}
 
+	void experiment001(Actor* actor) {
+		if (!actor) {
+			return;
+		}
+		auto HighProcess = actor->currentProcess->high;
+		if (!HighProcess) {
+			return;
+		}
+
+		log::info("Actor {} has an animationDelta: {},{},{}", actor_name(actor), HighProcess->animationDelta.x, HighProcess->animationDelta.y, HighProcess->animationDelta.z);
+	}
+
+	void experiment002(Actor* actor) {
+		if (!actor) {
+			return;
+		}
+		auto middlehighprocess = actor->currentProcess->middleHigh;
+		if (!middlehighprocess) {
+			return;
+		}
+		auto thisAGmanager = middlehighprocess->animationGraphManager.get();
+		if (!thisAGmanager) {
+			return;
+		}
+		auto thisgraph = thisAGmanager->graphs.begin()->get();
+		if (!thisgraph) {
+			return;
+		}
+		log::info("Actor {} has an anim graph", actor_name(actor));
+	}
+
 	void update_actor(Actor* actor) {
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 		smooth_height_change(actor, saved_data, temp_data);
 		update_height(actor, saved_data, temp_data);
 		apply_high_heel_scale(actor, temp_data);
+		experiment001(actor);
+		experiment002(actor);
 	}
 }
 
