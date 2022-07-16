@@ -161,8 +161,7 @@ namespace {
 		smooth_height_change(actor, saved_data, temp_data);
 		update_height(actor, saved_data, temp_data);
 		apply_high_heel_scale(actor, temp_data);
-		experiment001(actor);
-		experiment002(actor);
+		experiment003(actor);
 	}
 }
 
