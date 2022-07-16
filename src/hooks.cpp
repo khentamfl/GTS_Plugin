@@ -1,10 +1,7 @@
 #include "hooks.h"
 #include "hooks/main.h"
-#include "hooks/frame_update.h"
 #include "hooks/actor.h"
-#include "hooks/character.h"
 #include "hooks/playercharacter.h"
-#include "hooks/tesobjectrefr.h"
 #include "hooks/impact.h"
 
 using namespace RE;
@@ -19,11 +16,8 @@ namespace Hooks
 		trampoline.create(256);
 
 		Hook_MainUpdate::Hook(trampoline);
-		//Hook_FrameUpdate::Hook(trampoline);
 		Hook_Player::Hook();
 		Hook_Actor::Hook();
-		Hook_Character::Hook();
-		// Hook_TESObjectREFR::Hook();
 		Hook_BGSImpactManager::Hook();
 
 		logger::info("Gts finished applying hooks...");
