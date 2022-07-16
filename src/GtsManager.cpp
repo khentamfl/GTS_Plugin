@@ -148,14 +148,14 @@ namespace {
 			std::string channelName = boundChannel->channelName.c_str();
 			log::info("  - channelName: {}", channelName);
 			log::info("  - Value (int): {}", boundChannel->value);
-			log::info("  - Value (float): {}", static_cast<float>(boundChannel->value));
+			log::info("  - Value (float): {}", reinterpret_cast<float>(boundChannel->value));
 		}
 		log::info("Actor {} bumped channels", actor_name(actor));
 		for (auto bumpedChannel: thisAGmanager->bumpedChannels) {
 			std::string channelName = bumpedChannel->channelName.c_str();
 			log::info("  - channelName: {}", channelName);
 			log::info("  - Value (int): {}", bumpedChannel->value);
-			log::info("  - Value (float): {}", static_cast<float>(bumpedChannel->value));
+			log::info("  - Value (float): {}", reinterpret_cast<float>(bumpedChannel->value));
 		}
 	}
 
