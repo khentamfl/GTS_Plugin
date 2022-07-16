@@ -149,6 +149,11 @@ namespace {
 			log::info("  - channelName: {}", channelName);
 			log::info("  - Value (int): {}", boundChannel->value);
 			log::info("  - Value (float): {}", reinterpret_cast<float &>(boundChannel->value));
+            if (channelName == "TimeDelta") {
+                float& value = reinterpret_cast<float &>(boundChannel->value);
+                value *= 0.12;
+                log::info("  - New Value (float) multipled by 0.12: {}", reinterpret_cast<float &>(boundChannel->value));
+            }
 		}
 		log::info("Actor {} bumped channels", actor_name(actor));
 		for (auto bumpedChannel: thisAGmanager->bumpedChannels) {
