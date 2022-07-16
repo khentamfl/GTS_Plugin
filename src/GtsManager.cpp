@@ -130,6 +130,31 @@ namespace {
 		log::info("Actor {} has an anim graph", actor_name(actor));
 	}
 
+	void experiment003(Actor* actor) {
+		if (!actor) {
+			return;
+		}
+		auto middlehighprocess = actor->currentProcess->middleHigh;
+		if (!middlehighprocess) {
+			return;
+		}
+		auto thisAGmanager = middlehighprocess->animationGraphManager.get();
+		if (!thisAGmanager) {
+			return;
+		}
+
+		log::info("Actor {} bound channels", actor_name(actor));
+		for (auto boundChannel: thisAGmanager->boundChannels) {
+			std::string channelName = boundChannel->channelName.c_str();
+			log::info("  - channelName: {}", channelName);
+		}
+		log::info("Actor {} bumped channels", actor_name(actor));
+		for (auto bumpedChannel: thisAGmanager->bumpedChannels) {
+			std::string channelName = bumpedChannel->channelName.c_str();
+			log::info("  - channelName: {}", channelName);
+		}
+	}
+
 	void update_actor(Actor* actor) {
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
