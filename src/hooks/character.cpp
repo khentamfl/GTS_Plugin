@@ -19,7 +19,7 @@ namespace Hooks
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
 	}
 
-	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
+	void Hook_Character::Update(RE::Actor* a_this, float a_delta) {
 		float anim_speed = 1.0;
 		if (a_delta > 1e-5) {
 			logger::info("Charcter Update: {} by {}", actor_name(a_this), a_delta);
