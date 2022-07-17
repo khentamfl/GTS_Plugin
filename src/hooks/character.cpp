@@ -7,28 +7,67 @@ using namespace RE;
 using namespace SKSE;
 using namespace Gts;
 
+namespace {
+    void log_delta(Actor* actor) {
+        float delta = 0.0;
+        actor->GetGraphVariableFloat("TimeDelta", delta);
+        log::info("  - {} TimeDelta: {}", actor_name(actor), delta);
+    }
+}
+
 namespace Hooks
 {
 	void Hook_Character::Hook() {
 		logger::info("Hooking Character");
 		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
 
+        _Update = ActorVtbl.write_vfunc(0xAD, Update);
 		_UpdateNonRenderSafe = ActorVtbl.write_vfunc(0xB1, UpdateNonRenderSafe);
+        _UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
+        _UpdateNoAI = ActorVtbl.write_vfunc(0xAE, UpdateNoAI);
+        _ModifyMovementData = ActorVtbl.write_vfunc(0x11A, ModifyMovementData);
+        _ProcessTracking = ActorVtbl.write_vfunc(0x112, ProcessTracking);
+	}
+    
+    void Hook_Character::Update(RE::Character* a_this, float a_delta) {
+        log::info("Update: {}",actor_name(actor));
+        log_delta(a_this);
+		_Update(a_this, a_delta);
+        log_delta(a_this);
 	}
 
 	void Hook_Character::UpdateNonRenderSafe(RE::Character* a_this, float a_delta) {
-		if (a_delta > 1e-5) {
-			if (Gts::GtsManager::GetSingleton().enabled) {
-				auto saved_data = Gts::Persistent::GetSingleton().GetActorData(a_this);
-				if (saved_data) {
-					if (saved_data->anim_speed > 0.0) {
-						log::info("Adjusting anim speed for: {} to {}", actor_name(a_this), saved_data->anim_speed);
-						a_delta *= saved_data->anim_speed;
-					}
-				}
-			}
-			log::info("Hook Character UpdateNonRenderSafe: {} by {}", actor_name(a_this), a_delta);
-		}
+        log::info("UpdateNonRenderSafe: {}",actor_name(actor));
+        log_delta(a_this);
 		_UpdateNonRenderSafe(a_this, a_delta);
+        log_delta(a_this);
+	}
+    
+    void Hook_Character::UpdateAnimation(RE::Character* a_this, float a_delta) {
+        log::info("UpdateAnimation: {}",actor_name(actor));
+        log_delta(a_this);
+		_UpdateAnimation(a_this, a_delta);
+        log_delta(a_this);
+	}
+    
+    void Hook_Character::UpdateNoAI(RE::Character* a_this, float a_delta) {
+        log::info("UpdateNoAI: {}",actor_name(actor));
+        log_delta(a_this);
+		_UpdateNoAI(a_this, a_delta);
+        log_delta(a_this);
+	}
+    
+    void Hook_Character::ModifyMovementData(RE::Character* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4) {
+        log::info("ModifyMovementData: {}",actor_name(actor));
+        log_delta(a_this);
+		_ModifyMovementData(a_this, a_delta, a_arg3, a_arg4);
+        log_delta(a_this);
+	}
+    
+    void Hook_Character::ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D) {
+        log::info("ProcessTracking: {}",actor_name(actor));
+        log_delta(a_this);
+		_ProcessTracking(a_this, a_delta, a_obj3D);
+        log_delta(a_this);
 	}
 }
