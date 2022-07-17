@@ -18,11 +18,12 @@ namespace Hooks
 		trampoline.create(256);
 
 		Hook_MainUpdate::Hook(trampoline);
-        Hook_Actor::Hook();
-        Hook_Character::Hook();
+		Hook_Actor::Hook();
+		Hook_Character::Hook();
 		Hook_Player::Hook();
 		Hook_BGSImpactManager::Hook();
-        Hook_TimeDelta::Hook();
+
+		logger::info("SetGraphVariableFloat is at: {}", (REL::Relocation<func_t> func{ RELOCATION_ID(32141, 32885) }).address());
 
 		logger::info("Gts finished applying hooks...");
 	}

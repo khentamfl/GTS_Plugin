@@ -54,9 +54,10 @@ namespace Hooks
 			if (Gts::GtsManager::GetSingleton().enabled) {
 				auto saved_data = Gts::Persistent::GetSingleton().GetActorData(a_this);
 				if (saved_data) {
-					float speed = saved_data->anim_speed;
+					float speed = 0.99; //saved_data->anim_speed;
 					if ((speed > 1e-5) && (fabs(speed - 1.0) > 1e-5)) {
 						float delta = (speed - 1.0) * previous_delta;
+						log::info("Adjusting anim with a delta of {}", delta);
 						a_this->UpdateAnimation(delta);
 					}
 				}
