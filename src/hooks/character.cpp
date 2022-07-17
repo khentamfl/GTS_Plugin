@@ -8,7 +8,7 @@ using namespace SKSE;
 using namespace Gts;
 
 namespace {
-    void experiment003(Actor* actor) {
+	void experiment003(Actor* actor) {
 		if (!actor) {
 			return;
 		}
@@ -27,11 +27,11 @@ namespace {
 			log::info("  - channelName: {}", channelName);
 			log::info("  - Value (int): {}", boundChannel->value);
 			log::info("  - Value (float): {}", reinterpret_cast<float &>(boundChannel->value));
-            if (channelName == "TimeDelta") {
-                float& value = reinterpret_cast<float &>(boundChannel->value);
-                value *= 0.12;
-                log::info("  - New Value (float) multipled by 0.12: {}", reinterpret_cast<float &>(boundChannel->value));
-            }
+			if (channelName == "TimeDelta") {
+				float& value = reinterpret_cast<float &>(boundChannel->value);
+				value *= 0.12;
+				log::info("  - New Value (float) multipled by 0.12: {}", reinterpret_cast<float &>(boundChannel->value));
+			}
 		}
 		log::info("Actor {} bumped channels", actor_name(actor));
 		for (auto bumpedChannel: thisAGmanager->bumpedChannels) {
@@ -48,26 +48,43 @@ namespace Hooks
 		logger::info("Hooking Character");
 		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
 
+		_Update = ActorVtbl.write_vfunc(0xAD, Update);
 		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
-        _ModifyAnimationUpdateData = ActorVtbl.write_vfunc(0x79, ModifyAnimationUpdateData);
-        _Update = ActorVtbl.write_vfunc(0xAD, Update);
+		_ModifyAnimationUpdateData = ActorVtbl.write_vfunc(0x79, ModifyAnimationUpdateData);
+
+		_UpdateNoAI = ActorVtbl.write_vfunc(0xAE, UpdateNoAI);
+		_UpdateNonRenderSafe = ActorVtbl.write_vfunc(0xB1, UpdateNonRenderSafe);
+		_ProcessTracking = ActorVtbl.write_vfunc(0x122, ProcessTracking);
 	}
-    
-    void Hook_Character::Update(RE::Actor* a_this, float a_delta) {
-		log::info("Hook Character Update: {}", actor_name(a_this));
+
+	void Hook_Character::Update(RE::Actor* a_this, float a_delta) {
+		log::info("Hook Character Update: {} by {}", actor_name(a_this), a_delta);
 		_Update(a_this, a_delta);
-        experiment003(a_this);
 	}
 
 	void Hook_Character::UpdateAnimation(RE::Actor* a_this, float a_delta) {
-		log::info("Hook Character Anim: {}", actor_name(a_this));
+		log::info("Hook Character Anim: {} by {}", actor_name(a_this), a_delta);
 		_UpdateAnimation(a_this, a_delta);
 	}
-    
-    void Hook_Character::ModifyAnimationUpdateData(RE::Actor* a_this, BSAnimationUpdateData& a_data) {
-        log::info("Hook Character Anim Update Modify: {}", actor_name(a_this));
+
+	void Hook_Character::ModifyAnimationUpdateData(RE::Actor* a_this, BSAnimationUpdateData& a_data) {
+		log::info("Hook Character Anim Update Modify: {}", actor_name(a_this));
 		_ModifyAnimationUpdateData(a_this, a_data);
-        experiment003(a_this);
-    }
-    
+	}
+
+	void Hook_Character::UpdateNoAI(RE::Actor* a_this, float a_delta) {
+		log::info("Hook Character UpdateNoAI: {} by {}", actor_name(a_this), a_delta);
+		_UpdateNoAI(a_this, a_delta);
+	}
+
+	void Hook_Character::UpdateNonRenderSafe(RE::Actor* a_this, float a_delta) {
+		log::info("Hook Character UpdateNonRenderSafe: {} by {}", actor_name(a_this), a_delta);
+		_UpdateNonRenderSafe(a_this, a_delta);
+	}
+
+	void Hook_Character::ProcessTracking(RE::Actor* a_this, float a_delta, NiAVObject* a_obj3D) {
+		log::info("Hook Character ProcessTracking: {} by {}", actor_name(a_this), a_delta);
+		_ProcessTracking(a_this, a_delta, a_obj3D);
+	}
+
 }
