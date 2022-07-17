@@ -4,7 +4,6 @@
 #include "hooks/character.h"
 #include "hooks/playercharacter.h"
 #include "hooks/impact.h"
-#include "hooks/timedelta.h"
 
 using namespace RE;
 
