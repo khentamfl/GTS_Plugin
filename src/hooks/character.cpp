@@ -60,6 +60,7 @@ namespace Hooks
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
 		log::info("Hook Character Update: {} by {}", actor_name(a_this), a_delta);
 		_Update(a_this, a_delta);
+		a_this->SetGraphVariableBool("bAnimationDriven", true);
 	}
 
 	void Hook_Character::UpdateAnimation(RE::Character* a_this, float a_delta) {
@@ -82,10 +83,10 @@ namespace Hooks
 		_UpdateNonRenderSafe(a_this, a_delta);
 		// NPC have their update time done here lets see what happens if we queue
 		// an anim update
-		if (a_delta > 1e-5) {
-			log::info("  - Anim driven: {} for {}", a_this->IsAnimationDriven(), actor_name(a_this));
-			a_this->UpdateAnimation(a_delta);
-		}
+		// if (a_delta > 1e-5) {
+		// 	log::info("  - Anim driven: {} for {}", a_this->IsAnimationDriven(), actor_name(a_this));
+		// 	a_this->UpdateAnimation(a_delta);
+		// }
 	}
 
 	void Hook_Character::ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D) {
