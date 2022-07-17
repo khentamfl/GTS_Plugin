@@ -38,18 +38,12 @@ namespace Hooks
 		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
 
 		_Update = ActorVtbl.write_vfunc(0xAD, Update);
-		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
-		_ModifyAnimationUpdateData = ActorVtbl.write_vfunc(0x79, ModifyAnimationUpdateData);
-
-		_UpdateNoAI = ActorVtbl.write_vfunc(0xAE, UpdateNoAI);
-		_UpdateNonRenderSafe = ActorVtbl.write_vfunc(0xB1, UpdateNonRenderSafe);
-		_ProcessTracking = ActorVtbl.write_vfunc(0x122, ProcessTracking);
 	}
 
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
 		log::info("Hook Character Update: {} by {}", actor_name(a_this), a_delta);
 		_Update(a_this, a_delta);
-		float previous_delta = get_anim_delta(actor);
+		float previous_delta = get_anim_delta(a_this);
 		if (previous_delta > 1e-5) {
 			if (Gts::GtsManager::GetSingleton().enabled) {
 				auto saved_data = Gts::Persistent::GetSingleton().GetActorData(a_this);
