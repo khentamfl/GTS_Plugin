@@ -8,38 +8,27 @@ using namespace SKSE;
 using namespace Gts;
 
 namespace {
-	void experiment003(Actor* actor) {
+	float get_anim_delta(Actor* actor) {
 		if (!actor) {
-			return;
+			return 0.0;
 		}
 		auto middlehighprocess = actor->currentProcess->middleHigh;
 		if (!middlehighprocess) {
-			return;
+			return 0.0;
 		}
 		auto thisAGmanager = middlehighprocess->animationGraphManager.get();
 		if (!thisAGmanager) {
-			return;
+			return 0.0;
 		}
 
-		log::info("Actor {} bound channels", actor_name(actor));
 		for (auto boundChannel: thisAGmanager->boundChannels) {
 			std::string channelName = boundChannel->channelName.c_str();
-			log::info("  - channelName: {}", channelName);
-			log::info("  - Value (int): {}", boundChannel->value);
-			log::info("  - Value (float): {}", reinterpret_cast<float &>(boundChannel->value));
 			if (channelName == "TimeDelta") {
 				float& value = reinterpret_cast<float &>(boundChannel->value);
-				value *= 0.12;
-				log::info("  - New Value (float) multipled by 0.12: {}", reinterpret_cast<float &>(boundChannel->value));
+				return value;
 			}
 		}
-		log::info("Actor {} bumped channels", actor_name(actor));
-		for (auto bumpedChannel: thisAGmanager->bumpedChannels) {
-			std::string channelName = bumpedChannel->channelName.c_str();
-			log::info("  - channelName: {}", channelName);
-			log::info("  - Value (int): {}", bumpedChannel->value);
-			log::info("  - Value (float): {}", reinterpret_cast<float &>(bumpedChannel->value));
-		}
+		return 0.0;
 	}
 }
 namespace Hooks
@@ -60,38 +49,18 @@ namespace Hooks
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
 		log::info("Hook Character Update: {} by {}", actor_name(a_this), a_delta);
 		_Update(a_this, a_delta);
-		a_this->SetGraphVariableBool("bAnimationDriven", true);
+		float previous_delta = get_anim_delta(actor);
+		if (previous_delta > 1e-5) {
+			if (Gts::GtsManager::GetSingleton().enabled) {
+				auto saved_data = Gts::Persistent::GetSingleton().GetActorData(a_this);
+				if (saved_data) {
+					float speed = saved_data->anim_speed;
+					if ((speed > 1e-5) && (fabs(speed - 1.0) > 1e-5)) {
+						float delta = (speed - 1.0) * previous_delta;
+						a_this->UpdateAnimation(delta);
+					}
+				}
+			}
+		}
 	}
-
-	void Hook_Character::UpdateAnimation(RE::Character* a_this, float a_delta) {
-		log::info("Hook Character Anim: {} by {}", actor_name(a_this), a_delta);
-		_UpdateAnimation(a_this, a_delta);
-	}
-
-	void Hook_Character::ModifyAnimationUpdateData(RE::Character* a_this, BSAnimationUpdateData& a_data) {
-		log::info("Hook Character Anim Update Modify: {}", actor_name(a_this));
-		_ModifyAnimationUpdateData(a_this, a_data);
-	}
-
-	void Hook_Character::UpdateNoAI(RE::Character* a_this, float a_delta) {
-		log::info("Hook Character UpdateNoAI: {} by {}", actor_name(a_this), a_delta);
-		_UpdateNoAI(a_this, a_delta);
-	}
-
-	void Hook_Character::UpdateNonRenderSafe(RE::Character* a_this, float a_delta) {
-		log::info("Hook Character UpdateNonRenderSafe: {} by {}", actor_name(a_this), a_delta);
-		_UpdateNonRenderSafe(a_this, a_delta);
-		// NPC have their update time done here lets see what happens if we queue
-		// an anim update
-		// if (a_delta > 1e-5) {
-		// 	log::info("  - Anim driven: {} for {}", a_this->IsAnimationDriven(), actor_name(a_this));
-		// 	a_this->UpdateAnimation(a_delta);
-		// }
-	}
-
-	void Hook_Character::ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D) {
-		log::info("Hook Character ProcessTracking: {} by {}", actor_name(a_this), a_delta);
-		_ProcessTracking(a_this, a_delta, a_obj3D);
-	}
-
 }
