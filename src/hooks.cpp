@@ -22,7 +22,9 @@ namespace Hooks
 		Hook_Player::Hook();
 		Hook_BGSImpactManager::Hook();
 
-		logger::info("SetGraphVariableFloat is at: {}", (REL::Relocation<func_t> func{ RELOCATION_ID(32141, 32885) }).address());
+		using func_t = decltype(&IAnimationGraphManagerHolder::SetGraphVariableBool);
+		REL::Relocation<func_t> func{ RELOCATION_ID(32141, 32885) };
+		logger::info("SetGraphVariableFloat is at: {}", func.address());
 
 		logger::info("Gts finished applying hooks...");
 	}
