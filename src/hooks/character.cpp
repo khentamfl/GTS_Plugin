@@ -57,32 +57,38 @@ namespace Hooks
 		_ProcessTracking = ActorVtbl.write_vfunc(0x122, ProcessTracking);
 	}
 
-	void Hook_Character::Update(RE::Actor* a_this, float a_delta) {
+	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
 		log::info("Hook Character Update: {} by {}", actor_name(a_this), a_delta);
 		_Update(a_this, a_delta);
 	}
 
-	void Hook_Character::UpdateAnimation(RE::Actor* a_this, float a_delta) {
+	void Hook_Character::UpdateAnimation(RE::Character* a_this, float a_delta) {
 		log::info("Hook Character Anim: {} by {}", actor_name(a_this), a_delta);
 		_UpdateAnimation(a_this, a_delta);
 	}
 
-	void Hook_Character::ModifyAnimationUpdateData(RE::Actor* a_this, BSAnimationUpdateData& a_data) {
+	void Hook_Character::ModifyAnimationUpdateData(RE::Character* a_this, BSAnimationUpdateData& a_data) {
 		log::info("Hook Character Anim Update Modify: {}", actor_name(a_this));
 		_ModifyAnimationUpdateData(a_this, a_data);
 	}
 
-	void Hook_Character::UpdateNoAI(RE::Actor* a_this, float a_delta) {
+	void Hook_Character::UpdateNoAI(RE::Character* a_this, float a_delta) {
 		log::info("Hook Character UpdateNoAI: {} by {}", actor_name(a_this), a_delta);
 		_UpdateNoAI(a_this, a_delta);
 	}
 
-	void Hook_Character::UpdateNonRenderSafe(RE::Actor* a_this, float a_delta) {
+	void Hook_Character::UpdateNonRenderSafe(RE::Character* a_this, float a_delta) {
 		log::info("Hook Character UpdateNonRenderSafe: {} by {}", actor_name(a_this), a_delta);
 		_UpdateNonRenderSafe(a_this, a_delta);
+		// NPC have their update time done here lets see what happens if we queue
+		// an anim update
+		if (a_delta > 1e-5) {
+			log::info("  - Anim driven: {} for {}", a_this->IsAnimationDriven(), actor_name(a_this));
+			a_this->UpdateAnimation(a_delta);
+		}
 	}
 
-	void Hook_Character::ProcessTracking(RE::Actor* a_this, float a_delta, NiAVObject* a_obj3D) {
+	void Hook_Character::ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D) {
 		log::info("Hook Character ProcessTracking: {} by {}", actor_name(a_this), a_delta);
 		_ProcessTracking(a_this, a_delta, a_obj3D);
 	}
