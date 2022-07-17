@@ -49,7 +49,7 @@ namespace Hooks
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
 		log::info("Hook Character Update: {} by {}", actor_name(a_this), a_delta);
 		_Update(a_this, a_delta);
-		float previous_delta = get_anim_delta(actor);
+		float previous_delta = get_anim_delta(a_this);
 		if (previous_delta > 1e-5) {
 			if (Gts::GtsManager::GetSingleton().enabled) {
 				auto saved_data = Gts::Persistent::GetSingleton().GetActorData(a_this);
