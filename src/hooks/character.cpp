@@ -13,6 +13,10 @@ namespace {
 		actor->GetGraphVariableFloat("TimeDelta", delta);
 		return delta;
 	}
+
+	void experiment(Actor* actor) {
+		actor->SetGraphVariableFloat("TimeDelta", 0.0);
+	}
 }
 
 namespace Hooks
@@ -36,6 +40,7 @@ namespace Hooks
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in Update");
 		}
+		experiment(a_this);
 	}
 
 	void Hook_Character::UpdateNonRenderSafe(RE::Character* a_this, float a_delta) {
@@ -45,6 +50,7 @@ namespace Hooks
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in UpdateNonRenderSafe");
 		}
+		experiment(a_this);
 	}
 
 	void Hook_Character::UpdateAnimation(RE::Character* a_this, float a_delta) {
@@ -54,6 +60,7 @@ namespace Hooks
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in UpdateAnimation");
 		}
+		experiment(a_this);
 	}
 
 	void Hook_Character::UpdateNoAI(RE::Character* a_this, float a_delta) {
@@ -63,6 +70,7 @@ namespace Hooks
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in UpdateNoAI");
 		}
+		experiment(a_this);
 	}
 
 	void Hook_Character::ModifyMovementData(RE::Character* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4) {
@@ -72,6 +80,7 @@ namespace Hooks
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in ModifyMovementData");
 		}
+		experiment(a_this);
 	}
 
 	void Hook_Character::ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D) {
@@ -81,5 +90,6 @@ namespace Hooks
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in ProcessTracking");
 		}
+		experiment(a_this);
 	}
 }
