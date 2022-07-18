@@ -30,54 +30,54 @@ namespace Hooks
 	}
 
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
-		float before = get_delta(actor);
+		float before = get_delta(a_this);
 		_Update(a_this, a_delta);
-		float delta = get_delta(actor) - before;
+		float delta = get_delta(a_this) - before;
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in Update");
 		}
 	}
 
 	void Hook_Character::UpdateNonRenderSafe(RE::Character* a_this, float a_delta) {
-		float before = get_delta(actor);
+		float before = get_delta(a_this);
 		_UpdateNonRenderSafe(a_this, a_delta);
-		float delta = get_delta(actor) - before;
+		float delta = get_delta(a_this) - before;
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in UpdateNonRenderSafe");
 		}
 	}
 
 	void Hook_Character::UpdateAnimation(RE::Character* a_this, float a_delta) {
-		float before = get_delta(actor);
+		float before = get_delta(a_this);
 		_UpdateAnimation(a_this, a_delta);
-		float delta = get_delta(actor) - before;
+		float delta = get_delta(a_this) - before;
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in UpdateAnimation");
 		}
 	}
 
 	void Hook_Character::UpdateNoAI(RE::Character* a_this, float a_delta) {
-		float before = get_delta(actor);
+		float before = get_delta(a_this);
 		_UpdateNoAI(a_this, a_delta);
-		float delta = get_delta(actor) - before;
+		float delta = get_delta(a_this) - before;
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in UpdateNoAI");
 		}
 	}
 
 	void Hook_Character::ModifyMovementData(RE::Character* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4) {
-		float before = get_delta(actor);
+		float before = get_delta(a_this);
 		_ModifyMovementData(a_this, a_delta, a_arg3, a_arg4);
-		float delta = get_delta(actor) - before;
+		float delta = get_delta(a_this) - before;
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in ModifyMovementData");
 		}
 	}
 
 	void Hook_Character::ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D) {
-		float before = get_delta(actor);
+		float before = get_delta(a_this);
 		_ProcessTracking(a_this, a_delta, a_obj3D);
-		float delta = get_delta(actor) - before;
+		float delta = get_delta(a_this) - before;
 		if (fabs(delta) > 1e-5) {
 			log::info("Non zero in ProcessTracking");
 		}
