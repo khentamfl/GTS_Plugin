@@ -15,13 +15,10 @@ namespace {
 	}
 
 	void experiment(Actor* actor) {
-		float current_delta = get_delta(actor);
+		float current_delta = *g_delta_time;
 		if (current_delta > 1e-5) {
-			log::info("Flobal Time Delta: {}", *g_delta_time);
-			log::info("Frame Delta: {}", current_delta);
-			actor->UpdateAnimation(-2.0*current_delta);
-			float post_delta = get_delta(actor);
-			log::info("Post Frame Delta: {}", post_delta);
+			log::info("Global Time Delta: {}", current_delta);
+			actor->UpdateAnimation(-0.85*current_delta);
 		}
 	}
 }
