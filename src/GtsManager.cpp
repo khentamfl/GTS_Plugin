@@ -100,6 +100,9 @@ namespace {
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+        if (!Persistent::GetSingleton().is_speed_adjusted) {
+            return;
+        }
 		if (!actor) {
 			return;
 		}
@@ -117,7 +120,7 @@ namespace {
 		if (scale < 1e-5) {
 			return;
 		}
-		float speed_mult = soft_core(scale, 0.074, 1.0, 1.12, 1.0);
+		float speed_mult = soft_core(scale, 0.125, 0.85, 1.12, 1.0);
 		persi_actor_data->anim_speed = speed_mult;
 		actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / speed_mult);
 	}
