@@ -44,7 +44,7 @@ namespace {
 				);
 		}
 	}
-	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
 			return;
 		}
@@ -99,12 +99,41 @@ namespace {
 		}
 	}
 
+	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+		if (!actor) {
+			return;
+		}
+		if (!actor->Is3DLoaded()) {
+			return;
+		}
+		if (!trans_actor_data) {
+			return;
+		}
+		if (!persi_actor_data) {
+			return;
+		}
+
+		float scale = persi_actor_data->visual_scale;
+		if (scale < 1e-5) {
+			return;
+		}
+		float speed_mult = soft_core(scale, 0.074, 1.0, 1.12, 1.0);
+		persi_actor_data->anim_speed = speed_mult;
+		actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / speed_mult);
+	}
+
+	void apply_actor(Actor* actor) {
+		auto temp_data = Transient::GetSingleton().GetActorData(actor);
+		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
+		apply_height(actor, saved_data, temp_data);
+		apply_highheel(actor, temp_data);
+		apply_speed(actor, saved_data, temp_data);
+	}
+
 	void update_actor(Actor* actor) {
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 		smooth_height_change(actor, saved_data, temp_data);
-		update_height(actor, saved_data, temp_data);
-		apply_high_heel_scale(actor, temp_data);
 	}
 }
 
@@ -157,6 +186,7 @@ void GtsManager::poll() {
 				continue;
 			}
 			update_actor(actor);
+			apply_actor(actor);
 		}
 	}
 }
@@ -214,8 +244,5 @@ void GtsManager::reapply_actor(Actor* actor) {
 		return;
 	}
 	log::info("Reapplying actor: {}", actor_name(actor));
-	auto temp_data = Transient::GetSingleton().GetActorData(actor);
-	auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-	update_height(actor, saved_data, temp_data);
-	apply_high_heel_scale(actor, temp_data);
+	apply_actor(actor);
 }

@@ -9,6 +9,7 @@ namespace {
 	inline const auto ActorDataRecord = _byteswap_ulong('ACTD');
 	inline const auto ScaleMethodRecord = _byteswap_ulong('SCMD');
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
+	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 }
 
 namespace Gts {
@@ -104,6 +105,10 @@ namespace Gts {
 				bool highheel_correction;
 				serde->ReadRecordData(&highheel_correction, sizeof(highheel_correction));
 				GetSingleton().highheel_correction = highheel_correction;
+			} else if (type == IsSpeedAdjustedRecord) {
+				bool is_speed_adjusted;
+				serde->ReadRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
+				GetSingleton().is_speed_adjusted = is_speed_adjusted;
 			} else {
 				log::warn("Unknown record type in cosave.");
 				__assume(false);
@@ -154,8 +159,16 @@ namespace Gts {
 			return;
 		}
 
-		int highheel_correction = GetSingleton().highheel_correction;
+		bool highheel_correction = GetSingleton().highheel_correction;
 		serde->WriteRecordData(&highheel_correction, sizeof(highheel_correction));
+
+		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 0)) {
+			log::error("Unable to open is speed adjusted record to write cosave data.");
+			return;
+		}
+
+		bool is_speed_adjusted = GetSingleton().is_speed_adjusted;
+		serde->WriteRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
 
 	}
 
@@ -192,9 +205,9 @@ namespace Gts {
 		}
 		return result;
 	}
-    
-    ActorData* Persistent::GetData(TESObjectREFR* refr) {
-        if (!refr) {
+
+	ActorData* Persistent::GetData(TESObjectREFR* refr) {
+		if (!refr) {
 			return nullptr;
 		}
 		auto key = refr->formID;
@@ -202,8 +215,8 @@ namespace Gts {
 		try {
 			result = &this->_actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
-            return nullptr;
-        }
-        return result;
-    }
+			return nullptr;
+		}
+		return result;
+	}
 }

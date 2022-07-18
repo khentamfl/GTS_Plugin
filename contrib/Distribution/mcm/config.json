@@ -63,7 +63,21 @@
         "action": {
           "type": "CallGlobalFunction",
           "script": "GtsPlugin",
-          "function": "EnableHighHeelCorrection",
+          "function": "SetIsHighHeelEnabled",
+          "params": ["{value}"]
+        }
+      },
+      {
+        "id": "bEnableSpeedAdjustment:Main",
+        "text": "Enable Anim and Walk Speed Adjustments",
+        "valueOptions": {
+          "sourceType": "ModSettingBool"
+        },
+        "type": "toggle",
+        "action": {
+          "type": "CallGlobalFunction",
+          "script": "GtsPlugin",
+          "function": "SetIsSpeedAdjusted",
           "params": ["{value}"]
         }
       },

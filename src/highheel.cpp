@@ -22,7 +22,7 @@ namespace {
 }
 
 namespace Gts {
-	void apply_high_heel_scale(Actor* actor, TempActorData* temp_data) {
+	void apply_highheel(Actor* actor, TempActorData* temp_data) {
 		if (!actor) {
 			return;
 		}

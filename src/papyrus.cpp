@@ -39,8 +39,8 @@ namespace {
 		}
 		return false;
 	}
-    
-    float GetGrowthHalfLife(StaticFunctionTag*, Actor* actor) {
+
+	float GetGrowthHalfLife(StaticFunctionTag*, Actor* actor) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
 			if (actor_data) {
@@ -78,13 +78,21 @@ namespace {
 		return format(number, sf);
 	}
 
-	void EnableHighHeelCorrection(StaticFunctionTag*, bool enabled) {
+	bool GetIsHighHeelEnabled(StaticFunctionTag*) {
+		return Persistent::GetSingleton().highheel_correction;
+	}
+
+	void SetIsHighHeelEnabled(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().highheel_correction = enabled;
 	}
-    
-    bool GetHighHeelCorrection(StaticFunctionTag*) {
-        return Persistent::GetSingleton().highheel_correction;
-    }
+
+	bool GetIsSpeedAdjusted(StaticFunctionTag*) {
+		return Persistent::GetSingleton().is_speed_adjusted;
+	}
+
+	void SetIsSpeedAdjusted(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().is_speed_adjusted = enabled;
+	}
 }
 
 namespace Gts {
@@ -94,9 +102,11 @@ namespace Gts {
 		vm->RegisterFunction("GetGrowthHalfLife", PapyrusClass, GetGrowthHalfLife);
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
-		vm->RegisterFunction("EnableHighHeelCorrection", PapyrusClass, EnableHighHeelCorrection);
-        vm->RegisterFunction("GetHighHeelCorrection", PapyrusClass, GetHighHeelCorrection);
-        
+		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
+		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
+		vm->RegisterFunction("GetIsSpeedAdjusted", PapyrusClass, GetIsSpeedAdjusted);
+		vm->RegisterFunction("SetIsSpeedAdjusted", PapyrusClass, SetIsSpeedAdjusted);
+
 		register_papyrus_scale(vm);
 		register_papyrus_events(vm);
 		return true;

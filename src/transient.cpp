@@ -47,6 +47,7 @@ namespace Gts {
 			result.base_height = base_height_meters;
 			result.base_volume = base_volume_meters;
 			result.last_hh_adjustment = 0.0;
+			result.base_walkspeedmult = actor->GetActorValue(ActorValue::kSpeedMult);
 			this->_actor_data[key] = result;
 		}
 		return &this->_actor_data[key];

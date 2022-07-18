@@ -1,6 +1,7 @@
 #pragma once
 // Misc codes
 #include <SKSE/SKSE.h>
+#include <math.h>
 
 using namespace std;
 using namespace RE;
@@ -33,5 +34,9 @@ namespace Gts {
 
 	inline bool logit(Actor* actor) {
 		return (actor->formID == 0x14 || actor->IsPlayerTeammate());
+	}
+
+	inline float soft_core(float x, float k, float n, float s, float o) {
+		return 1.0/(pow(1.0+pow(k*(x-o),n*s),1.0/s));
 	}
 }

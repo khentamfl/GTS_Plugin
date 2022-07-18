@@ -11,6 +11,7 @@ namespace Gts {
 		float base_height;
 		float base_volume;
 		float last_hh_adjustment;
+		float base_walkspeedmult;
 	};
 
 	class Transient {
