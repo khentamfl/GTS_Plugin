@@ -44,7 +44,7 @@
         "valueOptions": {
           "options": ["Model", "NPC Root Node", "Ref Scale"],
           "shortNames": ["Model", "NPC", "Ref"],
-          "sourceType": "ModSettingFloat"
+          "sourceType": "ModSettingInt"
         },
         "action": {
           "type": "CallGlobalFunction",
@@ -81,7 +81,7 @@
           "max": 2.0,
           "step": 0.01,
           "formatString": "{2}",
-          "sourceType": "ModSettingBool"
+          "sourceType": "ModSettingFloat"
         },
         "action": {
           "type": "CallFunction",
