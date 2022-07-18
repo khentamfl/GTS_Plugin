@@ -31,5 +31,8 @@ namespace Gts {
 			void poll();
 			void poll_actor(Actor* actor);
 
+			// Reapply changes (used after reload events)
+			void reapply();
+			void reapply_actor(Actor* actor);
 	};
 }

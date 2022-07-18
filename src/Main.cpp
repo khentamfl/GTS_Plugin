@@ -5,6 +5,7 @@
 #include "persistent.h"
 #include "transient.h"
 #include "footstep.h"
+#include "reloader.h"
 
 #include <stddef.h>
 #include <thread>
@@ -96,7 +97,15 @@ namespace {
 					case MessagingInterface::kPostLoad: // Called after all plugins have finished running SKSEPlugin_Load.
 					// It is now safe to do multithreaded operations, or operations against other plugins.
 					case MessagingInterface::kPostPostLoad: // Called after all kPostLoad message handlers have run.
+						break;
 					case MessagingInterface::kInputLoaded: // Called when all game data has been found.
+						{
+							auto event_sources = ScriptEventSourceHolder::GetSingleton();
+							if (event_sources) {
+								event_sources->AddEventSink<TESObjectLoadedEvent>(&ReloadManager::GetSingleton());
+								event_sources->AddEventSink<TESCellFullyLoadedEvent>(&ReloadManager::GetSingleton());
+							}
+						}
 						break;
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 						// It is now safe to access form data.
@@ -172,7 +181,7 @@ SKSEPluginLoad(const LoadInterface * skse)
 
 	Init(skse);
 	InitializeMessaging();
-    Hooks::Install();
+	Hooks::Install();
 	InitializePapyrus();
 	InitializeSerialization();
 

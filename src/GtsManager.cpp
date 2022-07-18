@@ -149,10 +149,7 @@ void GtsManager::poll() {
 		}
 
 		auto actors = find_actors();
-		int i = 0;
-		int count = actors.size();
 		for (auto actor: actors) {
-			i += 1;
 			if (!actor) {
 				continue;
 			}
@@ -193,4 +190,32 @@ void GtsManager::poll_actor(Actor* actor) {
 
 	log::info("Scale changed from {} to {}. Updating on ActorUpdate",scale, visual_scale);
 	set_scale(actor, visual_scale);
+}
+
+void GtsManager::reapply() {
+	// Get everyone in loaded AI data and reapply
+	auto actors = find_actors();
+	for (auto actor: actors) {
+		if (!actor) {
+			continue;
+		}
+		if (!actor->Is3DLoaded()) {
+			continue;
+		}
+		reapply_actor(actor);
+	}
+}
+void GtsManager::reapply_actor(Actor* actor) {
+	// Reapply just this actor
+	if (!actor) {
+		return;
+	}
+	if (!actor->Is3DLoaded()) {
+		return;
+	}
+	log::info("Reapplying actor: {}", actor_name(actor));
+	auto temp_data = Transient::GetSingleton().GetActorData(actor);
+	auto saved_data = Persistent::GetSingleton().GetActorData(actor);
+	update_height(actor, saved_data, temp_data);
+	apply_high_heel_scale(actor, temp_data);
 }
