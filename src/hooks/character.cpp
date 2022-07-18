@@ -8,10 +8,10 @@ using namespace SKSE;
 using namespace Gts;
 
 namespace {
-	void log_delta(Actor* actor) {
+	float get_delta(Actor* actor) {
 		float delta = 0.0;
 		actor->GetGraphVariableFloat("TimeDelta", delta);
-		log::info("  - {} TimeDelta: {}", actor_name(actor), delta);
+		return delta;
 	}
 }
 
@@ -30,44 +30,56 @@ namespace Hooks
 	}
 
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
-		log::info("Update: {}",actor_name(a_this));
-		log_delta(a_this);
+		float before = get_delta(actor);
 		_Update(a_this, a_delta);
-		log_delta(a_this);
+		float delta = get_delta(actor) - before;
+		if (fabs(delta) > 1e-5) {
+			log::info("Non zero in Update");
+		}
 	}
 
 	void Hook_Character::UpdateNonRenderSafe(RE::Character* a_this, float a_delta) {
-		log::info("UpdateNonRenderSafe: {}",actor_name(a_this));
-		log_delta(a_this);
+		float before = get_delta(actor);
 		_UpdateNonRenderSafe(a_this, a_delta);
-		log_delta(a_this);
+		float delta = get_delta(actor) - before;
+		if (fabs(delta) > 1e-5) {
+			log::info("Non zero in UpdateNonRenderSafe");
+		}
 	}
 
 	void Hook_Character::UpdateAnimation(RE::Character* a_this, float a_delta) {
-		log::info("UpdateAnimation: {}",actor_name(a_this));
-		log_delta(a_this);
+		float before = get_delta(actor);
 		_UpdateAnimation(a_this, a_delta);
-		log_delta(a_this);
+		float delta = get_delta(actor) - before;
+		if (fabs(delta) > 1e-5) {
+			log::info("Non zero in UpdateAnimation");
+		}
 	}
 
 	void Hook_Character::UpdateNoAI(RE::Character* a_this, float a_delta) {
-		log::info("UpdateNoAI: {}",actor_name(a_this));
-		log_delta(a_this);
+		float before = get_delta(actor);
 		_UpdateNoAI(a_this, a_delta);
-		log_delta(a_this);
+		float delta = get_delta(actor) - before;
+		if (fabs(delta) > 1e-5) {
+			log::info("Non zero in UpdateNoAI");
+		}
 	}
 
 	void Hook_Character::ModifyMovementData(RE::Character* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4) {
-		log::info("ModifyMovementData: {}",actor_name(a_this));
-		log_delta(a_this);
+		float before = get_delta(actor);
 		_ModifyMovementData(a_this, a_delta, a_arg3, a_arg4);
-		log_delta(a_this);
+		float delta = get_delta(actor) - before;
+		if (fabs(delta) > 1e-5) {
+			log::info("Non zero in ModifyMovementData");
+		}
 	}
 
 	void Hook_Character::ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D) {
-		log::info("ProcessTracking: {}",actor_name(a_this));
-		log_delta(a_this);
+		float before = get_delta(actor);
 		_ProcessTracking(a_this, a_delta, a_obj3D);
-		log_delta(a_this);
+		float delta = get_delta(actor) - before;
+		if (fabs(delta) > 1e-5) {
+			log::info("Non zero in ProcessTracking");
+		}
 	}
 }
