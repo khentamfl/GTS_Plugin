@@ -15,7 +15,10 @@ namespace {
 	}
 
 	void experiment(Actor* actor) {
-		actor->SetGraphVariableFloat("TimeDelta", 0.0);
+		float current_delta = get_delta(actor);
+		if (current_delta > 1e-5) {
+			actor->UpdateAnimation(-2.0*current_delta);
+		}
 	}
 }
 
@@ -26,11 +29,11 @@ namespace Hooks
 		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
 
 		_Update = ActorVtbl.write_vfunc(0xAD, Update);
-		_UpdateNonRenderSafe = ActorVtbl.write_vfunc(0xB1, UpdateNonRenderSafe);
-		_UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
-		_UpdateNoAI = ActorVtbl.write_vfunc(0xAE, UpdateNoAI);
-		_ModifyMovementData = ActorVtbl.write_vfunc(0x11A, ModifyMovementData);
-		_ProcessTracking = ActorVtbl.write_vfunc(0x112, ProcessTracking);
+		// _UpdateNonRenderSafe = ActorVtbl.write_vfunc(0xB1, UpdateNonRenderSafe);
+		// _UpdateAnimation = ActorVtbl.write_vfunc(0x7D, UpdateAnimation);
+		// _UpdateNoAI = ActorVtbl.write_vfunc(0xAE, UpdateNoAI);
+		// _ModifyMovementData = ActorVtbl.write_vfunc(0x11A, ModifyMovementData);
+		// _ProcessTracking = ActorVtbl.write_vfunc(0x112, ProcessTracking);
 	}
 
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
