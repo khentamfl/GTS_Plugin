@@ -13,7 +13,7 @@ namespace Hooks
 		logger::info("Hooking Character");
 		REL::Relocation<std::uintptr_t> ActorVtbl{ RE::VTABLE_Character[0] };
 
-		_Update = ActorVtbl.write_vfunc(0xAD, Update);
+		_Update = ActorVtbl.write_vfunc(REL::Relocate(0xAD, 0x0AD, 0x0AF), Update);
 	}
 
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
