@@ -16,6 +16,11 @@ namespace Hooks
 		_Update = ActorVtbl.write_vfunc(REL::Relocate(0xAD, 0x0AD, 0x0AF), Update);
 	}
 
+	// NPC Characters don't call UpdateAnimation like the PlayerCharacter
+	// does. I was unable to find where it is updated (maybed in AI)
+	// So this is an alternative hack
+	// It works by either adding more animation or undoing animations
+	// to that which skyrim does naturally
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
 		_Update(a_this, a_delta);
 		float current_delta = *g_delta_time;

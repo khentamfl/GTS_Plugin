@@ -107,7 +107,7 @@ namespace {
 		return Persistent::GetSingleton().speed_adjustment.n;
 	}
 	void SetSpeedParameterS(StaticFunctionTag*, float s) {
-		Persistent::GetSingleton().speed_adjustment.S = s;
+		Persistent::GetSingleton().speed_adjustment.s = s;
 	}
 	float GetSpeedParameterS(StaticFunctionTag*) {
 		return Persistent::GetSingleton().speed_adjustment.s;
