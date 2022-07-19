@@ -93,6 +93,25 @@ namespace {
 	void SetIsSpeedAdjusted(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().is_speed_adjusted = enabled;
 	}
+
+	void SetSpeedParameterK(StaticFunctionTag*, float k) {
+		Persistent::GetSingleton().speed_adjustment.k = k;
+	}
+	float GetSpeedParameterK(StaticFunctionTag*) {
+		return Persistent::GetSingleton().speed_adjustment.k;
+	}
+	void SetSpeedParameterN(StaticFunctionTag*, float n) {
+		Persistent::GetSingleton().speed_adjustment.n = n;
+	}
+	float GetSpeedParameterN(StaticFunctionTag*) {
+		return Persistent::GetSingleton().speed_adjustment.n;
+	}
+	void SetSpeedParameterS(StaticFunctionTag*, float s) {
+		Persistent::GetSingleton().speed_adjustment.S = s;
+	}
+	float GetSpeedParameterS(StaticFunctionTag*) {
+		return Persistent::GetSingleton().speed_adjustment.s;
+	}
 }
 
 namespace Gts {
@@ -106,6 +125,12 @@ namespace Gts {
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("GetIsSpeedAdjusted", PapyrusClass, GetIsSpeedAdjusted);
 		vm->RegisterFunction("SetIsSpeedAdjusted", PapyrusClass, SetIsSpeedAdjusted);
+		vm->RegisterFunction("SetSpeedParameterK", PapyrusClass, SetSpeedParameterK);
+		vm->RegisterFunction("GetSpeedParameterK", PapyrusClass, GetSpeedParameterK);
+		vm->RegisterFunction("SetSpeedParameterN", PapyrusClass, SetSpeedParameterN);
+		vm->RegisterFunction("GetSpeedParameterN", PapyrusClass, GetSpeedParameterN);
+		vm->RegisterFunction("SetSpeedParameterS", PapyrusClass, SetSpeedParameterS);
+		vm->RegisterFunction("GetSpeedParameterS", PapyrusClass, GetSpeedParameterS);
 
 		register_papyrus_scale(vm);
 		register_papyrus_events(vm);

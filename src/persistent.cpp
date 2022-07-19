@@ -109,6 +109,19 @@ namespace Gts {
 				bool is_speed_adjusted;
 				serde->ReadRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
 				GetSingleton().is_speed_adjusted = is_speed_adjusted;
+				if (version >= 1) {
+					float k;
+					serde->ReadRecordData(&k, sizeof(k));
+					GetSingleton().speed_adjustment.k = k;
+					float n;
+					serde->ReadRecordData(&n, sizeof(n));
+					GetSingleton().speed_adjustment.n = n;
+					float s;
+					serde->ReadRecordData(&s, sizeof(s));
+					GetSingleton().speed_adjustment.s = s;
+					float o = 1.0;
+					GetSingleton().speed_adjustment.o = o;
+				}
 			} else {
 				log::warn("Unknown record type in cosave.");
 				__assume(false);
@@ -162,13 +175,19 @@ namespace Gts {
 		bool highheel_correction = GetSingleton().highheel_correction;
 		serde->WriteRecordData(&highheel_correction, sizeof(highheel_correction));
 
-		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 0)) {
+		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 1)) {
 			log::error("Unable to open is speed adjusted record to write cosave data.");
 			return;
 		}
 
 		bool is_speed_adjusted = GetSingleton().is_speed_adjusted;
 		serde->WriteRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
+		float k = GetSingleton().speed_adjustment.k;
+		serde->WriteRecordData(&k, sizeof(k));
+		float n = GetSingleton().speed_adjustment.n;
+		serde->WriteRecordData(&n, sizeof(n));
+		float s = GetSingleton().speed_adjustment.s;
+		serde->WriteRecordData(&s, sizeof(s));
 
 	}
 
