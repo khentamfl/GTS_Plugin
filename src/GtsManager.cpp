@@ -132,6 +132,13 @@ namespace {
 		apply_height(actor, saved_data, temp_data);
 		apply_highheel(actor, temp_data);
 		apply_speed(actor, saved_data, temp_data);
+
+		// Experiement
+		auto& rot_speed = actor->currentProcess->middleHigh->rotationSpeed;
+		log::info("{} rotationSpeed: {},{},{}", actor_name(actor), rot_speed.x,rot_speed.y,rot_speed.z);
+		actor->currentProcess->middleHigh->rotationSpeed.x=1000.0;
+		actor->currentProcess->middleHigh->rotationSpeed.y=1000.0;
+		actor->currentProcess->middleHigh->rotationSpeed.z=1000.0;
 	}
 
 	void update_actor(Actor* actor) {

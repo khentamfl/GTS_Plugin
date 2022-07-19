@@ -18,7 +18,7 @@ namespace Hooks
 		_GetRunSpeed = ActorVtbl.write_vfunc(REL::Relocate(0x0EB, 0x0EB, 0x0ED), GetRunSpeed);
 		_GetJogSpeed = ActorVtbl.write_vfunc(REL::Relocate(0x0EC, 0x0EC, 0x0EE), GetJogSpeed);
 		_GetFastWalkSpeed = ActorVtbl.write_vfunc(REL::Relocate(0x0ED, 0x0ED, 0x0EF), GetFastWalkSpeed);
-		_UpdateGetWalkSpeed = ActorVtbl.write_vfunc(REL::Relocate(0x0EE, 0x0EE, 0x0F0), GetWalkSpeed);
+		_GetWalkSpeed = ActorVtbl.write_vfunc(REL::Relocate(0x0EE, 0x0EE, 0x0F0), GetWalkSpeed);
 	}
 
 	// NPC Characters don't call UpdateAnimation like the PlayerCharacter
