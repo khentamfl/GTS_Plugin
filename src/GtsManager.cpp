@@ -247,7 +247,6 @@ void GtsManager::poll_actor(Actor* actor) {
 		return;
 	}
 
-	log::info("Scale changed from {} to {}. Updating on ActorUpdate",scale, visual_scale);
 	set_scale(actor, visual_scale);
 }
 
@@ -272,6 +271,5 @@ void GtsManager::reapply_actor(Actor* actor) {
 	if (!actor->Is3DLoaded()) {
 		return;
 	}
-	log::info("Reapplying actor: {}", actor_name(actor));
 	apply_actor(actor);
 }
