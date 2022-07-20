@@ -162,17 +162,17 @@ namespace {
 
 namespace Gts {
 	bool register_papyrus_height(IVirtualMachine* vm) {
-		vm->RegisterFunction("SetTargetHeight", PapyrusClass, SetTargetScale);
-		vm->RegisterFunction("GetTargetHeight", PapyrusClass, GetTargetScale);
-		vm->RegisterFunction("ModTargetHeight", PapyrusClass, ModTargetScale);
+		vm->RegisterFunction("SetTargetHeight", PapyrusClass, SetTargetHeight);
+		vm->RegisterFunction("GetTargetHeight", PapyrusClass, GetTargetHeight);
+		vm->RegisterFunction("ModTargetHeight", PapyrusClass, ModTargetHeight);
 
-		vm->RegisterFunction("SetMaxHeight", PapyrusClass, SetMaxScale);
-		vm->RegisterFunction("GetMaxHeight", PapyrusClass, GetMaxScale);
-		vm->RegisterFunction("ModMaxHeight", PapyrusClass, ModMaxScale);
+		vm->RegisterFunction("SetMaxHeight", PapyrusClass, SetMaxHeight);
+		vm->RegisterFunction("GetMaxHeight", PapyrusClass, GetMaxHeight);
+		vm->RegisterFunction("ModMaxHeight", PapyrusClass, ModMaxHeight);
 
-		vm->RegisterFunction("GetVisualHeight", PapyrusClass, GetVisualScale);
+		vm->RegisterFunction("GetVisualHeight", PapyrusClass, GetVisualHeight);
 
-		vm->RegisterFunction("ModTeammateHeight", PapyrusClass, ModTeammateScale);
+		vm->RegisterFunction("ModTeammateHeight", PapyrusClass, ModTeammateHeight);
 
 		return true;
 	}
