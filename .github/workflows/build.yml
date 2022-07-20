@@ -18,12 +18,6 @@ jobs:
         uses: lukka/run-vcpkg@v10
         with:
           vcpkgGitCommitId: 3d8f78171a2a37d461077bf8d063256b63e25a4f
-      - name: Cache Build
-        id: cache-build
-        uses: actions/cache@v3
-        with:
-          path: build
-          key: ${{ hashFiles('README.md') }}
       - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
         uses: lukka/run-cmake@v10
         with:
