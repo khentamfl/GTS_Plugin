@@ -14,7 +14,7 @@ namespace Hooks
 	}
 
 	BSEventNotifyControl Hook_BGSImpactManager::ProcessEvent(BGSImpactManager* a_this, const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
-		Gts::FootStepManager::GetSingleton().HookProcessEvent(a_event, a_eventSource);
+		Gts::FootStepManager::GetSingleton().HookProcessEvent(a_this, a_event, a_eventSource);
 		auto result = _ProcessEvent(a_this, a_event, a_eventSource);
 		return result;
 	}

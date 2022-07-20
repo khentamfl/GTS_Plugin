@@ -11,7 +11,7 @@ namespace Gts {
 		return instance;
 	}
 
-	void FootStepManager::HookProcessEvent(const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
+	void FootStepManager::HookProcessEvent(BGSImpactManager* impact, const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
 		if (a_event) {
 			auto actor = a_event->actor.get().get();
 			if (actor) {
