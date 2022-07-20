@@ -113,7 +113,7 @@ namespace {
 }
 
 namespace Gts {
-	bool register_papyrus_height(IVirtualMachine* vm) {
+	bool register_papyrus_plugin(IVirtualMachine* vm) {
 		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
 		vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
 		vm->RegisterFunction("GetGrowthHalfLife", PapyrusClass, GetGrowthHalfLife);
