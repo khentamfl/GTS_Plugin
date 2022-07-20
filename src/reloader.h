@@ -9,9 +9,12 @@ using namespace RE;
 namespace Gts {
 	class ReloadManager :
 		public BSTEventSink<TESObjectLoadedEvent>,
-		public BSTEventSink<TESCellFullyLoadedEvent> {
+		public BSTEventSink<TESCellFullyLoadedEvent>,
+		public BSTEventSink<TESCellAttachDetachEvent>,
+		public BSTEventSink<TESEquipEvent> {
 		public:
 			[[nodiscard]] static ReloadManager& GetSingleton() noexcept;
+			void Initialize();
 
 		protected:
 			virtual BSEventNotifyControl ProcessEvent(const TESObjectLoadedEvent * evn, BSTEventSource<TESObjectLoadedEvent> * dispatcher) override;

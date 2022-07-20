@@ -100,11 +100,7 @@ namespace {
 						break;
 					case MessagingInterface::kInputLoaded: // Called when all game data has been found.
 						{
-							auto event_sources = ScriptEventSourceHolder::GetSingleton();
-							if (event_sources) {
-								event_sources->AddEventSink<TESObjectLoadedEvent>(&ReloadManager::GetSingleton());
-								event_sources->AddEventSink<TESCellFullyLoadedEvent>(&ReloadManager::GetSingleton());
-							}
+							ReloadManager::GetSingleton().Initialize();
 						}
 						break;
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
