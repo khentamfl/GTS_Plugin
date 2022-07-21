@@ -32,21 +32,18 @@ namespace Gts {
 
 	BSEventNotifyControl ReloadManager::ProcessEvent(const TESCellFullyLoadedEvent* evn, BSTEventSource<TESCellFullyLoadedEvent>* dispatcher)
 	{
-		log::info("TESCellFullyLoadedEvent");
 		GtsManager::GetSingleton().reapply();
 		return BSEventNotifyControl::kContinue;
 	}
 
 	BSEventNotifyControl ReloadManager::ProcessEvent(const TESCellAttachDetachEvent* evn, BSTEventSource<TESCellAttachDetachEvent>* dispatcher)
 	{
-		log::info("TESCellAttachDetachEvent");
 		GtsManager::GetSingleton().reapply();
 		return BSEventNotifyControl::kContinue;
 	}
 
 	BSEventNotifyControl ReloadManager::ProcessEvent(const TESEquipEvent* evn, BSTEventSource<TESEquipEvent>* dispatcher)
 	{
-		log::info("TESEquipEvent");
 		GtsManager::GetSingleton().reapply();
 		return BSEventNotifyControl::kContinue;
 	}
