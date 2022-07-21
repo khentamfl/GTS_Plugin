@@ -1,7 +1,7 @@
-#include "scale.h"
+#include "scale/scale.h"
 #include "util.h"
-#include "GtsManager.h"
-#include "persistent.h"
+#include "managers/GtsManager.h"
+#include "data/persistent.h"
 
 using namespace Gts;
 

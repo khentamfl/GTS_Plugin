@@ -1,9 +1,9 @@
-#include "footstep.h"
-#include "scale.h"
-#include "modevent.h"
+#include "managers/footstep.h"
+#include "scale/scale.h"
+#include "managers/modevent.h"
 #include "util.h"
 #include "node.h"
-#include "runtime.h"
+#include "data/runtime.h"
 
 using namespace SKSE;
 using namespace RE;
@@ -30,6 +30,7 @@ namespace {
 				return Runtime::GetSingleton().FootstepR;
 				break;
 		}
+    return nullptr;
 	}
 }
 namespace Gts {

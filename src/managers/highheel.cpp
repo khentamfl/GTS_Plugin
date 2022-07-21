@@ -1,9 +1,9 @@
-#include "highheel.h"
+#include "managers/highheel.h"
 #include "node.h"
-#include "scale.h"
-#include "GtsManager.h"
-#include "persistent.h"
-#include "transient.h"
+#include "scale/scale.h"
+#include "managers/GtsManager.h"
+#include "data/persistent.h"
+#include "data/transient.h"
 #include "util.h"
 
 using namespace RE;

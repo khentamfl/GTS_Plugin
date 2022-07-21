@@ -1,8 +1,8 @@
-#include "height.h"
+#include "scale/height.h"
 #include "util.h"
-#include "GtsManager.h"
-#include "persistent.h"
-#include "transient.h"
+#include "managers/GtsManager.h"
+#include "data/persistent.h"
+#include "data/transient.h"
 
 using namespace Gts;
 

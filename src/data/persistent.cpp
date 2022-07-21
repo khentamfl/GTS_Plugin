@@ -1,6 +1,6 @@
-#include "persistent.h"
-#include "GtsManager.h"
-#include "scale.h"
+#include "data/persistent.h"
+#include "managers/GtsManager.h"
+#include "scale/scale.h"
 
 using namespace SKSE;
 using namespace RE;

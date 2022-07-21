@@ -1,7 +1,7 @@
 #include "papyrus/plugin.h"
-#include "scale.h"
-#include "persistent.h"
-#include "GtsManager.h"
+#include "scale/scale.h"
+#include "data/persistent.h"
+#include "managers/GtsManager.h"
 #include <math.h>
 #include <sstream>
 #include <iomanip>

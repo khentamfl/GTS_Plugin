@@ -1,4 +1,4 @@
-#include "hooks.h"
+#include "hooks/hooks.h"
 #include "hooks/main.h"
 #include "hooks/actor.h"
 #include "hooks/character.h"

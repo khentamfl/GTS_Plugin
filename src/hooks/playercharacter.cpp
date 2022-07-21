@@ -1,7 +1,7 @@
 #include "hooks/PlayerCharacter.h"
 #include "util.h"
-#include "GtsManager.h"
-#include "persistent.h"
+#include "managers/GtsManager.h"
+#include "data/persistent.h"
 
 using namespace RE;
 using namespace SKSE;

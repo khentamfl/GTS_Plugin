@@ -1,9 +1,9 @@
 #include <SKSE/SKSE.h>
 #include <Config.h>
-#include <GtsManager.h>
-#include <persistent.h>
-#include <transient.h>
-#include <highheel.h>
+#include <managers/GtsManager.h>
+#include <data/persistent.h>
+#include <data/transient.h>
+#include <managers/highheel.h>
 #include <vector>
 #include <string>
 

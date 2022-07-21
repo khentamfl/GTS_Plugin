@@ -1,6 +1,6 @@
 #include "hooks/main.h"
 
-#include "GtsManager.h"
+#include "managers/GtsManager.h"
 
 using namespace RE;
 using namespace SKSE;

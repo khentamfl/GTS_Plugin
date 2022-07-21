@@ -1,7 +1,7 @@
 #pragma once
 // Module that holds data that is persistent across saves
 #include <SKSE/SKSE.h>
-#include "scale.h"
+#include "scale/scale.h"
 #include "util.h"
 
 using namespace std;

@@ -1,11 +1,11 @@
 #include "Config.h"
-#include "GtsManager.h"
-#include "hooks.h"
-#include "papyrus.h"
-#include "persistent.h"
-#include "transient.h"
-#include "footstep.h"
-#include "reloader.h"
+#include "managers/GtsManager.h"
+#include "hooks/hooks.h"
+#include "papyrus/papyrus.h"
+#include "data/persistent.h"
+#include "data/transient.h"
+#include "managers/footstep.h"
+#include "managers/reloader.h"
 
 #include <stddef.h>
 #include <thread>

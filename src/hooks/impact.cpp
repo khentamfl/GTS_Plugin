@@ -1,5 +1,5 @@
 #include "hooks/impact.h"
-#include "footstep.h"
+#include "managers/footstep.h"
 
 using namespace RE;
 

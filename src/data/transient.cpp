@@ -1,7 +1,7 @@
-#include "transient.h"
+#include "data/transient.h"
 #include "node.h"
 #include "util.h"
-#include "scale.h"
+#include "scale/scale.h"
 
 using namespace SKSE;
 using namespace RE;

@@ -1,4 +1,4 @@
-#include "papyrus.h"
+#include "papyrus/papyrus.h"
 #include "papyrus/plugin.h"
 #include "papyrus/scale.h"
 #include "papyrus/height.h"
