@@ -49,32 +49,42 @@ namespace Gts {
 			auto event_manager = ModEventManager::GetSingleton();
 			event_manager.m_onfootstep.SendEvent(actor,tag);
 
+            log::info("{} for {}", tag, actor_name(actor));
 			// Foot step time
 			float scale = get_scale(actor);
 			float k = 4.0;
 			float n = 5.6;
 			float a = 1.1;
 			if (scale >= a) {
+                log::info("Actor is big enough");
 				float volume = pow(k*(scale-a), n);
 
 				NiAVObject* foot = nullptr;
 				Foot foot_kind = Foot::Unknown;
 				if (starts_with(tag, "FootLeft")) {
+                    log::info("Trying to find FootLeft");
 					foot = find_node_regex_any(actor, ".*(\bL\b.*\bFoot|\bL\b.*Leg.*Tip).*");
 					foot_kind = Foot::Left;
 				} else if (starts_with(tag, "FootRight")) {
-					foot = find_node_regex_any(actor, ".*(\bR\b.*\bFoot|\bR\b.*Leg.*Tip).*");
+					log::info("Trying to find FootRight");
+                    foot = find_node_regex_any(actor, ".*(\bR\b.*\bFoot|\bR\b.*Leg.*Tip).*");
 					foot_kind = Foot::Right;
 				} else if (starts_with(tag, "FootFont")) {
-					foot = find_node_regex_any(actor, ".*(\b(R|L)\b.*\bHand|\b(R|L)\b.*Arm.*Tip).*");
+					log::info("Trying to find FootFont");
+                    foot = find_node_regex_any(actor, ".*(\b(R|L)\b.*\bHand|\b(R|L)\b.*Arm.*Tip).*");
 					foot_kind = Foot::Front;
 				} else if (starts_with(tag, "FootBack")) {
-					foot = find_node_regex_any(actor, ".*(\b(R|L)\b.*\bFoot|\b(R|L)\b.*Leg.*Tip).*");
+					log::info("Trying to find FootBack");
+                    foot = find_node_regex_any(actor, ".*(\b(R|L)\b.*\bFoot|\b(R|L)\b.*Leg.*Tip).*");
 					foot_kind = Foot::Back;
 				}
+                if (!foot) {
+                    log::info("Couldnt find the foot node");
+                }
 				if (foot && impact) {
 					auto audio_manager = BSAudioManager::GetSingleton();
 					if (!audio_manager) return;
+                    log::info("Getting material");
 					auto tes = TES::GetSingleton();
 					if (!tes) return;
 					NiPoint3 pos = actor->GetPosition() + foot->world.translate;
@@ -82,10 +92,13 @@ namespace Gts {
 					if (!land) return;
 					auto material = land->materialType;
 					if (!material) return;
-					auto imapact_data_set = get_foot_impactdata(foot_kind);
+					log::info("Getting impact data set");
+                    auto imapact_data_set = get_foot_impactdata(foot_kind);
 					if (!imapact_data_set) return;
+                    log::info("Getting impact data for material");
 					auto imapact_data = imapact_data_set->impactMap.find(material)->second;
 					if (!imapact_data) return;
+                    log::info("Creating sound info");
 					NiPoint3 sound_position;
 					sound_position.x = 0.0;
 					sound_position.y = 0.0;
@@ -107,6 +120,7 @@ namespace Gts {
 					sound.playSound2      = false;
 					sound.unk2A           = false;
 					sound.unk30           = nullptr;
+                    log::info("Playing sound");
 					impact->PlayImpactDataSounds(sound);
 				}
 			}
