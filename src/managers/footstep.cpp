@@ -63,19 +63,19 @@ namespace Gts {
 				Foot foot_kind = Foot::Unknown;
 				if (starts_with(tag, "FootLeft")) {
                     log::info("Trying to find FootLeft");
-					foot = find_node_regex_any(actor, ".*(\bL\b.*\bFoot|\bL\b.*Leg.*Tip).*");
+					foot = find_node_regex_any(actor, ".*(L.*Foot|L.*Leg.*Tip).*");
 					foot_kind = Foot::Left;
 				} else if (starts_with(tag, "FootRight")) {
 					log::info("Trying to find FootRight");
-                    foot = find_node_regex_any(actor, ".*(\bR\b.*\bFoot|\bR\b.*Leg.*Tip).*");
+                    foot = find_node_regex_any(actor, ".*(R.*Foot|R.*Leg.*Tip).*");
 					foot_kind = Foot::Right;
 				} else if (starts_with(tag, "FootFont")) {
 					log::info("Trying to find FootFont");
-                    foot = find_node_regex_any(actor, ".*(\b(R|L)\b.*\bHand|\b(R|L)\b.*Arm.*Tip).*");
+                    foot = find_node_regex_any(actor, ".*((R|L).*Hand|(R|L)b.*Arm.*Tip).*");
 					foot_kind = Foot::Front;
 				} else if (starts_with(tag, "FootBack")) {
 					log::info("Trying to find FootBack");
-                    foot = find_node_regex_any(actor, ".*(\b(R|L)\b.*\bFoot|\b(R|L)\b.*Leg.*Tip).*");
+                    foot = find_node_regex_any(actor, ".*((R|L).*Foot|(R|L)b.*Leg.*Tip).*");
 					foot_kind = Foot::Back;
 				}
                 if (!foot) {
