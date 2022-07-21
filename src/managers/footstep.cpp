@@ -84,12 +84,14 @@ namespace Gts {
 				if (foot && impact) {
 					auto audio_manager = BSAudioManager::GetSingleton();
 					if (!audio_manager) return;
-                    log::info("Getting material");
+                    log::info("Getting TES");
 					auto tes = TES::GetSingleton();
 					if (!tes) return;
+                    log::info("Getting Land");
 					NiPoint3 pos = actor->GetPosition() + foot->world.translate;
 					auto land = tes->GetLandTexture(pos);
 					if (!land) return;
+                    log::info("Getting Material");
 					auto material = land->materialType;
 					if (!material) return;
 					log::info("Getting impact data set");
