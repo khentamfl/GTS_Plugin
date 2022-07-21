@@ -107,8 +107,8 @@ namespace Gts {
 					BSSoundHandle sound_handle_2 = BSSoundHandle::BSSoundHandle();
 					audio_manager->BuildSoundDataFromDescriptor(sound_handle_1, imapact_data->sound1);
 					audio_manager->BuildSoundDataFromDescriptor(sound_handle_2, imapact_data->sound2);
-					sound_handle_1.SetVolume(volume);
-					sound_handle_2.SetVolume(volume);
+					// sound_handle_1.SetVolume(volume);
+					// sound_handle_2.SetVolume(volume);
 
 					BGSImpactManager::ImpactSoundData sound;
 					sound.impactData      = imapact_data;
