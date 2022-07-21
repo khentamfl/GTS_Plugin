@@ -90,16 +90,27 @@ namespace Gts {
 				return _experiment;
 			}
 
+			[[nodiscard]] inline std::string GetFootstepLForm() const noexcept {
+				return _footstepLForm;
+			}
+			[[nodiscard]] inline std::string GetFootstepRForm() const noexcept {
+				return _footstepRForm;
+			}
+
 		private:
 			articuno_serde(ar) {
 				ar <=> articuno::kv(_debug, "debug");
 				ar <=> articuno::kv(_frame, "frame");
 				ar <=> articuno::kv(_experiment, "experiment");
+				ar <=> articuno::kv(_footstepLForm, "footstepLForm");
+				ar <=> articuno::kv(_footstepRForm, "footstepRForm");
 			}
 
 			Debug _debug;
 			Frame _frame;
 			int _experiment;
+			std::string _footstepLForm;
+			std::string _footstepRForm;
 
 			friend class articuno::access;
 	};

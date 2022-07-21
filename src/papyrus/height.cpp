@@ -1,5 +1,5 @@
 #include "papyrus/height.h"
-#include "height.h"
+#include <height.h>
 #include "util.h"
 
 
@@ -13,7 +13,7 @@ namespace {
 
 	// Target Scales
 	void SetTargetHeight(StaticFunctionTag*, Actor* actor, float height) {
-		set_target_hight(actor, height);
+		set_target_height(actor, height);
 	}
 
 	float GetTargetHeight(StaticFunctionTag*, Actor* actor) {

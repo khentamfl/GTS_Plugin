@@ -21,6 +21,4 @@ namespace Gts {
 	float get_ref_scale(Actor* actor);
 	float get_scale(Actor* actor);
 	bool set_scale(Actor* actor, float scale);
-
-
 }

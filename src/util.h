@@ -20,6 +20,10 @@ namespace Gts {
 		return "";
 	}
 
+	inline bool starts_with(std::string_view arg, std::string_view prefix) {
+		return arg.compare(0, prefix.size(), prefix);
+	}
+
 	vector<Actor*> find_actors();
 	float unit_to_meter(float unit);
 	float meter_to_unit(float meter);
