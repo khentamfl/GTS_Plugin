@@ -136,7 +136,7 @@ namespace Gts {
 					sound.sound2          = &sound_handle_2;
 					sound.playSound1      = sound_a;
 					sound.playSound2      = sound_b;
-					sound.unk2A           = false;
+					sound.unk2A           = true;
 					sound.unk30           = nullptr;
 					log::info("Playing sound");
 					bool success = impact->PlayImpactDataSounds(sound);
