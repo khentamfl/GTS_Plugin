@@ -14,7 +14,7 @@ namespace Gts {
 
 			void Load();
 
-			BGSImpactDataSet* FootstepL;
-			BGSImpactDataSet* FootstepR;
+			BGSImpactDataSet* FootstepL = nullptr;
+			BGSImpactDataSet* FootstepR = nullptr;
 	};
 }
