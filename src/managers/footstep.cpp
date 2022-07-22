@@ -137,7 +137,7 @@ namespace Gts {
 					sound.playSound1      = sound_a;
 					sound.playSound2      = sound_b;
 					sound.unk2A           = true;
-					sound.unk30           = nullptr;
+					sound.unk30           = audio_manager;
 					log::info("Playing sound");
 					bool success = impact->PlayImpactDataSounds(sound);
 					log::info("  play success: {}", success);
