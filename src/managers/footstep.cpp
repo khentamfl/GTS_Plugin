@@ -49,6 +49,8 @@ namespace Gts {
 			auto event_manager = ModEventManager::GetSingleton();
 			event_manager.m_onfootstep.SendEvent(actor,tag);
 
+			if (actor->formID != 0x14) return;
+
 			log::info("{} for {}", tag, actor_name(actor));
 			// Foot step time
 			float scale = get_scale(actor);
