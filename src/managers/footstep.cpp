@@ -112,13 +112,17 @@ namespace Gts {
 					BSSoundHandle sound_handle_1 = BSSoundHandle::BSSoundHandle();
 					BSSoundHandle sound_handle_2 = BSSoundHandle::BSSoundHandle();
 
+					bool sound_a = false;
 					if (imapact_data->sound1) {
 						log::info("Building sound descriptor 1");
-						audio_manager->BuildSoundDataFromDescriptor(sound_handle_1, imapact_data->sound1);
+						sound_a = audio_manager->BuildSoundDataFromDescriptor(sound_handle_1, imapact_data->sound1);
+						log::info("  build success: {}", sound_a);
 					}
+					bool sound_b = false;
 					if (imapact_data->sound2) {
 						log::info("Building sound descriptor 2");
-						audio_manager->BuildSoundDataFromDescriptor(sound_handle_2, imapact_data->sound2);
+						sound_b = audio_manager->BuildSoundDataFromDescriptor(sound_handle_2, imapact_data->sound2);
+						log::info("  build success: {}", sound_b);
 					}
 					// sound_handle_1.SetVolume(volume);
 					// sound_handle_2.SetVolume(volume);
@@ -130,12 +134,13 @@ namespace Gts {
 					sound.objectToFollow  = foot;
 					sound.sound1          = &sound_handle_1;
 					sound.sound2          = &sound_handle_2;
-					sound.playSound1      = true;
-					sound.playSound2      = false;
+					sound.playSound1      = sound_a;
+					sound.playSound2      = sound_b;
 					sound.unk2A           = false;
 					sound.unk30           = nullptr;
 					log::info("Playing sound");
-					impact->PlayImpactDataSounds(sound);
+					bool success = impact->PlayImpactDataSounds(sound);
+					log::info("  play success: {}", success);
 				}
 			}
 		}
