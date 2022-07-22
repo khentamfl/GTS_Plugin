@@ -111,11 +111,14 @@ namespace Gts {
 					sound_position.z = 0.0;
 					BSSoundHandle sound_handle_1 = BSSoundHandle::BSSoundHandle();
 					BSSoundHandle sound_handle_2 = BSSoundHandle::BSSoundHandle();
+					log::info("Building sound descriptor 1");
 					audio_manager->BuildSoundDataFromDescriptor(sound_handle_1, imapact_data->sound1);
+					log::info("Building sound descriptor 2");
 					audio_manager->BuildSoundDataFromDescriptor(sound_handle_2, imapact_data->sound2);
 					// sound_handle_1.SetVolume(volume);
 					// sound_handle_2.SetVolume(volume);
 
+					log::info("Creating impact sound data");
 					BGSImpactManager::ImpactSoundData sound;
 					sound.impactData      = imapact_data;
 					sound.position        = &sound_position;
