@@ -19,6 +19,8 @@ namespace Hooks
 		_GetJogSpeed = ActorVtbl.write_vfunc(REL::Relocate(0x0EC, 0x0EC, 0x0EE), GetJogSpeed);
 		_GetFastWalkSpeed = ActorVtbl.write_vfunc(REL::Relocate(0x0ED, 0x0ED, 0x0EF), GetFastWalkSpeed);
 		_GetWalkSpeed = ActorVtbl.write_vfunc(REL::Relocate(0x0EE, 0x0EE, 0x0F0), GetWalkSpeed);
+
+		_ProcessTracking = ActorVtbl.write_vfunc(REL::Relocate(0x122, 0x122, 0x124), ProcessTracking);
 	}
 
 	// NPC Characters don't call UpdateAnimation like the PlayerCharacter
@@ -67,5 +69,10 @@ namespace Hooks
 		float value = _GetWalkSpeed(a_this);
 		log::info("{} GetWalkSpeed {}", actor_name(a_this), value);
 		return value;
+	}
+
+	void Hook_Character::ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D) {
+		log::info("{} is tracking {} (update of {} s)", actor_name(a_this), a_obj3D->name.c_str(), a_delta);
+		_ProcessTracking(a_this, a_delta, a_obj3D);
 	}
 }
