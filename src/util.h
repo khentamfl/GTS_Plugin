@@ -60,7 +60,7 @@ namespace Gts {
 	inline void shake_camera(Actor* actor, float intensity, float duration) {
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 		RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-		auto args = RE::MakeFunctionArguments(std::move(actor), intensity, duration);
+		auto args = RE::MakeFunctionArguments(std::move(actor), std::move(intensity), std::move(duration));
 		vm->DispatchStaticCall("Game", "shakeCamera", args, callback);
 	}
 }
