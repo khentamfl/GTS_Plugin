@@ -84,8 +84,10 @@ namespace Gts {
 					log::info("Couldnt find the foot node");
 				}
 				if (foot && impact) {
+					log::info("Getting audio manager");
 					auto audio_manager = BSAudioManager::GetSingleton();
 					if (!audio_manager) return;
+					log::info("Getting sound descriptor");
 					auto sound_descriptor = get_footstep_sounddesc(foot_kind);
 					if (!sound_descriptor) return;
 					BSSoundHandle sound_handle = BSSoundHandle::BSSoundHandle();

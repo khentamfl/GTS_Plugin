@@ -112,8 +112,8 @@ namespace Gts {
 				ar <=> articuno::kv(_experiment, "experiment");
 				ar <=> articuno::kv(_footstepLForm, "footstepLForm");
 				ar <=> articuno::kv(_footstepRForm, "footstepRForm");
-				ar <=> articuno::kv(_footstepLForm, "footstepSoundLForm");
-				ar <=> articuno::kv(_footstepRForm, "footstepSoundRForm");
+				ar <=> articuno::kv(_footstepSoundLForm, "footstepSoundLForm");
+				ar <=> articuno::kv(_footstepSoundRForm, "footstepSoundRForm");
 			}
 
 			Debug _debug;
