@@ -61,7 +61,14 @@ namespace Gts {
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 		RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
 		auto args = RE::MakeFunctionArguments(std::move(actor), std::move(intensity), std::move(duration));
-		vm->DispatchStaticCall("Game", "shakeCamera", args, callback);
+		vm->DispatchStaticCall("Game", "ShakeCamera", args, callback);
+	}
+
+	inline void shake_controller(float left_intensity, float right_intensity, float duration) {
+		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
+		RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+		auto args = RE::MakeFunctionArguments(std::move(left_intensity), std::move(right_intensity), std::move(duration));
+		vm->DispatchStaticCall("Game", "shakeController", args, callback);
 	}
 
 	inline float get_distance_to_camera(Actor* actor) {

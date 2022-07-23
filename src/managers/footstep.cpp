@@ -68,10 +68,11 @@ namespace {
 		return nullptr;
 	}
 
-	BSSoundHandle get_footstep_sound(const NiAVObject* foot, const Foot& foot_kind, const float& scale) {
+	BSSoundHandle get_footstep_sound(NiAVObject* foot, const Foot& foot_kind, const float& scale) {
 		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
 		auto sound_descriptor = get_footstep_sounddesc(foot_kind);
-		if (sound_descriptor && foot) {
+		auto audio_manager = BSAudioManager::GetSingleton();
+		if (sound_descriptor && foot && audio_manager) {
 
 			// https://www.desmos.com/calculator/ygoxbe7hjg
 			float k = 1.08;
@@ -109,10 +110,11 @@ namespace {
 		return nullptr;
 	}
 
-	BSSoundHandle get_rumble_sound(const NiAVObject* foot, const Foot& foot_kind, const float& scale) {
+	BSSoundHandle get_rumble_sound(NiAVObject* foot, const Foot& foot_kind, const float& scale) {
 		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
 		auto sound_descriptor = get_rumble_sounddesc(foot_kind);
-		if (sound_descriptor && foot) {
+		auto audio_manager = BSAudioManager::GetSingleton();
+		if (sound_descriptor && foot && audio_manager) {
 			float k = 1.08;
 			float n = 0.39;
 			float a = 13.0;
@@ -149,10 +151,11 @@ namespace {
 		return nullptr;
 	}
 
-	BSSoundHandle get_sprint_sound(const NiAVObject* foot, const Foot& foot_kind, const float& scale) {
+	BSSoundHandle get_sprint_sound(NiAVObject* foot, const Foot& foot_kind, const float& scale) {
 		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
 		auto sound_descriptor = get_sprint_sounddesc(foot_kind);
-		if (sound_descriptor && foot) {
+		auto audio_manager = BSAudioManager::GetSingleton();
+		if (sound_descriptor && foot && audio_manager) {
 			float k = 1.08;
 			float n = 0.39;
 			float a = 13.0;
@@ -189,10 +192,11 @@ namespace {
 		return nullptr;
 	}
 
-	BSSoundHandle get_xlfeet_sound(const NiAVObject* foot, const Foot& foot_kind, const float& scale) {
+	BSSoundHandle get_xlfeet_sound(NiAVObject* foot, const Foot& foot_kind, const float& scale) {
 		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
 		auto sound_descriptor = get_xlfeet_sounddesc(foot_kind);
-		if (sound_descriptor && foot) {
+		auto audio_manager = BSAudioManager::GetSingleton();
+		if (sound_descriptor && foot && audio_manager) {
 			float k = 1.08;
 			float n = 0.39;
 			float a = 13.0;
@@ -231,8 +235,6 @@ namespace Gts {
 			event_manager.m_onfootstep.SendEvent(actor,tag);
 
 			if (actor->formID != 0x14) return;
-
-			log::info("{} for {}", tag, actor_name(actor));
 			// Foot step time
 			float scale = get_scale(actor);
 
@@ -246,7 +248,6 @@ namespace Gts {
 					scale *= 0.85; // Walking makes you sound quieter
 				}
 				Foot foot_kind = get_foot_kind(tag);
-				Foot foot_kind = Foot::Unknown;
 				NiAVObject* foot = get_landing_foot(actor, foot_kind);
 
 				BSSoundHandle footstep_sound = get_footstep_sound(foot, foot_kind, scale);
@@ -274,9 +275,9 @@ namespace Gts {
 				// 1.0 Meter ~= 20% Power
 				// 0.5 Meter ~= 50% Power
 				float falloff = soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0);
-				// Increases cubically with scale (linearly with volume)
+				// Power increases cubically with scale (linearly with volume)
 				float n = 3.0;
-				float min_shake_scale = 1.0; // Before this no shaking
+				float min_shake_scale = minimal_size; // Before this no shaking
 				float max_shake_scale = 20.0; // After this we have full power shaking
 				float a = min_shake_scale;
 				float k = 1.0/pow(scale - a, n);
@@ -287,6 +288,22 @@ namespace Gts {
 				float duration = duration_power * falloff;
 				if (intensity > 0.05 && duration > 0.05) {
 					shake_camera(actor, intensity, duration);
+					float left_shake = intensity;
+					float right_shake = intensity;
+					if (actor->formID == 0x14) {
+						switch (foot_kind) {
+							case Foot::Left:
+							case Foot::Front:
+								right_shake = 0.0;
+								break;
+							case Foot::Right:
+							case Foot::Back:
+							case Foot::Unknown:
+								left_shake = 0.0;
+								break;
+						}
+					}
+					shake_controller(left_shake, right_shake, duration);
 				}
 			}
 		}
