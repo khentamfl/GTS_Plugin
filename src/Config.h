@@ -74,6 +74,28 @@ namespace Gts {
 			friend class articuno::access;
 	};
 
+	class Sound {
+		public:
+			[[nodiscard]] inline std::string GetFootStepR() const noexcept {
+				return _footstepR;
+			}
+
+			[[nodiscard]] inline std::string GetFootStepL() const noexcept {
+				return _footstepL;
+			}
+
+		private:
+			articuno_serde(ar) {
+				ar <=> articuno::kv(_footstepL, "footstepL");
+				ar <=> articuno::kv(_footstepR, "footstepR");
+			}
+
+			std::string _footstepL;
+			std::string _footstepR;
+
+			friend class articuno::access;
+	};
+
 	class Config {
 		public:
 			[[nodiscard]] inline const Debug& GetDebug() const noexcept {
@@ -84,45 +106,22 @@ namespace Gts {
 				return _frame;
 			}
 
+			[[nodiscard]] inline const Sound& GetSound() const noexcept {
+				return _sound;
+			}
+
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
-
-			[[nodiscard]] inline int GetExperiment() const noexcept {
-				return _experiment;
-			}
-
-			[[nodiscard]] inline std::string GetFootstepLForm() const noexcept {
-				return _footstepLForm;
-			}
-			[[nodiscard]] inline std::string GetFootstepRForm() const noexcept {
-				return _footstepRForm;
-			}
-
-			[[nodiscard]] inline std::string GetFootstepSoundLForm() const noexcept {
-				return _footstepSoundLForm;
-			}
-
-			[[nodiscard]] inline std::string GetFootstepSoundRForm() const noexcept {
-				return _footstepSoundRForm;
-			}
 
 		private:
 			articuno_serde(ar) {
 				ar <=> articuno::kv(_debug, "debug");
 				ar <=> articuno::kv(_frame, "frame");
-				ar <=> articuno::kv(_experiment, "experiment");
-				ar <=> articuno::kv(_footstepLForm, "footstepLForm");
-				ar <=> articuno::kv(_footstepRForm, "footstepRForm");
-				ar <=> articuno::kv(_footstepSoundLForm, "footstepSoundLForm");
-				ar <=> articuno::kv(_footstepSoundRForm, "footstepSoundRForm");
+				ar <=> articuno::kv(_sound, "sound");
 			}
 
 			Debug _debug;
 			Frame _frame;
-			int _experiment;
-			std::string _footstepLForm;
-			std::string _footstepRForm;
-			std::string _footstepSoundLForm;
-			std::string _footstepSoundRForm;
+			Sound _sound;
 
 			friend class articuno::access;
 	};

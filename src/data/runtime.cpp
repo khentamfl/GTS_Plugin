@@ -28,10 +28,7 @@ namespace Gts {
 	}
 
 	void Runtime::Load() {
-		this->FootstepL = find_form<BGSImpactDataSet>(Config::GetSingleton().GetFootstepLForm());
-		this->FootstepR = find_form<BGSImpactDataSet>(Config::GetSingleton().GetFootstepRForm());
-
-		this->FootstepSoundL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetFootstepSoundLForm());
-		this->FootstepSoundR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetFootstepSoundRForm());
+		this->FootstepSoundL = find_form<BGSImpactDataSet>(Config::GetSingleton().GetSound().GetFootstepL());
+		this->FootstepSoundR = find_form<BGSImpactDataSet>(Config::GetSingleton().GetSound().GetFootstepR());
 	}
 }

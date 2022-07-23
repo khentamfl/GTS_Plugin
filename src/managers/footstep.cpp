@@ -54,9 +54,10 @@ namespace Gts {
 			log::info("{} for {}", tag, actor_name(actor));
 			// Foot step time
 			float scale = get_scale(actor);
-			float k = 4.0;
-			float n = 5.6;
-			float a = 1.1;
+			// https://www.desmos.com/calculator/ygoxbe7hjg
+			float k = 1.08;
+			float n = 0.39;
+			float a = 1.2;
 			if (scale >= a) {
 				float volume = pow(k*(scale-a), n);
 
