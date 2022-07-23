@@ -62,7 +62,6 @@ namespace {
 				break;
 			case Foot::Right:
 			case Foot::Back:
-			case Foot::Unknown:
 				return Runtime::GetSingleton().FootstepSoundR;
 				break;
 		}
@@ -104,7 +103,6 @@ namespace {
 				break;
 			case Foot::Right:
 			case Foot::Back:
-			case Foot::Unknown:
 				return Runtime::GetSingleton().RumbleSoundR;
 				break;
 		}
@@ -145,7 +143,6 @@ namespace {
 				break;
 			case Foot::Right:
 			case Foot::Back:
-			case Foot::Unknown:
 				return Runtime::GetSingleton().SprintSoundR;
 				break;
 		}
@@ -186,7 +183,6 @@ namespace {
 				break;
 			case Foot::Right:
 			case Foot::Back:
-			case Foot::Unknown:
 				return Runtime::GetSingleton().ExtraLargeFeetSoundR;
 				break;
 		}
@@ -301,7 +297,6 @@ namespace Gts {
 								break;
 							case Foot::Right:
 							case Foot::Back:
-							case Foot::Unknown:
 								left_shake = 0.0;
 								break;
 						}
