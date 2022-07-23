@@ -86,7 +86,7 @@ namespace {
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				result.SetVolume(volume);
-				// result.SetFrequency(-volume);
+				result.SetFrequency(-volume/100.0);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -126,7 +126,7 @@ namespace {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				// result.SetFrequency(-volume);
+				result.SetFrequency(-volume/100.0);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -166,7 +166,7 @@ namespace {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				// result.SetFrequency(-volume);
+				result.SetFrequency(-volume/100.0);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -206,7 +206,7 @@ namespace {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				// result.SetFrequency(-volume);
+				result.SetFrequency(-volume/100.0);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -342,6 +342,9 @@ namespace Gts {
 				}
 				if (xlfeet_sound.soundID != BSSoundHandle::kInvalidID) {
 					xlfeet_sound.Play();
+				}
+                if (jumpland_sound.soundID != BSSoundHandle::kInvalidID) {
+					jumpland_sound.Play();
 				}
 
 				do_shakes(actor, foot_kind, scale);
