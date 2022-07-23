@@ -1,6 +1,7 @@
 #include "managers/footstep.h"
 #include "scale/scale.h"
 #include "managers/modevent.h"
+#include "data/persistent.h"
 #include "util.h"
 #include "node.h"
 #include "data/runtime.h"
@@ -236,7 +237,9 @@ namespace Gts {
 
 			if (actor->formID != 0x14) return;
 			// Foot step time
-			float scale = get_scale(actor);
+			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			if (!actor_data) return;
+			float scale = actor_data->visual_scale;
 
 			float minimal_size = 1.2;
 			if (scale > minimal_size && !actor->IsSwimming()) {
