@@ -63,19 +63,19 @@ namespace Gts {
 
 				NiAVObject* foot = nullptr;
 				Foot foot_kind = Foot::Unknown;
-				if (starts_with(tag, "FootLeft")) {
+				if (starts_with(tag, "FootLeft") || starts_with(tag, "FootScuffLeft")  || starts_with(tag, "FootSprintLeft")) {
 					log::info("Trying to find FootLeft");
 					foot = find_node_regex_any(actor, ".*(L.*Foot|L.*Leg.*Tip).*");
 					foot_kind = Foot::Left;
-				} else if (starts_with(tag, "FootRight")) {
+				} else if (starts_with(tag, "FootRight")  || starts_with(tag, "FootScuffRight")  || starts_with(tag, "FootSprintRight")) {
 					log::info("Trying to find FootRight");
 					foot = find_node_regex_any(actor, ".*(R.*Foot|R.*Leg.*Tip).*");
 					foot_kind = Foot::Right;
-				} else if (starts_with(tag, "FootFont")) {
+				} else if (starts_with(tag, "FootFont")  || starts_with(tag, "FootScuffFront")  || starts_with(tag, "FootSprintFront")) {
 					log::info("Trying to find FootFont");
 					foot = find_node_regex_any(actor, ".*((R|L).*Hand|(R|L)b.*Arm.*Tip).*");
 					foot_kind = Foot::Front;
-				} else if (starts_with(tag, "FootBack")) {
+				} else if (starts_with(tag, "FootBack") || starts_with(tag, "FootScuffBack")  || starts_with(tag, "FootSprintBack")) {
 					log::info("Trying to find FootBack");
 					foot = find_node_regex_any(actor, ".*((R|L).*Foot|(R|L)b.*Leg.*Tip).*");
 					foot_kind = Foot::Back;
@@ -96,9 +96,10 @@ namespace Gts {
 					log::info("Building sound descriptor 1");
 					sound_sucess = audio_manager->BuildSoundDataFromDescriptor(sound_handle, sound_descriptor);
 					log::info("  build success: {}", sound_sucess);
-					// sound_handle.SetVolume(volume);
 
 					if (sound_sucess) {
+						sound_handle.SetVolume(volume);
+						sound_handle.SetFrequency(-volume);
 						NiPoint3 pos;
 						pos.x = 0;
 						pos.y = 0;
