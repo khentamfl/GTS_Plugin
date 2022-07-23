@@ -10,3 +10,9 @@ sound:
   # This is the sound descriptor for the footsteps
   footstepL: "GTS.esp|1E93AB"
   footstepR: "GTS.esp|1E93AD"
+  rumbleL: "GTS.esp|36A06D"
+  rumbleR: "GTS.esp|36A06D"
+  sprintL: "GTS.esp|319060"
+  springR: "GTS.esp|319060"
+  xlFeetL: "GTS.esp|271EF4"
+  xlFeetR: "GTS.esp|271EF4"

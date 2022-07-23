@@ -79,19 +79,57 @@ namespace Gts {
 			[[nodiscard]] inline std::string GetFootStepR() const noexcept {
 				return _footstepR;
 			}
-
 			[[nodiscard]] inline std::string GetFootStepL() const noexcept {
 				return _footstepL;
+			}
+
+			[[nodiscard]] inline std::string GetRumbleL() const noexcept {
+				return _rumbleL;
+			}
+			[[nodiscard]] inline std::string GetRumbleR() const noexcept {
+				return _rumbleR;
+			}
+
+			[[nodiscard]] inline std::string GetSprintL() const noexcept {
+				return _sprintL;
+			}
+			[[nodiscard]] inline std::string GetSprintR() const noexcept {
+				return _sprintR;
+			}
+
+			[[nodiscard]] inline std::string GetXLFeetL() const noexcept {
+				return _xlFeetL;
+			}
+			[[nodiscard]] inline std::string GetXLFeetR() const noexcept {
+				return _xlFeetR;
 			}
 
 		private:
 			articuno_serde(ar) {
 				ar <=> articuno::kv(_footstepL, "footstepL");
 				ar <=> articuno::kv(_footstepR, "footstepR");
+
+				ar <=> articuno::kv(_rumbleL, "rumbleL");
+				ar <=> articuno::kv(_rumbleR, "rumbleR");
+
+				ar <=> articuno::kv(_sprintL, "sprintL");
+				ar <=> articuno::kv(_sprintR, "sprintR");
+
+				ar <=> articuno::kv(_xlFeetL, "xlFeetL");
+				ar <=> articuno::kv(_xlFeetR, "xlFeetR");
 			}
 
 			std::string _footstepL;
 			std::string _footstepR;
+
+			std::string _rumbleL;
+			std::string _rumbleR;
+
+			std::string _sprintL;
+			std::string _sprintR;
+
+			std::string _xlFeetL;
+			std::string _xlFeetR;
 
 			friend class articuno::access;
 	};

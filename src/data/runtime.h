@@ -16,5 +16,14 @@ namespace Gts {
 
 			BGSSoundDescriptorForm* FootstepSoundL = nullptr;
 			BGSSoundDescriptorForm* FootstepSoundR = nullptr;
+
+			BGSSoundDescriptorForm* RumbleSoundL = nullptr;
+			BGSSoundDescriptorForm* RumbleSoundR = nullptr;
+
+			BGSSoundDescriptorForm* SprintSoundL = nullptr;
+			BGSSoundDescriptorForm* SprintSoundR = nullptr;
+
+			BGSSoundDescriptorForm* ExtraLargeFeetSoundL = nullptr;
+			BGSSoundDescriptorForm* ExtraLargeFeetSoundR = nullptr;
 	};
 }
