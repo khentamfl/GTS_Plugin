@@ -63,19 +63,19 @@ namespace Gts {
 
 				NiAVObject* foot = nullptr;
 				Foot foot_kind = Foot::Unknown;
-				if (starts_with(tag, "FootLeft") || starts_with(tag, "FootScuffLeft")  || starts_with(tag, "FootSprintLeft")) {
+				if (matches(tag, ".*Foot.*Left.*")) {
 					log::info("Trying to find FootLeft");
 					foot = find_node_regex_any(actor, ".*(L.*Foot|L.*Leg.*Tip).*");
 					foot_kind = Foot::Left;
-				} else if (starts_with(tag, "FootRight")  || starts_with(tag, "FootScuffRight")  || starts_with(tag, "FootSprintRight")) {
+				} else if (matches(tag, ".*Foot.*Right.*")) {
 					log::info("Trying to find FootRight");
 					foot = find_node_regex_any(actor, ".*(R.*Foot|R.*Leg.*Tip).*");
 					foot_kind = Foot::Right;
-				} else if (starts_with(tag, "FootFont")  || starts_with(tag, "FootScuffFront")  || starts_with(tag, "FootSprintFront")) {
+				} else if (matches(tag, ".*Foot.*Front.*")) {
 					log::info("Trying to find FootFont");
 					foot = find_node_regex_any(actor, ".*((R|L).*Hand|(R|L)b.*Arm.*Tip).*");
 					foot_kind = Foot::Front;
-				} else if (starts_with(tag, "FootBack") || starts_with(tag, "FootScuffBack")  || starts_with(tag, "FootSprintBack")) {
+				} else if (matches(tag, ".*Foot.*Back.*")) {
 					log::info("Trying to find FootBack");
 					foot = find_node_regex_any(actor, ".*((R|L).*Foot|(R|L)b.*Leg.*Tip).*");
 					foot_kind = Foot::Back;

@@ -2,6 +2,7 @@
 // Misc codes
 #include <SKSE/SKSE.h>
 #include <math.h>
+#include <regex>
 
 using namespace std;
 using namespace RE;
@@ -22,6 +23,11 @@ namespace Gts {
 
 	inline bool starts_with(std::string_view arg, std::string_view prefix) {
 		return arg.compare(0, prefix.size(), prefix);
+	}
+
+	inline bool matches(std::string_view str, std::string_view reg) {
+		std::regex the_regex(std::string(reg).c_str());
+		return std::regex_match(str, the_regex);
 	}
 
 	vector<Actor*> find_actors();
