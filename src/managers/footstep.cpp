@@ -86,7 +86,7 @@ namespace {
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				result.SetVolume(volume);
-				//result.SetFrequency(-volume/100.0);
+				result.SetFrequency(1.0-volume/100.0);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
