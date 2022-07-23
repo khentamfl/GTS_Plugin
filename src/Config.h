@@ -104,6 +104,10 @@ namespace Gts {
 				return _xlFeetR;
 			}
 
+			[[nodiscard]] inline std::string GetJumpLand() const noexcept {
+				return _jumpLand;
+			}
+
 		private:
 			articuno_serde(ar) {
 				ar <=> articuno::kv(_footstepL, "footstepL");
@@ -117,6 +121,8 @@ namespace Gts {
 
 				ar <=> articuno::kv(_xlFeetL, "xlFeetL");
 				ar <=> articuno::kv(_xlFeetR, "xlFeetR");
+
+				ar <=> articuno::kv(_jumpLand, "jumpLand");
 			}
 
 			std::string _footstepL;
@@ -130,6 +136,8 @@ namespace Gts {
 
 			std::string _xlFeetL;
 			std::string _xlFeetR;
+
+			std::string _jumpLand;
 
 			friend class articuno::access;
 	};

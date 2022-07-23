@@ -7,7 +7,7 @@ frame:
   step: 0
 
 sound:
-  # This is the sound descriptor for the footsteps
+  # This is the sound descriptor for the footsteps/jumps
   footstepL: "GTS.esp|1E93AB"
   footstepR: "GTS.esp|1E93AD"
   rumbleL: "GTS.esp|36A06D"
@@ -16,3 +16,4 @@ sound:
   springR: "GTS.esp|319060"
   xlFeetL: "GTS.esp|271EF4"
   xlFeetR: "GTS.esp|271EF4"
+  jumpLand: "GTS.esp|183F43"

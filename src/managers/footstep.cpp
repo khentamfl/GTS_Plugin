@@ -16,6 +16,7 @@ namespace {
 		Right,
 		Front,
 		Back,
+		JumpLand,
 		Unknown,
 	};
 
@@ -29,6 +30,8 @@ namespace {
 			foot_kind = Foot::Front;
 		} else if (matches(tag, ".*Foot.*Back.*")) {
 			foot_kind = Foot::Back;
+		} else if (matches(tag, ".*Jump.*(Down|Land).*")) {
+			foot_kind = Foot::JumpLand;
 		}
 		return foot_kind;
 	}
@@ -214,6 +217,79 @@ namespace {
 		}
 		return result;
 	}
+
+	BSISoundDescriptor* get_jumpland_sounddesc(const Foot& foot_kind) {
+		switch (foot_kind) {
+			case Foot::JumpLand:
+				return Runtime::GetSingleton().JumpLandSound;
+				break;
+		}
+		return nullptr;
+	}
+
+	BSSoundHandle get_jumpland_sound(NiAVObject* foot, const Foot& foot_kind, const float& scale) {
+		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
+		auto sound_descriptor = get_jumpland_sounddesc(foot_kind);
+		auto audio_manager = BSAudioManager::GetSingleton();
+		if (sound_descriptor && foot && audio_manager) {
+			float k = 1.08;
+			float n = 0.39;
+			float a = 1.2;
+
+			float volume = pow(k*(scale-a), n);
+			if (volume > 1e-5) {
+				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
+				float volume = pow(k*(scale-a), n);
+				result.SetVolume(volume);
+				result.SetFrequency(-volume);
+				NiPoint3 pos;
+				pos.x = 0;
+				pos.y = 0;
+				pos.z = 0;
+				result.SetPosition(pos);
+				result.SetObjectToFollow(foot);
+			}
+		}
+		return result;
+	}
+
+	void do_shakes(Actor* actor, const Foot& foot_kind, const float& scale) {
+		float distance_to_camera = get_distance_to_camera(actor);
+
+		// Camera shakes
+		// 1.0 Meter ~= 20% Power
+		// 0.5 Meter ~= 50% Power
+		float falloff = soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0);
+		// Power increases cubically with scale (linearly with volume)
+		float n = 3.0;
+		float min_shake_scale = 1.2; // Before this no shaking
+		float max_shake_scale = 20.0; // After this we have full power shaking
+		float a = min_shake_scale;
+		float k = 1.0/pow(scale - a, n);
+		float power = k*pow(scale - a, n);
+
+		float intensity = power * falloff;
+		float duration_power = 0.25 * power;
+		float duration = duration_power * falloff;
+		if (intensity > 0.05 && duration > 0.05) {
+			shake_camera(actor, intensity, duration);
+			float left_shake = intensity;
+			float right_shake = intensity;
+			if (actor->formID == 0x14) {
+				switch (foot_kind) {
+					case Foot::Left:
+					case Foot::Front:
+						right_shake = 0.0;
+						break;
+					case Foot::Right:
+					case Foot::Back:
+						left_shake = 0.0;
+						break;
+				}
+			}
+			shake_controller(left_shake, right_shake, duration);
+		}
+	}
 }
 namespace Gts {
 	FootStepManager& FootStepManager::GetSingleton() noexcept {
@@ -253,6 +329,7 @@ namespace Gts {
 				BSSoundHandle rumble_sound = get_rumble_sound(foot, foot_kind, scale);
 				BSSoundHandle sprint_sound = get_sprint_sound(foot, foot_kind, scale);
 				BSSoundHandle xlfeet_sound = get_xlfeet_sound(foot, foot_kind, scale);
+				BSSoundHandle jumpland_sound = get_jumpland_sound(foot, foot_kind, scale);
 
 				if (footstep_sound.soundID != BSSoundHandle::kInvalidID) {
 					footstep_sound.Play();
@@ -267,42 +344,7 @@ namespace Gts {
 					xlfeet_sound.Play();
 				}
 
-
-				float distance_to_camera = get_distance_to_camera(actor);
-
-				// Camera shakes
-				// 1.0 Meter ~= 20% Power
-				// 0.5 Meter ~= 50% Power
-				float falloff = soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0);
-				// Power increases cubically with scale (linearly with volume)
-				float n = 3.0;
-				float min_shake_scale = minimal_size; // Before this no shaking
-				float max_shake_scale = 20.0; // After this we have full power shaking
-				float a = min_shake_scale;
-				float k = 1.0/pow(scale - a, n);
-				float power = k*pow(scale - a, n);
-
-				float intensity = power * falloff;
-				float duration_power = 0.25 * power;
-				float duration = duration_power * falloff;
-				if (intensity > 0.05 && duration > 0.05) {
-					shake_camera(actor, intensity, duration);
-					float left_shake = intensity;
-					float right_shake = intensity;
-					if (actor->formID == 0x14) {
-						switch (foot_kind) {
-							case Foot::Left:
-							case Foot::Front:
-								right_shake = 0.0;
-								break;
-							case Foot::Right:
-							case Foot::Back:
-								left_shake = 0.0;
-								break;
-						}
-					}
-					shake_controller(left_shake, right_shake, duration);
-				}
+				do_shakes(actor, foot_kind, scale);
 			}
 		}
 	}
