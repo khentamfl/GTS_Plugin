@@ -58,44 +58,32 @@ namespace Gts {
 			float n = 5.6;
 			float a = 1.1;
 			if (scale >= a) {
-				log::info("Actor is big enough");
 				float volume = pow(k*(scale-a), n);
 
 				NiAVObject* foot = nullptr;
 				Foot foot_kind = Foot::Unknown;
 				if (matches(tag, ".*Foot.*Left.*")) {
-					log::info("Trying to find FootLeft");
 					foot = find_node_regex_any(actor, ".*(L.*Foot|L.*Leg.*Tip).*");
 					foot_kind = Foot::Left;
 				} else if (matches(tag, ".*Foot.*Right.*")) {
-					log::info("Trying to find FootRight");
 					foot = find_node_regex_any(actor, ".*(R.*Foot|R.*Leg.*Tip).*");
 					foot_kind = Foot::Right;
 				} else if (matches(tag, ".*Foot.*Front.*")) {
-					log::info("Trying to find FootFont");
 					foot = find_node_regex_any(actor, ".*((R|L).*Hand|(R|L)b.*Arm.*Tip).*");
 					foot_kind = Foot::Front;
 				} else if (matches(tag, ".*Foot.*Back.*")) {
-					log::info("Trying to find FootBack");
 					foot = find_node_regex_any(actor, ".*((R|L).*Foot|(R|L)b.*Leg.*Tip).*");
 					foot_kind = Foot::Back;
 				}
-				if (!foot) {
-					log::info("Couldnt find the foot node");
-				}
 				if (foot && impact) {
-					log::info("Getting audio manager");
 					auto audio_manager = BSAudioManager::GetSingleton();
 					if (!audio_manager) return;
-					log::info("Getting sound descriptor");
 					auto sound_descriptor = get_footstep_sounddesc(foot_kind);
 					if (!sound_descriptor) return;
 					BSSoundHandle sound_handle = BSSoundHandle::BSSoundHandle();
 
 					bool sound_sucess = false;
-					log::info("Building sound descriptor 1");
 					sound_sucess = audio_manager->BuildSoundDataFromDescriptor(sound_handle, sound_descriptor);
-					log::info("  build success: {}", sound_sucess);
 
 					if (sound_sucess) {
 						sound_handle.SetVolume(volume);
