@@ -97,6 +97,14 @@ namespace Gts {
 				return _footstepRForm;
 			}
 
+			[[nodiscard]] inline std::string GetFootstepSoundLForm() const noexcept {
+				return _footstepSoundLForm;
+			}
+
+			[[nodiscard]] inline std::string GetFootstepSoundRForm() const noexcept {
+				return _footstepSoundRForm;
+			}
+
 		private:
 			articuno_serde(ar) {
 				ar <=> articuno::kv(_debug, "debug");
@@ -104,6 +112,8 @@ namespace Gts {
 				ar <=> articuno::kv(_experiment, "experiment");
 				ar <=> articuno::kv(_footstepLForm, "footstepLForm");
 				ar <=> articuno::kv(_footstepRForm, "footstepRForm");
+				ar <=> articuno::kv(_footstepLForm, "footstepSoundLForm");
+				ar <=> articuno::kv(_footstepRForm, "footstepSoundRForm");
 			}
 
 			Debug _debug;
@@ -111,6 +121,8 @@ namespace Gts {
 			int _experiment;
 			std::string _footstepLForm;
 			std::string _footstepRForm;
+			std::string _footstepSoundLForm;
+			std::string _footstepSoundRForm;
 
 			friend class articuno::access;
 	};

@@ -16,5 +16,8 @@ namespace Gts {
 
 			BGSImpactDataSet* FootstepL = nullptr;
 			BGSImpactDataSet* FootstepR = nullptr;
+
+			BGSSoundDescriptorForm* FootstepSoundL = nullptr;
+			BGSSoundDescriptorForm* FootstepSoundR = nullptr;
 	};
 }

@@ -18,16 +18,16 @@ namespace {
 		Unknown,
 	};
 
-	BGSImpactDataSet* get_foot_impactdata(Foot foot_kind) {
+	BSISoundDescriptor* get_footstep_sounddesc(Foot foot_kind) {
 		switch (foot_kind) {
 			case Foot::Left:
 			case Foot::Front:
-				return Runtime::GetSingleton().FootstepL;
+				return Runtime::GetSingleton().FootstepSoundL;
 				break;
 			case Foot::Right:
 			case Foot::Back:
 			case Foot::Unknown:
-				return Runtime::GetSingleton().FootstepR;
+				return Runtime::GetSingleton().FootstepSoundR;
 				break;
 		}
 		return nullptr;
@@ -86,61 +86,25 @@ namespace Gts {
 				if (foot && impact) {
 					auto audio_manager = BSAudioManager::GetSingleton();
 					if (!audio_manager) return;
-					// log::info("Getting TES");
-					// auto tes = TES::GetSingleton();
-					// if (!tes) return;
-					// log::info("Getting Land");
-					// NiPoint3 pos = actor->GetPosition() + foot->world.translate;
-					// auto land = tes->GetLandTexture(pos);
-					// if (!land) return;
-					log::info("Getting Material");
-					// TODO get better way of finding material
-					auto material_id = MATERIAL_ID::kGrass;
-					auto material = BGSMaterialType::GetMaterialType(material_id);
-					if (!material) return;
-					log::info("Getting impact data set");
-					auto imapact_data_set = get_foot_impactdata(foot_kind);
-					if (!imapact_data_set) return;
-					log::info("Getting impact data for material");
-					auto imapact_data = imapact_data_set->impactMap.find(material)->second;
-					if (!imapact_data) return;
-					log::info("Creating sound info");
-					NiPoint3 sound_position;
-					sound_position.x = 0.0;
-					sound_position.y = 0.0;
-					sound_position.z = 0.0;
-					BSSoundHandle sound_handle_1 = BSSoundHandle::BSSoundHandle();
-					BSSoundHandle sound_handle_2 = BSSoundHandle::BSSoundHandle();
+					auto sound_descriptor = get_footstep_sounddesc(foot_kind);
+					if (!sound_descriptor) return;
+					BSSoundHandle sound_handle = BSSoundHandle::BSSoundHandle();
 
-					bool sound_a = false;
-					if (imapact_data->sound1) {
-						log::info("Building sound descriptor 1");
-						sound_a = audio_manager->BuildSoundDataFromDescriptor(sound_handle_1, imapact_data->sound1);
-						log::info("  build success: {}", sound_a);
-					}
-					bool sound_b = false;
-					if (imapact_data->sound2) {
-						log::info("Building sound descriptor 2");
-						sound_b = audio_manager->BuildSoundDataFromDescriptor(sound_handle_2, imapact_data->sound2);
-						log::info("  build success: {}", sound_b);
-					}
-					// sound_handle_1.SetVolume(volume);
-					// sound_handle_2.SetVolume(volume);
+					bool sound_sucess = false;
+					log::info("Building sound descriptor 1");
+					sound_sucess = audio_manager->BuildSoundDataFromDescriptor(sound_handle, sound_descriptor);
+					log::info("  build success: {}", sound_sucess);
+					// sound_handle.SetVolume(volume);
 
-					log::info("Creating impact sound data");
-					BGSImpactManager::ImpactSoundData sound;
-					sound.impactData      = imapact_data;
-					sound.position        = &sound_position;
-					sound.objectToFollow  = foot;
-					sound.sound1          = &sound_handle_1;
-					sound.sound2          = &sound_handle_2;
-					sound.playSound1      = sound_a;
-					sound.playSound2      = sound_b;
-					sound.unk2A           = true;
-					sound.unk30           = audio_manager;
-					log::info("Playing sound");
-					bool success = impact->PlayImpactDataSounds(sound);
-					log::info("  play success: {}", success);
+					if (sound_sucess) {
+						NiPoint3 pos;
+						pos.x = 0;
+						pos.y = 0;
+						pos.z = 0;
+						sound_handle.SetPosition(pos);
+						sound_handle.SetObjectToFollow(foot);
+						sound_handle.Play();
+					}
 				}
 			}
 		}
