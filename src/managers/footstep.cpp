@@ -95,6 +95,7 @@ namespace Gts {
 						sound_handle.SetPosition(pos);
 						sound_handle.SetObjectToFollow(foot);
 						sound_handle.Play();
+						shake_camera(actor, 1.5, 0.25);
 					}
 				}
 			}

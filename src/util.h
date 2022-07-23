@@ -27,7 +27,7 @@ namespace Gts {
 
 	inline bool matches(std::string_view str, std::string_view reg) {
 		std::regex the_regex(std::string(reg).c_str());
-		return std::regex_match(str, the_regex);
+		return std::regex_match(std::string(str), the_regex);
 	}
 
 	vector<Actor*> find_actors();
@@ -55,5 +55,12 @@ namespace Gts {
 	}
 	inline float soft_core(float x, SoftPotential& soft_potential) {
 		return soft_core(x, soft_potential.k, soft_potential.n, soft_potential.s, soft_potential.o);
+	}
+
+	inline void shake_camera(Actor* actor, float intensity, float duration) {
+		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
+		RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+		auto args = RE::MakeFunctionArguments(std::move(actor), intensity, duration);
+		vm->DispatchStaticCall("Game", "shakeCamera", args, callback);
 	}
 }
