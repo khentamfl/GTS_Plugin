@@ -86,7 +86,7 @@ namespace {
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				result.SetVolume(volume);
-				result.SetFrequency(-volume);
+				// result.SetFrequency(-volume);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -126,7 +126,7 @@ namespace {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				result.SetFrequency(-volume);
+				// result.SetFrequency(-volume);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -166,7 +166,7 @@ namespace {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				result.SetFrequency(-volume);
+				// result.SetFrequency(-volume);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -206,7 +206,7 @@ namespace {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				result.SetFrequency(-volume);
+				// result.SetFrequency(-volume);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -241,7 +241,7 @@ namespace {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				result.SetFrequency(-volume);
+				// result.SetFrequency(-volume);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -254,7 +254,7 @@ namespace {
 	}
 
 	void do_shakes(Actor* actor, const Foot& foot_kind, const float& scale) {
-		float distance_to_camera = get_distance_to_camera(actor);
+		float distance_to_camera = unit_to_meter(get_distance_to_camera(actor));
 
 		// Camera shakes
 		// 1.0 Meter ~= 20% Power
