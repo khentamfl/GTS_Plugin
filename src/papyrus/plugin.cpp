@@ -2,6 +2,7 @@
 #include "scale/scale.h"
 #include "data/persistent.h"
 #include "managers/GtsManager.h"
+#include "util.h"
 #include <math.h>
 #include <sstream>
 #include <iomanip>
@@ -15,16 +16,7 @@ using namespace RE::BSScript;
 namespace {
 	constexpr std::string_view PapyrusClass = "GtsPlugin";
 	float GetDistanceToCamera(StaticFunctionTag*, Actor* actor) {
-		if (actor) {
-			auto camera = PlayerCamera::GetSingleton();
-			if (camera) {
-				auto point_a = actor->GetPosition();
-				auto point_b = camera->pos;
-				auto delta = point_a - point_b;
-				return delta.Length();
-			}
-		}
-		return 3.4028237E38; // Max float
+		return get_distance_to_camera(actor);
 	}
 
 	bool SetGrowthHalfLife(StaticFunctionTag*, Actor* actor, float halflife) {

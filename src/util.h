@@ -63,4 +63,17 @@ namespace Gts {
 		auto args = RE::MakeFunctionArguments(std::move(actor), std::move(intensity), std::move(duration));
 		vm->DispatchStaticCall("Game", "shakeCamera", args, callback);
 	}
+
+	inline float get_distance_to_camera(Actor* actor) {
+		if (actor) {
+			auto camera = PlayerCamera::GetSingleton();
+			if (camera) {
+				auto point_a = actor->GetPosition();
+				auto point_b = camera->pos;
+				auto delta = point_a - point_b;
+				return delta.Length();
+			}
+		}
+		return 3.4028237E38; // Max float
+	}
 }

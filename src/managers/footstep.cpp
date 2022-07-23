@@ -267,7 +267,27 @@ namespace Gts {
 					xlfeet_sound.Play();
 				}
 
-				shake_camera(actor, 1.0, 1.0);
+
+				float distance_to_camera = get_distance_to_camera(actor);
+
+				// Camera shakes
+				// 1.0 Meter ~= 20% Power
+				// 0.5 Meter ~= 50% Power
+				float falloff = soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0);
+				// Increases cubically with scale (linearly with volume)
+				float n = 3.0;
+				float min_shake_scale = 1.0; // Before this no shaking
+				float max_shake_scale = 20.0; // After this we have full power shaking
+				float a = min_shake_scale;
+				float k = 1.0/pow(scale - a, n);
+				float power = k*pow(scale - a, n);
+
+				float intensity = power * falloff;
+				float duration_power = 0.25 * power;
+				float duration = duration_power * falloff;
+				if (intensity > 0.05 && duration > 0.05) {
+					shake_camera(actor, intensity, duration);
+				}
 			}
 		}
 	}
