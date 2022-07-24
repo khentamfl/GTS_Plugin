@@ -13,7 +13,7 @@ sound:
   rumbleL: "GTS.esp|36A06D"
   rumbleR: "GTS.esp|36A06D"
   sprintL: "GTS.esp|319060"
-  springR: "GTS.esp|319060"
+  sprintR: "GTS.esp|319060"
   xlFeetL: "GTS.esp|271EF4"
   xlFeetR: "GTS.esp|271EF4"
   jumpLand: "GTS.esp|183F43"
