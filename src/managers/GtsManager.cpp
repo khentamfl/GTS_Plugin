@@ -44,7 +44,7 @@ namespace {
 				);
 		}
 	}
-	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, force bool = false) {
+	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
 		if (!actor) {
 			return;
 		}
@@ -262,7 +262,7 @@ void GtsManager::reapply() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		reapply_actor(actor, true);
+		reapply_actor(actor);
 	}
 }
 void GtsManager::reapply_actor(Actor* actor) {
@@ -273,5 +273,5 @@ void GtsManager::reapply_actor(Actor* actor) {
 	if (!actor->Is3DLoaded()) {
 		return;
 	}
-	apply_actor(actor);
+	apply_actor(actor, true);
 }
