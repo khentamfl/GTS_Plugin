@@ -83,10 +83,11 @@ namespace {
 			float a = 1.2;
 
 			float volume = pow(k*(scale-a), n);
+			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a);
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				result.SetVolume(volume);
-				result.SetFrequency(1.0-volume/100.0);
+				result.SetFrequency(frequency);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -122,11 +123,12 @@ namespace {
 			float a = 13.0;
 
 			float volume = pow(k*(scale-a), n);
+			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a);
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				//result.SetFrequency(-volume/100.0);
+				result.SetFrequency(frequency);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -162,11 +164,12 @@ namespace {
 			float a = 13.0;
 
 			float volume = pow(k*(scale-a), n);
+			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a);
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				//result.SetFrequency(-volume/100.0);
+				result.SetFrequency(frequency);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -202,11 +205,12 @@ namespace {
 			float a = 13.0;
 
 			float volume = pow(k*(scale-a), n);
+			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a);
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				//result.SetFrequency(-volume/100.0);
+				result.SetFrequency(frequency);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -237,11 +241,12 @@ namespace {
 			float a = 1.2;
 
 			float volume = pow(k*(scale-a), n);
+			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a);
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
 				result.SetVolume(volume);
-				// result.SetFrequency(-volume);
+				result.SetFrequency(frequency);
 				NiPoint3 pos;
 				pos.x = 0;
 				pos.y = 0;
@@ -343,7 +348,7 @@ namespace Gts {
 				if (xlfeet_sound.soundID != BSSoundHandle::kInvalidID) {
 					xlfeet_sound.Play();
 				}
-                if (jumpland_sound.soundID != BSSoundHandle::kInvalidID) {
+				if (jumpland_sound.soundID != BSSoundHandle::kInvalidID) {
 					jumpland_sound.Play();
 				}
 
