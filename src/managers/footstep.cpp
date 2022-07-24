@@ -51,6 +51,10 @@ namespace {
 			case Foot::Back:
 				result = find_node_regex_any(actor, ".*((R|L).*Foot|(R|L)b.*Leg.*Tip).*");
 				break;
+			case Foot::JumpLand:
+				// Whatever it find first
+				result = find_node_regex_any(actor, ".*((R|L).*(Foot|Hand)|(R|L)b.*(Leg|Arm).*Tip).*");
+				break;
 		}
 		return result;
 	}
