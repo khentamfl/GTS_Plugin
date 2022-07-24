@@ -87,7 +87,7 @@ namespace {
 			float a = 1.2;
 
 			float volume = pow(k*(scale-a), n);
-			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a);
+			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				result.SetVolume(volume);
@@ -127,7 +127,7 @@ namespace {
 			float a = 13.0;
 
 			float volume = pow(k*(scale-a), n);
-			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a);
+			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
@@ -168,7 +168,7 @@ namespace {
 			float a = 13.0;
 
 			float volume = pow(k*(scale-a), n);
-			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a);
+			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
@@ -209,7 +209,7 @@ namespace {
 			float a = 13.0;
 
 			float volume = pow(k*(scale-a), n);
-			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a);
+			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
@@ -245,7 +245,7 @@ namespace {
 			float a = 1.2;
 
 			float volume = pow(k*(scale-a), n);
-			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a);
+			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				float volume = pow(k*(scale-a), n);
