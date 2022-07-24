@@ -17,6 +17,9 @@ namespace Hooks
 	void Hook_MainUpdate::Update(RE::Main* a_this, float a2)
 	{
 		_Update(a_this, a2);
-		Gts::GtsManager::GetSingleton().poll();
+        auto manager = Gts::GtsManager::GetSingleton();
+        manager.main_thread = true;
+        manager.poll();
+        manager.main_thread = false;
 	}
 }

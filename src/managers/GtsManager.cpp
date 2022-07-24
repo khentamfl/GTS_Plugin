@@ -75,27 +75,29 @@ namespace {
 
 		log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
-
-		for (bool person: {false, true}) {
-			NiAVObject* model = nullptr;
-			switch (Persistent::GetSingleton().size_method) {
-				case SizeMethod::ModelScale:
-				{
-					model = actor->Get3D(person);
-					break;
-				}
-				case SizeMethod::RootScale:
-				{
-					string node_name = "NPC Root [Root]";
-					model = find_node(actor, node_name, person);
-					break;
-				}
-			}
-			// We are on the main thread so we can update this now
-			if (model) {
-				NiUpdateData ctx;
-				model->UpdateWorldData(&ctx);
-			}
+        
+        if (GtsManager::GetSingleton().main_thead) {
+    		for (bool person: {false, true}) {
+    			NiAVObject* model = nullptr;
+    			switch (Persistent::GetSingleton().size_method) {
+    				case SizeMethod::ModelScale:
+    				{
+    					model = actor->Get3D(person);
+    					break;
+    				}
+    				case SizeMethod::RootScale:
+    				{
+    					string node_name = "NPC Root [Root]";
+    					model = find_node(actor, node_name, person);
+    					break;
+    				}
+    			}
+    			// We are on the main thread so we can update this now
+    			if (model) {
+    				NiUpdateData ctx;
+    				model->UpdateWorldData(&ctx);
+    			}
+            }
 		}
 	}
 
@@ -207,7 +209,7 @@ void GtsManager::poll() {
 		if ((current_frame - init_delay) % step != 0) {
 			return;
 		}
-
+        
 		auto actors = find_actors();
 		for (auto actor: actors) {
 			if (!actor) {
