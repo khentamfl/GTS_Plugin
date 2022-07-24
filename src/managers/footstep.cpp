@@ -124,7 +124,7 @@ namespace {
 		if (sound_descriptor && foot && audio_manager) {
 			float k = 1.08;
 			float n = 0.39;
-			float a = 13.0;
+			float a = 12.99;
 
 			float volume = pow(k*(scale-a), n);
 			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
@@ -165,7 +165,7 @@ namespace {
 		if (sound_descriptor && foot && audio_manager) {
 			float k = 1.08;
 			float n = 0.39;
-			float a = 13.0;
+			float a = 12.99;
 
 			float volume = pow(k*(scale-a), n);
 			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
@@ -206,7 +206,7 @@ namespace {
 		if (sound_descriptor && foot && audio_manager) {
 			float k = 1.08;
 			float n = 0.39;
-			float a = 13.0;
+			float a = 12.99;
 
 			float volume = pow(k*(scale-a), n);
 			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
