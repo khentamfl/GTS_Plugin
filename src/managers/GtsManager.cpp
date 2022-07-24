@@ -44,7 +44,7 @@ namespace {
 				);
 		}
 	}
-	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, force bool = false) {
 		if (!actor) {
 			return;
 		}
@@ -64,7 +64,7 @@ namespace {
 		float visual_scale = persi_actor_data->visual_scale;
 
 		// Is scale correct already?
-		if (fabs(visual_scale - scale) <= 1e-5) {
+		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
 			return;
 		}
 
@@ -99,7 +99,7 @@ namespace {
 		}
 	}
 
-	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
 		if (!Persistent::GetSingleton().is_speed_adjusted) {
 			return;
 		}
@@ -126,39 +126,39 @@ namespace {
 		actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / speed_mult);
 
 		// Experiement
-        if (false) {
-    		auto& rot_speed = actor->currentProcess->middleHigh->rotationSpeed;
-    		if (fabs(rot_speed.x) > 1e-5 || fabs(rot_speed.y) > 1e-5 || fabs(rot_speed.z) > 1e-5) {
-    			log::info("{} rotationSpeed: {},{},{}", actor_name(actor), rot_speed.x,rot_speed.y,rot_speed.z);
-    			actor->currentProcess->middleHigh->rotationSpeed.x *= speed_mult;
-    			actor->currentProcess->middleHigh->rotationSpeed.y *= speed_mult;
-    			actor->currentProcess->middleHigh->rotationSpeed.z *= speed_mult;
-    		}
-    		auto& animationDelta = actor->currentProcess->high->animationDelta;
-    		if (fabs(animationDelta.x) > 1e-5 || fabs(animationDelta.y) > 1e-5 || fabs(animationDelta.z) > 1e-5) {
-    			log::info("{} animationDelta: {},{},{}", actor_name(actor), animationDelta.x,animationDelta.y,animationDelta.z);
-    		}
-    		auto& animationAngleMod = actor->currentProcess->high->animationAngleMod;
-    		if (fabs(animationAngleMod.x) > 1e-5 || fabs(animationAngleMod.y) > 1e-5 || fabs(animationAngleMod.z) > 1e-5) {
-    			log::info("{} animationAngleMod: {},{},{}", actor_name(actor), animationAngleMod.x,animationAngleMod.y,animationAngleMod.z);
-    		}
-    		auto& pathingCurrentRotationSpeed = actor->currentProcess->high->pathingCurrentRotationSpeed;
-    		if (fabs(pathingCurrentRotationSpeed.x) > 1e-5 || fabs(pathingCurrentRotationSpeed.y) > 1e-5 || fabs(pathingCurrentRotationSpeed.z) > 1e-5) {
-    			log::info("{} pathingCurrentRotationSpeed: {},{},{}", actor_name(actor), pathingCurrentRotationSpeed.x,pathingCurrentRotationSpeed.y,pathingCurrentRotationSpeed.z);
-    		}
-    		auto& pathingDesiredRotationSpeed = actor->currentProcess->high->pathingDesiredRotationSpeed;
-    		if (fabs(pathingDesiredRotationSpeed.x) > 1e-5 || fabs(pathingDesiredRotationSpeed.y) > 1e-5 || fabs(pathingDesiredRotationSpeed.z) > 1e-5) {
-    			log::info("{} pathingDesiredRotationSpeed: {},{},{}", actor_name(actor), pathingDesiredRotationSpeed.x,pathingDesiredRotationSpeed.y,pathingDesiredRotationSpeed.z);
-    		}
-        }
+		if (false) {
+			auto& rot_speed = actor->currentProcess->middleHigh->rotationSpeed;
+			if (fabs(rot_speed.x) > 1e-5 || fabs(rot_speed.y) > 1e-5 || fabs(rot_speed.z) > 1e-5) {
+				log::info("{} rotationSpeed: {},{},{}", actor_name(actor), rot_speed.x,rot_speed.y,rot_speed.z);
+				actor->currentProcess->middleHigh->rotationSpeed.x *= speed_mult;
+				actor->currentProcess->middleHigh->rotationSpeed.y *= speed_mult;
+				actor->currentProcess->middleHigh->rotationSpeed.z *= speed_mult;
+			}
+			auto& animationDelta = actor->currentProcess->high->animationDelta;
+			if (fabs(animationDelta.x) > 1e-5 || fabs(animationDelta.y) > 1e-5 || fabs(animationDelta.z) > 1e-5) {
+				log::info("{} animationDelta: {},{},{}", actor_name(actor), animationDelta.x,animationDelta.y,animationDelta.z);
+			}
+			auto& animationAngleMod = actor->currentProcess->high->animationAngleMod;
+			if (fabs(animationAngleMod.x) > 1e-5 || fabs(animationAngleMod.y) > 1e-5 || fabs(animationAngleMod.z) > 1e-5) {
+				log::info("{} animationAngleMod: {},{},{}", actor_name(actor), animationAngleMod.x,animationAngleMod.y,animationAngleMod.z);
+			}
+			auto& pathingCurrentRotationSpeed = actor->currentProcess->high->pathingCurrentRotationSpeed;
+			if (fabs(pathingCurrentRotationSpeed.x) > 1e-5 || fabs(pathingCurrentRotationSpeed.y) > 1e-5 || fabs(pathingCurrentRotationSpeed.z) > 1e-5) {
+				log::info("{} pathingCurrentRotationSpeed: {},{},{}", actor_name(actor), pathingCurrentRotationSpeed.x,pathingCurrentRotationSpeed.y,pathingCurrentRotationSpeed.z);
+			}
+			auto& pathingDesiredRotationSpeed = actor->currentProcess->high->pathingDesiredRotationSpeed;
+			if (fabs(pathingDesiredRotationSpeed.x) > 1e-5 || fabs(pathingDesiredRotationSpeed.y) > 1e-5 || fabs(pathingDesiredRotationSpeed.z) > 1e-5) {
+				log::info("{} pathingDesiredRotationSpeed: {},{},{}", actor_name(actor), pathingDesiredRotationSpeed.x,pathingDesiredRotationSpeed.y,pathingDesiredRotationSpeed.z);
+			}
+		}
 	}
 
-	void apply_actor(Actor* actor) {
+	void apply_actor(Actor* actor, bool force = false) {
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-		apply_height(actor, saved_data, temp_data);
-		apply_highheel(actor, temp_data);
-		apply_speed(actor, saved_data, temp_data);
+		apply_height(actor, saved_data, temp_data, force);
+		apply_highheel(actor, temp_data, force);
+		apply_speed(actor, saved_data, temp_data, force);
 	}
 
 	void update_actor(Actor* actor) {
@@ -262,7 +262,7 @@ void GtsManager::reapply() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		reapply_actor(actor);
+		reapply_actor(actor, true);
 	}
 }
 void GtsManager::reapply_actor(Actor* actor) {

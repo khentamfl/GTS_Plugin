@@ -22,7 +22,7 @@ namespace {
 }
 
 namespace Gts {
-	void apply_highheel(Actor* actor, TempActorData* temp_data) {
+	void apply_highheel(Actor* actor, TempActorData* temp_data, bool force) {
 		if (!actor) {
 			return;
 		}
@@ -69,7 +69,7 @@ namespace Gts {
 			auto npc_root_node = find_node(actor, "CME Body [Body]", person);
 			if (npc_root_node) {
 				float current_value = npc_root_node->local.translate.z;
-				if ((fabs(last_hh_adjustment - new_hh) > 1e-5) || (fabs(current_value - new_hh) > 1e-5)) {
+				if ((fabs(last_hh_adjustment - new_hh) > 1e-5) || (fabs(current_value - new_hh) > 1e-5) || force) {
 					npc_root_node->local.translate.z = new_hh;
 					NiUpdateData ctx;
 					npc_root_node->UpdateWorldData(&ctx);
