@@ -263,6 +263,20 @@ namespace {
 	}
 
 	void do_shakes(Actor* actor, const Foot& foot_kind, const float& scale) {
+		float power_multi = 1.0;
+		switch (foot_kind) {
+			case Foot::Left:
+			case Foot::Right:
+			case Foot::Front:
+			case Foot::Back:
+				break;
+			case Foot::JumpLand:
+				power_multi = 2.0;
+				break;
+			default:
+				return;
+				break;
+		}
 		float distance_to_camera = unit_to_meter(get_distance_to_camera(actor));
 
 		// Camera shakes
@@ -275,7 +289,7 @@ namespace {
 		float max_shake_scale = 20.0; // After this we have full power shaking
 		float a = min_shake_scale;
 		float k = 1.0/pow(scale - a, n);
-		float power = k*pow(scale - a, n);
+		float power = k*pow(scale - a, n) * power_multi;
 
 		float intensity = power * falloff;
 		float duration_power = 0.25 * power;
@@ -356,7 +370,10 @@ namespace Gts {
 					jumpland_sound.Play();
 				}
 
-				do_shakes(actor, foot_kind, scale);
+				shake_camera(actor, 1.0, 1.0);
+				shake_controller(1.0, 1.0, 1.0);
+
+				//do_shakes(actor, foot_kind, scale);
 			}
 		}
 	}
