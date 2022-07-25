@@ -339,7 +339,7 @@ namespace Gts {
 			float minimal_size = 1.2;
 			if (scale > minimal_size && !actor->IsSwimming()) {
 				if (actor->IsSprinting()) {
-					scale *= 1.75; // Sprinting makes you sound bigger
+					scale *= 1.3; // Sprinting makes you sound bigger
 				} else if (actor->IsSneaking()) {
 					scale *= 0.55; // Sneaking makes you sound quieter
 				} else if (actor->IsWalking()) {
