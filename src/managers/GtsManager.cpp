@@ -132,6 +132,10 @@ namespace {
 		}
 	}
 
+	void update_effective_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+
+	}
+
 	void apply_actor(Actor* actor, bool force = false) {
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
@@ -143,6 +147,7 @@ namespace {
 	void update_actor(Actor* actor) {
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
+		update_effective_height(actor, saved_data, temp_data);
 		smooth_height_change(actor, saved_data, temp_data);
 	}
 }

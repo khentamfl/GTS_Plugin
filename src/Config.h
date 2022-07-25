@@ -142,6 +142,22 @@ namespace Gts {
 			friend class articuno::access;
 	};
 
+	class SpellEffects {
+		public:
+			[[nodiscard]] inline std::string GetSmallMassiveThreat() const noexcept {
+				return _smallMassiveThreat;
+			}
+
+		private:
+			articuno_serde(ar) {
+				ar <=> articuno::kv(_smallMassiveThreat, "smallMassiveThreat");
+			}
+
+			std::string _smallMassiveThreat;
+
+			friend class articuno::access;
+	};
+
 	class Config {
 		public:
 			[[nodiscard]] inline const Debug& GetDebug() const noexcept {
@@ -156,6 +172,10 @@ namespace Gts {
 				return _sound;
 			}
 
+			[[nodiscard]] inline const SpellEffects& GetSpellEffects() const noexcept {
+				return _spellEffects;
+			}
+
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
 
 		private:
@@ -163,11 +183,13 @@ namespace Gts {
 				ar <=> articuno::kv(_debug, "debug");
 				ar <=> articuno::kv(_frame, "frame");
 				ar <=> articuno::kv(_sound, "sound");
+				ar <=> articuno::kv(_spellEffects, "spellEffects");
 			}
 
 			Debug _debug;
 			Frame _frame;
 			Sound _sound;
+			SpellEffects _spellEffects;
 
 			friend class articuno::access;
 	};

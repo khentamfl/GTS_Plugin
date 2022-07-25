@@ -17,3 +17,7 @@ sound:
   xlFeetL: "GTS.esp|271EF4"
   xlFeetR: "GTS.esp|271EF4"
   jumpLand: "GTS.esp|183F43"
+
+spellEffects:
+  # IDs for spell effects
+  smallMassiveThreat: "GTS.esp|1A2568"
