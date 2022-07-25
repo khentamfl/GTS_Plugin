@@ -58,17 +58,25 @@ namespace Gts {
 	}
 
 	inline void shake_camera(Actor* actor, float intensity, float duration) {
-		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-		auto args = RE::MakeFunctionArguments(std::move(actor), std::move(intensity), std::move(duration));
-		vm->DispatchStaticCall("Game", "ShakeCamera", args, callback);
+		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+		if (vm) {
+			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+			auto args = RE::MakeFunctionArguments(std::move(actor), std::move(intensity), std::move(duration));
+			vm->DispatchStaticCall("Game", "ShakeCamera", args, callback);
+		} else {
+			log::info("VM not avaliable");
+		}
 	}
 
 	inline void shake_controller(float left_intensity, float right_intensity, float duration) {
-		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-		auto args = RE::MakeFunctionArguments(std::move(left_intensity), std::move(right_intensity), std::move(duration));
-		vm->DispatchStaticCall("Game", "shakeController", args, callback);
+		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+		if (vm) {
+			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+			auto args = RE::MakeFunctionArguments(std::move(left_intensity), std::move(right_intensity), std::move(duration));
+			vm->DispatchStaticCall("Game", "shakeController", args, callback);
+		}
 	}
 
 	inline float get_distance_to_camera(Actor* actor) {
