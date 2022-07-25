@@ -6,7 +6,6 @@
 
 #include <RE/Skyrim.h>
 
-#include "scale/scale.h"
 #include "node.h"
 #include "util.h"
 

@@ -1,6 +1,5 @@
 #include "managers/highheel.h"
 #include "node.h"
-#include "scale/scale.h"
 #include "managers/GtsManager.h"
 #include "data/persistent.h"
 #include "data/transient.h"

@@ -1,5 +1,4 @@
 #include "papyrus/plugin.h"
-#include "scale/scale.h"
 #include "data/persistent.h"
 #include "managers/GtsManager.h"
 #include "util.h"

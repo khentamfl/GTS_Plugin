@@ -1,7 +1,7 @@
 #include "data/transient.h"
 #include "node.h"
 #include "util.h"
-#include "scale/scale.h"
+#include "scale/modscale.h"
 
 using namespace SKSE;
 using namespace RE;
