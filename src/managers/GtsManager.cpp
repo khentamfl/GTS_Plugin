@@ -3,6 +3,7 @@
 #include <managers/GtsManager.h>
 #include <data/persistent.h>
 #include <data/transient.h>
+#include <data/runtime.h>
 #include <managers/highheel.h>
 #include "util.h"
 #include <vector>
