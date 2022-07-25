@@ -76,7 +76,7 @@ namespace {
 		log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
         
-        if (GtsManager::GetSingleton().main_thead) {
+        if (GtsManager::GetSingleton().main_thread) {
     		for (bool person: {false, true}) {
     			NiAVObject* model = nullptr;
     			switch (Persistent::GetSingleton().size_method) {
