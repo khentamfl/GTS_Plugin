@@ -1,7 +1,8 @@
 #pragma once
 // Module that holds data that is persistent across saves
 #include <SKSE/SKSE.h>
-#include "scale.h"
+#include "scale/scale.h"
+#include "util.h"
 
 using namespace std;
 using namespace SKSE;
@@ -18,6 +19,7 @@ namespace Gts {
 		float half_life;
 		float anim_speed;
 	};
+
 	class Persistent {
 		public:
 			[[nodiscard]] static Persistent& GetSingleton() noexcept;
@@ -26,8 +28,16 @@ namespace Gts {
 			static void OnGameLoaded(SKSE::SerializationInterface* serde);
 
 			ActorData* GetActorData(Actor* actor);
+			ActorData* GetData(TESObjectREFR* refr);
 
 			bool highheel_correction = true;
+			bool is_speed_adjusted = true;
+			SoftPotential speed_adjustment {
+				.k = 0.125,
+				.n = 0.85,
+				.s = 1.12,
+				.o = 1.0,
+			};
 			SizeMethod size_method = SizeMethod::ModelScale;
 		private:
 			Persistent() = default;

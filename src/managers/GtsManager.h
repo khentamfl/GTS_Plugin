@@ -6,7 +6,7 @@
 
 #include <RE/Skyrim.h>
 
-#include "scale.h"
+#include "scale/scale.h"
 #include "node.h"
 #include "util.h"
 
@@ -31,5 +31,8 @@ namespace Gts {
 			void poll();
 			void poll_actor(Actor* actor);
 
+			// Reapply changes (used after reload events)
+			void reapply();
+			void reapply_actor(Actor* actor);
 	};
 }

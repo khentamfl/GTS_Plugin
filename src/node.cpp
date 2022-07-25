@@ -1,4 +1,5 @@
 #include "node.h"
+#include <regex>
 
 using namespace SKSE;
 using namespace Gts;
@@ -101,6 +102,81 @@ namespace Gts {
 		}
 
 		return nullptr;
+	}
+
+	NiAVObject* find_node_regex(Actor* actor, std::string_view node_regex, bool first_person) {
+		if (!actor->Is3DLoaded()) {
+			return nullptr;
+		}
+		auto model = actor->Get3D(first_person);
+		if (!model) {
+			return nullptr;
+		}
+
+		std::regex the_regex(std::string(node_regex).c_str());
+
+		// Game lookup failed we try and find it manually
+		std::deque<NiAVObject*> queue;
+		queue.push_back(model);
+
+
+		while (!queue.empty()) {
+			auto currentnode = queue.front();
+			queue.pop_front();
+			try {
+				if (currentnode) {
+					auto ninode = currentnode->AsNode();
+					if (ninode) {
+						for (auto child: ninode->GetChildren()) {
+							// Bredth first search
+							queue.push_back(child.get());
+							// Depth first search
+							//queue.push_front(child.get());
+						}
+					}
+					// Do smth
+					if  (std::regex_match(currentnode->name.c_str(), the_regex)) {
+						return currentnode;
+					}
+				}
+			}
+			catch (const std::overflow_error& e) {
+				log::warn("Overflow: {}", e.what());
+			} // this executes if f() throws std::overflow_error (same type rule)
+			catch (const std::runtime_error& e) {
+				log::warn("Underflow: {}", e.what());
+			} // this executes if f() throws std::underflow_error (base class rule)
+			catch (const std::exception& e) {
+				log::warn("Exception: {}", e.what());
+			} // this executes if f() throws std::logic_error (base class rule)
+			catch (...) {
+				log::warn("Exception Other");
+			}
+		}
+
+		return nullptr;
+	}
+
+	NiAVObject* find_node_any(Actor* actor, std::string_view name) {
+		NiAVObject* result = nullptr;
+		for (auto person: {false, true}) {
+			result = find_node(actor, name, person);
+			if (result) {
+				break;
+			}
+		}
+		return result;
+	}
+
+	NiAVObject* find_node_regex_any(Actor* actor, std::string_view node_regex) {
+		NiAVObject* result = nullptr;
+		for (auto person: {false, true}) {
+			result = find_node_regex(actor, node_regex, person);
+			if (result) {
+				break;
+			}
+		}
+		return result;
 	}
 
 	void scale_hkpnodes(Actor* actor, float prev_scale, float new_scale) {

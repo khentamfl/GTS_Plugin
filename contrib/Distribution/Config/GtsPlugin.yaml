@@ -5,3 +5,7 @@ debug:
 frame:
   initDelay: 0
   step: 0
+experiment: 0
+# This is the impact data set for the footsteps
+footstepLForm: "GTS.esp|1C5C7D"
+footstepRForm: "GTS.esp|1C5C7D"

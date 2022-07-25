@@ -1,6 +1,6 @@
-#include "persistent.h"
-#include "GtsManager.h"
-#include "scale.h"
+#include "data/persistent.h"
+#include "managers/GtsManager.h"
+#include "scale/scale.h"
 
 using namespace SKSE;
 using namespace RE;
@@ -9,6 +9,7 @@ namespace {
 	inline const auto ActorDataRecord = _byteswap_ulong('ACTD');
 	inline const auto ScaleMethodRecord = _byteswap_ulong('SCMD');
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
+	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 }
 
 namespace Gts {
@@ -104,6 +105,23 @@ namespace Gts {
 				bool highheel_correction;
 				serde->ReadRecordData(&highheel_correction, sizeof(highheel_correction));
 				GetSingleton().highheel_correction = highheel_correction;
+			} else if (type == IsSpeedAdjustedRecord) {
+				bool is_speed_adjusted;
+				serde->ReadRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
+				GetSingleton().is_speed_adjusted = is_speed_adjusted;
+				if (version >= 1) {
+					float k;
+					serde->ReadRecordData(&k, sizeof(k));
+					GetSingleton().speed_adjustment.k = k;
+					float n;
+					serde->ReadRecordData(&n, sizeof(n));
+					GetSingleton().speed_adjustment.n = n;
+					float s;
+					serde->ReadRecordData(&s, sizeof(s));
+					GetSingleton().speed_adjustment.s = s;
+					float o = 1.0;
+					GetSingleton().speed_adjustment.o = o;
+				}
 			} else {
 				log::warn("Unknown record type in cosave.");
 				__assume(false);
@@ -154,8 +172,22 @@ namespace Gts {
 			return;
 		}
 
-		int highheel_correction = GetSingleton().highheel_correction;
+		bool highheel_correction = GetSingleton().highheel_correction;
 		serde->WriteRecordData(&highheel_correction, sizeof(highheel_correction));
+
+		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 1)) {
+			log::error("Unable to open is speed adjusted record to write cosave data.");
+			return;
+		}
+
+		bool is_speed_adjusted = GetSingleton().is_speed_adjusted;
+		serde->WriteRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
+		float k = GetSingleton().speed_adjustment.k;
+		serde->WriteRecordData(&k, sizeof(k));
+		float n = GetSingleton().speed_adjustment.n;
+		serde->WriteRecordData(&n, sizeof(n));
+		float s = GetSingleton().speed_adjustment.s;
+		serde->WriteRecordData(&s, sizeof(s));
 
 	}
 
@@ -189,6 +221,20 @@ namespace Gts {
 			new_data.anim_speed = 1.0;
 			this->_actor_data[key] = new_data;
 			result = &this->_actor_data.at(key);
+		}
+		return result;
+	}
+
+	ActorData* Persistent::GetData(TESObjectREFR* refr) {
+		if (!refr) {
+			return nullptr;
+		}
+		auto key = refr->formID;
+		ActorData* result = nullptr;
+		try {
+			result = &this->_actor_data.at(key);
+		} catch (const std::out_of_range& oor) {
+			return nullptr;
 		}
 		return result;
 	}

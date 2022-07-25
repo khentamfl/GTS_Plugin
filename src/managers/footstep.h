@@ -11,6 +11,6 @@ namespace Gts {
 		public:
 			[[nodiscard]] static FootStepManager& GetSingleton() noexcept;
 
-			void HookProcessEvent(const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource);
+			void HookProcessEvent(BGSImpactManager* impact, const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource);
 	};
 }

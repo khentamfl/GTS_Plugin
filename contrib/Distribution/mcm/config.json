@@ -44,7 +44,7 @@
         "valueOptions": {
           "options": ["Model", "NPC Root Node", "Ref Scale"],
           "shortNames": ["Model", "NPC", "Ref"],
-          "sourceType": "ModSettingFloat"
+          "sourceType": "ModSettingInt"
         },
         "action": {
           "type": "CallGlobalFunction",
@@ -63,7 +63,21 @@
         "action": {
           "type": "CallGlobalFunction",
           "script": "GtsPlugin",
-          "function": "EnableHighHeelCorrection",
+          "function": "SetIsHighHeelEnabled",
+          "params": ["{value}"]
+        }
+      },
+      {
+        "id": "bEnableSpeedAdjustment:Main",
+        "text": "Enable Anim and Walk Speed Adjustments",
+        "valueOptions": {
+          "sourceType": "ModSettingBool"
+        },
+        "type": "toggle",
+        "action": {
+          "type": "CallGlobalFunction",
+          "script": "GtsPlugin",
+          "function": "SetIsSpeedAdjusted",
           "params": ["{value}"]
         }
       },
@@ -81,7 +95,7 @@
           "max": 2.0,
           "step": 0.01,
           "formatString": "{2}",
-          "sourceType": "ModSettingBool"
+          "sourceType": "ModSettingFloat"
         },
         "action": {
           "type": "CallFunction",

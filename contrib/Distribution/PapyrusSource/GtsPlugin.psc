@@ -30,5 +30,23 @@ String function SigFig(Float number, Int sf) global native
 ; Controls if the HH correction method is enabled or not
 ;
 ; Value is saved into the cosave
-Function EnableHighHeelCorrection(Bool enabled) global native
-Bool Function GetHighHeelCorrection() global native
+Function SetIsHighHeelEnabled(Bool enabled) global native
+Bool Function GetIsHighHeelEnabled() global native
+
+; Controls if the Anim and Walk speeds adjustments are enabled or not
+;
+; Value is saved into the cosave
+Function SetIsSpeedAdjusted(Bool enabled) global native
+Bool Function GetIsSpeedAdjusted() global native
+; These control the variables in the speed adjustment formula
+;
+; The formula is
+; 1/(1+(k*(x-1.0))^(n*s))^(1/s)
+; https://www.desmos.com/calculator/klvqenjooi
+; Values are saved into the cosave
+Float Function GetSpeedParameterK() global native
+Float Function SetSpeedParameterK(Float k) global native
+Float Function GetSpeedParameterN() global native
+Float Function SetSpeedParameterN(Float n) global native
+Float Function GetSpeedParameterS() global native
+Float Function SetSpeedParameterS(Float s) global native

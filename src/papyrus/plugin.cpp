@@ -1,9 +1,7 @@
-#include "papyrus.h"
-#include "scale.h"
-#include "persistent.h"
-#include "GtsManager.h"
-#include "papyrus/scale.h"
-#include "papyrus/events.h"
+#include "papyrus/plugin.h"
+#include "scale/scale.h"
+#include "data/persistent.h"
+#include "managers/GtsManager.h"
 #include <math.h>
 #include <sstream>
 #include <iomanip>
@@ -39,8 +37,8 @@ namespace {
 		}
 		return false;
 	}
-    
-    float GetGrowthHalfLife(StaticFunctionTag*, Actor* actor) {
+
+	float GetGrowthHalfLife(StaticFunctionTag*, Actor* actor) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
 			if (actor_data) {
@@ -78,27 +76,60 @@ namespace {
 		return format(number, sf);
 	}
 
-	void EnableHighHeelCorrection(StaticFunctionTag*, bool enabled) {
+	bool GetIsHighHeelEnabled(StaticFunctionTag*) {
+		return Persistent::GetSingleton().highheel_correction;
+	}
+
+	void SetIsHighHeelEnabled(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().highheel_correction = enabled;
 	}
-    
-    bool GetHighHeelCorrection(StaticFunctionTag*) {
-        return Persistent::GetSingleton().highheel_correction;
-    }
+
+	bool GetIsSpeedAdjusted(StaticFunctionTag*) {
+		return Persistent::GetSingleton().is_speed_adjusted;
+	}
+
+	void SetIsSpeedAdjusted(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().is_speed_adjusted = enabled;
+	}
+
+	void SetSpeedParameterK(StaticFunctionTag*, float k) {
+		Persistent::GetSingleton().speed_adjustment.k = k;
+	}
+	float GetSpeedParameterK(StaticFunctionTag*) {
+		return Persistent::GetSingleton().speed_adjustment.k;
+	}
+	void SetSpeedParameterN(StaticFunctionTag*, float n) {
+		Persistent::GetSingleton().speed_adjustment.n = n;
+	}
+	float GetSpeedParameterN(StaticFunctionTag*) {
+		return Persistent::GetSingleton().speed_adjustment.n;
+	}
+	void SetSpeedParameterS(StaticFunctionTag*, float s) {
+		Persistent::GetSingleton().speed_adjustment.s = s;
+	}
+	float GetSpeedParameterS(StaticFunctionTag*) {
+		return Persistent::GetSingleton().speed_adjustment.s;
+	}
 }
 
 namespace Gts {
-	bool register_papyrus(IVirtualMachine* vm) {
+	bool register_papyrus_plugin(IVirtualMachine* vm) {
 		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
 		vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
 		vm->RegisterFunction("GetGrowthHalfLife", PapyrusClass, GetGrowthHalfLife);
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
-		vm->RegisterFunction("EnableHighHeelCorrection", PapyrusClass, EnableHighHeelCorrection);
-        vm->RegisterFunction("GetHighHeelCorrection", PapyrusClass, GetHighHeelCorrection);
-        
-		register_papyrus_scale(vm);
-		register_papyrus_events(vm);
+		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
+		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
+		vm->RegisterFunction("GetIsSpeedAdjusted", PapyrusClass, GetIsSpeedAdjusted);
+		vm->RegisterFunction("SetIsSpeedAdjusted", PapyrusClass, SetIsSpeedAdjusted);
+		vm->RegisterFunction("SetSpeedParameterK", PapyrusClass, SetSpeedParameterK);
+		vm->RegisterFunction("GetSpeedParameterK", PapyrusClass, GetSpeedParameterK);
+		vm->RegisterFunction("SetSpeedParameterN", PapyrusClass, SetSpeedParameterN);
+		vm->RegisterFunction("GetSpeedParameterN", PapyrusClass, GetSpeedParameterN);
+		vm->RegisterFunction("SetSpeedParameterS", PapyrusClass, SetSpeedParameterS);
+		vm->RegisterFunction("GetSpeedParameterS", PapyrusClass, GetSpeedParameterS);
+
 		return true;
 	}
 }

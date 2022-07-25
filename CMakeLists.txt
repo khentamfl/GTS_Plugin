@@ -40,7 +40,7 @@ source_group(
 ########################################################################################################################
 find_package(CommonLibSSE CONFIG REQUIRED)
 find_package(ryml CONFIG REQUIRED)
-find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
+find_path(ARTICUNO_INCLUDE_DIRS "articuno/access.h")
 
 add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")

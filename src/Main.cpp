@@ -1,10 +1,11 @@
 #include "Config.h"
-#include "GtsManager.h"
-#include "hooks.h"
-#include "papyrus.h"
-#include "persistent.h"
-#include "transient.h"
-#include "footstep.h"
+#include "managers/GtsManager.h"
+#include "hooks/hooks.h"
+#include "papyrus/papyrus.h"
+#include "data/persistent.h"
+#include "data/transient.h"
+#include "managers/footstep.h"
+#include "managers/reloader.h"
 
 #include <stddef.h>
 #include <thread>
@@ -96,11 +97,14 @@ namespace {
 					case MessagingInterface::kPostLoad: // Called after all plugins have finished running SKSEPlugin_Load.
 					// It is now safe to do multithreaded operations, or operations against other plugins.
 					case MessagingInterface::kPostPostLoad: // Called after all kPostLoad message handlers have run.
+						break;
 					case MessagingInterface::kInputLoaded: // Called when all game data has been found.
+						{
+							ReloadManager::GetSingleton().Initialize();
+						}
 						break;
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 						// It is now safe to access form data.
-						Hooks::Install();
 						break;
 					// Skyrim game events.
 					case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
@@ -173,6 +177,7 @@ SKSEPluginLoad(const LoadInterface * skse)
 
 	Init(skse);
 	InitializeMessaging();
+	Hooks::Install();
 	InitializePapyrus();
 	InitializeSerialization();
 
