@@ -2,6 +2,9 @@
 using namespace RE;
 using namespace SKSE;
 
+using namespace RE;
+using namespace RE::BSScript;
+
 namespace Hooks
 {
 	class Hook_VM
