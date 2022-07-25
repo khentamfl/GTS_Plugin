@@ -41,5 +41,7 @@ namespace Gts {
 		this->ExtraLargeFeetSoundR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLFeetR());
 
 		this->JumpLandSound = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetJumpLand());
+
+		this->SmallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
 	}
 }

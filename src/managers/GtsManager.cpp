@@ -14,7 +14,7 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	void smooth_height_change(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
 			return;
 		}
@@ -132,8 +132,22 @@ namespace {
 		}
 	}
 
-	void update_effective_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
-
+	void update_effective_multi(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+		if (!actor) {
+			return;
+		}
+		if (!persi_actor_data) {
+			return;
+		}
+		auto small_massive_threat = Runtime::GetSingleton().SmallMassiveThreat;
+		if (!small_massive_threat) {
+			return;
+		}
+		if (actor->HasMagicEffect(small_massive_threat)) {
+			persi_actor_data->effective_multi = 4.0;
+		} else {
+			persi_actor_data->effective_multi = 1.0;
+		}
 	}
 
 	void apply_actor(Actor* actor, bool force = false) {
@@ -147,8 +161,8 @@ namespace {
 	void update_actor(Actor* actor) {
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-		update_effective_height(actor, saved_data, temp_data);
-		smooth_height_change(actor, saved_data, temp_data);
+		update_effective_multi(actor, saved_data, temp_data);
+		update_height(actor, saved_data, temp_data);
 	}
 }
 

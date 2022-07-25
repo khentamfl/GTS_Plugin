@@ -27,5 +27,7 @@ namespace Gts {
 			BGSSoundDescriptorForm* ExtraLargeFeetSoundR = nullptr;
 
 			BGSSoundDescriptorForm* JumpLandSound = nullptr;
+
+			EffectSetting* SmallMassiveThreat = nullptr;
 	};
 }
