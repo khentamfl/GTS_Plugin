@@ -71,8 +71,7 @@ namespace Gts {
 				float current_value = npc_root_node->local.translate.z;
 				if ((fabs(last_hh_adjustment - new_hh) > 1e-5) || (fabs(current_value - new_hh) > 1e-5) || force) {
 					npc_root_node->local.translate.z = new_hh;
-					NiUpdateData ctx;
-					npc_root_node->UpdateWorldData(&ctx);
+					update_node(npc_root_node);
 					adjusted = true;
 				}
 			}

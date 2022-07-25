@@ -27,7 +27,6 @@ namespace Gts {
 
 			atomic_ulong frame_count = atomic_int64_t(0);
 			bool enabled = false;
-            bool main_thread = false;
 
 			void poll();
 			void poll_actor(Actor* actor);

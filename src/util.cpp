@@ -89,4 +89,9 @@ namespace Gts {
 		x = eydt*(j0 + j1*dt) + x_goal;
 		v = eydt*(v - j1*y*dt);
 	}
+
+	std::atomic_bool& get_main_thread() {
+		static std::atomic_bool main_thread(false);
+		return main_thread;
+	}
 }

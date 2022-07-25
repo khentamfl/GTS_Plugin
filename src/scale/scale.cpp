@@ -1,5 +1,6 @@
 #include "scale/scale.h"
 #include "util.h"
+#include "node.h"
 #include "managers/GtsManager.h"
 #include "data/persistent.h"
 
@@ -28,28 +29,14 @@ namespace Gts {
 		if (model) {
 			result = true;
 			model->local.scale = target_scale;
-			auto task = SKSE::GetTaskInterface();
-			task->AddTask([model]() {
-				if (model) {
-					NiUpdateData ctx;
-					// ctx.flags |= NiUpdateData::Flag::kDirty;
-					model->UpdateWorldData(&ctx);
-				}
-			});
+			update_node(model);
 		}
 
 		auto first_model = actor->Get3D(true);
 		if (first_model) {
 			result = true;
 			first_model->local.scale = target_scale;
-			auto task = SKSE::GetTaskInterface();
-			task->AddTask([first_model]() {
-				if (first_model) {
-					NiUpdateData ctx;
-					// ctx.flags |= NiUpdateData::Flag::kDirty;
-					first_model->UpdateWorldData(&ctx);
-				}
-			});
+			update_node(first_model);
 		}
 		return result;
 	}
@@ -62,28 +49,14 @@ namespace Gts {
 		if (node) {
 			result = true;
 			node->local.scale = target_scale;
-			auto task = SKSE::GetTaskInterface();
-			task->AddTask([node]() {
-				if (node) {
-					NiUpdateData ctx;
-					// ctx.flags |= NiUpdateData::Flag::kDirty;
-					node->UpdateWorldData(&ctx);
-				}
-			});
+			update_node(node);
 		}
 
 		auto first_node = find_node(actor, node_name, true);
 		if (first_node) {
 			result = true;
 			first_node->local.scale = target_scale;
-			auto task = SKSE::GetTaskInterface();
-			task->AddTask([first_node]() {
-				if (first_node) {
-					NiUpdateData ctx;
-					// ctx.flags |= NiUpdateData::Flag::kDirty;
-					first_node->UpdateWorldData(&ctx);
-				}
-			});
+			update_node(first_node);
 		}
 		return result;
 	}

@@ -1,4 +1,5 @@
 #include "node.h"
+#include "util.h"
 #include <regex>
 
 using namespace SKSE;
@@ -319,5 +320,24 @@ namespace Gts {
 	NiAVObject* get_bumper(Actor* actor) {
 		string node_name = "CharacterBumper";
 		return find_node(actor, node_name);
+	}
+
+	void update_node(NiAVObject* node) {
+		if (node) {
+			if (on_mainthread()) {
+				NiUpdateData ctx;
+				node->UpdateWorldData(&ctx);
+			} else {
+				node->IncRefCount();
+				auto task = SKSE::GetTaskInterface();
+				task->AddTask([node]() {
+					if (node) {
+						NiUpdateData ctx;
+						node->UpdateWorldData(&ctx);
+						node->DecRefCount();
+					}
+				});
+			}
+		}
 	}
 }
