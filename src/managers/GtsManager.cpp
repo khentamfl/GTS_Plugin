@@ -251,7 +251,7 @@ void GtsManager::poll_actor(Actor* actor) {
 	set_scale(actor, visual_scale);
 }
 
-void GtsManager::reapply() {
+void GtsManager::reapply(bool force) {
 	// Get everyone in loaded AI data and reapply
 	auto actors = find_actors();
 	for (auto actor: actors) {
@@ -261,10 +261,10 @@ void GtsManager::reapply() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		reapply_actor(actor);
+		reapply_actor(actor, force);
 	}
 }
-void GtsManager::reapply_actor(Actor* actor) {
+void GtsManager::reapply_actor(Actor* actor, bool force) {
 	// Reapply just this actor
 	if (!actor) {
 		return;
@@ -272,5 +272,5 @@ void GtsManager::reapply_actor(Actor* actor) {
 	if (!actor->Is3DLoaded()) {
 		return;
 	}
-	apply_actor(actor, true);
+	apply_actor(actor, force);
 }
