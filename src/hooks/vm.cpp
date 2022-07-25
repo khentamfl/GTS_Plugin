@@ -7,15 +7,16 @@ namespace Hooks
 {
 	// BGSImpactManager
 	void Hook_VM::Hook() {
-		logger::info("Hooking BGSImpactManager");
-		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_BGSImpactManager[0] };
+		logger::info("Hooking VirtualMachine");
+		REL::Relocation<std::uintptr_t> Vtbl{ IVirtualMachine::VTABLE[0] };
 
-		_ProcessEvent = Vtbl.write_vfunc(0x01, ProcessEvent);
+		_SendEvent = Vtbl.write_vfunc(REL::Relocation(0x24, 0x24, 0x26), SendEvent);
 	}
 
 	void Hook_VM::SendEvent(IVirtualMachine* a_this, VMHandle a_handle, const BSFixedString& a_eventName, IFunctionArguments* a_args) {
 		_SendEvent(a_this, a_handle, a_eventName, a_args);
 		if (a_eventName.c_str() == "OnUpdate") {
+            logger::info("VM OnUpdate");
 			GtsManager::GetSingleton().reapply(false);
 		}
 	}
