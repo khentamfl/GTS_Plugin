@@ -129,8 +129,8 @@ namespace Gts {
 				ar <=> articuno::kv(_xlFeetL, "xlFeetL");
 				ar <=> articuno::kv(_xlFeetR, "xlFeetR");
 
-				ar <=> articuno::kv(_xlFeetL, "xxlFeetL");
-				ar <=> articuno::kv(_xlFeetR, "xxlFeetR");
+				ar <=> articuno::kv(_xxlFeetL, "xxlFeetL");
+				ar <=> articuno::kv(_xxlFeetR, "xxlFeetR");
 
 				ar <=> articuno::kv(_jumpLand, "jumpLand");
 			}
