@@ -75,7 +75,7 @@ namespace Hooks
 		if (a_obj3D) {
 			log::info("{} is tracking {} (update of {} s)", actor_name(a_this), a_obj3D->name.c_str(), a_delta);
 		} else {
-			log::info("{} is tracking unknown nullptr (update of {} s)", actor_name(a_this), a_obj3D->name.c_str(), a_delta);
+			log::info("{} is tracking unknown nullptr (update of {} s)", actor_name(a_this), a_delta);
 		}
 		_ProcessTracking(a_this, a_delta, a_obj3D);
         if (a_this) {
