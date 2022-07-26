@@ -19,6 +19,7 @@ namespace Hooks
 
 	void Hook_VM::SendEvent(IVirtualMachine* a_this, VMHandle a_handle, const BSFixedString& a_eventName, IFunctionArguments* a_args) {
 		_SendEvent(a_this, a_handle, a_eventName, a_args);
+		logger::info("Got event: {}", a_eventName.c_str());
 		if (a_eventName.c_str() == "OnUpdate") {
 			logger::info("VM OnUpdate");
 			GtsManager::GetSingleton().reapply(false);
@@ -27,6 +28,7 @@ namespace Hooks
 
 	void Hook_VM::SendEvent2(RE::BSScript::Internal::VirtualMachine* a_this, VMHandle a_handle, const BSFixedString& a_eventName, IFunctionArguments* a_args) {
 		_SendEvent2(a_this, a_handle, a_eventName, a_args);
+		logger::info("Got event2: {}", a_eventName.c_str());
 		if (a_eventName.c_str() == "OnUpdate") {
 			logger::info("VM OnUpdate");
 			GtsManager::GetSingleton().reapply(false);
