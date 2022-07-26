@@ -93,6 +93,17 @@ namespace {
 		return soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
 	}
 
+	float falloff_function(NiAVObject* source) {
+		if (source) {
+			float distance_to_camera = unit_to_meter(get_distance_to_camera(source));
+			// Camera shakes
+			// 1.0 Meter ~= 20% Power
+			// 0.5 Meter ~= 50% Power
+			float falloff = soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0);
+		}
+		return 1.0;
+	}
+
 	BSSoundHandle get_sound(NiAVObject* foot, const float& scale, BSISoundDescriptor* sound_descriptor, const VolumeParams& params) {
 		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
 		auto audio_manager = BSAudioManager::GetSingleton();
@@ -100,10 +111,12 @@ namespace {
 
 			float volume = volume_function(scale, params);
 			float frequency = frequency_function(scale, params);
+			float falloff = falloff_function(foot);
+			float intensity = volume * falloff;
 
-			if (volume > 1e-5) {
+			if (intensity > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
-				result.SetVolume(volume);
+				result.SetVolume(intensity);
 				result.SetFrequency(frequency);
 				NiPoint3 pos;
 				pos.x = 0;

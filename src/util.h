@@ -79,15 +79,27 @@ namespace Gts {
 		}
 	}
 
+	inline float get_distance_to_camera(const NiPoint3& point) {
+		auto camera = PlayerCamera::GetSingleton();
+		if (camera) {
+			auto point_a = point;
+			auto point_b = camera->pos;
+			auto delta = point_a - point_b;
+			return delta.Length();
+		}
+		return 3.4028237E38; // Max float
+	}
+
+	inline float get_distance_to_camera(NiAVObject* node) {
+		if (node) {
+			return get_distance_to_camera(node->world.translate);
+		}
+		return 3.4028237E38; // Max float
+	}
+
 	inline float get_distance_to_camera(Actor* actor) {
 		if (actor) {
-			auto camera = PlayerCamera::GetSingleton();
-			if (camera) {
-				auto point_a = actor->GetPosition();
-				auto point_b = camera->pos;
-				auto delta = point_a - point_b;
-				return delta.Length();
-			}
+			return get_distance_to_camera(actor->GetPosition());
 		}
 		return 3.4028237E38; // Max float
 	}
