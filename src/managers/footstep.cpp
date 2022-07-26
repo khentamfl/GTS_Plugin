@@ -78,14 +78,16 @@ namespace {
 		float a;
 		float k;
 		float n;
+		float s;
 	};
 
 	float volume_function(float scale, const VolumeParams& params) {
 		float k = params.k;
 		float a = params.a;
 		float n = params.n;
+		float s = params.s;
 		// https://www.desmos.com/calculator/ygoxbe7hjg
-		return pow(k*(scale-a), n);
+		return k*pow(s*(scale-a), n);
 	}
 
 	float frequency_function(float scale, const VolumeParams& params) {
@@ -278,12 +280,12 @@ namespace Gts {
 				Foot foot_kind = get_foot_kind(tag);
 				NiAVObject* foot = get_landing_foot(actor, foot_kind);
 
-				BSSoundHandle footstep_sound = get_sound(foot, scale, get_footstep_sounddesc(foot_kind), VolumeParams { .a = 1.2,   .k = 1.08, .n = 0.39});
-				BSSoundHandle rumble_sound   = get_sound(foot, scale, get_rumble_sounddesc(foot_kind),   VolumeParams { .a = 12.99, .k = 1.08, .n = 0.39});
-				BSSoundHandle sprint_sound   = get_sound(foot, scale, get_sprint_sounddesc(foot_kind),   VolumeParams { .a = 12.99, .k = 1.08, .n = 0.39});
-				BSSoundHandle xlfeet_sound   = get_sound(foot, scale, get_xlfeet_sounddesc(foot_kind),   VolumeParams { .a = 12.99, .k = 1.08, .n = 0.39});
-				BSSoundHandle xxlfeet_sound  = get_sound(foot, scale, get_xxlfeet_sounddesc(foot_kind),  VolumeParams { .a = 23.99, .k = 1.08, .n = 0.39});
-				BSSoundHandle jumpland_sound = get_sound(foot, scale, get_jumpland_sounddesc(foot_kind), VolumeParams { .a = 1.2,   .k = 1.08, .n = 0.39});
+				BSSoundHandle footstep_sound = get_sound(foot, scale, get_footstep_sounddesc(foot_kind), VolumeParams { .a = 1.2,   .k = 1.08, .n = 0.39, .s = 1.0});
+				BSSoundHandle rumble_sound   = get_sound(foot, scale, get_rumble_sounddesc(foot_kind),   VolumeParams { .a = 12.99, .k = 1.08, .n = 0.39, .s = 1.0});
+				BSSoundHandle sprint_sound   = get_sound(foot, scale, get_sprint_sounddesc(foot_kind),   VolumeParams { .a = 12.99, .k = 1.08, .n = 0.39, .s = 1.0});
+				BSSoundHandle xlfeet_sound   = get_sound(foot, scale, get_xlfeet_sounddesc(foot_kind),   VolumeParams { .a = 12.99, .k = 1.08, .n = 0.39, .s = 1.0});
+				BSSoundHandle xxlfeet_sound  = get_sound(foot, scale, get_xxlfeet_sounddesc(foot_kind),  VolumeParams { .a = 23.99, .k = 1.08, .n = 0.39, .s = 1.0});
+				BSSoundHandle jumpland_sound = get_sound(foot, scale, get_jumpland_sounddesc(foot_kind), VolumeParams { .a = 1.2,   .k = 1.08, .n = 0.39, .s = 1.0});
 
 				if (footstep_sound.soundID != BSSoundHandle::kInvalidID) {
 					footstep_sound.Play();
