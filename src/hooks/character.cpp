@@ -77,7 +77,6 @@ namespace Hooks
 		} else {
 			log::info("{} is tracking unknown nullptr (update of {} s)", actor_name(a_this), a_delta);
 		}
-		_ProcessTracking(a_this, a_delta, a_obj3D);
         if (a_this) {
             auto ai = a_this->currentProcess;
             if (ai) {
@@ -94,5 +93,6 @@ namespace Hooks
                 }
             }
         }
+		_ProcessTracking(a_this, a_delta, a_obj3D);
 	}
 }
