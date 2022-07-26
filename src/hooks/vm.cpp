@@ -3,6 +3,7 @@
 
 using namespace RE;
 using namespace RE::BSScript;
+using namespace Gts;
 
 namespace Hooks
 {
