@@ -74,19 +74,33 @@ namespace {
 		return nullptr;
 	}
 
-	BSSoundHandle get_footstep_sound(NiAVObject* foot, const Foot& foot_kind, const float& scale) {
+	struct VolumeParams {
+		float k;
+		float n;
+		float a;
+	};
+
+	float volume_function(float scale, const VolumeParams& params) {
+		float k = params.k;
+		float a = params.a;
+		float n = params.n;
+		// https://www.desmos.com/calculator/ygoxbe7hjg
+		return pow(k*(scale-a), n);
+	}
+
+	float frequency_function(float scale, const VolumeParams& params) {
+		float a = params.a;
+		return soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
+	}
+
+	BSSoundHandle get_sound(NiAVObject* foot, const float& scale, BSISoundDescriptor* sound_descriptor, const VolumeParams& params) {
 		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
-		auto sound_descriptor = get_footstep_sounddesc(foot_kind);
 		auto audio_manager = BSAudioManager::GetSingleton();
 		if (sound_descriptor && foot && audio_manager) {
 
-			// https://www.desmos.com/calculator/ygoxbe7hjg
-			float k = 1.08;
-			float n = 0.39;
-			float a = 1.2;
+			float volume = volume_function(scale, params);
+			float frequency = frequency_function(scale, params);
 
-			float volume = pow(k*(scale-a), n);
-			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
 			if (volume > 1e-5) {
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				result.SetVolume(volume);
@@ -116,33 +130,6 @@ namespace {
 		return nullptr;
 	}
 
-	BSSoundHandle get_rumble_sound(NiAVObject* foot, const Foot& foot_kind, const float& scale) {
-		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
-		auto sound_descriptor = get_rumble_sounddesc(foot_kind);
-		auto audio_manager = BSAudioManager::GetSingleton();
-		if (sound_descriptor && foot && audio_manager) {
-			float k = 1.08;
-			float n = 0.39;
-			float a = 12.99;
-
-			float volume = pow(k*(scale-a), n);
-			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
-			if (volume > 1e-5) {
-				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
-				float volume = pow(k*(scale-a), n);
-				result.SetVolume(volume);
-				result.SetFrequency(frequency);
-				NiPoint3 pos;
-				pos.x = 0;
-				pos.y = 0;
-				pos.z = 0;
-				result.SetPosition(pos);
-				result.SetObjectToFollow(foot);
-			}
-		}
-		return result;
-	}
-
 	BSISoundDescriptor* get_sprint_sounddesc(const Foot& foot_kind) {
 		switch (foot_kind) {
 			case Foot::Left:
@@ -155,33 +142,6 @@ namespace {
 				break;
 		}
 		return nullptr;
-	}
-
-	BSSoundHandle get_sprint_sound(NiAVObject* foot, const Foot& foot_kind, const float& scale) {
-		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
-		auto sound_descriptor = get_sprint_sounddesc(foot_kind);
-		auto audio_manager = BSAudioManager::GetSingleton();
-		if (sound_descriptor && foot && audio_manager) {
-			float k = 1.08;
-			float n = 0.39;
-			float a = 12.99;
-
-			float volume = pow(k*(scale-a), n);
-			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
-			if (volume > 1e-5) {
-				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
-				float volume = pow(k*(scale-a), n);
-				result.SetVolume(volume);
-				result.SetFrequency(frequency);
-				NiPoint3 pos;
-				pos.x = 0;
-				pos.y = 0;
-				pos.z = 0;
-				result.SetPosition(pos);
-				result.SetObjectToFollow(foot);
-			}
-		}
-		return result;
 	}
 
 	BSISoundDescriptor* get_xlfeet_sounddesc(const Foot& foot_kind) {
@@ -198,31 +158,18 @@ namespace {
 		return nullptr;
 	}
 
-	BSSoundHandle get_xlfeet_sound(NiAVObject* foot, const Foot& foot_kind, const float& scale) {
-		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
-		auto sound_descriptor = get_xlfeet_sounddesc(foot_kind);
-		auto audio_manager = BSAudioManager::GetSingleton();
-		if (sound_descriptor && foot && audio_manager) {
-			float k = 1.08;
-			float n = 0.39;
-			float a = 12.99;
-
-			float volume = pow(k*(scale-a), n);
-			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
-			if (volume > 1e-5) {
-				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
-				float volume = pow(k*(scale-a), n);
-				result.SetVolume(volume);
-				result.SetFrequency(frequency);
-				NiPoint3 pos;
-				pos.x = 0;
-				pos.y = 0;
-				pos.z = 0;
-				result.SetPosition(pos);
-				result.SetObjectToFollow(foot);
-			}
+	BSISoundDescriptor* get_xxlfeet_sounddesc(const Foot& foot_kind) {
+		switch (foot_kind) {
+			case Foot::Left:
+			case Foot::Front:
+				return Runtime::GetSingleton().ExtraExtraLargeFeetSoundL;
+				break;
+			case Foot::Right:
+			case Foot::Back:
+				return Runtime::GetSingleton().ExtraExtraLargeFeetSoundR;
+				break;
 		}
-		return result;
+		return nullptr;
 	}
 
 	BSISoundDescriptor* get_jumpland_sounddesc(const Foot& foot_kind) {
@@ -232,33 +179,6 @@ namespace {
 				break;
 		}
 		return nullptr;
-	}
-
-	BSSoundHandle get_jumpland_sound(NiAVObject* foot, const Foot& foot_kind, const float& scale) {
-		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
-		auto sound_descriptor = get_jumpland_sounddesc(foot_kind);
-		auto audio_manager = BSAudioManager::GetSingleton();
-		if (sound_descriptor && foot && audio_manager) {
-			float k = 1.08;
-			float n = 0.39;
-			float a = 1.2;
-
-			float volume = pow(k*(scale-a), n);
-			float frequency = soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
-			if (volume > 1e-5) {
-				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
-				float volume = pow(k*(scale-a), n);
-				result.SetVolume(volume);
-				result.SetFrequency(frequency);
-				NiPoint3 pos;
-				pos.x = 0;
-				pos.y = 0;
-				pos.z = 0;
-				result.SetPosition(pos);
-				result.SetObjectToFollow(foot);
-			}
-		}
-		return result;
 	}
 
 	void do_shakes(Actor* actor, const Foot& foot_kind, const float& scale) {
@@ -345,11 +265,12 @@ namespace Gts {
 				Foot foot_kind = get_foot_kind(tag);
 				NiAVObject* foot = get_landing_foot(actor, foot_kind);
 
-				BSSoundHandle footstep_sound = get_footstep_sound(foot, foot_kind, scale);
-				BSSoundHandle rumble_sound = get_rumble_sound(foot, foot_kind, scale);
-				BSSoundHandle sprint_sound = get_sprint_sound(foot, foot_kind, scale);
-				BSSoundHandle xlfeet_sound = get_xlfeet_sound(foot, foot_kind, scale);
-				BSSoundHandle jumpland_sound = get_jumpland_sound(foot, foot_kind, scale);
+				BSSoundHandle footstep_sound = get_sound(foot, scale, get_footstep_sounddesc(foot_kind), VolumeParams { .a = 1.2,   .k = 1.08, .n = 0.39});
+				BSSoundHandle rumble_sound   = get_sound(foot, scale, get_rumble_sounddesc(foot_kind),   VolumeParams { .a = 12.99, .k = 1.08, .n = 0.39});
+				BSSoundHandle sprint_sound   = get_sound(foot, scale, get_sprint_sounddesc(foot_kind),   VolumeParams { .a = 12.99, .k = 1.08, .n = 0.39});
+				BSSoundHandle xlfeet_sound   = get_sound(foot, scale, get_xlfeet_sounddesc(foot_kind),   VolumeParams { .a = 12.99, .k = 1.08, .n = 0.39});
+				BSSoundHandle xxlfeet_sound  = get_sound(foot, scale, get_xxlfeet_sounddesc(foot_kind),  VolumeParams { .a = 23.99, .k = 1.08, .n = 0.39});
+				BSSoundHandle jumpland_sound = get_sound(foot, scale, get_jumpland_sounddesc(foot_kind), VolumeParams { .a = 1.2,   .k = 1.08, .n = 0.39});
 
 				if (footstep_sound.soundID != BSSoundHandle::kInvalidID) {
 					footstep_sound.Play();
@@ -362,6 +283,9 @@ namespace Gts {
 				}
 				if (xlfeet_sound.soundID != BSSoundHandle::kInvalidID) {
 					xlfeet_sound.Play();
+				}
+				if (xxlfeet_sound.soundID != BSSoundHandle::kInvalidID) {
+					xxlfeet_sound.Play();
 				}
 				if (jumpland_sound.soundID != BSSoundHandle::kInvalidID) {
 					jumpland_sound.Play();

@@ -16,6 +16,8 @@ sound:
   sprintR: "GTS.esp|319060"
   xlFeetL: "GTS.esp|271EF4"
   xlFeetR: "GTS.esp|271EF4"
+  xxlFeetL: "GTS.esp|16FB25"
+  xxlFeetR: "GTS.esp|16FB25"
   jumpLand: "GTS.esp|183F43"
 
 spellEffects:

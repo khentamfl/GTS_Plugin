@@ -104,6 +104,13 @@ namespace Gts {
 				return _xlFeetR;
 			}
 
+			[[nodiscard]] inline std::string GetXXLFeetL() const noexcept {
+				return _xxlFeetL;
+			}
+			[[nodiscard]] inline std::string GetXXLFeetR() const noexcept {
+				return _xxlFeetR;
+			}
+
 			[[nodiscard]] inline std::string GetJumpLand() const noexcept {
 				return _jumpLand;
 			}
@@ -122,6 +129,9 @@ namespace Gts {
 				ar <=> articuno::kv(_xlFeetL, "xlFeetL");
 				ar <=> articuno::kv(_xlFeetR, "xlFeetR");
 
+				ar <=> articuno::kv(_xlFeetL, "xxlFeetL");
+				ar <=> articuno::kv(_xlFeetR, "xxlFeetR");
+
 				ar <=> articuno::kv(_jumpLand, "jumpLand");
 			}
 
@@ -136,6 +146,9 @@ namespace Gts {
 
 			std::string _xlFeetL;
 			std::string _xlFeetR;
+
+			std::string _xxlFeetL;
+			std::string _xxlFeetR;
 
 			std::string _jumpLand;
 
