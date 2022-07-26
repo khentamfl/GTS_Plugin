@@ -106,7 +106,7 @@ namespace {
 		return 1.0;
 	}
 
-	BSSoundHandle get_sound(NiAVObject* foot, const float& scale, BSISoundDescriptor* sound_descriptor, const VolumeParams& params) {
+	BSSoundHandle get_sound(NiAVObject* foot, const float& scale, BSISoundDescriptor* sound_descriptor, const VolumeParams& params, std::string_view tag) {
 		BSSoundHandle result = BSSoundHandle::BSSoundHandle();
 		auto audio_manager = BSAudioManager::GetSingleton();
 		if (sound_descriptor && foot && audio_manager) {
@@ -117,6 +117,7 @@ namespace {
 			float intensity = volume * falloff;
 
 			if (intensity > 1e-5) {
+				log::info("  - Playing {} with volume: {}, falloff: {}, intensity: {}", tag, volume, falloff, intensity);
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				result.SetVolume(intensity);
 				result.SetFrequency(frequency);
@@ -270,6 +271,7 @@ namespace Gts {
 
 			float minimal_size = 1.2;
 			if (scale > minimal_size && !actor->IsSwimming()) {
+				log::info("Base Scale: {}", scale);
 				float start_l = 1.2;
 				float start_xl = 11.99;
 				float start_xxl = 20.0;
@@ -277,6 +279,7 @@ namespace Gts {
 					scale *= 1.20; // Sprinting makes you sound bigger
 					start_xl = 7.99;
 					start_xxl = 15.99;
+					log::info("Sprint Scale: {}", scale);
 				} else if (actor->IsSneaking()) {
 					scale *= 0.55; // Sneaking makes you sound quieter
 				} else if (actor->IsWalking()) {
@@ -285,14 +288,14 @@ namespace Gts {
 				Foot foot_kind = get_foot_kind(tag);
 				NiAVObject* foot = get_landing_foot(actor, foot_kind);
 
-				BSSoundHandle footstep_sound = get_sound(foot, scale, get_footstep_sounddesc(foot_kind), VolumeParams { .a = start_l,   .k = 0.6,  .n = 0.7, .s = 1.0});
-				BSSoundHandle jumpland_sound = get_sound(foot, scale, get_jumpland_sounddesc(foot_kind), VolumeParams { .a = start_l,   .k = 0.6,  .n = 0.7, .s = 1.0});
+				BSSoundHandle footstep_sound = get_sound(foot, scale, get_footstep_sounddesc(foot_kind), VolumeParams { .a = start_l,   .k = 0.6,  .n = 0.7, .s = 1.0}, "L Footstep");
+				BSSoundHandle jumpland_sound = get_sound(foot, scale, get_jumpland_sounddesc(foot_kind), VolumeParams { .a = start_l,   .k = 0.6,  .n = 0.7, .s = 1.0}, "L Jump");
 
-				BSSoundHandle rumble_sound   = get_sound(foot, scale, get_rumble_sounddesc(foot_kind),   VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0});
-				BSSoundHandle sprint_sound   = get_sound(foot, scale, get_sprint_sounddesc(foot_kind),   VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0});
-				BSSoundHandle xlfeet_sound   = get_sound(foot, scale, get_xlfeet_sounddesc(foot_kind),   VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0});
+				BSSoundHandle rumble_sound   = get_sound(foot, scale, get_rumble_sounddesc(foot_kind),   VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0}, "XL Rumble");
+				BSSoundHandle sprint_sound   = get_sound(foot, scale, get_sprint_sounddesc(foot_kind),   VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0}, "XL Sprint");
+				BSSoundHandle xlfeet_sound   = get_sound(foot, scale, get_xlfeet_sounddesc(foot_kind),   VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0}, "XL: Footstep");
 
-				BSSoundHandle xxlfeet_sound  = get_sound(foot, scale, get_xxlfeet_sounddesc(foot_kind),  VolumeParams { .a = start_xxl, .k = 0.6,  .n = 0.5, .s = 1.0});
+				BSSoundHandle xxlfeet_sound  = get_sound(foot, scale, get_xxlfeet_sounddesc(foot_kind),  VolumeParams { .a = start_xxl, .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
 
 
 				if (footstep_sound.soundID != BSSoundHandle::kInvalidID) {
