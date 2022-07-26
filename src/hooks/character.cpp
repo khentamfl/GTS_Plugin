@@ -80,17 +80,21 @@ namespace Hooks
         if (a_this) {
             auto ai = a_this->currentProcess;
             if (ai) {
-                auto high = ai->high;
-                if (high) {
-                    auto offset = high->headTrackTargetOffset;
-                    log::info("  - Headtrack offset: {},{},{} for {}", offset.x, offset.y, offset.z, actor_name(a_this));
-					log::info("  - Mutlipier: {}", GtsManager::GetSingleton().experiment);
-					high->headTrackTargetOffset.x *= GtsManager::GetSingleton().experiment;
-					high->headTrackTargetOffset.y *= GtsManager::GetSingleton().experiment;
-					high->headTrackTargetOffset.z *= GtsManager::GetSingleton().experiment;
-					auto offsetb = high->headTrackTargetOffset;
-                    log::info("  - Headtrack offset changed to: {},{},{} for {}", offsetb.x, offsetb.y, offsetb.z, actor_name(a_this));
-                }
+                //auto high = ai->high;
+                //if (high) {
+                    //auto offset = high->headTrackTargetOffset;
+                    // log::info("  - Headtrack offset: {},{},{} for {}", offset.x, offset.y, offset.z, actor_name(a_this));
+					//log::info("  - Mutlipier: {}", GtsManager::GetSingleton().experiment);
+					//high->headTrackTargetOffset.x *= GtsManager::GetSingleton().experiment;
+					//high->headTrackTargetOffset.y *= GtsManager::GetSingleton().experiment;
+					//high->headTrackTargetOffset.z *= GtsManager::GetSingleton().experiment;
+					//auto offsetb = high->headTrackTargetOffset;
+                    //log::info("  - Headtrack offset changed to: {},{},{} for {}", offsetb.x, offsetb.y, offsetb.z, actor_name(a_this));
+                //}
+				auto midhigh = ai->middleHigh;
+				if (midhigh) {
+					log::info("  headHeightOffset: {} for {}", midhigh->headHeightOffset, actor_name(a_this));
+				}
             }
         }
 		_ProcessTracking(a_this, a_delta, a_obj3D);
