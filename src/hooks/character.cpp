@@ -72,14 +72,20 @@ namespace Hooks
 	}
 
 	void Hook_Character::ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D) {
-		log::info("{} is tracking {} (update of {} s)", actor_name(a_this), a_obj3D->name.c_str(), a_delta);
+		if (a_obj3D) {
+			log::info("{} is tracking {} (update of {} s)", actor_name(a_this), a_obj3D->name.c_str(), a_delta);
+		} else {
+			log::info("{} is tracking unknown nullptr (update of {} s)", actor_name(a_this), a_obj3D->name.c_str(), a_delta);
+		}
 		_ProcessTracking(a_this, a_delta, a_obj3D);
-        auto ai = a_this->currentProcess;
-        if (ai) {
-            auto high = ai->high;
-            if (high) {
-                auto offset = high->headTrackTargetOffset;
-                log::info("  - Headtrack offset: {},{},{} for {}", offset.x, offset.y, offset.z, actor_name(a_this));
+        if (a_this) {
+            auto ai = a_this->currentProcess;
+            if (ai) {
+                auto high = ai->high;
+                if (high) {
+                    auto offset = high->headTrackTargetOffset;
+                    log::info("  - Headtrack offset: {},{},{} for {}", offset.x, offset.y, offset.z, actor_name(a_this));
+                }
             }
         }
 	}
