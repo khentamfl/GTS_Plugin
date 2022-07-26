@@ -155,7 +155,6 @@ namespace {
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 		apply_height(actor, saved_data, temp_data, force);
-		apply_highheel(actor, temp_data, force);
 		apply_speed(actor, saved_data, temp_data, force);
 	}
 
@@ -249,6 +248,32 @@ void GtsManager::poll_actor(Actor* actor) {
 	}
 
 	set_scale(actor, visual_scale);
+}
+
+// Fired during the Papyrus OnUpdate event
+void GtsManager::on_update() {
+	if (!this->enabled) {
+		return;
+	}
+	auto player_char = RE::PlayerCharacter::GetSingleton();
+	if (!player_char) {
+		return;
+	}
+	if (!player_char->Is3DLoaded()) {
+		return;
+	}
+	auto actors = find_actors();
+	for (auto actor: actors) {
+		if (!actor) {
+			continue;
+		}
+		if (!actor->Is3DLoaded()) {
+			continue;
+		}
+		auto temp_data = Transient::GetSingleton().GetActorData(actor);
+		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
+		apply_highheel(actor, temp_data, force);
+	}
 }
 
 void GtsManager::reapply(bool force) {

@@ -19,7 +19,7 @@ namespace Hooks
 		_SendEvent(a_this, a_handle, a_eventName, a_args);
 		std::string event_name = a_eventName.c_str();
 		if (event_name == "OnUpdate") {
-			GtsManager::GetSingleton().reapply(false);
+			GtsManager::GetSingleton().on_update();
 		}
 	}
 }
