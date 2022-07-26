@@ -101,7 +101,7 @@ namespace {
 			// Camera shakes
 			// 1.0 Meter ~= 20% Power
 			// 0.5 Meter ~= 50% Power
-			float falloff = soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0);
+			return soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0);
 		}
 		return 1.0;
 	}
