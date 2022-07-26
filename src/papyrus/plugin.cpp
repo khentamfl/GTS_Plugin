@@ -129,7 +129,7 @@ namespace Gts {
 		vm->RegisterFunction("SetSpeedParameterS", PapyrusClass, SetSpeedParameterS);
 		vm->RegisterFunction("GetSpeedParameterS", PapyrusClass, GetSpeedParameterS);
 		vm->RegisterFunction("GetExperimentFloat", PapyrusClass, GetExperimentFloat);
-		vm->RegisterFunction("SetExperimentFloat", PapyrusClass, SetSpeedParameterS);
+		vm->RegisterFunction("SetExperimentFloat", PapyrusClass, SetExperimentFloat);
 
 		return true;
 	}
