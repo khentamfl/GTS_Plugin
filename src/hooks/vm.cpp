@@ -22,7 +22,7 @@ namespace Hooks
 			logger::info("VM OnUpdate");
 			GtsManager::GetSingleton().reapply(false);
 		} else {
-			logger::info(">>{}<<", eventName);
+			logger::info(">>{}<<", event_name);
 		}
 	}
 }
