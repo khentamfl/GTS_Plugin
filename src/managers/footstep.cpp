@@ -75,9 +75,9 @@ namespace {
 	}
 
 	struct VolumeParams {
+		float a;
 		float k;
 		float n;
-		float a;
 	};
 
 	float volume_function(float scale, const VolumeParams& params) {
