@@ -75,7 +75,7 @@ namespace {
 			return;
 		}
 
-		log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
+		// log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
 	}
 
