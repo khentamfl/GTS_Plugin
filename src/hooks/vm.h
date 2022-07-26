@@ -4,6 +4,7 @@ using namespace SKSE;
 
 using namespace RE;
 using namespace RE::BSScript;
+using namespace RE::BSScript::Internal;
 
 namespace Hooks
 {
@@ -12,10 +13,7 @@ namespace Hooks
 		public:
 			static void Hook();
 		private:
-
-			static void SendEvent(IVirtualMachine* a_this, VMHandle a_handle, const BSFixedString& a_eventName, IFunctionArguments* a_args);
+			static void SendEvent(VirtualMachine* a_this, VMHandle a_handle, const BSFixedString& a_eventName, IFunctionArguments* a_args);
 			static inline REL::Relocation<decltype(SendEvent)> _SendEvent;
-			static void SendEvent2(RE::BSScript::Internal::VirtualMachine* a_this, VMHandle a_handle, const BSFixedString& a_eventName, IFunctionArguments* a_args);
-			static inline REL::Relocation<decltype(SendEvent)> _SendEvent2;
 	};
 }
