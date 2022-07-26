@@ -276,9 +276,10 @@ namespace Gts {
 				float start_xl = 11.99;
 				float start_xxl = 20.0;
 				if (actor->IsSprinting()) {
-					scale *= 1.20; // Sprinting makes you sound bigger
-					start_xl = 7.99;
-					start_xxl = 15.99;
+                    float sprint_factor = 1.2;
+					scale *= sprint_factor; // Sprinting makes you sound bigger
+					start_xl = 7.99 * sprint_factor;
+					start_xxl = 15.99 * sprint_factor;
 					log::info("Sprint Scale: {}", scale);
 				} else if (actor->IsSneaking()) {
 					scale *= 0.55; // Sneaking makes you sound quieter
