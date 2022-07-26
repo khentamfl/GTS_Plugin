@@ -47,6 +47,10 @@ Bool Function GetIsSpeedAdjusted() global native
 Float Function GetSpeedParameterK() global native
 Float Function SetSpeedParameterK(Float k) global native
 Float Function GetSpeedParameterN() global native
-Float Function SetSpeedParameterN(Float n) global native
-Float Function GetSpeedParameterS() global native
-Float Function SetSpeedParameterS(Float s) global native
+Function SetSpeedParameterN(Float n) global native
+Function GetSpeedParameterS() global native
+Function SetSpeedParameterS(Float s) global native
+
+
+Float Function GetExperimentFloat() global native
+Function SetExperimentFloat(Float value) global native

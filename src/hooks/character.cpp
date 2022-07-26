@@ -85,6 +85,9 @@ namespace Hooks
                 if (high) {
                     auto offset = high->headTrackTargetOffset;
                     log::info("  - Headtrack offset: {},{},{} for {}", offset.x, offset.y, offset.z, actor_name(a_this));
+					high->headTrackTargetOffset *= GtsManager::GetSingleton().experiment;
+					auto offset = high->headTrackTargetOffset;
+                    log::info("  - Headtrack offset changed to: {},{},{} for {}", offset.x, offset.y, offset.z, actor_name(a_this));
                 }
             }
         }

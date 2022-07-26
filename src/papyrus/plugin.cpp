@@ -101,6 +101,14 @@ namespace {
 	float GetSpeedParameterS(StaticFunctionTag*) {
 		return Persistent::GetSingleton().speed_adjustment.s;
 	}
+	
+	float GetExperimentFloat(StaticFunctionTag*) {
+		return GtsManager::GetSingleton().experiment;
+	}
+	
+	void SetExperimentFloat(StaticFunctionTag*, float value) {
+		GtsManager::GetSingleton().experiment = value;
+	}
 }
 
 namespace Gts {
@@ -120,6 +128,8 @@ namespace Gts {
 		vm->RegisterFunction("GetSpeedParameterN", PapyrusClass, GetSpeedParameterN);
 		vm->RegisterFunction("SetSpeedParameterS", PapyrusClass, SetSpeedParameterS);
 		vm->RegisterFunction("GetSpeedParameterS", PapyrusClass, GetSpeedParameterS);
+		vm->RegisterFunction("GetExperimentFloat", PapyrusClass, GetExperimentFloat);
+		vm->RegisterFunction("SetExperimentFloat", PapyrusClass, SetSpeedParameterS);
 
 		return true;
 	}
