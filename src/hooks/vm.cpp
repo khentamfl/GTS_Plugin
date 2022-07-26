@@ -19,10 +19,7 @@ namespace Hooks
 		_SendEvent(a_this, a_handle, a_eventName, a_args);
 		std::string event_name = a_eventName.c_str();
 		if (event_name == "OnUpdate") {
-			logger::info("VM OnUpdate");
 			GtsManager::GetSingleton().reapply(false);
-		} else {
-			logger::info(">>{}<<", event_name);
 		}
 	}
 }
