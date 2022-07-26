@@ -15,7 +15,7 @@ namespace Hooks
 
 			static void SendEvent(IVirtualMachine* a_this, VMHandle a_handle, const BSFixedString& a_eventName, IFunctionArguments* a_args);
 			static inline REL::Relocation<decltype(SendEvent)> _SendEvent;
-			static void SendEvent2(IVirtualMachine* a_this, VMHandle a_handle, const BSFixedString& a_eventName, IFunctionArguments* a_args);
+			static void SendEvent2(RE::BSScript::Internal::VirtualMachine* a_this, VMHandle a_handle, const BSFixedString& a_eventName, IFunctionArguments* a_args);
 			static inline REL::Relocation<decltype(SendEvent)> _SendEvent2;
 	};
 }
