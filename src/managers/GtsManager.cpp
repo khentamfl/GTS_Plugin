@@ -272,7 +272,7 @@ void GtsManager::on_update() {
 		}
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-		apply_highheel(actor, temp_data, false);
+		apply_highheel(actor, temp_data, true);
 	}
 }
 
