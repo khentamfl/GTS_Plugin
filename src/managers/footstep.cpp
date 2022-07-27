@@ -271,6 +271,7 @@ namespace Gts {
 			event_manager.m_onfootstep.SendEvent(actor,tag);
 
 			if (actor->formID == 0x14) return;
+			log::info("- Foot Impact event: {}", tag);
 			// Foot step time
 			float scale = get_effective_scale(actor);
 
@@ -328,9 +329,6 @@ namespace Gts {
 				}
 				if (xlSprint.soundID != BSSoundHandle::kInvalidID) {
 					xlSprint.Play();
-				}
-				if (xlJumpLand.soundID != BSSoundHandle::kInvalidID) {
-					xlJumpLand.Play();
 				}
 				if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
 					xxlFootstepL.Play();
