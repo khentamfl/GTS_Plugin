@@ -11,7 +11,7 @@ namespace Gts {
 		return instance;
 	}
 
-	void make_explosion(ExplosionKind kind, Actor* actor, NiAVObject* node, NiPoint3 offset, float scale) {
+	void ExplosionManager::make_explosion(ExplosionKind kind, Actor* actor, NiAVObject* node, NiPoint3 offset, float scale) {
 		if (!actor) return;
 		if (!node) return;
 
