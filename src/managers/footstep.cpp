@@ -265,7 +265,6 @@ namespace Gts {
 			auto event_manager = ModEventManager::GetSingleton();
 			event_manager.m_onfootstep.SendEvent(actor,tag);
 
-			if (actor->formID != 0x14) return;
 			// Foot step time
 			float scale = get_effective_scale(actor);
 
@@ -276,7 +275,7 @@ namespace Gts {
 				float start_xl = 11.99;
 				float start_xxl = 20.0;
 				if (actor->IsSprinting()) {
-                    float sprint_factor = 1.2;
+					float sprint_factor = 1.2;
 					scale *= sprint_factor; // Sprinting makes you sound bigger
 					start_xl = 7.99 * sprint_factor;
 					start_xxl = 15.99 * sprint_factor;
