@@ -10,7 +10,8 @@ sound:
   # This is the sound descriptor for the footsteps/jumps
   lFootstepL: "GTS.esp|1E93AB"
   lFootstepR: "GTS.esp|1E93AD"
-  lJumpLand: "GTS.esp|183F43"
+  lJumpLand: "GTS.esp|2F594F"
+
   # XL sounds
   xlFootstepL: "GTS.esp|271EF4"
   xlFootstepR: "GTS.esp|271EF4"
@@ -18,6 +19,7 @@ sound:
   xlRumbleR: "GTS.esp|36A06D"
   xlSprintL: "GTS.esp|319060"
   xlSprintR: "GTS.esp|319060"
+  xlJumpLand: "GTS.esp|183F43"
   # XXL Sounds
   xxlFootstepL: "GTS.esp|16FB25"
   xxlFootstepR: "GTS.esp|16FB25"
