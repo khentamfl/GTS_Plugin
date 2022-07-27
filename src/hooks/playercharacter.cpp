@@ -36,25 +36,21 @@ namespace Hooks
 
 	float Hook_Player::GetRunSpeed(RE::Character* a_this) {
 		float value = _GetRunSpeed(a_this);
-		log::info("{} GetRunSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 
 	float Hook_Player::GetJogSpeed(RE::Character* a_this) {
 		float value = _GetJogSpeed(a_this);
-		log::info("{} GetJogSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 
 	float Hook_Player::GetFastWalkSpeed(RE::Character* a_this) {
 		float value = _GetFastWalkSpeed(a_this);
-		log::info("{} GetFastWalkSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 
 	float Hook_Player::GetWalkSpeed(RE::Character* a_this) {
 		float value = _GetWalkSpeed(a_this);
-		log::info("{} GetWalkSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 }

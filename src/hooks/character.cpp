@@ -50,46 +50,25 @@ namespace Hooks
 
 	float Hook_Character::GetRunSpeed(RE::Character* a_this) {
 		float value = _GetRunSpeed(a_this);
-		log::info("{} GetRunSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 
 	float Hook_Character::GetJogSpeed(RE::Character* a_this) {
 		float value = _GetJogSpeed(a_this);
-		log::info("{} GetJogSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 
 	float Hook_Character::GetFastWalkSpeed(RE::Character* a_this) {
 		float value = _GetFastWalkSpeed(a_this);
-		log::info("{} GetFastWalkSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 
 	float Hook_Character::GetWalkSpeed(RE::Character* a_this) {
 		float value = _GetWalkSpeed(a_this);
-		log::info("{} GetWalkSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 
 	void Hook_Character::ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D) {
-		if (a_obj3D) {
-			log::info("{} is tracking {} (update of {} s)", actor_name(a_this), a_obj3D->name.c_str(), a_delta);
-		} else {
-			log::info("{} is tracking unknown nullptr (update of {} s)", actor_name(a_this), a_delta);
-		}
-		if (a_this) {
-			auto ai = a_this->currentProcess;
-			if (ai) {
-				auto midhigh = ai->middleHigh;
-				if (midhigh) {
-					log::info("  headHeightOffset: {} for {}", midhigh->headHeightOffset, actor_name(a_this));
-					float new_value = GtsManager::GetSingleton().experiment;
-					log::info("  Setting headHeightOffset to: {} for {}", new_value, actor_name(a_this));
-					midhigh->headHeightOffset = new_value;
-				}
-			}
-		}
 		_ProcessTracking(a_this, a_delta, a_obj3D);
 	}
 }

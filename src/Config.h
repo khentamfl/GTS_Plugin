@@ -175,6 +175,22 @@ namespace Gts {
 			friend class articuno::access;
 	};
 
+	class Explosions {
+		public:
+			[[nodiscard]] inline std::string GetFootstepExplosion() const noexcept {
+				return _footstepExplosion;
+			}
+
+		private:
+			articuno_serde(ar) {
+				ar <=> articuno::kv(_footstepExplosion, "footstepExplosion");
+			}
+
+			std::string _footstepExplosion;
+
+			friend class articuno::access;
+	};
+
 	class Config {
 		public:
 			[[nodiscard]] inline const Debug& GetDebug() const noexcept {
@@ -193,6 +209,10 @@ namespace Gts {
 				return _spellEffects;
 			}
 
+			[[nodiscard]] inline const Explosions& GetExplosions() const noexcept {
+				return _explosions;
+			}
+
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
 
 		private:
@@ -201,12 +221,14 @@ namespace Gts {
 				ar <=> articuno::kv(_frame, "frame");
 				ar <=> articuno::kv(_sound, "sound");
 				ar <=> articuno::kv(_spellEffects, "spellEffects");
+				ar <=> articuno::kv(_explosions, "explosions");
 			}
 
 			Debug _debug;
 			Frame _frame;
 			Sound _sound;
 			SpellEffects _spellEffects;
+			Explosions _explosions;
 
 			friend class articuno::access;
 	};

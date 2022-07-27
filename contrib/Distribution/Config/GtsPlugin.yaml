@@ -25,3 +25,7 @@ sound:
 spellEffects:
   # IDs for spell effects
   smallMassiveThreat: "GTS.esp|1A2568"
+
+explosions:
+  # IDs for explosion effects
+  footstepExplosion: "GTS.esp|01CE9C"

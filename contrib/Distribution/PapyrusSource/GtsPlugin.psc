@@ -51,6 +51,10 @@ Function SetSpeedParameterN(Float n) global native
 Function GetSpeedParameterS() global native
 Function SetSpeedParameterS(Float s) global native
 
+; Extra Actor state functions
+Bool function IsJumping(Actor target) global native
+Bool function IsInAir(Actor target) global native
 
+; Debug functions
 Float Function GetExperimentFloat() global native
 Function SetExperimentFloat(Float value) global native

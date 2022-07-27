@@ -1,6 +1,7 @@
 #include "managers/footstep.h"
 #include "scale/scale.h"
 #include "managers/modevent.h"
+#include "managers/explosion.h"
 #include "util.h"
 #include "node.h"
 #include "data/runtime.h"
@@ -22,13 +23,7 @@ namespace {
 	Foot get_foot_kind(Actor* actor, std::string_view tag) {
 		Foot foot_kind = Foot::Unknown;
 		bool is_jumping = actor ? IsJumping(actor) : false;
-		if (is_jumping) {
-			log::info("Jumping detected");
-		}
 		bool in_air = actor ? actor->IsInMidair() : false;
-		if (in_air) {
-			log::info("InAir detected");
-		}
 		if (matches(tag, ".*Foot.*Left.*") && !is_jumping && !in_air) {
 			foot_kind = Foot::Left;
 		} else if (matches(tag, ".*Foot.*Right.*") && !is_jumping && !in_air) {
@@ -107,7 +102,7 @@ namespace {
 			float intensity = volume * falloff;
 
 			if (intensity > 1e-5) {
-				log::info("  - Playing {} with volume: {}, falloff: {}, intensity: {}", tag, volume, falloff, intensity);
+				// log::trace("  - Playing {} with volume: {}, falloff: {}, intensity: {}", tag, volume, falloff, intensity);
 				audio_manager->BuildSoundDataFromDescriptor(result, sound_descriptor);
 				result.SetVolume(intensity);
 				result.SetFrequency(frequency);
@@ -278,14 +273,11 @@ namespace Gts {
 			auto event_manager = ModEventManager::GetSingleton();
 			event_manager.m_onfootstep.SendEvent(actor,tag);
 
-			if (actor->formID != 0x14) return;
-			log::info("- Foot Impact event: {}", tag);
 			// Foot step time
 			float scale = get_effective_scale(actor);
 
 			float minimal_size = 1.2;
 			if (scale > minimal_size && !actor->IsSwimming()) {
-				log::info("Base Scale: {}", scale);
 				float start_l = 1.2;
 				float start_xl = 11.99;
 				float start_xlJumpLand= 1.99;
@@ -295,13 +287,10 @@ namespace Gts {
 					scale *= sprint_factor; // Sprinting makes you sound bigger
 					start_xl = 7.99 * sprint_factor;
 					start_xxl = 15.99 * sprint_factor;
-					log::info("Sprint Scale: {}", scale);
 				} else if (actor->IsSneaking()) {
 					scale *= 0.55; // Sneaking makes you sound quieter
-					log::info("Sneak Scale: {}", scale);
 				} else if (actor->IsWalking()) {
 					scale *= 0.85; // Walking makes you sound quieter
-					log::info("Walk Scale: {}", scale);
 				}
 				Foot foot_kind = get_foot_kind(actor, tag);
 				if (foot_kind == Foot::JumpLand) {
@@ -309,7 +298,6 @@ namespace Gts {
 					scale *= jump_factor; // Jumping makes you sound bigger
 					start_xl = 6.99 * jump_factor;
 					start_xxl = 14.99 * jump_factor;
-					log::info("Jump Scale: {}", scale);
 				}
 				NiAVObject* foot = get_landing_foot(actor, foot_kind);
 
@@ -344,6 +332,8 @@ namespace Gts {
 
 				shake_camera(actor, 1.0, 1.0);
 				shake_controller(1.0, 1.0, 1.0);
+
+				ExplosionManager::GetSingleton().make_explosion(ExplosionKind::Footstep, actor, foot, NiPoint3(), scale);
 
 				//do_shakes(actor, foot_kind, scale);
 			}
