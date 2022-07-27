@@ -270,7 +270,7 @@ namespace Gts {
 			auto event_manager = ModEventManager::GetSingleton();
 			event_manager.m_onfootstep.SendEvent(actor,tag);
 
-			if (actor->formID == 0x14) return;
+			if (actor->formID != 0x14) return;
 			log::info("- Foot Impact event: {}", tag);
 			// Foot step time
 			float scale = get_effective_scale(actor);
