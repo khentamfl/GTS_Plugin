@@ -28,23 +28,23 @@ namespace Gts {
 	}
 
 	void Runtime::Load() {
-		this->FootstepSoundL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetFootStepL());
-		this->FootstepSoundR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetFootStepR());
+		this->lFootstepL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLFootstepL());
+		this->lFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLFootstepR());
 
-		this->RumbleSoundL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetRumbleL());
-		this->RumbleSoundR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetRumbleR());
+		this->lJumpLand = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLJumpLand());
 
-		this->SprintSoundL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetSprintL());
-		this->SprintSoundR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetSprintR());
+		this->xlFootstepL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLFootstepL());
+		this->xlFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLFootstepR());
 
-		this->ExtraLargeFeetSoundL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLFeetL());
-		this->ExtraLargeFeetSoundR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLFeetR());
+		this->xlRumbleL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLRumbleL());
+		this->xlRumbleR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLRumbleR());
 
-		this->ExtraExtraLargeFeetSoundL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXXLFeetL());
-		this->ExtraExtraLargeFeetSoundR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXXLFeetR());
+		this->xlSprintL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLSprintL());
+		this->xlSprintR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLSprintR());
 
-		this->JumpLandSound = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetJumpLand());
+		this->xxlFootstepL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXXLFootstepL());
+		this->xxlFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXXLFootstepR());
 
-		this->SmallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
+		this->smallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
 	}
 }

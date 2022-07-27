@@ -14,23 +14,25 @@ namespace Gts {
 
 			void Load();
 
-			BGSSoundDescriptorForm* FootstepSoundL = nullptr;
-			BGSSoundDescriptorForm* FootstepSoundR = nullptr;
+			BGSSoundDescriptorForm* lFootstepL = nullptr;
+			BGSSoundDescriptorForm* lFootstepR = nullptr;
 
-			BGSSoundDescriptorForm* RumbleSoundL = nullptr;
-			BGSSoundDescriptorForm* RumbleSoundR = nullptr;
+			BGSSoundDescriptorForm* lJumpLand = nullptr;
 
-			BGSSoundDescriptorForm* SprintSoundL = nullptr;
-			BGSSoundDescriptorForm* SprintSoundR = nullptr;
+			BGSSoundDescriptorForm* xlFootstepL = nullptr;
+			BGSSoundDescriptorForm* xlFootstepR = nullptr;
 
-			BGSSoundDescriptorForm* ExtraLargeFeetSoundL = nullptr;
-			BGSSoundDescriptorForm* ExtraLargeFeetSoundR = nullptr;
+			BGSSoundDescriptorForm* xlRumbleL = nullptr;
+			BGSSoundDescriptorForm* xlRumbleR = nullptr;
 
-			BGSSoundDescriptorForm* ExtraExtraLargeFeetSoundL = nullptr;
-			BGSSoundDescriptorForm* ExtraExtraLargeFeetSoundR = nullptr;
+			BGSSoundDescriptorForm* xlSprintL = nullptr;
+			BGSSoundDescriptorForm* xlSprintR = nullptr;
 
-			BGSSoundDescriptorForm* JumpLandSound = nullptr;
+			BGSSoundDescriptorForm* xxlFootstepL = nullptr;
+			BGSSoundDescriptorForm* xxlFootstepR = nullptr;
 
-			EffectSetting* SmallMassiveThreat = nullptr;
+
+
+			EffectSetting* smallMassiveThreat = nullptr;
 	};
 }

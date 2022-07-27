@@ -8,17 +8,19 @@ frame:
 
 sound:
   # This is the sound descriptor for the footsteps/jumps
-  footstepL: "GTS.esp|1E93AB"
-  footstepR: "GTS.esp|1E93AD"
-  rumbleL: "GTS.esp|36A06D"
-  rumbleR: "GTS.esp|36A06D"
-  sprintL: "GTS.esp|319060"
-  sprintR: "GTS.esp|319060"
-  xlFeetL: "GTS.esp|271EF4"
-  xlFeetR: "GTS.esp|271EF4"
-  xxlFeetL: "GTS.esp|16FB25"
-  xxlFeetR: "GTS.esp|16FB25"
-  jumpLand: "GTS.esp|183F43"
+  lFootstepL: "GTS.esp|1E93AB"
+  lFootstepR: "GTS.esp|1E93AD"
+  lJumpLand: "GTS.esp|183F43"
+  # XL sounds
+  xlFootstepL: "GTS.esp|271EF4"
+  xlFootstepR: "GTS.esp|271EF4"
+  xlRumbleL: "GTS.esp|36A06D"
+  xlRumbleR: "GTS.esp|36A06D"
+  xlSprintL: "GTS.esp|319060"
+  xlSprintR: "GTS.esp|319060"
+  # XXL Sounds
+  xxlFootstepL: "GTS.esp|16FB25"
+  xxlFootstepR: "GTS.esp|16FB25"
 
 spellEffects:
   # IDs for spell effects

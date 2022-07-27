@@ -58,22 +58,6 @@ namespace {
 		return result;
 	}
 
-
-
-	BSISoundDescriptor* get_footstep_sounddesc(const Foot& foot_kind) {
-		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
-				return Runtime::GetSingleton().FootstepSoundL;
-				break;
-			case Foot::Right:
-			case Foot::Back:
-				return Runtime::GetSingleton().FootstepSoundR;
-				break;
-		}
-		return nullptr;
-	}
-
 	struct VolumeParams {
 		float a;
 		float k;
@@ -98,9 +82,7 @@ namespace {
 	float falloff_function(NiAVObject* source) {
 		if (source) {
 			float distance_to_camera = unit_to_meter(get_distance_to_camera(source));
-			// Camera shakes
-			// 1.0 Meter ~= 20% Power
-			// 0.5 Meter ~= 50% Power
+			// Camera distance based volume falloff
 			return soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0);
 		}
 		return 1.0;
@@ -132,66 +114,80 @@ namespace {
 		return result;
 	}
 
-	BSISoundDescriptor* get_rumble_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_lFootstep_sounddesc(const Foot& foot_kind) {
 		switch (foot_kind) {
 			case Foot::Left:
 			case Foot::Front:
-				return Runtime::GetSingleton().RumbleSoundL;
+				return Runtime::GetSingleton().lFootstepL;
 				break;
 			case Foot::Right:
 			case Foot::Back:
-				return Runtime::GetSingleton().RumbleSoundR;
+				return Runtime::GetSingleton().lFootstepR;
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_sprint_sounddesc(const Foot& foot_kind) {
-		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
-				return Runtime::GetSingleton().SprintSoundL;
-				break;
-			case Foot::Right:
-			case Foot::Back:
-				return Runtime::GetSingleton().SprintSoundR;
-				break;
-		}
-		return nullptr;
-	}
-
-	BSISoundDescriptor* get_xlfeet_sounddesc(const Foot& foot_kind) {
-		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
-				return Runtime::GetSingleton().ExtraLargeFeetSoundL;
-				break;
-			case Foot::Right:
-			case Foot::Back:
-				return Runtime::GetSingleton().ExtraLargeFeetSoundR;
-				break;
-		}
-		return nullptr;
-	}
-
-	BSISoundDescriptor* get_xxlfeet_sounddesc(const Foot& foot_kind) {
-		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
-				return Runtime::GetSingleton().ExtraExtraLargeFeetSoundL;
-				break;
-			case Foot::Right:
-			case Foot::Back:
-				return Runtime::GetSingleton().ExtraExtraLargeFeetSoundR;
-				break;
-		}
-		return nullptr;
-	}
-
-	BSISoundDescriptor* get_jumpland_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_lJumpLand_sounddesc(const Foot& foot_kind) {
 		switch (foot_kind) {
 			case Foot::JumpLand:
-				return Runtime::GetSingleton().JumpLandSound;
+				return Runtime::GetSingleton().lJumpLand;
+				break;
+		}
+		return nullptr;
+	}
+
+	BSISoundDescriptor* get_xlFootstep_sounddesc(const Foot& foot_kind) {
+		switch (foot_kind) {
+			case Foot::Left:
+			case Foot::Front:
+				return Runtime::GetSingleton().xlFootstepL;
+				break;
+			case Foot::Right:
+			case Foot::Back:
+				return Runtime::GetSingleton().xlFootstepR;
+				break;
+		}
+		return nullptr;
+	}
+
+	BSISoundDescriptor* get_xlRumble_sounddesc(const Foot& foot_kind) {
+		switch (foot_kind) {
+			case Foot::Left:
+			case Foot::Front:
+				return Runtime::GetSingleton().xlRumbleL;
+				break;
+			case Foot::Right:
+			case Foot::Back:
+				return Runtime::GetSingleton().xlRumbleR;
+				break;
+		}
+		return nullptr;
+	}
+
+	BSISoundDescriptor* get_xlSprint_sounddesc(const Foot& foot_kind) {
+		switch (foot_kind) {
+			case Foot::Left:
+			case Foot::Front:
+				return Runtime::GetSingleton().xlSprintL;
+				break;
+			case Foot::Right:
+			case Foot::Back:
+				return Runtime::GetSingleton().xlSprintR;
+				break;
+		}
+		return nullptr;
+	}
+
+	BSISoundDescriptor* get_xxlFootstep_sounddesc(const Foot& foot_kind) {
+		switch (foot_kind) {
+			case Foot::Left:
+			case Foot::Front:
+				return Runtime::GetSingleton().xxlFootstepL;
+				break;
+			case Foot::Right:
+			case Foot::Back:
+				return Runtime::GetSingleton().xxlFootstepR;
 				break;
 		}
 		return nullptr;
@@ -288,33 +284,33 @@ namespace Gts {
 				Foot foot_kind = get_foot_kind(tag);
 				NiAVObject* foot = get_landing_foot(actor, foot_kind);
 
-				BSSoundHandle footstep_sound = get_sound(foot, scale, get_footstep_sounddesc(foot_kind), VolumeParams { .a = start_l,   .k = 0.6,  .n = 0.7, .s = 1.0}, "L Footstep");
-				BSSoundHandle jumpland_sound = get_sound(foot, scale, get_jumpland_sounddesc(foot_kind), VolumeParams { .a = start_l,   .k = 0.6,  .n = 0.7, .s = 1.0}, "L Jump");
+				BSSoundHandle lFootstep    = get_sound(foot, scale, get_lFootstep_sounddesc(foot_kind),   VolumeParams { .a = start_l,   .k = 0.6,  .n = 0.7, .s = 1.0}, "L Footstep");
+				BSSoundHandle lJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_l,   .k = 0.6,  .n = 0.7, .s = 1.0}, "L Jump");
 
-				BSSoundHandle rumble_sound   = get_sound(foot, scale, get_rumble_sounddesc(foot_kind),   VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0}, "XL Rumble");
-				BSSoundHandle sprint_sound   = get_sound(foot, scale, get_sprint_sounddesc(foot_kind),   VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0}, "XL Sprint");
-				BSSoundHandle xlfeet_sound   = get_sound(foot, scale, get_xlfeet_sounddesc(foot_kind),   VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0}, "XL: Footstep");
+				BSSoundHandle xlFootstep   = get_sound(foot, scale, get_xlFootstep_sounddesc(foot_kind),  VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0}, "XL: Footstep");
+				BSSoundHandle xlRumble     = get_sound(foot, scale, get_xlRumble_sounddesc(foot_kind),    VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0}, "XL Rumble");
+				BSSoundHandle xlSprint     = get_sound(foot, scale, get_xlSprint_sounddesc(foot_kind),    VolumeParams { .a = start_xl,  .k = 0.65, .n = 0.5, .s = 1.0}, "XL Sprint");
 
-				BSSoundHandle xxlfeet_sound  = get_sound(foot, scale, get_xxlfeet_sounddesc(foot_kind),  VolumeParams { .a = start_xxl, .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
+				BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl, .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
 
 
-				if (footstep_sound.soundID != BSSoundHandle::kInvalidID) {
-					footstep_sound.Play();
+				if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
+					lFootstep.Play();
 				}
-				if (rumble_sound.soundID != BSSoundHandle::kInvalidID) {
-					rumble_sound.Play();
+				if (lJumpLand.soundID != BSSoundHandle::kInvalidID) {
+					lJumpLand.Play();
 				}
-				if (sprint_sound.soundID != BSSoundHandle::kInvalidID) {
-					sprint_sound.Play();
+				if (xlFootstep.soundID != BSSoundHandle::kInvalidID) {
+					xlFootstep.Play();
 				}
-				if (xlfeet_sound.soundID != BSSoundHandle::kInvalidID) {
-					xlfeet_sound.Play();
+				if (xlRumble.soundID != BSSoundHandle::kInvalidID) {
+					xlRumble.Play();
 				}
-				if (xxlfeet_sound.soundID != BSSoundHandle::kInvalidID) {
-					xxlfeet_sound.Play();
+				if (xlSprint.soundID != BSSoundHandle::kInvalidID) {
+					xlSprint.Play();
 				}
-				if (jumpland_sound.soundID != BSSoundHandle::kInvalidID) {
-					jumpland_sound.Play();
+				if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
+					xxlFootstepL.Play();
 				}
 
 				shake_camera(actor, 1.0, 1.0);

@@ -76,81 +76,86 @@ namespace Gts {
 
 	class Sound {
 		public:
-			[[nodiscard]] inline std::string GetFootStepR() const noexcept {
-				return _footstepR;
+			[[nodiscard]] inline std::string GetLFootstepL() const noexcept {
+				return _lFootstepL;
 			}
-			[[nodiscard]] inline std::string GetFootStepL() const noexcept {
-				return _footstepL;
-			}
-
-			[[nodiscard]] inline std::string GetRumbleL() const noexcept {
-				return _rumbleL;
-			}
-			[[nodiscard]] inline std::string GetRumbleR() const noexcept {
-				return _rumbleR;
+			[[nodiscard]] inline std::string GetLFootstepR() const noexcept {
+				return _lFootstepR;
 			}
 
-			[[nodiscard]] inline std::string GetSprintL() const noexcept {
-				return _sprintL;
-			}
-			[[nodiscard]] inline std::string GetSprintR() const noexcept {
-				return _sprintR;
+			[[nodiscard]] inline std::string GetLJumpLand() const noexcept {
+				return _lJumpLand;
 			}
 
-			[[nodiscard]] inline std::string GetXLFeetL() const noexcept {
-				return _xlFeetL;
+			[[nodiscard]] inline std::string GetXLFootstepL() const noexcept {
+				return _xlFootstepL;
 			}
-			[[nodiscard]] inline std::string GetXLFeetR() const noexcept {
-				return _xlFeetR;
-			}
-
-			[[nodiscard]] inline std::string GetXXLFeetL() const noexcept {
-				return _xxlFeetL;
-			}
-			[[nodiscard]] inline std::string GetXXLFeetR() const noexcept {
-				return _xxlFeetR;
+			[[nodiscard]] inline std::string GetXLFootstepR() const noexcept {
+				return _xlFootstepR;
 			}
 
-			[[nodiscard]] inline std::string GetJumpLand() const noexcept {
-				return _jumpLand;
+			[[nodiscard]] inline std::string GetXLRumbleL() const noexcept {
+				return _xlRumbleL;
+			}
+			[[nodiscard]] inline std::string GetXLRumbleR() const noexcept {
+				return _xlRumbleR;
+			}
+
+			[[nodiscard]] inline std::string GetXLSprintL() const noexcept {
+				return _xlSprintL;
+			}
+			[[nodiscard]] inline std::string GetXLSprintR() const noexcept {
+				return _xlSprintR;
+			}
+
+			[[nodiscard]] inline std::string GetXXLFootstepL() const noexcept {
+				return _xxlFootstepL;
+			}
+			[[nodiscard]] inline std::string GetXXLFootstepR() const noexcept {
+				return _xxlFootstepR;
 			}
 
 		private:
 			articuno_serde(ar) {
-				ar <=> articuno::kv(_footstepL, "footstepL");
-				ar <=> articuno::kv(_footstepR, "footstepR");
+				ar <=> articuno::kv(_lFootstepL, "lFootstepL");
+				ar <=> articuno::kv(_lFootstepR, "lFootstepR");
 
-				ar <=> articuno::kv(_rumbleL, "rumbleL");
-				ar <=> articuno::kv(_rumbleR, "rumbleR");
+				ar <=> articuno::kv(_lJumpLand, "lJumpLand");
 
-				ar <=> articuno::kv(_sprintL, "sprintL");
-				ar <=> articuno::kv(_sprintR, "sprintR");
+				ar <=> articuno::kv(_xlFootstepL, "xlFootstepL");
+				ar <=> articuno::kv(_xlFootstepR, "xlFootstepR");
 
-				ar <=> articuno::kv(_xlFeetL, "xlFeetL");
-				ar <=> articuno::kv(_xlFeetR, "xlFeetR");
+				ar <=> articuno::kv(_xlRumbleL, "xlRumbleL");
+				ar <=> articuno::kv(_xlRumbleR, "xlRumbleR");
 
-				ar <=> articuno::kv(_xxlFeetL, "xxlFeetL");
-				ar <=> articuno::kv(_xxlFeetR, "xxlFeetR");
+				ar <=> articuno::kv(_xlSprintL, "xlSprintL");
+				ar <=> articuno::kv(_xlSprintR, "xlSprintR");
 
-				ar <=> articuno::kv(_jumpLand, "jumpLand");
+
+				ar <=> articuno::kv(_xxlFootstepL, "xxlFootstepL");
+				ar <=> articuno::kv(_xxlFootstepR, "xxlFootstepR");
+
+
 			}
 
-			std::string _footstepL;
-			std::string _footstepR;
+			std::string _lFootstepL;
+			std::string _lFootstepR;
 
-			std::string _rumbleL;
-			std::string _rumbleR;
+			std::string _lJumpLand;
 
-			std::string _sprintL;
-			std::string _sprintR;
+			std::string _xlFootstepL;
+			std::string _xlFootstepR;
 
-			std::string _xlFeetL;
-			std::string _xlFeetR;
+			std::string _xlRumbleL;
+			std::string _xlRumbleR;
 
-			std::string _xxlFeetL;
-			std::string _xxlFeetR;
+			std::string _xlSprintL;
+			std::string _xlSprintR;
 
-			std::string _jumpLand;
+			std::string _xxlFootstepL;
+			std::string _xxlFootstepR;
+
+
 
 			friend class articuno::access;
 	};
