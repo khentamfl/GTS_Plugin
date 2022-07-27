@@ -21,6 +21,7 @@ namespace Hooks
 		_GetWalkSpeed = ActorVtbl.write_vfunc(REL::Relocate(0x0EE, 0x0EE, 0x0F0), GetWalkSpeed);
 
 		_ProcessTracking = ActorVtbl.write_vfunc(REL::Relocate(0x122, 0x122, 0x124), ProcessTracking);
+		logger::info("  - ProcessTracking Address: {:X}", _ProcessTracking.address());
 	}
 
 	// NPC Characters don't call UpdateAnimation like the PlayerCharacter
