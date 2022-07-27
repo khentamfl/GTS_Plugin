@@ -22,7 +22,9 @@ namespace Gts {
 		}
 
 		if (base_explosion) {
-			TESObjectREFR* instance = actor->PlaceObjectAtMe(base_explosion, false);
+			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
+			if (!instance_ptr) return;
+			TESObjectREFR* instance = instance_ptr.get();
 			if (!instance) return;
 			Explosion* explosion = instance->AsExplosion();
 			if (!explosion) return;
