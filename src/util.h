@@ -116,4 +116,11 @@ namespace Gts {
 	inline void deactivate_mainthread_mode() {
 		get_main_thread().store(false);
 	}
+
+	inline bool IsJumping(Actor* actor) {
+		if (!actor) return false;
+		bool result = false;
+		actor->GetGraphVariableBool("bInJumpState", result);
+		return result;
+	}
 }

@@ -19,15 +19,23 @@ namespace {
 		Unknown,
 	};
 
-	Foot get_foot_kind(std::string_view tag) {
+	Foot get_foot_kind(Actor* actor, std::string_view tag) {
 		Foot foot_kind = Foot::Unknown;
-		if (matches(tag, ".*Foot.*Left.*")) {
+		bool is_jumping = actor ? IsJumping(actor) : false;
+		if (is_jumping) {
+			log::info("Jumping detected");
+		}
+		bool in_air = actor ? actor->IsInMidair() : false;
+		if (in_air) {
+			log::info("InAir detected");
+		}
+		if (matches(tag, ".*Foot.*Left.*") && !is_jumping && !in_air) {
 			foot_kind = Foot::Left;
-		} else if (matches(tag, ".*Foot.*Right.*")) {
+		} else if (matches(tag, ".*Foot.*Right.*") && !is_jumping && !in_air) {
 			foot_kind = Foot::Right;
-		} else if (matches(tag, ".*Foot.*Front.*")) {
+		} else if (matches(tag, ".*Foot.*Front.*") && !is_jumping && !in_air) {
 			foot_kind = Foot::Front;
-		} else if (matches(tag, ".*Foot.*Back.*")) {
+		} else if (matches(tag, ".*Foot.*Back.*") && !is_jumping && !in_air) {
 			foot_kind = Foot::Back;
 		} else if (matches(tag, ".*Jump.*(Down|Land).*")) {
 			foot_kind = Foot::JumpLand;
@@ -295,7 +303,7 @@ namespace Gts {
 					scale *= 0.85; // Walking makes you sound quieter
 					log::info("Walk Scale: {}", scale);
 				}
-				Foot foot_kind = get_foot_kind(tag);
+				Foot foot_kind = get_foot_kind(actor, tag);
 				if (foot_kind == Foot::JumpLand) {
 					float jump_factor = 1.2;
 					scale *= jump_factor; // Jumping makes you sound bigger
