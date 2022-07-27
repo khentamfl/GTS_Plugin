@@ -185,15 +185,6 @@ namespace {
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_xlJumpLand_sounddesc(const Foot& foot_kind) {
-		switch (foot_kind) {
-			case Foot::JumpLand:
-				return Runtime::GetSingleton().xlJumpLand;
-				break;
-		}
-		return nullptr;
-	}
-
 	BSISoundDescriptor* get_xxlFootstep_sounddesc(const Foot& foot_kind) {
 		switch (foot_kind) {
 			case Foot::Left:
@@ -279,6 +270,7 @@ namespace Gts {
 			auto event_manager = ModEventManager::GetSingleton();
 			event_manager.m_onfootstep.SendEvent(actor,tag);
 
+			if (actor->formID == 0x14) return;
 			// Foot step time
 			float scale = get_effective_scale(actor);
 
@@ -318,7 +310,6 @@ namespace Gts {
 				BSSoundHandle xlFootstep   = get_sound(foot, scale, get_xlFootstep_sounddesc(foot_kind),  VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL: Footstep");
 				BSSoundHandle xlRumble     = get_sound(foot, scale, get_xlRumble_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL Rumble");
 				BSSoundHandle xlSprint     = get_sound(foot, scale, get_xlSprint_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL Sprint");
-				BSSoundHandle xlJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_xlJumpLand,   .k = 0.6,  .n = 0.7, .s = 1.0}, "XL Jump");
 
 				BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
 

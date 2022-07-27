@@ -28,8 +28,6 @@ namespace Gts {
 			BGSSoundDescriptorForm* xlSprintL = nullptr;
 			BGSSoundDescriptorForm* xlSprintR = nullptr;
 
-			BGSSoundDescriptorForm* xlJumpLand = nullptr;
-
 			BGSSoundDescriptorForm* xxlFootstepL = nullptr;
 			BGSSoundDescriptorForm* xxlFootstepR = nullptr;
 
