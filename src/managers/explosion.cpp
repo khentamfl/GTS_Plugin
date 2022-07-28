@@ -34,6 +34,7 @@ namespace {
 			explosion->SetPosition(new_pos);
 			explosion->radius *= scale;
 			explosion->imodRadius *= scale;
+			explosion->unkB8 = nullptr;
 		}
 	}
 }
