@@ -31,8 +31,8 @@ namespace {
 		return foot_kind;
 	}
 
-	std::std::vector<NiAVObject*> get_landing_nodes(Actor* actor, const Foot& foot_kind) {
-		std::std::vector<NiAVObject*> results;
+	std::vector<NiAVObject*> get_landing_nodes(Actor* actor, const Foot& foot_kind) {
+		std::vector<NiAVObject*> results;
 		const std::string_view left_foot = ".*(L.*Foot|L.*Leg.*Tip).*";
 		const std::string_view right_foot = ".*(R.*Foot|R.*Leg.*Tip).*";
 		const std::string_view left_arm = ".*(L.*Foot|L.*Leg.*Tip).*";
@@ -42,29 +42,29 @@ namespace {
 		switch (foot_kind) {
 			case Foot::Left:
 				result = find_node_regex_any(actor, left_foot);
-				if (result) results.push(result);
+				if (result) results.push_back(result);
 				break;
 			case Foot::Right:
 				result = find_node_regex_any(actor, right_foot);
-				if (result) results.push(result);
+				if (result) results.push_back(result);
 				break;
 			case Foot::Front:
 				result = find_node_regex_any(actor, left_arm);
-				if (result) results.push(result);
+				if (result) results.push_back(result);
 				result = find_node_regex_any(actor, right_arm);
-				if (result) results.push(result);
+				if (result) results.push_back(result);
 				break;
 			case Foot::Back:
 				result = find_node_regex_any(actor, left_foot);
-				if (result) results.push(result);
+				if (result) results.push_back(result);
 				result = find_node_regex_any(actor, right_foot);
-				if (result) results.push(result);
+				if (result) results.push_back(result);
 				break;
 			case Foot::JumpLand:
 				result = find_node_regex_any(actor, left_foot);
-				if (result) results.push(result);
+				if (result) results.push_back(result);
 				result = find_node_regex_any(actor, right_foot);
-				if (result) results.push(result);
+				if (result) results.push_back(result);
 				break;
 		}
 		return results;
@@ -86,12 +86,13 @@ namespace Gts {
 			auto event_manager = ModEventManager::GetSingleton();
 			event_manager.m_onfootstep.SendEvent(actor,tag);
 
+			auto kind = get_foot_kind(actor, tag);
 			Impact impact_data = Impact {
 				.actor = actor,
-				.kind = get_foot_kind(actor, tag),
+				.kind = kind,
 				.scale = get_visual_scale(actor),
 				.effective_scale = get_effective_scale(actor),
-				.nodes = get_landing_nodes(actor, foot_kind),
+				.nodes = get_landing_nodes(actor, kind),
 			};
 
 			FootStepManager::GetSingleton().OnImpact(impact_data);

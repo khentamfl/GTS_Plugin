@@ -1,13 +1,14 @@
 #include "managers/tremor.h"
 #include "managers/impact.h"
 #include "data/runtime.h"
+#include "util.h"
 
 using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
 namespace {
-	void do_shakes(NiAVObject* node, const Foot& foot_kind, const float& scale) {
+	void do_shakes(Actor* actor, NiAVObject* node, const Foot& foot_kind, const float& scale) {
 		float power_multi = 1.0;
 		switch (foot_kind) {
 			case Foot::Left:
@@ -40,7 +41,7 @@ namespace {
 		float duration_power = 0.25 * power;
 		float duration = duration_power * falloff;
 		if (intensity > 0.05 && duration > 0.05) {
-			shake_camera(nullptr, intensity, duration);
+			shake_camera(actor, intensity, duration);
 			float left_shake = intensity;
 			float right_shake = intensity;
 			if (actor->formID == 0x14) {
@@ -85,7 +86,7 @@ namespace Gts {
 				scale *= 1.2; // Jumping makes you sound bigger
 			}
 			for (NiAVObject* node: impact.nodes) {
-				do_shakes(node, impact.kind, scale);
+				do_shakes(impact.actor, node, impact.kind, scale);
 			}
 		}
 	}

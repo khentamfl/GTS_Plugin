@@ -18,7 +18,7 @@ namespace {
 			case Foot::Front:
 			case Foot::Back:
 				base_explosion = Runtime::GetSingleton().footstepExplosion;
-			case Foot::JumpLand,:
+			case Foot::JumpLand:
 				base_explosion = Runtime::GetSingleton().footstepExplosion;
 		}
 
