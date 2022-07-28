@@ -1,23 +1,24 @@
 #include "managers/explosion.h"
+#include "managers/impact.h"
 #include "data/runtime.h"
 
 using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
-namespace Gts {
-	ExplosionManager& ExplosionManager::GetSingleton() noexcept {
-		static ExplosionManager instance;
-		return instance;
-	}
-
-	void ExplosionManager::make_explosion(ExplosionKind kind, Actor* actor, NiAVObject* node, NiPoint3 offset, float scale) {
+namespace {
+	void make_explosion(Foot kind, Actor* actor, NiAVObject* node, NiPoint3 offset, float scale) {
 		if (!actor) return;
 		if (!node) return;
 
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
-			case ExplosionKind::Footstep:
+			case Foot::Left:
+			case Foot::Right:
+			case Foot::Front:
+			case Foot::Back:
+				base_explosion = Runtime::GetSingleton().footstepExplosion;
+			case Foot::JumpLand,:
 				base_explosion = Runtime::GetSingleton().footstepExplosion;
 		}
 
@@ -35,4 +36,36 @@ namespace Gts {
 			explosion->imodRadius *= scale;
 		}
 	}
+}
+
+namespace Gts {
+	ExplosionManager& ExplosionManager::GetSingleton() noexcept {
+		static ExplosionManager instance;
+		return instance;
+	}
+
+	void ExplosionManager::OnImpact(const Impact& impact) {
+		if (!impact.actor) return;
+		auto actor = impact.actor;
+
+		float scale = impact.effective_scale;
+		float minimal_size = 4.0;
+		if (scale > minimal_size && !actor->IsSwimming()) {
+			if (actor->IsSprinting()) {
+				scale *= 1.2; // Sprinting makes you sound bigger
+			} else if (actor->IsSneaking()) {
+				scale *= 0.55; // Sneaking makes you sound quieter
+			} else if (actor->IsWalking()) {
+				scale *= 0.85; // Walking makes you sound quieter
+			}
+			Foot foot_kind = impact.kind;
+			if (foot_kind == Foot::JumpLand) {
+				scale *= 1.2; // Jumping makes you sound bigger
+			}
+			for (NiAVObject* node: impact.nodes) {
+				make_explosion(impact.kind, actor, node, NiPoint3(), scale);
+			}
+		}
+	}
+
 }

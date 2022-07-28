@@ -8,9 +8,9 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class FootStepManager {
+	class TremorManager {
 		public:
-			[[nodiscard]] static FootStepManager& GetSingleton() noexcept;
+			[[nodiscard]] static TremorManager& GetSingleton() noexcept;
 
 			void OnImpact(const Impact& impact);
 	};
