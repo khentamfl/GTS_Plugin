@@ -75,7 +75,7 @@ namespace Gts {
 					log::info("Shiting explosion down by {} due to hh", temp_data->total_hh_adjustment);
 					offset.z -= temp_data->total_hh_adjustment;
 				}
-				float extra_offset = 3.0*get_visual_scale(actor);
+				float extra_offset = 50.0*get_visual_scale(actor);
 				offset.z -= extra_offset;
 				log::info("Shiting explosion down by {} due to scale", extra_offset);
 				make_explosion(impact.kind, actor, node, offset, scale);
