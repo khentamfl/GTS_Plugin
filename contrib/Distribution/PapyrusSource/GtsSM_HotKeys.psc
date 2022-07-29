@@ -14,6 +14,10 @@ Function PlayerGrowthHalfLife(Float rate)
   GtsPlugin.SetGrowthHalfLife(PlayerRef, rate)
 EndFunction
 
+Function Experiment(Float value)
+  GtsPlugin.SetExperimentFloat(value)
+EndFunction
+
 
 Function GrowFollowers()
   GtsScale.ModTeammateScale(0.1)
