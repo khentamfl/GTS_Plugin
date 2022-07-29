@@ -1,7 +1,9 @@
 #include "managers/explosion.h"
 #include "managers/impact.h"
+#include "scale/scale.h"
 #include "data/runtime.h"
 #include "data/transient.h"
+
 
 using namespace SKSE;
 using namespace RE;
@@ -31,8 +33,10 @@ namespace {
 			Explosion* explosion = instance->AsExplosion();
 			if (!explosion) return;
 			explosion->MoveToNode(actor, node);
+			log::info("Explosion pos before offset: {},{},{}", explosion->GetPosition().x, explosion->GetPosition().y, explosion->GetPosition().z);
 			NiPoint3 new_pos = explosion->GetPosition() + offset;
 			explosion->SetPosition(new_pos);
+			log::info("Explosion pos after offset: {},{},{}", explosion->GetPosition().x, explosion->GetPosition().y, explosion->GetPosition().z);
 			explosion->radius *= scale;
 			explosion->imodRadius *= scale;
 			explosion->unkB8 = nullptr;
@@ -68,9 +72,12 @@ namespace Gts {
 				NiPoint3 offset = NiPoint3();
 				auto temp_data = Transient::GetSingleton().GetActorData(impact.actor);
 				if (temp_data) {
+					log::info("Shiting explosion down by {} due to hh", temp_data->total_hh_adjustment);
 					offset.z -= temp_data->total_hh_adjustment;
 				}
-				offset.z-=3;
+				float extra_offset = 3.0*get_visual_scale(actor);
+				offset.z -= extra_offset;
+				log::info("Shiting explosion down by {} due to scale", extra_offset);
 				make_explosion(impact.kind, actor, node, offset, scale);
 			}
 		}
