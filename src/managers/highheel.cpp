@@ -30,6 +30,7 @@ namespace Gts {
 		}
 
 		float new_hh = 0.0;
+		float base_hh;
 		float last_hh_adjustment = temp_data->last_hh_adjustment;
 		if (!Persistent::GetSingleton().highheel_correction) {
 			if (fabs(last_hh_adjustment) > 1e-5) {
@@ -58,7 +59,7 @@ namespace Gts {
 				return;
 			}
 
-			float base_hh = npc_node->local.translate.z;
+			base_hh = npc_node->local.translate.z;
 			float scale = root_node->local.scale;
 			new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale);
 		}
@@ -77,6 +78,7 @@ namespace Gts {
 		}
 		if (adjusted) {
 			temp_data->last_hh_adjustment = new_hh;
+			temp_data->total_hh_adjustment = new_hh + base_hh;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 #include "managers/explosion.h"
 #include "managers/impact.h"
 #include "data/runtime.h"
+#include "data/transient.h"
 
 using namespace SKSE;
 using namespace RE;
@@ -64,7 +65,13 @@ namespace Gts {
 				scale *= 1.2; // Jumping makes you sound bigger
 			}
 			for (NiAVObject* node: impact.nodes) {
-				make_explosion(impact.kind, actor, node, NiPoint3(), scale);
+				NiPoint3 offset = NiPoint3();
+				auto temp_data = Transient::GetSingleton().GetActorData(impact.actor);
+				if (temp_data) {
+					offset.z -= temp_data->total_hh_adjustment;
+				}
+				offset.z-=3;
+				make_explosion(impact.kind, actor, node, offset, scale);
 			}
 		}
 	}
