@@ -1,5 +1,5 @@
 #include "raycast.h"
-
+ur 
 using namespace Gts;
 using namespace RE;
 
@@ -10,6 +10,7 @@ namespace Gts {
 	}
 
 	void RayCollector::AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) {
+		log::info("Add Ray Hit");
 		const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
 		const hkpShape* first_shape = shape; // Used for checking against filter
 		const hkpShape* last_shape = shape; // Used for checking against filter
@@ -18,6 +19,7 @@ namespace Gts {
 			switch (shape->type) {
 				case hkpShapeType::kList:
 				{
+					log::info("Listshape");
 					const hkpListShape* container = static_cast<const hkpListShape*>(shape);
 					// Get collision shape
 
@@ -37,6 +39,8 @@ namespace Gts {
 					}
 				}
 				break;
+				default:
+					log::info("Another shape");
 			}
 		}
 
@@ -48,23 +52,31 @@ namespace Gts {
 					NiObject* nishape = static_cast<NiObject*>(shape->userData);
 					NiObject* first_nishape = static_cast<NiObject*>(first_shape->userData);
 					NiObject* last_nishape = static_cast<NiObject*>(last_shape->userData);
-					if ((collision_object  != nishape) && (collision_object  != first_nishape) && (collision_object  != last_nishape)) {
-						HitResult hit_result;
-						hit_result.shape = shape;
-						hit_result.fraction = a_hitInfo.hitFraction;
-						results.push_back(hit_result);
+					if ((collision_object  == nishape) || (collision_object  == first_nishape) || (collision_object  == last_nishape)) {
+						log::info("Filtered");
+						return;
 					}
 				}
 			}
+			HitResult hit_result;
+			hit_result.shape = shape;
+			hit_result.fraction = a_hitInfo.hitFraction;
+			results.push_back(hit_result);
 		}
 	}
 
 	NiPoint3 CastRay(Actor* actor, NiPoint3 origin, NiPoint3 direction, float length, bool& success) {
 		success = false;
-		if (!actor) return NiPoint3();
+		if (!actor) {
+			log::info("No Actor");
+			return NiPoint3();
+		}
 		auto cell = actor->GetParentCell();
 		auto collision_world = cell->GetbhkWorld();
-		if (!collision_world) return NiPoint3();
+		if (!collision_world) {
+			log:info("No world");
+			return NiPoint3();
+		}
 		bhkPickData pick_data;
 
 		pick_data.rayInput.from = origin;
@@ -91,6 +103,7 @@ namespace Gts {
 			}
 			return origin + normed * length * min_fraction;
 		} else {
+			log::info("No result");
 			return NiPoint3();
 		}
 	}
