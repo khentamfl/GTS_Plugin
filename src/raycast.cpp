@@ -1,5 +1,5 @@
 #include "raycast.h"
-ur 
+
 using namespace Gts;
 using namespace RE;
 
@@ -74,7 +74,7 @@ namespace Gts {
 		auto cell = actor->GetParentCell();
 		auto collision_world = cell->GetbhkWorld();
 		if (!collision_world) {
-			log:info("No world");
+			log::info("No world");
 			return NiPoint3();
 		}
 		bhkPickData pick_data;
