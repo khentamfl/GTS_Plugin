@@ -4,6 +4,7 @@
 #include "scale/scale.h"
 #include "data/runtime.h"
 #include "data/transient.h"
+#include "raycast.h"
 
 
 using namespace SKSE;
@@ -11,7 +12,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	void make_explosion(Foot kind, Actor* actor, NiAVObject* node, NiPoint3 offset, float scale) {
+	void make_explosion_belownode(Foot kind, Actor* actor, NiAVObject* node, NiPoint3 offset, float scale) {
 		if (!actor) return;
 		if (!node) return;
 
@@ -34,10 +35,79 @@ namespace {
 			Explosion* explosion = instance->AsExplosion();
 			if (!explosion) return;
 			explosion->MoveToNode(actor, node);
-			log::info("Explosion pos before offset: {},{},{}", explosion->GetPosition().x, explosion->GetPosition().y, explosion->GetPosition().z);
+			NiPoint3 ray_start = explosion->GetPosition();
+			NiPoint3 ray_direction;
+			ray_direction.z = -1.0;
+			bool success = false;
+			NiPoint3 ray_end = CastRay(actor, ray_start, ray_direction, meter_to_unit(1.0), success);
+			if (success) {
+				log::info("Ray hit at: {},{},{}", ray_end.x, ray_end.y, ray_end.z);
+			} else {
+				ray_end = explosion->GetPosition();
+				log::info("No Ray hit using position of node: {},{},{}", ray_end.x, ray_end.y, ray_end.z);
+			}
+			NiPoint3 new_pos = ray_end + offset;
+
+			explosion->SetPosition(new_pos);
+			explosion->radius *= scale;
+			explosion->imodRadius *= scale;
+			explosion->unkB8 = nullptr;
+		}
+	}
+
+	void make_explosion_atnode(Foot kind, Actor* actor, NiAVObject* node, NiPoint3 offset, float scale) {
+		if (!actor) return;
+		if (!node) return;
+
+		BGSExplosion* base_explosion = nullptr;
+		switch (kind) {
+			case Foot::Left:
+			case Foot::Right:
+			case Foot::Front:
+			case Foot::Back:
+				base_explosion = Runtime::GetSingleton().footstepExplosion;
+			case Foot::JumpLand:
+				base_explosion = Runtime::GetSingleton().footstepExplosion;
+		}
+
+		if (base_explosion) {
+			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
+			if (!instance_ptr) return;
+			TESObjectREFR* instance = instance_ptr.get();
+			if (!instance) return;
+			Explosion* explosion = instance->AsExplosion();
+			if (!explosion) return;
+			explosion->MoveToNode(actor, node);
 			NiPoint3 new_pos = explosion->GetPosition() + offset;
 			explosion->SetPosition(new_pos);
-			log::info("Explosion pos after offset: {},{},{}", explosion->GetPosition().x, explosion->GetPosition().y, explosion->GetPosition().z);
+			explosion->radius *= scale;
+			explosion->imodRadius *= scale;
+			explosion->unkB8 = nullptr;
+		}
+	}
+
+	void make_explosion_at(Foot kind, Actor* actor, NiPoint3 position, float scale) {
+		if (!actor) return;
+
+		BGSExplosion* base_explosion = nullptr;
+		switch (kind) {
+			case Foot::Left:
+			case Foot::Right:
+			case Foot::Front:
+			case Foot::Back:
+				base_explosion = Runtime::GetSingleton().footstepExplosion;
+			case Foot::JumpLand:
+				base_explosion = Runtime::GetSingleton().footstepExplosion;
+		}
+
+		if (base_explosion) {
+			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
+			if (!instance_ptr) return;
+			TESObjectREFR* instance = instance_ptr.get();
+			if (!instance) return;
+			Explosion* explosion = instance->AsExplosion();
+			if (!explosion) return;
+			explosion->SetPosition(position);
 			explosion->radius *= scale;
 			explosion->imodRadius *= scale;
 			explosion->unkB8 = nullptr;
@@ -76,10 +146,10 @@ namespace Gts {
 					log::info("Shiting explosion down by {} due to hh", temp_data->total_hh_adjustment);
 					offset.z -= temp_data->total_hh_adjustment;
 				}
-				float extra_offset = GtsManager::GetSingleton().experiment * get_visual_scale(actor);
+				float extra_offset = GtsManager::GetSingleton().experiment * impact.scale;
 				offset.z -= extra_offset;
 				log::info("Shiting explosion down by {} due to scale", extra_offset);
-				make_explosion(impact.kind, actor, node, offset, scale);
+				make_explosion_belownode(impact.kind, actor, node, offset, scale);
 			}
 		}
 	}
