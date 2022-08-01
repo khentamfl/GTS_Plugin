@@ -37,6 +37,8 @@ namespace {
 			explosion->MoveToNode(actor, node);
 			NiPoint3 ray_start = explosion->GetPosition();
 			NiPoint3 ray_direction;
+			ray_direction.x = 0.0;
+			ray_direction.y = 0.0;
 			ray_direction.z = -1.0;
 			bool success = false;
 			log::info("Casting RAY");

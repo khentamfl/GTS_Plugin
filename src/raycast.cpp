@@ -74,7 +74,9 @@ namespace Gts {
 		log::info("Ray Start: {},{},{}", origin.x, origin.y, origin.z);
 		pick_data.rayInput.from = origin;
 
+		log::info("Ray direction: {},{},{}", direction.x, direction.y, direction.z);
 		NiPoint3 normed = direction / direction.Length();
+		log::info("Normalised Ray direction: {},{},{}", normed.x, normed.y, normed.z);
 		NiPoint3 end = unit_to_meter(origin + normed * length);
 		log::info("Ray End: {},{},{}", end.x, end.y, end.z);
 		// pick_data.rayInput.to = end;
