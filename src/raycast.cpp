@@ -78,6 +78,7 @@ namespace Gts {
 			log::info("No world");
 			return NiPoint3();
 		}
+		log::info("Making ray picker");
 		bhkPickData pick_data;
 
 		pick_data.rayInput.from = origin;
@@ -91,11 +92,13 @@ namespace Gts {
 		collector.add_filter(actor->Get3D(false));
 		collector.add_filter(actor->Get3D(true));
 		pick_data.rayHitCollectorA0 = &collector;
-		pick_data.rayHitCollectorA8 = &collector;
-		pick_data.rayHitCollectorB0 = &collector;
-		pick_data.rayHitCollectorB8 = &collector;
+		// pick_data.rayHitCollectorA8 = &collector;
+		// pick_data.rayHitCollectorB0 = &collector;
+		// pick_data.rayHitCollectorB8 = &collector;
+		log::info("Picking ray");
 
 		collision_world->PickObject(pick_data);
+		log::info("Ray picked");
 		float min_fraction = 1.0;
 		success = !collector.results.empty();
 		if (collector.results.size() > 0) {

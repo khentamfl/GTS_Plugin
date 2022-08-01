@@ -39,7 +39,9 @@ namespace {
 			NiPoint3 ray_direction;
 			ray_direction.z = -1.0;
 			bool success = false;
+			log::info("Casting RAY");
 			NiPoint3 ray_end = CastRay(actor, ray_start, ray_direction, meter_to_unit(1.0), success);
+			log::info("Ray CAST RAY");
 			if (success) {
 				log::info("Ray hit at: {},{},{}", ray_end.x, ray_end.y, ray_end.z);
 			} else {
