@@ -58,6 +58,7 @@ namespace Gts {
 					}
 				}
 			}
+			log::info("Adding result");
 			HitResult hit_result;
 			hit_result.shape = shape;
 			hit_result.fraction = a_hitInfo.hitFraction;
@@ -90,6 +91,9 @@ namespace Gts {
 		collector.add_filter(actor->Get3D(false));
 		collector.add_filter(actor->Get3D(true));
 		pick_data.rayHitCollectorA0 = &collector;
+		pick_data.rayHitCollectorA8 = &collector;
+		pick_data.rayHitCollectorB0 = &collector;
+		pick_data.rayHitCollectorB8 = &collector;
 
 		collision_world->PickObject(pick_data);
 		float min_fraction = 1.0;
@@ -111,9 +115,11 @@ namespace Gts {
 
 
 void hkpClosestRayHitCollector::AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) {
+	log::info("Dummy AddRayHit");
 	// Dummy
 }
 
 hkpClosestRayHitCollector::~hkpClosestRayHitCollector() {
+	log::info("Dummy Destructor");
 	// Dummy
 }
