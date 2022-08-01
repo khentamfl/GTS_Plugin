@@ -40,15 +40,14 @@ namespace {
 			ray_direction.z = -1.0;
 			bool success = false;
 			log::info("Casting RAY");
-			NiPoint3 ray_end = CastRay(actor, ray_start, ray_direction, meter_to_unit(1.0), success);
+			NiPoint3 new_pos = CastRay(actor, ray_start, ray_direction, meter_to_unit(1.0), success);
 			log::info("Ray CAST RAY");
 			if (success) {
-				log::info("Ray hit at: {},{},{}", ray_end.x, ray_end.y, ray_end.z);
+				log::info("Ray hit at: {},{},{}", new_pos.x, new_pos.y, new_pos.z);
 			} else {
-				ray_end = explosion->GetPosition();
-				log::info("No Ray hit using position of node: {},{},{}", ray_end.x, ray_end.y, ray_end.z);
+				new_pos = explosion->GetPosition()  + offset;
+				log::info("No Ray hit using position of node: {},{},{}", new_pos.x, new_pos.y, new_pos.z);
 			}
-			NiPoint3 new_pos = ray_end + offset;
 
 			explosion->SetPosition(new_pos);
 			explosion->radius *= scale;

@@ -9,56 +9,43 @@ namespace Gts {
 	void RayCollector::add_filter(NiAVObject* obj) noexcept {
 		object_filter.push_back(obj);
 	}
+	bool RayCollector::is_filtered(NiAVObject* obj) {
+		while (obj) {
+			for (auto object: this->object_filter) {
+				if (obj == object) {
+					return true;
+				}
+			}
+			obj = obj->parent;
+		}
+		return false;
+	}
 
 	void RayCollector::AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) {
 		log::info("Add Ray Hit");
 		const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
-		const hkpShape* first_shape = shape; // Used for checking against filter
-		const hkpShape* last_shape = shape; // Used for checking against filter
-		hkpShapeKey key = a_body.shapeKey;
-		if (shape) {
-			switch (shape->type) {
-				case hkpShapeType::kList:
-				{
-					log::info("Listshape");
-					const hkpListShape* container = static_cast<const hkpListShape*>(shape);
-					// Get collision shape
-
-					if (key == HK_INVALID_SHAPE_KEY) {
-						// If invalid just use first
-						key = container->GetFirstKey();
-					}
-					auto buffer = hkpShapeBuffer();
-					shape = container->GetChildShape(key, buffer);
-					// Get first shape
-					first_shape = container->GetChildShape(container->GetFirstKey(), buffer);
-					// Get last shape
-					last_shape = shape;
-					while (key != HK_INVALID_SHAPE_KEY) {
-						last_shape = container->GetChildShape(key, buffer);
-						key = container->GetNextKey(key);
-					}
-				}
-				break;
-				default:
-					log::info("Another shape");
-			}
-		}
 
 		if (shape) {
-			if (object_filter.size() > 0)
-			{
-				for (auto object: this->object_filter) {
-					NiObject* collision_object = static_cast<NiObject*>(object);
-					NiObject* nishape = static_cast<NiObject*>(shape->userData);
-					NiObject* first_nishape = static_cast<NiObject*>(first_shape->userData);
-					NiObject* last_nishape = static_cast<NiObject*>(last_shape->userData);
-					if ((collision_object  == nishape) || (collision_object  == first_nishape) || (collision_object  == last_nishape)) {
-						log::info("Filtered");
-						return;
+			auto ni_shape = shape->userData;
+			if (ni_shape) {
+				auto collision_node = ni_shape->AsBhkNiCollisionObject();
+				if (collision_node) {
+					auto av_node = collision_node->sceneObject;
+					if (av_node) {
+						if (is_filtered(av_node)) {
+							log::info("Filtered");
+							return;
+						}
+					} else {
+						log::info("No scene node");
 					}
+				} else {
+					log::info("Not a collision object????");
 				}
+			} else {
+				log::info("No bhknode");
 			}
+
 			log::info("Adding result");
 			HitResult hit_result;
 			hit_result.shape = shape;

@@ -18,6 +18,7 @@ namespace Gts {
 	{
 		public:
 			void add_filter(NiAVObject* obj) noexcept;
+			bool is_filtered(NiAVObject* obj);
 			void AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) override;
 
 			std::vector<NiAVObject*> object_filter;
