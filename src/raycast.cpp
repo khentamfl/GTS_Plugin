@@ -44,6 +44,7 @@ namespace Gts {
 				}
 			} else {
 				log::info("No bhknode");
+				log::info("  - hkpShapeType: {}", static_cast<int>(shape->type));
 			}
 
 			log::info("Adding result");
@@ -54,8 +55,8 @@ namespace Gts {
 		}
 	}
 
-	NiPoint3 CastRay(Actor* actor, NiPoint3 in_origin, NiPoint3 direction, float length, bool& success) {
-
+	NiPoint3 CastRay(Actor* actor, NiPoint3 in_origin, NiPoint3 direction, float unit_length, bool& success) {
+		float length = unit_to_meter(unit_length);
 		success = false;
 		if (!actor) {
 			log::info("No Actor");
@@ -77,7 +78,7 @@ namespace Gts {
 		log::info("Ray direction: {},{},{}", direction.x, direction.y, direction.z);
 		NiPoint3 normed = direction / direction.Length();
 		log::info("Normalised Ray direction: {},{},{}", normed.x, normed.y, normed.z);
-		NiPoint3 end = unit_to_meter(origin + normed * length);
+		NiPoint3 end = origin + normed * length;
 		log::info("Ray End: {},{},{}", end.x, end.y, end.z);
 		// pick_data.rayInput.to = end;
 
