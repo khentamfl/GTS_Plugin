@@ -1,4 +1,5 @@
 #include "raycast.h"
+#include "util.h"
 
 using namespace Gts;
 using namespace RE;
@@ -66,7 +67,9 @@ namespace Gts {
 		}
 	}
 
-	NiPoint3 CastRay(Actor* actor, NiPoint3 origin, NiPoint3 direction, float length, bool& success) {
+	NiPoint3 CastRay(Actor* actor, NiPoint3 in_origin, NiPoint3 direction, float length, bool& success) {
+		NiPoint3 origin = unit_to_meter(in_origin);
+
 		success = false;
 		if (!actor) {
 			log::info("No Actor");
@@ -84,7 +87,7 @@ namespace Gts {
 		pick_data.rayInput.from = origin;
 
 		NiPoint3 normed = direction / direction.Length();
-		pick_data.rayInput.to = origin + normed * length;
+		pick_data.rayInput.to = unit_to_meter(origin + normed * length);
 
 		pick_data.ray = pick_data.rayInput.to - pick_data.rayInput.from; // Length in each axis to travel
 
@@ -108,7 +111,7 @@ namespace Gts {
 					min_fraction = ray_result.fraction;
 				}
 			}
-			return origin + normed * length * min_fraction;
+			return meter_to_unit(origin + normed * length * min_fraction);
 		} else {
 			log::info("No result");
 			return NiPoint3();

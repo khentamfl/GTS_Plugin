@@ -31,8 +31,10 @@ namespace Gts {
 	}
 
 	vector<Actor*> find_actors();
-	float unit_to_meter(float unit);
-	float meter_to_unit(float meter);
+	float unit_to_meter(const float& unit);
+	float meter_to_unit(const float& meter);
+	NiPoint3 unit_to_meter(const NiPoint3& unit);
+	NiPoint3 meter_to_unit(const NiPoint3& meter);
 	void critically_damped(
 		float& x,
 		float& v,
