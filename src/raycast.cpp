@@ -68,7 +68,6 @@ namespace Gts {
 	}
 
 	NiPoint3 CastRay(Actor* actor, NiPoint3 in_origin, NiPoint3 direction, float length, bool& success) {
-		NiPoint3 origin = unit_to_meter(in_origin);
 
 		success = false;
 		if (!actor) {
@@ -84,18 +83,24 @@ namespace Gts {
 		log::info("Making ray picker");
 		bhkPickData pick_data;
 
+		NiPoint3 origin = unit_to_meter(in_origin);
+		log::info("Ray Start: {},{},{}", origin.x, origin.y, origin.z);
 		pick_data.rayInput.from = origin;
 
 		NiPoint3 normed = direction / direction.Length();
-		pick_data.rayInput.to = unit_to_meter(origin + normed * length);
+		NiPoint3 end = unit_to_meter(origin + normed * length);
+		log::info("Ray End: {},{},{}", end.x, end.y, end.z);
+		// pick_data.rayInput.to = end;
 
-		pick_data.ray = pick_data.rayInput.to - pick_data.rayInput.from; // Length in each axis to travel
+		NiPoint3 delta = end - origin;
+		log::info("Ray Delta: {},{},{}", delta.x, delta.y, delta.z);
+		pick_data.ray = delta; // Length in each axis to travel
 
 		RayCollector collector = RayCollector();
 		collector.add_filter(actor->Get3D(false));
 		collector.add_filter(actor->Get3D(true));
-		pick_data.rayHitCollectorA0 = &collector;
-		// pick_data.rayHitCollectorA8 = &collector;
+		// pick_data.rayHitCollectorA0 = &collector;
+		pick_data.rayHitCollectorA8 = &collector;
 		// pick_data.rayHitCollectorB0 = &collector;
 		// pick_data.rayHitCollectorB8 = &collector;
 		log::info("Picking ray");
