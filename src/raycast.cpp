@@ -26,12 +26,12 @@ namespace Gts {
 		const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
 
 		// Search for top level shape
-		hkpCdBody* top_body = a_body->parent;
+		const hkpCdBody* top_body = a_body.parent;
 		while (top_body) {
 			if (top_body->shape) {
 				shape = top_body->shape;
 			}
-			top_body = a_body->parent;
+			top_body = top_body->parent;
 		}
 
 		if (shape) {
