@@ -43,32 +43,64 @@ namespace Gts {
 						}
 						float native_scale;
 						serde->ReadRecordData(&native_scale, sizeof(native_scale));
+						if (std::isnan(native_scale)) {
+							native_scale = 1.0;
+						}
+
 						float visual_scale;
 						serde->ReadRecordData(&visual_scale, sizeof(visual_scale));
+						if (std::isnan(visual_scale)) {
+							visual_scale = 1.0;
+						}
+
 						float visual_scale_v;
 						serde->ReadRecordData(&visual_scale_v, sizeof(visual_scale_v));
+						if (std::isnan(visual_scale_v)) {
+							visual_scale_v = 0.0;
+						}
+
 						float target_scale;
 						serde->ReadRecordData(&target_scale, sizeof(target_scale));
+						if (std::isnan(target_scale)) {
+							target_scale = 1.0;
+						}
+
 						float max_scale;
 						serde->ReadRecordData(&max_scale, sizeof(max_scale));
+						if (std::isnan(max_scale)) {
+							max_scale = 1.0;
+						}
+
 						float half_life;
 						if (version >= 2) {
 							serde->ReadRecordData(&half_life, sizeof(half_life));
 						} else {
 							half_life = 0.05;
 						}
+						if (std::isnan(half_life)) {
+							half_life = 0.05;
+						}
+
 						float anim_speed;
 						if (version >= 3) {
 							serde->ReadRecordData(&anim_speed, sizeof(anim_speed));
 						} else {
 							anim_speed = 1.0;
 						}
+						if (std::isnan(anim_speed)) {
+							anim_speed = 1.0;
+						}
+
 						float effective_multi;
 						if (version >= 4) {
 							serde->ReadRecordData(&effective_multi, sizeof(effective_multi));
 						} else {
 							effective_multi = 1.0;
 						}
+						if (std::isnan(effective_multi)) {
+							effective_multi = 1.0;
+						}
+
 						ActorData data;
 						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed);
 						data.native_scale = native_scale;
