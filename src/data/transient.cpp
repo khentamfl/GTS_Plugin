@@ -49,7 +49,7 @@ namespace Gts {
 			result.last_hh_adjustment = 0.0;
 			result.total_hh_adjustment = 0.0;
 			result.base_walkspeedmult = actor->GetActorValue(ActorValue::kSpeedMult);
-			this->_actor_data[key] = result;
+			this->_actor_data.try_emplace(key, resullt);
 		}
 		return &this->_actor_data[key];
 	}

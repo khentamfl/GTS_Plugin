@@ -228,7 +228,7 @@ namespace Gts {
 			new_data.max_scale = 65535.0;
 			new_data.half_life = 0.05;
 			new_data.anim_speed = 1.0;
-			this->_actor_data[key] = new_data;
+			this->_actor_data.try_emplace(key, new_data);
 			result = &this->_actor_data.at(key);
 		}
 		return result;
