@@ -55,15 +55,15 @@ namespace Gts {
 		float minimal_size = 4.0;
 		if (scale > minimal_size && !actor->IsSwimming()) {
 			if (actor->IsSprinting()) {
-				scale *= 1.2; // Sprinting makes you sound bigger
+				scale *= 1.2; // Sprinting makes you seem bigger
 			} else if (actor->IsSneaking()) {
-				scale *= 0.55; // Sneaking makes you sound quieter
+				scale *= 0.55; // Sneaking makes you seem quieter
 			} else if (actor->IsWalking()) {
-				scale *= 0.85; // Walking makes you sound quieter
+				scale *= 0.85; // Walking makes you seem quieter
 			}
 			Foot foot_kind = impact.kind;
 			if (foot_kind == Foot::JumpLand) {
-				scale *= 1.2; // Jumping makes you sound bigger
+				scale *= 2.0; // Jumping makes you sound bigger
 			}
 			for (NiAVObject* node: impact.nodes) {
 				// First try casting a ray
