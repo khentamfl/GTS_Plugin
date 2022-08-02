@@ -14,11 +14,11 @@ namespace Gts {
 	}
 
 	TempActorData* Transient::GetData(TESObjectREFR* object) {
-		if (!refr) {
+		if (!object) {
 			return nullptr;
 		}
-		auto key = refr->formID;
-		ActorData* result = nullptr;
+		auto key = object->formID;
+		TempActorData* result = nullptr;
 		try {
 			result = &this->_actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
@@ -64,7 +64,7 @@ namespace Gts {
 			result.last_hh_adjustment = 0.0;
 			result.total_hh_adjustment = 0.0;
 			result.base_walkspeedmult = actor->GetActorValue(ActorValue::kSpeedMult);
-			this->_actor_data.try_emplace(key, resullt);
+			this->_actor_data.try_emplace(key, result);
 		}
 		return &this->_actor_data[key];
 	}
