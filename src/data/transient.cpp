@@ -14,6 +14,7 @@ namespace Gts {
 	}
 
 	TempActorData* Transient::GetActorData(Actor* actor) {
+		std::unique_lock lock(this->_lock);
 		if (!actor) {
 			return nullptr;
 		}

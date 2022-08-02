@@ -201,6 +201,7 @@ namespace Gts {
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
+		std::unique_lock lock(this->_lock);
 		if (!actor) {
 			return nullptr;
 		}
