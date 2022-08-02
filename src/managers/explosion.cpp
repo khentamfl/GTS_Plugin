@@ -77,12 +77,8 @@ namespace Gts {
 				NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, ray_length, success);
 
 				if (!success) {
-					return;
 					explosion_pos = foot_location;
-					auto temp_data = Transient::GetSingleton().GetData(impact.actor);
-					if (temp_data) {
-						explosion_pos.z -= temp_data->total_hh_adjustment;
-					}
+					explosion_pos.z = actor->GetPosition().z;
 				}
 				make_explosion_at(impact.kind, actor, explosion_pos, scale);
 			}
