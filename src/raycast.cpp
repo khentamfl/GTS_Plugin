@@ -88,7 +88,7 @@ namespace Gts {
 		log::info("  - Normalised Ray direction: {},{},{}", normed.x, normed.y, normed.z);
 		NiPoint3 end = origin + normed * length;
 		log::info("  - Ray End: {},{},{}", end.x, end.y, end.z);
-		// pick_data.rayInput.to = end;
+		pick_data.rayInput.to = end;
 
 		NiPoint3 delta = end - origin;
 		log::info("  - Ray Delta: {},{},{}", delta.x, delta.y, delta.z);
