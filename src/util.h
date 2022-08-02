@@ -59,7 +59,7 @@ namespace Gts {
 		return soft_core(x, soft_potential.k, soft_potential.n, soft_potential.s, soft_potential.o);
 	}
 
-	inline void shake_camera(Actor* actor, float intensity, float duration) {
+	inline void shake_camera(TESObjectREFR* actor, float intensity, float duration) {
 		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
 		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
 		if (vm) {
