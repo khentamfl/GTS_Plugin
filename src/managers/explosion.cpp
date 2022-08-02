@@ -12,83 +12,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	void make_explosion_belownode(Foot kind, Actor* actor, NiAVObject* node, NiPoint3 offset, float scale) {
-		if (!actor) return;
-		if (!node) return;
-
-		BGSExplosion* base_explosion = nullptr;
-		switch (kind) {
-			case Foot::Left:
-			case Foot::Right:
-			case Foot::Front:
-			case Foot::Back:
-				base_explosion = Runtime::GetSingleton().footstepExplosion;
-			case Foot::JumpLand:
-				base_explosion = Runtime::GetSingleton().footstepExplosion;
-		}
-
-		if (base_explosion) {
-			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
-			if (!instance_ptr) return;
-			TESObjectREFR* instance = instance_ptr.get();
-			if (!instance) return;
-			Explosion* explosion = instance->AsExplosion();
-			if (!explosion) return;
-			explosion->MoveToNode(actor, node);
-			NiPoint3 ray_start = explosion->GetPosition();
-			NiPoint3 ray_direction;
-			ray_direction.x = 0.0;
-			ray_direction.y = 0.0;
-			ray_direction.z = -1.0;
-			bool success = false;
-			log::info("Casting RAY");
-			NiPoint3 new_pos = CastRay(actor, ray_start, ray_direction, meter_to_unit(1.0), success);
-			log::info("Ray CAST RAY");
-			if (success) {
-				log::info("Ray hit at: {},{},{}", new_pos.x, new_pos.y, new_pos.z);
-			} else {
-				new_pos = explosion->GetPosition()  + offset;
-				log::info("No Ray hit using position of node: {},{},{}", new_pos.x, new_pos.y, new_pos.z);
-			}
-
-			explosion->SetPosition(new_pos);
-			explosion->radius *= scale;
-			explosion->imodRadius *= scale;
-			explosion->unkB8 = nullptr;
-		}
-	}
-
-	void make_explosion_atnode(Foot kind, Actor* actor, NiAVObject* node, NiPoint3 offset, float scale) {
-		if (!actor) return;
-		if (!node) return;
-
-		BGSExplosion* base_explosion = nullptr;
-		switch (kind) {
-			case Foot::Left:
-			case Foot::Right:
-			case Foot::Front:
-			case Foot::Back:
-				base_explosion = Runtime::GetSingleton().footstepExplosion;
-			case Foot::JumpLand:
-				base_explosion = Runtime::GetSingleton().footstepExplosion;
-		}
-
-		if (base_explosion) {
-			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
-			if (!instance_ptr) return;
-			TESObjectREFR* instance = instance_ptr.get();
-			if (!instance) return;
-			Explosion* explosion = instance->AsExplosion();
-			if (!explosion) return;
-			explosion->MoveToNode(actor, node);
-			NiPoint3 new_pos = explosion->GetPosition() + offset;
-			explosion->SetPosition(new_pos);
-			explosion->radius *= scale;
-			explosion->imodRadius *= scale;
-			explosion->unkB8 = nullptr;
-		}
-	}
-
 	void make_explosion_at(Foot kind, Actor* actor, NiPoint3 position, float scale) {
 		if (!actor) return;
 
@@ -143,16 +66,21 @@ namespace Gts {
 				scale *= 1.2; // Jumping makes you sound bigger
 			}
 			for (NiAVObject* node: impact.nodes) {
-				NiPoint3 offset = NiPoint3();
-				auto temp_data = Transient::GetSingleton().GetActorData(impact.actor);
-				if (temp_data) {
-					log::info("Shiting explosion down by {} due to hh", temp_data->total_hh_adjustment);
-					offset.z -= temp_data->total_hh_adjustment;
+				// First try casting a ray
+				NiPoint3 foot_location = actor->GetPosition() + node->world.translate;
+				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05)); // Shift up a little
+				NiPoint3 ray_direction(0.0, 0.0, -1.0);
+				bool success = false;
+				NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, meter_to_unit(1.0), success);
+
+				if (!success) {
+					explosion_pos = foot_location;
+					auto temp_data = Transient::GetSingleton().GetActorData(impact.actor);
+					if (temp_data) {
+						explosion_pos.z -= temp_data->total_hh_adjustment;
+					}
 				}
-				float extra_offset = GtsManager::GetSingleton().experiment * impact.scale;
-				offset.z -= extra_offset;
-				log::info("Shiting explosion down by {} due to scale", extra_offset);
-				make_explosion_belownode(impact.kind, actor, node, offset, scale);
+				make_explosion_at(impact.kind, actor, explosion_pos, scale);
 			}
 		}
 	}

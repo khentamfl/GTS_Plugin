@@ -22,7 +22,7 @@ namespace Gts {
 	}
 
 	void RayCollector::AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) {
-		log::info("Add Ray Hit");
+		log::info("# Add Ray Hit");
 		const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
 
 		// Search for top level shape
@@ -42,21 +42,21 @@ namespace Gts {
 					auto av_node = collision_node->sceneObject;
 					if (av_node) {
 						if (is_filtered(av_node)) {
-							log::info("Filtered");
+							log::info("  - Filtered");
 							return;
 						}
 					} else {
-						log::info("No scene node");
+						log::info("  - No scene node");
 					}
 				} else {
-					log::info("Not a collision object????");
+					log::info("  - Not a collision object????");
 				}
 			} else {
-				log::info("No bhknode");
-				log::info("  - hkpShapeType: {}", static_cast<int>(shape->type));
+				log::info("  - No bhknode");
+				log::info("    - hkpShapeType: {}", static_cast<int>(shape->type));
 			}
 
-			log::info("Adding result");
+			log::info("# Ray collision success");
 			HitResult hit_result;
 			hit_result.shape = shape;
 			hit_result.fraction = a_hitInfo.hitFraction;
@@ -68,31 +68,30 @@ namespace Gts {
 		float length = unit_to_meter(unit_length);
 		success = false;
 		if (!actor) {
-			log::info("No Actor");
 			return NiPoint3();
 		}
 		auto cell = actor->GetParentCell();
+		if (!cell) return NiPoint3();
 		auto collision_world = cell->GetbhkWorld();
 		if (!collision_world) {
-			log::info("No world");
 			return NiPoint3();
 		}
-		log::info("Making ray picker");
+		log::info("# Making ray picker");
 		bhkPickData pick_data;
 
 		NiPoint3 origin = unit_to_meter(in_origin);
-		log::info("Ray Start: {},{},{}", origin.x, origin.y, origin.z);
+		log::info("  - Ray Start: {},{},{}", origin.x, origin.y, origin.z);
 		pick_data.rayInput.from = origin;
 
-		log::info("Ray direction: {},{},{}", direction.x, direction.y, direction.z);
+		log::info("  - Ray direction: {},{},{}", direction.x, direction.y, direction.z);
 		NiPoint3 normed = direction / direction.Length();
-		log::info("Normalised Ray direction: {},{},{}", normed.x, normed.y, normed.z);
+		log::info("  - Normalised Ray direction: {},{},{}", normed.x, normed.y, normed.z);
 		NiPoint3 end = origin + normed * length;
-		log::info("Ray End: {},{},{}", end.x, end.y, end.z);
+		log::info("  - Ray End: {},{},{}", end.x, end.y, end.z);
 		// pick_data.rayInput.to = end;
 
 		NiPoint3 delta = end - origin;
-		log::info("Ray Delta: {},{},{}", delta.x, delta.y, delta.z);
+		log::info("  - Ray Delta: {},{},{}", delta.x, delta.y, delta.z);
 		pick_data.ray = delta; // Length in each axis to travel
 
 		RayCollector collector = RayCollector();
@@ -102,10 +101,10 @@ namespace Gts {
 		pick_data.rayHitCollectorA8 = &collector;
 		// pick_data.rayHitCollectorB0 = &collector;
 		// pick_data.rayHitCollectorB8 = &collector;
-		log::info("Picking ray");
+		log::info("# Picking ray");
 
 		collision_world->PickObject(pick_data);
-		log::info("Ray picked");
+		log::info("# Ray picked");
 		float min_fraction = 1.0;
 		success = !collector.results.empty();
 		if (collector.results.size() > 0) {
@@ -117,7 +116,7 @@ namespace Gts {
 			}
 			return meter_to_unit(origin + normed * length * min_fraction);
 		} else {
-			log::info("No result");
+			log::info("# No ray collision");
 			return NiPoint3();
 		}
 	}
