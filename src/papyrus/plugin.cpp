@@ -20,7 +20,7 @@ namespace {
 
 	bool SetGrowthHalfLife(StaticFunctionTag*, Actor* actor, float halflife) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				actor_data->half_life = halflife;
 				return true;
@@ -31,7 +31,7 @@ namespace {
 
 	float GetGrowthHalfLife(StaticFunctionTag*, Actor* actor) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				return actor_data->half_life;
 			}
@@ -41,7 +41,7 @@ namespace {
 
 	bool SetAnimSpeed(StaticFunctionTag*, Actor* actor, float animspeed) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				actor_data->anim_speed = animspeed;
 				return true;

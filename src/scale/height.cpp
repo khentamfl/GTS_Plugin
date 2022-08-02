@@ -11,7 +11,7 @@ namespace {
 		if (!actor) {
 			return -1.0;
 		}
-		auto temp_actor_data = Transient::GetSingleton().GetActorData(actor);
+		auto temp_actor_data = Transient::GetSingleton().GetData(actor);
 		if (!temp_actor_data) {
 			return -1.0;
 		}
@@ -22,7 +22,7 @@ namespace {
 		if (!actor) {
 			return -1.0;
 		}
-		auto temp_actor_data = Transient::GetSingleton().GetActorData(actor);
+		auto temp_actor_data = Transient::GetSingleton().GetData(actor);
 		if (!temp_actor_data) {
 			return -1.0;
 		}

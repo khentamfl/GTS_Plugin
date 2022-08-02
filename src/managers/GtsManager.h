@@ -29,7 +29,6 @@ namespace Gts {
 			float experiment = 1.0;
 
 			void poll();
-			void poll_actor(Actor* actor);
 
 			void on_update();
 

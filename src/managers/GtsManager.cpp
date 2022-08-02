@@ -152,8 +152,8 @@ namespace {
 	}
 
 	void apply_actor(Actor* actor, bool force = false) {
-		auto temp_data = Transient::GetSingleton().GetActorData(actor);
-		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
+		auto temp_data = Transient::GetSingleton().GetData(actor);
+		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
 		apply_speed(actor, saved_data, temp_data, force);
 	}
@@ -220,36 +220,6 @@ void GtsManager::poll() {
 	}
 }
 
-void GtsManager::poll_actor(Actor* actor) {
-	if (!actor) {
-		return;
-	}
-	if (!actor->Is3DLoaded()) {
-		return;
-	}
-	auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-	if (!saved_data) {
-		return;
-	}
-	float scale = get_scale(actor);
-	if (scale < 0.0) {
-		return;
-	}
-	float visual_scale = saved_data->visual_scale;
-
-	// Is scale correct already?
-	if (fabs(visual_scale - scale) <= 1e-5) {
-		return;
-	}
-
-	// Is scale too small
-	if (visual_scale <= 1e-5) {
-		return;
-	}
-
-	set_scale(actor, visual_scale);
-}
-
 // Fired during the Papyrus OnUpdate event
 void GtsManager::on_update() {
 	if (!this->enabled) {
@@ -270,8 +240,8 @@ void GtsManager::on_update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		auto temp_data = Transient::GetSingleton().GetActorData(actor);
-		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
+		auto temp_data = Transient::GetSingleton().GetData(actor);
+		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_highheel(actor, temp_data, true);
 	}
 }

@@ -13,6 +13,20 @@ namespace Gts {
 		return instance;
 	}
 
+	TempActorData* Transient::GetData(TESObjectREFR* object) {
+		if (!refr) {
+			return nullptr;
+		}
+		auto key = refr->formID;
+		ActorData* result = nullptr;
+		try {
+			result = &this->_actor_data.at(key);
+		} catch (const std::out_of_range& oor) {
+			return nullptr;
+		}
+		return result;
+	}
+
 	TempActorData* Transient::GetActorData(Actor* actor) {
 		std::unique_lock lock(this->_lock);
 		if (!actor) {

@@ -78,7 +78,7 @@ namespace Gts {
 				if (!success) {
 					return;
 					explosion_pos = foot_location;
-					auto temp_data = Transient::GetSingleton().GetActorData(impact.actor);
+					auto temp_data = Transient::GetSingleton().GetData(impact.actor);
 					if (temp_data) {
 						explosion_pos.z -= temp_data->total_hh_adjustment;
 					}

@@ -34,7 +34,7 @@ namespace Hooks
 		float current_delta = *g_delta_time;
 		if (current_delta> 1e-5) {
 			if (Gts::GtsManager::GetSingleton().enabled) {
-				auto saved_data = Gts::Persistent::GetSingleton().GetActorData(a_this);
+				auto saved_data = Gts::Persistent::GetSingleton().GetData(a_this);
 				if (saved_data) {
 					float anim_speed = saved_data->anim_speed;
 					if ((anim_speed > 0.0) && (fabs(anim_speed - 1.0) > 1e-5)) {

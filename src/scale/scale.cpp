@@ -8,7 +8,7 @@ using namespace Gts;
 namespace Gts {
 	void set_target_scale(Actor* actor, float scale) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				actor_data->target_scale = scale;
 			}
@@ -17,7 +17,7 @@ namespace Gts {
 
 	float get_target_scale(Actor* actor) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				return actor_data->target_scale;
 			}
@@ -27,7 +27,7 @@ namespace Gts {
 
 	void mod_target_scale(Actor* actor, float amt) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				actor_data->target_scale += amt;
 			}
@@ -36,7 +36,7 @@ namespace Gts {
 
 	void set_max_scale(Actor* actor, float scale) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				actor_data->max_scale = scale;
 			}
@@ -45,7 +45,7 @@ namespace Gts {
 
 	float get_max_scale(Actor* actor) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				return actor_data->max_scale;
 			}
@@ -54,7 +54,7 @@ namespace Gts {
 	}
 	void mod_max_scale(Actor* actor, float amt) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				actor_data->max_scale += amt;
 			}
@@ -63,7 +63,7 @@ namespace Gts {
 
 	float get_visual_scale(Actor* actor) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				return actor_data->visual_scale;
 			}
@@ -73,7 +73,7 @@ namespace Gts {
 
 	float get_effective_scale(Actor* actor) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				return actor_data->visual_scale * actor_data->effective_multi;
 			}

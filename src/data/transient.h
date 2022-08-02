@@ -19,6 +19,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static Transient& GetSingleton() noexcept;
 
+			TempActorData* GetData(TESObjectREFR* object);
 			TempActorData* GetActorData(Actor* actor);
 
 			void Clear();
