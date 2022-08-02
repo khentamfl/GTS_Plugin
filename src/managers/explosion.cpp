@@ -69,8 +69,14 @@ namespace Gts {
 				// First try casting a ray
 				//log::info("# Foot Node: {}", node->name.c_str());
 				NiPoint3 foot_location = node->world.translate;
+
+				float hh_offset = 0.0;
+				auto temp_data = Transient::GetSingleton().GetData(actor);
+				if (temp_data) {
+					hh_offset = temp_data->total_hh_adjustment;
+				}
 				//log::info("  - Position: {},{},{}", foot_location.x, foot_location.y, foot_location.z);
-				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05)); // Shift up a little
+				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05*impact.scale - hh_offset)); // Shift up a little then subtract the hh offset
 				NiPoint3 ray_direction(0.0, 0.0, -1.0);
 				bool success = false;
 				float ray_length = meter_to_unit(std::max(1.05*impact.scale, 1.05));
