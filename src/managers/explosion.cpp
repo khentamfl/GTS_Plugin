@@ -67,7 +67,9 @@ namespace Gts {
 			}
 			for (NiAVObject* node: impact.nodes) {
 				// First try casting a ray
-				NiPoint3 foot_location = actor->GetPosition() + node->world.translate;
+				log::info("# Foot Node: {}", node->name.c_str());
+				NiPoint3 foot_location = node->world.translate;
+				log::info("  - Position: {},{},{}", foot_location.x, foot_location.y, foot_location.z);
 				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05)); // Shift up a little
 				NiPoint3 ray_direction(0.0, 0.0, -1.0);
 				bool success = false;
