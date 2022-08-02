@@ -73,7 +73,7 @@ namespace Gts {
 				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05)); // Shift up a little
 				NiPoint3 ray_direction(0.0, 0.0, -1.0);
 				bool success = false;
-				NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, meter_to_unit(1.0), success);
+				NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, meter_to_unit(1.05), success);
 
 				if (!success) {
 					explosion_pos = foot_location;
