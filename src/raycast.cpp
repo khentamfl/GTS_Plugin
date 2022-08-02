@@ -25,6 +25,15 @@ namespace Gts {
 		log::info("Add Ray Hit");
 		const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
 
+		// Search for top level shape
+		hkpCdBody* top_body = a_body->parent;
+		while (top_body) {
+			if (top_body->shape) {
+				shape = top_body->shape;
+			}
+			top_body = a_body->parent;
+		}
+
 		if (shape) {
 			auto ni_shape = shape->userData;
 			if (ni_shape) {
