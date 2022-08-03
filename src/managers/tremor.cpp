@@ -59,7 +59,7 @@ namespace Gts {
 				float power = k*pow(scale - min_shake_scale, n) * power_multi;
 
 				float intensity = power * falloff;
-				float duration_power = 0.25 * power;
+				float duration_power = 1.25 * power;
 				float duration = duration_power * falloff;
 				if (intensity > 0.05 && duration > 0.05) {
 					shake_camera(actor, intensity, duration);
