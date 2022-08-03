@@ -18,8 +18,7 @@ namespace Gts {
 		auto actor = impact.actor;
 
 		float scale = impact.effective_scale;
-		float minimal_size = 4.0;
-		if (scale > minimal_size && !actor->IsSwimming()) {
+		if (!actor->IsSwimming()) {
 			if (actor->IsSprinting()) {
 				scale *= 1.2; // Sprinting makes you sound bigger
 			} else if (actor->IsSneaking()) {
