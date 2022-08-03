@@ -54,9 +54,10 @@ namespace Gts {
 				float n = 3.0;
 				float min_shake_scale = 1.2; // Before this no shaking
 				float max_shake_scale = 20.0; // After this we have full power shaking
-				float a = min_shake_scale;
-				float k = 1.0/pow(scale - a, n);
-				float power = k*pow(scale - a, n) * power_multi;
+
+				if (scale < min_shake_scale) return;
+				float k = 1.0/pow(max_shake_scale - min_shake_scale, n);
+				float power = k*pow(scale - min_shake_scale, n) * power_multi;
 
 				float intensity = power * falloff;
 				float duration_power = 0.25 * power;

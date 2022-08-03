@@ -59,6 +59,27 @@ namespace Gts {
 		return soft_core(x, soft_potential.k, soft_potential.n, soft_potential.s, soft_potential.o);
 	}
 
+	// https://en.wikipedia.org/wiki/Smoothstep
+	inline float clamp(float lowerlimit, float upperlimit, float x) {
+		if (x < lowerlimit)
+			x = lowerlimit;
+		if (x > upperlimit)
+			x = upperlimit;
+		return x;
+	}
+	inline float smootherstep(float edge0, float edge1, float x) {
+		// Scale, and clamp x to 0..1 range
+		x = clamp(0.0, 1.0, (x - edge0) / (edge1 - edge0));
+		// Evaluate polynomial
+		return x * x * x * (x * (x * 6 - 15) + 10);
+	}
+	inline float smoothstep (float edge0, float edge1, float x) {
+		// Scale/bias into [0..1] range
+		x = clamp(0.0, 1.0, (x - edge0) / (edge1 - edge0));
+
+		return x * x * (3 - 2 * x);
+	}
+
 	inline void shake_camera(TESObjectREFR* actor, float intensity, float duration) {
 		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
 		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
