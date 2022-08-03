@@ -24,5 +24,8 @@ namespace Hooks
 
 			static float GetWalkSpeed(RE::Character* a_this);
 			static inline REL::Relocation<decltype(GetWalkSpeed)> _GetWalkSpeed;
+
+			static void ProcessTracking(RE::Character* a_this, float a_delta, NiAVObject* a_obj3D);
+			static inline REL::Relocation<decltype(ProcessTracking)> _ProcessTracking;
 	};
 }

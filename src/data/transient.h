@@ -11,14 +11,15 @@ namespace Gts {
 		float base_height;
 		float base_volume;
 		float last_hh_adjustment;
+		float total_hh_adjustment;
 		float base_walkspeedmult;
-		float headHeightOffset;
 	};
 
 	class Transient {
 		public:
 			[[nodiscard]] static Transient& GetSingleton() noexcept;
 
+			TempActorData* GetData(TESObjectREFR* object);
 			TempActorData* GetActorData(Actor* actor);
 
 			void Clear();

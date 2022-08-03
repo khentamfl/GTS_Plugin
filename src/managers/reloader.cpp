@@ -9,8 +9,8 @@ namespace Gts {
 		auto event_sources = ScriptEventSourceHolder::GetSingleton();
 		if (event_sources) {
 			event_sources->AddEventSink<TESObjectLoadedEvent>(this);
-			event_sources->AddEventSink<TESCellFullyLoadedEvent>(this);
-			event_sources->AddEventSink<TESCellAttachDetachEvent>(this);
+			// event_sources->AddEventSink<TESCellFullyLoadedEvent>(this);
+			// event_sources->AddEventSink<TESCellAttachDetachEvent>(this);
 			event_sources->AddEventSink<TESEquipEvent>(this);
 		}
 	}
@@ -44,7 +44,12 @@ namespace Gts {
 
 	BSEventNotifyControl ReloadManager::ProcessEvent(const TESEquipEvent* evn, BSTEventSource<TESEquipEvent>* dispatcher)
 	{
-		GtsManager::GetSingleton().reapply();
+		if (evn) {
+			auto* actor = TESForm::LookupByID<Actor>(evn->actor->formID);
+			if (actor) {
+				GtsManager::GetSingleton().reapply_actor(actor);
+			}
+		}
 		return BSEventNotifyControl::kContinue;
 	}
 }

@@ -6,7 +6,6 @@
 
 #include <RE/Skyrim.h>
 
-#include "scale/scale.h"
 #include "node.h"
 #include "util.h"
 
@@ -27,12 +26,14 @@ namespace Gts {
 
 			atomic_ulong frame_count = atomic_int64_t(0);
 			bool enabled = false;
+			float experiment = 1.0;
 
 			void poll();
-			void poll_actor(Actor* actor);
+
+			void on_update();
 
 			// Reapply changes (used after reload events)
-			void reapply();
-			void reapply_actor(Actor* actor);
+			void reapply(bool force = true);
+			void reapply_actor(Actor* actor, bool force = true);
 	};
 }

@@ -1,7 +1,7 @@
 #include "papyrus/plugin.h"
-#include "scale/scale.h"
 #include "data/persistent.h"
 #include "managers/GtsManager.h"
+#include "util.h"
 #include <math.h>
 #include <sstream>
 #include <iomanip>
@@ -15,21 +15,12 @@ using namespace RE::BSScript;
 namespace {
 	constexpr std::string_view PapyrusClass = "GtsPlugin";
 	float GetDistanceToCamera(StaticFunctionTag*, Actor* actor) {
-		if (actor) {
-			auto camera = PlayerCamera::GetSingleton();
-			if (camera) {
-				auto point_a = actor->GetPosition();
-				auto point_b = camera->pos;
-				auto delta = point_a - point_b;
-				return delta.Length();
-			}
-		}
-		return 3.4028237E38; // Max float
+		return get_distance_to_camera(actor);
 	}
 
 	bool SetGrowthHalfLife(StaticFunctionTag*, Actor* actor, float halflife) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				actor_data->half_life = halflife;
 				return true;
@@ -40,7 +31,7 @@ namespace {
 
 	float GetGrowthHalfLife(StaticFunctionTag*, Actor* actor) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				return actor_data->half_life;
 			}
@@ -50,7 +41,7 @@ namespace {
 
 	bool SetAnimSpeed(StaticFunctionTag*, Actor* actor, float animspeed) {
 		if (actor) {
-			auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				actor_data->anim_speed = animspeed;
 				return true;
@@ -110,6 +101,23 @@ namespace {
 	float GetSpeedParameterS(StaticFunctionTag*) {
 		return Persistent::GetSingleton().speed_adjustment.s;
 	}
+
+	bool IsJumping(StaticFunctionTag*, Actor* actor) {
+		return Gts::IsJumping(actor);
+	}
+
+	bool IsInAir(StaticFunctionTag*, Actor* actor) {
+		if (!actor) return false;
+		return actor->IsInMidair();
+	}
+
+	float GetExperimentFloat(StaticFunctionTag*) {
+		return GtsManager::GetSingleton().experiment;
+	}
+
+	void SetExperimentFloat(StaticFunctionTag*, float value) {
+		GtsManager::GetSingleton().experiment = value;
+	}
 }
 
 namespace Gts {
@@ -129,6 +137,10 @@ namespace Gts {
 		vm->RegisterFunction("GetSpeedParameterN", PapyrusClass, GetSpeedParameterN);
 		vm->RegisterFunction("SetSpeedParameterS", PapyrusClass, SetSpeedParameterS);
 		vm->RegisterFunction("GetSpeedParameterS", PapyrusClass, GetSpeedParameterS);
+		vm->RegisterFunction("IsJumping", PapyrusClass, IsJumping);
+		vm->RegisterFunction("IsInAir", PapyrusClass, IsInAir);
+		vm->RegisterFunction("GetExperimentFloat", PapyrusClass, GetExperimentFloat);
+		vm->RegisterFunction("SetExperimentFloat", PapyrusClass, SetExperimentFloat);
 
 		return true;
 	}

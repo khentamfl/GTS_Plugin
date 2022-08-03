@@ -1,127 +1,81 @@
 #include "scale/height.h"
+#include "scale/scale.h"
 #include "util.h"
 #include "managers/GtsManager.h"
-#include "data/persistent.h"
 #include "data/transient.h"
 
 using namespace Gts;
 
+namespace {
+	float height_to_scale(Actor* actor, float height) {
+		if (!actor) {
+			return -1.0;
+		}
+		auto temp_actor_data = Transient::GetSingleton().GetData(actor);
+		if (!temp_actor_data) {
+			return -1.0;
+		}
+		return height / temp_actor_data->base_height;
+	}
+
+	float scale_to_height(Actor* actor, float scale) {
+		if (!actor) {
+			return -1.0;
+		}
+		auto temp_actor_data = Transient::GetSingleton().GetData(actor);
+		if (!temp_actor_data) {
+			return -1.0;
+		}
+		return scale * temp_actor_data->base_height;
+	}
+
+}
+
 namespace Gts {
 	void set_target_height(Actor* actor, float height) {
-		if (!actor) {
-			return;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		auto temp_actor_data = Transient::GetSingleton().GetActorData(actor);
-		if (!temp_actor_data) {
-			return;
-		}
-		float scale = height / temp_actor_data->base_height;
-		if (actor_data) {
-			actor_data->target_scale = scale;
-		}
+		float scale = height_to_scale(actor, height);
+		set_target_scale(actor, scale);
 	}
 
 	float get_target_height(Actor* actor) {
-		if (!actor) {
-			return 0.0;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		auto temp_actor_data = Transient::GetSingleton().GetActorData(actor);
-		if (!temp_actor_data) {
-			return 0.0;
-		}
-		if (actor_data) {
-			float scale = actor_data->target_scale;
-			return scale * temp_actor_data->base_height;
-		}
-		return 0.0;
+		float scale = get_target_scale(actor);
+		return scale_to_height(actor, scale);
 	}
 
 	void mod_target_height(Actor* actor, float amt) {
-		if (!actor) {
-			return;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		auto temp_actor_data = Transient::GetSingleton().GetActorData(actor);
-		if (!temp_actor_data) {
-			return;
-		}
-		if (!actor_data) {
-			return;
-		}
-		float current_scale = actor_data->target_scale;
-		float current_height = current_scale * temp_actor_data->base_height;
+		float current_scale = get_target_scale(actor);
+		float current_height = scale_to_height(actor, current_scale);
 		float target_height = (current_height + amt);
-		float target_scale = target_height / temp_actor_data->base_height;
+		float target_scale = height_to_scale(actor, target_height);
 		float scale_delta = target_scale - current_scale;
-
-		actor_data->target_scale += scale_delta;
+		mod_target_scale(actor, scale_delta);
 	}
 
 	void set_max_height(Actor* actor, float height) {
-		if (!actor) {
-			return;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		auto temp_actor_data = Transient::GetSingleton().GetActorData(actor);
-		if (!temp_actor_data) {
-			return;
-		}
-		float scale = height / temp_actor_data->base_height;
-		if (actor_data) {
-			actor_data->max_scale = scale;
-		}
+		float scale = height_to_scale(actor, height);
+		set_max_scale(actor, scale);
 	}
 
 	float get_max_height(Actor* actor) {
-		if (!actor) {
-			return 0.0;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		auto temp_actor_data = Transient::GetSingleton().GetActorData(actor);
-		if (!temp_actor_data) {
-			return 0.0;
-		}
-		if (actor_data) {
-			float scale = actor_data->max_scale;
-			return scale * temp_actor_data->base_height;
-		}
-		return 0.0;
+		float scale = get_max_scale(actor);
+		return scale_to_height(actor, scale);
 	}
 	void mod_max_height(Actor* actor, float amt) {
-		if (!actor) {
-			return;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		auto temp_actor_data = Transient::GetSingleton().GetActorData(actor);
-		if (!temp_actor_data) {
-			return;
-		}
-		if (actor_data) {
-			float current_scale = actor_data->max_scale;
-			float current_height = current_scale * temp_actor_data->base_height;
-			float target_height = (current_height + amt);
-			float target_scale = target_height / temp_actor_data->base_height;
-			float scale_delta = target_scale - current_scale;
-
-			actor_data->max_scale += scale_delta;
-		}
+		float current_scale = get_max_scale(actor);
+		float current_height = scale_to_height(actor, current_scale);
+		float target_height = (current_height + amt);
+		float target_scale = height_to_scale(actor, target_height);
+		float scale_delta = target_scale - current_scale;
+		mod_max_scale(actor, scale_delta);
 	}
 
 	float get_visual_height(Actor* actor) {
-		if (!actor) {
-			return 0.0;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		auto temp_actor_data = Transient::GetSingleton().GetActorData(actor);
-		if (!temp_actor_data) {
-			return 0.0;
-		}
-		if (actor_data) {
-			float scale = actor_data->visual_scale;
-			return scale * temp_actor_data->base_height;
-		}
-		return 0.0;
+		float scale = get_visual_scale(actor);
+		return scale_to_height(actor, scale);
+	}
+
+	float get_effective_height(Actor* actor) {
+		float scale = get_effective_scale(actor);
+		return scale_to_height(actor, scale);
 	}
 }

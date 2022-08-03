@@ -4,6 +4,7 @@
 #include "papyrus/papyrus.h"
 #include "data/persistent.h"
 #include "data/transient.h"
+#include "data/runtime.h"
 #include "managers/footstep.h"
 #include "managers/reloader.h"
 
@@ -47,9 +48,7 @@ namespace {
 		{
 			log = std::make_shared <spdlog::logger>(
 				"Global", std::make_shared <spdlog::sinks::msvc_sink_mt>());
-		}
-		else
-		{
+		} else {
 			log = std::make_shared <spdlog::logger>(
 				"Global", std::make_shared <spdlog::sinks::basic_file_sink_mt>(path->string(), true));
 		}
@@ -105,6 +104,7 @@ namespace {
 						break;
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 						// It is now safe to access form data.
+						Runtime::GetSingleton().Load();
 						break;
 					// Skyrim game events.
 					case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.

@@ -1,7 +1,7 @@
 #pragma once
 // Module that holds data that is persistent across saves
 #include <SKSE/SKSE.h>
-#include "scale/scale.h"
+#include "scale/modscale.h"
 #include "util.h"
 
 using namespace std;
@@ -18,6 +18,7 @@ namespace Gts {
 		float max_scale;
 		float half_life;
 		float anim_speed;
+		float effective_multi;
 	};
 
 	class Persistent {

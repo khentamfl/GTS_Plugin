@@ -8,6 +8,7 @@ Event OnConfigInit()
     GtsPlugin.SetIsHighHeelEnabled(GetModSettingBool("bEnableHighHeels:Main"))
     GtsPlugin.SetGrowthHalfLife(PlayerRef, GetModSettingFloat("fPlayerGrowthHalfLife:Main"))
     GtsPlugin.SetIsHighHeelEnabled(GetModSettingBool("bEnableSpeedAdjustment:Main"))
+    GtsPlugin.SetExperimentFloat(GetModSettingFloat("fExperiment:Main"))
 EndEvent
 
 ; Event raised when a config menu is opened.
@@ -16,4 +17,5 @@ Event OnConfigOpen()
     SetModSettingBool("bEnableHighHeels:Main", GtsPlugin.GetIsHighHeelEnabled())
     SetModSettingFloat("fPlayerGrowthHalfLife:Main", GtsPlugin.GetGrowthHalfLife(PlayerRef))
     SetModSettingBool("bEnableSpeedAdjustment:Main", GtsPlugin.GetIsSpeedAdjusted())
+    SetModSettingFloat("fExperiment:Main", GtsPlugin.GetExperimentFloat())
 EndEvent

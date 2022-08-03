@@ -2,6 +2,7 @@
 // Misc codes
 #include <SKSE/SKSE.h>
 #include <math.h>
+#include <regex>
 
 using namespace std;
 using namespace RE;
@@ -24,9 +25,16 @@ namespace Gts {
 		return arg.compare(0, prefix.size(), prefix);
 	}
 
+	inline bool matches(std::string_view str, std::string_view reg) {
+		std::regex the_regex(std::string(reg).c_str());
+		return std::regex_match(std::string(str), the_regex);
+	}
+
 	vector<Actor*> find_actors();
-	float unit_to_meter(float unit);
-	float meter_to_unit(float meter);
+	float unit_to_meter(const float& unit);
+	float meter_to_unit(const float& meter);
+	NiPoint3 unit_to_meter(const NiPoint3& unit);
+	NiPoint3 meter_to_unit(const NiPoint3& meter);
 	void critically_damped(
 		float& x,
 		float& v,
@@ -49,5 +57,94 @@ namespace Gts {
 	}
 	inline float soft_core(float x, SoftPotential& soft_potential) {
 		return soft_core(x, soft_potential.k, soft_potential.n, soft_potential.s, soft_potential.o);
+	}
+
+	// https://en.wikipedia.org/wiki/Smoothstep
+	inline float clamp(float lowerlimit, float upperlimit, float x) {
+		if (x < lowerlimit)
+			x = lowerlimit;
+		if (x > upperlimit)
+			x = upperlimit;
+		return x;
+	}
+	inline float smootherstep(float edge0, float edge1, float x) {
+		// Scale, and clamp x to 0..1 range
+		x = clamp(0.0, 1.0, (x - edge0) / (edge1 - edge0));
+		// Evaluate polynomial
+		return x * x * x * (x * (x * 6 - 15) + 10);
+	}
+	inline float smoothstep (float edge0, float edge1, float x) {
+		// Scale/bias into [0..1] range
+		x = clamp(0.0, 1.0, (x - edge0) / (edge1 - edge0));
+
+		return x * x * (3 - 2 * x);
+	}
+
+	inline void shake_camera(TESObjectREFR* actor, float intensity, float duration) {
+		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+		if (vm) {
+			log::info("Attempting camera shake: intensity: {} duration: {}", intensity, duration);
+			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+			auto args = RE::MakeFunctionArguments(std::move(actor), std::move(intensity), std::move(duration));
+			vm->DispatchStaticCall("Game", "ShakeCamera", args, callback);
+		} else {
+			log::info("VM not avaliable");
+		}
+	}
+
+	inline void shake_controller(float left_intensity, float right_intensity, float duration) {
+		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+		if (vm) {
+			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+			auto args = RE::MakeFunctionArguments(std::move(left_intensity), std::move(right_intensity), std::move(duration));
+			vm->DispatchStaticCall("Game", "shakeController", args, callback);
+		}
+	}
+
+	inline float get_distance_to_camera(const NiPoint3& point) {
+		auto camera = PlayerCamera::GetSingleton();
+		if (camera) {
+			auto point_a = point;
+			auto point_b = camera->pos;
+			auto delta = point_a - point_b;
+			return delta.Length();
+		}
+		return 3.4028237E38; // Max float
+	}
+
+	inline float get_distance_to_camera(NiAVObject* node) {
+		if (node) {
+			return get_distance_to_camera(node->world.translate);
+		}
+		return 3.4028237E38; // Max float
+	}
+
+	inline float get_distance_to_camera(Actor* actor) {
+		if (actor) {
+			return get_distance_to_camera(actor->GetPosition());
+		}
+		return 3.4028237E38; // Max float
+	}
+
+	[[nodiscard]] std::atomic_bool& get_main_thread();
+
+	inline bool on_mainthread() {
+		return get_main_thread().load();
+	}
+
+	inline void activate_mainthread_mode() {
+		get_main_thread().store(true);
+	}
+	inline void deactivate_mainthread_mode() {
+		get_main_thread().store(false);
+	}
+
+	inline bool IsJumping(Actor* actor) {
+		if (!actor) return false;
+		bool result = false;
+		actor->GetGraphVariableBool("bInJumpState", result);
+		return result;
 	}
 }

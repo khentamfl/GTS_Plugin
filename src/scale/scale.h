@@ -7,18 +7,14 @@ using namespace RE;
 using namespace SKSE;
 
 namespace Gts {
-	enum SizeMethod {
-		ModelScale = 0,
-		RootScale = 1,
-		RefScale = 2,
-	};
+	void set_target_scale(Actor* actor, float height);
+	float get_target_scale(Actor* actor);
+	void mod_target_scale(Actor* actor, float amt);
 
-	void set_ref_scale(Actor* actor, float target_scale);
-	bool set_model_scale(Actor* actor, float target_scale);
-	bool set_npcnode_scale(Actor* actor, float target_scale);
-	float get_npcnode_scale(Actor* actor);
-	float get_model_scale(Actor* actor);
-	float get_ref_scale(Actor* actor);
-	float get_scale(Actor* actor);
-	bool set_scale(Actor* actor, float scale);
+	void set_max_scale(Actor* actor, float height);
+	float get_max_scale(Actor* actor);
+	void mod_max_scale(Actor* actor, float amt);
+
+	float get_visual_scale(Actor* actor);
+	float get_effective_scale(Actor* actor);
 }

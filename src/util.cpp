@@ -50,7 +50,7 @@ namespace Gts {
 		return result;
 	}
 
-	float unit_to_meter(float unit) {
+	float unit_to_meter(const float& unit) {
 		// Game reports that the height of a slaughterfish is 0.31861934
 		// From inspecting the bounding box of the slaughterfish and applying
 		// base actor scales the unit height is 22.300568
@@ -62,7 +62,7 @@ namespace Gts {
 		return unit / 70.0;
 	}
 
-	float meter_to_unit(float meter) {
+	float meter_to_unit(const float& meter) {
 		// Game reports that the height of a slaughterfish is 0.31861934
 		// From inspecting the bounding box of the slaughterfish and applying
 		// base actor scales the unit height is 22.300568
@@ -71,6 +71,13 @@ namespace Gts {
 		// Slaughterfish was chosen because it has scales of 1.0 (and was in my worldspace)
 		// The scaling factor of 70 also applies to actor heights (once you remove)
 		// race specific height scaling
+		return meter * 70.0;
+	}
+
+	NiPoint3 unit_to_meter(const NiPoint3& unit) {
+		return unit / 70.0;
+	}
+	NiPoint3 meter_to_unit(const NiPoint3& meter) {
 		return meter * 70.0;
 	}
 
@@ -88,5 +95,10 @@ namespace Gts {
 
 		x = eydt*(j0 + j1*dt) + x_goal;
 		v = eydt*(v - j1*y*dt);
+	}
+
+	std::atomic_bool& get_main_thread() {
+		static std::atomic_bool main_thread(false);
+		return main_thread;
 	}
 }

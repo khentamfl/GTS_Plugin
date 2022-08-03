@@ -3,7 +3,9 @@
 #include <managers/GtsManager.h>
 #include <data/persistent.h>
 #include <data/transient.h>
+#include <data/runtime.h>
 #include <managers/highheel.h>
+#include "util.h"
 #include <vector>
 #include <string>
 
@@ -13,7 +15,7 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	void smooth_height_change(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
 			return;
 		}
@@ -44,7 +46,7 @@ namespace {
 				);
 		}
 	}
-	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
 		if (!actor) {
 			return;
 		}
@@ -64,7 +66,7 @@ namespace {
 		float visual_scale = persi_actor_data->visual_scale;
 
 		// Is scale correct already?
-		if (fabs(visual_scale - scale) <= 1e-5) {
+		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
 			return;
 		}
 
@@ -73,33 +75,11 @@ namespace {
 			return;
 		}
 
-		log::info("Scale changed from {} to {}. Updating",scale, visual_scale);
+		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
-
-		for (bool person: {false, true}) {
-			NiAVObject* model = nullptr;
-			switch (Persistent::GetSingleton().size_method) {
-				case SizeMethod::ModelScale:
-				{
-					model = actor->Get3D(person);
-					break;
-				}
-				case SizeMethod::RootScale:
-				{
-					string node_name = "NPC Root [Root]";
-					model = find_node(actor, node_name, person);
-					break;
-				}
-			}
-			// We are on the main thread so we can update this now
-			if (model) {
-				NiUpdateData ctx;
-				model->UpdateWorldData(&ctx);
-			}
-		}
 	}
 
-	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
 		if (!Persistent::GetSingleton().is_speed_adjusted) {
 			return;
 		}
@@ -126,45 +106,63 @@ namespace {
 		actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / speed_mult);
 
 		// Experiement
-        if (false) {
-    		auto& rot_speed = actor->currentProcess->middleHigh->rotationSpeed;
-    		if (fabs(rot_speed.x) > 1e-5 || fabs(rot_speed.y) > 1e-5 || fabs(rot_speed.z) > 1e-5) {
-    			log::info("{} rotationSpeed: {},{},{}", actor_name(actor), rot_speed.x,rot_speed.y,rot_speed.z);
-    			actor->currentProcess->middleHigh->rotationSpeed.x *= speed_mult;
-    			actor->currentProcess->middleHigh->rotationSpeed.y *= speed_mult;
-    			actor->currentProcess->middleHigh->rotationSpeed.z *= speed_mult;
-    		}
-    		auto& animationDelta = actor->currentProcess->high->animationDelta;
-    		if (fabs(animationDelta.x) > 1e-5 || fabs(animationDelta.y) > 1e-5 || fabs(animationDelta.z) > 1e-5) {
-    			log::info("{} animationDelta: {},{},{}", actor_name(actor), animationDelta.x,animationDelta.y,animationDelta.z);
-    		}
-    		auto& animationAngleMod = actor->currentProcess->high->animationAngleMod;
-    		if (fabs(animationAngleMod.x) > 1e-5 || fabs(animationAngleMod.y) > 1e-5 || fabs(animationAngleMod.z) > 1e-5) {
-    			log::info("{} animationAngleMod: {},{},{}", actor_name(actor), animationAngleMod.x,animationAngleMod.y,animationAngleMod.z);
-    		}
-    		auto& pathingCurrentRotationSpeed = actor->currentProcess->high->pathingCurrentRotationSpeed;
-    		if (fabs(pathingCurrentRotationSpeed.x) > 1e-5 || fabs(pathingCurrentRotationSpeed.y) > 1e-5 || fabs(pathingCurrentRotationSpeed.z) > 1e-5) {
-    			log::info("{} pathingCurrentRotationSpeed: {},{},{}", actor_name(actor), pathingCurrentRotationSpeed.x,pathingCurrentRotationSpeed.y,pathingCurrentRotationSpeed.z);
-    		}
-    		auto& pathingDesiredRotationSpeed = actor->currentProcess->high->pathingDesiredRotationSpeed;
-    		if (fabs(pathingDesiredRotationSpeed.x) > 1e-5 || fabs(pathingDesiredRotationSpeed.y) > 1e-5 || fabs(pathingDesiredRotationSpeed.z) > 1e-5) {
-    			log::info("{} pathingDesiredRotationSpeed: {},{},{}", actor_name(actor), pathingDesiredRotationSpeed.x,pathingDesiredRotationSpeed.y,pathingDesiredRotationSpeed.z);
-    		}
-        }
+		if (false) {
+			auto& rot_speed = actor->currentProcess->middleHigh->rotationSpeed;
+			if (fabs(rot_speed.x) > 1e-5 || fabs(rot_speed.y) > 1e-5 || fabs(rot_speed.z) > 1e-5) {
+				log::info("{} rotationSpeed: {},{},{}", actor_name(actor), rot_speed.x,rot_speed.y,rot_speed.z);
+				actor->currentProcess->middleHigh->rotationSpeed.x *= speed_mult;
+				actor->currentProcess->middleHigh->rotationSpeed.y *= speed_mult;
+				actor->currentProcess->middleHigh->rotationSpeed.z *= speed_mult;
+			}
+			auto& animationDelta = actor->currentProcess->high->animationDelta;
+			if (fabs(animationDelta.x) > 1e-5 || fabs(animationDelta.y) > 1e-5 || fabs(animationDelta.z) > 1e-5) {
+				log::info("{} animationDelta: {},{},{}", actor_name(actor), animationDelta.x,animationDelta.y,animationDelta.z);
+			}
+			auto& animationAngleMod = actor->currentProcess->high->animationAngleMod;
+			if (fabs(animationAngleMod.x) > 1e-5 || fabs(animationAngleMod.y) > 1e-5 || fabs(animationAngleMod.z) > 1e-5) {
+				log::info("{} animationAngleMod: {},{},{}", actor_name(actor), animationAngleMod.x,animationAngleMod.y,animationAngleMod.z);
+			}
+			auto& pathingCurrentRotationSpeed = actor->currentProcess->high->pathingCurrentRotationSpeed;
+			if (fabs(pathingCurrentRotationSpeed.x) > 1e-5 || fabs(pathingCurrentRotationSpeed.y) > 1e-5 || fabs(pathingCurrentRotationSpeed.z) > 1e-5) {
+				log::info("{} pathingCurrentRotationSpeed: {},{},{}", actor_name(actor), pathingCurrentRotationSpeed.x,pathingCurrentRotationSpeed.y,pathingCurrentRotationSpeed.z);
+			}
+			auto& pathingDesiredRotationSpeed = actor->currentProcess->high->pathingDesiredRotationSpeed;
+			if (fabs(pathingDesiredRotationSpeed.x) > 1e-5 || fabs(pathingDesiredRotationSpeed.y) > 1e-5 || fabs(pathingDesiredRotationSpeed.z) > 1e-5) {
+				log::info("{} pathingDesiredRotationSpeed: {},{},{}", actor_name(actor), pathingDesiredRotationSpeed.x,pathingDesiredRotationSpeed.y,pathingDesiredRotationSpeed.z);
+			}
+		}
 	}
 
-	void apply_actor(Actor* actor) {
-		auto temp_data = Transient::GetSingleton().GetActorData(actor);
-		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-		apply_height(actor, saved_data, temp_data);
-		apply_highheel(actor, temp_data);
-		apply_speed(actor, saved_data, temp_data);
+	void update_effective_multi(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+		if (!actor) {
+			return;
+		}
+		if (!persi_actor_data) {
+			return;
+		}
+		auto small_massive_threat = Runtime::GetSingleton().smallMassiveThreat;
+		if (!small_massive_threat) {
+			return;
+		}
+		if (actor->HasMagicEffect(small_massive_threat)) {
+			persi_actor_data->effective_multi = 4.0;
+		} else {
+			persi_actor_data->effective_multi = 1.0;
+		}
+	}
+
+	void apply_actor(Actor* actor, bool force = false) {
+		auto temp_data = Transient::GetSingleton().GetData(actor);
+		auto saved_data = Persistent::GetSingleton().GetData(actor);
+		apply_height(actor, saved_data, temp_data, force);
+		apply_speed(actor, saved_data, temp_data, force);
 	}
 
 	void update_actor(Actor* actor) {
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-		smooth_height_change(actor, saved_data, temp_data);
+		update_effective_multi(actor, saved_data, temp_data);
+		update_height(actor, saved_data, temp_data);
 	}
 }
 
@@ -222,37 +220,33 @@ void GtsManager::poll() {
 	}
 }
 
-void GtsManager::poll_actor(Actor* actor) {
-	if (!actor) {
+// Fired during the Papyrus OnUpdate event
+void GtsManager::on_update() {
+	if (!this->enabled) {
 		return;
 	}
-	if (!actor->Is3DLoaded()) {
+	auto player_char = RE::PlayerCharacter::GetSingleton();
+	if (!player_char) {
 		return;
 	}
-	auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-	if (!saved_data) {
+	if (!player_char->Is3DLoaded()) {
 		return;
 	}
-	float scale = get_scale(actor);
-	if (scale < 0.0) {
-		return;
+	auto actors = find_actors();
+	for (auto actor: actors) {
+		if (!actor) {
+			continue;
+		}
+		if (!actor->Is3DLoaded()) {
+			continue;
+		}
+		auto temp_data = Transient::GetSingleton().GetData(actor);
+		auto saved_data = Persistent::GetSingleton().GetData(actor);
+		apply_highheel(actor, temp_data, true);
 	}
-	float visual_scale = saved_data->visual_scale;
-
-	// Is scale correct already?
-	if (fabs(visual_scale - scale) <= 1e-5) {
-		return;
-	}
-
-	// Is scale too small
-	if (visual_scale <= 1e-5) {
-		return;
-	}
-
-	set_scale(actor, visual_scale);
 }
 
-void GtsManager::reapply() {
+void GtsManager::reapply(bool force) {
 	// Get everyone in loaded AI data and reapply
 	auto actors = find_actors();
 	for (auto actor: actors) {
@@ -262,10 +256,10 @@ void GtsManager::reapply() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		reapply_actor(actor);
+		reapply_actor(actor, force);
 	}
 }
-void GtsManager::reapply_actor(Actor* actor) {
+void GtsManager::reapply_actor(Actor* actor, bool force) {
 	// Reapply just this actor
 	if (!actor) {
 		return;
@@ -273,5 +267,5 @@ void GtsManager::reapply_actor(Actor* actor) {
 	if (!actor->Is3DLoaded()) {
 		return;
 	}
-	apply_actor(actor);
+	apply_actor(actor, force);
 }

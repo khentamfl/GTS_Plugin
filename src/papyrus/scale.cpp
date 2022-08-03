@@ -1,5 +1,6 @@
 #include "papyrus/scale.h"
 #include "scale/scale.h"
+#include "scale/modscale.h"
 #include "data/persistent.h"
 #include "managers/GtsManager.h"
 
@@ -15,7 +16,7 @@ namespace {
 	// Model Scale
 	bool SetModelScale(StaticFunctionTag*, Actor* actor, float scale) {
 		bool result = false;
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
 			result = set_model_scale(actor, scale);
 			actor_data->visual_scale = scale;
@@ -33,7 +34,7 @@ namespace {
 	}
 	bool ModModelScale(StaticFunctionTag*, Actor* actor, float amt) {
 		bool result = false;
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
 			auto scale = get_model_scale(actor) + amt;
 			result = set_model_scale(actor, scale);
@@ -47,7 +48,7 @@ namespace {
 	// Node Scale
 	bool SetNodeScale(StaticFunctionTag*, Actor* actor, float scale) {
 		bool result = false;
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
 			result = set_npcnode_scale(actor, scale);
 			actor_data->visual_scale = scale;
@@ -65,7 +66,7 @@ namespace {
 	}
 	bool ModNodeScale(StaticFunctionTag*, Actor* actor, float amt) {
 		bool result = false;
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
 			auto scale = get_npcnode_scale(actor) + amt;
 			result = set_npcnode_scale(actor, scale);
@@ -79,7 +80,7 @@ namespace {
 	// Ref scale
 	bool SetRefScale(StaticFunctionTag*, Actor* actor, float scale) {
 		bool result = false;
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
 			set_ref_scale(actor, scale);
 			result = true; // Ref scale cannot fail
@@ -98,7 +99,7 @@ namespace {
 	}
 	bool ModRefScale(StaticFunctionTag*, Actor* actor, float amt) {
 		bool result = false;
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
 			auto scale = get_ref_scale(actor) + amt;
 			set_ref_scale(actor, scale);
@@ -141,7 +142,7 @@ namespace {
 	}
 	bool SetScale(StaticFunctionTag*, Actor* actor, float scale) {
 		bool result = false;
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
 			result = set_scale(actor, scale);
 			actor_data->visual_scale = scale;
@@ -159,7 +160,7 @@ namespace {
 	}
 	bool ModScale(StaticFunctionTag*, Actor* actor, float amt) {
 		bool result = false;
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
+		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
 			auto scale = get_scale(actor) + amt;
 			result = set_scale(actor, scale);
@@ -172,76 +173,31 @@ namespace {
 
 	// Target Scales
 	void SetTargetScale(StaticFunctionTag*, Actor* actor, float scale) {
-		if (!actor) {
-			return;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		if (actor_data) {
-			actor_data->target_scale = scale;
-		}
+		set_target_scale(actor, scale);
 	}
 
 	float GetTargetScale(StaticFunctionTag*, Actor* actor) {
-		if (!actor) {
-			return 0.0;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		if (actor_data) {
-			return actor_data->target_scale;
-		}
-		return 0.0;
+		return get_target_scale(actor);
 	}
 
 	void ModTargetScale(StaticFunctionTag*, Actor* actor, float amt) {
-		if (!actor) {
-			return;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		if (actor_data) {
-			actor_data->target_scale += amt;
-		}
+		mod_target_scale(actor, amt);
 	}
 
 	void SetMaxScale(StaticFunctionTag*, Actor* actor, float scale) {
-		if (!actor) {
-			return;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		if (actor_data) {
-			actor_data->max_scale = scale;
-		}
+		set_max_scale(actor, scale);
 	}
 
 	float GetMaxScale(StaticFunctionTag*, Actor* actor) {
-		if (!actor) {
-			return 0.0;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		if (actor_data) {
-			return actor_data->max_scale;
-		}
-		return 0.0;
+		return get_max_scale(actor);
 	}
 
 	void ModMaxScale(StaticFunctionTag*, Actor* actor, float amt) {
-		if (!actor) {
-			return;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		if (actor_data) {
-			actor_data->max_scale += amt;
-		}
+		mod_max_scale(actor, amt);
 	}
 
 	float GetVisualScale(StaticFunctionTag*, Actor* actor) {
-		if (!actor) {
-			return 0.0;
-		}
-		auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-		if (actor_data) {
-			return actor_data->visual_scale;
-		}
-		return 0.0;
+		return get_visual_scale(actor);
 	}
 
 	void ModTeammateScale(StaticFunctionTag*, float amt) {
@@ -253,10 +209,7 @@ namespace {
 				continue;
 			}
 			if (actor->IsPlayerTeammate()) {
-				auto actor_data = Persistent::GetSingleton().GetActorData(actor);
-				if (actor_data) {
-					actor_data->target_scale += amt;
-				}
+				mod_target_scale(actor, amt);
 			}
 		}
 	}

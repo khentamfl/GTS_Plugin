@@ -24,7 +24,7 @@ namespace Hooks
 	void Hook_Player::UpdateAnimation(RE::PlayerCharacter* a_this, float a_delta) {
 		float anim_speed = 1.0;
 		if (Gts::GtsManager::GetSingleton().enabled) {
-			auto saved_data = Gts::Persistent::GetSingleton().GetActorData(a_this);
+			auto saved_data = Gts::Persistent::GetSingleton().GetData(a_this);
 			if (saved_data) {
 				if (saved_data->anim_speed > 0.0) {
 					anim_speed = saved_data->anim_speed;
@@ -36,25 +36,21 @@ namespace Hooks
 
 	float Hook_Player::GetRunSpeed(RE::Character* a_this) {
 		float value = _GetRunSpeed(a_this);
-		log::info("{} GetRunSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 
 	float Hook_Player::GetJogSpeed(RE::Character* a_this) {
 		float value = _GetJogSpeed(a_this);
-		log::info("{} GetJogSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 
 	float Hook_Player::GetFastWalkSpeed(RE::Character* a_this) {
 		float value = _GetFastWalkSpeed(a_this);
-		log::info("{} GetFastWalkSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 
 	float Hook_Player::GetWalkSpeed(RE::Character* a_this) {
 		float value = _GetWalkSpeed(a_this);
-		log::info("{} GetWalkSpeed {}", actor_name(a_this), value);
 		return value;
 	}
 }

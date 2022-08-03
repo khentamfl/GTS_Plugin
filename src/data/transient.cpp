@@ -1,7 +1,7 @@
 #include "data/transient.h"
 #include "node.h"
 #include "util.h"
-#include "scale/scale.h"
+#include "scale/modscale.h"
 
 using namespace SKSE;
 using namespace RE;
@@ -13,7 +13,22 @@ namespace Gts {
 		return instance;
 	}
 
+	TempActorData* Transient::GetData(TESObjectREFR* object) {
+		if (!object) {
+			return nullptr;
+		}
+		auto key = object->formID;
+		TempActorData* result = nullptr;
+		try {
+			result = &this->_actor_data.at(key);
+		} catch (const std::out_of_range& oor) {
+			return nullptr;
+		}
+		return result;
+	}
+
 	TempActorData* Transient::GetActorData(Actor* actor) {
+		std::unique_lock lock(this->_lock);
 		if (!actor) {
 			return nullptr;
 		}
@@ -47,10 +62,9 @@ namespace Gts {
 			result.base_height = base_height_meters;
 			result.base_volume = base_volume_meters;
 			result.last_hh_adjustment = 0.0;
+			result.total_hh_adjustment = 0.0;
 			result.base_walkspeedmult = actor->GetActorValue(ActorValue::kSpeedMult);
-			result.headHeightOffset = actor->currentProcess->middleHigh->headHeightOffset;
-			log::info("{} headHeightOffset: {}", actor_name(actor), result.headHeightOffset);
-			this->_actor_data[key] = result;
+			this->_actor_data.try_emplace(key, result);
 		}
 		return &this->_actor_data[key];
 	}

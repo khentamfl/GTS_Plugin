@@ -1,110 +1,134 @@
 {
   "modName": "GtsSizeMatters",
   "displayName": "Size Matters",
+  "cursorFillMode": "topToBottom",
   "minMcmVersion": 9,
-  "pages": [{
-    "pageDisplayName": "Main Page",
-    "content": [{
-        "text": "Key Binds",
-        "type": "header"
-      },
-      {
-        "id": "grow_player_hk",
-        "text": "Grow Player",
-        "type": "keymap",
-        "help": "Grows the player using the plugin."
-      },
-      {
-        "id": "shrink_player_hk",
-        "text": "Shrink Player",
-        "type": "keymap",
-        "help": "Shrinks the player using the plugin."
-      },
-      {
-        "id": "grow_follower_hk",
-        "text": "Grow Followers",
-        "type": "keymap",
-        "help": "Grows all followers using the plugin."
-      },
-      {
-        "id": "shrink_follower_hk",
-        "text": "Shrink Followers",
-        "type": "keymap",
-        "help": "Shrinks all followers using the plugin."
-      },
-      {
-        "text": "Options",
-        "type": "header"
-      },
-      {
-        "id": "iScaleMethod:Main",
-        "text": "Set Scale Method",
-        "type": "enum",
-        "help": "The method used for adjusting scales.",
-        "valueOptions": {
-          "options": ["Model", "NPC Root Node", "Ref Scale"],
-          "shortNames": ["Model", "NPC", "Ref"],
-          "sourceType": "ModSettingInt"
+  "pages": [
+    {
+      "pageDisplayName": "Main Page",
+      "content": [
+        {
+          "text": "Key Binds",
+          "type": "header"
         },
-        "action": {
-          "type": "CallGlobalFunction",
-          "script": "GtsScale",
-          "function": "SetScaleMethod",
-          "params": ["{value}"]
-        }
-      },
-      {
-        "id": "bEnableHighHeels:Main",
-        "text": "Enable High Heel Correction",
-        "valueOptions": {
-          "sourceType": "ModSettingBool"
+        {
+          "id": "grow_player_hk",
+          "text": "Grow Player",
+          "type": "keymap",
+          "help": "Grows the player using the plugin."
         },
-        "type": "toggle",
-        "action": {
-          "type": "CallGlobalFunction",
-          "script": "GtsPlugin",
-          "function": "SetIsHighHeelEnabled",
-          "params": ["{value}"]
-        }
-      },
-      {
-        "id": "bEnableSpeedAdjustment:Main",
-        "text": "Enable Anim and Walk Speed Adjustments",
-        "valueOptions": {
-          "sourceType": "ModSettingBool"
+        {
+          "id": "shrink_player_hk",
+          "text": "Shrink Player",
+          "type": "keymap",
+          "help": "Shrinks the player using the plugin."
         },
-        "type": "toggle",
-        "action": {
-          "type": "CallGlobalFunction",
-          "script": "GtsPlugin",
-          "function": "SetIsSpeedAdjusted",
-          "params": ["{value}"]
-        }
-      },
-      {
-        "text": "Experiments",
-        "type": "header"
-      },
-      {
-        "id": "fPlayerGrowthHalfLife:Main",
-        "text": "Player Growth Half Life",
-        "type": "slider",
-        "help": "The half life of the player's growth",
-        "valueOptions": {
-          "min": 0.0,
-          "max": 2.0,
-          "step": 0.01,
-          "formatString": "{2}",
-          "sourceType": "ModSettingFloat"
+        {
+          "id": "grow_follower_hk",
+          "text": "Grow Followers",
+          "type": "keymap",
+          "help": "Grows all followers using the plugin."
         },
-        "action": {
-          "type": "CallFunction",
-          "form": "GtsSizeMatters.esp|5900",
-          "scriptName": "GtsSM_HotKeys",
-          "function": "PlayerGrowthHalfLife",
-          "params": ["{value}"]
+        {
+          "id": "shrink_follower_hk",
+          "text": "Shrink Followers",
+          "type": "keymap",
+          "help": "Shrinks all followers using the plugin."
+        },
+        {
+          "text": "Options",
+          "type": "header"
+        },
+        {
+          "id": "iScaleMethod:Main",
+          "text": "Set Scale Method",
+          "type": "enum",
+          "help": "The method used for adjusting scales.",
+          "valueOptions": {
+            "options": ["Model", "NPC Root Node", "Ref Scale"],
+            "shortNames": ["Model", "NPC", "Ref"],
+            "sourceType": "ModSettingInt"
+          },
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "GtsScale",
+            "function": "SetScaleMethod",
+            "params": ["{value}"]
+          }
+        },
+        {
+          "id": "bEnableHighHeels:Main",
+          "text": "Enable High Heel Correction",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          },
+          "type": "toggle",
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "GtsPlugin",
+            "function": "SetIsHighHeelEnabled",
+            "params": ["{value}"]
+          }
+        },
+        {
+          "id": "bEnableSpeedAdjustment:Main",
+          "text": "Enable Anim and Walk Speed Adjustments",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          },
+          "type": "toggle",
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "GtsPlugin",
+            "function": "SetIsSpeedAdjusted",
+            "params": ["{value}"]
+          }
+        },
+        {
+          "text": "Experiments",
+          "type": "header"
+        },
+        {
+          "id": "fPlayerGrowthHalfLife:Main",
+          "text": "Player Growth Half Life",
+          "type": "slider",
+          "help": "The half life of the player's growth",
+          "valueOptions": {
+            "min": 0.0,
+            "max": 2.0,
+            "step": 0.01,
+            "formatString": "{2}",
+            "sourceType": "ModSettingFloat"
+          },
+          "action": {
+            "type": "CallFunction",
+            "form": "GtsSizeMatters.esp|5900",
+            "scriptName": "GtsSM_HotKeys",
+            "function": "PlayerGrowthHalfLife",
+            "params": ["{value}"]
+          }
+        },
+        {
+          "id": "fExperiment:Main",
+          "text": "Experiment",
+          "type": "slider",
+          "help": "An experiment value",
+          "valueOptions": {
+            "min": -50.0,
+            "max": 50.0,
+            "step": 0.01,
+            "formatString": "{2}",
+            "sourceType": "ModSettingFloat"
+          },
+          "action": {
+            "type": "CallFunction",
+            "form": "GtsSizeMatters.esp|5900",
+            "scriptName": "GtsSM_HotKeys",
+            "function": "Experiment",
+            "params": ["{value}"]
+          }
         }
-      }
-    ]
-  }]
+      ]
+    }
+  ]
 }

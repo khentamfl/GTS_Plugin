@@ -1,6 +1,6 @@
 #include "data/persistent.h"
 #include "managers/GtsManager.h"
-#include "scale/scale.h"
+#include "scale/modscale.h"
 
 using namespace SKSE;
 using namespace RE;
@@ -43,26 +43,64 @@ namespace Gts {
 						}
 						float native_scale;
 						serde->ReadRecordData(&native_scale, sizeof(native_scale));
+						if (std::isnan(native_scale)) {
+							native_scale = 1.0;
+						}
+
 						float visual_scale;
 						serde->ReadRecordData(&visual_scale, sizeof(visual_scale));
+						if (std::isnan(visual_scale)) {
+							visual_scale = 1.0;
+						}
+
 						float visual_scale_v;
 						serde->ReadRecordData(&visual_scale_v, sizeof(visual_scale_v));
+						if (std::isnan(visual_scale_v)) {
+							visual_scale_v = 0.0;
+						}
+
 						float target_scale;
 						serde->ReadRecordData(&target_scale, sizeof(target_scale));
+						if (std::isnan(target_scale)) {
+							target_scale = 1.0;
+						}
+
 						float max_scale;
 						serde->ReadRecordData(&max_scale, sizeof(max_scale));
+						if (std::isnan(max_scale)) {
+							max_scale = 1.0;
+						}
+
 						float half_life;
 						if (version >= 2) {
 							serde->ReadRecordData(&half_life, sizeof(half_life));
 						} else {
 							half_life = 0.05;
 						}
+						if (std::isnan(half_life)) {
+							half_life = 0.05;
+						}
+
 						float anim_speed;
 						if (version >= 3) {
 							serde->ReadRecordData(&anim_speed, sizeof(anim_speed));
 						} else {
 							anim_speed = 1.0;
 						}
+						if (std::isnan(anim_speed)) {
+							anim_speed = 1.0;
+						}
+
+						float effective_multi;
+						if (version >= 4) {
+							serde->ReadRecordData(&effective_multi, sizeof(effective_multi));
+						} else {
+							effective_multi = 1.0;
+						}
+						if (std::isnan(effective_multi)) {
+							effective_multi = 1.0;
+						}
+
 						ActorData data;
 						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed);
 						data.native_scale = native_scale;
@@ -72,6 +110,7 @@ namespace Gts {
 						data.max_scale = max_scale;
 						data.half_life = half_life;
 						data.anim_speed = anim_speed;
+						data.effective_multi = effective_multi;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
@@ -132,7 +171,7 @@ namespace Gts {
 	void Persistent::OnGameSaved(SerializationInterface* serde) {
 		std::unique_lock lock(GetSingleton()._lock);
 
-		if (!serde->OpenRecord(ActorDataRecord, 3)) {
+		if (!serde->OpenRecord(ActorDataRecord, 4)) {
 			log::error("Unable to open actor data record to write cosave data.");
 			return;
 		}
@@ -148,7 +187,8 @@ namespace Gts {
 			float max_scale = data.max_scale;
 			float half_life = data.half_life;
 			float anim_speed = data.anim_speed;
-			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed);
+			float effective_multi = data.effective_multi;
+			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
 			serde->WriteRecordData(&visual_scale, sizeof(visual_scale));
@@ -157,6 +197,7 @@ namespace Gts {
 			serde->WriteRecordData(&max_scale, sizeof(max_scale));
 			serde->WriteRecordData(&half_life, sizeof(half_life));
 			serde->WriteRecordData(&anim_speed, sizeof(anim_speed));
+			serde->WriteRecordData(&effective_multi, sizeof(effective_multi));
 		}
 
 		if (!serde->OpenRecord(ScaleMethodRecord, 0)) {
@@ -192,6 +233,7 @@ namespace Gts {
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
+		std::unique_lock lock(this->_lock);
 		if (!actor) {
 			return nullptr;
 		}
@@ -219,7 +261,7 @@ namespace Gts {
 			new_data.max_scale = 65535.0;
 			new_data.half_life = 0.05;
 			new_data.anim_speed = 1.0;
-			this->_actor_data[key] = new_data;
+			this->_actor_data.try_emplace(key, new_data);
 			result = &this->_actor_data.at(key);
 		}
 		return result;

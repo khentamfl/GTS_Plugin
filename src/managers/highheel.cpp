@@ -1,6 +1,5 @@
 #include "managers/highheel.h"
 #include "node.h"
-#include "scale/scale.h"
 #include "managers/GtsManager.h"
 #include "data/persistent.h"
 #include "data/transient.h"
@@ -22,7 +21,7 @@ namespace {
 }
 
 namespace Gts {
-	void apply_highheel(Actor* actor, TempActorData* temp_data) {
+	void apply_highheel(Actor* actor, TempActorData* temp_data, bool force) {
 		if (!actor) {
 			return;
 		}
@@ -31,6 +30,7 @@ namespace Gts {
 		}
 
 		float new_hh = 0.0;
+		float base_hh;
 		float last_hh_adjustment = temp_data->last_hh_adjustment;
 		if (!Persistent::GetSingleton().highheel_correction) {
 			if (fabs(last_hh_adjustment) > 1e-5) {
@@ -59,7 +59,7 @@ namespace Gts {
 				return;
 			}
 
-			float base_hh = npc_node->local.translate.z;
+			base_hh = npc_node->local.translate.z;
 			float scale = root_node->local.scale;
 			new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale);
 		}
@@ -69,16 +69,16 @@ namespace Gts {
 			auto npc_root_node = find_node(actor, "CME Body [Body]", person);
 			if (npc_root_node) {
 				float current_value = npc_root_node->local.translate.z;
-				if ((fabs(last_hh_adjustment - new_hh) > 1e-5) || (fabs(current_value - new_hh) > 1e-5)) {
+				if ((fabs(last_hh_adjustment - new_hh) > 1e-5) || (fabs(current_value - new_hh) > 1e-5) || force) {
 					npc_root_node->local.translate.z = new_hh;
-					NiUpdateData ctx;
-					npc_root_node->UpdateWorldData(&ctx);
+					update_node(npc_root_node);
 					adjusted = true;
 				}
 			}
 		}
 		if (adjusted) {
 			temp_data->last_hh_adjustment = new_hh;
+			temp_data->total_hh_adjustment = new_hh + base_hh;
 		}
 	}
 }
