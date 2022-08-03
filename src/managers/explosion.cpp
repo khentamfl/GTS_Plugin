@@ -67,7 +67,6 @@ namespace Gts {
 			}
 			for (NiAVObject* node: impact.nodes) {
 				// First try casting a ray
-				//log::info("# Foot Node: {}", node->name.c_str());
 				NiPoint3 foot_location = node->world.translate;
 
 				float hh_offset = 0.0;
@@ -75,7 +74,6 @@ namespace Gts {
 				if (temp_data) {
 					hh_offset = temp_data->total_hh_adjustment;
 				}
-				//log::info("  - Position: {},{},{}", foot_location.x, foot_location.y, foot_location.z);
 				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05*impact.scale - hh_offset)); // Shift up a little then subtract the hh offset
 				NiPoint3 ray_direction(0.0, 0.0, -1.0);
 				bool success = false;
