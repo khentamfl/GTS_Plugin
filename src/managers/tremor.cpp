@@ -7,6 +7,13 @@ using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
+namespace {
+	enum Formula {
+		Power,
+		Smooth,
+	};
+}
+
 namespace Gts {
 	TremorManager& TremorManager::GetSingleton() noexcept {
 		static TremorManager instance;
@@ -55,8 +62,21 @@ namespace Gts {
 				float max_shake_scale = 20.0; // After this we have full power shaking
 
 				if (scale < min_shake_scale) return;
-				float k = 1.0/pow(max_shake_scale - min_shake_scale, n);
-				float power = k*pow(scale - min_shake_scale, n) * power_multi;
+				float power = 0.0;
+
+				Formula formula = Formula::Smooth;
+				switch (formula) {
+					case Formula::Power:
+					{
+						float k = 1.0/pow(max_shake_scale - min_shake_scale, n);
+						power = k*pow(scale - min_shake_scale, n) * power_multi;
+					}
+					case Formula::Smooth:
+					{
+						power = smootherstep(min_shake_scale, max_shake_scale, scale);
+					}
+				}
+
 
 				float intensity = power * falloff;
 				float duration_power = 1.25 * power;
