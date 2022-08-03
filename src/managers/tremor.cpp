@@ -62,7 +62,7 @@ namespace Gts {
 				float duration_power = 0.25 * power;
 				float duration = duration_power * falloff;
 				if (intensity > 0.05 && duration > 0.05) {
-					this->shake_camera(actor, intensity, duration);
+					shake_camera(actor, intensity, duration);
 
 					float left_shake = intensity;
 					float right_shake = intensity;
@@ -78,48 +78,9 @@ namespace Gts {
 								break;
 						}
 					}
-					this->shake_controller(left_shake, right_shake, duration);
+					shake_controller(left_shake, right_shake, duration);
 				}
 			}
 		}
 	}
-
-
-	void TremorManager::Process() {
-		std::unique_lock lock(this->_lock);
-		if (this->camera_tremor.process.exchange(false)) {
-			Gts::shake_camera(this->camera_tremor.actor, this->camera_tremor.intensity, this->camera_tremor.duration);
-		}
-		if (this->controller_tremor.process.exchange(false)) {
-			Gts::shake_controller(this->controller_tremor.intensity_l, this->controller_tremor.intensity_r, this->controller_tremor.duration);
-		}
-	}
-
-	void TremorManager::shake_camera(Actor* actor, float intensity, float duration) {
-		std::unique_lock lock(this->_lock);
-		if (this->camera_tremor.process.load()) {
-			intensity = std::max(this->camera_tremor.intensity, intensity);
-			duration = std::max(this->camera_tremor.duration, duration);
-			if (get_distance_to_camera(actor) > get_distance_to_camera(this->camera_tremor.actor)) {
-				actor = this->camera_tremor.actor;
-			}
-		}
-		this->camera_tremor.process.store(true);
-		this->camera_tremor.intensity = intensity;
-		this->camera_tremor.duration = duration;
-		this->camera_tremor.actor = actor;
-	}
-	void TremorManager::shake_controller(float intensity_l, float intensity_r, float duration) {
-		std::unique_lock lock(this->_lock);
-		if (this->controller_tremor.process.load()) {
-			intensity_l = std::max(this->controller_tremor.intensity_l, intensity_l);
-			intensity_r = std::max(this->controller_tremor.intensity_r, intensity_r);
-			duration = std::max(this->controller_tremor.duration, duration);
-		}
-		this->controller_tremor.process.store(true);
-		this->controller_tremor.intensity_l = intensity_l;
-		this->controller_tremor.intensity_r = intensity_r;
-		this->controller_tremor.duration = duration;
-	}
-
 }

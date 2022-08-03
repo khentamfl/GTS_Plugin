@@ -1,6 +1,5 @@
 #include "hooks/vm.h"
 #include "managers/GtsManager.h"
-#include "managers/tremor.h"
 
 using namespace RE;
 using namespace RE::BSScript;
@@ -21,7 +20,6 @@ namespace Hooks
 		std::string event_name = a_eventName.c_str();
 		if (event_name == "OnUpdate") {
 			GtsManager::GetSingleton().on_update();
-			TremorManager::GetSingleton().Process();
 		}
 	}
 }
