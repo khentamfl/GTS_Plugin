@@ -3,12 +3,6 @@
 
 using namespace Gts;
 using namespace RE;
-using namespace REL;
-
-namespace {
-	typedef NiAVObject* (*thkpCdBody_GetUserData)(hkpCdBody* a_this);
-	static Relocation<thkpCdBody_GetUserData> getUserData{ RELOCATION_ID(76160, 77988) };
-}
 
 namespace Gts {
 
@@ -21,6 +15,7 @@ namespace Gts {
 				return true;
 			}
 		}
+		return false;
 	}
 	bool RayCollector::is_filtered_av(NiAVObject* obj) {
 		while (obj) {
@@ -67,13 +62,6 @@ namespace Gts {
 					if (is_filtered_av(ni_node)) {
 						return;
 					}
-				}
-			}
-
-			auto av_node = getUserData(&top_body);
-			if (ni_av) {
-				if (is_filtered_av(av_node)) {
-					return;
 				}
 			}
 
