@@ -52,7 +52,7 @@ namespace Gts {
 		auto actor = impact.actor;
 
 		float scale = impact.effective_scale;
-		float minimal_size = 4.0;
+		float minimal_size = 3.0;
 		if (scale > minimal_size && !actor->IsSwimming()) {
 			if (actor->IsSprinting()) {
 				scale *= 1.2; // Sprinting makes you seem bigger
