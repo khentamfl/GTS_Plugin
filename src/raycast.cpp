@@ -3,20 +3,32 @@
 
 using namespace Gts;
 using namespace RE;
+using namespace REL;
+
+namespace {
+	typedef NiAVObject* (*thkpCdBody_GetUserData)(hkpCdBody* a_this);
+	static Relocation<thkpCdBody_GetUserData> getUserData{ RELOCATION_ID(76160, 77988) };
+}
 
 namespace Gts {
 
-	void RayCollector::add_filter(NiAVObject* obj) noexcept {
+	void RayCollector::add_filter(NiObject* obj) noexcept {
 		object_filter.push_back(obj);
 	}
-	bool RayCollector::is_filtered(NiAVObject* obj) {
-		while (obj) {
-			for (auto object: this->object_filter) {
-				if (obj == object) {
-					return true;
-				}
+	bool RayCollector::is_filtered(NiObject* obj) {
+		for (auto object: this->object_filter) {
+			if (obj == object) {
+				return true;
 			}
-			obj = obj->parent;
+		}
+	}
+	bool RayCollector::is_filtered_av(NiAVObject* obj) {
+		while (obj) {
+			if (!is_filtered(obj)) {
+				obj = obj->parent;
+			} else {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -36,14 +48,32 @@ namespace Gts {
 		if (shape) {
 			auto ni_shape = shape->userData;
 			if (ni_shape) {
+				if (is_filtered(ni_shape)) {
+					return;
+				}
+
 				auto collision_node = ni_shape->AsBhkNiCollisionObject();
 				if (collision_node) {
 					auto av_node = collision_node->sceneObject;
 					if (av_node) {
-						if (is_filtered(av_node)) {
+						if (is_filtered_av(av_node)) {
 							return;
 						}
 					}
+				}
+
+				auto ni_node = ni_shape->AsNiNode();
+				if (ni_node) {
+					if (is_filtered_av(ni_node)) {
+						return;
+					}
+				}
+			}
+
+			auto av_node = getUserData(top_body);
+			if (ni_av) {
+				if (is_filtered_av(av_node)) {
+					return;
 				}
 			}
 
