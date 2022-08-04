@@ -27,7 +27,7 @@ namespace Gts {
 		auto actor = impact.actor;
 
 		float tremor_scale;
-		if (actor.formID == 0x14) {
+		if (actor->formID == 0x14) {
 			tremor_scale = Persistent::GetSingleton().tremor_scale;
 		} else {
 			tremor_scale = Persistent::GetSingleton().npc_tremor_scale;
@@ -65,10 +65,26 @@ namespace Gts {
 						return;
 						break;
 				}
-				float distance_to_camera = unit_to_meter(get_distance_to_camera(node));
+				float distance = 0.0;
+				if (actor->formID == 0x14) {
+					distance = unit_to_meter(get_distance_to_camera(node));
+				} else {
+					auto point_a = node->world.translate;
+					auto point_b = PlayerCharacter::GetSingleton()->GetPosition();
+					auto delta = point_a - point_b;
+
+					distance = unit_to_meter(delta.Length());
+				}
 
 				// Camera shakes
-				float falloff = soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0);
+				SoftPotential falloff_sp {
+					.k = 0.024,
+					.n = 2.0,
+					.s = 0.8,
+					.o = 0.0,
+					.a = 0.0,
+				};
+				float falloff = soft_core(distance, falloff_sp);
 				// Power increases cubically with scale (linearly with volume)
 				float n = 3.0;
 				float min_shake_scale = 1.2; // Before this no shaking
@@ -98,7 +114,7 @@ namespace Gts {
 							.a = -1.17,
 						};
 
-						power = soft_power(softness);
+						power = soft_power(scale, softness);
 					}
 				}
 
