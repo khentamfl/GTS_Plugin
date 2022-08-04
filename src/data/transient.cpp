@@ -68,7 +68,7 @@ namespace Gts {
 			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 			float shoe_weight = 1.0;
 			if (shoe) {
-				shoe_weight = show->weight;
+				shoe_weight = shoe->weight;
 			}
 			result.shoe_weight = shoe_weight;
 			result.char_weight = actor->GetWeight();
@@ -79,7 +79,10 @@ namespace Gts {
 			if (hhBonusPerk) {
 				result.has_hhBonus_perk = actor->HasPerk(hhBonusPerk);
 				if (!result.has_hhBonus_perk && result.is_teammate) {
-					result.has_hhBonus_perk = this->GetData(PlayerCharacter::GetSingleton()).has_hhBonus_perk;
+					auto player_data = this->GetData(PlayerCharacter::GetSingleton());
+					if (player_data) {
+						result.has_hhBonus_perk = player_data->has_hhBonus_perk;
+					}
 				}
 			} else {
 				result.has_hhBonus_perk = false;
@@ -105,7 +108,7 @@ namespace Gts {
 			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 			float shoe_weight = 1.0;
 			if (shoe) {
-				shoe_weight = show->weight;
+				shoe_weight = shoe->weight;
 			}
 			data.shoe_weight = shoe_weight;
 
@@ -117,7 +120,10 @@ namespace Gts {
 			if (hhBonusPerk) {
 				data.has_hhBonus_perk = actor->HasPerk(hhBonusPerk);
 				if (!data.has_hhBonus_perk && data.is_teammate) {
-					data.has_hhBonus_perk = this->GetData(PlayerCharacter::GetSingleton()).has_hhBonus_perk;
+					auto player_data = this->GetData(PlayerCharacter::GetSingleton());
+					if (player_data) {
+						data.has_hhBonus_perk = player_data->has_hhBonus_perk;
+					}
 				}
 			} else {
 				data.has_hhBonus_perk = false;
