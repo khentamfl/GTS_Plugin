@@ -52,7 +52,9 @@ namespace Gts {
 				scale *= 1.2; // Jumping makes you seem bigger
 			}
 			auto actor_data = Transient::GetSingleton().GetData(actor);
-			tremor_scale *= actor_data->get_hh_bonus_factor();
+			if (actor_data) {
+				tremor_scale *= actor_data->get_hh_bonus_factor();
+			}
 
 			for (NiAVObject* node: impact.nodes) {
 				float power_multi = 1.0;

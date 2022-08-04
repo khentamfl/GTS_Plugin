@@ -66,8 +66,10 @@ namespace Gts {
 				scale *= 2.0; // Jumping makes you sound bigger
 			}
 			auto actor_data = Transient::GetSingleton().GetData(actor);
-			if (actor_data->wearing_hh()) {
-				scale *= 1.25;
+			if (actor_data) {
+				if (actor_data->wearing_hh()) {
+					scale *= 1.25;
+				}
 			}
 
 			for (NiAVObject* node: impact.nodes) {

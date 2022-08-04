@@ -73,7 +73,7 @@ namespace Gts {
 			result.shoe_weight = shoe_weight;
 			result.char_weight = actor->GetWeight();
 
-			result.is_teammate = actor->IsPlayerTeammate();
+			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 
 			auto hhBonusPerk = Runtime::GetSingleton().hhBonus;
 			if (hhBonusPerk) {
@@ -114,7 +114,7 @@ namespace Gts {
 
 			data.char_weight = actor->GetWeight();
 
-			data.is_teammate = actor->IsPlayerTeammate();
+			data.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 
 			auto hhBonusPerk = Runtime::GetSingleton().hhBonus;
 			if (hhBonusPerk) {
