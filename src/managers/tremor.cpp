@@ -37,22 +37,22 @@ namespace Gts {
 			return;
 		}
 
-		auto actor_data = Transient::GetSingleton().GetData(actor);
-		tremor_scale *= actor_data->get_hh_bonus_factor();
-
 		float scale = impact.effective_scale;
 		if (!actor->IsSwimming()) {
 			if (actor->IsSprinting()) {
-				scale *= 1.2; // Sprinting makes you sound bigger
+				scale *= 1.2; // Sprinting makes you seem bigger
 			} else if (actor->IsSneaking()) {
-				scale *= 0.55; // Sneaking makes you sound quieter
+				scale *= 0.55; // Sneaking makes you seem quieter
 			} else if (actor->IsWalking()) {
-				scale *= 0.85; // Walking makes you sound quieter
+				scale *= 0.85; // Walking makes you seem quieter
 			}
 			Foot foot_kind = impact.kind;
 			if (foot_kind == Foot::JumpLand) {
-				scale *= 1.2; // Jumping makes you sound bigger
+				scale *= 1.2; // Jumping makes you seem bigger
 			}
+			auto actor_data = Transient::GetSingleton().GetData(actor);
+			tremor_scale *= actor_data->get_hh_bonus_factor();
+
 			for (NiAVObject* node: impact.nodes) {
 				float power_multi = 1.0;
 				switch (foot_kind) {

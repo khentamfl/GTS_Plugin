@@ -65,6 +65,11 @@ namespace Gts {
 			if (foot_kind == Foot::JumpLand) {
 				scale *= 2.0; // Jumping makes you sound bigger
 			}
+			auto actor_data = Transient::GetSingleton().GetData(actor);
+			if (actor_data->wearing_hh()) {
+				scale *= 1.25;
+			}
+
 			for (NiAVObject* node: impact.nodes) {
 				// First try casting a ray
 				NiPoint3 foot_location = node->world.translate;
