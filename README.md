@@ -38,7 +38,7 @@ WIP
   - [ ] Apply size effects to near by actor
   - [x] Move away from favor active
   - [x] Animation speed adjustment
-- [ ] Walk/Jump events
+- [X] Walk/Jump events
   - [x] Camera distance to event
-  - [ ] Camera shake
-  - [ ] Feet sounds
+  - [X] Camera shake
+  - [X] Feet sounds
