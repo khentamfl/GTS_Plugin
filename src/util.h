@@ -51,12 +51,21 @@ namespace Gts {
 		float n;
 		float s;
 		float o;
+		float a;
 	};
-	inline float soft_core(float x, float k, float n, float s, float o) {
-		return 1.0/(pow(1.0+pow(k*(x-o),n*s),1.0/s));
+	// https://www.desmos.com/calculator/lnooldbscf
+	inline float soft_power(const float x, const float k,const float n,const float s,const float o,const float a) {
+		return pow(1.0+pow(k*(x-o),n*s),1.0/s) + a;
 	}
-	inline float soft_core(float x, SoftPotential& soft_potential) {
-		return soft_core(x, soft_potential.k, soft_potential.n, soft_potential.s, soft_potential.o);
+	// https://www.desmos.com/calculator/dfuaog1rwf
+	inline float soft_core(const float x, const float k, const float n, const float s, const float o, const float a) {
+		return 1.0/soft_power(x, k, n, s, o, 0.0) + a;
+	}
+	inline float soft_core(const float x, const SoftPotential& soft_potential) {
+		return soft_core(x, soft_potential.k, soft_potential.n, soft_potential.s, soft_potential.o, soft_potential.a);
+	}
+	inline float soft_power(const float x, const SoftPotential& soft_potential) {
+		return soft_power(x, soft_potential.k, soft_potential.n, soft_potential.s, soft_potential.o, soft_potential.a);
 	}
 
 	// https://en.wikipedia.org/wiki/Smoothstep

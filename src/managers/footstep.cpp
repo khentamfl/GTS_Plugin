@@ -30,14 +30,14 @@ namespace {
 
 	float frequency_function(float scale, const VolumeParams& params) {
 		float a = params.a;
-		return soft_core(scale, 0.01, 1.0, 1.0, a)*0.5+0.5;
+		return soft_core(scale, 0.01, 1.0, 1.0, a, 0.0)*0.5+0.5;
 	}
 
 	float falloff_function(NiAVObject* source) {
 		if (source) {
 			float distance_to_camera = unit_to_meter(get_distance_to_camera(source));
 			// Camera distance based volume falloff
-			return soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0);
+			return soft_core(distance_to_camera, 0.024, 2.0, 0.8, 0.0, 0.0);
 		}
 		return 1.0;
 	}

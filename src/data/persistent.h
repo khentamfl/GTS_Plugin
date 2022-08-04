@@ -40,6 +40,7 @@ namespace Gts {
 				.n = 0.85,
 				.s = 1.12,
 				.o = 1.0,
+				.a = 0.0,
 			};
 			SizeMethod size_method = SizeMethod::ModelScale;
 		private:

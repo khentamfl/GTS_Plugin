@@ -1,6 +1,7 @@
 #include "managers/tremor.h"
 #include "managers/impact.h"
 #include "data/runtime.h"
+#include "data/persistent.h"
 #include "util.h"
 
 using namespace SKSE;
@@ -11,6 +12,7 @@ namespace {
 	enum Formula {
 		Power,
 		Smooth,
+		SoftCore,
 	};
 }
 
@@ -23,6 +25,17 @@ namespace Gts {
 	void TremorManager::OnImpact(const Impact& impact) {
 		if (!impact.actor) return;
 		auto actor = impact.actor;
+
+		float tremor_scale;
+		if (actor.formID == 0x14) {
+			tremor_scale = Persistent::GetSingleton().tremor_scale;
+		} else {
+			tremor_scale = Persistent::GetSingleton().npc_tremor_scale;
+		}
+
+		if (tremor_scale < 1e-5) {
+			return;
+		}
 
 		float scale = impact.effective_scale;
 		if (!actor->IsSwimming()) {
@@ -64,7 +77,7 @@ namespace Gts {
 				if (scale < min_shake_scale) return;
 				float power = 0.0;
 
-				Formula formula = Formula::Smooth;
+				Formula formula = Formula::SoftCore;
 				switch (formula) {
 					case Formula::Power:
 					{
@@ -75,11 +88,23 @@ namespace Gts {
 					{
 						power = smootherstep(min_shake_scale, max_shake_scale, scale);
 					}
+					case Formula::SoftCore:
+					{
+						SoftPotential softness {
+							.k = 0.054,
+							.n = 0.26,
+							.s = 1.0,
+							.o = 1.2,
+							.a = -1.17,
+						};
+
+						power = soft_power(softness);
+					}
 				}
 
 
-				float intensity = power * falloff;
-				float duration_power = 0.7 * power;
+				float intensity = power * falloff * tremor_scale;
+				float duration_power = 0.25 * power * tremor_scale;
 				float duration = duration_power / falloff; // As we fall off we have smaller but longer lasting tremors
 				if (intensity > 0.05 && duration > 0.05) {
 					shake_camera(actor, intensity, duration);
