@@ -126,7 +126,7 @@ namespace Gts {
 
 
 				float intensity = power * falloff * tremor_scale;
-				float duration_power = 0.25 * power * tremor_scale;
+				float duration_power = 0.25 * (Persistent::GetSingleton().visual_scale(actor) * 0.50 + 0.50) * tremor_scale;//power * tremor_scale;
 				float duration = duration_power * intensity; // falloff; // As we fall off we have smaller but longer lasting tremors
 				if (intensity > 0.05 && duration > 0.05) {
 					shake_camera(actor, intensity, duration);
