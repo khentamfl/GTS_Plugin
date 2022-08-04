@@ -62,7 +62,7 @@ namespace Gts {
 					}
 				}
 
-				auto ni_node = ni_shape->AsNiNode();
+				auto ni_node = ni_shape->AsNode();
 				if (ni_node) {
 					if (is_filtered_av(ni_node)) {
 						return;
@@ -70,7 +70,7 @@ namespace Gts {
 				}
 			}
 
-			auto av_node = getUserData(top_body);
+			auto av_node = getUserData(&top_body);
 			if (ni_av) {
 				if (is_filtered_av(av_node)) {
 					return;
