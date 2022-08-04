@@ -23,7 +23,7 @@ namespace Gts {
 		}
 		inline float get_hh_bonus_factor() {
 			if (wearing_hh() && has_hhBonus_perk) {
-				return 1.5 + shoe_weight/10.0 + char_weight/260;
+				return 1.5; //+ shoe_weight/10.0 + char_weight/260;
 			} else {
 				return 1.0;
 			}
