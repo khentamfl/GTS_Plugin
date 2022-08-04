@@ -74,6 +74,7 @@ namespace Gts {
 				float distance = 0.0;
 				if (actor->formID == 0x14) {
 					distance = unit_to_meter(get_distance_to_camera(node));
+					distance *= 0.5;
 				} else {
 					auto point_a = node->world.translate;
 					auto point_b = PlayerCharacter::GetSingleton()->GetPosition();
@@ -127,7 +128,7 @@ namespace Gts {
 
 				float intensity = power * falloff * tremor_scale;
 				float duration_power = 0.25 * power * tremor_scale;
-				float duration = duration_power / falloff; // As we fall off we have smaller but longer lasting tremors
+				float duration = duration_power * intensity // falloff; // As we fall off we have smaller but longer lasting tremors
 				if (intensity > 0.05 && duration > 0.05) {
 					shake_camera(actor, intensity, duration);
 
