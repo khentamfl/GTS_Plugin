@@ -90,7 +90,7 @@ namespace Gts {
 					.o = 0.0,
 					.a = 0.0,
 				};
-				float falloff = soft_core(distance * 0.5, falloff_sp);
+				float falloff = soft_core(distance * 0.25, falloff_sp);
 				// Power increases cubically with scale (linearly with volume)
 				float n = 3.0;
 				float min_shake_scale = 1.2; // Before this no shaking
@@ -126,7 +126,7 @@ namespace Gts {
 
 
 				float intensity = power * falloff * tremor_scale;
-				float duration_power = 0.25 * (Persistent::GetSingleton().visual_scale(actor) * 0.50 + 0.50) * tremor_scale;//power * tremor_scale;
+				float duration_power = 0.25 * (scale * 0.50 + 0.50) * tremor_scale;//power * tremor_scale;
 				float duration = duration_power * intensity; // falloff; // As we fall off we have smaller but longer lasting tremors
 				if (intensity > 0.05 && duration > 0.05) {
 					shake_camera(actor, intensity, duration);
