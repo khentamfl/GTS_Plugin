@@ -49,11 +49,11 @@ namespace Gts {
 			}
 			Foot foot_kind = impact.kind;
 			if (foot_kind == Foot::JumpLand) {
-				scale *= 1.2; // Jumping makes you seem bigger
+				scale *= 2.0; // Jumping makes you seem bigger
 			}
 			auto actor_data = Transient::GetSingleton().GetData(actor);
 			if (actor_data) {
-				tremor_scale *= actor_data->get_hh_bonus_factor();
+				scale *= actor_data->get_hh_bonus_factor();
 			}
 
 			for (NiAVObject* node: impact.nodes) {
