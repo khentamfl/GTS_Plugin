@@ -33,6 +33,8 @@ namespace Gts {
 
 			bool highheel_correction = true;
 			bool is_speed_adjusted = true;
+			float tremor_scale = 1.0;
+			float npc_tremor_scale = 1.0;
 			SoftPotential speed_adjustment {
 				.k = 0.125,
 				.n = 0.85,

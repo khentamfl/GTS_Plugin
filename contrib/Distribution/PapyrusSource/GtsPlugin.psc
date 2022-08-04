@@ -55,6 +55,20 @@ Function SetSpeedParameterS(Float s) global native
 Bool function IsJumping(Actor target) global native
 Bool function IsInAir(Actor target) global native
 
+; Global Tremor Scales
+;
+; These control the scale of the camera/controller
+; shakes on footstep
+;
+; 1.0 is default
+; 0.0 means off
+;
+; Values are saved into the cosave
+Float Function GetTremorScale() global native
+Function SetTremorScale(Float value) global native
+Float Function GetTremorScaleNPC() global native
+Function SetTremorScaleNPC(Float value) global native
+
 ; Debug functions
 Float Function GetExperimentFloat() global native
 Function SetExperimentFloat(Float value) global native

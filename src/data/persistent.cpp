@@ -10,6 +10,7 @@ namespace {
 	inline const auto ScaleMethodRecord = _byteswap_ulong('SCMD');
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
+	inline const auto TremorScales = _byteswap_ulong('TREM');
 }
 
 namespace Gts {
@@ -161,6 +162,13 @@ namespace Gts {
 					float o = 1.0;
 					GetSingleton().speed_adjustment.o = o;
 				}
+			} else if (type == TremorScales) {
+				float tremor_scale;
+				serde->ReadRecordData(&tremor_scale, sizeof(tremor_scale));
+				GetSingleton().tremor_scale = tremor_scale;
+				float npc_tremor_scale;
+				serde->ReadRecordData(&npc_tremor_scale, sizeof(npc_tremor_scale));
+				GetSingleton().npc_tremor_scale = npc_tremor_scale;
 			} else {
 				log::warn("Unknown record type in cosave.");
 				__assume(false);
@@ -229,6 +237,16 @@ namespace Gts {
 		serde->WriteRecordData(&n, sizeof(n));
 		float s = GetSingleton().speed_adjustment.s;
 		serde->WriteRecordData(&s, sizeof(s));
+
+		if (!serde->OpenRecord(TremorScales, 0)) {
+			log::error("Unable to open tremor scale record to write cosave data.");
+			return;
+		}
+
+		float tremor_scale = GetSingleton().tremor_scale;
+		serde->WriteRecordData(&tremor_scale, sizeof(tremor_scale));
+		float npc_tremor_scale = GetSingleton().npc_tremor_scale;
+		serde->WriteRecordData(&npc_tremor_scale, sizeof(npc_tremor_scale));
 
 	}
 

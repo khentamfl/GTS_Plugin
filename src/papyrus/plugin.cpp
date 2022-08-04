@@ -111,6 +111,22 @@ namespace {
 		return actor->IsInMidair();
 	}
 
+	float GetTremorScale(StaticFunctionTag*) {
+		return Persistent::GetSingleton().tremor_scale;
+	}
+
+	void SetTremorScale(StaticFunctionTag*, float value) {
+		Persistent::GetSingleton().tremor_scale = value;
+	}
+
+	float GetTremorScaleNPC(StaticFunctionTag*) {
+		return Persistent::GetSingleton().npc_tremor_scale;
+	}
+
+	void SetTremorScaleNPC(StaticFunctionTag*, float value) {
+		Persistent::GetSingleton().npc_tremor_scale = value;
+	}
+
 	float GetExperimentFloat(StaticFunctionTag*) {
 		return GtsManager::GetSingleton().experiment;
 	}
@@ -139,6 +155,10 @@ namespace Gts {
 		vm->RegisterFunction("GetSpeedParameterS", PapyrusClass, GetSpeedParameterS);
 		vm->RegisterFunction("IsJumping", PapyrusClass, IsJumping);
 		vm->RegisterFunction("IsInAir", PapyrusClass, IsInAir);
+		vm->RegisterFunction("GetTremorScale", PapyrusClass, GetTremorScale);
+		vm->RegisterFunction("SetTremorScale", PapyrusClass, SetTremorScale);
+		vm->RegisterFunction("GetTremorScaleNPC", PapyrusClass, GetTremorScaleNPC);
+		vm->RegisterFunction("SetTremorScaleNPC", PapyrusClass, SetTremorScaleNPC);
 		vm->RegisterFunction("GetExperimentFloat", PapyrusClass, GetExperimentFloat);
 		vm->RegisterFunction("SetExperimentFloat", PapyrusClass, SetExperimentFloat);
 
