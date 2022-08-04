@@ -37,6 +37,9 @@ namespace Gts {
 			return;
 		}
 
+		auto actor_data = Transient::GetSingleton().GetData(actor);
+		tremor_scale *= actor_data->get_hh_bonus_factor();
+
 		float scale = impact.effective_scale;
 		if (!actor->IsSwimming()) {
 			if (actor->IsSprinting()) {

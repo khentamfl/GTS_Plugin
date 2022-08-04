@@ -34,5 +34,7 @@ namespace Gts {
 			EffectSetting* smallMassiveThreat = nullptr;
 
 			BGSExplosion* footstepExplosion = nullptr;
+
+			BGSPerk* hhBonus = nullptr;
 	};
 }

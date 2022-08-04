@@ -1,4 +1,5 @@
 #include "data/transient.h"
+#include "data/runtime.h"
 #include "node.h"
 #include "util.h"
 #include "scale/modscale.h"
@@ -64,9 +65,68 @@ namespace Gts {
 			result.last_hh_adjustment = 0.0;
 			result.total_hh_adjustment = 0.0;
 			result.base_walkspeedmult = actor->GetActorValue(ActorValue::kSpeedMult);
+			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+			float shoe_weight = 1.0;
+			if (shoe) {
+				shoe_weight = show->weight;
+			}
+			result.shoe_weight = shoe_weight;
+			result.char_weight = actor->GetWeight();
+
+			result.is_teammate = actor->IsPlayerTeammate();
+
+			auto hhBonusPerk = Runtime::GetSingleton().hhBonus;
+			if (hhBonusPerk) {
+				result.has_hhBonus_perk = actor->HasPerk(hhBonusPerk);
+				if (!result.has_hhBonus_perk && result.is_teammate) {
+					result.has_hhBonus_perk = this->GetData(PlayerCharacter::GetSingleton()).has_hhBonus_perk;
+				}
+			} else {
+				result.has_hhBonus_perk = false;
+			}
+
 			this->_actor_data.try_emplace(key, result);
 		}
 		return &this->_actor_data[key];
+	}
+
+	void Transient::UpdateActorData(Actor* actor) {
+		if (!actor) {
+			return;
+		}
+		if (!actor->Is3DLoaded()) {
+			return;
+		}
+
+		auto key = actor->formID;
+		std::unique_lock lock(this->_lock);
+		try {
+			auto data = this->_actor_data.at(key);
+			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+			float shoe_weight = 1.0;
+			if (shoe) {
+				shoe_weight = show->weight;
+			}
+			data.shoe_weight = shoe_weight;
+
+			data.char_weight = actor->GetWeight();
+
+			data.is_teammate = actor->IsPlayerTeammate();
+
+			auto hhBonusPerk = Runtime::GetSingleton().hhBonus;
+			if (hhBonusPerk) {
+				data.has_hhBonus_perk = actor->HasPerk(hhBonusPerk);
+				if (!data.has_hhBonus_perk && data.is_teammate) {
+					data.has_hhBonus_perk = this->GetData(PlayerCharacter::GetSingleton()).has_hhBonus_perk;
+				}
+			} else {
+				data.has_hhBonus_perk = false;
+			}
+
+
+		} catch (const std::out_of_range& oor) {
+			return;
+		}
 	}
 
 	void Transient::Clear() {

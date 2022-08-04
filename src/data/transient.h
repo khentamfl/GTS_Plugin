@@ -13,6 +13,18 @@ namespace Gts {
 		float last_hh_adjustment;
 		float total_hh_adjustment;
 		float base_walkspeedmult;
+		float char_weight;
+		float shoe_weight;
+		bool has_hhBonus_perk;
+		bool is_teammate;
+
+		inline float get_hh_bonus_factor() {
+			if (fabs(last_hh_adjustment) > 1e-5 && has_hhBonus_perk) {
+				return 1.5 + shoe_weight/10.0 + char_weight/260;
+			} else {
+				return 1.0;
+			}
+		}
 	};
 
 	class Transient {
@@ -21,6 +33,7 @@ namespace Gts {
 
 			TempActorData* GetData(TESObjectREFR* object);
 			TempActorData* GetActorData(Actor* actor);
+			void UpdateActorData(Actor* actor);
 
 			void Clear();
 		private:

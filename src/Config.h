@@ -191,6 +191,22 @@ namespace Gts {
 			friend class articuno::access;
 	};
 
+	class Perks {
+		public:
+			[[nodiscard]] inline std::string GetHHBonus() const noexcept {
+				return _hhBonus;
+			}
+
+		private:
+			articuno_serde(ar) {
+				ar <=> articuno::kv(_hhBonus, "hhBonus");
+			}
+
+			std::string _hhBonus;
+
+			friend class articuno::access;
+	};
+
 	class Config {
 		public:
 			[[nodiscard]] inline const Debug& GetDebug() const noexcept {
@@ -213,6 +229,10 @@ namespace Gts {
 				return _explosions;
 			}
 
+			[[nodiscard]] inline const Perks& GetPerks() const noexcept {
+				return _perks;
+			}
+
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
 
 		private:
@@ -222,6 +242,7 @@ namespace Gts {
 				ar <=> articuno::kv(_sound, "sound");
 				ar <=> articuno::kv(_spellEffects, "spellEffects");
 				ar <=> articuno::kv(_explosions, "explosions");
+				ar <=> articuno::kv(_perks, "perks");
 			}
 
 			Debug _debug;
@@ -229,6 +250,7 @@ namespace Gts {
 			Sound _sound;
 			SpellEffects _spellEffects;
 			Explosions _explosions;
+			Perks _perks;
 
 			friend class articuno::access;
 	};

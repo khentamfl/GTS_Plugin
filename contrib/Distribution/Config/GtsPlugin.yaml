@@ -29,3 +29,6 @@ spellEffects:
 explosions:
   # IDs for explosion effects
   footstepExplosion: "GTS.esp|035C81"
+
+perks:
+  hhBonus: "GTS.esp|271EF1"

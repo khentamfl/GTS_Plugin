@@ -151,18 +151,20 @@ namespace {
 		}
 	}
 
+	void update_actor(Actor* actor) {
+		Transient::GetSingleton().UpdateActorData(actor);
+
+		auto temp_data = Transient::GetSingleton().GetActorData(actor);
+		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
+		update_effective_multi(actor, saved_data, temp_data);
+		update_height(actor, saved_data, temp_data);
+	}
+
 	void apply_actor(Actor* actor, bool force = false) {
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
 		apply_speed(actor, saved_data, temp_data, force);
-	}
-
-	void update_actor(Actor* actor) {
-		auto temp_data = Transient::GetSingleton().GetActorData(actor);
-		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
-		update_effective_multi(actor, saved_data, temp_data);
-		update_height(actor, saved_data, temp_data);
 	}
 }
 
