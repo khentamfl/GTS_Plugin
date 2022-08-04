@@ -2,6 +2,7 @@
 #include "managers/impact.h"
 #include "data/runtime.h"
 #include "data/persistent.h"
+#include "data/transient.h"
 #include "util.h"
 
 using namespace SKSE;
