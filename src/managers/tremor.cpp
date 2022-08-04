@@ -41,7 +41,7 @@ namespace Gts {
 		float scale = impact.effective_scale;
 		if (!actor->IsSwimming()) {
 			if (actor->IsSprinting()) {
-				scale *= 1.2; // Sprinting makes you seem bigger
+				scale *= 1.35; // Sprinting makes you seem bigger
 			} else if (actor->IsSneaking()) {
 				scale *= 0.55; // Sneaking makes you seem quieter
 			} else if (actor->IsWalking()) {
@@ -49,7 +49,7 @@ namespace Gts {
 			}
 			Foot foot_kind = impact.kind;
 			if (foot_kind == Foot::JumpLand) {
-				scale *= 2.0; // Jumping makes you seem bigger
+				scale *= 2.5; // Jumping makes you seem bigger
 			}
 			auto actor_data = Transient::GetSingleton().GetData(actor);
 			if (actor_data) {
@@ -90,7 +90,7 @@ namespace Gts {
 					.o = 0.0,
 					.a = 0.0,
 				};
-				float falloff = soft_core(distance, falloff_sp);
+				float falloff = soft_core(distance * 1.5, falloff_sp);
 				// Power increases cubically with scale (linearly with volume)
 				float n = 3.0;
 				float min_shake_scale = 1.2; // Before this no shaking
@@ -126,7 +126,7 @@ namespace Gts {
 
 
 				float intensity = power * falloff * tremor_scale;
-				float duration_power = 0.25 * (scale * 0.25 + 0.75) * tremor_scale;//power * tremor_scale;
+				float duration_power = 0.25 * (scale * 0.15 + 0.85) * tremor_scale;//power * tremor_scale;
 				float duration = duration_power * intensity; // falloff; // As we fall off we have smaller but longer lasting tremors
 				if (duration >= 1.20)
 				{duration = 1.20;}
