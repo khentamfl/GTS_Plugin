@@ -137,6 +137,7 @@ namespace Gts {
 
 				float intensity = power * falloff * tremor_scale;
 				float duration = 0.5 * power * tremor_scale * falloff;
+				log::info("Effective scale: {}", scale);
 				log::info("Shake values: intensity: {}, power: {}, falloff: {}, tremor_scale: {}, duration: {}, distance: {}", intensity, power, falloff, tremor_scale, duration, distance);
 				if (intensity > 0.01 && duration > 0.01) {
 					shake_camera(actor, intensity, duration);
