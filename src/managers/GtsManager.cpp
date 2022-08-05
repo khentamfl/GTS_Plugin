@@ -145,7 +145,7 @@ namespace {
 			return;
 		}
 		if (actor->HasMagicEffect(small_massive_threat)) {
-			persi_actor_data->effective_multi = 4.0;
+			persi_actor_data->effective_multi = 2.0;
 		} else {
 			persi_actor_data->effective_multi = 1.0;
 		}
