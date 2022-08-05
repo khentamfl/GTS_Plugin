@@ -16,6 +16,26 @@ namespace {
 		SoftCore,
 		Linear,
 	};
+
+	float falloff_calc(float x, float half_power) {
+		// Standard falloff with halk power at specifed poin
+		float n = 2.0; // Inverse square law
+		float s = 0.8; // Softness at the core
+		float o = 0.0; // X Offset
+		float a = 0.0; // Y Offset
+
+		// k is adjusted to make y=0.5 when x=half_power
+		float k = pow(pow(1/(0.5-a),s)-1, 1/(n*s))/(half_power, o);
+		SoftPotential falloff_sp {
+			.k = k,
+			.n = n,
+			.s = s,
+			.o = o,
+			.a = a,
+		};
+		// Falloff: https://www.desmos.com/calculator/axldl2k7q8
+		return soft_core(distance, falloff_sp);
+	}
 }
 
 namespace Gts {
@@ -71,16 +91,7 @@ namespace Gts {
 
 				// Camera shakes
 
-				SoftPotential falloff_sp {
-					.k = 0.182,
-					.n = 2.0,
-					.s = 0.8,
-					.o = 0.0,
-					.a = 0.0,
-				};
-				// Falloff: https://www.desmos.com/calculator/lg1kk0xora
-				// (20% at 10m)
-				float falloff = soft_core(distance, falloff_sp);
+				float falloff = falloff_calc(scale, 8.0);
 
 				float min_shake_scale = 1.2; // Before this no shaking
 				float max_shake_scale = 30.0; // After this we have full power shaking
@@ -142,8 +153,13 @@ namespace Gts {
 				float duration = smootherstep(min_shake_scale, max_shake_scale, scale)*(max_duration-min_duration) + min_duration;
 				duration *= falloff;
 
-				log::info("Effective scale: {}", scale);
-				log::info("Shake values: intensity: {}, power: {}, falloff: {}, tremor_scale: {}, duration: {}, distance: {}", intensity, power, falloff, tremor_scale, duration, distance);
+				log::info("Shake values at scale {}:", scale);
+				log::info("  - intensity: {}", intensity);
+				log::info("  - power: {}", power);
+				log::info("  - falloff: {}", falloff);
+				log::info("  - tremor_scale: {}", tremor_scale);
+				log::info("  - duration: {}", duration);
+				log::info("  - distance: {}", distance);
 				if (intensity > 0.01 && duration > 0.01) {
 					shake_camera(actor, intensity, duration);
 
