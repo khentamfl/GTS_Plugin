@@ -84,6 +84,8 @@ namespace Gts {
 
 				float min_shake_scale = 1.2; // Before this no shaking
 				float max_shake_scale = 30.0; // After this we have full power shaking
+				float power_at_min = 0.15; // Power at minimum scale
+				float power_at_max = 1.0; // Power at maximum scale
 
 				if (scale < min_shake_scale) return;
 				float power = 0.0;
@@ -97,22 +99,29 @@ namespace Gts {
 						// Power increases cubically with scale (linearly with volume)
 						float n = 3.0;
 						float k = 1.0/pow(max_shake_scale - min_shake_scale, n);
-						power = k*pow(scale - min_shake_scale, n);
+						power = k*pow(scale - min_shake_scale, n)*(power_at_max-power_at_min) + power_at_min;
 					}
 					case Formula::Smooth:
 					{
 						// Smooth step
-						power = smootherstep(min_shake_scale, max_shake_scale, scale);
+						power = smootherstep(min_shake_scale, max_shake_scale, scale)*(power_at_max-power_at_min) + power_at_min;
 					}
 					case Formula::SoftCore:
 					{
 						// A root like softpower
+						// https://www.desmos.com/calculator/p7vfatfljg
+						float n = 0.24;
+						float s = 1.0;
+						float a = -1.17;
+						// Altered to maintain the powerat/min/max
+						float o = -pow(pow(power_at_min-a, s)-1, 1/(n*s))*(max_shake_scale-min_shake_scale)/pow(pow(power_at_max-a, s)-1.0, 1/(n*s))+min_shake_scale;
+						float k = pow(pow(power_at_max-a, s)-1.0,1/(n*s))/(max_shake_scale-o);
 						SoftPotential softness {
-							.k = 0.065,
-							.n = 0.24,
-							.s = 1.0,
-							.o = 1.05,
-							.a = -1.17,
+							.k = k,
+							.n = n,
+							.s = s,
+							.o = o,
+							.a = a,
 						};
 
 						power = soft_power(scale, softness);
@@ -122,7 +131,7 @@ namespace Gts {
 						// Linear
 						float m = (1.0-0.0)/(max_shake_scale - min_shake_scale);
 						float c = -m*min_shake_scale;
-						power = m*scale + c;
+						power = (m*scale + c)*(power_at_max-power_at_min) + power_at_min;
 					}
 				}
 
