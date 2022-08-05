@@ -128,7 +128,7 @@ namespace Gts {
 
 				float intensity = power * falloff * tremor_scale;
 				float duration_power = 0.25 * power * tremor_scale;
-				float duration = duration_power * falloff; // As we fall off we have smaller but longer lasting tremors
+				float duration = duration_power * falloff;
 				if (intensity > 0.05 && duration > 0.05) {
 					shake_camera(actor, intensity, duration);
 
