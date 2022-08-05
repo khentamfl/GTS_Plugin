@@ -20,7 +20,7 @@ namespace {
 	float falloff_calc(float x, float half_power) {
 		// Standard falloff with halk power at specifed poin
 		float n = 2.0; // Inverse square law
-		float s = 0.8; // Softness at the core
+		float s = 1; // Softness at the core
 		float o = 0.0; // X Offset
 		float a = 0.0; // Y Offset
 
@@ -34,7 +34,7 @@ namespace {
 			.a = a,
 		};
 		// Falloff: https://www.desmos.com/calculator/axldl2k7q8
-		return soft_core(distance, falloff_sp);
+		return soft_core(x, falloff_sp);
 	}
 }
 
@@ -91,11 +91,11 @@ namespace Gts {
 
 				// Camera shakes
 
-				float falloff = falloff_calc(scale, 8.0);
+				float falloff = falloff_calc(scale, 2.0);
 
 				float min_shake_scale = 1.2; // Before this no shaking
 				float max_shake_scale = 30.0; // After this we have full power shaking
-				float power_at_min = 0.15; // Power at minimum scale
+				float power_at_min = 0.406; // Power at minimum scale and zero distance will be much lower than this at 2m due to falloff
 				float power_at_max = 1.0; // Power at maximum scale
 
 				if (scale < min_shake_scale) return;
@@ -103,6 +103,8 @@ namespace Gts {
 
 
 				// The equation to use
+				//
+				// FullTesting graph: https://www.desmos.com/calculator/qazgd0awcx
 				Formula formula = Formula::Linear;
 				switch (formula) {
 					case Formula::Power:
