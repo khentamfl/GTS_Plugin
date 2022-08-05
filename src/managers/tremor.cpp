@@ -19,10 +19,10 @@ namespace {
 
 	float falloff_calc(float x, float half_power) {
 		// Standard falloff with halk power at specifed poin
-		float n = 2.0; // Inverse square law
-		float s = 1.0; // Softness at the core
-		float o = 0.0; // X Offset
-		float a = 0.0; // Y Offset
+		float n = -1.0;//2.0; // Inverse square law
+		float s = 3.0;//1.0; // Softness at the core
+		float o = 1.0;//0.0; // X Offset
+		float a = 0.2;//0.0; // Y Offset
 
 		// k is adjusted to make y=0.5 when x=half_power
 		float k = pow(pow(1/(0.5-a),s)-1,1/(n*s))/(half_power - o);
