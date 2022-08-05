@@ -136,7 +136,12 @@ namespace Gts {
 				}
 
 				float intensity = power * falloff * tremor_scale;
-				float duration = 0.5 * power * tremor_scale * falloff;
+
+				float min_duration = 0.1;
+				float max_duration = 1.5;
+				float duration = smootherstep(min_shake_scale, max_shake_scale, scale)*(max_duration-min_duration) + min_duration;
+				duration *= falloff;
+
 				log::info("Effective scale: {}", scale);
 				log::info("Shake values: intensity: {}, power: {}, falloff: {}, tremor_scale: {}, duration: {}, distance: {}", intensity, power, falloff, tremor_scale, duration, distance);
 				if (intensity > 0.01 && duration > 0.01) {
