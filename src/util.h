@@ -57,7 +57,7 @@ namespace Gts {
 	inline float soft_power(const float x, const float k,const float n,const float s,const float o,const float a) {
 		return pow(1.0+pow(k*(x-o),n*s),1.0/s) + a;
 	}
-	// https://www.desmos.com/calculator/dfuaog1rwf
+	// https://www.desmos.com/calculator/pcoyowf7hn
 	inline float soft_core(const float x, const float k, const float n, const float s, const float o, const float a) {
 		return 1.0/soft_power(x, k, n, s, o, 0.0) + a;
 	}

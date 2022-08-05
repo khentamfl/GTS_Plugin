@@ -14,6 +14,7 @@ namespace {
 		Power,
 		Smooth,
 		SoftCore,
+		Linear,
 	};
 }
 
@@ -57,20 +58,6 @@ namespace Gts {
 			}
 
 			for (NiAVObject* node: impact.nodes) {
-				float power_multi = 1.0;
-				switch (foot_kind) {
-					case Foot::Left:
-					case Foot::Right:
-					case Foot::Front:
-					case Foot::Back:
-						break;
-					case Foot::JumpLand:
-						power_multi = 2.0;
-						break;
-					default:
-						return;
-						break;
-				}
 				float distance = 0.0;
 				if (actor->formID == 0x14) {
 					distance = unit_to_meter(get_distance_to_camera(node));
@@ -83,47 +70,61 @@ namespace Gts {
 				}
 
 				// Camera shakes
+
 				SoftPotential falloff_sp {
-					.k = 0.024,
+					.k = 0.182,
 					.n = 2.0,
 					.s = 0.8,
 					.o = 0.0,
 					.a = 0.0,
 				};
+				// Falloff: https://www.desmos.com/calculator/lg1kk0xora
+				// (20% at 10m)
 				float falloff = soft_core(distance, falloff_sp);
-				// Power increases cubically with scale (linearly with volume)
-				float n = 3.0;
+
 				float min_shake_scale = 1.2; // Before this no shaking
-				float max_shake_scale = 20.0; // After this we have full power shaking
+				float max_shake_scale = 30.0; // After this we have full power shaking
 
 				if (scale < min_shake_scale) return;
 				float power = 0.0;
 
-				Formula formula = Formula::SoftCore;
+
+				// The equation to use
+				Formula formula = Formula::Linear;
 				switch (formula) {
 					case Formula::Power:
 					{
+						// Power increases cubically with scale (linearly with volume)
+						float n = 3.0;
 						float k = 1.0/pow(max_shake_scale - min_shake_scale, n);
-						power = k*pow(scale - min_shake_scale, n) * power_multi;
+						power = k*pow(scale - min_shake_scale, n);
 					}
 					case Formula::Smooth:
 					{
+						// Smooth step
 						power = smootherstep(min_shake_scale, max_shake_scale, scale);
 					}
 					case Formula::SoftCore:
 					{
+						// A root like softpower
 						SoftPotential softness {
-							.k = 0.054,
-							.n = 0.26,
+							.k = 0.065,
+							.n = 0.24,
 							.s = 1.0,
-							.o = 1.2,
+							.o = 1.05,
 							.a = -1.17,
 						};
 
 						power = soft_power(scale, softness);
 					}
+					case Formula::Linear:
+					{
+						// Linear
+						float m = (1.0-0.0)/(max_shake_scale - min_shake_scale);
+						float c = -m*min_shake_scale;
+						power = m*scale + c;
+					}
 				}
-
 
 				float intensity = power * falloff * tremor_scale;
 				float duration_power = 0.25 * power * tremor_scale;
