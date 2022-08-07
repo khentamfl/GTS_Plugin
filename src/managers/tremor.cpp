@@ -91,12 +91,12 @@ namespace Gts {
 
 				// Camera shakes
 
-				float falloff = falloff_calc(distance, 1.512606117);
+				float falloff = falloff_calc(distance, 1.539368969);
 
 				float min_shake_scale = 1.2; // Before this no shaking
 				float max_shake_scale = 30.0; // After this we have full power shaking
-				float power_at_min = 0.48357165; // Power at minimum scale and zero distance will be much lower than this at 2m due to falloff
-				float power_at_max = 603.1954038; // Power at maximum scale
+				float power_at_min = 0.37; // Power at minimum scale and zero distance will be much lower than this at 2m due to falloff
+				float power_at_max = 46.5327215; // Power at maximum scale
 
 				if (scale < min_shake_scale) return;
 				float power = 0.0;
