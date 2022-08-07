@@ -15,6 +15,7 @@ namespace {
 		Smooth,
 		SoftCore,
 		Linear,
+		Unknown,
 	};
 
 	float falloff_calc(float x, float half_power) {
@@ -90,13 +91,14 @@ namespace Gts {
 				}
 
 				// Camera shakes
+				auto config = Config::GetSingleton().GetTremor();
 
-				float falloff = falloff_calc(distance, 0.293274533);
+				float falloff = falloff_calc(distance, config.GetHalfScale());
 
-				float min_shake_scale = 0.0; // Before this no shaking
-				float max_shake_scale = 30.0; // After this we have full power shaking
-				float power_at_min = 0.0; // Power at minimum scale and zero distance will be much lower than this at 2m due to falloff
-				float power_at_max = 8.647901403; // Power at maximum scale
+				float min_shake_scale = config.GetMinScale(); // Before this no shaking
+				float max_shake_scale = config.GetMaxScale(); // After this we have full power shaking
+				float power_at_min = config.GetPowerAtMin(); // Power at minimum scale and zero distance will be much lower than this at 2m due to falloff
+				float power_at_max = config.GetPowerAtMax(); // Power at maximum scale
 
 				if (scale < min_shake_scale) return;
 				float power = 0.0;
@@ -105,7 +107,17 @@ namespace Gts {
 				// The equation to use
 				//
 				// FullTesting graph: https://www.desmos.com/calculator/qazgd0awcx
-				Formula formula = Formula::Linear;
+				Formula formula = Formula::Unknown;
+				switch (config.GetMethod()) {
+					case "linear":
+						formula = Formula::Linear;
+					case "smoothstep":
+						formula = Formula::Smooth;
+					case "softcore":
+						formula = Formula::SoftCore;
+					case "cubic":
+						formula = Formula::Power;
+				}
 				switch (formula) {
 					case Formula::Power:
 					{
@@ -145,6 +157,9 @@ namespace Gts {
 						float m = (1.0-0.0)/(max_shake_scale - min_shake_scale);
 						float c = -m*min_shake_scale;
 						power = (m*scale + c)*(power_at_max-power_at_min) + power_at_min;
+					}
+					default: {
+						log::info("Tremor method invalid");
 					}
 				}
 

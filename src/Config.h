@@ -207,6 +207,47 @@ namespace Gts {
 			friend class articuno::access;
 	};
 
+	class Tremor {
+		public:
+			[[nodiscard]] inline std::string GetMethod() const noexcept {
+				return _method;
+			}
+			[[nodiscard]] inline float GetHalfScale() const noexcept {
+				return _halfScale;
+			}
+			[[nodiscard]] inline float GetPowerAtMin() const noexcept {
+				return _powerAtMin;
+			}
+			[[nodiscard]] inline float GetPowerAtMax() const noexcept {
+				return _powerAtMax;
+			}
+			[[nodiscard]] inline float GetMaxScale() const noexcept {
+				return _maxScale;
+			}
+			[[nodiscard]] inline float GetMinScale() const noexcept {
+				return _minScale;
+			}
+
+		private:
+			articuno_serde(ar) {
+				ar <=> articuno::kv(_method, "method");
+				ar <=> articuno::kv(_halfScale, "halfScale");
+				ar <=> articuno::kv(_powerAtMin, "powerAtMin");
+				ar <=> articuno::kv(_powerAtMax, "powerAtMax");
+				ar <=> articuno::kv(_maxScale, "maxScale");
+				ar <=> articuno::kv(_minScale, "minScale");
+			}
+
+			std::string _method;
+			float _halfScale;
+			float _powerAtMin;
+			float _powerAtMax;
+			float _maxScale;
+			float _minScale;
+
+			friend class articuno::access;
+	};
+
 	class Config {
 		public:
 			[[nodiscard]] inline const Debug& GetDebug() const noexcept {
@@ -233,6 +274,10 @@ namespace Gts {
 				return _perks;
 			}
 
+			[[nodiscard]] inline const Tremor& GetTremor() const noexcept {
+				return _tremor;
+			}
+
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
 
 		private:
@@ -243,6 +288,7 @@ namespace Gts {
 				ar <=> articuno::kv(_spellEffects, "spellEffects");
 				ar <=> articuno::kv(_explosions, "explosions");
 				ar <=> articuno::kv(_perks, "perks");
+				ar <=> articuno::kv(_tremor, "tremor");
 			}
 
 			Debug _debug;
@@ -251,6 +297,7 @@ namespace Gts {
 			SpellEffects _spellEffects;
 			Explosions _explosions;
 			Perks _perks;
+			Tremor _tremor;
 
 			friend class articuno::access;
 	};
