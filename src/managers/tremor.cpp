@@ -3,6 +3,7 @@
 #include "data/runtime.h"
 #include "data/persistent.h"
 #include "data/transient.h"
+#include "Config.h"
 #include "util.h"
 
 using namespace SKSE;
@@ -19,23 +20,8 @@ namespace {
 	};
 
 	float falloff_calc(float x, float half_power) {
-		// Standard falloff with halk power at specifed poin
-		float n = 2.0; // Inverse square law
-		float s = 1.0; // Softness at the core
-		float o = 0.0; // X Offset
-		float a = 0.0; // Y Offset
-
-		// k is adjusted to make y=0.5 when x=half_power
-		float k = pow(pow(1/(0.5-a),s)-1,1/(n*s))/(half_power - o);
-		SoftPotential falloff_sp {
-			.k = k,
-			.n = n,
-			.s = s,
-			.o = o,
-			.a = a,
-		};
-		// Falloff: https://www.desmos.com/calculator/axldl2k7q8
-		return soft_core(x, falloff_sp);
+		float n_falloff = 2.0;
+		return 1/(1+pow(pow(1/0.5-1,n_falloff)*(x)/half_power,half_power));
 	}
 }
 
@@ -154,9 +140,9 @@ namespace Gts {
 					case Formula::Linear:
 					{
 						// Linear
-						float m = (1.0-0.0)/(max_shake_scale - min_shake_scale);
-						float c = -m*min_shake_scale;
-						power = (m*scale + c)*(power_at_max-power_at_min) + power_at_min;
+						float m = (power_at_max-power_at_min)/(max_shake_scale-min_shake_scale);
+						float c = power_at_min-(power_at_max-power_at_min)/(max_shake_scale-min_shake_scale)*min_shake_scale;
+						power = m*scale + c;
 					}
 					default: {
 						log::info("Tremor method invalid");
