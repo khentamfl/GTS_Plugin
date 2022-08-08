@@ -94,7 +94,8 @@ namespace Gts {
 				//
 				// FullTesting graph: https://www.desmos.com/calculator/qazgd0awcx
 				Formula formula = Formula::Unknown;
-				switch (config.GetMethod()) {
+				std::string_view formula_str = config.GetMethod();
+				switch (formula_str) {
 					case "linear":
 						formula = Formula::Linear;
 					case "smoothstep":
