@@ -16,17 +16,30 @@ namespace {
 		kCollisionCallback = 1001
 	};
 
-	typedef hkpWorldExtension* (*thkpWorld_findWorldExtension)(hkpWorld* a_world, hkpKnownWorldExtensionIds a_id);
-	static Relocation<thkpWorld_findWorldExtension> findWorldExtension{ RELOCATION_ID(60549, 61397) };
 
-	typedef bool (*thkpCollisionCallbackUtil_requireCollisionCallbackUtil)(hkpWorld* a_world);
-	static Relocation<thkpCollisionCallbackUtil_requireCollisionCallbackUtil> requireCollisionCallbackUtil{ RELOCATION_ID(60588, 61437) };
+	hkpWorldExtension* findWorldExtension(hkpWorld* a_world, WorldExtensionIds a_id) {
+		using func_t = decltype(&findWorldExtension);
+		REL::Relocation<func_t> func{ RELOCATION_ID(60549, 61397) };
+		return func(a_world, a_id);
+	}
 
-	typedef bool (*thkpCollisionCallbackUtil_releaseCollisionCallbackUtil)(hkpWorld* a_world);
-	static Relocation<thkpCollisionCallbackUtil_releaseCollisionCallbackUtil> releaseCollisionCallbackUtil{ RELOCATION_ID(61800, 62715) };
+	bool requireCollisionCallbackUtil(hkpWorld* a_world) {
+		using func_t = decltype(&requireCollisionCallbackUtil);
+		REL::Relocation<func_t> func{ RELOCATION_ID(60588, 61437) };
+		return func(a_world);
+	}
 
-	typedef void* (*thkpWorld_addContactListener)(RE::hkpWorld* a_world, RE::hkpContactListener* a_worldListener);
-	static REL::Relocation<thkpWorld_addContactListener> addContactListener{ RELOCATION_ID(60543, 61383) };
+	bool releaseCollisionCallbackUtil(hkpWorld* a_world) {
+		using func_t = decltype(&releaseCollisionCallbackUtil);
+		REL::Relocation<func_t> func{ RELOCATION_ID(61800, 62715) };
+		return func(a_world);
+	}
+
+	void addContactListener(RE::hkpWorld* a_world, RE::hkpContactListener* a_worldListener){
+		using func_t = decltype(&addContactListener);
+		REL::Relocation<func_t> func{ RELOCATION_ID(60543, 61383) };
+		return func(a_world, a_worldListener);
+	}
 
 	void removeContactListener(hkpWorld* a_this, hkpContactListener* a_worldListener)
 	{
@@ -41,11 +54,17 @@ namespace {
 		}
 	}
 
-	typedef void* (*thkpWorld_addWorldPostSimulationListener)(RE::hkpWorld* a_world, RE::hkpWorldPostSimulationListener* a_worldListener);
-	static REL::Relocation<thkpWorld_addWorldPostSimulationListener> addWorldPostSimulationListener{ RELOCATION_ID(60538, 61366) };
+	void addWorldPostSimulationListener(RE::hkpWorld* a_world, RE::hkpWorldPostSimulationListener* a_worldListener) {
+		using func_t = decltype(&addWorldPostSimulationListener);
+		REL::Relocation<func_t> func{ RELOCATION_ID(60538, 61366) };
+		return func(a_world, a_worldListener);
+	}
 
-	typedef void* (*thkpWorld_removeWorldPostSimulationListener)(RE::hkpWorld* a_world, RE::hkpWorldPostSimulationListener* a_worldListener);
-	static REL::Relocation<thkpWorld_removeWorldPostSimulationListener> removeWorldPostSimulationListener{ RELOCATION_ID(60539, 61367) };
+	void removeWorldPostSimulationListener(RE::hkpWorld* a_world, RE::hkpWorldPostSimulationListener* a_worldListener) {
+		using func_t = decltype(&removeWorldPostSimulationListener);
+		REL::Relocation<func_t> func{ RELOCATION_ID(60539, 61367) };
+		return func(a_world, a_worldListener);
+	}
 }
 
 namespace Gts {
