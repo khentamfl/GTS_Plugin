@@ -149,7 +149,7 @@ namespace Gts {
 
 				float intensity = power * falloff * tremor_scale;
 
-				float duration = 0.5; // intensity * 0.4;
+				float duration = intensity * 0.5;
 
 				log::info("Shake values at scale {}:", scale);
 				log::info("  - intensity: {}", intensity);
