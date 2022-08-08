@@ -10,10 +10,10 @@ tremor:
   # linear, smoothstep, softcore, cubic
   method: "linear"
   # Contolls falloff this is the scale at which falloff=50%
-  halfScale: 0.293274533
+  halfScale: 0.77
   # Controls the power at min/max scale
   powerAtMin: 0.0
-  powerAtMax: 8.647901403
+  powerAtMax: 6.99
   # Min/max scale points, this is just used for the powerAt dosen't min actual min/max
   maxScale: 30.0
   minScale: 0.0
