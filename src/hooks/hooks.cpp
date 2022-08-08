@@ -24,7 +24,7 @@ namespace Hooks
 		Hook_Player::Hook();
 		Hook_BGSImpactManager::Hook();
 		Hook_VM::Hook();
-		Hook_Havok::Hook();
+		Hook_Havok::Hook(trampoline);
 
 		using func_t = decltype(&IAnimationGraphManagerHolder::SetGraphVariableBool);
 		REL::Relocation<func_t> func{ RELOCATION_ID(32141, 32885) };

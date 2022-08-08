@@ -90,6 +90,11 @@ namespace Gts {
 			requireCollisionCallbackUtil(world->GetWorld2());
 			addContactListener(world->GetWorld2(), this);
 			addWorldPostSimulationListener(world->GetWorld2(), this);
+
+			RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->GetWorld2()->collisionFilter);
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCameraSphere)] = 0;
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] = 0;
+
 		}
 	}
 

@@ -1,4 +1,4 @@
-#include "hooks/main.h"
+#include "hooks/havok.h"
 #include "util.h"
 
 #include "managers/contact.h"
@@ -16,7 +16,7 @@ namespace Hooks
 		_ProcessHavokHitJobs = trampoline.write_call<5>(hook.address() + REL::Relocate(0x104, 0xFC), ProcessHavokHitJobs);
 	}
 
-	void Hook_Havok::ProcessHavokHitJobs(void* a1);
+	void Hook_Havok::ProcessHavokHitJobs(void* a1)
 	{
 		_ProcessHavokHitJobs(a1);
 
