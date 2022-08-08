@@ -93,18 +93,15 @@ namespace Gts {
 				// The equation to use
 				//
 				// FullTesting graph: https://www.desmos.com/calculator/qazgd0awcx
-				Formula formula = Formula::Unknown;
-				std::string_view formula_str = config.GetMethod();
-				switch (formula_str) {
-					case "linear":
-						formula = Formula::Linear;
-					case "smoothstep":
-						formula = Formula::Smooth;
-					case "softcore":
-						formula = Formula::SoftCore;
-					case "cubic":
-						formula = Formula::Power;
-				}
+				std::map<std::string, Formula> s_mapStringToForumlua =
+				{
+					{ "linear", Formula::Linear },
+					{ "smoothstep", Formula::Smooth },
+					{ "softcore", Formula::SoftCore },
+					{ "cubic", Formula::Power }
+				};
+				Formula formula = s_mapStringToForumlua[config.GetMethod()];
+
 				switch (formula) {
 					case Formula::Power:
 					{
