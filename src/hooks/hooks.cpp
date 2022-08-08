@@ -5,6 +5,7 @@
 #include "hooks/playercharacter.h"
 #include "hooks/impact.h"
 #include "hooks/vm.h"
+#include "hooks/havok.h"
 
 using namespace RE;
 
@@ -23,6 +24,7 @@ namespace Hooks
 		Hook_Player::Hook();
 		Hook_BGSImpactManager::Hook();
 		Hook_VM::Hook();
+		Hook_Havok::Hook();
 
 		using func_t = decltype(&IAnimationGraphManagerHolder::SetGraphVariableBool);
 		REL::Relocation<func_t> func{ RELOCATION_ID(32141, 32885) };
