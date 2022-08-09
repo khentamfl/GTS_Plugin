@@ -110,8 +110,6 @@ namespace {
 			{ "kItemPicker", COL_LAYER::kItemPicker },
 			{ "kLOS", COL_LAYER::kLOS },
 			{ "kPathingPick", COL_LAYER::kPathingPick },
-			{ "kUnused", COL_LAYER::kUnused },
-			{ "kUnused", COL_LAYER::kUnused },
 			{ "kSpellExplosion", COL_LAYER::kSpellExplosion },
 			{ "kDroppingPick", COL_LAYER::kDroppingPick },
 		};
