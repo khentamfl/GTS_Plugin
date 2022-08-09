@@ -123,7 +123,7 @@ namespace {
 
 	}
 
-	void sync_camera_collision_groups(hkpWorld* world) {
+	void sync_camera_collision_groups(NiPointer<bhkWorld> world) {
 		// Default groups:
 		//  CameraSphere Collision Groups
 		//   - Collides with kAcousticSpace
@@ -151,7 +151,7 @@ namespace {
 		//   - Collides with kTrees
 		if (!world) return;
 		FormID player_id = 0x14;
-		auto player_data = Persistent::GetSingleton() ::GetData(player_id);
+		auto player_data = Persistent::GetSingleton().GetData(player_id);
 		if (!player_data) return;
 		auto& camera_collisions = Persistent::GetSingleton().camera_collisions;
 
@@ -159,7 +159,7 @@ namespace {
 		this->world = world;
 		BSWriteLockGuard lock(world->worldLock);
 
-		RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->collisionFilter);
+		RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->GetWorld2()->collisionFilter);
 
 		if (!camera_collisions.enable_actor && scale >= camera_collisions.above_scale) {
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~COL_LAYER::kBiped;
@@ -281,7 +281,7 @@ namespace Gts {
 			contactListener.ensure_last();
 		}
 		if (world) {
-			sync_camera_collision_groups(world->GetWorld2());
+			sync_camera_collision_groups(world);
 		}
 	}
 }
