@@ -11,6 +11,7 @@ namespace {
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
+	inline const auto CameraCollisions = _byteswap_ulong('CAMC');
 }
 
 namespace Gts {
@@ -169,6 +170,22 @@ namespace Gts {
 				float npc_tremor_scale;
 				serde->ReadRecordData(&npc_tremor_scale, sizeof(npc_tremor_scale));
 				GetSingleton().npc_tremor_scale = npc_tremor_scale;
+			} else if (type == CameraCollisions) {
+				bool enable_trees;
+				serde->ReadRecordData(&enable_trees, sizeof(enable_trees));
+				GetSingleton().camera_collisions.enable_trees = enable_trees;
+				bool enable_debris;
+				serde->ReadRecordData(&enable_debris, sizeof(enable_debris));
+				GetSingleton().camera_collisions.enable_debris = enable_debris;
+				bool enable_terrain;
+				serde->ReadRecordData(&enable_terrain, sizeof(enable_terrain));
+				GetSingleton().camera_collisions.enable_terrain = enable_terrain;
+				bool enable_actor;
+				serde->ReadRecordData(&enable_actor, sizeof(enable_actor));
+				GetSingleton().camera_collisions.enable_actor = enable_actor;
+				float above_scale;
+				serde->ReadRecordData(&above_scale, sizeof(above_scale));
+				GetSingleton().camera_collisions.above_scale = above_scale;
 			} else {
 				log::warn("Unknown record type in cosave.");
 				__assume(false);
@@ -248,6 +265,21 @@ namespace Gts {
 		float npc_tremor_scale = GetSingleton().npc_tremor_scale;
 		serde->WriteRecordData(&npc_tremor_scale, sizeof(npc_tremor_scale));
 
+		if (!serde->OpenRecord(CameraCollisions, 0)) {
+			log::error("Unable to open camera collisions record to write cosave data.");
+			return;
+		}
+
+		bool enable_trees = GetSingleton().camera_collisions.enable_trees;
+		serde->WriteRecordData(&enable_trees, sizeof(enable_trees));
+		bool enable_debris = GetSingleton().camera_collisions.enable_debris;
+		serde->WriteRecordData(&enable_debris, sizeof(enable_debris));
+		bool enable_terrain = GetSingleton().camera_collisions.enable_terrain;
+		serde->WriteRecordData(&enable_terrain, sizeof(enable_terrain));
+		bool enable_actor = GetSingleton().camera_collisions.enable_actor;
+		serde->WriteRecordData(&enable_actor, sizeof(enable_actor));
+		float above_scale = GetSingleton().camera_collisions.above_scale;
+		serde->WriteRecordData(&above_scale, sizeof(above_scale));
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {

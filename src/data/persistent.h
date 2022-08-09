@@ -21,6 +21,14 @@ namespace Gts {
 		float effective_multi;
 	};
 
+	struct CameraCollisions {
+		bool enable_trees = false;
+		bool enable_debris = false;
+		bool enable_terrain = false;
+		bool enable_actor = true;
+		float above_scale = 5.0;
+	};
+
 	class Persistent {
 		public:
 			[[nodiscard]] static Persistent& GetSingleton() noexcept;
@@ -43,6 +51,7 @@ namespace Gts {
 				.a = 0.0,
 			};
 			SizeMethod size_method = SizeMethod::ModelScale;
+			CameraCollisions camera_collisions;
 		private:
 			Persistent() = default;
 

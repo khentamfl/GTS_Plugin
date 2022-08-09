@@ -3,6 +3,7 @@
 #include "papyrus/scale.h"
 #include "papyrus/height.h"
 #include "papyrus/events.h"
+#include "papyrus/camera.h"
 
 
 using namespace SKSE;
@@ -20,6 +21,7 @@ namespace Gts {
 		register_papyrus_scale(vm);
 		register_papyrus_height(vm);
 		register_papyrus_events(vm);
+		register_papyrus_camera(vm);
 		return true;
 	}
 }

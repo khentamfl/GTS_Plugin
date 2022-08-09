@@ -1,4 +1,5 @@
 #include "managers/contact.h"
+#include "data/persistent.h"
 
 #include "util.h"
 
@@ -121,6 +122,70 @@ namespace {
 		}
 
 	}
+
+	void sync_camera_collision_groups(hkpWorld* world) {
+		// Default groups:
+		//  CameraSphere Collision Groups
+		//   - Collides with kAcousticSpace
+		//   - Collides with kDebrisLarge
+		//   - Collides with kDroppingPick
+		//   - Collides with kItemPicker
+		//   - Collides with kPortal
+		//   - Collides with kShellCasting
+		//   - Collides with kWater
+		//  Camera Collision Groups
+		//   - Collides with kAnimStatic
+		//   - Collides with kBiped
+		//   - Collides with kCharController
+		//   - Collides with kCloudTrap
+		//   - Collides with kDebrisLarge
+		//   - Collides with kGround
+		//   - Collides with kItemPicker
+		//   - Collides with kLOS
+		//   - Collides with kStatic
+		//   - Collides with kTerrain
+		//   - Collides with kTransparent
+		//   - Collides with kTransparentSmallAnim
+		//   - Collides with kTransparentWall
+		//   - Collides with kTrap
+		//   - Collides with kTrees
+		if (!world) return;
+		FormID player_id = 0x14;
+		auto player_data = Persistent::GetSingleton() ::GetData(player_id);
+		if (!player_data) return;
+		auto& camera_collisions = Persistent::GetSingleton().camera_collisions;
+
+		float scale = player_data->target_scale;
+		this->world = world;
+		BSWriteLockGuard lock(world->worldLock);
+
+		RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->collisionFilter);
+
+		if (!camera_collisions.enable_actor && scale >= camera_collisions.above_scale) {
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~COL_LAYER::kBiped;
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~COL_LAYER::kCharController;
+		} else {
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= COL_LAYER::kBiped;
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= COL_LAYER::kCharController;
+		}
+		if (!camera_collisions.enable_debris && scale >= camera_collisions.above_scale) {
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~COL_LAYER::kDebrisLarge;
+		} else {
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= COL_LAYER::kDebrisLarge;
+		}
+		if (!camera_collisions.enable_trees && scale >= camera_collisions.above_scale) {
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~COL_LAYER::kTrees;
+		} else {
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= COL_LAYER::kTrees;
+		}
+		if (!camera_collisions.enable_terrain && scale >= camera_collisions.above_scale) {
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~COL_LAYER::kTerrain;
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~COL_LAYER::kGround;
+		} else {
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= COL_LAYER::kTerrain;
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= COL_LAYER::kGround;
+		}
+	}
 }
 
 namespace Gts {
@@ -165,15 +230,6 @@ namespace Gts {
 			requireCollisionCallbackUtil(world->GetWorld2());
 			addContactListener(world->GetWorld2(), this);
 			addWorldPostSimulationListener(world->GetWorld2(), this);
-
-			RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->GetWorld2()->collisionFilter);
-			log::info("CameraSphere Collision Groups");
-			print_collision_groups(filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCameraSphere)]);
-			log::info("Camera Collision Groups");
-			print_collision_groups(filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)]);
-			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCameraSphere)] = 0;
-			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] = 0;
-
 		}
 	}
 
@@ -223,6 +279,9 @@ namespace Gts {
 			contactListener.detach();
 			contactListener.attach(world);
 			contactListener.ensure_last();
+		}
+		if (world) {
+			sync_camera_collision_groups(world->GetWorld2());
 		}
 	}
 }
