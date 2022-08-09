@@ -65,28 +65,86 @@ namespace {
 		REL::Relocation<func_t> func{ RELOCATION_ID(60539, 61367) };
 		return func(a_world, a_worldListener);
 	}
+
+	void print_collision_groups(std::uint64_t flags) {
+		std::map<std::string, COL_LAYER> named_layers {
+			{ "kStatic", COL_LAYER::kStatic },
+			{ "kAnimStatic", COL_LAYER::kAnimStatic },
+			{ "kTransparent", COL_LAYER::kTransparent },
+			{ "kClutter", COL_LAYER::kClutter },
+			{ "kWeapon", COL_LAYER::kWeapon },
+			{ "kProjectile", COL_LAYER::kProjectile },
+			{ "kSpell", COL_LAYER::kSpell },
+			{ "kBiped", COL_LAYER::kBiped },
+			{ "kTrees", COL_LAYER::kTrees },
+			{ "kProps", COL_LAYER::kProps },
+			{ "kWater", COL_LAYER::kWater },
+			{ "kTrigger", COL_LAYER::kTrigger },
+			{ "kTerrain", COL_LAYER::kTerrain },
+			{ "kTrap", COL_LAYER::kTrap },
+			{ "kNonCollidable", COL_LAYER::kNonCollidable },
+			{ "kCloudTrap", COL_LAYER::kCloudTrap },
+			{ "kGround", COL_LAYER::kGround },
+			{ "kPortal", COL_LAYER::kPortal },
+			{ "kDebrisSmall", COL_LAYER::kDebrisSmall },
+			{ "kDebrisLarge", COL_LAYER::kDebrisLarge },
+			{ "kAcousticSpace", COL_LAYER::kAcousticSpace },
+			{ "kActorZone", COL_LAYER::kActorZone },
+			{ "kProjectileZone", COL_LAYER::kProjectileZone },
+			{ "kGasTrap", COL_LAYER::kGasTrap },
+			{ "kShellCasting", COL_LAYER::kShellCasting },
+			{ "kTransparentWall", COL_LAYER::kTransparentWall },
+			{ "kInvisibleWall", COL_LAYER::kInvisibleWall },
+			{ "kTransparentSmallAnim", COL_LAYER::kTransparentSmallAnim },
+			{ "kClutterLarge", COL_LAYER::kClutterLarge },
+			{ "kCharController", COL_LAYER::kCharController },
+			{ "kStairHelper", COL_LAYER::kStairHelper },
+			{ "kDeadBip", COL_LAYER::kDeadBip },
+			{ "kBipedNoCC", COL_LAYER::kBipedNoCC },
+			{ "kAvoidBox", COL_LAYER::kAvoidBox },
+			{ "kCollisionBox", COL_LAYER::kCollisionBox },
+			{ "kCameraSphere", COL_LAYER::kCameraSphere },
+			{ "kDoorDetection", COL_LAYER::kDoorDetection },
+			{ "kConeProjectile", COL_LAYER::kConeProjectile },
+			{ "kCamera", COL_LAYER::kCamera },
+			{ "kItemPicker", COL_LAYER::kItemPicker },
+			{ "kLOS", COL_LAYER::kLOS },
+			{ "kPathingPick", COL_LAYER::kPathingPick },
+			{ "kUnused", COL_LAYER::kUnused },
+			{ "kUnused", COL_LAYER::kUnused },
+			{ "kSpellExplosion", COL_LAYER::kSpellExplosion },
+			{ "kDroppingPick", COL_LAYER::kDroppingPick },
+		};
+		for (const auto& [key, value] : named_layers) {
+			auto layer_flag = (static_cast<uint64_t>(1) << static_cast<uint64_t>(value));
+			if ((flags & layer_flag) != 0) {
+				log::info(" - Collides with {}", key);
+			}
+		}
+
+	}
 }
 
 namespace Gts {
 
 	void ContactListener::ContactPointCallback(const hkpContactPointEvent& a_event)
 	{
-		log::info("ContactPointCallback");
+		// log::info("ContactPointCallback");
 	}
 
 	void ContactListener::CollisionAddedCallback(const hkpCollisionEvent& a_event)
 	{
-		log::info("CollisionAddedCallback");
+		// log::info("CollisionAddedCallback");
 	}
 
 	void ContactListener::CollisionRemovedCallback(const hkpCollisionEvent& a_event)
 	{
-		log::info("CollisionRemovedCallback");
+		// log::info("CollisionRemovedCallback");
 	}
 
 	void ContactListener::PostSimulationCallback(hkpWorld* a_world)
 	{
-		log::info("PostSimulationCallback");
+		// log::info("PostSimulationCallback");
 	}
 
 	void ContactListener::detach() {
@@ -111,6 +169,10 @@ namespace Gts {
 			addWorldPostSimulationListener(world->GetWorld2(), this);
 
 			RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->GetWorld2()->collisionFilter);
+			log::info("CameraSphere Collision Groups");
+			print_collision_groups(filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCameraSphere)]);
+			log::info("Camera Collision Groups");
+			print_collision_groups(filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)]);
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCameraSphere)] = 0;
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] = 0;
 
