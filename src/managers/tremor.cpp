@@ -152,13 +152,15 @@ namespace Gts {
 				float duration = power * tremor_scale * 0.5;
 				duration = smootherstep(0.2, 1.2, duration);
 
-				log::info("Shake values at scale {}:", scale);
-				log::info("  - intensity: {}", intensity);
-				log::info("  - power: {}", power);
-				log::info("  - falloff: {}", falloff);
-				log::info("  - tremor_scale: {}", tremor_scale);
-				log::info("  - duration: {}", duration);
-				log::info("  - distance: {}", distance);
+				if (actor->formID == 0x14) {
+					log::info("Shake values at scale {}:", scale);
+					log::info("  - intensity: {}", intensity);
+					log::info("  - power: {}", power);
+					log::info("  - falloff: {}", falloff);
+					log::info("  - tremor_scale: {}", tremor_scale);
+					log::info("  - duration: {}", duration);
+					log::info("  - distance: {}", distance);
+				}
 				if (intensity > 0.01 && duration > 0.01) {
 					shake_camera(actor, intensity, duration);
 
