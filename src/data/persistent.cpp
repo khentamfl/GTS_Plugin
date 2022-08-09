@@ -11,7 +11,7 @@ namespace {
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
-	inline const auto CameraCollisions = _byteswap_ulong('CAMC');
+	inline const auto CamCollisions = _byteswap_ulong('CAMC');
 }
 
 namespace Gts {
@@ -170,7 +170,7 @@ namespace Gts {
 				float npc_tremor_scale;
 				serde->ReadRecordData(&npc_tremor_scale, sizeof(npc_tremor_scale));
 				GetSingleton().npc_tremor_scale = npc_tremor_scale;
-			} else if (type == CameraCollisions) {
+			} else if (type == CamCollisions) {
 				bool enable_trees;
 				serde->ReadRecordData(&enable_trees, sizeof(enable_trees));
 				GetSingleton().camera_collisions.enable_trees = enable_trees;
@@ -265,7 +265,7 @@ namespace Gts {
 		float npc_tremor_scale = GetSingleton().npc_tremor_scale;
 		serde->WriteRecordData(&npc_tremor_scale, sizeof(npc_tremor_scale));
 
-		if (!serde->OpenRecord(CameraCollisions, 0)) {
+		if (!serde->OpenRecord(CamCollisions, 0)) {
 			log::error("Unable to open camera collisions record to write cosave data.");
 			return;
 		}
