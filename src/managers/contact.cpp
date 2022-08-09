@@ -92,7 +92,7 @@ namespace Gts {
 	void ContactListener::detach() {
 		if (world) {
 			BSWriteLockGuard lock(world->worldLock);
-			auto collisionCallbackExtension = findWorldExtension(world, WorldExtensionIds::kCollisionCallback);
+			auto collisionCallbackExtension = findWorldExtension(world->GetWorld2(), WorldExtensionIds::kCollisionCallback);
 			if (collisionCallbackExtension) {
 				releaseCollisionCallbackUtil(world->GetWorld2());
 			}
