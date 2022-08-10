@@ -279,6 +279,7 @@ namespace Gts {
 			RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->GetWorld2()->collisionFilter);
 			if (filter) {
 				print_collision_groups(filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBiped)]);
+				print_collision_groups(filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBipedNoCC)]);
 			}
 		}
 	}
