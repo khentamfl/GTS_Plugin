@@ -205,9 +205,10 @@ namespace Gts {
 			if (!actor_a) return;
 			Actor* actor_b = skyrim_cast<Actor*>(objref_b);
 			if (!actor_b) return;
-			auto name_a = objref_a->GetDisplayFullName();
+			if (actor_a == actor_b) return;
+			auto name_a = actor_a->GetDisplayFullName();
 			if (!name_a) return;
-			auto name_b = objref_b->GetDisplayFullName();
+			auto name_b = actor_b->GetDisplayFullName();
 			if (!name_b) return;
 			log::info("Colliding: {} with: {}", name_a, name_b);
 		}
