@@ -5,6 +5,14 @@
     <folder source="Plugin" destination="SKSE\Plugins" priority="0"/>
     <file source="Papyrus\GtsPlugin.pex" destination="Scripts\GtsPlugin.pex" priority="0"/>
     <file source="PapyrusSource\GtsPlugin.psc" destination="Source\Scripts\GtsPlugin.psc" priority="0"/>
+	<file source="Papyrus\GtsCamera.pex" destination="Scripts\GtsCamera.pex" priority="0"/>
+    <file source="PapyrusSource\GtsCamera.psc" destination="Source\Scripts\GtsCamera.psc" priority="0"/>
+	<file source="Papyrus\GtsScale.pex" destination="Scripts\GtsScale.pex" priority="0"/>
+    <file source="PapyrusSource\GtsScale.psc" destination="Source\Scripts\GtsScale.psc" priority="0"/>
+	<file source="Papyrus\GtsEvent.pex" destination="Scripts\GtsEvent.pex" priority="0"/>
+    <file source="PapyrusSource\GtsEvent.psc" destination="Source\Scripts\GtsEvent.psc" priority="0"/>
+	<file source="Papyrus\GtsHeight.pex" destination="Scripts\GtsHeight.pex" priority="0"/>
+    <file source="PapyrusSource\GtsHeight.psc" destination="Source\Scripts\GtsHeight.psc" priority="0"/>
   </requiredInstallFiles>
   <installSteps order="Explicit">
     <installStep name="Test ESP">
