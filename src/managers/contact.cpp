@@ -151,6 +151,7 @@ namespace {
 		//   - Collides with kTrees
 		if (!world) return;
 		PlayerCharacter* player = PlayerCharacter::GetSingleton();
+		if (!player) return;
 		auto player_data = Persistent::GetSingleton().GetData(player);
 		if (!player_data) return;
 		auto& camera_collisions = Persistent::GetSingleton().camera_collisions;
@@ -197,14 +198,19 @@ namespace Gts {
 		if (!rigid_b) return;
 		auto objref_a = rigid_a->GetUserData();
 		if (!objref_a) return;
-		auto name_a = objref_a->GetDisplayFullName();
-		if (!name_a) return;
-		log::info("Colliding: {}", name_a);
 		auto objref_b = rigid_b->GetUserData();
 		if (!objref_b) return;
-		auto name_b = objref_b->GetDisplayFullName();
-		if (!name_b) return;
-		log::info("  with: {}", name_b);
+		if (objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE) {
+			Actor* actor_a = skyrim_cast<Actor*>(objref_a);
+			if (!actor_a) return;
+			Actor* actor_b = skyrim_cast<Actor*>(objref_b);
+			if (!actor_b) return;
+			auto name_a = objref_a->GetDisplayFullName();
+			if (!name_a) return;
+			auto name_b = objref_b->GetDisplayFullName();
+			if (!name_b) return;
+			log::info("Colliding: {} with: {}", name_a, name_b);
+		}
 		// log::info("ContactPointCallback");
 	}
 
