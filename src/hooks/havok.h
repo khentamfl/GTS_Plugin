@@ -20,7 +20,7 @@ namespace Hooks
 				Ignore,    // Force the two objects to not collide
 			};
 
-			CollisionFilterComparisonResult CompareFilterInfo(bhkCollisionFilter* a_collisionFilter, uint32_t a_filterInfoA, uint32_t a_filterInfoB);
+			static CollisionFilterComparisonResult CompareFilterInfo(bhkCollisionFilter* a_collisionFilter, uint32_t a_filterInfoA, uint32_t a_filterInfoB);
 
 			static void ProcessHavokHitJobs(void* a1);
 			static inline REL::Relocation<decltype(ProcessHavokHitJobs)> _ProcessHavokHitJobs;

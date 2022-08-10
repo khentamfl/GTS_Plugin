@@ -41,6 +41,20 @@ namespace Hooks
 
 	Hook_Havok::CollisionFilterComparisonResult Hook_Havok::CompareFilterInfo(RE::bhkCollisionFilter* a_collisionFilter, uint32_t a_filterInfoA, uint32_t a_filterInfoB)
 	{
+		CollisionLayer layerA = static_cast<CollisionLayer>(a_filterInfoA & 0x7f);
+		CollisionLayer layerB = static_cast<CollisionLayer>(a_filterInfoB & 0x7f);
+
+		if ((layerA == CollisionLayer::kBiped || layerA == CollisionLayer::kBipedNoCC) && (layerB == CollisionLayer::kBiped || layerB == CollisionLayer::kBipedNoCC)) {
+			// Biped vs. biped
+			uint16_t groupA = a_filterInfoA >> 16;
+			uint16_t groupB = a_filterInfoB >> 16;
+			if (groupA == groupB) {
+				return CollisionFilterComparisonResult::Ignore;
+			}
+
+			return CollisionFilterComparisonResult::Collide;
+		}
+
 		return CollisionFilterComparisonResult::Continue;
 	}
 	bool Hook_Havok::bhkCollisionFilter_CompareFilterInfo1(RE::bhkCollisionFilter* a_this, uint32_t a_filterInfoA, uint32_t a_filterInfoB)
