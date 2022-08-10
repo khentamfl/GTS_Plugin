@@ -191,6 +191,20 @@ namespace Gts {
 
 	void ContactListener::ContactPointCallback(const hkpContactPointEvent& a_event)
 	{
+		auto rigid_a = a_event.bodies[0];
+		if (!rigid_a) return;
+		auto rigid_b = a_event.bodies[1];
+		if (!rigid_b) return;
+		auto objref_a = rigid_a->GetUserData();
+		if (!objref_a) return;
+		auto name_a = objref_a->GetDisplayFullName();
+		if (!name_a) return;
+		log::info("Colliding: {}", name_a);
+		auto objref_b = rigid_b->GetUserData();
+		if (!objref_b) return;
+		auto name_b = objref_b->GetDisplayFullName();
+		if (!name_b) return;
+		log::info("  with: {}", name_b);
 		// log::info("ContactPointCallback");
 	}
 
