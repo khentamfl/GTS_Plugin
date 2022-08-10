@@ -67,6 +67,19 @@ namespace {
 		return func(a_world, a_worldListener);
 	}
 
+	NiAVObject* getNodeFromCollidable(const RE::hkpCollidable* a_collidable) {
+		using func_t = decltype(&getNodeFromCollidable);
+		REL::Relocation<func_t> func{ RELOCATION_ID(76160, 77988) };
+		return func(a_collidable);
+	}
+
+	NiAVObject* getNodeFromCollidable(const RE::hkpRigidBody* a_rigidbody) {
+		const auto hkpCollidable = a_rigidbody->GetCollidable();
+		return hkpCollidable ? getNodeFromCollidable(hkpCollidable) : nullptr;
+	}
+
+
+
 	void print_collision_groups(std::uint64_t flags) {
 		std::map<std::string, COL_LAYER> named_layers {
 			{ "kStatic", COL_LAYER::kStatic },
@@ -211,6 +224,18 @@ namespace Gts {
 			auto name_b = actor_b->GetDisplayFullName();
 			if (!name_b) return;
 			log::info("Colliding: {} with: {}", name_a, name_b);
+			NiAVObject* node_a = getNodeFromCollidable(rigid_a);
+			if (!node_a) return;
+			NiAVObject* node_b = getNodeFromCollidable(rigid_b);
+			if (!node_b) return;
+			auto node_name_a = node_a->name;
+			if (!node_name_a.empty()) {
+				log::info("  - Node A: {}", node_name_a.c_str());
+			}
+			auto node_name_b = node_b->name;
+			if (!node_name_b.empty()) {
+				log::info("  - Node B: {}", node_name_b.c_str());
+			}
 		}
 		// log::info("ContactPointCallback");
 	}
