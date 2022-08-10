@@ -52,7 +52,7 @@ namespace {
 }
 
 namespace Gts {
-	bool register_papyrus_events(IVirtualMachine* vm) {
+	bool register_papyrus_camera(IVirtualMachine* vm) {
 		vm->RegisterFunction("SetEnableCollisionActor", PapyrusClass, SetEnableCollisionActor);
 		vm->RegisterFunction("GetEnableCollisionActor", PapyrusClass, GetEnableCollisionActor);
 		vm->RegisterFunction("SetEnableCollisionTree", PapyrusClass, SetEnableCollisionTree);
