@@ -16,5 +16,5 @@ Bool Function GetEnableCollisionTerrain() global native
 ; and above which the camera adheres to the settings above
 ;
 ; Value is stored in the cosave
-Function SetCollisionScale(float scale) global native
+Function SetCollisionScale(Float scale) global native
 Float Function GetCollisionScale() global native

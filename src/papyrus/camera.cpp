@@ -43,10 +43,12 @@ namespace {
 	}
 
 	void SetCollisionScale(StaticFunctionTag*, float scale) {
+		log::info("Setting Collision Scale: {}", scale);
 		Persistent::GetSingleton().camera_collisions.above_scale = scale;
 	}
 
 	float GetCollisionScale(StaticFunctionTag*) {
+		log::info("Getting Collision Scale: {}", Persistent::GetSingleton().camera_collisions.above_scale);
 		return Persistent::GetSingleton().camera_collisions.above_scale;
 	}
 }
