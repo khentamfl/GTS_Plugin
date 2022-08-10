@@ -169,6 +169,90 @@
           }
         }
       ]
+    },
+    {
+      "pageDisplayName": "Camera",
+      "content": [
+        {
+          "id": "bCollideActor:Camera",
+          "text": "Collide with Actor",
+          "type": "toggle",
+          "help": "Toggle for controlling camera collisions with actor at large scale.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          },
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "GtsCamera",
+            "function": "SetEnableCollisionActor",
+            "params": ["{value}"]
+          }
+        },
+        {
+          "id": "bCollideTree:Camera",
+          "text": "Collide with Tree",
+          "type": "toggle",
+          "help": "Toggle for controlling camera collisions with trees at large scale.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          },
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "GtsCamera",
+            "function": "SetEnableCollisionTree",
+            "params": ["{value}"]
+          }
+        },
+        {
+          "id": "bCollideDebris:Camera",
+          "text": "Collide with Debris",
+          "type": "toggle",
+          "help": "Toggle for controlling camera collisions with debris at large scale.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          },
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "GtsCamera",
+            "function": "SetEnableCollisionDebris",
+            "params": ["{value}"]
+          }
+        },
+        {
+          "id": "bCollideTerrain:Camera",
+          "text": "Collide with Terrain",
+          "type": "toggle",
+          "help": "Toggle for controlling camera collisions with terrain at large scale.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          },
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "GtsCamera",
+            "function": "SetEnableCollisionTerrain",
+            "params": ["{value}"]
+          }
+        },
+        {
+          "id": "fCollideScale:Camera",
+          "text": "Large Scale Size",
+          "type": "slider",
+          "help": "Scale at which player is considered large enough to warrent camera collision adjustments.",
+          "valueOptions": {
+            "min": 0,
+            "max": 30,
+            "step": 0.1,
+            "formatString": "{2}",
+            "sourceType": "ModSettingFloat"
+          },
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "GtsCamera",
+            "function": "SetCollisionScale",
+            "params": ["{value}"]
+          }
+        }
+      ]
     }
   ]
 }

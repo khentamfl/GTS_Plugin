@@ -12,6 +12,12 @@ Event OnConfigInit()
     GtsPlugin.SetGrowthHalfLife(PlayerRef, GetModSettingFloat("fPlayerGrowthHalfLife:Main"))
     GtsPlugin.SetIsHighHeelEnabled(GetModSettingBool("bEnableSpeedAdjustment:Main"))
     GtsPlugin.SetExperimentFloat(GetModSettingFloat("fExperiment:Main"))
+
+    GtsCamera.SetEnableCollisionActor(GetModSettingBool("bCollideActor:Camera"))
+    GtsCamera.SetEnableCollisionDebris(GetModSettingBool("bCollideDebris:Camera"))
+    GtsCamera.SetEnableCollisionTree(GetModSettingBool("bCollideTree:Camera"))
+    GtsCamera.SetEnableCollisionTerrain(GetModSettingBool("bCollideTerrain:Camera"))
+    GtsCamera.SetCollisionScale(GetModSettingFloat("fCollideScale:Camera"))
 EndEvent
 
 ; Event raised when a config menu is opened.
@@ -24,4 +30,10 @@ Event OnConfigOpen()
     SetModSettingFloat("fPlayerGrowthHalfLife:Main", GtsPlugin.GetGrowthHalfLife(PlayerRef))
     SetModSettingBool("bEnableSpeedAdjustment:Main", GtsPlugin.GetIsSpeedAdjusted())
     SetModSettingFloat("fExperiment:Main", GtsPlugin.GetExperimentFloat())
+
+    SetModSettingBool("bCollideActor:Camera", GtsCamera.GetEnableCollisionActor())
+    SetModSettingBool("bCollideDebris:Camera", GtsCamera.GetEnableCollisionDebris())
+    SetModSettingBool("bCollideTree:Camera", GtsCamera.GetEnableCollisionTree())
+    SetModSettingBool("bCollideTerrain:Camera", GtsCamera.GetEnableCollisionTerrain())
+    SetModSettingFloat("fCollideScale:Camera", GtsCamera.GetCollisionScale())
 EndEvent
