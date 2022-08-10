@@ -1,4 +1,6 @@
 #pragma once
+#include "hooks/hooks.h"
+
 using namespace RE;
 using namespace SKSE;
 
