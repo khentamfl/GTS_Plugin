@@ -109,11 +109,13 @@ namespace Gts {
 						float n = 3.0;
 						float k = 1.0/pow(max_shake_scale - min_shake_scale, n);
 						power = k*pow(scale - min_shake_scale, n)*(power_at_max-power_at_min) + power_at_min;
+						break;
 					}
 					case Formula::Smooth:
 					{
 						// Smooth step
 						power = smootherstep(min_shake_scale, max_shake_scale, scale)*(power_at_max-power_at_min) + power_at_min;
+						break;
 					}
 					case Formula::SoftCore:
 					{
@@ -134,6 +136,7 @@ namespace Gts {
 						};
 
 						power = soft_power(scale, softness);
+						break;
 					}
 					case Formula::Linear:
 					{
@@ -141,9 +144,12 @@ namespace Gts {
 						float m = (power_at_max-power_at_min)/(max_shake_scale-min_shake_scale);
 						float c = power_at_min-(power_at_max-power_at_min)/(max_shake_scale-min_shake_scale)*min_shake_scale;
 						power = m*scale + c;
+						break;
 					}
 					default: {
 						log::info("Tremor method invalid");
+						return;
+						break;
 					}
 				}
 
