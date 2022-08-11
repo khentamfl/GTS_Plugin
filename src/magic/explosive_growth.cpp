@@ -34,7 +34,7 @@ namespace Gts {
 			{
 				mod_target_scale(target, (0.00300 * progression_multiplier));
 			}
-			if (target->HasMagicEffect(growth1 && scale <= one) // Explosive Growth Part 1 (Small)
+			if (target->HasMagicEffect(growth1) && scale <= one) // Explosive Growth Part 1 (Small)
 			{
 				mod_target_scale(target, (0.00175 * progression_multiplier));
 			}
