@@ -150,6 +150,7 @@ namespace Gts {
 		auto objref_b = rigid_b->GetUserData();
 		if (!objref_b) return;
 		if (objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE) {
+			log::info("Both collisions are actors");
 			Actor* actor_a = skyrim_cast<Actor*>(objref_a);
 			if (!actor_a) return;
 			Actor* actor_b = skyrim_cast<Actor*>(objref_b);
@@ -350,8 +351,16 @@ namespace Gts {
 
 		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBiped)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBiped));
 		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBiped)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBipedNoCC));
+		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBiped)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kCharController));
+
 		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBipedNoCC)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBiped));
 		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBipedNoCC)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBipedNoCC));
+		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBipedNoCC)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kCharController));
+
+		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCharController)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBiped));
+		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCharController)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBipedNoCC));
+		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCharController)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kCharController));
+
 	}
 
 
