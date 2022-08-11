@@ -183,6 +183,11 @@ namespace Gts {
 				bool enable_actor;
 				serde->ReadRecordData(&enable_actor, sizeof(enable_actor));
 				GetSingleton().camera_collisions.enable_actor = enable_actor;
+				if (version >= 1) {
+					bool enable_static;
+					serde->ReadRecordData(&enable_static, sizeof(enable_static));
+					GetSingleton().camera_collisions.enable_static = enable_static;
+				}
 				float above_scale;
 				serde->ReadRecordData(&above_scale, sizeof(above_scale));
 				GetSingleton().camera_collisions.above_scale = above_scale;
@@ -265,7 +270,7 @@ namespace Gts {
 		float npc_tremor_scale = GetSingleton().npc_tremor_scale;
 		serde->WriteRecordData(&npc_tremor_scale, sizeof(npc_tremor_scale));
 
-		if (!serde->OpenRecord(CamCollisions, 0)) {
+		if (!serde->OpenRecord(CamCollisions, 1)) {
 			log::error("Unable to open camera collisions record to write cosave data.");
 			return;
 		}
@@ -278,6 +283,8 @@ namespace Gts {
 		serde->WriteRecordData(&enable_terrain, sizeof(enable_terrain));
 		bool enable_actor = GetSingleton().camera_collisions.enable_actor;
 		serde->WriteRecordData(&enable_actor, sizeof(enable_actor));
+		bool enable_static = GetSingleton().camera_collisions.enable_static;
+		serde->WriteRecordData(&enable_static, sizeof(enable_static));
 		float above_scale = GetSingleton().camera_collisions.above_scale;
 		serde->WriteRecordData(&above_scale, sizeof(above_scale));
 	}

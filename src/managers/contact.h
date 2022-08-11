@@ -24,6 +24,7 @@ namespace Gts {
 			void detach();
 			void attach(NiPointer<bhkWorld> world);
 			void ensure_last();
+			void sync_camera_collision_groups();
 	};
 
 	class ContactManager {
@@ -31,6 +32,7 @@ namespace Gts {
 			[[nodiscard]] static ContactManager& GetSingleton() noexcept;
 
 			void Update();
+			void UpdateCameraContacts();
 
 			ContactListener listener{};
 	};

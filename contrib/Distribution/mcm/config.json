@@ -234,6 +234,21 @@
           }
         },
         {
+          "id": "bCollideStatic:Camera",
+          "text": "Collide with Static",
+          "type": "toggle",
+          "help": "Toggle for controlling camera collisions with static objects at large scale.",
+          "valueOptions": {
+            "sourceType": "ModSettingBool"
+          },
+          "action": {
+            "type": "CallGlobalFunction",
+            "script": "GtsCamera",
+            "function": "SetEnableCollisionStatic",
+            "params": ["{value}"]
+          }
+        },
+        {
           "id": "fCollideScale:Camera",
           "text": "Large Scale Size",
           "type": "slider",

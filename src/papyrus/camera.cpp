@@ -42,6 +42,14 @@ namespace {
 		return Persistent::GetSingleton().camera_collisions.enable_terrain;
 	}
 
+	void SetEnableCollisionStatic(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().camera_collisions.enable_static = enabled;
+	}
+
+	bool GetEnableCollisionStatic(StaticFunctionTag*) {
+		return Persistent::GetSingleton().camera_collisions.enable_static;
+	}
+
 	void SetCollisionScale(StaticFunctionTag*, float scale) {
 		Persistent::GetSingleton().camera_collisions.above_scale = scale;
 	}
@@ -61,6 +69,8 @@ namespace Gts {
 		vm->RegisterFunction("GetEnableCollisionDebris", PapyrusClass, GetEnableCollisionDebris);
 		vm->RegisterFunction("SetEnableCollisionTerrain", PapyrusClass, SetEnableCollisionTerrain);
 		vm->RegisterFunction("GetEnableCollisionTerrain", PapyrusClass, GetEnableCollisionTerrain);
+		vm->RegisterFunction("SetEnableCollisionStatic", PapyrusClass, SetEnableCollisionStatic);
+		vm->RegisterFunction("GetEnableCollisionStatic", PapyrusClass, GetEnableCollisionStatic);
 		vm->RegisterFunction("SetCollisionScale", PapyrusClass, SetCollisionScale);
 		vm->RegisterFunction("GetCollisionScale", PapyrusClass, GetCollisionScale);
 

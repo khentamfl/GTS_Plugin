@@ -24,6 +24,7 @@ namespace Gts {
 	struct CameraCollisions {
 		bool enable_trees = false;
 		bool enable_debris = false;
+		bool enable_static = true;
 		bool enable_terrain = true;
 		bool enable_actor = false;
 		float above_scale = 5.0;

@@ -16,6 +16,7 @@ Event OnConfigInit()
     GtsCamera.SetEnableCollisionDebris(GetModSettingBool("bCollideDebris:Camera"))
     GtsCamera.SetEnableCollisionTree(GetModSettingBool("bCollideTree:Camera"))
     GtsCamera.SetEnableCollisionTerrain(GetModSettingBool("bCollideTerrain:Camera"))
+    GtsCamera.SetEnableCollisionStatic(GetModSettingBool("bCollideStatic:Camera"))
     GtsCamera.SetCollisionScale(GetModSettingFloat("fCollideScale:Camera"))
 EndEvent
 
@@ -34,5 +35,6 @@ Event OnConfigOpen()
     SetModSettingBool("bCollideDebris:Camera", GtsCamera.GetEnableCollisionDebris())
     SetModSettingBool("bCollideTree:Camera", GtsCamera.GetEnableCollisionTree())
     SetModSettingBool("bCollideTerrain:Camera", GtsCamera.GetEnableCollisionTerrain())
+    SetModSettingBool("bCollideStatic:Camera", GtsCamera.GetEnableCollisionStatic())
     SetModSettingFloat("fCollideScale:Camera", GtsCamera.GetCollisionScale())
 EndEvent
