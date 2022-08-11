@@ -22,9 +22,9 @@ namespace Gts {
 		float size_limit = SizeLimit->value;
 
 		if (target->HasPerk(extra_growth)) {
-		 one = 4;
-		 two = 8;
-		 three = 12;
+		 one = 4.0;
+		 two = 8.0;
+		 three = 12.0;
 		}
 		
 		float scale = get_visual_scale(target);
@@ -37,14 +37,17 @@ namespace Gts {
 			if (target->HasMagicEffect(growth3) && scale <= three) // Explosive Growth Part 3 (Strongest)
 			{
 				mod_target_scale(target, (0.00480 * progression_multiplier));
+				log::info("Scaling Actor");
 			}
 			else if (target->HasMagicEffect(growth2) && scale <= two) // Explosive Growth Part 2 (Medium)
 			{
 				mod_target_scale(target, (0.00300 * progression_multiplier));
+				log::info("Scaling Actor");
 			}
 			else if (target->HasMagicEffect(growth1) && scale <= one) // Explosive Growth Part 1 (Small)
 			{
 				mod_target_scale(target, (0.00175 * progression_multiplier));
+				log::info("Scaling Actor");
 			}
 			if (GrowthTick == 120.0)
 			{GrowthSound.Play();GrowthTick = 0.0;}
