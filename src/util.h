@@ -93,12 +93,9 @@ namespace Gts {
 		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
 		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
 		if (vm) {
-			log::info("Attempting camera shake: intensity: {} duration: {}", intensity, duration);
 			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
 			auto args = RE::MakeFunctionArguments(std::move(actor), std::move(intensity), std::move(duration));
 			vm->DispatchStaticCall("Game", "ShakeCamera", args, callback);
-		} else {
-			log::info("VM not avaliable");
 		}
 	}
 
@@ -108,7 +105,7 @@ namespace Gts {
 		if (vm) {
 			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
 			auto args = RE::MakeFunctionArguments(std::move(left_intensity), std::move(right_intensity), std::move(duration));
-			vm->DispatchStaticCall("Game", "shakeController", args, callback);
+			vm->DispatchStaticCall("Game", "ShakeController", args, callback);
 		}
 	}
 
