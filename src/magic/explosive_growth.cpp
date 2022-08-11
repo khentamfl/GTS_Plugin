@@ -46,7 +46,7 @@ namespace Gts {
 			{
 				mod_target_scale(target, (0.00175 * progression_multiplier));
 			}
-			for (Actor* target)
+			for (target)
 			{
 				if (GrowthTick == 120.0)
 				{GrowthSound.Play();GrowthTick = 0.0;}
