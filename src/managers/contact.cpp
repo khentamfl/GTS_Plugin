@@ -320,6 +320,48 @@ namespace Gts {
 		}
 	}
 
+	void ContactListener::enable_biped_collision() {
+		auto& world = this->world;
+		// kBiped Collisions
+		//  - Collides with kAnimStatic
+		//  - Collides with kCamera
+		//  - Collides with kCloudTrap
+		//  - Collides with kConeProjectile
+		//  - Collides with kDroppingPick
+		//  - Collides with kGround
+		//  - Collides with kInvisibleWall
+		//  - Collides with kItemPicker
+		//  - Collides with kLOS
+		//  - Collides with kSpell
+		//  - Collides with kSpellExplosion
+		//  - Collides with kStatic
+		//  - Collides with kTerrain
+		//  - Collides with kTransparent
+		//  - Collides with kTransparentSmallAnim
+		//  - Collides with kTransparentWall
+		//  - Collides with kTrap
+		//  - Collides with kTrees
+		//  - Collides with kTrigger
+		//  - Collides with kWater
+		// kBipedNoCC Collisions
+		//  - Collides with kCharController
+		//  - Collides with kClutter
+		//  - Collides with kConeProjectile
+		//  - Collides with kProjectile
+		//  - Collides with kProps
+		//  - Collides with kSpell
+		//  - Collides with kWeapon
+		if (!world) return;
+		BSWriteLockGuard lock(world->worldLock);
+
+		RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->GetWorld2()->collisionFilter);
+
+		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBiped)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBiped));
+		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBiped)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBipedNoCC));
+		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBipedNoCC)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBiped));
+		filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBipedNoCC)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBipedNoCC));
+	}
+
 
 	ContactManager& ContactManager::GetSingleton() noexcept {
 		static ContactManager instance;
@@ -340,6 +382,7 @@ namespace Gts {
 			contactListener.detach();
 			contactListener.attach(world);
 			contactListener.ensure_last();
+			contactListener.enable_biped_collision();
 		}
 		contactListener.sync_camera_collision_groups();
 	}

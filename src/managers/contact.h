@@ -25,6 +25,7 @@ namespace Gts {
 			void attach(NiPointer<bhkWorld> world);
 			void ensure_last();
 			void sync_camera_collision_groups();
+			void enable_biped_collision();
 	};
 
 	class ContactManager {
