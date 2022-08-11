@@ -214,7 +214,9 @@ namespace Gts {
 
 			RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->GetWorld2()->collisionFilter);
 			if (filter) {
+				log::info("kBiped Collisions");
 				print_collision_groups(filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBiped)]);
+				log::info("kBipedNoCC Collisions");
 				print_collision_groups(filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kBipedNoCC)]);
 			}
 		}
@@ -286,43 +288,33 @@ namespace Gts {
 		RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->GetWorld2()->collisionFilter);
 
 		if (!camera_collisions.enable_actor && scale >= camera_collisions.above_scale) {
-			log::info("Disable actor collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBiped));
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kCharController));
 		} else {
-			log::info("Enable actor collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kBiped));
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kCharController));
 		}
 		if (!camera_collisions.enable_debris && scale >= camera_collisions.above_scale) {
-			log::info("Disable debris collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kDebrisLarge));
 		} else {
-			log::info("Enable debris collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kDebrisLarge));
 		}
 		if (!camera_collisions.enable_trees && scale >= camera_collisions.above_scale) {
-			log::info("Disable tree collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kTrees));
 		} else {
-			log::info("Enable tree collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kTrees));
 		}
 		if (!camera_collisions.enable_terrain && scale >= camera_collisions.above_scale) {
-			log::info("Disable terrain collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kTerrain));
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kGround));
 		} else {
-			log::info("Enable terrain collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kTerrain));
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kGround));
 		}
 		if (!camera_collisions.enable_static && scale >= camera_collisions.above_scale) {
-			log::info("Disable static collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kStatic));
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kAnimStatic));
 		} else {
-			log::info("Enable static collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kStatic));
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kAnimStatic));
 		}
