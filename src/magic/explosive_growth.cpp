@@ -10,7 +10,7 @@ namespace Gts {
 
 		BGSPerk* extra_growth = find_form<BGSPerk>("GTS.esp|332563");
 		TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-		float progression_multiplier = progression_multiplier_global.value;
+		float progression_multiplier = progression_multiplier_global->value;
 
 		if (target.HasPerk(extra_growth)) {
 			one = 4;
@@ -23,7 +23,7 @@ namespace Gts {
 			EffectSetting* growth_three = find_form<EffectSetting>("GTS.esp|007928");
 			if (target->HasMagicEffect(growth_three) && scale <= three) // Explosive Growth Part 3 (Strongest)
 			{
-				mod_target_scale(target, (0.00480 * progression_multiplier))
+				mod_target_scale(target, (0.00480 * progression_multiplier));
 			}
 		}
 	}
