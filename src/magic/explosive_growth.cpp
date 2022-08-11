@@ -7,6 +7,7 @@ namespace Gts {
 		float one = 2.0;
 		float two = 4.0;
 		float three = 6.0;
+		float GrowthTick = 120.0
 
 		BGSPerk* extra_growth = find_form<BGSPerk>("GTS.esp|332563");
 		TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
@@ -15,7 +16,7 @@ namespace Gts {
 		BSSoundHandle GrowthSound = BSSoundHandle::BSSoundHandle();
 		auto audio_manager = BSAudioManager::GetSingleton();
 		BSISoundDescriptor* sound_descriptor = find_form<BSISoundDescriptor>("GTS.esp|271EF6");
-		audio_manager->BuildSoundDataFromDescriptor(ground_sound, sound_descriptor);
+		audio_manager->BuildSoundDataFromDescriptor(GrowthSound, sound_descriptor);
 		
 		float progression_multiplier = progression_multiplier_global->value;
 		float size_limit = SizeLimit->value;
@@ -29,6 +30,7 @@ namespace Gts {
 		float scale = get_visual_scale(target);
 		if (scale <= size_limit) 
 		{
+			GrowthTick -= 1.0
 			EffectSetting* growth3 = find_form<EffectSetting>("GTS.esp|007928"); // 3
 			EffectSetting* growth2 = find_form<EffectSetting>("GTS.esp|1E42A5"); // 2
 			EffectSetting* growth1 = find_form<EffectSetting>("GTS.esp|1E42A6"); // 1
@@ -36,17 +38,18 @@ namespace Gts {
 			{
 				mod_target_scale(target, (0.00480 * progression_multiplier));
 			}
-			if (target->HasMagicEffect(growth2) && scale <= two) // Explosive Growth Part 2 (Medium)
+			else if (target->HasMagicEffect(growth2) && scale <= two) // Explosive Growth Part 2 (Medium)
 			{
 				mod_target_scale(target, (0.00300 * progression_multiplier));
 			}
-			if (target->HasMagicEffect(growth1) && scale <= one) // Explosive Growth Part 1 (Small)
+			else if (target->HasMagicEffect(growth1) && scale <= one) // Explosive Growth Part 1 (Small)
 			{
 				mod_target_scale(target, (0.00175 * progression_multiplier));
 			}
-			for (target)
+			for (Actor* target)
 			{
-				GrowthSound.Play();
+				if (GrowthTick == 120.0)
+				{GrowthSound.Play();GrowthTick = 0.0}
 			}
 			
 		}
