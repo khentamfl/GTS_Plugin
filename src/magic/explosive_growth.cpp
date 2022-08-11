@@ -14,13 +14,17 @@ namespace Gts {
 		float progression_multiplier = progression_multiplier_global->value;
 		float size_limit = SizeLimit->value;
 
-		if (target.HasPerk->extra_growth) {
-			one = 4;
-			two = 8;
-			three = 12;
+		if (target->HasPerk(extra_growth))
+			
+		{
+		 one = 4;
+		 two = 8;
+		 three = 12;
 		}
+		
 		float scale = get_visual_scale(target);
-		if (scale <= size_limit) {
+		if (scale <= size_limit) 
+		{
 			EffectSetting* growth_three = find_form<EffectSetting>("GTS.esp|007928"); // 3
 			EffectSetting* growth_two = find_form<EffectSetting>("GTS.esp|1E42A5"); // 2
 			EffectSetting* growth_one = find_form<EffectSetting>("GTS.esp|1E42A6"); // 1
