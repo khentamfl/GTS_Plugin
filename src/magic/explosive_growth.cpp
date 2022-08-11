@@ -11,6 +11,12 @@ namespace Gts {
 		BGSPerk* extra_growth = find_form<BGSPerk>("GTS.esp|332563");
 		TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
 		TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
+		
+		BSSoundHandle GrowthSound = BSSoundHandle::BSSoundHandle();
+		auto audio_manager = BSAudioManager::GetSingleton();
+		BSISoundDescriptor* sound_descriptor = find_form<BSISoundDescriptor>("GTS.esp|271EF6");
+		audio_manager->BuildSoundDataFromDescriptor(ground_sound, sound_descriptor);
+		
 		float progression_multiplier = progression_multiplier_global->value;
 		float size_limit = SizeLimit->value;
 
@@ -38,6 +44,11 @@ namespace Gts {
 			{
 				mod_target_scale(target, (0.00175 * progression_multiplier));
 			}
+			for (target)
+			{
+				GrowthSound.Play();
+			}
+			
 		}
 	}
 }
