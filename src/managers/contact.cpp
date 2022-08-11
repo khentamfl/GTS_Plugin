@@ -201,10 +201,14 @@ namespace {
 			log::info("Disable terrain collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kTerrain));
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kGround));
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kStatic));
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] &= ~(static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kAnimStatic));
 		} else {
 			log::info("Enable terrain collision");
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kTerrain));
 			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kGround));
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kStatic));
+			filter->layerBitfields[static_cast<uint8_t>(COL_LAYER::kCamera)] |= (static_cast<uint64_t>(1) << static_cast<uint64_t>(COL_LAYER::kAnimStatic));
 		}
 	}
 }
