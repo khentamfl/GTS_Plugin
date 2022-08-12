@@ -47,11 +47,36 @@ namespace Gts {
 
 		this->smallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
 		
-		this->explosiveGrowth1 = find_form<EffectSetting>("GTS.esp|007928");
+		this->explosiveGrowth1 = find_form<EffectSetting>("GTS.esp|007928"); // < Growth Spurt shouts
 			
 		this->explosiveGrowth2 = find_form<EffectSetting>("GTS.esp|1E42A5");
 		
 		this->explosiveGrowth3 = find_form<EffectSetting>("GTS.esp|1E42A6");
+		///Shrink Spells
+		this->ShrinkPCButton = find_form<EffectSetting>("GTS.esp|10A6CF"); // <- Shrink PC in size on button press.
+		this->ShrinkBack = find_form<EffectSetting>("GTS.esp|005369"); // < - Spell that restores size back to normal.
+		this->ShrinkSpell = find_form<EffectSetting>("GTS.esp|002850"); // <- Grow while using spell
+		
+		this->ShrinkEnemy = find_form<EffectSetting>("GTS.esp|00387B");
+		this->ShrinkEnemyAOE = find_form<EffectSetting>("GTS.esp|0DCDC5");
+		this->ShrinkEnemyAOEMast = find_form<EffectSetting>("GTS.esp|0DCDCA");
+		this->SwordEnchant = find_form<EffectSetting>("GTS.esp|00FA9E");
+		///End
+		
+		///Ally/Grow Spells
+		this->SlowGrowth = find_form<EffectSetting>("GTS.esp|019C3D"); // <- slow growth spell
+		this->GrowthSpell = find_form<EffectSetting>("GTS.esp|0022EB"); // <- Grow while using spell
+		this->GrowPcButton = find_form<EffectSetting>("GTS.esp|002DB5"); // <- Grow PC in size on button press
+		
+		this->AllyGrowSize = find_form<EffectSetting>("GTS.esp|0058D5"); 
+		this->GrowAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE3");  // <- Makes ally grow for 2 sec
+		this->ShrinkAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE4"); // <- Makes ally shrink for 2 sec
+		this->AllyCrushGrowth = find_form<EffectSetting>("GTS.esp|2028B6"); // < Growth from Crushing
+		///End
+		
+		///Others
+		this->GlobalVoreGrowth = find_form<EffectSetting>("GTS.esp|216CCC"); // < Vore Growth, used for both PC and Followers 
+		///End
 
 		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
 
