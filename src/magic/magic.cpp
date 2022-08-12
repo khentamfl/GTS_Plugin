@@ -11,7 +11,7 @@ namespace Gts {
 
 	void MagicManager::poll() {
 		auto actors = find_actors();
-		auto& runtime = Runtime::GetSingeton();
+		auto& runtime = Runtime::GetSingleton();
 		for (auto actor: actors) {
 			auto effect_list =actor->GetActiveEffectList();
 			if (!effect_list) continue;
