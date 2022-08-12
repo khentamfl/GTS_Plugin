@@ -73,7 +73,7 @@ namespace Gts {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     float size_limit = SizeLimit->value;
     float casterScale = get_visual_scale(caster);
-	  if (casterScale < size_limit>) {
+	  if (casterScale < size_limit) {
 		  mod_target_scale(caster, 0.0025 * casterScale);
 	  }
       
