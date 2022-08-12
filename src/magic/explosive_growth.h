@@ -7,5 +7,5 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-  void explosive_growth(Actor* target);
+  void explosive_growth(Actor* caster);
 }
