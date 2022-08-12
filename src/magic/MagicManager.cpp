@@ -57,11 +57,11 @@ namespace Gts {
     float TargetScale = get_visual_scale(Target); 
     float casterScale = get_visual_scale(Caster);
 	  if (TargetScale > 0.10)
-	  {set_target_scale(target, TargetScale * 1 - 0.00280)}
+	  {set_target_scale(target, TargetScale * 1 - 0.00280);}
       
       if (CasterScale < size_limit)
    	 {
-	      set_target_scale(caster, casterScale + 0.00096)
+	      set_target_scale(caster, casterScale + 0.00096);
 	 }
   }
 }
