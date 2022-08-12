@@ -12,5 +12,5 @@ namespace Gts {
   void SwordOfSize(Actor* caster, Actor* target);
   void ShrinkPCFunction(Actor* caster);
   void GrowPCFunction(Actor* caster);
-  void SlowGrowthFunction(Actor* caster)
+  void SlowGrowthFunction(Actor* caster);
 }
