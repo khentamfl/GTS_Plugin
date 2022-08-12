@@ -26,10 +26,12 @@ namespace Gts {
 		 two = 8.0;
 		 three = 12.0;
 		}
+		log::info("Explosive Growth.cpp initialized");
 		
 		float scale = get_visual_scale(caster);
 		if (scale <= size_limit) 
 		{
+			log::info("Scale < size Limit");
 			GrowthTick -= 1.0;
 			EffectSetting* growth3 = find_form<EffectSetting>("GTS.esp|007928"); // 3
 			EffectSetting* growth2 = find_form<EffectSetting>("GTS.esp|1E42A5"); // 2
