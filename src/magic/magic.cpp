@@ -21,7 +21,7 @@ namespace Gts {
 				float elapsedSeconds = effect->elapsedSeconds;
 				float duration = effect->duration;
 
-				if (base_spell == find_form<EffectSetting>("GTS.esp|01234")) {
+				if (base_spell == find_form<EffectSetting>("GTS.esp|1E42A6")) {
 					explosive_growth(caster);
 				}
 			}
