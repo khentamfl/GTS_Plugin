@@ -4,7 +4,7 @@
 
 namespace Gts {
 	
-	void explosive_growth(Actor* caster) {
+	void explosive_growth1(Actor* caster) {
 		float one = 2.0;
 		float two = 4.0;
 		float three = 6.0;
