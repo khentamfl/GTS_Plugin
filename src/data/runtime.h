@@ -38,6 +38,32 @@ namespace Gts {
 			EffectSetting* explosiveGrowth2 = nullptr;
 		
 			EffectSetting* explosiveGrowth3 = nullptr;
+		
+		        ///Shrink Effects Start
+			EffectSetting* ShrinkPCButton = nullptr;
+			EffectSetting* ShrinkBack = nullptr;
+			EffectSetting* ShrinkSpell = nullptr;
+			
+			EffectSetting* ShrinkEnemy = nullptr;
+			EffectSetting* ShrinkEnemyAOE = nullptr;
+			EffectSetting* ShrinkEnemyAOEMast = nullptr;
+			EffectSetting* SwordEnchant = nullptr;
+		        ///End
+			
+			///Ally/Grow Spells 
+			EffectSetting* SlowGrowth = nullptr;
+			EffectSetting* GrowthSpell = nullptr;
+			EffectSetting* GrowPcButton = nullptr;
+			
+			EffectSetting* AllyGrowSize = nullptr;
+			EffectSetting* GrowAllySizeButton = nullptr;
+			EffectSetting* ShrinkAllySizeButton = nullptr;
+			EffectSetting* AllyCrushGrowth = nullptr;
+			///end
+		
+			///Others
+			EffectSetting* GlobalVoreGrowth = nullptr;
+			///End
 
 			BGSExplosion* footstepExplosion = nullptr;
 
