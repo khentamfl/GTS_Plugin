@@ -64,7 +64,7 @@ namespace Gts {
     float size_limit = SizeLimit->value;
     float casterScale = get_visual_scale(caster);
 	  if (casterScale > 0.25) {
-		  mod_target_scale(caster, -0.0025 * PCScale);
+		  mod_target_scale(caster, -0.0025 * casterScale);
 	  }
   }
 
@@ -74,7 +74,7 @@ namespace Gts {
     float size_limit = SizeLimit->value;
     float casterScale = get_visual_scale(caster);
 	  if (casterScale > 0.25) {
-		  mod_target_scale(caster, 0.0025 * PCScale);
+		  mod_target_scale(caster, 0.0025 * casterScale);
 	  }
       
   }

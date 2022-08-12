@@ -38,6 +38,17 @@ namespace Gts {
 				if (base_spell == runtime.GrowPcButton) {
 					GrowPCFunction(caster);
 				}
+
+				if (base_spell == runtime.ShrinkEnemy) {
+					ShrinkFoe(caster, target);
+				}
+				if (base_spell == runtime.ShrinkEnemyAoe) {
+					ShrinkFoeAoe(caster, target);
+				}
+				if (base_spell == runtime.ShrinkEnemyAoeMast) {
+					ShrinkFoeAoeMast(caster, target);
+				}
+
 				if (base_spell == runtime.SlowGrowth) {
 					SlowGrowthFunction(caster);
 				}
