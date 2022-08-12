@@ -3,7 +3,8 @@
 #include "scale/scale.h"
 
 namespace Gts {
-	void explosive_growth1(Actor* caster) {
+	
+	void explosive_growth(Actor* caster) {
 		float one = 2.0;
 		float two = 4.0;
 		float three = 6.0;
@@ -31,7 +32,6 @@ namespace Gts {
 		float scale = get_visual_scale(caster);
 		if (scale <= size_limit) 
 		{
-			log::info("Scale < size Limit");
 			GrowthTick -= 1.0;
 			EffectSetting* growth3 = find_form<EffectSetting>("GTS.esp|007928"); // 3
 			EffectSetting* growth2 = find_form<EffectSetting>("GTS.esp|1E42A5"); // 2
@@ -52,11 +52,6 @@ namespace Gts {
 		TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
 		TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 		
-		//BSSoundHandle GrowthSound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = find_form<BSISoundDescriptor>("GTS.esp|271EF6");
-		//audio_manager->BuildSoundDataFromDescriptor(GrowthSound, sound_descriptor);
-		
 		float progression_multiplier = progression_multiplier_global->value;
 		float size_limit = SizeLimit->value;
 
@@ -70,7 +65,6 @@ namespace Gts {
 		float scale = get_visual_scale(caster);
 		if (scale <= size_limit) 
 		{
-			log::info("Scale < size Limit");
 				mod_target_scale(caster, (0.00300 * progression_multiplier));
 				log::info("Scaling Actor");	
 		}
@@ -86,11 +80,6 @@ namespace Gts {
 		TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
 		TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 		
-		//BSSoundHandle GrowthSound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = find_form<BSISoundDescriptor>("GTS.esp|271EF6");
-		//audio_manager->BuildSoundDataFromDescriptor(GrowthSound, sound_descriptor);
-		
 		float progression_multiplier = progression_multiplier_global->value;
 		float size_limit = SizeLimit->value;
 
@@ -104,8 +93,7 @@ namespace Gts {
 		float scale = get_visual_scale(caster);
 		if (scale <= size_limit) 
 		{
-			log::info("Scale < size Limit");
-				mod_target_scale(caster, (0.00300 * progression_multiplier));
+				mod_target_scale(caster, (0.00175 * progression_multiplier));
 				log::info("Scaling Actor");	
 		}
 	}
