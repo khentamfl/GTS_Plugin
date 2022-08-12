@@ -7,7 +7,6 @@ namespace Gts {
 	void ShrinkFoe(Actor* caster, Actor* target) 
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
     float size_limit = SizeLimit->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
@@ -21,7 +20,6 @@ namespace Gts {
   void ShrinkFoeAoe(Actor* caster, Actor* target)
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
     float size_limit = SizeLimit->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
@@ -35,7 +33,6 @@ namespace Gts {
   void ShrinkFoeAoeMast(Actor* caster, Actor* target)
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
     float size_limit = SizeLimit->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
@@ -49,7 +46,6 @@ namespace Gts {
  void SwordOfSize(Actor* caster, Actor* target)
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
     float size_limit = SizeLimit->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
@@ -79,6 +75,19 @@ namespace Gts {
     float casterScale = get_visual_scale(caster);
 	  if (casterScale > 0.25) {
 		  mod_target_scale(caster, 0.0025 * PCScale);
+	  }
+      
+  }
+
+  void SlowGrowthFunction(Actor* caster)
+  {
+    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
+    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
+    float size_limit = SizeLimit->value;
+    float ProgressionMultiplier = progression_multiplier_global->value
+    float casterScale = get_visual_scale(caster);
+	  if (casterScale > 0.25) {
+		  mod_target_scale(caster, 0.00010 * ProgressionMultiplier);
 	  }
       
   }
