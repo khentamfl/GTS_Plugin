@@ -51,8 +51,8 @@ namespace Gts {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
     float size_limit = SizeLimit->value;
-    float TargetScale = get_visual_scale(Target); 
-    float casterScale = get_visual_scale(Caster);
+    float TargetScale = get_visual_scale(target); 
+    float casterScale = get_visual_scale(caster);
 	  if (TargetScale > 0.10) {
 		  set_target_scale(target, TargetScale * 1 - 0.00280);
 	  }
