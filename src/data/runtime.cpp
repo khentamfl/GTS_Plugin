@@ -46,9 +46,17 @@ namespace Gts {
 		this->xxlFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXXLFootstepR());
 
 		this->smallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
+		
+		this->explosiveGrowth1 = find_form<EffectSetting>("GTS.esp|007928");
+			
+		this->explosiveGrowth2 = find_form<EffectSetting>("GTS.esp|1E42A5");
+		
+		this->explosiveGrowth3 = find_form<EffectSetting>("GTS.esp|1E42A6");
 
 		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
 
 		this->hhBonus = find_form<BGSPerk>(Config::GetSingleton().GetPerks().GetHHBonus());
+		
+		this->
 	}
 }
