@@ -43,10 +43,10 @@ namespace Gts {
 				if (base_spell == runtime.ShrinkEnemy) {
 					ShrinkFoe(caster, target);
 				}
-				if (base_spell == runtime.ShrinkEnemyAoe) {
+				if (base_spell == runtime.ShrinkEnemyAOE) {
 					ShrinkFoeAoe(caster, target);
 				}
-				if (base_spell == runtime.ShrinkEnemyAoeMast) {
+				if (base_spell == runtime.ShrinkEnemyAOEMast) {
 					ShrinkFoeAoeMast(caster, target);
 				}
 
