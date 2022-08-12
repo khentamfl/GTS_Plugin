@@ -61,4 +61,26 @@ namespace Gts {
 	      set_target_scale(caster, casterScale + 0.00096);
 	 }
   }
+
+  void ShrinkPCFunction(Actor* caster)
+  {
+    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
+    float size_limit = SizeLimit->value;
+    float casterScale = get_visual_scale(caster);
+	  if (casterScale > 0.25) {
+		  mod_target_scale(caster, -0.0025 * PCScale);
+	  }
+  }
+
+  void GrowPCFunction(Actor* caster)
+  {
+    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
+    float size_limit = SizeLimit->value;
+    float casterScale = get_visual_scale(caster);
+	  if (casterScale > 0.25) {
+		  mod_target_scale(caster, 0.0025 * PCScale);
+	  }
+      
+  }
+
 }

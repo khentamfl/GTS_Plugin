@@ -32,6 +32,15 @@ namespace Gts {
 				else if (base_spell == runtime.explosiveGrowth3) {
 					explosive_growth3(caster);
 				}
+				if (base_spell == runtime.ShrinkPCButton) {
+					ShrinkPCFunction(caster);
+				}
+				if (base_spell == runtime.GrowPcButton) {
+					GrowPCFunction(caster);
+				}
+				if (base_spell == runtime.SlowGrowth) {
+					SlowGrowthFunction(caster);
+				}
 			}
 		}
 	}
