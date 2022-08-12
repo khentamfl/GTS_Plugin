@@ -58,7 +58,7 @@ namespace Gts {
 	 }
   }
 
-  void ShrinkPCFunction(Actor* caster)
+  void ShrinkPCFunction(Actor* caster) // <- Shrink in Size button
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     float size_limit = SizeLimit->value;
@@ -68,12 +68,12 @@ namespace Gts {
 	  }
   }
 
-  void GrowPCFunction(Actor* caster)
+  void GrowPCFunction(Actor* caster) // <- Grow in Size button
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     float size_limit = SizeLimit->value;
     float casterScale = get_visual_scale(caster);
-	  if (casterScale > 0.25) {
+	  if (casterScale < size_limit>) {
 		  mod_target_scale(caster, 0.0025 * casterScale);
 	  }
       
@@ -86,10 +86,8 @@ namespace Gts {
     float size_limit = SizeLimit->value;
     float ProgressionMultiplier = progression_multiplier_global->value;
     float casterScale = get_visual_scale(caster);
-	  if (casterScale > 0.25) {
-		  mod_target_scale(caster, 0.00010 * ProgressionMultiplier);
+	  if (casterScale < size_limit) {
+		  mod_target_scale(caster, 0.0010 * ProgressionMultiplier);
 	  }
-      
   }
-
 }

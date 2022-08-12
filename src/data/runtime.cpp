@@ -55,23 +55,29 @@ namespace Gts {
 		///Shrink Spells
 		this->ShrinkPCButton = find_form<EffectSetting>("GTS.esp|10A6CF"); // <- Shrink PC in size on button press.
 		this->ShrinkBack = find_form<EffectSetting>("GTS.esp|005369"); // < - Spell that restores size back to normal.
-		this->ShrinkSpell = find_form<EffectSetting>("GTS.esp|002850"); // <- Grow while using spell
+		this->ShrinkBackNPC = find_form<EffectSetting>("GTS.esp|00536C"); // < - Spell that restores size back to normal, for NPC.
+		this->ShrinkSpell = find_form<EffectSetting>("GTS.esp|002850"); // <- Shrink Self over time [Hands]
+		this->ShrinkAlly = find_form<EffectSetting>("GTS.esp|0058D1"); // <- Shrink ally without hostile damage and no aggro.
 		
 		this->ShrinkEnemy = find_form<EffectSetting>("GTS.esp|00387B");
 		this->ShrinkEnemyAOE = find_form<EffectSetting>("GTS.esp|0DCDC5");
 		this->ShrinkEnemyAOEMast = find_form<EffectSetting>("GTS.esp|0DCDCA");
 		this->SwordEnchant = find_form<EffectSetting>("GTS.esp|00FA9E");
+
+		this->ShrinkToNothing = find_form<EffectSetting>("GTS.esp|009979"); // <- Absorbs someone
 		///End
 		
 		///Ally/Grow Spells
-		this->SlowGrowth = find_form<EffectSetting>("GTS.esp|019C3D"); // <- slow growth spell
-		this->GrowthSpell = find_form<EffectSetting>("GTS.esp|0022EB"); // <- Grow while using spell
+		this->SlowGrowth = find_form<EffectSetting>("GTS.esp|019C3D"); // <- slow growth spell [Hands]. Release and grow over time.
+		this->GrowthSpell = find_form<EffectSetting>("GTS.esp|0022EB"); // <- Grow Spell [Hands]
 		this->GrowPcButton = find_form<EffectSetting>("GTS.esp|002DB5"); // <- Grow PC in size on button press
 		
-		this->AllyGrowSize = find_form<EffectSetting>("GTS.esp|0058D5"); 
-		this->GrowAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE3");  // <- Makes ally grow for 2 sec
-		this->ShrinkAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE4"); // <- Makes ally shrink for 2 sec
-		this->AllyCrushGrowth = find_form<EffectSetting>("GTS.esp|2028B6"); // < Growth from Crushing
+		this->AllyGrowSize = find_form<EffectSetting>("GTS.esp|0058D5");  // <- Increase Ally Size [Hands]
+
+		this->GrowAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE3");  // <- Makes ally grow for 2 sec on button press.
+		this->ShrinkAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE4"); // <- Makes ally shrink for 2 sec on button press.
+
+		this->AllyCrushGrowth = find_form<EffectSetting>("GTS.esp|2028B6"); // < Grow on Crush. NPC only. Player triggers CrushGrowth on crushing someone via Crush() function in SP.
 		///End
 		
 		///Others
@@ -79,6 +85,8 @@ namespace Gts {
 		///End
 
 		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
+
+		this->GrowthOnHitPerk = find_form<BGSPerk>("GTS.esp|30EE52");
 
 		this->hhBonus = find_form<BGSPerk>(Config::GetSingleton().GetPerks().GetHHBonus());
 		
