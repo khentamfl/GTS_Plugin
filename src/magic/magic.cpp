@@ -1,7 +1,7 @@
 #include "magic/magic.h"
 #include "util.h"
 #include "magic/explosive_growth.h"
-#include “data/runtime.h”
+#include "data/runtime.h"
 
 namespace Gts {
 	MagicManager& MagicManager::GetSingleton() noexcept {
