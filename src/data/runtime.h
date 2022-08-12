@@ -42,12 +42,16 @@ namespace Gts {
 		        ///Shrink Effects Start
 			EffectSetting* ShrinkPCButton = nullptr;
 			EffectSetting* ShrinkBack = nullptr;
+			EffectSetting* ShrinkBackNPC = nullptr;
 			EffectSetting* ShrinkSpell = nullptr;
+			EffectSetting* ShrinkAlly = nullptr;
 			
 			EffectSetting* ShrinkEnemy = nullptr;
 			EffectSetting* ShrinkEnemyAOE = nullptr;
 			EffectSetting* ShrinkEnemyAOEMast = nullptr;
 			EffectSetting* SwordEnchant = nullptr;
+
+			EffectSetting* ShrinkToNothing = nullptr;
 		        ///End
 			
 			///Ally/Grow Spells 
@@ -66,6 +70,8 @@ namespace Gts {
 			///End
 
 			BGSExplosion* footstepExplosion = nullptr;
+
+			BGSPerk* GrowthOnHitPerk = nullptr;
 
 			BGSPerk* hhBonus = nullptr;
 		
