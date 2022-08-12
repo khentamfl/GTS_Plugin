@@ -8,13 +8,13 @@ namespace Gts {
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float TargetScale = Get_Visual_Scale(Target); 
-    float CasterScale = Get_Visual_Scale(Caster);
-    SetTargetScale(target, TargetScale * 0.99935)
+    float TargetScale = get_visual_scale(Target); 
+    float casterScale = get_visual_scale(Caster);
+    set_target_Scale(target, TargetScale * 0.99935)
 	    
       if (CasterScale < SizeLimit)
    	 {
-	      SetTargetScale(Caster, casterScale + 0.000015)
+	      set_target_scale(Caster, casterScale + 0.000015)
 	 }
   }
   
@@ -22,13 +22,13 @@ namespace Gts {
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float TargetScale = Get_Visual_Scale(Target); 
-    float CasterScale = Get_Visual_Scale(Caster);
-    SetTargetScale(target, TargetScale * 0.99905) //- ((ShrinkRateTotal * SMTRate) * 1 * Efficiency))
+    float TargetScale = get_visual_scale(Target); 
+    float casterScale = get_visual_scale(Caster);
+    Set_Target_Scale(target, TargetScale * 0.99905) //- ((ShrinkRateTotal * SMTRate) * 1 * Efficiency))
       
     if (CasterScale < SizeLimit)
    	 {
-	    SetTargetScale(Caster, casterScale + 0.000020)
+	    set_target_scale(Caster, casterScale + 0.000020)
     	 }
   }
   
@@ -36,13 +36,13 @@ namespace Gts {
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float TargetScale = Get_Visual_Scale(Target); 
-    float CasterScale = Get_Visual_Scale(Caster);
-    SetTargetScale(target, TargetScale * 0.99705)
+    float TargetScale = get_visual_scale(Target); 
+    float casterScale = get_visual_scale(Caster);
+    set_target_scale(target, TargetScale * 0.99705)
       
       if (CasterScale < SizeLimit)
    	 {
-	      SetTargetScale(Caster, casterScale + 0.000025)
+	      set_target_scale(Caster, casterScale + 0.000025)
 	 }
   }
 			     
@@ -50,14 +50,14 @@ namespace Gts {
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float TargetScale = Get_Visual_Scale(Target); 
-    float CasterScale = Get_Visual_Scale(Caster);
+    float TargetScale = get_visual_scale(Target); 
+    float CasterScale = get_visual_scale(Caster);
 	  if (TargetScale > 0.10)
-	  {SetTargetScale(Target, TargetScale * 1 - 0.00280)}
+	  {set_target_scale(Target, TargetScale * 1 - 0.00280)}
       
       if (CasterScale < SizeLimit)
    	 {
-	      SetTargetScale(Caster, casterScale + 0.00096)
+	      set_target_scale(Caster, casterScale + 0.00096)
 	 }
   }
 }
