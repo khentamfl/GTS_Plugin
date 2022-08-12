@@ -8,11 +8,12 @@ namespace Gts {
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
+    float size_limit = SizeLimit->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
-    set_target_Scale(target, TargetScale * 0.99935);
+    set_target_scale(target, TargetScale * 0.99935);
 	    
-      if (CasterScale < SizeLimit)
+      if (CasterScale < size_limit)
    	 {
 	      set_target_scale(caster, casterScale + 0.000015);
 	 }
@@ -22,11 +23,12 @@ namespace Gts {
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
+    float size_limit = SizeLimit->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
     set_target_scale(target, TargetScale * 0.99905); //- ((ShrinkRateTotal * SMTRate) * 1 * Efficiency))
       
-    if (CasterScale < SizeLimit)
+    if (CasterScale < size_limit)
    	 {
 	    set_target_scale(caster, casterScale + 0.000020);
     	 }
@@ -36,11 +38,12 @@ namespace Gts {
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
+    float size_limit = SizeLimit->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
     set_target_scale(target, TargetScale * 0.99705);
       
-      if (CasterScale < SizeLimit)
+      if (CasterScale < size_limit)
    	 {
 	      set_target_scale(caster, casterScale + 0.000025);
 	 }
@@ -50,12 +53,13 @@ namespace Gts {
   {
     TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
     TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
+    float size_limit = SizeLimit->value;
     float TargetScale = get_visual_scale(Target); 
     float casterScale = get_visual_scale(Caster);
 	  if (TargetScale > 0.10)
 	  {set_target_scale(target, TargetScale * 1 - 0.00280)}
       
-      if (CasterScale < SizeLimit)
+      if (CasterScale < size_limit)
    	 {
 	      set_target_scale(caster, casterScale + 0.00096)
 	 }
