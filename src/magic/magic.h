@@ -21,4 +21,11 @@ namespace Gts {
 		const auto dataHandler = RE::TESDataHandler::GetSingleton();
 		return dataHandler ? dataHandler->LookupForm<T>(relativeID, plugin) : nullptr;
 	}
+
+	class MagicManager {
+		public:
+			[[nodiscard]] static MagicManager& GetSingleton() noexcept;
+
+			void poll();
+	};
 }

@@ -2,6 +2,7 @@
 #include "util.h"
 
 #include "managers/GtsManager.h"
+#include "magic/magic.h"
 
 using namespace RE;
 using namespace SKSE;
@@ -20,8 +21,10 @@ namespace Hooks
 	{
 		_Update(a_this, a2);
 		auto& manager = GtsManager::GetSingleton();
+		auto& magic = MagicManager::GetSingleton();
 		activate_mainthread_mode();
 		manager.poll();
+		magic.poll();
 		deactivate_mainthread_mode();
 	}
 }
