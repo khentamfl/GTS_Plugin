@@ -6,7 +6,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-  void Shrink(Actor* caster, Actor* Target);
-  void ShrinkAoe(Actor* caster, Actor* Target);
-  void ShrinkAoeMast(Actor* caster, Actor* Target);
+  void ShrinkFoe(Actor* caster, Actor* Target);
+  void ShrinkFoeAoe(Actor* caster, Actor* Target);
+  void ShrinkFoeAoeMast(Actor* caster, Actor* Target);
 }
