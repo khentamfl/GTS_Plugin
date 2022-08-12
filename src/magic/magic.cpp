@@ -1,6 +1,7 @@
 #include "magic/magic.h"
 #include "util.h"
 #include "magic/explosive_growth.h"
+#include "magic/MagicManager.h"
 #include "data/runtime.h"
 
 namespace Gts {
