@@ -57,6 +57,5 @@ namespace Gts {
 
 		this->hhBonus = find_form<BGSPerk>(Config::GetSingleton().GetPerks().GetHHBonus());
 		
-		this->
 	}
 }
