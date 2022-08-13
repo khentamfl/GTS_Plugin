@@ -12,6 +12,7 @@ namespace Gts {
 		float three = 4.0;
 		float GrowthTick = 120.0;
 		float BonusGrowth = 1.0;
+		float progression_multiplier = runtime.ProgressionMultiplier->value;
 
 		
 		//BSSoundHandle GrowthSound = BSSoundHandle::BSSoundHandle();
@@ -19,7 +20,7 @@ namespace Gts {
 		//BSISoundDescriptor* sound_descriptor = find_form<BSISoundDescriptor>("GTS.esp|271EF6");
 		//audio_manager->BuildSoundDataFromDescriptor(GrowthSound, sound_descriptor);
 		
-		float size_limit = runtime.SizeLimit->value;
+		float size_limit = runtime.sizeLimit->value;
 
 		if (caster->HasPerk(runtime.ExtraGrowthMax)) {
 		 one = 6.0;
@@ -48,6 +49,7 @@ namespace Gts {
 		float three = 4.0;
 		float GrowthTick = 120.0;
 		float BonusGrowth = 1.0;
+		float progression_multiplier = runtime.ProgressionMultiplier->value;
 
 		
 		//BSSoundHandle GrowthSound = BSSoundHandle::BSSoundHandle();
@@ -55,7 +57,7 @@ namespace Gts {
 		//BSISoundDescriptor* sound_descriptor = find_form<BSISoundDescriptor>("GTS.esp|271EF6");
 		//audio_manager->BuildSoundDataFromDescriptor(GrowthSound, sound_descriptor);
 		
-		float size_limit = runtime.SizeLimit->value;
+		float size_limit = runtime.sizeLimit->value;
 
 		if (caster->HasPerk(runtime.ExtraGrowthMax)) {
 		 one = 6.0;
@@ -83,6 +85,7 @@ namespace Gts {
 		float three = 4.0;
 		float GrowthTick = 120.0;
 		float BonusGrowth = 1.0;
+		float progression_multiplier = runtime.ProgressionMultiplier->value;
 
 		
 		//BSSoundHandle GrowthSound = BSSoundHandle::BSSoundHandle();
@@ -90,7 +93,7 @@ namespace Gts {
 		//BSISoundDescriptor* sound_descriptor = find_form<BSISoundDescriptor>("GTS.esp|271EF6");
 		//audio_manager->BuildSoundDataFromDescriptor(GrowthSound, sound_descriptor);
 		
-		float size_limit = runtime.SizeLimit->value;
+		float size_limit = runtime.sizeLimit->value;
 
 		if (caster->HasPerk(runtime.ExtraGrowthMax)) {
 		 one = 6.0;
