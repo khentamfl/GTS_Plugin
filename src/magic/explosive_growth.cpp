@@ -30,7 +30,7 @@ namespace Gts {
 		log::info("Explosive Growth.cpp initialized");
 		
 		float scale = get_visual_scale(caster);
-		if (scale <= size_limit && scale < three) 
+		if (scale <= size_limit && scale < one) 
 		{
 		      mod_target_scale(caster, (0.00480 * progression_multiplier));	
 		}
@@ -85,7 +85,7 @@ namespace Gts {
 		log::info("Explosive Growth.cpp initialized");
 		
 		float scale = get_visual_scale(caster);
-		if (scale <= size_limit && scale < one) 
+		if (scale <= size_limit && scale < three) 
 		{
 				mod_target_scale(caster, (0.00175 * progression_multiplier));
 				log::info("Scaling Actor");	

@@ -24,14 +24,14 @@ namespace Gts {
 				float elapsedSeconds = effect->elapsedSeconds;
 				float duration = effect->duration;
 
-				if (base_spell == runtime.explosiveGrowth1) {
-					explosive_growth1(caster);
+				if (base_spell == runtime.explosiveGrowth3) {
+					explosive_growth3(caster);
 				}
 				else if (base_spell == runtime.explosiveGrowth2) {
 					explosive_growth2(caster);
 				}
-				else if (base_spell == runtime.explosiveGrowth3) {
-					explosive_growth3(caster);
+				else if (base_spell == runtime.explosiveGrowth1) {
+					explosive_growth1(caster);
 				}
 				if (base_spell == runtime.ShrinkPCButton) {
 					ShrinkPCFunction(caster);
@@ -62,7 +62,7 @@ namespace Gts {
 					ShrinkSpellFunction(caster);
 				}
 
-				if (base_spell == runtime.AllyGrowSizeMGEF) {
+				if (base_spell == runtime.GrowAlly) {
 					GrowAllyFunction(caster, target);
 				}
 
