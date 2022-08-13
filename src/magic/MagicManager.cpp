@@ -331,9 +331,9 @@ namespace Gts {
     else if (runtime.ChosenGameMode->value== 2.0 && Scale > 1.0)
     {set_target_scale(Player, Scale * (0.99985 - (ShrinkRate * 0.25)));}
     else if (runtime.ChosenGameMode->value == 3.0 && Scale < size_limit)
-    { if (Player.IsInCombat() == true)
+    { if (Player->IsInCombat() == true)
       {set_target_scale(Player, Scale * (1.00008 + (GrowthRate * 0.17)));}
-      else if (Player.IsInCombat() == false)
+      else if (Player->IsInCombat() == false)
       {set_target_scale(Player, Scale * (0.99981 + (ShrinkRate * 0.34)));}
   }
   }
@@ -350,10 +350,11 @@ namespace Gts {
     else if (runtime.ChosenGameModeNPC->value == 2.0 && Scale > 1.0)
     {set_target_scale(Receiver, Scale * (0.99985 - (ShrinkRate * 0.25)));}
     else if (runtime.ChosenGameModeNPC->value == 3.0 && Scale < size_limit)
-    { if (Receiver.IsInCombat() == true)
+    { if (Receiver->IsInCombat() == true)
       {set_target_scale(Receiver, Scale * (1.00008 + (GrowthRate * 0.17)));}
-      else if (Receiver.IsInCombat() == false)
+      else if (Receiver->IsInCombat() == false)
       {set_target_scale(Receiver, Scale * (0.99981 + (ShrinkRate * 0.34)));}
   }
+}
 
 }
