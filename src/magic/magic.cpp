@@ -23,7 +23,9 @@ namespace Gts {
 				float magnitude = effect->magnitude;
 				float elapsedSeconds = effect->elapsedSeconds;
 				float duration = effect->duration;
-				ManageGameModePC(); ManageGameModeNPC(actor)
+				ManageGameModePC(); 
+				if (target.IsPlayerTeammate())
+				{ManageGameModeNPC(actor)}
 				if (base_spell == runtime.explosiveGrowth3) {
 					explosive_growth3(caster);
 				}
