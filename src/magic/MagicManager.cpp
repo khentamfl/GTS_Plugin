@@ -32,7 +32,8 @@ namespace Gts {
 
     float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
 
-
+    if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
+    {CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
     set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate) * Efficiency));
 	    
       if (casterScale < size_limit) {
@@ -66,6 +67,9 @@ namespace Gts {
     {AdditionalShrinkValue = 2.0;}
 
     float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+
+   if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
+    {CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
 
     set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.12) * Efficiency));
       
@@ -101,6 +105,8 @@ namespace Gts {
 
     float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
 
+    if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
+    {CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
 
     set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.35) * Efficiency));
 	    
@@ -133,6 +139,9 @@ namespace Gts {
     {AdditionalShrinkValue = 1.33;}
     else if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
+
+     if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
+    {CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
 
     float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
 	  if (TargetScale > 0.10) {
