@@ -109,8 +109,8 @@ namespace Gts {
     if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    //if (TargetScale < 0.25 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
-    //{ShrinkToNothing->CastSpell(caster, target)}
+    if (TargetScale < 0.25 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
+    {caster->magicCasters[SlotTypes::kLeftHand]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
 
     float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
