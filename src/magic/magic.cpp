@@ -24,8 +24,8 @@ namespace Gts {
 				float elapsedSeconds = effect->elapsedSeconds;
 				float duration = effect->duration;
 				ManageGameModePC(); 
-				if (actor->IsPlayerTeammate())
-				{ManageGameModeNPC(actor);}
+				if (base_spell == runtime.GtsMarkAlly)
+				{ManageGameModeNPC(target);}
 				if (base_spell == runtime.explosiveGrowth3) {
 					explosive_growth3(caster);
 				}

@@ -78,6 +78,7 @@ namespace Gts {
 		this->ShrinkAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE4"); // <- Makes ally shrink for 2 sec on button press.
 
 		this->AllyCrushGrowth = find_form<EffectSetting>("GTS.esp|2028B6"); // < Grow on Crush. NPC only. Player triggers CrushGrowth on crushing someone via Crush() function in SP.
+		this->GtsMarkAlly = find_form<EffectSetting>("GTS.esp|2EB746"); // < Marks ally when changing game mode
 		///End
 		
 		///Others
