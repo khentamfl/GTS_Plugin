@@ -19,7 +19,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (target.getDisplayName().includes("ragon"))
+    else if (target->getDisplayName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -30,7 +30,7 @@ namespace Gts {
     else if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    float AlterationLevel = caster->getActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+    float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
 
 
     set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate) * Efficiency));
@@ -53,7 +53,7 @@ namespace Gts {
     if (Efficiency >= 1.25)
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
-        {Efficiency = 0.25}
+        {Efficiency = 0.25;}
     else if (target.getDisplayName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
@@ -65,7 +65,7 @@ namespace Gts {
     else if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    float AlterationLevel = caster->getActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+    float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
 
     set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.12) * Efficiency));
       
@@ -99,7 +99,7 @@ namespace Gts {
     else if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    float AlterationLevel = caster->getActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+    float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
 
 
     set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.35) * Efficiency));
@@ -134,7 +134,7 @@ namespace Gts {
     else if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    float AlterationLevel = caster->getActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+    float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
 	  if (TargetScale > 0.10) {
 		  set_target_scale(target, TargetScale * (1 - 0.00280 * targetScale * Efficiency));
 	  }
@@ -149,7 +149,7 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
-    float StaminaMaxCheck = caster->getActorValuePercentage("Stamina");
+    float StaminaMaxCheck = caster->GetActorValuePercentage("Stamina");
 	  if (casterScale > 0.25) {
       caster->damageActorValue("Stamina", (0.075 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
 		  mod_target_scale(caster, -0.0025 * casterScale * StaminaMaxCheck);
@@ -161,7 +161,7 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
-    float StaminaMaxCheck = caster->getActorValuePercentage("Stamina");
+    float StaminaMaxCheck = caster->GetActorValuePercentage("Stamina");
 	  if (casterScale < size_limit) {
       caster->damageActorValue("Stamina", (0.15 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
 		  mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck);
@@ -206,12 +206,13 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
+    float CrushGrowthRate = runtime.CrushGrowthRate->value
     float casterScale = get_visual_scale(caster);
     float targetScale = get_visual_scale(target);
-    float GrowRate = 0.0
+    float GrowRate = 0.0;
 
-    if (runtime.CrushGrowthRate->value >= 1.4)
-    {Growrate = 0.00090}
+    if (CrushGrowthRate >= 1.4)
+    {Growrate = 0.00090;}
 
 	  if (targetScale < size_limit) {
 		  set_target_scale(target, targetScale * 1.00000 + (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier));
@@ -284,7 +285,6 @@ namespace Gts {
 
   void ManageGameMode()
   {
-    auto Player = PlayerCharacter::GetSingleton()
-    
+    auto Player = PlayerCharacter::GetSingleton();
   }
 }
