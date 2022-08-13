@@ -63,7 +63,7 @@ namespace Gts {
 
     if (caster->HasPerk(runtime.PerkPart1))
     {AdditionalShrinkValue = 1.33;}
-    else if (caster->HasPerk(runtime.PerkPart2))
+    if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
     float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
@@ -100,11 +100,11 @@ namespace Gts {
 
     if (caster->HasPerk(runtime.PerkPart1))
     {AdditionalShrinkValue = 1.33;}
-    else if (caster->HasPerk(runtime.PerkPart2))
+    if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    if (targetScale < 0.25)
-    {caster->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.0, false, 10.0, caster);}
+    if (targetScale < 0.25) {
+      caster->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.0, false, 10.0, caster);}
 
     float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
 
@@ -140,7 +140,7 @@ namespace Gts {
 
     if (caster->HasPerk(runtime.PerkPart1))
     {AdditionalShrinkValue = 1.33;}
-    else if (caster->HasPerk(runtime.PerkPart2))
+    if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
     // if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
