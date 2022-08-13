@@ -19,7 +19,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (std::string(target->GetDisplayFullName()->c_str()).find("ragon") != std::string::npos)
+    else if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos)
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -54,7 +54,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (std::string(target->GetDisplayFullName()->c_str()).find("ragon") != std::string::npos)
+    else if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos)
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -88,7 +88,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (std::string(target->GetDisplayFullName()->c_str()).find("ragon") != std::string::npos)
+    else if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos)
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -123,7 +123,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (std::string(target->GetDisplayFullName()->c_str()).find("ragon") != std::string::npos)
+    else if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos)
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
