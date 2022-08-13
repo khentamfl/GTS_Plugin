@@ -19,7 +19,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (target->getDisplayName().includes("ragon"))
+    else if (target->GetDisplayName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -54,7 +54,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (target.getDisplayName().includes("ragon"))
+    else if (target->getDisplayName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -88,7 +88,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (target.getDisplayName().includes("ragon"))
+    else if (target->getDisplayName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -123,7 +123,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (target.getDisplayName().includes("ragon"))
+    else if (target->getDisplayName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -206,7 +206,7 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-    float CrushGrowthRate = runtime.CrushGrowthRate->value
+    float CrushGrowthRate = runtime.CrushGrowthRate->value;
     float casterScale = get_visual_scale(caster);
     float targetScale = get_visual_scale(target);
     float GrowRate = 0.0;
