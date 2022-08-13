@@ -15,7 +15,7 @@ namespace Gts {
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
     float Efficiency = (caster->GetLevel()/target->GetLevel()) * ProgressionMultiplier;
     float DualCast = 1.0;
-    if (caster->magicCasters[SlotTypes::kLeftHand]->GetIsDualCasting())
+    if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
     {DualCast = 2.0;}
     if (Efficiency >= 1.25)
     {Efficiency = 1.25 * ProgressionMultiplier;}
@@ -53,7 +53,7 @@ namespace Gts {
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
     float Efficiency = (caster->GetLevel()/target->GetLevel()) * ProgressionMultiplier;
     float DualCast = 1.0;
-    if (caster->magicCasters[SlotTypes::kLeftHand]->GetIsDualCasting())
+    if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
     {DualCast = 2.0;}
     if (Efficiency >= 1.25)
     {Efficiency = 1.25 * ProgressionMultiplier;}
@@ -92,7 +92,7 @@ namespace Gts {
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
     float Efficiency = (caster->GetLevel()/target->GetLevel()) * ProgressionMultiplier;
     float DualCast = 1.0;
-    if (caster->magicCasters[SlotTypes::kLeftHand]->GetIsDualCasting())
+    if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
     {DualCast = 2.0;}
     if (Efficiency >= 1.25)
     {Efficiency = 1.25 * ProgressionMultiplier;}
@@ -196,7 +196,7 @@ namespace Gts {
     float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
     float DualCast = 1.0;
-    if (caster->magicCasters[SlotTypes::kLeftHand]->GetIsDualCasting())
+    if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
     {DualCast = 2.0;}
 	  if (casterScale < size_limit) {
 		  mod_target_scale(caster, 0.0010 * ProgressionMultiplier);
@@ -210,7 +210,7 @@ namespace Gts {
     float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
     float DualCast = 1.0;
-    if (caster->magicCasters[SlotTypes::kLeftHand]->GetIsDualCasting())
+    if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
     {DualCast = 2.0;}
 	  if (casterScale < size_limit) {
 		  set_target_scale(caster, casterScale + (0.00125 * ProgressionMultiplier * DualCast));
@@ -223,7 +223,7 @@ namespace Gts {
     float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
     float DualCast = 1.0;
-    if (caster->magicCasters[SlotTypes::kLeftHand]->GetIsDualCasting())
+    if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
     {DualCast = 2.0;}
 	  if (casterScale < size_limit) {
 		  set_target_scale(caster, casterScale - (0.0018* ProgressionMultiplier * DualCast));
@@ -241,7 +241,7 @@ namespace Gts {
     float GrowRate = 0.0;
     float SMTRate = 1.0;
     float DualCast = 1.0;
-    if (caster->magicCasters[SlotTypes::kLeftHand]->GetIsDualCasting())
+    if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
     {DualCast = 2.0;}
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
     {SMTRate = 2.0;}
@@ -265,7 +265,7 @@ namespace Gts {
     float targetScale = get_visual_scale(target);
     float GrowRate = 0.0;
       float DualCast = 1.0;
-    if (caster->magicCasters[SlotTypes::kLeftHand]->GetIsDualCasting())
+    if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
     {DualCast = 2.0;}
     if (CrushGrowthRate >= 1.4)
     {GrowRate = 0.00090;}
