@@ -92,7 +92,7 @@ namespace Gts {
 		this->PerkPart1 = find_form<BGSPerk>("GTS.esp|16081F");
 		this->PerkPart2 = find_form<BGSPerk>("GTS.esp|160820");
 
-		this->SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
+		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 
 		this->ProgressionMultiplier = find_form<TESGlobal>("GTS.esp|37E46E");
 		this->CrushGrowthRate = find_form<TESGlobal>("GTS.esp|2028B9");

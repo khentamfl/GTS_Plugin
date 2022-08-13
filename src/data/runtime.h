@@ -76,7 +76,7 @@ namespace Gts {
 			BGSPerk* PerkPart1 = nullptr;
 			BGSPerk* PerkPart2 = nullptr;
 
-			TESGlobal* SizeLimit = nullptr;
+			TESGlobal* sizeLimit = nullptr;
 			TESGlobal * ProgressionMultiplier = nullptr;
 			TESGlobal * CrushGrowthRate = nullptr;
 			
