@@ -161,11 +161,11 @@ namespace Gts {
     float ProgressionMultiplier = progression_multiplier_global->value;
     float casterScale = get_visual_scale(caster);
     if (casterScale < 1.0)
-    {set_target_scale(caster, casterScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier))}
+    {set_target_scale(caster, casterScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier));}
     
     else if (casterScale > 1.00)
     {
-      set_target_scale(caster, casterScale * 0.9950 - (0.0005 * 10 * ProgressionMultiplier))
+      set_target_scale(caster, casterScale * 0.9950 - (0.0005 * 10 * ProgressionMultiplier));
     }
   }
 
@@ -177,11 +177,11 @@ namespace Gts {
     float ProgressionMultiplier = progression_multiplier_global->value;
     float targetScale = get_visual_scale(target);
     if (targetScale < 1.0)
-    {set_target_scale(target, targetScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier))}
+    {set_target_scale(target, targetScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier));}
     
     else if (targetScale > 1.00)
     {
-      set_target_scale(target, targetScale * 0.9950 - (0.0005 * 10 * ProgressionMultiplier))
+      set_target_scale(target, targetScale * 0.9950 - (0.0005 * 10 * ProgressionMultiplier));
     }
   }
 
@@ -193,6 +193,6 @@ namespace Gts {
     float ProgressionMultiplier = progression_multiplier_global->value;
     float casterScale = get_visual_scale(caster);
     if (casterScale < size_limit)
-    set_target_scale(caster, casterScale + ((0.00165) * 0.15 * TargetSize * ProgressionMultiplier));
+    set_target_scale(caster, casterScale + ((0.00165) * 0.15 * ProgressionMultiplier));
   }
 }

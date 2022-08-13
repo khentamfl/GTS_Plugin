@@ -20,5 +20,5 @@ namespace Gts {
   void ShrinkAllyButtonFunction(Actor* target);
   void ShrinkBackFunction(Actor* caster);
   void ShrinkBackNPCFunction(Actor* target);
-  void VoreGrowthFunction(Actor* target);
+  void VoreGrowthFunction(Actor* caster);
 }
