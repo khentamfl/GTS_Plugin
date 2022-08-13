@@ -327,14 +327,14 @@ namespace Gts {
     auto Player = PlayerCharacter::GetSingleton();
     float Scale = get_visual_scale(Player);
     if (runtime.ChosenGameMode->value == 1.0 && Scale < size_limit)
-    {set_target_scale(player, Scale * (1.00010 + (GrowthRate * 0.25)));}
+    {set_target_scale(Player, Scale * (1.00010 + (GrowthRate * 0.25)));}
     else if (runtime.ChosenGameMode->value== 2.0 && Scale > 1.0)
-    {set_target_scale(player, Scale * (0.99985 - (ShrinkRate * 0.25)));}
+    {set_target_scale(Player, Scale * (0.99985 - (ShrinkRate * 0.25)));}
     else if (runtime.ChosenGameMode->value == 3.0 && Scale < size_limit)
     { if (Player.IsInCombat() == true)
-      {set_target_scale(player, Scale * (1.00008 + (GrowthRate * 0.17)));}
+      {set_target_scale(Player, Scale * (1.00008 + (GrowthRate * 0.17)));}
       else if (Player.IsInCombat() == false)
-      {set_target_scale(player, Scale * (0.99981 + (ShrinkRate * 0.34)));}
+      {set_target_scale(Player, Scale * (0.99981 + (ShrinkRate * 0.34)));}
   }
   }
 

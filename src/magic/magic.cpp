@@ -25,7 +25,7 @@ namespace Gts {
 				float duration = effect->duration;
 				ManageGameModePC(); 
 				if (target->IsPlayerTeammate())
-				{ManageGameModeNPC(actor)}
+				{ManageGameModeNPC(actor);}
 				if (base_spell == runtime.explosiveGrowth3) {
 					explosive_growth3(caster);
 				}
