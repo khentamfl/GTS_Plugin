@@ -347,9 +347,8 @@ namespace Gts {
     float ShrinkRate = runtime.ShrinkModeRate->value;
     auto Player = PlayerCharacter::GetSingleton();
     float Scale = get_visual_scale(Player);
-    if (runtime.ChosenGameMode->value == 0.0)
-    {return;}
-    else if (runtime.ChosenGameMode->value == 1.0 && Scale < size_limit)
+
+    if (runtime.ChosenGameMode->value == 1.0 && Scale < size_limit)
     {mod_target_scale(Player, +(0.000010 + (GrowthRate * 0.25)));}
     else if (runtime.ChosenGameMode->value == 2.0 && Scale > 1.0)
     {mod_target_scale(Player, - (0.000015 + (ShrinkRate * 0.25)));}
@@ -368,9 +367,8 @@ namespace Gts {
     float GrowthRate = runtime.GrowthModeRateNPC->value;
     float ShrinkRate = runtime.ShrinkModeRateNPC->value;
     float Scale = get_visual_scale(Receiver);
-    if (runtime.ChosenGameModeNPC->value == 0.0)
-    {return;}
-    else if (runtime.ChosenGameModeNPC->value == 1.0 && Scale < size_limit)
+
+    if (runtime.ChosenGameModeNPC->value == 1.0 && Scale < size_limit)
     {mod_target_scale(Receiver, (0.000010 + (GrowthRate * 0.25)));}
     else if (runtime.ChosenGameModeNPC->value == 2.0 && Scale > 1.0)
     {mod_target_scale(Receiver, -(0.000015 + (ShrinkRate * 0.25)));}
