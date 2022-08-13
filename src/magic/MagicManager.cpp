@@ -1,6 +1,7 @@
 #include "magic/explosive_growth.h"
 #include "magic/magic.h"
 #include "scale/scale.h"
+#include "data/runtime.h"
 
 namespace Gts {
 	
@@ -21,7 +22,7 @@ namespace Gts {
     else if (target.getDisplayName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier}    
 
-    if (caster->hasMagicEffect(_smallMassiveThreat))
+    if (caster->hasMagicEffect(runtime.smallMassiveThreat))
     {SMTRate = 2.0;}
 
     if (caster->hasPerk(runtime.PerkPart1))
@@ -47,16 +48,16 @@ namespace Gts {
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
-    float Efficiency = caster->getLevel()/target->getLevel() * ProgressionMultiplier
+    float Efficiency = caster->getLevel()/target->getLevel() * ProgressionMultiplier;
 
     if (Efficiency >= 1.25)
-    {Efficiency = 1.25 * ProgressionMultiplier}
+    {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25}
     else if (target.getDisplayName().includes("ragon"))
-    {Efficiency = 0.14 * ProgressionMultiplier}    
+    {Efficiency = 0.14 * ProgressionMultiplier;}    
 
-    if (caster->hasMagicEffect(_smallMassiveThreat))
+    if (caster->hasMagicEffect(runtime.smallMassiveThreat))
     {SMTRate = 2.0;}
 
     if (caster->hasPerk(runtime.PerkPart1))
@@ -81,16 +82,16 @@ namespace Gts {
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
-    float Efficiency = caster->getLevel()/target->getLevel() * ProgressionMultiplier
+    float Efficiency = caster->getLevel()/target->getLevel() * ProgressionMultiplier;
 
     if (Efficiency >= 1.25)
-    {Efficiency = 1.25 * ProgressionMultiplier}
+    {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
-        {Efficiency = 0.25}
+        {Efficiency = 0.25;}
     else if (target.getDisplayName().includes("ragon"))
-    {Efficiency = 0.14 * ProgressionMultiplier}    
+    {Efficiency = 0.14 * ProgressionMultiplier;}    
 
-    if (caster->hasMagicEffect(_smallMassiveThreat))
+    if (caster->hasMagicEffect(runtime.smallMassiveThreat))
     {SMTRate = 2.0;}
 
     if (caster->hasPerk(runtime.PerkPart1))
@@ -116,16 +117,16 @@ namespace Gts {
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
-    float Efficiency = caster->getLevel()/target->getLevel() * ProgressionMultiplier
+    float Efficiency = caster->getLevel()/target->getLevel() * ProgressionMultiplier;
 
     if (Efficiency >= 1.25)
-    {Efficiency = 1.25 * ProgressionMultiplier}
+    {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
-        {Efficiency = 0.25}
+        {Efficiency = 0.25;}
     else if (target.getDisplayName().includes("ragon"))
-    {Efficiency = 0.14 * ProgressionMultiplier}    
+    {Efficiency = 0.14 * ProgressionMultiplier;}    
 
-    if (caster->hasMagicEffect(_smallMassiveThreat))
+    if (caster->hasMagicEffect(runtime.smallMassiveThreat))
     {SMTRate = 2.0;}
 
     if (caster->hasPerk(runtime.PerkPart1))
