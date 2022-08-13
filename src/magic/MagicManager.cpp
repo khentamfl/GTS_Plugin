@@ -300,8 +300,8 @@ namespace Gts {
     float targetScale = get_visual_scale(target);
     if (targetScale < 1.0)
     {set_target_scale(target, targetScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier));}
-    else if (targetScale >= 1.01 || targetScale <=1.00)
-    {runtime.ShrinkBackNPCSpell->DispelSpell(target)}
+    //else if (targetScale >= 1.01 || targetScale <=1.00)
+    //{runtime.ShrinkBackNPCSpell->DispelSpell(target)}
     else if (targetScale > 1.00)
     {
       set_target_scale(target, targetScale * 0.9950 - (0.0005 * 10 * ProgressionMultiplier));
@@ -324,16 +324,16 @@ namespace Gts {
     float GrowthRate = runtime.GrowthModeRate->value;
     float ShrinkRate = runtime.ShrinkModeRate->value;
     auto Player = PlayerCharacter::GetSingleton();
-    float Scale = get_visual_scale(Player)
+    float Scale = get_visual_scale(Player);
     if (runtime.ChosenGameMode == 1.0 && Scale < size_limit)
-    {set_target_scale(player, Scale * (1.00010 + (Growthrate * 0.25)))}
+    {set_target_scale(player, Scale * (1.00010 + (Growthrate * 0.25)));}
     else if (runtime.ChosenGameMode == 2.0 && Scale > 1.0)
-    {set_target_scale(player, Scale * (0.99985 - (ShrinkRate * 0.25)))}
+    {set_target_scale(player, Scale * (0.99985 - (ShrinkRate * 0.25)));}
     else if (runtime.ChosenGameMode == 3.0 && Scale < size_limit)
     { if (Player.IsInCombat() == true)
-      {set_target_scale(player, Scale * (1.00008 + (GrowthRate * 0.17)))}
+      {set_target_scale(player, Scale * (1.00008 + (GrowthRate * 0.17)));}
       else if (Player.IsInCombat() == false)
-      {set_target_scale(player, Scale * (0.99981 + (ShrinkRate * 0.34)))}
+      {set_target_scale(player, Scale * (0.99981 + (ShrinkRate * 0.34)));}
   }
   }
 
@@ -342,16 +342,16 @@ namespace Gts {
     float size_limit = runtime.sizeLimit->value;
     float GrowthRate = runtime.GrowthModeRateNPC->value;
     float ShrinkRate = runtime.ShrinkModeRateNPC->value;
-    float Scale = get_visual_scale(Receiver)
+    float Scale = get_visual_scale(Receiver);
     if (runtime.ChosenGameModeNPC == 1.0 && Scale < size_limit)
-    {set_target_scale(Receiver, Scale * (1.00010 + (Growthrate * 0.25)))}
+    {set_target_scale(Receiver, Scale * (1.00010 + (Growthrate * 0.25)));}
     else if (runtime.ChosenGameModeNPC == 2.0 && Scale > 1.0)
-    {set_target_scale(Receiver, Scale * (0.99985 - (ShrinkRate * 0.25)))}
+    {set_target_scale(Receiver, Scale * (0.99985 - (ShrinkRate * 0.25)));}
     else if (runtime.ChosenGameModeNPC == 3.0 && Scale < size_limit)
     { if (Receiver.IsInCombat() == true)
-      {set_target_scale(Receiver, Scale * (1.00008 + (GrowthRate * 0.17)))}
+      {set_target_scale(Receiver, Scale * (1.00008 + (GrowthRate * 0.17)));}
       else if (Receiver.IsInCombat() == false)
-      {set_target_scale(Receiver, Scale * (0.99981 + (ShrinkRate * 0.34)))}
+      {set_target_scale(Receiver, Scale * (0.99981 + (ShrinkRate * 0.34)));}
   }
 
 }

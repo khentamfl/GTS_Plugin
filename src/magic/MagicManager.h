@@ -22,5 +22,7 @@ namespace Gts {
   void ShrinkBackFunction(Actor* caster);
   void ShrinkBackNPCFunction(Actor* target);
   void VoreGrowthFunction(Actor* caster);
+  void ManageGameModePC();
+  void ManageGameModeNPC(Actor* Receiver);
 
 }
