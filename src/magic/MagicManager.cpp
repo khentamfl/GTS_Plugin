@@ -19,7 +19,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (target->GetDisplayName().includes("ragon"))
+    else if (target->GetDisplayFullName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -54,7 +54,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (target->getDisplayName().includes("ragon"))
+    else if (target->GetDisplayFullName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -88,7 +88,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (target->getDisplayName().includes("ragon"))
+    else if (target->GetDisplayFullName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -123,7 +123,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (target->getDisplayName().includes("ragon"))
+    else if (target->GetDisplayFullName().includes("ragon"))
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -136,11 +136,11 @@ namespace Gts {
 
     float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
 	  if (TargetScale > 0.10) {
-		  set_target_scale(target, TargetScale * (1 - 0.00280 * targetScale * Efficiency));
+		  set_target_scale(target, TargetScale * (1 - 0.00280 * TargetScale * Efficiency));
 	  }
       
       if (casterScale < size_limit) {
-	      set_target_scale(caster, casterScale + (0.00096 * targetScale * ProgressionMultiplier));
+	      set_target_scale(caster, casterScale + (0.00096 * TargetScale * ProgressionMultiplier));
 	 }
   }
 
@@ -212,7 +212,7 @@ namespace Gts {
     float GrowRate = 0.0;
 
     if (CrushGrowthRate >= 1.4)
-    {Growrate = 0.00090;}
+    {GrowRate = 0.00090;}
 
 	  if (targetScale < size_limit) {
 		  set_target_scale(target, targetScale * 1.00000 + (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier));
