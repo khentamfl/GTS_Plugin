@@ -112,7 +112,7 @@ namespace Gts {
 		if (caster->HasPerk(runtime.PerkPart2))
 		{AdditionalShrinkValue = 2.0;}
 
-		if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
+		if (TargetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
 		{
 			caster->magicCasters[Actor::SlotTypes::kUnknown]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
 		}
