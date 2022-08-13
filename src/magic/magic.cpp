@@ -66,6 +66,10 @@ namespace Gts {
 					GrowAllyFunction(caster, target);
 				}
 
+				if (base_spell == runtime.ShrinkAlly) {
+					ShrinkAllyFunction(caster, target);
+				}
+
 				if (base_spell == runtime.GrowAllySizeButton) {
 					GrowAllyButtonFunction(target);
 				}
@@ -73,6 +77,7 @@ namespace Gts {
 				if (base_spell == runtime.ShrinkAllySizeButton) {
 					ShrinkAllyButtonFunction(target);
 				}
+
 
 				if (base_spell == runtime.ShrinkBack) {
 					ShrinkBackFunction(caster);
