@@ -151,7 +151,7 @@ namespace Gts {
     float casterScale = get_visual_scale(caster);
     float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetBaseActorValue(ActorValue::kStamina);
 	  if (casterScale > 0.25) {
-      caster->staminaModifiers.modifiers[RE::ACTOR_VALUE_MODIFIERS::kDamage] = ((0.075 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
+      caster->staminaModifiers.modifiers[RE::ACTOR_VALUE_MODIFIERS::kDamage] = ((-0.075 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
 		  mod_target_scale(caster, -0.0025 * casterScale * StaminaMaxCheck);
 	  }
   }
@@ -163,7 +163,7 @@ namespace Gts {
     float casterScale = get_visual_scale(caster);
     float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetBaseActorValue(ActorValue::kStamina);
 	  if (casterScale < size_limit) {
-      caster->staminaModifiers.modifiers[RE::ACTOR_VALUE_MODIFIERS::kDamage] = ((0.15 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
+      caster->staminaModifiers.modifiers[RE::ACTOR_VALUE_MODIFIERS::kDamage] = ((-0.15 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
 		  mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck);
 	  }
       

@@ -51,6 +51,13 @@ namespace Gts {
 				.o = 1.0,
 				.a = 0.0,
 			};
+			SoftPotential MS_adjustment {
+				.k = 0.132,
+				.n = 0.85,
+				.s = 1.12,
+				.o = 1.0,
+				.a = 0.0,
+			};
 			SizeMethod size_method = SizeMethod::ModelScale;
 			CameraCollisions camera_collisions;
 		private:
