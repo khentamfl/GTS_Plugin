@@ -75,6 +75,8 @@ namespace Gts {
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
 
+    if (TargetScale < 0.25 && target->HasSpell(runtime.ShrinkToNothing) == false)
+    {caster->magicCasters[Actor::SlotTypes::kLeftHand]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
 
 		set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.12) * Efficiency));
 
