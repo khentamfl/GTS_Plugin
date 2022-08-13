@@ -110,17 +110,36 @@ namespace Gts {
 			     
  void SwordOfSize(Actor* caster, Actor* target)
   {
-    auto& runtime = Runtime::GetSingleton();
+      auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
+    float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
+    float Efficiency = caster->getLevel()/target->getLevel() * ProgressionMultiplier
+
+    if (Efficiency >= 1.25)
+    {Efficiency = 1.25 * ProgressionMultiplier}
+    else if (Efficiency <= 0.25)
+        {Efficiency = 0.25}
+    else if (target.getDisplayName().includes("ragon"))
+    {Efficiency = 0.14 * ProgressionMultiplier}    
+
+    if (caster->hasMagicEffect(_smallMassiveThreat))
+    {SMTRate = 2.0;}
+
+    if (caster->hasPerk(runtime.PerkPart1))
+    {AdditionalShrinkValue = 1.33;}
+    else if (caster->hasPerk(runtime.PerkPart2))
+    {AdditionalShrinkValue = 2.0;}
+
+    float AlterationLevel = caster->getActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
 	  if (TargetScale > 0.10) {
-		  set_target_scale(target, TargetScale * 1 - 0.00280);
+		  set_target_scale(target, TargetScale * (1 - 0.00280 * targetScale * Efficiency));
 	  }
       
       if (casterScale < size_limit) {
-	      set_target_scale(caster, casterScale + (0.00096 * ProgressionMultiplier));
+	      set_target_scale(caster, casterScale + (0.00096 * targetScale * ProgressionMultiplier));
 	 }
   }
 

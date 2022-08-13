@@ -73,12 +73,12 @@ namespace Gts {
 
 			BGSPerk* GrowthOnHitPerk = nullptr;
 			BGSPerk* hhBonus = nullptr;
-			PerkPart1 = nullptr;
-			PerkPart2 = nullptr;
+			BGSPerk* PerkPart1 = nullptr;
+			BGSPerk* PerkPart2 = nullptr;
 
-			SizeLimit = nullptr;
-			ProgressionMultiplier = nullptr;
-			CrushGrowthRate = nullptr;
+			TESGlobal* SizeLimit = nullptr;
+			TESGlobal * ProgressionMultiplier = nullptr;
+			TESGlobal * CrushGrowthRate = nullptr;
 			
 	};
 }
