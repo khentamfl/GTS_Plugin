@@ -96,6 +96,15 @@ namespace Gts {
 
 		this->ProgressionMultiplier = find_form<TESGlobal>("GTS.esp|37E46E");
 		this->CrushGrowthRate = find_form<TESGlobal>("GTS.esp|2028B9");
+
+		this->ChosenGameMode = find_form<TESGlobal>("GTS.esp|2EB74C");
+		this->GrowthModeRate = find_form<TESGlobal>("GTS.esp|2028C3");
+		this->ShrinkModeRate = find_form<TESGlobal>("GTS.esp|2028C4");
+
+		this->ChosenGameModeNPC = find_form<TESGlobal>("GTS.esp|2EB747");
+		this->GrowthModeRateNPC = find_form<TESGlobal>("GTS.esp|2EB74B");
+		this->ShrinkModeRateNPC = find_form<TESGlobal>("GTS.esp|2EB74A");
+
 		this->ShrinkToNothingSpell = find_form<MagicItem>("GTS.esp|00997A");
 		this->ShrinkBackNPCSpell = find_form<MagicItem>("GTS.esp|00536B");
 		this->ShrinkBackSpell = find_form<MagicItem>("GTS.esp|005368");

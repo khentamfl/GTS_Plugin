@@ -79,6 +79,14 @@ namespace Gts {
 			TESGlobal * sizeLimit = nullptr;
 			TESGlobal * ProgressionMultiplier = nullptr;
 			TESGlobal * CrushGrowthRate = nullptr;
+			TESGlobal * ChosenGameMode = nullptr;
+			TESGlobal * GrowthModeRate = nullptr;
+			TESGlobal * ShrinkModeRate = nullptr;
+
+			TESGlobal * ChosenGameModeNPC = nullptr;
+			TESGlobal * GrowthModeRateNPC = nullptr;
+			TESGlobal * ShrinkModeRateNPC = nullptr;
+
 			MagicItem * ShrinkToNothingSpell = nullptr;
 			MagicItem * ShrinkBackNPCSpell = nullptr;
 			MagicItem * ShrinkBackSpell = nullptr;
