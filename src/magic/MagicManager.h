@@ -13,4 +13,12 @@ namespace Gts {
   void ShrinkPCFunction(Actor* caster);
   void GrowPCFunction(Actor* caster);
   void SlowGrowthFunction(Actor* caster);
+  void GrowthSpellFunction(Actor* caster);
+  void ShrinkSpellFunction(Actor* caster);
+  void GrowAllyFunction(Actor* caster, Actor* target);
+  void GrowAllyButtonFunction(Actor* target);
+  void ShrinkAllyButtonFunction(Actor* target);
+  void ShrinkBackFunction(Actor* caster);
+  void ShrinkBackNPCFunction(Actor* target);
+  void VoreGrowthFunction(Actor* target);
 }
