@@ -158,10 +158,11 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
-    float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetBaseActorValue(ActorValue::kStamina);
+    float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetActorValueMax(ActorValue::kStamina);
+    log::info("Stamina Max Check is", actor_name(actor), StaminaMaxCheck);
 	  if (casterScale > 0.25) {
       caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.075 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
-		  mod_target_scale(caster, -0.0025 * casterScale * StaminaMaxCheck);
+		  mod_target_scale(caster, (-0.0025 * casterScale) * StaminaMaxCheck);
 	  }
   }
 
@@ -170,10 +171,11 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
-    float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetBaseActorValue(ActorValue::kStamina);
+    float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetActorValueMax(ActorValue::kStamina);
+    log::info("Stamina Max Check is", actor_name(actor), StaminaMaxCheck);
 	  if (casterScale < size_limit) {
       caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.15 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
-		  mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck);
+		  mod_target_scale(caster, (0.0025 * casterScale) * StaminaMaxCheck);
 	  }
       
   }
