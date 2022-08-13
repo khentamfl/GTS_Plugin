@@ -350,14 +350,14 @@ namespace Gts {
     if (runtime.ChosenGameMode->value == 0.0)
     {return;}
     else if (runtime.ChosenGameMode->value == 1.0 && Scale < size_limit)
-    {mod_target_scale(Player, +(0.00010));}
+    {mod_target_scale(Player, +(0.000010 + (GrowthRate * 0.25)));}
     else if (runtime.ChosenGameMode->value == 2.0 && Scale > 1.0)
-    {mod_target_scale(Player, - (0.00015 + (ShrinkRate * 0.25)));}
+    {mod_target_scale(Player, - (0.000015 + (ShrinkRate * 0.25)));}
     else if (runtime.ChosenGameMode->value == 3.0 && Scale < size_limit)
     { if (Player->IsInCombat() == true)
-      {mod_target_scale(Player, + (0.00008 + (GrowthRate * 0.17)));}
+      {mod_target_scale(Player, + (0.000008 + (GrowthRate * 0.17)));}
       else if (Player->IsInCombat() == false)
-      {mod_target_scale(Player, - (0.00010 + (ShrinkRate * 0.34)));}
+      {mod_target_scale(Player, - (0.000010 + (ShrinkRate * 0.34)));}
   }
   }
 
@@ -371,14 +371,14 @@ namespace Gts {
     if (runtime.ChosenGameModeNPC->value == 0.0)
     {return;}
     else if (runtime.ChosenGameModeNPC->value == 1.0 && Scale < size_limit)
-    {mod_target_scale(Receiver, (0.00010 + (GrowthRate * 0.25)));}
+    {mod_target_scale(Receiver, (0.000010 + (GrowthRate * 0.25)));}
     else if (runtime.ChosenGameModeNPC->value == 2.0 && Scale > 1.0)
-    {mod_target_scale(Receiver, - (0.00015 + (ShrinkRate * 0.25)));}
+    {mod_target_scale(Receiver, -(0.000015 + (ShrinkRate * 0.25)));}
     else if (runtime.ChosenGameModeNPC->value == 3.0 && Scale < size_limit)
     { if (Receiver->IsInCombat() == true)
-      {mod_target_scale(Receiver, (0.00008 + (GrowthRate * 0.17)));}
+      {mod_target_scale(Receiver, (0.000008 + (GrowthRate * 0.17)));}
       else if (Receiver->IsInCombat() == false)
-      {mod_target_scale(Receiver,-(0.00010 + (ShrinkRate * 0.34)));}
+      {mod_target_scale(Receiver,-(0.000010 + (ShrinkRate * 0.34)));}
   }
 }
 
