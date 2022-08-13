@@ -320,6 +320,7 @@ namespace Gts {
 
   void ManageGameModePC()
   {
+    auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float GrowthRate = runtime.GrowthModeRate->value;
     float ShrinkRate = runtime.ShrinkModeRate->value;
@@ -339,6 +340,7 @@ namespace Gts {
 
     void ManageGameModeNPC(Actor* Receiver)
   {
+    auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float GrowthRate = runtime.GrowthModeRateNPC->value;
     float ShrinkRate = runtime.ShrinkModeRateNPC->value;
