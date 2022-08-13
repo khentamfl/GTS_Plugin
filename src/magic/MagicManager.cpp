@@ -326,15 +326,17 @@ namespace Gts {
     float ShrinkRate = runtime.ShrinkModeRate->value;
     auto Player = PlayerCharacter::GetSingleton();
     float Scale = get_visual_scale(Player);
-    if (runtime.ChosenGameMode->value == 1.0 && Scale < size_limit)
-    {set_target_scale(Player, Scale * (1.00010 + (GrowthRate * 0.25)));}
-    else if (runtime.ChosenGameMode->value== 2.0 && Scale > 1.0)
-    {set_target_scale(Player, Scale * (0.99985 - (ShrinkRate * 0.25)));}
+    else if (runtime.ChosenGameMode->value == 0.0)
+    {return}
+    else if (runtime.ChosenGameMode->value == 1.0 && Scale < size_limit)
+    {mod_target_scale(Player, (0.00010 + (GrowthRate * 0.25) * Scale));}
+    else if (runtime.ChosenGameMode->value == 2.0 && Scale > 1.0)
+    {mod_target_scale(Player, (0.00015 - (ShrinkRate * 0.25) * Scale));}
     else if (runtime.ChosenGameMode->value == 3.0 && Scale < size_limit)
     { if (Player->IsInCombat() == true)
-      {set_target_scale(Player, Scale * (1.00008 + (GrowthRate * 0.17)));}
+      {mod_target_scale(Player, (0.00008 + (GrowthRate * 0.17) * Scale));}
       else if (Player->IsInCombat() == false)
-      {set_target_scale(Player, Scale * (0.99981 + (ShrinkRate * 0.34)));}
+      {mod_target_scale(Player, - (0.00010 + (ShrinkRate * 0.34) * Scale));}
   }
   }
 
@@ -345,15 +347,17 @@ namespace Gts {
     float GrowthRate = runtime.GrowthModeRateNPC->value;
     float ShrinkRate = runtime.ShrinkModeRateNPC->value;
     float Scale = get_visual_scale(Receiver);
-    if (runtime.ChosenGameModeNPC->value == 1.0 && Scale < size_limit)
-    {set_target_scale(Receiver, Scale * (1.00010 + (GrowthRate * 0.25)));}
+    else if (runtime.ChosenGameModeNPC->value == 0.0)
+    {return}
+    else if (runtime.ChosenGameModeNPC->value == 1.0 && Scale < size_limit)
+    {mod_target_scale(Receiver, (0.00010 + (GrowthRate * 0.25) * Scale));}
     else if (runtime.ChosenGameModeNPC->value == 2.0 && Scale > 1.0)
-    {set_target_scale(Receiver, Scale * (0.99985 - (ShrinkRate * 0.25)));}
+    {mod_target_scale(Receiver, (0.00015 - (ShrinkRate * 0.25) * Scale));}
     else if (runtime.ChosenGameModeNPC->value == 3.0 && Scale < size_limit)
     { if (Receiver->IsInCombat() == true)
-      {set_target_scale(Receiver, Scale * (1.00008 + (GrowthRate * 0.17)));}
+      {mod_target_scale(Receiver, (0.00008 + (GrowthRate * 0.17) * Scale));}
       else if (Receiver->IsInCombat() == false)
-      {set_target_scale(Receiver, Scale * (0.99981 + (ShrinkRate * 0.34)));}
+      {mod_target_scale(Receiver,-(0.00010 + (ShrinkRate * 0.34) * Scale));}
   }
 }
 
