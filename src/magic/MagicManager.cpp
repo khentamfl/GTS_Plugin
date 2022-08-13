@@ -19,7 +19,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (std::string(target->GetDisplayFullName().c_str()).find("ragon") != std::string::npos)
+    else if (std::string(target->GetDisplayFullName()->c_str()).find("ragon") != std::string::npos)
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -54,7 +54,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (std::string(target->GetDisplayFullName().c_str()).find("ragon") != std::string::npos)
+    else if (std::string(target->GetDisplayFullName()->c_str()).find("ragon") != std::string::npos)
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -88,7 +88,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (std::string(target->GetDisplayFullName().c_str()).find("ragon") != std::string::npos)
+    else if (std::string(target->GetDisplayFullName()->c_str()).find("ragon") != std::string::npos)
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -123,7 +123,7 @@ namespace Gts {
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
         {Efficiency = 0.25;}
-    else if (std::string(target->GetDisplayFullName().c_str()).find("ragon") != std::string::npos)
+    else if (std::string(target->GetDisplayFullName()->c_str()).find("ragon") != std::string::npos)
     {Efficiency = 0.14 * ProgressionMultiplier;}    
 
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
@@ -149,7 +149,7 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
-    float StaminaMaxCheck = actor->GetActorValue(ActorValue::kStamina)/actor->GetBaseActorValue(ActorValue::kStamina);
+    float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetBaseActorValue(ActorValue::kStamina);
 	  if (casterScale > 0.25) {
       caster->staminaModifiers.modifiers[RE::ACTOR_VALUE_MODIFIERS::kDamage] = ((0.075 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
 		  mod_target_scale(caster, -0.0025 * casterScale * StaminaMaxCheck);
@@ -161,7 +161,7 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
-    float StaminaMaxCheck = actor->GetActorValue(ActorValue::kStamina)/actor->GetBaseActorValue(ActorValue::kStamina);
+    float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetBaseActorValue(ActorValue::kStamina);
 	  if (casterScale < size_limit) {
       caster->staminaModifiers.modifiers[RE::ACTOR_VALUE_MODIFIERS::kDamage] = (("Stamina", )(0.15 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
 		  mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck);
