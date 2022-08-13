@@ -53,6 +53,38 @@ namespace Gts {
 				if (base_spell == runtime.SlowGrowth) {
 					SlowGrowthFunction(caster);
 				}
+
+				if (base_spell == runtime.GrowthSpell) {
+					GrowthSpellFunction(caster);
+				}
+
+				if (base_spell == runtime.ShrinkSpell) {
+					ShrinkSpellFunction(caster);
+				}
+
+				if (base_spell == runtime.AllyGrowSize) {
+					GrowAllyFunction(caster, target);
+				}
+
+				if (base_spell == runtime.GrowAllySizeButton) {
+					GrowAllyButtonFunction(target);
+				}
+
+				if (base_spell == runtime.ShrinkAllySizeButton) {
+					ShrinkAllyButtonFunction(target);
+				}
+
+				if (base_spell == runtime.ShrinkBack) {
+					ShrinkBackFunction(caster);
+				}
+
+				if (base_spell == runtime.ShrinkBackNPC) {
+					ShrinkBackNPCFunction(target); 
+				}
+
+				if (base_spell == runtime.GlobalVoreGrowth) {
+					VoreGrowthFunction(caster); 
+				}
 			}
 		}
 	}
