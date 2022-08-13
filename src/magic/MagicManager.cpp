@@ -104,7 +104,7 @@ namespace Gts {
     {AdditionalShrinkValue = 2.0;}
 
     if (TargetScale < 0.25 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
-    {caster->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.0, false, 10.0, caster);}
+    {CastSpell(RE::BSScript::IVirtualMachine* a_vm, ShrinkToNothingSpell, caster, target)}
 
     float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
 
@@ -319,4 +319,16 @@ namespace Gts {
   {
     auto Player = PlayerCharacter::GetSingleton();
   }
+
+  void CastSpell(RE::BSScript::IVirtualMachine* a_vm, RE::SpellItem* thisSpell, RE::TESObjectREFR* Caster, RE::TESObjectREFR* Target)
+	
+{
+		
+  using func_t = void(*)(RE::BSScript::IVirtualMachine* a_vm, std::uint32_t stackId, RE::SpellItem* thisSpell, RE::TESObjectREFR* Caster, RE::TESObjectREFR* Target);
+		  
+  REL::Relocation<func_t> func{ REL::ID(55149) };
+		  
+  return func(a_vm, 0, thisSpell, Caster, Target);
+	
+}
 }
