@@ -89,8 +89,8 @@ namespace Gts {
 		this->GrowthOnHitPerk = find_form<BGSPerk>("GTS.esp|30EE52");
 
 		this->hhBonus = find_form<BGSPerk>(Config::GetSingleton().GetPerks().GetHHBonus());
-		this->Perkpart1 = find_form<BGSPerk>("GTS.esp|16081F");
-		this->Perkpart2 = find_form<BGSPerk>("GTS.esp|160820");
+		this->PerkPart1 = find_form<BGSPerk>("GTS.esp|16081F");
+		this->PerkPart2 = find_form<BGSPerk>("GTS.esp|160820");
 
 		this->SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 

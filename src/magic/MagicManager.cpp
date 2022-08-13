@@ -148,8 +148,10 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
+    float StaminaMaxCheck = caster->getActorValuePercentage("Stamina");
 	  if (casterScale > 0.25) {
-		  mod_target_scale(caster, -0.0025 * casterScale);
+      caster->damageActorValue("Stamina", (0.075 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
+		  mod_target_scale(caster, -0.0025 * casterScale * StaminaMaxCheck);
 	  }
   }
 
@@ -158,8 +160,10 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
+    float StaminaMaxCheck = caster->getActorValuePercentage("Stamina");
 	  if (casterScale < size_limit) {
-		  mod_target_scale(caster, 0.0025 * casterScale);
+      caster->damageActorValue("Stamina", (0.15 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
+		  mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck);
 	  }
       
   }
