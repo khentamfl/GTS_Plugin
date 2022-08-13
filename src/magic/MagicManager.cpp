@@ -149,9 +149,9 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
-    float StaminaMaxCheck = caster->GetActorValuePercentage("Stamina");
+    float StaminaMaxCheck = actor->GetActorValue(ActorValue::kStamina)/actor->GetBaseActorValue(ActorValue::kStamina);
 	  if (casterScale > 0.25) {
-      caster->DamageActorValue("Stamina", (0.075 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
+      caster->staminaModifiers.modifiers[RE::ACTOR_VALUE_MODIFIERS::kDamage] = ((0.075 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
 		  mod_target_scale(caster, -0.0025 * casterScale * StaminaMaxCheck);
 	  }
   }
@@ -161,9 +161,9 @@ namespace Gts {
     auto& runtime = Runtime::GetSingleton();
     float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
-    float StaminaMaxCheck = caster->GetActorValuePercentage("Stamina");
+    float StaminaMaxCheck = actor->GetActorValue(ActorValue::kStamina)/actor->GetBaseActorValue(ActorValue::kStamina);
 	  if (casterScale < size_limit) {
-      caster->DamageActorValue("Stamina", (0.15 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
+      caster->staminaModifiers.modifiers[RE::ACTOR_VALUE_MODIFIERS::kDamage] = (("Stamina", )(0.15 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck);
 		  mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck);
 	  }
       
