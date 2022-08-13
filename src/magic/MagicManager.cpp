@@ -104,7 +104,7 @@ namespace Gts {
     {AdditionalShrinkValue = 2.0;}
 
     if (TargetScale < 0.25 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
-    {CastSpell(ShrinkToNothingSpell, caster, target)}
+    {ShrinkToNothing->CastSpell(caster, target)}
 
     float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
 
