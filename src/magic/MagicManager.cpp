@@ -14,7 +14,9 @@ namespace Gts {
     float casterScale = get_visual_scale(caster);
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
     float Efficiency = (caster->GetLevel()/target->GetLevel()) * ProgressionMultiplier;
-
+    float DualCast = 1.0;
+    if (caster->GetIsDualCasting())
+    {DualCast = 2.0;}
     if (Efficiency >= 1.25)
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
@@ -30,7 +32,7 @@ namespace Gts {
     else if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
+    float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
     //if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
     //{CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
@@ -50,7 +52,9 @@ namespace Gts {
     float casterScale = get_visual_scale(caster);
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
     float Efficiency = (caster->GetLevel()/target->GetLevel()) * ProgressionMultiplier;
-
+    float DualCast = 1.0;
+    if (caster->GetIsDualCasting())
+    {DualCast = 2.0;}
     if (Efficiency >= 1.25)
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
@@ -66,7 +70,7 @@ namespace Gts {
     if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
+    float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
    //if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
    // {CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
@@ -87,7 +91,9 @@ namespace Gts {
     float casterScale = get_visual_scale(caster);
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
     float Efficiency = (caster->GetLevel()/target->GetLevel()) * ProgressionMultiplier;
-
+    float DualCast = 1.0;
+    if (caster->GetIsDualCasting())
+    {DualCast = 2.0;}
     if (Efficiency >= 1.25)
     {Efficiency = 1.25 * ProgressionMultiplier;}
     else if (Efficiency <= 0.25)
@@ -106,7 +112,7 @@ namespace Gts {
     //if (TargetScale < 0.25 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
     //{ShrinkToNothing->CastSpell(caster, target)}
 
-    float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
+    float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
     //if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
     //{CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
@@ -189,6 +195,9 @@ namespace Gts {
     float size_limit = runtime.sizeLimit->value;
     float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
+    float DualCast = 1.0;
+    if (caster->GetIsDualCasting())
+    {DualCast = 2.0;}
 	  if (casterScale < size_limit) {
 		  mod_target_scale(caster, 0.0010 * ProgressionMultiplier);
 	  }
@@ -200,8 +209,11 @@ namespace Gts {
     float size_limit = runtime.sizeLimit->value;
     float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
+    float DualCast = 1.0;
+    if (caster->GetIsDualCasting())
+    {DualCast = 2.0;}
 	  if (casterScale < size_limit) {
-		  set_target_scale(caster, casterScale + (0.00125 * ProgressionMultiplier));
+		  set_target_scale(caster, casterScale + (0.00125 * ProgressionMultiplier * DualCast));
 	  }
   }
   void ShrinkSpellFunction(Actor* caster) // Shrink Spell
@@ -210,8 +222,11 @@ namespace Gts {
     float size_limit = runtime.sizeLimit->value;
     float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
+    float DualCast = 1.0;
+    if (caster->GetIsDualCasting())
+    {DualCast = 2.0;}
 	  if (casterScale < size_limit) {
-		  set_target_scale(caster, casterScale - (0.0018* ProgressionMultiplier));
+		  set_target_scale(caster, casterScale - (0.0018* ProgressionMultiplier * DualCast));
 	  }
   }
 
@@ -225,16 +240,19 @@ namespace Gts {
     float targetScale = get_visual_scale(target);
     float GrowRate = 0.0;
     float SMTRate = 1.0;
+    float DualCast = 1.0;
+    if (caster->GetIsDualCasting())
+    {DualCast = 2.0;}
     if (caster->HasMagicEffect(runtime.smallMassiveThreat))
     {SMTRate = 2.0;}
     if (CrushGrowthRate >= 1.4)
     {GrowRate = 0.00180;}
-
+    
 	  if (targetScale < size_limit) {
-		  set_target_scale(target, targetScale * 1.00000 + (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier * SMTRate));
+		  set_target_scale(target, targetScale * 1.00000 + (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier * SMTRate * DualCast));
 	  }
     if (casterScale >= 1.0)
-      {set_target_scale(caster, casterScale * 1.00000 - (((0.00180 + GrowRate) * targetScale * 0.50)) * ProgressionMultiplier * SMTRate);}
+      {set_target_scale(caster, casterScale * 1.00000 - (((0.00180 + GrowRate) * targetScale * 0.50)) * ProgressionMultiplier * SMTRate * DualCast);}
   }
 
   void ShrinkAllyFunction(Actor* caster, Actor* target) // Shrink Ally with a spell
@@ -246,11 +264,14 @@ namespace Gts {
     float casterScale = get_visual_scale(caster);
     float targetScale = get_visual_scale(target);
     float GrowRate = 0.0;
+      float DualCast = 1.0;
+    if (caster->GetIsDualCasting())
+    {DualCast = 2.0;}
     if (CrushGrowthRate >= 1.4)
     {GrowRate = 0.00090;}
 
 	  if (targetScale > 0.25) {
-		  set_target_scale(target, targetScale * 1.00000 - (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier));
+		  set_target_scale(target, targetScale * 1.00000 - (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier * DualCast));
 	  }
   }
 
