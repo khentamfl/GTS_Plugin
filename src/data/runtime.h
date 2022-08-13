@@ -80,6 +80,8 @@ namespace Gts {
 			TESGlobal * ProgressionMultiplier = nullptr;
 			TESGlobal * CrushGrowthRate = nullptr;
 			MagicItem * ShrinkToNothingSpell = nullptr;
+			MagicItem * ShrinkBackNPCSpell = nullptr;
+			MagicItem * ShrinkBackSpell = nullptr;
 			
 	};
 }

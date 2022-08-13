@@ -97,5 +97,7 @@ namespace Gts {
 		this->ProgressionMultiplier = find_form<TESGlobal>("GTS.esp|37E46E");
 		this->CrushGrowthRate = find_form<TESGlobal>("GTS.esp|2028B9");
 		this->ShrinkToNothingSpell = find_form<MagicItem>("GTS.esp|00997A");
+		this->ShrinkBackNPCSpell = find_form<MagicItem>("GTS.esp|00536B");
+		this->ShrinkBackSpell = find_form<MagicItem>("GTS.esp|005368");
 	}
 }

@@ -224,15 +224,17 @@ namespace Gts {
     float casterScale = get_visual_scale(caster);
     float targetScale = get_visual_scale(target);
     float GrowRate = 0.0;
-    log::info("Growing Ally");
+    float SMTRate = 1.0;
+    if (caster->HasMagicEffect(runtime.smallMassiveThreat))
+    {SMTRate = 2.0;}
     if (CrushGrowthRate >= 1.4)
-    {GrowRate = 0.00090;}
+    {GrowRate = 0.00180;}
 
 	  if (targetScale < size_limit) {
-		  set_target_scale(target, targetScale * 1.00000 + (((0.00090 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier));
+		  set_target_scale(target, targetScale * 1.00000 + (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier * SMTRate));
 	  }
     if (casterScale >= 1.0)
-      {set_target_scale(caster, casterScale * 1.00000 - (((0.00090 + GrowRate) * targetScale * 0.25)) * ProgressionMultiplier);}
+      {set_target_scale(caster, casterScale * 1.00000 - (((0.00180 + GrowRate) * targetScale * 0.50)) * ProgressionMultiplier * SMTRate);}
   }
 
   void ShrinkAllyFunction(Actor* caster, Actor* target) // Shrink Ally with a spell
@@ -244,7 +246,6 @@ namespace Gts {
     float casterScale = get_visual_scale(caster);
     float targetScale = get_visual_scale(target);
     float GrowRate = 0.0;
-     log::info("Shrinking Ally");
     if (CrushGrowthRate >= 1.4)
     {GrowRate = 0.00090;}
 
@@ -283,7 +284,8 @@ namespace Gts {
     float casterScale = get_visual_scale(caster);
     if (casterScale < 1.0)
     {set_target_scale(caster, casterScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier));}
-    
+    else if (targetScale >= 1.01 || targetScale <=1.00)
+    {runtime.ShrinkBackSpell->Dispel(caster)}
     else if (casterScale > 1.00)
     {
       set_target_scale(caster, casterScale * 0.9950 - (0.0005 * 10 * ProgressionMultiplier));
@@ -298,7 +300,8 @@ namespace Gts {
     float targetScale = get_visual_scale(target);
     if (targetScale < 1.0)
     {set_target_scale(target, targetScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier));}
-    
+    else if (targetScale >= 1.01 || targetScale <=1.00)
+    {runtime.ShrinkBackNPCSpell->Dispel(target)}
     else if (targetScale > 1.00)
     {
       set_target_scale(target, targetScale * 0.9950 - (0.0005 * 10 * ProgressionMultiplier));
