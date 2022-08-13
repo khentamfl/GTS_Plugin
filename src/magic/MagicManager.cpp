@@ -13,7 +13,7 @@ namespace Gts {
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
-    float Efficiency = caster->GetLevel()/target->GetLevel() * ProgressionMultiplier;
+    float Efficiency = (caster->GetLevel()/target->GetLevel()) * ProgressionMultiplier;
 
     if (Efficiency >= 1.25)
     {Efficiency = 1.25 * ProgressionMultiplier;}
@@ -30,7 +30,7 @@ namespace Gts {
     else if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+    float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
 
     //if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
     //{CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
@@ -49,7 +49,7 @@ namespace Gts {
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
-    float Efficiency = caster->GetLevel()/target->GetLevel() * ProgressionMultiplier;
+    float Efficiency = (caster->GetLevel()/target->GetLevel()) * ProgressionMultiplier;
 
     if (Efficiency >= 1.25)
     {Efficiency = 1.25 * ProgressionMultiplier;}
@@ -66,7 +66,7 @@ namespace Gts {
     else if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+    float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
 
    //if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
    // {CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
@@ -86,7 +86,7 @@ namespace Gts {
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
     float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
-    float Efficiency = caster->GetLevel()/target->GetLevel() * ProgressionMultiplier;
+    float Efficiency = (caster->GetLevel()/target->GetLevel()) * ProgressionMultiplier;
 
     if (Efficiency >= 1.25)
     {Efficiency = 1.25 * ProgressionMultiplier;}
@@ -103,7 +103,7 @@ namespace Gts {
     else if (caster->HasPerk(runtime.PerkPart2))
     {AdditionalShrinkValue = 2.0;}
 
-    float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+    float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
 
     //if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
     //{CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
@@ -143,7 +143,7 @@ namespace Gts {
     // if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
     //{CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);}
 
-    float AlterationLevel = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+    float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
 	  if (TargetScale > 0.10) {
 		  set_target_scale(target, TargetScale * (1 - 0.00280 * TargetScale * Efficiency));
 	  }

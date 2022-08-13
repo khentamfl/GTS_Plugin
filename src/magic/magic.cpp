@@ -19,7 +19,7 @@ namespace Gts {
 			for (auto effect: (*effect_list)) {
 				EffectSetting* base_spell = effect->GetBaseObject();
 				Actor* caster = effect->caster.get().get();
-				Actor* target = effect->target.get().get();
+				Actor* target = actor;
 				float magnitude = effect->magnitude;
 				float elapsedSeconds = effect->elapsedSeconds;
 				float duration = effect->duration;
