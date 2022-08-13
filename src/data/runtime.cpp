@@ -72,7 +72,7 @@ namespace Gts {
 		this->GrowthSpell = find_form<EffectSetting>("GTS.esp|0022EB"); // <- Grow Spell [Hands]
 		this->GrowPcButton = find_form<EffectSetting>("GTS.esp|002DB5"); // <- Grow PC in size on button press
 		
-		this->AllyGrowSize = find_form<EffectSetting>("GTS.esp|0058D5");  // <- Increase Ally Size [Hands]
+		this->AllyGrowSizeMGEF = find_form<EffectSetting>("GTS.esp|0058D5");  // <- Increase Ally Size [Hands]
 
 		this->GrowAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE3");  // <- Makes ally grow for 2 sec on button press.
 		this->ShrinkAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE4"); // <- Makes ally shrink for 2 sec on button press.

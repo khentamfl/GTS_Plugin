@@ -19,7 +19,7 @@ namespace Gts {
 			for (auto effect: (*effect_list)) {
 				EffectSetting* base_spell = effect->GetBaseObject();
 				Actor* caster = effect->caster.get().get();
-				Actor* target = actor;
+				Actor* target = effect->target.get().get();
 				float magnitude = effect->magnitude;
 				float elapsedSeconds = effect->elapsedSeconds;
 				float duration = effect->duration;
@@ -62,7 +62,7 @@ namespace Gts {
 					ShrinkSpellFunction(caster);
 				}
 
-				if (base_spell == runtime.AllyGrowSize) {
+				if (base_spell == runtime.AllyGrowSizeMGEF) {
 					GrowAllyFunction(caster, target);
 				}
 

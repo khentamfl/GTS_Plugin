@@ -161,7 +161,7 @@ namespace Gts {
     float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetActorValue(ActorValue::kStamina);
     log::info("Stamina Max Check is", StaminaMaxCheck);
 	  if (casterScale > 0.25) {
-      caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.075 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
+      caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.25 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
 		  mod_target_scale(caster, (-0.0025 * casterScale) * StaminaMaxCheck);
 	  }
   }
@@ -174,7 +174,7 @@ namespace Gts {
     float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetBaseActorValue(ActorValue::kStamina);
     log::info("Stamina Max Check is", StaminaMaxCheck);
 	  if (casterScale < size_limit) {
-      caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.15 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
+      caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.45 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
 		  mod_target_scale(caster, (0.0025 * casterScale) * StaminaMaxCheck);
 	  }
       
@@ -245,7 +245,7 @@ namespace Gts {
     if (CrushGrowthRate >= 1.4)
     {GrowRate = 0.00090;}
 
-	  if (targetScale < size_limit) {
+	  if (targetScale > 0.25) {
 		  set_target_scale(target, targetScale * 1.00000 - (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier));
 	  }
   }
