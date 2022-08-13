@@ -6,47 +6,113 @@ namespace Gts {
 	
 	void ShrinkFoe(Actor* caster, Actor* target) 
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    float size_limit = SizeLimit->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
-    set_target_scale(target, TargetScale * 0.99935);
+    float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
+    float Efficiency = caster->getLevel()/target->getLevel() * ProgressionMultiplier
+
+    if (Efficiency >= 1.25)
+    {Efficiency = 1.25 * ProgressionMultiplier}
+    else if (Efficiency <= 0.25)
+        {Efficiency = 0.25}
+    else if (target.getDisplayName().includes("ragon"))
+    {Efficiency = 0.14 * ProgressionMultiplier}    
+
+    if (caster->hasMagicEffect(_smallMassiveThreat))
+    {SMTRate = 2.0;}
+
+    if (caster->hasPerk(runtime.PerkPart1))
+    {AdditionalShrinkValue = 1.33;}
+    else if (caster->hasPerk(runtime.PerkPart2))
+    {AdditionalShrinkValue = 2.0;}
+
+    float AlterationLevel = caster->getActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+
+
+    set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate) * Efficiency));
 	    
       if (casterScale < size_limit) {
-	      set_target_scale(caster, casterScale + 0.000015);
+	      set_target_scale(caster, casterScale + (0.000015 + ((AlterationLevel * SMTRate) * 0.28 * Efficiency)));
 	 }
   }
   
   void ShrinkFoeAoe(Actor* caster, Actor* target)
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    float size_limit = SizeLimit->value;
+        auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
-    set_target_scale(target, TargetScale * 0.99905); //- ((ShrinkRateTotal * SMTRate) * 1 * Efficiency))
+    float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
+    float Efficiency = caster->getLevel()/target->getLevel() * ProgressionMultiplier
+
+    if (Efficiency >= 1.25)
+    {Efficiency = 1.25 * ProgressionMultiplier}
+    else if (Efficiency <= 0.25)
+        {Efficiency = 0.25}
+    else if (target.getDisplayName().includes("ragon"))
+    {Efficiency = 0.14 * ProgressionMultiplier}    
+
+    if (caster->hasMagicEffect(_smallMassiveThreat))
+    {SMTRate = 2.0;}
+
+    if (caster->hasPerk(runtime.PerkPart1))
+    {AdditionalShrinkValue = 1.33;}
+    else if (caster->hasPerk(runtime.PerkPart2))
+    {AdditionalShrinkValue = 2.0;}
+
+    float AlterationLevel = caster->getActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+
+    set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.12) * Efficiency))
       
     if (casterScale < size_limit) {
-	    set_target_scale(caster, casterScale + 0.000020);
+	    set_target_scale(caster, casterScale + 0.000017 + ((AlterationLevel * SMTRate) * 0.34 * Efficiency));
     	 }
   }
   
   void ShrinkFoeAoeMast(Actor* caster, Actor* target)
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    float size_limit = SizeLimit->value;
+      auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
-    set_target_scale(target, TargetScale * 0.99705);
-      
+    float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
+    float Efficiency = caster->getLevel()/target->getLevel() * ProgressionMultiplier
+
+    if (Efficiency >= 1.25)
+    {Efficiency = 1.25 * ProgressionMultiplier}
+    else if (Efficiency <= 0.25)
+        {Efficiency = 0.25}
+    else if (target.getDisplayName().includes("ragon"))
+    {Efficiency = 0.14 * ProgressionMultiplier}    
+
+    if (caster->hasMagicEffect(_smallMassiveThreat))
+    {SMTRate = 2.0;}
+
+    if (caster->hasPerk(runtime.PerkPart1))
+    {AdditionalShrinkValue = 1.33;}
+    else if (caster->hasPerk(runtime.PerkPart2))
+    {AdditionalShrinkValue = 2.0;}
+
+    float AlterationLevel = caster->getActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue;
+
+
+    set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.35) * Efficiency));
+	    
       if (casterScale < size_limit) {
-	      set_target_scale(caster, casterScale + 0.000025);
+	      set_target_scale(caster, casterScale + (0.000020 + ((AlterationLevel * SMTRate) * 0.40 * Efficiency)));
 	 }
   }
 			     
  void SwordOfSize(Actor* caster, Actor* target)
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    float size_limit = SizeLimit->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float TargetScale = get_visual_scale(target); 
     float casterScale = get_visual_scale(caster);
 	  if (TargetScale > 0.10) {
@@ -54,14 +120,14 @@ namespace Gts {
 	  }
       
       if (casterScale < size_limit) {
-	      set_target_scale(caster, casterScale + 0.00096);
+	      set_target_scale(caster, casterScale + (0.00096 * ProgressionMultiplier));
 	 }
   }
 
   void ShrinkPCFunction(Actor* caster) // <- Shrink in Size button
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    float size_limit = SizeLimit->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
 	  if (casterScale > 0.25) {
 		  mod_target_scale(caster, -0.0025 * casterScale);
@@ -70,8 +136,8 @@ namespace Gts {
 
   void GrowPCFunction(Actor* caster) // <- Grow in Size button
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    float size_limit = SizeLimit->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
     float casterScale = get_visual_scale(caster);
 	  if (casterScale < size_limit) {
 		  mod_target_scale(caster, 0.0025 * casterScale);
@@ -81,10 +147,9 @@ namespace Gts {
 
   void SlowGrowthFunction(Actor* caster) // Slow Growth spell
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float size_limit = SizeLimit->value;
-    float ProgressionMultiplier = progression_multiplier_global->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
 	  if (casterScale < size_limit) {
 		  mod_target_scale(caster, 0.0010 * ProgressionMultiplier);
@@ -93,49 +158,50 @@ namespace Gts {
 
   void GrowthSpellFunction(Actor* caster) // Growth Spell
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float size_limit = SizeLimit->value;
-    float ProgressionMultiplier = progression_multiplier_global->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
 	  if (casterScale < size_limit) {
-		  mod_target_scale(caster, casterScale + (0.00125 * ProgressionMultiplier));
+		  set_target_scale(caster, casterScale + (0.00125 * ProgressionMultiplier));
 	  }
   }
   void ShrinkSpellFunction(Actor* caster) // Shrink Spell
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float size_limit = SizeLimit->value;
-    float ProgressionMultiplier = progression_multiplier_global->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
 	  if (casterScale < size_limit) {
-		  mod_target_scale(caster, casterScale - (0.0018* ProgressionMultiplier));
+		  set_target_scale(caster, casterScale - (0.0018* ProgressionMultiplier));
 	  }
   }
 
   void GrowAllyFunction(Actor* caster, Actor* target) // Scale Ally with a spell
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float size_limit = SizeLimit->value;
-    float ProgressionMultiplier = progression_multiplier_global->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
     float targetScale = get_visual_scale(target);
-	  if (casterScale < size_limit) {
-		  set_target_scale(target, targetScale * 1.00000 + (((0.00180) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier));
+    float GrowRate = 0.0
+
+    if (runtime.CrushGrowthRate->value >= 1.4)
+    {Growrate = 0.00090}
+
+	  if (targetScale < size_limit) {
+		  set_target_scale(target, targetScale * 1.00000 + (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier));
 	  }
     if (casterScale >= 1.0)
-      {set_target_scale(caster, casterScale * 1.00000 - (((0.00180) * targetScale * 0.25)) * ProgressionMultiplier);}
+      {set_target_scale(caster, casterScale * 1.00000 - (((0.00180 + GrowRate) * targetScale * 0.25)) * ProgressionMultiplier);}
   }
 
 
   void GrowAllyButtonFunction(Actor* target) // Scale Ally with a button press
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float size_limit = SizeLimit->value;
-    float ProgressionMultiplier = progression_multiplier_global->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float targetScale = get_visual_scale(target);
     if (targetScale < size_limit)
     {mod_target_scale(target, + ((0.0020 * targetScale) * ProgressionMultiplier));}
@@ -143,10 +209,9 @@ namespace Gts {
 
      void ShrinkAllyButtonFunction(Actor* target) // Shrink Ally with a button press
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float size_limit = SizeLimit->value;
-    float ProgressionMultiplier = progression_multiplier_global->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float targetScale = get_visual_scale(target);
     if (targetScale > 1.0)
     {mod_target_scale(target, - ((0.0020 * targetScale) * ProgressionMultiplier));}
@@ -155,10 +220,9 @@ namespace Gts {
 
     void ShrinkBackFunction(Actor* caster) // Restore Size function for PC
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float size_limit = SizeLimit->value;
-    float ProgressionMultiplier = progression_multiplier_global->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
     if (casterScale < 1.0)
     {set_target_scale(caster, casterScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier));}
@@ -171,10 +235,9 @@ namespace Gts {
 
    void ShrinkBackNPCFunction(Actor* target) // Restore size but for Followers/NPC's
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float size_limit = SizeLimit->value;
-    float ProgressionMultiplier = progression_multiplier_global->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float targetScale = get_visual_scale(target);
     if (targetScale < 1.0)
     {set_target_scale(target, targetScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier));}
@@ -187,12 +250,17 @@ namespace Gts {
 
    void VoreGrowthFunction(Actor* caster) // Growth after the Vore
   {
-    TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-    TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-    float size_limit = SizeLimit->value;
-    float ProgressionMultiplier = progression_multiplier_global->value;
+    auto& runtime = Runtime::GetSingleton();
+    float size_limit = runtime.sizeLimit->value;
+    float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
     float casterScale = get_visual_scale(caster);
     if (casterScale < size_limit)
     set_target_scale(caster, casterScale + ((0.00165) * 0.15 * ProgressionMultiplier));
+  }
+
+  void ManageGameMode()
+  {
+    auto Player = PlayerCharacter::GetSingleton()
+    
   }
 }

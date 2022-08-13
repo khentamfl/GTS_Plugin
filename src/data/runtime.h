@@ -72,9 +72,13 @@ namespace Gts {
 			BGSExplosion* footstepExplosion = nullptr;
 
 			BGSPerk* GrowthOnHitPerk = nullptr;
-
 			BGSPerk* hhBonus = nullptr;
-		
-		
+			PerkPart1 = nullptr;
+			PerkPart2 = nullptr;
+
+			SizeLimit = nullptr;
+			ProgressionMultiplier = nullptr;
+			CrushGrowthRate = nullptr;
+			
 	};
 }
