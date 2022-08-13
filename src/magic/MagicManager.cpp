@@ -350,7 +350,7 @@ namespace Gts {
     if (runtime.ChosenGameMode->value == 0.0)
     {return;}
     else if (runtime.ChosenGameMode->value == 1.0 && Scale < size_limit)
-    {mod_target_scale(Player, +(0.00010 + (GrowthRate * 0.25)));}
+    {mod_target_scale(Player, +(0.00010));}
     else if (runtime.ChosenGameMode->value == 2.0 && Scale > 1.0)
     {mod_target_scale(Player, - (0.00015 + (ShrinkRate * 0.25)));}
     else if (runtime.ChosenGameMode->value == 3.0 && Scale < size_limit)

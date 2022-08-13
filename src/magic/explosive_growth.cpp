@@ -6,8 +6,8 @@ namespace Gts {
 	
 	void explosive_growth1(Actor* caster) {
 		float one = 2.0;
-		float two = 4.0;
-		float three = 6.0;
+		float two = 3.0;
+		float three = 4.0;
 		float GrowthTick = 120.0;
 
 		BGSPerk* extra_growth = find_form<BGSPerk>("GTS.esp|332563");
@@ -24,8 +24,8 @@ namespace Gts {
 
 		if (caster->HasPerk(extra_growth)) {
 		 one = 4.0;
-		 two = 8.0;
-		 three = 12.0;
+		 two = 6.0;
+		 three = 8.0;
 		}
 		log::info("Explosive Growth.cpp initialized");
 		
@@ -38,8 +38,8 @@ namespace Gts {
 	
 	void explosive_growth2(Actor* caster) {
 		float one = 2.0;
-		float two = 4.0;
-		float three = 6.0;
+		float two = 3.0;
+		float three = 4.0;
 		float GrowthTick = 120.0;
 
 		BGSPerk* extra_growth = find_form<BGSPerk>("GTS.esp|332563");
@@ -51,23 +51,21 @@ namespace Gts {
 
 		if (caster->HasPerk(extra_growth)) {
 		 one = 4.0;
-		 two = 8.0;
-		 three = 12.0;
+		 two = 6.0;
+		 three = 8.0;
 		}
-		log::info("Explosive Growth.cpp initialized");
 		
 		float scale = get_visual_scale(caster);
 		if (scale <= size_limit && scale < two) 
 		{
 				mod_target_scale(caster, (0.00300 * progression_multiplier));
-				log::info("Scaling Actor");	
 		}
 	}
 	
 	void explosive_growth3(Actor* caster) {
 		float one = 2.0;
-		float two = 4.0;
-		float three = 6.0;
+		float two = 3.0;
+		float three = 4.0;
 		float GrowthTick = 120.0;
 
 		BGSPerk* extra_growth = find_form<BGSPerk>("GTS.esp|332563");
@@ -79,16 +77,14 @@ namespace Gts {
 
 		if (caster->HasPerk(extra_growth)) {
 		 one = 4.0;
-		 two = 8.0;
-		 three = 12.0;
+		 two = 6.0;
+		 three = 8.0;
 		}
-		log::info("Explosive Growth.cpp initialized");
 		
 		float scale = get_visual_scale(caster);
 		if (scale <= size_limit && scale < three) 
 		{
 				mod_target_scale(caster, (0.00175 * progression_multiplier));
-				log::info("Scaling Actor");	
 		}
 	}
 }
