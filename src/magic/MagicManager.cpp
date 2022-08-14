@@ -10,6 +10,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
+		auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
 		float TargetScale = get_visual_scale(target);
 		float casterScale = get_visual_scale(caster);
 		float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
@@ -35,7 +36,7 @@ namespace Gts {
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
 		if (TargetScale < 0.25)
-	{auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kUnknown);
+	{
 	if (source) {
     source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
 	}}
@@ -51,6 +52,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
+		auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
 		float TargetScale = get_visual_scale(target);
 		float casterScale = get_visual_scale(caster);
 		float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
@@ -77,7 +79,7 @@ namespace Gts {
 
 
     if (TargetScale < 0.25)
-	{auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kUnknown);
+	{
 	if (source) {
     source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
 	}}
@@ -94,6 +96,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
+		auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
 		float TargetScale = get_visual_scale(target);
 		float casterScale = get_visual_scale(caster);
 		float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
@@ -117,7 +120,7 @@ namespace Gts {
 		{AdditionalShrinkValue = 2.0;}
 
 		if (TargetScale < 0.25)
-	{auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kUnknown);
+	{
 	if (source) {
     source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
 	}}
@@ -126,7 +129,7 @@ namespace Gts {
 
 		if (TargetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
 		{
-			caster->magicCasters[Actor::SlotTypes::kUnknown]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
+			caster->magicCasters[Actor::SlotTypes::kLeftHand]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
 		}
 
 		set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.35) * Efficiency));
@@ -163,7 +166,7 @@ namespace Gts {
 
 		if (TargetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
 		{
-			caster->magicCasters[Actor::SlotTypes::kUnknown]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
+			caster->magicCasters[Actor::SlotTypes::kLeftHand]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
 		}
 
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
