@@ -6,8 +6,6 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	void ShrinkFoeAoe(Actor* caster, Actor* target);
-	void ShrinkFoeAoeMast(Actor* caster, Actor* target);
 	void SwordOfSize(Actor* caster, Actor* target);
 	void ShrinkPCFunction(Actor* caster);
 	void GrowPCFunction(Actor* caster);

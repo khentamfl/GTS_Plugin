@@ -8,15 +8,10 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ShrinkFor : Magic {
+	class ShrinkButton : Magic {
 		public:
 			virtual void OnUpdate() override;
 
 			static bool StartEffect(EffectSetting* effect);
-
-			ShrinkFor(ActiveEffect* effect);
-		private:
-			float power = 0.0;
-			float efficiency = 0.0;
 	};
 }

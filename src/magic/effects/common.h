@@ -16,7 +16,7 @@ namespace Gts {
 		return Efficiency;
 	}
 
-	inline float transfer_size(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency) {
+	inline float transfer_size(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smallMassiveThreat) {
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
@@ -33,7 +33,7 @@ namespace Gts {
 			DualCast = 2.0;
 		}
 
-		if (caster->HasMagicEffect(runtime.smallMassiveThreat)) {
+		if (smallMassiveThreat) {
 			SMTRate = 2.0;
 		}
 
