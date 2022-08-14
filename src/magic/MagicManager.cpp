@@ -368,7 +368,7 @@ namespace Gts {
 		float ShrinkRate = runtime.ShrinkModeRate->value;
 		auto Player = PlayerCharacter::GetSingleton();
 		float Scale = get_visual_scale(Player);
-				auto cell = actor->GetParentCell();
+				auto cell = Player->GetParentCell();
 	if (!cell) return;
 	float water_height = 0.0;
 	NiPoint3 pos = Player.GetPosition();
