@@ -37,9 +37,9 @@ namespace Gts {
 			EffectSetting* GetBaseEffect();
 
 			void Dispel();
-			bool IsDuelCasting();
-			inline bool DuelCasted() {
-				return this->duel_casted;
+			bool IsDualCasting();
+			inline bool DualCasted() {
+				return this->dual_casted;
 			}
 
 			Magic(ActiveEffect* effect) : activeEffect(effect){
@@ -62,7 +62,7 @@ namespace Gts {
 			Actor* caster = nullptr;
 			ActiveEffect* activeEffect = nullptr;
 			EffectSetting* effectSetting = nullptr;
-			bool duel_casted = false;
+			bool dual_casted = false;
 	};
 
 	class MagicManager {
@@ -71,6 +71,6 @@ namespace Gts {
 
 			void poll();
 		private:
-			std::list<std::unique_ptr<Magic> > active_effects;
+			std::map<ActiveEffect*, std::unique_ptr<Magic> > active_effects;
 	};
 }

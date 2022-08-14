@@ -1,4 +1,4 @@
-#include "magic/explosive_growth.h"
+#include "magic/effects/explosive_growth.h"
 #include "magic/magic.h"
 #include "scale/scale.h"
 #include "data/runtime.h"
@@ -18,7 +18,7 @@ namespace Gts {
 		}
 	}
 
-	bool StartEffect(EffectSetting* effect) {
+	bool ExplosiveGrowth::StartEffect(EffectSetting* effect) {
 		auto& runtime = Runtime::GetSingleton();
 		if (effect == runtime.explosiveGrowth1 || effect == runtime.explosiveGrowth2 || effect == runtime.explosiveGrowth3) {
 			return true;

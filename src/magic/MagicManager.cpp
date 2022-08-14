@@ -5,48 +5,6 @@
 
 namespace Gts {
 
-	void ShrinkFoe(Actor* caster, Actor* target)
-	{
-		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
-		float TargetScale = get_visual_scale(target);
-		float casterScale = get_visual_scale(caster);
-		float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
-		float Efficiency = (caster->GetLevel()/target->GetLevel()) * ProgressionMultiplier;
-		float DualCast = 1.0;
-		if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
-		{DualCast = 2.0;}
-		if (Efficiency >= 1.25)
-		{Efficiency = 1.25 * ProgressionMultiplier;}
-		else if (Efficiency <= 0.25)
-		{Efficiency = 0.25;}
-		else if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos)
-		{Efficiency = 0.14 * ProgressionMultiplier;}
-
-		if (caster->HasMagicEffect(runtime.smallMassiveThreat))
-		{SMTRate = 2.0;}
-
-		if (caster->HasPerk(runtime.PerkPart1))
-		{AdditionalShrinkValue = 1.33;}
-		else if (caster->HasPerk(runtime.PerkPart2))
-		{AdditionalShrinkValue = 2.0;}
-
-		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
-
-		if (TargetScale < 0.25)
-	{
-	if (source) {
-    source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
-	}}
-		set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate) * Efficiency));
-
-		if (casterScale < size_limit) {
-			set_target_scale(caster, casterScale + (0.000015 + ((AlterationLevel * SMTRate) * 0.28 * Efficiency)));
-		}
-	}
-
 	void ShrinkFoeAoe(Actor* caster, Actor* target)
 	{
 		auto& runtime = Runtime::GetSingleton();
@@ -78,11 +36,12 @@ namespace Gts {
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
 
-    if (TargetScale < 0.25)
-	{
-	if (source) {
-    source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
-	}}
+		if (TargetScale < 0.25)
+		{
+			if (source) {
+				source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
+			}
+		}
 
 		set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.12) * Efficiency));
 
@@ -120,10 +79,11 @@ namespace Gts {
 		{AdditionalShrinkValue = 2.0;}
 
 		if (TargetScale < 0.25)
-	{
-	if (source) {
-    source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
-	}}
+		{
+			if (source) {
+				source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
+			}
+		}
 
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
@@ -187,8 +147,8 @@ namespace Gts {
 		float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetPermanentActorValue(ActorValue::kStamina);
 		if (casterScale > 0.25) {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.25 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
-      if (StaminaMaxCheck <= 0.05)
-      {StaminaMaxCheck = 0.05;}
+			if (StaminaMaxCheck <= 0.05)
+			{StaminaMaxCheck = 0.05;}
 			mod_target_scale(caster, -(0.0025 * casterScale) * StaminaMaxCheck);
 		}
 	}
@@ -200,10 +160,10 @@ namespace Gts {
 		float casterScale = get_visual_scale(caster);
 		float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetPermanentActorValue(ActorValue::kStamina);
 		float PermanentSP = caster->GetPermanentActorValue(ActorValue::kStamina);
-		log::info("MaxCheck is {}", StaminaMaxCheck);log::info("Permanent SP is {}", PermanentSP);
+		log::info("MaxCheck is {}", StaminaMaxCheck); log::info("Permanent SP is {}", PermanentSP);
 		if (casterScale < size_limit) {
-      if (StaminaMaxCheck <= 0.05)
-      {StaminaMaxCheck = 0.05;}
+			if (StaminaMaxCheck <= 0.05)
+			{StaminaMaxCheck = 0.05;}
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.45 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
 			mod_target_scale(caster, (0.0025 * casterScale) * StaminaMaxCheck);
 		}

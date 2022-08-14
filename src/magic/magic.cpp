@@ -1,6 +1,7 @@
 #include "magic/magic.h"
 #include "util.h"
-#include "magic/explosive_growth.h"
+#include "magic/effects/explosive_growth.h"
+#include "magic/effects/shrink_foe.h"
 #include "magic/MagicManager.h"
 #include "data/runtime.h"
 
@@ -30,7 +31,7 @@ namespace Gts {
 						this->caster = this->activeEffect->caster.get().get();
 					}
 				}
-				this->duel_casted = this->IsDuelCasting();
+				this->dual_casted = this->IsDualCasting();
 
 				this->state = State::Start;
 				break;
@@ -87,7 +88,7 @@ namespace Gts {
 		}
 	}
 
-	bool Magic::IsDuelCasting() {
+	bool Magic::IsDualCasting() {
 		if (this->caster) {
 			auto source = this->caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
 			if (source) {
@@ -115,12 +116,11 @@ namespace Gts {
 				if (base_spell == runtime.GtsMarkAlly) {
 					ManageGameModeNPC(target);
 				}
-				else if (ExplosiveGrowth::StartEffect(base_spell)) {
-					ExplosiveGrowth(caster);
-					this->active_effects.push_back(new ExplosiveGrowth(effect));
+				if (ExplosiveGrowth::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
 				}
-				if (base_spell == runtime.ShrinkPCButton) {
-					ShrinkPCFunction(caster);
+				if (ShrinkFoe::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new ShrinkFoe(effect));
 				}
 				if (base_spell == runtime.GrowPcButton) {
 					GrowPCFunction(caster);
