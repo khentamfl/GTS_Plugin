@@ -4,23 +4,6 @@
 #include "data/runtime.h"
 
 namespace Gts {
-	void GrowPCFunction(Actor* caster) // <- Grow in Size button
-	{
-		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
-		float casterScale = get_visual_scale(caster);
-		float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetPermanentActorValue(ActorValue::kStamina);
-		float PermanentSP = caster->GetPermanentActorValue(ActorValue::kStamina);
-		log::info("MaxCheck is {}", StaminaMaxCheck); log::info("Permanent SP is {}", PermanentSP);
-		if (casterScale < size_limit) {
-			if (StaminaMaxCheck <= 0.05)
-			{StaminaMaxCheck = 0.05;}
-			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.45 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
-			mod_target_scale(caster, (0.0025 * casterScale) * StaminaMaxCheck);
-		}
-
-	}
-
 	void SlowGrowthFunction(Actor* caster) // Slow Growth spell
 	{
 		auto& runtime = Runtime::GetSingleton();

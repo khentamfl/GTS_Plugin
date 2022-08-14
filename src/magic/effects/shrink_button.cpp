@@ -7,7 +7,7 @@
 namespace Gts {
 	bool ShrinkButton::StartEffect(EffectSetting* effect) {
 		auto& runtime = Runtime::GetSingleton();
-		if (effect == runtime.GrowPcButton ) {
+		if (effect == runtime.ShrinkPCButton ) {
 			return true;
 		} else {
 			return false;

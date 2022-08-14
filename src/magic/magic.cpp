@@ -4,6 +4,7 @@
 #include "magic/effects/shrink_foe.h"
 #include "magic/effects/sword_of_size.h"
 #include "magic/effects/shrink_button.h"
+#include "magic/effects/grow_button.h"
 #include "magic/MagicManager.h"
 #include "data/runtime.h"
 
@@ -130,8 +131,8 @@ namespace Gts {
 				if (ShrinkButton::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new ShrinkButton(effect));
 				}
-				if (base_spell == runtime.GrowPcButton) {
-					GrowPCFunction(caster);
+				if (GrowButton::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new GrowButton(effect));
 				}
 				if (base_spell == runtime.SlowGrowth) {
 					SlowGrowthFunction(caster);
