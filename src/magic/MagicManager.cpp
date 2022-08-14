@@ -326,7 +326,7 @@ namespace Gts {
 		float casterScale = get_visual_scale(caster);
 		if (casterScale < 1.0)
 		{set_target_scale(caster, casterScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier));}
-		//else if (casterScale >= 1.01 || casterScale <=1.00)
+		//else if (casterScale >= 1.00 && casterScale <=1.02)
 		//{runtime.ShrinkBackSpell->DispelSpell(caster)}
 		else if (casterScale > 1.00)
 		{
@@ -387,6 +387,15 @@ namespace Gts {
 		float GrowthRate = runtime.GrowthModeRateNPC->value;
 		float ShrinkRate = runtime.ShrinkModeRateNPC->value;
 		float Scale = get_visual_scale(target);
+		auto cell = actor->GetParentCell();
+	if (!cell) return;
+	float water_height = 0.0;
+	NiPoint3 pos = actor.GetPosition();
+	if (cell->GetWaterHeight(pos, water_height)){
+ 	 log::info("Water height: {}", water_height);
+	} else {
+ 	 log::info("No water");
+	}
 
 		if (runtime.ChosenGameModeNPC->value == 1.0 && Scale < size_limit)
 		{set_target_scale(target, Scale * (1.00010 + (GrowthRate * 0.25)));}
