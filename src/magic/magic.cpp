@@ -137,9 +137,8 @@ namespace Gts {
 				if (SlowGrow::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new SlowGrow(effect));
 				}
-
-				if (base_spell == runtime.GrowthSpell) {
-					GrowthSpellFunction(caster);
+				if (Growth::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new Growth(effect));
 				}
 
 				if (base_spell == runtime.ShrinkSpell) {
