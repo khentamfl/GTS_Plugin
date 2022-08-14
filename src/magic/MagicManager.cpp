@@ -371,7 +371,7 @@ namespace Gts {
 				auto cell = actor->GetParentCell();
 	if (!cell) return;
 	float water_height = 0.0;
-	NiPoint3 pos = actor.GetPosition();
+	NiPoint3 pos = Player.GetPosition();
 	if (cell->GetWaterHeight(pos, water_height)){
  	 log::info("Water height: {}", water_height);
 	} else {
