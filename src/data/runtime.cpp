@@ -78,7 +78,7 @@ namespace Gts {
 		this->ShrinkAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE4"); // <- Makes ally shrink for 2 sec on button press.
 
 		this->AllyCrushGrowth = find_form<EffectSetting>("GTS.esp|2028B6"); // < Grow on Crush. NPC only. Player triggers CrushGrowth on crushing someone via Crush() function in SP.
-		this->GtsMarkAlly = find_form<EffectSetting>("GTS.esp|2EB746"); // < Marks ally when changing game mode
+		this->GtsMarkAlly = find_form<EffectSetting>("GTS.esp|29F82C"); // < Marks ally when changing game mode
 		///End
 		
 		///Others
@@ -92,6 +92,8 @@ namespace Gts {
 		this->hhBonus = find_form<BGSPerk>(Config::GetSingleton().GetPerks().GetHHBonus());
 		this->PerkPart1 = find_form<BGSPerk>("GTS.esp|16081F");
 		this->PerkPart2 = find_form<BGSPerk>("GTS.esp|160820");
+		this->ExtraGrowth = find_form<BGSPerk>("GTS.esp|332563");
+		this->ExtraGrowthMax = find_form<BGSPerk>("GTS.esp|397972");
 
 		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 

@@ -35,20 +35,24 @@ namespace Gts {
 		float two = 3.0;
 		float three = 4.0;
 		float GrowthTick = 120.0;
+		float BonusGrowth = 1.0;
+		float progression_multiplier = runtime.ProgressionMultiplier->value;
 
-		BGSPerk* extra_growth = find_form<BGSPerk>("GTS.esp|332563");
-		TESGlobal* progression_multiplier_global = find_form<TESGlobal>("GTS.esp|37E46E");
-		TESGlobal* SizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 
 		//BSSoundHandle GrowthSound = BSSoundHandle::BSSoundHandle();
 		//auto audio_manager = BSAudioManager::GetSingleton();
 		//BSISoundDescriptor* sound_descriptor = find_form<BSISoundDescriptor>("GTS.esp|271EF6");
 		//audio_manager->BuildSoundDataFromDescriptor(GrowthSound, sound_descriptor);
 
-		float progression_multiplier = progression_multiplier_global->value;
-		float size_limit = SizeLimit->value;
+		float size_limit = runtime.sizeLimit->value;
 
-		if (caster->HasPerk(extra_growth)) {
+		if (caster->HasPerk(runtime.ExtraGrowthMax)) {
+			one = 6.0;
+			two = 8.0;
+			three = 12.0;
+			BonusGrowth = 2.0;
+		}
+		else if (caster->HasPerk(runtime.ExtraGrowth)) {
 			one = 4.0;
 			two = 6.0;
 			three = 8.0;

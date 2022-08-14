@@ -10,6 +10,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
+		auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
 		float TargetScale = get_visual_scale(target);
 		float casterScale = get_visual_scale(caster);
 		float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
@@ -34,10 +35,11 @@ namespace Gts {
 
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
-		if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
-		{
-			caster->magicCasters[Actor::SlotTypes::kUnknown]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
-		}
+		if (TargetScale < 0.25)
+	{
+	if (source) {
+    source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
+	}}
 		set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate) * Efficiency));
 
 		if (casterScale < size_limit) {
@@ -50,6 +52,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
+		auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
 		float TargetScale = get_visual_scale(target);
 		float casterScale = get_visual_scale(caster);
 		float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
@@ -75,6 +78,11 @@ namespace Gts {
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
 
+    if (TargetScale < 0.25)
+	{
+	if (source) {
+    source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
+	}}
 
 		set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.12) * Efficiency));
 
@@ -88,6 +96,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
+		auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
 		float TargetScale = get_visual_scale(target);
 		float casterScale = get_visual_scale(caster);
 		float AdditionalShrinkValue = 1.0; float SMTRate = 1.0;
@@ -110,16 +119,17 @@ namespace Gts {
 		if (caster->HasPerk(runtime.PerkPart2))
 		{AdditionalShrinkValue = 2.0;}
 
-		if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
-		{
-			caster->magicCasters[Actor::SlotTypes::kUnknown]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
-		}
+		if (TargetScale < 0.25)
+	{
+	if (source) {
+    source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
+	}}
 
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
-		if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
+		if (TargetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
 		{
-			caster->magicCasters[Actor::SlotTypes::kUnknown]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
+			caster->magicCasters[Actor::SlotTypes::kLeftHand]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
 		}
 
 		set_target_scale(target, TargetScale * 0.99995 - ((AlterationLevel * SMTRate * 1.35) * Efficiency));
@@ -154,9 +164,9 @@ namespace Gts {
 		if (caster->HasPerk(runtime.PerkPart2))
 		{AdditionalShrinkValue = 2.0;}
 
-		if (targetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
+		if (TargetScale < 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
 		{
-			caster->magicCasters[Actor::SlotTypes::kUnknown]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
+			caster->magicCasters[Actor::SlotTypes::kLeftHand]->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
 		}
 
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue;
@@ -174,11 +184,12 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 		float casterScale = get_visual_scale(caster);
-		float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetActorValue(ActorValue::kStamina);
-		log::info("Stamina Max Check is", StaminaMaxCheck);
+		float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetPermanentActorValue(ActorValue::kStamina);
 		if (casterScale > 0.25) {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.25 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
-			mod_target_scale(caster, (-0.0025 * casterScale) * StaminaMaxCheck);
+      if (StaminaMaxCheck <= 0.05)
+      {StaminaMaxCheck = 0.05;}
+			mod_target_scale(caster, -(0.0025 * casterScale) * StaminaMaxCheck);
 		}
 	}
 
@@ -187,9 +198,12 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 		float casterScale = get_visual_scale(caster);
-		float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetBaseActorValue(ActorValue::kStamina);
-		log::info("Stamina Max Check is", StaminaMaxCheck);
+		float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetPermanentActorValue(ActorValue::kStamina);
+		float PermanentSP = caster->GetPermanentActorValue(ActorValue::kStamina);
+		log::info("MaxCheck is {}", StaminaMaxCheck);log::info("Permanent SP is {}", PermanentSP);
 		if (casterScale < size_limit) {
+      if (StaminaMaxCheck <= 0.05)
+      {StaminaMaxCheck = 0.05;}
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.45 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
 			mod_target_scale(caster, (0.0025 * casterScale) * StaminaMaxCheck);
 		}

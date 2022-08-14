@@ -49,7 +49,7 @@ namespace Gts {
 		float scale = impact.effective_scale;
 		if (!actor->IsSwimming()) {
 			if (actor->IsSprinting()) {
-				scale *= 1.35; // Sprinting makes you seem bigger
+				scale *= 1.25; // Sprinting makes you seem bigger
 			} else if (actor->IsSneaking()) {
 				scale *= 0.55; // Sneaking makes you seem quieter
 			} else if (actor->IsWalking()) {
@@ -57,7 +57,7 @@ namespace Gts {
 			}
 			Foot foot_kind = impact.kind;
 			if (foot_kind == Foot::JumpLand) {
-				scale *= 2.5; // Jumping makes you seem bigger
+				scale *= 2.0; // Jumping makes you seem bigger
 			}
 			auto actor_data = Transient::GetSingleton().GetData(actor);
 			if (actor_data) {
