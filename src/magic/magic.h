@@ -22,10 +22,55 @@ namespace Gts {
 		return dataHandler ? dataHandler->LookupForm<T>(relativeID, plugin) : nullptr;
 	}
 
+	class Magic {
+		public:
+			virtual void OnStart();
+			virtual void OnUpdate();
+			virtual void OnFinish();
+
+			void poll();
+
+			Actor* GetTarget();
+			Actor* GetCaster();
+
+			ActiveEffect* GetActiveEffect();
+			EffectSetting* GetBaseEffect();
+
+			void Dispel();
+			bool IsDuelCasting();
+			inline bool DuelCasted() {
+				return this->duel_casted;
+			}
+
+			Magic(ActiveEffect* effect) : activeEffect(effect){
+			}
+
+			inline bool IsFinished() {
+				return this->state == State::CleanUp;
+			}
+
+		private:
+			enum State {
+				Init,
+				Start,
+				Update,
+				Finish,
+				CleanUp,
+			};
+			State state = State::Init;
+			Actor* target = nullptr;
+			Actor* caster = nullptr;
+			ActiveEffect* activeEffect = nullptr;
+			EffectSetting* effectSetting = nullptr;
+			bool duel_casted = false;
+	};
+
 	class MagicManager {
 		public:
 			[[nodiscard]] static MagicManager& GetSingleton() noexcept;
 
 			void poll();
+		private:
+			std::list<std::unique_ptr<Magic> > active_effects;
 	};
 }
