@@ -140,9 +140,8 @@ namespace Gts {
 				if (Growth::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new Growth(effect));
 				}
-
-				if (base_spell == runtime.ShrinkSpell) {
-					ShrinkSpellFunction(caster);
+				if (Shrink::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new Shrink(effect));
 				}
 
 				if (base_spell == runtime.GrowAlly) {

@@ -1,16 +1,16 @@
-#include "magic/effects/growth.h"
+#include "magic/effects/shrink.h"
 #include "magic/effects/common.h"
 #include "magic/magic.h"
 #include "scale/scale.h"
 #include "data/runtime.h"
 
 namespace Gts {
-	bool Growth::StartEffect(EffectSetting* effect) {
+	bool Shrink::StartEffect(EffectSetting* effect) {
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.GrowthSpell;
+		return effect == runtime.ShrinkSpell;
 	}
 
-	void Growth::OnUpdate() {
+	void Shrink::OnUpdate() {
 		auto caster = GetCaster();
 		if (!caster) return;
 		auto target = GetTarget();
@@ -21,12 +21,11 @@ namespace Gts {
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float casterScale = get_visual_scale(caster);
 		float DualCast = 1.0;
-		if (IsDualCasting()) {
+		if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting()) {
 			DualCast = 2.0;
 		}
-
 		if (casterScale < size_limit) {
-			mod_target_scale(caster, 0.00125 * ProgressionMultiplier * DualCast);
+			set_target_scale(caster, casterScale - (0.0018* ProgressionMultiplier * DualCast));
 		}
 	}
 }

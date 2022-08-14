@@ -1,4 +1,4 @@
-#include "magic/effects/shrink_for.h"
+#include "magic/effects/shrink_foe.h"
 #include "magic/effects/common.h"
 #include "magic/magic.h"
 #include "scale/scale.h"
