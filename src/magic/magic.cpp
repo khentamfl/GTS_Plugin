@@ -143,13 +143,11 @@ namespace Gts {
 				if (Shrink::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new Shrink(effect));
 				}
-
-				if (base_spell == runtime.GrowAlly) {
-					GrowAllyFunction(caster, target);
+				if (GrowOther::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new GrowOther(effect));
 				}
-
-				if (base_spell == runtime.ShrinkAlly) {
-					ShrinkAllyFunction(caster, target);
+				if (ShrinkOther::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new ShrinkOther(effect));
 				}
 
 				if (base_spell == runtime.GrowAllySizeButton) {
