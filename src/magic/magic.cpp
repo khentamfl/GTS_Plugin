@@ -134,8 +134,8 @@ namespace Gts {
 				if (GrowButton::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new GrowButton(effect));
 				}
-				if (base_spell == runtime.SlowGrowth) {
-					SlowGrowthFunction(caster);
+				if (SlowGrow::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new SlowGrow(effect));
 				}
 
 				if (base_spell == runtime.GrowthSpell) {
