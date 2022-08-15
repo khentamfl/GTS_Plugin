@@ -48,12 +48,7 @@ namespace Gts {
 
 	void VoreGrowthFunction(Actor* caster) // Growth after the Vore
 	{
-		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float casterScale = get_visual_scale(caster);
-		if (casterScale < size_limit)
-			set_target_scale(caster, casterScale + ((0.00165) * 0.15 * ProgressionMultiplier));
+
 	}
 
 	void ManageGameModePC()

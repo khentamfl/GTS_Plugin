@@ -162,8 +162,8 @@ namespace Gts {
 					this->active_effects.try_emplace(effect, new ShrinkBackOther(effect));
 				}
 
-				if (base_spell == runtime.GlobalVoreGrowth) {
-					VoreGrowthFunction(caster);
+				if (VoreGrowth::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new VoreGrowth(effect));
 				}
 			}
 		}
