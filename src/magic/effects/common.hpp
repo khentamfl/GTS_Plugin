@@ -52,11 +52,8 @@ namespace Gts {
 		float growth_amount = stolen_amount * transfer_effeciency;
 		mod_target_scale(caster, growth_amount);
 
-		if (TargetScale < 0.10) {
-			auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
-			if (source) {
-				source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.0f, false, 0.0f, caster);
-			}
+		if (TargetScale <= 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false)
+		{caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
 		}
 	}
 }
