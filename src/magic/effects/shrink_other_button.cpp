@@ -23,8 +23,11 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float targetScale = get_visual_scale(target);
+		float MagickaMaxCheck = GetMagickaPercentage(caster);
+		if (MagickaMaxCheck <= 0.05)
+		{MagickaMaxCheck = 0.05;}
 		if (targetScale > 1.0) {
-			mod_target_scale(target, -(0.0020 * targetScale * ProgressionMultiplier));
+			mod_target_scale(target, -(0.0025 * targetScale * ProgressionMultiplier));
 		}
 	}
 }

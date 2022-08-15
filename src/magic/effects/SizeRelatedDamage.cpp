@@ -27,14 +27,15 @@ namespace Gts {
         float targetScale = get_visual_scale(target);
 		float DualCast = 1.0;
         float SizeDifference = casterScale/targetScale;
-        if (target->IsPlayerTeammate() == true && runtime.GtsNPCEffectImmunityToggle->value == 1.0)
+        if (target->IsPlayerTeammate() == true && runtime.GtsNPCEffectImmunityToggle->value == 1.0 || target.HasMagicEffect(runtime.FakeCrushEffect) == true || target.Is3DLoaded() == false)
         {return;} // Do not apply if those are true
 
-         if (SizeDifference >= 24.0 && target->IsPlayerTeammate() == false)
+         if (SizeDifference >= 24.0 && target->IsPlayerTeammate() == false && target->HasSpell(runtime.FakeCrushSpell) == false)
         {caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);} 
         // ^ Crush anyway, no conditions needed since size difference is too massive
 
-        else if (SizeDifference >= 4.0 && target->IsDead() && target->IsPlayerTeammate() == false) // We don't want to crush allies
+        else if (SizeDifference >= 4.0 && target->IsDead() == true && target->IsPlayerTeammate() == false && target->HasSpell(runtime.FakeCrushSpell) == false) 
+		// ^ We don't want to crush allies
         {caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);} 
         // ^ Crush only if size difference is > than 4.0
        

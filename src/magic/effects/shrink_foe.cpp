@@ -10,15 +10,15 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 
 		if (base_spell == runtime.ShrinkEnemy) {
-			this->power = 1.0;
+			this->power = 0.90;
 			this->efficiency = 0.34;
 		} else if (base_spell == runtime.ShrinkEnemyAOE) {
-			this->power = 1.12;
+			this->power = 1.10;
 			this->efficiency = 0.36;
 		} else if (base_spell == runtime.ShrinkEnemyAOEMast) {
 			// ShrinkEnemyAOEMast
-			this->power = 1.35;
-			this->efficiency = 0.40;
+			this->power = 1.25;
+			this->efficiency = 0.42;
 		}
 	}
 

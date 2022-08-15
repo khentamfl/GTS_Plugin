@@ -107,6 +107,7 @@ namespace Gts {
 
 			SpellItem * ShrinkToNothingSpell = nullptr;
 			SpellItem * FakeCrushSpell = nullptr;
+			EffectSetting* FakeCrushEffect = nullptr;
 
 			MagicItem * ShrinkBackNPCSpell = nullptr;
 			MagicItem * ShrinkBackSpell = nullptr;

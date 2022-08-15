@@ -123,6 +123,7 @@ namespace Gts {
 
 		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");
 		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
+		this->FakeCrushEffect = find_form<EffectSetting>("GTS.esp|271EF9");
 
 		this->ShrinkBackNPCSpell = find_form<MagicItem>("GTS.esp|00536B");
 		this->ShrinkBackSpell = find_form<MagicItem>("GTS.esp|005368");
