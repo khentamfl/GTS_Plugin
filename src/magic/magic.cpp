@@ -155,22 +155,11 @@ namespace Gts {
 				if (ShrinkOtherButton::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new ShrinkOtherButton(effect));
 				}
-
-				if (base_spell == runtime.GrowAllySizeButton) {
-					GrowAllyButtonFunction(target);
+				if (ShrinkBack::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new ShrinkBack(effect));
 				}
-
-				if (base_spell == runtime.ShrinkAllySizeButton) {
-					ShrinkAllyButtonFunction(target);
-				}
-
-
-				if (base_spell == runtime.ShrinkBack) {
-					ShrinkBackFunction(caster);
-				}
-
-				if (base_spell == runtime.ShrinkBackNPC) {
-					ShrinkBackNPCFunction(target);
+				if (ShrinkBackOther::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new ShrinkBackOther(effect));
 				}
 
 				if (base_spell == runtime.GlobalVoreGrowth) {

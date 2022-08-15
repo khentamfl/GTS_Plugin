@@ -38,34 +38,12 @@ namespace Gts {
 
 	void ShrinkBackFunction(Actor* caster) // Restore Size function for PC
 	{
-		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float casterScale = get_visual_scale(caster);
-		if (casterScale < 1.0)
-		{set_target_scale(caster, casterScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier));}
-		//else if (casterScale >= 1.01 || casterScale <=1.00)
-		//{runtime.ShrinkBackSpell->DispelSpell(caster)}
-		else if (casterScale > 1.00)
-		{
-			set_target_scale(caster, casterScale * 0.9950 - (0.0005 * 10 * ProgressionMultiplier));
-		}
+
 	}
 
 	void ShrinkBackNPCFunction(Actor* target) // Restore size but for Followers/NPC's
 	{
-		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float targetScale = get_visual_scale(target);
-		if (targetScale < 1.0)
-		{set_target_scale(target, targetScale * 1.0050 + (0.0005 * 10 * ProgressionMultiplier));}
-		//else if (targetScale >= 1.01 || targetScale <=1.00)
-		//{runtime.ShrinkBackNPCSpell->DispelSpell(target)}
-		else if (targetScale > 1.00)
-		{
-			set_target_scale(target, targetScale * 0.9950 - (0.0005 * 10 * ProgressionMultiplier));
-		}
+
 	}
 
 	void VoreGrowthFunction(Actor* caster) // Growth after the Vore
