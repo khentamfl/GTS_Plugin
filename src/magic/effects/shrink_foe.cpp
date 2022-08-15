@@ -37,7 +37,6 @@ namespace Gts {
 			return;
 		}
 		auto target = GetTarget();
-		auto targetScale = get_visual_scale(target);
 		if (!target) {
 			return;
 		}
