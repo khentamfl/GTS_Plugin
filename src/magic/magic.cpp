@@ -86,7 +86,7 @@ namespace Gts {
 		return this->target;
 	}
 	Actor* Magic::GetCaster() {
-		return this->target;
+		return this->caster;
 	}
 
 	ActiveEffect* Magic::GetActiveEffect() {
