@@ -48,7 +48,7 @@ namespace Gts {
 		log::info("Shrinking Is Called");
 		float stolen_amount = (TargetScale * 0.0015 + AlterationLevel * SMTRate * Efficiency) * power;
 		mod_target_scale(target, -stolen_amount);
-		float growth_amount = stolen_amount; //* transfer_effeciency;
+		float growth_amount = stolen_amount * transfer_effeciency;
 		mod_target_scale(caster, growth_amount);
 
 		if (TargetScale <= 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false)
