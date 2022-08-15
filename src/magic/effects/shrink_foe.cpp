@@ -47,7 +47,7 @@ namespace Gts {
 			return;
 		}
 		transfer_size(caster, target, IsDualCasting(), this->power, this->efficiency, smallMassiveThreat);
-		log::info("Calling Shrink}")
+		log::info("Calling Shrink}");
 		
 		//if (EssentialProtection != 1.0 || target->IsEssential() == false) // Essential Protection
 		//{;}
