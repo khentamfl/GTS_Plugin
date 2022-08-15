@@ -45,7 +45,6 @@ namespace Gts {
 
 		if (runtime.ProtectEssentials->value == 1.0 && target->IsEssential() == true) // Essential Protection
 		{return;}
-		else
 		
 		transfer_size(caster, target, IsDualCasting(), this->power, this->efficiency, smallMassiveThreat);
 		
