@@ -7,7 +7,7 @@
 namespace Gts {
 	bool Absorb::StartEffect(EffectSetting* effect) {
 		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.SlowGrowth || effect == runtime.SlowGrowth)
+		return (effect == runtime.AbsorbMGEF);
 	}
 
 	void SlowGrow::OnUpdate() {
