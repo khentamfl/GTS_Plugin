@@ -37,7 +37,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto caster = GetCaster();
+		auto target = GetTarget();
 		if (!target) {
 			return;
 		}
