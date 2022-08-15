@@ -27,7 +27,7 @@ namespace Gts {
         float targetScale = get_visual_scale(target);
 		float DualCast = 1.0;
         float SizeDifference = casterScale/targetScale;
-        if (target->IsPlayerTeammate() == true && runtime.GtsNPCEffectImmunityToggle->value == 1.0 || target->HasMagicEffect(runtime.FakeCrushEffect) == true || target.Is3DLoaded() == false)
+        if (target->IsPlayerTeammate() == true && runtime.GtsNPCEffectImmunityToggle->value == 1.0 || target->HasMagicEffect(runtime.FakeCrushEffect) == true || target->Is3DLoaded() == false)
         {return;} // Do not apply if those are true
 
          if (SizeDifference >= 24.0 && target->IsPlayerTeammate() == false && target->HasSpell(runtime.FakeCrushSpell) == false)
