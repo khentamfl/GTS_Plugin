@@ -21,11 +21,8 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float targetScale = get_visual_scale(target);
-		if (targetScale < size_limit) {
-			mod_target_scale(target, 0.0020 * targetScale * ProgressionMultiplier);
-		}
+		mod_target_scale(target, 0.0020 * targetScale * ProgressionMultiplier);
 	}
 }

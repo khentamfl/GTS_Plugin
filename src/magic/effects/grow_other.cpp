@@ -21,7 +21,6 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float CrushGrowthRate = runtime.CrushGrowthRate->value;
 		float casterScale = get_visual_scale(caster);
@@ -40,9 +39,8 @@ namespace Gts {
 		}
 
 		float transer_amount = (0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale * ProgressionMultiplier * SMTRate * DualCast;
-		if (targetScale < size_limit) {
-			mod_target_scale(target, transer_amount);
-		}
+		mod_target_scale(target, transer_amount);
+
 		if (casterScale >= 1.0) {
 			mod_target_scale(caster, -transer_amount);
 		}

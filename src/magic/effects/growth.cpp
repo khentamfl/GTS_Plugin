@@ -21,7 +21,6 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float casterScale = get_visual_scale(caster);
 		float DualCast = 1.0;
@@ -29,8 +28,6 @@ namespace Gts {
 			DualCast = 2.0;
 		}
 
-		if (casterScale < size_limit) {
-			mod_target_scale(caster, 0.00125 * ProgressionMultiplier * DualCast);
-		}
+		mod_target_scale(caster, 0.00125 * ProgressionMultiplier * DualCast);
 	}
 }

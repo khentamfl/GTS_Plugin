@@ -45,7 +45,7 @@ namespace Gts {
 		this->xxlFootstepL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXXLFootstepL());
 		this->xxlFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXXLFootstepR());
 
-		this->growthSound = find_form<BSISoundDescriptor>("GTS.esp|271EF6");
+		this->growthSound = find_form<BGSSoundDescriptorForm>("GTS.esp|271EF6");
 
 		this->smallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
 

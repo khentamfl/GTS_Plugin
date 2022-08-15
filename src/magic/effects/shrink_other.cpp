@@ -21,7 +21,6 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float CrushGrowthRate = runtime.CrushGrowthRate->value;
 		float casterScale = get_visual_scale(caster);

@@ -19,7 +19,6 @@ namespace Gts {
 	inline float transfer_size(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smallMassiveThreat) {
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
 		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
 
 		float TargetScale = get_visual_scale(target);
 		float casterScale = get_visual_scale(caster);
@@ -45,8 +44,7 @@ namespace Gts {
 
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
-		if (TargetScale < 0.25)
-		{
+		if (TargetScale < 0.25) {
 			auto source = caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
 			if (source) {
 				source->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1, false, 1, caster);
@@ -56,11 +54,7 @@ namespace Gts {
 		float stolen_amount = TargetScale * 0.0015 + ((AlterationLevel * SMTRate) * Efficiency);
 		mod_target_scale(target, -stolen_amount*power_shrink);
 		float growth_amount = stolen_amount * transfer_effeciency;
-		if (casterScale + growth_amount < size_limit) {
-			mod_target_scale(caster, growth_amount);
-		} else {
-			set_target_scale(caster,size_limit);
-		}
+		mod_target_scale(caster, growth_amount);
 
 	}
 }

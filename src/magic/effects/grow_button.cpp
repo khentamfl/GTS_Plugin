@@ -21,15 +21,12 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
 		float casterScale = get_visual_scale(caster);
 		float StaminaMaxCheck = GetStaminaPercentage(caster);
-		if (casterScale < size_limit) {
-			if (StaminaMaxCheck <= 0.05) {
-				StaminaMaxCheck = 0.05;
-			}
-			DamageAV(caster, ActorValue::kStamina, 0.45 * (casterScale * 0.5 + 0.5) * StaminaMaxCheck);
-			mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck);
+		if (StaminaMaxCheck <= 0.05) {
+			StaminaMaxCheck = 0.05;
 		}
+		DamageAV(caster, ActorValue::kStamina, 0.45 * (casterScale * 0.5 + 0.5) * StaminaMaxCheck);
+		mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck);
 	}
 }

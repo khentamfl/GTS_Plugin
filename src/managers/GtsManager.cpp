@@ -107,10 +107,11 @@ namespace {
 		float MS_mult = soft_core(scale, MS_adjustment);
 		persi_actor_data->anim_speed = MS_mult;
 		actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / MS_mult);
-		if (actor->IsWalking() == true)
-		{actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.50 / MS_mult);}
-		else if (actor->IsSprinting() == true)
-		{actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 1.28 / MS_mult);}
+		if (actor->IsWalking() == true) {
+			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.50 / MS_mult);
+		} else if (actor->IsSprinting() == true) {
+			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 1.28 / MS_mult);
+		}
 
 		// Experiement
 		if (false) {
@@ -173,6 +174,38 @@ namespace {
 		apply_height(actor, saved_data, temp_data, force);
 		apply_speed(actor, saved_data, temp_data, force);
 	}
+
+	// Handles changes like slowly loosing height
+	// over time
+	void GameMode(Actor* actor)  {
+		auto& runtime = Runtime::GetSingleton();
+		float size_limit = runtime.sizeLimit->value;
+
+		set_max_scale(actor, size_limit);
+		if (get_target_size(actor) > size_limit) {
+			set_target_size(actor, size_limit);
+		}
+
+		if (actor->formID == 0x14 || actor->IsPlayerTeammate()) {
+
+			float GrowthRate = runtime.GrowthModeRate->value;
+			float ShrinkRate = runtime.ShrinkModeRate->value;
+
+			float natural_scale = 1.0;
+			float Scale = get_visual_scale(actor);
+			if (runtime.ChosenGameMode->value == 1.0 && Scale < size_limit) {
+				mod_target_scale(actor, Scale * (0.00010 + (GrowthRate * 0.25)));
+			} else if (runtime.ChosenGameMode->value == 2.0 && Scale > natural_scale) {
+				mod_target_scale(actor, Scale * -(0.00025 + (ShrinkRate * 0.25)));
+			} else if (runtime.ChosenGameMode->value == 3.0 && Scale < size_limit) {
+				if (actor->IsInCombat()) {
+					mod_target_scale(Player, Scale * (0.00008 + (GrowthRate * 0.17)));
+				} else {
+					mod_target_scale(Player, Scale * -(0.00029 + (ShrinkRate * 0.34)));
+				}
+			}
+		}
+	}
 }
 
 GtsManager& GtsManager::GetSingleton() noexcept {
@@ -225,6 +258,7 @@ void GtsManager::poll() {
 			}
 			update_actor(actor);
 			apply_actor(actor);
+			GameMode(actor);
 		}
 	}
 }

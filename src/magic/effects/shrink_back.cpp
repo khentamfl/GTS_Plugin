@@ -21,7 +21,6 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float casterScale = get_visual_scale(caster);
 		float transfer_amount = casterScale * 0.0050 + (0.0005 * 10 * ProgressionMultiplier);

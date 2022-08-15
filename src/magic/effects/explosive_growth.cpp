@@ -46,8 +46,6 @@ void ExplosiveGrowth::OnUpdate() {
 	audio_manager->BuildSoundDataFromDescriptor(GrowthSound, sound_descriptor);
 	GrowthSound.Play();
 
-	float size_limit = runtime.sizeLimit->value;
-
 	if (caster->HasPerk(runtime.ExtraGrowthMax)) {
 		one = 6.0;
 		two = 8.0;
@@ -60,9 +58,6 @@ void ExplosiveGrowth::OnUpdate() {
 	}
 	log::info("Explosive Growth.cpp initialized");
 
-	float scale = get_visual_scale(caster);
-	if (scale <= size_limit && scale < one) {
-		mod_target_scale(caster, this->power * progression_multiplier);
-	}
+	mod_target_scale(caster, this->power * progression_multiplier);
 }
 }
