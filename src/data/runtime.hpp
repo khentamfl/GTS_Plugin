@@ -100,7 +100,5 @@ namespace Gts {
 			MagicItem * ShrinkBackNPCSpell = nullptr;
 			MagicItem * ShrinkBackSpell = nullptr;
 
-			
-
 	};
 }

@@ -44,7 +44,7 @@ namespace Gts {
 		}
 		float TargetScale = get_visual_scale(target);
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
-
+		log::info("Essential Protection, Target Name, is Essential : {},{},{}", EssentialProtection, pos.y, target->GetDisplayFullName(), target->IsEssential());
 		if (EssentialProtection == 1.0 && target->IsEssential() == true) // Essential Protection
 		{return;}
 		if (TargetScale <= 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
