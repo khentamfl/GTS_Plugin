@@ -95,6 +95,8 @@ namespace Gts {
 			TESGlobal * GtsProtectEssentials = nullptr;
 
 			SpellItem * ShrinkToNothingSpell = nullptr;
+			SpellItem * FakeCrushSpell = nullptr;
+
 			MagicItem * ShrinkBackNPCSpell = nullptr;
 			MagicItem * ShrinkBackSpell = nullptr;
 
