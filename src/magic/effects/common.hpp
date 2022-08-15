@@ -45,7 +45,7 @@ namespace Gts {
 		}
 
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
-		log::info("Shrinking Is Called}")
+		log::info("Shrinking Is Called}");
 		float stolen_amount = (TargetScale * 0.0015 + AlterationLevel * SMTRate * Efficiency) * power;
 		mod_target_scale(target, -stolen_amount);
 		float growth_amount = stolen_amount; //* transfer_effeciency;
