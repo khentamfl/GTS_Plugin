@@ -47,8 +47,5 @@ namespace Gts {
 			return;
 		}
 		transfer_size(caster, target, IsDualCasting(), this->power, this->efficiency, smallMassiveThreat);
-		
-		//if (EssentialProtection != 1.0 || target->IsEssential() == false) // Essential Protection
-		//{;}
 	}
 }
