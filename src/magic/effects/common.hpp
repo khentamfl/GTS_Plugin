@@ -45,11 +45,11 @@ namespace Gts {
 		}
 
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
-		log::info("Caster is {}", caster->GetDisplayFullName());
-		log::info("Target is {}", target->GetDisplayFullName());
-		float stolen_amount = (TargetScale * 0.0015 + AlterationLevel * SMTRate * Efficiency) * power;
+		//log::info("Caster is {}", caster->GetDisplayFullName());
+		//log::info("Target is {}", target->GetDisplayFullName());
+		float stolen_amount = (TargetScale * 0.0005 + AlterationLevel * SMTRate * Efficiency) * power;
 		mod_target_scale(target, -stolen_amount);
-		float growth_amount = stolen_amount * transfer_effeciency;
+		float growth_amount = stolen_amount/3 * transfer_effeciency;
 		mod_target_scale(caster, growth_amount);
 
 		if (TargetScale <= 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false)

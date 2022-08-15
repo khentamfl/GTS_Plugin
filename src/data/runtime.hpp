@@ -70,6 +70,11 @@ namespace Gts {
 
 			///Others
 			EffectSetting* GlobalVoreGrowth = nullptr;
+
+			EffectSetting* SizeRelatedDamage0 = nullptr;
+			EffectSetting* SizeRelatedDamage1 = nullptr;
+			EffectSetting* SizeRelatedDamage2 = nullptr;
+
 			///End
 
 			BGSExplosion* footstepExplosion = nullptr;
@@ -82,6 +87,9 @@ namespace Gts {
 			BGSPerk* ExtraGrowthMax = nullptr;
 
 			TESGlobal * sizeLimit = nullptr;
+
+			TESGlobal * GtsNPCEffectImmunityToggle = nullptr;
+
 			TESGlobal * ProgressionMultiplier = nullptr;
 			TESGlobal * CrushGrowthRate = nullptr;
 			TESGlobal * ChosenGameMode = nullptr;

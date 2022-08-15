@@ -9,13 +9,13 @@ namespace Gts {
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
 
-		if (base_spell == runtime.explosiveGrowth1) {
+		if (base_spell == runtime.ShrinkEnemy) {
 			this->power = 1.0;
 			this->efficiency = 0.34;
-		} else if (base_spell == runtime.explosiveGrowth2) {
+		} else if (base_spell == runtime.ShrinkEnemyAOE) {
 			this->power = 1.12;
 			this->efficiency = 0.36;
-		} else {
+		} else if (base_spell == runtime.ShrinkEnemyAOEMast) {
 			// ShrinkEnemyAOEMast
 			this->power = 1.35;
 			this->efficiency = 0.40;

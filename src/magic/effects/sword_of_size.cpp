@@ -27,6 +27,6 @@ namespace Gts {
 			return;
 		}
 
-		transfer_size(caster, target, false, 1.0, 0.38, false);
+		transfer_size(caster, target, false, 6.0, 0.38, false);
 	}
 }

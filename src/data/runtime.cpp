@@ -85,6 +85,10 @@ namespace Gts {
 
 		///Others
 		this->GlobalVoreGrowth = find_form<EffectSetting>("GTS.esp|216CCC"); // < Vore Growth, used for both PC and Followers
+
+		this->SizeRelatedDamage0 = find_form<EffectSetting>("GTS.esp|00A441"); // gtsSizeCloakEffect
+		this->SizeRelatedDamage1 = find_form<EffectSetting>("GTS.esp|00A9A8"); // gtsApplySizeEffect
+		this->SizeRelatedDamage2 = find_form<EffectSetting>("GTS.esp|00B474"); // gtsApplySprintingSizeEffect
 		///End
 
 		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
@@ -98,6 +102,8 @@ namespace Gts {
 		this->ExtraGrowthMax = find_form<BGSPerk>("GTS.esp|397972");
 
 		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
+
+		this->GtsNPCEffectImmunityToggle = find_form<TESGlobal>("GTS.esp|271EFA");
 
 		this->ProgressionMultiplier = find_form<TESGlobal>("GTS.esp|37E46E");
 		this->CrushGrowthRate = find_form<TESGlobal>("GTS.esp|2028B9");
