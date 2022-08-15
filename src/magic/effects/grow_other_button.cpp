@@ -26,7 +26,7 @@ namespace Gts {
 		float MagickaMaxCheck = GetMagickaPercentage(caster);
 		if (MagickaMaxCheck <= 0.05)
 		{MagickaMaxCheck = 0.05;}
-		DamageAV(caster, ActorValue::kMagicka, 0.25 * (targetScale * 0.25 + 0.75) * MagickaMaxCheck);
+		DamageAV(caster, ActorValue::kMagicka, 0.45 * (targetScale * 0.25 + 0.75) * MagickaMaxCheck);
 		mod_target_scale(target, 0.0025 * targetScale * ProgressionMultiplier);
 	}
 }

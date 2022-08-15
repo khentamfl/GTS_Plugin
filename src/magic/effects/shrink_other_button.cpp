@@ -27,6 +27,7 @@ namespace Gts {
 		if (MagickaMaxCheck <= 0.05)
 		{MagickaMaxCheck = 0.05;}
 		if (targetScale > 1.0) {
+			DamageAV(caster, ActorValue::kMagicka, 0.25 * (targetScale * 0.25 + 0.75) * MagickaMaxCheck);
 			mod_target_scale(target, -(0.0025 * targetScale * ProgressionMultiplier));
 		}
 	}
