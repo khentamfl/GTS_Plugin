@@ -3,7 +3,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
-#include "data/util.hpp"
+#include "util.hpp"
 
 namespace Gts {
 	bool GrowButton::StartEffect(EffectSetting* effect) {
