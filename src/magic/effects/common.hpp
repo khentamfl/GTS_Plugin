@@ -46,12 +46,12 @@ namespace Gts {
 
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 
-		if (TargetScale <= 0.25 && target->HasSpell(runtime.ShrinkToNothingSpell) == false)
+		if (TargetScale <= 0.10 && target->HasSpell(runtime.ShrinkToNothingSpell) == false)
 		{caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);}
 
 		float stolen_amount = (TargetScale * 0.0015 + AlterationLevel * SMTRate * Efficiency) * power;
 		mod_target_scale(target, -stolen_amount);
-		float growth_amount = stolen_amount * transfer_effeciency;
+		float growth_amount = stolen_amount; //* transfer_effeciency;
 		mod_target_scale(caster, growth_amount);
 
 	}
