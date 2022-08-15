@@ -43,7 +43,7 @@ namespace Gts {
 		}
 		
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
-		if (Runtime::GetSingleton().ProtectEssentials->value == 1.0 && target.IsEssential() == true) {
+		if (Runtime::GetSingleton().ProtectEssentials->value == 1.0 && target->IsEssential() == true) {
 			return;
 		}
 		transfer_size(caster, target, IsDualCasting(), this->power, this->efficiency, smallMassiveThreat);
