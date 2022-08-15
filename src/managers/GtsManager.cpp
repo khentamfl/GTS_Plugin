@@ -1,10 +1,11 @@
 #include <SKSE/SKSE.h>
 #include <Config.h>
 #include <managers/GtsManager.h>
+#include <managers/highheel.h>
 #include <data/persistent.h>
 #include <data/transient.h>
 #include <data/runtime.h>
-#include <managers/highheel.h>
+#include <scale/scale.h>
 #include "util.h"
 #include <vector>
 #include <string>
@@ -182,8 +183,8 @@ namespace {
 		float size_limit = runtime.sizeLimit->value;
 
 		set_max_scale(actor, size_limit);
-		if (get_target_size(actor) > size_limit) {
-			set_target_size(actor, size_limit);
+		if (get_target_scale(actor) > size_limit) {
+			set_target_scale(actor, size_limit);
 		}
 
 		if (actor->formID == 0x14 || actor->IsPlayerTeammate()) {
@@ -199,9 +200,9 @@ namespace {
 				mod_target_scale(actor, Scale * -(0.00025 + (ShrinkRate * 0.25)));
 			} else if (runtime.ChosenGameMode->value == 3.0 && Scale < size_limit) {
 				if (actor->IsInCombat()) {
-					mod_target_scale(Player, Scale * (0.00008 + (GrowthRate * 0.17)));
+					mod_target_scale(actor, Scale * (0.00008 + (GrowthRate * 0.17)));
 				} else {
-					mod_target_scale(Player, Scale * -(0.00029 + (ShrinkRate * 0.34)));
+					mod_target_scale(actor, Scale * -(0.00029 + (ShrinkRate * 0.34)));
 				}
 			}
 		}

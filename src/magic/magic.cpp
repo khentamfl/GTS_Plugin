@@ -33,7 +33,7 @@ namespace Gts {
 			{
 				// Setup target etc
 				if (this->activeEffect) {
-					this->baseEffect = this->activeEffect->GetBaseObject();
+					this->effectSetting = this->activeEffect->GetBaseObject();
 					MagicTarget* m_target = this->activeEffect->target;
 					if (m_target) {
 						if (m_target->MagicTargetIsActor()) {
@@ -97,7 +97,7 @@ namespace Gts {
 
 	void Magic::Dispel() {
 		if (this->activeEffect) {
-			this->activeEffect->Dispel();
+			this->activeEffect->Dispel(false); // Not forced
 		}
 	}
 
@@ -184,9 +184,9 @@ namespace Gts {
 		}
 
 		for (auto i = this->active_effects.begin(); i != this->active_effects.end();) {
-			auto magic = (*i);
-			magic->poll();
-			if (magic->IsFinished()) {
+			auto& magic = (*i);
+			magic.second->poll();
+			if (magic.second->IsFinished()) {
 				i = this->active_effects.erase(i);
 			} else {
 				++i;

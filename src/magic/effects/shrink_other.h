@@ -8,8 +8,10 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ShinkOther : Magic {
+	class ShrinkOther : Magic {
 		public:
+			using Magic::Magic;
+
 			virtual void OnUpdate() override;
 
 			static bool StartEffect(EffectSetting* effect);

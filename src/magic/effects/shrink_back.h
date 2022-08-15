@@ -10,6 +10,8 @@ using namespace RE;
 namespace Gts {
 	class ShrinkBack : Magic {
 		public:
+			using Magic::Magic;
+
 			virtual void OnUpdate() override;
 
 			static bool StartEffect(EffectSetting* effect);

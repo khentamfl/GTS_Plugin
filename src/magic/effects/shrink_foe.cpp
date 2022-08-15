@@ -7,13 +7,13 @@
 namespace Gts {
 	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) {
 		this->activeEffect = effect;
-		this->baseEffect = effect->GetBaseEffect();
+		this->effectSetting = effect->GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
 
-		if (this->baseEffect == runtime.explosiveGrowth1) {
+		if (this->effectSetting == runtime.explosiveGrowth1) {
 			this->power = 1.0;
 			this->efficiency = 0.34;
-		} else if (this->baseEffect == runtime.explosiveGrowth2) {
+		} else if (this->effectSetting == runtime.explosiveGrowth2) {
 			this->power = 1.12;
 			this->efficiency = 0.36;
 		} else {
@@ -34,9 +34,13 @@ namespace Gts {
 
 	void ShrinkFoe::OnUpdate() {
 		auto caster = GetCaster();
-		if (!caster) return;
+		if (!caster) {
+			return;
+		}
 		auto target = GetTarget();
-		if (!targer) return;
+		if (!targer) {
+			return;
+		}
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
 		transfer_size(caster, target, IsDuelCasting(), this->power, this->efficiency, smallMassiveThreat);
 	}

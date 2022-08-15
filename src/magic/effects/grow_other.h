@@ -10,6 +10,8 @@ using namespace RE;
 namespace Gts {
 	class GrowOther : Magic {
 		public:
+			using Magic::Magic;
+
 			virtual void OnUpdate() override;
 
 			static bool StartEffect(EffectSetting* effect);

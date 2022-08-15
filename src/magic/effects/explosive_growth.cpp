@@ -6,12 +6,12 @@
 namespace Gts {
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) {
 		this->activeEffect = effect;
-		this->baseEffect = effect->GetBaseEffect();
+		this->effectSetting = effect->GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
 
-		if (this->baseEffect == runtime.explosiveGrowth1) {
+		if (this->effectSetting == runtime.explosiveGrowth1) {
 			this->power = 0.00480;
-		} else if (this->baseEffect == runtime.explosiveGrowth2) {
+		} else if (this->effectSetting == runtime.explosiveGrowth2) {
 			this->power = 0.00300;
 		} else {
 			this->power = 0.00175;

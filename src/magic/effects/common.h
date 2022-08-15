@@ -1,5 +1,7 @@
 #pragma once
 #include "util.h"
+#include "scale/scale.h"
+#include "data/runtime.h"
 // Module that handles footsteps
 #include <SKSE/SKSE.h>
 
@@ -51,8 +53,8 @@ namespace Gts {
 			}
 		}
 
-		float stolen_amount = TargetScale * 0.0015 + ((AlterationLevel * SMTRate) * Efficiency);
-		mod_target_scale(target, -stolen_amount*power_shrink);
+		float stolen_amount = (TargetScale * 0.0015 + AlterationLevel * SMTRate * Efficiency) * power;
+		mod_target_scale(target, -stolen_amount);
 		float growth_amount = stolen_amount * transfer_effeciency;
 		mod_target_scale(caster, growth_amount);
 
