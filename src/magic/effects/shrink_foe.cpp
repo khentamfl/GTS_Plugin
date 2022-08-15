@@ -43,7 +43,7 @@ namespace Gts {
 		}
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
 
-		if (runtime.ProtectEssentials->value == 1.0 && target.isEssential() == true) // Essential Protection
+		if (runtime.ProtectEssentials->value == 1.0 && target.GetisEssential() == true) // Essential Protection
 		{return;}
 		else
 		
