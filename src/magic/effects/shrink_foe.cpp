@@ -44,12 +44,14 @@ namespace Gts {
 		}
 		float TargetScale = get_visual_scale(target);
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
-		log::info("Essential Protection, Target Name, is Essential : {},{},{}", EssentialProtection, target->GetDisplayFullName(), target->IsEssential());
+		//log::info("Essential Protection, Target Name, is Essential : {},{},{}", EssentialProtection, target->GetDisplayFullName(), target->IsEssential());
+
+		transfer_size(caster, target, IsDualCasting(), this->power, this->efficiency, smallMassiveThreat);
 		
 		if (TargetScale <= 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false)
 		{caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);}
 		
-		if (EssentialProtection != 1.0 || target->IsEssential() == false) // Essential Protection
-		{transfer_size(caster, target, IsDualCasting(), this->power, this->efficiency, smallMassiveThreat);}
+		//if (EssentialProtection != 1.0 || target->IsEssential() == false) // Essential Protection
+		//{;}
 	}
 }
