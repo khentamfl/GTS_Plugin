@@ -12,7 +12,7 @@ namespace Gts {
 		float Efficiency = clamp(0.25, 1.25, (caster->GetLevel()/target->GetLevel())) * ProgressionMultiplier;
 
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
-			Efficiency *= 0.86;
+			Efficiency *= 0.14;
 		}
 
 		return Efficiency;
@@ -43,7 +43,9 @@ namespace Gts {
 		} else if (caster->HasPerk(runtime.PerkPart2)) {
 			AdditionalShrinkValue = 2.0;
 		}
-
+		if (Runtime::GetSingleton().ProtectEssentials->value == 1.0 && target->IsEssential() == true) {
+			return;
+		}
 		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
 		//log::info("Caster is {}", caster->GetDisplayFullName());
 		//log::info("Target is {}", target->GetDisplayFullName());
