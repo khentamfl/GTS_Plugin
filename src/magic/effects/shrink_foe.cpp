@@ -34,7 +34,7 @@ namespace Gts {
 	void ShrinkFoe::OnUpdate() {
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
-		float EssentialProtection = runtime.ProtectEssentials->value;
+		//float EssentialProtection = runtime.ProtectEssentials->value;
 		if (!caster) {
 			return;
 		}
@@ -44,9 +44,9 @@ namespace Gts {
 		}
 		float TargetScale = get_visual_scale(target);
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
-		//log::info("Essential Protection, Target Name, is Essential : {},{},{}", EssentialProtection, target->GetDisplayFullName(), target->IsEssential());
 
 		transfer_size(caster, target, IsDualCasting(), this->power, this->efficiency, smallMassiveThreat);
+		log::info("Calling Shrink}")
 		
 		if (TargetScale <= 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false)
 		{caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);}
