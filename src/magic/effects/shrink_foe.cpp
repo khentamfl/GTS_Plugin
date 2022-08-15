@@ -37,10 +37,12 @@ namespace Gts {
 			return;
 		}
 		auto target = GetTarget();
+		auto targetScale = get_visual_scale(target);
 		if (!target) {
 			return;
 		}
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
 		transfer_size(caster, target, IsDualCasting(), this->power, this->efficiency, smallMassiveThreat);
+		
 	}
 }
