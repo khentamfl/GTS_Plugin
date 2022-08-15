@@ -3,7 +3,7 @@
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 // Module that handles footsteps
-#include <SKSE/SKSE.h>
+
 
 namespace Gts {
 	inline float calc_effeciency(Actor* caster, Actor* target) {
@@ -18,7 +18,7 @@ namespace Gts {
 		return Efficiency;
 	}
 
-	inline float transfer_size(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smallMassiveThreat) {
+	inline void transfer_size(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smallMassiveThreat) {
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
 		auto& runtime = Runtime::GetSingleton();
 

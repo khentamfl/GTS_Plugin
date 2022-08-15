@@ -27,23 +27,25 @@ namespace Gts {
 	void Magic::OnFinish() {
 	}
 
+	Magic::Magic(ActiveEffect* effect) : activeEffect(effect) {
+		if (this->activeEffect) {
+			this->effectSetting = this->activeEffect->GetBaseObject();
+			MagicTarget* m_target = this->activeEffect->target;
+			if (m_target) {
+				if (m_target->MagicTargetIsActor()) {
+					this->target = skyrim_cast<Actor*>(m_target);
+				}
+			}
+			if (this->activeEffect->caster) {
+				this->caster = this->activeEffect->caster.get().get();
+			}
+		}
+	}
+
 	void Magic::poll() {
 		switch (this->state) {
 			case State::Init:
 			{
-				// Setup target etc
-				if (this->activeEffect) {
-					this->effectSetting = this->activeEffect->GetBaseObject();
-					MagicTarget* m_target = this->activeEffect->target;
-					if (m_target) {
-						if (m_target->MagicTargetIsActor()) {
-							this->target = skyrim_cast<Actor*>(m_target);
-						}
-					}
-					if (this->activeEffect->caster) {
-						this->caster = this->activeEffect->caster.get().get();
-					}
-				}
 				this->dual_casted = this->IsDualCasting();
 
 				this->state = State::Start;

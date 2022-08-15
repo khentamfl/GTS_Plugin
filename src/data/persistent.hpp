@@ -1,6 +1,6 @@
 #pragma once
 // Module that holds data that is persistent across saves
-#include <SKSE/SKSE.h>
+
 #include "scale/modscale.hpp"
 #include "util.hpp"
 

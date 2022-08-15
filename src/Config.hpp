@@ -1,7 +1,6 @@
 #pragma once
 
 #include <articuno/articuno.h>
-#include <SKSE/SKSE.h>
 
 namespace Gts {
 	class Debug {

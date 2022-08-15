@@ -26,6 +26,7 @@ file(GLOB headers
 file(GLOB sources
         src/*.cpp
         src/*/*.cpp
+        src/*/*/*.cpp
 
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 
@@ -62,7 +63,7 @@ target_link_libraries(${PROJECT_NAME}
 
 target_precompile_headers(${PROJECT_NAME}
         PRIVATE
-        src/PCH.h)
+        src/PCH.hpp)
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/Gts"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")

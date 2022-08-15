@@ -1,6 +1,5 @@
 #pragma once
 // Misc codes
-#include <SKSE/SKSE.h>
 #include <math.h>
 #include <regex>
 

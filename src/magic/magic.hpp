@@ -1,6 +1,5 @@
 #pragma once
 // Module that handles footsteps
-#include <SKSE/SKSE.h>
 
 using namespace std;
 using namespace SKSE;
@@ -42,8 +41,7 @@ namespace Gts {
 				return this->dual_casted;
 			}
 
-			Magic(ActiveEffect* effect) : activeEffect(effect){
-			}
+			Magic(ActiveEffect* effect);
 
 			inline bool IsFinished() {
 				return this->state == State::CleanUp;

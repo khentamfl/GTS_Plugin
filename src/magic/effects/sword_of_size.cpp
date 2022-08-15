@@ -5,8 +5,7 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
-	SwordOfSize::SwordOfSize(ActiveEffect* effect) {
-		this->activeEffect = effect;
+	SwordOfSize::SwordOfSize(ActiveEffect* effect) : Magic(effect) {
 	}
 
 	bool SwordOfSize::StartEffect(EffectSetting* effect) {
@@ -24,7 +23,7 @@ namespace Gts {
 			return;
 		}
 		auto target = GetTarget();
-		if (!targer) {
+		if (!target) {
 			return;
 		}
 

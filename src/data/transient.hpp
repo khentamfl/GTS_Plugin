@@ -1,6 +1,6 @@
 #pragma once
 // Module that holds data that is not persistent across saves
-#include <SKSE/SKSE.h>
+
 
 using namespace std;
 using namespace SKSE;

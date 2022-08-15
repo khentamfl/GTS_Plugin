@@ -1,6 +1,6 @@
 #pragma once
 // Handles the various methods of scaling an actor
-#include <SKSE/SKSE.h>
+
 
 using namespace std;
 using namespace RE;

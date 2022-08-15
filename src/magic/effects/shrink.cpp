@@ -16,7 +16,7 @@ namespace Gts {
 			return;
 		}
 		auto target = GetTarget();
-		if (!targer) {
+		if (!target) {
 			return;
 		}
 
@@ -25,7 +25,7 @@ namespace Gts {
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float casterScale = get_visual_scale(caster);
 		float DualCast = 1.0;
-		if (IsDuelCasting()) {
+		if (IsDualCasting()) {
 			DualCast = 2.0;
 		}
 		if (casterScale < size_limit) {

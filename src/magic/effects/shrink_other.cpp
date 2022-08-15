@@ -16,7 +16,7 @@ namespace Gts {
 			return;
 		}
 		auto target = GetTarget();
-		if (!targer) {
+		if (!target) {
 			return;
 		}
 
@@ -27,7 +27,7 @@ namespace Gts {
 		float targetScale = get_visual_scale(target);
 		float GrowRate = 0.0;
 		float DualCast = 1.0;
-		if (IsDuelCasting()) {
+		if (IsDualCasting()) {
 			DualCast = 2.0;
 		}
 		if (CrushGrowthRate >= 1.4) {

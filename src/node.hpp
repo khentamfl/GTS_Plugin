@@ -1,7 +1,5 @@
 #pragma once
 // Module that finds nodes and node realated data
-#include <SKSE/SKSE.h>
-
 using namespace std;
 using namespace SKSE;
 using namespace RE;

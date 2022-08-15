@@ -1,4 +1,4 @@
-#include <SKSE/SKSE.h>
+
 #include "Config.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"

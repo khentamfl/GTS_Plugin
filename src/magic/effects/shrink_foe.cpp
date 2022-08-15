@@ -5,15 +5,14 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
-	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) {
-		this->activeEffect = effect;
-		this->effectSetting = effect->GetBaseEffect();
+	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) : Magic(effect) {
+		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
 
-		if (this->effectSetting == runtime.explosiveGrowth1) {
+		if (base_spell == runtime.explosiveGrowth1) {
 			this->power = 1.0;
 			this->efficiency = 0.34;
-		} else if (this->effectSetting == runtime.explosiveGrowth2) {
+		} else if (base_spell == runtime.explosiveGrowth2) {
 			this->power = 1.12;
 			this->efficiency = 0.36;
 		} else {
@@ -38,10 +37,10 @@ namespace Gts {
 			return;
 		}
 		auto target = GetTarget();
-		if (!targer) {
+		if (!target) {
 			return;
 		}
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
-		transfer_size(caster, target, IsDuelCasting(), this->power, this->efficiency, smallMassiveThreat);
+		transfer_size(caster, target, IsDualCasting(), this->power, this->efficiency, smallMassiveThreat);
 	}
 }

@@ -16,7 +16,7 @@ namespace Gts {
 			return;
 		}
 		auto target = GetTarget();
-		if (!targer) {
+		if (!target) {
 			return;
 		}
 
@@ -25,13 +25,13 @@ namespace Gts {
 		float targetScale = get_visual_scale(target);
 		float transfer_amount = targetScale * 0.0050 + (0.0005 * 10 * ProgressionMultiplier);
 		float natural_scale = 1.0;
-		if (fabs(casterScale - natural_scale) <= transfer_amount) {
-			set_target_scale(caster, natural_scale);
+		if (fabs(targetScale - natural_scale) <= transfer_amount) {
+			set_target_scale(target, natural_scale);
 			Dispel();
-		} else if (casterScale < natural_scale) {
-			mod_target_scale(caster, transfer_amount);
+		} else if (targetScale < natural_scale) {
+			mod_target_scale(target, transfer_amount);
 		} else { // if (casterScale > natural_scale) {
-			mod_target_scale(caster, -transfer_amount);
+			mod_target_scale(target, -transfer_amount);
 		}
 	}
 }
