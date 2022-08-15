@@ -92,7 +92,7 @@ namespace Gts {
 			TESGlobal * GrowthModeRateNPC = nullptr;
 			TESGlobal * ShrinkModeRateNPC = nullptr;
 
-			TESGlobal * GtsProtectEssentials = nullptr;
+			TESGlobal * ProtectEssentials = nullptr;
 
 			SpellItem * ShrinkToNothingSpell = nullptr;
 			SpellItem * FakeCrushSpell = nullptr;

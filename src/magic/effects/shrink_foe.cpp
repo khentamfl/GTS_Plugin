@@ -32,6 +32,7 @@ namespace Gts {
 	}
 
 	void ShrinkFoe::OnUpdate() {
+		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
@@ -42,7 +43,7 @@ namespace Gts {
 		}
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
 
-		if (runtime.GtsProtectEssentials->value == 1.0 && target.isEssential() == true) // Essential Protection
+		if (runtime.ProtectEssentials->value == 1.0 && target.isEssential() == true) // Essential Protection
 		{return;}
 		else
 		

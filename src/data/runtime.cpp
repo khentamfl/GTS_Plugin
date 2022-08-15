@@ -110,7 +110,7 @@ namespace Gts {
 		this->GrowthModeRateNPC = find_form<TESGlobal>("GTS.esp|2EB74B");
 		this->ShrinkModeRateNPC = find_form<TESGlobal>("GTS.esp|2EB74A");
 
-		this->GtsProtectEssentials = find_form<TESGlobal>("GTS.esp|23A3E2");
+		this->ProtectEssentials = find_form<TESGlobal>("GTS.esp|23A3E2");
 
 		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");
 		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
