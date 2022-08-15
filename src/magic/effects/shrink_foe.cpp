@@ -34,7 +34,6 @@ namespace Gts {
 	void ShrinkFoe::OnUpdate() {
 		auto caster = GetCaster();
 		auto& runtime = Runtime::GetSingleton();
-		//float EssentialProtection = runtime.ProtectEssentials->value;
 		if (!caster) {
 			return;
 		}
