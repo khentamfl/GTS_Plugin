@@ -25,7 +25,7 @@ namespace Gts {
 		float casterScale = get_visual_scale(caster);
         float targetScale = get_visual_scale(target);
         float SizeDifference = casterScale/targetScale;
-        if (target.HasMagicEffect(runtime.AbsorbMGEF)) {
+        if (target.HasMagicEffect(runtime.TrueAbsorb)) {
 		mod_target_scale(target, -0.0825 * ProgressionMultiplier * SizeDifference);
         mod_target_scale(caster, 0.0025 * ProgressionMultiplier * SizeDifference);
         if (targetScale <= 0.25)
