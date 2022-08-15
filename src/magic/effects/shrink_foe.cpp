@@ -42,7 +42,7 @@ namespace Gts {
 		}
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
 
-		float GtsProtectEssentials = runtime.GtsProtectEssentials;
+		float GtsProtectEssentials = runtime.GtsProtectEssentials->value;
 		if (GtsProtectEssentials == 1.0 && target.isEssential() == true) // Essential Protection
 		{return;}
 		else
