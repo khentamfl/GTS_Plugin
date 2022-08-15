@@ -24,7 +24,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float targetScale = get_visual_scale(target);
-		float MagickaMaxCheck = GetMagickaPercentage(caster);
+		float MagickaMaxCheck = GetMagikaPercentage(caster);
 		if (MagickaMaxCheck <= 0.05)
 		{MagickaMaxCheck = 0.05;}
 		DamageAV(caster, ActorValue::kMagicka, 0.45 * (targetScale * 0.25 + 0.75) * MagickaMaxCheck);
