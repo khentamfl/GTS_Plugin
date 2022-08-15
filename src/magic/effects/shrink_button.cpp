@@ -3,6 +3,7 @@
 #include "magic/magic.h"
 #include "scale/scale.h"
 #include "data/runtime.h"
+#include "util.h"
 
 namespace Gts {
 	bool ShrinkButton::StartEffect(EffectSetting* effect) {
@@ -16,20 +17,24 @@ namespace Gts {
 
 	void ShrinkButton::OnUpdate() {
 		auto caster = GetCaster();
-		if (!caster) return;
+		if (!caster) {
+			return;
+		}
 		auto target = GetTarget();
-		if (!targer) return;
+		if (!targer) {
+			return;
+		}
 
 		auto& runtime = Runtime::GetSingleton();
 
 		float casterScale = get_visual_scale(caster);
-		float StaminaMaxCheck = caster->GetActorValue(ActorValue::kStamina)/caster->GetPermanentActorValue(ActorValue::kStamina);
+		float StaminaMaxCheck = GetStaminaPercentage(caster);
 		if (casterScale > 0.25) {
-			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, ((-0.25 * (casterScale * 0.5 + 0.5)) * StaminaMaxCheck));
+			DamageAV(caster, ActorValue::kStamina, 0.25 * (casterScale * 0.5 + 0.5) * StaminaMaxCheck);
 			if (StaminaMaxCheck <= 0.05) {
 				StaminaMaxCheck = 0.05;
 			}
-			mod_target_scale(caster, -(0.0025 * casterScale) * StaminaMaxCheck);
+			mod_target_scale(caster, -0.0025 * casterScale * StaminaMaxCheck);
 		}
 	}
 }

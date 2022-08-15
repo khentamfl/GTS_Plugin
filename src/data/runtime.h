@@ -31,41 +31,43 @@ namespace Gts {
 			BGSSoundDescriptorForm* xxlFootstepL = nullptr;
 			BGSSoundDescriptorForm* xxlFootstepR = nullptr;
 
+			BGSSoundDescriptorForm* growthSound = nullptr;
+
 			EffectSetting* smallMassiveThreat = nullptr;
-		
+
 			EffectSetting* explosiveGrowth1 = nullptr;
-		
+
 			EffectSetting* explosiveGrowth2 = nullptr;
-		
+
 			EffectSetting* explosiveGrowth3 = nullptr;
-		
-		        ///Shrink Effects Start
+
+			///Shrink Effects Start
 			EffectSetting* ShrinkPCButton = nullptr;
 			EffectSetting* ShrinkBack = nullptr;
 			EffectSetting* ShrinkBackNPC = nullptr;
 			EffectSetting* ShrinkSpell = nullptr;
 			EffectSetting* ShrinkAlly = nullptr;
-			
+
 			EffectSetting* ShrinkEnemy = nullptr;
 			EffectSetting* ShrinkEnemyAOE = nullptr;
 			EffectSetting* ShrinkEnemyAOEMast = nullptr;
 			EffectSetting* SwordEnchant = nullptr;
 
 			EffectSetting* ShrinkToNothing = nullptr;
-		        ///End
-			
-			///Ally/Grow Spells 
+			///End
+
+			///Ally/Grow Spells
 			EffectSetting* SlowGrowth = nullptr;
 			EffectSetting* GrowthSpell = nullptr;
 			EffectSetting* GrowPcButton = nullptr;
-			
+
 			EffectSetting* GrowAlly = nullptr;
 			EffectSetting* GrowAllySizeButton = nullptr;
 			EffectSetting* ShrinkAllySizeButton = nullptr;
 			EffectSetting* AllyCrushGrowth = nullptr;
 			EffectSetting* GtsMarkAlly = nullptr;
 			///end
-		
+
 			///Others
 			EffectSetting* GlobalVoreGrowth = nullptr;
 			///End
@@ -93,6 +95,6 @@ namespace Gts {
 			MagicItem * ShrinkToNothingSpell = nullptr;
 			MagicItem * ShrinkBackNPCSpell = nullptr;
 			MagicItem * ShrinkBackSpell = nullptr;
-			
+
 	};
 }

@@ -12,9 +12,13 @@ namespace Gts {
 
 	void ShrinkOther::OnUpdate() {
 		auto caster = GetCaster();
-		if (!caster) return;
+		if (!caster) {
+			return;
+		}
 		auto target = GetTarget();
-		if (!targer) return;
+		if (!targer) {
+			return;
+		}
 
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
@@ -24,13 +28,15 @@ namespace Gts {
 		float targetScale = get_visual_scale(target);
 		float GrowRate = 0.0;
 		float DualCast = 1.0;
-		if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
-		{DualCast = 2.0;}
-		if (CrushGrowthRate >= 1.4)
-		{GrowRate = 0.00090;}
+		if (IsDuelCasting()) {
+			DualCast = 2.0;
+		}
+		if (CrushGrowthRate >= 1.4) {
+			GrowRate = 0.00090;
+		}
 
 		if (targetScale > 0.25) {
-			set_target_scale(target, targetScale * 1.00000 - (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier * DualCast));
+			mod_target_scale(target, -(0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale * ProgressionMultiplier * DualCast);
 		}
 	}
 }

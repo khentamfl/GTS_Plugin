@@ -1,11 +1,21 @@
 #include "magic/magic.h"
 #include "util.h"
+#include "magic/effects/common.h"
 #include "magic/effects/explosive_growth.h"
-#include "magic/effects/shrink_foe.h"
-#include "magic/effects/sword_of_size.h"
-#include "magic/effects/shrink_button.h"
 #include "magic/effects/grow_button.h"
-#include "magic/MagicManager.h"
+#include "magic/effects/grow_other.h"
+#include "magic/effects/grow_other_button.h"
+#include "magic/effects/growth.h"
+#include "magic/effects/shrink.h"
+#include "magic/effects/shrink_back.h"
+#include "magic/effects/shrink_back_other.h"
+#include "magic/effects/shrink_button.h"
+#include "magic/effects/shrink_foe.h"
+#include "magic/effects/shrink_other.h"
+#include "magic/effects/shrink_other_button.h"
+#include "magic/effects/slow_grow.h"
+#include "magic/effects/sword_of_size.h"
+#include "magic/effects/vore_growth.h"
 #include "data/runtime.h"
 
 namespace Gts {
@@ -111,50 +121,55 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		for (auto actor: actors) {
 			auto effect_list =actor->GetActiveEffectList();
-			if (!effect_list) continue;
+			if (!effect_list) {
+				continue;
+			}
 			for (auto effect: (*effect_list)) {
 				EffectSetting* base_spell = effect->GetBaseObject();
-				ManageGameModePC();
-
-				if (base_spell == runtime.GtsMarkAlly) {
-					ManageGameModeNPC(target);
-				}
 				if (ExplosiveGrowth::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
 				}
+
 				if (ShrinkFoe::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new ShrinkFoe(effect));
 				}
+
 				if (SwordOfSize::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new SwordOfSize(effect));
 				}
+
 				if (ShrinkButton::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new ShrinkButton(effect));
 				}
 				if (GrowButton::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new GrowButton(effect));
 				}
+
 				if (SlowGrow::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new SlowGrow(effect));
 				}
+
 				if (Growth::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new Growth(effect));
 				}
 				if (Shrink::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new Shrink(effect));
 				}
+
 				if (GrowOther::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new GrowOther(effect));
 				}
 				if (ShrinkOther::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new ShrinkOther(effect));
 				}
+
 				if (GrowOtherButton::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new GrowOtherButton(effect));
 				}
 				if (ShrinkOtherButton::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new ShrinkOtherButton(effect));
 				}
+
 				if (ShrinkBack::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new ShrinkBack(effect));
 				}

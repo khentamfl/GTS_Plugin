@@ -12,9 +12,13 @@ namespace Gts {
 
 	void Growth::OnUpdate() {
 		auto caster = GetCaster();
-		if (!caster) return;
+		if (!caster) {
+			return;
+		}
 		auto target = GetTarget();
-		if (!targer) return;
+		if (!targer) {
+			return;
+		}
 
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;

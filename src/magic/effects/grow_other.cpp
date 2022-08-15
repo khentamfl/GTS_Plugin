@@ -12,9 +12,13 @@ namespace Gts {
 
 	void GrowOther::OnUpdate() {
 		auto caster = GetCaster();
-		if (!caster) return;
+		if (!caster) {
+			return;
+		}
 		auto target = GetTarget();
-		if (!targer) return;
+		if (!targer) {
+			return;
+		}
 
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
@@ -25,17 +29,22 @@ namespace Gts {
 		float GrowRate = 0.0;
 		float SMTRate = 1.0;
 		float DualCast = 1.0;
-		if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting())
-		{DualCast = 2.0;}
-		if (caster->HasMagicEffect(runtime.smallMassiveThreat))
-		{SMTRate = 2.0;}
-		if (CrushGrowthRate >= 1.4)
-		{GrowRate = 0.00180;}
-
-		if (targetScale < size_limit) {
-			set_target_scale(target, targetScale * 1.00000 + (((0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale) * ProgressionMultiplier * SMTRate * DualCast));
+		if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting()) {
+			DualCast = 2.0;
 		}
-		if (casterScale >= 1.0)
-		{set_target_scale(caster, casterScale * 1.00000 - (((0.00180 + GrowRate) * targetScale * 0.50)) * ProgressionMultiplier * SMTRate * DualCast);}
+		if (caster->HasMagicEffect(runtime.smallMassiveThreat)) {
+			SMTRate = 2.0;
+		}
+		if (CrushGrowthRate >= 1.4) {
+			GrowRate = 0.00180;
+		}
+
+		float transer_amount = (0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale * ProgressionMultiplier * SMTRate * DualCast;
+		if (targetScale < size_limit) {
+			mod_target_scale(target, transer_amount);
+		}
+		if (casterScale >= 1.0) {
+			mod_target_scale(caster, -transer_amount);
+		}
 	}
 }

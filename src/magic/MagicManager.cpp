@@ -4,53 +4,6 @@
 #include "data/runtime.h"
 
 namespace Gts {
-	void SlowGrowthFunction(Actor* caster) // Slow Growth spell
-	{
-	}
-
-	void GrowthSpellFunction(Actor* caster) // Growth Spell
-	{
-	}
-	void ShrinkSpellFunction(Actor* caster) // Shrink Spell
-	{
-
-	}
-
-	void GrowAllyFunction(Actor* caster, Actor* target) // Scale Ally with a spell
-	{
-	}
-
-	void ShrinkAllyFunction(Actor* caster, Actor* target) // Shrink Ally with a spell
-	{
-	}
-
-
-	void GrowAllyButtonFunction(Actor* target) // Scale Ally with a button press
-	{
-
-	}
-
-	void ShrinkAllyButtonFunction(Actor* target) // Shrink Ally with a button press
-	{
-
-	}
-
-
-	void ShrinkBackFunction(Actor* caster) // Restore Size function for PC
-	{
-
-	}
-
-	void ShrinkBackNPCFunction(Actor* target) // Restore size but for Followers/NPC's
-	{
-
-	}
-
-	void VoreGrowthFunction(Actor* caster) // Growth after the Vore
-	{
-
-	}
-
 	void ManageGameModePC()
 	{
 		auto& runtime = Runtime::GetSingleton();

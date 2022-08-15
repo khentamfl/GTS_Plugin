@@ -70,10 +70,12 @@ namespace Gts {
 
 	// https://en.wikipedia.org/wiki/Smoothstep
 	inline float clamp(float lowerlimit, float upperlimit, float x) {
-		if (x < lowerlimit)
+		if (x < lowerlimit) {
 			x = lowerlimit;
-		if (x > upperlimit)
+		}
+		if (x > upperlimit) {
 			x = upperlimit;
+		}
 		return x;
 	}
 	inline float smootherstep(float edge0, float edge1, float x) {
@@ -148,9 +150,39 @@ namespace Gts {
 	}
 
 	inline bool IsJumping(Actor* actor) {
-		if (!actor) return false;
+		if (!actor) {
+			return false;
+		}
 		bool result = false;
 		actor->GetGraphVariableBool("bInJumpState", result);
 		return result;
+	}
+
+	inline float GetStaminaPercentage(Actor* actor) {
+		auto baseValue = actor->GetPermanentActorValue(ActorValue::kStamina);
+		auto valueMod = actor->staminaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
+		auto currentValue = actor->GetActorValue(ActorValue::kStamina);
+
+		return currentValue / (baseValue + valueMod);
+	}
+
+	inline float GetHealthPercentage(Actor* actor) {
+		auto baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
+		auto valueMod = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
+		auto currentValue = actor->GetActorValue(ActorValue::kHealth);
+
+		return currentValue / (baseValue + valueMod);
+	}
+
+	inline float GetMagikaPercentage(Actor* actor) {
+		auto baseValue = actor->GetPermanentActorValue(ActorValue::kMagicka);
+		auto valueMod = actor->magickaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
+		auto currentValue = actor->GetActorValue(ActorValue::kMagicka);
+
+		return currentValue / (baseValue + valueMod);
+	}
+
+	inline void DamageAV(Actor* actor, ActorValue av, float amount) {
+		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, av, -amount);
 	}
 }

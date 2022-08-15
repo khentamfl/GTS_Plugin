@@ -14,12 +14,12 @@ namespace Gts {
 			this->power = 1.0;
 			this->efficiency = 0.34;
 		} else if (this->baseEffect == runtime.explosiveGrowth2) {
-			this->power = 1.0;
-			this->efficiency = 0.34;
+			this->power = 1.12;
+			this->efficiency = 0.36;
 		} else {
 			// ShrinkEnemyAOEMast
-			this->power = 1.0;
-			this->efficiency = 0.34;
+			this->power = 1.35;
+			this->efficiency = 0.40;
 		}
 	}
 

@@ -1,4 +1,4 @@
-#include "magic/effects/shrink_other.h"
+#include "magic/effects/vore_growth.h"
 #include "magic/effects/common.h"
 #include "magic/magic.h"
 #include "scale/scale.h"
@@ -12,15 +12,20 @@ namespace Gts {
 
 	void VoreGrowth::OnUpdate() {
 		auto caster = GetCaster();
-		if (!caster) return;
+		if (!caster) {
+			return;
+		}
 		auto target = GetTarget();
-		if (!targer) return;
+		if (!targer) {
+			return;
+		}
 
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float casterScale = get_visual_scale(caster);
-		if (casterScale < size_limit)
-			set_target_scale(caster, casterScale + ((0.00165) * 0.15 * ProgressionMultiplier));
+		if (casterScale < size_limit) {
+			mod_target_scale(caster, 0.00165 * 0.15 * ProgressionMultiplier);
+		}
 	}
 }

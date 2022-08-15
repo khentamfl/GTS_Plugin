@@ -20,9 +20,13 @@ namespace Gts {
 
 	void SwordOfSize::OnUpdate() {
 		auto caster = GetCaster();
-		if (!caster) return;
+		if (!caster) {
+			return;
+		}
 		auto target = GetTarget();
-		if (!targer) return;
+		if (!targer) {
+			return;
+		}
 
 		transfer_size(caster, target, false, 1.0, 0.38, false);
 	}
