@@ -1,6 +1,6 @@
 #pragma once
 #include "magic/magic.hpp"
-// Module that handles footsteps
+// Module that handles Size related damage
 
 
 using namespace std;

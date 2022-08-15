@@ -16,6 +16,7 @@
 #include "magic/effects/slow_grow.hpp"
 #include "magic/effects/sword_of_size.hpp"
 #include "magic/effects/vore_growth.hpp"
+#include "magic/effects/SizeRelatedDamage.hpp"
 #include "data/runtime.hpp"
 
 namespace Gts {
