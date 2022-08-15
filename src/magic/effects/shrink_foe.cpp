@@ -41,11 +41,13 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
+		float TargetScale = target.get_visual_scale();
 		bool smallMassiveThreat = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
 
 		if (runtime.ProtectEssentials->value == 1.0 && target->IsEssential() == true) // Essential Protection
 		{return;}
-		
+		if (TargetScale <= 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false)
+		{caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);}
 		transfer_size(caster, target, IsDualCasting(), this->power, this->efficiency, smallMassiveThreat);
 		
 	}
