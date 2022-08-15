@@ -27,22 +27,12 @@ namespace Gts {
 
 	void GrowAllyButtonFunction(Actor* target) // Scale Ally with a button press
 	{
-		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float targetScale = get_visual_scale(target);
-		if (targetScale < size_limit)
-		{mod_target_scale(target, +((0.0020 * targetScale) * ProgressionMultiplier));}
+
 	}
 
 	void ShrinkAllyButtonFunction(Actor* target) // Shrink Ally with a button press
 	{
-		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float targetScale = get_visual_scale(target);
-		if (targetScale > 1.0)
-		{mod_target_scale(target, -((0.0020 * targetScale) * ProgressionMultiplier));}
+
 	}
 
 

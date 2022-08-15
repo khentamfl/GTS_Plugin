@@ -149,6 +149,12 @@ namespace Gts {
 				if (ShrinkOther::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new ShrinkOther(effect));
 				}
+				if (GrowOtherButton::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new GrowOtherButton(effect));
+				}
+				if (ShrinkOtherButton::StartEffect(base_spell)) {
+					this->active_effects.try_emplace(effect, new ShrinkOtherButton(effect));
+				}
 
 				if (base_spell == runtime.GrowAllySizeButton) {
 					GrowAllyButtonFunction(target);
