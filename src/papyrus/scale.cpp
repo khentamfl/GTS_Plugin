@@ -1,8 +1,8 @@
-#include "papyrus/scale.h"
-#include "scale/scale.h"
-#include "scale/modscale.h"
-#include "data/persistent.h"
-#include "managers/GtsManager.h"
+#include "papyrus/scale.hpp"
+#include "scale/scale.hpp"
+#include "scale/modscale.hpp"
+#include "data/persistent.hpp"
+#include "managers/GtsManager.hpp"
 
 
 using namespace SKSE;

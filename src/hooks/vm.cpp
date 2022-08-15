@@ -1,5 +1,5 @@
-#include "hooks/vm.h"
-#include "managers/GtsManager.h"
+#include "hooks/vm.hpp"
+#include "managers/GtsManager.hpp"
 
 using namespace RE;
 using namespace RE::BSScript;

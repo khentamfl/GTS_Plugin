@@ -1,6 +1,6 @@
-#include "papyrus/height.h"
-#include "scale/height.h"
-#include "util.h"
+#include "papyrus/height.hpp"
+#include "scale/height.hpp"
+#include "util.hpp"
 
 
 using namespace SKSE;

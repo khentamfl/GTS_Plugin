@@ -1,11 +1,11 @@
-#include "hooks/hooks.h"
-#include "hooks/main.h"
-#include "hooks/actor.h"
-#include "hooks/character.h"
-#include "hooks/playercharacter.h"
-#include "hooks/impact.h"
-#include "hooks/vm.h"
-#include "hooks/havok.h"
+#include "hooks/hooks.hpp"
+#include "hooks/main.hpp"
+#include "hooks/actor.hpp"
+#include "hooks/character.hpp"
+#include "hooks/playercharacter.hpp"
+#include "hooks/impact.hpp"
+#include "hooks/vm.hpp"
+#include "hooks/havok.hpp"
 
 using namespace RE;
 

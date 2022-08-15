@@ -1,11 +1,11 @@
-#include "managers/footstep.h"
-#include "managers/impact.h"
+#include "managers/footstep.hpp"
+#include "managers/impact.hpp"
 
-#include "scale/scale.h"
-#include "managers/modevent.h"
-#include "util.h"
-#include "node.h"
-#include "data/runtime.h"
+#include "scale/scale.hpp"
+#include "managers/modevent.hpp"
+#include "util.hpp"
+#include "node.hpp"
+#include "data/runtime.hpp"
 
 using namespace SKSE;
 using namespace RE;

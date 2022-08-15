@@ -1,5 +1,5 @@
 #pragma once
-#include "magic/magic.h"
+#include "magic/magic.hpp"
 // Module that handles footsteps
 #include <SKSE/SKSE.h>
 
@@ -8,7 +8,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ShrinkOtherButton : Magic {
+	class SlowGrow : Magic {
 		public:
 			using Magic::Magic;
 

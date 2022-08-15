@@ -1,5 +1,5 @@
-#include "hooks/impact.h"
-#include "managers/impact.h"
+#include "hooks/impact.hpp"
+#include "managers/impact.hpp"
 
 using namespace RE;
 

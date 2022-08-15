@@ -1,5 +1,5 @@
-#include "managers/reloader.h"
-#include "managers/GtsManager.h"
+#include "managers/reloader.hpp"
+#include "managers/GtsManager.hpp"
 
 using namespace SKSE;
 using namespace RE;

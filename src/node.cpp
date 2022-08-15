@@ -1,5 +1,5 @@
-#include "node.h"
-#include "util.h"
+#include "node.hpp"
+#include "util.hpp"
 #include <regex>
 
 using namespace SKSE;

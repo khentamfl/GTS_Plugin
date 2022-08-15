@@ -1,4 +1,4 @@
 #pragma once
 
-#include "Config.h"
+#include "Config.hpp"
 #include <RE/Skyrim.h>

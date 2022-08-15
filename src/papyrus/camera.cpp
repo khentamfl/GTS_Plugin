@@ -1,5 +1,5 @@
-#include "papyrus/camera.h"
-#include "data/persistent.h"
+#include "papyrus/camera.hpp"
+#include "data/persistent.hpp"
 
 
 using namespace SKSE;

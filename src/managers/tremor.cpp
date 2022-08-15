@@ -1,10 +1,10 @@
-#include "managers/tremor.h"
-#include "managers/impact.h"
-#include "data/runtime.h"
-#include "data/persistent.h"
-#include "data/transient.h"
-#include "Config.h"
-#include "util.h"
+#include "managers/tremor.hpp"
+#include "managers/impact.hpp"
+#include "data/runtime.hpp"
+#include "data/persistent.hpp"
+#include "data/transient.hpp"
+#include "Config.hpp"
+#include "util.hpp"
 
 using namespace SKSE;
 using namespace RE;

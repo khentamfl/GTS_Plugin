@@ -1,5 +1,5 @@
-#include "papyrus/events.h"
-#include "managers/modevent.h"
+#include "papyrus/events.hpp"
+#include "managers/modevent.hpp"
 
 
 using namespace SKSE;

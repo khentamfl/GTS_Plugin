@@ -6,8 +6,8 @@
 
 #include <RE/Skyrim.h>
 
-#include "node.h"
-#include "util.h"
+#include "node.hpp"
+#include "util.hpp"
 
 using namespace std;
 using namespace RE;

@@ -1,8 +1,8 @@
-#include "data/transient.h"
-#include "data/runtime.h"
-#include "node.h"
-#include "util.h"
-#include "scale/modscale.h"
+#include "data/transient.hpp"
+#include "data/runtime.hpp"
+#include "node.hpp"
+#include "util.hpp"
+#include "scale/modscale.hpp"
 
 using namespace SKSE;
 using namespace RE;

@@ -1,4 +1,4 @@
-#include "Config.h"
+#include "Config.hpp"
 // Config file that is loaded a init
 #include <articuno/archives/ryml/ryml.h>
 

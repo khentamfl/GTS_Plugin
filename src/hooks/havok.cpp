@@ -1,7 +1,7 @@
-#include "hooks/havok.h"
-#include "util.h"
+#include "hooks/havok.hpp"
+#include "util.hpp"
 
-#include "managers/contact.h"
+#include "managers/contact.hpp"
 
 using namespace RE;
 using namespace SKSE;

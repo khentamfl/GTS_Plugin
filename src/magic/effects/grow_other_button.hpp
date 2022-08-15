@@ -1,5 +1,5 @@
 #pragma once
-#include "magic/magic.h"
+#include "magic/magic.hpp"
 // Module that handles footsteps
 #include <SKSE/SKSE.h>
 

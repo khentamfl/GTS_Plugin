@@ -1,5 +1,5 @@
 #pragma once
-#include "magic/magic.h"
+#include "magic/magic.hpp"
 // Module that handles footsteps
 #include <SKSE/SKSE.h>
 
@@ -8,15 +8,12 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ShrinkFoe : Magic {
+	class GrowOther : Magic {
 		public:
+			using Magic::Magic;
+
 			virtual void OnUpdate() override;
 
 			static bool StartEffect(EffectSetting* effect);
-
-			ShrinkFoe(ActiveEffect* effect);
-		private:
-			float power = 0.0;
-			float efficiency = 0.0;
 	};
 }

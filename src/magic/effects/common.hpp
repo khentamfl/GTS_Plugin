@@ -1,7 +1,7 @@
 #pragma once
-#include "util.h"
-#include "scale/scale.h"
-#include "data/runtime.h"
+#include "util.hpp"
+#include "scale/scale.hpp"
+#include "data/runtime.hpp"
 // Module that handles footsteps
 #include <SKSE/SKSE.h>
 

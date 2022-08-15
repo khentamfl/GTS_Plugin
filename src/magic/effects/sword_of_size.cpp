@@ -1,8 +1,8 @@
-#include "magic/effects/sword_of_size.h"
-#include "magic/effects/common.h"
-#include "magic/magic.h"
-#include "scale/scale.h"
-#include "data/runtime.h"
+#include "magic/effects/sword_of_size.hpp"
+#include "magic/effects/common.hpp"
+#include "magic/magic.hpp"
+#include "scale/scale.hpp"
+#include "data/runtime.hpp"
 
 namespace Gts {
 	SwordOfSize::SwordOfSize(ActiveEffect* effect) {

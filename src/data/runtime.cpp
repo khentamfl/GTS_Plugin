@@ -1,5 +1,5 @@
-#include "data/runtime.h"
-#include "Config.h"
+#include "data/runtime.hpp"
+#include "Config.hpp"
 
 using namespace SKSE;
 using namespace RE;

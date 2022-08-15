@@ -21,7 +21,7 @@ configure_file(
         @ONLY)
 
 file(GLOB headers
-        include/GTS/*.h)
+        include/GTS/*.hpp)
 
 file(GLOB sources
         src/*.cpp

@@ -1,12 +1,12 @@
-#include "managers/impact.h"
-#include "managers/footstep.h"
-#include "managers/explosion.h"
-#include "managers/tremor.h"
-#include "managers/modevent.h"
+#include "managers/impact.hpp"
+#include "managers/footstep.hpp"
+#include "managers/explosion.hpp"
+#include "managers/tremor.hpp"
+#include "managers/modevent.hpp"
 
-#include "scale/scale.h"
-#include "util.h"
-#include "node.h"
+#include "scale/scale.hpp"
+#include "util.hpp"
+#include "node.hpp"
 
 using namespace SKSE;
 using namespace RE;

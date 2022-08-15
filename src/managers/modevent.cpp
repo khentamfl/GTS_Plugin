@@ -1,4 +1,4 @@
-#include "managers/modevent.h"
+#include "managers/modevent.hpp"
 
 using namespace SKSE;
 using namespace RE;

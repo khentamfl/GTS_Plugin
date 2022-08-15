@@ -1,5 +1,5 @@
 #pragma once
-#include "hooks/hooks.h"
+#include "hooks/hooks.hpp"
 
 using namespace RE;
 using namespace SKSE;

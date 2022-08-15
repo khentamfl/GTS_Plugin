@@ -1,19 +1,17 @@
 #pragma once
-#include "magic/magic.h"
 // Module that handles footsteps
 #include <SKSE/SKSE.h>
+#include "managers/impact.hpp"
 
 using namespace std;
 using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class Shrink : Magic {
+	class TremorManager {
 		public:
-			using Magic::Magic;
+			[[nodiscard]] static TremorManager& GetSingleton() noexcept;
 
-			virtual void OnUpdate() override;
-
-			static bool StartEffect(EffectSetting* effect);
+			void OnImpact(const Impact& impact);
 	};
 }

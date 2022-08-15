@@ -1,6 +1,6 @@
-#include "data/persistent.h"
-#include "managers/GtsManager.h"
-#include "scale/modscale.h"
+#include "data/persistent.hpp"
+#include "managers/GtsManager.hpp"
+#include "scale/modscale.hpp"
 
 using namespace SKSE;
 using namespace RE;

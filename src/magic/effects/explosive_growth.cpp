@@ -1,7 +1,7 @@
-#include "magic/effects/explosive_growth.h"
-#include "magic/magic.h"
-#include "scale/scale.h"
-#include "data/runtime.h"
+#include "magic/effects/explosive_growth.hpp"
+#include "magic/magic.hpp"
+#include "scale/scale.hpp"
+#include "data/runtime.hpp"
 
 namespace Gts {
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) {

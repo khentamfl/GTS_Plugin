@@ -1,9 +1,9 @@
-#include "magic/effects/shrink_button.h"
-#include "magic/effects/common.h"
-#include "magic/magic.h"
-#include "scale/scale.h"
-#include "data/runtime.h"
-#include "util.h"
+#include "magic/effects/shrink_button.hpp"
+#include "magic/effects/common.hpp"
+#include "magic/magic.hpp"
+#include "scale/scale.hpp"
+#include "data/runtime.hpp"
+#include "util.hpp"
 
 namespace Gts {
 	bool ShrinkButton::StartEffect(EffectSetting* effect) {

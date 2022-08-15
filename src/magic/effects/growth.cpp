@@ -1,8 +1,8 @@
-#include "magic/effects/growth.h"
-#include "magic/effects/common.h"
-#include "magic/magic.h"
-#include "scale/scale.h"
-#include "data/runtime.h"
+#include "magic/effects/growth.hpp"
+#include "magic/effects/common.hpp"
+#include "magic/magic.hpp"
+#include "scale/scale.hpp"
+#include "data/runtime.hpp"
 
 namespace Gts {
 	bool Growth::StartEffect(EffectSetting* effect) {

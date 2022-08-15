@@ -1,10 +1,10 @@
-#include "managers/explosion.h"
-#include "managers/impact.h"
-#include "managers/GtsManager.h"
-#include "scale/scale.h"
-#include "data/runtime.h"
-#include "data/transient.h"
-#include "raycast.h"
+#include "managers/explosion.hpp"
+#include "managers/impact.hpp"
+#include "managers/GtsManager.hpp"
+#include "scale/scale.hpp"
+#include "data/runtime.hpp"
+#include "data/transient.hpp"
+#include "raycast.hpp"
 
 
 using namespace SKSE;

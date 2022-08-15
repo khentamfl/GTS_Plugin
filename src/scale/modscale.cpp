@@ -1,8 +1,8 @@
-#include "scale/modscale.h"
-#include "util.h"
-#include "node.h"
-#include "managers/GtsManager.h"
-#include "data/persistent.h"
+#include "scale/modscale.hpp"
+#include "util.hpp"
+#include "node.hpp"
+#include "managers/GtsManager.hpp"
+#include "data/persistent.hpp"
 
 using namespace Gts;
 

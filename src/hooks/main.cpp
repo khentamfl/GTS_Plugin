@@ -1,8 +1,8 @@
-#include "hooks/main.h"
-#include "util.h"
+#include "hooks/main.hpp"
+#include "util.hpp"
 
-#include "managers/GtsManager.h"
-#include "magic/magic.h"
+#include "managers/GtsManager.hpp"
+#include "magic/magic.hpp"
 
 using namespace RE;
 using namespace SKSE;

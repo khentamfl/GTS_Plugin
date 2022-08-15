@@ -1,7 +1,7 @@
-#include "managers/contact.h"
-#include "data/persistent.h"
+#include "managers/contact.hpp"
+#include "data/persistent.hpp"
 
-#include "util.h"
+#include "util.hpp"
 
 using namespace SKSE;
 using namespace RE;

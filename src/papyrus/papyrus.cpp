@@ -1,9 +1,9 @@
-#include "papyrus/papyrus.h"
-#include "papyrus/plugin.h"
-#include "papyrus/scale.h"
-#include "papyrus/height.h"
-#include "papyrus/events.h"
-#include "papyrus/camera.h"
+#include "papyrus/papyrus.hpp"
+#include "papyrus/plugin.hpp"
+#include "papyrus/scale.hpp"
+#include "papyrus/height.hpp"
+#include "papyrus/events.hpp"
+#include "papyrus/camera.hpp"
 
 
 using namespace SKSE;

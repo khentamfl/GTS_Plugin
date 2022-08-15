@@ -1,12 +1,12 @@
 #include <SKSE/SKSE.h>
-#include <Config.h>
-#include <managers/GtsManager.h>
-#include <managers/highheel.h>
-#include <data/persistent.h>
-#include <data/transient.h>
-#include <data/runtime.h>
-#include <scale/scale.h>
-#include "util.h"
+#include "Config.hpp"
+#include "managers/GtsManager.hpp"
+#include "managers/highheel.hpp"
+#include "data/persistent.hpp"
+#include "data/transient.hpp"
+#include "data/runtime.hpp"
+#include "scale/scale.hpp"
+#include "util.hpp"
 #include <vector>
 #include <string>
 

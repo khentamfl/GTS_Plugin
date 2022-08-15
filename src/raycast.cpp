@@ -1,5 +1,5 @@
-#include "raycast.h"
-#include "util.h"
+#include "raycast.hpp"
+#include "util.hpp"
 
 using namespace Gts;
 using namespace RE;
