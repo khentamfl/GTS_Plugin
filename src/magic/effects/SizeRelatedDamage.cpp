@@ -30,7 +30,7 @@ namespace Gts {
         if (target->IsPlayerTeammate() == true && runtime.GtsNPCEffectImmunityToggle->value == 1.0)
         {return;} // Do not apply if those are true
 
-         if (SizeDifference >= 24.0)
+         if (SizeDifference >= 24.0 && target->IsPlayerTeammate() == false)
         {caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);} 
         // ^ Crush anyway, no conditions needed since size difference is too massive
 

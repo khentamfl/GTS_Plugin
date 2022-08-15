@@ -75,6 +75,9 @@ namespace Gts {
 			EffectSetting* SizeRelatedDamage1 = nullptr;
 			EffectSetting* SizeRelatedDamage2 = nullptr;
 
+			EffectSetting* AbsorbMGEF = nullptr;
+			EffectSetting* TrueAbsorb = nullptr;
+
 			///End
 
 			BGSExplosion* footstepExplosion = nullptr;

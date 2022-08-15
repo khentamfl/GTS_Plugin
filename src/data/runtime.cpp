@@ -89,6 +89,9 @@ namespace Gts {
 		this->SizeRelatedDamage0 = find_form<EffectSetting>("GTS.esp|00A441"); // gtsSizeCloakEffect
 		this->SizeRelatedDamage1 = find_form<EffectSetting>("GTS.esp|00A9A8"); // gtsApplySizeEffect
 		this->SizeRelatedDamage2 = find_form<EffectSetting>("GTS.esp|00B474"); // gtsApplySprintingSizeEffect
+
+		this->AbsorbMGEF = find_form<EffectSetting>("GTS.esp|00B470");
+		this->TrueAbsorb = find_form<EffectSetting>("GTS.esp|22B0D5");
 		///End
 
 		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
