@@ -5,12 +5,18 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
-	bool ShrinkOther::StartEffect(EffectSetting* effect) {
+	bool ShrinkOther::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.ShrinkAlly;
 	}
 
 	void ShrinkOther::OnUpdate() {
+		const float BASE_POWER = 0.00180;
+		const float CRUSH_BONUS = 0.00180;
+		const float GROWTH_AMOUNT_BONUS = 1.4;
+		const float DUAL_CAST_BONUS = 2.0;
+		const float SCALE_FACTOR = 0.5;
+
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
@@ -21,21 +27,18 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float CrushGrowthRate = runtime.CrushGrowthRate->value;
-		float casterScale = get_visual_scale(caster);
-		float targetScale = get_visual_scale(target);
-		float GrowRate = 0.0;
-		float DualCast = 1.0;
-		if (IsDualCasting()) {
-			DualCast = 2.0;
-		}
-		if (CrushGrowthRate >= 1.4) {
-			GrowRate = 0.00090;
+		float caster_scale = get_visual_scale(caster);
+		float target_scale = get_visual_scale(target);
+
+		float power = BASE_POWER;
+		if (runtime.CrushGrowthRate->value >= GROWTH_AMOUNT_BONUS) {
+			power += CRUSH_BONUS;
 		}
 
-		if (targetScale > 0.25) {
-			mod_target_scale(target, -(0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale * ProgressionMultiplier * DualCast * time_scale());
+		if (IsDualCasting()) {
+			power *= DUAL_CAST_BONUS;
 		}
+
+		Shrink(target, power*0.5, power + 0.5);
 	}
 }

@@ -6,13 +6,9 @@
 #include "util.hpp"
 
 namespace Gts {
-	bool ShrinkButton::StartEffect(EffectSetting* effect) {
+	bool ShrinkButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		if (effect == runtime.ShrinkPCButton ) {
-			return true;
-		} else {
-			return false;
-		}
+		return (effect == runtime.ShrinkPCButton);
 	}
 
 	void ShrinkButton::OnUpdate() {
@@ -25,16 +21,11 @@ namespace Gts {
 			return;
 		}
 
-		auto& runtime = Runtime::GetSingleton();
-
-		float casterScale = get_visual_scale(caster);
-		float StaminaMaxCheck = GetStaminaPercentage(caster);
+		float caster_scale = get_visual_scale(caster);
+		float stamina = clamp(0.25, 1.0, GetStaminaPercentage(caster));
 		if (casterScale > 0.25) {
-			DamageAV(caster, ActorValue::kStamina, 0.25 * (casterScale * 0.5 + 0.5) * StaminaMaxCheck * time_scale());
-			if (StaminaMaxCheck <= 0.05) {
-				StaminaMaxCheck = 0.05;
-			}
-			mod_target_scale(caster, -0.0025 * casterScale * StaminaMaxCheck * time_scale());
+			DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * time_scale());
+			Shrink(caster, 0.0025*stamina, 0.0);
 		}
 	}
 }

@@ -5,12 +5,15 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
-	bool Growth::StartEffect(EffectSetting* effect) {
+	bool Growth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.GrowthSpell;
 	}
 
 	void Growth::OnUpdate() {
+		const float BASE_POWER = 0.00125;
+		const float DUAL_CAST_BONUS = 2.0;
+
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
@@ -20,14 +23,11 @@ namespace Gts {
 			return;
 		}
 
-		auto& runtime = Runtime::GetSingleton();
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float casterScale = get_visual_scale(caster);
-		float DualCast = 1.0;
+		float power = BASE_POWER;
 		if (IsDualCasting()) {
-			DualCast = 2.0;
+			power *= DUAL_CAST_BONUS;
 		}
 
-		mod_target_scale(caster, 0.00125 * ProgressionMultiplier * DualCast * time_scale());
+		Grow(caster, power, 0.0);
 	}
 }

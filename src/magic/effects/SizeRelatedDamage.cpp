@@ -6,7 +6,7 @@
 
 namespace Gts {
 
-	bool SizeDamage::StartEffect(EffectSetting* effect) {
+	bool SizeDamage::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return (effect == runtime.SizeRelatedDamage0 || effect == runtime.SizeRelatedDamage1 || effect == runtime.SizeRelatedDamage2);
 	}
@@ -22,22 +22,21 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float casterScale = get_visual_scale(caster);
-		float targetScale = get_visual_scale(target);
+		float caster_scale = get_visual_scale(caster);
+		float target_scale = get_visual_scale(target);
 
-		float SizeDifference = casterScale/targetScale;
-		if (target->IsPlayerTeammate() == true && runtime.GtsNPCEffectImmunityToggle->value == 1.0
+		float size_difference = caster_scale/target_scale;
+		if (target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0
 		    || target->HasMagicEffect(runtime.FakeCrushEffect) == true
-		    || target->Is3DLoaded() == false) {
+		    || !target->Is3DLoaded()) {
 			return;
 		} // Do not apply if those are true
 
-		if (SizeDifference >= 24.0 && !target->IsPlayerTeammate()) {
+		if (size_difference >= 24.0 && !target->IsPlayerTeammate()) { // NOLINT
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
 		}
 		// ^ Crush anyway, no conditions needed since size difference is too massive
-		else if (SizeDifference >= 4.0 && target->IsDead() && !target->IsPlayerTeammate()) {
+		else if (size_difference >= 4.0 && target->IsDead() && !target->IsPlayerTeammate()) {
 			// ^ We don't want to crush allies
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
 		}

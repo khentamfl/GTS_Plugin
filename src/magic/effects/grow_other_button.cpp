@@ -6,7 +6,7 @@
 #include "util.hpp"
 
 namespace Gts {
-	bool GrowOtherButton::StartEffect(EffectSetting* effect) {
+	bool GrowOtherButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.GrowAllySizeButton;
 	}
@@ -22,13 +22,10 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float targetScale = get_visual_scale(target);
-		float MagickaMaxCheck = GetMagikaPercentage(caster);
-		if (MagickaMaxCheck <= 0.05) {
-			MagickaMaxCheck = 0.05;
-		}
-		DamageAV(caster, ActorValue::kMagicka, 0.45 * (targetScale * 0.25 + 0.75) * MagickaMaxCheck * time_scale());
-		mod_target_scale(target, 0.0025 * targetScale * ProgressionMultiplier * time_scale());
+		float target_scale = get_visual_scale(target);
+		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
+
+		DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * time_scale());
+		Grow(target, 0.0025* magicka, 0.0);
 	}
 }

@@ -6,7 +6,7 @@
 #include "util.hpp"
 
 namespace Gts {
-	bool GrowButton::StartEffect(EffectSetting* effect) {
+	bool GrowButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.GrowPcButton;
 	}
@@ -16,18 +16,11 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto target = GetTarget();
-		if (!target) {
-			return;
-		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float casterScale = get_visual_scale(caster);
-		float StaminaMaxCheck = GetStaminaPercentage(caster);
-		if (StaminaMaxCheck <= 0.05) {
-			StaminaMaxCheck = 0.05;
-		}
-		DamageAV(caster, ActorValue::kStamina, 0.45 * (casterScale * 0.5 + 0.5) * StaminaMaxCheck * time_scale());
-		mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck * time_scale());
+		float caster_scale = get_visual_scale(caster);
+		float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
+		DamageAV(caster, ActorValue::kStamina, 0.45 * (caster_scale * 0.5 + 0.5) * stamina * time_scale());
+		Grow(caster, 0.0025 * stamina, 0.0);
 	}
 }

@@ -6,7 +6,7 @@
 #include "util.hpp"
 
 namespace Gts {
-	bool ShrinkOtherButton::StartEffect(EffectSetting* effect) {
+	bool ShrinkOtherButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.ShrinkAllySizeButton;
 	}
@@ -21,16 +21,12 @@ namespace Gts {
 			return;
 		}
 
-		auto& runtime = Runtime::GetSingleton();
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float targetScale = get_visual_scale(target);
-		float MagickaMaxCheck = GetMagikaPercentage(caster);
-		if (MagickaMaxCheck <= 0.05) {
-			MagickaMaxCheck = 0.05;
-		}
-		if (targetScale > 1.0) {
-			DamageAV(caster, ActorValue::kMagicka, 0.25 * (targetScale * 0.25 + 0.75) * MagickaMaxCheck * time_scale());
-			mod_target_scale(target, -(0.0025 * targetScale * ProgressionMultiplier * time_scale()));
+		float target_scale = get_visual_scale(target);
+		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
+
+		if (targetScale > get_natural_scale(target)) {
+			DamageAV(caster, ActorValue::kMagicka, 0.25 * (targetScale * 0.25 + 0.75) * magicka * time_scale());
+			Shrink(target, 0.0025 * targetScale * magicka, 0.0);
 		}
 	}
 }

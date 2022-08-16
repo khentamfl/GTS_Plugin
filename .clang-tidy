@@ -1,5 +1,5 @@
 ---
-Checks:          'clang-analyzer-*,readability-*'
+Checks:          'clang-analyzer-*,readability-*,bugprone-*'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
@@ -15,6 +15,10 @@ CheckOptions:
     value:           'lower_case'
   - key: readability-identifier-naming.ParameterCase
     value: lower_case
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE
+  - key: cppcoreguidelines-init-variables.IncludeStyle
+    value: google
   - key:             readability-suspicious-call-argument.PrefixSimilarAbove
     value:           '30'
   - key:             cppcoreguidelines-no-malloc.Reallocations

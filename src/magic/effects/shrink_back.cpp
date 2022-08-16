@@ -5,7 +5,7 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
-	bool ShrinkBack::StartEffect(EffectSetting* effect) {
+	bool ShrinkBack::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.ShrinkBack;
 	}
@@ -15,23 +15,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto target = GetTarget();
-		if (!target) {
-			return;
-		}
 
-		auto& runtime = Runtime::GetSingleton();
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float casterScale = get_visual_scale(caster);
-		float transfer_amount = casterScale * 0.0025 + (0.0001 * 10 * ProgressionMultiplier);
-		float natural_scale = 1.0;
-		if (fabs(casterScale - natural_scale) <= transfer_amount) {
-			set_target_scale(caster, natural_scale);
-			Dispel();
-		} else if (casterScale < natural_scale) {
-			mod_target_scale(caster, transfer_amount * time_scale());
-		} else { // if (casterScale > natural_scale) {
-			mod_target_scale(caster, -transfer_amount * time_scale());
-		}
+		Revert(caster, 0.0025, 0.0010);
 	}
 }

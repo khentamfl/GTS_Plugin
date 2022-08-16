@@ -22,10 +22,47 @@ namespace Gts {
 		return Efficiency;
 	}
 
-	inline Grow(Actor* actor, float a, float b) {
-		// amount = scale * a + b
-
+	inline float CalcPower(Actor* actor, float scale_factor, float bonus) {
+		auto& runtime = Runtime::GetSingleton();
+		float progression_multiplier = runtime.ProgressionMultiplier->value;
+		// y = mx +c
+		// power = scale_factor * scale + bonus
+		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * time_scale();
 	}
+
+	inline void Grow(Actor* actor, float a, float b) {
+		// amount = scale * a + b
+		mod_target_scale(actor, CalcPower(actor, a, b));
+	}
+
+	inline void Shrink(Actor* actor, float a, float b) {
+		// amount = scale * a + b
+		mod_target_scale(actor, -CalcPower(actor, a, b));
+	}
+
+	inline void Revert(Actor* actor, float a, float b) {
+		// amount = scale * a + b
+		float amount = CalcPower(actor, a, b);
+
+		if (fabs(scale - natural_scale) < amount) {
+			set_target_scale(target, natural_scale);
+			Dispel();
+		} else if (target_scale < natural_scale) { // NOLINT
+			mod_target_scale(actor, amount);
+		} else {
+			mod_target_scale(actor, -amount);
+		}
+	}
+
+	inline void Steal(Actor* from, Actor* to, float a, float b, float effectiency) {
+		Shrink(from, a, b);
+		Grow(to, a, b);
+	}
+
+	inline void Transfer(Actor* from, Actor* to, float amt) {
+		Steal(from, to, a, b, 1.0); // 100% efficent for friendly steal
+	}
+
 
 	inline void transfer_size(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smallMassiveThreat) {
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink

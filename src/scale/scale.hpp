@@ -16,5 +16,6 @@ namespace Gts {
 	void mod_max_scale(Actor* actor, float amt);
 
 	float get_visual_scale(Actor* actor);
+	float get_natural_scale(Actor* actor);
 	float get_effective_scale(Actor* actor);
 }

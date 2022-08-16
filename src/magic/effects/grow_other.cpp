@@ -5,12 +5,18 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
-	bool GrowOther::StartEffect(EffectSetting* effect) {
+	bool GrowOther::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.GrowAlly;
 	}
 
 	void GrowOther::OnUpdate() {
+		const float BASE_POWER = 0.00180;
+		const float SMT_BONUS = 2.0;
+		const float CRUSH_BONUS = 0.00180;
+		const float GROWTH_AMOUNT_BONUS = 1.4;
+		const float DUAL_CAST_BONUS = 2.0;
+
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
@@ -21,28 +27,21 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float CrushGrowthRate = runtime.CrushGrowthRate->value;
-		float casterScale = get_visual_scale(caster);
-		float targetScale = get_visual_scale(target);
-		float GrowRate = 0.0;
-		float SMTRate = 1.0;
-		float DualCast = 1.0;
-		if (caster->magicCasters[Actor::SlotTypes::kLeftHand]->GetIsDualCasting()) {
-			DualCast = 2.0;
+		float caster_scale = get_visual_scale(caster);
+		float target_scale = get_visual_scale(target);
+
+		float power = BASE_POWER;
+		if (runtime.CrushGrowthRate->value >= GROWTH_AMOUNT_BONUS) {
+			power += CRUSH_BONUS;
+		}
+
+		if (IsDualCasting()) {
+			power *= DUAL_CAST_BONUS;
 		}
 		if (caster->HasMagicEffect(runtime.smallMassiveThreat)) {
-			SMTRate = 2.0;
-		}
-		if (CrushGrowthRate >= 1.4) {
-			GrowRate = 0.00180;
+			power *= SMT_BONUS;
 		}
 
-		float transer_amount = (0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale * ProgressionMultiplier * SMTRate * DualCast;
-		mod_target_scale(target, transer_amount * time_scale());
-
-		if (casterScale >= 1.0) {
-			mod_target_scale(caster, -transer_amount * time_scale());
-		}
+		Transfer(caster, target, power*0.5, power + 0.5);
 	}
 }

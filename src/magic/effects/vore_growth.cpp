@@ -5,24 +5,17 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
-	bool VoreGrowth::StartEffect(EffectSetting* effect) {
+	bool VoreGrowth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.GlobalVoreGrowth;
 	}
 
 	void VoreGrowth::OnUpdate() {
+		const float BASE_POWER = 0.0002475;
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		}
-		auto target = GetTarget();
-		if (!target) {
-			return;
-		}
-
-		auto& runtime = Runtime::GetSingleton();
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float casterScale = get_visual_scale(caster);
-		mod_target_scale(caster, 0.00165 * 0.15 * ProgressionMultiplier * time_scale());
+		Grow(caster, 0.0, BASE_POWER);
 	}
 }

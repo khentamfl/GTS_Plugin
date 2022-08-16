@@ -8,13 +8,9 @@ namespace Gts {
 	SwordOfSize::SwordOfSize(ActiveEffect* effect) : Magic(effect) {
 	}
 
-	bool SwordOfSize::StartEffect(EffectSetting* effect) {
+	bool SwordOfSize::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		if (effect == runtime.SwordEnchant ) {
-			return true;
-		} else {
-			return false;
-		}
+		return (effect == runtime.SwordEnchant );
 	}
 
 	void SwordOfSize::OnUpdate() {
