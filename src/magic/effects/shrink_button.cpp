@@ -27,11 +27,10 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-		auto& runtime = Runtime::GetSingleton();
 
 		float caster_scale = get_visual_scale(caster);
 		float stamina = clamp(0.25, 1.0, GetStaminaPercentage(caster));
-		if (casterScale > 0.25) {
+		if (caster_scale > 0.25) {
 			DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * time_scale());
 			Shrink(caster, 0.0025*stamina, 0.0);
 			
