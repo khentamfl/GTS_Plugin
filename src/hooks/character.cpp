@@ -31,7 +31,7 @@ namespace Hooks
 	// to that which skyrim does naturally
 	void Hook_Character::Update(RE::Character* a_this, float a_delta) {
 		_Update(a_this, a_delta);
-		float current_delta = *g_delta_time;
+		float current_delta = g_delta_time;
 		if (current_delta> 1e-5) {
 			if (Gts::GtsManager::GetSingleton().enabled) {
 				auto saved_data = Gts::Persistent::GetSingleton().GetData(a_this);
