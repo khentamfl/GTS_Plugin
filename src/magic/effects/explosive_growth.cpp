@@ -49,6 +49,11 @@ namespace Gts {
 
 	bool ExplosiveGrowth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
+		BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
+		auto audio_manager = BSAudioManager::GetSingleton();
+		BSISoundDescriptor* sound_descriptor = runtime.growthSound;;
+		audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
+		growth_sound.Play();
 		return (effect == runtime.explosiveGrowth1 || effect == runtime.explosiveGrowth2 || effect == runtime.explosiveGrowth3);
 	}
 
@@ -60,11 +65,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 
 
-		BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
-		auto audio_manager = BSAudioManager::GetSingleton();
-		BSISoundDescriptor* sound_descriptor = runtime.growthSound;;
-		audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
-		growth_sound.Play();
+		
 
 		if (get_target_scale(caster) > this->grow_limit) {
 			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
