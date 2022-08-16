@@ -187,7 +187,7 @@ namespace Gts {
 				if (SizeDamage::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new SizeDamage(effect));
 				}
-				if (SizeDamage::StartEffect(base_spell)) {
+				if (Absorb::StartEffect(base_spell)) {
 					this->active_effects.try_emplace(effect, new Absorb(effect));
 				}
 			}

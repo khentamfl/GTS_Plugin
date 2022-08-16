@@ -5,6 +5,17 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
+	Absorb::Absorb(ActiveEffect* effect) : Magic(effect) {
+		auto base_spell = GetBaseEffect();
+		auto& runtime = Runtime::GetSingleton();
+
+		if (base_spell == runtime.TrueAbsorb) {
+			this->true_absorb = true;
+		} else {
+			this->true_absorb = false;
+		}
+	}
+
 	bool Absorb::StartEffect(EffectSetting* effect) {
 		auto& runtime = Runtime::GetSingleton();
 		return (effect == runtime.AbsorbMGEF || effect == runtime.TrueAbsorb);
@@ -23,19 +34,19 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float casterScale = get_visual_scale(caster);
-        float targetScale = get_visual_scale(target);
-        float SizeDifference = casterScale/targetScale;
-        if (target->HasMagicEffect(runtime.TrueAbsorb)) {
-		mod_target_scale(target, -0.00825 * ProgressionMultiplier * SizeDifference);
-        mod_target_scale(caster, 0.0025 * ProgressionMultiplier * SizeDifference * targetScale);
-        if (targetScale <= 0.25)
-        {caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);} 
-        // ^ Emulate absorption
-        }
-	    
+		float targetScale = get_visual_scale(target);
+		float SizeDifference = casterScale/targetScale;
+		if (this->true_absorb) {
+			mod_target_scale(target, -0.00825 * ProgressionMultiplier * SizeDifference);
+			mod_target_scale(caster,  0.00250 * ProgressionMultiplier * SizeDifference);
+			if (targetScale <= 0.25) {
+				caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
+			}
+			// ^ Emulate absorption
+		} else {
+			mod_target_scale(target, -0.0025 * ProgressionMultiplier * SizeDifference);
+			mod_target_scale(caster,  0.0005 * ProgressionMultiplier * SizeDifference * targetScale);
+		}
 
-       else if (target->HasMagicEffect(runtime.AbsorbMGEF)) {
-		mod_target_scale(target, -0.0025 * ProgressionMultiplier * SizeDifference);
-        mod_target_scale(caster, 0.0005 * ProgressionMultiplier * SizeDifference * targetScale);}
-	
-}}
+	}
+}

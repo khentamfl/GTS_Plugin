@@ -10,10 +10,10 @@ using namespace RE;
 namespace Gts {
 	class Absorb : public Magic {
 		public:
-			using Magic::Magic;
-
 			virtual void OnUpdate() override;
 
 			static bool StartEffect(EffectSetting* effect);
+		private:
+			bool true_absorb = false;
 	};
 }
