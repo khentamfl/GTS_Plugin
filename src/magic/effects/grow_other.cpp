@@ -39,10 +39,10 @@ namespace Gts {
 		}
 
 		float transer_amount = (0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale * ProgressionMultiplier * SMTRate * DualCast;
-		mod_target_scale(target, transer_amount);
+		mod_target_scale(target, transer_amount * time_scale());
 
 		if (casterScale >= 1.0) {
-			mod_target_scale(caster, -transer_amount);
+			mod_target_scale(caster, -transer_amount * time_scale());
 		}
 	}
 }

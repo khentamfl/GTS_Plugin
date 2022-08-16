@@ -38,20 +38,21 @@ namespace Gts {
 		float SizeDifference = casterScale/targetScale;
 		if (caster->HasMagicEffect(runtime.smallMassiveThreat)) {
 			SizeDifference *= 4.0;
-			} // Insta-absorb if SMT is active
-		if (SizeDifference >= 4.0 && target->HasMagicEffect(runtime.TrueAbsorb) == false)
-		{caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrueAbsorbSpell, false, target, 1.00f, false, 0.0f, caster);}
+		} // Insta-absorb if SMT is active
+		if (SizeDifference >= 4.0 && target->HasMagicEffect(runtime.TrueAbsorb) == false) {
+			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrueAbsorbSpell, false, target, 1.00f, false, 0.0f, caster);
+		}
 		// ^ Cast true absorb
 		if (this->true_absorb) {
-			mod_target_scale(target, -0.00325 * ProgressionMultiplier * SizeDifference);
-			mod_target_scale(caster,  0.00090 * ProgressionMultiplier * targetScale);
+			mod_target_scale(target, -0.00325 * ProgressionMultiplier * SizeDifference * time_scale());
+			mod_target_scale(caster,  0.00090 * ProgressionMultiplier * targetScale * time_scale());
 			if (targetScale <= 0.25 && target->HasMagicEffect(runtime.ShrinkToNothing) == false) {
 				caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
 			}
 			// ^ Emulate absorption
 		} else {
-			mod_target_scale(target, -0.0025 * ProgressionMultiplier * SizeDifference);
-			mod_target_scale(caster,  0.0005 * ProgressionMultiplier * targetScale);
+			mod_target_scale(target, -0.0025 * ProgressionMultiplier * SizeDifference * time_scale());
+			mod_target_scale(caster,  0.0005 * ProgressionMultiplier * targetScale * time_scale());
 		}
 
 	}

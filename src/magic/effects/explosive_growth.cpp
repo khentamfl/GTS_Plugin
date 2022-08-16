@@ -56,6 +56,6 @@ namespace Gts {
 		}
 		log::info("Explosive Growth.cpp initialized");
 
-		mod_target_scale(caster, this->power * progression_multiplier);
+		mod_target_scale(caster, this->power * progression_multiplier * time_scale());
 	}
 }

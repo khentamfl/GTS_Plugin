@@ -29,7 +29,7 @@ namespace Gts {
 			DualCast = 2.0;
 		}
 		if (casterScale < size_limit) {
-			mod_target_scale(caster, -0.0018* ProgressionMultiplier * DualCast);
+			mod_target_scale(caster, -0.0018* ProgressionMultiplier * DualCast * time_scale());
 		}
 	}
 }

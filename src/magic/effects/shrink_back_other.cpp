@@ -29,9 +29,9 @@ namespace Gts {
 			set_target_scale(target, natural_scale);
 			Dispel();
 		} else if (targetScale < natural_scale) {
-			mod_target_scale(target, transfer_amount);
+			mod_target_scale(target, transfer_amount * time_scale());
 		} else { // if (casterScale > natural_scale) {
-			mod_target_scale(target, -transfer_amount);
+			mod_target_scale(target, -transfer_amount * time_scale());
 		}
 	}
 }

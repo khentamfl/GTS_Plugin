@@ -28,6 +28,6 @@ namespace Gts {
 			DualCast = 2.0;
 		}
 
-		mod_target_scale(caster, 0.00125 * ProgressionMultiplier * DualCast);
+		mod_target_scale(caster, 0.00125 * ProgressionMultiplier * DualCast * time_scale());
 	}
 }

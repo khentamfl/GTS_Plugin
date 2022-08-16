@@ -27,6 +27,6 @@ namespace Gts {
 		if (IsDualCasting()) {
 			DualCast = 2.0;
 		}
-		mod_target_scale(caster, 0.0010 * ProgressionMultiplier);
+		mod_target_scale(caster, 0.0010 * ProgressionMultiplier * time_scale());
 	}
 }

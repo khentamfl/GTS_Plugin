@@ -6,6 +6,10 @@
 
 
 namespace Gts {
+	inline float time_scale() {
+		return g_delta_time * 60.0;
+	}
+
 	inline float calc_effeciency(Actor* caster, Actor* target) {
 		auto& runtime = Runtime::GetSingleton();
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
@@ -16,6 +20,11 @@ namespace Gts {
 		}
 
 		return Efficiency;
+	}
+
+	inline Grow(Actor* actor, float a, float b) {
+		// amount = scale * a + b
+
 	}
 
 	inline void transfer_size(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smallMassiveThreat) {
@@ -50,12 +59,12 @@ namespace Gts {
 		//log::info("Caster is {}", caster->GetDisplayFullName());
 		//log::info("Target is {}", target->GetDisplayFullName());
 		float stolen_amount = (TargetScale * 0.0005 + AlterationLevel * SMTRate * Efficiency) * power;
-		mod_target_scale(target, -stolen_amount);
+		mod_target_scale(target, -stolen_amount * time_scale());
 		float growth_amount = stolen_amount/3 * transfer_effeciency;
-		mod_target_scale(caster, growth_amount);
+		mod_target_scale(caster, growth_amount * time_scale());
 
-		if (TargetScale <= 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false)
-		{caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
+		if (TargetScale <= 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
+			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
 		}
 	}
 }

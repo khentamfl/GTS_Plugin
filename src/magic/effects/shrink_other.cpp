@@ -35,7 +35,7 @@ namespace Gts {
 		}
 
 		if (targetScale > 0.25) {
-			mod_target_scale(target, -(0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale * ProgressionMultiplier * DualCast);
+			mod_target_scale(target, -(0.00180 + GrowRate) * (casterScale * 0.50 + 0.50) * targetScale * ProgressionMultiplier * DualCast * time_scale());
 		}
 	}
 }

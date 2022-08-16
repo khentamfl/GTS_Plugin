@@ -23,6 +23,6 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float casterScale = get_visual_scale(caster);
-		mod_target_scale(caster, 0.00165 * 0.15 * ProgressionMultiplier);
+		mod_target_scale(caster, 0.00165 * 0.15 * ProgressionMultiplier * time_scale());
 	}
 }

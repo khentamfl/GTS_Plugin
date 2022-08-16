@@ -27,7 +27,7 @@ namespace Gts {
 		if (StaminaMaxCheck <= 0.05) {
 			StaminaMaxCheck = 0.05;
 		}
-		DamageAV(caster, ActorValue::kStamina, 0.45 * (casterScale * 0.5 + 0.5) * StaminaMaxCheck);
-		mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck);
+		DamageAV(caster, ActorValue::kStamina, 0.45 * (casterScale * 0.5 + 0.5) * StaminaMaxCheck * time_scale());
+		mod_target_scale(caster, 0.0025 * casterScale * StaminaMaxCheck * time_scale());
 	}
 }

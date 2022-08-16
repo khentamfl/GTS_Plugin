@@ -30,11 +30,11 @@ namespace Gts {
 		float casterScale = get_visual_scale(caster);
 		float StaminaMaxCheck = GetStaminaPercentage(caster);
 		if (casterScale > 0.25) {
-			DamageAV(caster, ActorValue::kStamina, 0.25 * (casterScale * 0.5 + 0.5) * StaminaMaxCheck);
+			DamageAV(caster, ActorValue::kStamina, 0.25 * (casterScale * 0.5 + 0.5) * StaminaMaxCheck * time_scale());
 			if (StaminaMaxCheck <= 0.05) {
 				StaminaMaxCheck = 0.05;
 			}
-			mod_target_scale(caster, -0.0025 * casterScale * StaminaMaxCheck);
+			mod_target_scale(caster, -0.0025 * casterScale * StaminaMaxCheck * time_scale());
 		}
 	}
 }
