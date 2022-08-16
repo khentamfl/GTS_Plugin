@@ -1,14 +1,13 @@
 #pragma once
 #include "util.hpp"
-#include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
-// Module that handles various magic effects
+// Module that handles footsteps
 
 
 namespace Gts {
 	inline float time_scale() {
-		return g_delta_time*; // * 60.0
+		return g_delta_time * 60.0;
 	}
 
 	inline float calc_effeciency(Actor* caster, Actor* target) {
@@ -44,30 +43,26 @@ namespace Gts {
 	inline void Revert(Actor* actor, float a, float b) {
 		// amount = scale * a + b
 		float amount = CalcPower(actor, a, b);
-		float scale = get_visual_scale(actor);
-		float natural_scale = get_natural_scale(actor);
 
 		if (fabs(scale - natural_scale) < amount) {
-			set_target_scale(actor, natural_scale);
-			//Dispel(); - Why can't it compile...
-		} 
-		else if (scale < natural_scale) { 
-			mod_target_scale(actor, amount); 
-		} 
-		else {
+			set_target_scale(target, natural_scale);
+			Dispel();
+		} else if (target_scale < natural_scale) { // NOLINT
+			mod_target_scale(actor, amount);
+		} else {
 			mod_target_scale(actor, -amount);
 		}
 	}
 
-	inline void Steal(Actor* from, Actor* to, float mod, float effeciency) {
+	inline void Steal(Actor* from, Actor* to, float a, float b, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
-		float amount = CalcPower(from, mod);
+		float amount = CalcPower(from, a, b);
 		mod_target_scale(from, -amount);
 		mod_target_scale(to, amount*effeciency);
 	}
 
-	inline void Transfer(Actor* from, Actor* to, float mod, float amt) {
-		Steal(from, to, mod, 1.0); // 100% efficent for friendly steal
+	inline void Transfer(Actor* from, Actor* to, float amt) {
+		Steal(from, to, a, b, 1.0); // 100% efficent for friendly steal
 	}
 
 

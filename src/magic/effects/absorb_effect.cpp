@@ -20,7 +20,7 @@ namespace Gts {
 	void Absorb::OnUpdate() {
 		const float SMT_BONUS = 4.0;
 		const float TRUE_ABSORB_UPGRADE = 4.0;
-		const float SHRINK_TO_NOTHING_SCALE = 0.1;
+		const float SHRINK_TO_NOTHING_SCALE = 0.25;
 
 		auto caster = GetCaster();
 		if (!caster) {
@@ -43,13 +43,14 @@ namespace Gts {
 			// Upgrade to true absorb
 			this->true_absorb = true;
 		}
-
+		if (size_difference >= 4.0 && target->HasMagicEffect(runtime.TrueAbsorb) == false)
+		{caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrueAbsorbSpell, false, target, 1.00f, false, 0.0f, caster);}
 		if (this->true_absorb) {
 			Steal(target, caster, 0.00325 * size_difference, 0.276);
-			if (target_scale <= SHRINK_TO_NOTHING_SCALE) {
+			if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false) {
 				// Shrink to nothing
-				set_target_scale(target, 1e-3);
-				Dispel();
+				caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
+				//Dispel();
 				return;
 			}
 		} else {
