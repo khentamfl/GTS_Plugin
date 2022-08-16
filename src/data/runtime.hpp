@@ -77,6 +77,7 @@ namespace Gts {
 
 			EffectSetting* AbsorbMGEF = nullptr;
 			EffectSetting* TrueAbsorb = nullptr;
+			SpellItem * TrueAbsorbSpell = nullptr;
 
 			///End
 

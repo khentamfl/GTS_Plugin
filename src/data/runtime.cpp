@@ -92,6 +92,7 @@ namespace Gts {
 
 		this->AbsorbMGEF = find_form<EffectSetting>("GTS.esp|00B470");
 		this->TrueAbsorb = find_form<EffectSetting>("GTS.esp|22B0D5");
+		this->TrueAbsorbSpell = find_form<SpellItem>("GTS.esp22B0D6");
 		///End
 
 		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
