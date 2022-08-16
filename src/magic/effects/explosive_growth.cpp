@@ -1,7 +1,9 @@
 #include "magic/effects/explosive_growth.hpp"
 #include "magic/magic.hpp"
+#include "magic/common.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+
 
 namespace Gts {
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
@@ -11,7 +13,10 @@ namespace Gts {
 
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
-
+		Actor* caster = GetCaster();
+		if (!caster) {
+			return;
+		}
 		if (base_spell == runtime.explosiveGrowth1) {
 			this->power = GROWTH_1_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
