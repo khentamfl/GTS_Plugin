@@ -7,8 +7,8 @@
 
 
 namespace Gts {
-	float time_scale() {
-		return g_delta_time; // * 60.0
+	inline float time_scale() {
+		return g_delta_time*->value; // * 60.0
 	}
 
 	inline float calc_effeciency(Actor* caster, Actor* target) {
