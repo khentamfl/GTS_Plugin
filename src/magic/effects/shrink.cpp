@@ -22,6 +22,6 @@ namespace Gts {
 		if (IsDualCasting()) {
 			power *= DUAL_CAST_BONUS;
 		}
-		Shrink(caster, this->power, 0);// <- Can't get it to compile
+		//Shrink(caster, this->power, 0);// <- Can't get it to compile
 	}
 }
