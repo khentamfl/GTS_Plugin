@@ -38,8 +38,7 @@ namespace Gts {
 
 	inline void Shrink(Actor* actor, float a, float b) {
 		// amount = scale * a + b
-		float Additional = -CalcPower(actor, a, b);
-		mod_target_scale(actor, Additional);
+		mod_target_scale(actor, -CalcPower(actor, a, b));
 	}
 
 	inline void Revert(Actor* actor, float a, float b) {
