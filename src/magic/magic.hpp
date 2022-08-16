@@ -68,7 +68,8 @@ namespace Gts {
 		public:
 			[[nodiscard]] static MagicManager& GetSingleton() noexcept;
 
-			void poll();
+			void Update();
+			void ProcessActiveEffects(Actor* actor);
 		private:
 			std::map<ActiveEffect*, std::unique_ptr<Magic> > active_effects;
 	};

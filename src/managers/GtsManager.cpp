@@ -285,18 +285,6 @@ void GtsManager::poll() {
 			apply_actor(actor);
 			GameMode(actor);
 		}
-
-		for (auto actor: find_actors_middle_high()) {
-			GameMode(actor);
-		}
-
-		for (auto actor: find_actors_middle_low()) {
-			GameMode(actor);
-		}
-
-		for (auto actor: find_actors_low()) {
-			GameMode(actor);
-		}
 	}
 }
 

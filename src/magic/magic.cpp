@@ -120,77 +120,81 @@ namespace Gts {
 		return instance;
 	}
 
-	void MagicManager::poll() {
-		auto actors = find_actors();
+	void MagicManager::ProcessActiveEffects(Actor* actor) {
 		auto& runtime = Runtime::GetSingleton();
-		for (auto actor: actors) {
-			auto effect_list =actor->GetActiveEffectList();
-			if (!effect_list) {
-				continue;
+
+		auto effect_list =actor->GetActiveEffectList();
+		if (!effect_list) {
+			continue;
+		}
+		for (auto effect: (*effect_list)) {
+			EffectSetting* base_spell = effect->GetBaseObject();
+			if (ExplosiveGrowth::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
 			}
-			for (auto effect: (*effect_list)) {
-				EffectSetting* base_spell = effect->GetBaseObject();
-				if (ExplosiveGrowth::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
-				}
 
-				if (ShrinkFoe::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new ShrinkFoe(effect));
-				}
-
-				if (SwordOfSize::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new SwordOfSize(effect));
-				}
-
-				if (ShrinkButton::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new ShrinkButton(effect));
-				}
-				if (GrowButton::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new GrowButton(effect));
-				}
-
-				if (SlowGrow::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new SlowGrow(effect));
-				}
-
-				if (Growth::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new Growth(effect));
-				}
-				if (Shrink::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new Shrink(effect));
-				}
-
-				if (GrowOther::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new GrowOther(effect));
-				}
-				if (ShrinkOther::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new ShrinkOther(effect));
-				}
-
-				if (GrowOtherButton::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new GrowOtherButton(effect));
-				}
-				if (ShrinkOtherButton::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new ShrinkOtherButton(effect));
-				}
-
-				if (ShrinkBack::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new ShrinkBack(effect));
-				}
-				if (ShrinkBackOther::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new ShrinkBackOther(effect));
-				}
-
-				if (VoreGrowth::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new VoreGrowth(effect));
-				}
-				if (SizeDamage::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new SizeDamage(effect));
-				}
-				if (Absorb::StartEffect(base_spell)) {
-					this->active_effects.try_emplace(effect, new Absorb(effect));
-				}
+			if (ShrinkFoe::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new ShrinkFoe(effect));
 			}
+
+			if (SwordOfSize::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new SwordOfSize(effect));
+			}
+
+			if (ShrinkButton::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new ShrinkButton(effect));
+			}
+			if (GrowButton::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new GrowButton(effect));
+			}
+
+			if (SlowGrow::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new SlowGrow(effect));
+			}
+
+			if (Growth::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new Growth(effect));
+			}
+			if (Shrink::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new Shrink(effect));
+			}
+
+			if (GrowOther::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new GrowOther(effect));
+			}
+			if (ShrinkOther::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new ShrinkOther(effect));
+			}
+
+			if (GrowOtherButton::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new GrowOtherButton(effect));
+			}
+			if (ShrinkOtherButton::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new ShrinkOtherButton(effect));
+			}
+
+			if (ShrinkBack::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new ShrinkBack(effect));
+			}
+			if (ShrinkBackOther::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new ShrinkBackOther(effect));
+			}
+
+			if (VoreGrowth::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new VoreGrowth(effect));
+			}
+			if (SizeDamage::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new SizeDamage(effect));
+			}
+			if (Absorb::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new Absorb(effect));
+			}
+		}
+	}
+
+	void MagicManager::Update() {
+		for (auto actor: find_actors()) {
+			this->ProcessActiveEffects(actor);
 		}
 
 		for (auto i = this->active_effects.begin(); i != this->active_effects.end();) {

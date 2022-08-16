@@ -24,7 +24,7 @@ namespace Hooks
 		auto& magic = MagicManager::GetSingleton();
 		activate_mainthread_mode();
 		manager.poll();
-		magic.poll();
+		magic.Update();
 		deactivate_mainthread_mode();
 	}
 }
