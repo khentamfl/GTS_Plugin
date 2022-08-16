@@ -13,7 +13,7 @@ namespace Gts {
 
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
-		Actor* caster = GetCaster();
+		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		}
