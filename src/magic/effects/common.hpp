@@ -8,7 +8,7 @@
 
 namespace Gts {
 	inline float time_scale() {
-		return g_delta_time; // * 60.0
+		return g_delta_time*; // * 60.0
 	}
 
 	inline float calc_effeciency(Actor* caster, Actor* target) {
@@ -59,15 +59,15 @@ namespace Gts {
 		}
 	}
 
-	inline void Steal(Actor* from, Actor* to, float a, float b, float effeciency) {
+	inline void Steal(Actor* from, Actor* to, float mod, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
-		float amount = CalcPower(from, a, b);
+		float amount = CalcPower(from, mod);
 		mod_target_scale(from, -amount);
 		mod_target_scale(to, amount*effeciency);
 	}
 
-	inline void Transfer(Actor* from, Actor* to, float amt) {
-		Steal(from, to, a, b, 1.0); // 100% efficent for friendly steal
+	inline void Transfer(Actor* from, Actor* to, float mod, float amt) {
+		Steal(from, to, mod, 1.0); // 100% efficent for friendly steal
 	}
 
 
