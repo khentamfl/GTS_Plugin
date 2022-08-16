@@ -25,7 +25,7 @@ namespace Gts {
 
 		float power = BASE_POWER;
 		if (IsDualCasting()) {
-			power *= DUAL_CAST_BONUS;
+			power *= DUAL_CAST_BONUS; 
 		}
 
 		Grow(caster, power, 0.0);
