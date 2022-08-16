@@ -37,7 +37,7 @@ namespace Gts {
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
 				this->grow_limit = 8.0; // NOLINT
 			} else {
-				this->grow_limit = 3.0; // NOLINT
+				this->grow_limit = 4.0; // NOLINT
 			}
 		}
 	}
@@ -62,14 +62,14 @@ namespace Gts {
 		growth_sound.Play();
 
 		if (get_target_scale(caster) > this->grow_limit) {
-			Dispel();
+			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
 			return;
 		}
 
 		Grow(caster, this->power, 0.0);
 		if (get_target_scale(caster) > this->grow_limit) {
 			set_target_scale(caster, this->grow_limit);
-			Dispel();
+			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
 		}
 	}
 }
