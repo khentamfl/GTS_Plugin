@@ -38,14 +38,82 @@ namespace Gts {
 
 			Actor* actor = actor_smartptr.get();
 			// auto actor = actor_handle.get().get();
-			if (actor && actor->Is3DLoaded())
-			{
+			if (actor && actor->Is3DLoaded()) {
 				result.push_back(actor);
 			}
 		}
 		auto player = PlayerCharacter::GetSingleton();
 		if (player && player->Is3DLoaded()) {
 			result.push_back(player);
+		}
+		return result;
+	}
+
+	vector<Actor*> find_actors_middle_high() {
+		vector<Actor*> result;
+
+		auto process_list = ProcessLists::GetSingleton();
+		for (ActorHandle actor_handle: process_list->middleHighActorHandles)
+		{
+			if (!actor_handle) {
+				continue;
+			}
+			auto actor_smartptr = actor_handle.get();
+			if (!actor_smartptr) {
+				continue;
+			}
+
+			Actor* actor = actor_smartptr.get();
+			// auto actor = actor_handle.get().get();
+			if (actor && actor->Is3DLoaded()) {
+				result.push_back(actor);
+			}
+		}
+		return result;
+	}
+
+	vector<Actor*> find_actors_middle_low() {
+		vector<Actor*> result;
+
+		auto process_list = ProcessLists::GetSingleton();
+		for (ActorHandle actor_handle: process_list->middleLowActorHandles)
+		{
+			if (!actor_handle) {
+				continue;
+			}
+			auto actor_smartptr = actor_handle.get();
+			if (!actor_smartptr) {
+				continue;
+			}
+
+			Actor* actor = actor_smartptr.get();
+			// auto actor = actor_handle.get().get();
+			if (actor && actor->Is3DLoaded()) {
+				result.push_back(actor);
+			}
+		}
+		return result;
+	}
+
+	vector<Actor*> find_actors_low() {
+		vector<Actor*> result;
+
+		auto process_list = ProcessLists::GetSingleton();
+		for (ActorHandle actor_handle: process_list->lowActorHandles)
+		{
+			if (!actor_handle) {
+				continue;
+			}
+			auto actor_smartptr = actor_handle.get();
+			if (!actor_smartptr) {
+				continue;
+			}
+
+			Actor* actor = actor_smartptr.get();
+			// auto actor = actor_handle.get().get();
+			if (actor && actor->Is3DLoaded()) {
+				result.push_back(actor);
+			}
 		}
 		return result;
 	}

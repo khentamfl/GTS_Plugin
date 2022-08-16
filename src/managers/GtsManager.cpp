@@ -274,8 +274,7 @@ void GtsManager::poll() {
 			return;
 		}
 
-		auto actors = find_actors();
-		for (auto actor: actors) {
+		for (auto actor: find_actors()) {
 			if (!actor) {
 				continue;
 			}
@@ -284,6 +283,18 @@ void GtsManager::poll() {
 			}
 			update_actor(actor);
 			apply_actor(actor);
+			GameMode(actor);
+		}
+
+		for (auto actor: find_actors_middle_high()) {
+			GameMode(actor);
+		}
+
+		for (auto actor: find_actors_middle_low()) {
+			GameMode(actor);
+		}
+
+		for (auto actor: find_actors_low()) {
 			GameMode(actor);
 		}
 	}
