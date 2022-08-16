@@ -14,10 +14,31 @@ namespace Gts {
 
 		if (base_spell == runtime.explosiveGrowth1) {
 			this->power = GROWTH_1_POWER;
+			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
+				this->grow_limit = 6.0; // NOLINT
+			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
+				this->grow_limit = 4.0; // NOLINT
+			} else {
+				this->grow_limit = 2.0; // NOLINT
+			}
 		} else if (base_spell == runtime.explosiveGrowth2) {
 			this->power = GROWTH_2_POWER;
+			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
+				this->grow_limit = 8.0; // NOLINT
+			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
+				this->grow_limit = 6.0; // NOLINT
+			} else {
+				this->grow_limit = 3.0; // NOLINT
+			}
 		} else {
 			this->power = GROWTH_3_POWER;
+			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
+				this->grow_limit = 12.0; // NOLINT
+			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
+				this->grow_limit = 8.0; // NOLINT
+			} else {
+				this->grow_limit = 3.0; // NOLINT
+			}
 		}
 	}
 
@@ -40,6 +61,15 @@ namespace Gts {
 		audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
 		growth_sound.Play();
 
+		if (get_target_scale(caster) > this->grow_limit) {
+			Dispel();
+			return;
+		}
+
 		Grow(caster, this->power, 0.0);
+		if (get_target_scale(caster) > this->grow_limit) {
+			set_target_scale(caster, this->grow_limit);
+			Dispel();
+		}
 	}
 }

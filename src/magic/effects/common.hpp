@@ -54,9 +54,11 @@ namespace Gts {
 		}
 	}
 
-	inline void Steal(Actor* from, Actor* to, float a, float b, float effectiency) {
-		Shrink(from, a, b);
-		Grow(to, a, b);
+	inline void Steal(Actor* from, Actor* to, float a, float b, float effeciency) {
+		effeciency = clamp(0.0, 1.0, effeciency);
+		float amount = CalcPower(from, a, b);
+		mod_target_scale(from, -amount);
+		mod_target_scale(to, amount*effeciency);
 	}
 
 	inline void Transfer(Actor* from, Actor* to, float amt) {
