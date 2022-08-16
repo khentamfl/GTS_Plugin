@@ -284,6 +284,9 @@ void GtsManager::poll() {
 			update_actor(actor);
 			apply_actor(actor);
 			GameMode(actor);
+
+			auto name = actor->GetDisplayFullName();
+			log::info("Actor found: {}", name);
 		}
 	}
 }
