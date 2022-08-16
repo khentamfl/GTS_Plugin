@@ -36,10 +36,12 @@ namespace Gts {
 		float casterScale = get_visual_scale(caster);
 		float targetScale = get_visual_scale(target);
 		float SizeDifference = casterScale/targetScale;
+		if (caster->HasMagicEffect(SmallMassiveThreat))
+		{SizeDifference *= 4.0} // Insta-absorb if SMT is active
 		if (this->true_absorb) {
 			mod_target_scale(target, -0.00825 * ProgressionMultiplier * SizeDifference);
 			mod_target_scale(caster,  0.00250 * ProgressionMultiplier * targetScale);
-			if (targetScale <= 0.25 && target->HasMagicEffect(runtime.ShrinkToNothing) == false) {
+			if (SizeDifference >= 4.0 && target->HasMagicEffect(runtime.ShrinkToNothing) == false) {
 				caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
 			}
 			// ^ Emulate absorption
