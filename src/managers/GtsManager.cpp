@@ -176,6 +176,12 @@ namespace {
 		apply_speed(actor, saved_data, temp_data, force);
 	}
 
+	enum ChosenGameMode {
+		None,
+		Grow,
+		Shrink,
+		Standard,
+	};
 	// Handles changes like slowly loosing height
 	// over time
 	void GameMode(Actor* actor)  {
@@ -187,22 +193,41 @@ namespace {
 			set_target_scale(actor, size_limit);
 		}
 
-		if (actor->formID == 0x14 || actor->IsPlayerTeammate()) {
+		ChosenGameMode game_mode = ChosenGameMode::None;
+		int game_mode_int = 0;
+		if (actor->formID == 0x14 ) {
+			game_mode_int = runtime.ChosenGameMode->value;
 
+		} else if (actor->IsPlayerTeammate()) {
+			int game_mode_int = runtime.ChosenGameModeNPC->value;
+		}
+		if (game_mode_int >=0 && game_mode_int <= 3) {
+			game_mode =  static_cast<ChosenGameMode>(game_mode_int);
+		}
+
+		if (game_mode != ChosenGameMode::None) {
 			float GrowthRate = runtime.GrowthModeRate->value;
 			float ShrinkRate = runtime.ShrinkModeRate->value;
 
 			float natural_scale = 1.0;
 			float Scale = get_visual_scale(actor);
-			if (runtime.ChosenGameMode->value == 1.0 && Scale < size_limit) {
-				mod_target_scale(actor, Scale * (0.00010 + (GrowthRate * 0.25)));
-			} else if (runtime.ChosenGameMode->value == 2.0 && Scale > natural_scale) {
-				mod_target_scale(actor, Scale * -(0.00025 + (ShrinkRate * 0.25)));
-			} else if (runtime.ChosenGameMode->value == 3.0 && Scale < size_limit) {
-				if (actor->IsInCombat()) {
-					mod_target_scale(actor, Scale * (0.00008 + (GrowthRate * 0.17)));
-				} else {
-					mod_target_scale(actor, Scale * -(0.00029 + (ShrinkRate * 0.34)));
+			switch (game_mode) {
+				case ChosenGameMode::Grow: {
+					mod_target_scale(actor, Scale * (0.00010 + (GrowthRate * 0.25)));
+					break;
+				}
+				case ChosenGameMode::Shrink: {
+					if (Scale > natural_scale) {
+						mod_target_scale(actor, Scale * -(0.00025 + (ShrinkRate * 0.25)));
+					}
+					break;
+				}
+				case ChosenGameMode::Standard: {
+					if (actor->IsInCombat()) {
+						mod_target_scale(actor, Scale * (0.00008 + (GrowthRate * 0.17)));
+					} else {
+						mod_target_scale(actor, Scale * -(0.00029 + (ShrinkRate * 0.34)));
+					}
 				}
 			}
 		}
