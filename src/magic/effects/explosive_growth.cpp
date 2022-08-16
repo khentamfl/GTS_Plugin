@@ -1,6 +1,6 @@
 #include "magic/effects/explosive_growth.hpp"
 #include "magic/magic.hpp"
-#include "magic/common.hpp"
+#include "magic/effects/common.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 
