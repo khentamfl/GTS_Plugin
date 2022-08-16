@@ -36,7 +36,7 @@ namespace Gts {
 		mod_target_scale(actor, CalcPower(actor, a, b));
 	}
 
-	inline void Shrink(Actor* actor, float a, float b) {
+	inline void ShrinkActor(Actor* actor, float a, float b) {
 		// amount = scale * a + b
 		mod_target_scale(actor, -CalcPower(actor, a, b));
 	}
