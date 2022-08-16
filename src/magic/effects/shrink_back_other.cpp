@@ -16,6 +16,9 @@ namespace Gts {
 			return;
 		}
 
-		Revert(target, 0.0025, 0.0010);
+		if (!Revert(target, 0.0025, 0.0010)) {
+			// Returns false when shrink back is complete
+			Dispel();
+		}
 	}
 }

@@ -7,7 +7,7 @@
 
 namespace Gts {
 	inline float time_scale() {
-		return g_delta_time * 60.0;
+		return (*g_delta_time) * 60.0;
 	}
 
 	inline float calc_effeciency(Actor* caster, Actor* target) {
@@ -40,18 +40,21 @@ namespace Gts {
 		mod_target_scale(actor, -CalcPower(actor, a, b));
 	}
 
-	inline void Revert(Actor* actor, float a, float b) {
+	inline bool Revert(Actor* actor, float a, float b) {
 		// amount = scale * a + b
 		float amount = CalcPower(actor, a, b);
+		float target_scale = get_target_scale(actor);
+		float natural_scale = get_natural_scale(actor);
 
-		if (fabs(scale - natural_scale) < amount) {
-			set_target_scale(target, natural_scale);
-			Dispel();
+		if (fabs(target_scale - natural_scale) < amount) {
+			set_target_scale(actor, natural_scale);
+			return false;
 		} else if (target_scale < natural_scale) { // NOLINT
 			mod_target_scale(actor, amount);
 		} else {
 			mod_target_scale(actor, -amount);
 		}
+		return true;
 	}
 
 	inline void Steal(Actor* from, Actor* to, float a, float b, float effeciency) {

@@ -1,7 +1,9 @@
 #include "magic/effects/explosive_growth.hpp"
 #include "magic/magic.hpp"
+#include "magic/common.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "util.hpp"
 
 namespace Gts {
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
@@ -16,6 +18,7 @@ namespace Gts {
 			this->power = GROWTH_1_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
 				this->grow_limit = 6.0; // NOLINT
+				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
 				this->grow_limit = 4.0; // NOLINT
 			} else {
@@ -25,6 +28,7 @@ namespace Gts {
 			this->power = GROWTH_2_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
 				this->grow_limit = 8.0; // NOLINT
+				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
 				this->grow_limit = 6.0; // NOLINT
 			} else {
@@ -34,10 +38,11 @@ namespace Gts {
 			this->power = GROWTH_3_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
 				this->grow_limit = 12.0; // NOLINT
+				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
 				this->grow_limit = 8.0; // NOLINT
 			} else {
-				this->grow_limit = 3.0; // NOLINT
+				this->grow_limit = 4.0; // NOLINT
 			}
 		}
 	}
@@ -45,6 +50,15 @@ namespace Gts {
 	bool ExplosiveGrowth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return (effect == runtime.explosiveGrowth1 || effect == runtime.explosiveGrowth2 || effect == runtime.explosiveGrowth3);
+	}
+
+	void OnStart() {
+		Actor* caster = GetCaster();
+		if (!caster) {
+			return;
+		}
+		shake_camera(caster, this->power * 0.5, 1.0);
+		shake_controller(this->power * 0.5, this->power * 0.5, 1.0);
 	}
 
 	void ExplosiveGrowth::OnUpdate() {

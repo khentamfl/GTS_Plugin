@@ -11,6 +11,7 @@ namespace Gts {
 	class ExplosiveGrowth : public Magic {
 		public:
 			virtual void OnUpdate() override;
+			virtual void OnStart() override;
 
 			static bool StartEffect(EffectSetting* effect);
 

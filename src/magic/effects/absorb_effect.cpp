@@ -45,7 +45,7 @@ namespace Gts {
 		}
 
 		if (this->true_absorb) {
-			Steal(target, caster, 0.00325 * size_difference, 0.276);
+			Steal(target, caster, 0.00325 * size_difference, 0.0, 0.276);
 			if (target_scale <= SHRINK_TO_NOTHING_SCALE) {
 				// Shrink to nothing
 				set_target_scale(target, 1e-3);
@@ -53,7 +53,7 @@ namespace Gts {
 				return;
 			}
 		} else {
-			Steal(target, caster, 0.0025 * size_difference, 0.2);
+			Steal(target, caster, 0.0025 * size_difference, 0.0, 0.2);
 		}
 	}
 }
