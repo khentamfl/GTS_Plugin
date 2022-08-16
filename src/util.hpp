@@ -8,7 +8,7 @@ using namespace RE;
 using namespace SKSE;
 
 namespace Gts {
-	inline static float g_delta_time = (float)REL::RelocationID(523660, 410199).address();
+	inline static float* g_delta_time = (float*)REL::RelocationID(523660, 410199).address();
 
 	inline std::string_view actor_name(Actor* actor) {
 		if (actor) {
