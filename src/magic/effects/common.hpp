@@ -8,7 +8,7 @@
 
 namespace Gts {
 	inline float time_scale() {
-		return g_delta_time.value; // * 60.0
+		return g_delta_time->value; // * 60.0
 	}
 
 	inline float calc_effeciency(Actor* caster, Actor* target) {
@@ -49,10 +49,10 @@ namespace Gts {
 
 		if (fabs(scale - natural_scale) < amount) {
 			set_target_scale(actor, natural_scale);
-			Magic::Dispel();
+			//Dispel(); - Why can't it compile...
 		} 
 		else if (target_scale < natural_scale) { 
-			mod_target_scale(actor, amount); // NOLINT
+			mod_target_scale(actor, amount); 
 		} 
 		else {
 			mod_target_scale(actor, -amount);
