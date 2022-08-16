@@ -32,7 +32,7 @@ namespace Gts {
 
 		if (target_scale > get_natural_scale(target)) {
 			DamageAV(caster, ActorValue::kMagicka, 0.25 * (target_scale * 0.25 + 0.75) * magicka * time_scale());
-			Shrink(target, 0.0025 * target_scale * magicka, 0.0);
+			ShrinkActor(target, 0.0025 * target_scale * magicka, 0.0);
 			
 		}
 	}
