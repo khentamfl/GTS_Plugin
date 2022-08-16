@@ -125,7 +125,7 @@ namespace Gts {
 
 		auto effect_list =actor->GetActiveEffectList();
 		if (!effect_list) {
-			continue;
+			return;
 		}
 		for (auto effect: (*effect_list)) {
 			EffectSetting* base_spell = effect->GetBaseObject();
