@@ -49,7 +49,7 @@ namespace Gts {
 
 		if (fabs(scale - natural_scale) < amount) {
 			set_target_scale(actor, natural_scale);
-			//Dispel(); - Why can't it compile...
+			Dispel();
 		} 
 		else if (scale < natural_scale) { 
 			mod_target_scale(actor, amount); 
