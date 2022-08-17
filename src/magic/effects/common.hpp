@@ -1,8 +1,9 @@
 #pragma once
 #include "util.hpp"
+#include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
-// Module that handles footsteps
+// Module that handles various magic effects
 
 
 namespace Gts {
@@ -35,7 +36,7 @@ namespace Gts {
 		mod_target_scale(actor, CalcPower(actor, a, b));
 	}
 
-	inline void Shrink(Actor* actor, float a, float b) {
+	inline void ShrinkActor(Actor* actor, float a, float b) {
 		// amount = scale * a + b
 		mod_target_scale(actor, -CalcPower(actor, a, b));
 	}
@@ -57,15 +58,15 @@ namespace Gts {
 		return true;
 	}
 
-	inline void Steal(Actor* from, Actor* to, float a, float b, float effeciency) {
+	inline void Steal(Actor* from, Actor* to, float mod, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
-		float amount = CalcPower(from, a, b);
+		float amount = CalcPower(from, mod, 0);
 		mod_target_scale(from, -amount);
 		mod_target_scale(to, amount*effeciency);
 	}
 
-	inline void Transfer(Actor* from, Actor* to, float amt) {
-		Steal(from, to, a, b, 1.0); // 100% efficent for friendly steal
+	inline void Transfer(Actor* from, Actor* to, float mod, float amt) {
+		Steal(from, to, mod, 1.0); // 100% efficent for friendly steal
 	}
 
 

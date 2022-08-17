@@ -1,9 +1,10 @@
 #include "magic/effects/explosive_growth.hpp"
 #include "magic/magic.hpp"
-#include "magic/common.hpp"
+#include "magic/effects/common.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "util.hpp"
+
 
 namespace Gts {
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
@@ -13,7 +14,10 @@ namespace Gts {
 
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
-
+		auto caster = GetCaster();
+		if (!caster) {
+			return;
+		}
 		if (base_spell == runtime.explosiveGrowth1) {
 			this->power = GROWTH_1_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
@@ -49,6 +53,11 @@ namespace Gts {
 
 	bool ExplosiveGrowth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
+		BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
+		auto audio_manager = BSAudioManager::GetSingleton();
+		BSISoundDescriptor* sound_descriptor = runtime.growthSound;;
+		audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
+		growth_sound.Play();
 		return (effect == runtime.explosiveGrowth1 || effect == runtime.explosiveGrowth2 || effect == runtime.explosiveGrowth3);
 	}
 
@@ -69,21 +78,17 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 
 
-		BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
-		auto audio_manager = BSAudioManager::GetSingleton();
-		BSISoundDescriptor* sound_descriptor = runtime.growthSound;;
-		audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
-		growth_sound.Play();
+
 
 		if (get_target_scale(caster) > this->grow_limit) {
-			Dispel();
+			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
 			return;
 		}
 
 		Grow(caster, this->power, 0.0);
 		if (get_target_scale(caster) > this->grow_limit) {
 			set_target_scale(caster, this->grow_limit);
-			Dispel();
+			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
 		}
 	}
 }

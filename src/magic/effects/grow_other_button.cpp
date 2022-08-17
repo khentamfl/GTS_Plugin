@@ -8,6 +8,13 @@
 namespace Gts {
 	bool GrowOtherButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
+		
+		BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
+		auto audio_manager = BSAudioManager::GetSingleton();
+		BSISoundDescriptor* sound_descriptor = runtime.growthSound;;
+		audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
+		growth_sound.Play();
+
 		return effect == runtime.GrowAllySizeButton;
 	}
 
@@ -20,8 +27,9 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
+        auto& runtime = Runtime::GetSingleton();
 
-		auto& runtime = Runtime::GetSingleton();
+		
 		float target_scale = get_visual_scale(target);
 		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
 

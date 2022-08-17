@@ -32,6 +32,7 @@ namespace Gts {
 			BGSSoundDescriptorForm* xxlFootstepR = nullptr;
 
 			BGSSoundDescriptorForm* growthSound = nullptr;
+			BGSSoundDescriptorForm* shrinkSound = nullptr;
 
 			EffectSetting* smallMassiveThreat = nullptr;
 

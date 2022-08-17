@@ -15,6 +15,13 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
+		auto& runtime = Runtime::GetSingleton();
+
+		BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();
+		auto audio_manager = BSAudioManager::GetSingleton();
+		BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;;
+		audio_manager->BuildSoundDataFromDescriptor(shrink_sound, sound_descriptor);
+		shrink_sound.Play();
 
 		if (!Revert(caster, 0.0025, 0.0010)) {
 			// Returns false when shrink back is complete
