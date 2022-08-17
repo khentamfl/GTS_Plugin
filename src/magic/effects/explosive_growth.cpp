@@ -65,7 +65,7 @@ namespace Gts {
 
 		BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
 		auto audio_manager = BSAudioManager::GetSingleton();
-		BSISoundDescriptor* sound_descriptor = runtime.growthSound;;
+		BSISoundDescriptor* sound_descriptor = runtime.growthSound;
 		audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
 		growth_sound.Play();
 		shake_camera(caster, this->power * 0.5, 1.0);

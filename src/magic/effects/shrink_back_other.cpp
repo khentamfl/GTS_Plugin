@@ -19,7 +19,7 @@ namespace Gts {
 
 		BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();
 		auto audio_manager = BSAudioManager::GetSingleton();
-		BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;;
+		BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;
 		audio_manager->BuildSoundDataFromDescriptor(shrink_sound, sound_descriptor);
 		shrink_sound.Play();
 
