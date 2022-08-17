@@ -9,18 +9,18 @@ using namespace REL;
 using namespace Gts;
 
 namespace {
-	void RescaleCapsule(hkpCapsuleShape* capsule, CapsuleData* data, float scale_factor) {
+	void RescaleCapsule(hkpCapsuleShape* capsule, CapsuleData* data, float& scale_factor, hkVector4& vec_scale) {
+		const float EPSILON = 1e-3;
+
 		float expected_radius = data->radius * scale_factor;
 		if(fabs(capsule->radius - expected_radius) > EPSILON) {
-			hkVector4 vec_scale = hkVector4(scale_factor, scale_factor, scale_factor, 1.0);
 			capsule->vertexA = data->start * vec_scale;
 			capsule->vertexB = data->end * vec_scale;
 			capsule->radius *= expected_radius;
 		}
 	}
 
-	void ProcessNode(ActorData* actor_data, NiAVObject* currentnode, float scale_factor) { // NOLINT
-		const float EPSILON = 1e-3;
+	void ProcessNode(ActorData* actor_data, NiAVObject* currentnode, float& scale_factor, hkVector4& vec_scale) { // NOLINT
 		auto collision_object = currentnode->GetCollisionObject();
 		if (collision_object) {
 			auto bhk_rigid_body = collision_object->GetRigidBody();
@@ -37,7 +37,7 @@ namespace {
 								hkpCapsuleShape* capsule = const_cast<hkpCapsuleShape*>(orig_capsule);
 								CapsuleData* capsule_data = actor_data->GetCapsuleData(capsule);
 								if (capsule_data) { // NOLINT
-									RescaleCapsule(capsule, capsule_data, scale_factor);
+									RescaleCapsule(capsule, capsule_data, scale_factor, vec_scale);
 								}
 								hkp_rigidbody->SetShape(capsule);
 							}
@@ -59,6 +59,7 @@ namespace {
 		float visual_scale = get_visual_scale(actor);
 		float natural_scale = get_natural_scale(actor);
 		float scale_factor = visual_scale/natural_scale;
+		hkVector4 vec_scale = hkVector4(scale_factor, scale_factor, scale_factor, 1.0);
 		// Game lookup failed we try and find it manually
 		std::deque<NiAVObject*> queue;
 		queue.push_back(model);
@@ -79,7 +80,7 @@ namespace {
 						}
 					}
 					// Do smth//
-					ProcessNode(actor_data, currentnode, scale_factor);
+					ProcessNode(actor_data, currentnode, scale_factor, vec_scale);
 				}
 			}
 			catch (const std::overflow_error& e) {
