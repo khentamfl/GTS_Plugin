@@ -166,8 +166,10 @@ namespace Gts {
 		auto baseValue = actor->GetPermanentActorValue(ActorValue::kStamina);
 		auto valueMod = actor->staminaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 		auto currentValue = actor->GetActorValue(ActorValue::kStamina);
-
-		return currentValue / (baseValue + valueMod);
+		auto returnValue = currentValue / (baseValue + valueMod);
+		if (returnValue <= 0.05)
+		{returnValue = 0.05} // CTD Protection
+		return returnValue;
 	}
 
 	inline float GetHealthPercentage(Actor* actor) {
@@ -182,8 +184,10 @@ namespace Gts {
 		auto baseValue = actor->GetPermanentActorValue(ActorValue::kMagicka);
 		auto valueMod = actor->magickaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 		auto currentValue = actor->GetActorValue(ActorValue::kMagicka);
-
-		return currentValue / (baseValue + valueMod);
+		auto returnValue = currentValue / (baseValue + valueMod);
+		if (returnValue <= 0.05)
+		{returnValue = 0.05} // CTD Protection
+		return returnValue;
 	}
 
 	inline void DamageAV(Actor* actor, ActorValue av, float amount) {

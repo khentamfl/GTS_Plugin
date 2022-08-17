@@ -9,11 +9,11 @@ namespace Gts {
 	bool ShrinkButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 
-		BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();
-		auto audio_manager = BSAudioManager::GetSingleton();
-		BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;
-		audio_manager->BuildSoundDataFromDescriptor(shrink_sound, sound_descriptor);
-		shrink_sound.Play();
+		//BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();
+		//auto audio_manager = BSAudioManager::GetSingleton();
+		//BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;
+		//audio_manager->BuildSoundDataFromDescriptor(shrink_sound, sound_descriptor);
+		//shrink_sound.Play();
 
 		return (effect == runtime.ShrinkPCButton);
 	}

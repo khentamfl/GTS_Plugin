@@ -63,12 +63,12 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 
-		BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
-		auto audio_manager = BSAudioManager::GetSingleton();
-		BSISoundDescriptor* sound_descriptor = runtime.growthSound;
-		audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
-		growth_sound.Play();
-		shake_camera(caster, this->power * 0.5, 1.0);
+		//BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
+		//auto audio_manager = BSAudioManager::GetSingleton();
+		//BSISoundDescriptor* sound_descriptor = runtime.growthSound;
+		//audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
+		//growth_sound.Play();
+		
 		shake_controller(this->power * 0.5, this->power * 0.5, 1.0);
 	}
 
@@ -90,6 +90,7 @@ namespace Gts {
 		Grow(caster, this->power, 0.0);
 		if (get_target_scale(caster) > this->grow_limit) {
 			set_target_scale(caster, this->grow_limit);
+			shake_camera(caster, this->power * 0.5, 1.0);
 			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
 		}
 	}
