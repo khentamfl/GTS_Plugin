@@ -75,7 +75,7 @@ namespace Gts {
 				if (this->activeEffect->elapsedSeconds >= this->activeEffect->duration) {
 					finished = true;
 				}
-				if (finished = true; ) {
+				if (finished) {
 					this->state = State::Finish;
 				}
 				break;
