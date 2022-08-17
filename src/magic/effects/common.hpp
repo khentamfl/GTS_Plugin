@@ -30,7 +30,7 @@ namespace Gts {
 		float progression_multiplier = runtime.ProgressionMultiplier->value;
 		// y = mx +c
 		// power = scale_factor * scale + bonus
-		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * time_scale();
+		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * TimeScale();
 	}
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
@@ -85,7 +85,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 		float caster_cale = get_visual_scale(caster);
 
-		float power = BASE_POWER * calc_effeciency(caster, target);
+		power *= BASE_POWER * CalcEffeciency(caster, target);
 
 		if (dual_casting) {
 			power *= DUAL_CAST_BONUS;
@@ -105,7 +105,7 @@ namespace Gts {
 			return;
 		}
 
-		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue * DualCast;
+		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
 		Transfer(caster, target, power, power*alteration_level_bonus, transfer_effeciency)
 	}
 
