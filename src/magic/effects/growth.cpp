@@ -32,6 +32,6 @@ namespace Gts {
 			power *= DUAL_CAST_BONUS;
 		}
 
-		Grow(caster, power, 0.0);
+		Grow(caster, 0.0, power);
 	}
 }
