@@ -123,9 +123,8 @@ namespace Gts {
 		try {
 			result = &this->actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
-
-			// ActorData new_data;
-			// this->actor_data.try_emplace(key, std::move(new_data));
+			std::unique_ptr<ActorData> new_data = std::make_unique<ActorData>();
+			this->actor_data.try_emplace(key, new_data);
 			try {
 				result = &this->actor_data.at(key);
 			} catch (const std::out_of_range& oor) {
