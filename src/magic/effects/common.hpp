@@ -105,9 +105,15 @@ namespace Gts {
 		mod_target_scale(target, -stolen_amount * time_scale());
 		float growth_amount = stolen_amount/3 * transfer_effeciency;
 		mod_target_scale(caster, growth_amount * time_scale());
+	}
 
-		if (TargetScale <= 0.10 && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
+	inline bool ShrinkToNothing(Actor* actor) {
+		const float SHRINK_TO_NOTHING_SCALE = 0.10;
+		float target_scale = get_visual_scale(actor);
+		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
+			return true;
 		}
+		return false;
 	}
 }
