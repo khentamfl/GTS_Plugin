@@ -7,20 +7,22 @@
 
 
 namespace Gts {
-	inline float time_scale() {
-		return (*g_delta_time) * 60.0;
+	inline float TimeScale() {
+		const float BASE_FPS = 60.0; // Parameters were optimised on this fps
+		return (*g_delta_time) * BASE_FPS;
 	}
 
-	inline float calc_effeciency(Actor* caster, Actor* target) {
+	inline float CalcEffeciency(Actor* caster, Actor* target) {
+		const float DRAGON_PEANLTY = 0.14;
 		auto& runtime = Runtime::GetSingleton();
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float Efficiency = clamp(0.25, 1.25, (caster->GetLevel()/target->GetLevel())) * ProgressionMultiplier;
+		float progression_multiplier = runtime.ProgressionMultiplier->value;
+		float efficiency = clamp(0.25, 1.25, (caster->GetLevel()/target->GetLevel())) * progression_multiplier;
 
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
-			Efficiency *= 0.14;
+			efficiency *= DRAGON_PEANLTY;
 		}
 
-		return Efficiency;
+		return efficiency;
 	}
 
 	inline float CalcPower(Actor* actor, float scale_factor, float bonus) {
@@ -31,19 +33,19 @@ namespace Gts {
 		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * time_scale();
 	}
 
-	inline void Grow(Actor* actor, float a, float b) {
+	inline void Grow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		mod_target_scale(actor, CalcPower(actor, a, b));
+		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
 	}
 
-	inline void ShrinkActor(Actor* actor, float a, float b) {
+	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		mod_target_scale(actor, -CalcPower(actor, a, b));
+		mod_target_scale(actor, -CalcPower(actor, scale_factor, bonus));
 	}
 
-	inline bool Revert(Actor* actor, float a, float b) {
+	inline bool Revert(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		float amount = CalcPower(actor, a, b);
+		float amount = CalcPower(actor, scale_factor, bonus);
 		float target_scale = get_target_scale(actor);
 		float natural_scale = get_natural_scale(actor);
 
@@ -58,62 +60,62 @@ namespace Gts {
 		return true;
 	}
 
-	inline void Steal(Actor* from, Actor* to, float mod, float effeciency) {
+	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
-		float amount = CalcPower(from, mod, 0);
+		float amount = CalcPower(from, scale_factor, bonus);
 		mod_target_scale(from, -amount);
 		mod_target_scale(to, amount*effeciency);
 	}
 
-	inline void Transfer(Actor* from, Actor* to, float mod, float amt) {
-		Steal(from, to, mod, 1.0); // 100% efficent for friendly steal
+	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus, float amt) {
+		Steal(from, to, scale_factor, bonus, 1.0); // 100% efficent for friendly steal
 	}
 
 
-	inline void transfer_size(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smallMassiveThreat) {
+	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt) {
+		const float BASE_POWER = 0.0005;
+		const float DUAL_CAST_BONUS = 2.0;
+		const float SMT_BONUS = 2.0;
+		const float PERK1_BONUS = 1.33;
+		const float PERK2_BONUS = 2.0;
+
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
 		auto& runtime = Runtime::GetSingleton();
 
-		float TargetScale = get_visual_scale(target);
-		float casterScale = get_visual_scale(caster);
+		float target_scale = get_visual_scale(target);
+		float caster_cale = get_visual_scale(caster);
 
-		float AdditionalShrinkValue = 1.0;
-		float SMTRate = 1.0;
-		float Efficiency = calc_effeciency(caster, target);
+		float power = BASE_POWER * calc_effeciency(caster, target);
 
-		float DualCast = 1.0;
 		if (dual_casting) {
-			DualCast = 2.0;
+			power *= DUAL_CAST_BONUS;
 		}
 
-		if (smallMassiveThreat) {
-			SMTRate = 2.0;
+		if (smt) {
+			power *= SMT_BONUS;
 		}
 
 		if (caster->HasPerk(runtime.PerkPart1)) {
-			AdditionalShrinkValue = 1.33;
-		} else if (caster->HasPerk(runtime.PerkPart2)) {
-			AdditionalShrinkValue = 2.0;
+			power *= PERK1_BONUS;
 		}
-		if (Runtime::GetSingleton().ProtectEssentials->value == 1.0 && target->IsEssential() == true) {
+		if (caster->HasPerk(runtime.PerkPart2)) {
+			power *= PERK2_BONUS;
+		}
+		if (Runtime::GetSingleton().ProtectEssentials->value == 1.0 && target->IsEssential()) {
 			return;
 		}
-		float AlterationLevel = (caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50) * AdditionalShrinkValue * DualCast;
-		//log::info("Caster is {}", caster->GetDisplayFullName());
-		//log::info("Target is {}", target->GetDisplayFullName());
-		float stolen_amount = (TargetScale * 0.0005 + AlterationLevel * SMTRate * Efficiency) * power;
-		mod_target_scale(target, -stolen_amount * time_scale());
-		float growth_amount = stolen_amount/3 * transfer_effeciency;
-		mod_target_scale(caster, growth_amount * time_scale());
+
+		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50 * AdditionalShrinkValue * DualCast;
+		Transfer(caster, target, power, power*alteration_level_bonus, transfer_effeciency)
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
 		const float SHRINK_TO_NOTHING_SCALE = 0.10;
 		float target_scale = get_visual_scale(target);
+		auto& runtime = Runtime::GetSingleton();
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
-			auto& runtime = Runtime::GetSingleton();
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
-			return true;
+			return true; // NOLINT
 		}
 		return false;
 	}

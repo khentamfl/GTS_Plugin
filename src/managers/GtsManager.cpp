@@ -286,7 +286,11 @@ void GtsManager::poll() {
 			GameMode(actor);
 
 			auto name = actor->GetDisplayFullName();
-			log::info("Actor found: {}", name);
+			if (actor->IsDead()) {
+				log::info("====== Actor found DOA: {}", name);
+			} else {
+				log::info("Actor found: {}", name);
+			}
 		}
 	}
 }
