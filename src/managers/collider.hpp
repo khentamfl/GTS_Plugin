@@ -19,7 +19,7 @@ namespace Gts {
 
 		private:
 			mutable std::mutex _lock;
-			std::unordered_map<hkpCapsuleShape*, CapsuleData> capsule_data;
+			std::map<hkpCapsuleShape*, CapsuleData> capsule_data;
 	};
 
 	class ColliderManager {
@@ -31,6 +31,6 @@ namespace Gts {
 			ActorData* GetActorData(Actor* actor);
 		private:
 			mutable std::mutex _lock;
-			std::unordered_map<Actor*, ActorData> actor_data;
+			std::map<Actor*, ActorData> actor_data;
 	};
 }
