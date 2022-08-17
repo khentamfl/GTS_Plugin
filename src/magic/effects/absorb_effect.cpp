@@ -44,7 +44,7 @@ namespace Gts {
 		}
 		if (this->true_absorb) {
 			Steal(target, caster, 0.00325 * size_difference, 0.0, 0.276);
-			if (ShrinkToNothing(target)) {
+			if (ShrinkToNothing(caster, target)) {
 				Dispel();
 			}
 		} else {

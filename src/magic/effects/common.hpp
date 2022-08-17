@@ -107,10 +107,11 @@ namespace Gts {
 		mod_target_scale(caster, growth_amount * time_scale());
 	}
 
-	inline bool ShrinkToNothing(Actor* actor) {
+	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
 		const float SHRINK_TO_NOTHING_SCALE = 0.10;
-		float target_scale = get_visual_scale(actor);
+		float target_scale = get_visual_scale(target);
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
+			auto& runtime = Runtime::GetSingleton();
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
 			return true;
 		}
