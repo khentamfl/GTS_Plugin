@@ -90,7 +90,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
-		
+
 		float target_scale = get_visual_scale(target);
 		float caster_scale = get_visual_scale(caster);
 
@@ -115,7 +115,7 @@ namespace Gts {
 		}
 
 		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
-		Steal(caster, target, power, power*alteration_level_bonus, transfer_effeciency);
+		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
