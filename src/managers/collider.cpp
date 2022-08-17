@@ -1,4 +1,5 @@
 #include "managers/collider.hpp"
+#include "scale/scale.hpp"
 
 #include "util.hpp"
 
@@ -97,13 +98,15 @@ namespace Gts {
 
 	ColliderManager& ColliderManager::GetSingleton() noexcept {
 		static ColliderManager instance;
-		return instance; 
+		return instance;
 	}
 
 	void ColliderManager::Update() {
 		for (auto actor: find_actors()) {
 			ActorData* actor_data = GetActorData(actor);
-			ScaleColliders(actor, actor_data);
+			float visual_scale = get_visual_scale(actor);
+			flaot natural_scale = get_natural_scale(actor);
+			ScaleColliders(actor, actor_data, visual_scale/natural_scale);
 		}
 	}
 

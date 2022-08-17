@@ -15,8 +15,8 @@ namespace Gts {
 	};
 
 	class ActorData {
-
-		CapsuleData* GetCapsuleData(hkpCapsuleShape* capsule);
+		public:
+			CapsuleData* GetCapsuleData(hkpCapsuleShape* capsule);
 
 		private:
 			mutable std::mutex _lock;
