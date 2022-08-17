@@ -121,11 +121,11 @@ namespace Gts {
 		auto key = actor;
 		ActorData* result = nullptr;
 		try {
-			result = this->actor_data.at(key).get();
+			result = &this->actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
 			this->actor_data.try_emplace(key);
 			try {
-				result = this->actor_data.at(key).get();
+				result = &this->actor_data.at(key);
 			} catch (const std::out_of_range& oor) {
 				result = nullptr;
 			}
@@ -141,15 +141,15 @@ namespace Gts {
 		auto key = capsule;
 		CapsuleData* result = nullptr;
 		try {
-			result = this->capsule_data.at(key).get();
+			result = &this->capsule_data.at(key);
 		} catch (const std::out_of_range& oor) {
-			std::unique_ptr<CapsuleData>  new_data = std::make_unique<CapsuleData>();
+			CapsuleData new_data;
 			new_data->start = capsule->vertexA;
 			new_data->end = capsule->vertexB;
 			new_data->radius = capsule->radius;
-			this->capsule_data.try_emplace(key, std::move(new_data));
+			this->capsule_data.try_emplace(key, new_data);
 			try {
-				result = this->capsule_data.at(key).get();
+				result = &this->capsule_data.at(key);
 			} catch (const std::out_of_range& oor) {
 				result = nullptr;
 			}
