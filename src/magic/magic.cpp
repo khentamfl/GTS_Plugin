@@ -56,7 +56,10 @@ namespace Gts {
 				this->dual_casted = this->IsDualCasting();
 
 				this->state = State::Start;
-				log::info("{}: Start on {}", this->GetName(), this->target->GetDisplayFullName());
+				if (this->target->formID != 0x14) {
+					log::info("{}: Start on {}", this->GetName(), this->target->GetDisplayFullName());
+					log::info("{}: ShouldDispelOnDeath: {}", this->GetName(), this->activeEffect->ShouldDispelOnDeath());
+				}
 				break;
 			}
 			case State::Start: {
@@ -67,19 +70,27 @@ namespace Gts {
 			case State::Update: {
 				this->OnUpdate();
 				bool found = false;
-				log::info("{}: OnUpdate running on {}, IsDead(): {}", this->GetName(), this->target->GetDisplayFullName(), this->target->IsDead());
+				if (this->target->formID != 0x14) {
+					log::info("{}: OnUpdate running on {}, IsDead(): {}", this->GetName(), this->target->GetDisplayFullName(), this->target->IsDead());
+				}
 				if (this->target) {
 					for (auto effect: (*this->target->GetActiveEffectList())) {
 						if (effect == this->activeEffect) {
 							found = true;
 						}
-						log::info("{}: Found effect {} on {}", this->GetName(), effect->GetBaseObject()->GetFullName(), this->target->GetDisplayFullName());
+						if (this->target->formID != 0x14) {
+							log::info("{}: Found effect {} on {}", this->GetName(), effect->GetBaseObject()->GetFullName(), this->target->GetDisplayFullName());
+						}
 					}
 				} else {
-					log::info("{}: Target Invalid");
+					if (this->target->formID != 0x14) {
+						log::info("{}: Target Invalid");
+					}
 				}
 				if (!found) {
-					log::info("{}: Spell no longer found on {}", this->GetName(), this->target->GetDisplayFullName());
+					if (this->target->formID != 0x14) {
+						log::info("{}: Spell no longer found on {}", this->GetName(), this->target->GetDisplayFullName());
+					}
 					this->state = State::Finish;
 				}
 				break;
@@ -87,7 +98,9 @@ namespace Gts {
 			case State::Finish: {
 				this->OnFinish();
 				this->state = State::CleanUp;
-				log::info("{}: Finish on {}", this->GetName(), this->target->GetDisplayFullName());
+				if (this->target->formID != 0x14) {
+					log::info("{}: Finish on {}", this->GetName(), this->target->GetDisplayFullName());
+				}
 				break;
 			}
 			case State::CleanUp: {
