@@ -15,6 +15,8 @@ namespace Gts {
 			virtual void OnStart() override;
 			virtual void OnUpdate() override;
 
+			virtual std::string GetName() override;
+
 			static bool StartEffect(EffectSetting* effect);
 	};
 }

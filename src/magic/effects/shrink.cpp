@@ -5,6 +5,10 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
+	std::string Shrink::GetName() {
+		return "Shrink";
+	}
+
 	bool Shrink::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.ShrinkSpell;

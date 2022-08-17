@@ -5,6 +5,10 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
+	std::string SwordOfSize::GetName() {
+		return "SwordOfSize";
+	}
+
 	SwordOfSize::SwordOfSize(ActiveEffect* effect) : Magic(effect) {
 	}
 

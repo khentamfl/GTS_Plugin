@@ -5,6 +5,10 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
+	std::string VoreGrowth::GetName() {
+		return "VoreGrowth";
+	}
+
 	bool VoreGrowth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.GlobalVoreGrowth;

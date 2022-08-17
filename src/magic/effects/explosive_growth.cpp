@@ -7,6 +7,10 @@
 
 
 namespace Gts {
+	std::string ExplosiveGrowth::GetName() {
+		return "ExplosiveGrowth";
+	}
+
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
 		const float GROWTH_1_POWER = 0.00480;
 		const float GROWTH_2_POWER = 0.00300;
@@ -68,8 +72,8 @@ namespace Gts {
 		//BSISoundDescriptor* sound_descriptor = runtime.growthSound;
 		//audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
 		//growth_sound.Play();
-		
-		
+
+
 	}
 
 	void ExplosiveGrowth::OnUpdate() {

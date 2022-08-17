@@ -5,6 +5,10 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
+	std::string ShrinkFoe::GetName() {
+		return "ShrinkFoe";
+	}
+
 	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) : Magic(effect) {
 		const float SHRINK_POWER = 0.90;
 		const float SHRINK_EFFIC = 0.34;
@@ -46,10 +50,9 @@ namespace Gts {
 		}
 
 		bool has_smt = caster->HasMagicEffect(Runtime::GetSingleton().smallMassiveThreat);
-		log::info("Running effect on {}", target->GetDisplayFullName());
 		TransferSize(caster, target, IsDualCasting(), this->power, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {
-				Dispel();
-			}
+			Dispel();
+		}
 	}
 }

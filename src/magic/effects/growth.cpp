@@ -5,6 +5,10 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
+	std::string Growth::GetName() {
+		return "Growth";
+	}
+
 	bool Growth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.GrowthSpell;
@@ -25,7 +29,7 @@ namespace Gts {
 
 		float power = BASE_POWER;
 		if (IsDualCasting()) {
-			power *= DUAL_CAST_BONUS; 
+			power *= DUAL_CAST_BONUS;
 		}
 
 		Grow(caster, power, 0.0);

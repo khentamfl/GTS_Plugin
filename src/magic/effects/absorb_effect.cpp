@@ -12,6 +12,10 @@ namespace Gts {
 		this->true_absorb = (base_spell == runtime.TrueAbsorb);
 	}
 
+	std::string Absorb::GetName() {
+		return "Absorb";
+	}
+
 	bool Absorb::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return (effect == runtime.AbsorbMGEF || effect == runtime.TrueAbsorb);

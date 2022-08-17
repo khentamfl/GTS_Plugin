@@ -29,6 +29,11 @@ namespace Gts {
 	void Magic::OnFinish() {
 	}
 
+	std::string Magic::GetName() {
+		return "";
+	}
+
+
 	Magic::Magic(ActiveEffect* effect) : activeEffect(effect) {
 		if (this->activeEffect) {
 			this->effectSetting = this->activeEffect->GetBaseObject();
@@ -51,6 +56,7 @@ namespace Gts {
 				this->dual_casted = this->IsDualCasting();
 
 				this->state = State::Start;
+				log::info("{}: Start on {}", this->GetName(), this->target->GetDisplayFullName());
 				break;
 			}
 			case State::Start: {
@@ -61,14 +67,19 @@ namespace Gts {
 			case State::Update: {
 				this->OnUpdate();
 				bool found = false;
+				log::info("{}: OnUpdate running on {}, IsDead(): {}", this->GetName(), this->target->GetDisplayFullName(), this->target->IsDead());
 				if (this->target) {
 					for (auto effect: (*this->target->GetActiveEffectList())) {
 						if (effect == this->activeEffect) {
 							found = true;
 						}
+						log::info("{}: Found effect {} on {}", this->GetName(), effect->GetBaseObject()->GetFullName(), this->target->GetDisplayFullName());
 					}
+				} else {
+					log::info("{}: Target Invalid");
 				}
 				if (!found) {
+					log::info("{}: Spell no longer found on {}", this->GetName(), this->target->GetDisplayFullName());
 					this->state = State::Finish;
 				}
 				break;
@@ -76,6 +87,7 @@ namespace Gts {
 			case State::Finish: {
 				this->OnFinish();
 				this->state = State::CleanUp;
+				log::info("{}: Finish on {}", this->GetName(), this->target->GetDisplayFullName());
 				break;
 			}
 			case State::CleanUp: {

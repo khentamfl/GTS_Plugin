@@ -5,6 +5,10 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
+	std::string ShrinkBack::GetName() {
+		return "ShrinkBack";
+	}
+
 	bool ShrinkBack::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.ShrinkBack;

@@ -28,6 +28,8 @@ namespace Gts {
 			virtual void OnUpdate();
 			virtual void OnFinish();
 
+			virtual std::string GetName();
+
 			void poll();
 
 			Actor* GetTarget();

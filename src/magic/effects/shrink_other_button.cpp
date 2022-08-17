@@ -6,6 +6,10 @@
 #include "util.hpp"
 
 namespace Gts {
+	std::string ShrinkOtherButton::GetName() {
+		return "ShrinkOtherButton";
+	}
+
 	bool ShrinkOtherButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		//BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();

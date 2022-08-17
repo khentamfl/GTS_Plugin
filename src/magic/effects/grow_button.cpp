@@ -6,6 +6,10 @@
 #include "util.hpp"
 
 namespace Gts {
+	std::string GrowButton::GetName() {
+		return "GrowButton";
+	}
+
 	bool GrowButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 
@@ -24,7 +28,7 @@ namespace Gts {
 		//BSISoundDescriptor* sound_descriptor = runtime.growthSound;
 		//audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
 		//growth_sound.Play();
-		
+
 	}
 
 	void GrowButton::OnUpdate() {

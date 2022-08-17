@@ -12,6 +12,8 @@ namespace Gts {
 		public:
 			virtual void OnUpdate() override;
 
+			virtual std::string GetName() override;
+
 			static bool StartEffect(EffectSetting* effect);
 
 			ShrinkFoe(ActiveEffect* effect);
