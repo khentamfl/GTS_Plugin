@@ -84,8 +84,17 @@ namespace Gts {
 					}
 				} else {
 					if (this->target->formID != 0x14) {
-						log::info("{}: Target Invalid");
+						log::info("{}: Target Invalid", this->GetName());
 					}
+				}
+				if (this->activeEffect->flags & ActiveEffect::Flag::kInactive) {
+					log::info("{}: Inactive effect", this->GetName());
+				}
+				if (this->activeEffect->flags & ActiveEffect::Flag::kDispelled) {
+					log::info("{}: Dispelled effect", this->GetName());
+				}
+				if (this->activeEffect->elapsedSeconds >= this->activeEffect->duration) {
+					log::info("{}: Time UP", this->GetName());
 				}
 				if (!found) {
 					if (this->target->formID != 0x14) {
