@@ -56,10 +56,6 @@ namespace Gts {
 				this->dual_casted = this->IsDualCasting();
 
 				this->state = State::Start;
-				if (this->target->formID != 0x14) {
-					log::info("{}: Start on {}", this->GetName(), this->target->GetDisplayFullName());
-					log::info("{}: ShouldDispelOnDeath: {}", this->GetName(), this->activeEffect->ShouldDispelOnDeath());
-				}
 				break;
 			}
 			case State::Start: {
@@ -68,38 +64,18 @@ namespace Gts {
 				break;
 			}
 			case State::Update: {
-				this->OnUpdate();
-				bool found = false;
-				if (this->target->formID != 0x14) {
-					log::info("{}: OnUpdate running on {}, IsDead(): {}", this->GetName(), this->target->GetDisplayFullName(), this->target->IsDead());
-				}
-				if (this->target) {
-					for (auto effect: (*this->target->GetActiveEffectList())) {
-						if (effect == this->activeEffect) {
-							found = true;
-						}
-						if (this->target->formID != 0x14) {
-							log::info("{}: Found effect {} on {}", this->GetName(), effect->GetBaseObject()->GetFullName(), this->target->GetDisplayFullName());
-						}
-					}
-				} else {
-					if (this->target->formID != 0x14) {
-						log::info("{}: Target Invalid", this->GetName());
-					}
-				}
 				if (this->activeEffect->flags & ActiveEffect::Flag::kInactive) {
-					log::info("{}: Inactive effect", this->GetName());
+					break;
 				}
+				this->OnUpdate();
+				bool finished = false;
 				if (this->activeEffect->flags & ActiveEffect::Flag::kDispelled) {
-					log::info("{}: Dispelled effect", this->GetName());
+					finished = true;
 				}
 				if (this->activeEffect->elapsedSeconds >= this->activeEffect->duration) {
-					log::info("{}: Time UP", this->GetName());
+					finished = true;
 				}
-				if (!found) {
-					if (this->target->formID != 0x14) {
-						log::info("{}: Spell no longer found on {}", this->GetName(), this->target->GetDisplayFullName());
-					}
+				if (finished = true; ) {
 					this->state = State::Finish;
 				}
 				break;
@@ -107,9 +83,6 @@ namespace Gts {
 			case State::Finish: {
 				this->OnFinish();
 				this->state = State::CleanUp;
-				if (this->target->formID != 0x14) {
-					log::info("{}: Finish on {}", this->GetName(), this->target->GetDisplayFullName());
-				}
 				break;
 			}
 			case State::CleanUp: {
