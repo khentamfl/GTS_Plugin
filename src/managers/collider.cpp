@@ -38,8 +38,8 @@ namespace {
 										RescaleCapsule(capsule, capsule_data, visual_scale);
 									}
 								}
+								hkp_rigidbody->SetShape(capsule);
 							}
-							hkp_rigidbody->SetShape(capsule);
 						}
 					}
 				}
@@ -55,6 +55,9 @@ namespace {
 		if (!model) {
 			return;
 		}
+		float visual_scale = get_visual_scale(actor);
+		float natural_scale = get_natural_scale(actor);
+		float scale_factor = visual_scale/natural_scale;
 		// Game lookup failed we try and find it manually
 		std::deque<NiAVObject*> queue;
 		queue.push_back(model);
@@ -75,7 +78,7 @@ namespace {
 						}
 					}
 					// Do smth
-					ProcessNode(currentnode);
+					ProcessNode(currentnode, scale_factor);
 				}
 			}
 			catch (const std::overflow_error& e) {
@@ -104,9 +107,7 @@ namespace Gts {
 	void ColliderManager::Update() {
 		for (auto actor: find_actors()) {
 			ActorData* actor_data = GetActorData(actor);
-			float visual_scale = get_visual_scale(actor);
-			flaot natural_scale = get_natural_scale(actor);
-			ScaleColliders(actor, actor_data, visual_scale/natural_scale);
+			ScaleColliders(actor, actor_data);
 		}
 	}
 
