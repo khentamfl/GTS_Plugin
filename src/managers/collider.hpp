@@ -31,6 +31,6 @@ namespace Gts {
 			ActorData* GetActorData(Actor* actor);
 		private:
 			mutable std::mutex _lock;
-			std::munordered_mapap<Actor*, ActorData> actor_data;
+			std::unordered_map<Actor*, ActorData> actor_data;
 	};
 }

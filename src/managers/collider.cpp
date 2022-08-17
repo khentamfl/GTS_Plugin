@@ -125,7 +125,7 @@ namespace Gts {
 		} catch (const std::out_of_range& oor) {
 
 			ActorData new_data;
-			this->actor_data.try_emplace(key, new_data);
+			this->actor_data.try_emplace(key, std::move(new_data));
 			try {
 				result = &this->actor_data.at(key);
 			} catch (const std::out_of_range& oor) {
@@ -149,7 +149,7 @@ namespace Gts {
 			new_data.start = capsule->vertexA;
 			new_data.end = capsule->vertexB;
 			new_data.radius = capsule->radius;
-			this->capsule_data.try_emplace(key, new_data);
+			this->capsule_data.try_emplace(key, std::move(new_data));
 			try {
 				result = &this->capsule_data.at(key);
 			} catch (const std::out_of_range& oor) {
