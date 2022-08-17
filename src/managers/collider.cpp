@@ -119,14 +119,16 @@ namespace Gts {
 			return nullptr;
 		}
 		auto key = actor;
+		ActorData* result = nullptr;
 		try {
-			auto no_discard = this->actor_data.at(key);
+			result = &this->actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
 
-			ActorData result;
-			this->actor_data.try_emplace(key, result);
+			ActorData new_data;
+			this->actor_data.try_emplace(key, new_data);
+			result = &this->actor_data[key];
 		}
-		return &this->actor_data[key];
+		return result;
 	}
 
 	CapsuleData* ActorData::GetCapsuleData(hkpCapsuleShape* capsule) { // NOLINT
@@ -135,15 +137,17 @@ namespace Gts {
 			return nullptr;
 		}
 		auto key = capsule;
+		CapsuleData* result = nullptr;
 		try {
-			auto no_discard = this->capsule_data.at(key);
+			result = &this->capsule_data.at(key);
 		} catch (const std::out_of_range& oor) {
-			CapsuleData result;
-			result.start = capsule->vertexA;
-			result.end = capsule->vertexB;
-			result.radius = capsule->radius;
-			this->capsule_data.try_emplace(key, result);
+			CapsuleData new_data;
+			new_data.start = capsule->vertexA;
+			new_data.end = capsule->vertexB;
+			new_data.radius = capsule->radius;
+			this->capsule_data.try_emplace(key, new_data);
+			result = &this->capsule_data[key];
 		}
-		return &this->capsule_data[key];
+		return result;
 	}
 }
