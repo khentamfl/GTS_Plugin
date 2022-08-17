@@ -87,6 +87,8 @@ namespace Gts {
 		const float PERK1_BONUS = 1.33;
 		const float PERK2_BONUS = 2.0;
 
+		auto& runtime = Runtime::GetSingleton();
+
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
 		
 		float target_scale = get_visual_scale(target);

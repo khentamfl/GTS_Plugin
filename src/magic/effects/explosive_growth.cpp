@@ -69,7 +69,7 @@ namespace Gts {
 		//audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
 		//growth_sound.Play();
 		
-		shake_controller(this->power * 0.5, this->power * 0.5, 1.0);
+		
 	}
 
 	void ExplosiveGrowth::OnUpdate() {
@@ -91,6 +91,7 @@ namespace Gts {
 		if (get_target_scale(caster) > this->grow_limit) {
 			set_target_scale(caster, this->grow_limit);
 			shake_camera(caster, this->power * 0.5, 1.0);
+			shake_controller(this->power * 0.5, this->power * 0.5, 1.0);
 			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
 		}
 	}
