@@ -35,7 +35,11 @@ namespace Gts {
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
+		auto& runtime = Runtime::GetSingleton();
+		float sizeLimit = runtime.sizeLimit->value;
+		float Scale = get_visual_scale(actor);
+		if (Scale < sizeLimit)
+		{mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));}
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
@@ -63,8 +67,12 @@ namespace Gts {
 	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
 		float amount = CalcPower(from, scale_factor, bonus);
+		auto& runtime = Runtime::GetSingleton();
+		float sizeLimit = runtime.sizeLimit->value;
+		float Scale = get_visual_scale(to);
 		mod_target_scale(from, -amount);
-		mod_target_scale(to, amount*effeciency);
+		if (Scale < sizeLimit)
+		{mod_target_scale(to, amount*effeciency);}
 	}
 
 	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
@@ -79,11 +87,13 @@ namespace Gts {
 		const float PERK1_BONUS = 1.33;
 		const float PERK2_BONUS = 2.0;
 
-		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
 		auto& runtime = Runtime::GetSingleton();
+		float sizeLimit = runtime.sizeLimit->value;
 
+		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
+		
 		float target_scale = get_visual_scale(target);
-		float caster_cale = get_visual_scale(caster);
+		float caster_scale = get_visual_scale(caster);
 
 		power *= BASE_POWER * CalcEffeciency(caster, target);
 
@@ -101,7 +111,7 @@ namespace Gts {
 		if (caster->HasPerk(runtime.PerkPart2)) {
 			power *= PERK2_BONUS;
 		}
-		if (Runtime::GetSingleton().ProtectEssentials->value == 1.0 && target->IsEssential()) {
+		if (Runtime::GetSingleton().ProtectEssentials->value == 1.0 && target->IsEssential() || caster_scale > sizeLimit) {
 			return;
 		}
 

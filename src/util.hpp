@@ -168,7 +168,7 @@ namespace Gts {
 		auto currentValue = actor->GetActorValue(ActorValue::kStamina);
 		auto returnValue = currentValue / (baseValue + valueMod);
 		if (returnValue <= 0.05)
-		{returnValue = 0.05} // CTD Protection
+		{returnValue = 0.05;} // CTD Protection
 		return returnValue;
 	}
 
@@ -186,7 +186,7 @@ namespace Gts {
 		auto currentValue = actor->GetActorValue(ActorValue::kMagicka);
 		auto returnValue = currentValue / (baseValue + valueMod);
 		if (returnValue <= 0.05)
-		{returnValue = 0.05} // CTD Protection
+		{returnValue = 0.05;} // CTD Protection
 		return returnValue;
 	}
 
