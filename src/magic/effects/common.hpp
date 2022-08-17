@@ -67,7 +67,7 @@ namespace Gts {
 		mod_target_scale(to, amount*effeciency);
 	}
 
-	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus, float amt) {
+	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
 		Steal(from, to, scale_factor, bonus, 1.0); // 100% efficent for friendly steal
 	}
 
@@ -106,7 +106,7 @@ namespace Gts {
 		}
 
 		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
-		Transfer(caster, target, power, power*alteration_level_bonus, transfer_effeciency);
+		Steal(caster, target, power, power*alteration_level_bonus, transfer_effeciency);
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {

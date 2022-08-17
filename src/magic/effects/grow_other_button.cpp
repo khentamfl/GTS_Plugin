@@ -24,8 +24,8 @@ namespace Gts {
 		BSISoundDescriptor* sound_descriptor = runtime.growthSound;;
 		audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
 		growth_sound.Play();
-		shake_camera(caster, this->power * 0.5, 1.0);
-		shake_controller(this->power * 0.5, this->power * 0.5, 1.0);
+		shake_camera(caster, 0.25, 1.0);
+		shake_controller(0.25, 0.25, 1.0);
 	}
 
 	void GrowOtherButton::OnUpdate() {
