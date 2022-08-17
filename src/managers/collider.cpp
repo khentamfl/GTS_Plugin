@@ -126,7 +126,11 @@ namespace Gts {
 
 			ActorData new_data;
 			this->actor_data.try_emplace(key, new_data);
-			result = &this->actor_data[key];
+			try {
+				result = &this->actor_data.at(key);
+			} catch (const std::out_of_range& oor) {
+				result = nullptr;
+			}
 		}
 		return result;
 	}
@@ -146,7 +150,11 @@ namespace Gts {
 			new_data.end = capsule->vertexB;
 			new_data.radius = capsule->radius;
 			this->capsule_data.try_emplace(key, new_data);
-			result = &this->capsule_data[key];
+			try {
+				result = &this->capsule_data.at(key);
+			} catch (const std::out_of_range& oor) {
+				result = nullptr;
+			}
 		}
 		return result;
 	}
