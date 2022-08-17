@@ -88,6 +88,9 @@ namespace Gts {
 		const float PERK2_BONUS = 2.0;
 
 		auto& runtime = Runtime::GetSingleton();
+		if (runtime.ProtectEssentials->value == 1.0 && target->IsEssential()) {
+			return;
+		}
 
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
 
@@ -109,9 +112,6 @@ namespace Gts {
 		}
 		if (caster->HasPerk(runtime.PerkPart2)) {
 			power *= PERK2_BONUS;
-		}
-		if (Runtime::GetSingleton().ProtectEssentials->value == 1.0 && target->IsEssential()) {
-			return;
 		}
 
 		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
