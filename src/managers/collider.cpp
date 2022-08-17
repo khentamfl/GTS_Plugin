@@ -95,9 +95,9 @@ namespace {
 
 namespace Gts {
 
-	ContactManager& ColliderManager::GetSingleton() noexcept {
-		static ContactManager instance;
-		return instance;
+	ColliderManager& ColliderManager::GetSingleton() noexcept {
+		static ColliderManager instance;
+		return instance; 
 	}
 
 	void ColliderManager::Update() {
