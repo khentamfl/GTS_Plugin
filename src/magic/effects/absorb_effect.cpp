@@ -43,12 +43,12 @@ namespace Gts {
 			this->true_absorb = true;
 		}
 		if (this->true_absorb) {
-			Steal(target, caster, 0.00325 * size_difference, 0.0, 0.276);
+			AbsorbSteal(target, caster, 0.00325 * size_difference, 0.0, 0.276);
 			if (ShrinkToNothing(caster, target)) {
 				//Dispel(); <- maybe no need to dispel since it will allow to absorb again?
 			}
 		} else {
-			Steal(target, caster, 0.0025 * size_difference, 0.0, 0.2);
+			AbsorbSteal(target, caster, 0.0025 * size_difference, 0.0, 0.2);
 		}
 	}
 }

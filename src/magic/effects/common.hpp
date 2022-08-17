@@ -36,10 +36,7 @@ namespace Gts {
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
 		auto& runtime = Runtime::GetSingleton();
-		float sizeLimit = runtime.sizeLimit->value;
-		float Scale = get_visual_scale(actor);
-		if (Scale < sizeLimit)
-		{mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));}
+		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
@@ -67,12 +64,15 @@ namespace Gts {
 	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
 		float amount = CalcPower(from, scale_factor, bonus);
-		auto& runtime = Runtime::GetSingleton();
-		float sizeLimit = runtime.sizeLimit->value;
-		float Scale = get_visual_scale(to);
 		mod_target_scale(from, -amount);
-		if (Scale < sizeLimit)
-		{mod_target_scale(to, amount*effeciency);}
+		mod_target_scale(to, amount*effeciency);
+	}
+
+	inline void AbsorbSteal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
+		effeciency = clamp(0.0, 1.0, effeciency);
+		float amount = CalcPower(from, scale_factor, bonus);
+		mod_target_scale(from, -amount);
+		mod_target_scale(to, amount*effeciency/4); // < 4 times weaker size steal towards caster. Absorb exclusive.
 	}
 
 	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
