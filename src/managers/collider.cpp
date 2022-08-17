@@ -109,7 +109,9 @@ namespace Gts {
 	void ColliderManager::Update() {
 		for (auto actor: find_actors()) {
 			ActorData* actor_data = GetActorData(actor);
-			ScaleColliders(actor, actor_data);
+			if (actor_data) {
+				ScaleColliders(actor, actor_data);
+			}
 		}
 	}
 
