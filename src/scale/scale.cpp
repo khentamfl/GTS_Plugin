@@ -75,7 +75,7 @@ namespace Gts {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
-				return actor_data->natural_scale;
+				return actor_data->native_scale;
 			}
 		}
 		return -1.0;

@@ -38,7 +38,7 @@ namespace Gts {
 		result.insert(result.end(), low_actors.begin(), low_actors.end());
 
 		std::sort( result.begin(), result.end() );
-		arr.erase( std::unique( result.begin(), result.end() ), result.end() );
+		result.erase( std::unique( result.begin(), result.end() ), result.end() );
 		return result;
 	}
 
