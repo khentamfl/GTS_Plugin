@@ -78,8 +78,8 @@ namespace {
 							//queue.push_front(child.get());
 						}
 					}
-					// Do smth
-					ProcessNode(currentnode, scale_factor);
+					// Do smth//
+					ProcessNode(actor_data, currentnode, scale_factor);
 				}
 			}
 			catch (const std::overflow_error& e) {
