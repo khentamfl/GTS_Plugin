@@ -122,8 +122,10 @@ namespace Gts {
 		const float SHRINK_TO_NOTHING_SCALE = 0.10;
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
+		log::info("Trying to STN actor: {}", target->GetDisplayFullName());
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
+			log::info("Actor was absorbed {}", target->GetDisplayFullName());
 			return true; // NOLINT
 		}
 		return false;
