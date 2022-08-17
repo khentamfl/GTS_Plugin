@@ -106,7 +106,7 @@ namespace Gts {
 		}
 
 		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
-		Transfer(caster, target, power, power*alteration_level_bonus, transfer_effeciency)
+		Transfer(caster, target, power, power*alteration_level_bonus, transfer_effeciency);
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {

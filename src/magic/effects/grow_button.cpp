@@ -9,13 +9,23 @@ namespace Gts {
 	bool GrowButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 
+		return effect == runtime.GrowPcButton;
+	}
+
+	void GrowButton::OnStart() {
+		Actor* caster = GetCaster();
+		if (!caster) {
+			return;
+		}
+		auto& runtime = Runtime::GetSingleton();
+
 		BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
 		auto audio_manager = BSAudioManager::GetSingleton();
 		BSISoundDescriptor* sound_descriptor = runtime.growthSound;;
 		audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
 		growth_sound.Play();
-
-		return effect == runtime.GrowPcButton;
+		shake_camera(caster, this->power * 0.5, 1.0);
+		shake_controller(this->power * 0.5, this->power * 0.5, 1.0);
 	}
 
 	void GrowButton::OnUpdate() {
