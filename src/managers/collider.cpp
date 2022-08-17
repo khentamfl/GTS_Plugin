@@ -9,14 +9,17 @@ using namespace REL;
 using namespace Gts;
 
 namespace {
-	void RescaleCapsule(hkpCapsuleShape* capsule, CapsuleData* data, float visual_scale) {
-		hkVector4 vec_scale = hkVector4(visual_scale, visual_scale, visual_scale, 1.0);
-		capsule->vertexA = capsule->vertexA * vec_scale;
-		capsule->vertexB = capsule->vertexB * vec_scale;
-		capsule->radius *= visual_scale;
+	void RescaleCapsule(hkpCapsuleShape* capsule, CapsuleData* data, float scale_factor) {
+		float expected_radius = data->radius * scale_factor;
+		if(fabs(capsule->radius - expected_radius) > EPSILON) {
+			hkVector4 vec_scale = hkVector4(scale_factor, scale_factor, scale_factor, 1.0);
+			capsule->vertexA = data->start * vec_scale;
+			capsule->vertexB = data->end * vec_scale;
+			capsule->radius *= expected_radius;
+		}
 	}
 
-	void ProcessNode(ActorData* actor_data, NiAVObject* currentnode, float visual_scale) { // NOLINT
+	void ProcessNode(ActorData* actor_data, NiAVObject* currentnode, float scale_factor) { // NOLINT
 		const float EPSILON = 1e-3;
 		auto collision_object = currentnode->GetCollisionObject();
 		if (collision_object) {
@@ -34,9 +37,7 @@ namespace {
 								hkpCapsuleShape* capsule = const_cast<hkpCapsuleShape*>(orig_capsule);
 								CapsuleData* capsule_data = actor_data->GetCapsuleData(capsule);
 								if (capsule_data) { // NOLINT
-									if(fabs(capsule_data->prev_scale - visual_scale) > EPSILON) {
-										RescaleCapsule(capsule, capsule_data, visual_scale);
-									}
+									RescaleCapsule(capsule, capsule_data, scale_factor);
 								}
 								hkp_rigidbody->SetShape(capsule);
 							}
@@ -137,7 +138,6 @@ namespace Gts {
 			auto no_discard = this->capsule_data.at(key);
 		} catch (const std::out_of_range& oor) {
 			CapsuleData result;
-			result.prev_scale = 1.0;
 			result.start = capsule->vertexA;
 			result.end = capsule->vertexB;
 			result.radius = capsule->radius;

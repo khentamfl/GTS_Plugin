@@ -8,7 +8,6 @@ using namespace RE;
 
 namespace Gts {
 	struct CapsuleData {
-		float prev_scale;
 		hkVector4 start;
 		hkVector4 end;
 		float radius;
