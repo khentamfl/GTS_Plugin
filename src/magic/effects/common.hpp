@@ -87,9 +87,6 @@ namespace Gts {
 		const float PERK1_BONUS = 1.33;
 		const float PERK2_BONUS = 2.0;
 
-		auto& runtime = Runtime::GetSingleton();
-		float sizeLimit = runtime.sizeLimit->value;
-
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
 		
 		float target_scale = get_visual_scale(target);
@@ -111,7 +108,7 @@ namespace Gts {
 		if (caster->HasPerk(runtime.PerkPart2)) {
 			power *= PERK2_BONUS;
 		}
-		if (Runtime::GetSingleton().ProtectEssentials->value == 1.0 && target->IsEssential() || caster_scale > sizeLimit) {
+		if (Runtime::GetSingleton().ProtectEssentials->value == 1.0 && target->IsEssential()) {
 			return;
 		}
 
