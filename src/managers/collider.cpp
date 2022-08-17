@@ -146,9 +146,9 @@ namespace Gts {
 			result = &this->capsule_data.at(key);
 		} catch (const std::out_of_range& oor) {
 			CapsuleData new_data;
-			new_data->start = capsule->vertexA;
-			new_data->end = capsule->vertexB;
-			new_data->radius = capsule->radius;
+			new_data.start = capsule->vertexA;
+			new_data.end = capsule->vertexB;
+			new_data.radius = capsule->radius;
 			this->capsule_data.try_emplace(key, new_data);
 			try {
 				result = &this->capsule_data.at(key);
