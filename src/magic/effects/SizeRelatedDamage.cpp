@@ -21,7 +21,7 @@ namespace Gts {
 			return;
 		}
 		auto name = target->GetDisplayFullName();
-		if (actor->IsDead()) {
+		if (target->IsDead()) {
 			log::info("====== SizeRelatedDamage: ====== Actor found DOA: {}", name);
 		} else {
 			log::info("====== SizeRelatedDamage: ====== Actor found: {}", name);
