@@ -136,7 +136,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
-			target.Delete();
+			target->Delete();
 			return true; // NOLINT
 		}
 		return false;
