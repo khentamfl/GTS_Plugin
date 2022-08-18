@@ -3,6 +3,9 @@
 
 #include "util.hpp"
 
+// Get MSVC 2015 alignment
+#define _DISABLE_EXTENDED_ALIGNED_STORAGE
+
 using namespace SKSE;
 using namespace RE;
 using namespace REL;
