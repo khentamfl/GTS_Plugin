@@ -1,4 +1,4 @@
-#include "magic/effects/slow_grow.hpp"
+#include "magic/effects/smallmassivethreat.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
