@@ -48,8 +48,8 @@ namespace Gts {
 		this->growthSound = find_form<BGSSoundDescriptorForm>("GTS.esp|271EF6");
 		this->shrinkSound = find_form<BGSSoundDescriptorForm>("GTS.esp|364F6A");
 
-		this->smallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
-		this->smallMassiveThreatSpell = find_form<SpellItem>("GTS.esp|1A2566");
+		this->MassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetMassiveThreat());
+		this->MassiveThreatSpell = find_form<SpellItem>("GTS.esp|1A2566");
 
 		this->explosiveGrowth1 = find_form<EffectSetting>("GTS.esp|007928"); // < Growth Spurt shouts
 

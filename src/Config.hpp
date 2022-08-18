@@ -160,16 +160,16 @@ namespace Gts {
 
 	class SpellEffects {
 		public:
-			[[nodiscard]] inline std::string GetSmallMassiveThreat() const noexcept {
-				return _smallMassiveThreat;
+			[[nodiscard]] inline std::string GetMassiveThreat() const noexcept {
+				return _MassiveThreat;
 			}
 
 		private:
 			articuno_serde(ar) {
-				ar <=> articuno::kv(_smallMassiveThreat, "smallMassiveThreat");
+				ar <=> articuno::kv(_MassiveThreat, "MassiveThreat");
 			}
 
-			std::string _smallMassiveThreat;
+			std::string _MassiveThreat;
 
 			friend class articuno::access;
 	};

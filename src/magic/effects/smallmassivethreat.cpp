@@ -5,11 +5,11 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
-	std::string SmallMassiveThreat::GetName() {
-		return "SmallMassiveThreat";
+	std::string MassiveThreat::GetName() {
+		return "MassiveThreat";
 	}
 
-	void SmallMassiveThreat::OnUpdate() {
+	void MassiveThreat::OnUpdate() {
 		const float BASE_POWER = 0.00035;
 		const float DUAL_CAST_BONUS = 2.0;
 		auto caster = GetCaster();

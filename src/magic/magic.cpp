@@ -159,8 +159,8 @@ namespace Gts {
 				this->active_effects.try_emplace(effect, new SlowGrow(effect));
 			}
 
-			if (SmallMassiveThreat::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SmallMassiveThreat(effect));
+			if (MassiveThreat::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new MassiveThreat(effect));
 			}
 
 			if (Growth::StartEffect(base_spell)) {
