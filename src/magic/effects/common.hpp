@@ -91,7 +91,6 @@ namespace Gts {
 		mod_target_scale(to, receive);
 	}
 
-
 	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt) {
 		const float BASE_POWER = 0.0005;
 		const float DUAL_CAST_BONUS = 2.0;
@@ -136,7 +135,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
-			target->SetDelete(true);
+			//target->SetDelete(true);
 			return true; // NOLINT
 		}
 		return false;
