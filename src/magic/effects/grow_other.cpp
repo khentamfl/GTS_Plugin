@@ -15,11 +15,11 @@ namespace Gts {
 	}
 
 	void GrowOther::OnUpdate() {
-		const float BASE_POWER = 0.00180;
+		const float BASE_POWER = 0.00090;
+		const float BONUS = 0.00090;
 		const float SMT_BONUS = 2.0;
-		const float CRUSH_BONUS = 0.00180;
-		const float GROWTH_AMOUNT_BONUS = 1.4;
 		const float DUAL_CAST_BONUS = 2.0;
+		const float CRUSH_GROWTH_CHECK = 1.4;
 
 		auto caster = GetCaster();
 		if (!caster) {
@@ -35,8 +35,9 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 
 		float power = BASE_POWER;
-		if (runtime.CrushGrowthRate->value >= GROWTH_AMOUNT_BONUS) {
-			power += CRUSH_BONUS;
+		
+		if (runtime.CrushGrowthRate->value >= CRUSH_GROWTH_CHECK) {
+			power += BONUS;
 		}
 
 		if (IsDualCasting()) {
@@ -45,7 +46,9 @@ namespace Gts {
 		if (caster->HasMagicEffect(runtime.smallMassiveThreat)) {
 			power *= SMT_BONUS;
 		}
+		float Gain = power + (caster_scale * 0.50 + 0.50 * target_scale);
+		float Lose = power + * (target_scale * 0.25);
 
-		Transfer(caster, target, power*0.5, power + 0.5);
+		Grow_Ally(caster, target, Gain, Lose);
 	}
 }

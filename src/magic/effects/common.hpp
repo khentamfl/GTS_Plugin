@@ -82,6 +82,16 @@ namespace Gts {
 		Steal(from, to, scale_factor, bonus, 1.0); // 100% efficent for friendly steal
 	}
 
+	inline void Grow_Ally(Actor* from, Actor* to, float receiver, float caster) {
+		effeciency = clamp(0.0, 1.0, effeciency);
+		float receive = CalcPower(from, receiver, 0);
+		float lose = CalcPower(from, receiver, 0);
+		float CasterScale = get_visual_scale(from);
+		if (CasterScale > 1.0) // We don't want to scale the caster below this limit!
+		{mod_target_scale(from, -lose);} 
+		mod_target_scale(to, receive*effeciency);
+	}
+
 
 	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt) {
 		const float BASE_POWER = 0.0005;
