@@ -11,7 +11,7 @@ namespace Gts {
 
     bool MassiveThreat::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.MassiveThreat;
+		return effect == runtime.SmallMassiveThreat;
 		
 	}
 

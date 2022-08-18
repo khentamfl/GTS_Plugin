@@ -34,7 +34,7 @@ namespace Gts {
 			BGSSoundDescriptorForm* growthSound = nullptr;
 			BGSSoundDescriptorForm* shrinkSound = nullptr;
 
-			EffectSetting* MassiveThreat = nullptr;
+			EffectSetting* SmallMassiveThreat = nullptr;
 
 			EffectSetting* explosiveGrowth1 = nullptr;
 
@@ -55,7 +55,7 @@ namespace Gts {
 			EffectSetting* SwordEnchant = nullptr;
 
 			EffectSetting* ShrinkToNothing = nullptr;
-			SpellItem* MassiveThreatSpell = nullptr;
+			SpellItem* SmallMassiveThreatSpell = nullptr;
 			///End
 
 			///Ally/Grow Spells
