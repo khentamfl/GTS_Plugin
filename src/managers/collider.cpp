@@ -93,7 +93,7 @@ namespace RE {
 		const auto a_idx = 0x00;
 		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
 		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkpSphereRepShape::~hkpSphereRepShape)> func(result);
+		REL::Relocation<void(hkpSphereRepShape*)> func(result);
 		func(this);
 	}
 
@@ -102,7 +102,7 @@ namespace RE {
 		const auto a_idx = 0x00;
 		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
 		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkpConvexShape::~hkpConvexShape)> func(result);
+		REL::Relocation<void(hkpConvexShape*)> func(result);
 		func(this);
 	}
 
@@ -157,7 +157,7 @@ namespace RE {
 		const auto a_idx = 0x00;
 		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
 		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkpCapsuleShape::~hkpCapsuleShape)> func(result);
+		REL::Relocation<void(hkpCapsuleShape*)> func(result);
 		return func(this);
 	}
 
