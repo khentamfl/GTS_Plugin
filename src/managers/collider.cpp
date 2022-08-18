@@ -22,7 +22,7 @@ namespace {
 		}
 	}
 
-	void ProcessNode(ActorData* actor_data, NiAVObject* currentnode, float& scale_factor, hkVector4& vec_scale) { // NOLINT
+	void AddNode(ActorData* actor_data, NiAVObject* currentnode) { // NOLINT
 		auto collision_object = currentnode->GetCollisionObject();
 		if (collision_object) {
 			auto bhk_rigid_body = collision_object->GetRigidBody();
@@ -37,11 +37,7 @@ namespace {
 								const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);
 								// Here be dragons
 								hkpCapsuleShape* capsule = const_cast<hkpCapsuleShape*>(orig_capsule);
-								CapsuleData* capsule_data = actor_data->GetCapsuleData(capsule);
-								if (capsule_data) { // NOLINT
-									RescaleCapsule(capsule, capsule_data, scale_factor, vec_scale);
-								}
-								hkp_rigidbody->SetShape(capsule);
+								actor_data->GetCapsuleData(capsule); // Will insert the data
 							}
 						}
 					}
@@ -50,27 +46,9 @@ namespace {
 		}
 	}
 
-	void ScaleColliders(Actor* actor, ActorData* actor_data) {
-		const float EPSILON = 1e-3;
-		if (!actor->Is3DLoaded()) {
-			return;
-		}
-		auto model = actor->Get3D();
-		if (!model) {
-			return;
-		}
-		float visual_scale = get_visual_scale(actor);
-		float natural_scale = get_natural_scale(actor);
-		float scale_factor = visual_scale/natural_scale;
-
-		if (fabs(actor_data->last_scale - scale_factor) <= EPSILON) {
-			return;
-		}
-		log::info("Updating: {}", actor->GetDisplayFullName());
-		hkVector4 vec_scale = hkVector4(scale_factor, scale_factor, scale_factor, 1.0);
-		// Game lookup failed we try and find it manually
+	void SearchColliders(NiAVObject* root, ActorData* actor_data) {
 		std::deque<NiAVObject*> queue;
-		queue.push_back(model);
+		queue.push_back(root);
 
 
 		while (!queue.empty()) {
@@ -88,7 +66,7 @@ namespace {
 						}
 					}
 					// Do smth//
-					ProcessNode(actor_data, currentnode, scale_factor, vec_scale);
+					AddNode(actor_data, currentnode);
 				}
 			}
 			catch (const std::overflow_error& e) {
@@ -102,6 +80,39 @@ namespace {
 			} // this executes if f() throws std::logic_error (base class rule)
 			catch (...) {
 				log::warn("Exception Other");
+			}
+		}
+	}
+
+	void ScaleColliders(Actor* actor, ActorData* actor_data) {
+		const float EPSILON = 1e-3;
+		if (!actor->Is3DLoaded()) {
+			return;
+		}
+		float visual_scale = get_visual_scale(actor);
+		float natural_scale = get_natural_scale(actor);
+		float scale_factor = visual_scale/natural_scale;
+
+		if (fabs(actor_data->last_scale - scale_factor) <= EPSILON) {
+			return;
+		}
+		log::info("Updating: {}", actor->GetDisplayFullName());
+		actor_data->last_scale = scale_factor;
+
+		bool search_nodes = !actor_data->HasCapsuleData();
+		if (search_nodes) {
+			for (auto person: {true, false} ) {
+				auto model = actor->Get3D(person);
+				if (model) {
+					SearchColliders(model, actor_data);
+				}
+			}
+		}
+
+		hkVector4 vec_scale = hkVector4(scale_factor, scale_factor, scale_factor, 1.0);
+		for (auto &[capsule, capsule_data]: actor_data->GetCapsulesData()) {
+			if (capsule) {
+				RescaleCapsule(capsule, &capsule_data, scale_factor, vec_scale);
 			}
 		}
 	}

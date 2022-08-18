@@ -17,6 +17,13 @@ namespace Gts {
 		public:
 			CapsuleData* GetCapsuleData(hkpCapsuleShape* capsule);
 
+			inline bool HasCapsuleData() {
+				return !this->capsule_data.empty();
+			}
+
+			inline std::unordered_map<hkpCapsuleShape*, CapsuleData>& GetCapsulesData() {
+				return this->capsule_data;
+			}
 
 			float last_scale = -1.0;
 		private:
