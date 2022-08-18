@@ -9,11 +9,15 @@ namespace Gts {
 		return "SlowGrow";
 	}
 
+	void SlowGrow::OnStart() {
+		if (IsDualCasting())
+		{WasDualCasted = true;}
+	}
+
 	bool SlowGrow::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.SlowGrowth;
-		if (IsDualCasting())
-		{WasDualCasted = true;}
+		
 	}
 
 	void SlowGrow::OnUpdate() {

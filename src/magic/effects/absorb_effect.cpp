@@ -22,7 +22,7 @@ namespace Gts {
 	}
 
 	void Absorb::OnUpdate() {
-		const float SMT_BONUS = 4.0;
+		const float SMT_BONUS = 3.0;
 		const float TRUE_ABSORB_UPGRADE = 4.0;
 
 		auto caster = GetCaster();
@@ -39,7 +39,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 		float size_difference = caster_scale/target_scale;
 		if (caster->HasMagicEffect(runtime.smallMassiveThreat)) {
-			size_difference *= SMT_BONUS;
+			size_difference += SMT_BONUS;
 		} // Insta-absorb if SMT is active
 
 		if (size_difference >= TRUE_ABSORB_UPGRADE && !this->true_absorb) {
