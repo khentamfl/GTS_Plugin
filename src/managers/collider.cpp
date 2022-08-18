@@ -14,25 +14,6 @@ using namespace Gts;
 namespace RE {
 	// DRAGON SLAYING
 
-	const hkClass* hkReferencedObject::GetClassType() const // 01 - { return 0; }
-	{
-		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkReferencedObject[0]};
-		const auto a_idx = 0x01;
-		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
-		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkReferencedObject::GetClassType)> func(result);
-		return func(this);
-	}
-	void hkReferencedObject::CalcContentStatistics(hkStatisticsCollector* a_collector, const hkClass* a_class) const // 02
-	{
-		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkReferencedObject[0]};
-		const auto a_idx = 0x02;
-		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
-		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkReferencedObject::CalcContentStatistics)> func(result);
-		func(this, a_collector, a_class);
-	}
-
 	hkpShape::~hkpShape()  // 00
 	{
 		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpShape[0]};
