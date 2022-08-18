@@ -36,7 +36,7 @@ namespace RE {
 		const auto a_idx = 0x00;
 		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
 		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkpShape::~hkpShape)> func(result);
+		REL::Relocation<void(hkpShape*)> func(result);
 		func(this);
 	}
 
