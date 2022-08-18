@@ -9,10 +9,6 @@ namespace Gts {
 		return "SlowGrow";
 	}
 
-	void SlowGrow::OnStart() {
-		if (IsDualCasting())
-		{WasDualCasted = true;}
-	}
 
 	bool SlowGrow::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
@@ -28,7 +24,7 @@ namespace Gts {
 			return;
 		}
 		float power = BASE_POWER;
-		if (WasDualCasted) {
+		if (DualCasted()) {
 			power *= DUAL_CAST_BONUS;
 			log::info("Dual Cast received, power: {}", power);
 		}

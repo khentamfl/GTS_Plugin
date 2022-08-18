@@ -75,7 +75,7 @@ namespace Gts {
 		effeciency = clamp(0.0, 1.0, effeciency);
 		float amount = CalcPower(from, scale_factor, bonus);
 		mod_target_scale(from, -amount);
-		mod_target_scale(to, amount*effeciency/4); // < 4 times weaker size steal towards caster. Absorb exclusive.
+		mod_target_scale(to, amount*effeciency/10); // < 4 times weaker size steal towards caster. Absorb exclusive.
 	}
 
 	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
@@ -136,6 +136,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
+			target.Delete();
 			return true; // NOLINT
 		}
 		return false;

@@ -55,6 +55,7 @@ namespace Gts {
 			EffectSetting* SwordEnchant = nullptr;
 
 			EffectSetting* ShrinkToNothing = nullptr;
+			SpellItem* smallMassiveThreatSpell = nullptr;
 			///End
 
 			///Ally/Grow Spells
