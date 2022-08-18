@@ -13,7 +13,6 @@ namespace RE {
 
 	const hkClass* hkReferencedObject::GetClassType() const // 01 - { return 0; }
 	{
-
 	}
 	void hkReferencedObject::CalcContentStatistics(hkStatisticsCollector* a_collector, const hkClass* a_class) const // 02
 	{
@@ -90,7 +89,12 @@ namespace RE {
 	}
 	bool hkpCapsuleShape::CastRayImpl(const hkpShapeRayCastInput& a_input, hkpShapeRayCastOutput& a_output) const // 08
 	{
-
+		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
+		const auto a_idx = 0x08;
+		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
+		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
+		REL::Relocation<decltype(&hkpCapsuleShape::CastRayImpl)> func(result);
+		return func(this, a_input, a_output);
 	}
 	std::int32_t hkpCapsuleShape::GetNumCollisionSpheresImpl() // 0B - { return 8; }
 	{
