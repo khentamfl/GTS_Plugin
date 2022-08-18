@@ -8,7 +8,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class MassiveThreat : public Magic {
+	class SmallMassiveThreat : public Magic {
 		public:
 			using Magic::Magic;
 

@@ -18,7 +18,7 @@
 #include "magic/effects/sword_of_size.hpp"
 #include "magic/effects/vore_growth.hpp"
 #include "magic/effects/SizeRelatedDamage.hpp"
-#include "magic/effects/smallmassivethreat.hpp"
+#include "magic/effects/SmallMassiveThreat.hpp"
 #include "data/runtime.hpp"
 
 namespace Gts {
@@ -160,8 +160,8 @@ namespace Gts {
 				this->active_effects.try_emplace(effect, new SlowGrow(effect));
 			}
 
-			if (MassiveThreat::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new MassiveThreat(effect));
+			if (SmallMassiveThreat::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new SmallMassiveThreat(effect));
 			}
 
 			if (Growth::StartEffect(base_spell)) {

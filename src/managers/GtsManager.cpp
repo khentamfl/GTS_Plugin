@@ -149,7 +149,7 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		auto small_massive_threat = Runtime::GetSingleton().MassiveThreat;
+		auto small_massive_threat = Runtime::GetSingleton().SmallMassiveThreat;
 		if (!small_massive_threat) {
 			return;
 		}

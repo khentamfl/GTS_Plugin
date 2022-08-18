@@ -49,7 +49,7 @@ namespace Gts {
 			return;
 		}
 
-		bool has_smt = caster->HasMagicEffect(Runtime::GetSingleton().MassiveThreat);
+		bool has_smt = caster->HasMagicEffect(Runtime::GetSingleton().SmallMassiveThreat);
 		TransferSize(caster, target, IsDualCasting(), this->power, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();

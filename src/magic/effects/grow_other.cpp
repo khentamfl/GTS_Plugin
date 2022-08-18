@@ -43,7 +43,7 @@ namespace Gts {
 		if (IsDualCasting()) {
 			power *= DUAL_CAST_BONUS;
 		}
-		if (caster->HasMagicEffect(runtime.MassiveThreat)) {
+		if (caster->HasMagicEffect(runtime.SmallMassiveThreat)) {
 			power *= SMT_BONUS;
 		}
 		float Gain = power * ((caster_scale * 0.50 + 0.50) * target_scale);

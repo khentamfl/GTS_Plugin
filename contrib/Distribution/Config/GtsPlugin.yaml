@@ -36,7 +36,7 @@ sound:
 
 spellEffects:
   # IDs for spell effects
-  MassiveThreat: "GTS.esp|1A2568"
+  SmallMassiveThreat: "GTS.esp|1A2568"
 
 explosions:
   # IDs for explosion effects
