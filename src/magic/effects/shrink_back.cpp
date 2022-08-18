@@ -19,6 +19,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
+		float Power = 0.0025;
 		auto& runtime = Runtime::GetSingleton();
 
 		//BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();
@@ -26,8 +27,10 @@ namespace Gts {
 		//BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;
 		//audio_manager->BuildSoundDataFromDescriptor(shrink_sound, sound_descriptor);
 		//shrink_sound.Play();
+		if (DualCasted())
+		{Power *= 2.0;}
 
-		if (!Revert(caster, 0.0025, 0.0010)) {
+		if (!Revert(caster, Power, Power/2.5)) {
 			// Returns false when shrink back is complete
 			Dispel();
 		}
