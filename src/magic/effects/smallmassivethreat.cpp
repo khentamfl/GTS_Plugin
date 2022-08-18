@@ -9,6 +9,12 @@ namespace Gts {
 		return "MassiveThreat";
 	}
 
+    bool MassiveThreat::StartEffect(EffectSetting* effect) { // NOLINT
+		auto& runtime = Runtime::GetSingleton();
+		return effect == runtime.MassiveThreat;
+		
+	}
+
 	void MassiveThreat::OnUpdate() {
 		const float BASE_POWER = 0.00035;
 		const float DUAL_CAST_BONUS = 2.0;
