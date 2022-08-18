@@ -8,6 +8,116 @@ using namespace RE;
 using namespace REL;
 using namespace Gts;
 
+namespace RE {
+	// DRAGON SLAYING
+
+	const hkClass* hkReferencedObject::GetClassType() const // 01 - { return 0; }
+	{
+
+	}
+	void hkReferencedObject::CalcContentStatistics(hkStatisticsCollector* a_collector, const hkClass* a_class) const // 02
+	{
+
+	}
+
+	hkpShape::~hkpShape()  // 00
+	{
+	}
+
+	// add
+	float hkpShape::GetMaximumProjection(const hkVector4& a_direction) const // 03
+	{
+
+	}
+	const hkpShapeContainer* hkpShape::GetContainer() const // 04 - { return 0; }
+	{
+	}
+	bool hkpShape::IsConvex() const // 05 - { return false; }
+	{
+	}
+	std::int32_t hkpShape::CalcSizeForSpu(const CalcSizeForSpuInput& a_input, std::int32_t a_spuBufferSizeLeft) const// 06 - { return -1; }
+	{
+
+	}
+	hkVector4Comparison hkpShape::CastRayBundleImpl(const hkpShapeRayBundleCastInput& a_input, hkpShapeRayBundleCastOutput& a_output, const hkVector4Comparison& a_mask) const// 0A
+	{
+	}
+
+	hkpSphereRepShape::~hkpSphereRepShape()  // 00
+	{
+
+	}
+
+	hkpConvexShape::~hkpConvexShape() {
+
+	}
+
+	float hkpConvexShape::GetMaximumProjection(const hkVector4& a_direction) const { // 03
+
+	}
+	bool hkpConvexShape::IsConvex() const { // 05 - { return true; }
+
+	}
+	void hkpConvexShape::CastRayWithCollectorImpl(const hkpShapeRayCastInput& a_input, const hkpCdBody& a_cdBody, hkpRayHitCollector& a_collector) const // 09
+	{
+
+	}
+	std::uint32_t hkpConvexShape::Unk_10(void) // 10 - { return 2; }
+	{
+	}
+	void hkpConvexShape::Unk_11(void) // 11
+	{
+	}
+
+	// VTABLE_hkpCapsuleShape
+	hkpCapsuleShape::~hkpCapsuleShape()  // 00
+	{
+
+	}
+
+	// override (hkpConvexShape)
+	void hkpCapsuleShape::CalcContentStatistics(hkStatisticsCollector* a_collector, const hkClass* a_class) const // 02
+	{
+
+	}
+	std::int32_t hkpCapsuleShape::CalcSizeForSpu(const CalcSizeForSpuInput& a_input, std::int32_t a_spuBufferSizeLeft) const // 06 - { return 56; }
+	{
+
+	}
+	void hkpCapsuleShape::GetAabbImpl(const hkTransform& a_localToWorld, float a_tolerance, hkAabb& a_out) const // 07
+	{
+
+	}
+	bool hkpCapsuleShape::CastRayImpl(const hkpShapeRayCastInput& a_input, hkpShapeRayCastOutput& a_output) const // 08
+	{
+
+	}
+	std::int32_t hkpCapsuleShape::GetNumCollisionSpheresImpl() // 0B - { return 8; }
+	{
+
+	}
+	const hkpSphere* hkpCapsuleShape::GetCollisionSpheresImpl(hkSphere* a_sphereBuffer)// 0C
+	{
+
+	}
+	void hkpCapsuleShape::GetCentreImpl(hkVector4& a_centreOut) // 0D
+	{
+
+	}
+	void hkpCapsuleShape::Unk_0E(void) // 0E
+	{
+
+	}
+	void hkpCapsuleShape::Unk_0F(void) // 0F
+	{
+
+	}
+	void hkpCapsuleShape::Unk_11(void) // 11
+	{
+
+	}
+}
+
 namespace {
 	void RescaleCapsule(hkpCapsuleShape* capsule, CapsuleData* data, float& scale_factor, hkVector4& vec_scale) {
 		const float EPSILON = 1e-3;
