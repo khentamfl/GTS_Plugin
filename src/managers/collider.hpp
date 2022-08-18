@@ -17,6 +17,8 @@ namespace Gts {
 		public:
 			CapsuleData* GetCapsuleData(hkpCapsuleShape* capsule);
 
+
+			float last_scale = -1.0;
 		private:
 			mutable std::mutex _lock;
 			std::unordered_map<hkpCapsuleShape*, CapsuleData> capsule_data;

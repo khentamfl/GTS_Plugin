@@ -16,7 +16,9 @@ namespace {
 		if(fabs(capsule->radius - expected_radius) > EPSILON) {
 			capsule->vertexA = data->start * vec_scale;
 			capsule->vertexB = data->end * vec_scale;
+			log::info("Old Radius: {}", capsule->radius);
 			capsule->radius = expected_radius;
+			log::info("New Radius: {}", capsule->radius);
 		}
 	}
 
@@ -49,6 +51,7 @@ namespace {
 	}
 
 	void ScaleColliders(Actor* actor, ActorData* actor_data) {
+		const float EPSILON = 1e-3;
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
@@ -59,6 +62,11 @@ namespace {
 		float visual_scale = get_visual_scale(actor);
 		float natural_scale = get_natural_scale(actor);
 		float scale_factor = visual_scale/natural_scale;
+
+		if (fabs(actor_data->last_scale - scale_factor) <= EPSILON) {
+			return;
+		}
+		log::info("Updating: {}", actor->GetDisplayFullName());
 		hkVector4 vec_scale = hkVector4(scale_factor, scale_factor, scale_factor, 1.0);
 		// Game lookup failed we try and find it manually
 		std::deque<NiAVObject*> queue;
