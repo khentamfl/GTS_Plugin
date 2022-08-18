@@ -38,7 +38,7 @@ namespace Gts {
 		float caster_scale = get_visual_scale(caster);
 		float target_scale = get_visual_scale(target);
 		float size_difference = caster_scale/target_scale;
-		if (caster->HasMagicEffect(runtime.MassiveThreat)) {
+		if (caster->HasMagicEffect(runtime.SmallMassiveThreat)) {
 			size_difference += SMT_BONUS;
 		} // Insta-absorb if SMT is active
 
