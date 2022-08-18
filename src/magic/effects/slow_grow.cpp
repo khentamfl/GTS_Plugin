@@ -15,7 +15,7 @@ namespace Gts {
 	}
 
 	void SlowGrow::OnUpdate() {
-		const float BASE_POWER = 0.00100;
+		const float BASE_POWER = 0.00035;
 		const float DUAL_CAST_BONUS = 2.0;
 		auto caster = GetCaster();
 		if (!caster) {
@@ -24,6 +24,7 @@ namespace Gts {
 		float power = BASE_POWER;
 		if (DualCasted()) {
 			power *= DUAL_CAST_BONUS;
+			log::info("Dual Cast received, power: {}", power);
 		}
 		Grow(caster, 0.0, power);
 	}
