@@ -91,6 +91,15 @@ namespace Gts {
 		mod_target_scale(to, receive);
 	}
 
+	inline void ConstructSound(String* Name, String* Sound)
+	{
+		auto audio_manager = BSAudioManager::GetSingleton();
+		BSSoundHandle Name = BSSoundHandle::BSSoundHandle();
+		BSISoundDescriptor* sound_descriptor = runtime.Sound;
+		audio_manager->BuildSoundDataFromDescriptor(Name, sound_descriptor);
+		Name.Play();
+	}
+
 
 	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt) {
 		const float BASE_POWER = 0.0005;

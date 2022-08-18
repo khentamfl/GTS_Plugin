@@ -23,11 +23,7 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 
-		//BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = runtime.growthSound;
-		//audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
-		//growth_sound.Play();
+		//
 
 	}
 
@@ -41,14 +37,14 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		const float currentHeight = target->GetCachedHeight();
+		const float currentHeight = target->AIProcess->GetCachedHeight();
 		float currentScale = get_visual_scale(target);
 		float AdjustedHeight = currentHeight * currentScale;
 
 
 		float target_scale = get_visual_scale(target);
 		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
-		target->SetCachedHeight(AdjustedHeight);
+		target->AIProcess->SetCachedHeight(AdjustedHeight);
 		DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * TimeScale());
 		Grow(target, 0.0025* magicka, 0.0);
 		shake_camera(caster, 0.25, 1.0);
