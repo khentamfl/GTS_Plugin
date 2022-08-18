@@ -158,7 +158,7 @@ namespace RE {
 		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
 		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
 		REL::Relocation<void(hkpCapsuleShape*)> func(result);
-		return func(this);
+		func(this);
 	}
 
 	// override (hkpConvexShape)
