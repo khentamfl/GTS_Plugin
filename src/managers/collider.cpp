@@ -16,7 +16,7 @@ namespace {
 		if(fabs(capsule->radius - expected_radius) > EPSILON) {
 			capsule->vertexA = data->start * vec_scale;
 			capsule->vertexB = data->end * vec_scale;
-			capsule->radius *= expected_radius;
+			capsule->radius = expected_radius;
 		}
 	}
 
