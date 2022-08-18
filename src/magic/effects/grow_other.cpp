@@ -46,8 +46,8 @@ namespace Gts {
 		if (caster->HasMagicEffect(runtime.smallMassiveThreat)) {
 			power *= SMT_BONUS;
 		}
-		float Gain = power + (caster_scale * 0.50 + 0.50 * target_scale);
-		float Lose = power + * (target_scale * 0.25);
+		float Gain = power * ((caster_scale * 0.50 + 0.50) * target_scale);
+		float Lose = power * (target_scale * 0.25);
 
 		Grow_Ally(caster, target, Gain, Lose);
 	}
