@@ -19,6 +19,9 @@ namespace {
 			log::info("Old Radius: {}", capsule->radius);
 			capsule->radius = expected_radius;
 			log::info("New Radius: {}", capsule->radius);
+
+			// Dragons
+			hkpCapsuleShape* ctd_me_capsule = new hkpCapsuleShape();
 		}
 	}
 
