@@ -249,9 +249,6 @@ namespace {
 			log::info("Old Radius: {}", capsule->radius);
 			capsule->radius = expected_radius;
 			log::info("New Radius: {}", capsule->radius);
-
-			// Dragons
-			hkpCapsuleShape* ctd_me_capsule = new hkpCapsuleShape();
 		}
 	}
 
@@ -268,9 +265,7 @@ namespace {
 						if (shape) {
 							if (shape->type == hkpShapeType::kCapsule) {
 								const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);
-								// Here be dragons
-								hkpCapsuleShape* capsule = const_cast<hkpCapsuleShape*>(orig_capsule);
-								actor_data->GetCapsuleData(capsule); // Will insert the data
+								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule);
 							}
 						}
 					}
@@ -343,9 +338,10 @@ namespace {
 		}
 
 		hkVector4 vec_scale = hkVector4(scale_factor, scale_factor, scale_factor, 1.0);
-		for (auto &[capsule, capsule_data]: actor_data->GetCapsulesData()) {
+		for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
+			auto& capsule = capsule_data.capsule;
 			if (capsule) {
-				RescaleCapsule(capsule, &capsule_data, scale_factor, vec_scale);
+				RescaleCapsule(capsule.get(), &capsule_data, scale_factor, vec_scale);
 			}
 		}
 	}
@@ -387,27 +383,20 @@ namespace Gts {
 		return result;
 	}
 
-	CapsuleData* ActorData::GetCapsuleData(hkpCapsuleShape* capsule) { // NOLINT
+	void ActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule) { // NOLINT
 		std::unique_lock lock(this->_lock);
-		if (!capsule) {
-			return nullptr;
+		if (!orig_capsule) {
+			return;
 		}
-		auto key = capsule;
-		CapsuleData* result = nullptr;
+		auto key = orig_capsule;
 		try {
-			result = &this->capsule_data.at(key);
+			auto& result = this->capsule_data.at(key);
 		} catch (const std::out_of_range& oor) {
-			CapsuleData new_data;
-			new_data.start = capsule->vertexA;
-			new_data.end = capsule->vertexB;
-			new_data.radius = capsule->radius;
-			this->capsule_data.try_emplace(key, new_data);
-			try {
-				result = &this->capsule_data.at(key);
-			} catch (const std::out_of_range& oor) {
-				result = nullptr;
-			}
+			CapsuleData new_data(orig_capsule);
+			auto new_capsule = new_data.capsule.get();
+			key = new_capsule;
+			rigid_body->SetShape(new_capsule);
+			this->capsule_data.try_emplace(key, std::move(new_data));
 		}
-		return result;
 	}
 }

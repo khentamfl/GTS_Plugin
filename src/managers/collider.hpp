@@ -8,27 +8,53 @@ using namespace RE;
 
 namespace Gts {
 	struct CapsuleData {
+		unique_ptr<hkpCapsuleShape> capsule;
 		hkVector4 start;
 		hkVector4 end;
 		float radius;
+		CapsuleData(const hkpCapsuleShape* orig_capsule) {
+			this->capsule = make_unique<hkpCapsuleShape>();
+			this->capsule->radius = orig_capsule->radius;
+			this->capsule->vertexA = orig_capsule->vertexA;
+			this->capsule->vertexB = orig_capsule->vertexB;
+			this->capsule->userData = orig_capsule->userData;
+			this->capsule->type = orig_capsule->type;
+
+			this->start = orig_capsule->vertexA;
+			this->end = orig_capsule->vertexB;
+			this->radius = orig_capsule->radius;
+		}
+		CapsuleData(CapsuleData&& old) : capsule(std::move(old.capsule)), start(std::move(old.start)), end(std::move(old.end)), radius(std::move(old.radius)) {
+		};
 	};
 
 	class ActorData {
 		public:
-			CapsuleData* GetCapsuleData(hkpCapsuleShape* capsule);
+			inline CapsuleData* GetCapsuleData(hkpCapsuleShape* capsule) {
+				CapsuleData* result = nullptr;
+				auto key = capsule;
+				try {
+					auto result = &this->capsule_data.at(key);
+				} catch (const std::out_of_range& oor) {
+					result = nullptr;
+				}
+				return result;
+			}
+
+			void ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule);
 
 			inline bool HasCapsuleData() {
 				return !this->capsule_data.empty();
 			}
 
-			inline std::unordered_map<hkpCapsuleShape*, CapsuleData>& GetCapsulesData() {
+			inline std::unordered_map<const hkpCapsuleShape*, CapsuleData>& GetCapsulesData() {
 				return this->capsule_data;
 			}
 
 			float last_scale = -1.0;
 		private:
 			mutable std::mutex _lock;
-			std::unordered_map<hkpCapsuleShape*, CapsuleData> capsule_data;
+			std::unordered_map<const hkpCapsuleShape*, CapsuleData> capsule_data;
 	};
 
 	class ColliderManager {
