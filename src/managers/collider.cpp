@@ -3,8 +3,6 @@
 
 #include "util.hpp"
 
-// Get MSVC 2015 alignment
-#define _DISABLE_EXTENDED_ALIGNED_STORAGE
 
 using namespace SKSE;
 using namespace RE;
@@ -117,21 +115,22 @@ namespace RE {
 	}
 	std::uint32_t hkpConvexShape::Unk_10(void) // 10 - { return 2; }
 	{
-		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpConvexShape[0]};
-		const auto a_idx = 0x10;
-		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
-		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkpConvexShape::Unk_10)> func(result);
-		return func(this);
+		// REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpConvexShape[0]};
+		// const auto a_idx = 0x10;
+		// const auto addr = vtable.address() + (sizeof(void *) * a_idx);
+		// const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
+		// REL::Relocation<decltype(&hkpConvexShape::Unk_10)> func(result);
+		// return func(this);
+		return 0;
 	}
 	void hkpConvexShape::Unk_11(void) // 11
 	{
-		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpConvexShape[0]};
-		const auto a_idx = 0x11;
-		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
-		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkpConvexShape::Unk_11)> func(result);
-		func(this);
+		// REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpConvexShape[0]};
+		// const auto a_idx = 0x11;
+		// const auto addr = vtable.address() + (sizeof(void *) * a_idx);
+		// const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
+		// REL::Relocation<decltype(&hkpConvexShape::Unk_11)> func(result);
+		// func(this);
 	}
 
 	// VTABLE_hkpCapsuleShape
@@ -211,30 +210,30 @@ namespace RE {
 	}
 	void hkpCapsuleShape::Unk_0E(void) // 0E
 	{
-		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
-		const auto a_idx = 0x0E;
-		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
-		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkpCapsuleShape::Unk_0E)> func(result);
-		func(this);
+		// REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
+		// const auto a_idx = 0x0E;
+		// const auto addr = vtable.address() + (sizeof(void *) * a_idx);
+		// const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
+		// REL::Relocation<decltype(&hkpCapsuleShape::Unk_0E)> func(result);
+		// func(this);
 	}
 	void hkpCapsuleShape::Unk_0F(void) // 0F
 	{
-		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
-		const auto a_idx = 0x0F;
-		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
-		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkpCapsuleShape::Unk_0F)> func(result);
-		func(this);
+		// REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
+		// const auto a_idx = 0x0F;
+		// const auto addr = vtable.address() + (sizeof(void *) * a_idx);
+		// const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
+		// REL::Relocation<decltype(&hkpCapsuleShape::Unk_0F)> func(result);
+		// func(this);
 	}
 	void hkpCapsuleShape::Unk_11(void) // 11
 	{
-		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
-		const auto a_idx = 0x11;
-		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
-		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<decltype(&hkpCapsuleShape::Unk_11)> func(result);
-		func(this);
+		// REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
+		// const auto a_idx = 0x11;
+		// const auto addr = vtable.address() + (sizeof(void *) * a_idx);
+		// const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
+		// REL::Relocation<decltype(&hkpCapsuleShape::Unk_11)> func(result);
+		// func(this);
 	}
 }
 
