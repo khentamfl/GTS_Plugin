@@ -374,7 +374,7 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			ActorData* actor_data = GetActorData(actor);
 			if (actor_data) {
-				bool force_reset = this->reset.swap(false);
+				bool force_reset = this->reset.exchange(false);
 				ScaleColliders(actor, actor_data, force_reset);
 			}
 		}
