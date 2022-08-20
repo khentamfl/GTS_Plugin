@@ -46,6 +46,8 @@ namespace Gts {
 			// ^ We don't want to crush allies
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
 			target->PlaceObjectAtMe(runtime.BloodExplosion, false);
+			explosion->radius *= target_scale;
+			explosion->imodRadius *= target_scale;
 		}
 		// ^ Crush only if size difference is > than 4.0
 
