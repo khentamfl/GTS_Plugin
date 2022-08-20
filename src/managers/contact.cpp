@@ -1,4 +1,5 @@
 #include "managers/contact.hpp"
+#include "managers/collider.hpp"
 #include "data/persistent.hpp"
 
 #include "util.hpp"
