@@ -46,7 +46,7 @@ namespace Gts {
 			// ^ We don't want to crush allies
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
 			//target->PlaceObjectAtMe(runtime.BloodExplosion, false);
-			NiPointer<TESObjectREFR> instance_ptr = target->PlaceObjectAtMe(base_explosion, false);
+			NiPointer<TESObjectREFR> instance_ptr = target->PlaceObjectAtMe(runtime.BloodExplosion, false);
 			if (!instance_ptr) return;
 			TESObjectREFR* instance = instance_ptr.get();
 			if (!instance) return;
