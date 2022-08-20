@@ -59,6 +59,6 @@ namespace Gts {
 		private:
 			mutable std::mutex _lock;
 			std::unordered_map<Actor*, ActorData > actor_data;
-			static std::atomic_bool reset = false;
+			std::atomic_bool reset = false;
 	};
 }
