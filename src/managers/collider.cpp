@@ -327,7 +327,7 @@ namespace {
 		}
 	}
 
-	void ScaleColliders(Actor* actor, ActorData* actor_data) {
+	void ScaleColliders(Actor* actor, ActorData* actor_data, bool force_search) {
 		const float EPSILON = 1e-3;
 		if (!actor->Is3DLoaded()) {
 			return;
@@ -342,7 +342,7 @@ namespace {
 		log::info("Updating: {}", actor->GetDisplayFullName());
 		actor_data->last_scale = scale_factor;
 
-		bool search_nodes = !actor_data->HasCapsuleData();
+		bool search_nodes = !actor_data->HasCapsuleData() || force_search;
 		if (search_nodes) {
 			for (auto person: {true, false} ) {
 				auto model = actor->Get3D(person);
@@ -357,6 +357,7 @@ namespace {
 			auto& capsule = capsule_data.capsule;
 			if (capsule) {
 				RescaleCapsule(capsule.get(), &capsule_data, scale_factor, vec_scale);
+				log::info("Capsule ref count: {}", capsule->GetReferenceCount());
 			}
 		}
 	}
@@ -373,7 +374,8 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			ActorData* actor_data = GetActorData(actor);
 			if (actor_data) {
-				ScaleColliders(actor, actor_data);
+				bool force_reset = this->reset.swap(false);
+				ScaleColliders(actor, actor_data, force_reset);
 			}
 		}
 	}

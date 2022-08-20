@@ -51,10 +51,14 @@ namespace Gts {
 			[[nodiscard]] static ColliderManager& GetSingleton() noexcept;
 
 			void Update();
+			inoine void FlagReset() {
+				this->reset.store(true);
+			}
 
 			ActorData* GetActorData(Actor* actor);
 		private:
 			mutable std::mutex _lock;
 			std::unordered_map<Actor*, ActorData > actor_data;
+			static std::atomic_bool reset = false;
 	};
 }
