@@ -51,7 +51,7 @@ namespace Gts {
 			[[nodiscard]] static ColliderManager& GetSingleton() noexcept;
 
 			void Update();
-			inoine void FlagReset() {
+			inline void FlagReset() {
 				this->reset.store(true);
 			}
 
