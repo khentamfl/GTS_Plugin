@@ -9,6 +9,22 @@ using namespace RE;
 using namespace REL;
 using namespace Gts;
 
+namespace {
+	hkpCapsuleShape* MakeCapsule() {
+		hkpCapsuleShape* x = new hkpCapsuleShape();
+		// First value is the vtable pointer
+		REL::Relocation<std::uintptr_t> vptr(reinterpret_cast<std::uintptr_t>(std::addressof(x)));
+
+		// This is the skyrim vtable location
+		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
+
+		// Make it use skyrims vtable
+		safe_write(vptr.address(), vtable.address());
+
+		return x;
+	}
+}
+
 namespace RE {
 	// DRAGON SLAYING
 
@@ -380,6 +396,19 @@ namespace Gts {
 			}
 		}
 		return result;
+	}
+
+	CapsuleData::CapsuleData(const hkpCapsuleShape* orig_capsule) {
+		this->capsule = unique_ptr<hkpCapsuleShape>(MakeCapsule());
+		this->capsule->radius = orig_capsule->radius;
+		this->capsule->vertexA = orig_capsule->vertexA;
+		this->capsule->vertexB = orig_capsule->vertexB;
+		this->capsule->userData = orig_capsule->userData;
+		this->capsule->type = orig_capsule->type;
+
+		this->start = orig_capsule->vertexA;
+		this->end = orig_capsule->vertexB;
+		this->radius = orig_capsule->radius;
 	}
 
 	void ActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule) { // NOLINT

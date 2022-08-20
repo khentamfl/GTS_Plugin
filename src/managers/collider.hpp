@@ -12,18 +12,7 @@ namespace Gts {
 		hkVector4 start;
 		hkVector4 end;
 		float radius;
-		CapsuleData(const hkpCapsuleShape* orig_capsule) {
-			this->capsule = make_unique<hkpCapsuleShape>();
-			this->capsule->radius = orig_capsule->radius;
-			this->capsule->vertexA = orig_capsule->vertexA;
-			this->capsule->vertexB = orig_capsule->vertexB;
-			this->capsule->userData = orig_capsule->userData;
-			this->capsule->type = orig_capsule->type;
-
-			this->start = orig_capsule->vertexA;
-			this->end = orig_capsule->vertexB;
-			this->radius = orig_capsule->radius;
-		}
+		CapsuleData(const hkpCapsuleShape* orig_capsule);
 		CapsuleData(CapsuleData&& old) : capsule(std::move(old.capsule)), start(std::move(old.start)), end(std::move(old.end)), radius(std::move(old.radius)) {
 		};
 	};
