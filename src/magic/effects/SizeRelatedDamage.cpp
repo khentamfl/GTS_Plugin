@@ -3,6 +3,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "data/transient.hpp"
 
 namespace Gts {
 	std::string SizeDamage::GetName() {
@@ -44,18 +45,13 @@ namespace Gts {
 		else if (size_difference >= 4.0 && target->IsDead() && !target->IsPlayerTeammate()) {
 			// ^ We don't want to crush allies
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
-			SpawnExplosion(target);
+
+			
+			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(runtime.BloodExplosion, false);
 		}
 		// ^ Crush only if size difference is > than 4.0
 
 	}
 
-	void SpawnExplosion(Actor* actor) {
-		if (!actor) return;
-		    Explosion = Runtime::GetSingleton().BloodExplosion;
-			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(Explosion, false);
-			//TESObjectREFR* instance = instance_ptr.get();
-			//Explosion* explosion = instance->AsExplosion();
-		}
 	
 }
