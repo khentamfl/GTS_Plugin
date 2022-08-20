@@ -13,7 +13,7 @@ namespace {
 	hkpCapsuleShape* MakeCapsule() {
 		hkpCapsuleShape* x = new hkpCapsuleShape();
 		// First value is the vtable pointer
-		REL::Relocation<std::uintptr_t> vptr(reinterpret_cast<std::uintptr_t>(std::addressof(x)));
+		REL::Relocation<std::uintptr_t> vptr(reinterpret_cast<std::uintptr_t>(x));
 
 		// This is the skyrim vtable location
 		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
