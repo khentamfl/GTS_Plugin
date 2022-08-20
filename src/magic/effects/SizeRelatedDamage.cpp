@@ -45,7 +45,7 @@ namespace Gts {
 		else if (size_difference >= 4.0 && target->IsDead() && !target->IsPlayerTeammate()) {
 			// ^ We don't want to crush allies
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
-			actor->PlaceObjectAtMe(runtime.BloodExplosion, false);
+			target->PlaceObjectAtMe(runtime.BloodExplosion, false);
 		}
 		// ^ Crush only if size difference is > than 4.0
 
