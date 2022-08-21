@@ -336,7 +336,7 @@ namespace {
 		float natural_scale = get_natural_scale(actor);
 		float scale_factor = visual_scale/natural_scale;
 
-		if (fabs(actor_data->last_scale - scale_factor) <= EPSILON) {
+		if ((fabs(actor_data->last_scale - scale_factor) <= EPSILON) &&  !force_search) {
 			return;
 		}
 		log::info("Updating: {}", actor->GetDisplayFullName());
