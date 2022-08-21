@@ -18,7 +18,7 @@ namespace {
 		// This is the skyrim vtable location
 		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
 
-		// Make it use skyrims vtable
+		// Make it use skyrims vtable not our hacky one
 		safe_write(vptr.address(), vtable.address());
 
 		return x;
@@ -344,6 +344,7 @@ namespace {
 
 		bool search_nodes = !actor_data->HasCapsuleData() || force_search;
 		if (search_nodes) {
+			log::info("Searching for new capsules");
 			for (auto person: {true, false} ) {
 				auto model = actor->Get3D(person);
 				if (model) {
@@ -357,7 +358,6 @@ namespace {
 			auto& capsule = capsule_data.capsule;
 			if (capsule) {
 				RescaleCapsule(capsule.get(), &capsule_data, scale_factor, vec_scale);
-				log::info("Capsule ref count: {}", capsule->GetReferenceCount());
 			}
 		}
 	}
@@ -424,9 +424,11 @@ namespace Gts {
 		} catch (const std::out_of_range& oor) {
 			CapsuleData new_data(orig_capsule);
 			auto new_capsule = new_data.capsule.get();
+			log::info("New capsule found: {} replacing: {}", reinterpret_cast<std::uintptr_t>(new_capsule), reinterpret_cast<std::uintptr_t>(orig_capsule));
 			key = new_capsule;
 			rigid_body->SetShape(new_capsule);
 			this->capsule_data.try_emplace(key, std::move(new_data));
+
 		}
 	}
 }
