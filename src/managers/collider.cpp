@@ -267,7 +267,7 @@ namespace {
 		}
 	}
 
-	void AddNode(ActorData* actor_data, NiAVObject* currentnode) { // NOLINT
+	void AddNode(ColliderActorData* actor_data, NiAVObject* currentnode) { // NOLINT
 		auto collision_object = currentnode->GetCollisionObject();
 		if (collision_object) {
 			auto bhk_rigid_body = collision_object->GetRigidBody();
@@ -289,7 +289,7 @@ namespace {
 		}
 	}
 
-	void SearchColliders(NiAVObject* root, ActorData* actor_data) {
+	void SearchColliders(NiAVObject* root, ColliderActorData* actor_data) {
 		std::deque<NiAVObject*> queue;
 		queue.push_back(root);
 
@@ -327,7 +327,7 @@ namespace {
 		}
 	}
 
-	void ScaleColliders(Actor* actor, ActorData* actor_data, bool force_search) {
+	void ScaleColliders(Actor* actor, ColliderActorData* actor_data, bool force_search) {
 		const float EPSILON = 1e-3;
 		if (!actor->Is3DLoaded()) {
 			return;
@@ -372,7 +372,7 @@ namespace Gts {
 
 	void ColliderManager::Update() {
 		for (auto actor: find_actors()) {
-			ActorData* actor_data = GetActorData(actor);
+			ColliderActorData* actor_data = GetActorData(actor);
 			if (actor_data) {
 				bool force_reset = this->reset.exchange(false);
 				ScaleColliders(actor, actor_data, force_reset);
@@ -380,13 +380,13 @@ namespace Gts {
 		}
 	}
 
-	ActorData* ColliderManager::GetActorData(Actor* actor) { // NOLINT
+	ColliderActorData* ColliderManager::GetActorData(Actor* actor) { // NOLINT
 		std::unique_lock lock(this->_lock);
 		if (!actor) {
 			return nullptr;
 		}
 		auto key = actor;
-		ActorData* result = nullptr;
+		ColliderActorData* result = nullptr;
 		try {
 			result = &this->actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
@@ -413,7 +413,7 @@ namespace Gts {
 		this->radius = orig_capsule->radius;
 	}
 
-	void ActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule) { // NOLINT
+	void ColliderActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule) { // NOLINT
 		std::unique_lock lock(this->_lock);
 		if (!orig_capsule) {
 			return;

@@ -17,7 +17,7 @@ namespace Gts {
 		};
 	};
 
-	class ActorData {
+	class ColliderActorData {
 		public:
 			inline CapsuleData* GetCapsuleData(hkpCapsuleShape* capsule) {
 				CapsuleData* result = nullptr;
@@ -55,10 +55,10 @@ namespace Gts {
 				this->reset.store(true);
 			}
 
-			ActorData* GetActorData(Actor* actor);
+			ColliderActorData* GetActorData(Actor* actor);
 		private:
 			mutable std::mutex _lock;
-			std::unordered_map<Actor*, ActorData > actor_data;
+			std::unordered_map<Actor*, ColliderActorData > actor_data;
 			std::atomic_bool reset = false;
 	};
 }
