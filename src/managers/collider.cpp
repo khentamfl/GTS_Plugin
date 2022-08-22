@@ -380,6 +380,15 @@ namespace Gts {
 				}
 			}
 		}
+
+		for (auto &[actor, data]: this->actor_data) {
+			if (actor) {
+				if (!actor->Is3DLoaded()) {
+					// Actor not loaded... delete
+					data.Reset();
+				}
+			}
+		}
 	}
 
 	ColliderActorData* ColliderManager::GetActorData(Actor* actor) { // NOLINT
