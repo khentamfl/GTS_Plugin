@@ -22,6 +22,7 @@ namespace {
 		// Make it use skyrims vtable not our hacky one
 		safe_write(vptr.address(), vtable.address());
 
+		x->AddReference();
 		return x;
 	}
 }

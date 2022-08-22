@@ -38,7 +38,17 @@ namespace Gts {
 			}
 
 			inline void Reset() {
-				this->capsule_data.clear();
+				auto itr = this->capsule_data.begin();
+				while (itr != this->capsule_data.end())
+				{
+					if (itr->second.capsule->GetReferenceCount() == 1) { // We are th e only ref
+						itr->second.capsule->RemoveReference(); // Say we don't need it
+						itr = m.erase(itr); // And delete
+					} else {
+						itr++;
+					}
+				}
+
 				this->last_scale = -1.0;
 				this->last_update_frame.store(0);
 			}
