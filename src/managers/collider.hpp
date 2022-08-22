@@ -1,6 +1,6 @@
 #pragma once
 // Module that handles footsteps
-
+#include <atomic>
 
 using namespace std;
 using namespace SKSE;
@@ -39,10 +39,10 @@ namespace Gts {
 			inline std::unordered_map<const hkpCapsuleShape*, CapsuleData>& GetCapsulesData() {
 				return this->capsule_data;
 			}
-
-			float last_scale = -1.0;
 		private:
 			mutable std::mutex _lock;
+			float last_scale = -1.0;
+			std::atomic_uint64_t last_update_frame = std::atomic_uint64_t(0);
 			std::unordered_map<const hkpCapsuleShape*, CapsuleData> capsule_data;
 	};
 
@@ -52,13 +52,13 @@ namespace Gts {
 
 			void Update();
 			inline void FlagReset() {
-				this->reset.store(true);
+				this->last_reset_frame.store(GtsManager::GetSingleton().GetFrameNum());
 			}
 
 			ColliderActorData* GetActorData(Actor* actor);
 		private:
 			mutable std::mutex _lock;
 			std::unordered_map<Actor*, ColliderActorData > actor_data;
-			std::atomic_bool reset = false;
+			std::atomic_uint64_t last_reset_frame = std::atomic_uint64_t(0);
 	};
 }

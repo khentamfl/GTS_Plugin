@@ -1,4 +1,5 @@
 #include "managers/collider.hpp"
+#include "managers/GtsManager.hpp"
 #include "scale/scale.hpp"
 
 #include "util.hpp"
@@ -327,22 +328,14 @@ namespace {
 		}
 	}
 
-	void ScaleColliders(Actor* actor, ColliderActorData* actor_data, bool force_search) {
+	void ScaleColliders(Actor* actor, ColliderActorData* actor_data, bool force_update) {
 		const float EPSILON = 1e-3;
-		if (!actor->Is3DLoaded()) {
-			return;
-		}
 		float visual_scale = get_visual_scale(actor);
 		float natural_scale = get_natural_scale(actor);
 		float scale_factor = visual_scale/natural_scale;
 
-		if ((fabs(actor_data->last_scale - scale_factor) <= EPSILON) &&  !force_search) {
-			return;
-		}
 		log::info("Updating: {}", actor->GetDisplayFullName());
-		actor_data->last_scale = scale_factor;
-
-		bool search_nodes = !actor_data->HasCapsuleData() || force_search;
+		bool search_nodes = !actor_data->HasCapsuleData() || force_update;
 		if (search_nodes) {
 			log::info("Searching for new capsules");
 			for (auto person: {true, false} ) {
@@ -352,6 +345,12 @@ namespace {
 				}
 			}
 		}
+
+		if ((fabs(actor_data->last_scale - scale_factor) <= EPSILON) &&  !force_update) {
+			return;
+		}
+
+		actor_data->last_scale = scale_factor;
 
 		hkVector4 vec_scale = hkVector4(scale_factor, scale_factor, scale_factor, 1.0);
 		for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
@@ -371,11 +370,14 @@ namespace Gts {
 	}
 
 	void ColliderManager::Update() {
+		std::uint64_t last_reset_frame = this->last_reset_frame.load();
 		for (auto actor: find_actors()) {
-			ColliderActorData* actor_data = GetActorData(actor);
-			if (actor_data) {
-				bool force_reset = this->reset.exchange(false);
-				ScaleColliders(actor, actor_data, force_reset);
+			if (actor->Is3DLoaded()) {
+				ColliderActorData* actor_data = GetActorData(actor);
+				if (actor_data) {
+					bool force_reset = actor_data->last_update_frame.exchange(last_reset_frame) <= last_reset_frame;
+					ScaleColliders(actor, actor_data, force_reset);
+				}
 			}
 		}
 	}

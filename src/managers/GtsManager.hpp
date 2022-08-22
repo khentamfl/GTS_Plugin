@@ -24,7 +24,7 @@ namespace Gts {
 			 */
 			[[nodiscard]] static GtsManager& GetSingleton() noexcept;
 
-			atomic_ulong frame_count = atomic_int64_t(0);
+			atomic_uint64_t frame_count = atomic_uint64_t(0);
 			bool enabled = false;
 			float experiment = 1.0;
 
@@ -35,5 +35,9 @@ namespace Gts {
 			// Reapply changes (used after reload events)
 			void reapply(bool force = true);
 			void reapply_actor(Actor* actor, bool force = true);
+
+			inline uint64_t GetFrameNum() {
+				return this->frame_count.load();
+			}
 	};
 }
