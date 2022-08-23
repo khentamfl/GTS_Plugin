@@ -68,11 +68,23 @@ namespace Gts {
 				this->last_reset_frame.store(GtsManager::GetSingleton().GetFrameNum());
 			}
 
+			inline void ResetActor(Actor* actor) {
+				ColliderActorData* result = nullptr;
+				try {
+					result = &this->actor_data.at(actor);
+				} catch (const std::out_of_range& oor) {
+					result = nullptr;
+				}
+				if (result) {
+					result->last_update_frame.store(0);
+				}
+			}
+
 			ColliderActorData* GetActorData(Actor* actor);
 		private:
 			mutable std::mutex _lock;
 			std::unordered_map<Actor*, ColliderActorData > actor_data;
 			std::atomic_uint64_t last_reset_frame = std::atomic_uint64_t(0);
-			TESObjectCell* previous_cell = nullptr;
+			TESObjectCELL* previous_cell = nullptr;
 	};
 }

@@ -1,5 +1,6 @@
 #include "managers/reloader.hpp"
 #include "managers/GtsManager.hpp"
+#include "managers/collider.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -25,6 +26,7 @@ namespace Gts {
 			auto* actor = TESForm::LookupByID<Actor>(evn->formID);
 			if (actor) {
 				GtsManager::GetSingleton().reapply_actor(actor);
+				ColliderManager::GetSingleton().ResetActor(actor);
 			}
 		}
 		return BSEventNotifyControl::kContinue;
