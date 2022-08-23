@@ -410,38 +410,41 @@ namespace Gts {
 			}
 		}
 
-		// auto player = PlayerCharacter::GetSingleton();
-		// if (player) {
-		// 	log::info("==Experiment");
-		// 	auto currentnode = player->Get3D();
-		// 	if (currentnode) {
-		// 		auto collision_object = currentnode->GetCollisionObject();
-		// 		if (collision_object) {
-		// 			log::info("Has collision object");
-		// 			auto bhk_rigid_body = collision_object->GetRigidBody();
-		// 			if (bhk_rigid_body) {
-		// 				log::info("Is rigidbody");
-		// 				hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
-		// 				if (hkp_rigidbody_ref) {
-		// 					log::info("Has HKP");
-		// 					hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
-		// 					if (hkp_rigidbody) {
-		// 						log::info("Is HKP RigidBody");
-		// 						auto shape = hkp_rigidbody->GetShape();
-		// 						if (shape) {
-		// 							log::info("Has Shape");
-		// 							log::info("Shape is of type: {}", static_cast<int>(shape->type));
-		// 							if (shape->type == hkpShapeType::kCapsule) {
-		// 								const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);;
-		// 							}
-		// 						}
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// 	log::info("==END Experiment");
-		// }
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			log::info("==Experiment");
+			auto currentnode = player->Get3D();
+			if (currentnode) {
+				auto collision_object = currentnode->GetCollisionObject();
+				if (collision_object) {
+					log::info("Has collision object");
+					auto bhk_rigid_body = collision_object->GetRigidBody();
+					if (bhk_rigid_body) {
+						log::info("Is rigidbody");
+						hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
+						if (hkp_rigidbody_ref) {
+							log::info("Has HKP");
+							hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
+							if (hkp_rigidbody) {
+								log::info("Is HKP RigidBody");
+								auto shape = hkp_rigidbody->GetShape();
+								if (shape) {
+									log::info("Has Shape");
+									log::info("Shape is of type: {}", static_cast<int>(shape->type));
+									if (shape->type == hkpShapeType::kBox) {
+										const hkpBoxShape* orig_capsule = static_cast<const hkpBoxShape*>(shape);
+										hkpBoxShape* dragon = const_cast<hkpBoxShape*>(orig_capsule);
+										log::info("Making box 100x100x100m");
+										dragon->halfExtents = hkVector4(100.,100.,100.,0.);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			log::info("==END Experiment");
+		}
 	}
 
 	ColliderActorData* ColliderManager::GetActorData(Actor* actor) { // NOLINT
