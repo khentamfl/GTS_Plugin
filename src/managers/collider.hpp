@@ -16,6 +16,7 @@ namespace Gts {
 		CapsuleData(const hkpCapsuleShape* orig_capsule);
 		CapsuleData(CapsuleData&& old) : capsule(std::move(old.capsule)), start(std::move(old.start)), end(std::move(old.end)), radius(std::move(old.radius)) {
 		};
+		~CapsuleData();
 	};
 
 	class ColliderActorData {
@@ -38,9 +39,6 @@ namespace Gts {
 			}
 
 			inline void Reset() {
-				for (auto &[capsule, data]: this->capsule_data) {
-					data.capsule->RemoveReference();
-				}
 				this->capsule_data.clear();
 
 				this->last_scale = -1.0;

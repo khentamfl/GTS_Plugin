@@ -462,6 +462,10 @@ namespace Gts {
 		this->radius = orig_capsule->radius;
 	}
 
+	CapsuleData::~CapsuleData () {
+		this->capsule->RemoveReference();
+	}
+
 	void ColliderActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule) { // NOLINT
 		std::unique_lock lock(this->_lock);
 		if (!orig_capsule) {
