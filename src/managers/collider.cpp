@@ -412,6 +412,9 @@ namespace Gts {
 								if (shape) {
 									log::info("Has Shape");
 									log::info("Shape is of type: {}", static_cast<int>(shape->type));
+									if (shape->type == hkpShapeType::kCapsule) {
+										const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);;
+									}
 								}
 							}
 						}
