@@ -22,7 +22,6 @@ namespace {
 		// Make it use skyrims vtable not our hacky one
 		safe_write(vptr.address(), vtable.address());
 
-		x->AddReference();
 		return x;
 	}
 }
@@ -446,7 +445,7 @@ namespace Gts {
 	}
 
 	CapsuleData::CapsuleData(const hkpCapsuleShape* orig_capsule) {
-		this->capsule = unique_ptr<hkpCapsuleShape>(MakeCapsule());
+		this->capsule = MakeCapsule();
 		this->capsule->radius = orig_capsule->radius;
 		this->capsule->vertexA = orig_capsule->vertexA;
 		this->capsule->vertexB = orig_capsule->vertexB;

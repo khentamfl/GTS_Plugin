@@ -9,7 +9,7 @@ using namespace RE;
 
 namespace Gts {
 	struct CapsuleData {
-		unique_ptr<hkpCapsuleShape> capsule;
+		hkpCapsuleShape* capsule;
 		hkVector4 start;
 		hkVector4 end;
 		float radius;
@@ -42,7 +42,10 @@ namespace Gts {
 				while (itr != this->capsule_data.end())
 				{
 					if (itr->second.capsule->GetReferenceCount() == 1) { // We are the only ref
-						itr = this->capsule_data.erase(itr); // So lets delete
+						itr->second.capsule->RemoveReference(); // Mark that we are done with it
+						itr = this->capsule_data.erase(itr); // Then delete our reference to it
+						// It seems that skyrim will clean it up with the reference count hits
+						// zero. If I delete it myself I get malloc errors
 					} else {
 						itr++;
 					}
