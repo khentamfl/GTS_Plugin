@@ -376,7 +376,7 @@ namespace Gts {
 			if (actor->Is3DLoaded()) {
 				ColliderActorData* actor_data = GetActorData(actor);
 				if (actor_data) {
-					bool force_reset = actor_data->last_update_frame.exchange(last_reset_frame) <= last_reset_frame;
+					bool force_reset = actor_data->last_update_frame.exchange(last_reset_frame) < last_reset_frame;
 					ScaleColliders(actor, actor_data, force_reset);
 				}
 			}
