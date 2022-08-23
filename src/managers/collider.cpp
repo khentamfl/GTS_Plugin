@@ -377,7 +377,10 @@ namespace Gts {
 
 	void ColliderManager::Update() {
 		std::uint64_t last_reset_frame = this->last_reset_frame.load();
-		for (auto actor: find_actors()) {
+
+
+		auto actors = find_actors();
+		for (auto actor: actors) {
 			if (actor->Is3DLoaded()) {
 				ColliderActorData* actor_data = GetActorData(actor);
 				if (actor_data) {
@@ -390,7 +393,8 @@ namespace Gts {
 		auto itr = this->actor_data.begin();
 		while (itr != this->actor_data.end())
 		{
-			if (!itr->first->Is3DLoaded()) {
+			bool found = (std::find(actors.begin(), actors.end(), itr->first) != actors.end());
+			if (!found) {
 				itr = this->actor_data.erase(itr);
 			} else {
 				itr++;
@@ -469,7 +473,7 @@ namespace Gts {
 	}
 
 	CapsuleData::~CapsuleData () {
-		// this->capsule->RemoveReference();
+		this->capsule->RemoveReference();
 	}
 
 	void ColliderActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule) { // NOLINT
