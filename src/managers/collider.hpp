@@ -41,7 +41,7 @@ namespace Gts {
 				auto itr = this->capsule_data.begin();
 				while (itr != this->capsule_data.end())
 				{
-					if (itr->second.capsule->GetReferenceCount() == 1) { // We are th e only ref
+					if (itr->second.capsule->GetReferenceCount() == 1) { // We are the only ref
 						itr->second.capsule->RemoveReference(); // Say we don't need it
 						itr = m.erase(itr); // And delete
 					} else {
