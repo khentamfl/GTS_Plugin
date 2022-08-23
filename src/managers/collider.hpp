@@ -64,7 +64,7 @@ namespace Gts {
 
 			void Update();
 			inline void FlagReset() {
-				log::info("=========== Capsule reset Triggered ===========")
+				log::info("=========== Capsule reset Triggered ===========");
 				this->last_reset_frame.store(GtsManager::GetSingleton().GetFrameNum());
 			}
 
