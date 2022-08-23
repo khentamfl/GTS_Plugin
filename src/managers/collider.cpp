@@ -11,6 +11,7 @@ using namespace REL;
 using namespace Gts;
 
 namespace {
+	const std::uint32_t CAPSULE_MARKER = 494148758080886;
 	hkpCapsuleShape* MakeCapsule() {
 		hkpCapsuleShape* x = new hkpCapsuleShape();
 		// First value is the vtable pointer
@@ -21,6 +22,8 @@ namespace {
 
 		// Make it use skyrims vtable not our hacky one
 		safe_write(vptr.address(), vtable.address());
+
+		x->pad28 = CAPSULE_MARKER;
 
 		return x;
 	}
@@ -281,6 +284,9 @@ namespace {
 						if (shape) {
 							if (shape->type == hkpShapeType::kCapsule) {
 								const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);
+								if (orig_capsule->pad28 == CAPSULE_MARKER) {
+									log::error("Capsule is a lost one of ours");
+								}
 								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule);
 							}
 						}
