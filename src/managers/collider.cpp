@@ -469,7 +469,7 @@ namespace Gts {
 	}
 
 	CapsuleData::~CapsuleData () {
-		this->capsule->RemoveReference();
+		// this->capsule->RemoveReference();
 	}
 
 	void ColliderActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule) { // NOLINT
@@ -485,6 +485,7 @@ namespace Gts {
 			auto new_capsule = new_data.capsule;
 			log::info("New capsule found: {} replacing: {}", reinterpret_cast<std::uintptr_t>(new_capsule), reinterpret_cast<std::uintptr_t>(orig_capsule));
 			key = new_capsule;
+			log::info("orig_capsule referenced: {}", orig_capsule->GetReferenceCount());
 			rigid_body->SetShape(new_capsule);
 			this->capsule_data.try_emplace(key, std::move(new_data));
 
