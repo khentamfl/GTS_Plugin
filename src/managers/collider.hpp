@@ -73,5 +73,6 @@ namespace Gts {
 			mutable std::mutex _lock;
 			std::unordered_map<Actor*, ColliderActorData > actor_data;
 			std::atomic_uint64_t last_reset_frame = std::atomic_uint64_t(0);
+			TESObjectCell* previous_cell = nullptr;
 	};
 }

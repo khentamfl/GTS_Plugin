@@ -374,6 +374,17 @@ namespace Gts {
 	}
 
 	void ColliderManager::Update() {
+		auto playerCharacter = PlayerCharacter::GetSingleton();
+		auto cell = playerCharacter->GetParentCell();
+		if (!cell) {
+			return;
+		}
+
+		if (cell != this->previous_cell) {
+			this->FlagReset();
+			this->previous_cell = cell;
+		}
+
 		std::uint64_t last_reset_frame = this->last_reset_frame.load();
 
 
