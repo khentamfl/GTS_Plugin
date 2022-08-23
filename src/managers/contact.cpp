@@ -178,7 +178,7 @@ namespace Gts {
 			if (!name_b) {
 				return;
 			}
-			log::info("Colliding: {} with: {}", name_a, name_b);
+			// log::info("Colliding: {} with: {}", name_a, name_b);
 			NiAVObject* node_a = getNodeFromCollidable(rigid_a);
 			if (!node_a) {
 				return;
@@ -188,13 +188,13 @@ namespace Gts {
 				return;
 			}
 			auto node_name_a = node_a->name;
-			if (!node_name_a.empty()) {
-				log::info("  - Node A: {}", node_name_a.c_str());
-			}
+			// if (!node_name_a.empty()) {
+			// 	log::info("  - Node A: {}", node_name_a.c_str());
+			// }
 			auto node_name_b = node_b->name;
-			if (!node_name_b.empty()) {
-				log::info("  - Node B: {}", node_name_b.c_str());
-			}
+			// if (!node_name_b.empty()) {
+			// 	log::info("  - Node B: {}", node_name_b.c_str());
+			// }
 		}
 		// log::info("ContactPointCallback");
 	}

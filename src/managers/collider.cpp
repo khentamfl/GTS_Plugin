@@ -265,9 +265,7 @@ namespace {
 		if(fabs(capsule->radius - expected_radius) > EPSILON) {
 			capsule->vertexA = data->start * vec_scale;
 			capsule->vertexB = data->end * vec_scale;
-			log::info("Old Radius: {}", capsule->radius);
 			capsule->radius = expected_radius;
-			log::info("New Radius: {}", capsule->radius);
 		}
 	}
 
@@ -284,9 +282,9 @@ namespace {
 						if (shape) {
 							if (shape->type == hkpShapeType::kCapsule) {
 								const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);
-								if (orig_capsule->pad28 == CAPSULE_MARKER) {
-									log::error("Capsule is a lost one of ours");
-								}
+								// if (orig_capsule->pad28 == CAPSULE_MARKER) {
+								// 	log::error("Capsule is a lost one of ours");
+								// }
 								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule);
 							}
 						}
@@ -340,10 +338,10 @@ namespace {
 		float natural_scale = get_natural_scale(actor);
 		float scale_factor = visual_scale/natural_scale;
 
-		log::info("Updating: {}", actor->GetDisplayFullName());
+
 		bool search_nodes = !actor_data->HasCapsuleData() || force_update;
 		if (search_nodes) {
-			log::info("Searching for new capsules");
+			log::info("{}: Searching for capsules", actor->GetDisplayFullName());
 			for (auto person: {true, false} ) {
 				auto model = actor->Get3D(person);
 				if (model) {
@@ -401,38 +399,38 @@ namespace Gts {
 			}
 		}
 
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			log::info("==Experiment");
-			auto currentnode = player->Get3D();
-			if (currentnode) {
-				auto collision_object = currentnode->GetCollisionObject();
-				if (collision_object) {
-					log::info("Has collision object");
-					auto bhk_rigid_body = collision_object->GetRigidBody();
-					if (bhk_rigid_body) {
-						log::info("Is rigidbody");
-						hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
-						if (hkp_rigidbody_ref) {
-							log::info("Has HKP");
-							hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
-							if (hkp_rigidbody) {
-								log::info("Is HKP RigidBody");
-								auto shape = hkp_rigidbody->GetShape();
-								if (shape) {
-									log::info("Has Shape");
-									log::info("Shape is of type: {}", static_cast<int>(shape->type));
-									if (shape->type == hkpShapeType::kCapsule) {
-										const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			log::info("==END Experiment");
-		}
+		// auto player = PlayerCharacter::GetSingleton();
+		// if (player) {
+		// 	log::info("==Experiment");
+		// 	auto currentnode = player->Get3D();
+		// 	if (currentnode) {
+		// 		auto collision_object = currentnode->GetCollisionObject();
+		// 		if (collision_object) {
+		// 			log::info("Has collision object");
+		// 			auto bhk_rigid_body = collision_object->GetRigidBody();
+		// 			if (bhk_rigid_body) {
+		// 				log::info("Is rigidbody");
+		// 				hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
+		// 				if (hkp_rigidbody_ref) {
+		// 					log::info("Has HKP");
+		// 					hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
+		// 					if (hkp_rigidbody) {
+		// 						log::info("Is HKP RigidBody");
+		// 						auto shape = hkp_rigidbody->GetShape();
+		// 						if (shape) {
+		// 							log::info("Has Shape");
+		// 							log::info("Shape is of type: {}", static_cast<int>(shape->type));
+		// 							if (shape->type == hkpShapeType::kCapsule) {
+		// 								const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);;
+		// 							}
+		// 						}
+		// 					}
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// 	log::info("==END Experiment");
+		// }
 	}
 
 	ColliderActorData* ColliderManager::GetActorData(Actor* actor) { // NOLINT
@@ -487,9 +485,7 @@ namespace Gts {
 		} catch (const std::out_of_range& oor) {
 			CapsuleData new_data(orig_capsule);
 			auto new_capsule = new_data.capsule;
-			log::info("New capsule found: {} replacing: {}", reinterpret_cast<std::uintptr_t>(new_capsule), reinterpret_cast<std::uintptr_t>(orig_capsule));
 			key = new_capsule;
-			log::info("orig_capsule referenced: {}", orig_capsule->GetReferenceCount());
 			rigid_body->SetShape(new_capsule);
 			this->capsule_data.try_emplace(key, std::move(new_data));
 
