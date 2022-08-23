@@ -38,18 +38,10 @@ namespace Gts {
 			}
 
 			inline void Reset() {
-				auto itr = this->capsule_data.begin();
-				while (itr != this->capsule_data.end())
-				{
-					if (itr->second.capsule->GetReferenceCount() == 1) { // We are the only ref
-						itr->second.capsule->RemoveReference(); // Mark that we are done with it
-						itr = this->capsule_data.erase(itr); // Then delete our reference to it
-						// It seems that skyrim will clean it up with the reference count hits
-						// zero. If I delete it myself I get malloc errors
-					} else {
-						itr++;
-					}
+				for (auto &[capsule, data]: this->capsule_data) {
+					data.capsule->RemoveReference();
 				}
+				this->capsule_data.clear();
 
 				this->last_scale = -1.0;
 				this->last_update_frame.store(0);
@@ -58,6 +50,8 @@ namespace Gts {
 			inline std::unordered_map<const hkpCapsuleShape*, CapsuleData>& GetCapsulesData() {
 				return this->capsule_data;
 			}
+
+			~ColliderActorData();
 
 			float last_scale = -1.0;
 			std::atomic_uint64_t last_update_frame = std::atomic_uint64_t(0);

@@ -356,7 +356,7 @@ namespace {
 		for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
 			auto& capsule = capsule_data.capsule;
 			if (capsule) {
-				RescaleCapsule(capsule.get(), &capsule_data, scale_factor, vec_scale);
+				RescaleCapsule(capsule, &capsule_data, scale_factor, vec_scale);
 			}
 		}
 	}
@@ -381,12 +381,13 @@ namespace Gts {
 			}
 		}
 
-		for (auto &[actor, data]: this->actor_data) {
-			if (actor) {
-				if (!actor->Is3DLoaded()) {
-					// Actor not loaded... delete
-					data.Reset();
-				}
+		auto itr = this->actor_data.begin();
+		while (itr != this->actor_data.end())
+		{
+			if (!itr->first->Is3DLoaded()) {
+				itr = this->actor_data.erase(itr);
+			} else {
+				itr++;
 			}
 		}
 
@@ -444,6 +445,10 @@ namespace Gts {
 		return result;
 	}
 
+	ColliderActorData::~ColliderActorData() {
+		this->Reset();
+	}
+
 	CapsuleData::CapsuleData(const hkpCapsuleShape* orig_capsule) {
 		this->capsule = MakeCapsule();
 		this->capsule->radius = orig_capsule->radius;
@@ -467,7 +472,7 @@ namespace Gts {
 			auto& result = this->capsule_data.at(key);
 		} catch (const std::out_of_range& oor) {
 			CapsuleData new_data(orig_capsule);
-			auto new_capsule = new_data.capsule.get();
+			auto new_capsule = new_data.capsule;
 			log::info("New capsule found: {} replacing: {}", reinterpret_cast<std::uintptr_t>(new_capsule), reinterpret_cast<std::uintptr_t>(orig_capsule));
 			key = new_capsule;
 			rigid_body->SetShape(new_capsule);
