@@ -43,6 +43,7 @@ namespace Gts {
 
 				this->last_scale = -1.0;
 				this->last_update_frame.store(0);
+				this->form_id = 0;
 			}
 
 			inline std::unordered_map<const hkpCapsuleShape*, CapsuleData>& GetCapsulesData() {
@@ -53,9 +54,11 @@ namespace Gts {
 
 			float last_scale = -1.0;
 			std::atomic_uint64_t last_update_frame = std::atomic_uint64_t(0);
+			FormID form_id = 0;
 		private:
 			mutable std::mutex _lock;
 			std::unordered_map<const hkpCapsuleShape*, CapsuleData> capsule_data;
+
 	};
 
 	class ColliderManager {

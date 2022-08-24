@@ -286,7 +286,7 @@ namespace {
 								// 	log::error("Capsule is a lost one of ours");
 								// }
 								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule);
-							} else {
+							} else if (actor_data->form_id == 0x14) {
 								std::string name = currentnode->name.c_str();
 								log::info("Node {} has type {}", name, static_cast<int>(shape->type));
 							}
@@ -428,6 +428,21 @@ namespace Gts {
 								auto shape = rigid_body->GetShape();
 								if (shape) {
 									log::info("Proxy RB is of type: {}", static_cast<int>(shape->type));
+									if (shape->type == hkpShapeType::kBVTree) {
+										const hkpBvTreeShape* bvhtree = static_cast<const hkpBvTreeShape*>(shape);
+										auto container = bvhtree->GetContainer();
+										if (container) {
+											auto key = container->GetFirstKey();
+											while (key != HK_INVALID_SHAPE_KEY) {
+												auto buffer = hkpShapeBuffer();
+												auto child_shape = container->GetChildShape(key, buffer);
+												if (child_shape) {
+													log::info("ChildShape is of type: {}", static_cast<int>(child_shape->type));
+												}
+												key = container->GetNextKey(key);
+											}
+										}
+									}
 								}
 							}
 						}
@@ -445,6 +460,20 @@ namespace Gts {
 							auto shape = phantom->GetShape();
 							if (shape) {
 								log::info("Controller Phantom is of type: {}", static_cast<int>(shape->type));
+								if (shape->type == hkpShapeType::kList) {
+									const hkpListShape* container = static_cast<const hkpListShape*>(shape);
+									if (container) {
+										auto key = container->GetFirstKey();
+										while (key != HK_INVALID_SHAPE_KEY) {
+											auto buffer = hkpShapeBuffer();
+											auto child_shape = container->GetChildShape(key, buffer);
+											if (child_shape) {
+												log::info("ChildShape is of type: {}", static_cast<int>(child_shape->type));
+											}
+											key = container->GetNextKey(key);
+										}
+									}
+								}
 							}
 						}
 					}
@@ -467,6 +496,7 @@ namespace Gts {
 			this->actor_data.try_emplace(key);
 			try {
 				result = &this->actor_data.at(key);
+				result->form_id = actor->GetFormID();
 			} catch (const std::out_of_range& oor) {
 				result = nullptr;
 			}
