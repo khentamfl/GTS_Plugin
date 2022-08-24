@@ -428,6 +428,14 @@ namespace Gts {
 								}
 							}
 						}
+						for (auto phantom: hkp_char_proxy->phantoms) {
+							if (phantom) {
+								auto shape = phantom->GetShape();
+								if (shape) {
+									log::info("Proxy Phantom is of type: {}", static_cast<int>(shape->type));
+								}
+							}
+						}
 					}
 				}
 			}
