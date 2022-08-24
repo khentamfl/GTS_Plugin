@@ -496,7 +496,7 @@ namespace Gts {
 			this->actor_data.try_emplace(key);
 			try {
 				result = &this->actor_data.at(key);
-				result->form_id = actor->GetFormID();
+				result->form_id = actor->formID;
 			} catch (const std::out_of_range& oor) {
 				result = nullptr;
 			}
