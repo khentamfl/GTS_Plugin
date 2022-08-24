@@ -415,22 +415,16 @@ namespace Gts {
 			log::info("==Experiment");
 			auto controller = player->GetCharController();
 			if (controller) {
-				for (auto bhk_shape: controller->shapes) {
-					log::info("Got bhkshape");
-					hkReferencedObject* hkp_refobj = bhk_shape->referencedObject.get();
-					if (hkp_refobj) {
-						log::info("Got HkpRefObj");
-						hkpShape* hkp_shape = skyrim_cast<hkpShape*>(hkp_refobj);
-						if (hkp_shape) {
-							log::info("Got HkpShape");
-							log::info("Shape is of type: {}", static_cast<int>(hkp_shape->type));
-							if (hkp_shape->type == hkpShapeType::kList) {
-								log::info("Is a list shape");
-								hkpListShape* hkp_list = static_cast<hkpListShape*>(hkp_shape);
-								for (auto child_info: hkp_list->childInfo) {
-									if (child_info.shape) {
-										log::info("Shild is a shape of type: {}", static_cast<int>(child_info.shape->type));
-									}
+				bhkCharProxyController* proxy_controller = skyrim_cast<bhkCharProxyController*>(controller);
+				if (proxy_controller) {
+					auto hkp_char_proxy = proxy_controller->GetCharacterProxy();
+					if (hkp_char_proxy) {
+						log::info("Got hkp proxy");
+						for (auto rigid_body: hkp_char_proxy->bodies) {
+							if (rigid_body) {
+								auto shape = rigid_body->GetShape();
+								if (shape) {
+									log::info("Proxy RB is of type: {}", static_cast<int>(shape->type));
 								}
 							}
 						}
