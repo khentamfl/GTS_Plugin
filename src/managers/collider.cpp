@@ -436,6 +436,14 @@ namespace Gts {
 								}
 							}
 						}
+
+						auto phantom = hkp_char_proxy->shapePhantom;
+						if (phantom) {
+							auto shape = phantom->GetShape();
+							if (shape) {
+								log::info("Controller Phantom is of type: {}", static_cast<int>(shape->type));
+							}
+						}
 					}
 				}
 			}
