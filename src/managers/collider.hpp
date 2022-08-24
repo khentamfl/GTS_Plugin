@@ -21,6 +21,8 @@ namespace Gts {
 
 	class ColliderActorData {
 		public:
+			ColliderActorData(Actor* actor);
+
 			inline CapsuleData* GetCapsuleData(hkpCapsuleShape* capsule) {
 				CapsuleData* result = nullptr;
 				auto key = capsule;

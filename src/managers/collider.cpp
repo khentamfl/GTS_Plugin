@@ -290,6 +290,7 @@ namespace {
 								std::string name = currentnode->name.c_str();
 								log::info("Node {} has type {}", name, static_cast<int>(shape->type));
 							}
+							log::info("CHECK {:X}", actor_data->form_id);
 						}
 					}
 				}
@@ -497,6 +498,11 @@ namespace Gts {
 		}
 	}
 
+	ColliderActorData::ColliderActorData(Actor* actor) {
+		this->Reset();
+		this->form_id = actor->formID;
+	}
+
 	ColliderActorData* ColliderManager::GetActorData(Actor* actor) { // NOLINT
 		std::unique_lock lock(this->_lock);
 		if (!actor) {
@@ -507,10 +513,9 @@ namespace Gts {
 		try {
 			result = &this->actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
-			this->actor_data.try_emplace(key);
+			this->actor_data.try_emplace(key, actor);
 			try {
 				result = &this->actor_data.at(key);
-				result->form_id = actor->formID;
 			} catch (const std::out_of_range& oor) {
 				result = nullptr;
 			}
