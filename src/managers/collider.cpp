@@ -286,6 +286,9 @@ namespace {
 								// 	log::error("Capsule is a lost one of ours");
 								// }
 								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule);
+							} else {
+								std::string name = currentnode->name.c_str();
+								log::info("Node {} has type {}", name, static_cast<int>(shape->type));
 							}
 						}
 					}
