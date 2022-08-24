@@ -428,8 +428,8 @@ namespace Gts {
 								auto shape = rigid_body->GetShape();
 								if (shape) {
 									log::info("Proxy RB is of type: {}", static_cast<int>(shape->type));
-									if (shape->type == hkpShapeType::kBVTree) {
-										const hkpBvTreeShape* bvhtree = static_cast<const hkpBvTreeShape*>(shape);
+									if (shape->type == hkpShapeType::kMOPP) {
+										const hkpMoppBvTreeShape* bvhtree = static_cast<const hkpMoppBvTreeShape*>(shape);
 										auto container = bvhtree->GetContainer();
 										if (container) {
 											auto key = container->GetFirstKey();
