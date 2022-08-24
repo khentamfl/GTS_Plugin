@@ -442,6 +442,20 @@ namespace Gts {
 												key = container->GetNextKey(key);
 											}
 										}
+									} else if (shape->type == hkpShapeType::kBVTree) {
+										const hkpBvTreeShape* bvhtree = static_cast<const hkpBvTreeShape*>(shape);
+										auto container = bvhtree->GetContainer();
+										if (container) {
+											auto key = container->GetFirstKey();
+											while (key != HK_INVALID_SHAPE_KEY) {
+												auto buffer = hkpShapeBuffer();
+												auto child_shape = container->GetChildShape(key, buffer);
+												if (child_shape) {
+													log::info("ChildShape is of type: {}", static_cast<int>(child_shape->type));
+												}
+												key = container->GetNextKey(key);
+											}
+										}
 									}
 								}
 							}
