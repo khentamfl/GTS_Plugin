@@ -477,15 +477,28 @@ namespace Gts {
 								log::info("Controller Phantom is of type: {}", static_cast<int>(shape->type));
 								if (shape->type == hkpShapeType::kList) {
 									const hkpListShape* container = static_cast<const hkpListShape*>(shape);
-									if (container) {
-										auto key = container->GetFirstKey();
-										while (key != HK_INVALID_SHAPE_KEY) {
-											auto buffer = hkpShapeBuffer();
-											auto child_shape = container->GetChildShape(key, buffer);
-											if (child_shape) {
-												log::info("ChildShape is of type: {}", static_cast<int>(child_shape->type));
+									static bool doonce = true;
+									if (doonce) {
+										doonce = false;
+										float factor = 100.0;
+										if (container) {
+											auto key = container->GetFirstKey();
+											while (key != HK_INVALID_SHAPE_KEY) {
+												auto buffer = hkpShapeBuffer();
+												auto child_shape = container->GetChildShape(key, buffer);
+												if (child_shape) {
+													log::info("ChildShape is of type: {}", static_cast<int>(child_shape->type));
+													if (child_shape->type == hkpShapeType::kCapsule) {
+														log::info("Chaging the capsule");
+														const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(child_shape);
+														hkpCapsuleShape* dragon = const_cast<hkpCapsuleShape*>(orig_capsule);
+														dragon->radius *= factor;
+													}
+												}
+												key = container->GetNextKey(key);
 											}
-											key = container->GetNextKey(key);
+											hkpListShape* dragon_container = const_cast<hkpListShape*>(container);
+											dragon_container->aabbHalfExtents = dragon_container->aabbHalfExtents * hkVector4(factor);
 										}
 									}
 								}
