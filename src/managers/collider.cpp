@@ -493,6 +493,8 @@ namespace Gts {
 														const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(child_shape);
 														hkpCapsuleShape* dragon = const_cast<hkpCapsuleShape*>(orig_capsule);
 														dragon->radius *= factor;
+														dragon->vertexA = dragon->vertexA * factor;
+														dragon->vertexB = dragon->vertexB * factor;
 													}
 												}
 												key = container->GetNextKey(key);
