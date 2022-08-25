@@ -1,6 +1,81 @@
 #pragma once
 #include <glm/glm.hpp>
 
+namespace Util {
+	inline bool IsRoughlyEqual(float first, float second, float maxDif)
+	{
+		return abs(first - second) <= maxDif;
+	}
+
+	inline glm::vec3 RotateVector(glm::quat quatIn, glm::vec3 vecIn) {
+		float num = quatIn.x * 2.0f;
+		float num2 = quatIn.y * 2.0f;
+		float num3 = quatIn.z * 2.0f;
+		float num4 = quatIn.x * num;
+		float num5 = quatIn.y * num2;
+		float num6 = quatIn.z * num3;
+		float num7 = quatIn.x * num2;
+		float num8 = quatIn.x * num3;
+		float num9 = quatIn.y * num3;
+		float num10 = quatIn.w * num;
+		float num11 = quatIn.w * num2;
+		float num12 = quatIn.w * num3;
+		glm::vec3 result;
+		result.x = (1.0f - (num5 + num6)) * vecIn.x + (num7 - num12) * vecIn.y + (num8 + num11) * vecIn.z;
+		result.y = (num7 + num12) * vecIn.x + (1.0f - (num4 + num6)) * vecIn.y + (num9 - num10) * vecIn.z;
+		result.z = (num8 - num11) * vecIn.x + (num9 + num10) * vecIn.y + (1.0f - (num4 + num5)) * vecIn.z;
+		return result;
+	}
+
+	inline glm::vec3 GetCameraPos()
+	{
+		auto playerCam = RE::PlayerCamera::GetSingleton();
+		return glm::vec3(playerCam->pos.x, playerCam->pos.y, playerCam->pos.z);
+	}
+
+	inline eglm::vec3 NormalizeVector(glm::vec3 p)
+	{
+		return glm::normalize(p);
+	}
+
+	inline glm::vec3 GetForwardVector(glm::quat quatIn)
+	{
+		// rotate Skyrim's base forward vector (positive Y forward) by quaternion
+		return RotateVector(quatIn, glm::vec3(0.0f, 1.0f, 0.0f));
+	}
+
+	inline bool IsPosBehindPlayerCamera(glm::vec3 pos)
+	{
+		auto cameraPos = GetCameraPos();
+		auto cameraRot = GetCameraRot();
+
+		auto toTarget = NormalizeVector(pos - cameraPos);
+		auto cameraForward = NormalizeVector(GetForwardVector(cameraRot));
+
+		auto angleDif = abs( glm::length(toTarget - cameraForward) );
+
+		// root_two is the diagonal length of a 1x1 square. When comparing normalized forward
+		// vectors, this accepts an angle of 90 degrees in all directions
+		return angleDif > glm::root_two<float>();
+	}
+
+	inline glm::vec3 GetPointOnRotatedCircle(glm::vec3 origin, float radius, float i, float maxI, glm::vec3 eulerAngles) {
+		float currAngle = (i / maxI) * glm::two_pi<float>();
+
+		glm::vec3 targetPos(
+			(radius * cos(currAngle)),
+			(radius * sin(currAngle)),
+			0.0f
+			);
+
+		auto targetPosRotated = RotateVector(eulerAngles, targetPos);
+
+		return glm::vec3(targetPosRotated.x + origin.x, targetPosRotated.y + origin.y, targetPosRotated.z + origin.z);
+	}
+}
+
+using namespace Util;
+
 struct ObjectBound
 {
 	ObjectBound()
@@ -19,6 +94,30 @@ struct ObjectBound
 		worldBoundMin = pWorldBoundMin;
 		worldBoundMax = pWorldBoundMax;
 		rotation = pRotation;
+	}
+
+	inline glm::vec3 GetBoundRightVectorRotated()
+	{
+		glm::vec3 bound(abs(boundMin.x - boundMax.x), 0.0f, 0.0f);
+		auto boundRotated = RotateVector(rotation, bound);
+
+		return boundRotated;
+	}
+
+	inline glm::vec3 GetBoundForwardVectorRotated()
+	{
+		glm::vec3 bound(0.0f, abs(boundMin.y - boundMax.y), 0.0f);
+		auto boundRotated = RotateVector(rotation, bound);
+
+		return boundRotated;
+	}
+
+	inline glm::vec3 GetBoundUpVectorRotated()
+	{
+		glm::vec3 bound(0.0f, 0.0f, abs(boundMin.z - boundMax.z));
+		auto boundRotated = RotateVector(rotation, bound);
+
+		return boundRotated;
 	}
 
 	glm::vec3 boundMin;

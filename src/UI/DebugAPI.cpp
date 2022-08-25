@@ -67,9 +67,9 @@ void DebugAPI::Update()
 
 void DebugAPI::DrawBoundsForMS(ObjectBound objectBound, int liftetimeMS, const glm::vec4& color, float lineThickness)
 {
-	auto boundRight = Util::GetBoundRightVectorRotated(objectBound);
-	auto boundForward = Util::GetBoundForwardVectorRotated(objectBound);
-	auto boundUp = Util::GetBoundUpVectorRotated(objectBound);
+	auto boundRight = objectBound.GetBoundRightVectorRotated();
+	auto boundForward = objectBound.GetBoundForwardVectorRotated();
+	auto boundUp = objectBound.GetBoundUpVectorRotated();
 
 	auto objectLocation = objectBound.worldBoundMin;
 
@@ -136,11 +136,11 @@ void DebugAPI::DrawSphere(glm::vec3 origin, float radius, int liftetimeMS, const
 
 void DebugAPI::DrawCircle(glm::vec3 origin, float radius, glm::vec3 eulerAngles, int liftetimeMS, const glm::vec4& color, float lineThickness)
 {
-	glm::vec3 lastEndPos = Util::GetPointOnRotatedCircle(origin, radius, CIRCLE_NUM_SEGMENTS, (float)(CIRCLE_NUM_SEGMENTS - 1), eulerAngles);
+	glm::vec3 lastEndPos = GetPointOnRotatedCircle(origin, radius, CIRCLE_NUM_SEGMENTS, (float)(CIRCLE_NUM_SEGMENTS - 1), eulerAngles);
 
 	for (int i = 0; i <= CIRCLE_NUM_SEGMENTS; i++)
 	{
-		glm::vec3 currEndPos = Util::GetPointOnRotatedCircle(origin, radius, (float)i, (float)(CIRCLE_NUM_SEGMENTS - 1), eulerAngles);
+		glm::vec3 currEndPos = GetPointOnRotatedCircle(origin, radius, (float)i, (float)(CIRCLE_NUM_SEGMENTS - 1), eulerAngles);
 
 		DrawLineForMS(
 			lastEndPos,
@@ -160,13 +160,13 @@ DebugAPILine* DebugAPI::GetExistingLine(const glm::vec3& from, const glm::vec3& 
 		DebugAPILine* line = LinesToDraw[i];
 
 		if (
-			Util::IsRoughlyEqual(from.x, line->From.x, DRAW_LOC_MAX_DIF) &&
-			Util::IsRoughlyEqual(from.y, line->From.y, DRAW_LOC_MAX_DIF) &&
-			Util::IsRoughlyEqual(from.z, line->From.z, DRAW_LOC_MAX_DIF) &&
-			Util::IsRoughlyEqual(to.x, line->To.x, DRAW_LOC_MAX_DIF) &&
-			Util::IsRoughlyEqual(to.y, line->To.y, DRAW_LOC_MAX_DIF) &&
-			Util::IsRoughlyEqual(to.z, line->To.z, DRAW_LOC_MAX_DIF) &&
-			Util::IsRoughlyEqual(lineThickness, line->LineThickness, DRAW_LOC_MAX_DIF) &&
+			IsRoughlyEqual(from.x, line->From.x, DRAW_LOC_MAX_DIF) &&
+			IsRoughlyEqual(from.y, line->From.y, DRAW_LOC_MAX_DIF) &&
+			IsRoughlyEqual(from.z, line->From.z, DRAW_LOC_MAX_DIF) &&
+			IsRoughlyEqual(to.x, line->To.x, DRAW_LOC_MAX_DIF) &&
+			IsRoughlyEqual(to.y, line->To.y, DRAW_LOC_MAX_DIF) &&
+			IsRoughlyEqual(to.z, line->To.z, DRAW_LOC_MAX_DIF) &&
+			IsRoughlyEqual(lineThickness, line->LineThickness, DRAW_LOC_MAX_DIF) &&
 			color == line->Color) {
 			return line;
 		}
@@ -177,7 +177,7 @@ DebugAPILine* DebugAPI::GetExistingLine(const glm::vec3& from, const glm::vec3& 
 
 void DebugAPI::DrawLine3D(RE::GPtr<RE::GFxMovieView> movie, glm::vec3 from, glm::vec3 to, float color, float lineThickness, float alpha)
 {
-	if (Util::IsPosBehindPlayerCamera(from) && Util::IsPosBehindPlayerCamera(to)) {
+	if (IsPosBehindPlayerCamera(from) && IsPosBehindPlayerCamera(to)) {
 		return;
 	}
 
