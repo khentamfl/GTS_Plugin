@@ -7,6 +7,7 @@
 #include "data/runtime.hpp"
 #include "managers/footstep.hpp"
 #include "managers/reloader.hpp"
+#include "UI/DebugAPI.hpp"
 
 #include <stddef.h>
 #include <thread>
@@ -35,8 +36,7 @@ namespace {
 	{
 		auto path = log_directory();
 
-		if (!path)
-		{
+		if (!path) {
 			report_and_fail("Unable to lookup SKSE logs directory.");
 		}
 		*path /= PluginDeclaration::GetSingleton()->GetName();
@@ -44,8 +44,7 @@ namespace {
 
 		std::shared_ptr <spdlog::logger> log;
 
-		if (IsDebuggerPresent())
-		{
+		if (IsDebuggerPresent()) {
 			log = std::make_shared <spdlog::logger>(
 				"Global", std::make_shared <spdlog::sinks::msvc_sink_mt>());
 		} else {
@@ -105,18 +104,21 @@ namespace {
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 						// It is now safe to access form data.
 						Runtime::GetSingleton().Load();
+						DebugOverlayMenu::Register();
 						break;
 					// Skyrim game events.
 					case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
 						// Data will be a boolean indicating whether the load was successful.
 						{
 							Transient::GetSingleton().Clear();
+							DebugOverlayMenu::Load();
 							GtsManager::GetSingleton().enabled = true;
 						}
 						break;
 					case MessagingInterface::kNewGame: // Player starts a new game from main menu.
 						{
 							Transient::GetSingleton().Clear();
+							DebugOverlayMenu::Load();
 							GtsManager::GetSingleton().enabled = true;
 						}
 						break;
@@ -129,8 +131,7 @@ namespace {
 					case MessagingInterface::kDeleteGame: // The player deleted a saved game from within the load menu.
 						break;
 			}
-		}))
-		{
+		})) {
 			stl::report_and_fail("Unable to register message listener.");
 		}
 	}
