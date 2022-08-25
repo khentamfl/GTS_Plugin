@@ -478,6 +478,28 @@ namespace Gts {
 								scale_recursive("", dragon, factor);
 							}
 						}
+
+						hkpRigidBody* bumped_body = controller->bumpedBody.get();
+						if (bumped_body) {
+							log::info("    - Got bumped body");
+							auto shape = bumped_body->GetShape();
+							if (shape) {
+								log::info("    - Got Shape: {}", static_cast<int>(shape->type));
+								hkpShape* dragon = const_cast<hkpShape*>(shape);
+								scale_recursive("", dragon, factor);
+							}
+						}
+
+						hkpRigidBody* bumped_char_collision = controller->bumpedCharCollisionObject.get();
+						if (bumped_char_collision) {
+							log::info("    - Got bumped char collision object");
+							auto shape = bumped_char_collision->GetShape();
+							if (shape) {
+								log::info("    - Got Shape: {}", static_cast<int>(shape->type));
+								hkpShape* dragon = const_cast<hkpShape*>(shape);
+								scale_recursive("", dragon, factor);
+							}
+						}
 					}
 				}
 			}
