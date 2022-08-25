@@ -286,11 +286,11 @@ namespace {
 								// 	log::error("Capsule is a lost one of ours");
 								// }
 								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule);
-							} else if (actor_data->form_id == 0x14) {
-								std::string name = currentnode->name.c_str();
-								log::info("Node {} has type {}", name, static_cast<int>(shape->type));
 							}
-							log::info("CHECK {:X}", actor_data->form_id);
+							//  else if (actor_data->form_id == 0x14) {
+							// 	std::string name = currentnode->name.c_str();
+							// 	log::info("Node {} has type {}", name, static_cast<int>(shape->type));
+							// }
 						}
 					}
 				}
@@ -416,14 +416,18 @@ namespace Gts {
 
 		static bool doonce = true;
 		if (doonce) {
+			doonce = false;
 			log::info("==Experiment");
+			float factor = 100.0;
 			for (auto actor: find_team_player()) {
 				if (actor) {
 					log::info(" + {}", actor->GetDisplayFullName());
 					auto controller = actor->GetCharController();
 					if (controller) {
+						log::info("    - Got CharController");
 						bhkCharProxyController* proxy_controller = skyrim_cast<bhkCharProxyController*>(controller);
 						if (proxy_controller) {
+							log::info("    - Got ProxyController");
 							auto hkp_char_proxy = proxy_controller->GetCharacterProxy();
 							if (hkp_char_proxy) {
 								log::info("    - Got hkp proxy");
@@ -436,9 +440,6 @@ namespace Gts {
 										if (shape->type == hkpShapeType::kList) {
 											const hkpListShape* container = static_cast<const hkpListShape*>(shape);
 
-
-											doonce = false;
-											float factor = 100.0;
 											if (container) {
 												auto key = container->GetFirstKey();
 												while (key != HK_INVALID_SHAPE_KEY) {
@@ -447,7 +448,7 @@ namespace Gts {
 													if (child_shape) {
 														log::info("      - ChildShape is of type: {}", static_cast<int>(child_shape->type));
 														if (child_shape->type == hkpShapeType::kCapsule) {
-															log::info("        - Chaging the capsule");
+															log::info("        - Changing the capsule");
 															const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(child_shape);
 															hkpCapsuleShape* dragon = const_cast<hkpCapsuleShape*>(orig_capsule);
 															dragon->radius *= factor;
