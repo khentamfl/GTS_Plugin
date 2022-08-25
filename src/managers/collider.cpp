@@ -309,6 +309,23 @@ namespace {
 			capsule->vertexA = data->start * vec_scale;
 			capsule->vertexB = data->end * vec_scale;
 			capsule->radius = expected_radius;
+
+			RE::hkTransform shapeTransform;
+			// use identity matrix for the BB of the unrotated object
+			shapeTransform.rotation.col0 = { 1.0f, 0.0f, 0.0f, 0.0f };
+			shapeTransform.rotation.col1 = { 0.0f, 1.0f, 0.0f, 0.0f };
+			shapeTransform.rotation.col2 = { 0.0f, 0.0f, 1.0f, 0.0f };
+			shapeTransform.translation.quad = _mm_set_ps(0.0f, 0.0f, 0.0f, 0.0f);
+
+			RE::hkAabb boundingBoxLocal;
+			capsule->GetAabbImpl(shapeTransform, 0.0f, boundingBoxLocal);
+
+			float boundMinLocal[4];
+			_mm_store_ps(boundMinLocal, boundingBoxLocal.min.quad);
+			float boundMaxLocal[4];
+			_mm_store_ps(boundMaxLocal, boundingBoxLocal.max.quad);
+
+			log::info("Capsule bb is now {},{},{} -- {},{},{}", boundMinLocal[0], boundMinLocal[1], boundMinLocal[2], boundMaxLocal[0], boundMaxLocal[1], boundMaxLocal[2]);
 		}
 	}
 
@@ -330,10 +347,10 @@ namespace {
 								// }
 								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule);
 							}
-							//  else if (actor_data->form_id == 0x14) {
-							// 	std::string name = currentnode->name.c_str();
-							// 	log::info("Node {} has type {}", name, static_cast<int>(shape->type));
-							// }
+							if (actor_data->form_id == 0x14) {
+								std::string name = currentnode->name.c_str();
+								log::info("Node {} has type {}", name, static_cast<int>(shape->type));
+							}
 						}
 					}
 				}
