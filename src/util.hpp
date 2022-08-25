@@ -9,7 +9,7 @@ using namespace SKSE;
 
 namespace Gts {
 	inline static float* g_delta_time = (float*)REL::RelocationID(523660, 410199).address();
-	inline static float*[4] WorldToCamMatrix = (float(*)[4]) REL::RelocationID(519579, 406126).address();
+	inline static RE::GMatrix3D* = (RE::GMatrix3D*) REL::RelocationID(519579, 406126).address();
 	inline static RE::NiRect<float>* ViewPort = (RE::NiRect<float>*) REL::RelocationID(519618,406160).address();
 
 	inline std::string_view actor_name(Actor* actor) {

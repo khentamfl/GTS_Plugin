@@ -298,7 +298,7 @@ glm::vec2 DebugAPI::WorldToScreenLoc(RE::GPtr<RE::GFxMovieView> movie, glm::vec3
 
 	float zVal;
 
-	RE::NiCamera::WorldPtToScreenPt3(Gts::WorldToCamMatrix, *Gts::ViewPort, niWorldLoc, screenLocOut.x, screenLocOut.y, zVal, 1e-5f);
+	RE::NiCamera::WorldPtToScreenPt3(Gts::WorldToCamMatrix->data, *Gts::ViewPort, niWorldLoc, screenLocOut.x, screenLocOut.y, zVal, 1e-5f);
 	RE::GRectF rect = movie->GetVisibleFrameRect();
 
 	screenLocOut.x = rect.left + (rect.right - rect.left) * screenLocOut.x;

@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: build
-          key: ${{ runner.os }}-${{ hashFiles('README.md') }}
+          key: ${{ runner.os }}-${{ hashFiles('README.md', 'CMakeList.txt', 'vcpkg.json', 'vcpkg-configuration.json') }}
       - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
         uses: lukka/run-cmake@v10
         with:
