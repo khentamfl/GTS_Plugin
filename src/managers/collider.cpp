@@ -27,6 +27,49 @@ namespace {
 
 		return x;
 	}
+
+
+	void scale_recursive(std::string_view prefix, hkpShape* shape, float scale) {
+		if (!shape) {
+			return;
+		}
+		if (shape->type == hkpShapeType::kCapsule) {
+			log::info("{}- Capsule (Scaling by {})", prefix, scale);
+			auto actual_shape = static_cast<hkpCapsuleShape*>(shape);
+			actual_shape->radius *= scale;
+			actual_shape->vertexA = actual_shape->vertexA * hkVector4(scale);
+			actual_shape->vertexB = actual_shape->vertexB * hkVector4(scale);
+		} else if (shape->type == hkpShapeType::kList) {
+			log::info("{}- List (checking children)", prefix);
+			auto container = static_cast<hkpListShape*>(shape);
+			auto key = container->GetFirstKey();
+			while (key != HK_INVALID_SHAPE_KEY) {
+				auto buffer = hkpShapeBuffer();
+				auto child_shape = container->GetChildShape(key, buffer);
+				if (child_shape) {
+					hkpShape* dragon_child = const_cast<hkpShape*>(child_shape);
+					scale_recursive(std::string(prefix) + "  ", dragon_child, scale);
+				}
+				key = container->GetNextKey(key);
+			}
+		} else if (shape->type == hkpShapeType::kBVTree) {
+			log::info("{}- Tree (checking children)", prefix);
+			auto actual_shape = static_cast<hkpBvTreeShape*>(shape);
+			const hkpShapeContainer* container = actual_shape->GetContainer();
+			auto key = container->GetFirstKey();
+			while (key != HK_INVALID_SHAPE_KEY) {
+				auto buffer = hkpShapeBuffer();
+				auto child_shape = container->GetChildShape(key, buffer);
+				if (child_shape) {
+					hkpShape* dragon_child = const_cast<hkpShape*>(child_shape);
+					scale_recursive(std::string(prefix) + "  ", dragon_child, scale);
+				}
+				key = container->GetNextKey(key);
+			}
+		} else {
+			log::info("{}- Shape (of type {})", prefix, static_cast<int>(shape->type));
+		}
+	}
 }
 
 namespace RE {
@@ -425,46 +468,14 @@ namespace Gts {
 					auto controller = actor->GetCharController();
 					if (controller) {
 						log::info("    - Got CharController");
-						bhkCharProxyController* proxy_controller = skyrim_cast<bhkCharProxyController*>(controller);
-						if (proxy_controller) {
-							log::info("    - Got ProxyController");
-							auto hkp_char_proxy = proxy_controller->GetCharacterProxy();
-							if (hkp_char_proxy) {
-								log::info("    - Got hkp proxy");
-
-								auto phantom = hkp_char_proxy->shapePhantom;
-								if (phantom) {
-									auto shape = phantom->GetShape();
-									if (shape) {
-										log::info("    - Controller Phantom is of type: {}", static_cast<int>(shape->type));
-										if (shape->type == hkpShapeType::kList) {
-											const hkpListShape* container = static_cast<const hkpListShape*>(shape);
-
-											if (container) {
-												auto key = container->GetFirstKey();
-												while (key != HK_INVALID_SHAPE_KEY) {
-													auto buffer = hkpShapeBuffer();
-													auto child_shape = container->GetChildShape(key, buffer);
-													if (child_shape) {
-														log::info("      - ChildShape is of type: {}", static_cast<int>(child_shape->type));
-														if (child_shape->type == hkpShapeType::kCapsule) {
-															log::info("        - Changing the capsule");
-															const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(child_shape);
-															hkpCapsuleShape* dragon = const_cast<hkpCapsuleShape*>(orig_capsule);
-															dragon->radius *= factor;
-															dragon->vertexA = dragon->vertexA * factor;
-															dragon->vertexB = dragon->vertexB * factor;
-														}
-													}
-													key = container->GetNextKey(key);
-												}
-												log::info("    - Changing the List group size");
-												hkpListShape* dragon_container = const_cast<hkpListShape*>(container);
-												dragon_container->aabbHalfExtents = dragon_container->aabbHalfExtents * hkVector4(factor);
-											}
-										}
-									}
-								}
+						hkpRigidBody* support_body = controller->supportBody.get();
+						if (support_body) {
+							log::info("    - Got support body");
+							auto shape = support_body->GetShape();
+							if (shape) {
+								log::info("    - Got Shape: {}", static_cast<int>(shape->type));
+								hkpShape* dragon = const_cast<hkpShape*>(shape);
+								scale_recursive("", dragon, factor);
 							}
 						}
 					}
