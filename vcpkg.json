@@ -5,7 +5,11 @@
   "features": {
     "plugin": {
       "description": "Build the SKSE plugin.",
-      "dependencies": ["commonlibsse-ng", "articuno"]
+      "dependencies": [
+        "commonlibsse-ng",
+        "articuno",
+        "glm"
+      ]
     }
   },
   "default-features": ["plugin"]
