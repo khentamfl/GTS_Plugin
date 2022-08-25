@@ -419,19 +419,20 @@ namespace Gts {
 			log::info("==Experiment");
 			for (auto actor: find_team_player()) {
 				if (actor) {
+					log::info(" + {}", actor->GetDisplayFullName());
 					auto controller = actor->GetCharController();
 					if (controller) {
 						bhkCharProxyController* proxy_controller = skyrim_cast<bhkCharProxyController*>(controller);
 						if (proxy_controller) {
 							auto hkp_char_proxy = proxy_controller->GetCharacterProxy();
 							if (hkp_char_proxy) {
-								log::info("Got hkp proxy");
+								log::info("    - Got hkp proxy");
 
 								auto phantom = hkp_char_proxy->shapePhantom;
 								if (phantom) {
 									auto shape = phantom->GetShape();
 									if (shape) {
-										log::info("Controller Phantom is of type: {}", static_cast<int>(shape->type));
+										log::info("    - Controller Phantom is of type: {}", static_cast<int>(shape->type));
 										if (shape->type == hkpShapeType::kList) {
 											const hkpListShape* container = static_cast<const hkpListShape*>(shape);
 
@@ -444,9 +445,9 @@ namespace Gts {
 													auto buffer = hkpShapeBuffer();
 													auto child_shape = container->GetChildShape(key, buffer);
 													if (child_shape) {
-														log::info("ChildShape is of type: {}", static_cast<int>(child_shape->type));
+														log::info("      - ChildShape is of type: {}", static_cast<int>(child_shape->type));
 														if (child_shape->type == hkpShapeType::kCapsule) {
-															log::info("Chaging the capsule");
+															log::info("        - Chaging the capsule");
 															const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(child_shape);
 															hkpCapsuleShape* dragon = const_cast<hkpCapsuleShape*>(orig_capsule);
 															dragon->radius *= factor;
@@ -456,6 +457,7 @@ namespace Gts {
 													}
 													key = container->GetNextKey(key);
 												}
+												log::info("    - Changing the List group size");
 												hkpListShape* dragon_container = const_cast<hkpListShape*>(container);
 												dragon_container->aabbHalfExtents = dragon_container->aabbHalfExtents * hkVector4(factor);
 											}
