@@ -414,93 +414,51 @@ namespace Gts {
 			}
 		}
 
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
+		static bool doonce = true;
+		if (doonce) {
 			log::info("==Experiment");
-			auto controller = player->GetCharController();
-			if (controller) {
-				bhkCharProxyController* proxy_controller = skyrim_cast<bhkCharProxyController*>(controller);
-				if (proxy_controller) {
-					auto hkp_char_proxy = proxy_controller->GetCharacterProxy();
-					if (hkp_char_proxy) {
-						log::info("Got hkp proxy");
-						for (auto rigid_body: hkp_char_proxy->bodies) {
-							if (rigid_body) {
-								auto shape = rigid_body->GetShape();
-								if (shape) {
-									log::info("Proxy RB is of type: {}", static_cast<int>(shape->type));
-									if (shape->type == hkpShapeType::kMOPP) {
-										const hkpMoppBvTreeShape* bvhtree = static_cast<const hkpMoppBvTreeShape*>(shape);
-										auto container = bvhtree->GetContainer();
-										if (container) {
-											auto key = container->GetFirstKey();
-											while (key != HK_INVALID_SHAPE_KEY) {
-												auto buffer = hkpShapeBuffer();
-												auto child_shape = container->GetChildShape(key, buffer);
-												if (child_shape) {
-													log::info("ChildShape is of type: {}", static_cast<int>(child_shape->type));
-												}
-												key = container->GetNextKey(key);
-											}
-										}
-									} else if (shape->type == hkpShapeType::kBVTree) {
-										const hkpBvTreeShape* bvhtree = static_cast<const hkpBvTreeShape*>(shape);
-										auto container = bvhtree->GetContainer();
-										if (container) {
-											auto key = container->GetFirstKey();
-											while (key != HK_INVALID_SHAPE_KEY) {
-												auto buffer = hkpShapeBuffer();
-												auto child_shape = container->GetChildShape(key, buffer);
-												if (child_shape) {
-													log::info("ChildShape is of type: {}", static_cast<int>(child_shape->type));
-												}
-												key = container->GetNextKey(key);
-											}
-										}
-									}
-								}
-							}
-						}
-						for (auto phantom: hkp_char_proxy->phantoms) {
-							if (phantom) {
-								auto shape = phantom->GetShape();
-								if (shape) {
-									log::info("Proxy Phantom is of type: {}", static_cast<int>(shape->type));
-								}
-							}
-						}
+			for (auto actor: find_team_player()) {
+				if (actor) {
+					auto controller = actor->GetCharController();
+					if (controller) {
+						bhkCharProxyController* proxy_controller = skyrim_cast<bhkCharProxyController*>(controller);
+						if (proxy_controller) {
+							auto hkp_char_proxy = proxy_controller->GetCharacterProxy();
+							if (hkp_char_proxy) {
+								log::info("Got hkp proxy");
 
-						auto phantom = hkp_char_proxy->shapePhantom;
-						if (phantom) {
-							auto shape = phantom->GetShape();
-							if (shape) {
-								log::info("Controller Phantom is of type: {}", static_cast<int>(shape->type));
-								if (shape->type == hkpShapeType::kList) {
-									const hkpListShape* container = static_cast<const hkpListShape*>(shape);
-									static bool doonce = true;
-									if (doonce) {
-										doonce = false;
-										float factor = 100.0;
-										if (container) {
-											auto key = container->GetFirstKey();
-											while (key != HK_INVALID_SHAPE_KEY) {
-												auto buffer = hkpShapeBuffer();
-												auto child_shape = container->GetChildShape(key, buffer);
-												if (child_shape) {
-													log::info("ChildShape is of type: {}", static_cast<int>(child_shape->type));
-													if (child_shape->type == hkpShapeType::kCapsule) {
-														log::info("Chaging the capsule");
-														const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(child_shape);
-														hkpCapsuleShape* dragon = const_cast<hkpCapsuleShape*>(orig_capsule);
-														dragon->radius *= factor;
-														dragon->vertexA = dragon->vertexA * factor;
-														dragon->vertexB = dragon->vertexB * factor;
+								auto phantom = hkp_char_proxy->shapePhantom;
+								if (phantom) {
+									auto shape = phantom->GetShape();
+									if (shape) {
+										log::info("Controller Phantom is of type: {}", static_cast<int>(shape->type));
+										if (shape->type == hkpShapeType::kList) {
+											const hkpListShape* container = static_cast<const hkpListShape*>(shape);
+
+
+											doonce = false;
+											float factor = 100.0;
+											if (container) {
+												auto key = container->GetFirstKey();
+												while (key != HK_INVALID_SHAPE_KEY) {
+													auto buffer = hkpShapeBuffer();
+													auto child_shape = container->GetChildShape(key, buffer);
+													if (child_shape) {
+														log::info("ChildShape is of type: {}", static_cast<int>(child_shape->type));
+														if (child_shape->type == hkpShapeType::kCapsule) {
+															log::info("Chaging the capsule");
+															const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(child_shape);
+															hkpCapsuleShape* dragon = const_cast<hkpCapsuleShape*>(orig_capsule);
+															dragon->radius *= factor;
+															dragon->vertexA = dragon->vertexA * factor;
+															dragon->vertexB = dragon->vertexB * factor;
+														}
 													}
+													key = container->GetNextKey(key);
 												}
-												key = container->GetNextKey(key);
+												hkpListShape* dragon_container = const_cast<hkpListShape*>(container);
+												dragon_container->aabbHalfExtents = dragon_container->aabbHalfExtents * hkVector4(factor);
 											}
-											hkpListShape* dragon_container = const_cast<hkpListShape*>(container);
-											dragon_container->aabbHalfExtents = dragon_container->aabbHalfExtents * hkVector4(factor);
 										}
 									}
 								}

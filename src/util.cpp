@@ -42,6 +42,16 @@ namespace Gts {
 		return result;
 	}
 
+	vector<Actor*> find_team_player() {
+		vector<Actor*> result;
+		for (auto actor: find_actors()) {
+			if (actor->formID == 0x14 || actor->IsPlayerTeammate()) {
+				result.push_back(actor);
+			}
+		}
+		return result;
+	}
+
 	vector<Actor*> find_actors_high() {
 		vector<Actor*> result;
 

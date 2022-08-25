@@ -34,6 +34,7 @@ namespace Gts {
 	vector<Actor*> find_actors_middle_high();
 	vector<Actor*> find_actors_middle_low();
 	vector<Actor*> find_actors_low();
+	vector<Actor*> find_team_player();
 
 	float unit_to_meter(const float& unit);
 	float meter_to_unit(const float& meter);
@@ -167,8 +168,9 @@ namespace Gts {
 		auto valueMod = actor->staminaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 		auto currentValue = actor->GetActorValue(ActorValue::kStamina);
 		auto returnValue = currentValue / (baseValue + valueMod);
-		if (returnValue <= 0.05)
-		{returnValue = 0.05;} // CTD Protection
+		if (returnValue <= 0.05) {
+			returnValue = 0.05;
+		} // CTD Protection
 		return returnValue;
 	}
 
@@ -185,8 +187,9 @@ namespace Gts {
 		auto valueMod = actor->magickaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 		auto currentValue = actor->GetActorValue(ActorValue::kMagicka);
 		auto returnValue = currentValue / (baseValue + valueMod);
-		if (returnValue <= 0.05)
-		{returnValue = 0.05;} // CTD Protection
+		if (returnValue <= 0.05) {
+			returnValue = 0.05;
+		} // CTD Protection
 		return returnValue;
 	}
 
