@@ -312,7 +312,7 @@ DebugOverlayMenu::DebugOverlayMenu()
 {
 	auto scaleformManager = RE::BSScaleformManager::GetSingleton();
 	if (!scaleformManager) {
-		logger::error("BTPS: failed to initialize DebugOverlayMenu - ScaleformManager not found");
+		logger::error("Gts: failed to initialize DebugOverlayMenu - ScaleformManager not found");
 		return;
 	}
 
@@ -333,16 +333,16 @@ DebugOverlayMenu::DebugOverlayMenu()
 
 void DebugOverlayMenu::Register()
 {
-	logger::info("BTPS: registering DebugOverlayMenu...");
+	logger::info("Gts: registering DebugOverlayMenu...");
 
 	auto ui = RE::UI::GetSingleton();
 	if (ui) {
 		ui->Register(MENU_NAME, Creator);
 		DebugOverlayMenu::Load();
 
-		logger::info("BTPS: successfully registered DebugOverlayMenu");
+		logger::info("Gts: successfully registered DebugOverlayMenu");
 	} else {
-		logger::error("BTPS: failed to register DebugOverlayMenu");
+		logger::error("Gts: failed to register DebugOverlayMenu");
 	}
 }
 
@@ -352,7 +352,7 @@ void DebugOverlayMenu::Load()
 	if (msgQ) {
 		msgQ->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
 	} else {
-		logger::warn("BTPS: failed to show DebugOverlayMenu");
+		logger::warn("Gts: failed to show DebugOverlayMenu");
 	}
 }
 
@@ -362,7 +362,7 @@ void DebugOverlayMenu::Unload()
 	if (msgQ) {
 		msgQ->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
 	} else {
-		logger::warn("BTPS: failed to hide DebugOverlayMenu");
+		logger::warn("Gts: failed to hide DebugOverlayMenu");
 	}
 }
 
@@ -422,7 +422,7 @@ void DebugAPI::CacheMenuData()
 	ScreenResY = abs(rect.top - rect.bottom);
 
 	CachedMenuData = true;
-	logger::info("BTPS: DebugAPI::CacheMenuData");
+	logger::info("Gts: DebugAPI::CacheMenuData");
 
 }
 

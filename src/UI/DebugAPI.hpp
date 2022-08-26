@@ -96,6 +96,12 @@ namespace Util {
 
 using namespace Util;
 
+namespace Gts {
+	inline glm::vec3 Ni2Glm(const RE::NiPoint3 &position) {
+		return glm::vec3{position.x, position.y, position.z};
+	}
+}
+
 struct ObjectBound
 {
 	ObjectBound()

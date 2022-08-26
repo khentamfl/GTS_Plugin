@@ -6,6 +6,7 @@
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "UI/DebugAPI.hpp"
 #include "util.hpp"
 #include <vector>
 #include <string>
@@ -259,6 +260,9 @@ void GtsManager::poll() {
 			GameMode(actor);
 		}
 	}
+
+	log::info("Drawing sphere");
+	DebugAPI::DrawSphere(Ni2Glm(player_char->GetCurrent3D()->world.translate), 2.0);
 }
 
 // Fired during the Papyrus OnUpdate event
