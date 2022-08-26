@@ -38,7 +38,22 @@ namespace Util {
 		return glm::vec3(playerCam->pos.x, playerCam->pos.y, playerCam->pos.z);
 	}
 
-	inline eglm::vec3 NormalizeVector(glm::vec3 p)
+	inline glm::quat GetCameraRot()
+	{
+		auto playerCam = RE::PlayerCamera::GetSingleton();
+
+		auto cameraState = playerCam->currentState.get();
+		if (!cameraState) {
+			return glm::quat();
+		}
+
+		RE::NiQuaternion niRotation;
+		cameraState->GetRotation(niRotation);
+
+		return glm::quat(niRotation.w, niRotation.x, niRotation.y, niRotation.z);
+	}
+
+	inline glm::vec3 NormalizeVector(glm::vec3 p)
 	{
 		return glm::normalize(p);
 	}
