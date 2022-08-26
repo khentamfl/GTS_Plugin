@@ -255,7 +255,7 @@ namespace {
 			game_modeNPC =  static_cast<ChosenGameModeNPC>(game_modeNPC_int);
 		}
 
-		if (game_modeNPC != ChosenGameModeNPC::None) {
+		if (game_modeNPC != ChosenGameModeNPC::NoneNPC) {
 			float GrowthRate = runtime.GrowthModeRateNPC->value;
 			float ShrinkRate = runtime.ShrinkModeRateNPC->value;
 
@@ -333,7 +333,7 @@ void GtsManager::poll() {
 			}
 			update_actor(actor);
 			apply_actor(actor);
-			GameModePC(actor);
+			GameMode(actor);
 			GameModeNPC(actor);
 		}
 	}
