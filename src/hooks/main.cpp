@@ -2,7 +2,10 @@
 #include "util.hpp"
 
 #include "managers/GtsManager.hpp"
+#include "managers/GtsQuest.hpp"
+#include "managers/camera.hpp"
 #include "magic/magic.hpp"
+
 
 using namespace RE;
 using namespace SKSE;
@@ -22,9 +25,13 @@ namespace Hooks
 		_Update(a_this, a2);
 		auto& manager = GtsManager::GetSingleton();
 		auto& magic = MagicManager::GetSingleton();
+		auto& camera = CameraManager::GetSingleton();
+		auti& quest = QuestManager::GetSingleton();
 		activate_mainthread_mode();
 		manager.poll();
 		magic.Update();
+		camera.Update();
+		quest.Update();
 		deactivate_mainthread_mode();
 	}
 }

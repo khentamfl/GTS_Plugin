@@ -106,6 +106,9 @@ namespace Gts {
 			TESGlobal * ChosenGameModeNPC = nullptr;
 			TESGlobal * GrowthModeRateNPC = nullptr;
 			TESGlobal * ShrinkModeRateNPC = nullptr;
+			TESGlobal * AdjustMaxSize = nullptr;
+			TESGlobal * AdjustMaxSize_MassBased = nullptr;
+			TESGlobal * SelectedSizeFormula = nullptr;
 
 			TESGlobal * ProtectEssentials = nullptr;
 
@@ -115,6 +118,8 @@ namespace Gts {
 
 			MagicItem * ShrinkBackNPCSpell = nullptr;
 			MagicItem * ShrinkBackSpell = nullptr;
+
+			TESQuest * MainQuest = nullptr;
 
 	};
 }

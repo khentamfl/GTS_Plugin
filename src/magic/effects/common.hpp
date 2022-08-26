@@ -67,6 +67,8 @@ namespace Gts {
 	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
 		float amount = CalcPower(from, scale_factor, bonus);
+		float target_scale = get_visual_scale(from);
+		AdjustSizeLimit(0.0001 * target_scale);
 		mod_target_scale(from, -amount);
 		mod_target_scale(to, amount*effeciency);
 	}
@@ -74,6 +76,8 @@ namespace Gts {
 	inline void AbsorbSteal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
 		float amount = CalcPower(from, scale_factor, bonus);
+		float target_scale = get_visual_scale(from);
+		AdjustSizeLimit(0.0016 * target_scale);
 		mod_target_scale(from, -amount);
 		mod_target_scale(to, amount*effeciency/10); // < 4 times weaker size steal towards caster. Absorb exclusive.
 	}
@@ -124,7 +128,7 @@ namespace Gts {
 		if (caster->HasPerk(runtime.PerkPart2)) {
 			power *= PERK2_BONUS;
 		}
-
+		AdjustSizeLimit(0.0001 * target_scale * power);
 		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
@@ -135,9 +139,42 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
+			AdjustSizeLimit(0.0117 * target_scale);
 			//target->SetDelete(true);
 			return true; // NOLINT
 		}
 		return false;
+	}
+
+
+		inline void AdjustSizeLimit(float Value)  // A function that adjusts Size Limit (Globals)
+	{
+		//AdjustMaxSize = 20CAC5
+		//AdjustMaxSize_MassBased = 277005
+		auto& runtime = Runtime::GetSingleton();
+
+		auto GlobalMaxSizeCalc = runtime.AdjustMaxSize; // <- Bonus that is used to determina quest progression
+		auto AdjustMaxSize_MassBased_Limit = runtime.AdjustMaxSize_MassBased; // <- Applies it
+
+		float SelectedFormula = runtime.SelectedSizeFormula->value;
+		float SizeLimit = runtime.SizeLimit->value;
+		float ProgressionMultiplier = runtime.ProgressionMultiplier;
+		float GetGlobalMaxValue = GlobalMaxSizeCalc->Value;
+		float GetMassValue = AdjustMaxSize_MassBased_Store->Value;
+
+		if (GetGlobalMaxValue < 10.0) {
+		GlobalMaxSizeCalc->Value = GetGlobalMaxValue + (Value * ProgressionMultiplier * TimeScale()); // Always apply it
+		}
+
+		if (AdjustMaxSize_MassBased_Limit < SizeLimit) {
+		if (SelectedFormula >= 2.0) {
+			AdjustMaxSize_MassBased_Limit->Value = GetValue + (Value * ProgressionMultiplier * TimeScale()); // We apply it
+			}
+
+		else {
+			
+			AdjustMaxSize_MassBased_Store->Value = GetMassValue + (Value * ProgressionMultiplier * TimeScale()); // Else we store it for the future
+			}
+		}
 	}
 }
