@@ -26,7 +26,7 @@ namespace Hooks
 		auto& manager = GtsManager::GetSingleton();
 		auto& magic = MagicManager::GetSingleton();
 		auto& camera = CameraManager::GetSingleton();
-		auti& quest = QuestManager::GetSingleton();
+		auto& quest = QuestManager::GetSingleton();
 		activate_mainthread_mode();
 		manager.poll();
 		magic.Update();
