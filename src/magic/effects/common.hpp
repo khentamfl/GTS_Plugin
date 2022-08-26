@@ -29,7 +29,6 @@ namespace Gts {
 		float SizeLimit = runtime.sizeLimit->value;
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float GetGlobalMaxValue = GlobalMaxSizeCalc->Value;
-		float GetMassValue = AdjustMaxSize_MassBased_Store->Value;
 
 		if (GetGlobalMaxValue < 10.0) {
 		GlobalMaxSizeCalc->Value = GetGlobalMaxValue + (Value * ProgressionMultiplier * TimeScale()); // Always apply it
@@ -37,12 +36,12 @@ namespace Gts {
 
 		if (AdjustMaxSize_MassBased_Limit < SizeLimit) {
 		if (SelectedFormula >= 2.0) {
-			AdjustMaxSize_MassBased_Limit->Value = GetValue + (Value * ProgressionMultiplier * TimeScale()); // We apply it
+			AdjustMaxSize_MassBased_Limit->Value = GetGlobalMaxValue + (Value * ProgressionMultiplier * TimeScale()); // We apply it
 			}
 
 		else {
 			
-			AdjustMaxSize_MassBased_Store->Value = GetMassValue + (Value * ProgressionMultiplier * TimeScale()); // Else we store it for the future
+			GlobalMaxSizeCalc->Value = GetMassValue + (Value * ProgressionMultiplier * TimeScale()); // Else we store it for the future
 			}
 		}
 	}
