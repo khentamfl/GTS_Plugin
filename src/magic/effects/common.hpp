@@ -15,6 +15,38 @@ namespace Gts {
 		return (*g_delta_time) * BASE_FPS;
 	}
 
+
+	inline void AdjustSizeLimit(float Value)  // A function that adjusts Size Limit (Globals)
+	{
+		//AdjustMaxSize = 20CAC5
+		//AdjustMaxSize_MassBased = 277005
+		auto& runtime = Runtime::GetSingleton();
+
+		auto GlobalMaxSizeCalc = runtime.AdjustMaxSize; // <- Bonus that is used to determina quest progression
+		auto AdjustMaxSize_MassBased_Limit = runtime.AdjustMaxSize_MassBased; // <- Applies it
+
+		float SelectedFormula = runtime.SelectedSizeFormula->value;
+		float SizeLimit = runtime.SizeLimit->value;
+		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
+		float GetGlobalMaxValue = GlobalMaxSizeCalc->Value;
+		float GetMassValue = AdjustMaxSize_MassBased_Store->Value;
+
+		if (GetGlobalMaxValue < 10.0) {
+		GlobalMaxSizeCalc->Value = GetGlobalMaxValue + (Value * ProgressionMultiplier * TimeScale()); // Always apply it
+		}
+
+		if (AdjustMaxSize_MassBased_Limit < SizeLimit) {
+		if (SelectedFormula >= 2.0) {
+			AdjustMaxSize_MassBased_Limit->Value = GetValue + (Value * ProgressionMultiplier * TimeScale()); // We apply it
+			}
+
+		else {
+			
+			AdjustMaxSize_MassBased_Store->Value = GetMassValue + (Value * ProgressionMultiplier * TimeScale()); // Else we store it for the future
+			}
+		}
+	}
+
 	inline float CalcEffeciency(Actor* caster, Actor* target) {
 		const float DRAGON_PEANLTY = 0.14;
 		auto& runtime = Runtime::GetSingleton();
@@ -144,37 +176,5 @@ namespace Gts {
 			return true; // NOLINT
 		}
 		return false;
-	}
-
-
-		inline void AdjustSizeLimit(float Value)  // A function that adjusts Size Limit (Globals)
-	{
-		//AdjustMaxSize = 20CAC5
-		//AdjustMaxSize_MassBased = 277005
-		auto& runtime = Runtime::GetSingleton();
-
-		auto GlobalMaxSizeCalc = runtime.AdjustMaxSize; // <- Bonus that is used to determina quest progression
-		auto AdjustMaxSize_MassBased_Limit = runtime.AdjustMaxSize_MassBased; // <- Applies it
-
-		float SelectedFormula = runtime.SelectedSizeFormula->value;
-		float SizeLimit = runtime.SizeLimit->value;
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-		float GetGlobalMaxValue = GlobalMaxSizeCalc->Value;
-		float GetMassValue = AdjustMaxSize_MassBased_Store->Value;
-
-		if (GetGlobalMaxValue < 10.0) {
-		GlobalMaxSizeCalc->Value = GetGlobalMaxValue + (Value * ProgressionMultiplier * TimeScale()); // Always apply it
-		}
-
-		if (AdjustMaxSize_MassBased_Limit < SizeLimit) {
-		if (SelectedFormula >= 2.0) {
-			AdjustMaxSize_MassBased_Limit->Value = GetValue + (Value * ProgressionMultiplier * TimeScale()); // We apply it
-			}
-
-		else {
-			
-			AdjustMaxSize_MassBased_Store->Value = GetMassValue + (Value * ProgressionMultiplier * TimeScale()); // Else we store it for the future
-			}
-		}
 	}
 }
