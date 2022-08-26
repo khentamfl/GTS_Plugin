@@ -24,6 +24,7 @@ namespace Gts {
 
 		float GetGlobalMaxSizeCalc = runtime.GlobaMaxSizeCalc->value; // <- Bonus that is used to determina quest progression
 		float GetGlobalMassSize = runtime.AdjustMaxSize_MassBased->value; // <- Applies it
+		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 
 		float SelectedFormula = runtime.SelectedSizeFormula->value;
 		float SizeLimit = runtime.sizeLimit->value;
@@ -32,9 +33,8 @@ namespace Gts {
 		runtime.GlobalMaxSizeCalc->Value = GetGlobalMaxSizeCalc + (Value * ProgressionMultiplier * TimeScale()); // Always apply it
 		}
 
-		if (AdjustMaxSize_MassBased_Limit < SizeLimit) {
-		if (SelectedFormula >= 2.0) {
-			runtime.AdjustMaxSize_MassBased_Limit->Value = GetGlobalMassSize + (Value * ProgressionMultiplier * TimeScale()); // We apply it
+		if (runtime.AdjustMaxSize_MassBased_Limit < SizeLimit && SelectedFormula >= 2.0) {
+			runtime.AdjustMaxSize_MassBased_Limit->Value = GetGlobalMassSize + (Value * ProgressionMultiplier * TimeScale()); 
 			}
 		}
 	}

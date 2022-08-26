@@ -106,7 +106,7 @@ namespace Gts {
 			TESGlobal * ChosenGameModeNPC = nullptr;
 			TESGlobal * GrowthModeRateNPC = nullptr;
 			TESGlobal * ShrinkModeRateNPC = nullptr;
-			TESGlobal * GlobaMaxSizeCalc = nullptr;
+			TESGlobal * GlobalMaxSizeCalc = nullptr;
 			TESGlobal * AdjustMaxSize_MassBased = nullptr;
 			TESGlobal * SelectedSizeFormula = nullptr;
 
