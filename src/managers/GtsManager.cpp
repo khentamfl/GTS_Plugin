@@ -184,10 +184,10 @@ namespace {
 	};
 
 	enum ChosenGameModeNPC {
-		None,
-		Grow,
-		Shrink,
-		Standard,
+		NoneNPC,
+		GrowNPC,
+		ShrinkNPC,
+		StandardNPC,
 	};
 	// Handles changes like slowly loosing height
 	// over time
@@ -251,8 +251,8 @@ namespace {
 		if (actor->formID != 0x14 && actor->IsPlayerTeammate()) {
 			game_modeNPC_int = runtime.ChosenGameMode->value;
 		} 
-		if (game_modeNPC_int >=0 && game_mode_int <= 3) {
-			game_modeNPC =  static_cast<ChosenGameMode>(game_mode_int);
+		if (game_modeNPC_int >=0 && game_modeNPC_int <= 3) {
+			game_modeNPC =  static_cast<ChosenGameModeNPC>(game_modeNPC_int);
 		}
 
 		if (game_modeNPC != ChosenGameModeNPC::None) {
@@ -262,17 +262,17 @@ namespace {
 			float natural_scale = 1.0;
 			float Scale = get_visual_scale(actor);
 			switch (game_modeNPC) {
-				case ChosenGameModeNPC::Grow: {
+				case ChosenGameModeNPC::GrowNPC: {
 					mod_target_scale(actor, Scale * (0.00010 + (GrowthRate * 0.25)));
 					break;
 				}
-				case ChosenGameModeNPC::Shrink: {
+				case ChosenGameModeNPC::ShrinkNPC: {
 					if (Scale > natural_scale) {
 						mod_target_scale(actor, Scale * -(0.00025 + (ShrinkRate * 0.25)));
 					}
 					break;
 				}
-				case ChosenGameModeNPC::Standard: {
+				case ChosenGameModeNPC::StandardNPC: {
 					if (actor->IsInCombat()) {
 						mod_target_scale(actor, Scale * (0.00008 + (GrowthRate * 0.17)));
 					} else {
