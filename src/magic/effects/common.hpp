@@ -33,11 +33,11 @@ namespace Gts {
 		runtime.GlobalMaxSizeCalc->value = GetGlobalMaxSizeCalc + (Value * ProgressionMultiplier * TimeScale()); // Always apply it
 		}
 
-		if (runtime.MassBasedSizeLimit < SizeLimit && SelectedFormula >= 2.0) {
+		if (GetGlobalMassSize < SizeLimit && SelectedFormula >= 2.0) {
 			runtime.MassBasedSizeLimit->value = GetGlobalMassSize + (Value * ProgressionMultiplier * TimeScale()); 
 			}
 		}
-	}
+	
 
 	inline float CalcEffeciency(Actor* caster, Actor* target) {
 		const float DRAGON_PEANLTY = 0.14;
