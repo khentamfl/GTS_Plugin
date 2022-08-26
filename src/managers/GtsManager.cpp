@@ -246,18 +246,18 @@ namespace {
 			set_target_scale(actor, size_limit);
 		}
 
-		ChosenGameModeNPC game_modeNPC = ChosenGameModeNPC::None;
+		ChosenGameModeNPC game_modeNPC = ChosenGameModeNPC::NoneNPC;
 		int game_modeNPC_int = 0;
 		if (actor->formID != 0x14 && actor->IsPlayerTeammate()) {
-			game_modeNPC_int = runtime.ChosenGameMode->value;
+			game_modeNPC_int = runtime.ChosenGameModeNPC->value;
 		} 
 		if (game_modeNPC_int >=0 && game_modeNPC_int <= 3) {
 			game_modeNPC =  static_cast<ChosenGameModeNPC>(game_modeNPC_int);
 		}
 
 		if (game_modeNPC != ChosenGameModeNPC::None) {
-			float GrowthRate = runtime.GrowthModeRate->value;
-			float ShrinkRate = runtime.ShrinkModeRate->value;
+			float GrowthRate = runtime.GrowthModeRateNPC->value;
+			float ShrinkRate = runtime.ShrinkModeRateNPC->value;
 
 			float natural_scale = 1.0;
 			float Scale = get_visual_scale(actor);
