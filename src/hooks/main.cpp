@@ -7,6 +7,7 @@
 #include "magic/magic.hpp"
 
 
+
 using namespace RE;
 using namespace SKSE;
 using namespace Gts;

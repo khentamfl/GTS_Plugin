@@ -123,9 +123,9 @@ namespace Gts {
 		this->GrowthModeRateNPC = find_form<TESGlobal>("GTS.esp|2EB74B");
 		this->ShrinkModeRateNPC = find_form<TESGlobal>("GTS.esp|2EB74A");
 
-		this->AdjustMaxSize = find_form<TESGlobal>("GTS.esp|20CAC5")
-		this->AdjustMaxSize_MassBased = find_form<TESGlobal>("GTS.esp|277005")
-		this->SelectedSizeFormula = find_form<TESGlobal>("GTS.esp|277004")
+		this->GlobaMaxSizeCalc = find_form<TESGlobal>("GTS.esp|20CAC5");
+		this->AdjustMaxSize_MassBased = find_form<TESGlobal>("GTS.esp|277005");
+		this->SelectedSizeFormula = find_form<TESGlobal>("GTS.esp|277004");
 
 		this->ProtectEssentials = find_form<TESGlobal>("GTS.esp|23A3E2");
 
