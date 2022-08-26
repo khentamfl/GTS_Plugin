@@ -261,8 +261,13 @@ void GtsManager::poll() {
 		}
 	}
 
-	log::info("Drawing sphere");
-	DebugAPI::DrawSphere(Ni2Glm(player_char->GetCurrent3D()->world.translate), 2.0);
+	auto model = player_char->GetCurrent3D();
+	if (model) {
+		auto spine_node = model->GetObjectByName("NPC Spine [Spn0]");
+		if (spine_node) {
+			DebugAPI::DrawSphere(Ni2Glm(spine_node->world.translate), meter_to_unit(2.0));
+		}
+	}
 }
 
 // Fired during the Papyrus OnUpdate event
