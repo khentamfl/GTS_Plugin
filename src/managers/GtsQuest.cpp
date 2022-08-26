@@ -9,10 +9,10 @@ namespace Gts {
 		return instance;
 	}
     void QuestManager::Update() {
-
+    auto& runtime = Runtime::GetSingleton();
 
     auto Player = PlayerCharacter::GetSingleton();
-    auto GtsQuest = QuestManager::GetSingleton();
+    auto GtsQuest = runtime.MainQuest;
     float QuestStage = GtsQuest->GetCurrentStageID();
    
     if (QuestStage > 100.0 || QuestStage < 20.0)
