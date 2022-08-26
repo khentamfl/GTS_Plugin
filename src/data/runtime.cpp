@@ -129,6 +129,42 @@ namespace Gts {
 
 		this->ProtectEssentials = find_form<TESGlobal>("GTS.esp|23A3E2");
 
+
+		///Camera
+		this->EnableCamera = find_form<TESGlobal>("GTS.esp|290512");
+		this->EnableAltCamera = find_form<TESGlobal>("GTS.esp|290513");
+		this->FeetCamera = find_form<TESGlobal>("GTS.esp|290525");
+		this->usingAutoDistance = find_form<TESGlobal>("GTS.esp|290524");
+		this->ImCrouching = find_form<TESGlobal>("GTS.esp|2C8039");
+
+		this->MinDistance = find_form<TESGlobal>("GTS.esp|29051E");
+		this->MaxDistance = find_form<TESGlobal>("GTS.esp|29051F");
+		this->CameraZoomSpeed = find_form<TESGlobal>("GTS.esp|290526");
+		this->CameraZoomPrecision = find_form<TESGlobal>("GTS.esp|290527");
+
+		this->proneCameraX = find_form<TESGlobal>("GTS.esp|290510");
+		this->proneCameraY = find_form<TESGlobal>("GTS.esp|290511");
+		this->proneCombatCameraX = find_form<TESGlobal>("GTS.esp|290518");
+		this->proneCombatCameraY = find_form<TESGlobal>("GTS.esp|290519");
+
+		this->cameraX = find_form<TESGlobal>("GTS.esp|29051A");
+		this->cameraY = find_form<TESGlobal>("GTS.esp|29051B");
+		this->combatCameraX = find_form<TESGlobal>("GTS.esp|29051D");
+		this->combatCameraY = find_form<TESGlobal>("GTS.esp|29051C");
+
+		this->proneCameraAlternateX = find_form<TESGlobal>("GTS.esp|290516");
+		this->proneCameraAlternateY = find_form<TESGlobal>("GTS.esp|290517");
+		this->proneCombatCameraAlternateX = find_form<TESGlobal>("GTS.esp|290518");
+		this->proneCombatCameraAlternateY = find_form<TESGlobal>("GTS.esp|290519");
+
+		this->cameraAlternateX = find_form<TESGlobal>("GTS.esp|290520");
+		this->cameraAlternateY = find_form<TESGlobal>("GTS.esp|290521");
+		this->combatCameraAlternateX = find_form<TESGlobal>("GTS.esp|290522");
+		this->combatCameraAlternateY = find_form<TESGlobal>("GTS.esp|290523");
+
+		this->CalcProne = find_form<TESGlobal>("GTS.esp|2D733A");
+		////////////
+
 		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");
 		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
 		this->FakeCrushEffect = find_form<EffectSetting>("GTS.esp|271EF9");
