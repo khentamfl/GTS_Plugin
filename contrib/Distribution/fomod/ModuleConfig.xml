@@ -3,6 +3,7 @@
   <requiredInstallFiles>
     <folder source="Config" destination="SKSE\Plugins"/>
     <folder source="Plugin" destination="SKSE\Plugins" priority="0"/>
+    <folder source="Interface" destination="Interface" priority="0"/>
     <file source="Papyrus\GtsPlugin.pex" destination="Scripts\GtsPlugin.pex" priority="0"/>
     <file source="PapyrusSource\GtsPlugin.psc" destination="Source\Scripts\GtsPlugin.psc" priority="0"/>
 	<file source="Papyrus\GtsCamera.pex" destination="Scripts\GtsCamera.pex" priority="0"/>
