@@ -12,5 +12,5 @@ namespace Gts {
 			[[nodiscard]] static QuestManager& GetSingleton() noexcept;
 
 			void Update();
-	}
+	};
 }

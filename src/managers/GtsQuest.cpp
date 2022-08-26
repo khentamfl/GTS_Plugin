@@ -2,15 +2,19 @@
 
 using namespace SKSE;
 using namespace RE;
+using namespace Gts;
 
 namespace Gts {
 	QuestManager& QuestManager::GetSingleton() noexcept {
 		static QuestManager instance;
 		return instance;
 	}
-    void QuestManager::Update() {
-    auto& runtime = Runtime::GetSingleton();
 
+
+    void QuestManager::Update() {
+
+    auto& runtime = Runtime::GetSingleton();
+    
     auto Player = PlayerCharacter::GetSingleton();
     auto GtsQuest = runtime.MainQuest;
     float QuestStage = GtsQuest->GetCurrentStageID();

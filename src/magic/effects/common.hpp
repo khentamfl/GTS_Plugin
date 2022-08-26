@@ -158,7 +158,7 @@ namespace Gts {
 
 		float SelectedFormula = runtime.SelectedSizeFormula->value;
 		float SizeLimit = runtime.SizeLimit->value;
-		float ProgressionMultiplier = runtime.ProgressionMultiplier;
+		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 		float GetGlobalMaxValue = GlobalMaxSizeCalc->Value;
 		float GetMassValue = AdjustMaxSize_MassBased_Store->Value;
 
