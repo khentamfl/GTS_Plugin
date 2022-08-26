@@ -182,6 +182,13 @@ namespace {
 		Shrink,
 		Standard,
 	};
+
+	enum ChosenGameModeNPC {
+		None,
+		Grow,
+		Shrink,
+		Standard,
+	};
 	// Handles changes like slowly loosing height
 	// over time
 	void GameMode(Actor* actor)  {
@@ -198,9 +205,6 @@ namespace {
 		if (actor->formID == 0x14 ) {
 			game_mode_int = runtime.ChosenGameMode->value;
 
-		} else if (actor->IsPlayerTeammate()) {
-			int game_mode_int = runtime.ChosenGameModeNPC->value;
-		}
 		if (game_mode_int >=0 && game_mode_int <= 3) {
 			game_mode =  static_cast<ChosenGameMode>(game_mode_int);
 		}
@@ -223,6 +227,52 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Standard: {
+					if (actor->IsInCombat()) {
+						mod_target_scale(actor, Scale * (0.00008 + (GrowthRate * 0.17)));
+					} else {
+						mod_target_scale(actor, Scale * -(0.00029 + (ShrinkRate * 0.34)));
+					}
+				}
+			}
+		}
+	}}
+
+	void GameModeNPC(Actor* actor)  {
+		auto& runtime = Runtime::GetSingleton();
+		float size_limit = runtime.sizeLimit->value;
+
+		set_max_scale(actor, size_limit);
+		if (get_target_scale(actor) > size_limit) {
+			set_target_scale(actor, size_limit);
+		}
+
+		ChosenGameModeNPC game_modeNPC = ChosenGameModeNPC::None;
+		int game_modeNPC_int = 0;
+		if (actor->formID != 0x14 && actor->IsPlayerTeammate()) {
+			game_modeNPC_int = runtime.ChosenGameMode->value;
+		} 
+		if (game_modeNPC_int >=0 && game_mode_int <= 3) {
+			game_modeNPC =  static_cast<ChosenGameMode>(game_mode_int);
+		}
+
+		if (game_modeNPC != ChosenGameModeNPC::None) {
+			float GrowthRate = runtime.GrowthModeRate->value;
+			float ShrinkRate = runtime.ShrinkModeRate->value;
+
+			float natural_scale = 1.0;
+			float Scale = get_visual_scale(actor);
+			switch (game_modeNPC) {
+				case ChosenGameModeNPC::Grow: {
+					mod_target_scale(actor, Scale * (0.00010 + (GrowthRate * 0.25)));
+					break;
+				}
+				case ChosenGameModeNPC::Shrink: {
+					if (Scale > natural_scale) {
+						mod_target_scale(actor, Scale * -(0.00025 + (ShrinkRate * 0.25)));
+					}
+					break;
+				}
+				case ChosenGameModeNPC::Standard: {
 					if (actor->IsInCombat()) {
 						mod_target_scale(actor, Scale * (0.00008 + (GrowthRate * 0.17)));
 					} else {
@@ -283,7 +333,8 @@ void GtsManager::poll() {
 			}
 			update_actor(actor);
 			apply_actor(actor);
-			GameMode(actor);
+			GameModePC(actor);
+			GameModeNPC(actor);
 		}
 	}
 }

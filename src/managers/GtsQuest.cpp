@@ -1,4 +1,6 @@
 #include "managers/GtsQuest.hpp"
+#include "data/runtime.hpp"
+#include "scale/scale.hpp"
 
 using namespace SKSE;
 using namespace RE;
