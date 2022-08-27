@@ -14,7 +14,7 @@ using namespace Gts;
 
 namespace {
 	void SetINIFloat(std::string_view name, float value) {
-		auto* ini_conf = INISettingCollection::GetSingleton();
+		auto* ini_conf = INISettingCollection::GetSingleton(); //GameSettingCollection::GetSingleton() <- Can't compile with it
 		Setting* setting = ini_conf->GetSetting(name);
 		if (setting) {
 			setting->data.f=value; // If float
@@ -23,20 +23,20 @@ namespace {
 	}
 
 	void BoostCarry(Actor* actor, float power) {
-		const ActorValue av = ActorValue::kCarryWeight;
+		const ActorValue av = ActorValue::kCarryWeight;   // <--- This function boosts Carry Weight towards infinity
 		float max_stamina = actor->GetPermanentActorValue(ActorValue::kStamina);
 		float scale = get_visual_scale(actor);
 		float base_av = actor->GetBaseActorValue(av);
 		float current_av = actor->GetActorValue(av);
 
-		float boost = base_av + ((max_stamina * 0.5 -50.0) * (scale * power));
+		float boost = (base_av + max_stamina * 0.5 -50.0) * (scale * power);
 
-		float new_av = boost;
+		float new_av = current_av + boost;
 		actor->SetActorValue(av, new_av);
 	}
 
 	void BoostJump(Actor* actor, float power) {
-		float scale = get_visual_scale(actor);
+		float scale = get_visual_scale(actor);  // <--- This function is not working because of SetINIFloat
 
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
@@ -48,12 +48,12 @@ namespace {
 	}
 
 	void BoostAttackDmg(Actor* actor, float power) {
-		float scale = get_visual_scale(actor);
+		float scale = get_visual_scale(actor); // <--- Works properly
 		actor->SetActorValue(ActorValue::kAttackDamageMult, (scale * power));
 	}
 
 	void BoostSpeedMulti(Actor* actor, float power) {
-		float scale = get_visual_scale(actor);
+		float scale = get_visual_scale(actor); // <--- Seems to work properly as well
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
 		if (actor_data) {
@@ -146,7 +146,7 @@ namespace Gts {
 		}
 
 
-		if (AllowTimeChange>= 1.00) {
+		if (AllowTimeChange == 0.00) {
 			BoostSpeedMulti(Player, bonusSpeedMultiplier);
 		}
 	}
