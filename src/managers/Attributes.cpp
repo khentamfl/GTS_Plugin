@@ -4,6 +4,7 @@
 #include "util.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "magic/effects/common.hpp"
 
 using namespace SKSE;
@@ -19,7 +20,56 @@ namespace {
 			setting->data.f=value; // If float
 			ini_conf->WriteSetting(setting);
 		}
-	}}
+	}
+
+	void BoostCarry(Actor* actor, float power) {
+		const ActorValue av = ActorValue::kCarryWeight;
+		float max_stamina = actor->GetPermanentActorValue(ActorValue::kStamina);
+		float scale = get_visual_scale(actor);
+		float base_av = actor->GetBaseActorValue(av);
+		float current_av = actor->GetActorValue(av);
+
+		float boost = (base_av + max_stamina * 0.5 -50.0) * (scale * power);
+
+		float new_av = current_av + boost;
+		actor->SetActorValue(av, new_av);
+	}
+
+	void BoostJump(Actor* actor, float power) {
+		float scale = get_visual_scale(actor);
+
+		if (fabs(power) > 1e-5) { // != 0.0
+			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
+			SetINIFloat("fJumpFallHeightMin", 600.0 + ( 600.0 * (scale - 1) * power));
+		} else if (bonusJumpHeightMultiplier != 0.0) {
+			SetINIFloat("fJumpHeightMin", 76.0);
+			SetINIFloat("fJumpFallHeightMin", 600.0 + ((-scale + 1.0) * 300 * power));
+		}
+	}
+
+	void BoostAttackDmg(Actor* actor, float power) {
+		float scale = get_visual_scale(actor);
+		actor->SetActorValue(ActorValue::kAttackDamageMult, (scale * power));
+	}
+
+	void BoostSpeedMulti(Actor* actor, float power) {
+		float scale = get_visual_scale(actor);
+		float base_speed;
+		auto actor_data = Transient::GetData(actor);
+		if (actor_data) {
+			base_speed = actor_data->base_walkspeedmult;
+		} else {
+			base_speed = 100.0;
+		}
+		if (size > 1) {
+			actor->SetActorValue(ActorValue::kSpeedMult, base_speed * scale * power);
+		} else if (size < 1) {
+			actor->SetActorValue(ActorValue::kSpeedMult, base_speed * scale);
+		} else {
+			actor->SetActorValue(ActorValue::kSpeedMult, base_speed);
+		}
+	}
+}
 
 
 namespace Gts {
@@ -28,8 +78,8 @@ namespace Gts {
 		return instance;
 	}
 
-void AttributeManager::Update() {
-	// Reapply Player Only
+	void AttributeManager::Update() {
+		// Reapply Player Only
 
 		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
@@ -46,8 +96,8 @@ void AttributeManager::Update() {
 		float bonusSpeedMax = runtime.bonusSpeedMax->value;
 
 		auto ExplGrowthP1 = runtime.explosiveGrowth1;
-    	auto ExplGrowthP2 = runtime.explosiveGrowth2;
-    	auto ExplGrowthP3 = runtime.explosiveGrowth3;
+		auto ExplGrowthP2 = runtime.explosiveGrowth2;
+		auto ExplGrowthP3 = runtime.explosiveGrowth3;
 		auto HealthRegenPerk = runtime.HealthRegenPerk;
 
 		float size = get_visual_scale(Player);
@@ -55,76 +105,46 @@ void AttributeManager::Update() {
 		float HpRegen = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.0005;
 		float MaxHealth = Player->GetPermanentActorValue(ActorValue::kHealth);
 
-		if (Player->HasPerk(HealthRegenPerk) && (Player->HasMagicEffect(ExplGrowthP1)||Player->HasMagicEffect(ExplGrowthP2)|| Player->HasMagicEffect(ExplGrowthP3)))
-    		{Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());}
-
-		float bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
-        float HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
-        float TempHP = Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-
-		if (bonusHPMultiplier == 0.0)  {
-			bonusHP = 0;
-			}
-
-		if (size < 1)    
-
-    	{bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
-    	HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
-        }
-        if (MaxHealth < HpCheck)     {
-			Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = TempHP + (HpCheck - MaxHealth);//Player->ModActorValue(ActorValue::kHealth, 1 * size);
-			}
-
-     if (MaxHealth > HpCheck + (1 * size) && MaxHealth > HpCheck) {
-		Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = TempHP + (HpCheck - MaxHealth); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);
-        //Player->ModActorValue(ActorValue::kHealth, -1 * size); 
+		if (Player->HasPerk(HealthRegenPerk) && (Player->HasMagicEffect(ExplGrowthP1)||Player->HasMagicEffect(ExplGrowthP2)|| Player->HasMagicEffect(ExplGrowthP3))) {
+			Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 
-	float MaxStamina = Player->GetPermanentActorValue(ActorValue::kStamina);
+		float bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
+		float HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
+		float TempHP = Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 
-	float bonusCarryWeight = ((Player->GetBaseActorValue(ActorValue::kCarryWeight) + (MaxStamina * 0.5) -50.0) * (size * bonusCarryWeightMultiplier));
-    if (Player->GetBaseActorValue(ActorValue::kCarryWeight) < bonusCarryWeight && Player->GetActorValue(ActorValue::kCarryWeight) < bonusCarryWeight)
-        {Player->ModActorValue(ActorValue::kCarryWeight, 1 * size);}    
-    if (Player->GetActorValue(ActorValue::kCarryWeight) > bonusCarryWeight)
-        {Player->ModActorValue(ActorValue::kCarryWeight, -1 * size);} 
+		if (bonusHPMultiplier == 0.0) {
+			bonusHP = 0;
+		}
+
+		if (size < 1) {
+			bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
+			HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
+		}
+		if (MaxHealth < HpCheck) {
+			Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = TempHP + (HpCheck - MaxHealth);//Player->ModActorValue(ActorValue::kHealth, 1 * size);
+		}
+
+		if (MaxHealth > HpCheck + (1 * size) && MaxHealth > HpCheck) {
+			Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = TempHP + (HpCheck - MaxHealth); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);
+			//Player->ModActorValue(ActorValue::kHealth, -1 * size);
+		}
+
+		BoostCarry(Player, bonusCarryWeightMultiplier);
 
 
-	if (size > 0)
-        if (bonusJumpHeightMultiplier != 0.0)
-        {
-            SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (size - 1) * bonusJumpHeightMultiplier));
-            SetINIFloat("fJumpFallHeightMin", 600.0 + ( 600.0 * (size - 1) * bonusJumpHeightMultiplier));
-        }
-    else
-        if (bonusJumpHeightMultiplier != 0.0)
-        {
-            SetINIFloat("fJumpHeightMin", 76.0);
-            SetINIFloat("fJumpFallHeightMin", 600.0 + ((-size + 1.0) * 300 * bonusJumpHeightMultiplier));
-        }	
+		if (size > 0) {
+			BoostJump(Player, bonusJumpHeightMultiplier);
+		}
 
-        if (size >= 0)
-    {Player->SetActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
+		if (size >= 0) {
+			BoostAttackDmg(Player, bonusDamageMultiplier);
+		}
 
-    else
-    if (bonusDamageMultiplier == 0.0)
-        {Player->SetActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
-    else
-        {Player->SetActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
 
-  
-       if (size > 1 && AllowTimeChange>= 1.00) {
-        Player->SetActorValue(ActorValue::kSpeedMult, (100 + ((size - 1) * (100 * bonusSpeedMultiplier))));
-        }   
-       
-       else 
-        if (size < 1 && AllowTimeChange >= 1.00) {
-        Player->SetActorValue(ActorValue::kSpeedMult, (100 * size));
-        }
-
-    else
-        if (bonusSpeedMultiplier == 0.0 && AllowTimeChange>= 1.00)
-            {Player->SetActorValue(ActorValue::kSpeedMult, 100);
-        }
-    }
+		if (AllowTimeChange>= 1.00) {
+			BoostSpeedMulti(Player, bonusSpeedMultiplier);
+		}
+	}
 
 }
