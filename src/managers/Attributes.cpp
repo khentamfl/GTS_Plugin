@@ -14,7 +14,7 @@ using namespace Gts;
 
 namespace {
 	void SetINIFloat(std::string_view name, float value) {
-		auto ini_conf = INISettingCollection::GetSingleton();
+		auto ini_conf = GameSettingCollection::GetSingleton();
 		Setting* setting = ini_conf->GetSetting(name);
 		if (setting) {
 			setting->data.f=value; // If float
