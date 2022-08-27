@@ -65,7 +65,7 @@ void AttributeManager::Update() {
         float TempHP = Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 
 		if (bonusHPMultiplier == 0.0)  {
-			bonusHP = 0; allowEdits = false
+			bonusHP = 0; allowEdits = false;
 			}
 
 		if (size < 1)    
