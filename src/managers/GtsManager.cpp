@@ -106,7 +106,9 @@ namespace {
 		float speed_mult = soft_core(scale, speed_adjustment);
 		persi_actor_data->anim_speed = speed_mult;
 		float MS_mult = soft_core(scale, MS_adjustment);
-		persi_actor_data->anim_speed = MS_mult;
+
+		//persi_actor_data->anim_speed = MS_mult; < --- Maybe this causes inability to sprint? edits 2 times?
+		
 		actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / MS_mult);
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.50 / MS_mult);
@@ -394,3 +396,5 @@ void GtsManager::reapply_actor(Actor* actor, bool force) {
 	}
 	apply_actor(actor, force);
 }
+
+

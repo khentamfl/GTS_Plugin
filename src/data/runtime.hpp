@@ -92,6 +92,7 @@ namespace Gts {
 			BGSPerk* PerkPart2 = nullptr;
 			BGSPerk* ExtraGrowth = nullptr;
 			BGSPerk* ExtraGrowthMax = nullptr;
+			BGSPerk* HealthRegenPerk = nullptr;
 
 			TESGlobal * sizeLimit = nullptr;
 
@@ -146,6 +147,18 @@ namespace Gts {
 			TESGlobal * combatCameraAlternateY = nullptr;
 
 			TESGlobal * CalcProne = nullptr;
+			/////////
+
+			/////Attributes//////
+			TESGlobal * AllowTimeChange = nullptr;
+			TESGlobal * bonusHPMultiplier = nullptr;
+			TESGlobal * bonusCarryWeightMultiplier = nullptr;
+			TESGlobal * bonusJumpHeightMultiplier = nullptr;
+			TESGlobal * bonusDamageMultiplier = nullptr;
+			TESGlobal * bonusSpeedMultiplier = nullptr;
+			TESGlobal * bonusSpeedMax = nullptr;
+
+		///EndAttributes///
 
 
 			SpellItem * ShrinkToNothingSpell = nullptr;

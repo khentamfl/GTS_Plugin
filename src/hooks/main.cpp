@@ -28,11 +28,14 @@ namespace Hooks
 		auto& magic = MagicManager::GetSingleton();
 		auto& camera = CameraManager::GetSingleton();
 		auto& quest = QuestManager::GetSingleton();
+		auto& attributes = AttributeManager::GetSingleton();
 		activate_mainthread_mode();
 		manager.poll();
 		magic.Update();
 		camera.Update();
 		quest.Update();
+		attributes.Update();
+
 		deactivate_mainthread_mode();
 	}
 }

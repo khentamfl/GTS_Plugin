@@ -107,6 +107,7 @@ namespace Gts {
 		this->PerkPart2 = find_form<BGSPerk>("GTS.esp|160820");
 		this->ExtraGrowth = find_form<BGSPerk>("GTS.esp|332563");
 		this->ExtraGrowthMax = find_form<BGSPerk>("GTS.esp|397972");
+		this->HealthRegenPerk = find_form<BGSPerk>("GTS.esp|18E160"); 
 
 		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 
@@ -164,6 +165,16 @@ namespace Gts {
 
 		this->CalcProne = find_form<TESGlobal>("GTS.esp|2D733A");
 		////////////
+		/////Attributes//////
+		this->AllowTimeChange = find_form<TESGlobal>("GTS.esp|277001"); // <- Speed AV modification toggler 
+		this->bonusHPMultiplier = find_form<TESGlobal>("GTS.esp|28B408");
+		this->bonusCarryWeightMultiplier = find_form<TESGlobal>("GTS.esp|28B407");
+		this->bonusJumpHeightMultiplier = find_form<TESGlobal>("GTS.esp|28B40A");
+		this->bonusDamageMultiplier = find_form<TESGlobal>("GTS.esp|28B409");
+		this->bonusSpeedMultiplier = find_form<TESGlobal>("GTS.esp|28B40B");
+		this->bonusSpeedMax = find_form<TESGlobal>("GTS.esp|28B40C");
+
+		///EndAttributes///
 
 		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");
 		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
