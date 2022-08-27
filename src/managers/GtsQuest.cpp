@@ -1,7 +1,7 @@
 #include "managers/GtsQuest.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
-#include "magic/common.hpp"
+#include "magic/effects/common.hpp"
 
 using namespace SKSE;
 using namespace RE;

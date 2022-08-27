@@ -22,7 +22,7 @@ namespace Gts {
 		//AdjustMaxSize_MassBased = 277005
 		auto& runtime = Runtime::GetSingleton();
 
-		float GetGlobalMaxSizeCalc = runtime.GlobalMaxSizeCalc->value; // <- Bonus that is used to determina quest progression
+		float GetGlobalMaxSizeCalc = runtime.GlobalMaxSizeCalc->value; // <- Bonus that is used to determine quest progression
 		float GetGlobalMassSize = runtime.MassBasedSizeLimit->value; // <- Applies it
 		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 
