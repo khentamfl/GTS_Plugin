@@ -4,6 +4,7 @@
 #include "managers/GtsManager.hpp"
 #include "managers/GtsQuest.hpp"
 #include "managers/camera.hpp"
+#include "managers/Attributes.hpp"
 #include "magic/magic.hpp"
 
 
