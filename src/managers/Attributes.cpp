@@ -11,6 +11,17 @@ using namespace RE;
 using namespace REL;
 using namespace Gts;
 
+namespace {
+	void SetINIFloat(std::string_view name, float value) {
+		auto ini_conf = INISettingCollection::GetSingleton();
+		Setting* setting = ini_conf->GetSetting(name);
+		if (setting) {
+			setting->data.f=value; // If float
+			ini_conf->WriteSetting(setting);
+		}
+	}}
+
+
 namespace Gts {
 	AttributeManager& AttributeManager::GetSingleton() noexcept {
 		static AttributeManager instance;
@@ -20,7 +31,7 @@ namespace Gts {
 void AttributeManager::Update() {
 	// Reapply Player Only
 
-		auto Player == PlayerCharacter::GetSingleton();
+		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
@@ -67,7 +78,7 @@ void AttributeManager::Update() {
 		}
 
 	if (MaxHealth <= HpCheck)     {
-		Player->ModActorValue(ActorValue::kHealth, 1 * size)
+		Player->ModActorValue(ActorValue::kHealth, 1 * size);
 		}
    else if (MaxHealth > HpCheck + (1.0 * size) && MaxHealth > HpCheck && Player->GetActorValueMax(ActorValue::kHealth) >= Player->GetBaseActorValue(ActorValue::kHealth) - 1 * size && MaxHealth > Player->GetBaseActorValue(ActorValue::kHealth)) {
 	Player->ModActorValue(ActorValue::kHealth, -1 * size); Player->RestoreActorValue(ActorValue::kHealth, 5 * size);
@@ -108,10 +119,10 @@ void AttributeManager::Update() {
     }
 
   
-       if (speedEffectiveSize > 1 && AllowTimeChange>= 1.00)
+       if (size > 1 && AllowTimeChange>= 1.00)
        {Player->SetActorValue(ActorValue::kSpeedMult, (100 + ((speedEffectiveSize - 1) * (100 * bonusSpeedMultiplier))));}   
        
-       else if (speedEffectiveSize < 1 && AllowTimeChange >= 1.00)
+       else if (size < 1 && AllowTimeChange >= 1.00)
         {Player->SetActorValue(ActorValue::kSpeedMult, (100 * size));}
 
     else
