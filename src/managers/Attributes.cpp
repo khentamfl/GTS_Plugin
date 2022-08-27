@@ -34,8 +34,6 @@ void AttributeManager::Update() {
 		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 
-        bool allowEdits = true;
-
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
 
 		float AllowTimeChange = runtime.AllowTimeChange->value;
@@ -65,7 +63,7 @@ void AttributeManager::Update() {
         float TempHP = Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 
 		if (bonusHPMultiplier == 0.0)  {
-			bonusHP = 0; allowEdits = false;
+			bonusHP = 0;
 			}
 
 		if (size < 1)    
