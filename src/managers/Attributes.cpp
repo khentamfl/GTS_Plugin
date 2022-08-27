@@ -34,6 +34,8 @@ void AttributeManager::Update() {
 		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 
+        bool allowEdits = true;
+
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
 
 		float AllowTimeChange = runtime.AllowTimeChange->value;
@@ -60,33 +62,28 @@ void AttributeManager::Update() {
 
 		float bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
         float HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
+        float TempHP = Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 
 		if (bonusHPMultiplier == 0.0)  {
-			bonusHP = 0;
+			bonusHP = 0; allowEdits = false
 			}
 
 		if (size < 1)    
-    	{bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
 
-    	HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;}
-        if (MaxHealth <= HpCheck)     {
-			Player->ModActorValue(ActorValue::kHealth, 1 * size);
+    	{bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
+    	HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
+        }
+        if (MaxHealth < HpCheck && allowEdits == true)     {
+			Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = TempHP + (HpCheck - MaxHealth);//Player->ModActorValue(ActorValue::kHealth, 1 * size);
 			}
 
-     if (MaxHealth > HpCheck + (1 * size) && MaxHealth > HpCheck) {
-		Player->ModActorValue(ActorValue::kHealth, -1 * size); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);
+     if (MaxHealth > HpCheck + (1 * size) && MaxHealth > HpCheck && allowEdits == true) {
+		Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = TempHP + (HpCheck - MaxHealth); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);
+        //Player->ModActorValue(ActorValue::kHealth, -1 * size); 
 		}
 
-	if (MaxHealth <= HpCheck)     {
-		Player->ModActorValue(ActorValue::kHealth, 1 * size);
-		}
-   else if (MaxHealth > HpCheck + (1.0 * size) && MaxHealth > HpCheck && MaxHealth >= MaxHealth - 1 * size && MaxHealth > Player->GetBaseActorValue(ActorValue::kHealth)) 
-   
-   {Player->ModActorValue(ActorValue::kHealth, -1 * size); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);}
+	float MaxStamina = Player->GetPermanentActorValue(ActorValue::kStamina);
 
-
-
-	float MaxStamina = Player->GetPermanentActorValue(ActorValue::kCarryWeight);
 	float bonusCarryWeight = ((Player->GetBaseActorValue(ActorValue::kCarryWeight) + (MaxStamina * 0.5) -50.0) * (size * bonusCarryWeightMultiplier));
     if (Player->GetBaseActorValue(ActorValue::kCarryWeight) < bonusCarryWeight && Player->GetActorValue(ActorValue::kCarryWeight) < bonusCarryWeight)
         {Player->ModActorValue(ActorValue::kCarryWeight, 1 * size);}    
