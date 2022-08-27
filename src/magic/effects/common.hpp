@@ -30,11 +30,11 @@ namespace Gts {
 		float SizeLimit = runtime.sizeLimit->value;
 
 		if (GetGlobalMaxSizeCalc < 10.0) {
-		runtime.GlobalMaxSizeCalc->value = GetGlobalMaxSizeCalc + (Value * ProgressionMultiplier * TimeScale()); // Always apply it
+		runtime.GlobalMaxSizeCalc->value = GetGlobalMaxSizeCalc + (Value * 10 * ProgressionMultiplier * TimeScale()); // Always apply it
 		}
 
 		if (GetGlobalMassSize < SizeLimit && SelectedFormula >= 2.0) {
-			runtime.MassBasedSizeLimit->value = GetGlobalMassSize + (Value * 10 * ProgressionMultiplier * TimeScale()); 
+			runtime.MassBasedSizeLimit->value = GetGlobalMassSize + (Value  * ProgressionMultiplier * TimeScale()); 
 			}
 		}
 	
