@@ -56,7 +56,7 @@ void AttributeManager::Update() {
 		float MaxHealth = Player->GetPermanentActorValue(ActorValue::kHealth);
 
 		if (Player->HasPerk(HealthRegenPerk) && (Player->HasMagicEffect(ExplGrowthP1)||Player->HasMagicEffect(ExplGrowthP2)|| Player->HasMagicEffect(ExplGrowthP3)))
-    		{Player->RestoreActorValue(ActorValue::kHealth, HpRegen * TimeScale());}
+    		{Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());}
 
 		float bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
         float HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
@@ -74,14 +74,14 @@ void AttributeManager::Update() {
 			}
 
      if (MaxHealth > HpCheck + (1 * size) && MaxHealth > HpCheck) {
-		Player->ModActorValue(ActorValue::kHealth, -1 * size); Player->RestoreActorValue(ActorValue::kHealth, 1 * size);
+		Player->ModActorValue(ActorValue::kHealth, -1 * size); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);
 		}
 
 	if (MaxHealth <= HpCheck)     {
 		Player->ModActorValue(ActorValue::kHealth, 1 * size);
 		}
-   else if (MaxHealth > HpCheck + (1.0 * size) && MaxHealth > HpCheck && Player->GetActorValueMax(ActorValue::kHealth) >= Player->GetBaseActorValue(ActorValue::kHealth) - 1 * size && MaxHealth > Player->GetBaseActorValue(ActorValue::kHealth)) {
-	Player->ModActorValue(ActorValue::kHealth, -1 * size); Player->RestoreActorValue(ActorValue::kHealth, 5 * size);
+   else if (MaxHealth > HpCheck + (1.0 * size) && MaxHealth > HpCheck && MaxHealth >= MaxHealth - 1 * size && MaxHealth > Player->GetBaseActorValue(ActorValue::kHealth)) {
+	Player->ModActorValue(ActorValue::kHealth, -1 * size); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);
 		}
  	}
 
@@ -109,21 +109,23 @@ void AttributeManager::Update() {
         }	
 
         if (size >= 0)
-    {Player->ForceActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
+    {Player->SetActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
 
     else
     if (bonusDamageMultiplier == 0.0)
-        {Player->ForceActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
+        {Player->SetActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
     else
-        {Player->ForceActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
+        {Player->SetActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
     }
 
   
-       if (size > 1 && AllowTimeChange>= 1.00)
-       {Player->SetActorValue(ActorValue::kSpeedMult, (100 + ((speedEffectiveSize - 1) * (100 * bonusSpeedMultiplier))));}   
+       if (size > 1 && AllowTimeChange>= 1.00){
+        Player->SetActorValue(ActorValue::kSpeedMult, (100 + ((size - 1) * (100 * bonusSpeedMultiplier))));
+        }   
        
-       else if (size < 1 && AllowTimeChange >= 1.00)
-        {Player->SetActorValue(ActorValue::kSpeedMult, (100 * size));}
+       else if (size < 1 && AllowTimeChange >= 1.00) {
+        Player->SetActorValue(ActorValue::kSpeedMult, (100 * size));
+        }
 
     else
         if (bonusSpeedMultiplier == 0.0 && AllowTimeChange>= 1.00)
