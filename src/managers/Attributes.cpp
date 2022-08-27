@@ -81,7 +81,13 @@ namespace Gts {
 	void AttributeManager::Update() {
 		// Reapply Player Only
 
-		auto Player = PlayerCharacter::GetSingleton();
+		auto Player = RE::PlayerCharacter::GetSingleton();
+		if (!Player) {
+			return;
+		}
+		if (!Player->Is3DLoaded()) {
+			return;
+		}
 		auto& runtime = Runtime::GetSingleton();
 
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
@@ -117,18 +123,12 @@ namespace Gts {
 			bonusHP = 0;
 		}
 
-		if (size < 1) {
-			bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
-			HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
-		}
-		if (MaxHealth < HpCheck) {
-			Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = TempHP + (HpCheck - MaxHealth);//Player->ModActorValue(ActorValue::kHealth, 1 * size);
-		}
+		{bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
+		 HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;}
 
-		if (MaxHealth > HpCheck + (1 * size) && MaxHealth > HpCheck) {
-			Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = TempHP + (HpCheck - MaxHealth); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);
-			//Player->ModActorValue(ActorValue::kHealth, -1 * size);
-		}
+		Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = (HpCheck - MaxHealth);//Player->ModActorValue(ActorValue::kHealth, 1 * size);
+
+
 
 		BoostCarry(Player, bonusCarryWeightMultiplier);
 
