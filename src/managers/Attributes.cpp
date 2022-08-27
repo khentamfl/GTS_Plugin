@@ -13,7 +13,7 @@ using namespace REL;
 using namespace Gts;
 
 namespace {
-	void SetINIFloat(char* name, float value) {
+	void SetINIFloat(char name, float value) {
 		auto& ini_conf = GameSettingCollection::GetSingleton();
 		Setting* setting = ini_conf->GetSetting(name);
 		if (setting) {
