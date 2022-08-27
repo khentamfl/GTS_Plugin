@@ -10,12 +10,12 @@ namespace Gts {
 	}
 
 	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) : Magic(effect) {
-		const float SHRINK_POWER = 0.90;
-		const float SHRINK_EFFIC = 0.34;
-		const float SHRINK_AOE_POWER = 1.10;
-		const float SHRINK_AOE_EFFIC = 0.36;
-		const float SHRINK_AOE_MASTER_POWER = 1.25;
-		const float SHRINK_AOE_MASTER_EFFIC = 0.42;
+		const float SHRINK_POWER = 1.10;
+		const float SHRINK_EFFIC = 0.38;
+		const float SHRINK_AOE_POWER = 1.25;
+		const float SHRINK_AOE_EFFIC = 0.42;
+		const float SHRINK_AOE_MASTER_POWER = 1.50;
+		const float SHRINK_AOE_MASTER_EFFIC = 0.46;
 
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();

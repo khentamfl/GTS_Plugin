@@ -45,6 +45,7 @@ namespace Gts {
 		else if (size_difference >= 4.0 && target->IsDead() && !target->IsPlayerTeammate()) {
 			// ^ We don't want to crush allies
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
+			CrushToNothing(caster, target);
 			//target->PlaceObjectAtMe(runtime.BloodExplosion, false);
 			NiPointer<TESObjectREFR> instance_ptr = target->PlaceObjectAtMe(runtime.BloodExplosion, false);
 			if (!instance_ptr) return;
