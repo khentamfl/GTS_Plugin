@@ -71,11 +71,11 @@ void AttributeManager::Update() {
     	{bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
     	HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
         }
-        if (MaxHealth < HpCheck && allowEdits == true)     {
+        if (MaxHealth < HpCheck)     {
 			Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = TempHP + (HpCheck - MaxHealth);//Player->ModActorValue(ActorValue::kHealth, 1 * size);
 			}
 
-     if (MaxHealth > HpCheck + (1 * size) && MaxHealth > HpCheck && allowEdits == true) {
+     if (MaxHealth > HpCheck + (1 * size) && MaxHealth > HpCheck) {
 		Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = TempHP + (HpCheck - MaxHealth); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);
         //Player->ModActorValue(ActorValue::kHealth, -1 * size); 
 		}
