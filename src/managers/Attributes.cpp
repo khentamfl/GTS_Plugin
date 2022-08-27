@@ -14,12 +14,12 @@ using namespace Gts;
 
 namespace {
 	void SetINIFloat(std::string_view name, float value) {
-		auto* ini_conf = GameSettingCollection::GetSingleton();
-		Setting* setting = ini_conf->GetSetting(name);
-		if (setting) {
+		auto ini_conf = GameSettingCollection::GetSingleton();
+		//Setting* setting = ini_conf->GetSetting(name);
+		//if (setting) {
 			setting->data.f=value; // If float
 			ini_conf->WriteSetting(setting);
-		}
+		//}
 	}
 
 	void BoostCarry(Actor* actor, float power) {
