@@ -66,7 +66,7 @@ void AttributeManager::Update() {
 			}
 
 		if (size < 1)    
-    	{{bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
+    	{bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
 
     	HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;}
         if (MaxHealth <= HpCheck)     {
@@ -80,10 +80,9 @@ void AttributeManager::Update() {
 	if (MaxHealth <= HpCheck)     {
 		Player->ModActorValue(ActorValue::kHealth, 1 * size);
 		}
-   else if (MaxHealth > HpCheck + (1.0 * size) && MaxHealth > HpCheck && MaxHealth >= MaxHealth - 1 * size && MaxHealth > Player->GetBaseActorValue(ActorValue::kHealth)) {
-	Player->ModActorValue(ActorValue::kHealth, -1 * size); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);
-		}
- 	}
+   else if (MaxHealth > HpCheck + (1.0 * size) && MaxHealth > HpCheck && MaxHealth >= MaxHealth - 1 * size && MaxHealth > Player->GetBaseActorValue(ActorValue::kHealth)) 
+   
+   {Player->ModActorValue(ActorValue::kHealth, -1 * size); Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 1 * size);}
 
 
 
@@ -116,20 +115,21 @@ void AttributeManager::Update() {
         {Player->SetActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
     else
         {Player->SetActorValue(ActorValue::kAttackDamageMult, (size * bonusDamageMultiplier));}
-    }
 
   
-       if (size > 1 && AllowTimeChange>= 1.00){
+       if (size > 1 && AllowTimeChange>= 1.00) {
         Player->SetActorValue(ActorValue::kSpeedMult, (100 + ((size - 1) * (100 * bonusSpeedMultiplier))));
         }   
        
-       else if (size < 1 && AllowTimeChange >= 1.00) {
+       else 
+        if (size < 1 && AllowTimeChange >= 1.00) {
         Player->SetActorValue(ActorValue::kSpeedMult, (100 * size));
         }
 
     else
         if (bonusSpeedMultiplier == 0.0 && AllowTimeChange>= 1.00)
             {Player->SetActorValue(ActorValue::kSpeedMult, 100);
-
+        }
     }
+
 }
