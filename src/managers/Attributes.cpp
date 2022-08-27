@@ -13,8 +13,8 @@ using namespace REL;
 using namespace Gts;
 
 namespace {
-	void SetINIFloat(std::string_view name, float value) {
-		auto& ini_conf = RE::GameSettingCollection::GetSingleton();
+	void SetINIFloat(char* name, float value) {
+		auto& ini_conf = GameSettingCollection::GetSingleton();
 		Setting* setting = ini_conf->GetSetting(name);
 		if (setting) {
 			setting->data.f=value; // If float
@@ -29,9 +29,9 @@ namespace {
 		float base_av = actor->GetBaseActorValue(av);
 		float current_av = actor->GetActorValue(av);
 
-		float boost = (base_av + max_stamina * 0.5 -50.0) * (scale * power);
+		float boost = base_av + ((max_stamina * 0.5 -50.0) * (scale * power));
 
-		float new_av = current_av + boost;
+		float new_av = boost;
 		actor->SetActorValue(av, new_av);
 	}
 
@@ -118,6 +118,10 @@ namespace Gts {
 		float bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
 		float HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
 		float TempHP = Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
+		float TempHP2 = Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
+
+		if (TempHP < TempHP2) // Ugly attempt to fix missing hp
+		{Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 25);}
 
 		if (bonusHPMultiplier == 0.0) {
 			bonusHP = 0;
