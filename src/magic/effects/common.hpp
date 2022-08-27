@@ -175,6 +175,6 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
 			AdjustSizeLimit(0.0417 * target_scale);
-			//ConsoleLog::Print(target.GetDisplayFullName(), "was crushed by", caster.GetDisplayFullName())
+			ConsoleLog::Print(target.GetDisplayFullName(), "was crushed by", caster.GetDisplayFullName())
 	}
 }
