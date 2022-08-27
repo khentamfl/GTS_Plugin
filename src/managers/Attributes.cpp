@@ -41,7 +41,7 @@ namespace {
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
 			SetINIFloat("fJumpFallHeightMin", 600.0 + ( 600.0 * (scale - 1) * power));
-		} else if (bonusJumpHeightMultiplier != 0.0) {
+		} else {
 			SetINIFloat("fJumpHeightMin", 76.0);
 			SetINIFloat("fJumpFallHeightMin", 600.0 + ((-scale + 1.0) * 300 * power));
 		}
@@ -55,15 +55,15 @@ namespace {
 	void BoostSpeedMulti(Actor* actor, float power) {
 		float scale = get_visual_scale(actor);
 		float base_speed;
-		auto actor_data = Transient::GetData(actor);
+		auto actor_data = Transient::GetSingleton().GetData(actor);
 		if (actor_data) {
 			base_speed = actor_data->base_walkspeedmult;
 		} else {
 			base_speed = 100.0;
 		}
-		if (size > 1) {
+		if (scale > 1) {
 			actor->SetActorValue(ActorValue::kSpeedMult, base_speed * scale * power);
-		} else if (size < 1) {
+		} else if (scale < 1) {
 			actor->SetActorValue(ActorValue::kSpeedMult, base_speed * scale);
 		} else {
 			actor->SetActorValue(ActorValue::kSpeedMult, base_speed);
