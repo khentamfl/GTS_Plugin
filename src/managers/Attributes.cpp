@@ -31,7 +31,13 @@ namespace Gts {
 void AttributeManager::Update() {
 	// Reapply Player Only
 
-		auto Player = PlayerCharacter::GetSingleton();
+		auto Player = RE::PlayerCharacter::GetSingleton();
+		   if (!Player) {
+        	return;
+    		}
+   		 if (!Player->Is3DLoaded()) {
+       		 return;
+   		 }
 		auto& runtime = Runtime::GetSingleton();
 
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
