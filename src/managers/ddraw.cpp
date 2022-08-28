@@ -21,7 +21,7 @@ namespace {
 					float radius = capsule->radius * *g_worldScaleInverse;
 
 					auto& transform = rigid_body->motion.motionState.transform;
-					glm::vec3 translation = HkToGlm(transform.translation);
+					glm::vec3 translation = HkToGlm(transform.translation)  * *g_worldScaleInverse;
 					glm::mat3 rotation = HkToGlm(transform.rotation);
 					float x_angle = 0.0;
 					float y_angle = 0.0;
