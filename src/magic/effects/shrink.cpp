@@ -21,8 +21,9 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
+		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 100;
 
-		float power = BASE_POWER;
+		float power = BASE_POWER * SkillMult;
 		if (IsDualCasting()) {
 			power *= DUAL_CAST_BONUS;
 		}
