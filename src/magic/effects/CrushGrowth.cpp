@@ -31,7 +31,7 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-        if (CrushGrowthAmount == 0.0)
+        if (CrushGrowthAmount <= 0.0)
         
         {this->CrushGrowthAmount = 1.0;} // Just to be safe
 

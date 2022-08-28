@@ -175,11 +175,21 @@ namespace Gts {
 		return false;
 	}
 
+	inline bool ShrinkToNothingPure(Actor* caster, Actor* target) {
+		const float SHRINK_TO_NOTHING_SCALE = 0.12;
+		float target_scale = get_visual_scale(target);
+		auto& runtime = Runtime::GetSingleton();
+		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
+			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
+			AdjustSizeLimit(0.0117);
+		}
+	}
+
 	inline void CrushToNothing(Actor* caster, Actor* target) {
 		const float SHRINK_TO_NOTHING_SCALE = 0.12;
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
-		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, caster, 1.00f, false, 0.0f, caster);
+		target->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, caster, 1.00f, false, 0.0f, target);
 		AdjustSizeLimit(0.0417 * target_scale);
 		log::info("Casting Crush Growth on self");
 	}

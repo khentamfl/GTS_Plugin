@@ -44,7 +44,7 @@ namespace {
 		if (current_av < boost)
 		{actor->ModActorValue(av, new_av);}
 
-		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
+		//log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
 	}
 
 	void BoostJump(Actor* actor, float power) {
