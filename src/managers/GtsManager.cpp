@@ -105,7 +105,8 @@ namespace {
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
-		persi_actor_data->anim_speed = speed_mult;
+		if (GtsManager::GetSingleton().GetFrameNum() % 30 == 0)
+		{persi_actor_data->anim_speed = speed_mult;}
 
 		float MS_mult = soft_core(scale, MS_adjustment);
 		if (GtsManager::GetSingleton().GetFrameNum() % 30 == 0 && actor->formID == 0x14)
