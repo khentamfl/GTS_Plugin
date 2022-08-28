@@ -33,7 +33,7 @@ namespace {
 		if (fabs(target_scale - persi_actor_data->visual_scale) < 1e-5) {
 			return;
 		}
-		float minimum_scale_delta = 0.0005; // 0.05%
+		float minimum_scale_delta = 0.000005; // 0.0005%
 		if (fabs(target_scale - persi_actor_data->visual_scale) < minimum_scale_delta) {
 			persi_actor_data->visual_scale = target_scale;
 			persi_actor_data->visual_scale_v = 0.0;
