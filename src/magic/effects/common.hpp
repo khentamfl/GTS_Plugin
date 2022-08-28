@@ -62,15 +62,12 @@ namespace Gts {
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		auto& runtime = Runtime::GetSingleton();
-		float Value = CalcPower(actor, scale_factor, bonus);
-		mod_target_scale(actor, Value);
+		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		float Value = -CalcPower(actor, scale_factor, bonus);
-		mod_target_scale(actor, Value);
+		mod_target_scale(actor, -CalcPower(actor, scale_factor, bonus));
 	}
 
 	inline bool Revert(Actor* actor, float scale_factor, float bonus) {
