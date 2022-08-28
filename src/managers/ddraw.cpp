@@ -15,19 +15,20 @@ namespace {
 			if (shape->type == hkpShapeType::kCapsule) {
 				const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
 				if (capsule) {
-					glm::vec3 start = HkToGlm(capsuleShape->vertexA) * *g_worldScaleInverse;
-					glm::vec3 end = HkToGlm(capsuleShape->vertexB) * *g_worldScaleInverse;
+					glm::vec3 start = HkToGlm(capsule->vertexA) * *g_worldScaleInverse;
+					glm::vec3 end = HkToGlm(capsule->vertexB) * *g_worldScaleInverse;
 
-					float radius = capsuleShape->radius * *g_worldScaleInverse;
+					float radius = capsule->radius * *g_worldScaleInverse;
 
-					auto& transform = hkpRigidBody->motion.motionState.transform;
+					auto& transform = rigid_body->motion.motionState.transform;
+					glm::vec3 translation = HkToGlm(transform.translation);
 					glm::mat3 rotation = HkToGlm(transform.rotation);
 					float x_angle = 0.0;
 					float y_angle = 0.0;
 					float z_angle = 0.0;
-					glm::extractEulerAngleXYZ(rotation, x_angle, y_angle, z_angle);
+					glm::extractEulerAngleXYZ(glm::mat4(rotation), x_angle, y_angle, z_angle);
 					glm::vec3 euler_angles = glm::vec3(x_angle, y_angle, z_angle);
-					DebugAPI::DrawCapsule(start, end, radius, euler_angles);
+					DebugAPI::DrawCapsule(translation + start, translation + end, radius, euler_angles);
 				}
 			}
 		}
@@ -42,7 +43,7 @@ namespace {
 				if (hkp_rigidbody_ref) {
 					hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
 					if (hkp_rigidbody) {
-						DrawRigidBody(rigid_body);
+						DrawRigidBody(hkp_rigidbody);
 					}
 				}
 			}

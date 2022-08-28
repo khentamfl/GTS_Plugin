@@ -8,10 +8,10 @@
 
 namespace Util {
 
-	inline glm::vec3 HkToGlm(const hkVector4 &vec) {
+	inline glm::vec3 HkToGlm(const RE::hkVector4 &vec) {
 		return glm::vec3(vec.quad.m128_f32[0], vec.quad.m128_f32[1], vec.quad.m128_f32[2]);
 	}
-	inline glm::mat3 HkToGlm(const hkRotation &mat) {
+	inline glm::mat3 HkToGlm(const RE::hkRotation &mat) {
 		return glm::mat3(HkToGlm(mat.col0), HkToGlm(mat.col1), HkToGlm(mat.col2));
 	}
 
