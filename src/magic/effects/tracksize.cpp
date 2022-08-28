@@ -24,6 +24,6 @@ namespace Gts {
 			return;
 		}
 		float size = get_visual_scale(target);
-        ShrinkToNothingPure(caster, target) 
+        ShrinkToNothingPure(caster, target); 
 	}
 }
