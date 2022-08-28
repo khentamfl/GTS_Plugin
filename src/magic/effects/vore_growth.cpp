@@ -14,6 +14,12 @@ namespace Gts {
 		return effect == runtime.GlobalVoreGrowth;
 	}
 
+	void VoreGrowth::OnStart() {
+		auto target = GetTarget();
+		float Scale = get_visual_scale(target);
+		this->ScaleOnVore = Scale; 
+	}
+
 	void VoreGrowth::OnUpdate() {
 		float BASE_POWER = 0.002475;
 		auto& runtime = Runtime::GetSingleton();
@@ -22,11 +28,15 @@ namespace Gts {
 		if (!caster || !target) {
 			return;
 		}
-		float targetscale = get_visual_scale(target);
-		BASE_POWER *= targetscale;
+		float GrowAmount = this->ScaleOnVore;
+		BASE_POWER *= GrowAmount;
 		if (caster->HasPerk(runtime.AdditionalAbsorption))
 		{BASE_POWER *= 2.0;}
 		Grow(caster, 0.0, BASE_POWER);
 		log::info("Vore Growth active");
+	}
+
+	void VoreGrowth::OnFinish() {
+		this->ScaleOnVore = 1.0;
 	}
 }

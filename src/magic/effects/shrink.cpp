@@ -15,7 +15,7 @@ namespace Gts {
 	}
 
 	void Shrink::OnUpdate() {
-		const float BASE_POWER = 0.00180;
+		const float BASE_POWER = 0.00360;
 		const float DUAL_CAST_BONUS = 2.0;
 		auto caster = GetCaster();
 		if (!caster) {

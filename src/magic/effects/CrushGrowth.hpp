@@ -24,5 +24,6 @@ namespace Gts {
 
             private:
             float CrushGrowthAmount = 1.0;
+			float ScaleOnCrush = 1.0;
 	};
 }
