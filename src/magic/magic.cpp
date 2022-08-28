@@ -115,9 +115,12 @@ namespace Gts {
 
 	bool Magic::IsDualCasting() {
 		if (this->caster) {
-			auto source = this->caster->GetMagicCaster(GetActiveEffect()->castingSource);
-			if (source) {
-				return source->GetIsDualCasting();
+			auto casting_type = GetActiveEffect()->castingSource;
+			if (casting_type == MagicSystem::CastingSource::kLeftHand || casting_type == MagicSystem::CastingSource::kRightHand) {
+				auto source = this->caster->GetMagicCaster(casting_type);
+				if (source) {
+					return source->GetIsDualCasting();
+				}
 			}
 		}
 		return false;
