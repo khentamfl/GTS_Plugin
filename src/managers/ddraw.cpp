@@ -7,6 +7,98 @@ using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
+
+namespace {
+	void DrawRigidBody(hkpRigidBody* rigid_body) {
+		auto shape = rigid_body->GetShape();
+		if (shape) {
+			if (shape->type == hkpShapeType::kCapsule) {
+				const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
+				if (capsule) {
+					glm::vec3 start = HkToGlm(capsuleShape->vertexA) * *g_worldScaleInverse;
+					glm::vec3 end = HkToGlm(capsuleShape->vertexB) * *g_worldScaleInverse;
+
+					float radius = capsuleShape->radius * *g_worldScaleInverse;
+
+					auto& transform = hkpRigidBody->motion.motionState.transform;
+					glm::mat3 rotation = HkToGlm(transform.rotation);
+					float x_angle = 0.0;
+					float y_angle = 0.0;
+					float z_angle = 0.0;
+					glm::extractEulerAngleXYZ(rotation, x_angle, y_angle, z_angle);
+					glm::vec3 euler_angles = glm::vec3(x_angle, y_angle, z_angle);
+					DebugAPI::DrawCapsule(start, end, radius, euler_angles);
+				}
+			}
+		}
+	}
+
+	void DrawNiAvObject(NiAVObject* currentnode) {
+		auto collision_object = currentnode->GetCollisionObject();
+		if (collision_object) {
+			auto bhk_rigid_body = collision_object->GetRigidBody();
+			if (bhk_rigid_body) {
+				hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
+				if (hkp_rigidbody_ref) {
+					hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
+					if (hkp_rigidbody) {
+						DrawRigidBody(rigid_body);
+					}
+				}
+			}
+		}
+	}
+
+	void DrawNiNodes(NiAVObject* root) {
+		std::deque<NiAVObject*> queue;
+		queue.push_back(root);
+
+
+		while (!queue.empty()) {
+			auto currentnode = queue.front();
+			queue.pop_front();
+			try {
+				if (currentnode) {
+					auto ninode = currentnode->AsNode();
+					if (ninode) {
+						for (auto child: ninode->GetChildren()) {
+							// Bredth first search
+							queue.push_back(child.get());
+							// Depth first search
+							//queue.push_front(child.get());
+						}
+					}
+					DrawNiAvObject(ninode);
+				}
+			}
+			catch (const std::overflow_error& e) {
+				log::warn("Overflow: {}", e.what());
+			} // this executes if f() throws std::overflow_error (same type rule)
+			catch (const std::runtime_error& e) {
+				log::warn("Underflow: {}", e.what());
+			} // this executes if f() throws std::underflow_error (base class rule)
+			catch (const std::exception& e) {
+				log::warn("Exception: {}", e.what());
+			} // this executes if f() throws std::logic_error (base class rule)
+			catch (...) {
+				log::warn("Exception Other");
+			}
+		}
+	}
+
+	void DrawActor(Actor* actor) {
+		if (!actor) {
+			return;
+		}
+		if (!actor->Is3DLoaded()) {
+			return;
+		}
+
+		auto root = actor->GetCurrent3D();
+		DrawNiNodes(root);
+	}
+}
+
 namespace Gts {
 	DDraw& DDraw::GetSingleton() noexcept {
 		static DDraw instance;

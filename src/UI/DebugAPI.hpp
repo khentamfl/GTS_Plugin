@@ -7,6 +7,14 @@
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Util {
+
+	inline glm::vec3 HkToGlm(const hkVector4 &vec) {
+		return glm::vec3(vec.quad.m128_f32[0], vec.quad.m128_f32[1], vec.quad.m128_f32[2]);
+	}
+	inline glm::mat3 HkToGlm(const hkRotation &mat) {
+		return glm::mat3(HkToGlm(mat.col0), HkToGlm(mat.col1), HkToGlm(mat.col2));
+	}
+
 	inline bool IsRoughlyEqual(float first, float second, float maxDif)
 	{
 		return abs(first - second) <= maxDif;
@@ -185,6 +193,8 @@ class DebugAPI
 		static void DrawBoundsForMS(ObjectBound objectBound, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
 		static void DrawSphere(glm::vec3, float radius, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
 		static void DrawCircle(glm::vec3, float radius, glm::vec3 eulerAngles, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
+		static void DrawHalfCircle(glm::vec3, float radius, glm::vec3 eulerAngles, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
+		static void DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::vec3 eulerAngles, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
 
 		static std::vector<DebugAPILine*> LinesToDraw;
 

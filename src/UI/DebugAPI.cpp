@@ -153,6 +153,76 @@ void DebugAPI::DrawCircle(glm::vec3 origin, float radius, glm::vec3 eulerAngles,
 	}
 }
 
+void DebugAPI::DrawHalfCircle(glm::vec3 origin, float radius, glm::vec3 eulerAngles, int liftetimeMS, const glm::vec4& color, float lineThickness)
+{
+	glm::vec3 lastEndPos = GetPointOnRotatedCircle(origin, radius, CIRCLE_NUM_SEGMENTS/2, (float)(CIRCLE_NUM_SEGMENTS - 1), eulerAngles);
+
+	for (int i = 0; i <= CIRCLE_NUM_SEGMENTS/2; i++)
+	{
+		glm::vec3 currEndPos = GetPointOnRotatedCircle(origin, radius, (float)i, (float)(CIRCLE_NUM_SEGMENTS - 1), eulerAngles);
+
+		DrawLineForMS(
+			lastEndPos,
+			currEndPos,
+			liftetimeMS,
+			color,
+			lineThickness);
+
+		lastEndPos = currEndPos;
+	}
+}
+
+void DebugAPI::DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::vec3 eulerAngles, int liftetimeMS, const glm::vec4& color, float lineThickness) {
+	// Start Cap
+	glm::vec3 start_euler_a = eulerAngles;
+	glm::vec3 start_euler_b = glm::vec3(start_euler_a.x + glm::half_pi<float>(), start_euler_a.y, start_euler_a.z);
+	DrawHalfCircle(start, radius, start_euler_a, liftetimeMS, color, lineThickness);
+	DrawHalfCircle(start, radius, start_euler_b, liftetimeMS, color, lineThickness);
+
+	// End Cap
+	glm::vec3 end_euler_a = glm::vec3(start_euler_a.x, start_euler_a.y, start_euler_a.z + glm::pi<float>());
+	glm::vec3 end_euler_b = glm::vec3(start_euler_b.x, start_euler_b.y, start_euler_b.z + glm::pi<float>());
+	DrawHalfCircle(end, radius, end_euler_a, liftetimeMS, color, lineThickness);
+	DrawHalfCircle(end, radius, end_euler_b, liftetimeMS, color, lineThickness);
+
+	// Joinings
+	glm::vec3 start_a_start = GetPointOnRotatedCircle(start, radius, 0, (float)(CIRCLE_NUM_SEGMENTS - 1), start_euler_a);
+	glm::vec3 start_a_end = GetPointOnRotatedCircle(start, radius, CIRCLE_NUM_SEGMENTS/2, (float)(CIRCLE_NUM_SEGMENTS - 1), start_euler_a);
+	glm::vec3 start_b_start = GetPointOnRotatedCircle(start, radius, 0, (float)(CIRCLE_NUM_SEGMENTS - 1), start_euler_b);
+	glm::vec3 start_b_end = GetPointOnRotatedCircle(start, radius, CIRCLE_NUM_SEGMENTS/2, (float)(CIRCLE_NUM_SEGMENTS - 1), start_euler_b);
+
+	glm::vec3 end_a_start = GetPointOnRotatedCircle(end, radius, 0, (float)(CIRCLE_NUM_SEGMENTS - 1), end_euler_a);
+	glm::vec3 end_a_end = GetPointOnRotatedCircle(end, radius, CIRCLE_NUM_SEGMENTS/2, (float)(CIRCLE_NUM_SEGMENTS - 1), end_euler_a);
+	glm::vec3 end_b_start = GetPointOnRotatedCircle(end, radius, 0, (float)(CIRCLE_NUM_SEGMENTS - 1), end_euler_b);
+	glm::vec3 end_b_end = GetPointOnRotatedCircle(end, radius, CIRCLE_NUM_SEGMENTS/2, (float)(CIRCLE_NUM_SEGMENTS - 1), end_euler_b);
+
+	DrawLineForMS(
+		start_a_start,
+		end_a_start,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		start_a_end,
+		end_a_end,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		start_b_start,
+		end_b_start,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		start_b_end,
+		end_b_end,
+		liftetimeMS,
+		color,
+		lineThickness);
+}
+
+
 DebugAPILine* DebugAPI::GetExistingLine(const glm::vec3& from, const glm::vec3& to, const glm::vec4& color, float lineThickness)
 {
 	for (int i = 0; i < LinesToDraw.size(); i++)
