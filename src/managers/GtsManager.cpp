@@ -33,7 +33,7 @@ namespace {
 		if (fabs(target_scale - persi_actor_data->visual_scale) < 1e-5) {
 			return;
 		}
-		float minimum_scale_delta = 0.005; // 0.5%
+		float minimum_scale_delta = 0.025; // 2.5%
 		if (fabs(target_scale - persi_actor_data->visual_scale) < minimum_scale_delta) {
 			persi_actor_data->visual_scale = target_scale;
 			persi_actor_data->visual_scale_v = 0.0;
@@ -104,10 +104,8 @@ namespace {
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
-		persi_actor_data->anim_speed = speed_mult;
+		persi_actor_data->anim_speed = speed_mult; // << 
 		float MS_mult = soft_core(scale, MS_adjustment);
-
-		persi_actor_data->anim_speed = MS_mult;
 		
 		actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / MS_mult);
 		if (actor->IsWalking() == true) {
