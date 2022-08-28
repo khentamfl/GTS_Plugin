@@ -28,6 +28,7 @@ namespace {
 					float z_angle = 0.0;
 					glm::extractEulerAngleXYZ(glm::mat4(rotation), x_angle, y_angle, z_angle);
 					glm::vec3 euler_angles = glm::vec3(x_angle, y_angle, z_angle);
+					log::info("Drawing Capsule, {},{},{}={},{},{}", start.x,start.y,start.z,end.x,end.y,end.z);
 					DebugAPI::DrawCapsule(translation + start, translation + end, radius, euler_angles);
 				}
 			}
