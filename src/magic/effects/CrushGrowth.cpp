@@ -24,11 +24,13 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
         auto target = GetTarget();
-        
+
 		if (!caster) {
+			log::info("Crush: No caster");
 			return;
 		}
 		if (!target) {
+			log::info("Crush: No Target");
 			return;
 		}
         if (CrushGrowthAmount <= 0.0)
@@ -36,12 +38,12 @@ namespace Gts {
         {this->CrushGrowthAmount = 1.0;} // Just to be safe
 
         float TargetScale = get_visual_scale(target);
-        float Rate = 0.00078 * TargetScale * CrushGrowthAmount;
+        float Rate = 0.0078 * TargetScale * CrushGrowthAmount;
         if (caster->HasPerk(runtime.AdditionalAbsorption))
 		{Rate *= 2.0;}
 
-		float size = get_visual_scale(target);
-        CrushGrow(caster, Rate, 0);
+		float size = get_visual_scale(caster); // We count Enemy as caster: he casts it on us
+        CrushGrow(target, Rate, 0);
 		
 	}
 
