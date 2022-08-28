@@ -104,14 +104,20 @@ namespace {
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
-		persi_actor_data->anim_speed = speed_mult; // << 
+		persi_actor_data->anim_speed = speed_mult;
 		float MS_mult = soft_core(scale, MS_adjustment);
-		
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		auto temp_data = Transient::GetSingleton().GetData(actor);
+		auto saved_data = Persistent::GetSingleton().GetData(actor);
+		apply_highheel(actor, temp_data, true);
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
 		actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / MS_mult);
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.44 / MS_mult);
 		} else if (actor->IsSprinting() == true) {
-			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 1.15 / MS_mult);
+			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 1.25 / MS_mult);
 		}
 		if (actor->formID == 0x14) {
 			log::info("Speed Mult for {} is {}", actor->GetDisplayFullName(),trans_actor_data->base_walkspeedmult);
@@ -201,6 +207,10 @@ namespace {
 		if (size_limit <= 1.0)
 		{size_limit = 1.0;} // Avoid bugs
 
+		auto actor_data = attr_man.GetActorData(actor);
+		if (actor_data->half_life <= 1.0)
+		{actor_data->half_life = 1.0;}
+
 		set_max_scale(actor, size_limit);
 		if (get_target_scale(actor) > size_limit) {
 			set_target_scale(actor, size_limit);
@@ -249,6 +259,9 @@ namespace {
 
 		if (size_limit <= 1.0)
 		{size_limit = 1.0;} // Avoid bugs
+		auto actor_data = attr_man.GetActorData(actor);
+		if (actor_data->half_life <= 1.0)
+		{actor_data->half_life = 1.0;}
 
 		set_max_scale(actor, size_limit);
 		if (get_target_scale(actor) > size_limit) {
