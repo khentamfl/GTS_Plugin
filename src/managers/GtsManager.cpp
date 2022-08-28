@@ -103,22 +103,15 @@ namespace {
 			return;
 		}
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
-		//SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
+		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
 		persi_actor_data->anim_speed = speed_mult;
 		this->ApplyDelay -= 1.0;
-		SoftPotential MS_adjustment {
-				.k = 0.132,
-				.n = 0.85,
-				.s = 1.12,
-				.o = 1.0,
-				.a = 0.0,
-			};
+
 
 		float MS_mult = soft_core(scale, MS_adjustment);
-		if (this->ApplyDelay <= 0.0)
+		if (GtsManager::GetSingleton().GetFrameNum() % 1 == 0)
 		{
-			this->ApplyDelay = 60.0;
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, 44 / MS_mult);
 		} else if (actor->IsSprinting() == true) {
