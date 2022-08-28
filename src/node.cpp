@@ -50,134 +50,175 @@ namespace Gts {
 		}
 	}
 
-	NiAVObject* find_node(Actor* actor, std::string_view node_name, bool first_person) {
+	NiAVObject* find_node(Actor* actor, std::string_view node_name, Person person) {
 		if (!actor->Is3DLoaded()) {
 			return nullptr;
 		}
-		auto model = actor->Get3D(first_person);
-		if (!model) {
-			return nullptr;
-		}
-		auto node_lookup = model->GetObjectByName(node_name);
-		if (node_lookup) {
-			return node_lookup;
-		}
-
-		// Game lookup failed we try and find it manually
-		std::deque<NiAVObject*> queue;
-		queue.push_back(model);
-
-
-		while (!queue.empty()) {
-			auto currentnode = queue.front();
-			queue.pop_front();
-			try {
-				if (currentnode) {
-					auto ninode = currentnode->AsNode();
-					if (ninode) {
-						for (auto child: ninode->GetChildren()) {
-							// Bredth first search
-							queue.push_back(child.get());
-							// Depth first search
-							//queue.push_front(child.get());
-						}
-					}
-					// Do smth
-					if  (currentnode->name.c_str() == node_name) {
-						return currentnode;
-					}
+		std::vector<NiAVObject*> models;
+		switch (person) {
+			case Person::First: {
+				auto model = actor->Get3D(true);
+				if (model) {
+					models.push_back(model);
 				}
 			}
-			catch (const std::overflow_error& e) {
-				log::warn("Overflow: {}", e.what());
-			} // this executes if f() throws std::overflow_error (same type rule)
-			catch (const std::runtime_error& e) {
-				log::warn("Underflow: {}", e.what());
-			} // this executes if f() throws std::underflow_error (base class rule)
-			catch (const std::exception& e) {
-				log::warn("Exception: {}", e.what());
-			} // this executes if f() throws std::logic_error (base class rule)
-			catch (...) {
-				log::warn("Exception Other");
+			case Person::Third: {
+				auto model = actor->Get3D(false);
+				if (model) {
+					models.push_back(model);
+				}
+			}
+			case Person::Any: {
+				auto model = actor->Get3D(false);
+				if (model) {
+					models.push_back(model);
+				}
+				auto modelb = actor->Get3D(true);
+				if (modelb) {
+					models.push_back(modelb);
+				}
+			}
+			case Person::Current: {
+				auto model = actor->GetCurrent3D();
+				if (model) {
+					models.push_back(model);
+				}
+			}
+		}
+		if (models.empty()) {
+			return nullptr;
+		}
+
+		for (auto model: models) {
+			auto node_lookup = model->GetObjectByName(node_name);
+			if (node_lookup) {
+				return node_lookup;
+			}
+
+			// Game lookup failed we try and find it manually
+			std::deque<NiAVObject*> queue;
+			queue.push_back(model);
+
+
+			while (!queue.empty()) {
+				auto currentnode = queue.front();
+				queue.pop_front();
+				try {
+					if (currentnode) {
+						auto ninode = currentnode->AsNode();
+						if (ninode) {
+							for (auto child: ninode->GetChildren()) {
+								// Bredth first search
+								queue.push_back(child.get());
+								// Depth first search
+								//queue.push_front(child.get());
+							}
+						}
+						// Do smth
+						if  (currentnode->name.c_str() == node_name) {
+							return currentnode;
+						}
+					}
+				}
+				catch (const std::overflow_error& e) {
+					log::warn("Overflow: {}", e.what());
+				} // this executes if f() throws std::overflow_error (same type rule)
+				catch (const std::runtime_error& e) {
+					log::warn("Underflow: {}", e.what());
+				} // this executes if f() throws std::underflow_error (base class rule)
+				catch (const std::exception& e) {
+					log::warn("Exception: {}", e.what());
+				} // this executes if f() throws std::logic_error (base class rule)
+				catch (...) {
+					log::warn("Exception Other");
+				}
 			}
 		}
 
 		return nullptr;
 	}
 
-	NiAVObject* find_node_regex(Actor* actor, std::string_view node_regex, bool first_person) {
+	NiAVObject* find_node_regex(Actor* actor, std::string_view node_regex, Person person) {
 		if (!actor->Is3DLoaded()) {
 			return nullptr;
 		}
-		auto model = actor->Get3D(first_person);
-		if (!model) {
+		std::vector<NiAVObject*> models;
+		switch (person) {
+			case Person::First: {
+				auto model = actor->Get3D(true);
+				if (model) {
+					models.push_back(model);
+				}
+			}
+			case Person::Third: {
+				auto model = actor->Get3D(false);
+				if (model) {
+					models.push_back(model);
+				}
+			}
+			case Person::Any: {
+				auto model = actor->Get3D(false);
+				if (model) {
+					models.push_back(model);
+				}
+				auto modelb = actor->Get3D(true);
+				if (modelb) {
+					models.push_back(modelb);
+				}
+			}
+			case Person::Current: {
+				auto model = actor->GetCurrent3D();
+				if (model) {
+					models.push_back(model);
+				}
+			}
+		}
+		if (models.empty()) {
 			return nullptr;
 		}
 
 		std::regex the_regex(std::string(node_regex).c_str());
 
-		// Game lookup failed we try and find it manually
-		std::deque<NiAVObject*> queue;
-		queue.push_back(model);
+		for (auto model: models) {
+			std::deque<NiAVObject*> queue;
+			queue.push_back(model);
 
 
-		while (!queue.empty()) {
-			auto currentnode = queue.front();
-			queue.pop_front();
-			try {
-				if (currentnode) {
-					auto ninode = currentnode->AsNode();
-					if (ninode) {
-						for (auto child: ninode->GetChildren()) {
-							// Bredth first search
-							queue.push_back(child.get());
-							// Depth first search
-							//queue.push_front(child.get());
+			while (!queue.empty()) {
+				auto currentnode = queue.front();
+				queue.pop_front();
+				try {
+					if (currentnode) {
+						auto ninode = currentnode->AsNode();
+						if (ninode) {
+							for (auto child: ninode->GetChildren()) {
+								// Bredth first search
+								queue.push_back(child.get());
+								// Depth first search
+								//queue.push_front(child.get());
+							}
+						}
+						// Do smth
+						if  (std::regex_match(currentnode->name.c_str(), the_regex)) {
+							return currentnode;
 						}
 					}
-					// Do smth
-					if  (std::regex_match(currentnode->name.c_str(), the_regex)) {
-						return currentnode;
-					}
+				}
+				catch (const std::overflow_error& e) {
+					log::warn("Overflow: {}", e.what());
+				} // this executes if f() throws std::overflow_error (same type rule)
+				catch (const std::runtime_error& e) {
+					log::warn("Underflow: {}", e.what());
+				} // this executes if f() throws std::underflow_error (base class rule)
+				catch (const std::exception& e) {
+					log::warn("Exception: {}", e.what());
+				} // this executes if f() throws std::logic_error (base class rule)
+				catch (...) {
+					log::warn("Exception Other");
 				}
 			}
-			catch (const std::overflow_error& e) {
-				log::warn("Overflow: {}", e.what());
-			} // this executes if f() throws std::overflow_error (same type rule)
-			catch (const std::runtime_error& e) {
-				log::warn("Underflow: {}", e.what());
-			} // this executes if f() throws std::underflow_error (base class rule)
-			catch (const std::exception& e) {
-				log::warn("Exception: {}", e.what());
-			} // this executes if f() throws std::logic_error (base class rule)
-			catch (...) {
-				log::warn("Exception Other");
-			}
 		}
-
 		return nullptr;
-	}
-
-	NiAVObject* find_node_any(Actor* actor, std::string_view name) {
-		NiAVObject* result = nullptr;
-		for (auto person: {false, true}) {
-			result = find_node(actor, name, person);
-			if (result) {
-				break;
-			}
-		}
-		return result;
-	}
-
-	NiAVObject* find_node_regex_any(Actor* actor, std::string_view node_regex) {
-		NiAVObject* result = nullptr;
-		for (auto person: {false, true}) {
-			result = find_node_regex(actor, node_regex, person);
-			if (result) {
-				break;
-			}
-		}
-		return result;
 	}
 
 	void clone_bound(Actor* actor) {
@@ -222,7 +263,7 @@ namespace Gts {
 
 	NiAVObject* get_bumper(Actor* actor) {
 		string node_name = "CharacterBumper";
-		return find_node(actor, node_name);
+		return find_node(actor, node_name, Person::Third);
 	}
 
 	void update_node(NiAVObject* node) {

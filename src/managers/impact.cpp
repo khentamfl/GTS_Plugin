@@ -41,30 +41,46 @@ namespace {
 		NiAVObject* result;
 		switch (foot_kind) {
 			case Foot::Left:
-				result = find_node_regex_any(actor, left_foot);
-				if (result) results.push_back(result);
+				result = find_node_regex(actor, left_foot, Person::Any);
+				if (result) {
+					results.push_back(result);
+				}
 				break;
 			case Foot::Right:
-				result = find_node_regex_any(actor, right_foot);
-				if (result) results.push_back(result);
+				result = find_node_regex(actor, right_foot, Person::Any);
+				if (result) {
+					results.push_back(result);
+				}
 				break;
 			case Foot::Front:
-				result = find_node_regex_any(actor, left_arm);
-				if (result) results.push_back(result);
-				result = find_node_regex_any(actor, right_arm);
-				if (result) results.push_back(result);
+				result = find_node_regex(actor, left_arm, Person::Any);
+				if (result) {
+					results.push_back(result);
+				}
+				result = find_node_regex(actor, right_arm, Person::Any);
+				if (result) {
+					results.push_back(result);
+				}
 				break;
 			case Foot::Back:
-				result = find_node_regex_any(actor, left_foot);
-				if (result) results.push_back(result);
-				result = find_node_regex_any(actor, right_foot);
-				if (result) results.push_back(result);
+				result = find_node_regex(actor, left_foot, Person::Any);
+				if (result) {
+					results.push_back(result);
+				}
+				result = find_node_regex(actor, right_foot, Person::Any);
+				if (result) {
+					results.push_back(result);
+				}
 				break;
 			case Foot::JumpLand:
-				result = find_node_regex_any(actor, left_foot);
-				if (result) results.push_back(result);
-				result = find_node_regex_any(actor, right_foot);
-				if (result) results.push_back(result);
+				result = find_node_regex(actor, left_foot, Person::Any);
+				if (result) {
+					results.push_back(result);
+				}
+				result = find_node_regex(actor, right_foot, Person::Any);
+				if (result) {
+					results.push_back(result);
+				}
 				break;
 		}
 		return results;

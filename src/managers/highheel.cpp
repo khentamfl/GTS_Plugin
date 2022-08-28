@@ -10,7 +10,7 @@ using namespace Gts;
 
 namespace {
 	NiAVObject* find_any_node(Actor* actor, std::string_view name) {
-		for (bool person: {false, true}) {
+		for (auto person: {Person::Third, Person::First}) {
 			auto found = find_node(actor, name, person);
 			if (found) {
 				return found;
@@ -65,7 +65,7 @@ namespace Gts {
 		}
 
 		bool adjusted = false;
-		for (bool person: {false, true}) {
+		for (auto person: {Person::Third, Person::First}) {
 			auto npc_root_node = find_node(actor, "CME Body [Body]", person);
 			if (npc_root_node) {
 				float current_value = npc_root_node->local.translate.z;

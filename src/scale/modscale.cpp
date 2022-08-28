@@ -45,14 +45,14 @@ namespace Gts {
 		// This will set the scale of the root npc node
 		string node_name = "NPC Root [Root]";
 		bool result = false;
-		auto node = find_node(actor, node_name, false);
+		auto node = find_node(actor, node_name, Person::Third);
 		if (node) {
 			result = true;
 			node->local.scale = target_scale;
 			update_node(node);
 		}
 
-		auto first_node = find_node(actor, node_name, true);
+		auto first_node = find_node(actor, node_name, Person::First);
 		if (first_node) {
 			result = true;
 			first_node->local.scale = target_scale;
@@ -64,11 +64,11 @@ namespace Gts {
 	float get_npcnode_scale(Actor* actor) {
 		// This will set the scale of the root npc node
 		string node_name = "NPC Root [Root]";
-		auto node = find_node(actor, node_name, false);
+		auto node = find_node(actor, node_name, Person::Third);
 		if (node) {
 			return node->local.scale;
 		}
-		auto first_node = find_node(actor, node_name, true);
+		auto first_node = find_node(actor, node_name, Person::First);
 		if (first_node) {
 			return first_node->local.scale;
 		}

@@ -309,23 +309,6 @@ namespace {
 			capsule->vertexA = data->start * vec_scale;
 			capsule->vertexB = data->end * vec_scale;
 			capsule->radius = expected_radius;
-
-			RE::hkTransform shapeTransform;
-			// use identity matrix for the BB of the unrotated object
-			shapeTransform.rotation.col0 = { 1.0f, 0.0f, 0.0f, 0.0f };
-			shapeTransform.rotation.col1 = { 0.0f, 1.0f, 0.0f, 0.0f };
-			shapeTransform.rotation.col2 = { 0.0f, 0.0f, 1.0f, 0.0f };
-			shapeTransform.translation.quad = _mm_set_ps(0.0f, 0.0f, 0.0f, 0.0f);
-
-			RE::hkAabb boundingBoxLocal;
-			capsule->GetAabbImpl(shapeTransform, 0.0f, boundingBoxLocal);
-
-			float boundMinLocal[4];
-			_mm_store_ps(boundMinLocal, boundingBoxLocal.min.quad);
-			float boundMaxLocal[4];
-			_mm_store_ps(boundMaxLocal, boundingBoxLocal.max.quad);
-
-			log::info("Capsule bb is now {},{},{} -- {},{},{}", boundMinLocal[0], boundMinLocal[1], boundMinLocal[2], boundMaxLocal[0], boundMaxLocal[1], boundMaxLocal[2]);
 		}
 	}
 
@@ -346,10 +329,6 @@ namespace {
 								// 	log::error("Capsule is a lost one of ours");
 								// }
 								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule);
-							}
-							if (actor_data->form_id == 0x14) {
-								std::string name = currentnode->name.c_str();
-								log::info("Node {} has type {}", name, static_cast<int>(shape->type));
 							}
 						}
 					}
@@ -474,54 +453,12 @@ namespace Gts {
 			}
 		}
 
-		static bool doonce = true;
-		if (doonce) {
-			doonce = false;
-			log::info("==Experiment");
-			float factor = 100.0;
-			for (auto actor: find_team_player()) {
-				if (actor) {
-					log::info(" + {}", actor->GetDisplayFullName());
-					auto controller = actor->GetCharController();
-					if (controller) {
-						log::info("    - Got CharController");
-						hkpRigidBody* support_body = controller->supportBody.get();
-						if (support_body) {
-							log::info("    - Got support body");
-							auto shape = support_body->GetShape();
-							if (shape) {
-								log::info("    - Got Shape: {}", static_cast<int>(shape->type));
-								hkpShape* dragon = const_cast<hkpShape*>(shape);
-								scale_recursive("", dragon, factor);
-							}
-						}
-
-						hkpRigidBody* bumped_body = controller->bumpedBody.get();
-						if (bumped_body) {
-							log::info("    - Got bumped body");
-							auto shape = bumped_body->GetShape();
-							if (shape) {
-								log::info("    - Got Shape: {}", static_cast<int>(shape->type));
-								hkpShape* dragon = const_cast<hkpShape*>(shape);
-								scale_recursive("", dragon, factor);
-							}
-						}
-
-						hkpRigidBody* bumped_char_collision = controller->bumpedCharCollisionObject.get();
-						if (bumped_char_collision) {
-							log::info("    - Got bumped char collision object");
-							auto shape = bumped_char_collision->GetShape();
-							if (shape) {
-								log::info("    - Got Shape: {}", static_cast<int>(shape->type));
-								hkpShape* dragon = const_cast<hkpShape*>(shape);
-								scale_recursive("", dragon, factor);
-							}
-						}
-					}
-				}
-			}
-			log::info("==END Experiment");
-		}
+		// static bool doonce = true;
+		// if (doonce) {
+		// 	doonce = false;
+		// 	log::info("==Experiment");
+		// 	log::info("==END Experiment");
+		// }
 	}
 
 	ColliderActorData::ColliderActorData(Actor* actor) {
@@ -584,7 +521,6 @@ namespace Gts {
 			key = new_capsule;
 			rigid_body->SetShape(new_capsule);
 			this->capsule_data.try_emplace(key, std::move(new_data));
-
 		}
 	}
 }
