@@ -260,15 +260,6 @@ void GtsManager::poll() {
 			GameMode(actor);
 		}
 	}
-
-	auto model = player_char->GetCurrent3D();
-	if (model) {
-		auto spine_node = find_node(player_char, "NPC Spine [Spn0]", Person::Current);
-		if (spine_node) {
-			log::info("Drawing Sphere");
-			DebugAPI::DrawSphere(Ni2Glm(spine_node->world.translate), meter_to_unit(2.0));
-		}
-	}
 }
 
 // Fired during the Papyrus OnUpdate event

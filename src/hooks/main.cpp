@@ -4,6 +4,7 @@
 #include "managers/GtsManager.hpp"
 #include "managers/collider.hpp"
 #include "magic/magic.hpp"
+#include "managers/ddraw.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -24,10 +25,12 @@ namespace Hooks
 		auto& manager = GtsManager::GetSingleton();
 		auto& magic = MagicManager::GetSingleton();
 		auto& collider = ColliderManager::GetSingleton();
+		auto& ddraw = DDraw::GetSingleton();
 		activate_mainthread_mode();
 		manager.poll();
 		magic.Update();
 		collider.Update();
+		ddraw.Update();
 		deactivate_mainthread_mode();
 	}
 }
