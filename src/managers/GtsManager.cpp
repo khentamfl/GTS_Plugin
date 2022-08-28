@@ -103,9 +103,18 @@ namespace {
 			return;
 		}
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
-		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
+		//SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
 		persi_actor_data->anim_speed = speed_mult;
+
+		SoftPotential MS_adjustment {
+				.k = 0.132,
+				.n = 0.85,
+				.s = 1.12,
+				.o = 1.0,
+				.a = 0.0,
+			};
+
 		float MS_mult = soft_core(scale, MS_adjustment);
 
 		if (actor->IsWalking() == true) {
