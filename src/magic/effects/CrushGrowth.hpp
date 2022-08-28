@@ -18,7 +18,7 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-			static bool StartEffect(EffectSetting* effect);
+			bool StartEffect(EffectSetting* effect);
 
             private:
             float CrushGrowthAmount = 1.0;
