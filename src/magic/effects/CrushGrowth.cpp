@@ -53,7 +53,7 @@ namespace Gts {
 
 
     void CrushGrowth::OnFinish() {
-        this->CrushGrowthAmount = 1.0;
+        this->CrushGrowthAmount = 0.0;
 		this->ScaleOnCrush = 1.0;
     }
 }

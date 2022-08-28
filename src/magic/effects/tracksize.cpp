@@ -11,7 +11,7 @@ namespace Gts {
 
 	bool TrackSize::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.GlobalVoreGrowth;
+		return effect == runtime.TrackSize;
 	}
 
 	void TrackSize::OnUpdate() {

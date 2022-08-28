@@ -178,7 +178,7 @@ namespace Gts {
 	inline void CrushToNothing(Actor* caster, Actor* target) {
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
-		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, caster, 1.00f, false, 0.0f, target);
+		target->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, caster, 1.00f, false, 0.0f, target);
 		AdjustSizeLimit(0.0417 * target_scale);
 		log::info("Casting Crush Growth on self");
 	}
