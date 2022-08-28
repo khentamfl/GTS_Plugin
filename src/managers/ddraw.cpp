@@ -10,11 +10,15 @@ using namespace Gts;
 
 namespace {
 	void DrawRigidBody(hkpRigidBody* rigid_body) {
+		log::info("Checking RB");
 		auto shape = rigid_body->GetShape();
 		if (shape) {
+			log::info("Has Shape");
 			if (shape->type == hkpShapeType::kCapsule) {
+				log::info("Shape is Capsule");
 				const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
 				if (capsule) {
+					log::info("Capsule is Valid");
 					glm::vec3 start = HkToGlm(capsule->vertexA) * *g_worldScaleInverse;
 					glm::vec3 end = HkToGlm(capsule->vertexB) * *g_worldScaleInverse;
 
@@ -36,14 +40,19 @@ namespace {
 	}
 
 	void DrawNiAvObject(NiAVObject* currentnode) {
+		log::info("Checking Node");
 		auto collision_object = currentnode->GetCollisionObject();
 		if (collision_object) {
+			log::info("Has Collision");
 			auto bhk_rigid_body = collision_object->GetRigidBody();
 			if (bhk_rigid_body) {
+				log::info("Has bhkRB");
 				hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
 				if (hkp_rigidbody_ref) {
+					log::info("Hash hkpRB");
 					hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
 					if (hkp_rigidbody) {
+						log::info("Valid hkpRB");
 						DrawRigidBody(hkp_rigidbody);
 					}
 				}
@@ -53,6 +62,7 @@ namespace {
 
 	void DrawNiNodes(NiAVObject* root) {
 		std::deque<NiAVObject*> queue;
+		log::info("Searching NiNodes");
 		queue.push_back(root);
 
 
