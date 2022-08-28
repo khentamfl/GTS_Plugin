@@ -73,7 +73,7 @@ namespace Gts {
 							max_scale = 1.0;
 						}
 
-						float half_life;
+						float half_life = 1.0;
 						if (version >= 2) {
 							half_life = 1.0;//serde->ReadRecordData(&half_life, sizeof(half_life));
 						} else {
