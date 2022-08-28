@@ -121,7 +121,7 @@ namespace {
 	
 
 		// Experiement
-		 {
+		if (false) {
 			auto& rot_speed = actor->currentProcess->middleHigh->rotationSpeed;
 			if (fabs(rot_speed.x) > 1e-5 || fabs(rot_speed.y) > 1e-5 || fabs(rot_speed.z) > 1e-5) {
 				log::info("{} rotationSpeed: {},{},{}", actor_name(actor), rot_speed.x,rot_speed.y,rot_speed.z);
