@@ -175,7 +175,7 @@ namespace Gts {
 		return false;
 	}
 
-	inline bool ShrinkToNothingPure(Actor* caster, Actor* target) {
+	inline void ShrinkToNothingPure(Actor* caster, Actor* target) {
 		const float SHRINK_TO_NOTHING_SCALE = 0.12;
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
