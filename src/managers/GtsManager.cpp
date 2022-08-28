@@ -112,7 +112,7 @@ namespace {
 		else if (actor->IsWalking() == true) {EditRoof = trans_actor_data->base_walkspeedmult * 1.25 / MS_mult}
 		else {EditRoof = trans_actor_data->base_walkspeedmult / MS_mult}
 		
-		if (base_walkspeedmult < EditRoof) {
+		if (trans_actor_data->base_walkspeedmult < EditRoof) {
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.44 / MS_mult);
 		} else if (actor->IsSprinting() == true) {
