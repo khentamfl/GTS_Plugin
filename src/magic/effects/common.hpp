@@ -65,6 +65,11 @@ namespace Gts {
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
 	}
 
+	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
+		// amount = scale * a + b
+		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
+	}
+
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
 		mod_target_scale(actor, -CalcPower(actor, scale_factor, bonus));

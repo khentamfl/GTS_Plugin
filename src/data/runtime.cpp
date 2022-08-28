@@ -73,6 +73,7 @@ namespace Gts {
 
 		///Ally/Grow Spells
 		this->SlowGrowth = find_form<EffectSetting>("GTS.esp|019C3D"); // <- slow growth spell [Hands]. Release and grow over time.
+		this->SlowGrowth2H = find_form<EffectSetting>("GTS.esp|086C8D");
 		this->GrowthSpell = find_form<EffectSetting>("GTS.esp|0022EB"); // <- Grow Spell [Hands]
 		this->GrowPcButton = find_form<EffectSetting>("GTS.esp|002DB5"); // <- Grow PC in size on button press
 
@@ -104,6 +105,7 @@ namespace Gts {
 		this->BloodExplosion = find_form<BGSExplosion>("GTS.esp|01CE9D");
 
 		this->GrowthOnHitPerk = find_form<BGSPerk>("GTS.esp|30EE52");
+		this->AdditionalAbsorption = find_form<BGSPerk>("GTS.esp|151518");
 
 		this->hhBonus = find_form<BGSPerk>(Config::GetSingleton().GetPerks().GetHHBonus());
 		this->PerkPart1 = find_form<BGSPerk>("GTS.esp|16081F");
@@ -148,8 +150,8 @@ namespace Gts {
 
 		this->proneCameraX = find_form<TESGlobal>("GTS.esp|290510");
 		this->proneCameraY = find_form<TESGlobal>("GTS.esp|290511");
-		this->proneCombatCameraX = find_form<TESGlobal>("GTS.esp|290518");
-		this->proneCombatCameraY = find_form<TESGlobal>("GTS.esp|290519");
+		this->proneCombatCameraX = find_form<TESGlobal>("GTS.esp|290514");
+		this->proneCombatCameraY = find_form<TESGlobal>("GTS.esp|290515");
 
 		this->cameraX = find_form<TESGlobal>("GTS.esp|29051A");
 		this->cameraY = find_form<TESGlobal>("GTS.esp|29051B");

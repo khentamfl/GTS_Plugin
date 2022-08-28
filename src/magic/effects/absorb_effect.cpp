@@ -58,4 +58,11 @@ namespace Gts {
 			AbsorbSteal(target, caster, 0.0025 * size_difference, 0.0, 0.2);
 		}
 	}
+
+	void Absorb::OnFinish() {
+		auto Caster = GetCaster();
+		auto Target = GetTarget();
+		auto runtime = Runtime::GetSingleton();
+		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
+	}
 }

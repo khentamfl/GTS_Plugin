@@ -20,6 +20,8 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
+		if (caster->HasPerk(runtime.AdditionalAbsorption))
+		{BASE_POWER *= 2.0;}
 		Grow(caster, 0.0, BASE_POWER);
 	}
 }

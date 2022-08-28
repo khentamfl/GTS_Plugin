@@ -8,6 +8,7 @@
 #include "magic/effects/tracksize.hpp"
 #include "magic/effects/grow_other_button.hpp"
 #include "magic/effects/growth.hpp"
+#include "magic/effects/CrushGrowth.hpp"
 #include "magic/effects/shrink.hpp"
 #include "magic/effects/shrink_back.hpp"
 #include "magic/effects/shrink_back_other.hpp"
@@ -30,11 +31,6 @@ namespace Gts {
 	void Magic::OnUpdate() {
 	}
 	void Magic::OnFinish() {
-		auto EFF = effect->GetBaseObject();
-		if (EFF == ShrinkFoe(Effect) || EFF == SwordOfSize(Effect) || EFF == Absorb(Effect)) 
-		auto Caster = GetCaster();
-		auto Target = GetTarget();
-		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
 	}
 
 	std::string Magic::GetName() {
@@ -150,6 +146,10 @@ namespace Gts {
 			EffectSetting* base_spell = effect->GetBaseObject();
 			if (ExplosiveGrowth::StartEffect(base_spell)) {
 				this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
+			}
+
+			if (CrushingGrowth::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new CrushingGrowth(effect));
 			}
 
 			if (TrackSize::StartEffect(base_spell)) {

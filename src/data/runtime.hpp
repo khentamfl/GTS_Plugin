@@ -60,6 +60,7 @@ namespace Gts {
 
 			///Ally/Grow Spells
 			EffectSetting* SlowGrowth = nullptr;
+			EffectSetting* SlowGrowth2H = nullptr;
 			EffectSetting* GrowthSpell = nullptr;
 			EffectSetting* GrowPcButton = nullptr;
 
@@ -90,6 +91,7 @@ namespace Gts {
 			BGSExplosion* BloodExplosion = nullptr;
 
 			BGSPerk* GrowthOnHitPerk = nullptr;
+			BGSPerk* AdditionalAbsorption = nullptr;
 			BGSPerk* hhBonus = nullptr;
 			BGSPerk* PerkPart1 = nullptr;
 			BGSPerk* PerkPart2 = nullptr;

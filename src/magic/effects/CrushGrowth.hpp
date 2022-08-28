@@ -1,6 +1,6 @@
 #pragma once
 #include "magic/magic.hpp"
-// Module that handles footsteps
+// Module that tracks the target
 
 
 using namespace std;
@@ -8,18 +8,19 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class Absorb : public Magic {
+	class CrushingGrowth : public Magic {
 		public:
-			Absorb(ActiveEffect* effect);
+			using Magic::Magic;
 
 			virtual void OnUpdate() override;
 
-			virtual void OnFinish() override;
+            virtual void OnFinish() override;
 
 			virtual std::string GetName() override;
 
 			static bool StartEffect(EffectSetting* effect);
-		private:
-			bool true_absorb = false;
+
+            private:
+            CrushGrowthAmount = 1.0;
 	};
 }
