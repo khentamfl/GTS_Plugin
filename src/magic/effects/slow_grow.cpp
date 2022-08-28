@@ -24,8 +24,8 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
-		float power = BASE_POWER * AlterBonus;
+		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00001;
+		float power = BASE_POWER + AlterBonus;
 		if (caster->HasMagicEffect(runtime.SlowGrowth2H))
 
 		{power*= DUAL_CAST_BONUS;}
