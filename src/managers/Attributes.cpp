@@ -89,10 +89,11 @@ namespace {
 		float last_hp_boost = actor_data->last_hp_boost;
 		const ActorValue av = ActorValue::kHealth;
 		float scale = get_visual_scale(actor);
+		float native_scale; = get_natural_scale(actor);
 		float base_av = actor->GetBaseActorValue(av);
 		float current_tempav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 
-		float boost = base_av * scale * power;
+		float boost = base_av * (scale/native_scale - 1.0) * power;
 
 		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav - last_hp_boost + boost;
 
