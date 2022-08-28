@@ -113,8 +113,9 @@ namespace {
 		} else if (actor->IsSprinting() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 1.15 / MS_mult);
 		}
-		if (actor->formID == 0x14)
-		{log::info("Speed Mult for {} is {}", actor->GetDisplayFullName(),trans_actor_data->base_walkspeedmult)}
+		if (actor->formID == 0x14) {
+			log::info("Speed Mult for {} is {}", actor->GetDisplayFullName(),trans_actor_data->base_walkspeedmult);
+			}
 
 		// Experiement
 		if (false) {
