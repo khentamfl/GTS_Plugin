@@ -68,7 +68,7 @@ namespace Gts {
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
-		Log::info("Crush Growth Active");
+		log::info("Crush Growth Active");
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
@@ -181,12 +181,12 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, caster, 1.00f, false, 0.0f, caster);
 		AdjustSizeLimit(0.0417 * target_scale);
-		log::info("Casting Crush Growth on self")
+		log::info("Casting Crush Growth on self");
 	}
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
 		auto& runtime = Runtime::GetSingleton();
 		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
-		log::info("Casting Track Size")
+		log::info("Casting Track Size");
 	}
 }

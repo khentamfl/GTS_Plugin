@@ -24,6 +24,6 @@ namespace Gts {
 		if (caster->HasPerk(runtime.AdditionalAbsorption))
 		{BASE_POWER *= 2.0;}
 		Grow(caster, 0.0, BASE_POWER);
-		Log::info("Vore Growth active");
+		log::info("Vore Growth active");
 	}
 }
