@@ -170,7 +170,7 @@ namespace Gts {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
 			AdjustSizeLimit(0.0117);
 			//target->SetDelete(true);
-			return true; // NOLINT
+			return true; 
 		}
 		return false;
 	}

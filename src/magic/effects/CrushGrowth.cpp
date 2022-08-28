@@ -7,25 +7,28 @@
 
 
 namespace Gts {
-	std::string CrushingGrowth::GetName() {
+	std::string CrushGrowth::GetName() {
 		return "CrushGrowth";
 	}
 
-	bool CrushingGrowth::StartEffect(EffectSetting* effect) { // NOLINT
+	bool CrushGrowth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.AllyCrushGrowth;
+		return effect == runtime.CrushGrowthMGEF;
 	}
 
-	void CrushingGrowth::OnStart() {
+	void CrushGrowth::OnStart() {
 		this->CrushGrowthAmount += 1.0;
 	}
 
-	void CrushingGrowth::OnUpdate() {
+	void CrushGrowth::OnUpdate() {
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
         auto target = GetTarget();
         
-		if (!caster || !target) {
+		if (!caster) {
+			return;
+		}
+		if (!target) {
 			return;
 		}
         if (CrushGrowthAmount == 0.0)
@@ -43,7 +46,7 @@ namespace Gts {
 	}
 
 
-    void CrushingGrowth::OnFinish() {
+    void CrushGrowth::OnFinish() {
         this->CrushGrowthAmount = 1.0;
     }
 }

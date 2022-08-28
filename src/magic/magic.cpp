@@ -148,8 +148,8 @@ namespace Gts {
 				this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
 			}
 
-			if (CrushingGrowth::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new CrushingGrowth(effect));
+			if (CrushGrowth::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new CrushGrowth(effect));
 			}
 
 			if (TrackSize::StartEffect(base_spell)) {

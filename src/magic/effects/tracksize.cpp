@@ -17,11 +17,16 @@ namespace Gts {
 	void TrackSize::OnUpdate() {
 		auto caster = GetCaster();
         auto target = GetTarget();
-		if (!caster || !target) {
+		if (!caster) {
+			return;
+		}
+		if (!target) {
 			return;
 		}
 		float size = get_visual_scale(target);
-        ShrinkToNothing(caster, target);
-		log::info("Track Size active");
+        if (ShrinkToNothing(caster, target)) {
+			log::info("Track Size active, STN Casted");
+		}
+		
 	}
 }

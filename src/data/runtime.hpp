@@ -67,7 +67,7 @@ namespace Gts {
 			EffectSetting* GrowAlly = nullptr;
 			EffectSetting* GrowAllySizeButton = nullptr;
 			EffectSetting* ShrinkAllySizeButton = nullptr;
-			EffectSetting* AllyCrushGrowth = nullptr;
+			EffectSetting* CrushGrowthMGEF = nullptr;
 			EffectSetting* GtsMarkAlly = nullptr;
 			EffectSetting* TrackSize = nullptr;
 			MagicItem* CrushGrowthSpell = nullptr;

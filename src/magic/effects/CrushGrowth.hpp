@@ -8,7 +8,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class CrushingGrowth : public Magic {
+	class CrushGrowth : public Magic {
 		public:
 			using Magic::Magic;
 
