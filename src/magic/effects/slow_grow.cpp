@@ -17,18 +17,18 @@ namespace Gts {
 	}
 
 	void SlowGrow::OnUpdate() {
-		auto& runtime = Runtime::GetSingleton();
-		float ALB = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
-		const float BASE_POWER = 0.00015 * ALB;
+		const float BASE_POWER = 0.00015;
 		const float DUAL_CAST_BONUS = 2.0;
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		}
-		float power = BASE_POWER;
-		if caster->HasMagicEffect(runtime.SlowGrowth2H)
+		auto& runtime = Runtime::GetSingleton();
+		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
+		float power = BASE_POWER * AlterBonus;
+		if (caster->HasMagicEffect(runtime.SlowGrowth2H))
 
-		{power *= DUAL_CAST_BONUS;}
+		{power*= DUAL_CAST_BONUS;}
 
 		Grow(caster, 0.0, power);
 	}
