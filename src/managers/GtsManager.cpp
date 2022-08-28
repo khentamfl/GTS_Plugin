@@ -116,7 +116,7 @@ namespace {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 1.25 / MS_mult);
 		}
 		else {
-			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult 4 / MS_mult);
+			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / MS_mult);
 		}}
 	
 
