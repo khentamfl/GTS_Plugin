@@ -1,4 +1,4 @@
-#include "magic/effects/vore_growth.hpp"
+#include "magic/effects/tracksize.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
@@ -22,6 +22,6 @@ namespace Gts {
 		}
 		float size = get_visual_scale(target);
         if (ShrinkToNothing(caster, target)) 
-        {Dispel()}
+        {Dispel();}
 	}
 }

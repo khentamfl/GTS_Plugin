@@ -30,8 +30,10 @@ namespace Gts {
 	void Magic::OnUpdate() {
 	}
 	void Magic::OnFinish() {
-		auto Caster = GetCaster()
-		auto Target = GetTarget()
+		auto EFF = effect->GetBaseObject();
+		if (EFF == ShrinkFoe(Effect) || EFF == SwordOfSize(Effect) || EFF == Absorb(Effect)) 
+		auto Caster = GetCaster();
+		auto Target = GetTarget();
 		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
 	}
 
