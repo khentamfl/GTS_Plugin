@@ -15,7 +15,8 @@ using namespace Gts;
 namespace {
 	void SetINIFloat(std::string_view name, float value) {
 		auto ini_conf = GameSettingCollection::GetSingleton();
-		Setting* setting = ini_conf->GetSetting(name);
+		std::string s_name(name);
+		Setting* setting = ini_conf->GetSetting(s_name.c_str());
 		if (setting) {
 			setting->data.f=value; // If float
 			ini_conf->WriteSetting(setting);
@@ -23,7 +24,8 @@ namespace {
 	}
 
 	void BoostCarry(Actor* actor, float power) {
-		auto actor_data = this->GetActorData(actor);
+		auto& attr_man = AttributeManager::GetSingleton();
+		auto actor_data = attr_man.GetActorData(actor);
 		if (!actor_data) {
 			return;
 		}
@@ -79,7 +81,8 @@ namespace {
 	}
 
 	void BoostHP(Actor* actor, float power) {
-		auto actor_data = this->GetActorData(actor);
+		auto& attr_man = AttributeManager::GetSingleton();
+		auto actor_data = attr_man.GetActorData(actor);
 		if (!actor_data) {
 			return;
 		}
@@ -89,9 +92,9 @@ namespace {
 		float base_av = actor->GetBaseActorValue(av);
 		float current_tempav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 
-		float boost = base_av * size * power;
+		float boost = base_av * scale * power;
 
-		Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav - last_hp_boost + boost;
+		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav - last_hp_boost + boost;
 
 		actor_data->last_hp_boost = boost;
 	}
