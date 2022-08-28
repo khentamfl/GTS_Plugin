@@ -83,6 +83,9 @@ namespace Gts {
 
 		this->AllyCrushGrowth = find_form<EffectSetting>("GTS.esp|2028B6"); // < Grow on Crush. NPC only. Player triggers CrushGrowth on crushing someone via Crush() function in SP.
 		this->GtsMarkAlly = find_form<EffectSetting>("GTS.esp|29F82C"); // < Marks ally when changing game mode
+		this->TrackSize = find_form<EffectSetting>("GTS.esp|3B0E75");
+		this->CrushGrowthSpell = find_form<MagicItem>("GTS.esp|2028B7");
+		this->TrackSizeSpell = find_form<MagicItem>("GTS.esp|3B0E73");
 		///End
 
 		///Others

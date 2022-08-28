@@ -157,7 +157,7 @@ namespace Gts {
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
-		const float SHRINK_TO_NOTHING_SCALE = 0.10;
+		const float SHRINK_TO_NOTHING_SCALE = 0.12;
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
@@ -170,10 +170,11 @@ namespace Gts {
 	}
 
 	inline void CrushToNothing(Actor* caster, Actor* target) {
-		const float SHRINK_TO_NOTHING_SCALE = 0.10;
+		const float SHRINK_TO_NOTHING_SCALE = 0.12;
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
-			AdjustSizeLimit(0.0417 * target_scale);
-			//ConsoleLog::Print(target->GetDisplayFullName(), "was crushed by", caster->GetDisplayFullName());
+		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, caster, 1.00f, false, 0.0f, caster);
+		AdjustSizeLimit(0.0417 * target_scale);
+		//ConsoleLog::Print(target->GetDisplayFullName(), "was crushed by", caster->GetDisplayFullName());
 	}
 }

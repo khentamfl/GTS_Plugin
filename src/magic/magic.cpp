@@ -5,6 +5,7 @@
 #include "magic/effects/explosive_growth.hpp"
 #include "magic/effects/grow_button.hpp"
 #include "magic/effects/grow_other.hpp"
+#include "magic/effects/tracksize.hpp"
 #include "magic/effects/grow_other_button.hpp"
 #include "magic/effects/growth.hpp"
 #include "magic/effects/shrink.hpp"
@@ -29,6 +30,9 @@ namespace Gts {
 	void Magic::OnUpdate() {
 	}
 	void Magic::OnFinish() {
+		auto Caster = GetCaster()
+		auto Target = GetTarget()
+		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
 	}
 
 	std::string Magic::GetName() {
@@ -144,6 +148,10 @@ namespace Gts {
 			EffectSetting* base_spell = effect->GetBaseObject();
 			if (ExplosiveGrowth::StartEffect(base_spell)) {
 				this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
+			}
+
+			if (TrackSize::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new TrackSize(effect));
 			}
 
 			if (ShrinkFoe::StartEffect(base_spell)) {
