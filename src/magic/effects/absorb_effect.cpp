@@ -63,6 +63,6 @@ namespace Gts {
 		auto Caster = GetCaster();
 		auto Target = GetTarget();
 		auto runtime = Runtime::GetSingleton();
-		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
+		CastTrackSize(Caster, Target);
 	}
 }

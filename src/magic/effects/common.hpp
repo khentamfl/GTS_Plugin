@@ -182,4 +182,8 @@ namespace Gts {
 		AdjustSizeLimit(0.0417 * target_scale);
 		//ConsoleLog::Print(target->GetDisplayFullName(), "was crushed by", caster->GetDisplayFullName());
 	}
+
+	inline void CastTrackSize(Actor* caster, Actor* target) {
+		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
+	}
 }
