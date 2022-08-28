@@ -19,6 +19,7 @@
 #include "magic/effects/vore_growth.hpp"
 #include "magic/effects/SizeRelatedDamage.hpp"
 #include "magic/effects/SmallMassiveThreat.hpp"
+#include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
 
 namespace Gts {
@@ -93,6 +94,7 @@ namespace Gts {
 	}
 
 	Actor* Magic::GetTarget() {
+		UpdateNpc(this->target);
 		return this->target;
 	}
 	Actor* Magic::GetCaster() {

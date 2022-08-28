@@ -40,7 +40,8 @@ namespace {
 
 		float new_av = current_av - last_carry_boost + boost;
 		actor_data->last_carry_boost = boost;
-		actor->SetActorValue(av, new_av);
+		if (current_av < boost)
+		{actor->ModActorValue(av, new_av);}
 
 		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
 	}
@@ -157,6 +158,25 @@ namespace Gts {
 			if (AllowTimeChange == 0.00) {
 				BoostSpeedMulti(Player, bonusSpeedMultiplier);
 			}
+		}
+	}
+
+
+	void AttributeManager::UpdateNpc(Actor Npc) {
+		// Reapply Player Only
+
+		if (!Npc) {
+			return;
+		}
+		if (!Npc->Is3DLoaded()) {
+			return;
+		}
+
+		if (size > 0) {
+
+			BoostAttackDmg(Npc, 1.0);
+			BoostSpeedMulti(Npc, 1.0);
+	
 		}
 	}
 
