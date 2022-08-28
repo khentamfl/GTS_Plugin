@@ -21,7 +21,7 @@ namespace Gts {
 			return;
 		}
 		float size = get_visual_scale(target);
-        if (ShrinkToNothing(caster, target)) 
-        {Dispel();}
+        ShrinkToNothing(caster, target);
+		Log::info("Track Size active");
 	}
 }

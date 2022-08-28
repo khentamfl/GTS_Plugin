@@ -39,6 +39,7 @@ namespace Gts {
 
 		float size = get_visual_scale(target);
         CrushGrow(caster, Rate, 0);
+		
 	}
 
 
