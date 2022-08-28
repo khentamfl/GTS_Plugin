@@ -75,7 +75,7 @@ namespace {
 		if (scale > 1) {
 			actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)));
 		} else if (scale < 1) {
-			actor->SetActorValue(ActorValue::kSpeedMult, base_speed * scale);
+			actor->SetActorValue(ActorValue::kSpeedMult, base_speed * (scale * 0.75));
 		} else {
 			actor->SetActorValue(ActorValue::kSpeedMult, base_speed);
 		}}
