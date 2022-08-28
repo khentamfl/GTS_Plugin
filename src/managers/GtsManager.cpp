@@ -183,7 +183,8 @@ namespace {
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
-		apply_speed(actor, saved_data, temp_data, force);
+		if actor->formID == 0x14
+		{apply_speed(actor, saved_data, temp_data, force);}
 	}
 
 	enum ChosenGameMode {
