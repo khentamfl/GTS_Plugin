@@ -110,7 +110,7 @@ namespace Gts {
 						data.visual_scale_v = visual_scale_v;
 						data.target_scale = target_scale;
 						data.max_scale = max_scale;
-						data.half_life = half_life;
+						data.half_life = 1.0;
 						data.anim_speed = anim_speed;
 						data.effective_multi = effective_multi;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
