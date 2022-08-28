@@ -195,8 +195,8 @@ namespace {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 
-		//if (size_limit <= 1.0)
-		//{size_limit = 1.0;} // Avoid bugs
+		if (size_limit <= 1.0)
+		{size_limit = 1.0;} // Avoid bugs
 
 		set_max_scale(actor, size_limit);
 		if (get_target_scale(actor) > size_limit) {
@@ -244,8 +244,8 @@ namespace {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
 
-		//if (size_limit <= 1.0)
-		//{size_limit = 1.0;} // Avoid bugs
+		if (size_limit <= 1.0)
+		{size_limit = 1.0;} // Avoid bugs
 
 		set_max_scale(actor, size_limit);
 		if (get_target_scale(actor) > size_limit) {
