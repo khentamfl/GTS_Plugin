@@ -26,13 +26,19 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.000005;
 		float power = BASE_POWER + AlterBonus;
-		if (caster->HasMagicEffect(runtime.SlowGrowth2H))
-
+		if (this->IsDual == true)
 		{
 		power*= DUAL_CAST_BONUS; 
 		log::info("SlowGrowth is dual");
 		}
 
 		Grow(caster, 0.0, power);
+	}
+
+	void SlowGrow::OnStart() {
+		if (IsDualCasting())
+		{this->IsDual = true;}
+		else
+		{this->IsDual = false;}
 	}
 }
