@@ -164,6 +164,8 @@ namespace Gts {
 		if (!Npc) {
 			return;
 		}
+		if (Npc->formID == 0x14)
+			{return;}
 		if (!Npc->Is3DLoaded()) {
 			return;
 		}
