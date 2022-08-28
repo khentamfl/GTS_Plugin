@@ -202,7 +202,7 @@ namespace {
 		float size_limit = runtime.sizeLimit->value;
 		auto& Persist = Persistent::GetSingleton();
 
-		if (size_limit <= 1.0)
+		if (size_limit < 1.0)
 		{size_limit = 1.0;} // Avoid bugs
 
 		auto actor_data = Persist.GetActorData(actor);
@@ -256,7 +256,7 @@ namespace {
 		float size_limit = runtime.sizeLimit->value;
 		auto& Persist = Persistent::GetSingleton();
 
-		if (size_limit <= 1.0)
+		if (size_limit < 1.0)
 		{size_limit = 1.0;} // Avoid bugs
 		auto actor_data = Persist.GetActorData(actor);
 		if (actor_data->half_life < 1.0)
