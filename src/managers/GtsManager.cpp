@@ -106,11 +106,9 @@ namespace {
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
 		persi_actor_data->anim_speed = speed_mult;
-		this->ApplyDelay -= 1.0;
-
 
 		float MS_mult = soft_core(scale, MS_adjustment);
-		if (GtsManager::GetSingleton().GetFrameNum() % 1 == 0)
+		if (GtsManager::GetSingleton().GetFrameNum() % 1 == 0 && actor.formID == 0x14)
 		{
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, 44 / MS_mult);
@@ -181,8 +179,7 @@ namespace {
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
-		if (actor->formID == 0x14)
-		{apply_speed(actor, saved_data, temp_data, force);}
+		apply_speed(actor, saved_data, temp_data, force);
 	}
 
 	enum ChosenGameMode {
