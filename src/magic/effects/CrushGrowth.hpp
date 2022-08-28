@@ -21,6 +21,6 @@ namespace Gts {
 			static bool StartEffect(EffectSetting* effect);
 
             private:
-            CrushGrowthAmount = 1.0;
+            float CrushGrowthAmount = 1.0;
 	};
 }

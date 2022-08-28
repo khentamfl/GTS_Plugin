@@ -17,6 +17,7 @@ namespace Gts {
 	}
 
 	void CrushingGrowth::OnUpdate() {
+		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
         auto target = GetTarget();
         
