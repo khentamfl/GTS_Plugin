@@ -17,7 +17,7 @@ namespace Gts {
 	}
 
 	void CrushGrowth::OnStart() {
-		auto CrushedFoe = GetCaster()
+		auto CrushedFoe = GetCaster();
 		this->CrushGrowthAmount += 1.0;
 		this->ScaleOnCrush = get_visual_scale(CrushedFoe);
 	}
@@ -40,7 +40,7 @@ namespace Gts {
         {this->CrushGrowthAmount = 1.0;} // Just to be safe
 
         float GrowAmount = this->ScaleOnCrush;
-        float Rate = 0.0078 * GrowAmount * CrushGrowthAmount;
+        float Rate = 0.00035 * GrowAmount * CrushGrowthAmount;
         if (caster->HasPerk(runtime.AdditionalAbsorption))
 		{Rate *= 2.0;}
 
