@@ -26,6 +26,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
         auto target = GetTarget();
+		float CrushGrowthActivationCount = this->CrushGrowthAmount;
 
 		if (!caster) {
 			log::info("Crush: No caster");
@@ -35,12 +36,12 @@ namespace Gts {
 			log::info("Crush: No Target");
 			return;
 		}
-        if (CrushGrowthAmount <= 1.0)
+        if (CrushGrowthActivationCount <= 1.0)
         
-        {this->CrushGrowthAmount = 1.0;} // Just to be safe
+        {CrushGrowthActivationCount = 1.0;} // Just to be safe
 
         float GrowAmount = this->ScaleOnCrush;
-        float Rate = 0.00035 * GrowAmount * CrushGrowthAmount;
+        float Rate = 0.00035 * GrowAmount * CrushGrowthActivationCount;
         if (caster->HasPerk(runtime.AdditionalAbsorption))
 		{Rate *= 2.0;}
 

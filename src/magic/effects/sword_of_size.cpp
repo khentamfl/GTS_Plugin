@@ -27,7 +27,7 @@ namespace Gts {
 			return;
 		}
 
-		TransferSize(caster, target, false, 1.25, 0.30, false);
+		TransferSize(caster, target, false, 3.66, 0.40, false);
 	}
 
 	void SwordOfSize::OnFinish() {
