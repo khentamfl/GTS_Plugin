@@ -107,21 +107,8 @@ namespace {
 		float speed_mult = soft_core(scale, speed_adjustment);
 		persi_actor_data->anim_speed = speed_mult;
 		float MS_mult = soft_core(scale, MS_adjustment);
-		float EditRoof;
 
-		if (actor->IsWalking() == true) {EditRoof = trans_actor_data->base_walkspeedmult * 0.44 / MS_mult;}
-		else if (actor->IsWalking() == true) {EditRoof = trans_actor_data->base_walkspeedmult * 1.25 / MS_mult;}
-		else {EditRoof = trans_actor_data->base_walkspeedmult / MS_mult;}
 		
-		if (trans_actor_data->base_walkspeedmult < EditRoof && actor->formID == 0x14) {
-		if (actor->IsWalking() == true) {
-			actor->SetActorValue(ActorValue::kSpeedMult, 44 / MS_mult);
-		} else if (actor->IsSprinting() == true) {
-			actor->SetActorValue(ActorValue::kSpeedMult, 125 / MS_mult);
-		}
-		else {
-			actor->SetActorValue(ActorValue::kSpeedMult, 100 / MS_mult);
-		}}
 	
 
 		// Experiement
