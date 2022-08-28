@@ -12,7 +12,7 @@ namespace Gts {
 
 	bool CrushingGrowth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-        CrushGrowthAmount += 1.0;
+        this->CrushGrowthAmount += 1.0;
 		return effect == runtime.AllyCrushGrowth;
 	}
 
@@ -26,7 +26,7 @@ namespace Gts {
 		}
         if (CrushGrowthAmount == 0.0)
         
-        {CrushGrowthAmount = 1.0;} // Just to be safe
+        {this->CrushGrowthAmount = 1.0;} // Just to be safe
 
         float TargetScale = get_visual_scale(target);
         float Rate = 0.00078 * TargetScale * CrushGrowthAmount;
@@ -39,6 +39,6 @@ namespace Gts {
 
 
     void CrushingGrowth::OnFinish() {
-        CrushGrowthAmount = 1.0;
+        this->CrushGrowthAmount = 1.0;
     }
 }
