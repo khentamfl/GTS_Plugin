@@ -108,7 +108,7 @@ namespace {
 		persi_actor_data->anim_speed = speed_mult;
 
 		float MS_mult = soft_core(scale, MS_adjustment);
-		if (GtsManager::GetSingleton().GetFrameNum() % 1 == 0 && actor.formID == 0x14)
+		if (GtsManager::GetSingleton().GetFrameNum() % 1 == 0 && actor->formID == 0x14)
 		{
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, 44 / MS_mult);
