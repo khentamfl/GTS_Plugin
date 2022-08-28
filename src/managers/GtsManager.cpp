@@ -108,7 +108,14 @@ namespace {
 		persi_actor_data->anim_speed = speed_mult;
 		float MS_mult = soft_core(scale, MS_adjustment);
 
-		
+		if (actor->IsWalking() == true) {
+			actor->SetActorValue(ActorValue::kSpeedMult, 44 / MS_mult);
+		} else if (actor->IsSprinting() == true) {
+			actor->SetActorValue(ActorValue::kSpeedMult, 125 / MS_mult);
+		}
+		else {
+			actor->SetActorValue(ActorValue::kSpeedMult, 100 / MS_mult);
+		}
 	
 
 		// Experiement
