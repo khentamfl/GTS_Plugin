@@ -69,7 +69,7 @@ namespace {
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
 			base_speed = actor_data->base_walkspeedmult;
-		if (actor->formdID == 0x14)
+		if (actor->formID == 0x14)
 		{base_speed = 100;}	
 		if (GtsManager::GetSingleton().GetFrameNum() % 30) {	
 		if (scale > 1) {
