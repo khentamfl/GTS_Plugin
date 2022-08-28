@@ -14,7 +14,7 @@ using namespace Gts;
 
 namespace {
 	void SetINIFloat(std::string_view name, float value) {
-		auto* ini_conf = INISettingCollection::GetSingleton(); //GameSettingCollection::GetSingleton() <- Can't compile with it
+		auto ini_conf = GameSettingCollection::GetSingleton();
 		Setting* setting = ini_conf->GetSetting(name);
 		if (setting) {
 			setting->data.f=value; // If float
@@ -23,7 +23,12 @@ namespace {
 	}
 
 	void BoostCarry(Actor* actor, float power) {
-		const ActorValue av = ActorValue::kCarryWeight;   // <--- This function boosts Carry Weight towards infinity
+		auto actor_data = this->GetActorData(actor);
+		if (!actor_data) {
+			return;
+		}
+		float last_carry_boost = actor_data->last_carry_boost;
+		const ActorValue av = ActorValue::kCarryWeight;
 		float max_stamina = actor->GetPermanentActorValue(ActorValue::kStamina);
 		float scale = get_visual_scale(actor);
 		float base_av = actor->GetBaseActorValue(av);
@@ -31,12 +36,15 @@ namespace {
 
 		float boost = (base_av + max_stamina * 0.5 -50.0) * (scale * power);
 
-		float new_av = current_av + boost;
+		float new_av = current_av - last_carry_boost + boost;
+		actor_data->last_carry_boost = boost;
 		actor->SetActorValue(av, new_av);
+
+		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
 	}
 
 	void BoostJump(Actor* actor, float power) {
-		float scale = get_visual_scale(actor);  // <--- This function is not working because of SetINIFloat
+		float scale = get_visual_scale(actor);
 
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
@@ -48,12 +56,12 @@ namespace {
 	}
 
 	void BoostAttackDmg(Actor* actor, float power) {
-		float scale = get_visual_scale(actor); // <--- Works properly
+		float scale = get_visual_scale(actor);
 		actor->SetActorValue(ActorValue::kAttackDamageMult, (scale * power));
 	}
 
 	void BoostSpeedMulti(Actor* actor, float power) {
-		float scale = get_visual_scale(actor); // <--- Seems to work properly as well
+		float scale = get_visual_scale(actor);
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
 		if (actor_data) {
@@ -68,6 +76,24 @@ namespace {
 		} else {
 			actor->SetActorValue(ActorValue::kSpeedMult, base_speed);
 		}
+	}
+
+	void BoostHP(Actor* actor, float power) {
+		auto actor_data = this->GetActorData(actor);
+		if (!actor_data) {
+			return;
+		}
+		float last_hp_boost = actor_data->last_hp_boost;
+		const ActorValue av = ActorValue::kHealth;
+		float scale = get_visual_scale(actor);
+		float base_av = actor->GetBaseActorValue(av);
+		float current_tempav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
+
+		float boost = base_av * size * power;
+
+		Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav - last_hp_boost + boost;
+
+		actor_data->last_hp_boost = boost;
 	}
 }
 
@@ -115,39 +141,18 @@ namespace Gts {
 			Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 
-		float bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
-		float HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;
-		float TempHP = Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-		float TempHP2 = Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-
-		if (TempHP < TempHP2) // Ugly attempt to fix missing hp
-		{Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 25);}
-
-		if (bonusHPMultiplier == 0.0) {
-			bonusHP = 0;
-		}
-
-		{bonusHP = ((Player->GetBaseActorValue(ActorValue::kHealth) * size - Player->GetBaseActorValue(ActorValue::kHealth)) * bonusHPMultiplier);
-		 HpCheck = Player->GetBaseActorValue(ActorValue::kHealth) + bonusHP;}
-
-		Player->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = (HpCheck - MaxHealth);//Player->ModActorValue(ActorValue::kHealth, 1 * size);
-
-
-
-		BoostCarry(Player, bonusCarryWeightMultiplier);
-
-
 		if (size > 0) {
+			BoostHP(Player, bonusHPMultiplier);
+
+			BoostCarry(Player, bonusCarryWeightMultiplier);
+
 			BoostJump(Player, bonusJumpHeightMultiplier);
-		}
 
-		if (size >= 0) {
 			BoostAttackDmg(Player, bonusDamageMultiplier);
-		}
 
-
-		if (AllowTimeChange == 0.00) {
-			BoostSpeedMulti(Player, bonusSpeedMultiplier);
+			if (AllowTimeChange == 0.00) {
+				BoostSpeedMulti(Player, bonusSpeedMultiplier);
+			}
 		}
 	}
 
