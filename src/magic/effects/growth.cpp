@@ -11,7 +11,6 @@ namespace Gts {
 
 	bool Growth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		OnUpdate();
 		return effect == runtime.GrowthSpell;
 
 	}
