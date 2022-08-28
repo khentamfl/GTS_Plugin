@@ -77,10 +77,10 @@ namespace Gts {
 						if (version >= 2) {
 							serde->ReadRecordData(&half_life, sizeof(half_life));
 						} else {
-							half_life = 0.05;
+							half_life = 0.75;
 						}
 						if (std::isnan(half_life)) {
-							half_life = 0.05;
+							half_life = 0.75;
 						}
 
 						float anim_speed;
