@@ -13,8 +13,11 @@ namespace Gts {
 
 	bool CrushingGrowth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-        this->CrushGrowthAmount += 1.0;
 		return effect == runtime.AllyCrushGrowth;
+	}
+
+	void CrushingGrowth::OnStart() {
+		this->CrushGrowthAmount += 1.0;
 	}
 
 	void CrushingGrowth::OnUpdate() {

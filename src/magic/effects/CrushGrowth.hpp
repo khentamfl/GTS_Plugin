@@ -12,13 +12,15 @@ namespace Gts {
 		public:
 			using Magic::Magic;
 
+			virtual void OnStart() override;
+
 			virtual void OnUpdate() override;
 
             virtual void OnFinish() override;
 
 			virtual std::string GetName() override;
 
-			bool StartEffect(EffectSetting* effect);
+			static bool StartEffect(EffectSetting* effect);
 
             private:
             float CrushGrowthAmount = 1.0;
