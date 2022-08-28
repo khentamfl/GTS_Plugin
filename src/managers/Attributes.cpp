@@ -67,11 +67,7 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
-		if (actor_data) {
-			base_speed = actor_data->base_walkspeedmult;
-		} else {
 			base_speed = 100.0;
-		}
 		if (scale > 1) {
 			actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)));
 		} else if (scale < 1) {
