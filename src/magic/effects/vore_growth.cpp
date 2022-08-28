@@ -18,6 +18,7 @@ namespace Gts {
 		float BASE_POWER = 0.002475;
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
+		auto target = GetTarget();
 		if (!caster || !target) {
 			return;
 		}

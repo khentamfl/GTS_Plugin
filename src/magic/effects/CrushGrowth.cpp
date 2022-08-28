@@ -33,7 +33,7 @@ namespace Gts {
 			log::info("Crush: No Target");
 			return;
 		}
-        if (CrushGrowthAmount <= 0.0)
+        if (CrushGrowthAmount <= 1.0)
         
         {this->CrushGrowthAmount = 1.0;} // Just to be safe
 
