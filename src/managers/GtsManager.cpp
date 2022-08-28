@@ -106,7 +106,7 @@ namespace {
 		//SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
 		persi_actor_data->anim_speed = speed_mult;
-
+		this->ApplyDelay -= 1.0;
 		SoftPotential MS_adjustment {
 				.k = 0.132,
 				.n = 0.85,
@@ -116,7 +116,9 @@ namespace {
 			};
 
 		float MS_mult = soft_core(scale, MS_adjustment);
-
+		if (this->ApplyDelay <= 0.0)
+		{
+			this->ApplyDelay = 60.0;
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, 44 / MS_mult);
 		} else if (actor->IsSprinting() == true) {
@@ -124,11 +126,11 @@ namespace {
 		}
 		else {
 			actor->SetActorValue(ActorValue::kSpeedMult, 100 / MS_mult);
-		}
+		}}
 	
 
 		// Experiement
-		if (false) {
+		 {
 			auto& rot_speed = actor->currentProcess->middleHigh->rotationSpeed;
 			if (fabs(rot_speed.x) > 1e-5 || fabs(rot_speed.y) > 1e-5 || fabs(rot_speed.z) > 1e-5) {
 				log::info("{} rotationSpeed: {},{},{}", actor_name(actor), rot_speed.x,rot_speed.y,rot_speed.z);
