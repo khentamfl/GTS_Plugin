@@ -17,7 +17,7 @@ namespace Gts {
 			[[nodiscard]] static AttributeManager& GetSingleton() noexcept;
 
 			void Update();
-			void UpdateNpc(Actor Npc);
+			void UpdateNpc(Actor* Npc);
 
 			inline AtributeActorData* GetActorData(Actor* actor) {
 				std::unique_lock lock(this->lock);

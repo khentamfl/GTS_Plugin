@@ -162,7 +162,7 @@ namespace Gts {
 	}
 
 
-	void AttributeManager::UpdateNpc(Actor Npc) {
+	void AttributeManager::UpdateNpc(Actor* Npc) {
 		// Reapply Player Only
 
 		if (!Npc) {
@@ -172,12 +172,8 @@ namespace Gts {
 			return;
 		}
 
-		if (size > 0) {
-
 			BoostAttackDmg(Npc, 1.0);
 			BoostSpeedMulti(Npc, 1.0);
-	
-		}
 	}
 
 }
