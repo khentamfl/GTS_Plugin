@@ -1,4 +1,5 @@
 #include "managers/camera.hpp"
+#include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
@@ -68,13 +69,14 @@ namespace {
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
 			base_speed = actor_data->base_walkspeedmult;
+		if (GtsManager::GetSingleton().GetFrameNum() % 30) {	
 		if (scale > 1) {
 			actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)));
 		} else if (scale < 1) {
 			actor->SetActorValue(ActorValue::kSpeedMult, base_speed * scale);
 		} else {
 			actor->SetActorValue(ActorValue::kSpeedMult, base_speed);
-		}
+		}}
 	}
 
 	void BoostHP(Actor* actor, float power) {
