@@ -56,10 +56,9 @@ namespace Gts {
 		}
 	}
 
-	void ShrinkFoe::Onfinish() {
+	void ShrinkFoe::OnFinish() {
 		auto Caster = GetCaster();
 		auto Target = GetTarget();
-		auto runtime = Runtime::GetSingleton();
 		CastTrackSize(Caster, Target);
 	}
 }
