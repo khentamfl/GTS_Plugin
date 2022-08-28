@@ -70,8 +70,8 @@ namespace Gts {
 			EffectSetting* CrushGrowthMGEF = nullptr;
 			EffectSetting* GtsMarkAlly = nullptr;
 			EffectSetting* TrackSize = nullptr;
-			MagicItem* CrushGrowthSpell = nullptr;
-			MagicItem* TrackSizeSpell = nullptr;
+			SpellItem* CrushGrowthSpell = nullptr;
+			SpellItem* TrackSizeSpell = nullptr;
 			///end
 
 			///Others
@@ -170,8 +170,8 @@ namespace Gts {
 			SpellItem * FakeCrushSpell = nullptr;
 			EffectSetting* FakeCrushEffect = nullptr;
 
-			MagicItem * ShrinkBackNPCSpell = nullptr;
-			MagicItem * ShrinkBackSpell = nullptr;
+			SpellItem * ShrinkBackNPCSpell = nullptr;
+			SpellItem * ShrinkBackSpell = nullptr;
 
 			TESQuest * MainQuest = nullptr;
 

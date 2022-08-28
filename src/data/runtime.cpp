@@ -85,8 +85,8 @@ namespace Gts {
 		this->CrushGrowthMGEF = find_form<EffectSetting>("GTS.esp|2028B6"); // < Grow on Crush. NPC only. Player triggers CrushGrowth on crushing someone via Crush() function in SP.
 		this->GtsMarkAlly = find_form<EffectSetting>("GTS.esp|29F82C"); // < Marks ally when changing game mode
 		this->TrackSize = find_form<EffectSetting>("GTS.esp|3B0E75");
-		this->CrushGrowthSpell = find_form<MagicItem>("GTS.esp|2028B7");
-		this->TrackSizeSpell = find_form<MagicItem>("GTS.esp|3B0E73");
+		this->CrushGrowthSpell = find_form<SpellItem>("GTS.esp|2028B7");
+		this->TrackSizeSpell = find_form<SpellItem>("GTS.esp|3B0E73");
 		///End
 
 		///Others
@@ -185,8 +185,8 @@ namespace Gts {
 		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
 		this->FakeCrushEffect = find_form<EffectSetting>("GTS.esp|271EF9");
 
-		this->ShrinkBackNPCSpell = find_form<MagicItem>("GTS.esp|00536B");
-		this->ShrinkBackSpell = find_form<MagicItem>("GTS.esp|005368");
+		this->ShrinkBackNPCSpell = find_form<SpellItem>("GTS.esp|00536B");
+		this->ShrinkBackSpell = find_form<SpellItem>("GTS.esp|005368");
 
 		this->MainQuest = find_form<TESQuest>("GTS.esp|005E3A");
 	}
