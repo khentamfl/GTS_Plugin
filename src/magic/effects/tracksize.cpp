@@ -24,9 +24,6 @@ namespace Gts {
 			return;
 		}
 		float size = get_visual_scale(target);
-        if (ShrinkToNothingPure(caster, target)) {
-			log::info("Track Size active, STN Casted");
-		}
-		
+        ShrinkToNothingPure(caster, target) 
 	}
 }

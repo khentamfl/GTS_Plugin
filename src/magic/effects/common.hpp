@@ -182,11 +182,11 @@ namespace Gts {
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
 			AdjustSizeLimit(0.0117);
+						log::info("Track Size active, STN Casted");
 		}
 	}
 
 	inline void CrushToNothing(Actor* caster, Actor* target) {
-		const float SHRINK_TO_NOTHING_SCALE = 0.12;
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
 		target->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, caster, 1.00f, false, 0.0f, target);
