@@ -68,7 +68,7 @@ namespace Gts {
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
-		Log::info("Track Size active");
+		Log::info("Crush Growth Active");
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
