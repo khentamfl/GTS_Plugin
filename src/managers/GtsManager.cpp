@@ -204,12 +204,12 @@ namespace {
 	void GameMode(Actor* actor)  {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
-		auto& attr_man = AttributeManager::GetSingleton();
+		auto& Persist = Persistent::GetSingleton();
 
 		if (size_limit <= 1.0)
 		{size_limit = 1.0;} // Avoid bugs
 
-		auto actor_data = attr_man.GetActorData(actor);
+		auto actor_data = Persist.GetActorData(actor);
 		if (actor_data->half_life <= 1.0)
 		{actor_data->half_life = 1.0;}
 
@@ -258,11 +258,11 @@ namespace {
 	void GameModeNPC(Actor* actor)  {
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
-		auto& attr_man = AttributeManager::GetSingleton();
+		auto& Persist = Persistent::GetSingleton();
 
 		if (size_limit <= 1.0)
 		{size_limit = 1.0;} // Avoid bugs
-		auto actor_data = attr_man.GetActorData(actor);
+		auto actor_data = Persist.GetActorData(actor);
 		if (actor_data->half_life <= 1.0)
 		{actor_data->half_life = 1.0;}
 
