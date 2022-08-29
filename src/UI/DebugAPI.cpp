@@ -213,40 +213,25 @@ void DebugAPI::DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::ma
 		liftetimeMS,
 		color,
 		lineThickness);
-	int steps = 20;
-	glm::vec3 previous = apply_transform(shaft_point(0.0, 1.0), transform);
-	for (std::size_t i = 0; i<steps; i++) {
-		float j = 1.0/steps * i;
-		float v = glm::cos(j*pi);
-		float u = (j<=0.5) ? 0.0 : 1.0;
-		glm::vec3 next = apply_transform(end_hemi_point(u, v), transform);
-		DrawLineForMS(
-			previous,
-			next,
-			liftetimeMS,
-			color,
-			lineThickness);
-		previous = next;
-	}
 	DrawLineForMS(
-		previous,
-		apply_transform(shaft_point(1.0, 0.0), transform),
+		apply_transform(shaft_point(0.5, 0.0), transform),
+		apply_transform(shaft_point(0.5, 1.0), transform),
 		liftetimeMS,
 		color,
 		lineThickness);
-	for (std::size_t i = 0; i<steps; i++) {
-		float j = 1.0/steps * i;
-		float v = glm::cos(j*pi);
-		float u = (j<=0.5) ? 1.0 : 0.0;
-		glm::vec3 next = apply_transform(start_hemi_point(u, v), transform);
-		DrawLineForMS(
-			previous,
-			next,
-			liftetimeMS,
-			color,
-			lineThickness);
-		previous = next;
-	}
+	// Loop2
+	DrawLineForMS(
+		apply_transform(shaft_point(0.25, 0.0), transform),
+		apply_transform(shaft_point(0.25, 1.0), transform),
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		apply_transform(shaft_point(0.75, 0.0), transform),
+		apply_transform(shaft_point(0.75, 1.0), transform),
+		liftetimeMS,
+		color,
+		lineThickness);
 }
 
 
