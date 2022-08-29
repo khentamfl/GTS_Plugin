@@ -49,7 +49,7 @@ namespace {
 		actor_data->bonus_carry = boost;
 		actor->ModActorValue(av, boost - last_carry_boost);
 
-		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
+		//log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
 	}
 
 	void BoostJump(Actor* actor, float power) {
