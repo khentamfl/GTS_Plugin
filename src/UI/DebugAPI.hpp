@@ -5,14 +5,27 @@
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "util.hpp"
 
 namespace Util {
 
 	inline glm::vec3 HkToGlm(const RE::hkVector4 &vec) {
-		return glm::vec3(vec.quad.m128_f32[0], vec.quad.m128_f32[1], vec.quad.m128_f32[2]);
+		return glm::vec3(vec.quad.m128_f32[0], vec.quad.m128_f32[1], vec.quad.m128_f32[2])  * *Gts::g_worldScaleInverse;
 	}
 	inline glm::mat3 HkToGlm(const RE::hkRotation &mat) {
-		return glm::mat3(HkToGlm(mat.col0), HkToGlm(mat.col1), HkToGlm(mat.col2));
+		return glm::mat3(
+			glm::vec3(mat.col0.quad.m128_f32[0], mat.col0.quad.m128_f32[1], mat.col0.quad.m128_f32[2]),
+			glm::vec3(mat.col1.quad.m128_f32[0], mat.col1.quad.m128_f32[1], mat.col1.quad.m128_f32[2]),
+			glm::vec3(mat.col2.quad.m128_f32[0], mat.col2.quad.m128_f32[1], mat.col2.quad.m128_f32[2])
+			);
+	}
+	inline glm::mat4 HkToGlm(const RE::hkTransform &transform) {
+		return glm::mat4(
+			glm::vec4(transform.rotation.col0.quad.m128_f32[0], transform.rotation.col0.quad.m128_f32[1], transform.rotation.col0.quad.m128_f32[2], 0.0),
+			glm::vec4(transform.rotation.col1.quad.m128_f32[0], transform.rotation.col1.quad.m128_f32[1], transform.rotation.col1.quad.m128_f32[2], 0.0),
+			glm::vec4(transform.rotation.col2.quad.m128_f32[0], transform.rotation.col2.quad.m128_f32[1], transform.rotation.col2.quad.m128_f32[2], 0.0),
+			glm::vec4(transform.translation.quad.m128_f32[0]   * *Gts::g_worldScaleInverse, transform.translation.quad.m128_f32[1]   * *Gts::g_worldScaleInverse, transform.translation.quad.m128_f32[2]   * *Gts::g_worldScaleInverse, 1.0)
+			);
 	}
 
 	inline bool IsRoughlyEqual(float first, float second, float maxDif)
@@ -99,6 +112,15 @@ namespace Util {
 		auto targetPosRotated = RotateVector(eulerAngles, targetPos);
 
 		return glm::vec3(targetPosRotated.x + origin.x, targetPosRotated.y + origin.y, targetPosRotated.z + origin.z);
+	}
+
+	inline glm::vec3 GetAnyPerpendicularUnitVector(const glm::vec3& vec)
+	{
+		if (vec.y != 0.0f || vec.z != 0.0f) {
+			return glm::vec3(1, 0, 0);
+		} else {
+			return glm::vec3(0, 1, 0);
+		}
 	}
 }
 
@@ -194,7 +216,7 @@ class DebugAPI
 		static void DrawSphere(glm::vec3, float radius, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
 		static void DrawCircle(glm::vec3, float radius, glm::vec3 eulerAngles, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
 		static void DrawHalfCircle(glm::vec3, float radius, glm::vec3 eulerAngles, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
-		static void DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::vec3 eulerAngles, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
+		static void DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::mat4 transform, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
 
 		static std::vector<DebugAPILine*> LinesToDraw;
 

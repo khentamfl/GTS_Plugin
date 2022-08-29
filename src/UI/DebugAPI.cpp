@@ -172,54 +172,81 @@ void DebugAPI::DrawHalfCircle(glm::vec3 origin, float radius, glm::vec3 eulerAng
 	}
 }
 
-void DebugAPI::DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::vec3 eulerAngles, int liftetimeMS, const glm::vec4& color, float lineThickness) {
-	// Start Cap
-	glm::vec3 start_euler_a = eulerAngles;
-	glm::vec3 start_euler_b = glm::vec3(start_euler_a.x + glm::half_pi<float>(), start_euler_a.y, start_euler_a.z);
-	DrawHalfCircle(start, radius, start_euler_a, liftetimeMS, color, lineThickness);
-	DrawHalfCircle(start, radius, start_euler_b, liftetimeMS, color, lineThickness);
+void DebugAPI::DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::mat4 transform, int liftetimeMS, const glm::vec4& color, float lineThickness) {
+	// From https://gamedev.stackexchange.com/questions/162426/how-to-draw-a-3d-capsule
+	// Local basis
+	float pi = glm::pi<float>();
+	glm::vec3 axis = end - start;
+	float length = glm::length(axis);
+	glm::vec3 localZ = axis/length;
+	glm::vec3 localX = GetAnyPerpendicularUnitVector(localZ);
+	glm::vec3 localY = glm::cross(localZ, localX);
+	localX = glm::cross(localY, localZ); // Reorthonalize
 
-	// End Cap
-	glm::vec3 end_euler_a = glm::vec3(start_euler_a.x, start_euler_a.y, start_euler_a.z + glm::pi<float>());
-	glm::vec3 end_euler_b = glm::vec3(start_euler_b.x, start_euler_b.y, start_euler_b.z + glm::pi<float>());
-	DrawHalfCircle(end, radius, end_euler_a, liftetimeMS, color, lineThickness);
-	DrawHalfCircle(end, radius, end_euler_b, liftetimeMS, color, lineThickness);
-
-	// Joinings
-	glm::vec3 start_a_start = GetPointOnRotatedCircle(start, radius, 0, (float)(CIRCLE_NUM_SEGMENTS - 1), start_euler_a);
-	glm::vec3 start_a_end = GetPointOnRotatedCircle(start, radius, CIRCLE_NUM_SEGMENTS/2, (float)(CIRCLE_NUM_SEGMENTS - 1), start_euler_a);
-	glm::vec3 start_b_start = GetPointOnRotatedCircle(start, radius, 0, (float)(CIRCLE_NUM_SEGMENTS - 1), start_euler_b);
-	glm::vec3 start_b_end = GetPointOnRotatedCircle(start, radius, CIRCLE_NUM_SEGMENTS/2, (float)(CIRCLE_NUM_SEGMENTS - 1), start_euler_b);
-
-	glm::vec3 end_a_start = GetPointOnRotatedCircle(end, radius, 0, (float)(CIRCLE_NUM_SEGMENTS - 1), end_euler_a);
-	glm::vec3 end_a_end = GetPointOnRotatedCircle(end, radius, CIRCLE_NUM_SEGMENTS/2, (float)(CIRCLE_NUM_SEGMENTS - 1), end_euler_a);
-	glm::vec3 end_b_start = GetPointOnRotatedCircle(end, radius, 0, (float)(CIRCLE_NUM_SEGMENTS - 1), end_euler_b);
-	glm::vec3 end_b_end = GetPointOnRotatedCircle(end, radius, CIRCLE_NUM_SEGMENTS/2, (float)(CIRCLE_NUM_SEGMENTS - 1), end_euler_b);
-
+	auto shaft_point = [&](float u, float v) {
+				   return start
+				          + localX * glm::cos(2 * pi * u) * radius
+				          + localY * glm::sin(2 * pi * u) * radius
+				          + localZ * v * length;
+			   };
+	auto start_hemi_point = [&](float u, float v) {
+					float latitude = (pi/2) * (v - 1);
+					return start
+					       + localX * cos(2 * pi * u) * cos(latitude) * radius
+					       + localY * sin(2 * pi * u) * cos(latitude) * radius
+					       + localZ * sin(latitude) * radius;
+				};
+	auto end_hemi_point = [&](float u, float v) {
+				      float latitude = (pi/2) * v;
+				      return end
+				             + localX * cos(2 * pi * u) * cos(latitude) * radius
+				             + localY * sin(2 * pi * u) * cos(latitude) * radius
+				             + localZ * sin(latitude) * radius;
+			      };
+	auto apply_transform = [](glm::vec3 vec, glm::mat4 mat) {
+				       return glm::vec3(mat * glm::vec4(vec, 1.0));
+			       };
+	// Loop1
 	DrawLineForMS(
-		start_a_start,
-		end_a_start,
+		apply_transform(shaft_point(0.0, 0.0), transform),
+		apply_transform(shaft_point(0.0, 1.0), transform),
 		liftetimeMS,
 		color,
 		lineThickness);
+	int steps = 20;
+	glm::vec3 previous = apply_transform(shaft_point(0.0, 1.0), transform);
+	for (std::size_t i = 0; i<steps; i++) {
+		float j = 1.0/steps * i;
+		float v = glm::cos(j*pi);
+		float u = (j<=0.5) ? 0.0 : 1.0;
+		glm::vec3 next = apply_transform(end_hemi_point(u, v), transform);
+		DrawLineForMS(
+			previous,
+			next,
+			liftetimeMS,
+			color,
+			lineThickness);
+		previous = next;
+	}
 	DrawLineForMS(
-		start_a_end,
-		end_a_end,
+		previous,
+		apply_transform(shaft_point(1.0, 0.0), transform),
 		liftetimeMS,
 		color,
 		lineThickness);
-	DrawLineForMS(
-		start_b_start,
-		end_b_start,
-		liftetimeMS,
-		color,
-		lineThickness);
-	DrawLineForMS(
-		start_b_end,
-		end_b_end,
-		liftetimeMS,
-		color,
-		lineThickness);
+	for (std::size_t i = 0; i<steps; i++) {
+		float j = 1.0/steps * i;
+		float v = glm::cos(j*pi);
+		float u = (j<=0.5) ? 1.0 : 0.0;
+		glm::vec3 next = apply_transform(start_hemi_point(u, v), transform);
+		DrawLineForMS(
+			previous,
+			next,
+			liftetimeMS,
+			color,
+			lineThickness);
+		previous = next;
+	}
 }
 
 

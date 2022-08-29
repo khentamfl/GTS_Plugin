@@ -9,51 +9,37 @@ using namespace Gts;
 
 
 namespace {
-	void DrawRigidBody(hkpRigidBody* rigid_body) {
-		log::info("Checking RB");
-		auto shape = rigid_body->GetShape();
+	const float MS_TIME = 10;
+	const glm::vec4 CAPSULE_COLOR = { 0.0f, 0.0f, 1.0f, 1.0f };
+	const float CAPSULE_LINETHICKNESS = 0.1;
+
+	void DrawRigidBody(hkpRigidBody* rigidBody) {
+		auto shape = rigidBody->GetShape();
 		if (shape) {
-			log::info("Has Shape");
 			if (shape->type == hkpShapeType::kCapsule) {
-				log::info("Shape is Capsule");
 				const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
 				if (capsule) {
-					log::info("Capsule is Valid");
-					glm::vec3 start = HkToGlm(capsule->vertexA) * *g_worldScaleInverse;
-					glm::vec3 end = HkToGlm(capsule->vertexB) * *g_worldScaleInverse;
-
+					glm::vec3 start = HkToGlm(capsule->vertexA);
+					glm::vec3 end = HkToGlm(capsule->vertexB);
 					float radius = capsule->radius * *g_worldScaleInverse;
 
-					auto& transform = rigid_body->motion.motionState.transform;
-					glm::vec3 translation = HkToGlm(transform.translation)  * *g_worldScaleInverse;
-					glm::mat3 rotation = HkToGlm(transform.rotation);
-					float x_angle = 0.0;
-					float y_angle = 0.0;
-					float z_angle = 0.0;
-					glm::extractEulerAngleXYZ(glm::mat4(rotation), x_angle, y_angle, z_angle);
-					glm::vec3 euler_angles = glm::vec3(x_angle, y_angle, z_angle);
-					log::info("Drawing Capsule, {},{},{}={},{},{}", start.x,start.y,start.z,end.x,end.y,end.z);
-					DebugAPI::DrawCapsule(translation + start, translation + end, radius, euler_angles);
+					glm::mat4 transform = HkToGlm(rigidBody->motion.motionState.transform);
+					DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
 				}
 			}
 		}
 	}
 
 	void DrawNiAvObject(NiAVObject* currentnode) {
-		log::info("Checking Node");
-		auto collision_object = currentnode->GetCollisionObject();
-		if (collision_object) {
-			log::info("Has Collision");
-			auto bhk_rigid_body = collision_object->GetRigidBody();
-			if (bhk_rigid_body) {
-				log::info("Has bhkRB");
-				hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
-				if (hkp_rigidbody_ref) {
-					log::info("Hash hkpRB");
-					hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
-					if (hkp_rigidbody) {
-						log::info("Valid hkpRB");
-						DrawRigidBody(hkp_rigidbody);
+		auto collisionObject = currentnode->GetCollisionObject();
+		if (collisionObject) {
+			auto bhkRigidBody = collisionObject->GetRigidBody();
+			if (bhkRigidBody) {
+				hkReferencedObject* hkpRigidBodyRef = bhkRigidBody->referencedObject.get();
+				if (hkpRigidBodyRef) {
+					hkpRigidBody* rigidBody = skyrim_cast<hkpRigidBody*>(hkpRigidBodyRef);
+					if (rigidBody) {
+						DrawRigidBody(rigidBody);
 					}
 				}
 			}
@@ -62,7 +48,6 @@ namespace {
 
 	void DrawNiNodes(NiAVObject* root) {
 		std::deque<NiAVObject*> queue;
-		log::info("Searching NiNodes");
 		queue.push_back(root);
 
 
@@ -131,9 +116,9 @@ namespace Gts {
 
 		auto model = player->GetCurrent3D();
 		if (model) {
-			auto spine_node = find_node(player, "NPC Spine [Spn0]", Person::Current);
-			if (spine_node) {
-				DebugAPI::DrawSphere(Ni2Glm(spine_node->world.translate), meter_to_unit(2.0));
+			auto spineNode = find_node(player, "NPC Spine [Spn0]", Person::Current);
+			if (spineNode) {
+				DebugAPI::DrawSphere(Ni2Glm(spineNode->world.translate), meter_to_unit(2.0));
 			}
 		}
 
