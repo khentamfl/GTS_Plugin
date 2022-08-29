@@ -179,7 +179,7 @@ namespace Gts {
 		auto currentValue = actor->GetActorValue(ActorValue::kHealth);
 		auto maxValue = (baseValue + valueMod);
 		auto percentage = currentValue/maxValue;
-		log::info("- Getting Current HP: {} Max HP: {}, Percentage: {:.0f}", currentValue, maxValue, percentage*100.0);
+		log::info("- Getting Current HP: {} Max HP: {}, Percentage: {}", currentValue, maxValue, percentage*100.0);
 		return percentage;
 	}
 
@@ -193,12 +193,15 @@ namespace Gts {
 		auto targetValue = target * maxValue;
 		float delta = targetValue - currentValue;
 
-		log::info("Setting Current HP: {} Max HP: {}, Percentage: {:.0f} -> {:0f}", currentValue, maxValue, percentage*100.0, target*100.0);
+		log::info("Setting Current HP: {} Max HP: {}, Percentage: {} -> {}", currentValue, maxValue, percentage*100.0, target*100.0);
 		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, delta);
 
+		baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
+		valueMod = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 		currentValue = actor->GetActorValue(ActorValue::kHealth);
+		maxValue = (baseValue + valueMod);
 		percentage = currentValue/maxValue;
-		log::info("  - Result Current HP: {} Max HP: {}, Percentage: {:.0f}", currentValue, maxValue, percentage*100.0);
+		log::info("  - Result Current HP: {} Max HP: {}, Percentage: {}", currentValue, maxValue, percentage*100.0);
 	}
 
 
