@@ -136,5 +136,7 @@ namespace Gts {
 				DebugAPI::DrawSphere(Ni2Glm(spine_node->world.translate), meter_to_unit(2.0));
 			}
 		}
+
+		DrawActor(player);
 	}
 }
