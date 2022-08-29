@@ -29,11 +29,9 @@ namespace Gts {
 		float CrushGrowthActivationCount = this->CrushGrowthAmount;
 
 		if (!caster) {
-			log::info("Crush: No caster");
 			return;
 		}
 		if (!target) {
-			log::info("Crush: No Target");
 			return;
 		}
         if (CrushGrowthActivationCount <= 1.0)
