@@ -47,7 +47,11 @@ namespace {
 			boost = base_av * (scale-1.0);
 		}
 
-		actor->avStorage.modifiers[ActorValue::kCarryWeight]->modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] += boost - last_carry_boost;
+		auto carry_mods = actor->avStorage.modifiers[ActorValue::kCarryWeight];
+		if (carry_mods) {
+			log::info("Has carry mods");
+			carry_mods->modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] += boost - last_carry_boost;
+		}
 		actor_data->bonus_carry = boost;
 
 		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
