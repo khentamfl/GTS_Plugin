@@ -47,12 +47,14 @@ namespace {
 			boost = base_av * (scale-1.0);
 		}
 
-		log::info("Avaliable AVs Bases: {}", actor->avStorage.baseValues.actorValues.c_str());
-		log::info("Avaliable AVs Mods: {}", actor->avStorage.modifiers.actorValues.c_str());
 		auto carry_mods = actor->avStorage.modifiers[ActorValue::kCarryWeight];
 		if (carry_mods) {
 			log::info("Has carry mods");
 			carry_mods->modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] += boost - last_carry_boost;
+		}
+		auto carry_base = actor->avStorage.baseValues[ActorValue::kCarryWeight];
+		if (carry_base) {
+			log::info("Has carry base: {}", *carry_base);
 		}
 		actor_data->bonus_carry = boost;
 
