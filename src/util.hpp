@@ -185,6 +185,7 @@ namespace Gts {
 
 	inline void SetHealthPercentage(Actor* actor, float target) {
 		auto baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
+		auto baseAv = actor->GetBaseActorValue(ActorValue::kHealth);
 		auto valueMod = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 		auto currentValue = actor->GetActorValue(ActorValue::kHealth);
 		auto maxValue = (baseValue + valueMod);
@@ -195,7 +196,8 @@ namespace Gts {
 
 		log::info("Setting Current HP: {} Max HP: {}, Percentage: {} -> {}", currentValue, maxValue, percentage*100.0, target*100.0);
 		log::info("  - Restoring: {}", delta);
-		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, delta);
+		actor->ModActorValue(av, delta);
+		actor->SetBaseActorValue(av, baseAv);
 
 		baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
 		valueMod = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
