@@ -47,17 +47,45 @@ namespace {
 			boost = base_av * (scale-1.0);
 		}
 
-		auto carry_mods = actor->avStorage.modifiers[ActorValue::kCarryWeight];
-		if (carry_mods) {
-			log::info("Has carry mods");
-			carry_mods->modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] += boost - last_carry_boost;
-		}
-		auto carry_base = actor->avStorage.baseValues[ActorValue::kCarryWeight];
-		if (carry_base) {
-			log::info("Has carry base: {}", *carry_base);
-		}
-		actor_data->bonus_carry = boost;
+		log::info("Calling: SetBaseActorValue");
+		base_av = actor->GetBaseActorValue(av);
+		value_av = actor->GetActorValue(av);
+		actor->SetBaseActorValue(av, base_av + 20);
+		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
+		log::info("Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
 
+		log::info("Calling: ModActorValue");
+		base_av = actor->GetBaseActorValue(av);
+		value_av = actor->GetActorValue(av);
+		actor->ModActorValue(av, 20);
+		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
+		log::info("Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
+
+		log::info("Calling: SetActorValue");
+		base_av = actor->GetBaseActorValue(av);
+		value_av = actor->GetActorValue(av);
+		actor->SetActorValue(av, value_av + 20);
+		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
+		log::info("Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
+
+		log::info("Calling: RestoreActorValue[kPermanent]");
+		base_av = actor->GetBaseActorValue(av);
+		value_av = actor->GetActorValue(av);
+		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kPermanent, av, 20);
+		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
+		log::info("Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
+
+		log::info("Calling: RestoreActorValue[kTemporary]");
+		base_av = actor->GetBaseActorValue(av);
+		value_av = actor->GetActorValue(av);
+		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, av, 20);
+		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
+		log::info("Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
+
+		log::info("Calling: RestoreActorValue[kDamage]");
+		base_av = actor->GetBaseActorValue(av);
+		value_av = actor->GetActorValue(av);
+		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, 20);
 		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
 		log::info("Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
 	}
