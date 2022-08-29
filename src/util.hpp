@@ -196,8 +196,7 @@ namespace Gts {
 
 		log::info("Setting Current HP: {} Max HP: {}, Percentage: {} -> {}", currentValue, maxValue, percentage*100.0, target*100.0);
 		log::info("  - Restoring: {}", delta);
-		actor->ModActorValue(av, delta);
-		actor->SetBaseActorValue(av, baseAv);
+		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kDamage] += delta;
 
 		baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
 		valueMod = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
