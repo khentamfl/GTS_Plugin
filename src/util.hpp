@@ -194,6 +194,7 @@ namespace Gts {
 		float delta = targetValue - currentValue;
 
 		log::info("Setting Current HP: {} Max HP: {}, Percentage: {} -> {}", currentValue, maxValue, percentage*100.0, target*100.0);
+		log::info("  - Restoring: {}", delta);
 		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, delta);
 
 		baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
