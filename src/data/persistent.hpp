@@ -19,6 +19,11 @@ namespace Gts {
 		float half_life;
 		float anim_speed;
 		float effective_multi;
+		float bonus_hp;
+		float bonus_carry;
+
+		ActorData();
+		ActorData(Actor* actor);
 	};
 
 	struct CameraCollisions {
@@ -39,6 +44,8 @@ namespace Gts {
 
 			ActorData* GetActorData(Actor* actor);
 			ActorData* GetData(TESObjectREFR* refr);
+
+			void ResetActor(Actor* actor);
 
 			bool highheel_correction = true;
 			bool is_speed_adjusted = true;

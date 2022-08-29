@@ -25,26 +25,31 @@ namespace {
 	}
 
 	void BoostCarry(Actor* actor, float power) {
-		auto& attr_man = AttributeManager::GetSingleton();
-		auto actor_data = attr_man.GetActorData(actor);
+		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (!actor_data) {
 			return;
 		}
-		float last_carry_boost = actor_data->last_carry_boost;
+		float last_carry_boost = actor_data->bonus_carry;
 		const ActorValue av = ActorValue::kCarryWeight;
 		float max_stamina = actor->GetPermanentActorValue(ActorValue::kStamina);
-		float scale = get_visual_scale(actor);
+		float visual_scale = get_visual_scale(actor);
+		float native_scale = get_natural_scale(actor);
+		float scale = visual_scale/native_scale;
 		float base_av = actor->GetBaseActorValue(av);
-		float current_av = actor->GetActorValue(av);
 
-		float boost = (base_av + max_stamina * 0.5 -50.0) * (scale * power);
+		float boost = 0.0;
+		if (scale > 1.0) {
+			boost = (base_av + max_stamina * 0.5 -50.0) * ((scale-1.0) * power);
+		} else {
+			// Linearly decrease carry weight
+			//   at scale=0.0 we adjust by -base_av
+			boost = base_av * (scale-1.0);
+		}
 
-		float new_av = current_av - last_carry_boost + boost;
-		actor_data->last_carry_boost = boost;
-		if (current_av < boost)
-		{actor->ModActorValue(av, new_av);}
+		actor_data->bonus_carry = boost;
+		actor->ModActorValue(av, boost - last_carry_boost);
 
-		//log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
+		log::info("Carry: Old base: {}, New base: {}", base_av, actor->GetBaseActorValue(av));
 	}
 
 	void BoostJump(Actor* actor, float power) {
@@ -68,37 +73,55 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
-			base_speed = actor_data->base_walkspeedmult;
-		if (actor->formID == 0x14)
-		{base_speed = 100;}	
-		if (GtsManager::GetSingleton().GetFrameNum() % 30) {	
-		if (scale > 1) {
-			actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)));
-		} else if (scale < 1) {
-			actor->SetActorValue(ActorValue::kSpeedMult, base_speed * (scale * 0.75));
-		} else {
-			actor->SetActorValue(ActorValue::kSpeedMult, base_speed);
-		}}
+		base_speed = actor_data->base_walkspeedmult;
+		if (actor->formID == 0x14) {
+			base_speed = 100;
+		}
+		if (GtsManager::GetSingleton().GetFrameNum() % 30) {
+			if (scale > 1) {
+				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)));
+			} else if (scale < 1) {
+				actor->SetActorValue(ActorValue::kSpeedMult, base_speed * (scale * 0.75));
+			} else {
+				actor->SetActorValue(ActorValue::kSpeedMult, base_speed);
+			}
+		}
 	}
 
 	void BoostHP(Actor* actor, float power) {
-		auto& attr_man = AttributeManager::GetSingleton();
-		auto actor_data = attr_man.GetActorData(actor);
+		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (!actor_data) {
 			return;
 		}
-		float last_hp_boost = actor_data->last_hp_boost;
+		float last_hp_boost = actor_data->bonus_hp;
 		const ActorValue av = ActorValue::kHealth;
-		float scale = get_visual_scale(actor);
+		float visual_scale = get_visual_scale(actor);
 		float native_scale = get_natural_scale(actor);
+		float scale = visual_scale/native_scale;
+
 		float base_av = actor->GetBaseActorValue(av);
 		float current_tempav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 
-		float boost = base_av * (scale/native_scale - 1.0) * power;
+		float boost;
+		if (scale > 1.0) {
+			boost = base_av * (scale - 1.0) * power;
+		} else {
+			// Linearly decrease such that:
+			//   boost = -base_av when scale==0.0
+			//   This way we shouldn't kill them by scaling them
+			//   to zero
+			boost = base_av * (scale - 1.0);
+		}
+
+		float current_health_percentage = GetHealthPercentage(actor);
 
 		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav - last_hp_boost + boost;
 
-		actor_data->last_hp_boost = boost;
+		actor_data->bonus_hp = boost;
+
+		SetHealthPercentage(actor, current_health_percentage);
+		// Fill up the new healthbar
+
 	}
 }
 
@@ -168,14 +191,15 @@ namespace Gts {
 		if (!Npc) {
 			return;
 		}
-		if (Npc->formID == 0x14)
-			{return;}
+		if (Npc->formID == 0x14) {
+			return;
+		}
 		if (!Npc->Is3DLoaded()) {
 			return;
 		}
 
-			BoostAttackDmg(Npc, 1.0);
-			BoostSpeedMulti(Npc, 1.0);
+		BoostAttackDmg(Npc, 1.0);
+		BoostSpeedMulti(Npc, 1.0);
 	}
 
 }

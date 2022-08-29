@@ -167,8 +167,9 @@ namespace Gts {
 		auto valueMod = actor->staminaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 		auto currentValue = actor->GetActorValue(ActorValue::kStamina);
 		auto returnValue = currentValue / (baseValue + valueMod);
-		if (returnValue <= 0.05)
-		{returnValue = 0.05;} // CTD Protection
+		if (returnValue <= 0.05) {
+			returnValue = 0.05;
+		} // CTD Protection
 		return returnValue;
 	}
 
@@ -180,13 +181,24 @@ namespace Gts {
 		return currentValue / (baseValue + valueMod);
 	}
 
+	inline void SetHealthPercentage(Actor* actor, float target) {
+		auto baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
+		auto valueMod = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
+		auto currentValue = actor->GetActorValue(ActorValue::kHealth);
+		auto targetValue = target * (baseValue + valueMod);
+		float delta = targetValue - currentValue;
+		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, delta);
+	}
+
+
 	inline float GetMagikaPercentage(Actor* actor) {
 		auto baseValue = actor->GetPermanentActorValue(ActorValue::kMagicka);
 		auto valueMod = actor->magickaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 		auto currentValue = actor->GetActorValue(ActorValue::kMagicka);
 		auto returnValue = currentValue / (baseValue + valueMod);
-		if (returnValue <= 0.05)
-		{returnValue = 0.05;} // CTD Protection
+		if (returnValue <= 0.05) {
+			returnValue = 0.05;
+		} // CTD Protection
 		return returnValue;
 	}
 
