@@ -17,7 +17,9 @@ namespace Gts {
 		const float SHRINK_AOE_MASTER_POWER = 1.75;
 		const float SHRINK_AOE_MASTER_EFFIC = 0.46;
 		const float SHRINK_BOLT_POWER = 12.40;
-		const float SHRINK_BOLT_EFFIC = 0.85;
+		const float SHRINK_BOLT_EFFIC = 0.62;
+		const float SHRINK_STORM_POWER = 12.40;
+		const float SHRINK_STORM_EFFIC = 0.62;
 
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
@@ -38,11 +40,16 @@ namespace Gts {
 			this->power = SHRINK_BOLT_POWER;
 			this->efficiency = SHRINK_BOLT_EFFIC;
 		}
+		else if (base_spell == runtime.ShrinkStorm) {
+			// ShrinkBolt
+			this->power = SHRINK_STORM_POWER;
+			this->efficiency = SHRINK_STORM_EFFIC;
+		}
 	}
 
 	bool ShrinkFoe::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.ShrinkEnemy || effect == runtime.ShrinkEnemyAOE || effect == runtime.ShrinkEnemyAOEMast || effect == runtime.ShrinkBolt);
+		return (effect == runtime.ShrinkEnemy || effect == runtime.ShrinkEnemyAOE || effect == runtime.ShrinkEnemyAOEMast || effect == runtime.ShrinkBolt || effect == runtime.ShrinkStorm);
 	}
 
 	void ShrinkFoe::OnUpdate() {

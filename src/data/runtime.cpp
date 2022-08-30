@@ -67,6 +67,7 @@ namespace Gts {
 		this->ShrinkEnemyAOE = find_form<EffectSetting>("GTS.esp|0DCDC5");
 		this->ShrinkEnemyAOEMast = find_form<EffectSetting>("GTS.esp|0DCDCA");
 		this->ShrinkBolt = find_form<EffectSetting>("GTS.esp|3C5278");
+		this->ShrinkStorm = find_form<EffectSetting>("GTS.esp|3C527C");
 		this->SwordEnchant = find_form<EffectSetting>("GTS.esp|00FA9E");
 
 		this->ShrinkToNothing = find_form<EffectSetting>("GTS.esp|009979"); // <- Absorbs someone
