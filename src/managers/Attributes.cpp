@@ -55,7 +55,7 @@ namespace {
 			float perm_av;
 			float damg_av;
 			float another_perm_av;
-			float delta = 20.0;
+			float delta = -20.0;
 
 			log::info("Calling: SetBaseActorValue");
 			base_av = actor->GetBaseActorValue(av);
