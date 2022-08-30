@@ -7,8 +7,10 @@ using namespace Gts;
 
 namespace {
 	bool ShouldGrow() {
+		if (GtsManager::GetSingleton().GetFrameNum() % 30) {
 		int random = rand() % 200 + 1;
 		int decide_chance = 1;
+		}
 		return (random <= decide_chance);
 	}
 }
@@ -20,7 +22,7 @@ namespace Gts {
 	}
 
 	void RandomGrowth::Update() {
-		auto player = Player:GetSingleton();
+		auto player = PlayerCharacter::GetSingleton();
 		if (!player) {
 			return;
 		}
