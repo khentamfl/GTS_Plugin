@@ -27,13 +27,12 @@ namespace {
 		auto Player = PlayerCharacter::GetSingleton();
 		if (!Player->HasPerk(runtime.GrowthAugmentation))
 		{return;}
-		else
-		float HpRegen = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
-		float MpRegen = Player->GetPermanentActorValue(ActorValue::kMagicka) * 0.00085;
-		float SpRegen = Player->GetPermanentActorValue(ActorValue::kStamina) * 0.00085;
-		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
-		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, MpRegen * TimeScale());
-		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
+		float HP = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
+		float MP = Player->GetPermanentActorValue(ActorValue::kMagicka) * 0.00085;
+		float SP = Player->GetPermanentActorValue(ActorValue::kStamina) * 0.00085;
+		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
+		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
+		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, MP * TimeScale());
 	}
 }
 
