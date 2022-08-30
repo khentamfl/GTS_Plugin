@@ -230,8 +230,8 @@ namespace Gts {
 		soundHandle.SetFrequency(1.0);
 		soundHandle.SetVolume(Volume);
 		NiAVObject* follow = nullptr;
-		if (player) {
-			NiAVObject* current_3d = player->GetCurrent3D();
+		if (Receiver) {
+			NiAVObject* current_3d = Receiver->GetCurrent3D();
 			if (current_3d) {
 				follow = current_3d;
 			}
