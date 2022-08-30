@@ -5,10 +5,8 @@
 #include "managers/GtsQuest.hpp"
 #include "managers/camera.hpp"
 #include "managers/Attributes.hpp"
+#include "managers/RandomGrowth.hpp"
 #include "magic/magic.hpp"
-#include "magic/RandomGrowth.hpp"
-
-
 
 using namespace RE;
 using namespace SKSE;
