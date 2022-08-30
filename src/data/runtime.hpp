@@ -34,6 +34,8 @@ namespace Gts {
 			BGSSoundDescriptorForm* growthSound = nullptr;
 			BGSSoundDescriptorForm* shrinkSound = nullptr;
 
+			BGSSoundDescriptorForm* MoanSound = nullptr;
+
 			EffectSetting* SmallMassiveThreat = nullptr;
 
 			EffectSetting* explosiveGrowth1 = nullptr;
@@ -100,6 +102,7 @@ namespace Gts {
 			BGSPerk* ExtraGrowth = nullptr;
 			BGSPerk* ExtraGrowthMax = nullptr;
 			BGSPerk* HealthRegenPerk = nullptr;
+			BGSPerk* GrowthPerk = nullptr;
 
 			TESGlobal * sizeLimit = nullptr;
 

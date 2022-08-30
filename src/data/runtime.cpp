@@ -48,6 +48,8 @@ namespace Gts {
 		this->growthSound = find_form<BGSSoundDescriptorForm>("GTS.esp|271EF6");
 		this->shrinkSound = find_form<BGSSoundDescriptorForm>("GTS.esp|364F6A");
 
+		this->MoanSound = find_form<BGSSoundDescriptorForm>("GTS.esp|09BOAC");
+
 		this->SmallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
 		this->SmallMassiveThreatSpell = find_form<SpellItem>("GTS.esp|1A2566");
 
@@ -115,6 +117,7 @@ namespace Gts {
 		this->ExtraGrowth = find_form<BGSPerk>("GTS.esp|332563");
 		this->ExtraGrowthMax = find_form<BGSPerk>("GTS.esp|397972");
 		this->HealthRegenPerk = find_form<BGSPerk>("GTS.esp|18E160"); 
+		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6"); 
 
 		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 
