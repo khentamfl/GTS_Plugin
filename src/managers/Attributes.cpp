@@ -218,6 +218,7 @@ namespace Gts {
 			this->MovementSpeedBonus = 0.0;
 		}
 		float MSBonus = clamp(0.0, 1.0, this->MovementSpeedBonus); 
+		log::info("Current Bonus is: {}", MSBonus);
 		return MSBonus;
 	}
 
