@@ -31,7 +31,6 @@ namespace Gts {
 		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 		auto AugmentationPerk = runtime.NoSpeedLoss;
-		float MSBonus = this->MovementSpeedBonus;
 		if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat))
 		{
 			this->MovementSpeedBonus += 0.00005;
@@ -44,8 +43,6 @@ namespace Gts {
 		{
 			this->MovementSpeedBonus = 0.0;
 		}
-		if (MSBonus >= 1.0)
-		{Debug.Notification("Ready to Insta-Crush someone");}
 		float MSBonus = clamp(0.0, 1.0, this->MovementSpeedBonus); 
 		return MSBonus;
 	}
