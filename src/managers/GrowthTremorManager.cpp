@@ -21,11 +21,12 @@ namespace Gts {
         float ReceiverSize = get_visual_scale(Receiver);
         float SizeDifference = SourceSize/ReceiverSize;
         float falloff = 250 * (SourceSize * 0.75 + 0.25);
-        float power = (0.425 / ShakeStrength(Source) * (SizeDifference * 0.25 + 1.0));
+        float GainBonus = ShakeStrength(Source);
+        float power = (0.425 * GainBonus * (SizeDifference * 0.25 + 1.0));
         float duration = (0.15, 1.2, 0.25 * (1 + (size * 0.25)));
          if (Distance < falloff)
             {
-             float intensity = ((falloff/playerDist) / 8);
+             float intensity = ((falloff/Distance) / 8);
              intensity = intensity*power*Modifier;
              duration = duration * intensity;
 
@@ -41,9 +42,9 @@ namespace Gts {
              {
                     duration = 1.2;
              }
-        shake_camera(Receiver, intensity, duration)
+        shake_camera(Receiver, intensity, duration);
         if (Receiver == Player) {
-        shake_controller(intensity, intensity, duration)
+        shake_controller(intensity, intensity, duration);
             }
         }
     }
@@ -52,7 +53,7 @@ namespace Gts {
         float Size = get_visual_scale(Source);
         float k = 0.065; 
         float n = 1.0; 
-        float n = 1.12;
+        float s = 1.12;
         float Result = 1.0/(pow(1.0+pow(k*(Size-1.0),n*s),1.0/s)); 
         return Result;
     }
