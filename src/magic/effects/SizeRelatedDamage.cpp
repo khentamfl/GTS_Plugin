@@ -75,10 +75,10 @@ namespace Gts {
 		{
 			float caster_scale = get_visual_scale(Caster);
 			float target_scale = get_visual_scale(Target);
-			float Multiplier = (caster_scale\target_scale);
+			float Multiplier = (caster_scale/target_scale);
 			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
 			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
-			if (CasterHp >= (TargetHp / (1.35 * multiplier))) {
+			if (CasterHp >= (TargetHp / (1.35 * Multiplier))) {
 			Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster); // Crush someone
 
 				if (!Caster->HasPerk(runtime.NoSpeedLoss)) {
@@ -87,7 +87,7 @@ namespace Gts {
 			}
 			else
 			{
-				Caster->PushActorAway(Target, 0.5 * target_scale); Target->PushActorAway(Caster, 0.5 * caster_scale); // Else simulate collision
+				//Caster->PushActorAway(Target, 0.5 * target_scale); Target->PushActorAway(Caster, 0.5 * caster_scale); // Else simulate collision
 				Target.DamageActorValue(ActorValue::kHealth, CasterHp * 0.35); Caster.DamageActorValue(ActorValue::kHealth, CasterHp * 0.15);
 				shake_camera(caster, 0.35, 0.5);
 				PlaySound(runtime.lJumpLand, caster, 0.5, 1.0);
