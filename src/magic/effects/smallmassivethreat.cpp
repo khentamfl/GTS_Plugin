@@ -9,10 +9,14 @@ namespace Gts {
 		return "SmallMassiveThreat";
 	}
 
+	SmallMassiveThreat& SmallMassiveThreat::GetSingleton() noexcept {
+		static SmallMassiveThreat instance;
+		return instance;
+	}
+
     bool SmallMassiveThreat::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.SmallMassiveThreat;
-		
 	}
 
 	void SmallMassiveThreat::OnUpdate() {
