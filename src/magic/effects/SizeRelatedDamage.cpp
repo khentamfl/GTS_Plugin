@@ -1,4 +1,5 @@
 #include "magic/effects/SizeRelatedDamage.hpp"
+#include "magic/effects/smallmassivethreat.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
@@ -48,7 +49,7 @@ namespace Gts {
 		if (caster->HasMagicEffect(runtime.SmallMassiveThreat) && caster->HasPerk(runtime.SmallMassiveThreatSizeSteal))
 		{
 			TransferSize(caster, target, false, 0.001, 0.001, true);
-			ShrinkActor(target, 0.002);
+			ShrinkActor(target, 0.002, 0.0);
 		}
 
 		
@@ -67,7 +68,7 @@ namespace Gts {
 	}
 	void SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
 		if (!Caster || !Target)
-		{return}
+		{return;}
 		else
 		auto& runtime = Runtime::GetSingleton();
 		if (SmallMassiveThreat::GetSingleton().Augmentation() >= 1.0)
@@ -76,7 +77,7 @@ namespace Gts {
 			float target_scale = get_visual_scale(Target);
 			float Multiplier = caster_scale\target_scale;
 			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
-			float TargetHp = Taster->GetActorValue(ActorValue::kHealth);
+			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
 			if (CasterHp >= (TargetHP / (1.35 * multiplier))) {
 			Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster); // Crush someone
 
