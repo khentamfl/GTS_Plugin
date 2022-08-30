@@ -17,5 +17,10 @@ namespace Gts {
 			virtual std::string GetName() override;
 
 			static bool StartEffect(EffectSetting* effect);
+
+			void SmallMassiveThreatModification(Actor* Caster, Actor* Target)
+
+			private:
+			bool AllowOneShot = false;
 	};
 }

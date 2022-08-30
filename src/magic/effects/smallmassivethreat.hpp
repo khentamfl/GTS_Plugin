@@ -17,5 +17,12 @@ namespace Gts {
 			virtual std::string GetName() override;
 
             static bool StartEffect(EffectSetting* effect);
+
+			inline float SmallMassiveThreat::Augmentation() 
+
+			void OverrideBonus(float Value)
+
+		private: 
+			float MovementSpeedBonus = 0.0;
 	};
 }

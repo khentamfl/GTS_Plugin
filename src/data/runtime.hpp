@@ -37,6 +37,7 @@ namespace Gts {
 			BGSSoundDescriptorForm* MoanSound = nullptr;
 
 			EffectSetting* SmallMassiveThreat = nullptr;
+			BGSPerk* SmallMassiveThreatSizeSteal = nullptr;
 
 			EffectSetting* explosiveGrowth1 = nullptr;
 
@@ -107,6 +108,7 @@ namespace Gts {
 			BGSPerk* VorePerkRegeneration = nullptr;
 			BGSPerk* VorePerkGreed = nullptr;
 			BGSPerk* GrowthPerk = nullptr;
+			BGSPerk* NoSpeedLoss = nullptr;
 
 			TESGlobal * sizeLimit = nullptr;
 

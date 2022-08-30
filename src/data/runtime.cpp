@@ -51,6 +51,7 @@ namespace Gts {
 		this->MoanSound = find_form<BGSSoundDescriptorForm>("GTS.esp|09B0AC");
 
 		this->SmallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
+		this->SmallMassiveThreatSizeSteal = find_form<BGSPerk>("GTS.esp|2496E8");
 		this->SmallMassiveThreatSpell = find_form<SpellItem>("GTS.esp|1A2566");
 
 		this->explosiveGrowth1 = find_form<EffectSetting>("GTS.esp|007928"); // < Growth Spurt shouts
@@ -122,6 +123,7 @@ namespace Gts {
 		this->VorePerkRegeneration = find_form<BGSPerk>("GTS.esp|33C764");
 		this->VorePerkGreed = find_form<BGSPerk>("GTS.esp|33C765");
 		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6"); 
+		this->NoSpeedLoss = find_form<BGSPerk>("GTS.esp|2E663B");
 		
 
 		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");

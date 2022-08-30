@@ -178,14 +178,17 @@ namespace Gts {
 	inline void CrushToNothing(Actor* caster, Actor* target) {
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
+		int Random = rand() % 8;
+		if (Random >= 8)
+		{
+			PlaySound(runtime.MoanSound,caster, 1.0, 1.0);
+		}
 		target->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, caster, 1.00f, false, 0.0f, target);
 		AdjustSizeLimit(0.0417 * target_scale);
-		log::info("Casting Crush Growth on self");
 	}
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
 		auto& runtime = Runtime::GetSingleton();
 		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
-		log::info("Casting Track Size");
 	}
 }

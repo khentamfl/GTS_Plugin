@@ -26,4 +26,30 @@ namespace Gts {
         if (CasterScale >= 2.0)
         {Dispel();} // <- Disallow having it when scale is > 2.0
 	}
+
+	inline float SmallMassiveThreat::Augmentation() {
+		Player = PlayerCharacter::GetSingleton();
+		auto& runtime = Runtime::GetSingleton();
+		auto AugmentationPerk = runtime.NoSpeedLoss;
+		if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat))
+		{
+			this->MovementSpeedBonus += 0.00005;
+		}
+		else if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat))
+		{
+			this->MovementSpeedBonus += 0.000075;
+		}
+		else
+		{
+			this->MovementSpeedBonus = 0.0;
+		}
+		if (MSBonus >= 1.0)
+		{Debug.Notification("Ready to Insta-Crush someone");}
+		float MSBonus = clamp(0.0, 1.0, this->MovementSpeedBonus); 
+		return MSBonus;
+	}
+
+	void SmallMassiveThreat::OverrideBonus(float Value) {
+		this->MovementSpeedBonus = Value;
+	}
 }

@@ -70,13 +70,15 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
-		base_speed = actor_data->base_walkspeedmult;
-		if (actor->formID == 0x14) {
-			base_speed = 100;
+		float SMTBonus = SmallMassiveThreat::GetSingleton().Augmentation()/2.5;
+		if (actor != PlayerCharacter::GetSingleton()) {
+			base_speed = actor_data->base_walkspeedmult;
 		}
+		else
+		{base_speed = 100.00;}
 		if (GtsManager::GetSingleton().GetFrameNum() % 30) {
 			if (scale > 1) {
-				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)));
+				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)) + SMTBonus);
 			} else if (scale < 1) {
 				actor->SetActorValue(ActorValue::kSpeedMult, base_speed * (scale * 0.90 +0.10));
 			} else {

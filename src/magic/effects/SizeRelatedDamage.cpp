@@ -4,6 +4,7 @@
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "data/transient.hpp"
+#include "util.hpp"
 
 namespace Gts {
 	std::string SizeDamage::GetName() {
@@ -41,8 +42,17 @@ namespace Gts {
 		if (size_difference >= 24.0 && !target->IsPlayerTeammate()) { // NOLINT
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
 		}
+
 		// ^ Crush anyway, no conditions needed since size difference is too massive
-		else if (size_difference >= 4.0 && target->IsDead() && !target->IsPlayerTeammate()) {
+
+		if (caster->HasMagicEffect(runtime.SmallMassiveThreat) && caster->HasPerk(runtime.SmallMassiveThreatSizeSteal))
+		{
+			TransferSize(caster, target, false, 0.001, 0.001, true);
+			ShrinkActor(target, 0.002);
+		}
+
+		
+		if (size_difference >= 4.0 && target->IsDead() && !target->IsPlayerTeammate()) {
 			// ^ We don't want to crush allies
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
 			CrushToNothing(caster, target);
@@ -54,9 +64,34 @@ namespace Gts {
 			explosion->radius *= target_scale;
 			explosion->imodRadius *= target_scale;
 		}
-		// ^ Crush only if size difference is > than 4.0
-
 	}
+	void SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
+		if (!Caster || !Target)
+		{return}
+		else
+		auto& runtime = Runtime::GetSingleton();
+		if (SmallMassiveThreat::GetSingleton().Augmentation() >= 1.0)
+		{
+			float caster_scale = get_visual_scale(Caster);
+			float target_scale = get_visual_scale(Target);
+			float Multiplier = caster_scale\target_scale;
+			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
+			float TargetHp = Taster->GetActorValue(ActorValue::kHealth);
+			if (CasterHp >= (TargetHP / (1.35 * multiplier))) {
+			Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster); // Crush someone
 
-	
+				if (!Caster->HasPerk(runtime.NoSpeedLoss)) {
+				SmallMassiveThreat::GetSingleton().OverrideBonus(0.35); // Reduce speed after crush
+				}
+			}
+			else
+			{
+				Caster->PushActorAway(Target, 0.5 * target_scale); Target->PushActorAway(Caster, 0.5 * caster_scale); // Else simulate collision
+				Target.DamageActorValue(ActorValue::kHealth, CasterHp * 0.35); Caster.DamageActorValue(ActorValue::kHealth, CasterHp * 0.15);
+				shake_camera(caster, 0.35, 0.5);
+				PlaySound(runtime.lJumpLand, caster, 0.5, 1.0);
+				SmallMassiveThreat::GetSingleton().OverrideBonus(0.0); // Completely remove bonus speed
+			}
+		}
+	}
 }
