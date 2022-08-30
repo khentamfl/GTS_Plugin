@@ -3,6 +3,7 @@
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
+#include "magic/effects/smallmassivethreat.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
