@@ -22,6 +22,8 @@ namespace Gts {
 
 			static bool StartEffect(EffectSetting* effect);
 
+			void VoreAugmentations();
+
 			private:
 
 			float ScaleOnVore = 1.0;
