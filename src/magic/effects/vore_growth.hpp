@@ -25,6 +25,7 @@ namespace Gts {
 			private:
 
 			float ScaleOnVore = 1.0;
+			bool BlockVoreMods = false;
 
 	};
 }

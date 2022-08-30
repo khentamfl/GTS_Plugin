@@ -9,9 +9,8 @@ using namespace Gts;
 
 namespace {
 	bool ShouldGrow() {
-		//if (GtsManager::GetSingleton().GetFrameNum() % 120) {
 		auto& runtime = Runtime::GetSingleton();
-		int random = rand() % 2400 + 1;
+		int random = rand() % 5000 + 1;
 		int decide_chance = 1;
 		auto GrowthPerk = runtime.GrowthPerk;
 		auto Player = PlayerCharacter::GetSingleton();
@@ -20,6 +19,20 @@ namespace {
 		} else {
 			return false;
 		}
+	}
+
+	void RestoreStats() {
+		auto& runtime = Runtime::GetSingleton();
+		auto Player = PlayerCharacter::GetSingleton();
+		if (!Player->HasPerk(runtime.GrowthAugmentation))
+		{return;}
+		else
+		float HpRegen = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
+		float MpRegen = Player->GetPermanentActorValue(ActorValue::kMagicka) * 0.00085;
+		float SpRegen = Player->GetPermanentActorValue(ActorValue::kStamina) * 0.00085;
+		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
+		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, MpRegen * TimeScale());
+		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
 	}
 }
 
@@ -38,16 +51,11 @@ namespace Gts {
 			return;
 		}
 
-		
-		
-
-		switch (this->state) {
-			case State::Idle: {
+		if (this->AllowGrowth == false) {
 				if (ShouldGrow()) {
 					// Start growing state
-					this->state = State::Working;
 					this->growth_time = 0.0;
-					log::info("State: Idle", ShouldGrow());
+					this->AllowGrowth = true;
 					// Play sound
 					auto& runtime = Runtime::GetSingleton();
 					auto MoanSound = runtime.MoanSound;
@@ -57,21 +65,23 @@ namespace Gts {
 					PlaySound(GrowthSound, player, Volume);
 				}
 			}
-			case State::Working: {
+		else if (this->AllowGrowth == true && player->HasMagicEffect(runtime.SmallMassiveThreat) == false) {
 				// Do the growing
 				auto& runtime = Runtime::GetSingleton();
 				float delta_time = *g_delta_time;
 				float Scale = get_visual_scale(player);
 				float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 				float base_power = ((0.0025 * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
+				RestoreStats(); // Regens Attributes if PC has perk
 				mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps
-				log::info("State: Working");
+				shake_camera(player, 0.25, 1.0);
+				shake_controller(0.25, 0.25, 1.0);
 				this->growth_time += delta_time;
-				if (this->growth_time >= 2.6) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
+				if (this->growth_time >= 2.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 					// End growing
-					this->state = State::Idle;
+					this->AllowGrowth = false;
 				}
 			}
 		}
 	}
-}
+

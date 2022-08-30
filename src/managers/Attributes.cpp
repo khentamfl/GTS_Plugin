@@ -159,7 +159,7 @@ namespace Gts {
 
 		float size = get_visual_scale(Player);
 
-		float HpRegen = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.0005;
+		float HpRegen = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.0006;
 		float MaxHealth = Player->GetPermanentActorValue(ActorValue::kHealth);
 
 		if (Player->HasPerk(HealthRegenPerk) && (Player->HasMagicEffect(ExplGrowthP1)||Player->HasMagicEffect(ExplGrowthP2)|| Player->HasMagicEffect(ExplGrowthP3))) {

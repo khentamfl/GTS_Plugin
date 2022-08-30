@@ -117,7 +117,11 @@ namespace Gts {
 		this->ExtraGrowth = find_form<BGSPerk>("GTS.esp|332563");
 		this->ExtraGrowthMax = find_form<BGSPerk>("GTS.esp|397972");
 		this->HealthRegenPerk = find_form<BGSPerk>("GTS.esp|18E160"); 
+		this->GrowthAugmentation = find_form<BGSPerk>("GTS.esp|35AD69");
+		this->VorePerkRegeneration = find_form<BGSPerk>("GTS.esp|33C764");
+		this->VorePerkGreed = find_form<BGSPerk>("GTS.esp|33C765");
 		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6"); 
+		
 
 		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 

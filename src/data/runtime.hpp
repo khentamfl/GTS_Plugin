@@ -102,6 +102,9 @@ namespace Gts {
 			BGSPerk* ExtraGrowth = nullptr;
 			BGSPerk* ExtraGrowthMax = nullptr;
 			BGSPerk* HealthRegenPerk = nullptr;
+			BGSPerk* GrowthAugmentation = nullptr;
+			BGSPerk* VorePerkRegeneration = nullptr;
+			BGSPerk* VorePerkGreed = nullptr;
 			BGSPerk* GrowthPerk = nullptr;
 
 			TESGlobal * sizeLimit = nullptr;

@@ -15,11 +15,7 @@ namespace Gts {
 			void Update();
 
 		private:
-			enum State {
-				Idle,
-				Working,
-			};
-			State state = State::Idle;
+			bool AllowGrowth = false;
 			float growth_time = 0.0;
 	};
 }
