@@ -10,9 +10,10 @@ using namespace RE;
 namespace Gts {
 	class SmallMassiveThreat : public Magic {
 		public:
-			using Magic::Magic;
 
 			[[nodiscard]] static SmallMassiveThreat& GetSingleton() noexcept;
+			
+			using Magic::Magic;
 
 			virtual void OnUpdate() override;
 

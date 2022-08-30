@@ -5,13 +5,13 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
-	std::string SmallMassiveThreat::GetName() {
-		return "SmallMassiveThreat";
-	}
 
 	SmallMassiveThreat& SmallMassiveThreat::GetSingleton() noexcept {
 		static SmallMassiveThreat instance;
 		return instance;
+	}
+	std::string SmallMassiveThreat::GetName() {
+		return "SmallMassiveThreat";
 	}
 
     bool SmallMassiveThreat::StartEffect(EffectSetting* effect) { // NOLINT
