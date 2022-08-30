@@ -6,6 +6,7 @@
 #include "managers/camera.hpp"
 #include "managers/Attributes.hpp"
 #include "magic/magic.hpp"
+#include "magic/RandomGrowth.hpp"
 
 
 
@@ -30,12 +31,14 @@ namespace Hooks
 		auto& camera = CameraManager::GetSingleton();
 		auto& quest = QuestManager::GetSingleton();
 		auto& attributes = AttributeManager::GetSingleton();
+		auto& randomGrowth = RandomGrowth::GetSingleton();
 		activate_mainthread_mode();
 		manager.poll();
 		magic.Update();
 		camera.Update();
 		quest.Update();
 		attributes.Update();
+		randomGrowth.Update();
 
 		deactivate_mainthread_mode();
 	}
