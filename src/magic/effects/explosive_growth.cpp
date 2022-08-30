@@ -1,4 +1,5 @@
 #include "magic/effects/explosive_growth.hpp"
+#include "managers/GrowthTremorManager.hpp"
 #include "magic/magic.hpp"
 #include "magic/effects/common.hpp"
 #include "scale/scale.hpp"
@@ -67,13 +68,6 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 
-		//BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = runtime.growthSound;
-		//audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
-		//growth_sound.Play();
-
-
 	}
 
 	void ExplosiveGrowth::OnUpdate() {
@@ -81,6 +75,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
+		auto& GrowthTremor = GrowthTremorManager::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 		float delta_time = *g_delta_time;
 		auto GrowthTick = this->growth_time;
@@ -89,25 +84,24 @@ namespace Gts {
 		{
 		auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
-		PlaySound(GrowthSound, caster, Volume);
+		PlaySound(GrowthSound, caster, Volume, 1.0);
 		}
 		this->growth_time +=delta_time;
 
 		if (GrowthTick >= 160.0)
-		{this->growth_time = 0.0;} // Reset
+		{this->growth_time = 0.0;} // Reset sound tick
 
 
 
 		if (get_target_scale(caster) > this->grow_limit) {
-			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
 			return;
 		}
 
-		Grow(caster, this->power, 0.0);
+		Grow(caster, this->power, 0.0); // Grow
+		CallRumble(caster, caster, 1.0);
+
 		if (get_target_scale(caster) > this->grow_limit) {
 			set_target_scale(caster, this->grow_limit);
-			shake_camera(caster, this->power * 0.5, 1.0);
-			shake_controller(this->power * 0.5, this->power * 0.5, 1.0);
 			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
 		}
 	}

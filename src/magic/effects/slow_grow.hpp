@@ -16,6 +16,8 @@ namespace Gts {
 
 			virtual void OnStart() override;
 
+			virtual void OnFinish() override;
+
 			virtual std::string GetName() override;
 
 			static bool StartEffect(EffectSetting* effect);
@@ -23,6 +25,7 @@ namespace Gts {
 			private:
 
 			bool IsDual = false;
+			float growth_tick = 0.0;
 
 	};
 }

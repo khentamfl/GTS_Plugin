@@ -223,7 +223,7 @@ namespace Gts {
 		SetPercentageAV(actor, ActorValue::kMagicka, target);
 	}
 
-	inline void PlaySound(BSISoundDescriptor* soundDescriptor, Actor* Receiver, float Volume) {
+	inline void PlaySound(BSISoundDescriptor* soundDescriptor, Actor* Receiver, float Volume, float Frequency) {
 		if (!soundDescriptor) {
 			log::error("Sound invalid");
 			return;
@@ -236,7 +236,7 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			soundHandle.SetFrequency(1.0);
+			soundHandle.SetFrequency(Frequency);
 			soundHandle.SetVolume(Volume);
 			NiAVObject* follow = nullptr;
 			if (Receiver) {

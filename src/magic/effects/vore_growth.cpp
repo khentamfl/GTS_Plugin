@@ -63,21 +63,21 @@ namespace Gts {
 			Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 			Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
 		}
-		if (Player->HasPerk(VoreGreedPerk) && this->BlockVoreMods == false)  // Permamently increased random AV after eating someone
+		if (Player->HasPerk(runtime.VorePerkGreed) && this->BlockVoreMods == false)  // Permamently increased random AV after eating someone
 		{
 			this->BlockVoreMods = true;
 			int Boost = rand() % 2;
 			if (Boost == 0)
 			{
-				Player->ModActorValue(ActorValue::kHealth, 0.50)
+				Player->ModActorValue(ActorValue::kHealth, 0.50);
 			}
 			else if (Boost == 1)
 			{
-				Player->ModActorValue(ActorValue::kMagicka, 0.50)
+				Player->ModActorValue(ActorValue::kMagicka, 0.50);
 			}
 			else if (Boost == 2)
 			{
-				Player->ModActorValue(ActorValue::kStamina, 0.50)
+				Player->ModActorValue(ActorValue::kStamina, 0.50);
 			}
 		}
 	}

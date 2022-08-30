@@ -1,4 +1,5 @@
 #include "magic/effects/slow_grow.hpp"
+#include "managers/GrowthTremorManager.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
@@ -26,13 +27,24 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.000005;
 		float power = BASE_POWER + AlterBonus;
+		float delta_time = *g_delta_time;
+		auto GrowthTick = this->growth_tick;
 		if (this->IsDual == true)
 		{
 		power*= DUAL_CAST_BONUS; 
 		log::info("SlowGrowth is dual");
 		}
 
+		if (GrowthTick <= 0.0)
+		{
+			auto GrowthSound = runtime.growthSound;
+			float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/3);
+			PlaySound(GrowthSound, caster, Volume, 0.75);
+		}
+		this->growth_tick +=delta_time;
+
 		Grow(caster, 0.0, power);
+		CallRumble(caster, caster, 0.30);
 	}
 
 	void SlowGrow::OnStart() {
@@ -40,5 +52,9 @@ namespace Gts {
 		{this->IsDual = true;}
 		else
 		{this->IsDual = false;}
+	}
+
+	void SlowGrowth::OnFinish() {
+		this->growth_tick = 0.0;
 	}
 }

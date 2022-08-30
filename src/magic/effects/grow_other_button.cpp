@@ -28,7 +28,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.50, 2.0, get_visual_scale(target));
-		PlaySound(GrowthSound, target, Volume);
+		PlaySound(GrowthSound, target, Volume, 1.0);
 	}
 
 	void GrowOtherButton::OnUpdate() {

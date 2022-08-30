@@ -22,7 +22,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		auto ShrinkSound = runtime.shrinkSound;
 		float Volume = clamp(0.50, 1.0, get_visual_scale(caster));
-		PlaySound(ShrinkSound, caster, Volume);
+		PlaySound(ShrinkSound, caster, Volume, 1.0);
 	}
 
 	void ShrinkBack::OnUpdate() {

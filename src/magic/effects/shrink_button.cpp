@@ -1,5 +1,6 @@
 #include "magic/effects/shrink_button.hpp"
 #include "magic/effects/common.hpp"
+#include "managers/GrowthTremorManager.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
@@ -30,7 +31,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		auto ShrinkSound = runtime.shrinkSound;
 		float Volume = clamp(0.50, 1.0, get_visual_scale(caster));
-		PlaySound(ShrinkSound, caster, Volume);
+		PlaySound(ShrinkSound, caster, Volume, 1.0);
 	}
 
 	void ShrinkButton::OnUpdate() {
@@ -48,7 +49,7 @@ namespace Gts {
 		if (caster_scale > 0.25) {
 			DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
 			ShrinkActor(caster, 0.0030*stamina, 0.0);
-
+			CallRumble(caster, caster, 0.60);
 		}
 	}
 }

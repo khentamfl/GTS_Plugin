@@ -61,8 +61,8 @@ namespace Gts {
 					auto MoanSound = runtime.MoanSound;
 					auto GrowthSound = runtime.growthSound;
 					float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
-					PlaySound(MoanSound, player, 1.0);
-					PlaySound(GrowthSound, player, Volume);
+					PlaySound(MoanSound, player, 1.0, 1.0);
+					PlaySound(GrowthSound, player, Volume, 1.0);
 				}
 			}
 		else if (this->AllowGrowth == true && player->HasMagicEffect(runtime.SmallMassiveThreat) == false) {
