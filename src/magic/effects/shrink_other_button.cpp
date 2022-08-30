@@ -26,7 +26,7 @@ namespace Gts {
 		float Volume = clamp(0.50, 1.0, get_visual_scale(target));
 		PlaySound(ShrinkSound, target, Volume);
 	}
-	}
+	
 
 	void ShrinkOtherButton::OnUpdate() {
 		auto caster = GetCaster();
