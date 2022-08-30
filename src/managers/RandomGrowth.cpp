@@ -30,9 +30,9 @@ namespace {
 		float HP = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
 		float MP = Player->GetPermanentActorValue(ActorValue::kMagicka) * 0.00085;
 		float SP = Player->GetPermanentActorValue(ActorValue::kStamina) * 0.00085;
-		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
-		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
-		Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, MP * TimeScale());
+		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
+		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
+		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, MP * TimeScale());
 	}
 }
 
