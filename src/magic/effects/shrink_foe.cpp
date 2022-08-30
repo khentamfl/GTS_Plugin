@@ -3,6 +3,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "data/persistent.hpp"
 
 namespace Gts {
 	std::string ShrinkFoe::GetName() {
