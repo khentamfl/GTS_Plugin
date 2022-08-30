@@ -52,6 +52,7 @@ namespace Gts {
 			EffectSetting* ShrinkEnemy = nullptr;
 			EffectSetting* ShrinkEnemyAOE = nullptr;
 			EffectSetting* ShrinkEnemyAOEMast = nullptr;
+			EffectSetting* ShrinkBolt = nullptr;
 			EffectSetting* SwordEnchant = nullptr;
 
 			EffectSetting* ShrinkToNothing = nullptr;
