@@ -22,7 +22,7 @@ namespace Gts {
         float SizeDifference = SourceSize/ReceiverSize;
         float falloff = 250 * (SourceSize * 0.75 + 0.25);
         float power = (0.425 * ShakeStrength(Source) * (SizeDifference * 0.25 + 1.0));
-        float duration = (0.15, 1.2, 0.25 * (1 + (size * 0.25)));
+        float duration = (0.25 * (1 + (size * 0.25)));
          if (Distance < falloff)
             {
              float intensity = ((falloff/Distance) / 8);
