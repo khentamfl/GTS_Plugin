@@ -14,6 +14,17 @@ namespace Gts {
 		return effect == runtime.ShrinkBack;
 	}
 
+	void ShrinkBack::OnStart() {
+		Actor* caster = GetCaster();
+		if (!caster) {
+			return;
+		}
+		auto& runtime = Runtime::GetSingleton();
+		auto ShrinkSound = runtime.shrinkSound;
+		float Volume = clamp(0.50, 1.0, get_visual_scale(caster));
+		PlaySound(ShrinkSound, caster, Volume);
+	}
+
 	void ShrinkBack::OnUpdate() {
 		auto caster = GetCaster();
 		if (!caster) {
@@ -22,11 +33,6 @@ namespace Gts {
 		float Power = 0.0025;
 		auto& runtime = Runtime::GetSingleton();
 
-		//BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;
-		//audio_manager->BuildSoundDataFromDescriptor(shrink_sound, sound_descriptor);
-		//shrink_sound.Play();
 		if (DualCasted())
 		{Power *= 2.0;}
 

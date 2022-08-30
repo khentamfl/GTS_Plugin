@@ -12,13 +12,20 @@ namespace Gts {
 
 	bool ShrinkOtherButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		//BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;
-		//audio_manager->BuildSoundDataFromDescriptor(shrink_sound, sound_descriptor);
-		//shrink_sound.Play();
 
 		return effect == runtime.ShrinkAllySizeButton;
+	}
+
+	void ShrinkOtherButton::OnStart() {
+		auto target = GetTarget();
+		if (!target) {
+			return;
+		}
+		auto& runtime = Runtime::GetSingleton();
+		auto ShrinkSound = runtime.shrinkSound;
+		float Volume = clamp(0.50, 1.0, get_visual_scale(target));
+		PlaySound(ShrinkSound, target, Volume);
+	}
 	}
 
 	void ShrinkOtherButton::OnUpdate() {

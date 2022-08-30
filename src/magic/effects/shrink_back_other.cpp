@@ -14,6 +14,17 @@ namespace Gts {
 		return effect == runtime.ShrinkBackNPC;
 	}
 
+	void ShrinkBackOther::OnStart() {
+		Actor* target = GetTarget();
+		if (!target) {
+			return;
+		}
+		auto& runtime = Runtime::GetSingleton();
+		auto ShrinkSound = runtime.shrinkSound;
+		float Volume = clamp(0.50, 1.0, get_visual_scale(target));
+		PlaySound(ShrinkSound, target, Volume);
+	}
+
 	void ShrinkBackOther::OnUpdate() {
 		auto target = GetTarget();
 		if (!target) {

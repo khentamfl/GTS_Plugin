@@ -21,10 +21,14 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
+		Actor * target = GetTarget();
+		if (!target) {
+			return;
+		}
 		auto& runtime = Runtime::GetSingleton();
-
-		//
-
+		auto GrowthSound = runtime.growthSound;
+		float Volume = clamp(0.50, 2.0, get_visual_scale(target));
+		PlaySound(GrowthSound, target, Volume);
 	}
 
 	void GrowOtherButton::OnUpdate() {
@@ -40,7 +44,6 @@ namespace Gts {
 
 		float target_scale = get_visual_scale(target);
 		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
-		target->currentProcess->SetCachedHeight(1.80 * target_scale);
 
 		DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * TimeScale());
 		Grow(target, 0.0030 * magicka, 0.0);

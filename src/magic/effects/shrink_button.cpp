@@ -22,6 +22,17 @@ namespace Gts {
 		return (effect == runtime.ShrinkPCButton);
 	}
 
+	void ShrinkButton::OnStart() {
+		auto caster = GetCaster();
+		if (!caster) {
+			return;
+		}
+		auto& runtime = Runtime::GetSingleton();
+		auto ShrinkSound = runtime.shrinkSound;
+		float Volume = clamp(0.50, 1.0, get_visual_scale(caster));
+		PlaySound(ShrinkSound, caster, Volume);
+	}
+
 	void ShrinkButton::OnUpdate() {
 		auto caster = GetCaster();
 		if (!caster) {

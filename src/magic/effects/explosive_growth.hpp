@@ -21,5 +21,6 @@ namespace Gts {
 		private:
 			float power = 0.0;
 			float grow_limit = 1.0;
+			float growth_time = 0.0;
 	};
 }

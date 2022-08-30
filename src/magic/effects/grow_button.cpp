@@ -22,12 +22,9 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-
-		//BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = runtime.growthSound;
-		//audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
-		//growth_sound.Play();
+		auto GrowthSound = runtime.growthSound;
+		float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
+		PlaySound(GrowthSound, caster, Volume);
 
 	}
 
