@@ -174,10 +174,13 @@ namespace Gts {
 	}
 
 	inline float GetHealthPercentage(Actor* actor) {
-		auto baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
-		auto valueMod = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-		auto currentValue = actor->GetActorValue(ActorValue::kHealth);
-		auto maxValue = (baseValue + valueMod);
+		// This: actor->GetActorValue(av); returns a cached value so we calc directly from mods
+		const ActorValue av = ActorValue::kHealth;
+		auto baseValue = actor->GetPermanentActorValue(av);
+		auto tempMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av);
+		auto damageMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av);
+		auto currentValue = baseValue + tempMod + damageMod;
+		auto maxValue = baseValue + tempMod;
 		auto percentage = currentValue/maxValue;
 		return percentage;
 	}
@@ -187,8 +190,9 @@ namespace Gts {
 		auto baseValue = actor->GetPermanentActorValue(av);
 		auto baseAv = actor->GetBaseActorValue(av);
 		auto tempMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av);
-		auto currentValue = actor->GetActorValue(av);
 		auto damageMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av);
+		auto currentValue = baseValue + tempMod + damageMod;
+
 		auto maxValue = (baseValue + tempMod);
 		auto percentage = currentValue/maxValue;
 
