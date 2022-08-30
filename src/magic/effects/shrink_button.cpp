@@ -49,7 +49,7 @@ namespace Gts {
 		if (caster_scale > 0.25) {
 			DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
 			ShrinkActor(caster, 0.0030*stamina, 0.0);
-			rowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.60);
+			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.60);
 		}
 	}
 }

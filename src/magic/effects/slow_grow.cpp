@@ -44,7 +44,7 @@ namespace Gts {
 		this->growth_tick +=delta_time;
 
 		Grow(caster, 0.0, power);
-		rowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.30);
+		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.30);
 	}
 
 	void SlowGrow::OnStart() {
