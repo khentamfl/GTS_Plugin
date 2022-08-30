@@ -231,8 +231,11 @@ namespace Gts {
 		soundHandle.SetFrequency(1.0);
 		soundHandle.SetVolume(1.0);
 		NiAVObject* follow = nullptr;
-		if (player && player->GetCurrent3D()) {
-			follow = player->GetCurrent3D();
+		if (player) {
+			NiAVObject* current_3d = player->GetCurrent3D();
+			if (current_3d) {
+				follow = player->GetCurrent3D();
+			}
 		}
 		soundHandle.SetObjectToFollow(follow);
 		soundHandle.Play();
