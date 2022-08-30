@@ -93,6 +93,7 @@ namespace Gts {
 
 			BGSExplosion* footstepExplosion = nullptr;
 			BGSExplosion* BloodExplosion = nullptr;
+			BGSExplosion* BloodFX = nullptr;
 
 			BGSPerk* GrowthOnHitPerk = nullptr;
 			BGSPerk* AdditionalAbsorption = nullptr;

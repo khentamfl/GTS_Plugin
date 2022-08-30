@@ -107,6 +107,7 @@ namespace Gts {
 
 		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
 		this->BloodExplosion = find_form<BGSExplosion>("GTS.esp|01CE9D");
+		this->BloodFX = find_form<BGSExplosion>("Dawnguard.esm|00E7B4");
 
 		this->GrowthOnHitPerk = find_form<BGSPerk>("GTS.esp|30EE52");
 		this->AdditionalAbsorption = find_form<BGSPerk>("GTS.esp|151518");

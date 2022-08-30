@@ -12,13 +12,15 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		auto& runtime = Runtime::GetSingleton();
-		int random = rand() % 7500 + 1;
+		if (GtsManager::GetSingleton().GetFrameNum() % 120 == 0) {
+		int random = rand() % 200 + 1;
 		int decide_chance = 1;
 		auto GrowthPerk = runtime.GrowthPerk;
 		auto Player = PlayerCharacter::GetSingleton();
 		if (random <= decide_chance && Player->HasPerk(GrowthPerk)) {
 			return true;
-		} else {
+		}}
+		 else {
 			return false;
 		}
 	}
