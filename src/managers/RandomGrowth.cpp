@@ -10,6 +10,7 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		//if (GtsManager::GetSingleton().GetFrameNum() % 120) {
+		auto& runtime = Runtime::GetSingleton();	
 		int random = rand() % 2400 + 1;
 		int decide_chance = 1;
 		auto GrowthHPerk = runtime.GrowthHPerk;
