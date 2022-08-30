@@ -49,7 +49,7 @@ namespace Gts {
     }
 
     void GrowthTremorManager::ShakeStrength(Actor* Source) {
-        const Size = get_visual_scale(Source);
+        float Size = get_visual_scale(Source);
         float k = 0.065; 
         float n = 1.0; 
         float n = 1.12;

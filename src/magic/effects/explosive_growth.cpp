@@ -75,7 +75,6 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto& GrowthTremor = GrowthTremorManager::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 		float delta_time = *g_delta_time;
 		auto GrowthTick = this->growth_time;
