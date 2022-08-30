@@ -19,10 +19,11 @@ namespace {
 		auto Player = PlayerCharacter::GetSingleton();
 		if (random <= decide_chance && Player->HasPerk(GrowthPerk)) {
 			return true;
-		}}
-		 else {
-			return false;
+			}
 		}
+		 else 
+			return false;
+		
 	}
 
 	void RestoreStats() {
