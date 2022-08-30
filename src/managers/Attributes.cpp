@@ -7,6 +7,7 @@
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "magic/effects/common.hpp"
+#include "magic/effects/smallmassivethreat.hpp"
 
 using namespace SKSE;
 using namespace RE;
