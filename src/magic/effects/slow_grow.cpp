@@ -54,7 +54,7 @@ namespace Gts {
 		{this->IsDual = false;}
 	}
 
-	void SlowGrowth::OnFinish() {
+	void SlowGrow::OnFinish() {
 		this->growth_tick = 0.0;
 	}
 }
