@@ -36,7 +36,6 @@ namespace {
 		float native_scale = get_natural_scale(actor);
 		float scale = visual_scale/native_scale;
 		float base_av = actor->GetBaseActorValue(av);
-		float value_av = actor->GetActorValue(av);
 
 		float boost = 0.0;
 		if (scale > 1.0) {
@@ -46,107 +45,7 @@ namespace {
 			//   at scale=0.0 we adjust by -base_av
 			boost = base_av * (scale-1.0);
 		};
-
-		static bool done_exper = false;
-		if (!done_exper) {
-			done_exper = true;
-
-			float temp_av;
-			float perm_av;
-			float damg_av;
-			float another_perm_av;
-			float delta = -20.0;
-
-			log::info("Calling: SetBaseActorValue");
-			base_av = actor->GetBaseActorValue(av);
-			value_av = actor->GetActorValue(av);
-			temp_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av);
-			perm_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);
-			damg_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av);
-			another_perm_av = actor->GetPermanentActorValue(av);
-			actor->SetBaseActorValue(av, base_av + delta);
-			log::info(" - Carry: Old base:  {}, New base:  {}", base_av, actor->GetBaseActorValue(av));
-			log::info(" - Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
-			log::info(" - Carry: Old Temp:  {}, New Temp:  {}", temp_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av));
-			log::info(" - Carry: Old Perm:  {}, New Perm:  {}", perm_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av));
-			log::info(" - Carry: Old Damg:  {}, New Damg:  {}", damg_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av));
-			log::info(" - Carry: Old PERM:  {}, New PERM:  {}", another_perm_av, actor->GetPermanentActorValue(av));
-
-			log::info("Calling: ModActorValue");
-			base_av = actor->GetBaseActorValue(av);
-			value_av = actor->GetActorValue(av);
-			temp_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av);
-			perm_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);
-			damg_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av);
-			another_perm_av = actor->GetPermanentActorValue(av);
-			actor->ModActorValue(av, delta);
-			log::info(" - Carry: Old base:  {}, New base:  {}", base_av, actor->GetBaseActorValue(av));
-			log::info(" - Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
-			log::info(" - Carry: Old Temp:  {}, New Temp:  {}", temp_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av));
-			log::info(" - Carry: Old Perm:  {}, New Perm:  {}", perm_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av));
-			log::info(" - Carry: Old Damg:  {}, New Damg:  {}", damg_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av));
-			log::info(" - Carry: Old PERM:  {}, New PERM:  {}", another_perm_av, actor->GetPermanentActorValue(av));
-
-			log::info("Calling: SetActorValue");
-			base_av = actor->GetBaseActorValue(av);
-			value_av = actor->GetActorValue(av);
-			temp_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av);
-			perm_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);
-			damg_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av);
-			another_perm_av = actor->GetPermanentActorValue(av);
-			actor->SetActorValue(av, value_av + delta);
-			log::info(" - Carry: Old base:  {}, New base:  {}", base_av, actor->GetBaseActorValue(av));
-			log::info(" - Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
-			log::info(" - Carry: Old Temp:  {}, New Temp:  {}", temp_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av));
-			log::info(" - Carry: Old Perm:  {}, New Perm:  {}", perm_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av));
-			log::info(" - Carry: Old Damg:  {}, New Damg:  {}", damg_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av));
-			log::info(" - Carry: Old PERM:  {}, New PERM:  {}", another_perm_av, actor->GetPermanentActorValue(av));
-
-			log::info("Calling: RestoreActorValue[kPermanent]");
-			base_av = actor->GetBaseActorValue(av);
-			value_av = actor->GetActorValue(av);
-			temp_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av);
-			perm_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);
-			damg_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av);
-			another_perm_av = actor->GetPermanentActorValue(av);
-			actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kPermanent, av, delta);
-			log::info(" - Carry: Old base:  {}, New base:  {}", base_av, actor->GetBaseActorValue(av));
-			log::info(" - Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
-			log::info(" - Carry: Old Temp:  {}, New Temp:  {}", temp_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av));
-			log::info(" - Carry: Old Perm:  {}, New Perm:  {}", perm_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av));
-			log::info(" - Carry: Old Damg:  {}, New Damg:  {}", damg_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av));
-			log::info(" - Carry: Old PERM:  {}, New PERM:  {}", another_perm_av, actor->GetPermanentActorValue(av));
-
-			log::info("Calling: RestoreActorValue[kTemporary]");
-			base_av = actor->GetBaseActorValue(av);
-			value_av = actor->GetActorValue(av);
-			temp_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av);
-			perm_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);
-			damg_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av);
-			another_perm_av = actor->GetPermanentActorValue(av);
-			actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, av, delta);
-			log::info(" - Carry: Old base:  {}, New base:  {}", base_av, actor->GetBaseActorValue(av));
-			log::info(" - Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
-			log::info(" - Carry: Old Temp:  {}, New Temp:  {}", temp_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av));
-			log::info(" - Carry: Old Perm:  {}, New Perm:  {}", perm_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av));
-			log::info(" - Carry: Old Damg:  {}, New Damg:  {}", damg_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av));
-			log::info(" - Carry: Old PERM:  {}, New PERM:  {}", another_perm_av, actor->GetPermanentActorValue(av));
-
-			log::info("Calling: RestoreActorValue[kDamage]");
-			base_av = actor->GetBaseActorValue(av);
-			value_av = actor->GetActorValue(av);
-			temp_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av);
-			perm_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);
-			damg_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av);
-			another_perm_av = actor->GetPermanentActorValue(av);
-			actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
-			log::info(" - Carry: Old base:  {}, New base:  {}", base_av, actor->GetBaseActorValue(av));
-			log::info(" - Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
-			log::info(" - Carry: Old Temp:  {}, New Temp:  {}", temp_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av));
-			log::info(" - Carry: Old Perm:  {}, New Perm:  {}", perm_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av));
-			log::info(" - Carry: Old Damg:  {}, New Damg:  {}", damg_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av));
-			log::info(" - Carry: Old PERM:  {}, New PERM:  {}", another_perm_av, actor->GetPermanentActorValue(av));
-		}
+		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, av, boost - last_carry_boost);
 	}
 
 	void BoostJump(Actor* actor, float power) {

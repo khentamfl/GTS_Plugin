@@ -184,26 +184,37 @@ namespace Gts {
 	}
 
 	inline void SetHealthPercentage(Actor* actor, float target) {
-		auto baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
-		auto baseAv = actor->GetBaseActorValue(ActorValue::kHealth);
-		auto valueMod = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-		auto currentValue = actor->GetActorValue(ActorValue::kHealth);
-		auto maxValue = (baseValue + valueMod);
+		const ActorValue av = ActorValue::kHealth;
+		auto baseValue = actor->GetPermanentActorValue(av);
+		auto baseAv = actor->GetBaseActorValue(av);
+		auto tempMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av);
+		auto currentValue = actor->GetActorValue(av);
+		auto damageMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av);
+		auto maxValue = (baseValue + tempMod);
 		auto percentage = currentValue/maxValue;
 
 		auto targetValue = target * maxValue;
 		float delta = targetValue - currentValue;
+		log::info("Current Percentage: {}, Target Percentage: {}", percentage, target);
+		log::info("  - maxValue: {}", maxValue);
+		log::info("  - currentValue - damageMod: {}", currentValue - damageMod);
 
-		log::info("Setting Current HP: {} Max HP: {}, Percentage: {} -> {}", currentValue, maxValue, percentage*100.0, target*100.0);
-		log::info("  - Restoring: {}", delta);
-		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kDamage] += delta;
-
-		baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
-		valueMod = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-		currentValue = actor->GetActorValue(ActorValue::kHealth);
-		maxValue = (baseValue + valueMod);
-		percentage = currentValue/maxValue;
-		log::info("  - Result Current HP: {} Max HP: {}, Percentage: {}", currentValue, maxValue, percentage*100.0);
+		float base_av = actor->GetBaseActorValue(av);
+		float value_av = actor->GetActorValue(av);
+		float temp_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av);
+		float perm_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);
+		float damg_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av);
+		float another_perm_av = actor->GetPermanentActorValue(av);
+		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
+		log::info("Post Change");
+		log::info(" - Carry: Old base:  {}, New base:  {}", base_av, actor->GetBaseActorValue(av));
+		log::info(" - Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
+		log::info(" - Carry: Old Temp:  {}, New Temp:  {}", temp_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av));
+		log::info(" - Carry: Old Perm:  {}, New Perm:  {}", perm_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av));
+		log::info(" - Carry: Old Damg:  {}, New Damg:  {}", damg_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av));
+		log::info(" - Carry: Old PERM:  {}, New PERM:  {}", another_perm_av, actor->GetPermanentActorValue(av));
+		percentage = actor->GetActorValue(av) / maxValue;
+		log::info(" - Percentage: {}, Target Percentage: {}", percentage, target);
 	}
 
 
