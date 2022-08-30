@@ -1,4 +1,5 @@
 #include "managers/RandomGrowth.hpp"
+#include "managers/GrowthTremorManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "magic/effects/common.hpp"
 #include "util.hpp"
@@ -11,7 +12,7 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		auto& runtime = Runtime::GetSingleton();
-		int random = rand() % 5000 + 1;
+		int random = rand() % 7500 + 1;
 		int decide_chance = 1;
 		auto GrowthPerk = runtime.GrowthPerk;
 		auto Player = PlayerCharacter::GetSingleton();
@@ -30,9 +31,9 @@ namespace {
 		float HP = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
 		float MP = Player->GetPermanentActorValue(ActorValue::kMagicka) * 0.00085;
 		float SP = Player->GetPermanentActorValue(ActorValue::kStamina) * 0.00085;
-		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
-		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
-		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, MP * TimeScale());
+		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, ActorValue::kHealth, HP * TimeScale());
+		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, ActorValue::kMagicka, SP * TimeScale());
+		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, ActorValue::kStamina, MP * TimeScale());
 	}
 }
 
@@ -61,8 +62,8 @@ namespace Gts {
 					auto MoanSound = runtime.MoanSound;
 					auto GrowthSound = runtime.growthSound;
 					float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
-					PlaySound(MoanSound, player, 1.0, 1.0);
-					PlaySound(GrowthSound, player, Volume, 1.0);
+					PlaySound(MoanSound, player, 1.0, 0.0);
+					PlaySound(GrowthSound, player, Volume, 0.0);
 				}
 			}
 		else if (this->AllowGrowth == true && player->HasMagicEffect(runtime.SmallMassiveThreat) == false) {
@@ -74,8 +75,7 @@ namespace Gts {
 				float base_power = ((0.0025 * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
 				RestoreStats(); // Regens Attributes if PC has perk
 				mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps
-				shake_camera(player, 0.25, 1.0);
-				shake_controller(0.25, 0.25, 1.0);
+				GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
 				this->growth_time += delta_time;
 				if (this->growth_time >= 2.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 					// End growing
