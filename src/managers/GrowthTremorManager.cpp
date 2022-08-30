@@ -21,8 +21,7 @@ namespace Gts {
         float ReceiverSize = get_visual_scale(Receiver);
         float SizeDifference = SourceSize/ReceiverSize;
         float falloff = 250 * (SourceSize * 0.75 + 0.25);
-        float GainBonus = ShakeStrength(Source);
-        float power = (0.425 * GainBonus * (SizeDifference * 0.25 + 1.0));
+        float power = (0.425 * ShakeStrength(Source) * (SizeDifference * 0.25 + 1.0));
         float duration = (0.15, 1.2, 0.25 * (1 + (size * 0.25)));
          if (Distance < falloff)
             {
@@ -49,7 +48,7 @@ namespace Gts {
         }
     }
 
-    void GrowthTremorManager::ShakeStrength(Actor* Source) {
+    inline float GrowthTremorManager::ShakeStrength(Actor* Source) {
         float Size = get_visual_scale(Source);
         float k = 0.065; 
         float n = 1.0; 
