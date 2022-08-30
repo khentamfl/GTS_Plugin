@@ -78,7 +78,7 @@ namespace Gts {
 			float Multiplier = (caster_scale\target_scale);
 			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
 			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
-			if (CasterHp >= (TargetHP / (1.35 * multiplier))) {
+			if (CasterHp >= (TargetHp / (1.35 * multiplier))) {
 			Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster); // Crush someone
 
 				if (!Caster->HasPerk(runtime.NoSpeedLoss)) {
