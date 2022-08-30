@@ -28,9 +28,10 @@ namespace Gts {
 	}
 
 	inline float SmallMassiveThreat::Augmentation() {
-		Player = PlayerCharacter::GetSingleton();
+		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 		auto AugmentationPerk = runtime.NoSpeedLoss;
+		float MSBonus = this->MovementSpeedBonus;
 		if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat))
 		{
 			this->MovementSpeedBonus += 0.00005;
