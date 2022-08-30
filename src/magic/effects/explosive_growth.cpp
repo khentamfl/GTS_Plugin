@@ -97,7 +97,7 @@ namespace Gts {
 		}
 
 		Grow(caster, this->power, 0.0); // Grow
-		CallRumble(caster, caster, 1.0);
+		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
 
 		if (get_target_scale(caster) > this->grow_limit) {
 			set_target_scale(caster, this->grow_limit);

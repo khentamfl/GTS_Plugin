@@ -12,7 +12,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static GrowthTremorManager& GetSingleton() noexcept;
 
-			inline void CallRumble(Actor* Source, Actor* Receiver, float Modifier);
-            inline void ShakeStrength(Actor* Source);
+			void CallRumble(Actor* Source, Actor* Receiver, float Modifier);
+            void ShakeStrength(Actor* Source);
 	};
 }
