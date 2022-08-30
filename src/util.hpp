@@ -236,7 +236,7 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			soundHandle.SetFrequency(Frequency);
+			//soundHandle.SetFrequency(Frequency);
 			soundHandle.SetVolume(Volume);
 			NiAVObject* follow = nullptr;
 			if (Receiver) {
