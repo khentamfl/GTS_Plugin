@@ -8,10 +8,10 @@ using namespace Gts;
 
 namespace {
 	bool ShouldGrow() {
-		if (GtsManager::GetSingleton().GetFrameNum() % 120) {
+		//if (GtsManager::GetSingleton().GetFrameNum() % 120) {
 		int random = rand() % 200 + 1;
 		int decide_chance = 1;
-		}
+		//}
 		return (random <= decide_chance);
 	}
 }
