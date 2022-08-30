@@ -13,12 +13,12 @@ namespace {
 		auto& runtime = Runtime::GetSingleton();	
 		int random = rand() % 2400 + 1;
 		int decide_chance = 1;
-		auto GrowthHPerk = runtime.GrowthHPerk;
+		auto GrowthPerk = runtime.GrowthPerk;
 		auto Player = PlayerCharacter::GetSingleton();
 		auto MoanSound = runtime.MoanSound;
 		auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.25, 1.0, get_visual_scale(Player)/4);;
-		if (random <= decide_chance && Player->HasPerk(GrowthHPerk))
+		if (random <= decide_chance && Player->HasPerk(GrowthPerk))
 		{
 			PlaySound(MoanSound, Player, Volume);
 			PlaySound(GrowthSound, Player, Volume);
@@ -57,6 +57,7 @@ namespace Gts {
 			}
 			case State::Working: {
 				// Do the growing
+				auto& runtime = Runtime::GetSingleton();
 				float delta_time = *g_delta_time;
 				float Scale = get_visual_scale(player);
 				float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
