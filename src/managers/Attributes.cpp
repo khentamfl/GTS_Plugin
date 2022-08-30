@@ -7,7 +7,6 @@
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "magic/effects/common.hpp"
-#include "magic/effects/smallmassivethreat.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -71,7 +70,7 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
-		float SMTBonus = SmallMassiveThreat::GetSingleton().Augmentation()/2.5;
+		float SMTBonus = Augmentation()/2.5;
 		if (actor != PlayerCharacter::GetSingleton()) {
 			base_speed = actor_data->base_walkspeedmult;
 		}
@@ -200,6 +199,30 @@ namespace Gts {
 
 		BoostAttackDmg(Npc, 1.0);
 		BoostSpeedMulti(Npc, 1.0);
+	}
+
+	inline float AttributeManager::Augmentation() {
+		auto Player = PlayerCharacter::GetSingleton();
+		auto& runtime = Runtime::GetSingleton();
+		auto AugmentationPerk = runtime.NoSpeedLoss;
+		if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat))
+		{
+			this->MovementSpeedBonus += 0.00005;
+		}
+		else if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat))
+		{
+			this->MovementSpeedBonus += 0.000075;
+		}
+		else
+		{
+			this->MovementSpeedBonus = 0.0;
+		}
+		float MSBonus = clamp(0.0, 1.0, this->MovementSpeedBonus); 
+		return MSBonus;
+	}
+
+	void AttributeManager::OverrideBonus(float Value) {
+		this->MovementSpeedBonus = Value;
 	}
 
 }

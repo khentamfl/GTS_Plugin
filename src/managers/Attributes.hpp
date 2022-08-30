@@ -14,5 +14,9 @@ namespace Gts {
 
 			void Update();
 			void UpdateNpc(Actor* Npc);
+			inline float Augmentation();
+			void OverrideBonus(float Value);
+			private:
+			float MovementSpeedBonus = 0.0;
 	};
 }

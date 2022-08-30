@@ -5,6 +5,7 @@
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "data/transient.hpp"
+#include "managers/Attributes.hpp"
 #include "util.hpp"
 
 namespace Gts {
@@ -70,7 +71,7 @@ namespace Gts {
 		if (!Caster || !Target)
 		{return;}
 		auto& runtime = Runtime::GetSingleton();
-		if (SmallMassiveThreat::GetSingleton().Augmentation() >= 1.0)
+		if (AttributeManager::GetSingleton().Augmentation() >= 1.0)
 		{
 			float caster_scale = get_visual_scale(Caster);
 			float target_scale = get_visual_scale(Target);
@@ -81,7 +82,7 @@ namespace Gts {
 			Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster); // Crush someone
 
 				if (!Caster->HasPerk(runtime.NoSpeedLoss)) {
-				SmallMassiveThreat::GetSingleton().OverrideBonus(0.35); // Reduce speed after crush
+				AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce speed after crush
 				}
 			}
 			else
@@ -90,7 +91,7 @@ namespace Gts {
 				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.35); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.15);
 				shake_camera(Caster, 0.35, 0.5);
 				PlaySound(runtime.lJumpLand, Caster, 0.5, 1.0);
-				SmallMassiveThreat::GetSingleton().OverrideBonus(0.0); // Completely remove bonus speed
+				AttributeManager::GetSingleton().OverrideBonus(0.0); // Completely remove bonus speed
 			}
 		}
 	}

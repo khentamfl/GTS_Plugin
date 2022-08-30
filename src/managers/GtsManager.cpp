@@ -110,7 +110,7 @@ namespace {
 		{persi_actor_data->anim_speed = speed_mult;}
 
 		float MS_mult = soft_core(scale, MS_adjustment);
-		float Bonus = SmallMassiveThreat::GetSingleton().Augmentation();
+		float Bonus = AttributeManager::GetSingleton().Augmentation();
 		if (GtsManager::GetSingleton().GetFrameNum() % 30 == 0 && actor->formID == 0x14)
 		{
 		if (actor->IsWalking() == true) {
