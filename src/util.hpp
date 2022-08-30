@@ -233,7 +233,7 @@ namespace Gts {
 		if (player) {
 			NiAVObject* current_3d = player->GetCurrent3D();
 			if (current_3d) {
-				follow = player->GetCurrent3D();
+				follow = current_3d;
 			}
 		}
 		soundHandle.SetObjectToFollow(follow);
