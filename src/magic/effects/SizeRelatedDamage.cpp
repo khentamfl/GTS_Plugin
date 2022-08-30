@@ -87,9 +87,9 @@ namespace Gts {
 			else
 			{
 				//Caster->PushActorAway(Target, 0.5 * target_scale); Target->PushActorAway(Caster, 0.5 * caster_scale); // Else simulate collision
-				Target->DamageActorValue(ActorValue::kHealth, CasterHp * 0.35); Caster->DamageActorValue(ActorValue::kHealth, CasterHp * 0.15);
+				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.35); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.15);
 				shake_camera(Caster, 0.35, 0.5);
-				PlaySound(runtime.lJumpLand, Сaster, 0.5, 1.0);
+				PlaySound(runtime.lJumpLand, Caster, 0.5, 1.0);
 				SmallMassiveThreat::GetSingleton().OverrideBonus(0.0); // Completely remove bonus speed
 			}
 		}
