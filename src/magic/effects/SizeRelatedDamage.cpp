@@ -46,11 +46,10 @@ namespace Gts {
 			// ^ We don't want to crush allies
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
 			CrushToNothing(caster, target);
-			target->PlaceObjectAtMe(runtime.BloodFX, false);
 			NiPointer<TESObjectREFR> instance_ptr = target->PlaceObjectAtMe(runtime.BloodExplosion, false);
-			if (!instance_ptr) return;
+			if (!instance_ptr || !instance_bfx) return;
 			TESObjectREFR* instance = instance_ptr.get();
-			if (!instance) return;
+			if (!instance || !instance_bfx) return;
 			Explosion* explosion = instance->AsExplosion();
 			explosion->radius *= target_scale;
 			explosion->imodRadius *= target_scale;
