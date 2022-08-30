@@ -223,16 +223,15 @@ namespace Gts {
 		SetPercentageAV(actor, ActorValue::kMagicka, target);
 	}
 
-	inline void PlaySound(BSISoundDescriptor* soundDescriptor) {
-		auto player = PlayerCharacter::GetSingleton();
+	inline void PlaySound(BSISoundDescriptor* soundDescriptor, Actor* Receiver, float Volume) {
 		auto audioManager = BSAudioManager::GetSingleton();
 		BSSoundHandle soundHandle;
 		audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		soundHandle.SetFrequency(1.0);
-		soundHandle.SetVolume(1.0);
+		soundHandle.SetVolume(Volume);
 		NiAVObject* follow = nullptr;
-		if (player && player->GetCurrent3D()) {
-			follow = player->GetCurrent3D();
+		if (Receiver && Receiver->GetCurrent3D()) {
+			Receiver = Receiver->GetCurrent3D();
 		}
 		soundHandle.SetObjectToFollow(follow);
 		soundHandle.Play();
