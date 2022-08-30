@@ -69,7 +69,6 @@ namespace Gts {
 	void SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
 		if (!Caster || !Target)
 		{return;}
-		else
 		auto& runtime = Runtime::GetSingleton();
 		if (SmallMassiveThreat::GetSingleton().Augmentation() >= 1.0)
 		{
@@ -90,7 +89,7 @@ namespace Gts {
 				//Caster->PushActorAway(Target, 0.5 * target_scale); Target->PushActorAway(Caster, 0.5 * caster_scale); // Else simulate collision
 				Target.DamageActorValue(ActorValue::kHealth, CasterHp * 0.35); Caster.DamageActorValue(ActorValue::kHealth, CasterHp * 0.15);
 				shake_camera(caster, 0.35, 0.5);
-				PlaySound(runtime.lJumpLand, caster, 0.5, 1.0);
+				PlaySound(runtime.lJumpLand, Сaster, 0.5, 1.0);
 				SmallMassiveThreat::GetSingleton().OverrideBonus(0.0); // Completely remove bonus speed
 			}
 		}
