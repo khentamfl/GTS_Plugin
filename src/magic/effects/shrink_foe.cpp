@@ -17,9 +17,9 @@ namespace Gts {
 		const float SHRINK_AOE_EFFIC = 0.42;
 		const float SHRINK_AOE_MASTER_POWER = 1.75;
 		const float SHRINK_AOE_MASTER_EFFIC = 0.46;
-		const float SHRINK_BOLT_POWER = 24.40;
+		const float SHRINK_BOLT_POWER = 32.40;
 		const float SHRINK_BOLT_EFFIC = 0.62;
-		const float SHRINK_STORM_POWER = 48.80;
+		const float SHRINK_STORM_POWER = 64.80;
 		const float SHRINK_STORM_EFFIC = 0.80;
 
 		auto base_spell = GetBaseEffect();
@@ -67,7 +67,7 @@ namespace Gts {
 		if (this->efficiency >= 18.00)
 		{	auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetActorData(target);
-			actor_data->half_life = 0.35; // Faster shrink, less smooth.
+			actor_data->half_life = 0.25; // Faster shrink, less smooth.
 		}
 
 		bool has_smt = caster->HasMagicEffect(Runtime::GetSingleton().SmallMassiveThreat);

@@ -17,7 +17,7 @@ namespace {
 		auto Player = PlayerCharacter::GetSingleton();
 		auto MoanSound = runtime.MoanSound;
 		auto GrowthSound = runtime.growthSound;
-		float Volume = clamp(0.25, 1.0, get_visual_scale(Player)/4);;
+		float Volume = clamp(0.25, 1.0, get_visual_scale(Player)/4);
 		if (random <= decide_chance && Player->HasPerk(GrowthPerk))
 		{
 			PlaySound(MoanSound, Player, Volume);
