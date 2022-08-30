@@ -235,7 +235,7 @@ namespace Gts {
 			MaxDistance = 50;
 		}
 
-
+		
 		if (FeetCamera >= 1.0) { // Adjustment for Feet Camera
 			SetfMouseWheelZoomIncrement(CameraZoomPrecision);
 			SetfMouseWheelZoomSpeed(CameraZoomSpeed/2);
@@ -262,6 +262,7 @@ namespace Gts {
 			}
 
 		}
+		UpdateThirdPerson();
 	}
 }
 
