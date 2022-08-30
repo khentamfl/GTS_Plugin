@@ -12,7 +12,6 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		auto& runtime = Runtime::GetSingleton();
-		if (GtsManager::GetSingleton().GetFrameNum() % 120 == 0) {
 		int random = rand() % 200 + 1;
 		int decide_chance = 1;
 		auto GrowthPerk = runtime.GrowthPerk;
@@ -20,10 +19,9 @@ namespace {
 		if (random <= decide_chance && Player->HasPerk(GrowthPerk)) {
 			return true;
 			}
-		}
-		 else 
+		 else {
 			return false;
-		
+		 }
 	}
 
 	void RestoreStats() {
@@ -31,12 +29,15 @@ namespace {
 		auto Player = PlayerCharacter::GetSingleton();
 		if (!Player->HasPerk(runtime.GrowthAugmentation))
 		{return;}
+		else
+		{
 		float HP = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
 		float MP = Player->GetPermanentActorValue(ActorValue::kMagicka) * 0.00085;
 		float SP = Player->GetPermanentActorValue(ActorValue::kStamina) * 0.00085;
 		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, ActorValue::kHealth, HP * TimeScale());
 		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, ActorValue::kMagicka, SP * TimeScale());
 		Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, ActorValue::kStamina, MP * TimeScale());
+		}
 	}
 }
 
@@ -57,7 +58,7 @@ namespace Gts {
 		}
 
 		if (this->AllowGrowth == false) {
-				if (ShouldGrow()) {
+				if (ShouldGrow() && GtsManager::GetSingleton().GetFrameNum() % 120 == 0) {
 					// Start growing state
 					this->growth_time = 0.0;
 					this->AllowGrowth = true;
