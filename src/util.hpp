@@ -179,7 +179,6 @@ namespace Gts {
 		auto currentValue = actor->GetActorValue(ActorValue::kHealth);
 		auto maxValue = (baseValue + valueMod);
 		auto percentage = currentValue/maxValue;
-		log::info("- Getting Current HP: {} Max HP: {}, Percentage: {}", currentValue, maxValue, percentage*100.0);
 		return percentage;
 	}
 
@@ -198,6 +197,9 @@ namespace Gts {
 		log::info("Current Percentage: {}, Target Percentage: {}", percentage, target);
 		log::info("  - maxValue: {}", maxValue);
 		log::info("  - currentValue - damageMod: {}", currentValue - damageMod);
+		log::info("  - currentValue: {}", currentValue);
+		log::info("  - targetValue: {}", targetValue);
+		log::info("  - delta: {}", delta);
 
 		float base_av = actor->GetBaseActorValue(av);
 		float value_av = actor->GetActorValue(av);
@@ -207,12 +209,12 @@ namespace Gts {
 		float another_perm_av = actor->GetPermanentActorValue(av);
 		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
 		log::info("Post Change");
-		log::info(" - Carry: Old base:  {}, New base:  {}", base_av, actor->GetBaseActorValue(av));
-		log::info(" - Carry: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
-		log::info(" - Carry: Old Temp:  {}, New Temp:  {}", temp_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av));
-		log::info(" - Carry: Old Perm:  {}, New Perm:  {}", perm_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av));
-		log::info(" - Carry: Old Damg:  {}, New Damg:  {}", damg_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av));
-		log::info(" - Carry: Old PERM:  {}, New PERM:  {}", another_perm_av, actor->GetPermanentActorValue(av));
+		log::info(" - Health: Old base:  {}, New base:  {}", base_av, actor->GetBaseActorValue(av));
+		log::info(" - Health: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
+		log::info(" - Health: Old Temp:  {}, New Temp:  {}", temp_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av));
+		log::info(" - Health: Old Perm:  {}, New Perm:  {}", perm_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av));
+		log::info(" - Health: Old Damg:  {}, New Damg:  {}", damg_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av));
+		log::info(" - Health: Old PERM:  {}, New PERM:  {}", another_perm_av, actor->GetPermanentActorValue(av));
 		percentage = actor->GetActorValue(av) / maxValue;
 		log::info(" - Percentage: {}, Target Percentage: {}", percentage, target);
 	}
