@@ -39,7 +39,7 @@ namespace Gts {
 		}
 
 		log::info("Growing {}", ShouldGrow());
-		log::info("Is Growing: {}", this->state == State::Working);
+		//log::info("Is Growing: {}", this->state);
 
 		switch (this->state) {
 			case State::Idle: {
@@ -52,8 +52,8 @@ namespace Gts {
 					auto& runtime = Runtime::GetSingleton();
 					auto MoanSound = runtime.MoanSound;
 					auto GrowthSound = runtime.growthSound;
-					float Volume = clamp(0.25, 1.0, get_visual_scale(player)/4);
-					PlaySound(MoanSound, player, Volume);
+					float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
+					PlaySound(MoanSound, player, 1.0);
 					PlaySound(GrowthSound, player, Volume);
 				}
 			}
@@ -63,7 +63,7 @@ namespace Gts {
 				float delta_time = *g_delta_time;
 				float Scale = get_visual_scale(player);
 				float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
-				float base_power = ((0.0025 * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
+				float base_power = ((0.00025 * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
 				mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps
 
 				this->growth_time += delta_time;
