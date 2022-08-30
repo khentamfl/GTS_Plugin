@@ -24,6 +24,7 @@ namespace Gts {
 
 	void RandomGrowth::Update() {
 		auto player = PlayerCharacter::GetSingleton();
+		log::info("Growing {}", ShouldGrow());
 		if (!player) {
 			return;
 		}
@@ -44,8 +45,8 @@ namespace Gts {
 				// Do the growing
 				float delta_time = *g_delta_time;
 				float base_power = 0.01;// Put in actual power please
-				mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps
-
+				//mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps
+				
 				this->growth_time += *g_delta_time;
 				if (this->growth_time >= 2.6) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 					// End growing
