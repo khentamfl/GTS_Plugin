@@ -21,9 +21,11 @@ namespace {
 		{
 			PlaySound(MoanSound, Player, Volume);
 			PlaySound(GrowthSound, Player, Volume);
+			return true;
 		}
+		else
 		//}
-		return (random <= decide_chance);
+		return false;
 	}
 }
 
