@@ -224,19 +224,31 @@ namespace Gts {
 	}
 
 	inline void PlaySound(BSISoundDescriptor* soundDescriptor, Actor* Receiver, float Volume) {
-		auto audioManager = BSAudioManager::GetSingleton();
-		BSSoundHandle soundHandle;
-		audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
-		soundHandle.SetFrequency(1.0);
-		soundHandle.SetVolume(Volume);
-		NiAVObject* follow = nullptr;
-		if (Receiver) {
-			NiAVObject* current_3d = Receiver->GetCurrent3D();
-			if (current_3d) {
-				follow = current_3d;
-			}
+		if (!soundDescriptor) {
+			log::error("Sound invalid");
+			return;
 		}
-		soundHandle.SetObjectToFollow(follow);
-		soundHandle.Play();
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			soundHandle.SetFrequency(1.0);
+			soundHandle.SetVolume(Volume);
+			NiAVObject* follow = nullptr;
+			if (Receiver) {
+				NiAVObject* current_3d = Receiver->GetCurrent3D();
+				if (current_3d) {
+					follow = current_3d;
+				}
+			}
+			soundHandle.SetObjectToFollow(follow);
+			soundHandle.Play();
+		} else {
+			log::error("Could not build sound");
+		}
 	}
 }
