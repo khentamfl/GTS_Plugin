@@ -12,15 +12,17 @@ namespace Gts {
 		public:
 			using Magic::Magic;
 
+			[[nodiscard]] static SmallMassiveThreat& GetSingleton() noexcept;
+
 			virtual void OnUpdate() override;
 
 			virtual std::string GetName() override;
 
             static bool StartEffect(EffectSetting* effect);
 
-			inline float SmallMassiveThreat::Augmentation() 
+			inline float Augmentation(); 
 
-			void OverrideBonus(float Value)
+			void OverrideBonus(float Value);
 
 		private: 
 			float MovementSpeedBonus = 0.0;

@@ -75,7 +75,7 @@ namespace Gts {
 		{
 			float caster_scale = get_visual_scale(Caster);
 			float target_scale = get_visual_scale(Target);
-			float Multiplier = caster_scale\target_scale;
+			float Multiplier = (caster_scale\target_scale);
 			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
 			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
 			if (CasterHp >= (TargetHP / (1.35 * multiplier))) {
