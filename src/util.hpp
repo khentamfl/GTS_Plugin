@@ -162,80 +162,64 @@ namespace Gts {
 		return result;
 	}
 
-	inline float GetStaminaPercentage(Actor* actor) {
-		auto baseValue = actor->GetPermanentActorValue(ActorValue::kStamina);
-		auto valueMod = actor->staminaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-		auto currentValue = actor->GetActorValue(ActorValue::kStamina);
-		auto returnValue = currentValue / (baseValue + valueMod);
-		if (returnValue <= 0.05) {
-			returnValue = 0.05;
-		} // CTD Protection
-		return returnValue;
-	}
-
-	inline float GetHealthPercentage(Actor* actor) {
-		// This: actor->GetActorValue(av); returns a cached value so we calc directly from mods
-		const ActorValue av = ActorValue::kHealth;
+	inline float GetMaxAV(Actor* actor, ActorValue av) {
 		auto baseValue = actor->GetPermanentActorValue(av);
 		auto tempMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av);
-		auto damageMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av);
-		auto currentValue = baseValue + tempMod + damageMod;
-		auto maxValue = baseValue + tempMod;
-		auto percentage = currentValue/maxValue;
-		return percentage;
+		return baseValue + tempMod;
 	}
-
-	inline void SetHealthPercentage(Actor* actor, float target) {
-		const ActorValue av = ActorValue::kHealth;
-		auto baseValue = actor->GetPermanentActorValue(av);
-		auto baseAv = actor->GetBaseActorValue(av);
-		auto tempMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av);
+	inline float GetAV(Actor* actor, ActorValue av) {
+		// actor->GetActorValue(av); returns a cached value so we calc directly from mods
+		float max_av = GetMaxAV(actor, av);
 		auto damageMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av);
-		auto currentValue = baseValue + tempMod + damageMod;
-
-		auto maxValue = (baseValue + tempMod);
-		auto percentage = currentValue/maxValue;
-
-		auto targetValue = target * maxValue;
-		float delta = targetValue - currentValue;
-		log::info("Current Percentage: {}, Target Percentage: {}", percentage, target);
-		log::info("  - maxValue: {}", maxValue);
-		log::info("  - currentValue - damageMod: {}", currentValue - damageMod);
-		log::info("  - currentValue: {}", currentValue);
-		log::info("  - targetValue: {}", targetValue);
-		log::info("  - delta: {}", delta);
-
-		float base_av = actor->GetBaseActorValue(av);
-		float value_av = actor->GetActorValue(av);
-		float temp_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av);
-		float perm_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);
-		float damg_av = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av);
-		float another_perm_av = actor->GetPermanentActorValue(av);
-		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
-		log::info("Post Change");
-		log::info(" - Health: Old base:  {}, New base:  {}", base_av, actor->GetBaseActorValue(av));
-		log::info(" - Health: Old Value: {}, New Value: {}", value_av, actor->GetActorValue(av));
-		log::info(" - Health: Old Temp:  {}, New Temp:  {}", temp_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av));
-		log::info(" - Health: Old Perm:  {}, New Perm:  {}", perm_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av));
-		log::info(" - Health: Old Damg:  {}, New Damg:  {}", damg_av, actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kDamage, av));
-		log::info(" - Health: Old PERM:  {}, New PERM:  {}", another_perm_av, actor->GetPermanentActorValue(av));
-		percentage = actor->GetActorValue(av) / maxValue;
-		log::info(" - Percentage: {}, Target Percentage: {}", percentage, target);
+		return max_av + damageMod;
 	}
-
-
-	inline float GetMagikaPercentage(Actor* actor) {
-		auto baseValue = actor->GetPermanentActorValue(ActorValue::kMagicka);
-		auto valueMod = actor->magickaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-		auto currentValue = actor->GetActorValue(ActorValue::kMagicka);
-		auto returnValue = currentValue / (baseValue + valueMod);
-		if (returnValue <= 0.05) {
-			returnValue = 0.05;
-		} // CTD Protection
-		return returnValue;
+	inline void ModAV(Actor* actor, ActorValue av, float amount) {
+		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kTemporary, av, amount);
+	}
+	inline void SetAV(Actor* actor, ActorValue av, float amount) {
+		float currentValue = GetAV(actor, av);
+		float delta = amount - currentValue;
+		ModAV(actor, av, delta);
 	}
 
 	inline void DamageAV(Actor* actor, ActorValue av, float amount) {
 		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, av, -amount);
+	}
+
+	inline float GetPercentageAV(Actor* actor, ActorValue av) {
+		return GetAV(actor, av)/GetMaxAV(actor, av);
+	}
+
+	inline void SetPercentageAV(Actor* actor, ActorValue av, float target) {
+		auto currentValue = GetAV(actor, av);
+		auto maxValue = GetMaxAV(actor, av);
+		auto percentage = currentValue/maxValue;
+		auto targetValue = target * maxValue;
+		float delta = targetValue - currentValue;
+		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
+	}
+
+	inline float GetStaminaPercentage(Actor* actor) {
+		return GetPercentageAV(actor, ActorValue::kStamina);
+	}
+
+	inline void SetStaminaPercentage(Actor* actor, float target) {
+		SetPercentageAV(actor, ActorValue::kStamina, target);
+	}
+
+	inline float GetHealthPercentage(Actor* actor) {
+		return GetPercentageAV(actor, ActorValue::kHealth);
+	}
+
+	inline void SetHealthPercentage(Actor* actor, float target) {
+		SetPercentageAV(actor, ActorValue::kHealth, target);
+	}
+
+	inline float GetMagikaPercentage(Actor* actor) {
+		return GetPercentageAV(actor, ActorValue::kMagicka);
+	}
+
+	inline void SetMagickaPercentage(Actor* actor, float target) {
+		SetPercentageAV(actor, ActorValue::kMagicka, target);
 	}
 }
