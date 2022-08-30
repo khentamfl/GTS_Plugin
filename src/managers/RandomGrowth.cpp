@@ -1,5 +1,6 @@
 #include "managers/RandomGrowth.hpp"
 #include "managers/GtsManager.hpp"
+#include "magic/effects/common.hpp"
 #include "util.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
@@ -44,6 +45,7 @@ namespace Gts {
 
 	void RandomGrowth::Update() {
 		auto player = PlayerCharacter::GetSingleton();
+		auto& runtime = Runtime::GetSingleton();
 		if (!player) {
 			return;
 		}
@@ -57,7 +59,6 @@ namespace Gts {
 					this->growth_time = 0.0;
 					this->AllowGrowth = true;
 					// Play sound
-					auto& runtime = Runtime::GetSingleton();
 					auto MoanSound = runtime.MoanSound;
 					auto GrowthSound = runtime.growthSound;
 					float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
@@ -67,7 +68,7 @@ namespace Gts {
 			}
 		else if (this->AllowGrowth == true && player->HasMagicEffect(runtime.SmallMassiveThreat) == false) {
 				// Do the growing
-				auto& runtime = Runtime::GetSingleton();
+				
 				float delta_time = *g_delta_time;
 				float Scale = get_visual_scale(player);
 				float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
