@@ -1,5 +1,6 @@
 #include "magic/effects/explosive_growth.hpp"
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/GtsManager.hpp"
 #include "magic/magic.hpp"
 #include "magic/effects/common.hpp"
 #include "scale/scale.hpp"
@@ -77,20 +78,13 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		float delta_time = *g_delta_time;
-		auto GrowthTick = this->growth_time;
 
-		if (GrowthTick <= 0.0)
+		if (GtsManager::GetSingleton().GetFrameNum() % 120 / delta_time == 0)
 		{
 		auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
 		PlaySound(GrowthSound, caster, Volume, 0.0);
 		}
-		this->growth_time +=delta_time;
-
-		if (GrowthTick >= 160.0)
-		{this->growth_time = 0.0;} // Reset sound tick
-
-
 
 		if (get_target_scale(caster) > this->grow_limit) {
 			return;
