@@ -146,6 +146,9 @@ namespace Gts {
 		this->SelectedSizeFormula = find_form<TESGlobal>("GTS.esp|277004");
 
 		this->ProtectEssentials = find_form<TESGlobal>("GTS.esp|23A3E2");
+		this->EnableGiantSounds = find_form<TESGlobal>("GTS.esp|26CDF0");
+		this->PCAdditionalEffects = find_form<TESGlobal>("GTS.esp|3D4586");
+		this->NPCSizeEffects = find_form<TESGlobal>("GTS.esp|3D4587");
 
 
 		///Camera

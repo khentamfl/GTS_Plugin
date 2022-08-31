@@ -128,6 +128,9 @@ namespace Gts {
 			TESGlobal * SelectedSizeFormula = nullptr;
 
 			TESGlobal * ProtectEssentials = nullptr;
+			TESGlobal * EnableGiantSounds = nullptr;
+			TESGlobal * PCAdditionalEffects = nullptr;
+			TESGlobal * NPCSizeEffects = nullptr;
 
 
 				///Camera

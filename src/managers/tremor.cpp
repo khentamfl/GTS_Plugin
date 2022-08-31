@@ -157,7 +157,8 @@ namespace Gts {
 
 				float duration = power * tremor_scale * 0.5;
 				duration = smootherstep(0.2, 1.2, duration);
-
+				if (actor->formID == 0x14 && Runtime::GetSingleton().PCAdditionalEffects->value >= 1.0)
+				{
 				if (intensity > 0.01 && duration > 0.01) {
 					shake_camera(actor, intensity, duration);
 
@@ -176,6 +177,30 @@ namespace Gts {
 						}
 					}
 					shake_controller(left_shake, right_shake, duration);
+					}
+				}
+
+				if (actor->formID != 0x14 && Runtime::GetSingleton().NPCSizeEffects->value >= 1.0)
+				{
+				if (intensity > 0.01 && duration > 0.01) {
+					shake_camera(actor, intensity, duration);
+
+					float left_shake = intensity;
+					float right_shake = intensity;
+					if (actor->formID == 0x14) {
+						switch (foot_kind) {
+							case Foot::Left:
+							case Foot::Front:
+								right_shake = 0.0;
+								break;
+							case Foot::Right:
+							case Foot::Back:
+								left_shake = 0.0;
+								break;
+						}
+					}
+					shake_controller(left_shake, right_shake, duration);
+					}
 				}
 			}
 		}
