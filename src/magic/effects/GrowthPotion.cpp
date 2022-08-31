@@ -36,8 +36,8 @@ namespace Gts {
 
         if (caster == PlayerCharacter::GetSingleton()) {
             GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.4);
-        
         }
+        
         if (GtsManager::GetSingleton().GetFrameNum() % 120 * TimeScale() == 0)
 		{
 		    auto GrowthSound = runtime.growthSound;
