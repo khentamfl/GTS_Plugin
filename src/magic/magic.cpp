@@ -21,6 +21,7 @@
 #include "magic/effects/vore_growth.hpp"
 #include "magic/effects/SizeRelatedDamage.hpp"
 #include "magic/effects/SmallMassiveThreat.hpp"
+#include "magic/effects/GrowthPotion.hpp"
 #include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
 
@@ -146,6 +147,10 @@ namespace Gts {
 			EffectSetting* base_spell = effect->GetBaseObject();
 			if (ExplosiveGrowth::StartEffect(base_spell)) {
 				this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
+			}
+
+			if (GrowthPotion::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new GrowthPotion(effect));
 			}
 
 			if (CrushGrowth::StartEffect(base_spell)) {

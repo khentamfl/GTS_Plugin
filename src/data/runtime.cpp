@@ -193,6 +193,11 @@ namespace Gts {
 
 		///EndAttributes///
 
+		///Potions///
+		this->EffectGrowthPotion = find_form<EffectSetting>("GTS.esp|3D4582");
+		this->ResistShrinkPotion = find_form<EffectSetting>("GTS.esp|3D4583");
+		///End Potions///
+
 		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");
 		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
 		this->FakeCrushEffect = find_form<EffectSetting>("GTS.esp|271EF9");

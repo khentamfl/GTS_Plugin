@@ -174,7 +174,12 @@ namespace Gts {
 			TESGlobal * bonusSpeedMultiplier = nullptr;
 			TESGlobal * bonusSpeedMax = nullptr;
 
-		///EndAttributes///
+			///EndAttributes///
+
+			///Potions///
+			EffectSetting* EffectGrowthPotion = nullptr;
+			EffectSetting* ResistShrinkPotion = nullptr;
+			///End Potions///
 
 
 			SpellItem * ShrinkToNothingSpell = nullptr;

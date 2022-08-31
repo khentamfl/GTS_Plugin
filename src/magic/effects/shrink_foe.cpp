@@ -71,6 +71,10 @@ namespace Gts {
 			float SizeDifference = clamp(1.0, 4.0, (get_visual_scale(caster)/get_visual_scale(target))/2);
 			this->power *= SizeDifference;
 		}
+		if (target->HasMagicEffect(runtime.ResistShrinkPotion))
+		{
+			this->power *=0.25;
+		}
 		bool has_smt = caster->HasMagicEffect(Runtime::GetSingleton().SmallMassiveThreat);
 		TransferSize(caster, target, IsDualCasting(), this->power, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {

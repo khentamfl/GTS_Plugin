@@ -46,7 +46,6 @@ namespace Gts {
 		static RandomGrowth instance;
 		return instance;
 	}
-
 	void RandomGrowth::Update() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
@@ -66,6 +65,7 @@ namespace Gts {
 					// Play sound
 					auto MoanSound = runtime.MoanSound;
 					auto GrowthSound = runtime.growthSound;
+					GrowthTremorManager::GetSingleton().CallRumble(player, player, 3.0);
 					float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
 					PlaySound(MoanSound, player, 1.0, 0.0);
 					PlaySound(GrowthSound, player, Volume, 0.0);
