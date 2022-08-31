@@ -68,8 +68,9 @@ namespace Gts {
 		{	auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetActorData(target);
 			actor_data->half_life = 0.25; // Faster shrink, less smooth.
+			float SizeDifference = clamp(1.0, 4.0, (get_visual_scale(caster)/get_visual_scale(target))/2);
+			this->power *= SizeDifference;
 		}
-
 		bool has_smt = caster->HasMagicEffect(Runtime::GetSingleton().SmallMassiveThreat);
 		TransferSize(caster, target, IsDualCasting(), this->power, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {

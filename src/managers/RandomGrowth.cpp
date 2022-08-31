@@ -50,11 +50,7 @@ namespace Gts {
 	void RandomGrowth::Update() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
-		float Print1 = Calendar::GetSingleton()->GetCurrentGameTime();
-		float Print2 = *g_delta_time;
-		float Print3 = GtsManager::GetSingleton().GetFrameNum() % 120;
-		float Print4 = GtsManager::GetSingleton().GetFrameNum();
-		log::info("Calendar: {}, Delta: {}, Frames 120: {}, Frames 0: {}", Print1, Print2, Print3, Print4);
+
 		if (!player) {
 			return;
 		}
@@ -63,8 +59,8 @@ namespace Gts {
 		}
 
 		if (this->AllowGrowth == false) {
-				if (ShouldGrow() && GtsManager::GetSingleton().GetFrameNum() % 120 == 0) {
-					// Start growing state
+				if (ShouldGrow() && GtsManager::GetSingleton().GetFrameNum() % 180 == 0) {
+					// Start growing 
 					this->growth_time = 0.0;
 					this->AllowGrowth = true;
 					// Play sound
