@@ -1,5 +1,6 @@
 #include "magic/effects/GrowthPotion.hpp"
 #include "magic/effects/common.hpp"
+#include "managers/GrowthTremorManager.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
@@ -30,7 +31,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-        
+
         if (caster == PlayerCharacter::GetSingleton()) {
             GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.5);
         
@@ -43,7 +44,7 @@ namespace Gts {
 		}
 		this->SoundTick +=delta_time;
 
-		if (GrowthTick >= 160.0)
+		if (this->SoundTick >= 160.0)
 		{this->SoundTick = 0.0;}
 
 		Grow(caster, 0.0, power);
