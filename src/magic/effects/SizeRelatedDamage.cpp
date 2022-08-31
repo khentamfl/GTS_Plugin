@@ -90,7 +90,7 @@ namespace Gts {
 			}
 			else
 			{
-				//Caster->ApplyCurrent(Target, 0.5 * target_scale); Target->PushActorAway(Caster, 0.5 * caster_scale); // Else simulate collision
+				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale); // Else simulate collision
 				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.35); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.15);
 				shake_camera(Caster, 0.35, 0.5);
 				PlaySound(runtime.lJumpLand, Caster, 0.5, 1.0);
