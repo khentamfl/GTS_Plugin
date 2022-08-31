@@ -34,13 +34,13 @@ namespace {
 			return;
 		}
 		if (shape->type == hkpShapeType::kCapsule) {
-			log::info("{}- Capsule (Scaling by {})", prefix, scale);
+			log::debug("{}- Capsule (Scaling by {})", prefix, scale);
 			auto actual_shape = static_cast<hkpCapsuleShape*>(shape);
 			actual_shape->radius *= scale;
 			actual_shape->vertexA = actual_shape->vertexA * hkVector4(scale);
 			actual_shape->vertexB = actual_shape->vertexB * hkVector4(scale);
 		} else if (shape->type == hkpShapeType::kList) {
-			log::info("{}- List (checking children)", prefix);
+			log::debug("{}- List (checking children)", prefix);
 			auto container = static_cast<hkpListShape*>(shape);
 			auto key = container->GetFirstKey();
 			while (key != HK_INVALID_SHAPE_KEY) {
@@ -53,7 +53,7 @@ namespace {
 				key = container->GetNextKey(key);
 			}
 		} else if (shape->type == hkpShapeType::kBVTree) {
-			log::info("{}- Tree (checking children)", prefix);
+			log::debug("{}- Tree (checking children)", prefix);
 			auto actual_shape = static_cast<hkpBvTreeShape*>(shape);
 			const hkpShapeContainer* container = actual_shape->GetContainer();
 			auto key = container->GetFirstKey();
@@ -67,7 +67,7 @@ namespace {
 				key = container->GetNextKey(key);
 			}
 		} else {
-			log::info("{}- Shape (of type {})", prefix, static_cast<int>(shape->type));
+			log::debug("{}- Shape (of type {})", prefix, static_cast<int>(shape->type));
 		}
 	}
 }

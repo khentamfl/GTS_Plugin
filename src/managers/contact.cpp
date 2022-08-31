@@ -131,7 +131,7 @@ namespace {
 		for (const auto& [key, value] : named_layers) {
 			auto layer_flag = (static_cast<uint64_t>(1) << static_cast<uint64_t>(value));
 			if ((flags & layer_flag) != 0) {
-				log::info(" - Collides with {}", key);
+				log::debug(" - Collides with {}", key);
 			}
 		}
 
@@ -178,7 +178,6 @@ namespace Gts {
 			if (!name_b) {
 				return;
 			}
-			// log::info("Colliding: {} with: {}", name_a, name_b);
 			NiAVObject* node_a = getNodeFromCollidable(rigid_a);
 			if (!node_a) {
 				return;
@@ -188,15 +187,8 @@ namespace Gts {
 				return;
 			}
 			auto node_name_a = node_a->name;
-			// if (!node_name_a.empty()) {
-			// 	log::info("  - Node A: {}", node_name_a.c_str());
-			// }
 			auto node_name_b = node_b->name;
-			// if (!node_name_b.empty()) {
-			// 	log::info("  - Node B: {}", node_name_b.c_str());
-			// }
 		}
-		// log::info("ContactPointCallback");
 	}
 
 	void ContactListener::CollisionAddedCallback(const hkpCollisionEvent& a_event)

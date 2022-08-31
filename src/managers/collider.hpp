@@ -73,7 +73,6 @@ namespace Gts {
 			void UpdateHavok();
 
 			inline void FlagReset() {
-				log::info("=========== Capsule reset Triggered ===========");
 				this->last_reset_frame.store(GtsManager::GetSingleton().GetFrameNum());
 			}
 
