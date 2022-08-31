@@ -198,7 +198,8 @@ namespace Gts {
 		}
 
 		BoostAttackDmg(Npc, 1.0);
-		BoostSpeedMulti(Npc, 1.0);
+		
+		//BoostSpeedMulti(Npc, 1.0);
 	}
 
 	inline float AttributeManager::Augmentation() {
