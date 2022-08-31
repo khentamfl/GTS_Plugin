@@ -51,7 +51,7 @@ namespace Gts {
 
 		if (caster->HasMagicEffect(runtime.SmallMassiveThreat) && caster->HasPerk(runtime.SmallMassiveThreatSizeSteal))
 		{
-			float BonusShrink = isJumping * 3.0 + 1.0;
+			float BonusShrink = isJumping(caster) * 3.0 + 1.0;
 			ShrinkActor(target, 0.002 * BonusShrink, 0.0);
 			Grow(caster, 0.001 * target_scale * BonusShrink, 0.0);
 		}
