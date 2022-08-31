@@ -33,7 +33,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float Power = 0.00125;
+		float Power = 0.00065;
 		auto& runtime = Runtime::GetSingleton();
 
 		if (DualCasted())
