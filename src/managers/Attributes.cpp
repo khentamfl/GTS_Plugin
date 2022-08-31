@@ -215,10 +215,18 @@ namespace Gts {
 		}
 		else
 		{
-			this->MovementSpeedBonus = 0.0;
+			if (this->MovementSpeedBonus > 0.0)	{
+				this->MovementSpeedBonus -= 0.0004175;
+			}
+			else	{
+				this->MovementSpeedBonus = 0.0;
+			}
 		}
 		float MSBonus = clamp(0.0, 1.0, this->MovementSpeedBonus); 
-		log::info("Current Bonus is: {}", MSBonus);
+		if (MSBonus >= 1.0)
+		{
+			Console::Log("Ready to insta-crush");
+		}
 		return MSBonus;
 	}
 
