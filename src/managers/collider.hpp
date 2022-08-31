@@ -15,7 +15,7 @@ namespace Gts {
 		hkVector4 start;
 		hkVector4 end;
 		float radius;
-		CapsuleData(const hkpCapsuleShape* orig_capsule, rigidBody* rigidBody, NiAVObject* node);
+		CapsuleData(const hkpCapsuleShape* orig_capsule, hkpRigidBody* rigidBody, NiAVObject* node);
 		CapsuleData(CapsuleData&& old) : capsule(std::move(old.capsule)), rigidBody(std::move(old.rigidBody)), node(std::move(old.node)), start(std::move(old.start)), end(std::move(old.end)), radius(std::move(old.radius)) {
 		};
 		~CapsuleData();
