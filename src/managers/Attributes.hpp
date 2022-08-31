@@ -18,5 +18,6 @@ namespace Gts {
 			void OverrideBonus(float Value);
 			private:
 			float MovementSpeedBonus = 0.0;
+			bool BlockMessage = false;
 	};
 }

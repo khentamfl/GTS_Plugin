@@ -98,6 +98,7 @@ namespace Gts {
 				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.35); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.15);
 				shake_camera(Caster, 0.35, 0.5);
 				PlaySound(runtime.lJumpLand, Caster, 0.5, 1.0);
+				DebugNotification(Target->GetDisplayFullName() + " is too tough to be crushed", 0, true);
 				AttributeManager::GetSingleton().OverrideBonus(0.0); // Completely remove bonus speed
 			}
 		}

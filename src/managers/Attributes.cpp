@@ -220,12 +220,14 @@ namespace Gts {
 			}
 			else	{
 				this->MovementSpeedBonus = 0.0;
+				this->BlockMessage = false;
 			}
 		}
 		float MSBonus = clamp(0.0, 1.0, this->MovementSpeedBonus); 
-		if (MSBonus >= 1.0)
+		if (MSBonus >= 1.0 && !this->BlockMessage)
 		{
-			ConsoleLog::GetSingleton()->Print("Ready to insta-crush");
+			this->BlockMessage = true; // Avoid spamming it
+			DebugNotification("Your speed is enough to crush someone", 0, true);
 		}
 		return MSBonus;
 	}
