@@ -112,7 +112,7 @@ namespace {
 		float MS_mult = soft_core(scale, MS_adjustment);
 		float Bonus = AttributeManager::GetSingleton().Augmentation();
 
-		if (GtsManager::GetSingleton().GetFrameNum() % 30 == 0 && actor == PlayerCharacter::GetSingleton())
+		if (GtsManager::GetSingleton().GetFrameNum() % 30 == 0 && actor->formID == 0x14)
 		{
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 0.44 / MS_mult);
@@ -123,7 +123,7 @@ namespace {
 			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult + (Bonus/3 + 1.0))/ MS_mult);
 		}}
 
-		if (GtsManager::GetSingleton().GetFrameNum() % 30 == 0 && actor != PlayerCharacter::GetSingleton())
+		if (GtsManager::GetSingleton().GetFrameNum() % 30 == 0 && !actor->formID == 0x14)
 		{
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.60 / MS_mult);
@@ -132,7 +132,8 @@ namespace {
 		}
 		else {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / MS_mult);
-		}	}
+			}	
+		}
 	
 
 		// Experiement
