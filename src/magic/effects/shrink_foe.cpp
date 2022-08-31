@@ -71,7 +71,7 @@ namespace Gts {
 			float SizeDifference = clamp(1.0, 4.0, (get_visual_scale(caster)/get_visual_scale(target))/2);
 			this->power *= SizeDifference;
 		}
-		if (target->HasMagicEffect(runtime.ResistShrinkPotion))
+		if (target->HasMagicEffect(Runtime::GetSingleton().ResistShrinkPotion))
 		{
 			this->power *=0.25;
 		}
