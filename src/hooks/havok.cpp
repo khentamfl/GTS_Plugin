@@ -2,6 +2,7 @@
 #include "util.hpp"
 
 #include "managers/contact.hpp"
+#include "managers/collider.hpp"
 
 using namespace RE;
 using namespace SKSE;
