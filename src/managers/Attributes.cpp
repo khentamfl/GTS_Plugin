@@ -225,7 +225,7 @@ namespace Gts {
 		float MSBonus = clamp(0.0, 1.0, this->MovementSpeedBonus); 
 		if (MSBonus >= 1.0)
 		{
-			ConsoleLog::Print("Ready to insta-crush");
+			ConsoleLog::GetSingleton()->Print("Ready to insta-crush");
 		}
 		return MSBonus;
 	}
