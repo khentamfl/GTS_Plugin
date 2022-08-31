@@ -67,7 +67,8 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		this->grow_limit * = clamp(1.0, 12.0, runtime.CrushGrowthStorage + 1.0); //Affected by storage.
+		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage + 1.0);
+		this->grow_limit *= AdjustLimit; //Affected by storage.
 		auto& runtime = Runtime::GetSingleton();
 
 	}

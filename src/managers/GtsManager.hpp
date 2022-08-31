@@ -37,7 +37,7 @@ namespace Gts {
 			void reapply_actor(Actor* actor, bool force = true);
 
 			inline uint64_t GetFrameNum() {
-				return this->frame_count.load() * TimeScale();
+				return this->frame_count.load();
 			}
 	};
 }
