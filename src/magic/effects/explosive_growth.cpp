@@ -67,9 +67,10 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
+		auto& runtime = Runtime::GetSingleton();
 		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage + 1.0);
 		this->grow_limit *= AdjustLimit; //Affected by storage.
-		auto& runtime = Runtime::GetSingleton();
+		
 
 	}
 
@@ -82,7 +83,7 @@ namespace Gts {
 		float delta_time = *g_delta_time;
 
 		auto HealthRegenPerk = runtime.HealthRegenPerk;
-		float HpRegen = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00075;
+		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00075;
 
 		if (caster->HasPerk(HealthRegenPerk)) {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
