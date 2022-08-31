@@ -114,5 +114,39 @@ namespace Gts {
 			MagicItem * ShrinkBackNPCSpell = nullptr;
 			MagicItem * ShrinkBackSpell = nullptr;
 
+			///Camera
+			TESGlobal * EnableCamera = nullptr;
+			TESGlobal * EnableAltCamera = nullptr;
+			TESGlobal * FeetCamera = nullptr;
+			TESGlobal * usingAutoDistance = nullptr;
+			TESGlobal * ImCrouching = nullptr;
+
+			TESGlobal * MinDistance = nullptr;
+			TESGlobal * MaxDistance = nullptr;
+			TESGlobal * CameraZoomSpeed = nullptr;
+			TESGlobal * CameraZoomPrecision = nullptr;
+
+			TESGlobal * proneCameraX = nullptr;
+			TESGlobal * proneCameraY = nullptr;
+			TESGlobal * proneCombatCameraX = nullptr;
+			TESGlobal * proneCombatCameraY = nullptr;
+
+			TESGlobal * cameraX = nullptr;
+			TESGlobal * cameraY = nullptr;
+			TESGlobal * combatCameraX = nullptr;
+			TESGlobal * combatCameraY = nullptr;
+
+			TESGlobal * proneCameraAlternateX = nullptr;
+			TESGlobal * proneCameraAlternateY = nullptr;
+			TESGlobal * proneCombatCameraAlternateX = nullptr;
+			TESGlobal * proneCombatCameraAlternateY = nullptr;
+
+			TESGlobal * cameraAlternateX = nullptr;
+			TESGlobal * cameraAlternateY = nullptr;
+			TESGlobal * combatCameraAlternateX = nullptr;
+			TESGlobal * combatCameraAlternateY = nullptr;
+
+			TESGlobal * CalcProne = nullptr;
+			/////////
 	};
 }

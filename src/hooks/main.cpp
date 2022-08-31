@@ -5,6 +5,7 @@
 #include "managers/collider.hpp"
 #include "magic/magic.hpp"
 #include "managers/ddraw.hpp"
+#include "managers/camera.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -26,11 +27,13 @@ namespace Hooks
 		auto& magic = MagicManager::GetSingleton();
 		auto& collider = ColliderManager::GetSingleton();
 		auto& ddraw = DDraw::GetSingleton();
+		auto& camera = CameraManager::GetSingleton();
 		activate_mainthread_mode();
 		manager.poll();
 		magic.Update();
 		collider.Update();
 		ddraw.Update();
+		camera.Update();
 		deactivate_mainthread_mode();
 	}
 }
