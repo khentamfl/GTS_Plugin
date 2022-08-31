@@ -51,8 +51,9 @@ namespace Gts {
 
 		if (caster->HasMagicEffect(runtime.SmallMassiveThreat) && caster->HasPerk(runtime.SmallMassiveThreatSizeSteal))
 		{
-			ShrinkActor(target, 0.002, 0.0);
-			Grow(caster, 0.001 * target_scale, 0.0);
+			float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
+			ShrinkActor(target, 0.002 * BonusShrink, 0.0);
+			Grow(caster, 0.001 * target_scale * BonusShrink, 0.0);
 		}
 
 		
@@ -69,7 +70,7 @@ namespace Gts {
 			explosion->imodRadius *= target_scale;
 		}
 	}
-	void SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
+	void SizeDamage::SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
 		if (!Caster || !Target)
 		{return;}
 		auto& runtime = Runtime::GetSingleton();
@@ -89,7 +90,7 @@ namespace Gts {
 			}
 			else
 			{
-				//Caster->PushActorAway(Target, 0.5 * target_scale); Target->PushActorAway(Caster, 0.5 * caster_scale); // Else simulate collision
+				//Caster->ApplyCurrent(Target, 0.5 * target_scale); Target->PushActorAway(Caster, 0.5 * caster_scale); // Else simulate collision
 				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.35); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.15);
 				shake_camera(Caster, 0.35, 0.5);
 				PlaySound(runtime.lJumpLand, Caster, 0.5, 1.0);
