@@ -27,32 +27,32 @@ namespace Gts {
 		if (base_spell == runtime.explosiveGrowth1) {
 			this->power = GROWTH_1_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
-				this->grow_limit = 6.0; // NOLINT
+				this->grow_limit = 2.00; // NOLINT
 				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
-				this->grow_limit = 4.0; // NOLINT
+				this->grow_limit = 1.66; // NOLINT
 			} else {
-				this->grow_limit = 2.0; // NOLINT
+				this->grow_limit = 1.33; // NOLINT
 			}
 		} else if (base_spell == runtime.explosiveGrowth2) {
 			this->power = GROWTH_2_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
-				this->grow_limit = 8.0; // NOLINT
+				this->grow_limit = 2.33; // NOLINT
 				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
-				this->grow_limit = 6.0; // NOLINT
+				this->grow_limit = 2.00; // NOLINT
 			} else {
-				this->grow_limit = 3.0; // NOLINT
+				this->grow_limit = 1.66; // NOLINT
 			}
 		} else {
 			this->power = GROWTH_3_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
-				this->grow_limit = 12.0; // NOLINT
+				this->grow_limit = 2.66; // NOLINT
 				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
-				this->grow_limit = 8.0; // NOLINT
+				this->grow_limit = 2.33; // NOLINT
 			} else {
-				this->grow_limit = 4.0; // NOLINT
+				this->grow_limit = 2.00; // NOLINT
 			}
 		}
 	}
@@ -67,6 +67,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
+		this->grow_limit * = clamp(1.0, 12.0, runtime.CrushGrowthStorage + 1.0); //Affected by storage.
 		auto& runtime = Runtime::GetSingleton();
 
 	}
@@ -79,7 +80,14 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float delta_time = *g_delta_time;
 
-		if (get_target_scale(caster) >= this->grow_limit) {
+		auto HealthRegenPerk = runtime.HealthRegenPerk;
+		float HpRegen = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00075;
+
+		if (caster->HasPerk(HealthRegenPerk)) {
+			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
+		}
+			
+		if (get_target_scale(caster) >= this->grow_limit || caster->HasMagicEffect(runtime.ShrinkBack)) {
 			return;
 		}
 
@@ -90,8 +98,7 @@ namespace Gts {
 		PlaySound(GrowthSound, caster, Volume, 0.0);
 		}
 
-		
-		
+	
 		Grow(caster, this->power, 0.0); // Grow
 		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
 

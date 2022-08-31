@@ -17,7 +17,7 @@ namespace Gts {
 	}
 
 	void CrushGrowth::OnStart() {
-		auto CrushedFoe = GetCaster();
+		auto CrushedFoe = GetTarget();
 		this->CrushGrowthAmount += 1.0;
 		this->ScaleOnCrush = get_visual_scale(CrushedFoe);
 	}
@@ -39,15 +39,15 @@ namespace Gts {
         {CrushGrowthActivationCount = 1.0;} // Just to be safe
 
         float GrowAmount = this->ScaleOnCrush;
-        float Rate = 0.00035 * GrowAmount * CrushGrowthActivationCount;
+        float Rate = 0.00025 * GrowAmount * CrushGrowthActivationCount;
         if (caster->HasPerk(runtime.AdditionalAbsorption))
 		{Rate *= 2.0;}
+
 
 		float size = get_visual_scale(caster); // We count Enemy as caster: he casts it on us
 		float size2 = get_visual_scale(target);
 		log::info("Caster {}, target {}, GrowAmount {}, CrushGrowth Amount {}", size, size2, GrowAmount, CrushGrowthAmount);
         CrushGrow(caster, Rate, 0);
-		
 	}
 
 

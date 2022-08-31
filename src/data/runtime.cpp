@@ -149,6 +149,7 @@ namespace Gts {
 		this->EnableGiantSounds = find_form<TESGlobal>("GTS.esp|26CDF0");
 		this->PCAdditionalEffects = find_form<TESGlobal>("GTS.esp|3D4586");
 		this->NPCSizeEffects = find_form<TESGlobal>("GTS.esp|3D4587");
+		this->CrushGrowthStorage = find_form<TESGlobal>("GTS.esp|3D4588");
 
 
 		///Camera

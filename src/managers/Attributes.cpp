@@ -70,7 +70,7 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
-		float SMTBonus = AttributeManager::GetSingleton().Augmentation()/2.5;
+		float SMTBonus = AttributeManager::GetSingleton().Augmentation()/3.0;
 		if (actor != PlayerCharacter::GetSingleton()) {
 			base_speed = actor_data->base_walkspeedmult;
 		}
@@ -78,7 +78,7 @@ namespace {
 		{base_speed = 100.00;}
 		if (GtsManager::GetSingleton().GetFrameNum() % 30) {
 			if (scale > 1) {
-				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)) * (SMTBonus/3 + 1.0));
+				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)) * (SMTBonus + 1.0));
 			} else if (scale < 1) {
 				actor->SetActorValue(ActorValue::kSpeedMult, base_speed * (scale * 0.90 +0.10));
 			} else {
@@ -157,16 +157,8 @@ namespace Gts {
 		auto ExplGrowthP1 = runtime.explosiveGrowth1;
 		auto ExplGrowthP2 = runtime.explosiveGrowth2;
 		auto ExplGrowthP3 = runtime.explosiveGrowth3;
-		auto HealthRegenPerk = runtime.HealthRegenPerk;
 
 		float size = get_visual_scale(Player);
-
-		float HpRegen = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.0006;
-		float MaxHealth = Player->GetPermanentActorValue(ActorValue::kHealth);
-
-		if (Player->HasPerk(HealthRegenPerk) && (Player->HasMagicEffect(ExplGrowthP1)||Player->HasMagicEffect(ExplGrowthP2)|| Player->HasMagicEffect(ExplGrowthP3))) {
-			Player->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
-		}
 
 		if (size > 0) {
 			BoostHP(Player, bonusHPMultiplier);

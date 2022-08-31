@@ -189,6 +189,12 @@ namespace Gts {
 			caster->NotifyAnimationGraph("JumpLand");
 		}
 		AdjustSizeLimit(0.0417 * target_scale);
+
+
+		if (caster->HasPerk(runtime.ExtraGrowth) && (caster->HasMagicEffect(runtime.explosiveGrowth1) || caster->HasMagicEffect(runtime.explosiveGrowth2) || caster->HasMagicEffect(runtime.explosiveGrowth3))) 
+		{runtime.CrushGrowthStorage->value += target_scale/50;} // Slowly increase Limit after crushing someone while Growth Spurt is active.
+
+
 		ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 	}
 

@@ -131,6 +131,7 @@ namespace Gts {
 			TESGlobal * EnableGiantSounds = nullptr;
 			TESGlobal * PCAdditionalEffects = nullptr;
 			TESGlobal * NPCSizeEffects = nullptr;
+			TESGlobal * CrushGrowthStorage = nullptr;
 
 
 				///Camera

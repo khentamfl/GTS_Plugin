@@ -35,6 +35,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 
 		SmallMassiveThreatModification(caster, target);
+		float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
 
 		float size_difference = caster_scale/target_scale;
 		if (target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0
@@ -48,14 +49,16 @@ namespace Gts {
 		}
 
 		// ^ Crush anyway, no conditions needed since size difference is too massive
+		if (caster->HasPerk(runtime.ExtraGrowth) && (caster->HasMagicEffect(runtime.explosiveGrowth1) || caster->HasMagicEffect(runtime.explosiveGrowth2) || caster->HasMagicEffect(runtime.explosiveGrowth3)))
+		{
+			ShrinkActor(target, 0.0026 * BonusShrink, 0.0);
+		}
 
 		if (caster->HasMagicEffect(runtime.SmallMassiveThreat))
 		{
 			size_difference += 3.2;
 			if (caster->HasPerk(runtime.SmallMassiveThreatSizeSteal) && caster != target)
 			{
-			float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
-
 			float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.0008;
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
 

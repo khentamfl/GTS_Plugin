@@ -16,10 +16,13 @@ namespace Gts {
 
 			virtual void OnUpdate() override;
 
+			virtual void OnFinish() override;
+
 			virtual std::string GetName() override;
 
 			static bool StartEffect(EffectSetting* effect);
         private:
             float SoundTick = 0.0;    
+			float ActivationCount = 0.0;
 	};
 }
