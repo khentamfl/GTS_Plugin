@@ -272,7 +272,7 @@ namespace Gts {
 				NiUpdateData ctx;
 				node->UpdateWorldData(&ctx);
 				NiUpdateData ctx2;
-				node->UpdateRigidDownwardPass(ctx2, 100);
+				node->UpdateRigidDownwardPass(ctx2, 0);
 			} else {
 				node->IncRefCount();
 				auto task = SKSE::GetTaskInterface();
@@ -281,7 +281,7 @@ namespace Gts {
 						NiUpdateData ctx;
 						node->UpdateWorldData(&ctx);
 						NiUpdateData ctx2;
-						node->UpdateRigidDownwardPass(ctx2, 100);
+						node->UpdateRigidDownwardPass(ctx2, 0);
 						node->DecRefCount();
 					}
 				});
