@@ -235,20 +235,24 @@ namespace Gts {
 
 	void ColliderManager::UpdateHavok() {
 		auto actors = find_actors();
-		for (auto actor: actors) {
-			if (actor->Is3DLoaded()) {
-				ColliderActorData* actor_data = GetActorData(actor);
-				if (actor_data) {
-					for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
-						auto& capsule = capsule_data.capsule;
-						auto& rigidBody = capsule_data.rigidBody;
-						auto& node = capsule_data.node;
-						if (capsule) {
-							if (rigidBody) {
-								if (node) {
-									NiPoint3 world_pos = node->world.translate;
-									hkVector4 new_translation = hkVector4(world_pos * (*g_worldScale));
-									rigidBody->motion.motionState.transform.translation = new_translation;
+		auto& manager = GtsManager::GetSingleton();
+		if (manager.GetFrameNum() % 400 == 0) {
+			log::info("Syncing");
+			for (auto actor: actors) {
+				if (actor->Is3DLoaded()) {
+					ColliderActorData* actor_data = GetActorData(actor);
+					if (actor_data) {
+						for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
+							auto& capsule = capsule_data.capsule;
+							auto& rigidBody = capsule_data.rigidBody;
+							auto& node = capsule_data.node;
+							if (capsule) {
+								if (rigidBody) {
+									if (node) {
+										NiPoint3 world_pos = node->world.translate;
+										hkVector4 new_translation = hkVector4(world_pos * (*g_worldScale));
+										rigidBody->motion.motionState.transform.translation = new_translation;
+									}
 								}
 							}
 						}

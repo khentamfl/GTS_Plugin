@@ -35,62 +35,18 @@ namespace Hooks
 	}
 
 	void Hook_BShkbAnimationGraph::AddRagdollToWorld(BShkbAnimationGraph* a_this) {
-		Actor* actor = GetActorForGraph(a_this);
-		if (actor) {
-			if (actor->formID == 0x14) {
-				log::info("+ AddRagdollToWorld");
-			}
-		}
 		_AddRagdollToWorld(a_this);
-		if (actor) {
-			if (actor->formID == 0x14) {
-				log::info("- AddRagdollToWorld");
-			}
-		}
 	}
 
 	void Hook_BShkbAnimationGraph::RemoveRagdollFromWorld(BShkbAnimationGraph* a_this) {
-		Actor* actor = GetActorForGraph(a_this);
-		if (actor) {
-			if (actor->formID == 0x14) {
-				log::info("+ RemoveRagdollFromWorld");
-			}
-		}
 		_RemoveRagdollFromWorld(a_this);
-		if (actor) {
-			if (actor->formID == 0x14) {
-				log::info("- RemoveRagdollFromWorld");
-			}
-		}
 	}
 
 	void Hook_BShkbAnimationGraph::ResetRagdoll(BShkbAnimationGraph* a_this) {
-		Actor* actor = GetActorForGraph(a_this);
-		if (actor) {
-			if (actor->formID == 0x14) {
-				log::info("+ ResetRagdoll");
-			}
-		}
 		_ResetRagdoll(a_this);
-		if (actor) {
-			if (actor->formID == 0x14) {
-				log::info("- ResetRagdoll");
-			}
-		}
 	}
 
 	void Hook_BShkbAnimationGraph::SetRagdollConstraintsFromBhkConstraints(BShkbAnimationGraph* a_this) {
-		Actor* actor = GetActorForGraph(a_this);
-		if (actor) {
-			if (actor->formID == 0x14) {
-				log::info("+ SetRagdollConstraintsFromBhkConstraints");
-			}
-		}
 		_SetRagdollConstraintsFromBhkConstraints(a_this);
-		if (actor) {
-			if (actor->formID == 0x14) {
-				log::info("- SetRagdollConstraintsFromBhkConstraints");
-			}
-		}
 	}
 }
