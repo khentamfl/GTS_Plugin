@@ -205,13 +205,13 @@ namespace Gts {
 		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 		auto AugmentationPerk = runtime.NoSpeedLoss;
-		if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat))
-		{
-			this->MovementSpeedBonus += 0.00005;
-		}
-		else if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat))
+		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat))
 		{
 			this->MovementSpeedBonus += 0.000075;
+		}
+		else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat))
+		{
+			this->MovementSpeedBonus += 0.00005;
 		}
 		else
 		{
