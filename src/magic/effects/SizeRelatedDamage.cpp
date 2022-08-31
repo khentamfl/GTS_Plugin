@@ -34,6 +34,8 @@ namespace Gts {
 		float caster_scale = get_visual_scale(caster);
 		float target_scale = get_visual_scale(target);
 
+		SmallMassiveThreatModification(caster, target);
+
 		float size_difference = caster_scale/target_scale;
 		if (target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0
 		    || target->HasMagicEffect(runtime.FakeCrushEffect) == true
@@ -49,8 +51,9 @@ namespace Gts {
 
 		if (caster->HasMagicEffect(runtime.SmallMassiveThreat) && caster->HasPerk(runtime.SmallMassiveThreatSizeSteal))
 		{
-			TransferSize(caster, target, false, 0.001, 0.001, true);
-			ShrinkActor(target, 0.002, 0.0);
+			float BonusShrink = isJumping * 3.0 + 1.0;
+			ShrinkActor(target, 0.002 * BonusShrink, 0.0);
+			Grow(caster, 0.001 * target_scale * BonusShrink, 0.0);
 		}
 
 		

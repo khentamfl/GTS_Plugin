@@ -78,7 +78,7 @@ namespace {
 		{base_speed = 100.00;}
 		if (GtsManager::GetSingleton().GetFrameNum() % 30) {
 			if (scale > 1) {
-				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)) + SMTBonus);
+				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)) * (SMTBonus/2.5 + 1.0));
 			} else if (scale < 1) {
 				actor->SetActorValue(ActorValue::kSpeedMult, base_speed * (scale * 0.90 +0.10));
 			} else {
@@ -207,11 +207,11 @@ namespace Gts {
 		auto AugmentationPerk = runtime.NoSpeedLoss;
 		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat))
 		{
-			this->MovementSpeedBonus += 0.000075;
+			this->MovementSpeedBonus += 0.000025;
 		}
 		else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat))
 		{
-			this->MovementSpeedBonus += 0.00005;
+			this->MovementSpeedBonus += 0.0000175;
 		}
 		else
 		{
