@@ -45,14 +45,14 @@ namespace Gts {
             GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.4);
         }
         
-        if (GtsManager::GetSingleton().GetFrameNum() % 120 / *g_delta_time == 0)
+        if (GtsManager::GetSingleton().GetFrameNum() % 140 * TimeScale()  == 0)
 		{
 		    auto GrowthSound = runtime.growthSound;
 		    float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/4);
 		    PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
 		}
         float HP = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
-		caster->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP / *g_delta_time);
+		caster->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale() );
 		
         float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 

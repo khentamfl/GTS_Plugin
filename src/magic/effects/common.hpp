@@ -184,7 +184,7 @@ namespace Gts {
 		{
 			PlaySound(runtime.MoanSound,caster, 1.0, 1.0);
 		}
-		target->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, caster, 1.00f, false, 0.0f, target);
+		target->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
 		if (get_visual_scale(caster) <= 13.0 || !caster->IsSprinting() && !caster->HasMagicEffect(runtime.SmallMassiveThreat)) {
 			caster->NotifyAnimationGraph("JumpLand");
 		}

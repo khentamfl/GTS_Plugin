@@ -31,7 +31,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		if (!target) {
+		if (!target || caster == target) {
 			return;
 		}
         if (CrushGrowthActivationCount <= 1.0)

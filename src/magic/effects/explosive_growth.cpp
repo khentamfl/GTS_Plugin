@@ -14,9 +14,9 @@ namespace Gts {
 	}
 
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
-		const float GROWTH_1_POWER = 0.00190;
-		const float GROWTH_2_POWER = 0.00150;
-		const float GROWTH_3_POWER = 0.00105;
+		const float GROWTH_1_POWER = 0.00120;
+		const float GROWTH_2_POWER = 0.00085;
+		const float GROWTH_3_POWER = 0.00065;
 
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
@@ -79,11 +79,11 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float delta_time = *g_delta_time;
 
-		if (get_target_scale(caster) > this->grow_limit) {
+		if (get_target_scale(caster) >= this->grow_limit) {
 			return;
 		}
 
-		if (GtsManager::GetSingleton().GetFrameNum() % 120 / delta_time == 0)
+		if (GtsManager::GetSingleton().GetFrameNum() % 140 * delta_time == 0)
 		{
 		auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
@@ -91,7 +91,7 @@ namespace Gts {
 		}
 
 		
-
+		
 		Grow(caster, this->power, 0.0); // Grow
 		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
 
