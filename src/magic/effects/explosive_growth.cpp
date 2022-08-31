@@ -68,7 +68,7 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage + 1.0);
+		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
 		this->grow_limit *= AdjustLimit; //Affected by storage.
 		
 
