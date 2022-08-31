@@ -79,6 +79,10 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float delta_time = *g_delta_time;
 
+		if (get_target_scale(caster) > this->grow_limit) {
+			return;
+		}
+
 		if (GtsManager::GetSingleton().GetFrameNum() % 120 / delta_time == 0)
 		{
 		auto GrowthSound = runtime.growthSound;
@@ -86,9 +90,7 @@ namespace Gts {
 		PlaySound(GrowthSound, caster, Volume, 0.0);
 		}
 
-		if (get_target_scale(caster) > this->grow_limit) {
-			return;
-		}
+		
 
 		Grow(caster, this->power, 0.0); // Grow
 		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);

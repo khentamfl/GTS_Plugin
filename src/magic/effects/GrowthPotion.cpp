@@ -31,7 +31,7 @@ namespace Gts {
     }
 
 	void GrowthPotion::OnUpdate() {
-		const float BASE_POWER = 0.000095;
+		const float BASE_POWER = 0.000180;
 		auto& runtime = Runtime::GetSingleton();
         
 
@@ -52,9 +52,9 @@ namespace Gts {
 		    PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
 		}
         float HP = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
-		caster->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, ActorValue::kHealth, HP / *g_delta_time);
+		caster->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP / *g_delta_time);
 		
-        float Power = BASE_POWER * AlchemyLevel;
+        float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 
 		Grow(caster, 0.0, Power);
 	}
