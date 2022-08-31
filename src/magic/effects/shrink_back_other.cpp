@@ -4,6 +4,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "util.hpp"
 
 namespace Gts {
 	std::string ShrinkBackOther::GetName() {
@@ -32,13 +33,12 @@ namespace Gts {
 			return;
 		}
 		float Power = 0.0025;
-		float delta_time = *g_delta_time;
 		auto& runtime = Runtime::GetSingleton();
 
 		if (DualCasted())
 		{Power *= 2.0;}
 
-		if (GtsManager::GetSingleton().GetFrameNum() % 120 * delta_time)
+		if (GtsManager::GetSingleton().GetFrameNum() % 120 * TimeScale() == 0)
 		{
 		    auto ShrinkSound = runtime.shrinkSound;
 		    float Volume = clamp(0.25, 2.0, get_visual_scale(target)/2);

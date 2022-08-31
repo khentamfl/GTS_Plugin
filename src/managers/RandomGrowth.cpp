@@ -58,7 +58,7 @@ namespace Gts {
 		}
 
 		if (this->AllowGrowth == false) {
-				if (ShouldGrow() && GtsManager::GetSingleton().GetFrameNum() % 180 == 0) {
+				if (ShouldGrow() && GtsManager::GetSingleton().GetFrameNum() % 180 * TimeScale() == 0) {
 					// Start growing 
 					this->growth_time = 0.0;
 					this->AllowGrowth = true;

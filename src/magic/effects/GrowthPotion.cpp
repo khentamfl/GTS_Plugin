@@ -5,6 +5,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "util.hpp"
 
 namespace Gts {
 	std::string GrowthPotion::GetName() {
@@ -25,7 +26,6 @@ namespace Gts {
 	void GrowthPotion::OnUpdate() {
 		const float BASE_POWER = 0.000040;
 		auto& runtime = Runtime::GetSingleton();
-        float delta_time = *g_delta_time;
         
 
 		auto caster = GetCaster();
@@ -38,7 +38,7 @@ namespace Gts {
             GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.4);
         
         }
-        if (GtsManager::GetSingleton().GetFrameNum() % 120 * delta_time)
+        if (GtsManager::GetSingleton().GetFrameNum() % 120 * TimeScale() == 0)
 		{
 		    auto GrowthSound = runtime.growthSound;
 		    float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/2);
