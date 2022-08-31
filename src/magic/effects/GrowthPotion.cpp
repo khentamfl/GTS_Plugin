@@ -23,15 +23,16 @@ namespace Gts {
     }
 
 	void GrowthPotion::OnUpdate() {
-		const float BASE_POWER = 0.00025;
+		const float BASE_POWER = 0.000040;
 		auto& runtime = Runtime::GetSingleton();
         float delta_time = *g_delta_time;
-        float GrowthTickIs = this->SoundTick;
+        
 
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		}
+        float AlchemyLevel = clamp(1.0, 2.0, caster->GetActorValue(ActorValue::kAlchemy)/100);
 
         if (caster == PlayerCharacter::GetSingleton()) {
             GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.4);
@@ -44,7 +45,7 @@ namespace Gts {
 		    PlaySound(GrowthSound, caster, Volume, 0.0);
 		}
 		
-        float Power = BASE_POWER;
+        float Power = BASE_POWER * AlchemyLevel;
 
 		Grow(caster, 0.0, Power);
 	}

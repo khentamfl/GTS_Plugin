@@ -1,3 +1,4 @@
+#include "managers/GrowthTremorManager.hpp"
 #include "magic/effects/shrink_back_other.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
@@ -31,15 +32,19 @@ namespace Gts {
 			return;
 		}
 		float Power = 0.0025;
+		float delta_time = *g_delta_time;
 		auto& runtime = Runtime::GetSingleton();
 
-		//BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;
-		//audio_manager->BuildSoundDataFromDescriptor(shrink_sound, sound_descriptor);
-		//shrink_sound.Play();
 		if (DualCasted())
 		{Power *= 2.0;}
+
+		if (GtsManager::GetSingleton().GetFrameNum() % 120 * delta_time)
+		{
+		    auto ShrinkSound = runtime.shrinkSound;
+		    float Volume = clamp(0.25, 2.0, get_visual_scale(target)/2);
+		    PlaySound(ShrinkSound, target, Volume, 0.0);
+			GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.30);
+		}
 
 		if (!Revert(target, Power, Power/2.5)) {
 			// Returns false when shrink back is complete
