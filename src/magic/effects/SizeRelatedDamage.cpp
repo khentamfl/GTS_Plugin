@@ -102,7 +102,7 @@ namespace Gts {
 				std::string text_a = Target->GetDisplayFullName();
 				std::string text_b = " is too tough to be crushed";
 				std::string Message = text_a + text_b;
-				DebugNotification(Message, 0, true);
+				DebugNotification(Message.c_str(), 0, true);
 
 				AttributeManager::GetSingleton().OverrideBonus(0.0); // Completely remove bonus speed
 			}
