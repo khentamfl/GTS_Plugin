@@ -271,6 +271,8 @@ namespace Gts {
 			if (on_mainthread()) {
 				NiUpdateData ctx;
 				node->UpdateWorldData(&ctx);
+				NiUpdateData ctx2;
+				node->UpdateRigidDownwardPass(ctx2, 100);
 			} else {
 				node->IncRefCount();
 				auto task = SKSE::GetTaskInterface();
@@ -278,6 +280,8 @@ namespace Gts {
 					if (node) {
 						NiUpdateData ctx;
 						node->UpdateWorldData(&ctx);
+						NiUpdateData ctx2;
+						node->UpdateRigidDownwardPass(ctx2, 100);
 						node->DecRefCount();
 					}
 				});
