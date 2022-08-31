@@ -248,7 +248,7 @@ namespace Gts {
 								if (node) {
 									NiPoint3 world_pos = node->world.translate;
 									hkVector4 new_translation = hkVector4(world_pos);
-									rigidBody->motion.motionState.transform = new_translation;
+									rigidBody->motion.motionState.transform.translation = new_translation;
 								}
 							}
 						}
