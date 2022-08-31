@@ -20,6 +20,7 @@ namespace Gts {
     void GrowthPotion::OnStart() {
         auto caster = GetCaster();
         auto player = PlayerCharacter::GetSingleton();
+        auto& runtime = Runtime::GetSingleton();
 		if (!caster || !player) {
 			return;
 		}
