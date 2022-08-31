@@ -100,7 +100,7 @@ namespace {
 								// if (orig_capsule->pad28 == CAPSULE_MARKER) {
 								// 	log::error("Capsule is a lost one of ours");
 								// }
-								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule);
+								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule, currentnode);
 							}
 						}
 					}
@@ -233,6 +233,32 @@ namespace Gts {
 		// }
 	}
 
+	void ColliderManager::UpdateHavok() {
+		auto actors = find_actors();
+		for (auto actor: actors) {
+			if (actor->Is3DLoaded()) {
+				ColliderActorData* actor_data = GetActorData(actor);
+				if (actor_data) {
+					for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
+						auto& capsule = capsule_data.capsule;
+						auto& rigidBody = capsule_data.rigidBody;
+						auto& node = capsule_data.node;
+						if (capsule) {
+							if (rigidBody) {
+								if (node) {
+									NiPoint3 world_pos = node->world.translate;
+									hkVector4 new_translation = hkVector4(world_pos);
+									rigidBody->motion.motionState.transform = new_translation;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
 	ColliderActorData::ColliderActorData(Actor* actor) {
 		this->Reset();
 		this->form_id = actor->formID;
@@ -262,8 +288,10 @@ namespace Gts {
 		this->Reset();
 	}
 
-	CapsuleData::CapsuleData(const hkpCapsuleShape* orig_capsule) {
+	CapsuleData::CapsuleData(const hkpCapsuleShape* orig_capsule, hkpRigidBody* rigidBody, NiAVObject* node) {
 		this->capsule = MakeCapsule();
+		this->rigidBody = rigidBody;
+		this->node = node;
 		this->capsule->radius = orig_capsule->radius;
 		this->capsule->vertexA = orig_capsule->vertexA;
 		this->capsule->vertexB = orig_capsule->vertexB;
@@ -279,7 +307,7 @@ namespace Gts {
 		this->capsule->RemoveReference();
 	}
 
-	void ColliderActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule) { // NOLINT
+	void ColliderActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule, NiAVObject* node) { // NOLINT
 		std::unique_lock lock(this->_lock);
 		if (!orig_capsule) {
 			return;
@@ -288,7 +316,7 @@ namespace Gts {
 		try {
 			auto& result = this->capsule_data.at(key);
 		} catch (const std::out_of_range& oor) {
-			CapsuleData new_data(orig_capsule);
+			CapsuleData new_data(orig_capsule, rigid_body, node);
 			auto new_capsule = new_data.capsule;
 			key = new_capsule;
 			rigid_body->SetShape(new_capsule);

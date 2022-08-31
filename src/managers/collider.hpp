@@ -10,11 +10,13 @@ using namespace RE;
 namespace Gts {
 	struct CapsuleData {
 		hkpCapsuleShape* capsule;
+		hkpRigidBody* rigidBody;
+		NiAVObject* node;
 		hkVector4 start;
 		hkVector4 end;
 		float radius;
-		CapsuleData(const hkpCapsuleShape* orig_capsule);
-		CapsuleData(CapsuleData&& old) : capsule(std::move(old.capsule)), start(std::move(old.start)), end(std::move(old.end)), radius(std::move(old.radius)) {
+		CapsuleData(const hkpCapsuleShape* orig_capsule, rigidBody* rigidBody, NiAVObject* node);
+		CapsuleData(CapsuleData&& old) : capsule(std::move(old.capsule)), rigidBody(std::move(old.rigidBody)), node(std::move(old.node)), start(std::move(old.start)), end(std::move(old.end)), radius(std::move(old.radius)) {
 		};
 		~CapsuleData();
 	};
@@ -34,7 +36,7 @@ namespace Gts {
 				return result;
 			}
 
-			void ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule);
+			void ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule, NiAVObject* node);
 
 			inline bool HasCapsuleData() {
 				return !this->capsule_data.empty();
@@ -68,6 +70,8 @@ namespace Gts {
 			[[nodiscard]] static ColliderManager& GetSingleton() noexcept;
 
 			void Update();
+			void UpdateHavok();
+
 			inline void FlagReset() {
 				log::info("=========== Capsule reset Triggered ===========");
 				this->last_reset_frame.store(GtsManager::GetSingleton().GetFrameNum());

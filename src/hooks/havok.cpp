@@ -37,6 +37,7 @@ namespace Hooks
 		_ProcessHavokHitJobs(a1);
 
 		ContactManager::GetSingleton().Update();
+		ColliderManager::GetSingleton().UpdateHavok();
 	}
 
 	Hook_Havok::CollisionFilterComparisonResult Hook_Havok::CompareFilterInfo(RE::bhkCollisionFilter* a_collisionFilter, uint32_t a_filterInfoA, uint32_t a_filterInfoB)
