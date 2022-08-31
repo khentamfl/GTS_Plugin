@@ -25,7 +25,7 @@ namespace Gts {
 			return;
 		}
         GrowthTremorManager::GetSingleton().CallRumble(caster, player, 2.0);
-        
+
         auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/4);
 		PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
@@ -52,7 +52,7 @@ namespace Gts {
             GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.4);
         }
         
-        if (GtsManager::GetSingleton().GetFrameNum() % FrameCount == 0)
+        if (GtsManager::GetSingleton().GetFrameNum() % (140 * TimeScale()) == 0)
 		{
 		    auto GrowthSound = runtime.growthSound;
 		    float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/4);
