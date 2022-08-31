@@ -48,6 +48,6 @@ namespace Gts {
 		{this->SoundTick = 0.0;}
         float Power = BASE_POWER;
 
-		Grow(caster, 0.0, power);
+		Grow(caster, 0.0, Power);
 	}
 }
