@@ -14,9 +14,9 @@ namespace Gts {
 	}
 
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
-		const float GROWTH_1_POWER = 0.00120;
-		const float GROWTH_2_POWER = 0.00085;
-		const float GROWTH_3_POWER = 0.00065;
+		const float GROWTH_1_POWER = 0.00085;
+		const float GROWTH_2_POWER = 0.00105;
+		const float GROWTH_3_POWER = 0.00125;
 
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
@@ -44,7 +44,7 @@ namespace Gts {
 			} else {
 				this->grow_limit = 1.66; // NOLINT
 			}
-		} else {
+		} else if (base_spell == runtime.explosiveGrowth3) {
 			this->power = GROWTH_3_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
 				this->grow_limit = 2.66; // NOLINT
@@ -70,8 +70,6 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
 		this->grow_limit *= AdjustLimit; //Affected by storage.
-		
-
 	}
 
 	void ExplosiveGrowth::OnUpdate() {
@@ -80,7 +78,6 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		float delta_time = *g_delta_time;
 
 		auto HealthRegenPerk = runtime.HealthRegenPerk;
 		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00075;
@@ -89,7 +86,7 @@ namespace Gts {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 			
-		if (get_target_scale(caster) >= this->grow_limit || caster->HasMagicEffect(runtime.ShrinkBack)) {
+		if (get_target_scale(caster) >= this->grow_limit) {
 			return;
 		}
 
@@ -100,10 +97,10 @@ namespace Gts {
 		PlaySound(GrowthSound, caster, Volume, 0.0);
 		}
 
-	
+
 		Grow(caster, this->power, 0.0); // Grow
 		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
-
+		log::info("Power {}, Limit {}", this->power, this->grow_limit);
 		if (get_target_scale(caster) > this->grow_limit) {
 			set_target_scale(caster, this->grow_limit);
 			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.

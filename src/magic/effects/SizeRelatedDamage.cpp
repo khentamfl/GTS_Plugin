@@ -49,7 +49,7 @@ namespace Gts {
 		}
 
 		// ^ Crush anyway, no conditions needed since size difference is too massive
-		if (caster->HasPerk(runtime.ExtraGrowth) && (caster->HasMagicEffect(runtime.explosiveGrowth1) || caster->HasMagicEffect(runtime.explosiveGrowth2) || caster->HasMagicEffect(runtime.explosiveGrowth3)))
+		if (caster->HasPerk(runtime.ExtraGrowth) && caster != target && (caster->HasMagicEffect(runtime.explosiveGrowth1) || caster->HasMagicEffect(runtime.explosiveGrowth2) || caster->HasMagicEffect(runtime.explosiveGrowth3)))
 		{
 			ShrinkActor(target, 0.0026 * BonusShrink, 0.0);
 		}
