@@ -46,6 +46,7 @@ namespace Gts {
 
 		if (this->SoundTick >= 160.0)
 		{this->SoundTick = 0.0;}
+        float Power = BASE_POWER;
 
 		Grow(caster, 0.0, power);
 	}
