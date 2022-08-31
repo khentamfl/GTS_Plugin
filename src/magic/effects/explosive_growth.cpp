@@ -90,7 +90,7 @@ namespace Gts {
 			return;
 		}
 
-		if (GtsManager::GetSingleton().GetFrameNum() % 140 * delta_time == 0)
+		if (GtsManager::GetSingleton().GetFrameNum() % 140 == 0)
 		{
 		auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
