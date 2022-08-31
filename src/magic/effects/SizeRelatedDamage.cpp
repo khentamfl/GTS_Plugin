@@ -55,6 +55,10 @@ namespace Gts {
 			if (caster->HasPerk(runtime.SmallMassiveThreatSizeSteal) && caster != target)
 			{
 			float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
+
+			float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.0008;
+			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
+
 			ShrinkActor(target, 0.002 * BonusShrink, 0.0);
 			Grow(caster, 0.001 * target_scale * BonusShrink, 0.0);
 			}
@@ -85,8 +89,18 @@ namespace Gts {
 			float Multiplier = (caster_scale/target_scale);
 			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
 			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
-			if (CasterHp >= (TargetHp / (1.35 * Multiplier))) {
+			if (CasterHp >= (TargetHp / Multiplier)) {
 			Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster); // Crush someone
+				shake_camera(Caster, 0.25 * caster_scale, 0.25);
+
+				NiPointer<TESObjectREFR> instance_ptr = target->PlaceObjectAtMe(runtime->footstepExplosion, false);
+
+				if (!instance_ptr) return;
+				TESObjectREFR* instance = instance_ptr.get();
+				if (!instance) return;
+				Explosion* explosion = instance->AsExplosion();
+				explosion->radius *= caster_scale * 3;
+				explosion->imodRadius *= caster_scale * 3;
 
 				if (!Caster->HasPerk(runtime.NoSpeedLoss)) {
 				AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce speed after crush

@@ -207,11 +207,11 @@ namespace Gts {
 		auto AugmentationPerk = runtime.NoSpeedLoss;
 		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat))
 		{
-			this->MovementSpeedBonus += 0.000025;
+			this->MovementSpeedBonus += 0.0000480;
 		}
 		else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat))
 		{
-			this->MovementSpeedBonus += 0.0000175;
+			this->MovementSpeedBonus += 0.0000320;
 		}
 		else
 		{
@@ -227,7 +227,7 @@ namespace Gts {
 		if (MSBonus >= 1.0 && !this->BlockMessage)
 		{
 			this->BlockMessage = true; // Avoid spamming it
-			DebugNotification("Your speed is enough to crush someone", 0, true);
+			DebugNotification("You're fast enough to crush someone", 0, true);
 		}
 		return MSBonus;
 	}
