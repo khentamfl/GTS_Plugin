@@ -30,7 +30,8 @@ namespace Gts {
 
 	void ShrinkBackOther::OnUpdate() {
 		auto target = GetTarget();
-		if (!target) {
+		auto caster = GetCaster();
+		if (!target || !caster) {
 			return;
 		}
 		float Power = 0.0025;
