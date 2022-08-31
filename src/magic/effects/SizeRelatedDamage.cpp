@@ -49,11 +49,15 @@ namespace Gts {
 
 		// ^ Crush anyway, no conditions needed since size difference is too massive
 
-		if (caster->HasMagicEffect(runtime.SmallMassiveThreat) && caster->HasPerk(runtime.SmallMassiveThreatSizeSteal))
+		if (caster->HasMagicEffect(runtime.SmallMassiveThreat))
 		{
+			size_difference += 3.2;
+			if (caster->HasPerk(runtime.SmallMassiveThreatSizeSteal) && caster != target)
+			{
 			float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
 			ShrinkActor(target, 0.002 * BonusShrink, 0.0);
 			Grow(caster, 0.001 * target_scale * BonusShrink, 0.0);
+			}
 		}
 
 		

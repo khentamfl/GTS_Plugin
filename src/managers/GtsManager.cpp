@@ -114,12 +114,12 @@ namespace {
 		if (GtsManager::GetSingleton().GetFrameNum() % 30 == 0 && actor->formID == 0x14)
 		{
 		if (actor->IsWalking() == true) {
-			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/2.5 + 1.0)) * 0.44 / MS_mult);
+			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 0.44 / MS_mult);
 		} else if (actor->IsSprinting() == true) {
-			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/2.5 + 1.0)) * 1.25 / MS_mult);
+			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 1.25 / MS_mult);
 		}
 		else {
-			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult + (Bonus/2.5 + 1.0))/ MS_mult);
+			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult + (Bonus/3 + 1.0))/ MS_mult);
 		}}
 	
 
