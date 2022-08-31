@@ -93,7 +93,7 @@ namespace Gts {
 			Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster); // Crush someone
 				shake_camera(Caster, 0.25 * caster_scale, 0.25);
 
-				NiPointer<TESObjectREFR> instance_ptr = Target->PlaceObjectAtMe(runtime->footstepExplosion, false);
+				NiPointer<TESObjectREFR> instance_ptr = Target->PlaceObjectAtMe(runtime.footstepExplosion, false);
 
 				if (!instance_ptr) return;
 				TESObjectREFR* instance = instance_ptr.get();
