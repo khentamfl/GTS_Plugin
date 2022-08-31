@@ -1,6 +1,7 @@
+#include "managers/GrowthTremorManager.hpp"
+#include "managers/GtsManager.hpp"
 #include "magic/effects/GrowthPotion.hpp"
 #include "magic/effects/common.hpp"
-#include "managers/GrowthTremorManager.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
@@ -36,19 +37,13 @@ namespace Gts {
             GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.4);
         
         }
-        if (GrowthTickIs <= 0.0)
+        if (GtsManager::GetSingleton().GetFrameNum() % 120 * delta_time)
 		{
 		    auto GrowthSound = runtime.growthSound;
 		    float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/2);
 		    PlaySound(GrowthSound, caster, Volume, 0.0);
 		}
 		
-
-		if (GrowthTickIs >= 160.0)
-		{this->SoundTick <= 0.0;}
-
-        this->SoundTick +=delta_time;
-
         float Power = BASE_POWER;
 
 		Grow(caster, 0.0, Power);
