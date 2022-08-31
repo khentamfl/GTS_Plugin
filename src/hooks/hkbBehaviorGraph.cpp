@@ -6,6 +6,24 @@ using namespace RE;
 using namespace SKSE;
 using namespace Gts;
 
+namespace {
+	Actor* GetActorForGraph(hkbBehaviorGraph* this_graph) {
+		for (auto actor: find_actors()) {
+			BSAnimationGraphManagerPtr animGraphManager;
+			if (actor->GetAnimationGraphManager(animGraphManager)) {
+				for (auto& graph : animGraphManager->graphs) {
+					if (graph) {
+						if (this_graph == graph->behaviorGraph) {
+							return actor;
+						}
+					}
+				}
+			}
+		}
+		return nullptr;
+	}
+}
+
 namespace Hooks
 {
 	void Hook_hkbBehaviorGraph::Hook() {
@@ -17,20 +35,12 @@ namespace Hooks
 
 	void Hook_hkbBehaviorGraph::Update(hkbBehaviorGraph* a_this, const hkbContext& a_context, float a_timestep) {
 		float anim_speed = 1.0;
-		for (auto actor: find_actors()) {
-			BSAnimationGraphManagerPtr animGraphManager;
-			if (actor->GetAnimationGraphManager(animGraphManager)) {
-				for (auto& graph : animGraphManager->graphs) {
-					if (graph) {
-						if (a_this == graph->behaviorGraph) {
-							auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
-							if (saved_data) {
-								if (saved_data->anim_speed > 0.0) {
-									anim_speed = saved_data->anim_speed;
-								}
-							}
-						}
-					}
+		Actor* actor = GetActorForGraph(a_this);
+		if (actor) {
+			auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
+			if (saved_data) {
+				if (saved_data->anim_speed > 0.0) {
+					anim_speed = saved_data->anim_speed;
 				}
 			}
 		}

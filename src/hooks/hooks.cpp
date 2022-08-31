@@ -4,6 +4,7 @@
 #include "hooks/vm.hpp"
 #include "hooks/havok.hpp"
 #include "hooks/hkbBehaviorGraph.hpp"
+#include "hooks/BShkbAnimationGraph.hpp"
 
 using namespace RE;
 
@@ -21,6 +22,7 @@ namespace Hooks
 		Hook_VM::Hook();
 		Hook_Havok::Hook(trampoline);
 		Hook_hkbBehaviorGraph::Hook();
+		Hook_BShkbAnimationGraph::Hook();
 
 		logger::info("Gts finished applying hooks...");
 	}
