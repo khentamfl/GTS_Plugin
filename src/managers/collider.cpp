@@ -247,7 +247,7 @@ namespace Gts {
 							if (rigidBody) {
 								if (node) {
 									NiPoint3 world_pos = node->world.translate;
-									hkVector4 new_translation = hkVector4(world_pos);
+									hkVector4 new_translation = hkVector4(world_pos * g_worldScale);
 									rigidBody->motion.motionState.transform.translation = new_translation;
 								}
 							}
