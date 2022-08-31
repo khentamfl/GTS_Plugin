@@ -169,7 +169,7 @@ namespace Gts {
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
 			AdjustSizeLimit(0.0117);
-			ConsoleLog::GetSingleton()->Print("{} Was absorbed by {}", target->GetDisplayFullName(), target->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s Was absorbed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			//target->SetDelete(true);
 			return true; 
 		}
@@ -186,7 +186,7 @@ namespace Gts {
 		}
 		target->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, caster, 1.00f, false, 0.0f, target);
 		AdjustSizeLimit(0.0417 * target_scale);
-		ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), target->GetDisplayFullName());
+		ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 	}
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
