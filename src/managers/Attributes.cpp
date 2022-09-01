@@ -7,6 +7,7 @@
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "magic/effects/common.hpp"
+#include "timer.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -73,10 +74,11 @@ namespace {
 		float SMTBonus = AttributeManager::GetSingleton().Augmentation()/3.0;
 		if (actor != PlayerCharacter::GetSingleton()) {
 			base_speed = actor_data->base_walkspeedmult;
+		} else {
+			base_speed = 100.00;
 		}
-		else
-		{base_speed = 100.00;}
-		if (GtsManager::GetSingleton().GetFrameNum() % 30) {
+		static timer = Timer(0.5); // Run every 0.5s or as soon as we can
+		if (timer.ShouldRun()) {
 			if (scale > 1) {
 				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)) * (SMTBonus + 1.0));
 			} else if (scale < 1) {
@@ -190,7 +192,7 @@ namespace Gts {
 		}
 
 		BoostAttackDmg(Npc, 1.0);
-		
+
 		//BoostSpeedMulti(Npc, 1.0);
 	}
 
@@ -198,27 +200,20 @@ namespace Gts {
 		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 		auto AugmentationPerk = runtime.NoSpeedLoss;
-		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat))
-		{
+		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
 			this->MovementSpeedBonus += 0.0000480;
-		}
-		else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat))
-		{
+		} else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
 			this->MovementSpeedBonus += 0.0000320;
-		}
-		else
-		{
-			if (this->MovementSpeedBonus > 0.0)	{
+		} else {
+			if (this->MovementSpeedBonus > 0.0) {
 				this->MovementSpeedBonus -= 0.0004175;
-			}
-			else	{
+			} else {
 				this->MovementSpeedBonus = 0.0;
 				this->BlockMessage = false;
 			}
 		}
-		float MSBonus = clamp(0.0, 1.0, this->MovementSpeedBonus); 
-		if (MSBonus >= 1.0 && !this->BlockMessage)
-		{
+		float MSBonus = clamp(0.0, 1.0, this->MovementSpeedBonus);
+		if (MSBonus >= 1.0 && !this->BlockMessage) {
 			this->BlockMessage = true; // Avoid spamming it
 			DebugNotification("You're fast enough to crush someone", 0, true);
 		}

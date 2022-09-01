@@ -37,14 +37,15 @@ namespace Gts {
 		float Power = 0.00065;
 		auto& runtime = Runtime::GetSingleton();
 
-		if (DualCasted())
-		{Power *= 2.0;}
+		if (DualCasted()) {
+			Power *= 2.0;
+		}
 
-		if (GtsManager::GetSingleton().GetFrameNum() % 120 * TimeScale() == 0)
-		{
-		    auto ShrinkSound = runtime.shrinkSound;
-		    float Volume = clamp(0.25, 2.0, get_visual_scale(target)/2);
-		    PlaySound(ShrinkSound, target, Volume, 0.0);
+		static timer = Timer(2.33); // Run every 2.33s or as soon as we can
+		if (timer.ShouldRun()) {
+			auto ShrinkSound = runtime.shrinkSound;
+			float Volume = clamp(0.25, 2.0, get_visual_scale(target)/2);
+			PlaySound(ShrinkSound, target, Volume, 0.0);
 			GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.30);
 		}
 

@@ -6,6 +6,7 @@
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "util.hpp"
+#include "timer.hpp"
 
 
 namespace Gts {
@@ -86,16 +87,16 @@ namespace Gts {
 		if (caster->HasPerk(HealthRegenPerk)) {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
-			
+
 		if (get_target_scale(caster) >= this->grow_limit-0.1) {
 			return;
 		}
 
-		if (GtsManager::GetSingleton().GetFrameNum() % 140 == 0)
-		{
-		auto GrowthSound = runtime.growthSound;
-		float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
-		PlaySound(GrowthSound, caster, Volume, 0.0);
+		static timer = Timer(2.33); // Run every 2.33s or as soon as we can
+		if (timer.ShouldRun()) {
+			auto GrowthSound = runtime.growthSound;
+			float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
+			PlaySound(GrowthSound, caster, Volume, 0.0);
 		}
 
 
