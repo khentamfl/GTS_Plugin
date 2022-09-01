@@ -123,7 +123,7 @@ namespace {
 			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult + (Bonus/3 + 1.0))/ MS_mult);
 		}}
 
-		if (!actor->formID == 0x14)
+		if (!actor->formID != 0x14)
 		{
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.60 / MS_mult);
