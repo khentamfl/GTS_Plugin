@@ -13,7 +13,7 @@ namespace Gts {
 	}
 	bool Timer::ShouldRun() {
 		float currentTime = GetCurrentTime();
-		if (this->last_time + this_delta <= currentTime) {
+		if (this->last_time + this->delta <= currentTime) {
 			this->elaped_time = currentTime - this->last_time;
 			this->last_time = currentTime;
 			return true;
