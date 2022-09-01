@@ -56,7 +56,7 @@ namespace Gts {
 		}
 
 		if (this->AllowGrowth == false) {
-			static timer = Timer(3.0); // Run every 3.0s or as soon as we can
+			static Timer timer = Timer(3.0); // Run every 3.0s or as soon as we can
 			if (ShouldGrow() && timer.ShouldRun()) {
 				// Start growing
 				this->growth_time = 0.0;

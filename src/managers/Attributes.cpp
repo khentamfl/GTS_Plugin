@@ -77,7 +77,7 @@ namespace {
 		} else {
 			base_speed = 100.00;
 		}
-		static timer = Timer(0.5); // Run every 0.5s or as soon as we can
+		static Timer timer = Timer(0.5); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRun()) {
 			if (scale > 1) {
 				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)) * (SMTBonus + 1.0));

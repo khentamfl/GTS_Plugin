@@ -108,7 +108,7 @@ namespace {
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
-		static timer = Timer(0.5); // Run every 0.5s or as soon as we can
+		static Timer timer = Timer(0.5); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRun()) {
 			persi_actor_data->anim_speed = speed_mult;
 
