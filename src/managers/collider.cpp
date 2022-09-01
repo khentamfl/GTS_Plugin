@@ -243,7 +243,6 @@ namespace Gts {
 
 	void ColliderManager::UpdateHavok() {
 		auto actors = find_actors();
-		log::info("====Update HAVOK====");
 		auto& manager = GtsManager::GetSingleton();
 		for (auto actor: actors) {
 			if (!actor) {
@@ -252,69 +251,29 @@ namespace Gts {
 			if (!actor->Is3DLoaded()) {
 				continue;
 			}
-			if (actor->formID != 0x14) {
-				continue;
-			}
-			log::info("  - Actor: {}:{:X}", actor->GetDisplayFullName(), actor->formID);
 			ColliderActorData* actor_data = GetActorData(actor);
 			if (actor_data) {
 				float scale = get_visual_scale(actor)/get_natural_scale(actor);
+				if (fabs(scale - 1.0) <= 1e-4) {
+					continue;
+				}
 				auto model = actor->GetCurrent3D();
 				if (model) {
 					hkVector4 player_origin = hkVector4(model->world.translate * (*g_worldScale));
-					NiAVObject* spine_node = find_node(actor, "NPC Spine [Spn0]", Person::Current);
-					log::info("Spine is {}", reinterpret_cast<std::uintptr_t>(spine_node));
 					for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
 						float scale = get_visual_scale(actor)/get_natural_scale(actor);
 						auto& capsule = capsule_data.capsule;
 						auto& rigidBody = capsule_data.rigidBody;
-						auto& node = capsule_data.node;
-						bool print_it = (node == spine_node);
 						if (capsule) {
 							if (rigidBody) {
-								if (node) {
-									// Translation
-									if (print_it) {
-										hkVector4 position = rigidBody->motion.motionState.transform.translation;
-										log::info("    + translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-									}
-									scale_relative_byref(rigidBody->motion.motionState.transform.translation, player_origin, scale);
-									if (print_it) {
-										hkVector4 position = rigidBody->motion.motionState.transform.translation;
-										log::info("    - translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-									}
+								// Translation
+								scale_relative_byref(rigidBody->motion.motionState.transform.translation, player_origin, scale);
 
-									// COM 0
-									if (print_it) {
-										hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMass0;
-										log::info("    + centerOfMass0: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-									}
-									scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass0, player_origin, scale);
-									if (print_it) {
-										hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMass0;
-										log::info("    - centerOfMass0: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-									}
+								// COM 0
+								scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass0, player_origin, scale);
 
-									// COM 1
-									if (print_it) {
-										hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMass1;
-										log::info("    + centerOfMass1: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-
-									}
-									scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass1, player_origin, scale);
-									if (print_it) {
-										hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMassLocal;
-										log::info("    - centerOfMassLocal: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-									}
-
-									// Maved Translation
-									if (print_it) {
-										if (rigidBody->motion.mavedMotion) {
-											hkVector4 position = rigidBody->motion.mavedMotion->motionState.transform.translation;
-											log::info("    - mavedMotion.translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-										}
-									}
-								}
+								// COM 1
+								scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass1, player_origin, scale);
 							}
 						}
 					}
