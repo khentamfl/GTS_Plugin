@@ -123,19 +123,35 @@ namespace {
 			return;
 		}
 
+		log::info("Drawing char controller");
 		hkpRigidBody* supportBody = charController->supportBody.get();
 		if (supportBody) {
+			log::info("  - Support Body");
 			DrawRigidBody(supportBody);
 		}
 
 		hkpRigidBody* bumpedBody = charController->bumpedBody.get();
 		if (bumpedBody) {
+			log::info("  - Bumped Body");
 			DrawRigidBody(bumpedBody);
 		}
 
 		hkpRigidBody* bumpedCharCollisionObject = charController->bumpedCharCollisionObject.get();
 		if (bumpedCharCollisionObject) {
+			log::info("  - Bumped Char Collision Object");
 			DrawRigidBody(bumpedCharCollisionObject);
+		}
+
+		auto model = actor->GetCurrent3D();
+		if (model) {
+			glm::mat4 transform = Ni2Glm(model->world);
+			for (auto bhkShape: charController->shapes) {
+				hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
+				if (shape) {
+					log::info("  - Shape of CharController");
+					DrawShape(shape, transform);
+				}
+			}
 		}
 	}
 

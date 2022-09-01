@@ -130,6 +130,15 @@ namespace Gts {
 	inline glm::vec3 Ni2Glm(const RE::NiPoint3 &position) {
 		return glm::vec3{position.x, position.y, position.z};
 	}
+
+	inline glm::mat4 Ni2Glm(const RE::NiTransform &transform) {
+		return glm::mat4(
+			glm::vec4(transform.rotate.entry[0][0], transform.rotate.entry[0][1], transform.rotate.entry[0][2], 0.0),
+			glm::vec4(transform.rotate.entry[1][0], transform.rotate.entry[1][1], transform.rotate.entry[1][2], 0.0),
+			glm::vec4(transform.rotate.entry[2][0], transform.rotate.entry[2][1], transform.rotate.entry[2][2], 0.0),
+			glm::vec4(transform.translate[0], transform.translate[1], transform.translate[2], 1.0)
+			);
+	}
 }
 
 struct ObjectBound
