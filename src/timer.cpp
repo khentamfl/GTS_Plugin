@@ -1,4 +1,5 @@
 #include "timer.hpp"
+#include "util.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -13,7 +14,7 @@ namespace Gts {
 	Timer::Timer(float delta) : delta(delta) {
 	}
 	bool Timer::ShouldRun() {
-		float currentTime = GetGameTime();
+		float currentTime = Calendar::GetSingleton()-> GetCurrentGameTime();
 		log::info("last_time: {}, elapsed_time: {}, currentTime: {}", this->last_time, this->elaped_time, currentTime);
 		if (this->last_time + this->delta <= currentTime) {
 			this->elaped_time = currentTime - this->last_time;
