@@ -106,22 +106,13 @@ namespace Gts {
 		if (!this->enabled.load()) {
 			return;
 		}
-		auto player = PlayerCharacter::GetSingleton();
-		if (!player) {
-			return;
-		}
-		if (!player->Is3DLoaded()) {
-			return;
-		}
 
-		auto model = player->GetCurrent3D();
-		if (model) {
-			auto spineNode = find_node(player, "NPC Spine [Spn0]", Person::Current);
-			if (spineNode) {
-				DebugAPI::DrawSphere(Ni2Glm(spineNode->world.translate), meter_to_unit(2.0));
+		for (auto actor: find_team_player()) {
+			if (!actor->Is3DLoaded()) {
+				continue;
 			}
-		}
 
-		DrawActor(player);
+			DrawActor(actor);
+		}
 	}
 }

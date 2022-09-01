@@ -188,6 +188,7 @@ namespace Gts {
 			}
 			auto node_name_a = node_a->name;
 			auto node_name_b = node_b->name;
+			log::info("Contact: Actor {}-{}, Node: {}-{}", name_a, name_b, node_name_a, node_name_b);
 		}
 	}
 
