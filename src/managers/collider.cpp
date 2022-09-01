@@ -28,6 +28,14 @@ namespace {
 		return x;
 	}
 
+	hkVector4 scale_relative(const hkVector4& input, const hkVector4& origin, const float& scale) {
+		return (input - origin)*scale + origin;
+	}
+
+	void scale_relative_byref(hkVector4& input, const hkVector4& origin, const float& scale) {
+		input = (input - origin)*scale + origin;
+	}
+
 
 	void scale_recursive(std::string_view prefix, hkpShape* shape, float scale) {
 		if (!shape) {
@@ -240,44 +248,50 @@ namespace Gts {
 			if (actor->Is3DLoaded()) {
 				ColliderActorData* actor_data = GetActorData(actor);
 				if (actor_data) {
-					for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
-						float scale = get_visual_scale(actor)/get_natural_scale(actor);
-						auto& capsule = capsule_data.capsule;
-						auto& rigidBody = capsule_data.rigidBody;
-						auto& node = capsule_data.node;
-						if (capsule) {
-							if (rigidBody) {
-								if (node) {
-									{
-										hkVector4 position = rigidBody->motion.motionState.transform.translation;
-										log::info("Pre translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-									}
+					float scale = get_visual_scale(actor)/get_natural_scale(actor);
+					auto model = actor->GetCurrent3D();
+					if (model) {
+						hkVector4 player_origin = hkVector4(model->world.translate * (*g_worldScale));
 
-									NiPoint3 world_pos = node->world.translate;
-									hkVector4 new_translation = hkVector4(world_pos * (*g_worldScale));
-									rigidBody->motion.motionState.transform.translation = new_translation;
+						for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
+							float scale = get_visual_scale(actor)/get_natural_scale(actor);
+							auto& capsule = capsule_data.capsule;
+							auto& rigidBody = capsule_data.rigidBody;
+							auto& node = capsule_data.node;
+							if (capsule) {
+								if (rigidBody) {
+									if (node) {
+										hkVector4 world_position = rigidBody->motion.motionState.transform.translation;
+										log::info("Pre translation: {},{},{}",world_position.quad.m128_f32[0], world_position.quad.m128_f32[1], world_position.quad.m128_f32[2]);
+										hkVector4 world_scaled_position = scale_relative(world_position, player_origin, scale);
+										log::info("Post translation: {},{},{}",world_scaled_position.quad.m128_f32[0], world_scaled_position.quad.m128_f32[1], world_scaled_position.quad.m128_f32[2]);
 
-									{
-										hkVector4 position = rigidBody->motion.motionState.transform.translation;
-										log::info("Post translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-									}
-									{
-										hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMass0;
-										log::info("centerOfMass0: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-									}
-									{
-										hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMass1;
-										log::info("centerOfMass1: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-									}
-									{
-										hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMassLocal;
-										log::info("centerOfMassLocal: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
-									}
+										rigidBody->motion.motionState.transform.translation = world_scaled_position;
 
-									{
-										if (rigidBody->motion.mavedMotion) {
-											hkVector4 position = rigidBody->motion.mavedMotion->motionState.transform.translation;
-											log::info("mavedMotion.translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+										{
+											hkVector4 position = rigidBody->motion.motionState.transform.translation;
+											log::info("Post translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+										}
+										{
+											hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMass0;
+											log::info("centerOfMass0: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+											scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass0, player_origin, scale);
+										}
+										{
+											hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMass1;
+											log::info("centerOfMass1: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+											scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass1, player_origin, scale);
+										}
+										{
+											hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMassLocal;
+											log::info("centerOfMassLocal: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+										}
+
+										{
+											if (rigidBody->motion.mavedMotion) {
+												hkVector4 position = rigidBody->motion.mavedMotion->motionState.transform.translation;
+												log::info("mavedMotion.translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+											}
 										}
 									}
 								}
