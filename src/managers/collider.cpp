@@ -252,10 +252,10 @@ namespace Gts {
 			if (actor->Is3DLoaded()) {
 				continue;
 			}
+			log::info("  - Actor: {}:{:X}", actor->GetDisplayFullName(), actor->formID);
 			if (actor->formID != 0x14) {
 				continue;
 			}
-			log::info("  - Actor: {}", actor->GetDisplayFullName());
 			ColliderActorData* actor_data = GetActorData(actor);
 			if (actor_data) {
 				float scale = get_visual_scale(actor)/get_natural_scale(actor);
