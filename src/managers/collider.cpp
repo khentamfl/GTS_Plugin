@@ -252,10 +252,10 @@ namespace Gts {
 			if (!actor->Is3DLoaded()) {
 				continue;
 			}
-			log::info("  - Actor: {}:{:X}", actor->GetDisplayFullName(), actor->formID);
 			if (actor->formID != 0x14) {
 				continue;
 			}
+			log::info("  - Actor: {}:{:X}", actor->GetDisplayFullName(), actor->formID);
 			ColliderActorData* actor_data = GetActorData(actor);
 			if (actor_data) {
 				float scale = get_visual_scale(actor)/get_natural_scale(actor);
@@ -263,6 +263,7 @@ namespace Gts {
 				if (model) {
 					hkVector4 player_origin = hkVector4(model->world.translate * (*g_worldScale));
 					NiAVObject* spine_node = find_node(actor, "NPC Spine [Spn0]", Person::Current);
+					log::info("Spine is {}", reinterpret_cast<std::uintptr_t>(spine_node));
 					for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
 						float scale = get_visual_scale(actor)/get_natural_scale(actor);
 						auto& capsule = capsule_data.capsule;
