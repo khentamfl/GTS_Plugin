@@ -127,11 +127,14 @@ namespace {
 		{
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.60 / MS_mult);
+			log::info("Adjusting MS of {}, {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult)
 		} else if (actor->IsSprinting() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 1.15 / MS_mult);
+			log::info("Adjusting MS of {}, {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult)
 		}
 		else {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / MS_mult);
+			log::info("Adjusting MS of {}, {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult)
 			}	
 		}
 	

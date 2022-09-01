@@ -179,6 +179,8 @@ namespace Gts {
 	inline void CrushToNothing(Actor* caster, Actor* target) {
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
+		if (!caster->HasPerk(runtime.GrowthPerk)) // Requires Growth Perk in order to grow
+		{return;}
 		int Random = rand() % 8;
 		if (Random >= 8)
 		{

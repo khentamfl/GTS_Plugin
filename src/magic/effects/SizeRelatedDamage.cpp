@@ -46,6 +46,7 @@ namespace Gts {
 
 		if (size_difference >= 24.0 && !target->IsPlayerTeammate()) { // NOLINT
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
+			CrushToNothing(caster, target);
 		}
 
 		// ^ Crush anyway, no conditions needed since size difference is too massive
@@ -95,15 +96,6 @@ namespace Gts {
 			if (CasterHp >= (TargetHp / Multiplier)) {
 			Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster); // Crush someone
 				shake_camera(Caster, 0.25 * caster_scale, 0.25);
-
-				NiPointer<TESObjectREFR> instance_ptr = Target->PlaceObjectAtMe(runtime.footstepExplosion, false);
-
-				if (!instance_ptr) return;
-				TESObjectREFR* instance = instance_ptr.get();
-				if (!instance) return;
-				Explosion* explosion = instance->AsExplosion();
-				explosion->radius *= caster_scale * 3;
-				explosion->imodRadius *= caster_scale * 3;
 
 				if (!Caster->HasPerk(runtime.NoSpeedLoss)) {
 				AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce speed after crush
