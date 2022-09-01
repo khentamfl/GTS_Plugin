@@ -108,22 +108,22 @@ namespace {
 		float speed_mult = soft_core(scale, speed_adjustment);
 		if (GtsManager::GetSingleton().GetFrameNum() % 30 == 0) {
 		persi_actor_data->anim_speed = speed_mult;
-
 		float MS_mult = soft_core(scale, MS_adjustment);
 		float Bonus = AttributeManager::GetSingleton().Augmentation();
+		float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 
 		if (actor->formID == 0x14)
 		{
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 0.44 / MS_mult);
-			log::info("Adjusting PC MS of {}, {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult);
+			log::info("Adjusting PC MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 		} else if (actor->IsSprinting() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 1.25 / MS_mult);
-			log::info("Adjusting PC MS of {}, {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult);
+			log::info("Adjusting PC MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 		}
 		else {
 			actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult + (Bonus/3 + 1.0))/ MS_mult);
-			log::info("Adjusting PC MS of {}, {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult);
+			log::info("Adjusting PC MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			}
 		}
 
@@ -131,14 +131,14 @@ namespace {
 		{
 		if (actor->IsWalking() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.60 / MS_mult);
-			log::info("Adjusting MS of {}, {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult);
+			log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 		} else if (actor->IsSprinting() == true) {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 1.15 / MS_mult);
-			log::info("Adjusting MS of {}, {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult);
+			log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 		}
 		else {
 			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / MS_mult);
-			log::info("Adjusting MS of {}, {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult);
+			log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 				}	
 			}
 		}
