@@ -13,20 +13,48 @@ namespace {
 	const glm::vec4 CAPSULE_COLOR = { 0.0f, 0.0f, 1.0f, 1.0f };
 	const float CAPSULE_LINETHICKNESS = 0.1;
 
+	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
+		if (shape->type == hkpShapeType::kCapsule) {
+			const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
+			if (capsule) {
+				glm::vec3 start = HkToGlm(capsule->vertexA);
+				glm::vec3 end = HkToGlm(capsule->vertexB);
+				float radius = capsule->radius * *g_worldScaleInverse;
+
+				DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
+			}
+		} else if (shape->type == hkpShapeType::kList) {
+			auto container = static_cast<const hkpListShape*>(shape);
+			auto key = container->GetFirstKey();
+			while (key != HK_INVALID_SHAPE_KEY) {
+				auto buffer = hkpShapeBuffer();
+				auto child_shape = container->GetChildShape(key, buffer);
+				if (child_shape) {
+					DrawShape(child_shape, transform);
+				}
+				key = container->GetNextKey(key);
+			}
+		} else if (shape->type == hkpShapeType::kBVTree) {
+			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
+			const hkpShapeContainer* container = actual_shape->GetContainer();
+			auto key = container->GetFirstKey();
+			while (key != HK_INVALID_SHAPE_KEY) {
+				auto buffer = hkpShapeBuffer();
+				auto child_shape = container->GetChildShape(key, buffer);
+				if (child_shape) {
+					DrawShape(child_shape, transform);
+				}
+				key = container->GetNextKey(key);
+			}
+		} else {
+			log::debug("- Shape (of type {}) is not handlled", static_cast<int>(shape->type));
+		}
+	}
 	void DrawRigidBody(hkpRigidBody* rigidBody) {
 		auto shape = rigidBody->GetShape();
+		glm::mat4 transform = HkToGlm(rigidBody->motion.motionState.transform);
 		if (shape) {
-			if (shape->type == hkpShapeType::kCapsule) {
-				const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
-				if (capsule) {
-					glm::vec3 start = HkToGlm(capsule->vertexA);
-					glm::vec3 end = HkToGlm(capsule->vertexB);
-					float radius = capsule->radius * *g_worldScaleInverse;
-
-					glm::mat4 transform = HkToGlm(rigidBody->motion.motionState.transform);
-					DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
-				}
-			}
+			DrawShape(shape, transform);
 		}
 	}
 
@@ -83,6 +111,34 @@ namespace {
 		}
 	}
 
+	void DrawCharController(Actor* actor) {
+		if (!actor) {
+			return;
+		}
+		if (!actor->Is3DLoaded()) {
+			return;
+		}
+		auto charController = actor->GetCharController();
+		if (!charController) {
+			return;
+		}
+
+		hkpRigidBody* supportBody = charController->supportBody.get();
+		if (supportBody) {
+			DrawRigidBody(supportBody);
+		}
+
+		hkpRigidBody* bumpedBody = charController->bumpedBody.get();
+		if (bumpedBody) {
+			DrawRigidBody(bumpedBody);
+		}
+
+		hkpRigidBody* bumpedCharCollisionObject = charController->bumpedCharCollisionObject.get();
+		if (bumpedCharCollisionObject) {
+			DrawRigidBody(bumpedCharCollisionObject);
+		}
+	}
+
 	void DrawActor(Actor* actor) {
 		if (!actor) {
 			return;
@@ -93,7 +149,11 @@ namespace {
 
 		auto root = actor->GetCurrent3D();
 		DrawNiNodes(root);
+
+		DrawCharController(actor);
 	}
+
+
 }
 
 namespace Gts {
