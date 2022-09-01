@@ -131,15 +131,15 @@ namespace {
 		if (actor->formID != 0x14)
 		{
 		if (actor->IsWalking() == true) {
-			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.60 / MS_mult);
-			log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
+			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.60 / speed_adjustment);
+			log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, speed_adjustment, MovementSpeed);
 		} else if (actor->IsSprinting() == true) {
-			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 1.15 / MS_mult);
-			log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
+			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 1.15 / speed_adjustment);
+			log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, speed_adjustment, MovementSpeed);
 		}
 		else {
-			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / MS_mult);
-			log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
+			actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult / speed_adjustment);
+			log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, speed_adjustment, MovementSpeed);
 				}	
 			}
 		}
