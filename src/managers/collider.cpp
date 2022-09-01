@@ -236,22 +236,49 @@ namespace Gts {
 	void ColliderManager::UpdateHavok() {
 		auto actors = find_actors();
 		auto& manager = GtsManager::GetSingleton();
-		if (manager.GetFrameNum() % 400 == 0) {
-			log::info("Syncing");
-			for (auto actor: actors) {
-				if (actor->Is3DLoaded()) {
-					ColliderActorData* actor_data = GetActorData(actor);
-					if (actor_data) {
-						for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
-							auto& capsule = capsule_data.capsule;
-							auto& rigidBody = capsule_data.rigidBody;
-							auto& node = capsule_data.node;
-							if (capsule) {
-								if (rigidBody) {
-									if (node) {
-										NiPoint3 world_pos = node->world.translate;
-										hkVector4 new_translation = hkVector4(world_pos * (*g_worldScale));
-										rigidBody->motion.motionState.transform.translation = new_translation;
+		for (auto actor: actors) {
+			if (actor->Is3DLoaded()) {
+				ColliderActorData* actor_data = GetActorData(actor);
+				if (actor_data) {
+					for (auto &[key, capsule_data]: actor_data->GetCapsulesData()) {
+						float scale = get_visual_scale(actor)/get_natural_scale(actor);
+						auto& capsule = capsule_data.capsule;
+						auto& rigidBody = capsule_data.rigidBody;
+						auto& node = capsule_data.node;
+						if (capsule) {
+							if (rigidBody) {
+								if (node) {
+									{
+										hkVector4 position = rigidBody->motion.motionState.transform.translation;
+										log::info("Pre translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+									}
+
+									NiPoint3 world_pos = node->world.translate;
+									hkVector4 new_translation = hkVector4(world_pos * (*g_worldScale));
+									rigidBody->motion.motionState.transform.translation = new_translation;
+
+									{
+										hkVector4 position = rigidBody->motion.motionState.transform.translation;
+										log::info("Post translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+									}
+									{
+										hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMass0;
+										log::info("centerOfMass0: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+									}
+									{
+										hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMass1;
+										log::info("centerOfMass1: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+									}
+									{
+										hkVector4 position = rigidBody->motion.motionState.sweptTransform.centerOfMassLocal;
+										log::info("centerOfMassLocal: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+									}
+
+									{
+										if (rigidBody->motion.mavedMotion) {
+											hkVector4 position = rigidBody->motion.mavedMotion->motionState.transform.translation;
+											log::info("mavedMotion.translation: {},{},{}",position.quad.m128_f32[0], position.quad.m128_f32[1], position.quad.m128_f32[2]);
+										}
 									}
 								}
 							}
