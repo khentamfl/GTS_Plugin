@@ -68,6 +68,8 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
+		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
+		this->grow_limit *= AdjustLimit; //Affected by storage.
 	}
 
 	void ExplosiveGrowth::OnUpdate() {
@@ -77,8 +79,6 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 
-		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
-		this->grow_limit *= AdjustLimit; //Affected by storage.
 
 		auto HealthRegenPerk = runtime.HealthRegenPerk;
 		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00075;
