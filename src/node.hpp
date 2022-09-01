@@ -17,6 +17,7 @@ namespace Gts {
 	void clone_bound(Actor* actor);
 	BSBound* get_bound(Actor* actor);
 	NiAVObject* get_bumper(Actor* actor);
+	bhkCharacterController* findCharController(NiAVObject* model);
 
 	void update_node(NiAVObject* node);
 }

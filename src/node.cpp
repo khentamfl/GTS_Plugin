@@ -50,6 +50,48 @@ namespace Gts {
 		}
 	}
 
+	bhkCharacterController* findCharController(NiAVObject* model) {
+		std::deque<NiAVObject*> queue;
+		queue.push_back(model);
+
+
+		while (!queue.empty()) {
+			auto currentnode = queue.front();
+			queue.pop_front();
+			try {
+				if (currentnode) {
+					auto ninode = currentnode->AsNode();
+					if (ninode) {
+						for (auto child: ninode->GetChildren()) {
+							// Bredth first search
+							queue.push_back(child.get());
+							// Depth first search
+							//queue.push_front(child.get());
+						}
+					}
+					// Do smth
+					bhkCharacterController* result = skyrim_cast<bhkCharacterController*>(currentnode);
+					if (result) {
+						return result;
+					}
+				}
+			}
+			catch (const std::overflow_error& e) {
+				log::warn("Overflow: {}", e.what());
+			} // this executes if f() throws std::overflow_error (same type rule)
+			catch (const std::runtime_error& e) {
+				log::warn("Underflow: {}", e.what());
+			} // this executes if f() throws std::underflow_error (base class rule)
+			catch (const std::exception& e) {
+				log::warn("Exception: {}", e.what());
+			} // this executes if f() throws std::logic_error (base class rule)
+			catch (...) {
+				log::warn("Exception Other");
+			}
+		}
+		return nullptr;
+	}
+
 	NiAVObject* find_node(Actor* actor, std::string_view node_name, Person person) {
 		if (!actor->Is3DLoaded()) {
 			return nullptr;

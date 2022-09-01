@@ -153,6 +153,31 @@ namespace {
 				}
 			}
 		}
+
+		bhkCharacterController* bcharController = findCharController(actor->GetCurrent3D());
+		if (bcharController) {
+			log::info("Found charController");
+		} else {
+			log::info("Nope");
+		}
+
+		auto ai = actor->currentProcess;
+		if (ai) {
+			auto high = ai->high;
+			if (high) {
+				auto unk1E8 = high->unk1E8;
+				if (unk1E8) {
+					log::info("Has unk1E8");
+					NiRefObject* refunk1E8 = unk1E8.get();
+					bhkCharacterController* result = skyrim_cast<bhkCharacterController*>(refunk1E8);
+					if (result) {
+						log::info("Found in AI");
+					} else {
+						log::info("Also NOPE");
+					}
+				}
+			}
+		}
 	}
 
 	void DrawActor(Actor* actor) {
