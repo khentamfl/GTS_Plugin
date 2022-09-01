@@ -164,7 +164,6 @@ namespace {
 
 		bool search_nodes = !actor_data->HasCapsuleData() || force_update;
 		if (search_nodes) {
-			log::info("{}: Searching for capsules", actor->GetDisplayFullName());
 			for (auto person: {true, false} ) {
 				auto model = actor->Get3D(person);
 				if (model) {
