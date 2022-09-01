@@ -99,7 +99,7 @@ namespace {
 			return;
 		}
 
-		float scale = persi_actor_data->visual_scale;
+		float scale = get_visual_scale(actor);
 		if (scale < 1e-5) {
 			return;
 		}
