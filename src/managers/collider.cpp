@@ -249,7 +249,7 @@ namespace Gts {
 			if (!actor) {
 				continue;
 			}
-			if (actor->Is3DLoaded()) {
+			if (!actor->Is3DLoaded()) {
 				continue;
 			}
 			log::info("  - Actor: {}:{:X}", actor->GetDisplayFullName(), actor->formID);
