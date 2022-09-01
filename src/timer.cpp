@@ -3,7 +3,7 @@
 using namespace RE;
 
 namespace {
-	inline float GetCurrentTime() {
+	inline float GetGameTime() {
 		return GetDurationOfApplicationRunTime();
 	}
 }
@@ -12,7 +12,7 @@ namespace Gts {
 	Timer::Timer(float delta) : delta(delta) {
 	}
 	bool Timer::ShouldRun() {
-		float currentTime = GetCurrentTime();
+		float currentTime = GetGameTime();
 		if (this->last_time + this->delta <= currentTime) {
 			this->elaped_time = currentTime - this->last_time;
 			this->last_time = currentTime;
