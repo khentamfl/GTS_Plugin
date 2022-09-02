@@ -98,7 +98,6 @@ namespace Gts {
 	}
 
 	Actor* Magic::GetTarget() {
-		AttributeManager::GetSingleton().UpdateNpc(this->target);
 		return this->target;
 	}
 	Actor* Magic::GetCaster() {

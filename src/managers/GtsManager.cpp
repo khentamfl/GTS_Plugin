@@ -6,16 +6,15 @@
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
-#include "magic/effects/common.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
+#include "timer.hpp"
 #include <vector>
 #include <string>
-#include "timer.hpp"
 
 using namespace Gts;
 using namespace RE;
@@ -89,6 +88,7 @@ namespace {
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
+		log::info("ApplySpeed Actor Name is {}", actor->GetDisplayFullName);
 		if (!Persistent::GetSingleton().is_speed_adjusted) {
 			return;
 		}
@@ -182,6 +182,7 @@ namespace {
 
 	void update_actor(Actor* actor) {
 		Transient::GetSingleton().UpdateActorData(actor);
+		log::info("Update Actor Name is {}", actor->GetDisplayFullName);
 
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
@@ -190,6 +191,7 @@ namespace {
 	}
 
 	void apply_actor(Actor* actor, bool force = false) {
+		log::info("Apply_Actor name is {}", actor->GetDisplayFullName);
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
@@ -225,7 +227,7 @@ namespace {
 		} // Avoid bugs
 
 		if (get_target_scale(actor) > size_limit) {
-			set_target_scale(actor, size_limit);
+			mod_target_scale(actor, -0.00025, 1.0);
 		}
 
 		ChosenGameMode game_mode = ChosenGameMode::None;
@@ -272,7 +274,9 @@ namespace {
 		ChosenGameModeNPC game_modeNPC = ChosenGameModeNPC::NoneNPC;
 		int game_modeNPC_int = 0;
 		if (actor->formID != 0x14 && actor->IsPlayerTeammate()) {
+			log::info("Game Mode NPC is {}", actor->GetDisplayFullName);
 			game_modeNPC_int = runtime.ChosenGameModeNPC->value;
+			AttributeManager::GetSingleton().UpdateNpc(actor);
 		}
 		if (game_modeNPC_int >=0 && game_modeNPC_int <= 3) {
 			game_modeNPC =  static_cast<ChosenGameModeNPC>(game_modeNPC_int);
