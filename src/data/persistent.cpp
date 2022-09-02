@@ -132,7 +132,7 @@ namespace Gts {
 						} else {
 							bonus_max_size = 0.0;
 						}
-						if (std::isnan(&bonus_max_size)) {
+						if (std::isnan(bonus_max_size)) {
 							bonus_max_size = 0.0;
 						}
 
