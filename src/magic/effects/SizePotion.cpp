@@ -19,7 +19,10 @@ namespace Gts {
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
 
-		if (base_spell == runtime.EffectSizePotionStrong) {
+        if (base_spell == runtime.EffectSizePotionExtreme) {
+            this->Strenght = 0.35;
+        }
+		else if (base_spell == runtime.EffectSizePotionStrong) {
             this->Strenght = 0.20;
         }
         else if (base_spell == runtime.EffectSizePotionNormal) {
@@ -34,7 +37,7 @@ namespace Gts {
 
 	bool SizePotion::StartEffect(EffectSetting* effect) { 
 		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.EffectSizePotionStrong || effect ==  runtime.EffectSizePotionNormal || effect == runtime.EffectSizePotionWeak);
+		return (effect == runtime.EffectSizePotionStrong || effect ==  runtime.EffectSizePotionNormal || effect == runtime.EffectSizePotionWeak || effect == runtime.EffectSizePotionExtreme);
 	}
 
 	void SizePotion::OnStart() {

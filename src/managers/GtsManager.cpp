@@ -86,8 +86,6 @@ namespace {
 
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
-		
-		
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
@@ -120,7 +118,7 @@ namespace {
 		float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 
 		static Timer timer = Timer(0.5); // Run every 0.5s or as soon as we can
-		if (timer.ShouldRun() && actor->formID == 0x14) {
+		if (timer.ShouldRun() && actor == PlayerCharacter::GetSingleton()) {
 
 				persi_actor_data->anim_speed = speed_mult;
 				if (actor->IsWalking() == true) {
@@ -136,7 +134,7 @@ namespace {
 		}
 			
 
-		if (timer.ShouldRun() && actor->formID != 0x14) {
+		if (timer.ShouldRun() && actor != PlayerCharacter::GetSingleton()) {
 				persi_actor_data->anim_speed = speed_mult;
 				if (actor->IsWalking() == true) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.60 / MS_mult);
