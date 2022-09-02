@@ -201,5 +201,7 @@ namespace Gts {
 
 			TESQuest * MainQuest = nullptr;
 
+			TESFaction* FollowerFaction = nullptr;
+
 	};
 }

@@ -232,12 +232,21 @@ namespace {
 		} // Avoid bugs
 
 		if (get_target_scale(actor) > size_limit) {
-			mod_target_scale(actor, -0.00025 * visual_scale);
+			mod_target_scale(actor, -0.000025 * visual_scale); // Smoothly scale down to normal size
+
+			static Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
+
+		if (timer.ShouldRun()) {
+			auto ShrinkSound = runtime.shrinkSound;
+			float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/3.25);
+			PlaySound(ShrinkSound, actor, Volume, 0.0);
+			GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
+			}
 		}
 
 		ChosenGameMode game_mode = ChosenGameMode::None;
 		int game_mode_int = 0;
-		if (actor->formID == 0x14 ) {
+		if (actor->formID == 0x14) {
 			game_mode_int = runtime.ChosenGameMode->value;
 
 			if (game_mode_int >=0 && game_mode_int <= 3) {
@@ -278,7 +287,7 @@ namespace {
 
 		ChosenGameModeNPC game_modeNPC = ChosenGameModeNPC::NoneNPC;
 		int game_modeNPC_int = 0;
-		if (actor->formID != 0x14 && actor->IsPlayerTeammate()) {
+		if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction))) {
 			//log::info("Game Mode NPC is {}", actor->GetDisplayFullName());
 			game_modeNPC_int = runtime.ChosenGameModeNPC->value;
 			AttributeManager::GetSingleton().UpdateNpc(actor);

@@ -238,7 +238,8 @@ namespace Gts {
 	}
 
 	void AttributeManager::OverrideBonus(float Value) {
-		this->MovementSpeedBonus = Value;
+		auto ActorAttributes = Persistent::GetSingleton().GetActorData(Player);
+		ActorAttributes->smt_run_speed = Value;
 	}
 
 }

@@ -216,5 +216,7 @@ namespace Gts {
 		this->ShrinkBackSpell = find_form<SpellItem>("GTS.esp|005368");
 
 		this->MainQuest = find_form<TESQuest>("GTS.esp|005E3A");
+
+		this->FollowerFaction = find_form<TESFaction>("Skyrim.esm|084D1B");
 	}
 }

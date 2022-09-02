@@ -31,7 +31,7 @@ namespace Gts {
         else if (base_spell == runtime.EffectSizePotionWeak) {
             this->Strenght = 0.10;
         }
-        log::info("Strenght is {}", this->Strenght);
+        //log::info("Strenght is {}", this->Strenght);
     }
 
 
