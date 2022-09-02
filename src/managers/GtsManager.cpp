@@ -342,7 +342,7 @@ void GtsManager::poll() {
 		const auto& frame_config = Gts::Config::GetSingleton().GetFrame();
 		auto init_delay = frame_config.GetInitDelay();
 		auto step = frame_config.GetStep() + 1; // 1 Based index
-
+		log::info("Manager: Poll.")
 		auto current_frame = this->frame_count.fetch_add(1);
 		if (current_frame < init_delay) {
 			return;
@@ -358,6 +358,7 @@ void GtsManager::poll() {
 			if (!actor->Is3DLoaded()) {
 				continue;
 			}
+			log::info("Found Actor {}", actor->GetDisplayFullName());
 			update_actor(actor);
 			apply_actor(actor);
 			GameMode(actor);
