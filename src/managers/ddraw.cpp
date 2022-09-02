@@ -192,6 +192,7 @@ namespace {
 					if (ragdollDriver) {
 						auto ragdoll = ragdollDriver->ragdoll;
 						if (ragdoll) {
+							log::info("Got ragdoll");
 							for (auto& rb: ragdoll->rigidBodies) {
 								DrawRigidBody(rb);
 							}
@@ -211,7 +212,7 @@ namespace {
 		}
 
 		auto root = actor->GetCurrent3D();
-		DrawNiNodes(root);
+		// DrawNiNodes(root);
 
 		DrawCharController(actor);
 		DrawRagdoll(actor);
