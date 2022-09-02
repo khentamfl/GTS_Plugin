@@ -164,7 +164,9 @@ namespace {
 		auto ai = actor->currentProcess;
 		if (ai) {
 			auto high = ai->high;
+			log::info("AI");
 			if (high) {
+				log::info("AI HIGH");
 				auto unk1E8 = high->unk1E8;
 				if (unk1E8) {
 					log::info("Has unk1E8");
