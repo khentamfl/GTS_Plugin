@@ -61,6 +61,5 @@ namespace Gts {
         float PotionPower = this->Strenght;
         float BonusSize = runtime.sizeLimit->value * PotionPower;
         saved_data->max_scale -= BonusSize;
-		auto caster = GetCaster();
 	}
 }
