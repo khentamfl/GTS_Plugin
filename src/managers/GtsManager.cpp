@@ -80,7 +80,7 @@ namespace {
 		}
 
 		// Is scale too small
-		if (visual_scale <= 1e-5 || visual_scale >= change_requirement) {
+		if (visual_scale <= 1e-5) {
 			return;
 		}
 
