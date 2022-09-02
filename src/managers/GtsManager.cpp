@@ -1,6 +1,7 @@
 
 #include "Config.hpp"
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/SizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
@@ -231,6 +232,7 @@ namespace {
 		float size_limit = actor_data->max_scale;
 		float visual_scale = get_visual_scale(actor);
 		
+		SizeManager::GetSingleton().UpdateSize(actor);
 
 		if (size_limit < 1.0) {
 			size_limit = 1.0;

@@ -122,6 +122,12 @@ namespace Gts {
 						} else {
 							bonus_carry = 0.0;
 						}
+						float bonus_max_size;
+						if (version >= 5) {
+							serge->ReadRecordData(&bonus_max_size, sizeof(bonus_max_size));
+						} else {
+							bonus_max_size = 0.0;
+						}
 						if (std::isnan(bonus_carry)) {
 							bonus_carry = 0.0;
 						}
@@ -138,6 +144,7 @@ namespace Gts {
 						data.effective_multi = effective_multi;
 						data.bonus_hp = bonus_hp;
 						data.bonus_carry = bonus_carry;
+						data.bonus_max_size = bonus_max_size;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
@@ -245,7 +252,8 @@ namespace Gts {
 			float effective_multi = data.effective_multi;
 			float bonus_hp = data.bonus_hp;
 			float bonus_carry = data.bonus_carry;
-			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry);
+			float bonus_max_size = data.onus_max_size;
+			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
 			serde->WriteRecordData(&visual_scale, sizeof(visual_scale));
@@ -257,6 +265,7 @@ namespace Gts {
 			serde->WriteRecordData(&effective_multi, sizeof(effective_multi));
 			serde->WriteRecordData(&bonus_hp, sizeof(bonus_hp));
 			serde->WriteRecordData(&bonus_carry, sizeof(bonus_carry));
+			serde->WriteRecordData(&bonus_max_size, sizeof(bonus_max_size));
 		}
 
 		if (!serde->OpenRecord(ScaleMethodRecord, 0)) {
@@ -334,6 +343,7 @@ namespace Gts {
 		this->anim_speed = 1.0;
 		this->bonus_hp = 0.0;
 		this->bonus_carry = 0.0;
+		this->bonus_max_size = 0.0;
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
@@ -391,6 +401,7 @@ namespace Gts {
 			data->anim_speed = 1.0;
 			data->bonus_hp = 0.0;
 			data->bonus_carry = 0.0;
+			data->bonus_max_size = 0.0;
 		}
 	}
 }

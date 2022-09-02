@@ -28,12 +28,13 @@ namespace Gts {
         else if (base_spell == runtime.EffectSizePotionWeak) {
             this->Strenght = 0.10;
         }
+        log::info("Strenght is {}", this->Strenght);
     }
 
 
 	bool SizePotion::StartEffect(EffectSetting* effect) { 
 		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.EffectSizePotionWeak || effect ==  runtime.EffectSizePotionNormal || effect == runtime.EffectSizePotionStrong);
+		return (effect == runtime.EffectSizePotionStrong || effect ==  runtime.EffectSizePotionNormal || effect == runtime.EffectSizePotionWeak);
 	}
 
 	void SizePotion::OnStart() {
@@ -45,7 +46,8 @@ namespace Gts {
         auto saved_data = Persistent::GetSingleton().GetActorData(caster);
         float PotionPower = this->Strenght;
         float BonusSize = runtime.sizeLimit->value * PotionPower;
-        saved_data->max_scale += BonusSize;
+        saved_data->bonus_max_size = BonusSize;
+        
 	}
 
 	void SizePotion::OnUpdate() {
@@ -58,8 +60,6 @@ namespace Gts {
 		}
         auto& runtime = Runtime::GetSingleton();
         auto saved_data = Persistent::GetSingleton().GetActorData(caster);
-        float PotionPower = this->Strenght;
-        float BonusSize = runtime.sizeLimit->value * PotionPower;
-        saved_data->max_scale -= BonusSize;
+        saved_data->bonus_max_size = 0;
 	}
 }
