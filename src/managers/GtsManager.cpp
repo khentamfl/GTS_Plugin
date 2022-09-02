@@ -88,30 +88,30 @@ namespace {
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
-		log::info("ApplySpeed Actor Name is {}", actor->GetDisplayFullName());
+		//log::info("ApplySpeed Actor Name is {}", actor->GetDisplayFullName());
 		if (!Persistent::GetSingleton().is_speed_adjusted) {
-			log::info("!!!!!SPEED IS ADJUSTED!!!!!! {}", actor->GetDisplayFullName());
+			//log::info("!!!!!SPEED IS ADJUSTED!!!!!! {}", actor->GetDisplayFullName());
 			return;
 		}
 		if (!actor) {
-			log::info("!ACTOR NOT FOUND!");
+			//log::info("!ACTOR NOT FOUND!");
 			return;
 		}
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
 		if (!trans_actor_data) {
-			log::info("!TRANS ACTOR DATA IS ! {}", actor->GetDisplayFullName());
+			//log::info("!TRANS ACTOR DATA IS ! {}", actor->GetDisplayFullName());
 			return;
 		}
 		if (!persi_actor_data) {
-			log::info("!PERSI ACTOR DATA IS ! {}", actor->GetDisplayFullName());
+			//log::info("!PERSI ACTOR DATA IS ! {}", actor->GetDisplayFullName());
 			return;
 		}
 
 		float scale = persi_actor_data->visual_scale;
 		if (scale < 1e-5) {
-			log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
+			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
 		}
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
@@ -121,7 +121,7 @@ namespace {
 
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
-		log::info("!PREPARING TO APPLY SPEED FOR {}!", actor->GetDisplayFullName());
+		//log::info("!PREPARING TO APPLY SPEED FOR {}!", actor->GetDisplayFullName());
 		static Timer timer = Timer(0.50); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRun()) {
 				persi_actor_data->anim_speed = speed_mult;

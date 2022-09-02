@@ -204,19 +204,24 @@ namespace Gts {
 		auto AugmentationPerk = runtime.NoSpeedLoss;
 		auto ActorAttributes = Persistent::GetSingleton().GetActorData(Player);
 		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			ActorAttributes->smt_run_speed += 0.000480;
+			ActorAttributes->smt_run_speed += 0.001480;
 		} else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			ActorAttributes->smt_run_speed += 0.000320;
+			ActorAttributes->smt_run_speed += 0.000960;
 		} else {
 			if (ActorAttributes->smt_run_speed > 0.0) {
 				ActorAttributes->smt_run_speed -= 0.004175;
 			} 
+
+			else if (ActorAttributes->smt_run_speed <= 0.0) {
+				ActorAttributes->smt_run_speed -= 0.0;
+				his->BlockMessage = false;
+			} 
 			
-			if (ActorAttributes->smt_run_speed > 1.0) {
+			else if (ActorAttributes->smt_run_speed > 1.0) {
 				ActorAttributes->smt_run_speed = 1.0;
 			}
 
-			if (ActorAttributes->smt_run_speed < 1.0) {
+			else if (ActorAttributes->smt_run_speed < 1.0) {
 				this->BlockMessage = false;
 			}
 
@@ -227,7 +232,7 @@ namespace Gts {
 		}
 		if (ActorAttributes->smt_run_speed >= 1.0 && !this->BlockMessage) {
 			this->BlockMessage = true; // Avoid spamming it
-			DebugNotification("You're fast enough to crush someone", 0, true);
+			DebugNotification("You're fast enough to instantly crush someone", 0, true);
 		}
 		log::info("SMT Bonus: {}", ActorAttributes->smt_run_speed);
 	}
