@@ -228,6 +228,7 @@ namespace {
 		auto& runtime = Runtime::GetSingleton();
 		auto actor_data = Persist.GetActorData(actor);
 		float size_limit = actor_data->max_scale;
+		float visual_scale = get_visual_scale(actor);
 		auto& Persist = Persistent::GetSingleton();
 
 		if (size_limit < 1.0) {
