@@ -214,7 +214,7 @@ namespace Gts {
 
 			else if (ActorAttributes->smt_run_speed <= 0.0) {
 				ActorAttributes->smt_run_speed -= 0.0;
-				his->BlockMessage = false;
+				this->BlockMessage = false;
 			} 
 			
 			else if (ActorAttributes->smt_run_speed > 1.0) {
