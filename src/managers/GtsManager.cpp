@@ -114,7 +114,7 @@ namespace {
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
 
-		float Bonus = Persistent::GetSingleton().GetData(actor);
+		float Bonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed;
 		float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 
 		static Timer timer = Timer(0.50); // Run every 0.5s or as soon as we can
