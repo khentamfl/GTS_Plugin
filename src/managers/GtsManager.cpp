@@ -85,7 +85,21 @@ namespace {
 		}
 
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
+		float SizeRoof = actor_data->max_scale + actor_data->bonus_max_size;
+
+		if (visual_scale > SizeRoof)	{
+			static Timer timer = Timer(2.33);
+			ShrinkActor(actor, 0.00025, 0.0);
+			if (timer.ShouldRun()) {
+				auto ShrinkSound = runtime.shrinkSound;
+				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/2);
+				PlaySound(ShrinkSound, actor, Volume, 0.0);
+				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
+			}
+		}
+		else {
 		set_scale(actor, visual_scale);
+		}
 		
 	}
 
@@ -241,23 +255,6 @@ namespace {
 			size_limit = 1.0;
 		} // Avoid bugs
 
-		float SizeRoof = actor_data->max_scale;
-
-		if (visual_scale > SizeRoof)	{
-			static Timer timer = Timer(2.33);
-			ShrinkActor(actor, 0.0005, 0.0);
-			if (timer.ShouldRun()) {
-				auto ShrinkSound = runtime.shrinkSound;
-				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/2);
-				PlaySound(ShrinkSound, actor, Volume, 0.0);
-				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
-			}
-		}
-		else {
-			set_max_scale(actor, size_limit);
-		}
-
-		
 		if (get_target_scale(actor) > size_limit) {
 			set_target_scale(actor, size_limit);
 		}
