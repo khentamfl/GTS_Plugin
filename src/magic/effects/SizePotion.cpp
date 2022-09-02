@@ -43,7 +43,7 @@ namespace Gts {
 		}
         auto& runtime = Runtime::GetSingleton();
         auto saved_data = Persistent::GetSingleton().GetActorData(caster);
-        float PotionPower = this->Strength;
+        float PotionPower = this->Strenght;
         float BonusSize = runtime.sizeLimit->value * PotionPower;
         saved_data->max_scale += BonusSize;
 	}
@@ -58,7 +58,7 @@ namespace Gts {
 		}
         auto& runtime = Runtime::GetSingleton();
         auto saved_data = Persistent::GetSingleton().GetActorData(caster);
-        float PotionPower = this->Strength;
+        float PotionPower = this->Strenght;
         float BonusSize = runtime.sizeLimit->value * PotionPower;
         saved_data->max_scale -= BonusSize;
 		auto caster = GetCaster();
