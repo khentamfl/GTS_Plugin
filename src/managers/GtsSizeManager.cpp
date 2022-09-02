@@ -1,5 +1,5 @@
-#include "managers/GtsSizeManager.hpp"
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
@@ -21,8 +21,8 @@ namespace Gts {
 	}
 	void SizeManager::UpdateSize(Actor* Actor) {
 		auto& runtime = Runtime::GetSingleton();
-        float Persistent_Size = Persistent::GetSingleton().GetActorData(Actor)->bonus_max_size;
         float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
+        float Persistent_Size = Persistent::GetSingleton().GetActorData(Actor)->bonus_max_size;
         float TotalLimit = GetLimit + Persistent_Size;
 
         set_max_scale(Actor, TotalLimit);

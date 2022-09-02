@@ -72,6 +72,7 @@ namespace {
 			return;
 		}
 		float visual_scale = persi_actor_data->visual_scale;
+		float change_requirement = Runtime::GetSingleton().sizeLimit->value + persi_actor_data->bonus_max_size;
 
 		// Is scale correct already?
 		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
@@ -79,7 +80,7 @@ namespace {
 		}
 
 		// Is scale too small
-		if (visual_scale <= 1e-5) {
+		if (visual_scale <= 1e-5 || visual_scale <= change_requirement) {
 			return;
 		}
 
@@ -114,13 +115,12 @@ namespace {
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
 		static Timer timer = Timer(0.5); // Run every 0.5s or as soon as we can
-		if (timer.ShouldRun()) {
+		if (timer.ShouldRun() && actor->formID == 0x14) {
+			
 			persi_actor_data->anim_speed = speed_mult;
 
 			float Bonus = AttributeManager::GetSingleton().Augmentation();
 			float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
-
-			if (actor->formID == 0x14) {
 				if (actor->IsWalking() == true) {
 					actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 0.44 / MS_mult);
 					log::info("Adjusting PC MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
@@ -130,10 +130,16 @@ namespace {
 				} else {
 					actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult + (Bonus/3 + 1.0))/ MS_mult);
 					log::info("Adjusting PC MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
+					}
 				}
-			}
+			
 
-			if (actor->formID != 0x14) {
+		if (timer.ShouldRun() && actor->formID != 0x14) {
+				persi_actor_data->anim_speed = speed_mult;
+
+				float Bonus = AttributeManager::GetSingleton().Augmentation();
+				float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
+
 				if (actor->IsWalking() == true) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * 0.60 / MS_mult);
 					log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
@@ -145,7 +151,7 @@ namespace {
 					log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 				}
 			}
-		}
+		
 
 
 		// Experiement
