@@ -20,6 +20,8 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
+            SizePotion(ActiveEffect* effect);
+
 			static bool StartEffect(EffectSetting* effect);
             private:
             float Strenght = 0.0;

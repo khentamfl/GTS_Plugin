@@ -4,6 +4,7 @@
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
+#include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "util.hpp"
 
@@ -24,7 +25,7 @@ namespace Gts {
         else if (base_spell == runtime.EffectSizePotionNormal) {
             this->Strenght = 0.15;
         }
-        if (base_spell == runtime.EffectSizePotionWeak) {
+        else if (base_spell == runtime.EffectSizePotionWeak) {
             this->Strenght = 0.10;
         }
     }
