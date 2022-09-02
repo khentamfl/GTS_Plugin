@@ -88,7 +88,7 @@ namespace {
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
-		log::info("ApplySpeed Actor Name is {}", actor->GetDisplayFullName);
+		log::info("ApplySpeed Actor Name is {}", actor->GetDisplayFullName());
 		if (!Persistent::GetSingleton().is_speed_adjusted) {
 			return;
 		}
@@ -182,7 +182,7 @@ namespace {
 
 	void update_actor(Actor* actor) {
 		Transient::GetSingleton().UpdateActorData(actor);
-		log::info("Update Actor Name is {}", actor->GetDisplayFullName);
+		log::info("Update Actor Name is {}", actor->GetDisplayFullName());
 
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
@@ -191,7 +191,7 @@ namespace {
 	}
 
 	void apply_actor(Actor* actor, bool force = false) {
-		log::info("Apply_Actor name is {}", actor->GetDisplayFullName);
+		log::info("Apply_Actor name is {}", actor->GetDisplayFullName());
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
@@ -274,7 +274,7 @@ namespace {
 		ChosenGameModeNPC game_modeNPC = ChosenGameModeNPC::NoneNPC;
 		int game_modeNPC_int = 0;
 		if (actor->formID != 0x14 && actor->IsPlayerTeammate()) {
-			log::info("Game Mode NPC is {}", actor->GetDisplayFullName);
+			log::info("Game Mode NPC is {}", actor->GetDisplayFullName());
 			game_modeNPC_int = runtime.ChosenGameModeNPC->value;
 			AttributeManager::GetSingleton().UpdateNpc(actor);
 		}
