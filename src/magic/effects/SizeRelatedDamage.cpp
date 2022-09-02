@@ -5,6 +5,7 @@
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "data/transient.hpp"
+#include "data/persistent.hpp"
 #include "managers/Attributes.hpp"
 #include "util.hpp"
 
