@@ -176,7 +176,6 @@ namespace Gts {
 			PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
 			AdjustSizeLimit(0.0117);
 			ConsoleLog::GetSingleton()->Print("%s Was absorbed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-			target->SetDelete(true);
 			return true;
 		}
 		return false;
@@ -208,7 +207,6 @@ namespace Gts {
 
 
 		ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-		target->SetDelete(true);
 	}
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
