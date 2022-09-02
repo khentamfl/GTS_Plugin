@@ -1,5 +1,5 @@
 #pragma once
-// Module that handles AttributeValues
+// Module that handles AttributeAdjustment
 
 
 using namespace std;
@@ -12,10 +12,6 @@ namespace Gts {
 		public:
 			[[nodiscard]] static SizeManager& GetSingleton() noexcept;
 
-			void Update(Actor* Target);
-
-		private:
-			bool AllowGrowth = false;
-			float growth_time = 0.0;
+			void UpdateSize(Actor* Target);
 	};
 }
