@@ -122,14 +122,18 @@ namespace Gts {
 						} else {
 							bonus_carry = 0.0;
 						}
+						if (std::isnan(bonus_carry)) {
+							bonus_carry = 0.0;
+						}
+
 						float bonus_max_size;
 						if (version >= 5) {
 							serge->ReadRecordData(&bonus_max_size, sizeof(bonus_max_size));
 						} else {
 							bonus_max_size = 0.0;
 						}
-						if (std::isnan(bonus_carry)) {
-							bonus_carry = 0.0;
+						if (std::isnan(&bonus_max_size)) {
+							bonus_max_size = 0.0;
 						}
 
 						ActorData data = ActorData();
@@ -252,7 +256,7 @@ namespace Gts {
 			float effective_multi = data.effective_multi;
 			float bonus_hp = data.bonus_hp;
 			float bonus_carry = data.bonus_carry;
-			float bonus_max_size = data.onus_max_size;
+			float bonus_max_size = data.bonus_max_size;
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));

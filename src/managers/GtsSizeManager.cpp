@@ -19,10 +19,12 @@ namespace Gts {
 	}
 	void SizeManager::UpdateSize(Actor* Target) {
 		auto& runtime = Runtime::GetSingleton();
-        auto Persistent_Size = Persistent::GetSingleton().GetActorData(Target)->bonus_max_size;
+        float Persistent_Size = Persistent::GetSingleton().GetActorData(Target)->bonus_max_size;
+        float GetLimit = clamp(1.0, 99999999, runtime.sizeLimit);
+        float TotalLimit = GetLimit + Persistent_Size;
 
-        float SizeLimit = runtime.sizeLimit + Persistent_Size;
         set_max_scale(Target, SizeLimit);
+        
         log::info("Actor's {} _ size limit is set to {}", Target->GetDisplayFullName(), SizeLimit);
     }
 }
