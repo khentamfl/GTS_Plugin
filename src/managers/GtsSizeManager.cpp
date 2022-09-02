@@ -23,8 +23,8 @@ namespace Gts {
         float GetLimit = clamp(1.0, 99999999, runtime.sizeLimit);
         float TotalLimit = GetLimit + Persistent_Size;
 
-        set_max_scale(Target, SizeLimit);
-        
-        log::info("Actor's {} _ size limit is set to {}", Target->GetDisplayFullName(), SizeLimit);
+        set_max_scale(Target, TotalLimit);
+
+        log::info("Actor's {} _ size limit is set to {}", Target->GetDisplayFullName(), TotalLimit);
     }
 }
