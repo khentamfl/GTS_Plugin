@@ -64,20 +64,17 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
+		float SizeDifference = 1.0;
+
 		if (this->power >= 18.00)
 		{	auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetActorData(target);
 			actor_data->half_life = 0.25; // Faster shrink, less smooth.
-			float SizeDifference = clamp(1.0, 4.0, (get_visual_scale(caster)/get_visual_scale(target))/2);
-			log::info("Size Difference is: {}, Power is: {}" SizeDifference, this->power)
-			this->power *= SizeDifference;
+			SizeDifference = clamp(1.0, 4.0, (get_visual_scale(caster)/get_visual_scale(target))/2);
 		}
-		if (target->HasMagicEffect(Runtime::GetSingleton().ResistShrinkPotion))
-		{
-			this->power *=0.25;
-		}
+		
 		bool has_smt = caster->HasMagicEffect(Runtime::GetSingleton().SmallMassiveThreat);
-		TransferSize(caster, target, IsDualCasting(), this->power, this->efficiency, has_smt);
+		TransferSize(caster, target, IsDualCasting(), this->power * SizeDamage, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();
 		}
