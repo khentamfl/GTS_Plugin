@@ -1,5 +1,5 @@
 #include "data/persistent.hpp"
-#include "managers/GtsManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "scale/modscale.hpp"
 
 using namespace SKSE;

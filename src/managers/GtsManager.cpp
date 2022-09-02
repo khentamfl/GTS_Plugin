@@ -1,7 +1,7 @@
 
 #include "Config.hpp"
 #include "managers/GrowthTremorManager.hpp"
-#include "managers/SizeManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
