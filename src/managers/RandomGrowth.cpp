@@ -29,15 +29,13 @@ namespace {
 	void RestoreStats() {
 		auto& runtime = Runtime::GetSingleton();
 		auto Player = PlayerCharacter::GetSingleton();
-		if (!Player->HasPerk(runtime.GrowthAugmentation)) {
-			return;
-		} else {
+		if (Player->HasPerk(runtime.GrowthAugmentation)) {
 			float HP = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
 			float MP = Player->GetPermanentActorValue(ActorValue::kMagicka) * 0.00085;
 			float SP = Player->GetPermanentActorValue(ActorValue::kStamina) * 0.00085;
-			Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, ActorValue::kHealth, HP * TimeScale());
-			Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, ActorValue::kMagicka, SP * TimeScale());
-			Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, ActorValue::kStamina, MP * TimeScale());
+			Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
+			Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
+			Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, MP * TimeScale());
 		}
 	}
 }

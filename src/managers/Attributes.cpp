@@ -71,7 +71,7 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
-		float SMTBonus = AttributeManager::GetSingleton().Augmentation()/3.0;
+		float SMTBonus = Persistent::GetSingleton().GetData(actor)/3.0;
 		if (actor != PlayerCharacter::GetSingleton()) {
 			base_speed = actor_data->base_walkspeedmult;
 		} else {
@@ -165,6 +165,8 @@ namespace Gts {
 		if (size > 0) {
 			BoostHP(Player, bonusHPMultiplier);
 
+			Augmentation();
+
 			BoostCarry(Player, bonusCarryWeightMultiplier);
 
 			BoostJump(Player, bonusJumpHeightMultiplier);
@@ -200,24 +202,29 @@ namespace Gts {
 		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 		auto AugmentationPerk = runtime.NoSpeedLoss;
+		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
 		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			this->MovementSpeedBonus += 0.0000480;
+			ActorAttributes->smt_run_speed += 0.0000480;
 		} else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			this->MovementSpeedBonus += 0.0000320;
+			ActorAttributes->smt_run_speed += 0.0000320;
 		} else {
-			if (this->MovementSpeedBonus > 0.0) {
-				this->MovementSpeedBonus -= 0.0004175;
-			} else {
-				this->MovementSpeedBonus = 0.0;
+			if (ActorAttributes->smt_run_speed > 0.0) {
+				ActorAttributes->smt_run_speed -= 0.0004175;
+			} 
+			
+			if (ActorAttributes->smt_run_speed > 1.0) {
+				ActorAttributes->smt_run_speed = 1.0;
+			}
+
+			else {
+				ActorAttributes->smt_run_speed = 0.0;
 				this->BlockMessage = false;
 			}
 		}
-		float MSBonus = clamp(0.0, 1.0, this->MovementSpeedBonus);
-		if (MSBonus >= 1.0 && !this->BlockMessage) {
+		if (ActorAttributes->smt_run_speed >= 1.0 && !this->BlockMessage) {
 			this->BlockMessage = true; // Avoid spamming it
 			DebugNotification("You're fast enough to crush someone", 0, true);
 		}
-		return MSBonus;
 	}
 
 	void AttributeManager::OverrideBonus(float Value) {

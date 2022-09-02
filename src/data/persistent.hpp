@@ -22,6 +22,7 @@ namespace Gts {
 		float bonus_hp;
 		float bonus_carry;
 		float bonus_max_size;
+		float smt_run_speed;
 
 		ActorData();
 		ActorData(Actor* actor);
