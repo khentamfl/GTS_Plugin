@@ -128,7 +128,7 @@ namespace Gts {
 
 						float bonus_max_size;
 						if (version >= 5) {
-							serge->ReadRecordData(&bonus_max_size, sizeof(bonus_max_size));
+							serde->ReadRecordData(&bonus_max_size, sizeof(bonus_max_size));
 						} else {
 							bonus_max_size = 0.0;
 						}
