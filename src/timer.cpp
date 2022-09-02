@@ -17,10 +17,10 @@ namespace Gts {
 	}
 	bool Timer::ShouldRun() {
 		double currentTime = GetGameTime();
-		log::info("last_time: {}, elapsed_time: {}, currentTime: {}", this->last_time, this->elaped_time, currentTime);
 		if (this->last_time + this->delta <= currentTime) {
 			this->elaped_time = currentTime - this->last_time;
 			this->last_time = currentTime;
+			log::info("last_time: {}, elapsed_time: {}, currentTime: {}", this->last_time, this->elaped_time, currentTime);
 			return true;
 		}
 		return false;
