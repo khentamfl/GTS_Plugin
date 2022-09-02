@@ -40,7 +40,7 @@ namespace {
 		if (fabs(target_scale - persi_actor_data->visual_scale) < 1e-5) {
 			return;
 		}
-		float minimum_scale_delta = 0.000005; // 0.0005%
+		float minimum_scale_delta = 0.000005; // 0.00005%
 		if (fabs(target_scale - persi_actor_data->visual_scale) < minimum_scale_delta) {
 			persi_actor_data->visual_scale = target_scale;
 			persi_actor_data->visual_scale_v = 0.0;
@@ -85,22 +85,8 @@ namespace {
 		}
 
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
-		float SizeRoof = persi_actor_data->max_scale + persi_actor_data->bonus_max_size;
-		auto runtime = Runtime::GetSingleton();
-
-		if (visual_scale > SizeRoof)	{
-			static Timer timer = Timer(2.33);
-			ShrinkActor(actor, 0.00025, 0.0);
-			if (timer.ShouldRun()) {
-				auto ShrinkSound = runtime.shrinkSound;
-				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/2);
-				PlaySound(ShrinkSound, actor, Volume, 0.0);
-				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
-			}
-		}
-		else {
 		set_scale(actor, visual_scale);
-		}
+		
 		
 	}
 
