@@ -198,7 +198,7 @@ namespace Gts {
 		//BoostSpeedMulti(Npc, 1.0);
 	}
 
-	inline float AttributeManager::Augmentation() {
+	void AttributeManager::Augmentation() {
 		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 		auto AugmentationPerk = runtime.NoSpeedLoss;
