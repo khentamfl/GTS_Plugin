@@ -36,6 +36,8 @@ namespace Gts {
 
 			BGSSoundDescriptorForm* MoanSound = nullptr;
 
+			BGSSoundDescriptorForm* BloodGushSound = nullptr;
+
 			EffectSetting* SmallMassiveThreat = nullptr;
 			BGSPerk* SmallMassiveThreatSizeSteal = nullptr;
 

@@ -50,6 +50,8 @@ namespace Gts {
 
 		this->MoanSound = find_form<BGSSoundDescriptorForm>("GTS.esp|09B0AC");
 
+		this->BloodGushSound = find_form<BGSSoundDescriptorForm>("Skyrim.esm|10F78C");
+
 		this->SmallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
 		this->SmallMassiveThreatSizeSteal = find_form<BGSPerk>("GTS.esp|2496E8");
 		this->SmallMassiveThreatSpell = find_form<SpellItem>("GTS.esp|1A2566");

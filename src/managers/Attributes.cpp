@@ -71,7 +71,7 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float base_speed;
 		auto actor_data = Transient::GetSingleton().GetData(actor);
-		float SMTBonus = Persistent::GetSingleton().GetData(actor)/3.0;
+		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/3.0;
 		if (actor != PlayerCharacter::GetSingleton()) {
 			base_speed = actor_data->base_walkspeedmult;
 		} else {

@@ -171,11 +171,12 @@ namespace Gts {
 		const float SHRINK_TO_NOTHING_SCALE = 0.12;
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
-		if (target_scale <= SHRINK_TO_NOTHING_SCALE && target->HasMagicEffect(runtime.ShrinkToNothing) == false && target->IsPlayerTeammate() == false) {
+		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !target->HasMagicEffect(runtime.ShrinkToNothing) && !target->IsPlayerTeammate()) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
+			PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
 			AdjustSizeLimit(0.0117);
 			ConsoleLog::GetSingleton()->Print("%s Was absorbed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-			//target->SetDelete(true);
+			target->SetDelete(true);
 			return true;
 		}
 		return false;
@@ -193,9 +194,12 @@ namespace Gts {
 		}
 		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
 		if (get_visual_scale(caster) <= 13.0 || !caster->IsSprinting() && !caster->HasMagicEffect(runtime.SmallMassiveThreat)) {
+			PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
 			caster->NotifyAnimationGraph("JumpLand");
+			
 		}
 		AdjustSizeLimit(0.0417 * target_scale);
+		
 
 
 		if (caster->HasPerk(runtime.ExtraGrowth) && (caster->HasMagicEffect(runtime.explosiveGrowth1) || caster->HasMagicEffect(runtime.explosiveGrowth2) || caster->HasMagicEffect(runtime.explosiveGrowth3))) {
@@ -204,6 +208,7 @@ namespace Gts {
 
 
 		ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+		target->SetDelete(true);
 	}
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
