@@ -87,7 +87,7 @@ namespace Gts {
 		if (!Caster || !Target)
 		{return;}
 		auto& runtime = Runtime::GetSingleton();
-		if (Persistent::GetSingleton().GetData(caster)->smt_run_speed >= 1.0)
+		if (Persistent::GetSingleton().GetData(Caster)->smt_run_speed >= 1.0)
 		{
 			float caster_scale = get_visual_scale(Caster);
 			float target_scale = get_visual_scale(Target);
