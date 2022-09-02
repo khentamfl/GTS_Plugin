@@ -153,23 +153,17 @@ namespace {
 			DrawRigidBody(bumpedCharCollisionObject);
 		}
 
-		// auto model = actor->GetCurrent3D();
-		// if (model) {
-		// 	glm::mat4 transform = Ni2Glm(model->world);
-		// 	for (auto bhkShape: charController->shapes) {
-		// 		hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
-		// 		if (shape) {
-		// 			log::info("  - Shape of CharController");
-		// 			DrawShape(shape, transform);
-		// 		}
-		// 	}
-		// }
-
-		bhkCharacterController* bcharController = findCharController(actor->GetCurrent3D());
-		if (bcharController) {
-			log::info("Found charController");
-		} else {
-			log::info("Nope");
+		{
+			hkTransform outTransform;
+			charController->GetTransformImpl(outTransform);
+			glm::mat4 transform = HkToGlm(outTransform);
+			for (auto bhkShape: charController->shapes) {
+				hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
+				if (shape) {
+					log::info("  - Shape of CharController");
+					DrawShape(shape, transform);
+				}
+			}
 		}
 
 		bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
