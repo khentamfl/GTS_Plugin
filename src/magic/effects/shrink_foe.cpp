@@ -67,8 +67,9 @@ namespace Gts {
 		if (this->power >= 18.00)
 		{	auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetActorData(target);
-			actor_data->half_life = 0.50; // Faster shrink, less smooth.
+			actor_data->half_life = 0.25; // Faster shrink, less smooth.
 			float SizeDifference = clamp(1.0, 4.0, (get_visual_scale(caster)/get_visual_scale(target))/2);
+			log::info("Size Difference is: {}, Power is: {}" SizeDifference, this->power)
 			this->power *= SizeDifference;
 		}
 		if (target->HasMagicEffect(Runtime::GetSingleton().ResistShrinkPotion))
