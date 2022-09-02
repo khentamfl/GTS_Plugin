@@ -238,7 +238,6 @@ namespace {
 		float SizeRoof = actor_data->max_scale;
 
 		if (visual_scale > SizeRoof)	{
-			auto runtime = Runtime::GetSingleton();
 			static Timer timer = Timer(2.33);
 			ShrinkActor(actor, 0.0005, 0.0);
 			if (timer.ShouldRun()) {
