@@ -85,7 +85,8 @@ namespace {
 		}
 
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
-		float SizeRoof = actor_data->max_scale + actor_data->bonus_max_size;
+		float SizeRoof = persi_actor_data->max_scale + persi_actor_data->bonus_max_size;
+		auto runtime = Runtime::GetSingleton();
 
 		if (visual_scale > SizeRoof)	{
 			static Timer timer = Timer(2.33);
