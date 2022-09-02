@@ -174,19 +174,24 @@ namespace {
 
 		bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
 		if (charProxyController) {
+			log::info("HAS bhkCharProxyController");
 			auto& proxy = charProxyController->proxy;
 			hkReferencedObject* refObject = proxy.referencedObject.get();
 			if (refObject) {
+				log::info("Has refObject");
 				hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
 				if (hkpObject) {
 					for (hkpRigidBody* body: hkpObject->bodies) {
+						log::info("Draw body");
 						DrawRigidBody(body);
 					}
 					for (auto phantom: hkpObject->phantoms) {
+						log::info("Draw Body");
 						DrawWorldObject(phantom);
 					}
 					auto shapePhantom = hkpObject->shapePhantom;
 					if (shapePhantom) {
+						log::info("Draw shape phantom");
 						DrawWorldObject(shapePhantom);
 					}
 				}
