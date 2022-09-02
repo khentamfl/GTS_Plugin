@@ -80,7 +80,7 @@ namespace {
 			if (timer.ShouldRun()) {
 				auto ShrinkSound = runtime.shrinkSound;
 				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/2);
-				PlaySound(ShrinkSound, target, Volume, 0.0);
+				PlaySound(ShrinkSound, actor, Volume, 0.0);
 				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
 			}
 			return; // Don't allow set_scale to take effect at all cost >:(
