@@ -22,6 +22,7 @@
 #include "magic/effects/SizeRelatedDamage.hpp"
 #include "magic/effects/SmallMassiveThreat.hpp"
 #include "magic/effects/GrowthPotion.hpp"
+#include "magic/effects/SizePotion.hpp"
 #include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
 
@@ -151,6 +152,10 @@ namespace Gts {
 
 			if (GrowthPotion::StartEffect(base_spell)) {
 				this->active_effects.try_emplace(effect, new GrowthPotion(effect));
+			}
+
+			if (SizePotion::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new SizePotion(effect));
 			}
 
 			if (CrushGrowth::StartEffect(base_spell)) {

@@ -200,6 +200,9 @@ namespace Gts {
 		///Potions///
 		this->EffectGrowthPotion = find_form<EffectSetting>("GTS.esp|3D4582");
 		this->ResistShrinkPotion = find_form<EffectSetting>("GTS.esp|3D4583");
+		this->EffectSizePotionWeak = find_form<EffectSetting>("GTS.esp|3E38BB");
+		this->EffectSizePotionNormal = find_form<EffectSetting>("GTS.esp|3E38BC");
+		this->EffectSizePotionStrong = find_form<EffectSetting>("GTS.esp|3E38BD");
 		///End Potions///
 
 		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");

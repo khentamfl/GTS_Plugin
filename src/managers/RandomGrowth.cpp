@@ -14,7 +14,7 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		auto& runtime = Runtime::GetSingleton();
-		int random = rand() % 30 + 1;
+		int random = rand() % 99 + 1;
 		int decide_chance = 1;
 		auto GrowthPerk = runtime.GrowthPerk;
 		auto Player = PlayerCharacter::GetSingleton();

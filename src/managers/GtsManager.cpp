@@ -4,6 +4,7 @@
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
+#include "magic/effects/common.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
@@ -69,6 +70,18 @@ namespace {
 			return;
 		}
 		float visual_scale = persi_actor_data->visual_scale;
+		float SizeRoof = persi_actor_data->max_scale;
+
+		if (visual_scale > SizeRoof)	{
+			ShrinkActor(actor, 0.0010, 0.0);
+			if (timer.ShouldRun()) {
+				auto ShrinkSound = runtime.shrinkSound;
+				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/2);
+				PlaySound(ShrinkSound, target, Volume, 0.0);
+				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
+			}
+			return; // Don't allow set_scale to take effect at all cost >:(
+		}
 
 		// Is scale correct already?
 		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
@@ -82,6 +95,7 @@ namespace {
 
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
+		
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
