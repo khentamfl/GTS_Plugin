@@ -74,7 +74,7 @@ namespace Gts {
 		}
 		
 		bool has_smt = caster->HasMagicEffect(Runtime::GetSingleton().SmallMassiveThreat);
-		TransferSize(caster, target, IsDualCasting(), this->power * SizeDamage, this->efficiency, has_smt);
+		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();
 		}
