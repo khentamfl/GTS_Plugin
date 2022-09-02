@@ -94,7 +94,7 @@ namespace Gts {
 			float Multiplier = (caster_scale/target_scale);
 			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
 			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
-			if (CasterHp >= (TargetHp / Multiplier) && !Target->HasMagicEffect(FakeCrushEffect) && !Target->HasSpell(FakeCrushSpell)) {
+			if (CasterHp >= (TargetHp / Multiplier) && !Target->HasMagicEffect(runtime.FakeCrushEffect) && !Target->HasSpell(runtime.FakeCrushSpell)) {
 			Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster); // Crush someone
 				shake_camera(Caster, 0.25 * caster_scale, 0.25);
 
