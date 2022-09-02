@@ -61,8 +61,8 @@ namespace Gts {
 		if (this->AllowGrowth == false) {
 			static Timer timer = Timer(3.0); // Run every 3.0s or as soon as we can
 			if (timer.ShouldRun())
-			{log::info("Checking For Growth");}
-			if (ShouldGrow() && timer.ShouldRun()) {
+			{
+			if (ShouldGrow()) {
 				log::info("Random Growth True");
 				// Start growing
 				this->growth_time = 0.0;
@@ -74,7 +74,9 @@ namespace Gts {
 				float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
 				PlaySound(MoanSound, player, 1.0, 0.0);
 				PlaySound(GrowthSound, player, Volume, 0.0);
+				}
 			}
+
 		} else if (this->AllowGrowth == true && player->HasMagicEffect(runtime.SmallMassiveThreat) == false) {
 			// Do the growing
 			float delta_time = Time::WorldTimeDelta();
