@@ -5,6 +5,7 @@
 #include "util.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "data/time.hpp"
 #include "timer.hpp"
 
 using namespace RE;
@@ -72,7 +73,7 @@ namespace Gts {
 			}
 		} else if (this->AllowGrowth == true && player->HasMagicEffect(runtime.SmallMassiveThreat) == false) {
 			// Do the growing
-			float delta_time = *g_delta_time;
+			float delta_time = Time::WorldTimeDelta();
 			float Scale = get_visual_scale(player);
 			float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
 			float base_power = ((0.0025 * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please

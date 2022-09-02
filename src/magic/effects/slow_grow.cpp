@@ -4,6 +4,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "data/time.hpp"
 
 namespace Gts {
 	std::string SlowGrow::GetName() {
@@ -14,7 +15,7 @@ namespace Gts {
 	bool SlowGrow::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 		return effect == runtime.SlowGrowth;
-		
+
 	}
 
 	void SlowGrow::OnUpdate() {
@@ -27,16 +28,14 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.000005;
 		float power = BASE_POWER + AlterBonus;
-		float delta_time = *g_delta_time;
+		float delta_time = Time::WorldTimeDelta();
 		auto GrowthTick = this->growth_tick;
-		if (this->IsDual == true)
-		{
-		power*= DUAL_CAST_BONUS; 
-		log::info("SlowGrowth is dual");
+		if (this->IsDual == true) {
+			power*= DUAL_CAST_BONUS;
+			log::info("SlowGrowth is dual");
 		}
 
-		if (GrowthTick <= 0.0)
-		{
+		if (GrowthTick <= 0.0) {
 			auto GrowthSound = runtime.growthSound;
 			float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/3);
 			PlaySound(GrowthSound, caster, Volume, 0.25);
@@ -48,10 +47,11 @@ namespace Gts {
 	}
 
 	void SlowGrow::OnStart() {
-		if (IsDualCasting())
-		{this->IsDual = true;}
-		else
-		{this->IsDual = false;}
+		if (IsDualCasting()) {
+			this->IsDual = true;
+		} else {
+			this->IsDual = false;
+		}
 	}
 
 	void SlowGrow::OnFinish() {

@@ -3,6 +3,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "data/time.hpp"
 // Module that handles various magic effects
 
 namespace {
@@ -12,7 +13,7 @@ namespace {
 namespace Gts {
 	inline float TimeScale() {
 		const float BASE_FPS = 60.0; // Parameters were optimised on this fps
-		return (*g_delta_time) * BASE_FPS;
+		return Time::WorldTimeDelta() * BASE_FPS;
 	}
 
 
@@ -30,14 +31,14 @@ namespace Gts {
 		float SizeLimit = runtime.sizeLimit->value;
 
 		if (GetGlobalMaxSizeCalc < 10.0) {
-		runtime.GlobalMaxSizeCalc->value = GetGlobalMaxSizeCalc + (Value * 10 * ProgressionMultiplier * TimeScale()); // Always apply it
+			runtime.GlobalMaxSizeCalc->value = GetGlobalMaxSizeCalc + (Value * 10 * ProgressionMultiplier * TimeScale()); // Always apply it
 		}
 
 		if (GetGlobalMassSize < SizeLimit && SelectedFormula >= 2.0) {
-			runtime.MassBasedSizeLimit->value = GetGlobalMassSize + (Value  * ProgressionMultiplier * TimeScale()); 
-			}
+			runtime.MassBasedSizeLimit->value = GetGlobalMassSize + (Value  * ProgressionMultiplier * TimeScale());
 		}
-	
+	}
+
 
 	inline float CalcEffeciency(Actor* caster, Actor* target) {
 		const float DRAGON_PEANLTY = 0.14;
@@ -119,8 +120,9 @@ namespace Gts {
 		float receive = CalcPower(from, receiver, 0);
 		float lose = CalcPower(from, receiver, 0);
 		float CasterScale = get_visual_scale(from);
-		if (CasterScale > 1.0) // We don't want to scale the caster below this limit!
-		{mod_target_scale(from, -lose);} 
+		if (CasterScale > 1.0) { // We don't want to scale the caster below this limit!
+			mod_target_scale(from, -lose);
+		}
 		mod_target_scale(to, receive);
 	}
 
@@ -171,7 +173,7 @@ namespace Gts {
 			AdjustSizeLimit(0.0117);
 			ConsoleLog::GetSingleton()->Print("%s Was absorbed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			//target->SetDelete(true);
-			return true; 
+			return true;
 		}
 		return false;
 	}
@@ -179,11 +181,11 @@ namespace Gts {
 	inline void CrushToNothing(Actor* caster, Actor* target) {
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
-		if (!caster->HasPerk(runtime.GrowthPerk)) // Requires Growth Perk in order to grow
-		{return;}
+		if (!caster->HasPerk(runtime.GrowthPerk)) { // Requires Growth Perk in order to grow
+			return;
+		}
 		int Random = rand() % 8;
-		if (Random >= 8)
-		{
+		if (Random >= 8) {
 			PlaySound(runtime.MoanSound,caster, 1.0, 1.0);
 		}
 		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
@@ -193,8 +195,9 @@ namespace Gts {
 		AdjustSizeLimit(0.0417 * target_scale);
 
 
-		if (caster->HasPerk(runtime.ExtraGrowth) && (caster->HasMagicEffect(runtime.explosiveGrowth1) || caster->HasMagicEffect(runtime.explosiveGrowth2) || caster->HasMagicEffect(runtime.explosiveGrowth3))) 
-		{runtime.CrushGrowthStorage->value += target_scale/50;} // Slowly increase Limit after crushing someone while Growth Spurt is active.
+		if (caster->HasPerk(runtime.ExtraGrowth) && (caster->HasMagicEffect(runtime.explosiveGrowth1) || caster->HasMagicEffect(runtime.explosiveGrowth2) || caster->HasMagicEffect(runtime.explosiveGrowth3))) {
+			runtime.CrushGrowthStorage->value += target_scale/50;
+		} // Slowly increase Limit after crushing someone while Growth Spurt is active.
 
 
 		ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());

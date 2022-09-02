@@ -7,6 +7,7 @@
 #include "managers/Attributes.hpp"
 #include "managers/RandomGrowth.hpp"
 #include "magic/magic.hpp"
+#include "data/time.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -30,7 +31,9 @@ namespace Hooks
 		auto& quest = QuestManager::GetSingleton();
 		auto& attributes = AttributeManager::GetSingleton();
 		auto& randomGrowth = RandomGrowth::GetSingleton();
+		auto& time = Time::GetSingleton();
 		activate_mainthread_mode();
+		time.Update();
 		manager.poll();
 		magic.Update();
 		camera.Update();
