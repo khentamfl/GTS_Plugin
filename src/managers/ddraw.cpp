@@ -142,17 +142,17 @@ namespace {
 			DrawRigidBody(bumpedCharCollisionObject);
 		}
 
-		auto model = actor->GetCurrent3D();
-		if (model) {
-			glm::mat4 transform = Ni2Glm(model->world);
-			for (auto bhkShape: charController->shapes) {
-				hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
-				if (shape) {
-					log::info("  - Shape of CharController");
-					DrawShape(shape, transform);
-				}
-			}
-		}
+		// auto model = actor->GetCurrent3D();
+		// if (model) {
+		// 	glm::mat4 transform = Ni2Glm(model->world);
+		// 	for (auto bhkShape: charController->shapes) {
+		// 		hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
+		// 		if (shape) {
+		// 			log::info("  - Shape of CharController");
+		// 			DrawShape(shape, transform);
+		// 		}
+		// 	}
+		// }
 
 		bhkCharacterController* bcharController = findCharController(actor->GetCurrent3D());
 		if (bcharController) {
@@ -182,6 +182,26 @@ namespace {
 		}
 	}
 
+	void DrawRagdoll(Actor* actor) {
+		BSAnimationGraphManagerPtr animGraphManager;
+		if (actor->GetAnimationGraphManager(animGraphManager)) {
+			for (auto& graph : animGraphManager->graphs) {
+				if (graph) {
+					auto& character = graph->characterInstance;
+					auto ragdollDriver = character.ragdollDriver.get();
+					if (ragdollDriver) {
+						auto ragdoll = ragdollDriver->ragdoll;
+						if (ragdoll) {
+							for (auto& rb: ragdoll->rigidBodies) {
+								DrawRigidBody(rb);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	void DrawActor(Actor* actor) {
 		if (!actor) {
 			return;
@@ -194,6 +214,7 @@ namespace {
 		DrawNiNodes(root);
 
 		DrawCharController(actor);
+		DrawRagdoll(actor);
 	}
 
 
