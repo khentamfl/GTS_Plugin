@@ -121,7 +121,7 @@ namespace {
 
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
-
+		log::info("!PREPARING TO APPLY SPEED FOR {}!", actor->GetDisplayFullName());
 		static Timer timer = Timer(0.50); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRun()) {
 				persi_actor_data->anim_speed = speed_mult;
@@ -232,7 +232,7 @@ namespace {
 		} // Avoid bugs
 
 		if (get_target_scale(actor) > size_limit) {
-			mod_target_scale(actor, -0.00025);
+			mod_target_scale(actor, -0.00025 * visual_scale);
 		}
 
 		ChosenGameMode game_mode = ChosenGameMode::None;
