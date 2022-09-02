@@ -18,6 +18,7 @@ namespace {
 		int decide_chance = 1;
 		auto GrowthPerk = runtime.GrowthPerk;
 		auto Player = PlayerCharacter::GetSingleton();
+		log::info("Random Growth random: {}", random);
 		if (random <= decide_chance && Player->HasPerk(GrowthPerk)) {
 			return true;
 		} else {
@@ -59,7 +60,10 @@ namespace Gts {
 
 		if (this->AllowGrowth == false) {
 			static Timer timer = Timer(3.0); // Run every 3.0s or as soon as we can
+			if (timer.ShouldRun())
+			{log::info("Checking For Growth");}
 			if (ShouldGrow() && timer.ShouldRun()) {
+				log::info("Random Growth True");
 				// Start growing
 				this->growth_time = 0.0;
 				this->AllowGrowth = true;
