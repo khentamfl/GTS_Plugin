@@ -50,6 +50,17 @@ namespace {
 			log::debug("- Shape (of type {}) is not handlled", static_cast<int>(shape->type));
 		}
 	}
+
+	void DrawWorldObject(hkpWorldObject* worldObject) {
+		auto shape = worldObject->GetShape();
+		auto motionState = worldObject->GetMotionState();
+		if (motionState) {
+			glm::mat4 transform = HkToGlm(motionState->transform);
+			if (shape) {
+				DrawShape(shape, transform);
+			}
+		}
+	}
 	void DrawRigidBody(hkpRigidBody* rigidBody) {
 		auto shape = rigidBody->GetShape();
 		glm::mat4 transform = HkToGlm(rigidBody->motion.motionState.transform);
@@ -161,21 +172,22 @@ namespace {
 			log::info("Nope");
 		}
 
-		auto ai = actor->currentProcess;
-		if (ai) {
-			auto high = ai->high;
-			log::info("AI");
-			if (high) {
-				log::info("AI HIGH");
-				auto unk1E8 = high->unk1E8;
-				if (unk1E8) {
-					log::info("Has unk1E8");
-					NiRefObject* refunk1E8 = unk1E8.get();
-					bhkCharacterController* result = skyrim_cast<bhkCharacterController*>(refunk1E8);
-					if (result) {
-						log::info("Found in AI");
-					} else {
-						log::info("Also NOPE");
+		bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
+		if (charProxyController) {
+			auto& proxy = charProxyController->proxy;
+			hkReferencedObject* refObject = proxy.referencedObject.get();
+			if (refObject) {
+				hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
+				if (hkpObject) {
+					for (hkpRigidBody* body: hkpObject->bodies) {
+						DrawRigidBody(body);
+					}
+					for (auto phantom: hkpObject->phantoms) {
+						DrawWorldObject(phantom);
+					}
+					auto shapePhantom = hkpObject->shapePhantom;
+					if (shapePhantom) {
+						DrawWorldObject(shapePhantom);
 					}
 				}
 			}
