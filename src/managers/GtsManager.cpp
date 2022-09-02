@@ -90,23 +90,28 @@ namespace {
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
 		log::info("ApplySpeed Actor Name is {}", actor->GetDisplayFullName());
 		if (!Persistent::GetSingleton().is_speed_adjusted) {
+			log::info("!!!!!SPEED IS ADJUSTED!!!!!! {}", actor->GetDisplayFullName());
 			return;
 		}
 		if (!actor) {
+			log::info("!ACTOR NOT FOUND!");
 			return;
 		}
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
 		if (!trans_actor_data) {
+			log::info("!TRANS ACTOR DATA IS ! {}", actor->GetDisplayFullName());
 			return;
 		}
 		if (!persi_actor_data) {
+			log::info("!PERSI ACTOR DATA IS ! {}", actor->GetDisplayFullName());
 			return;
 		}
 
 		float scale = persi_actor_data->visual_scale;
 		if (scale < 1e-5) {
+			log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
 		}
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
@@ -182,7 +187,7 @@ namespace {
 
 	void update_actor(Actor* actor) {
 		Transient::GetSingleton().UpdateActorData(actor);
-		log::info("Update Actor Name is {}", actor->GetDisplayFullName());
+		//log::info("Update Actor Name is {}", actor->GetDisplayFullName());
 
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
@@ -191,7 +196,7 @@ namespace {
 	}
 
 	void apply_actor(Actor* actor, bool force = false) {
-		log::info("Apply_Actor name is {}", actor->GetDisplayFullName());
+		//log::info("Apply_Actor name is {}", actor->GetDisplayFullName());
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
@@ -274,7 +279,7 @@ namespace {
 		ChosenGameModeNPC game_modeNPC = ChosenGameModeNPC::NoneNPC;
 		int game_modeNPC_int = 0;
 		if (actor->formID != 0x14 && actor->IsPlayerTeammate()) {
-			log::info("Game Mode NPC is {}", actor->GetDisplayFullName());
+			//log::info("Game Mode NPC is {}", actor->GetDisplayFullName());
 			game_modeNPC_int = runtime.ChosenGameModeNPC->value;
 			AttributeManager::GetSingleton().UpdateNpc(actor);
 		}
@@ -342,7 +347,7 @@ void GtsManager::poll() {
 		const auto& frame_config = Gts::Config::GetSingleton().GetFrame();
 		auto init_delay = frame_config.GetInitDelay();
 		auto step = frame_config.GetStep() + 1; // 1 Based index
-		log::info("Manager: Poll.");
+		//log::info("Manager: Poll.");
 		auto current_frame = this->frame_count.fetch_add(1);
 		if (current_frame < init_delay) {
 			return;
@@ -358,7 +363,7 @@ void GtsManager::poll() {
 			if (!actor->Is3DLoaded()) {
 				continue;
 			}
-			log::info("Found Actor {}", actor->GetDisplayFullName());
+			//log::info("Found Actor {}", actor->GetDisplayFullName());
 			update_actor(actor);
 			apply_actor(actor);
 			GameMode(actor);
