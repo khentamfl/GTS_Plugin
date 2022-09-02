@@ -49,7 +49,7 @@ namespace Gts {
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
 			efficiency *= DRAGON_PEANLTY;
 		}
-		if (target->HasMagicEffect(runtime.ResistShrinkPotion) {
+		if (target->HasMagicEffect(runtime.ResistShrinkPotion)) {
 			efficiency *= 0.25;
 		}
 
