@@ -1,5 +1,6 @@
 
 #include "Config.hpp"
+#include "managers/GrowthTremorManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
@@ -73,6 +74,8 @@ namespace {
 		float SizeRoof = persi_actor_data->max_scale;
 
 		if (visual_scale > SizeRoof)	{
+			auto runtime = Runtime::GetSingleton();
+			static Timer timer = Timer(2.33);
 			ShrinkActor(actor, 0.0010, 0.0);
 			if (timer.ShouldRun()) {
 				auto ShrinkSound = runtime.shrinkSound;
