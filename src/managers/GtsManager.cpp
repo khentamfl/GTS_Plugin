@@ -71,20 +71,6 @@ namespace {
 			return;
 		}
 		float visual_scale = persi_actor_data->visual_scale;
-		float SizeRoof = persi_actor_data->max_scale;
-
-		if (visual_scale > SizeRoof)	{
-			auto runtime = Runtime::GetSingleton();
-			static Timer timer = Timer(2.33);
-			ShrinkActor(actor, 0.0010, 0.0);
-			if (timer.ShouldRun()) {
-				auto ShrinkSound = runtime.shrinkSound;
-				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/2);
-				PlaySound(ShrinkSound, actor, Volume, 0.0);
-				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
-			}
-			return; // Don't allow set_scale to take effect at all cost >:(
-		}
 
 		// Is scale correct already?
 		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
@@ -240,19 +226,32 @@ namespace {
 	// over time
 	void GameMode(Actor* actor)  {
 		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
+		auto actor_data = Persist.GetActorData(actor);
+		float size_limit = actor_data->max_scale;
 		auto& Persist = Persistent::GetSingleton();
 
 		if (size_limit < 1.0) {
 			size_limit = 1.0;
 		} // Avoid bugs
 
-		auto actor_data = Persist.GetActorData(actor);
-		if (actor_data->half_life < 1.0) {
-			actor_data->half_life = 1.0;
+		float SizeRoof = actor_data->max_scale;
+
+		if (visual_scale > SizeRoof)	{
+			auto runtime = Runtime::GetSingleton();
+			static Timer timer = Timer(2.33);
+			ShrinkActor(actor, 0.0005, 0.0);
+			if (timer.ShouldRun()) {
+				auto ShrinkSound = runtime.shrinkSound;
+				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/2);
+				PlaySound(ShrinkSound, actor, Volume, 0.0);
+				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
+			}
+		}
+		else {
+			set_max_scale(actor, size_limit);
 		}
 
-		set_max_scale(actor, size_limit);
+		
 		if (get_target_scale(actor) > size_limit) {
 			set_target_scale(actor, size_limit);
 		}
@@ -297,21 +296,6 @@ namespace {
 
 	void GameModeNPC(Actor* actor)  {
 		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
-		auto& Persist = Persistent::GetSingleton();
-
-		if (size_limit < 1.0) {
-			size_limit = 1.0;
-		} // Avoid bugs
-		auto actor_data = Persist.GetActorData(actor);
-		if (actor_data->half_life < 1.0) {
-			actor_data->half_life = 1.0;
-		}
-
-		set_max_scale(actor, size_limit);
-		if (get_target_scale(actor) > size_limit) {
-			set_target_scale(actor, size_limit);
-		}
 
 		ChosenGameModeNPC game_modeNPC = ChosenGameModeNPC::NoneNPC;
 		int game_modeNPC_int = 0;
