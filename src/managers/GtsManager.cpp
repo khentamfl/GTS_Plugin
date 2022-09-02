@@ -114,7 +114,7 @@ namespace {
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
 
-		float Bonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed;
+		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 
 		static Timer timer = Timer(0.50); // Run every 0.5s or as soon as we can
@@ -227,7 +227,7 @@ namespace {
 		} // Avoid bugs
 
 		if (get_target_scale(actor) > size_limit) {
-			mod_target_scale(actor, -0.00025, 1.0);
+			mod_target_scale(actor, -0.00025);
 		}
 
 		ChosenGameMode game_mode = ChosenGameMode::None;
@@ -342,7 +342,7 @@ void GtsManager::poll() {
 		const auto& frame_config = Gts::Config::GetSingleton().GetFrame();
 		auto init_delay = frame_config.GetInitDelay();
 		auto step = frame_config.GetStep() + 1; // 1 Based index
-		log::info("Manager: Poll.")
+		log::info("Manager: Poll.");
 		auto current_frame = this->frame_count.fetch_add(1);
 		if (current_frame < init_delay) {
 			return;
