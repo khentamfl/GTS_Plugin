@@ -2,6 +2,7 @@
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
+#include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "util.hpp"
 
@@ -17,9 +18,6 @@ namespace Gts {
 	}
 
 	void Gigantism::OnStart() {
-		auto CrushedFoe = GetTarget();
-		this->CrushGrowthAmount += 1.0;
-		this->ScaleOnCrush = get_visual_scale(CrushedFoe);
 	}
 
 	void Gigantism::OnUpdate() {
@@ -36,7 +34,5 @@ namespace Gts {
 
 
     void Gigantism::OnFinish() {
-        this->CrushGrowthAmount = 0.0;
-		this->ScaleOnCrush = 1.0;
     }
 }
