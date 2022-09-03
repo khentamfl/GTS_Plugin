@@ -2,6 +2,7 @@
 #include "util.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
+#include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 // Module that handles various magic effects
