@@ -115,15 +115,15 @@ namespace {
 			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
 		}
-				float kS = 0.125,
-				float nS = 0.86,
-				float sS = 1.12,
+				float kS = 0.125;
+				float nS = 0.86;
+				float sS = 1.12;
 				float SpeedCalc = 1.0/(pow(1.0+pow(kS*(scale-1.0),nS*sS),1.0/sS));
 				float speed_mult = clamp(0.10, 1.00, SpeedCalc); 
         // -------------------------------------- Ctrl C from SP;
-				float kM = 0.132,
-				float nM = 0.86,
-				float sM = 1.12,
+				float kM = 0.132;
+				float nM = 0.86;
+				float sM = 1.12;
 				float MSCalc = 1.0/(pow(1.0+pow(kM*(scale-1.0),nM*sM),1.0/sM)); 
 				float MS_Mult = clamp(0.10, 1.00, MSCalc); 
 
