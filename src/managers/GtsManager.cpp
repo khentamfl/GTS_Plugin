@@ -88,29 +88,23 @@ namespace {
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
-		//log::info("ApplySpeed Actor Name is {}", actor->GetDisplayFullName());
 		if (!Persistent::GetSingleton().is_speed_adjusted) {
-			//log::info("!!!!!SPEED IS ADJUSTED!!!!!! {}", actor->GetDisplayFullName());
 			return;
 		}
 		if (!actor) {
-			//log::info("!ACTOR NOT FOUND!");
 			return;
 		}
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
 		if (!trans_actor_data) {
-			//log::info("!TRANS ACTOR DATA IS ! {}", actor->GetDisplayFullName());
 			return;
 		}
 		if (!persi_actor_data) {
-			//log::info("!PERSI ACTOR DATA IS ! {}", actor->GetDisplayFullName());
 			return;
 		}
 
-		//float scale = persi_actor_data->visual_scale;
-		float scale = get_visual_scale(actor);
+		float scale = persi_actor_data->visual_scale;
 		if (scale < 1e-5) {
 			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
