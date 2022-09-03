@@ -88,7 +88,7 @@ namespace Gts {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 
-		if (get_visual_scale(caster) >= this->grow_limit-0.01) {
+		if (get_visual_scale(caster) >= this->grow_limit) {
 			return;
 		}
 
