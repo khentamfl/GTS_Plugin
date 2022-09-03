@@ -4,6 +4,7 @@
 #include "magic/effects/common.hpp"
 #include "util.hpp"
 #include "scale/scale.hpp"
+#include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "timer.hpp"
@@ -14,10 +15,11 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		auto& runtime = Runtime::GetSingleton();
-		int random = rand() % 99 + 1;
+		auto Player = PlayerCharacter::GetSingleton();
+		float Gigantism = Persistent::GetSingleton().GetActorData(Player)->gigantism_enchantment;
+		int random = rand() % ((149 + 1) * (1.0 - Gigantism));
 		int decide_chance = 1;
 		auto GrowthPerk = runtime.GrowthPerk;
-		auto Player = PlayerCharacter::GetSingleton();
 		log::info("Random Growth random: {}", random);
 		if (random <= decide_chance && Player->HasPerk(GrowthPerk)) {
 			return true;
