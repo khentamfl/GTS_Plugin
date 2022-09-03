@@ -28,32 +28,32 @@ namespace Gts {
 		if (base_spell == runtime.explosiveGrowth1) {
 			this->power = GROWTH_1_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
-				this->grow_limit = 2.00; // NOLINT
+				this->grow_limit = 2.01; // NOLINT
 				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
-				this->grow_limit = 1.66; // NOLINT
+				this->grow_limit = 1.67; // NOLINT
 			} else {
-				this->grow_limit = 1.33; // NOLINT
+				this->grow_limit = 1.34; // NOLINT
 			}
 		} else if (base_spell == runtime.explosiveGrowth2) {
 			this->power = GROWTH_2_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
-				this->grow_limit = 2.33; // NOLINT
+				this->grow_limit = 2.34; // NOLINT
 				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
-				this->grow_limit = 2.00; // NOLINT
+				this->grow_limit = 2.01; // NOLINT
 			} else {
-				this->grow_limit = 1.66; // NOLINT
+				this->grow_limit = 1.67; // NOLINT
 			}
 		} else if (base_spell == runtime.explosiveGrowth3) {
 			this->power = GROWTH_3_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
-				this->grow_limit = 2.66; // NOLINT
+				this->grow_limit = 2.67; // NOLINT
 				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
-				this->grow_limit = 2.33; // NOLINT
+				this->grow_limit = 2.34; // NOLINT
 			} else {
-				this->grow_limit = 2.00; // NOLINT
+				this->grow_limit = 2.01; // NOLINT
 			}
 		}
 	}
