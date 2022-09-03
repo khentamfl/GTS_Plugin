@@ -109,13 +109,30 @@ namespace {
 			return;
 		}
 
-		float scale = persi_actor_data->visual_scale;
+		//float scale = persi_actor_data->visual_scale;
+		float scale = get_visual_scale(actor);
 		if (scale < 1e-5) {
 			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
 		}
-		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
-		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
+		SoftPotential speed_adjustment {
+				.k = 0.125,
+				.n = 0.86,
+				.s = 1.12,
+				.o = 1.0,
+				.a = 0.0,
+			};
+
+		SoftPotential MS_adjustment {
+				.k = 0.132,
+				.n = 0.86,
+				.s = 1.12,
+				.o = 1.0,
+				.a = 0.0,
+			};
+
+		//SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
+		//SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
 
