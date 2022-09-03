@@ -125,7 +125,7 @@ namespace {
 				float nM = 0.86;
 				float sM = 1.12;
 				float MSCalc = 1.0/(pow(1.0+pow(kM*(scale-1.0),nM*sM),1.0/sM)); 
-				float MS_Mult = clamp(0.10, 1.00, MSCalc); 
+				float MS_mult = clamp(0.10, 1.00, MSCalc); 
 
 		//SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		//SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
