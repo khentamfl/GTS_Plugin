@@ -55,7 +55,7 @@ namespace Gts {
 			efficiency *= 0.25;
 		}
 
-		effeciency *= GigantismCaster * GigantismTarget;
+		efficiency *= GigantismCaster * GigantismTarget;
 
 		return efficiency;
 	}
