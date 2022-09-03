@@ -18,9 +18,6 @@ namespace Gts {
 	}
 
 	void Gigantism::OnStart() {
-	}
-
-	void Gigantism::OnUpdate() {
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
 
@@ -28,11 +25,24 @@ namespace Gts {
 			return;
 		}
         float GigantismPower = GetActiveEffect()->magnitude;
-        Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment = GigantismPower;
-		log::info("GigantismPower is {}", GigantismPower);
+        Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment += GigantismPower;
+		log::info("GigantismPower is {}", Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment);
+	}
+
+	void Gigantism::OnUpdate() {
+		
 	}
 
 
     void Gigantism::OnFinish() {
+		auto& runtime = Runtime::GetSingleton();
+		auto caster = GetCaster();
+
+		if (!caster) {
+			return;
+		}
+        float GigantismPower = GetActiveEffect()->magnitude;
+        Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment -= GigantismPower;
+		log::info("GigantismPower is {}", Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment);
     }
 }
