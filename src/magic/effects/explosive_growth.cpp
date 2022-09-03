@@ -88,13 +88,13 @@ namespace Gts {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 
-		if (get_visual_scale(caster) >= this->grow_limit) {
+		if (get_visual_scale(caster) >= this->grow_limit -0.01) {
 			return;
 		}
 
 		if (this->timer.ShouldRun()) {
 			auto GrowthSound = runtime.growthSound;
-			float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
+			float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/2);
 			PlaySound(GrowthSound, caster, Volume, 0.0);
 			log::info("Timer is working");
 		}

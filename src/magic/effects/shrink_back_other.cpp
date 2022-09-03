@@ -44,7 +44,7 @@ namespace Gts {
 
 		if (this->timer.ShouldRun()) {
 			auto ShrinkSound = runtime.shrinkSound;
-			float Volume = clamp(0.25, 2.0, get_visual_scale(target)/2);
+			float Volume = clamp(0.15, 2.0, get_visual_scale(target)/4);
 			PlaySound(ShrinkSound, target, Volume, 0.0);
 			GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.30);
 		}

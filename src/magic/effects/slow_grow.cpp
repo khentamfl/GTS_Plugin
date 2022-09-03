@@ -37,7 +37,7 @@ namespace Gts {
 
 		if (GrowthTick <= 0.0) {
 			auto GrowthSound = runtime.growthSound;
-			float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/3);
+			float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/4);
 			PlaySound(GrowthSound, caster, Volume, 0.25);
 		}
 		this->growth_tick +=delta_time;

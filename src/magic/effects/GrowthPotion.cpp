@@ -56,7 +56,7 @@ namespace Gts {
 
 		if (this->timer.ShouldRun()) {
 			auto GrowthSound = runtime.growthSound;
-			float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/4);
+			float Volume = clamp(0.15, 1.0, get_visual_scale(caster)/4);
 			PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
 		}
 		float HP = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
