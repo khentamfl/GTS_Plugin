@@ -1,5 +1,6 @@
 #pragma once
 #include "magic/magic.hpp"
+#include "timer.hpp">
 // Module that handles footsteps
 
 
@@ -12,7 +13,7 @@ namespace Gts {
 		public:
 			using Magic::Magic;
 
-            virtual void OnStart() override;
+			virtual void OnStart() override;
 
 			virtual void OnUpdate() override;
 
@@ -21,8 +22,9 @@ namespace Gts {
 			virtual std::string GetName() override;
 
 			static bool StartEffect(EffectSetting* effect);
-        private:
-            float SoundTick = 0.0;    
+		private:
+			float SoundTick = 0.0;
 			float ActivationCount = 0.0;
+			Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
 	};
 }

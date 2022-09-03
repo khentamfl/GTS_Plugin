@@ -123,20 +123,20 @@ namespace {
 		float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 		//log::info("!PREPARING TO APPLY SPEED FOR {}!", actor->GetDisplayFullName());
 		static Timer timer = Timer(0.50); // Run every 0.5s or as soon as we can
-		if (timer.ShouldRun()) {
-				persi_actor_data->anim_speed = speed_mult;
-				if (actor->IsWalking() == true) {
-					actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 0.44 / MS_mult);
-					log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
-				} else if (actor->IsSprinting() == true) {
-					actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 1.25 / MS_mult);
-					log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
-				} else {
-					actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult + (Bonus/3 + 1.0))/ MS_mult);
-					log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
-				}
+		if (timer.ShouldRunFrame()) {
+			persi_actor_data->anim_speed = speed_mult;
+			if (actor->IsWalking() == true) {
+				actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 0.44 / MS_mult);
+				log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
+			} else if (actor->IsSprinting() == true) {
+				actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 1.25 / MS_mult);
+				log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
+			} else {
+				actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult + (Bonus/3 + 1.0))/ MS_mult);
+				log::info("Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
+			}
 		}
-		
+
 
 
 		// Experiement
@@ -224,7 +224,7 @@ namespace {
 		auto actor_data = Persist.GetActorData(actor);
 		float size_limit = actor_data->max_scale;
 		float visual_scale = get_visual_scale(actor);
-		
+
 		SizeManager::GetSingleton().UpdateSize(actor);
 
 		if (size_limit < 1.0) {
@@ -236,11 +236,11 @@ namespace {
 
 			static Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
 
-		if (timer.ShouldRun()) {
-			auto ShrinkSound = runtime.shrinkSound;
-			float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/3.25);
-			PlaySound(ShrinkSound, actor, Volume, 0.0);
-			GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
+			if (timer.ShouldRunFrame()) {
+				auto ShrinkSound = runtime.shrinkSound;
+				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/3.25);
+				PlaySound(ShrinkSound, actor, Volume, 0.0);
+				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
 			}
 		}
 

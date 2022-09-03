@@ -54,8 +54,7 @@ namespace Gts {
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.4);
 		}
 
-		static Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
-		if (timer.ShouldRun()) {
+		if (this->timer.ShouldRun()) {
 			auto GrowthSound = runtime.growthSound;
 			float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/4);
 			PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);

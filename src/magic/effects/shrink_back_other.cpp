@@ -42,8 +42,7 @@ namespace Gts {
 			Power *= 2.0;
 		}
 
-		static Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
-		if (timer.ShouldRun()) {
+		if (this->timer.ShouldRun()) {
 			auto ShrinkSound = runtime.shrinkSound;
 			float Volume = clamp(0.25, 2.0, get_visual_scale(target)/2);
 			PlaySound(ShrinkSound, target, Volume, 0.0);

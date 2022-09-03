@@ -78,7 +78,7 @@ namespace {
 			base_speed = 100.00;
 		}
 		static Timer timer = Timer(0.5); // Run every 0.5s or as soon as we can
-		if (timer.ShouldRun()) {
+		if (timer.ShouldRunFrame()) {
 			if (scale > 1) {
 				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((scale - 1) * (100 * scale)) * (SMTBonus + 1.0));
 			} else if (scale < 1) {
@@ -210,22 +210,14 @@ namespace Gts {
 		} else {
 			if (ActorAttributes->smt_run_speed > 0.0) {
 				ActorAttributes->smt_run_speed -= 0.004175;
-			} 
-
-			else if (ActorAttributes->smt_run_speed <= 0.0) {
+			} else if (ActorAttributes->smt_run_speed <= 0.0) {
 				ActorAttributes->smt_run_speed -= 0.0;
 				this->BlockMessage = false;
-			} 
-			
-			else if (ActorAttributes->smt_run_speed > 1.0) {
+			} else if (ActorAttributes->smt_run_speed > 1.0) {
 				ActorAttributes->smt_run_speed = 1.0;
-			}
-
-			else if (ActorAttributes->smt_run_speed < 1.0) {
+			} else if (ActorAttributes->smt_run_speed < 1.0) {
 				this->BlockMessage = false;
-			}
-
-			else {
+			} else {
 				ActorAttributes->smt_run_speed = 0.0;
 				this->BlockMessage = false;
 			}
