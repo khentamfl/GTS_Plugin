@@ -16,8 +16,9 @@ namespace {
 	bool ShouldGrow() {
 		auto& runtime = Runtime::GetSingleton();
 		auto Player = PlayerCharacter::GetSingleton();
-		float Gigantism = Persistent::GetSingleton().GetActorData(Player)->gigantism_enchantment;
-		int random = rand() % ((149 + 1) * (1.0 - Gigantism));
+		float Gigantism = 1.0 - Persistent::GetSingleton().GetActorData(Player)->gigantism_enchantment;
+		float Requirement = 125 * Gigantism;
+		int random = rand() % Requirement;
 		int decide_chance = 1;
 		auto GrowthPerk = runtime.GrowthPerk;
 		log::info("Random Growth random: {}", random);
