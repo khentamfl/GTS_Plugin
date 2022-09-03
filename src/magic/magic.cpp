@@ -3,6 +3,7 @@
 #include "magic/effects/common.hpp"
 #include "magic/effects/absorb_effect.hpp"
 #include "magic/effects/explosive_growth.hpp"
+#include "magic/effects/EnchGigantism.hpp"
 #include "magic/effects/grow_button.hpp"
 #include "magic/effects/grow_other.hpp"
 #include "magic/effects/tracksize.hpp"
@@ -147,6 +148,10 @@ namespace Gts {
 			EffectSetting* base_spell = effect->GetBaseObject();
 			if (ExplosiveGrowth::StartEffect(base_spell)) {
 				this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
+			}
+
+			if (Gigantism::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new Gigantism(effect));
 			}
 
 			if (GrowthPotion::StartEffect(base_spell)) {

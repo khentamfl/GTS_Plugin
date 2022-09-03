@@ -21,9 +21,10 @@ namespace Gts {
 	}
 	void SizeManager::UpdateSize(Actor* Actor) {
 		auto& runtime = Runtime::GetSingleton();
+        float Gigantism = Persistent::GetSingleton().GetActorData(Actor)->gigantism_enchantment;
         float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
         float Persistent_Size = Persistent::GetSingleton().GetActorData(Actor)->bonus_max_size;
-        float TotalLimit = GetLimit + Persistent_Size;
+        float TotalLimit = GetLimit + Persistent_Size + Gigantism;
         if (get_max_scale(Actor) < TotalLimit || get_max_scale(Actor) > TotalLimit) {
         set_max_scale(Actor, TotalLimit);
         log::info("{} _ size limit is set to {}", Actor->GetDisplayFullName(), TotalLimit);

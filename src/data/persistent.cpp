@@ -140,6 +140,19 @@ namespace Gts {
 						} else {
 							smt_run_speed = 0.0;
 						}
+						if (std::isnan(smt_run_speed)) {
+							smt_run_speed = 0.0;
+						}
+
+						float gigantism_enchantment;
+						if (version >= 5) {
+							serde->ReadRecordData(&gigantism_enchantment, sizeof(gigantism_enchantment));
+						} else {
+							gigantism_enchantment = 0.0;
+						}
+						if (std::isnan(gigantism_enchantment)) {
+							gigantism_enchantment = 0.0;
+						}
 						
 						ActorData data = ActorData();
 						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, bonus_hp: {}, bonus_carry: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, bonus_hp, bonus_carry);
@@ -155,6 +168,7 @@ namespace Gts {
 						data.bonus_carry = bonus_carry;
 						data.bonus_max_size = bonus_max_size;
 						data.smt_run_speed = smt_run_speed;
+						data.gigantism_enchantment = gigantism_enchantment;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
@@ -264,6 +278,7 @@ namespace Gts {
 			float bonus_carry = data.bonus_carry;
 			float bonus_max_size = data.bonus_max_size;
 			float smt_run_speed = data.smt_run_speed;
+			float gigantism_enchantment = data.gigantism_enchantment;
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
@@ -278,6 +293,7 @@ namespace Gts {
 			serde->WriteRecordData(&bonus_carry, sizeof(bonus_carry));
 			serde->WriteRecordData(&bonus_max_size, sizeof(bonus_max_size));
 			serde->WriteRecordData(&smt_run_speed, sizeof(smt_run_speed));
+			serde->WriteRecordData(&gigantism_enchantment, sizeof(gigantism_enchantment));
 		}
 
 		if (!serde->OpenRecord(ScaleMethodRecord, 0)) {
@@ -357,6 +373,7 @@ namespace Gts {
 		this->bonus_carry = 0.0;
 		this->bonus_max_size = 0.0;
 		this->smt_run_speed = 0.0;
+		this->gigantism_enchantment = 0.0;
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
@@ -416,6 +433,7 @@ namespace Gts {
 			data->bonus_carry = 0.0;
 			data->bonus_max_size = 0.0;
 			data->smt_run_speed = 0.0;
+			data->gigantism_enchantment = 0.0;
 		}
 	}
 }

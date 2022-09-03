@@ -60,6 +60,7 @@ namespace Gts {
 			EffectSetting* ShrinkBolt = nullptr;
 			EffectSetting* ShrinkStorm = nullptr;
 			EffectSetting* SwordEnchant = nullptr;
+			EffectSetting* EnchGigantism = nullptr;
 
 			EffectSetting* ShrinkToNothing = nullptr;
 			SpellItem* SmallMassiveThreatSpell = nullptr;
