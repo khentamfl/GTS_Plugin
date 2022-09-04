@@ -26,7 +26,7 @@ namespace Hooks
 							auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
 							if (saved_data) {
 								if (saved_data->anim_speed > 0.0) {
-									anim_speed = 0.001; // saved_data->anim_speed;
+									anim_speed = saved_data->anim_speed;
 								}
 							}
 						}
