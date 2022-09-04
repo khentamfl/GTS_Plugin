@@ -1,5 +1,5 @@
 debug:
-  logLevel: info
+  logLevel: debug
   flushLevel: trace
 
 frame:

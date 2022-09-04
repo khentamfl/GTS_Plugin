@@ -92,23 +92,31 @@ namespace {
 		}
 	}
 
-	void AddNode(ColliderActorData* actor_data, NiAVObject* currentnode) { // NOLINT
-		auto collision_object = currentnode->GetCollisionObject();
-		if (collision_object) {
-			auto bhk_rigid_body = collision_object->GetRigidBody();
-			if (bhk_rigid_body) {
-				hkReferencedObject* hkp_rigidbody_ref = bhk_rigid_body->referencedObject.get();
-				if (hkp_rigidbody_ref) {
-					hkpRigidBody* hkp_rigidbody = skyrim_cast<hkpRigidBody*>(hkp_rigidbody_ref);
-					if (hkp_rigidbody) {
-						auto shape = hkp_rigidbody->GetShape();
-						if (shape) {
-							if (shape->type == hkpShapeType::kCapsule) {
-								const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);
-								// if (orig_capsule->pad28 == CAPSULE_MARKER) {
-								// 	log::error("Capsule is a lost one of ours");
-								// }
-								actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule, currentnode);
+	void AddRigidBody(ColliderActorData* actor_data, hkpRigidBody* hkp_rigidbody) { // NOLINT
+		if (hkp_rigidbody) {
+			auto shape = hkp_rigidbody->GetShape();
+			if (shape) {
+				if (shape->type == hkpShapeType::kCapsule) {
+					const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);
+					actor_data->ReplaceCapsule(hkp_rigidbody, orig_capsule);
+				}
+			}
+		}
+	}
+
+	void SearchColliders(Actor* actor, ColliderActorData* actor_data) {
+		BSAnimationGraphManagerPtr animGraphManager;
+		if (actor->GetAnimationGraphManager(animGraphManager)) {
+			for (auto& graph : animGraphManager->graphs) {
+				if (graph) {
+					auto& character = graph->characterInstance;
+					auto ragdollDriver = character.ragdollDriver.get();
+					if (ragdollDriver) {
+						auto ragdoll = ragdollDriver->ragdoll;
+						if (ragdoll) {
+							log::info("Got ragdoll");
+							for (auto& rb: ragdoll->rigidBodies) {
+								AddRigidBody(actor_data, rb);
 							}
 						}
 					}
@@ -117,46 +125,11 @@ namespace {
 		}
 	}
 
-	void SearchColliders(NiAVObject* root, ColliderActorData* actor_data) {
-		std::deque<NiAVObject*> queue;
-		queue.push_back(root);
-
-
-		while (!queue.empty()) {
-			auto currentnode = queue.front();
-			queue.pop_front();
-			try {
-				if (currentnode) {
-					auto ninode = currentnode->AsNode();
-					if (ninode) {
-						for (auto child: ninode->GetChildren()) {
-							// Bredth first search
-							queue.push_back(child.get());
-							// Depth first search
-							//queue.push_front(child.get());
-						}
-					}
-					// Do smth//
-					AddNode(actor_data, currentnode);
-				}
-			}
-			catch (const std::overflow_error& e) {
-				log::warn("Overflow: {}", e.what());
-			} // this executes if f() throws std::overflow_error (same type rule)
-			catch (const std::runtime_error& e) {
-				log::warn("Underflow: {}", e.what());
-			} // this executes if f() throws std::underflow_error (base class rule)
-			catch (const std::exception& e) {
-				log::warn("Exception: {}", e.what());
-			} // this executes if f() throws std::logic_error (base class rule)
-			catch (...) {
-				log::warn("Exception Other");
-			}
-		}
-	}
-
 	void ScaleColliders(Actor* actor, ColliderActorData* actor_data, bool force_update) {
 		const float EPSILON = 1e-3;
+		if (!actor) {
+			return;
+		}
 		float visual_scale = get_visual_scale(actor);
 		float natural_scale = get_natural_scale(actor);
 		float scale_factor = visual_scale/natural_scale;
@@ -164,12 +137,7 @@ namespace {
 
 		bool search_nodes = !actor_data->HasCapsuleData() || force_update;
 		if (search_nodes) {
-			for (auto person: {true, false} ) {
-				auto model = actor->Get3D(person);
-				if (model) {
-					SearchColliders(model, actor_data);
-				}
-			}
+			SearchColliders(actor, actor_data);
 		}
 
 		if ((fabs(actor_data->last_scale - scale_factor) <= EPSILON) &&  !force_update) {
@@ -183,6 +151,22 @@ namespace {
 			auto& capsule = capsule_data.capsule;
 			if (capsule) {
 				RescaleCapsule(capsule, &capsule_data, scale_factor, vec_scale);
+			}
+		}
+
+		static bool doonce = false;
+		if (!doonce) {
+			doonce = true;
+			log::info("Doing test scale on {}", actor->GetDisplayFullName());
+			auto charController = actor->GetCharController();
+			if (charController) {
+				for (auto bhkShape: charController->shapes) {
+					hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
+					if (shape) {
+						log::info("  - Scaling");
+						scale_recursive("    ", shape, 10.0);
+					}
+				}
 			}
 		}
 	}
@@ -311,10 +295,9 @@ namespace Gts {
 		this->Reset();
 	}
 
-	CapsuleData::CapsuleData(const hkpCapsuleShape* orig_capsule, hkpRigidBody* rigidBody, NiAVObject* node) {
+	CapsuleData::CapsuleData(const hkpCapsuleShape* orig_capsule, hkpRigidBody* rigidBody) {
 		this->capsule = MakeCapsule();
 		this->rigidBody = rigidBody;
-		this->node = node;
 		this->capsule->radius = orig_capsule->radius;
 		this->capsule->vertexA = orig_capsule->vertexA;
 		this->capsule->vertexB = orig_capsule->vertexB;
@@ -330,7 +313,7 @@ namespace Gts {
 		this->capsule->RemoveReference();
 	}
 
-	void ColliderActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule, NiAVObject* node) { // NOLINT
+	void ColliderActorData::ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule) { // NOLINT
 		std::unique_lock lock(this->_lock);
 		if (!orig_capsule) {
 			return;
@@ -339,7 +322,7 @@ namespace Gts {
 		try {
 			auto& result = this->capsule_data.at(key);
 		} catch (const std::out_of_range& oor) {
-			CapsuleData new_data(orig_capsule, rigid_body, node);
+			CapsuleData new_data(orig_capsule, rigid_body);
 			auto new_capsule = new_data.capsule;
 			key = new_capsule;
 			rigid_body->SetShape(new_capsule);

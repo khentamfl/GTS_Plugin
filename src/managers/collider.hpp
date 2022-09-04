@@ -11,12 +11,11 @@ namespace Gts {
 	struct CapsuleData {
 		hkpCapsuleShape* capsule;
 		hkpRigidBody* rigidBody;
-		NiAVObject* node;
 		hkVector4 start;
 		hkVector4 end;
 		float radius;
-		CapsuleData(const hkpCapsuleShape* orig_capsule, hkpRigidBody* rigidBody, NiAVObject* node);
-		CapsuleData(CapsuleData&& old) : capsule(std::move(old.capsule)), rigidBody(std::move(old.rigidBody)), node(std::move(old.node)), start(std::move(old.start)), end(std::move(old.end)), radius(std::move(old.radius)) {
+		CapsuleData(const hkpCapsuleShape* orig_capsule, hkpRigidBody* rigidBody);
+		CapsuleData(CapsuleData&& old) : capsule(std::move(old.capsule)), rigidBody(std::move(old.rigidBody)), start(std::move(old.start)), end(std::move(old.end)), radius(std::move(old.radius)) {
 		};
 		~CapsuleData();
 	};
@@ -36,7 +35,7 @@ namespace Gts {
 				return result;
 			}
 
-			void ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule, NiAVObject* node);
+			void ReplaceCapsule(hkpRigidBody* rigid_body, const hkpCapsuleShape* orig_capsule);
 
 			inline bool HasCapsuleData() {
 				return !this->capsule_data.empty();

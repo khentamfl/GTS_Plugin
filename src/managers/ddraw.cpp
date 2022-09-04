@@ -11,11 +11,12 @@ using namespace Gts;
 namespace {
 	const float MS_TIME = 10;
 
-	const glm::vec4 CAPSULE_COLOR = { 237/255, 230/255, 47/255, 1.0f };
+	const glm::vec4 CAPSULE_COLOR = { 0.90f, 0.90f, 0.20f, 1.0f };
 	const float CAPSULE_LINETHICKNESS = 0.1;
 
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
 		if (shape->type == hkpShapeType::kCapsule) {
+			// log::info("Capsule");
 			const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
 			if (capsule) {
 				glm::vec3 start = HkToGlm(capsule->vertexA);
@@ -25,20 +26,20 @@ namespace {
 				DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
 			}
 		} else if (shape->type == hkpShapeType::kList) {
-			log::info("List");
+			// log::info("List");
 			auto container = static_cast<const hkpListShape*>(shape);
 			auto key = container->GetFirstKey();
 			while (key != HK_INVALID_SHAPE_KEY) {
 				auto buffer = hkpShapeBuffer();
 				auto child_shape = container->GetChildShape(key, buffer);
 				if (child_shape) {
-					log::info("  - Child");
+					// log::info("  - Child");
 					DrawShape(child_shape, transform);
 				}
 				key = container->GetNextKey(key);
 			}
 		} else if (shape->type == hkpShapeType::kBVTree) {
-			log::info("Tree");
+			// log::info("Tree");
 			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
 			const hkpShapeContainer* container = actual_shape->GetContainer();
 			auto key = container->GetFirstKey();
@@ -46,7 +47,7 @@ namespace {
 				auto buffer = hkpShapeBuffer();
 				auto child_shape = container->GetChildShape(key, buffer);
 				if (child_shape) {
-					log::info("  - Child");
+					// log::info("  - Child");
 					DrawShape(child_shape, transform);
 				}
 				key = container->GetNextKey(key);
