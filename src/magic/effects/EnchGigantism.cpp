@@ -14,6 +14,7 @@ namespace Gts {
 
 	bool Gigantism::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
+		log::info("Starting Gigantism Effect");
 		return effect == runtime.EnchGigantism;
 	}
 
@@ -26,7 +27,7 @@ namespace Gts {
 		}
         float GigantismPower = GetActiveEffect()->magnitude;
         Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment += GigantismPower;
-		log::info("GigantismPower is {}", Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment);
+		log::info("Increasing GigantismPower: {}", Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment);
 	}
 
 	void Gigantism::OnUpdate() {
@@ -43,6 +44,6 @@ namespace Gts {
 		}
         float GigantismPower = GetActiveEffect()->magnitude;
         Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment -= GigantismPower;
-		log::info("GigantismPower is {}", Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment);
+		log::info("Decreasing GigantismPower: {}", Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment);
     }
 }

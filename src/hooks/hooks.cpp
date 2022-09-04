@@ -21,7 +21,7 @@ namespace Hooks
 		Hook_BGSImpactManager::Hook();
 		Hook_VM::Hook();
 		Hook_Havok::Hook(trampoline);
-		Hook_MagicTarget::Hook();
+		//Hook_MagicTarget::Hook();
 		Hook_hkbBehaviorGraph::Hook();
 
 		logger::info("Gts finished applying hooks...");

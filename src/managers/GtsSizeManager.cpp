@@ -27,7 +27,7 @@ namespace Gts {
         float TotalLimit = (GetLimit + Persistent_Size) * Gigantism;
         if (get_max_scale(Actor) < TotalLimit || get_max_scale(Actor) > TotalLimit) {
         set_max_scale(Actor, TotalLimit);
-        log::info("{} _ size limit is set to {}", Actor->GetDisplayFullName(), TotalLimit);
+        //log::info("{} _ size limit is set to {}", Actor->GetDisplayFullName(), TotalLimit);
         }
     }
 }

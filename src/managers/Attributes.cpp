@@ -226,7 +226,7 @@ namespace Gts {
 			this->BlockMessage = true; // Avoid spamming it
 			DebugNotification("You're fast enough to instantly crush someone", 0, true);
 		}
-		log::info("SMT Bonus: {}", ActorAttributes->smt_run_speed);
+		//log::info("SMT Bonus: {}", ActorAttributes->smt_run_speed);
 	}
 
 	void AttributeManager::OverrideBonus(float Value) {
