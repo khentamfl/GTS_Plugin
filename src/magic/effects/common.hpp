@@ -45,8 +45,8 @@ namespace Gts {
 		const float DRAGON_PEANLTY = 0.14;
 		auto& runtime = Runtime::GetSingleton();
 		float progression_multiplier = runtime.ProgressionMultiplier->value;
-		float GigantismCaster = 1.0 + Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment;
-		float GigantismTarget = 1.0 - Persistent::GetSingleton().GetActorData(target)->gigantism_enchantment;
+		float GigantismCaster = 1.0 + Persistent::GetSingleton().GetData(caster)->gigantism_enchantment;
+		float GigantismTarget = 1.0 - Persistent::GetSingleton().GetData(target)->gigantism_enchantment;
 		float efficiency = clamp(0.25, 1.25, (caster->GetLevel()/target->GetLevel())) * progression_multiplier;
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
 			efficiency *= DRAGON_PEANLTY;

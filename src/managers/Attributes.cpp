@@ -202,7 +202,7 @@ namespace Gts {
 		auto Player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
 		auto AugmentationPerk = runtime.NoSpeedLoss;
-		auto ActorAttributes = Persistent::GetSingleton().GetActorData(Player);
+		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
 		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
 			ActorAttributes->smt_run_speed += 0.001480;
 		} else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {

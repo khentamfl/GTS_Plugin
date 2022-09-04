@@ -68,7 +68,7 @@ namespace Gts {
 
 		if (this->power >= 18.00)
 		{	auto& Persist = Persistent::GetSingleton();
-			auto actor_data = Persist.GetActorData(target);
+			auto actor_data = Persist.GetData(target);
 			actor_data->half_life = 0.25; // Faster shrink, less smooth.
 			SizeDifference = clamp(1.0, 4.0, (get_visual_scale(caster)/get_visual_scale(target))/2);
 		}
