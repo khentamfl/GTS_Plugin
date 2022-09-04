@@ -33,15 +33,15 @@ namespace {
 				DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
 			}
 		} else if (shape->type == hkpShapeType::kTriangle) {
-			// log::info("Capsule");
-			const hkpTriangleShape* triangle = static_cast<const hkpTriangleShape*>(shape);
-			if (triangle) {
-				glm::vec3 pointA = HkToGlm(triangle->vertexA);
-				glm::vec3 pointB = HkToGlm(triangle->vertexB);
-				glm::vec3 pointC = HkToGlm(triangle->vertexC);
-
-				DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
-			}
+			// log::info("Triangle");
+			// const hkpTriangleShape* triangle = static_cast<const hkpTriangleShape*>(shape);
+			// if (triangle) {
+			// 	glm::vec3 pointA = HkToGlm(triangle->vertexA);
+			// 	glm::vec3 pointB = HkToGlm(triangle->vertexB);
+			// 	glm::vec3 pointC = HkToGlm(triangle->vertexC);
+			//
+			// 	DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
+			// }
 		} else if (shape->type == hkpShapeType::kConvexVertices) {
 			// Too much effort to RE and draw that
 			const hkpConvexShape* unknown = static_cast<const hkpConvexShape*>(shape);
