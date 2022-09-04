@@ -6,6 +6,7 @@
 #include "hooks/impact.hpp"
 #include "hooks/vm.hpp"
 #include "hooks/havok.hpp"
+#include "hooks/magicTarget.hpp"
 
 using namespace RE;
 
@@ -25,6 +26,7 @@ namespace Hooks
 		Hook_BGSImpactManager::Hook();
 		Hook_VM::Hook();
 		Hook_Havok::Hook(trampoline);
+		Hook_MagicTarget::Hook();
 
 		using func_t = decltype(&IAnimationGraphManagerHolder::SetGraphVariableBool);
 		REL::Relocation<func_t> func{ RELOCATION_ID(32141, 32885) };
