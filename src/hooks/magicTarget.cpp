@@ -19,12 +19,28 @@ namespace Hooks
 	}
 
 	bool Hook_MagicTarget::AddTargetPlayer(PlayerCharacter* player, MagicTarget::AddTargetData& a_targetData) {
-		log::info("Add magic target effect: {}", a_targetData.effect->baseEffect->GetFullName());
+		log::info("Add magic target player");
+		auto effect = a_targetData.effect;
+		if (effect) {
+			log::info("  - Has effect");
+			auto baseEffect = effect->baseEffect;
+			if (baseEffect) {
+				log::info("    - Has base effect: {}", baseEffect->GetFullName());
+			}
+		}
 		return _AddTargetPlayer(player, a_targetData);
 	}
 
 	bool Hook_MagicTarget::AddTargetCharacter(Character* character, MagicTarget::AddTargetData& a_targetData) {
-		log::info("Add magic target effect: {}", a_targetData.effect->baseEffect->GetFullName());
+		log::info("Add magic target character");
+		auto effect = a_targetData.effect;
+		if (effect) {
+			log::info("  - Has effect");
+			auto baseEffect = effect->baseEffect;
+			if (baseEffect) {
+				log::info("    - Has base effect: {}", baseEffect->GetFullName());
+			}
+		}
 		return _AddTargetCharacter(character, a_targetData);
 	}
 }
