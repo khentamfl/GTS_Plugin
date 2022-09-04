@@ -1,4 +1,4 @@
-#include "hooks/BShkbAnimationGraph.hpp"
+#include "hooks/magicTarget.hpp"
 #include "util.hpp"
 #include "data/persistent.hpp"
 
