@@ -4,6 +4,7 @@
 #include "hooks/vm.hpp"
 #include "hooks/havok.hpp"
 #include "hooks/magicTarget.hpp"
+#include "hooks/BShkbAnimationGraph.hpp"
 
 using namespace RE;
 
