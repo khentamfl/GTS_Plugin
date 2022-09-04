@@ -27,10 +27,7 @@ namespace Hooks
 		Hook_VM::Hook();
 		Hook_Havok::Hook(trampoline);
 		Hook_MagicTarget::Hook();
-
-		using func_t = decltype(&IAnimationGraphManagerHolder::SetGraphVariableBool);
-		REL::Relocation<func_t> func{ RELOCATION_ID(32141, 32885) };
-		logger::info("SetGraphVariableFloat is at: {}", func.address());
+		Hook_hkbBehaviorGraph::Hook();
 
 		logger::info("Gts finished applying hooks...");
 	}
