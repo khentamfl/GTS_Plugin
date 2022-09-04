@@ -19,6 +19,7 @@ namespace {
 		float Gigantism = 1.0 - Persistent::GetSingleton().GetActorData(Player)->gigantism_enchantment;
 		int Requirement = 125 * Gigantism;
 		int random = rand() % Requirement;
+		ConsoleLog::GetSingleton()->Print("Requirement: %s, Gigantism: %s", Requirement, Gigantism);
 		int decide_chance = 1;
 		auto GrowthPerk = runtime.GrowthPerk;
 		log::info("Random Growth random: {}", random);
