@@ -1,5 +1,6 @@
 #include "managers/ddraw.hpp"
 #include "UI/DebugAPI.hpp"
+#include "hooks/RE.hpp"
 #include "node.hpp"
 #include "util.hpp"
 
@@ -11,8 +12,14 @@ using namespace Gts;
 namespace {
 	const float MS_TIME = 10;
 
-	const glm::vec4 CAPSULE_COLOR = { 0.90f, 0.90f, 0.20f, 1.0f };
+	const glm::vec4 CAPSULE_COLOR = { 0.50f, 0.50f, 0.20f, 1.0f };
 	const float CAPSULE_LINETHICKNESS = 0.1;
+
+	const glm::vec4 TRIANGLE_COLOR = { 0.20f, 0.50f, 0.50f, 1.0f };
+	const float TRIANGLE_LINETHICKNESS = 0.1;
+
+	const glm::vec4 UNKNOWN_COLOR = { 0.10f, 0.10f, 0.10f, 1.0f };
+	const float UNKNOWN_LINETHICKNESS = 0.1;
 
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
 		if (shape->type == hkpShapeType::kCapsule) {
@@ -24,6 +31,25 @@ namespace {
 				float radius = capsule->radius * *g_worldScaleInverse;
 
 				DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
+			}
+		} else if (shape->type == hkpShapeType::kTriangle) {
+			// log::info("Capsule");
+			const hkpTriangleShape* triangle = static_cast<const hkpTriangleShape*>(shape);
+			if (triangle) {
+				glm::vec3 pointA = HkToGlm(triangle->vertexA);
+				glm::vec3 pointB = HkToGlm(triangle->vertexB);
+				glm::vec3 pointC = HkToGlm(triangle->vertexC);
+
+				DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
+			}
+		} else if (shape->type == hkpShapeType::kConvexVertices) {
+			// Too much effort to RE and draw that
+			const hkpConvexShape* unknown = static_cast<const hkpConvexShape*>(shape);
+			if (unknown) {
+				glm::vec3 localPos = glm::vec3(0.,0.,0.);
+				glm::vec3 worldPos = (transform * glm::vec4(localPos, 1.0));
+				float radius = radius * (*Gts::g_worldScaleInverse);
+				DebugAPI::DrawSphere(worldPos, radius, MS_TIME, UNKNOWN_COLOR, UNKNOWN_LINETHICKNESS);
 			}
 		} else if (shape->type == hkpShapeType::kList) {
 			// log::info("List");
@@ -40,6 +66,22 @@ namespace {
 			}
 		} else if (shape->type == hkpShapeType::kBVTree) {
 			// log::info("Tree");
+			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
+			const hkpShapeContainer* container = actual_shape->GetContainer();
+			auto key = container->GetFirstKey();
+			while (key != HK_INVALID_SHAPE_KEY) {
+				auto buffer = hkpShapeBuffer();
+				auto child_shape = container->GetChildShape(key, buffer);
+				if (child_shape) {
+					// log::info("  - Child");
+					DrawShape(child_shape, transform);
+				}
+				key = container->GetNextKey(key);
+			}
+		} else if (shape->type == hkpShapeType::kMOPP) {
+			// log::info("MOP Tree");
+			// MOPP is a Tree implementation we jsut cast too tree and deal with
+			// it at that level
 			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
 			const hkpShapeContainer* container = actual_shape->GetContainer();
 			auto key = container->GetFirstKey();

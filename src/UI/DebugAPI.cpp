@@ -295,6 +295,31 @@ void DebugAPI::DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::ma
 	}
 }
 
+void DebugAPI::DrawTriangle(glm::vec3 pointA, glm::vec3 pointB, glm::vec3 pointC, glm::mat4 transform, int liftetimeMS, const glm::vec4& color, float lineThickness) {
+	auto apply_transform = [](glm::vec3 vec, glm::mat4 mat) {
+				       return glm::vec3(mat * glm::vec4(vec, 1.0));
+			       };
+
+	DrawLineForMS(
+		apply_transform(pointA, transform),
+		apply_transform(pointB, transform),
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		apply_transform(pointB, transform),
+		apply_transform(pointC, transform),
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		apply_transform(pointC, transform),
+		apply_transform(pointA, transform),
+		liftetimeMS,
+		color,
+		lineThickness);
+}
+
 
 DebugAPILine* DebugAPI::GetExistingLine(const glm::vec3& from, const glm::vec3& to, const glm::vec4& color, float lineThickness)
 {
