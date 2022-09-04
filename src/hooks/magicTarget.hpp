@@ -16,6 +16,6 @@ namespace Hooks
 			static inline REL::Relocation<decltype(AddTargetPlayer)> _AddTargetPlayer;
 
 			static bool AddTargetCharacter(Character* character, MagicTarget::AddTargetData& a_targetData);
-			static inline REL::Relocation<decltype(AddTargetPlayer)> _AddTargetCharacter;
+			static inline REL::Relocation<decltype(AddTargetCharacter)> _AddTargetCharacter;
 	};
 }
