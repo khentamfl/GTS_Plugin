@@ -17,7 +17,7 @@ namespace {
 		auto& runtime = Runtime::GetSingleton();
 		auto Player = PlayerCharacter::GetSingleton();
 		float Gigantism = 1.0 - Persistent::GetSingleton().GetActorData(Player)->gigantism_enchantment;
-		float Requirement = 125 * Gigantism;
+		int Requirement = 125 * Gigantism;
 		int random = rand() % Requirement;
 		int decide_chance = 1;
 		auto GrowthPerk = runtime.GrowthPerk;
