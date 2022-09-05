@@ -94,7 +94,7 @@ namespace Gts {
 
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		if (CheckForLimit) {
+		if (CheckForLimit == true) {
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
 		}
 	}
@@ -127,7 +127,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0001 * target_scale);
 		mod_target_scale(from, -amount);
-		if (CheckForLimit)
+		if (CheckForLimit == true)
 		{
 		mod_target_scale(to, amount*effeciency);
 		}
@@ -139,7 +139,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0016 * target_scale);
 		mod_target_scale(from, -amount);
-		if (CheckForLimit) {
+		if (CheckForLimit == true) {
 		mod_target_scale(to, amount*effeciency/10); // < 4 times weaker size steal towards caster. Absorb exclusive.
 		}
 	}
