@@ -68,9 +68,9 @@ namespace Gts {
 		for (bool person: {false, true}) {
 			auto npc_root_node = find_node(actor, "CME Body [Body]", person);
 			if (npc_root_node) {
-				float current_value = npc_root_node->world.translate.z;
+				float current_value = npc_root_node->local.translate.z;
 				if ((fabs(last_hh_adjustment - new_hh) > 1e-5) || (fabs(current_value - new_hh) > 1e-5) || force) {
-					npc_root_node->world.translate.z = new_hh;
+					npc_root_node->local.translate.z = new_hh;
 					update_node(npc_root_node);
 					adjusted = true;
 				}
