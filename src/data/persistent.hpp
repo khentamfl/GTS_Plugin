@@ -23,7 +23,6 @@ namespace Gts {
 		float bonus_carry;
 		float bonus_max_size;
 		float smt_run_speed;
-		float gigantism_enchantment;
 
 		ActorData();
 		ActorData(Actor* actor);

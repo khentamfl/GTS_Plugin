@@ -7,6 +7,7 @@
 #include "data/runtime.hpp"
 #include "util.hpp"
 #include "timer.hpp"
+#include "managers/GtsSizeManager.hpp"
 
 
 namespace Gts {
@@ -70,7 +71,7 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
-		float Gigantism = Persistent::GetSingleton().GetActorData(caster)->gigantism_enchantment + 1.0;
+		float Gigantism = SizeManager::GetSingleton().GetExtraMaxSize(caster) + 1.0;
 		this->grow_limit *= AdjustLimit; //Affected by storage.
 		this->grow_limit *= Gigantism; //Affected by Enchantment
 	}

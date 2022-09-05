@@ -5,6 +5,7 @@
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
+#include "managers/GtsSizeManager.hpp"
 // Module that handles various magic effects
 
 namespace {
@@ -45,8 +46,8 @@ namespace Gts {
 		const float DRAGON_PEANLTY = 0.14;
 		auto& runtime = Runtime::GetSingleton();
 		float progression_multiplier = runtime.ProgressionMultiplier->value;
-		float GigantismCaster = 1.0 + Persistent::GetSingleton().GetData(caster)->gigantism_enchantment;
-		float GigantismTarget = 1.0 - Persistent::GetSingleton().GetData(target)->gigantism_enchantment;
+		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetExtraMaxSize(caster);
+		float GigantismTarget = 1.0 - SizeManager::GetSingleton().GetExtraMaxSize(target); // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (caster->GetLevel()/target->GetLevel())) * progression_multiplier;
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
 			efficiency *= DRAGON_PEANLTY;
@@ -199,10 +200,10 @@ namespace Gts {
 		if (get_visual_scale(caster) <= 13.0 || !caster->IsSprinting() && !caster->HasMagicEffect(runtime.SmallMassiveThreat)) {
 			PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
 			caster->NotifyAnimationGraph("JumpLand");
-			
+
 		}
 		AdjustSizeLimit(0.0417 * target_scale);
-		
+
 
 
 		if (caster->HasPerk(runtime.ExtraGrowth) && (caster->HasMagicEffect(runtime.explosiveGrowth1) || caster->HasMagicEffect(runtime.explosiveGrowth2) || caster->HasMagicEffect(runtime.explosiveGrowth3))) {

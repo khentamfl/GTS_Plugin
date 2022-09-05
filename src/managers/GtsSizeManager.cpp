@@ -19,15 +19,32 @@ namespace Gts {
 		static SizeManager instance;
 		return instance;
 	}
-	void SizeManager::UpdateSize(Actor* Actor) {
+	void SizeManager::UpdateSize(Actor* actor) {
 		auto& runtime = Runtime::GetSingleton();
-        float Gigantism = Persistent::GetSingleton().GetData(Actor)->gigantism_enchantment + 1.0;
-        float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
-        float Persistent_Size = Persistent::GetSingleton().GetData(Actor)->bonus_max_size;
-        float TotalLimit = (GetLimit + Persistent_Size) * Gigantism;
-        if (get_max_scale(Actor) < TotalLimit || get_max_scale(Actor) > TotalLimit) {
-        set_max_scale(Actor, TotalLimit);
-        //log::info("{} _ size limit is set to {}", Actor->GetDisplayFullName(), TotalLimit);
-        }
-    }
+		float Gigantism = this->GetExtraMaxSize(actor) + 1.0;
+		float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
+		float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
+		float TotalLimit = (GetLimit + Persistent_Size) * Gigantism;
+		if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
+			set_max_scale(actor, TotalLimit);
+			//log::info("{} _ size limit is set to {}", actor->GetDisplayFullName(), TotalLimit);
+		}
+	}
+
+	void SizeManager::SetExtraMaxSize(Actor* actor, float amt) {
+		this->GetData(actor).extraMaxSize = amt;
+	}
+
+	float SizeManager::GetExtraMaxSize(Actor* actor) {
+		return this->GetData(actor).extraMaxSize;
+	}
+
+	void SizeManager::ModExtraMaxSize(Actor* actor, float amt) {
+		this->GetData(actor).extraMaxSize += amt;
+	}
+
+	SizeManagerData& SizeManager::GetData(Actor* actor) {
+		this->sizeData.try_emplace(actor);
+		return this->sizeData.at(actor);
+	}
 }

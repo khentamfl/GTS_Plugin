@@ -5,7 +5,7 @@
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "util.hpp"
-
+#include "managers/GtsSizeManager.hpp"
 
 namespace Gts {
 	std::string Gigantism::GetName() {
@@ -25,25 +25,25 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-        float GigantismPower = GetActiveEffect()->magnitude;
-        Persistent::GetSingleton().GetData(caster)->gigantism_enchantment += GigantismPower;
-		log::info("Increasing GigantismPower: {}, Actor: {}", Persistent::GetSingleton().GetData(caster)->gigantism_enchantment, caster->GetDisplayFullName());
+		float GigantismPower = GetActiveEffect()->magnitude;
+		SizeManager::GetSingleton().ModExtraMaxSize(caster, GigantismPower);
+		log::info("Increasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetExtraMaxSize(caster), caster->GetDisplayFullName());
 	}
 
 	void Gigantism::OnUpdate() {
-		
+
 	}
 
 
-    void Gigantism::OnFinish() {
+	void Gigantism::OnFinish() {
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
 
 		if (!caster) {
 			return;
 		}
-        float GigantismPower = GetActiveEffect()->magnitude;
-        Persistent::GetSingleton().GetData(caster)->gigantism_enchantment -= GigantismPower;
-		log::info("Decreasing GigantismPower: {}, Actor: {}", Persistent::GetSingleton().GetData(caster)->gigantism_enchantment, caster->GetDisplayFullName());
-    }
+		float GigantismPower = GetActiveEffect()->magnitude;
+		SizeManager::GetSingleton().ModExtraMaxSize(caster, -GigantismPower);
+		log::info("Decreasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetExtraMaxSize(caster), caster->GetDisplayFullName());
+	}
 }
