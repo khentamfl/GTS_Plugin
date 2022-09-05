@@ -26,7 +26,7 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00005;
+		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.000025;
 		float power = BASE_POWER + AlterBonus;
 		if (this->IsDual == true) {
 			power*= DUAL_CAST_BONUS;
