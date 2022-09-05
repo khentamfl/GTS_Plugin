@@ -14,7 +14,7 @@ namespace Gts {
 
 	bool Gigantism::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		log::info("Starting Gigantism Effect");
+		//log::info("Starting Gigantism Effect");
 		return effect == runtime.EnchGigantism;
 	}
 
