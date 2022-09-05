@@ -26,9 +26,9 @@ namespace {
 		if (!actor) {
 			return;
 		}
-		if (actor->formID==0x14) {
-		log::info("Player's VS:{}, VS_V: {}", persi_actor_data->visual_scale, persi_actor_data->visual_scale_v);
-		}
+		//if (actor->formID==0x14) {
+		//log::info("Player's VS:{}, VS_V: {}", persi_actor_data->visual_scale, persi_actor_data->visual_scale_v);
+		//}
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
@@ -39,7 +39,6 @@ namespace {
 			return;
 		}
 		float target_scale = min(persi_actor_data->target_scale, persi_actor_data->max_scale);
-		float limit_size = runtime.sizeLimit;
 		if (fabs(target_scale - persi_actor_data->visual_scale) < 1e-5) {
 			return;
 		}
@@ -56,8 +55,6 @@ namespace {
 				Time::WorldTimeDelta()
 				);
 		}
-		if (persi_actor_data->target_scale >= limit_size)
-		{persi_actor_data->visual_scale_v = 0.0;}
 	}
 	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
 		if (!actor) {
