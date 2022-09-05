@@ -21,7 +21,7 @@ namespace Gts {
 		return instance;
 	}
 
-	void GetRaceScale(Actor* actor) {
+	inline float SizeManager::GetRaceScale(Actor* actor) {
 		auto GetNode = find_node(actor, "NPC", false);
 		float NodeScale = GetNode->world.scale;
 		return GetNode ? NodeScale : 1; 
