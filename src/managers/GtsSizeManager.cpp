@@ -24,7 +24,7 @@ namespace Gts {
 	inline float SizeManager::GetRaceScale(Actor* actor) {
 		auto GetNode = find_node(actor, "NPC", false);
 		float NodeScale = GetNode->world.scale;
-		return GetNode ? NodeScale : 1; 
+		return GetNode ? NodeScale : 1; // <- not used, causes troubles with quest progression. (Can't reach 1.44 for example when 1.50 is needed.)
 	}
 
 	void SizeManager::UpdateSize(Actor* actor) {
@@ -32,10 +32,10 @@ namespace Gts {
 		float Gigantism = this->GetEnchantmentBonus(actor)/100;
 		float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
 		float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
-		float RaceScale = GetRaceScale(actor);
-		float TotalLimit = ((GetLimit - 1.0) + Persistent_Size + RaceScale) * (1.0 + Gigantism);
-		if (TotalLimit < 0.50) {
-			TotalLimit = 0.50;
+		//float RaceScale = GetRaceScale(actor);
+		float TotalLimit = (GetLimit + Persistent_Size) * (1.0 + Gigantism);
+		if (TotalLimit < 1.0) {
+			TotalLimit = 1.0;
 			}
 		if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 			set_max_scale(actor, TotalLimit);

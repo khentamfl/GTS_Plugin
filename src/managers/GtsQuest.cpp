@@ -22,12 +22,12 @@ namespace Gts {
     auto GtsQuest = runtime.MainQuest;
     float QuestStage = GtsQuest->GetCurrentStageID();
    
-    if (QuestStage > 100.0 || QuestStage < 20.0)
+    if (QuestStage > 100.0 || QuestStage < 20.0 || Player->HasMagicEffect(runtime.EffectGrowthPotion))
     {return;} //Do not calculate if true
 
     float SizeLimit = runtime.sizeLimit->value;
     float SelectedFormula = runtime.SelectedSizeFormula->value;
-    float ShrinkPower = 0.00040;
+    float ShrinkPower = 0.00046;
     if (Player->HasMagicEffect(runtime.ResistShrinkPotion)) {
         ShrinkPower *= 0.25;
     }
