@@ -35,7 +35,7 @@ namespace Gts {
 	}
 
 	float SizeManager::GetEnchantmentBonus(Actor* actor) {
-		if this->GetData(actor).enchantmentBonus <= 0.02 {
+		if (this->GetData(actor).enchantmentBonus <= 0.02) {
 			return 0.02; //Protect against 0
 		}
 		return this->GetData(actor).enchantmentBonus;
