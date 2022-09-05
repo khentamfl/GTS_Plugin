@@ -44,7 +44,6 @@ namespace Gts {
 
 		float AlchemyLevel = clamp(1.0, 2.0, caster->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
 		float FrameCount = 140 * TimeScale();
-		float Activations = this->ActivationCount;
 		if (caster == PlayerCharacter::GetSingleton()) {
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.4);
 		}
