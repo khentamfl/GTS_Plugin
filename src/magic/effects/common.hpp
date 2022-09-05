@@ -21,8 +21,6 @@ namespace Gts {
 
 	inline void AdjustSizeLimit(float value)  // A function that adjusts Size Limit (Globals)
 	{
-		//AdjustMaxSize = 20CAC5
-		//AdjustMaxSize_MassBased = 277005
 		auto& runtime = Runtime::GetSingleton();
 
 		float progressionMultiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
@@ -40,10 +38,10 @@ namespace Gts {
 			if (runtime.SelectedSizeFormula->value >= 2.0) {
 				auto globalMassSize = runtime.MassBasedSizeLimit; // <- Applies it
 				if (globalMassSize) {
-					float sizeLimit = runtime.sizeLimit;
+					auto sizeLimit = runtime.sizeLimit;
 					if (sizeLimit) {
 						if (globalMassSize->value < sizeLimit->value) {
-							globalMassSize->value += Value  * ProgressionMultiplier * TimeScale();
+							globalMassSize->value += value * progressionMultiplier * TimeScale();
 						}
 					}
 				}
@@ -57,7 +55,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster);
-		float GigantismTarget = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target); // May go negative needs fixing with a smooth clamp
+		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target));  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (caster->GetLevel()/target->GetLevel())) * progression_multiplier;
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
 			efficiency *= DRAGON_PEANLTY;
@@ -191,11 +189,11 @@ namespace Gts {
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
-		const float SHRINK_TO_NOTHING_SCALE = 0.12;
+		const float SHRINK_TO_NOTHING_SCALE = 0.14;
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
-		if (runtime.ShrinkToNothing == nullptr) {
-			return;
+		if (!runtime.ShrinkToNothing) {
+			return false;
 		}
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !target->HasMagicEffect(runtime.ShrinkToNothing) && !target->IsPlayerTeammate()) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
