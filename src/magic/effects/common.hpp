@@ -128,9 +128,12 @@ namespace Gts {
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0001 * target_scale);
 		mod_target_scale(from, -amount);
-		if (CheckForLimit(to))
+		if (!CheckForLimit(to))
 		{
-		mod_target_scale(to, amount*effeciency);
+		return;
+		}
+		else {
+			mod_target_scale(to, amount*effeciency);
 		}
 	}
 
@@ -140,8 +143,10 @@ namespace Gts {
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0016 * target_scale);
 		mod_target_scale(from, -amount);
-		if (CheckForLimit(to)) {
-		mod_target_scale(to, amount*effeciency/10); // < 4 times weaker size steal towards caster. Absorb exclusive.
+		if (!CheckForLimit(to)) {
+			return;
+		}	else {
+		mod_target_scale(to, amount*effeciency/10); // < 10 times weaker size steal towards caster. Absorb exclusive.
 		}
 	}
 
