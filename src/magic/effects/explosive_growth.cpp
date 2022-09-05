@@ -71,7 +71,7 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
-		float Gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100 + 1.0;
+		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		this->grow_limit *= AdjustLimit; //Affected by storage.
 		this->grow_limit *= Gigantism; //Affected by Enchantment
 	}

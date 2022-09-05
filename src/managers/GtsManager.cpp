@@ -123,13 +123,13 @@ namespace {
 			persi_actor_data->anim_speed = speed_mult;
 			if (actor->IsWalking() == true) {
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 0.44) / MS_mult);
-				log::info("Slow Walk Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
+				//log::info("Slow Walk Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			} else if (actor->IsSprinting() == true) {
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * 1.25) / MS_mult);
-				log::info("Sprint Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
+				//log::info("Sprint Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			} else {
 				actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult + (Bonus/3 + 1.0))/ MS_mult);
-				log::info("Normal Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
+				//log::info("Normal Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			}
 		}
 
@@ -212,22 +212,20 @@ namespace {
 		ShrinkNPC,
 		StandardNPC,
 	};
-	// Handles changes like slowly loosing height
-	// over time
-	void GameMode(Actor* actor)  {
-		auto& runtime = Runtime::GetSingleton();
+
+	void SmoothSizeDecrease(Actor* actor) {  // Handles smooth size loss over time.
+
 		auto& Persist = Persistent::GetSingleton();
 		auto actor_data = Persist.GetActorData(actor);
 		float size_limit = actor_data->max_scale;
 		float visual_scale = get_visual_scale(actor);
 
-		SizeManager::GetSingleton().UpdateSize(actor);
-
 		if (size_limit < 1.0) {
 			size_limit = 1.0;
 		} // Avoid bugs
 
-		if (get_target_scale(actor) > size_limit) {
+		if (get_target_scale(actor) < size_limit) {return;}
+			else {
 			mod_target_scale(actor, -0.000025 * visual_scale); // Smoothly scale down to normal size
 
 			static Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
@@ -239,14 +237,22 @@ namespace {
 				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
 			}
 		}
+	}
+
+	void GameModePC(Actor* actor)  {
+		if (actor->formID != 0x14) {
+			return
+		} 
+
+		auto& runtime = Runtime::GetSingleton();
 
 		ChosenGameMode game_mode = ChosenGameMode::None;
 		int game_mode_int = 0;
-		if (actor->formID == 0x14) {
+		 
 			game_mode_int = runtime.ChosenGameMode->value;
 
 			if (game_mode_int >=0 && game_mode_int <= 3) {
-				game_mode =  static_cast<ChosenGameMode>(game_mode_int);
+				game_mode = static_cast<ChosenGameMode>(game_mode_int);
 			}
 
 			if (game_mode != ChosenGameMode::None) {
@@ -276,7 +282,6 @@ namespace {
 				}
 			}
 		}
-	}
 
 	void GameModeNPC(Actor* actor)  {
 		auto& runtime = Runtime::GetSingleton();
@@ -284,12 +289,11 @@ namespace {
 		ChosenGameModeNPC game_modeNPC = ChosenGameModeNPC::NoneNPC;
 		int game_modeNPC_int = 0;
 		if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction))) {
-			//log::info("Game Mode NPC is {}", actor->GetDisplayFullName());
 			game_modeNPC_int = runtime.ChosenGameModeNPC->value;
 			AttributeManager::GetSingleton().UpdateNpc(actor);
 		}
 		if (game_modeNPC_int >=0 && game_modeNPC_int <= 3) {
-			game_modeNPC =  static_cast<ChosenGameModeNPC>(game_modeNPC_int);
+			game_modeNPC = static_cast<ChosenGameModeNPC>(game_modeNPC_int);
 		}
 
 		if (game_modeNPC != ChosenGameModeNPC::NoneNPC) {
@@ -371,8 +375,10 @@ void GtsManager::poll() {
 			//log::info("Found Actor {}", actor->GetDisplayFullName());
 			update_actor(actor);
 			apply_actor(actor);
-			GameMode(actor);
-			GameModeNPC(actor);
+			GameModePC(actor); // <-- Calculates Game Mode for PC
+			GameModeNPC(actor); // <-- Same but of Allies (Followers/Teammates)
+			SmoothSizeDecrease(actor); // Instead of suddently shrinking back to normal, Smoothens shrink when size limit is breached.
+			SizeManager::GetSingleton().UpdateSize(actor); // Calculates Max Size for Everyone.
 		}
 	}
 }

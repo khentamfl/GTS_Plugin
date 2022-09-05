@@ -28,7 +28,6 @@ namespace Gts {
 		if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 			set_max_scale(actor, TotalLimit);
 			log::info("Total limit of {} is: {}", actor->GetDisplayFullName(), TotalLimit);
-			//log::info("{} _ size limit is set to {}", actor->GetDisplayFullName(), TotalLimit);
 		}
 	}
 	void SizeManager::SetEnchantmentBonus(Actor* actor, float amt) {

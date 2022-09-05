@@ -1,5 +1,6 @@
 #include "managers/RandomGrowth.hpp"
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "magic/effects/common.hpp"
 #include "util.hpp"
@@ -8,7 +9,6 @@
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "timer.hpp"
-#include "managers/GtsSizeManager.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -18,7 +18,7 @@ namespace {
 		auto& runtime = Runtime::GetSingleton();
 		auto Player = PlayerCharacter::GetSingleton();
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		int Requirement = 125 * Gigantism;
+		int Requirement = 120 * Gigantism;
 		int random = rand() % Requirement;
 		if (Gigantism)
 		{

@@ -1,4 +1,5 @@
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "magic/effects/SizePotion.hpp"
 #include "magic/effects/common.hpp"
@@ -7,7 +8,7 @@
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "util.hpp"
-#include "managers/GtsSizeManager.hpp"
+
 
 namespace Gts {
 	std::string SizePotion::GetName() {
@@ -44,7 +45,7 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		float Gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100 + 1.0;
+		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		auto saved_data = Persistent::GetSingleton().GetData(caster);
 		float PotionPower = this->Strenght;
 		float BonusSize = runtime.sizeLimit->value * PotionPower * Gigantism;

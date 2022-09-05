@@ -1,3 +1,4 @@
+#include "managers/GtsSizeManager.hpp"
 #include "magic/effects/absorb_effect.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
@@ -38,6 +39,7 @@ namespace Gts {
 		float caster_scale = get_visual_scale(caster);
 		float target_scale = get_visual_scale(target);
 		float size_difference = caster_scale/target_scale;
+		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		if (caster->HasMagicEffect(runtime.SmallMassiveThreat)) {
 			size_difference += SMT_BONUS;
 		} // Insta-absorb if SMT is active
@@ -50,19 +52,19 @@ namespace Gts {
 		{size_difference = 4.1;} // Cap Size Difference
 
 		if (this->true_absorb) {
-			AbsorbSteal(target, caster, 0.00325 * size_difference, 0.0, 0.276);
+			AbsorbSteal(target, caster, (0.00325 * size_difference) * gigantism, 0.0, 0.276);
 			if (ShrinkToNothing(caster, target)) {
 				//Dispel(); <- maybe no need to dispel since it will allow to absorb again?
 			}
 		} else {
-			AbsorbSteal(target, caster, 0.0025 * size_difference, 0.0, 0.2);
+			AbsorbSteal(target, caster, (0.0025 * size_difference) * gigantism, 0.0, 0.2);
 		}
 	}
 
 	void Absorb::OnFinish() {
-		auto Caster = GetCaster();
-		auto Target = GetTarget();
+		auto caster = GetCaster();
+		auto target = GetTarget();
 		auto runtime = Runtime::GetSingleton();
-		CastTrackSize(Caster, Target);
+		CastTrackSize(caster, target);
 	}
 }

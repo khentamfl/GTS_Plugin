@@ -84,7 +84,7 @@ namespace Gts {
 		}
 	}
 	void SizeDamage::SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
-		if (!Caster || !Target)
+		if (!Caster || !Target || Caster == Target)
 		{return;}
 		auto& runtime = Runtime::GetSingleton();
 		if (Persistent::GetSingleton().GetData(Caster)->smt_run_speed >= 1.0)
@@ -102,7 +102,7 @@ namespace Gts {
 				AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce speed after crush
 				}
 			}
-			else
+			else if (CasterHp < (TargetHp / Multiplier) && !Target->HasMagicEffect(runtime.FakeCrushEffect) && !Target->HasSpell(runtime.FakeCrushSpell))
 			{
 				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale); // Else simulate collision
 				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.35); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.15);

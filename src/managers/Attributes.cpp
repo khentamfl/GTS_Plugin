@@ -1,4 +1,5 @@
 #include "managers/camera.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
 #include "scale/scale.hpp"
@@ -203,10 +204,17 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		auto AugmentationPerk = runtime.NoSpeedLoss;
 		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
+		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
 		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			ActorAttributes->smt_run_speed += 0.001480;
+			ActorAttributes->smt_run_speed += 0.001480 * Gigantism;
+			if (ActorAttributes->smt_run_speed < 1.0) {
+				this->BlockMessage = false;
+			}
 		} else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			ActorAttributes->smt_run_speed += 0.000960;
+			ActorAttributes->smt_run_speed += 0.000960 * Gigantism;
+			if (ActorAttributes->smt_run_speed < 1.0) {
+				this->BlockMessage = false;
+			}
 		} else {
 			if (ActorAttributes->smt_run_speed > 0.0) {
 				ActorAttributes->smt_run_speed -= 0.004175;
