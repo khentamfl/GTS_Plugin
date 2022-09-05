@@ -215,6 +215,7 @@ namespace {
 
 	void SmoothSizeDecrease(Actor* actor) {  // Handles smooth size loss over time.
 
+		auto& runtime = Runtime::GetSingleton();
 		auto& Persist = Persistent::GetSingleton();
 		auto actor_data = Persist.GetActorData(actor);
 		float size_limit = actor_data->max_scale;
@@ -241,7 +242,7 @@ namespace {
 
 	void GameModePC(Actor* actor)  {
 		if (actor->formID != 0x14) {
-			return
+			return;
 		} 
 
 		auto& runtime = Runtime::GetSingleton();
