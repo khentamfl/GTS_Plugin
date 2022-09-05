@@ -135,7 +135,7 @@ namespace Gts {
 							bonus_max_size = 0.0;
 						}
 						float smt_run_speed;
-						if (version >= 5) {
+						if (version >= 6) {
 							serde->ReadRecordData(&smt_run_speed, sizeof(smt_run_speed));
 						} else {
 							smt_run_speed = 0.0;
@@ -246,7 +246,7 @@ namespace Gts {
 	void Persistent::OnGameSaved(SerializationInterface* serde) {
 		std::unique_lock lock(GetSingleton()._lock);
 
-		if (!serde->OpenRecord(ActorDataRecord, 5)) {
+		if (!serde->OpenRecord(ActorDataRecord, 6)) {
 			log::error("Unable to open actor data record to write cosave data.");
 			return;
 		}
