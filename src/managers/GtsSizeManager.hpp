@@ -15,6 +15,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static SizeManager& GetSingleton() noexcept;
 
+			inline float GetRaceScale(Actor* actor);
 			void UpdateSize(Actor* Target);
 
 			SizeManagerData& GetData(Actor* actor);
