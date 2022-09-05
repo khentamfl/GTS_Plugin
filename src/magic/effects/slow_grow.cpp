@@ -4,7 +4,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
-#include "data/time.hpp"
+#include "timer.hpp"
 
 namespace Gts {
 	std::string SlowGrow::GetName() {
@@ -28,19 +28,16 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.000005;
 		float power = BASE_POWER + AlterBonus;
-		float delta_time = Time::WorldTimeDelta();
-		auto GrowthTick = this->growth_tick;
 		if (this->IsDual == true) {
 			power*= DUAL_CAST_BONUS;
 			log::info("SlowGrowth is dual");
 		}
 
-		if (GrowthTick <= 0.0) {
+		if (this->timer.ShouldRun()) {
 			auto GrowthSound = runtime.growthSound;
-			float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/4);
-			PlaySound(GrowthSound, caster, Volume, 0.25);
+			float Volume = clamp(0.15, 1.0, get_visual_scale(caster)/8);
+			PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
 		}
-		this->growth_tick +=delta_time;
 
 		Grow(caster, 0.0, power);
 		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.30);
@@ -55,6 +52,5 @@ namespace Gts {
 	}
 
 	void SlowGrow::OnFinish() {
-		this->growth_tick = 0.0;
 	}
 }

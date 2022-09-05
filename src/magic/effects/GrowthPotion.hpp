@@ -23,8 +23,6 @@ namespace Gts {
 
 			static bool StartEffect(EffectSetting* effect);
 		private:
-			float SoundTick = 0.0;
-			float ActivationCount = 0.0;
 			Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
 	};
 }

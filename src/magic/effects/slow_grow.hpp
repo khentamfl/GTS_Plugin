@@ -1,6 +1,7 @@
 #pragma once
 #include "magic/magic.hpp"
-// Module that handles footsteps
+#include "timer.hpp"
+// Module that handles slow growth
 
 
 using namespace std;
@@ -25,7 +26,5 @@ namespace Gts {
 			private:
 
 			bool IsDual = false;
-			float growth_tick = 0.0;
-
 	};
 }
