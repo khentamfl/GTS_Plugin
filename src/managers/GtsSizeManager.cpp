@@ -8,6 +8,7 @@
 #include "data/time.hpp"
 #include "timer.hpp"
 #include "util.hpp"
+#include "node.hpp"
 
 
 using namespace RE;
@@ -19,12 +20,23 @@ namespace Gts {
 		static SizeManager instance;
 		return instance;
 	}
+
+	void GetRaceScale(Actor* actor) {
+		auto GetNode = find_node(actor, "NPC", false);
+		float NodeScale = GetNode->world.scale;
+		return GetNode ? NodeScale : 1; 
+	}
+
 	void SizeManager::UpdateSize(Actor* actor) {
 		auto& runtime = Runtime::GetSingleton();
 		float Gigantism = this->GetEnchantmentBonus(actor)/100;
 		float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
 		float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
-		float TotalLimit = (GetLimit + Persistent_Size) * (1.0 + Gigantism);
+		float RaceScale = GetRaceSCale(actor);
+		float TotalLimit = ((GetLimit - 1.0) + Persistent_Size + RaceScale) * (1.0 + Gigantism);
+		if (TotalLimit < 0.50) {
+			TotalLimit = 0.50;
+			}
 		if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 			set_max_scale(actor, TotalLimit);
 			log::info("Total limit of {} is: {}", actor->GetDisplayFullName(), TotalLimit);
