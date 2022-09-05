@@ -21,7 +21,7 @@ namespace Gts {
 	inline bool CheckForLimit(Actor* actor) {
 		float scale = get_visual_scale(actor);
 		float limit = Persistent::GetSingleton().GetData(actor)->max_scale;
-		if (scale > limit) {
+		if (scale >= limit) {
 			return false;
 		}
 		else
