@@ -22,9 +22,12 @@ namespace {
 		int random = rand() % Requirement;
 		ConsoleLog::GetSingleton()->Print("Requirement: %s, Gigantism: %s", Requirement, Gigantism);
 		int decide_chance = 1;
-		auto GrowthPerk = runtime.GrowthPerk;
+		auto growthPerk = runtime.GrowthPerk;
+		if (!growthPerk) {
+			return false;
+		}
 		log::info("Random Growth random: {}", random);
-		if (random <= decide_chance && Player->HasPerk(GrowthPerk)) {
+		if (random <= decide_chance && Player->HasPerk(growthPerk)) {
 			return true;
 		} else {
 			return false;
@@ -33,6 +36,9 @@ namespace {
 
 	void RestoreStats() {
 		auto& runtime = Runtime::GetSingleton();
+		if (!runtime.GrowthAugmentation) {
+			return;
+		}
 		auto Player = PlayerCharacter::GetSingleton();
 		if (Player->HasPerk(runtime.GrowthAugmentation)) {
 			float HP = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
@@ -61,6 +67,8 @@ namespace Gts {
 			return;
 		}
 
+		bool hasSMT = runtime.SmallMassiveThreat ? player->HasMagicEffect(runtime.SmallMassiveThreat) : false;
+
 		if (this->AllowGrowth == false) {
 			static Timer timer = Timer(3.0); // Run every 3.0s or as soon as we can
 			if (timer.ShouldRun()) {
@@ -74,16 +82,20 @@ namespace Gts {
 					auto GrowthSound = runtime.growthSound;
 					GrowthTremorManager::GetSingleton().CallRumble(player, player, 6.0);
 					float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
-					PlaySound(MoanSound, player, 1.0, 0.0);
-					PlaySound(GrowthSound, player, Volume, 0.0);
+					if (MoanSound) {
+						PlaySound(MoanSound, player, 1.0, 0.0);
+					}
+					if (GrowthSound) {
+						PlaySound(GrowthSound, player, Volume, 0.0);
+					}
 				}
 			}
 
-		} else if (this->AllowGrowth == true && player->HasMagicEffect(runtime.SmallMassiveThreat) == false) {
+		} else if (this->AllowGrowth == true && !hasSMT) {
 			// Do the growing
 			float delta_time = Time::WorldTimeDelta();
 			float Scale = get_visual_scale(player);
-			float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
+			float ProgressionMultiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
 			float base_power = ((0.0025 * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
 			RestoreStats(); // Regens Attributes if PC has perk
 			mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps

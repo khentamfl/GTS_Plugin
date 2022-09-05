@@ -25,19 +25,29 @@ namespace Gts {
 		//AdjustMaxSize_MassBased = 277005
 		auto& runtime = Runtime::GetSingleton();
 
-		float GetGlobalMaxSizeCalc = runtime.GlobalMaxSizeCalc->value; // <- Bonus that is used to determine quest progression
-		float GetGlobalMassSize = runtime.MassBasedSizeLimit->value; // <- Applies it
-		float ProgressionMultiplier = runtime.ProgressionMultiplier->value;
+		float progressionMultiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
 
-		float SelectedFormula = runtime.SelectedSizeFormula->value;
-		float SizeLimit = runtime.sizeLimit->value;
-
-		if (GetGlobalMaxSizeCalc < 10.0) {
-			runtime.GlobalMaxSizeCalc->value = GetGlobalMaxSizeCalc + (Value * 10 * ProgressionMultiplier * TimeScale()); // Always apply it
+		auto globalMaxSizeCalc = runtime.GlobalMaxSizeCalc;
+		if (globalMaxSizeCalc) {
+			float valueGlobalMaxSizeCalc = globalMaxSizeCalc->value;
+			if (valueGlobalMaxSizeCalc < 10.0) {
+				globalMaxSizeCalc->value = valueGlobalMaxSizeCalc + (Value * 10 * ProgressionMultiplier * TimeScale()); // Always apply it
+			}
 		}
 
-		if (GetGlobalMassSize < SizeLimit && SelectedFormula >= 2.0) {
-			runtime.MassBasedSizeLimit->value = GetGlobalMassSize + (Value  * ProgressionMultiplier * TimeScale());
+		auto selectedFormula = runtime.SelectedSizeFormula;
+		if (selectedFormula) {
+			if (runtime.SelectedSizeFormula->value >= 2.0) {
+				auto globalMassSize = runtime.MassBasedSizeLimit; // <- Applies it
+				if (globalMassSize) {
+					float sizeLimit = runtime.sizeLimit;
+					if (sizeLimit) {
+						if (globalMassSize->value < sizeLimit->value) {
+							globalMassSize->value += Value  * ProgressionMultiplier * TimeScale();
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -45,15 +55,17 @@ namespace Gts {
 	inline float CalcEffeciency(Actor* caster, Actor* target) {
 		const float DRAGON_PEANLTY = 0.14;
 		auto& runtime = Runtime::GetSingleton();
-		float progression_multiplier = runtime.ProgressionMultiplier->value;
+		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetExtraMaxSize(caster);
 		float GigantismTarget = 1.0 - SizeManager::GetSingleton().GetExtraMaxSize(target); // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (caster->GetLevel()/target->GetLevel())) * progression_multiplier;
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
 			efficiency *= DRAGON_PEANLTY;
 		}
-		if (target->HasMagicEffect(runtime.ResistShrinkPotion)) {
-			efficiency *= 0.25;
+		if (runtime.ResistShrinkPotion) {
+			if (target->HasMagicEffect(runtime.ResistShrinkPotion)) {
+				efficiency *= 0.25;
+			}
 		}
 
 		efficiency *= GigantismCaster * GigantismTarget;
@@ -63,7 +75,7 @@ namespace Gts {
 
 	inline float CalcPower(Actor* actor, float scale_factor, float bonus) {
 		auto& runtime = Runtime::GetSingleton();
-		float progression_multiplier = runtime.ProgressionMultiplier->value;
+		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
 		// y = mx +c
 		// power = scale_factor * scale + bonus
 		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
@@ -142,8 +154,10 @@ namespace Gts {
 		const float PERK2_BONUS = 2.0;
 
 		auto& runtime = Runtime::GetSingleton();
-		if (runtime.ProtectEssentials->value == 1.0 && target->IsEssential()) {
-			return;
+		if (runtime.ProtectEssentials) {
+			if (runtime.ProtectEssentials->value == 1.0 && target->IsEssential()) {
+				return;
+			}
 		}
 
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
@@ -161,11 +175,15 @@ namespace Gts {
 			power *= SMT_BONUS;
 		}
 
-		if (caster->HasPerk(runtime.PerkPart1)) {
-			power *= PERK1_BONUS;
+		if (runtime.PerkPart1) {
+			if (caster->HasPerk(runtime.PerkPart1)) {
+				power *= PERK1_BONUS;
+			}
 		}
-		if (caster->HasPerk(runtime.PerkPart2)) {
-			power *= PERK2_BONUS;
+		if (runtime.PerkPart2) {
+			if (caster->HasPerk(runtime.PerkPart2)) {
+				power *= PERK2_BONUS;
+			}
 		}
 		AdjustSizeLimit(0.0001 * target_scale * power);
 		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
@@ -176,9 +194,14 @@ namespace Gts {
 		const float SHRINK_TO_NOTHING_SCALE = 0.12;
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
+		if (!runtime.ShrinkToNothing) {
+			return;
+		}
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !target->HasMagicEffect(runtime.ShrinkToNothing) && !target->IsPlayerTeammate()) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
-			PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
+			if (runtime.BloodGushSound) {
+				PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
+			}
 			AdjustSizeLimit(0.0117);
 			ConsoleLog::GetSingleton()->Print("%s Was absorbed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			return true;
@@ -189,16 +212,26 @@ namespace Gts {
 	inline void CrushToNothing(Actor* caster, Actor* target) {
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
+		if (!runtime.GrowthPerk) {
+			return;
+		}
 		if (!caster->HasPerk(runtime.GrowthPerk)) { // Requires Growth Perk in order to grow
 			return;
 		}
 		int Random = rand() % 8;
 		if (Random >= 8) {
-			PlaySound(runtime.MoanSound,caster, 1.0, 1.0);
+			if (runtime.MoanSound) {
+				PlaySound(runtime.MoanSound,caster, 1.0, 1.0);
+			}
 		}
-		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
-		if (get_visual_scale(caster) <= 13.0 || !caster->IsSprinting() && !caster->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
+		if (runtime.CrushGrowthSpell) {
+			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
+		}
+		bool hasSMT = runtime.SmallMassiveThreat ? caster->HasMagicEffect(runtime.SmallMassiveThreat) : false;
+		if (get_visual_scale(caster) <= 13.0 || !caster->IsSprinting() && !hasSMT) {
+			if (runtime.BloodGushSound) {
+				PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
+			}
 			caster->NotifyAnimationGraph("JumpLand");
 
 		}
@@ -206,9 +239,17 @@ namespace Gts {
 
 
 
-		if (caster->HasPerk(runtime.ExtraGrowth) && (caster->HasMagicEffect(runtime.explosiveGrowth1) || caster->HasMagicEffect(runtime.explosiveGrowth2) || caster->HasMagicEffect(runtime.explosiveGrowth3))) {
-			runtime.CrushGrowthStorage->value += target_scale/50;
-		} // Slowly increase Limit after crushing someone while Growth Spurt is active.
+		if (runtime.ExtraGrowth) {
+			if (runtime.CrushGrowthStorage) {
+				bool hasExplosiveGrowth1 = runtime.explosiveGrowth1 ? caster->HasMagicEffect(runtime.explosiveGrowth1) : false;
+				bool hasExplosiveGrowth2 = runtime.explosiveGrowth2 ? caster->HasMagicEffect(runtime.explosiveGrowth2) : false;
+				bool hasExplosiveGrowth3 = runtime.explosiveGrowth3 ? caster->HasMagicEffect(runtime.explosiveGrowth3) : false;
+
+				if (caster->HasPerk(runtime.ExtraGrowth) && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
+					runtime.CrushGrowthStorage->value += target_scale/50;
+				} // Slowly increase Limit after crushing someone while Growth Spurt is active.
+			}
+		}
 
 
 		ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
@@ -216,6 +257,8 @@ namespace Gts {
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
 		auto& runtime = Runtime::GetSingleton();
-		caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
+		if (runtime.TrackSizeSpell) {
+			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
+		}
 	}
 }
