@@ -56,5 +56,6 @@ namespace Gts {
 		SizeManager::GetSingleton().ModEnchantmentBonus(caster, -GigantismPower);
 		log::info("Decreasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
 		log::info("Stopping effect: {}", reinterpret_cast<std::uintptr_t>(GetActiveEffect()));
+		log::info("elapsedSeconds: {}, duration: {}", GetActiveEffect()->elapsedSeconds, GetActiveEffect()->duration);
 	}
 }
