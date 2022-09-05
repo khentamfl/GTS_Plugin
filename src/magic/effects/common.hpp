@@ -18,14 +18,15 @@ namespace Gts {
 		return Time::WorldTimeDelta() * BASE_FPS;
 	}
 
-	bool CheckForLimit(Actor* actor) {
-		auto scale = get_visual_scale(actor);
-		auto limit = Persistent::GetSingleton().GetData(actor)->max_scale;
-		if (scale > limit) {
-			return false;
+	inline bool CheckForLimit(Actor* actor) {
+		float scale = get_visual_scale(actor);
+		float limit = Persistent::GetSingleton().GetData(actor)->max_scale;
+		if (scale < limit) {
+			return true;
 		}
 		else
-		{return true;}
+		{}
+		return false;
 	}
 
 	inline void AdjustSizeLimit(float value)  // A function that adjusts Size Limit (Globals)
@@ -95,7 +96,7 @@ namespace Gts {
 
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		if (CheckForLimit) {
+		if (CheckForLimit(actor)) {
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
 		}
 	}
@@ -128,7 +129,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0001 * target_scale);
 		mod_target_scale(from, -amount);
-		if (CheckForLimit)
+		if (CheckForLimit(to))
 		{
 		mod_target_scale(to, amount*effeciency);
 		}
@@ -140,7 +141,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0016 * target_scale);
 		mod_target_scale(from, -amount);
-		if (CheckForLimit) {
+		if (CheckForLimit(to)) {
 		mod_target_scale(to, amount*effeciency/10); // < 4 times weaker size steal towards caster. Absorb exclusive.
 		}
 	}
