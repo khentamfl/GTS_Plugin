@@ -39,7 +39,7 @@ namespace {
 			return;
 		}
 		float target_scale = min(persi_actor_data->target_scale, persi_actor_data->max_scale);
-		float limit_size = persi_actor_data->max_scale;
+		float limit_size = runtime.sizeLimit;
 		if (fabs(target_scale - persi_actor_data->visual_scale) < 1e-5) {
 			return;
 		}
