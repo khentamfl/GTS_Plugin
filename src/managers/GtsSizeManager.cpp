@@ -32,7 +32,7 @@ namespace Gts {
 		float Gigantism = this->GetEnchantmentBonus(actor)/100;
 		float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
 		float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
-		float RaceScale = GetRaceSCale(actor);
+		float RaceScale = GetRaceScale(actor);
 		float TotalLimit = ((GetLimit - 1.0) + Persistent_Size + RaceScale) * (1.0 + Gigantism);
 		if (TotalLimit < 0.50) {
 			TotalLimit = 0.50;
