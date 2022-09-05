@@ -28,7 +28,7 @@ namespace Gts {
 		GrowthTremorManager::GetSingleton().CallRumble(caster, player, 2.0);
 
 		auto GrowthSound = runtime.growthSound;
-		float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/4);
+		float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/8);
 		PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
 	}
 
@@ -56,7 +56,7 @@ namespace Gts {
 		float HP = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
 		caster->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
 
-		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel * Activations;
+		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 
 		Grow(caster, 0.0, Power);
 	}
