@@ -13,7 +13,7 @@ namespace Gts {
 			[[nodiscard]] static AttributeManager& GetSingleton() noexcept;
 
 			void Update();
-			void UpdateNpc(Actor* Npc);
+			void UpdateNpc(Actor* npc);
 			void Augmentation();
 			void OverrideBonus(float Value);
 			private:

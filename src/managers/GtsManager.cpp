@@ -291,7 +291,6 @@ namespace {
 		int game_modeNPC_int = 0;
 		if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction))) {
 			game_modeNPC_int = runtime.ChosenGameModeNPC->value;
-			AttributeManager::GetSingleton().UpdateNpc(actor);
 		}
 		if (game_modeNPC_int >=0 && game_modeNPC_int <= 3) {
 			game_modeNPC = static_cast<ChosenGameModeNPC>(game_modeNPC_int);
@@ -379,6 +378,7 @@ void GtsManager::poll() {
 			GameModePC(actor); // <-- Calculates Game Mode for PC
 			GameModeNPC(actor); // <-- Same but of Allies (Followers/Teammates)
 			SmoothSizeDecrease(actor); // Instead of suddently shrinking back to normal, Smoothens shrink when size limit is breached.
+			AttributeManager::GetSingleton().UpdateNpc(actor); // <-- Adjust attack damage
 			SizeManager::GetSingleton().UpdateSize(actor); // Calculates Max Size for Everyone.
 		}
 	}

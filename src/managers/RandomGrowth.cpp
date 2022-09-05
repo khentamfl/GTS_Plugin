@@ -18,7 +18,7 @@ namespace {
 		auto& runtime = Runtime::GetSingleton();
 		auto Player = PlayerCharacter::GetSingleton();
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		int Requirement = 120 * Gigantism;
+		int Requirement = 150 * Gigantism;
 		int random = rand() % Requirement;
 		if (Gigantism)
 		{
