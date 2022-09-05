@@ -25,9 +25,11 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float GigantismPower = GetActiveEffect()->magnitude;
+		this->magnitude = GetActiveEffect()->magnitude;
+		float GigantismPower = this->magnitude;
 		SizeManager::GetSingleton().ModEnchantmentBonus(caster, GigantismPower);
 		log::info("Increasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
+		log::info("Starting effect: {}", reinterpret_cast<std::uintptr_t>(GetActiveEffect()));
 	}
 
 	void Gigantism::OnUpdate() {
@@ -50,8 +52,9 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float GigantismPower = GetActiveEffect()->magnitude;
+		float GigantismPower = this->magnitude;
 		SizeManager::GetSingleton().ModEnchantmentBonus(caster, -GigantismPower);
 		log::info("Decreasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
+		log::info("Stopping effect: {}", reinterpret_cast<std::uintptr_t>(GetActiveEffect()));
 	}
 }
