@@ -180,20 +180,20 @@ namespace Gts {
 	}
 
 
-	void AttributeManager::UpdateNpc(Actor* Npc) {
+	void AttributeManager::UpdateNpc(Actor* npc) {
 		// Reapply Player Only
 
-		if (!Npc) {
+		if (!npc) {
 			return;
 		}
-		if (Npc->formID == 0x14) {
+		if (npc->formID == 0x14) {
 			return;
 		}
-		if (!Npc->Is3DLoaded()) {
+		if (!npc->Is3DLoaded()) {
 			return;
 		}
 
-		BoostAttackDmg(Npc, 1.0);
+		BoostAttackDmg(npc, 1.0);
 
 		//BoostSpeedMulti(Npc, 1.0);
 	}

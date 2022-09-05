@@ -17,10 +17,13 @@ namespace {
 	bool ShouldGrow() {
 		auto& runtime = Runtime::GetSingleton();
 		auto Player = PlayerCharacter::GetSingleton();
-		float Gigantism = 1.0 - SizeManager::GetSingleton().GetExtraMaxSize(Player);
+		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player);
 		int Requirement = 125 * Gigantism;
 		int random = rand() % Requirement;
+		if (Gigantism)
+		{
 		ConsoleLog::GetSingleton()->Print("Requirement: %s, Gigantism: %s", Requirement, Gigantism);
+		}
 		int decide_chance = 1;
 		auto growthPerk = runtime.GrowthPerk;
 		if (!growthPerk) {

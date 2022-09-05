@@ -19,7 +19,7 @@ namespace Gts {
 	}
 
 
-	inline void AdjustSizeLimit(float Value)  // A function that adjusts Size Limit (Globals)
+	inline void AdjustSizeLimit(float value)  // A function that adjusts Size Limit (Globals)
 	{
 		//AdjustMaxSize = 20CAC5
 		//AdjustMaxSize_MassBased = 277005
@@ -31,7 +31,7 @@ namespace Gts {
 		if (globalMaxSizeCalc) {
 			float valueGlobalMaxSizeCalc = globalMaxSizeCalc->value;
 			if (valueGlobalMaxSizeCalc < 10.0) {
-				globalMaxSizeCalc->value = valueGlobalMaxSizeCalc + (Value * 10 * ProgressionMultiplier * TimeScale()); // Always apply it
+				globalMaxSizeCalc->value = valueGlobalMaxSizeCalc + (value * 10 * progressionMultiplier * TimeScale()); // Always apply it
 			}
 		}
 
@@ -56,8 +56,8 @@ namespace Gts {
 		const float DRAGON_PEANLTY = 0.14;
 		auto& runtime = Runtime::GetSingleton();
 		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
-		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetExtraMaxSize(caster);
-		float GigantismTarget = 1.0 - SizeManager::GetSingleton().GetExtraMaxSize(target); // May go negative needs fixing with a smooth clamp
+		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster);
+		float GigantismTarget = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target); // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (caster->GetLevel()/target->GetLevel())) * progression_multiplier;
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
 			efficiency *= DRAGON_PEANLTY;
@@ -194,7 +194,7 @@ namespace Gts {
 		const float SHRINK_TO_NOTHING_SCALE = 0.12;
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
-		if (!runtime.ShrinkToNothing) {
+		if (runtime.ShrinkToNothing == nullptr) {
 			return;
 		}
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !target->HasMagicEffect(runtime.ShrinkToNothing) && !target->IsPlayerTeammate()) {

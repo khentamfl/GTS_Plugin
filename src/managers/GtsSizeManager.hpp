@@ -9,7 +9,7 @@ using namespace RE;
 namespace Gts {
 
 	struct SizeManagerData {
-		float extraMaxSize = 0.0;
+		float enchantmentBonus = 0.0;
 	};
 	class SizeManager {
 		public:
@@ -19,9 +19,9 @@ namespace Gts {
 
 			SizeManagerData& GetData(Actor* actor);
 
-			void SetExtraMaxSize(Actor* actor, float amt);
-			float GetExtraMaxSize(Actor* actor);
-			void ModExtraMaxSize(Actor* actor, float amt);
+			void SetenchantmentBonus(Actor* actor, float amt);
+			float GetEnchantmentBonus(Actor* actor);
+			void ModEnchantmentBonus(Actor* actor, float amt);
 
 		private:
 			std::map<Actor*, SizeManagerData> sizeData;

@@ -21,7 +21,7 @@ namespace Gts {
 	}
 	void SizeManager::UpdateSize(Actor* actor) {
 		auto& runtime = Runtime::GetSingleton();
-		float Gigantism = this->GetExtraMaxSize(actor) + 1.0;
+		float Gigantism = this->GetEnchantmentBonus(actor) + 1.0;
 		float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
 		float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
 		float TotalLimit = (GetLimit + Persistent_Size) * Gigantism;
@@ -30,17 +30,16 @@ namespace Gts {
 			//log::info("{} _ size limit is set to {}", actor->GetDisplayFullName(), TotalLimit);
 		}
 	}
-
-	void SizeManager::SetExtraMaxSize(Actor* actor, float amt) {
-		this->GetData(actor).extraMaxSize = amt;
+	void SizeManager::SetEnchantmentBonus(Actor* actor, float amt) {
+		this->GetData(actor).enchantmentBonus = amt;
 	}
 
-	float SizeManager::GetExtraMaxSize(Actor* actor) {
-		return this->GetData(actor).extraMaxSize;
+	float SizeManager::GetEnchantmentBonus(Actor* actor) {
+		return this->GetData(actor).enchantmentBonus;
 	}
 
-	void SizeManager::ModExtraMaxSize(Actor* actor, float amt) {
-		this->GetData(actor).extraMaxSize += amt;
+	void SizeManager::ModEnchantmentBonus(Actor* actor, float amt) {
+		this->GetData(actor).enchantmentBonus += amt;
 	}
 
 	SizeManagerData& SizeManager::GetData(Actor* actor) {
