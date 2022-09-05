@@ -19,7 +19,7 @@ namespace Gts {
 
 			SizeManagerData& GetData(Actor* actor);
 
-			void SetenchantmentBonus(Actor* actor, float amt);
+			void SetEnchantmentBonus(Actor* actor, float amt);
 			float GetEnchantmentBonus(Actor* actor);
 			void ModEnchantmentBonus(Actor* actor, float amt);
 
