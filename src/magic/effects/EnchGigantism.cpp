@@ -30,6 +30,7 @@ namespace Gts {
 		SizeManager::GetSingleton().ModEnchantmentBonus(caster, GigantismPower);
 		log::info("Increasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
 		log::info("Starting effect: {}", reinterpret_cast<std::uintptr_t>(GetActiveEffect()));
+		log::info("Total GigantismPower: {}, {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
 	}
 
 	void Gigantism::OnUpdate() {
@@ -57,5 +58,6 @@ namespace Gts {
 		log::info("Decreasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
 		log::info("Stopping effect: {}", reinterpret_cast<std::uintptr_t>(GetActiveEffect()));
 		log::info("elapsedSeconds: {}, duration: {}", GetActiveEffect()->elapsedSeconds, GetActiveEffect()->duration);
+		log::info("Total GigantismPower: {}, {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
 	}
 }

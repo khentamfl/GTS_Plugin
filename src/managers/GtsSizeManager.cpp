@@ -25,9 +25,9 @@ namespace Gts {
 		float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
 		float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
 		float TotalLimit = (GetLimit + Persistent_Size) * (1.0 + Gigantism);
-		log::info("Total limit of {} is: {}", actor->GetDisplayFullName(), TotalLimit);
 		if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 			set_max_scale(actor, TotalLimit);
+			log::info("Total limit of {} is: {}", actor->GetDisplayFullName(), TotalLimit);
 			//log::info("{} _ size limit is set to {}", actor->GetDisplayFullName(), TotalLimit);
 		}
 	}
