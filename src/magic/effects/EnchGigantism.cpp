@@ -33,7 +33,7 @@ namespace Gts {
 
 	void Gigantism::OnUpdate() {
 		auto caster = GetCaster();
-
+		auto& runtime = Runtime::GetSingleton();
 		if (!caster) {
 			return;
 		}
