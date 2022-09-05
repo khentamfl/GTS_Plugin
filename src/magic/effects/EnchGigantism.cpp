@@ -26,7 +26,8 @@ namespace Gts {
 			return;
 		}
 		float GigantismPower = GetActiveEffect()->magnitude;
-		SizeManager::GetSingleton().ModEnchantmentBonus(caster, GigantismPower);
+		//SizeManager::GetSingleton().ModEnchantmentBonus(caster, GigantismPower);
+		SizeManager::GetSingleton().SetEnchantmentBonus(caster, GigantismPower);
 		log::info("Increasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
 	}
 
@@ -43,7 +44,8 @@ namespace Gts {
 			return;
 		}
 		float GigantismPower = GetActiveEffect()->magnitude;
-		SizeManager::GetSingleton().ModEnchantmentBonus(caster, -GigantismPower);
+		//SizeManager::GetSingleton().ModEnchantmentBonus(caster, -GigantismPower);
+		SizeManager::GetSingleton().SetEnchantmentBonus(caster, GigantismPower);
 		log::info("Decreasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
 	}
 }

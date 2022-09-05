@@ -17,7 +17,7 @@ namespace {
 	bool ShouldGrow() {
 		auto& runtime = Runtime::GetSingleton();
 		auto Player = PlayerCharacter::GetSingleton();
-		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player);
+		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
 		int Requirement = 125 * Gigantism;
 		int random = rand() % Requirement;
 		if (Gigantism)

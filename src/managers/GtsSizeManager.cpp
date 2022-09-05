@@ -21,7 +21,7 @@ namespace Gts {
 	}
 	void SizeManager::UpdateSize(Actor* actor) {
 		auto& runtime = Runtime::GetSingleton();
-		float Gigantism = this->GetEnchantmentBonus(actor) + 1.0;
+		float Gigantism = this->GetEnchantmentBonus(actor)/100 + 1.0;
 		float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
 		float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
 		float TotalLimit = (GetLimit + Persistent_Size) * Gigantism;

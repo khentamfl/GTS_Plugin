@@ -44,7 +44,7 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		float Gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(caster) + 1.0;
+		float Gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100 + 1.0;
 		auto saved_data = Persistent::GetSingleton().GetData(caster);
 		float PotionPower = this->Strenght;
 		float BonusSize = runtime.sizeLimit->value * PotionPower * Gigantism;
