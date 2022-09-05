@@ -21,7 +21,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		Actor * target = GetTarget();
+		Actor* target = GetTarget();
 		if (!target) {
 			return;
 		}
@@ -29,6 +29,7 @@ namespace Gts {
 		auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.50, 2.0, get_visual_scale(target));
 		PlaySound(GrowthSound, target, Volume, 0.0);
+		log::info("Grow Other Button, actor: {}", target->GetDisplayFullName());
 	}
 
 	void GrowOtherButton::OnUpdate() {

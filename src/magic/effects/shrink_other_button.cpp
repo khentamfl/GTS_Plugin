@@ -25,6 +25,7 @@ namespace Gts {
 		auto ShrinkSound = runtime.shrinkSound;
 		float Volume = clamp(0.50, 1.0, get_visual_scale(target));
 		PlaySound(ShrinkSound, target, Volume, 0.0);
+		log::info("Shrink Other Button, actor: {}", target->GetDisplayFullName());
 	}
 	
 

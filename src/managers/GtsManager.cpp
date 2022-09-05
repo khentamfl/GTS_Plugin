@@ -225,17 +225,17 @@ namespace {
 			size_limit = 1.0;
 		} // Avoid bugs
 
-		if (get_target_scale(actor) < size_limit) {return;}
-			else {
+		if (visual_scale > size_limit) {
 			mod_target_scale(actor, -0.000025 * visual_scale); // Smoothly scale down to normal size
 
 			static Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
-
+			log::info("Manager Shrinks Back: {}, Scale: {}, Limit: {}", actor->GetDisplayFullName(), visual_scale, size_limit);
 			if (timer.ShouldRunFrame()) {
 				auto ShrinkSound = runtime.shrinkSound;
 				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/3.25);
 				PlaySound(ShrinkSound, actor, Volume, 0.0);
 				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
+				log::info("Manager Shrinks Back: {}", actor->GetDisplayFullName());
 			}
 		}
 	}
