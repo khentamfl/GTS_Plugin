@@ -44,18 +44,24 @@ namespace Gts {
 				return this->dual_casted;
 			}
 			inline bool HasDuration() {
-				// switch (this->activeEffect->spell->GetSpellType()) {
-				// 	case  MagicSystem::SpellType::kEnchantment: {
-				// 		return false;
-				// 	}
-				// }
-				switch (this->activeEffect->spell->GetCastingType()) {
-					case  MagicSystem::CastingType::kConstantEffect: {
-						return false;
+				if (this->activeEffect) {
+					if (this->activeEffect->spell) {
+						// switch (this->activeEffect->spell->GetSpellType()) {
+						// 	case  MagicSystem::SpellType::kEnchantment: {
+						// 		return false;
+						// 	}
+						// }
+						switch (this->activeEffect->spell->GetCastingType()) {
+							case  MagicSystem::CastingType::kConstantEffect: {
+								return false;
+							}
+						}
 					}
 				}
-				if (this->effectSetting->data.flags.all(EffectSetting::EffectSettingData::Flag::kNoDuration)) {
-					return false;
+				if (this->effectSetting) {
+					if (this->effectSetting->data.flags.all(EffectSetting::EffectSettingData::Flag::kNoDuration)) {
+						return false;
+					}
 				}
 				return true;
 			}
