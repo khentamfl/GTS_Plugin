@@ -1,4 +1,3 @@
-
 #include "Config.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/GtsSizeManager.hpp"
