@@ -19,8 +19,8 @@ namespace Gts {
 	}
 
 	inline bool CheckForLimit(Actor* actor) {
-		auto limit = Persist.GetData(actor)->max_scale;
 		auto scale = get_visual_scale(actor);
+		auto limit = Persistent::GetSingleton().GetData(actor)->max_scale;
 		if (scale > limit)
 		{return false;}
 		else 
