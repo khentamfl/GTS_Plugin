@@ -222,8 +222,8 @@ namespace {
 		float visual_scale = get_visual_scale(actor);
 		float just_scale = get_scale(actor);
 
-		if (size_limit < 0.50) {
-			size_limit = 0.50;
+		if (size_limit < 1.0) {
+			size_limit = 1.0;
 		} // Avoid bugs
 
 		if (visual_scale > size_limit) {
