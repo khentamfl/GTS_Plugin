@@ -22,7 +22,7 @@ namespace {
 	const float UNKNOWN_LINETHICKNESS = 0.1;
 
 	const glm::vec4 RAY_COLOR = { 0.90f, 0.10f, 0.10f, 1.0f };
-	const float RAY_LINETHICKNESS = 0.1;
+	const float RAY_LINETHICKNESS = 3.0;
 
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
 		if (shape->type == hkpShapeType::kCapsule) {
