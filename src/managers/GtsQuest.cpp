@@ -31,16 +31,11 @@ namespace Gts {
 
     float PCScale = get_visual_scale(Player);
 
-    log::info("Quest Stage: {}, IsInCombat: {}", QuestStage, Player->IsInCombat());
-
     if (QuestStage >= 40 && QuestStage < 60 && Player->IsInCombat() == false && PCScale > 1.00) {
         mod_target_scale(Player, -ShrinkPower * TimeScale());
-        log::info("Quest Stage is > 40, < 60");
         } // Shrink Stage 1 (Normal)
-
     if (QuestStage >= 60 && QuestStage < 70 && Player->IsInCombat() == false && PCScale > 1.00) {
         mod_target_scale(Player, -ShrinkPower/1.5 * TimeScale());
-        log::info("Quest Stage is > 60, < 70");
         } // Shrink Stage 2 (Less)
     }
 }

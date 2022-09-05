@@ -26,6 +26,9 @@ namespace {
 		if (!actor) {
 			return;
 		}
+		if (actor->formID==0x14) {
+		log::info("Player's VS:{}, VS_V: {}", persi_actor_data->visual_scale, persi_actor_data->visual_scale_v)
+		}
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
