@@ -90,7 +90,12 @@ namespace Gts {
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
+		if (!CheckForLimit(actor)) {
+			return;
+			} 
+			else {
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
+		}
 	}
 
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
