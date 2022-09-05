@@ -281,9 +281,7 @@ namespace {
 		charController->GetTransformImpl(outTransform);
 		glm::mat4 transform = HkToGlm(outTransform);
 
-		glm::vec4 localForward = glm::vec4(HkToGlm(charController->forwardVec), 0.0);
-		log::info("Local Forward: {},{},{}", localForward.x, localForward.y, localForward.z);
-		glm::vec3 worldForward = ApplyTransform(localForward, transform);
+		glm::vec3 worldForward = HkToGlm(charController->forwardVec);
 
 		glm::vec3 actorPos = HkToGlm(outTransform.translation);
 		glm::vec3 rayStart = actorPos + worldForward * meter_to_unit(0.5);
