@@ -16,7 +16,11 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		auto& runtime = Runtime::GetSingleton();
-		auto Player = PlayerCharacter::GetSingleton();
+				auto Player = PlayerCharacter::GetSingleton();
+		auto growthPerk = runtime.GrowthPerk;
+		if (!Player->HasPerk(growthPerk)) {
+			return false;
+		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
 		int Requirement = 150 * Gigantism;
 		int random = rand() % Requirement;
@@ -25,10 +29,6 @@ namespace {
 		log::info("Requirement: {}, Gigantism: {}", Requirement, Gigantism);
 		}
 		int decide_chance = 1;
-		auto growthPerk = runtime.GrowthPerk;
-		if (!growthPerk) {
-			return false;
-		}
 		log::info("Random Growth random: {}", random);
 		if (random <= decide_chance && Player->HasPerk(growthPerk)) {
 			return true;

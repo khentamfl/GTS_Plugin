@@ -51,6 +51,7 @@ namespace Gts {
 			auto GrowthSound = runtime.growthSound;
 			float Volume = clamp(0.15, 1.0, get_visual_scale(caster)/4);
 			PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
+			log::info("Playing sound, caster: {}", caster->GetDisplayFullName);
 		}
 		float HP = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
 		caster->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());

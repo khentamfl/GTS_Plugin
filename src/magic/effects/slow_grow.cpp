@@ -28,11 +28,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.000025;
 		float power = BASE_POWER + AlterBonus;
-		if (this->IsDual == true) {
-			power*= DUAL_CAST_BONUS;
-			log::info("SlowGrowth is dual");
-		}
-
+	
 		if (this->timer.ShouldRun()) {
 			auto GrowthSound = runtime.growthSound;
 			float Volume = clamp(0.15, 1.0, get_visual_scale(caster)/8);
@@ -41,6 +37,7 @@ namespace Gts {
 
 		Grow(caster, 0.0, power);
 		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.30);
+		log::info("Slowly Growing, actor: {}", caster->GetDisplayFullName);
 	}
 
 	void SlowGrow::OnStart() {

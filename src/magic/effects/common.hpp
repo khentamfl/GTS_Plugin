@@ -200,6 +200,10 @@ namespace Gts {
 			if (runtime.BloodGushSound) {
 				PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
 			}
+			else
+			{
+				log::info("SOUND NOT FOUND!");
+			}
 			AdjustSizeLimit(0.0117);
 			ConsoleLog::GetSingleton()->Print("%s Was absorbed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			return true;
@@ -227,13 +231,16 @@ namespace Gts {
 		}
 		bool hasSMT = runtime.SmallMassiveThreat ? caster->HasMagicEffect(runtime.SmallMassiveThreat) : false;
 		if (get_visual_scale(caster) <= 13.0 || !caster->IsSprinting() && !hasSMT) {
-			if (runtime.BloodGushSound) {
-				PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
-			}
 			caster->NotifyAnimationGraph("JumpLand");
 
 		}
 		AdjustSizeLimit(0.0417 * target_scale);
+			if (runtime.BloodGushSound) {
+				PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
+			} else 
+			{
+				log::info("SOUND NOT FOUND!");
+			}
 
 
 
