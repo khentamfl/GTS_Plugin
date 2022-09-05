@@ -79,8 +79,10 @@ namespace Gts {
 				if (this->activeEffect->flags & ActiveEffect::Flag::kDispelled) {
 					finished = true;
 				}
-				if (this->activeEffect->elapsedSeconds >= this->activeEffect->duration) {
-					finished = true;
+				if (this->HasDuration()) {
+					if (this->activeEffect->elapsedSeconds >= this->activeEffect->duration) {
+						finished = true;
+					}
 				}
 				if (finished) {
 					this->state = State::Finish;
