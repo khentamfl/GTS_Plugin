@@ -28,6 +28,14 @@ namespace Util {
 			);
 	}
 
+	inline glm::vec3 ApplyTransform(glm::vec4 vec, glm::mat4 mat) {
+		return glm::vec3(mat * vec);
+	}
+
+	inline glm::vec3 ApplyTransform(glm::vec3 vec, glm::mat4 mat) {
+		return glm::vec3(mat * glm::vec4(vec, 1.0));
+	}
+
 	inline bool IsRoughlyEqual(float first, float second, float maxDif)
 	{
 		return abs(first - second) <= maxDif;

@@ -21,6 +21,9 @@ namespace {
 	const glm::vec4 UNKNOWN_COLOR = { 0.10f, 0.10f, 0.10f, 1.0f };
 	const float UNKNOWN_LINETHICKNESS = 0.1;
 
+	const glm::vec4 RAY_COLOR = { 0.90f, 0.10f, 0.10f, 1.0f };
+	const float RAY_LINETHICKNESS = 0.1;
+
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
 		if (shape->type == hkpShapeType::kCapsule) {
 			// log::info("Capsule");
@@ -262,6 +265,33 @@ namespace {
 		}
 	}
 
+	void DrawRay(Actor* actor) {
+		if (!actor) {
+			return;
+		}
+		if (!actor->Is3DLoaded()) {
+			return;
+		}
+		auto charController = actor->GetCharController();
+		if (!charController) {
+			return;
+		}
+
+		hkTransform outTransform;
+		charController->GetTransformImpl(outTransform);
+		glm::mat4 transform = HkToGlm(outTransform);
+
+		glm::vec4 localForward = glm::vec4(HkToGlm(charController->forwardVec), 0.0);
+		log::info("Local Forward: {},{},{}", localForward.x, localForward.y, localForward.z);
+		glm::vec3 worldForward = ApplyTransform(localForward, transform);
+
+		glm::vec3 actorPos = HkToGlm(outTransform.translation);
+		glm::vec3 rayStart = actorPos + worldForward * meter_to_unit(0.5);
+		glm::vec3 rayEnd = actorPos + worldForward * meter_to_unit(5.5);
+
+		DebugAPI::DrawLineForMS(rayStart, rayEnd, MS_TIME, RAY_COLOR, RAY_LINETHICKNESS);
+	}
+
 	void DrawActor(Actor* actor) {
 		if (!actor) {
 			return;
@@ -297,6 +327,7 @@ namespace Gts {
 			}
 
 			DrawActor(actor);
+			DrawRay(actor);
 		}
 	}
 }
