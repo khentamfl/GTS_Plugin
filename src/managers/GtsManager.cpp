@@ -220,6 +220,7 @@ namespace {
 		auto actor_data = Persist.GetActorData(actor);
 		float size_limit = actor_data->max_scale;
 		float visual_scale = get_visual_scale(actor);
+		float just_scale = get_scale(actor);
 
 		if (size_limit < 1.0) {
 			size_limit = 1.0;
@@ -229,7 +230,7 @@ namespace {
 			mod_target_scale(actor, -0.000025 * visual_scale); // Smoothly scale down to normal size
 
 			static Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
-			log::info("Manager Shrinks Back: {}, Scale: {}, Limit: {}", actor->GetDisplayFullName(), visual_scale, size_limit);
+			log::info("Manager Shrinks Back: {}, Scale: {}, Limit: {}, Normal Scale: {}", actor->GetDisplayFullName(), visual_scale, size_limit, just_scale);
 			if (timer.ShouldRunFrame()) {
 				auto ShrinkSound = runtime.shrinkSound;
 				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/3.25);
