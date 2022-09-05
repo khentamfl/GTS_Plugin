@@ -281,7 +281,7 @@ namespace {
 		charController->GetTransformImpl(outTransform);
 		glm::mat4 transform = HkToGlm(outTransform);
 
-		glm::vec3 worldForward = HkToGlm(charController->forwardVec);
+		glm::vec3 worldForward = glm::normalize(HkVecToGlmVec(charController->forwardVec));
 
 		glm::vec3 actorPos = HkToGlm(outTransform.translation);
 		glm::vec3 rayStart = actorPos + worldForward * meter_to_unit(0.5);

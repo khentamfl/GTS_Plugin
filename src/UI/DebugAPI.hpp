@@ -9,22 +9,26 @@
 
 namespace Util {
 
+	inline glm::vec3 HkVecToGlmVec(const RE::hkVector4 &vec) {
+		return glm::vec3(vec.quad.m128_f32[0], vec.quad.m128_f32[1], vec.quad.m128_f32[2]);
+	}
+
 	inline glm::vec3 HkToGlm(const RE::hkVector4 &vec) {
-		return glm::vec3(vec.quad.m128_f32[0], vec.quad.m128_f32[1], vec.quad.m128_f32[2])  * *Gts::g_worldScaleInverse;
+		return HkVecToGlmVec(vec)  * *Gts::g_worldScaleInverse;
 	}
 	inline glm::mat3 HkToGlm(const RE::hkRotation &mat) {
 		return glm::mat3(
-			glm::vec3(mat.col0.quad.m128_f32[0], mat.col0.quad.m128_f32[1], mat.col0.quad.m128_f32[2]),
-			glm::vec3(mat.col1.quad.m128_f32[0], mat.col1.quad.m128_f32[1], mat.col1.quad.m128_f32[2]),
-			glm::vec3(mat.col2.quad.m128_f32[0], mat.col2.quad.m128_f32[1], mat.col2.quad.m128_f32[2])
+			HkVecToGlmVec(mat.col0),
+			HkVecToGlmVec(mat.col1),
+			HkVecToGlmVec(mat.col2)
 			);
 	}
 	inline glm::mat4 HkToGlm(const RE::hkTransform &transform) {
 		return glm::mat4(
-			glm::vec4(transform.rotation.col0.quad.m128_f32[0], transform.rotation.col0.quad.m128_f32[1], transform.rotation.col0.quad.m128_f32[2], 0.0),
-			glm::vec4(transform.rotation.col1.quad.m128_f32[0], transform.rotation.col1.quad.m128_f32[1], transform.rotation.col1.quad.m128_f32[2], 0.0),
-			glm::vec4(transform.rotation.col2.quad.m128_f32[0], transform.rotation.col2.quad.m128_f32[1], transform.rotation.col2.quad.m128_f32[2], 0.0),
-			glm::vec4(transform.translation.quad.m128_f32[0]   * *Gts::g_worldScaleInverse, transform.translation.quad.m128_f32[1]   * *Gts::g_worldScaleInverse, transform.translation.quad.m128_f32[2]   * *Gts::g_worldScaleInverse, 1.0)
+			glm::vec4(HkVecToGlmVec(transform.rotation.col0), 0.0),
+			glm::vec4(HkVecToGlmVec(transform.rotation.col1), 0.0),
+			glm::vec4(HkVecToGlmVec(transform.rotation.col2), 0.0),
+			glm::vec4(HkToGlm(transform.translation), 1.0)
 			);
 	}
 
