@@ -226,7 +226,7 @@ namespace {
 			size_limit = 1.0;
 		} // Avoid bugs
 		auto GetNode = find_node(actor, "NPC", false);
-		float NodeScale = GetNode->m_localTransform.scale;
+		float NodeScale = GetNode->world.scale;
 		if (visual_scale > size_limit) {
 			mod_target_scale(actor, -0.000025 * visual_scale); // Smoothly scale down to normal size
 
