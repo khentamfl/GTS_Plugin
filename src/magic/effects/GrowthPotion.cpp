@@ -30,8 +30,6 @@ namespace Gts {
 		auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/4);
 		PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
-
-		this->ActivationCount += 1.0;
 	}
 
 	void GrowthPotion::OnUpdate() {
@@ -43,9 +41,6 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		if (this->ActivationCount <= 1.0) {
-			this->ActivationCount = 1.0;
-		} //Ensure that it's not a zero
 
 		float AlchemyLevel = clamp(1.0, 2.0, caster->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
 		float FrameCount = 140 * TimeScale();
@@ -68,6 +63,5 @@ namespace Gts {
 	}
 
 	void GrowthPotion::OnFinish() {
-		this->ActivationCount = 0.0;
 	}
 }
