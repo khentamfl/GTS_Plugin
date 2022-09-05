@@ -18,6 +18,14 @@ namespace Gts {
 		return Time::WorldTimeDelta() * BASE_FPS;
 	}
 
+	inline bool CheckForLimit(Actor* actor) {
+		auto limit = Persist.GetData(actor)->max_scale;
+		auto scale = get_visual_scale(actor);
+		if (scale > limit)
+		{return false;}
+		else 
+		return true;
+	}
 
 	inline void AdjustSizeLimit(float value)  // A function that adjusts Size Limit (Globals)
 	{
@@ -86,8 +94,9 @@ namespace Gts {
 
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
+		if (CheckForLimit) {
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
-		log::info("Crush Growth Active");
+		}
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
@@ -118,7 +127,10 @@ namespace Gts {
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0001 * target_scale);
 		mod_target_scale(from, -amount);
+		if (CheckForLimit)
+		{
 		mod_target_scale(to, amount*effeciency);
+		}
 	}
 
 	inline void AbsorbSteal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
@@ -127,7 +139,9 @@ namespace Gts {
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0016 * target_scale);
 		mod_target_scale(from, -amount);
+		if (CheckForLimit) {
 		mod_target_scale(to, amount*effeciency/10); // < 4 times weaker size steal towards caster. Absorb exclusive.
+		}
 	}
 
 	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
@@ -251,7 +265,7 @@ namespace Gts {
 				bool hasExplosiveGrowth3 = runtime.explosiveGrowth3 ? caster->HasMagicEffect(runtime.explosiveGrowth3) : false;
 
 				if (caster->HasPerk(runtime.ExtraGrowth) && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
-					runtime.CrushGrowthStorage->value += target_scale/50;
+					runtime.CrushGrowthStorage->value += target_scale/75;
 				} // Slowly increase Limit after crushing someone while Growth Spurt is active.
 			}
 		}

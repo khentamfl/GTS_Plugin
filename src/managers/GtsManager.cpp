@@ -12,6 +12,7 @@
 #include "data/time.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
+#include "node.hpp"
 #include "timer.hpp"
 #include <vector>
 #include <string>
@@ -225,7 +226,7 @@ namespace {
 		if (size_limit < 1.0) {
 			size_limit = 1.0;
 		} // Avoid bugs
-		auto GetNode = find_any_node(actor, "NPC", false);
+		auto GetNode = find_node(actor, "NPC", false);
 		float NodeScale = GetNode->local.scale;
 		if (visual_scale > size_limit) {
 			mod_target_scale(actor, -0.000025 * visual_scale); // Smoothly scale down to normal size
@@ -241,6 +242,7 @@ namespace {
 			}
 		}
 	}
+
 
 	void GameModePC(Actor* actor)  {
 		if (actor->formID != 0x14) {
