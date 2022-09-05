@@ -21,11 +21,11 @@ namespace Gts {
 	inline bool CheckForLimit(Actor* actor) {
 		float scale = get_visual_scale(actor);
 		float limit = Persistent::GetSingleton().GetData(actor)->max_scale;
-		if (scale < limit) {
-			return true;
+		if (scale > limit) {
+			return false;
 		}
 		else
-		{return false;}
+		{return true;}
 	}
 
 	inline void AdjustSizeLimit(float value)  // A function that adjusts Size Limit (Globals)
