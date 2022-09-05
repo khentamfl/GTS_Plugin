@@ -22,7 +22,7 @@ namespace {
 		int random = rand() % Requirement;
 		if (Gigantism)
 		{
-		ConsoleLog::GetSingleton()->Print("Requirement: %s, Gigantism: %s", Requirement, Gigantism);
+		log::info("Requirement: {}, Gigantism: {}", Requirement, Gigantism);
 		}
 		int decide_chance = 1;
 		auto growthPerk = runtime.GrowthPerk;
