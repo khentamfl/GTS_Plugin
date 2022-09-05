@@ -25,14 +25,22 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float GigantismPower = GetActiveEffect()->magnitude;
+		//float GigantismPower = GetActiveEffect()->magnitude;
 		//SizeManager::GetSingleton().ModEnchantmentBonus(caster, GigantismPower);
-		SizeManager::GetSingleton().SetEnchantmentBonus(caster, GigantismPower);
-		log::info("Increasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
+		//SizeManager::GetSingleton().SetEnchantmentBonus(caster, GigantismPower);
+		//log::info("Increasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
 	}
 
 	void Gigantism::OnUpdate() {
+		auto caster = GetCaster();
 
+		if (!caster) {
+			return;
+		}
+		float GigantismPower = GetActiveEffect()->magnitude;
+		SizeManager::GetSingleton().SetEnchantmentBonus(caster, GigantismPower);
+		float GetCount = runtime.EnchGigantism->effectLoadedCount;
+		log::info("GigantismPower is: {}, Actor: {}, Count: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName(), GetCount);
 	}
 
 
@@ -43,9 +51,9 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float GigantismPower = GetActiveEffect()->magnitude;
+		//float GigantismPower = GetActiveEffect()->magnitude;
 		//SizeManager::GetSingleton().ModEnchantmentBonus(caster, -GigantismPower);
-		SizeManager::GetSingleton().SetEnchantmentBonus(caster, GigantismPower);
-		log::info("Decreasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
+		//SizeManager::GetSingleton().SetEnchantmentBonus(caster, GigantismPower);
+		//log::info("Decreasing GigantismPower: {}, Actor: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName());
 	}
 }
