@@ -25,7 +25,7 @@ namespace Gts {
 			return false;
 		}
 		else
-		return true;
+		{return true;}
 	}
 
 	inline void AdjustSizeLimit(float value)  // A function that adjusts Size Limit (Globals)
