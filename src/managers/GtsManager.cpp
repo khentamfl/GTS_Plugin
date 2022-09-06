@@ -52,10 +52,11 @@ namespace {
 					persi_actor_data->target_scale,
 					persi_actor_data->target_scale_v,
 					max_scale,
-					persi_actor_data->half_life*10,
+					persi_actor_data->half_life*3,
 					Time::WorldTimeDelta()
 					);
 			}
+			log::info("Relaxing target scale {} to max scale {} with velocity: {}", persi_actor_data->target_scale, persi_actor_data->max_scale, persi_actor_data->target_scale_v);
 		} else {
 			persi_actor_data->target_scale_v = 0.0;
 		}
@@ -232,14 +233,20 @@ namespace {
 
 
 	void ApplyGameMode(Actor* actor, const ChosenGameMode& game_mode, const float& GrowthRate, const float& ShrinkRate )  {
+		const float EPS = 1e-7;
 		if (game_mode != ChosenGameMode::None) {
 			float natural_scale = get_natural_scale(actor);
 			float Scale = get_visual_scale(actor);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
+			log::info("GameMode is: None");
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
-					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * Time::WorldTimeDelta();
+					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
+					if (fabs(GrowthRate) < EPS) {
+						return;
+					}
+					log::info("GameMode is: Grow");
 					if ((targetScale + modAmount) < maxScale) {
 						mod_target_scale(actor, modAmount);
 					} else if (targetScale < maxScale) {
@@ -248,7 +255,11 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Shrink: {
-					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * Time::WorldTimeDelta();
+					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * 60 * Time::WorldTimeDelta();
+					if (fabs(ShrinkRate) < EPS) {
+							return;
+						}
+					log::info("GameMode is: Shrink");
 					if ((targetScale + modAmount) > natural_scale) {
 						mod_target_scale(actor, modAmount);
 					} else if (targetScale > natural_scale) {
@@ -257,15 +268,22 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Standard: {
+					log::info("GameMode is: Standard");
 					if (actor->IsInCombat()) {
-						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * Time::WorldTimeDelta();
+						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
+						if (fabs(GrowthRate) < EPS) {
+							return;
+						}
 						if ((targetScale + modAmount) < maxScale) {
 							mod_target_scale(actor, modAmount);
 						} else if (targetScale < maxScale) {
 							set_target_scale(actor, maxScale);
 						} // else let spring handle it
 					} else {
-						float modAmount = Scale * -(0.00029 + (ShrinkRate * 0.34)) * Time::WorldTimeDelta();
+						float modAmount = Scale * -(0.00029 + (ShrinkRate * 0.34)) * 60 * Time::WorldTimeDelta();
+						if (fabs(ShrinkRate) < EPS) {
+							return;
+						}
 						if ((targetScale + modAmount) > natural_scale) {
 							mod_target_scale(actor, modAmount);
 						} else if (targetScale > natural_scale) {
@@ -274,7 +292,10 @@ namespace {
 					}
 				}
 				case ChosenGameMode::Quest: {
-					float modAmount = ShrinkRate * Time::WorldTimeDelta();
+					float modAmount = -ShrinkRate * Time::WorldTimeDelta();
+					if (fabs(ShrinkRate) < EPS) {
+						return;
+					}
 					if ((targetScale + modAmount) > natural_scale) {
 						mod_target_scale(actor, modAmount);
 					} else if (targetScale > natural_scale) {
@@ -302,11 +323,11 @@ namespace {
 
 			} else if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) {
 				game_mode_int = runtime.ChosenGameModeNPC->value;
-				GrowthRate = runtime.GrowthModeRateNPC->value;
-				ShrinkRate = runtime.ShrinkModeRateNPC->value;
+				growthRate = runtime.GrowthModeRateNPC->value;
+				shrinkRate = runtime.ShrinkModeRateNPC->value;
 			}
-		} else if (QuestStage < 20.0) {
-			if (actor->formID == 0x14) {
+		} else if (QuestStage < 100.0) {
+			if (actor->formID == 0x14 && !actor->IsInCombat()) {
 				game_mode_int = 4; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
 					shrinkRate = 0.00046;
@@ -314,17 +335,17 @@ namespace {
 					shrinkRate = 0.00046 / 1.5;
 				}
 
-				if (actor->IsInCombat()) {
-					shrinkRate *= 0.0;
-				} else if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
+				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
 					shrinkRate *= 0.0;
 				} else if (actor->HasMagicEffect(runtime.ResistShrinkPotion)) {
 					shrinkRate *= 0.25;
 				}
+				
+				if (fabs(shrinkRate) <= 1e-6) {
+					game_mode_int = 0; // Nothing to do
+				}
 			}
 		}
-
-		float QuestStage = runtime.MainQuest->GetCurrentStageID();
 
 
 		if (game_mode_int >=0 && game_mode_int <= 4) {

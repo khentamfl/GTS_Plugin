@@ -74,6 +74,23 @@ namespace Gts {
 		}
 		return -1.0;
 	}
+	
+	float get_npcparentnode_scale(Actor* actor) {
+		// This will set the scale of the root npc node
+		string node_name = "NPC Root [Root]";
+		auto childNode = find_node(actor, node_name, false);
+		if (!childNode) {
+			childNode = find_node(actor, node_name, true);
+			if (!childNode) {
+				return -1.0;
+			}
+		}
+		auto parent = childNode->parent;
+		if (parent) {
+			return parent->local.scale;
+		}
+		return -1.0; // 
+	}
 
 	float get_model_scale(Actor* actor) {
 		// This will set the scale of the root npc node
@@ -109,7 +126,11 @@ namespace Gts {
 		if (node_scale < 0.0) {
 			return -1.0;
 		}
-		return ref_scale * model_scale * node_scale;
+		float npc_parentnode_scale = get_npcparentnode_scale(actor);
+		if (npc_parentnode_scale < 0.0) {
+			return -1.0;
+		}
+		return ref_scale * model_scale * node_scale * npc_parentnode_scale;
 	}
 
 	bool set_scale(Actor* actor, float scale) {
