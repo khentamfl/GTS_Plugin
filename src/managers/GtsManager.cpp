@@ -56,6 +56,7 @@ namespace {
 					Time::WorldTimeDelta()
 					);
 			}
+			log::info("Relaxing target scale {} to max scale {} with velocity: {}", persi_actor_data->target_scale, persi_actor_data->max_scale, persi_actor_data->target_scale_v);
 		} else {
 			persi_actor_data->target_scale_v = 0.0;
 		}
