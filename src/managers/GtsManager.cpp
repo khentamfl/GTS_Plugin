@@ -342,7 +342,7 @@ namespace {
 					shrinkRate *= 0.25;
 				}
 				
-				if (fabs(shrinkRate) <= 1e-4) {
+				if (fabs(shrinkRate) <= 1e-6) {
 					game_mode_int = 0; // Nothing to do
 				}
 			}
