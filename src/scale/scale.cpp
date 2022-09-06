@@ -11,6 +11,7 @@ namespace Gts {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				actor_data->target_scale = scale;
+				actor_data->target_scale_v = 0.0;
 			}
 		}
 	}
@@ -30,6 +31,7 @@ namespace Gts {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				actor_data->target_scale += amt;
+				actor_data->target_scale_v = 0.0;
 			}
 		}
 	}

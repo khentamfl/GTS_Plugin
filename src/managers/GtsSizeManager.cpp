@@ -51,10 +51,6 @@ namespace Gts {
 		}
 		if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 			set_max_scale(actor, TotalLimit);
-			float target_scale = get_target_scale(actor);
-			if (target_scale > TotalLimit) {
-				set_target_scale(actor, TotalLimit);
-			}
 			log::info("Total limit of {} is: {}", actor->GetDisplayFullName(), TotalLimit);
 		}
 	}

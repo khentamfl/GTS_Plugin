@@ -144,6 +144,16 @@ namespace Gts {
 							smt_run_speed = 0.0;
 						}
 
+						float target_scale_v;
+						if (version >= 7) {
+							serde->ReadRecordData(&target_scale_v, sizeof(target_scale_v));
+						} else {
+							target_scale_v = 0.0;
+						}
+						if (std::isnan(target_scale_v)) {
+							target_scale_v = 0.0;
+						}
+
 						ActorData data = ActorData();
 						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, bonus_hp: {}, bonus_carry: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, bonus_hp, bonus_carry);
 						data.native_scale = native_scale;
@@ -158,6 +168,7 @@ namespace Gts {
 						data.bonus_carry = bonus_carry;
 						data.bonus_max_size = bonus_max_size;
 						data.smt_run_speed = smt_run_speed;
+						data.target_scale_v = target_scale_v;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
@@ -246,7 +257,7 @@ namespace Gts {
 	void Persistent::OnGameSaved(SerializationInterface* serde) {
 		std::unique_lock lock(GetSingleton()._lock);
 
-		if (!serde->OpenRecord(ActorDataRecord, 6)) {
+		if (!serde->OpenRecord(ActorDataRecord, 7)) {
 			log::error("Unable to open actor data record to write cosave data.");
 			return;
 		}
@@ -267,6 +278,7 @@ namespace Gts {
 			float bonus_carry = data.bonus_carry;
 			float bonus_max_size = data.bonus_max_size;
 			float smt_run_speed = data.smt_run_speed;
+			float target_scale_v = data.target_scale_v;
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
@@ -281,6 +293,7 @@ namespace Gts {
 			serde->WriteRecordData(&bonus_carry, sizeof(bonus_carry));
 			serde->WriteRecordData(&bonus_max_size, sizeof(bonus_max_size));
 			serde->WriteRecordData(&smt_run_speed, sizeof(smt_run_speed));
+			serde->WriteRecordData(&target_scale_v, sizeof(target_scale_v));
 		}
 
 		if (!serde->OpenRecord(ScaleMethodRecord, 0)) {

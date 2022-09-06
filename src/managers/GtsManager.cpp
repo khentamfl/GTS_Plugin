@@ -38,23 +38,42 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		float target_scale = min(persi_actor_data->target_scale, persi_actor_data->max_scale);
+		float target_scale = persi_actor_data->target_scale;
 
-		if (fabs(target_scale - persi_actor_data->visual_scale) < 1e-5) {
-			return;
-		}
-		float minimum_scale_delta = 0.000005; // 0.00005%
-		if (fabs(target_scale - persi_actor_data->visual_scale) < minimum_scale_delta) {
-			persi_actor_data->visual_scale = target_scale;
-			persi_actor_data->visual_scale_v = 0.0;
+		// Smooth target_scale towards max_scale if target_scale > max_scale
+		float max_scale = persi_actor_data->max_scale;
+		if (target_scale > max_scale) {
+			float minimum_scale_delta = 0.000005; // 0.00005%
+			if (fabs(target_scale - max_scale) < minimum_scale_delta) {
+				persi_actor_data->target_scale = max_scale;
+				persi_actor_data->target_scale_v = 0.0;
+			} else {
+				critically_damped(
+					persi_actor_data->target_scale,
+					persi_actor_data->target_scale_v,
+					max_scale,
+					persi_actor_data->half_life*10,
+					Time::WorldTimeDelta()
+					);
+			}
 		} else {
-			critically_damped(
-				persi_actor_data->visual_scale,
-				persi_actor_data->visual_scale_v,
-				target_scale,
-				persi_actor_data->half_life,
-				Time::WorldTimeDelta()
-				);
+			persi_actor_data->target_scale_v = 0.0;
+		}
+
+		if (fabs(target_scale - persi_actor_data->visual_scale) > 1e-5) {
+			float minimum_scale_delta = 0.000005; // 0.00005%
+			if (fabs(target_scale - persi_actor_data->visual_scale) < minimum_scale_delta) {
+				persi_actor_data->visual_scale = target_scale;
+				persi_actor_data->visual_scale_v = 0.0;
+			} else {
+				critically_damped(
+					persi_actor_data->visual_scale,
+					persi_actor_data->visual_scale_v,
+					target_scale,
+					persi_actor_data->half_life,
+					Time::WorldTimeDelta()
+					);
+			}
 		}
 	}
 	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
@@ -208,124 +227,111 @@ namespace {
 		Grow,
 		Shrink,
 		Standard,
+		Quest,
 	};
 
-	enum ChosenGameModeNPC {
-		NoneNPC,
-		GrowNPC,
-		ShrinkNPC,
-		StandardNPC,
-	};
 
-	void SmoothSizeDecrease(Actor* actor) {  // Handles smooth size loss over time.
-
-		auto& runtime = Runtime::GetSingleton();
-		auto& Persist = Persistent::GetSingleton();
-		auto actor_data = Persist.GetActorData(actor);
-		float size_limit = actor_data->max_scale;
-		float visual_scale = get_visual_scale(actor);
-		float just_scale = get_scale(actor);
-
-		if (size_limit < 1.0) {
-			size_limit = 1.0;
-		} // Avoid bugs
-
-		if (visual_scale > size_limit) {
-			mod_target_scale(actor, -0.00010 * visual_scale); // Smoothly scale down to normal size
-
-			static Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
-			if (timer.ShouldRunFrame() && visual_scale > (size_limit * 1.25)) {
-				auto ShrinkSound = runtime.shrinkSound;
-				float Volume = clamp(0.15, 1.0, get_visual_scale(actor)/6.0);
-				PlaySound(ShrinkSound, actor, Volume, 0.0);
-				GrowthTremorManager::GetSingleton().CallRumble(actor, PlayerCharacter::GetSingleton(), 0.25);
-			}
-		}
-	}
-
-
-	void GameModePC(Actor* actor)  {
-		if (actor->formID != 0x14) {
-			return;
-		}
-
-		auto& runtime = Runtime::GetSingleton();
-
-		ChosenGameMode game_mode = ChosenGameMode::None;
-		int game_mode_int = 0;
-
-		game_mode_int = runtime.ChosenGameMode->value;
-
-		if (game_mode_int >=0 && game_mode_int <= 3) {
-			game_mode = static_cast<ChosenGameMode>(game_mode_int);
-		}
-
+	void ApplyGameMode(Actor* actor, const ChosenGameMode& game_mode, const float& GrowthRate, const float& ShrinkRate )  {
 		if (game_mode != ChosenGameMode::None) {
-			float GrowthRate = runtime.GrowthModeRate->value;
-			float ShrinkRate = runtime.ShrinkModeRate->value;
-
-			float natural_scale = 1.0;
+			float natural_scale = get_natural_scale(actor);
 			float Scale = get_visual_scale(actor);
+			float maxScale = get_max_scale(actor);
+			float targetScale = get_target_scale(actor);
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
-					mod_target_scale(actor, Scale * (0.00010 + (GrowthRate * 0.25)));
+					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * Time::WorldTimeDelta();
+					if ((targetScale + modAmount) < maxScale) {
+						mod_target_scale(actor, modAmount);
+					} else if (targetScale < maxScale) {
+						set_target_scale(actor, maxScale);
+					} // else let spring handle it
 					break;
 				}
 				case ChosenGameMode::Shrink: {
-					if (Scale > natural_scale) {
-						mod_target_scale(actor, Scale * -(0.00025 + (ShrinkRate * 0.25)));
-					}
+					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * Time::WorldTimeDelta();
+					if ((targetScale + modAmount) > natural_scale) {
+						mod_target_scale(actor, modAmount);
+					} else if (targetScale > natural_scale) {
+						set_target_scale(actor, natural_scale);
+					} // Need to have size restored by someone
 					break;
 				}
 				case ChosenGameMode::Standard: {
 					if (actor->IsInCombat()) {
-						mod_target_scale(actor, Scale * (0.00008 + (GrowthRate * 0.17)));
+						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * Time::WorldTimeDelta();
+						if ((targetScale + modAmount) < maxScale) {
+							mod_target_scale(actor, modAmount);
+						} else if (targetScale < maxScale) {
+							set_target_scale(actor, maxScale);
+						} // else let spring handle it
 					} else {
-						mod_target_scale(actor, Scale * -(0.00029 + (ShrinkRate * 0.34)));
+						float modAmount = Scale * -(0.00029 + (ShrinkRate * 0.34)) * Time::WorldTimeDelta();
+						if ((targetScale + modAmount) > natural_scale) {
+							mod_target_scale(actor, modAmount);
+						} else if (targetScale > natural_scale) {
+							set_target_scale(actor, natural_scale);
+						} // Need to have size restored by someone
 					}
+				}
+				case ChosenGameMode::Quest: {
+					float modAmount = ShrinkRate * Time::WorldTimeDelta();
+					if ((targetScale + modAmount) > natural_scale) {
+						mod_target_scale(actor, modAmount);
+					} else if (targetScale > natural_scale) {
+						set_target_scale(actor, natural_scale);
+					} // Need to have size restored by somethig
 				}
 			}
 		}
 	}
 
-	void GameModeNPC(Actor* actor)  {
+	void GameMode(Actor* actor)  {
 		auto& runtime = Runtime::GetSingleton();
 
-		ChosenGameModeNPC game_modeNPC = ChosenGameModeNPC::NoneNPC;
-		int game_modeNPC_int = 0;
-		if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction))) {
-			game_modeNPC_int = runtime.ChosenGameModeNPC->value;
-		}
-		if (game_modeNPC_int >=0 && game_modeNPC_int <= 3) {
-			game_modeNPC = static_cast<ChosenGameModeNPC>(game_modeNPC_int);
-		}
+		ChosenGameMode gameMode = ChosenGameMode::None;
+		float growthRate = 0.0;
+		float shrinkRate = 0.0;
+		int game_mode_int = 0;
+		float QuestStage = runtime.MainQuest->GetCurrentStageID();
 
-		if (game_modeNPC != ChosenGameModeNPC::NoneNPC) {
-			float GrowthRate = runtime.GrowthModeRateNPC->value;
-			float ShrinkRate = runtime.ShrinkModeRateNPC->value;
+		if (QuestStage > 100.0) {
+			if (actor->formID == 0x14) {
+				game_mode_int = runtime.ChosenGameMode->value;
+				growthRate = runtime.GrowthModeRate->value;
+				shrinkRate = runtime.ShrinkModeRate->value;
 
-			float natural_scale = 1.0;
-			float Scale = get_visual_scale(actor);
-			switch (game_modeNPC) {
-				case ChosenGameModeNPC::GrowNPC: {
-					mod_target_scale(actor, Scale * (0.00010 + (GrowthRate * 0.25)));
-					break;
+			} else if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) {
+				game_mode_int = runtime.ChosenGameModeNPC->value;
+				GrowthRate = runtime.GrowthModeRateNPC->value;
+				ShrinkRate = runtime.ShrinkModeRateNPC->value;
+			}
+		} else if (QuestStage < 20.0) {
+			if (actor->formID == 0x14) {
+				game_mode_int = 4; // QuestMode
+				if (QuestStage >= 40 && QuestStage < 60) {
+					shrinkRate = 0.00046;
+				} else if (QuestStage >= 60 && QuestStage < 70) {
+					shrinkRate = 0.00046 / 1.5;
 				}
-				case ChosenGameModeNPC::ShrinkNPC: {
-					if (Scale > natural_scale) {
-						mod_target_scale(actor, Scale * -(0.00025 + (ShrinkRate * 0.25)));
-					}
-					break;
-				}
-				case ChosenGameModeNPC::StandardNPC: {
-					if (actor->IsInCombat()) {
-						mod_target_scale(actor, Scale * (0.00008 + (GrowthRate * 0.17)));
-					} else {
-						mod_target_scale(actor, Scale * -(0.00029 + (ShrinkRate * 0.34)));
-					}
+
+				if (actor->IsInCombat()) {
+					shrinkRate *= 0.0;
+				} else if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
+					shrinkRate *= 0.0;
+				} else if (actor->HasMagicEffect(runtime.ResistShrinkPotion)) {
+					shrinkRate *= 0.25;
 				}
 			}
 		}
+
+		float QuestStage = runtime.MainQuest->GetCurrentStageID();
+
+
+		if (game_mode_int >=0 && game_mode_int <= 4) {
+			gameMode = static_cast<ChosenGameMode>(game_mode_int);
+		}
+
+		ApplyGameMode(actor, gameMode, growthRate, shrinkRate);
 	}
 }
 
@@ -379,9 +385,7 @@ void GtsManager::poll() {
 			//log::info("Found Actor {}", actor->GetDisplayFullName());
 			update_actor(actor);
 			apply_actor(actor);
-			GameModePC(actor); // <-- Calculates Game Mode for PC
-			GameModeNPC(actor); // <-- Same but of Allies (Followers/Teammates)
-			SmoothSizeDecrease(actor); // Instead of suddently shrinking back to normal, Smoothens shrink when size limit is breached.
+			GameMode(actor);
 			AttributeManager::GetSingleton().UpdateNpc(actor); // <-- Adjust attack damage
 			SizeManager::GetSingleton().UpdateSize(actor); // Calculates Max Size for Everyone.
 		}

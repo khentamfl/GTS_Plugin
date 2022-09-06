@@ -15,6 +15,7 @@ namespace Gts {
 		float visual_scale;
 		float visual_scale_v;
 		float target_scale;
+		float target_scale_v;
 		float max_scale;
 		float half_life;
 		float anim_speed;
