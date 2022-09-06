@@ -239,7 +239,6 @@ namespace {
 			float Scale = get_visual_scale(actor);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
-			log::info("GameMode is: None");
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
 					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
@@ -268,7 +267,6 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Standard: {
-					log::info("GameMode is: Standard");
 					if (actor->IsInCombat()) {
 						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
 						if (fabs(GrowthRate) < EPS) {
@@ -297,7 +295,7 @@ namespace {
 						return;
 					}
 					if ((targetScale + modAmount) > natural_scale) {
-						mod_target_scale(actor, -modAmount);
+						mod_target_scale(actor, modAmount);
 					} else if (targetScale > natural_scale) {
 						set_target_scale(actor, natural_scale);
 					} // Need to have size restored by somethig
@@ -327,7 +325,7 @@ namespace {
 				shrinkRate = runtime.ShrinkModeRateNPC->value;
 			}
 		} else if (QuestStage < 100.0) {
-			if (actor->formID == 0x14) {
+			if (actor->formID == 0x14 && !actor->IsInCombat()) {
 				game_mode_int = 4; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
 					shrinkRate = 0.00046;
@@ -335,9 +333,7 @@ namespace {
 					shrinkRate = 0.00046 / 1.5;
 				}
 
-				if (actor->IsInCombat()) {
-					shrinkRate *= 0.0;
-				} else if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
+				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
 					shrinkRate *= 0.0;
 				} else if (actor->HasMagicEffect(runtime.ResistShrinkPotion)) {
 					shrinkRate *= 0.25;
