@@ -281,7 +281,7 @@ namespace {
 					log::info("GameMode is: Quest");
 					float modAmount = ShrinkRate * 60 * Time::WorldTimeDelta();
 					if ((targetScale + modAmount) > natural_scale) {
-						mod_target_scale(actor, modAmount);
+						mod_target_scale(actor, -modAmount);
 					} else if (targetScale > natural_scale) {
 						set_target_scale(actor, natural_scale);
 					} // Need to have size restored by somethig
