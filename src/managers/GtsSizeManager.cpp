@@ -35,22 +35,26 @@ namespace Gts {
 		float SelectedFormula = runtime.SelectedSizeFormula->value;
 		if (SelectedFormula >= 2.0) {
 			GetLimit = clamp(1.0, 99999999.0, runtime.MassBasedSizeLimit->value);
-			}
+		}
 		float RaceScale = GetRaceScale(actor);
 		float RaceScaleLimit = (RaceScale * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
 		if (actor->formID==0x14) {
-		log::info("PC Race Scale: {}, SizeLimit: {}, Persistent: {}, Scale Limit with Race: {}", RaceScale, GetLimit, Persistent_Size, RaceScaleLimit);
+			log::info("PC Race Scale: {}, SizeLimit: {}, Persistent: {}, Scale Limit with Race: {}", RaceScale, GetLimit, Persistent_Size, RaceScaleLimit);
 		}
 		//float TotalLimit = (RaceScale * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
 		float TotalLimit = (GetLimit + Persistent_Size) * (1.0 + Gigantism);
 
-		
+
 
 		if (TotalLimit < 1.0) {
 			TotalLimit = 1.0;
-			}
+		}
 		if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 			set_max_scale(actor, TotalLimit);
+			float target_scale = get_target_scale(actor);
+			if (target_scale > TotalLimit) {
+				set_target_scale(actor, TotalLimit);
+			}
 			log::info("Total limit of {} is: {}", actor->GetDisplayFullName(), TotalLimit);
 		}
 	}
