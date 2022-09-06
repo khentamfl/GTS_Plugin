@@ -292,7 +292,6 @@ namespace {
 		float growthRate = 0.0;
 		float shrinkRate = 0.0;
 		int game_mode_int = 0;
-		float QuestStage = runtime.MainQuest->GetCurrentStageID();
 
 		if (QuestStage > 100.0) {
 			if (actor->formID == 0x14) {
@@ -302,12 +301,13 @@ namespace {
 
 			} else if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) {
 				game_mode_int = runtime.ChosenGameModeNPC->value;
-				GrowthRate = runtime.GrowthModeRateNPC->value;
-				ShrinkRate = runtime.ShrinkModeRateNPC->value;
+				growthRate = runtime.GrowthModeRateNPC->value;
+				shrinkRate = runtime.ShrinkModeRateNPC->value;
 			}
 		} else if (QuestStage < 20.0) {
 			if (actor->formID == 0x14) {
 				game_mode_int = 4; // QuestMode
+				float QuestStage = runtime.MainQuest->GetCurrentStageID();
 				if (QuestStage >= 40 && QuestStage < 60) {
 					shrinkRate = 0.00046;
 				} else if (QuestStage >= 60 && QuestStage < 70) {
@@ -323,8 +323,6 @@ namespace {
 				}
 			}
 		}
-
-		float QuestStage = runtime.MainQuest->GetCurrentStageID();
 
 
 		if (game_mode_int >=0 && game_mode_int <= 4) {
