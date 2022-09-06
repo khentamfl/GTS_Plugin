@@ -274,7 +274,7 @@ namespace {
 					}
 				}
 				case ChosenGameMode::Quest: {
-					float modAmount = ShrinkRate * Time::WorldTimeDelta();
+					float modAmount = -ShrinkRate * Time::WorldTimeDelta();
 					if ((targetScale + modAmount) > natural_scale) {
 						mod_target_scale(actor, modAmount);
 					} else if (targetScale > natural_scale) {
