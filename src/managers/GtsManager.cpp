@@ -239,6 +239,7 @@ namespace {
 			float Scale = get_visual_scale(actor);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
+			log::info("GameMode is: None");
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
 					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
@@ -267,6 +268,7 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Standard: {
+					log::info("GameMode is: Standard");
 					if (actor->IsInCombat()) {
 						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
 						if (fabs(GrowthRate) < EPS) {
