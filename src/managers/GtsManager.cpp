@@ -38,9 +38,8 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		float max_scale = persi_actor_data->max_scale;
 		float target_scale = min(persi_actor_data->target_scale, persi_actor_data->max_scale);
-		
+
 		if (fabs(target_scale - persi_actor_data->visual_scale) < 1e-5) {
 			return;
 		}
@@ -248,46 +247,46 @@ namespace {
 	void GameModePC(Actor* actor)  {
 		if (actor->formID != 0x14) {
 			return;
-		} 
+		}
 
 		auto& runtime = Runtime::GetSingleton();
 
 		ChosenGameMode game_mode = ChosenGameMode::None;
 		int game_mode_int = 0;
-		 
-			game_mode_int = runtime.ChosenGameMode->value;
 
-			if (game_mode_int >=0 && game_mode_int <= 3) {
-				game_mode = static_cast<ChosenGameMode>(game_mode_int);
-			}
+		game_mode_int = runtime.ChosenGameMode->value;
 
-			if (game_mode != ChosenGameMode::None) {
-				float GrowthRate = runtime.GrowthModeRate->value;
-				float ShrinkRate = runtime.ShrinkModeRate->value;
+		if (game_mode_int >=0 && game_mode_int <= 3) {
+			game_mode = static_cast<ChosenGameMode>(game_mode_int);
+		}
 
-				float natural_scale = 1.0;
-				float Scale = get_visual_scale(actor);
-				switch (game_mode) {
-					case ChosenGameMode::Grow: {
-						mod_target_scale(actor, Scale * (0.00010 + (GrowthRate * 0.25)));
-						break;
+		if (game_mode != ChosenGameMode::None) {
+			float GrowthRate = runtime.GrowthModeRate->value;
+			float ShrinkRate = runtime.ShrinkModeRate->value;
+
+			float natural_scale = 1.0;
+			float Scale = get_visual_scale(actor);
+			switch (game_mode) {
+				case ChosenGameMode::Grow: {
+					mod_target_scale(actor, Scale * (0.00010 + (GrowthRate * 0.25)));
+					break;
+				}
+				case ChosenGameMode::Shrink: {
+					if (Scale > natural_scale) {
+						mod_target_scale(actor, Scale * -(0.00025 + (ShrinkRate * 0.25)));
 					}
-					case ChosenGameMode::Shrink: {
-						if (Scale > natural_scale) {
-							mod_target_scale(actor, Scale * -(0.00025 + (ShrinkRate * 0.25)));
-						}
-						break;
-					}
-					case ChosenGameMode::Standard: {
-						if (actor->IsInCombat()) {
-							mod_target_scale(actor, Scale * (0.00008 + (GrowthRate * 0.17)));
-						} else {
-							mod_target_scale(actor, Scale * -(0.00029 + (ShrinkRate * 0.34)));
-						}
+					break;
+				}
+				case ChosenGameMode::Standard: {
+					if (actor->IsInCombat()) {
+						mod_target_scale(actor, Scale * (0.00008 + (GrowthRate * 0.17)));
+					} else {
+						mod_target_scale(actor, Scale * -(0.00029 + (ShrinkRate * 0.34)));
 					}
 				}
 			}
 		}
+	}
 
 	void GameModeNPC(Actor* actor)  {
 		auto& runtime = Runtime::GetSingleton();
