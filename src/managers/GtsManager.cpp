@@ -52,7 +52,7 @@ namespace {
 					persi_actor_data->target_scale,
 					persi_actor_data->target_scale_v,
 					max_scale,
-					persi_actor_data->half_life*10,
+					persi_actor_data->half_life*3,
 					Time::WorldTimeDelta()
 					);
 			}
