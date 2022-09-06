@@ -127,7 +127,7 @@ namespace Gts {
 			return -1.0;
 		}
 		float npc_parentnode_scale = get_npcparentnode_scale(actor);
-		if (npc_parentnode_scale) {
+		if (npc_parentnode_scale < 0.0) {
 			return -1.0;
 		}
 		return ref_scale * model_scale * node_scale * npc_parentnode_scale;
