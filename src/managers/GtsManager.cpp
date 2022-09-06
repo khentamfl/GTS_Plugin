@@ -242,6 +242,9 @@ namespace {
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
 					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
+					if (fabs(modAmount) < 1e-6) {
+						return;
+					}
 					log::info("GameMode is: Grow");
 					if ((targetScale + modAmount) < maxScale) {
 						mod_target_scale(actor, modAmount);
@@ -252,6 +255,9 @@ namespace {
 				}
 				case ChosenGameMode::Shrink: {
 					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * 60 * Time::WorldTimeDelta();
+					if (fabs(modAmount) < 1e-6) {
+							return;
+						}
 					log::info("GameMode is: Shrink");
 					if ((targetScale + modAmount) > natural_scale) {
 						mod_target_scale(actor, modAmount);
@@ -264,6 +270,9 @@ namespace {
 					log::info("GameMode is: Standard");
 					if (actor->IsInCombat()) {
 						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
+						if (fabs(modAmount) < 1e-6) {
+							return;
+						}
 						if ((targetScale + modAmount) < maxScale) {
 							mod_target_scale(actor, modAmount);
 						} else if (targetScale < maxScale) {
@@ -271,6 +280,9 @@ namespace {
 						} // else let spring handle it
 					} else {
 						float modAmount = Scale * -(0.00029 + (ShrinkRate * 0.34)) * 60 * Time::WorldTimeDelta();
+						if (fabs(modAmount) < 1e-6) {
+							return;
+						}
 						if ((targetScale + modAmount) > natural_scale) {
 							mod_target_scale(actor, modAmount);
 						} else if (targetScale > natural_scale) {
@@ -280,6 +292,9 @@ namespace {
 				}
 				case ChosenGameMode::Quest: {
 					float modAmount = -ShrinkRate * Time::WorldTimeDelta();
+					if (fabs(modAmount) < 1e-6) {
+						return;
+					}
 					if ((targetScale + modAmount) > natural_scale) {
 						mod_target_scale(actor, -modAmount);
 					} else if (targetScale > natural_scale) {
@@ -325,6 +340,10 @@ namespace {
 					shrinkRate *= 0.0;
 				} else if (actor->HasMagicEffect(runtime.ResistShrinkPotion)) {
 					shrinkRate *= 0.25;
+				}
+				
+				if (fabs(shrinkRate) <= 1e-4) {
+					game_mode_int = 0; // Nothing to do
 				}
 			}
 		}
