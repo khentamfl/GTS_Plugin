@@ -38,7 +38,10 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
+		float max_scale = persi_actor_data->max_scale;
 		float target_scale = min(persi_actor_data->target_scale, persi_actor_data->max_scale);
+		if (target_scale >= max_scale)
+ 		 {target_scale = max_scale;}
 		if (fabs(target_scale - persi_actor_data->visual_scale) < 1e-5) {
 			return;
 		}
