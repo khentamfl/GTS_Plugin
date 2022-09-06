@@ -237,9 +237,11 @@ namespace {
 			float Scale = get_visual_scale(actor);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
+			log::info("GameMode is: None");
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
-					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * Time::WorldTimeDelta();
+					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
+					log::info("GameMode is: Grow");
 					if ((targetScale + modAmount) < maxScale) {
 						mod_target_scale(actor, modAmount);
 					} else if (targetScale < maxScale) {
@@ -248,7 +250,8 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Shrink: {
-					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * Time::WorldTimeDelta();
+					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * 60 * Time::WorldTimeDelta();
+					log::info("GameMode is: Shrink");
 					if ((targetScale + modAmount) > natural_scale) {
 						mod_target_scale(actor, modAmount);
 					} else if (targetScale > natural_scale) {
@@ -257,15 +260,16 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Standard: {
+					log::info("GameMode is: Standard");
 					if (actor->IsInCombat()) {
-						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * Time::WorldTimeDelta();
+						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
 						if ((targetScale + modAmount) < maxScale) {
 							mod_target_scale(actor, modAmount);
 						} else if (targetScale < maxScale) {
 							set_target_scale(actor, maxScale);
 						} // else let spring handle it
 					} else {
-						float modAmount = Scale * -(0.00029 + (ShrinkRate * 0.34)) * Time::WorldTimeDelta();
+						float modAmount = Scale * -(0.00029 + (ShrinkRate * 0.34)) * 60 * Time::WorldTimeDelta();
 						if ((targetScale + modAmount) > natural_scale) {
 							mod_target_scale(actor, modAmount);
 						} else if (targetScale > natural_scale) {
@@ -276,7 +280,7 @@ namespace {
 				case ChosenGameMode::Quest: {
 					float modAmount = -ShrinkRate * Time::WorldTimeDelta();
 					if ((targetScale + modAmount) > natural_scale) {
-						mod_target_scale(actor, modAmount);
+						mod_target_scale(actor, -modAmount);
 					} else if (targetScale > natural_scale) {
 						set_target_scale(actor, natural_scale);
 					} // Need to have size restored by somethig
@@ -292,6 +296,7 @@ namespace {
 		float growthRate = 0.0;
 		float shrinkRate = 0.0;
 		int game_mode_int = 0;
+		float QuestStage = runtime.MainQuest->GetCurrentStageID();
 
 		if (QuestStage > 100.0) {
 			if (actor->formID == 0x14) {
@@ -304,10 +309,9 @@ namespace {
 				growthRate = runtime.GrowthModeRateNPC->value;
 				shrinkRate = runtime.ShrinkModeRateNPC->value;
 			}
-		} else if (QuestStage < 20.0) {
+		} else if (QuestStage < 100.0) {
 			if (actor->formID == 0x14) {
 				game_mode_int = 4; // QuestMode
-				float QuestStage = runtime.MainQuest->GetCurrentStageID();
 				if (QuestStage >= 40 && QuestStage < 60) {
 					shrinkRate = 0.00046;
 				} else if (QuestStage >= 60 && QuestStage < 70) {
