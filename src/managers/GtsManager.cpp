@@ -233,6 +233,7 @@ namespace {
 
 
 	void ApplyGameMode(Actor* actor, const ChosenGameMode& game_mode, const float& GrowthRate, const float& ShrinkRate )  {
+		const float EPS = 1e-7;
 		if (game_mode != ChosenGameMode::None) {
 			float natural_scale = get_natural_scale(actor);
 			float Scale = get_visual_scale(actor);
@@ -242,7 +243,7 @@ namespace {
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
 					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
-					if (fabs(GrowthRate) < 1e-6) {
+					if (fabs(GrowthRate) < EPS) {
 						return;
 					}
 					log::info("GameMode is: Grow");
@@ -255,7 +256,7 @@ namespace {
 				}
 				case ChosenGameMode::Shrink: {
 					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * 60 * Time::WorldTimeDelta();
-					if (fabs(ShrinkRate) < 1e-6) {
+					if (fabs(ShrinkRate) < EPS) {
 							return;
 						}
 					log::info("GameMode is: Shrink");
@@ -270,7 +271,7 @@ namespace {
 					log::info("GameMode is: Standard");
 					if (actor->IsInCombat()) {
 						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
-						if (fabs(GrowthRate) < 1e-6) {
+						if (fabs(GrowthRate) < EPS) {
 							return;
 						}
 						if ((targetScale + modAmount) < maxScale) {
@@ -280,7 +281,7 @@ namespace {
 						} // else let spring handle it
 					} else {
 						float modAmount = Scale * -(0.00029 + (ShrinkRate * 0.34)) * 60 * Time::WorldTimeDelta();
-						if (fabs(ShrinkRate) < 1e-6) {
+						if (fabs(ShrinkRate) < EPS) {
 							return;
 						}
 						if ((targetScale + modAmount) > natural_scale) {
@@ -292,7 +293,7 @@ namespace {
 				}
 				case ChosenGameMode::Quest: {
 					float modAmount = -ShrinkRate * Time::WorldTimeDelta();
-					if (fabs(ShrinkRate) < 1e-6) {
+					if (fabs(ShrinkRate) < EPS) {
 						return;
 					}
 					if ((targetScale + modAmount) > natural_scale) {
