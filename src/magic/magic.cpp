@@ -56,6 +56,31 @@ namespace Gts {
 		}
 	}
 
+	bool Magic::HasDuration()  {
+		if (this->activeEffect) {
+			auto spell = this->activeEffect->spell;
+			if (spell) {
+				// switch (this->activeEffect->spell->GetSpellType()) {
+				// 	case  MagicSystem::SpellType::kEnchantment: {
+				// 		return false;
+				// 	}
+				// }
+				switch (spell->GetCastingType()) {
+					case  MagicSystem::CastingType::kConstantEffect: {
+						return false;
+					}
+				}
+			}
+		}
+		auto effectSetting = this->effectSetting;
+		if (effectSetting) {
+			if (effectSetting->data.flags.all(EffectSetting::EffectSettingData::Flag::kNoDuration)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	void Magic::poll() {
 		switch (this->state) {
 			case State::Init:
