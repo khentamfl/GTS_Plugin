@@ -9,6 +9,9 @@
 
 namespace Util {
 
+	inline glm::vec3 CompMult(const glm::vec3& a, const glm::vec3& b) {
+		return glm::vec3(a[0]*b[0], a[1]*b[1], a[2]*b[2]);
+	}
 	inline glm::vec3 HkVecToGlmVec(const RE::hkVector4 &vec) {
 		return glm::vec3(vec.quad.m128_f32[0], vec.quad.m128_f32[1], vec.quad.m128_f32[2]);
 	}
@@ -243,6 +246,7 @@ class DebugAPI
 		static void DrawHalfCircle(glm::vec3, float radius, glm::vec3 eulerAngles, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
 		static void DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::mat4 transform, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
 		static void DrawTriangle(glm::vec3 pointA, glm::vec3 pointB, glm::vec3 pointC, glm::mat4 transform, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
+		static void DrawBox(glm::vec3 origin, glm::vec3 halfExtents, glm::mat4 transform, int liftetimeMS = 10, const glm::vec4& color = { 1.0f, 0.0f, 0.0f, 1.0f }, float lineThickness = 1);
 
 		static std::vector<DebugAPILine*> LinesToDraw;
 

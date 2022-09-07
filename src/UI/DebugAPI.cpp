@@ -295,6 +295,91 @@ void DebugAPI::DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::ma
 	}
 }
 
+void DebugAPI::DrawBox(glm::vec3 origin, glm::vec3 halfExtents, glm::mat4 transform, int liftetimeMS, const glm::vec4& color, float lineThickness) {
+	glm::vec3 p000 = ApplyTransform(origin + CompMult(glm::vec3(-1.,-1.,-1.), halfExtents), transform);
+	glm::vec3 p100 = ApplyTransform(origin + CompMult(glm::vec3( 1.,-1.,-1.), halfExtents), transform);
+	glm::vec3 p101 = ApplyTransform(origin + CompMult(glm::vec3( 1.,-1., 1.), halfExtents), transform);
+	glm::vec3 p001 = ApplyTransform(origin + CompMult(glm::vec3(-1.,-1., 1.), halfExtents), transform);
+	glm::vec3 p010 = ApplyTransform(origin + CompMult(glm::vec3(-1., 1.,-1.), halfExtents), transform);
+	glm::vec3 p110 = ApplyTransform(origin + CompMult(glm::vec3( 1., 1.,-1.), halfExtents), transform);
+	glm::vec3 p111 = ApplyTransform(origin + CompMult(glm::vec3( 1., 1., 1.), halfExtents), transform);
+	glm::vec3 p011 = ApplyTransform(origin + CompMult(glm::vec3(-1., 1., 1.), halfExtents), transform);
+	DrawLineForMS(
+		p000,
+		p100,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		p100,
+		p101,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		p101,
+		p001,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		p001,
+		p000,
+		liftetimeMS,
+		color,
+		lineThickness);
+
+	DrawLineForMS(
+		p010,
+		p110,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		p110,
+		p111,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		p111,
+		p011,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		p011,
+		p010,
+		liftetimeMS,
+		color,
+		lineThickness);
+
+	DrawLineForMS(
+		p000,
+		p010,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		p001,
+		p011,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		p101,
+		p111,
+		liftetimeMS,
+		color,
+		lineThickness);
+	DrawLineForMS(
+		p100,
+		p110,
+		liftetimeMS,
+		color,
+		lineThickness);
+}
+
 void DebugAPI::DrawTriangle(glm::vec3 pointA, glm::vec3 pointB, glm::vec3 pointC, glm::mat4 transform, int liftetimeMS, const glm::vec4& color, float lineThickness) {
 	auto apply_transform = [](glm::vec3 vec, glm::mat4 mat) {
 				       return glm::vec3(mat * glm::vec4(vec, 1.0));

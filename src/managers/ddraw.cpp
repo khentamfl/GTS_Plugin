@@ -19,6 +19,9 @@ namespace {
 	const glm::vec4 TRIANGLE_COLOR = { 0.20f, 0.50f, 0.50f, 1.0f };
 	const float TRIANGLE_LINETHICKNESS = 0.1;
 
+	const glm::vec4 BOX_COLOR = { 0.80f, 0.20f, 0.50f, 1.0f };
+	const float BOX_LINETHICKNESS = 0.1;
+
 	const glm::vec4 UNKNOWN_COLOR = { 0.10f, 0.10f, 0.10f, 1.0f };
 	const float UNKNOWN_LINETHICKNESS = 0.1;
 
@@ -46,6 +49,15 @@ namespace {
 			//
 			// 	DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
 			// }
+		} else if (shape->type == hkpShapeType::kBox) {
+			// log::info("Triangle");
+			const hkpBoxShape* box = static_cast<const hkpBoxShape*>(shape);
+			if (box) {
+				glm::vec3 origin = glm::vec3(0.,0.,0.);
+				glm::vec3 halfExtents = HkToGlm(box->halfExtents);
+
+				DebugAPI::DrawBox(origin, halfExtents, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
+			}
 		} else if (shape->type == hkpShapeType::kConvexVertices) {
 			// Too much effort to RE and draw that
 			const hkpConvexShape* unknown = static_cast<const hkpConvexShape*>(shape);
@@ -282,7 +294,7 @@ namespace {
 		charController->GetTransformImpl(outTransform);
 		glm::mat4 transform = HkToGlm(outTransform);
 
-		glm::vec3 worldForward = glm::normalize(HkVecToGlmVec(charController->forwardVec));
+		glm::vec3 worldForward = glm::normalize(HkVecToGlmVec(charController->forwardVec)) * glm::vec3(-1);
 
 		glm::vec3 actorPos = HkToGlm(outTransform.translation);
 		glm::vec3 rayStart = actorPos + worldForward * meter_to_unit(0.5);
@@ -297,9 +309,7 @@ namespace {
 			for (auto result: results) {
 				const hkpMotion* motion = static_cast<const hkpMotion*>(result.motion);
 				if (motion) {
-					log::info("CTD TIME");
 					glm::mat4 shapeTransform = HkToGlm(motion->motionState.transform);
-					log::info("WAIT WHY NO CTD");
 					DrawShape(result.shape, shapeTransform);
 				} else {
 					log::info("No motion state");
