@@ -60,13 +60,13 @@ namespace {
 			}
 		} else if (shape->type == hkpShapeType::kConvexVertices) {
 			// Too much effort to RE and draw that
-			const hkpConvexShape* unknown = static_cast<const hkpConvexShape*>(shape);
-			if (unknown) {
-				glm::vec3 localPos = glm::vec3(0.,0.,0.);
-				glm::vec3 worldPos = (transform * glm::vec4(localPos, 1.0));
-				float radius = radius * (*Gts::g_worldScaleInverse);
-				DebugAPI::DrawSphere(worldPos, radius, MS_TIME, UNKNOWN_COLOR, UNKNOWN_LINETHICKNESS);
-			}
+			// const hkpConvexShape* unknown = static_cast<const hkpConvexShape*>(shape);
+			// if (unknown) {
+			// 	glm::vec3 localPos = glm::vec3(0.,0.,0.);
+			// 	glm::vec3 worldPos = (transform * glm::vec4(localPos, 1.0));
+			// 	float radius = radius * (*Gts::g_worldScaleInverse);
+			// 	DebugAPI::DrawSphere(worldPos, radius, MS_TIME, UNKNOWN_COLOR, UNKNOWN_LINETHICKNESS);
+			// }
 		} else if (shape->type == hkpShapeType::kList) {
 			// log::info("List");
 			auto container = static_cast<const hkpListShape*>(shape);
@@ -354,7 +354,7 @@ namespace Gts {
 				continue;
 			}
 
-			DrawActor(actor);
+			// DrawActor(actor);
 			DrawRay(actor);
 		}
 	}
