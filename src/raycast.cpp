@@ -68,21 +68,20 @@ namespace Gts {
 			HitResult hit_result;
 			hit_result.shape = shape;
 			hit_result.fraction = a_hitInfo.hitFraction;
+			hit_result.motion = a_body.motion;
 			results.push_back(hit_result);
 		}
 	}
 
-	NiPoint3 CastRay(Actor* actor, NiPoint3 in_origin, NiPoint3 direction, float unit_length, bool& success) {
+	std::vector<HitResult> CastRayResults(TESObjectCELL* cell, NiPoint3 in_origin, NiPoint3 direction, float unit_length, bool& success, const std::vector<NiAVObject*>& filterNodes) {
 		float length = unit_to_meter(unit_length);
 		success = false;
-		if (!actor) {
-			return NiPoint3();
+		if (!cell) {
+			return {};
 		}
-		auto cell = actor->GetParentCell();
-		if (!cell) return NiPoint3();
 		auto collision_world = cell->GetbhkWorld();
 		if (!collision_world) {
-			return NiPoint3();
+			return {};
 		}
 		bhkPickData pick_data;
 
@@ -97,19 +96,39 @@ namespace Gts {
 		pick_data.ray = delta; // Length in each axis to travel
 
 		RayCollector collector = RayCollector();
-		collector.add_filter(actor->Get3D(false));
-		collector.add_filter(actor->Get3D(true));
+		for (auto filterNode: filterNodes) {
+			collector.add_filter(filterNode);
+		}
 		// pick_data.rayHitCollectorA0 = &collector;
 		pick_data.rayHitCollectorA8 = &collector;
 		// pick_data.rayHitCollectorB0 = &collector;
 		// pick_data.rayHitCollectorB8 = &collector;
 
 		collision_world->PickObject(pick_data);
-		float min_fraction = 1.0;
 		success = !collector.results.empty();
 		if (collector.results.size() > 0) {
 			success = true;
-			for (auto ray_result: collector.results) {
+			return collector.results;
+		} else {
+			return {};
+		}
+	}
+
+	NiPoint3 CastRay(Actor* actor, NiPoint3 in_origin, NiPoint3 direction, float unit_length, bool& success) {
+		float length = unit_to_meter(unit_length);
+		success = false;
+		if (!actor) {
+			return NiPoint3();
+		}
+		auto cell = actor->GetParentCell();
+		auto results = CastRayResults(cell, in_origin, direction, unit_length, success, { actor->Get3D(false), actor->Get3D(true)});
+
+		float min_fraction = 1.0;
+		NiPoint3 origin = unit_to_meter(in_origin);
+		NiPoint3 normed = direction / direction.Length();
+		if (results.size() > 0) {
+			success = true;
+			for (auto ray_result: results) {
 				if (ray_result.fraction < min_fraction) {
 					min_fraction = ray_result.fraction;
 				}

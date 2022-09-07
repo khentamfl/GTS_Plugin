@@ -139,6 +139,10 @@ namespace Util {
 using namespace Util;
 
 namespace Gts {
+	inline RE::NiPoint3 Glm2Ni(const glm::vec3 &position) {
+		return RE::NiPoint3(position[0], position[1], position[2]);
+	}
+
 	inline glm::vec3 Ni2Glm(const RE::NiPoint3 &position) {
 		return glm::vec3{position.x, position.y, position.z};
 	}

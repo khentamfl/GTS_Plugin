@@ -3,6 +3,7 @@
 #include "hooks/RE.hpp"
 #include "node.hpp"
 #include "util.hpp"
+#include "raycast.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -285,9 +286,28 @@ namespace {
 
 		glm::vec3 actorPos = HkToGlm(outTransform.translation);
 		glm::vec3 rayStart = actorPos + worldForward * meter_to_unit(0.5);
-		glm::vec3 rayEnd = actorPos + worldForward * meter_to_unit(5.5);
+		glm::vec3 rayEnd = rayStart + worldForward * meter_to_unit(5);
 
 		DebugAPI::DrawLineForMS(rayStart, rayEnd, MS_TIME, RAY_COLOR, RAY_LINETHICKNESS);
+
+		TESObjectCELL* cell = actor->GetParentCell();
+		bool success = false;
+		auto results = CastRayResults(cell, Glm2Ni(rayStart), Glm2Ni(worldForward), meter_to_unit(5), success, {});
+		if (success) {
+			for (auto result: results) {
+				const hkpMotion* motion = static_cast<const hkpMotion*>(result.motion);
+				if (motion) {
+					log::info("CTD TIME");
+					glm::mat4 shapeTransform = HkToGlm(motion->motionState.transform);
+					log::info("WAIT WHY NO CTD");
+					DrawShape(result.shape, shapeTransform);
+				} else {
+					log::info("No motion state");
+				}
+			}
+		} else {
+			log::info("Ray hit nothing");
+		}
 	}
 
 	void DrawActor(Actor* actor) {

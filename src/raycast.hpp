@@ -10,6 +10,7 @@ using namespace SKSE;
 namespace Gts {
 	struct HitResult {
 		const hkpShape* shape;
+		const void* motion;
 		float fraction;
 	};
 
@@ -26,5 +27,6 @@ namespace Gts {
 			std::uint32_t filter = 0x40122716; // https://gitlab.com/Shrimperator/skyrim-mod-betterthirdpersonselection/-/blob/main/src/SmoothCamStuff/bhkLinearCastCollector.h
 	};
 
+	std::vector<HitResult> CastRayResults(TESObjectCELL* cell, NiPoint3 origin, NiPoint3 direction, float length, bool& success, const std::vector<NiAVObject*>& filterNodes);
 	NiPoint3 CastRay(Actor* actor, NiPoint3 origin, NiPoint3 direction, float length, bool& success);
 }
