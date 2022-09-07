@@ -307,9 +307,9 @@ namespace {
 		auto results = CastRayResults(cell, Glm2Ni(rayStart), Glm2Ni(worldForward), meter_to_unit(5), success, {});
 		if (success) {
 			for (auto result: results) {
-				const hkpMotion* motion = static_cast<const hkpMotion*>(result.motion);
+				const hkTransform* shapeHkTransform = static_cast<const hkTransform*>(result.motion);
 				if (motion) {
-					glm::mat4 shapeTransform = HkToGlm(motion->motionState.transform);
+					glm::mat4 shapeTransform = HkToGlm(shapeHkTransform);
 					DrawShape(result.shape, shapeTransform);
 				} else {
 					log::info("No motion state");
