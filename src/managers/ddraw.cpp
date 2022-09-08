@@ -31,7 +31,7 @@ namespace {
 	const glm::vec4 RAY_COLOR = { 0.90f, 0.10f, 0.10f, 1.0f };
 	const float RAY_LINETHICKNESS = 3.0;
 
-	void DrawAabb(const hkpShape* shape, const glm::mat4& transform) {
+	void DrawAabb(const hkpShape* shape, const glm::mat4& transform, const glm::vec4& color) {
 		RE::hkTransform shapeTransform;
 		// use identity matrix for the BB of the unrotated object
 		shapeTransform.rotation.col0 = { 1.0f, 0.0f, 0.0f, 0.0f };
@@ -44,7 +44,7 @@ namespace {
 		glm::vec3 extends = HkToGlm(boundingBoxLocal.max) - HkToGlm(boundingBoxLocal.min);
 		glm::vec3 halfExtends = extends * glm::vec3(0.5,0.5,0.5);
 		glm::vec3 origin = HkToGlm(boundingBoxLocal.min) + halfExtends;
-		DebugAPI::DrawBox(origin, halfExtends, transform, MS_TIME, AABB_COLOR, AABB_LINETHICKNESS);
+		DebugAPI::DrawBox(origin, halfExtends, transform, MS_TIME, color, AABB_LINETHICKNESS);
 	}
 
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
@@ -59,18 +59,44 @@ namespace {
 				DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
 			}
 		} else if (shape->type == hkpShapeType::kTriangle) {
-			log::info("Triangle");
+			// log::info("Triangle");
 			const hkpTriangleShape* triangle = static_cast<const hkpTriangleShape*>(shape);
 			if (triangle) {
-				log::info("A");
 				glm::vec3 pointA = HkToGlm(triangle->vertexA);
-				log::info("B");
 				glm::vec3 pointB = HkToGlm(triangle->vertexB);
-				log::info("C");
 				glm::vec3 pointC = HkToGlm(triangle->vertexC);
-				log::info("YAY");
 
 				DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
+			}
+		} else if (shape->type == hkpShapeType::kConvexVertices) {
+			// log::info("Convext Verts");
+			// Way too much of a pain to RE
+			// Just show a sphere and a BB
+			const hkpConvexShape* convexShape = static_cast<const hkpConvexShape*>(shape);
+			if (convexShape) {
+				float radius = convexShape->radius * (*Gts::g_worldScaleInverse);
+				glm::vec3 localPos = glm::vec3(0.0, 0.0, 0.0);
+				glm::vec3 worldPos = ApplyTransform(localPos, transform);
+				DrawAabb(convexShape, transform, UNKNOWN_COLOR);
+				DebugAPI::DrawSphere(worldPos, radius, MS_TIME, UNKNOWN_COLOR, UNKNOWN_LINETHICKNESS);
+			}
+		} else if (shape->type == hkpShapeType::kConvexTransform) {
+			log::info("Convext transform");
+			const hkpConvexTransformShape* transformShape = static_cast<const hkpConvexTransformShape*>(shape);
+			if (transformShape) {
+				log::info("  - Container");
+				auto container = transformShape->GetContainer();
+				auto childTransform = transform * HkToGlm(transformShape->transform);
+				auto key = container->GetFirstKey();
+				while (key != HK_INVALID_SHAPE_KEY) {
+					auto buffer = hkpShapeBuffer();
+					auto childShape = container->GetChildShape(key, buffer);
+					if (childShape) {
+						// log::info("  - Child");
+						DrawShape(childShape, childTransform);
+					}
+					key = container->GetNextKey(key);
+				}
 			}
 		} else if (shape->type == hkpShapeType::kBox) {
 			// log::info("Box");
@@ -126,7 +152,7 @@ namespace {
 			}
 		} else {
 			log::debug("- Shape (of type {}) is not handlled", static_cast<int>(shape->type));
-			DrawAabb(shape, transform);
+			DrawAabb(shape, transform, AABB_COLOR);
 		}
 	}
 

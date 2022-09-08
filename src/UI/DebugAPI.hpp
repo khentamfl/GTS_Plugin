@@ -34,6 +34,19 @@ namespace Util {
 			glm::vec4(HkToGlm(transform.translation), 1.0)
 			);
 	}
+	inline glm::mat4 HkToGlm(const RE::hkQsTransform &transform) {
+		glm::quat quat = glm::quat(HkVecToGlmVec(transform.rotation.vec));
+		glm::mat4 rotMat = glm::mat4_cast(quat);
+		return glm::translate(
+			(rotMat *
+			 glm::scale(
+				 glm::mat4(1.0),
+				 HkVecToGlmVec(transform.scale)
+				 )
+			),
+			HkToGlm(transform.translation)
+			);
+	}
 
 	inline glm::vec3 ApplyTransform(glm::vec4 vec, glm::mat4 mat) {
 		return glm::vec3(mat * vec);
