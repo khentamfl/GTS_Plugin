@@ -25,8 +25,27 @@ namespace {
 	const glm::vec4 UNKNOWN_COLOR = { 0.10f, 0.10f, 0.10f, 1.0f };
 	const float UNKNOWN_LINETHICKNESS = 0.1;
 
+	const glm::vec4 AABB_COLOR = { 0.10f, 0.00f, 0.00f, 1.0f };
+	const float AABB_LINETHICKNESS = 0.1;
+
 	const glm::vec4 RAY_COLOR = { 0.90f, 0.10f, 0.10f, 1.0f };
 	const float RAY_LINETHICKNESS = 3.0;
+
+	void DrawAabb(const hkpShape* shape, const glm::mat4& transform) {
+		RE::hkTransform shapeTransform;
+		// use identity matrix for the BB of the unrotated object
+		shapeTransform.rotation.col0 = { 1.0f, 0.0f, 0.0f, 0.0f };
+		shapeTransform.rotation.col1 = { 0.0f, 1.0f, 0.0f, 0.0f };
+		shapeTransform.rotation.col2 = { 0.0f, 0.0f, 1.0f, 0.0f };
+
+		shapeTransform.translation.quad = _mm_set_ps(0.0f, 0.0f, 0.0f, 1.0f);
+		RE::hkAabb boundingBoxLocal;
+		shape->GetAabbImpl(shapeTransform, 0.0f, boundingBoxLocal);
+		glm::vec3 extends = HkToGlm(boundingBoxLocal.max) - HkToGlm(boundingBoxLocal.min);
+		glm::vec3 halfExtends = extends * glm::vec3(0.5,0.5,0.5);
+		glm::vec3 origin = HkToGlm(boundingBoxLocal.min) + halfExtends;
+		DebugAPI::DrawBox(origin, halfExtends, transform, MS_TIME, AABB_COLOR, AABB_LINETHICKNESS);
+	}
 
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
 		if (shape->type == hkpShapeType::kCapsule) {
@@ -40,17 +59,21 @@ namespace {
 				DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
 			}
 		} else if (shape->type == hkpShapeType::kTriangle) {
-			// log::info("Triangle");
-			// const hkpTriangleShape* triangle = static_cast<const hkpTriangleShape*>(shape);
-			// if (triangle) {
-			// 	glm::vec3 pointA = HkToGlm(triangle->vertexA);
-			// 	glm::vec3 pointB = HkToGlm(triangle->vertexB);
-			// 	glm::vec3 pointC = HkToGlm(triangle->vertexC);
-			//
-			// 	DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
-			// }
+			log::info("Triangle");
+			const hkpTriangleShape* triangle = static_cast<const hkpTriangleShape*>(shape);
+			if (triangle) {
+				log::info("A");
+				glm::vec3 pointA = HkToGlm(triangle->vertexA);
+				log::info("B");
+				glm::vec3 pointB = HkToGlm(triangle->vertexB);
+				log::info("C");
+				glm::vec3 pointC = HkToGlm(triangle->vertexC);
+				log::info("YAY");
+
+				DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
+			}
 		} else if (shape->type == hkpShapeType::kBox) {
-			// log::info("Triangle");
+			// log::info("Box");
 			const hkpBoxShape* box = static_cast<const hkpBoxShape*>(shape);
 			if (box) {
 				glm::vec3 origin = glm::vec3(0.,0.,0.);
@@ -58,15 +81,6 @@ namespace {
 
 				DebugAPI::DrawBox(origin, halfExtents, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
 			}
-		} else if (shape->type == hkpShapeType::kConvexVertices) {
-			// Too much effort to RE and draw that
-			// const hkpConvexShape* unknown = static_cast<const hkpConvexShape*>(shape);
-			// if (unknown) {
-			// 	glm::vec3 localPos = glm::vec3(0.,0.,0.);
-			// 	glm::vec3 worldPos = (transform * glm::vec4(localPos, 1.0));
-			// 	float radius = radius * (*Gts::g_worldScaleInverse);
-			// 	DebugAPI::DrawSphere(worldPos, radius, MS_TIME, UNKNOWN_COLOR, UNKNOWN_LINETHICKNESS);
-			// }
 		} else if (shape->type == hkpShapeType::kList) {
 			// log::info("List");
 			auto container = static_cast<const hkpListShape*>(shape);
@@ -112,6 +126,7 @@ namespace {
 			}
 		} else {
 			log::debug("- Shape (of type {}) is not handlled", static_cast<int>(shape->type));
+			DrawAabb(shape, transform);
 		}
 	}
 
