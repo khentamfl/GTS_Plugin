@@ -22,6 +22,9 @@ namespace {
 	const glm::vec4 BOX_COLOR = { 0.00f, 1.00f, 0.00f, 1.0f };
 	const float BOX_LINETHICKNESS = 0.1;
 
+	const glm::vec4 CONVEXVERTS_COLOR = { 0.00f, 1.00f, 1.00f, 1.0f };
+	const float CONVEXVERTS_LINETHICKNESS = 1.0;
+
 	const glm::vec4 UNKNOWN_COLOR = { 1.00f, 0.00f, 0.00f, 1.0f };
 	const float UNKNOWN_LINETHICKNESS = 1.0;
 
@@ -72,19 +75,40 @@ namespace {
 			// log::info("Convext Verts");
 			// Way too much of a pain to RE
 			// Just show a sphere and a BB
-			const hkpConvexShape* convexShape = static_cast<const hkpConvexShape*>(shape);
+			const hkpConvexVerticesShape* convexShape = static_cast<const hkpConvexVerticesShape*>(shape);
 			if (convexShape) {
 				float radius = convexShape->radius * (*Gts::g_worldScaleInverse);
 				glm::vec3 localPos = glm::vec3(0.0, 0.0, 0.0);
 				glm::vec3 worldPos = ApplyTransform(localPos, transform);
 				DrawAabb(convexShape, transform, UNKNOWN_COLOR);
 				DebugAPI::DrawSphere(worldPos, radius, MS_TIME, UNKNOWN_COLOR, UNKNOWN_LINETHICKNESS);
+				log::info("Prepare for kConvexVertices CTD");
+				std::size_t numVertices = convexShape->numVertices;
+				log::info("  - numVertices: {}", numVertices);
+				glm::vec3 previous = glm::vec3(
+					convexShape->rotatedVertices.vertices[0][0].quad.m128_f32[0],
+					convexShape->rotatedVertices.vertices[0][1].quad.m128_f32[0],
+					convexShape->rotatedVertices.vertices[0][2].quad.m128_f32[0]
+					);
+				log::info("  - Firs Vert: {},{},{}", previous[0],previous[1],previous[2]);
+
+				for (std::size_t i = 0; i < numVertices; i++) {
+					std::size_t j = i / 4;
+					std::size_t k = i % 4;
+					glm::vec3 vert = glm::vec3(
+						convexShape->rotatedVertices.vertices[j][0].quad.m128_f32[k],
+						convexShape->rotatedVertices.vertices[j][1].quad.m128_f32[k],
+						convexShape->rotatedVertices.vertices[j][2].quad.m128_f32[k]
+						);
+					log::info("  - Vert: {},{},{}", vert[0], vert[1], vert[2]);
+					DebugAPI::DrawLineForMS(ApplyTransform(previous, transform), ApplyTransform(vert, transform),MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
+				}
+				log::info("What really? Where is the CTD I DEMAND A CTD");
 			}
 		} else if (shape->type == hkpShapeType::kConvexTransform) {
-			log::info("Convext transform");
+			// log::info("Convext transform");
 			const hkpConvexTransformShape* transformShape = static_cast<const hkpConvexTransformShape*>(shape);
 			if (transformShape) {
-				log::info("  - Container");
 				auto container = transformShape->GetContainer();
 				auto childTransform = transform * HkToGlm(transformShape->transform);
 				auto key = container->GetFirstKey();
@@ -359,6 +383,7 @@ namespace {
 						switch (type) {
 							case 0: {
 								// Invalid
+								break;
 							}
 							case 1: {
 								// hkpEntity
@@ -369,6 +394,7 @@ namespace {
 									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
 									log::info("  - Type: {}", static_cast<int>(result.shape->type));
 								}
+								break;
 							}
 							case 2: {
 								// hkpPhantom
@@ -379,9 +405,11 @@ namespace {
 									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
 									log::info("  - Type: {}", static_cast<int>(result.shape->type));
 								}
+								break;
 							}
 							case 3: {
 								// hkpBroadPhaseBorder
+								break;
 							}
 						}
 					}
