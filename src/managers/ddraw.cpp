@@ -16,19 +16,19 @@ namespace {
 	const glm::vec4 CAPSULE_COLOR = { 0.50f, 0.50f, 0.20f, 1.0f };
 	const float CAPSULE_LINETHICKNESS = 0.1;
 
-	const glm::vec4 TRIANGLE_COLOR = { 0.20f, 0.50f, 0.50f, 1.0f };
+	const glm::vec4 TRIANGLE_COLOR = { 0.00f, 0.00f, 1.00f, 1.0f };
 	const float TRIANGLE_LINETHICKNESS = 0.1;
 
-	const glm::vec4 BOX_COLOR = { 0.80f, 0.20f, 0.50f, 1.0f };
+	const glm::vec4 BOX_COLOR = { 0.00f, 1.00f, 0.00f, 1.0f };
 	const float BOX_LINETHICKNESS = 0.1;
 
-	const glm::vec4 UNKNOWN_COLOR = { 0.10f, 0.10f, 0.10f, 1.0f };
-	const float UNKNOWN_LINETHICKNESS = 0.1;
+	const glm::vec4 UNKNOWN_COLOR = { 1.00f, 0.00f, 0.00f, 1.0f };
+	const float UNKNOWN_LINETHICKNESS = 1.0;
 
-	const glm::vec4 AABB_COLOR = { 0.10f, 0.00f, 0.00f, 1.0f };
-	const float AABB_LINETHICKNESS = 0.1;
+	const glm::vec4 AABB_COLOR = { 0.00f, 0.00f, 0.00f, 1.0f };
+	const float AABB_LINETHICKNESS = 3.0;
 
-	const glm::vec4 RAY_COLOR = { 0.90f, 0.10f, 0.10f, 1.0f };
+	const glm::vec4 RAY_COLOR = { 1.00f, 1.00f, 1.00f, 1.0f };
 	const float RAY_LINETHICKNESS = 3.0;
 
 	void DrawAabb(const hkpShape* shape, const glm::mat4& transform, const glm::vec4& color) {
