@@ -329,6 +329,7 @@ namespace {
 					auto collidable = result.rootCollidable;
 					if (collidable) {
 						auto type = collidable->broadPhaseHandle.type;
+						log::info("Collidable: {}", type);
 						switch (type) {
 							case 0: {
 								// Invalid
