@@ -34,6 +34,8 @@ namespace {
 	const glm::vec4 RAY_COLOR = { 1.00f, 1.00f, 1.00f, 1.0f };
 	const float RAY_LINETHICKNESS = 3.0;
 
+	inline static glm::vec3 GLM_HK_TO_SK = glm::vec3((*Gts::g_worldScaleInverse));
+
 	void DrawAabb(const hkpShape* shape, const glm::mat4& transform, const glm::vec4& color) {
 		RE::hkTransform shapeTransform;
 		// use identity matrix for the BB of the unrotated object
@@ -86,23 +88,28 @@ namespace {
 				log::info("Prepare for kConvexVertices CTD");
 				std::size_t numVertices = convexShape->numVertices;
 				log::info("  - numVertices: {}", numVertices);
-				glm::vec3 previous = glm::vec3(
-					convexShape->rotatedVertices[0].vertices[0].quad.m128_f32[0],
-					convexShape->rotatedVertices[0].vertices[1].quad.m128_f32[0],
-					convexShape->rotatedVertices[0].vertices[2].quad.m128_f32[0]
-					);
+				glm::vec3 previous = ApplyTransform(
+					glm::vec3(
+						convexShape->rotatedVertices[0].vertices[0].quad.m128_f32[0],
+						convexShape->rotatedVertices[0].vertices[1].quad.m128_f32[0],
+						convexShape->rotatedVertices[0].vertices[2].quad.m128_f32[0]
+						) * GLM_HK_TO_SK,
+					transform);
 				log::info("  - Firs Vert: {},{},{}", previous[0],previous[1],previous[2]);
 
 				for (std::size_t i = 0; i < numVertices; i++) {
 					std::size_t j = i / 4;
 					std::size_t k = i % 4;
-					glm::vec3 vert = glm::vec3(
-						convexShape->rotatedVertices[j].vertices[0].quad.m128_f32[k],
-						convexShape->rotatedVertices[j].vertices[1].quad.m128_f32[k],
-						convexShape->rotatedVertices[j].vertices[2].quad.m128_f32[k]
-						);
+					glm::vec3 vert = ApplyTransform(
+						glm::vec3(
+							convexShape->rotatedVertices[j].vertices[0].quad.m128_f32[k],
+							convexShape->rotatedVertices[j].vertices[1].quad.m128_f32[k],
+							convexShape->rotatedVertices[j].vertices[2].quad.m128_f32[k]
+							) * GLM_HK_TO_SK,
+						transform);
 					log::info("  - Vert: {},{},{}", vert[0], vert[1], vert[2]);
-					DebugAPI::DrawLineForMS(ApplyTransform(previous * glm::vec3((*Gts::g_worldScaleInverse)), transform), ApplyTransform(vert * glm::vec3((*Gts::g_worldScaleInverse)), transform),MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
+					DebugAPI::DrawLineForMS(previous, vert,MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
+					previous = vert;
 				}
 				log::info("What really? Where is the CTD I DEMAND A CTD");
 			}
