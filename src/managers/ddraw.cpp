@@ -308,12 +308,12 @@ namespace {
 		if (success) {
 			for (auto result: results) {
 				const hkTransform* shapeHkTransform = static_cast<const hkTransform*>(result.motion);
-				if (motion) {
-					glm::mat4 shapeTransform = HkToGlm(shapeHkTransform);
+				if (shapeHkTransform) {
+					glm::mat4 shapeTransform = HkToGlm(*shapeHkTransform);
 					DrawShape(result.shape, shapeTransform);
 					auto collidable = result.rootCollidable;
 					if (collidable) {
-						auto type = collidable->m_broadPhaseHandle.type;
+						auto type = collidable->broadPhaseHandle.type;
 						switch (type) {
 							case 0: {
 								// Invalid
@@ -322,11 +322,19 @@ namespace {
 								// hkpEntity
 								hkpEntity* entity = collidable->GetOwner<hkpEntity>();
 								log::info("It's an entity");
+								auto objectRefr = entity->GetUserData();
+								if (objectRefr) {
+									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
+								}
 							}
 							case 2: {
 								// hkpPhantom
-								hkpEntity* phantom = collidable->GetOwner<hkpPhantom>();
+								hkpPhantom* phantom = collidable->GetOwner<hkpPhantom>();
 								log::info("It's a phantom");
+								auto objectRefr = phantom->GetUserData();
+								if (objectRefr) {
+									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
+								}
 							}
 							case 3: {
 								// hkpBroadPhaseBorder
