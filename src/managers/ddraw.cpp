@@ -170,7 +170,7 @@ namespace {
 				auto child_shape = container->GetChildShape(key, buffer);
 				if (child_shape) {
 					// log::info("  - Child");
-					DrawShape(child_shape, transform);
+					// DrawShape(child_shape, transform);
 				}
 				key = container->GetNextKey(key);
 			}
