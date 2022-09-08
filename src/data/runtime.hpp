@@ -1,18 +1,18 @@
 #pragma once
 // Module that holds data that is loaded at runtime
 // This includes various forms
-
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class Runtime {
+	class Runtime : public EventListener {
 		public:
 			[[nodiscard]] static Runtime& GetSingleton() noexcept;
 
-			void Load();
+			virtual void DataReady() override;
 
 			BGSSoundDescriptorForm* lFootstepL = nullptr;
 			BGSSoundDescriptorForm* lFootstepR = nullptr;
@@ -137,7 +137,7 @@ namespace Gts {
 			TESGlobal * CrushGrowthStorage = nullptr;
 
 
-				///Camera
+			///Camera
 			TESGlobal * EnableCamera = nullptr;
 			TESGlobal * EnableAltCamera = nullptr;
 			TESGlobal * FeetCamera = nullptr;

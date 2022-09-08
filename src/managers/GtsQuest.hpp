@@ -1,16 +1,16 @@
 #pragma once
 // Module that handles footsteps
-
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class QuestManager {
+	class QuestManager : public EventListener {
 		public:
 			[[nodiscard]] static QuestManager& GetSingleton() noexcept;
 
-			void Update();
+			virtual void Update() override;
 	};
 }

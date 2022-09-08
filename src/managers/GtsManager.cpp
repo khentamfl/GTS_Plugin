@@ -206,9 +206,6 @@ namespace {
 	}
 
 	void update_actor(Actor* actor) {
-		Transient::GetSingleton().UpdateActorData(actor);
-		//log::info("Update Actor Name is {}", actor->GetDisplayFullName());
-
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 		update_effective_multi(actor, saved_data, temp_data);
@@ -257,8 +254,8 @@ namespace {
 				case ChosenGameMode::Shrink: {
 					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * 60 * Time::WorldTimeDelta();
 					if (fabs(ShrinkRate) < EPS) {
-							return;
-						}
+						return;
+					}
 					log::info("GameMode is: Shrink");
 					if ((targetScale + modAmount) > natural_scale) {
 						mod_target_scale(actor, modAmount);
@@ -340,7 +337,7 @@ namespace {
 				} else if (actor->HasMagicEffect(runtime.ResistShrinkPotion)) {
 					shrinkRate *= 0.25;
 				}
-				
+
 				if (fabs(shrinkRate) <= 1e-6) {
 					game_mode_int = 0; // Nothing to do
 				}
@@ -370,72 +367,18 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 }
 
 // Poll for updates
-void GtsManager::poll() {
-	if (!this->enabled) {
-		return;
-	}
-	auto player_char = RE::PlayerCharacter::GetSingleton();
-	if (!player_char) {
-		return;
-	}
-	if (!player_char->Is3DLoaded()) {
-		return;
-	}
-
-	auto ui = RE::UI::GetSingleton();
-	if (!ui->GameIsPaused()) {
-		const auto& frame_config = Gts::Config::GetSingleton().GetFrame();
-		auto init_delay = frame_config.GetInitDelay();
-		auto step = frame_config.GetStep() + 1; // 1 Based index
-		//log::info("Manager: Poll.");
-		auto current_frame = this->frame_count.fetch_add(1);
-		if (current_frame < init_delay) {
-			return;
-		}
-		if ((current_frame - init_delay) % step != 0) {
-			return;
-		}
-
-		for (auto actor: find_actors()) {
-			if (!actor) {
-				continue;
-			}
-			if (!actor->Is3DLoaded()) {
-				continue;
-			}
-			//log::info("Found Actor {}", actor->GetDisplayFullName());
-			update_actor(actor);
-			apply_actor(actor);
-			GameMode(actor);
-			AttributeManager::GetSingleton().UpdateNpc(actor); // <-- Adjust attack damage
-			SizeManager::GetSingleton().UpdateSize(actor); // Calculates Max Size for Everyone.
-		}
-	}
-}
-
-// Fired during the Papyrus OnUpdate event
-void GtsManager::on_update() {
-	if (!this->enabled) {
-		return;
-	}
-	auto player_char = RE::PlayerCharacter::GetSingleton();
-	if (!player_char) {
-		return;
-	}
-	if (!player_char->Is3DLoaded()) {
-		return;
-	}
-	auto actors = find_actors();
-	for (auto actor: actors) {
+void GtsManager::Update() {
+	for (auto actor: find_actors()) {
 		if (!actor) {
 			continue;
 		}
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		auto temp_data = Transient::GetSingleton().GetData(actor);
-		auto saved_data = Persistent::GetSingleton().GetData(actor);
-		apply_highheel(actor, temp_data, true);
+		//log::info("Found Actor {}", actor->GetDisplayFullName());
+		update_actor(actor);
+		apply_actor(actor);
+		GameMode(actor);
 	}
 }
 

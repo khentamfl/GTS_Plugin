@@ -1,6 +1,6 @@
 #pragma once
 // Module that handles footsteps
-
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -28,11 +28,11 @@ namespace Gts {
 			void enable_biped_collision();
 	};
 
-	class ContactManager {
+	class ContactManager : public EventListener {
 		public:
 			[[nodiscard]] static ContactManager& GetSingleton() noexcept;
 
-			void Update();
+			virtual void Update() override;
 			void UpdateCameraContacts();
 
 			ContactListener listener{};

@@ -125,19 +125,47 @@ namespace {
 		// Fill up the new healthbar
 
 	}
-}
 
-
-namespace Gts {
-	AttributeManager& AttributeManager::GetSingleton() noexcept {
-		static AttributeManager instance;
-		return instance;
+	void Augmentation(Actor* Player, bool& BlockMessage) {
+		auto& runtime = Runtime::GetSingleton();
+		auto AugmentationPerk = runtime.NoSpeedLoss;
+		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
+		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
+		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
+			ActorAttributes->smt_run_speed += 0.001480 * Gigantism;
+			if (ActorAttributes->smt_run_speed < 1.0) {
+				BlockMessage = false;
+			}
+		} else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
+			ActorAttributes->smt_run_speed += 0.000960 * Gigantism;
+			if (ActorAttributes->smt_run_speed < 1.0) {
+				BlockMessage = false;
+			}
+		} else {
+			if (ActorAttributes->smt_run_speed > 0.0) {
+				ActorAttributes->smt_run_speed -= 0.004175;
+			} else if (ActorAttributes->smt_run_speed <= 0.0) {
+				ActorAttributes->smt_run_speed -= 0.0;
+				BlockMessage = false;
+			} else if (ActorAttributes->smt_run_speed > 1.0) {
+				ActorAttributes->smt_run_speed = 1.0;
+			} else if (ActorAttributes->smt_run_speed < 1.0) {
+				BlockMessage = false;
+			} else {
+				ActorAttributes->smt_run_speed = 0.0;
+				BlockMessage = false;
+			}
+		}
+		if (ActorAttributes->smt_run_speed >= 1.0 && !BlockMessage) {
+			BlockMessage = true; // Avoid spamming it
+			DebugNotification("You're fast enough to instantly crush someone", 0, true);
+		}
+		//log::info("SMT Bonus: {}", ActorAttributes->smt_run_speed);
 	}
 
-	void AttributeManager::Update() {
+	void UpdatePlayer(Actor* Player, bool& BlockMessage) {
 		// Reapply Player Only
 
-		auto Player = RE::PlayerCharacter::GetSingleton();
 		if (!Player) {
 			return;
 		}
@@ -166,7 +194,7 @@ namespace Gts {
 		if (size > 0) {
 			BoostHP(Player, bonusHPMultiplier);
 
-			Augmentation();
+			Augmentation(Player, BlockMessage);
 
 			BoostCarry(Player, bonusCarryWeightMultiplier);
 
@@ -180,10 +208,7 @@ namespace Gts {
 		}
 	}
 
-
-	void AttributeManager::UpdateNpc(Actor* npc) {
-		// Reapply Player Only
-
+	void UpdateNPC(Actor* npc) {
 		if (!npc) {
 			return;
 		}
@@ -198,43 +223,23 @@ namespace Gts {
 
 		//BoostSpeedMulti(Npc, 1.0);
 	}
+}
 
-	void AttributeManager::Augmentation() {
-		auto Player = PlayerCharacter::GetSingleton();
-		auto& runtime = Runtime::GetSingleton();
-		auto AugmentationPerk = runtime.NoSpeedLoss;
-		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
-		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			ActorAttributes->smt_run_speed += 0.001480 * Gigantism;
-			if (ActorAttributes->smt_run_speed < 1.0) {
-				this->BlockMessage = false;
-			}
-		} else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			ActorAttributes->smt_run_speed += 0.000960 * Gigantism;
-			if (ActorAttributes->smt_run_speed < 1.0) {
-				this->BlockMessage = false;
-			}
-		} else {
-			if (ActorAttributes->smt_run_speed > 0.0) {
-				ActorAttributes->smt_run_speed -= 0.004175;
-			} else if (ActorAttributes->smt_run_speed <= 0.0) {
-				ActorAttributes->smt_run_speed -= 0.0;
-				this->BlockMessage = false;
-			} else if (ActorAttributes->smt_run_speed > 1.0) {
-				ActorAttributes->smt_run_speed = 1.0;
-			} else if (ActorAttributes->smt_run_speed < 1.0) {
-				this->BlockMessage = false;
+
+namespace Gts {
+	AttributeManager& AttributeManager::GetSingleton() noexcept {
+		static AttributeManager instance;
+		return instance;
+	}
+
+	void AttributeManager::Update() {
+		for (auto actor: find_actors()) {
+			if (actor->formID == 0x14) {
+				UpdatePlayer(actor, this->BlockMessage);
 			} else {
-				ActorAttributes->smt_run_speed = 0.0;
-				this->BlockMessage = false;
+				UpdateNPC(actor);
 			}
 		}
-		if (ActorAttributes->smt_run_speed >= 1.0 && !this->BlockMessage) {
-			this->BlockMessage = true; // Avoid spamming it
-			DebugNotification("You're fast enough to instantly crush someone", 0, true);
-		}
-		//log::info("SMT Bonus: {}", ActorAttributes->smt_run_speed);
 	}
 
 	void AttributeManager::OverrideBonus(float Value) {

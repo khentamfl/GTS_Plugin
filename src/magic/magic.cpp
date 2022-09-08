@@ -275,4 +275,8 @@ namespace Gts {
 			}
 		}
 	}
+
+	void MagicManager::Reset() {
+		this->active_effects.clear();
+	}
 }

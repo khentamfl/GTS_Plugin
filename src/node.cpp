@@ -1,6 +1,7 @@
 #include "node.hpp"
 #include "util.hpp"
 #include <regex>
+#include "data/plugin.hpp"
 
 using namespace SKSE;
 using namespace Gts;
@@ -324,7 +325,7 @@ namespace Gts {
 
 	void update_node(NiAVObject* node) {
 		if (node) {
-			if (on_mainthread()) {
+			if (Plugin::OnMainThread()) {
 				NiUpdateData ctx;
 				node->UpdateWorldData(&ctx);
 			} else {

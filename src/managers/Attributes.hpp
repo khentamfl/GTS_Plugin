@@ -1,6 +1,6 @@
 #pragma once
 // Module that handles AttributeValues
-
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -8,15 +8,15 @@ using namespace RE;
 
 namespace Gts {
 
-	class AttributeManager {
+	class AttributeManager : public EventListener {
 		public:
 			[[nodiscard]] static AttributeManager& GetSingleton() noexcept;
 
-			void Update();
-			void UpdateNpc(Actor* npc);
+			virtual void Update() override;
+
 			void Augmentation();
 			void OverrideBonus(float Value);
-			private:
+		private:
 			float MovementSpeedBonus = 0.0;
 			bool BlockMessage = false;
 	};

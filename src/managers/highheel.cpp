@@ -8,23 +8,37 @@
 using namespace RE;
 using namespace Gts;
 
-namespace {
-	NiAVObject* find_any_node(Actor* actor, std::string_view name) {
-		for (bool person: {false, true}) {
-			auto found = find_node(actor, name, person);
-			if (found) {
-				return found;
-			}
-		}
-		return nullptr;
-	}
-}
-
 namespace Gts {
-	void apply_highheel(Actor* actor, TempActorData* temp_data, bool force) {
+	HighHeelManager& HighHeelManager::GetSingleton() noexcept {
+		static HighHeelManager instance;
+		return instance;
+	}
+
+	void HighHeelManager::PapyrusUpdate() {
+		const bool FORCE_APPLY = false;
+		auto actors = find_actors();
+		for (auto actor: actors) {
+			ApplyHH(actor, FORCE_APPLY);
+		}
+	}
+
+	void HighHeelManager::ActorEquip(Actor* actor) {
+		const bool FORCE_APPLY = true;
+		ApplyHH(actor, FORCE_APPLY);
+	}
+	void HighHeelManager::ActorLoaded(Actor* actor) {
+		const bool FORCE_APPLY = true;
+		ApplyHH(actor, FORCE_APPLY);
+	}
+
+	void HighHeelManager::ApplyHH(Actor* actor, bool force) {
 		if (!actor) {
 			return;
 		}
+		if (!actor->Is3DLoaded()) {
+			return;
+		}
+		auto temp_data = Transient::GetSingleton().GetData(actor);
 		if (!temp_data) {
 			return;
 		}
@@ -39,22 +53,22 @@ namespace Gts {
 				return;
 			}
 		} else {
-			NiAVObject* npc_node = find_any_node(actor, "NPC");
+			NiAVObject* npc_node = find_node_any(actor, "NPC");
 			if (!npc_node) {
 				return;
 			}
 
-			NiAVObject* root_node = find_any_node(actor, "NPC Root [Root]");
+			NiAVObject* root_node = find_node_any(actor, "NPC Root [Root]");
 			if (!root_node) {
 				return;
 			}
 
-			NiAVObject* com_node = find_any_node(actor, "NPC COM [COM ]");
+			NiAVObject* com_node = find_node_any(actor, "NPC COM [COM ]");
 			if (!com_node) {
 				return;
 			}
 
-			NiAVObject* body_node = find_any_node(actor, "CME Body [Body]");
+			NiAVObject* body_node = find_node_any(actor, "CME Body [Body]");
 			if (!body_node) {
 				return;
 			}

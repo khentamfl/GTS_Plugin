@@ -138,19 +138,6 @@ namespace Gts {
 		return 3.4028237E38; // Max float
 	}
 
-	[[nodiscard]] std::atomic_bool& get_main_thread();
-
-	inline bool on_mainthread() {
-		return get_main_thread().load();
-	}
-
-	inline void activate_mainthread_mode() {
-		get_main_thread().store(true);
-	}
-	inline void deactivate_mainthread_mode() {
-		get_main_thread().store(false);
-	}
-
 	inline bool IsJumping(Actor* actor) {
 		if (!actor) {
 			return false;

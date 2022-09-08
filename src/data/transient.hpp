@@ -1,6 +1,6 @@
 #pragma once
 // Module that holds data that is not persistent across saves
-
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -30,15 +30,16 @@ namespace Gts {
 		}
 	};
 
-	class Transient {
+	class Transient : public EventListener {
 		public:
 			[[nodiscard]] static Transient& GetSingleton() noexcept;
 
 			TempActorData* GetData(TESObjectREFR* object);
 			TempActorData* GetActorData(Actor* actor);
-			void UpdateActorData(Actor* actor);
 
-			void Clear();
+			virtual void Update() override;
+			virtual void Reset() override;
+			virtual void ResetActor(Actor* actor) override;
 		private:
 
 			mutable std::mutex _lock;

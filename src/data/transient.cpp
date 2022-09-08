@@ -93,50 +93,59 @@ namespace Gts {
 		return &this->_actor_data[key];
 	}
 
-	void Transient::UpdateActorData(Actor* actor) {
-		if (!actor) {
-			return;
-		}
-		if (!actor->Is3DLoaded()) {
-			return;
-		}
 
-		auto key = actor->formID;
-		std::unique_lock lock(this->_lock);
-		try {
-			auto data = this->_actor_data.at(key);
-			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
-			float shoe_weight = 1.0;
-			if (shoe) {
-				shoe_weight = shoe->weight;
+	void Transient::Update() {
+		for (auto actor: find_actors()) {
+			if (!actor) {
+				continue;
 			}
-			data.shoe_weight = shoe_weight;
+			if (!actor->Is3DLoaded()) {
+				continue;
+			}
 
-			data.char_weight = actor->GetWeight();
-
-			data.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
-
-			auto hhBonusPerk = Runtime::GetSingleton().hhBonus;
-			if (hhBonusPerk) {
-				data.has_hhBonus_perk = actor->HasPerk(hhBonusPerk);
-				if (!data.has_hhBonus_perk && data.is_teammate) {
-					auto player_data = this->GetData(PlayerCharacter::GetSingleton());
-					if (player_data) {
-						data.has_hhBonus_perk = player_data->has_hhBonus_perk;
-					}
+			auto key = actor->formID;
+			std::unique_lock lock(this->_lock);
+			try {
+				auto data = this->_actor_data.at(key);
+				auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+				float shoe_weight = 1.0;
+				if (shoe) {
+					shoe_weight = shoe->weight;
 				}
-			} else {
-				data.has_hhBonus_perk = false;
+				data.shoe_weight = shoe_weight;
+
+				data.char_weight = actor->GetWeight();
+
+				data.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
+
+				auto hhBonusPerk = Runtime::GetSingleton().hhBonus;
+				if (hhBonusPerk) {
+					data.has_hhBonus_perk = actor->HasPerk(hhBonusPerk);
+					if (!data.has_hhBonus_perk && data.is_teammate) {
+						auto player_data = this->GetData(PlayerCharacter::GetSingleton());
+						if (player_data) {
+							data.has_hhBonus_perk = player_data->has_hhBonus_perk;
+						}
+					}
+				} else {
+					data.has_hhBonus_perk = false;
+				}
+
+
+			} catch (const std::out_of_range& oor) {
+				continue;
 			}
-
-
-		} catch (const std::out_of_range& oor) {
-			return;
 		}
 	}
-
-	void Transient::Clear() {
+	void Transient::Reset() {
 		std::unique_lock lock(this->_lock);
 		this->_actor_data.clear();
+	}
+	void Transient::ResetActor(Actor* actor) {
+		std::unique_lock lock(this->_lock);
+		if (actor) {
+			auto key = actor->formID;
+			this->_actor_data.erase(key);
+		}
 	}
 }

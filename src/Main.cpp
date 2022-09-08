@@ -1,12 +1,21 @@
 #include "Config.hpp"
-#include "managers/GtsManager.hpp"
 #include "hooks/hooks.hpp"
 #include "papyrus/papyrus.hpp"
+#include "data/plugin.hpp"
+
+#include "events.hpp"
+#include "magic/magic.hpp"
+#include "managers/highheel.hpp"
+#include "managers/GtsSizeManager.hpp"
+#include "managers/Attributes.hpp"
+#include "managers/contact.hpp"
+#include "managers/RandomGrowth.hpp"
+#include "managers/GtsQuest.hpp"
+#include "managers/GtsManager.hpp"
+#include "managers/camera.hpp"
+#include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
-#include "data/runtime.hpp"
-#include "managers/footstep.hpp"
-#include "managers/reloader.hpp"
 
 #include <stddef.h>
 #include <thread>
@@ -35,8 +44,7 @@ namespace {
 	{
 		auto path = log_directory();
 
-		if (!path)
-		{
+		if (!path) {
 			report_and_fail("Unable to lookup SKSE logs directory.");
 		}
 		*path /= PluginDeclaration::GetSingleton()->GetName();
@@ -44,8 +52,7 @@ namespace {
 
 		std::shared_ptr <spdlog::logger> log;
 
-		if (IsDebuggerPresent())
-		{
+		if (IsDebuggerPresent()) {
 			log = std::make_shared <spdlog::logger>(
 				"Global", std::make_shared <spdlog::sinks::msvc_sink_mt>());
 		} else {
@@ -98,39 +105,37 @@ namespace {
 					case MessagingInterface::kPostPostLoad: // Called after all kPostLoad message handlers have run.
 						break;
 					case MessagingInterface::kInputLoaded: // Called when all game data has been found.
-						{
-							ReloadManager::GetSingleton().Initialize();
-						}
 						break;
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 						// It is now safe to access form data.
-						Runtime::GetSingleton().Load();
+						EventDispatcher::DoDataReady();
 						break;
 					// Skyrim game events.
 					case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
 						// Data will be a boolean indicating whether the load was successful.
 						{
-							Transient::GetSingleton().Clear();
-							GtsManager::GetSingleton().enabled = true;
+							Plugin::SetInGame(true);
 						}
 						break;
 					case MessagingInterface::kNewGame: // Player starts a new game from main menu.
 						{
-							Transient::GetSingleton().Clear();
-							GtsManager::GetSingleton().enabled = true;
+							Plugin::SetInGame(false);
+							EventDispatcher::DoReset();
 						}
 						break;
 					case MessagingInterface::kPreLoadGame: // Player selected a game to load, but it hasn't loaded yet.
 						// Data will be the name of the loaded save.
-						GtsManager::GetSingleton().enabled = false;
+						{
+							Plugin::SetInGame(false);
+							EventDispatcher::DoReset();
+						}
 						break;
 					case MessagingInterface::kSaveGame: // The player has saved a game.
 					// Data will be the save name.
 					case MessagingInterface::kDeleteGame: // The player deleted a saved game from within the load menu.
 						break;
 			}
-		}))
-		{
+		})) {
 			stl::report_and_fail("Unable to register message listener.");
 		}
 	}
@@ -153,6 +158,25 @@ void InitializePapyrus() {
 	} else {
 		stl::report_and_fail("Failure to register Papyrus bindings.");
 	}
+}
+
+void InitializeEventSystem() {
+	EventDispatcher::AddListener(&Runtime::GetSingleton());
+	EventDispatcher::AddListener(&Persistent::GetSingleton());
+	EventDispatcher::AddListener(&Transient::GetSingleton());
+
+	EventDispatcher::AddListener(&GtsManager::GetSingleton());
+	EventDispatcher::AddListener(&SizeManager::GetSingleton());
+	EventDispatcher::AddListener(&HighHeelManager::GetSingleton());
+	EventDispatcher::AddListener(&CameraManager::GetSingleton());
+	
+	EventDispatcher::AddListener(&MagicManager::GetSingleton());
+
+	EventDispatcher::AddListener(&AttributeManager::GetSingleton());
+	EventDispatcher::AddListener(&RandomGrowth::GetSingleton());
+	EventDispatcher::AddListener(&QuestManager::GetSingleton());
+
+	EventDispatcher::AddListener(&ContactManager::GetSingleton());
 }
 
 /**
@@ -180,6 +204,7 @@ SKSEPluginLoad(const LoadInterface * skse)
 	Hooks::Install();
 	InitializePapyrus();
 	InitializeSerialization();
+	InitializeEventSystem();
 
 	log::info("{} has finished loading.", plugin->GetName());
 	return(true);

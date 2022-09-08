@@ -22,9 +22,13 @@ namespace Gts {
 		return instance;
 	}
 
+	void Persistent::Reset() {
+		std::unique_lock lock(this->_lock);
+		this->_actor_data.clear();
+	}
+
 	void Persistent::OnRevert(SerializationInterface*) {
-		std::unique_lock lock(GetSingleton()._lock);
-		GetSingleton()._actor_data.clear();
+		GetSingleton().Reset();
 	}
 
 	void Persistent::OnGameLoaded(SerializationInterface* serde) {

@@ -27,7 +27,7 @@ namespace Gts {
 		return instance;
 	}
 
-	void Runtime::Load() {
+	void Runtime::DataReady() {
 		this->lFootstepL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLFootstepL());
 		this->lFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLFootstepR());
 
@@ -121,13 +121,13 @@ namespace Gts {
 		this->PerkPart2 = find_form<BGSPerk>("GTS.esp|160820");
 		this->ExtraGrowth = find_form<BGSPerk>("GTS.esp|332563");
 		this->ExtraGrowthMax = find_form<BGSPerk>("GTS.esp|397972");
-		this->HealthRegenPerk = find_form<BGSPerk>("GTS.esp|18E160"); 
+		this->HealthRegenPerk = find_form<BGSPerk>("GTS.esp|18E160");
 		this->GrowthAugmentation = find_form<BGSPerk>("GTS.esp|35AD69");
 		this->VorePerkRegeneration = find_form<BGSPerk>("GTS.esp|33C764");
 		this->VorePerkGreed = find_form<BGSPerk>("GTS.esp|33C765");
-		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6"); 
+		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6");
 		this->NoSpeedLoss = find_form<BGSPerk>("GTS.esp|2E663B");
-		
+
 
 		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 
@@ -190,7 +190,7 @@ namespace Gts {
 		this->CalcProne = find_form<TESGlobal>("GTS.esp|2D733A");
 		////////////
 		/////Attributes//////
-		this->AllowTimeChange = find_form<TESGlobal>("GTS.esp|277001"); // <- Speed AV modification toggler 
+		this->AllowTimeChange = find_form<TESGlobal>("GTS.esp|277001"); // <- Speed AV modification toggler
 		this->bonusHPMultiplier = find_form<TESGlobal>("GTS.esp|28B408");
 		this->bonusCarryWeightMultiplier = find_form<TESGlobal>("GTS.esp|28B407");
 		this->bonusJumpHeightMultiplier = find_form<TESGlobal>("GTS.esp|28B40A");

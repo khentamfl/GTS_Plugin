@@ -1,6 +1,7 @@
 #pragma once
 // Module that holds data that is persistent across saves
 
+#include "events.hpp"
 #include "scale/modscale.hpp"
 #include "util.hpp"
 
@@ -38,8 +39,11 @@ namespace Gts {
 		float above_scale = 5.0;
 	};
 
-	class Persistent {
+	class Persistent : public Gts::EventListener {
 		public:
+			virtual void Reset() override;
+			virtual void ResetActor(Actor* actor) override;
+
 			[[nodiscard]] static Persistent& GetSingleton() noexcept;
 			static void OnRevert(SKSE::SerializationInterface*);
 			static void OnGameSaved(SKSE::SerializationInterface* serde);
@@ -48,7 +52,7 @@ namespace Gts {
 			ActorData* GetActorData(Actor* actor);
 			ActorData* GetData(TESObjectREFR* refr);
 
-			void ResetActor(Actor* actor);
+
 
 			bool highheel_correction = true;
 			bool is_speed_adjusted = true;

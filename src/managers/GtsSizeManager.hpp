@@ -1,6 +1,6 @@
 #pragma once
 // Module that handles AttributeAdjustment
-
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -11,12 +11,12 @@ namespace Gts {
 	struct SizeManagerData {
 		float enchantmentBonus = 0.0;
 	};
-	class SizeManager {
+	class SizeManager : public EventListener {
 		public:
 			[[nodiscard]] static SizeManager& GetSingleton() noexcept;
 
 			inline float GetRaceScale(Actor* actor);
-			void UpdateSize(Actor* Target);
+			virtual void Update() override;
 
 			SizeManagerData& GetData(Actor* actor);
 
