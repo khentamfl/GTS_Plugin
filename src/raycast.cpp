@@ -29,15 +29,21 @@ namespace Gts {
 	}
 
 	void RayCollector::AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) {
-		const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
+		const hkpShape* shape; // = a_body.GetShape(); // Shape that was collided with
 
 		// Search for top level shape
-		const hkpCdBody* top_body = a_body.parent;
+		const hkpCdBody* top_body = &a_body;
 		while (top_body) {
-			if (top_body->shape) {
-				shape = top_body->shape;
+			auto newShape = top_body->GetShape();
+			if (newShape) {
+				shape = newShape;
 			}
-			top_body = top_body->parent;
+			auto parent = top_body->parent;
+			if (parent) {
+				top_body = parent;
+			} else {
+				break;
+			}
 		}
 
 		if (shape) {
