@@ -92,7 +92,7 @@ namespace {
 				auto getVertex = [&](std::size_t i) {
 							 std::size_t j = i / 4;
 							 std::size_t k = i % 4;
-							 ApplyTransform(
+							 return ApplyTransform(
 								 glm::vec3(
 									 convexShape->rotatedVertices[j].vertices[0].quad.m128_f32[k],
 									 convexShape->rotatedVertices[j].vertices[1].quad.m128_f32[k],
@@ -103,10 +103,10 @@ namespace {
 				if (connectivity) {
 					std::size_t i = 0;
 					for (auto numVerticesPerFace: connectivity->numVerticesPerFace) {
-						glm::vec3 prev = getVertex(connectivity->vertexIndices[i]);
+						glm::vec3 previous = getVertex(connectivity->vertexIndices[i]);
 						for (std::size_t j=i+1; j<i+numVerticesPerFace; j++) {
 							glm::vec3 vert = getVertex(connectivity->vertexIndices[j]);
-							DebugAPI::DrawLineForMS(previous, vert,MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
+							DebugAPI::DrawLineForMS(previous, vert, MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
 							previous = vert;
 						}
 						i += numVerticesPerFace;
@@ -116,7 +116,7 @@ namespace {
 
 					for (std::size_t i = 0; i < numVertices; i++) {
 						glm::vec3 vert = getVertex(i);
-						DebugAPI::DrawLineForMS(previous, vert,MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
+						DebugAPI::DrawLineForMS(previous, vert, MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
 						previous = vert;
 					}
 				}
