@@ -367,6 +367,7 @@ namespace {
 								auto objectRefr = entity->GetUserData();
 								if (objectRefr) {
 									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
+									log::info("  - Type: {}", static_cast<int>(result.shape->type));
 								}
 							}
 							case 2: {
@@ -376,6 +377,7 @@ namespace {
 								auto objectRefr = phantom->GetUserData();
 								if (objectRefr) {
 									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
+									log::info("  - Type: {}", static_cast<int>(result.shape->type));
 								}
 							}
 							case 3: {
