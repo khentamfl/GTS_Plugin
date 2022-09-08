@@ -102,7 +102,7 @@ namespace {
 						convexShape->rotatedVertices[j].vertices[2].quad.m128_f32[k]
 						);
 					log::info("  - Vert: {},{},{}", vert[0], vert[1], vert[2]);
-					DebugAPI::DrawLineForMS(ApplyTransform(previous, transform), ApplyTransform(vert, transform),MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
+					DebugAPI::DrawLineForMS(ApplyTransform(previous * glm::vec3((*Gts::g_worldScaleInverse)), transform), ApplyTransform(vert * glm::vec3((*Gts::g_worldScaleInverse)), transform),MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
 				}
 				log::info("What really? Where is the CTD I DEMAND A CTD");
 			}
