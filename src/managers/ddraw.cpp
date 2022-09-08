@@ -88,30 +88,38 @@ namespace {
 				log::info("Prepare for kConvexVertices CTD");
 				std::size_t numVertices = convexShape->numVertices;
 				log::info("  - numVertices: {}", numVertices);
-				glm::vec3 previous = ApplyTransform(
-					glm::vec3(
-						convexShape->rotatedVertices[0].vertices[0].quad.m128_f32[0],
-						convexShape->rotatedVertices[0].vertices[1].quad.m128_f32[0],
-						convexShape->rotatedVertices[0].vertices[2].quad.m128_f32[0]
-						) * GLM_HK_TO_SK,
-					transform);
-				log::info("  - Firs Vert: {},{},{}", previous[0],previous[1],previous[2]);
+				auto connectivity = convexShape->connectivity;
+				auto getVertex = [&](std::size_t i) {
+							 std::size_t j = i / 4;
+							 std::size_t k = i % 4;
+							 ApplyTransform(
+								 glm::vec3(
+									 convexShape->rotatedVertices[j].vertices[0].quad.m128_f32[k],
+									 convexShape->rotatedVertices[j].vertices[1].quad.m128_f32[k],
+									 convexShape->rotatedVertices[j].vertices[2].quad.m128_f32[k]
+									 ) * GLM_HK_TO_SK,
+								 transform);
+						 };
+				if (connectivity) {
+					std::size_t i = 0;
+					for (auto numVerticesPerFace: connectivity->numVerticesPerFace) {
+						glm::vec3 prev = getVertex(connectivity->vertexIndices[i]);
+						for (std::size_t j=i+1; j<i+numVerticesPerFace; j++) {
+							glm::vec3 vert = getVertex(connectivity->vertexIndices[j]);
+							DebugAPI::DrawLineForMS(previous, vert,MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
+							previous = vert;
+						}
+						i += numVerticesPerFace;
+					}
+				} else {
+					glm::vec3 previous = getVertex(0);
 
-				for (std::size_t i = 0; i < numVertices; i++) {
-					std::size_t j = i / 4;
-					std::size_t k = i % 4;
-					glm::vec3 vert = ApplyTransform(
-						glm::vec3(
-							convexShape->rotatedVertices[j].vertices[0].quad.m128_f32[k],
-							convexShape->rotatedVertices[j].vertices[1].quad.m128_f32[k],
-							convexShape->rotatedVertices[j].vertices[2].quad.m128_f32[k]
-							) * GLM_HK_TO_SK,
-						transform);
-					log::info("  - Vert: {},{},{}", vert[0], vert[1], vert[2]);
-					DebugAPI::DrawLineForMS(previous, vert,MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
-					previous = vert;
+					for (std::size_t i = 0; i < numVertices; i++) {
+						glm::vec3 vert = getVertex(i);
+						DebugAPI::DrawLineForMS(previous, vert,MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
+						previous = vert;
+					}
 				}
-				log::info("What really? Where is the CTD I DEMAND A CTD");
 			}
 		} else if (shape->type == hkpShapeType::kConvexTransform) {
 			// log::info("Convext transform");

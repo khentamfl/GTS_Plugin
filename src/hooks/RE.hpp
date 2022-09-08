@@ -69,6 +69,19 @@ namespace RE
 			hkVector4 vertices[3];
 	};
 
+	class hkpConvexVerticesConnectivity : public hkReferencedObject {
+		public:
+			inline static constexpr auto RTTI = RTTI_hkpConvexVerticesShape;
+
+			~hkpConvexVerticesConnectivity() override;  // 00
+
+			virtual void clear();
+
+			hkArray<hkUint16> vertexIndices;
+
+			hkArray<hkUint8> numVerticesPerFace;
+	};
+
 	class hkpConvexVerticesShape : public hkpConvexShape
 	{
 		public:
@@ -96,6 +109,6 @@ namespace RE
 
 			mutable hkArray<hkVector4> planeEquations;
 
-			mutable std::uintptr_t connectivity;
+			mutable hkpConvexVerticesConnectivity* connectivity;
 	};
 }
