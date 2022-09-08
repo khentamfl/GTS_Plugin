@@ -77,9 +77,9 @@ namespace RE
 
 			virtual void clear();
 
-			hkArray<hkUint16> vertexIndices;
+			hkArray<std::uint16_t> vertexIndices;
 
-			hkArray<hkUint8> numVerticesPerFace;
+			hkArray<std::uint8_t> numVerticesPerFace;
 	};
 
 	class hkpConvexVerticesShape : public hkpConvexShape
