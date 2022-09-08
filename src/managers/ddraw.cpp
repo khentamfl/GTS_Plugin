@@ -85,9 +85,7 @@ namespace {
 				glm::vec3 worldPos = ApplyTransform(localPos, transform);
 				DrawAabb(convexShape, transform, UNKNOWN_COLOR);
 				DebugAPI::DrawSphere(worldPos, radius, MS_TIME, UNKNOWN_COLOR, UNKNOWN_LINETHICKNESS);
-				log::info("Prepare for kConvexVertices CTD");
 				std::size_t numVertices = convexShape->numVertices;
-				log::info("  - numVertices: {}", numVertices);
 				auto connectivity = convexShape->connectivity;
 				auto getVertex = [&](std::size_t i) {
 							 std::size_t j = i / 4;
@@ -101,21 +99,25 @@ namespace {
 								 transform);
 						 };
 				if (connectivity) {
+					log::info("Connectivity present");
 					std::size_t i = 0;
 					for (auto numVerticesPerFace: connectivity->numVerticesPerFace) {
 						glm::vec3 previous = getVertex(connectivity->vertexIndices[i]);
 						for (std::size_t j=i+1; j<i+numVerticesPerFace; j++) {
 							glm::vec3 vert = getVertex(connectivity->vertexIndices[j]);
+							log::info("  - Vert: {},{},{}", vert[0], vert[1], vert[2]);
 							DebugAPI::DrawLineForMS(previous, vert, MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
 							previous = vert;
 						}
 						i += numVerticesPerFace;
 					}
 				} else {
+					log::info("No connectivity present");
 					glm::vec3 previous = getVertex(0);
 
 					for (std::size_t i = 0; i < numVertices; i++) {
 						glm::vec3 vert = getVertex(i);
+						log::info("  - Vert: {},{},{}", vert[0], vert[1], vert[2]);
 						DebugAPI::DrawLineForMS(previous, vert, MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
 						previous = vert;
 					}
