@@ -51,6 +51,7 @@ namespace {
 	}
 
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
+		DrawAabb(shape, transform,AABB_COLOR);
 		if (shape->type == hkpShapeType::kCapsule) {
 			// log::info("Capsule");
 			const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
@@ -86,9 +87,9 @@ namespace {
 				std::size_t numVertices = convexShape->numVertices;
 				log::info("  - numVertices: {}", numVertices);
 				glm::vec3 previous = glm::vec3(
-					convexShape->rotatedVertices.vertices[0][0].quad.m128_f32[0],
-					convexShape->rotatedVertices.vertices[0][1].quad.m128_f32[0],
-					convexShape->rotatedVertices.vertices[0][2].quad.m128_f32[0]
+					convexShape->rotatedVertices[0].vertices[0].quad.m128_f32[0],
+					convexShape->rotatedVertices[0].vertices[1].quad.m128_f32[0],
+					convexShape->rotatedVertices[0].vertices[2].quad.m128_f32[0]
 					);
 				log::info("  - Firs Vert: {},{},{}", previous[0],previous[1],previous[2]);
 
@@ -96,9 +97,9 @@ namespace {
 					std::size_t j = i / 4;
 					std::size_t k = i % 4;
 					glm::vec3 vert = glm::vec3(
-						convexShape->rotatedVertices.vertices[j][0].quad.m128_f32[k],
-						convexShape->rotatedVertices.vertices[j][1].quad.m128_f32[k],
-						convexShape->rotatedVertices.vertices[j][2].quad.m128_f32[k]
+						convexShape->rotatedVertices[j].vertices[0].quad.m128_f32[k],
+						convexShape->rotatedVertices[j].vertices[1].quad.m128_f32[k],
+						convexShape->rotatedVertices[j].vertices[2].quad.m128_f32[k]
 						);
 					log::info("  - Vert: {},{},{}", vert[0], vert[1], vert[2]);
 					DebugAPI::DrawLineForMS(ApplyTransform(previous, transform), ApplyTransform(vert, transform),MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
@@ -176,7 +177,6 @@ namespace {
 			}
 		} else {
 			log::debug("- Shape (of type {}) is not handlled", static_cast<int>(shape->type));
-			DrawAabb(shape, transform, AABB_COLOR);
 		}
 	}
 
