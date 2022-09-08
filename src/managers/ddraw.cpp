@@ -311,12 +311,30 @@ namespace {
 				if (motion) {
 					glm::mat4 shapeTransform = HkToGlm(shapeHkTransform);
 					DrawShape(result.shape, shapeTransform);
-				} else {
-					log::info("No motion state");
+					auto collidable = result.rootCollidable;
+					if (collidable) {
+						auto type = collidable->m_broadPhaseHandle.type;
+						switch (type) {
+							case 0: {
+								// Invalid
+							}
+							case 1: {
+								// hkpEntity
+								hkpEntity* entity = collidable->GetOwner<hkpEntity>();
+								log::info("It's an entity");
+							}
+							case 2: {
+								// hkpPhantom
+								hkpEntity* phantom = collidable->GetOwner<hkpPhantom>();
+								log::info("It's a phantom");
+							}
+							case 3: {
+								// hkpBroadPhaseBorder
+							}
+						}
+					}
 				}
 			}
-		} else {
-			log::info("Ray hit nothing");
 		}
 	}
 

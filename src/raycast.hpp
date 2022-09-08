@@ -10,6 +10,7 @@ using namespace SKSE;
 namespace Gts {
 	struct HitResult {
 		const hkpShape* shape;
+		const hkpCollidable* rootCollidable;
 		const void* motion;
 		float fraction;
 	};

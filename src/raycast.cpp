@@ -69,6 +69,7 @@ namespace Gts {
 			hit_result.shape = shape;
 			hit_result.fraction = a_hitInfo.hitFraction;
 			hit_result.motion = a_body.motion;
+			hit_result.rootCollidable = static_cast<const hkpCollidable*>(top_body);
 			results.push_back(hit_result);
 		}
 	}
