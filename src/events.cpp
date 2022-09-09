@@ -13,6 +13,11 @@ namespace Gts {
 	void EventListener::PapyrusUpdate() {
 
 	}
+	
+	// Called on Havok update (when processing hitjobs)
+	void EventListener::HavokUpdate() {
+		
+	}
 
 	// Called on game load started (not yet finished)
 	// and when new game is selected
@@ -66,6 +71,11 @@ namespace Gts {
 	void EventDispatcher::DoPapyrusUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
 			listener->PapyrusUpdate();
+		}
+	}
+	void EventDispatcher::DoHavokUpdate() {
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->HavokUpdate();
 		}
 	}
 	void EventDispatcher::DoReset() {

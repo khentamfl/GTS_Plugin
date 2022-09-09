@@ -1,5 +1,6 @@
 #include "hooks/havok.hpp"
 #include "util.hpp"
+#include "events.hpp"
 
 #include "managers/contact.hpp"
 
@@ -36,7 +37,7 @@ namespace Hooks
 	{
 		_ProcessHavokHitJobs(a1);
 
-		ContactManager::GetSingleton().Update();
+		EventDispatcher::DoHavokUpdate();
 	}
 
 	Hook_Havok::CollisionFilterComparisonResult Hook_Havok::CompareFilterInfo(RE::bhkCollisionFilter* a_collisionFilter, uint32_t a_filterInfoA, uint32_t a_filterInfoB)

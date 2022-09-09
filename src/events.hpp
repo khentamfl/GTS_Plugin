@@ -12,6 +12,9 @@ namespace Gts {
 
 			// Called on Papyrus OnUpdate
 			virtual void PapyrusUpdate();
+			
+			// Called on Havok update (when processing hitjobs)
+			virtual void HavokUpdate();
 
 			// Called on game load started (not yet finished)
 			// and when new game is selected
@@ -44,6 +47,7 @@ namespace Gts {
 			static void AddListener(EventListener* listener);
 			static void DoUpdate();
 			static void DoPapyrusUpdate();
+			static void DoHavokUpdate();
 			static void DoReset();
 			static void DoEnabled();
 			static void DoDisabled();

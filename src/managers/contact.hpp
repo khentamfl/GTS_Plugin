@@ -32,7 +32,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static ContactManager& GetSingleton() noexcept;
 
-			virtual void Update() override;
+			virtual void HavokUpdate() override;
 			void UpdateCameraContacts();
 
 			ContactListener listener{};
