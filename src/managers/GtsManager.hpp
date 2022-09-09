@@ -25,7 +25,6 @@ namespace Gts {
 			 */
 			[[nodiscard]] static GtsManager& GetSingleton() noexcept;
 
-			atomic_ulong frame_count = atomic_int64_t(0);
 			float experiment = 1.0;
 
 			virtual void Update() override;
