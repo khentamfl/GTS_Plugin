@@ -374,11 +374,14 @@ namespace Gts {
 
 		auto cell = playerCharacter->GetParentCell();
 		if (!cell) return;
+		
 
 		auto world = RE::NiPointer<RE::bhkWorld>(cell->GetbhkWorld());
 		if (!world) return;
 		ContactListener& contactListener = this->listener;
-
+		auto PC = PlayerCharacter::GetSingleton();
+		auto HighHeel = HighHeelManager::GetSingleton();
+		HighHeel.ApplyHH(PC, false);
 		if (contactListener.world != world) {
 			contactListener.detach();
 			contactListener.attach(world);

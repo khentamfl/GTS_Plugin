@@ -18,7 +18,7 @@ namespace Gts {
 		const bool FORCE_APPLY = false;
 		auto actors = find_actors();
 		for (auto actor: actors) {
-			ApplyHH(actor, FORCE_APPLY);
+			//ApplyHH(actor, FORCE_APPLY);
 		}
 	}
 
