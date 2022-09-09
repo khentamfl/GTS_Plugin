@@ -107,7 +107,8 @@ namespace {
 		}
 
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
-		set_scale(actor, visual_scale);
+		//set_scale(actor, visual_scale);
+		set_model_scale(PlayerCharacter::GetSingleton(), 5.0);
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
