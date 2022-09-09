@@ -10,8 +10,12 @@ namespace Gts {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
-				actor_data->target_scale = scale;
-				actor_data->target_scale_v = 0.0;
+				if (actor_data->target_scale < actor_data->max_scale) {
+					if (scale > actor_data->max_scale) {
+						scale = actor_data->max_scale;
+					}
+					actor_data->target_scale = scale;
+				}
 			}
 		}
 	}
@@ -30,8 +34,14 @@ namespace Gts {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
-				actor_data->target_scale += amt;
-				actor_data->target_scale_v = 0.0;
+				if (actor_data->target_scale < actor_data->max_scale) {
+					if (actor_data->target_scale + amt > actor_data->max_scale) {
+						actor_data->target_scale = actor_data->max_scale;
+					} else {
+						actor_data->target_scale += amt;
+						actor_data->target_scale_v = 0.0;
+					}
+				}
 			}
 		}
 	}
