@@ -106,8 +106,6 @@ namespace RE
 			std::int32_t numVertices;
 
 			bool useSpuBuffer;
-			std::uint8_t pad_A;
-			std::uint16_t pad_B;
 
 			mutable hkArray<hkVector4> planeEquations;
 

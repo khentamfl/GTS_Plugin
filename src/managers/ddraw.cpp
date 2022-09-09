@@ -98,36 +98,11 @@ namespace {
 									 ) * GLM_HK_TO_SK,
 								 transform);
 						 };
-				if (connectivity) {
-					log::info("Connectivity present");
-					std::size_t i = 0;
-					log::info("  - There are {} verticies", numVertices);
-					for (auto numVerticesPerFace: connectivity->numVerticesPerFace) {
-						log::info("  - Number of verticies in face: {}", numVerticesPerFace);
-					}
-					for (auto vertexIndex: connectivity->vertexIndices) {
-						log::info("  - Vertex index: {}", vertexIndex);
-					}
-					for (auto numVerticesPerFace: connectivity->numVerticesPerFace) {
-						glm::vec3 previous = getVertex(connectivity->vertexIndices[i]);
-						for (std::size_t j=i+1; j<i+numVerticesPerFace; j++) {
-							glm::vec3 vert = getVertex(connectivity->vertexIndices[j]);
-							log::info("  - Vert: {},{},{}", vert[0], vert[1], vert[2]);
-							DebugAPI::DrawLineForMS(previous, vert, MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
-							previous = vert;
-						}
-						i += numVerticesPerFace;
-					}
-				} else {
-					log::info("No connectivity present");
-					glm::vec3 previous = getVertex(0);
-
-					for (std::size_t i = 0; i < numVertices; i++) {
-						glm::vec3 vert = getVertex(i);
-						log::info("  - Vert: {},{},{}", vert[0], vert[1], vert[2]);
-						DebugAPI::DrawLineForMS(previous, vert, MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
-						previous = vert;
-					}
+				glm::vec3 previous = getVertex(0);
+				for (std::size_t i = 0; i < numVertices; i++) {
+					glm::vec3 vert = getVertex(i);
+					DebugAPI::DrawLineForMS(previous, vert, MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
+					previous = vert;
 				}
 			}
 		} else if (shape->type == hkpShapeType::kConvexTransform) {
