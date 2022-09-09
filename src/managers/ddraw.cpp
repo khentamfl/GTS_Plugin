@@ -296,18 +296,18 @@ namespace {
 			DrawRigidBody(bumpedCharCollisionObject);
 		}
 
-		{
-			hkTransform outTransform;
-			charController->GetTransformImpl(outTransform);
-			glm::mat4 transform = HkToGlm(outTransform);
-			for (auto bhkShape: charController->shapes) {
-				hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
-				if (shape) {
-					log::info("  - Shape of CharController");
-					DrawShape(shape, transform);
-				}
-			}
-		}
+		// {
+		// 	hkTransform outTransform;
+		// 	charController->GetTransformImpl(outTransform);
+		// 	glm::mat4 transform = HkToGlm(outTransform);
+		// 	for (auto bhkShape: charController->shapes) {
+		// 		hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
+		// 		if (shape) {
+		// 			log::info("  - Shape of CharController");
+		// 			DrawShape(shape, transform);
+		// 		}
+		// 	}
+		// }
 
 		bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
 		if (charProxyController) {

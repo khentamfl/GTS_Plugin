@@ -154,7 +154,7 @@ namespace {
 			}
 		}
 
-		static bool doonce = false;
+		static bool doonce = true;
 		if (!doonce) {
 			doonce = true;
 			log::info("Doing test scale on {}", actor->GetDisplayFullName());
