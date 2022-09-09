@@ -45,10 +45,18 @@ namespace {
 
 		shapeTransform.translation.quad = _mm_set_ps(0.0f, 0.0f, 0.0f, 1.0f);
 		RE::hkAabb boundingBoxLocal;
-		shape->GetAabbImpl(shapeTransform, 0.0f, boundingBoxLocal);
-		glm::vec3 extends = HkToGlm(boundingBoxLocal.max) - HkToGlm(boundingBoxLocal.min);
-		glm::vec3 halfExtends = extends * glm::vec3(0.5,0.5,0.5);
-		glm::vec3 origin = HkToGlm(boundingBoxLocal.min) + halfExtends;
+		shape->GetAabbImpl(shapeTransform, 1e-5, boundingBoxLocal);
+		glm::vec3 minBound =HkToGlm(boundingBoxLocal.min);
+		glm::vec3 maxBound =HkToGlm(boundingBoxLocal.max);
+		glm::vec3 extends = maxBound - minBound;
+		glm::vec3 halfExtends = extends * glm::vec3(0.5);
+		glm::vec3 origin = minBound + halfExtends;
+		log::info("AABB");
+		log::info(" - MIN: {},{},{}", minBound[0], minBound[1], minBound[2]);
+		log::info(" - MAX: {},{},{}", maxBound[0], maxBound[1], maxBound[2]);
+		log::info(" - EXT: {},{},{}", extends[0], extends[1], extends[2]);
+		log::info(" - ET2: {},{},{}", halfExtends[0], halfExtends[1], halfExtends[2]);
+		log::info(" - ORI: {},{},{}", origin[0], origin[1], origin[2]);
 		DebugAPI::DrawBox(origin, halfExtends, transform, MS_TIME, color, AABB_LINETHICKNESS);
 	}
 
@@ -76,8 +84,6 @@ namespace {
 			}
 		} else if (shape->type == hkpShapeType::kConvexVertices) {
 			// log::info("Convext Verts");
-			// Way too much of a pain to RE
-			// Just show a sphere and a BB
 			const hkpConvexVerticesShape* convexShape = static_cast<const hkpConvexVerticesShape*>(shape);
 			if (convexShape) {
 				float radius = convexShape->radius * (*Gts::g_worldScaleInverse);
