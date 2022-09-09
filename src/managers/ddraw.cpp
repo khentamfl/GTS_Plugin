@@ -51,19 +51,18 @@ namespace {
 		glm::vec3 extends = maxBound - minBound;
 		glm::vec3 halfExtends = extends * glm::vec3(0.5);
 		glm::vec3 origin = minBound + halfExtends;
-		log::info("AABB");
-		log::info(" - MIN: {},{},{}", minBound[0], minBound[1], minBound[2]);
-		log::info(" - MAX: {},{},{}", maxBound[0], maxBound[1], maxBound[2]);
-		log::info(" - EXT: {},{},{}", extends[0], extends[1], extends[2]);
-		log::info(" - ET2: {},{},{}", halfExtends[0], halfExtends[1], halfExtends[2]);
-		log::info(" - ORI: {},{},{}", origin[0], origin[1], origin[2]);
+		// log::info("AABB");
+		// log::info(" - MIN: {},{},{}", minBound[0], minBound[1], minBound[2]);
+		// log::info(" - MAX: {},{},{}", maxBound[0], maxBound[1], maxBound[2]);
+		// log::info(" - EXT: {},{},{}", extends[0], extends[1], extends[2]);
+		// log::info(" - ET2: {},{},{}", halfExtends[0], halfExtends[1], halfExtends[2]);
+		// log::info(" - ORI: {},{},{}", origin[0], origin[1], origin[2]);
 		DebugAPI::DrawBox(origin, halfExtends, transform, MS_TIME, color, AABB_LINETHICKNESS);
 	}
 
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
-		DrawAabb(shape, transform,AABB_COLOR);
 		if (shape->type == hkpShapeType::kCapsule) {
-			// log::info("Capsule");
+			log::info("Capsule");
 			const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
 			if (capsule) {
 				glm::vec3 start = HkToGlm(capsule->vertexA);
@@ -73,7 +72,7 @@ namespace {
 				DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
 			}
 		} else if (shape->type == hkpShapeType::kTriangle) {
-			// log::info("Triangle");
+			log::info("Triangle");
 			const hkpTriangleShape* triangle = static_cast<const hkpTriangleShape*>(shape);
 			if (triangle) {
 				glm::vec3 pointA = HkToGlm(triangle->vertexA);
@@ -83,13 +82,12 @@ namespace {
 				DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
 			}
 		} else if (shape->type == hkpShapeType::kConvexVertices) {
-			// log::info("Convext Verts");
+			log::info("Convext Verts");
 			const hkpConvexVerticesShape* convexShape = static_cast<const hkpConvexVerticesShape*>(shape);
 			if (convexShape) {
 				float radius = convexShape->radius * (*Gts::g_worldScaleInverse);
 				glm::vec3 localPos = glm::vec3(0.0, 0.0, 0.0);
 				glm::vec3 worldPos = ApplyTransform(localPos, transform);
-				DrawAabb(convexShape, transform, UNKNOWN_COLOR);
 				DebugAPI::DrawSphere(worldPos, radius, MS_TIME, UNKNOWN_COLOR, UNKNOWN_LINETHICKNESS);
 				std::size_t numVertices = convexShape->numVertices;
 				auto connectivity = convexShape->connectivity;
@@ -129,7 +127,7 @@ namespace {
 				}
 			}
 		} else if (shape->type == hkpShapeType::kBox) {
-			// log::info("Box");
+			log::info("Box");
 			const hkpBoxShape* box = static_cast<const hkpBoxShape*>(shape);
 			if (box) {
 				glm::vec3 origin = glm::vec3(0.,0.,0.);
@@ -138,7 +136,7 @@ namespace {
 				DebugAPI::DrawBox(origin, halfExtents, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
 			}
 		} else if (shape->type == hkpShapeType::kList) {
-			// log::info("List");
+			log::info("List");
 			auto container = static_cast<const hkpListShape*>(shape);
 			auto key = container->GetFirstKey();
 			while (key != HK_INVALID_SHAPE_KEY) {
@@ -151,7 +149,7 @@ namespace {
 				key = container->GetNextKey(key);
 			}
 		} else if (shape->type == hkpShapeType::kBVTree) {
-			// log::info("Tree");
+			log::info("Tree");
 			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
 			const hkpShapeContainer* container = actual_shape->GetContainer();
 			auto key = container->GetFirstKey();
@@ -165,7 +163,7 @@ namespace {
 				key = container->GetNextKey(key);
 			}
 		} else if (shape->type == hkpShapeType::kMOPP) {
-			// log::info("MOP Tree");
+			log::info("MOP Tree");
 			// MOPP is a Tree implementation we jsut cast too tree and deal with
 			// it at that level
 			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
@@ -182,6 +180,7 @@ namespace {
 			}
 		} else {
 			log::debug("- Shape (of type {}) is not handlled", static_cast<int>(shape->type));
+			DrawAabb(shape, transform,AABB_COLOR);
 		}
 	}
 
