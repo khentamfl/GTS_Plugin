@@ -14,10 +14,15 @@ namespace Gts {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
-				if (scale > (actor_data->max_scale - EPS)) {
-					scale = actor_data->max_scale;
+				if (scale < (actor_data->max_scale + EPS)) {
+					// If new value is below max: allow it
+					scale = scale;
+				} else if (actor_data->target_scale < (actor_data->max_scale - EPS)) {
+					// If we are below max currently and we are trying to scale over max: make it max
+					actor_data->target_scale = scale;
+				} else {
+					// If we are over max: forbid it
 				}
-				actor_data->target_scale = scale;
 			}
 		}
 	}
@@ -37,11 +42,16 @@ namespace Gts {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
 				if (amt - EPS < 0.0) {
+					// If neative change always: allow
 					actor_data->target_scale += amt;
 				} else if (actor_data->target_scale + amt < (actor_data->max_scale + EPS)) {
+					// If change results is below max: allow it
 					actor_data->target_scale += amt;
-				} else {
+				} else if (actor_data->target_scale < (actor_data->max_scale - EPS)) {
+					// If we are currently below max and we are scaling above max: make it max
 					actor_data->target_scale = actor_data->max_scale;
+				} else {
+					// if we are over max then don't allow it
 				}
 			}
 		}
