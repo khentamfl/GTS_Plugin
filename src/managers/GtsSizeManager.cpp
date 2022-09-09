@@ -39,9 +39,6 @@ namespace Gts {
 			}
 			float RaceScale = GetRaceScale(actor);
 			float RaceScaleLimit = (RaceScale * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
-			if (actor->formID==0x14) {
-				log::info("PC Race Scale: {}, SizeLimit: {}, Persistent: {}, Scale Limit with Race: {}", RaceScale, GetLimit, Persistent_Size, RaceScaleLimit);
-			}
 			//float TotalLimit = (RaceScale * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
 			float TotalLimit = (GetLimit + Persistent_Size) * (1.0 + Gigantism);
 
@@ -52,7 +49,6 @@ namespace Gts {
 			}
 			if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 				set_max_scale(actor, TotalLimit);
-				log::info("Total limit of {} is: {}", actor->GetDisplayFullName(), TotalLimit);
 			}
 		}
 	}

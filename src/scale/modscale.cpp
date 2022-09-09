@@ -74,7 +74,7 @@ namespace Gts {
 		}
 		return -1.0;
 	}
-	
+
 	float get_npcparentnode_scale(Actor* actor) {
 		// This will set the scale of the root npc node
 		string node_name = "NPC Root [Root]";
@@ -89,7 +89,7 @@ namespace Gts {
 		if (parent) {
 			return parent->local.scale;
 		}
-		return -1.0; // 
+		return -1.0; //
 	}
 
 	float get_model_scale(Actor* actor) {
@@ -129,6 +129,9 @@ namespace Gts {
 		float npc_parentnode_scale = get_npcparentnode_scale(actor);
 		if (npc_parentnode_scale < 0.0) {
 			return -1.0;
+		}
+		if (actor->formID == 0x14) {
+			log::info("npc_parentnode_scale: {}", npc_parentnode_scale);
 		}
 		return ref_scale * model_scale * node_scale * npc_parentnode_scale;
 	}

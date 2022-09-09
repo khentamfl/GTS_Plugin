@@ -56,7 +56,6 @@ namespace {
 					Time::WorldTimeDelta()
 					);
 			}
-			log::info("Relaxing target scale {} to max scale {} with velocity: {}", persi_actor_data->target_scale, persi_actor_data->max_scale, persi_actor_data->target_scale_v);
 		} else {
 			persi_actor_data->target_scale_v = 0.0;
 		}
@@ -236,14 +235,12 @@ namespace {
 			float Scale = get_visual_scale(actor);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
-			log::info("GameMode is: None");
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
 					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
 					if (fabs(GrowthRate) < EPS) {
 						return;
 					}
-					log::info("GameMode is: Grow");
 					if ((targetScale + modAmount) < maxScale) {
 						mod_target_scale(actor, modAmount);
 					} else if (targetScale < maxScale) {
@@ -256,7 +253,6 @@ namespace {
 					if (fabs(ShrinkRate) < EPS) {
 						return;
 					}
-					log::info("GameMode is: Shrink");
 					if ((targetScale + modAmount) > natural_scale) {
 						mod_target_scale(actor, modAmount);
 					} else if (targetScale > natural_scale) {
@@ -265,7 +261,6 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Standard: {
-					log::info("GameMode is: Standard");
 					if (actor->IsInCombat()) {
 						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
 						if (fabs(GrowthRate) < EPS) {
