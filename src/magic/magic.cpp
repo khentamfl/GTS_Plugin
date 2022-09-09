@@ -66,7 +66,6 @@ namespace Gts {
 				// 		return false;
 				// 	}
 				// }
-				log::info("Checking casting type for: {}", this->GetName());
 				switch (spell->GetCastingType()) {
 					case  MagicSystem::CastingType::kConstantEffect: {
 						return false;

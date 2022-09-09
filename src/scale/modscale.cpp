@@ -130,9 +130,6 @@ namespace Gts {
 		if (npc_parentnode_scale < 0.0) {
 			return -1.0;
 		}
-		if (actor->formID == 0x14) {
-			log::info("npc_parentnode_scale: {}", npc_parentnode_scale);
-		}
 		return ref_scale * model_scale * node_scale * npc_parentnode_scale;
 	}
 
