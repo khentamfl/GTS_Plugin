@@ -20,6 +20,8 @@ namespace Hooks
 	void Hook_MainUpdate::Update(RE::Main* a_this, float a2)
 	{
 		_Update(a_this, a2);
+		Time::GetSingleton().Update();
+		
 		static std::atomic_bool started = std::atomic_bool(false);
 		Plugin::SetOnMainThread(true);
 		if (Plugin::Enabled()) {
