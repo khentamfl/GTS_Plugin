@@ -132,15 +132,15 @@ namespace {
 			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
 		}
-
+		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
+		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
+		float speed_mult = soft_core(scale, speed_adjustment);
+		float MS_mult = soft_core(scale, MS_adjustment);
 
 	
 		static Timer timer = Timer(0.50); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRunFrame()) {
-				SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
-		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
-		float speed_mult = soft_core(scale, speed_adjustment);
-		float MS_mult = soft_core(scale, MS_adjustment);
+
 
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
