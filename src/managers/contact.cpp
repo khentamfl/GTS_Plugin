@@ -388,7 +388,7 @@ namespace Gts {
 		auto Manager = GtsManager::GetSingleton();
 		HighHeel.ApplyHH(PC, false);
 		//Manager.reapply_actor(PC, false);
-		set_model_scale(PC, 5.0);
+		//set_model_scale(PC, 5.0);
 		if (contactListener.world != world) {
 			contactListener.detach();
 			contactListener.attach(world);
