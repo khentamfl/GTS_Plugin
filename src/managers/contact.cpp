@@ -1,5 +1,6 @@
 #include "managers/contact.hpp"
 #include "data/persistent.hpp"
+#include "managers/highheel.hpp"
 
 #include "util.hpp"
 
