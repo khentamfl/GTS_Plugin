@@ -369,7 +369,7 @@ namespace Gts {
 		return instance;
 	}
 
-	void ContactManager::Update() {
+	void ContactManager::HavokUpdate() {
 		auto playerCharacter = PlayerCharacter::GetSingleton();
 
 		auto cell = playerCharacter->GetParentCell();
