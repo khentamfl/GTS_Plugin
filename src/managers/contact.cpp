@@ -1,5 +1,6 @@
 #include "managers/contact.hpp"
 #include "data/persistent.hpp"
+#include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 
 #include "util.hpp"
@@ -382,7 +383,9 @@ namespace Gts {
 		ContactListener& contactListener = this->listener;
 		auto PC = PlayerCharacter::GetSingleton();
 		auto HighHeel = HighHeelManager::GetSingleton();
+		auto Manager = GtsManager::GetSingleton();
 		HighHeel.ApplyHH(PC, false);
+		Manager.reapply_actor(PC, false);
 		if (contactListener.world != world) {
 			contactListener.detach();
 			contactListener.attach(world);
