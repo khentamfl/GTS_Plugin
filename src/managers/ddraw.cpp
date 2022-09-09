@@ -101,6 +101,13 @@ namespace {
 				if (connectivity) {
 					log::info("Connectivity present");
 					std::size_t i = 0;
+					log::info("  - There are {} verticies", numVertices);
+					for (auto numVerticesPerFace: connectivity->numVerticesPerFace) {
+						log::info("  - Number of verticies in face: {}", numVerticesPerFace);
+					}
+					for (auto vertexIndex: connectivity->vertexIndices) {
+						log::info("  - Vertex index: {}", vertexIndex);
+					}
 					for (auto numVerticesPerFace: connectivity->numVerticesPerFace) {
 						glm::vec3 previous = getVertex(connectivity->vertexIndices[i]);
 						for (std::size_t j=i+1; j<i+numVerticesPerFace; j++) {
