@@ -2,6 +2,8 @@
 #include "data/persistent.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
+#include "scale/scale.hpp"
+#include "scale/modscale.hpp"
 
 #include "util.hpp"
 
@@ -385,7 +387,8 @@ namespace Gts {
 		auto HighHeel = HighHeelManager::GetSingleton();
 		auto Manager = GtsManager::GetSingleton();
 		HighHeel.ApplyHH(PC, false);
-		Manager.reapply_actor(PC, false);
+		//Manager.reapply_actor(PC, false);
+		set_model_scale(PC, 5.0);
 		if (contactListener.world != world) {
 			contactListener.detach();
 			contactListener.attach(world);
