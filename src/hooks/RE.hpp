@@ -71,7 +71,7 @@ namespace RE
 
 	class hkpConvexVerticesConnectivity : public hkReferencedObject {
 		public:
-			inline static constexpr auto RTTI = RTTI_hkpConvexVerticesShape;
+			inline static constexpr auto RTTI = RTTI_hkpConvexVerticesConnectivity;
 
 			~hkpConvexVerticesConnectivity() override;  // 00
 
@@ -105,7 +105,9 @@ namespace RE
 			hkArray<hkFourTransposedPoints> rotatedVertices;
 			std::int32_t numVertices;
 
-			bool useSpuBuffer; //+default(0) +nosave
+			bool useSpuBuffer;
+			std::uint8_t pad_A;
+			std::uint16_t pad_B;
 
 			mutable hkArray<hkVector4> planeEquations;
 
