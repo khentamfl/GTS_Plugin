@@ -60,57 +60,80 @@ namespace {
 		DebugAPI::DrawBox(origin, halfExtends, transform, MS_TIME, color, AABB_LINETHICKNESS);
 	}
 
+	void DrawCapsule(const hkpShape* shape, const glm::mat4& transform) {
+		const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
+		if (capsule) {
+			glm::vec3 start = HkToGlm(capsule->vertexA);
+			glm::vec3 end = HkToGlm(capsule->vertexB);
+			float radius = capsule->radius * *g_worldScaleInverse;
+
+			DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
+		}
+	}
+	void DrawTriangle(const hkpShape* shape, const glm::mat4& transform) {
+		const hkpTriangleShape* triangle = static_cast<const hkpTriangleShape*>(shape);
+		if (triangle) {
+			glm::vec3 pointA = HkToGlm(triangle->vertexA);
+			glm::vec3 pointB = HkToGlm(triangle->vertexB);
+			glm::vec3 pointC = HkToGlm(triangle->vertexC);
+
+			DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
+		}
+	}
+	void DrawConvexVerts(const hkpShape* shape, const glm::mat4& transform) {
+		const hkpConvexVerticesShape* convexShape = static_cast<const hkpConvexVerticesShape*>(shape);
+		if (convexShape) {
+			float radius = convexShape->radius * (*Gts::g_worldScaleInverse);
+			glm::vec3 localPos = glm::vec3(0.0, 0.0, 0.0);
+			glm::vec3 worldPos = ApplyTransform(localPos, transform);
+			DebugAPI::DrawSphere(worldPos, radius, MS_TIME, UNKNOWN_COLOR, UNKNOWN_LINETHICKNESS);
+			std::size_t numVertices = convexShape->numVertices;
+			auto connectivity = convexShape->connectivity;
+			auto getVertex = [&](std::size_t i) {
+						 std::size_t j = i / 4;
+						 std::size_t k = i % 4;
+						 return ApplyTransform(
+							 glm::vec3(
+								 convexShape->rotatedVertices[j].vertices[0].quad.m128_f32[k],
+								 convexShape->rotatedVertices[j].vertices[1].quad.m128_f32[k],
+								 convexShape->rotatedVertices[j].vertices[2].quad.m128_f32[k]
+								 ) * GLM_HK_TO_SK,
+							 transform);
+					 };
+			glm::vec3 previous = getVertex(0);
+			for (std::size_t i = 0; i < numVertices; i++) {
+				glm::vec3 vert = getVertex(i);
+				DebugAPI::DrawLineForMS(previous, vert, MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
+				previous = vert;
+			}
+		}
+	}
+	void DrawBox(const hkpShape* shape, const glm::mat4& transform) {
+		const hkpBoxShape* box = static_cast<const hkpBoxShape*>(shape);
+		if (box) {
+			glm::vec3 origin = glm::vec3(0.,0.,0.);
+			glm::vec3 halfExtents = HkToGlm(box->halfExtents);
+
+			DebugAPI::DrawBox(origin, halfExtents, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
+		}
+	}
+
+
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
 		if (shape->type == hkpShapeType::kCapsule) {
 			log::info("Capsule");
-			const hkpCapsuleShape* capsule = static_cast<const hkpCapsuleShape*>(shape);
-			if (capsule) {
-				glm::vec3 start = HkToGlm(capsule->vertexA);
-				glm::vec3 end = HkToGlm(capsule->vertexB);
-				float radius = capsule->radius * *g_worldScaleInverse;
-
-				DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, CAPSULE_COLOR, CAPSULE_LINETHICKNESS);
-			}
+			DrawCapsule(shape, transform);
 		} else if (shape->type == hkpShapeType::kTriangle) {
 			log::info("Triangle");
-			const hkpTriangleShape* triangle = static_cast<const hkpTriangleShape*>(shape);
-			if (triangle) {
-				glm::vec3 pointA = HkToGlm(triangle->vertexA);
-				glm::vec3 pointB = HkToGlm(triangle->vertexB);
-				glm::vec3 pointC = HkToGlm(triangle->vertexC);
-
-				DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
-			}
+			DrawTriangle(shape, transform);
 		} else if (shape->type == hkpShapeType::kConvexVertices) {
-			log::info("Convext Verts");
-			const hkpConvexVerticesShape* convexShape = static_cast<const hkpConvexVerticesShape*>(shape);
-			if (convexShape) {
-				float radius = convexShape->radius * (*Gts::g_worldScaleInverse);
-				glm::vec3 localPos = glm::vec3(0.0, 0.0, 0.0);
-				glm::vec3 worldPos = ApplyTransform(localPos, transform);
-				DebugAPI::DrawSphere(worldPos, radius, MS_TIME, UNKNOWN_COLOR, UNKNOWN_LINETHICKNESS);
-				std::size_t numVertices = convexShape->numVertices;
-				auto connectivity = convexShape->connectivity;
-				auto getVertex = [&](std::size_t i) {
-							 std::size_t j = i / 4;
-							 std::size_t k = i % 4;
-							 return ApplyTransform(
-								 glm::vec3(
-									 convexShape->rotatedVertices[j].vertices[0].quad.m128_f32[k],
-									 convexShape->rotatedVertices[j].vertices[1].quad.m128_f32[k],
-									 convexShape->rotatedVertices[j].vertices[2].quad.m128_f32[k]
-									 ) * GLM_HK_TO_SK,
-								 transform);
-						 };
-				glm::vec3 previous = getVertex(0);
-				for (std::size_t i = 0; i < numVertices; i++) {
-					glm::vec3 vert = getVertex(i);
-					DebugAPI::DrawLineForMS(previous, vert, MS_TIME, CONVEXVERTS_COLOR, CONVEXVERTS_LINETHICKNESS);
-					previous = vert;
-				}
-			}
+			log::info("Convex Verts");
+			DrawConvexVerts(shape, transform);
+		} else if (shape->type == hkpShapeType::kBox) {
+			log::info("Box");
+			DrawBox(shape, transform);
 		} else if (shape->type == hkpShapeType::kConvexTransform) {
-			// log::info("Convext transform");
+			log::info("Convex transform");
 			const hkpConvexTransformShape* transformShape = static_cast<const hkpConvexTransformShape*>(shape);
 			if (transformShape) {
 				auto container = transformShape->GetContainer();
@@ -120,20 +143,10 @@ namespace {
 					auto buffer = hkpShapeBuffer();
 					auto childShape = container->GetChildShape(key, buffer);
 					if (childShape) {
-						// log::info("  - Child");
 						DrawShape(childShape, childTransform);
 					}
 					key = container->GetNextKey(key);
 				}
-			}
-		} else if (shape->type == hkpShapeType::kBox) {
-			log::info("Box");
-			const hkpBoxShape* box = static_cast<const hkpBoxShape*>(shape);
-			if (box) {
-				glm::vec3 origin = glm::vec3(0.,0.,0.);
-				glm::vec3 halfExtents = HkToGlm(box->halfExtents);
-
-				DebugAPI::DrawBox(origin, halfExtents, transform, MS_TIME, TRIANGLE_COLOR, TRIANGLE_LINETHICKNESS);
 			}
 		} else if (shape->type == hkpShapeType::kList) {
 			log::info("List");
@@ -143,7 +156,6 @@ namespace {
 				auto buffer = hkpShapeBuffer();
 				auto child_shape = container->GetChildShape(key, buffer);
 				if (child_shape) {
-					// log::info("  - Child");
 					DrawShape(child_shape, transform);
 				}
 				key = container->GetNextKey(key);
@@ -157,8 +169,7 @@ namespace {
 				auto buffer = hkpShapeBuffer();
 				auto child_shape = container->GetChildShape(key, buffer);
 				if (child_shape) {
-					// log::info("  - Child");
-					// DrawShape(child_shape, transform);
+					DrawShape(child_shape, transform);
 				}
 				key = container->GetNextKey(key);
 			}
@@ -173,7 +184,6 @@ namespace {
 				auto buffer = hkpShapeBuffer();
 				auto child_shape = container->GetChildShape(key, buffer);
 				if (child_shape) {
-					// log::info("  - Child");
 					DrawShape(child_shape, transform);
 				}
 				key = container->GetNextKey(key);
@@ -342,6 +352,10 @@ namespace {
 							}
 						}
 					}
+					auto rootNode = graph->rootNode;
+					if (rootNode) {
+						DrawNiNodes(rootNode);
+					}
 				}
 			}
 		}
@@ -397,6 +411,10 @@ namespace {
 								if (objectRefr) {
 									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
 									log::info("  - Type: {}", static_cast<int>(result.shape->type));
+								}
+								hkpRigidBody* entityRb = skyrim_cast<hkpRigidBody*>(entity);
+								if (entityRb) {
+									log::info("  - It's a rigid body");
 								}
 								break;
 							}
@@ -456,7 +474,7 @@ namespace Gts {
 				continue;
 			}
 
-			// DrawActor(actor);
+			DrawActor(actor);
 			DrawRay(actor);
 		}
 	}

@@ -38,7 +38,7 @@ namespace RE
 			~hkpConvexTransformShapeBase() override;  // 00
 
 			hkpSingleShapeContainer childShape;
-			mutable std::int32_t childSize; // 60
+			mutable std::int32_t childSize;
 	};
 
 	class hkpConvexTransformShape : public hkpConvexTransformShapeBase
@@ -109,6 +109,7 @@ namespace RE
 
 			mutable hkArray<hkVector4> planeEquations;
 
+			// FYI: Cannot get connectivity to work
 			mutable hkpConvexVerticesConnectivity* connectivity;
 	};
 }
