@@ -5,17 +5,19 @@
 
 using namespace Gts;
 
+namespace {
+	const float EPS = 1e-4;
+}
+
 namespace Gts {
 	void set_target_scale(Actor* actor, float scale) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
-				if (actor_data->target_scale < actor_data->max_scale) {
-					if (scale > actor_data->max_scale) {
-						scale = actor_data->max_scale;
-					}
-					actor_data->target_scale = scale;
+				if (scale > (actor_data->max_scale - EPS)) {
+					scale = actor_data->max_scale;
 				}
+				actor_data->target_scale = scale;
 			}
 		}
 	}
@@ -34,13 +36,12 @@ namespace Gts {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
-				if (actor_data->target_scale < actor_data->max_scale) {
-					if (actor_data->target_scale + amt > actor_data->max_scale) {
-						actor_data->target_scale = actor_data->max_scale;
-					} else {
-						actor_data->target_scale += amt;
-						actor_data->target_scale_v = 0.0;
-					}
+				if (amt - EPS < 0.0) {
+					actor_data->target_scale += amt;
+				} else if (actor_data->target_scale + amt < (actor_data->max_scale + EPS)) {
+					actor_data->target_scale += amt;
+				} else {
+					actor_data->target_scale = actor_data->max_scale;
 				}
 			}
 		}
