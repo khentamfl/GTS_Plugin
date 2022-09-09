@@ -53,6 +53,7 @@ namespace Gts {
 			if (this->activeEffect->caster) {
 				this->caster = this->activeEffect->caster.get().get();
 			}
+			this->hasDuration = this->HasDuration();
 		}
 	}
 
@@ -101,16 +102,8 @@ namespace Gts {
 					break;
 				}
 				this->OnUpdate();
-				bool finished = false;
-				if (this->activeEffect->flags & ActiveEffect::Flag::kDispelled) {
-					finished = true;
-				}
-				if (this->HasDuration()) {
-					if (this->activeEffect->elapsedSeconds >= this->activeEffect->duration) {
-						finished = true;
-					}
-				}
-				if (finished) {
+				if ((this->activeEffect->flags & ActiveEffect::Flag::kDispelled)
+				    || (this->hasDuration && (this->activeEffect->elapsedSeconds >= this->activeEffect->duration))) {
 					this->state = State::Finish;
 				}
 				break;

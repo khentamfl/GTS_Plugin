@@ -65,6 +65,7 @@ namespace Gts {
 			ActiveEffect* activeEffect = nullptr;
 			EffectSetting* effectSetting = nullptr;
 			bool dual_casted = false;
+			bool hasDuration = false;
 	};
 
 	class MagicManager : public EventListener {
