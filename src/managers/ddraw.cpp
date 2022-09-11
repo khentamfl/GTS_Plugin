@@ -121,19 +121,19 @@ namespace {
 
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform) {
 		if (shape->type == hkpShapeType::kCapsule) {
-			log::info("Capsule");
+			// log::debug("Capsule");
 			DrawCapsule(shape, transform);
 		} else if (shape->type == hkpShapeType::kTriangle) {
-			log::info("Triangle");
+			// log::debug("Triangle");
 			DrawTriangle(shape, transform);
 		} else if (shape->type == hkpShapeType::kConvexVertices) {
-			log::info("Convex Verts");
+			log::debug("Convex Verts");
 			DrawConvexVerts(shape, transform);
 		} else if (shape->type == hkpShapeType::kBox) {
-			log::info("Box");
+			// log::debug("Box");
 			DrawBox(shape, transform);
 		} else if (shape->type == hkpShapeType::kConvexTransform) {
-			log::info("Convex transform");
+			log::debug("Convex transform");
 			const hkpConvexTransformShape* transformShape = static_cast<const hkpConvexTransformShape*>(shape);
 			if (transformShape) {
 				auto container = transformShape->GetContainer();
@@ -149,7 +149,7 @@ namespace {
 				}
 			}
 		} else if (shape->type == hkpShapeType::kList) {
-			log::info("List");
+			log::debug("List");
 			auto container = static_cast<const hkpListShape*>(shape);
 			auto key = container->GetFirstKey();
 			while (key != HK_INVALID_SHAPE_KEY) {
@@ -161,7 +161,7 @@ namespace {
 				key = container->GetNextKey(key);
 			}
 		} else if (shape->type == hkpShapeType::kBVTree) {
-			log::info("Tree");
+			log::debug("Tree");
 			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
 			const hkpShapeContainer* container = actual_shape->GetContainer();
 			auto key = container->GetFirstKey();
@@ -174,7 +174,7 @@ namespace {
 				key = container->GetNextKey(key);
 			}
 		} else if (shape->type == hkpShapeType::kMOPP) {
-			log::info("MOP Tree");
+			log::debug("MOP Tree");
 			// MOPP is a Tree implementation we jsut cast too tree and deal with
 			// it at that level
 			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
@@ -309,29 +309,25 @@ namespace {
 		// 	}
 		// }
 
-		log::info("CharController Raw Name: {}", GetRawName(charController));
 		bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
 		if (charProxyController) {
-			log::info("HAS bhkCharProxyController");
 			auto& proxy = charProxyController->proxy;
 			hkReferencedObject* refObject = proxy.referencedObject.get();
 			if (refObject) {
-				log::info("Has refObject");
 				hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
 				if (hkpObject) {
 					for (hkpRigidBody* body: hkpObject->bodies) {
-						log::info("Draw body");
 						DrawRigidBody(body);
 					}
-					for (auto phantom: hkpObject->phantoms) {
-						log::info("Draw Body");
-						DrawWorldObject(phantom);
-					}
-					auto shapePhantom = hkpObject->shapePhantom;
-					if (shapePhantom) {
-						log::info("Draw shape phantom");
-						DrawWorldObject(shapePhantom);
-					}
+					// for (auto phantom: hkpObject->phantoms) {
+					// 	log::info("Draw Body");
+					// 	DrawWorldObject(phantom);
+					// }
+					// auto shapePhantom = hkpObject->shapePhantom;
+					// if (shapePhantom) {
+					// 	log::info("Draw shape phantom");
+					// 	DrawWorldObject(shapePhantom);
+					// }
 				}
 			}
 		}
@@ -344,22 +340,18 @@ namespace {
 			charRigidBodyController = static_cast<bhkCharRigidBodyController*>(charController);
 		}
 		if (charRigidBodyController) {
-			log::info("HAS bhkCharRigidBodyController");
 			auto& characterRigidBody = charRigidBodyController->characterRigidBody;
 			hkReferencedObject* refObject = characterRigidBody.referencedObject.get();
 			if (refObject) {
-				log::info("Has refObject");
 				hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
 				if (hkpObject) {
-					log::info("Is hkpCharacterRigidBody");
-					if (hkpObject->m_character) {
-						log::info("Draw RB");
+					auto rb = hkpObject->m_character;
+					if (rb) {
+						rb->SetShape(nullptr);
 						DrawRigidBody(hkpObject->m_character);
 					}
 				}
 			}
-		} else {
-			log::info("HAS bhkCharRigidBodyController");
 		}
 	}
 
@@ -373,7 +365,6 @@ namespace {
 					if (ragdollDriver) {
 						auto ragdoll = ragdollDriver->ragdoll;
 						if (ragdoll) {
-							log::info("Got ragdoll");
 							for (auto& rb: ragdoll->rigidBodies) {
 								DrawRigidBody(rb);
 							}
