@@ -129,29 +129,7 @@ namespace RE
 	};
 
 	class hkpSimpleConstraintContactMgr;
-
-	class hkpCharacterRigidBodyListener : public hkReferencedObject
-	{
-		public:
-			inline static constexpr auto RTTI = RTTI_hkpCharacterRigidBodyListener;
-
-			virtual ~hkpCharacterRigidBodyListener() {
-			}
-
-			virtual void characterCallback( hkpWorld* world, hkpCharacterRigidBody* characterRB );
-
-			void discardVerticalPoints( hkpCharacterRigidBody* characterRB );
-
-			void processActualPoints( hkpWorld* world, hkpCharacterRigidBody* characterRB );
-
-			virtual void processActualPoints( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<hkContactPointId>& contactPointIds );
-
-			virtual void unweldContactPoints( hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<hkContactPointId>& contactPointIds );
-
-			virtual void considerCollisionEntryForSlope( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<hkContactPointId>& contactPointIds );
-
-			virtual void considerCollisionEntryForMassModification( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<hkContactPointId>& contactPointIds );
-	};
+	class hkpCharacterRigidBodyListener;
 
 	class hkpCharacterRigidBody : public hkReferencedObject, public hkpEntityListener, public hkpWorldPostSimulationListener
 	{
@@ -208,6 +186,29 @@ namespace RE
 			};
 
 			hkArray<VertPointInfo> m_verticalContactPoints;
+	};
+
+	class hkpCharacterRigidBodyListener : public hkReferencedObject
+	{
+		public:
+			inline static constexpr auto RTTI = RTTI_hkpCharacterRigidBodyListener;
+
+			virtual ~hkpCharacterRigidBodyListener() {
+			}
+
+			virtual void characterCallback( hkpWorld* world, hkpCharacterRigidBody* characterRB );
+
+			void discardVerticalPoints( hkpCharacterRigidBody* characterRB );
+
+			void processActualPoints( hkpWorld* world, hkpCharacterRigidBody* characterRB );
+
+			virtual void processActualPoints( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<hkContactPointId>& contactPointIds );
+
+			virtual void unweldContactPoints( hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<hkContactPointId>& contactPointIds );
+
+			virtual void considerCollisionEntryForSlope( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<hkContactPointId>& contactPointIds );
+
+			virtual void considerCollisionEntryForMassModification( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<hkContactPointId>& contactPointIds );
 	};
 
 	struct bhkCharacterRigidBody : bhkSerializable
