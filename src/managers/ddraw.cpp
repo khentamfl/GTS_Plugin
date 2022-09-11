@@ -7,6 +7,7 @@
 
 using namespace SKSE;
 using namespace RE;
+using namespace REL;
 using namespace Gts;
 
 
@@ -33,6 +34,28 @@ namespace {
 
 	const glm::vec4 RAY_COLOR = { 1.00f, 1.00f, 1.00f, 1.0f };
 	const float RAY_LINETHICKNESS = 3.0;
+
+	const std::uint32_t CAPSULE_MARKER = 494148758080886;
+	hkpCapsuleShape* MakeCapsule() {
+		hkpCapsuleShape* x = new hkpCapsuleShape();
+		// First value is the vtable pointer
+		REL::Relocation<std::uintptr_t> vptr(reinterpret_cast<std::uintptr_t>(x));
+
+		// This is the skyrim vtable location
+		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpCapsuleShape[0]};
+
+		// Make it use skyrims vtable not our hacky one
+		safe_write(vptr.address(), vtable.address());
+
+		x->pad28 = CAPSULE_MARKER;
+		x->radius = 0.0;
+		x->vertexA = hkVector4(0.0);
+		x->vertexB = hkVector4(0.0);
+		x->type = hkpShapeType::kCapsule;
+
+		return x;
+	}
+
 
 	inline static glm::vec3 GLM_HK_TO_SK = glm::vec3((*Gts::g_worldScaleInverse));
 
@@ -278,23 +301,23 @@ namespace {
 		}
 
 		log::info("Drawing char controller");
-		hkpRigidBody* supportBody = charController->supportBody.get();
-		if (supportBody) {
-			log::info("  - Support Body");
-			DrawRigidBody(supportBody);
-		}
-
-		hkpRigidBody* bumpedBody = charController->bumpedBody.get();
-		if (bumpedBody) {
-			log::info("  - Bumped Body");
-			DrawRigidBody(bumpedBody);
-		}
-
-		hkpRigidBody* bumpedCharCollisionObject = charController->bumpedCharCollisionObject.get();
-		if (bumpedCharCollisionObject) {
-			log::info("  - Bumped Char Collision Object");
-			DrawRigidBody(bumpedCharCollisionObject);
-		}
+		// hkpRigidBody* supportBody = charController->supportBody.get();
+		// if (supportBody) {
+		// 	log::info("  - Support Body");
+		// 	DrawRigidBody(supportBody);
+		// }
+		//
+		// hkpRigidBody* bumpedBody = charController->bumpedBody.get();
+		// if (bumpedBody) {
+		// 	log::info("  - Bumped Body");
+		// 	DrawRigidBody(bumpedBody);
+		// }
+		//
+		// hkpRigidBody* bumpedCharCollisionObject = charController->bumpedCharCollisionObject.get();
+		// if (bumpedCharCollisionObject) {
+		// 	log::info("  - Bumped Char Collision Object");
+		// 	DrawRigidBody(bumpedCharCollisionObject);
+		// }
 
 		// {
 		// 	hkTransform outTransform;
@@ -347,8 +370,16 @@ namespace {
 				if (hkpObject) {
 					auto rb = hkpObject->m_character;
 					if (rb) {
-						rb->SetShape(nullptr);
-						DrawRigidBody(hkpObject->m_character);
+						static bool experimented = false;
+						if (!experimented) {
+							experimented = true;
+							auto capsule = MakeCapsule();
+							capsule->radius = 0.001;
+							capsule->vertexA = hkVector4(0.0);
+							capsule->vertexB = hkVector4(0.001);
+							rb->SetShape(capsule);
+						}
+						DrawRigidBody(rb);
 					}
 				}
 			}
@@ -493,7 +524,7 @@ namespace Gts {
 			}
 
 			DrawActor(actor);
-			DrawRay(actor);
+			// DrawRay(actor);
 		}
 	}
 }
