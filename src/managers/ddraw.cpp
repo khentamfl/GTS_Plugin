@@ -479,8 +479,8 @@ namespace {
 		auto root = actor->GetCurrent3D();
 		// DrawNiNodes(root);
 
-		DrawCharController(actor);
-		// DrawRagdoll(actor);
+		// DrawCharController(actor);
+		DrawRagdoll(actor);
 	}
 
 
