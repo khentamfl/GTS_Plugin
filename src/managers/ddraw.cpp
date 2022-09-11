@@ -356,82 +356,28 @@ namespace {
 					if (rootNode) {
 						DrawNiNodes(rootNode);
 					}
-				}
-			}
-		}
-	}
+					auto controllerDriver = character.characterControllerDriver;
+					if (controllerDriver) {
+						log::info("A");
+						hkbCharacterControllerDriver* adriver = static_cast<hkbCharacterControllerDriver*>(controllerDriver.get());
 
-	void DrawRay(Actor* actor) {
-		if (!actor) {
-			return;
-		}
-		if (!actor->Is3DLoaded()) {
-			return;
-		}
-		auto charController = actor->GetCharController();
-		if (!charController) {
-			return;
-		}
-
-		hkTransform outTransform;
-		charController->GetTransformImpl(outTransform);
-		glm::mat4 transform = HkToGlm(outTransform);
-
-		glm::vec3 worldForward = glm::normalize(HkVecToGlmVec(charController->forwardVec)) * glm::vec3(-1);
-
-		glm::vec3 actorPos = HkToGlm(outTransform.translation);
-		glm::vec3 rayStart = actorPos + worldForward * meter_to_unit(0.5);
-		glm::vec3 rayEnd = rayStart + worldForward * meter_to_unit(5);
-
-		DebugAPI::DrawLineForMS(rayStart, rayEnd, MS_TIME, RAY_COLOR, RAY_LINETHICKNESS);
-
-		TESObjectCELL* cell = actor->GetParentCell();
-		bool success = false;
-		auto results = CastRayResults(cell, Glm2Ni(rayStart), Glm2Ni(worldForward), meter_to_unit(5), success, {});
-		if (success) {
-			for (auto result: results) {
-				const hkTransform* shapeHkTransform = static_cast<const hkTransform*>(result.motion);
-				if (shapeHkTransform) {
-					glm::mat4 shapeTransform = HkToGlm(*shapeHkTransform);
-					DrawShape(result.shape, shapeTransform);
-					auto collidable = result.rootCollidable;
-					if (collidable) {
-						auto type = collidable->broadPhaseHandle.type;
-						log::info("Collidable: {}", type);
-						switch (type) {
-							case 0: {
-								// Invalid
-								break;
-							}
-							case 1: {
-								// hkpEntity
-								hkpEntity* entity = collidable->GetOwner<hkpEntity>();
-								log::info("It's an entity");
-								auto objectRefr = entity->GetUserData();
-								if (objectRefr) {
-									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
-									log::info("  - Type: {}", static_cast<int>(result.shape->type));
+						if (adriver->m_controller) {
+							log::info("B");
+							hkbCharacterController* controller = static_cast<hkbCharacterController*>(adriver->m_controller.get());
+							log::info("C");
+							hkbpCharacterProxyController* controllerProxy = static_cast<hkbpCharacterProxyController*>(controller);
+							log::info("D");
+							if (controllerProxy->m_characterProxy) {
+								log::info("E");
+								hkpCharacterProxy* characterProxy = controllerProxy->m_characterProxy.get();
+								log::info("F");
+								if (characterProxy) {
+									log::info("G");
+									for (auto body in characterProxy->bodies) {
+										log::info("H");
+										DrawRigidBody(body);
+									}
 								}
-								hkpRigidBody* entityRb = skyrim_cast<hkpRigidBody*>(entity);
-								if (entityRb) {
-									log::info("  - It's a rigid body");
-								}
-								break;
-							}
-							case 2: {
-								// hkpPhantom
-								hkpPhantom* phantom = collidable->GetOwner<hkpPhantom>();
-								log::info("It's a phantom");
-								auto objectRefr = phantom->GetUserData();
-								if (objectRefr) {
-									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
-									log::info("  - Type: {}", static_cast<int>(result.shape->type));
-								}
-								break;
-							}
-							case 3: {
-								// hkpBroadPhaseBorder
-								break;
 							}
 						}
 					}
@@ -439,21 +385,101 @@ namespace {
 			}
 		}
 	}
+}
 
-	void DrawActor(Actor* actor) {
-		if (!actor) {
-			return;
-		}
-		if (!actor->Is3DLoaded()) {
-			return;
-		}
-
-		auto root = actor->GetCurrent3D();
-		// DrawNiNodes(root);
-
-		DrawCharController(actor);
-		// DrawRagdoll(actor);
+void DrawRay(Actor* actor) {
+	if (!actor) {
+		return;
 	}
+	if (!actor->Is3DLoaded()) {
+		return;
+	}
+	auto charController = actor->GetCharController();
+	if (!charController) {
+		return;
+	}
+
+	hkTransform outTransform;
+	charController->GetTransformImpl(outTransform);
+	glm::mat4 transform = HkToGlm(outTransform);
+
+	glm::vec3 worldForward = glm::normalize(HkVecToGlmVec(charController->forwardVec)) * glm::vec3(-1);
+
+	glm::vec3 actorPos = HkToGlm(outTransform.translation);
+	glm::vec3 rayStart = actorPos + worldForward * meter_to_unit(0.5);
+	glm::vec3 rayEnd = rayStart + worldForward * meter_to_unit(5);
+
+	DebugAPI::DrawLineForMS(rayStart, rayEnd, MS_TIME, RAY_COLOR, RAY_LINETHICKNESS);
+
+	TESObjectCELL* cell = actor->GetParentCell();
+	bool success = false;
+	auto results = CastRayResults(cell, Glm2Ni(rayStart), Glm2Ni(worldForward), meter_to_unit(5), success, {});
+	if (success) {
+		for (auto result: results) {
+			const hkTransform* shapeHkTransform = static_cast<const hkTransform*>(result.motion);
+			if (shapeHkTransform) {
+				glm::mat4 shapeTransform = HkToGlm(*shapeHkTransform);
+				DrawShape(result.shape, shapeTransform);
+				auto collidable = result.rootCollidable;
+				if (collidable) {
+					auto type = collidable->broadPhaseHandle.type;
+					log::info("Collidable: {}", type);
+					switch (type) {
+						case 0: {
+							// Invalid
+							break;
+						}
+						case 1: {
+							// hkpEntity
+							hkpEntity* entity = collidable->GetOwner<hkpEntity>();
+							log::info("It's an entity");
+							auto objectRefr = entity->GetUserData();
+							if (objectRefr) {
+								log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
+								log::info("  - Type: {}", static_cast<int>(result.shape->type));
+							}
+							hkpRigidBody* entityRb = skyrim_cast<hkpRigidBody*>(entity);
+							if (entityRb) {
+								log::info("  - It's a rigid body");
+							}
+							break;
+						}
+						case 2: {
+							// hkpPhantom
+							hkpPhantom* phantom = collidable->GetOwner<hkpPhantom>();
+							log::info("It's a phantom");
+							auto objectRefr = phantom->GetUserData();
+							if (objectRefr) {
+								log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
+								log::info("  - Type: {}", static_cast<int>(result.shape->type));
+							}
+							break;
+						}
+						case 3: {
+							// hkpBroadPhaseBorder
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void DrawActor(Actor* actor) {
+	if (!actor) {
+		return;
+	}
+	if (!actor->Is3DLoaded()) {
+		return;
+	}
+
+	auto root = actor->GetCurrent3D();
+	// DrawNiNodes(root);
+
+	DrawCharController(actor);
+	// DrawRagdoll(actor);
+}
 
 
 }

@@ -112,4 +112,116 @@ namespace RE
 			// FYI: Cannot get connectivity to work
 			mutable hkpConvexVerticesConnectivity* connectivity;
 	};
+
+
+	class hkbCharacterController : public hkReferencedObject
+	{
+		public:
+
+			~hkbCharacterController() override;
+
+			/// The character driver will call this function to integrate the character controller.
+			/// The character controller need not update it's position immediately if isIntegratedWithPhysics() == true.
+			/// But the position should be updated after hkbPhysicsInterface::step is called.
+			virtual void integrate( hkVector4 newVelocity, float timestep ) = 0;
+
+			/// Indicates if the controller is integrated as part of hkbPhysicsInterface::step.
+			virtual bool isIntegratedWithPhysics() const = 0;
+
+			/// The current position of the character controller.
+			virtual void getPosition( hkVector4& positionOut ) const = 0;
+
+			/// The current linear velocity of the character controller.
+			virtual void getLinearVelocity( hkVector4& linearVelocityOut ) const = 0;
+
+			/// Checks if the character controller is currently supported in the down direction, this is called once per frame
+			/// after the character is integrated and hkbPhysicsInterface::step is (possibly) called. If the character is
+			/// supported it should return true and fill out supportingNormalOut.
+			virtual bool checkSupport( hkVector4 down, float timestep, hkVector4& supportingNormalOut ) = 0;
+
+			/// Sets the collision filter info dynamically (after creation)
+			virtual void setCollisionFilterInfo( std::uint32_t filterInfo ) = 0;
+	};
+
+	class hkbpCharacterController : public hkbCharacterController
+	{
+		public:
+
+			~hkbpCharacterController() override;
+
+			/// Get the hkpCollidable used by this character controller.
+			virtual const hkpCollidable* getCollidable() const = 0;
+	};
+
+	/// This is a wrapper for a Havok Physics2012 proxy-based character controller.
+	class hkbpCharacterProxyController : public hkbpCharacterController
+	{
+		public:
+
+			virtual ~hkbpCharacterProxyController() override;
+
+
+			// hkbCharacterController interface
+			virtual void integrate( hkVector4 newVelocity, float timestep ) override;
+
+			// hkbCharacterController interface
+			virtual bool isIntegratedWithPhysics() const override;
+
+			// hkbCharacterController interface
+			virtual void getPosition( hkVector4& positionOut ) const override;
+
+			// hkbCharacterController interface
+			virtual void getLinearVelocity( hkVector4& positionOut ) const override;
+
+			// hkbCharacterController interface
+			virtual bool checkSupport( hkVector4 down, float timestep, hkVector4& supportingNormalOut ) override;
+
+			// hkbCharacterContoller interface
+			virtual void setCollisionFilterInfo( std::uint32_t filterInfo ) override;
+
+			//////////////////////////////////////////////////////////////////////////
+			// hkbpCharacterController interface
+			//////////////////////////////////////////////////////////////////////////
+
+			// hkbpCharacterController interface
+			virtual const hkpCollidable* getCollidable() const override;
+
+		protected:
+
+			/// The proxy associated with the character.
+			hkRefPtr<hkpCharacterProxy> m_characterProxy;
+	};
+
+	class hkbCharacterControllerDriver : public hkReferencedObject
+	{
+		public:
+			~hkbCharacterControllerDriver()  override;  // 00
+
+			// The current controller (maybe null).
+			hkRefPtr<hkbCharacterController> m_controller;
+
+			// The expected or anticipated position of the controller after it is integrated.
+			hkVector4 m_expectedPosition;
+
+			// The horizontal displacement used to calculate the final position.
+			hkVector4 m_horizontalDisplacement;
+
+			// The vertical displacement used to calculate the final position.
+			float m_verticalDisplacement;
+
+			// Indicating the controller reported it was supported.
+			bool m_isSupported;
+
+			// Stored supporting normal from the controller.
+			hkVector4 m_supportingNormal;
+
+			// Stored from current character controller
+			hkVector4 m_storedPosition;
+
+			// Stored from current character controller
+			hkVector4 m_storedLinearVelocity;
+
+			// Current enabled status.
+			bool m_isEnabled;
+	};
 }
