@@ -335,6 +335,24 @@ namespace {
 				}
 			}
 		}
+
+		bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
+		if (charRigidBodyController) {
+			log::info("HAS bhkCharRigidBodyController");
+			auto& characterRigidBody = charRigidBodyController->characterRigidBody;
+			hkReferencedObject* refObject = proxy.referencedObject.get();
+			if (refObject) {
+				log::info("Has refObject");
+				hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
+				if (hkpObject) {
+					log::info("Is hkpCharacterRigidBody");
+					if (hkpObject->m_character) {
+						log::info("Draw RB");
+						DrawRigidBody(hkpObject->m_character);
+					}
+				}
+			}
+		}
 	}
 
 	void DrawRagdoll(Actor* actor) {

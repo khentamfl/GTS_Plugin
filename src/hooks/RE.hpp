@@ -216,12 +216,11 @@ namespace RE
 			void          Unk_2E(void) override;                              // 2E
 			void          Unk_2F(void) override;                              // 2F
 
-			RE::hkRefPtr<hkpCharacterRigidBody> characterRigidBody;
-			std::uint64_t unk18;
 			bhkRigidBody *rigidBody;
 			NiAVObject *unk28;
 			bhkCharacterPointCollector ignoredCollisionStartCollector;
 	};
+	static_assert(offsetof(bhkCharacterRigidBody, ignoredCollisionStartCollector) == 0x30);
 
 	struct bhkCharRigidBodyController :
 		public bhkCharacterController, // 00
