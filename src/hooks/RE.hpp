@@ -186,7 +186,6 @@ namespace RE
 			// hkbpCharacterController interface
 			virtual const hkpCollidable* getCollidable() const override;
 
-		protected:
 
 			/// The proxy associated with the character.
 			hkRefPtr<hkpCharacterProxy> m_characterProxy;
