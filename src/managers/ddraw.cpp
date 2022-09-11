@@ -309,6 +309,7 @@ namespace {
 		// 	}
 		// }
 
+		log::info("CharController Raw Name: {}", GetRawName(charController));
 		bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
 		if (charProxyController) {
 			log::info("HAS bhkCharProxyController");
@@ -359,6 +360,8 @@ namespace {
 					auto controllerDriver = character.characterControllerDriver;
 					if (controllerDriver) {
 						log::info("A");
+						log::info("controllerDriver Raw Name: {}", GetRawName(controllerDriver));
+						log::info("A2");
 						hkbCharacterControllerDriver* adriver = static_cast<hkbCharacterControllerDriver*>(controllerDriver.get());
 
 						if (adriver->m_controller) {
