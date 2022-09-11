@@ -193,14 +193,9 @@ namespace RE
 		public:
 			inline static constexpr auto RTTI = RTTI_hkpCharacterRigidBodyListener;
 
-			virtual ~hkpCharacterRigidBodyListener() {
-			}
+			virtual ~hkpCharacterRigidBodyListener() override;
 
 			virtual void characterCallback( hkpWorld* world, hkpCharacterRigidBody* characterRB );
-
-			void discardVerticalPoints( hkpCharacterRigidBody* characterRB );
-
-			void processActualPoints( hkpWorld* world, hkpCharacterRigidBody* characterRB );
 
 			virtual void processActualPoints( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<std::uint16_t>& contactPointIds );
 
@@ -235,12 +230,12 @@ namespace RE
 
 			~bhkCharRigidBodyController() override;  // 00
 
-			// override (hkpCharacterProxyListener)
-			void ProcessConstraintsCallback(const hkpCharacterProxy* a_proxy, const hkArray<hkpRootCdPoint>& a_manifold, hkpSimplexSolverInput& a_input) override;                  // 01
-			void ContactPointAddedCallback(const hkpCharacterProxy* a_proxy, const hkpRootCdPoint& a_point) override;                                                               // 02
-			void ContactPointRemovedCallback(const hkpCharacterProxy* a_proxy, const hkpRootCdPoint& a_point) override;                                                             // 03
-			void CharacterInteractionCallback(hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) override;                               // 04
-			void ObjectInteractionCallback(hkpCharacterProxy* a_proxy, const hkpCharacterObjectInteractionEvent& a_input, hkpCharacterObjectInteractionResult& a_output) override;  // 05
+			// override (hkpCharacterRigidBodyListener)
+			void characterCallback( hkpWorld* world, hkpCharacterRigidBody* characterRB ) override;
+			void processActualPoints( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<std::uint16_t>& contactPointIds ) override;
+			void unweldContactPoints( hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<std::uint16_t>& contactPointIds ) override;
+			void considerCollisionEntryForSlope( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<std::uint16_t>& contactPointIds ) override;
+			void considerCollisionEntryForMassModification( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<std::uint16_t>& contactPointIds ) override;
 
 			// override (bhkCharacterController)
 			void GetLinearVelocityImpl(hkVector4& a_velocity) const override;  // 06
