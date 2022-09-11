@@ -340,7 +340,7 @@ namespace {
 		if (charRigidBodyController) {
 			log::info("HAS bhkCharRigidBodyController");
 			auto& characterRigidBody = charRigidBodyController->characterRigidBody;
-			hkReferencedObject* refObject = proxy.referencedObject.get();
+			hkReferencedObject* refObject = characterRigidBody.referencedObject.get();
 			if (refObject) {
 				log::info("Has refObject");
 				hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
