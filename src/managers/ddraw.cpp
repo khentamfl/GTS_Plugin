@@ -353,37 +353,10 @@ namespace {
 							}
 						}
 					}
-					auto rootNode = graph->rootNode;
-					if (rootNode) {
-						DrawNiNodes(rootNode);
-					}
-					auto controllerDriver = character.characterControllerDriver;
-					if (controllerDriver) {
-						log::info("A");
-						log::info("controllerDriver Raw Name: {}", GetRawName(controllerDriver.get()));
-						log::info("A2");
-						hkbCharacterControllerDriver* adriver = static_cast<hkbCharacterControllerDriver*>(controllerDriver.get());
-
-						if (adriver->m_controller) {
-							log::info("B");
-							hkbCharacterController* controller = static_cast<hkbCharacterController*>(adriver->m_controller.get());
-							log::info("C");
-							hkbpCharacterProxyController* controllerProxy = static_cast<hkbpCharacterProxyController*>(controller);
-							log::info("D");
-							if (controllerProxy->m_characterProxy) {
-								log::info("E");
-								hkpCharacterProxy* characterProxy = controllerProxy->m_characterProxy.get();
-								log::info("F");
-								if (characterProxy) {
-									log::info("G");
-									for (auto body: characterProxy->bodies) {
-										log::info("H");
-										DrawRigidBody(body);
-									}
-								}
-							}
-						}
-					}
+					// auto rootNode = graph->rootNode;
+					// if (rootNode) {
+					// 	DrawNiNodes(rootNode);
+					// }
 				}
 			}
 		}
@@ -480,7 +453,7 @@ namespace {
 		// DrawNiNodes(root);
 
 		DrawCharController(actor);
-		DrawRagdoll(actor);
+		// DrawRagdoll(actor);
 	}
 
 

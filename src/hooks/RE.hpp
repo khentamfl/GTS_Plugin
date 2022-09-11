@@ -128,114 +128,124 @@ namespace RE
 			mutable hkpConvexVerticesConnectivity* connectivity;
 	};
 
+	class hkpSimpleConstraintContactMgr;
 
-	class hkbCharacterController : public hkReferencedObject
+	class hkpCharacterRigidBodyListener : public hkReferencedObject
 	{
 		public:
+			inline static constexpr auto RTTI = RTTI_hkpCharacterRigidBodyListener;
 
-			~hkbCharacterController() override;
+			virtual ~hkpCharacterRigidBodyListener() {
+			}
 
-			/// The character driver will call this function to integrate the character controller.
-			/// The character controller need not update it's position immediately if isIntegratedWithPhysics() == true.
-			/// But the position should be updated after hkbPhysicsInterface::step is called.
-			virtual void integrate( hkVector4 newVelocity, float timestep ) = 0;
+			virtual void characterCallback( hkpWorld* world, hkpCharacterRigidBody* characterRB );
 
-			/// Indicates if the controller is integrated as part of hkbPhysicsInterface::step.
-			virtual bool isIntegratedWithPhysics() const = 0;
+			void discardVerticalPoints( hkpCharacterRigidBody* characterRB );
 
-			/// The current position of the character controller.
-			virtual void getPosition( hkVector4& positionOut ) const = 0;
+			void processActualPoints( hkpWorld* world, hkpCharacterRigidBody* characterRB );
 
-			/// The current linear velocity of the character controller.
-			virtual void getLinearVelocity( hkVector4& linearVelocityOut ) const = 0;
+			virtual void processActualPoints( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<hkContactPointId>& contactPointIds );
 
-			/// Checks if the character controller is currently supported in the down direction, this is called once per frame
-			/// after the character is integrated and hkbPhysicsInterface::step is (possibly) called. If the character is
-			/// supported it should return true and fill out supportingNormalOut.
-			virtual bool checkSupport( hkVector4 down, float timestep, hkVector4& supportingNormalOut ) = 0;
+			virtual void unweldContactPoints( hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<hkContactPointId>& contactPointIds );
 
-			/// Sets the collision filter info dynamically (after creation)
-			virtual void setCollisionFilterInfo( std::uint32_t filterInfo ) = 0;
+			virtual void considerCollisionEntryForSlope( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<hkContactPointId>& contactPointIds );
+
+			virtual void considerCollisionEntryForMassModification( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<hkContactPointId>& contactPointIds );
 	};
 
-	class hkbpCharacterController : public hkbCharacterController
+	class hkpCharacterRigidBody : public hkReferencedObject, public hkpEntityListener, public hkpWorldPostSimulationListener
 	{
 		public:
+			inline static constexpr auto RTTI = RTTI_hkpCharacterRigidBody;
 
-			~hkbpCharacterController() override;
+			~hkpCharacterRigidBody() override;
 
-			/// Get the hkpCollidable used by this character controller.
-			virtual const hkpCollidable* getCollidable() const = 0;
+			virtual void checkSupport( const hkStepInfo& stepInfo, hkpSurfaceInfo& ground ) const;
+
+			struct SupportInfo
+			{
+				hkContactPoint m_point;
+				hkpRigidBody* m_rigidBody;
+				hkVector4 m_surfaceVelocity;
+			};
+
+			virtual hkpSurfaceInfo::SupportedState getSupportInfo( const hkStepInfo& stepInfo, hkArray<SupportInfo>& supportInfo ) const;
+
+			virtual void getGround( const hkArray<SupportInfo>& supportInfo, bool useDynamicBodyVelocities, hkpSurfaceInfo& ground ) const;
+
+			// Listener methods.
+			virtual void entityAddedCallback( hkpEntity* entity );
+
+			virtual void entityRemovedCallback( hkpEntity* entity );
+
+			virtual void postSimulationCallback( hkpWorld* world );
+
+			hkpRigidBody* m_character;
+
+			hkpCharacterRigidBodyListener* m_listener;
+
+			hkVector4 m_up;
+
+			float m_unweldingHeightOffsetFactor;
+
+			float m_maxSlopeCosine;
+
+			float m_maxSpeedForSimplexSolver;
+
+			float m_supportDistance;
+
+			float m_hardSupportDistance;
+
+			hkVector4 m_acceleration;
+			float m_maxForce;
+
+			struct CollectorPair;
+
+			struct VertPointInfo
+			{
+				hkContactPoint m_vertPoint;
+				hkpSimpleConstraintContactMgr* m_mgr;
+			};
+
+			hkArray<VertPointInfo> m_verticalContactPoints;
 	};
 
-	/// This is a wrapper for a Havok Physics2012 proxy-based character controller.
-	class hkbpCharacterProxyController : public hkbpCharacterController
+	struct bhkCharacterRigidBody : bhkSerializable
 	{
 		public:
+			inline static constexpr auto RTTI = RTTI_bhkCharacterRigidBody;
 
-			virtual ~hkbpCharacterProxyController() override;
+			~bhkCharacterRigidBody() override;  // 00
 
-
-			// hkbCharacterController interface
-			virtual void integrate( hkVector4 newVelocity, float timestep ) override;
-
-			// hkbCharacterController interface
-			virtual bool isIntegratedWithPhysics() const override;
-
-			// hkbCharacterController interface
-			virtual void getPosition( hkVector4& positionOut ) const override;
-
-			// hkbCharacterController interface
-			virtual void getLinearVelocity( hkVector4& positionOut ) const override;
-
-			// hkbCharacterController interface
-			virtual bool checkSupport( hkVector4 down, float timestep, hkVector4& supportingNormalOut ) override;
-
-			// hkbCharacterContoller interface
-			virtual void setCollisionFilterInfo( std::uint32_t filterInfo ) override;
-
-			//////////////////////////////////////////////////////////////////////////
-			// hkbpCharacterController interface
-			//////////////////////////////////////////////////////////////////////////
-
-			// hkbpCharacterController interface
-			virtual const hkpCollidable* getCollidable() const override;
-
-
-			/// The proxy associated with the character.
-			hkRefPtr<hkpCharacterProxy> m_characterProxy;
+			RE::hkRefPtr<hkpCharacterRigidBody> characterRigidBody;     // 10
+			std::uint64_t unk18;
+			bhkRigidBody *rigidBody;                                    // 20
+			NiAVObject *unk28;                                          // 28 - MarkerX ??
+			bhkCharacterPointCollector ignoredCollisionStartCollector;  // 30
 	};
+	static_assert(offsetof(bhkCharacterRigidBody, ignoredCollisionStartCollector) == 0x30);
 
-	class hkbCharacterControllerDriver : public hkReferencedObject
+	struct bhkCharRigidBodyController :
+		public bhkCharacterController, // 00
+		public hkpCharacterRigidBodyListener // 330
 	{
 		public:
-			~hkbCharacterControllerDriver()  override;  // 00
+			inline static constexpr auto RTTI = RTTI_bhkCharRigidBodyController;
 
-			// The current controller (maybe null).
-			hkRefPtr<hkbCharacterController> m_controller;
+			~bhkCharRigidBodyController() override;  // 00
 
-			// The expected or anticipated position of the controller after it is integrated.
-			hkVector4 m_expectedPosition;
+			// override (hkpCharacterProxyListener)
+			void ProcessConstraintsCallback(const hkpCharacterProxy* a_proxy, const hkArray<hkpRootCdPoint>& a_manifold, hkpSimplexSolverInput& a_input) override;                  // 01
+			void ContactPointAddedCallback(const hkpCharacterProxy* a_proxy, const hkpRootCdPoint& a_point) override;                                                               // 02
+			void ContactPointRemovedCallback(const hkpCharacterProxy* a_proxy, const hkpRootCdPoint& a_point) override;                                                             // 03
+			void CharacterInteractionCallback(hkpCharacterProxy* a_proxy, hkpCharacterProxy* a_otherProxy, const hkContactPoint& a_contact) override;                               // 04
+			void ObjectInteractionCallback(hkpCharacterProxy* a_proxy, const hkpCharacterObjectInteractionEvent& a_input, hkpCharacterObjectInteractionResult& a_output) override;  // 05
 
-			// The horizontal displacement used to calculate the final position.
-			hkVector4 m_horizontalDisplacement;
+			// override (bhkCharacterController)
+			void GetLinearVelocityImpl(hkVector4& a_velocity) const override;  // 06
+			void SetLinearVelocityImpl(const hkVector4& a_velocity) override;  // 07
 
-			// The vertical displacement used to calculate the final position.
-			float m_verticalDisplacement;
-
-			// Indicating the controller reported it was supported.
-			bool m_isSupported;
-
-			// Stored supporting normal from the controller.
-			hkVector4 m_supportingNormal;
-
-			// Stored from current character controller
-			hkVector4 m_storedPosition;
-
-			// Stored from current character controller
-			hkVector4 m_storedLinearVelocity;
-
-			// Current enabled status.
-			bool m_isEnabled;
+			bhkCharacterRigidBody characterRigidBody; // 340
 	};
+	static_assert(offsetof(bhkCharRigidBodyController, characterRigidBody) == 0x340);
 }
