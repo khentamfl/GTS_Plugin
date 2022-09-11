@@ -336,7 +336,13 @@ namespace {
 			}
 		}
 
+
 		bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
+		if ((charProxyController == nullptr) && (charRigidBodyController == nullptr)) {
+			log::info("CharController has Raw Name: {} of but we couldn't confirm via RTTI", GetRawName(charController));
+			log::info("Forcing to bhkCharRigidBodyController");
+			charRigidBodyController = static_cast<bhkCharRigidBodyController*>(charController);
+		}
 		if (charRigidBodyController) {
 			log::info("HAS bhkCharRigidBodyController");
 			auto& characterRigidBody = charRigidBodyController->characterRigidBody;
@@ -352,6 +358,8 @@ namespace {
 					}
 				}
 			}
+		} else {
+			log::info("HAS bhkCharRigidBodyController");
 		}
 	}
 
