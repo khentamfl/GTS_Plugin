@@ -57,9 +57,9 @@ namespace Gts {
 	};
 	// https://www.desmos.com/calculator/lnooldbscf
 	inline float soft_power(const float x, const float k,const float n,const float s,const float o,const float a) {
-		return pow(1.0+pow(k*(x-o),n*s),1.0/s) + a;
+		return pow(1.0+pow(k*(x),n*s),1.0/s)/pow(1.0+pow(k*o,n*s), 1.0/s) + a;
 	}
-	// https://www.desmos.com/calculator/pcoyowf7hn
+	// https://www.desmos.com/calculator/vyofjrqmrn
 	inline float soft_core(const float x, const float k, const float n, const float s, const float o, const float a) {
 		return 1.0/soft_power(x, k, n, s, o, 0.0) + a;
 	}
