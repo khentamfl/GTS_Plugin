@@ -130,6 +130,25 @@ namespace RE
 
 	class hkpSimpleConstraintContactMgr;
 	class hkpCharacterRigidBodyListener;
+	class hkpCharacterRigidBody;
+
+	class hkpCharacterRigidBodyListener : public hkReferencedObject
+	{
+		public:
+			inline static constexpr auto RTTI = RTTI_hkpCharacterRigidBodyListener;
+
+			virtual ~hkpCharacterRigidBodyListener() override;
+
+			virtual void characterCallback( hkpWorld* world, hkpCharacterRigidBody* characterRB );
+
+			virtual void processActualPoints( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<std::uint16_t>& contactPointIds );
+
+			virtual void unweldContactPoints( hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<std::uint16_t>& contactPointIds );
+
+			virtual void considerCollisionEntryForSlope( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<std::uint16_t>& contactPointIds );
+
+			virtual void considerCollisionEntryForMassModification( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<std::uint16_t>& contactPointIds );
+	};
 
 	class hkpCharacterRigidBody : public hkReferencedObject, public hkpEntityListener, public hkpWorldPostSimulationListener
 	{
@@ -188,30 +207,14 @@ namespace RE
 			hkArray<VertPointInfo> m_verticalContactPoints;
 	};
 
-	class hkpCharacterRigidBodyListener : public hkReferencedObject
-	{
-		public:
-			inline static constexpr auto RTTI = RTTI_hkpCharacterRigidBodyListener;
-
-			virtual ~hkpCharacterRigidBodyListener() override;
-
-			virtual void characterCallback( hkpWorld* world, hkpCharacterRigidBody* characterRB );
-
-			virtual void processActualPoints( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<std::uint16_t>& contactPointIds );
-
-			virtual void unweldContactPoints( hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<std::uint16_t>& contactPointIds );
-
-			virtual void considerCollisionEntryForSlope( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, hkArray<std::uint16_t>& contactPointIds );
-
-			virtual void considerCollisionEntryForMassModification( const hkpWorld* world, hkpCharacterRigidBody* characterRB, const hkpLinkedCollidable::CollisionEntry& entry, hkpSimpleConstraintContactMgr* mgr, const hkArray<std::uint16_t>& contactPointIds );
-	};
-
 	struct bhkCharacterRigidBody : bhkSerializable
 	{
 		public:
 			inline static constexpr auto RTTI = RTTI_bhkCharacterRigidBody;
 
 			~bhkCharacterRigidBody() override;  // 00
+			void          Unk_2E(void) override;                              // 2E
+			void          Unk_2F(void) override;                              // 2F
 
 			RE::hkRefPtr<hkpCharacterRigidBody> characterRigidBody;     // 10
 			std::uint64_t unk18;
