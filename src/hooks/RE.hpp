@@ -18,7 +18,7 @@ namespace RE
 
 		// At the end, we can get the type's mangled name
 		const char* colName = tDesc->name;
-
+		return colName;
 	}
 	class hkpTriangleShape : public hkpConvexShape
 	{
