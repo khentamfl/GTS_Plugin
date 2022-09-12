@@ -1,6 +1,7 @@
 #include "managers/collider.hpp"
 #include "managers/GtsManager.hpp"
 #include "scale/scale.hpp"
+#include "hooks/RE.hpp"
 
 #include "util.hpp"
 
@@ -47,6 +48,25 @@ namespace {
 			actual_shape->radius *= scale;
 			actual_shape->vertexA = actual_shape->vertexA * hkVector4(scale);
 			actual_shape->vertexB = actual_shape->vertexB * hkVector4(scale);
+		} else if (shape->type == hkpShapeType::kConvexVertices) {
+			log::debug("{}- Convex Verts (Scaling by {})", prefix, scale);
+			hkpConvexVerticesShape* convexShape = static_cast<hkpConvexVerticesShape*>(shape);
+			hkVector4 scaleVec = hkVector4(scale, scale, scale, scale);
+
+			if (convexShape) {
+				convexShape->radius *= scale;
+				convexShape->aabbHalfExtents = convexShape->aabbHalfExtents * scaleVec;
+				convexShape->aabbCenter = convexShape->aabbCenter * scaleVec;
+				std::size_t numVertices = convexShape->numVertices;
+				log::info("There are {} verts", numVertices);
+				for (std::size_t i = 0; i< numVertices; i++) {
+					log::info("Pre  Scale {},{},{}", convexShape->rotatedVertices[i].vertices[0].quad.m128_f32[0], convexShape->rotatedVertices[i].vertices[0].quad.m128_f32[1], convexShape->rotatedVertices[i].vertices[0].quad.m128_f32[2]);
+					convexShape->rotatedVertices[i].vertices[0] = convexShape->rotatedVertices[i].vertices[0] * scaleVec;
+					convexShape->rotatedVertices[i].vertices[1] = convexShape->rotatedVertices[i].vertices[1] * scaleVec;
+					convexShape->rotatedVertices[i].vertices[2] = convexShape->rotatedVertices[i].vertices[2] * scaleVec;
+					log::info("Post Scale {},{},{}", convexShape->rotatedVertices[i].vertices[0].quad.m128_f32[0], convexShape->rotatedVertices[i].vertices[0].quad.m128_f32[1], convexShape->rotatedVertices[i].vertices[0].quad.m128_f32[2]);
+				}
+			}
 		} else if (shape->type == hkpShapeType::kList) {
 			log::debug("{}- List (checking children)", prefix);
 			auto container = static_cast<hkpListShape*>(shape);
@@ -114,7 +134,7 @@ namespace {
 					if (ragdollDriver) {
 						auto ragdoll = ragdollDriver->ragdoll;
 						if (ragdoll) {
-							log::info("Got ragdoll");
+							// log::info("Got ragdoll");
 							for (auto& rb: ragdoll->rigidBodies) {
 								AddRigidBody(actor_data, rb);
 							}
@@ -154,18 +174,47 @@ namespace {
 			}
 		}
 
-		static bool doonce = true;
+		static bool doonce = false;
 		if (!doonce) {
 			doonce = true;
 			log::info("Doing test scale on {}", actor->GetDisplayFullName());
 			auto charController = actor->GetCharController();
-			if (charController) {
-				for (auto bhkShape: charController->shapes) {
-					hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
-					if (shape) {
-						log::info("  - Scaling");
-						scale_recursive("    ", shape, 10.0);
+
+			hkpRigidBody* rb = nullptr;
+			bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
+			if (charProxyController) {
+				// Player has this contoller
+				auto& proxy = charProxyController->proxy;
+				hkReferencedObject* refObject = proxy.referencedObject.get();
+				if (refObject) {
+					hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
+					if (hkpObject) {
+						for (hkpRigidBody* body: hkpObject->bodies) {
+							rb = body;
+							break;
+						}
 					}
+				}
+			}
+			bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
+			if (charRigidBodyController) {
+				// NPCs have this controller
+				auto& characterRigidBody = charRigidBodyController->characterRigidBody;
+				hkReferencedObject* refObject = characterRigidBody.referencedObject.get();
+				if (refObject) {
+					hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
+					if (hkpObject) {
+						rb = hkpObject->m_character;
+					}
+				}
+			}
+
+			if (rb) {
+				// Experiment TIME!
+				const hkpShape* shape = rb->GetShape();
+				if (shape) {
+					hkpShape* dragon = const_cast<hkpShape*>(shape);
+					scale_recursive("", dragon, 2.0);
 				}
 			}
 		}
