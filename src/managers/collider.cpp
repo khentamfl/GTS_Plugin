@@ -80,7 +80,7 @@ namespace {
 				}
 				key = container->GetNextKey(key);
 			}
-		} else if (shape->type == hkpShapeType::kBVTree) {
+		} else if ((shape->type == hkpShapeType::kBVTree) || (shape->type == hkpShapeType::kMOPP)) {
 			log::debug("{}- Tree (checking children)", prefix);
 			auto actual_shape = static_cast<hkpBvTreeShape*>(shape);
 			const hkpShapeContainer* container = actual_shape->GetContainer();
@@ -175,7 +175,7 @@ namespace {
 		}
 
 		static bool doonce = false;
-		if (!doonce) {
+		if ((!doonce) && (actor->formID != 0x14)) {
 			doonce = true;
 			log::info("Doing test scale on {}", actor->GetDisplayFullName());
 			auto charController = actor->GetCharController();
