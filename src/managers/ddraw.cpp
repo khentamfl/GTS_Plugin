@@ -150,13 +150,13 @@ namespace {
 			// log::debug("Triangle");
 			DrawTriangle(shape, transform);
 		} else if (shape->type == hkpShapeType::kConvexVertices) {
-			log::debug("Convex Verts");
+			// log::debug("Convex Verts");
 			DrawConvexVerts(shape, transform);
 		} else if (shape->type == hkpShapeType::kBox) {
 			// log::debug("Box");
 			DrawBox(shape, transform);
 		} else if (shape->type == hkpShapeType::kConvexTransform) {
-			log::debug("Convex transform");
+			// log::debug("Convex transform");
 			const hkpConvexTransformShape* transformShape = static_cast<const hkpConvexTransformShape*>(shape);
 			if (transformShape) {
 				auto container = transformShape->GetContainer();
@@ -172,7 +172,7 @@ namespace {
 				}
 			}
 		} else if (shape->type == hkpShapeType::kList) {
-			log::debug("List");
+			// log::debug("List");
 			auto container = static_cast<const hkpListShape*>(shape);
 			auto key = container->GetFirstKey();
 			while (key != HK_INVALID_SHAPE_KEY) {
@@ -184,7 +184,7 @@ namespace {
 				key = container->GetNextKey(key);
 			}
 		} else if (shape->type == hkpShapeType::kBVTree) {
-			log::debug("Tree");
+			// log::debug("Tree");
 			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
 			const hkpShapeContainer* container = actual_shape->GetContainer();
 			auto key = container->GetFirstKey();
@@ -197,7 +197,7 @@ namespace {
 				key = container->GetNextKey(key);
 			}
 		} else if (shape->type == hkpShapeType::kMOPP) {
-			log::debug("MOP Tree");
+			// log::debug("MOP Tree");
 			// MOPP is a Tree implementation we jsut cast too tree and deal with
 			// it at that level
 			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
@@ -300,22 +300,22 @@ namespace {
 			return;
 		}
 
-		log::info("Drawing char controller");
+		// log::info("Drawing char controller");
 		hkpRigidBody* supportBody = charController->supportBody.get();
 		if (supportBody) {
-			log::info("  - Support Body");
+			// log::info("  - Support Body");
 			DrawRigidBody(supportBody);
 		}
 
 		hkpRigidBody* bumpedBody = charController->bumpedBody.get();
 		if (bumpedBody) {
-			log::info("  - Bumped Body");
+			// log::info("  - Bumped Body");
 			DrawRigidBody(bumpedBody);
 		}
 
 		hkpRigidBody* bumpedCharCollisionObject = charController->bumpedCharCollisionObject.get();
 		if (bumpedCharCollisionObject) {
-			log::info("  - Bumped Char Collision Object");
+			// log::info("  - Bumped Char Collision Object");
 			DrawRigidBody(bumpedCharCollisionObject);
 		}
 
@@ -326,7 +326,7 @@ namespace {
 			for (auto bhkShape: charController->shapes) {
 				hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
 				if (shape) {
-					log::info("  - Shape of CharController");
+					// log::info("  - Shape of CharController");
 					DrawShape(shape, transform);
 				}
 			}
@@ -343,12 +343,12 @@ namespace {
 						DrawRigidBody(body);
 					}
 					for (auto phantom: hkpObject->phantoms) {
-						log::info("Draw Body");
+						// log::info("Draw Body");
 						DrawWorldObject(phantom);
 					}
 					auto shapePhantom = hkpObject->shapePhantom;
 					if (shapePhantom) {
-						log::info("Draw shape phantom");
+						// log::info("Draw shape phantom");
 						DrawWorldObject(shapePhantom);
 					}
 				}
@@ -358,8 +358,8 @@ namespace {
 
 		bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
 		if ((charProxyController == nullptr) && (charRigidBodyController == nullptr)) {
-			log::info("CharController has Raw Name: {} of but we couldn't confirm via RTTI", GetRawName(charController));
-			log::info("Forcing to bhkCharRigidBodyController");
+			log::warn("CharController has Raw Name: {} of but we couldn't confirm via RTTI", GetRawName(charController));
+			log::warn("Forcing to bhkCharRigidBodyController");
 			charRigidBodyController = static_cast<bhkCharRigidBodyController*>(charController);
 		}
 		if (charRigidBodyController) {
@@ -434,47 +434,47 @@ namespace {
 				if (shapeHkTransform) {
 					glm::mat4 shapeTransform = HkToGlm(*shapeHkTransform);
 					DrawShape(result.shape, shapeTransform);
-					auto collidable = result.rootCollidable;
-					if (collidable) {
-						auto type = collidable->broadPhaseHandle.type;
-						log::info("Collidable: {}", type);
-						switch (type) {
-							case 0: {
-								// Invalid
-								break;
-							}
-							case 1: {
-								// hkpEntity
-								hkpEntity* entity = collidable->GetOwner<hkpEntity>();
-								log::info("It's an entity");
-								auto objectRefr = entity->GetUserData();
-								if (objectRefr) {
-									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
-									log::info("  - Type: {}", static_cast<int>(result.shape->type));
-								}
-								hkpRigidBody* entityRb = skyrim_cast<hkpRigidBody*>(entity);
-								if (entityRb) {
-									log::info("  - It's a rigid body");
-								}
-								break;
-							}
-							case 2: {
-								// hkpPhantom
-								hkpPhantom* phantom = collidable->GetOwner<hkpPhantom>();
-								log::info("It's a phantom");
-								auto objectRefr = phantom->GetUserData();
-								if (objectRefr) {
-									log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
-									log::info("  - Type: {}", static_cast<int>(result.shape->type));
-								}
-								break;
-							}
-							case 3: {
-								// hkpBroadPhaseBorder
-								break;
-							}
-						}
-					}
+					// auto collidable = result.rootCollidable;
+					// if (collidable) {
+					// 	auto type = collidable->broadPhaseHandle.type;
+					// 	// log::info("Collidable: {}", type);
+					// 	switch (type) {
+					// 		case 0: {
+					// 			// Invalid
+					// 			break;
+					// 		}
+					// 		case 1: {
+					// 			// hkpEntity
+					// 			hkpEntity* entity = collidable->GetOwner<hkpEntity>();
+					// 			log::info("It's an entity");
+					// 			auto objectRefr = entity->GetUserData();
+					// 			if (objectRefr) {
+					// 				log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
+					// 				log::info("  - Type: {}", static_cast<int>(result.shape->type));
+					// 			}
+					// 			hkpRigidBody* entityRb = skyrim_cast<hkpRigidBody*>(entity);
+					// 			if (entityRb) {
+					// 				log::info("  - It's a rigid body");
+					// 			}
+					// 			break;
+					// 		}
+					// 		case 2: {
+					// 			// hkpPhantom
+					// 			hkpPhantom* phantom = collidable->GetOwner<hkpPhantom>();
+					// 			log::info("It's a phantom");
+					// 			auto objectRefr = phantom->GetUserData();
+					// 			if (objectRefr) {
+					// 				log::info("  - Owner: {}", objectRefr->GetDisplayFullName());
+					// 				log::info("  - Type: {}", static_cast<int>(result.shape->type));
+					// 			}
+					// 			break;
+					// 		}
+					// 		case 3: {
+					// 			// hkpBroadPhaseBorder
+					// 			break;
+					// 		}
+					// 	}
+					// }
 				}
 			}
 		}
