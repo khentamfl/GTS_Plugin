@@ -301,36 +301,36 @@ namespace {
 		}
 
 		log::info("Drawing char controller");
-		// hkpRigidBody* supportBody = charController->supportBody.get();
-		// if (supportBody) {
-		// 	log::info("  - Support Body");
-		// 	DrawRigidBody(supportBody);
-		// }
-		//
-		// hkpRigidBody* bumpedBody = charController->bumpedBody.get();
-		// if (bumpedBody) {
-		// 	log::info("  - Bumped Body");
-		// 	DrawRigidBody(bumpedBody);
-		// }
-		//
-		// hkpRigidBody* bumpedCharCollisionObject = charController->bumpedCharCollisionObject.get();
-		// if (bumpedCharCollisionObject) {
-		// 	log::info("  - Bumped Char Collision Object");
-		// 	DrawRigidBody(bumpedCharCollisionObject);
-		// }
+		hkpRigidBody* supportBody = charController->supportBody.get();
+		if (supportBody) {
+			log::info("  - Support Body");
+			DrawRigidBody(supportBody);
+		}
 
-		// {
-		// 	hkTransform outTransform;
-		// 	charController->GetTransformImpl(outTransform);
-		// 	glm::mat4 transform = HkToGlm(outTransform);
-		// 	for (auto bhkShape: charController->shapes) {
-		// 		hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
-		// 		if (shape) {
-		// 			log::info("  - Shape of CharController");
-		// 			DrawShape(shape, transform);
-		// 		}
-		// 	}
-		// }
+		hkpRigidBody* bumpedBody = charController->bumpedBody.get();
+		if (bumpedBody) {
+			log::info("  - Bumped Body");
+			DrawRigidBody(bumpedBody);
+		}
+
+		hkpRigidBody* bumpedCharCollisionObject = charController->bumpedCharCollisionObject.get();
+		if (bumpedCharCollisionObject) {
+			log::info("  - Bumped Char Collision Object");
+			DrawRigidBody(bumpedCharCollisionObject);
+		}
+
+		{
+			hkTransform outTransform;
+			charController->GetTransformImpl(outTransform);
+			glm::mat4 transform = HkToGlm(outTransform);
+			for (auto bhkShape: charController->shapes) {
+				hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
+				if (shape) {
+					log::info("  - Shape of CharController");
+					DrawShape(shape, transform);
+				}
+			}
+		}
 
 		bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
 		if (charProxyController) {
@@ -342,15 +342,15 @@ namespace {
 					for (hkpRigidBody* body: hkpObject->bodies) {
 						DrawRigidBody(body);
 					}
-					// for (auto phantom: hkpObject->phantoms) {
-					// 	log::info("Draw Body");
-					// 	DrawWorldObject(phantom);
-					// }
-					// auto shapePhantom = hkpObject->shapePhantom;
-					// if (shapePhantom) {
-					// 	log::info("Draw shape phantom");
-					// 	DrawWorldObject(shapePhantom);
-					// }
+					for (auto phantom: hkpObject->phantoms) {
+						log::info("Draw Body");
+						DrawWorldObject(phantom);
+					}
+					auto shapePhantom = hkpObject->shapePhantom;
+					if (shapePhantom) {
+						log::info("Draw shape phantom");
+						DrawWorldObject(shapePhantom);
+					}
 				}
 			}
 		}
@@ -370,15 +370,6 @@ namespace {
 				if (hkpObject) {
 					auto rb = hkpObject->m_character;
 					if (rb) {
-						static bool experimented = false;
-						if (!experimented) {
-							experimented = true;
-							auto capsule = MakeCapsule();
-							capsule->radius = 0.001;
-							capsule->vertexA = hkVector4(0.0);
-							capsule->vertexB = hkVector4(0.001);
-							rb->SetShape(capsule);
-						}
 						DrawRigidBody(rb);
 					}
 				}
@@ -401,10 +392,10 @@ namespace {
 							}
 						}
 					}
-					// auto rootNode = graph->rootNode;
-					// if (rootNode) {
-					// 	DrawNiNodes(rootNode);
-					// }
+					auto rootNode = graph->rootNode;
+					if (rootNode) {
+						DrawNiNodes(rootNode);
+					}
 				}
 			}
 		}
@@ -501,10 +492,8 @@ namespace {
 		// DrawNiNodes(root);
 
 		DrawCharController(actor);
-		// DrawRagdoll(actor);
+		DrawRagdoll(actor);
 	}
-
-
 }
 
 namespace Gts {
