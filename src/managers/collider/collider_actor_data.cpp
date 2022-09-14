@@ -198,20 +198,23 @@ namespace Gts {
 				hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
 				if (hkpObject) {
 					for (auto body: hkpObject->bodies) {
+						log::info("Body");
 						auto const_shape = body->GetShape();
 						if (const_shape) {
 							hkpShape* shape = const_cast<hkpShape*>(const_shape);
 							this->AddShape(shape);
 						}
 					}
-					for (auto body: hkpObject->phantoms) {
-						auto const_shape = body->GetShape();
+					for (auto phantom: hkpObject->phantoms) {
+						log::info("Phantom");
+						auto const_shape = phantom->GetShape();
 						if (const_shape) {
 							hkpShape* shape = const_cast<hkpShape*>(const_shape);
 							this->AddShape(shape);
 						}
 					}
 					if (hkpObject->shapePhantom) {
+						log::info("shapePhantom");
 						auto const_shape = hkpObject->shapePhantom->GetShape();
 						if (const_shape) {
 							hkpShape* shape = const_cast<hkpShape*>(const_shape);
@@ -228,6 +231,7 @@ namespace Gts {
 				hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
 				if (hkpObject) {
 					if (hkpObject->m_character) {
+						log::info("m_character");
 						auto const_shape = hkpObject->m_character->GetShape();
 						if (const_shape) {
 							hkpShape* shape = const_cast<hkpShape*>(const_shape);
