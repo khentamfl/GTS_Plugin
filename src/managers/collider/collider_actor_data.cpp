@@ -246,9 +246,11 @@ namespace Gts {
 				}
 			}
 			case hkpShapeType::kList: {
-				auto container = static_cast<const hkpListShape*>(shape);
+				const hkpListShape* container = static_cast<const hkpListShape*>(shape);
 				if (container) {
-					auto key = container->GetFirstKey();
+					log::info("Got ListShape: {}", reinterpret_cast<std::uintptr_t>(container));
+					hkpShapeKey key = container->GetFirstKey();
+					log::info("  - First Key: {}", key);
 					while (key != HK_INVALID_SHAPE_KEY) {
 						auto buffer = hkpShapeBuffer();
 						auto child_shape = container->GetChildShape(key, buffer);
