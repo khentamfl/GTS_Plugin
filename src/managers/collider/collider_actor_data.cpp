@@ -198,16 +198,25 @@ namespace Gts {
 				hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
 				if (hkpObject) {
 					for (auto body: hkpObject->bodies) {
-						hkpShape* shape = const_cast<hkpShape*>(body->GetShape());
-						this->AddShape(shape);
+						auto const_shape = body->GetShape();
+						if (const_shape) {
+							hkpShape* shape = const_cast<hkpShape*>(const_shape);
+							this->AddShape(shape);
+						}
 					}
 					for (auto body: hkpObject->phantoms) {
-						hkpShape* shape = const_cast<hkpShape*>(body->GetShape());
-						this->AddShape(shape);
+						auto const_shape = body->GetShape();
+						if (const_shape) {
+							hkpShape* shape = const_cast<hkpShape*>(const_shape);
+							this->AddShape(shape);
+						}
 					}
 					if (hkpObject->shapePhantom) {
-						hkpShape* shape = const_cast<hkpShape*>(hkpObject->shapePhantom->GetShape());
-						this->AddShape(shape);
+						auto const_shape = hkpObject->shapePhantom->GetShape();
+						if (const_shape) {
+							hkpShape* shape = const_cast<hkpShape*>(const_shape);
+							this->AddShape(shape);
+						}
 					}
 				}
 			}
@@ -219,8 +228,11 @@ namespace Gts {
 				hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
 				if (hkpObject) {
 					if (hkpObject->m_character) {
-						hkpShape* shape = const_cast<hkpShape*>(hkpObject->m_character->GetShape());
-						this->AddShape(shape);
+						auto const_shape = hkpObject->m_character->GetShape();
+						if (const_shape) {
+							hkpShape* shape = const_cast<hkpShape*>(const_shape);
+							this->AddShape(shape);
+						}
 					}
 				}
 			}
@@ -249,6 +261,8 @@ namespace Gts {
 				const hkpListShape* container = static_cast<const hkpListShape*>(shape);
 				if (container) {
 					log::info("Got ListShape: {}", reinterpret_cast<std::uintptr_t>(container));
+					auto num_shapes = container->GetNumChildShapes();
+					log::info("  - num_shapes: {}", num_shapes);
 					hkpShapeKey key = container->GetFirstKey();
 					log::info("  - First Key: {}", key);
 					while (key != HK_INVALID_SHAPE_KEY) {
