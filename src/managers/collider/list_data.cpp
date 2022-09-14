@@ -6,7 +6,6 @@ using namespace RE;
 
 namespace Gts {
 	ListData::ListData(hkpListShape* list) {
-		this->list->AddReference();
 		this->list = list;
 
 		this->aabbHalfExtents = list->aabbHalfExtents;
@@ -14,7 +13,6 @@ namespace Gts {
 	}
 
 	ListData::~ListData () {
-		this->list->RemoveReference();
 	}
 
 	void ListData::ApplyScale(const float& scale, const hkVector4& vecScale) {

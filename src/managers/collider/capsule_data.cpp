@@ -9,13 +9,11 @@ namespace Gts {
 		this->capsule = orig_capsule;
 
 		this->start = orig_capsule->vertexA;
-		this->capsule->AddReference();
 		this->end = orig_capsule->vertexB;
 		this->radius = orig_capsule->radius;
 	}
 
 	CapsuleData::~CapsuleData () {
-		this->capsule->RemoveReference();
 	}
 
 	void CapsuleData::ApplyScale(const float& scale, const hkVector4& vecScale) {
