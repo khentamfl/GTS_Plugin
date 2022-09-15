@@ -258,12 +258,14 @@ namespace Gts {
 				if (actual_shape) {
 					this->AddCapsule(actual_shape);
 				}
+				break;
 			}
 			case hkpShapeType::kConvexVertices: {
 				auto actual_shape = static_cast<hkpConvexVerticesShape*>(shape);
 				if (actual_shape) {
 					this->AddConvexVerts(actual_shape);
 				}
+				break;
 			}
 			case hkpShapeType::kList: {
 				const hkpListShape* container = static_cast<const hkpListShape*>(shape);
@@ -290,6 +292,7 @@ namespace Gts {
 						this->AddList(container_mut);
 					}
 				}
+				break;
 			}
 		}
 	}
