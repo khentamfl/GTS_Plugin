@@ -197,22 +197,26 @@ namespace Gts {
 			if (refObject) {
 				hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
 				if (hkpObject) {
-					for (auto body: hkpObject->bodies) {
-						log::info("Body");
-						auto const_shape = body->GetShape();
-						if (const_shape) {
-							hkpShape* shape = const_cast<hkpShape*>(const_shape);
-							this->AddShape(shape);
-						}
-					}
-					for (auto phantom: hkpObject->phantoms) {
-						log::info("Phantom");
-						auto const_shape = phantom->GetShape();
-						if (const_shape) {
-							hkpShape* shape = const_cast<hkpShape*>(const_shape);
-							this->AddShape(shape);
-						}
-					}
+					// I think these ones are objects that we collide with
+					// Needs testing
+					// for (auto body: hkpObject->bodies) {
+					// 	log::info("Body");
+					// 	auto const_shape = body->GetShape();
+					// 	if (const_shape) {
+					// 		hkpShape* shape = const_cast<hkpShape*>(const_shape);
+					// 		this->AddShape(shape);
+					// 	}
+					// }
+					// for (auto phantom: hkpObject->phantoms) {
+					// 	log::info("Phantom");
+					// 	auto const_shape = phantom->GetShape();
+					// 	if (const_shape) {
+					// 		hkpShape* shape = const_cast<hkpShape*>(const_shape);
+					// 		this->AddShape(shape);
+					// 	}
+					// }
+
+					// This is the actual shape
 					if (hkpObject->shapePhantom) {
 						log::info("shapePhantom");
 						auto const_shape = hkpObject->shapePhantom->GetShape();
@@ -275,6 +279,7 @@ namespace Gts {
 						if (child_shape) {
 							hkpShape* child_shape_mut = const_cast<hkpShape*>(child_shape);
 							if (child_shape_mut) {
+								log::info("Adding child");
 								this->AddShape(child_shape_mut);
 							}
 						}
