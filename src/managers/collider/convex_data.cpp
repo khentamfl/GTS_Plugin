@@ -48,8 +48,10 @@ namespace Gts {
 		for (std::size_t i = 0; i < numRotatedVerticies; i++) {
 			std::size_t j = i / 3;
 			std::size_t k = i % 3;
+			log::info("  - shape->rotatedVertices[{}].vertices[{}] = {}", j, k, Vector2Str(shape->rotatedVertices[j].vertices[k]));
 			shape->rotatedVertices[j].vertices[k] = this->rotated_verts[i] * vecScale;
 			log::info("  - rotatedVertices[{}]: {} -> {}",i, Vector2Str(this->rotated_verts[i]), Vector2Str(shape->rotatedVertices[j].vertices[k]));
+
 		}
 	}
 }
