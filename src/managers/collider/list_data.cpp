@@ -1,4 +1,5 @@
 #include "managers/collider/list_data.hpp"
+#include "util.hpp"
 
 using namespace std;
 using namespace SKSE;
