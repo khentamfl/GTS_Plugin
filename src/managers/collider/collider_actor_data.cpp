@@ -28,6 +28,7 @@ namespace {
 		x->pad28 = CAPSULE_MARKER;
 		x->pad2C = 0;
 		x->pad1C = 0;
+		x->memSizeAndFlags = 0xffff; // 0xffff Indicates normal size for type; If 0x0 disable ref counting
 
 		return x;
 	}
@@ -119,7 +120,7 @@ namespace Gts {
 
 		this->last_scale = scale_factor;
 		hkVector4 vecScale = hkVector4(scale_factor, scale_factor, scale_factor, scale_factor);
-		this->ApplyScale(scale_factor, vecScale);
+		// this->ApplyScale(scale_factor, vecScale);
 	}
 
 	void ColliderActorData::UpdateColliders(Actor* actor) {
@@ -133,7 +134,7 @@ namespace Gts {
 					if (ragdollDriver) {
 						auto ragdoll = ragdollDriver->ragdoll;
 						if (ragdoll) {
-							this->AddRagdoll(ragdoll);
+							// this->AddRagdoll(ragdoll);
 						}
 					}
 				}
@@ -142,7 +143,7 @@ namespace Gts {
 
 		// Search CharControllers
 		auto charController = actor->GetCharController();
-		this->AddCharController(charController);
+		// this->AddCharController(charController);
 	}
 
 	void ColliderActorData::AddRagdoll(hkaRagdollInstance* ragdoll) {
@@ -154,30 +155,29 @@ namespace Gts {
 						const hkpCapsuleShape* orig_capsule = static_cast<const hkpCapsuleShape*>(shape);
 						hkpCapsuleShape* mut_cap = const_cast<hkpCapsuleShape*>(orig_capsule);
 						// Is the capsule in our data?
-						// if (mut_cap) {
-						// 	if (this->capsule_data.find(mut_cap) == this->capsule_data.end()) {
-						// 		// Nope
-						// 		// Clone it (because ragdolls share shape between all actors of same race)
-						// 		hkpCapsuleShape* newCap = MakeCapsule();
-						// 		log::info("Made new capsule: {}", reinterpret_cast<std::uintptr_t>(newCap));
-						// 		newCap->radius = orig_capsule->radius;
-						// 		newCap->vertexA = orig_capsule->vertexA;
-						// 		newCap->vertexB = orig_capsule->vertexB;
-						// 		newCap->userData = orig_capsule->userData;
-						// 		newCap->type = orig_capsule->type;
-						//
-						// 		// Make rb use the new one
-						// 		rb->SetShape(newCap);
-						// 		log::info("Orig memSizeAndFlags: {}", mut_cap->memSizeAndFlags);
-						// 		mut_cap = newCap;
-						// 		log::info("New memSizeAndFlags: {}", mut_cap->memSizeAndFlags);
-						// 	}
-						// 	log::info("Adding capsule {}", reinterpret_cast<std::uintptr_t>(mut_cap));
-						// 	log::info("{},{},{}", mut_cap->vertexA.quad.m128_f32[0], mut_cap->vertexA.quad.m128_f32[1], mut_cap->vertexA.quad.m128_f32[2]);
-						// 	log::info("maybe this: {}", mut_cap->referenceCount);
-						// 	this->AddCapsule(mut_cap);
-						// 	log::info("Capsule added");
-						// }
+						if (mut_cap) {
+							if (this->capsule_data.find(mut_cap) == this->capsule_data.end()) {
+								// Nope
+								// Clone it (because ragdolls share shape between all actors of same race)
+								hkpCapsuleShape* newCap = MakeCapsule();
+								log::info("Made new capsule: {}", reinterpret_cast<std::uintptr_t>(newCap));
+								newCap->radius = orig_capsule->radius;
+								newCap->vertexA = orig_capsule->vertexA;
+								newCap->vertexB = orig_capsule->vertexB;
+								newCap->userData = orig_capsule->userData;
+								newCap->type = orig_capsule->type;
+								newCap->memSizeAndFlags = orig_capsule->memSizeAndFlags;
+
+								// Make rb use the new one
+								rb->SetShape(newCap);
+								mut_cap = newCap;
+							}
+							log::info("Adding capsule {}", reinterpret_cast<std::uintptr_t>(mut_cap));
+							log::info("{},{},{}", mut_cap->vertexA.quad.m128_f32[0], mut_cap->vertexA.quad.m128_f32[1], mut_cap->vertexA.quad.m128_f32[2]);
+							log::info("maybe this: {}", mut_cap->referenceCount);
+							this->AddCapsule(mut_cap);
+							log::info("Capsule added");
+						}
 						if (rb) {
 							this->AddRidgedBody(rb);
 						}
