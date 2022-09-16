@@ -35,10 +35,10 @@ namespace Hooks
 
 	void Hook_hkbBehaviorGraph::Update(hkbBehaviorGraph* a_this, const hkbContext& a_context, float a_timestep) {
 		float anim_speed = 1.0;
-		log::info("Updating graph: {}", reinterpret_cast<std::uintptr_t>(a_this));
+		// log::info("Updating graph: {}", reinterpret_cast<std::uintptr_t>(a_this));
 		Actor* actor = GetActorForGraph(a_this);
 		if (actor) {
-			log::info("  - Actor found: {}", actor->GetDisplayFullName());
+			// log::info("  - Actor found: {}", actor->GetDisplayFullName());
 			auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
 			if (saved_data) {
 				if (saved_data->anim_speed > 0.0) {
@@ -47,8 +47,8 @@ namespace Hooks
 				}
 			}
 		}
-		log::info("  - Graph speed is {}", anim_speed);
+		// log::info("  - Graph speed is {}", anim_speed);
 		_Update(a_this, a_context, a_timestep * anim_speed);
-		log::info("  DONE");
+		// log::info("  DONE");
 	}
 }

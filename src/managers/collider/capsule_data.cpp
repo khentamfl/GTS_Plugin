@@ -6,6 +6,7 @@ using namespace RE;
 
 namespace Gts {
 	CapsuleData::CapsuleData(hkpCapsuleShape* orig_capsule) {
+		this->capsule->AddReference();
 		this->capsule = orig_capsule;
 
 		this->start = orig_capsule->vertexA;
@@ -14,6 +15,7 @@ namespace Gts {
 	}
 
 	CapsuleData::~CapsuleData () {
+		this->capsule->RemoveReference();
 	}
 
 	void CapsuleData::ApplyScale(const float& scale, const hkVector4& vecScale) {
