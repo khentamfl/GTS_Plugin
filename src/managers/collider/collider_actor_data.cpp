@@ -172,11 +172,7 @@ namespace Gts {
 								rb->SetShape(newCap);
 								mut_cap = newCap;
 							}
-							log::info("Adding capsule {}", reinterpret_cast<std::uintptr_t>(mut_cap));
-							log::info("{},{},{}", mut_cap->vertexA.quad.m128_f32[0], mut_cap->vertexA.quad.m128_f32[1], mut_cap->vertexA.quad.m128_f32[2]);
-							log::info("maybe this: {}", mut_cap->referenceCount);
 							this->AddCapsule(mut_cap);
-							log::info("Capsule added");
 						}
 						if (rb) {
 							this->AddRidgedBody(rb);
