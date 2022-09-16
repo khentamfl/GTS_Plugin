@@ -143,7 +143,7 @@ namespace Gts {
 
 		// Search CharControllers
 		auto charController = actor->GetCharController();
-		// this->AddCharController(charController);
+		this->AddCharController(charController);
 	}
 
 	void ColliderActorData::AddRagdoll(hkaRagdollInstance* ragdoll) {
