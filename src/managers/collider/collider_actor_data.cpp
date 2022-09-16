@@ -134,7 +134,7 @@ namespace Gts {
 					if (ragdollDriver) {
 						auto ragdoll = ragdollDriver->ragdoll;
 						if (ragdoll) {
-							// this->AddRagdoll(ragdoll);
+							this->AddRagdoll(ragdoll);
 						}
 					}
 				}
