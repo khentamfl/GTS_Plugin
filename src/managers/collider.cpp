@@ -82,7 +82,7 @@ namespace Gts {
 				if (fabs(scale - 1.0) <= 1e-4) {
 					continue;
 				}
-				// actor_data->ApplyPose(actor, scale);
+				actor_data->ApplyPose(actor, scale);
 			}
 		}
 	}
