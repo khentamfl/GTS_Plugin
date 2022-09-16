@@ -120,7 +120,7 @@ namespace Gts {
 
 		this->last_scale = scale_factor;
 		hkVector4 vecScale = hkVector4(scale_factor, scale_factor, scale_factor, scale_factor);
-		// this->ApplyScale(scale_factor, vecScale);
+		this->ApplyScale(scale_factor, vecScale);
 	}
 
 	void ColliderActorData::UpdateColliders(Actor* actor) {
