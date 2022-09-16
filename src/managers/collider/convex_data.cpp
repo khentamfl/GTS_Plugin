@@ -1,4 +1,5 @@
 #include "managers/collider/convex_data.hpp"
+#include "util.hpp"
 #include "hooks/RE.hpp"
 
 using namespace std;
