@@ -13,7 +13,9 @@ using namespace Gts;
 
 namespace {
 	void make_explosion_at(Foot kind, Actor* actor, NiPoint3 position, float scale) {
-		if (!actor) return;
+		if (!actor) {
+			return;
+		}
 
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
@@ -22,17 +24,25 @@ namespace {
 			case Foot::Front:
 			case Foot::Back:
 				base_explosion = Runtime::GetSingleton().footstepExplosion;
+				break;
 			case Foot::JumpLand:
 				base_explosion = Runtime::GetSingleton().footstepExplosion;
+				break;
 		}
 
 		if (base_explosion) {
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
-			if (!instance_ptr) return;
+			if (!instance_ptr) {
+				return;
+			}
 			TESObjectREFR* instance = instance_ptr.get();
-			if (!instance) return;
+			if (!instance) {
+				return;
+			}
 			Explosion* explosion = instance->AsExplosion();
-			if (!explosion) return;
+			if (!explosion) {
+				return;
+			}
 			explosion->SetPosition(position);
 			explosion->radius *= scale;
 			explosion->imodRadius *= scale;
@@ -48,7 +58,9 @@ namespace Gts {
 	}
 
 	void ExplosionManager::OnImpact(const Impact& impact) {
-		if (!impact.actor) return;
+		if (!impact.actor) {
+			return;
+		}
 		auto actor = impact.actor;
 
 		float scale = impact.effective_scale;

@@ -201,6 +201,7 @@ namespace {
 					} else {
 						mod_target_scale(actor, Scale * -(0.00029 + (ShrinkRate * 0.34)));
 					}
+					break;
 				}
 			}
 		}

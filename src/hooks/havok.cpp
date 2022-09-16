@@ -63,12 +63,13 @@ namespace Hooks
 	{
 		switch (CompareFilterInfo(a_this, a_filterInfoA, a_filterInfoB)) {
 			case CollisionFilterComparisonResult::Continue:
-			default:
 				return _bhkCollisionFilter_CompareFilterInfo1(a_this, a_filterInfoA, a_filterInfoB);
 			case CollisionFilterComparisonResult::Collide:
 				return true;
 			case CollisionFilterComparisonResult::Ignore:
 				return false;
+			default:
+				return _bhkCollisionFilter_CompareFilterInfo1(a_this, a_filterInfoA, a_filterInfoB);
 		}
 	}
 

@@ -103,12 +103,14 @@ namespace Gts {
 				if (model) {
 					models.push_back(model);
 				}
+				break;
 			}
 			case Person::Third: {
 				auto model = actor->Get3D(false);
 				if (model) {
 					models.push_back(model);
 				}
+				break;
 			}
 			case Person::Any: {
 				auto model = actor->Get3D(false);
@@ -119,12 +121,14 @@ namespace Gts {
 				if (modelb) {
 					models.push_back(modelb);
 				}
+				break;
 			}
 			case Person::Current: {
 				auto model = actor->GetCurrent3D();
 				if (model) {
 					models.push_back(model);
 				}
+				break;
 			}
 		}
 		if (models.empty()) {
@@ -191,12 +195,14 @@ namespace Gts {
 				if (model) {
 					models.push_back(model);
 				}
+				break;
 			}
 			case Person::Third: {
 				auto model = actor->Get3D(false);
 				if (model) {
 					models.push_back(model);
 				}
+				break;
 			}
 			case Person::Any: {
 				auto model = actor->Get3D(false);
@@ -207,12 +213,14 @@ namespace Gts {
 				if (modelb) {
 					models.push_back(modelb);
 				}
+				break;
 			}
 			case Person::Current: {
 				auto model = actor->GetCurrent3D();
 				if (model) {
 					models.push_back(model);
 				}
+				break;
 			}
 		}
 		if (models.empty()) {
