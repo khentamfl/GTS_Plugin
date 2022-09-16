@@ -18,6 +18,7 @@ namespace Gts {
 	}
 
 	void ColliderManager::Update() {
+		return;
 		auto playerCharacter = PlayerCharacter::GetSingleton();
 		auto cell = playerCharacter->GetParentCell();
 		if (!cell) {
@@ -67,6 +68,7 @@ namespace Gts {
 	}
 
 	void ColliderManager::UpdateHavok() {
+		return;
 		auto actors = find_actors();
 		auto& manager = GtsManager::GetSingleton();
 		for (auto actor: actors) {
