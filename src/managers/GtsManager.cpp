@@ -391,11 +391,12 @@ void GtsManager::Update() {
 		if (GetActionString() == "activate")
 		{
 			ConsoleLog::GetSingleton()->Print("E Pressed");
+			PlayerCharacter::GetSingleton()->mod_target_scale(0.33);
 			}
 
 		if (GetActionString() != "activate") {
-			log::info("Button is pressed:{}", GetActionString());
-			ConsoleLog::GetSingleton()->Print("Button is pressed but it's not E");
+			//log::info("Button is pressed:{}", GetActionString());
+			//ConsoleLog::GetSingleton()->Print("Button is pressed but it's not E");
 		}
 
 		if (GetActionString() == "leftAttack" || GetActionString() == "rightAttack") {
