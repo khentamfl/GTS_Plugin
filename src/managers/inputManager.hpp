@@ -19,5 +19,5 @@ namespace Gts
             auto Result = std::basic_string Action;
             return Result.c_str();
         }
-    }
+    };
 }
