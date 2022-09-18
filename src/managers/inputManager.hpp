@@ -12,7 +12,7 @@ namespace Gts
 
         inline std::string GetActionString() {
             auto Action = RE::UserEvents::GetSingleton()->activate;
-            return std::Action;
+            return Action;
         }
     }
 }
