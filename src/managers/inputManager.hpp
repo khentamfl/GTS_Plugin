@@ -1,30 +1,33 @@
 #pragma once
 
+using namespace std;
+using namespace SKSE;
+using namespace RE;
 
 namespace Gts
 {
-	using Events = RE::UserEventEnabled;
-
-	class InputManager : public RE::BSTEventSink<RE::InputEvent*>
+	class InputManager : public RE::ControlMap
 	{
 	public:
 
 		inline float GetKeyPress() {
-            auto PressedKey = Events->inputKey;
+            auto PressedKey = RE::ControlMap::Events->inputKey;
             if (!PressedKey)    {
                 return 0;
             }
-            else
+            else {
             return PressedKey;
+            }
         }
 
         inline std::string GetActionString() {
-            auto Action = Events->eventID;
+            auto Action = RE::ControlMap::Events->eventID;
             if (!Action)    {
                 return "None";
             }
-            else
+            else {
             return Action;
+            }
         }
     }
 }

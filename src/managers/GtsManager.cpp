@@ -145,15 +145,13 @@ namespace {
 
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
-		float BonusSprint = clamp(1.0, 1.35, 1.0 + scale/20); // Used to slowly increase sprint speed when becoming huge
-		float NegativeMS = clamp(1.00, 1.66, 1.0 + scale/20); // Used to slow down SlowWalk speed at huge size
 			persi_actor_data->anim_speed = speed_mult;
 			if (actor->IsWalking() == true) {
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * -NegativeMS) / MS_mult);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / MS_mult);
 				log::info("Slow Walk Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			} 
 			if (actor->IsSprinting() == true) {
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)) * BonusSprint) / MS_mult);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) * 1.25 / MS_mult);
 				log::info("Sprint Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}, Bonus: {}, NegativeMS: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed, BonusSprint, NegativeMS);
 			} else {
 				actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult + (Bonus/3 + 1.0))/ MS_mult);
