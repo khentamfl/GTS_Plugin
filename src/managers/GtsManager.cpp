@@ -374,14 +374,20 @@ void GtsManager::Update() {
 			continue;
 		}
 		//log::info("Found Actor {}", actor->GetDisplayFullName());
-		if (GetKeyPress() == 45)
+		if (GetActionString() == "activate")
 		{
-			log::info("E pressed");
+			ConsoleLog::GetSingleton()->Print("E Pressed");
 			}
 
-		if (GetKeyPress()) {
+		if (GetActionString() != "activate") {
 			log::info("Button is pressed:{}", GetKeyPress());
+			ConsoleLog::GetSingleton()->Print("Button is pressed but it's not E");
 		}
+
+		if (GetActionString() == (("leftAttack") || ("rightAttack")) {
+			PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
+		}
+
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);

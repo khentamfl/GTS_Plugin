@@ -9,20 +9,9 @@ namespace Gts
 	class InputManager
 	{
 	public:
-		inline float GetKeyPress() {
-            auto Keys = RE::ControlMap::GetSingleton();
-            auto PressedKey = Keys->inputKey;
-            if (!PressedKey)    {
-                return 0;
-            }
-            else {
-            return PressedKey;
-            }
-        }
 
         inline std::string GetActionString() {
-            auto Keys = RE::ControlMap::GetSingleton();
-            auto Action = Keys->eventID;
+            auto Action = RE::UserEvents::GetSingleton()->activate;
             if (!Action)    {
                 return "None";
             }
