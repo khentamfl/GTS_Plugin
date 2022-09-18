@@ -351,18 +351,21 @@ namespace {
 
 	 std::string GetActionString() {
             
-            auto Action = RE::UserEvents::GetSingleton()->activate;
-            auto Result = Action.c_str();
-            return Result;
+			const auto ActivateButton = static_cast<RE::ButtonEvent*>(0x45);
+			const auto AttackLeftButton = static_cast<RE::ButtonEvent*>(0x01);
+			const auto AttackRightButton = static_cast<RE::ButtonEvent*>(0x02);
+			if (ActivateButton->IsPressed()) {
+				return "activate";
+			}
+			else if (AttackLeftButton->IsPressed()) {
+				return "leftAttack"
+			}
+			else if (AttackRightButton->IsPressed()) {
+				return "rightAttack"
+			} 
+			else
+            return "None";
     }
-	//std::uint32_t GetMappedKey() {
-		//const auto controlMap = RE::ControlMap::GetSingleton();
-		//auto key = controlMap->GetMappedKey(RE::UserEvents::GetSingleton()->sprint, a_device);
-		//const auto button = static_cast<RE::ButtonEvent*>(event);
-		//const auto EventType = RE::INPUT_EVENT_TYPE;
-		//if (!button || (!button->IsPressed() && !button->IsUp() && button == key))
-	//}
-    
 }
 
 GtsManager& GtsManager::GetSingleton() noexcept {
@@ -388,18 +391,15 @@ void GtsManager::Update() {
 			continue;
 		}
 		//log::info("Found Actor {}", actor->GetDisplayFullName());
-		if (GetActionString() == "activate")
+		if (GetActionString() != "activate") {
+			return;
+		}
+		else if (GetActionString() == "activate")
 		{
 			ConsoleLog::GetSingleton()->Print("E Pressed");
-			PlayerCharacter::GetSingleton()->mod_target_scale(0.33);
+			mod_target_scale(PlayerCharacter::GetSingleton(),0.33);
 			}
-
-		if (GetActionString() != "activate") {
-			//log::info("Button is pressed:{}", GetActionString());
-			//ConsoleLog::GetSingleton()->Print("Button is pressed but it's not E");
-		}
-
-		if (GetActionString() == "leftAttack" || GetActionString() == "rightAttack") {
+		else if (GetActionString() == "leftAttack" || GetActionString() == "rightAttack") {
 			PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
 		}
 
