@@ -376,8 +376,13 @@ void GtsManager::Update() {
 			continue;
 		}
 		//log::info("Found Actor {}", actor->GetDisplayFullName());
-		if (GetKeyPress() == 45.0) {
-			log::info("Button is pressed");
+		if (GetKeyPress() == 45)
+		{
+			log::info("E pressed");
+			}
+
+		if (GetKeyPress()) {
+			log::info("Button is pressed:{}", GetKeyPress());
 		}
 		update_actor(actor);
 		apply_actor(actor);

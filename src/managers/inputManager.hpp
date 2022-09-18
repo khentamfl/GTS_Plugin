@@ -1,20 +1,28 @@
 #pragma once
 
+
 namespace Gts
 {
-	using EventResult = RE::BSEventNotifyControl;
+	using Events = RE::UserEventEnabled;
 
 	class InputManager : public RE::BSTEventSink<RE::InputEvent*>
 	{
 	public:
-		virtual EventResult CheckButton(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>* a_eventSource) override;
 
-		static void Register()
-		{
-			auto deviceManager = RE::BSInputDeviceManager::GetSingleton();
-			deviceManager->AddEventSink(InputEventHandler::GetSingleton());
-		}
+		inline float GetKeyPress() {
+            const PressedKey = Events->inputKey;
+            if (!PressedKey)
+            {return 0}
+            else
+            return PressedKey;
+        }
 
-		static std::uint32_t GetKeyPress(RE::INPUT_DEVICE a_device);
+        inline std::string GetActionString() {
+            const Action = Events->eventID;
+            if (!Action)
+            {return "None"}
+            else
+            return Action;
+        }
 
 }
