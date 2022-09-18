@@ -10,17 +10,19 @@ namespace Gts
 	public:
 
 		inline float GetKeyPress() {
-            const PressedKey = Events->inputKey;
-            if (!PressedKey)
-            {return 0}
+            auto PressedKey = Events->inputKey;
+            if (!PressedKey)    {
+                return 0;
+            }
             else
             return PressedKey;
         }
 
         inline std::string GetActionString() {
-            const Action = Events->eventID;
-            if (!Action)
-            {return "None"}
+            auto Action = Events->eventID;
+            if (!Action)    {
+                return "None";
+            }
             else
             return Action;
         }
