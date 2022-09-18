@@ -1,5 +1,9 @@
 #pragma once
 
+#include <locale>
+#include <codecvt>
+#include <string>
+
 using namespace std;
 using namespace SKSE;
 using namespace RE;
@@ -15,7 +19,8 @@ namespace Gts
         inline string GetActionString() {
             
             auto Action = RE::UserEvents::GetSingleton()->activate;
-            return Action;
+            auto Result = std::basic_string Action;
+            return Result;
         }
     }
 }
