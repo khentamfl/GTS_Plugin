@@ -20,10 +20,10 @@ namespace Gts
             return Result;
         }
 
-        float GetPressedButton() {
-            auto KeyPress = RE::ControlMap::GetSingleton()->inputKey;
-            auto TheKey = KeyPress.c_str();
-            return TheKey;
-        }
-    };
+        //float GetPressedButton() {
+          //  auto KeyPress = RE::ControlMap::GetSingleton()->inputKey;
+          //  auto TheKey = KeyPress.c_str();
+           // return TheKey;
+        //}
+   // };
 }
