@@ -6,10 +6,9 @@ using namespace RE;
 
 namespace Gts
 {
-	class InputManager : public RE::ControlMap
+	class InputManager
 	{
 	public:
-
 		inline float GetKeyPress() {
             auto PressedKey = RE::ControlMap::Events->inputKey;
             if (!PressedKey)    {
