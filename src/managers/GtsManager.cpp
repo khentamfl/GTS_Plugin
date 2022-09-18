@@ -4,6 +4,7 @@
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
+#include "managers/inputManager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -375,6 +376,9 @@ void GtsManager::Update() {
 			continue;
 		}
 		//log::info("Found Actor {}", actor->GetDisplayFullName());
+		if (GetKeyPress() == 45.0) {
+			log::info("Button is pressed");
+		}
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);
