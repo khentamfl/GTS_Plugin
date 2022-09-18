@@ -17,7 +17,7 @@ namespace Gts
             //auto KeyPress = RE::ControlMap::GetSingleton()->inputKey;
             //return KeyPress;
             auto Action = RE::UserEvents::GetSingleton()->activate;
-            auto Result = std::basic_string<Action>;
+            auto Result = std::string<Action>;
             return Result;
         }
     };
