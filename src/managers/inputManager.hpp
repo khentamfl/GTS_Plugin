@@ -12,7 +12,7 @@ namespace Gts
 
         [[nodiscard]] static InputManager& GetSingleton() noexcept;
     
-        inline BSFixedString GetActionString() {
+        inline string GetActionString() {
             
             auto Action = RE::UserEvents::GetSingleton()->activate;
             return Action;

@@ -380,7 +380,7 @@ void GtsManager::Update() {
 			}
 
 		if (InputManager::GetSingleton().GetActionString() != "activate") {
-			log::info("Button is pressed:{}", GetKeyPress());
+			log::info("Button is pressed:{}", GetActionString());
 			ConsoleLog::GetSingleton()->Print("Button is pressed but it's not E");
 		}
 
