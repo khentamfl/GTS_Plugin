@@ -1,8 +1,5 @@
 #pragma once
 
-#include <locale>
-#include <codecvt>
-#include <string>
 
 using namespace std;
 using namespace SKSE;
@@ -20,7 +17,7 @@ namespace Gts
             
             auto Action = RE::UserEvents::GetSingleton()->activate;
             auto Result = std::basic_string Action;
-            return Result;
+            return Result.c_str();
         }
     }
 }
