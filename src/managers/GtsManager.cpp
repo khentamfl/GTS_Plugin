@@ -349,6 +349,21 @@ namespace {
 
 		ApplyGameMode(actor, gameMode, growthRate, shrinkRate);
 	}
+
+	 std::string GetActionString() {
+            
+            auto Action = RE::UserEvents::GetSingleton()->activate;
+            auto Result = Action.c_str();
+            return Result;
+    }
+	//std::uint32_t GetMappedKey() {
+		//const auto controlMap = RE::ControlMap::GetSingleton();
+		//auto key = controlMap->GetMappedKey(RE::UserEvents::GetSingleton()->sprint, a_device);
+		//const auto button = static_cast<RE::ButtonEvent*>(event);
+		//const auto EventType = RE::INPUT_EVENT_TYPE;
+		//if (!button || (!button->IsPressed() && !button->IsUp() && button == key))
+	//}
+    
 }
 
 GtsManager& GtsManager::GetSingleton() noexcept {
@@ -373,19 +388,18 @@ void GtsManager::Update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		auto Input = InputManager::GetSingleton();
 		//log::info("Found Actor {}", actor->GetDisplayFullName());
-		if (Input.GetActionString() == "activate")
+		if (GetActionString() == "activate")
 		{
 			ConsoleLog::GetSingleton()->Print("E Pressed");
 			}
 
-		if (Input.GetActionString() != "activate") {
-			log::info("Button is pressed:{}", Input.GetActionString());
+		if (GetActionString() != "activate") {
+			log::info("Button is pressed:{}", GetActionString());
 			ConsoleLog::GetSingleton()->Print("Button is pressed but it's not E");
 		}
 
-		if (Input.GetActionString() == "leftAttack" || Input.GetActionString() == "rightAttack") {
+		if (GetActionString() == "leftAttack" || GetActionString() == "rightAttack") {
 			PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
 		}
 
