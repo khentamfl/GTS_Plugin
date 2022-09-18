@@ -385,7 +385,7 @@ void GtsManager::Update() {
 			ConsoleLog::GetSingleton()->Print("Button is pressed but it's not E");
 		}
 
-		if (Input.GetActionString() == (("leftAttack") || ("rightAttack"))) {
+		if (Input.GetActionString() == "leftAttack" || Input.GetActionString() == "rightAttack") {
 			PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
 		}
 
