@@ -13,7 +13,7 @@ namespace Gts
 
         [[nodiscard]] static InputManager& GetSingleton() noexcept;
     
-        inline string GetActionString() {
+        virtual std::string GetActionString() {
             //auto KeyPress = RE::ControlMap::GetSingleton()->inputKey;
             //return KeyPress;
             auto Action = RE::UserEvents::GetSingleton()->activate;
