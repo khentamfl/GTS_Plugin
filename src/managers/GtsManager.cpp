@@ -373,18 +373,19 @@ void GtsManager::Update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
+		auto Input = InputManager::GetSingleton();
 		//log::info("Found Actor {}", actor->GetDisplayFullName());
-		if (InputManager::GetSingleton().GetActionString() == "activate")
+		if (Input.GetActionString() == "activate")
 		{
 			ConsoleLog::GetSingleton()->Print("E Pressed");
 			}
 
-		if (InputManager::GetSingleton().GetActionString() != "activate") {
-			log::info("Button is pressed:{}", GetActionString());
+		if (Input.GetActionString() != "activate") {
+			log::info("Button is pressed:{}", Input.GetActionString());
 			ConsoleLog::GetSingleton()->Print("Button is pressed but it's not E");
 		}
 
-		if (InputManager::GetSingleton().GetActionString() == (("leftAttack") || ("rightAttack")) {
+		if (Input.GetActionString() == (("leftAttack") || ("rightAttack")) {
 			PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
 		}
 
