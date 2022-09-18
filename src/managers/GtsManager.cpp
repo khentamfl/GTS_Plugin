@@ -374,17 +374,17 @@ void GtsManager::Update() {
 			continue;
 		}
 		//log::info("Found Actor {}", actor->GetDisplayFullName());
-		if (GetActionString() == "activate")
+		if (InputManager::GetSingleton().GetActionString() == "activate")
 		{
 			ConsoleLog::GetSingleton()->Print("E Pressed");
 			}
 
-		if (GetActionString() != "activate") {
+		if (InputManager::GetSingleton().GetActionString() != "activate") {
 			log::info("Button is pressed:{}", GetKeyPress());
 			ConsoleLog::GetSingleton()->Print("Button is pressed but it's not E");
 		}
 
-		if (GetActionString() == (("leftAttack") || ("rightAttack")) {
+		if (InputManager::GetSingleton().GetActionString() == (("leftAttack") || ("rightAttack")) {
 			PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
 		}
 
