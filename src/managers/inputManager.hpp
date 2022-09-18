@@ -1,6 +1,5 @@
 #pragma once
 
-
 using namespace std;
 using namespace SKSE;
 using namespace RE;
@@ -18,8 +17,8 @@ namespace Gts
             auto Action = RE::UserEvents::GetSingleton()->activate;
             auto Result = Action.c_str();
             return Result;
-        }
-
+            }
+    };
         //float GetPressedButton() {
           //  auto KeyPress = RE::ControlMap::GetSingleton()->inputKey;
           //  auto TheKey = KeyPress.c_str();
