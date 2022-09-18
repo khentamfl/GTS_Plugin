@@ -14,7 +14,7 @@ namespace Gts
         [[nodiscard]] static InputManager& GetSingleton() noexcept;
     
         inline string GetActionString() {
-            auto KeyPress = RE::ControlMap::GetSingleton()->UserEventMapping->inputKey;
+            auto KeyPress = RE::ControlMap::GetSingleton()->inputKey;
             return KeyPress;
             //auto Action = RE::UserEvents::GetSingleton()->activate;
             //return Action;
