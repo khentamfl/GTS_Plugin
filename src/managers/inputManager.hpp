@@ -10,7 +10,7 @@ namespace Gts
 	{
 	public:
 		inline float GetKeyPress() {
-            auto PressedKey = RE::ControlMap::Events->inputKey;
+            auto PressedKey = RE::ControlMap::inputKey;
             if (!PressedKey)    {
                 return 0;
             }
@@ -20,7 +20,7 @@ namespace Gts
         }
 
         inline std::string GetActionString() {
-            auto Action = RE::ControlMap::Events->eventID;
+            auto Action = RE::ControlMap::eventID;
             if (!Action)    {
                 return "None";
             }
