@@ -14,7 +14,7 @@ namespace Gts {
 	inline static float* g_worldScale = (float*)RELOCATION_ID(231896, 188105).address();
 	inline static float* g_worldScaleInverse = (float*)RELOCATION_ID(230692, 187407).address();
 
-	inline std::string_view actor_name(Actor* actor) {
+	inline std::string actor_name(Actor* actor) {
 		if (actor) {
 			auto ba = actor->GetActorBase();
 			if (ba) {
@@ -24,11 +24,11 @@ namespace Gts {
 		return "";
 	}
 
-	inline std::string_view Vector2Str(const hkVector4& vector) {
+	inline std::string Vector2Str(const hkVector4& vector) {
 		return std::format("{},{},{}", vector.quad.m128_f32[0], vector.quad.m128_f32[1], vector.quad.m128_f32[2]);
 	}
 
-	inline std::string_view Vector2Str(const hkVector4* vector) {
+	inline std::string Vector2Str(const hkVector4* vector) {
 		if (vector) {
 			return std::format("{},{},{}", vector->quad.m128_f32[0], vector->quad.m128_f32[1], vector->quad.m128_f32[2]);
 		} else {
@@ -36,11 +36,11 @@ namespace Gts {
 		}
 	}
 
-	inline std::string_view Vector2Str(const NiPoint3& vector) {
+	inline std::string Vector2Str(const NiPoint3& vector) {
 		return std::format("{},{},{}", vector.x, vector.y, vector.z);
 	}
 
-	inline std::string_view Vector2Str(const NiPoint3* vector) {
+	inline std::string Vector2Str(const NiPoint3* vector) {
 		if (vector) {
 			return std::format("{},{},{}", vector->x, vector->y, vector->z);
 		} else {
