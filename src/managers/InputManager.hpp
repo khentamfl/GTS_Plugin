@@ -15,7 +15,7 @@ namespace Gts
 	public:
         [[nodiscard]] static InputManager& GetSingleton() noexcept;
 
-		virtual EventResult::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>*) {
+		virtual EventResult::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>) {
   		if (!a_event) {
    		 return EventResult::kContinue;
  		 }
