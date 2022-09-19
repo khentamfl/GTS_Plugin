@@ -300,37 +300,37 @@ namespace {
 			return;
 		}
 
-		// log::info("Drawing char controller");
-		hkpRigidBody* supportBody = charController->supportBody.get();
-		if (supportBody) {
-			// log::info("  - Support Body");
-			DrawRigidBody(supportBody);
-		}
-
-		hkpRigidBody* bumpedBody = charController->bumpedBody.get();
-		if (bumpedBody) {
-			// log::info("  - Bumped Body");
-			DrawRigidBody(bumpedBody);
-		}
-
-		hkpRigidBody* bumpedCharCollisionObject = charController->bumpedCharCollisionObject.get();
-		if (bumpedCharCollisionObject) {
-			// log::info("  - Bumped Char Collision Object");
-			DrawRigidBody(bumpedCharCollisionObject);
-		}
-
-		{
-			hkTransform outTransform;
-			charController->GetTransformImpl(outTransform);
-			glm::mat4 transform = HkToGlm(outTransform);
-			for (auto bhkShape: charController->shapes) {
-				hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
-				if (shape) {
-					// log::info("  - Shape of CharController");
-					DrawShape(shape, transform);
-				}
-			}
-		}
+		// // log::info("Drawing char controller");
+		// hkpRigidBody* supportBody = charController->supportBody.get();
+		// if (supportBody) {
+		// 	// log::info("  - Support Body");
+		// 	DrawRigidBody(supportBody);
+		// }
+		//
+		// hkpRigidBody* bumpedBody = charController->bumpedBody.get();
+		// if (bumpedBody) {
+		// 	// log::info("  - Bumped Body");
+		// 	DrawRigidBody(bumpedBody);
+		// }
+		//
+		// hkpRigidBody* bumpedCharCollisionObject = charController->bumpedCharCollisionObject.get();
+		// if (bumpedCharCollisionObject) {
+		// 	// log::info("  - Bumped Char Collision Object");
+		// 	DrawRigidBody(bumpedCharCollisionObject);
+		// }
+		//
+		// {
+		// 	hkTransform outTransform;
+		// 	charController->GetTransformImpl(outTransform);
+		// 	glm::mat4 transform = HkToGlm(outTransform);
+		// 	for (auto bhkShape: charController->shapes) {
+		// 		hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
+		// 		if (shape) {
+		// 			// log::info("  - Shape of CharController");
+		// 			DrawShape(shape, transform);
+		// 		}
+		// 	}
+		// }
 
 		bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
 		if (charProxyController) {
@@ -339,13 +339,13 @@ namespace {
 			if (refObject) {
 				hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
 				if (hkpObject) {
-					for (hkpRigidBody* body: hkpObject->bodies) {
-						DrawRigidBody(body);
-					}
-					for (auto phantom: hkpObject->phantoms) {
-						// log::info("Draw Body");
-						DrawWorldObject(phantom);
-					}
+					// for (hkpRigidBody* body: hkpObject->bodies) {
+					// 	DrawRigidBody(body);
+					// }
+					// for (auto phantom: hkpObject->phantoms) {
+					// 	// log::info("Draw Body");
+					// 	DrawWorldObject(phantom);
+					// }
 					auto shapePhantom = hkpObject->shapePhantom;
 					if (shapePhantom) {
 						// log::info("Draw shape phantom");
@@ -357,11 +357,6 @@ namespace {
 
 
 		bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
-		if ((charProxyController == nullptr) && (charRigidBodyController == nullptr)) {
-			log::warn("CharController has Raw Name: {} of but we couldn't confirm via RTTI", GetRawName(charController));
-			log::warn("Forcing to bhkCharRigidBodyController");
-			charRigidBodyController = static_cast<bhkCharRigidBodyController*>(charController);
-		}
 		if (charRigidBodyController) {
 			auto& characterRigidBody = charRigidBodyController->characterRigidBody;
 			hkReferencedObject* refObject = characterRigidBody.referencedObject.get();
@@ -479,21 +474,6 @@ namespace {
 			}
 		}
 	}
-
-	void DrawActor(Actor* actor) {
-		if (!actor) {
-			return;
-		}
-		if (!actor->Is3DLoaded()) {
-			return;
-		}
-
-		auto root = actor->GetCurrent3D();
-		// DrawNiNodes(root);
-
-		DrawCharController(actor);
-		DrawRagdoll(actor);
-	}
 }
 
 namespace Gts {
@@ -512,7 +492,8 @@ namespace Gts {
 				continue;
 			}
 
-			DrawActor(actor);
+			DrawCharController(actor);
+			// DrawRagdoll(actor);
 			// DrawRay(actor);
 		}
 	}
