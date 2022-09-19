@@ -14,8 +14,18 @@ namespace Gts
 	public:
         [[nodiscard]] static InputManager& GetSingleton() noexcept;
 
-		virtual Result ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>* a_eventSource) override;
-
+		virtual Result InputEventHandler::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>*) {
+  		if (!a_event) {
+   		 return EventResult::kContinue;
+ 		 }
+  		for (auto event = *a_event; event; event = event->next) {
+   		 if (event->eventType != EventType::kButton) {
+   		 continue;
+    	}
+    		auto buttonEvent = a_event->AsButtonEvent();
+    // You now have the button event
+ 		 }
+	}
         void Start() override {
             Register();
         };
