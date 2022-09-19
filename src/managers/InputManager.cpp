@@ -30,11 +30,11 @@ namespace Gts {
 			if (event->GetEventType() != INPUT_EVENT_TYPE::kButton) {
 				continue;
 			}
-			ButtonEvent* buttonEvent = event.AsButtonEvent();
+			ButtonEvent* buttonEvent = event->AsButtonEvent();
 			if (!buttonEvent || (!buttonEvent->IsPressed() && !buttonEvent->IsUp())) {
 				continue;
 			}
-			if (button->device.get() != DeviceType::kKeyboard) {
+			if (buttonEvent->device.get() != INPUT_DEVICE::kKeyboard) {
 				continue;
 			}
 			auto key = buttonEvent->GetIDCode();
