@@ -22,7 +22,7 @@ namespace Gts {
 		return instance;
 	}
 
-	BSEventNotifyControl InputManager::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>* a_source) {
+	BSEventNotifyControl InputManager::ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) {
 		if (!a_event) {
 			return BSEventNotifyControl::kContinue;
 		}
@@ -30,7 +30,7 @@ namespace Gts {
 			if (event->GetEventType() != INPUT_EVENT_TYPE::kButton) {
 				continue;
 			}
-			ButtonEvent* buttonEvent = a_event->AsButtonEvent();
+			ButtonEvent* buttonEvent = event.AsButtonEvent();
 			if (!buttonEvent || (!buttonEvent->IsPressed() && !buttonEvent->IsUp())) {
 				continue;
 			}
