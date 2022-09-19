@@ -22,31 +22,34 @@ namespace Gts {
 		return instance;
 	}
 
-	EventResult InputManager::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*> a_source) {
+	BSEventNotifyControl InputManager::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>* a_source) {
 		if (!a_event) {
-			return EventResult::kContinue;
+			return BSEventNotifyControl::kContinue;
 		}
 		for (auto event = *a_event; event; event = event->next) {
 			if (event->GetEventType() != INPUT_EVENT_TYPE::kButton) {
 				continue;
 			}
 			ButtonEvent* buttonEvent = a_event->AsButtonEvent();
-			if (!buttonEvent) {
+			if (!buttonEvent || (!buttonEvent->IsPressed() && !buttonEvent->IsUp())) {
 				continue;
 			}
-
-			if ((buttonEvent->idCode == 0x45) && buttonEvent->IsPressed()) {
+			if (button->device.get() != DeviceType::kKeyboard) {
+				continue;
+			}
+			auto key = buttonEvent->GetIDCode();
+			if (key == 0x45) {
 				// Do attack
 				log::info("0x45 pressed");
-			} else if ((buttonEvent->idCode == 0x1) && buttonEvent->IsPressed()) {
+			} else if (key == 0x1) {
 				// Do attack left
 				log::info("0x01 pressed");
-			} else if ((buttonEvent->idCode == 0x2) && buttonEvent->IsPressed()) {
+			} else if (key == 0x2) {
 				// Do attack right
 				log::info("0x02 pressed");
 			}
 		}
-		return EventResult::kContinue;
+		return BSEventNotifyControl::kContinue;
 	}
 
 	void InputManager::Start() {
