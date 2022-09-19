@@ -1,5 +1,5 @@
-		
-        
+
+
 #include "managers/RandomGrowth.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -24,36 +24,32 @@ namespace Gts {
 }
 
 namespace {
-        void DetectInput() {
-        if (GetActionString() != "activate") {
-			return;
+	EventResult InputManager::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>) {
+		if (!a_event) {
+			return EventResult::kContinue;
 		}
-		else if (GetActionString() == "activate")
-		{
-			ConsoleLog::GetSingleton()->Print("E Pressed");
-			mod_target_scale(PlayerCharacter::GetSingleton(),0.33);
+		for (auto event = *a_event; event; event = event->next) {
+			if (event->eventType != EventType::kButton) {
+				continue;
 			}
-		else if (GetActionString() == "leftAttack" || GetActionString() == "rightAttack") {
-			PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
-		    }
-        }
+			auto buttonEvent = a_event->AsButtonEvent();
 
+			if ((buttonEvent->idCode == 0x45) && buttonEvent->IsPressed()) {
+				// Do attack
+				log::info("0x45 pressed");
+			} else if ((buttonEvent->idCode == 0x1) && buttonEvent->IsPressed()) {
+				// Do attack left
+				log::info("0x01 pressed");
+			} else if ((buttonEvent->idCode == 0x2) && buttonEvent->IsPressed()) {
+				// Do attack right
+				log::info("0x02 pressed");
+			}
+		}
+		return EventResult::kContinue;
+	}
 
-        std::string GetActionString() {
-			const auto ActivateButton = static_cast<RE::ButtonEvent*>(static_cast<RE::InputEvent*>((0x45)));
-			const auto AttackLeftButton = static_cast<RE::ButtonEvent*>(static_cast<RE::InputEvent*>((0x01)));
-			const auto AttackRightButton = static_cast<RE::ButtonEvent*>(static_cast<RE::InputEvent*>((0x02)));
-			if (ActivateButton->IsPressed()) {
-				return "activate";
-			}
-			else if (AttackLeftButton->IsPressed()) {
-				return "leftAttack";
-			}
-			else if (AttackRightButton->IsPressed()) {
-				return "rightAttack";
-			} 
-			else
-            return "None";
-    }
+	void InputManager::Start() {
+		auto deviceManager = RE::BSInputDeviceManager::GetSingleton();
+		deviceManager->AddEventSink(InputManager::GetSingleton());
+	}
 }
-
