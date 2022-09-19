@@ -120,6 +120,45 @@ namespace Gts {
 
 		this->last_scale = scale_factor;
 		hkVector4 vecScale = hkVector4(scale_factor, scale_factor, scale_factor, scale_factor);
+		{
+			auto charController = actor->GetCharController();
+			log::info("Actor: {}, CharController: {}", actor->GetDisplayFullName(), reinterpret_cast<std::uintptr_t>(charController));
+			bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
+			bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
+			if (charProxyController) {
+				auto& proxy = charProxyController->proxy;
+				hkReferencedObject* refObject = proxy.referencedObject.get();
+				if (refObject) {
+					hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
+					if (hkpObject) {
+						if (hkpObject->shapePhantom) {
+							log::info("  - shapePhantom: {}", reinterpret_cast<std::uintptr_t>(hkpObject->shapePhantom));
+							auto const_shape = hkpObject->shapePhantom->GetShape();
+							if (const_shape) {
+								log::info("    - Shape: {}", reinterpret_cast<std::uintptr_t>(const_shape));
+								log::info("    - Type: {}", static_cast<std::uint32_t>(const_shape->type))
+							}
+						}
+					}
+				}
+			} else if (charRigidBodyController) {
+				auto& characterRigidBody = charRigidBodyController->characterRigidBody;
+				hkReferencedObject* refObject = characterRigidBody.referencedObject.get();
+				if (refObject) {
+					hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
+					if (hkpObject) {
+						if (hkpObject->m_character) {
+							log::info("  - m_character: {}", reinterpret_cast<std::uintptr_t>(hkpObject->m_character));
+							auto const_shape = hkpObject->m_character->GetShape();
+							if (const_shape) {
+								log::info("    - Shape: {}", reinterpret_cast<std::uintptr_t>(const_shape));
+								log::info("    - Type: {}", static_cast<std::uint32_t>(const_shape->type))
+							}
+						}
+					}
+				}
+			}
+		}
 		this->ApplyScale(scale_factor, vecScale);
 	}
 

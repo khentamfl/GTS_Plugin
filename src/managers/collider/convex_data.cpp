@@ -8,7 +8,6 @@ using namespace RE;
 
 namespace Gts {
 	ConvexData::ConvexData(hkpConvexVerticesShape* shape) {
-		this->convex->referenceCount += 1;
 		this->convex = shape;
 
 		this->radius = shape->radius;
@@ -30,7 +29,6 @@ namespace Gts {
 	}
 
 	ConvexData::~ConvexData () {
-		this->convex->referenceCount -= 1;
 	}
 
 	void ConvexData::ApplyScale(const float& scale, const hkVector4& vecScale) {
