@@ -174,8 +174,6 @@ namespace {
 		} else if (shape->type == hkpShapeType::kList) {
 			// log::debug("List");
 			auto container = static_cast<const hkpListShape*>(shape);
-			log::info("List Type: {}", static_cast<int>(container->type));
-			log::info("List Len: {}", container->GetNumChildShapes());
 			for (auto childInfo: container->childInfo) {
 				auto child_shape = childInfo.shape;
 				if (child_shape) {
