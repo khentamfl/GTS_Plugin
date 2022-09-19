@@ -374,7 +374,7 @@ void GtsManager::Update() {
 			continue;
 		}
 		//log::info("Found Actor {}", actor->GetDisplayFullName());
-		DetectInput();
+		InputManager::GetSingleton().ProcessEvent();
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);
