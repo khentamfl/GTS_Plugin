@@ -15,7 +15,7 @@ namespace Gts
 		public:
 			[[nodiscard]] static InputManager& GetSingleton() noexcept;
 
-			EventResult ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>);
+			EventResult ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*> a_source) override;
 			void Start() override;
 	};
 }
