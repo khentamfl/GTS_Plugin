@@ -160,6 +160,7 @@ namespace Gts {
 			}
 		}
 		this->ApplyScale(scale_factor, vecScale);
+		log::info("DONE:: Actor: {}", actor->GetDisplayFullName());
 	}
 
 	void ColliderActorData::UpdateColliders(Actor* actor) {

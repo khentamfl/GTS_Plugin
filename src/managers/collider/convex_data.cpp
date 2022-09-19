@@ -35,20 +35,20 @@ namespace Gts {
 		log::info("- Scaling ConvexVerts: {}", reinterpret_cast<std::uintptr_t>(this->convex));
 		log::info("  - Scale: {}", scale);
 		auto shape = this->convex;
-		// shape->radius = this->radius * scale;
-		// log::info("  - Radius: {} -> {}", this->radius, shape->radius);
-		// shape->aabbHalfExtents = this->aabbHalfExtents * vecScale;
-		// log::info("  - aabbHalfExtents: {} -> {}", Vector2Str(this->aabbHalfExtents), Vector2Str(shape->aabbHalfExtents));
-		// shape->aabbCenter = this->aabbCenter * vecScale;
-		// log::info("  - aabbCenter: {} -> {}", Vector2Str(this->aabbCenter), Vector2Str(shape->aabbCenter));
+		shape->radius = this->radius * scale;
+		log::info("  - Radius: {} -> {}", this->radius, shape->radius);
+		shape->aabbHalfExtents = this->aabbHalfExtents * vecScale;
+		log::info("  - aabbHalfExtents: {} -> {}", Vector2Str(this->aabbHalfExtents), Vector2Str(shape->aabbHalfExtents));
+		shape->aabbCenter = this->aabbCenter * vecScale;
+		log::info("  - aabbCenter: {} -> {}", Vector2Str(this->aabbCenter), Vector2Str(shape->aabbCenter));
 
 		std::size_t numRotatedVerticies = this->rotated_verts.size();
 		for (std::size_t i = 0; i < numRotatedVerticies; i++) {
 			std::size_t j = i / 3;
 			std::size_t k = i % 3;
-			log::info("  - shape->rotatedVertices[{}].vertices[{}] = {}", j, k, Vector2Str(shape->rotatedVertices[j].vertices[k]));
-			shape->rotatedVertices[j].vertices[k] = this->rotated_verts[i] * vecScale;
-			log::info("  - rotatedVertices[{}]: {} -> {}",i, Vector2Str(this->rotated_verts[i]), Vector2Str(shape->rotatedVertices[j].vertices[k]));
+			// log::info("  - shape->rotatedVertices[{}].vertices[{}] = {}", j, k, Vector2Str(shape->rotatedVertices[j].vertices[k]));
+			// shape->rotatedVertices[j].vertices[k] = this->rotated_verts[i] * vecScale;
+			// log::info("  - rotatedVertices[{}]: {} -> {}",i, Vector2Str(this->rotated_verts[i]), Vector2Str(shape->rotatedVertices[j].vertices[k]));
 
 		}
 	}
