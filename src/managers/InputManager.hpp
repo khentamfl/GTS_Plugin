@@ -8,7 +8,7 @@ using namespace RE;
 
 namespace Gts
 {
-	using Result = RE::BSEventNotifyControl;
+	using EventResult = RE::BSEventNotifyControl;
 
 	class InputManager : public EventListener, public BSTEventSink<InputEvent*>
 	{
