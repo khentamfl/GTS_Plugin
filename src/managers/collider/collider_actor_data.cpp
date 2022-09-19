@@ -136,7 +136,7 @@ namespace Gts {
 							auto const_shape = hkpObject->shapePhantom->GetShape();
 							if (const_shape) {
 								log::info("    - Shape: {}", reinterpret_cast<std::uintptr_t>(const_shape));
-								log::info("    - Type: {}", static_cast<std::uint32_t>(const_shape->type))
+								log::info("    - Type: {}", static_cast<std::uint32_t>(const_shape->type));
 							}
 						}
 					}
@@ -152,7 +152,7 @@ namespace Gts {
 							auto const_shape = hkpObject->m_character->GetShape();
 							if (const_shape) {
 								log::info("    - Shape: {}", reinterpret_cast<std::uintptr_t>(const_shape));
-								log::info("    - Type: {}", static_cast<std::uint32_t>(const_shape->type))
+								log::info("    - Type: {}", static_cast<std::uint32_t>(const_shape->type));
 							}
 						}
 					}
