@@ -20,6 +20,9 @@ namespace Gts
             Register();
         };
         
+		std::string GetActionString();
+		void DetectInput();
+
 		static void Register()
 		{
 			auto deviceManager = RE::BSInputDeviceManager::GetSingleton();

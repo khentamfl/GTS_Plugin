@@ -349,24 +349,6 @@ namespace {
 
 		ApplyGameMode(actor, gameMode, growthRate, shrinkRate);
 	}
-
-	 std::string GetActionString() {
-            
-			const auto ActivateButton = static_cast<RE::ButtonEvent*>(static_cast<RE::InputEvent*>((0x45)));
-			const auto AttackLeftButton = static_cast<RE::ButtonEvent*>(static_cast<RE::InputEvent*>((0x01)));
-			const auto AttackRightButton = static_cast<RE::ButtonEvent*>(static_cast<RE::InputEvent*>((0x02)));
-			if (ActivateButton->IsPressed()) {
-				return "activate";
-			}
-			else if (AttackLeftButton->IsPressed()) {
-				return "leftAttack";
-			}
-			else if (AttackRightButton->IsPressed()) {
-				return "rightAttack";
-			} 
-			else
-            return "None";
-    }
 }
 
 GtsManager& GtsManager::GetSingleton() noexcept {
@@ -392,18 +374,7 @@ void GtsManager::Update() {
 			continue;
 		}
 		//log::info("Found Actor {}", actor->GetDisplayFullName());
-		if (GetActionString() != "activate") {
-			return;
-		}
-		else if (GetActionString() == "activate")
-		{
-			ConsoleLog::GetSingleton()->Print("E Pressed");
-			mod_target_scale(PlayerCharacter::GetSingleton(),0.33);
-			}
-		else if (GetActionString() == "leftAttack" || GetActionString() == "rightAttack") {
-			PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
-		}
-
+		DetectInput();
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);
