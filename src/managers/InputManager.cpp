@@ -15,6 +15,14 @@
 using namespace RE;
 using namespace Gts;
 
+
+namespace Gts {
+	InputManager& InputManager::GetSingleton() noexcept {
+		static InputManager instance;
+		return instance;
+	}
+}
+
 namespace {
         void DetectInput() {
         if (GetActionString() != "activate") {
@@ -48,3 +56,4 @@ namespace {
             return "None";
     }
 }
+
