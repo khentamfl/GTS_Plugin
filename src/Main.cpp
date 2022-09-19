@@ -7,6 +7,7 @@
 #include "magic/magic.hpp"
 #include "managers/highheel.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/InputManager.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/contact.hpp"
 #include "managers/RandomGrowth.hpp"
@@ -177,6 +178,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&QuestManager::GetSingleton());
 
 	EventDispatcher::AddListener(&ContactManager::GetSingleton());
+	EventDispatcher::AddListener(&InputManager::GetSingleton());
 }
 
 /**
