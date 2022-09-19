@@ -351,9 +351,9 @@ namespace {
 
 	 std::string GetActionString() {
             
-			const auto ActivateButton = static_cast<RE::ButtonEvent*>(std::uint32_t(0x45));
-			const auto AttackLeftButton = static_cast<RE::ButtonEvent*>(std::uint32_t(0x01));
-			const auto AttackRightButton = static_cast<RE::ButtonEvent*>(std::uint32_t(0x02));
+			const auto ActivateButton = static_cast<RE::ButtonEvent*>(static_cast<RE::InputEvent*>((0x45)));
+			const auto AttackLeftButton = static_cast<RE::ButtonEvent*>(static_cast<RE::InputEvent*>((0x01)));
+			const auto AttackRightButton = static_cast<RE::ButtonEvent*>(static_cast<RE::InputEvent*>((0x02)));
 			if (ActivateButton->IsPressed()) {
 				return "activate";
 			}
