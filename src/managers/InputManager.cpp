@@ -21,18 +21,19 @@ namespace Gts {
 		static InputManager instance;
 		return instance;
 	}
-}
 
-namespace {
-	EventResult InputManager::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>) {
+	EventResult InputManager::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*> a_source) {
 		if (!a_event) {
 			return EventResult::kContinue;
 		}
 		for (auto event = *a_event; event; event = event->next) {
-			if (event->eventType != EventType::kButton) {
+			if (event->GetEventType() != INPUT_EVENT_TYPE::kButton) {
 				continue;
 			}
-			auto buttonEvent = a_event->AsButtonEvent();
+			ButtonEvent* buttonEvent = a_event->AsButtonEvent();
+			if (!buttonEvent) {
+				continue;
+			}
 
 			if ((buttonEvent->idCode == 0x45) && buttonEvent->IsPressed()) {
 				// Do attack
@@ -50,6 +51,6 @@ namespace {
 
 	void InputManager::Start() {
 		auto deviceManager = RE::BSInputDeviceManager::GetSingleton();
-		deviceManager->AddEventSink(InputManager::GetSingleton());
+		deviceManager->AddEventSink(&InputManager::GetSingleton());
 	}
 }

@@ -138,18 +138,18 @@ namespace {
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
 
-	
+
 		static Timer timer = Timer(0.50); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRunFrame()) {
 
 
-		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
-		float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
+			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
+			float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 			persi_actor_data->anim_speed = speed_mult;
 			if (actor->IsWalking() == true) {
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / MS_mult);
 				log::info("Slow Walk Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
-			} 
+			}
 			if (actor->IsSprinting() == true) {
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) * 1.25 / MS_mult);
 				log::info("Sprint Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
@@ -374,7 +374,6 @@ void GtsManager::Update() {
 			continue;
 		}
 		//log::info("Found Actor {}", actor->GetDisplayFullName());
-		InputManager::GetSingleton().ProcessEvent();
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);
