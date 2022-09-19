@@ -42,7 +42,7 @@ namespace Gts {
 				continue;
 			}
 			auto key = buttonEvent->GetIDCode();
-			if (key == kE) {
+			if (key == GFxKey::kE) {
 				// Do attack
 				ConsoleLog::GetSingleton()->Print("Pressed E");
 				mod_target_scale(PlayerCharacter::GetSingleton(), 0.33);
