@@ -10,7 +10,7 @@ namespace Gts
 {
 	using Result = RE::BSEventNotifyControl;
 
-	class InputEventHandler: public EventListener, public BSTEventSink<InputEvent*>
+	class InputManager: public EventListener, public BSTEventSink<InputEvent*>
 	{
 	public:
         [[nodiscard]] static InputManager& GetSingleton() noexcept;
