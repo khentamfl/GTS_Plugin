@@ -21,10 +21,10 @@ namespace Gts {
 	void ListData::ApplyScale(const float& scale, const hkVector4& vecScale) {
 		// log::info("- Scaling list: {}", reinterpret_cast<std::uintptr_t>(this->list));
 		// log::info("  - Scale by: {}", scale);
-		this->list->aabbHalfExtents = this->aabbHalfExtents * vecScale;
+		// this->list->aabbHalfExtents = this->aabbHalfExtents * vecScale;
 		// log::info("  - aabbHalfExtents: {} -> {}", Vector2Str(this->aabbHalfExtents), Vector2Str(this->list->aabbHalfExtents));
-		this->list->aabbCenter = this->aabbCenter * vecScale;
+		// this->list->aabbCenter = this->aabbCenter * vecScale;
 		// log::info("  - aabbCenter: {} -> {}", Vector2Str(this->aabbCenter), Vector2Str(this->list->aabbCenter));
-		this->list->flags = 1;
+		// this->list->flags = 1;
 	}
 }
