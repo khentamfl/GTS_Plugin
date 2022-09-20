@@ -6,6 +6,8 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
+	hkpCapsuleShape* MakeCapsule();
+
 	struct CapsuleData {
 		hkpCapsuleShape* capsule;
 		hkVector4 start;
