@@ -198,19 +198,6 @@ namespace Gts {
 	}
 
 	void ColliderActorData::AddCharController(bhkCharacterController* charController) {
-		for (auto bhkShapePtr: charController->shapes) {
-			if (bhkShapePtr) {
-				if (bhkShapePtr->referencedObject) {
-					auto referencedObject = bhkShapePtr->referencedObject.get();
-					hkpShape* shape = static_cast<hkpShape*>(referencedObject);
-					if (shape) {
-						this->AddShape(shape);
-					}
-				}
-			}
-		}
-
-		return;
 		bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
 		bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
 		if (charProxyController) {
