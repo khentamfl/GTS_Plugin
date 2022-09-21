@@ -174,11 +174,14 @@ namespace {
 		} else if (shape->type == hkpShapeType::kList) {
 			// log::debug("List");
 			auto container = static_cast<const hkpListShape*>(shape);
-			for (auto childInfo: container->childInfo) {
-				auto child_shape = childInfo.shape;
+			hkpShapeKey key = container->GetFirstKey();
+			while (key != HK_INVALID_SHAPE_KEY) {
+				auto buffer = hkpShapeBuffer();
+				auto child_shape = container->GetChildShape(key, buffer);
 				if (child_shape) {
-					DrawShape(child_shape, transform, active);
+					DrawShape(child_shape);
 				}
+				key = container->GetNextKey(key);
 			}
 		} else if (shape->type == hkpShapeType::kBVTree) {
 			// log::debug("Tree");
