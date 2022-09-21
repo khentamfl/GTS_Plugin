@@ -35,6 +35,7 @@ namespace Gts {
 		this->last_scale = -1.0;
 		this->last_update_frame.store(0);
 		this->form_id = 0;
+		this->lastCharController = nullptr;
 	}
 
 	void ColliderActorData::ApplyScale(const float& new_scale, const hkVector4& vec_scale) {
@@ -69,6 +70,11 @@ namespace Gts {
 	}
 
 	void ColliderActorData::Update(Actor* actor, std::uint64_t last_reset_frame) {
+		auto currentCharController = actor->GetCharController();
+		if (currentCharController != this->lastCharController) {
+			this->Reset();
+		}
+
 		bool force_reset = this->last_update_frame.exchange(last_reset_frame) < last_reset_frame;
 		if (force_reset ||
 		    (
@@ -76,7 +82,8 @@ namespace Gts {
 			    (this->convex_data.size() == 0) &&
 			    (this->list_data.size() == 0) &&
 			    (this->rb_data.size() == 0)
-		    )) {
+		    ) ||
+		    lastCharController == nullptr) {
 			this->UpdateColliders(actor);
 		}
 
@@ -157,6 +164,7 @@ namespace Gts {
 
 		// Search CharControllers
 		auto charController = actor->GetCharController();
+		this->lastCharController = charController;
 		this->AddCharController(charController);
 	}
 

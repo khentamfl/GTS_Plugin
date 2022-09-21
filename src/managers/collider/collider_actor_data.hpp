@@ -36,6 +36,8 @@ namespace Gts {
 			mutable std::mutex _lock;
 
 			float last_scale = -1.0;
+			bhkCharacterController* lastCharController = nullptr;
+
 			std::atomic_uint64_t last_update_frame = std::atomic_uint64_t(0);
 			FormID form_id = 0;
 
