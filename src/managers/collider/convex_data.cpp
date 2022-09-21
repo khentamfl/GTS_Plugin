@@ -17,7 +17,7 @@ namespace Gts {
 		this->numVertices = shape->numVertices;
 
 		std::size_t numVertices = shape->numVertices;
-		std::size_t numRotatedVerticies = numVertices / 3;
+		std::size_t numRotatedVerticies = numVertices / 4;
 		if (numVertices % 4 != 0) {
 			numRotatedVerticies += 1;
 		}
@@ -43,13 +43,15 @@ namespace Gts {
 		shape->aabbHalfExtents = this->aabbHalfExtents * vecScale;
 		shape->aabbCenter = this->aabbCenter * vecScale;
 
-		std::size_t numRotatedVerticies = this->rotated_verts.size();
-		for (std::size_t i = 0; i < numRotatedVerticies; i++) {
-			std::size_t j = i / 3;
-			std::size_t k = i % 3;
-			shape->rotatedVertices[j].vertices[k] = this->rotated_verts[i] * vecScale;
-			log::info("  - rotatedVertices[{}]: {} -> {}",i, Vector2Str(this->rotated_verts[i]), Vector2Str(shape->rotatedVertices[j].vertices[k]));
-
+		std::size_t numVertices = shape->numVertices;
+		std::size_t numRotatedVerticies = numVertices / 4;
+		if (numVertices % 4 != 0) {
+			numRotatedVerticies += 1;
+		}
+		for (std::size_t i = 0; i< numRotatedVerticies; i++) {
+			shape->rotatedVertices[i].vertices[0] = this->rotated_verts[i*3 + 0];
+			shape->rotatedVertices[i].vertices[1] = this->rotated_verts[i*3 + 1];
+			shape->rotatedVertices[i].vertices[2] = this->rotated_verts[i*3 + 2];
 		}
 	}
 }
