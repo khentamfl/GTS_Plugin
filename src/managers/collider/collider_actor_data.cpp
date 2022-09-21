@@ -6,12 +6,6 @@ using namespace std;
 using namespace SKSE;
 using namespace RE;
 
-namespace {
-	void scale_relative_byref(hkVector4& input, const hkVector4& origin, const float& scale) {
-		input = (input - origin)*scale + origin;
-	}
-}
-
 namespace Gts {
 	ColliderActorData::ColliderActorData(Actor* actor) {
 		this->Reset();
@@ -54,17 +48,8 @@ namespace Gts {
 		auto model = actor->GetCurrent3D();
 		if (model) {
 			hkVector4 origin = hkVector4(model->world.translate * (*g_worldScale));
-			for (auto rigidBody: this->rb_data) {
-				if (rigidBody) {
-					// Translation
-					scale_relative_byref(rigidBody->motion.motionState.transform.translation, origin, new_scale);
-
-					// COM 0
-					scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass0, origin, new_scale);
-
-					// COM 1
-					scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass1, origin, new_scale);
-				}
+			for (auto &[key, data]: this->rb_data) {
+				data.ApplyPose(origin, new_scale);
 			}
 		}
 	}
@@ -130,21 +115,43 @@ namespace Gts {
 
 	void ColliderActorData::PruneColliders(Actor* actor) {
 		log::info("Prune capsules");
-		for (auto &[key, data]: this->capsule_data) {
-			if (key) {
-				log::info("Shape: {}: {}", reinterpret_cast<std::uintptr_t>(key), key->GetReferenceCount());
+		for (auto i = this->capsule_data.begin(); i != this->capsule_data.end();) {
+			auto& data = (*i);
+			auto key = data.first;
+			if (key->GetReferenceCount() == 1) {
+				i = this->capsule_data.erase(i);
+			} else {
+				++i;
 			}
 		}
 		log::info("Prune convex");
-		for (auto &[key, data]: this->convex_data) {
-			if (key) {
-				log::info("Shape: {}: {}", reinterpret_cast<std::uintptr_t>(key), key->GetReferenceCount());
+		for (auto i = this->convex_data.begin(); i != this->convex_data.end();) {
+			auto& data = (*i);
+			auto key = data.first;
+			if (key->GetReferenceCount() == 1) {
+				i = this->convex_data.erase(i);
+			} else {
+				++i;
 			}
 		}
 		log::info("Prune list");
-		for (auto &[key, data]: this->list_data) {
-			if (key) {
-				log::info("Shape: {}: {}", reinterpret_cast<std::uintptr_t>(key), key->GetReferenceCount());
+		for (auto i = this->list_data.begin(); i != this->list_data.end();) {
+			auto& data = (*i);
+			auto key = data.first;
+			if (key->GetReferenceCount() == 1) {
+				i = this->list_data.erase(i);
+			} else {
+				++i;
+			}
+		}
+		log::info("Prune Rb");
+		for (auto i = this->rb_data.begin(); i != this->rb_data.end();) {
+			auto& data = (*i);
+			auto key = data.first;
+			if (key->GetReferenceCount() == 1) {
+				i = this->rb_data.erase(i);
+			} else {
+				++i;
 			}
 		}
 	}
@@ -329,6 +336,6 @@ namespace Gts {
 			return;
 		}
 		auto key = rigid_body;
-		this->rb_data.insert(key);
+		this->rb_data.try_emplace(key, rigid_body);
 	}
 }

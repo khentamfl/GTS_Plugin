@@ -5,6 +5,7 @@
 #include "managers/collider/capsule_data.hpp"
 #include "managers/collider/convex_data.hpp"
 #include "managers/collider/list_data.hpp"
+#include "managers/collider/rb_data.hpp"
 
 
 
@@ -45,7 +46,7 @@ namespace Gts {
 			std::unordered_map<hkpCapsuleShape*, CapsuleData> capsule_data;
 			std::unordered_map<hkpConvexVerticesShape*, ConvexData> convex_data;
 			std::unordered_map<hkpListShape*, ListData> list_data;
-			std::unordered_set<hkpRigidBody*> rb_data;
+			std::unordered_map<hkpRigidBody*, RbData> rb_data;
 
 
 	};
