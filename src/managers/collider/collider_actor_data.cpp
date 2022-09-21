@@ -174,9 +174,12 @@ namespace Gts {
 
 								// Make rb use the new one
 								rb->SetShape(newCap);
-								mut_cap = newCap;
+								this->AddCapsule(newCap);
+								newCap->RemoveReference();
+							} else {
+								this->AddCapsule(mut_cap);
 							}
-							this->AddCapsule(mut_cap);
+
 						}
 						if (rb) {
 							this->AddRidgedBody(rb);
