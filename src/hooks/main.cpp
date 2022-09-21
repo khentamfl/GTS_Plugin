@@ -32,7 +32,7 @@ namespace Hooks
 		manager.poll();
 		magic.Update();
 		collider.Update();
-		// ddraw.Update();
+		ddraw.Update();
 		camera.Update();
 		deactivate_mainthread_mode();
 	}
