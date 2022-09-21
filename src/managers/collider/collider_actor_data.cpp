@@ -27,10 +27,10 @@ namespace Gts {
 	}
 
 	void ColliderActorData::Reset() {
-		this->capsule_data.clear();
-		this->convex_data.clear();
-		this->list_data.clear();
-		this->rb_data.clear();
+		// this->capsule_data.clear();
+		// this->convex_data.clear();
+		// this->list_data.clear();
+		// this->rb_data.clear();
 
 		this->last_scale = -1.0;
 		this->last_update_frame.store(0);

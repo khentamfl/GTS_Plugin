@@ -7,15 +7,15 @@ using namespace RE;
 
 namespace Gts {
 	ListData::ListData(hkpListShape* list) {
-		// this->list->AddReference();
 		this->list = list;
+		this->list->AddReference();
 
 		this->aabbHalfExtents = list->aabbHalfExtents;
 		this->aabbCenter = list->aabbCenter;
 	}
 
 	ListData::~ListData () {
-		// this->list->AddReference();
+		this->list->RemoveReference();
 	}
 
 	void ListData::ApplyScale(const float& scale, const hkVector4& vecScale) {
