@@ -251,8 +251,10 @@ namespace Gts {
 		if (!shape) {
 			return;
 		}
+		log::info("Adding shape: {}", static_cast<std::uint32_t>(shape->type));
 		switch (shape->type) {
 			case hkpShapeType::kCapsule: {
+				log::info("Adding Capsule");
 				auto actual_shape = static_cast<hkpCapsuleShape*>(shape);
 				if (actual_shape) {
 					this->AddCapsule(actual_shape);
@@ -260,6 +262,7 @@ namespace Gts {
 				break;
 			}
 			case hkpShapeType::kConvexVertices: {
+				log::info("Adding ConvVerts");
 				auto actual_shape = static_cast<hkpConvexVerticesShape*>(shape);
 				if (actual_shape) {
 					this->AddConvexVerts(actual_shape);
@@ -267,6 +270,7 @@ namespace Gts {
 				break;
 			}
 			case hkpShapeType::kList: {
+				log::info("Adding List");
 				const hkpListShape* container = static_cast<const hkpListShape*>(shape);
 				if (container) {
 					auto num_shapes = container->GetNumChildShapes();
