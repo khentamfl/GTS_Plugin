@@ -199,13 +199,13 @@ namespace Gts {
 				if (hkpObject) {
 					// I think these ones are objects that we collide with
 					// Needs testing
-					// for (auto body: hkpObject->bodies) {
-					// 	auto const_shape = body->GetShape();
-					// 	if (const_shape) {
-					// 		hkpShape* shape = const_cast<hkpShape*>(const_shape);
-					// 		this->AddShape(shape);
-					// 	}
-					// }
+					for (auto body: hkpObject->bodies) {
+						auto const_shape = body->GetShape();
+						if (const_shape) {
+							hkpShape* shape = const_cast<hkpShape*>(const_shape);
+							this->AddShape(shape);
+						}
+					}
 
 					// This one appears to be active during combat.
 					// Maybe used for sword swing collision detection
