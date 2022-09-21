@@ -346,7 +346,7 @@ namespace {
 					auto shapePhantom = hkpObject->shapePhantom;
 					if (shapePhantom) {
 						// log::info("Draw shape phantom");
-						DrawWorldObject(shapePhantom);
+						// DrawWorldObject(shapePhantom);
 					}
 				}
 			}
@@ -490,7 +490,7 @@ namespace Gts {
 			}
 
 			DrawCharController(actor);
-			// DrawRagdoll(actor);
+			DrawRagdoll(actor);
 			// DrawRay(actor);
 		}
 	}
