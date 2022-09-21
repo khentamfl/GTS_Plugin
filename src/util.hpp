@@ -25,12 +25,12 @@ namespace Gts {
 	}
 
 	inline std::string Vector2Str(const hkVector4& vector) {
-		return std::format("{},{},{}", vector.quad.m128_f32[0], vector.quad.m128_f32[1], vector.quad.m128_f32[2]);
+		return std::format("{},{},{},{}", vector.quad.m128_f32[0], vector.quad.m128_f32[1], vector.quad.m128_f32[2], vector.quad.m128_f32[3]);
 	}
 
 	inline std::string Vector2Str(const hkVector4* vector) {
 		if (vector) {
-			return std::format("{},{},{}", vector->quad.m128_f32[0], vector->quad.m128_f32[1], vector->quad.m128_f32[2]);
+			return std::format("{},{},{},{}", vector->quad.m128_f32[0], vector->quad.m128_f32[1], vector->quad.m128_f32[2], vector->quad.m128_f32[3]);
 		} else {
 			return "";
 		}
