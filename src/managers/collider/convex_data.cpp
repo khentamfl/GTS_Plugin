@@ -24,9 +24,12 @@ namespace Gts {
 
 		this->rotated_verts = {};
 		for (std::size_t i = 0; i< numRotatedVerticies; i++) {
-			this->rotated_verts.push_back(shape->rotatedVertices[i].vertices[0]);
-			this->rotated_verts.push_back(shape->rotatedVertices[i].vertices[1]);
-			this->rotated_verts.push_back(shape->rotatedVertices[i].vertices[2]);
+			this->rotated_verts.push_back(
+				RotatedVerts {
+				.x = shape->rotatedVertices[i].vertices[0],
+				.y = shape->rotatedVertices[i].vertices[1],
+				.z = shape->rotatedVertices[i].vertices[2]}
+				);
 		}
 	}
 
@@ -49,9 +52,9 @@ namespace Gts {
 			numRotatedVerticies += 1;
 		}
 		for (std::size_t i = 0; i< numRotatedVerticies; i++) {
-			shape->rotatedVertices[i].vertices[0] = this->rotated_verts[i*3 + 0];
-			shape->rotatedVertices[i].vertices[1] = this->rotated_verts[i*3 + 1];
-			shape->rotatedVertices[i].vertices[2] = this->rotated_verts[i*3 + 2];
+			shape->rotatedVertices[i].vertices[0] = this->rotated_verts[i].x * vecScale;
+			shape->rotatedVertices[i].vertices[1] = this->rotated_verts[i].y * vecScale;
+			shape->rotatedVertices[i].vertices[2] = this->rotated_verts[i].z * vecScale;
 		}
 	}
 }
