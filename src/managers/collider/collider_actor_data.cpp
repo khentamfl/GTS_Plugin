@@ -273,19 +273,16 @@ namespace Gts {
 				log::info("Adding List");
 				const hkpListShape* container = static_cast<const hkpListShape*>(shape);
 				if (container) {
-					auto num_shapes = container->GetNumChildShapes();
-					hkpShapeKey key = container->GetFirstKey();
-					while (key != HK_INVALID_SHAPE_KEY) {
-						auto buffer = hkpShapeBuffer();
-						auto child_shape = container->GetChildShape(key, buffer);
+					for (auto childShapeInfo: container->childInfo) {
+						auto child_shape = childShapeInfo.shape;
 						if (child_shape) {
 							hkpShape* child_shape_mut = const_cast<hkpShape*>(child_shape);
 							if (child_shape_mut) {
 								this->AddShape(child_shape_mut);
 							}
 						}
-						key = container->GetNextKey(key);
 					}
+
 					auto container_mut = const_cast<hkpListShape*>(container);
 					if (container_mut) {
 						this->AddList(container_mut);
