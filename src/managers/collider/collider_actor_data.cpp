@@ -27,10 +27,10 @@ namespace Gts {
 	}
 
 	void ColliderActorData::Reset() {
-		// this->capsule_data.clear();
-		// this->convex_data.clear();
-		// this->list_data.clear();
-		// this->rb_data.clear();
+		this->capsule_data.clear();
+		this->convex_data.clear();
+		this->list_data.clear();
+		this->rb_data.clear();
 
 		this->last_scale = -1.0;
 		this->last_update_frame.store(0);
@@ -70,11 +70,6 @@ namespace Gts {
 	}
 
 	void ColliderActorData::Update(Actor* actor, std::uint64_t last_reset_frame) {
-		auto currentCharController = actor->GetCharController();
-		if (currentCharController != this->lastCharController) {
-			this->Reset();
-		}
-
 		bool force_reset = this->last_update_frame.exchange(last_reset_frame) < last_reset_frame;
 		if (force_reset ||
 		    (
@@ -83,7 +78,7 @@ namespace Gts {
 			    (this->list_data.size() == 0) &&
 			    (this->rb_data.size() == 0)
 		    ) ||
-		    lastCharController == nullptr) {
+		    lastCharController != actor->GetCharController()) {
 			this->UpdateColliders(actor);
 		}
 
@@ -101,45 +96,10 @@ namespace Gts {
 
 		this->last_scale = scale_factor;
 		hkVector4 vecScale = hkVector4(scale_factor, scale_factor, scale_factor, scale_factor);
-		{
-			auto charController = actor->GetCharController();
-			log::info("Actor: {}, CharController: {}", actor->GetDisplayFullName(), reinterpret_cast<std::uintptr_t>(charController));
-			bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
-			bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
-			if (charProxyController) {
-				auto& proxy = charProxyController->proxy;
-				hkReferencedObject* refObject = proxy.referencedObject.get();
-				if (refObject) {
-					hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
-					if (hkpObject) {
-						if (hkpObject->shapePhantom) {
-							log::info("  - shapePhantom: {}", reinterpret_cast<std::uintptr_t>(hkpObject->shapePhantom));
-							auto const_shape = hkpObject->shapePhantom->GetShape();
-							if (const_shape) {
-								log::info("    - Shape: {}", reinterpret_cast<std::uintptr_t>(const_shape));
-								log::info("    - Type: {}", static_cast<std::uint32_t>(const_shape->type));
-							}
-						}
-					}
-				}
-			} else if (charRigidBodyController) {
-				auto& characterRigidBody = charRigidBodyController->characterRigidBody;
-				hkReferencedObject* refObject = characterRigidBody.referencedObject.get();
-				if (refObject) {
-					hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
-					if (hkpObject) {
-						if (hkpObject->m_character) {
-							log::info("  - m_character: {}", reinterpret_cast<std::uintptr_t>(hkpObject->m_character));
-							auto const_shape = hkpObject->m_character->GetShape();
-							if (const_shape) {
-								log::info("    - Shape: {}", reinterpret_cast<std::uintptr_t>(const_shape));
-								log::info("    - Type: {}", static_cast<std::uint32_t>(const_shape->type));
-							}
-						}
-					}
-				}
-			}
-		}
+
+		// Prune any colliders that are not used anymore
+		this->PruneColliders(actor);
+
 		this->ApplyScale(scale_factor, vecScale);
 		log::info("DONE:: Actor: {}", actor->GetDisplayFullName());
 	}
@@ -166,6 +126,27 @@ namespace Gts {
 		auto charController = actor->GetCharController();
 		this->lastCharController = charController;
 		this->AddCharController(charController);
+	}
+
+	void ColliderActorData::PruneColliders(Actor* actor) {
+		log::info("Prune capsules");
+		for (auto &[key, data]: this->capsule_data) {
+			if (key) {
+				log::info("Shape: {}: {}", reinterpret_cast<std::uintptr_t>(key), key->GetReferenceCount());
+			}
+		}
+		log::info("Prune convex");
+		for (auto &[key, data]: this->convex_data) {
+			if (key) {
+				log::info("Shape: {}: {}", reinterpret_cast<std::uintptr_t>(key), key->GetReferenceCount());
+			}
+		}
+		log::info("Prune list");
+		for (auto &[key, data]: this->list_data) {
+			if (key) {
+				log::info("Shape: {}: {}", reinterpret_cast<std::uintptr_t>(key), key->GetReferenceCount());
+			}
+		}
 	}
 
 	void ColliderActorData::AddRagdoll(hkaRagdollInstance* ragdoll) {

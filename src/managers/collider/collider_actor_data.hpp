@@ -24,6 +24,7 @@ namespace Gts {
 			void ApplyScale(const float& new_scale, const hkVector4& vec_scale);
 			void ApplyPose(Actor* actor, const float& scale);
 			void UpdateColliders(Actor* actor);
+			void PruneColliders(Actor* actor);
 			void AddRagdoll(hkaRagdollInstance* ragdoll);
 			void AddCharController(bhkCharacterController* controller);
 			void AddShape(hkpShape* shape);
