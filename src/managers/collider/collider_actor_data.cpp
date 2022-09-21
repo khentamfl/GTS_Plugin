@@ -36,9 +36,9 @@ namespace Gts {
 		for (auto &[key, data]: this->capsule_data) {
 			data.ApplyScale(new_scale, vec_scale);
 		}
-		// for (auto &[key, data]: this->convex_data) {
-		// 	data.ApplyScale(new_scale, vec_scale);
-		// }
+		for (auto &[key, data]: this->convex_data) {
+			data.ApplyScale(new_scale, vec_scale);
+		}
 		for (auto &[key, data]: this->list_data) {
 			data.ApplyScale(new_scale, vec_scale);
 		}

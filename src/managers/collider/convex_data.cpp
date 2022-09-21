@@ -14,10 +14,11 @@ namespace Gts {
 		this->radius = shape->radius;
 		this->aabbHalfExtents = shape->aabbHalfExtents;
 		this->aabbCenter = shape->aabbCenter;
+		this->numVertices = shape->numVertices;
 
 		std::size_t numVertices = shape->numVertices;
 		std::size_t numRotatedVerticies = numVertices / 3;
-		if (numVertices % 3 != 0) {
+		if (numVertices % 4 != 0) {
 			numRotatedVerticies += 1;
 		}
 
@@ -35,14 +36,17 @@ namespace Gts {
 
 	void ConvexData::ApplyScale(const float& scale, const hkVector4& vecScale) {
 		auto shape = this->convex;
+		if (shape->numVertices != this->numVertices) {
+			log::error("Vertext count mismatch");
+		}
 		shape->radius = this->radius * scale;
 		shape->aabbHalfExtents = this->aabbHalfExtents * vecScale;
 		shape->aabbCenter = this->aabbCenter * vecScale;
 
 		std::size_t numRotatedVerticies = this->rotated_verts.size();
 		for (std::size_t i = 0; i < numRotatedVerticies; i++) {
-			std::size_t j = i / 3;
-			std::size_t k = i % 3;
+			std::size_t j = i / 4;
+			std::size_t k = i % 4;
 			// log::info("  - shape->rotatedVertices[{}].vertices[{}] = {}", j, k, Vector2Str(shape->rotatedVertices[j].vertices[k]));
 			shape->rotatedVertices[j].vertices[k] = this->rotated_verts[i] * vecScale;
 			// log::info("  - rotatedVertices[{}]: {} -> {}",i, Vector2Str(this->rotated_verts[i]), Vector2Str(shape->rotatedVertices[j].vertices[k]));

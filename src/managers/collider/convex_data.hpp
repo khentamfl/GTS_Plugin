@@ -12,6 +12,7 @@ namespace Gts {
 		float radius;
 		hkVector4 aabbHalfExtents;
 		hkVector4 aabbCenter;
+		std::uint32_t numVertices;
 		std::vector<hkVector4> rotated_verts;
 		ConvexData(hkpConvexVerticesShape* orig_capsule);
 		ConvexData(ConvexData&& old) : convex(std::move(old.convex)), radius(std::move(old.radius)), aabbHalfExtents(std::move(old.aabbHalfExtents)), aabbCenter(std::move(old.aabbCenter)), rotated_verts(std::move(old.rotated_verts)) {
