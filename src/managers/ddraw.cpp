@@ -220,7 +220,7 @@ namespace {
 		if (motionState) {
 			glm::mat4 transform = HkToGlm(motionState->transform);
 			if (shape) {
-				DrawShape(shape, transform, worldObject->world == nullptr);
+				DrawShape(shape, transform, worldObject->world != nullptr);
 			}
 		}
 	}
@@ -228,7 +228,7 @@ namespace {
 		auto shape = rigidBody->GetShape();
 		glm::mat4 transform = HkToGlm(rigidBody->motion.motionState.transform);
 		if (shape) {
-			DrawShape(shape, transform, rigidBody->world == nullptr);
+			DrawShape(shape, transform, rigidBody->world != nullptr);
 		}
 	}
 
