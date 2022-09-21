@@ -62,7 +62,7 @@ namespace {
 
 	inline static glm::vec3 GLM_HK_TO_SK = glm::vec3((*Gts::g_worldScaleInverse));
 
-	void DrawAabb(const hkpShape* shape, const glm::mat4& transform, const glm::vec4& color) {
+	void DrawAabb(const hkpShape* shape, const glm::mat4& transform, const glm::vec4& color, bool active = true) {
 		RE::hkTransform shapeTransform;
 		// use identity matrix for the BB of the unrotated object
 		shapeTransform.rotation.col0 = { 1.0f, 0.0f, 0.0f, 0.0f };
@@ -83,7 +83,7 @@ namespace {
 		// log::info(" - EXT: {},{},{}", extends[0], extends[1], extends[2]);
 		// log::info(" - ET2: {},{},{}", halfExtends[0], halfExtends[1], halfExtends[2]);
 		// log::info(" - ORI: {},{},{}", origin[0], origin[1], origin[2]);
-		DebugAPI::DrawBox(origin, halfExtends, transform, MS_TIME, color, AABB_LINETHICKNESS);
+		DebugAPI::DrawBox(origin, halfExtends, transform, MS_TIME, active ? color: INACTIVE_COLOR, AABB_LINETHICKNESS);
 	}
 
 	void DrawCapsule(const hkpShape* shape, const glm::mat4& transform, bool active = true) {

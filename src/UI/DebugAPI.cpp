@@ -236,7 +236,7 @@ void DebugAPI::DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::ma
 	// Start hemi
 	const int STEPS = 20;
 	glm::vec3 prev_point = apply_transform(start_hemi_point(0.0, 0.0), transform);
-	f  or (int i = 1; i<STEPS; i++) {
+	for (int i = 1; i<STEPS; i++) {
 		float x = (1.0/STEPS*i);
 
 		float v = glm::sin(x*pi);
