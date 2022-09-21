@@ -83,6 +83,7 @@ namespace {
 		// log::info(" - EXT: {},{},{}", extends[0], extends[1], extends[2]);
 		// log::info(" - ET2: {},{},{}", halfExtends[0], halfExtends[1], halfExtends[2]);
 		// log::info(" - ORI: {},{},{}", origin[0], origin[1], origin[2]);
+		log::info("Aabb: {}", active);
 		DebugAPI::DrawBox(origin, halfExtends, transform, MS_TIME, active ? color: INACTIVE_COLOR, AABB_LINETHICKNESS);
 	}
 
@@ -93,6 +94,7 @@ namespace {
 			glm::vec3 end = HkToGlm(capsule->vertexB);
 			float radius = capsule->radius * *g_worldScaleInverse;
 
+			log::info("Capsule: {}", active);
 			DebugAPI::DrawCapsule(start, end, radius, transform, MS_TIME, active ? CAPSULE_COLOR : INACTIVE_COLOR, CAPSULE_LINETHICKNESS);
 		}
 	}
@@ -103,6 +105,7 @@ namespace {
 			glm::vec3 pointB = HkToGlm(triangle->vertexB);
 			glm::vec3 pointC = HkToGlm(triangle->vertexC);
 
+			log::info("Triangle: {}", active);
 			DebugAPI::DrawTriangle(pointA, pointB, pointB, transform, MS_TIME, active ? TRIANGLE_COLOR : INACTIVE_COLOR, TRIANGLE_LINETHICKNESS);
 		}
 	}
@@ -124,6 +127,7 @@ namespace {
 							 transform);
 					 };
 			glm::vec3 previous = getVertex(0);
+			log::info("Verts: {}", active);
 			for (std::size_t i = 0; i < numVertices; i++) {
 				glm::vec3 vert = getVertex(i);
 				DebugAPI::DrawLineForMS(previous, vert, MS_TIME, active ? CONVEXVERTS_COLOR: INACTIVE_COLOR, CONVEXVERTS_LINETHICKNESS);
@@ -136,7 +140,7 @@ namespace {
 		if (box) {
 			glm::vec3 origin = glm::vec3(0.,0.,0.);
 			glm::vec3 halfExtents = HkToGlm(box->halfExtents);
-
+			log::info("Box: {}", active);
 			DebugAPI::DrawBox(origin, halfExtents, transform, MS_TIME, active ? TRIANGLE_COLOR: INACTIVE_COLOR, TRIANGLE_LINETHICKNESS);
 		}
 	}
@@ -231,6 +235,7 @@ namespace {
 		auto shape = rigidBody->GetShape();
 		glm::mat4 transform = HkToGlm(rigidBody->motion.motionState.transform);
 		if (shape) {
+			log::info("RB: Enabled: {}", rigidBody->world != nullptr);
 			DrawShape(shape, transform, rigidBody->world != nullptr);
 		}
 	}
