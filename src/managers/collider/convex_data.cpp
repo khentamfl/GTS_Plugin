@@ -42,7 +42,7 @@ namespace Gts {
 		if (shape->numVertices != this->numVertices) {
 			log::error("Vertext count mismatch");
 		}
-		shape->radius = this->radius * scale;
+		// shape->radius = this->radius * scale;
 		shape->aabbHalfExtents = this->aabbHalfExtents * vecScale;
 		shape->aabbCenter = this->aabbCenter * vecScale;
 
