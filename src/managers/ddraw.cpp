@@ -144,19 +144,19 @@ namespace {
 
 	void DrawShape(const hkpShape* shape, const glm::mat4& transform, bool active = true) {
 		if (shape->type == hkpShapeType::kCapsule) {
-			// log::debug("Capsule");
+			log::debug("Capsule");
 			DrawCapsule(shape, transform);
 		} else if (shape->type == hkpShapeType::kTriangle) {
-			// log::debug("Triangle");
+			log::debug("Triangle");
 			DrawTriangle(shape, transform, active);
 		} else if (shape->type == hkpShapeType::kConvexVertices) {
-			// log::debug("Convex Verts");
+			log::debug("Convex Verts");
 			DrawConvexVerts(shape, transform, active);
 		} else if (shape->type == hkpShapeType::kBox) {
-			// log::debug("Box");
+			log::debug("Box");
 			DrawBox(shape, transform, active);
 		} else if (shape->type == hkpShapeType::kConvexTransform) {
-			// log::debug("Convex transform");
+			log::debug("Convex transform");
 			const hkpConvexTransformShape* transformShape = static_cast<const hkpConvexTransformShape*>(shape);
 			if (transformShape) {
 				auto container = transformShape->GetContainer();
@@ -172,7 +172,7 @@ namespace {
 				}
 			}
 		} else if (shape->type == hkpShapeType::kList) {
-			// log::debug("List");
+			log::debug("List");
 			auto container = static_cast<const hkpListShape*>(shape);
 			for (auto childInfo: container->childInfo) {
 				auto child_shape = childInfo.shape;
@@ -181,7 +181,7 @@ namespace {
 				}
 			}
 		} else if (shape->type == hkpShapeType::kBVTree) {
-			// log::debug("Tree");
+			log::debug("Tree");
 			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
 			const hkpShapeContainer* container = actual_shape->GetContainer();
 			auto key = container->GetFirstKey();
@@ -194,7 +194,7 @@ namespace {
 				key = container->GetNextKey(key);
 			}
 		} else if (shape->type == hkpShapeType::kMOPP) {
-			// log::debug("MOP Tree");
+			log::debug("MOP Tree");
 			// MOPP is a Tree implementation we jsut cast too tree and deal with
 			// it at that level
 			auto actual_shape = static_cast<const hkpBvTreeShape*>(shape);
