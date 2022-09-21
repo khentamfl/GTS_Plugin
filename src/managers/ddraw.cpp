@@ -490,7 +490,7 @@ namespace Gts {
 			}
 
 			DrawCharController(actor);
-			DrawRagdoll(actor);
+			// DrawRagdoll(actor);
 			// DrawRay(actor);
 		}
 	}
