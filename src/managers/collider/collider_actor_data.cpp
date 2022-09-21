@@ -33,9 +33,9 @@ namespace Gts {
 	}
 
 	void ColliderActorData::ApplyScale(const float& new_scale, const hkVector4& vec_scale) {
-		// for (auto &[key, data]: this->capsule_data) {
-		// 	data.ApplyScale(new_scale, vec_scale);
-		// }
+		for (auto &[key, data]: this->capsule_data) {
+			data.ApplyScale(new_scale, vec_scale);
+		}
 		// for (auto &[key, data]: this->convex_data) {
 		// 	data.ApplyScale(new_scale, vec_scale);
 		// }
