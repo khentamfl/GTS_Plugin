@@ -25,24 +25,24 @@ namespace Gts {
 	}
 
 	inline std::string Vector2Str(const hkVector4& vector) {
-		return std::format("{},{},{},{}", vector.quad.m128_f32[0], vector.quad.m128_f32[1], vector.quad.m128_f32[2], vector.quad.m128_f32[3]);
+		return std::format("{:.2f},{:.2f},{:.2f},{:.2f}", vector.quad.m128_f32[0], vector.quad.m128_f32[1], vector.quad.m128_f32[2], vector.quad.m128_f32[3]);
 	}
 
 	inline std::string Vector2Str(const hkVector4* vector) {
 		if (vector) {
-			return std::format("{},{},{},{}", vector->quad.m128_f32[0], vector->quad.m128_f32[1], vector->quad.m128_f32[2], vector->quad.m128_f32[3]);
+			return std::format("{:.2f},{:.2f},{:.2f},{:.2f}", vector->quad.m128_f32[0], vector->quad.m128_f32[1], vector->quad.m128_f32[2], vector->quad.m128_f32[3]);
 		} else {
 			return "";
 		}
 	}
 
 	inline std::string Vector2Str(const NiPoint3& vector) {
-		return std::format("{},{},{}", vector.x, vector.y, vector.z);
+		return std::format("{:.2f},{:.2f},{:.2f}", vector.x, vector.y, vector.z);
 	}
 
 	inline std::string Vector2Str(const NiPoint3* vector) {
 		if (vector) {
-			return std::format("{},{},{}", vector->x, vector->y, vector->z);
+			return std::format("{:.2f},{:.2f},{:.2f}", vector->x, vector->y, vector->z);
 		} else {
 			return "";
 		}
