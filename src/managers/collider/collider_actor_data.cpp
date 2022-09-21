@@ -86,7 +86,6 @@ namespace Gts {
 		this->PruneColliders(actor);
 
 		this->ApplyScale(scale_factor, vecScale);
-		log::info("DONE:: Actor: {}", actor->GetDisplayFullName());
 	}
 
 	void ColliderActorData::UpdateColliders(Actor* actor) {
@@ -114,7 +113,6 @@ namespace Gts {
 	}
 
 	void ColliderActorData::PruneColliders(Actor* actor) {
-		log::info("Prune capsules");
 		for (auto i = this->capsule_data.begin(); i != this->capsule_data.end();) {
 			auto& data = (*i);
 			auto key = data.first;
@@ -124,7 +122,6 @@ namespace Gts {
 				++i;
 			}
 		}
-		log::info("Prune convex");
 		for (auto i = this->convex_data.begin(); i != this->convex_data.end();) {
 			auto& data = (*i);
 			auto key = data.first;
@@ -134,7 +131,6 @@ namespace Gts {
 				++i;
 			}
 		}
-		log::info("Prune list");
 		for (auto i = this->list_data.begin(); i != this->list_data.end();) {
 			auto& data = (*i);
 			auto key = data.first;
@@ -144,7 +140,6 @@ namespace Gts {
 				++i;
 			}
 		}
-		log::info("Prune Rb");
 		for (auto i = this->rb_data.begin(); i != this->rb_data.end();) {
 			auto& data = (*i);
 			auto key = data.first;
@@ -170,7 +165,6 @@ namespace Gts {
 								// Nope
 								// Clone it (because ragdolls share shape between all actors of same race)
 								hkpCapsuleShape* newCap = MakeCapsule();
-								log::info("Made new capsule: {}", reinterpret_cast<std::uintptr_t>(newCap));
 								newCap->radius = orig_capsule->radius;
 								newCap->vertexA = orig_capsule->vertexA;
 								newCap->vertexB = orig_capsule->vertexB;
@@ -206,7 +200,6 @@ namespace Gts {
 					// I think these ones are objects that we collide with
 					// Needs testing
 					// for (auto body: hkpObject->bodies) {
-					// 	log::info("Body");
 					// 	auto const_shape = body->GetShape();
 					// 	if (const_shape) {
 					// 		hkpShape* shape = const_cast<hkpShape*>(const_shape);
@@ -214,7 +207,6 @@ namespace Gts {
 					// 	}
 					// }
 					// for (auto phantom: hkpObject->phantoms) {
-					// 	log::info("Phantom");
 					// 	auto const_shape = phantom->GetShape();
 					// 	if (const_shape) {
 					// 		hkpShape* shape = const_cast<hkpShape*>(const_shape);
@@ -224,7 +216,6 @@ namespace Gts {
 
 					// This is the actual shape
 					if (hkpObject->shapePhantom) {
-						log::info("shapePhantom");
 						auto const_shape = hkpObject->shapePhantom->GetShape();
 						if (const_shape) {
 							hkpShape* shape = const_cast<hkpShape*>(const_shape);
@@ -241,7 +232,6 @@ namespace Gts {
 				hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
 				if (hkpObject) {
 					if (hkpObject->m_character) {
-						log::info("m_character");
 						auto const_shape = hkpObject->m_character->GetShape();
 						if (const_shape) {
 							hkpShape* shape = const_cast<hkpShape*>(const_shape);
@@ -276,18 +266,14 @@ namespace Gts {
 			case hkpShapeType::kList: {
 				const hkpListShape* container = static_cast<const hkpListShape*>(shape);
 				if (container) {
-					log::info("Got ListShape: {}", reinterpret_cast<std::uintptr_t>(container));
 					auto num_shapes = container->GetNumChildShapes();
-					log::info("  - num_shapes: {}", num_shapes);
 					hkpShapeKey key = container->GetFirstKey();
-					log::info("  - First Key: {}", key);
 					while (key != HK_INVALID_SHAPE_KEY) {
 						auto buffer = hkpShapeBuffer();
 						auto child_shape = container->GetChildShape(key, buffer);
 						if (child_shape) {
 							hkpShape* child_shape_mut = const_cast<hkpShape*>(child_shape);
 							if (child_shape_mut) {
-								log::info("Adding child");
 								this->AddShape(child_shape_mut);
 							}
 						}
