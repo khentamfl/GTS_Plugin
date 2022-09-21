@@ -179,7 +179,7 @@ namespace {
 				auto buffer = hkpShapeBuffer();
 				auto child_shape = container->GetChildShape(key, buffer);
 				if (child_shape) {
-					DrawShape(child_shape);
+					DrawShape(child_shape, transform, active);
 				}
 				key = container->GetNextKey(key);
 			}
