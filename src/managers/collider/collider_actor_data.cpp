@@ -206,13 +206,16 @@ namespace Gts {
 					// 		this->AddShape(shape);
 					// 	}
 					// }
-					// for (auto phantom: hkpObject->phantoms) {
-					// 	auto const_shape = phantom->GetShape();
-					// 	if (const_shape) {
-					// 		hkpShape* shape = const_cast<hkpShape*>(const_shape);
-					// 		this->AddShape(shape);
-					// 	}
-					// }
+
+					// This one appears to be active during combat.
+					// Maybe used for sword swing collision detection
+					for (auto phantom: hkpObject->phantoms) {
+						auto const_shape = phantom->GetShape();
+						if (const_shape) {
+							hkpShape* shape = const_cast<hkpShape*>(const_shape);
+							this->AddShape(shape);
+						}
+					}
 
 					// This is the actual shape
 					if (hkpObject->shapePhantom) {
