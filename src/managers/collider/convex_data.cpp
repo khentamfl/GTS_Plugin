@@ -32,7 +32,7 @@ namespace Gts {
 				);
 		}
 
-		this->SetOriginMinZ();
+		// this->SetOriginMinZ();
 	}
 
 	ConvexData::~ConvexData () {

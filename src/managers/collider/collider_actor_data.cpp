@@ -56,6 +56,7 @@ namespace Gts {
 
 	void ColliderActorData::Update(Actor* actor, std::uint64_t last_reset_frame) {
 		bool force_reset = this->last_update_frame.exchange(last_reset_frame) < last_reset_frame;
+		bool charControllerChanged = this->lastCharController != actor->GetCharController();
 		if (force_reset ||
 		    (
 			    (this->capsule_data.size() == 0) &&
@@ -63,14 +64,17 @@ namespace Gts {
 			    (this->list_data.size() == 0) &&
 			    (this->rb_data.size() == 0)
 		    ) ||
-		    lastCharController != actor->GetCharController()) {
+		    charControllerChanged) {
 			this->UpdateColliders(actor);
 		}
 
-		const float EPSILON = 1e-3;
-		if (!actor) {
-			return;
+		auto charController = actor->GetCharController();
+		if (charControllerChanged && charController != nullptr) {
+			this->charControllerCenter = charController->center;
 		}
+
+		const float EPSILON = 1e-3;
+
 		float visual_scale = get_visual_scale(actor);
 		float natural_scale = get_natural_scale(actor);
 		float scale_factor = visual_scale/natural_scale;
@@ -86,6 +90,10 @@ namespace Gts {
 		this->PruneColliders(actor);
 
 		this->ApplyScale(scale_factor, vecScale);
+
+		if (charController) {
+			charController->center = charController * scale_factor;
+		}
 	}
 
 	void ColliderActorData::UpdateColliders(Actor* actor) {
