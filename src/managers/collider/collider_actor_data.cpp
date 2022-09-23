@@ -70,6 +70,7 @@ namespace Gts {
 
 		auto charController = actor->GetCharController();
 		if (charControllerChanged && charController != nullptr) {
+			log::info("Actor: {}: Reset center to: {} from: {}", actor->GetDisplayFullName(), charController->center, this->charControllerCenter);
 			this->charControllerCenter = charController->center;
 		}
 
