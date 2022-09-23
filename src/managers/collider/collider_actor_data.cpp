@@ -92,7 +92,7 @@ namespace Gts {
 		this->ApplyScale(scale_factor, vecScale);
 
 		if (charController) {
-			charController->center = charController * scale_factor;
+			charController->center = this->charControllerCenter * scale_factor;
 		}
 	}
 
