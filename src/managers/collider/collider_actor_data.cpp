@@ -183,7 +183,7 @@ namespace Gts {
 								// Make rb use the new one
 								rb->SetShape(newCap);
 								this->AddCapsule(newCap);
-								newCap->RemoveReference();
+								// newCap->RemoveReference();
 							} else {
 								this->AddCapsule(mut_cap);
 							}
