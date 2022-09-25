@@ -93,14 +93,38 @@ namespace Gts {
 		this->ApplyScale(scale_factor, vecScale);
 
 		if (charController) {
+			log::info("Actor: {}", actor->GetDisplayFullName());
+			log::info("Scale: {}", scale_factor);
+			log::info("Up: {}", Vector2Str(charController->up));
+			log::info("Unscaled center: {}", this->charControllerCenter);
+
 			hkVector4 pos;
 			charController->GetPositionImpl(pos, false);
+			log::info("Current Pos: {}", Vector2Str(pos));
+
+			hkVector4 posWwCenter;
+			charController->GetPositionImpl(posWwCenter, true);
+			log::info("Current Pos + Center: {}", Vector2Str(posWwCenter));
+
+			hkVector4 delta = posWwCenter - pos;
+			log::info("Current Delta: {}", Vector2Str(delta));
+
 
 			charController->center = this->charControllerCenter * scale_factor;
 
 			hkVector4 newPos = pos + charController->up * this->charControllerCenter * scale_factor;
+			log::info("Calc Pos: {}", Vector2Str(newPos));
 
 			charController->SetPositionImpl(newPos, true, false);
+
+			charController->GetPositionImpl(pos, false);
+			log::info("New Pos: {}", Vector2Str(pos));
+
+			charController->GetPositionImpl(posWwCenter, true);
+			log::info("New Pos + Center: {}", Vector2Str(posWwCenter));
+
+			delta = posWwCenter - pos;
+			log::info("New Delta: {}", Vector2Str(delta));
 		}
 	}
 
