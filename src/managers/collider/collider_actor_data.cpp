@@ -6,6 +6,33 @@ using namespace std;
 using namespace SKSE;
 using namespace RE;
 
+namespace {
+	float GetHeightofCharController(bhkCharacterController* charController) {
+		float preScaleHeight = 0.0;
+		if (!charController) {
+			return preScaleHeight;
+		}
+
+		RE::hkTransform shapeTransform;
+		// use identity matrix for the BB of the unrotated object
+		shapeTransform.rotation.col0 = { 1.0f, 0.0f, 0.0f, 0.0f };
+		shapeTransform.rotation.col1 = { 0.0f, 1.0f, 0.0f, 0.0f };
+		shapeTransform.rotation.col2 = { 0.0f, 0.0f, 1.0f, 0.0f };
+		shapeTransform.translation.quad = _mm_set_ps(0.0f, 0.0f, 0.0f, 1.0f);
+
+		bhkShape* bShape = charController->shapes[0].get();
+		hkReferencedObject* refShape = bShape->referencedObject.get();
+		hkpShape* shape = static_cast<hkpShape*>(refShape);
+		if (shape) {
+			hkAabb outAabb;
+			shape->GetAabbImpl(shapeTransform, 0.0, outAabb);
+			preScaleHeight = (outAabb.max - outAabb.min).quad.m128_f32[2];
+		}
+
+		return preScaleHeight;
+	}
+}
+
 namespace Gts {
 	ColliderActorData::ColliderActorData(Actor* actor) {
 		this->Reset();
@@ -56,7 +83,11 @@ namespace Gts {
 
 	void ColliderActorData::Update(Actor* actor, std::uint64_t last_reset_frame) {
 		bool force_reset = this->last_update_frame.exchange(last_reset_frame) < last_reset_frame;
-		bool charControllerChanged = this->lastCharController != actor->GetCharController();
+		auto charController = actor->GetCharController();
+		if (!charController) {
+			return;
+		}
+		bool charControllerChanged = this->lastCharController != charController;
 		if (force_reset ||
 		    (
 			    (this->capsule_data.size() == 0) &&
@@ -68,8 +99,8 @@ namespace Gts {
 			this->UpdateColliders(actor);
 		}
 
-		auto charController = actor->GetCharController();
-		if (charControllerChanged && charController != nullptr) {
+
+		if (charControllerChanged) {
 			log::info("Actor: {}: Reset center to: {} from: {}", actor->GetDisplayFullName(), charController->center, this->charControllerCenter);
 			this->charControllerCenter = charController->center;
 		}
@@ -84,48 +115,32 @@ namespace Gts {
 			return;
 		}
 
-		this->last_scale = scale_factor;
 		hkVector4 vecScale = hkVector4(scale_factor, scale_factor, scale_factor, scale_factor);
 
 		// Prune any colliders that are not used anymore
 		this->PruneColliders(actor);
 
+		// Get the orig height of collider so we can shift position accordingly
+		hkVector4 preScalePos;
+		charController->GetPositionImpl(preScalePos, false);
+		float preScaleHeight = GetHeightofCharController(charController);
+		log::info("preScaleHeight: {}", preScaleHeight);
+		log::info("preScalePos: {}", Vector2Str(preScalePos));
+
 		this->ApplyScale(scale_factor, vecScale);
 
-		if (charController) {
-			log::info("Actor: {}", actor->GetDisplayFullName());
-			log::info("Scale: {}", scale_factor);
-			log::info("Up: {}", Vector2Str(charController->up));
-			log::info("Unscaled center: {}", this->charControllerCenter);
-
-			hkVector4 pos;
-			charController->GetPositionImpl(pos, false);
-			log::info("Current Pos: {}", Vector2Str(pos));
-
-			hkVector4 posWwCenter;
-			charController->GetPositionImpl(posWwCenter, true);
-			log::info("Current Pos + Center: {}", Vector2Str(posWwCenter));
-
-			hkVector4 delta = posWwCenter - pos;
-			log::info("Current Delta: {}", Vector2Str(delta));
+		// Work out change in height of collider and shift position accordingly
+		float postScaleHeight = GetHeightofCharController(charController);
+		hkVector4 postScalePos = preScalePos + hkVector4(0.0, 0.0, 1.0, 0.0) * (postScaleHeight - preScaleHeight);
+		charController->SetPositionImpl(postScalePos, false, false);
+		log::info("postScaleHeight: {}", postScaleHeight);
+		log::info("postScalePos: {}", Vector2Str(postScalePos));
 
 
-			charController->center = this->charControllerCenter * scale_factor;
+		// Change the center offset of the collider
+		charController->center = this->charControllerCenter * scale_factor;
 
-			hkVector4 newPos = pos + charController->up * this->charControllerCenter * scale_factor;
-			log::info("Calc Pos: {}", Vector2Str(newPos));
-
-			charController->SetPositionImpl(newPos, true, false);
-
-			charController->GetPositionImpl(pos, false);
-			log::info("New Pos: {}", Vector2Str(pos));
-
-			charController->GetPositionImpl(posWwCenter, true);
-			log::info("New Pos + Center: {}", Vector2Str(posWwCenter));
-
-			delta = posWwCenter - pos;
-			log::info("New Delta: {}", Vector2Str(delta));
-		}
+		this->last_scale = scale_factor;
 	}
 
 	void ColliderActorData::UpdateColliders(Actor* actor) {
