@@ -94,15 +94,13 @@ namespace Gts {
 
 		if (charController) {
 			hkVector4 pos;
-			hkVector4 posWwCenter;
 			charController->GetPositionImpl(pos, false);
-			charController->GetPositionImpl(posWwCenter, true);
-			hkVector4 deltaPos = posWwCenter - pos;
-			hkVector4 newPosWwCenter = pos + deltaPos * scale_factor;
 
 			charController->center = this->charControllerCenter * scale_factor;
 
-			charController->SetPositionImpl(newPosWwCenter, true, false);
+			hkVector4 newPos = pos + charController->up * this->charControllerCenter * scale_factor;
+
+			charController->SetPositionImpl(newPos, true, false);
 		}
 	}
 
