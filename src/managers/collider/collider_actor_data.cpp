@@ -93,7 +93,10 @@ namespace Gts {
 		this->ApplyScale(scale_factor, vecScale);
 
 		if (charController) {
+			hkVector4 pos;
+			charController->GetPositionImpl(pos, false);
 			charController->center = this->charControllerCenter * scale_factor;
+			charController->SetPositionImpl(pos, false, false);
 		}
 	}
 
