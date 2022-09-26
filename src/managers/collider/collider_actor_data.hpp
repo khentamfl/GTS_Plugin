@@ -42,6 +42,7 @@ namespace Gts {
 			float charControllerCenter = 0.0;
 			float actorHeight = 0.0;
 			float m_unweldingHeightOffsetFactor = 0.0;
+			hkVector4 fakeSupportStart = hkVector4(0.0);
 
 			std::atomic_uint64_t last_update_frame = std::atomic_uint64_t(0);
 			FormID form_id = 0;

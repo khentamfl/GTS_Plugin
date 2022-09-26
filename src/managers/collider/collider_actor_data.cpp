@@ -111,8 +111,10 @@ namespace Gts {
 			log::info("Actor: {}: Reset center to: {} from: {}", actor->GetDisplayFullName(), charController->center, this->charControllerCenter);
 			this->charControllerCenter = charController->center;
 			this->actorHeight = charController->actorHeight;
+			this->fakeSupportStart = charController->fakeSupportStart;
 
 			bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
+
 
 			if (charRigidBodyController) {
 				// NPCs seem to use rigid body ones
@@ -151,6 +153,8 @@ namespace Gts {
 		charController->actorHeight = this->actorHeight * scale_factor;
 		charController->center = this->charControllerCenter * scale_factor - (1.0 - scale_factor)* 0.05;
 		charController->scale = scale_factor;
+		charController->fakeSupportStart = this->fakeSupportStart * hkVector4(scale_factor);
+
 		float postScaleCenter = charController->center;
 
 		log::info("rotCenter: {}", Vector2Str(charController->rotCenter));
