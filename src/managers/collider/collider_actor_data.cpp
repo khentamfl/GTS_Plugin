@@ -94,6 +94,7 @@ namespace Gts {
 		if (!charController) {
 			return;
 		}
+		log::info("Actor: {} Scale: {}:{}", actor->GetDisplayFullName(), get_visual_scale(actor), get_visual_scale(actor)/get_natural_scale(actor));
 		bool charControllerChanged = this->lastCharController != charController;
 		if (force_reset ||
 		    (
@@ -134,6 +135,7 @@ namespace Gts {
 		// Change the center offset of the collider
 		charController->actorHeight = this->actorHeight * scale_factor;
 		charController->center = this->charControllerCenter * scale_factor - (1.0 - scale_factor)* 0.05;
+		charController->scale = scale_factor;
 		float postScaleCenter = charController->center;
 
 		// Adjust position caused by center shift
@@ -141,6 +143,24 @@ namespace Gts {
 		charController->GetPositionImpl(pos, false);
 		hkVector4 postScalePos = pos + hkVector4(0.0, 0.0, 1.0, 0.0) * (postScaleCenter - preScaleCenter);
 		charController->SetPositionImpl(postScalePos, false, false);
+
+		{
+			bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
+
+			if (charRigidBodyController) {
+				// NPCs seem to use rigid body ones
+				auto& characterRigidBody = charRigidBodyController->characterRigidBody;
+				hkReferencedObject* refObject = characterRigidBody.referencedObject.get();
+				if (refObject) {
+					hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
+					if (hkpObject) {
+						log::info("m_unweldingHeightOffsetFactor: {}", hkpObject->m_unweldingHeightOffsetFactor);
+						log::info("m_supportDistance: {}", hkpObject->m_supportDistance);
+						log::info("m_hardSupportDistance: {}", hkpObject->m_hardSupportDistance);
+					}
+				}
+			}
+		}
 
 
 		this->last_scale = scale_factor;
