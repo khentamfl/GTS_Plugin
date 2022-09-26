@@ -23,8 +23,8 @@ namespace Gts {
 
 		this->list->aabbHalfExtents = this->aabbHalfExtents * wless * hkVector4(2.0);
 		this->list->aabbCenter = this->aabbCenter * wless;
-		log::info("List: aabbCenter: {}", Vector2Str(this->list->aabbCenter));
-		log::info("List: aabbHalfExtents: {}", Vector2Str(this->list->aabbHalfExtents));
+		// log::info("List: aabbCenter: {}", Vector2Str(this->list->aabbCenter));
+		// log::info("List: aabbHalfExtents: {}", Vector2Str(this->list->aabbHalfExtents));
 		this->list->flags = 1;
 	}
 }
