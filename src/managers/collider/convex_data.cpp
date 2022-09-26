@@ -48,7 +48,7 @@ namespace Gts {
 		hkVector4 origin = hkVector4(this->origin.x, this->origin.y, this->origin.z, 0.0);
 		log::info("origin: {}", Vector2Str(origin));
 
-		shape->aabbHalfExtents = this->aabbHalfExtents * vecScale;
+		shape->aabbHalfExtents = this->aabbHalfExtents * vecScale * hkVector4(2.0);
 		shape->aabbCenter = (this->aabbCenter - origin) * vecScale + origin;
 
 		log::info("ConvVerts: aabbCenter: {}", Vector2Str(shape->aabbCenter));
@@ -68,12 +68,12 @@ namespace Gts {
 			shape->rotatedVertices[i].vertices[2] = (this->rotated_verts[i].z - z_origin) * vecScale + z_origin;
 		}
 
-		shape->useSpuBuffer = false;
-		// Clear plane equations
-		for (std::size_t i = 0; i < shape->planeEquations.size(); i++) {
-			shape->planeEquations._data[i].~hkVector4();
-		}
-		shape->planeEquations._size = 0;
+		// shape->useSpuBuffer = false;
+		// // Clear plane equations
+		// for (std::size_t i = 0; i < shape->planeEquations.size(); i++) {
+		// 	shape->planeEquations._data[i].~hkVector4();
+		// }
+		// shape->planeEquations._size = 0;
 	}
 
 	void ConvexData::SetOrigin(const float& x, const float& y, const float& z) {
