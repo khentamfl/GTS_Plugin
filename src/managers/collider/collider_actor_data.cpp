@@ -8,9 +8,9 @@ using namespace RE;
 
 namespace {
 	float GetHeightofCharController(bhkCharacterController* charController) {
-		float preScaleHeight = 0.0;
+		float height = 0.0;
 		if (!charController) {
-			return preScaleHeight;
+			return height;
 		}
 
 		RE::hkTransform shapeTransform;
@@ -20,16 +20,33 @@ namespace {
 		shapeTransform.rotation.col2 = { 0.0f, 0.0f, 1.0f, 0.0f };
 		shapeTransform.translation.quad = _mm_set_ps(0.0f, 0.0f, 0.0f, 1.0f);
 
-		bhkShape* bShape = charController->shapes[0].get();
-		hkReferencedObject* refShape = bShape->referencedObject.get();
-		hkpShape* shape = static_cast<hkpShape*>(refShape);
-		if (shape) {
-			hkAabb outAabb;
-			shape->GetAabbImpl(shapeTransform, 0.0, outAabb);
-			preScaleHeight = (outAabb.max - outAabb.min).quad.m128_f32[2];
+		{
+			bhkShape* bShape = charController->shapes[0].get();
+			hkReferencedObject* refShape = bShape->referencedObject.get();
+			hkpShape* shape = static_cast<hkpShape*>(refShape);
+			if (shape) {
+				hkAabb outAabb;
+				shape->GetAabbImpl(shapeTransform, 0.0, outAabb);
+				height = (outAabb.max - outAabb.min).quad.m128_f32[2];
+				log::info("  shape[0] = {}", height);
+				log::info("  type[0]  = {}", static_cast<std::uint32_t>(shape->type));
+			}
 		}
 
-		return preScaleHeight;
+		{
+			bhkShape* bShape = charController->shapes[1].get();
+			hkReferencedObject* refShape = bShape->referencedObject.get();
+			hkpShape* shape = static_cast<hkpShape*>(refShape);
+			if (shape) {
+				hkAabb outAabb;
+				shape->GetAabbImpl(shapeTransform, 0.0, outAabb);
+				height = (outAabb.max - outAabb.min).quad.m128_f32[2];
+				log::info("  shape[1] = {}", height);
+				log::info("  type[1]  = {}", static_cast<std::uint32_t>(shape->type));
+			}
+		}
+
+		return height;
 	}
 }
 
