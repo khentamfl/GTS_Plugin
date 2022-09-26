@@ -40,6 +40,7 @@ namespace Gts {
 			float last_scale = -1.0;
 			bhkCharacterController* lastCharController = nullptr;
 			float charControllerCenter = 0.0;
+			float actorHeight = 0.0;
 
 			std::atomic_uint64_t last_update_frame = std::atomic_uint64_t(0);
 			FormID form_id = 0;

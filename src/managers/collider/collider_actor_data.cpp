@@ -19,31 +19,20 @@ namespace {
 		shapeTransform.rotation.col2 = { 0.0f, 0.0f, 1.0f, 0.0f };
 		shapeTransform.translation.quad = _mm_set_ps(0.0f, 0.0f, 0.0f, 1.0f);
 
-		float height_0 = 0.0;
-		float height_1 = 0.0;
-		{
-			bhkShape* bShape = charController->shapes[0].get();
+		float height = 0.0;
+		for (auto bShapeRef: charController->shapes) {
+			bhkShape* bShape = bShapeRef.get();
 			hkReferencedObject* refShape = bShape->referencedObject.get();
 			hkpShape* shape = static_cast<hkpShape*>(refShape);
 			if (shape) {
 				hkAabb outAabb;
 				shape->GetAabbImpl(shapeTransform, 0.0, outAabb);
-				height_0 = (outAabb.max - outAabb.min).quad.m128_f32[2];
+				float shape_height = (outAabb.max - outAabb.min).quad.m128_f32[2];
+				height = std::max(shape_height, height);
 			}
 		}
 
-		{
-			bhkShape* bShape = charController->shapes[1].get();
-			hkReferencedObject* refShape = bShape->referencedObject.get();
-			hkpShape* shape = static_cast<hkpShape*>(refShape);
-			if (shape) {
-				hkAabb outAabb;
-				shape->GetAabbImpl(shapeTransform, 0.0, outAabb);
-				height_1 = (outAabb.max - outAabb.min).quad.m128_f32[2];
-			}
-		}
-
-		return std::max(height_0, height_1);
+		return height;
 	}
 }
 
@@ -117,6 +106,7 @@ namespace Gts {
 		if (charControllerChanged) {
 			log::info("Actor: {}: Reset center to: {} from: {}", actor->GetDisplayFullName(), charController->center, this->charControllerCenter);
 			this->charControllerCenter = charController->center;
+			this->actorHeight = charController->actorHeight;
 		}
 
 		const float EPSILON = 1e-3;
@@ -149,10 +139,14 @@ namespace Gts {
 		charController->SetPositionImpl(postScalePos, false, false);
 		log::info("postScaleHeight: {}", postScaleHeight);
 		log::info("postScalePos: {}", Vector2Str(postScalePos));
+		// One last check
+		charController->GetPositionImpl(postScalePos, false);
+		log::info("  Actual postScalePos: {}", Vector2Str(postScalePos));
 
 
 		// Change the center offset of the collider
 		charController->center = this->charControllerCenter * scale_factor;
+		charController->actorHeight = this->actorHeight * scale_factor;
 
 		this->last_scale = scale_factor;
 	}
