@@ -8,9 +8,8 @@ using namespace RE;
 
 namespace {
 	float GetHeightofCharController(bhkCharacterController* charController) {
-		float height = 0.0;
 		if (!charController) {
-			return height;
+			return 0.0;
 		}
 
 		RE::hkTransform shapeTransform;
@@ -20,6 +19,8 @@ namespace {
 		shapeTransform.rotation.col2 = { 0.0f, 0.0f, 1.0f, 0.0f };
 		shapeTransform.translation.quad = _mm_set_ps(0.0f, 0.0f, 0.0f, 1.0f);
 
+		float height_0 = 0.0;
+		float height_1 = 0.0;
 		{
 			bhkShape* bShape = charController->shapes[0].get();
 			hkReferencedObject* refShape = bShape->referencedObject.get();
@@ -27,9 +28,7 @@ namespace {
 			if (shape) {
 				hkAabb outAabb;
 				shape->GetAabbImpl(shapeTransform, 0.0, outAabb);
-				height = (outAabb.max - outAabb.min).quad.m128_f32[2];
-				log::info("  shape[0] = {}", height);
-				log::info("  type[0]  = {}", static_cast<std::uint32_t>(shape->type));
+				height_0 = (outAabb.max - outAabb.min).quad.m128_f32[2];
 			}
 		}
 
@@ -40,13 +39,11 @@ namespace {
 			if (shape) {
 				hkAabb outAabb;
 				shape->GetAabbImpl(shapeTransform, 0.0, outAabb);
-				height = (outAabb.max - outAabb.min).quad.m128_f32[2];
-				log::info("  shape[1] = {}", height);
-				log::info("  type[1]  = {}", static_cast<std::uint32_t>(shape->type));
+				height_1 = (outAabb.max - outAabb.min).quad.m128_f32[2];
 			}
 		}
 
-		return height;
+		return std::max(height_0, height_1);
 	}
 }
 
@@ -274,13 +271,13 @@ namespace Gts {
 				if (hkpObject) {
 					// I think these ones are objects that we collide with
 					// Needs testing
-					for (auto body: hkpObject->bodies) {
-						auto const_shape = body->GetShape();
-						if (const_shape) {
-							hkpShape* shape = const_cast<hkpShape*>(const_shape);
-							this->AddShape(shape);
-						}
-					}
+					// for (auto body: hkpObject->bodies) {
+					// 	auto const_shape = body->GetShape();
+					// 	if (const_shape) {
+					// 		hkpShape* shape = const_cast<hkpShape*>(const_shape);
+					// 		this->AddShape(shape);
+					// 	}
+					// }
 
 					// This one appears to be active during combat.
 					// Maybe used for sword swing collision detection
@@ -317,6 +314,20 @@ namespace Gts {
 						}
 					}
 				}
+			}
+		}
+
+		// There are two collider shapes on the characontroller
+		// One of these shapes should already be handelled in the above
+		// calcs however there is anohter one attached to the characontroller
+		// that we are not sure what it does.
+		// Regardless we add it to the collider system now
+		for (auto bShapeRef: charController->shapes) {
+			bhkShape* bShape = bShapeRef.get();
+			hkReferencedObject* refShape = bShape->referencedObject.get();
+			hkpShape* shape = static_cast<hkpShape*>(refShape);
+			if (shape) {
+				this->AddShape(shape);
 			}
 		}
 	}
