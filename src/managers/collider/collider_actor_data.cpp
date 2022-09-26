@@ -147,7 +147,7 @@ namespace Gts {
 		float preScaleCenter = charController->center;
 		// Change the center offset of the collider
 		charController->actorHeight = this->actorHeight * scale_factor;
-		charController->center = this->center * scale_factor - (1.0 - scale_factor)* 0.05;
+		// charController->center = this->center * scale_factor - (1.0 - scale_factor)* 0.05;
 		charController->scale = scale_factor;
 		charController->fakeSupportStart = this->fakeSupportStart * hkVector4(scale_factor);
 
