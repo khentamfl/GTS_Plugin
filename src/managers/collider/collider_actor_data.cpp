@@ -360,7 +360,7 @@ namespace Gts {
 					if (refShape) {
 						hkpShape* shape = static_cast<hkpShape*>(refShape);
 						if (shape) {
-							this->AddShape(shape);
+							// this->AddShape(shape);
 						}
 					}
 				}
