@@ -20,6 +20,7 @@ namespace Gts {
 
 		void ApplyScale(const float& new_scale, const hkVector4& vecScale);
 		void ApplyPose(const hkVector4& origin, const float& new_scale);
+		void UpdateColliders(bhkCharacterController* charCont);
 		void PruneColliders(Actor* actor);
 		void AddShape(hkpShape* shape);
 		void AddCapsule(hkpCapsuleShape* capsule);

@@ -71,7 +71,7 @@ namespace Gts {
 		}
 	}
 
-	void RagdollData::ApplyScale(const float& scale, const hkVector4& vecScale) {
+	void RagdollData::ApplyScale(const float& new_scale, const hkVector4& vecScale) {
 		for (auto &[key, data]: this->capsule_data) {
 			data.ApplyScale(new_scale, vec_scale);
 		}

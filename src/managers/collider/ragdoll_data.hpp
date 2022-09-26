@@ -18,6 +18,7 @@ namespace Gts {
 
 		void ApplyScale(const float& new_scale, const hkVector4& vecScale);
 		void ApplyPose(const hkVector4& origin, const float& new_scale);
+		void UpdateColliders(hkaRagdollInstance* ragdoll);
 		void PruneColliders(Actor* actor);
 		void AddCapsule(hkpCapsuleShape* capsule);
 		void AddRidgedBody(hkpRigidBody* rigid_body);
