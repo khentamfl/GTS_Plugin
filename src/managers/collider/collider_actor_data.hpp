@@ -1,12 +1,8 @@
 #pragma once
 // Module that handles footsteps
 #include <atomic>
-#include "hooks/RE.hpp"
-#include "managers/collider/capsule_data.hpp"
-#include "managers/collider/convex_data.hpp"
-#include "managers/collider/list_data.hpp"
-#include "managers/collider/rb_data.hpp"
-
+#include "managers/collider/charcont_data.hpp"
+#include "managers/collider/ragdoll_data.hpp"
 
 
 using namespace std;
@@ -28,30 +24,15 @@ namespace Gts {
 			void PruneColliders(Actor* actor);
 			void AddRagdoll(hkaRagdollInstance* ragdoll);
 			void AddCharController(bhkCharacterController* controller);
-			void AddShape(hkpShape* shape);
-			void AddCapsule(hkpCapsuleShape* capsule);
-			void AddConvexVerts(hkpConvexVerticesShape* convex);
-			void AddList(hkpListShape* list);
-			void AddRidgedBody(hkpRigidBody* rigid_body);
 
 		private:
 			mutable std::mutex _lock;
 
 			float last_scale = -1.0;
-			bhkCharacterController* lastCharController = nullptr;
-			float center = 0.0;
-			float actorHeight = 0.0;
-			hkVector4 fakeSupportStart = hkVector4(0.0);
-			BSBound* collisionBound = nullptr;
 
 			std::atomic_uint64_t last_update_frame = std::atomic_uint64_t(0);
-			FormID form_id = 0;
 
-			std::unordered_map<hkpCapsuleShape*, CapsuleData> capsule_data;
-			std::unordered_map<hkpConvexVerticesShape*, ConvexData> convex_data;
-			std::unordered_map<hkpListShape*, ListData> list_data;
-			std::unordered_map<hkpRigidBody*, RbData> rb_data;
-
-
+			RagdollData ragdollData;
+			CharContData charContData;
 	};
 }
