@@ -106,7 +106,7 @@ namespace Gts {
 		float natural_scale = get_natural_scale(actor);
 		float scale_factor = visual_scale/natural_scale;
 
-		if ((fabs(this->last_scale - scale_factor) <= EPSILON) &&  !force_reset) {
+		if ((fabs(this->last_scale - scale_factor) <= EPSILON) &&  !needs_reset) {
 			return;
 		}
 

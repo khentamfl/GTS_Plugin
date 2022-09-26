@@ -11,6 +11,7 @@ namespace Gts {
 
 	class RagdollData {
 		public:
+			RagdollData();
 			RagdollData(hkaRagdollInstance* ragdoll);
 			RagdollData(RagdollData&& old) : ragdoll(std::move(old.ragdoll)), capsule_data(std::move(old.capsule_data)), rb_data(std::move(old.rb_data)) {
 			};

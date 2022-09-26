@@ -7,6 +7,10 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
+	RagdollData::RagdollData() {
+		RagdollData(nullptr);
+	}
+
 	RagdollData::RagdollData(hkaRagdollInstance* ragdoll) {
 		this->Init(ragdoll);
 		if (ragdoll) {

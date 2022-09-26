@@ -13,6 +13,7 @@ namespace Gts {
 
 	class CharContData {
 		public:
+			CharContData();
 			CharContData(bhkCharacterController* charCont);
 			CharContData(CharContData&& old) : charCont(std::move(old.charCont)), capsule_data(std::move(old.capsule_data)), convex_data(std::move(old.convex_data)), list_data(std::move(old.list_data)) {
 			};

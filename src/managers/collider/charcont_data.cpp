@@ -7,6 +7,9 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
+	CharContData::CharContData() {
+		CharContData(nullptr);
+	}
 	CharContData::CharContData(bhkCharacterController* charCont) {
 		this->Init(charCont);
 		if (charCont) {
