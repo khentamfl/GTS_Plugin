@@ -410,7 +410,7 @@ namespace Gts {
 			contactListener.detach();
 			contactListener.attach(world);
 			contactListener.ensure_last();
-			contactListener.enable_biped_collision();
+			// contactListener.enable_biped_collision();
 			auto& collider = ColliderManager::GetSingleton();
 			collider.FlagReset();
 		}
