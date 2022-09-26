@@ -329,10 +329,12 @@ namespace {
 			charController->GetTransformImpl(outTransform);
 			glm::mat4 transform = HkToGlm(outTransform);
 			for (auto bhkShape: charController->shapes) {
-				hkpShape* shape = static_cast<hkpShape*>(bhkShape->referencedObject.get());
-				if (shape) {
-					log::info("  - Shape of CharController");
-					DrawShape(shape, transform);
+				auto bShape = bhkShape->referencedObject.get();
+				if (bShape) {
+					hkpShape* shape = static_cast<hkpShape*>(bShape);
+					if (shape) {
+						DrawShape(shape, transform);
+					}
 				}
 			}
 		}

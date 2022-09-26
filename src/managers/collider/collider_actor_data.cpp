@@ -22,13 +22,17 @@ namespace {
 		float height = 0.0;
 		for (auto bShapeRef: charController->shapes) {
 			bhkShape* bShape = bShapeRef.get();
-			hkReferencedObject* refShape = bShape->referencedObject.get();
-			hkpShape* shape = static_cast<hkpShape*>(refShape);
-			if (shape) {
-				hkAabb outAabb;
-				shape->GetAabbImpl(shapeTransform, 0.0, outAabb);
-				float shape_height = (outAabb.max - outAabb.min).quad.m128_f32[2];
-				height = std::max(shape_height, height);
+			if (bShape) {
+				hkReferencedObject* refShape = bShape->referencedObject.get();
+				if (refShape) {
+					hkpShape* shape = static_cast<hkpShape*>(refShape);
+					if (shape) {
+						hkAabb outAabb;
+						shape->GetAabbImpl(shapeTransform, 0.0, outAabb);
+						float shape_height = (outAabb.max - outAabb.min).quad.m128_f32[2];
+						height = std::max(shape_height, height);
+					}
+				}
 			}
 		}
 
@@ -124,29 +128,20 @@ namespace Gts {
 		// Prune any colliders that are not used anymore
 		this->PruneColliders(actor);
 
-		// Get the orig height of collider so we can shift position accordingly
-		hkVector4 preScalePos;
-		charController->GetPositionImpl(preScalePos, false);
-		float preScaleHeight = GetHeightofCharController(charController);
-		log::info("preScaleHeight: {}", preScaleHeight);
-		log::info("preScalePos: {}", Vector2Str(preScalePos));
-
 		this->ApplyScale(scale_factor, vecScale);
 
-		// Work out change in height of collider and shift position accordingly
-		float postScaleHeight = GetHeightofCharController(charController);
-		hkVector4 postScalePos = preScalePos + hkVector4(0.0, 0.0, 1.0, 0.0) * (postScaleHeight - preScaleHeight);
-		charController->SetPositionImpl(postScalePos, false, false);
-		log::info("postScaleHeight: {}", postScaleHeight);
-		log::info("postScalePos: {}", Vector2Str(postScalePos));
-		// One last check
-		charController->GetPositionImpl(postScalePos, false);
-		log::info("  Actual postScalePos: {}", Vector2Str(postScalePos));
-
-
+		float preScaleCenter = charController->center;
 		// Change the center offset of the collider
-		charController->center = this->charControllerCenter * scale_factor;
 		charController->actorHeight = this->actorHeight * scale_factor;
+		charController->center = this->charControllerCenter * scale_factor;
+		float postScaleCenter = charController->center;
+
+		// Adjust position caused by center shift
+		hkVector4 pos;
+		charController->GetPositionImpl(pos, false);
+		hkVector4 postScalePos = pos + hkVector4(0.0, 0.0, 1.0, 0.0) * (postScaleCenter - preScaleCenter);
+		charController->SetPositionImpl(postScalePos, false, false);
+
 
 		this->last_scale = scale_factor;
 	}
