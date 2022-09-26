@@ -39,10 +39,10 @@ namespace Gts {
 
 			float last_scale = -1.0;
 			bhkCharacterController* lastCharController = nullptr;
-			float charControllerCenter = 0.0;
+			float center = 0.0;
 			float actorHeight = 0.0;
-			float m_unweldingHeightOffsetFactor = 0.0;
 			hkVector4 fakeSupportStart = hkVector4(0.0);
+			BSBound* collisionBound = nullptr;
 
 			std::atomic_uint64_t last_update_frame = std::atomic_uint64_t(0);
 			FormID form_id = 0;
