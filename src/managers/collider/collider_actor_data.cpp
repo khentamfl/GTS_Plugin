@@ -153,6 +153,9 @@ namespace Gts {
 		charController->scale = scale_factor;
 		float postScaleCenter = charController->center;
 
+		log::info("rotCenter: {}", Vector2Str(charController->rotCenter));
+		log::info("fakeSupportStart: {}", Vector2Str(charController->fakeSupportStart));
+
 		// Adjust position caused by center shift
 		hkVector4 pos;
 		charController->GetPositionImpl(pos, false);
