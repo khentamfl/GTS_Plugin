@@ -173,7 +173,7 @@ namespace Gts {
 						log::info("m_supportDistance: {}", hkpObject->m_supportDistance);
 						log::info("m_hardSupportDistance: {}", hkpObject->m_hardSupportDistance);
 						if (this->m_unweldingHeightOffsetFactor > 0) {
-							hkpObject->m_unweldingHeightOffsetFactor = this->m_unweldingHeightOffsetFactor * scale_factor;
+							// hkpObject->m_unweldingHeightOffsetFactor = this->m_unweldingHeightOffsetFactor * scale_factor;
 						}
 					}
 				}
