@@ -40,7 +40,6 @@ namespace Gts {
 	}
 
 	void ConvexData::ApplyScale(const float& scale, const hkVector4& vecScale) {
-		return;
 		auto shape = this->convex;
 		if (shape->numVertices != this->numVertices) {
 			log::error("Vertext count mismatch");
