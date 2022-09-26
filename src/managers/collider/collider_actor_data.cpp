@@ -94,7 +94,6 @@ namespace Gts {
 		if (!charController) {
 			return;
 		}
-		log::info("Actor: {} Scale: {}:{}", actor->GetDisplayFullName(), get_visual_scale(actor), get_visual_scale(actor)/get_natural_scale(actor));
 		bool charControllerChanged = this->lastCharController != charController;
 		if (force_reset ||
 		    (
@@ -112,6 +111,20 @@ namespace Gts {
 			log::info("Actor: {}: Reset center to: {} from: {}", actor->GetDisplayFullName(), charController->center, this->charControllerCenter);
 			this->charControllerCenter = charController->center;
 			this->actorHeight = charController->actorHeight;
+
+			bhkCharRigidBodyController* charRigidBodyController = skyrim_cast<bhkCharRigidBodyController*>(charController);
+
+			if (charRigidBodyController) {
+				// NPCs seem to use rigid body ones
+				auto& characterRigidBody = charRigidBodyController->characterRigidBody;
+				hkReferencedObject* refObject = characterRigidBody.referencedObject.get();
+				if (refObject) {
+					hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
+					if (hkpObject) {
+						this->m_unweldingHeightOffsetFactor = hkpObject->m_unweldingHeightOffsetFactor;
+					}
+				}
+			}
 		}
 
 		const float EPSILON = 1e-3;
@@ -123,6 +136,8 @@ namespace Gts {
 		if ((fabs(this->last_scale - scale_factor) <= EPSILON) &&  !force_reset) {
 			return;
 		}
+
+		log::info("Actor: {} Scale: {}:{}", actor->GetDisplayFullName(), visual_scale, scale_factor);
 
 		hkVector4 vecScale = hkVector4(scale_factor, scale_factor, scale_factor, scale_factor);
 
@@ -157,6 +172,9 @@ namespace Gts {
 						log::info("m_unweldingHeightOffsetFactor: {}", hkpObject->m_unweldingHeightOffsetFactor);
 						log::info("m_supportDistance: {}", hkpObject->m_supportDistance);
 						log::info("m_hardSupportDistance: {}", hkpObject->m_hardSupportDistance);
+						if (this->m_unweldingHeightOffsetFactor > 0) {
+							hkpObject->m_unweldingHeightOffsetFactor = this->m_unweldingHeightOffsetFactor * scale_factor;
+						}
 					}
 				}
 			}
