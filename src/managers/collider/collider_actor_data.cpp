@@ -306,17 +306,23 @@ namespace Gts {
 			}
 		}
 
-		// There are two collider shapes on the characontroller
-		// One of these shapes should already be handelled in the above
-		// calcs however there is anohter one attached to the characontroller
-		// that we are not sure what it does.
-		// Regardless we add it to the collider system now
-		for (auto bShapeRef: charController->shapes) {
-			bhkShape* bShape = bShapeRef.get();
-			hkReferencedObject* refShape = bShape->referencedObject.get();
-			hkpShape* shape = static_cast<hkpShape*>(refShape);
-			if (shape) {
-				this->AddShape(shape);
+		if (charController) {
+			// There are two collider shapes on the characontroller
+			// One of these shapes should already be handelled in the above
+			// calcs however there is anohter one attached to the characontroller
+			// that we are not sure what it does.
+			// Regardless we add it to the collider system now
+			for (auto bShapeRef: charController->shapes) {
+				bhkShape* bShape = bShapeRef.get();
+				if (bShape) {
+					hkReferencedObject* refShape = bShape->referencedObject.get();
+					if (refShape) {
+						hkpShape* shape = static_cast<hkpShape*>(refShape);
+						if (shape) {
+							this->AddShape(shape);
+						}
+					}
+				}
 			}
 		}
 	}
