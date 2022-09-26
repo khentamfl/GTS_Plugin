@@ -21,6 +21,8 @@ namespace Gts {
 	void ListData::ApplyScale(const float& scale, const hkVector4& vecScale) {
 		this->list->aabbHalfExtents = this->aabbHalfExtents * vecScale;
 		this->list->aabbCenter = this->aabbCenter * vecScale;
+		log::info("List: aabbCenter: {}", Vector2Str(this->list->aabbCenter));
+		log::info("List: aabbHalfExtents: {}", Vector2Str(this->list->aabbHalfExtents));
 		this->list->flags = 1;
 	}
 }

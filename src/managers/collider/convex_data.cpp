@@ -46,9 +46,13 @@ namespace Gts {
 		}
 		// shape->radius = this->radius * scale;
 		hkVector4 origin = hkVector4(this->origin.x, this->origin.y, this->origin.z, 0.0);
+		log::info("origin: {}", Vector2Str(origin));
 
 		shape->aabbHalfExtents = this->aabbHalfExtents * vecScale;
 		shape->aabbCenter = (this->aabbCenter - origin) * vecScale + origin;
+
+		log::info("ConvVerts: aabbCenter: {}", Vector2Str(shape->aabbCenter));
+		log::info("ConvVerts: aabbHalfExtents: {}", Vector2Str(shape->aabbHalfExtents));
 
 		std::size_t numVertices = shape->numVertices;
 		std::size_t numRotatedVerticies = numVertices / 4;
