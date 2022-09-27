@@ -46,8 +46,19 @@ namespace Gts {
 	}
 
 	void CapsuleData::ApplyScale(const float& scale, const hkVector4& vecScale) {
-		this->capsule->vertexA = this->start * vecScale;
-		this->capsule->vertexB = this->end * vecScale;
+		hkVector4 origin = hkVector4(this->origin.x, this->origin.y, this->origin.z, 0.0);
+		this->capsule->vertexA = (this->start - origin) * vecScale + origin;
+		this->capsule->vertexB = (this->end - origin) * vecScale + origin;
 		this->capsule->radius = this->radius * scale;
+	}
+
+	void CapsuleData::SetOriginMinZ() {
+		hkVector4 lowest;
+		if (this->start.quad.m128_f32[2] < this->end.quad.m128_f32[2]) {
+			lowest = this->start - hkVector4(this->radius, this->radius, this->radius, 0.0);
+		} else {
+			lowest = this->end - hkVector4(this->radius, this->radius, this->radius, 0.0);
+		}
+		this->SetOrigin(lowest);
 	}
 }

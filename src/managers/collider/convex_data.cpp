@@ -67,21 +67,6 @@ namespace Gts {
 			shape->rotatedVertices[i].vertices[1] = (this->rotated_verts[i].y - y_origin) * vecScale + y_origin;
 			shape->rotatedVertices[i].vertices[2] = (this->rotated_verts[i].z - z_origin) * vecScale + z_origin;
 		}
-
-		// shape->useSpuBuffer = false;
-		// // Clear plane equations
-		// for (std::size_t i = 0; i < shape->planeEquations.size(); i++) {
-		// 	shape->planeEquations._data[i].~hkVector4();
-		// }
-		// shape->planeEquations._size = 0;
-	}
-
-	void ConvexData::SetOrigin(const float& x, const float& y, const float& z) {
-		this->origin = NiPoint3(x, y, z);
-	}
-
-	void ConvexData::SetOrigin(const NiPoint3& point) {
-		this->origin = point;
 	}
 
 	void ConvexData::SetOriginMinZ() {

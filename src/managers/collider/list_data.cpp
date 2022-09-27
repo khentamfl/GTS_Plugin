@@ -19,12 +19,13 @@ namespace Gts {
 	}
 
 	void ListData::ApplyScale(const float& scale, const hkVector4& vecScale) {
-		hkVector4 wless = hkVector4(scale, scale, scale, 0.0);
+		hkVector4 origin = hkVector4(this->origin.x, this->origin.y, this->origin.z, 0.0);
+		this->list->aabbHalfExtents = this->aabbHalfExtents * vecScale;
+		this->list->aabbCenter = (this->aabbCenter - origin) * vecScale + origin;
+	}
 
-		this->list->aabbHalfExtents = this->aabbHalfExtents * wless * hkVector4(2.0);
-		this->list->aabbCenter = this->aabbCenter * wless;
-		// log::info("List: aabbCenter: {}", Vector2Str(this->list->aabbCenter));
-		// log::info("List: aabbHalfExtents: {}", Vector2Str(this->list->aabbHalfExtents));
-		this->list->flags = 1;
+	void ListData::SetOriginMinZ() {
+		hkVector4 lowest = this->aabbCenter - hkVector4(0.0, 0.0, this->aabbHalfExtents.quad.m128_f32[2], 0.0);
+		this->SetOrigin(lowest);
 	}
 }
