@@ -213,7 +213,10 @@ namespace Gts {
 			return;
 		}
 		auto key = orig_capsule;
-		this->capsule_data.try_emplace(key, orig_capsule);
+		auto result = this->capsule_data.try_emplace(key, orig_capsule);
+		if (result.second) {
+			(*result.first).second.SetOriginMinZ();
+		}
 	}
 
 	void CharContData::AddConvexVerts(hkpConvexVerticesShape* convex) {
@@ -222,7 +225,10 @@ namespace Gts {
 			return;
 		}
 		auto key = convex;
-		this->convex_data.try_emplace(key, convex);
+		auto result = this->convex_data.try_emplace(key, convex);
+		if (result.second) {
+			(*result.first).second.SetOriginMinZ();
+		}
 	}
 
 	void CharContData::AddList(hkpListShape* list) {
@@ -231,6 +237,9 @@ namespace Gts {
 			return;
 		}
 		auto key = list;
-		this->list_data.try_emplace(key, list);
+		auto result = this->list_data.try_emplace(key, list);
+		if (result.second) {
+			(*result.first).second.SetOriginMinZ();
+		}
 	}
 }
