@@ -55,9 +55,9 @@ namespace Gts {
 	void CapsuleData::SetOriginMinZ() {
 		hkVector4 lowest;
 		if (this->start.quad.m128_f32[2] < this->end.quad.m128_f32[2]) {
-			lowest = this->start - hkVector4(this->radius, this->radius, this->radius, 0.0);
+			lowest = this->start - hkVector4(0.0, 0.0, this->radius, 0.0);
 		} else {
-			lowest = this->end - hkVector4(this->radius, this->radius, this->radius, 0.0);
+			lowest = this->end - hkVector4(0.0, 0.0, this->radius, 0.0);
 		}
 		this->SetOrigin(lowest);
 	}
