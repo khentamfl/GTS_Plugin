@@ -35,12 +35,11 @@ namespace Gts {
 			float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
 			float SelectedFormula = runtime.SelectedSizeFormula->value;
 			if (SelectedFormula >= 2.0) {
-				GetLimit = clamp(1.0, 99999999.0, runtime.MassBasedSizeLimit->value);
+				GetLimit = runtime.MassBasedSizeLimit->value +1.0;
 			}
-			float RaceScale = GetRaceScale(actor);
-			float RaceScaleLimit = (RaceScale * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
-			//float TotalLimit = (RaceScale * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
+			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
 			float TotalLimit = (GetLimit + Persistent_Size) * (1.0 + Gigantism);
+			
 
 
 
@@ -49,6 +48,7 @@ namespace Gts {
 			}
 			if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 				set_max_scale(actor, TotalLimit);
+				log::info("Current Size Limit of: {} is {}", actor->GetDisplayFullName() ,TotalLimit);
 			}
 		}
 	}
