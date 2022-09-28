@@ -53,22 +53,22 @@ namespace Gts {
 				return;
 			}
 		} else {
-			NiAVObject* npc_node = find_node_any(actor, "NPC");
+			NiAVObject* npc_node = find_node(actor, "NPC", Person::Any);
 			if (!npc_node) {
 				return;
 			}
 
-			NiAVObject* root_node = find_node_any(actor, "NPC Root [Root]");
+			NiAVObject* root_node = find_node(actor, "NPC Root [Root]", Person::Any);
 			if (!root_node) {
 				return;
 			}
 
-			NiAVObject* com_node = find_node_any(actor, "NPC COM [COM ]");
+			NiAVObject* com_node = find_node(actor, "NPC COM [COM ]", Person::Any);
 			if (!com_node) {
 				return;
 			}
 
-			NiAVObject* body_node = find_node_any(actor, "CME Body [Body]");
+			NiAVObject* body_node = find_node(actor, "CME Body [Body]", Person::Any);
 			if (!body_node) {
 				return;
 			}
