@@ -1,7 +1,5 @@
 #include "managers/reloader.hpp"
-#include "managers/GtsManager.hpp"
-#include "managers/collider.hpp"
-#include "UI/DebugAPI.hpp"
+#include "events.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -11,8 +9,6 @@ namespace Gts {
 		auto event_sources = ScriptEventSourceHolder::GetSingleton();
 		if (event_sources) {
 			event_sources->AddEventSink<TESObjectLoadedEvent>(this);
-			// event_sources->AddEventSink<TESCellFullyLoadedEvent>(this);
-			// event_sources->AddEventSink<TESCellAttachDetachEvent>(this);
 			event_sources->AddEventSink<TESEquipEvent>(this);
 		}
 
@@ -35,22 +31,20 @@ namespace Gts {
 		if (evn) {
 			auto* actor = TESForm::LookupByID<Actor>(evn->formID);
 			if (actor) {
-				GtsManager::GetSingleton().reapply_actor(actor);
-				ColliderManager::GetSingleton().ResetActor(actor);
+				EventDispatcher::DoActorLoaded(actor);
 			}
 		}
 		return BSEventNotifyControl::kContinue;
 	}
 
-	BSEventNotifyControl ReloadManager::ProcessEvent(const TESCellFullyLoadedEvent* evn, BSTEventSource<TESCellFullyLoadedEvent>* dispatcher)
+	BSEventNotifyControl ReloadManager::ProcessEvent(const TESResetEvent* evn, BSTEventSource<TESResetEvent>* dispatcher)
 	{
-		GtsManager::GetSingleton().reapply();
-		return BSEventNotifyControl::kContinue;
-	}
-
-	BSEventNotifyControl ReloadManager::ProcessEvent(const TESCellAttachDetachEvent* evn, BSTEventSource<TESCellAttachDetachEvent>* dispatcher)
-	{
-		GtsManager::GetSingleton().reapply();
+		if (evn) {
+			auto* actor = TESForm::LookupByID<Actor>(evn->object->formID);
+			if (actor) {
+				EventDispatcher::DoResetActor(actor);
+			}
+		}
 		return BSEventNotifyControl::kContinue;
 	}
 
@@ -59,7 +53,7 @@ namespace Gts {
 		if (evn) {
 			auto* actor = TESForm::LookupByID<Actor>(evn->actor->formID);
 			if (actor) {
-				GtsManager::GetSingleton().reapply_actor(actor);
+				EventDispatcher::DoActorEquip(actor);
 			}
 		}
 		return BSEventNotifyControl::kContinue;

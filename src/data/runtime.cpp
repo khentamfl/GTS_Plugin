@@ -27,7 +27,7 @@ namespace Gts {
 		return instance;
 	}
 
-	void Runtime::Load() {
+	void Runtime::DataReady() {
 		this->lFootstepL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLFootstepL());
 		this->lFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLFootstepR());
 
@@ -48,7 +48,13 @@ namespace Gts {
 		this->growthSound = find_form<BGSSoundDescriptorForm>("GTS.esp|271EF6");
 		this->shrinkSound = find_form<BGSSoundDescriptorForm>("GTS.esp|364F6A");
 
-		this->smallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
+		this->MoanSound = find_form<BGSSoundDescriptorForm>("GTS.esp|09B0AC");
+
+		this->BloodGushSound = find_form<BGSSoundDescriptorForm>("Skyrim.esm|10F78C");
+
+		this->SmallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
+		this->SmallMassiveThreatSizeSteal = find_form<BGSPerk>("GTS.esp|2496E8");
+		this->SmallMassiveThreatSpell = find_form<SpellItem>("GTS.esp|1A2566");
 
 		this->explosiveGrowth1 = find_form<EffectSetting>("GTS.esp|007928"); // < Growth Spurt shouts
 
@@ -65,23 +71,30 @@ namespace Gts {
 		this->ShrinkEnemy = find_form<EffectSetting>("GTS.esp|00387B");
 		this->ShrinkEnemyAOE = find_form<EffectSetting>("GTS.esp|0DCDC5");
 		this->ShrinkEnemyAOEMast = find_form<EffectSetting>("GTS.esp|0DCDCA");
+		this->ShrinkBolt = find_form<EffectSetting>("GTS.esp|3C5278");
+		this->ShrinkStorm = find_form<EffectSetting>("GTS.esp|3C527C");
 		this->SwordEnchant = find_form<EffectSetting>("GTS.esp|00FA9E");
+		this->EnchGigantism = find_form<EffectSetting>("GTS.esp|3EDAC5");
 
 		this->ShrinkToNothing = find_form<EffectSetting>("GTS.esp|009979"); // <- Absorbs someone
 		///End
 
 		///Ally/Grow Spells
 		this->SlowGrowth = find_form<EffectSetting>("GTS.esp|019C3D"); // <- slow growth spell [Hands]. Release and grow over time.
+		this->SlowGrowth2H = find_form<EffectSetting>("GTS.esp|086C8D");
 		this->GrowthSpell = find_form<EffectSetting>("GTS.esp|0022EB"); // <- Grow Spell [Hands]
 		this->GrowPcButton = find_form<EffectSetting>("GTS.esp|002DB5"); // <- Grow PC in size on button press
 
-		this->GrowAlly = find_form<EffectSetting>("GTS.esp|0058D7");  // <- Increase Ally Size [Hands]
+		this->GrowAlly = find_form<EffectSetting>("GTS.esp|0058D5");  // <- Increase Ally Size [Hands]
 
 		this->GrowAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE3");  // <- Makes ally grow for 2 sec on button press.
 		this->ShrinkAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE4"); // <- Makes ally shrink for 2 sec on button press.
 
-		this->AllyCrushGrowth = find_form<EffectSetting>("GTS.esp|2028B6"); // < Grow on Crush. NPC only. Player triggers CrushGrowth on crushing someone via Crush() function in SP.
+		this->CrushGrowthMGEF = find_form<EffectSetting>("GTS.esp|2028B6"); // < Grow on Crush. NPC only. Player triggers CrushGrowth on crushing someone via Crush() function in SP.
 		this->GtsMarkAlly = find_form<EffectSetting>("GTS.esp|29F82C"); // < Marks ally when changing game mode
+		this->TrackSize = find_form<EffectSetting>("GTS.esp|3B0E75");
+		this->CrushGrowthSpell = find_form<SpellItem>("GTS.esp|2028B7");
+		this->TrackSizeSpell = find_form<SpellItem>("GTS.esp|3B0E73");
 		///End
 
 		///Others
@@ -97,14 +110,24 @@ namespace Gts {
 		///End
 
 		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
+		this->BloodExplosion = find_form<BGSExplosion>("GTS.esp|01CE9D");
+		this->BloodFX = find_form<BGSExplosion>("Dawnguard.esm|00E7B4");
 
 		this->GrowthOnHitPerk = find_form<BGSPerk>("GTS.esp|30EE52");
+		this->AdditionalAbsorption = find_form<BGSPerk>("GTS.esp|151518");
 
 		this->hhBonus = find_form<BGSPerk>(Config::GetSingleton().GetPerks().GetHHBonus());
 		this->PerkPart1 = find_form<BGSPerk>("GTS.esp|16081F");
 		this->PerkPart2 = find_form<BGSPerk>("GTS.esp|160820");
 		this->ExtraGrowth = find_form<BGSPerk>("GTS.esp|332563");
 		this->ExtraGrowthMax = find_form<BGSPerk>("GTS.esp|397972");
+		this->HealthRegenPerk = find_form<BGSPerk>("GTS.esp|18E160");
+		this->GrowthAugmentation = find_form<BGSPerk>("GTS.esp|35AD69");
+		this->VorePerkRegeneration = find_form<BGSPerk>("GTS.esp|33C764");
+		this->VorePerkGreed = find_form<BGSPerk>("GTS.esp|33C765");
+		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6");
+		this->NoSpeedLoss = find_form<BGSPerk>("GTS.esp|2E663B");
+
 
 		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
 
@@ -121,14 +144,16 @@ namespace Gts {
 		this->GrowthModeRateNPC = find_form<TESGlobal>("GTS.esp|2EB74B");
 		this->ShrinkModeRateNPC = find_form<TESGlobal>("GTS.esp|2EB74A");
 
+		this->GlobalMaxSizeCalc = find_form<TESGlobal>("GTS.esp|20CAC5");
+		this->MassBasedSizeLimit = find_form<TESGlobal>("GTS.esp|277005");
+		this->SelectedSizeFormula = find_form<TESGlobal>("GTS.esp|277004");
+
 		this->ProtectEssentials = find_form<TESGlobal>("GTS.esp|23A3E2");
+		this->EnableGiantSounds = find_form<TESGlobal>("GTS.esp|26CDF0");
+		this->PCAdditionalEffects = find_form<TESGlobal>("GTS.esp|3D4586");
+		this->NPCSizeEffects = find_form<TESGlobal>("GTS.esp|3D4587");
+		this->CrushGrowthStorage = find_form<TESGlobal>("GTS.esp|3D4588");
 
-		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");
-		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
-		this->FakeCrushEffect = find_form<EffectSetting>("GTS.esp|271EF9");
-
-		this->ShrinkBackNPCSpell = find_form<MagicItem>("GTS.esp|00536B");
-		this->ShrinkBackSpell = find_form<MagicItem>("GTS.esp|005368");
 
 		///Camera
 		this->EnableCamera = find_form<TESGlobal>("GTS.esp|290512");
@@ -164,5 +189,35 @@ namespace Gts {
 
 		this->CalcProne = find_form<TESGlobal>("GTS.esp|2D733A");
 		////////////
+		/////Attributes//////
+		this->AllowTimeChange = find_form<TESGlobal>("GTS.esp|277001"); // <- Speed AV modification toggler
+		this->bonusHPMultiplier = find_form<TESGlobal>("GTS.esp|28B408");
+		this->bonusCarryWeightMultiplier = find_form<TESGlobal>("GTS.esp|28B407");
+		this->bonusJumpHeightMultiplier = find_form<TESGlobal>("GTS.esp|28B40A");
+		this->bonusDamageMultiplier = find_form<TESGlobal>("GTS.esp|28B409");
+		this->bonusSpeedMultiplier = find_form<TESGlobal>("GTS.esp|28B40B");
+		this->bonusSpeedMax = find_form<TESGlobal>("GTS.esp|28B40C");
+
+		///EndAttributes///
+
+		///Potions///
+		this->EffectGrowthPotion = find_form<EffectSetting>("GTS.esp|3D4582");
+		this->ResistShrinkPotion = find_form<EffectSetting>("GTS.esp|3D4583");
+		this->EffectSizePotionWeak = find_form<EffectSetting>("GTS.esp|3E38BB");
+		this->EffectSizePotionNormal = find_form<EffectSetting>("GTS.esp|3E38BC");
+		this->EffectSizePotionStrong = find_form<EffectSetting>("GTS.esp|3E38BD");
+		this->EffectSizePotionExtreme = find_form<EffectSetting>("GTS.esp|3E38C0");
+		///End Potions///
+
+		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");
+		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
+		this->FakeCrushEffect = find_form<EffectSetting>("GTS.esp|271EF9");
+
+		this->ShrinkBackNPCSpell = find_form<SpellItem>("GTS.esp|00536B");
+		this->ShrinkBackSpell = find_form<SpellItem>("GTS.esp|005368");
+
+		this->MainQuest = find_form<TESQuest>("GTS.esp|005E3A");
+
+		this->FollowerFaction = find_form<TESFaction>("Skyrim.esm|084D1B");
 	}
 }

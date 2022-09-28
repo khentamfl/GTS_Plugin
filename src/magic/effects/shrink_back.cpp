@@ -1,8 +1,12 @@
+#include "managers/GrowthTremorManager.hpp"
 #include "magic/effects/shrink_back.hpp"
 #include "magic/effects/common.hpp"
+#include "managers/GtsManager.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "util.hpp"
+#include "timer.hpp"
 
 namespace Gts {
 	std::string ShrinkBack::GetName() {
@@ -14,20 +18,39 @@ namespace Gts {
 		return effect == runtime.ShrinkBack;
 	}
 
+	void ShrinkBack::OnStart() {
+		Actor* caster = GetCaster();
+		if (!caster) {
+			return;
+		}
+		auto& runtime = Runtime::GetSingleton();
+		auto ShrinkSound = runtime.shrinkSound;
+		float Volume = clamp(0.50, 1.0, get_visual_scale(caster));
+		PlaySound(ShrinkSound, caster, Volume, 1.0);
+		log::info("Shrink Back Start, actor: {}", caster->GetDisplayFullName());
+	}
+
 	void ShrinkBack::OnUpdate() {
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		}
+		float Power = 0.00065;
 		auto& runtime = Runtime::GetSingleton();
 
-		//BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;
-		//audio_manager->BuildSoundDataFromDescriptor(shrink_sound, sound_descriptor);
-		//shrink_sound.Play();
+		if (DualCasted()) {
+			Power *= 2.0;
+		}
 
-		if (!Revert(caster, 0.0025, 0.0010)) {
+		if (this->timer.ShouldRun()) {
+			auto ShrinkSound = runtime.shrinkSound;
+			float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/4);
+			PlaySound(ShrinkSound, caster, Volume, 0.0);
+			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.30);
+			log::info("Shrink Back Loop, actor: {}", caster->GetDisplayFullName());
+		}
+
+		if (!Revert(caster, Power, Power/2.5)) {
 			// Returns false when shrink back is complete
 			Dispel();
 		}

@@ -3,10 +3,13 @@
 #include "magic/effects/common.hpp"
 #include "magic/effects/absorb_effect.hpp"
 #include "magic/effects/explosive_growth.hpp"
+#include "magic/effects/EnchGigantism.hpp"
 #include "magic/effects/grow_button.hpp"
 #include "magic/effects/grow_other.hpp"
+#include "magic/effects/tracksize.hpp"
 #include "magic/effects/grow_other_button.hpp"
 #include "magic/effects/growth.hpp"
+#include "magic/effects/CrushGrowth.hpp"
 #include "magic/effects/shrink.hpp"
 #include "magic/effects/shrink_back.hpp"
 #include "magic/effects/shrink_back_other.hpp"
@@ -18,6 +21,10 @@
 #include "magic/effects/sword_of_size.hpp"
 #include "magic/effects/vore_growth.hpp"
 #include "magic/effects/SizeRelatedDamage.hpp"
+#include "magic/effects/SmallMassiveThreat.hpp"
+#include "magic/effects/GrowthPotion.hpp"
+#include "magic/effects/SizePotion.hpp"
+#include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
 
 namespace Gts {
@@ -46,7 +53,33 @@ namespace Gts {
 			if (this->activeEffect->caster) {
 				this->caster = this->activeEffect->caster.get().get();
 			}
+			this->hasDuration = this->HasDuration();
 		}
+	}
+
+	bool Magic::HasDuration()  {
+		if (this->activeEffect) {
+			auto spell = this->activeEffect->spell;
+			if (spell) {
+				// switch (this->activeEffect->spell->GetSpellType()) {
+				// 	case  MagicSystem::SpellType::kEnchantment: {
+				// 		return false;
+				// 	}
+				// }
+				switch (spell->GetCastingType()) {
+					case  MagicSystem::CastingType::kConstantEffect: {
+						return false;
+					}
+				}
+			}
+		}
+		auto effectSetting = this->effectSetting;
+		if (effectSetting) {
+			if (effectSetting->data.flags.all(EffectSetting::EffectSettingData::Flag::kNoDuration)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	void Magic::poll() {
@@ -68,14 +101,8 @@ namespace Gts {
 					break;
 				}
 				this->OnUpdate();
-				bool finished = false;
-				if (this->activeEffect->flags & ActiveEffect::Flag::kDispelled) {
-					finished = true;
-				}
-				if (this->activeEffect->elapsedSeconds >= this->activeEffect->duration) {
-					finished = true;
-				}
-				if (finished) {
+				if ((this->activeEffect->flags & ActiveEffect::Flag::kDispelled)
+				    || (this->hasDuration && (this->activeEffect->elapsedSeconds >= this->activeEffect->duration))) {
 					this->state = State::Finish;
 				}
 				break;
@@ -114,9 +141,12 @@ namespace Gts {
 
 	bool Magic::IsDualCasting() {
 		if (this->caster) {
-			auto source = this->caster->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
-			if (source) {
-				return source->GetIsDualCasting();
+			auto casting_type = GetActiveEffect()->castingSource;
+			if (casting_type == MagicSystem::CastingSource::kLeftHand || casting_type == MagicSystem::CastingSource::kRightHand) {
+				auto source = this->caster->GetMagicCaster(casting_type);
+				if (source) {
+					return source->GetIsDualCasting();
+				}
 			}
 		}
 		return false;
@@ -140,6 +170,26 @@ namespace Gts {
 				this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
 			}
 
+			if (Gigantism::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new Gigantism(effect));
+			}
+
+			if (GrowthPotion::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new GrowthPotion(effect));
+			}
+
+			if (SizePotion::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new SizePotion(effect));
+			}
+
+			if (CrushGrowth::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new CrushGrowth(effect));
+			}
+
+			if (TrackSize::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new TrackSize(effect));
+			}
+
 			if (ShrinkFoe::StartEffect(base_spell)) {
 				this->active_effects.try_emplace(effect, new ShrinkFoe(effect));
 			}
@@ -157,6 +207,10 @@ namespace Gts {
 
 			if (SlowGrow::StartEffect(base_spell)) {
 				this->active_effects.try_emplace(effect, new SlowGrow(effect));
+			}
+
+			if (SmallMassiveThreat::StartEffect(base_spell)) {
+				this->active_effects.try_emplace(effect, new SmallMassiveThreat(effect));
 			}
 
 			if (Growth::StartEffect(base_spell)) {
@@ -213,5 +267,9 @@ namespace Gts {
 				++i;
 			}
 		}
+	}
+
+	void MagicManager::Reset() {
+		this->active_effects.clear();
 	}
 }

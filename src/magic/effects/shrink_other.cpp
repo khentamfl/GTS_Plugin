@@ -43,6 +43,6 @@ namespace Gts {
 			power *= DUAL_CAST_BONUS;
 		}
 
-		ShrinkActor(target, power*0.5, power + 0.5);
+		ShrinkActor(target, power*0.5, 0);
 	}
 }

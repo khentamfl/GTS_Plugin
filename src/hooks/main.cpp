@@ -1,11 +1,8 @@
 #include "hooks/main.hpp"
 #include "util.hpp"
-
-#include "managers/GtsManager.hpp"
-#include "managers/collider.hpp"
-#include "magic/magic.hpp"
-#include "managers/ddraw.hpp"
-#include "managers/camera.hpp"
+#include "events.hpp"
+#include "data/time.hpp"
+#include "data/plugin.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -23,17 +20,35 @@ namespace Hooks
 	void Hook_MainUpdate::Update(RE::Main* a_this, float a2)
 	{
 		_Update(a_this, a2);
-		auto& manager = GtsManager::GetSingleton();
-		auto& magic = MagicManager::GetSingleton();
-		auto& collider = ColliderManager::GetSingleton();
-		auto& ddraw = DDraw::GetSingleton();
-		auto& camera = CameraManager::GetSingleton();
-		activate_mainthread_mode();
-		manager.poll();
-		magic.Update();
-		collider.Update();
-		ddraw.Update();
-		camera.Update();
-		deactivate_mainthread_mode();
+		Time::GetSingleton().Update();
+
+		static std::atomic_bool started = std::atomic_bool(false);
+		Plugin::SetOnMainThread(true);
+		if (Plugin::Enabled()) {
+			if (Plugin::InGame()) {
+				// We are not loading or in the mainmenu
+				auto player_char = RE::PlayerCharacter::GetSingleton();
+				if (player_char) {
+					if (player_char->Is3DLoaded()) {
+						// Player is loaded
+						auto ui = RE::UI::GetSingleton();
+						if (!ui->GameIsPaused()) {
+							// Not paused
+							if (started.exchange(true)) {
+								// Not first updated
+								EventDispatcher::DoUpdate();
+							} else {
+								// First update this load
+								EventDispatcher::DoStart();
+							}
+						}
+					}
+				}
+			} else {
+				// Loading or in main menu
+				started.store(false);
+			}
+		}
+		Plugin::SetOnMainThread(false);
 	}
 }

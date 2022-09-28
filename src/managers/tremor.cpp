@@ -32,7 +32,9 @@ namespace Gts {
 	}
 
 	void TremorManager::OnImpact(const Impact& impact) {
-		if (!impact.actor) return;
+		if (!impact.actor) {
+			return;
+		}
 		auto actor = impact.actor;
 
 		float tremor_scale;
@@ -86,7 +88,9 @@ namespace Gts {
 				float power_at_min = config.GetPowerAtMin(); // Power at minimum scale and zero distance will be much lower than this at 2m due to falloff
 				float power_at_max = config.GetPowerAtMax(); // Power at maximum scale
 
-				if (scale < min_shake_scale) return;
+				if (scale < min_shake_scale) {
+					return;
+				}
 				float power = 0.0;
 
 
@@ -158,24 +162,52 @@ namespace Gts {
 				float duration = power * tremor_scale * 0.5;
 				duration = smootherstep(0.2, 1.2, duration);
 
-				if (intensity > 0.01 && duration > 0.01) {
-					shake_camera(actor, intensity, duration);
+				auto& runtime = Runtime::GetSingleton();
+				bool pcEffects = runtime.PCAdditionalEffects ? runtime.NPCSizeEffects->value >= 1.0 : true;
 
-					float left_shake = intensity;
-					float right_shake = intensity;
-					if (actor->formID == 0x14) {
-						switch (foot_kind) {
-							case Foot::Left:
-							case Foot::Front:
-								right_shake = 0.0;
-								break;
-							case Foot::Right:
-							case Foot::Back:
-								left_shake = 0.0;
-								break;
+				if (actor->formID == 0x14 && pcEffects) {
+					if (intensity > 0.01 && duration > 0.01) {
+						shake_camera(actor, intensity, duration);
+
+						float left_shake = intensity;
+						float right_shake = intensity;
+						if (actor->formID == 0x14) {
+							switch (foot_kind) {
+								case Foot::Left:
+								case Foot::Front:
+									right_shake = 0.0;
+									break;
+								case Foot::Right:
+								case Foot::Back:
+									left_shake = 0.0;
+									break;
+							}
 						}
+						shake_controller(left_shake, right_shake, duration);
 					}
-					shake_controller(left_shake, right_shake, duration);
+				}
+
+				bool npcEffects = runtime.NPCSizeEffects ? runtime.NPCSizeEffects->value >= 1.0 : true;
+				if (actor->formID != 0x14 && npcEffects) {
+					if (intensity > 0.01 && duration > 0.01) {
+						shake_camera(actor, intensity, duration);
+
+						float left_shake = intensity;
+						float right_shake = intensity;
+						if (actor->formID == 0x14) {
+							switch (foot_kind) {
+								case Foot::Left:
+								case Foot::Front:
+									right_shake = 0.0;
+									break;
+								case Foot::Right:
+								case Foot::Back:
+									left_shake = 0.0;
+									break;
+							}
+						}
+						shake_controller(left_shake, right_shake, duration);
+					}
 				}
 			}
 		}

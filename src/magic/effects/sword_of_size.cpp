@@ -27,6 +27,13 @@ namespace Gts {
 			return;
 		}
 
-		TransferSize(caster, target, false, 1.25, 0.30, false);
+		TransferSize(caster, target, false, 6.00, 0.40, false);
+	}
+
+	void SwordOfSize::OnFinish() {
+		auto Caster = GetCaster();
+		auto Target = GetTarget();
+		auto runtime = Runtime::GetSingleton();
+		CastTrackSize(Caster, Target);
 	}
 }

@@ -169,19 +169,6 @@ namespace Gts {
 		return 3.4028237E38; // Max float
 	}
 
-	[[nodiscard]] std::atomic_bool& get_main_thread();
-
-	inline bool on_mainthread() {
-		return get_main_thread().load();
-	}
-
-	inline void activate_mainthread_mode() {
-		get_main_thread().store(true);
-	}
-	inline void deactivate_mainthread_mode() {
-		get_main_thread().store(false);
-	}
-
 	inline bool IsJumping(Actor* actor) {
 		if (!actor) {
 			return false;
@@ -191,37 +178,122 @@ namespace Gts {
 		return result;
 	}
 
-	inline float GetStaminaPercentage(Actor* actor) {
-		auto baseValue = actor->GetPermanentActorValue(ActorValue::kStamina);
-		auto valueMod = actor->staminaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-		auto currentValue = actor->GetActorValue(ActorValue::kStamina);
-		auto returnValue = currentValue / (baseValue + valueMod);
-		if (returnValue <= 0.05) {
-			returnValue = 0.05;
-		} // CTD Protection
-		return returnValue;
+	inline float GetMaxAV(Actor* actor, ActorValue av) {
+		auto baseValue = actor->GetPermanentActorValue(av);
+		auto tempMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av);
+		return baseValue + tempMod;
 	}
-
-	inline float GetHealthPercentage(Actor* actor) {
-		auto baseValue = actor->GetPermanentActorValue(ActorValue::kHealth);
-		auto valueMod = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-		auto currentValue = actor->GetActorValue(ActorValue::kHealth);
-
-		return currentValue / (baseValue + valueMod);
+	inline float GetAV(Actor* actor, ActorValue av) {
+		// actor->GetActorValue(av); returns a cached value so we calc directly from mods
+		float max_av = GetMaxAV(actor, av);
+		auto damageMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av);
+		return max_av + damageMod;
 	}
-
-	inline float GetMagikaPercentage(Actor* actor) {
-		auto baseValue = actor->GetPermanentActorValue(ActorValue::kMagicka);
-		auto valueMod = actor->magickaModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-		auto currentValue = actor->GetActorValue(ActorValue::kMagicka);
-		auto returnValue = currentValue / (baseValue + valueMod);
-		if (returnValue <= 0.05) {
-			returnValue = 0.05;
-		} // CTD Protection
-		return returnValue;
+	inline void ModAV(Actor* actor, ActorValue av, float amount) {
+		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kTemporary, av, amount);
+	}
+	inline void SetAV(Actor* actor, ActorValue av, float amount) {
+		float currentValue = GetAV(actor, av);
+		float delta = amount - currentValue;
+		ModAV(actor, av, delta);
 	}
 
 	inline void DamageAV(Actor* actor, ActorValue av, float amount) {
 		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, av, -amount);
+	}
+
+	inline float GetPercentageAV(Actor* actor, ActorValue av) {
+		return GetAV(actor, av)/GetMaxAV(actor, av);
+	}
+
+	inline void SetPercentageAV(Actor* actor, ActorValue av, float target) {
+		auto currentValue = GetAV(actor, av);
+		auto maxValue = GetMaxAV(actor, av);
+		auto percentage = currentValue/maxValue;
+		auto targetValue = target * maxValue;
+		float delta = targetValue - currentValue;
+		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
+	}
+
+	inline float GetStaminaPercentage(Actor* actor) {
+		return GetPercentageAV(actor, ActorValue::kStamina);
+	}
+
+	inline void SetStaminaPercentage(Actor* actor, float target) {
+		SetPercentageAV(actor, ActorValue::kStamina, target);
+	}
+
+	inline float GetHealthPercentage(Actor* actor) {
+		return GetPercentageAV(actor, ActorValue::kHealth);
+	}
+
+	inline void SetHealthPercentage(Actor* actor, float target) {
+		SetPercentageAV(actor, ActorValue::kHealth, target);
+	}
+
+	inline float GetMagikaPercentage(Actor* actor) {
+		return GetPercentageAV(actor, ActorValue::kMagicka);
+	}
+
+	inline void SetMagickaPercentage(Actor* actor, float target) {
+		SetPercentageAV(actor, ActorValue::kMagicka, target);
+	}
+
+	inline void PlaySound(BSISoundDescriptor* soundDescriptor, Actor* Receiver, float Volume, float Frequency) {
+		if (!soundDescriptor) {
+			log::error("Sound invalid");
+			return;
+		}
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			//soundHandle.SetFrequency(Frequency);
+			soundHandle.SetVolume(Volume);
+			NiAVObject* follow = nullptr;
+			if (Receiver) {
+				NiAVObject* current_3d = Receiver->GetCurrent3D();
+				if (current_3d) {
+					follow = current_3d;
+				}
+			}
+			soundHandle.SetObjectToFollow(follow);
+			soundHandle.Play();
+		} else {
+			log::error("Could not build sound");
+		}
+	}
+
+	inline void PlaySound_Frequency(BSISoundDescriptor* soundDescriptor, Actor* Receiver, float Volume, float Frequency) {
+		if (!soundDescriptor) {
+			log::error("Sound invalid");
+			return;
+		}
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			soundHandle.SetFrequency(Frequency);
+			soundHandle.SetVolume(Volume);
+			NiAVObject* follow = nullptr;
+			if (Receiver) {
+				NiAVObject* current_3d = Receiver->GetCurrent3D();
+				if (current_3d) {
+					follow = current_3d;
+				}
+			}
+			soundHandle.SetObjectToFollow(follow);
+			soundHandle.Play();
+		} else {
+			log::error("Could not build sound");
+		}
 	}
 }

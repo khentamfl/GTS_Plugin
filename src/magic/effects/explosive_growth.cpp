@@ -1,9 +1,13 @@
 #include "magic/effects/explosive_growth.hpp"
+#include "managers/GrowthTremorManager.hpp"
+#include "managers/GtsManager.hpp"
 #include "magic/magic.hpp"
 #include "magic/effects/common.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "util.hpp"
+#include "timer.hpp"
+#include "managers/GtsSizeManager.hpp"
 
 
 namespace Gts {
@@ -12,9 +16,9 @@ namespace Gts {
 	}
 
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
-		const float GROWTH_1_POWER = 0.00480;
-		const float GROWTH_2_POWER = 0.00300;
-		const float GROWTH_3_POWER = 0.00175;
+		const float GROWTH_1_POWER = 0.00075;
+		const float GROWTH_2_POWER = 0.00095;
+		const float GROWTH_3_POWER = 0.00115;
 
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
@@ -25,32 +29,32 @@ namespace Gts {
 		if (base_spell == runtime.explosiveGrowth1) {
 			this->power = GROWTH_1_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
-				this->grow_limit = 6.0; // NOLINT
+				this->grow_limit = 2.01; // NOLINT
 				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
-				this->grow_limit = 4.0; // NOLINT
+				this->grow_limit = 1.67; // NOLINT
 			} else {
-				this->grow_limit = 2.0; // NOLINT
+				this->grow_limit = 1.34; // NOLINT
 			}
 		} else if (base_spell == runtime.explosiveGrowth2) {
 			this->power = GROWTH_2_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
-				this->grow_limit = 8.0; // NOLINT
+				this->grow_limit = 2.34; // NOLINT
 				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
-				this->grow_limit = 6.0; // NOLINT
+				this->grow_limit = 2.01; // NOLINT
 			} else {
-				this->grow_limit = 3.0; // NOLINT
+				this->grow_limit = 1.67; // NOLINT
 			}
-		} else {
+		} else if (base_spell == runtime.explosiveGrowth3) {
 			this->power = GROWTH_3_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
-				this->grow_limit = 12.0; // NOLINT
+				this->grow_limit = 2.67; // NOLINT
 				this->power *= 2.0; // NOLINT
 			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
-				this->grow_limit = 8.0; // NOLINT
+				this->grow_limit = 2.34; // NOLINT
 			} else {
-				this->grow_limit = 4.0; // NOLINT
+				this->grow_limit = 2.01; // NOLINT
 			}
 		}
 	}
@@ -66,14 +70,10 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-
-		//BSSoundHandle growth_sound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = runtime.growthSound;
-		//audio_manager->BuildSoundDataFromDescriptor(growth_sound, sound_descriptor);
-		//growth_sound.Play();
-
-
+		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
+		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+		this->grow_limit *= AdjustLimit; //Affected by storage.
+		this->grow_limit *= Gigantism; //Affected by Enchantment
 	}
 
 	void ExplosiveGrowth::OnUpdate() {
@@ -84,18 +84,30 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 
 
+		auto HealthRegenPerk = runtime.HealthRegenPerk;
+		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00075;
 
+		if (caster->HasPerk(HealthRegenPerk)) {
+			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
+		}
 
-		if (get_target_scale(caster) > this->grow_limit) {
-			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
+		if (get_visual_scale(caster) >= this->grow_limit -0.01) {
 			return;
 		}
 
-		Grow(caster, this->power, 0.0);
+		if (this->timer.ShouldRun()) {
+			auto GrowthSound = runtime.growthSound;
+			float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/2);
+			PlaySound(GrowthSound, caster, Volume, 0.0);
+			log::info("Timer is working");
+		}
+
+
+		Grow(caster, this->power, 0.0); // Grow
+		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
+		log::info("Power {}, Limit {}", this->power, this->grow_limit);
 		if (get_target_scale(caster) > this->grow_limit) {
 			set_target_scale(caster, this->grow_limit);
-			shake_camera(caster, this->power * 0.5, 1.0);
-			shake_controller(this->power * 0.5, this->power * 0.5, 1.0);
 			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
 		}
 	}

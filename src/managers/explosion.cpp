@@ -103,7 +103,10 @@ namespace Gts {
 					explosion_pos = foot_location;
 					explosion_pos.z = actor->GetPosition().z;
 				}
-				make_explosion_at(impact.kind, actor, explosion_pos, scale);
+				if (actor->formID == 0x14 && Runtime::GetSingleton().PCAdditionalEffects->value >= 1.0)
+				{make_explosion_at(impact.kind, actor, explosion_pos, scale);}
+				if (actor->formID != 0x14 && Runtime::GetSingleton().NPCSizeEffects->value >= 1.0)
+				{make_explosion_at(impact.kind, actor, explosion_pos, scale);}
 			}
 		}
 	}

@@ -1,5 +1,4 @@
 #include "data/persistent.hpp"
-#include "managers/GtsManager.hpp"
 #include "scale/modscale.hpp"
 
 using namespace SKSE;
@@ -12,6 +11,9 @@ namespace {
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
 	inline const auto CamCollisions = _byteswap_ulong('CAMC');
+
+	const float DEFAULT_MAX_SCALE = 65535.0;
+	const float DEFAULT_HALF_LIFE = 1.0;
 }
 
 namespace Gts {
@@ -20,9 +22,13 @@ namespace Gts {
 		return instance;
 	}
 
+	void Persistent::Reset() {
+		std::unique_lock lock(this->_lock);
+		this->_actor_data.clear();
+	}
+
 	void Persistent::OnRevert(SerializationInterface*) {
-		std::unique_lock lock(GetSingleton()._lock);
-		GetSingleton()._actor_data.clear();
+		GetSingleton().Reset();
 	}
 
 	void Persistent::OnGameLoaded(SerializationInterface* serde) {
@@ -70,17 +76,17 @@ namespace Gts {
 						float max_scale;
 						serde->ReadRecordData(&max_scale, sizeof(max_scale));
 						if (std::isnan(max_scale)) {
-							max_scale = 1.0;
+							max_scale = DEFAULT_MAX_SCALE;
 						}
 
 						float half_life;
 						if (version >= 2) {
 							serde->ReadRecordData(&half_life, sizeof(half_life));
 						} else {
-							half_life = 0.05;
+							half_life = DEFAULT_HALF_LIFE;
 						}
 						if (std::isnan(half_life)) {
-							half_life = 0.05;
+							half_life = DEFAULT_HALF_LIFE;
 						}
 
 						float anim_speed;
@@ -103,8 +109,57 @@ namespace Gts {
 							effective_multi = 1.0;
 						}
 
-						ActorData data;
-						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed);
+						float bonus_hp;
+						if (version >= 5) {
+							serde->ReadRecordData(&bonus_hp, sizeof(bonus_hp));
+						} else {
+							bonus_hp = 0.0;
+						}
+						if (std::isnan(bonus_hp)) {
+							bonus_hp = 0.0;
+						}
+
+						float bonus_carry;
+						if (version >= 5) {
+							serde->ReadRecordData(&bonus_carry, sizeof(bonus_carry));
+						} else {
+							bonus_carry = 0.0;
+						}
+						if (std::isnan(bonus_carry)) {
+							bonus_carry = 0.0;
+						}
+
+						float bonus_max_size;
+						if (version >= 5) {
+							serde->ReadRecordData(&bonus_max_size, sizeof(bonus_max_size));
+						} else {
+							bonus_max_size = 0.0;
+						}
+						if (std::isnan(bonus_max_size)) {
+							bonus_max_size = 0.0;
+						}
+						float smt_run_speed;
+						if (version >= 6) {
+							serde->ReadRecordData(&smt_run_speed, sizeof(smt_run_speed));
+						} else {
+							smt_run_speed = 0.0;
+						}
+						if (std::isnan(smt_run_speed)) {
+							smt_run_speed = 0.0;
+						}
+
+						float target_scale_v;
+						if (version >= 7) {
+							serde->ReadRecordData(&target_scale_v, sizeof(target_scale_v));
+						} else {
+							target_scale_v = 0.0;
+						}
+						if (std::isnan(target_scale_v)) {
+							target_scale_v = 0.0;
+						}
+
+						ActorData data = ActorData();
+						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, bonus_hp: {}, bonus_carry: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, bonus_hp, bonus_carry);
 						data.native_scale = native_scale;
 						data.visual_scale = visual_scale;
 						data.visual_scale_v = visual_scale_v;
@@ -113,6 +168,11 @@ namespace Gts {
 						data.half_life = half_life;
 						data.anim_speed = anim_speed;
 						data.effective_multi = effective_multi;
+						data.bonus_hp = bonus_hp;
+						data.bonus_carry = bonus_carry;
+						data.bonus_max_size = bonus_max_size;
+						data.smt_run_speed = smt_run_speed;
+						data.target_scale_v = target_scale_v;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
@@ -201,7 +261,7 @@ namespace Gts {
 	void Persistent::OnGameSaved(SerializationInterface* serde) {
 		std::unique_lock lock(GetSingleton()._lock);
 
-		if (!serde->OpenRecord(ActorDataRecord, 4)) {
+		if (!serde->OpenRecord(ActorDataRecord, 7)) {
 			log::error("Unable to open actor data record to write cosave data.");
 			return;
 		}
@@ -218,7 +278,12 @@ namespace Gts {
 			float half_life = data.half_life;
 			float anim_speed = data.anim_speed;
 			float effective_multi = data.effective_multi;
-			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi);
+			float bonus_hp = data.bonus_hp;
+			float bonus_carry = data.bonus_carry;
+			float bonus_max_size = data.bonus_max_size;
+			float smt_run_speed = data.smt_run_speed;
+			float target_scale_v = data.target_scale_v;
+			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
 			serde->WriteRecordData(&visual_scale, sizeof(visual_scale));
@@ -228,6 +293,11 @@ namespace Gts {
 			serde->WriteRecordData(&half_life, sizeof(half_life));
 			serde->WriteRecordData(&anim_speed, sizeof(anim_speed));
 			serde->WriteRecordData(&effective_multi, sizeof(effective_multi));
+			serde->WriteRecordData(&bonus_hp, sizeof(bonus_hp));
+			serde->WriteRecordData(&bonus_carry, sizeof(bonus_carry));
+			serde->WriteRecordData(&bonus_max_size, sizeof(bonus_max_size));
+			serde->WriteRecordData(&smt_run_speed, sizeof(smt_run_speed));
+			serde->WriteRecordData(&target_scale_v, sizeof(target_scale_v));
 		}
 
 		if (!serde->OpenRecord(ScaleMethodRecord, 0)) {
@@ -289,6 +359,26 @@ namespace Gts {
 		serde->WriteRecordData(&above_scale, sizeof(above_scale));
 	}
 
+	ActorData::ActorData() {
+		// Uninit data
+		// Make sure it is set
+	}
+	ActorData::ActorData(Actor* actor) {
+		// DEFAULT VALUES FOR NEW ACTORS
+		auto scale = get_scale(actor);
+		this->native_scale = scale;
+		this->visual_scale = scale;
+		this->visual_scale_v = 0.0;
+		this->target_scale = scale;
+		this->max_scale = DEFAULT_MAX_SCALE;
+		this->half_life = DEFAULT_HALF_LIFE;
+		this->anim_speed = 1.0;
+		this->bonus_hp = 0.0;
+		this->bonus_carry = 0.0;
+		this->bonus_max_size = 0.0;
+		this->smt_run_speed = 0.0;
+	}
+
 	ActorData* Persistent::GetActorData(Actor* actor) {
 		std::unique_lock lock(this->_lock);
 		if (!actor) {
@@ -306,19 +396,11 @@ namespace Gts {
 			if (!actor->Is3DLoaded()) {
 				return nullptr;
 			}
-			ActorData new_data;
 			auto scale = get_scale(actor);
 			if (scale < 0.0) {
 				return nullptr;
 			}
-			new_data.native_scale = scale;
-			new_data.visual_scale = scale;
-			new_data.visual_scale_v = 0.0;
-			new_data.target_scale = scale;
-			new_data.max_scale = 65535.0;
-			new_data.half_life = 0.05;
-			new_data.anim_speed = 1.0;
-			this->_actor_data.try_emplace(key, new_data);
+			this->_actor_data.try_emplace(key, actor);
 			result = &this->_actor_data.at(key);
 		}
 		return result;
@@ -336,5 +418,24 @@ namespace Gts {
 			return nullptr;
 		}
 		return result;
+	}
+
+	void Persistent::ResetActor(Actor* actor) {
+		// Fired after a TESReset event
+		//  This event should be when the game attempts to reset their
+		//  actor values etc when the cell resets
+		auto data = this->GetData(actor);
+		if (data) {
+			data->visual_scale = data->native_scale;
+			data->target_scale = data->native_scale;
+			data->max_scale = DEFAULT_MAX_SCALE;
+			data->visual_scale_v = 0.0;
+			data->half_life = DEFAULT_HALF_LIFE;
+			data->anim_speed = 1.0;
+			data->bonus_hp = 0.0;
+			data->bonus_carry = 0.0;
+			data->bonus_max_size = 0.0;
+			data->smt_run_speed = 0.0;
+		}
 	}
 }

@@ -6,6 +6,7 @@
 
 #include <RE/Skyrim.h>
 
+#include "events.hpp"
 #include "node.hpp"
 #include "util.hpp"
 
@@ -16,7 +17,7 @@ namespace Gts {
 	/**
 	 * The class which tracks gts size effects.
 	 */
-	class GtsManager {
+	class GtsManager : public EventListener  {
 		public:
 
 			/**
@@ -24,13 +25,9 @@ namespace Gts {
 			 */
 			[[nodiscard]] static GtsManager& GetSingleton() noexcept;
 
-			atomic_uint64_t frame_count = atomic_uint64_t(0);
-			bool enabled = false;
 			float experiment = 1.0;
 
-			void poll();
-
-			void on_update();
+			virtual void Update() override;
 
 			// Reapply changes (used after reload events)
 			void reapply(bool force = true);

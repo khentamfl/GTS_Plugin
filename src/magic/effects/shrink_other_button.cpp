@@ -12,14 +12,22 @@ namespace Gts {
 
 	bool ShrinkOtherButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		//BSSoundHandle shrink_sound = BSSoundHandle::BSSoundHandle();
-		//auto audio_manager = BSAudioManager::GetSingleton();
-		//BSISoundDescriptor* sound_descriptor = runtime.shrinkSound;
-		//audio_manager->BuildSoundDataFromDescriptor(shrink_sound, sound_descriptor);
-		//shrink_sound.Play();
 
 		return effect == runtime.ShrinkAllySizeButton;
 	}
+
+	void ShrinkOtherButton::OnStart() {
+		auto target = GetTarget();
+		if (!target) {
+			return;
+		}
+		auto& runtime = Runtime::GetSingleton();
+		auto ShrinkSound = runtime.shrinkSound;
+		float Volume = clamp(0.50, 1.0, get_visual_scale(target));
+		PlaySound(ShrinkSound, target, Volume, 0.0);
+		log::info("Shrink Other Button, actor: {}", target->GetDisplayFullName());
+	}
+	
 
 	void ShrinkOtherButton::OnUpdate() {
 		auto caster = GetCaster();
@@ -36,8 +44,7 @@ namespace Gts {
 
 		if (target_scale > get_natural_scale(target)) {
 			DamageAV(caster, ActorValue::kMagicka, 0.25 * (target_scale * 0.25 + 0.75) * magicka * TimeScale());
-			ShrinkActor(target, 0.0025 * target_scale * magicka, 0.0);
-
+			ShrinkActor(target, 0.0030*magicka, 0.0);
 		}
 	}
 }

@@ -1,6 +1,6 @@
-
 #pragma once
 // Module that handles footsteps
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -43,6 +43,7 @@ namespace Gts {
 			inline bool DualCasted() {
 				return this->dual_casted;
 			}
+			bool HasDuration();
 
 			Magic(ActiveEffect* effect);
 
@@ -64,13 +65,16 @@ namespace Gts {
 			ActiveEffect* activeEffect = nullptr;
 			EffectSetting* effectSetting = nullptr;
 			bool dual_casted = false;
+			bool hasDuration = false;
 	};
 
-	class MagicManager {
+	class MagicManager : public EventListener {
 		public:
 			[[nodiscard]] static MagicManager& GetSingleton() noexcept;
 
-			void Update();
+			virtual void Update() override;
+			virtual void Reset() override;
+
 			void ProcessActiveEffects(Actor* actor);
 		private:
 			std::map<ActiveEffect*, std::unique_ptr<Magic> > active_effects;

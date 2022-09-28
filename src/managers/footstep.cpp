@@ -200,7 +200,7 @@ namespace Gts {
 
 					BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
 
-
+				if (Runtime::GetSingleton().EnableGiantSounds->value >= 1.0) { // Global check
 					if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
 						lFootstep.Play();
 					}
@@ -218,6 +218,7 @@ namespace Gts {
 					}
 					if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
 						xxlFootstepL.Play();
+					}
 					}
 				}
 			}
