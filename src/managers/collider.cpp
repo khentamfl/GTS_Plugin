@@ -2,6 +2,7 @@
 #include "managers/GtsManager.hpp"
 #include "scale/scale.hpp"
 #include "hooks/RE.hpp"
+#include "data/time.hpp"
 
 #include "util.hpp"
 
@@ -54,6 +55,13 @@ namespace Gts {
 		}
 	}
 
+	void ColliderManager::Reset() {
+		std::unique_lock lock(this->_lock);
+		this->actor_data.clear();
+		this->last_reset_frame.store(0);
+		this->previous_cell = nullptr;
+	}
+
 	void ColliderManager::ResetActor(Actor* actor) {
 		ColliderActorData* result = nullptr;
 		try {
@@ -66,7 +74,11 @@ namespace Gts {
 		}
 	}
 
-	void ColliderManager::UpdateHavok() {
+	void ColliderManager::ActorLoaded(Actor* actor) {
+		this->ResetActor(actor);
+	}
+
+	void ColliderManager::HavokUpdate() {
 		auto actors = find_actors();
 		auto& manager = GtsManager::GetSingleton();
 		for (auto actor: actors) {
@@ -108,6 +120,6 @@ namespace Gts {
 	}
 
 	void ColliderManager::FlagReset(){
-		this->last_reset_frame.store(GtsManager::GetSingleton().GetFrameNum());
+		this->last_reset_frame.store(Time::FramesElapsed());
 	}
 }

@@ -1,5 +1,4 @@
 #include "managers/contact.hpp"
-#include "managers/collider.hpp"
 #include "data/persistent.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
@@ -420,8 +419,6 @@ namespace Gts {
 			contactListener.attach(world);
 			contactListener.ensure_last();
 			// contactListener.enable_biped_collision();
-			auto& collider = ColliderManager::GetSingleton();
-			collider.FlagReset();
 		}
 		contactListener.sync_camera_collision_groups();
 	}

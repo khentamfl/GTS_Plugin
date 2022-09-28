@@ -3,22 +3,26 @@
 #include <atomic>
 #include "hooks/RE.hpp"
 #include "managers/collider/collider_actor_data.hpp"
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ColliderManager {
+	class ColliderManager : public EventListener {
 		public:
 			[[nodiscard]] static ColliderManager& GetSingleton() noexcept;
 
-			void Update();
-			void UpdateHavok();
+			void Update() override;
+			void HavokUpdate() override;
+			void Reset() override;
+			void ResetActor(Actor* actor) override;
+			void ActorLoaded(Actor* actor) override;
 
 			void FlagReset();
 
-			void ResetActor(Actor* actor);
+
 
 			ColliderActorData* GetActorData(Actor* actor);
 		private:
