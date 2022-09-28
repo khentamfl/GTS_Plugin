@@ -19,6 +19,7 @@
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
+#include "UI/DebugAPI.hpp"
 
 #include <stddef.h>
 #include <thread>

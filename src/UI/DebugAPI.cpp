@@ -585,14 +585,19 @@ DebugOverlayMenu::DebugOverlayMenu()
 	});
 }
 
-void DebugOverlayMenu::Register()
+DebugOverlayMenu& DebugOverlayMenu::GetSingleton() noexcept {
+	static DebugOverlayMenu instance;
+	return instance;
+}
+
+void DebugOverlayMenu::DataReady()
 {
 	logger::info("Gts: registering DebugOverlayMenu...");
 
 	auto ui = RE::UI::GetSingleton();
 	if (ui) {
 		ui->Register(MENU_NAME, Creator);
-		DebugOverlayMenu::Load();
+		DebugOverlayMenu::Start();
 
 		logger::info("Gts: successfully registered DebugOverlayMenu");
 	} else {
@@ -600,7 +605,7 @@ void DebugOverlayMenu::Register()
 	}
 }
 
-void DebugOverlayMenu::Load()
+void DebugOverlayMenu::Start()
 {
 	auto msgQ = RE::UIMessageQueue::GetSingleton();
 	if (msgQ) {
@@ -608,6 +613,11 @@ void DebugOverlayMenu::Load()
 	} else {
 		logger::warn("Gts: failed to show DebugOverlayMenu");
 	}
+}
+
+void DebugOverlayMenu::Update()
+{
+	DebugAPI::Update();
 }
 
 void DebugOverlayMenu::Unload()

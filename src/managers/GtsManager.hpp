@@ -32,9 +32,5 @@ namespace Gts {
 			// Reapply changes (used after reload events)
 			void reapply(bool force = true);
 			void reapply_actor(Actor* actor, bool force = true);
-
-			inline uint64_t GetFrameNum() {
-				return this->frame_count.load();
-			}
 	};
 }

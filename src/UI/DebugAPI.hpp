@@ -1,4 +1,5 @@
 #pragma once
+#include "events.hpp"
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
@@ -296,7 +297,7 @@ class DebugAPI
 		static DebugAPILine* GetExistingLine(const glm::vec3& from, const glm::vec3& to, const glm::vec4& color, float lineThickness);
 };
 
-class DebugOverlayMenu : RE::IMenu
+class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 {
 	public:
 		static constexpr const char* MENU_PATH = "GTS_Plugin/GTS_overlay_menu";
@@ -304,11 +305,14 @@ class DebugOverlayMenu : RE::IMenu
 
 		DebugOverlayMenu();
 
-		static void Register();
+		[[nodiscard]] static DebugOverlayMenu& GetSingleton() noexcept;
+		void DataReady() override;
+		void Start() override;
+		void Update() override;
 
 		static std::vector<std::string> Hidden_Sources;
 
-		static void Load();
+
 		static void Unload();
 
 		static void Show(std::string source);

@@ -22,7 +22,7 @@ namespace Gts {
 	}
 
 	inline float SizeManager::GetRaceScale(Actor* actor) {
-		auto GetNode = find_node(actor, "NPC", false);
+		auto GetNode = find_node(actor, "NPC", Person::Third);
 		float NodeScale = GetNode->world.scale;
 		return GetNode ? NodeScale : 1; // <- not used, causes troubles with quest progression. (Can't reach 1.44 for example when 1.50 is needed.)
 	}

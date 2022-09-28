@@ -10,7 +10,8 @@ namespace Gts {
 	class ReloadManager :
 		public BSTEventSink<TESObjectLoadedEvent>,
 		public BSTEventSink<TESResetEvent>,
-		public BSTEventSink<TESEquipEvent> {
+		public BSTEventSink<TESEquipEvent>,
+		public BSTEventSink<MenuOpenCloseEvent> {
 		public:
 			[[nodiscard]] static ReloadManager& GetSingleton() noexcept;
 			void Initialize();
