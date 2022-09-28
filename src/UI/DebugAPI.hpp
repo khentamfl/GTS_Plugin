@@ -309,6 +309,7 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 		void DataReady() override;
 		void Start() override;
 		void Update() override;
+		void MenuChange(const MenuOpenCloseEvent* a_event) override;
 
 		static std::vector<std::string> Hidden_Sources;
 

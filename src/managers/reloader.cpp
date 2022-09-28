@@ -61,41 +61,8 @@ namespace Gts {
 
 	BSEventNotifyControl ReloadManager::ProcessEvent(const MenuOpenCloseEvent* a_event, BSTEventSource<MenuOpenCloseEvent>* a_eventSource)
 	{
-		auto mName = a_event->menuName;
-
-		if (
-			mName == RE::JournalMenu::MENU_NAME ||
-			mName == RE::InventoryMenu::MENU_NAME ||
-			mName == RE::MapMenu::MENU_NAME ||
-			mName == RE::BookMenu::MENU_NAME ||
-			mName == RE::LockpickingMenu::MENU_NAME ||
-			mName == RE::MagicMenu::MENU_NAME ||
-			mName == RE::RaceSexMenu::MENU_NAME ||
-			mName == RE::CraftingMenu::MENU_NAME ||
-			mName == RE::SleepWaitMenu::MENU_NAME ||
-			mName == RE::TrainingMenu::MENU_NAME ||
-			mName == RE::BarterMenu::MENU_NAME ||
-			mName == RE::FavoritesMenu::MENU_NAME ||
-			mName == RE::GiftMenu::MENU_NAME ||
-			mName == RE::StatsMenu::MENU_NAME ||
-			mName == RE::ContainerMenu::MENU_NAME ||
-			mName == RE::DialogueMenu::MENU_NAME ||
-			mName == RE::MessageBoxMenu::MENU_NAME ||
-			mName == RE::TweenMenu::MENU_NAME || // tab menu
-			mName == RE::MainMenu::MENU_NAME ||
-			mName == "CustomMenu") { // papyrus custom menues go here
-			if (a_event->opening) {
-				DebugOverlayMenu::Hide(mName.c_str());
-			} else {
-				DebugOverlayMenu::Show(mName.c_str());
-			}
-		}
-		// for some reason, after each cell change, the menu is hidden and needs to be shown again
-		// using a UI message kShow
-		else if (mName == RE::LoadingMenu::MENU_NAME) {
-			if (!a_event->opening) {
-				DebugOverlayMenu::Load();
-			}
+		if (a_event) {
+			EventDispatcher::DoMenuChange(a_event);
 		}
 
 		return RE::BSEventNotifyControl::kContinue;
