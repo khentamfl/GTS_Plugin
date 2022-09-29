@@ -143,7 +143,7 @@ namespace Gts {
 	}
 
 
-	void CamerManager::AdjustSide(bool Reset, bool Right, bool Left) {
+	void CameraManager::AdjustSide(bool Reset, bool Right, bool Left) {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
 		if (Reset) {
 			this->Side = 1.0;
@@ -156,7 +156,7 @@ namespace Gts {
 			}
 		}
 
-	void CamerManager::AdjustUpDown(bool Reset, bool Up, bool Down) {
+	void CameraManager::AdjustUpDown(bool Reset, bool Up, bool Down) {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
 		if (Reset) {
 			this->UpDown = 1.0
