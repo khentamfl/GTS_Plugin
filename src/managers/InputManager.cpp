@@ -43,6 +43,7 @@ namespace Gts {
 				auto caster = PlayerCharacter::GetSingleton();
 				auto runtime = Runtime::GetSingleton();
 				auto Cache = runtime.ManualGrowthStorage;
+				auto Camera = CameraManager::GetSingleton();
 				log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
@@ -59,24 +60,24 @@ namespace Gts {
 						}
 					}
 				if (key == 0x38 && key == 0xCB && key == 0xCD)	{
-					CameraManager::AdjustSide(true, false, false);
+					Camera.AdjustSide(true, false, false); // Reset
 				}
 				if (key == 0x38 && key == 0xCD)	{
-					CameraManager::AdjustSide(false, true, false); // Right
+					Camera.AdjustSide(false, true, false); // Right
 				}
 				if (key == 0x38 && key == 0xCB)	{
-					CameraManager::AdjustSide(false, false, true); // Left
+					Camera.AdjustSide(false, false, true); // Left
 				} // Left or Right end
 
 
 				if (key == 0x38 && key == 0xC8 && key == 0xD0)	{
-					CameraManager::AdjustUpDown(true, false, false); // Reset
+					Camera.AdjustUpDown(true, false, false); // Reset
 				}
 				if (key == 0x38 && key == 0xC8)	{
-					CameraManager::AdjustUpDown(false, true, false); // Up
+					Camera.AdjustUpDown(false, true, false); // Up
 				}
 				if (key == 0x38 && key == 0xD0)	{
-					CameraManager::AdjustUpDown(false, false, true); // Down
+					Camera.AdjustUpDown(false, false, true); // Down
 				} // Up or Down end
 			}  
 			if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
