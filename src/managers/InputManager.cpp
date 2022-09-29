@@ -25,9 +25,17 @@ namespace Gts {
 	}
 
 	BSEventNotifyControl InputManager::ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) {
+
 		if (!a_event) {
 			return BSEventNotifyControl::kContinue;
 		}
+		bool AltPressed = false;
+		bool LeftArrow = false;
+		bool RightArrow = false;
+
+		bool ArrowUp = false;
+		bool ArrowDown = false;
+
 		for (auto event = *a_event; event; event = event->next) {
 			if (event->GetEventType() != INPUT_EVENT_TYPE::kButton) {
 				continue;
@@ -59,29 +67,37 @@ namespace Gts {
 						Cache->value = 0.0;
 						}
 					}
-				if (key == 0x38 && key == 0xCB && key == 0xCD)	{
+
+				if (key == 0x38) {AltPressed = true;}	
+				else if (key == 0xCD) {RightArrow = true;}
+				else if (key == 0xCB) {LeftArrow = true;}
+
+				else if (key == 0xC8) {ArrowUp = true;}
+				else if (key == 0xD0) {ArrowDown = true;}
+
+				if (AltPressed && RightArrow && LeftArrow)	{
 					Camera.AdjustSide(true, false, false); // Reset
 					log::info("Alt + Left & Right: Reset");
 				}
-				if (key == 0x38 && key == 0xCD)	{
+				if (AltPressed && RightArrow)	{
 					Camera.AdjustSide(false, true, false); // Right
 					log::info("Alt + Right");
 				}
-				if (key == 0x38 && key == 0xCB)	{
+				if (AltPressed && LeftArrow)	{
 					Camera.AdjustSide(false, false, true); // Left
 					log::info("Alt + Right");
 				} // Left or Right end
 
 
-				if (key == 0x38 && key == 0xC8 && key == 0xD0)	{
+				if (AltPressed && ArrowDown && ArrowUp)	{
 					Camera.AdjustUpDown(true, false, false); // Reset
 					log::info("Alt + Up & Down: Reset");
 				}
-				if (key == 0x38 && key == 0xC8)	{
+				if (AltPressed && ArrowUp)	{
 					Camera.AdjustUpDown(false, true, false); // Up
 					log::info("Alt + Up");
 				}
-				if (key == 0x38 && key == 0xD0)	{
+				if (AltPressed && ArrowDown)	{
 					Camera.AdjustUpDown(false, false, true); // Down
 					log::info("Alt + Down");
 				} // Up or Down end
