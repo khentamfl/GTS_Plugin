@@ -175,12 +175,6 @@ void DebugAPI::DrawHalfCircle(glm::vec3 origin, float radius, glm::vec3 eulerAng
 void DebugAPI::DrawCapsule(glm::vec3 start, glm::vec3 end, float radius, glm::mat4 transform, int liftetimeMS, const glm::vec4& color, float lineThickness) {
 	// From https://gamedev.stackexchange.com/questions/162426/how-to-draw-a-3d-capsule
 	// Local basis
-
-	// Capsule starts at these points
-	// Not shaft starts at these points
-	start = start + glm::normalize(end- start)*radius;
-	end = end + glm::normalize(start - end)*radius;
-
 	float pi = glm::pi<float>();
 	glm::vec3 axis = end - start;
 	float length = glm::length(axis);
