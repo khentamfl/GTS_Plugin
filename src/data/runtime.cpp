@@ -154,6 +154,8 @@ namespace Gts {
 		this->NPCSizeEffects = find_form<TESGlobal>("GTS.esp|3D4587");
 		this->CrushGrowthStorage = find_form<TESGlobal>("GTS.esp|3D4588");
 
+		this->ManualGrowthStorage = find_form<TESGlobal>("GTS.esp|4162CB");
+
 
 		///Camera
 		this->EnableCamera = find_form<TESGlobal>("GTS.esp|290512");

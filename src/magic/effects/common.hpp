@@ -206,6 +206,8 @@ namespace Gts {
 				log::info("SOUND NOT FOUND!");
 			}
 			AdjustSizeLimit(0.0117);
+			auto Cache = runtime.ManualGrowthStorage;
+			Cache->value += target_scale/25;
 			ConsoleLog::GetSingleton()->Print("%s Was absorbed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			return true;
 		}
@@ -235,6 +237,9 @@ namespace Gts {
 			caster->NotifyAnimationGraph("JumpLand");
 
 		}
+		auto Cache = runtime.ManualGrowthStorage;
+		Cache->value += target_scale/50;
+
 		AdjustSizeLimit(0.0417 * target_scale);
 			if (runtime.BloodGushSound) {
 				PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);

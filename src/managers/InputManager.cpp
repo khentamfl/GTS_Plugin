@@ -11,6 +11,7 @@
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "timer.hpp"
+#include "data/time.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -40,14 +41,18 @@ namespace Gts {
 				auto key = buttonEvent->GetIDCode();
 				auto caster = PlayerCharacter::GetSingleton();
 				auto runtime = Runtime::GetSingleton();
-				if (key == 0x12) {
+				auto Cache = runtime.ManualGrowthStorage;
+				if (key == 0x12 && Time::WorldTimeElapsed() >= 2.0 && Cache->value > 0.0) {
 					// Grow
 					if (this->timer.ShouldRun()) {
 						auto GrowthSound = runtime.growthSound;
-						float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/2);
+						auto MoanSound = runtime.MoanSound;
+						Cache->value = 0.0;
+						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->value);
 						PlaySound(GrowthSound, caster, Volume, 0.0);
-						GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
-						Grow(caster, 3.0, 0.0);
+						PlaySound(MoanSound, caster, Volume, 0.0);
+						GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value);
+						Grow(caster, Cache->value, 0.0);
 						}
 					}
 				}  

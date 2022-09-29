@@ -136,6 +136,8 @@ namespace Gts {
 			TESGlobal * NPCSizeEffects = nullptr;
 			TESGlobal * CrushGrowthStorage = nullptr;
 
+			TESGlobal * ManualGrowthStorage = nullptr;
+
 
 			///Camera
 			TESGlobal * EnableCamera = nullptr;
