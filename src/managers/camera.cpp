@@ -150,11 +150,11 @@ namespace Gts {
 			log::info("Side Reset: {}", this->Side);
 			}
 		else if (Left) {
-			this->Side = this->side - (0.20 * (size * 0.33)) + 0.20;
+			this->Side = this->Side - (0.20 * (size * 0.33)) + 0.20;
 			log::info("Side Left: {}", this->Side);
 			}
 		else if (Right) { 
-			this->Side = this->side + (0.20 * (size * 0.33)) + 0.20;
+			this->Side = this->Side + (0.20 * (size * 0.33)) + 0.20;
 			log::info("Side Right: {}", this->Side);
 			}
 		}
