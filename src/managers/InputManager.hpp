@@ -21,5 +21,7 @@ namespace Gts
 		private:	
 			Timer timer = Timer(2.33);
 			float TickCheck = 0.0;
+			float growth_time = 0.0;
+			bool BlockShake = false;
 	};
 }

@@ -58,6 +58,10 @@ namespace Gts {
 		static RandomGrowth instance;
 		return instance;
 	}
+	void RandomGrowth::CallShake(float value) {
+		this->CallInputGrowth = true;
+		this->ShakePower = value;
+	}
 	void RandomGrowth::Update() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
@@ -106,6 +110,15 @@ namespace Gts {
 			if (this->growth_time >= 2.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 				// End growing
 				this->AllowGrowth = false;
+			}
+		}
+		else if (this->CallInputGrowth == true) {
+			float delta_time = Time::WorldTimeDelta();
+			this->growth_time_input += delta_time;
+			GrowthTremorManager::GetSingleton().CallRumble(player, player, this->ShakePower);
+			if (this->growth_time_input >= 1.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
+				// End growing
+				this->CallInputGrowth = false;
 			}
 		}
 	}

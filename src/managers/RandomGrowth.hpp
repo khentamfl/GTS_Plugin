@@ -13,9 +13,12 @@ namespace Gts {
 			[[nodiscard]] static RandomGrowth& GetSingleton() noexcept;
 
 			virtual void Update() override;
+			void CallShake(float value);
 
 		private:
 			bool AllowGrowth = false;
+			bool CallInputGrowth = false;
 			float growth_time = 0.0;
+			float ShakePower = 0.0;
 	};
 }

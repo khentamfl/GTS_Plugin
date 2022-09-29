@@ -35,6 +35,7 @@ namespace Gts {
 
 		bool ArrowUp = false;
 		bool ArrowDown = false;
+		
 
 		for (auto event = *a_event; event; event = event->next) {
 			if (event->GetEventType() != INPUT_EVENT_TYPE::kButton) {
@@ -51,10 +52,11 @@ namespace Gts {
 				auto runtime = Runtime::GetSingleton();
 				auto Cache = runtime.ManualGrowthStorage;
 				auto Camera = CameraManager::GetSingleton();
+				
 				//log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
-					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/10 * this->TickCheck);
+					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/10 * buttonEvent->HeldDuration());
 					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 2.0) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
@@ -62,7 +64,7 @@ namespace Gts {
 						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->value);
 						PlaySound(GrowthSound, caster, Volume, 0.0);
 						PlaySound(MoanSound, caster, Volume, 0.0);
-						GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value * 10);
+						RandomGrowth::GetSingleton().CallShake(Cache->value * 10);
 						mod_target_scale(caster, Cache->value);
 						Cache->value = 0.0;
 						}
@@ -75,31 +77,37 @@ namespace Gts {
 				else if (key == 0xC8) {ArrowUp = true;}
 				else if (key == 0xD0) {ArrowDown = true;}
 
-				if (AltPressed && RightArrow && LeftArrow)	{
+				while (AltPressed == true && RightArrow == true && LeftArrow == true)	{
 					Camera.AdjustSide(true, false, false); // Reset
 					log::info("Alt + Left & Right: Reset");
+					break;
 				}
-				if (AltPressed && RightArrow)	{
+				while (AltPressed == true && RightArrow == true)	{
 					Camera.AdjustSide(false, true, false); // Right
 					log::info("Alt + Right");
+					break;
 				}
-				if (AltPressed && LeftArrow)	{
+				while (AltPressed == true && LeftArrow == true)	{
 					Camera.AdjustSide(false, false, true); // Left
 					log::info("Alt + Right");
+					break;
 				} // Left or Right end
 
 
-				if (AltPressed && ArrowDown && ArrowUp)	{
+				while (AltPressed == true && ArrowDown == true && ArrowUp == true)	{
 					Camera.AdjustUpDown(true, false, false); // Reset
 					log::info("Alt + Up & Down: Reset");
+					break;
 				}
-				if (AltPressed && ArrowUp)	{
+				while (AltPressed == true && ArrowUp == true)	{
 					Camera.AdjustUpDown(false, true, false); // Up
 					log::info("Alt + Up");
+					break;
 				}
-				if (AltPressed && ArrowDown)	{
+				while (AltPressed == true && ArrowDown == true)	{
 					Camera.AdjustUpDown(false, false, true); // Down
 					log::info("Alt + Down");
+					break;
 				} // Up or Down end
 			}  
 			if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
