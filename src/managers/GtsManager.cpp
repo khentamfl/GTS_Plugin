@@ -146,8 +146,7 @@ namespace {
 			float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 			persi_actor_data->anim_speed = speed_mult;
 			if (actor->IsWalking() == true) {
-				if (scale < 1.0)
-				{
+				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
@@ -155,16 +154,14 @@ namespace {
 				//log::info("Slow Walk Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			}
 			if (actor->IsSprinting() == true) {
-				if (scale < 1.0)
-				{
+				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult * 1.15));
 				//log::info("Sprint Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			} else {
-				if (scale < 1.0)
-				{
+				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
