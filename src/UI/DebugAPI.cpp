@@ -656,7 +656,7 @@ void DebugOverlayMenu::Hide(std::string source)
 
 void DebugOverlayMenu::MenuChange(const MenuOpenCloseEvent* a_event) {
 	auto mName = a_event->menuName;
-
+	log::info("Menuchange");
 	if (
 		mName == RE::JournalMenu::MENU_NAME ||
 		mName == RE::InventoryMenu::MENU_NAME ||
