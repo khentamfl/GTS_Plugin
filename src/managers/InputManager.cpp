@@ -73,7 +73,7 @@ namespace Gts {
 					}
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun())	
 				{ 
-					ConsoleLog::GetSingleton()->Print("Size Reserve is {}", Cache->value);
+					ConsoleLog::GetSingleton()->Print("Size Reserve is: %s", Cache->value);
 				}
 
 				if (key == 0x38) {AltPressed = true;}	
