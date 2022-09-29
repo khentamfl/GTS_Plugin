@@ -69,6 +69,7 @@ namespace {
 	}
 
 	void BoostSpeedMulti(Actor* actor, float power) {
+		auto runtime = Runtime::GetSingleton();
 		float scale = get_visual_scale(actor);
 		auto actor_data = Transient::GetSingleton().GetData(actor);
 		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/3.0;
