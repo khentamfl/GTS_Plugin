@@ -119,6 +119,7 @@ namespace Gts {
 			if (this->growth_time_input >= 1.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 				// End growing
 				this->CallInputGrowth = false;
+				this->growth_time_input = 0.0;
 			}
 		}
 	}
