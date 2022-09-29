@@ -59,6 +59,7 @@ namespace Gts {
 		} else {
 			lowest = this->end - hkVector4(0.0, 0.0, this->radius, 0.0);
 		}
+		log::info("Setting capsule, start: {}, end: {}, radius: {}, lowest point: {}", Vector2Str(this->start), Vector2Str(this->end), this->radius, Vector2Str(lowest));
 		this->SetOrigin(lowest);
 	}
 }
