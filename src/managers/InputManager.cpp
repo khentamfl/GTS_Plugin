@@ -74,7 +74,7 @@ namespace Gts {
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun())	
 				{ 
 					float Value = Cache->value;
-					DebugNotification(Value, 0, true);
+					DebugNotification(Value.c_str(), 0, true);
 				}
 
 				if (key == 0x38) {AltPressed = true;}	
