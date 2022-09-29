@@ -36,24 +36,24 @@ namespace Gts {
 
 			}
 			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
-				log::info("ButtonEvent == Keyboard");
+				// log::info("ButtonEvent == Keyboard");
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x12) {
 					// Do attack
-					ConsoleLog::GetSingleton()->Print("Pressed E");
+					// ConsoleLog::GetSingleton()->Print("Pressed E");
 					mod_target_scale(PlayerCharacter::GetSingleton(), 0.33);
 				}
-				log::info("{:X} pressed", key);
+				// log::info("{:X} pressed", key);
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1) {
 					// Do attack left
-					ConsoleLog::GetSingleton()->Print("Pressed LMB");
+					// ConsoleLog::GetSingleton()->Print("Pressed LMB");
 				} else if (key == 0x2) {
 					// Do attack right
-					ConsoleLog::GetSingleton()->Print("Pressed RMB");
+					// ConsoleLog::GetSingleton()->Print("Pressed RMB");
 				}
-				log::info("{:X} pressed", key);
+				// log::info("{:X} pressed", key);
 			}
 		}
 		return BSEventNotifyControl::kContinue;
