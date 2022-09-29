@@ -42,7 +42,8 @@ namespace Gts {
 				auto caster = PlayerCharacter::GetSingleton();
 				auto runtime = Runtime::GetSingleton();
 				auto Cache = runtime.ManualGrowthStorage;
-				if (key == 0x12 && Time::WorldTimeElapsed() >= 2.0 && Cache->value > 0.0) {
+				auto Time = Time::GetSingleton();
+				if (key == 0x12 && Time.WorldTimeElapsed() >= 2.0 && Cache->value > 0.0) {
 					// Grow
 					if (this->timer.ShouldRun()) {
 						auto GrowthSound = runtime.growthSound;
