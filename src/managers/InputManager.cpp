@@ -35,26 +35,33 @@ namespace Gts {
 			if (!buttonEvent || (!buttonEvent->IsPressed() && !buttonEvent->IsUp())) {
 				log::info("ButtonEvent aren't pressed");
 				continue;
-				
+
 			}
-			if (buttonEvent->device.get() != INPUT_DEVICE::kKeyboard) {
-				log::info("ButtonEvent != Keyboard");
-				continue;
-			}
-			auto key = buttonEvent->GetIDCode();
-			if (key == GFxKey::kE) {
-				// Do attack
-				ConsoleLog::GetSingleton()->Print("Pressed E");
-				mod_target_scale(PlayerCharacter::GetSingleton(), 0.33);
-				log::info("0x45 pressed");
-			} else if (key == 0x1) {
-				// Do attack left
-				ConsoleLog::GetSingleton()->Print("Pressed LMB");
-				log::info("0x01 pressed");
-			} else if (key == 0x2) {
-				// Do attack right
-				ConsoleLog::GetSingleton()->Print("Pressed RMB");
-				log::info("0x02 pressed");
+			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
+				log::info("ButtonEvent == Keyboard");
+				auto key = buttonEvent->GetIDCode();
+				if (key == GFxKey::kE) {
+					// Do attack
+					ConsoleLog::GetSingleton()->Print("Pressed E");
+					mod_target_scale(PlayerCharacter::GetSingleton(), 0.33);
+					log::info("0x45 pressed");
+				} else {
+					log::info("Pressed: {}", key);
+				}
+			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
+				log::info("ButtonEvent == Mouse");
+				auto key = buttonEvent->GetIDCode();
+				if (key == 0x1) {
+					// Do attack left
+					ConsoleLog::GetSingleton()->Print("Pressed LMB");
+					log::info("0x01 pressed");
+				} else if (key == 0x2) {
+					// Do attack right
+					ConsoleLog::GetSingleton()->Print("Pressed RMB");
+					log::info("0x02 pressed");
+				} else {
+					log::info("Pressed: {}", key);
+				}
 			}
 		}
 		return BSEventNotifyControl::kContinue;
