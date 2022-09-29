@@ -1,5 +1,6 @@
 #include "managers/collider/collider_actor_data.hpp"
 #include "scale/scale.hpp"
+#include "hooks/RE.hpp"
 #include "node.hpp"
 #include "util.hpp"
 
@@ -52,6 +53,13 @@ namespace {
 						if (ragdoll) {
 							return ragdoll;
 						}
+					}
+					auto controllerDriver = character.characterControllerDriver.get();
+					log::info("Actor: {}", actor->GetDisplayFullName());
+					if (controllerDriver) {
+						log::info("  - controllerDriver: {}", GetRawName(controllerDriver));
+					} else {
+						log::info("  - No controllerDriver");
 					}
 				}
 			}
