@@ -41,7 +41,7 @@ namespace Gts {
 				if (key == 0x12) {
 					// Do attack
 					// ConsoleLog::GetSingleton()->Print("Pressed E");
-					mod_target_scale(PlayerCharacter::GetSingleton(), 0.33);
+					// mod_target_scale(PlayerCharacter::GetSingleton(), 0.33);
 				}
 				// log::info("{:X} pressed", key);
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
