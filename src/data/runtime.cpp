@@ -129,6 +129,7 @@ namespace Gts {
 		this->VorePerkGreed = find_form<BGSPerk>("GTS.esp|33C765");
 		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6");
 		this->NoSpeedLoss = find_form<BGSPerk>("GTS.esp|2E663B");
+		this->SizeReserve = find_form<BGSPerk>("GTS.esp|4204CE");
 
 
 		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
@@ -138,7 +139,6 @@ namespace Gts {
 		this->ProgressionMultiplier = find_form<TESGlobal>("GTS.esp|37E46E");
 		this->CrushGrowthRate = find_form<TESGlobal>("GTS.esp|2028B9");
 		this->IsFalling = find_form<TESGlobal>("GTS.esp|1CAD98");
-		this->SizeReserve = find_form<TESGlobal>("GTS.esp|4204CE");
 
 		this->ChosenGameMode = find_form<TESGlobal>("GTS.esp|2EB74C");
 		this->GrowthModeRate = find_form<TESGlobal>("GTS.esp|2028C3");

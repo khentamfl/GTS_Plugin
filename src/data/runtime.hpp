@@ -112,6 +112,7 @@ namespace Gts {
 			BGSPerk* VorePerkGreed = nullptr;
 			BGSPerk* GrowthPerk = nullptr;
 			BGSPerk* NoSpeedLoss = nullptr;
+			BGSPerk* SizeReserve = nullptr;
 
 			TESGlobal * sizeLimit = nullptr;
 
@@ -136,7 +137,7 @@ namespace Gts {
 			TESGlobal * NPCSizeEffects = nullptr;
 			TESGlobal * CrushGrowthStorage = nullptr;
 			TESGlobal * IsFalling = nullptr;
-			TESGlobal * SizeReserve = nullptr;
+			
 
 			TESGlobal * ManualGrowthStorage = nullptr;
 
