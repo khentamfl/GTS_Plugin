@@ -146,6 +146,9 @@ namespace Gts {
 			TESGlobal * usingAutoDistance = nullptr;
 			TESGlobal * ImCrouching = nullptr;
 
+			TESGlobal * CameraSide = nullptr;
+			TESGlobal * CameraUpDown = nullptr;
+
 			TESGlobal * MinDistance = nullptr;
 			TESGlobal * MaxDistance = nullptr;
 			TESGlobal * CameraZoomSpeed = nullptr;

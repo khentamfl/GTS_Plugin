@@ -112,33 +112,35 @@ namespace Gts {
 
 	void CameraManager::AdjustSide(bool Reset, bool Right, bool Left) {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
+		auto Side = Runtime::GetSingleton().CameraSide; 
 		if (Left == true) {
-			this->Side -=(0.20 * (size * 0.33)) + 0.20;
+			Side->value -=(0.20 * (size * 0.33)) + 0.20;
 			log::info("Side Left: {}", this->Side);
 			}
 		else if (Right == true) { 
-			this->Side += (0.20 * (size * 0.33)) + 0.20;
+			Side->value += (0.20 * (size * 0.33)) + 0.20;
 			log::info("Side Right: {}", this->Side);
 			}
 		else if (Reset == true) {
-			this->Side = 1.0;
+			Side->value = 1.0;
 			log::info("Side Reset: {}", this->Side);
 			}	
 		}
 
 	void CameraManager::AdjustUpDown(bool Reset, bool Up, bool Down) {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
+		auto UpDown = Runtime::GetSingleton().CameraUpDown; 
 		
 		if (Up == true) {
-			this->UpDown +=(0.20 * (size * 0.33)) + 0.20;
+			UpDown->value +=(0.20 * (size * 0.33)) + 0.20;
 			log::info("UpDown Decrease: {}", this->UpDown);
 			}
 		else if (Down == true) { 
-			this->UpDown -= (0.20 * (size * 0.33)) + 0.20;
+			UpDown->value -= (0.20 * (size * 0.33)) + 0.20;
 			log::info("UpDown Increase: {}", this->UpDown);
 			}
 		else if (Reset == true) {
-			this->UpDown = 1.0;
+			UpDown->value = 1.0;
 			log::info("UpDown Reset: {}", this->UpDown);
 			}
 		}
@@ -148,7 +150,8 @@ namespace Gts {
 	void CameraManager::ApplyCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
 		auto& runtime = Runtime::GetSingleton();
 		float cameraYCorrection = 121.0;
-		float UpDown = this->UpDown; float Side = this->Side;
+		float UpDown = runtime.CameraUpDown->value; 
+		float Side = runtime.CameraSide->value;
 		float CalcProne = runtime.CalcProne->value;
 
 		SetfOverShoulderPosX((X + Side) * size);
@@ -182,7 +185,8 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float cameraYCorrection2 = 205.0 * (size * 0.33) + 70;
 		float CalcProne2 = runtime.CalcProne->value;
-		float UpDown = this->UpDown; float Side = this->Side;
+		float UpDown = runtime.CameraUpDown->value; 
+		float Side = runtime.CameraSide->value;
 
 		CameraManager::SetfOverShoulderPosX(((X + Side) * size));
 		CameraManager::SetfOverShoulderPosZ(((Y + UpDown) * size) - cameraYCorrection2);

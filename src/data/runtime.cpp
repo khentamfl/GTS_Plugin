@@ -164,6 +164,9 @@ namespace Gts {
 		this->usingAutoDistance = find_form<TESGlobal>("GTS.esp|290524");
 		this->ImCrouching = find_form<TESGlobal>("GTS.esp|2C8039");
 
+		this->CameraSide = find_form<TESGlobal>("GTS.esp|41B3CD");
+		this->CameraUpDown = find_form<TESGlobal>("GTS.esp|41B3CC");
+
 		this->MinDistance = find_form<TESGlobal>("GTS.esp|29051E");
 		this->MaxDistance = find_form<TESGlobal>("GTS.esp|29051F");
 		this->CameraZoomSpeed = find_form<TESGlobal>("GTS.esp|290526");
