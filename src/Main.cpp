@@ -109,6 +109,7 @@ namespace {
 						break;
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 						// It is now safe to access form data.
+						ConsoleLog::GetSingleton()->Print("Giantess Mod v 1.00_Test was succesfully ininitalized and works properly.");
 						EventDispatcher::DoDataReady();
 						break;
 					// Skyrim game events.
