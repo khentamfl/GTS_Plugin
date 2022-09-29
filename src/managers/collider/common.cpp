@@ -17,7 +17,7 @@ namespace Gts {
 	}
 
 	void ShapeData::SetOrigin(const hkVector4& point) {
-		this->SetOrigin(point.quad.m128_f32[0], point.quad.m128_f32[0], point.quad.m128_f32[0]);
+		this->SetOrigin(point.quad.m128_f32[0], point.quad.m128_f32[1], point.quad.m128_f32[2]);
 	}
 
 	void ShapeData::SetOrigin(const NiPoint3& point) {
