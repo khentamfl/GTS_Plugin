@@ -58,7 +58,7 @@ namespace Gts {
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
 					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/15 * buttonEvent->HeldDuration());
-					PlaySound(runtime.GrowthSound, caster, Cache->value/25 * buttonEvent->HeldDuration(), 0.0);
+					PlaySound(runtime.growthSound, caster, Cache->value/25 * buttonEvent->HeldDuration(), 0.0);
 					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 1.2) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
