@@ -15,7 +15,7 @@ namespace Gts {
 			float GetfOverShoulderPosX();
 			void SetfOverShoulderPosY(float value);
 			float GetfOverShoulderPosY();
-			void SetfOverShoulderPosZ(float value);
+			void SetfOverShoulderPosZ(float value); 
 			float GetfOverShoulderPosZ();
 
 			void SetfOverShoulderCombatPosX(float value);
