@@ -45,7 +45,7 @@ namespace Gts {
 			}
 			if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 				set_max_scale(actor, TotalLimit);
-				log::info("Current Size Limit of: {} is {}", actor->GetDisplayFullName(), get_max_scale(actor));
+				//log::info("Current Size Limit of: {} is {}", actor->GetDisplayFullName(), get_max_scale(actor));
 			}
 		}
 	}

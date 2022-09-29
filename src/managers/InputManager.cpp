@@ -44,10 +44,10 @@ namespace Gts {
 				auto runtime = Runtime::GetSingleton();
 				auto Cache = runtime.ManualGrowthStorage;
 				auto Camera = CameraManager::GetSingleton();
-				log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
+				//log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
-					if (this->timer.ShouldRun() && this->TickCheck == 80.0) {
+					if (this->timer.ShouldRun() && this->TickCheck >= 80.0) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
 						this->TickCheck = 0.0;
