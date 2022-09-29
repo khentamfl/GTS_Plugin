@@ -64,7 +64,7 @@ namespace Gts {
 						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->value);
 						PlaySound(GrowthSound, caster, Volume, 0.0);
 						PlaySound(MoanSound, caster, Volume, 0.0);
-						RandomGrowth::GetSingleton().CallShake(Cache->value * 20);
+						RandomGrowth::GetSingleton().CallShake(Cache->value);
 						mod_target_scale(caster, Cache->value);
 						Cache->value = 0.0;
 						}

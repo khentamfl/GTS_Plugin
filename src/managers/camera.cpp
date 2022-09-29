@@ -112,33 +112,34 @@ namespace Gts {
 
 	void CameraManager::AdjustSide(bool Reset, bool Right, bool Left) {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
-		if (Reset) {
-			this->Side = 1.0;
-			log::info("Side Reset: {}", this->Side);
-			}
-		else if (Left) {
+		if (Left == true) {
 			this->Side -=(0.20 * (size * 0.33)) + 0.20;
 			log::info("Side Left: {}", this->Side);
 			}
-		else if (Right) { 
+		else if (Right == true) { 
 			this->Side += (0.20 * (size * 0.33)) + 0.20;
 			log::info("Side Right: {}", this->Side);
 			}
+		else if (Reset == true) {
+			this->Side = 1.0;
+			log::info("Side Reset: {}", this->Side);
+			}	
 		}
 
 	void CameraManager::AdjustUpDown(bool Reset, bool Up, bool Down) {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
-		if (Reset) {
-			this->UpDown = 1.0;
-			log::info("UpDown Reset: {}", this->UpDown);
-			}
-		else if (Up) {
+		
+		if (Up == true) {
 			this->UpDown +=(0.20 * (size * 0.33)) + 0.20;
 			log::info("UpDown Decrease: {}", this->UpDown);
 			}
-		else if (Down) { 
+		else if (Down == true) { 
 			this->UpDown -= (0.20 * (size * 0.33)) + 0.20;
 			log::info("UpDown Increase: {}", this->UpDown);
+			}
+		else if (Reset == true) {
+			this->UpDown = 1.0;
+			log::info("UpDown Reset: {}", this->UpDown);
 			}
 		}
 
