@@ -19,7 +19,7 @@ namespace Gts
 			BSEventNotifyControl ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) override;
 			void Start() override;
 		private:	
-			Timer timer = Timer(2.33);
+			Timer timer = Timer(1.2);
 			float TickCheck = 0.0;
 			float growth_time = 0.0;
 			bool BlockShake = false;

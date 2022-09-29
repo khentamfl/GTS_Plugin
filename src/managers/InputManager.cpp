@@ -58,7 +58,8 @@ namespace Gts {
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
 					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/15 * buttonEvent->HeldDuration());
-					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 2.0) {
+					PlaySound(GrowthSound, caster, Cache->value/25 * buttonEvent->HeldDuration(), 0.0);
+					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 1.2) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
 						this->TickCheck = 0.0;
@@ -70,7 +71,7 @@ namespace Gts {
 						Cache->value = 0.0;
 						}
 					}
-				if (key == 0x21 && CtrlPressed && buttonEvent->HeldDuration() == 0.5)	
+				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun())	
 				{ 
 					ConsoleLog::GetSingleton()->Print("Size Reserve is {}", Cache->value);
 				}
