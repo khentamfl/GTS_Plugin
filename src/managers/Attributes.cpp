@@ -75,7 +75,7 @@ namespace {
 		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/3.0;
 		float base_speed = actor_data->base_walkspeedmult;
 		float bonusSpeedMax = runtime.bonusSpeedMax->value;
-		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0
+		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
 
 		static Timer timer = Timer(0.15); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRunFrame()) {
