@@ -78,9 +78,9 @@ namespace Gts {
 	float get_npcparentnode_scale(Actor* actor) {
 		// This will set the scale of the root npc node
 		string node_name = "NPC Root [Root]";
-		auto childNode = find_node(actor, node_name, false);
+		auto childNode = find_node(actor, node_name, Person::Third);
 		if (!childNode) {
-			childNode = find_node(actor, node_name, true);
+			childNode = find_node(actor, node_name, Person::First);
 			if (!childNode) {
 				return -1.0;
 			}
