@@ -150,7 +150,7 @@ namespace Gts {
 			log::info("Side Reset: {}", this->Side);
 			}
 		else if (Left) {
-			this->Side -= (0.20 * (size * 0.33)) - 0.20;
+			this->Side -= (0.20 * (size * 0.33)) + 0.20;
 			log::info("Side Left: {}", this->Side);
 			}
 		else if (Right) { 
@@ -170,7 +170,7 @@ namespace Gts {
 			log::info("UpDown Decrease: {}", this->UpDown);
 			}
 		else if (Down) { 
-			this->UpDown -=(0.20 * (size * 0.33)) - 0.20;
+			this->UpDown -=(0.20 * (size * 0.33)) + 0.20;
 			log::info("UpDown Increase: {}", this->UpDown);
 			}
 		}

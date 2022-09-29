@@ -61,6 +61,7 @@ namespace Gts {
 	void RandomGrowth::CallShake(float value) {
 		this->CallInputGrowth = true;
 		this->ShakePower = value;
+		log::info("ShakePower is {}", this->ShakePower);
 	}
 	void RandomGrowth::Update() {
 		auto player = PlayerCharacter::GetSingleton();
@@ -74,6 +75,17 @@ namespace Gts {
 		}
 
 		bool hasSMT = runtime.SmallMassiveThreat ? player->HasMagicEffect(runtime.SmallMassiveThreat) : false;
+		 if (this->CallInputGrowth == true) {
+			float delta_time = Time::WorldTimeDelta();
+			this->growth_time_input += delta_time;
+			GrowthTremorManager::GetSingleton().CallRumble(player, player, this->ShakePower);
+			log::info("Calling Growth Shake, power: {}", this->ShakePower);
+			if (this->growth_time_input >= 1.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
+				// End growing
+				this->CallInputGrowth = false;
+				this->growth_time_input = 0.0;
+			}
+		}
 
 		if (this->AllowGrowth == false) {
 			static Timer timer = Timer(3.0); // Run every 3.0s or as soon as we can
@@ -112,15 +124,6 @@ namespace Gts {
 				this->AllowGrowth = false;
 			}
 		}
-		else if (this->CallInputGrowth == true) {
-			float delta_time = Time::WorldTimeDelta();
-			this->growth_time_input += delta_time;
-			GrowthTremorManager::GetSingleton().CallRumble(player, player, this->ShakePower);
-			if (this->growth_time_input >= 1.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
-				// End growing
-				this->CallInputGrowth = false;
-				this->growth_time_input = 0.0;
-			}
-		}
+		
 	}
 }
