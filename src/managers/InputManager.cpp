@@ -33,9 +33,9 @@ namespace Gts {
 				continue;
 			}
 			ButtonEvent* buttonEvent = event->AsButtonEvent();
-			//if (!buttonEvent || (!buttonEvent->IsPressed() && !buttonEvent->IsUp())) {
-				//continue;
-			//}
+			if (!buttonEvent || (!buttonEvent->IsPressed() && !buttonEvent->IsUp())) {
+				continue;
+			}
 			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
 				// log::info("ButtonEvent == Keyboard");
 				auto key = buttonEvent->GetIDCode();
@@ -46,8 +46,8 @@ namespace Gts {
 				//log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
-					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value * this->TickCheck);
-					if (this->timer.ShouldRun() && this->TickCheck >= 80.0) {
+					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/10 * this->TickCheck);
+					if (this->timer.ShouldRun() && key->HeldDuration() >= 2.0) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
 						this->TickCheck = 0.0;
@@ -59,7 +59,20 @@ namespace Gts {
 						Cache->value = 0.0;
 						}
 					}
-				if (key == 0x38 && key == 0xCB && key == 0xCD)	{
+			}  
+			if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
+				auto key = buttonEvent->GetIDCode();
+				if (key == 0x1) {
+					PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
+					// Do attack right
+					// ConsoleLog::GetSingleton()->Print("Pressed LMB");
+				} if (key == 0x2) {
+					// Do attack left
+					// ConsoleLog::GetSingleton()->Print("Pressed RMB");
+				}
+				// log::info("{:X} pressed", key);
+			}
+			if (key == 0x38 && key == 0xCB && key == 0xCD)	{
 					Camera.AdjustSide(true, false, false); // Reset
 					log::info("Alt + Left & Right: Reset");
 				}
@@ -85,19 +98,6 @@ namespace Gts {
 					Camera.AdjustUpDown(false, false, true); // Down
 					log::info("Alt + Down");
 				} // Up or Down end
-			}  
-			if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
-				auto key = buttonEvent->GetIDCode();
-				if (key == 0x1) {
-					PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
-					// Do attack right
-					// ConsoleLog::GetSingleton()->Print("Pressed LMB");
-				} if (key == 0x2) {
-					// Do attack left
-					// ConsoleLog::GetSingleton()->Print("Pressed RMB");
-				}
-				// log::info("{:X} pressed", key);
-			}
 		}
 		return BSEventNotifyControl::kContinue;
 	}
