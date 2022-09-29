@@ -48,7 +48,7 @@ namespace Gts {
 					if (this->timer.ShouldRun() && this->TickCheck >= 120.0) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
-						this->TickCheck += 0.0;
+						this->TickCheck = 0.0;
 						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->value);
 						PlaySound(GrowthSound, caster, Volume, 0.0);
 						PlaySound(MoanSound, caster, Volume, 0.0);
