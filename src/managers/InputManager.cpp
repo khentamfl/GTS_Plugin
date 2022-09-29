@@ -33,10 +33,9 @@ namespace Gts {
 				continue;
 			}
 			ButtonEvent* buttonEvent = event->AsButtonEvent();
-			if (!buttonEvent || (!buttonEvent->IsPressed() && !buttonEvent->IsUp())) {
-				continue;
-
-			}
+			//if (!buttonEvent || (!buttonEvent->IsPressed() && !buttonEvent->IsUp())) {
+				//continue;
+			//}
 			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
 				// log::info("ButtonEvent == Keyboard");
 				auto key = buttonEvent->GetIDCode();
@@ -47,6 +46,7 @@ namespace Gts {
 				//log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
+					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value * this->TickCheck);
 					if (this->timer.ShouldRun() && this->TickCheck >= 80.0) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
@@ -54,7 +54,7 @@ namespace Gts {
 						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->value);
 						PlaySound(GrowthSound, caster, Volume, 0.0);
 						PlaySound(MoanSound, caster, Volume, 0.0);
-						GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value * 1.5);
+						GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value * 10);
 						mod_target_scale(caster, Cache->value);
 						Cache->value = 0.0;
 						}
