@@ -56,7 +56,7 @@ namespace Gts {
 				//log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
-					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/10 * buttonEvent->HeldDuration());
+					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/15 * buttonEvent->HeldDuration());
 					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 2.0) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
@@ -64,7 +64,7 @@ namespace Gts {
 						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->value);
 						PlaySound(GrowthSound, caster, Volume, 0.0);
 						PlaySound(MoanSound, caster, Volume, 0.0);
-						RandomGrowth::GetSingleton().CallShake(Cache->value * 10);
+						RandomGrowth::GetSingleton().CallShake(Cache->value * 20);
 						mod_target_scale(caster, Cache->value);
 						Cache->value = 0.0;
 						}
@@ -112,11 +112,11 @@ namespace Gts {
 			}  
 			if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
 				auto key = buttonEvent->GetIDCode();
-				if (key == 0x1) {
+				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.05) {
 					PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
 					// Do attack right
 					// ConsoleLog::GetSingleton()->Print("Pressed LMB");
-				} if (key == 0x2) {
+				} if (key == 0x2 && buttonEvent->HeldDuration() <= 0.05) {
 					// Do attack left
 					// ConsoleLog::GetSingleton()->Print("Pressed RMB");
 				}

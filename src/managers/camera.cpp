@@ -110,6 +110,38 @@ namespace Gts {
 		return GetINIFloat("fMouseWheelZoomSpeed:Camera");
 	}
 
+	void CameraManager::AdjustSide(bool Reset, bool Right, bool Left) {
+		float size = get_visual_scale(PlayerCharacter::GetSingleton());
+		if (Reset) {
+			this->Side = 1.0;
+			log::info("Side Reset: {}", this->Side);
+			}
+		else if (Left) {
+			this->Side -=(0.20 * (size * 0.33)) + 0.20;
+			log::info("Side Left: {}", this->Side);
+			}
+		else if (Right) { 
+			this->Side += (0.20 * (size * 0.33)) + 0.20;
+			log::info("Side Right: {}", this->Side);
+			}
+		}
+
+	void CameraManager::AdjustUpDown(bool Reset, bool Up, bool Down) {
+		float size = get_visual_scale(PlayerCharacter::GetSingleton());
+		if (Reset) {
+			this->UpDown = 1.0;
+			log::info("UpDown Reset: {}", this->UpDown);
+			}
+		else if (Up) {
+			this->UpDown +=(0.20 * (size * 0.33)) + 0.20;
+			log::info("UpDown Decrease: {}", this->UpDown);
+			}
+		else if (Down) { 
+			this->UpDown -= (0.20 * (size * 0.33)) + 0.20;
+			log::info("UpDown Increase: {}", this->UpDown);
+			}
+		}
+
 
 
 	void CameraManager::ApplyCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
@@ -143,37 +175,7 @@ namespace Gts {
 	}
 
 
-	void CameraManager::AdjustSide(bool Reset, bool Right, bool Left) {
-		float size = get_visual_scale(PlayerCharacter::GetSingleton());
-		if (Reset) {
-			this->Side = 1.0;
-			log::info("Side Reset: {}", this->Side);
-			}
-		else if (Left) {
-			this->Side = this->Side - (0.20 * (size * 0.33)) + 0.20;
-			log::info("Side Left: {}", this->Side);
-			}
-		else if (Right) { 
-			this->Side = this->Side + (0.20 * (size * 0.33)) + 0.20;
-			log::info("Side Right: {}", this->Side);
-			}
-		}
-
-	void CameraManager::AdjustUpDown(bool Reset, bool Up, bool Down) {
-		float size = get_visual_scale(PlayerCharacter::GetSingleton());
-		if (Reset) {
-			this->UpDown = 1.0;
-			log::info("UpDown Reset: {}", this->UpDown);
-			}
-		else if (Up) {
-			this->UpDown = this->UpDown + (0.20 * (size * 0.33)) + 0.20;
-			log::info("UpDown Decrease: {}", this->UpDown);
-			}
-		else if (Down) { 
-			this->UpDown = this->UpDown - (0.20 * (size * 0.33)) + 0.20;
-			log::info("UpDown Increase: {}", this->UpDown);
-			}
-		}
+	
 
 	void CameraManager::ApplyFeetCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
 		auto& runtime = Runtime::GetSingleton();

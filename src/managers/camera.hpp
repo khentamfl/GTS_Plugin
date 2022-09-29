@@ -44,10 +44,10 @@ namespace Gts {
 
 			void ApplyCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
 			void ApplyFeetCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
-
-		private:
-			float last_scale = -1.0;
 			float UpDown = 1.0;
 			float Side = 1.0;
+		private:
+			float last_scale = -1.0;
+
 	};
 }
