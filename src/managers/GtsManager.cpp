@@ -144,9 +144,13 @@ namespace {
 			auto IsFalling = Runtime::GetSingleton().IsFalling->value;
 			if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
 				Runtime::GetSingleton().IsFalling->value = 1.0;
+				mod_target_scale(actor, 0.25);
+				ConsoleLog::GetSingleton()->Print("Is Falling");
 				}
 			else if (actor->formID == 0x14 && IsJumping(actor) && IsFalling >= 1.0) {
 				Runtime::GetSingleton().IsFalling->value = 0.0;
+				mod_target_scale(actor, -0.25);
+				ConsoleLog::GetSingleton()->Print("Jump Land");
 				}
 			
 			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
