@@ -159,7 +159,7 @@ namespace Gts {
 	void CameraManager::AdjustUpDown(bool Reset, bool Up, bool Down) {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
 		if (Reset) {
-			this->UpDown = 1.0
+			this->UpDown = 1.0;
 			}
 		else if (Up) {
 			this->UpDown += (0.20 * (size * 0.33)) + 0.20;
