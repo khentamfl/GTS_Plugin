@@ -4,6 +4,7 @@
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
+#include "managers/camera.hpp"
 #include "magic/effects/common.hpp"
 #include "util.hpp"
 #include "scale/scale.hpp"
@@ -45,19 +46,39 @@ namespace Gts {
 				log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
-					if (this->timer.ShouldRun() && this->TickCheck >= 120.0) {
+					if (this->timer.ShouldRun() && this->TickCheck >= 80.0 && this->TickCheck < 81.0) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
 						this->TickCheck = 0.0;
 						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->value);
 						PlaySound(GrowthSound, caster, Volume, 0.0);
 						PlaySound(MoanSound, caster, Volume, 0.0);
-						GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value);
-						Grow(caster, Cache->value, 0.0);
+						GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value * 1.5);
+						mod_target_scale(caster, Cache->value);
 						Cache->value = 0.0;
 						}
 					}
-				}  
+				if (key == 0x38 && key == 0xCB && key == 0xCD)	{
+					CameraManager::AdjustSide(true, false, false);
+				}
+				if (key == 0x38 && key == 0xCD)	{
+					CameraManager::AdjustSide(false, true, false); // Right
+				}
+				if (key == 0x38 && key == 0xCB)	{
+					CameraManager::AdjustSide(false, false, true); // Left
+				} // Left or Right end
+
+
+				if (key == 0x38 && key == 0xC8 && key == 0xD0)	{
+					CameraManager::AdjustUpDown(true, false, false); // Reset
+				}
+				if (key == 0x38 && key == 0xC8)	{
+					CameraManager::AdjustUpDown(false, true, false); // Up
+				}
+				if (key == 0x38 && key == 0xD0)	{
+					CameraManager::AdjustUpDown(false, false, true); // Down
+				} // Up or Down end
+			}  
 			if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1) {

@@ -37,6 +37,9 @@ namespace Gts {
 
 			virtual void Update() override;
 
+			void AdjustSide(bool Reset, bool Right, bool Left);
+			void AdjustUpDown(bool Reset, bool Right, bool Left);
+
 			//void OnScaleChanged(float new_scale, float old_scale);
 
 			void ApplyCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
@@ -44,5 +47,7 @@ namespace Gts {
 
 		private:
 			float last_scale = -1.0;
+			float UpDown = 1.0;
+			float Side = 1.0;
 	};
 }

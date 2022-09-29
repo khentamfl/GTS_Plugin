@@ -115,7 +115,7 @@ namespace Gts {
 	void CameraManager::ApplyCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
 		auto& runtime = Runtime::GetSingleton();
 		float cameraYCorrection = 121.0;
-		float UpDown = 1.0; float Side = 1.0;
+		float UpDown = this->UpDown; float Side = this->Side;
 		float CalcProne = runtime.CalcProne->value;
 
 		SetfOverShoulderPosX((X + Side) * size);
@@ -142,11 +142,38 @@ namespace Gts {
 		}
 	}
 
+
+	void CamerManager::AdjustSide(bool Reset, bool Right, bool Left) {
+		float size = get_visual_scale(PlayerCharacter::GetSingleton());
+		if (Reset) {
+			this->Side = 1.0;
+			}
+		else if (Left) {
+			this->Side -= (0.20 * (size * 0.33)) - 0.20;
+			}
+		else if (Right) { 
+			this->Side +=(0.20 * (size * 0.33)) + 0.20;
+			}
+		}
+
+	void CamerManager::AdjustUpDown(bool Reset, bool Up, bool Down) {
+		float size = get_visual_scale(PlayerCharacter::GetSingleton());
+		if (Reset) {
+			this->UpDown = 1.0
+			}
+		else if (Up) {
+			this->UpDown += (0.20 * (size * 0.33)) + 0.20;
+			}
+		else if (Down) { 
+			this->UpDown -=(0.20 * (size * 0.33)) - 0.20;
+			}
+		}
+
 	void CameraManager::ApplyFeetCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
 		auto& runtime = Runtime::GetSingleton();
 		float cameraYCorrection2 = 205.0 * (size * 0.33) + 70;
 		float CalcProne2 = runtime.CalcProne->value;
-		float UpDown = 1.0; float Side = 1.0;
+		float UpDown = this->UpDown; float Side = this->Side;
 
 		CameraManager::SetfOverShoulderPosX(((X + Side) * size));
 		CameraManager::SetfOverShoulderPosZ(((Y + UpDown) * size) - cameraYCorrection2);
