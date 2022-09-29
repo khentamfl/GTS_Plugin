@@ -154,8 +154,8 @@ namespace {
 			float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 			float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
 			float MS_mult_limit = clamp(0.650, 1.0, MS_mult); // For Walk speed
-			float PerkSpeed = 1.0
-			if (actor->HasPerk(runtime.BonusSpeedPerk))
+			float PerkSpeed = 1.0;
+			if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk))
 			{
 				PerkSpeed = clamp(0.75, 1.0, MS_mult); // Used as a bonus 25% MS if PC has perk.
 			}
