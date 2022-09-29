@@ -42,8 +42,8 @@ namespace Gts {
 				auto caster = PlayerCharacter::GetSingleton();
 				auto runtime = Runtime::GetSingleton();
 				auto Cache = runtime.ManualGrowthStorage;
-				auto Time = Time::GetSingleton();
-				if (key == 0x12 && Time.WorldTimeElapsed() >= 2.0 && Cache->value > 0.0) {
+				log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
+				if (key == 0x12 && Time::WorldTimeElapsed() >= 2.0 && Cache->value > 0.0) {
 					// Grow
 					if (this->timer.ShouldRun()) {
 						auto GrowthSound = runtime.growthSound;
@@ -61,10 +61,10 @@ namespace Gts {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1) {
 					PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
-					// Do attack left
+					// Do attack right
 					// ConsoleLog::GetSingleton()->Print("Pressed LMB");
 				} if (key == 0x2) {
-					// Do attack right
+					// Do attack left
 					// ConsoleLog::GetSingleton()->Print("Pressed RMB");
 				}
 				// log::info("{:X} pressed", key);
