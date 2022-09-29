@@ -46,7 +46,7 @@ namespace Gts {
 			void ApplyFeetCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
 		private:
 			float last_scale = -1.0;
-			static float UpDown = 1.0;
-			static float Side = 1.0;
+			inline static float UpDown = 1.0;
+			inline static float Side = 1.0;
 	};
 }
