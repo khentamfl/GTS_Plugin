@@ -139,7 +139,7 @@ namespace {
 		float MS_mult = soft_core(scale, MS_adjustment);
 
 
-		static Timer timer = Timer(0.15); // Run every 0.15s or as soon as we can
+		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
 		if (timer.ShouldRunFrame()) {
 			auto IsFalling = Runtime::GetSingleton().IsFalling->value;
 			if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {

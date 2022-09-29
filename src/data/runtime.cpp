@@ -138,6 +138,7 @@ namespace Gts {
 		this->ProgressionMultiplier = find_form<TESGlobal>("GTS.esp|37E46E");
 		this->CrushGrowthRate = find_form<TESGlobal>("GTS.esp|2028B9");
 		this->IsFalling = find_form<TESGlobal>("GTS.esp|1CAD98");
+		this->SizeReserve = find_form<TESGlobal>("GTS.esp|4204CE");
 
 		this->ChosenGameMode = find_form<TESGlobal>("GTS.esp|2EB74C");
 		this->GrowthModeRate = find_form<TESGlobal>("GTS.esp|2028C3");

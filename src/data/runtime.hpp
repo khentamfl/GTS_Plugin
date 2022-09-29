@@ -136,6 +136,7 @@ namespace Gts {
 			TESGlobal * NPCSizeEffects = nullptr;
 			TESGlobal * CrushGrowthStorage = nullptr;
 			TESGlobal * IsFalling = nullptr;
+			TESGlobal * SizeReserve = nullptr;
 
 			TESGlobal * ManualGrowthStorage = nullptr;
 

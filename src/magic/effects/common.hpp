@@ -207,7 +207,9 @@ namespace Gts {
 			}
 			AdjustSizeLimit(0.0117);
 			auto Cache = runtime.ManualGrowthStorage;
-			Cache->value += target_scale/25;
+			if (caster->formID == 0x14 && caster->HasPerk(runtime.SizeReserve)) {
+				Cache->value += target_scale/25;
+			}
 			ConsoleLog::GetSingleton()->Print("%s Was absorbed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			return true;
 		}
@@ -238,7 +240,9 @@ namespace Gts {
 
 		}
 		auto Cache = runtime.ManualGrowthStorage;
-		Cache->value += target_scale/50;
+		if (caster->formID == 0x14 && caster->HasPerk(runtime.SizeReserve)) {
+				Cache->value += target_scale/25;
+		}
 
 		AdjustSizeLimit(0.0417 * target_scale);
 			if (runtime.BloodGushSound) {
