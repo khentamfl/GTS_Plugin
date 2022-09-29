@@ -139,7 +139,7 @@ namespace {
 		float MS_mult = soft_core(scale, MS_adjustment);
 
 
-		static Timer timer = Timer(0.25); // Run every 0.5s or as soon as we can
+		static Timer timer = Timer(0.15); // Run every 0.15s or as soon as we can
 		if (timer.ShouldRunFrame()) {
 			auto IsFalling = Runtime::GetSingleton().IsFalling->value;
 			if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
@@ -147,7 +147,7 @@ namespace {
 				mod_target_scale(actor, 0.25);
 				ConsoleLog::GetSingleton()->Print("Is Falling");
 				}
-			else if (actor->formID == 0x14 && IsJumping(actor) && IsFalling >= 1.0) {
+			else if (actor->formID == 0x14 && !IsJumping(actor) && IsFalling >= 1.0) {
 				Runtime::GetSingleton().IsFalling->value = 0.0;
 				mod_target_scale(actor, -0.25);
 				ConsoleLog::GetSingleton()->Print("Jump Land");
