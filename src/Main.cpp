@@ -16,6 +16,7 @@
 #include "managers/camera.hpp"
 #include "managers/footstep.hpp"
 #include "managers/reloader.hpp"
+#include "managers/collider.hpp"
 #include "managers/ddraw.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
@@ -181,6 +182,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&RandomGrowth::GetSingleton());
 	EventDispatcher::AddListener(&QuestManager::GetSingleton());
 
+	EventDispatcher::AddListener(&ColliderManager::GetSingleton());
 	EventDispatcher::AddListener(&ContactManager::GetSingleton());
 	EventDispatcher::AddListener(&InputManager::GetSingleton());
 
