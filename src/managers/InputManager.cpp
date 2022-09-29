@@ -43,17 +43,18 @@ namespace Gts {
 				auto runtime = Runtime::GetSingleton();
 				auto Cache = runtime.ManualGrowthStorage;
 				log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
-				if (key == 0x12 && Time::WorldTimeElapsed() >= 2.0 && Cache->value > 0.0) {
-					// Grow
-					if (this->timer.ShouldRun()) {
+				if (key == 0x12 && Cache->value > 0.0) {
+					this->TickCheck += 1.0;
+					if (this->timer.ShouldRun() && this->TickCheck >= 120.0) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
-						Cache->value = 0.0;
+						this->TickCheck += 0.0;
 						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->value);
 						PlaySound(GrowthSound, caster, Volume, 0.0);
 						PlaySound(MoanSound, caster, Volume, 0.0);
 						GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value);
 						Grow(caster, Cache->value, 0.0);
+						Cache->value = 0.0;
 						}
 					}
 				}  

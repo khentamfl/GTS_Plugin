@@ -20,5 +20,6 @@ namespace Gts
 			void Start() override;
 		private:	
 			Timer timer = Timer(2.33);
+			float TickCheck = 0.0;
 	};
 }
