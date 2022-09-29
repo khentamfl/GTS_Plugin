@@ -153,7 +153,7 @@ namespace {
 			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 			float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 			float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
-			float MS_mult_limit = clamp(0.750, 1.0, MS_mult); // For Walk speed
+			float MS_mult_limit = clamp(0.650, 1.0, MS_mult); // For Walk speed
 			persi_actor_data->anim_speed = speed_mult;
 			if (actor->IsWalking() == true) {
 				if (scale < 1.0) {
