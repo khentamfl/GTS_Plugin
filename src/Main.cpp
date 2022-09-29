@@ -16,6 +16,7 @@
 #include "managers/camera.hpp"
 #include "managers/footstep.hpp"
 #include "managers/reloader.hpp"
+#include "managers/ddraw.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -184,6 +185,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&InputManager::GetSingleton());
 
 	EventDispatcher::AddListener(&DebugOverlayMenu::GetSingleton());
+	EventDispatcher::AddListener(&DDraw::GetSingleton());
 }
 
 /**
