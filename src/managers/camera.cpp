@@ -115,15 +115,15 @@ namespace Gts {
 		auto Side = Runtime::GetSingleton().CameraSide; 
 		if (Left == true) {
 			Side->value -=(0.20 * (size * 0.33)) + 0.20;
-			log::info("Side Left: {}", this->Side);
+			log::info("Side Left: {}", Side->value);
 			}
 		else if (Right == true) { 
 			Side->value += (0.20 * (size * 0.33)) + 0.20;
-			log::info("Side Right: {}", this->Side);
+			log::info("Side Right: {}", Side->value);
 			}
 		else if (Reset == true) {
 			Side->value = 1.0;
-			log::info("Side Reset: {}", this->Side);
+			log::info("Side Reset: {}", Side->value);
 			}	
 		}
 
@@ -133,15 +133,15 @@ namespace Gts {
 		
 		if (Up == true) {
 			UpDown->value +=(0.20 * (size * 0.33)) + 0.20;
-			log::info("UpDown Decrease: {}", this->UpDown);
+			log::info("UpDown Decrease: {}", UpDown->value);
 			}
 		else if (Down == true) { 
 			UpDown->value -= (0.20 * (size * 0.33)) + 0.20;
-			log::info("UpDown Increase: {}", this->UpDown);
+			log::info("UpDown Increase: {}", UpDown->value);
 			}
 		else if (Reset == true) {
 			UpDown->value = 1.0;
-			log::info("UpDown Reset: {}", this->UpDown);
+			log::info("UpDown Reset: {}", UpDown->value);
 			}
 		}
 
