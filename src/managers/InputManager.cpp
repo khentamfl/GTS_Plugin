@@ -47,7 +47,7 @@ namespace Gts {
 				log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
-					if (this->timer.ShouldRun() && this->TickCheck >= 80.0 && this->TickCheck < 81.0) {
+					if (this->timer.ShouldRun() && this->TickCheck == 80.0) {
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
 						this->TickCheck = 0.0;
@@ -61,23 +61,29 @@ namespace Gts {
 					}
 				if (key == 0x38 && key == 0xCB && key == 0xCD)	{
 					Camera.AdjustSide(true, false, false); // Reset
+					log::info("Alt + Left & Right: Reset");
 				}
 				if (key == 0x38 && key == 0xCD)	{
 					Camera.AdjustSide(false, true, false); // Right
+					log::info("Alt + Right");
 				}
 				if (key == 0x38 && key == 0xCB)	{
 					Camera.AdjustSide(false, false, true); // Left
+					log::info("Alt + Right");
 				} // Left or Right end
 
 
 				if (key == 0x38 && key == 0xC8 && key == 0xD0)	{
 					Camera.AdjustUpDown(true, false, false); // Reset
+					log::info("Alt + Up & Down: Reset");
 				}
 				if (key == 0x38 && key == 0xC8)	{
 					Camera.AdjustUpDown(false, true, false); // Up
+					log::info("Alt + Up");
 				}
 				if (key == 0x38 && key == 0xD0)	{
 					Camera.AdjustUpDown(false, false, true); // Down
+					log::info("Alt + Down");
 				} // Up or Down end
 			}  
 			if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {

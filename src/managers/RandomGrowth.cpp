@@ -22,7 +22,7 @@ namespace {
 			return false;
 		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		int Requirement = 150 * Gigantism;
+		int Requirement = 200 * Gigantism;
 		int random = rand() % Requirement;
 		if (Gigantism) {
 			log::info("Requirement: {}, Gigantism: {}", Requirement, Gigantism);
