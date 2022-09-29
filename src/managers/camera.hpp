@@ -38,7 +38,7 @@ namespace Gts {
 			virtual void Update() override;
 
 			void AdjustSide(bool Reset, bool Right, bool Left);
-			void AdjustUpDown(bool Reset, bool Right, bool Left);
+			void AdjustUpDown(bool Reset, bool Up, bool Down);
 
 			//void OnScaleChanged(float new_scale, float old_scale);
 
