@@ -81,7 +81,7 @@ namespace Gts {
 			float delta_time = Time::WorldTimeDelta();
 			this->growth_time_input += delta_time;
 			actor_data->half_life = 1.0 + this->ShakePower/6;
-			GrowthTremorManager::GetSingleton().CallRumble(player, player, this->ShakePower);
+			GrowthTremorManager::GetSingleton().CallRumble(player, player, this->ShakePower * 15);
 			log::info("Calling Growth Shake, power: {}", this->ShakePower);
 			if (this->growth_time_input >= actor_data->half_life) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 				// End growing

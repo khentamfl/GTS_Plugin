@@ -144,6 +144,7 @@ namespace {
 
 			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 			float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
+			float MS_mult_Limit = clamp(0.70, 1.0, MS_mult);
 			persi_actor_data->anim_speed = speed_mult;
 			if (actor->IsWalking() == true) {
 				if (scale < 1.0) {
@@ -158,7 +159,7 @@ namespace {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult * 1.15));
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_Limit);
 				//log::info("Sprint Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			} else {
 				if (scale < 1.0) {
