@@ -135,6 +135,7 @@ namespace Gts {
 			TESGlobal * PCAdditionalEffects = nullptr;
 			TESGlobal * NPCSizeEffects = nullptr;
 			TESGlobal * CrushGrowthStorage = nullptr;
+			TESGlobal * IsFalling = nullptr;
 
 			TESGlobal * ManualGrowthStorage = nullptr;
 
@@ -145,9 +146,6 @@ namespace Gts {
 			TESGlobal * FeetCamera = nullptr;
 			TESGlobal * usingAutoDistance = nullptr;
 			TESGlobal * ImCrouching = nullptr;
-
-			TESGlobal * CameraSide = nullptr;
-			TESGlobal * CameraUpDown = nullptr;
 
 			TESGlobal * MinDistance = nullptr;
 			TESGlobal * MaxDistance = nullptr;

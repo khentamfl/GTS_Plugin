@@ -139,9 +139,16 @@ namespace {
 		float MS_mult = soft_core(scale, MS_adjustment);
 
 
-		static Timer timer = Timer(0.50); // Run every 0.5s or as soon as we can
+		static Timer timer = Timer(0.25); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRunFrame()) {
-
+			auto IsFalling = Runtime::GetSingleton().IsFalling->value;
+			if (actor->formID == 0x14 && actor->IsInAir() && IsFalling == 0.0) {
+				Runtime::GetSingleton().IsFalling->value = 1.0;
+				}
+			else if (actor->formID == 0x14 && actor->IsInAir() && IsFalling >= 1.0) {
+				Runtime::GetSingleton().IsFalling->value = 0.0;
+				}
+			}
 			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 			float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 			float MS_mult_Limit = clamp(0.70, 1.0, MS_mult);

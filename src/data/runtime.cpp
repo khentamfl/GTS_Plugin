@@ -107,6 +107,8 @@ namespace Gts {
 		this->AbsorbMGEF = find_form<EffectSetting>("GTS.esp|00B470");
 		this->TrueAbsorb = find_form<EffectSetting>("GTS.esp|22B0D5");
 		this->TrueAbsorbSpell = find_form<SpellItem>("GTS.esp22B0D6");
+
+		
 		///End
 
 		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
@@ -135,6 +137,7 @@ namespace Gts {
 
 		this->ProgressionMultiplier = find_form<TESGlobal>("GTS.esp|37E46E");
 		this->CrushGrowthRate = find_form<TESGlobal>("GTS.esp|2028B9");
+		this->IsFalling = find_form<TESGlobal>("GTS.esp|1CAD98");
 
 		this->ChosenGameMode = find_form<TESGlobal>("GTS.esp|2EB74C");
 		this->GrowthModeRate = find_form<TESGlobal>("GTS.esp|2028C3");
@@ -163,9 +166,6 @@ namespace Gts {
 		this->FeetCamera = find_form<TESGlobal>("GTS.esp|290525");
 		this->usingAutoDistance = find_form<TESGlobal>("GTS.esp|290524");
 		this->ImCrouching = find_form<TESGlobal>("GTS.esp|2C8039");
-
-		this->CameraSide = find_form<TESGlobal>("GTS.esp|41B3CD");
-		this->CameraUpDown = find_form<TESGlobal>("GTS.esp|41B3CC");
 
 		this->MinDistance = find_form<TESGlobal>("GTS.esp|29051E");
 		this->MaxDistance = find_form<TESGlobal>("GTS.esp|29051F");
