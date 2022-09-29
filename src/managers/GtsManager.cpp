@@ -138,6 +138,8 @@ namespace {
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
 
+		float IsFalling = Runtime::GetSingleton().IsFalling->value;
+
 		if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
 				Runtime::GetSingleton().IsFalling->value = 1.0;
 		}
@@ -147,7 +149,7 @@ namespace {
 
 		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
 		if (timer.ShouldRunFrame()) {
-			auto IsFalling = Runtime::GetSingleton().IsFalling->value;
+			
 			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 			float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 			float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint

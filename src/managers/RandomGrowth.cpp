@@ -89,7 +89,7 @@ namespace Gts {
 
 			static Timer timer = Timer(0.33);
 			if (timer.ShouldRunFrame() && this->ShakePower > 6.0) {
-				PlaySound(runtime.xlRumbleL, caster, this->ShakePower/10, 0.0);
+				PlaySound(runtime.xlRumbleL, player, this->ShakePower/10, 0.0);
 			}
 			log::info("Calling Growth Shake, power: {}", this->ShakePower);
 			if (this->growth_time_input >= actor_data->half_life) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
