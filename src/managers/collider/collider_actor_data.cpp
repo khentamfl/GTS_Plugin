@@ -96,7 +96,7 @@ namespace Gts {
 		bool charControllerChanged = this->charContData.charCont != charController;
 		bool ragdollChanged = this->ragdollData.ragdoll != ragdoll;
 		if (needs_reset || charControllerChanged || ragdollChanged ) {
-			log::info("Collider rescale: {}", actor->GetDisplayFullName());
+			log::info("Collider reset: {}", actor->GetDisplayFullName());
 			this->UpdateColliders(actor);
 		}
 

@@ -24,11 +24,11 @@ namespace {
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
 		int Requirement = 150 * Gigantism;
 		int random = rand() % Requirement;
-		if (Gigantism) {
-			log::info("Requirement: {}, Gigantism: {}", Requirement, Gigantism);
-		}
+		// if (Gigantism) {
+		// 	log::info("Requirement: {}, Gigantism: {}", Requirement, Gigantism);
+		// }
 		int decide_chance = 1;
-		log::info("Random Growth random: {}", random);
+		// log::info("Random Growth random: {}", random);
 		if (random <= decide_chance && Player->HasPerk(growthPerk)) {
 			return true;
 		} else {
@@ -75,7 +75,7 @@ namespace Gts {
 			static Timer timer = Timer(3.0); // Run every 3.0s or as soon as we can
 			if (timer.ShouldRun()) {
 				if (ShouldGrow()) {
-					log::info("Random Growth True");
+					// log::info("Random Growth True");
 					// Start growing
 					this->growth_time = 0.0;
 					this->AllowGrowth = true;
