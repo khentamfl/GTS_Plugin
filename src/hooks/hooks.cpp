@@ -16,7 +16,6 @@ namespace Hooks
 
 		auto& trampoline = SKSE::GetTrampoline();
 		trampoline.create(256);
-		float version = 1.00;
 
 		Hook_MainUpdate::Hook(trampoline);
 		Hook_BGSImpactManager::Hook();
@@ -26,7 +25,6 @@ namespace Hooks
 		Hook_hkbBehaviorGraph::Hook();
 
 		logger::info("Gts finished applying hooks...");
-		ConsoleLog::GetSingleton()->Print("Giantess MOD v{} was succesfully initialized and works properly", version);
+		ConsoleLog::GetSingleton()->Print("Giantess MOD v 1.00 was succesfully initialized and works properly");
 	}
-
 }
