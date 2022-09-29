@@ -25,6 +25,5 @@ namespace Hooks
 		Hook_hkbBehaviorGraph::Hook();
 
 		logger::info("Gts finished applying hooks...");
-		ConsoleLog::GetSingleton()->Print("Giantess MOD v 1.00 was succesfully initialized and works properly");
 	}
 }
