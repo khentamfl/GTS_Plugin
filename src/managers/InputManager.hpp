@@ -1,6 +1,7 @@
 #pragma once
 #include "data/transient.hpp"
 #include "events.hpp"
+#include "timer.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -17,5 +18,7 @@ namespace Gts
 
 			BSEventNotifyControl ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) override;
 			void Start() override;
+		private:	
+			Timer timer = Timer(2.33);
 	};
 }

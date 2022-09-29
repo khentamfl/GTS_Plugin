@@ -28,33 +28,40 @@ namespace Gts {
 		}
 		for (auto event = *a_event; event; event = event->next) {
 			if (event->GetEventType() != INPUT_EVENT_TYPE::kButton) {
-				log::info("ButtonEvent Type != Button");
 				continue;
 			}
 			ButtonEvent* buttonEvent = event->AsButtonEvent();
 			if (!buttonEvent || (!buttonEvent->IsPressed() && !buttonEvent->IsUp())) {
-				log::info("ButtonEvent aren't pressed");
 				continue;
-				
+
 			}
-			if (buttonEvent->device.get() != INPUT_DEVICE::kKeyboard) {
-				log::info("ButtonEvent != Keyboard");
-				continue;
-			}
-			auto key = buttonEvent->GetIDCode();
-			if (key == GFxKey::kE) {
-				// Do attack
-				ConsoleLog::GetSingleton()->Print("Pressed E");
-				mod_target_scale(PlayerCharacter::GetSingleton(), 0.33);
-				log::info("0x45 pressed");
-			} else if (key == 0x1) {
-				// Do attack left
-				ConsoleLog::GetSingleton()->Print("Pressed LMB");
-				log::info("0x01 pressed");
-			} else if (key == 0x2) {
-				// Do attack right
-				ConsoleLog::GetSingleton()->Print("Pressed RMB");
-				log::info("0x02 pressed");
+			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
+				// log::info("ButtonEvent == Keyboard");
+				auto key = buttonEvent->GetIDCode();
+				auto caster = PlayerCharacter::GetSingleton();
+				auto runtime = Runtime::GetSingleton();
+				if (key == 0x12) {
+					// Grow
+					if (this->timer.ShouldRun()) {
+						auto GrowthSound = runtime.growthSound;
+						float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/2);
+						PlaySound(GrowthSound, caster, Volume, 0.0);
+						GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
+						Grow(caster, 3.0, 0.0);
+						}
+					}
+				}  
+			if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
+				auto key = buttonEvent->GetIDCode();
+				if (key == 0x1) {
+					PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
+					// Do attack left
+					// ConsoleLog::GetSingleton()->Print("Pressed LMB");
+				} if (key == 0x2) {
+					// Do attack right
+					// ConsoleLog::GetSingleton()->Print("Pressed RMB");
+				}
+				// log::info("{:X} pressed", key);
 			}
 		}
 		return BSEventNotifyControl::kContinue;
