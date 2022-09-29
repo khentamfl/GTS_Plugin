@@ -688,6 +688,7 @@ void DebugOverlayMenu::MenuChange(const MenuOpenCloseEvent* a_event) {
 	// using a UI message kShow
 	else if (mName == RE::LoadingMenu::MENU_NAME) {
 		if (!a_event->opening) {
+			log::info("Repoen menu");
 			DebugOverlayMenu::Start();
 		}
 	}
