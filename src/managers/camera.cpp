@@ -150,11 +150,11 @@ namespace Gts {
 			log::info("Side Reset: {}", this->Side);
 			}
 		else if (Left) {
-			this->Side -= (0.20 * (size * 0.33)) + 0.20;
+			this->Side = this->side - (0.20 * (size * 0.33)) + 0.20;
 			log::info("Side Left: {}", this->Side);
 			}
 		else if (Right) { 
-			this->Side +=(0.20 * (size * 0.33)) + 0.20;
+			this->Side = this->side + (0.20 * (size * 0.33)) + 0.20;
 			log::info("Side Right: {}", this->Side);
 			}
 		}
@@ -166,11 +166,11 @@ namespace Gts {
 			log::info("UpDown Reset: {}", this->UpDown);
 			}
 		else if (Up) {
-			this->UpDown += (0.20 * (size * 0.33)) + 0.20;
+			this->UpDown = this->UpDown + (0.20 * (size * 0.33)) + 0.20;
 			log::info("UpDown Decrease: {}", this->UpDown);
 			}
 		else if (Down) { 
-			this->UpDown -=(0.20 * (size * 0.33)) + 0.20;
+			this->UpDown = this->UpDown - (0.20 * (size * 0.33)) + 0.20;
 			log::info("UpDown Increase: {}", this->UpDown);
 			}
 		}
