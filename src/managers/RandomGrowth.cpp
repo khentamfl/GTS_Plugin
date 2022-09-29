@@ -75,19 +75,28 @@ namespace Gts {
 		}
 
 		bool hasSMT = runtime.SmallMassiveThreat ? player->HasMagicEffect(runtime.SmallMassiveThreat) : false;
+
 		 if (this->CallInputGrowth == true) {
+			
 			auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetData(player);
 			float delta_time = Time::WorldTimeDelta();
+
 			this->growth_time_input += delta_time;
 			actor_data->half_life = 1.0 + this->ShakePower/6;
+
 			GrowthTremorManager::GetSingleton().CallRumble(player, player, this->ShakePower * 15);
+
+			static Timer timer = Timer(0.33);
+			if (timer.ShouldRunFrame() && this->ShakePower > 6.0) {
+				PlaySound(runtime.xlRumbleL, caster, this->ShakePower/10, 0.0);
+			}
 			log::info("Calling Growth Shake, power: {}", this->ShakePower);
 			if (this->growth_time_input >= actor_data->half_life) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
-				// End growing
 				this->CallInputGrowth = false;
 				this->growth_time_input = 0.0;
 				actor_data->half_life = 1.0;
+				// End growing
 			}
 		}
 

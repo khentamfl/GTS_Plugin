@@ -29,6 +29,7 @@ namespace Gts {
 		if (!a_event) {
 			return BSEventNotifyControl::kContinue;
 		}
+		bool CtrlPressed = false;
 		bool AltPressed = false;
 		bool LeftArrow = false;
 		bool RightArrow = false;
@@ -69,8 +70,13 @@ namespace Gts {
 						Cache->value = 0.0;
 						}
 					}
+				if (key == 0x21 && CtrlPressed && buttonEvent->HeldDuration() == 0.5)	
+				{ 
+					ConsoleLog::GetSingleton()->Print("Size Reserve is {}", Cache->value);
+				}
 
 				if (key == 0x38) {AltPressed = true;}	
+				else if (key == 0x1D) {CtrlPressed = true;}
 				else if (key == 0xCD) {RightArrow = true;}
 				else if (key == 0xCB) {LeftArrow = true;}
 

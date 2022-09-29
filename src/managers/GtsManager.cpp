@@ -138,31 +138,27 @@ namespace {
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
 
+		if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
+				Runtime::GetSingleton().IsFalling->value = 1.0;
+		}
+		else if (actor->formID == 0x14 && !IsJumping(actor) && IsFalling >= 1.0) {
+				Runtime::GetSingleton().IsFalling->value = 0.0;
+		}
 
 		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
 		if (timer.ShouldRunFrame()) {
 			auto IsFalling = Runtime::GetSingleton().IsFalling->value;
-			if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
-				Runtime::GetSingleton().IsFalling->value = 1.0;
-				mod_target_scale(actor, 0.25);
-				ConsoleLog::GetSingleton()->Print("Is Falling");
-				}
-			else if (actor->formID == 0x14 && !IsJumping(actor) && IsFalling >= 1.0) {
-				Runtime::GetSingleton().IsFalling->value = 0.0;
-				mod_target_scale(actor, -0.25);
-				ConsoleLog::GetSingleton()->Print("Jump Land");
-				}
-			
 			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 			float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
-			float MS_mult_Limit = clamp(0.70, 1.0, MS_mult);
+			float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
+			float MS_mult_limit = clamp(0.825, 1.0, MS_mult); // For Walk speed
 			persi_actor_data->anim_speed = speed_mult;
 			if (actor->IsWalking() == true) {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / MS_mult);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit);
 				//log::info("Slow Walk Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			}
 			if (actor->IsSprinting() == true) {
@@ -170,14 +166,14 @@ namespace {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_Limit);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_sprint_limit);
 				//log::info("Sprint Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			} else {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				actor->SetActorValue(ActorValue::kSpeedMult, (trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))/ MS_mult);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ (MS_mult)/MS_mult_limit);
 				//log::info("Normal Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			}
 		}
