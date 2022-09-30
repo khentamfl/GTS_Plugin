@@ -93,7 +93,6 @@ namespace Gts {
 		}
 		lowest.x = 0.0;
 		lowest.y = 0.0;
-		log::info("Setting convverts, lowest point: {}", Vector2Str(lowest));
 		this->SetOrigin(lowest);
 	}
 }

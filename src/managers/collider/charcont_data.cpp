@@ -30,7 +30,6 @@ namespace Gts {
 
 			if (charCont) {
 				this->center = charCont->center;
-				log::info("Center: {}", this->center);
 			}
 		}
 	}

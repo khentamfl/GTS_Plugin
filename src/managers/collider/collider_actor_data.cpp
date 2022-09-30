@@ -97,10 +97,12 @@ namespace Gts {
 		bool charControllerChanged = this->charContData.charCont != charController;
 		bool ragdollChanged = this->ragdollData.ragdoll != ragdoll;
 		if (needs_reset || charControllerChanged || ragdollChanged ) {
-			log::info("Collider reset: {}", actor->GetDisplayFullName());
 			this->UpdateColliders(actor);
 		}
 
+		if (actor->formID == 0x14) {
+			log::info("Center: {}", charController->center);
+		}
 
 		const float EPSILON = 1e-3;
 
