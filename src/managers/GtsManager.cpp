@@ -149,7 +149,7 @@ namespace {
 		}
 
 		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
-		if (timer.ShouldRunFrame()) {
+		if (timer.ShouldRunFrame() && actor->formID == 0x14) {
 			
 			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 			float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
@@ -166,15 +166,18 @@ namespace {
 				}
 				else
 				persi_actor_data->anim_speed = 0.33;//speed_mult * MS_mult/;
+				ConsoleLog::GetSingleton()->Print("IsRunning");
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 			}
-			if (actor->IsSprinting() == true) {
+			else if (actor->IsWalking() == true) {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				persi_actor_data->anim_speed = speed_mult;
+				persi_actor_data->anim_speed = 0.33;//speed_mult * MS_mult/;
+				ConsoleLog::GetSingleton()->Print("IsWalking");
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
+			}
 			} else {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
