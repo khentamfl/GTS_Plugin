@@ -15,7 +15,7 @@ namespace Gts {
 			float GetfOverShoulderPosX();
 			void SetfOverShoulderPosY(float value);
 			float GetfOverShoulderPosY();
-			void SetfOverShoulderPosZ(float value); 
+			void SetfOverShoulderPosZ(float value);
 			float GetfOverShoulderPosZ();
 
 			void SetfOverShoulderCombatPosX(float value);
@@ -46,7 +46,7 @@ namespace Gts {
 			void ApplyFeetCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
 		private:
 			float last_scale = -1.0;
-			inline static float UpDown = 1.0;
-			inline static float Side = 1.0;
+			float UpDown = 1.0;
+			float Side = 1.0;
 	};
 }
