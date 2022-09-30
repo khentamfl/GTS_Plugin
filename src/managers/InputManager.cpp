@@ -75,7 +75,7 @@ namespace Gts {
 						Cache->value = 0.0;
 					}
 				}
-				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && caster->HasPerk(runtime.ManualGrowthStorage)) {
+				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && caster->HasPerk(runtime.SizeReserve)) {
 					float Value = Cache->value;
 					Notify("Reserved Size: {}", Value);
 				}
