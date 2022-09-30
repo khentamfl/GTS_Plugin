@@ -102,14 +102,14 @@ namespace Gts {
 				} else if (key == 0xD0) {
 					ArrowDown = true;
 				}
-			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
+			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
-				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.05) {
+				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.025) {
 					PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
 					// Do attack right
 					// ConsoleLog::GetSingleton()->Print("Pressed LMB");
 				}
-				if (key == 0x2 && buttonEvent->HeldDuration() <= 0.05) {
+				if (key == 0x2 && buttonEvent->HeldDuration() <= 0.025) {
 					// Do attack left
 					// ConsoleLog::GetSingleton()->Print("Pressed RMB");
 				}

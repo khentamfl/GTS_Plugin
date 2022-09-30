@@ -140,7 +140,7 @@ namespace {
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
 		float MS_mult_limit = clamp(0.650, 1.0, MS_mult); // For Walk speed
-		float Multy = clamp(0.850, 1.0, MS_mult); // Additional 15% ms
+		float Multy = clamp(0.900, 1.0, MS_mult); // Additional 15% ms
 		float PerkSpeed = 1.0;
 
 		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
@@ -165,7 +165,16 @@ namespace {
 		} 
 		
 		if (timer.ShouldRunFrame()) {
-			if (actor->IsRunning()) {
+			if (actor->IsWalking()) {
+				if (scale < 1.0) {
+				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
+				}
+				else {
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/Multy/PerkSpeed);
+				return;
+				}
+			}
+			else if (actor->IsRunning()) {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
