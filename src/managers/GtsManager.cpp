@@ -154,18 +154,20 @@ namespace {
 			float MovementSpeed = actor->GetActorValue(ActorValue::kSpeedMult);
 			float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
 			float MS_mult_limit = clamp(0.650, 1.0, MS_mult); // For Walk speed
+			float Multy = clamp(0.750, 1.0, MS_mult); // Additional 25% ms
 			float PerkSpeed = 1.0;
 			if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk))
 			{
-				PerkSpeed = clamp(0.75, 1.0, MS_mult); // Used as a bonus 25% MS if PC has perk.
+				PerkSpeed = clamp(0.85, 1.0, MS_mult); // Used as a bonus 25% MS if PC has perk.
 			}
+			float TotalSpeed = (MS_mult)/MS_mult_limit/Multy/PerkSpeed;
 			persi_actor_data->anim_speed = speed_mult;
 			if (actor->IsWalking() == true) {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/PerkSpeed);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / TotalSpeed);
 				//log::info("Slow Walk Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			}
 			if (actor->IsSprinting() == true) {
@@ -173,14 +175,14 @@ namespace {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_sprint_limit/PerkSpeed);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / TotalSpeed);
 				//log::info("Sprint Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			} else {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ (MS_mult)/MS_mult_limit/PerkSpeed);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ TotalSpeed);
 				//log::info("Normal Adjusting MS of {}, BaseWS: {}, Ms_Mult: {}, kSpeedMult: {}", actor->GetDisplayFullName(), trans_actor_data->base_walkspeedmult, MS_mult, MovementSpeed);
 			}
 		}

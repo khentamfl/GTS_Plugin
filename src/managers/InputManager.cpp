@@ -81,6 +81,12 @@ namespace Gts {
 					float Value = Cache->value * gigantism;
 					Notify("Reserved Size: {}", Value);
 				}
+				if (key == 0x2E) {
+					auto Player = PlayerCharacter::GetSingleton();
+					actor_data = Persistent::GetSingleton().GetData(Player);
+				if (actor_data) {
+					actor_data->anim_speed -=0.001;
+				}
 
 				if (key == 0x38) {
 					AltPressed = true;
