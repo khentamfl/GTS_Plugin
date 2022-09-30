@@ -83,7 +83,7 @@ namespace Gts {
 				}
 				if (key == 0x2E) {
 					auto Player = PlayerCharacter::GetSingleton();
-					actor_data = Persistent::GetSingleton().GetData(Player);
+					auto actor_data = Persistent::GetSingleton().GetData(Player);
 				if (actor_data) {
 					actor_data->anim_speed -=0.001;
 					}
