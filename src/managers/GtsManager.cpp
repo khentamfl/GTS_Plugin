@@ -137,8 +137,13 @@ namespace {
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
-		
+		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
+		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
+		float MS_mult_limit = clamp(0.650, 1.0, MS_mult); // For Walk speed
+		float Multy = clamp(0.850, 1.0, MS_mult); // Additional 25% ms
+		float PerkSpeed = 1.0;
 
+		static Timer timer = Timer(0.025); // Run every 0.10s or as soon as we can
 		float IsFalling = Runtime::GetSingleton().IsFalling->value;
 
 		if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
@@ -148,14 +153,13 @@ namespace {
 				Runtime::GetSingleton().IsFalling->value = 0.0;
 		}
 
-		static Timer timer = Timer(0.025); // Run every 0.10s or as soon as we can
+		if (actor->IsRunning()) {
+			persi_actor_data->anim_speed = speed_mult/MS_mult;
+		} else {
+			persi_actor_data->anim_speed = speed_mult;
+		}
+		
 		if (timer.ShouldRunFrame() && actor->formID == 0x14) {
-			
-			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
-			float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
-			float MS_mult_limit = clamp(0.650, 1.0, MS_mult); // For Walk speed
-			float Multy = clamp(0.850, 1.0, MS_mult); // Additional 25% ms
-			float PerkSpeed = 1.0;
 			if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk))
 			{
 				PerkSpeed = clamp(0.85, 1.0, MS_mult); // Used as a bonus 15% MS if PC has perk.
@@ -166,7 +170,6 @@ namespace {
 				}
 				else
 				{
-				persi_actor_data->anim_speed = speed_mult/MS_mult;
 				ConsoleLog::GetSingleton()->Print("IsRunning");
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 				return;
@@ -178,7 +181,6 @@ namespace {
 				}
 				else
 				{
-				persi_actor_data->anim_speed = speed_mult;
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 				}
 			}
