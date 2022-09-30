@@ -160,7 +160,7 @@ namespace {
 			{
 				PerkSpeed = clamp(0.85, 1.0, MS_mult); // Used as a bonus 15% MS if PC has perk.
 			}
-			if (actor->IsWalking() == true) {
+			if (actor->IsRunning() == true) {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
