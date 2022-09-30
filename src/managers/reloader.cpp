@@ -5,7 +5,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	void ReloadManager::Initialize() {
+	void ReloadManager::DataReady() {
 		auto event_sources = ScriptEventSourceHolder::GetSingleton();
 		if (event_sources) {
 			event_sources->AddEventSink<TESObjectLoadedEvent>(this);
@@ -21,6 +21,7 @@ namespace Gts {
 			return;
 		}
 	}
+
 	ReloadManager& ReloadManager::GetSingleton() noexcept {
 		static ReloadManager instance;
 		return instance;

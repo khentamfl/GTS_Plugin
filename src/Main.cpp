@@ -18,6 +18,7 @@
 #include "managers/reloader.hpp"
 #include "managers/collider.hpp"
 #include "managers/ddraw.hpp"
+#include "managers/reloader.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -170,6 +171,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&Runtime::GetSingleton());
 	EventDispatcher::AddListener(&Persistent::GetSingleton());
 	EventDispatcher::AddListener(&Transient::GetSingleton());
+	EventDispatcher::AddListener(&ReloadManager::GetSingleton());
 
 	EventDispatcher::AddListener(&GtsManager::GetSingleton());
 	EventDispatcher::AddListener(&SizeManager::GetSingleton());
