@@ -64,6 +64,7 @@ namespace Gts {
 					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/15 * buttonEvent->HeldDuration());
 					PlaySound(runtime.growthSound, caster, Cache->value/25 * buttonEvent->HeldDuration(), 0.0);
 					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 1.2) {
+						float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
 						this->TickCheck = 0.0;
@@ -71,12 +72,13 @@ namespace Gts {
 						PlaySound(GrowthSound, caster, Volume, 0.0);
 						PlaySound(MoanSound, caster, Volume, 0.0);
 						RandomGrowth::GetSingleton().CallShake(Cache->value);
-						mod_target_scale(caster, Cache->value);
+						mod_target_scale(caster, Cache->value * gigantism);
 						Cache->value = 0.0;
 					}
 				}
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && caster->HasPerk(runtime.SizeReserve)) {
-					float Value = Cache->value;
+					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+					float Value = Cache->value * gigantism;
 					Notify("Reserved Size: {}", Value);
 				}
 
