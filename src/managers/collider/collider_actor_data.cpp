@@ -101,7 +101,15 @@ namespace Gts {
 		}
 
 		if (actor->formID == 0x14) {
-			log::info("Center: {}", charController->center);
+			log::info("== Frame ==");
+			log::info("  Center: {}", charController->center);
+			log::info("  pushDelta: {}", Vector2Str(charController->pushDelta));
+			log::info("  pitchAngle: {}", Vector2Str(charController->pitchAngle));
+			log::info("  rollAngle: {}", Vector2Str(charController->rollAngle));
+			log::info("  pitchMult: {}", Vector2Str(charController->pitchMult));
+			log::info("  actorHeight: {}", Vector2Str(charController->actorHeight));
+			log::info("  speedPct: {}", Vector2Str(charController->speedPct));
+			log::info("");
 		}
 
 		const float EPSILON = 1e-3;
