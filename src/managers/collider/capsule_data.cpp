@@ -59,6 +59,9 @@ namespace Gts {
 		} else {
 			lowest = this->end;
 		}
+		lowest.quad.m128_f32[0] = 0.0;
+		lowest.quad.m128_f32[1] = 0.0;
+		lowest.quad.m128_f32[3] = 0.0;
 		log::info("Setting capsule, start: {}, end: {}, radius: {}, lowest point: {}", Vector2Str(this->start), Vector2Str(this->end), this->radius, Vector2Str(lowest));
 		this->SetOrigin(lowest);
 	}

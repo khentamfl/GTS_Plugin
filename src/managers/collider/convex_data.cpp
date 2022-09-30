@@ -84,13 +84,15 @@ namespace Gts {
 				if (rotated_vert.z.quad.m128_f32[j] < lowest_z) {
 					lowest_z = rotated_vert.z.quad.m128_f32[j];
 					NiPoint3 lowest = NiPoint3(
-						rotated_vert.x.quad.m128_f32[j],
-						rotated_vert.y.quad.m128_f32[j],
+						0.0,
+						0.0,
 						rotated_vert.z.quad.m128_f32[j]
 						);
 				}
 			}
 		}
+		lowest.x = 0.0;
+		lowest.y = 0.0;
 		log::info("Setting convverts, lowest point: {}", Vector2Str(lowest));
 		this->SetOrigin(lowest);
 	}
