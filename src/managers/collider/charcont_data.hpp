@@ -15,7 +15,7 @@ namespace Gts {
 		public:
 			CharContData();
 			CharContData(bhkCharacterController* charCont);
-			CharContData(CharContData&& old) : charCont(std::move(old.charCont)), capsule_data(std::move(old.capsule_data)), convex_data(std::move(old.convex_data)), list_data(std::move(old.list_data)) {
+			CharContData(CharContData&& old) : charCont(std::move(old.charCont)), capsule_data(std::move(old.capsule_data)), convex_data(std::move(old.convex_data)), list_data(std::move(old.list_data)), center(std::move(old.center)) {
 			};
 			~CharContData();
 			void Init(bhkCharacterController* charCont);
@@ -35,6 +35,7 @@ namespace Gts {
 			std::unordered_map<hkpCapsuleShape*, CapsuleData> capsule_data;
 			std::unordered_map<hkpConvexVerticesShape*, ConvexData> convex_data;
 			std::unordered_map<hkpListShape*, ListData> list_data;
+			float center = 0.0;
 
 			mutable std::mutex _lock;
 	};

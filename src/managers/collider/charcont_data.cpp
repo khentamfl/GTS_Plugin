@@ -26,6 +26,12 @@ namespace Gts {
 			this->capsule_data.clear();
 			this->convex_data.clear();
 			this->list_data.clear();
+			this->center = 0.0;
+
+			if (charCont) {
+				this->center = charCont->center;
+				log::info("Center: {}", this->center);
+			}
 		}
 	}
 
@@ -215,7 +221,7 @@ namespace Gts {
 		auto key = orig_capsule;
 		auto result = this->capsule_data.try_emplace(key, orig_capsule);
 		if (result.second) {
-			(*result.first).second.SetOriginMinZ();
+			(*result.first).second.SetOrigin(0.0, 0.0, -this->center);
 		}
 	}
 
@@ -227,7 +233,7 @@ namespace Gts {
 		auto key = convex;
 		auto result = this->convex_data.try_emplace(key, convex);
 		if (result.second) {
-			(*result.first).second.SetOriginMinZ();
+			(*result.first).second.SetOrigin(0.0, 0.0, -this->center);
 		}
 	}
 
@@ -239,7 +245,7 @@ namespace Gts {
 		auto key = list;
 		auto result = this->list_data.try_emplace(key, list);
 		if (result.second) {
-			(*result.first).second.SetOriginMinZ();
+			(*result.first).second.SetOrigin(0.0, 0.0, -this->center);
 		}
 	}
 }

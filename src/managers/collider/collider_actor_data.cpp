@@ -47,15 +47,6 @@ namespace {
 			for (auto& graph : animGraphManager->graphs) {
 				if (graph) {
 					auto& character = graph->characterInstance;
-
-					auto controllerDriver = character.characterControllerDriver.get();
-					log::info("Actor: {}", actor->GetDisplayFullName());
-					if (controllerDriver) {
-						log::info("  - controllerDriver: {}", GetRawName(controllerDriver));
-					} else {
-						log::info("  - No controllerDriver");
-					}
-
 					auto ragdollDriver = character.ragdollDriver.get();
 					if (ragdollDriver) {
 						auto ragdoll = ragdollDriver->ragdoll;
