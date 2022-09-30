@@ -137,7 +137,7 @@ namespace {
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
-		//persi_actor_data->anim_speed = speed_mult;
+		
 
 		float IsFalling = Runtime::GetSingleton().IsFalling->value;
 
@@ -160,27 +160,30 @@ namespace {
 			{
 				PerkSpeed = clamp(0.85, 1.0, MS_mult); // Used as a bonus 25% MS if PC has perk.
 			}
-			float TotalSpeed = (MS_mult)/MS_mult_limit/Multy/PerkSpeed;
 			if (actor->IsWalking() == true) {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / TotalSpeed);
+				speed_mult *= 0.5;
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 			}
 			if (actor->IsSprinting() == true) {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / TotalSpeed);
+				speed_mult *= 1.0;
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 			} else {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ TotalSpeed);
+				speed_mult *= 1.0;
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 			}
+			persi_actor_data->anim_speed = speed_mult;
 		}
 
 

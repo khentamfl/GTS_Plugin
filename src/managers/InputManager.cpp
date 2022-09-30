@@ -85,7 +85,7 @@ namespace Gts {
 					auto Player = PlayerCharacter::GetSingleton();
 					auto actor_data = Persistent::GetSingleton().GetData(Player);
 				if (actor_data) {
-					actor_data->anim_speed -=0.001;
+					//actor_data->anim_speed -=0.001;
 					}
 				}
 
