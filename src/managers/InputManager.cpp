@@ -77,7 +77,7 @@ namespace Gts {
 				}
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) {
 					float Value = Cache->value;
-					DebugNotification(std::format("Value: {}", Value).c_str());
+					Notify("Value: {}", Value);
 				}
 
 				if (key == 0x38) {

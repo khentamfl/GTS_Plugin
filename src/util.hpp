@@ -11,7 +11,11 @@ namespace Gts {
 
 	template< typename ... Args >
 	void Notify(std::string_view rt_fmt_str, Args&&... args) {
-		DebugNotification(std::vformat(rt_fmt_str, std::make_format_args(args ...)).c_str());
+		try {
+			DebugNotification(std::vformat(rt_fmt_str, std::make_format_args(args ...)).c_str());
+		} catch (const std::format_error &e) {
+			log::info("Could not format notification, check valid format string: {}", e.what());
+		}
 	}
 
 	inline std::string_view actor_name(Actor* actor) {
