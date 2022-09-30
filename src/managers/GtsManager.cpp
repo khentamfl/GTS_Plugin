@@ -152,18 +152,20 @@ namespace {
 		else if (actor->formID == 0x14 && !IsJumping(actor) && IsFalling >= 1.0) {
 				Runtime::GetSingleton().IsFalling->value = 0.0;
 		}
+		if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk))
+			{
+				PerkSpeed = clamp(0.85, 1.0, MS_mult); // Used as a bonus 15% MS if PC has perk.
+				
+			}
 
-		if (actor->IsRunning()) {
-			persi_actor_data->anim_speed = speed_mult/MS_mult;
-		} else {
+		if (actor->IsRunning() && actor->formID == 0x14) {
+			persi_actor_data->anim_speed = speed_mult * MS_mult_limit;
+			log::info("MS Mult is: {}", persi_actor_data->anim_speed)
+		} else if (!actor->IsRunning() && actor->formID == 0x14) {
 			persi_actor_data->anim_speed = speed_mult;
 		}
 		
-		if (timer.ShouldRunFrame() && actor->formID == 0x14) {
-			if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk))
-			{
-				PerkSpeed = clamp(0.85, 1.0, MS_mult); // Used as a bonus 15% MS if PC has perk.
-			}
+		if (timer.ShouldRunFrame()) {
 			if (actor->IsRunning()) {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
