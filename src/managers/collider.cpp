@@ -1,5 +1,6 @@
 #include "managers/collider.hpp"
 #include "managers/GtsManager.hpp"
+#include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "hooks/RE.hpp"
 #include "data/time.hpp"

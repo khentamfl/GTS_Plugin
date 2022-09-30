@@ -1,5 +1,6 @@
 #include "managers/ddraw.hpp"
 #include "UI/DebugAPI.hpp"
+#include "data/runtime.hpp"
 #include "hooks/RE.hpp"
 #include "node.hpp"
 #include "util.hpp"
