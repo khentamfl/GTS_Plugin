@@ -36,7 +36,7 @@ namespace Gts {
 
 		bool ArrowUp = false;
 		bool ArrowDown = false;
-		
+
 
 		for (auto event = *a_event; event; event = event->next) {
 			if (event->GetEventType() != INPUT_EVENT_TYPE::kButton) {
@@ -52,8 +52,12 @@ namespace Gts {
 				auto caster = PlayerCharacter::GetSingleton();
 				auto runtime = Runtime::GetSingleton();
 				auto Cache = runtime.ManualGrowthStorage;
-				auto Camera = CameraManager::GetSingleton();
-				
+				if (!Cache) {
+					log::info("Cache is invalid");
+					continue;
+				}
+
+
 				//log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
 				if (key == 0x12 && Cache->value > 0.0) {
 					this->TickCheck += 1.0;
@@ -69,68 +73,69 @@ namespace Gts {
 						RandomGrowth::GetSingleton().CallShake(Cache->value);
 						mod_target_scale(caster, Cache->value);
 						Cache->value = 0.0;
-						}
 					}
-				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun())	
-				{ 
-					//float Value = Cache->value;
-					//DebugNotification(Value.c_str(), 0, true);
+				}
+				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) {
+					float Value = Cache->value;
+					log::info("Value: {}", Value);
 				}
 
-				if (key == 0x38) {AltPressed = true;}	
-				else if (key == 0x1D) {CtrlPressed = true;}
-				else if (key == 0xCD) {RightArrow = true;}
-				else if (key == 0xCB) {LeftArrow = true;}
-
-				else if (key == 0xC8) {ArrowUp = true;}
-				else if (key == 0xD0) {ArrowDown = true;}
-
-				while (AltPressed == true && RightArrow == true && LeftArrow == true)	{
-					Camera.AdjustSide(true, false, false); // Reset
-					log::info("Alt + Left & Right: Reset");
-					break;
+				if (key == 0x38) {
+					AltPressed = true;
+				} else if (key == 0x1D) {
+					CtrlPressed = true;
+				} else if (key == 0xCD) {
+					RightArrow = true;
+				} else if (key == 0xCB) {
+					LeftArrow = true;
+				} else if (key == 0xC8) {
+					ArrowUp = true;
+				} else if (key == 0xD0) {
+					ArrowDown = true;
 				}
-				while (AltPressed == true && RightArrow == true)	{
-					Camera.AdjustSide(false, true, false); // Right
-					log::info("Alt + Right");
-					break;
-				}
-				while (AltPressed == true && LeftArrow == true)	{
-					Camera.AdjustSide(false, false, true); // Left
-					log::info("Alt + Right");
-					break;
-				} // Left or Right end
-
-
-				while (AltPressed == true && ArrowDown == true && ArrowUp == true)	{
-					Camera.AdjustUpDown(true, false, false); // Reset
-					log::info("Alt + Up & Down: Reset");
-					break;
-				}
-				while (AltPressed == true && ArrowUp == true)	{
-					Camera.AdjustUpDown(false, true, false); // Up
-					log::info("Alt + Up");
-					break;
-				}
-				while (AltPressed == true && ArrowDown == true)	{
-					Camera.AdjustUpDown(false, false, true); // Down
-					log::info("Alt + Down");
-					break;
-				} // Up or Down end
-			}  
-			if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
+			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.05) {
 					PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
 					// Do attack right
 					// ConsoleLog::GetSingleton()->Print("Pressed LMB");
-				} if (key == 0x2 && buttonEvent->HeldDuration() <= 0.05) {
+				}
+				if (key == 0x2 && buttonEvent->HeldDuration() <= 0.05) {
 					// Do attack left
 					// ConsoleLog::GetSingleton()->Print("Pressed RMB");
 				}
 				// log::info("{:X} pressed", key);
 			}
 		}
+
+		auto Camera = CameraManager::GetSingleton();
+		if (AltPressed == true && RightArrow == true && LeftArrow == true) {
+			Camera.AdjustSide(true, false, false); // Reset
+			log::info("Alt + Left & Right: Reset");
+		}
+		if (AltPressed == true && RightArrow == true) {
+			Camera.AdjustSide(false, true, false); // Right
+			log::info("Alt + Right");
+		}
+		if (AltPressed == true && LeftArrow == true) {
+			Camera.AdjustSide(false, false, true); // Left
+			log::info("Alt + Right");
+		} // Left or Right end
+
+
+		if (AltPressed == true && ArrowDown == true && ArrowUp == true) {
+			Camera.AdjustUpDown(true, false, false); // Reset
+			log::info("Alt + Up & Down: Reset");
+		}
+		if (AltPressed == true && ArrowUp == true) {
+			Camera.AdjustUpDown(false, true, false); // Up
+			log::info("Alt + Up");
+		}
+		if (AltPressed == true && ArrowDown == true) {
+			Camera.AdjustUpDown(false, false, true); // Down
+			log::info("Alt + Down");
+		} // Up or Down end
+
 		return BSEventNotifyControl::kContinue;
 	}
 
