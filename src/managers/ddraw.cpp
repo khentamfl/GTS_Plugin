@@ -490,7 +490,7 @@ namespace Gts {
 	}
 
 	void DDraw::Update() {
-		if (!this->enabled.load()) {
+		if (!this->enabled.load() || Runtime::GetSingleton().EnableDebugOverlay->value == 0.0) {
 			return;
 		}
 

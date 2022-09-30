@@ -136,6 +136,10 @@ namespace Gts {
 			TESGlobal * NPCSizeEffects = nullptr;
 			TESGlobal * CrushGrowthStorage = nullptr;
 
+			
+			TESGlobal * EnableColliders = nullptr;
+			TESGlobal * EnableDebugOverlay = nullptr;
+
 			/////Attributes//////
 			TESGlobal * AllowTimeChange = nullptr;
 			TESGlobal * bonusHPMultiplier = nullptr;
