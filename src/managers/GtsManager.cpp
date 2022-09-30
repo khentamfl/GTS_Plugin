@@ -140,7 +140,7 @@ namespace {
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
 		float MS_mult_limit = clamp(0.650, 1.0, MS_mult); // For Walk speed
-		float Multy = clamp(0.850, 1.0, MS_mult); // Additional 25% ms
+		float Multy = clamp(0.850, 1.0, MS_mult); // Additional 15% ms
 		float PerkSpeed = 1.0;
 
 		static Timer timer = Timer(0.025); // Run every 0.10s or as soon as we can
@@ -155,12 +155,11 @@ namespace {
 		if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk))
 			{
 				PerkSpeed = clamp(0.85, 1.0, MS_mult); // Used as a bonus 15% MS if PC has perk.
-				
 			}
 
 		if (actor->IsRunning() && actor->formID == 0x14) {
 			persi_actor_data->anim_speed = speed_mult * MS_mult_limit;
-			log::info("MS Mult is: {}", persi_actor_data->anim_speed)
+			log::info("MS Mult is: {}", persi_actor_data->anim_speed);
 		} else if (!actor->IsRunning() && actor->formID == 0x14) {
 			persi_actor_data->anim_speed = speed_mult;
 		}
