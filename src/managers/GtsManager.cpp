@@ -178,7 +178,7 @@ namespace {
 				ConsoleLog::GetSingleton()->Print("IsWalking");
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 			}
-			} else {
+			 else {
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
