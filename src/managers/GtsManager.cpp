@@ -143,7 +143,7 @@ namespace {
 		float Multy = clamp(0.850, 1.0, MS_mult); // Additional 15% ms
 		float PerkSpeed = 1.0;
 
-		static Timer timer = Timer(0.025); // Run every 0.10s or as soon as we can
+		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
 		float IsFalling = Runtime::GetSingleton().IsFalling->value;
 
 		if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
