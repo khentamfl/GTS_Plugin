@@ -59,7 +59,7 @@ namespace Gts {
 			float tremor_scale = 1.0;
 			float npc_tremor_scale = 1.0;
 			SoftPotential speed_adjustment {
-				.k = 0.07, // 0.125
+				.k = 0.125, // 0.125
 				.n = 0.86, // 0.86
 				.s = 1.12,
 				.o = 1.0,
