@@ -76,6 +76,9 @@ namespace {
 		float base_speed = actor_data->base_walkspeedmult;
 		float bonusSpeedMax = runtime.bonusSpeedMax->value;
 		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
+
+		static Timer timer = Timer(0.15); // Run every 0.5s or as soon as we can
+		if (timer.ShouldRunFrame()) {
 			if (scale > 1) {
 				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((speedEffectiveSize - 1) * (100 * power)));
 			} else if (scale < 1) {
@@ -83,6 +86,7 @@ namespace {
 			} else {
 				actor->SetActorValue(ActorValue::kSpeedMult, base_speed);
 			}
+		}
 	}
 
 	void BoostHP(Actor* actor, float power) {
@@ -168,7 +172,6 @@ namespace {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		static Timer timer = Timer(0.15);
 
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
 
@@ -185,9 +188,11 @@ namespace {
 		auto ExplGrowthP3 = runtime.explosiveGrowth3;
 
 		float size = get_visual_scale(Player);
-		Augmentation(Player, BlockMessage);
-		if (size > 0 && timer.ShouldRunFrame()) {
+
+		if (size > 0) {
 			BoostHP(Player, bonusHPMultiplier);
+
+			Augmentation(Player, BlockMessage);
 
 			BoostCarry(Player, bonusCarryWeightMultiplier);
 
@@ -211,10 +216,10 @@ namespace {
 		if (!npc->Is3DLoaded()) {
 			return;
 		}
-		static Timer timer = Timer(0.15);
-		if (timer.ShouldRunFrame()) {
-			BoostAttackDmg(npc, 1.0);
-		}
+
+		BoostAttackDmg(npc, 1.0);
+
+		//BoostSpeedMulti(Npc, 1.0);
 	}
 }
 
