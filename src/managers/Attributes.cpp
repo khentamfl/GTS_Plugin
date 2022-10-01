@@ -75,9 +75,6 @@ namespace {
 		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/3.0;
 		float base_speed = actor_data->base_walkspeedmult;
 		float bonusSpeedMax = runtime.bonusSpeedMax->value;
-		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
-
-		if (this->timer.ShouldRunFrame()) {
 			if (scale > 1) {
 				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((speedEffectiveSize - 1) * (100 * power)));
 			} else if (scale < 1) {
@@ -85,7 +82,6 @@ namespace {
 			} else {
 				actor->SetActorValue(ActorValue::kSpeedMult, base_speed);
 			}
-		}
 	}
 
 	void BoostHP(Actor* actor, float power) {
