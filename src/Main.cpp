@@ -167,19 +167,19 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&Persistent::GetSingleton()); 
 	EventDispatcher::AddListener(&Transient::GetSingleton());
 
-	//EventDispatcher::AddListener(&GtsManager::GetSingleton()); // Manages Game Mode, smooth size increase and animation & movement speed
-	//EventDispatcher::AddListener(&SizeManager::GetSingleton()); // Manager Max Scale of everyone
+	EventDispatcher::AddListener(&GtsManager::GetSingleton()); // Manages Game Mode, smooth size increase and animation & movement speed
+	EventDispatcher::AddListener(&SizeManager::GetSingleton()); // Manager Max Scale of everyone
 	EventDispatcher::AddListener(&HighHeelManager::GetSingleton()); // Applies high heels
-	//EventDispatcher::AddListener(&CameraManager::GetSingleton()); // Edits the camera
+	EventDispatcher::AddListener(&CameraManager::GetSingleton()); // Edits the camera
 	
-	//EventDispatcher::AddListener(&MagicManager::GetSingleton()); // Manages spells and size changes in general
+	EventDispatcher::AddListener(&MagicManager::GetSingleton()); // Manages spells and size changes in general
 
-	//EventDispatcher::AddListener(&AttributeManager::GetSingleton()); // Adjusts most attributes
-	//EventDispatcher::AddListener(&RandomGrowth::GetSingleton()); // Manages random growth perk
-	//EventDispatcher::AddListener(&QuestManager::GetSingleton()); // Quest is currently empty and not needed
+	EventDispatcher::AddListener(&AttributeManager::GetSingleton()); // Adjusts most attributes
+	EventDispatcher::AddListener(&RandomGrowth::GetSingleton()); // Manages random growth perk
+	EventDispatcher::AddListener(&QuestManager::GetSingleton()); // Quest is currently empty and not needed
 
-	//EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
-	//EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
+	EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
+	EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
 }
 
 /**
