@@ -175,10 +175,10 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&MagicManager::GetSingleton());
 
 	EventDispatcher::AddListener(&AttributeManager::GetSingleton());
-	EventDispatcher::AddListener(&RandomGrowth::GetSingleton());
-	EventDispatcher::AddListener(&QuestManager::GetSingleton());
+	//EventDispatcher::AddListener(&RandomGrowth::GetSingleton());
+	//EventDispatcher::AddListener(&QuestManager::GetSingleton());
 
-	EventDispatcher::AddListener(&ContactManager::GetSingleton());
+	//EventDispatcher::AddListener(&ContactManager::GetSingleton());
 	EventDispatcher::AddListener(&InputManager::GetSingleton());
 }
 
