@@ -1,7 +1,6 @@
 #pragma once
 // Module that handles AttributeValues
 #include "events.hpp"
-#include "timer.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -20,6 +19,5 @@ namespace Gts {
 		private:
 			float MovementSpeedBonus = 0.0;
 			bool BlockMessage = false;
-			Timer timer = Timer(0.15);
 	};
 }

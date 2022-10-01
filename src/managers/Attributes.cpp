@@ -171,6 +171,7 @@ namespace {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
+		static Timer timer = Timer(0.15);
 
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
 
@@ -188,7 +189,7 @@ namespace {
 
 		float size = get_visual_scale(Player);
 		Augmentation(Player, BlockMessage);
-		if (size > 0 && this->timer.ShouldRunFrame()) {
+		if (size > 0 && timer.ShouldRunFrame()) {
 			BoostHP(Player, bonusHPMultiplier);
 
 			BoostCarry(Player, bonusCarryWeightMultiplier);
@@ -213,7 +214,8 @@ namespace {
 		if (!npc->Is3DLoaded()) {
 			return;
 		}
-		if (this->timer.ShouldRunFrame()) {
+		static Timer timer = Timer(0.15);
+		if (timer.ShouldRunFrame()) {
 			BoostAttackDmg(npc, 1.0);
 		}
 	}
