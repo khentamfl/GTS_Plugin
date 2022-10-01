@@ -143,7 +143,7 @@ namespace {
 		float Multy = clamp(0.900, 1.0, MS_mult); // Additional 15% ms
 		float PerkSpeed = 1.0;
 
-		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
+		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can  . Used in Timer.ShouldRunFrame()
 		float IsFalling = Runtime::GetSingleton().IsFalling->value;
 
 		if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
@@ -164,17 +164,7 @@ namespace {
 		}
 		
 		
-		if (timer.ShouldRunFrame()) {
-			if (actor->IsWalking()) {
-				if (scale < 1.0) {
-				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
-				}
-				else {
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/PerkSpeed * Multy * Multy);
-				return;
-				}
-			}
-			else if (actor->IsRunning()) {
+		if (timer.ShouldRunFrame()) { // Each 0.10 sec, Timer Timer determines it ^
 				if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
@@ -183,15 +173,6 @@ namespace {
 				return;
 				}
 			}
-			 else if (!actor->IsRunning()) {
-				if (scale < 1.0) {
-				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
-				} else
-				{
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
-				}
-			}
-		}
 		// Experiement
 		if (false) {
 			auto& rot_speed = actor->currentProcess->middleHigh->rotationSpeed;
