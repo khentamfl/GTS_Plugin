@@ -31,6 +31,7 @@ namespace Gts {
 		}
 		bool CtrlPressed = false;
 		bool AltPressed = false;
+		bool ShiftPressed = false;
 		bool LeftArrow = false;
 		bool RightArrow = false;
 
@@ -104,6 +105,8 @@ namespace Gts {
 					ArrowUp = true;
 				} else if (key == 0xD0) {
 					ArrowDown = true;
+				} else if (key == 0x2A) {
+					ShiftPressed = true;
 				}
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
@@ -147,6 +150,69 @@ namespace Gts {
 			Camera.AdjustUpDown(false, false, true); // Down
 			log::info("Alt + Down");
 		} // Up or Down end
+		if (ShiftPressed == true && ArrowUp == true && !CtrlPressed && !ArrowDown)  // Grow self
+		{
+			float cale = get_visual_scale(PlayerCharacter::GetSingleton());
+			auto caster = PlayerCharacter::GetSingleton;
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
+			DamageAV(caster, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
+			Grow(caster, 0.0010 * stamina * scale, 0.0);
+			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/4);
+			if (this->timergrowth()) {
+			PlaySound(runtime.growthSound, caster, Volume, 0.0);
+			}
+		}
+		if (ShiftPressed == true && ArrowDown == true && !CtrlPressed && !ArrowUp) // Shrink Self
+		{
+			float scale = get_visual_scale(PlayerCharacter::GetSingleton());
+			auto caster = PlayerCharacter::GetSingleton;
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
+			DamageAV(caster, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
+			Shrink(caster, 0.0030 * stamina * scale, 0.0);
+			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/4);
+			if (this->timergrowth()) {
+			PlaySound(runtime.shrinkSound, caster, Volume, 0.0);
+			}
+		}
+
+		else if (ShiftPressed == true && ArrowUp == true && CtrlPressed && !ArrowDown)  // Grow Ally
+		{
+			for (auto actor: find_actors()) {
+		if (!actor) {
+			continue;
+		}
+			if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) { 
+				float scale = get_visual_scale(actor);
+				auto caster = PlayerCharacter::GetSingleton;
+				auto target = actor;
+				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
+				DamageAV(caster, ActorValue::kMagicka, 0.15 * (scale * 0.5 + 0.5) * magicka * TimeScale());
+				Grow(target, 0.0010 * magicka * scale, 0.0);
+				float Volume = clamp(0.10, 2.0, get_visual_scale(target)/4);
+			if (this->timergrowth()) {
+				PlaySound(runtime.growthSound, target, Volume, 0.0);
+				}
+			}
+		}
+		else if (ShiftPressed == true && ArrowDown == true && CtrlPressed && !ArrowUp) // Shrink Ally
+		{
+			for (auto actor: find_actors()) {
+		if (!actor) {
+			continue;
+		}
+		if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) { 
+				float scale = get_visual_scale(actor);
+				auto caster = PlayerCharacter::GetSingleton;
+				auto target = actor;
+				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
+				DamageAV(target, ActorValue::kMagicka, 0.10 * (scale * 0.5 + 0.5) * magicka * TimeScale());
+				Shrink(target, 0.0030 * stamina * scale, 0.0);
+				float Volume = clamp(0.10, 2.0, get_visual_scale(target)/4);
+			if (this->timergrowth()) {
+				PlaySound(runtime.shrinkSound, target, Volume, 0.0);
+				}
+			}
+		}
 
 		return BSEventNotifyControl::kContinue;
 	}
