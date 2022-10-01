@@ -167,18 +167,18 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&Persistent::GetSingleton());
 	EventDispatcher::AddListener(&Transient::GetSingleton());
 
-	//EventDispatcher::AddListener(&GtsManager::GetSingleton());
-	//EventDispatcher::AddListener(&SizeManager::GetSingleton());
+	EventDispatcher::AddListener(&GtsManager::GetSingleton());
+	EventDispatcher::AddListener(&SizeManager::GetSingleton());
 	EventDispatcher::AddListener(&HighHeelManager::GetSingleton());
-	//EventDispatcher::AddListener(&CameraManager::GetSingleton());
+	EventDispatcher::AddListener(&CameraManager::GetSingleton());
 	
-	//EventDispatcher::AddListener(&MagicManager::GetSingleton());
+	EventDispatcher::AddListener(&MagicManager::GetSingleton());
 
-	//EventDispatcher::AddListener(&AttributeManager::GetSingleton());
-	//EventDispatcher::AddListener(&RandomGrowth::GetSingleton());
-	//EventDispatcher::AddListener(&QuestManager::GetSingleton());
+	EventDispatcher::AddListener(&AttributeManager::GetSingleton());
+	EventDispatcher::AddListener(&RandomGrowth::GetSingleton());
+	EventDispatcher::AddListener(&QuestManager::GetSingleton());
 
-	//EventDispatcher::AddListener(&ContactManager::GetSingleton());
+	EventDispatcher::AddListener(&ContactManager::GetSingleton());
 	EventDispatcher::AddListener(&InputManager::GetSingleton());
 }
 
