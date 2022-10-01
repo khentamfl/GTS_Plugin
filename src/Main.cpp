@@ -168,7 +168,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&Transient::GetSingleton());
 
 	EventDispatcher::AddListener(&GtsManager::GetSingleton()); // Manages Game Mode, smooth size increase and animation & movement speed
-	EventDispatcher::AddListener(&SizeManager::GetSingleton()); // Manager Max Scale of everyone
+	//EventDispatcher::AddListener(&SizeManager::GetSingleton()); // Manager Max Scale of everyone
 	EventDispatcher::AddListener(&HighHeelManager::GetSingleton()); // Applies high heels
 	//EventDispatcher::AddListener(&CameraManager::GetSingleton()); // Edits the camera
 	
