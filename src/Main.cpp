@@ -179,7 +179,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&QuestManager::GetSingleton()); // Quest is currently empty and not needed
 
 	EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
-	EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
+	//EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
 }
 
 /**
