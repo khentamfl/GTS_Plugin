@@ -163,7 +163,7 @@ void InitializePapyrus() {
 }
 
 void InitializeEventSystem() {
-	EventDispatcher::AddListener(&Runtime::GetSingleton()); // Stores every spells, globals and other important data
+	EventDispatcher::AddListener(&Runtime::GetSingleton()); // Stores spells, globals and other important data
 	EventDispatcher::AddListener(&Persistent::GetSingleton()); 
 	EventDispatcher::AddListener(&Transient::GetSingleton());
 
