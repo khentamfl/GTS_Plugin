@@ -170,7 +170,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&GtsManager::GetSingleton());
 	EventDispatcher::AddListener(&SizeManager::GetSingleton());
 	EventDispatcher::AddListener(&HighHeelManager::GetSingleton());
-	EventDispatcher::AddListener(&CameraManager::GetSingleton());
+	//EventDispatcher::AddListener(&CameraManager::GetSingleton());
 	
 	EventDispatcher::AddListener(&MagicManager::GetSingleton());
 
