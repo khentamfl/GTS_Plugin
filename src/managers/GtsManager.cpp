@@ -141,6 +141,7 @@ namespace {
 		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
 		float MS_mult_limit = clamp(0.650, 1.0, MS_mult); // For Walk speed
 		float Multy = clamp(0.900, 1.0, MS_mult); // Additional 15% ms
+		float WalkSpeedLimit = clamp(0.500, 1.0, MS_mult);
 		float PerkSpeed = 1.0;
 
 		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
@@ -165,7 +166,7 @@ namespace {
 			}	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = speed_mult * MS_mult;
+			persi_actor_data->anim_speed = speed_mult * WalkSpeedLimit;
 			if (actor->formID == 0x14) 
 		{
 			log::info("Is Running Size: {}, Mult: {}", get_visual_scale(actor), persi_actor_data->anim_speed);
