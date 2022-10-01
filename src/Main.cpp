@@ -167,8 +167,8 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&Persistent::GetSingleton());
 	EventDispatcher::AddListener(&Transient::GetSingleton());
 
-	EventDispatcher::AddListener(&GtsManager::GetSingleton());
-	EventDispatcher::AddListener(&SizeManager::GetSingleton());
+	//EventDispatcher::AddListener(&GtsManager::GetSingleton());
+	//EventDispatcher::AddListener(&SizeManager::GetSingleton());
 	EventDispatcher::AddListener(&HighHeelManager::GetSingleton());
 	//EventDispatcher::AddListener(&CameraManager::GetSingleton());
 	
