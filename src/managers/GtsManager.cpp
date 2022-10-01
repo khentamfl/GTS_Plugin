@@ -156,12 +156,13 @@ namespace {
 			{
 				PerkSpeed = clamp(0.85, 1.0, MS_mult); // Used as a bonus 15% MS if PC has perk.
 			}
-		if (actor->IsRunning()) {
-			persi_actor_data->anim_speed = speed_mult * MS_mult;
-		} 	
-		else if (actor->IsRunning() == false) {
+			
+		if (actor->IsRunning() == false) {
 			persi_actor_data->anim_speed = speed_mult;
 		}
+		else if (actor->IsRunning()) {
+			persi_actor_data->anim_speed = speed_mult * MS_mult;
+		} 
 		if (actor->formID == 0x14) 
 		{
 			log::info("Size: {}, Mult: {}", get_visual_scale(actor), persi_actor_data->anim_speed);

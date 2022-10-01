@@ -60,14 +60,14 @@ namespace Gts {
 			float npc_tremor_scale = 1.0;
 			SoftPotential speed_adjustment {
 				.k = 0.125, // 0.125
-				.n = 0.45, // 0.86
+				.n = 1.68, // 0.86
 				.s = 1.12,
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 			};
 			SoftPotential MS_adjustment {
 				.k = 0.132, // 0.132
-				.n = 0.45, // 0.86
+				.n = 1.68, // 0.86
 				.s = 1.12,
 				.o = 1.0,
 				.a = 0.0, //Default is 0
