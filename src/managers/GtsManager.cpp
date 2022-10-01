@@ -162,7 +162,10 @@ namespace {
 		else if (actor->IsRunning() == false) {
 			persi_actor_data->anim_speed = speed_mult;
 		}
-		
+		if (actor->formID == 0x14) 
+		{
+			log::info("Size: {}, Mult: {}", get_visual_scale(actor), persi_actor_data->anim_speed);
+		}
 		
 		if (timer.ShouldRunFrame()) {
 				if (scale < 1.0) {
