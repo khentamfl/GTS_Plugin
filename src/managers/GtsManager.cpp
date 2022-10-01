@@ -156,14 +156,13 @@ namespace {
 			{
 				PerkSpeed = clamp(0.85, 1.0, MS_mult); // Used as a bonus 15% MS if PC has perk.
 			}
-		if (actor->IsRunning() == false) {
-			persi_actor_data->anim_speed = speed_mult;
-			log::info("Non Running MS Mult of {} is: {}", actor->GetDisplayFullName(), persi_actor_data->anim_speed);
-		}
 		if (actor->IsRunning()) {
-			persi_actor_data->anim_speed = speed_mult * MS_mult_limit;
-			log::info("Running MS Mult of {} is: {}", actor->GetDisplayFullName(), persi_actor_data->anim_speed);
-		} 
+			persi_actor_data->anim_speed = speed_mult * MS_mult;
+		} 	
+		else if (actor->IsRunning() == false) {
+			persi_actor_data->anim_speed = speed_mult;
+		}
+		
 		
 		if (timer.ShouldRunFrame()) {
 			if (actor->IsWalking()) {
@@ -171,7 +170,7 @@ namespace {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else {
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/PerkSpeed * Multy);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/PerkSpeed * Multy * Multy);
 				return;
 				}
 			}
