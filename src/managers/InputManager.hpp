@@ -20,6 +20,7 @@ namespace Gts
 			void Start() override;
 		private:	
 			Timer timer = Timer(1.2);
+			Timer timergrowth = Timer(0.33);
 			float TickCheck = 0.0;
 			float growth_time = 0.0;
 			bool BlockShake = false;

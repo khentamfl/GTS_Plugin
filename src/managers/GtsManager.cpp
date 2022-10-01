@@ -158,10 +158,11 @@ namespace {
 			}
 		if (actor->IsRunning() == false) {
 			persi_actor_data->anim_speed = speed_mult;
+			log::info("Non Running MS Mult of {} is: {}", actor->GetDisplayFullName(), persi_actor_data->anim_speed);
 		}
 		if (actor->IsRunning()) {
 			persi_actor_data->anim_speed = speed_mult * MS_mult_limit;
-			log::info("MS Mult is: {}", persi_actor_data->anim_speed);
+			log::info("Running MS Mult of {} is: {}", actor->GetDisplayFullName(), persi_actor_data->anim_speed);
 		} 
 		
 		if (timer.ShouldRunFrame()) {
@@ -170,7 +171,7 @@ namespace {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				}
 				else {
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/Multy/PerkSpeed);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0))) / (MS_mult)/MS_mult_limit/Multy/PerkSpeed * Multy);
 				return;
 				}
 			}
