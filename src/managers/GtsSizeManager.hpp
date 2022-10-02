@@ -28,6 +28,8 @@ namespace Gts {
 			void SetSizeHungerBonus(Actor* actor, float amt);
 			float GetSizeHungerBonus(Actor* actor);
 			void ModSizeHungerBonus(Actor* actor, float amt);
+
+			void BalancedMode(bool Toggle);
 			
 
 		private:
