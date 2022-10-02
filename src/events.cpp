@@ -57,7 +57,7 @@ namespace Gts {
 	}
 
 	// Called when a papyrus hit event is fired
-	void HitEvent(const TESHitEvent* evt) {
+	void EventListener::HitEvent(const TESHitEvent* evt) {
 
 	}
 
