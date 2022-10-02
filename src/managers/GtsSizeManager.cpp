@@ -92,12 +92,12 @@ namespace Gts {
 
 	void SizeManager::BalancedMode(bool Toggle)
 	{
-		float BalanceMode = Runtime::GetSingleton().BalanceMode;
-		if (Toggle && BalanceMode->value < 1.0) {
-			BalanceMode->value=1.0; return;
+		float BalanceMode = Runtime::GetSingleton().BalanceMode->value;
+		if (Toggle && BalanceMode < 1.0) {
+			BalanceMode=1.0; return;
 		}
-		else if (!Toggle && BalanceMode->value >= 1.0) {
-			BalanceMode->value=0.0; return;
+		else if (!Toggle && BalanceMode >= 1.0) {
+			BalanceMode=0.0; return;
 		}
 	}
 
