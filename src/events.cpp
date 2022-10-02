@@ -13,10 +13,10 @@ namespace Gts {
 	void EventListener::PapyrusUpdate() {
 
 	}
-	
+
 	// Called on Havok update (when processing hitjobs)
 	void EventListener::HavokUpdate() {
-		
+
 	}
 
 	// Called on game load started (not yet finished)
@@ -53,6 +53,11 @@ namespace Gts {
 
 	// Called when an actor has is fully loaded
 	void EventListener::ActorLoaded(Actor* actor) {
+
+	}
+
+	// Called when a papyrus hit event is fired
+	void HitEvent(const TESHitEvent* evt) {
 
 	}
 
@@ -116,6 +121,11 @@ namespace Gts {
 	void EventDispatcher::DoActorLoaded(Actor* actor) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
 			listener->ActorLoaded(actor);
+		}
+	}
+	void EventDispatcher::DoHitEvent(const TESHitEvent* evt) {
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->HitEvent(evt);
 		}
 	}
 	EventDispatcher& EventDispatcher::GetSingleton() {

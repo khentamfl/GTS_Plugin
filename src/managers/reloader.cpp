@@ -8,6 +8,7 @@ namespace Gts {
 	void ReloadManager::Initialize() {
 		auto event_sources = ScriptEventSourceHolder::GetSingleton();
 		if (event_sources) {
+			event_sources->AddEventSink<TESHitEvent>(this);
 			event_sources->AddEventSink<TESObjectLoadedEvent>(this);
 			event_sources->AddEventSink<TESEquipEvent>(this);
 		}
@@ -15,6 +16,14 @@ namespace Gts {
 	ReloadManager& ReloadManager::GetSingleton() noexcept {
 		static ReloadManager instance;
 		return instance;
+	}
+
+	BSEventNotifyControl ReloadManager::ProcessEvent(const TESHitEvent * evn, BSTEventSource<TESHitEvent>* dispatcher)
+	{
+		if (evn) {
+			EventDispatcher::DoHitEvent(evn);
+		}
+		return BSEventNotifyControl::kContinue;
 	}
 
 	BSEventNotifyControl ReloadManager::ProcessEvent(const TESObjectLoadedEvent * evn, BSTEventSource<TESObjectLoadedEvent>* dispatcher)

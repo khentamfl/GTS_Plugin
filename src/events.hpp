@@ -12,7 +12,7 @@ namespace Gts {
 
 			// Called on Papyrus OnUpdate
 			virtual void PapyrusUpdate();
-			
+
 			// Called on Havok update (when processing hitjobs)
 			virtual void HavokUpdate();
 
@@ -40,6 +40,9 @@ namespace Gts {
 
 			// Called when an actor has is fully loaded
 			virtual void ActorLoaded(Actor* actor);
+
+			// Called when a papyrus hit event is fired
+			virtual void HitEvent(const TESHitEvent* evt);
 	};
 
 	class EventDispatcher {
@@ -56,6 +59,7 @@ namespace Gts {
 			static void DoResetActor(Actor* actor);
 			static void DoActorEquip(Actor* actor);
 			static void DoActorLoaded(Actor* actor);
+			static void DoHitEvent(const TESHitEvent* evt);
 		private:
 			[[nodiscard]] static EventDispatcher& GetSingleton();
 			std::vector<EventListener*> listeners;
