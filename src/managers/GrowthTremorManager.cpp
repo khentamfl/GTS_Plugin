@@ -16,7 +16,7 @@ namespace Gts {
 
 	void GrowthTremorManager::CallRumble(Actor* Source, Actor* Receiver, float Modifier) {
 		auto Player = PlayerCharacter::GetSingleton();
-		float Distance = get_distance_to_camera(Receiver); // No way to call Source->GetDistance like in SP, so i'll have to use Camera
+		float Distance = get_distance_to_camera(Source); // No way to call Source->GetDistance like in SP, so i'll have to use Camera
 		float SourceSize = get_visual_scale(Source);
 		float ReceiverSize = get_visual_scale(Receiver);
 		float SizeDifference = SourceSize/ReceiverSize;
