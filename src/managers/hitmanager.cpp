@@ -15,21 +15,21 @@ namespace Gts {
 		if (!a_event) {
 			return;
 		}
-		auto attacker = a_eventSource->cause;
+		auto attacker = a_event->cause;
 		if (!attacker) {
 			return;
 		}
-		auto receiver = a_eventSource->target;
+		auto receiver = a_event->target;
 		if (!receiver) {
 			return;
 		}
-		auto HitId = a_eventSource->source;
-		auto ProjectileID = a_eventSource->projectile;
+		auto HitId = a_event->source;
+		auto ProjectileID = a_event->projectile;
 
-		bool wasPowerAttack = a_eventSource->flags.all(TESHitEvent::Flag::kPowerAttack);
-		bool wasSneakAttack = a_eventSource->flags.all(TESHitEvent::Flag::kSneakAttack);
-		bool wasBashAttack = a_eventSource->flags.all(TESHitEvent::Flag::kBashAttack);
-		bool wasHitBlocked = a_eventSource->flags.all(TESHitEvent::Flag::kHitBlocked);
+		bool wasPowerAttack = a_event->flags.all(TESHitEvent::Flag::kPowerAttack);
+		bool wasSneakAttack = a_event->flags.all(TESHitEvent::Flag::kSneakAttack);
+		bool wasBashAttack = a_event->flags.all(TESHitEvent::Flag::kBashAttack);
+		bool wasHitBlocked = a_event->flags.all(TESHitEvent::Flag::kHitBlocked);
 
 		// Do something
 
