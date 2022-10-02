@@ -1,4 +1,5 @@
 #include "managers/hitmanager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
