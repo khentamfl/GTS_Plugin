@@ -109,7 +109,7 @@ namespace Gts {
 //===============Hit Growth END
 
 	void SizeManager::SetGrowthTime(Actor* actor, float amt) {
-		this->GetData(actor).HitGrowth = amt;
+		this->GetData(actor).GrowthTime = amt;
 	}
 
 	float SizeManager::GetGrowthTime(Actor* actor) {
@@ -117,6 +117,10 @@ namespace Gts {
 			return 0.0; //Protect against 0
 		}
 		return this->GetData(actor).GrowthTime;
+	}
+
+	void SizeManager::ModGrowthTime(Actor* actor, float amt) {
+		this->GetData(actor).GrowthTime += amt;
 	}
 
 	void SizeManager::BalancedMode(bool Toggle)
