@@ -26,11 +26,11 @@ namespace Gts {
 		if (!a_event) {
 			return;
 		}
-		auto attacker = a_event->cause;
+		auto attacker = a_event->cause->GetActorOwner();
 		if (!attacker) {
 			return;
 		}
-		auto receiver = a_event->target;
+		auto receiver = a_event->target->GetActorOwner();
 		if (!receiver) {
 			return;
 		}
