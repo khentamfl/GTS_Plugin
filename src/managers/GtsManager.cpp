@@ -324,25 +324,15 @@ namespace {
 		float shrinkRate = 0.0;
 		int game_mode_int = 0;
 		float QuestStage = runtime.MainQuest->GetCurrentStageID();
+		float BalanceMode = runtime.BalancedMode->value;
 
-		if (QuestStage > 100.0) {
-			if (actor->formID == 0x14) {
-				game_mode_int = runtime.ChosenGameMode->value;
-				growthRate = runtime.GrowthModeRate->value;
-				shrinkRate = runtime.ShrinkModeRate->value;
-
-			} else if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) {
-				game_mode_int = runtime.ChosenGameModeNPC->value;
-				growthRate = runtime.GrowthModeRateNPC->value;
-				shrinkRate = runtime.ShrinkModeRateNPC->value;
-			}
-		} else if (QuestStage < 100.0) {
+		if (QuestStage < 100.0 ||  BalanceMode == 1.0) {
 			if (actor->formID == 0x14 && !actor->IsInCombat()) {
 				game_mode_int = 4; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
-					shrinkRate = 0.00046;
+					shrinkRate = 0.00046 * (BalanceMode * 1.33);
 				} else if (QuestStage >= 60 && QuestStage < 70) {
-					shrinkRate = 0.00046 / 1.5;
+					shrinkRate = 0.00046 / 1.5* (BalanceMode * 1.33;
 				}
 
 				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
@@ -357,6 +347,18 @@ namespace {
 			}
 		}
 
+		else if (QuestStage > 100.0 && BalanceMode == 0.0) {
+			if (actor->formID == 0x14) {
+				game_mode_int = runtime.ChosenGameMode->value;
+				growthRate = runtime.GrowthModeRate->value;
+				shrinkRate = runtime.ShrinkModeRate->value;
+
+			} else if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) {
+				game_mode_int = runtime.ChosenGameModeNPC->value;
+				growthRate = runtime.GrowthModeRateNPC->value;
+				shrinkRate = runtime.ShrinkModeRateNPC->value;
+			}
+		} 
 
 		if (game_mode_int >=0 && game_mode_int <= 4) {
 			gameMode = static_cast<ChosenGameMode>(game_mode_int);
