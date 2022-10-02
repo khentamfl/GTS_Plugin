@@ -75,14 +75,14 @@ namespace Gts {
 
 	void SizeManager::SetSizeHungerBonus(Actor* actor, float amt) {
 		this->GetData(actor).SizeHungerBonus = amt;
-		log::info("SizeHungerBonus of {} is {}", actor->GetDisplayFullName(), this->GetData(actor).SizeHungerBonus);
+		log::info("SizeHungerBonus of {} is {}", actor->GetDisplayFullName(), this->GetData(actor).SizeHungerBonus/100);
 	}
 
 	float SizeManager::GetSizeHungerBonus(Actor* actor) {
 		if (this->GetData(actor).SizeHungerBonus <= 0.0) {
 			return 0.0; //Protect against 0
 		}
-		return this->GetData(actor).SizeHungerBonus;
+		return this->GetData(actor).SizeHungerBonus/100;
 	}
 
 	void SizeManager::ModSizeHungerBonus(Actor* actor, float amt) {

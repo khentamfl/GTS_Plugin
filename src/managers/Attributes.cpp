@@ -65,7 +65,8 @@ namespace {
 
 	void BoostAttackDmg(Actor* actor, float power) {
 		float scale = get_visual_scale(actor);
-		actor->SetActorValue(ActorValue::kAttackDamageMult, (scale * power));
+		actor->SetActorValue(ActorValue::kAttackDamageMult, 1.0 * (scale * power));
+		log::info("Actor is, Mult: ", actor->GetDisplayFullName(), 1.0 * (scale * power));
 	}
 
 	void BoostSpeedMulti(Actor* actor, float power) {
