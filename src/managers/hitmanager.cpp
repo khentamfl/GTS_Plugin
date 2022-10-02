@@ -26,11 +26,15 @@ namespace Gts {
 		if (!a_event) {
 			return;
 		}
-		auto attacker = a_event->cause->GetActorOwner();
+		auto attacker_PTR = a_event->cause;
+		auto atacker_ref = attacker_PTR.get();
+		auto attacker = skyrim_cast<Actor*>(atacker_ref);
 		if (!attacker) {
 			return;
 		}
-		auto receiver = a_event->target->GetActorOwner();
+		auto receiver_PTR = a_event->target;
+		auto receiver_ref = attacker_PTR.get();
+		auto receiver = skyrim_cast<Actor*>(receiver_ref);
 		if (!receiver) {
 			return;
 		}
@@ -48,25 +52,23 @@ namespace Gts {
 		// Do something
 
 		if (receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->getName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
-			if(wasHitBlocked == false && attacker->isPlayerTeammate() == false && attacker != player)
-   		 {
-      	 	float ReceiverScale = get_visual_scale(receiver);
-      	 	float DealerScale = get_visual_scale(attacker);
-		 	float HealthMult = GetMaxAV(receiver, "health") / receiver->GetActorValue("health");
-       	 	float SizeDifference = ReceiverScale/DealerScale;
-       	 	float LaughChance = rand() % 12;
-		 	auto GrowthSound = runtime.growthSound;
-		 	PlaySound(GrowthSound, receiver, ReceiverScale/10, 0.0);
-		 	sizemanager.SetHitGrowth(receiver, 1.0);
-			sizemanager.SetGrowthTime(receiver, HealthMult);
-       			if (SizeDifference >= 4.0 && LaughChance >= 12.0)
-      		 		{
+			if(wasHitBlocked == false && attacker->isPlayerTeammate() == false && attacker != player) {
+				float ReceiverScale = get_visual_scale(receiver);
+				float DealerScale = get_visual_scale(attacker);
+				float HealthMult = GetMaxAV(receiver, "health") / receiver->GetActorValue("health");
+				float SizeDifference = ReceiverScale/DealerScale;
+				float LaughChance = rand() % 12;
+				auto GrowthSound = runtime.growthSound;
+				PlaySound(GrowthSound, receiver, ReceiverScale/10, 0.0);
+				sizemanager.SetHitGrowth(receiver, 1.0);
+				sizemanager.SetGrowthTime(receiver, HealthMult);
+				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
 					auto LaughSound = Runtime::GetSingleton().LaughSound;
-       				PlaySound(LaughSound, receiver, 1.0, 0.0); //FearCast()
-					}
-    			} 
+					PlaySound(LaughSound, receiver, 1.0, 0.0); //FearCast()
+				}
 			}
 		}
+	}
 
 	void HitManager::Update()
 	{
@@ -74,22 +76,20 @@ namespace Gts {
 		{
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
-			if (SizeManager.GetHitGrowth(actor) > 0.0)
-			{
+			if (SizeManager.GetHitGrowth(actor) > 0.0) {
 				float HealthMult = GetMaxAV(actor, "health") / actor->GetActorValue("health");
-       		    float GrowthValue = HealthMult/9700;
+				float GrowthValue = HealthMult/9700;
 				auto& Persist = Persistent::GetSingleton();
 				auto actor_data = Persist.GetData(actor);
 				float delta_time = Time::WorldTimeDelta();
 				actor_data->half_life = 1.0 - HealthMult;
-        		if (actor->hasMagicEffect(Runtime.SmallMassiveThreat))	{
+				if (actor->hasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
 				}
 				if (sizemanager.GetGrowthTime(actor) > 0.01) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
-					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75);
-				}
-				else if (sizemanager.GetGrowthTime(actor) < 0.01) {
+					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
+				} else if (sizemanager.GetGrowthTime(actor) < 0.01) {
 					actor_data->half_life = 1.0;
 					sizemanager.SetHitGrowth(actor, 0.0);
 					sizemanager.SetGrowthTime(actor, 0.0);
