@@ -150,32 +150,32 @@ namespace Gts {
 			Camera.AdjustUpDown(false, false, true); // Down
 			log::info("Alt + Down");
 		} // Up or Down end
-		if (ShiftPressed == true && ArrowUp == true && !CtrlPressed && !ArrowDown)  // Grow self
+		if (!ShiftPressed && ArrowUp && LeftArrow && !ArrowDown)  // Grow self
 		{
-			float cale = get_visual_scale(PlayerCharacter::GetSingleton());
-			auto caster = PlayerCharacter::GetSingleton;
+			float scale = get_visual_scale(PlayerCharacter::GetSingleton());
+			auto caster = PlayerCharacter::GetSingleton();
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 			DamageAV(caster, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			Grow(caster, 0.0010 * stamina * scale, 0.0);
 			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/4);
 			if (this->timergrowth()) {
-			PlaySound(runtime.growthSound, caster, Volume, 0.0);
+			PlaySound(Runtime::GetSingleton().growthSound, caster, Volume, 0.0);
 			}
 		}
-		if (ShiftPressed == true && ArrowDown == true && !CtrlPressed && !ArrowUp) // Shrink Self
+		if (!ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) // Shrink Self
 		{
 			float scale = get_visual_scale(PlayerCharacter::GetSingleton());
-			auto caster = PlayerCharacter::GetSingleton;
+			auto caster = PlayerCharacter::GetSingleton();
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 			DamageAV(caster, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			Shrink(caster, 0.0030 * stamina * scale, 0.0);
 			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/4);
 			if (this->timergrowth()) {
-			PlaySound(runtime.shrinkSound, caster, Volume, 0.0);
+			PlaySound(Runtime::GetSingleton().shrinkSound, caster, Volume, 0.0);
 			}
 		}
 
-		else if (ShiftPressed == true && ArrowUp == true && CtrlPressed && !ArrowDown)  // Grow Ally
+		else if (ShiftPressed && ArrowUp && LeftArrow && !ArrowDown)  // Grow Ally
 		{
 			for (auto actor: find_actors()) {
 		if (!actor) {
@@ -190,11 +190,11 @@ namespace Gts {
 				Grow(target, 0.0010 * magicka * scale, 0.0);
 				float Volume = clamp(0.10, 2.0, get_visual_scale(target)/4);
 			if (this->timergrowth()) {
-				PlaySound(runtime.growthSound, target, Volume, 0.0);
+				PlaySound(Runtime::GetSingleton().growthSound, target, Volume, 0.0);
 				}
 			}
 		}
-		else if (ShiftPressed == true && ArrowDown == true && CtrlPressed && !ArrowUp) // Shrink Ally
+		else if (ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) // Shrink Ally
 		{
 			for (auto actor: find_actors()) {
 		if (!actor) {
@@ -209,7 +209,7 @@ namespace Gts {
 				Shrink(target, 0.0030 * stamina * scale, 0.0);
 				float Volume = clamp(0.10, 2.0, get_visual_scale(target)/4);
 			if (this->timergrowth()) {
-				PlaySound(runtime.shrinkSound, target, Volume, 0.0);
+				PlaySound(Runtime::GetSingleton().shrinkSound, target, Volume, 0.0);
 				}
 			}
 		}
