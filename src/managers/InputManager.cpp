@@ -13,6 +13,7 @@
 #include "data/time.hpp"
 #include "timer.hpp"
 #include "data/time.hpp"
+#include "util.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -181,7 +182,8 @@ namespace Gts {
 			for (auto actor: find_actors()) {
 		if (!actor) {
 			continue;
-		}
+			} 
+		
 			if (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
 				float scale = get_visual_scale(actor);
 				auto caster = PlayerCharacter::GetSingleton();
@@ -192,15 +194,17 @@ namespace Gts {
 				float Volume = clamp(0.10, 2.0, get_visual_scale(target)/4);
 			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().growthSound, target, Volume, 0.0);
+					}
 				}
 			}
-		
+		}
 		else if (ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) // Shrink Ally
 		{
 			for (auto actor: find_actors()) {
 		if (!actor) {
 			continue;
-		}
+				}
+		
 		if (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
 				float scale = get_visual_scale(actor);
 				auto caster = PlayerCharacter::GetSingleton();
@@ -211,8 +215,10 @@ namespace Gts {
 				float Volume = clamp(0.10, 2.0, get_visual_scale(target)/4);
 			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().shrinkSound, target, Volume, 0.0);
+					}
 				}
 			}
+		}
 		
 
 		return BSEventNotifyControl::kContinue;
