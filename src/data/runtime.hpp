@@ -111,6 +111,7 @@ namespace Gts {
 			BGSPerk* VorePerkRegeneration = nullptr;
 			BGSPerk* VorePerkGreed = nullptr;
 			BGSPerk* GrowthPerk = nullptr;
+			BGSPerk* TotalControl = nullptr;
 			BGSPerk* NoSpeedLoss = nullptr;
 			BGSPerk* SizeReserve = nullptr;
 			BGSPerk* BonusSpeedPerk = nullptr;

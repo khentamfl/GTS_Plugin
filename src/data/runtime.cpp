@@ -128,6 +128,7 @@ namespace Gts {
 		this->VorePerkRegeneration = find_form<BGSPerk>("GTS.esp|33C764");
 		this->VorePerkGreed = find_form<BGSPerk>("GTS.esp|33C765");
 		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6");
+		this->TotalControl = find_form<BGSPerk>("GTS.esp|128CF7");
 		this->NoSpeedLoss = find_form<BGSPerk>("GTS.esp|2E663B");
 		this->SizeReserve = find_form<BGSPerk>("GTS.esp|4204CE");
 		this->BonusSpeedPerk = find_form<BGSPerk>("GTS.esp|4255D0");

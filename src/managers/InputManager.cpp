@@ -38,6 +38,8 @@ namespace Gts {
 
 		bool ArrowUp = false;
 		bool ArrowDown = false;
+		auto player = PlayerCharacter::GetSingleton();
+		auto TotalControl = Runtime::GetSingleton().TotalControl;
 
 
 		for (auto event = *a_event; event; event = event->next) {
@@ -51,7 +53,7 @@ namespace Gts {
 			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
 				// log::info("ButtonEvent == Keyboard");
 				auto key = buttonEvent->GetIDCode();
-				auto caster = PlayerCharacter::GetSingleton();
+				auto caster = player;
 				auto runtime = Runtime::GetSingleton();
 				auto Cache = runtime.ManualGrowthStorage;
 				if (!Cache) {
@@ -87,8 +89,7 @@ namespace Gts {
 					Notify("Reserved Size: {}", Value);
 				}
 				if (key == 0x2E) {
-					auto Player = PlayerCharacter::GetSingleton();
-					auto actor_data = Persistent::GetSingleton().GetData(Player);
+					auto actor_data = Persistent::GetSingleton().GetData(player);
 				if (actor_data) {
 					//actor_data->anim_speed -=0.001;
 					}
@@ -109,18 +110,17 @@ namespace Gts {
 				} else if (key == 0x2A) {
 					ShiftPressed = true;
 				}
-			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
+			} 
+
+			else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.025) {
-					//PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
-					// Do attack right
-					// ConsoleLog::GetSingleton()->Print("Pressed LMB");
+					//player->NotifyAnimationGraph("JumpLand");
+					// Attack Right
 				}
 				if (key == 0x2 && buttonEvent->HeldDuration() <= 0.025) {
 					// Do attack left
-					// ConsoleLog::GetSingleton()->Print("Pressed RMB");
 				}
-				// log::info("{:X} pressed", key);
 			}
 		}
 
@@ -152,10 +152,10 @@ namespace Gts {
 			log::info("Alt + Down");
 		} // Up or Down end
 
-		if (!ShiftPressed && ArrowUp && LeftArrow && !ArrowDown)  // Grow self
+		if (player->HasPerk(TotalControl) && !ShiftPressed && ArrowUp && LeftArrow && !ArrowDown)  // Grow self
 		{
-			float scale = get_visual_scale(PlayerCharacter::GetSingleton());
-			auto caster = PlayerCharacter::GetSingleton();
+			float scale = get_visual_scale(player);
+			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 			DamageAV(caster, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			Grow(caster, 0.0010 * stamina * scale, 0.0);
@@ -165,10 +165,10 @@ namespace Gts {
 				PlaySound(Runtime::GetSingleton().growthSound, caster, Volume, 0.0);
 			}
 		}
-		if (!ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) // Shrink Self
+		if (player->HasPerk(TotalControl) && !ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) // Shrink Self
 		{
-			float scale = get_visual_scale(PlayerCharacter::GetSingleton());
-			auto caster = PlayerCharacter::GetSingleton();
+			float scale = get_visual_scale(player);
+			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 			DamageAV(caster, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			Grow(caster, -0.0010 * stamina * scale, 0.0);
@@ -179,7 +179,7 @@ namespace Gts {
 			}
 		}
 
-		else if (ShiftPressed && ArrowUp && LeftArrow && !ArrowDown)  // Grow Ally
+		else if (player->HasPerk(TotalControl) && ShiftPressed && ArrowUp && LeftArrow && !ArrowDown)  // Grow Ally
 		{
 			for (auto actor: find_actors()) {
 		if (!actor) {
@@ -188,7 +188,7 @@ namespace Gts {
 		
 			if (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
 				float scale = get_visual_scale(actor);
-				auto caster = PlayerCharacter::GetSingleton();
+				auto caster = player;
 				auto target = actor;
 				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
 				DamageAV(caster, ActorValue::kMagicka, 0.15 * (scale * 0.5 + 0.5) * magicka * TimeScale());
@@ -201,7 +201,7 @@ namespace Gts {
 				}
 			}
 		}
-		else if (ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) // Shrink Ally
+		else if (player->HasPerk(TotalControl) && ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) // Shrink Ally
 		{
 			for (auto actor: find_actors()) {
 		if (!actor) {
@@ -210,7 +210,7 @@ namespace Gts {
 		
 		if (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
 				float scale = get_visual_scale(actor);
-				auto caster = PlayerCharacter::GetSingleton();
+				auto caster = player;
 				auto target = actor;
 				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
 				DamageAV(target, ActorValue::kMagicka, 0.10 * (scale * 0.5 + 0.5) * magicka * TimeScale());
