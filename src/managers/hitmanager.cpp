@@ -10,7 +10,7 @@ namespace Gts {
 		return instance;
 	}
 
-	void HitEvent(const TESHitEvent* a_event) {
+	void HitManager::HitEvent(const TESHitEvent* a_event) {
 
 		if (!a_event) {
 			return;
