@@ -1,4 +1,4 @@
-#include "manager/hitmanager.hpp"
+#include "managers/hitmanager.hpp"
 
 using namespace RE;
 using namespace Gts;
