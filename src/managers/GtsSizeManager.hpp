@@ -10,6 +10,7 @@ namespace Gts {
 
 	struct SizeManagerData {
 		float enchantmentBonus = 0.0;
+		float SizeHungerBonus = 0.0;
 	};
 	class SizeManager : public EventListener {
 		public:
