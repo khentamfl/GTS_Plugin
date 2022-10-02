@@ -57,7 +57,6 @@ namespace Gts {
 	}
 	void SizeManager::SetEnchantmentBonus(Actor* actor, float amt) {
 		this->GetData(actor).enchantmentBonus = amt;
-
 	}
 
 	float SizeManager::GetEnchantmentBonus(Actor* actor) {
@@ -88,8 +87,6 @@ namespace Gts {
 	void SizeManager::ModSizeHungerBonus(Actor* actor, float amt) {
 		this->GetData(actor).SizeHungerBonus += amt;
 	}
-//===============Size Hunger END	
-
 //=================Hit Growth
 
 	void SizeManager::SetHitGrowth(Actor* actor, float amt) {
@@ -106,7 +103,7 @@ namespace Gts {
 	void SizeManager::ModHitGrowth(Actor* actor, float amt) {
 		this->GetData(actor).HitGrowth += amt;
 	}
-//===============Hit Growth END
+//===============Growth Timer 
 
 	void SizeManager::SetGrowthTime(Actor* actor, float amt) {
 		this->GetData(actor).GrowthTimer = amt;
@@ -122,7 +119,7 @@ namespace Gts {
 	void SizeManager::ModGrowthTime(Actor* actor, float amt) {
 		this->GetData(actor).GrowthTimer += amt;
 	}
-
+//===============Balance Mode 
 	void SizeManager::BalancedMode(bool Toggle)
 	{
 		float BalanceMode = Runtime::GetSingleton().BalanceMode->value;
