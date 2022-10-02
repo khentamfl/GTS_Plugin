@@ -37,6 +37,7 @@ namespace Gts {
 			if (duration > 1.2) {
 				duration = 1.2;
 			}
+			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, Distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, Distance, falloff);
 			
 			if (Receiver == Player) {
 				shake_controller(intensity*Modifier, intensity*Modifier, duration);
