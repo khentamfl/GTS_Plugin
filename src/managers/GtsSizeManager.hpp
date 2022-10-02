@@ -24,6 +24,11 @@ namespace Gts {
 			float GetEnchantmentBonus(Actor* actor);
 			void ModEnchantmentBonus(Actor* actor, float amt);
 
+			void SetSizeHungerBonus(Actor* actor, float amt);
+			float GetSizeHungerBonus(Actor* actor);
+			void ModSizeHungerBonus(Actor* actor, float amt);
+			
+
 		private:
 			std::map<Actor*, SizeManagerData> sizeData;
 	};

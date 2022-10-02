@@ -198,6 +198,7 @@ namespace Gts {
 			EffectSetting* EffectSizePotionNormal = nullptr;
 			EffectSetting* EffectSizePotionStrong = nullptr;
 			EffectSetting* EffectSizePotionExtreme = nullptr;
+			EffectSetting* EffectSizeHungerPotion = nullptr;
 			///End Potions///
 
 

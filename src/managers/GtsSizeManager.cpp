@@ -29,11 +29,17 @@ namespace Gts {
 
 	void SizeManager::Update() {
 		for (auto actor: find_actors()) {
+
+			bool Balance = false; // Toggles Balance Mode for the mod. False = off, true = on. 
+
 			auto& runtime = Runtime::GetSingleton();
 			float Gigantism = this->GetEnchantmentBonus(actor)/100;
 			float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
 			float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
 			float SelectedFormula = runtime.SelectedSizeFormula->value;
+
+			//BalancedMode(Balance);
+
 			if (SelectedFormula >= 2.0) {
 				GetLimit = runtime.MassBasedSizeLimit->value +1.0;
 			}
@@ -51,6 +57,7 @@ namespace Gts {
 	}
 	void SizeManager::SetEnchantmentBonus(Actor* actor, float amt) {
 		this->GetData(actor).enchantmentBonus = amt;
+
 	}
 
 	float SizeManager::GetEnchantmentBonus(Actor* actor) {
@@ -62,6 +69,36 @@ namespace Gts {
 
 	void SizeManager::ModEnchantmentBonus(Actor* actor, float amt) {
 		this->GetData(actor).enchantmentBonus += amt;
+	}
+
+//=================Size Hunger
+
+	void SizeManager::SetSizeHungerBonus(Actor* actor, float amt) {
+		this->GetData(actor).SizeHungerBonus = amt;
+		log::info("SizeHungerBonus of {} is {}", actor->GetDisplayFullName(), SizeHungerBonus);
+	}
+
+	float SizeManager::GetSizeHungerBonus(Actor* actor) {
+		if (this->GetData(actor).SizeHungerBonus <= 0.0) {
+			return 0.0; //Protect against 0
+		}
+		return this->GetData(actor).SizeHungerBonus;
+	}
+
+	void SizeManager::ModSizeHungerBonus(Actor* actor, float amt) {
+		this->GetData(actor).SizeHungerBonus += amt;
+	}
+//===============Size Hunger END	
+
+	void SizeManager::BalancedMode(bool Toggle)
+	{
+		float BalanceMode = Runtime::GetSingleton().BalanceMode;
+		if (Toggle && BalanceMode->value < 1.0) {
+			BalanceMode->value=1.0; return;
+		}
+		else if (!Toggle && BalanceMode->value >= 1.0) {
+			BalanceMode->value=0.0; return;
+		}
 	}
 
 	SizeManagerData& SizeManager::GetData(Actor* actor) {
