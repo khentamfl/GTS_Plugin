@@ -30,6 +30,7 @@ namespace Gts {
 
 			if (charCont) {
 				this->center = charCont->center;
+				this->rotCenter = charCont->rotCenter;
 			}
 		}
 	}
@@ -129,6 +130,9 @@ namespace Gts {
 		}
 		for (auto &[key, data]: this->list_data) {
 			data.ApplyScale(new_scale, vec_scale);
+		}
+		if (this->charCont) {
+			this->charCont->rotCenter = this->rotCenter * vec_scale;
 		}
 	}
 
