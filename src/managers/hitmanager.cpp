@@ -40,8 +40,11 @@ namespace Gts {
 		}
 		auto runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
-		auto HitId = a_event->source;
-		auto ProjectileID = a_event->projectile;
+		auto HitIdForm = a_event->source;
+		auto HitId = TESForm::LookupByID(HitIdForm);
+
+		auto ProjectileIDForm = a_event->projectile;
+		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
 		auto player = PlayerCharacter::GetSingleton();
 
 		bool wasPowerAttack = a_event->flags.all(TESHitEvent::Flag::kPowerAttack);
@@ -51,11 +54,11 @@ namespace Gts {
 
 		// Do something
 
-		if (receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->getName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
-			if(wasHitBlocked == false && attacker->isPlayerTeammate() == false && attacker != player) {
+		if (receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
+			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
-				float HealthMult = GetMaxAV(receiver, "health") / receiver->GetActorValue("health");
+				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
 				float SizeDifference = ReceiverScale/DealerScale;
 				float LaughChance = rand() % 12;
 				auto GrowthSound = runtime.growthSound;
@@ -70,20 +73,18 @@ namespace Gts {
 		}
 	}
 
-	void HitManager::Update()
-	{
-		for (auto actor: find_actors())
-		{
+	void HitManager::Update() {
+		for (auto actor: find_actors()) {
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
 			if (SizeManager.GetHitGrowth(actor) > 0.0) {
-				float HealthMult = GetMaxAV(actor, "health") / actor->GetActorValue("health");
+				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float GrowthValue = HealthMult/9700;
 				auto& Persist = Persistent::GetSingleton();
 				auto actor_data = Persist.GetData(actor);
 				float delta_time = Time::WorldTimeDelta();
 				actor_data->half_life = 1.0 - HealthMult;
-				if (actor->hasMagicEffect(Runtime.SmallMassiveThreat)) {
+				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
 				}
 				if (sizemanager.GetGrowthTime(actor) > 0.01) {
