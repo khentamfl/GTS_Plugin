@@ -156,7 +156,7 @@ namespace Gts {
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 			DamageAV(caster, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			mod_target_scale(caster, -0.0010 * stamina * scale);
+			mod_target_scale(caster, 0.0010 * stamina * scale);
 			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, scale/10);
 			if (this->timergrowth.ShouldRun()) {
