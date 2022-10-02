@@ -111,7 +111,7 @@ namespace Gts {
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.025) {
-					PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
+					//PlayerCharacter::GetSingleton()->NotifyAnimationGraph("JumpLand");
 					// Do attack right
 					// ConsoleLog::GetSingleton()->Print("Pressed LMB");
 				}
@@ -150,6 +150,7 @@ namespace Gts {
 			Camera.AdjustUpDown(false, false, true); // Down
 			log::info("Alt + Down");
 		} // Up or Down end
+		
 		if (!ShiftPressed && ArrowUp && LeftArrow && !ArrowDown)  // Grow self
 		{
 			float scale = get_visual_scale(PlayerCharacter::GetSingleton());
@@ -158,8 +159,8 @@ namespace Gts {
 			DamageAV(caster, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			Grow(caster, 0.0010 * stamina * scale, 0.0);
 			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/4);
-			if (this->timergrowth()) {
-			PlaySound(Runtime::GetSingleton().growthSound, caster, Volume, 0.0);
+			if (this->timergrowth.ShouldRun()) {
+				PlaySound(Runtime::GetSingleton().growthSound, caster, Volume, 0.0);
 			}
 		}
 		if (!ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) // Shrink Self
@@ -168,10 +169,10 @@ namespace Gts {
 			auto caster = PlayerCharacter::GetSingleton();
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 			DamageAV(caster, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			Shrink(caster, 0.0030 * stamina * scale, 0.0);
+			Grow(caster, -0.0030 * stamina * scale, 0.0);
 			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/4);
-			if (this->timergrowth()) {
-			PlaySound(Runtime::GetSingleton().shrinkSound, caster, Volume, 0.0);
+			if (this->timergrowth.ShouldRun()) {
+				PlaySound(Runtime::GetSingleton().shrinkSound, caster, Volume, 0.0);
 			}
 		}
 
@@ -181,7 +182,7 @@ namespace Gts {
 		if (!actor) {
 			continue;
 		}
-			if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) { 
+			if (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
 				float scale = get_visual_scale(actor);
 				auto caster = PlayerCharacter::GetSingleton;
 				auto target = actor;
@@ -189,7 +190,7 @@ namespace Gts {
 				DamageAV(caster, ActorValue::kMagicka, 0.15 * (scale * 0.5 + 0.5) * magicka * TimeScale());
 				Grow(target, 0.0010 * magicka * scale, 0.0);
 				float Volume = clamp(0.10, 2.0, get_visual_scale(target)/4);
-			if (this->timergrowth()) {
+			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().growthSound, target, Volume, 0.0);
 				}
 			}
@@ -200,15 +201,15 @@ namespace Gts {
 		if (!actor) {
 			continue;
 		}
-		if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) { 
+		if (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
 				float scale = get_visual_scale(actor);
 				auto caster = PlayerCharacter::GetSingleton;
 				auto target = actor;
 				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
 				DamageAV(target, ActorValue::kMagicka, 0.10 * (scale * 0.5 + 0.5) * magicka * TimeScale());
-				Shrink(target, 0.0030 * stamina * scale, 0.0);
+				Grow(target, -0.0030 * stamina * scale, 0.0);
 				float Volume = clamp(0.10, 2.0, get_visual_scale(target)/4);
-			if (this->timergrowth()) {
+			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().shrinkSound, target, Volume, 0.0);
 				}
 			}
