@@ -141,7 +141,7 @@ namespace {
 		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
 		float MS_mult_limit = clamp(0.650, 1.0, MS_mult); // For Walk speed
 		float Multy = clamp(0.825, 1.0, MS_mult); // Additional 17.5% ms
-		float WalkSpeedLimit = clamp(0.100, 1.0, MS_mult * 1.25);
+		float WalkSpeedLimit = clamp(0.100, 1.0, MS_mult * 1.12);
 		float PerkSpeed = 1.0;
 
 		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can

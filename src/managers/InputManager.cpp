@@ -156,8 +156,8 @@ namespace Gts {
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 			DamageAV(caster, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			Grow(caster, 0.0010 * stamina * scale, 0.0);
-			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/4);
+			mod_target_scale(caster, -0.0010 * stamina * scale);
+			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, scale/10);
 			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().growthSound, caster, Volume, 0.0);
@@ -169,8 +169,8 @@ namespace Gts {
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 			DamageAV(caster, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			Grow(caster, -0.0010 * stamina * scale, 0.0);
-			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/4);
+			mod_target_scale(caster, -0.0010 * stamina * scale);
+			float Volume = clamp(0.05, 2.0, get_visual_scale(caster)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, scale/14);
 			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().shrinkSound, caster, Volume, 0.0);
@@ -190,8 +190,8 @@ namespace Gts {
 				auto target = actor;
 				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
 				DamageAV(caster, ActorValue::kMagicka, 0.15 * (scale * 0.5 + 0.5) * magicka * TimeScale());
-				Grow(target, 0.0010 * magicka * scale, 0.0);
-				float Volume = clamp(0.10, 2.0, get_visual_scale(target)/4);
+				mod_target_scale(target, 0.0010 * magicka * scale);
+				float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
 				GrowthTremorManager::GetSingleton().CallRumble(target, caster, scale/10);
 			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().growthSound, target, Volume, 0.0);
@@ -212,8 +212,8 @@ namespace Gts {
 				auto target = actor;
 				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
 				DamageAV(target, ActorValue::kMagicka, 0.10 * (scale * 0.5 + 0.5) * magicka * TimeScale());
-				Grow(target, -0.0010 * magicka * scale, 0.0);
-				float Volume = clamp(0.10, 2.0, get_visual_scale(target)/4);
+				mod_target_scale(target, -0.0010 * magicka * scale);
+				float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
 				GrowthTremorManager::GetSingleton().CallRumble(target, caster, scale/14);
 			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().shrinkSound, target, Volume, 0.0);

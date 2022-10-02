@@ -9,14 +9,14 @@ using namespace RE;
 
 namespace Gts
 {
-	using EventResult = RE::BSEventNotifyControl;
+	//using EventResult = RE::BSEventNotifyControl;
 
-	class HitManager : public EventListener, public BSTEventSink<InputEvent*>
-	{
-		public:
-			[[nodiscard]] static HitManager& GetSingleton() noexcept;
+	//class HitManager : public EventListener, public BSTEventSink<InputEvent*>
+	//{
+		//public:
+			//[[nodiscard]] static HitManager& GetSingleton() noexcept;
 
-			BSEventNotifyControl ProcessEvent(InputEvent* const* a_event, BSTEventSource<TESHitEvent*>* a_eventSource) override;
-			void Start() override;
-	};
+			//BSEventNotifyControl ProcessEvent(InputEvent* const* a_event, BSTEventSource<TESHitEvent*>* a_eventSource) override;
+			//void Start() override;
+	//};
 }
