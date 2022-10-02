@@ -36,6 +36,9 @@ namespace Gts {
 			float GetHitGrowth(Actor* actor);
 			void ModHitGrowth(Actor* actor, float amt);
 
+			void SetGrowthTime(Actor* actor, float amt);
+			void GetGrowthTime(Actor* actor);
+
 			void BalancedMode(bool Toggle);
 			
 
