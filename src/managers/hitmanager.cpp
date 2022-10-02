@@ -37,6 +37,7 @@ namespace Gts {
 		auto sizemanager = SizeManager::GetSingleton();
 		auto HitId = a_event->source;
 		auto ProjectileID = a_event->projectile;
+		auto player = PlayerCharacter::GetSingleton();
 
 		bool wasPowerAttack = a_event->flags.all(TESHitEvent::Flag::kPowerAttack);
 		bool wasSneakAttack = a_event->flags.all(TESHitEvent::Flag::kSneakAttack);
@@ -45,11 +46,11 @@ namespace Gts {
 
 		// Do something
 
-		if (receiver == Game.getPlayer() && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->getName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
-			if(wasHitBlocked == false && attacker->isPlayerTeammate() == false && attacker != PlayerCharacter::GetSingleton())
+		if (receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->getName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
+			if(wasHitBlocked == false && attacker->isPlayerTeammate() == false && attacker != player)
    		 {
-      	 	float ReceiverScale = GetVisualScale(receiver);
-      	 	float DealerScale = GetVisualScale(attacker);
+      	 	float ReceiverScale = get_visual_scale(receiver);
+      	 	float DealerScale = get_visual_scale(attacker);
 		 	float HealthMult = GetMaxAV(receiver, "health") / receiver->GetActorValue("health");
        	 	float SizeDifference = ReceiverScale/DealerScale;
        	 	float LaughChance = rand() % 12;
