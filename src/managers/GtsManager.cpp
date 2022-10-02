@@ -161,18 +161,10 @@ namespace {
 			}
 			
 		if (!actor->IsRunning()) {
-			persi_actor_data->anim_speed = speed_mult;
-			if (actor->formID == 0x14) 
-			{
-			//log::info("NOT Running Size: {}, Mult: {}", get_visual_scale(actor), persi_actor_data->anim_speed);
-			}	
+			persi_actor_data->anim_speed = speed_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
 			persi_actor_data->anim_speed = speed_mult * WalkSpeedLimit;
-			if (actor->formID == 0x14) 
-		{
-			//log::info("Is Running Size: {}, Mult: {}", get_visual_scale(actor), persi_actor_data->anim_speed);
-		}
 		} 
 		
 		

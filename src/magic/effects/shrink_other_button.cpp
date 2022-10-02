@@ -45,6 +45,7 @@ namespace Gts {
 		if (target_scale > get_natural_scale(target)) {
 			DamageAV(caster, ActorValue::kMagicka, 0.25 * (target_scale * 0.25 + 0.75) * magicka * TimeScale());
 			ShrinkActor(target, 0.0030*magicka, 0.0);
+			GrowthTremorManager::GetSingleton().CallRumble(target, caster, 1.0);
 		}
 	}
 }

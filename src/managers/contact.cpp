@@ -386,7 +386,9 @@ namespace Gts {
 		auto PC = PlayerCharacter::GetSingleton();
 		auto HighHeel = HighHeelManager::GetSingleton();
 		auto Manager = GtsManager::GetSingleton();
-		HighHeel.ApplyHH(PC, false);
+		for (auto actor: actors) {
+			HighHeel.ApplyHH(actor, false);
+		}
 		//Manager.reapply_actor(PC, false);
 		//set_model_scale(PC, 5.0);
 		if (contactListener.world != world) {

@@ -184,7 +184,7 @@ namespace Gts {
 			continue;
 			} 
 		
-			if (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
+			if (actor->formID != 0x14 && actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
 				float scale = get_visual_scale(actor);
 				auto caster = player;
 				auto target = actor;
@@ -206,7 +206,7 @@ namespace Gts {
 			continue;
 				}
 		
-		if (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
+		if (actor->formID != 0x14 && actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
 				float scale = get_visual_scale(actor);
 				auto caster = player;
 				auto target = actor;
