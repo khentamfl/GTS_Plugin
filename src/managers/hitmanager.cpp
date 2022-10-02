@@ -77,7 +77,7 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
-			if (SizeManager.GetHitGrowth(actor) > 0.0) {
+			if (sizemanager.GetHitGrowth(actor) > 0.0) {
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float GrowthValue = HealthMult/9700;
 				auto& Persist = Persistent::GetSingleton();
