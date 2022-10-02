@@ -14,5 +14,6 @@ namespace Gts
 			[[nodiscard]] static HitManager& GetSingleton() noexcept;
 
 			void HitEvent(const TESHitEvent* evt) override;
+			void Update();
 	};
 }

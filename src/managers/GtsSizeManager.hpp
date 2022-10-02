@@ -11,6 +11,9 @@ namespace Gts {
 	struct SizeManagerData {
 		float enchantmentBonus = 0.0;
 		float SizeHungerBonus = 0.0;
+		float HitGrowth = 0.0;
+		float GrowthTime = 0.0;
+
 	};
 	class SizeManager : public EventListener {
 		public:
@@ -28,6 +31,10 @@ namespace Gts {
 			void SetSizeHungerBonus(Actor* actor, float amt);
 			float GetSizeHungerBonus(Actor* actor);
 			void ModSizeHungerBonus(Actor* actor, float amt);
+
+			void SetHitGrowth(Actor* actor, float amt);
+			float GetHitGrowth(Actor* actor);
+			void ModHitGrowth(Actor* actor, float amt);
 
 			void BalancedMode(bool Toggle);
 			

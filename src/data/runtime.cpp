@@ -49,6 +49,7 @@ namespace Gts {
 		this->shrinkSound = find_form<BGSSoundDescriptorForm>("GTS.esp|364F6A");
 
 		this->MoanSound = find_form<BGSSoundDescriptorForm>("GTS.esp|09B0AC");
+		this->LaughSound = find_form<BGSSoundDescriptorForm>("GTS.esp|09B0A9");
 
 		this->BloodGushSound = find_form<BGSSoundDescriptorForm>("Skyrim.esm|10F78C");
 

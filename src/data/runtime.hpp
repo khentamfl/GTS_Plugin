@@ -35,6 +35,7 @@ namespace Gts {
 			BGSSoundDescriptorForm* shrinkSound = nullptr;
 
 			BGSSoundDescriptorForm* MoanSound = nullptr;
+			BGSSoundDescriptorForm* LaughSound = nullptr;
 
 			BGSSoundDescriptorForm* BloodGushSound = nullptr;
 

@@ -90,6 +90,35 @@ namespace Gts {
 	}
 //===============Size Hunger END	
 
+//=================Hit Growth
+
+	void SizeManager::SetHitGrowth(Actor* actor, float amt) {
+		this->GetData(actor).HitGrowth = amt;
+	}
+
+	float SizeManager::GetHitGrowth(Actor* actor) {
+		if (this->GetData(actor).HitGrowth <= 0.0) {
+			return 0.0; //Protect against 0
+		}
+		return this->GetData(actor).HitGrowth;
+	}
+
+	void SizeManager::ModHitGrowth(Actor* actor, float amt) {
+		this->GetData(actor).HitGrowth += amt;
+	}
+//===============Hit Growth END
+
+	void SizeManager::SetGrowthTime(Actor* actor, float amt) {
+		this->GetData(actor).HitGrowth = amt;
+	}
+
+	float SizeManager::GetGrowthTime(Actor* actor) {
+		if (this->GetData(actor).GrowthTime <= 0.0) {
+			return 0.0; //Protect against 0
+		}
+		return this->GetData(actor).GrowthTime;
+	}
+
 	void SizeManager::BalancedMode(bool Toggle)
 	{
 		float BalanceMode = Runtime::GetSingleton().BalanceMode->value;

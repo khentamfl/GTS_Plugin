@@ -5,6 +5,7 @@
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/InputManager.hpp"
+#include "managers/hitmanager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -394,6 +395,7 @@ void GtsManager::Update() {
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);
+		HitManager::GetSingleton().Update();
 	}
 }
 
