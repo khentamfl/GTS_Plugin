@@ -12,7 +12,7 @@ namespace Gts {
 		float enchantmentBonus = 0.0;
 		float SizeHungerBonus = 0.0;
 		float HitGrowth = 0.0;
-		float GrowthTime = 0.0;
+		float GrowthTimer = 0.0;
 
 	};
 	class SizeManager : public EventListener {
@@ -38,6 +38,7 @@ namespace Gts {
 
 			void SetGrowthTime(Actor* actor, float amt);
 			void GetGrowthTime(Actor* actor);
+			void ModGrowthTime(Actor* actor, float amt);
 
 			void BalancedMode(bool Toggle);
 			

@@ -109,18 +109,18 @@ namespace Gts {
 //===============Hit Growth END
 
 	void SizeManager::SetGrowthTime(Actor* actor, float amt) {
-		this->GetData(actor).GrowthTime = amt;
+		this->GetData(actor).GrowthTimer = amt;
 	}
 
 	float SizeManager::GetGrowthTime(Actor* actor) {
-		if (this->GetData(actor).GrowthTime <= 0.0) {
+		if (this->GetData(actor).GrowthTimer <= 0.0) {
 			return 0.0; //Protect against 0
 		}
-		return this->GetData(actor).GrowthTime;
+		return this->GetData(actor).GrowthTimer;
 	}
 
 	void SizeManager::ModGrowthTime(Actor* actor, float amt) {
-		this->GetData(actor).GrowthTime += amt;
+		this->GetData(actor).GrowthTimer += amt;
 	}
 
 	void SizeManager::BalancedMode(bool Toggle)
