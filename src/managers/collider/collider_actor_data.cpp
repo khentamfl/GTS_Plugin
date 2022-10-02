@@ -109,6 +109,7 @@ namespace Gts {
 			log::info("  pitchMult: {}", Vector2Str(charController->pitchMult));
 			log::info("  actorHeight: {}", Vector2Str(charController->actorHeight));
 			log::info("  speedPct: {}", Vector2Str(charController->speedPct));
+			log::info("  rotCenter: {}", Vector2Str(charController->rotCenter));
 			log::info("");
 		}
 
