@@ -76,7 +76,7 @@ namespace Gts {
 	}
 
 	void HitManager::Update() {
-		for (auto actor: PlayerCharacter::GetSingleton()) {
+			auto actor = PlayerCharacter::GetSingleton() 
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
 			
@@ -100,8 +100,8 @@ namespace Gts {
 					sizemanager.SetHitGrowth(actor, 0.0);
 					sizemanager.SetGrowthTime(actor, 0.0);
 					ConsoleLog::GetSingleton()->Print("Growth Ended.");
-				}
 			}
 		}
 	}
 }
+
