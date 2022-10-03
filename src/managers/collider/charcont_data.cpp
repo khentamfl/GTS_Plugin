@@ -224,9 +224,9 @@ namespace Gts {
 		}
 		auto key = orig_capsule;
 		auto result = this->capsule_data.try_emplace(key, orig_capsule);
-		if (result.second) {
-			(*result.first).second.SetOrigin(0.0, 0.0, -this->center);
-		}
+		// if (result.second) {
+		// 	(*result.first).second.SetOrigin(0.0, 0.0, -this->center);
+		// }
 	}
 
 	void CharContData::AddConvexVerts(hkpConvexVerticesShape* convex) {
@@ -236,9 +236,9 @@ namespace Gts {
 		}
 		auto key = convex;
 		auto result = this->convex_data.try_emplace(key, convex);
-		if (result.second) {
-			(*result.first).second.SetOrigin(0.0, 0.0, -this->center);
-		}
+		// if (result.second) {
+		// 	(*result.first).second.SetOrigin(0.0, 0.0, -this->center);
+		// }
 	}
 
 	void CharContData::AddList(hkpListShape* list) {
@@ -248,8 +248,8 @@ namespace Gts {
 		}
 		auto key = list;
 		auto result = this->list_data.try_emplace(key, list);
-		if (result.second) {
-			(*result.first).second.SetOrigin(0.0, 0.0, -this->center);
-		}
+		// if (result.second) {
+		// 	(*result.first).second.SetOrigin(0.0, 0.0, -this->center);
+		// }
 	}
 }
