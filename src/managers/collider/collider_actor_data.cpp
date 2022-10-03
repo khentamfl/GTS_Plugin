@@ -47,6 +47,10 @@ namespace {
 			for (auto& graph : animGraphManager->graphs) {
 				if (graph) {
 					auto& character = graph->characterInstance;
+					auto footik = character.footIkDriver.get();
+					if (footik) {
+						log::info("footik: {}", GetRawName(footik));
+					}
 					auto ragdollDriver = character.ragdollDriver.get();
 					if (ragdollDriver) {
 						auto ragdoll = ragdollDriver->ragdoll;
