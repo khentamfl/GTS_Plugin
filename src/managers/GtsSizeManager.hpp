@@ -32,17 +32,8 @@ namespace Gts {
 			float GetSizeHungerBonus(Actor* actor);
 			void ModSizeHungerBonus(Actor* actor, float amt);
 
-			void SetHitGrowth(Actor* actor, float amt);
-			float GetHitGrowth(Actor* actor);
-			void ModHitGrowth(Actor* actor, float amt);
-
-			void SetGrowthTime(Actor* actor, float amt);
-			float GetGrowthTime(Actor* actor);
-			void ModGrowthTime(Actor* actor, float amt);
-
 			void BalancedMode(bool Toggle);
 			
-
 		private:
 			std::map<Actor*, SizeManagerData> sizeData;
 	};
