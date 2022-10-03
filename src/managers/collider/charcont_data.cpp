@@ -134,10 +134,11 @@ namespace Gts {
 			data.ApplyScale(new_scale, vec_scale);
 		}
 		if (this->charCont) {
-			hkVector4 centerVec = hkVector4(0.0, 0.0, this->center, 0.0);
+			// hkVector4 centerVec = hkVector4(0.0, 0.0, this->center, 0.0);
 			// this->charCont->center = this->center * new_scale;
 			this->charCont->scale = this->scale * new_scale;
-			this->charCont->rotCenter = (this->rotCenter - centerVec) * vec_scale + centerVec;
+			// this->charCont->rotCenter = (this->rotCenter - centerVec) * vec_scale + centerVec;
+			this->charCont->rotCenter = this->rotCenter * vec_scale;
 		}
 	}
 
