@@ -66,6 +66,8 @@ namespace Gts {
 				PlaySound(GrowthSound, receiver, ReceiverScale/10, 0.0);
 				sizemanager.SetHitGrowth(receiver, 1.0);
 				sizemanager.SetGrowthTime(receiver, HealthMult);
+				log::info("GetGrowthTime of {} is {}", receiver->GetDisplayFullName(), sizemanager.GetGrowthTime(receiver));
+				log::info("GetHitGrowth of {} is {}", receiver->GetDisplayFullName(), sizemanager.GetHitGrowth(receiver));
 				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
 					auto LaughSound = Runtime::GetSingleton().LaughSound;
 					PlaySound(LaughSound, receiver, 1.0, 0.0); //FearCast()
@@ -75,15 +77,11 @@ namespace Gts {
 	}
 
 	void HitManager::Update() {
-			auto actor = PlayerCharacter::GetSingleton() ;
+			auto actor = PlayerCharacter::GetSingleton();
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
-			static Timer timer = Timer(2.0);
-			if (timer.ShouldRunFrame()) {
-				ConsoleLog::GetSingleton()->Print("OnUpdate Works.");
-			}
-			if (sizemanager.GetHitGrowth(actor) > 0.0) {
-				ConsoleLog::GetSingleton()->Print("GetHitWroth > 0.");
+			if (sizemanager.GetHitGrowth(actor) > 0) {
+				ConsoleLog::GetSingleton()->Print("GetHitGrowth > 0");
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float GrowthValue = HealthMult/9700;
 				auto& Persist = Persistent::GetSingleton();
