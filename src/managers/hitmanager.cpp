@@ -52,9 +52,9 @@ namespace Gts {
 		bool wasBashAttack = a_event->flags.all(TESHitEvent::Flag::kBashAttack);
 		bool wasHitBlocked = a_event->flags.all(TESHitEvent::Flag::kHitBlocked);
 
-		// Do something
+		// Apply it
 		
-		if (receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
+		if (!this->CanGrow && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
 			ConsoleLog::GetSingleton()->Print("First condition passed");
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
 				if (wasPowerAttack) {
@@ -63,7 +63,7 @@ namespace Gts {
 				else if (!wasPowerAttack) {
 					this->BonusPower = 1.0;
 				}
-				ConsoleLog::GetSingleton()->Print("Hit Initialized.");
+
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
 				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
@@ -73,15 +73,13 @@ namespace Gts {
 				auto GrowthSound = runtime.growthSound;
 
 				auto actor_data = Persist.GetData(receiver);
-				actor_data->half_life = 1.0/HealthPercentage;
+				actor_data->half_life = 1.0/HealthPercentage/this->BonusPower;
 
-				PlaySound(GrowthSound, receiver, ReceiverScale/20, 0.0);
+				PlaySound(GrowthSound, receiver, ReceiverScale/15, 0.0);
 
 				this->CanGrow = true;
 				this->GrowthTick +=GetHealthPercentage(receiver);
 
-				log::info("GetGrowthTime of {} is {}, HP mult: {}", receiver->GetDisplayFullName(), sizemanager.GetGrowthTime(receiver), HealthMult);
-				log::info("GetHitGrowth of {} is {}", receiver->GetDisplayFullName(), sizemanager.GetHitGrowth(receiver));
 				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
 					auto LaughSound = Runtime::GetSingleton().LaughSound;
 					PlaySound(LaughSound, receiver, 1.0, 0.0); //FearCast()
@@ -96,16 +94,14 @@ namespace Gts {
 			auto sizemanager = SizeManager::GetSingleton();
 			auto& Persist = Persistent::GetSingleton();
 			if (this->CanGrow) {
-				ConsoleLog::GetSingleton()->Print("GetHitGrowth > 0");
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
-				float GrowthValue = HealthMult/9700/this->BonusPower;
+				float GrowthValue = HealthMult/9700;
 				auto actor_data = Persist.GetData(actor);
 				
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
 				}
 				if (this->GrowthTick > 0.01) {
-					ConsoleLog::GetSingleton()->Print("Growth Started.");
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
 					this->GrowthTick -= 0.001 * TimeScale();
@@ -113,7 +109,6 @@ namespace Gts {
 					actor_data->half_life = 1.0;
 					this->CanGrow = false;
 					this->GrowthTick = 0.0;
-					ConsoleLog::GetSingleton()->Print("Growth Ended.");
 			}
 		}
 	}
