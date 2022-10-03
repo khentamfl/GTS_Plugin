@@ -22,23 +22,19 @@ namespace Gts {
 	}
 
 	void HitManager::HitEvent(const TESHitEvent* a_event) {
-		ConsoleLog::GetSingleton()->Print("Attempting Hit Event");
 		if (!a_event) {
-			ConsoleLog::GetSingleton()->Print("No Event, Returning");
 			return;
 		}
 		auto attacker_PTR = a_event->cause;
 		auto atacker_ref = attacker_PTR.get();
 		auto attacker = skyrim_cast<Actor*>(atacker_ref);
 		if (!attacker) {
-			ConsoleLog::GetSingleton()->Print("No Attacker, Returning");
 			return;
 		}
 		auto receiver_PTR = a_event->target;
 		auto receiver_ref = attacker_PTR.get();
 		auto receiver = skyrim_cast<Actor*>(receiver_ref);
 		if (!receiver) {
-			ConsoleLog::GetSingleton()->Print("No Receiver, Returning");
 			return;
 		}
 		auto runtime = Runtime::GetSingleton();
