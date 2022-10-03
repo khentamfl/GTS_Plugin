@@ -58,6 +58,7 @@ namespace Gts {
 
 	// Called when a papyrus hit event is fired
 	void EventListener::HitEvent(const TESHitEvent* evt) {
+		ConsoleLog::GetSingleton()->Print("Events.cpp: HitEvent");
 
 	}
 
@@ -126,6 +127,7 @@ namespace Gts {
 	void EventDispatcher::DoHitEvent(const TESHitEvent* evt) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
 			listener->HitEvent(evt);
+			ConsoleLog::GetSingleton()->Print("Reloader: EventDispatcher: DoHitEvent");
 		}
 	}
 	EventDispatcher& EventDispatcher::GetSingleton() {

@@ -22,6 +22,7 @@ namespace Gts {
 	{
 		if (evn) {
 			EventDispatcher::DoHitEvent(evn);
+			ConsoleLog::GetSingleton()->Print("Reloader: DoHitEvent");
 		}
 		return BSEventNotifyControl::kContinue;
 	}
