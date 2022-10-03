@@ -18,6 +18,12 @@ jobs:
         uses: lukka/run-vcpkg@v10
         with:
           vcpkgGitCommitId: 3d8f78171a2a37d461077bf8d063256b63e25a4f
+      - name: Cache Build
+        id: cache-build
+        uses: actions/cache@v3
+        with:
+          path: build
+          key: ${{ runner.os }}-${{ hashFiles('README.md', 'CMakeList.txt', 'vcpkg.json', 'vcpkg-configuration.json') }}
       - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
         uses: lukka/run-cmake@v10
         with:
@@ -29,13 +35,23 @@ jobs:
           mkdir contrib/Distribution/Plugin || exit 1
           if [ -d contrib/Distribution/PluginDebug ]; then
             if [ ! -d contrib/Distribution/PluginRelease ]; then
-              cp contrib/Distribution/PluginDebug/* contrib/Distribution/Plugin/
+              cp contrib/Distribution/PluginDebug/*.dll contrib/Distribution/Plugin/
+              cp contrib/Distribution/PluginDebug/*.pdb contrib/
+              rm -rf contrib/Distribution/PluginDebug
             fi
           fi
           if [ -d contrib/Distribution/PluginRelease ]; then
-            cp contrib/Distribution/PluginRelease/* contrib/Distribution/Plugin/
+            cp contrib/Distribution/PluginRelease/*.dll contrib/Distribution/Plugin/
+            cp contrib/Distribution/PluginRelease/*.pdb contrib/
+            rm -rf contrib/Distribution/PluginRelease
           fi
       - uses: actions/upload-artifact@v2
+        name: Upload package
         with:
           name: GTSPlugin
           path: "contrib/Distribution/*"
+      - uses: actions/upload-artifact@v2
+        name: Upload debug info
+        with:
+          name: GTSPluginDebugInfo
+          path: "contrib/*.pdb"
