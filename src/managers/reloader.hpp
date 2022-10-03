@@ -1,20 +1,20 @@
 #pragma once
 // Module that handles various reload events
-
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ReloadManager :
+	class ReloadManager : public EventListener,
 		public BSTEventSink<TESHitEvent>,
 		public BSTEventSink<TESObjectLoadedEvent>,
 		public BSTEventSink<TESResetEvent>,
 		public BSTEventSink<TESEquipEvent> {
 		public:
 			[[nodiscard]] static ReloadManager& GetSingleton() noexcept;
-			void Initialize();
+			void DataReady() override;
 
 		protected:
 			virtual BSEventNotifyControl ProcessEvent(const TESHitEvent * evn, BSTEventSource<TESHitEvent> * dispatcher) override;

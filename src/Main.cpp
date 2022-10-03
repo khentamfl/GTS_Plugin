@@ -13,6 +13,7 @@
 #include "managers/RandomGrowth.hpp"
 #include "managers/GtsQuest.hpp"
 #include "managers/GtsManager.hpp"
+#include "managers/reloader.hpp"
 #include "managers/camera.hpp"
 #include "managers/hitmanager.hpp"
 #include "data/runtime.hpp"
@@ -172,6 +173,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&SizeManager::GetSingleton()); // Manager Max Scale of everyone
 	EventDispatcher::AddListener(&HighHeelManager::GetSingleton()); // Applies high heels
 	EventDispatcher::AddListener(&CameraManager::GetSingleton()); // Edits the camera
+	EventDispatcher::AddListener(&ReloadManager::GetSingleton()); // Handles Skyrim Events
 
 	EventDispatcher::AddListener(&MagicManager::GetSingleton()); // Manages spells and size changes in general
 
