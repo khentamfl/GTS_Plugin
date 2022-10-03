@@ -56,6 +56,7 @@ namespace Gts {
 
 		if (receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
+				ConsoleLog::GetSingleton()->Print("Hit Initialized.");
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
 				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
@@ -74,10 +75,12 @@ namespace Gts {
 	}
 
 	void HitManager::Update() {
-		for (auto actor: find_actors()) {
+		for (auto actor: PlayerCharacter::GetSingleton()) {
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
+			
 			if (sizemanager.GetHitGrowth(actor) > 0.0) {
+				ConsoleLog::GetSingleton()->Print("OnUpdate Works.");
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float GrowthValue = HealthMult/9700;
 				auto& Persist = Persistent::GetSingleton();
@@ -88,12 +91,14 @@ namespace Gts {
 					GrowthValue *= 0.50;
 				}
 				if (sizemanager.GetGrowthTime(actor) > 0.01) {
-					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
+					ConsoleLog::GetSingleton()->Print("Growth Started.");
+					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
 				} else if (sizemanager.GetGrowthTime(actor) < 0.01) {
 					actor_data->half_life = 1.0;
 					sizemanager.SetHitGrowth(actor, 0.0);
 					sizemanager.SetGrowthTime(actor, 0.0);
+					ConsoleLog::GetSingleton()->Print("Growth Ended.");
 				}
 			}
 		}
