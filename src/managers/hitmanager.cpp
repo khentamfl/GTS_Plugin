@@ -54,7 +54,7 @@ namespace Gts {
 
 		// Apply it
 		
-		if (this->CanGrow == false && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
+		if (this->CanGrow == false && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
 				this->CanGrow = true;
 				if (wasPowerAttack) {
