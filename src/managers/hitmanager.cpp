@@ -99,6 +99,7 @@ namespace Gts {
 				ConsoleLog::GetSingleton()->Print("GetHitGrowth > 0");
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float GrowthValue = HealthMult/9700/this->BonusPower;
+				auto actor_data = Persist.GetData(receiver);
 				
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
@@ -109,7 +110,6 @@ namespace Gts {
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
 					this->GrowthTick -= 0.001 * TimeScale();
 				} else if (this->GrowthTick < 0.01) {
-					auto actor_data = Persist.GetData(receiver);
 					actor_data->half_life = 1.0;
 					this->CanGrow = false;
 					this->GrowthTick = 0.0;
