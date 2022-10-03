@@ -77,7 +77,7 @@ namespace Gts {
 	}
 
 	void HitManager::Update() {
-			auto actor = PlayerCharacter::GetSingleton() 
+			auto actor = PlayerCharacter::GetSingleton() ;
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
 			
