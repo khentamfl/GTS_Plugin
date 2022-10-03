@@ -50,12 +50,16 @@ namespace Gts {
 		bool wasSneakAttack = a_event->flags.all(TESHitEvent::Flag::kSneakAttack);
 		bool wasBashAttack = a_event->flags.all(TESHitEvent::Flag::kBashAttack);
 		bool wasHitBlocked = a_event->flags.all(TESHitEvent::Flag::kHitBlocked);
+		float BonusPower = 1.0;
 
 		// Do something
 		
 		if (receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
 			ConsoleLog::GetSingleton()->Print("First condition passed");
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
+				if (wasPowerAttack) {
+					BonusPower = 3.0;
+				}
 				ConsoleLog::GetSingleton()->Print("Hit Initialized.");
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
@@ -65,8 +69,8 @@ namespace Gts {
 				auto GrowthSound = runtime.growthSound;
 				PlaySound(GrowthSound, receiver, ReceiverScale/10, 0.0);
 				sizemanager.SetHitGrowth(receiver, 1.0);
-				sizemanager.SetGrowthTime(receiver, HealthMult);
-				log::info("GetGrowthTime of {} is {}", receiver->GetDisplayFullName(), sizemanager.GetGrowthTime(receiver));
+				sizemanager.SetGrowthTime(receiver, HealthMult * BonusPower);
+				log::info("GetGrowthTime of {} is {}, HP mult: {}", receiver->GetDisplayFullName(), sizemanager.GetGrowthTime(receiver), HealthMult);
 				log::info("GetHitGrowth of {} is {}", receiver->GetDisplayFullName(), sizemanager.GetHitGrowth(receiver));
 				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
 					auto LaughSound = Runtime::GetSingleton().LaughSound;
