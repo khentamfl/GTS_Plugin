@@ -73,7 +73,7 @@ namespace Gts {
 				PlaySound(GrowthSound, receiver, ReceiverScale/30, 0.0);
 				this->CanGrow = true;
 				sizemanager.SetHitGrowth(receiver, 1.0);
-				sizemanager.SetGrowthTime(receiver, GetHealthPercentage);
+				sizemanager.SetGrowthTime(receiver, GetHealthPercentage(receiver));
 				log::info("GetGrowthTime of {} is {}, HP mult: {}", receiver->GetDisplayFullName(), sizemanager.GetGrowthTime(receiver), HealthMult);
 				log::info("GetHitGrowth of {} is {}", receiver->GetDisplayFullName(), sizemanager.GetHitGrowth(receiver));
 				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
