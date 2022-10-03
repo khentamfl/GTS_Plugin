@@ -27,10 +27,12 @@ namespace Gts {
 			this->convex_data.clear();
 			this->list_data.clear();
 			this->center = 0.0;
+			this->scale = 0.0;
 
 			if (charCont) {
 				this->center = charCont->center;
 				this->rotCenter = charCont->rotCenter;
+				this->scale = charCont->scale;
 			}
 		}
 	}
