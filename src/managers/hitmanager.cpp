@@ -55,6 +55,7 @@ namespace Gts {
 		// Do something
 
 		if (receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
+			ConsoleLog::GetSingleton()->Print("First condition passed");
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
 				ConsoleLog::GetSingleton()->Print("Hit Initialized.");
 				float ReceiverScale = get_visual_scale(receiver);
