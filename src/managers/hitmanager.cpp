@@ -32,7 +32,7 @@ namespace Gts {
 			return;
 		}
 		auto receiver_PTR = a_event->target;
-		auto receiver_ref = attacker_PTR.get();
+		auto receiver_ref = receiver_PTR.get();
 		auto receiver = skyrim_cast<Actor*>(receiver_ref);
 		if (!receiver) {
 			return;
