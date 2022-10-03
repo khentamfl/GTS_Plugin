@@ -53,6 +53,7 @@ namespace Gts {
 		bool wasHitBlocked = a_event->flags.all(TESHitEvent::Flag::kHitBlocked);
 
 		// Do something
+		ConsoleLog::GetSingleton()->Print("Hit Detection is fine.");
 
 		if (receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
 			ConsoleLog::GetSingleton()->Print("First condition passed");
