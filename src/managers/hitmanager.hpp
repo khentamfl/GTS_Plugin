@@ -18,6 +18,6 @@ namespace Gts
 			private:
 			bool CanGrow = false;
 			inline static float BonusPower = 1.0;
-			inline static float GrowthTick = 1.0;
+			inline static float GrowthTick = 0.0;
 	};
 }
