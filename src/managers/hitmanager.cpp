@@ -50,7 +50,6 @@ namespace Gts {
 		bool wasSneakAttack = a_event->flags.all(TESHitEvent::Flag::kSneakAttack);
 		bool wasBashAttack = a_event->flags.all(TESHitEvent::Flag::kBashAttack);
 		bool wasHitBlocked = a_event->flags.all(TESHitEvent::Flag::kHitBlocked);
-		float BonusPower = 1.0;
 
 		// Do something
 		
@@ -58,19 +57,23 @@ namespace Gts {
 			ConsoleLog::GetSingleton()->Print("First condition passed");
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
 				if (wasPowerAttack) {
-					BonusPower = 3.0;
+					this->BonusPower = 3.0;
+				}
+				else if (!wasPowerAttack) {
+					this->BonusPower = 1.0;
 				}
 				ConsoleLog::GetSingleton()->Print("Hit Initialized.");
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
 				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
+				float HealthPercentage = GetHealthPercentage(receiver);
 				float SizeDifference = ReceiverScale/DealerScale;
 				float LaughChance = rand() % 12;
 				auto GrowthSound = runtime.growthSound;
-				PlaySound(GrowthSound, receiver, ReceiverScale/10, 0.0);
+				PlaySound(GrowthSound, receiver, ReceiverScale/30, 0.0);
 				this->CanGrow = true;
 				sizemanager.SetHitGrowth(receiver, 1.0);
-				sizemanager.SetGrowthTime(receiver, HealthMult * BonusPower);
+				sizemanager.SetGrowthTime(receiver, GetHealthPercentage);
 				log::info("GetGrowthTime of {} is {}, HP mult: {}", receiver->GetDisplayFullName(), sizemanager.GetGrowthTime(receiver), HealthMult);
 				log::info("GetHitGrowth of {} is {}", receiver->GetDisplayFullName(), sizemanager.GetHitGrowth(receiver));
 				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
@@ -88,11 +91,10 @@ namespace Gts {
 			if (this->CanGrow) {
 				ConsoleLog::GetSingleton()->Print("GetHitGrowth > 0");
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
-				float GrowthValue = HealthMult/9700;
+				float GrowthValue = HealthMult/9700/this->BonusPower;
 				auto& Persist = Persistent::GetSingleton();
 				auto actor_data = Persist.GetData(actor);
-				float delta_time = Time::WorldTimeDelta();
-				actor_data->half_life = 1.0 - HealthMult;
+				actor_data->half_life = 1.0/GetHealthPercentage(actor);
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
 				}
