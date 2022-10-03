@@ -120,6 +120,7 @@ namespace Gts {
 		this->AdditionalAbsorption = find_form<BGSPerk>("GTS.esp|151518");
 
 		this->hhBonus = find_form<BGSPerk>(Config::GetSingleton().GetPerks().GetHHBonus());
+		this->StaggerImmunity = find_form<BGSPerk>("GTS.esp|0AA3B2");
 		this->PerkPart1 = find_form<BGSPerk>("GTS.esp|16081F");
 		this->PerkPart2 = find_form<BGSPerk>("GTS.esp|160820");
 		this->ExtraGrowth = find_form<BGSPerk>("GTS.esp|332563");

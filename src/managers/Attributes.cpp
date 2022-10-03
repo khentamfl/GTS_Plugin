@@ -204,6 +204,15 @@ namespace {
 			if (AllowTimeChange == 0.00) {
 				BoostSpeedMulti(Player, bonusSpeedMultiplier);
 			}
+			if (!Player->HasPerk(runtime.StaggerImmunity) && size > 1.33)
+			{
+				Player->AddPerk(runtime.StaggerImmunity);
+				return; 
+			}
+			else if (size < 1.33 && Player->HasPerk(runtime.StaggerImmunity))
+			{
+				Player->RemovePerk(runtime.StaggerImmunity);
+			}
 		}
 	}
 

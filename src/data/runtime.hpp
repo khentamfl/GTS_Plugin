@@ -102,6 +102,7 @@ namespace Gts {
 
 			BGSPerk* GrowthOnHitPerk = nullptr;
 			BGSPerk* AdditionalAbsorption = nullptr;
+			BGSPerk* StaggerImmunity = nullptr;
 			BGSPerk* hhBonus = nullptr;
 			BGSPerk* PerkPart1 = nullptr;
 			BGSPerk* PerkPart2 = nullptr;
