@@ -70,10 +70,15 @@ namespace Gts {
 				float SizeDifference = ReceiverScale/DealerScale;
 				float LaughChance = rand() % 12;
 				auto GrowthSound = runtime.growthSound;
-				PlaySound(GrowthSound, receiver, ReceiverScale/30, 0.0);
+
+				auto actor_data = Persist.GetData(receiver);
+				actor_data->half_life = 1.0/HealthPercentage;
+
+				PlaySound(GrowthSound, receiver, ReceiverScale/20, 0.0);
+
 				this->CanGrow = true;
-				sizemanager.SetHitGrowth(receiver, 1.0);
-				sizemanager.SetGrowthTime(receiver, GetHealthPercentage(receiver));
+				this->GrowthTick +=GetHealthPercentage(receiver);
+
 				log::info("GetGrowthTime of {} is {}, HP mult: {}", receiver->GetDisplayFullName(), sizemanager.GetGrowthTime(receiver), HealthMult);
 				log::info("GetHitGrowth of {} is {}", receiver->GetDisplayFullName(), sizemanager.GetHitGrowth(receiver));
 				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
@@ -93,21 +98,19 @@ namespace Gts {
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float GrowthValue = HealthMult/9700/this->BonusPower;
 				auto& Persist = Persistent::GetSingleton();
-				auto actor_data = Persist.GetData(actor);
-				actor_data->half_life = 1.0/GetHealthPercentage(actor);
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
 				}
-				if (sizemanager.GetGrowthTime(actor) > 0.01) {
+				if (this->GrowthTick > 0.01) {
 					ConsoleLog::GetSingleton()->Print("Growth Started.");
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
-					sizemanager.ModGrowthTime(actor, -0.001);
-				} else if (sizemanager.GetGrowthTime(actor) < 0.01) {
+					this->GrowthTick -= 0.001 * TimeScale();
+				} else if (this->GrowthTick < 0.01) {
+					auto actor_data = Persist.GetData(receiver);
 					actor_data->half_life = 1.0;
 					this->CanGrow = false;
-					sizemanager.SetHitGrowth(actor, 0.0);
-					sizemanager.SetGrowthTime(actor, 0.0);
+					this->GrowthTick = 0.0;
 					ConsoleLog::GetSingleton()->Print("Growth Ended.");
 			}
 		}

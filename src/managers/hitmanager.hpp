@@ -17,6 +17,7 @@ namespace Gts
 			void Update();
 			private:
 			bool CanGrow = false;
-			float BonusPower = 1.0;
+			inline static float BonusPower = 1.0;
+			inline static float GrowthTick = 1.0;
 	};
 }
