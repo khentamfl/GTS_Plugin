@@ -54,7 +54,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster);
+		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
 		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (caster->GetLevel()/target->GetLevel())) * progression_multiplier;
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
@@ -87,7 +87,9 @@ namespace Gts {
 
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		
+		float modifier = Runtime::GetSingleton().BalancedMode->value + 1.0;
+		scale_factor /= modifier;
+		bonus /= modifier;
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
 		
 	}

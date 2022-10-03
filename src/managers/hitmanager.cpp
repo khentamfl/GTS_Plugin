@@ -54,9 +54,9 @@ namespace Gts {
 
 		// Apply it
 		
-		if (!this->CanGrow && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
-			ConsoleLog::GetSingleton()->Print("First condition passed");
+		if (this->CanGrow == false && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && sizemanager.GetHitGrowth(receiver) < 0.01) {
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
+				this->CanGrow = true;
 				if (wasPowerAttack) {
 					this->BonusPower = 3.0;
 				}
@@ -77,7 +77,7 @@ namespace Gts {
 
 				PlaySound(GrowthSound, receiver, ReceiverScale/15, 0.0);
 
-				this->CanGrow = true;
+				
 				this->GrowthTick +=GetHealthPercentage(receiver);
 
 				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
@@ -94,8 +94,7 @@ namespace Gts {
 			auto sizemanager = SizeManager::GetSingleton();
 			auto& Persist = Persistent::GetSingleton();
 			if (this->CanGrow) {
-				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
-				float GrowthValue = HealthMult/9700;
+				float GrowthValue = 9700 * runtime.BalancedMode->value + 1.0/GetHealthPercentage(actor);
 				auto actor_data = Persist.GetData(actor);
 				
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {

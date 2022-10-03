@@ -22,13 +22,9 @@ namespace {
 			return false;
 		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		int Requirement = 200 * Gigantism;
+		int Requirement = 200 * Gigantism * runtime.BalancedMode->value + 1.0;
 		int random = rand() % Requirement;
-		if (Gigantism) {
-			//log::info("Requirement: {}, Gigantism: {}", Requirement, Gigantism);
-		}
 		int decide_chance = 1;
-		//log::info("Random Growth random: {}", random);
 		if (random <= decide_chance && Player->HasPerk(growthPerk)) {
 			return true;
 		} else {
