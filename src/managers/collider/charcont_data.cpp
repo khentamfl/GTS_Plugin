@@ -132,8 +132,7 @@ namespace Gts {
 			data.ApplyScale(new_scale, vec_scale);
 		}
 		if (this->charCont) {
-			//this->charCont->center = this->center * new_scale;
-			this->charCont->pitchMult = this->pitchMult * new_scale;
+			this->charCont->center = this->center * -new_scale;
 			this->charCont->rotCenter = this->rotCenter * vec_scale;
 		}
 	}
