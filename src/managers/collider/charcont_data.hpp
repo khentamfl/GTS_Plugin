@@ -36,6 +36,7 @@ namespace Gts {
 			std::unordered_map<hkpConvexVerticesShape*, ConvexData> convex_data;
 			std::unordered_map<hkpListShape*, ListData> list_data;
 			float center = 0.0;
+			float scale = 0.0;
 			hkVector4 rotCenter;
 
 			mutable std::mutex _lock;

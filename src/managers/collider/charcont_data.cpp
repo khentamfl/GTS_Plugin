@@ -27,10 +27,12 @@ namespace Gts {
 			this->convex_data.clear();
 			this->list_data.clear();
 			this->center = 0.0;
+			this->scale = 0.0;
 
 			if (charCont) {
 				this->center = charCont->center;
 				this->rotCenter = charCont->rotCenter;
+				this->scale = charCont->scale;
 			}
 		}
 	}
@@ -132,7 +134,8 @@ namespace Gts {
 			data.ApplyScale(new_scale, vec_scale);
 		}
 		if (this->charCont) {
-			this->charCont->center = this->center * new_scale;
+			//this->charCont->center = this->center * -new_scale;
+			this->charCont->scale = this->scale * new_scale;
 			this->charCont->rotCenter = this->rotCenter * vec_scale;
 		}
 	}
