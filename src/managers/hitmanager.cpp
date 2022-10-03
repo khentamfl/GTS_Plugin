@@ -39,7 +39,7 @@ namespace Gts {
 		}
 		auto runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
-		auto Persist = Persistent::GetSingleton();
+		auto& Persist = Persistent::GetSingleton();
 		auto HitIdForm = a_event->source;
 		auto HitId = TESForm::LookupByID(HitIdForm);
 
@@ -94,7 +94,7 @@ namespace Gts {
 			auto actor = PlayerCharacter::GetSingleton();
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
-			auto Persist = Persistent::GetSingleton();
+			auto& Persist = Persistent::GetSingleton();
 			if (this->CanGrow) {
 				ConsoleLog::GetSingleton()->Print("GetHitGrowth > 0");
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
@@ -109,7 +109,6 @@ namespace Gts {
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
 					this->GrowthTick -= 0.001 * TimeScale();
 				} else if (this->GrowthTick < 0.01) {
-					
 					auto actor_data = Persist.GetData(receiver);
 					actor_data->half_life = 1.0;
 					this->CanGrow = false;
