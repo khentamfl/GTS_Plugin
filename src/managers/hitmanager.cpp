@@ -78,9 +78,12 @@ namespace Gts {
 			auto actor = PlayerCharacter::GetSingleton() ;
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
-			
-			if (sizemanager.GetHitGrowth(actor) > 0.0) {
+			static Timer timer = Timer(2.0);
+			if (timer.ShouldRunFrame()) {
 				ConsoleLog::GetSingleton()->Print("OnUpdate Works.");
+			}
+			if (sizemanager.GetHitGrowth(actor) > 0.0) {
+				ConsoleLog::GetSingleton()->Print("GetHitWroth > 0.");
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float GrowthValue = HealthMult/9700;
 				auto& Persist = Persistent::GetSingleton();
