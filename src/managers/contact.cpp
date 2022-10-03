@@ -154,7 +154,7 @@ namespace Gts {
 		auto objref_b = rigid_b->GetUserData();
 		if (!objref_b) return;
 		if (objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE) {
-			log::info("Both collisions are actors");
+			//log::info("Both collisions are actors");
 			Actor* actor_a = skyrim_cast<Actor*>(objref_a);
 			if (!actor_a) return;
 			Actor* actor_b = skyrim_cast<Actor*>(objref_b);
@@ -164,18 +164,18 @@ namespace Gts {
 			if (!name_a) return;
 			auto name_b = actor_b->GetDisplayFullName();
 			if (!name_b) return;
-			log::info("Colliding: {} with: {}", name_a, name_b);
+			//log::info("Colliding: {} with: {}", name_a, name_b);
 			NiAVObject* node_a = getNodeFromCollidable(rigid_a);
 			if (!node_a) return;
 			NiAVObject* node_b = getNodeFromCollidable(rigid_b);
 			if (!node_b) return;
 			auto node_name_a = node_a->name;
 			if (!node_name_a.empty()) {
-				log::info("  - Node A: {}", node_name_a.c_str());
+				//log::info("  - Node A: {}", node_name_a.c_str());
 			}
 			auto node_name_b = node_b->name;
 			if (!node_name_b.empty()) {
-				log::info("  - Node B: {}", node_name_b.c_str());
+				//log::info("  - Node B: {}", node_name_b.c_str());
 			}
 		}
 		// log::info("ContactPointCallback");

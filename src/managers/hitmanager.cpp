@@ -68,6 +68,7 @@ namespace Gts {
 				float LaughChance = rand() % 12;
 				auto GrowthSound = runtime.growthSound;
 				PlaySound(GrowthSound, receiver, ReceiverScale/10, 0.0);
+				this->CanGrow = true;
 				sizemanager.SetHitGrowth(receiver, 1.0);
 				sizemanager.SetGrowthTime(receiver, HealthMult * BonusPower);
 				log::info("GetGrowthTime of {} is {}, HP mult: {}", receiver->GetDisplayFullName(), sizemanager.GetGrowthTime(receiver), HealthMult);
@@ -84,7 +85,7 @@ namespace Gts {
 			auto actor = PlayerCharacter::GetSingleton();
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
-			if (sizemanager.GetHitGrowth(actor) > 0) {
+			if (this->CanGrow) {
 				ConsoleLog::GetSingleton()->Print("GetHitGrowth > 0");
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float GrowthValue = HealthMult/9700;
@@ -99,8 +100,10 @@ namespace Gts {
 					ConsoleLog::GetSingleton()->Print("Growth Started.");
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
+					sizemanager.ModGrowthTime(actor, -0.001);
 				} else if (sizemanager.GetGrowthTime(actor) < 0.01) {
 					actor_data->half_life = 1.0;
+					this->CanGrow = false;
 					sizemanager.SetHitGrowth(actor, 0.0);
 					sizemanager.SetGrowthTime(actor, 0.0);
 					ConsoleLog::GetSingleton()->Print("Growth Ended.");

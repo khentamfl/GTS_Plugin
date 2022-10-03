@@ -15,5 +15,7 @@ namespace Gts
 
 			void HitEvent(const TESHitEvent* evt) override;
 			void Update();
+			private:
+			bool CanGrow = false;
 	};
 }

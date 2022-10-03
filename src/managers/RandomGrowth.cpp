@@ -25,10 +25,10 @@ namespace {
 		int Requirement = 200 * Gigantism;
 		int random = rand() % Requirement;
 		if (Gigantism) {
-			log::info("Requirement: {}, Gigantism: {}", Requirement, Gigantism);
+			//log::info("Requirement: {}, Gigantism: {}", Requirement, Gigantism);
 		}
 		int decide_chance = 1;
-		log::info("Random Growth random: {}", random);
+		//log::info("Random Growth random: {}", random);
 		if (random <= decide_chance && Player->HasPerk(growthPerk)) {
 			return true;
 		} else {
@@ -61,7 +61,7 @@ namespace Gts {
 	void RandomGrowth::CallShake(float value) {
 		this->CallInputGrowth = true;
 		this->ShakePower = value;
-		log::info("ShakePower is {}", this->ShakePower);
+		//log::info("ShakePower is {}", this->ShakePower);
 	}
 	void RandomGrowth::Update() {
 		auto player = PlayerCharacter::GetSingleton();
@@ -91,7 +91,7 @@ namespace Gts {
 			if (timer.ShouldRunFrame() && this->ShakePower > 6.0) {
 				PlaySound(runtime.xlRumbleL, player, this->ShakePower/10, 0.0);
 			}
-			log::info("Calling Growth Shake, power: {}", this->ShakePower);
+			//log::info("Calling Growth Shake, power: {}", this->ShakePower);
 			if (this->growth_time_input >= actor_data->half_life) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 				this->CallInputGrowth = false;
 				this->growth_time_input = 0.0;
@@ -104,7 +104,7 @@ namespace Gts {
 			static Timer timer = Timer(3.0); // Run every 3.0s or as soon as we can
 			if (timer.ShouldRun()) {
 				if (ShouldGrow()) {
-					log::info("Random Growth True");
+					//log::info("Random Growth True");
 					// Start growing
 					this->growth_time = 0.0;
 					this->AllowGrowth = true;
