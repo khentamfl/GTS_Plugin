@@ -70,7 +70,7 @@ namespace {
 		if (timer.ShouldRunFrame()) {
 			actor->SetActorValue(ActorValue::kAttackDamageMult, bonus);
 		}
-		if (actor->FormID == 0x14) {
+		if (actor->formID == 0x14) {
 			log::info("Actor is: {}, Scale: {}, Pure Mult: {}, Mult: {}", actor->GetDisplayFullName(), scale, power, bonus);
 		}
 	}
