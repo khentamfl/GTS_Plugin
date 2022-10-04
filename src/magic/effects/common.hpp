@@ -87,7 +87,7 @@ namespace Gts {
 
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		float modifier = SizeManager::GetSingleton().BalancedMode();
+		float modifier = 1.0; //SizeManager::GetSingleton().BalancedMode();
 		scale_factor /= modifier;
 		bonus /= modifier;
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
