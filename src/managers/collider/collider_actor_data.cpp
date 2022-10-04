@@ -47,15 +47,30 @@ namespace {
 			for (auto& graph : animGraphManager->graphs) {
 				if (graph) {
 					auto& character = graph->characterInstance;
-					auto footik = character.footIkDriver.get();
-					if (footik) {
-						log::info("footik: {}", GetRawName(footik));
-					}
 					auto ragdollDriver = character.ragdollDriver.get();
 					if (ragdollDriver) {
 						auto ragdoll = ragdollDriver->ragdoll;
 						if (ragdoll) {
 							return ragdoll;
+						}
+					}
+				}
+			}
+		}
+		return nullptr;
+	}
+
+	hkbFootIkDriver* GetFootIk(Actor* actor) {
+		BSAnimationGraphManagerPtr animGraphManager;
+		if (actor->GetAnimationGraphManager(animGraphManager)) {
+			for (auto& graph : animGraphManager->graphs) {
+				if (graph) {
+					auto& character = graph->characterInstance;
+					auto footik_ref = character.footIkDriver.get();
+					if (footik_ref) {
+						auto footik = skyrim_cast<hkbFootIkDriver*>(footik_ref);
+						if (footik) {
+							return footik;
 						}
 					}
 				}
@@ -83,6 +98,7 @@ namespace Gts {
 	void ColliderActorData::ApplyScale(const float& new_scale, const hkVector4& vec_scale) {
 		this->ragdollData.ApplyScale(new_scale, vec_scale);
 		this->charContData.ApplyScale(new_scale, vec_scale);
+		this->footIkData.ApplyScale(new_scale, vec_scale);
 	}
 
 	void ColliderActorData::ApplyPose(Actor* actor, const float& new_scale) {
@@ -96,11 +112,13 @@ namespace Gts {
 	void ColliderActorData::Update(Actor* actor, std::uint64_t last_reset_frame) {
 		auto charController = actor->GetCharController();
 		auto ragdoll = GetRagdoll(actor);
+		auto footIk = GetFootIk(actor);
 
 		bool needs_reset = this->last_update_frame.exchange(last_reset_frame) < last_reset_frame;
 		bool charControllerChanged = this->charContData.charCont != charController;
 		bool ragdollChanged = this->ragdollData.ragdoll != ragdoll;
-		if (needs_reset || charControllerChanged || ragdollChanged ) {
+		bool footIkChanged = this->footIkData.ik != footIk;
+		if (needs_reset || charControllerChanged || ragdollChanged || footIkChanged ) {
 			this->UpdateColliders(actor);
 		}
 
@@ -142,6 +160,10 @@ namespace Gts {
 		auto ragdoll = GetRagdoll(actor);
 		this->AddRagdoll(ragdoll);
 
+		// Search footIK
+		auto ik = GetFootIk(actor);
+		this->AddFootIk(ik);
+
 		// Search CharControllers
 		auto charController = actor->GetCharController();
 		this->AddCharController(charController);
@@ -158,6 +180,10 @@ namespace Gts {
 
 	void ColliderActorData::AddCharController(bhkCharacterController* charController) {
 		this->charContData.UpdateColliders(charController);
+	}
+
+	void ColliderActorData::AddFootIk(hkbFootIkDriver* ik) {
+		this->footIkData.ChangeIk(ik);
 	}
 
 }

@@ -3,6 +3,7 @@
 #include <atomic>
 #include "managers/collider/charcont_data.hpp"
 #include "managers/collider/ragdoll_data.hpp"
+#include "managers/collider/footIK.hpp"
 
 
 using namespace std;
@@ -24,6 +25,7 @@ namespace Gts {
 			void PruneColliders(Actor* actor);
 			void AddRagdoll(hkaRagdollInstance* ragdoll);
 			void AddCharController(bhkCharacterController* controller);
+			void AddFootIk(hkbFootIkDriver* ik);
 
 		private:
 			mutable std::mutex _lock;
@@ -34,5 +36,6 @@ namespace Gts {
 
 			RagdollData ragdollData;
 			CharContData charContData;
+			FootIkData footIkData;
 	};
 }
