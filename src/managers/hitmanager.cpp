@@ -94,7 +94,10 @@ namespace Gts {
 			auto sizemanager = SizeManager::GetSingleton();
 			auto& Persist = Persistent::GetSingleton();
 			if (this->CanGrow) {
-				float GrowthValue = (GetHealthPercentage(actor)/9700) * (Runtime.BalanceMode->value + 1.0);
+				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
+				float HealthPercentage = GetHealthPercentage(actor);
+				float GrowthValue = (HealthMult/9700) * (Runtime.BalanceMode->value + 1.0);
+				log::info("Growth Value is: {}, Health Mult is: {}, HP Percentage is: {}", GrowthValue, HealthMult, HealthPercentage);
 				auto actor_data = Persist.GetData(actor);
 				
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
