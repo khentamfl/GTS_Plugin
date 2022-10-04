@@ -25,6 +25,7 @@ namespace Gts {
 		}
 		this->ik = ik;
 		if (this->ik) {
+			log::info("driver memSizeAndFlags: {:X}", this->ik->memSizeAndFlags);
 			this->ik->AddReference();
 
 			this->UpdateColliders(this->ik);

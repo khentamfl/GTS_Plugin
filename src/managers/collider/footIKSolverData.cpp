@@ -9,6 +9,7 @@ namespace Gts {
 	FootIkSolverData::FootIkSolverData(hkaFootPlacementIkSolver* solver) {
 		this->solver = solver;
 		this->solver->AddReference();
+		log::info("solver memSizeAndFlags: {:X}", this->solver->memSizeAndFlags);
 		this->m_footEndLS = solver->m_setup.m_footEndLS;
 		this->m_footPlantedAnkleHeightMS = solver->m_setup.m_footPlantedAnkleHeightMS;
 		this->m_footRaisedAnkleHeightMS = solver->m_setup.m_footRaisedAnkleHeightMS;
