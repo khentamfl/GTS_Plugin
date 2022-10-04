@@ -90,11 +90,11 @@ namespace Gts {
 //===============Balance Mode 
 	float SizeManager::BalancedMode()
 	{
-		if (GtsManager::GetSingleton().balancemode) {
+		if (Runtime::GetSingleton().BalanceMode->value >= 1.0) {
 			log::info("Balance Mode True");
 			return 2.0;
 		}
-		else if (!GtsManager::GetSingleton().balancemode) {
+		else if (Runtime::GetSingleton().BalanceMode->value < 1.0) {
 			log::info("Balance Mode False");
 			return 1.0;
 		}

@@ -134,14 +134,6 @@ namespace {
 	void SetExperimentFloat(StaticFunctionTag*, float value) {
 		GtsManager::GetSingleton().experiment = value;
 	}
-
-	bool GetBalanceMode(StaticFunctionTag*) {
-		return GtsManager::GetSingleton().balancemode;
-	}
-
-	void SetBalanceMode(StaticFunctionTag*, bool enabled) {
-		GtsManager::GetSingleton().balancemode = enabled;
-	}
 }
 
 namespace Gts {
@@ -169,8 +161,6 @@ namespace Gts {
 		vm->RegisterFunction("SetTremorScaleNPC", PapyrusClass, SetTremorScaleNPC);
 		vm->RegisterFunction("GetExperimentFloat", PapyrusClass, GetExperimentFloat);
 		vm->RegisterFunction("SetExperimentFloat", PapyrusClass, SetExperimentFloat);
-		vm->RegisterFunction("GetBalanceMode", PapyrusClass, GetBalanceMode);
-		vm->RegisterFunction("SetBalanceMode", PapyrusClass, SetBalanceMode);
 
 		return true;
 	}
