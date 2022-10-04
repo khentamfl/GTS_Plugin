@@ -26,7 +26,7 @@ namespace Gts {
 			[[nodiscard]] static GtsManager& GetSingleton() noexcept;
 
 			float experiment = 1.0;
-			static bool balancemode = false;
+			inline static bool balancemode = false;
 
 			virtual void Update() override;
 
