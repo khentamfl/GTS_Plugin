@@ -9,7 +9,11 @@ namespace Gts {
 	FootIkSolverData::FootIkSolverData(hkaFootPlacementIkSolver* solver) {
 		this->solver = solver;
 		this->solver->AddReference();
-
+		if (solver->m_setup.m_skeleton) {
+			log::info("Checking: {}, m_skeleton: {}", reinterpret_cast<std::uintptr_t>(solver), GetRawName(solver->m_setup.m_skeleton));
+		} else {
+			log::info("Checking: {}", reinterpret_cast<std::uintptr_t>(solver));
+		}
 		this->m_footEndLS = solver->m_setup.m_footEndLS;
 		this->m_footPlantedAnkleHeightMS = solver->m_setup.m_footPlantedAnkleHeightMS;
 		this->m_footRaisedAnkleHeightMS = solver->m_setup.m_footRaisedAnkleHeightMS;
