@@ -88,7 +88,7 @@ namespace Gts {
 	}
 
 //===============Balance Mode 
-	void SizeManager::BalancedMode()
+	float SizeManager::BalancedMode()
 	{
 		if (GtsManager::GetSingleton().balancemode) {
 			log::info("Balance Mode True");

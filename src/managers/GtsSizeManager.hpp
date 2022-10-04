@@ -32,7 +32,7 @@ namespace Gts {
 			float GetSizeHungerBonus(Actor* actor);
 			void ModSizeHungerBonus(Actor* actor, float amt);
 
-			void BalancedMode(bool Toggle);
+			float BalancedMode();
 			
 		private:
 			std::map<Actor*, SizeManagerData> sizeData;
