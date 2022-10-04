@@ -105,7 +105,7 @@ namespace Gts {
 				Runtime::GetSingleton().HighHeelDamage->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
 				// Feel free to remove it once we move it to DLL completely ^ 
 			}
-			else if {actor->formID == 0x14 && base_hh <= 0 } {
+			else if (actor->formID == 0x14 && base_hh <= 0) {
 				Runtime::GetSingleton().HighHeelDamage->value = 1.0;
 			}
 		}
