@@ -135,12 +135,12 @@ namespace {
 		GtsManager::GetSingleton().experiment = value;
 	}
 
-	void SetBalanceMode(StaticFunctionTag*, bool enabled) {
-		GtsManager::GetSingleton().balancemode = enabled;
+	bool GetBalanceMode(StaticFunctionTag*) {
+		return GtsManager::GetSingleton().balancemode;
 	}
 
-	bool GetBalanceMode(StaticFunctionTag*){
-		return GtsManager::GetSingleton().balancemode;
+	void SetBalanceMode(StaticFunctionTag*, bool enabled) {
+		GtsManager::GetSingleton().balancemode = enabled;
 	}
 }
 
