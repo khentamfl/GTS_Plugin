@@ -68,7 +68,7 @@ namespace {
 		float bonus = scale * power;
 		static Timer timer = Timer(0.15);
 		if (timer.ShouldRunFrame()) {
-			actor->SetActorValue(ActorValue::kAttackDamageMult, bonus);
+			actor->SetBaseActorValue(ActorValue::kAttackDamageMult, bonus);
 		}
 		if (actor->formID == 0x14) {
 			log::info("Actor is: {}, Scale: {}, Pure Mult: {}, Mult: {}", actor->GetDisplayFullName(), scale, power, bonus);
