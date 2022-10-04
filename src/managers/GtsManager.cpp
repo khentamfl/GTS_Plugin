@@ -331,12 +331,12 @@ namespace {
 			if (actor->formID == 0x14 && !actor->IsInCombat()) {
 				game_mode_int = 4; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
-					shrinkRate = 0.0046 / (1.0 * (BalanceMode));
+					shrinkRate = 0.0086 / (1.0 * (BalanceMode));
 				} else if (QuestStage >= 60 && QuestStage < 70) {
-					shrinkRate = 0.0046 / (1.5 * (BalanceMode));
+					shrinkRate = 0.0086 / (1.5 * (BalanceMode));
 				} else if (BalanceMode >= 2.0 && QuestStage > 70)
 				{
-					shrinkRate = 0.0046 / (1.5 * (BalanceMode));
+					shrinkRate = 0.0086 / (1.5 * (BalanceMode));
 				}
 
 				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {

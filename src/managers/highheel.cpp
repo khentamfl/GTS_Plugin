@@ -93,6 +93,19 @@ namespace Gts {
 		if (adjusted) {
 			temp_data->last_hh_adjustment = new_hh;
 			temp_data->total_hh_adjustment = new_hh + base_hh;
+			if (actor->formID == 0x14 && base_hh > 0) {
+				auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+				float shoe_weight = 1.0;
+				auto char_weight = actor->GetWeight()/260;
+				if (shoe) {
+					shoe_weight = shoe->weight/10;
+				}
+				Runtime::GetSingleton().HighHeelDamage->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
+				// Feel free to remove it once we move it to DLL completely ^ 
+			}
+			else {
+				Runtime::GetSingleton().HighHeelDamage->value = 1.0;
+			}
 		}
 	}
 }

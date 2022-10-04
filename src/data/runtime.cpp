@@ -165,6 +165,7 @@ namespace Gts {
 		this->ManualGrowthStorage = find_form<TESGlobal>("GTS.esp|4162CB");
 
 		this->BalanceMode = find_form<TESGlobal>("GTS.esp|42F7D3");
+		this->HighHeelDamage = find_form<TESGlobal>("GTS.esp|271EFF");
 
 		///Camera
 		this->EnableCamera = find_form<TESGlobal>("GTS.esp|290512");
