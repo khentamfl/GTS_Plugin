@@ -124,13 +124,13 @@ namespace Gts {
 			auto sizemanager = SizeManager::GetSingleton();
 			auto& Persist = Persistent::GetSingleton();
 			if (this->CanGrow) {
-				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
+				//float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float HealthPercentage = GetHealthPercentage(actor);
-				float GrowthValue = (9700/HealthMult) * sizemanager.BalancedMode();
+				float GrowthValue = (0.000025 / HealthPercentage) / sizemanager.BalancedMode();
 				
 				auto actor_data = Persist.GetData(actor);
 
-				log::info("Growth Value is: {}, Health Mult is: {}, HP Percentage is: {}", GrowthValue, HealthMult, HealthPercentage);
+				//log::info("Growth Value is: {}, Health Mult is: {}, HP Percentage is: {}", GrowthValue, HealthMult, HealthPercentage);
 				
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
@@ -148,7 +148,9 @@ namespace Gts {
 		}
 		else if (this->Balance_CanGrow) {
 			if (get_visual_scale(actor) > 1.00) {
-				float GrowthValue = -0.00010 * (get_visual_scale(actor) * 0.25 + 0.75);
+				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
+				float HealthPercentage = GetHealthPercentage(actor);
+				float GrowthValue = -0.00010/HealthMult * (get_visual_scale(actor) * 0.25 + 0.75);
 				auto actor_data = Persist.GetData(actor);
 
 				log::info("Balance Shrink Value is: {}", GrowthValue);
