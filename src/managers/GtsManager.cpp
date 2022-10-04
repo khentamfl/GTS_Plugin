@@ -327,13 +327,16 @@ namespace {
 		float QuestStage = runtime.MainQuest->GetCurrentStageID();
 		float BalanceMode = runtime.BalanceMode->value;
 
-		if (QuestStage < 100.0 ||  BalanceMode == 1.0) {
+		if (QuestStage < 100.0 || BalanceMode == 1.0) {
 			if (actor->formID == 0x14 && !actor->IsInCombat()) {
 				game_mode_int = 4; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
-					shrinkRate = 0.00046 * (BalanceMode * 1.33);
+					shrinkRate = 0.00046 / 1.0 * (BalanceMode * 1.33);
 				} else if (QuestStage >= 60 && QuestStage < 70) {
-					shrinkRate = 0.00046 / 1.5* (BalanceMode * 1.33);
+					shrinkRate = 0.00046 / 1.5 * (BalanceMode * 1.33);
+				} else if (BalanceMode == 1.0 && QuestStage > 70)
+				{
+					shrinkRate = 0.00046 / 1.5 * (BalanceMode * 1.33);
 				}
 
 				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {

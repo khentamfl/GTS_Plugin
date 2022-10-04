@@ -66,7 +66,43 @@ namespace Gts {
 
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
+				float BalanceMode = runtime.BalanceMode->value + 1.0;
 				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
+				float HealthPercentage = GetHealthPercentage(receiver);
+				float SizeDifference = ReceiverScale/DealerScale;
+				float LaughChance = rand() % 12;
+				float ShrinkChance = rand() % (5 * BalanceMode);
+				auto GrowthSound = runtime.growthSound;
+
+				auto actor_data = Persist.GetData(receiver);
+				actor_data->half_life = 1.0/HealthPercentage/this->BonusPower;
+
+				PlaySound(GrowthSound, receiver, ReceiverScale/15, 0.0);
+
+				this->GrowthTick +=GetHealthPercentage(receiver);
+				if (ShrinkChance >= 5 * BalanceMode) {
+					mod_target_scale(attacker, -0.025); // Shrink Attacker
+				}
+
+				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
+					auto LaughSound = Runtime::GetSingleton().LaughSound;
+					PlaySound(LaughSound, receiver, 1.0, 0.0); //FearCast()
+				}
+				return;
+			}
+		}
+		else if (runtime.BalancedMode->value == 1.0 && this->CanGrow == false && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
+			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) { // If BalanceMode is 1, shrink player on hit
+				this->CanGrow = true;
+				if (wasPowerAttack) {
+					this->BonusPower = 3.0;
+				}
+				else if (!wasPowerAttack) {
+					this->BonusPower = 1.0;
+				}
+
+				float ReceiverScale = get_visual_scale(receiver);
+				float DealerScale = get_visual_scale(attacker);
 				float HealthPercentage = GetHealthPercentage(receiver);
 				float SizeDifference = ReceiverScale/DealerScale;
 				float LaughChance = rand() % 12;
@@ -75,15 +111,8 @@ namespace Gts {
 				auto actor_data = Persist.GetData(receiver);
 				actor_data->half_life = 1.0/HealthPercentage/this->BonusPower;
 
-				PlaySound(GrowthSound, receiver, ReceiverScale/15, 0.0);
-
-				
 				this->GrowthTick +=GetHealthPercentage(receiver);
-
-				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
-					auto LaughSound = Runtime::GetSingleton().LaughSound;
-					PlaySound(LaughSound, receiver, 1.0, 0.0); //FearCast()
-				}
+				return;
 			}
 		}
 	}
@@ -93,7 +122,7 @@ namespace Gts {
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
 			auto& Persist = Persistent::GetSingleton();
-			if (this->CanGrow) {
+			if (this->CanGrow && Runtime.BalanceMode->value == 0) {
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float HealthPercentage = GetHealthPercentage(actor);
 				float GrowthValue = (HealthMult/9700) * (Runtime.BalanceMode->value + 1.0);
@@ -106,6 +135,23 @@ namespace Gts {
 				if (this->GrowthTick > 0.01) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
+					this->GrowthTick -= 0.001 * TimeScale();
+				} else if (this->GrowthTick < 0.01) {
+					actor_data->half_life = 1.0;
+					this->CanGrow = false;
+					this->GrowthTick = 0.0;
+			}
+		}
+		else if (this->CanGrow && Runtime.BalanceMode->value == 1) {
+				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
+				float HealthPercentage = GetHealthPercentage(actor);
+				float GrowthValue = -0.001 * (get_visual_scale(actor) * 0.25 + 0.75);
+				log::info("Growth Value is: {}, Health Mult is: {}, HP Percentage is: {}", GrowthValue, HealthMult, HealthPercentage);
+				auto actor_data = Persist.GetData(actor);
+
+				if (this->GrowthTick > 0.01) {
+					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
+					mod_target_scale(actor, GrowthValue);
 					this->GrowthTick -= 0.001 * TimeScale();
 				} else if (this->GrowthTick < 0.01) {
 					actor_data->half_life = 1.0;
