@@ -70,7 +70,7 @@ namespace {
 		float basedamagebonus = actor->GetBaseActorValue(ActorValue::kAttackDamageMult);  
 		static Timer timer = Timer(0.15);
 		if (timer.ShouldRunFrame()) {
-			actor->SetBaseActorValue(ActorValue::kAttackDamageMult, bonus);
+			actor->SetActorValue(ActorValue::kAttackDamageMult, bonus);
 		}
 		if (actor->formID == 0x14) {
 			log::info("Actor is: {}, Scale: {}, Pure Mult: {}, Mult: {}, Damage Bonus: {}, Base Damage Bonus: {}", actor->GetDisplayFullName(), scale, power, bonus, damagebonus, basedamagebonus);
