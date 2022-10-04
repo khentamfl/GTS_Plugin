@@ -9,10 +9,11 @@ using namespace RE;
 namespace Gts {
 
 	class FootIkSolverData {
-		FootIkSolverData(hkaFootPlacementIkSolver* ik);
-		~FootIkSolverData();
+		public:
+			FootIkSolverData(hkaFootPlacementIkSolver* ik);
+			~FootIkSolverData();
 
-		void ApplyScale(const float& new_scale, const hkVector4& vecScale);
+			void ApplyScale(const float& new_scale, const hkVector4& vecScale);
 
 		private:
 			hkaFootPlacementIkSolver* solver;
