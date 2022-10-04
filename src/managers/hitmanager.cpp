@@ -165,7 +165,7 @@ namespace Gts {
 				}
 			}
 			else if (get_visual_scale(actor) < 1.0) {
-				set_visual_scale(actor, 1.0);
+				set_target_scale(actor, 1.0);
 			}
 		}
 	}
