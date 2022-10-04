@@ -17,6 +17,9 @@ namespace Gts {
 	}
 
 	void FootIkData::ChangeIk(hkbFootIkDriver* ik) {
+		if (this->ik == ik) {
+			return;
+		}
 		if (this->ik) {
 			this->ik->RemoveReference();
 		}
