@@ -24,27 +24,34 @@ namespace Gts {
 		if (this->ik) {
 			log::info("Foot IK count {}", this->ik->GetReferenceCount());
 			this->ik->AddReference();
+
+			for (auto& leg: this->ik->m_internalLegData) {
+				auto solver = leg.m_footIkSolver;
+				this->AddSolver(solver);
+			}
 		}
 	}
 
 	void FootIkData::ApplyScale(const float& new_scale, const hkVector4& vecScale) {
-		if (!this->ik) {
-			return;
+		for (auto &[key, data]: this->solver_data) {
+			data.ApplyScale(new_scale, vecScale);
 		}
-		for (auto& leg: this->ik->m_internalLegData) {
-			auto solver = leg.m_footIkSolver;
-			if (solver) {
-				log::info("m_footEndLS: {}", Vector2Str(solver->m_setup.m_footEndLS));
-				log::info("m_footPlantedAnkleHeightMS: {}", Vector2Str(solver->m_setup.m_footPlantedAnkleHeightMS));
-				log::info("m_footRaisedAnkleHeightMS: {}", Vector2Str(solver->m_setup.m_footRaisedAnkleHeightMS));
-				log::info("m_maxAnkleHeightMS: {}", Vector2Str(solver->m_setup.m_maxAnkleHeightMS));
-				log::info("m_minAnkleHeightMS: {}", Vector2Str(solver->m_setup.m_minAnkleHeightMS));
-				log::info("m_raycastDistanceUp: {}", Vector2Str(solver->m_setup.m_raycastDistanceUp));
-				log::info("m_raycastDistanceDown: {}", Vector2Str(solver->m_setup.m_raycastDistanceDown));
+	}
+
+	void FootIkData::PruneColliders(Actor* actor) {
+		for (auto i = this->solver_data.begin(); i != this->solver_data.end();) {
+			auto& data = (*i);
+			auto key = data.first;
+			if (key->GetReferenceCount() == 1) {
+				i = this->solver_data.erase(i);
+			} else {
+				++i;
 			}
 		}
 	}
-	void FootIkData::ApplyPose(const hkVector4& origin, const float& new_scale) {
 
+	void FootIkData::AddSolver(hkaFootPlacementIkSolver* solver) {
+		log::info("Foot IK Solver count {}", solver->GetReferenceCount());
+		this->solver_data.try_emplace(solver, solver);
 	}
 }

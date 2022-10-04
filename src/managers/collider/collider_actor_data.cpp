@@ -172,6 +172,7 @@ namespace Gts {
 	void ColliderActorData::PruneColliders(Actor* actor) {
 		this->ragdollData.PruneColliders(actor);
 		this->charContData.PruneColliders(actor);
+		this->footIkData.PruneColliders(actor);
 	}
 
 	void ColliderActorData::AddRagdoll(hkaRagdollInstance* ragdoll) {
