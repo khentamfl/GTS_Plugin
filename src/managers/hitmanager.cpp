@@ -67,7 +67,7 @@ namespace Gts {
 
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
-				int BalanceMode = runtime.BalanceMode->value + 1.0;
+				int BalanceMode = sizemanager.BalancedMode();
 				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
 				float HealthPercentage = GetHealthPercentage(receiver);
 				float SizeDifference = ReceiverScale/DealerScale;
@@ -126,7 +126,7 @@ namespace Gts {
 			if (this->CanGrow) {
 				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float HealthPercentage = GetHealthPercentage(actor);
-				float GrowthValue = (HealthMult/9700) * (Runtime.BalanceMode->value + 1.0);
+				float GrowthValue = (9700/HealthMult) * sizemanager.BalancedMode();
 				
 				auto actor_data = Persist.GetData(actor);
 

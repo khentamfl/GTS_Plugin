@@ -22,7 +22,7 @@ namespace {
 			return false;
 		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		int Requirement = (200 * Gigantism) * (runtime.BalanceMode->value + 1.0);
+		int Requirement = (200 * Gigantism) * sizemanager.BalancedMode();
 		int random = rand() % Requirement;
 		int decide_chance = 1;
 		if (random <= decide_chance && Player->HasPerk(growthPerk)) {

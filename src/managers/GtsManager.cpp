@@ -325,19 +325,18 @@ namespace {
 		float shrinkRate = 0.0;
 		int game_mode_int = 0;
 		float QuestStage = runtime.MainQuest->GetCurrentStageID();
-		float BalanceMode = runtime.BalanceMode->value;
+		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
 
-		if (QuestStage < 100.0 || BalanceMode >= 1.0) {
+		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
 			if (actor->formID == 0x14 && !actor->IsInCombat()) {
 				game_mode_int = 4; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
-					shrinkRate = 0.0046 / (1.0 * (BalanceMode + 1.0));
+					shrinkRate = 0.0046 / (1.0 * (BalanceMode));
 				} else if (QuestStage >= 60 && QuestStage < 70) {
-					shrinkRate = 0.0046 / (1.5 * (BalanceMode + 1.0));
-				} else if (BalanceMode >= 1.0 && QuestStage > 70)
+					shrinkRate = 0.0046 / (1.5 * (BalanceMode));
+				} else if (BalanceMode >= 2.0 && QuestStage > 70)
 				{
-					shrinkRate = 0.0046 / (1.5 * (BalanceMode + 1.0));
-					log::info("BalanceModeTrue");
+					shrinkRate = 0.0046 / (1.5 * (BalanceMode));
 				}
 
 				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
@@ -352,7 +351,7 @@ namespace {
 			}
 		}
 
-		else if (QuestStage > 100.0 && BalanceMode == 0.0) {
+		else if (QuestStage > 100.0 && BalanceMode == 1.0) {
 			if (actor->formID == 0x14) {
 				game_mode_int = runtime.ChosenGameMode->value;
 				growthRate = runtime.GrowthModeRate->value;

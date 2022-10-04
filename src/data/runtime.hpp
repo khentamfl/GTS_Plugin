@@ -144,7 +144,6 @@ namespace Gts {
 			
 
 			TESGlobal * ManualGrowthStorage = nullptr;
-			TESGlobal * BalanceMode = nullptr;
 
 
 			///Camera
