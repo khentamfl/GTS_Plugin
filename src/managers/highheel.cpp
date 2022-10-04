@@ -1,4 +1,5 @@
 #include "managers/highheel.hpp"
+#include "data/runtime.hpp"
 #include "node.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
@@ -93,7 +94,8 @@ namespace Gts {
 		if (adjusted) {
 			temp_data->last_hh_adjustment = new_hh;
 			temp_data->total_hh_adjustment = new_hh + base_hh;
-			if (actor->formID == 0x14 && base_hh > 0) {
+
+			if (actor->formID == 0x14 && base_hh > 0) { // HH damage bonus start
 				auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 				float shoe_weight = 1.0;
 				auto char_weight = actor->GetWeight()/260;
@@ -103,7 +105,7 @@ namespace Gts {
 				Runtime::GetSingleton().HighHeelDamage->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
 				// Feel free to remove it once we move it to DLL completely ^ 
 			}
-			else {
+			else if {actor->formID == 0x14 && base_hh <= 0 } {
 				Runtime::GetSingleton().HighHeelDamage->value = 1.0;
 			}
 		}
