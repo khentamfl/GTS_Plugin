@@ -150,7 +150,7 @@ namespace Gts {
 				float GrowthValue = -0.001 * (get_visual_scale(actor) * 0.25 + 0.75);
 				auto actor_data = Persist.GetData(actor);
 
-				log::info("Balance Shrink Value is: {}, Health Mult is: {}, HP Percentage is: {}", GrowthValue, HealthMult, HealthPercentage);
+				log::info("Balance Shrink Value is: {}", GrowthValue);
 
 				if (this->GrowthTick > 0.01) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
