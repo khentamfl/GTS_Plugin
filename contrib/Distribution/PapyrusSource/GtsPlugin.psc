@@ -73,5 +73,5 @@ Function SetTremorScaleNPC(Float value) global native
 Float Function GetExperimentFloat() global native
 Function SetExperimentFloat(Float value) global native
 
-Function GetBalanceMode() global native
+bool Function GetBalanceMode() global native
 Function SetBalanceMode(bool enabled) global native
