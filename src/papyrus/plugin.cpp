@@ -136,7 +136,7 @@ namespace {
 	}
 
 	void SetBalanceMode(StaticFunctionTag*, bool enabled) {
-		GtsManager::GetSingleton().experiment = enabled;
+		GtsManager::GetSingleton().balancemode = enabled;
 	}
 
 	void GetBalanceMode(StaticFunctionTag*){
