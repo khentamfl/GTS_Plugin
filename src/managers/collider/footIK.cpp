@@ -27,7 +27,13 @@ namespace Gts {
 		if (this->ik) {
 			this->ik->AddReference();
 
-			for (auto& leg: this->ik->m_internalLegData) {
+			this->UpdateColliders(this->ik);
+		}
+	}
+
+	void FootIkData::UpdateColliders(hkbFootIkDriver* ik) {
+		if (ik) {
+			for (auto& leg: ik->m_internalLegData) {
 				auto solver = leg.m_footIkSolver;
 				this->AddSolver(solver);
 			}
@@ -35,6 +41,8 @@ namespace Gts {
 	}
 
 	void FootIkData::ApplyScale(const float& new_scale, const hkVector4& vecScale) {
+		this->UpdateColliders(this->ik);
+
 		for (auto& leg: this->ik->m_internalLegData) {
 			auto solver = leg.m_footIkSolver;
 			try {

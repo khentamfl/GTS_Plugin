@@ -17,6 +17,7 @@ namespace Gts {
 
 			void ApplyScale(const float& new_scale, const hkVector4& vecScale);
 			void AddSolver(hkaFootPlacementIkSolver* solver);
+			void UpdateColliders(hkbFootIkDriver* ik);
 			void PruneColliders(Actor* actor);
 
 			hkbFootIkDriver* ik = nullptr;
