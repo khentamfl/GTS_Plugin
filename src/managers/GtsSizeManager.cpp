@@ -98,6 +98,7 @@ namespace Gts {
 			log::info("Balance Mode False");
 			return 1.0;
 		}
+		return 1.0;
 	}
 
 	SizeManagerData& SizeManager::GetData(Actor* actor) {
