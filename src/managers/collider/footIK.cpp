@@ -54,8 +54,8 @@ namespace Gts {
 	}
 
 	void FootIkData::AddSolver(hkaFootPlacementIkSolver* solver) {
-		log::info("Foot IK Solver count {}", solver->GetReferenceCount());
 		if (solver) {
+			log::info("Foot IK Solver count {}", solver->GetReferenceCount());
 			this->solver_data.try_emplace(solver, solver);
 		}
 	}
