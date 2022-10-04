@@ -147,7 +147,8 @@ namespace Gts {
 			return;
 		}
 		else if (this->Balance_CanGrow) {
-				float GrowthValue = -0.001 * (get_visual_scale(actor) * 0.25 + 0.75);
+			if (get_visual_scale(actor) > 1.00) {
+				float GrowthValue = -0.00010 * (get_visual_scale(actor) * 0.25 + 0.75);
 				auto actor_data = Persist.GetData(actor);
 
 				log::info("Balance Shrink Value is: {}", GrowthValue);
@@ -160,6 +161,11 @@ namespace Gts {
 					actor_data->half_life = 1.0;
 					this->Balance_CanGrow = false;
 					this->GrowthTick = 0.0;
+					return;
+				}
+			}
+			else if (get_visual_scale(actor) < 1.0) {
+				set_visual_scale(actor, 1.0);
 			}
 		}
 	}
