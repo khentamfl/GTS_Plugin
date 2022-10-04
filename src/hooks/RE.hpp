@@ -4,7 +4,7 @@
 #include "RE/H/hkpConvexShape.h"
 namespace RE
 {
-	std::string GetRawName(void* obj);
+	std::string GetRawName(const void* obj);
 	class hkpTriangleShape : public hkpConvexShape
 	{
 		public:

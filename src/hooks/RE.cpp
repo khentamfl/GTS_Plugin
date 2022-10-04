@@ -4,8 +4,9 @@
 
 namespace RE {
 
-	std::string GetRawName(void* obj) {
+	std::string GetRawName(const void* obj_c) {
 		// Get the meta entry in vftable
+		void* obj = const_cast<void*>(obj_c);
 		_RTTICompleteObjectLocator* col = reinterpret_cast<_RTTICompleteObjectLocator***>(obj)[0][-1];
 
 		// Calculate image base by subtracting the RTTICompleteObjectLocator's pSelf offset from RTTICompleteObjectLocator's pointer
