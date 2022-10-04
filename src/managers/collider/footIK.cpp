@@ -25,7 +25,6 @@ namespace Gts {
 		}
 		this->ik = ik;
 		if (this->ik) {
-			log::info("Foot IK count {}", this->ik->GetReferenceCount());
 			this->ik->AddReference();
 
 			for (auto& leg: this->ik->m_internalLegData) {
@@ -36,8 +35,14 @@ namespace Gts {
 	}
 
 	void FootIkData::ApplyScale(const float& new_scale, const hkVector4& vecScale) {
-		for (auto &[key, data]: this->solver_data) {
-			data.ApplyScale(new_scale, vecScale);
+		for (auto& leg: this->ik->m_internalLegData) {
+			auto solver = leg.m_footIkSolver;
+			try {
+				auto& data = this->solver_data.at(solver);
+				data.ApplyScale(new_scale, vecScale);
+			} catch (std::out_of_range& e) {
+				continue;
+			}
 		}
 	}
 
@@ -55,8 +60,6 @@ namespace Gts {
 
 	void FootIkData::AddSolver(hkaFootPlacementIkSolver* solver) {
 		if (solver) {
-			log::info("Foot IK Solver count {}", solver->GetReferenceCount());
-			log::info("Foot IK Solver Name {}", GetRawName(solver));
 			this->solver_data.try_emplace(solver, solver);
 		}
 	}
