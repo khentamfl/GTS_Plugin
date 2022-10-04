@@ -139,7 +139,7 @@ namespace {
 		GtsManager::GetSingleton().balancemode = enabled;
 	}
 
-	void GetBalanceMode(StaticFunctionTag*){
+	float GetBalanceMode(StaticFunctionTag*){
 		return GtsManager::GetSingleton().balancemode;
 	}
 }
