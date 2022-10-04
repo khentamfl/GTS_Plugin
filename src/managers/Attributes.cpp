@@ -64,11 +64,12 @@ namespace {
 	}
 
 	void BoostAttackDmg(Actor* actor, float power) {
-		float scale = get_visual_scale(actor);
-		float bonus = 1.0 + (scale * power - scale);
-		float oldbonus = (scale * power);
+		float scale = get_target_scale(actor);
+		float bonus = scale * power;
 		actor->SetActorValue(ActorValue::kAttackDamageMult, bonus);
-		log::info("Actor is: {}, Scale: {}, Pure Mult: {}, Mult: {}, Old Mult: {}", actor->GetDisplayFullName(), scale, power, bonus, oldbonus);
+		if (actor->FormID == 0x14) {
+			log::info("Actor is: {}, Scale: {}, Pure Mult: {}, Mult: {}", actor->GetDisplayFullName(), scale, power, bonus);
+		}
 	}
 
 	void BoostSpeedMulti(Actor* actor, float power) {
