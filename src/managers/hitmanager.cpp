@@ -92,8 +92,8 @@ namespace Gts {
 				return;
 			}
 		}
-		else if (runtime.BalanceMode->value == 1.0 && this->Balance_CanGrow == false && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
-			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) { // If BalanceMode is 1, shrink player on hit
+		else if (sizemanager.BalancedMode() == 2.0 && this->Balance_CanGrow == false && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
+			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) { // If BalanceMode is 2, shrink player on hit
 				this->Balance_CanGrow = true;
 				if (wasPowerAttack) {
 					this->BonusPower = 3.0;
