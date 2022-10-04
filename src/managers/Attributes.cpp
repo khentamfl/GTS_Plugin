@@ -68,7 +68,7 @@ namespace {
 		float bonus = 1.0 + (scale * power - scale);
 		float oldbonus = (scale * power);
 		actor->SetActorValue(ActorValue::kAttackDamageMult, bonus);
-		log::info("Actor is: {}, Mult: {}, Old Mult: {}", actor->GetDisplayFullName(), bonus, oldbonus);
+		log::info("Actor is: {}, Scale: {}, Pure Mult: {}, Mult: {}, Old Mult: {}", actor->GetDisplayFullName(), scale, power, bonus, oldbonus);
 	}
 
 	void BoostSpeedMulti(Actor* actor, float power) {
