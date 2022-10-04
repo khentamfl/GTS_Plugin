@@ -29,6 +29,6 @@ namespace Gts {
 		this->solver->m_setup.m_maxAnkleHeightMS = this->m_maxAnkleHeightMS  * new_scale;
 		this->solver->m_setup.m_minAnkleHeightMS = this->m_minAnkleHeightMS * new_scale;
 		this->solver->m_setup.m_raycastDistanceUp = this->m_raycastDistanceUp * new_scale;
-		this->solver->m_setup.m_raycastDistanceDown = this->data.m_raycastDistanceDown * new_scale;
+		this->solver->m_setup.m_raycastDistanceDown = this->m_raycastDistanceDown * new_scale;
 	}
 }
