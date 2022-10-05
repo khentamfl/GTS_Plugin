@@ -207,7 +207,7 @@ namespace {
 
 			BoostJump(Player, bonusJumpHeightMultiplier);
 
-			Player->SetActorValue(ActorValue::kAttackDamageMult, get_target_scale(Player) * bonusDamageMultiplier);
+			BoostAttackDmg(Player, bonusDamageMultiplier);
 
 			if (AllowTimeChange == 0.00) {
 				BoostSpeedMulti(Player, bonusSpeedMultiplier);
