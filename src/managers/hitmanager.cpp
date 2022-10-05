@@ -37,9 +37,11 @@ namespace Gts {
 		if (!receiver) {
 			return;
 		}
+
 		auto runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
 		auto& Persist = Persistent::GetSingleton();
+
 		auto HitIdForm = a_event->source;
 		auto HitId = TESForm::LookupByID(HitIdForm);
 
@@ -55,30 +57,36 @@ namespace Gts {
 
 		// Apply it
 		
-		if (this->CanGrow == false && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
+		if (!this->CanGrow && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
 
-			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
+			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
 				this->CanGrow = true;
 				if (wasPowerAttack) {
-					this->BonusPower = 3.0;
+					this->BonusPower = 2.0;
 				}
 				else if (!wasPowerAttack) {
 					this->BonusPower = 1.0;
 				}
+				auto GrowthSound = runtime.growthSound;
 
 				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 
-				float ReceiverScale = get_visual_scale(receiver);
-				float DealerScale = get_visual_scale(attacker);
-				float BalanceMode = sizemanager.BalancedMode();
-				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
-				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(receiver));
-				float SizeDifference = ReceiverScale/DealerScale;
 				float LaughChance = rand() % 12;
 				float ShrinkChance = rand() % 6;
-				auto GrowthSound = runtime.growthSound;
-				float clampduration = (1.0 * HealthPercentage)/this->BonusPower;
+
+				float ReceiverScale = get_visual_scale(receiver);
+				float DealerScale = get_visual_scale(attacker);
+
+				float BalanceMode = sizemanager.BalancedMode();
+
+				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
+				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(receiver));
+
+				float SizeDifference = ReceiverScale/DealerScale;
+				
+				
+				float clampduration = (1.0 * HealthPercentage);
 
 				auto actor_data = Persist.GetData(receiver);
 				actor_data->half_life = clampduration;
@@ -86,10 +94,12 @@ namespace Gts {
 				PlaySound(GrowthSound, receiver, ReceiverScale/15, 0.0);
 				
 				this->GrowthTick +=GetHealthPercentage(receiver);
+
 				log::info("Clamp Duration is: {}, GrowthTicks: {}", clampduration, this->GrowthTick);
 
 				if (ShrinkChance >= 5) {
 					mod_target_scale(attacker, (-0.035 * SizeHunger * Gigantism) / BalanceMode); // Shrink Attacker
+					mod_target_scale(receiver, (0.035 * SizeHunger * Gigantism) / BalanceMode); // Grow Attacker
 					log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
 				}
 
@@ -100,11 +110,11 @@ namespace Gts {
 				return;
 			}
 		}
-		else if (sizemanager.BalancedMode() >= 2.0 && this->Balance_CanShrink == false && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
-			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) { // If BalanceMode is 2, shrink player on hit
+		else if (sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
+			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) { // If BalanceMode is 2, shrink player on hit
 				this->Balance_CanShrink = true;
 				if (wasPowerAttack) {
-					this->BonusPower = 3.0;
+					this->BonusPower = 2.0;
 				}
 				else if (!wasPowerAttack) {
 					this->BonusPower = 1.0;
@@ -112,8 +122,9 @@ namespace Gts {
 
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
-				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(receiver));
 				float SizeDifference = ReceiverScale/DealerScale;
+				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(receiver));
+				
 				
 				if (receiver->HasMagicEffect(runtime.EffectGrowthPotion)) {
 					this->AdjustValue *= 0.50;
@@ -122,10 +133,11 @@ namespace Gts {
 				}
 
 				auto actor_data = Persist.GetData(receiver);
-				float clampduration = (1.0 * HealthPercentage)/this->BonusPower;
+				float clampduration = (1.0 * HealthPercentage);
 				actor_data->half_life = clampduration;
 				
 				this->GrowthTick +=GetHealthPercentage(receiver);
+
 				log::info("Clamp Duration is: {}, GrowthTicks: {}", clampduration, this->GrowthTick);
 				return;
 			}
@@ -138,11 +150,10 @@ namespace Gts {
 			auto sizemanager = SizeManager::GetSingleton();
 			auto& Persist = Persistent::GetSingleton();
 			if (this->CanGrow) { // Grow on hit
-				//float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
-				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
-				float GrowthValue = (0.000300 / HealthPercentage * SizeHunger * Gigantism) / sizemanager.BalancedMode();
+				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
+				float GrowthValue = (0.000030 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
 				if (GrowthValue <= 0) 
 				{	
 					this->CanGrow = false;
@@ -151,9 +162,7 @@ namespace Gts {
 				}
 				
 				auto actor_data = Persist.GetData(actor);
-
-				
-				
+	
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
 				}
@@ -174,8 +183,8 @@ namespace Gts {
 				float SizeHunger = 1.0 - sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
 				auto actor_data = Persist.GetData(actor);
-				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
-				float ShrinkValue = 0.00090/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue;		
+				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
+				float ShrinkValue = 0.00009/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;		
 
 				if (ShrinkValue <= 0) 
 				{	
@@ -184,18 +193,18 @@ namespace Gts {
 					return;
 				}
 				
-
-				
 				if (this->GrowthTick > 0.01) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life);
 					mod_target_scale(actor, -ShrinkValue);
 					this->GrowthTick -= 0.001 * TimeScale();
 				} else if (this->GrowthTick < 0.01) {
-					log::info("Shrink Value is: {}, SizeHunger: {}, Gigantism: {}", ShrinkValue, SizeHunger, Gigantism);
 					actor_data->half_life = 1.0;
 					this->Balance_CanShrink = false;
 					this->GrowthTick = 0.0;
 					this->AdjustValue = 1.0;
+
+					log::info("Shrink Value is: {}, SizeHunger: {}, Gigantism: {}", ShrinkValue, SizeHunger, Gigantism);
+
 					return;
 				}
 			}

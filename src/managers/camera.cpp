@@ -114,15 +114,15 @@ namespace Gts {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
 		if (Reset) {
 			this->Side = 1.0;
-			log::info("Side Reset: {}", this->Side);
+			//log::info("Side Reset: {}", this->Side);
 			}
 		if (Left) {
 			this->Side -=(1.0 * (size * 0.15 + 0.85));
-			log::info("Side Left: {}", this->Side);
+			//log::info("Side Left: {}", this->Side);
 			}
 		if (Right) { 
 			this->Side += (1.0 * (size * 0.15 + 0.85));
-			log::info("Side Right: {}", this->Side);
+			//log::info("Side Right: {}", this->Side);
 			}
 		}
 
@@ -130,15 +130,15 @@ namespace Gts {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
 		if (Reset) {
 			this->UpDown = 1.0;
-			log::info("UpDown Reset: {}", this->UpDown);
+			//log::info("UpDown Reset: {}", this->UpDown);
 			}
 		if (Up) {
 			this->UpDown +=(1.0 * (size * 0.15 + 0.85));
-			log::info("UpDown Decrease: {}", this->UpDown);
+			//log::info("UpDown Decrease: {}", this->UpDown);
 			}
 		if (Down) { 
 			this->UpDown -= (1.0 * (size * 0.15 + 0.85));
-			log::info("UpDown Increase: {}", this->UpDown);
+			//log::info("UpDown Increase: {}", this->UpDown);
 			}
 		}
 
