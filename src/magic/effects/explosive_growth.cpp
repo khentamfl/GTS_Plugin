@@ -96,7 +96,7 @@ namespace Gts {
 		
 		if (scale < limit) {
 			DoGrowth(caster, this->power);
-			SizeManager::GetSingleton().SetGrowthSpurt(actor, limit);
+			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 		}
 
 		else if (limit < GetGrowthSpurt) {
