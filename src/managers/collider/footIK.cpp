@@ -65,8 +65,8 @@ namespace Gts {
 	}
 
 	void FootIkData::AddSolver(hkaFootPlacementIkSolver* solver) {
-		// if (solver) {
-		// 	this->solver_data.try_emplace(solver, solver);
-		// }
+		if (solver) {
+			this->solver_data.try_emplace(solver, solver);
+		}
 	}
 }
