@@ -1,6 +1,7 @@
 #pragma once
 #include "magic/magic.hpp"
 #include "timer.hpp"
+#include "events.hpp"
 // Module that handles footsteps
 
 
@@ -9,11 +10,13 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ExplosiveGrowth : public Magic {
+	class ExplosiveGrowth : public EventListener, public Magic {
 		public:
 			virtual void OnUpdate() override;
 			virtual void OnStart() override;
 			virtual void OnFinish() override;
+
+			void Start() override;
 
 			virtual std::string GetName() override;
 

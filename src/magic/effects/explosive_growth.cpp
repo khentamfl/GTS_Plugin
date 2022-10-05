@@ -96,7 +96,9 @@ namespace Gts {
 		
 		if (scale < limit) {
 			DoGrowth(caster, this->power);
-			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
+			if (GetGrowthSpurt < limit) {
+				SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
+			}
 		}
 
 		else if (limit < GetGrowthSpurt) {
@@ -145,6 +147,13 @@ namespace Gts {
 				float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/2);
 				PlaySound(GrowthSound, actor, Volume, 0.0);
 			}
+		}
+
+		void ExplosiveGrowth::Start() {
+			auto sizemanager = SizeManager::GetSingleton();
+			auto caster = PlayerCharacter::GetSingleton();
+			sizemanager.SetEnchantmentBonus(caster, 0.0);
+			sizemanager.SetGrowthSpurt(caster, 0.0);
 		}
 	}
 	
