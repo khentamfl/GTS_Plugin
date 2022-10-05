@@ -52,13 +52,20 @@ namespace Gts {
 	}
 
 	void FootIkData::PruneColliders(Actor* actor) {
+		if (!this->ik) {
+			return;
+		}
 		for (auto i = this->solver_data.begin(); i != this->solver_data.end();) {
 			auto& data = (*i);
 			auto solver = data.second.solver;
-			log::info("Solver: {}", reinterpret_cast<std::uintptr_t>(solver));
-			log::info("Prune: {}", solver->GetReferenceCount());
-			log::info("RawName: {}", GetRawName(solver));
-			if (solver->GetReferenceCount() == 1) {
+			bool found = false;
+			for (auto& leg: ik->m_internalLegData) {
+				if (solver == leg.m_footIkSolver) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
 				i = this->solver_data.erase(i);
 			} else {
 				++i;
