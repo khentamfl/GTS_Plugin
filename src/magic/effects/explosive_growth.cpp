@@ -96,13 +96,12 @@ namespace Gts {
 		
 		if (scale < limit) {
 			DoGrowth(caster, this->power);
-			if (GetGrowthSpurt < limit) {
-				SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
-			}
+			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 		}
 
 		else if (limit < GetGrowthSpurt) {
 			float difference = GetGrowthSpurt - limit;
+			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 			DoShrink(caster, difference/100);
 			log::info("Difference is: {}", difference);
 		}
