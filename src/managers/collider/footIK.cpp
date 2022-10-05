@@ -52,16 +52,16 @@ namespace Gts {
 	}
 
 	void FootIkData::PruneColliders(Actor* actor) {
-		// for (auto i = this->solver_data.begin(); i != this->solver_data.end();) {
-		// 	auto& data = (*i);
-		// 	auto key = data.first;
-		// 	log::info("Prune: {}", key->GetReferenceCount());
-		// 	if (key->GetReferenceCount() == 1) {
-		// 		i = this->solver_data.erase(i);
-		// 	} else {
-		// 		++i;
-		// 	}
-		// }
+		for (auto i = this->solver_data.begin(); i != this->solver_data.end();) {
+			auto& data = (*i);
+			auto key = data.first;
+			log::info("Prune: {}", key->GetReferenceCount());
+			if (key->GetReferenceCount() == 1) {
+				i = this->solver_data.erase(i);
+			} else {
+				++i;
+			}
+		}
 	}
 
 	void FootIkData::AddSolver(hkaFootPlacementIkSolver* solver) {
