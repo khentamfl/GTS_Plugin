@@ -85,7 +85,7 @@ namespace Gts {
 		float GetGrowthSpurt = SizeManager::GetSingleton().GetGrowthSpurt(caster);
 		float scale = get_visual_scale(caster);
 
-		float limit = this->grow_limit * (AdjustLimit) * Gigantism;
+		float limit = this->grow_limit * Gigantism * AdjustLimit;
 
 		auto HealthRegenPerk = runtime.HealthRegenPerk;
 		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00075;
@@ -96,6 +96,7 @@ namespace Gts {
 		
 		if (scale < limit) {
 			DoGrowth(caster, this->power);
+			SizeManager::GetSingleton().SetGrowthSpurt(actor, limit);
 		}
 
 		else if (limit < GetGrowthSpurt) {
@@ -103,7 +104,7 @@ namespace Gts {
 			DoShrink(caster, difference/100);
 			log::info("Difference is: {}", difference);
 		}
-		log::info("Total Limit is: {}", limit);
+		log::info("Growth Spurt: {}, Total Limit is: {}", GetGrowthSpurt, limit);
 	}
 
 	void ExplosiveGrowth::OnFinish() {
@@ -118,10 +119,7 @@ namespace Gts {
 
 	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
 			Grow(actor, value, 0.0); // Grow
-			float CalculateSize = get_visual_scale(actor);
 			auto runtime = Runtime::GetSingleton();
-
-			SizeManager::GetSingleton().SetGrowthSpurt(actor, CalculateSize);
 
 			GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
 			if (this->timerSound.ShouldRunFrame()) {
