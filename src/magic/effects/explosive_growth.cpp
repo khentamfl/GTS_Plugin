@@ -103,7 +103,7 @@ namespace Gts {
 			DoShrink(caster, difference/100);
 			log::info("Difference is: {}", difference);
 		}
-		log::info("Total Limit is: {}", limit)
+		log::info("Total Limit is: {}", limit);
 	}
 
 	void ExplosiveGrowth::OnFinish() {
