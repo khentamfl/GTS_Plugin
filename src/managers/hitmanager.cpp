@@ -94,7 +94,7 @@ namespace Gts {
 		}
 		else if (sizemanager.BalancedMode() >= 2.0 && this->Balance_CanShrink == false && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) { // If BalanceMode is 2, shrink player on hit
-				this->Balance_CanGrow = true;
+				this->Balance_CanShrink = true;
 				if (wasPowerAttack) {
 					this->BonusPower = 3.0;
 				}
@@ -169,7 +169,7 @@ namespace Gts {
 					this->GrowthTick -= 0.001 * TimeScale();
 				} else if (this->GrowthTick < 0.01) {
 					actor_data->half_life = 1.0;
-					this->Balance_CanGrow = false;
+					this->Balance_CanShrink = false;
 					this->GrowthTick = 0.0;
 					this->AdjustValue = 1.0;
 					return;
