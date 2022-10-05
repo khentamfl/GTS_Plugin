@@ -71,28 +71,29 @@ namespace Gts {
 
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
-				int BalanceMode = sizemanager.BalancedMode();
+				float BalanceMode = sizemanager.BalancedMode();
 				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
-				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(receiver));
+				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(receiver));
 				float SizeDifference = ReceiverScale/DealerScale;
 				float LaughChance = rand() % 12;
-				float ShrinkChance = rand() % (5 * BalanceMode);
+				float ShrinkChance = rand() % 6;
 				auto GrowthSound = runtime.growthSound;
-				float clampduration = 1.0 * HealthPercentage/this->BonusPower;
+				float clampduration = (1.0 * HealthPercentage)/this->BonusPower;
 
 				auto actor_data = Persist.GetData(receiver);
 				actor_data->half_life = clampduration;
 
 				PlaySound(GrowthSound, receiver, ReceiverScale/15, 0.0);
-				log::info("Clamp Duration is: {}", clampduration);
-
+				
 				this->GrowthTick +=GetHealthPercentage(receiver);
-				if (ShrinkChance >= 5 * BalanceMode) {
-					mod_target_scale(attacker, -0.035 * SizeHunger * Gigantism); // Shrink Attacker
+				log::info("Clamp Duration is: {}, GrowthTicks: {}", clampduration, this->GrowthTick);
+
+				if (ShrinkChance >= 5) {
+					mod_target_scale(attacker, (-0.035 * SizeHunger * Gigantism) / BalanceMode); // Shrink Attacker
 					log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
 				}
 
-				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
+				if (SizeDifference >= 4.0 && LaughChance >= 11.0) {
 					auto LaughSound = Runtime::GetSingleton().LaughSound;
 					PlaySound(LaughSound, receiver, 1.0, 0.0); //FearCast()
 				}
@@ -111,7 +112,7 @@ namespace Gts {
 
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
-				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(receiver));
+				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(receiver));
 				float SizeDifference = ReceiverScale/DealerScale;
 				
 				if (receiver->HasMagicEffect(runtime.EffectGrowthPotion)) {
@@ -121,11 +122,11 @@ namespace Gts {
 				}
 
 				auto actor_data = Persist.GetData(receiver);
-				float clampduration = 1.0 * HealthPercentage/this->BonusPower;
+				float clampduration = (1.0 * HealthPercentage)/this->BonusPower;
 				actor_data->half_life = clampduration;
-				log::info("Clamp Duration is: {}", clampduration);
-
+				
 				this->GrowthTick +=GetHealthPercentage(receiver);
+				log::info("Clamp Duration is: {}, GrowthTicks: {}", clampduration, this->GrowthTick);
 				return;
 			}
 		}
@@ -140,8 +141,8 @@ namespace Gts {
 				//float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
-				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
-				float GrowthValue = (0.000030 / HealthPercentage * SizeHunger * Gigantism) / sizemanager.BalancedMode();
+				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
+				float GrowthValue = (0.000300 / HealthPercentage * SizeHunger * Gigantism) / sizemanager.BalancedMode();
 				if (GrowthValue <= 0) 
 				{	
 					this->CanGrow = false;
@@ -173,8 +174,8 @@ namespace Gts {
 				float SizeHunger = 1.0 - sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
 				auto actor_data = Persist.GetData(actor);
-				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
-				float ShrinkValue = 0.00009/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue;		
+				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
+				float ShrinkValue = 0.00090/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue;		
 
 				if (ShrinkValue <= 0) 
 				{	
