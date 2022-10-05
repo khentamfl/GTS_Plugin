@@ -117,7 +117,7 @@ namespace Gts {
 		bool needs_reset = this->last_update_frame.exchange(last_reset_frame) < last_reset_frame;
 		bool charControllerChanged = this->charContData.charCont != charController;
 		bool ragdollChanged = this->ragdollData.ragdoll != ragdoll;
-		bool footIkChanged = false; // this->footIkData.ik != footIk;
+		bool footIkChanged = this->footIkData.ik != footIk;
 		if (needs_reset || charControllerChanged || ragdollChanged || footIkChanged ) {
 			this->UpdateColliders(actor);
 		}
