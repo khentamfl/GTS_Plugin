@@ -98,9 +98,9 @@ namespace Gts {
 			DoGrowth(caster, this->power);
 		}
 
-		else if (limit < GetGrowthSpurt && scale > limit) {
+		else if (limit < GetGrowthSpurt) {
 			float difference = GetGrowthSpurt - limit;
-			DoShrink(caster, difference);
+			DoShrink(caster, difference/100);
 			log::info("Difference is: {}", difference);
 		}
 	}
