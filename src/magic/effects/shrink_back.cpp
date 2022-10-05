@@ -27,7 +27,6 @@ namespace Gts {
 		auto ShrinkSound = runtime.shrinkSound;
 		float Volume = clamp(0.50, 1.0, get_visual_scale(caster));
 		PlaySound(ShrinkSound, caster, Volume, 1.0);
-		log::info("Shrink Back Start, actor: {}", caster->GetDisplayFullName());
 	}
 
 	void ShrinkBack::OnUpdate() {
@@ -46,8 +45,7 @@ namespace Gts {
 			auto ShrinkSound = runtime.shrinkSound;
 			float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/4);
 			PlaySound(ShrinkSound, caster, Volume, 0.0);
-			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.30);
-			log::info("Shrink Back Loop, actor: {}", caster->GetDisplayFullName());
+			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.60);
 		}
 
 		if (!Revert(caster, Power, Power/2.5)) {

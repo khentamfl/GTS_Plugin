@@ -56,11 +56,9 @@ namespace Gts {
 				float GetHP = clamp(0.5, 1.0, GetHealthPercentage(actor) + 0.4); // Bonus Size Gain if Player has perk
 				if (amt > 0) {
 					amt /= GetHP;
-					log::info("AMT + HP is: {}", GetHP);
 				}
 				else if (amt < 0) {
 					amt *= GetHP;
-					log::info("AMT - HP is: {}", GetHP);
 				}
 			}
 			if (actor_data) {
