@@ -45,7 +45,7 @@ namespace Gts {
 			auto runtime = Runtime::GetSingleton();
 			if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && actor->formID == 0x14 || actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) 
 			{
-				float scale = get_visual_scale(actor); // Enabled if BalanceMode is True. Decreases Grow Efficiency.
+				float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 				if (scale >= 1.0)
 				{
 					amt /= (1.0 + (scale/3 - 0.33));
