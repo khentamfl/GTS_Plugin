@@ -13,7 +13,6 @@ namespace Gts {
 			FootIkData();
 			FootIkData(hkbFootIkDriver* ik);
 			~FootIkData();
-			void ChangeIk(hkbFootIkDriver* ik);
 
 			void ApplyScale(const float& new_scale, const hkVector4& vecScale);
 			void AddSolver(hkaFootPlacementIkSolver* solver);

@@ -171,7 +171,7 @@ namespace Gts {
 	}
 
 	void ColliderActorData::AddFootIk(hkbFootIkDriver* ik) {
-		// this->footIkData.ChangeIk(ik);
+		this->footIkData.UpdateColliders(ik);
 	}
 
 }
