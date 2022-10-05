@@ -51,6 +51,12 @@ namespace Gts {
 					amt /= (1.0 + (scale/3 - 0.33));
 				}
 			}
+			if (actor->formID == 0x14 && actor->HasPerk(runtime.OnTheEdge))
+			{
+				float GetHP = clamp(0.5, 1.0, GetHealthPercentage(actor) + 0.4);
+				amt /= GetHP;
+				log::info("HP is: {}", GetHP);
+			}
 			if (actor_data) {
 				if (amt - EPS < 0.0) {
 					// If neative change always: allow

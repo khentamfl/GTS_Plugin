@@ -13,6 +13,7 @@ namespace Gts {
 		float SizeHungerBonus = 0.0;
 		float HitGrowth = 0.0;
 		float GrowthTimer = 0.0;
+		float GrowthSpurt = 0.0;
 
 	};
 	class SizeManager : public EventListener {
