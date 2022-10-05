@@ -89,6 +89,7 @@ namespace Gts {
 				this->GrowthTick +=GetHealthPercentage(receiver);
 				if (ShrinkChance >= 5 * BalanceMode) {
 					mod_target_scale(attacker, -0.035 * SizeHunger * Gigantism); // Shrink Attacker
+					log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
 				}
 
 				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
