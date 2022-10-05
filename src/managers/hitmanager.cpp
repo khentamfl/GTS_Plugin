@@ -93,7 +93,7 @@ namespace Gts {
 
 				PlaySound(GrowthSound, receiver, ReceiverScale/15, 0.0);
 				
-				this->GrowthTick +=GetHealthPercentage(receiver);
+				this->GrowthTick +=HealthPercentage;
 
 				log::info("Clamp Duration is: {}, GrowthTicks: {}", clampduration, this->GrowthTick);
 
@@ -136,7 +136,7 @@ namespace Gts {
 				float clampduration = (1.0 * HealthPercentage);
 				actor_data->half_life = clampduration;
 				
-				this->GrowthTick +=GetHealthPercentage(receiver);
+				this->GrowthTick +=HealthPercentage;
 
 				log::info("Clamp Duration is: {}, GrowthTicks: {}", clampduration, this->GrowthTick);
 				return;
