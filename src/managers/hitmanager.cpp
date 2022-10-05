@@ -55,7 +55,7 @@ namespace Gts {
 
 		// Apply it
 		
-		if (Timer.ShouldRunFrame() && this->CanGrow == false && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
+		if (this->CanGrow == false && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
 
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
 				this->CanGrow = true;
@@ -78,9 +78,10 @@ namespace Gts {
 				float LaughChance = rand() % 12;
 				float ShrinkChance = rand() % (5 * BalanceMode);
 				auto GrowthSound = runtime.growthSound;
+				float clampduration = (0.10, 2.0, 1.0 * HealthPercentage/this->BonusPower);
 
 				auto actor_data = Persist.GetData(receiver);
-				actor_data->half_life = 1.0 * HealthPercentage/this->BonusPower;
+				actor_data->half_life = clampduration;
 
 				PlaySound(GrowthSound, receiver, ReceiverScale/15, 0.0);
 
@@ -118,7 +119,8 @@ namespace Gts {
 				}
 
 				auto actor_data = Persist.GetData(receiver);
-				actor_data->half_life = 1.0 * HealthPercentage/this->BonusPower;
+				float clampduration = (0.10, 2.0, 1.0 * HealthPercentage/this->BonusPower);
+				actor_data->half_life = clampduration;
 
 				this->GrowthTick +=GetHealthPercentage(receiver);
 				return;
