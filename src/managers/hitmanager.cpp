@@ -51,10 +51,11 @@ namespace Gts {
 		bool wasSneakAttack = a_event->flags.all(TESHitEvent::Flag::kSneakAttack);
 		bool wasBashAttack = a_event->flags.all(TESHitEvent::Flag::kBashAttack);
 		bool wasHitBlocked = a_event->flags.all(TESHitEvent::Flag::kHitBlocked);
+		static Timer timer = Timer(0.25);
 
 		// Apply it
 		
-		if (this->CanGrow == false && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
+		if (Timer.ShouldRunFrame() && this->CanGrow == false && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
 
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) {
 				this->CanGrow = true;
