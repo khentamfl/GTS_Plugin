@@ -103,7 +103,7 @@ namespace Gts {
 		// amount = scale * a + b
 		float amount = CalcPower(actor, scale_factor, bonus);
 		float target_scale = get_target_scale(actor);
-		float natural_scale = SizeManager::GetRaceScale(actor);  //get_natural_scale(actor); It behaves weirdly and sets my Scale to 1.0. 
+		float natural_scale = SizeManager::GetSingleton().GetRaceScale(actor);  //get_natural_scale(actor); It behaved weirdly: used to revert my character to x0.87 instead of x1.0.
 
 		if (fabs(target_scale - natural_scale) < amount) {
 			set_target_scale(actor, natural_scale);
