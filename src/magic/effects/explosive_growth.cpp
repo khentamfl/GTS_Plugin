@@ -116,14 +116,15 @@ namespace Gts {
 	void DoGrowth(Actor* actor, float value) {
 			Grow(actor, value, 0.0); // Grow
 			float CalculateSize = get_visual_scale(actor);
+			auto runtime = Runtime::GetSingleton();
 
-			SizeManager::GetSingleton().SetGrowthSpurt(caster, CalculateSize);
+			SizeManager::GetSingleton().SetGrowthSpurt(actor, CalculateSize);
 
 			GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
-			if (timerSound.ShouldRunFrame()) {
+			if (this->timerSound.ShouldRunFrame()) {
 				PlaySound(runtime.xlRumbleL, actor, this->power/20, 0.0);
 			}
-			if (timer.ShouldRun()) {
+			if (this->timer.ShouldRun()) {
 				auto GrowthSound = runtime.growthSound;
 				float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/4);
 				PlaySound(GrowthSound, actor, Volume, 0.0);
@@ -132,12 +133,13 @@ namespace Gts {
 
 		void DoShrink(Actor* actor, float value) {
 			Grow(actor, -value, 0.0); // Grow
+			auto runtime = Runtime::GetSingleton();
 
 			GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
-			if (timerSound.ShouldRunFrame()) {
+			if (this->timerSound.ShouldRunFrame()) {
 				PlaySound(runtime.xlRumbleL, actor, this->power/20, 0.0);
 			}
-			else if (timer.ShouldRun()) {
+			if (this->timer.ShouldRun()) {
 				auto GrowthSound = runtime.shrinkSound;
 				float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/2);
 				PlaySound(GrowthSound, actor, Volume, 0.0);
