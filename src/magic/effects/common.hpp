@@ -264,7 +264,7 @@ namespace Gts {
 				bool hasExplosiveGrowth3 = runtime.explosiveGrowth3 ? caster->HasMagicEffect(runtime.explosiveGrowth3) : false;
 
 				if (caster->HasPerk(runtime.ExtraGrowth) && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
-					runtime.CrushGrowthStorage->value += (target_scale/75) / SizeManager::GetSingleton().GetBalanceMode();
+					runtime.CrushGrowthStorage->value += (target_scale/75) / SizeManager::GetSingleton().GetBalancedMode();
 				} // Slowly increase Limit after crushing someone while Growth Spurt is active.
 			}
 		}
