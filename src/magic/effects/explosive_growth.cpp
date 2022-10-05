@@ -1,5 +1,6 @@
 #include "magic/effects/explosive_growth.hpp"
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "magic/magic.hpp"
 #include "magic/effects/common.hpp"
@@ -7,7 +8,7 @@
 #include "data/runtime.hpp"
 #include "util.hpp"
 #include "timer.hpp"
-#include "managers/GtsSizeManager.hpp"
+
 
 
 namespace Gts {
@@ -70,10 +71,6 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
-		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-		this->grow_limit *= AdjustLimit; //Affected by storage.
-		this->grow_limit *= Gigantism; //Affected by Enchantment
 	}
 
 	void ExplosiveGrowth::OnUpdate() {
@@ -82,8 +79,12 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		float limit = this->grow_limit;
+		auto sizemanager = SizeManager::GetSingleton();
+		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
+		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(caster)/100;
+		float GetGrowthSpurt = SizeManager::GetSingleton().GetGrowthSpurt(caster);
 
+		float limit = this->grow_limit * (AdjustLimit) * Gigantism;
 
 		auto HealthRegenPerk = runtime.HealthRegenPerk;
 		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00075;
@@ -93,17 +94,54 @@ namespace Gts {
 		}
 		
 		if (get_visual_scale(caster) < limit) {
-			Grow(caster, this->power, 0.0); // Grow
-			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
-			if (timerSound.ShouldRunFrame()) {
-				PlaySound(runtime.xlRumbleL, caster, this->power/20, 0.0);
-			}
+			DoGrowth(caster, this->power);
+		}
 
+		else if (limit < GetGrowthSpurt) {
+			float difference = GetGrowthSpurt - limit;
+			DoShrink(caster, -difference);
+		}
+	}
+
+	void ExplosiveGrowth::OnFinish() {
+		Actor* caster = GetCaster();
+		if (!caster) {
+			return;
+		}
+		SizeManager::GetSingleton().SetGrowthSpurt(caster, 0.0);
+	}
+
+
+
+	void DoGrowth(Actor* actor, float value) {
+			Grow(actor, value, 0.0); // Grow
+			float CalculateSize = get_visual_scale(actor);
+
+			SizeManager::GetSingleton().SetGrowthSpurt(caster, CalculateSize);
+
+			GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
+			if (timerSound.ShouldRunFrame()) {
+				PlaySound(runtime.xlRumbleL, actor, this->power/20, 0.0);
+			}
 			if (timer.ShouldRun()) {
 				auto GrowthSound = runtime.growthSound;
-				float Volume = clamp(0.12, 2.0, get_visual_scale(caster)/4);
-				PlaySound(GrowthSound, caster, Volume, 0.0);
+				float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/4);
+				PlaySound(GrowthSound, actor, Volume, 0.0);
+			}
+		}
+
+		void DoShrink(Actor* actor, float value) {
+			Grow(actor, -value, 0.0); // Grow
+
+			GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
+			if (timerSound.ShouldRunFrame()) {
+				PlaySound(runtime.xlRumbleL, actor, this->power/20, 0.0);
+			}
+			else if (timer.ShouldRun()) {
+				auto GrowthSound = runtime.shrinkSound;
+				float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/2);
+				PlaySound(GrowthSound, actor, Volume, 0.0);
 			}
 		}
 	}
-}
+	

@@ -32,6 +32,10 @@ namespace Gts {
 			float GetSizeHungerBonus(Actor* actor);
 			void ModSizeHungerBonus(Actor* actor, float amt);
 
+			void SetGrowthSpurt(Actor* actor, float amt);
+			float GetGrowthSpurt(Actor* actor);
+			void ModGrowthSpurt(Actor* actor, float amt);
+
 			float BalancedMode();
 			
 		private:

@@ -126,10 +126,13 @@ namespace Gts {
 				float HealthPercentage = clamp(0.10, 0.50, GetHealthPercentage(receiver));
 				
 				
-				if (receiver->HasMagicEffect(runtime.EffectGrowthPotion) || receiver->HasMagicEffect(runtime.explosiveGrowth1) || receiver->HasMagicEffect(runtime.explosiveGrowth2) || receiver->HasMagicEffect(runtime.explosiveGrowth3)) {
-					this->AdjustValue *= 0.50;
-				} if (receiver->HasMagicEffect(runtime.ResistShrinkPotion)) {
-					this->AdjustValue *= 0.25;
+				if (receiver->HasMagicEffect(runtime.EffectGrowthPotion)) {
+					this->AdjustValue *= 0.50; // 50% resistance from Growth Potion.
+				} if (receiver->HasMagicEffect(runtime.explosiveGrowth1) || receiver->HasMagicEffect(runtime.explosiveGrowth2) || receiver->HasMagicEffect(runtime.explosiveGrowth3)) {
+					this->AdjustValue *= 0.40; // Growth Spurt 60% resistance.
+				}
+				if (receiver->HasMagicEffect(runtime.ResistShrinkPotion)) {
+					this->AdjustValue *= 0.25; // 75% resistance from potion.
 				}
 
 				auto actor_data = Persist.GetData(receiver);

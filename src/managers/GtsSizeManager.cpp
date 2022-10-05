@@ -1,5 +1,5 @@
-#include "managers/GtsSizeManager.hpp"
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
@@ -85,6 +85,23 @@ namespace Gts {
 
 	void SizeManager::ModSizeHungerBonus(Actor* actor, float amt) {
 		this->GetData(actor).SizeHungerBonus += amt;
+	}
+
+//==================Growth Spurt
+
+	void SizeManager::SetGrowthSpurt(Actor* actor, float amt) {
+		this->GetData(actor).GrowthSpurt = amt;
+	}
+
+	float SizeManager::GetGrowthSpurt(Actor* actor) {
+		if (this->GetData(actor).GrowthSpurt <= 0.0) {
+			return 0.0; //Protect against 0
+		}
+		return this->GetData(actor).GrowthSpurt;
+	}
+
+	void SizeManager::ModGrowthSpurt(Actor* actor, float amt) {
+		this->GetData(actor).GrowthSpurt += amt;
 	}
 
 //===============Balance Mode 

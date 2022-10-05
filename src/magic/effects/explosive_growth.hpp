@@ -19,6 +19,9 @@ namespace Gts {
 			static bool StartEffect(EffectSetting* effect);
 
 			ExplosiveGrowth(ActiveEffect* effect);
+
+			virtual void DoGrowth(Actor* actor, float value);
+			virtual void DoShrink(Actor* actor, float value);
 		private:
 			float power = 0.0;
 			float grow_limit = 1.0;
