@@ -73,7 +73,7 @@ namespace Gts {
 				float DealerScale = get_visual_scale(attacker);
 				int BalanceMode = sizemanager.BalancedMode();
 				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
-				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
+				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(receiver));
 				float SizeDifference = ReceiverScale/DealerScale;
 				float LaughChance = rand() % 12;
 				float ShrinkChance = rand() % (5 * BalanceMode);
@@ -110,7 +110,7 @@ namespace Gts {
 
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
-				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
+				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(receiver));
 				float SizeDifference = ReceiverScale/DealerScale;
 				
 				if (receiver->HasMagicEffect(runtime.EffectGrowthPotion)) {
@@ -175,10 +175,10 @@ namespace Gts {
 				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
 				float ShrinkValue = 0.00009/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue;		
 
-				if (GrowthValue <= 0) 
+				if (ShrinkValue <= 0) 
 				{	
 					this->CanGrow = false;
-					GrowthValue = 0.0;
+					ShrinkValue = 0.0;
 					return;
 				}
 				
@@ -189,7 +189,7 @@ namespace Gts {
 					mod_target_scale(actor, -ShrinkValue);
 					this->GrowthTick -= 0.001 * TimeScale();
 				} else if (this->GrowthTick < 0.01) {
-					log::info("Balance Shrink Value is: {}, SizeHunger: {}, Gigantism: {}", ShrinkValue, SizeHunger, Gigantism);
+					log::info("Shrink Value is: {}, SizeHunger: {}, Gigantism: {}", ShrinkValue, SizeHunger, Gigantism);
 					actor_data->half_life = 1.0;
 					this->Balance_CanShrink = false;
 					this->GrowthTick = 0.0;
