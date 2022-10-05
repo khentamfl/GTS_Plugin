@@ -184,7 +184,7 @@ namespace Gts {
 				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
 				auto actor_data = Persist.GetData(actor);
 				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
-				float ShrinkValue = (0.000085/HealthPercentage) * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;		
+				float ShrinkValue = (0.000085/HealthPercentage) * (get_visual_scale(actor) * 0.10 + 0.90) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;		
 				
 				if (this->GrowthTick > 0.01) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life);

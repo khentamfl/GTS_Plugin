@@ -326,17 +326,23 @@ namespace {
 		int game_mode_int = 0;
 		float QuestStage = runtime.MainQuest->GetCurrentStageID();
 		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
+		float BonusShrink = 1.0;
+		float scale = get_visual_scale(actor);
+		if (BalanceMode >= 2.0)
+		{
+			float BonusShrink = (1.0 + (scale/3 - 0.33));
+		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
 			if (actor->formID == 0x14 && !actor->IsInCombat()) {
 				game_mode_int = 4; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
-					shrinkRate = 0.0186 / (1.0 * (BalanceMode));
+					shrinkRate = 0.0186 / (1.0 * (BalanceMode) * BonusShrink);
 				} else if (QuestStage >= 60 && QuestStage < 70) {
-					shrinkRate = 0.0186 / (1.5 * (BalanceMode));
+					shrinkRate = 0.0186 / (1.5 * (BalanceMode) * BonusShrink);
 				} else if (BalanceMode >= 2.0 && QuestStage > 70)
 				{
-					shrinkRate = 0.0186 / (1.5 * (BalanceMode));
+					shrinkRate = 0.0186 / (1.5 * (BalanceMode) * BonusShrink);
 				}
 
 				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
