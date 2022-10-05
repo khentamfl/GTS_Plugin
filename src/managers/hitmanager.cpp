@@ -73,7 +73,7 @@ namespace Gts {
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 
 				float LaughChance = rand() % 12;
-				float ShrinkChance = rand() % 6;
+				float ShrinkChance = rand() % 11;
 
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
@@ -97,9 +97,9 @@ namespace Gts {
 
 				log::info("Clamp Duration is: {}, GrowthTicks: {}", clampduration, this->GrowthTick);
 
-				if (ShrinkChance >= 5) {
+				if (ShrinkChance >= 10) {
 					mod_target_scale(attacker, (-0.035 * SizeHunger * Gigantism) / BalanceMode); // Shrink Attacker
-					mod_target_scale(receiver, (0.035 * SizeHunger * Gigantism) / BalanceMode); // Grow Attacker
+					mod_target_scale(receiver, (0.025 * SizeHunger * Gigantism) / BalanceMode); // Grow Attacker
 					log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
 				}
 
@@ -152,8 +152,8 @@ namespace Gts {
 			if (this->CanGrow) { // Grow on hit
 				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
-				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
-				float GrowthValue = (0.000030 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
+				float HealthPercentage = clamp(0.02, 1.0, GetHealthPercentage(actor));
+				float GrowthValue = (0.0000175 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
 				if (GrowthValue <= 0) 
 				{	
 					this->CanGrow = false;
@@ -183,8 +183,8 @@ namespace Gts {
 				float SizeHunger = 1.0 - sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
 				auto actor_data = Persist.GetData(actor);
-				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
-				float ShrinkValue = 0.00009/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;		
+				float HealthPercentage = clamp(0.02, 1.0, GetHealthPercentage(actor));
+				float ShrinkValue = 0.000085/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;		
 
 				if (ShrinkValue <= 0) 
 				{	
