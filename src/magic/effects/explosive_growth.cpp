@@ -106,7 +106,7 @@ namespace Gts {
 			DoShrink(caster, difference/100);
 			log::info("Difference is: {}", difference);
 		}
-		log::info("Growth Spurt: {}, Total Limit is: {}", GetGrowthSpurt, limit);
+		log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit);
 	}
 
 	void ExplosiveGrowth::OnFinish() {
@@ -120,7 +120,7 @@ namespace Gts {
 
 
 	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
-			Grow(actor, value, 0.0); // Grow
+			mod_target_scale(actor, value); // Grow
 			auto runtime = Runtime::GetSingleton();
 
 			GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
@@ -135,7 +135,7 @@ namespace Gts {
 		}
 
 		void ExplosiveGrowth::DoShrink(Actor* actor, float value) {
-			Grow(actor, -value, 0.0); // Grow
+			mod_target_scale(actor, -value); // Grow
 			auto runtime = Runtime::GetSingleton();
 
 			GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
@@ -147,8 +147,6 @@ namespace Gts {
 				float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/2);
 				PlaySound(GrowthSound, actor, Volume, 0.0);
 			}
-		}
-
-		
+		}	
 	}
 	
