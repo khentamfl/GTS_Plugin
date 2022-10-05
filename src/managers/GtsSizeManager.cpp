@@ -122,4 +122,12 @@ namespace Gts {
 		this->sizeData.try_emplace(actor);
 		return this->sizeData.at(actor);
 	}
+
+	void SizeManager::Start() {
+			auto sizemanager = SizeManager::GetSingleton();
+			auto caster = PlayerCharacter::GetSingleton();
+			sizemanager.SetEnchantmentBonus(caster, 0.0);
+			sizemanager.SetGrowthSpurt(caster, 0.0);
+			log::info("Resetting Enchantment and Growth Spurt");
+		}
 }

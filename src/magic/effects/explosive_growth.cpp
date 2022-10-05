@@ -149,11 +149,6 @@ namespace Gts {
 			}
 		}
 
-		void ExplosiveGrowth::Start() {
-			auto sizemanager = SizeManager::GetSingleton();
-			auto caster = PlayerCharacter::GetSingleton();
-			sizemanager.SetEnchantmentBonus(caster, 0.0);
-			sizemanager.SetGrowthSpurt(caster, 0.0);
-		}
+		
 	}
 	
