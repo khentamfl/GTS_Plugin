@@ -92,7 +92,7 @@ namespace Gts {
 				return;
 			}
 		}
-		else if (sizemanager.BalancedMode() == 2.0 && this->Balance_CanGrow == false && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
+		else if (sizemanager.BalancedMode() >= 2.0 && this->Balance_CanGrow == false && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
 			if(wasHitBlocked == false && attacker->IsPlayerTeammate() == false && attacker != player) { // If BalanceMode is 2, shrink player on hit
 				this->Balance_CanGrow = true;
 				if (wasPowerAttack) {
@@ -106,8 +106,6 @@ namespace Gts {
 				float DealerScale = get_visual_scale(attacker);
 				float HealthPercentage = GetHealthPercentage(receiver);
 				float SizeDifference = ReceiverScale/DealerScale;
-				float LaughChance = rand() % 12;
-				auto GrowthSound = runtime.growthSound;
 
 				auto actor_data = Persist.GetData(receiver);
 				actor_data->half_life = 1.0/HealthPercentage/this->BonusPower;
@@ -123,10 +121,10 @@ namespace Gts {
 			auto Runtime = Runtime::GetSingleton();
 			auto sizemanager = SizeManager::GetSingleton();
 			auto& Persist = Persistent::GetSingleton();
-			if (this->CanGrow) {
+			if (this->CanGrow) { // Grow on hit
 				//float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float HealthPercentage = GetHealthPercentage(actor);
-				float GrowthValue = (0.000025 / HealthPercentage) / sizemanager.BalancedMode();
+				float GrowthValue = (0.000175 / HealthPercentage) / sizemanager.BalancedMode();
 				
 				auto actor_data = Persist.GetData(actor);
 
@@ -146,18 +144,17 @@ namespace Gts {
 			}
 			return;
 		}
-		else if (this->Balance_CanGrow) {
+		else if (this->Balance_CanGrow) { // Shrink on hit
 			if (get_visual_scale(actor) > 1.00) {
-				float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float HealthPercentage = GetHealthPercentage(actor);
-				float GrowthValue = -0.00010/HealthMult * (get_visual_scale(actor) * 0.25 + 0.75);
+				float GrowthValue = 0.00010/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75);
 				auto actor_data = Persist.GetData(actor);
 
 				log::info("Balance Shrink Value is: {}", GrowthValue);
 
 				if (this->GrowthTick > 0.01) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
-					mod_target_scale(actor, GrowthValue);
+					mod_target_scale(actor, -GrowthValue);
 					this->GrowthTick -= 0.001 * TimeScale();
 				} else if (this->GrowthTick < 0.01) {
 					actor_data->half_life = 1.0;
