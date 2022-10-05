@@ -65,6 +65,9 @@ namespace Gts {
 					this->BonusPower = 1.0;
 				}
 
+				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
+				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
+
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
 				int BalanceMode = sizemanager.BalancedMode();
@@ -82,7 +85,7 @@ namespace Gts {
 
 				this->GrowthTick +=GetHealthPercentage(receiver);
 				if (ShrinkChance >= 5 * BalanceMode) {
-					mod_target_scale(attacker, -0.025); // Shrink Attacker
+					mod_target_scale(attacker, -0.035 * SizeHunger * Gigantism); // Shrink Attacker
 				}
 
 				if (SizeDifference >= 4.0 && LaughChance >= 12.0) {
@@ -132,7 +135,7 @@ namespace Gts {
 				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
 				float HealthPercentage = GetHealthPercentage(actor);
-				float GrowthValue = (0.000050 / HealthPercentage * SizeHunger * Gigantism) / sizemanager.BalancedMode();
+				float GrowthValue = (0.000030 / HealthPercentage * SizeHunger * Gigantism) / sizemanager.BalancedMode();
 				
 				auto actor_data = Persist.GetData(actor);
 
@@ -154,11 +157,11 @@ namespace Gts {
 		}
 		else if (this->Balance_CanShrink) { // Shrink on hit
 			if (get_visual_scale(actor) > 1.00) {
-				float SizeHunger = clamp(0.10, 1.0, 1.0 - sizemanager.GetSizeHungerBonus(actor)/100);
-				float Gigantism = clamp(0.10, 1.0, 1.0 - sizemanager.GetEnchantmentBonus(actor)/100);
+				float SizeHunger = 1.0 - sizemanager.GetSizeHungerBonus(actor)/100;
+				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
 				auto actor_data = Persist.GetData(actor);
 				float HealthPercentage = GetHealthPercentage(actor);
-				float ShrinkValue = 0.00010/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue;		
+				float ShrinkValue = 0.00009/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue;		
 
 				log::info("Balance Shrink Value is: {}, SizeHunger: {}, Gigantism: {}", ShrinkValue, SizeHunger, Gigantism);
 
