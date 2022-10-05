@@ -389,7 +389,6 @@ namespace Gts {
 		auto actors = find_actors();
 		for (auto actor: actors) {
 			HighHeel.ApplyHH(actor, false);
-			set_model_scale(actor, get_visual_scale(actor));
 		}
 		//Manager.reapply_actor(PC, false);
 		//set_model_scale(PC, 5.0);
