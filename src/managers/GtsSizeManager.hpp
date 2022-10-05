@@ -23,7 +23,7 @@ namespace Gts {
 			inline float GetRaceScale(Actor* actor);
 			virtual void Update() override;
 
-			virtual void Start() override;
+			void Start() override;
 
 			SizeManagerData& GetData(Actor* actor);
 
