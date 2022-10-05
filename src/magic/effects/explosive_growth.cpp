@@ -99,7 +99,7 @@ namespace Gts {
 
 		else if (limit < GetGrowthSpurt) {
 			float difference = GetGrowthSpurt - limit;
-			DoShrink(caster, -difference);
+			DoShrink(caster, difference);
 		}
 	}
 
