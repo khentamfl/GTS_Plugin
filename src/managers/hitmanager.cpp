@@ -78,12 +78,13 @@ namespace Gts {
 				float LaughChance = rand() % 12;
 				float ShrinkChance = rand() % (5 * BalanceMode);
 				auto GrowthSound = runtime.growthSound;
-				float clampduration = (0.10, 2.0, 1.0 * HealthPercentage/this->BonusPower);
+				float clampduration = 1.0 * HealthPercentage/this->BonusPower;
 
 				auto actor_data = Persist.GetData(receiver);
 				actor_data->half_life = clampduration;
 
 				PlaySound(GrowthSound, receiver, ReceiverScale/15, 0.0);
+				log::info("Clamp Duration is: {}", clampduration);
 
 				this->GrowthTick +=GetHealthPercentage(receiver);
 				if (ShrinkChance >= 5 * BalanceMode) {
@@ -119,8 +120,9 @@ namespace Gts {
 				}
 
 				auto actor_data = Persist.GetData(receiver);
-				float clampduration = (0.10, 2.0, 1.0 * HealthPercentage/this->BonusPower);
+				float clampduration = 1.0 * HealthPercentage/this->BonusPower;
 				actor_data->half_life = clampduration;
+				log::info("Clamp Duration is: {}", clampduration);
 
 				this->GrowthTick +=GetHealthPercentage(receiver);
 				return;
@@ -137,12 +139,12 @@ namespace Gts {
 				//float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
-				float HealthPercentage = GetHealthPercentage(actor);
+				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
 				float GrowthValue = (0.000030 / HealthPercentage * SizeHunger * Gigantism) / sizemanager.BalancedMode();
 				
 				auto actor_data = Persist.GetData(actor);
 
-				log::info("Growth Value is: {}, HP Percentage is: {}, SizeHunger: {}, Gigantism: {}", GrowthValue, HealthPercentage, SizeHunger, Gigantism);
+				
 				
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
@@ -152,6 +154,7 @@ namespace Gts {
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
 					this->GrowthTick -= 0.001 * TimeScale();
 				} else if (this->GrowthTick < 0.01) {
+					log::info("Growth Value is: {}, HP Percentage is: {}, SizeHunger: {}, Gigantism: {}", GrowthValue, HealthPercentage, SizeHunger, Gigantism);
 					actor_data->half_life = 1.0;
 					this->CanGrow = false;
 					this->GrowthTick = 0.0;
@@ -163,10 +166,10 @@ namespace Gts {
 				float SizeHunger = 1.0 - sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
 				auto actor_data = Persist.GetData(actor);
-				float HealthPercentage = GetHealthPercentage(actor);
+				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
 				float ShrinkValue = 0.00009/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue;		
 
-				log::info("Balance Shrink Value is: {}, SizeHunger: {}, Gigantism: {}", ShrinkValue, SizeHunger, Gigantism);
+				
 
 				
 				if (this->GrowthTick > 0.01) {
@@ -174,6 +177,7 @@ namespace Gts {
 					mod_target_scale(actor, -ShrinkValue);
 					this->GrowthTick -= 0.001 * TimeScale();
 				} else if (this->GrowthTick < 0.01) {
+					log::info("Balance Shrink Value is: {}, SizeHunger: {}, Gigantism: {}", ShrinkValue, SizeHunger, Gigantism);
 					actor_data->half_life = 1.0;
 					this->Balance_CanShrink = false;
 					this->GrowthTick = 0.0;
