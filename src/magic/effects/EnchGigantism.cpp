@@ -42,7 +42,7 @@ namespace Gts {
 		//float GigantismPower = GetActiveEffect()->magnitude;
 		//SizeManager::GetSingleton().SetEnchantmentBonus(caster, GigantismPower);
 		//float GetCount = runtime.EnchGigantism->effectLoadedCount;
-		//log::info("GigantismPower is: {}, Actor: {}, Count: {}", SizeManager::GetSingleton().GetEnchantmentBonus(caster), caster->GetDisplayFullName(), GetCount);
+		log::info("GigantismPower is: {}", this->magnitude = GetActiveEffect()->magnitude);
 	}
 
 

@@ -94,18 +94,28 @@ namespace Gts {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 		
-		if (scale < limit || limit > GetGrowthSpurt) {
+		if (scale <= limit || limit > GetGrowthSpurt) {
 			DoGrowth(caster, this->power);
+			this->RequiredSizeChange = 0.0;
 			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 		}
 
 		else if (limit < GetGrowthSpurt) {
 			float difference = GetGrowthSpurt - limit;
-			//SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
-			DoShrink(caster, difference/100);
+			if (this->RequiredSizeChange == 0.0) 
+			{
+				this->RequiredSizeChange = scale - difference;
+			}
+			float RequiredSizeChange = this->RequiredSizeChange;
+			if (limit >= GetGrowthSpurt) {
+				SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
+			}
+			if (scale > RequiredSizeChange) {
+				DoShrink(caster, difference/100);
+			}
 			log::info("Difference is: {}", difference);
 		}
-		log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}, Visual Scale: {}, Target Scale: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit, scale, get_visual_scale(caster));
+		log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}, Target Scale: {}, Visual Scale: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit, scale, get_visual_scale(caster));
 	}
 
 	void ExplosiveGrowth::OnFinish() {
