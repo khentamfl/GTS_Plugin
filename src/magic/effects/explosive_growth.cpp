@@ -16,9 +16,9 @@ namespace Gts {
 	}
 
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
-		const float GROWTH_1_POWER = 0.00075;
-		const float GROWTH_2_POWER = 0.00095;
-		const float GROWTH_3_POWER = 0.00115;
+		const float GROWTH_1_POWER = 0.00125;
+		const float GROWTH_2_POWER = 0.00145;
+		const float GROWTH_3_POWER = 0.00175;
 
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();

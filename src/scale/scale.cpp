@@ -1,6 +1,7 @@
 #include "managers/GtsManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "data/persistent.hpp"
+#include "data/runtime.hpp"
 #include "scale/height.hpp"
 #include "util.hpp"
 
@@ -41,7 +42,8 @@ namespace Gts {
 	void mod_target_scale(Actor* actor, float amt) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
-			if (SizeManager::GetSingleton().GetBalancedMode() >= 2.0 && amt > 0 && actor->formID == 0x14 || actor->IsPlayerTeammate()) 
+			auto runtime = Runtime::GetSingleton();
+			if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && actor->formID == 0x14 || actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) 
 			{
 				float scale = get_visual_scale(actor); // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 				if (scale >= 1.0)
