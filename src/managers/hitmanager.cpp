@@ -73,7 +73,7 @@ namespace Gts {
 				float DealerScale = get_visual_scale(attacker);
 				int BalanceMode = sizemanager.BalancedMode();
 				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
-				float HealthPercentage = GetHealthPercentage(receiver);
+				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
 				float SizeDifference = ReceiverScale/DealerScale;
 				float LaughChance = rand() % 12;
 				float ShrinkChance = rand() % (5 * BalanceMode);
@@ -110,7 +110,7 @@ namespace Gts {
 
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
-				float HealthPercentage = GetHealthPercentage(receiver);
+				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
 				float SizeDifference = ReceiverScale/DealerScale;
 				
 				if (receiver->HasMagicEffect(runtime.EffectGrowthPotion)) {
@@ -139,7 +139,7 @@ namespace Gts {
 				//float HealthMult = GetMaxAV(actor, ActorValue::kHealth) / actor->GetActorValue(ActorValue::kHealth);
 				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
-				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
+				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
 				float GrowthValue = (0.000030 / HealthPercentage * SizeHunger * Gigantism) / sizemanager.BalancedMode();
 				
 				auto actor_data = Persist.GetData(actor);
@@ -166,7 +166,7 @@ namespace Gts {
 				float SizeHunger = 1.0 - sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
 				auto actor_data = Persist.GetData(actor);
-				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
+				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
 				float ShrinkValue = 0.00009/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue;		
 
 				
