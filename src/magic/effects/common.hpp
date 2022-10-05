@@ -1,11 +1,11 @@
 #pragma once
-#include "util.hpp"
-#include "magic/magic.hpp"
-#include "scale/scale.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
-#include "managers/GtsSizeManager.hpp"
+#include "magic/magic.hpp"
+#include "scale/scale.hpp"
+#include "util.hpp"
 // Module that handles various magic effects
 
 namespace {
@@ -257,14 +257,14 @@ namespace Gts {
 
 
 
-		if (runtime.ExtraGrowth) {
+		if (runtime.ExtraGrowth && caster->formID == 0x14) {
 			if (runtime.CrushGrowthStorage) {
 				bool hasExplosiveGrowth1 = runtime.explosiveGrowth1 ? caster->HasMagicEffect(runtime.explosiveGrowth1) : false;
 				bool hasExplosiveGrowth2 = runtime.explosiveGrowth2 ? caster->HasMagicEffect(runtime.explosiveGrowth2) : false;
 				bool hasExplosiveGrowth3 = runtime.explosiveGrowth3 ? caster->HasMagicEffect(runtime.explosiveGrowth3) : false;
 
 				if (caster->HasPerk(runtime.ExtraGrowth) && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
-					runtime.CrushGrowthStorage->value += target_scale/75;
+					runtime.CrushGrowthStorage->value += (target_scale/75) / SizeManager::GetSingleton().GetBalanceMode();
 				} // Slowly increase Limit after crushing someone while Growth Spurt is active.
 			}
 		}
