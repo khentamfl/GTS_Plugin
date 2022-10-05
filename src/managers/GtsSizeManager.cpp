@@ -27,8 +27,9 @@ namespace Gts {
 		return GetNode ? NodeScale : 1; // <- not used, causes troubles with quest progression. (Can't reach 1.44 for example when 1.50 is needed.)
 	}
 
-	void SizeManager::Update(Actor* actor) {
- 
+	void SizeManager::Update() {
+		for (auto actor: find_actors()) {
+
 			bool Balance = false; // Toggles Balance Mode for the mod. False = off, true = on. 
 
 			auto& runtime = Runtime::GetSingleton();
@@ -37,6 +38,7 @@ namespace Gts {
 			float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
 			float SelectedFormula = runtime.SelectedSizeFormula->value;
 
+			//BalancedMode(Balance);
 
 			if (SelectedFormula >= 2.0) {
 				GetLimit = runtime.MassBasedSizeLimit->value +1.0;
@@ -49,9 +51,10 @@ namespace Gts {
 			}
 			if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 				set_max_scale(actor, TotalLimit);
+				//log::info("Current Size Limit of: {} is {}", actor->GetDisplayFullName(), get_max_scale(actor));
+			}
 		}
 	}
-	
 	void SizeManager::SetEnchantmentBonus(Actor* actor, float amt) {
 		this->GetData(actor).enchantmentBonus = amt;
 	}
