@@ -26,12 +26,12 @@ namespace Gts {
 				this->ik->AddReference();
 			}
 		}
-		// if (this->ik) {
-		// 	for (auto& leg: ik->m_internalLegData) {
-		// 		auto solver = leg.m_footIkSolver;
-		// 		this->AddSolver(solver);
-		// 	}
-		// }
+		if (this->ik) {
+			for (auto& leg: ik->m_internalLegData) {
+				auto solver = leg.m_footIkSolver;
+				this->AddSolver(solver);
+			}
+		}
 	}
 
 	void FootIkData::ApplyScale(const float& new_scale, const hkVector4& vecScale) {

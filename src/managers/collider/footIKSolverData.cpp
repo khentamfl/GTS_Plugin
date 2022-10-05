@@ -14,14 +14,14 @@ namespace Gts {
 			return;
 		}
 		this->solver->AddReference();
-		log::info("solver memSizeAndFlags: {:X}", this->solver->memSizeAndFlags);
-		this->m_footEndLS = solver->m_setup.m_footEndLS;
-		this->m_footPlantedAnkleHeightMS = solver->m_setup.m_footPlantedAnkleHeightMS;
-		this->m_footRaisedAnkleHeightMS = solver->m_setup.m_footRaisedAnkleHeightMS;
-		this->m_maxAnkleHeightMS = solver->m_setup.m_maxAnkleHeightMS;
-		this->m_minAnkleHeightMS = solver->m_setup.m_minAnkleHeightMS;
-		this->m_raycastDistanceUp = solver->m_setup.m_raycastDistanceUp;
-		this->m_raycastDistanceDown = solver->m_setup.m_raycastDistanceDown;
+		// log::info("solver memSizeAndFlags: {:X}", this->solver->memSizeAndFlags);
+		// this->m_footEndLS = solver->m_setup.m_footEndLS;
+		// this->m_footPlantedAnkleHeightMS = solver->m_setup.m_footPlantedAnkleHeightMS;
+		// this->m_footRaisedAnkleHeightMS = solver->m_setup.m_footRaisedAnkleHeightMS;
+		// this->m_maxAnkleHeightMS = solver->m_setup.m_maxAnkleHeightMS;
+		// this->m_minAnkleHeightMS = solver->m_setup.m_minAnkleHeightMS;
+		// this->m_raycastDistanceUp = solver->m_setup.m_raycastDistanceUp;
+		// this->m_raycastDistanceDown = solver->m_setup.m_raycastDistanceDown;
 	}
 	FootIkSolverData::~FootIkSolverData() {
 		this->solver->RemoveReference();
