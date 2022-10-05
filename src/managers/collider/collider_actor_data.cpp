@@ -98,7 +98,7 @@ namespace Gts {
 	void ColliderActorData::ApplyScale(const float& new_scale, const hkVector4& vec_scale) {
 		this->ragdollData.ApplyScale(new_scale, vec_scale);
 		this->charContData.ApplyScale(new_scale, vec_scale);
-		this->footIkData.ApplyScale(new_scale, vec_scale);
+		// this->footIkData.ApplyScale(new_scale, vec_scale);
 	}
 
 	void ColliderActorData::ApplyPose(Actor* actor, const float& new_scale) {
@@ -117,7 +117,7 @@ namespace Gts {
 		bool needs_reset = this->last_update_frame.exchange(last_reset_frame) < last_reset_frame;
 		bool charControllerChanged = this->charContData.charCont != charController;
 		bool ragdollChanged = this->ragdollData.ragdoll != ragdoll;
-		bool footIkChanged = this->footIkData.ik != footIk;
+		bool footIkChanged = false; // this->footIkData.ik != footIk;
 		if (needs_reset || charControllerChanged || ragdollChanged || footIkChanged ) {
 			this->UpdateColliders(actor);
 		}
@@ -159,7 +159,7 @@ namespace Gts {
 	void ColliderActorData::PruneColliders(Actor* actor) {
 		this->ragdollData.PruneColliders(actor);
 		this->charContData.PruneColliders(actor);
-		this->footIkData.PruneColliders(actor);
+		// this->footIkData.PruneColliders(actor);
 	}
 
 	void ColliderActorData::AddRagdoll(hkaRagdollInstance* ragdoll) {
@@ -171,7 +171,7 @@ namespace Gts {
 	}
 
 	void ColliderActorData::AddFootIk(hkbFootIkDriver* ik) {
-		this->footIkData.ChangeIk(ik);
+		// this->footIkData.ChangeIk(ik);
 	}
 
 }
