@@ -98,7 +98,7 @@ namespace Gts {
 	void ColliderActorData::ApplyScale(const float& new_scale, const hkVector4& vec_scale) {
 		this->ragdollData.ApplyScale(new_scale, vec_scale);
 		this->charContData.ApplyScale(new_scale, vec_scale);
-		// this->footIkData.ApplyScale(new_scale, vec_scale);
+		this->footIkData.ApplyScale(new_scale, vec_scale);
 	}
 
 	void ColliderActorData::ApplyPose(Actor* actor, const float& new_scale) {
@@ -159,7 +159,7 @@ namespace Gts {
 	void ColliderActorData::PruneColliders(Actor* actor) {
 		this->ragdollData.PruneColliders(actor);
 		this->charContData.PruneColliders(actor);
-		// this->footIkData.PruneColliders(actor);
+		this->footIkData.PruneColliders(actor);
 	}
 
 	void ColliderActorData::AddRagdoll(hkaRagdollInstance* ragdoll) {
