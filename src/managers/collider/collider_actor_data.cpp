@@ -148,8 +148,8 @@ namespace Gts {
 		this->AddRagdoll(ragdoll);
 
 		// Search footIK
-		auto ik = GetFootIk(actor);
-		this->AddFootIk(ik);
+		// auto ik = GetFootIk(actor);
+		// this->AddFootIk(ik);
 
 		// Search CharControllers
 		auto charController = actor->GetCharController();
