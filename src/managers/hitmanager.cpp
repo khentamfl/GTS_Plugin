@@ -141,6 +141,12 @@ namespace Gts {
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
 				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
 				float GrowthValue = (0.000030 / HealthPercentage * SizeHunger * Gigantism) / sizemanager.BalancedMode();
+				if (GrowthValue <= 0) 
+				{	
+					this->CanGrow = false;
+					GrowthValue = 0.0;
+					return;
+				}
 				
 				auto actor_data = Persist.GetData(actor);
 
@@ -169,6 +175,12 @@ namespace Gts {
 				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(actor));
 				float ShrinkValue = 0.00009/HealthPercentage * (get_visual_scale(actor) * 0.25 + 0.75) * SizeHunger * Gigantism * this->AdjustValue;		
 
+				if (GrowthValue <= 0) 
+				{	
+					this->CanGrow = false;
+					GrowthValue = 0.0;
+					return;
+				}
 				
 
 				
