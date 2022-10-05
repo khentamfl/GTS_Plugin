@@ -53,9 +53,15 @@ namespace Gts {
 			}
 			if (actor->formID == 0x14 && actor->HasPerk(runtime.OnTheEdge))
 			{
-				float GetHP = clamp(0.5, 1.0, GetHealthPercentage(actor) + 0.4);
-				amt /= GetHP;
-				log::info("HP is: {}", GetHP);
+				float GetHP = clamp(0.5, 1.0, GetHealthPercentage(actor) + 0.4); // Bonus Size Gain if Player has perk
+				if (amt > 0) {
+					amt /= GetHP;
+					log::info("AMT + HP is: {}", GetHP);
+				}
+				else if (amt < 0) {
+					amt *= GetHP;
+					log::info("AMT - HP is: {}", GetHP);
+				}
 			}
 			if (actor_data) {
 				if (amt - EPS < 0.0) {
