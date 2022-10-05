@@ -72,9 +72,9 @@ namespace {
 		if (timer.ShouldRunFrame()) {
 			actor->SetActorValue(ActorValue::kAttackDamageMult, bonus);
 		}
-		if (actor->formID == 0x14) {
-			log::info("Actor is: {}, Scale: {}, Pure Mult: {}, Mult: {}, Damage Bonus: {}, Base Damage Bonus: {}", actor->GetDisplayFullName(), scale, power, bonus, damagebonus, basedamagebonus);
-		}
+		//if (actor->formID == 0x14) {
+			//log::info("Actor is: {}, Scale: {}, Pure Mult: {}, Mult: {}, Damage Bonus: {}, Base Damage Bonus: {}", actor->GetDisplayFullName(), scale, power, bonus, damagebonus, basedamagebonus);
+		//}
 	}
 
 	void BoostSpeedMulti(Actor* actor, float power) {
