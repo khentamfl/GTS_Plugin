@@ -113,7 +113,7 @@ namespace Gts {
 
 
 
-	void DoGrowth(Actor* actor, float value) {
+	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
 			Grow(actor, value, 0.0); // Grow
 			float CalculateSize = get_visual_scale(actor);
 			auto runtime = Runtime::GetSingleton();
@@ -131,7 +131,7 @@ namespace Gts {
 			}
 		}
 
-		void DoShrink(Actor* actor, float value) {
+		void ExplosiveGrowth::DoShrink(Actor* actor, float value) {
 			Grow(actor, -value, 0.0); // Grow
 			auto runtime = Runtime::GetSingleton();
 
