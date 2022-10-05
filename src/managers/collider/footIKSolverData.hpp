@@ -15,9 +15,8 @@ namespace Gts {
 
 			void ApplyScale(const float& new_scale, const hkVector4& vecScale);
 
-		private:
 			hkaFootPlacementIkSolver* solver;
-
+		private:
 			hkVector4 m_footEndLS;
 			float m_footPlantedAnkleHeightMS;
 			float m_footRaisedAnkleHeightMS;
