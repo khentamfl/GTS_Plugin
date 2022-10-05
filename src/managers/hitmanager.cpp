@@ -57,7 +57,7 @@ namespace Gts {
 
 		// Apply it
 		
-		if (!this->CanGrow && receiver == player && receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
+		if (receiver->HasPerk(runtime.GrowthOnHitPerk) && !this->CanGrow && receiver == player && HitId->GetName() != "Stagger") {
 
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
 				this->CanGrow = true;
@@ -81,7 +81,7 @@ namespace Gts {
 				float BalanceMode = sizemanager.BalancedMode();
 
 				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
-				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(receiver));
+				float HealthPercentage = clamp(0.10, 0.50, GetHealthPercentage(receiver));
 
 				float SizeDifference = ReceiverScale/DealerScale;
 				
@@ -123,7 +123,7 @@ namespace Gts {
 				float ReceiverScale = get_visual_scale(receiver);
 				float DealerScale = get_visual_scale(attacker);
 				float SizeDifference = ReceiverScale/DealerScale;
-				float HealthPercentage = clamp(0.10, 1.0, GetHealthPercentage(receiver));
+				float HealthPercentage = clamp(0.10, 0.50, GetHealthPercentage(receiver));
 				
 				
 				if (receiver->HasMagicEffect(runtime.EffectGrowthPotion) || receiver->HasMagicEffect(runtime.explosiveGrowth1) || receiver->HasMagicEffect(runtime.explosiveGrowth2) || receiver->HasMagicEffect(runtime.explosiveGrowth3)) {
@@ -154,13 +154,7 @@ namespace Gts {
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
 				float HealthPercentage = clamp(0.02, 1.0, GetHealthPercentage(actor));
 				float GrowthValue = (0.0000245 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
-				if (GrowthValue <= 0) 
-				{	
-					this->CanGrow = false;
-					GrowthValue = 0.0;
-					return;
-				}
-				
+
 				auto actor_data = Persist.GetData(actor);
 	
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
@@ -169,8 +163,8 @@ namespace Gts {
 				if (this->GrowthTick > 0.01) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
-					this->GrowthTick -= 0.001 * TimeScale();
-				} else if (this->GrowthTick < 0.01) {
+					this->GrowthTick -= 0.0005 * TimeScale();
+				} else if (this->GrowthTick <= 0.0) {
 					log::info("Growth Value is: {}, HP Percentage is: {}, SizeHunger: {}, Gigantism: {}", GrowthValue, HealthPercentage, SizeHunger, Gigantism);
 					actor_data->half_life = 1.0;
 					this->CanGrow = false;
@@ -189,8 +183,8 @@ namespace Gts {
 				if (this->GrowthTick > 0.01) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life);
 					mod_target_scale(actor, -ShrinkValue);
-					this->GrowthTick -= 0.001 * TimeScale();
-				} else if (this->GrowthTick < 0.01) {
+					this->GrowthTick -= 0.0005 * TimeScale();
+				} else if (this->GrowthTick <= 0.0) {
 					actor_data->half_life = 1.0;
 					this->Balance_CanShrink = false;
 					this->GrowthTick = 0.0;
@@ -200,9 +194,6 @@ namespace Gts {
 
 					return;
 				}
-			}
-			else if (get_visual_scale(actor) < 1.0) {
-				set_target_scale(actor, 1.0);
 			}
 		}
 	}

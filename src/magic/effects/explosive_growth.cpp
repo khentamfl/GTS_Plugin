@@ -82,6 +82,7 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
+		float limit = this->grow_limit;
 
 
 		auto HealthRegenPerk = runtime.HealthRegenPerk;
@@ -90,28 +91,19 @@ namespace Gts {
 		if (caster->HasPerk(HealthRegenPerk)) {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
-
-		if (get_visual_scale(caster) >= this->grow_limit -0.01) {
-			return;
-		}
-
-		if (this->timer.ShouldRun()) {
-			auto GrowthSound = runtime.growthSound;
-			float Volume = clamp(0.25, 2.0, get_visual_scale(caster)/2);
-			PlaySound(GrowthSound, caster, Volume, 0.0);
-			log::info("Timer is working");
-		}
-
-
-		Grow(caster, this->power, 0.0); // Grow
-		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
+		
+		if (get_visual_scale(caster) < limit) {
+			Grow(caster, this->power, 0.0); // Grow
+			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 1.0);
 			if (timerSound.ShouldRunFrame()) {
 				PlaySound(runtime.xlRumbleL, caster, this->power/20, 0.0);
 			}
-		log::info("Power {}, Limit {}", this->power, this->grow_limit);
-		if (get_target_scale(caster) > this->grow_limit) {
-			set_target_scale(caster, this->grow_limit);
-			//Dispel; < - No need to dispel, we want to have effect active to gain bonuses from perks.
+
+			if (timer.ShouldRun()) {
+				auto GrowthSound = runtime.growthSound;
+				float Volume = clamp(0.12, 2.0, get_visual_scale(caster)/4);
+				PlaySound(GrowthSound, caster, Volume, 0.0);
+			}
 		}
 	}
 }
