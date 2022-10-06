@@ -165,7 +165,7 @@ namespace Gts {
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
 				}
-				if (this->GrowthTick > 0.01) {
+				if (this->GrowthTick > 0.01 && GrowthValue > 0) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
 					this->GrowthTick -= 0.0005 * TimeScale();
@@ -185,11 +185,11 @@ namespace Gts {
 				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
 				auto actor_data = Persist.GetData(actor);
 				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
-				float ShrinkValue = (0.000085/HealthPercentage) * (get_visual_scale(actor) * 0.10 + 0.90) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;		
+				float ShrinkValue = -(0.000085/HealthPercentage) * (get_visual_scale(actor) * 0.10 + 0.90) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;		
 				
-				if (this->GrowthTick > 0.01) {
+				if (this->GrowthTick > 0.01 && shrinkvalue < 0) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life);
-					mod_target_scale(actor, -ShrinkValue);
+					mod_target_scale(actor, ShrinkValue);
 					this->GrowthTick -= 0.0005 * TimeScale();
 				} else if (this->GrowthTick <= 0.01) {
 					actor_data->half_life = 1.0;

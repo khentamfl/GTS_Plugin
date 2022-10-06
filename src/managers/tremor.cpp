@@ -3,9 +3,10 @@
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
+#include "scale/scale.hpp"
 #include "Config.hpp"
 #include "util.hpp"
-#include "scale/scale.hpp"
+
 
 using namespace SKSE;
 using namespace RE;
@@ -40,9 +41,9 @@ namespace Gts {
 
 		float tremor_scale;
 		if (actor->formID == 0x14) {
-			tremor_scale = Persistent::GetSingleton().tremor_scale;
+			tremor_scale = Persistent::GetSingleton().tremor_scale * (get_target_scale(actor) * 0.05 + 0.95);
 		} else {
-			tremor_scale = Persistent::GetSingleton().npc_tremor_scale;
+			tremor_scale = Persistent::GetSingleton().npc_tremor_scale * (get_target_scale(actor) * 0.05 + 0.95);
 		}
 
 		if (tremor_scale < 1e-5) {
@@ -76,7 +77,7 @@ namespace Gts {
 					auto point_b = PlayerCharacter::GetSingleton()->GetPosition();
 					auto delta = point_a - point_b;
 
-					distance = unit_to_meter(delta.Length()); // Trying to make it stronger with NPC size
+					distance = unit_to_meter(delta.Length());
 				}
 
 				// Camera shakes
@@ -158,11 +159,7 @@ namespace Gts {
 					}
 				}
 
-				
-				tremor_scale *= (get_visual_scale(actor) * 0.05 + 0.95); // Boost it a bit, non science friendly.
-				
 				float intensity = power * falloff * tremor_scale;
-				
 
 				float duration = power * tremor_scale * 0.5;
 				duration = smootherstep(0.2, 1.2, duration);
