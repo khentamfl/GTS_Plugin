@@ -44,7 +44,7 @@ namespace Gts {
 		{Rate *= 2.0;}
 
 
-		float size = get_visual_scale(caster); // We count Enemy as caster: he casts it on us
+		float size = get_visual_scale(caster); 
 		float size2 = get_visual_scale(target);
 		log::info("Caster {}, target {}, GrowAmount {}, CrushGrowth Amount {}", size, size2, GrowAmount, CrushGrowthAmount);
         CrushGrow(caster, Rate, 0);

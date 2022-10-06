@@ -34,7 +34,6 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-
 		const float GROWTH_1_POWER = 0.00125;
 		const float GROWTH_2_POWER = 0.00145;
 		const float GROWTH_3_POWER = 0.00175;
@@ -91,23 +90,28 @@ namespace Gts {
 		
 		if (scale <= limit || limit > GetGrowthSpurt) {
 			DoGrowth(caster, this->power);
+			this->RequiredSizeChange = 0;
 			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 		}
 
 		else if (limit <= GetGrowthSpurt || GetGrowthSpurt > limit) {
 			float difference = GetGrowthSpurt - limit;
 			float RequiredSizeChange = this->RequiredSizeChange;
-			log::info("RequiredSizeChange: {}", RequiredSizeChange);
+			//log::info("RequiredSizeChange: {}", RequiredSizeChange);
+			if (RequiredSizeChange <= 0 && GetGrowthSpurt > limit) {
+				this->RequiredSizeChange = difference;
+			}
 			if (limit > GetGrowthSpurt) {
 				SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 			}
-			if (scale > limit && difference > 0) {
+			if (scale > limit && RequiredSizeChange > 0) {
+				this->RequiredSizeChange -= difference/100;
 				DoShrink(caster, difference/100);
-				log::info("Trying to shrink");
+				//log::info("Trying to shrink");
 			}
-			log::info("Difference is: {}", difference);
+			//log::info("Difference is: {}", difference);
 		}
-		log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}, Target Scale: {}, Visual Scale: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit, scale, get_visual_scale(caster));
+		//log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}, Target Scale: {}, Visual Scale: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit, scale, get_visual_scale(caster));
 	}
 
 	void ExplosiveGrowth::OnFinish() {
@@ -150,4 +154,3 @@ namespace Gts {
 			}
 		}	
 	}
-	
