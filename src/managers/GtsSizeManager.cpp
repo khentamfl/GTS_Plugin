@@ -75,7 +75,7 @@ namespace Gts {
 	}
 
 	float SizeManager::GetSizeHungerBonus(Actor* actor) {
-		float SHB = clamp(0.0, 2.0, this->GetData(actor).SizeHungerBonus);
+		float SHB = clamp(0.0, 100.0, this->GetData(actor).SizeHungerBonus);
 		return SHB;
 	}
 
