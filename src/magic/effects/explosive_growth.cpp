@@ -107,7 +107,7 @@ namespace Gts {
 				this->RequiredSizeChange = scale - difference;
 			}
 			float RequiredSizeChange = this->RequiredSizeChange;
-			if (limit >= GetGrowthSpurt || GetGrowthSpurt >= limit) {
+			if (limit > GetGrowthSpurt) {
 				SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 			}
 			if (scale > RequiredSizeChange) {

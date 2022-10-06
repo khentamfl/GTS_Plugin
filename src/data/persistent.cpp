@@ -38,8 +38,7 @@ namespace Gts {
 		std::uint32_t size;
 		std::uint32_t version;
 
-		SizeManager::GetSingleton().SetEnchantmentBonus(PlayerCharacter::GetSingleton(), 0.0);
-		SizeManager::GetSingleton().SetGrowthSpurt(PlayerCharacter::GetSingleton(), 0.0);
+		SizeManager::GetSingleton().Reset();
 
 		while (serde->GetNextRecordInfo(type, version, size)) {
 			if (type == ActorDataRecord) {
