@@ -96,17 +96,16 @@ namespace Gts {
 
 		else if (limit <= GetGrowthSpurt || GetGrowthSpurt > limit) {
 			float difference = GetGrowthSpurt - limit;
-			float RequiredSizeChange = this->RequiredSizeChange;
 			//log::info("RequiredSizeChange: {}", RequiredSizeChange);
-			if (RequiredSizeChange <= 0 && difference > 0.01) {
+			if (this->RequiredSizeChange <= 0 && difference > 0.10) {
 				SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 				this->RequiredSizeChange = difference;
 			}
 
-			if (RequiredSizeChange > 0) {
+			if (this->RequiredSizeChange > 0) {
 				this->RequiredSizeChange -= difference/100;
 				DoShrink(caster, difference/100);
-				if (RequiredSizeChange <= 0)
+				if (this->RequiredSizeChange <= 0)
 				{
 					this->RequiredSizeChange = 0;
 					return;
