@@ -115,7 +115,6 @@ namespace Gts {
 			//log::info("RequiredSizeChange: {}, Difference: {}", RequiredSizeChange, difference);
 		}
 		//log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}, Target Scale: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit, scale);
-	}
 
 	void ExplosiveGrowth::OnFinish() {
 		Actor* caster = GetCaster();
