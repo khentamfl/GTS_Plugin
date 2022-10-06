@@ -171,10 +171,10 @@ namespace {
 		
 		if (timer.ShouldRunFrame()) {
 				if (scale < 1.0) {
-				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
+					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				} else
 				{
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
+					actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 				}
 		}
 		// Experiement
@@ -330,7 +330,7 @@ namespace {
 		float scale = get_visual_scale(actor);
 		if (BalanceMode >= 2.0)
 		{
-			float BonusShrink = (1.0 + (scale/2));
+			float BonusShrink = (2.0 + (scale/1.5));
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {

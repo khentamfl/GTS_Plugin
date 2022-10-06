@@ -48,7 +48,7 @@ namespace Gts {
 				float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 				if (scale >= 1.0)
 				{
-					amt /= (1.0 + (scale/2 - 0.5));
+					amt /= (1.5 + (scale/2));
 				}
 			}
 			if (actor->HasPerk(runtime.OnTheEdge))
