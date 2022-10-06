@@ -118,10 +118,9 @@ namespace Gts {
 	}
 
 	void SizeManager::Reset() {
-			auto sizemanager = SizeManager::GetSingleton();
 			auto caster = PlayerCharacter::GetSingleton();
-			sizemanager.SetEnchantmentBonus(caster, 0.0);
-			sizemanager.SetGrowthSpurt(caster, 0.0);
+			SetEnchantmentBonus(caster, 0.0);
+			SetGrowthSpurt(caster, 0.0);
 			log::info("Resetting Enchantment and Growth Spurt");
 		}
 }
