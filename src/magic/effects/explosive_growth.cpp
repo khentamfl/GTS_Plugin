@@ -41,9 +41,7 @@ namespace Gts {
 
 		auto& runtime = Runtime::GetSingleton();
 		auto base_spell = GetBaseEffect();
-		if (!caster) {
-			return;
-		}
+		
 		if (base_spell == runtime.explosiveGrowth1) {
 			this->power = GROWTH_1_POWER;
 			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
