@@ -158,9 +158,9 @@ namespace Gts {
 					}
 				}
 
-				if (actor->formID != 0x14) {
-					tremor_scale *= (get_visual_scale(actor) * 0.05 + 0.95);
-				}
+				
+				tremor_scale *= (get_visual_scale(actor) * 0.05 + 0.95); // Boost it a bit, non science friendly.
+				
 				float intensity = power * falloff * tremor_scale;
 				
 
