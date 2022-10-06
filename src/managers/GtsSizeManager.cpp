@@ -63,6 +63,9 @@ namespace Gts {
 		if (this->GetData(actor).enchantmentBonus <= 0.0) {
 			return 0.0; //Protect against 0
 		}
+		else if (this->GetData(actor).enchantmentBonus <= 1.0) {
+			return 1.0; //Protect against >1
+		}
 		return this->GetData(actor).enchantmentBonus;
 	}
 
@@ -80,6 +83,9 @@ namespace Gts {
 		if (this->GetData(actor).SizeHungerBonus <= 0.0) {
 			return 0.0; //Protect against 0
 		}
+		else if (this->GetData(actor).SizeHungerBonus >= 1.0) {
+			return 1.0; //Protect against >1
+		}
 		return this->GetData(actor).SizeHungerBonus;
 	}
 
@@ -96,6 +102,9 @@ namespace Gts {
 	float SizeManager::GetGrowthSpurt(Actor* actor) {
 		if (this->GetData(actor).GrowthSpurt <= 0.0) {
 			return 0.0; //Protect against 0
+		}
+		else if (this->GetData(actor).GrowthSpurt >= 1.0) {
+			return 1.0; //Protect against >1
 		}
 		return this->GetData(actor).GrowthSpurt;
 	}
