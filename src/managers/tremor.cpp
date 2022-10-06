@@ -75,7 +75,7 @@ namespace Gts {
 					auto point_b = PlayerCharacter::GetSingleton()->GetPosition();
 					auto delta = point_a - point_b;
 
-					distance = unit_to_meter(delta.Length());
+					distance = unit_to_meter(delta.Length()) * get_visual_scale(actor); // Trying to make it stronger with NPC size
 				}
 
 				// Camera shakes

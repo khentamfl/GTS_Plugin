@@ -16,12 +16,12 @@ namespace Gts {
 
 	void GrowthTremorManager::CallRumble(Actor* Source, Actor* Receiver, float Modifier) {
 		auto Player = PlayerCharacter::GetSingleton();
-		float Distance = get_distance_to_camera(Source); // No way to call Source->GetDistance like in SP, so i'll have to use Camera
+		float Distance = get_distance_to_camera(Source);
 		float SourceSize = get_visual_scale(Source);
 		float ReceiverSize = get_visual_scale(Receiver);
-		float SizeDifference = SourceSize/ReceiverSize;
-		float falloff = 650 * (SourceSize * 0.75 + 0.25);
-		float power = (0.425 * ShakeStrength(Source) * (SizeDifference * 0.25 + 0.75));
+		float SizeDifference = clamp(0.0, 10.0, SourceSize/ReceiverSize);
+		float falloff = 450 * (SourceSize * 0.25 + 0.75) * (SizeDifference * 0.25 + 0.75);
+		float power = (0.425 * ShakeStrength(Source));
 		float duration = 0.25 * (1 + (SizeDifference * 0.25));
 		if (Distance < falloff) {
 			float intensity = ((falloff/Distance) / 8);

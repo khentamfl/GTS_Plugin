@@ -61,7 +61,7 @@ namespace Gts {
 			SoftPotential speed_adjustment {
 				.k = 0.125, // 0.125
 				.n = 0.86, // 0.86
-				.s = 2.06, // 1.12
+				.s = 1.12, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 			};
