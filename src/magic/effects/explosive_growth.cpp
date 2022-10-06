@@ -90,27 +90,27 @@ namespace Gts {
 		
 		if (scale <= limit || limit > GetGrowthSpurt) {
 			DoGrowth(caster, this->power);
-			this->RequiredSizeChange = 0;
+			//this->RequiredSizeChange = 0;
 			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 		}
 
-		else if (limit <= GetGrowthSpurt || GetGrowthSpurt > limit) {
-			float difference = GetGrowthSpurt - limit;
+		//else if (limit <= GetGrowthSpurt || GetGrowthSpurt > limit) {
+			//float difference = GetGrowthSpurt - limit;
 			//log::info("RequiredSizeChange: {}", RequiredSizeChange);
-			if (this->RequiredSizeChange <= 0 && difference > 0.10) {
-				SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
-				this->RequiredSizeChange = difference;
-			}
+			//if (this->RequiredSizeChange <= 0 && difference > 0.10) {
+				//SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
+				//this->RequiredSizeChange = difference;
+			//}
 
-			if (this->RequiredSizeChange > 0) {
-				this->RequiredSizeChange -= difference/100;
-				DoShrink(caster, difference/100);
-				if (this->RequiredSizeChange <= 0)
-				{
-					this->RequiredSizeChange = 0;
-					return;
-				}
-			}
+			//if (this->RequiredSizeChange > 0) {
+				//this->RequiredSizeChange -= difference/100;
+				//DoShrink(caster, difference/100);
+				//if (this->RequiredSizeChange <= 0)
+				//{
+					//this->RequiredSizeChange = 0;
+					//return;
+				//}
+			//}
 			//log::info("Difference is: {}", difference);
 			log::info("RequiredSizeChange: {}, Difference: {}", RequiredSizeChange, difference);
 		}
