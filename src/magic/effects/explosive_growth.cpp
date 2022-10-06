@@ -107,11 +107,13 @@ namespace Gts {
 				this->RequiredSizeChange = scale - difference;
 			}
 			float RequiredSizeChange = this->RequiredSizeChange;
+			log::info("RequiredSizeChange: {}", RequiredSizeChange);
 			if (limit > GetGrowthSpurt) {
 				SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 			}
 			if (scale > RequiredSizeChange) {
 				DoShrink(caster, difference/100);
+				log::info("Trying to shrink");
 			}
 			log::info("Difference is: {}", difference);
 		}
