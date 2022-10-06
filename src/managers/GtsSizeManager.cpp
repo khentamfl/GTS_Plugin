@@ -117,7 +117,7 @@ namespace Gts {
 		return this->sizeData.at(actor);
 	}
 
-	void SizeManager::Start() {
+	void SizeManager::Reset() {
 			auto sizemanager = SizeManager::GetSingleton();
 			auto caster = PlayerCharacter::GetSingleton();
 			sizemanager.SetEnchantmentBonus(caster, 0.0);

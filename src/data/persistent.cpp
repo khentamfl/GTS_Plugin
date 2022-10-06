@@ -1,5 +1,7 @@
+#include "managers/GtsSizeManager.hpp"
 #include "data/persistent.hpp"
 #include "scale/modscale.hpp"
+
 
 using namespace SKSE;
 using namespace RE;
@@ -35,6 +37,8 @@ namespace Gts {
 		std::uint32_t type;
 		std::uint32_t size;
 		std::uint32_t version;
+
+		SizeManager::GetSingleton().Start();
 
 		while (serde->GetNextRecordInfo(type, version, size)) {
 			if (type == ActorDataRecord) {
