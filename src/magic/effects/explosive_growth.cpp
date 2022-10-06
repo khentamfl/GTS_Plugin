@@ -39,9 +39,8 @@ namespace Gts {
 		const float GROWTH_2_POWER = 0.00145;
 		const float GROWTH_3_POWER = 0.00175;
 
-		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
-		auto caster = GetCaster();
+		auto base_spell = GetBaseEffect();
 		if (!caster) {
 			return;
 		}
@@ -77,7 +76,6 @@ namespace Gts {
 			}
 		}
 		
-		auto& runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
 		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(caster)/100;
