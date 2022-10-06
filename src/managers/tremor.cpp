@@ -76,7 +76,7 @@ namespace Gts {
 					auto point_b = PlayerCharacter::GetSingleton()->GetPosition();
 					auto delta = point_a - point_b;
 
-					distance = unit_to_meter(delta.Length()) * get_visual_scale(actor); // Trying to make it stronger with NPC size
+					distance = unit_to_meter(delta.Length()); // Trying to make it stronger with NPC size
 				}
 
 				// Camera shakes
@@ -158,7 +158,11 @@ namespace Gts {
 					}
 				}
 
+				if (actor->formID != 0x14) {
+					tremor_scale *= get_visual_scale(actor);
+				}
 				float intensity = power * falloff * tremor_scale;
+				
 
 				float duration = power * tremor_scale * 0.5;
 				duration = smootherstep(0.2, 1.2, duration);

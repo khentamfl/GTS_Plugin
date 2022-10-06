@@ -192,7 +192,7 @@ namespace Gts {
 				DamageAV(caster, ActorValue::kMagicka, 0.15 * (scale * 0.5 + 0.5) * magicka * TimeScale());
 				mod_target_scale(target, 0.0010 * magicka * scale);
 				float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
-				GrowthTremorManager::GetSingleton().CallRumble(target, caster, scale/10);
+				GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.25);
 			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().growthSound, target, Volume, 0.0);
 					}
@@ -214,7 +214,7 @@ namespace Gts {
 				DamageAV(target, ActorValue::kMagicka, 0.10 * (scale * 0.5 + 0.5) * magicka * TimeScale());
 				mod_target_scale(target, -0.0010 * magicka * scale);
 				float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
-				GrowthTremorManager::GetSingleton().CallRumble(target, caster, scale/14);
+				GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.20);
 			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().shrinkSound, target, Volume, 0.0);
 					}

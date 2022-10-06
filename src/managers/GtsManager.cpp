@@ -362,11 +362,13 @@ namespace {
 				game_mode_int = runtime.ChosenGameMode->value;
 				growthRate = runtime.GrowthModeRate->value;
 				shrinkRate = runtime.ShrinkModeRate->value;
+				log::info("Enabling Player Mode");
 
-			} if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) {
+			} else if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) {
 				game_mode_int = runtime.ChosenGameModeNPC->value;
 				growthRate = runtime.GrowthModeRateNPC->value;
 				shrinkRate = runtime.ShrinkModeRateNPC->value;
+				log::info("Enabling NPC Mode");
 			}
 		} 
 
