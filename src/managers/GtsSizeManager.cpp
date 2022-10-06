@@ -60,7 +60,7 @@ namespace Gts {
 	}
 
 	float SizeManager::GetEnchantmentBonus(Actor* actor) {
-		float EB = clamp(0.0, 1.0, this->GetData(actor).enchantmentBonus);
+		float EB = clamp(0.0, 100.0, this->GetData(actor).enchantmentBonus);
 		return EB;
 	}
 
