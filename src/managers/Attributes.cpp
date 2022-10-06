@@ -188,7 +188,7 @@ namespace {
 		auto ExplGrowthP2 = runtime.explosiveGrowth2;
 		auto ExplGrowthP3 = runtime.explosiveGrowth3;
 
-		float size = get_visual_scale(Player);
+		float size = get_target_scale(Player);
 
 		if (size > 0) {
 			BoostHP(Player, bonusHPMultiplier);
@@ -225,6 +225,18 @@ namespace {
 		}
 		if (!npc->Is3DLoaded()) {
 			return;
+		}
+		auto& runtime = Runtime::GetSingleton();
+		float size = get_target_scale(npc);
+		if (npc->IsPlayerTeammate() || npc->IsInFaction(runtime.FollowerFaction)) {
+			BoostHP(npc, 1.0);
+			BoostCarry(npc, 1.0);
+		}
+		if (!npc->HasPerk(runtime.StaggerImmunity) && size > 1.33) {
+			npc->AddPerk(runtime.StaggerImmunity);
+		}
+		else if (size < 1.33 && npc->HasPerk(runtime.StaggerImmunity)) {
+			npc->RemovePerk(runtime.StaggerImmunity);
 		}
 		BoostAttackDmg(npc, 1.0);
 	}
