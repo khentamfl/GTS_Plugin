@@ -66,15 +66,7 @@ namespace {
 	void BoostAttackDmg(Actor* actor, float power) {
 		float scale = get_target_scale(actor);
 		float bonus = scale * power;
-		float damagebonus = actor->GetActorValue(ActorValue::kAttackDamageMult);  
-		float basedamagebonus = actor->GetBaseActorValue(ActorValue::kAttackDamageMult);  
-		static Timer timer = Timer(0.15);
-		if (timer.ShouldRunFrame()) {
-			actor->SetActorValue(ActorValue::kAttackDamageMult, bonus);
-		}
-		//if (actor->formID == 0x14) {
-			//log::info("Actor is: {}, Scale: {}, Pure Mult: {}, Mult: {}, Damage Bonus: {}, Base Damage Bonus: {}", actor->GetDisplayFullName(), scale, power, bonus, damagebonus, basedamagebonus);
-		//}
+		actor->SetActorValue(ActorValue::kAttackDamageMult, bonus);
 	}
 
 	void BoostSpeedMulti(Actor* actor, float power) {

@@ -249,12 +249,13 @@ namespace {
 
 	void ApplyGameMode(Actor* actor, const ChosenGameMode& game_mode, const float& GrowthRate, const float& ShrinkRate )  {
 		const float EPS = 1e-7;
+		log::info("Trying to apply game mode for {}", actor->GetDisplayFullName());
 		if (game_mode != ChosenGameMode::None) {
 			float natural_scale = get_natural_scale(actor);
 			float Scale = get_visual_scale(actor);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
-			log::info("Gamemode {} for {}", game_mode, actor->GetDisplayFullName());
+			log::info("Gamemode Success {} for {}", game_mode, actor->GetDisplayFullName());
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
 					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
@@ -365,7 +366,7 @@ namespace {
 				shrinkRate = runtime.ShrinkModeRate->value;
 				log::info("Enabling Player Mode");
 
-			} else if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) {
+			} else if (!actor->formID == 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction))) {
 				game_mode_int = runtime.ChosenGameModeNPC->value;
 				growthRate = runtime.GrowthModeRateNPC->value;
 				shrinkRate = runtime.ShrinkModeRateNPC->value;
@@ -378,6 +379,7 @@ namespace {
 		}
 
 		ApplyGameMode(actor, gameMode, growthRate, shrinkRate);
+		log::info("Applying Game mode: Actor: {}", actor->GetDisplayFullName());
 	}
 }
 
