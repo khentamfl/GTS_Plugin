@@ -94,13 +94,13 @@ namespace Gts {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 		
-		if (scale <= limit || limit > GetGrowthSpurt) {
+		if (scale <= limit || limit >= GetGrowthSpurt) {
 			DoGrowth(caster, this->power);
 			this->RequiredSizeChange = 0.0;
 			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 		}
 
-		else if (limit < GetGrowthSpurt) {
+		else if (limit <= GetGrowthSpurt) {
 			float difference = GetGrowthSpurt - limit;
 			if (this->RequiredSizeChange == 0.0) 
 			{
