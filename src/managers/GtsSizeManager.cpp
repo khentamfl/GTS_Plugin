@@ -63,7 +63,7 @@ namespace Gts {
 		if (this->GetData(actor).enchantmentBonus <= 0.0) {
 			return 0.0; //Protect against 0
 		}
-		else if (this->GetData(actor).enchantmentBonus <= 1.0) {
+		else if (this->GetData(actor).enchantmentBonus >= 1.0) {
 			return 1.0; //Protect against >1
 		}
 		return this->GetData(actor).enchantmentBonus;
