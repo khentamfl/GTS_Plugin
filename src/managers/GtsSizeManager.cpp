@@ -75,7 +75,7 @@ namespace Gts {
 	}
 
 	float SizeManager::GetSizeHungerBonus(Actor* actor) {
-		float SHB = clamp(0.0, 1.0, this->GetData(actor).SizeHungerBonus);
+		float SHB = clamp(0.0, 2.0, this->GetData(actor).SizeHungerBonus);
 		return SHB;
 	}
 
@@ -90,7 +90,7 @@ namespace Gts {
 	}
 
 	float SizeManager::GetGrowthSpurt(Actor* actor) {
-		float GS = clamp (0.0, 1.0, this->GetData(actor).GrowthSpurt);
+		float GS = clamp (0.0, 999999.0, this->GetData(actor).GrowthSpurt);
 		return GS;
 	}
 
