@@ -58,8 +58,9 @@ namespace Gts {
 		// Apply it
 		
 		if (receiver->HasPerk(runtime.GrowthOnHitPerk) && !this->CanGrow && receiver == player && HitId->GetName() != "Stagger") {
-
+			log::info("Growth Condition 1 true");
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
+				log::info("Growth Condition 2 true");
 				this->CanGrow = true;
 				if (wasPowerAttack) {
 					this->BonusPower = 2.0;
@@ -159,6 +160,7 @@ namespace Gts {
 				float GrowthValue = (0.0000245 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
 
 				auto actor_data = Persist.GetData(actor);
+				log::info("SizeHunger, {}, Gigantism: {}", SizeHunger, Gigantism);
 	
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
@@ -167,13 +169,15 @@ namespace Gts {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
 					this->GrowthTick -= 0.0005 * TimeScale();
-				} else if (this->GrowthTick <= 0.0) {
+				} else if (this->GrowthTick <= 0.01) {
 					log::info("Growth Value is: {}, HP Percentage is: {}, SizeHunger: {}, Gigantism: {}", GrowthValue, HealthPercentage, SizeHunger, Gigantism);
 					actor_data->half_life = 1.0;
 					this->CanGrow = false;
 					this->GrowthTick = 0.0;
-			}
-			return;
+				}
+				else {
+					this->GrowthTick = 0.0;
+				}
 		}
 		else if (this->Balance_CanShrink) { // Shrink on hit
 			if (get_visual_scale(actor) > 1.00) {
@@ -187,15 +191,16 @@ namespace Gts {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life);
 					mod_target_scale(actor, -ShrinkValue);
 					this->GrowthTick -= 0.0005 * TimeScale();
-				} else if (this->GrowthTick <= 0.0) {
+				} else if (this->GrowthTick <= 0.01) {
 					actor_data->half_life = 1.0;
 					this->Balance_CanShrink = false;
 					this->GrowthTick = 0.0;
 					this->AdjustValue = 1.0;
 
 					log::info("Shrink Value is: {}, SizeHunger: {}, Gigantism: {}", ShrinkValue, SizeHunger, Gigantism);
-
-					return;
+				}
+				else {
+					this->GrowthTick = 0.0;
 				}
 			}
 		}

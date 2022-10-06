@@ -48,10 +48,10 @@ namespace Gts {
 				float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 				if (scale >= 1.0)
 				{
-					amt /= (1.0 + (scale/3 - 0.33));
+					amt /= (1.0 + (scale/2 - 0.5));
 				}
 			}
-			if (actor->formID == 0x14 && actor->HasPerk(runtime.OnTheEdge))
+			if (actor->HasPerk(runtime.OnTheEdge))
 			{
 				float GetHP = clamp(0.5, 1.0, GetHealthPercentage(actor) + 0.4); // Bonus Size Gain if Actor has perk
 				if (amt > 0) {
