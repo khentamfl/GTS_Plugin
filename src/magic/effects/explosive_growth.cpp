@@ -96,22 +96,17 @@ namespace Gts {
 		
 		if (scale <= limit || limit > GetGrowthSpurt) {
 			DoGrowth(caster, this->power);
-			this->RequiredSizeChange = 0.0;
 			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 		}
 
 		else if (limit <= GetGrowthSpurt || GetGrowthSpurt > limit) {
 			float difference = GetGrowthSpurt - limit;
-			if (this->RequiredSizeChange == 0.0) 
-			{
-				this->RequiredSizeChange = scale - difference;
-			}
 			float RequiredSizeChange = this->RequiredSizeChange;
 			log::info("RequiredSizeChange: {}", RequiredSizeChange);
 			if (limit > GetGrowthSpurt) {
 				SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 			}
-			if (scale > RequiredSizeChange) {
+			if (scale > limit && difference > 0) {
 				DoShrink(caster, difference/100);
 				log::info("Trying to shrink");
 			}
