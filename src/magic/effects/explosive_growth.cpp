@@ -107,11 +107,11 @@ namespace Gts {
 			if (scale > limit && RequiredSizeChange > 0) {
 				this->RequiredSizeChange -= difference/100;
 				DoShrink(caster, difference/100);
-				//log::info("Trying to shrink");
 			}
 			//log::info("Difference is: {}", difference);
+			log::info("RequiredSizeChange: {}, Difference: {}", RequiredSizeChange, difference);
 		}
-		//log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}, Target Scale: {}, Visual Scale: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit, scale, get_visual_scale(caster));
+		log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}, Target Scale: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit, scale);
 	}
 
 	void ExplosiveGrowth::OnFinish() {
