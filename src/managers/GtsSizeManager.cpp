@@ -60,13 +60,8 @@ namespace Gts {
 	}
 
 	float SizeManager::GetEnchantmentBonus(Actor* actor) {
-		if (this->GetData(actor).enchantmentBonus <= 0.0) {
-			return 0.0; //Protect against 0
-		}
-		else if (this->GetData(actor).enchantmentBonus >= 1.0) {
-			return 1.0; //Protect against >1
-		}
-		return this->GetData(actor).enchantmentBonus;
+		float EB = clamp(0.0, 1.0, this->GetData(actor).enchantmentBonus);
+		return EB;
 	}
 
 	void SizeManager::ModEnchantmentBonus(Actor* actor, float amt) {
@@ -80,13 +75,8 @@ namespace Gts {
 	}
 
 	float SizeManager::GetSizeHungerBonus(Actor* actor) {
-		if (this->GetData(actor).SizeHungerBonus <= 0.0) {
-			return 0.0; //Protect against 0
-		}
-		else if (this->GetData(actor).SizeHungerBonus >= 1.0) {
-			return 1.0; //Protect against >1
-		}
-		return this->GetData(actor).SizeHungerBonus;
+		float SHB = clamp(0.0, 1.0, this->GetData(actor).SizeHungerBonus);
+		return SHB;
 	}
 
 	void SizeManager::ModSizeHungerBonus(Actor* actor, float amt) {
@@ -100,13 +90,8 @@ namespace Gts {
 	}
 
 	float SizeManager::GetGrowthSpurt(Actor* actor) {
-		if (this->GetData(actor).GrowthSpurt <= 0.0) {
-			return 0.0; //Protect against 0
-		}
-		else if (this->GetData(actor).GrowthSpurt >= 1.0) {
-			return 1.0; //Protect against >1
-		}
-		return this->GetData(actor).GrowthSpurt;
+		float GS = clamp (0.0, 1.0, this->GetData(actor).GrowthSpurt);
+		return GS;
 	}
 
 	void SizeManager::ModGrowthSpurt(Actor* actor, float amt) {
