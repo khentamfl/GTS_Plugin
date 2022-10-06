@@ -357,13 +357,13 @@ namespace {
 			}
 		}
 
-		else if (QuestStage > 100.0 && BalanceMode == 1.0) {
+		else if (QuestStage > 100.0 && BalanceMode <= 1.0) {
 			if (actor->formID == 0x14) {
 				game_mode_int = runtime.ChosenGameMode->value;
 				growthRate = runtime.GrowthModeRate->value;
 				shrinkRate = runtime.ShrinkModeRate->value;
 
-			} else if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) {
+			} if (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) {
 				game_mode_int = runtime.ChosenGameModeNPC->value;
 				growthRate = runtime.GrowthModeRateNPC->value;
 				shrinkRate = runtime.ShrinkModeRateNPC->value;
