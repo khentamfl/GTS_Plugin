@@ -187,7 +187,7 @@ namespace Gts {
 				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
 				float ShrinkValue = -(0.000085/HealthPercentage) * (get_visual_scale(actor) * 0.10 + 0.90) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;		
 				
-				if (this->GrowthTick > 0.01 && shrinkvalue < 0) {
+				if (this->GrowthTick > 0.01 && ShrinkValue < 0) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life);
 					mod_target_scale(actor, ShrinkValue);
 					this->GrowthTick -= 0.0005 * TimeScale();
