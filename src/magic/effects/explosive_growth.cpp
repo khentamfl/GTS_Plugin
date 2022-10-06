@@ -17,6 +17,24 @@ namespace Gts {
 	}
 
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
+		
+	}
+
+	bool ExplosiveGrowth::StartEffect(EffectSetting* effect) { // NOLINT
+		auto& runtime = Runtime::GetSingleton();
+		return (effect == runtime.explosiveGrowth1 || effect == runtime.explosiveGrowth2 || effect == runtime.explosiveGrowth3);
+	}
+
+	void ExplosiveGrowth::OnStart() {
+
+	}
+
+	void ExplosiveGrowth::OnUpdate() {
+		Actor* caster = GetCaster();
+		if (!caster) {
+			return;
+		}
+
 		const float GROWTH_1_POWER = 0.00125;
 		const float GROWTH_2_POWER = 0.00145;
 		const float GROWTH_3_POWER = 0.00175;
@@ -58,26 +76,7 @@ namespace Gts {
 				this->grow_limit = 2.01; // NOLINT
 			}
 		}
-	}
-
-	bool ExplosiveGrowth::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.explosiveGrowth1 || effect == runtime.explosiveGrowth2 || effect == runtime.explosiveGrowth3);
-	}
-
-	void ExplosiveGrowth::OnStart() {
-		Actor* caster = GetCaster();
-		if (!caster) {
-			return;
-		}
-		auto& runtime = Runtime::GetSingleton();
-	}
-
-	void ExplosiveGrowth::OnUpdate() {
-		Actor* caster = GetCaster();
-		if (!caster) {
-			return;
-		}
+		
 		auto& runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
 		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
@@ -88,7 +87,7 @@ namespace Gts {
 		float limit = this->grow_limit * Gigantism * AdjustLimit;
 
 		auto HealthRegenPerk = runtime.HealthRegenPerk;
-		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00075;
+		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00050;
 
 		if (caster->HasPerk(HealthRegenPerk)) {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());

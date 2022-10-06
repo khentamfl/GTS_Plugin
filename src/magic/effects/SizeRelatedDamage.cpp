@@ -54,6 +54,7 @@ namespace Gts {
 		if (caster->HasPerk(runtime.ExtraGrowth) && caster != target && (caster->HasMagicEffect(runtime.explosiveGrowth1) || caster->HasMagicEffect(runtime.explosiveGrowth2) || caster->HasMagicEffect(runtime.explosiveGrowth3)))
 		{
 			ShrinkActor(target, 0.0026 * BonusShrink, 0.0);
+			Grow(caster, 0.0012 * BonusShrink, 0.0);
 		}
 
 		if (caster->HasMagicEffect(runtime.SmallMassiveThreat))
