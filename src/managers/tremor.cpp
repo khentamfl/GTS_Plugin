@@ -5,6 +5,7 @@
 #include "data/transient.hpp"
 #include "Config.hpp"
 #include "util.hpp"
+#include "scale/scale.hpp"
 
 using namespace SKSE;
 using namespace RE;
