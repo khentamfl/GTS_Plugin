@@ -41,9 +41,9 @@ namespace Gts {
 
 		float tremor_scale;
 		if (actor->formID == 0x14) {
-			tremor_scale = Persistent::GetSingleton().tremor_scale * (get_target_scale(actor) * 0.05 + 0.95);
+			tremor_scale = Persistent::GetSingleton().tremor_scale;
 		} else {
-			tremor_scale = Persistent::GetSingleton().npc_tremor_scale * (get_target_scale(actor) * 0.05 + 0.95);
+			tremor_scale = Persistent::GetSingleton().npc_tremor_scale * (0.95 + get_visual_scale(actor) * 0.05);
 		}
 
 		if (tremor_scale < 1e-5) {

@@ -238,7 +238,7 @@ namespace Gts {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
 		}
 		bool hasSMT = runtime.SmallMassiveThreat ? caster->HasMagicEffect(runtime.SmallMassiveThreat) : false;
-		if (get_visual_scale(caster) <= 13.0 || !caster->IsSprinting() && !hasSMT) {
+		if (get_visual_scale(caster) <= 13.0 && !caster->IsSprinting() && !hasSMT || hasSMT && get_visual_scale(caster) <= 13.0) {
 			caster->NotifyAnimationGraph("JumpLand");
 
 		}
