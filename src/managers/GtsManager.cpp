@@ -344,6 +344,7 @@ namespace {
 				{
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.0);
 				}
+				log::info("ShrinkRate is{}", shrinkRate);
 
 				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
 					shrinkRate *= 0.0;
