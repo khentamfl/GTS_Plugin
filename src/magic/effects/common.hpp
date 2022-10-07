@@ -201,13 +201,13 @@ namespace Gts {
 		}
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !target->HasMagicEffect(runtime.ShrinkToNothing) && !target->IsPlayerTeammate()) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
-			if (runtime.BloodGushSound) {
-				PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
-			}
-			else
-			{
-				log::info("SOUND NOT FOUND!");
-			}
+			//if (runtime.BloodGushSound) {
+				//PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
+			//}
+			//else
+			//{
+				//log::info("SOUND NOT FOUND!");
+			//}
 			AdjustSizeLimit(0.0117);
 			auto Cache = runtime.ManualGrowthStorage;
 			if (caster->formID == 0x14 && caster->HasPerk(runtime.SizeReserve)) {
