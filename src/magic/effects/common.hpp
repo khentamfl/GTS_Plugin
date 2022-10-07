@@ -248,12 +248,12 @@ namespace Gts {
 		}
 
 		AdjustSizeLimit(0.0417 * target_scale);
-			if (runtime.BloodGushSound) {
-				PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
-			} else 
-			{
-				log::info("SOUND NOT FOUND!");
-			}
+			//if (runtime.BloodGushSound) {
+				//PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
+			//} else 
+			//{
+			//	log::info("SOUND NOT FOUND!");
+			//}
 
 
 

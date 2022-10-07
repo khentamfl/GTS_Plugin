@@ -326,11 +326,11 @@ namespace {
 		int game_mode_int = 0;
 		float QuestStage = runtime.MainQuest->GetCurrentStageID();
 		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
-		float BonusShrink = 1.0;
 		float scale = get_visual_scale(actor);
+		float BonusShrink = 1.0;
 		if (BalanceMode >= 2.0)
 		{
-			BonusShrink = (2.0 * scale);
+			BonusShrink = (2.0 * (scale * 2));
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
