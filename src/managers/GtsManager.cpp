@@ -330,7 +330,7 @@ namespace {
 		float scale = get_visual_scale(actor);
 		if (BalanceMode >= 2.0)
 		{
-			float BonusShrink = (2.0 * scale);
+			BonusShrink = (2.0 * scale);
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
