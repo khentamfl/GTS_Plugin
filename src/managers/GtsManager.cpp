@@ -342,7 +342,7 @@ namespace {
 					shrinkRate = 0.0186 / (1.5 * (BalanceMode) * BonusShrink);
 				} else if (BalanceMode >= 2.0 && QuestStage > 70)
 				{
-					shrinkRate = 0.0186 / (1.5 * (BalanceMode) / BonusShrink);
+					shrinkRate = 0.0186 / (1.5 * (BalanceMode) * BonusShrink);
 				}
 
 				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
