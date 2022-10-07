@@ -142,7 +142,7 @@ namespace {
 		float MS_mult = soft_core(scale, MS_adjustment);
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
-		float MS_mult_limit = clamp(0.650, 1.0, MS_mult); // For Walk speed
+		float MS_mult_limit = clamp(0.10, 1.0, MS_mult); // For Walk speed
 		float Multy = clamp(0.75, 1.0, MS_mult); // Additional 25% ms
 		float WalkSpeedLimit = clamp(0.33, 1.0, MS_mult);
 		float PerkSpeed = 1.0;
