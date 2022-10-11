@@ -192,23 +192,23 @@ namespace {
 
 		auto CharController = Player->GetCharController();
 
-		float velocity = CharController->velocityMod;
-		float up = CharController->up;
+		//float velocity = CharController->velocityMod;
+		//float up = CharController->up;
 		float unk180 = CharController->unk180;
 		float unk188 = CharController->unk188;
-		float pad198 = CharController->pad198;
+		//float pad198 = CharController->pad198;
 		float waterH = CharController->waterHeight;
-		float swimH = CharController->swimFloatHeightt;
+		float swimH = CharController->swimFloatHeight;
 		float ActorH = CharController->actorHeight;
 		float speed = CharController->speedPct;
 
 		static Timer timer = Timer(3.00); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRunFrame()) {
-			log::info("velocity: {}", velocity);
-			log::info("up: {}", up);
+			//log::info("velocity: {}", velocity);
+			//log::info("up: {}", up);
 			log::info("unk180: {}", unk180);
 			log::info("unk188: {}", unk188);
-			log::info("unk198: {}", unk198);
+			//log::info("unk198: {}", unk198);
 			log::info("waterH: {}", waterH);
 			log::info("swimH: {}", swimH);
 			log::info("ActorH: {}", ActorH);
