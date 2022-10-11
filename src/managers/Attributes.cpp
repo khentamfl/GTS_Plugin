@@ -192,7 +192,7 @@ namespace {
 
 		auto CharController = Player->GetCharController();
 
-		float velocity = CharController->velocityMod
+		float velocity = CharController->velocityMod;
 		float up = CharController->up;
 		float unk180 = CharController->unk180;
 		float unk188 = CharController->unk188;
