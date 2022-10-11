@@ -173,6 +173,7 @@ namespace {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
+		
 
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
 
@@ -187,6 +188,32 @@ namespace {
 		auto ExplGrowthP1 = runtime.explosiveGrowth1;
 		auto ExplGrowthP2 = runtime.explosiveGrowth2;
 		auto ExplGrowthP3 = runtime.explosiveGrowth3;
+		
+
+		auto CharController = Player->GetCharController();
+
+		float velocity = CharController->velocityMod->value;
+		float up = CharController->up->value;
+		float unk180 = CharController->unk180->value;
+		float unk188 = CharController->unk188->value;
+		float pad198 = CharController->pad198->value;
+		float waterH = CharController->waterHeight->value;
+		float swimH = CharController->swimFloatHeightt->value;
+		float ActorH = CharController->actorHeight->value;
+		float speed = CharController->speedPct->value;
+
+		static Timer timer = Timer(3.00); // Run every 0.5s or as soon as we can
+		if (timer.ShouldRunFrame()) {
+			log::info("velocity: {}", velocity);
+			log::info("up: {}", up);
+			log::info("unk180: {}", unk180);
+			log::info("unk188: {}", unk188);
+			log::info("unk198: {}", unk198);
+			log::info("waterH: {}", waterH);
+			log::info("swimH: {}", swimH);
+			log::info("ActorH: {}", ActorH);
+			log::info("speed: {}", speed);
+		}
 
 		float size = get_target_scale(Player);
 
