@@ -193,33 +193,26 @@ namespace {
 		float size = get_target_scale(Player);
 		
 
-		auto CharController = Player->GetCharController();
+		//auto CharController = Player->GetCharController();
 
-		//float velocity = CharController->velocityMod;
-		//float up = CharController->up;
-		float unk180 = CharController->unk180;
-		float unk188 = CharController->unk188;
-		//float pad198 = CharController->pad198;
-		float waterH = CharController->waterHeight;
-		CharController->swimFloatHeight = 1.6 * size * sizemanager.GetRaceScale(Player);
-		CharController->actorHeight = 1.828 * size * sizemanager.GetRaceScale(Player);
-		CharController->scale = size;
-		float speed = CharController->speedPct;
-		float rotMod = CharController->rotMod;
-		float rotModTime = CharController->rotModTime;
+		//float waterH = CharController->waterHeight;
+		//CharController->swimFloatHeight = 1.6 * size * sizemanager.GetRaceScale(Player);
+		//CharController->actorHeight = 1.828 * size * sizemanager.GetRaceScale(Player);
+		//CharController->scale = size;
+		//float speed = CharController->speedPct;
+		//float rotMod = CharController->rotMod;
+		//float rotModTime = CharController->rotModTime;
 
-		static Timer timer = Timer(3.00); // Run every 0.5s or as soon as we can
-		if (timer.ShouldRunFrame()) {
-			log::info("unk180: {}", unk180);
-			log::info("unk188: {}", unk188);
-			log::info("waterH: {}", waterH);
-			log::info("swimH: {}", CharController->swimFloatHeight);
-			log::info("ActorH: {}", CharController->actorHeight);
-			log::info("speed: {}", speed);
-			log::info("scale: {}", CharController->scale);
-			log::info("rotMod: {}", rotMod);
-			log::info("rotModTime: {}", rotModTime);
-		}
+		//static Timer timer = Timer(3.00); // Run every 0.5s or as soon as we can
+		//if (timer.ShouldRunFrame()) {
+			//log::info("waterH: {}", waterH);
+			//log::info("swimH: {}", CharController->swimFloatHeight);
+			//log::info("ActorH: {}", CharController->actorHeight);
+			//log::info("speed: {}", speed);
+			//log::info("scale: {}", CharController->scale);
+			//log::info("rotMod: {}", rotMod);
+			//log::info("rotModTime: {}", rotModTime);
+		//}
 
 		
 
