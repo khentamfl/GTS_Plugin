@@ -26,9 +26,8 @@ namespace Gts {
 
 		auto globalMaxSizeCalc = runtime.GlobalMaxSizeCalc;
 		if (globalMaxSizeCalc) {
-			float valueGlobalMaxSizeCalc = globalMaxSizeCalc->value;
 			if (valueGlobalMaxSizeCalc < 10.0) {
-				globalMaxSizeCalc->value = valueGlobalMaxSizeCalc + (value * 10 * progressionMultiplier * TimeScale()); // Always apply it
+				globalMaxSizeCalc->value += (value * 10 * progressionMultiplier * TimeScale() * 60); // Always apply it
 			}
 		}
 
