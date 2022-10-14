@@ -35,20 +35,20 @@ namespace Gts {
 	}
 
 	void FootIkData::ApplyScale(const float& new_scale, const hkVector4& vecScale) {
-		// if (!this->ik) {
-		// 	return;
-		// }
-		// this->UpdateColliders(this->ik);
-		//
-		// for (auto& leg: this->ik->m_internalLegData) {
-		// 	auto solver = leg.m_footIkSolver;
-		// 	try {
-		// 		auto& data = this->solver_data.at(solver);
-		// 		data.ApplyScale(new_scale, vecScale);
-		// 	} catch (std::out_of_range& e) {
-		// 		continue;
-		// 	}
-		// }
+		if (!this->ik) {
+			return;
+		}
+		this->UpdateColliders(this->ik);
+
+		for (auto& leg: this->ik->m_internalLegData) {
+			auto solver = leg.m_footIkSolver;
+			try {
+				auto& data = this->solver_data.at(solver);
+				data.ApplyScale(new_scale, vecScale);
+			} catch (std::out_of_range& e) {
+				continue;
+			}
+		}
 	}
 
 	void FootIkData::PruneColliders(Actor* actor) {
