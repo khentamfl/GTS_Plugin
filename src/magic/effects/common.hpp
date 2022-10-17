@@ -225,16 +225,13 @@ namespace Gts {
 		if (!runtime.GrowthPerk) {
 			return;
 		}
-		if (!caster->HasPerk(runtime.GrowthPerk)) { // Requires Growth Perk in order to grow
-			return;
-		}
 		int Random = rand() % 8;
-		if (Random >= 8) {
+		if (Random >= 8 && caster->HasPerk(runtime.GrowthPerk)) {
 			if (runtime.MoanSound) {
 				PlaySound(runtime.MoanSound,caster, 1.0, 1.0);
 			}
 		}
-		if (runtime.CrushGrowthSpell) {
+		if (runtime.CrushGrowthSpell && caster->HasPerk(runtime.GrowthPerk)) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
 		}
 		bool hasSMT = runtime.SmallMassiveThreat ? caster->HasMagicEffect(runtime.SmallMassiveThreat) : false;
@@ -246,8 +243,9 @@ namespace Gts {
 		if (caster->formID == 0x14 && caster->HasPerk(runtime.SizeReserve)) {
 				Cache->value += target_scale/25;
 		}
-
-		AdjustSizeLimit(0.0417 * target_scale);
+		if (caster->formID == 0x14) {
+			AdjustSizeLimit(0.0417 * target_scale);
+		}
 			//if (runtime.BloodGushSound) {
 				//PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
 			//} else 
