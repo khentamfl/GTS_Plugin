@@ -22,14 +22,14 @@ namespace Gts {
 	}
 
 	void RbData::ApplyPose(const hkVector4& origin, const float& new_scale) {
-		auto rigidBody = this->rb;
-		// Translation
-		scale_relative_byref(rigidBody->motion.motionState.transform.translation, origin, new_scale);
-
-		// COM 0
-		scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass0, origin, new_scale);
-
-		// COM 1
-		scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass1, origin, new_scale);
+		// auto rigidBody = this->rb;
+		// // Translation
+		// scale_relative_byref(rigidBody->motion.motionState.transform.translation, origin, new_scale);
+		//
+		// // COM 0
+		// scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass0, origin, new_scale);
+		//
+		// // COM 1
+		// scale_relative_byref(rigidBody->motion.motionState.sweptTransform.centerOfMass1, origin, new_scale);
 	}
 }
