@@ -48,7 +48,7 @@ namespace {
 				if (graph) {
 					auto& character = graph->characterInstance;
 
-					auto& worldFromModel = character.worldFromModel.get();
+					auto worldFromModel = character.worldFromModel.get();
 					if (worldFromModel) {
 						log::info("worldFromModel: {}", GetRawName(worldFromModel));
 					}
