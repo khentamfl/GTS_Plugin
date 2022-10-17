@@ -105,7 +105,7 @@ namespace Gts {
 		auto model = actor->GetCurrent3D();
 		if (model) {
 			hkVector4 origin = hkVector4(model->world.translate * (*g_worldScale));
-			this->ragdollData.ApplyPose(origin, new_scale);
+			// this->ragdollData.ApplyPose(origin, new_scale);
 		}
 	}
 
