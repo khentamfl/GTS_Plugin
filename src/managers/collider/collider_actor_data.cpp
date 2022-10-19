@@ -47,12 +47,6 @@ namespace {
 			for (auto& graph : animGraphManager->graphs) {
 				if (graph) {
 					auto& character = graph->characterInstance;
-
-					auto worldFromModel = character.worldFromModel.get();
-					if (worldFromModel) {
-						log::info("worldFromModel: {}", GetRawName(worldFromModel));
-					}
-
 					auto ragdollDriver = character.ragdollDriver.get();
 					if (ragdollDriver) {
 						auto ragdoll = ragdollDriver->ragdoll;
