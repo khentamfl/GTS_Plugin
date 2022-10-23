@@ -109,7 +109,7 @@ namespace {
 		}
 
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
-		set_scale(actor, visual_scale);
+		set_scale(actor, actor->GetScale() * visual_scale);
 	}
 
 
