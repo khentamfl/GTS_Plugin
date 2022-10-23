@@ -44,14 +44,14 @@ namespace Gts {
 				GetLimit = runtime.MassBasedSizeLimit->value +1.0;
 			}
 			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
-			float TotalLimit = (GetLimit + Persistent_Size) * (1.0 + Gigantism);
+			float TotalLimit = (GetLimit * actor->GetScale() + Persistent_Size) * (1.0 + Gigantism);
 			
 			if (TotalLimit < 1.0) {
 				TotalLimit = 1.0;
 			}
 			if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 				set_max_scale(actor, TotalLimit);
-				//log::info("Current Size Limit of: {} is {}", actor->GetDisplayFullName(), get_max_scale(actor));
+				log::info("Current Size Limit of: {} is {}", actor->GetDisplayFullName(), get_max_scale(actor));
 			}
 		}
 	}
