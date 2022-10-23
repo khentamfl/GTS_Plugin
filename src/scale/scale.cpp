@@ -129,7 +129,7 @@ namespace Gts {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			if (actor_data) {
-				return actor_data->visual_scale * actor_data->effective_multi;
+				return actor_data->visual_scale * actor_data->effective_multi; // Effective Multi = SmallMassiveThreat
 			}
 		}
 		return -1.0;
