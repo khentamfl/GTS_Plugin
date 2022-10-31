@@ -37,7 +37,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->AddSpell(runtime.gtsSizeCloakSpellImpossible, false);
+            actor->AddSpell(runtime.gtsSizeCloakSpellImpossible);
         }
         else if (scale >= 32.0 && scale <= 40.0) {       
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
@@ -47,7 +47,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellImpossible);
-            actor->AddSpell(runtime.gtsSizeCloakSpellGigantic, false);
+            actor->AddSpell(runtime.gtsSizeCloakSpellGigantic);
         }
 
         else if (scale >= 24.0 && scale <= 32.0) {       
@@ -58,7 +58,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellImpossible);
-            actor->AddSpell(runtime.gtsSizeCloakSpellMassive, false);
+            actor->AddSpell(runtime.gtsSizeCloakSpellMassive);
         }
         else if (scale >= 18.0 && scale <= 24.0) {       
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
@@ -68,7 +68,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->AddSpell(runtime.gtsSizeCloakSpellMega, false);
+            actor->AddSpell(runtime.gtsSizeCloakSpellMega);
         }
         else if (scale >= 12.0 && scale <= 18.0) {       
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
@@ -78,7 +78,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
-            actor->AddSpell(runtime.gtsSizeCloakSpellHuge, false);
+            actor->AddSpell(runtime.gtsSizeCloakSpellHuge);
         }
 
         else if (scale >= 8.0 && scale <= 12.0) {
@@ -89,7 +89,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->AddSpell(runtime.gtsSizeCloakSpellLarge, false);   
+            actor->AddSpell(runtime.gtsSizeCloakSpellLarge);   
         }
   else if (scale >= 2.5 && scale <= 8.0) {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
@@ -99,13 +99,13 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
-            actor->AddSpell(runtime.gtsSizeCloakSpellMedium, false);
+            actor->AddSpell(runtime.gtsSizeCloakSpellMedium);
     
     if (scale >=3.25 && scale <= 8.0) {
-        actor->AddSpell(runtime.gtsSizeCloakSpellMedium, false); 
+        actor->AddSpell(runtime.gtsSizeCloakSpellMedium); 
     }
     if (scale >=5.0 && scale <= 8.0) {
-        actor->AddSpell(runtime.gtsSizeCloakSpellMedium, false); 
+        actor->AddSpell(runtime.gtsSizeCloakSpellMedium); 
     }
 
   }
@@ -117,7 +117,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
-            actor->AddSpell(runtime.gtsSizeCloakSpellSmall, false);
+            actor->AddSpell(runtime.gtsSizeCloakSpellSmall);
   }
 
   else if (scale <= 1.1) {
@@ -128,7 +128,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
-            actor->AddSpell(runtime.gtsSizeCloakSpellTiny, false);
+            actor->AddSpell(runtime.gtsSizeCloakSpellTiny);
       }
     }
 }
