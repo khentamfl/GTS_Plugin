@@ -15,6 +15,7 @@ namespace Gts {
 	}
 
 	void ShrinkOther::OnUpdate() {
+		auto& runtime = Runtime::GetSingleton();
 		const float BASE_POWER = 0.00180;
 		const float CRUSH_BONUS = 0.00180;
 		const float GROWTH_AMOUNT_BONUS = 1.4;
