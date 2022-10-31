@@ -205,6 +205,18 @@ namespace Gts {
 			EffectSetting* EffectSizeHungerPotion = nullptr;
 			///End Potions///
 
+			///Size-Damage spells
+			SpellItem* gtsSizeCloakSpellTiny = nullptr;
+ 			SpellItem* gtsSizeCloakSpellSmall = nullptr;
+ 			SpellItem* gtsSizeCloakSpellMedium = nullptr;
+ 			SpellItem* gtsSizeCloakSpellLarge = nullptr;
+ 			SpellItem* gtsSizeCloakSpellHuge = nullptr;
+			SpellItem* gtsSizeCloakSpellMega = nullptr;
+ 			SpellItem* gtsSizeCloakSpellMassive = nullptr;
+ 			SpellItem* gtsSizeCloakSpellGigantic = nullptr;
+ 			SpellItem* gtsSizeCloakSpellImpossible = nullptr;
+			///End Size-Damage spells
+
 
 			SpellItem * ShrinkToNothingSpell = nullptr;
 			SpellItem * FakeCrushSpell = nullptr;

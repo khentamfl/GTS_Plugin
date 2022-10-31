@@ -12,6 +12,7 @@
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "scale/scale.hpp"
+#include "scale/scalespellmanager.hpp"
 #include "util.hpp"
 #include "node.hpp"
 #include "timer.hpp"
@@ -138,7 +139,16 @@ namespace {
 		}
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
-		float speed_mult = soft_core(scale, speed_adjustment);
+		
+		SoftPotential speed_adjustment_Test {
+				.k = 0.125, // 0.125
+				.n = 0.86, // 0.86
+				.s = 1.86, // 1.12
+				.o = 1.0,
+				.a = 0.0,  //Default is 0
+		};
+
+		float speed_mult = soft_core(scale, speed_adjustment_Test);
 		float MS_mult = soft_core(scale, MS_adjustment);
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
@@ -405,6 +415,10 @@ void GtsManager::Update() {
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);
+		static Timer timer = Timer(0.80);
+		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
+			ScaleSpellManager::GetSingleton().CheckSize(actor);
+		}
 		HitManager::GetSingleton().Update();
 	}
 }

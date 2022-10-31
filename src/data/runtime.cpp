@@ -223,6 +223,18 @@ namespace Gts {
 		this->EffectSizeHungerPotion = find_form<EffectSetting>("GTS.esp|42F7D6");
 		///End Potions///
 
+		///Size-Damage spells
+		this->gtsSizeCloakSpellTiny = find_form<SpellItem>("GTS.esp|00CA0A");
+ 		this->gtsSizeCloakSpellSmall = find_form<SpellItem>("GTS.esp|00A9A5");
+ 		this->gtsSizeCloakSpellMedium = find_form<SpellItem>("GTS.esp|00CA07");
+ 		this->gtsSizeCloakSpellLarge = find_form<SpellItem>("GTS.esp|00CA08");
+ 		this->gtsSizeCloakSpellHuge = find_form<SpellItem>("GTS.esp|00CA0C");
+		this->gtsSizeCloakSpellMega = find_form<SpellItem>("GTS.esp|00CA0E");
+ 		this->gtsSizeCloakSpellMassive = find_form<SpellItem>("GTS.esp|08BD90");
+ 		this->gtsSizeCloakSpellGigantic = find_form<SpellItem>("GTS.esp|08BD92");
+ 		this->gtsSizeCloakSpellImpossible = find_form<SpellItem>("GTS.esp|08BD94");
+		///End Size-Damage spells
+
 		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");
 		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
 		this->FakeCrushEffect = find_form<EffectSetting>("GTS.esp|271EF9");
