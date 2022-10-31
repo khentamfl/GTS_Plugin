@@ -95,7 +95,7 @@ namespace Gts {
 						{
 							caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
 						}
-						else if if (actor != caster && get_distance_to_actor(actor) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
+						else if (actor != caster && get_distance_to_actor(actor) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
 							caster->NotifyAnimationGraph("IdleActivatePickupLow");
 						}
 					}
