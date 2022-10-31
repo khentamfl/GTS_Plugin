@@ -15,7 +15,7 @@ namespace Gts {
 	}
 
     void ScaleSpellManager::CheckSize(Actor* actor) {
-        if (!actor) {
+        if (!actor || actor->IsDead() || !actor->Is3DLoaded()) {
 			return;
 		}
         float actorscale = get_visual_scale(actor);
@@ -23,7 +23,7 @@ namespace Gts {
 	}
 
     void ScaleSpellManager::ApplySpellBonus(Actor* actor, float scale) {
-		if (!actor || actor->IsDead() || !actor->Is3DLoaded()) {
+		if (!actor) {
 			return;
 		}
         auto runtime = Runtime::GetSingleton();
