@@ -33,6 +33,8 @@ namespace Gts {
 
 		float power = BASE_POWER;
 
+		auto base_spell = GetBaseEffect();
+
 		if (base_spell == runtime.ShrinkAllyAdept) 
 		{
 			power *= 1.32;
