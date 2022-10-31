@@ -1,6 +1,5 @@
 #pragma once
 // Module that handles Spell Distribution to everyone
-#include "scale/events.hpp"
 
 using namespace std;
 using namespace SKSE;
