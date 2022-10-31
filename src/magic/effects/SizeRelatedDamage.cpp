@@ -130,7 +130,7 @@ namespace Gts {
 		float targetsize = get_visual_scale(Target);
 		float multiplier = castersize / targetsize;
 		float SprintDamage = 1.0;
-		if (timer.ShouldRunFrame() && multiplier >= 1.02)
+		if (timer.ShouldRunFrame() && multiplier >= 1.33)
 		{
 			if (Caster->IsSprinting()) {
 				SprintDamage *= 10.5;

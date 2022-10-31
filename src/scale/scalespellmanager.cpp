@@ -23,7 +23,7 @@ namespace Gts {
 	}
 
     void ScaleSpellManager::ApplySpellBonus(Actor* actor, float scale) {
-		if (!actor) {
+		if (!actor || actor->IsDead() || !actor->Is3DLoaded()) {
 			return;
 		}
         auto runtime = Runtime::GetSingleton();
