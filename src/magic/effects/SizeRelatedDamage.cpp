@@ -8,6 +8,7 @@
 #include "data/persistent.hpp"
 #include "managers/Attributes.hpp"
 #include "util.hpp"
+#include "timer.hpp"
 
 namespace Gts {
 	std::string SizeDamage::GetName() {
@@ -36,6 +37,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 
 		SmallMassiveThreatModification(caster, target);
+		DoSizeRelatedDamage(caster, target);
 		float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
 
 		float size_difference = caster_scale/target_scale;
@@ -44,6 +46,8 @@ namespace Gts {
 		    || !target->Is3DLoaded()) {
 			return;
 		} // Do not apply if those are true
+
+		
 
 		if (size_difference >= 24.0 && !target->IsPlayerTeammate()) { // NOLINT
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
@@ -117,6 +121,20 @@ namespace Gts {
 
 				AttributeManager::GetSingleton().OverrideBonus(0.0); // Completely remove bonus speed
 			}
+		}
+	}
+	void SizeDamage::DoSizeRelatedDamage(Actor* Caster, Actor* Target) {
+		static Timer timer = Timer(0.01);
+		float casterscale = get_visual_scale(Caster);
+		float targetscale = get_visual_scale(Target);
+		float multiplier = (casterSize) / (targetSize);
+		float SprintDamage = 1.0;
+		if (timer.ShouldRunFrame() && multiplier >= 1.02)
+		{
+			if (Caster->IsSprinting()) {
+				SprintDamage *= 10.5;
+			}
+			DamageAV(target, ActorValue::kHealth, multiplier);
 		}
 	}
 }
