@@ -134,7 +134,7 @@ namespace Gts {
 			if (Caster->IsSprinting()) {
 				SprintDamage *= 10.5;
 			}
-			DamageAV(target, ActorValue::kHealth, multiplier);
+			DamageAV(Target, ActorValue::kHealth, multiplier);
 		}
 	}
 }
