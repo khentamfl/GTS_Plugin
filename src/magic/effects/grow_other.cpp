@@ -15,23 +15,11 @@ namespace Gts {
 	}
 
 	void GrowOther::OnUpdate() {
-		auto& runtime = Runtime::GetSingleton();
 		const float BASE_POWER = 0.00090;
 		const float BONUS = 0.00090;
 		const float SMT_BONUS = 2.0;
 		const float DUAL_CAST_BONUS = 2.0;
 		const float CRUSH_GROWTH_CHECK = 1.4;
-
-		auto base_spell = GetBaseEffect();
-
-		if (base_spell == runtime.GrowAllyAdept) 
-		{
-			BASE_POWER *= 1.32;
-		}
-		else if (base_spell == runtime.GrowAllyExpert)
-		{
-			BASE_POWER *= 1.65;
-		}
 
 		auto caster = GetCaster();
 		if (!caster) {
@@ -42,11 +30,22 @@ namespace Gts {
 			return;
 		}
 
+		float power = BASE_POWER;
+
+		auto base_spell = GetBaseEffect();
+
+		if (base_spell == runtime.GrowAllyAdept) 
+		{
+			power *= 1.32;
+		}
+		else if (base_spell == runtime.GrowAllyExpert)
+		{
+			power *= 1.65;
+		}
+
 		auto& runtime = Runtime::GetSingleton();
 		float caster_scale = get_visual_scale(caster);
 		float target_scale = get_visual_scale(target);
-
-		float power = BASE_POWER;
 		
 		if (runtime.CrushGrowthRate->value >= CRUSH_GROWTH_CHECK) {
 			power += BONUS;

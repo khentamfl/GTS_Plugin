@@ -22,15 +22,6 @@ namespace Gts {
 		const float DUAL_CAST_BONUS = 2.0;
 		const float SCALE_FACTOR = 0.5;
 
-		if (base_spell == runtime.ShrinkAllyAdept) 
-		{
-			BASE_POWER *= 1.32;
-		}
-		else if (base_spell == runtime.ShrinkAllyExpert)
-		{
-			BASE_POWER *= 1.68;
-		}
-
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
@@ -40,11 +31,20 @@ namespace Gts {
 			return;
 		}
 
-		auto& runtime = Runtime::GetSingleton();
+		float power = BASE_POWER;
+
+		if (base_spell == runtime.ShrinkAllyAdept) 
+		{
+			power *= 1.32;
+		}
+		else if (base_spell == runtime.ShrinkAllyExpert)
+		{
+			power *= 1.68;
+		}
+
 		float caster_scale = get_visual_scale(caster);
 		float target_scale = get_visual_scale(target);
 
-		float power = BASE_POWER;
 		if (runtime.CrushGrowthRate->value >= GROWTH_AMOUNT_BONUS) {
 			power += CRUSH_BONUS;
 		}
