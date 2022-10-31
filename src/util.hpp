@@ -153,7 +153,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			auto point_a = point;
-			auto point_b = camera->pos;
+			auto point_b = player->pos;
 			auto delta = point_a - point_b;
 			return delta.Length();
 		}

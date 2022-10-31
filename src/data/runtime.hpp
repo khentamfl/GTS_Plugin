@@ -98,6 +98,11 @@ namespace Gts {
 			EffectSetting* TrueAbsorb = nullptr;
 			SpellItem * TrueAbsorbSpell = nullptr;
 
+			BGSPerk* VorePerk = nullptr;
+
+			SpellItem * StartVoreFake = nullptr;
+			SpellItem * StartVore = nullptr;
+
 			///End
 
 			BGSExplosion* footstepExplosion = nullptr;

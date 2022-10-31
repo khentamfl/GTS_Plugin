@@ -86,10 +86,18 @@ namespace Gts {
 					float Value = Cache->value * gigantism;
 					Notify("Reserved Size: {}", Value);
 				}
-				if (key == 0x2E) {
-					auto actor_data = Persistent::GetSingleton().GetData(player);
-				if (actor_data) {
-					//actor_data->anim_speed -=0.001;
+				if (key == 0x2F && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && caster->HasPerk(runtime.VorePerk)) {
+					for (auto actor: find_actors()) {
+						float castersize = get_visual_scale(caster);
+						float targetsize = get_visual_scale(actor);
+						float sizedifference = castersize / targetsize;
+						if (actor != caster && get_distance_to_actor(actor) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0)
+						{
+							caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
+						}
+						else if if (actor != caster && get_distance_to_actor(actor) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
+							caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVoreFake, false, actor, 1.00f, false, 0.0f, caster);
+						}
 					}
 				}
 

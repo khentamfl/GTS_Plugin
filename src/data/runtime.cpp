@@ -111,8 +111,12 @@ namespace Gts {
 
 		this->AbsorbMGEF = find_form<EffectSetting>("GTS.esp|00B470");
 		this->TrueAbsorb = find_form<EffectSetting>("GTS.esp|22B0D5");
-		this->TrueAbsorbSpell = find_form<SpellItem>("GTS.esp22B0D6");
+		this->TrueAbsorbSpell = find_form<SpellItem>("GTS.esp|22B0D6");
 
+		this->VorePerk = find_form<BGSPerk>("GTS.esp|355C68");
+
+		this->StartVoreFake = find_form<SpellItem>("GTS.esp|319056");
+		this->StartVore = find_form<SpellItem>("GTS.esp|31905C");
 		
 		///End
 
