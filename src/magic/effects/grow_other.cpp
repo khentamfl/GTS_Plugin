@@ -15,6 +15,7 @@ namespace Gts {
 	}
 
 	void GrowOther::OnUpdate() {
+		auto& runtime = Runtime::GetSingleton();
 		const float BASE_POWER = 0.00090;
 		const float BONUS = 0.00090;
 		const float SMT_BONUS = 2.0;
@@ -43,7 +44,6 @@ namespace Gts {
 			power *= 1.65;
 		}
 
-		auto& runtime = Runtime::GetSingleton();
 		float caster_scale = get_visual_scale(caster);
 		float target_scale = get_visual_scale(target);
 		
