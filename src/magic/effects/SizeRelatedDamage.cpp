@@ -125,9 +125,9 @@ namespace Gts {
 	}
 	void SizeDamage::DoSizeRelatedDamage(Actor* Caster, Actor* Target) {
 		static Timer timer = Timer(0.01);
-		float casterscale = get_visual_scale(Caster);
-		float targetscale = get_visual_scale(Target);
-		float multiplier = (castersize) / (targetsize);
+		float castersize = get_visual_scale(Caster);
+		float targetsize = get_visual_scale(Target);
+		float multiplier = castersize / targetsize;
 		float SprintDamage = 1.0;
 		if (timer.ShouldRunFrame() && multiplier >= 1.02)
 		{
