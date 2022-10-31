@@ -148,6 +148,32 @@ namespace Gts {
 		return 3.4028237E38; // Max float
 	}
 
+
+	inline float get_distance_to_actor(const NiPoint3& point) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			auto point_a = point;
+			auto point_b = camera->pos;
+			auto delta = point_a - point_b;
+			return delta.Length();
+		}
+		return 3.4028237E38; // Max float
+	}
+
+	inline float get_distance_to_actor(NiAVObject* node) {
+		if (node) {
+			return get_distance_to_actor(node->world.translate);
+		}
+		return 3.4028237E38; // Max float
+	}
+
+	inline float get_distance_to_actor(Actor* actor) {
+		if (actor) {
+			return get_distance_to_actor(actor->GetPosition());
+		}
+		return 3.4028237E38; // Max float
+	}
+
 	inline bool IsJumping(Actor* actor) {
 		if (!actor) {
 			return false;
