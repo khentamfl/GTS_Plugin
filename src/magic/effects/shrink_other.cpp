@@ -11,7 +11,7 @@ namespace Gts {
 
 	bool ShrinkOther::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.ShrinkAlly;
+		return (effect == runtime.ShrinkAlly || effect == runtime.ShrinkAllyAdept || effect == runtime.ShrinkAllyExpert);
 	}
 
 	void ShrinkOther::OnUpdate() {
@@ -20,6 +20,15 @@ namespace Gts {
 		const float GROWTH_AMOUNT_BONUS = 1.4;
 		const float DUAL_CAST_BONUS = 2.0;
 		const float SCALE_FACTOR = 0.5;
+
+		if (base_spell == runtime.ShrinkAllyAdept) 
+		{
+			BASE_POWER *= 1.32;
+		}
+		else if (base_spell == runtime.ShrinkAllyExpert)
+		{
+			BASE_POWER *= 1.68;
+		}
 
 		auto caster = GetCaster();
 		if (!caster) {

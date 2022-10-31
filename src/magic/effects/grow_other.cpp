@@ -11,7 +11,7 @@ namespace Gts {
 
 	bool GrowOther::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.GrowAlly;
+		return (effect == runtime.GrowAlly || effect == runtime.GrowAllyAdept || effect == runtime.GrowAllyExpert);
 	}
 
 	void GrowOther::OnUpdate() {
@@ -20,6 +20,17 @@ namespace Gts {
 		const float SMT_BONUS = 2.0;
 		const float DUAL_CAST_BONUS = 2.0;
 		const float CRUSH_GROWTH_CHECK = 1.4;
+
+		auto base_spell = GetBaseEffect();
+
+		if (base_spell == runtime.GrowAllyAdept) 
+		{
+			BASE_POWER *= 1.32;
+		}
+		else if (base_spell == runtime.GrowAllyExpert)
+		{
+			BASE_POWER *= 1.65;
+		}
 
 		auto caster = GetCaster();
 		if (!caster) {

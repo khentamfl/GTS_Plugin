@@ -54,6 +54,8 @@ namespace Gts {
 			EffectSetting* ShrinkBackNPC = nullptr;
 			EffectSetting* ShrinkSpell = nullptr;
 			EffectSetting* ShrinkAlly = nullptr;
+			EffectSetting* ShrinkAllyAdept = nullptr;
+			EffectSetting* ShrinkAllyExpert = nullptr;
 
 			EffectSetting* ShrinkEnemy = nullptr;
 			EffectSetting* ShrinkEnemyAOE = nullptr;
@@ -74,6 +76,8 @@ namespace Gts {
 			EffectSetting* GrowPcButton = nullptr;
 
 			EffectSetting* GrowAlly = nullptr;
+			EffectSetting* GrowAllyAdept = nullptr;
+			EffectSetting* GrowAllyExpert = nullptr;
 			EffectSetting* GrowAllySizeButton = nullptr;
 			EffectSetting* ShrinkAllySizeButton = nullptr;
 			EffectSetting* CrushGrowthMGEF = nullptr;

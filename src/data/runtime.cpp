@@ -68,6 +68,8 @@ namespace Gts {
 		this->ShrinkBackNPC = find_form<EffectSetting>("GTS.esp|00536C"); // < - Spell that restores size back to normal, for NPC.
 		this->ShrinkSpell = find_form<EffectSetting>("GTS.esp|002850"); // <- Shrink Self over time [Hands]
 		this->ShrinkAlly = find_form<EffectSetting>("GTS.esp|0058D1"); // <- Shrink ally without hostile damage and no aggro.
+		this->ShrinkAllyAdept = find_form<EffectSetting>("GTS.esp|452F17");
+		this->ShrinkAllyExpert = find_form<EffectSetting>("GTS.esp|452F18");
 
 		this->ShrinkEnemy = find_form<EffectSetting>("GTS.esp|00387B");
 		this->ShrinkEnemyAOE = find_form<EffectSetting>("GTS.esp|0DCDC5");
@@ -87,6 +89,8 @@ namespace Gts {
 		this->GrowPcButton = find_form<EffectSetting>("GTS.esp|002DB5"); // <- Grow PC in size on button press
 
 		this->GrowAlly = find_form<EffectSetting>("GTS.esp|0058D5");  // <- Increase Ally Size [Hands]
+		this->GrowAllyAdept = find_form<EffectSetting>("GTS.esp|452F15");
+		this->GrowAllyExpert = find_form<EffectSetting>("GTS.esp|452F16");
 
 		this->GrowAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE3");  // <- Makes ally grow for 2 sec on button press.
 		this->ShrinkAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE4"); // <- Makes ally shrink for 2 sec on button press.
