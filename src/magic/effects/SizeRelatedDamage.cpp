@@ -37,7 +37,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 
 		SmallMassiveThreatModification(caster, target);
-		DoSizeRelatedDamage(caster, target);
+
 		float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
 
 		float size_difference = caster_scale/target_scale;
@@ -123,6 +123,7 @@ namespace Gts {
 			}
 		}
 	}
+
 	void SizeDamage::DoSizeRelatedDamage(Actor* Caster, Actor* Target) {
 		static Timer timer = Timer(0.01);
 		float castersize = get_visual_scale(Caster);

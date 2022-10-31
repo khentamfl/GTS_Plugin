@@ -160,7 +160,7 @@ namespace Gts {
 				float GrowthValue = (0.0000245 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
 
 				auto actor_data = Persist.GetData(actor);
-				log::info("SizeHunger, {}, Gigantism: {}", SizeHunger, Gigantism);
+				//log::info("SizeHunger, {}, Gigantism: {}", SizeHunger, Gigantism);
 	
 				if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
 					GrowthValue *= 0.50;
@@ -170,7 +170,7 @@ namespace Gts {
 					mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
 					this->GrowthTick -= 0.0005 * TimeScale();
 				} else if (this->GrowthTick <= 0.01) {
-					log::info("Growth Value is: {}, HP Percentage is: {}, SizeHunger: {}, Gigantism: {}", GrowthValue, HealthPercentage, SizeHunger, Gigantism);
+					//log::info("Growth Value is: {}, HP Percentage is: {}, SizeHunger: {}, Gigantism: {}", GrowthValue, HealthPercentage, SizeHunger, Gigantism);
 					actor_data->half_life = 1.0;
 					this->CanGrow = false;
 					this->GrowthTick = 0.0;

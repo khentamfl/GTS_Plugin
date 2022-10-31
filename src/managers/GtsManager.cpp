@@ -415,7 +415,7 @@ void GtsManager::Update() {
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);
-		static Timer timer = Timer(0.80);
+		static Timer timer = Timer(3.00);
 		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
 		}
