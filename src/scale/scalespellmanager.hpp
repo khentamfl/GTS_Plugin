@@ -1,5 +1,5 @@
 #pragma once
-// Module that handles AttributeValues
+// Module that handles Spell Distribution to everyone
 #include "scale/events.hpp"
 
 using namespace std;
@@ -8,7 +8,7 @@ using namespace RE;
 
 namespace Gts {
 
-	class ScaleSpellManager : public EventListener {
+	class ScaleSpellManager {
 		public:
 			[[nodiscard]] static ScaleSpellManager& GetSingleton() noexcept;
 			void CheckSize(Actor* actor);

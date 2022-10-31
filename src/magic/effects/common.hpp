@@ -118,7 +118,8 @@ namespace Gts {
 
 	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
-		float amount = CalcPower(from, scale_factor, bonus);
+		//float amount = CalcPower(from, scale_factor, bonus);
+		float amount = bonus * 0.55;
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0001 * scale_factor * target_scale);
 		mod_target_scale(from, -amount);
@@ -187,7 +188,7 @@ namespace Gts {
 				power *= PERK2_BONUS;
 			}
 		}
-		AdjustSizeLimit(0.0001 * target_scale * power);
+		AdjustSizeLimit(0.0010 * target_scale * power);
 		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
