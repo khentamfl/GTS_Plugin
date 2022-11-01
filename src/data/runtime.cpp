@@ -229,7 +229,7 @@ namespace Gts {
 		this->EffectSizePotionStrong = find_form<EffectSetting>("GTS.esp|3E38BD");
 		this->EffectSizePotionExtreme = find_form<EffectSetting>("GTS.esp|3E38C0");
 		this->EffectSizeHungerPotion = find_form<EffectSetting>("GTS.esp|42F7D6");
-		this->EffectSizeAmplifyPotion = find_form<EffectSetting>("GTS.esp|445F1D");
+		this->EffectSizeAmplifyPotion = find_form<EffectSetting>("GTS.esp|452F1D");
 		///End Potions///
 
 		///Size-Damage spells
