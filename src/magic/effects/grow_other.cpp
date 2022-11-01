@@ -41,7 +41,7 @@ namespace Gts {
 		}
 		else if (base_spell == runtime.GrowAllyExpert)
 		{
-			power *= 1.65;
+			power *= 1.75;
 		}
 
 		float caster_scale = get_visual_scale(caster);

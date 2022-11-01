@@ -15,11 +15,13 @@ namespace Gts {
 	}
 
     void ScaleSpellManager::CheckSize(Actor* actor) {
-        if (!actor || actor->IsDead() || !actor->Is3DLoaded()) {
+        if (!actor || !actor->Is3DLoaded() || actor->IsDead()) {
 			return;
 		}
-        float actorscale = get_visual_scale(actor);
-        ApplySpellBonus(actor, actorscale);
+        float actorscale = get_target_scale(actor);
+        if (actorscale >= 1.25) {
+            ApplySpellBonus(actor, actorscale);
+        }
 	}
 
     void ScaleSpellManager::ApplySpellBonus(Actor* actor, float scale) {

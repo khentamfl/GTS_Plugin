@@ -141,9 +141,9 @@ namespace {
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		
 		SoftPotential speed_adjustment_Test {
-				.k = 0.125, // 0.125
+				.k = 0.065, // 0.125
 				.n = 0.86, // 0.86
-				.s = 1.60, // 1.12
+				.s = 1.12, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};
@@ -416,10 +416,10 @@ void GtsManager::Update() {
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);
+		HitManager::GetSingleton().Update();
 		static Timer timer = Timer(3.00);
 		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
-			HitManager::GetSingleton().Update();
 			//if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) {
 				//RandomVoreAttempt(actor); 
 			//}

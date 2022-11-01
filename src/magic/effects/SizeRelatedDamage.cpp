@@ -36,8 +36,6 @@ namespace Gts {
 		float caster_scale = get_visual_scale(caster);
 		float target_scale = get_visual_scale(target);
 
-		SmallMassiveThreatModification(caster, target);
-
 		float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
 
 		float size_difference = caster_scale/target_scale;
@@ -66,6 +64,7 @@ namespace Gts {
 			size_difference += 3.2;
 			if (caster->HasPerk(runtime.SmallMassiveThreatSizeSteal) && caster != target)
 			{
+			SmallMassiveThreatModification(caster, target);
 			float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.0008;
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
 
@@ -89,10 +88,12 @@ namespace Gts {
 		}
 	}
 	void SizeDamage::SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
-		if (!Caster || !Target || Caster == Target)
-		{return;}
+		if (!Caster || !Target || Caster == Target) {
+			return;
+		}
 		auto& runtime = Runtime::GetSingleton();
-		if (Persistent::GetSingleton().GetData(Caster)->smt_run_speed >= 1.0)
+		auto& persistent = Persistent::GetSingleton();
+		if (persistent.GetData(Caster)->smt_run_speed != nullptr && persistent.GetData(Caster)->smt_run_speed >= 1.0)
 		{
 			float caster_scale = get_visual_scale(Caster);
 			float target_scale = get_visual_scale(Target);

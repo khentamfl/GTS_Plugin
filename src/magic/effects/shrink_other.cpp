@@ -37,11 +37,11 @@ namespace Gts {
 
 		if (base_spell == runtime.ShrinkAllyAdept) 
 		{
-			power *= 1.32;
+			power *= 1.33;
 		}
 		else if (base_spell == runtime.ShrinkAllyExpert)
 		{
-			power *= 1.68;
+			power *= 1.75;
 		}
 
 		float caster_scale = get_visual_scale(caster);
