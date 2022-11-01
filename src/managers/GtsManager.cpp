@@ -452,7 +452,7 @@ void GtsManager::reapply_actor(Actor* actor, bool force) {
 
 void GtsManager::RandomVoreAttempt(Actor* caster) {
 	for (auto actor: find_actors()) {
-	if (actor->FormID == 0x14 || !actor->Is3DLoaded() || actor->IsDead())
+	if (actor->formID == 0x14 || !actor->Is3DLoaded() || actor->IsDead())
 	{
 		return;
 	}
