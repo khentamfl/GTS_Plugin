@@ -142,20 +142,12 @@ namespace {
 		
 		SoftPotential speed_adjustment_sprint {
 				.k = 0.095, // 0.125
-				.n = 0.65, // 0.86
-				.s = 1.90, // 1.12
-				.o = 1.0,
-				.a = 0.0,  //Default is 0
-		};
-		SoftPotential speed_adjustment_walk {
-				.k = 0.095, // 0.125
-				.n = 1.30, // 0.86
+				.n = 0.82, // 0.86
 				.s = 1.90, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};
 
-		float speed_mult_walk = soft_core(scale, speed_adjustment_walk); // For walking
 		float speed_mult_sprint = soft_core(scale, speed_adjustment_sprint); // For Running
 
 		float speed_mult = soft_core(scale, speed_adjustment);
@@ -165,7 +157,7 @@ namespace {
 		float MS_mult_limit = clamp(0.750, 1.0, MS_mult); // For Walk speed
 		float Multy = clamp(0.70, 1.0, MS_mult); // Additional 30% ms
 		float WalkSpeedLimit = clamp(0.33, 1.0, MS_mult);
-		float WalkSpeedLimitNew = clamp(0.02, 1.0, speed_mult);
+		float WalkSpeedLimitNew = clamp(0.02, 1.0, speed_mult_sprint);
 		float PerkSpeed = 1.0;
 
 		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
@@ -186,13 +178,13 @@ namespace {
 			persi_actor_data->anim_speed = speed_mult_sprint;//MS_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = speed_mult_walk;
+			persi_actor_data->anim_speed = 1.0 / (actor->GetActorValue(ActorValue::kSpeedMult) / trans_actor_data->base_walkspeedmult);
 		} 
 		
 		
 		if (timer.ShouldRunFrame()) {
 			if (actor->formID == 0x14) {
-				log::info("Player Speed Walk: {}, Speed Sprint: {}", speed_mult_walk, speed_mult_sprint);
+				log::info("Speed Sprint: {}", speed_mult_sprint);
 			}
 				if (scale < 1.0) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
