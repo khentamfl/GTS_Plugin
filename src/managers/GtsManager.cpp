@@ -353,6 +353,7 @@ namespace {
 		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
 		float BonusShrink = 1.0;
+		float bonus = 1.0;
 		if (BalanceMode >= 2.0)
 		{
 			BonusShrink = (2.0 * (scale * 2));
@@ -382,7 +383,6 @@ namespace {
 				}
 			}
 		}
-		float bonus = 1.0;
 		
 		else if (QuestStage > 100.0 && BalanceMode <= 1.0) {
 			if (actor->formID == 0x14) {
