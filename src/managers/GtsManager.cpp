@@ -140,25 +140,25 @@ namespace {
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		
-		SoftPotential speed_adjustment_rs {
+		SoftPotential speed_adjustment_run {
 				.k = 0.095, // 0.125
 				.n = 0.65, // 0.86
 				.s = 1.90, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};
-
-		SoftPotential speed_adjustment_ws {
+		SoftPotential speed_adjustment_walk {
 				.k = 0.095, // 0.125
 				.n = 1.30, // 0.86
 				.s = 1.90, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};
-		float speed_adjustment = soft_core(scale, speed_adjustment_rs); // For walking
-		float speed_mult = soft_core(scale, speed_adjustment_ws); // For Running
 
-		float speed_multnormal = soft_core(scale, speed_adjustment);
+		float speed_mult_walk = soft_core(scale, speed_adjustment_walk); // For walking
+		float speed_mult_run = soft_core(scale, speed_adjustment_run); // For Running
+
+		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
@@ -183,16 +183,16 @@ namespace {
 			}
 			
 		if (!actor->IsRunning()) {
-			persi_actor_data->anim_speed = speed_mult;//MS_mult;	
+			persi_actor_data->anim_speed = speed_mult_walk;//MS_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = speed_mult * (actor->GetActorValue(ActorValue::kSpeedMult) / trans_actor_data->base_walkspeedmult);
+			persi_actor_data->anim_speed = speed_mult_walk / (actor->GetActorValue(ActorValue::kSpeedMult) / trans_actor_data->base_walkspeedmult);
 		} 
 		
 		
 		if (timer.ShouldRunFrame()) {
 			if (actor->formID == 0x14) {
-				log::info("Player SATest: {}, SAOW: {}, WS Mult Old: {}, WS Mult New: {}", speed_mult, speed_adjustment_walk, WalkSpeedLimit, WalkSpeedLimitNew);
+				log::info("Player SpeedWalk: {}, SpeedRun: {}", speed_mult_walk, speed_mult_run);
 			}
 				if (scale < 1.0) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
