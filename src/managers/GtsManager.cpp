@@ -148,6 +148,14 @@ namespace {
 				.a = 0.0,  //Default is 0
 		};
 
+		SoftPotential speed_adjustment_walk {
+				.k = 0.095, // 0.125
+				.n = 1.30, // 0.86
+				.s = 1.90, // 1.12
+				.o = 1.0,
+				.a = 0.0,  //Default is 0
+		};
+
 		float speed_mult = soft_core(scale, speed_adjustment_Test);
 		float speed_multnormal = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
@@ -177,13 +185,13 @@ namespace {
 			persi_actor_data->anim_speed = speed_mult;//MS_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = speed_mult * WalkSpeedLimit;
+			persi_actor_data->anim_speed = speed_adjustment_walk;
 		} 
 		
 		
 		if (timer.ShouldRunFrame()) {
 			if (actor->formID == 0x14) {
-				log::info("Player SATest: {}, SAO: {}, WS Mult Old: {}, WS Mult New: {}", speed_mult, speed_multnormal, WalkSpeedLimit, WalkSpeedLimitNew);
+				log::info("Player SATest: {}, SAOW: {}, WS Mult Old: {}, WS Mult New: {}", speed_mult, speed_adjustment_walk, WalkSpeedLimit, WalkSpeedLimitNew);
 			}
 				if (scale < 1.0) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
