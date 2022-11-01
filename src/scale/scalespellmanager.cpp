@@ -41,7 +41,7 @@ namespace Gts {
            // actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
            // actor->AddSpell(runtime.gtsSizeCloakSpellImpossible);
         }
-        else if (scale >= 32.0) //scale <= 40.0) {       
+        else if (scale >= 32.0) { //scale <= 40.0) {       
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
