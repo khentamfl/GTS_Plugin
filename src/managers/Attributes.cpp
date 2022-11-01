@@ -180,6 +180,7 @@ namespace {
 		
 
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
+		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 
 		float AllowTimeChange = runtime.AllowTimeChange->value;
 		float bonusHPMultiplier = runtime.bonusHPMultiplier->value;
@@ -196,11 +197,11 @@ namespace {
 		float size = get_target_scale(Player);
 
 		if (size > 0) {
-			BoostHP(Player, bonusHPMultiplier);
+			BoostHP(Player, bonusHPMultiplier/BalancedMode);
 
 			Augmentation(Player, BlockMessage);
 
-			BoostCarry(Player, bonusCarryWeightMultiplier);
+			BoostCarry(Player, bonusCarryWeightMultiplier/BalancedMode);
 
 			BoostJump(Player, bonusJumpHeightMultiplier);
 
