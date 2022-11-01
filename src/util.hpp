@@ -149,8 +149,7 @@ namespace Gts {
 	}
 
 
-
-	inline float get_distance_to_actor(const NiPoint3& point, Actor* actor) {
+	inline float get_distance_to_actor(const NiPoint3& point) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			auto point_a = point;
