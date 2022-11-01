@@ -27,7 +27,7 @@ namespace Gts {
 			return;
 		}
         auto runtime = Runtime::GetSingleton();
-        log::info("Receiver Name: {}, Scale: {}", actor->GetDisplayFullName(), scale);
+        //log::info("Receiver Name: {}, Scale: {}", actor->GetDisplayFullName(), scale);
 
         if (scale >= 40.0) {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);

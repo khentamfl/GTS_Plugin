@@ -142,7 +142,7 @@ namespace Gts {
 				
 				this->GrowthTick +=HealthPercentage;
 
-				log::info("Clamp Duration is: {}, GrowthTicks: {}", clampduration, this->GrowthTick);
+				log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}", clampduration, this->GrowthTick, HitId->GetName());
 				return;
 			}
 		}
