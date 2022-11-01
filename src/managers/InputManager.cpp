@@ -93,7 +93,7 @@ namespace Gts {
 						if (actor->formID != 0x14 && actor->IsInFaction(Runtime::GetSingleton().FollowerFaction) || actor->IsPlayerTeammate()) {
 							float Scale = get_target_scale(actor);
 							float MaxScale = get_max_scale(actor);
-							ConsoleLog::GetSingleton()->Print("%s Scale is %g\n and Size Limit is %g\n", actor->GetDisplayFullName(), Scale, MaxScale);
+							ConsoleLog::GetSingleton()->Print("%s Scale is %g; Size Limit is %g", actor->GetDisplayFullName(), Scale, MaxScale);
 						}
 					}
 				}
