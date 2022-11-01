@@ -140,14 +140,14 @@ namespace {
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		
-		SoftPotential speed_adjustment_run {
+		SoftPotential speed_adjustment_walk {
 				.k = 0.095, // 0.125
 				.n = 0.65, // 0.86
 				.s = 1.90, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};
-		SoftPotential speed_adjustment_walk {
+		SoftPotential speed_adjustment_run {
 				.k = 0.095, // 0.125
 				.n = 1.30, // 0.86
 				.s = 1.90, // 1.12
@@ -186,7 +186,7 @@ namespace {
 			persi_actor_data->anim_speed = speed_mult_walk;//MS_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = speed_mult_run;
+			persi_actor_data->anim_speed = 1.0 / (actor->GetActorValue(ActorValue::kSpeedMult) / trans_actor_data->base_walkspeedmult);
 		} 
 		
 		
