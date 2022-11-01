@@ -87,7 +87,7 @@ namespace Gts {
 					Notify("Reserved Size: {}", Value);
 				}
 				if (key == 0x2F && buttonEvent->HeldDuration() >= 1.2) {
-					log::Info("V is True");
+					log::info("V is True");
 					for (auto actor: find_actors()) {
 						float castersize = get_visual_scale(caster);
 						float targetsize = get_visual_scale(actor);
