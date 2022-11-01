@@ -42,15 +42,9 @@ namespace Gts {
 		float caster_scale = get_visual_scale(caster);
 		float stamina = clamp(0.25, 1.0, GetStaminaPercentage(caster));
 
-		float bonus = 1.0;
-		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
-		{
-			bonus = get_target_scale(caster);
-		}
-
 		if (caster_scale > 0.25) {
-			DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * bonus * TimeScale());
-			ShrinkActor(caster, 0.0030* stamina * bonus, 0.0);
+			DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
+			ShrinkActor(caster, 0.0030* stamina, 0.0);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.60);
 		}
 	}
