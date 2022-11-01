@@ -183,10 +183,10 @@ namespace {
 			}
 			
 		if (!actor->IsRunning()) {
-			persi_actor_data->anim_speed = speed_mult_walk;//MS_mult;	
+			persi_actor_data->anim_speed = speed_mult_sprint;//MS_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = speed_mult_sprint;
+			persi_actor_data->anim_speed = speed_mult_walk;
 		} 
 		
 		
