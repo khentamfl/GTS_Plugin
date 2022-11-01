@@ -92,13 +92,13 @@ namespace Gts {
 						float castersize = get_visual_scale(caster);
 						float targetsize = get_visual_scale(actor);
 						float sizedifference = castersize / targetsize;
-						log::info("Distance between PC and {} is {}", actor->GetDisplayFullName(), get_distance_to_actor(actor));
-						if (actor != caster && get_distance_to_actor(actor) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0)
+						log::info("Distance between PC and {} is {}", actor->GetDisplayFullName(), get_distance_to_actor(actor, caster));
+						if (actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0)
 						{
 							caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
 							log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
 						}
-						else if (actor != caster && get_distance_to_actor(actor) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
+						else if (actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
 							caster->NotifyAnimationGraph("IdleActivatePickupLow");
 						}
 					}

@@ -149,11 +149,10 @@ namespace Gts {
 	}
 
 
-	inline float get_distance_to_actor(const NiPoint3& point) {
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
+	inline float get_distance_to_actor(const NiPoint3& point, actor target) {
+		if (target) {
 			auto point_a = point;
-			auto point_b = player->GetPosition();
+			auto point_b = target->GetPosition();
 			auto delta = point_a - point_b;
 			return delta.Length();
 		}
@@ -167,9 +166,9 @@ namespace Gts {
 		return 3.4028237E38; // Max float
 	}
 
-	inline float get_distance_to_actor(Actor* actor) {
+	inline float get_distance_to_actor(Actor* actor, Actor* actortwo) {
 		if (actor) {
-			return get_distance_to_actor(actor->GetPosition());
+			return get_distance_to_actor(actor->GetPosition(), actortwo);
 		}
 		return 3.4028237E38; // Max float
 	}

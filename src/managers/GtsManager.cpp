@@ -465,12 +465,12 @@ void GtsManager::RandomVoreAttempt(Actor* caster) {
 		float targetsize = get_visual_scale(actor);
 		float sizedifference = castersize / targetsize;
 		if (random <= decide_chance) {
-			if (actor != caster && get_distance_to_actor(actor) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0)
+			if (actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0)
 					{
 						caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
 						log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
 					}
-				else if (actor != caster && get_distance_to_actor(actor) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
+				else if (actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
 						caster->NotifyAnimationGraph("IdleActivatePickupLow");
 					}
 				}
