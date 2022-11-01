@@ -180,7 +180,7 @@ namespace {
 		}
 		if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk))
 			{
-				PerkSpeed = clamp(0.80, 1.0, MS_mult); // Used as a bonus 20% MS if PC has perk.
+				PerkSpeed = clamp(0.80, 1.0, speed_mult_walk); // Used as a bonus 20% MS if PC has perk.
 			}
 			
 		if (!actor->IsRunning()) {
