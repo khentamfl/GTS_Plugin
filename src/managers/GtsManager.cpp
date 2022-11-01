@@ -419,9 +419,9 @@ void GtsManager::Update() {
 		static Timer timer = Timer(3.00);
 		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
-			if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) {}
-				RandomVoreAttempt(actor);
-			}
+			//if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) {}
+				//RandomVoreAttempt(actor);
+			//}
 		HitManager::GetSingleton().Update();
 	}
 }
