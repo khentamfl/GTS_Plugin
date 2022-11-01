@@ -186,7 +186,7 @@ namespace {
 			persi_actor_data->anim_speed = speed_mult;//MS_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = speed_adjustment_walk;
+			persi_actor_data->anim_speed = speed_mult * (actor->GetActorValue(ActorValue::kSpeedMult) / trans_actor_data->base_walkspeedmult);
 		} 
 		
 		
