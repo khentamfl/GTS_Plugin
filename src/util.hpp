@@ -149,7 +149,7 @@ namespace Gts {
 	}
 
 
-	inline float get_distance_to_actor(const NiPoint3& point, actor target) {
+	inline float get_distance_to_actor(const NiPoint3& point, Actor* target) {
 		if (target) {
 			auto point_a = point;
 			auto point_b = target->GetPosition();

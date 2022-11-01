@@ -57,7 +57,7 @@ namespace Gts {
 
 		// Apply it
 		
-		if (receiver->HasPerk(runtime.GrowthOnHitPerk) && !this->CanGrow && receiver == player && HitId->GetName() != "Stagger") {
+		if (receiver->HasPerk(runtime.GrowthOnHitPerk) && !this->CanGrow && receiver == player && HitId->GetName() != "Stagger" && HitId->GetName() != "Size Effect") {
 			log::info("Growth Condition 1 true");
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
 				log::info("Growth Condition 2 true");
@@ -111,7 +111,7 @@ namespace Gts {
 				return;
 			}
 		}
-		else if (sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger") {
+		else if (sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) && HitId->GetName() != "Stagger" && HitId->GetName() != "Size Effect") {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) { // If BalanceMode is 2, shrink player on hit
 				this->Balance_CanShrink = true;
 				if (wasPowerAttack) {
