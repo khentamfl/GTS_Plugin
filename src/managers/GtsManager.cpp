@@ -382,16 +382,23 @@ namespace {
 				}
 			}
 		}
-
+		float bonus = 1.0;
+		
 		else if (QuestStage > 100.0 && BalanceMode <= 1.0) {
 			if (actor->formID == 0x14) {
+				if (PlayerCharacter::GetSingleton().HasMagicEffect(runtime.EffectSizeAmplifyPotion) {
+					bonus = scale;
+				}
 				game_mode_int = runtime.ChosenGameMode->value;
-				growthRate = runtime.GrowthModeRate->value;
+				growthRate = runtime.GrowthModeRate->value * bonus;
 				shrinkRate = runtime.ShrinkModeRate->value;
 
 			} else if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction))) {
+				if (PlayerCharacter::GetSingleton().HasMagicEffect(runtime.EffectSizeAmplifyPotion) {
+					bonus = scale;
+				}
 				game_mode_int = runtime.ChosenGameModeNPC->value;
-				growthRate = runtime.GrowthModeRateNPC->value;
+				growthRate = runtime.GrowthModeRateNPC->value * bonus;
 				shrinkRate = runtime.ShrinkModeRateNPC->value;
 			}
 		} 
