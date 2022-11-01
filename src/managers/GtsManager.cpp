@@ -148,7 +148,16 @@ namespace {
 				.a = 0.0,  //Default is 0
 		};
 
+		SoftPotential speed_adjustment_walk {
+				.k = 0.095 * 2, // 0.125
+				.n = 1.3, // 0.86
+				.s = 1.87, // 1.12
+				.o = 1.0,
+				.a = 0.0,  //Default is 0
+		};
+
 		float speed_mult_sprint = soft_core(scale, speed_adjustment_sprint); // For Running
+		float speed_mult_walk = soft_core(scale, speed_adjustment_walk); // For Walking
 
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
@@ -178,7 +187,7 @@ namespace {
 			persi_actor_data->anim_speed = speed_mult_sprint;//MS_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = speed_mult_sprint/WalkSpeedLimit;
+			persi_actor_data->anim_speed = speed_mult_walk;
 		} 
 		
 		
