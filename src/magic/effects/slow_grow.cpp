@@ -35,7 +35,7 @@ namespace Gts {
 			PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
 		}
 		float bonus = 1.0;
-		if (PlayerCharacter::GetSingleton().HasMagicEffect(runtime.EffectSizeAmplifyPotion))
+		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
 		{
 			bonus = get_target_scale(caster);
 		}

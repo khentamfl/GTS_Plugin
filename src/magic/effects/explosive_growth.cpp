@@ -92,7 +92,7 @@ namespace Gts {
 		
 		if (scale <= limit || limit > GetGrowthSpurt) {
 			
-			if (PlayerCharacter::GetSingleton().HasMagicEffect(runtime.EffectSizeAmplifyPotion))
+			if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
 			{
 				bonus = get_target_scale(caster);
 			}
