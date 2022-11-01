@@ -186,13 +186,13 @@ namespace {
 			persi_actor_data->anim_speed = speed_mult;//MS_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = speed_adjustment_walk;
+			persi_actor_data->anim_speed = speed_mult * (actor->GetActorValue(ActorValue::kSpeedMult) / trans_actor_data->base_walkspeedmult);
 		} 
 		
 		
 		if (timer.ShouldRunFrame()) {
 			if (actor->formID == 0x14) {
-				log::info("Player SATest: {}, SAOW: {}, WS Mult Old: {}, WS Mult New: {}", speed_mult, speed_adjustment_walk, WalkSpeedLimit, WalkSpeedLimitNew);
+				log::info("Player SATest: {}, Test WS: {}", speed_mult, speed_adjustment_walk);
 			}
 				if (scale < 1.0) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
