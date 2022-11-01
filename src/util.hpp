@@ -149,26 +149,12 @@ namespace Gts {
 	}
 
 
-	inline float get_distance_to_actor(const NiPoint3& point, Actor* target) {
+	inline float get_distance_to_actor(Actor* receiver, Actor* target) {
 		if (target) {
-			auto point_a = point;
+			auto point_a = receiver->GetPosition();
 			auto point_b = target->GetPosition();
 			auto delta = point_a - point_b;
 			return delta.Length();
-		}
-		return 3.4028237E38; // Max float
-	}
-
-	inline float get_distance_to_actor(NiAVObject* node) {
-		if (node) {
-			return get_distance_to_actor(node->world.translate);
-		}
-		return 3.4028237E38; // Max float
-	}
-
-	inline float get_distance_to_actor(Actor* actor, Actor* actortwo) {
-		if (actor) {
-			return get_distance_to_actor(actor->GetPosition(), actortwo);
 		}
 		return 3.4028237E38; // Max float
 	}
