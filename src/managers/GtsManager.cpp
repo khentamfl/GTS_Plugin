@@ -418,7 +418,9 @@ void GtsManager::Update() {
 		static Timer timer = Timer(3.00);
 		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
-		}
+			if (actor->IsInFaction(runtime.PF) || actor->IsPlayerTeammate()) {}
+				RandomVoreAttempt(actor);
+			}
 		HitManager::GetSingleton().Update();
 	}
 }
@@ -446,5 +448,31 @@ void GtsManager::reapply_actor(Actor* actor, bool force) {
 	}
 	apply_actor(actor, force);
 }
+
+void GtsManager::RandomVoreAttempt(Actor* caster) {
+	for (auto actor: find_actors()) {
+	if (actor->FormID == 0x14 || !actor->Is3DLoaded() || actor->IsDead())
+	{
+		return;
+	}
+		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+		int Requirement = (25 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
+		int random = rand() % Requirement;
+		int decide_chance = 1;
+		float castersize = get_visual_scale(caster);
+		float targetsize = get_visual_scale(actor);
+		float sizedifference = castersize / targetsize;
+		if (random <= decide_chance) {
+			if (actor != caster && get_distance_to_actor(actor) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0)
+					{
+						caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
+						log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
+					}
+				else if (actor != caster && get_distance_to_actor(actor) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
+						caster->NotifyAnimationGraph("IdleActivatePickupLow");
+					}
+				}
+			}
+		}
 
 
