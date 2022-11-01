@@ -231,13 +231,12 @@ namespace Gts {
 				PlaySound(runtime.MoanSound,caster, 1.0, 1.0);
 			}
 		}
-		if (runtime.CrushGrowthSpell && caster->HasPerk(runtime.GrowthPerk)) {
+		if (runtime.CrushGrowthSpell && caster->HasPerk(runtime.GrowthPerk) && !target->IsEssential()) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
 		}
 		bool hasSMT = runtime.SmallMassiveThreat ? caster->HasMagicEffect(runtime.SmallMassiveThreat) : false;
 		if (get_visual_scale(caster) <= 12.0 && !caster->IsSprinting() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
 			caster->NotifyAnimationGraph("JumpLand");
-
 		}
 		auto Cache = runtime.ManualGrowthStorage;
 		if (caster->formID == 0x14 && caster->HasPerk(runtime.SizeReserve)) {
