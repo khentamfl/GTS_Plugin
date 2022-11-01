@@ -212,6 +212,7 @@ namespace Gts {
 			EffectSetting* EffectSizePotionStrong = nullptr;
 			EffectSetting* EffectSizePotionExtreme = nullptr;
 			EffectSetting* EffectSizeHungerPotion = nullptr;
+			EffectSetting* EffectSizeAmplifyPotion = nullptr;
 			///End Potions///
 
 			///Size-Damage spells

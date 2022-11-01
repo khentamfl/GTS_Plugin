@@ -40,12 +40,20 @@ namespace Gts {
 			return;
 		}
 
+		auto& runtime = Runtime::GetSingleton();
+
 		float target_scale = get_visual_scale(target);
 		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
 
+		float bonus = 1.0;
+		if (PlayerCharacter::GetSingleton().HasMagicEffect(runtime.EffectSizeAmplifyPotion))
+		{
+			bonus = get_target_scale(target);
+		}
+
 		if (target_scale > get_natural_scale(target)) {
-			DamageAV(caster, ActorValue::kMagicka, 0.25 * (target_scale * 0.25 + 0.75) * magicka * TimeScale());
-			ShrinkActor(target, 0.0030 *magicka, 0.0);
+			DamageAV(caster, ActorValue::kMagicka, 0.25 * (target_scale * 0.25 + 0.75) * magicka * bonus * TimeScale());
+			ShrinkActor(target, 0.0030 * magicka * bonus, 0.0);
 			GrowthTremorManager::GetSingleton().CallRumble(target, caster, 1.0);
 		}
 	}

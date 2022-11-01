@@ -24,9 +24,18 @@ namespace Gts {
 		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 100;
 
 		float power = BASE_POWER * SkillMult;
+
+		auto& runtime = Runtime::GetSingleton();
+
+		float bonus = 1.0;
+		if (PlayerCharacter::GetSingleton().HasMagicEffect(runtime.EffectSizeAmplifyPotion))
+		{
+			bonus = get_target_scale(caster);
+		}
+
 		if (IsDualCasting()) {
 			power *= DUAL_CAST_BONUS;
 		}
-		ShrinkActor(caster, 0.0, power);
+		ShrinkActor(caster, 0.0, power * bonus);
 	}
 }

@@ -30,13 +30,20 @@ namespace Gts {
 		if (!caster || !target) {
 			return;
 		}
+		float bonus = 1.0;
 		float GrowAmount = this->ScaleOnVore;
 		BASE_POWER *= GrowAmount;
 		if (caster->HasPerk(runtime.AdditionalAbsorption)) {
 			BASE_POWER *= 2.0;
 		}
+
+		if (PlayerCharacter::GetSingleton().HasMagicEffect(runtime.EffectSizeAmplifyPotion))
+		{
+			bonus = get_target_scale(caster);
+		}
+		
 		VoreAugmentations();
-		Grow(caster, 0.0, BASE_POWER);
+		Grow(caster, 0.0, BASE_POWER * bonus);
 	}
 
 	void VoreGrowth::OnFinish() {

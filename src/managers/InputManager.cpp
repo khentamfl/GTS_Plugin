@@ -171,7 +171,7 @@ namespace Gts {
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 			DamageAV(caster, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			mod_target_scale(caster, 0.0010 * stamina * scale);
+			mod_target_scale(caster, 0.0010 * scale * stamina);
 			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, scale/10);
 			if (this->timergrowth.ShouldRun()) {
@@ -184,7 +184,7 @@ namespace Gts {
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 			DamageAV(caster, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			mod_target_scale(caster, -0.0010 * stamina * scale);
+			mod_target_scale(caster, -0.0010 * scale * stamina);
 			float Volume = clamp(0.05, 2.0, get_visual_scale(caster)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, scale/14);
 			if (this->timergrowth.ShouldRun()) {
@@ -200,12 +200,12 @@ namespace Gts {
 			} 
 		
 			if (actor->formID != 0x14 && actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
-				float scale = get_visual_scale(actor);
+				float scale = get_target_scale(actor);
 				auto caster = player;
 				auto target = actor;
 				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
 				DamageAV(caster, ActorValue::kMagicka, 0.15 * (scale * 0.5 + 0.5) * magicka * TimeScale());
-				mod_target_scale(target, 0.0010 * magicka * scale);
+				mod_target_scale(target, 0.0010 * scale * magicka);
 				float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
 				GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.25);
 			if (this->timergrowth.ShouldRun()) {
@@ -222,12 +222,12 @@ namespace Gts {
 				}
 		
 		if (actor->formID != 0x14 && actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) { 
-				float scale = get_visual_scale(actor);
+				float scale = get_target_scale(actor);
 				auto caster = player;
 				auto target = actor;
 				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
 				DamageAV(target, ActorValue::kMagicka, 0.10 * (scale * 0.5 + 0.5) * magicka * TimeScale());
-				mod_target_scale(target, -0.0010 * magicka * scale);
+				mod_target_scale(target, -0.0010 * scale * magicka);
 				float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
 				GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.20);
 			if (this->timergrowth.ShouldRun()) {

@@ -34,8 +34,13 @@ namespace Gts {
 			float Volume = clamp(0.15, 1.0, get_visual_scale(caster)/8);
 			PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
 		}
+		float bonus = 1.0;
+		if (PlayerCharacter::GetSingleton().HasMagicEffect(runtime.EffectSizeAmplifyPotion))
+		{
+			bonus = get_target_scale(caster);
+		}
 
-		Grow(caster, 0.0, power);
+		Grow(caster, 0.0, power * bonus);
 		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.30);
 		log::info("Slowly Growing, actor: {}", caster->GetDisplayFullName());
 	}

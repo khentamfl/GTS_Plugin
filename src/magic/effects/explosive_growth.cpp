@@ -79,6 +79,8 @@ namespace Gts {
 		float GetGrowthSpurt = SizeManager::GetSingleton().GetGrowthSpurt(caster);
 		float scale = get_target_scale(caster);
 
+		float bonus = 1.0;
+
 		float limit = this->grow_limit * Gigantism * AdjustLimit;
 
 		auto HealthRegenPerk = runtime.HealthRegenPerk;
@@ -89,7 +91,12 @@ namespace Gts {
 		}
 		
 		if (scale <= limit || limit > GetGrowthSpurt) {
-			DoGrowth(caster, this->power);
+			
+			if (PlayerCharacter::GetSingleton().HasMagicEffect(runtime.EffectSizeAmplifyPotion))
+			{
+				bonus = get_target_scale(caster);
+			}
+			DoGrowth(caster, this->power * bonus);
 			//this->RequiredSizeChange = 0;
 			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 		}
