@@ -387,7 +387,7 @@ namespace {
 		else if (QuestStage > 100.0 && BalanceMode <= 1.0) {
 			if (actor->formID == 0x14) {
 				if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion)) {
-					bonus = scale;
+					bonus = scale * 0.25 + 0.75;
 				}
 				game_mode_int = runtime.ChosenGameMode->value;
 				growthRate = runtime.GrowthModeRate->value * bonus;
@@ -395,7 +395,7 @@ namespace {
 
 			} else if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction))) {
 				if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion)) {
-					bonus = scale;
+					bonus = scale * 0.25 + 0.75;
 				}
 				game_mode_int = runtime.ChosenGameModeNPC->value;
 				growthRate = runtime.GrowthModeRateNPC->value * bonus;

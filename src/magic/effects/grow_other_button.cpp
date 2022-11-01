@@ -50,7 +50,7 @@ namespace Gts {
 		float bonus = 1.0;
 		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
 		{
-			bonus = get_target_scale(target);
+			bonus = get_target_scale(target) * 0.25 + 0.75;
 		}
 
 		DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * bonus * TimeScale());

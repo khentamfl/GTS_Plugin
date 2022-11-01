@@ -94,7 +94,7 @@ namespace Gts {
 			
 			if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
 			{
-				bonus = get_target_scale(caster);
+				bonus = get_target_scale(caster) * 0.25 + 0.75;
 			}
 			DoGrowth(caster, this->power * bonus);
 			//this->RequiredSizeChange = 0;

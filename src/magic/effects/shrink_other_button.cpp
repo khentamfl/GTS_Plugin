@@ -48,7 +48,7 @@ namespace Gts {
 		float bonus = 1.0;
 		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
 		{
-			bonus = get_target_scale(target);
+			bonus = get_target_scale(target) * 0.25 + 0.75;
 		}
 
 		if (target_scale > get_natural_scale(target)) {
