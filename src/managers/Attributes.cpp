@@ -34,7 +34,7 @@ namespace {
 		float last_carry_boost = actor_data->bonus_carry;
 		const ActorValue av = ActorValue::kCarryWeight;
 		float max_stamina = actor->GetPermanentActorValue(ActorValue::kStamina);
-		float visual_scale = get_visual_scale(actor);
+		float visual_scale = get_target_scale(actor);
 		float native_scale = get_natural_scale(actor);
 		float scale = visual_scale/native_scale;
 		float base_av = actor->GetBaseActorValue(av);
@@ -71,7 +71,7 @@ namespace {
 
 	void BoostSpeedMulti(Actor* actor, float power) {
 		auto runtime = Runtime::GetSingleton();
-		float scale = get_visual_scale(actor);
+		float scale = get_target_scale(actor);
 		auto actor_data = Transient::GetSingleton().GetData(actor);
 		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/3.0;
 		float base_speed = actor_data->base_walkspeedmult;
@@ -97,7 +97,7 @@ namespace {
 		}
 		float last_hp_boost = actor_data->bonus_hp;
 		const ActorValue av = ActorValue::kHealth;
-		float visual_scale = get_visual_scale(actor);
+		float visual_scale = get_target_scale(actor);
 		float native_scale = get_natural_scale(actor);
 		float scale = visual_scale/native_scale;
 
@@ -191,30 +191,6 @@ namespace {
 		auto ExplGrowthP3 = runtime.explosiveGrowth3;
 
 		float size = get_target_scale(Player);
-		
-
-		//auto CharController = Player->GetCharController();
-
-		//float waterH = CharController->waterHeight;
-		//CharController->swimFloatHeight = 1.6 * size * sizemanager.GetRaceScale(Player);
-		//CharController->actorHeight = 1.828 * size * sizemanager.GetRaceScale(Player);
-		//CharController->scale = size;
-		//float speed = CharController->speedPct;
-		//float rotMod = CharController->rotMod;
-		//float rotModTime = CharController->rotModTime;
-
-		//static Timer timer = Timer(3.00); // Run every 0.5s or as soon as we can
-		//if (timer.ShouldRunFrame()) {
-			//log::info("waterH: {}", waterH);
-			//log::info("swimH: {}", CharController->swimFloatHeight);
-			//log::info("ActorH: {}", CharController->actorHeight);
-			//log::info("speed: {}", speed);
-			//log::info("scale: {}", CharController->scale);
-			//log::info("rotMod: {}", rotMod);
-			//log::info("rotModTime: {}", rotModTime);
-		//}
-
-		
 
 		if (size > 0) {
 			BoostHP(Player, bonusHPMultiplier);

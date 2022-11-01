@@ -404,6 +404,7 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 
 // Poll for updates
 void GtsManager::Update() {
+	auto& runtime = Runtime::GetSingleton();
 	for (auto actor: find_actors()) {
 		if (!actor) {
 			continue;
@@ -418,7 +419,7 @@ void GtsManager::Update() {
 		static Timer timer = Timer(3.00);
 		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
-			if (actor->IsInFaction(runtime.PF) || actor->IsPlayerTeammate()) {}
+			if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) {}
 				RandomVoreAttempt(actor);
 			}
 		HitManager::GetSingleton().Update();
@@ -455,6 +456,7 @@ void GtsManager::RandomVoreAttempt(Actor* caster) {
 	{
 		return;
 	}
+		auto& runtime = Runtime::GetSingleton();
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		int Requirement = (25 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 		int random = rand() % Requirement;
