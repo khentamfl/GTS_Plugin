@@ -150,8 +150,8 @@ namespace {
 
 		SoftPotential speed_adjustment_walk {
 				.k = 0.095 * 2, // 0.125
-				.n = 1.3, // 0.86
-				.s = 1.87, // 1.12
+				.n = 0.9, // 0.86
+				.s = 1.3, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};
