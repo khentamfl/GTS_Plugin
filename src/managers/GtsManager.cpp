@@ -141,14 +141,15 @@ namespace {
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		
 		SoftPotential speed_adjustment_Test {
-				.k = 0.065, // 0.125
-				.n = 0.70, // 0.86
+				.k = 0.095, // 0.125
+				.n = 0.65, // 0.86
 				.s = 1.90, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};
 
 		float speed_mult = soft_core(scale, speed_adjustment_Test);
+		float speed_multnormal = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
@@ -182,7 +183,7 @@ namespace {
 		
 		if (timer.ShouldRunFrame()) {
 			if (actor->formID == 0x14) {
-				log::info("Player Speed Attribute Test: {}, Speed Attribute: {}, WS Mult Old: {}, WS Mult New: {}", speed_mult, speed_adjustment, WalkSpeedLimit, WalkSpeedLimitNew);
+				log::info("Player SATest: {}, SAO: {}, WS Mult Old: {}, WS Mult New: {}", speed_mult, speed_multnormal, WalkSpeedLimit, WalkSpeedLimitNew);
 			}
 				if (scale < 1.0) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
