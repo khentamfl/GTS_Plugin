@@ -140,14 +140,14 @@ namespace {
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		
-		SoftPotential speed_adjustment_walk {
+		SoftPotential speed_adjustment_sprint {
 				.k = 0.095, // 0.125
 				.n = 0.65, // 0.86
 				.s = 1.90, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};
-		SoftPotential speed_adjustment_run {
+		SoftPotential speed_adjustment_walk {
 				.k = 0.095, // 0.125
 				.n = 1.30, // 0.86
 				.s = 1.90, // 1.12
@@ -156,7 +156,7 @@ namespace {
 		};
 
 		float speed_mult_walk = soft_core(scale, speed_adjustment_walk); // For walking
-		float speed_mult_run = soft_core(scale, speed_adjustment_run); // For Running
+		float speed_mult_sprint = soft_core(scale, speed_adjustment_sprint); // For Running
 
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
@@ -186,13 +186,13 @@ namespace {
 			persi_actor_data->anim_speed = speed_mult_walk;//MS_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = 1.0 / (actor->GetActorValue(ActorValue::kSpeedMult) / trans_actor_data->base_walkspeedmult);
+			persi_actor_data->anim_speed = speed_mult_sprint;
 		} 
 		
 		
 		if (timer.ShouldRunFrame()) {
 			if (actor->formID == 0x14) {
-				log::info("Player SpeedWalk: {}, SpeedRun: {}", speed_mult_walk, speed_mult_run);
+				log::info("Player Speed Walk: {}, Speed Sprint: {}", speed_mult_walk, speed_mult_sprint);
 			}
 				if (scale < 1.0) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
