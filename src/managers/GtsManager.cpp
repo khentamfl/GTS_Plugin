@@ -142,8 +142,8 @@ namespace {
 		
 		SoftPotential speed_adjustment_Test {
 				.k = 0.065, // 0.125
-				.n = 0.86, // 0.86
-				.s = 1.12, // 1.12
+				.n = 0.70, // 0.86
+				.s = 1.90, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};

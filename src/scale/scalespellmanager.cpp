@@ -19,7 +19,7 @@ namespace Gts {
 			return;
 		}
         float actorscale = get_target_scale(actor);
-        if (actorscale >= 1.25) {
+        if ((actor->formID == 0x14 || actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) && actorscale >= 1.25) {
             ApplySpellBonus(actor, actorscale);
         }
 	}
@@ -32,16 +32,16 @@ namespace Gts {
         //log::info("Receiver Name: {}, Scale: {}", actor->GetDisplayFullName(), scale);
 
         if (scale >= 40.0) {
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellTiny);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->AddSpell(runtime.gtsSizeCloakSpellImpossible);
+            //actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
+            //actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
+            //actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
+            //actor->RemoveSpell(runtime.gtsSizeCloakSpellTiny);
+            //actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
+            //actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
+           // actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
+           // actor->AddSpell(runtime.gtsSizeCloakSpellImpossible);
         }
-        else if (scale >= 32.0 && scale <= 40.0) {       
+        else if (scale >= 32.0) //scale <= 40.0) {       
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
