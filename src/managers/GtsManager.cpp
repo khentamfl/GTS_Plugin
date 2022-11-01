@@ -182,7 +182,7 @@ namespace {
 		
 		if (timer.ShouldRunFrame()) {
 			if (actor->formID == 0x14) {
-				log::info("Player Speed Attribute Test: {}, Speed Attribute: {}, WS Mult Old: {}, WS Mult New: {}", speed_adjustment_Test, speed_adjustment, WalkSpeedLimit, WalkSpeedLimitNew);
+				log::info("Player Speed Attribute Test: {}, Speed Attribute: {}, WS Mult Old: {}, WS Mult New: {}", speed_mult, speed_adjustment, WalkSpeedLimit, WalkSpeedLimitNew);
 			}
 				if (scale < 1.0) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
