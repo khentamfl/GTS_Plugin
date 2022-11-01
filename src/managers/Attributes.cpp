@@ -77,8 +77,8 @@ namespace {
 		float base_speed = actor_data->base_walkspeedmult;
 		float bonusSpeedMax = runtime.bonusSpeedMax->value;
 		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
-		if (speedEffectiveSize > size)	{
-			speedEffectiveSize = size;
+		if (speedEffectiveSize > scale)	{
+			speedEffectiveSize = scale;
 			}
          }
 
