@@ -96,7 +96,7 @@ namespace Gts {
 				
 				this->GrowthTick +=HealthPercentage;
 
-				log::info("Clamp Duration is: {}, GrowthTicks: {}", clampduration, this->GrowthTick);
+				log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}", clampduration, this->GrowthTick, HitId->GetName());
 
 				if (ShrinkChance >= 10) {
 					mod_target_scale(attacker, (-0.025 * SizeHunger * Gigantism) * SizeDifference / BalanceMode); // Shrink Attacker
