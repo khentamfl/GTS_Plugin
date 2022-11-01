@@ -155,6 +155,7 @@ namespace {
 		float MS_mult_limit = clamp(0.750, 1.0, MS_mult); // For Walk speed
 		float Multy = clamp(0.70, 1.0, MS_mult); // Additional 30% ms
 		float WalkSpeedLimit = clamp(0.33, 1.0, MS_mult);
+		float WalkSpeedLimitNew = clamp(0.02, 1.0, speed_mult);
 		float PerkSpeed = 1.0;
 
 		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
@@ -180,6 +181,9 @@ namespace {
 		
 		
 		if (timer.ShouldRunFrame()) {
+			if (actor->formID == 0x14) {
+				log::info("Player SAT: {}, SA: {}, WS Mult Old: {}, WS Mult New: {}", speed_adjustment_Test, speed_adjustment, WalkSpeedLimit, WalkSpeedLimitNew);
+			}
 				if (scale < 1.0) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				} else
