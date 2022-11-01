@@ -86,7 +86,8 @@ namespace Gts {
 					float Value = Cache->value * gigantism;
 					Notify("Reserved Size: {}", Value);
 				}
-				if (key == 0x2F && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && caster->HasPerk(runtime.VorePerk)) {
+				if (key == 0x2F && buttonEvent->HeldDuration() >= 1.2) {
+					log::Info("V is True");
 					for (auto actor: find_actors()) {
 						float castersize = get_visual_scale(caster);
 						float targetsize = get_visual_scale(actor);
