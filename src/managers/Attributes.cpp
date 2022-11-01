@@ -77,15 +77,19 @@ namespace {
 		float base_speed = actor_data->base_walkspeedmult;
 		float bonusSpeedMax = runtime.bonusSpeedMax->value;
 		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
+		if (speedEffectiveSize > size)	{
+			speedEffectiveSize = size;
+			}
+         }
 
 		static Timer timer = Timer(0.15); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRunFrame()) {
 			if (scale > 1) {
-				actor->SetActorValue(ActorValue::kSpeedMult, base_speed + ((speedEffectiveSize - 1) * (100 * power)));
+				actor->SetActorValue(ActorValue::kSpeedMult, 100 + ((speedEffectiveSize - 1) * (100 * power)));
 			} else if (scale < 1) {
-				actor->SetActorValue(ActorValue::kSpeedMult, base_speed * (scale * 0.90 +0.10));
+				actor->SetActorValue(ActorValue::kSpeedMult, 100 * (scale * 0.90 +0.10));
 			} else {
-				actor->SetActorValue(ActorValue::kSpeedMult, base_speed);
+				actor->SetActorValue(ActorValue::kSpeedMult, 100);
 			}
 		}
 	}
