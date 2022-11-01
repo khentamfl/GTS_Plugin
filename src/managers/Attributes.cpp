@@ -79,8 +79,7 @@ namespace {
 		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
 		if (speedEffectiveSize > scale)	{
 			speedEffectiveSize = scale;
-			}
-         }
+		}
 
 		static Timer timer = Timer(0.15); // Run every 0.5s or as soon as we can
 		if (timer.ShouldRunFrame()) {
