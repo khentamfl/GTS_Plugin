@@ -91,7 +91,9 @@ namespace Gts {
 				if (key == 0x1d && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) { // Left CTRL
 					for (auto actor: find_actors()) {
 						if (actor->formID != 0x14 && actor->IsInFaction(Runtime::GetSingleton().FollowerFaction) || actor->IsPlayerTeammate())
-							ConsoleLog::GetSingleton()->Print("%s Current Size is %g\n; SizeLimit is %g\n", actor->GetDisplayFullName(), get_target_scale(actor), get_max_scale(actor));
+							float Scale = get_target_scale(actor);
+							float MaxScale = get_max_scale(actor);
+							ConsoleLog::GetSingleton()->Print("%s Scale is %g\n, SizeLimit is %g\n", actor->GetDisplayFullName(), Scale, MaxScale);
 					}
 				}
 
