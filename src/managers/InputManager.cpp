@@ -61,14 +61,14 @@ namespace Gts {
 
 
 				//log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
-				if (key == 0x12 && Cache->value > 0.0) {
+				if (key == 0x12 && Cache->value > 0.0) { // E
 					this->TickCheck += 1.0;
 					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/15 * buttonEvent->HeldDuration());
 					if (this->timergrowth.ShouldRunFrame()) {
 						PlaySound(runtime.growthSound, caster, Cache->value/25 * buttonEvent->HeldDuration(), 0.0);
 					}
 
-					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 1.2) {
+					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 1.2 && caster->HasPerk(runtime.SizeReserve)) {
 						float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 						auto GrowthSound = runtime.growthSound;
 						auto MoanSound = runtime.MoanSound;
@@ -81,7 +81,7 @@ namespace Gts {
 						Cache->value = 0.0;
 					}
 				}
-				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && caster->HasPerk(runtime.SizeReserve)) {
+				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && caster->HasPerk(runtime.SizeReserve)) { //F
 					
 					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 					float Value = Cache->value * gigantism;
