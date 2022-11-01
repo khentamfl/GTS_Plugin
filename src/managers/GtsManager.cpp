@@ -140,7 +140,7 @@ namespace {
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		
-		SoftPotential speed_adjustment_Test {
+		SoftPotential speed_adjustment_rs {
 				.k = 0.095, // 0.125
 				.n = 0.65, // 0.86
 				.s = 1.90, // 1.12
@@ -148,15 +148,16 @@ namespace {
 				.a = 0.0,  //Default is 0
 		};
 
-		SoftPotential speed_adjustment_walk {
+		SoftPotential speed_adjustment_ws {
 				.k = 0.095, // 0.125
 				.n = 1.30, // 0.86
 				.s = 1.90, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};
+		float speed_adjustment = soft_core(speed_adjustment_rs); // For walking
+		float speed_mult = soft_core(scale, speed_adjustment_ws); // For Running
 
-		float speed_mult = soft_core(scale, speed_adjustment_Test);
 		float speed_multnormal = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
