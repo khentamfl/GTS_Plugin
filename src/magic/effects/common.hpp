@@ -201,13 +201,6 @@ namespace Gts {
 		}
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !target->HasMagicEffect(runtime.ShrinkToNothing) && !target->IsPlayerTeammate()) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
-			//if (runtime.BloodGushSound) {
-				//PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
-			//}
-			//else
-			//{
-				//log::info("SOUND NOT FOUND!");
-			//}
 			AdjustSizeLimit(0.0117);
 			auto Cache = runtime.ManualGrowthStorage;
 			if (caster->formID == 0x14 && caster->HasPerk(runtime.SizeReserve)) {
@@ -233,6 +226,7 @@ namespace Gts {
 		}
 		if (runtime.CrushGrowthSpell && caster->HasPerk(runtime.GrowthPerk) && !target->IsEssential()) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
+			ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 		}
 		bool hasSMT = runtime.SmallMassiveThreat ? caster->HasMagicEffect(runtime.SmallMassiveThreat) : false;
 		if (get_visual_scale(caster) <= 12.0 && !caster->IsSprinting() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
@@ -265,9 +259,6 @@ namespace Gts {
 				} // Slowly increase Limit after crushing someone while Growth Spurt is active.
 			}
 		}
-
-
-		ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 	}
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {

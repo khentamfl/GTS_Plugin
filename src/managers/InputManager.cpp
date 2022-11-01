@@ -88,6 +88,13 @@ namespace Gts {
 					Notify("Reserved Size: {}", Value);
 				}
 
+				if (key == 0x1d && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) { // Left CTRL
+					for (auto actor: find_actors()) {
+						if (actor->formID != 0x14 && actor->IsInFaction(Runtime::GetSingleton().FollowerFaction) || actor->IsPlayerTeammate())
+							ConsoleLog::GetSingleton()->Print("%s Current Size is %s; SizeLimit is {}", actor->GetDisplayFullName(), get_target_scale(actor), get_max_scale(actor));
+					}
+				}
+
 				if (key == 0x2F && buttonEvent->HeldDuration() >= 100000.2 && this->timer.ShouldRun()) {
 					log::info("V is True");
 					// Currently >>>DISABLED<<<. It reports values < 300.0 when someone is far away for some reason. 
