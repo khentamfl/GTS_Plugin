@@ -82,12 +82,15 @@ namespace Gts {
 					}
 				}
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && caster->HasPerk(runtime.SizeReserve)) {
+					
 					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 					float Value = Cache->value * gigantism;
 					Notify("Reserved Size: {}", Value);
 				}
-				if (key == 0x2F && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) {
+
+				if (key == 0x2F && buttonEvent->HeldDuration() >= 100000.2 && this->timer.ShouldRun()) {
 					log::info("V is True");
+					// Currently >>>DISABLED<<<. It reports values < 300.0 when someone is far away for some reason. 
 					for (auto actor: find_actors()) {
 						float castersize = get_visual_scale(caster);
 						float targetsize = get_visual_scale(actor);
