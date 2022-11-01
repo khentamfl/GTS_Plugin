@@ -41,8 +41,6 @@ namespace Gts {
 
 		float caster_scale = get_visual_scale(caster);
 		float stamina = clamp(0.25, 1.0, GetStaminaPercentage(caster));
-		
-		auto& runtime = Runtime::GetSingleton();
 
 		float bonus = 1.0;
 		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
