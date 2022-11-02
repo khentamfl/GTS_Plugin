@@ -36,7 +36,7 @@ namespace Gts {
 
 	inline bool TremorManager::GetFP() {
 		auto playercamera = PlayerCamera::GetSingleton();
-		auto IsFirstPerson = playercamera->cameraStates[CameraStates::kTotal];
+		auto IsFirstPerson = playercamera->cameraStates[CameraStates::kFirstPerson];
 		if (!playercamera) {
 			return false;
 		}
