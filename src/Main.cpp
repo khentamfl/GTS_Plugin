@@ -132,6 +132,7 @@ namespace {
 						{
 							Plugin::SetInGame(false);
 							EventDispatcher::DoReset();
+							log::info("Firing kPreLoadGame Event");
 						}
 						break;
 					case MessagingInterface::kSaveGame: // The player has saved a game.
