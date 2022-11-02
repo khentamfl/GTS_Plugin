@@ -28,7 +28,7 @@ namespace Gts {
 
 		auto& runtime = Runtime::GetSingleton();
 		float FirstPersonMode = runtime.FirstPersonMode->value;
-		float ProneOffsetFP = clamp(1.0, 3.0 * runtime.ProneOffsetFP->value);
+		float ProneOffsetFP = clamp(1.0, 20.0, 3.0 * runtime.ProneOffsetFP->value);
 
 		auto model = actor->Get3D(false);
 		if (model) {
@@ -61,7 +61,7 @@ namespace Gts {
 
 		auto& runtime = Runtime::GetSingleton();
 		float FirstPersonMode = runtime.FirstPersonMode->value;
-		float ProneOffsetFP = clamp(1.0, 3.0 * runtime.ProneOffsetFP->value);
+		float ProneOffsetFP = clamp(1.0, 20.0, 3.0 * runtime.ProneOffsetFP->value);
 
 		auto node = find_node(actor, node_name, false);
 		if (node) {
