@@ -39,7 +39,6 @@ namespace Gts {
 		if (!player) {
 			return false;
 		}
-		log::info("FP Node: {}, TP Node: {}", find_node(player, "Camera1st [Cam1]", true), find_node(player, "Camera1st [Cam1]", false));
 		return find_node(player, "Camera1st [Cam1]", true) ? true : false;
 	}
 
