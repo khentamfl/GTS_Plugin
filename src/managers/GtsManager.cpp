@@ -140,8 +140,8 @@ namespace {
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		
-		SoftPotential speed_adjustment_sprint { // Even though it is named 'sprint', it is used for all other movement states
-				.k = 0.13, // 0.125
+		SoftPotential speed_adjustment_others { // Even though it is named 'sprint', it is used for all other movement states
+				.k = 0.142, // 0.125
 				.n = 0.82, // 0.86
 				.s = 1.90, // 1.12
 				.o = 1.0,
@@ -156,7 +156,7 @@ namespace {
 				.a = 0.0,  //Default is 0
 		};
 
-		float speed_mult_sprint = soft_core(scale, speed_adjustment_sprint); // For all other movement types
+		float speed_mult_others = soft_core(scale, speed_adjustment_others); // For all other movement types
 		float speed_mult_walk = soft_core(scale, speed_adjustment_walk); // For Walking
 
 		float speed_mult = soft_core(scale, speed_adjustment);
@@ -184,7 +184,7 @@ namespace {
 			}
 			
 		if (!actor->IsRunning()) {
-			persi_actor_data->anim_speed = speed_mult_sprint;//MS_mult;	
+			persi_actor_data->anim_speed = speed_mult_others;//MS_mult;	
 		}
 		else if (actor->IsRunning() && !actor->IsSprinting()) {
 			persi_actor_data->anim_speed = speed_mult_walk * PerkSpeed;
