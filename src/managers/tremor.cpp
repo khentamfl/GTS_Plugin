@@ -39,8 +39,8 @@ namespace Gts {
 		if (!playercamera) {
 			return false;
 		}
-		auto IsFirstPerson = playercamera->cameraStates[CameraState];
-		if (IsFirstPerson) {
+		auto IsFirstPerson = playercamera->cameraState
+		if (IsFirstPerson == CameraStates::kFirstPerson = 0) {
 			return true;
 		}
 		return false;
