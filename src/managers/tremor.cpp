@@ -43,7 +43,7 @@ namespace Gts {
 		if (IsFirstPerson) {
 			return true;
 		}
-		return false
+		return false;
 	}
 
 	void TremorManager::OnImpact(const Impact& impact) {
