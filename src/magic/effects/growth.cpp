@@ -26,16 +26,6 @@ namespace Gts {
 			return;
 		}
 
-		auto base_spell = GetBaseEffect();
-
-		if (base_spell == runtime.GrowthSpellAdept) 
-		{
-			power *= 1.33;
-		}
-		else if (base_spell == runtime.GrowthSpellExpert)
-		{
-			power *= 1.75;
-		}
 
 		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 150;
 
@@ -49,6 +39,17 @@ namespace Gts {
 		}
 
 		float power = BASE_POWER * SkillMult;
+
+		auto base_spell = GetBaseEffect();
+
+		if (base_spell == runtime.GrowthSpellAdept) {
+			power *= 1.33;
+		}
+		else if (base_spell == runtime.GrowthSpellExpert) {
+			power *= 1.75;
+		}
+
+
 		if (IsDualCasting()) {
 			power *= DUAL_CAST_BONUS;
 		}
