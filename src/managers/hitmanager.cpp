@@ -57,13 +57,12 @@ namespace Gts {
 
 		// Apply it
 		
-		if (receiver->HasPerk(runtime.GrowthOnHitPerk) && !this->CanGrow && receiver == player 
+		if (receiver->HasPerk(runtime.GrowthOnHitPerk) && !this->CanGrow && !this->BlockEffect && receiver == player 
 			&& 
 		HitId->GetName() != "Stagger" && HitId->GetName() != "Size Effect" && HitId->GetName() != "Sprinting Size Effect" && HitId->GetName() != "Gts Tasty Foe") 
 		{
-			log::info("Growth Condition 1 true");
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
-				log::info("Growth Condition 2 true");
+				this->BlockEffect = true;
 				this->CanGrow = true;
 				if (wasPowerAttack) {
 					this->BonusPower = 2.0;
@@ -114,10 +113,11 @@ namespace Gts {
 				return;
 			}
 		}
-		else if (sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) 
+		else if (sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && !this->BlockEffect && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk) 
 			&& 
 		HitId->GetName() != "Stagger" && HitId->GetName() != "Size Effect" && HitId->GetName() != "Sprinting Size Effect" && HitId->GetName() != "Gts Tasty Foe") {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) { // If BalanceMode is 2, shrink player on hit
+				this->BlockEffect = true;
 				this->Balance_CanShrink = true;
 				if (wasPowerAttack) {
 					this->BonusPower = 2.0;
@@ -178,6 +178,7 @@ namespace Gts {
 					//log::info("Growth Value is: {}, HP Percentage is: {}, SizeHunger: {}, Gigantism: {}", GrowthValue, HealthPercentage, SizeHunger, Gigantism);
 					actor_data->half_life = 1.0;
 					this->CanGrow = false;
+					this->BlockEffect = false;
 					this->GrowthTick = 0.0;
 				}
 				else {
@@ -199,6 +200,7 @@ namespace Gts {
 				} else if (this->GrowthTick <= 0.01) {
 					actor_data->half_life = 1.0;
 					this->Balance_CanShrink = false;
+					this->BlockEffect = false;
 					this->GrowthTick = 0.0;
 					this->AdjustValue = 1.0;
 
