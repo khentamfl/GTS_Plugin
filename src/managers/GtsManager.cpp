@@ -436,7 +436,7 @@ void GtsManager::Update() {
 		apply_actor(actor);
 		GameMode(actor);
 		HitManager::GetSingleton().Update();
-		log::info("Player Scale is: {}, Player Max Size is: {}", get_target_scale(PlayerCharacter::GetSingleton(), get_max_scale(PlayerCharacter::GetSingleton())));
+		log::info("Player Scale is: {}, Player Max Size is: {}", get_target_scale(PlayerCharacter::GetSingleton()), get_max_scale(PlayerCharacter::GetSingleton()));
 		static Timer timer = Timer(3.00);
 		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
 			ScaleSpellManager::GetSingleton().CheckSize(actor);

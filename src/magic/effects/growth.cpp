@@ -33,6 +33,8 @@ namespace Gts {
 
 		float bonus = 1.0;
 
+		log::info("Growing, Player Scale is: {}, Player Max Size is: {}", get_target_scale(caster), get_max_scale(caster));
+
 		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
 		{
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
