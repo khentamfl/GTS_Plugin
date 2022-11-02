@@ -46,7 +46,7 @@ namespace Gts {
 		}
 		else if (base_spell == runtime.GrowthSpellExpert) {
 			power *= 1.75;
-			float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00020;
+			float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00040;
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 
