@@ -3,6 +3,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "util.hpp"
 
 namespace Gts {
 	std::string Growth::GetName() {
@@ -47,6 +48,8 @@ namespace Gts {
 		}
 		else if (base_spell == runtime.GrowthSpellExpert) {
 			power *= 1.75;
+			float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00020;
+			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 
 
