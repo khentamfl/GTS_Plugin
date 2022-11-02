@@ -3,6 +3,7 @@
 #include "node.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
+#include "data/runtime.hpp"
 
 using namespace Gts;
 
@@ -25,6 +26,10 @@ namespace Gts {
 		}
 		bool result = false;
 
+		auto& runtime = Runtime::GetSingleton();
+		float FirstPersonMode = runtime.FirstPersonMode->value;
+		float ProneOffsetFP = clamp(1.0, 3.0 * runtime.ProneOffsetFP->value);
+
 		auto model = actor->Get3D(false);
 		if (model) {
 			result = true;
@@ -35,7 +40,15 @@ namespace Gts {
 		auto first_model = actor->Get3D(true);
 		if (first_model) {
 			result = true;
-			first_model->local.scale = target_scale;
+			if (FirstPersonMode == 0.0) {
+				first_model->local.scale = target_scale;
+			}
+			else if (FirstPersonMode == 1.0) {
+				first_model->local.scale = 1.0 * ProneOffsetFP;
+			}
+			else if (FirstPersonMode == 2.0) {
+				first_model->local.scale = 0.7 * ProneOffsetFP;
+			}
 			update_node(first_model);
 		}
 		return result;
@@ -45,6 +58,11 @@ namespace Gts {
 		// This will set the scale of the root npc node
 		string node_name = "NPC Root [Root]";
 		bool result = false;
+
+		auto& runtime = Runtime::GetSingleton();
+		float FirstPersonMode = runtime.FirstPersonMode->value;
+		float ProneOffsetFP = clamp(1.0, 3.0 * runtime.ProneOffsetFP->value);
+
 		auto node = find_node(actor, node_name, false);
 		if (node) {
 			result = true;
@@ -55,7 +73,15 @@ namespace Gts {
 		auto first_node = find_node(actor, node_name, true);
 		if (first_node) {
 			result = true;
-			first_node->local.scale = target_scale;
+			if (FirstPersonMode == 0.0) {
+				first_node->local.scale = target_scale;
+			}
+			else if (FirstPersonMode == 1.0) {
+				first_node->local.scale = 1.0 * ProneOffsetFP;
+			}
+			else if (FirstPersonMode == 2.0) {
+				first_node->local.scale = 0.7 * ProneOffsetFP;
+			}
 			update_node(first_node);
 		}
 		return result;

@@ -161,6 +161,11 @@ namespace Gts {
 
 
 			///Camera
+
+			///FP Camera
+			TESGlobal * FirstPersonMode = nullptr;
+			TESGlobal * ProneOffsetFP = nullptr;
+			///FP Camera END
 			TESGlobal * EnableCamera = nullptr;
 			TESGlobal * EnableAltCamera = nullptr;
 			TESGlobal * FeetCamera = nullptr;

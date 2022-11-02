@@ -179,6 +179,12 @@ namespace Gts {
 		this->HighHeelDamage = find_form<TESGlobal>("GTS.esp|271EFF");
 
 		///Camera
+
+		///FP Camera
+		this->FirstPersonMode = find_form<TESGlobal>("GTS.esp|2B8D35");
+		this->ProneOffsetFP = find_form<TESGlobal>("GTS.esp|2C2F38");
+		///FP Camera END
+
 		this->EnableCamera = find_form<TESGlobal>("GTS.esp|290512");
 		this->EnableAltCamera = find_form<TESGlobal>("GTS.esp|290513");
 		this->FeetCamera = find_form<TESGlobal>("GTS.esp|290525");
