@@ -192,9 +192,6 @@ namespace {
 		
 		
 		if (timer.ShouldRunFrame()) {
-			if (actor->formID == 0x14) {
-				log::info("Speed Sprint: {}", speed_mult_sprint);
-			}
 				if (scale < 1.0) {
 					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				} else

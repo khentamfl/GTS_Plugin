@@ -29,6 +29,7 @@ namespace Gts {
 
 
 		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 200;
+		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00035;
 
 		float bonus = 1.0;
 
@@ -46,7 +47,6 @@ namespace Gts {
 		}
 		else if (base_spell == runtime.GrowthSpellExpert) {
 			power *= 1.75;
-			float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00035;
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 

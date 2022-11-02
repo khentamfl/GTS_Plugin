@@ -75,7 +75,6 @@ namespace Gts {
 		auto first_model = actor->Get3D(true);
 		auto& runtime = Runtime::GetSingleton();
 		float FirstPersonMode = runtime.FirstPersonMode->value;
-		log::info("FP Mode is: {}", FirstPersonMode);
 
 		if (size_method == RootScale && first_node) {
 			result = true;
