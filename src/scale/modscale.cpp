@@ -3,6 +3,7 @@
 #include "node.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
+#include "data/runtime.hpp"
 
 using namespace Gts;
 
@@ -68,10 +69,12 @@ namespace Gts {
 			return false;
 		}
 		bool result = false;
-
+		string node_name = "NPC Root [Root]";
 		auto& size_method = Persistent::GetSingleton().size_method;
 		auto first_node = find_node(actor, node_name, true);
 		auto first_model = actor->Get3D(true);
+		auto& runtime = Runtime::GetSingleton();
+		float FirstPersonMode = runtime.FirstPersonMode->value;
 
 		if (size_method == ModelScale && first_node) {
 			result = true;
