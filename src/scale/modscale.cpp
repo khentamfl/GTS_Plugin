@@ -94,15 +94,15 @@ namespace Gts {
 		else if (size_method == RootScale && first_model) {
 			result = true;
 			if (FirstPersonMode == 0.0) {
-				first_model->local.scale = target_scale * prone;
+				first_node->local.scale = target_scale * prone;
 			}
 			else if (FirstPersonMode == 1.0) {
-				first_model->local.scale = 1.0 * prone;
+				first_node->local.scale = 1.0 * prone;
 			}
 			else if (FirstPersonMode == 2.0) {
-				first_model->local.scale = 0.7 * prone;
+				first_node->local.scale = 0.7 * prone;
 			}
-			update_node(first_model);
+			update_node(first_node);
 		} 
 		return result;
 	}
