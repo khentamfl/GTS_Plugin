@@ -123,7 +123,7 @@ namespace {
 						break;
 					case MessagingInterface::kNewGame: // Player starts a new game from main menu.
 						{
-							Plugin::SetInGame(false);
+							Plugin::SetInGame(true);
 							EventDispatcher::DoReset();
 						}
 						break;
