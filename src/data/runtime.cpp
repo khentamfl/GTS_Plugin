@@ -86,6 +86,8 @@ namespace Gts {
 		this->SlowGrowth = find_form<EffectSetting>("GTS.esp|019C3D"); // <- slow growth spell [Hands]. Release and grow over time.
 		this->SlowGrowth2H = find_form<EffectSetting>("GTS.esp|086C8D");
 		this->GrowthSpell = find_form<EffectSetting>("GTS.esp|0022EB"); // <- Grow Spell [Hands]
+		this->GrowthSpellAdept = find_form<EffectSetting>("GTS.esp|45D124"); 
+		this->GrowthSpellExpert = find_form<EffectSetting>("GTS.esp|45D125"); 
 		this->GrowPcButton = find_form<EffectSetting>("GTS.esp|002DB5"); // <- Grow PC in size on button press
 
 		this->GrowAlly = find_form<EffectSetting>("GTS.esp|0058D5");  // <- Increase Ally Size [Hands]

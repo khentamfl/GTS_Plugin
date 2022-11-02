@@ -73,6 +73,8 @@ namespace Gts {
 			EffectSetting* SlowGrowth = nullptr;
 			EffectSetting* SlowGrowth2H = nullptr;
 			EffectSetting* GrowthSpell = nullptr;
+			EffectSetting* GrowthSpellAdept = nullptr;
+			EffectSetting* GrowthSpellExpert = nullptr;
 			EffectSetting* GrowPcButton = nullptr;
 
 			EffectSetting* GrowAlly = nullptr;

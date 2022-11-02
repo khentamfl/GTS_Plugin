@@ -11,7 +11,7 @@ namespace Gts {
 
 	bool Growth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.GrowthSpell;
+		return (effect == runtime.GrowthSpell || effect == runtime.GrowthSpellAdept || effect == runtime.GrowthSpellExpert);
 
 	}
 
@@ -24,7 +24,19 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 100;
+
+		auto base_spell = GetBaseEffect();
+
+		if (base_spell == runtime.GrowthSpellAdept) 
+		{
+			power *= 1.33;
+		}
+		else if (base_spell == runtime.GrowthSpellExpert)
+		{
+			power *= 1.75;
+		}
+
+		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 150;
 
 		float bonus = 1.0;
 
