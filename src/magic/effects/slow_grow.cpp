@@ -19,7 +19,7 @@ namespace Gts {
 	}
 
 	void SlowGrow::OnUpdate() {
-		const float BASE_POWER = 0.00015;
+		const float BASE_POWER = 0.000125;
 		const float DUAL_CAST_BONUS = 2.0;
 		auto caster = GetCaster();
 		if (!caster) {
@@ -42,7 +42,7 @@ namespace Gts {
 
 		Grow(caster, 0.0, power * bonus);
 		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.30);
-		log::info("Slowly Growing, actor: {}", caster->GetDisplayFullName());
+		//log::info("Slowly Growing, actor: {}", caster->GetDisplayFullName());
 	}
 
 	void SlowGrow::OnStart() {

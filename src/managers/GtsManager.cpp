@@ -141,7 +141,7 @@ namespace {
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		
 		SoftPotential speed_adjustment_sprint {
-				.k = 0.095, // 0.125
+				.k = 0.102, // 0.125
 				.n = 0.82, // 0.86
 				.s = 1.90, // 1.12
 				.o = 1.0,
