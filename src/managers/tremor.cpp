@@ -35,11 +35,15 @@ namespace Gts {
 	}
 
 	inline bool TremorManager::GetFP() {
-		auto player = PlayerCharacter::GetSingleton();
-		if (!player) {
+		auto playercamera = PlayerCamera::GetSingleton();
+		auto IsFirstPerson = playercamera->cameraStates[CameraStates::kTotal];
+		if (!playercamera) {
 			return false;
 		}
-		return find_node(player, "Camera1st [Cam1]", false) ? true : false;
+		if (IsFirstPerson) {
+			return true;
+		}
+		return false
 	}
 
 	void TremorManager::OnImpact(const Impact& impact) {
