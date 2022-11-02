@@ -13,5 +13,6 @@ namespace Gts {
 			[[nodiscard]] static TremorManager& GetSingleton() noexcept;
 
 			void OnImpact(const Impact& impact);
+			inline bool GetFP();
 	};
 }

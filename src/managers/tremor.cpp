@@ -33,6 +33,14 @@ namespace Gts {
 		return instance;
 	}
 
+	inline bool TremorManager::GetFP() {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!player) {
+			return false;
+		}
+		return find_Node(player, "Camera1st [Cam1]") ? true : false;
+	}
+
 	void TremorManager::OnImpact(const Impact& impact) {
 		if (!impact.actor) {
 			return;
@@ -169,6 +177,12 @@ namespace Gts {
 
 				if (actor->formID == 0x14 && pcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
+						if (GetFP())
+						{
+							intensity *= 0.02;
+							log::info("Fp Activated");
+						}
+						log::info("Intensity is: {}", intensity);
 						shake_camera(actor, intensity, duration);
 
 						float left_shake = intensity;
