@@ -111,7 +111,7 @@ namespace {
 						break;
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 						// It is now safe to access form data.
-						ConsoleLog::GetSingleton()->Print("Giantess Mod v 1.00_Test was succesfully ininitalized and works properly.");
+						ConsoleLog::GetSingleton()->Print("Giantess Mod v 1.00_Test was succesfully loaded.");
 						EventDispatcher::DoDataReady();
 						break;
 					// Skyrim game events.
@@ -119,12 +119,14 @@ namespace {
 						// Data will be a boolean indicating whether the load was successful.
 						{
 							Plugin::SetInGame(true);
+							ConsoleLog::GetSingleton()->Print("Giantess Mod v 1.00_Test was succesfully initialized and working properly.");
 						}
 						break;
 					case MessagingInterface::kNewGame: // Player starts a new game from main menu.
 						{
 							Plugin::SetInGame(true);
 							EventDispatcher::DoReset();
+							ConsoleLog::GetSingleton()->Print("Giantess Mod v 1.00_Test was succesfully initialized and working properly.");
 						}
 						break;
 					case MessagingInterface::kPreLoadGame: // Player selected a game to load, but it hasn't loaded yet.
