@@ -77,21 +77,7 @@ namespace Gts {
 		float FirstPersonMode = runtime.FirstPersonMode->value;
 		log::info("FP Mode is: {}", FirstPersonMode);
 
-		if (size_method == ModelScale && first_node) {
-			result = true;
-			if (FirstPersonMode == 0.0) {
-				first_model->local.scale = target_scale * prone;
-			}
-			else if (FirstPersonMode == 1.0) {
-				first_model->local.scale = 1.0 * prone;
-			}
-			else if (FirstPersonMode == 2.0) {
-				first_model->local.scale = 0.7 * prone;
-			}
-			update_node(first_model);
-		}
-
-		else if (size_method == RootScale && first_model) {
+		if (size_method == RootScale && first_node) {
 			result = true;
 			if (FirstPersonMode == 0.0) {
 				first_node->local.scale = target_scale * prone;
@@ -103,6 +89,20 @@ namespace Gts {
 				first_node->local.scale = 0.7 * prone;
 			}
 			update_node(first_node);
+		}
+
+		else if (size_method == ModelScale && first_model) {
+			result = true;
+			if (FirstPersonMode == 0.0) {
+				first_model->local.scale = target_scale * prone;
+			}
+			else if (FirstPersonMode == 1.0) {
+				first_model->local.scale = 1.0 * prone;
+			}
+			else if (FirstPersonMode == 2.0) {
+				first_model->local.scale = 0.7 * prone;
+			}
+			update_node(first_model);
 		} 
 		return result;
 	}
