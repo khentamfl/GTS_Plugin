@@ -39,7 +39,7 @@ namespace Gts {
 		if (!player) {
 			return false;
 		}
-		return find_node(player, "Camera1st [Cam1]", true) ? true : false;
+		return find_node(player, "Camera1st [Cam1]", false) ? true : false;
 	}
 
 	void TremorManager::OnImpact(const Impact& impact) {
