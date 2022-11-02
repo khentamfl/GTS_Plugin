@@ -140,17 +140,17 @@ namespace {
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 		
-		SoftPotential speed_adjustment_sprint {
-				.k = 0.110, // 0.125
+		SoftPotential speed_adjustment_sprint { // Even though it is named 'sprint', it is used for all other movement states
+				.k = 0.13, // 0.125
 				.n = 0.82, // 0.86
 				.s = 1.90, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 		};
 
-		SoftPotential speed_adjustment_walk {
-				.k = 0.25, // 0.125
-				.n = 1.03, // 0.86
+		SoftPotential speed_adjustment_walk { // Used for normal walk, it has faster animation speed for some reason, so it needs a custom one
+				.k = 0.265, // 0.125
+				.n = 1.11, // 0.86
 				.s = 2.0, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
