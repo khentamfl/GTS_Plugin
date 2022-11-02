@@ -90,7 +90,7 @@ namespace Gts {
 			Impact impact_data = Impact {
 				.actor = actor,
 				.kind = kind,
-				.scale = get_visual_scale(actor),
+				.scale = get_target_scale(actor),  // get_visual_scale(actor),
 				.effective_scale = get_effective_scale(actor),
 				.nodes = get_landing_nodes(actor, kind),
 			};

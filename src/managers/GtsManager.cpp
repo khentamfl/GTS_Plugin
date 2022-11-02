@@ -156,7 +156,7 @@ namespace {
 				.a = 0.0,  //Default is 0
 		};
 
-		float speed_mult_sprint = soft_core(scale, speed_adjustment_sprint); // For Running
+		float speed_mult_sprint = soft_core(scale, speed_adjustment_sprint); // For all other movement types
 		float speed_mult_walk = soft_core(scale, speed_adjustment_walk); // For Walking
 
 		float speed_mult = soft_core(scale, speed_adjustment);
