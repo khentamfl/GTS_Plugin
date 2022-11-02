@@ -174,7 +174,7 @@ namespace Gts {
 			CameraManager::SetfOverShoulderPosZ(ProneCalc * runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
 			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
 		}
-		set_fp_scale(PlayerCharacter::GetSingleton(), get_target_scale(PlayerCharacter::GetSingleton(), ProneOffsetFP));
+		set_fp_scale(PlayerCharacter::GetSingleton(), get_target_scale(PlayerCharacter::GetSingleton()), ProneOffsetFP);
 	}
 
 
@@ -204,7 +204,7 @@ namespace Gts {
 			CameraManager::SetfOverShoulderPosZ(ProneCalc * runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
 			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
 		}
-		set_fp_scale(PlayerCharacter::GetSingleton(), get_target_scale(PlayerCharacter::GetSingleton(), ProneOffsetFP));
+		set_fp_scale(PlayerCharacter::GetSingleton(), get_target_scale(PlayerCharacter::GetSingleton()), ProneOffsetFP);
 	}
 
 	// Run every frame
