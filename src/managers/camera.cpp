@@ -168,11 +168,11 @@ namespace Gts {
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
-			ProneOffsetFP = clamp(1.0, 20.0, 3.0 * runtime.ProneOffsetFP->value);
+			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * runtime.ProneOffsetFP->value);
 			float ProneCalc = CameraManager::GetfOverShoulderPosZ(); //Utility.getINIFloat("fOverShoulderPosZ:Camera")
 			float ProneCalcC = CameraManager::GetfOverShoulderCombatPosZ(); //Utility.getINIFloat("fOverShoulderCombatPosZ:Camera")
-			CameraManager::SetfOverShoulderPosZ(ProneCalc * runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
-			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
+			CameraManager::SetfOverShoulderPosZ(ProneCalc * -runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
+			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * -runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
 		}
 		set_fp_scale(PlayerCharacter::GetSingleton(), get_target_scale(PlayerCharacter::GetSingleton()), ProneOffsetFP);
 	}
@@ -198,11 +198,11 @@ namespace Gts {
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
-			ProneOffsetFP = clamp(1.0, 20.0, 3.0 * runtime.ProneOffsetFP->value);
+			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * runtime.ProneOffsetFP->value);
 			float ProneCalc = CameraManager::GetfOverShoulderPosZ(); //Utility.getINIFloat("fOverShoulderPosZ:Camera")
 			float ProneCalcC = CameraManager::GetfOverShoulderCombatPosZ(); //Utility.getINIFloat("fOverShoulderCombatPosZ:Camera")
-			CameraManager::SetfOverShoulderPosZ(ProneCalc * runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
-			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
+			CameraManager::SetfOverShoulderPosZ(ProneCalc * -runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
+			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * -runtime.CalcProne->value); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
 		}
 		set_fp_scale(PlayerCharacter::GetSingleton(), get_target_scale(PlayerCharacter::GetSingleton()), ProneOffsetFP);
 	}

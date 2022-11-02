@@ -79,7 +79,7 @@ namespace Gts {
 		if (size_method == ModelScale && first_node) {
 			result = true;
 			if (FirstPersonMode == 0.0) {
-				first_model->local.scale = target_scale;
+				first_model->local.scale = target_scale * prone;
 			}
 			else if (FirstPersonMode == 1.0) {
 				first_model->local.scale = 1.0 * prone;
@@ -93,7 +93,7 @@ namespace Gts {
 		else if (size_method == RootScale && first_model) {
 			result = true;
 			if (FirstPersonMode == 0.0) {
-				first_model->local.scale = target_scale;
+				first_model->local.scale = target_scale * prone;
 			}
 			else if (FirstPersonMode == 1.0) {
 				first_model->local.scale = 1.0 * prone;
