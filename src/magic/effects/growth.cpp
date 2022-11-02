@@ -17,7 +17,7 @@ namespace Gts {
 	}
 
 	void Growth::OnUpdate() {
-		const float BASE_POWER = 0.00250;
+		const float BASE_POWER = 0.00200;
 		const float DUAL_CAST_BONUS = 2.0;
 		auto& runtime = Runtime::GetSingleton();
 		
@@ -28,7 +28,7 @@ namespace Gts {
 		}
 
 
-		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 150;
+		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 200;
 
 		float bonus = 1.0;
 
@@ -46,7 +46,7 @@ namespace Gts {
 		}
 		else if (base_spell == runtime.GrowthSpellExpert) {
 			power *= 1.75;
-			float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00740;
+			float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00035;
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 
