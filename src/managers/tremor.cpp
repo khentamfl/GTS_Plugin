@@ -5,6 +5,7 @@
 #include "data/transient.hpp"
 #include "scale/scale.hpp"
 #include "Config.hpp"
+#include "node.hpp"
 #include "util.hpp"
 
 
@@ -38,7 +39,8 @@ namespace Gts {
 		if (!player) {
 			return false;
 		}
-		return find_Node(player, "Camera1st [Cam1]") ? true : false;
+		log::info("FP Node: {}, TP Node: {}", find_node(player, "Camera1st [Cam1]", true), find_node(player, "Camera1st [Cam1]", false));
+		return find_node(player, "Camera1st [Cam1]", true) ? true : false;
 	}
 
 	void TremorManager::OnImpact(const Impact& impact) {
