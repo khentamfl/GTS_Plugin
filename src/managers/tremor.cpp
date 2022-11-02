@@ -183,8 +183,7 @@ namespace Gts {
 					if (intensity > 0.01 && duration > 0.01) {
 						if (GetFP())
 						{
-							intensity *= 0.02;
-							log::info("Fp Activated");
+							intensity *= 0.075; // Shake effects are weaker when in first person
 						}
 						log::info("Intensity is: {}", intensity);
 						shake_camera(actor, intensity, duration);

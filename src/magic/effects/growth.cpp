@@ -17,7 +17,7 @@ namespace Gts {
 	}
 
 	void Growth::OnUpdate() {
-		const float BASE_POWER = 0.00200;
+		const float BASE_POWER = 0.00150;
 		const float DUAL_CAST_BONUS = 2.0;
 		auto& runtime = Runtime::GetSingleton();
 		

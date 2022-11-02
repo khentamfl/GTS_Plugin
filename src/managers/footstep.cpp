@@ -1,5 +1,6 @@
 #include "managers/footstep.hpp"
 #include "managers/impact.hpp"
+#include "managers/tremor.hpp"
 
 #include "scale/scale.hpp"
 #include "managers/modevent.hpp"
@@ -183,6 +184,11 @@ namespace Gts {
 				} else if (actor->IsWalking()) {
 					scale *= 0.85; // Walking makes you sound quieter
 				}
+
+				if (actor->formID == 0x14 && TremorManager::GetSingleton().GetFP) { // Footsteps are quieter when in first person
+					scale *= 0.25;
+				}
+
 				Foot foot_kind = impact.kind;
 				if (foot_kind == Foot::JumpLand) {
 					float jump_factor = 1.2;

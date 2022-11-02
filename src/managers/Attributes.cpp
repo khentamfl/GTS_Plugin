@@ -146,7 +146,7 @@ namespace {
 			}
 		} else {
 			if (ActorAttributes->smt_run_speed > 0.0) {
-				ActorAttributes->smt_run_speed -= 0.009175;
+				ActorAttributes->smt_run_speed -= 0.045000;
 			} else if (ActorAttributes->smt_run_speed <= 0.0) {
 				ActorAttributes->smt_run_speed -= 0.0;
 				BlockMessage = false;
