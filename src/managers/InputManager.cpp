@@ -86,6 +86,7 @@ namespace Gts {
 					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 					float Value = Cache->value * gigantism;
 					Notify("Reserved Size: {}", Value);
+					ConsoleLog::GetSingleton()->Print("tfc");
 				}
 
 				if (key == 0x1d && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) { // Left CTRL
