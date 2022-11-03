@@ -16,8 +16,8 @@ namespace Gts {
 
 	void GrowOther::OnUpdate() {
 		auto& runtime = Runtime::GetSingleton();
-		const float BASE_POWER = 0.00090;
-		const float BONUS = 0.00090;
+		const float BASE_POWER = 0.00045;
+		const float BONUS = 0.00045;
 		const float SMT_BONUS = 2.0;
 		const float DUAL_CAST_BONUS = 2.0;
 		const float CRUSH_GROWTH_CHECK = 1.4;
