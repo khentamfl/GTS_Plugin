@@ -48,12 +48,11 @@ namespace Gts {
 		}
 	}
 
-
 	inline float CalcEffeciency(Actor* caster, Actor* target) {
 		const float DRAGON_PEANLTY = 0.14;
 		auto& runtime = Runtime::GetSingleton();
-		float casterlevel = clamp(1.0, 50.0, caster->GetLevel());
-		float targetlevel = clamp(1.0, 50.0,target->GetLevel());
+		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
+		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
 		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
@@ -79,6 +78,12 @@ namespace Gts {
 		// y = mx +c
 		// power = scale_factor * scale + bonus
 		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
+	}
+
+	inline float CalcPower_NoMult(Actor* actor, float scale_factor, float bonus) {
+		// y = mx +c
+		// power = scale_factor * scale + bonus
+		return (get_visual_scale(actor) * scale_factor + bonus) * MASTER_POWER * TimeScale();
 	}
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
@@ -121,9 +126,10 @@ namespace Gts {
 	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
 		float amount = CalcPower(from, scale_factor, bonus);
+		float amountnomult = CalcPower_NoMult(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0001 * scale_factor * target_scale);
-		mod_target_scale(from, -bonus/target_scale);
+		mod_target_scale(from, amountnomult/target_scale);
 		mod_target_scale(to, amount*effeciency);
 	}
 
