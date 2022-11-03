@@ -82,6 +82,7 @@ namespace Gts {
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
 		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel));
+		log::info("LevelDifference: {}", efficiency);
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
 			efficiency *= DRAGON_PEANLTY;
 		}
@@ -92,6 +93,7 @@ namespace Gts {
 		}
 
 		efficiency *= GigantismCaster * GigantismTarget * SizeHunger;
+		log::info("Total Efficiency: {}", efficiency);
 
 		return efficiency;
 	}
@@ -150,6 +152,7 @@ namespace Gts {
 	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
 		effeciency = clamp(0.01, 1.0, effeciency);
 		float effeciency_noscale = clamp(0.01, 1.0, CalcEffeciency_NoProgression(to, from));
+		log::info("Efficiency is: {}", effeciency_noscale);
 		float amount = CalcPower(from, scale_factor, bonus);
 		float amountnomult = CalcPower_NoMult(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
