@@ -129,7 +129,7 @@ namespace Gts {
 		float amountnomult = CalcPower_NoMult(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0001 * scale_factor * target_scale);
-		mod_target_scale(from, -amountnomult * 0.55/target_scale);
+		mod_target_scale(from, -amountnomult * 0.55);
 		mod_target_scale(to, amount*effeciency);
 	}
 
