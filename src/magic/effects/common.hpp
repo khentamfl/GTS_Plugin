@@ -72,6 +72,30 @@ namespace Gts {
 		return efficiency;
 	}
 
+	inline float CalcEffeciency_NoProgression(Actor* caster, Actor* target) {
+		const float DRAGON_PEANLTY = 0.14;
+		auto& runtime = Runtime::GetSingleton();
+		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
+		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
+		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
+		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
+		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
+		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel));
+		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
+			efficiency *= DRAGON_PEANLTY;
+		}
+		if (runtime.ResistShrinkPotion) {
+			if (target->HasMagicEffect(runtime.ResistShrinkPotion)) {
+				efficiency *= 0.25;
+			}
+		}
+
+		efficiency *= GigantismCaster * GigantismTarget * SizeHunger;
+
+		return efficiency;
+	}
+
 	inline float CalcPower(Actor* actor, float scale_factor, float bonus) {
 		auto& runtime = Runtime::GetSingleton();
 		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
@@ -124,12 +148,13 @@ namespace Gts {
 	}
 
 	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
-		effeciency = clamp(0.0, 1.0, effeciency);
+		effeciency = clamp(0.01, 1.0, effeciency);
+		float effeciency_noscale = clamp(0.01, 1.0, CalcEffeciency_NoProgression(to, from));
 		float amount = CalcPower(from, scale_factor, bonus);
 		float amountnomult = CalcPower_NoMult(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0001 * scale_factor * target_scale);
-		mod_target_scale(from, -amountnomult * 0.55);
+		mod_target_scale(from, -amountnomult * 0.55 * effeciency_noscale);
 		mod_target_scale(to, amount*effeciency);
 	}
 
