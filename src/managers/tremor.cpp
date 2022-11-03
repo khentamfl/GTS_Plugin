@@ -185,7 +185,7 @@ namespace Gts {
 						{
 							intensity *= 0.075; // Shake effects are weaker when in first person
 						}
-						log::info("Intensity is: {}", intensity);
+						//log::info("Intensity is: {}", intensity);
 						shake_camera(actor, intensity, duration);
 
 						float left_shake = intensity;

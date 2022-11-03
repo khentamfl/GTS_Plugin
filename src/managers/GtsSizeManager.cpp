@@ -51,7 +51,7 @@ namespace Gts {
 			}
 			if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 				set_max_scale(actor, TotalLimit);
-				log::info("Current Size Limit of: {} is {}", actor->GetDisplayFullName(), get_max_scale(actor));
+				//log::info("Current Size Limit of: {} is {}", actor->GetDisplayFullName(), get_max_scale(actor));
 			}
 		}
 	}
@@ -121,6 +121,6 @@ namespace Gts {
 			auto caster = PlayerCharacter::GetSingleton();
 			SetEnchantmentBonus(caster, 0.0);
 			SetGrowthSpurt(caster, 0.0);
-			log::info("Resetting Enchantment and Growth Spurt");
+			//log::info("Resetting Enchantment and Growth Spurt");
 		}
 }
