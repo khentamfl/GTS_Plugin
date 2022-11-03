@@ -52,11 +52,13 @@ namespace Gts {
 	inline float CalcEffeciency(Actor* caster, Actor* target) {
 		const float DRAGON_PEANLTY = 0.14;
 		auto& runtime = Runtime::GetSingleton();
+		float casterlevel = clamp(1.0, 50.0, caster->GetLevel());
+		float targetlevel = clamp(1.0, 50.0,target->GetLevel());
 		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
 		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
-		float efficiency = clamp(0.25, 1.25, (caster->GetLevel()/target->GetLevel())) * progression_multiplier;
+		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel)) * progression_multiplier;
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
 			efficiency *= DRAGON_PEANLTY;
 		}
@@ -121,7 +123,7 @@ namespace Gts {
 		float amount = CalcPower(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0001 * scale_factor * target_scale);
-		mod_target_scale(from, -bonus * 0.55);
+		mod_target_scale(from, -bonus/target_scale);
 		mod_target_scale(to, amount*effeciency);
 	}
 
