@@ -31,7 +31,7 @@ namespace Gts {
         auto runtime = Runtime::GetSingleton();
         //log::info("Receiver Name: {}, Scale: {}", actor->GetDisplayFullName(), scale);
 
-        if (scale >= 40.0) {
+        //if (scale >= 40.0) {
             //actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
             //actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
             //actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
@@ -40,8 +40,8 @@ namespace Gts {
             //actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
            // actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
            // actor->AddSpell(runtime.gtsSizeCloakSpellImpossible);
-        }
-        else if (scale >= 32.0) { //scale <= 40.0) {       
+        //}
+         if (scale >= 32.0) { //scale <= 40.0) {       
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
@@ -50,6 +50,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellImpossible);
             actor->AddSpell(runtime.gtsSizeCloakSpellGigantic);
+            log::info("Adding Spell №11 to {}", actor->GetDisplayFullName());
         }
 
         else if (scale >= 24.0 && scale <= 32.0) {       
@@ -61,6 +62,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellImpossible);
             actor->AddSpell(runtime.gtsSizeCloakSpellMassive);
+            log::info("Adding Spell №10 to {}", actor->GetDisplayFullName());
         }
         else if (scale >= 18.0 && scale <= 24.0) {       
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
@@ -71,6 +73,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->AddSpell(runtime.gtsSizeCloakSpellMega);
+            log::info("Adding Spell №9 to {}", actor->GetDisplayFullName());
         }
         else if (scale >= 12.0 && scale <= 18.0) {       
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
@@ -81,6 +84,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
             actor->AddSpell(runtime.gtsSizeCloakSpellHuge);
+            log::info("Adding Spell №8 to {}", actor->GetDisplayFullName());
         }
 
         else if (scale >= 8.0 && scale <= 12.0) {
@@ -92,6 +96,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->AddSpell(runtime.gtsSizeCloakSpellLarge);   
+            log::info("Adding Spell №7 to {}", actor->GetDisplayFullName());
         }
   else if (scale >= 2.5 && scale <= 8.0) {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
@@ -102,12 +107,15 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
             actor->AddSpell(runtime.gtsSizeCloakSpellMedium);
+            log::info("Adding Spell №4 to {}", actor->GetDisplayFullName());
     
     if (scale >=3.25 && scale <= 8.0) {
         actor->AddSpell(runtime.gtsSizeCloakSpellMedium); 
+        log::info("Adding Spell №5 to {}", actor->GetDisplayFullName());
     }
     if (scale >=5.0 && scale <= 8.0) {
         actor->AddSpell(runtime.gtsSizeCloakSpellMedium); 
+        log::info("Adding Spell №6 to {}", actor->GetDisplayFullName());
     }
 
   }
@@ -120,6 +128,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
             actor->AddSpell(runtime.gtsSizeCloakSpellSmall);
+            log::info("Adding Spell №2 to {}", actor->GetDisplayFullName());
   }
 
   else if (scale <= 1.1) {
@@ -131,6 +140,7 @@ namespace Gts {
             actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
             actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
             actor->AddSpell(runtime.gtsSizeCloakSpellTiny);
+            log::info("Adding Spell №1 to {}", actor->GetDisplayFullName());
       }
     }
 }
