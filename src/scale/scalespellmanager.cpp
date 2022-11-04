@@ -19,7 +19,7 @@ namespace Gts {
 			return;
 		}
         float actorscale = get_target_scale(actor);
-        if ((actor->formID == 0x14 || actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) && actorscale >= 1.25) {
+        if (actorscale >= 1.25) {//((actor->formID == 0x14 || actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) && actorscale >= 1.25) {
             ApplySpellBonus(actor, actorscale);
         }
 	}
