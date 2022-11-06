@@ -100,7 +100,7 @@ namespace Gts {
 					}
 				}
 
-				if (key == 0x2F && buttonEvent->HeldDuration() >= 100000.2 && this->timer.ShouldRun()) {
+				if (key == 0x2F && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) {
 					log::info("V is True");
 					// Currently >>>DISABLED<<<. It reports values < 300.0 when someone is far away for some reason. 
 					for (auto actor: find_actors()) {
