@@ -27,6 +27,6 @@ namespace Gts
 			bool CanVore(Actor* pred, Actor* prey);
 
 			// Do the vore (this has no checks make sure they can vore with CanVore first)
-			bool Vore(Actor* pred, Actor* prey);
+			void Vore(Actor* pred, Actor* prey);
 	};
 }
