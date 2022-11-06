@@ -16,6 +16,7 @@
 #include "managers/reloader.hpp"
 #include "managers/camera.hpp"
 #include "managers/hitmanager.hpp"
+#include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -178,6 +179,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&ReloadManager::GetSingleton()); // Handles Skyrim Events
 
 	EventDispatcher::AddListener(&MagicManager::GetSingleton()); // Manages spells and size changes in general
+	EventDispatcher::AddListener(&Vore::GetSingleton()); // Manages vore
 
 	EventDispatcher::AddListener(&AttributeManager::GetSingleton()); // Adjusts most attributes
 	EventDispatcher::AddListener(&RandomGrowth::GetSingleton()); // Manages random growth perk

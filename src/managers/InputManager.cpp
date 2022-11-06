@@ -2,6 +2,7 @@
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
+#include "managers/vore.hpp"
 #include "managers/camera.hpp"
 #include "magic/effects/common.hpp"
 #include "util.hpp"
@@ -82,7 +83,7 @@ namespace Gts {
 					}
 				}
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && caster->HasPerk(runtime.SizeReserve)) { //F
-					
+
 					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 					float Value = Cache->value * gigantism;
 					Notify("Reserved Size: {}", Value);
@@ -102,21 +103,15 @@ namespace Gts {
 
 				if (key == 0x2A && key == 0x2F && buttonEvent->HeldDuration() > 0.2 && this->voretimer.ShouldRun()) {
 					log::info("l.Shift + E is True");
-					// Currently >>>DISABLED<<<. It reports values < 300.0 when someone is far away for some reason. 
-					for (auto actor: find_actors()) {
-						float castersize = get_visual_scale(caster);
-						float targetsize = get_visual_scale(actor);
-						float sizedifference = castersize / targetsize;
-						log::info("Distance between PC and {} is {}", actor->GetDisplayFullName(), get_distance_to_actor(actor, caster));
-						if (!actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
-							caster->NotifyAnimationGraph("IdleActivatePickupLow");
-						}
-						else if (!actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0 && !actor->HasSpell(runtime.StartVore))
-						{
-							caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
-							log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
-						}
-						
+					// Currently >>>DISABLED<<<. It reports values < 300.0 when someone is far away for some reason.
+					auto player = PlayerCharacter::GetSingleton();
+					auto voreMan = Vore::GetSingleton();
+					auto pray = voreMan::GetPlayerVoreTarget();
+
+
+					if (pray) {
+						log::info("Distance between PC and {} is {}", pray->GetDisplayFullName(), get_distance_to_actor(player, pray));
+						voreMan::Vore(player, pray);
 					}
 				}
 
@@ -135,9 +130,7 @@ namespace Gts {
 				} else if (key == 0x2A) {
 					ShiftPressed = true;
 				}
-			} 
-
-			else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
+			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.025) {
 					//player->NotifyAnimationGraph("JumpLand");
@@ -177,8 +170,7 @@ namespace Gts {
 			log::info("Alt + Down");
 		} // Up or Down end
 
-		if (player->HasPerk(TotalControl) && !ShiftPressed && ArrowUp && LeftArrow && !ArrowDown)  // Grow self
-		{
+		if (player->HasPerk(TotalControl) && !ShiftPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow self
 			float scale = get_visual_scale(player);
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
@@ -190,8 +182,7 @@ namespace Gts {
 				PlaySound(Runtime::GetSingleton().growthSound, caster, Volume, 0.0);
 			}
 		}
-		if (player->HasPerk(TotalControl) && !ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) // Shrink Self
-		{
+		if (player->HasPerk(TotalControl) && !ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Self
 			float scale = get_visual_scale(player);
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
@@ -202,53 +193,48 @@ namespace Gts {
 			if (this->timergrowth.ShouldRun()) {
 				PlaySound(Runtime::GetSingleton().shrinkSound, caster, Volume, 0.0);
 			}
+		} else if (player->HasPerk(TotalControl) && ShiftPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow Ally
+			for (auto actor: find_actors()) {
+				if (!actor) {
+					continue;
+				}
+
+				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction))) {
+					float scale = get_visual_scale(actor);
+					auto caster = player;
+					auto target = actor;
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
+					DamageAV(caster, ActorValue::kMagicka, 0.15 * (scale * 0.5 + 0.5) * magicka * TimeScale());
+					mod_target_scale(target, 0.0012 * scale * magicka);
+					float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
+					GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.25);
+					if (this->timergrowth.ShouldRun()) {
+						PlaySound(Runtime::GetSingleton().growthSound, target, Volume, 0.0);
+					}
+				}
+			}
+		} else if (player->HasPerk(TotalControl) && ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Ally
+			for (auto actor: find_actors()) {
+				if (!actor) {
+					continue;
+				}
+
+				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction))) {
+					float scale = get_visual_scale(actor);
+					auto caster = player;
+					auto target = actor;
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
+					DamageAV(target, ActorValue::kMagicka, 0.10 * (scale * 0.5 + 0.5) * magicka * TimeScale());
+					mod_target_scale(target, -0.0012 * scale * magicka);
+					float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
+					GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.20);
+					if (this->timergrowth.ShouldRun()) {
+						PlaySound(Runtime::GetSingleton().shrinkSound, target, Volume, 0.0);
+					}
+				}
+			}
 		}
 
-		else if (player->HasPerk(TotalControl) && ShiftPressed && ArrowUp && LeftArrow && !ArrowDown)  // Grow Ally
-		{
-			for (auto actor: find_actors()) {
-		if (!actor) {
-			continue;
-			} 
-		
-			if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction))) { 
-				float scale = get_visual_scale(actor);
-				auto caster = player;
-				auto target = actor;
-				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
-				DamageAV(caster, ActorValue::kMagicka, 0.15 * (scale * 0.5 + 0.5) * magicka * TimeScale());
-				mod_target_scale(target, 0.0012 * scale * magicka);
-				float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
-				GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.25);
-			if (this->timergrowth.ShouldRun()) {
-				PlaySound(Runtime::GetSingleton().growthSound, target, Volume, 0.0);
-					}
-				}
-			}
-		}
-		else if (player->HasPerk(TotalControl) && ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) // Shrink Ally
-		{
-			for (auto actor: find_actors()) {
-		if (!actor) {
-			continue;
-		}
-		
-		if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction))) { 
-				float scale = get_visual_scale(actor);
-				auto caster = player;
-				auto target = actor;
-				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
-				DamageAV(target, ActorValue::kMagicka, 0.10 * (scale * 0.5 + 0.5) * magicka * TimeScale());
-				mod_target_scale(target, -0.0012 * scale * magicka);
-				float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
-				GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.20);
-			if (this->timergrowth.ShouldRun()) {
-				PlaySound(Runtime::GetSingleton().shrinkSound, target, Volume, 0.0);
-					}
-				}
-			}
-		}
-		
 
 		return BSEventNotifyControl::kContinue;
 	}
