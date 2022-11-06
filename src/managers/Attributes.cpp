@@ -217,7 +217,7 @@ namespace {
 
 	}
 
-	void Augmentation(Actor* Player, bool& BlockMessage) {
+	void Augmentation(Actor* Player, bool& BlockMessage)  {
 		auto& runtime = Runtime::GetSingleton();
 		auto AugmentationPerk = runtime.NoSpeedLoss;
 		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
