@@ -270,7 +270,7 @@ namespace Gts {
 
 		if (EnableCamera < 1.0) { // If Enable Automatic Camera is disabled.
 			return;
-		} else if (MinDistance < -200)  {
+		} else if (MinDistance < -200) {
 			MinDistance = -200;
 		}
 		if (MaxDistance < 50) {
