@@ -37,6 +37,7 @@ namespace {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
+		static Timer timer = Timer(0.33);
 		
 
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
@@ -57,6 +58,11 @@ namespace {
 		float size = get_target_scale(Player);
 
 		if (size > 0) {
+
+			if (AllowTimeChange == 0.00) {
+				BoostSpeedMulti(Player, bonusSpeedMultiplier);
+			}
+			if (timer.ShouldRunFrame()) {
 			BoostHP(Player, bonusHPMultiplier/BalancedMode);
 
 			Augmentation(Player, BlockMessage);
@@ -67,17 +73,15 @@ namespace {
 
 			BoostAttackDmg(Player, bonusDamageMultiplier);
 
-			if (AllowTimeChange == 0.00) {
-				BoostSpeedMulti(Player, bonusSpeedMultiplier);
-			}
 			if (!Player->HasPerk(runtime.StaggerImmunity) && size > 1.33)
 			{
 				Player->AddPerk(runtime.StaggerImmunity);
 				return; 
 			}
 			else if (size < 1.33 && Player->HasPerk(runtime.StaggerImmunity))
-			{
+				{
 				Player->RemovePerk(runtime.StaggerImmunity);
+				}
 			}
 		}
 	}
@@ -92,19 +96,22 @@ namespace {
 		if (!npc->Is3DLoaded()) {
 			return;
 		}
+		static Timer timer = Timer(0.33);
 		auto& runtime = Runtime::GetSingleton();
 		float size = get_target_scale(npc);
-		if (npc->IsPlayerTeammate() || npc->IsInFaction(runtime.FollowerFaction)) {
-			BoostHP(npc, 1.0);
-			BoostCarry(npc, 1.0);
+		if (timer.ShouldRunFrame()) {
+			if (npc->IsPlayerTeammate() || npc->IsInFaction(runtime.FollowerFaction)) {
+				BoostHP(npc, 1.0);
+				BoostCarry(npc, 1.0);
+			}
+			if (!npc->HasPerk(runtime.StaggerImmunity) && size > 1.33) {
+				npc->AddPerk(runtime.StaggerImmunity);
+			}
+			else if (size < 1.33 && npc->HasPerk(runtime.StaggerImmunity)) {
+				npc->RemovePerk(runtime.StaggerImmunity);
+			}
+			BoostAttackDmg(npc, 1.0);
 		}
-		if (!npc->HasPerk(runtime.StaggerImmunity) && size > 1.33) {
-			npc->AddPerk(runtime.StaggerImmunity);
-		}
-		else if (size < 1.33 && npc->HasPerk(runtime.StaggerImmunity)) {
-			npc->RemovePerk(runtime.StaggerImmunity);
-		}
-		BoostAttackDmg(npc, 1.0);
 	}
 
 	void BoostCarry(Actor* actor, float power) {
@@ -117,7 +124,7 @@ namespace {
 		float max_stamina = actor->GetPermanentActorValue(ActorValue::kStamina);
 		float visual_scale = get_target_scale(actor);
 		float native_scale = get_natural_scale(actor);
-		float scale = visual_scale/native_scale;
+		float scale = visual_scale;//native_scale;
 		float base_av = actor->GetBaseActorValue(av);
 
 		float boost = 0.0;
@@ -133,7 +140,7 @@ namespace {
 	}
 
 	void BoostJump(Actor* actor, float power) {
-		float scale = get_visual_scale(actor);
+		float scale = get_target_scale(actor);
 
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
@@ -183,7 +190,7 @@ namespace {
 		const ActorValue av = ActorValue::kHealth;
 		float visual_scale = get_target_scale(actor);
 		float native_scale = get_natural_scale(actor);
-		float scale = visual_scale/native_scale;
+		float scale = visual_scale;///native_scale;
 
 		float base_av = actor->GetBaseActorValue(av);
 		float current_tempav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];

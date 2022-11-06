@@ -267,7 +267,8 @@ namespace Gts {
 		} else {
 			ImProne = false;
 		}
-		if (EnableCamera < 1.0) {
+
+		if (EnableCamera < 1.0) { // If Enable Automatic Camera is disabled.
 			return;
 		} else if (MinDistance < -200) {
 			MinDistance = -200;
