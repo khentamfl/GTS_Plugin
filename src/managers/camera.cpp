@@ -277,7 +277,7 @@ namespace Gts {
 		}
 
 		
-		if (FeetCamera >= 1.0) { // Adjustment for Feet Camera
+		if (EnableAltCamera >= 3.0) { // Adjustment for Feet Camera
 			SetfMouseWheelZoomIncrement(CameraZoomPrecision);
 			SetfMouseWheelZoomSpeed(CameraZoomSpeed/2);
 			if (player->IsSneaking() == true && ImProne == true) {
@@ -285,7 +285,7 @@ namespace Gts {
 			} else {
 				CameraManager::ApplyFeetCameraSettings(size, cameraAlternateX, cameraAlternateY, combatCameraAlternateX, combatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
 			}
-		} else if (EnableAltCamera >= 1.0) { // Adjustment for Alternate Camera
+		} else if (EnableAltCamera >= 2.0 && EnableAltCamera < 3.0) { // Adjustment for Alternate Camera
 			SetfMouseWheelZoomIncrement(CameraZoomPrecision);
 			SetfMouseWheelZoomSpeed(CameraZoomSpeed/2);
 			if (player->IsSneaking() == true && ImProne == true) {
