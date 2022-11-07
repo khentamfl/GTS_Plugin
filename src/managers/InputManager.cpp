@@ -101,7 +101,7 @@ namespace Gts {
 					}
 				}
 
-				if (key == 0x2A && key == 0x2F && buttonEvent->HeldDuration() > 0.2 && this->voretimer.ShouldRun()) {
+				if (key == 0x2A && key == 0x2F && buttonEvent->HeldDuration() >= 0.2 && this->voretimer.ShouldRun()) {
 					log::info("l.Shift + E is True");
 					// Currently >>>DISABLED<<<. It reports values < 300.0 when someone is far away for some reason.
 					auto player = PlayerCharacter::GetSingleton();

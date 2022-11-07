@@ -32,11 +32,11 @@ namespace Gts {
 		if (!crosshairPick) {
 			return nullptr;
 		}
-		auto cameraNode = playerCam->cameraRoot.get();
+		auto cameraNode = playerCamera->cameraRoot.get();
 		if (!cameraNode) {
 			return nullptr;
 		}
-		NiPoint3 start =  cameraNode->world.translate;
+		NiPoint3 start = cameraNode->world.translate;
 		NiPoint3 end = crosshairPick->collisionPoint;
 
 		Actor* closestActor = nullptr;
@@ -118,7 +118,7 @@ namespace Gts {
 		float prey_distance = (pred.GetPosition() - prey.GetPosition()).Length();
 		if ((prey_distance < MINIMUM_VORE_DISTANCE * pred_scale)
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE_RATIO)
-		    && (prey->IsEssential())
+		    && (!prey->IsEssential())
 		    && !pred->HasSpell(runtime.StartVore)) {
 			return true;
 		} else {
