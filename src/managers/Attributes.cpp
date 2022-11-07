@@ -26,94 +26,6 @@ namespace {
 		}
 	}
 
-	void UpdatePlayer(Actor* Player, bool& BlockMessage) {
-		// Reapply Player Only
-
-		if (!Player) {
-			return;
-		}
-		if (!Player->Is3DLoaded()) {
-			return;
-		}
-		auto& runtime = Runtime::GetSingleton();
-		auto sizemanager = SizeManager::GetSingleton();
-		static Timer timer = Timer(0.33);
-		
-
-		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
-		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
-
-		float AllowTimeChange = runtime.AllowTimeChange->value;
-		float bonusHPMultiplier = runtime.bonusHPMultiplier->value;
-
-		float bonusCarryWeightMultiplier = runtime.bonusCarryWeightMultiplier->value;
-		float bonusJumpHeightMultiplier = runtime.bonusJumpHeightMultiplier->value;
-		float bonusDamageMultiplier = runtime.bonusDamageMultiplier->value;
-		float bonusSpeedMultiplier = runtime.bonusSpeedMultiplier->value;
-
-		auto ExplGrowthP1 = runtime.explosiveGrowth1;
-		auto ExplGrowthP2 = runtime.explosiveGrowth2;
-		auto ExplGrowthP3 = runtime.explosiveGrowth3;
-
-		float size = get_target_scale(Player);
-
-		if (size > 0) {
-
-			if (AllowTimeChange == 0.00) {
-				BoostSpeedMulti(Player, bonusSpeedMultiplier);
-			}
-			if (timer.ShouldRunFrame()) {
-			BoostHP(Player, bonusHPMultiplier/BalancedMode);
-
-			Augmentation(Player, BlockMessage);
-
-			BoostCarry(Player, bonusCarryWeightMultiplier/BalancedMode);
-
-			BoostJump(Player, bonusJumpHeightMultiplier);
-
-			BoostAttackDmg(Player, bonusDamageMultiplier);
-
-			if (!Player->HasPerk(runtime.StaggerImmunity) && size > 1.33)
-			{
-				Player->AddPerk(runtime.StaggerImmunity);
-				return; 
-			}
-			else if (size < 1.33 && Player->HasPerk(runtime.StaggerImmunity))
-				{
-				Player->RemovePerk(runtime.StaggerImmunity);
-				}
-			}
-		}
-	}
-
-	void UpdateNPC(Actor* npc) {
-		if (!npc) {
-			return;
-		}
-		if (npc->formID == 0x14) {
-			return;
-		}
-		if (!npc->Is3DLoaded()) {
-			return;
-		}
-		static Timer timer = Timer(0.33);
-		auto& runtime = Runtime::GetSingleton();
-		float size = get_target_scale(npc);
-		if (timer.ShouldRunFrame()) {
-			if (npc->IsPlayerTeammate() || npc->IsInFaction(runtime.FollowerFaction)) {
-				BoostHP(npc, 1.0);
-				BoostCarry(npc, 1.0);
-			}
-			if (!npc->HasPerk(runtime.StaggerImmunity) && size > 1.33) {
-				npc->AddPerk(runtime.StaggerImmunity);
-			}
-			else if (size < 1.33 && npc->HasPerk(runtime.StaggerImmunity)) {
-				npc->RemovePerk(runtime.StaggerImmunity);
-			}
-			BoostAttackDmg(npc, 1.0);
-		}
-	}
-
 	void BoostCarry(Actor* actor, float power) {
 		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (!actor_data) {
@@ -214,7 +126,6 @@ namespace {
 
 		SetHealthPercentage(actor, current_health_percentage);
 		// Fill up the new healthbar
-
 	}
 
 	void Augmentation(Actor* Player, bool& BlockMessage) {
@@ -252,6 +163,94 @@ namespace {
 			DebugNotification("You're fast enough to instantly crush someone", 0, true);
 		}
 		//log::info("SMT Bonus: {}", ActorAttributes->smt_run_speed);
+	}
+
+	void UpdatePlayer(Actor* Player, bool& BlockMessage) {
+		// Reapply Player Only
+
+		if (!Player) {
+			return;
+		}
+		if (!Player->Is3DLoaded()) {
+			return;
+		}
+		auto& runtime = Runtime::GetSingleton();
+		auto sizemanager = SizeManager::GetSingleton();
+		static Timer timer = Timer(0.33);
+		
+
+		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
+		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
+
+		float AllowTimeChange = runtime.AllowTimeChange->value;
+		float bonusHPMultiplier = runtime.bonusHPMultiplier->value;
+
+		float bonusCarryWeightMultiplier = runtime.bonusCarryWeightMultiplier->value;
+		float bonusJumpHeightMultiplier = runtime.bonusJumpHeightMultiplier->value;
+		float bonusDamageMultiplier = runtime.bonusDamageMultiplier->value;
+		float bonusSpeedMultiplier = runtime.bonusSpeedMultiplier->value;
+
+		auto ExplGrowthP1 = runtime.explosiveGrowth1;
+		auto ExplGrowthP2 = runtime.explosiveGrowth2;
+		auto ExplGrowthP3 = runtime.explosiveGrowth3;
+
+		float size = get_target_scale(Player);
+
+		if (size > 0) {
+
+			if (AllowTimeChange == 0.00) {
+				BoostSpeedMulti(Player, bonusSpeedMultiplier);
+			}
+			if (timer.ShouldRunFrame()) {
+			BoostHP(Player, bonusHPMultiplier/BalancedMode);
+
+			Augmentation(Player, BlockMessage);
+
+			BoostCarry(Player, bonusCarryWeightMultiplier/BalancedMode);
+
+			BoostJump(Player, bonusJumpHeightMultiplier);
+
+			BoostAttackDmg(Player, bonusDamageMultiplier);
+
+			if (!Player->HasPerk(runtime.StaggerImmunity) && size > 1.33)
+			{
+				Player->AddPerk(runtime.StaggerImmunity);
+				return; 
+			}
+			else if (size < 1.33 && Player->HasPerk(runtime.StaggerImmunity))
+				{
+				Player->RemovePerk(runtime.StaggerImmunity);
+				}
+			}
+		}
+	}
+
+	void UpdateNPC(Actor* npc) {
+		if (!npc) {
+			return;
+		}
+		if (npc->formID == 0x14) {
+			return;
+		}
+		if (!npc->Is3DLoaded()) {
+			return;
+		}
+		static Timer timer = Timer(0.33);
+		auto& runtime = Runtime::GetSingleton();
+		float size = get_target_scale(npc);
+		if (timer.ShouldRunFrame()) {
+			if (npc->IsPlayerTeammate() || npc->IsInFaction(runtime.FollowerFaction)) {
+				BoostHP(npc, 1.0);
+				BoostCarry(npc, 1.0);
+			}
+			if (!npc->HasPerk(runtime.StaggerImmunity) && size > 1.33) {
+				npc->AddPerk(runtime.StaggerImmunity);
+			}
+			else if (size < 1.33 && npc->HasPerk(runtime.StaggerImmunity)) {
+				npc->RemovePerk(runtime.StaggerImmunity);
+			}
+			BoostAttackDmg(npc, 1.0);
+		}
 	}
 }
 
