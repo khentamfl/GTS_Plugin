@@ -47,7 +47,7 @@ namespace {
 			//   at scale=0.0 we adjust by -base_av
 			boost = base_av * (scale-1.0);
 		};
-		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, av, boost);// - last_carry_boost);
+		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, av, boost - last_carry_boost);
 		actor_data->bonus_carry = boost;
 	}
 
@@ -120,7 +120,7 @@ namespace {
 
 		float current_health_percentage = GetHealthPercentage(actor);
 
-		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav + boost;//- last_hp_boost + boost;
+		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav - last_hp_boost + boost;
 
 		actor_data->bonus_hp = boost;
 
@@ -195,7 +195,7 @@ namespace {
 		float size = get_target_scale(Player);
 
 		static Timer timer = Timer(0.05);
-
+		
 		if (size > 0) {
 
 			if (AllowTimeChange == 0.00) {

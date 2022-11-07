@@ -34,6 +34,7 @@ namespace Gts {
 		bool ShiftPressed = false;
 		bool LeftArrow = false;
 		bool RightArrow = false;
+		bool E_Pressed = false;
 
 		bool ArrowUp = false;
 		bool ArrowDown = false;
@@ -101,24 +102,6 @@ namespace Gts {
 					}
 				}
 
-				if (key == 0x2A && key == 0x12 && buttonEvent->HeldDuration() >= 0.2 && this->voretimer.ShouldRun()) {
-					log::info("l.Shift + E is True");
-					// Currently >>>DISABLED<<<. It reports values < 300.0 when someone is far away for some reason.
-					auto player = PlayerCharacter::GetSingleton();
-
-					if (!player->HasPerk(Runtime::GetSingleton().VorePerk)) {
-						return;
-					}
-
-					auto voreMan = Vore::GetSingleton();
-					auto prey = voreMan.GetPlayerVoreTarget();
-
-					if (prey) {
-						log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
-						voreMan.StartVore(player, prey);
-					}
-				}
-
 				if (key == 0x38) {
 					AltPressed = true;
 				} else if (key == 0x1D) {
@@ -133,6 +116,8 @@ namespace Gts {
 					ArrowDown = true;
 				} else if (key == 0x2A) {
 					ShiftPressed = true;
+				} else if (key == 0x12) {
+					E_Pressed = true;
 				}
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
@@ -143,6 +128,24 @@ namespace Gts {
 				if (key == 0x2 && buttonEvent->HeldDuration() <= 0.025) {
 					// Do attack left
 				}
+			}
+		}
+		
+		if (ShiftPressed && E_Pressed && voretimer.ShouldRunFrame()) 
+		{
+			log::info("l.Shift + E is True");
+			auto player = PlayerCharacter::GetSingleton();
+
+			if (!player->HasPerk(Runtime::GetSingleton().VorePerk)) {
+				return;
+			}
+
+			auto voreMan = Vore::GetSingleton();
+			auto prey = voreMan.GetPlayerVoreTarget();
+
+			if (prey) {
+				log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
+				voreMan.StartVore(player, prey);
 			}
 		}
 
