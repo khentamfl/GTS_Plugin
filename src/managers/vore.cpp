@@ -77,8 +77,8 @@ namespace Gts {
 			return nullptr;
 		}
 
-		hkVector4 worldForward = charController->forwardVec * -1;
-		hkVector4 actorPos = pred->GetPosition();
+		NiPoint3 worldForward = charController->forwardVec * -1;
+		NiPoint3 actorPos = pred->GetPosition();
 
 
 		NiPoint3 start = actorPos + worldForward * 0.0;
