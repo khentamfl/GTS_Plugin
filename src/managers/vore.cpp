@@ -1,7 +1,6 @@
 #include "managers/vore.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
-#include <glm/glm.hpp>
 
 using namespace RE;
 using namespace Gts;
@@ -81,7 +80,7 @@ namespace Gts {
 		NiPoint4 actorPos = pred->GetPosition();
 
 		glm::vec4 start = actorPos + worldForward * 0.0;
-		glm::vec4 end = rayStart + worldForward * 1.0;
+		glm::vec4 end = actorPos + worldForward * 1.0; //rayStart + worldForward * 1.0;
 
 		Actor* closestActor = nullptr;
 		float nearest_distance = 1e8;
