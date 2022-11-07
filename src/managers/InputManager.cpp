@@ -106,11 +106,11 @@ namespace Gts {
 					// Currently >>>DISABLED<<<. It reports values < 300.0 when someone is far away for some reason.
 					auto player = PlayerCharacter::GetSingleton();
 					auto voreMan = Vore::GetSingleton();
-					auto prey = voreMan::GetPlayerVoreTarget();
+					auto prey = voreMan.GetPlayerVoreTarget();
 
 
-					if (pray) {
-						log::info("Distance between PC and {} is {}", pray->GetDisplayFullName(), get_distance_to_actor(player, prey));
+					if (prey) {
+						log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
 						voreMan::StartVore(player, prey);
 					}
 				}
