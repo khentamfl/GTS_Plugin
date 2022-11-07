@@ -5,7 +5,6 @@
 
 using namespace RE;
 using namespace Gts;
-using namespace glm;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 128.0;
@@ -25,7 +24,7 @@ namespace Gts {
 		// Get vore target for player
 		auto player = PlayerCharacter::GetSingleton();
 		if (!player) {
-			return  nullptr;
+			return nullptr;
 		}
 		auto playerCamera = PlayerCamera::GetSingleton();
 		if (!playerCamera) {
@@ -82,8 +81,8 @@ namespace Gts {
 		hkVector4 actorPos = pred->GetPosition();
 
 
-		glm::vec4 start = actorPos + worldForward * 0.0;
-		glm::vec4 end = actorPos + worldForward * 1.0; //rayStart + worldForward * 1.0;
+		NiPoint3 start = actorPos + worldForward * 0.0;
+		NiPoint3 end = actorPos + worldForward * 1.0; //rayStart + worldForward * 1.0;
 
 		Actor* closestActor = nullptr;
 		float nearest_distance = 1e8;
