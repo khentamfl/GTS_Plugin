@@ -23,7 +23,7 @@ namespace Gts {
 		// Get vore target for player
 		auto player = PlayerCharacter::GetSingleton();
 		if (!player) {
-			return nullptr;
+			return  nullptr;
 		}
 		auto playerCamera = PlayerCamera::GetSingleton();
 		if (!playerCamera) {
