@@ -126,7 +126,7 @@ namespace Gts {
 		}
 	}
 
-	void Vore::Vore(Actor* pred, Actor* prey) {
+	void Vore::StartVore(Actor* pred, Actor* prey) {
 		auto runtime = Runtime::GetSingleton();
 		pred->NotifyAnimationGraph("IdleActivatePickupLow");
 		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
