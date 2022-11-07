@@ -20,7 +20,7 @@ namespace Gts
 			void Start() override;
 		private:	
 			Timer timer = Timer(1.2);
-			Timer voretimer = Timer(0.2);
+			Timer voretimer = Timer(2.0);
 			Timer timergrowth = Timer(2.00);
 			float TickCheck = 0.0;
 			float growth_time = 0.0;
