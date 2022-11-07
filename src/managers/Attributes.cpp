@@ -47,7 +47,7 @@ namespace {
 			//   at scale=0.0 we adjust by -base_av
 			boost = base_av * (scale-1.0);
 		};
-		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, av, boost - last_carry_boost);
+		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, av, boost);// - last_carry_boost);
 		actor_data->bonus_carry = boost;
 	}
 
@@ -120,7 +120,7 @@ namespace {
 
 		float current_health_percentage = GetHealthPercentage(actor);
 
-		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav - last_hp_boost + boost;
+		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav + boost;//- last_hp_boost + boost;
 
 		actor_data->bonus_hp = boost;
 
@@ -176,9 +176,7 @@ namespace {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
-		static Timer timer = Timer(0.33);
 		
-
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 
@@ -195,6 +193,8 @@ namespace {
 		auto ExplGrowthP3 = runtime.explosiveGrowth3;
 
 		float size = get_target_scale(Player);
+
+		static Timer timer = Timer(0.05);
 
 		if (size > 0) {
 
@@ -235,7 +235,7 @@ namespace {
 		if (!npc->Is3DLoaded()) {
 			return;
 		}
-		static Timer timer = Timer(0.33);
+		static Timer timer = Timer(0.05);
 		auto& runtime = Runtime::GetSingleton();
 		float size = get_target_scale(npc);
 		if (timer.ShouldRunFrame()) {
