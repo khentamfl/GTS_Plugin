@@ -111,7 +111,7 @@ namespace Gts {
 
 					if (prey) {
 						log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
-						voreMan::StartVore(player, prey);
+						voreMan.StartVore(player, prey);
 					}
 				}
 
