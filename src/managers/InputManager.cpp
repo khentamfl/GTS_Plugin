@@ -131,14 +131,14 @@ namespace Gts {
 			}
 		}
 		
-		if (ShiftPressed && E_Pressed && voretimer.ShouldRunFrame()) 
+		if (E_Pressed && voretimer.ShouldRunFrame()) 
 		{
 			log::info("l.Shift + E is True");
 			auto player = PlayerCharacter::GetSingleton();
 
 			if (player->HasPerk(Runtime::GetSingleton().VorePerk)) {
-
-			
+				log::info("Player has vore perk");
+			}
 
 			auto voreMan = Vore::GetSingleton();
 			auto prey = voreMan.GetPlayerVoreTarget();
@@ -147,7 +147,7 @@ namespace Gts {
 				log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
 				voreMan.StartVore(player, prey);
 				}
-			}
+			
 		}
 
 		auto Camera = CameraManager::GetSingleton();
