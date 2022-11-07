@@ -81,7 +81,7 @@ namespace Gts {
 		NiPoint3 forwardVecNi = NiPoint3(
 			forwardVechK.quad.m128_f32[0],
 			forwardVechK.quad.m128_f32[1],
-			forwardVechK.quad.m128_f32[2],
+			forwardVechK.quad.m128_f32[2]
 			);
 		NiPoint3 worldForward = forwardVecNi * -1;
 		NiPoint3 actorPos = pred->GetPosition();
