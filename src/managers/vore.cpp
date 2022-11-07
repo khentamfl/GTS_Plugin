@@ -124,7 +124,7 @@ namespace Gts {
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
-		float prey_distance = (pred.GetPosition() - prey.GetPosition()).Length();
+		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if ((prey_distance < MINIMUM_VORE_DISTANCE * pred_scale)
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE_RATIO)
 		    && (!prey->IsEssential())
