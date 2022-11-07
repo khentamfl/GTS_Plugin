@@ -7,7 +7,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	const float MINIMUM_VORE_DISTANCE = 128.0;
+	const float MINIMUM_VORE_DISTANCE = 256.0;
 	const float MINIMUM_VORE_SCALE_RATIO = 4.0;
 }
 
