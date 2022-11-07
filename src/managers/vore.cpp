@@ -77,7 +77,13 @@ namespace Gts {
 			return nullptr;
 		}
 
-		NiPoint3 worldForward = charController->forwardVec * -1;
+		hkVector4 forwardVechK = charController->forwardVec;
+		NiPoint3 forwardVecNi = NiPoint3(
+			forwardVechK.quad.m128_f32[0],
+			forwardVechK.quad.m128_f32[1],
+			forwardVechK.quad.m128_f32[2],
+			);
+		NiPoint3 worldForward = forwardVecNi * -1;
 		NiPoint3 actorPos = pred->GetPosition();
 
 
@@ -87,7 +93,7 @@ namespace Gts {
 		Actor* closestActor = nullptr;
 		float nearest_distance = 1e8;
 		for (auto actor: find_actors()) {
-			hkVector4 actorPos = actor->GetPosition();
+			NiPoint3 actorPos = actor->GetPosition();
 			// https://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
 			float d1 = (end - start).Cross(start - actorPos).Length() / (end - start).Length();
 			float d2 = (actorPos - start).Cross(actorPos - end).Length() / (end - start).Length();
