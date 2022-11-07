@@ -23,7 +23,7 @@ namespace Gts {
 		// Get vore target for player
 		auto player = PlayerCharacter::GetSingleton();
 		if (!player) {
-			return;
+			return nullptr;
 		}
 		auto playerCamera = PlayerCamera::GetSingleton();
 		if (!playerCamera) {
@@ -45,8 +45,8 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			NiPoint3 actorPos = actor->GetPosition();
 			// https://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
-			float d1 = (end - start).cross(start - actorPos).Length() / (end - start).Length();
-			float d2 = (actorPos - start).cross(actorPos - end).Length() / (end - start).Length();
+			float d1 = (end - start).Cross(start - actorPos).Length() / (end - start).Length();
+			float d2 = (actorPos - start).Cross(actorPos - end).Length() / (end - start).Length();
 			float d;
 			if ((d1 > 1e-4) && (d2 > 1e-4)) {
 				d = std::min(d1, d2);
