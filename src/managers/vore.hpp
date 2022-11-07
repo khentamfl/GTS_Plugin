@@ -13,7 +13,7 @@ namespace Gts
 		public:
 			[[nodiscard]] static Vore& GetSingleton() noexcept;
 
-			void Vore::OnUpdate();
+			virtual void Update() override;
 
 			// Get's vore target for player using the crosshair
 			// This will only return actors with appropiate distance/scale

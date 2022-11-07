@@ -15,7 +15,8 @@ namespace Gts {
 		static Vore instance;
 		return instance;
 	}
-	void Vore::OnUpdate() {
+
+	void Vore::Update() {
 	}
 
 	Actor* Vore::GetPlayerVoreTarget() {
