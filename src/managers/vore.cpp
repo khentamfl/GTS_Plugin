@@ -80,8 +80,8 @@ namespace Gts {
 		hkVector4 worldForward = charController->forwardVec * -1;
 		hkVector4 actorPos = pred->GetPosition();
 
-		glm::vec4 start = actorPos + worldForward * 0.0;
-		glm::vec4 end = actorPos + worldForward * 1.0; //rayStart + worldForward * 1.0;
+		glm::vec3 start = actorPos + worldForward * 0.0;
+		glm::vec3 end = actorPos + worldForward * 1.0; //rayStart + worldForward * 1.0;
 
 		Actor* closestActor = nullptr;
 		float nearest_distance = 1e8;
@@ -130,7 +130,10 @@ namespace Gts {
 
 	void Vore::StartVore(Actor* pred, Actor* prey) {
 		auto runtime = Runtime::GetSingleton();
-		pred->NotifyAnimationGraph("IdleActivatePickupLow");
+		if (!CanVore(pred, prey)) {
+			pred->NotifyAnimationGraph("IdleActivatePickupLow"); // Only play anim if we can't eat the target
+			return;
+		}
 		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
 		log::info("{} was eaten by {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 	}
