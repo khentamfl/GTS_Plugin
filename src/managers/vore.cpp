@@ -5,6 +5,7 @@
 
 using namespace RE;
 using namespace Gts;
+using namespace glm;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 128.0;
@@ -80,8 +81,9 @@ namespace Gts {
 		hkVector4 worldForward = charController->forwardVec * -1;
 		hkVector4 actorPos = pred->GetPosition();
 
-		glm::vec3 start = actorPos + worldForward * 0.0;
-		glm::vec3 end = actorPos + worldForward * 1.0; //rayStart + worldForward * 1.0;
+
+		glm::vec4 start = actorPos + worldForward * 0.0;
+		glm::vec4 end = actorPos + worldForward * 1.0; //rayStart + worldForward * 1.0;
 
 		Actor* closestActor = nullptr;
 		float nearest_distance = 1e8;
