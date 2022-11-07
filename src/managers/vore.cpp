@@ -1,4 +1,5 @@
 #include "managers/vore.hpp"
+#include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
 
@@ -79,16 +80,16 @@ namespace Gts {
 		hkVector4 worldForward = charController->forwardVec * -1;
 		hkVector4 actorPos = pred->GetPosition();
 
-		glm::hkVector4 start = actorPos + worldForward * 0.0;
-		glm::hkVector4 end = actorPos + worldForward * 1.0; //rayStart + worldForward * 1.0;
+		glm::vec4 start = actorPos + worldForward * 0.0;
+		glm::vec4 end = actorPos + worldForward * 1.0; //rayStart + worldForward * 1.0;
 
 		Actor* closestActor = nullptr;
 		float nearest_distance = 1e8;
 		for (auto actor: find_actors()) {
 			hkVector4 actorPos = actor->GetPosition();
 			// https://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
-			float d1 = (end - start).cross(start - actorPos).Length() / (end - start).Length();
-			float d2 = (actorPos - start).cross(actorPos - end).Length() / (end - start).Length();
+			float d1 = (end - start).Cross(start - actorPos).Length() / (end - start).Length();
+			float d2 = (actorPos - start).Cross(actorPos - end).Length() / (end - start).Length();
 			float d;
 			if ((d1 > 1e-4) && (d2 > 1e-4)) {
 				d = std::min(d1, d2);
