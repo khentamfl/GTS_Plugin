@@ -133,20 +133,36 @@ namespace Gts {
 		
 		if (E_Pressed && voretimer.ShouldRunFrame()) 
 		{
-			log::info("l.Shift + E is True");
-			auto player = PlayerCharacter::GetSingleton();
 
-			if (player->HasPerk(Runtime::GetSingleton().VorePerk)) {
-				log::info("Player has vore perk");
-			}
+			for (auto actor: find_actors()) {
+						float castersize = get_visual_scale(caster);
+						float targetsize = get_visual_scale(actor);
+						float sizedifference = castersize / targetsize;
+						log::info("Distance between PC and {} is {}", actor->GetDisplayFullName(), get_distance_to_actor(actor, caster));
+						if (!actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
+							caster->NotifyAnimationGraph("IdleActivatePickupLow");
+						}
+						else if (!caster->HasMagicEffect(Runtime::GetSingleton().VoreStart) && !actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0 && !actor->HasSpell(runtime.StartVore))
+						{
+							caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
+							log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
+						}
+						
+					}
+			//log::info("l.Shift + E is True");
+			//auto player = PlayerCharacter::GetSingleton();
 
-			auto voreMan = Vore::GetSingleton();
-			auto prey = voreMan.GetPlayerVoreTarget();
+			//if (player->HasPerk(Runtime::GetSingleton().VorePerk)) {
+				//log::info("Player has vore perk");
+			//}
 
-			if (prey) {
-				log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
-				voreMan.StartVore(player, prey);
-				}
+			//auto voreMan = Vore::GetSingleton();
+			//auto prey = voreMan.GetPlayerVoreTarget();
+
+			//if (prey) {
+				//log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
+				//voreMan.StartVore(player, prey);
+				//}
 			
 		}
 
