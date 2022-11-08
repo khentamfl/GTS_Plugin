@@ -130,6 +130,7 @@ namespace Gts {
 			preys.resize(numberOfPrey);
 		}
 
+		return preys;
 	}
 
 	Actor* Vore::GetVoreTargetAround(Actor* pred) {
