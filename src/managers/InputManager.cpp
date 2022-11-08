@@ -35,6 +35,7 @@ namespace Gts {
 		bool LeftArrow = false;
 		bool RightArrow = false;
 		bool E_Pressed = false;
+		bool V_Pressed = false;
 
 		bool ArrowUp = false;
 		bool ArrowDown = false;
@@ -119,7 +120,9 @@ namespace Gts {
 					ShiftPressed = true;
 				} else if (key == 0x12) {
 					E_Pressed = true;
-				}
+				} else if (key == 0x21) {
+					V_Pressed = true;
+				} 
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.025) {
@@ -132,7 +135,7 @@ namespace Gts {
 			}
 		}
 		
-		if (E_Pressed && voretimer.ShouldRunFrame()) 
+		if (V_Pressed && voretimer.ShouldRunFrame()) 
 		{
 
 			for (auto actor: find_actors()) {
@@ -141,15 +144,15 @@ namespace Gts {
 						float sizedifference = castersize / targetsize;
 						
 						log::info("Distance between PC and {} is {}", actor->GetDisplayFullName(), get_distance_to_actor(actor, caster));
-						if (!actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
-							caster->NotifyAnimationGraph("IdleActivatePickupLow");
-						}
-						else if (!caster->HasSpell(runtime.StartVore) && !actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0 && !actor->HasSpell(runtime.StartVore))
+						if (!caster->HasSpell(runtime.StartVore) && !actor->HasSpell(runtime.StartVore) && !actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 6.0 && !actor->HasSpell(runtime.StartVore))
 						{
 							caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
 							log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
 						}
-						
+						else if (!actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 6.0) {
+							caster->NotifyAnimationGraph("IdleActivatePickupLow");
+							
+						}	
 					}
 			//log::info("l.Shift + E is True");
 			//auto player = PlayerCharacter::GetSingleton();

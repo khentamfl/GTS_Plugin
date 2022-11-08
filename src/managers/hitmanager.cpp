@@ -59,7 +59,7 @@ namespace Gts {
 		
 		if (receiver->HasPerk(runtime.GrowthOnHitPerk) && !this->CanGrow && !this->BlockEffect && receiver == player )
 		{
-			if (HitId->GetName() == "Stagger" || HitId->GetName() == "Size Effect" || HitId->GetName() == "Sprinting Size Effect" || HitId->GetName() == "Gts Tasty Foe") 
+			if (HitId->GetName() == "Stagger" || HitId->GetName() == "SizeEffect" || HitId->GetName() == "SprintingSizeEffect" || HitId->GetName() == "GtsTastyFoe") 
 			{
 				return;
 			}
@@ -117,7 +117,7 @@ namespace Gts {
 		}
 		else if (sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && !this->BlockEffect && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk)) 
 		{
-			if (HitId->GetName() == "Stagger" || HitId->GetName() == "Size Effect" || HitId->GetName() == "Sprinting Size Effect" || HitId->GetName() == "Gts Tasty Foe") 
+			if (HitId->GetName() == "Stagger" || HitId->GetName() == "SizeEffect" || HitId->GetName() == "SprintingSizeEffect" || HitId->GetName() == "GtsTastyFoe") 
 			{
 				return;
 			}
