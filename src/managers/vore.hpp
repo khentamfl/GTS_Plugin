@@ -28,11 +28,11 @@ namespace Gts
 			// Get's vore target for any actor based on distance from pred
 			// This will only return actors with appropiate distance/scale
 			// as based on `CanVore`  and can return multiple targets
-			Actor* GetVoreTargetsInFront(Actor* pred, std::size_t numberOfPrey);
+			std::vector<Actor*> GetVoreTargetsInFront(Actor* pred, std::size_t numberOfPrey);
 
 			// Get's vore target for any actor based on direction they are facing
 			// This will only return actors with appropiate distance/scale
-			std::vector<Actor*> GetVoreTargetAround(Actor* pred);
+			Actor* GetVoreTargetAround(Actor* pred);
 
 			// Get's vore target for any actor based on distance from pred
 			// This will only return actors with appropiate distance/scale
