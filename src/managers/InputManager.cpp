@@ -43,6 +43,7 @@ namespace Gts {
 		auto caster = player;
 		auto TotalControl = Runtime::GetSingleton().TotalControl;
 		auto& runtime = Runtime::GetSingleton();
+		auto VoreManager = Vore::GetSingleton();
 
 
 		for (auto event = *a_event; event; event = event->next) {
@@ -120,7 +121,7 @@ namespace Gts {
 					ShiftPressed = true;
 				} else if (key == 0x12) {
 					E_Pressed = true;
-				} else if (key == 0x21) {
+				} else if (key == 0x2F) {
 					V_Pressed = true;
 				} 
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
@@ -135,25 +136,14 @@ namespace Gts {
 			}
 		}
 		
-		if (V_Pressed && voretimer.ShouldRunFrame()) 
-		{
-
-			for (auto actor: find_actors()) {
-						float castersize = get_visual_scale(caster);
-						float targetsize = get_visual_scale(actor);
-						float sizedifference = castersize / targetsize;
-						
-						log::info("Distance between PC and {} is {}", actor->GetDisplayFullName(), get_distance_to_actor(actor, caster));
-						if (!caster->HasSpell(runtime.StartVore) && !actor->HasSpell(runtime.StartVore) && !actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 6.0 && !actor->HasSpell(runtime.StartVore))
-						{
-							caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
-							log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
-						}
-						else if (!actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 6.0) {
-							caster->NotifyAnimationGraph("IdleActivatePickupLow");
-							
-						}	
-					}
+		if (ShiftPressed && !V_Pressed && voretimer.ShouldRunFrame()) { 
+			V_pressed = true;
+			VoreManager.StartVore();
+			log::info("Starting Vore Attempt");
+		} else if (ShiftPressed!) {
+  			V_Pressed = false;
+		}
+					
 			//log::info("l.Shift + E is True");
 			//auto player = PlayerCharacter::GetSingleton();
 
@@ -168,7 +158,7 @@ namespace Gts {
 				//log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
 				//voreMan.StartVore(player, prey);
 				//}
-			
+	
 		}
 
 		auto Camera = CameraManager::GetSingleton();

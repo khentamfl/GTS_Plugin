@@ -135,13 +135,29 @@ namespace Gts {
 		}
 	}
 
-	void Vore::StartVore(Actor* pred, Actor* prey) {
+	void Vore::StartVore() {
 		auto runtime = Runtime::GetSingleton();
-		if (!CanVore(pred, prey)) {
-			pred->NotifyAnimationGraph("IdleActivatePickupLow"); // Only play anim if we can't eat the target
-			return;
+		auto caster = PlayerCharacter::GetSingleton();
+		for (auto actor: find_actors()) {
+				float castersize = get_visual_scale(caster);
+				float targetsize = get_visual_scale(actor);
+				float sizedifference = castersize / targetsize;
+						
+				log::info("Distance between PC and {} is {}", actor->GetDisplayFullName(), get_distance_to_actor(actor, caster));
+				if (!caster->HasSpell(runtime.StartVore) && !actor->HasSpell(runtime.StartVore) && !actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 8.0)
+				{
+					caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, caster, 1.00f, false, 0.0f, actor);
+					log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
+				}
+					else if (!actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 8.0) {
+					caster->NotifyAnimationGraph("IdleActivatePickupLow");
+				}	
+			}
 		}
-		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, pred, 1.00f, false, 0.0f, prey);
-		log::info("{} was eaten by {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-	}
-}
+
+		//if (!CanVore(pred, prey)) {
+			//pred->NotifyAnimationGraph("IdleActivatePickupLow"); // Only play anim if we can't eat the target
+			//return;
+		//}
+		//pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, pred, 1.00f, false, 0.0f, prey);
+		//log::info("{} was eaten by {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());

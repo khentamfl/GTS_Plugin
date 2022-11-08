@@ -45,6 +45,10 @@ namespace Gts {
 		auto HitIdForm = a_event->source;
 		auto HitId = TESForm::LookupByID(HitIdForm);
 
+		if (HitId->GetName() == "Stagger" || HitId->GetName() == "SizeEffect" || HitId->GetName() == "SprintingSizeEffect" || HitId->GetName() == "GtsTastyFoe") {
+				return;
+		}
+
 		auto ProjectileIDForm = a_event->projectile;
 		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
 		auto player = PlayerCharacter::GetSingleton();
@@ -59,10 +63,6 @@ namespace Gts {
 		
 		if (receiver->HasPerk(runtime.GrowthOnHitPerk) && !this->CanGrow && !this->BlockEffect && receiver == player )
 		{
-			if (HitId->GetName() == "Stagger" || HitId->GetName() == "SizeEffect" || HitId->GetName() == "SprintingSizeEffect" || HitId->GetName() == "GtsTastyFoe") 
-			{
-				return;
-			}
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
 				this->BlockEffect = true;
 				this->CanGrow = true;
@@ -100,7 +100,7 @@ namespace Gts {
 				
 				this->GrowthTick +=HealthPercentage;
 
-				log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}", clampduration, this->GrowthTick, HitId->GetName());
+				log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}, HitForm: {}", clampduration, this->GrowthTick, HitId->GetName(), HitIdForm);
 
 				if (ShrinkChance >= 10) {
 					mod_target_scale(attacker, (-0.025 * SizeHunger * Gigantism) * SizeDifference / BalanceMode); // Shrink Attacker
@@ -117,10 +117,6 @@ namespace Gts {
 		}
 		else if (sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && !this->BlockEffect && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk)) 
 		{
-			if (HitId->GetName() == "Stagger" || HitId->GetName() == "SizeEffect" || HitId->GetName() == "SprintingSizeEffect" || HitId->GetName() == "GtsTastyFoe") 
-			{
-				return;
-			}
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) { // If BalanceMode is 2, shrink player on hit
 				this->BlockEffect = true;
 				this->Balance_CanShrink = true;
@@ -152,7 +148,7 @@ namespace Gts {
 				
 				this->GrowthTick +=HealthPercentage;
 
-				log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}", clampduration, this->GrowthTick, HitId->GetName());
+				log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}, HitId Form: {}", clampduration, this->GrowthTick, HitId->GetName(), HitIdForm);
 				return;
 			}
 		}
