@@ -137,10 +137,10 @@ namespace Gts {
 		}
 		
 		if (ShiftPressed && !V_Pressed && voretimer.ShouldRunFrame()) { 
-			V_pressed = true;
+			V_Pressed = true;
 			VoreManager.StartVore();
 			log::info("Starting Vore Attempt");
-		} else if (ShiftPressed!) {
+		} else if (!ShiftPressed) {
   			V_Pressed = false;
 		}
 					
@@ -158,8 +158,6 @@ namespace Gts {
 				//log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
 				//voreMan.StartVore(player, prey);
 				//}
-	
-		}
 
 		auto Camera = CameraManager::GetSingleton();
 		if (AltPressed == true && RightArrow == true && LeftArrow == true) {
