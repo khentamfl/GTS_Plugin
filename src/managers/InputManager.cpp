@@ -147,13 +147,13 @@ namespace Gts {
 				if (pred->HasPerk(runtime.MassVorePerk)) {
 					numberOfPrey = 3;
 				}
-				std::vector<Actor*> preys = VoreManager.GetVoreTargetInFront(pred, numberOfPrey);
+				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					VoreManager.StartVore(pred, prey);
 				}
 			}
 		} else if (!ShiftPressed && !V_Pressed) {
-			this->voreBlock = false
+			this->voreBlock = false;
 		}
 
 		//log::info("l.Shift + E is True");
