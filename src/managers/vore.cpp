@@ -204,6 +204,6 @@ namespace Gts {
 			return;
 		}
 		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
-		log::info("{} was eaten by {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 	}
 }
