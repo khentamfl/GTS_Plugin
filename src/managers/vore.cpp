@@ -136,10 +136,10 @@ namespace Gts {
 		float predWidth = 70 * get_visual_scale(pred);
 		float shiftAmount = tan(VORE_ANGLE/2.0) * predWidth / 2.0;
 
-		NiPoint3 coneStart = predPos - forwardVec * shiftAmount;
-		NiPoint3 predDir = predPos - coneStart;
+		NiPoint3 coneStart = predPos - forwardVecNi * shiftAmount;
+		predDir = predPos - coneStart;
 		predDir = predDir / predDir.Length();
-		preys.erase(std::remove_if(preys.begin(), preys.end(),[predPos, predDir](auto prey)
+		preys.erase(std::remove_if(preys.begin(), preys.end(),[coneStart, predWidth, predDir](auto prey)
 		{
 			NiPoint3 preyDir = prey->GetPosition() - coneStart;
 			if (preyDir.Length() <= predWidth) {
