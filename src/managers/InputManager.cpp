@@ -126,7 +126,7 @@ namespace Gts {
 					V_Pressed = true;
 				} else if (key == 0x21) {
 					F_Pressed = true;
-				} 
+				}
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.025) {
@@ -138,29 +138,33 @@ namespace Gts {
 				}
 			}
 		}
-		
-		if (ShiftPressed && !V_Pressed && voretimer.ShouldRunFrame()) { 
-			V_Pressed = true;
-			VoreManager.StartVore();
-			log::info("Starting Vore Attempt");
-		} else if (!ShiftPressed) {
-  			V_Pressed = false;
+
+		if (ShiftPressed && V_Pressed && voretimer.ShouldRunFrame() && !this->voreBlock) {
+			this->voreBlock = true;
+			Actor* pred = PlayerCharacter::GetSingleton();
+			std::size_t numberOfPrey = 1;
+			std::vector<Actor*> preys = VoreManager.GetVoreTargetInFront(pred, numberOfPrey);
+			for (auto prey: preys) {
+				VoreManager.StartVore(pred, prey);
+			}
+		} else if (!ShiftPressed && !V_Pressed) {
+			this->voreBlock = false
 		}
-					
-			//log::info("l.Shift + E is True");
-			//auto player = PlayerCharacter::GetSingleton();
 
-			//if (player->HasPerk(Runtime::GetSingleton().VorePerk)) {
-				//log::info("Player has vore perk");
-			//}
+		//log::info("l.Shift + E is True");
+		//auto player = PlayerCharacter::GetSingleton();
 
-			//auto voreMan = Vore::GetSingleton();
-			//auto prey = voreMan.GetPlayerVoreTarget();
+		//if (player->HasPerk(Runtime::GetSingleton().VorePerk)) {
+		//log::info("Player has vore perk");
+		//}
 
-			//if (prey) {
-				//log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
-				//voreMan.StartVore(player, prey);
-				//}
+		//auto voreMan = Vore::GetSingleton();
+		//auto prey = voreMan.GetPlayerVoreTarget();
+
+		//if (prey) {
+		//log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
+		//voreMan.StartVore(player, prey);
+		//}
 
 		auto Camera = CameraManager::GetSingleton();
 		if (AltPressed == true && RightArrow == true && LeftArrow == true) {
