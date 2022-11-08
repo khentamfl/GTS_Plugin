@@ -78,11 +78,11 @@ namespace Gts {
 	std::vector<Actor*> Vore::GetVoreTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		if (!pred) {
-			return nullptr;
+			return {};
 		}
 		auto charController = pred->GetCharController();
 		if (!charController) {
-			return nullptr;
+			return {};
 		}
 
 		NiPoint3 predPos = pred->GetPosition();
@@ -114,7 +114,7 @@ namespace Gts {
 		NiPoint3 worldForward = forwardVecNi * -1;
 		NiPoint3 predDir = worldForward - predPos;
 		predDir = predDir / predDir.Length();
-		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, predDir](auto prey)
+		preys.erase(std::remove_if(preys.begin(), preys.end(),[predPos, predDir](auto prey)
 		{
 			NiPoint3 preyDir = prey->GetPosition() - predPos;
 			if (preyDir.Length() <= 1e-4) {
@@ -145,7 +145,7 @@ namespace Gts {
 		// Get vore target for actor
 		// around them
 		if (!pred) {
-			return nullptr;
+			return {};
 		}
 		NiPoint3 predPos = pred->GetPosition();
 
