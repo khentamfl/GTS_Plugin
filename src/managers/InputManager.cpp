@@ -39,6 +39,7 @@ namespace Gts {
 		bool ArrowUp = false;
 		bool ArrowDown = false;
 		auto player = PlayerCharacter::GetSingleton();
+		auto caster = player;
 		auto TotalControl = Runtime::GetSingleton().TotalControl;
 
 
@@ -53,7 +54,6 @@ namespace Gts {
 			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
 				// log::info("ButtonEvent == Keyboard");
 				auto key = buttonEvent->GetIDCode();
-				auto caster = player;
 				auto runtime = Runtime::GetSingleton();
 				auto Cache = runtime.ManualGrowthStorage;
 				if (!Cache) {
@@ -142,7 +142,7 @@ namespace Gts {
 						if (!actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
 							caster->NotifyAnimationGraph("IdleActivatePickupLow");
 						}
-						else if (!caster->HasMagicEffect(Runtime::GetSingleton().VoreStart) && !actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0 && !actor->HasSpell(runtime.StartVore))
+						else if (!caster->HasMagicEffect(Runtime::GetSingleton().StartVore) && !actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0 && !actor->HasSpell(runtime.StartVore))
 						{
 							caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
 							log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
