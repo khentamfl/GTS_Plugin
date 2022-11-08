@@ -23,7 +23,7 @@ namespace Gts {
 	}
 
 	void VoreGrowth::OnUpdate() {
-		float BASE_POWER = 0.0005200;
+		float BASE_POWER = 0.0000420;
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
 		auto target = GetTarget();
@@ -43,7 +43,7 @@ namespace Gts {
 		}
 		log::info("Vore Growth Actor: {}", caster->GetDisplayFullName());
 		VoreAugmentations();
-		mod_target_scale(caster, BASE_POWER * bonus);
+		Grow(caster, 0, BASE_POWER * bonus);
 	}
 
 	void VoreGrowth::OnFinish() {

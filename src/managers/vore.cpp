@@ -256,7 +256,6 @@ void Vore::RandomVoreAttempt(Actor* caster) {
 		    && !pred->HasSpell(runtime.StartVore)) {
 			return true;
 		} else {
-			pred->NotifyAnimationGraph("IdleActivatePickupLow"); // Only play anim if we can't eat the target
 			return false;
 		}
 	}
