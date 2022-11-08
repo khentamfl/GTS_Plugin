@@ -101,6 +101,7 @@ namespace Gts {
 			SpellItem * TrueAbsorbSpell = nullptr;
 
 			BGSPerk* VorePerk = nullptr;
+			BGSPerk* MassVorePerk = nullptr;
 
 			SpellItem * StartVoreFake = nullptr;
 			SpellItem * StartVore = nullptr;
