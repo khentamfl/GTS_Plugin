@@ -186,7 +186,7 @@ namespace {
 		if (!actor->IsRunning()) {
 			persi_actor_data->anim_speed = speed_mult_others;//MS_mult;	
 		}
-		else if (actor->IsRunning() && !actor->IsSprinting()) {
+		else if (actor->IsRunning() && !actor->IsSprinting() && !actor->IsSneaking()) {
 			persi_actor_data->anim_speed = speed_mult_walk * PerkSpeed;
 		} 
 		

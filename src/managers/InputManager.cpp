@@ -36,6 +36,7 @@ namespace Gts {
 		bool RightArrow = false;
 		bool E_Pressed = false;
 		bool V_Pressed = false;
+		bool F_Pressed = false;
 
 		bool ArrowUp = false;
 		bool ArrowDown = false;
@@ -123,6 +124,8 @@ namespace Gts {
 					E_Pressed = true;
 				} else if (key == 0x2F) {
 					V_Pressed = true;
+				} else if (key == 0x21) {
+					F_Pressed = true;
 				} 
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();

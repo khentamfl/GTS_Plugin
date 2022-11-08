@@ -154,6 +154,7 @@ namespace Gts {
 				}	
 			}
 		}
+}
 
 		//if (!CanVore(pred, prey)) {
 			//pred->NotifyAnimationGraph("IdleActivatePickupLow"); // Only play anim if we can't eat the target
