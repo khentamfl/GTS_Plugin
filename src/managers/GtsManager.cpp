@@ -479,6 +479,7 @@ void GtsManager::RandomVoreAttempt(Actor* caster) {
 		return;
 	}
 		auto& runtime = Runtime::GetSingleton();
+		auto VoreManager = Vore::GetSingleton();
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		int Requirement = (25 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 		int random = rand() % Requirement;
