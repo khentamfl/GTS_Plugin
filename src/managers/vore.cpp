@@ -8,7 +8,7 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 256.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 4.0;
+	const float MINIMUM_VORE_SCALE_RATIO = 8.0;
 }
 
 namespace Gts {
@@ -68,7 +68,7 @@ namespace Gts {
 
 	Actor* Vore::GetVoreTargetInFront(Actor* pred) {
 		auto preys = this->GetVoreTargetsInFront(pred, 1);
-		if (preys.count() > 0) {
+		if (preys.size() > 0) {
 			return preys[0];
 		} else {
 			return nullptr;
@@ -91,7 +91,7 @@ namespace Gts {
 
 		// Sort prey by distance
 		sort(preys.begin(), preys.end(),
-		     [](const Actor* preyA, const Actor* preyB) -> bool
+		     [predPos](const Actor* preyA, const Actor* preyB) -> bool
 		{
 			float distanceToA = (preyA->GetPosition() - predPos).Length();
 			float distanceToB = (preyB->GetPosition() - predPos).Length();
@@ -99,10 +99,10 @@ namespace Gts {
 		});
 
 		// Filter out invalid targets
-		preys.remove_if([](auto prey)
+		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
 			return !this->CanVore(pred, prey);
-		});
+		}), preys.end());;
 
 		// Filter out actors not in front
 		hkVector4 forwardVechK = charController->forwardVec;
@@ -114,7 +114,7 @@ namespace Gts {
 		NiPoint3 worldForward = forwardVecNi * -1;
 		NiPoint3 predDir = worldForward - predPos;
 		predDir = predDir / predDir.Length();
-		preys.remove_if([](auto prey)
+		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, predDir](auto prey)
 		{
 			NiPoint3 preyDir = prey->GetPosition() - predPos;
 			if (preyDir.Length() <= 1e-4) {
@@ -123,10 +123,10 @@ namespace Gts {
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
 			return fabs(cosTheta) <= 0.866025403784; // <= cos(30*pi/180) === +-30 degrees
-		});
+		}), preys.end());
 
 		// Reduce vector size
-		if (preys.count() > numberOfPrey) {
+		if (preys.size() > numberOfPrey) {
 			preys.resize(numberOfPrey);
 		}
 
@@ -134,7 +134,7 @@ namespace Gts {
 
 	Actor* Vore::GetVoreTargetAround(Actor* pred) {
 		auto preys = this->GetVoreTargetsAround(pred, 1);
-		if (preys.count() > 0) {
+		if (preys.size() > 0) {
 			return preys[0];
 		} else {
 			return nullptr;
@@ -153,7 +153,7 @@ namespace Gts {
 
 		// Sort prey by distance
 		sort(preys.begin(), preys.end(),
-		     [](const Actor* preyA, const Actor* preyB) -> bool
+		     [predPos](const Actor* preyA, const Actor* preyB) -> bool
 		{
 			float distanceToA = (preyA->GetPosition() - predPos).Length();
 			float distanceToB = (preyB->GetPosition() - predPos).Length();
@@ -161,13 +161,13 @@ namespace Gts {
 		});
 
 		// Filter out invalid targets
-		preys.remove_if([](auto prey)
+		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
 			return !this->CanVore(pred, prey);
-		});
+		}), preys.end());
 
 		// Reduce vector size
-		if (preys.count() > numberOfPrey) {
+		if (preys.size() > numberOfPrey) {
 			preys.resize(numberOfPrey);
 		}
 
