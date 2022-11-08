@@ -140,7 +140,7 @@ namespace Gts {
 		}
 
 		if (ShiftPressed && V_Pressed && !this->voreBlock) {
-			if (voretimer.ShouldRunFrame()) {
+			if (voretimer.ShouldRunFrame() && caster->HasPerk(runtime.MassVorePerk)) { // Caster == Player, a reminder.
 				this->voreBlock = true;
 				Actor* pred = PlayerCharacter::GetSingleton();
 				std::size_t numberOfPrey = 1;
