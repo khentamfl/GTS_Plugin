@@ -6,6 +6,7 @@
 #include "managers/Attributes.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/hitmanager.hpp"
+#include "managers/vore.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -424,6 +425,7 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 // Poll for updates
 void GtsManager::Update() {
 	auto& runtime = Runtime::GetSingleton();
+	auto PC = PlayerCharacter::GetSingleton();
 	for (auto actor: find_actors()) {
 		if (!actor) {
 			continue;
@@ -436,12 +438,12 @@ void GtsManager::Update() {
 		apply_actor(actor);
 		GameMode(actor);
 		HitManager::GetSingleton().Update();
-		static Timer timer = Timer(3.00);
+		static Timer timer = Timer(6.00);
 		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
-			//if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) {
-				//RandomVoreAttempt(actor); 
-			//}
+			if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate() && actor->IsInCombat() && PC->HasPerk(runtime.VorePerk)) {
+				RandomVoreAttempt(actor); 
+				}
 			}
 		}
 }
@@ -477,6 +479,7 @@ void GtsManager::RandomVoreAttempt(Actor* caster) {
 		return;
 	}
 		auto& runtime = Runtime::GetSingleton();
+		auto VoreManager = Vore::GetSingleton();
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		int Requirement = (25 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 		int random = rand() % Requirement;
@@ -485,16 +488,16 @@ void GtsManager::RandomVoreAttempt(Actor* caster) {
 		float targetsize = get_visual_scale(actor);
 		float sizedifference = castersize / targetsize;
 		if (random <= decide_chance) {
-			if (actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0)
-					{
-						caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
-						log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
-					}
-				else if (actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
-						caster->NotifyAnimationGraph("IdleActivatePickupLow");
-					}
+			Actor* player = PlayerCharacter::GetSingleton();
+			Actor* pred = caster;
+				std::size_t numberOfPrey = 1;
+				if (player->HasPerk(runtime.MassVorePerk)) {
+					numberOfPrey = 3;
+				}
+				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
+				for (auto prey: preys) {
+					VoreManager.StartVore(pred, prey);
 				}
 			}
 		}
-
-
+	}

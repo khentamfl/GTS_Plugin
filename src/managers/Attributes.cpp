@@ -67,7 +67,7 @@ namespace {
 		float scale = get_target_scale(actor);
 		float bonus = scale * power;
 		if (actor->formID == 0x14) {
-			log::info("Actor: {}, Scale:{}, Power: {}, Bonus: {}", actor->GetDisplayFullName(), scale, power, bonus);
+			//log::info("Actor: {}, Scale:{}, Power: {}, Bonus: {}", actor->GetDisplayFullName(), scale, power, bonus);
 		}
 		actor->SetBaseActorValue(ActorValue::kAttackDamageMult, bonus);
 	}
