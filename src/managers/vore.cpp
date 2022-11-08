@@ -201,7 +201,7 @@ namespace Gts {
 			pred->NotifyAnimationGraph("IdleActivatePickupLow"); // Only play anim if we can't eat the target
 			return;
 		}
-		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, pred, 1.00f, false, 0.0f, prey);
+		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
 		log::info("{} was eaten by {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 	}
 }
