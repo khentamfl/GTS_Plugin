@@ -11,6 +11,7 @@ namespace {
 	const float MINIMUM_VORE_DISTANCE = 128.0;
 	const float MINIMUM_VORE_SCALE_RATIO = 8.0;
 	const float VORE_ANGLE = 100;
+	const float PI = 3.14159;
 }
 
 namespace Gts {
@@ -147,7 +148,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			return cosTheta <= cos(VORE_ANGLE*std::M_PI/180.0);
+			return cosTheta <= cos(VORE_ANGLE*PI/180.0);
 		}), preys.end());
 
 		// Reduce vector size
