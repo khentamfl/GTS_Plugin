@@ -181,16 +181,19 @@ namespace Gts {
 			return false;
 		}
 		auto& runtime = Runtime::GetSingleton();
+		auto PC = PlayerCharacter::GetSingleton();
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if ((prey_distance < MINIMUM_VORE_DISTANCE * pred_scale)
+		    && PC->HasPerk(runtime.VorePerk);
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE_RATIO)
 		    && (!prey->IsEssential())
 		    && !pred->HasSpell(runtime.StartVore)) {
 			return true;
 		} else {
+			pred->NotifyAnimationGraph("IdleActivatePickupLow"); // Only play anim if we can't eat the target
 			return false;
 		}
 	}
@@ -198,7 +201,6 @@ namespace Gts {
 	void Vore::StartVore(Actor* pred, Actor* prey) {
 		auto runtime = Runtime::GetSingleton();
 		if (!CanVore(pred, prey)) {
-			pred->NotifyAnimationGraph("IdleActivatePickupLow"); // Only play anim if we can't eat the target
 			return;
 		}
 		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
