@@ -7,7 +7,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	const float MINIMUM_VORE_DISTANCE = 256.0;
+	const float MINIMUM_VORE_DISTANCE = 128.0;
 	const float MINIMUM_VORE_SCALE_RATIO = 8.0;
 }
 
@@ -187,7 +187,7 @@ namespace Gts {
 		float prey_scale = get_visual_scale(prey);
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if ((prey_distance < MINIMUM_VORE_DISTANCE * pred_scale)
-		    && PC->HasPerk(runtime.VorePerk);
+		    && PC->HasPerk(runtime.VorePerk)
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE_RATIO)
 		    && (!prey->IsEssential())
 		    && !pred->HasSpell(runtime.StartVore)) {
