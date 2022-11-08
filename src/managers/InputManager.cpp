@@ -41,6 +41,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		auto caster = player;
 		auto TotalControl = Runtime::GetSingleton().TotalControl;
+		auto& runtime = Runtime::GetSingleton();
 
 
 		for (auto event = *a_event; event; event = event->next) {
@@ -138,11 +139,12 @@ namespace Gts {
 						float castersize = get_visual_scale(caster);
 						float targetsize = get_visual_scale(actor);
 						float sizedifference = castersize / targetsize;
+						
 						log::info("Distance between PC and {} is {}", actor->GetDisplayFullName(), get_distance_to_actor(actor, caster));
 						if (!actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
 							caster->NotifyAnimationGraph("IdleActivatePickupLow");
 						}
-						else if (!caster->HasMagicEffect(Runtime::GetSingleton().StartVore) && !actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0 && !actor->HasSpell(runtime.StartVore))
+						else if (!caster->HasSpell(runtime.StartVore) && !actor->IsEssential() && actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0 && !actor->HasSpell(runtime.StartVore))
 						{
 							caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
 							log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
