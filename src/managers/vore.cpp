@@ -21,6 +21,45 @@ namespace Gts {
 	}
 
 	void Vore::Update() {
+		if (!pred->HasPerk(runtime.VorePerk)) {
+			return;
+		}
+		static Timer timer = Timer(6.00);
+		if (timer.ShouldRunFrame()) { //Try to not overload
+			for (auto actor: find_actors()) {
+				if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate() && actor->IsInCombat() && PC->HasPerk(runtime.VorePerk)) {
+					RandomVoreAttempt(actor);
+				}
+			}
+		}
+	}
+}
+
+void Vore::RandomVoreAttempt(Actor* caster) {
+	Actor* player = PlayerCharacter::GetSingleton();
+	auto& runtime = Runtime::GetSingleton();
+	auto VoreManager = Vore::GetSingleton();
+	int Requirement = (25 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
+	std::size_t numberOfPrey = 1;
+	if (player->HasPerk(runtime.MassVorePerk)) {
+		numberOfPrey = 3;
+	}
+
+	for (auto actor: find_actors()) {
+		if (actor->formID == 0x14 || !actor->Is3DLoaded() || actor->IsDead()) {
+			return;
+		}
+		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+
+		int random = rand() % Requirement;
+		int decide_chance = 1;
+		if (random <= decide_chance) {
+			Actor* pred = caster;
+			std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
+			for (auto prey: preys) {
+				VoreManager.StartVore(pred, prey);
+			}
+		}
 	}
 
 	Actor* Vore::GeVoreTargetCrossHair(Actor* pred) {
@@ -207,13 +246,11 @@ namespace Gts {
 			return false;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		auto PC = PlayerCharacter::GetSingleton();
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if ((prey_distance < MINIMUM_VORE_DISTANCE * pred_scale)
-		    && PC->HasPerk(runtime.VorePerk)
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE_RATIO)
 		    && (!prey->IsEssential())
 		    && !pred->HasSpell(runtime.StartVore)) {

@@ -15,6 +15,8 @@ namespace Gts
 
 			virtual void Update() override;
 
+			void RandomVoreAttempt(Actor* pred);
+
 			// Get's vore target for pred using the crosshair
 			// This will only return actors with appropiate distance/scale
 			// as based on `CanVore`

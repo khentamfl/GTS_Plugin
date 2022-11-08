@@ -6,7 +6,6 @@
 #include "managers/Attributes.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/hitmanager.hpp"
-#include "managers/vore.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -140,21 +139,21 @@ namespace {
 		}
 		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
 		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
-		
+
 		SoftPotential speed_adjustment_others { // Even though it is named 'sprint', it is used for all other movement states
-				.k = 0.142, // 0.125
-				.n = 0.82, // 0.86
-				.s = 1.90, // 1.12
-				.o = 1.0,
-				.a = 0.0,  //Default is 0
+			.k = 0.142, // 0.125
+			.n = 0.82, // 0.86
+			.s = 1.90, // 1.12
+			.o = 1.0,
+			.a = 0.0,  //Default is 0
 		};
 
 		SoftPotential speed_adjustment_walk { // Used for normal walk, it has faster animation speed for some reason, so it needs a custom one
-				.k = 0.265, // 0.125
-				.n = 1.11, // 0.86
-				.s = 2.0, // 1.12
-				.o = 1.0,
-				.a = 0.0,  //Default is 0
+			.k = 0.265, // 0.125
+			.n = 1.11, // 0.86
+			.s = 2.0, // 1.12
+			.o = 1.0,
+			.a = 0.0,  //Default is 0
 		};
 
 		float speed_mult_others = soft_core(scale, speed_adjustment_others); // For all other movement types
@@ -166,7 +165,7 @@ namespace {
 		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
 		float MS_mult_limit = clamp(0.750, 1.0, MS_mult); // For Walk speed
 		float Multy = clamp(0.70, 1.0, MS_mult); // Additional 30% ms
-			//float WalkSpeedLimit = clamp(0.33, 1.0, MS_mult);
+		//float WalkSpeedLimit = clamp(0.33, 1.0, MS_mult);
 		float WalkSpeedLimit = clamp(0.02, 1.0, MS_mult);
 		float PerkSpeed = 1.0;
 
@@ -174,31 +173,27 @@ namespace {
 		float IsFalling = Runtime::GetSingleton().IsFalling->value;
 
 		if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
-				Runtime::GetSingleton().IsFalling->value = 1.0;
+			Runtime::GetSingleton().IsFalling->value = 1.0;
+		} else if (actor->formID == 0x14 && !IsJumping(actor) && IsFalling >= 1.0) {
+			Runtime::GetSingleton().IsFalling->value = 0.0;
 		}
-		else if (actor->formID == 0x14 && !IsJumping(actor) && IsFalling >= 1.0) {
-				Runtime::GetSingleton().IsFalling->value = 0.0;
+		if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk)) {
+			PerkSpeed = clamp(0.80, 1.0, speed_mult_walk); // Used as a bonus 20% MS if PC has perk.
 		}
-		if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk))
-			{
-				PerkSpeed = clamp(0.80, 1.0, speed_mult_walk); // Used as a bonus 20% MS if PC has perk.
-			}
-			
+
 		if (!actor->IsRunning()) {
-			persi_actor_data->anim_speed = speed_mult_others;//MS_mult;	
-		}
-		else if (actor->IsRunning() && !actor->IsSprinting() && !actor->IsSneaking()) {
+			persi_actor_data->anim_speed = speed_mult_others;//MS_mult;
+		} else if (actor->IsRunning() && !actor->IsSprinting() && !actor->IsSneaking()) {
 			persi_actor_data->anim_speed = speed_mult_walk * PerkSpeed;
-		} 
-		
-		
+		}
+
+
 		if (timer.ShouldRunFrame()) {
-				if (scale < 1.0) {
-					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
-				} else
-				{
-					actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
-				}
+			if (scale < 1.0) {
+				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
+			} else {
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
+			}
 		}
 		// Experiement
 		if (false) {
@@ -352,8 +347,7 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float BonusShrink = 1.0;
 		float bonus = 1.0;
-		if (BalanceMode >= 2.0)
-		{
+		if (BalanceMode >= 2.0) {
 			BonusShrink = (2.0 * (scale * 2));
 		}
 
@@ -364,8 +358,7 @@ namespace {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.5);
 				} else if (QuestStage >= 60 && QuestStage < 70) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.0);
-				} else if (BalanceMode >= 2.0 && QuestStage > 70)
-				{
+				} else if (BalanceMode >= 2.0 && QuestStage > 70) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.0);
 				}
 
@@ -380,9 +373,7 @@ namespace {
 					game_mode_int = 0; // Nothing to do
 				}
 			}
-		}
-		
-		else if (QuestStage > 100.0 && BalanceMode <= 1.0) {
+		} else if (QuestStage > 100.0 && BalanceMode <= 1.0) {
 			if (actor->formID == 0x14) {
 				if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion)) {
 					bonus = scale * 0.25 + 0.75;
@@ -399,7 +390,7 @@ namespace {
 				growthRate = runtime.GrowthModeRateNPC->value * bonus;
 				shrinkRate = runtime.ShrinkModeRateNPC->value;
 			}
-		} 
+		}
 
 		if (game_mode_int >=0 && game_mode_int <= 4) {
 			gameMode = static_cast<ChosenGameMode>(game_mode_int);
@@ -441,63 +432,32 @@ void GtsManager::Update() {
 		static Timer timer = Timer(6.00);
 		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
-			if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate() && actor->IsInCombat() && PC->HasPerk(runtime.VorePerk)) {
-				RandomVoreAttempt(actor); 
-				}
-			}
 		}
-}
+	}
 
-void GtsManager::reapply(bool force) {
-	// Get everyone in loaded AI data and reapply
-	auto actors = find_actors();
-	for (auto actor: actors) {
+	void GtsManager::reapply(bool force) {
+		// Get everyone in loaded AI data and reapply
+		auto actors = find_actors();
+		for (auto actor: actors) {
+			if (!actor) {
+				continue;
+			}
+			if (!actor->Is3DLoaded()) {
+				continue;
+			}
+			reapply_actor(actor, force);
+		}
+	}
+	void GtsManager::reapply_actor(Actor* actor, bool force) {
+		// Reapply just this actor
 		if (!actor) {
-			continue;
+			return;
 		}
 		if (!actor->Is3DLoaded()) {
-			continue;
+			return;
 		}
-		reapply_actor(actor, force);
+		apply_actor(actor, force);
 	}
-}
-void GtsManager::reapply_actor(Actor* actor, bool force) {
-	// Reapply just this actor
-	if (!actor) {
-		return;
-	}
-	if (!actor->Is3DLoaded()) {
-		return;
-	}
-	apply_actor(actor, force);
-}
 
-void GtsManager::RandomVoreAttempt(Actor* caster) {
-	for (auto actor: find_actors()) {
-	if (actor->formID == 0x14 || !actor->Is3DLoaded() || actor->IsDead())
-	{
-		return;
-	}
-		auto& runtime = Runtime::GetSingleton();
-		auto VoreManager = Vore::GetSingleton();
-		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-		int Requirement = (25 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
-		int random = rand() % Requirement;
-		int decide_chance = 1;
-		float castersize = get_visual_scale(caster);
-		float targetsize = get_visual_scale(actor);
-		float sizedifference = castersize / targetsize;
-		if (random <= decide_chance) {
-			Actor* player = PlayerCharacter::GetSingleton();
-			Actor* pred = caster;
-				std::size_t numberOfPrey = 1;
-				if (player->HasPerk(runtime.MassVorePerk)) {
-					numberOfPrey = 3;
-				}
-				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
-				for (auto prey: preys) {
-					VoreManager.StartVore(pred, prey);
-				}
-			}
-		}
-	}
+
+}

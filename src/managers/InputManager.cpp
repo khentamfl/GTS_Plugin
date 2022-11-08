@@ -139,21 +139,24 @@ namespace Gts {
 			}
 		}
 
-		if (ShiftPressed && V_Pressed && !this->voreBlock) {
-			if (voretimer.ShouldRunFrame()) {
-				this->voreBlock = true;
-				Actor* pred = PlayerCharacter::GetSingleton();
-				std::size_t numberOfPrey = 1;
-				if (pred->HasPerk(runtime.MassVorePerk)) {
-					numberOfPrey = 3;
+		Actor* pred = PlayerCharacter::GetSingleton();
+		if (pred->HasPerk(runtime.VorePerk)) {
+			if (ShiftPressed && V_Pressed && !this->voreBlock) {
+				if (voretimer.ShouldRunFrame()) {
+					this->voreBlock = true;
+
+					std::size_t numberOfPrey = 1;
+					if (pred->HasPerk(runtime.MassVorePerk)) {
+						numberOfPrey = 3;
+					}
+					std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
+					for (auto prey: preys) {
+						VoreManager.StartVore(pred, prey);
+					}
 				}
-				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
-				for (auto prey: preys) {
-					VoreManager.StartVore(pred, prey);
-				}
+			} else if (!ShiftPressed && !V_Pressed) {
+				this->voreBlock = false;
 			}
-		} else if (!ShiftPressed && !V_Pressed) {
-			this->voreBlock = false;
 		}
 
 		//log::info("l.Shift + E is True");
