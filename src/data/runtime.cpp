@@ -116,6 +116,7 @@ namespace Gts {
 		this->TrueAbsorbSpell = find_form<SpellItem>("GTS.esp|22B0D6");
 
 		this->VorePerk = find_form<BGSPerk>("GTS.esp|355C68");
+		this->MassVorePerk = find_form<BGSPerk>("GTS.esp|462228");
 
 		this->StartVoreFake = find_form<SpellItem>("GTS.esp|319056");
 		this->StartVore = find_form<SpellItem>("GTS.esp|31905C");

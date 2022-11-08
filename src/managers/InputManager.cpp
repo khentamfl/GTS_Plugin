@@ -143,6 +143,9 @@ namespace Gts {
 			this->voreBlock = true;
 			Actor* pred = PlayerCharacter::GetSingleton();
 			std::size_t numberOfPrey = 1;
+			if (pred->HasPerk(runtime.MassVorePerk)) {
+				numberOfPrey = 3;
+			}
 			std::vector<Actor*> preys = VoreManager.GetVoreTargetInFront(pred, numberOfPrey);
 			for (auto prey: preys) {
 				VoreManager.StartVore(pred, prey);
