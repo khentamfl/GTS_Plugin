@@ -2,6 +2,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
+#include <cmath>
 
 using namespace RE;
 using namespace Gts;
@@ -9,6 +10,7 @@ using namespace Gts;
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 256.0;
 	const float MINIMUM_VORE_SCALE_RATIO = 8.0;
+	const float VORE_ANGLE = 100;
 }
 
 namespace Gts {
@@ -122,7 +124,30 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			return fabs(cosTheta) <= 0.866025403784; // <= cos(30*pi/180) === +-30 degrees
+			return cosTheta <= 0; // 180 degress
+		}), preys.end());
+
+		// Filter out actors not in a truncated cone
+		// \      x   /
+		//  \  x     /
+		//   \______/  <- Truncated cone
+		//   | pred |  <- Based on width of prey
+		//   |______|
+		float predWidth = 70 * get_visual_scale(pred);
+		float shiftAmount = tan(VORE_ANGLE/2.0) * predWidth / 2.0;
+
+		NiPoint3 coneStart = predPos - forwardVec * shiftAmount;
+		NiPoint3 predDir = predPos - coneStart;
+		predDir = predDir / predDir.Length();
+		preys.erase(std::remove_if(preys.begin(), preys.end(),[predPos, predDir](auto prey)
+		{
+			NiPoint3 preyDir = prey->GetPosition() - coneStart;
+			if (preyDir.Length() <= predWidth) {
+				return false;
+			}
+			preyDir = preyDir / preyDir.Length();
+			float cosTheta = predDir.Dot(preyDir);
+			return cosTheta <= cos(VORE_ANGLE*M_PI/180.0);
 		}), preys.end());
 
 		// Reduce vector size
