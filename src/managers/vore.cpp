@@ -147,7 +147,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			return cosTheta <= cos(VORE_ANGLE*M_PI/180.0);
+			return cosTheta <= cos(VORE_ANGLE*std::M_PI/180.0);
 		}), preys.end());
 
 		// Reduce vector size
