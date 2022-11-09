@@ -164,7 +164,7 @@ namespace Gts {
 			forwardVechK.quad.m128_f32[1],
 			forwardVechK.quad.m128_f32[2]
 			);
-		NiPoint3 worldForward = forwardVecNi * -1;
+		NiPoint3 worldForward = forwardVecNi;
 		NiPoint3 predDir = worldForward - predPos;
 		predDir = predDir / predDir.Length();
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[predPos, predDir](auto prey)
