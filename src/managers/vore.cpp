@@ -11,7 +11,7 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 128.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 4.6;
+	const float MINIMUM_VORE_SCALE_RATIO = 1.0; // 4.6;
 	const float VORE_ANGLE = 100;
 	const float PI = 3.14159;
 }
@@ -177,6 +177,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
+			log::info("    - {} is at anagle {}", prey->GetDisplayFullName(), acos(cosTheta));
 			return cosTheta >= 0; // 180 degress
 		}), preys.end());
 
@@ -202,6 +203,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
+			log::info("    - {} is at anagle {}", prey->GetDisplayFullName(), acos(cosTheta));
 			return cosTheta >= cos(VORE_ANGLE*PI/180.0);
 		}), preys.end());
 
@@ -281,7 +283,9 @@ namespace Gts {
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
-		if (staminacheck >= staminarequirement); 
+		if (staminacheck >= staminarequirement) {
+			;
+		}
 		{
 			ConsoleLog::GetSingleton()->Print("Stamina Check True");
 		}
@@ -305,7 +309,7 @@ namespace Gts {
 		float prey_scale = get_visual_scale(prey);
 		float sizedifference = pred_scale/prey_scale;
 
-		float calculatestamina = GetMaxAV(pred, ActorValue::kStamina)/sizedifference; // Damage stamina 
+		float calculatestamina = GetMaxAV(pred, ActorValue::kStamina)/sizedifference; // Damage stamina
 		DamageAV(pred, ActorValue::kStamina, calculatestamina);
 
 		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
