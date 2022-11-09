@@ -294,10 +294,11 @@ namespace Gts {
 	void Vore::StartVore(Actor* pred, Actor* prey) {
 		auto runtime = Runtime::GetSingleton();
 		
-		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
-		float staminarequirement = GetMaxAV(pred, ActorValue::kStamina)/(pred_scale/prey_scale);
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
+		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
+		float staminarequirement = GetMaxAV(pred, ActorValue::kStamina)/(pred_scale/prey_scale);
+		
 		if (!CanVore(pred, prey)) {
 			return;
 		}
