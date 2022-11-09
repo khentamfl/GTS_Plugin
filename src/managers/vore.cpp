@@ -136,6 +136,8 @@ namespace Gts {
 
 		auto preys = find_actors();
 
+		log::info("{} is looking for prey", pred->GetDisplayFullName());
+
 		// Sort prey by distance
 		sort(preys.begin(), preys.end(),
 		     [predPos](const Actor* preyA, const Actor* preyB) -> bool
@@ -145,11 +147,15 @@ namespace Gts {
 			return distanceToA < distanceToB;
 		});
 
+		log::info("  - There are {} tasty morsals in the world", preys.size());
+
 		// Filter out invalid targets
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
 			return !this->CanVore(pred, prey);
 		}), preys.end());;
+
+		log::info("  - Only {} of these are the right size/distance", preys.size());
 
 		// Filter out actors not in front
 		hkVector4 forwardVechK = charController->forwardVec;
@@ -171,6 +177,8 @@ namespace Gts {
 			float cosTheta = predDir.Dot(preyDir);
 			return cosTheta <= 0; // 180 degress
 		}), preys.end());
+
+		log::info("  - Only {} of these are in front", preys.size());
 
 		// Filter out actors not in a truncated cone
 		// \      x   /
@@ -200,7 +208,9 @@ namespace Gts {
 			preys.resize(numberOfPrey);
 		}
 
-		log::info("Prey search for {} is complete found {} prey", pred->GetDisplayFullName(), preys.size());
+		log::info("  - Only {} of these are in the cone", preys.size());
+
+		log::info("  = Prey search for {} is complete found {} prey", pred->GetDisplayFullName(), preys.size());
 		for (auto prey: preys) {
 			log::info("  - Prey: {} is {} from pred", prey->GetDisplayFullName(), (pred->GetPosition() - prey->GetPosition()).Length());
 		}
