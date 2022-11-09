@@ -307,7 +307,7 @@ namespace Gts {
 		}
 		if (staminacheck < staminarequirement) {
 			Notify("You're too tired for vore...");
-			DamageAV(prey, ActorValue::kHealth, 3 * sizedifference)
+			DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
 			PlaySound(runtime.VoreSound_Fail, pred, 1.0, 0.0);
 			pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.gtsStaggerSpell, false, prey, 1.00f, false, 0.0f, pred);
 			return;
