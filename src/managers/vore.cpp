@@ -202,7 +202,7 @@ namespace Gts {
 
 		log::info("Prey search for {} is complete found {} prey", pred->GetDisplayFullName(), preys.size());
 		for (auto prey: preys) {
-			log::info("  - Prey: {} is {} from pred", prey-.GetDisplayFullName(), (pred->GetPosition() - prey->GetPosition()).Length());
+			log::info("  - Prey: {} is {} from pred", prey->GetDisplayFullName(), (pred->GetPosition() - prey->GetPosition()).Length());
 		}
 
 		return preys;
