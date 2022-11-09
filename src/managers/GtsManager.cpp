@@ -398,7 +398,7 @@ namespace {
 
 		ApplyGameMode(actor, gameMode, growthRate, shrinkRate);
 	}
-}
+
 
 GtsManager& GtsManager::GetSingleton() noexcept {
 	static GtsManager instance;
@@ -434,7 +434,7 @@ void GtsManager::Update() {
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
 		}
 	}
-
+}
 	void GtsManager::reapply(bool force) {
 		// Get everyone in loaded AI data and reapply
 		auto actors = find_actors();
@@ -458,6 +458,5 @@ void GtsManager::Update() {
 		}
 		apply_actor(actor, force);
 	}
-
-
 }
+
