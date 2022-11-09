@@ -177,7 +177,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			log::info("    - {} is at anagle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
+			log::info("    - {} is at angle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
 			return cosTheta >= 0; // 180 degress
 		}), preys.end());
 
@@ -203,7 +203,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			log::info("    - {} is at anagle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
+			log::info("    - {} is at angle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
 			return cosTheta >= cos(VORE_ANGLE*PI/180.0);
 		}), preys.end());
 
@@ -278,19 +278,10 @@ namespace Gts {
 		if (pred->HasPerk(runtime.MassVorePerk)) {
 			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
 		}
-		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
-		float staminarequirement = GetMaxAV(pred, ActorValue::kStamina)/(pred_scale/prey_scale);
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
-		if (staminacheck >= staminarequirement) {
-			;
-		}
-		{
-			ConsoleLog::GetSingleton()->Print("Stamina Check True");
-		}
-
-		if ((prey_distance < MINIMUM_VORE_DISTANCE * pred_scale)
+		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
 		    && (!prey->IsEssential())
 		    && !pred->HasSpell(runtime.StartVore)) {
@@ -302,15 +293,35 @@ namespace Gts {
 
 	void Vore::StartVore(Actor* pred, Actor* prey) {
 		auto runtime = Runtime::GetSingleton();
+
+		float pred_scale = get_visual_scale(pred);
+		float prey_scale = get_visual_scale(prey);
+		
+		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
+		float staminarequirement = GetMaxAV(pred, ActorValue::kStamina)/(pred_scale/prey_scale);
+
+		float sizedifference = pred_scale/prey_scale;
+		
 		if (!CanVore(pred, prey)) {
 			return;
 		}
-		float pred_scale = get_visual_scale(pred);
-		float prey_scale = get_visual_scale(prey);
-		float sizedifference = pred_scale/prey_scale;
+		if (staminacheck < staminarequirement) {
+			Notify("You're too tired for vore...");
+			prey.DamageAV(ActorValue::KHealth, 3 * sizedifference)
+			PlaySound(runtime.VoreSound_Fail, pred, 1.0, 0.0);
+			pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.gtsStaggerSpell, false, prey, 1.00f, false, 0.0f, pred);
+			return;
+		}
+		
+		
+		if (pred->HasPerk(runtime.MassVorePerk))
+		{
+			sizedifference *= 1.15; // Less stamina drain
+		}
 
-		float calculatestamina = GetMaxAV(pred, ActorValue::kStamina)/sizedifference; // Damage stamina
+		float calculatestamina = GetMaxAV(pred, ActorValue::kStamina)/sizedifference; // Drain stamina
 		DamageAV(pred, ActorValue::kStamina, calculatestamina);
+		PlaySound(runtime.VoreSound_Success, pred, 1.0, 0.0);
 
 		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
 		ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());

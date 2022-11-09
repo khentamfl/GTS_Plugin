@@ -244,7 +244,7 @@ namespace Gts {
 		this->EffectSizeAmplifyPotion = find_form<EffectSetting>("GTS.esp|452F1D");
 		///End Potions///
 
-		///Size-Damage spells
+		///Size-Damage
 		this->gtsSizeCloakSpellTiny = find_form<SpellItem>("GTS.esp|00CA0A");
  		this->gtsSizeCloakSpellSmall = find_form<SpellItem>("GTS.esp|00A9A5");
  		this->gtsSizeCloakSpellMedium = find_form<SpellItem>("GTS.esp|00CA07");
@@ -254,7 +254,9 @@ namespace Gts {
  		this->gtsSizeCloakSpellMassive = find_form<SpellItem>("GTS.esp|08BD90");
  		this->gtsSizeCloakSpellGigantic = find_form<SpellItem>("GTS.esp|08BD92");
  		this->gtsSizeCloakSpellImpossible = find_form<SpellItem>("GTS.esp|08BD94");
-		///End Size-Damage spells
+
+		this->gtsStaggerSpell = find_form<SpellItem>("GTS.esp|00A9AB");
+		///End Size-Damage
 
 		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");
 		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
