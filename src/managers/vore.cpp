@@ -2,6 +2,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
+#include "timer.hpp"
 #include <cmath>
 
 using namespace RE;
@@ -21,13 +22,16 @@ namespace Gts {
 	}
 
 	void Vore::Update() {
-		if (!pred->HasPerk(runtime.VorePerk)) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto& runtime = Runtime::GetSingleton();
+
+		if (!player->HasPerk(runtime.VorePerk)) {
 			return;
 		}
 		static Timer timer = Timer(6.00);
 		if (timer.ShouldRunFrame()) { //Try to not overload
 			for (auto actor: find_actors()) {
-				if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate() && actor->IsInCombat() && PC->HasPerk(runtime.VorePerk)) {
+				if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate() && actor->IsInCombat()) {
 					RandomVoreAttempt(actor);
 				}
 			}
