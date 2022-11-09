@@ -168,6 +168,7 @@ namespace Gts {
 		log::info("    - Forward: {}", Vector2Str(worldForward));
 		NiPoint3 predDir = worldForward - predPos;
 		predDir = predDir / predDir.Length();
+		log::info("    - predDir: {}", Vector2Str(worldForward));
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[predPos, predDir](auto prey)
 		{
 			NiPoint3 preyDir = prey->GetPosition() - predPos;
@@ -176,7 +177,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			return cosTheta <= 0; // 180 degress
+			return cosTheta >= 0; // 180 degress
 		}), preys.end());
 
 		log::info("  - Only {} of these are in front", preys.size());
@@ -201,7 +202,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			return cosTheta <= cos(VORE_ANGLE*PI/180.0);
+			return cosTheta >= cos(VORE_ANGLE*PI/180.0);
 		}), preys.end());
 
 		// Reduce vector size
