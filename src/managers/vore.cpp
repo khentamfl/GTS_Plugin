@@ -285,7 +285,7 @@ namespace Gts {
 
 		if (staminacheck < staminarequirement) {
 			Notify("Not enough stamina for Vore");
-			PlaySound(runtime.VoreSound_Fail);
+			PlaySound(runtime.VoreSound_Fail, pred, 1.0, 0.0);
 			return false;
 		}
 
@@ -293,7 +293,7 @@ namespace Gts {
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
 		    && (!prey->IsEssential())
 		    && !pred->HasSpell(runtime.StartVore)) {
-				PlaySound(runtime.VoreSound_Success);
+				PlaySound(runtime.VoreSound_Success, pred, 1.0, 0.0);
 				return true;
 		} else {
 				return false;
