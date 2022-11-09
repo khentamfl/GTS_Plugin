@@ -177,7 +177,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			log::info("    - {} is at anagle {}", prey->GetDisplayFullName(), acos(cosTheta));
+			log::info("    - {} is at anagle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
 			return cosTheta >= 0; // 180 degress
 		}), preys.end());
 
@@ -203,7 +203,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			log::info("    - {} is at anagle {}", prey->GetDisplayFullName(), acos(cosTheta));
+			log::info("    - {} is at anagle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
 			return cosTheta >= cos(VORE_ANGLE*PI/180.0);
 		}), preys.end());
 
