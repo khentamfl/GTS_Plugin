@@ -165,6 +165,7 @@ namespace Gts {
 			forwardVechK.quad.m128_f32[2]
 			);
 		NiPoint3 worldForward = forwardVecNi;
+		log::info("    - Forward: {}", Vector2Str(worldForward));
 		NiPoint3 predDir = worldForward - predPos;
 		predDir = predDir / predDir.Length();
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[predPos, predDir](auto prey)

@@ -28,6 +28,30 @@ namespace Gts {
 		return "";
 	}
 
+	inline std::string Vector2Str(const hkVector4& vector) {
+		return std::format("{:.2f},{:.2f},{:.2f},{:.2f}", vector.quad.m128_f32[0], vector.quad.m128_f32[1], vector.quad.m128_f32[2], vector.quad.m128_f32[3]);
+	}
+
+	inline std::string Vector2Str(const hkVector4* vector) {
+		if (vector) {
+			return std::format("{:.2f},{:.2f},{:.2f},{:.2f}", vector->quad.m128_f32[0], vector->quad.m128_f32[1], vector->quad.m128_f32[2], vector->quad.m128_f32[3]);
+		} else {
+			return "";
+		}
+	}
+
+	inline std::string Vector2Str(const NiPoint3& vector) {
+		return std::format("{:.2f},{:.2f},{:.2f}", vector.x, vector.y, vector.z);
+	}
+
+	inline std::string Vector2Str(const NiPoint3* vector) {
+		if (vector) {
+			return std::format("{:.2f},{:.2f},{:.2f}", vector->x, vector->y, vector->z);
+		} else {
+			return "";
+		}
+	}
+
 	inline bool starts_with(std::string_view arg, std::string_view prefix) {
 		return arg.compare(0, prefix.size(), prefix);
 	}
