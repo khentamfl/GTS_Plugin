@@ -11,7 +11,7 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 128.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 8.0;
+	const float MINIMUM_VORE_SCALE_RATIO = 1.0;
 	const float VORE_ANGLE = 100;
 	const float PI = 3.14159;
 }
