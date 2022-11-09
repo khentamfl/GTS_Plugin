@@ -1,6 +1,7 @@
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "util.hpp"
 #include "timer.hpp"
 #include <cmath>
@@ -37,31 +38,31 @@ namespace Gts {
 			}
 		}
 	}
-}
 
-void Vore::RandomVoreAttempt(Actor* caster) {
-	Actor* player = PlayerCharacter::GetSingleton();
-	auto& runtime = Runtime::GetSingleton();
-	auto VoreManager = Vore::GetSingleton();
-	int Requirement = (25 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
-	std::size_t numberOfPrey = 1;
-	if (player->HasPerk(runtime.MassVorePerk)) {
-		numberOfPrey = 3;
-	}
-
-	for (auto actor: find_actors()) {
-		if (actor->formID == 0x14 || !actor->Is3DLoaded() || actor->IsDead()) {
-			return;
+	void Vore::RandomVoreAttempt(Actor* caster) {
+		Actor* player = PlayerCharacter::GetSingleton();
+		auto& runtime = Runtime::GetSingleton();
+		auto VoreManager = Vore::GetSingleton();
+		std::size_t numberOfPrey = 1;
+		if (player->HasPerk(runtime.MassVorePerk)) {
+			numberOfPrey = 3;
 		}
-		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 
-		int random = rand() % Requirement;
-		int decide_chance = 1;
-		if (random <= decide_chance) {
-			Actor* pred = caster;
-			std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
-			for (auto prey: preys) {
-				VoreManager.StartVore(pred, prey);
+		for (auto actor: find_actors()) {
+			if (actor->formID == 0x14 || !actor->Is3DLoaded() || actor->IsDead()) {
+				return;
+			}
+			float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+			int Requirement = (25 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
+
+			int random = rand() % Requirement;
+			int decide_chance = 1;
+			if (random <= decide_chance) {
+				Actor* pred = caster;
+				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
+				for (auto prey: preys) {
+					VoreManager.StartVore(pred, prey);
+				}
 			}
 		}
 	}
