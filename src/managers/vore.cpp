@@ -269,10 +269,12 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 
+		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
+
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (pred->HasPerk(runtime.MassVorePerk)) {
-			MINIMUM_VORE_SCALE_RATIO *= 0.85; // Decrease Size Requirement
+			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
 		}
 		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
 		float staminarequirement = GetMaxAV(pred, ActorValue::kStamina)/(pred_scale/prey_scale);
@@ -285,7 +287,7 @@ namespace Gts {
 		}
 
 		if ((prey_distance < MINIMUM_VORE_DISTANCE * pred_scale)
-		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE_RATIO)
+		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
 		    && (!prey->IsEssential())
 		    && !pred->HasSpell(runtime.StartVore)) {
 			return true;
