@@ -11,7 +11,7 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 128.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 1.0;
+	const float MINIMUM_VORE_SCALE_RATIO = 4.6;
 	const float VORE_ANGLE = 100;
 	const float PI = 3.14159;
 }
@@ -147,7 +147,7 @@ namespace Gts {
 			return distanceToA < distanceToB;
 		});
 
-		log::info("  - There are {} tasty morsals in the world", preys.size());
+		log::info("  - There are {} tasty mortals in the world", preys.size());
 
 		// Filter out invalid targets
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
@@ -271,7 +271,19 @@ namespace Gts {
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
+		if (pred->HasPerk(runtime.MassVorePerk)) {
+			MINIMUM_VORE_SCALE_RATIO *= 0.85; // Decrease Size Requirement
+		}
+		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
+		float staminarequirement = GetMaxAV(pred, ActorValue::kStamina)/(pred_scale/prey_scale);
+
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
+
+		if (staminacheck >= staminarequirement); 
+		{
+			ConsoleLog::GetSingleton()->Print("Stamina Check True");
+		}
+
 		if ((prey_distance < MINIMUM_VORE_DISTANCE * pred_scale)
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE_RATIO)
 		    && (!prey->IsEssential())
@@ -287,6 +299,13 @@ namespace Gts {
 		if (!CanVore(pred, prey)) {
 			return;
 		}
+		float pred_scale = get_visual_scale(pred);
+		float prey_scale = get_visual_scale(prey);
+		float sizedifference = pred_scale/prey_scale;
+
+		float calculatestamina = GetMaxAV(pred, ActorValue::kStamina)/sizedifference; // Damage stamina 
+		DamageAV(pred, ActorValue::kStamina, calculatestamina);
+
 		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
 		ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 	}
