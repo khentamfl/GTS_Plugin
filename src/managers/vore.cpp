@@ -276,45 +276,46 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (pred->HasPerk(runtime.MassVorePerk)) {
-			MINIMUM_VORE_SCALE *= 0.85; // Decreased Size Requirement, less stamina drain
+			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
 		}
-		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
-		float staminarequirement = GetMaxAV(pred, ActorValue::kStamina)/(pred_scale/prey_scale);
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
-		if (staminacheck < staminarequirement) {
-			Notify("Not enough stamina for Vore");
-			PlaySound(runtime.VoreSound_Fail, pred, 1.0, 0.0);
-			return false;
-		}
-
-		if ((prey_distance < MINIMUM_VORE_DISTANCE * pred_scale)
+		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
 		    && (!prey->IsEssential())
 		    && !pred->HasSpell(runtime.StartVore)) {
-				PlaySound(runtime.VoreSound_Success, pred, 1.0, 0.0);
-				return true;
+			return true;
 		} else {
-				return false;
+			return false;
 		}
 	}
 
 	void Vore::StartVore(Actor* pred, Actor* prey) {
 		auto runtime = Runtime::GetSingleton();
+		
+		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
+		float staminarequirement = GetMaxAV(pred, ActorValue::kStamina)/(pred_scale/prey_scale);
+		float pred_scale = get_visual_scale(pred);
+		float prey_scale = get_visual_scale(prey);
 		if (!CanVore(pred, prey)) {
 			return;
 		}
-		float pred_scale = get_visual_scale(pred);
-		float prey_scale = get_visual_scale(prey);
+		if (staminacheck < staminarequirement) {
+			Notify("Not enough stamina for Vore");
+			PlaySound(runtime.VoreSound_Fail, pred, 1.0, 0.0);
+			return;
+		}
+		
 		float sizedifference = pred_scale/prey_scale;
 		if (pred->HasPerk(runtime.MassVorePerk))
 		{
-			sizedifference *= 1.15; // Less stamina damage
+			sizedifference *= 1.15; // Less stamina drain
 		}
 
-		float calculatestamina = GetMaxAV(pred, ActorValue::kStamina)/sizedifference; // Damage stamina
+		float calculatestamina = GetMaxAV(pred, ActorValue::kStamina)/sizedifference; // Drain stamina
 		DamageAV(pred, ActorValue::kStamina, calculatestamina);
+		PlaySound(runtime.VoreSound_Success, pred, 1.0, 0.0);
 
 		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
 		ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
