@@ -120,6 +120,9 @@ namespace Gts {
 
 		this->StartVoreFake = find_form<SpellItem>("GTS.esp|319056");
 		this->StartVore = find_form<SpellItem>("GTS.esp|31905C");
+
+		this->VoreSound_Success = find_form<BGSSoundDescriptorForm>("Skyrim.esm|000F8B");
+		this->VoreSound_Fail = find_form<BGSSoundDescriptorForm>("Skyrim.esm|10FAE5");
 		
 		///End
 

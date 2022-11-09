@@ -106,6 +106,9 @@ namespace Gts {
 			SpellItem * StartVoreFake = nullptr;
 			SpellItem * StartVore = nullptr;
 
+			BGSSoundDescriptorForm * VoreSound_Success = nullptr;
+			BGSSoundDescriptorForm * VoreSound_Fail = nullptr;
+
 			///End
 
 			BGSExplosion* footstepExplosion = nullptr;
