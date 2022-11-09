@@ -175,7 +175,7 @@ void Vore::RandomVoreAttempt(Actor* caster) {
 		// \      x   /
 		//  \  x     /
 		//   \______/  <- Truncated cone
-		//   | pred |  <- Based on width of prey
+		//   | pred |  <- Based on width of pred
 		//   |______|
 		float predWidth = 70 * get_visual_scale(pred);
 		float shiftAmount = tan(VORE_ANGLE/2.0) * predWidth / 2.0;
@@ -197,6 +197,11 @@ void Vore::RandomVoreAttempt(Actor* caster) {
 		// Reduce vector size
 		if (preys.size() > numberOfPrey) {
 			preys.resize(numberOfPrey);
+		}
+
+		log::info("Prey search for {} is complete found {} prey", pred->GetDisplayFullName(), preys.size());
+		for (auto prey: preys) {
+			log::info("  - Prey: {} is {} from pred", prey-.GetDisplayFullName(), (pred->GetPosition() - prey->GetPosition()).Length());
 		}
 
 		return preys;
