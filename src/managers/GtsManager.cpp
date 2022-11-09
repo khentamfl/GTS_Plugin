@@ -429,12 +429,12 @@ void GtsManager::Update() {
 		apply_actor(actor);
 		GameMode(actor);
 		HitManager::GetSingleton().Update();
-		static Timer timer = Timer(6.00);
-		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
+		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
+		if (timer.ShouldRunFrame()) { 
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
 		}
 	}
-
+}
 	void GtsManager::reapply(bool force) {
 		// Get everyone in loaded AI data and reapply
 		auto actors = find_actors();
@@ -460,4 +460,3 @@ void GtsManager::Update() {
 	}
 
 
-}

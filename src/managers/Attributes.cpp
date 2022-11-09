@@ -41,7 +41,7 @@ namespace {
 
 		float boost = 0.0;
 		if (scale > 1.0) {
-			boost = (base_av + max_stamina * 0.5 -50.0) * ((scale-1.0) * power);
+			boost = (base_av) * ((scale-1.0) * power);
 		} else {
 			// Linearly decrease carry weight
 			//   at scale=0.0 we adjust by -base_av

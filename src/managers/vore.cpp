@@ -28,7 +28,7 @@ namespace Gts {
 		if (!player->HasPerk(runtime.VorePerk)) {
 			return;
 		}
-		static Timer timer = Timer(6.00);
+		static Timer timer = Timer(6.00); // Random Vore once per 6 sec
 		if (timer.ShouldRunFrame()) { //Try to not overload
 			for (auto actor: find_actors()) {
 				if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate() && actor->IsInCombat()) {
