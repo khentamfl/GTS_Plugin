@@ -190,7 +190,7 @@ namespace Gts {
 		//   | pred |  <- Based on width of pred
 		//   |______|
 		float predWidth = 70 * get_visual_scale(pred);
-		float shiftAmount = tan(VORE_ANGLE/2.0) * predWidth / 2.0;
+		float shiftAmount = (predWidth / 2.0) / tan(VORE_ANGLE/2.0);
 
 		NiPoint3 coneStart = predPos - forwardVecNi * shiftAmount;
 		predDir = predPos - coneStart;
