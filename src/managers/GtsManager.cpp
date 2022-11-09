@@ -398,7 +398,7 @@ namespace {
 
 		ApplyGameMode(actor, gameMode, growthRate, shrinkRate);
 	}
-
+}
 
 GtsManager& GtsManager::GetSingleton() noexcept {
 	static GtsManager instance;
@@ -458,5 +458,5 @@ void GtsManager::Update() {
 		}
 		apply_actor(actor, force);
 	}
-}
+
 
