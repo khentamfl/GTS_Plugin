@@ -254,6 +254,10 @@ namespace Gts {
 		if (!runtime.GrowthPerk) {
 			return;
 		}
+		if (runtime.ProtectEssentials->value == 1.0 && target->IsEssential())
+		{
+			return;
+		}
 		int Random = rand() % 8;
 		if (Random >= 8 && caster->HasPerk(runtime.GrowthPerk)) {
 			if (runtime.MoanSound) {

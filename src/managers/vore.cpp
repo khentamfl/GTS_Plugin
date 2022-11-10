@@ -284,7 +284,7 @@ namespace Gts {
 
 		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
-		    && (!prey->IsEssential())
+		    && (!prey->IsEssential() && runtime.ProtectEssentials->value < 1.0)
 		    && !pred->HasSpell(runtime.StartVore)) {
 			return true;
 		} else {
