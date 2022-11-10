@@ -177,7 +177,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			log::info("    - {} is at angle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
+			log::info("    - {} is at cos(angle) {} and angle {}", prey->GetDisplayFullName(), cosTheta, acos(cosTheta) * 180/PI);
 			return cosTheta >= 0; // 180 degress
 		}), preys.end());
 
