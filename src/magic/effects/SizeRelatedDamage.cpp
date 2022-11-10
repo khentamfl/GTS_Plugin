@@ -45,9 +45,9 @@ namespace Gts {
 		//float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
 
 		float size_difference = caster_scale/target_scale;
-		if (target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0) {
-			return;
-		} // Do not apply if those are true
+		//if (target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0) {
+			//return;
+		//} // Do not apply if those are true
 
 		//if (target->HasMagicEffect(runtime.FakeCrushEffect))
 		//{
