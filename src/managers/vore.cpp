@@ -319,7 +319,7 @@ namespace Gts {
 			sizedifference *= 1.15; // Less stamina drain
 		}
 
-		float calculatestamina = GetMaxAV(pred, ActorValue::kStamina)/sizedifference; // Drain stamina
+		float calculatestamina = 300/sizedifference; // Drain stamina
 		DamageAV(pred, ActorValue::kStamina, calculatestamina);
 		PlaySound(runtime.VoreSound_Success, pred, 1.0, 0.0);
 

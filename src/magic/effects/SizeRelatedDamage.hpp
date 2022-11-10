@@ -23,5 +23,6 @@ namespace Gts {
 
 			private:
 			bool AllowOneShot = false;
+			Timer crushtimer = Timer(0.035);
 	};
 }
