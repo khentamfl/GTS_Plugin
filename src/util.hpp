@@ -184,7 +184,7 @@ namespace Gts {
 	}
 
 	inline bool IsJumping(Actor* actor) {
-		if (!actor || !actor->Is3DLoaded()) {
+		if (!actor) {
 			return false;
 		}
 		bool result = false;
