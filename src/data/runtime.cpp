@@ -146,9 +146,10 @@ namespace Gts {
 		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6");
 		this->TotalControl = find_form<BGSPerk>("GTS.esp|128CF7");
 		this->NoSpeedLoss = find_form<BGSPerk>("GTS.esp|2E663B");
-		this->SizeReserve = find_form<BGSPerk>("GTS.esp|4204CE");
-		this->BonusSpeedPerk = find_form<BGSPerk>("GTS.esp|4255D0");
-		this->OnTheEdge = find_form<BGSPerk>("GTS.esp|4399E3");
+		this->SizeReserve = find_form<BGSPerk>("GTS.esp|4204CE"); 
+		this->BonusSpeedPerk = find_form<BGSPerk>("GTS.esp|4255D0"); 
+		this->OnTheEdge = find_form<BGSPerk>("GTS.esp|4399E3"); 
+		this->LethalSprint = find_form<BGSPerk>("GTS.esp|123BEB");
 
 
 		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");

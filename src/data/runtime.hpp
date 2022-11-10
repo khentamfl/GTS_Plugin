@@ -133,6 +133,7 @@ namespace Gts {
 			BGSPerk* SizeReserve = nullptr;
 			BGSPerk* BonusSpeedPerk = nullptr;
 			BGSPerk* OnTheEdge = nullptr;
+			BGSPerk* LethalSprint = nullptr;
 
 			TESGlobal * sizeLimit = nullptr;
 

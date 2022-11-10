@@ -58,8 +58,8 @@ namespace Gts {
 			return;
 		}
 
-		if (caster->IsSprinting()) {
-			InstaCrushRequirement = 17.0;
+		if (caster->HasPerk(runtime.LethalSprint) && caster->IsSprinting()) {
+			InstaCrushRequirement = 14.0;
 		}
 
 		 if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
