@@ -38,7 +38,6 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-		float size_limit = runtime.sizeLimit->value;
 		float caster_scale = get_target_scale(caster);
 		float target_scale = get_target_scale(target);
 
