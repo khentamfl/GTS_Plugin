@@ -191,6 +191,7 @@ namespace Gts {
 		//   |______|
 		float predWidth = 70 * get_visual_scale(pred);
 		float shiftAmount = (predWidth / 2.0) / tan(VORE_ANGLE/2.0);
+		log::info("  - To truncate the cone we shift by: {}", shiftAmount);
 
 		NiPoint3 coneStart = predPos - forwardVecNi * shiftAmount;
 		predDir = predPos - coneStart;
@@ -296,12 +297,12 @@ namespace Gts {
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
-		
+
 		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
 		float staminarequirement = GetMaxAV(pred, ActorValue::kStamina)/(pred_scale/prey_scale);
 
 		float sizedifference = pred_scale/prey_scale;
-		
+
 		if (!CanVore(pred, prey)) {
 			return;
 		}
@@ -312,10 +313,9 @@ namespace Gts {
 			pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.gtsStaggerSpell, false, prey, 1.00f, false, 0.0f, pred);
 			return;
 		}
-		
-		
-		if (pred->HasPerk(runtime.MassVorePerk))
-		{
+
+
+		if (pred->HasPerk(runtime.MassVorePerk)) {
 			sizedifference *= 1.15; // Less stamina drain
 		}
 
