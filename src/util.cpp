@@ -189,4 +189,16 @@ namespace Gts {
 		static std::atomic_bool main_thread(false);
 		return main_thread;
 	}
+
+	bool IsJumping(Actor* actor) {
+		if (!actor) {
+			return false;
+		}
+		if (!actor->Is3DLoaded()) {
+			return false;
+		}
+		bool result = false;
+		actor->GetGraphVariableBool("bInJumpState", result);
+		return result;
+	}
 }
