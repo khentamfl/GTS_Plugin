@@ -29,11 +29,15 @@ namespace Gts {
 		if (!caster->Is3DLoaded()) {
 			return;
 		}
+
 		auto target = GetTarget();
 		if (!target) {
 			return;
 		}
 		if (!target->Is3DLoaded()) {
+			return;
+		}
+		if (caster == target) {
 			return;
 		}
 
@@ -47,9 +51,12 @@ namespace Gts {
 		log::info("Caster: {}, Target: {}, TargetScale: {}, CasterScale: {}, SizeDifference: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), target_scale, caster_scale, size_difference);
 
 
-		//if (target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0) {
+		//if (caster->formdID == 0x14 && target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0) {
 			//return;
-		//} // Do not apply if those are true
+		//} 
+		//if (caster->IsPlayerTeammate() && target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0) {
+			//return;
+		//}// Do not apply if those are true
 
 		//if (target->HasMagicEffect(runtime.FakeCrushEffect))
 		//{
