@@ -305,7 +305,7 @@ namespace Gts {
 		}
 
 		float wastestamina = 3/sizedifference; // Drain stamina, should be 300 once tests are over
-		float staminacheck = caster->GetActorValue(ActorValue::kStamina);
+		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
 
 		
 
