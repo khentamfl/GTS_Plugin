@@ -1,5 +1,6 @@
 #pragma once
 #include "magic/magic.hpp"
+#include "timer.hpp"
 // Module that handles Size related damage
 
 

@@ -54,7 +54,7 @@ namespace Gts {
 		log::info("Caster: {}, Target: {}, TargetScale: {}, CasterScale: {}, SizeDifference: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), target_scale, caster_scale, size_difference);
 
 
-		if (caster->formdID == 0x14 && target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0) {
+		if (caster->formID == 0x14 && target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0) {
 			return;
 		} 
 		if (caster->IsPlayerTeammate() && target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0) {
@@ -66,7 +66,7 @@ namespace Gts {
 			return;
 		}
 
-		 if (size_difference >= 24.0 && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {  NOLINT
+		 if (size_difference >= 24.0 && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
 		 	caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
 		 	CrushToNothing(caster, target);
 		 }
@@ -120,7 +120,7 @@ namespace Gts {
 		 	float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
 		 	float TargetHp = Target->GetActorValue(ActorValue::kHealth);
 		 	if (CasterHp >= (TargetHp / Multiplier) && !Target->HasMagicEffect(runtime.FakeCrushEffect) && !Target->HasSpell(runtime.FakeCrushSpell)) {
-		 		Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster);  Crush someone
+		 		Caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, Target, 1.00f, false, 0.0f, Caster); //  Crush someone
 		 		shake_camera(Caster, 0.25 * caster_scale, 0.25);
 		
 		 		if (!Caster->HasPerk(runtime.NoSpeedLoss)) {

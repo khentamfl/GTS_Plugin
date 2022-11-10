@@ -11,7 +11,6 @@
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "timer.hpp"
-#include "data/time.hpp"
 #include "util.hpp"
 
 using namespace RE;
