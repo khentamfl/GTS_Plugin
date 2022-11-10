@@ -26,17 +26,17 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		if (!caster->Is3DLoaded()) {
-			return;
-		}
+		//if (!caster->Is3DLoaded()) {
+			//return;
+		//}
 
 		auto target = GetTarget();
 		if (!target) {
 			return;
 		}
-		if (!target->Is3DLoaded()) {
-			return;
-		}
+		//if (!target->Is3DLoaded()) {
+			//return;
+		//}
 		if (caster == target) {
 			return;
 		}
