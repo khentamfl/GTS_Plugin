@@ -16,7 +16,7 @@ namespace Gts {
 	}
 
 
-	bool SizeDamage::StartEffect(EffectSetting* effect) {  NOLINT
+	bool SizeDamage::StartEffect(EffectSetting* effect) { 
 		auto& runtime = Runtime::GetSingleton();
 		return (effect == runtime.SizeRelatedDamage0 || effect == runtime.SizeRelatedDamage1 || effect == runtime.SizeRelatedDamage2);
 	}
@@ -65,8 +65,6 @@ namespace Gts {
 		{
 			return;
 		}
-
-
 
 		 if (size_difference >= 24.0 && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {  NOLINT
 		 	caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
