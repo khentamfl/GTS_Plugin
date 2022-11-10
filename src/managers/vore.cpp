@@ -298,15 +298,21 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 
-		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
-		float staminarequirement = GetMaxAV(pred, ActorValue::kStamina)/(pred_scale/prey_scale);
-
 		float sizedifference = pred_scale/prey_scale;
+
+		if (pred->HasPerk(runtime.MassVorePerk)) {
+			sizedifference *= 1.15; // Less stamina drain
+		}
+
+		float wastestamina = 3/sizedifference; // Drain stamina, should be 300 once tests are over
+		float staminacheck = caster->GetActorValue(ActorValue::kStamina);
+
+		
 
 		if (!CanVore(pred, prey)) {
 			return;
 		}
-		if (staminacheck < staminarequirement) {
+		if (staminacheck < wastestamina) {
 			Notify("You're too tired for vore...");
 			DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
 			PlaySound(runtime.VoreSound_Fail, pred, 1.0, 0.0);
@@ -314,16 +320,15 @@ namespace Gts {
 			return;
 		}
 
-
-		if (pred->HasPerk(runtime.MassVorePerk)) {
-			sizedifference *= 1.15; // Less stamina drain
-		}
-
-		float calculatestamina = 300/sizedifference; // Drain stamina
-		DamageAV(pred, ActorValue::kStamina, calculatestamina);
+		DamageAV(pred, ActorValue::kStamina, wastestamina);
 		PlaySound(runtime.VoreSound_Success, pred, 1.0, 0.0);
-
+		if (!prey->IsDead()) {
+			ConsoleLog::GetSingleton()->Print("%s Was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		}
+		else if (prey->IsDead()) {
+			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		}
 		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
-		ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		
 	}
 }
