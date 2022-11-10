@@ -39,8 +39,8 @@ namespace Gts {
 
 		auto& runtime = Runtime::GetSingleton();
 		float size_limit = runtime.sizeLimit->value;
-		float caster_scale = get_visual_scale(caster);
-		float target_scale = get_visual_scale(target);
+		float caster_scale = get_target_scale(caster);
+		float target_scale = get_target_scale(target);
 
 		//float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
 
