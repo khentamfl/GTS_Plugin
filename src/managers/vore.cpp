@@ -284,7 +284,7 @@ namespace Gts {
 
 		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
-		    && (!prey->IsEssential() && runtime.ProtectEssentials->value < 1.0)
+		    && (!prey->IsEssential())
 		    && !pred->HasSpell(runtime.StartVore)) {
 			return true;
 		} else {
@@ -309,7 +309,7 @@ namespace Gts {
 
 		
 
-		if (!CanVore(pred, prey)) {
+		if (!CanVore(pred, prey) || prey->IsEssential() && runtime.ProtectEssentials->value >= 1.0) {
 			return;
 		}
 		if (staminacheck < wastestamina) {
@@ -317,7 +317,7 @@ namespace Gts {
 			DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
 			PlaySound(runtime.VoreSound_Fail, pred, 1.0, 0.0);
 			pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.gtsStaggerSpell, false, prey, 1.00f, false, 0.0f, pred);
-			return;
+			//return;
 		}
 
 		DamageAV(pred, ActorValue::kStamina, wastestamina);

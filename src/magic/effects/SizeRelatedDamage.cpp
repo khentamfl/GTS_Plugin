@@ -26,17 +26,10 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		//if (!caster->Is3DLoaded()) {
-			//return;
-		//}
-
 		auto target = GetTarget();
 		if (!target) {
 			return;
 		}
-		//if (!target->Is3DLoaded()) {
-			//return;
-		//}
 		if (caster == target) {
 			return;
 		}
@@ -45,13 +38,12 @@ namespace Gts {
 		}
 
 		auto& runtime = Runtime::GetSingleton();
-
+		float InstaCrushRequirement = 24.0;
 		float caster_scale = get_target_scale(caster);
 		float target_scale = get_target_scale(target);
-
 		float BonusShrink = 1.0; //IsJumping(caster) * 3.0 + 1.0;
-
 		float size_difference = caster_scale/target_scale;
+
 		log::info("Caster: {}, Target: {}, TargetScale: {}, CasterScale: {}, SizeDifference: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), target_scale, caster_scale, size_difference);
 
 
@@ -60,14 +52,17 @@ namespace Gts {
 		} 
 		if (caster->IsPlayerTeammate() && target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0) {
 			return;
-		} // Do not apply if those are true
+		} // ^ Do not apply if those are true
 
-		if (target->HasMagicEffect(runtime.FakeCrushEffect))
-		{
+		if (target->HasMagicEffect(runtime.FakeCrushEffect)) {
 			return;
 		}
 
-		 if (size_difference >= 24.0 && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
+		if (caster->IsSprinting()) {
+			InstaCrushRequirement = 17.0;
+		}
+
+		 if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
 		 	caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.FakeCrushSpell, false, target, 1.00f, false, 0.0f, caster);
 		 	CrushToNothing(caster, target);
 		 }
