@@ -184,12 +184,12 @@ namespace Gts {
 	}
 
 	inline bool IsJumping(Actor* actor) {
-		if (!actor) {
+		//if (!actor) {
 			return false;
-		}
-		bool result = false;
-		actor->GetGraphVariableBool("bInJumpState", result);
-		return result;
+		//}
+		//bool result = false;
+		//actor->GetGraphVariableBool("bInJumpState", result);
+		//return result;
 	}
 
 	inline float GetMaxAV(Actor* actor, ActorValue av) {
