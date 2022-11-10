@@ -42,7 +42,7 @@ namespace Gts {
 		float caster_scale = get_visual_scale(caster);
 		float target_scale = get_visual_scale(target);
 
-		float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
+		//float BonusShrink = IsJumping(caster) * 3.0 + 1.0;
 
 		float size_difference = caster_scale/target_scale;
 		if (target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0
