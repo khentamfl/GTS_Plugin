@@ -44,11 +44,7 @@ namespace Gts {
         if (player->HasPerk(runtime.AdditionalAbsorption)) {
 			Rate *= 2.0;
 		}
-
-
-		float size = get_visual_scale(caster); 
-		float size2 = get_visual_scale(target);
-		log::info("Caster {}, target {}, GrowAmount {}, CrushGrowth Amount {}", size, size2, GrowAmount, CrushGrowthAmount);
+		
         CrushGrow(caster, Rate, 0);
 	}
 
