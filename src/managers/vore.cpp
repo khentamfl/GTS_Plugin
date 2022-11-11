@@ -65,7 +65,7 @@ namespace Gts {
 			for (auto actor: find_actors()) {
 				if ((actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) && player->IsInCombat()) {
 					RandomVoreAttempt(actor);
-					log::info("Found Vore Caster");
+					//log::info("Found Vore Caster");
 				}
 			}
 		}
@@ -79,7 +79,7 @@ namespace Gts {
 		if (player->HasPerk(runtime.MassVorePerk)) {
 			numberOfPrey = 3;
 		}
-		log::info("Attempting Random Vore");
+		//log::info("Attempting Random Vore");
 		for (auto actor: find_actors()) {
 			if (actor->formID == 0x14 || !actor->Is3DLoaded() || actor->IsDead()) {
 				return;
@@ -91,8 +91,8 @@ namespace Gts {
 			int decide_chance = 2;
 			if (random <= decide_chance) {
 				Actor* pred = caster;
-				log::info("random Vore for {} is true", caster->GetDisplayFullName());
-				log::info("{} is looking for prey", caster->GetDisplayFullName());
+				//log::info("random Vore for {} is true", caster->GetDisplayFullName());
+				//log::info("{} is looking for prey", caster->GetDisplayFullName());
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					VoreManager.StartVore(pred, prey);

@@ -60,7 +60,7 @@ namespace Gts {
 				auto runtime = Runtime::GetSingleton();
 				auto Cache = runtime.ManualGrowthStorage;
 				if (!Cache) {
-					log::info("Cache is invalid");
+					//log::info("Cache is invalid");
 					continue;
 				}
 
@@ -176,29 +176,29 @@ namespace Gts {
 		auto Camera = CameraManager::GetSingleton();
 		if (AltPressed == true && RightArrow == true && LeftArrow == true) {
 			Camera.AdjustSide(true, false, false); // Reset
-			log::info("Alt + Left & Right: Reset");
+			//log::info("Alt + Left & Right: Reset");
 		}
 		if (AltPressed == true && RightArrow == true) {
 			Camera.AdjustSide(false, true, false); // Right
-			log::info("Alt + Right");
+			//log::info("Alt + Right");
 		}
 		if (AltPressed == true && LeftArrow == true) {
 			Camera.AdjustSide(false, false, true); // Left
-			log::info("Alt + Right");
+			//log::info("Alt + Right");
 		} // Left or Right end
 
 
 		if (AltPressed == true && ArrowDown == true && ArrowUp == true) {
 			Camera.AdjustUpDown(true, false, false); // Reset
-			log::info("Alt + Up & Down: Reset");
+			//log::info("Alt + Up & Down: Reset");
 		}
 		if (AltPressed == true && ArrowUp == true) {
 			Camera.AdjustUpDown(false, true, false); // Up
-			log::info("Alt + Up");
+			//log::info("Alt + Up");
 		}
 		if (AltPressed == true && ArrowDown == true) {
 			Camera.AdjustUpDown(false, false, true); // Down
-			log::info("Alt + Down");
+			//log::info("Alt + Down");
 		} // Up or Down end
 
 		if (player->HasPerk(TotalControl) && !ShiftPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow self
