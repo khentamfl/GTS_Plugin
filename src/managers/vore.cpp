@@ -354,7 +354,7 @@ namespace Gts {
 			return;
 		}
 		if (prey->IsEssential() && runtime.ProtectEssentials->value >= 1.0){
-			Notify("Target is Essential, can't vore.");
+			Notify("%s is Essential, can't vore.");
 		}
 		if (staminacheck < wastestamina) {
 			Notify("%s is too tired for vore...");
