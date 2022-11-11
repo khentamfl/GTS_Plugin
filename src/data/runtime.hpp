@@ -163,6 +163,7 @@ namespace Gts {
 			TESGlobal * ManualGrowthStorage = nullptr;
 			TESGlobal * BalanceMode = nullptr;
 			TESGlobal * HighHeelDamage = nullptr;
+			
 
 
 			///Camera

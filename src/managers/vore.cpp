@@ -11,7 +11,7 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 68.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 4.6;
+	const float MINIMUM_VORE_SCALE_RATIO = 4.8;
 	const float VORE_ANGLE = 60;
 	const float PI = 3.14159;
 
@@ -345,24 +345,27 @@ namespace Gts {
 			sizedifference *= 1.15; // Less stamina drain
 		}
 
-		float wastestamina = 3/sizedifference; // Drain stamina, should be 300 once tests are over
+		float wastestamina = 300/sizedifference; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
 
 
 
-		if (!CanVore(pred, prey) || prey->IsEssential() && runtime.ProtectEssentials->value >= 1.0) {
+		if (!CanVore(pred, prey)) {
 			return;
 		}
+		if (prey->IsEssential() && runtime.ProtectEssentials->value >= 1.0){
+			Notify("Target is Essential, can't vore.");
+		}
 		if (staminacheck < wastestamina) {
-			Notify("You're too tired for vore...");
-			DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
-			PlaySound(runtime.VoreSound_Fail, pred, 1.0, 0.0);
+			Notify("%s is too tired for vore...");
+			DamageAV(prey, ActorValue::kHealth, 300 * sizedifference);
+			PlaySound(runtime.VoreSound_Fail, pred, 1.8, 0.0);
 			pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.gtsStaggerSpell, false, prey, 1.00f, false, 0.0f, pred);
-			//return;
+			return;
 		}
 
 		DamageAV(pred, ActorValue::kStamina, wastestamina);
-		PlaySound(runtime.VoreSound_Success, pred, 1.0, 0.0);
+		PlaySound(runtime.VoreSound_Success, pred, 0.6, 0.0);
 		if (!prey->IsDead()) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (prey->IsDead()) {

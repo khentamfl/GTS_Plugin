@@ -121,8 +121,8 @@ namespace Gts {
 		this->StartVoreFake = find_form<SpellItem>("GTS.esp|319056");
 		this->StartVore = find_form<SpellItem>("GTS.esp|31905C");
 
-		this->VoreSound_Success = find_form<BGSSoundDescriptorForm>("Skyrim.esm|000F8B");
-		this->VoreSound_Fail = find_form<BGSSoundDescriptorForm>("Skyrim.esm|10FAE5");
+		this->VoreSound_Success = find_form<BGSSoundDescriptorForm>("Skyrim.esm|10FAE5");
+		this->VoreSound_Fail = find_form<BGSSoundDescriptorForm>("Skyrim.esm|000F8B");
 		
 		///End
 
@@ -182,6 +182,7 @@ namespace Gts {
 
 		this->BalanceMode = find_form<TESGlobal>("GTS.esp|42F7D3");
 		this->HighHeelDamage = find_form<TESGlobal>("GTS.esp|271EFF");
+
 
 		///Camera
 
