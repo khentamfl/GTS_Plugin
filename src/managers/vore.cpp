@@ -354,11 +354,11 @@ namespace Gts {
 			return;
 		}
 		if (prey->IsEssential() && runtime.ProtectEssentials->value >= 1.0){
-			Notify("%s is Essential, can't vore.");
+			Notify("%s is Essential, can't vore.", prey->GetDisplayFullName());
 		}
 		if (staminacheck < wastestamina) {
-			Notify("%s is too tired for vore...");
-			DamageAV(prey, ActorValue::kHealth, 300 * sizedifference);
+			Notify("%s is too tired for vore...", pred->GetDisplayFullName());
+			DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
 			PlaySound(runtime.VoreSound_Fail, pred, 1.8, 0.0);
 			pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.gtsStaggerSpell, false, prey, 1.00f, false, 0.0f, pred);
 			return;
