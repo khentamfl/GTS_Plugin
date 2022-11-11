@@ -65,7 +65,7 @@ namespace Gts {
 		if (timer.ShouldRunFrame()) { //Try to not overload
 			log::info("Vore Timer True");
 			for (auto actor: find_actors()) {
-				if ((actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) && !actor == player && player->IsInCombat()) {
+				if ((actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) && actor != player && player->IsInCombat()) {
 					RandomVoreAttempt(actor);
 					log::info("Found Vore Caster");
 				}
