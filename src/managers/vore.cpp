@@ -10,9 +10,9 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	const float MINIMUM_VORE_DISTANCE = 128.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 1.0; // 4.6;
-	const float VORE_ANGLE = 100;
+	const float MINIMUM_VORE_DISTANCE = 68.0;
+	const float MINIMUM_VORE_SCALE_RATIO = 4.6;
+	const float VORE_ANGLE = 60;
 	const float PI = 3.14159;
 
 	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
@@ -125,8 +125,6 @@ namespace Gts {
 		auto preys = find_actors();
 		auto predPos = pred->GetPosition();
 
-		log::info("{} is looking for prey", pred->GetDisplayFullName());
-
 		// Sort prey by distance
 		sort(preys.begin(), preys.end(),
 		     [predPos](const Actor* preyA, const Actor* preyB) -> bool
@@ -136,15 +134,11 @@ namespace Gts {
 			return distanceToA < distanceToB;
 		});
 
-		log::info("  - There are {} tasty mortals in the world", preys.size());
-
 		// Filter out invalid targets
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
 			return !this->CanVore(pred, prey);
 		}), preys.end());;
-
-		log::info("  - Only {} of these are the right size/distance", preys.size());
 
 		// Filter out actors not in front
 		NiPoint3 predDir = end - start;
@@ -157,11 +151,8 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			log::info("    - {} is at cos(angle) {} and angle {}", prey->GetDisplayFullName(), cosTheta, acos(cosTheta) * 180/PI);
 			return cosTheta <= 0; // 180 degress
 		}), preys.end());
-
-		log::info("  - Only {} of these are in front", preys.size());
 
 		NiPoint3 coneStart = start;
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[coneStart, predDir](auto prey)
@@ -172,20 +163,12 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			log::info("    - {} is at angle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
 			return cosTheta <= cos(VORE_ANGLE*PI/180.0);
 		}), preys.end());
-
-		log::info("  - Only {} of these are in the cone", preys.size());
 
 		// Reduce vector size
 		if (preys.size() > numberOfPrey) {
 			preys.resize(numberOfPrey);
-		}
-
-		log::info("  = Prey search for {} is complete found {} prey", pred->GetDisplayFullName(), preys.size());
-		for (auto prey: preys) {
-			log::info("  - Prey: {} is {} from pred", prey->GetDisplayFullName(), (pred->GetPosition() - prey->GetPosition()).Length());
 		}
 
 		return preys;
@@ -214,8 +197,6 @@ namespace Gts {
 
 		auto preys = find_actors();
 
-		log::info("{} is looking for prey", pred->GetDisplayFullName());
-
 		// Sort prey by distance
 		sort(preys.begin(), preys.end(),
 		     [predPos](const Actor* preyA, const Actor* preyB) -> bool
@@ -225,15 +206,11 @@ namespace Gts {
 			return distanceToA < distanceToB;
 		});
 
-		log::info("  - There are {} tasty mortals in the world", preys.size());
-
 		// Filter out invalid targets
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
 			return !this->CanVore(pred, prey);
 		}), preys.end());;
-
-		log::info("  - Only {} of these are the right size/distance", preys.size());
 
 		// Filter out actors not in front
 		auto actorAngle = pred->data.angle.z;
@@ -242,7 +219,6 @@ namespace Gts {
 
 		NiPoint3 predDir = actorForward;
 		predDir = predDir / predDir.Length();
-		log::info("    - predDir: {}", Vector2Str(actorForward));
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[predPos, predDir](auto prey)
 		{
 			NiPoint3 preyDir = prey->GetPosition() - predPos;
@@ -251,11 +227,8 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			log::info("    - {} is at cos(angle) {} and angle {}", prey->GetDisplayFullName(), cosTheta, acos(cosTheta) * 180/PI);
 			return cosTheta <= 0; // 180 degress
 		}), preys.end());
-
-		log::info("  - Only {} of these are in front", preys.size());
 
 		// Filter out actors not in a truncated cone
 		// \      x   /
@@ -265,7 +238,6 @@ namespace Gts {
 		//   |______|
 		float predWidth = 70 * get_visual_scale(pred);
 		float shiftAmount = fabs((predWidth / 2.0) / tan(VORE_ANGLE/2.0));
-		log::info("  - To truncate the cone we shift by: {}", shiftAmount);
 
 		NiPoint3 coneStart = predPos - predDir * shiftAmount;
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[coneStart, predWidth, predDir](auto prey)
@@ -276,20 +248,12 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			log::info("    - {} is at angle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
 			return cosTheta <= cos(VORE_ANGLE*PI/180.0);
 		}), preys.end());
 
 		// Reduce vector size
 		if (preys.size() > numberOfPrey) {
 			preys.resize(numberOfPrey);
-		}
-
-		log::info("  - Only {} of these are in the cone", preys.size());
-
-		log::info("  = Prey search for {} is complete found {} prey", pred->GetDisplayFullName(), preys.size());
-		for (auto prey: preys) {
-			log::info("  - Prey: {} is {} from pred", prey->GetDisplayFullName(), (pred->GetPosition() - prey->GetPosition()).Length());
 		}
 
 		return preys;
