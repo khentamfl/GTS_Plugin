@@ -10,7 +10,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	const float MINIMUM_VORE_DISTANCE = 68.0;
+	const float MINIMUM_VORE_DISTANCE = 64.0;
 	const float MINIMUM_VORE_SCALE_RATIO = 4.8;
 	const float VORE_ANGLE = 60;
 	const float PI = 3.14159;
@@ -90,6 +90,7 @@ namespace Gts {
 			int decide_chance = 1;
 			if (random <= decide_chance) {
 				Actor* pred = caster;
+				log::info("random Vore for {} is true", caster->GetDisplayFullName());
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					VoreManager.StartVore(pred, prey);
@@ -345,7 +346,7 @@ namespace Gts {
 			sizedifference *= 1.15; // Less stamina drain
 		}
 
-		float wastestamina = 300/sizedifference; // Drain stamina, should be 300 once tests are over
+		float wastestamina = 180/sizedifference; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
 
 

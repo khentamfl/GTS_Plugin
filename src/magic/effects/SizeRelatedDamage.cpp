@@ -44,7 +44,7 @@ namespace Gts {
 		float BonusShrink = 1.0; //IsJumping(caster) * 3.0 + 1.0;
 		float size_difference = caster_scale/target_scale;
 
-		log::info("Caster: {}, Target: {}, TargetScale: {}, CasterScale: {}, SizeDifference: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), target_scale, caster_scale, size_difference);
+		//log::info("Caster: {}, Target: {}, TargetScale: {}, CasterScale: {}, SizeDifference: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), target_scale, caster_scale, size_difference);
 
 
 		if (caster->formID == 0x14 && target->IsPlayerTeammate() && runtime.GtsNPCEffectImmunityToggle->value == 1.0) {
