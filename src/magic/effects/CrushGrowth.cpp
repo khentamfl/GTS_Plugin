@@ -26,7 +26,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
         auto target = GetTarget();
-		auto player = PlayerCharacter::GegSingleton();
+		auto player = PlayerCharacter::GetSingleton();
 		float CrushGrowthActivationCount = this->CrushGrowthAmount;
 
 		if (!caster) {
