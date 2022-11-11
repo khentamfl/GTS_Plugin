@@ -177,7 +177,7 @@ namespace Gts {
 	inline void Grow_Ally(Actor* from, Actor* to, float receiver, float caster) {
 		float receive = CalcPower(from, receiver, 0);
 		float lose = CalcPower(from, receiver, 0);
-		float CasterScale = get_visual_scale(from);
+		float CasterScale = get_target_scale(from);
 		if (CasterScale > 1.0) { // We don't want to scale the caster below this limit!
 			mod_target_scale(from, -lose);
 		}
