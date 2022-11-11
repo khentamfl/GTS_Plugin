@@ -178,7 +178,7 @@ namespace Gts {
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
 			log::info("    - {} is at cos(angle) {} and angle {}", prey->GetDisplayFullName(), cosTheta, acos(cosTheta) * 180/PI);
-			return cosTheta >= 0; // 180 degress
+			return cosTheta <= 0; // 180 degress
 		}), preys.end());
 
 		log::info("  - Only {} of these are in front", preys.size());
@@ -190,7 +190,7 @@ namespace Gts {
 		//   | pred |  <- Based on width of pred
 		//   |______|
 		float predWidth = 70 * get_visual_scale(pred);
-		float shiftAmount = fabs(predWidth / 2.0) / tan(VORE_ANGLE/2.0);
+		float shiftAmount = fabs((predWidth / 2.0) / tan(VORE_ANGLE/2.0));
 		log::info("  - To truncate the cone we shift by: {}", shiftAmount);
 
 		NiPoint3 coneStart = predPos - forwardVecNi * shiftAmount;
@@ -205,7 +205,7 @@ namespace Gts {
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
 			log::info("    - {} is at angle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
-			return cosTheta >= cos(VORE_ANGLE*PI/180.0);
+			return cosTheta <= cos(VORE_ANGLE*PI/180.0);
 		}), preys.end());
 
 		// Reduce vector size
@@ -307,7 +307,7 @@ namespace Gts {
 		float wastestamina = 3/sizedifference; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
 
-		
+
 
 		if (!CanVore(pred, prey) || prey->IsEssential() && runtime.ProtectEssentials->value >= 1.0) {
 			return;
@@ -324,11 +324,10 @@ namespace Gts {
 		PlaySound(runtime.VoreSound_Success, pred, 1.0, 0.0);
 		if (!prey->IsDead()) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		}
-		else if (prey->IsDead()) {
+		} else if (prey->IsDead()) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, prey, 1.00f, false, 0.0f, pred);
-		
+
 	}
 }
