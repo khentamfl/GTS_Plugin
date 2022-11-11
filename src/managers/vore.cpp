@@ -60,10 +60,10 @@ namespace Gts {
 		if (!player->HasPerk(runtime.VorePerk)) {
 			return;
 		}
-		static Timer timer = Timer(6.00); // Random Vore once per 6 sec
+		static Timer timer = Timer(3.00); // Random Vore once per 3 sec
 		if (timer.ShouldRunFrame()) { //Try to not overload
 			for (auto actor: find_actors()) {
-				if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate() && actor->IsInCombat()) {
+				if ((actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) && actor->IsInCombat()) {
 					RandomVoreAttempt(actor);
 				}
 			}
@@ -91,6 +91,7 @@ namespace Gts {
 			if (random <= decide_chance) {
 				Actor* pred = caster;
 				log::info("random Vore for {} is true", caster->GetDisplayFullName());
+				log::info("{} is looking for prey", caster->GetDisplayFullName());
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					VoreManager.StartVore(pred, prey);
