@@ -14,6 +14,32 @@ namespace {
 	const float MINIMUM_VORE_SCALE_RATIO = 1.0; // 4.6;
 	const float VORE_ANGLE = 100;
 	const float PI = 3.14159;
+
+	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
+	{
+		float S = sin(angle);
+		float C = cos(angle);
+
+		const float XX = axis.x * axis.x;
+		const float YY = axis.y * axis.y;
+		const float ZZ = axis.z * axis.z;
+
+		const float XY = axis.x * axis.y;
+		const float YZ = axis.y * axis.z;
+		const float ZX = axis.z * axis.x;
+
+		const float XS = axis.x * S;
+		const float YS = axis.y * S;
+		const float ZS = axis.z * S;
+
+		const float OMC = 1.f - C;
+
+		return RE::NiPoint3(
+			(OMC * XX + C) * vec.x + (OMC * XY - ZS) * vec.y + (OMC * ZX + YS) * vec.z,
+			(OMC * XY + ZS) * vec.x + (OMC * YY + C) * vec.y + (OMC * YZ - XS) * vec.z,
+			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
+			);
+	}
 }
 
 namespace Gts {
@@ -68,6 +94,15 @@ namespace Gts {
 	}
 
 	Actor* Vore::GeVoreTargetCrossHair(Actor* pred) {
+		auto preys = this->GeVoreTargetsCrossHair(pred, 1);
+		if (preys.size() > 0) {
+			return preys[0];
+		} else {
+			return nullptr;
+		}
+	}
+
+	std::vector<Actor*> Vore::GeVoreTargetsCrossHair(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for player
 		if (!pred) {
 			return nullptr;
@@ -87,30 +122,72 @@ namespace Gts {
 		NiPoint3 start = cameraNode->world.translate;
 		NiPoint3 end = crosshairPick->collisionPoint;
 
-		Actor* closestActor = nullptr;
-		float nearest_distance = 1e8;
-		for (auto actor: find_actors()) {
-			NiPoint3 actorPos = actor->GetPosition();
-			// https://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
-			float d1 = (end - start).Cross(start - actorPos).Length() / (end - start).Length();
-			float d2 = (actorPos - start).Cross(actorPos - end).Length() / (end - start).Length();
-			float d;
-			if ((d1 > 1e-4) && (d2 > 1e-4)) {
-				d = std::min(d1, d2);
-			} else if (d1 > 1e-4) {
-				d = d1;
-			} else if (d2 > 1e-4) {
-				d = d2;
-			} else {
-				continue;
+		auto preys = find_actors();
+
+		log::info("{} is looking for prey", pred->GetDisplayFullName());
+
+		// Sort prey by distance
+		sort(preys.begin(), preys.end(),
+		     [predPos](const Actor* preyA, const Actor* preyB) -> bool
+		{
+			float distanceToA = (preyA->GetPosition() - predPos).Length();
+			float distanceToB = (preyB->GetPosition() - predPos).Length();
+			return distanceToA < distanceToB;
+		});
+
+		log::info("  - There are {} tasty mortals in the world", preys.size());
+
+		// Filter out invalid targets
+		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
+		{
+			return !this->CanVore(pred, prey);
+		}), preys.end());;
+
+		log::info("  - Only {} of these are the right size/distance", preys.size());
+
+		// Filter out actors not in front
+		NiPoint3 predDir = end - start;
+		predDir = predDir / predDir.Length();
+		preys.erase(std::remove_if(preys.begin(), preys.end(),[predPos, predDir](auto prey)
+		{
+			NiPoint3 preyDir = prey->GetPosition() - predPos;
+			if (preyDir.Length() <= 1e-4) {
+				return false;
 			}
-			if ((d < nearest_distance) && this->CanVore(pred, actor)) {
-				nearest_distance = d;
-				closestActor = actor;
+			preyDir = preyDir / preyDir.Length();
+			float cosTheta = predDir.Dot(preyDir);
+			log::info("    - {} is at cos(angle) {} and angle {}", prey->GetDisplayFullName(), cosTheta, acos(cosTheta) * 180/PI);
+			return cosTheta <= 0; // 180 degress
+		}), preys.end());
+
+		log::info("  - Only {} of these are in front", preys.size());
+
+		NiPoint3 coneStart = start;
+		preys.erase(std::remove_if(preys.begin(), preys.end(),[coneStart, predDir](auto prey)
+		{
+			NiPoint3 preyDir = prey->GetPosition() - coneStart;
+			if (preyDir.Length() <= 1e-4) {
+				return false;
 			}
+			preyDir = preyDir / preyDir.Length();
+			float cosTheta = predDir.Dot(preyDir);
+			log::info("    - {} is at angle {}", prey->GetDisplayFullName(), acos(cosTheta) * 180/PI);
+			return cosTheta <= cos(VORE_ANGLE*PI/180.0);
+		}), preys.end());
+
+		log::info("  - Only {} of these are in the cone", preys.size());
+
+		// Reduce vector size
+		if (preys.size() > numberOfPrey) {
+			preys.resize(numberOfPrey);
 		}
 
-		return closestActor;
+		log::info("  = Prey search for {} is complete found {} prey", pred->GetDisplayFullName(), preys.size());
+		for (auto prey: preys) {
+			log::info("  - Prey: {} is {} from pred", prey->GetDisplayFullName(), (pred->GetPosition() - prey->GetPosition()).Length());
+		}
+
+		return preys;
 	}
 
 	Actor* Vore::GetVoreTargetInFront(Actor* pred) {
@@ -158,17 +235,13 @@ namespace Gts {
 		log::info("  - Only {} of these are the right size/distance", preys.size());
 
 		// Filter out actors not in front
-		hkVector4 forwardVechK = charController->forwardVec;
-		NiPoint3 forwardVecNi = NiPoint3(
-			forwardVechK.quad.m128_f32[0],
-			forwardVechK.quad.m128_f32[1],
-			forwardVechK.quad.m128_f32[2]
-			);
-		NiPoint3 worldForward = forwardVecNi;
-		log::info("    - Forward: {}", Vector2Str(worldForward));
-		NiPoint3 predDir = worldForward - predPos;
+		auto actorAngle = playerCharacter->data.angle.z;
+		RE::NiPoint3 forwardVector{ 0.f, 1.f, 0.f };
+		RE::NiPoint3 actorForward = RotateAngleAxis(forwardVector, -actorAngle, { 0.f, 0.f, 1.f });
+
+		NiPoint3 predDir = actorForward;
 		predDir = predDir / predDir.Length();
-		log::info("    - predDir: {}", Vector2Str(worldForward));
+		log::info("    - predDir: {}", Vector2Str(actorForward));
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[predPos, predDir](auto prey)
 		{
 			NiPoint3 preyDir = prey->GetPosition() - predPos;
@@ -193,13 +266,11 @@ namespace Gts {
 		float shiftAmount = fabs((predWidth / 2.0) / tan(VORE_ANGLE/2.0));
 		log::info("  - To truncate the cone we shift by: {}", shiftAmount);
 
-		NiPoint3 coneStart = predPos - forwardVecNi * shiftAmount;
-		predDir = predPos - coneStart;
-		predDir = predDir / predDir.Length();
+		NiPoint3 coneStart = predPos - predDir * shiftAmount;
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[coneStart, predWidth, predDir](auto prey)
 		{
 			NiPoint3 preyDir = prey->GetPosition() - coneStart;
-			if (preyDir.Length() <= predWidth) {
+			if (preyDir.Length() <= predWidth*0.4) {
 				return false;
 			}
 			preyDir = preyDir / preyDir.Length();

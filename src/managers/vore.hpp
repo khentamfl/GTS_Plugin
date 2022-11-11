@@ -21,6 +21,8 @@ namespace Gts
 			// This will only return actors with appropiate distance/scale
 			// as based on `CanVore`
 			Actor* GeVoreTargetCrossHair(Actor* pred);
+			// The varient get's multiple targets
+			std::vector<Actor*> GeVoreTargetsCrossHair(Actor* pred, std::size_t numberOfPrey);
 
 			// Get's vore target for any actor based on direction they are facing
 			// This will only return actors with appropiate distance/scale
