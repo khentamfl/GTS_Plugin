@@ -6,7 +6,6 @@
 #include "managers/Attributes.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/hitmanager.hpp"
-#include "managers/vore.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -418,9 +417,7 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 void GtsManager::Update() {
 	auto& runtime = Runtime::GetSingleton();
 	auto PC = PlayerCharacter::GetSingleton();
-	auto VoreManager = Vore::GetSingleton();
 
-	VoreManager.Update();
 	HitManager::GetSingleton().Update();
 
 	for (auto actor: find_actors()) {

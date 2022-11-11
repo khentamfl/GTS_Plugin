@@ -40,7 +40,7 @@ namespace Gts {
         {CrushGrowthActivationCount = 1.0;} // Just to be safe
 
         float GrowAmount = this->ScaleOnCrush;
-        float Rate = 0.00035 * GrowAmount * CrushGrowthActivationCount;
+        float Rate = 0.00050 * GrowAmount * CrushGrowthActivationCount;
         if (player->HasPerk(runtime.AdditionalAbsorption)) {
 			Rate *= 2.0;
 		}

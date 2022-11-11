@@ -60,11 +60,14 @@ namespace Gts {
 		if (!player->HasPerk(runtime.VorePerk)) {
 			return;
 		}
+		log::info("Vore Update True");
 		static Timer timer = Timer(3.00); // Random Vore once per 3 sec
 		if (timer.ShouldRunFrame()) { //Try to not overload
+			log::info("Vore Timer True");
 			for (auto actor: find_actors()) {
-				if ((actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) && actor->IsInCombat()) {
+				if ((actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) && !actor->formID == 0x14 && actor->IsInCombat()) {
 					RandomVoreAttempt(actor);
+					log::info("Found Vore Caster");
 				}
 			}
 		}
@@ -78,7 +81,7 @@ namespace Gts {
 		if (player->HasPerk(runtime.MassVorePerk)) {
 			numberOfPrey = 3;
 		}
-
+		log::info("Attempting Random Vore");
 		for (auto actor: find_actors()) {
 			if (actor->formID == 0x14 || !actor->Is3DLoaded() || actor->IsDead()) {
 				return;
@@ -359,7 +362,7 @@ namespace Gts {
 			Notify("{} is Essential, can't vore.", prey->GetDisplayFullName());
 		}
 		if (staminacheck < wastestamina) {
-			Notify("{} is too tired for vore...", pred->GetDisplayFullName());
+			Notify("{} is too tired for vore.", pred->GetDisplayFullName());
 			DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
 			PlaySound(runtime.VoreSound_Fail, pred, 1.8, 0.0);
 			pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.gtsStaggerSpell, false, prey, 1.00f, false, 0.0f, pred);
