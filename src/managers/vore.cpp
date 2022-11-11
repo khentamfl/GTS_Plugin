@@ -40,6 +40,11 @@ namespace {
 			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
 			);
 	}
+
+	void ToggleFreeCamera() {
+		auto playerCamera = PlayerCamera::GetSingleton();
+		playerCamera->ToggleFreeCameraMode(false);
+	}
 }
 
 namespace Gts {
