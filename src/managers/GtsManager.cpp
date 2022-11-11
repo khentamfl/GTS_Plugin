@@ -6,6 +6,7 @@
 #include "managers/Attributes.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/hitmanager.hpp"
+#include "managers/vore.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -417,6 +418,11 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 void GtsManager::Update() {
 	auto& runtime = Runtime::GetSingleton();
 	auto PC = PlayerCharacter::GetSingleton();
+	auto VoreManager = Vore::GetSingleton();
+
+	VoreManager.Update();
+	HitManager::GetSingleton().Update();
+
 	for (auto actor: find_actors()) {
 		if (!actor) {
 			continue;
@@ -428,7 +434,6 @@ void GtsManager::Update() {
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);
-		HitManager::GetSingleton().Update();
 		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
 		if (timer.ShouldRunFrame()) { 
 			ScaleSpellManager::GetSingleton().CheckSize(actor);

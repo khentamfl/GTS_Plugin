@@ -26,6 +26,7 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
         auto target = GetTarget();
+		auto player = PlayerCharacter::GegSingleton();
 		float CrushGrowthActivationCount = this->CrushGrowthAmount;
 
 		if (!caster) {
@@ -39,9 +40,10 @@ namespace Gts {
         {CrushGrowthActivationCount = 1.0;} // Just to be safe
 
         float GrowAmount = this->ScaleOnCrush;
-        float Rate = 0.00025 * GrowAmount * CrushGrowthActivationCount;
-        if (caster->HasPerk(runtime.AdditionalAbsorption))
-		{Rate *= 2.0;}
+        float Rate = 0.00035 * GrowAmount * CrushGrowthActivationCount;
+        if (player->HasPerk(runtime.AdditionalAbsorption)) {
+			Rate *= 2.0;
+		}
 
 
 		float size = get_visual_scale(caster); 
