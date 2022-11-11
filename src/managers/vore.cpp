@@ -60,10 +60,8 @@ namespace Gts {
 		if (!player->HasPerk(runtime.VorePerk)) {
 			return;
 		}
-		log::info("Vore Update True");
 		static Timer timer = Timer(3.00); // Random Vore once per 3 sec
 		if (timer.ShouldRunFrame()) { //Try to not overload
-			log::info("Vore Timer True");
 			for (auto actor: find_actors()) {
 				if ((actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) && player->IsInCombat()) {
 					RandomVoreAttempt(actor);
@@ -87,10 +85,10 @@ namespace Gts {
 				return;
 			}
 			float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-			int Requirement = (25 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
+			int Requirement = (10 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 
 			int random = rand() % Requirement;
-			int decide_chance = 1;
+			int decide_chance = 2;
 			if (random <= decide_chance) {
 				Actor* pred = caster;
 				log::info("random Vore for {} is true", caster->GetDisplayFullName());
@@ -327,13 +325,16 @@ namespace Gts {
 		}
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-
+		if (pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
+			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
+		}
 		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
 		    && (!prey->IsEssential())
 		    && !pred->HasSpell(runtime.StartVore)) {
 			return true;
 		} else {
+			
 			return false;
 		}
 	}
