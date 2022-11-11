@@ -251,6 +251,7 @@ namespace Gts {
 	inline void CrushToNothing(Actor* caster, Actor* target) {
 		float target_scale = get_visual_scale(target);
 		auto& runtime = Runtime::GetSingleton();
+		auto player = PlayerCharacter::GetSingleton();
 		if (!runtime.GrowthPerk) {
 			return;
 		}
@@ -264,7 +265,7 @@ namespace Gts {
 				PlaySound(runtime.MoanSound,caster, 1.0, 1.0);
 			}
 		}
-		if (runtime.CrushGrowthSpell && caster->HasPerk(runtime.GrowthPerk) && !target->IsEssential()) {
+		if (runtime.CrushGrowthSpell && player->HasPerk(runtime.GrowthPerk) && !target->IsEssential()) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
 			ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 		}
