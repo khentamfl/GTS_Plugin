@@ -105,24 +105,25 @@ namespace Gts {
 	std::vector<Actor*> Vore::GeVoreTargetsCrossHair(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for player
 		if (!pred) {
-			return nullptr;
+			return {};
 		}
 		auto playerCamera = PlayerCamera::GetSingleton();
 		if (!playerCamera) {
-			return nullptr;
+			return {};
 		}
 		auto crosshairPick = RE::CrosshairPickData::GetSingleton();
 		if (!crosshairPick) {
-			return nullptr;
+			return {};
 		}
 		auto cameraNode = playerCamera->cameraRoot.get();
 		if (!cameraNode) {
-			return nullptr;
+			return {};
 		}
 		NiPoint3 start = cameraNode->world.translate;
 		NiPoint3 end = crosshairPick->collisionPoint;
 
 		auto preys = find_actors();
+		auto predPos = pred->GetPosition();
 
 		log::info("{} is looking for prey", pred->GetDisplayFullName());
 
@@ -235,7 +236,7 @@ namespace Gts {
 		log::info("  - Only {} of these are the right size/distance", preys.size());
 
 		// Filter out actors not in front
-		auto actorAngle = playerCharacter->data.angle.z;
+		auto actorAngle = pred->data.angle.z;
 		RE::NiPoint3 forwardVector{ 0.f, 1.f, 0.f };
 		RE::NiPoint3 actorForward = RotateAngleAxis(forwardVector, -actorAngle, { 0.f, 0.f, 1.f });
 
