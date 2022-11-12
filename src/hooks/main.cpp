@@ -3,6 +3,7 @@
 #include "events.hpp"
 #include "data/time.hpp"
 #include "data/plugin.hpp"
+#include "timer.hpp"
 
 using namespace RE;
 using namespace SKSE;
