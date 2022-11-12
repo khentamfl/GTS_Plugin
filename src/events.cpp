@@ -1,4 +1,5 @@
 #include "events.hpp"
+#include <format>
 
 using namespace std;
 using namespace RE;
@@ -61,14 +62,15 @@ namespace Gts {
 	}
 
 	void EventDispatcher::ReportProfilers() {
-		log::info("Reporting Profilers:");
+		std::string report = "Reporting Profilers:";
 		double total = 0.0;
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
 			total += listener->profiler.Elapsed();
 		}
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			log::info("  - {}: {:.3f}s ({:.0f}%)", listener->DebugName(), listener->profiler.Elapsed(), listener.profiler.Elapsed()*100.0/total);
+			report += std::format("\n  {:30s}: {:.3f}s ({:.0f}%)", listener->DebugName(), listener->profiler.Elapsed(), listener.profiler.Elapsed()*100.0/total);
 		}
+		log::info("{}", report);
 	}
 
 	void EventDispatcher::AddListener(EventListener* listener) {
