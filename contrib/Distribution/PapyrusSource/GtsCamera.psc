@@ -20,3 +20,6 @@ Bool Function GetEnableCollisionStatic() global native
 ; Value is stored in the cosave
 Function SetCollisionScale(Float scale) global native
 Float Function GetCollisionScale() global native
+
+; Toggle free camera like the console command
+Function ToggleFreeCamera() global native

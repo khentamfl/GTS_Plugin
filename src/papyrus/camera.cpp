@@ -57,6 +57,13 @@ namespace {
 	float GetCollisionScale(StaticFunctionTag*) {
 		return Persistent::GetSingleton().camera_collisions.above_scale;
 	}
+
+	void ToggleFreeCamera(StaticFunctionTag*) {
+		auto camera = PlayerCamera::GetSingleton();
+		if (camera) {
+			camera->ToggleFreeCameraMode(false);
+		}
+	}
 }
 
 namespace Gts {
@@ -73,6 +80,7 @@ namespace Gts {
 		vm->RegisterFunction("GetEnableCollisionStatic", PapyrusClass, GetEnableCollisionStatic);
 		vm->RegisterFunction("SetCollisionScale", PapyrusClass, SetCollisionScale);
 		vm->RegisterFunction("GetCollisionScale", PapyrusClass, GetCollisionScale);
+		vm->RegisterFunction("ToggleFreeCamera", PapyrusClass, ToggleFreeCamera);
 
 		return true;
 	}
