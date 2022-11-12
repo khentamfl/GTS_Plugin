@@ -1,4 +1,4 @@
-#include "managers/camera.hpp"
+#include "managers/altcamera.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
 #include "data/runtime.hpp"
