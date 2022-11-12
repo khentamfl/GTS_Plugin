@@ -7,7 +7,7 @@ namespace Gts {
 		m_beg = Clock::now();
 	}
 
-	double Profiler::Stop()
+	void Profiler::Stop()
 	{
 		this->elapsed += std::chrono::duration_cast<Second>(Clock::now() - m_beg).count();
 	}
