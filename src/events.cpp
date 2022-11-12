@@ -62,8 +62,12 @@ namespace Gts {
 
 	void EventDispatcher::ReportProfilers() {
 		log::info("Reporting Profilers:");
+		double total = 0.0;
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			log::info("  - {}: {:.3f}s", listener->DebugName(), listener->profiler.Elapsed());
+			total += listener->profiler.Elapsed();
+		}
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			log::info("  - {}: {:.3f}s ({:.0f}%)", listener->DebugName(), listener->profiler.Elapsed(), listener.profiler.Elapsed()*100.0/total);
 		}
 	}
 
