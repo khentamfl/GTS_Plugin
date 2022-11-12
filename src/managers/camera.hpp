@@ -1,6 +1,7 @@
 #pragma once
 // Module that handles the Camera
 #include "events.hpp"
+#include "timer.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -49,5 +50,6 @@ namespace Gts {
 			float last_scale = -1.0;
 			inline static float UpDown = 1.0;  //< -- Inline static float is a MUST. Else it doesn't work, for some reason.
 			inline static float Side = 1.0;
+			Timer CameraTimer = Timer(0.10);
 	};
 }
