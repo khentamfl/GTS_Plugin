@@ -8,9 +8,9 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class CameraManager : public EventListener {
+	class CameraManagerOld : public EventListener {
 		public:
-			[[nodiscard]] static CameraManager& GetSingleton() noexcept;
+			[[nodiscard]] static CameraManagerOld& GetSingleton() noexcept;
 
 			void SetfOverShoulderPosX(float value);
 			float GetfOverShoulderPosX();

@@ -37,80 +37,80 @@ namespace {
 }
 
 namespace Gts {
-	CameraManager& CameraManager::GetSingleton() noexcept {
-		static CameraManager instance;
+	CameraManagerOld& CameraManagerOld::GetSingleton() noexcept {
+		static CameraManagerOld instance;
 		return instance;
 	}
 
-	void CameraManager::SetfOverShoulderPosX(float value) {
+	void CameraManagerOld::SetfOverShoulderPosX(float value) {
 		SetINIFloat("fOverShoulderPosX:Camera", value);
 	}
-	float CameraManager::GetfOverShoulderPosX() {
+	float CameraManagerOld::GetfOverShoulderPosX() {
 		return GetINIFloat("fOverShoulderPosX:Camera");
 	}
 
-	void CameraManager::SetfOverShoulderPosY(float value) {
+	void CameraManagerOld::SetfOverShoulderPosY(float value) {
 		SetINIFloat("fOverShoulderPosY:Camera", value);
 	}
-	float CameraManager::GetfOverShoulderPosY() {
+	float CameraManagerOld::GetfOverShoulderPosY() {
 		return GetINIFloat("fOverShoulderPosY:Camera");
 	}
 
-	void CameraManager::SetfOverShoulderPosZ(float value) {
+	void CameraManagerOld::SetfOverShoulderPosZ(float value) {
 		SetINIFloat("fOverShoulderPosZ:Camera", value);
 	}
-	float CameraManager::GetfOverShoulderPosZ() {
+	float CameraManagerOld::GetfOverShoulderPosZ() {
 		return GetINIFloat("fOverShoulderPosZ:Camera");
 	}
 
-	void CameraManager::SetfOverShoulderCombatPosX(float value) {
+	void CameraManagerOld::SetfOverShoulderCombatPosX(float value) {
 		SetINIFloat("fOverShoulderCombatPosX:Camera", value);
 	}
-	float CameraManager::GetfOverShoulderCombatPosX() {
+	float CameraManagerOld::GetfOverShoulderCombatPosX() {
 		return GetINIFloat("fOverShoulderPosCombatX:Camera");
 	}
 
-	void CameraManager::SetfOverShoulderCombatPosY(float value) {
+	void CameraManagerOld::SetfOverShoulderCombatPosY(float value) {
 		SetINIFloat("fOverShoulderCombatPosY:Camera", value);
 	}
-	float CameraManager::GetfOverShoulderCombatPosY() {
+	float CameraManagerOld::GetfOverShoulderCombatPosY() {
 		return GetINIFloat("fOverShoulderCombatPosY:Camera");
 	}
 
-	void CameraManager::SetfOverShoulderCombatPosZ(float value) {
+	void CameraManagerOld::SetfOverShoulderCombatPosZ(float value) {
 		SetINIFloat("fOverShoulderCombatPosZ:Camera", value);
 	}
-	float CameraManager::GetfOverShoulderCombatPosZ() {
+	float CameraManagerOld::GetfOverShoulderCombatPosZ() {
 		return GetINIFloat("fOverShoulderCombatPosZ:Camera");
 	}
 
-	void CameraManager::SetfVanityModeMaxDist(float value) {
+	void CameraManagerOld::SetfVanityModeMaxDist(float value) {
 		SetINIFloat("fVanityModeMaxDist:Camera", value);
 	}
-	float CameraManager::GetfVanityModeMaxDist() {
+	float CameraManagerOld::GetfVanityModeMaxDist() {
 		return GetINIFloat("fVanityModeMaxDist:Camera");
 	}
 
-	void CameraManager::SetfVanityModeMinDist(float value) {
+	void CameraManagerOld::SetfVanityModeMinDist(float value) {
 		SetINIFloat("fVanityModeMinDist:Camera", value);
 	}
-	float CameraManager::GetfVanityModeMinDist() {
+	float CameraManagerOld::GetfVanityModeMinDist() {
 		return GetINIFloat("fVanityModeMinDist:Camera");
 	}
 
-	void CameraManager::SetfMouseWheelZoomSpeed(float value) {
+	void CameraManagerOld::SetfMouseWheelZoomSpeed(float value) {
 		SetINIFloat("fMouseWheelZoomSpeed:Camera", value);
 	}
 
-	void CameraManager::SetfMouseWheelZoomIncrement(float value) {
+	void CameraManagerOld::SetfMouseWheelZoomIncrement(float value) {
 		SetINIFloat("fMouseWheelZoomIncrement:Camera", value);
 	}
 
-	float CameraManager::GetfMouseWheelZoomSpeed() {
+	float CameraManagerOld::GetfMouseWheelZoomSpeed() {
 		return GetINIFloat("fMouseWheelZoomSpeed:Camera");
 	}
 
-	void CameraManager::AdjustSide(bool Reset, bool Right, bool Left) {
+	void CameraManagerOld::AdjustSide(bool Reset, bool Right, bool Left) {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
 		if (Reset) {
 			this->Side = 1.0;
@@ -126,7 +126,7 @@ namespace Gts {
 		}
 	}
 
-	void CameraManager::AdjustUpDown(bool Reset, bool Up, bool Down) {
+	void CameraManagerOld::AdjustUpDown(bool Reset, bool Up, bool Down) {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
 		if (Reset) {
 			this->UpDown = 1.0;
@@ -142,7 +142,7 @@ namespace Gts {
 		}
 	}
 
-	void CameraManager::UpdateFirstPerson(bool ImProne) {
+	void CameraManagerOld::UpdateFirstPerson(bool ImProne) {
 		auto player = PlayerCharacter::GetSingleton();
 		float scale = get_target_scale(player);
 		float ProneOffsetFP = 1.0;
@@ -152,7 +152,7 @@ namespace Gts {
 		set_fp_scale(player, scale, ProneOffsetFP);
 	}
 
-	void CameraManager::ApplyCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
+	void CameraManagerOld::ApplyCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
 		float cameraYCorrection = 121.0;
 		float UpDown = this->UpDown; float Side = this->Side;
 		float CalcProne = Runtime::GetFloat("CalcProne");
@@ -175,21 +175,21 @@ namespace Gts {
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
-			float ProneCalc = CameraManager::GetfOverShoulderPosZ(); //Utility.getINIFloat("fOverShoulderPosZ:Camera")
-			float ProneCalcC = CameraManager::GetfOverShoulderCombatPosZ(); //Utility.getINIFloat("fOverShoulderCombatPosZ:Camera")
-			CameraManager::SetfOverShoulderPosZ(ProneCalc * (1.0 - Runtime::GetFloat("CalcProne"))); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
-			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * (1.0 - Runtime::GetFloat("CalcProne"))); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
+			float ProneCalc = CameraManagerOld::GetfOverShoulderPosZ(); //Utility.getINIFloat("fOverShoulderPosZ:Camera")
+			float ProneCalcC = CameraManagerOld::GetfOverShoulderCombatPosZ(); //Utility.getINIFloat("fOverShoulderCombatPosZ:Camera")
+			CameraManagerOld::SetfOverShoulderPosZ(ProneCalc * (1.0 - Runtime::GetFloat("CalcProne"))); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
+			CameraManagerOld::SetfOverShoulderCombatPosZ(ProneCalcC * (1.0 - Runtime::GetFloat("CalcProne"))); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
 		}
 	}
 
-	void CameraManager::ApplyFeetCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
+	void CameraManagerOld::ApplyFeetCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
 		float cameraYCorrection2 = 205.0 * (size * 0.33) + 70;
 		float CalcProne2 = Runtime::GetFloat("CalcProne");
 		float UpDown = this->UpDown; float Side = this->Side;
 		float ProneOffsetFP = 1.0;
 
-		CameraManager::SetfOverShoulderPosX(((X + Side) * size));
-		CameraManager::SetfOverShoulderPosZ(((Y + UpDown) * size) - cameraYCorrection2);
+		CameraManagerOld::SetfOverShoulderPosX(((X + Side) * size));
+		CameraManagerOld::SetfOverShoulderPosZ(((Y + UpDown) * size) - cameraYCorrection2);
 
 		SetfOverShoulderCombatPosX((AltX + Side) * size);
 		SetfOverShoulderCombatPosZ((AltY + UpDown) * size - cameraYCorrection2);
@@ -199,20 +199,20 @@ namespace Gts {
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
-			float ProneCalc = CameraManager::GetfOverShoulderPosZ(); //Utility.getINIFloat("fOverShoulderPosZ:Camera")
-			float ProneCalcC = CameraManager::GetfOverShoulderCombatPosZ(); //Utility.getINIFloat("fOverShoulderCombatPosZ:Camera")
-			CameraManager::SetfOverShoulderPosZ(ProneCalc * (1.0 - (Runtime::GetFloat("CalcProne")))); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
-			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * (1.0 - Runtime::GetFloat("CalcProne"))); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
+			float ProneCalc = CameraManagerOld::GetfOverShoulderPosZ(); //Utility.getINIFloat("fOverShoulderPosZ:Camera")
+			float ProneCalcC = CameraManagerOld::GetfOverShoulderCombatPosZ(); //Utility.getINIFloat("fOverShoulderCombatPosZ:Camera")
+			CameraManagerOld::SetfOverShoulderPosZ(ProneCalc * (1.0 - (Runtime::GetFloat("CalcProne")))); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
+			CameraManagerOld::SetfOverShoulderCombatPosZ(ProneCalcC * (1.0 - Runtime::GetFloat("CalcProne"))); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
 		}
 
 	}
 
-	std::string CameraManager::DebugName() {
-		return "CameraManager";
+	std::string CameraManagerOld::DebugName() {
+		return "CameraManagerOld";
 	}
 
 	// Run every frame
-	void CameraManager::Update() {
+	void CameraManagerOld::Update() {
 		auto player = PlayerCharacter::GetSingleton();
 		float size = get_visual_scale(player);
 		// Early exit
@@ -295,25 +295,25 @@ namespace Gts {
 			SetfMouseWheelZoomIncrement(CameraZoomPrecision);
 			SetfMouseWheelZoomSpeed(CameraZoomSpeed/2);
 			if (player->IsSneaking() == true && ImProne == true) {
-				CameraManager::ApplyFeetCameraSettings(size, proneCameraAlternateX, proneCameraAlternateY, proneCombatCameraAlternateX, proneCombatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
+				CameraManagerOld::ApplyFeetCameraSettings(size, proneCameraAlternateX, proneCameraAlternateY, proneCombatCameraAlternateX, proneCombatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
 			} else {
-				CameraManager::ApplyFeetCameraSettings(size, cameraAlternateX, cameraAlternateY, combatCameraAlternateX, combatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
+				CameraManagerOld::ApplyFeetCameraSettings(size, cameraAlternateX, cameraAlternateY, combatCameraAlternateX, combatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
 			}
 		} else if (EnableAltCamera >= 2.0 && EnableAltCamera < 3.0) { // Adjustment for Alternate Camera
 			SetfMouseWheelZoomIncrement(CameraZoomPrecision);
 			SetfMouseWheelZoomSpeed(CameraZoomSpeed/2);
 			if (player->IsSneaking() == true && ImProne == true) {
-				CameraManager::ApplyCameraSettings(size, proneCameraAlternateX, proneCameraAlternateY, proneCombatCameraAlternateX, proneCombatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
+				CameraManagerOld::ApplyCameraSettings(size, proneCameraAlternateX, proneCameraAlternateY, proneCombatCameraAlternateX, proneCombatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
 			} else {
-				CameraManager::ApplyCameraSettings(size, cameraAlternateX, cameraAlternateY, combatCameraAlternateX, combatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
+				CameraManagerOld::ApplyCameraSettings(size, cameraAlternateX, cameraAlternateY, combatCameraAlternateX, combatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
 			}
 		} else if (EnableCamera >= 1.0) { // Regular Camera
 			SetfMouseWheelZoomIncrement(CameraZoomPrecision);
 			SetfMouseWheelZoomSpeed(CameraZoomSpeed/2);
 			if (player->IsSneaking() == true && ImProne == true) {
-				CameraManager::ApplyCameraSettings(size, proneCameraX, proneCameraY, proneCombatCameraX, proneCombatCameraY, MinDistance, MaxDistance,usingAutoDistance, ImProne);
+				CameraManagerOld::ApplyCameraSettings(size, proneCameraX, proneCameraY, proneCombatCameraX, proneCombatCameraY, MinDistance, MaxDistance,usingAutoDistance, ImProne);
 			} else {
-				CameraManager::ApplyCameraSettings(size, cameraX, cameraY, combatCameraX, combatCameraY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
+				CameraManagerOld::ApplyCameraSettings(size, cameraX, cameraY, combatCameraX, combatCameraY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
 			}
 
 		}
