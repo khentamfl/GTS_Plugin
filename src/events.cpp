@@ -68,7 +68,8 @@ namespace Gts {
 			total += listener->profiler.Elapsed();
 		}
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			report += std::format("\n  {:30s}: {:.3f}s ({:.0f}%)", listener->DebugName(), listener->profiler.Elapsed(), listener.profiler.Elapsed()*100.0/total);
+			double elapsed = listener->profiler.Elapsed();
+			report += std::format("\n  {:30s}: {:.3f}s ({:.0f}%)", listener->DebugName(), elapsed, elapsed*100.0/total);
 		}
 		log::info("{}", report);
 	}
