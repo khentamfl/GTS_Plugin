@@ -28,7 +28,7 @@ namespace Hooks
 				log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
 			}
 		}
-		__SetHeadtrackTarget0(a_this, a_target);
+		_SetHeadtrackTarget0(a_this, a_target);
 	}
 	void Hook_HeadTracking::SetHeadtrackTarget4A(RE::AIProcess* a_this, RE::Actor* a_target)
 	{
@@ -38,7 +38,7 @@ namespace Hooks
 				log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
 			}
 		}
-		__SetHeadtrackTarget4A(a_this, a_target);
+		_SetHeadtrackTarget4A(a_this, a_target);
 	}
 	void Hook_HeadTracking::SetHeadtrackTarget4B(RE::AIProcess* a_this, RE::Actor* a_target)
 	{
@@ -48,7 +48,7 @@ namespace Hooks
 				log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
 			}
 		}
-		__SetHeadtrackTarget4B(a_this, a_target);
+		_SetHeadtrackTarget4B(a_this, a_target);
 	}
 	void Hook_HeadTracking::SetHeadtrackTarget4C(RE::AIProcess* a_this, RE::Actor* a_target)
 	{
@@ -58,7 +58,7 @@ namespace Hooks
 				log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
 			}
 		}
-		__SetHeadtrackTarget4C(a_this, a_target);
+		_SetHeadtrackTarget4C(a_this, a_target);
 	}
 	void Hook_HeadTracking::SetHeadtrackTarget4D(RE::AIProcess* a_this, RE::Actor* a_target)
 	{
@@ -68,6 +68,6 @@ namespace Hooks
 				log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
 			}
 		}
-		__SetHeadtrackTarget4D(a_this, a_target);
+		_SetHeadtrackTarget4D(a_this, a_target);
 	}
 }
