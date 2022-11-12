@@ -60,6 +60,12 @@ namespace Gts {
 	void EventListener::HitEvent(const TESHitEvent* evt) {
 	}
 
+	void EventDispatcher::ReportProfilers() {
+		log::info("Reporting Profilers:")
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			log::info("  - {}: {:.3f}s", listener->DebugName(), listener->profiler.Elapsed());
+		}
+	}
 
 	void EventDispatcher::AddListener(EventListener* listener) {
 		if (listener) {
@@ -69,62 +75,86 @@ namespace Gts {
 
 	void EventDispatcher::DoUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->Update();
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoPapyrusUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->PapyrusUpdate();
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoHavokUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->HavokUpdate();
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoReset() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->Reset();
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoEnabled() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->Enabled();
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoDisabled() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->Disabled();
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoStart() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->Start();
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoDataReady() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->DataReady();
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoResetActor(Actor* actor) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->ResetActor(actor);
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoActorEquip(Actor* actor) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->ActorEquip(actor);
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoActorLoaded(Actor* actor) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->ActorLoaded(actor);
+			listener->profiler.stop();
 		}
 	}
 	void EventDispatcher::DoHitEvent(const TESHitEvent* evt) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			listener->profiler.start();
 			listener->HitEvent(evt);
+			listener->profiler.stop();
 		}
 	}
 	EventDispatcher& EventDispatcher::GetSingleton() {

@@ -21,7 +21,7 @@ namespace Hooks
 	{
 		_Update(a_this, a2);
 		Time::GetSingleton().Update();
-		
+
 		static std::atomic_bool started = std::atomic_bool(false);
 		Plugin::SetOnMainThread(true);
 		if (Plugin::Enabled()) {
@@ -50,5 +50,10 @@ namespace Hooks
 			}
 		}
 		Plugin::SetOnMainThread(false);
+
+		static Timer timer = Timer(5.0);
+		if (timer.ShouldRun()) {
+			EventDispatcher::ReportProfilers();
+		}
 	}
 }

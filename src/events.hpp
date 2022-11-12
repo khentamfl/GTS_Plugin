@@ -1,5 +1,7 @@
 #pragma once
 
+#include "profiler.hpp"
+
 using namespace std;
 using namespace RE;
 using namespace SKSE;
@@ -7,6 +9,11 @@ using namespace SKSE;
 namespace Gts {
 	class EventListener {
 		public:
+			Profiler profiler;
+
+			// Get name used for debug prints
+			virtual std::string DebugName();
+
 			// Called on Live (non paused) gameplay
 			virtual void Update();
 
@@ -47,6 +54,7 @@ namespace Gts {
 
 	class EventDispatcher {
 		public:
+			static void ReportProfilers();
 			static void AddListener(EventListener* listener);
 			static void DoUpdate();
 			static void DoPapyrusUpdate();
