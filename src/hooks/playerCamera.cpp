@@ -1,5 +1,4 @@
-#include "hooks/impact.hpp"
-#include "managers/impact.hpp"
+#include "hooks/playerCamera.hpp"
 
 using namespace RE;
 
