@@ -115,32 +115,32 @@ namespace Gts {
 		if (Reset) {
 			this->Side = 1.0;
 			//log::info("Side Reset: {}", this->Side);
-			}
+		}
 		if (Left) {
 			this->Side -= (1.0 + (size * 0.0125 - 0.0125));
 			//log::info("Side Left: {}", this->Side);
-			}
-		if (Right) { 
+		}
+		if (Right) {
 			this->Side += (1.0 + (size * 0.0125 - 0.0125));
 			//log::info("Side Right: {}", this->Side);
-			}
 		}
+	}
 
 	void CameraManager::AdjustUpDown(bool Reset, bool Up, bool Down) {
 		float size = get_visual_scale(PlayerCharacter::GetSingleton());
 		if (Reset) {
 			this->UpDown = 1.0;
 			//log::info("UpDown Reset: {}", this->UpDown);
-			}
+		}
 		if (Up) {
 			this->UpDown += (1.0 + (size * 0.0125 - 0.0125));
 			//log::info("UpDown Decrease: {}", this->UpDown);
-			}
-		if (Down) { 
+		}
+		if (Down) {
 			this->UpDown -= (1.0 + (size * 0.0125 - 0.0125));
 			//log::info("UpDown Increase: {}", this->UpDown);
-			}
 		}
+	}
 
 
 
@@ -178,7 +178,7 @@ namespace Gts {
 	}
 
 
-	
+
 
 	void CameraManager::ApplyFeetCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
 		auto& runtime = Runtime::GetSingleton();
@@ -205,6 +205,10 @@ namespace Gts {
 			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * (1.0 - runtime.CalcProne->value)); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
 		}
 		set_fp_scale(PlayerCharacter::GetSingleton(), get_target_scale(PlayerCharacter::GetSingleton()), ProneOffsetFP);
+	}
+
+	std::string CameraManager::DebugName() {
+		return "CameraManager";
 	}
 
 	// Run every frame
@@ -277,7 +281,7 @@ namespace Gts {
 			MaxDistance = 50;
 		}
 
-		
+
 		if (EnableAltCamera >= 3.0) { // Adjustment for Feet Camera
 			SetfMouseWheelZoomIncrement(CameraZoomPrecision);
 			SetfMouseWheelZoomSpeed(CameraZoomSpeed/2);

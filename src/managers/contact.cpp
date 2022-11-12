@@ -146,29 +146,51 @@ namespace Gts {
 	void ContactListener::ContactPointCallback(const hkpContactPointEvent& a_event)
 	{
 		auto rigid_a = a_event.bodies[0];
-		if (!rigid_a) return;
+		if (!rigid_a) {
+			return;
+		}
 		auto rigid_b = a_event.bodies[1];
-		if (!rigid_b) return;
+		if (!rigid_b) {
+			return;
+		}
 		auto objref_a = rigid_a->GetUserData();
-		if (!objref_a) return;
+		if (!objref_a) {
+			return;
+		}
 		auto objref_b = rigid_b->GetUserData();
-		if (!objref_b) return;
+		if (!objref_b) {
+			return;
+		}
 		if (objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE) {
 			//log::info("Both collisions are actors");
 			Actor* actor_a = skyrim_cast<Actor*>(objref_a);
-			if (!actor_a) return;
+			if (!actor_a) {
+				return;
+			}
 			Actor* actor_b = skyrim_cast<Actor*>(objref_b);
-			if (!actor_b) return;
-			if (actor_a == actor_b) return;
+			if (!actor_b) {
+				return;
+			}
+			if (actor_a == actor_b) {
+				return;
+			}
 			auto name_a = actor_a->GetDisplayFullName();
-			if (!name_a) return;
+			if (!name_a) {
+				return;
+			}
 			auto name_b = actor_b->GetDisplayFullName();
-			if (!name_b) return;
+			if (!name_b) {
+				return;
+			}
 			//log::info("Colliding: {} with: {}", name_a, name_b);
 			NiAVObject* node_a = getNodeFromCollidable(rigid_a);
-			if (!node_a) return;
+			if (!node_a) {
+				return;
+			}
 			NiAVObject* node_b = getNodeFromCollidable(rigid_b);
-			if (!node_b) return;
+			if (!node_b) {
+				return;
+			}
 			auto node_name_a = node_a->name;
 			if (!node_name_a.empty()) {
 				//log::info("  - Node A: {}", node_name_a.c_str());
@@ -272,11 +294,17 @@ namespace Gts {
 		//   - Collides with kTransparentWall
 		//   - Collides with kTrap
 		//   - Collides with kTrees
-		if (!world) return;
+		if (!world) {
+			return;
+		}
 		PlayerCharacter* player = PlayerCharacter::GetSingleton();
-		if (!player) return;
+		if (!player) {
+			return;
+		}
 		auto player_data = Persistent::GetSingleton().GetData(player);
-		if (!player_data) return;
+		if (!player_data) {
+			return;
+		}
 		auto& camera_collisions = Persistent::GetSingleton().camera_collisions;
 
 		float scale = player_data->target_scale;
@@ -348,7 +376,9 @@ namespace Gts {
 		//  - Collides with kProps
 		//  - Collides with kSpell
 		//  - Collides with kWeapon
-		if (!world) return;
+		if (!world) {
+			return;
+		}
 		BSWriteLockGuard lock(world->worldLock);
 
 		RE::bhkCollisionFilter* filter = static_cast<bhkCollisionFilter*>(world->GetWorld2()->collisionFilter);
@@ -373,15 +403,23 @@ namespace Gts {
 		return instance;
 	}
 
+	std::string ContactManager::DebugName() {
+		return "ContactManager";
+	}
+
 	void ContactManager::HavokUpdate() {
 		auto playerCharacter = PlayerCharacter::GetSingleton();
 
 		auto cell = playerCharacter->GetParentCell();
-		if (!cell) return;
-		
+		if (!cell) {
+			return;
+		}
+
 
 		auto world = RE::NiPointer<RE::bhkWorld>(cell->GetbhkWorld());
-		if (!world) return;
+		if (!world) {
+			return;
+		}
 		ContactListener& contactListener = this->listener;
 		auto PC = PlayerCharacter::GetSingleton();
 		auto HighHeel = HighHeelManager::GetSingleton();

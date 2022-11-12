@@ -37,6 +37,7 @@ namespace Gts {
 			TempActorData* GetData(TESObjectREFR* object);
 			TempActorData* GetActorData(Actor* actor);
 
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;

@@ -17,6 +17,8 @@ namespace Gts
 			[[nodiscard]] static InputManager& GetSingleton() noexcept;
 
 			BSEventNotifyControl ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) override;
+
+			virtual std::string DebugName() override;
 			void Start() override;
 		private:
 			Timer timer = Timer(1.2);

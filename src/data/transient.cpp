@@ -94,6 +94,10 @@ namespace Gts {
 	}
 
 
+	std::string Transient::DebugName() {
+		return "Transient";
+	}
+
 	void Transient::Update() {
 		for (auto actor: find_actors()) {
 			if (!actor) {

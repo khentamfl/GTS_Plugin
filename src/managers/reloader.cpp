@@ -5,6 +5,10 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
+	std::string ReloadManager::DebugName() {
+		return "ReloadManager";
+	}
+
 	void ReloadManager::DataReady() {
 		auto event_sources = ScriptEventSourceHolder::GetSingleton();
 		if (event_sources) {

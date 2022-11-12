@@ -35,6 +35,7 @@ namespace Gts {
 			void SetfMouseWheelZoomSpeed(float value);
 			float GetfMouseWheelZoomSpeed();
 
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 
 			void AdjustSide(bool Reset, bool Right, bool Left);

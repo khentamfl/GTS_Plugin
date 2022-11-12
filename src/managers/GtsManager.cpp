@@ -413,6 +413,10 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 	return instance;
 }
 
+std::string GtsManager::DebugName() {
+	return "GtsManager";
+}
+
 // Poll for updates
 void GtsManager::Update() {
 	auto& runtime = Runtime::GetSingleton();
@@ -432,33 +436,31 @@ void GtsManager::Update() {
 		apply_actor(actor);
 		GameMode(actor);
 		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
-		if (timer.ShouldRunFrame()) { 
+		if (timer.ShouldRunFrame()) {
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
 		}
 	}
 }
-	void GtsManager::reapply(bool force) {
-		// Get everyone in loaded AI data and reapply
-		auto actors = find_actors();
-		for (auto actor: actors) {
-			if (!actor) {
-				continue;
-			}
-			if (!actor->Is3DLoaded()) {
-				continue;
-			}
-			reapply_actor(actor, force);
-		}
-	}
-	void GtsManager::reapply_actor(Actor* actor, bool force) {
-		// Reapply just this actor
+void GtsManager::reapply(bool force) {
+	// Get everyone in loaded AI data and reapply
+	auto actors = find_actors();
+	for (auto actor: actors) {
 		if (!actor) {
-			return;
+			continue;
 		}
 		if (!actor->Is3DLoaded()) {
-			return;
+			continue;
 		}
-		apply_actor(actor, force);
+		reapply_actor(actor, force);
 	}
-
-
+}
+void GtsManager::reapply_actor(Actor* actor, bool force) {
+	// Reapply just this actor
+	if (!actor) {
+		return;
+	}
+	if (!actor->Is3DLoaded()) {
+		return;
+	}
+	apply_actor(actor, force);
+}

@@ -258,6 +258,10 @@ namespace Gts {
 		}
 	}
 
+	std::string MagicManager::DebugName() {
+		return "MagicManager";
+	}
+
 	void MagicManager::Update() {
 		for (auto actor: find_actors()) {
 			this->ProcessActiveEffects(actor);

@@ -13,6 +13,7 @@ namespace Gts
 		public:
 			[[nodiscard]] static Vore& GetSingleton() noexcept;
 
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 
 			void RandomVoreAttempt(Actor* pred);

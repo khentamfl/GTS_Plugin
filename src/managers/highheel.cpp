@@ -15,6 +15,10 @@ namespace Gts {
 		return instance;
 	}
 
+	std::string HighHeelManager::DebugName() {
+		return "HighHeelManager";
+	}
+
 	void HighHeelManager::PapyrusUpdate() {
 		const bool FORCE_APPLY = false;
 		auto actors = find_actors();
@@ -103,9 +107,8 @@ namespace Gts {
 					shoe_weight = shoe->weight/10;
 				}
 				Runtime::GetSingleton().HighHeelDamage->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
-				// Feel free to remove it once we move it to DLL completely ^ 
-			}
-			else if (actor->formID == 0x14 && base_hh <= 0) {
+				// Feel free to remove it once we move it to DLL completely ^
+			} else if (actor->formID == 0x14 && base_hh <= 0) {
 				Runtime::GetSingleton().HighHeelDamage->value = 1.0;
 			}
 		}

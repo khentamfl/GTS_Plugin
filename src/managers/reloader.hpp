@@ -14,6 +14,8 @@ namespace Gts {
 		public BSTEventSink<TESEquipEvent> {
 		public:
 			[[nodiscard]] static ReloadManager& GetSingleton() noexcept;
+
+			virtual std::string DebugName() override;
 			void DataReady() override;
 
 		protected:

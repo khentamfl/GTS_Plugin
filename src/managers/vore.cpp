@@ -53,6 +53,10 @@ namespace Gts {
 		return instance;
 	}
 
+	std::string Vore::DebugName() {
+		return "Vore";
+	}
+
 	void Vore::Update() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
@@ -334,7 +338,7 @@ namespace Gts {
 		    && !pred->HasSpell(runtime.StartVore)) {
 			return true;
 		} else {
-			
+
 			return false;
 		}
 	}
@@ -359,7 +363,7 @@ namespace Gts {
 		if (!CanVore(pred, prey)) {
 			return;
 		}
-		if (prey->IsEssential() && runtime.ProtectEssentials->value >= 1.0){
+		if (prey->IsEssential() && runtime.ProtectEssentials->value >= 1.0) {
 			Notify("{} is Essential, can't vore.", prey->GetDisplayFullName());
 		}
 		if (staminacheck < wastestamina) {

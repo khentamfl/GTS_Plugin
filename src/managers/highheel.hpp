@@ -10,6 +10,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static HighHeelManager& GetSingleton() noexcept;
 
+			virtual std::string DebugName() override;
 			virtual void PapyrusUpdate() override;
 			virtual void ActorEquip(Actor* actor) override;
 			virtual void ActorLoaded(Actor* actor) override;

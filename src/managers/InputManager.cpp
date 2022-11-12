@@ -270,6 +270,10 @@ namespace Gts {
 		return BSEventNotifyControl::kContinue;
 	}
 
+	std::string InputManager::DebugName() {
+		return "InputManager";
+	}
+
 	void InputManager::Start() {
 		auto deviceManager = RE::BSInputDeviceManager::GetSingleton();
 		deviceManager->AddEventSink(&InputManager::GetSingleton());

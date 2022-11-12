@@ -59,6 +59,11 @@ namespace Gts {
 		this->ShakePower = value;
 		//log::info("ShakePower is {}", this->ShakePower);
 	}
+
+	std::string RandomGrowth::DebugName() {
+		return "RandomGrowth";
+	}
+
 	void RandomGrowth::Update() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& runtime = Runtime::GetSingleton();
@@ -72,8 +77,8 @@ namespace Gts {
 
 		bool hasSMT = runtime.SmallMassiveThreat ? player->HasMagicEffect(runtime.SmallMassiveThreat) : false;
 
-		 if (this->CallInputGrowth == true) {
-			
+		if (this->CallInputGrowth == true) {
+
 			auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetData(player);
 			float delta_time = Time::WorldTimeDelta();
@@ -133,6 +138,6 @@ namespace Gts {
 				this->AllowGrowth = false;
 			}
 		}
-		
+
 	}
 }

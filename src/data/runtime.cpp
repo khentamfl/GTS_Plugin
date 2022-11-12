@@ -27,6 +27,10 @@ namespace Gts {
 		return instance;
 	}
 
+	std::string Runtime::DebugName() {
+		return "Runtime";
+	}
+
 	void Runtime::DataReady() {
 		this->lFootstepL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLFootstepL());
 		this->lFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLFootstepR());
@@ -86,8 +90,8 @@ namespace Gts {
 		this->SlowGrowth = find_form<EffectSetting>("GTS.esp|019C3D"); // <- slow growth spell [Hands]. Release and grow over time.
 		this->SlowGrowth2H = find_form<EffectSetting>("GTS.esp|086C8D");
 		this->GrowthSpell = find_form<EffectSetting>("GTS.esp|0022EB"); // <- Grow Spell [Hands]
-		this->GrowthSpellAdept = find_form<EffectSetting>("GTS.esp|45D124"); 
-		this->GrowthSpellExpert = find_form<EffectSetting>("GTS.esp|45D125"); 
+		this->GrowthSpellAdept = find_form<EffectSetting>("GTS.esp|45D124");
+		this->GrowthSpellExpert = find_form<EffectSetting>("GTS.esp|45D125");
 		this->GrowPcButton = find_form<EffectSetting>("GTS.esp|002DB5"); // <- Grow PC in size on button press
 
 		this->GrowAlly = find_form<EffectSetting>("GTS.esp|0058D5");  // <- Increase Ally Size [Hands]
@@ -117,14 +121,14 @@ namespace Gts {
 
 		this->VorePerk = find_form<BGSPerk>("GTS.esp|355C68");
 		this->MassVorePerk = find_form<BGSPerk>("GTS.esp|462228");
-		
+
 
 		this->StartVoreFake = find_form<SpellItem>("GTS.esp|319056");
 		this->StartVore = find_form<SpellItem>("GTS.esp|31905C");
 
 		this->VoreSound_Success = find_form<BGSSoundDescriptorForm>("Skyrim.esm|10FAE5");
 		this->VoreSound_Fail = find_form<BGSSoundDescriptorForm>("Skyrim.esm|000F8B");
-		
+
 		///End
 
 		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
@@ -147,9 +151,9 @@ namespace Gts {
 		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6");
 		this->TotalControl = find_form<BGSPerk>("GTS.esp|128CF7");
 		this->NoSpeedLoss = find_form<BGSPerk>("GTS.esp|2E663B");
-		this->SizeReserve = find_form<BGSPerk>("GTS.esp|4204CE"); 
-		this->BonusSpeedPerk = find_form<BGSPerk>("GTS.esp|4255D0"); 
-		this->OnTheEdge = find_form<BGSPerk>("GTS.esp|4399E3"); 
+		this->SizeReserve = find_form<BGSPerk>("GTS.esp|4204CE");
+		this->BonusSpeedPerk = find_form<BGSPerk>("GTS.esp|4255D0");
+		this->OnTheEdge = find_form<BGSPerk>("GTS.esp|4399E3");
 		this->LethalSprint = find_form<BGSPerk>("GTS.esp|123BEB");
 
 
@@ -249,14 +253,14 @@ namespace Gts {
 
 		///Size-Damage
 		this->gtsSizeCloakSpellTiny = find_form<SpellItem>("GTS.esp|00CA0A");
- 		this->gtsSizeCloakSpellSmall = find_form<SpellItem>("GTS.esp|00A9A5");
- 		this->gtsSizeCloakSpellMedium = find_form<SpellItem>("GTS.esp|00CA07");
- 		this->gtsSizeCloakSpellLarge = find_form<SpellItem>("GTS.esp|00CA08");
- 		this->gtsSizeCloakSpellHuge = find_form<SpellItem>("GTS.esp|00CA0C");
+		this->gtsSizeCloakSpellSmall = find_form<SpellItem>("GTS.esp|00A9A5");
+		this->gtsSizeCloakSpellMedium = find_form<SpellItem>("GTS.esp|00CA07");
+		this->gtsSizeCloakSpellLarge = find_form<SpellItem>("GTS.esp|00CA08");
+		this->gtsSizeCloakSpellHuge = find_form<SpellItem>("GTS.esp|00CA0C");
 		this->gtsSizeCloakSpellMega = find_form<SpellItem>("GTS.esp|00CA0E");
- 		this->gtsSizeCloakSpellMassive = find_form<SpellItem>("GTS.esp|08BD90");
- 		this->gtsSizeCloakSpellGigantic = find_form<SpellItem>("GTS.esp|08BD92");
- 		this->gtsSizeCloakSpellImpossible = find_form<SpellItem>("GTS.esp|08BD94");
+		this->gtsSizeCloakSpellMassive = find_form<SpellItem>("GTS.esp|08BD90");
+		this->gtsSizeCloakSpellGigantic = find_form<SpellItem>("GTS.esp|08BD92");
+		this->gtsSizeCloakSpellImpossible = find_form<SpellItem>("GTS.esp|08BD94");
 
 		this->gtsStaggerSpell = find_form<SpellItem>("GTS.esp|00A9AB");
 		///End Size-Damage

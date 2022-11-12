@@ -72,6 +72,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static MagicManager& GetSingleton() noexcept;
 
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 			virtual void Reset() override;
 

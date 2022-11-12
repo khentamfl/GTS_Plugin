@@ -27,10 +27,14 @@ namespace Gts {
 		return GetNode ? NodeScale : 1; // <- not used, causes troubles with quest progression. (Can't reach 1.44 for example when 1.50 is needed.)
 	}
 
+	std::string SizeManager::DebugName() {
+		return "SizeManager";
+	}
+
 	void SizeManager::Update() {
 		for (auto actor: find_actors()) {
 
-			bool Balance = false; // Toggles Balance Mode for the mod. False = off, true = on. 
+			bool Balance = false; // Toggles Balance Mode for the mod. False = off, true = on.
 
 			auto& runtime = Runtime::GetSingleton();
 			float Gigantism = this->GetEnchantmentBonus(actor)/100;
@@ -45,7 +49,7 @@ namespace Gts {
 			}
 			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
 			float TotalLimit = (GetLimit + Persistent_Size) * (1.0 + Gigantism);
-			
+
 			if (TotalLimit < 1.0) {
 				TotalLimit = 1.0;
 			}
@@ -68,7 +72,7 @@ namespace Gts {
 		this->GetData(actor).enchantmentBonus += amt;
 	}
 
-//=================Size Hunger
+	//=================Size Hunger
 
 	void SizeManager::SetSizeHungerBonus(Actor* actor, float amt) {
 		this->GetData(actor).SizeHungerBonus = amt;
@@ -83,7 +87,7 @@ namespace Gts {
 		this->GetData(actor).SizeHungerBonus += amt;
 	}
 
-//==================Growth Spurt
+	//==================Growth Spurt
 
 	void SizeManager::SetGrowthSpurt(Actor* actor, float amt) {
 		this->GetData(actor).GrowthSpurt = amt;
@@ -98,14 +102,13 @@ namespace Gts {
 		this->GetData(actor).GrowthSpurt += amt;
 	}
 
-//===============Balance Mode 
+	//===============Balance Mode
 	float SizeManager::BalancedMode()
 	{
 		if (Runtime::GetSingleton().BalanceMode->value >= 1.0) {
 			//log::info("Balance Mode True");
 			return 2.0;
-		}
-		else if (Runtime::GetSingleton().BalanceMode->value < 1.0) {
+		} else if (Runtime::GetSingleton().BalanceMode->value < 1.0) {
 			//log::info("Balance Mode False");
 			return 1.0;
 		}
@@ -118,9 +121,9 @@ namespace Gts {
 	}
 
 	void SizeManager::Reset() {
-			auto caster = PlayerCharacter::GetSingleton();
-			SetEnchantmentBonus(caster, 0.0);
-			SetGrowthSpurt(caster, 0.0);
-			//log::info("Resetting Enchantment and Growth Spurt");
-		}
+		auto caster = PlayerCharacter::GetSingleton();
+		SetEnchantmentBonus(caster, 0.0);
+		SetGrowthSpurt(caster, 0.0);
+		//log::info("Resetting Enchantment and Growth Spurt");
+	}
 }

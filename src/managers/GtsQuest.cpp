@@ -13,6 +13,9 @@ namespace Gts {
 		return instance;
 	}
 
+	std::string QuestManager::DebugName() {
+		return "QuestManager";
+	}
 
 	void QuestManager::Update() {
 	}

@@ -11,6 +11,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static QuestManager& GetSingleton() noexcept;
 
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 	};
 }

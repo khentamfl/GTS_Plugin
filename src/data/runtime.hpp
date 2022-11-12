@@ -12,6 +12,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static Runtime& GetSingleton() noexcept;
 
+			virtual std::string DebugName() override;
 			virtual void DataReady() override;
 
 			BGSSoundDescriptorForm* lFootstepL = nullptr;
@@ -158,12 +159,12 @@ namespace Gts {
 			TESGlobal * NPCSizeEffects = nullptr;
 			TESGlobal * CrushGrowthStorage = nullptr;
 			TESGlobal * IsFalling = nullptr;
-			
+
 
 			TESGlobal * ManualGrowthStorage = nullptr;
 			TESGlobal * BalanceMode = nullptr;
 			TESGlobal * HighHeelDamage = nullptr;
-			
+
 
 
 			///Camera
@@ -230,14 +231,14 @@ namespace Gts {
 
 			///Size-Damage
 			SpellItem* gtsSizeCloakSpellTiny = nullptr;
- 			SpellItem* gtsSizeCloakSpellSmall = nullptr;
- 			SpellItem* gtsSizeCloakSpellMedium = nullptr;
- 			SpellItem* gtsSizeCloakSpellLarge = nullptr;
- 			SpellItem* gtsSizeCloakSpellHuge = nullptr;
+			SpellItem* gtsSizeCloakSpellSmall = nullptr;
+			SpellItem* gtsSizeCloakSpellMedium = nullptr;
+			SpellItem* gtsSizeCloakSpellLarge = nullptr;
+			SpellItem* gtsSizeCloakSpellHuge = nullptr;
 			SpellItem* gtsSizeCloakSpellMega = nullptr;
- 			SpellItem* gtsSizeCloakSpellMassive = nullptr;
- 			SpellItem* gtsSizeCloakSpellGigantic = nullptr;
- 			SpellItem* gtsSizeCloakSpellImpossible = nullptr;
+			SpellItem* gtsSizeCloakSpellMassive = nullptr;
+			SpellItem* gtsSizeCloakSpellGigantic = nullptr;
+			SpellItem* gtsSizeCloakSpellImpossible = nullptr;
 
 			SpellItem* gtsStaggerSpell = nullptr;
 			///End Size-Damage

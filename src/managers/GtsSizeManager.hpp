@@ -21,6 +21,8 @@ namespace Gts {
 			[[nodiscard]] static SizeManager& GetSingleton() noexcept;
 
 			inline float GetRaceScale(Actor* actor);
+
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 
 			void Reset();
@@ -40,7 +42,7 @@ namespace Gts {
 			void ModGrowthSpurt(Actor* actor, float amt);
 
 			float BalancedMode();
-			
+
 		private:
 			std::map<Actor*, SizeManagerData> sizeData;
 	};

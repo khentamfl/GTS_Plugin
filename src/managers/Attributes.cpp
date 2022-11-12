@@ -80,7 +80,7 @@ namespace {
 		float base_speed = actor_data->base_walkspeedmult;
 		float bonusSpeedMax = runtime.bonusSpeedMax->value;
 		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
-		if (speedEffectiveSize > scale)	{
+		if (speedEffectiveSize > scale) {
 			speedEffectiveSize = scale;
 		}
 
@@ -179,7 +179,7 @@ namespace {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
-		
+
 		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 
@@ -198,31 +198,28 @@ namespace {
 		float size = get_target_scale(Player);
 
 		static Timer timer = Timer(0.05);
-		
+
 		if (size > 0) {
 
 			if (AllowTimeChange == 0.00) {
 				BoostSpeedMulti(Player, bonusSpeedMultiplier);
 			}
 			if (timer.ShouldRunFrame()) {
-			BoostHP(Player, bonusHPMultiplier/BalancedMode);
+				BoostHP(Player, bonusHPMultiplier/BalancedMode);
 
-			Augmentation(Player, BlockMessage);
+				Augmentation(Player, BlockMessage);
 
-			BoostCarry(Player, bonusCarryWeightMultiplier/BalancedMode);
+				BoostCarry(Player, bonusCarryWeightMultiplier/BalancedMode);
 
-			BoostJump(Player, bonusJumpHeightMultiplier);
+				BoostJump(Player, bonusJumpHeightMultiplier);
 
-			BoostAttackDmg(Player, bonusDamageMultiplier);
+				BoostAttackDmg(Player, bonusDamageMultiplier);
 
-			if (!Player->HasPerk(runtime.StaggerImmunity) && size > 1.33)
-			{
-				Player->AddPerk(runtime.StaggerImmunity);
-				return; 
-			}
-			else if (size < 1.33 && Player->HasPerk(runtime.StaggerImmunity))
-				{
-				Player->RemovePerk(runtime.StaggerImmunity);
+				if (!Player->HasPerk(runtime.StaggerImmunity) && size > 1.33) {
+					Player->AddPerk(runtime.StaggerImmunity);
+					return;
+				} else if (size < 1.33 && Player->HasPerk(runtime.StaggerImmunity)) {
+					Player->RemovePerk(runtime.StaggerImmunity);
 				}
 			}
 		}
@@ -248,8 +245,7 @@ namespace {
 			}
 			if (!npc->HasPerk(runtime.StaggerImmunity) && size > 1.33) {
 				npc->AddPerk(runtime.StaggerImmunity);
-			}
-			else if (size < 1.33 && npc->HasPerk(runtime.StaggerImmunity)) {
+			} else if (size < 1.33 && npc->HasPerk(runtime.StaggerImmunity)) {
 				npc->RemovePerk(runtime.StaggerImmunity);
 			}
 			BoostAttackDmg(npc, 1.0);
@@ -262,6 +258,10 @@ namespace Gts {
 	AttributeManager& AttributeManager::GetSingleton() noexcept {
 		static AttributeManager instance;
 		return instance;
+	}
+
+	std::string AttributeManager::DebugName() {
+		return "AttributeManager";
 	}
 
 	void AttributeManager::Update() {

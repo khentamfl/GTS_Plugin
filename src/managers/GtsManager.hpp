@@ -28,6 +28,7 @@ namespace Gts {
 			float experiment = 1.0;
 			inline static bool balancemode = false;
 
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 
 			// Reapply changes (used after reload events)

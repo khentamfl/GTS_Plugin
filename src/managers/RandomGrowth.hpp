@@ -12,6 +12,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static RandomGrowth& GetSingleton() noexcept;
 
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 			void CallShake(float value);
 

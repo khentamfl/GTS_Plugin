@@ -13,9 +13,10 @@ namespace Gts
 		public:
 			[[nodiscard]] static HitManager& GetSingleton() noexcept;
 
+			virtual std::string DebugName() override;
 			void HitEvent(const TESHitEvent* evt) override;
-			void Update();
-			private:
+			void Update() override;
+		private:
 			bool CanGrow = false;
 			bool Balance_CanShrink = false;
 			bool BlockEffect = false;
