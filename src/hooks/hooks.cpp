@@ -1,5 +1,6 @@
 #include "hooks/hooks.hpp"
 #include "hooks/main.hpp"
+#include "hooks/headTracking.hpp"
 #include "hooks/impact.hpp"
 #include "hooks/vm.hpp"
 #include "hooks/havok.hpp"
@@ -21,6 +22,7 @@ namespace Hooks
 		Hook_BGSImpactManager::Hook();
 		Hook_VM::Hook();
 		Hook_Havok::Hook(trampoline);
+		Hook_HeadTracking::Hook(trampoline);
 		//Hook_MagicTarget::Hook();
 		Hook_hkbBehaviorGraph::Hook();
 
