@@ -12,7 +12,7 @@ namespace Gts {
 			Profiler profiler;
 
 			// Get name used for debug prints
-			virtual std::string DebugName();
+			virtual std::string DebugName() = 0;
 
 			// Called on Live (non paused) gameplay
 			virtual void Update();
