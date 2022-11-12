@@ -41,6 +41,7 @@ namespace Gts {
 
 	class Persistent : public Gts::EventListener {
 		public:
+			virtual std::string DebugName() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 

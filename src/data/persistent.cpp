@@ -24,6 +24,10 @@ namespace Gts {
 		return instance;
 	}
 
+	std::string Persistent::DebugName() {
+		return "Persistent";
+	}
+
 	void Persistent::Reset() {
 		std::unique_lock lock(this->_lock);
 		this->_actor_data.clear();
