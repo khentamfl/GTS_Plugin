@@ -23,7 +23,7 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		auto ShrinkSound = runtime.shrinkSound;
-		float Volume = clamp(0.50, 1.0, get_visual_scale(caster));
+		float Volume = clamp(0.50, 1.0, get_target_scale(caster));
 		PlaySound(ShrinkSound, caster, Volume, 0.0);
 		//log::info("Shrink Buton Sound, actor: {}", caster->GetDisplayFullName());
 	}
@@ -39,7 +39,7 @@ namespace Gts {
 			return;
 		}
 
-		float caster_scale = get_visual_scale(caster);
+		float caster_scale = get_target_scale(caster);
 		float stamina = clamp(0.25, 1.0, GetStaminaPercentage(caster));
 
 		if (caster_scale > 0.25) {

@@ -25,7 +25,7 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		auto ShrinkSound = runtime.shrinkSound;
-		float Volume = clamp(0.50, 1.0, get_visual_scale(target));
+		float Volume = clamp(0.50, 1.0, get_target_scale(target));
 		PlaySound(ShrinkSound, target, Volume, 0.0);
 	}
 
@@ -44,7 +44,7 @@ namespace Gts {
 
 		if (this->timer.ShouldRun()) {
 			auto ShrinkSound = runtime.shrinkSound;
-			float Volume = clamp(0.15, 2.0, get_visual_scale(target)/4);
+			float Volume = clamp(0.15, 2.0, get_target_scale(target)/4);
 			PlaySound(ShrinkSound, target, Volume, 0.0);
 			GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.60);
 		}

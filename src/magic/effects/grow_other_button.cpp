@@ -28,7 +28,7 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		auto GrowthSound = runtime.growthSound;
-		float Volume = clamp(0.50, 2.0, get_visual_scale(target));
+		float Volume = clamp(0.50, 2.0, get_target_scale(target));
 		PlaySound(GrowthSound, target, Volume, 0.0);
 		log::info("Grow Other Button, actor: {}", target->GetDisplayFullName());
 	}
@@ -44,7 +44,7 @@ namespace Gts {
 		}
 		auto& runtime = Runtime::GetSingleton();
 		
-		float target_scale = get_visual_scale(target);
+		float target_scale = get_target_scale(target);
 		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
 
 		float bonus = 1.0;
