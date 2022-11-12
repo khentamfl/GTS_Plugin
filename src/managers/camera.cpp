@@ -230,7 +230,6 @@ namespace Gts {
 
 
 		bool ImProne = false;
-		float size = get_visual_scale(player);
 		float ScaleMethod = 0.0;
 		SizeMethod method = Persistent::GetSingleton().size_method;
 		if (method == SizeMethod::ModelScale) {
