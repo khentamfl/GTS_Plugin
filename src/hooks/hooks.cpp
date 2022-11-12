@@ -6,6 +6,7 @@
 #include "hooks/havok.hpp"
 #include "hooks/magicTarget.hpp"
 #include "hooks/hkbBehaviorGraph.hpp"
+#include "hooks/playerCamera.hpp"
 
 using namespace RE;
 
@@ -25,6 +26,7 @@ namespace Hooks
 		Hook_HeadTracking::Hook(trampoline);
 		//Hook_MagicTarget::Hook();
 		Hook_hkbBehaviorGraph::Hook();
+		Hook_PlayerCamera::Hook();
 
 		logger::info("Gts finished applying hooks...");
 	}
