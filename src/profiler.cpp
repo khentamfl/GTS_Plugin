@@ -1,5 +1,4 @@
-#pragma once
-
+#include "profiler.hpp"
 #include <chrono>
 
 namespace Gts {
