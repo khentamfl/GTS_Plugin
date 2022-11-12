@@ -216,12 +216,12 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		float size = get_visual_scale(player);
 		// Early exit
-		if (!this->CameraTimer.ShouldRunFrame()) {
-			return;
-		}
-		//if (fabs(size - this->last_scale) <= 1e-4) {
+		//if (!this->CameraTimer.ShouldRunFrame()) {
 			//return;
 		//}
+		if (fabs(size - this->last_scale) <= 1e-4) {
+			return;
+		}
 		this->last_scale = size;
 
 		auto& runtime = Runtime::GetSingleton();
