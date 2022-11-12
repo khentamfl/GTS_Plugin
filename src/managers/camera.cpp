@@ -214,6 +214,13 @@ namespace Gts {
 	// Run every frame
 	void CameraManager::Update() {
 		auto player = PlayerCharacter::GetSingleton();
+		float size = get_visual_scale(player);
+		// Early exit
+		if (fabs(size - this->last_scale) <= 1e-4) {
+			return;
+		}
+		this->last_scale = size;
+
 		auto& runtime = Runtime::GetSingleton();
 
 		auto Camera = PlayerCamera::GetSingleton();
