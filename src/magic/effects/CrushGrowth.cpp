@@ -57,6 +57,7 @@ namespace Gts {
 		auto caster = GetCaster();
 		if (caster != target) {
 			sizemanager.ModCrushGrowthStacks(caster, -1.0);
+			log::info("Removing Crush Growth Stacks from: {}", caster->GetDisplayFullName());
 		}
     }
 }

@@ -33,6 +33,7 @@ namespace Gts {
 	void VoreGrowth::OnUpdate() {
 		float BASE_POWER = 0.0000210;
 		auto& runtime = Runtime::GetSingleton();
+		auto sizemanager = SizeManager::GetSingleton();
 		auto caster = GetCaster();
 		auto target = GetTarget();
 		if (!caster || !target) {
@@ -44,6 +45,7 @@ namespace Gts {
 		if (caster->HasPerk(runtime.AdditionalAbsorption)) {
 			BASE_POWER *= 2.0;
 		}
+		BASE_POWER *= sizemanager.GetVoreStacks(caster);
 
 		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
 		{
@@ -60,6 +62,7 @@ namespace Gts {
 		auto target = GetTarget();
 		if (caster != target) {
 			sizemanager.ModVoreStacks(caster, -1.0);
+			log::info("Removing Vore Stacks from: {}", caster->GetDisplayFullName());
 		}
 		this->ScaleOnVore = 1.0;
 		this->BlockVoreMods = false;
