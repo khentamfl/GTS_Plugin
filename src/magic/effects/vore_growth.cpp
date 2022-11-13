@@ -22,7 +22,9 @@ namespace Gts {
 		auto target = GetTarget();
 		float Scale = get_target_scale(target);
 		if (caster != target) {
-			sizemanager.ModVoreStacks(caster, 1.0);
+			this->magnitude = GetActiveEffect()->magnitude;
+			float VoreStacks = this->magnitude;
+			sizemanager.SetVoreStacks(caster, VoreStacks);
 			log::info("Vore Caster: {}, Target: {}, Vore Stacks: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), sizemanager.GetVoreStacks(caster));
 		}
 
@@ -61,10 +63,6 @@ namespace Gts {
 		auto sizemanager = SizeManager::GetSingleton();
 		auto caster = GetCaster();
 		auto target = GetTarget();
-		if (caster != target && !caster->HasMagicEffect(runtime.GlobalVoreGrowth)) {
-			sizemanager.SetVoreStacks(caster, 0);
-			log::info("Removing Vore Stacks from: {}", caster->GetDisplayFullName());
-		}
 		this->ScaleOnVore = 1.0;
 		this->BlockVoreMods = false;
 	}
