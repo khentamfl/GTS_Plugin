@@ -30,9 +30,6 @@ namespace Gts {
 		if (!caster || !target) {
 			return;
 		}
-		if (caster == target) {
-			return;
-		}
 		float bonus = 1.0;
 		float GrowAmount = this->ScaleOnVore;
 		BASE_POWER *= GrowAmount;
@@ -44,7 +41,7 @@ namespace Gts {
 		{
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
-		//log::info("Vore Growth Actor: {}", caster->GetDisplayFullName());
+		log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
 		VoreAugmentations();
 		Grow(caster, 0, BASE_POWER * bonus);
 	}
