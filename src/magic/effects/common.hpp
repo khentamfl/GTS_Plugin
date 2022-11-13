@@ -248,6 +248,41 @@ namespace Gts {
 		return false;
 	}
 
+	inline void PrintCrushMessage(Actor* caster, Actor* target, float sizedifference, int random, float instacrushrequirement) {
+		if (sizedifference < instacrushrequirement && random < 4) {
+				ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+				return;
+			} 
+		else if (sizedifference < instacrushrequirement && random >= 4) {
+				ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+				return;
+			} 
+		else if (sizedifference < instacrushrequirement && random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s Crushed %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+				return;
+			} 	
+		else if (sizedifference < instacrushrequirement && random >= 8) {
+				ConsoleLog::GetSingleton()->Print("%s Was defeated by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+				return;
+			}	
+		else if (sizedifference >= instacrushrequirement && random < 4) {
+				ConsoleLog::GetSingleton()->Print("%s Crushed %s without noticing it", caster->GetDisplayFullName(), target->GetDisplayFullName());
+				return;
+			}
+		else if (sizedifference >= instacrushrequirement && random >= 4) {
+				ConsoleLog::GetSingleton()->Print("%s Accidentally Crushed %s", caster->GetDisplayFullName(), target->GetDisplayFullName());
+				return;
+			}	
+		else if (sizedifference >= instacrushrequirement && random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s was defeated by feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+				return;
+			}	
+		else if (sizedifference >= instacrushrequirement && random >= 8) {
+				ConsoleLog::GetSingleton()->Print("%s was turned into mush by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+				return;
+			}	
+		}
+
 	inline void CrushToNothing(Actor* caster, Actor* target) {
 		float target_scale = get_target_scale(target);
 		float caster_scale = get_target_scale(caster);
@@ -285,14 +320,6 @@ namespace Gts {
 		if (caster->formID == 0x14) {
 			AdjustSizeLimit(0.0417 * target_scale);
 		}
-			//if (runtime.BloodGushSound) {
-				//PlaySound(runtime.BloodGushSound, target, 1.0, 1.0);
-			//} else 
-			//{
-			//	log::info("SOUND NOT FOUND!");
-			//}
-
-
 
 		if (runtime.ExtraGrowth && caster->formID == 0x14) {
 			if (runtime.CrushGrowthStorage) {
@@ -313,39 +340,4 @@ namespace Gts {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
 		}
 	}
-
-	void PrintCrushMessage(Actor* caster, Actor* target, float sizedifference, int random, float instacrushrequirement) {
-		if (sizedifference < instacrushrequirement && random < 4) {
-				ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-				return;
-			} 
-		else if (sizedifference < instacrushrequirement && random >= 4) {
-				ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-				return;
-			} 
-		else if (sizedifference < instacrushrequirement && random >= 6) {
-				ConsoleLog::GetSingleton()->Print("%s Crushed %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-				return;
-			} 	
-		else if (sizedifference < instacrushrequirement && random >= 8) {
-				ConsoleLog::GetSingleton()->Print("%s Was defeated by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-				return;
-			}	
-		else if (sizedifference >= instacrushrequirement && random < 4) {
-				ConsoleLog::GetSingleton()->Print("%s Crushed %s without noticing it", caster->GetDisplayFullName(), target->GetDisplayFullName());
-				return;
-			}
-		else if (sizedifference >= instacrushrequirement && random >= 4) {
-				ConsoleLog::GetSingleton()->Print("%s Accidentally Crushed %s", caster->GetDisplayFullName(), target->GetDisplayFullName());
-				return;
-			}	
-		else if (sizedifference >= instacrushrequirement && random >= 6) {
-				ConsoleLog::GetSingleton()->Print("%s was defeated by feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-				return;
-			}	
-		else if (sizedifference >= instacrushrequirement && random >= 8) {
-				ConsoleLog::GetSingleton()->Print("%s was turned into mush by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-				return;
-			}	
-		}
 }
