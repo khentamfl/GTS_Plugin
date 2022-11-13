@@ -299,7 +299,7 @@ namespace Gts {
 		}
 		if (runtime.CrushGrowthSpell && player->HasPerk(runtime.GrowthPerk) && !target->IsEssential()) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
-			PrintCrushMessage(caster, caster, sizedifference, Random, instacrushrequirement);
+			PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement);
 		}
 		bool hasSMT = runtime.SmallMassiveThreat ? caster->HasMagicEffect(runtime.SmallMassiveThreat) : false;
 		if (get_visual_scale(caster) <= 12.0 && !caster->IsSprinting() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
