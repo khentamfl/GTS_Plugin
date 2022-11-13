@@ -41,7 +41,7 @@ namespace Gts {
 		{
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
-		log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
+		//log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
 		VoreAugmentations();
 		Grow(caster, 0, BASE_POWER * bonus);
 	}
