@@ -56,4 +56,14 @@ namespace Gts {
 
 	void CameraManager::Update() {
 	}
+
+	void CameraManager::AdjustUpDown(float amt) {
+	}
+	void CameraManager::ResetUpDown() {
+	}
+
+	void CameraManager::AdjustLeftRight(float amt) {
+	}
+	void CameraManager::ResetLeftRight() {
+	}
 }

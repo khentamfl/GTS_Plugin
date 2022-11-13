@@ -3,7 +3,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/vore.hpp"
-#include "managers/camera.hpp"
+#include "managers/altcamera.hpp"
 #include "magic/effects/common.hpp"
 #include "util.hpp"
 #include "scale/scale.hpp"
@@ -151,29 +151,24 @@ namespace Gts {
 
 		auto Camera = CameraManager::GetSingleton();
 		if (AltPressed == true && RightArrow == true && LeftArrow == true) {
-			Camera.AdjustSide(true, false, false); // Reset
-			//log::info("Alt + Left & Right: Reset");
+			Camera.ResetLeftRight();
 		}
 		if (AltPressed == true && RightArrow == true) {
-			Camera.AdjustSide(false, true, false); // Right
-			//log::info("Alt + Right");
+			Camera.AdjustLeftRight(1.0);
 		}
 		if (AltPressed == true && LeftArrow == true) {
-			Camera.AdjustSide(false, false, true); // Left
-			//log::info("Alt + Right");
+			Camera.AdjustLeftRight(-1.0);
 		} // Left or Right end
 
 
 		if (AltPressed == true && ArrowDown == true && ArrowUp == true) {
-			Camera.AdjustUpDown(true, false, false); // Reset
-			//log::info("Alt + Up & Down: Reset");
+			Camera.ResetUpDown();
 		}
 		if (AltPressed == true && ArrowUp == true) {
-			Camera.AdjustUpDown(false, true, false); // Up
-			//log::info("Alt + Up");
+			Camera.AdjustUpDown(1.0);
 		}
 		if (AltPressed == true && ArrowDown == true) {
-			Camera.AdjustUpDown(false, false, true); // Down
+			Camera.AdjustUpDown(-1.0);
 			//log::info("Alt + Down");
 		} // Up or Down end
 

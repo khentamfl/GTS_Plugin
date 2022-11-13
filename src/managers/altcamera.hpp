@@ -14,5 +14,11 @@ namespace Gts {
 			virtual std::string DebugName() override;
 			virtual void Update() override;
 			virtual void Start() override;
+
+			void AdjustUpDown(float amt);
+			void ResetUpDown();
+
+			void AdjustLeftRight(float amt);
+			void ResetLeftRight();
 	};
 }
