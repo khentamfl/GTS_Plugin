@@ -14,6 +14,8 @@ namespace Gts {
 		float HitGrowth = 0.0;
 		float GrowthTimer = 0.0;
 		float GrowthSpurt = 0.0;
+		float CrushGrowthStacks = 0.0;
+		float VoreStacks = 0.0;
 
 	};
 	class SizeManager : public EventListener {
