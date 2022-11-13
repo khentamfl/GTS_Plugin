@@ -21,8 +21,10 @@ namespace Gts {
 		auto caster = GetCaster();
 		auto target = GetTarget();
 		float Scale = get_target_scale(target);
-		sizemanager.ModVoreStacks(caster, 1.0);
-		log::info("Vore Caster: {}, Target: {}, Vore Stacks: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), sizemanager.GetVoreStacks(caster));
+		if (caster != target) {
+			sizemanager.ModVoreStacks(caster, 1.0);
+			log::info("Vore Caster: {}, Target: {}, Vore Stacks: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), sizemanager.GetVoreStacks(caster));
+		}
 
 		this->ScaleOnVore = Scale; 
 		this->BlockVoreMods = false;
@@ -55,7 +57,10 @@ namespace Gts {
 	void VoreGrowth::OnFinish() {
 		auto sizemanager = SizeManager::GetSingleton();
 		auto caster = GetCaster();
-		sizemanager.ModVoreStacks(caster, -1.0);
+		auto target = GetTarget();
+		if (caster != target) {
+			sizemanager.ModVoreStacks(caster, -1.0);
+		}
 		this->ScaleOnVore = 1.0;
 		this->BlockVoreMods = false;
 	}

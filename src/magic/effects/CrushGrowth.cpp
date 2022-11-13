@@ -22,7 +22,10 @@ namespace Gts {
 		auto target = GetTarget();
 		auto caster = GetCaster();
 		sizemanager.ModCrushGrowthStacks(caster, 1.0);
-		this->ScaleOnCrush = get_target_scale(target);
+		if (caster != target) {
+			this->ScaleOnCrush = get_target_scale(target);
+			log::info("Crush Receiver: {}, victim: {}, amount: {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), sizemanager.GetCrushGrowthStacks());
+		}
 	}
 
 	void CrushGrowth::OnUpdate() {
@@ -52,6 +55,8 @@ namespace Gts {
         auto sizemanager = SizeManager::GetSingleton();
 		auto target = GetTarget();
 		auto caster = GetCaster();
-		sizemanager.ModCrushGrowthStacks(caster, -1.0);
+		if (caster != target) {
+			sizemanager.ModCrushGrowthStacks(caster, -1.0);
+		}
     }
 }
