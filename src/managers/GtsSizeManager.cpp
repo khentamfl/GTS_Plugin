@@ -111,7 +111,7 @@ namespace Gts {
 	}
 
 	float SizeManager::GetCrushGrowthStacks(Actor* actor) {
-		float CGS = this->GetData(actor).CrushGrowthStacks;
+		float CGS = clamp(1.0, 100.0, this->GetData(actor).CrushGrowthStacks);
 		return CGS;
 	}
 
@@ -129,7 +129,7 @@ namespace Gts {
 	}
 
 	float SizeManager::GetVoreStacks(Actor* actor) {
-		float VS = this->GetData(actor).VoreStacks;
+		float VS = clamp(1.0, 100.0, this->GetData(actor).VoreStacks);
 		return VS;
 	}
 

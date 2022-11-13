@@ -52,10 +52,11 @@ namespace Gts {
 
 
     void CrushGrowth::OnFinish() {
+		auto& runtime = Runtime::GetSingleton();
         auto sizemanager = SizeManager::GetSingleton();
 		auto target = GetTarget();
 		auto caster = GetCaster();
-		if (caster != target) {
+		if (caster != target && !caster->HasMagicEffect(runtime.CrushGrowthMGEF)) {
 			sizemanager.ModCrushGrowthStacks(caster, -1.0);
 			log::info("Removing Crush Growth Stacks from: {}", caster->GetDisplayFullName());
 		}

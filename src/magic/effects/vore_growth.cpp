@@ -57,11 +57,12 @@ namespace Gts {
 	}
 
 	void VoreGrowth::OnFinish() {
+		auto& runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
 		auto caster = GetCaster();
 		auto target = GetTarget();
-		if (caster != target) {
-			sizemanager.ModVoreStacks(caster, -1.0);
+		if (caster != target && !caster->HasMagicEffect(runtime.GlobalVoreGrowth)) {
+			sizemanager.SetVoreStacks(caster, 0);
 			log::info("Removing Vore Stacks from: {}", caster->GetDisplayFullName());
 		}
 		this->ScaleOnVore = 1.0;
