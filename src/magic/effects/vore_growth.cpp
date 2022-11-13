@@ -40,7 +40,7 @@ namespace Gts {
 		float GrowAmount = this->ScaleOnVore;
 		BASE_POWER *= GrowAmount;
 
-		float VoreStacks = GetActiveEffect()->magnitude;
+		float VoreStacks = GetActiveEffect()->magnitude * 100;
 			
 
 		if (caster->HasPerk(runtime.AdditionalAbsorption)) {
