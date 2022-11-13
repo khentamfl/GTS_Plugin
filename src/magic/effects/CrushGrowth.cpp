@@ -1,4 +1,5 @@
 #include "magic/effects/CrushGrowth.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
@@ -17,17 +18,19 @@ namespace Gts {
 	}
 
 	void CrushGrowth::OnStart() {
-		auto CrushedFoe = GetTarget();
-		this->CrushGrowthAmount += 1.0;
-		this->ScaleOnCrush = get_visual_scale(CrushedFoe);
+		auto sizemanager = SizeManager::GetSingleton();
+		auto target = GetTarget();
+		auto caster = GetCaster();
+		sizemanager.ModCrushGrowthStacks(caster, 1.0);
+		this->ScaleOnCrush = get_target_scale(target);
 	}
 
 	void CrushGrowth::OnUpdate() {
 		auto& runtime = Runtime::GetSingleton();
+		auto sizemanager = SizeManager::GetSingleton();
 		auto caster = GetCaster();
         auto target = GetTarget();
 		auto player = PlayerCharacter::GetSingleton();
-		float CrushGrowthActivationCount = this->CrushGrowthAmount;
 
 		if (!caster) {
 			return;
@@ -35,12 +38,8 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-        if (CrushGrowthActivationCount <= 1.0)
-        
-        {CrushGrowthActivationCount = 1.0;} // Just to be safe
-
-        float GrowAmount = this->ScaleOnCrush;
-        float Rate = 0.00050 * GrowAmount * CrushGrowthActivationCount;
+        float GrowAmount = clamp(1.0, 1000.0, SizeManager.GetCrushGrowthStacks(caster));
+        float Rate = 0.00050 * GrowAmount * this->ScaleOnCrush;
         if (player->HasPerk(runtime.AdditionalAbsorption)) {
 			Rate *= 2.0;
 		}
@@ -50,7 +49,9 @@ namespace Gts {
 
 
     void CrushGrowth::OnFinish() {
-        this->CrushGrowthAmount = 0.0;
-		this->ScaleOnCrush = 1.0;
+        auto sizemanager = SizeManager::GetSingleton();
+		auto target = GetTarget();
+		auto caster = GetCaster();
+		sizemanager.ModCrushGrowthStacks(caster, -1.0);
     }
 }
