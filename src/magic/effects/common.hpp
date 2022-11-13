@@ -249,9 +249,13 @@ namespace Gts {
 	}
 
 	inline void CrushToNothing(Actor* caster, Actor* target) {
-		float target_scale = get_visual_scale(target);
+		float target_scale = get_target_scale(target);
+		float caster_scale = get_target_scale(caster);
 		auto& runtime = Runtime::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
+		float size_difference = caster_scale/target_scale;
+		float InstaCrushRequirement = 24.0;
+
 		if (!runtime.GrowthPerk) {
 			return;
 		}
@@ -267,7 +271,11 @@ namespace Gts {
 		}
 		if (runtime.CrushGrowthSpell && player->HasPerk(runtime.GrowthPerk) && !target->IsEssential()) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
-			ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			if (sizedifference < InstaCrushRequirement) {
+				ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			} else if (sizedifference >= InstaCrushRequirement) {
+				ConsoleLog::GetSingleton()->Print("%s Crushed %s without even noticing it", caster->GetDisplayFullName(), target->GetDisplayFullName());
+			}
 		}
 		bool hasSMT = runtime.SmallMassiveThreat ? caster->HasMagicEffect(runtime.SmallMassiveThreat) : false;
 		if (get_visual_scale(caster) <= 12.0 && !caster->IsSprinting() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {

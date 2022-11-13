@@ -24,7 +24,7 @@ namespace Gts {
 		sizemanager.ModCrushGrowthStacks(caster, 1.0);
 		if (caster != target) {
 			this->ScaleOnCrush = get_target_scale(target);
-			log::info("Crush Receiver: {}, victim: {}, amount: {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), sizemanager.GetCrushGrowthStacks());
+			log::info("Crush Receiver: {}, victim: {}, amount: {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), sizemanager.GetCrushGrowthStacks(caster));
 		}
 	}
 
