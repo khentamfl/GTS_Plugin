@@ -128,7 +128,7 @@ namespace Gts {
 		this->GetData(actor).VoreStacks = amt;
 	}
 
-	float SizeManager::GetCrushGrowthStacks(Actor* actor) {
+	float SizeManager::GetVoreStacks(Actor* actor) {
 		float VS = clamp(1.0, 100.0, this->GetData(actor).VoreStacks);
 		return VS;
 	}
