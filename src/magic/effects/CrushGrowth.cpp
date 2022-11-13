@@ -38,7 +38,7 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-        float GrowAmount = clamp(1.0, 1000.0, SizeManager.GetCrushGrowthStacks(caster));
+        float GrowAmount = clamp(1.0, 1000.0, sizemanager.GetCrushGrowthStacks(caster));
         float Rate = 0.00050 * GrowAmount * this->ScaleOnCrush;
         if (player->HasPerk(runtime.AdditionalAbsorption)) {
 			Rate *= 2.0;
