@@ -22,12 +22,8 @@ namespace Gts {
 		auto target = GetTarget();
 		float Scale = get_target_scale(target);
 		if (caster != target) {
-			float VoreStacks = GetActiveEffect()->magnitude;
-			sizemanager.SetVoreStacks(caster, VoreStacks);
-			log::info("Vore Caster: {}, Target: {}, Vore Stacks: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), sizemanager.GetVoreStacks(caster));
+			this->ScaleOnVore = Scale;
 		}
-
-		this->ScaleOnVore = Scale; 
 		this->BlockVoreMods = false;
 	}
 
@@ -43,18 +39,22 @@ namespace Gts {
 		float bonus = 1.0;
 		float GrowAmount = this->ScaleOnVore;
 		BASE_POWER *= GrowAmount;
+
+		float VoreStacks = GetActiveEffect()->magnitude;
+			
+
 		if (caster->HasPerk(runtime.AdditionalAbsorption)) {
 			BASE_POWER *= 2.0;
 		}
-		BASE_POWER *= sizemanager.GetVoreStacks(caster);
+		BASE_POWER *= VoreStacks;
 
 		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
 		{
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
-		//log::info("Vore Growth Actor: {}", caster->GetDisplayFullName());
 		VoreAugmentations();
 		Grow(caster, 0, BASE_POWER * bonus);
+		log::info("Vore Caster: {}, Target: {}, Vore Stacks: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), VoreStacks);
 	}
 
 	void VoreGrowth::OnFinish() {

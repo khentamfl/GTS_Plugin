@@ -21,12 +21,8 @@ namespace Gts {
 		auto sizemanager = SizeManager::GetSingleton();
 		auto target = GetTarget();
 		auto caster = GetCaster();
-		
 		if (caster != target) {
-			float CrushStacks = GetActiveEffect()->magnitude;
-			sizemanager.SetCrushGrowthStacks(caster, CrushStacks);
 			this->ScaleOnCrush = get_target_scale(target);
-			log::info("Crush Receiver: {}, victim: {}, amount: {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), sizemanager.GetCrushGrowthStacks(caster));
 		}
 	}
 
@@ -43,12 +39,17 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-        float GrowAmount = clamp(1.0, 1000.0, sizemanager.GetCrushGrowthStacks(caster));
+		float CrushStacks = GetActiveEffect()->magnitude;
+			
+
+        float GrowAmount = clamp(1.0, 1000.0, CrushStacks);
         float Rate = 0.00050 * GrowAmount * this->ScaleOnCrush;
+
         if (player->HasPerk(runtime.AdditionalAbsorption)) {
 			Rate *= 2.0;
 		}
-		
+
+		log::info("Crush Receiver: {}, victim: {}, amount: {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), CrushStacks);
         CrushGrow(caster, Rate, 0);
 	}
 
