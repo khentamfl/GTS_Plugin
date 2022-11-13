@@ -22,8 +22,7 @@ namespace Gts {
 		auto target = GetTarget();
 		float Scale = get_target_scale(target);
 		if (caster != target) {
-			this->magnitude = GetActiveEffect()->magnitude;
-			float VoreStacks = this->magnitude;
+			float VoreStacks = GetActiveEffect()->magnitude;
 			sizemanager.SetVoreStacks(caster, VoreStacks);
 			log::info("Vore Caster: {}, Target: {}, Vore Stacks: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), sizemanager.GetVoreStacks(caster));
 		}

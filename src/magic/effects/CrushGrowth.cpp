@@ -23,8 +23,7 @@ namespace Gts {
 		auto caster = GetCaster();
 		
 		if (caster != target) {
-			this->magnitude = GetActiveEffect()->magnitude;
-			float CrushStacks = this->magnitude;
+			float CrushStacks = GetActiveEffect()->magnitude;
 			sizemanager.SetCrushGrowthStacks(caster, CrushStacks);
 			this->ScaleOnCrush = get_target_scale(target);
 			log::info("Crush Receiver: {}, victim: {}, amount: {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), sizemanager.GetCrushGrowthStacks(caster));
