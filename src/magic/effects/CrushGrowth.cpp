@@ -17,40 +17,42 @@ namespace Gts {
 	}
 
 	void CrushGrowth::OnStart() {
-		auto sizemanager = SizeManager::GetSingleton();
-		auto target = GetTarget();
-		auto caster = GetCaster();
-		this->ScaleOnCrush = get_target_scale(target);
+		auto CrushedFoe = GetTarget();
+		this->CrushGrowthAmount += 1.0;
+		this->ScaleOnCrush = get_visual_scale(CrushedFoe);
 	}
 
 	void CrushGrowth::OnUpdate() {
 		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
         auto target = GetTarget();
-		auto player = PlayerCharacter::GetSingleton();
+		float CrushGrowthActivationCount = this->CrushGrowthAmount;
 
 		if (!caster) {
 			return;
 		}
 		if (!target) {
 			return;
-		}		
-
-        float GrowAmount = clamp(1.0, 1000.0, CrushStacks);
-        float Rate = 0.00050 * GrowAmount * this->ScaleOnCrush;
-
-        if (player->HasPerk(runtime.AdditionalAbsorption)) {
-			Rate *= 2.0;
 		}
+        if (CrushGrowthActivationCount <= 1.0) {
+			CrushGrowthActivationCount = 1.0;
+		} // Just to be safe
 
-        CrushGrow(caster, 0, Rate);
+        float GrowAmount = this->ScaleOnCrush;
+        float Rate = 0.00050 * GrowAmount * CrushGrowthActivationCount;
+        if (caster->HasPerk(runtime.AdditionalAbsorption))
+		{Rate *= 2.0;}
+
+
+		float size = get_visual_scale(caster); 
+		float size2 = get_visual_scale(target);
+		//log::info("Caster {}, target {}, GrowAmount {}, CrushGrowth Amount {}", size, size2, GrowAmount, CrushGrowthAmount);
+        CrushGrow(caster, Rate, 0);
 	}
 
 
     void CrushGrowth::OnFinish() {
-		auto& runtime = Runtime::GetSingleton();
-        auto sizemanager = SizeManager::GetSingleton();
-		auto target = GetTarget();
-		auto caster = GetCaster();
+        this->CrushGrowthAmount = 0.0;
+		this->ScaleOnCrush = 1.0;
     }
 }
