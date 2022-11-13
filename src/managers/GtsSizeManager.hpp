@@ -43,14 +43,6 @@ namespace Gts {
 			float GetGrowthSpurt(Actor* actor);
 			void ModGrowthSpurt(Actor* actor, float amt);
 
-			void SetCrushGrowthStacks(Actor* actor, float amt);
-			float GetCrushGrowthStacks(Actor* actor);
-			void ModCrushGrowthStacks(Actor* actor, float amt);
-
-			void SetVoreStacks(Actor* actor, float amt);
-			float GetVoreStacks(Actor* actor);
-			void ModVoreStacks(Actor* actor, float amt);
-
 			float BalancedMode();
 
 		private:

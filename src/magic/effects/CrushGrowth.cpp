@@ -1,5 +1,4 @@
 #include "magic/effects/CrushGrowth.hpp"
-#include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
@@ -21,14 +20,11 @@ namespace Gts {
 		auto sizemanager = SizeManager::GetSingleton();
 		auto target = GetTarget();
 		auto caster = GetCaster();
-		if (caster != target) {
-			this->ScaleOnCrush = get_target_scale(target);
-		}
+		this->ScaleOnCrush = get_target_scale(target);
 	}
 
 	void CrushGrowth::OnUpdate() {
 		auto& runtime = Runtime::GetSingleton();
-		auto sizemanager = SizeManager::GetSingleton();
 		auto caster = GetCaster();
         auto target = GetTarget();
 		auto player = PlayerCharacter::GetSingleton();
@@ -38,9 +34,7 @@ namespace Gts {
 		}
 		if (!target) {
 			return;
-		}
-		float CrushStacks = GetActiveEffect()->magnitude;
-			
+		}		
 
         float GrowAmount = clamp(1.0, 1000.0, CrushStacks);
         float Rate = 0.00050 * GrowAmount * this->ScaleOnCrush;
@@ -49,8 +43,7 @@ namespace Gts {
 			Rate *= 2.0;
 		}
 
-		log::info("Crush Receiver: {}, victim: {}, amount: {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), CrushStacks);
-        CrushGrow(caster, Rate, 0);
+        CrushGrow(caster, 0, Rate);
 	}
 
 

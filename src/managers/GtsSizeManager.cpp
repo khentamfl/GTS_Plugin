@@ -103,43 +103,6 @@ namespace Gts {
 	}
 
 
-
-	//=================Crush Growth Stacks
-
-	void SizeManager::SetCrushGrowthStacks(Actor* actor, float amt) {
-		this->GetData(actor).CrushGrowthStacks = amt;
-	}
-
-	float SizeManager::GetCrushGrowthStacks(Actor* actor) {
-		float CGS = clamp(1.0, 100.0, this->GetData(actor).CrushGrowthStacks);
-		return CGS;
-	}
-
-	void SizeManager::ModCrushGrowthStacks(Actor* actor, float amt) {
-		this->GetData(actor).CrushGrowthStacks += amt;
-	}
-
-
-
-
-	//=================Vore Stacks
-
-	void SizeManager::SetVoreStacks(Actor* actor, float amt) {
-		this->GetData(actor).VoreStacks = amt;
-	}
-
-	float SizeManager::GetVoreStacks(Actor* actor) {
-		float VS = clamp(1.0, 100.0, this->GetData(actor).VoreStacks);
-		return VS;
-	}
-
-	void SizeManager::ModVoreStacks(Actor* actor, float amt) {
-		this->GetData(actor).VoreStacks += amt;
-	}
-
-
-
-
 	//===============Balance Mode
 	float SizeManager::BalancedMode()
 	{

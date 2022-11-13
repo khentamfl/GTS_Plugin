@@ -56,7 +56,7 @@ namespace Gts {
 		DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * bonus * TimeScale());
 
 		
-		Grow(target, 0.0030 * magicka * bonus, 0.0);
+		Grow(target, 0.0, 0.0030 * magicka * bonus);
 		GrowthTremorManager::GetSingleton().CallRumble(target, caster, 1.0);
 	}
 }

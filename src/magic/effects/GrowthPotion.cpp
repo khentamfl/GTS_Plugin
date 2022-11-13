@@ -59,7 +59,7 @@ namespace Gts {
 
 		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 
-		Grow(caster, 0.0, Power);
+		Grow(caster, power, 0.0);
 	}
 
 	void GrowthPotion::OnFinish() {
