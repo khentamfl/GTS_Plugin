@@ -46,41 +46,57 @@ namespace {
 		playerCamera->ToggleFreeCameraMode(false);
 	}
 
-	//void PlayAnimation(Actor* actor, std::string_view animName) {
-	//	actor->NotifyAnimationGraph(animName);
-	//}
+	void PlayAnimation(Actor* actor, std::string_view animName) {
+		actor->NotifyAnimationGraph(animName);
+	}
 
-	//void TransferInventory(Actor* from, Actor* to) {
-	//	for (auto &[a_object, pair]: from->GetInventory()) {
-	//		RE::ExtraDataList* extra = new RE::ExtraDataList();
-	//		extra->SetOwner(to);
-	//		auto a_count = pair.first;
-	//		to->AddObjectToContainer(a_object, a_extraList, a_count, from);
-	//	}
-	//}
+	void TransferInventory(Actor* from, Actor* to) {
+		for (auto &[a_object, pair]: from->GetInventory()) {
+			RE::ExtraDataList* a_extraList = new RE::ExtraDataList();
+			a_extraList->SetOwner(to);
+			auto a_count = pair.first;
+			to->AddObjectToContainer(a_object, a_extraList, a_count, from);
+		}
+	}
 
-	//void Disintegrate(Actor* actor) {
-	//	actor->criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
-	//}
+	void Disintegrate(Actor* actor) {
+		actor->criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+	}
 
-	//void SetRestrained(Actor* actor) {
-	//	actor->actorState1.lifeState = ACTOR_LIFE_STATE::kRestrained;
-	//}
+	void SetRestrained(Actor* actor) {
+		actor->actorState1.lifeState = ACTOR_LIFE_STATE::kRestrained;
+	}
 
-	//void SetDontMove(Actor* actor) {
-	//	const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-	//	auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-	//	if (vm) {
-	//		RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-	//		auto args = RE::MakeFunctionArguments(std::move(true));
-	//		vm->DispatchMethodCall1(actor, "setDontMove", args, callback);
-	//	}
-	//}
+	using ObjectPtr = RE::BSTSmartPointer<RE::BSScript::Object>;
+	inline ObjectPtr GetObjectPtr(RE::TESForm* a_form, const char* a_class, bool a_create)
+	{
+		auto vm = VM::GetSingleton();
+		auto handle = GetHandle(a_form);
 
-	//void PlayImpactEffect(Actor* actor, BGSImpactDataSet* impactEffect, std::string_view node, float x, float y, float z, float length, bool applyRotation, bool useLocalRotation) {
-	//	auto impact = BGSImpactManager::GetSingleton();
-	//	impact->PlayImpactEffect(actor, BGSImpactDataSet* a_impactEffect, node, NiPoint3 {x, y, z}, length, applyRotation, useLocalRotation);
-	//}
+		ObjectPtr object = nullptr;
+		bool found = vm->FindBoundObject(handle, a_class, object);
+		if (!found && a_create) {
+			vm->CreateObject2(a_class, object);
+			vm->BindObject(object, handle, false);
+		}
+
+		return object;
+	}
+
+	void SetDontMove(Actor* actor) {
+		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+		if (vm) {
+			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+			auto args = RE::MakeFunctionArguments(std::move(true));
+			vm->DispatchMethodCall(GetObjectPtr(actor), "setDontMove", args, callback);
+		}
+	}
+
+	void PlayImpactEffect(Actor* actor, BGSImpactDataSet* a_impactEffect, std::string_view node, NiPoint3& direction, float length, bool applyRotation, bool useLocalRotation) {
+		auto impact = BGSImpactManager::GetSingleton();
+		impact->PlayImpactEffect(actor, a_impactEffect, node, direction, length, applyRotation, useLocalRotation);
+	}
 }
 
 namespace Gts {
