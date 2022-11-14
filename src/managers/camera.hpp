@@ -46,6 +46,7 @@ namespace Gts {
 
 			void ApplyCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
 			void ApplyFeetCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
+			void UpdateFirstPerson(bool ImProne, float scale);
 		private:
 			float last_scale = -1.0;
 			inline static float UpDown = 1.0;  //< -- Inline static float is a MUST. Else it doesn't work, for some reason.
