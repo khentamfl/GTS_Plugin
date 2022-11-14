@@ -146,7 +146,10 @@ namespace Gts {
 		auto& runtime = Runtime::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
 		float scale = get_target_scale(player);
-		ProneOffsetFP = clamp(0.25, 20.0, 3.0 * runtime.ProneOffsetFP->value);
+		float ProneOffsetFP = 1.0;
+		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
+			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * runtime.ProneOffsetFP->value);
+		}
 		set_fp_scale(player, scale, ProneOffsetFP);
 	}
 
