@@ -147,7 +147,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		float scale = get_target_scale(player);
 		float ProneOffsetFP = 1.0;
-		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
+		if (player->IsSneaking() == true && ImProne == true) {
 			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * runtime.ProneOffsetFP->value);
 		}
 		set_fp_scale(player, scale, ProneOffsetFP);
@@ -177,7 +177,6 @@ namespace Gts {
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
-			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * runtime.ProneOffsetFP->value);
 			float ProneCalc = CameraManager::GetfOverShoulderPosZ(); //Utility.getINIFloat("fOverShoulderPosZ:Camera")
 			float ProneCalcC = CameraManager::GetfOverShoulderCombatPosZ(); //Utility.getINIFloat("fOverShoulderCombatPosZ:Camera")
 			CameraManager::SetfOverShoulderPosZ(ProneCalc * (1.0 - runtime.CalcProne->value)); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
@@ -203,7 +202,6 @@ namespace Gts {
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
-			
 			float ProneCalc = CameraManager::GetfOverShoulderPosZ(); //Utility.getINIFloat("fOverShoulderPosZ:Camera")
 			float ProneCalcC = CameraManager::GetfOverShoulderCombatPosZ(); //Utility.getINIFloat("fOverShoulderCombatPosZ:Camera")
 			CameraManager::SetfOverShoulderPosZ(ProneCalc * (1.0 - (runtime.CalcProne->value))); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
@@ -286,7 +284,7 @@ namespace Gts {
 			ImProne = false;
 		}
 
-		UpdateFirstPerson(ImProne, size); // Update FP camera
+		UpdateFirstPerson(ImProne); // Update FP camera
 
 		if (EnableCamera < 1.0) { // If Enable Automatic Camera is disabled.
 			return;
