@@ -67,17 +67,18 @@ namespace {
 		actor->actorState1.lifeState = ACTOR_LIFE_STATE::kRestrained;
 	}
 
+	using VM = RE::BSScript::Internal::VirtualMachine;
 	using ObjectPtr = RE::BSTSmartPointer<RE::BSScript::Object>;
 	inline RE::VMHandle GetHandle(RE::TESForm* a_form)
 	{
-		auto vm = RE::SkyrimVM::GetSingleton();
+		auto vm = VM::GetSingleton();
 		auto policy = vm->GetObjectHandlePolicy();
 		return policy->GetHandleForObject(a_form->GetFormType(), a_form);
 	}
 
 	inline ObjectPtr GetObjectPtr(RE::TESForm* a_form, const char* a_class, bool a_create)
 	{
-		auto vm = RE::SkyrimVM::GetSingleton();
+		auto vm = VM::GetSingleton();
 		auto handle = GetHandle(a_form);
 
 		ObjectPtr object = nullptr;
