@@ -68,9 +68,16 @@ namespace {
 	}
 
 	using ObjectPtr = RE::BSTSmartPointer<RE::BSScript::Object>;
+	inline RE::VMHandle GetHandle(RE::TESForm* a_form)
+	{
+		auto vm = RE::SkyrimVM::GetSingleton();
+		auto policy = vm->GetObjectHandlePolicy();
+		return policy->GetHandleForObject(a_form->GetFormType(), a_form);
+	}
+
 	inline ObjectPtr GetObjectPtr(RE::TESForm* a_form, const char* a_class, bool a_create)
 	{
-		auto vm = VM::GetSingleton();
+		auto vm = RE::SkyrimVM::GetSingleton();
 		auto handle = GetHandle(a_form);
 
 		ObjectPtr object = nullptr;
@@ -89,7 +96,8 @@ namespace {
 		if (vm) {
 			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
 			auto args = RE::MakeFunctionArguments(std::move(true));
-			vm->DispatchMethodCall(GetObjectPtr(actor), "setDontMove", args, callback);
+			auto actorPtr = GetObjectPtr(actor, "Actor", false);
+			vm->DispatchMethodCall(actorPtr, "setDontMove", args, callback);
 		}
 	}
 
