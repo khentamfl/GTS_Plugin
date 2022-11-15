@@ -137,6 +137,16 @@ namespace Gts {
 		}
 	}
 
+	inline void TriggerScreenBlood(int aiValue) {
+		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+		if (vm) {
+			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+			auto args = RE::MakeFunctionArguments(std::move(aiValue));
+			vm->DispatchStaticCall("Game", "TriggerScreenBlood", args, callback);
+		}
+	}
+
 	inline void shake_controller(float left_intensity, float right_intensity, float duration) {
 		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
 		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
