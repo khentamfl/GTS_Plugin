@@ -25,23 +25,23 @@ namespace Gts {
 		auto base_spell = GetBaseEffect();
 		auto& runtime = Runtime::GetSingleton();
 
-		if (base_spell == runtime.ShrinkEnemy) {
+		if (base_spell == runtime.GetMagicEffect("ShrinkEnemy")) {
 			this->power = SHRINK_POWER;
 			this->efficiency = SHRINK_EFFIC;
-		} else if (base_spell == runtime.ShrinkEnemyAOE) {
+		} else if (base_spell == runtime.GetMagicEffect("ShrinkEnemyAOE")) {
 			this->power = SHRINK_AOE_POWER;
 			this->efficiency = SHRINK_AOE_EFFIC;
-		} else if (base_spell == runtime.ShrinkEnemyAOEMast) {
+		} else if (base_spell == runtime.GetMagicEffect("ShrinkEnemyAOEMast")) {
 			// ShrinkEnemyAOEMast
 			this->power = SHRINK_AOE_MASTER_POWER;
 			this->efficiency = SHRINK_AOE_MASTER_EFFIC;
 		}
-		else if (base_spell == runtime.ShrinkBolt) {
+		else if (base_spell == runtime.GetMagicEffect("ShrinkBolt")) {
 			// ShrinkBolt
 			this->power = SHRINK_BOLT_POWER;
 			this->efficiency = SHRINK_BOLT_EFFIC;
 		}
-		else if (base_spell == runtime.ShrinkStorm) {
+		else if (base_spell == runtime.GetMagicEffect("ShrinkStorm")) {
 			// ShrinkBolt
 			this->power = SHRINK_STORM_POWER;
 			this->efficiency = SHRINK_STORM_EFFIC;
@@ -50,7 +50,7 @@ namespace Gts {
 
 	bool ShrinkFoe::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.ShrinkEnemy || effect == runtime.ShrinkEnemyAOE || effect == runtime.ShrinkEnemyAOEMast || effect == runtime.ShrinkBolt || effect == runtime.ShrinkStorm);
+		return (effect == runtime.GetMagicEffect("ShrinkEnemy") || effect == runtime.GetMagicEffect("ShrinkEnemyAOE") || effect == runtime.GetMagicEffect("ShrinkEnemyAOEMast") || effect == runtime.GetMagicEffect("ShrinkBolt") || effect == runtime.GetMagicEffect("ShrinkStorm"));
 	}
 
 	void ShrinkFoe::OnUpdate() {
@@ -73,7 +73,7 @@ namespace Gts {
 			SizeDifference = clamp(1.0, 8.0, (get_target_scale(caster)/get_target_scale(target))/2);
 		}
 		
-		bool has_smt = caster->HasMagicEffect(Runtime::GetSingleton().SmallMassiveThreat);
+		bool has_smt = runtime.HasMagicEffect(caster, "SmallMassiveThreat");
 		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();

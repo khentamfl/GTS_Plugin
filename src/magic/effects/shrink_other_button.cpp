@@ -14,7 +14,7 @@ namespace Gts {
 	bool ShrinkOtherButton::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
 
-		return effect == runtime.ShrinkAllySizeButton;
+		return effect == runtime.GetMagicEffect("ShrinkAllySizeButton");
 	}
 
 	void ShrinkOtherButton::OnStart() {
@@ -23,9 +23,8 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		auto ShrinkSound = runtime.shrinkSound;
 		float Volume = clamp(0.50, 1.0, get_target_scale(target));
-		PlaySound(ShrinkSound, target, Volume, 0.0);
+		runtime.PlaySound("shrinkSound", target, Volume, 0.0);
 		log::info("Shrink Other Button, actor: {}", target->GetDisplayFullName());
 	}
 	
@@ -46,7 +45,7 @@ namespace Gts {
 		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
 
 		float bonus = 1.0;
-		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
+		if (runtime.HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion"))
 		{
 			bonus = get_target_scale(target) * 0.25 + 0.75;
 		}
