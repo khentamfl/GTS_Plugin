@@ -17,6 +17,7 @@ namespace Gts {
 
 	struct CrushData {
 		CrushData();
+		CrushData(Actor* giant, Actor* small);
 
 		CrushState state;
 		Timer delay;
