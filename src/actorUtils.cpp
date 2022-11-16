@@ -38,12 +38,12 @@ namespace Gts {
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
 		for (auto &[a_object, invData]: from->GetInventory()) {
 			const auto& [count, entry] = invData;
-			if (!removeQuestItems && entry.IsQuestObject()) {
+			if (!removeQuestItems && entry->IsQuestObject()) {
 				continue;
 			}
 			RE::ExtraDataList* a_extraList = new RE::ExtraDataList();
 			if (keepOwnership) {
-				a_extraList->SetOwner(entry.GetOwner());
+				a_extraList->SetOwner(entry->GetOwner());
 			} else {
 				a_extraList->SetOwner(to);
 			}
@@ -56,7 +56,7 @@ namespace Gts {
 	}
 
 	void UnDisintegrate(Actor* actor) {
-		actor->criticalStage.set(ACTOR_CRITICAL_STAGE::kNone);
+		actor->criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 	}
 
 	void SetRestrained(Actor* actor) {
