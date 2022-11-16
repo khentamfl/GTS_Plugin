@@ -64,7 +64,7 @@ namespace Gts {
 			if (Runtime::HasPerk(caster, "ExtraGrowthMax")) {
 				this->grow_limit = 2.67; // NOLINT
 				this->power *= 2.0; // NOLINT
-			} else if (Runtime(caster, "ExtraGrowth")) {
+			} else if (Runtime::HasPerk(caster, "ExtraGrowth")) {
 				this->grow_limit = 2.34; // NOLINT
 			} else {
 				this->grow_limit = 2.01; // NOLINT
@@ -72,7 +72,7 @@ namespace Gts {
 		}
 
 		auto sizemanager = SizeManager::GetSingleton();
-		float AdjustLimit = clamp(1.0, 12.0, Runtime::GetFloatOr(CrushGrowthStorage, 0.0) + 1.0);
+		float AdjustLimit = clamp(1.0, 12.0, Runtime::GetFloatOr("CrushGrowthStorage", 0.0) + 1.0);
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(caster)/100;
 		float GetGrowthSpurt = SizeManager::GetSingleton().GetGrowthSpurt(caster);
 		float scale = get_target_scale(caster);

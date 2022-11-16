@@ -9,7 +9,7 @@ namespace Gts {
 	Absorb::Absorb(ActiveEffect* effect) : Magic(effect) {
 		auto base_spell = GetBaseEffect();
 
-		this->true_absorb = (base_spell == Runtime::GetSpell("TrueAbsorb"));
+		this->true_absorb = (base_spell == Runtime::GetMagicEffect("TrueAbsorb"));
 	}
 
 	std::string Absorb::GetName() {
