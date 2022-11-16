@@ -32,18 +32,20 @@ namespace {
 		// If you have small massive threat then the max value is ALWAYS 4
 
 		// S.Answer: It's supposed to proc more often with SMT active, so having it always 4 is fine ^
-		if (MaxValue <= 4 || giant->HasMagicEffect(GtsSmallMassiveThreatMe)) {
+		if (MaxValue <= 4 || Runtime::HasMagicEffect(giant, "GtsSmallMassiveThreatMe")) {
 			MaxValue = 4;
 		}
-		int JumpFearChance = rand() % MaxValue;
-		if (JumpFearChance <= 0 ) {
-			auto event = RegistrationSet("CastFear");
-			event.SendEvent();
+		int FearChance = rand() % MaxValue;
+		if (FearChance <= 0 ) {
+			//auto event = RegistrationSet("CastFear");
+			//event.SendEvent();
+			Runtime::CastSpell(actor, actor, "GtsVoreFearSpell");
+			// Should cast fear 
 		}
 	}
 
 	void PleasureText(Actor* actor) {
-		Pleasure = rand() % 5;
+		int Pleasure = rand() % 5;
 		if (Pleasure <= 0) {
 			if (actor.formID == 0x14) {
 				Notify("Crushing your foes feels good and makes you bigger");
@@ -54,7 +56,7 @@ namespace {
 	}
 
 	void GrowAfterTheKill(Actor* actor) {
-		if (!Runtime::GetBool(GtsDecideGrowth) || Runtime::HasMagicEffect(actor, "GtsSmallMassiveThreat")) {
+		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(actor, "GtsSmallMassiveThreat")) {
 			return;
 		} else if (Runtime::HasPerk(actor, "GtsCrushGrowth") && Runtime::GetInt("GtsDecideGrowth") >= 1 ) {
 			Runtime::CastSpell(actor, actor, "GtsSmallCrushGrowthSpell");
