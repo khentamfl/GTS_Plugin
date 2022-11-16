@@ -89,11 +89,6 @@ namespace Gts {
 		}
 	}
 
-	void PlayImpactEffect(Actor* actor, BGSImpactDataSet* a_impactEffect, std::string_view node, NiPoint3& direction, float length, bool applyRotation, bool useLocalRotation) {
-		auto impact = BGSImpactManager::GetSingleton();
-		impact->PlayImpactEffect(actor, a_impactEffect, node, direction, length, applyRotation, useLocalRotation);
-	}
-
 	void KnockAreaEffect(Actor* actor, float afMagnitude, float afRadius) {
 		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
 		auto vm = skyrimVM ? skyrimVM->impl : nullptr;

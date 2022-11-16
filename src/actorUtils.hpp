@@ -14,7 +14,5 @@ namespace Gts {
 	void SetDontMove(Actor* actor);
 	void SetMove(Actor* actor);
 
-	void PlayImpactEffect(Actor* actor, BGSImpactDataSet* a_impactEffect, std::string_view node, NiPoint3& direction, float length, bool applyRotation, bool useLocalRotation);
-
 	void KnockAreaEffect(Actor* actor, float afMagnitude, float afRadius);
 }

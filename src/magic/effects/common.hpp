@@ -20,29 +20,20 @@ namespace Gts {
 
 	inline void AdjustSizeLimit(float value)  // A function that adjusts Size Limit (Globals)
 	{
-		auto& runtime = Runtime::GetSingleton();
+		float progressionMultiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 
-		float progressionMultiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
-
-		auto globalMaxSizeCalc = runtime.GlobalMaxSizeCalc;
-		if (globalMaxSizeCalc) {
-			float valueGlobalMaxSizeCalc = globalMaxSizeCalc->value;
-			if (valueGlobalMaxSizeCalc < 10.0) {
-				globalMaxSizeCalc->value += (value * 50 * progressionMultiplier * TimeScale()); // Always apply it
-			}
+		auto globalMaxSizeCalc = Runtime::GetFloat("GlobalMaxSizeCalc");
+		if (globalMaxSizeCalc < 10.0) {
+			Runtime::SetFloat("GlobalMaxSizeCalc", globalMaxSizeCalc + (value * 50 * progressionMultiplier * TimeScale())); // Always apply it
 		}
 
-		auto selectedFormula = runtime.SelectedSizeFormula;
+		auto selectedFormula = Runtime::GetInt("SelectedSizeFormula");
 		if (selectedFormula) {
-			if (runtime.SelectedSizeFormula->value >= 2.0) {
-				auto globalMassSize = runtime.MassBasedSizeLimit; // <- Applies it
-				if (globalMassSize) {
-					auto sizeLimit = runtime.sizeLimit;
-					if (sizeLimit) {
-						if (globalMassSize->value < sizeLimit->value) {
-							globalMassSize->value += value * progressionMultiplier * TimeScale();
-						}
-					}
+			if (selectedFormula >= 2.0) {
+				auto globalMassSize = Runtime::GetFloat("MassBasedSizeLimit"); // <- Applies it
+				auto sizeLimit = Runtime::GetFloat("sizeLimit");
+				if (globalMassSize < sizeLimit) {
+					Runtime::SetFloat("globalMassSize", globalMassSize + value * progressionMultiplier * TimeScale());
 				}
 			}
 		}
@@ -50,10 +41,9 @@ namespace Gts {
 
 	inline float CalcEffeciency(Actor* caster, Actor* target) {
 		const float DRAGON_PEANLTY = 0.14;
-		auto& runtime = Runtime::GetSingleton();
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
+		float progression_multiplier = Runtime::GetFloat("ProgressionMultiplier", 1.0);
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
 		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
@@ -61,10 +51,8 @@ namespace Gts {
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
 			efficiency *= DRAGON_PEANLTY;
 		}
-		if (runtime.ResistShrinkPotion) {
-			if (target->HasMagicEffect(runtime.ResistShrinkPotion)) {
-				efficiency *= 0.25;
-			}
+		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
+			efficiency *= 0.25;
 		}
 
 		efficiency *= GigantismCaster * GigantismTarget * SizeHunger;
@@ -74,10 +62,9 @@ namespace Gts {
 
 	inline float CalcEffeciency_NoProgression(Actor* caster, Actor* target) {
 		const float DRAGON_PEANLTY = 0.14;
-		auto& runtime = Runtime::GetSingleton();
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
+		float progression_multiplier = Runtime::GetFloat("ProgressionMultiplier", 1.0);
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
 		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
@@ -86,10 +73,8 @@ namespace Gts {
 		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
 			efficiency *= DRAGON_PEANLTY;
 		}
-		if (runtime.ResistShrinkPotion) {
-			if (target->HasMagicEffect(runtime.ResistShrinkPotion)) {
-				efficiency *= 0.25;
-			}
+		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
+			efficiency *= 0.25;
 		}
 
 		efficiency *= GigantismCaster * GigantismTarget * SizeHunger;
@@ -99,8 +84,7 @@ namespace Gts {
 	}
 
 	inline float CalcPower(Actor* actor, float scale_factor, float bonus) {
-		auto& runtime = Runtime::GetSingleton();
-		float progression_multiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
+		float progression_multiplier = Runtime::GetFloat("ProgressionMultiplier", 1.0);
 		// y = mx +c
 		// power = scale_factor * scale + bonus
 		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
@@ -115,7 +99,7 @@ namespace Gts {
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
-		
+
 	}
 
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
@@ -124,7 +108,7 @@ namespace Gts {
 		scale_factor /= modifier;
 		bonus /= modifier;
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
-		
+
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
@@ -191,11 +175,8 @@ namespace Gts {
 		const float PERK1_BONUS = 1.33;
 		const float PERK2_BONUS = 2.0;
 
-		auto& runtime = Runtime::GetSingleton();
-		if (runtime.ProtectEssentials) {
-			if (runtime.ProtectEssentials->value == 1.0 && target->IsEssential()) {
-				return;
-			}
+		if (Runtime::GetBool("ProtectEssentials") && target->IsEssential()) {
+			return;
 		}
 
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
@@ -213,15 +194,11 @@ namespace Gts {
 			power *= SMT_BONUS;
 		}
 
-		if (runtime.PerkPart1) {
-			if (caster->HasPerk(runtime.PerkPart1)) {
-				power *= PERK1_BONUS;
-			}
+		if (Runtime::HasPerk(caster, "PerkPart1")) {
+			power *= PERK1_BONUS;
 		}
-		if (runtime.PerkPart2) {
-			if (caster->HasPerk(runtime.PerkPart2)) {
-				power *= PERK2_BONUS;
-			}
+		if (Runtime::HasPerk(caster, "PerkPart2")) {
+			power *= PERK2_BONUS;
 		}
 		AdjustSizeLimit(0.0010 * target_scale * power);
 		float alteration_level_bonus = caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 50;
@@ -231,16 +208,13 @@ namespace Gts {
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
 		const float SHRINK_TO_NOTHING_SCALE = 0.14;
 		float target_scale = get_visual_scale(target);
-		auto& runtime = Runtime::GetSingleton();
-		if (!runtime.ShrinkToNothing) {
-			return false;
-		}
-		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !target->HasMagicEffect(runtime.ShrinkToNothing) && !target->IsPlayerTeammate()) {
-			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.ShrinkToNothingSpell, false, target, 1.00f, false, 0.0f, caster);
+
+		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
+			Runtime::CastSpell(caster, target, "ShrinkToNothingSpell");
 			AdjustSizeLimit(0.0117);
-			auto Cache = runtime.ManualGrowthStorage;
-			if (caster->formID == 0x14 && caster->HasPerk(runtime.SizeReserve)) {
-				Cache->value += target_scale/25;
+			auto Cache = Runtime::GetFloat("ManualGrowthStorage");
+			if (caster->formID == 0x14 && Runtime::HasPerk(caster, "SizeReserve")) {
+				Runtime::SetFloat("ManualGrowthStorage", Cache + target_scale/25);
 			}
 			ConsoleLog::GetSingleton()->Print("%s Was absorbed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			return true;
@@ -250,86 +224,68 @@ namespace Gts {
 
 	inline void PrintCrushMessage(Actor* caster, Actor* target, float sizedifference, int random, float instacrushrequirement) {
 		if (sizedifference < instacrushrequirement && random < 4) {
-				ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-			} 
-		else if (sizedifference < instacrushrequirement && random >= 4) {
-				ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-			} 
-		else if (sizedifference < instacrushrequirement && random >= 6) {
-				ConsoleLog::GetSingleton()->Print("%s Crushed %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-			} 	
-		else if (sizedifference < instacrushrequirement && random >= 8) {
-				ConsoleLog::GetSingleton()->Print("%s Was defeated by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-			}	
-		else if (sizedifference >= instacrushrequirement && random < 4) {
-				ConsoleLog::GetSingleton()->Print("%s Crushed %s without noticing it", caster->GetDisplayFullName(), target->GetDisplayFullName());
-			}
-		else if (sizedifference >= instacrushrequirement && random >= 4) {
-				ConsoleLog::GetSingleton()->Print("%s Accidentally Crushed %s", caster->GetDisplayFullName(), target->GetDisplayFullName());
-			}	
-		else if (sizedifference >= instacrushrequirement && random >= 6) {
-				ConsoleLog::GetSingleton()->Print("%s was defeated by feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-			}	
-		else if (sizedifference >= instacrushrequirement && random >= 8) {
-				ConsoleLog::GetSingleton()->Print("%s was turned into mush by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-			}	
+			ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+		} else if (sizedifference < instacrushrequirement && random >= 4) {
+			ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+		} else if (sizedifference < instacrushrequirement && random >= 6) {
+			ConsoleLog::GetSingleton()->Print("%s Crushed %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+		} else if (sizedifference < instacrushrequirement && random >= 8) {
+			ConsoleLog::GetSingleton()->Print("%s Was defeated by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+		} else if (sizedifference >= instacrushrequirement && random < 4) {
+			ConsoleLog::GetSingleton()->Print("%s Crushed %s without noticing it", caster->GetDisplayFullName(), target->GetDisplayFullName());
+		} else if (sizedifference >= instacrushrequirement && random >= 4) {
+			ConsoleLog::GetSingleton()->Print("%s Accidentally Crushed %s", caster->GetDisplayFullName(), target->GetDisplayFullName());
+		} else if (sizedifference >= instacrushrequirement && random >= 6) {
+			ConsoleLog::GetSingleton()->Print("%s was defeated by feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+		} else if (sizedifference >= instacrushrequirement && random >= 8) {
+			ConsoleLog::GetSingleton()->Print("%s was turned into mush by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 		}
+	}
 
 	inline void CrushToNothing(Actor* caster, Actor* target) {
 		float target_scale = get_target_scale(target);
 		float caster_scale = get_target_scale(caster);
-		auto& runtime = Runtime::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
 		float sizedifference = caster_scale/target_scale;
 		float instacrushrequirement = 24.0;
 
 
-		if (!runtime.GrowthPerk) {
-			return;
-		}
-		if (runtime.ProtectEssentials->value == 1.0 && target->IsEssential())
-		{
+		if (Runtime::GetBool("ProtectEssentials") && target->IsEssential()) {
 			return;
 		}
 		int Random = rand() % 8;
-		if (Random >= 8 && caster->HasPerk(runtime.GrowthPerk)) {
-			if (runtime.MoanSound) {
-				PlaySound(runtime.MoanSound,caster, 1.0, 1.0);
-			}
+		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthPerk")) {
+			Runtime::PlaySound("MoanSound",caster, 1.0, 1.0);
 		}
-		if (runtime.CrushGrowthSpell && player->HasPerk(runtime.GrowthPerk) && !target->IsEssential()) {
-			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.CrushGrowthSpell, false, target, 1.00f, false, 0.0f, caster);
+		if (Runtime::HasPerk(player, "GrowthPerk") && !target->IsEssential()) {
+			Runtime::CastSpell(caster, target "CrushGrowthSpell");
 			PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement);
 		}
-		bool hasSMT = runtime.SmallMassiveThreat ? caster->HasMagicEffect(runtime.SmallMassiveThreat) : false;
+		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 		if (get_visual_scale(caster) <= 12.0 && !caster->IsSprinting() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
 			caster->NotifyAnimationGraph("JumpLand");
 		}
-		auto Cache = runtime.ManualGrowthStorage;
-		if (caster->formID == 0x14 && caster->HasPerk(runtime.SizeReserve)) {
-				Cache->value += target_scale/25;
+		auto Cache = Runtime::GetFloat("ManualGrowthStorage"); // TODO: Fix this properly
+		if (caster->formID == 0x14 && Runtime::HasPerk(caster, "SizeReserve")) {
+			Runtime::SetFloat("ManualGrowthStorage", Cache+ target_scale/25);
 		}
 		if (caster->formID == 0x14) {
 			AdjustSizeLimit(0.0417 * target_scale);
 		}
 
-		if (runtime.ExtraGrowth && caster->formID == 0x14) {
-			if (runtime.CrushGrowthStorage) {
-				bool hasExplosiveGrowth1 = runtime.explosiveGrowth1 ? caster->HasMagicEffect(runtime.explosiveGrowth1) : false;
-				bool hasExplosiveGrowth2 = runtime.explosiveGrowth2 ? caster->HasMagicEffect(runtime.explosiveGrowth2) : false;
-				bool hasExplosiveGrowth3 = runtime.explosiveGrowth3 ? caster->HasMagicEffect(runtime.explosiveGrowth3) : false;
+		if (caster->formID == 0x14) {
+			bool hasExplosiveGrowth1 = Runtime::HasMagicEffect(caster, "explosiveGrowth1");
+			bool hasExplosiveGrowth2 = Runtime::HasMagicEffect(caster, "explosiveGrowth2");
+			bool hasExplosiveGrowth3 = Runtime::HasMagicEffect(caster, "explosiveGrowth3");
 
-				if (caster->HasPerk(runtime.ExtraGrowth) && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
-					runtime.CrushGrowthStorage->value += (target_scale/75) / SizeManager::GetSingleton().BalancedMode();
-				} // Slowly increase Limit after crushing someone while Growth Spurt is active.
-			}
+			if (Runtime::HasPerk(caster, "ExtraGrowth") && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
+				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
+				Runtime::SetFloat("CrushGrowthStorage" CrushGrowthStorage->value + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());
+			} // Slowly increase Limit after crushing someone while Growth Spurt is active.
 		}
 	}
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
-		auto& runtime = Runtime::GetSingleton();
-		if (runtime.TrackSizeSpell) {
-			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.TrackSizeSpell, false, target, 1.00f, false, 0.0f, caster);
-		}
+		Runtime::CastSpell(caster, target, "TrackSizeSpell");
 	}
 }

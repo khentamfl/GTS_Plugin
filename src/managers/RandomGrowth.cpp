@@ -15,10 +15,8 @@ using namespace Gts;
 
 namespace {
 	bool ShouldGrow() {
-		auto& runtime = Runtime::GetSingleton();
 		auto Player = PlayerCharacter::GetSingleton();
-		auto growthPerk = runtime.GrowthPerk;
-		if (!Player->HasPerk(growthPerk)) {
+		if (!Runtime::HasPerk(Player, "GrowthPerk")) {
 			return false;
 		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
@@ -33,12 +31,8 @@ namespace {
 	}
 
 	void RestoreStats() {
-		auto& runtime = Runtime::GetSingleton();
-		if (!runtime.GrowthAugmentation) {
-			return;
-		}
 		auto Player = PlayerCharacter::GetSingleton();
-		if (Player->HasPerk(runtime.GrowthAugmentation)) {
+		if (Runtime::HasPerk(Player, "GrowthAugmentation")) {
 			float HP = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
 			float MP = Player->GetPermanentActorValue(ActorValue::kMagicka) * 0.00085;
 			float SP = Player->GetPermanentActorValue(ActorValue::kStamina) * 0.00085;
@@ -66,7 +60,6 @@ namespace Gts {
 
 	void RandomGrowth::Update() {
 		auto player = PlayerCharacter::GetSingleton();
-		auto& runtime = Runtime::GetSingleton();
 
 		if (!player) {
 			return;
@@ -75,7 +68,7 @@ namespace Gts {
 			return;
 		}
 
-		bool hasSMT = runtime.SmallMassiveThreat ? player->HasMagicEffect(runtime.SmallMassiveThreat) : false;
+		bool hasSMT = Runtime::HasMagicEffect(player, "SmallMassiveThreat");
 
 		if (this->CallInputGrowth == true) {
 
@@ -90,7 +83,7 @@ namespace Gts {
 
 			static Timer timer = Timer(0.33);
 			if (timer.ShouldRunFrame() && this->ShakePower > 6.0) {
-				PlaySound(runtime.xlRumbleL, player, this->ShakePower/10, 0.0);
+				Runtime::PlaySound("xlRumbleL", player, this->ShakePower/10, 0.0);
 			}
 			//log::info("Calling Growth Shake, power: {}", this->ShakePower);
 			if (this->growth_time_input >= actor_data->half_life) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
@@ -110,16 +103,10 @@ namespace Gts {
 					this->growth_time = 0.0;
 					this->AllowGrowth = true;
 					// Play sound
-					auto MoanSound = runtime.MoanSound;
-					auto GrowthSound = runtime.growthSound;
 					GrowthTremorManager::GetSingleton().CallRumble(player, player, 6.0);
 					float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
-					if (MoanSound) {
-						PlaySound(MoanSound, player, 1.0, 0.0);
-					}
-					if (GrowthSound) {
-						PlaySound(GrowthSound, player, Volume, 0.0);
-					}
+					Runtime::PlaySound("MoanSound", player, 1.0, 0.0);
+					Runtime::PlaySound("growthSound", player, Volume, 0.0);
 				}
 			}
 
@@ -127,7 +114,7 @@ namespace Gts {
 			// Do the growing
 			float delta_time = Time::WorldTimeDelta();
 			float Scale = get_visual_scale(player);
-			float ProgressionMultiplier = runtime.ProgressionMultiplier ? runtime.ProgressionMultiplier->value : 1.0;
+			float ProgressionMultiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 			float base_power = ((0.0025 * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
 			RestoreStats(); // Regens Attributes if PC has perk
 			mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps

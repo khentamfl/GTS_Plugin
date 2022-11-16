@@ -12,9 +12,7 @@ namespace Gts {
 	}
 
 	bool GrowButton::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-
-		return effect == runtime.GrowPcButton;
+		return effect == Runtime::GetEffect("GrowPcButton");
 	}
 
 	void GrowButton::OnStart() {
@@ -22,11 +20,9 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto& runtime = Runtime::GetSingleton();
-		auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
-		PlaySound(GrowthSound, caster, Volume, 0.0);
-		
+		Runtime::PlaySound("growthSound", caster, Volume, 0.0);
+
 		//log::info("Grow Button actor: {}", caster->GetDisplayFullName());
 
 	}
@@ -36,7 +32,6 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto& runtime = Runtime::GetSingleton();
 
 		float caster_scale = get_visual_scale(caster);
 		float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));

@@ -12,9 +12,7 @@ namespace Gts {
 	}
 
 	bool GrowOtherButton::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-
-		return effect == runtime.GrowAllySizeButton;
+		return effect == Runtime::GetEffect("GrowAllySizeButton");
 	}
 
 	void GrowOtherButton::OnStart() {
@@ -26,10 +24,8 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-		auto& runtime = Runtime::GetSingleton();
-		auto GrowthSound = runtime.growthSound;
 		float Volume = clamp(0.50, 2.0, get_target_scale(target));
-		PlaySound(GrowthSound, target, Volume, 0.0);
+		Runtime::PlaySound("growthSound", target, Volume, 0.0);
 		log::info("Grow Other Button, actor: {}", target->GetDisplayFullName());
 	}
 
@@ -42,20 +38,18 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-		auto& runtime = Runtime::GetSingleton();
-		
+
 		float target_scale = get_target_scale(target);
 		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
 
 		float bonus = 1.0;
-		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
-		{
+		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(target) * 0.25 + 0.75;
 		}
 
 		DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * bonus * TimeScale());
 
-		
+
 		Grow(target, 0.0, 0.0030 * magicka * bonus);
 		GrowthTremorManager::GetSingleton().CallRumble(target, caster, 1.0);
 	}

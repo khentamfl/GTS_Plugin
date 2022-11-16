@@ -19,15 +19,14 @@ namespace Gts {
 	SizePotion::SizePotion(ActiveEffect* effect) : Magic(effect) {
 
 		auto base_spell = GetBaseEffect();
-		auto& runtime = Runtime::GetSingleton();
 
-		if (base_spell == runtime.EffectSizePotionExtreme) {
+		if (base_spell == Runtime::GetEffect("SizePotionExtreme")) {
 			this->Strenght = 0.35;
-		} else if (base_spell == runtime.EffectSizePotionStrong) {
+		} else if (base_spell == Runtime::GetEffect("SizePotionStrong")) {
 			this->Strenght = 0.20;
-		} else if (base_spell == runtime.EffectSizePotionNormal) {
+		} else if (base_spell == Runtime::GetEffect("SizePotionNormal")) {
 			this->Strenght = 0.15;
-		} else if (base_spell == runtime.EffectSizePotionWeak) {
+		} else if (base_spell == Runtime::GetEffect("SizePotionWeak")) {
 			this->Strenght = 0.10;
 		}
 		//log::info("Strenght is {}", this->Strenght);
@@ -35,8 +34,7 @@ namespace Gts {
 
 
 	bool SizePotion::StartEffect(EffectSetting* effect) {
-		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.EffectSizePotionStrong || effect ==  runtime.EffectSizePotionNormal || effect == runtime.EffectSizePotionWeak || effect == runtime.EffectSizePotionExtreme);
+		return (effect == Runtime::GetEffect("SizePotionStrong") || effect ==  Runtime::GetEffect("SizePotionNormal") || effect == Runtime::GetEffect("SizePotionWeak") || effect == Runtime::GetEffect("SizePotionExtreme"));
 	}
 
 	void SizePotion::OnStart() {
@@ -44,11 +42,10 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto& runtime = Runtime::GetSingleton();
 		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		auto saved_data = Persistent::GetSingleton().GetData(caster);
 		float PotionPower = this->Strenght;
-		float BonusSize = runtime.sizeLimit->value * PotionPower * Gigantism;
+		float BonusSize = Runtime::GetFloat("sizeLimit") * PotionPower * Gigantism;
 		saved_data->bonus_max_size = BonusSize;
 
 	}
@@ -61,7 +58,6 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto& runtime = Runtime::GetSingleton();
 		auto saved_data = Persistent::GetSingleton().GetActorData(caster);
 		saved_data->bonus_max_size = 0;
 	}

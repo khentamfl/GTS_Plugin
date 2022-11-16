@@ -9,15 +9,14 @@ using namespace Gts;
 
 namespace {
 	void ScareChance(Actor* actor) {
-		auto runtime = Runtime::GetSingleton();
 		int voreFearRoll = rand() % 5;
-		if (actor->HasMagicEffect(runtime.gtsSmallMassiveThreatMe)) {
+		if (Runtime::HasMagicEffect(actor, "gtsSmallMassiveThreatMe")) {
 			voreFearRoll = rand() % 2;
 			shake_camera(PlayerRef, 0.4, 0.25);
 		}
 
 		if (voreFearRoll <= 0) {
-			actor->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.GtsVoreFearSpell, false, actor, 1.00f, false, 0.0f, actor);
+			Runtime::CastSpell(actor, actor, "GtsVoreFearSpell");
 			KnockAreaEffect(actor, 6, 650);
 		}
 	}
@@ -25,7 +24,6 @@ namespace {
 	void FearChance(actor* giant)  {
 		float size = get_visual_scale(giant);
 		int MaxValue = (20 - (1.6 * size));
-		auto runtime = Runtime::GetSingleton();
 
 		// TODO: Ask about the max value thing here
 		// If you have small massive threat then the max value is ALWAYS 4
@@ -51,10 +49,9 @@ namespace {
 	}
 
 	void GrowAfterTheKill(Actor* actor) {
-		auto runtime = Runtime::GetSingleton();
-		if (runtime.GtsDecideGrowth.value != 1.0 || actor->HasMagicEffect(runtime.GtsSmallMassiveThreat)) {
+		if (!Runtime::GetBool(GtsDecideGrowth) || Runtime::HasMagicEffect(actor, "GtsSmallMassiveThreat")) {
 			return;
-		} else if (actor->HasPerk(runtime.GtsCrushGrowth) && runtime.GtsDecideGrowth.value >= 1.0 ) {
+		} else if (Runtime::HasPerk(actor, "GtsCrushGrowth") && Runtime::GetInt("GtsDecideGrowth") >= 1 ) {
 			GtsSmallCrushGrowthSpell.Cast(actor)
 		}
 		PleasureText(actor)
@@ -63,8 +60,7 @@ namespace {
 	void RandomMoan(Actor* actor) {
 		auto randomInt = rand() % 10;
 		if (randomInt < 1 ) {
-			auto runtime = Runtime::GetSingleton();
-			PlaySound(runtime.GtsMoanSound, actor, 1.0, 1.0);
+			Runtime::PlaySound("GtsMoanSound", actor, 1.0, 1.0);
 			GrowAfterTheKill(actor)
 		}
 	}
@@ -103,22 +99,21 @@ namespace Gts {
 					data.state = CrushState::Crushed;
 
 					// Do crush
-					auto runtime = Runtime::GetSingleton();
-					PlaySound(runtime.GtsCrunchSound, actor, 1.0, 1.0);
-					PlaySound(runtime.GtsFallSound, actor, 1.0, 1.0);
-					small->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.GtsBleedSpell, false, small, 1.00f, false, 0.0f, small);
+					Runtime::PlaySound("GtsCrunchSound", actor, 1.0, 1.0);
+					Runtime::PlaySound("GtsFallSound", actor, 1.0, 1.0);
+					Runtime::CastSpell(small, small, "GtsBleedSpell");
 					GrowAfterTheKill(giant);
 
 					shake_camera(giant, 1.8, 1);
 					if (giant->formID == 0x14) {
 						TriggerScreenBlood(1);
 					}
-					PlayImpactEffect(runtime.GtsBloodSprayImpactSet, "NPC Head", NiPoint3{26, 0, 0}, 460, true, true);
-					PlayImpactEffect(runtime.GtsBloodSprayImpactSet, "NPC L Foot [Lft]", NiPoint3{0, 0, 0}, 0, true, false);
-					PlayImpactEffect(runtime.GtsBloodSprayImpactSet, "NPC R Foot [Rft]", NiPoint3{0, 0, 0}, 0, true, false);
-					if (giant->formID == 0x14 && giant->isInFaction(runtime.GtsEnableLoot)) {
+					Runtime::PlayImpactEffect(small, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{26, 0, 0}, 460, true, true);
+					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{0, 0, 0}, 0, true, false);
+					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{0, 0, 0}, 0, true, false);
+					if (giant->formID == 0x14 && Runtime::InFaction(giant "GtsEnableLoot")) {
 						Actor* into = giant;
-						if (giant->IsPlayerTeammate() || giant->isInFaction(runtime.PlayerFaction)) {
+						if (giant->IsPlayerTeammate() || Runtime::InFaction(giant, "PlayerFaction")) {
 							into = PlayerCharacter::GetSingleton();
 						}
 						TransferInventory(small, into, false, true);

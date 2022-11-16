@@ -41,8 +41,6 @@ namespace Gts {
 		bool ArrowDown = false;
 		auto player = PlayerCharacter::GetSingleton();
 		auto caster = player;
-		auto TotalControl = Runtime::GetSingleton().TotalControl;
-		auto& runtime = Runtime::GetSingleton();
 		auto VoreManager = Vore::GetSingleton();
 
 
@@ -57,8 +55,7 @@ namespace Gts {
 			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
 				// log::info("ButtonEvent == Keyboard");
 				auto key = buttonEvent->GetIDCode();
-				auto runtime = Runtime::GetSingleton();
-				auto Cache = runtime.ManualGrowthStorage;
+				auto Cache = Runteim::GetFloat("ManualGrowthStorage");
 				if (!Cache) {
 					//log::info("Cache is invalid");
 					continue;
@@ -70,23 +67,21 @@ namespace Gts {
 					this->TickCheck += 1.0;
 					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/15 * buttonEvent->HeldDuration());
 					if (this->timergrowth.ShouldRunFrame()) {
-						PlaySound(runtime.growthSound, caster, Cache->value/25 * buttonEvent->HeldDuration(), 0.0);
+						Runtime::PlaySound("growthSound", caster, Cache->value/25 * buttonEvent->HeldDuration(), 0.0);
 					}
 
-					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 1.2 && caster->HasPerk(runtime.SizeReserve)) {
+					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 1.2 && Runtime::HasPerk(caster, "SizeReserve")) {
 						float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-						auto GrowthSound = runtime.growthSound;
-						auto MoanSound = runtime.MoanSound;
 						this->TickCheck = 0.0;
 						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->value);
-						PlaySound(GrowthSound, caster, Volume, 0.0);
-						PlaySound(MoanSound, caster, Volume, 0.0);
+						Runtime::PlaySound("growthSound", caster, Volume, 0.0);
+						Runtime::PlaySound("MoanSound", caster, Volume, 0.0);
 						RandomGrowth::GetSingleton().CallShake(Cache->value);
 						mod_target_scale(caster, Cache->value * gigantism);
 						Cache->value = 0.0;
 					}
 				}
-				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && caster->HasPerk(runtime.SizeReserve)) { //F
+				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && Runtime::HasPerk(caster, "SizeReserve")) { //F
 
 					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 					float Value = Cache->value * gigantism;
@@ -96,7 +91,7 @@ namespace Gts {
 
 				if (key == 0x1d && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) { // Left CTRL
 					for (auto actor: find_actors()) {
-						if (actor->formID != 0x14 && actor->IsInFaction(Runtime::GetSingleton().FollowerFaction) || actor->IsPlayerTeammate()) {
+						if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 							float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
 							float Scale = get_target_scale(actor);
 							float MaxScale = get_max_scale(actor);
@@ -139,13 +134,13 @@ namespace Gts {
 		}
 
 		Actor* pred = PlayerCharacter::GetSingleton();
-		if (pred->HasPerk(runtime.VorePerk)) {
+		if (Runtime::HasPerk(pred, "VorePerk")) {
 			if (ShiftPressed && V_Pressed && !this->voreBlock) {
 				if (voretimer.ShouldRunFrame()) {
 					this->voreBlock = true;
 
 					std::size_t numberOfPrey = 1;
-					if (pred->HasPerk(runtime.MassVorePerk)) {
+					if (Runtime::HasPerk(pred, "MassVorePerk")) {
 						numberOfPrey = 3;
 					}
 					std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
@@ -157,21 +152,6 @@ namespace Gts {
 				this->voreBlock = false;
 			}
 		}
-
-		//log::info("l.Shift + E is True");
-		//auto player = PlayerCharacter::GetSingleton();
-
-		//if (player->HasPerk(Runtime::GetSingleton().VorePerk)) {
-		//log::info("Player has vore perk");
-		//}
-
-		//auto voreMan = Vore::GetSingleton();
-		//auto prey = voreMan.GetPlayerVoreTarget();
-
-		//if (prey) {
-		//log::info("Distance between PC and {} is {}", prey->GetDisplayFullName(), get_distance_to_actor(player, prey));
-		//voreMan.StartVore(player, prey);
-		//}
 
 		auto Camera = CameraManager::GetSingleton();
 		if (AltPressed == true && RightArrow == true && LeftArrow == true) {
@@ -201,7 +181,7 @@ namespace Gts {
 			//log::info("Alt + Down");
 		} // Up or Down end
 
-		if (player->HasPerk(TotalControl) && !ShiftPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow self
+		if (Runtime::HasPerk(player, "TotalControl") && !ShiftPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow self
 			float scale = get_visual_scale(player);
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
@@ -210,10 +190,10 @@ namespace Gts {
 			float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, scale/10);
 			if (this->timergrowth.ShouldRun()) {
-				PlaySound(Runtime::GetSingleton().growthSound, caster, Volume, 0.0);
+				Runtime::PlaySound("growthSound", caster, Volume, 0.0);
 			}
 		}
-		if (player->HasPerk(TotalControl) && !ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Self
+		if (Runtime::HasPerk(player, "TotalControl") && !ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Self
 			float scale = get_visual_scale(player);
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
@@ -222,15 +202,15 @@ namespace Gts {
 			float Volume = clamp(0.05, 2.0, get_visual_scale(caster)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, scale/14);
 			if (this->timergrowth.ShouldRun()) {
-				PlaySound(Runtime::GetSingleton().shrinkSound, caster, Volume, 0.0);
+				Runtime::PlaySound("shrinkSound", caster, Volume, 0.0);
 			}
-		} else if (player->HasPerk(TotalControl) && ShiftPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow Ally
+		} else if (Runtime::HasPerk(player, "TotalControl") && ShiftPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow Ally
 			for (auto actor: find_actors()) {
 				if (!actor) {
 					continue;
 				}
 
-				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction))) {
+				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 					float scale = get_visual_scale(actor);
 					auto caster = player;
 					auto target = actor;
@@ -240,17 +220,17 @@ namespace Gts {
 					float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.25);
 					if (this->timergrowth.ShouldRun()) {
-						PlaySound(Runtime::GetSingleton().growthSound, target, Volume, 0.0);
+						Runtime::PlaySound("growthSound", target, Volume, 0.0);
 					}
 				}
 			}
-		} else if (player->HasPerk(TotalControl) && ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Ally
+		} else if (Runtime::HasPerk(player, "TotalControl") && ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Ally
 			for (auto actor: find_actors()) {
 				if (!actor) {
 					continue;
 				}
 
-				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction))) {
+				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 					float scale = get_visual_scale(actor);
 					auto caster = player;
 					auto target = actor;
@@ -260,7 +240,7 @@ namespace Gts {
 					float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.20);
 					if (this->timergrowth.ShouldRun()) {
-						PlaySound(Runtime::GetSingleton().shrinkSound, target, Volume, 0.0);
+						Runtime::PlaySound("shrinkSound", target, Volume, 0.0);
 					}
 				}
 			}

@@ -73,40 +73,33 @@ namespace Gts {
 		auto& size_method = Persistent::GetSingleton().size_method;
 		auto first_node = find_node(actor, node_name, true);
 		auto first_model = actor->Get3D(true);
-		auto& runtime = Runtime::GetSingleton();
-		float FirstPersonMode = runtime.FirstPersonMode->value;
+		float FirstPersonMode = Runtime::GetInt("FirstPersonMode"); // TODO: Fix detection
 
 		if (size_method == RootScale && first_node) {
 			result = true;
 			if (FirstPersonMode == 0.0) {
 				first_node->local.scale = target_scale * prone;
-			}
-			else if (FirstPersonMode == 1.0) {
+			} else if (FirstPersonMode == 1.0) {
 				first_node->local.scale = 1.0 * prone;
-			}
-			else if (FirstPersonMode == 2.0) {
+			} else if (FirstPersonMode == 2.0) {
 				first_node->local.scale = 0.7 * prone;
 			}
 			update_node(first_node);
-		}
-
-		else if (size_method == ModelScale && first_model) {
+		} else if (size_method == ModelScale && first_model) {
 			result = true;
 			if (FirstPersonMode == 0.0) {
 				first_model->local.scale = target_scale * prone;
-			}
-			else if (FirstPersonMode == 1.0) {
+			} else if (FirstPersonMode == 1.0) {
 				first_model->local.scale = 1.0 * prone;
-			}
-			else if (FirstPersonMode == 2.0) {
+			} else if (FirstPersonMode == 2.0) {
 				first_model->local.scale = 0.7 * prone;
 			}
 			update_node(first_model);
-		} 
+		}
 		return result;
 	}
 
-	
+
 
 	float get_npcnode_scale(Actor* actor) {
 		// This will set the scale of the root npc node

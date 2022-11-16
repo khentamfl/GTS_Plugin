@@ -42,22 +42,18 @@ namespace Gts {
 	void mod_target_scale(Actor* actor, float amt) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
-			auto runtime = Runtime::GetSingleton();
-			if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && actor->formID == 0x14 || actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction)) 
-			{
+			// TODO: Fix this
+			if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFactrion(actor, "FollowerFaction")) {
 				float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
-				if (scale >= 1.0)
-				{
+				if (scale >= 1.0) {
 					amt /= (1.5 + (scale/1.5));
 				}
 			}
-			if (actor->HasPerk(runtime.OnTheEdge))
-			{
+			if (Runtime::HasPerk(actor, "OnTheEdge")) {
 				float GetHP = clamp(0.5, 1.0, GetHealthPercentage(actor) + 0.4); // Bonus Size Gain if Actor has perk
 				if (amt > 0) {
 					amt /= GetHP;
-				}
-				else if (amt < 0) {
+				} else if (amt < 0) {
 					amt *= GetHP;
 				}
 			}

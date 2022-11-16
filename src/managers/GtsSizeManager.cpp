@@ -36,16 +36,15 @@ namespace Gts {
 
 			bool Balance = false; // Toggles Balance Mode for the mod. False = off, true = on.
 
-			auto& runtime = Runtime::GetSingleton();
 			float Gigantism = this->GetEnchantmentBonus(actor)/100;
-			float GetLimit = clamp(1.0, 99999999.0, runtime.sizeLimit->value);
+			float GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("sizeLimit"));
 			float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
-			float SelectedFormula = runtime.SelectedSizeFormula->value;
+			float SelectedFormula = Runtime::GetInt("SelectedSizeFormula");
 
 			//BalancedMode(Balance);
 
 			if (SelectedFormula >= 2.0) {
-				GetLimit = runtime.MassBasedSizeLimit->value +1.0;
+				GetLimit = Runtime::GetFloat("MassBasedSizeLimit") +1.0;
 			}
 			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
 			float TotalLimit = (GetLimit + Persistent_Size) * (1.0 + Gigantism);
@@ -106,14 +105,13 @@ namespace Gts {
 	//===============Balance Mode
 	float SizeManager::BalancedMode()
 	{
-		if (Runtime::GetSingleton().BalanceMode->value >= 1.0) {
+		if (Runtime::GetBool("BalanceMode")) {
 			//log::info("Balance Mode True");
 			return 2.0;
-		} else if (Runtime::GetSingleton().BalanceMode->value < 1.0) {
+		} else {
 			//log::info("Balance Mode False");
 			return 1.0;
 		}
-		return 1.0;
 	}
 
 	SizeManagerData& SizeManager::GetData(Actor* actor) {

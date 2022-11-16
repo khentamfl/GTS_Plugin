@@ -73,12 +73,11 @@ namespace {
 	}
 
 	void BoostSpeedMulti(Actor* actor, float power) {
-		auto runtime = Runtime::GetSingleton();
 		float scale = get_target_scale(actor);
 		auto actor_data = Transient::GetSingleton().GetData(actor);
 		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/3.0;
 		float base_speed = actor_data->base_walkspeedmult;
-		float bonusSpeedMax = runtime.bonusSpeedMax->value;
+		float bonusSpeedMax = Runtime::GetFloat("bonusSpeedMax");
 		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
 		if (speedEffectiveSize > scale) {
 			speedEffectiveSize = scale;
@@ -132,16 +131,14 @@ namespace {
 	}
 
 	void Augmentation(Actor* Player, bool& BlockMessage) {
-		auto& runtime = Runtime::GetSingleton();
-		auto AugmentationPerk = runtime.NoSpeedLoss;
 		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
 		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
+		if (Player->IsSprinting() && Runtime::HasPerk(Player, "NoSpeedLoss") && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
 			ActorAttributes->smt_run_speed += 0.001480 * Gigantism;
 			if (ActorAttributes->smt_run_speed < 1.0) {
 				BlockMessage = false;
 			}
-		} else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
+		} else if (Player->IsSprinting() && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
 			ActorAttributes->smt_run_speed += 0.000960 * Gigantism;
 			if (ActorAttributes->smt_run_speed < 1.0) {
 				BlockMessage = false;
@@ -177,23 +174,15 @@ namespace {
 		if (!Player->Is3DLoaded()) {
 			return;
 		}
-		auto& runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
 
-		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 
-		float AllowTimeChange = runtime.AllowTimeChange->value;
-		float bonusHPMultiplier = runtime.bonusHPMultiplier->value;
-
-		float bonusCarryWeightMultiplier = runtime.bonusCarryWeightMultiplier->value;
-		float bonusJumpHeightMultiplier = runtime.bonusJumpHeightMultiplier->value;
-		float bonusDamageMultiplier = runtime.bonusDamageMultiplier->value;
-		float bonusSpeedMultiplier = runtime.bonusSpeedMultiplier->value;
-
-		auto ExplGrowthP1 = runtime.explosiveGrowth1;
-		auto ExplGrowthP2 = runtime.explosiveGrowth2;
-		auto ExplGrowthP3 = runtime.explosiveGrowth3;
+		float bonusHPMultiplier = Runtime::GetFloat("bonusHPMultiplier");
+		float bonusCarryWeightMultiplier = Runtime::GetFloat("bonusCarryWeightMultiplier");
+		float bonusJumpHeightMultiplier = Runtime::GetFloat("bonusJumpHeightMultiplier");
+		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
+		float bonusSpeedMultiplier = Runtime::GetFloat(bonusSpeedMultiplier);
 
 		float size = get_target_scale(Player);
 
@@ -201,7 +190,7 @@ namespace {
 
 		if (size > 0) {
 
-			if (AllowTimeChange == 0.00) {
+			if (!Runtime::GetBool("AllowTimeChange")) {
 				BoostSpeedMulti(Player, bonusSpeedMultiplier);
 			}
 			if (timer.ShouldRunFrame()) {
@@ -215,16 +204,17 @@ namespace {
 
 				BoostAttackDmg(Player, bonusDamageMultiplier);
 
-				if (!Player->HasPerk(runtime.StaggerImmunity) && size > 1.33) {
-					Player->AddPerk(runtime.StaggerImmunity);
+				if (!Runtime::HasPerk(Player, "StaggerImmunity") && size > 1.33) {
+					Runtime::AddPerk(Player, "StaggerImmunity");
 					return;
-				} else if (size < 1.33 && Player->HasPerk(runtime.StaggerImmunity)) {
-					Player->RemovePerk(runtime.StaggerImmunity);
+				} else if (size < 1.33 && Runtime::HasPerk(Player, "StaggerImmunity")) {
+					Runtime::RemovePerk(Player, "StaggerImmunity");
 				}
 			}
 		}
 	}
 
+	// Todo unify the functions
 	void UpdateNPC(Actor* npc) {
 		if (!npc) {
 			return;
@@ -236,17 +226,16 @@ namespace {
 			return;
 		}
 		static Timer timer = Timer(0.05);
-		auto& runtime = Runtime::GetSingleton();
 		float size = get_target_scale(npc);
 		if (timer.ShouldRunFrame()) {
-			if (npc->IsPlayerTeammate() || npc->IsInFaction(runtime.FollowerFaction)) {
+			if (npc->IsPlayerTeammate() || Runtime::InFaction(pc, "FollowerFaction")) {
 				BoostHP(npc, 1.0);
 				BoostCarry(npc, 1.0);
 			}
-			if (!npc->HasPerk(runtime.StaggerImmunity) && size > 1.33) {
-				npc->AddPerk(runtime.StaggerImmunity);
-			} else if (size < 1.33 && npc->HasPerk(runtime.StaggerImmunity)) {
-				npc->RemovePerk(runtime.StaggerImmunity);
+			if (!Runtime::HasPerk(npc, "StaggerImmunity") && size > 1.33) {
+				Runtime::AddPerk(npc, "StaggerImmunity");
+			} else if (size < 1.33 && Runtime::HasPerk(npc, "StaggerImmunity")) {
+				Runtime::RemovePerk(npc, "StaggerImmunity");
 			}
 			BoostAttackDmg(npc, 1.0);
 		}

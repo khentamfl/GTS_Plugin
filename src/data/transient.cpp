@@ -75,18 +75,7 @@ namespace Gts {
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 
-			auto hhBonusPerk = Runtime::GetSingleton().hhBonus;
-			if (hhBonusPerk) {
-				result.has_hhBonus_perk = actor->HasPerk(hhBonusPerk);
-				if (!result.has_hhBonus_perk && result.is_teammate) {
-					auto player_data = this->GetData(PlayerCharacter::GetSingleton());
-					if (player_data) {
-						result.has_hhBonus_perk = player_data->has_hhBonus_perk;
-					}
-				}
-			} else {
-				result.has_hhBonus_perk = false;
-			}
+			result.has_hhBonus_perk = Runtime::HasPerkTeam("hhBonus");
 
 			this->_actor_data.try_emplace(key, result);
 		}
@@ -122,18 +111,7 @@ namespace Gts {
 
 				data.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 
-				auto hhBonusPerk = Runtime::GetSingleton().hhBonus;
-				if (hhBonusPerk) {
-					data.has_hhBonus_perk = actor->HasPerk(hhBonusPerk);
-					if (!data.has_hhBonus_perk && data.is_teammate) {
-						auto player_data = this->GetData(PlayerCharacter::GetSingleton());
-						if (player_data) {
-							data.has_hhBonus_perk = player_data->has_hhBonus_perk;
-						}
-					}
-				} else {
-					data.has_hhBonus_perk = false;
-				}
+				data.has_hhBonus_perk = Runtime::HasPerkTeam("hhBonus");
 
 
 			} catch (const std::out_of_range& oor) {

@@ -8,6 +8,42 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
+	struct SoundData {
+		BGSSoundDescriptorForm* data;
+	};
+
+	struct SpellEffectData {
+		EffectSetting* data;
+	};
+
+	struct SpellData {
+		SpellItem* data;
+	};
+
+	struct PerkData {
+		BGSPerk* data;
+	};
+
+	struct ExplosionData {
+		BGSExplosion* data;
+	};
+
+	struct GlobalData {
+		TESGlobal* data;
+	};
+
+	struct QuestData {
+		TESQuest* data;
+	};
+
+	struct FactionData {
+		TESFaction* data;
+	};
+
+	struct ImpactData {
+		BGSImpactDataSet* data;
+	};
+
 	class Runtime : public EventListener {
 		public:
 			[[nodiscard]] static Runtime& GetSingleton() noexcept;
@@ -15,245 +51,71 @@ namespace Gts {
 			virtual std::string DebugName() override;
 			virtual void DataReady() override;
 
-			BGSSoundDescriptorForm* lFootstepL = nullptr;
-			BGSSoundDescriptorForm* lFootstepR = nullptr;
+			static BSISoundDescriptor* GetSound(std::string_view tag);
+			static void PlaySound(std::string_view tag, Actor* actor, float volume, float frequency);
+			// Spell Effects
+			static EffectSetting* GetMagicEffect(std::string_view tag);
+			static bool HasMagicEffect(Actor* actor, std::string_view tag);
+			static bool HasMagicEffectOr(Actor* actor, std::string_view tag, bool default);
+			// Spells
+			static SpellItem* GetSpell(std::string_view tag);
+			static bool AddSpell(Actor* actor, std::string_view tag);
+			static bool RemoveSpell(Actor* actor, std::string_view tag);
+			static bool HasSpell(Actor* actor, std::string_view tag);
+			static bool HasSpellOr(Actor* actor, std::string_view tag, bool default);
+			static bool CastSpell(Actor* caster, Actor* target, std::string_view tag);
+			// Perks
+			static BGSPerk* GetPerk(std::string_view tag);
+			static bool AddPerk(Actor* actor, std::string_view tag);
+			static bool RemovePerk(Actor* actor, std::string_view tag);
+			static bool HasPerk(Actor* actor, std::string_view tag);
+			static bool HasPerkOr(Actor* actor, std::string_view tag, bool default);
+			// Explosion
+			static BGSExplosion* GetExplosion(std::string_view tag);
+			static void CreateExplosion(Actor* actor, float scale, std::string_view tag);
+			static void CreateExplosionAtNode(Actor* actor, std::string_view node, float scale, std::string_view tag);
+			static void CreateExplosionAtPos(Actor* actor, NiPoint3 pos, float scale, std::string_view tag);
+			// Globals
+			static TESGlobal* GetGlobal(std::string_view tag);
+			static bool GetBool(std::string_view tag);
+			static bool GetBoolOr(std::string_view tag, bool default);
+			static void SetBool(std::string_view tag, bool value);
+			static int GetInt(std::string_view tag);
+			static int GetIntOr(std::string_view tag, int default);
+			static void SetInt(std::string_view tag, int value);
+			static int GetFloat(std::string_view tag);
+			static int GetFloatOr(std::string_view tag, float default);
+			static void SetFloat(std::string_view tag, float value);
+			// Quests
+			static TESQuest* GetQuest(std::string_view tag);
+			static std::uint16_t GetStage(std::string_view tag);
+			static std::uint16_t GetStageOr(std::string_view tag, std::uint16_t default);
+			static void GetStage(std::string_view tag, std::uint16_t value);
+			// Factions
+			static TESFaction* GetFaction(std::string_view tag);
+			static bool InFaction(Actor* actor, std::string_view tag);
+			static bool InFactionOr(Actor* actor, std::string_view tag, bool default);
+			// Impacts
+			static BGSImpactDataSet* GetImpactEffect(std::string_view tag);
+			static PlayImpactEffect(Actor* actor, std::string_view tag, std::string_view node, NiPoint3& direction, float length, bool applyRotation, bool useLocalRotation);
 
-			BGSSoundDescriptorForm* lJumpLand = nullptr;
-
-			BGSSoundDescriptorForm* xlFootstepL = nullptr;
-			BGSSoundDescriptorForm* xlFootstepR = nullptr;
-
-			BGSSoundDescriptorForm* xlRumbleL = nullptr;
-			BGSSoundDescriptorForm* xlRumbleR = nullptr;
-
-			BGSSoundDescriptorForm* xlSprintL = nullptr;
-			BGSSoundDescriptorForm* xlSprintR = nullptr;
-
-			BGSSoundDescriptorForm* xxlFootstepL = nullptr;
-			BGSSoundDescriptorForm* xxlFootstepR = nullptr;
-
-			BGSSoundDescriptorForm* growthSound = nullptr;
-			BGSSoundDescriptorForm* shrinkSound = nullptr;
-
-			BGSSoundDescriptorForm* MoanSound = nullptr;
-			BGSSoundDescriptorForm* LaughSound = nullptr;
-
-			BGSSoundDescriptorForm* BloodGushSound = nullptr;
-
-			EffectSetting* SmallMassiveThreat = nullptr;
-			BGSPerk* SmallMassiveThreatSizeSteal = nullptr;
-
-			EffectSetting* explosiveGrowth1 = nullptr;
-
-			EffectSetting* explosiveGrowth2 = nullptr;
-
-			EffectSetting* explosiveGrowth3 = nullptr;
-
-			///Shrink Effects Start
-			EffectSetting* ShrinkPCButton = nullptr;
-			EffectSetting* ShrinkBack = nullptr;
-			EffectSetting* ShrinkBackNPC = nullptr;
-			EffectSetting* ShrinkSpell = nullptr;
-			EffectSetting* ShrinkAlly = nullptr;
-			EffectSetting* ShrinkAllyAdept = nullptr;
-			EffectSetting* ShrinkAllyExpert = nullptr;
-
-			EffectSetting* ShrinkEnemy = nullptr;
-			EffectSetting* ShrinkEnemyAOE = nullptr;
-			EffectSetting* ShrinkEnemyAOEMast = nullptr;
-			EffectSetting* ShrinkBolt = nullptr;
-			EffectSetting* ShrinkStorm = nullptr;
-			EffectSetting* SwordEnchant = nullptr;
-			EffectSetting* EnchGigantism = nullptr;
-
-			EffectSetting* ShrinkToNothing = nullptr;
-			SpellItem* SmallMassiveThreatSpell = nullptr;
-			///End
-
-			///Ally/Grow Spells
-			EffectSetting* SlowGrowth = nullptr;
-			EffectSetting* SlowGrowth2H = nullptr;
-			EffectSetting* GrowthSpell = nullptr;
-			EffectSetting* GrowthSpellAdept = nullptr;
-			EffectSetting* GrowthSpellExpert = nullptr;
-			EffectSetting* GrowPcButton = nullptr;
-
-			EffectSetting* GrowAlly = nullptr;
-			EffectSetting* GrowAllyAdept = nullptr;
-			EffectSetting* GrowAllyExpert = nullptr;
-			EffectSetting* GrowAllySizeButton = nullptr;
-			EffectSetting* ShrinkAllySizeButton = nullptr;
-			EffectSetting* CrushGrowthMGEF = nullptr;
-			EffectSetting* GtsMarkAlly = nullptr;
-			EffectSetting* TrackSize = nullptr;
-			SpellItem* CrushGrowthSpell = nullptr;
-			SpellItem* TrackSizeSpell = nullptr;
-			///end
-
-			///Others
-			EffectSetting* GlobalVoreGrowth = nullptr;
-
-			EffectSetting* SizeRelatedDamage0 = nullptr;
-			EffectSetting* SizeRelatedDamage1 = nullptr;
-			EffectSetting* SizeRelatedDamage2 = nullptr;
-
-			EffectSetting* AbsorbMGEF = nullptr;
-			EffectSetting* TrueAbsorb = nullptr;
-			SpellItem * TrueAbsorbSpell = nullptr;
-
-			BGSPerk* VorePerk = nullptr;
-			BGSPerk* MassVorePerk = nullptr;
-
-			SpellItem * StartVoreFake = nullptr;
-			SpellItem * StartVore = nullptr;
-
-			BGSSoundDescriptorForm * VoreSound_Success = nullptr;
-			BGSSoundDescriptorForm * VoreSound_Fail = nullptr;
-
-			///End
-
-			BGSExplosion* footstepExplosion = nullptr;
-			BGSExplosion* BloodExplosion = nullptr;
-			BGSExplosion* BloodFX = nullptr;
-
-			BGSPerk* GrowthOnHitPerk = nullptr;
-			BGSPerk* AdditionalAbsorption = nullptr;
-			BGSPerk* StaggerImmunity = nullptr;
-			BGSPerk* hhBonus = nullptr;
-			BGSPerk* PerkPart1 = nullptr;
-			BGSPerk* PerkPart2 = nullptr;
-			BGSPerk* ExtraGrowth = nullptr;
-			BGSPerk* ExtraGrowthMax = nullptr;
-			BGSPerk* HealthRegenPerk = nullptr;
-			BGSPerk* GrowthAugmentation = nullptr;
-			BGSPerk* VorePerkRegeneration = nullptr;
-			BGSPerk* VorePerkGreed = nullptr;
-			BGSPerk* GrowthPerk = nullptr;
-			BGSPerk* TotalControl = nullptr;
-			BGSPerk* NoSpeedLoss = nullptr;
-			BGSPerk* SizeReserve = nullptr;
-			BGSPerk* BonusSpeedPerk = nullptr;
-			BGSPerk* OnTheEdge = nullptr;
-			BGSPerk* LethalSprint = nullptr;
-
-			TESGlobal * sizeLimit = nullptr;
-
-			TESGlobal * GtsNPCEffectImmunityToggle = nullptr;
-
-			TESGlobal * ProgressionMultiplier = nullptr;
-			TESGlobal * CrushGrowthRate = nullptr;
-			TESGlobal * ChosenGameMode = nullptr;
-			TESGlobal * GrowthModeRate = nullptr;
-			TESGlobal * ShrinkModeRate = nullptr;
-
-			TESGlobal * ChosenGameModeNPC = nullptr;
-			TESGlobal * GrowthModeRateNPC = nullptr;
-			TESGlobal * ShrinkModeRateNPC = nullptr;
-			TESGlobal * GlobalMaxSizeCalc = nullptr;
-			TESGlobal * MassBasedSizeLimit = nullptr;
-			TESGlobal * SelectedSizeFormula = nullptr;
-
-			TESGlobal * ProtectEssentials = nullptr;
-			TESGlobal * EnableGiantSounds = nullptr;
-			TESGlobal * PCAdditionalEffects = nullptr;
-			TESGlobal * NPCSizeEffects = nullptr;
-			TESGlobal * CrushGrowthStorage = nullptr;
-			TESGlobal * IsFalling = nullptr;
+			// Team Functions
+			static bool HasMagicEffectTeam(Actor* actor, std::string_view tag);
+			static bool HasMagicEffectTeamOr(Actor* actor, std::string_view tag, bool default);
+			static bool HasSpellTeam(Actor* actor, std::string_view tag);
+			static bool HasSpellTeamOr(Actor* actor, std::string_view tag, bool default);
+			static bool HasPerkTeam(Actor* actor, std::string_view tag);
+			static bool HasPerkTeamOr(Actor* actor, std::string_view tag, bool default);
 
 
-			TESGlobal * ManualGrowthStorage = nullptr;
-			TESGlobal * BalanceMode = nullptr;
-			TESGlobal * HighHeelDamage = nullptr;
-
-
-
-			///Camera
-
-			///FP Camera
-			TESGlobal * FirstPersonMode = nullptr;
-			TESGlobal * ProneOffsetFP = nullptr;
-			///FP Camera END
-			TESGlobal * EnableCamera = nullptr;
-			TESGlobal * EnableAltCamera = nullptr;
-			TESGlobal * FeetCamera = nullptr;
-			TESGlobal * usingAutoDistance = nullptr;
-			TESGlobal * ImCrouching = nullptr;
-
-			TESGlobal * MinDistance = nullptr;
-			TESGlobal * MaxDistance = nullptr;
-			TESGlobal * CameraZoomSpeed = nullptr;
-			TESGlobal * CameraZoomPrecision = nullptr;
-
-			TESGlobal * proneCameraX = nullptr;
-			TESGlobal * proneCameraY = nullptr;
-			TESGlobal * proneCombatCameraX = nullptr;
-			TESGlobal * proneCombatCameraY = nullptr;
-
-			TESGlobal * cameraX = nullptr;
-			TESGlobal * cameraY = nullptr;
-			TESGlobal * combatCameraX = nullptr;
-			TESGlobal * combatCameraY = nullptr;
-
-			TESGlobal * proneCameraAlternateX = nullptr;
-			TESGlobal * proneCameraAlternateY = nullptr;
-			TESGlobal * proneCombatCameraAlternateX = nullptr;
-			TESGlobal * proneCombatCameraAlternateY = nullptr;
-
-			TESGlobal * cameraAlternateX = nullptr;
-			TESGlobal * cameraAlternateY = nullptr;
-			TESGlobal * combatCameraAlternateX = nullptr;
-			TESGlobal * combatCameraAlternateY = nullptr;
-
-			TESGlobal * CalcProne = nullptr;
-			/////////
-
-			/////Attributes//////
-			TESGlobal * AllowTimeChange = nullptr;
-			TESGlobal * bonusHPMultiplier = nullptr;
-			TESGlobal * bonusCarryWeightMultiplier = nullptr;
-			TESGlobal * bonusJumpHeightMultiplier = nullptr;
-			TESGlobal * bonusDamageMultiplier = nullptr;
-			TESGlobal * bonusSpeedMultiplier = nullptr;
-			TESGlobal * bonusSpeedMax = nullptr;
-
-			///EndAttributes///
-
-			///Potions///
-			EffectSetting* EffectGrowthPotion = nullptr;
-			EffectSetting* ResistShrinkPotion = nullptr;
-			EffectSetting* EffectSizePotionWeak = nullptr;
-			EffectSetting* EffectSizePotionNormal = nullptr;
-			EffectSetting* EffectSizePotionStrong = nullptr;
-			EffectSetting* EffectSizePotionExtreme = nullptr;
-			EffectSetting* EffectSizeHungerPotion = nullptr;
-			EffectSetting* EffectSizeAmplifyPotion = nullptr;
-			///End Potions///
-
-			///Size-Damage
-			SpellItem* gtsSizeCloakSpellTiny = nullptr;
-			SpellItem* gtsSizeCloakSpellSmall = nullptr;
-			SpellItem* gtsSizeCloakSpellMedium = nullptr;
-			SpellItem* gtsSizeCloakSpellLarge = nullptr;
-			SpellItem* gtsSizeCloakSpellHuge = nullptr;
-			SpellItem* gtsSizeCloakSpellMega = nullptr;
-			SpellItem* gtsSizeCloakSpellMassive = nullptr;
-			SpellItem* gtsSizeCloakSpellGigantic = nullptr;
-			SpellItem* gtsSizeCloakSpellImpossible = nullptr;
-
-			SpellItem* gtsStaggerSpell = nullptr;
-			///End Size-Damage
-
-
-			SpellItem * ShrinkToNothingSpell = nullptr;
-			SpellItem * FakeCrushSpell = nullptr;
-			EffectSetting* FakeCrushEffect = nullptr;
-
-			SpellItem * ShrinkBackNPCSpell = nullptr;
-			SpellItem * ShrinkBackSpell = nullptr;
-
-			TESQuest * MainQuest = nullptr;
-
-			TESFaction* FollowerFaction = nullptr;
-
+			std::unordered_map<std::string, SoundData> sounds;
+			std::unordered_map<std::string, SpellEffectData> spellEffects;
+			std::unordered_map<std::string, SpellData> spells;
+			std::unordered_map<std::string, PerkData> perks;
+			std::unordered_map<std::string, ExplosionData> explosions;
+			std::unordered_map<std::string, GlobalData> globals;
+			std::unordered_map<std::string, QuestData> quests;
+			std::unordered_map<std::string, FactionData> factions;
+			std::unordered_map<std::string, ImpactData> impacts;
 	};
 }

@@ -97,7 +97,7 @@ namespace {
 			return;
 		}
 		float visual_scale = persi_actor_data->visual_scale;
-		float change_requirement = Runtime::GetSingleton().sizeLimit->value + persi_actor_data->bonus_max_size;
+		float change_requirement = Runtime::GetFloat("sizeLimit") + persi_actor_data->bonus_max_size;
 
 		// Is scale correct already?
 		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
@@ -170,14 +170,14 @@ namespace {
 		float PerkSpeed = 1.0;
 
 		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
-		float IsFalling = Runtime::GetSingleton().IsFalling->value;
+		float IsFalling = Runtime::GetInt(IsFalling);
 
 		if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
-			Runtime::GetSingleton().IsFalling->value = 1.0;
+			Runtime::SetInt("IsFalling", 1.0);
 		} else if (actor->formID == 0x14 && !IsJumping(actor) && IsFalling >= 1.0) {
-			Runtime::GetSingleton().IsFalling->value = 0.0;
+			Runtime::SetInt("IsFalling", 0);
 		}
-		if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk)) {
+		if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
 			PerkSpeed = clamp(0.80, 1.0, speed_mult_walk); // Used as a bonus 20% MS if PC has perk.
 		}
 
@@ -230,11 +230,7 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		auto small_massive_threat = Runtime::GetSingleton().SmallMassiveThreat;
-		if (!small_massive_threat) {
-			return;
-		}
-		if (actor->HasMagicEffect(small_massive_threat)) {
+		if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
 			persi_actor_data->effective_multi = 2.0;
 		} else {
 			persi_actor_data->effective_multi = 1.0;
@@ -336,13 +332,11 @@ namespace {
 	}
 
 	void GameMode(Actor* actor)  {
-		auto& runtime = Runtime::GetSingleton();
-
 		ChosenGameMode gameMode = ChosenGameMode::None;
 		float growthRate = 0.0;
 		float shrinkRate = 0.0;
 		int game_mode_int = 0;
-		float QuestStage = runtime.MainQuest->GetCurrentStageID();
+		float QuestStage = Runtime::GetCurrentStageID("MainQuest");
 		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
 		float BonusShrink = 1.0;
@@ -363,9 +357,9 @@ namespace {
 				}
 
 
-				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
+				if (Runtime::HasMagicEffect(actor, "EffectGrowthPotion")) {
 					shrinkRate *= 0.0;
-				} else if (actor->HasMagicEffect(runtime.ResistShrinkPotion)) {
+				} else if (Runtime::HasMagicEffect(actor, "ResistShrinkPotion")) {
 					shrinkRate *= 0.25;
 				}
 
@@ -375,20 +369,20 @@ namespace {
 			}
 		} else if (QuestStage > 100.0 && BalanceMode <= 1.0) {
 			if (actor->formID == 0x14) {
-				if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion)) {
+				if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 					bonus = scale * 0.25 + 0.75;
 				}
-				game_mode_int = runtime.ChosenGameMode->value;
-				growthRate = runtime.GrowthModeRate->value * bonus;
-				shrinkRate = runtime.ShrinkModeRate->value;
+				game_mode_int = Runtime::GetInt("ChosenGameMode");
+				growthRate = Runtime::GetFloat("GrowthModeRate");
+				shrinkRate = Runtime::GetFloat("ShrinkModeRate");
 
-			} else if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction))) {
-				if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion)) {
+			} else if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+				if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 					bonus = scale * 0.25 + 0.75;
 				}
-				game_mode_int = runtime.ChosenGameModeNPC->value;
-				growthRate = runtime.GrowthModeRateNPC->value * bonus;
-				shrinkRate = runtime.ShrinkModeRateNPC->value;
+				game_mode_int = Runtime::GetInt("ChosenGameModeNPC");
+				growthRate = Runtime::GetFloat("GrowthModeRateNPC") * bonus;
+				shrinkRate = Runtime::GetFloat("ShrinkModeRateNPC");
 			}
 		}
 
@@ -419,7 +413,6 @@ std::string GtsManager::DebugName() {
 
 // Poll for updates
 void GtsManager::Update() {
-	auto& runtime = Runtime::GetSingleton();
 	auto PC = PlayerCharacter::GetSingleton();
 
 	HitManager::GetSingleton().Update();

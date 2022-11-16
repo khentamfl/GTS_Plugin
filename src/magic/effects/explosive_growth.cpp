@@ -17,12 +17,11 @@ namespace Gts {
 	}
 
 	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
-		
+
 	}
 
 	bool ExplosiveGrowth::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.explosiveGrowth1 || effect == runtime.explosiveGrowth2 || effect == runtime.explosiveGrowth3);
+		return (effect == Runtime::GetEffect("explosiveGrowth1") || effect == Runtime::GetEffect("explosiveGrowth2") || effect == Runtime::GetEffect("explosiveGrowth3"));
 	}
 
 	void ExplosiveGrowth::OnStart() {
@@ -38,43 +37,42 @@ namespace Gts {
 		const float GROWTH_2_POWER = 0.00145;
 		const float GROWTH_3_POWER = 0.00175;
 
-		auto& runtime = Runtime::GetSingleton();
 		auto base_spell = GetBaseEffect();
-		
-		if (base_spell == runtime.explosiveGrowth1) {
+
+		if (base_spell == Runtime::GetEffect("explosiveGrowth1")) {
 			this->power = GROWTH_1_POWER;
-			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
+			if (Runtime::HasPerk(caster, "ExtraGrowthMax")) {
 				this->grow_limit = 2.01; // NOLINT
 				this->power *= 2.0; // NOLINT
-			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
+			} else if (Runtime::HasPerk(caster, "ExtraGrowth")) {
 				this->grow_limit = 1.67; // NOLINT
 			} else {
 				this->grow_limit = 1.34; // NOLINT
 			}
-		} else if (base_spell == runtime.explosiveGrowth2) {
+		} else if (base_spell == Runtime::GetEffect("explosiveGrowth2")) {
 			this->power = GROWTH_2_POWER;
-			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
+			if (Runtime::HasPerk(caster, "ExtraGrowthMax")) {
 				this->grow_limit = 2.34; // NOLINT
 				this->power *= 2.0; // NOLINT
-			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
+			} else if (Runtime::HasPerk(caster, "ExtraGrowth")) {
 				this->grow_limit = 2.01; // NOLINT
 			} else {
 				this->grow_limit = 1.67; // NOLINT
 			}
-		} else if (base_spell == runtime.explosiveGrowth3) {
+		} else if (base_spell == Runtime::GetEffect("explosiveGrowth3")) {
 			this->power = GROWTH_3_POWER;
-			if (caster->HasPerk(runtime.ExtraGrowthMax)) {
+			if (Runtime::HasPerk(caster, "ExtraGrowthMax")) {
 				this->grow_limit = 2.67; // NOLINT
 				this->power *= 2.0; // NOLINT
-			} else if (caster->HasPerk(runtime.ExtraGrowth)) {
+			} else if (Runtime(caster, "ExtraGrowth")) {
 				this->grow_limit = 2.34; // NOLINT
 			} else {
 				this->grow_limit = 2.01; // NOLINT
 			}
 		}
-		
+
 		auto sizemanager = SizeManager::GetSingleton();
-		float AdjustLimit = clamp(1.0, 12.0, runtime.CrushGrowthStorage->value + 1.0);
+		float AdjustLimit = clamp(1.0, 12.0, Runtime::GetFloatOr(CrushGrowthStorage, 0.0) + 1.0);
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(caster)/100;
 		float GetGrowthSpurt = SizeManager::GetSingleton().GetGrowthSpurt(caster);
 		float scale = get_target_scale(caster);
@@ -83,17 +81,15 @@ namespace Gts {
 
 		float limit = this->grow_limit * Gigantism * AdjustLimit;
 
-		auto HealthRegenPerk = runtime.HealthRegenPerk;
 		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00080;
 
-		if (caster->HasPerk(HealthRegenPerk)) {
+		if (Runtime::HasPerk(caster, "HealthRegenPerk")) {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
-		
+
 		if (scale <= limit || limit > GetGrowthSpurt) {
-			
-			if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
-			{
+
+			if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 				bonus = get_target_scale(caster) * 0.25 + 0.75;
 			}
 			DoGrowth(caster, this->power * bonus);
@@ -102,26 +98,26 @@ namespace Gts {
 		}
 
 		//else if (limit <= GetGrowthSpurt || GetGrowthSpurt > limit) {
-			//float difference = GetGrowthSpurt - limit;
-			//log::info("RequiredSizeChange: {}", RequiredSizeChange);
-			//if (this->RequiredSizeChange <= 0 && difference > 0.10) {
-				//SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
-				//this->RequiredSizeChange = difference;
-			//}
+		//float difference = GetGrowthSpurt - limit;
+		//log::info("RequiredSizeChange: {}", RequiredSizeChange);
+		//if (this->RequiredSizeChange <= 0 && difference > 0.10) {
+		//SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
+		//this->RequiredSizeChange = difference;
+		//}
 
-			//if (this->RequiredSizeChange > 0) {
-				//this->RequiredSizeChange -= difference/100;
-				//DoShrink(caster, difference/100);
-				//if (this->RequiredSizeChange <= 0)
-				//{
-					//this->RequiredSizeChange = 0;
-					//return;
-				//}
-			//}
-			//log::info("Difference is: {}", difference);
-			//log::info("RequiredSizeChange: {}, Difference: {}", RequiredSizeChange, difference);
-		}
-		//log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}, Target Scale: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit, scale);
+		//if (this->RequiredSizeChange > 0) {
+		//this->RequiredSizeChange -= difference/100;
+		//DoShrink(caster, difference/100);
+		//if (this->RequiredSizeChange <= 0)
+		//{
+		//this->RequiredSizeChange = 0;
+		//return;
+		//}
+		//}
+		//log::info("Difference is: {}", difference);
+		//log::info("RequiredSizeChange: {}, Difference: {}", RequiredSizeChange, difference);
+	}
+	//log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}, Target Scale: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit, scale);
 
 	void ExplosiveGrowth::OnFinish() {
 		Actor* caster = GetCaster();
@@ -134,32 +130,28 @@ namespace Gts {
 
 
 	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
-			mod_target_scale(actor, value); // Grow
-			auto runtime = Runtime::GetSingleton();
+		mod_target_scale(actor, value); // Grow
 
-			GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
-			if (this->timerSound.ShouldRunFrame()) {
-				PlaySound(runtime.xlRumbleL, actor, this->power/20, 0.0);
-			}
-			if (this->timer.ShouldRun()) {
-				auto GrowthSound = runtime.growthSound;
-				float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/4);
-				PlaySound(GrowthSound, actor, Volume, 0.0);
-			}
+		GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
+		if (this->timerSound.ShouldRunFrame()) {
+			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
 		}
-
-		void ExplosiveGrowth::DoShrink(Actor* actor, float value) {
-			mod_target_scale(actor, -value); // Grow
-			auto runtime = Runtime::GetSingleton();
-
-			GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
-			if (this->timerSound.ShouldRunFrame()) {
-				PlaySound(runtime.xlRumbleL, actor, this->power/20, 0.0);
-			}
-			if (this->timer.ShouldRun()) {
-				auto GrowthSound = runtime.shrinkSound;
-				float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/2);
-				PlaySound(GrowthSound, actor, Volume, 0.0);
-			}
-		}	
+		if (this->timer.ShouldRun()) {
+			float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/4);
+			Runtime::PlaySound("growthSound", actor, Volume, 0.0);
+		}
 	}
+
+	void ExplosiveGrowth::DoShrink(Actor* actor, float value) {
+		mod_target_scale(actor, -value); // Grow
+
+		GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
+		if (this->timerSound.ShouldRunFrame()) {
+			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
+		}
+		if (this->timer.ShouldRun()) {
+			float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/2);
+			Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);
+		}
+	}
+}

@@ -159,8 +159,6 @@ namespace Gts {
 	}
 
 	void MagicManager::ProcessActiveEffects(Actor* actor) {
-		auto& runtime = Runtime::GetSingleton();
-
 		auto effect_list =actor->GetActiveEffectList();
 		if (!effect_list) {
 			return;

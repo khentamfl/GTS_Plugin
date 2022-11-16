@@ -145,10 +145,9 @@ namespace Gts {
 
 
 	void CameraManager::ApplyCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
-		auto& runtime = Runtime::GetSingleton();
 		float cameraYCorrection = 121.0;
 		float UpDown = this->UpDown; float Side = this->Side;
-		float CalcProne = runtime.CalcProne->value;
+		float CalcProne = Runtime::GetFloat("CalcProne");
 		float ProneOffsetFP = 1.0;
 
 		SetfOverShoulderPosX((X + Side) * size);
@@ -168,11 +167,11 @@ namespace Gts {
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
-			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * runtime.ProneOffsetFP->value);
+			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * Runtime::GetFloat("ProneOffsetFP"));
 			float ProneCalc = CameraManager::GetfOverShoulderPosZ(); //Utility.getINIFloat("fOverShoulderPosZ:Camera")
 			float ProneCalcC = CameraManager::GetfOverShoulderCombatPosZ(); //Utility.getINIFloat("fOverShoulderCombatPosZ:Camera")
-			CameraManager::SetfOverShoulderPosZ(ProneCalc * (1.0 - runtime.CalcProne->value)); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
-			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * (1.0 - runtime.CalcProne->value)); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
+			CameraManager::SetfOverShoulderPosZ(ProneCalc * (1.0 - Runtime::GetFloat("CalcProne"))); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
+			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * (1.0 - Runtime::GetFloat("CalcProne"))); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
 		}
 		set_fp_scale(PlayerCharacter::GetSingleton(), get_target_scale(PlayerCharacter::GetSingleton()), ProneOffsetFP);
 	}
@@ -181,9 +180,8 @@ namespace Gts {
 
 
 	void CameraManager::ApplyFeetCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
-		auto& runtime = Runtime::GetSingleton();
 		float cameraYCorrection2 = 205.0 * (size * 0.33) + 70;
-		float CalcProne2 = runtime.CalcProne->value;
+		float CalcProne2 = Runtime::GetFloat("CalcProne");
 		float UpDown = this->UpDown; float Side = this->Side;
 		float ProneOffsetFP = 1.0;
 
@@ -198,11 +196,11 @@ namespace Gts {
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
-			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * runtime.ProneOffsetFP->value);
+			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * Runtime::GetFloat("ProneOffsetFP"));
 			float ProneCalc = CameraManager::GetfOverShoulderPosZ(); //Utility.getINIFloat("fOverShoulderPosZ:Camera")
 			float ProneCalcC = CameraManager::GetfOverShoulderCombatPosZ(); //Utility.getINIFloat("fOverShoulderCombatPosZ:Camera")
-			CameraManager::SetfOverShoulderPosZ(ProneCalc * (1.0 - (runtime.CalcProne->value))); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
-			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * (1.0 - runtime.CalcProne->value)); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
+			CameraManager::SetfOverShoulderPosZ(ProneCalc * (1.0 - (Runtime::GetFloat("CalcProne")))); //Utility.setINIFloat("fOverShoulderPosZ:Camera", ProneCalc * CalcProne2)
+			CameraManager::SetfOverShoulderCombatPosZ(ProneCalcC * (1.0 - Runtime::GetFloat("CalcProne"))); //Utility.setINIFloat("fOverShoulderCombatPosZ:Camera", ProneCalcC * CalcProne2)
 		}
 		set_fp_scale(PlayerCharacter::GetSingleton(), get_target_scale(PlayerCharacter::GetSingleton()), ProneOffsetFP);
 	}
@@ -217,14 +215,12 @@ namespace Gts {
 		float size = get_visual_scale(player);
 		// Early exit
 		//if (!this->CameraTimer.ShouldRunFrame()) {
-			//return;
+		//return;
 		//}
 		if (fabs(size - this->last_scale) <= 1e-4) {
 			return;
 		}
 		this->last_scale = size;
-
-		auto& runtime = Runtime::GetSingleton();
 
 		auto Camera = PlayerCamera::GetSingleton();
 		float CameraX = Camera->pos.x;
@@ -243,36 +239,36 @@ namespace Gts {
 			ScaleMethod = 2.0;
 		}
 
-		float EnableCamera = runtime.EnableCamera->value;
-		float EnableAltCamera = runtime.EnableAltCamera->value;
-		float FeetCamera = runtime.FeetCamera->value;
-		float usingAutoDistance = runtime.usingAutoDistance->value;
-		float ImCrouching = runtime.ImCrouching->value;
-		float MinDistance = runtime.MinDistance->value;
-		float MaxDistance = runtime.MaxDistance->value;
-		float CameraZoomSpeed = runtime.CameraZoomSpeed->value;
-		float CameraZoomPrecision = runtime.CameraZoomPrecision->value;
+		float EnableCamera = Runtime::GetInt("EnableCamera");
+		float EnableAltCamera = Runtime::GetInt("EnableAltCamera");
+		float FeetCamera = Runtime::GetInt("FeetCamera");
+		float usingAutoDistance = Runtime::GetInt("usingAutoDistance");
+		float ImCrouching = Runtime::GetInt("ImCrouching");
+		float MinDistance = Runtime::GetFloat("MinDistance");
+		float MaxDistance = Runtime::GetFloat("MaxDistance");
+		float CameraZoomSpeed = Runtime::GetFloat("CameraZoomSpeed");
+		float CameraZoomPrecision = Runtime::GetFloat("CameraZoomPrecision");
 		//////////Normal - Prone
-		float proneCameraX = runtime.proneCameraX->value;
-		float proneCameraY = runtime.proneCameraY->value;
-		float proneCombatCameraX = runtime.proneCombatCameraX->value;
-		float proneCombatCameraY = runtime.proneCombatCameraY->value;
+		float proneCameraX = Runtime::GetFloat("proneCameraX");
+		float proneCameraY = Runtime::GetFloat("proneCameraY");
+		float proneCombatCameraX = Runtime::GetFloat("proneCombatCameraX");
+		float proneCombatCameraY = Runtime::GetFloat("proneCombatCameraY");
 		/////////Normal - Normal
-		float cameraX = runtime.cameraX->value;
-		float cameraY = runtime.cameraY->value;
-		float combatCameraX = runtime.combatCameraX->value;
-		float combatCameraY = runtime.combatCameraY->value;
+		float cameraX = Runtime::GetFloat("cameraX");
+		float cameraY = Runtime::GetFloat("cameraY");
+		float combatCameraX = Runtime::GetFloat("combatCameraX");
+		float combatCameraY = Runtime::GetFloat("combatCameraY");
 		//------------------------------------------------------------------------------------------------------------------------
 		/////////Alternate - Prone
-		float proneCameraAlternateX = runtime.proneCameraAlternateX->value;
-		float proneCameraAlternateY = runtime.proneCameraAlternateY->value;
-		float proneCombatCameraAlternateX = runtime.proneCombatCameraAlternateX->value;
-		float proneCombatCameraAlternateY = runtime.proneCameraAlternateY->value;
+		float proneCameraAlternateX = Runtime::GetFloat("proneCameraAlternateX");
+		float proneCameraAlternateY = Runtime::GetFloat("proneCameraAlternateY");
+		float proneCombatCameraAlternateX = Runtime::GetFloat("proneCombatCameraAlternateX");
+		float proneCombatCameraAlternateY = Runtime::GetFloat("proneCameraAlternateY");
 		////////Alternate - Normal
-		float cameraAlternateX = runtime.cameraAlternateX->value;
-		float cameraAlternateY = runtime.cameraAlternateY->value;
-		float combatCameraAlternateX = runtime.combatCameraAlternateX->value;
-		float combatCameraAlternateY = runtime.combatCameraAlternateY->value;
+		float cameraAlternateX = Runtime::GetFloat("cameraAlternateX");
+		float cameraAlternateY = Runtime::GetFloat("cameraAlternateY");
+		float combatCameraAlternateX = Runtime::GetFloat("combatCameraAlternateX");
+		float combatCameraAlternateY = Runtime::GetFloat("combatCameraAlternateY");
 
 
 		if (ImCrouching >= 1.0) {
