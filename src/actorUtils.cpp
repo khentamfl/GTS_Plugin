@@ -1,34 +1,8 @@
 #include "actorUtils.hpp"
+#include "papyrusUtils.hpp"
 
 using namespace RE;
 using namespace Gts;
-
-namespace {
-	using VM = RE::BSScript::Internal::VirtualMachine;
-	using ObjectPtr = RE::BSTSmartPointer<RE::BSScript::Object>;
-	inline RE::VMHandle GetHandle(RE::TESForm* a_form)
-	{
-		auto vm = VM::GetSingleton();
-		auto policy = vm->GetObjectHandlePolicy();
-		return policy->GetHandleForObject(a_form->GetFormType(), a_form);
-	}
-
-	inline ObjectPtr GetObjectPtr(RE::TESForm* a_form, const char* a_class, bool a_create)
-	{
-		auto vm = VM::GetSingleton();
-		auto handle = GetHandle(a_form);
-
-		ObjectPtr object = nullptr;
-		bool found = vm->FindBoundObject(handle, a_class, object);
-		if (!found && a_create) {
-			vm->CreateObject2(a_class, object);
-			vm->BindObject(object, handle, false);
-		}
-
-		return object;
-	}
-
-}
 
 namespace Gts {
 	void PlayAnimation(Actor* actor, std::string_view animName) {
