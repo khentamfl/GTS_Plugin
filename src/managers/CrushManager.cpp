@@ -199,7 +199,7 @@ namespace Gts {
 		return true;
 	}
 
-	CrushData::CrushData(Actor* giant, Actor* tiny) {
+	void CrushData::CrushData(Actor* giant, Actor* tiny) {
 		this->state = CrushState::Healthy;
 		this->delay = Timer(0.01);
 		this->giant = giant;
