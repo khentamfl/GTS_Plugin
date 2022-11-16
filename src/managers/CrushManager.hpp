@@ -12,7 +12,7 @@ namespace Gts {
 	enum class CrushState {
 		Healthy,
 		Crushing,
-		Crushed,
+		Crushed
 	};
 
 	struct CrushData {
