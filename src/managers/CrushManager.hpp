@@ -16,10 +16,10 @@ namespace Gts {
 	};
 
 	struct CrushData {
-		CrushData(Actor* giant, Actor* small);
+		// CrushData(Actor* giant, Actor* small);
 
-		CrushState state;
-		Timer delay;
+		// CrushState state;
+		// Timer delay;
 		Actor* giant;
 	};
 
