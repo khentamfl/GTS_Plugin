@@ -74,7 +74,6 @@ namespace Gts {
 				} else if (!wasPowerAttack) {
 					this->BonusPower = 1.0;
 				}
-				auto GrowthSound = runtime.growthSound;
 
 				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
@@ -98,7 +97,7 @@ namespace Gts {
 				auto actor_data = Persist.GetData(receiver);
 				actor_data->half_life = clampduration;
 
-				PlaySound(GrowthSound, receiver, ReceiverScale/15, 0.0);
+				runtime.PlaySound("growthSound", receiver, ReceiverScale/15, 0.0);
 
 				this->GrowthTick +=HealthPercentage;
 
@@ -111,8 +110,7 @@ namespace Gts {
 				}
 
 				if (SizeDifference >= 4.0 && LaughChance >= 11.0) {
-					auto LaughSound = Runtime::GetSingleton().LaughSound;
-					PlaySound(LaughSound, receiver, 1.0, 0.0); //FearCast()
+					runTime.PlaySound("LaughSound", receiver, 1.0, 0.0); 
 				}
 				return;
 			}
@@ -159,6 +157,7 @@ namespace Gts {
 		auto Runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
 		auto& Persist = Persistent::GetSingleton();
+		
 		if (this->CanGrow) { // Grow on hit
 			float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(actor)/100;
 			float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
@@ -176,7 +175,6 @@ namespace Gts {
 				mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
 				this->GrowthTick -= 0.0005 * TimeScale();
 			} else if (this->GrowthTick <= 0.01) {
-				//log::info("Growth Value is: {}, HP Percentage is: {}, SizeHunger: {}, Gigantism: {}", GrowthValue, HealthPercentage, SizeHunger, Gigantism);
 				actor_data->half_life = 1.0;
 				this->CanGrow = false;
 				this->BlockEffect = false;
