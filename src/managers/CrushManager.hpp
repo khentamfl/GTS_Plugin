@@ -34,6 +34,7 @@ namespace Gts {
 			virtual void ResetActor(Actor* actor) override;
 
 			static bool CanCrush(Actor* giant, Actor* tiny);
+			static bool AlreadyCrushed(Actor* actor);
 			static void Crush(Actor* giant, Actor* tiny);
 		private:
 			std::unordered_map<Actor*, CrushData> data;

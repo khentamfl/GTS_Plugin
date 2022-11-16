@@ -104,7 +104,7 @@ namespace Gts {
 				RandomMoan(data.giant);
 				data.state = CrushState::Crushing;
 			} else if (data.state == CrushState::Crushing) {
-				if (data.time.ShouldRun()) {
+				if (data.delay.ShouldRun()) { // it was data.time
 					data.state = CrushState::Crushed;
 
 					// Do crush
@@ -117,9 +117,9 @@ namespace Gts {
 					if (giant->formID == 0x14) {
 						TriggerScreenBlood(1);
 					}
-					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{0, 0, -1}, 512, true, true);
-					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{0, 0, -1}, 512, true, false);
-					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{0, 0, -1}, 512, true, false);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{0, 0, 0}, 512, true, true);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{0, 0, 0}, 512, true, false);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{0, 0, 0}, 512, true, false);
 					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLoot")) {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
