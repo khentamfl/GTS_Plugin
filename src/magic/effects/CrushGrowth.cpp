@@ -12,7 +12,7 @@ namespace Gts {
 	}
 
 	bool CrushGrowth::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetEffect("CrushGrowthMGEF");
+		return effect == Runtime::GetMagicEffect("CrushGrowthMGEF");
 	}
 
 	void CrushGrowth::OnStart() {

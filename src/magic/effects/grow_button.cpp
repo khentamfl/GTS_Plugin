@@ -12,7 +12,7 @@ namespace Gts {
 	}
 
 	bool GrowButton::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetEffect("GrowPcButton");
+		return effect == Runtime::GetMagicEffect("GrowPcButton");
 	}
 
 	void GrowButton::OnStart() {

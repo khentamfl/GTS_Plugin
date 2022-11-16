@@ -20,13 +20,13 @@ namespace Gts {
 
 		auto base_spell = GetBaseEffect();
 
-		if (base_spell == Runtime::GetEffect("SizePotionExtreme")) {
+		if (base_spell == Runtime::GetMagicEffect("SizePotionExtreme")) {
 			this->Strenght = 0.35;
-		} else if (base_spell == Runtime::GetEffect("SizePotionStrong")) {
+		} else if (base_spell == Runtime::GetMagicEffect("SizePotionStrong")) {
 			this->Strenght = 0.20;
-		} else if (base_spell == Runtime::GetEffect("SizePotionNormal")) {
+		} else if (base_spell == Runtime::GetMagicEffect("SizePotionNormal")) {
 			this->Strenght = 0.15;
-		} else if (base_spell == Runtime::GetEffect("SizePotionWeak")) {
+		} else if (base_spell == Runtime::GetMagicEffect("SizePotionWeak")) {
 			this->Strenght = 0.10;
 		}
 		//log::info("Strenght is {}", this->Strenght);
@@ -34,7 +34,7 @@ namespace Gts {
 
 
 	bool SizePotion::StartEffect(EffectSetting* effect) {
-		return (effect == Runtime::GetEffect("SizePotionStrong") || effect ==  Runtime::GetEffect("SizePotionNormal") || effect == Runtime::GetEffect("SizePotionWeak") || effect == Runtime::GetEffect("SizePotionExtreme"));
+		return (effect == Runtime::GetMagicEffect("SizePotionStrong") || effect ==  Runtime::GetMagicEffect("SizePotionNormal") || effect == Runtime::GetMagicEffect("SizePotionWeak") || effect == Runtime::GetMagicEffect("SizePotionExtreme"));
 	}
 
 	void SizePotion::OnStart() {

@@ -17,7 +17,7 @@ namespace Gts {
 	}
 
 	bool Absorb::StartEffect(EffectSetting* effect) { // NOLINT
-		return (effect == Runtime::GetEffect("AbsorbMGEF") || effect == Runtime::GetEffect("TrueAbsorb"));
+		return (effect == Runtime::GetMagicEffect("AbsorbMGEF") || effect == Runtime::GetMagicEffect("TrueAbsorb"));
 	}
 
 	void Absorb::OnUpdate() {

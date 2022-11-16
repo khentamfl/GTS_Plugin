@@ -10,7 +10,7 @@ namespace Gts {
 	}
 
 	bool GrowOther::StartEffect(EffectSetting* effect) { // NOLINT
-		return (effect == Runtime::GetEffect("GrowAlly") || effect == Runtime::GetEffect("GrowAllyAdept") || effect == Runtime::GetEffect("GrowAllyExpert"));
+		return (effect == Runtime::GetMagicEffect("GrowAlly") || effect == Runtime::GetMagicEffect("GrowAllyAdept") || effect == Runtime::GetMagicEffect("GrowAllyExpert"));
 	}
 
 	void GrowOther::OnUpdate() {
@@ -33,9 +33,9 @@ namespace Gts {
 
 		auto base_spell = GetBaseEffect();
 
-		if (base_spell == Runtime::GetEffect("GrowAllyAdept")) {
+		if (base_spell == Runtime::GetMagicEffect("GrowAllyAdept")) {
 			power *= 1.32;
-		} else if (base_spell == Runtime::GetEffect("GrowAllyExpert")) {
+		} else if (base_spell == Runtime::GetMagicEffect("GrowAllyExpert")) {
 			power *= 1.75;
 		}
 

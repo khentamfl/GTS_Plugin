@@ -21,7 +21,7 @@ namespace Gts {
 	}
 
 	bool ExplosiveGrowth::StartEffect(EffectSetting* effect) { // NOLINT
-		return (effect == Runtime::GetEffect("explosiveGrowth1") || effect == Runtime::GetEffect("explosiveGrowth2") || effect == Runtime::GetEffect("explosiveGrowth3"));
+		return (effect == Runtime::GetMagicEffect("explosiveGrowth1") || effect == Runtime::GetMagicEffect("explosiveGrowth2") || effect == Runtime::GetMagicEffect("explosiveGrowth3"));
 	}
 
 	void ExplosiveGrowth::OnStart() {
@@ -39,7 +39,7 @@ namespace Gts {
 
 		auto base_spell = GetBaseEffect();
 
-		if (base_spell == Runtime::GetEffect("explosiveGrowth1")) {
+		if (base_spell == Runtime::GetMagicEffect("explosiveGrowth1")) {
 			this->power = GROWTH_1_POWER;
 			if (Runtime::HasPerk(caster, "ExtraGrowthMax")) {
 				this->grow_limit = 2.01; // NOLINT
@@ -49,7 +49,7 @@ namespace Gts {
 			} else {
 				this->grow_limit = 1.34; // NOLINT
 			}
-		} else if (base_spell == Runtime::GetEffect("explosiveGrowth2")) {
+		} else if (base_spell == Runtime::GetMagicEffect("explosiveGrowth2")) {
 			this->power = GROWTH_2_POWER;
 			if (Runtime::HasPerk(caster, "ExtraGrowthMax")) {
 				this->grow_limit = 2.34; // NOLINT
@@ -59,7 +59,7 @@ namespace Gts {
 			} else {
 				this->grow_limit = 1.67; // NOLINT
 			}
-		} else if (base_spell == Runtime::GetEffect("explosiveGrowth3")) {
+		} else if (base_spell == Runtime::GetMagicEffect("explosiveGrowth3")) {
 			this->power = GROWTH_3_POWER;
 			if (Runtime::HasPerk(caster, "ExtraGrowthMax")) {
 				this->grow_limit = 2.67; // NOLINT

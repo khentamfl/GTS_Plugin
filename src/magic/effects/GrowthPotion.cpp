@@ -14,7 +14,7 @@ namespace Gts {
 	}
 
 	bool GrowthPotion::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetEffect("GrowthPotion");
+		return effect == Runtime::GetMagicEffect("GrowthPotion");
 	}
 
 	void GrowthPotion::OnStart() {
