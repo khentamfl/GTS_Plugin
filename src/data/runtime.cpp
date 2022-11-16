@@ -139,7 +139,7 @@ namespace Gts {
 	bool Runtime::AddSpell(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetSpell(tag);
 		if (data) {
-			if (!Runtime::HasSpell(actor, data)) {
+			if (!Runtime::HasSpell(actor, tag)) {
 				actor->AddSpell(data);
 			}
 		}
@@ -147,7 +147,7 @@ namespace Gts {
 	bool Runtime::RemoveSpell(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetSpell(tag);
 		if (data) {
-			if (Runtime::HasSpell(actor, data)) {
+			if (Runtime::HasSpell(actor, tag)) {
 				actor->RemoveSpell(data);
 			}
 		}
@@ -188,7 +188,7 @@ namespace Gts {
 	bool Runtime::AddPerk(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetPerk(tag);
 		if (data) {
-			if (!Runtime::HasPerk(actor, data)) {
+			if (!Runtime::HasPerk(actor, tag)) {
 				actor->AddPerk(data);
 			}
 		}
@@ -196,7 +196,7 @@ namespace Gts {
 	bool Runtime::RemovePerk(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetPerk(tag);
 		if (data) {
-			if (Runtime::HasPerk(actor, data)) {
+			if (Runtime::HasPerk(actor, tag)) {
 				actor->RemovePerk(data);
 			}
 		}
@@ -233,12 +233,12 @@ namespace Gts {
 		}
 	}
 
-	void Runtime::CreateExplosionAtNode(Actor* actor, std::string_view node, float scale, std::string_view tag) {
+	void Runtime::CreateExplosionAtNode(Actor* actor, std::string_view node_name, float scale, std::string_view tag) {
 		if (actor) {
 			if (actor->Is3DLoaded()) {
 				auto model = actor->GetCurrent3D();
 				if (model) {
-					auto node = model->GetObjectByName(std::string(node));
+					auto node = model->GetObjectByName(std::string(node_name));
 					if (node) {
 						CreateExplosionAtPos(actor, node->world.translate, scale, tag);
 					}
@@ -383,7 +383,7 @@ namespace Gts {
 	}
 
 	bool Runtime::InFactionOr(Actor* actor, std::string_view tag, bool default_value) {
-		auto data = GetQuest(tag);
+		auto data = GetFaction(tag);
 		if (data) {
 			return actor->IsInFaction(data);
 		} else {
@@ -432,14 +432,14 @@ namespace Gts {
 	}
 
 	bool Runtime::HasSpellTeamOr(Actor* actor, std::string_view tag, bool default_value) {
-		if (Runtime::HasSpellTeamOr(actor, tag, default_value)) {
+		if (Runtime::HasSpellTeam(actor, tag)) {
 			return true;
 		}
 		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 			auto player = PlayerCharacter::GetSingleton();
 			return Runtime::HasSpellTeamOr(player, tag, default_value);
 		} else {
-			return false;
+			return default_value;
 		}
 	}
 
@@ -447,15 +447,15 @@ namespace Gts {
 		return Runtime::HasPerkTeamOr(actor, tag, false);
 	}
 
-	bool Runtime::HasPerkTeamOr(Actor* actor, std::string_view tag) {
-		if (Runtime::HasPerkOr(actor, tag, default_value)) {
+	bool Runtime::HasPerkTeamOr(Actor* actor, std::string_view tag, bool default_value) {
+		if (Runtime::HasPerk(actor, tag)) {
 			return true;
 		}
 		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 			auto player = PlayerCharacter::GetSingleton();
 			return Runtime::HasPerkOr(player, tag, default_value);
 		} else {
-			return false;
+			return default_value;
 		}
 	}
 
