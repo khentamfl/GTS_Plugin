@@ -177,7 +177,7 @@ namespace Gts {
 				duration = smootherstep(0.2, 1.2, duration);
 
 				auto& runtime = Runtime::GetSingleton();
-				bool pcEffects = runtime.PCAdditionalEffects ? runtime.NPCSizeEffects->value >= 1.0 : true;
+				bool pcEffects = runtime.GetGlobal("PCAdditionalEffects") ? runtime.GetFloat("NPCSizeEffects") >= 1.0 : true;
 
 				if (actor->formID == 0x14 && pcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
@@ -206,7 +206,7 @@ namespace Gts {
 					}
 				}
 
-				bool npcEffects = runtime.NPCSizeEffects ? runtime.NPCSizeEffects->value >= 1.0 : true;
+				bool npcEffects = runtime.GetGlobal("NPCSizeEffects") ? runtime.GetFloat("NPCSizeEffects") >= 1.0 : true;
 				if (actor->formID != 0x14 && npcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
 						shake_camera(actor, intensity, duration);

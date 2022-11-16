@@ -65,7 +65,7 @@ namespace Gts {
 
 		// Apply it
 
-		if (receiver->HasPerk(runtime.GrowthOnHitPerk) && !this->CanGrow && !this->BlockEffect && receiver == player ) {
+		if (Runtime::HasPerk(receiver, "GrowthOnHitPerk") && !this->CanGrow && !this->BlockEffect && receiver == player ) {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
 				this->BlockEffect = true;
 				this->CanGrow = true;
@@ -116,7 +116,7 @@ namespace Gts {
 				}
 				return;
 			}
-		} else if (sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && !this->BlockEffect && receiver == player && !receiver->HasPerk(runtime.GrowthOnHitPerk)) {
+		} else if (sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && !this->BlockEffect && receiver == player && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) { // If BalanceMode is 2, shrink player on hit
 				this->BlockEffect = true;
 				this->Balance_CanShrink = true;
@@ -168,7 +168,7 @@ namespace Gts {
 			auto actor_data = Persist.GetData(actor);
 			//log::info("SizeHunger, {}, Gigantism: {}", SizeHunger, Gigantism);
 
-			if (actor->HasMagicEffect(Runtime.SmallMassiveThreat)) {
+			if (Runtime.HasMagicEffect(actor, "SmallMassiveThreat")) {
 				GrowthValue *= 0.50;
 			}
 			if (this->GrowthTick > 0.01 && GrowthValue > 0) {

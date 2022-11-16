@@ -144,14 +144,14 @@ namespace {
 		switch (foot_kind) {
 			case Foot::Left:
 			case Foot::Front:
-				return Runtime::GetSingleton().xxlFootstepL;
+				return Runtime::GetSound("xxlFootstepL");
 				break;
 			case Foot::Right:
 			case Foot::Back:
-				return Runtime::GetSingleton().xxlFootstepR;
+				return Runtime::GetSound("xxlFootstepR");
 				break;
 			case Foot::JumpLand:
-				return Runtime::GetSingleton().xxlFootstepR;
+				return Runtime::GetSound("xxlFootstepR");
 				break;
 		}
 		return nullptr;

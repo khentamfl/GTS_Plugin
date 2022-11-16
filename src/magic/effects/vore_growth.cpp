@@ -62,12 +62,12 @@ namespace Gts {
 		float HpRegen = Caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00145;
 		float SpRegen = Caster->GetPermanentActorValue(ActorValue::kStamina) * 0.007;
 
-		if(Caster->HasPerk(runtime.VorePerkRegeneration))
+		if (runtime.HasPerk(Caster, "VorePerkRegeneration"))
 		{
 			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
 		}
-		if (Caster->HasPerk(runtime.VorePerkGreed) && this->BlockVoreMods == false)  // Permamently increases random AV after eating someone
+		if (runtime.HasPerk(Caster, "VorePerkGreed") && this->BlockVoreMods == false)  // Permamently increases random AV after eating someone
 		{
 			this->BlockVoreMods = true;
 			int Boost = rand() % 2;
