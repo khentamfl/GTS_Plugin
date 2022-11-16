@@ -22,7 +22,6 @@ namespace Gts {
 			return;
 		}
 		auto& runtime = Runtime::GetSingleton();
-		auto ShrinkSound = runtime.shrinkSound;
 		float Volume = clamp(0.50, 1.0, get_target_scale(caster));
 		runtime.PlaySound("shrinkSound", caster, Volume, 0.0);
 		//log::info("Shrink Buton Sound, actor: {}", caster->GetDisplayFullName());

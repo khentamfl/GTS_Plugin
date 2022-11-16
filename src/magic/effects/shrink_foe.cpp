@@ -73,7 +73,7 @@ namespace Gts {
 			SizeDifference = clamp(1.0, 8.0, (get_target_scale(caster)/get_target_scale(target))/2);
 		}
 		
-		bool has_smt = runtime.HasMagicEffect(caster, "SmallMassiveThreat");
+		bool has_smt = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();
