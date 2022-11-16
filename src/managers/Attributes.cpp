@@ -182,7 +182,7 @@ namespace {
 		float bonusCarryWeightMultiplier = Runtime::GetFloat("bonusCarryWeightMultiplier");
 		float bonusJumpHeightMultiplier = Runtime::GetFloat("bonusJumpHeightMultiplier");
 		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
-		float bonusSpeedMultiplier = Runtime::GetFloat(bonusSpeedMultiplier);
+		float bonusSpeedMultiplier = Runtime::GetFloat("bonusSpeedMultiplier");
 
 		float size = get_target_scale(Player);
 
@@ -228,7 +228,7 @@ namespace {
 		static Timer timer = Timer(0.05);
 		float size = get_target_scale(npc);
 		if (timer.ShouldRunFrame()) {
-			if (npc->IsPlayerTeammate() || Runtime::InFaction(pc, "FollowerFaction")) {
+			if (npc->IsPlayerTeammate() || Runtime::InFaction(npc, "FollowerFaction")) {
 				BoostHP(npc, 1.0);
 				BoostCarry(npc, 1.0);
 			}

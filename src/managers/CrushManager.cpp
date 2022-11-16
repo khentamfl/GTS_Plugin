@@ -12,7 +12,7 @@ namespace {
 		int voreFearRoll = rand() % 5;
 		if (Runtime::HasMagicEffect(actor, "gtsSmallMassiveThreatMe")) {
 			voreFearRoll = rand() % 2;
-			shake_camera(PlayerRef, 0.4, 0.25);
+			shake_camera(actor, 0.4, 0.25);
 		}
 
 		if (voreFearRoll <= 0) {
