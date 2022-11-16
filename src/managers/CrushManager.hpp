@@ -1,7 +1,7 @@
 #pragma once
-// Module that handles Crushing
-#include "events.hpp"
-#include "timer.hpp"
+// Module that handles footsteps
+// #include "events.hpp"
+// #include "timer.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -9,16 +9,16 @@ using namespace RE;
 
 namespace Gts {
 
-	// enum class CrushState {
-	// 	Healthy,
-	// 	Crushing,
-	// 	Crushed
-	// };
+	enum class CrushState {
+		Healthy,
+		Crushing,
+		Crushed
+	};
 
 	struct CrushData {
 		CrushData(Actor* giant, Actor* small);
 
-		// CrushState state;
+		CrushState state;
 		Timer delay;
 		Actor* giant;
 	};

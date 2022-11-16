@@ -111,11 +111,11 @@ namespace Gts {
 					Runtime::PlayImpactEffect(small, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{26, 0, 0}, 460, true, true);
 					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{0, 0, 0}, 0, true, false);
 					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{0, 0, 0}, 0, true, false);
-					if (giant->formID == 0x14 && Runtime::InFaction(giant "GtsEnableLoot")) {
+					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLoot")) {
 						Actor* into = giant;
-						if (giant->IsPlayerTeammate() || Runtime::InFaction(giant, "PlayerFaction")) {
-							into = PlayerCharacter::GetSingleton();
-						}
+						TransferInventory(small, into, false, true);
+					} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLoot")) {
+						Actor* into = giant;
 						TransferInventory(small, into, false, true);
 					}
 					ScareChance(giant);
