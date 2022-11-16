@@ -104,7 +104,7 @@ namespace Gts {
 			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
 			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
 			if (CasterHp >= (TargetHp / Multiplier) && !Runtime::HasMagicEffect(Target, "FakeCrushEffect") && !Runtime::HasSpell(Target, "FakeCrushSpell")) {
-				CrushManager::Crush(caster, target);
+				CrushManager::Crush(Caster, Target);
 				shake_camera(Caster, 0.25 * caster_scale, 0.25);
 
 				if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
