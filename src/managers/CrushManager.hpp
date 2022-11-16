@@ -9,7 +9,7 @@ using namespace RE;
 
 namespace Gts {
 
-	enum CrushState {
+	enum class CrushState {
 		Healthy,
 		Crushing,
 		Crushed,
