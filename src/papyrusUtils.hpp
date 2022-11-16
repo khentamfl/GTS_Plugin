@@ -39,7 +39,7 @@ namespace Gts {
 			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
 			auto args = RE::MakeFunctionArguments(std::forward<Args>(a_args)...);
 			auto objectPtr = GetObjectPtr(a_form, std::string(formKind).c_str(), false);
-			vm->DispatchMethodCall(actorPtr, std::string(formKind).c_str(), args, callback);
+			vm->DispatchMethodCall(objectPtr, std::string(formKind).c_str(), args, callback);
 		}
 	}
 }
