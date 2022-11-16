@@ -17,6 +17,8 @@ sounds:
   BloodGushSound: "Skyrim.esm|10F78C"
   VoreSound_Success: "Skyrim.esm|10FAE5"
   VoreSound_Fail: "Skyrim.esm|000F8B"
+  GtsCrushSound: "GTS.esp|01102F"
+  GtsFallSound: "GTS.esp|183F43"
 
 spellEffects:
   SmallMassiveThreat: "GTS.esp|1A2568"

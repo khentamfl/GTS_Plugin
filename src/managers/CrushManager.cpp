@@ -1,8 +1,10 @@
 #include "managers/CrushManager.hpp"
 #include "data/runtime.hpp"
+#include "data/time.hpp"
 #include "scale/scale.hpp"
 #include "actorUtils.hpp"
 #include "util.hpp"
+
 
 
 using namespace SKSE;
@@ -20,7 +22,7 @@ namespace {
 
 		if (voreFearRoll <= 0) {
 			Runtime::CastSpell(actor, actor, "GtsVoreFearSpell");
-			KnockAreaEffect(actor, 6, 650);
+			KnockAreaEffect(actor, 6, 60 * get_target_scale(actor));
 		}
 	}
 
@@ -39,7 +41,7 @@ namespace {
 		if (FearChance <= 0 ) {
 			//auto event = RegistrationSet("CastFear");
 			//event.SendEvent();
-			Runtime::CastSpell(actor, actor, "GtsVoreFearSpell");
+			Runtime::CastSpell(giant, giant, "GtsVoreFearSpell");
 			// Should cast fear 
 		}
 	}
@@ -61,7 +63,7 @@ namespace {
 		} else if (Runtime::HasPerk(actor, "GtsCrushGrowth") && Runtime::GetInt("GtsDecideGrowth") >= 1 ) {
 			Runtime::CastSpell(actor, actor, "GtsSmallCrushGrowthSpell");
 		}
-		PleasureText(actor)
+		PleasureText(actor);
 	}
 
 	void RandomMoan(Actor* actor) {
@@ -106,7 +108,7 @@ namespace Gts {
 					data.state = CrushState::Crushed;
 
 					// Do crush
-					Runtime::PlaySound("GtsCrunchSound", actor, 1.0, 1.0);
+					Runtime::PlaySound("GtsCrushSound", actor, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", actor, 1.0, 1.0);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
 					GrowAfterTheKill(giant);
