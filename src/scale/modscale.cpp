@@ -36,8 +36,8 @@ namespace Gts {
 		auto first_model = actor->Get3D(true);
 		if (first_model) {
 			result = true;
-			first_model->local.scale = target_scale;
-			update_node(first_model);
+			//first_model->local.scale = target_scale;
+			//update_node(first_model);
 		}
 		return result;
 	}
@@ -57,8 +57,8 @@ namespace Gts {
 		auto first_node = find_node(actor, node_name, true);
 		if (first_node) {
 			result = true;
-			first_node->local.scale = target_scale;
-			update_node(first_node);
+			//first_node->local.scale = target_scale;
+			//update_node(first_node);
 		}
 		return result;
 	}
