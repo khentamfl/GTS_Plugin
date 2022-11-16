@@ -49,7 +49,7 @@ namespace {
 	void PleasureText(Actor* actor) {
 		int Pleasure = rand() % 5;
 		if (Pleasure <= 0) {
-			if (actor.formID == 0x14) {
+			if (actor->formID == 0x14) {
 				Notify("Crushing your foes feels good and makes you bigger");
 			} else {
 				Notify("Your companion grows bigger by crushing your foes");
@@ -108,8 +108,8 @@ namespace Gts {
 					data.state = CrushState::Crushed;
 
 					// Do crush
-					Runtime::PlaySound("GtsCrushSound", actor, 1.0, 1.0);
-					Runtime::PlaySound("GtsFallSound", actor, 1.0, 1.0);
+					Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
+					Runtime::PlaySound("GtsFallSound", giant, 1.0, 1.0);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
 					GrowAfterTheKill(giant);
 
@@ -118,8 +118,8 @@ namespace Gts {
 						TriggerScreenBlood(1);
 					}
 					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{0, 0, -1}, 512, true, true);
-					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{0, 0, -1}, 512, true, false);
-					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{0, 0, -1}, 512, true, false);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{0, 0, -1}, 512, true, false);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{0, 0, -1}, 512, true, false);
 					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLoot")) {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
@@ -129,7 +129,7 @@ namespace Gts {
 					}
 					ScareChance(giant);
 
-					if (tiny->formID == 0x14) {
+					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // CTD if we Disintegrate the player
 					}
 
