@@ -1,5 +1,8 @@
 #pragma once
 
+using namespace RE;
+using namespace SKSE;
+
 namespace Gts {
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
