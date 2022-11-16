@@ -28,14 +28,14 @@ namespace Gts {
 		public:
 			[[nodiscard]] static CrushManager& GetSingleton() noexcept;
 
-			// 	virtual std::string DebugName() override;
-			// 	virtual void Update() override;
-			// 	virtual void Reset() override;
-			// 	virtual void ResetActor(Actor* actor) override;
-			//
-			// 	static bool CanCrush(Actor* giant, Actor* small);
-			// 	static void Crush(Actor* giant, Actor* small);
-			// private:
-			// 	std::unordered_map<Actor*, CrushData> data;
+			virtual std::string DebugName() override;
+			virtual void Update() override;
+			virtual void Reset() override;
+			virtual void ResetActor(Actor* actor) override;
+
+			static bool CanCrush(Actor* giant, Actor* tiny);
+			static void Crush(Actor* giant, Actor* tiny);
+		private:
+			std::unordered_map<Actor*, CrushData> data;
 	};
 }

@@ -77,15 +77,15 @@ namespace Gts {
 	}
 
 	void CrushManager::Update() {
-		for (auto &[small, data]: this->data) {
+		for (auto &[tiny, data]: this->data) {
 			auto giant = data.giant;
-			if (!small) {
+			if (!tiny) {
 				continue;
 			}
 			if (!giant) {
 				continue;
 			}
-			if (!small->Is3DLoaded()) {
+			if (!tiny->Is3DLoaded()) {
 				continue;
 			}
 			if (!giant->Is3DLoaded()) {
@@ -101,27 +101,27 @@ namespace Gts {
 					// Do crush
 					Runtime::PlaySound("GtsCrunchSound", actor, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", actor, 1.0, 1.0);
-					Runtime::CastSpell(small, small, "GtsBleedSpell");
+					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
 					GrowAfterTheKill(giant);
 
 					shake_camera(giant, 1.8, 1);
 					if (giant->formID == 0x14) {
 						TriggerScreenBlood(1);
 					}
-					Runtime::PlayImpactEffect(small, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{26, 0, 0}, 460, true, true);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{26, 0, 0}, 460, true, true);
 					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{0, 0, 0}, 0, true, false);
 					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{0, 0, 0}, 0, true, false);
 					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLoot")) {
 						Actor* into = giant;
-						TransferInventory(small, into, false, true);
+						TransferInventory(tiny, into, false, true);
 					} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLoot")) {
 						Actor* into = giant;
-						TransferInventory(small, into, false, true);
+						TransferInventory(tiny, into, false, true);
 					}
 					ScareChance(giant);
 
-					if (small->formID == 0x14) {
-						Disintegrate(small); // CTD if we Disintegrate the player
+					if (tiny->formID == 0x14) {
+						Disintegrate(tiny); // CTD if we Disintegrate the player
 					}
 
 					FearChance(giant);
@@ -143,9 +143,9 @@ namespace Gts {
 		this->data.erase(actor);
 	}
 
-	void Crush(Actor* giant, Actor* small) {
-		if (CrushManager::CanCrush(giant, small)) {
-			this->data.try_emplace(small, giant, small);
+	void Crush(Actor* giant, Actor* tiny) {
+		if (CrushManager::CanCrush(giant, tiny)) {
+			this->data.try_emplace(tiny, giant, tiny);
 		}
 	}
 
@@ -153,26 +153,26 @@ namespace Gts {
 		return !(CrushManager::GetSingleton().data.find(actor) == m.end());
 	}
 
-	bool CrushManager::CanCrush(Actor* giant, Actor* small) {
-		if (CrushManager::AlreadyCrushed(small)) {
+	bool CrushManager::CanCrush(Actor* giant, Actor* tiny) {
+		if (CrushManager::AlreadyCrushed(tiny)) {
 			return false;
 		}
 
 		// Check if they are immune
 		const std::string_view CANT_CRUSH_EDITORID = "GtsCantStomp";
-		if (small->HasKeywordString(CANT_CRUSH_EDITORID)) {
+		if (tiny->HasKeywordString(CANT_CRUSH_EDITORID)) {
 			// TODO: Check GtsCantStomp is a valid keyword
 			return false;
 		}
 
 		// Check skin
-		auto skin = small->GetSkin();
+		auto skin = tiny->GetSkin();
 		if (skin) {
 			if (skin->HasKeywordString(CANT_CRUSH_EDITORID)) {
 				return false;
 			}
 		}
-		const auto inv = small->GetInventory([](TESBoundObject& a_object) {
+		const auto inv = tiny->GetInventory([](TESBoundObject& a_object) {
 			return a_object.IsArmor();
 		});
 
@@ -190,7 +190,7 @@ namespace Gts {
 		return true;
 	}
 
-	CrushData::CrushData(Actor* giant, Actor* small); {
+	CrushData::CrushData(Actor* giant, Actor* tiny); {
 		this->state = CrushState::Healthy;
 		this->delay = Timer(0.01);
 		this->giant = giant;
