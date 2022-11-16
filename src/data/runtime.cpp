@@ -45,7 +45,7 @@ namespace {
 			ar <=> kv(quests, "quests");
 			ar <=> kv(factions, "factions");
 		}
-	}
+	};
 }
 
 namespace Gts {
@@ -63,7 +63,7 @@ namespace Gts {
 	BSISoundDescriptor* Runtime::GetSound(std::string_view tag) {
 		BSISoundDescriptor* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().sounds.at(tag);
+			data = Runtime::GetSingleton().sounds.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
 		}
@@ -83,8 +83,8 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			//soundHandle.SetFrequency(Frequency);
-			soundHandle.SetVolume(Volume);
+			//soundHandle.SetFrequency(frequency);
+			soundHandle.SetVolume(volume);
 			NiAVObject* follow = nullptr;
 			if (Receiver) {
 				NiAVObject* current_3d = Receiver->GetCurrent3D();
@@ -103,7 +103,7 @@ namespace Gts {
 	EffectSetting* Runtime::GetMagicEffect(std::string_view tag) {
 		EffectSetting* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().spellEffects.at(tag).data;
+			data = Runtime::GetSingleton().spellEffects.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			log::warn("MagicEffect: {} not found", tag);
 			data = nullptr;
@@ -128,7 +128,7 @@ namespace Gts {
 	SpellItem* Runtime::GetSpell(std::string_view tag) {
 		SpellItem* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().spells.at(tag).data;
+			data = Runtime::GetSingleton().spells.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			log::warn("Spell: {} not found", tag);
 			data = nullptr;
@@ -177,7 +177,7 @@ namespace Gts {
 	BGSPerk* Runtime::GetPerk(std::string_view tag) {
 		BGSPerk* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().perks.at(tag).data;
+			data = Runtime::GetSingleton().perks.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
 			log::warn("Perk: {} not found", tag);
@@ -219,7 +219,7 @@ namespace Gts {
 	BGSExplosion* Runtime::GetExplosion(std::string_view tag) {
 		BGSExplosion* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().explosions.at(tag).data;
+			data = Runtime::GetSingleton().explosions.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
 			log::warn("Explosion: {} not found", tag);
@@ -270,7 +270,7 @@ namespace Gts {
 	TESGlobal* Runtime::GetGlobal(std::string_view tag) {
 		TESGlobal* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().globals.at(tag).data;
+			data = Runtime::GetSingleton().globals.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
 			log::warn("Global: {} not found", tag);
@@ -346,7 +346,7 @@ namespace Gts {
 	TESQuest* Runtime::GetQuest(std::string_view tag) {
 		TESQuest* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().quests.at(tag).data;
+			data = Runtime::GetSingleton().quests.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
 			log::warn("Quest: {} not found", tag);
@@ -371,7 +371,7 @@ namespace Gts {
 	TESFaction* Runtime::GetFaction(std::string_view tag) {
 		TESFaction* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().factions.at(tag).data;
+			data = Runtime::GetSingleton().factions.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
 		}
@@ -396,7 +396,7 @@ namespace Gts {
 	BGSImpactDataSet* GetImpactEffect(std::string_view tag) {
 		BGSImpactDataSet* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().impacts.at(tag).data;
+			data = Runtime::GetSingleton().impacts.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
 			log::warn("ImpactEffect: {} not found", tag);
