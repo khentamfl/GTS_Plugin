@@ -16,7 +16,7 @@ namespace Gts {
 	};
 
 	struct CrushData {
-		CrushData(int giant, int small);
+		CrushData();
 
 		CrushState state;
 		Timer delay;
