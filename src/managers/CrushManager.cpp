@@ -158,7 +158,7 @@ namespace Gts {
 		}
 	}
 
-	bool CrushManager::AlreadyCrushed(Acor* actor) {
+	bool CrushManager::AlreadyCrushed(Actor* actor) {
 		return !(CrushManager::GetSingleton().data.find(actor) == m.end());
 	}
 
