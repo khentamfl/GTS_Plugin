@@ -1,7 +1,9 @@
 #include "managers/CrushManager.hpp"
 #include "data/runtime.hpp"
+#include "scale/scale.hpp"
 #include "actorUtils.hpp"
 #include "util.hpp"
+
 
 using namespace SKSE;
 using namespace RE;
@@ -31,7 +33,7 @@ namespace {
 
 		// S.Answer: It's supposed to proc more often with SMT active, so having it always 4 is fine ^
 		if (MaxValue <= 4 || giant->HasMagicEffect(GtsSmallMassiveThreatMe)) {
-			MaxValue = 4
+			MaxValue = 4;
 		}
 		int JumpFearChance = rand() % MaxValue;
 		if (JumpFearChance <= 0 ) {
@@ -55,7 +57,7 @@ namespace {
 		if (!Runtime::GetBool(GtsDecideGrowth) || Runtime::HasMagicEffect(actor, "GtsSmallMassiveThreat")) {
 			return;
 		} else if (Runtime::HasPerk(actor, "GtsCrushGrowth") && Runtime::GetInt("GtsDecideGrowth") >= 1 ) {
-			GtsSmallCrushGrowthSpell.Cast(actor)
+			Runtime::CastSpell(actor, actor, "GtsSmallCrushGrowthSpell");
 		}
 		PleasureText(actor)
 	}
@@ -64,7 +66,7 @@ namespace {
 		auto randomInt = rand() % 10;
 		if (randomInt < 1 ) {
 			Runtime::PlaySound("GtsMoanSound", actor, 1.0, 1.0);
-			GrowAfterTheKill(actor)
+			GrowAfterTheKill(actor);
 		}
 	}
 }
