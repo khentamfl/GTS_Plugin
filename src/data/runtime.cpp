@@ -402,7 +402,7 @@ namespace Gts {
 		}
 		return data;
 	}
-	void Runtime::PlayImpactEffect(Actor* actor, std::string_view tag, std::string_view node, NiPoint3& direction, float length, bool applyRotation, bool useLocalRotation) {
+	void Runtime::PlayImpactEffect(Actor* actor, std::string_view tag, std::string_view node, NiPoint3 direction, float length, bool applyRotation, bool useLocalRotation) {
 		auto data = GetImpactEffect(tag);
 		if (data) {
 			auto impact = BGSImpactManager::GetSingleton();

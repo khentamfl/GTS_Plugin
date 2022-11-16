@@ -6,7 +6,7 @@ using namespace SKSE;
 namespace Gts {
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
-	void TransferInventory(Actor* from, Actor* to);
+	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems);
 
 	void Disintegrate(Actor* actor);
 	void UnDisintegrate(Actor* actor);
