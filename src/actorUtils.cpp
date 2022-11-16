@@ -1,4 +1,4 @@
-#include "managers/actorUtils.hpp"
+#include "actorUtils.hpp"
 
 using namespace RE;
 using namespace Gts;

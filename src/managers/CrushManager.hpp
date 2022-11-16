@@ -25,15 +25,15 @@ namespace Gts {
 
 	class CrushManager : public EventListener {
 		public:
-			[[nodiscard]] static AttributeManager& CrushManager() noexcept;
+			[[nodiscard]] static CrushManager& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 
-			statuc bool CanCrush(Actor* giant, Actor* small);
-			statuc void Crush(Actor* giant, Actor* small);
+			static bool CanCrush(Actor* giant, Actor* small);
+			static void Crush(Actor* giant, Actor* small);
 		private:
 			std::unordered_map<Actor*, CrushData> data;
 	};
