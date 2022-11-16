@@ -9,16 +9,16 @@ using namespace RE;
 
 namespace Gts {
 
-	enum class CrushState {
-		Healthy,
-		Crushing,
-		Crushed
-	};
+	// enum class CrushState {
+	// 	Healthy,
+	// 	Crushing,
+	// 	Crushed
+	// };
 
 	struct CrushData {
-		// CrushData(Actor* giant, Actor* small);
+		CrushData(Actor* giant, Actor* small);
 
-		CrushState state;
+		// CrushState state;
 		Timer delay;
 		Actor* giant;
 	};
