@@ -75,7 +75,7 @@ namespace Gts {
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 
-			result.has_hhBonus_perk = Runtime::HasPerkTeam("hhBonus");
+			result.has_hhBonus_perk = Runtime::HasPerkTeam(actor, "hhBonus");
 
 			this->_actor_data.try_emplace(key, result);
 		}
@@ -111,7 +111,7 @@ namespace Gts {
 
 				data.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 
-				data.has_hhBonus_perk = Runtime::HasPerkTeam("hhBonus");
+				data.has_hhBonus_perk = Runtime::HasPerkTeam(actor, "hhBonus");
 
 
 			} catch (const std::out_of_range& oor) {

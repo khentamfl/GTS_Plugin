@@ -86,8 +86,8 @@ namespace Gts {
 			//soundHandle.SetFrequency(frequency);
 			soundHandle.SetVolume(volume);
 			NiAVObject* follow = nullptr;
-			if (Receiver) {
-				NiAVObject* current_3d = Receiver->GetCurrent3D();
+			if (actor) {
+				NiAVObject* current_3d = actor->GetCurrent3D();
 				if (current_3d) {
 					follow = current_3d;
 				}
@@ -139,7 +139,7 @@ namespace Gts {
 	bool Runtime::AddSpell(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetSpell(tag);
 		if (data) {
-			if (!Runtime::HasSpell(data)) {
+			if (!Runtime::HasSpell(actor, data)) {
 				actor->AddSpell(data);
 			}
 		}
@@ -147,7 +147,7 @@ namespace Gts {
 	bool Runtime::RemoveSpell(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetSpell(tag);
 		if (data) {
-			if (Runtime::HasSpell(data)) {
+			if (Runtime::HasSpell(actor, data)) {
 				actor->RemoveSpell(data);
 			}
 		}
@@ -188,7 +188,7 @@ namespace Gts {
 	bool Runtime::AddPerk(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetPerk(tag);
 		if (data) {
-			if (!Runtime::HasSpell(data)) {
+			if (!Runtime::HasPerk(actor, data)) {
 				actor->AddPerk(data);
 			}
 		}
@@ -196,7 +196,7 @@ namespace Gts {
 	bool Runtime::RemovePerk(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetPerk(tag);
 		if (data) {
-			if (Runtime::HasPerk(data)) {
+			if (Runtime::HasPerk(actor, data)) {
 				actor->RemovePerk(data);
 			}
 		}
@@ -238,8 +238,7 @@ namespace Gts {
 			if (actor->Is3DLoaded()) {
 				auto model = actor->GetCurrent3D();
 				if (model) {
-					std::string nodeName = node;
-					auto node = model->GetObjectByName(nodeName);
+					auto node = model->GetObjectByName(std::string(node));
 					if (node) {
 						CreateExplosionAtPos(actor, node->world.translate, scale, tag);
 					}
@@ -251,7 +250,7 @@ namespace Gts {
 	void Runtime::CreateExplosionAtPos(Actor* actor, NiPoint3 pos, float scale, std::string_view tag) {
 		auto data = GetExplosion(tag);
 		if (data) {
-			NiPointer<TESObjectREFR> instance_ptr = target->PlaceObjectAtMe(data, false);
+			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(data, false);
 			if (!instance_ptr) {
 				return;
 			}
