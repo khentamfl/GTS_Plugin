@@ -1,6 +1,7 @@
 #include "managers/CrushManager.hpp"
 #include "data/runtime.hpp"
 #include "actorUtils.hpp"
+#include "util.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -21,12 +22,14 @@ namespace {
 		}
 	}
 
-	void FearChance(actor* giant)  {
+	void FearChance(Actor* giant)  {
 		float size = get_visual_scale(giant);
 		int MaxValue = (20 - (1.6 * size));
 
 		// TODO: Ask about the max value thing here
 		// If you have small massive threat then the max value is ALWAYS 4
+
+		// S.Answer: It's supposed to proc more often with SMT active, so having it always 4 is fine ^
 		if (MaxValue <= 4 || giant->HasMagicEffect(GtsSmallMassiveThreatMe)) {
 			MaxValue = 4
 		}
