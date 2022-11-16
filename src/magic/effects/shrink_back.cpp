@@ -15,7 +15,7 @@ namespace Gts {
 
 	bool ShrinkBack::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.ShrinkBack;
+		return effect == runtime.GetMagicEffect("ShrinkBack");
 	}
 
 	void ShrinkBack::OnStart() {

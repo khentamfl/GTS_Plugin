@@ -108,9 +108,9 @@ namespace Gts {
 					if (giant->formID == 0x14) {
 						TriggerScreenBlood(1);
 					}
-					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{26, 0, 0}, 460, true, true);
-					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{0, 0, 0}, 0, true, false);
-					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{0, 0, 0}, 0, true, false);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{0, 0, -1}, 512, true, true);
+					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{0, 0, -1}, 512, true, false);
+					Runtime::PlayImpactEffect(giant, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{0, 0, -1}, 512, true, false);
 					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLoot")) {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
