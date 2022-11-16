@@ -14,7 +14,7 @@ namespace Gts {
 
 	bool SlowGrow::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.SlowGrowth;
+		return effect == runtime.GetMagicEffect("SlowGrowth");
 
 	}
 
@@ -30,12 +30,12 @@ namespace Gts {
 		float power = BASE_POWER + AlterBonus;
 	
 		if (this->timer.ShouldRun()) {
-			auto GrowthSound = runtime.growthSound;
+			auto GrowthSound = runtime.GetSound("growthSound");
 			float Volume = clamp(0.15, 1.0, get_visual_scale(caster)/8);
 			PlaySound_Frequency(GrowthSound, caster, Volume, 1.0);
 		}
 		float bonus = 1.0;
-		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
+		if (runtime.HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion"))
 		{
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}

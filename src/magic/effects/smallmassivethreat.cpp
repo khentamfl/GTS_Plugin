@@ -12,7 +12,7 @@ namespace Gts {
 
     bool SmallMassiveThreat::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.SmallMassiveThreat;
+		return effect == runtime.GetMagicEffect("SmallMassiveThreat");
 	}
 
 	void SmallMassiveThreat::OnUpdate() {

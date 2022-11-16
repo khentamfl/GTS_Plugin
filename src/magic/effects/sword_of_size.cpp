@@ -14,7 +14,7 @@ namespace Gts {
 
 	bool SwordOfSize::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.SwordEnchant );
+		return (effect == runtime.GetMagicEffect("SwordEnchant"));
 	}
 
 	void SwordOfSize::OnUpdate() {

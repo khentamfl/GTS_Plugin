@@ -14,7 +14,7 @@ namespace Gts {
 
 	bool SizeHunger::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.EffectSizeHungerPotion;
+		return effect == runtime.GetMagicEffect("EffectSizeHungerPotion");
 	}
 
 	void SizeHunger::OnStart() {
