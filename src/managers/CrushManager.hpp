@@ -17,7 +17,7 @@ namespace Gts {
 
 	class CrushData {
 		public:
-			CrushData(Actor* giant);
+			CrushData(Actor* giant, Actor* small);
 
 			CrushState state;
 			Timer delay;
