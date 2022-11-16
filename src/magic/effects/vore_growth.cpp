@@ -12,7 +12,7 @@ namespace Gts {
 
 	bool VoreGrowth::StartEffect(EffectSetting* effect) { // NOLINT
 		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.GlobalVoreGrowth;
+		return effect == Runtime::GetMagicEffect("GlobalVoreGrowth");
 	}
 
 	void VoreGrowth::OnStart() {
@@ -33,11 +33,11 @@ namespace Gts {
 		float bonus = 1.0;
 		float GrowAmount = this->ScaleOnVore;
 		BASE_POWER *= GrowAmount;
-		if (caster->HasPerk(runtime.AdditionalAbsorption)) {
+		if (Runtime::HasMagicEffect(caster, "AdditionalAbsorption")) {
 			BASE_POWER *= 2.0;
 		}
 
-		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
+		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion"))
 		{
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
