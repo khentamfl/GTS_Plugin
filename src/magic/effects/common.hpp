@@ -43,7 +43,7 @@ namespace Gts {
 		const float DRAGON_PEANLTY = 0.14;
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float progression_multiplier = Runtime::GetFloat("ProgressionMultiplier", 1.0);
+		float progression_multiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
 		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
@@ -64,7 +64,7 @@ namespace Gts {
 		const float DRAGON_PEANLTY = 0.14;
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float progression_multiplier = Runtime::GetFloat("ProgressionMultiplier", 1.0);
+		float progression_multiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
 		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
@@ -84,7 +84,7 @@ namespace Gts {
 	}
 
 	inline float CalcPower(Actor* actor, float scale_factor, float bonus) {
-		float progression_multiplier = Runtime::GetFloat("ProgressionMultiplier", 1.0);
+		float progression_multiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 		// y = mx +c
 		// power = scale_factor * scale + bonus
 		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
@@ -258,7 +258,7 @@ namespace Gts {
 			Runtime::PlaySound("MoanSound",caster, 1.0, 1.0);
 		}
 		if (Runtime::HasPerk(player, "GrowthPerk") && !target->IsEssential()) {
-			Runtime::CastSpell(caster, target "CrushGrowthSpell");
+			Runtime::CastSpell(caster, target, "CrushGrowthSpell");
 			PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement);
 		}
 		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
@@ -280,7 +280,7 @@ namespace Gts {
 
 			if (Runtime::HasPerk(caster, "ExtraGrowth") && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
 				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
-				Runtime::SetFloat("CrushGrowthStorage" CrushGrowthStorage->value + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());
+				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());
 			} // Slowly increase Limit after crushing someone while Growth Spurt is active.
 		}
 	}
