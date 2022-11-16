@@ -115,12 +115,12 @@ namespace Gts {
 		return Runtime::HasMagicEffectOr(actor, tag, false);
 	}
 
-	bool Runtime::HasMagicEffectOr(Actor* actor, std::string_view tag, bool default) {
+	bool Runtime::HasMagicEffectOr(Actor* actor, std::string_view tag, bool default_value) {
 		auto data = Runtime::GetMagicEffect(tag);
 		if (data) {
 			return actor->HasMagicEffect(data);
 		} else {
-			return default;
+			return default_value;
 		}
 	}
 
@@ -157,12 +157,12 @@ namespace Gts {
 		return Runtime::HasSpellOr(actor, tag, false);
 	}
 
-	bool Runtime::HasSpellOr(Actor* actor, std::string_view tag, bool default) {
+	bool Runtime::HasSpellOr(Actor* actor, std::string_view tag, bool default_value) {
 		auto data = Runtime::GetSpell(tag);
 		if (data) {
 			return actor->HasSpell(data);
 		} else {
-			return default;
+			return default_value;
 		}
 	}
 
@@ -206,12 +206,12 @@ namespace Gts {
 		return Runtime::HasPerkOr(actor, tag, false);
 	}
 
-	bool Runtime::HasPerkOr(Actor* actor, std::string_view tag, bool default) {
+	bool Runtime::HasPerkOr(Actor* actor, std::string_view tag, bool default_value) {
 		auto data = Runtime::GetPerk(tag);
 		if (data) {
 			return actor->HasPerk(data);
 		} else {
-			return default;
+			return default_value;
 		}
 	}
 
@@ -282,12 +282,12 @@ namespace Gts {
 		return Runtime::GetBoolOr(tag, false);
 	}
 
-	bool Runtime::GetBoolOr(std::string_view tag, bool default) {
+	bool Runtime::GetBoolOr(std::string_view tag, bool default_value) {
 		auto data = GetGlobal(tag);
 		if (data) {
 			return fabs(data->value - 0.0) > 1e-4;
 		} else {
-			return default;
+			return default_value;
 		}
 	}
 
@@ -306,12 +306,12 @@ namespace Gts {
 		return Runtime::GetIntOr(tag, false);
 	}
 
-	int Runtime::GetIntOr(std::string_view tag, int default) {
+	int Runtime::GetIntOr(std::string_view tag, int default_value) {
 		auto data = GetGlobal(tag);
 		if (data) {
 			return data->value;
 		} else {
-			return default;
+			return default_value;
 		}
 	}
 
@@ -326,12 +326,12 @@ namespace Gts {
 		return Runtime::GetFloatOr(tag, false);
 	}
 
-	int Runtime::GetFloatOr(std::string_view tag, float default) {
+	int Runtime::GetFloatOr(std::string_view tag, float default_value) {
 		auto data = GetGlobal(tag);
 		if (data) {
 			return data->value;
 		} else {
-			return default;
+			return default_value;
 		}
 	}
 
@@ -358,12 +358,12 @@ namespace Gts {
 		return Runtime::GetStageOr(tag, 0);
 	}
 
-	std::uint16_t Runtime::GetStageOr(std::string_view tag, std::uint16_t default) {
+	std::uint16_t Runtime::GetStageOr(std::string_view tag, std::uint16_t default_value) {
 		auto data = GetQuest(tag);
 		if (data) {
 			return data->GetCurrentStageID();
 		} else {
-			return default;
+			return default_value;
 		}
 	}
 
@@ -383,12 +383,12 @@ namespace Gts {
 		return Runtime::InFactionOr(actor, tag, false);
 	}
 
-	bool Runtime::InFactionOr(Actor* actor, std::string_view tag, bool default) {
+	bool Runtime::InFactionOr(Actor* actor, std::string_view tag, bool default_value) {
 		auto data = GetQuest(tag);
 		if (data) {
 			return actor->IsInFaction(data);
 		} else {
-			return default;
+			return default_value;
 		}
 	}
 
@@ -416,13 +416,13 @@ namespace Gts {
 		return Runtime::HasMagicEffectTeamOr(actor, tag, false);
 	}
 
-	bool Runtime::HasMagicEffectTeamOr(Actor* actor, std::string_view tag, bool default) {
-		if (Runtime::HasMagicEffectOr(actor, tag, default)) {
+	bool Runtime::HasMagicEffectTeamOr(Actor* actor, std::string_view tag, bool default_value) {
+		if (Runtime::HasMagicEffectOr(actor, tag, default_value)) {
 			return true;
 		}
 		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 			auto player = PlayerCharacter::GetSingleton();
-			return Runtime::HasMagicEffectOr(player, tag, default);
+			return Runtime::HasMagicEffectOr(player, tag, default_value);
 		} else {
 			return false;
 		}
@@ -432,13 +432,13 @@ namespace Gts {
 		return Runtime::HasMagicEffectTeamOr(actor, tag, false);
 	}
 
-	bool Runtime::HasSpellTeamOr(Actor* actor, std::string_view tag, bool default) {
-		if (Runtime::HasSpellTeamOr(actor, tag, default)) {
+	bool Runtime::HasSpellTeamOr(Actor* actor, std::string_view tag, bool default_value) {
+		if (Runtime::HasSpellTeamOr(actor, tag, default_value)) {
 			return true;
 		}
 		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 			auto player = PlayerCharacter::GetSingleton();
-			return Runtime::HasSpellTeamOr(player, tag, default);
+			return Runtime::HasSpellTeamOr(player, tag, default_value);
 		} else {
 			return false;
 		}
@@ -449,12 +449,12 @@ namespace Gts {
 	}
 
 	bool Runtime::HasPerkTeamOr(Actor* actor, std::string_view tag) {
-		if (Runtime::HasPerkOr(actor, tag, default)) {
+		if (Runtime::HasPerkOr(actor, tag, default_value)) {
 			return true;
 		}
 		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 			auto player = PlayerCharacter::GetSingleton();
-			return Runtime::HasPerkOr(player, tag, default);
+			return Runtime::HasPerkOr(player, tag, default_value);
 		} else {
 			return false;
 		}

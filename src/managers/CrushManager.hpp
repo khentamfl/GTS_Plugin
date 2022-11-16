@@ -16,11 +16,11 @@ namespace Gts {
 	};
 
 	struct CrushData {
+		CrushData(Actor* giant, Actor* small);
+
 		CrushState state;
 		Timer delay;
 		Actor* giant;
-
-		CrushData(Actor* giant, Actor* small);
 	};
 
 	class CrushManager : public EventListener {

@@ -36,7 +36,7 @@ namespace Gts {
 	}
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
-		for (auto &[a_object, pair]: from->GetInventory()) {
+		for (auto &[a_object, invData]: from->GetInventory()) {
 			const auto& [count, entry] = invData;
 			if (!removeQuestItems && entry.IsQuestObject()) {
 				continue;
