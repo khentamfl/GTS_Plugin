@@ -188,6 +188,8 @@ globals:
   bonusDamageMultiplier: "GTS.esp|28B409"
   bonusSpeedMultiplier: "GTS.esp|28B40B"
   bonusSpeedMax: "GTS.esp|28B40C"
+  GtsEnableLooting: "GTS.esp|2EB748"
+  GtsNPCEnableLooting: "GTS.esp|2EB749"
 
 quests:
   MainQuest: "GTS.esp|005E3A"
@@ -195,4 +197,6 @@ quests:
 factions:
   FollowerFaction: "Skyrim.esm|084D1B"
 
-impacts: {}
+impacts:
+  GtsBloodSprayImpactSet: "GTS.esp|01CEA7"
+  GtsBloodSprayImpactSetVore: "GTS.esp|024578"
