@@ -143,12 +143,11 @@ namespace Gts {
 	}
 
 	void CameraManager::UpdateFirstPerson(bool ImProne) {
-		auto& runtime = Runtime::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
 		float scale = get_target_scale(player);
 		float ProneOffsetFP = 1.0;
 		if (player->IsSneaking() == true && ImProne == true) {
-			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * runtime.ProneOffsetFP->value);
+			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * Runtime::GetFloat("ProneOffsetFP"));
 		}
 		set_fp_scale(player, scale, ProneOffsetFP);
 	}

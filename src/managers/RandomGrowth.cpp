@@ -23,7 +23,7 @@ namespace {
 		int Requirement = (250 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 		int random = rand() % Requirement;
 		int decide_chance = 1;
-		if (random <= decide_chance && Player->HasPerk("growthPerk")) {
+		if (random <= decide_chance) {
 			return true;
 		} else {
 			return false;
