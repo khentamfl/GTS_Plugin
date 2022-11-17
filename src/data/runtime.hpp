@@ -107,7 +107,7 @@ namespace Gts {
 			static bool HasPerkTeamOr(Actor* actor, std::string_view tag, bool default_value);
 
 			// Log function
-			static bool Logged(std::string_view key);
+			static bool Logged(std::string_view class, std::string_view key);
 
 
 			std::unordered_map<std::string, SoundData> sounds;
