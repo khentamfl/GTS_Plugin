@@ -34,6 +34,7 @@ namespace {
 		std::unordered_map<std::string, std::string> globals;
 		std::unordered_map<std::string, std::string> quests;
 		std::unordered_map<std::string, std::string> factions;
+		std::unordered_map<std::string, std::string> impacts;
 
 		articuno_serde(ar) {
 			ar <=> kv(sounds, "sounds");
@@ -44,6 +45,7 @@ namespace {
 			ar <=> kv(globals, "globals");
 			ar <=> kv(quests, "quests");
 			ar <=> kv(factions, "factions");
+			ar <=> kv(impacts, "impacts");
 		}
 	};
 }
@@ -66,6 +68,9 @@ namespace Gts {
 			data = Runtime::GetSingleton().sounds.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
+			if (!Runtime::Logged("sond", tag)) {
+				log::warn("Sound: {} not found", tag);
+			}
 		}
 		return data;
 	}
@@ -105,7 +110,9 @@ namespace Gts {
 		try {
 			data = Runtime::GetSingleton().spellEffects.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
-			log::warn("MagicEffect: {} not found", tag);
+			if (!Runtime::Logged("mgef", tag)) {
+				log::warn("MagicEffect: {} not found", tag);
+			}
 			data = nullptr;
 		}
 		return data;
@@ -130,7 +137,9 @@ namespace Gts {
 		try {
 			data = Runtime::GetSingleton().spells.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
-			log::warn("Spell: {} not found", tag);
+			if (!Runtime::Logged("spel", tag)) {
+				log::warn("Spell: {} not found", tag);
+			}
 			data = nullptr;
 		}
 		return data;
@@ -180,7 +189,9 @@ namespace Gts {
 			data = Runtime::GetSingleton().perks.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
-			log::warn("Perk: {} not found", tag);
+			if (!Runtime::Logged("perk", tag)) {
+				log::warn("Perk: {} not found", tag);
+			}
 		}
 		return data;
 	}
@@ -222,7 +233,9 @@ namespace Gts {
 			data = Runtime::GetSingleton().explosions.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
-			log::warn("Explosion: {} not found", tag);
+			if (!Runtime::Logged("expl", tag)) {
+				log::warn("Explosion: {} not found", tag);
+			}
 		}
 		return data;
 	}
@@ -272,7 +285,9 @@ namespace Gts {
 			data = Runtime::GetSingleton().globals.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
-			log::warn("Global: {} not found", tag);
+			if (!Runtime::Logged("glob", tag)) {
+				log::warn("Global: {} not found", tag);
+			}
 		}
 		return data;
 	}
@@ -348,7 +363,9 @@ namespace Gts {
 			data = Runtime::GetSingleton().quests.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
-			log::warn("Quest: {} not found", tag);
+			if (!Runtime::Logged("qust", tag)) {
+				log::warn("Quest: {} not found", tag);
+			}
 		}
 		return data;
 	}
@@ -398,7 +415,9 @@ namespace Gts {
 			data = Runtime::GetSingleton().impacts.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
-			log::warn("ImpactEffect: {} not found", tag);
+			if (!Runtime::Logged("impc", tag)) {
+				log::warn("ImpactEffect: {} not found", tag);
+			}
 		}
 		return data;
 	}
@@ -459,6 +478,12 @@ namespace Gts {
 		}
 	}
 
+	void Runtime::Logged(std::string_view class, std::string_view key) {
+		auto& m = Runtime::GetSingleton().logged;
+		std::string logKey = std::format("{}::{}", class, key);
+		return !(m.find(logKey) == m.end());
+	}
+
 	void Runtime::DataReady() {
 		RuntimeConfig config;
 
@@ -470,7 +495,7 @@ namespace Gts {
 			auto form = find_form<BGSSoundDescriptorForm>(value);
 			if (form) {
 				this->sounds.try_emplace(key, form);
-			} else {
+			} else if (!Runtime::Logged("sond", key)) {
 				log::warn("SoundDescriptorform not found for {}", key);
 			}
 		}
@@ -479,7 +504,7 @@ namespace Gts {
 			auto form = find_form<EffectSetting>(value);
 			if (form) {
 				this->spellEffects.try_emplace(key, form);
-			} else {
+			} else if (!Runtime::Logged("mgef", tag)) {
 				log::warn("EffectSetting form not found for {}", key);
 			}
 		}
@@ -488,7 +513,7 @@ namespace Gts {
 			auto form = find_form<SpellItem>(value);
 			if (form) {
 				this->spells.try_emplace(key, form);
-			} else {
+			} else if (!Runtime::Logged("spel", tag)) {
 				log::warn("SpellItem form not found for {}", key);
 			}
 		}
@@ -497,7 +522,7 @@ namespace Gts {
 			auto form = find_form<BGSPerk>(value);
 			if (form) {
 				this->perks.try_emplace(key, form);
-			} else {
+			} else if (!Runtime::Logged("perk", tag)) {
 				log::warn("Perk form not found for {}", key);
 			}
 		}
@@ -506,7 +531,7 @@ namespace Gts {
 			auto form = find_form<BGSExplosion>(value);
 			if (form) {
 				this->explosions.try_emplace(key, form);
-			} else {
+			} else if (!Runtime::Logged("expl", tag)) {
 				log::warn("Explosion form not found for {}", key);
 			}
 		}
@@ -515,7 +540,7 @@ namespace Gts {
 			auto form = find_form<TESGlobal>(value);
 			if (form) {
 				this->globals.try_emplace(key, form);
-			} else {
+			} else if (!Runtime::Logged("glob", tag)) {
 				log::warn("Global form not found for {}", key);
 			}
 		}
@@ -524,7 +549,7 @@ namespace Gts {
 			auto form = find_form<TESQuest>(value);
 			if (form) {
 				this->quests.try_emplace(key, form);
-			} else {
+			} else if (!Runtime::Logged("qust", tag)) {
 				log::warn("Quest form not found for {}", key);
 			}
 		}
@@ -533,8 +558,17 @@ namespace Gts {
 			auto form = find_form<TESFaction>(value);
 			if (form) {
 				this->factions.try_emplace(key, form);
-			} else {
+			} else if (!Runtime::Logged("facn", tag)) {
 				log::warn("FactionData form not found for {}", key);
+			}
+		}
+
+		for (auto &[key, value]: config.impacts) {
+			auto form = find_form<BGSImpactDataSet>(value);
+			if (form) {
+				this->impacts.try_emplace(key, form);
+			} else if (!Runtime::Logged("impc", tag)) {
+				log::warn("ImpactData form not found for {}", key);
 			}
 		}
 

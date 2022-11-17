@@ -194,3 +194,5 @@ quests:
 
 factions:
   FollowerFaction: "Skyrim.esm|084D1B"
+
+impacts: {}

@@ -106,6 +106,9 @@ namespace Gts {
 			static bool HasPerkTeam(Actor* actor, std::string_view tag);
 			static bool HasPerkTeamOr(Actor* actor, std::string_view tag, bool default_value);
 
+			// Log function
+			static bool Logged(std::string_view key);
+
 
 			std::unordered_map<std::string, SoundData> sounds;
 			std::unordered_map<std::string, SpellEffectData> spellEffects;
@@ -116,5 +119,7 @@ namespace Gts {
 			std::unordered_map<std::string, QuestData> quests;
 			std::unordered_map<std::string, FactionData> factions;
 			std::unordered_map<std::string, ImpactData> impacts;
+
+			std::unordered_set<std::string> logged;
 	};
 }
