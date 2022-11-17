@@ -58,7 +58,7 @@ namespace Gts {
 				auto Cache = Runtime::GetFloat("ManualGrowthStorage");
 
 
-				//log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
+				//log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache);
 				if (key == 0x12 && Cache > 0.0) { // E
 					this->TickCheck += 1.0;
 					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache/15 * buttonEvent->HeldDuration());
