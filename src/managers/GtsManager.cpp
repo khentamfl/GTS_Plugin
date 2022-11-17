@@ -170,7 +170,7 @@ namespace {
 		float PerkSpeed = 1.0;
 
 		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
-		float IsFalling = Runtime::GetInt(IsFalling);
+		float IsFalling = Runtime::GetInt("IsFalling");
 
 		if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
 			Runtime::SetInt("IsFalling", 1.0);
@@ -336,7 +336,7 @@ namespace {
 		float growthRate = 0.0;
 		float shrinkRate = 0.0;
 		int game_mode_int = 0;
-		float QuestStage = Runtime::GetCurrentStageID("MainQuest");
+		float QuestStage = Runtime::GetStage("MainQuest");
 		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
 		float BonusShrink = 1.0;

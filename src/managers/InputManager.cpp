@@ -55,36 +55,32 @@ namespace Gts {
 			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
 				// log::info("ButtonEvent == Keyboard");
 				auto key = buttonEvent->GetIDCode();
-				auto Cache = Runteim::GetFloat("ManualGrowthStorage");
-				if (!Cache) {
-					//log::info("Cache is invalid");
-					continue;
-				}
+				auto Cache = Runtime::GetFloat("ManualGrowthStorage");
 
 
 				//log::info("Time Elapsed: {}, Cache Value: {}", Time::WorldTimeElapsed(), Cache->value);
-				if (key == 0x12 && Cache->value > 0.0) { // E
+				if (key == 0x12 && Cache > 0.0) { // E
 					this->TickCheck += 1.0;
-					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->value/15 * buttonEvent->HeldDuration());
+					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache/15 * buttonEvent->HeldDuration());
 					if (this->timergrowth.ShouldRunFrame()) {
-						Runtime::PlaySound("growthSound", caster, Cache->value/25 * buttonEvent->HeldDuration(), 0.0);
+						Runtime::PlaySound("growthSound", caster, Cache/25 * buttonEvent->HeldDuration(), 0.0);
 					}
 
 					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 1.2 && Runtime::HasPerk(caster, "SizeReserve")) {
 						float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 						this->TickCheck = 0.0;
-						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->value);
+						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache);
 						Runtime::PlaySound("growthSound", caster, Volume, 0.0);
 						Runtime::PlaySound("MoanSound", caster, Volume, 0.0);
-						RandomGrowth::GetSingleton().CallShake(Cache->value);
-						mod_target_scale(caster, Cache->value * gigantism);
-						Cache->value = 0.0;
+						RandomGrowth::GetSingleton().CallShake(Cache);
+						mod_target_scale(caster, Cache * gigantism);
+						Cache = 0.0;
 					}
 				}
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && Runtime::HasPerk(caster, "SizeReserve")) { //F
 
 					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-					float Value = Cache->value * gigantism;
+					float Value = Cache * gigantism;
 					Notify("Reserved Size: {}", Value);
 					//ConsoleLog::GetSingleton()->Print("tfc");
 				}
