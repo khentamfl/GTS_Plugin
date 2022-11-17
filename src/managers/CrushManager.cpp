@@ -42,7 +42,7 @@ namespace {
 			//auto event = RegistrationSet("CastFear");
 			//event.SendEvent();
 			Runtime::CastSpell(giant, giant, "GtsVoreFearSpell");
-			// Should cast fear 
+			// Should cast fear
 		}
 	}
 
@@ -152,14 +152,15 @@ namespace Gts {
 		this->data.erase(actor);
 	}
 
-	void Crush(Actor* giant, Actor* tiny) {
+	void CrushManager::Crush(Actor* giant, Actor* tiny) {
 		if (CrushManager::CanCrush(giant, tiny)) {
-			this->data.try_emplace(tiny, giant, tiny);
+			CrushManager::GetSingleton().data.try_emplace(tiny, giant, tiny);
 		}
 	}
 
 	bool CrushManager::AlreadyCrushed(Actor* actor) {
-		return !(CrushManager::GetSingleton().data.find(actor) == m.end());
+		auto& m = CrushManager::GetSingleton().data;
+		return !(m.find(actor) == m.end());
 	}
 
 	bool CrushManager::CanCrush(Actor* giant, Actor* tiny) {
@@ -199,9 +200,9 @@ namespace Gts {
 		return true;
 	}
 
-	CrushData::CrushData(Actor* giant, Actor* tiny) {
-		this->state = CrushState::Healthy;
-		this->delay = Timer(0.01);
-		this->giant = giant;
+	CrushData::CrushData(Actor* giant, Actor* tiny) :
+		delay(Timer(0.01)),
+		state(CrushState::Healthy),
+		giant(giant) {
 	}
 }
