@@ -392,7 +392,7 @@ namespace Gts {
 	}
 
 	// Impacts
-	BGSImpactDataSet* GetImpactEffect(std::string_view tag) {
+	BGSImpactDataSet* Runtime::GetImpactEffect(std::string_view tag) {
 		BGSImpactDataSet* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().impacts.at(std::string(tag)).data;
