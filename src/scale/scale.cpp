@@ -43,7 +43,7 @@ namespace Gts {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			// TODO: Fix this
-			if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFactrion(actor, "FollowerFaction")) {
+			if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
 				float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 				if (scale >= 1.0) {
 					amt /= (1.5 + (scale/1.5));
