@@ -73,11 +73,11 @@ namespace {
 		switch (foot_kind) {
 			case Foot::Left:
 			case Foot::Front:
-				return Runtime::GetSingleton().lFootstepL;
+				return Runtime::GetSound("lFootstepL");
 				break;
 			case Foot::Right:
 			case Foot::Back:
-				return Runtime::GetSingleton().lFootstepR;
+				return Runtime::GetSound("lFootstepR");
 				break;
 		}
 		return nullptr;
@@ -86,7 +86,7 @@ namespace {
 	BSISoundDescriptor* get_lJumpLand_sounddesc(const Foot& foot_kind) {
 		switch (foot_kind) {
 			case Foot::JumpLand:
-				return Runtime::GetSingleton().lJumpLand;
+				return Runtime::GetSound("lJumpLand");
 				break;
 		}
 		return nullptr;
@@ -96,11 +96,11 @@ namespace {
 		switch (foot_kind) {
 			case Foot::Left:
 			case Foot::Front:
-				return Runtime::GetSingleton().xlFootstepL;
+				return Runtime::GetSound("xlFootstepL");
 				break;
 			case Foot::Right:
 			case Foot::Back:
-				return Runtime::GetSingleton().xlFootstepR;
+				return Runtime::GetSound("xlFootstepR");
 				break;
 		}
 		return nullptr;
@@ -110,14 +110,14 @@ namespace {
 		switch (foot_kind) {
 			case Foot::Left:
 			case Foot::Front:
-				return Runtime::GetSingleton().xlRumbleL;
+				return Runtime::GetSound("xlRumbleL");
 				break;
 			case Foot::Right:
 			case Foot::Back:
-				return Runtime::GetSingleton().xlRumbleR;
+				return Runtime::GetSound("xlRumbleR");
 				break;
 			case Foot::JumpLand:
-				return Runtime::GetSingleton().xlRumbleR;
+				return Runtime::GetSound("xlRumbleR");
 				break;
 		}
 		return nullptr;
@@ -127,14 +127,14 @@ namespace {
 		switch (foot_kind) {
 			case Foot::Left:
 			case Foot::Front:
-				return Runtime::GetSingleton().xlSprintL;
+				return Runtime::GetSound("xlSprintL");
 				break;
 			case Foot::Right:
 			case Foot::Back:
-				return Runtime::GetSingleton().xlSprintR;
+				return Runtime::GetSound("xlSprintR");
 				break;
 			case Foot::JumpLand:
-				return Runtime::GetSingleton().xlSprintR;
+				return Runtime::GetSound("xlSprintR");
 				break;
 		}
 		return nullptr;
@@ -206,25 +206,25 @@ namespace Gts {
 
 					BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
 
-				if (Runtime::GetSingleton().EnableGiantSounds->value >= 1.0) { // Global check
-					if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
-						lFootstep.Play();
-					}
-					if (lJumpLand.soundID != BSSoundHandle::kInvalidID) {
-						lJumpLand.Play();
-					}
-					if (xlFootstep.soundID != BSSoundHandle::kInvalidID) {
-						xlFootstep.Play();
-					}
-					if (xlRumble.soundID != BSSoundHandle::kInvalidID) {
-						xlRumble.Play();
-					}
-					if (xlSprint.soundID != BSSoundHandle::kInvalidID) {
-						xlSprint.Play();
-					}
-					if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
-						xxlFootstepL.Play();
-					}
+					if (Runtime::GetBool("EnableGiantSounds")) { // Global check
+						if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
+							lFootstep.Play();
+						}
+						if (lJumpLand.soundID != BSSoundHandle::kInvalidID) {
+							lJumpLand.Play();
+						}
+						if (xlFootstep.soundID != BSSoundHandle::kInvalidID) {
+							xlFootstep.Play();
+						}
+						if (xlRumble.soundID != BSSoundHandle::kInvalidID) {
+							xlRumble.Play();
+						}
+						if (xlSprint.soundID != BSSoundHandle::kInvalidID) {
+							xlSprint.Play();
+						}
+						if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
+							xxlFootstepL.Play();
+						}
 					}
 				}
 			}
