@@ -109,7 +109,7 @@ namespace Gts {
 				}
 
 				if (SizeDifference >= 4.0 && LaughChance >= 11.0) {
-					runTime.PlaySound("LaughSound", receiver, 1.0, 0.0);
+					RunTime::PlaySound("LaughSound", receiver, 1.0, 0.0);
 				}
 				return;
 			}

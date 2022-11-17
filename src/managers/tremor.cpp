@@ -204,7 +204,7 @@ namespace Gts {
 					}
 				}
 
-				bool npcEffects = runtime.GetGlobal("NPCSizeEffects") ? Runtime::GetFloat("NPCSizeEffects") >= 1.0 : true;
+				bool npcEffects = Runtime::GetBoolOr("NPCSizeEffects", true);
 				if (actor->formID != 0x14 && npcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
 						shake_camera(actor, intensity, duration);

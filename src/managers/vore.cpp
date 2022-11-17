@@ -358,7 +358,7 @@ namespace Gts {
 		if (!CanVore(pred, prey)) {
 			return;
 		}
-		if (prey->IsEssential() && Runtime.GetBool("ProtectEssentials")) {
+		if (prey->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
 			Notify("{} is Essential, can't vore.", prey->GetDisplayFullName());
 		}
 		if (staminacheck < wastestamina) {
