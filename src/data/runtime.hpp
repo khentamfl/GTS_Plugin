@@ -59,15 +59,15 @@ namespace Gts {
 			static bool HasMagicEffectOr(Actor* actor, std::string_view tag, bool default_value);
 			// Spells
 			static SpellItem* GetSpell(std::string_view tag);
-			static bool AddSpell(Actor* actor, std::string_view tag);
-			static bool RemoveSpell(Actor* actor, std::string_view tag);
+			static void AddSpell(Actor* actor, std::string_view tag);
+			static void RemoveSpell(Actor* actor, std::string_view tag);
 			static bool HasSpell(Actor* actor, std::string_view tag);
 			static bool HasSpellOr(Actor* actor, std::string_view tag, bool default_value);
-			static bool CastSpell(Actor* caster, Actor* target, std::string_view tag);
+			static void CastSpell(Actor* caster, Actor* target, std::string_view tag);
 			// Perks
 			static BGSPerk* GetPerk(std::string_view tag);
-			static bool AddPerk(Actor* actor, std::string_view tag);
-			static bool RemovePerk(Actor* actor, std::string_view tag);
+			static void AddPerk(Actor* actor, std::string_view tag);
+			static void RemovePerk(Actor* actor, std::string_view tag);
 			static bool HasPerk(Actor* actor, std::string_view tag);
 			static bool HasPerkOr(Actor* actor, std::string_view tag, bool default_value);
 			// Explosion
@@ -90,7 +90,6 @@ namespace Gts {
 			static TESQuest* GetQuest(std::string_view tag);
 			static std::uint16_t GetStage(std::string_view tag);
 			static std::uint16_t GetStageOr(std::string_view tag, std::uint16_t default_value);
-			static void GetStage(std::string_view tag, std::uint16_t value);
 			// Factions
 			static TESFaction* GetFaction(std::string_view tag);
 			static bool InFaction(Actor* actor, std::string_view tag);

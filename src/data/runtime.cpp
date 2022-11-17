@@ -136,7 +136,7 @@ namespace Gts {
 		return data;
 	}
 
-	bool Runtime::AddSpell(Actor* actor, std::string_view tag) {
+	void Runtime::AddSpell(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetSpell(tag);
 		if (data) {
 			if (!Runtime::HasSpell(actor, tag)) {
@@ -144,7 +144,7 @@ namespace Gts {
 			}
 		}
 	}
-	bool Runtime::RemoveSpell(Actor* actor, std::string_view tag) {
+	void Runtime::RemoveSpell(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetSpell(tag);
 		if (data) {
 			if (Runtime::HasSpell(actor, tag)) {
@@ -166,7 +166,7 @@ namespace Gts {
 		}
 	}
 
-	bool Runtime::CastSpell(Actor* caster, Actor* target, std::string_view tag) {
+	void Runtime::CastSpell(Actor* caster, Actor* target, std::string_view tag) {
 		auto data = GetSpell(tag);
 		if (data) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(data, false, target, 1.00f, false, 0.0f, caster);
@@ -185,7 +185,7 @@ namespace Gts {
 		return data;
 	}
 
-	bool Runtime::AddPerk(Actor* actor, std::string_view tag) {
+	void Runtime::AddPerk(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetPerk(tag);
 		if (data) {
 			if (!Runtime::HasPerk(actor, tag)) {
@@ -193,7 +193,7 @@ namespace Gts {
 			}
 		}
 	}
-	bool Runtime::RemovePerk(Actor* actor, std::string_view tag) {
+	void Runtime::RemovePerk(Actor* actor, std::string_view tag) {
 		auto data = Runtime::GetPerk(tag);
 		if (data) {
 			if (Runtime::HasPerk(actor, tag)) {
