@@ -109,7 +109,7 @@ namespace Gts {
 				}
 
 				if (SizeDifference >= 4.0 && LaughChance >= 11.0) {
-					RunTime::PlaySound("LaughSound", receiver, 1.0, 0.0);
+					Runtime::PlaySound("LaughSound", receiver, 1.0, 0.0);
 				}
 				return;
 			}
@@ -135,7 +135,7 @@ namespace Gts {
 				if (Runtime::HasMagicEffect(receiver, "explosiveGrowth1") || Runtime::HasMagicEffect(receiver, "explosiveGrowth2") || Runtime::HasMagicEffect(receiver, "explosiveGrowth3")) {
 					this->AdjustValue *= 0.40; // Growth Spurt 60% resistance.
 				}
-				if (Runtime::HasMagicEffect(receiver."ResistShrinkPotion")) {
+				if (Runtime::HasMagicEffect(receiver, "ResistShrinkPotion")) {
 					this->AdjustValue *= 0.25; // 75% resistance from potion.
 				}
 
