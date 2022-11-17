@@ -23,25 +23,22 @@ namespace Gts {
 		const float SHRINK_STORM_EFFIC = 0.20;
 
 		auto base_spell = GetBaseEffect();
-		auto& runtime = Runtime::GetSingleton();
 
-		if (base_spell == runtime.GetMagicEffect("ShrinkEnemy")) {
+		if (base_spell == Runtime::GetMagicEffect("ShrinkEnemy")) {
 			this->power = SHRINK_POWER;
 			this->efficiency = SHRINK_EFFIC;
-		} else if (base_spell == runtime.GetMagicEffect("ShrinkEnemyAOE")) {
+		} else if (base_spell == Runtime::GetMagicEffect("ShrinkEnemyAOE")) {
 			this->power = SHRINK_AOE_POWER;
 			this->efficiency = SHRINK_AOE_EFFIC;
-		} else if (base_spell == runtime.GetMagicEffect("ShrinkEnemyAOEMast")) {
+		} else if (base_spell == Runtime::GetMagicEffect("ShrinkEnemyAOEMast")) {
 			// ShrinkEnemyAOEMast
 			this->power = SHRINK_AOE_MASTER_POWER;
 			this->efficiency = SHRINK_AOE_MASTER_EFFIC;
-		}
-		else if (base_spell == runtime.GetMagicEffect("ShrinkBolt")) {
+		} else if (base_spell == Runtime::GetMagicEffect("ShrinkBolt")) {
 			// ShrinkBolt
 			this->power = SHRINK_BOLT_POWER;
 			this->efficiency = SHRINK_BOLT_EFFIC;
-		}
-		else if (base_spell == runtime.GetMagicEffect("ShrinkStorm")) {
+		} else if (base_spell == Runtime::GetMagicEffect("ShrinkStorm")) {
 			// ShrinkBolt
 			this->power = SHRINK_STORM_POWER;
 			this->efficiency = SHRINK_STORM_EFFIC;
@@ -49,13 +46,12 @@ namespace Gts {
 	}
 
 	bool ShrinkFoe::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.GetMagicEffect("ShrinkEnemy") || effect == runtime.GetMagicEffect("ShrinkEnemyAOE") || effect == runtime.GetMagicEffect("ShrinkEnemyAOEMast") || effect == runtime.GetMagicEffect("ShrinkBolt") || effect == runtime.GetMagicEffect("ShrinkStorm"));
+		return (effect == Runtime::GetMagicEffect("ShrinkEnemy") || effect == Runtime::GetMagicEffect("ShrinkEnemyAOE") || effect == Runtime::GetMagicEffect("ShrinkEnemyAOEMast") || effect == Runtime::GetMagicEffect("ShrinkBolt") || effect == Runtime::GetMagicEffect("ShrinkStorm"));
 	}
 
 	void ShrinkFoe::OnUpdate() {
 		auto caster = GetCaster();
-		
+
 
 		if (!caster) {
 			return;
@@ -66,13 +62,13 @@ namespace Gts {
 		}
 		float SizeDifference = 1.0;
 
-		if (this->power >= 18.00)
-		{	auto& Persist = Persistent::GetSingleton();
+		if (this->power >= 18.00) {
+			auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetData(target);
 			actor_data->half_life = 0.25; // Faster shrink, less smooth.
 			SizeDifference = clamp(1.0, 8.0, (get_target_scale(caster)/get_target_scale(target))/2);
 		}
-		
+
 		bool has_smt = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {

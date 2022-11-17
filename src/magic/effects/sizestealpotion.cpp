@@ -13,12 +13,10 @@ namespace Gts {
 	}
 
 	bool SizeHunger::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.GetMagicEffect("EffectSizeHungerPotion");
+		return effect == Runtime::GetMagicEffect("EffectSizeHungerPotion");
 	}
 
 	void SizeHunger::OnStart() {
-		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
 
 		if (!caster) {
@@ -33,7 +31,6 @@ namespace Gts {
 
 
 	void SizeHunger::OnFinish() {
-		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
 
 		if (!caster) {

@@ -12,8 +12,7 @@ namespace Gts {
 	}
 
 	bool ShrinkButton::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.GetMagicEffect("ShrinkPCButton"));
+		return (effect == Runtime::GetMagicEffect("ShrinkPCButton"));
 	}
 
 	void ShrinkButton::OnStart() {
@@ -21,9 +20,8 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto& runtime = Runtime::GetSingleton();
 		float Volume = clamp(0.50, 1.0, get_target_scale(caster));
-		runtime.PlaySound("shrinkSound", caster, Volume, 0.0);
+		Runtime::PlaySound("shrinkSound", caster, Volume, 0.0);
 		//log::info("Shrink Buton Sound, actor: {}", caster->GetDisplayFullName());
 	}
 

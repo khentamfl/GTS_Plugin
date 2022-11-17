@@ -11,7 +11,6 @@ namespace Gts {
 	}
 
 	bool Growth::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
 		return (effect == Runtime::GetMagicEffect("GrowthSpell") || effect == Runtime::GetMagicEffect("GrowthSpellAdept") || effect == Runtime::GetMagicEffect("GrowthSpellExpert"));
 
 	}
@@ -19,8 +18,7 @@ namespace Gts {
 	void Growth::OnUpdate() {
 		const float BASE_POWER = 0.00150;
 		const float DUAL_CAST_BONUS = 2.0;
-		auto& runtime = Runtime::GetSingleton();
-		
+
 
 		auto caster = GetCaster();
 		if (!caster) {
@@ -33,8 +31,7 @@ namespace Gts {
 
 		float bonus = 1.0;
 
-		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion"))
-		{
+		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
 
@@ -44,8 +41,7 @@ namespace Gts {
 
 		if (base_spell == Runtime::GetMagicEffect("GrowthSpellAdept")) {
 			power *= 1.33;
-		}
-		else if (base_spell == Runtime::GetMagicEffect("GrowthSpellExpert")) {
+		} else if (base_spell == Runtime::GetMagicEffect("GrowthSpellExpert")) {
 			power *= 1.75;
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}

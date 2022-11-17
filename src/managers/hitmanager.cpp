@@ -42,7 +42,6 @@ namespace Gts {
 			return;
 		}
 
-		auto runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
 		auto& Persist = Persistent::GetSingleton();
 
@@ -97,7 +96,7 @@ namespace Gts {
 				auto actor_data = Persist.GetData(receiver);
 				actor_data->half_life = clampduration;
 
-				runtime.PlaySound("growthSound", receiver, ReceiverScale/15, 0.0);
+				Runtime::PlaySound("growthSound", receiver, ReceiverScale/15, 0.0);
 
 				this->GrowthTick +=HealthPercentage;
 
@@ -110,7 +109,7 @@ namespace Gts {
 				}
 
 				if (SizeDifference >= 4.0 && LaughChance >= 11.0) {
-					runTime.PlaySound("LaughSound", receiver, 1.0, 0.0); 
+					runTime.PlaySound("LaughSound", receiver, 1.0, 0.0);
 				}
 				return;
 			}
@@ -130,13 +129,13 @@ namespace Gts {
 				float HealthPercentage = clamp(0.10, 0.50, GetHealthPercentage(receiver));
 
 
-				if (receiver->HasMagicEffect(runtime.EffectGrowthPotion)) {
+				if (Runtime::HasMagicEffect(receiver, "EffectGrowthPotion")) {
 					this->AdjustValue *= 0.50; // 50% resistance from Growth Potion.
 				}
-				if (receiver->HasMagicEffect(runtime.explosiveGrowth1) || receiver->HasMagicEffect(runtime.explosiveGrowth2) || receiver->HasMagicEffect(runtime.explosiveGrowth3)) {
+				if (Runtime::HasMagicEffect(receiver, "explosiveGrowth1") || Runtime::HasMagicEffect(receiver, "explosiveGrowth2") || Runtime::HasMagicEffect(receiver, "explosiveGrowth3")) {
 					this->AdjustValue *= 0.40; // Growth Spurt 60% resistance.
 				}
-				if (receiver->HasMagicEffect(runtime.ResistShrinkPotion)) {
+				if (Runtime::HasMagicEffect(receiver."ResistShrinkPotion")) {
 					this->AdjustValue *= 0.25; // 75% resistance from potion.
 				}
 
@@ -154,10 +153,9 @@ namespace Gts {
 
 	void HitManager::Update() {
 		auto actor = PlayerCharacter::GetSingleton();
-		auto Runtime = Runtime::GetSingleton();
 		auto sizemanager = SizeManager::GetSingleton();
 		auto& Persist = Persistent::GetSingleton();
-		
+
 		if (this->CanGrow) { // Grow on hit
 			float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(actor)/100;
 			float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
@@ -167,7 +165,7 @@ namespace Gts {
 			auto actor_data = Persist.GetData(actor);
 			//log::info("SizeHunger, {}, Gigantism: {}", SizeHunger, Gigantism);
 
-			if (Runtime.HasMagicEffect(actor, "SmallMassiveThreat")) {
+			if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
 				GrowthValue *= 0.50;
 			}
 			if (this->GrowthTick > 0.01 && GrowthValue > 0) {

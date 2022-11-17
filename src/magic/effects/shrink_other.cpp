@@ -10,12 +10,10 @@ namespace Gts {
 	}
 
 	bool ShrinkOther::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.GetMagicEffect("ShrinkAlly") || effect == runtime.GetMagicEffect("ShrinkAllyAdept") || effect == runtime.GetMagicEffect("ShrinkAllyExpert"));
+		return (effect == Runtime::GetMagicEffect("ShrinkAlly") || effect == Runtime::GetMagicEffect("ShrinkAllyAdept") || effect == Runtime::GetMagicEffect("ShrinkAllyExpert"));
 	}
 
 	void ShrinkOther::OnUpdate() {
-		auto& runtime = Runtime::GetSingleton();
 		const float BASE_POWER = 0.00180;
 		const float CRUSH_BONUS = 0.00180;
 		const float GROWTH_AMOUNT_BONUS = 1.4;
@@ -35,19 +33,16 @@ namespace Gts {
 
 		auto base_spell = GetBaseEffect();
 
-		if (base_spell == runtime.GetMagicEffect("ShrinkAllyAdept")) 
-		{
+		if (base_spell == Runtime::GetMagicEffect("ShrinkAllyAdept")) {
 			power *= 1.33;
-		}
-		else if (base_spell == runtime.GetMagicEffect("ShrinkAllyExpert"))
-		{
+		} else if (base_spell == Runtime::GetMagicEffect("ShrinkAllyExpert")) {
 			power *= 1.75;
 		}
 
 		float caster_scale = get_target_scale(caster);
 		float target_scale = get_target_scale(target);
 
-		if (runtime.GetFloat("CrushGrowthRate") >= GROWTH_AMOUNT_BONUS) {
+		if (Runtime::GetFloat("CrushGrowthRate") >= GROWTH_AMOUNT_BONUS) {
 			power += CRUSH_BONUS;
 		}
 

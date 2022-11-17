@@ -11,19 +11,17 @@ namespace Gts {
 	}
 
 	bool VoreGrowth::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
 		return effect == Runtime::GetMagicEffect("GlobalVoreGrowth");
 	}
 
 	void VoreGrowth::OnStart() {
 		auto target = GetTarget();
 		float Scale = get_target_scale(target);
-		this->ScaleOnVore = Scale; 
+		this->ScaleOnVore = Scale;
 		this->BlockVoreMods = false;
 	}
 
 	void VoreGrowth::OnUpdate() {
-		auto& runtime = Runtime::GetSingleton();
 		float BASE_POWER = 0.0000210;
 		auto caster = GetCaster();
 		auto target = GetTarget();
@@ -37,8 +35,7 @@ namespace Gts {
 			BASE_POWER *= 2.0;
 		}
 
-		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion"))
-		{
+		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
 		//log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
@@ -53,34 +50,27 @@ namespace Gts {
 
 
 	void VoreGrowth::VoreAugmentations() {
-		
+
 		auto Caster = GetCaster();
-		if (!Caster) // Don't apply bonuses if caster is not player.
-		{return;}
-		auto& runtime = Runtime::GetSingleton();
-		
+		if (!Caster) { // Don't apply bonuses if caster is not player.
+			return;
+		}
+
 		float HpRegen = Caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00145;
 		float SpRegen = Caster->GetPermanentActorValue(ActorValue::kStamina) * 0.007;
 
-		if (runtime.HasPerk(Caster, "VorePerkRegeneration"))
-		{
+		if (Runtime::HasPerk(Caster, "VorePerkRegeneration")) {
 			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
 		}
-		if (runtime.HasPerk(Caster, "VorePerkGreed") && this->BlockVoreMods == false)  // Permamently increases random AV after eating someone
-		{
+		if (Runtime::HasPerk(Caster, "VorePerkGreed") && this->BlockVoreMods == false) { // Permamently increases random AV after eating someone
 			this->BlockVoreMods = true;
 			int Boost = rand() % 2;
-			if (Boost == 0)
-			{
+			if (Boost == 0) {
 				Caster->ModActorValue(ActorValue::kHealth, 0.50);
-			}
-			else if (Boost == 1)
-			{
+			} else if (Boost == 1) {
 				Caster->ModActorValue(ActorValue::kMagicka, 0.50);
-			}
-			else if (Boost == 2)
-			{
+			} else if (Boost == 2) {
 				Caster->ModActorValue(ActorValue::kStamina, 0.50);
 			}
 		}

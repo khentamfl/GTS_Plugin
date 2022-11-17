@@ -13,8 +13,7 @@ namespace Gts {
 	}
 
 	bool SwordOfSize::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.GetMagicEffect("SwordEnchant"));
+		return (effect == Runtime::GetMagicEffect("SwordEnchant"));
 	}
 
 	void SwordOfSize::OnUpdate() {
@@ -33,7 +32,6 @@ namespace Gts {
 	void SwordOfSize::OnFinish() {
 		auto Caster = GetCaster();
 		auto Target = GetTarget();
-		auto runtime = Runtime::GetSingleton();
 		CastTrackSize(Caster, Target);
 	}
 }

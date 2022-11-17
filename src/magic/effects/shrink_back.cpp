@@ -14,8 +14,7 @@ namespace Gts {
 	}
 
 	bool ShrinkBack::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.GetMagicEffect("ShrinkBack");
+		return effect == Runtime::GetMagicEffect("ShrinkBack");
 	}
 
 	void ShrinkBack::OnStart() {
@@ -23,9 +22,8 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto& runtime = Runtime::GetSingleton();
 		float Volume = clamp(0.50, 1.0, get_target_scale(caster));
-		runtime.PlaySound("shrinkSound", caster, Volume, 1.0);
+		Runtime::PlaySound("shrinkSound", caster, Volume, 1.0);
 	}
 
 	void ShrinkBack::OnUpdate() {
@@ -34,7 +32,6 @@ namespace Gts {
 			return;
 		}
 		float Power = 0.00065;
-		auto& runtime = Runtime::GetSingleton();
 
 		if (DualCasted()) {
 			Power *= 2.0;
@@ -42,7 +39,7 @@ namespace Gts {
 
 		if (this->timer.ShouldRun()) {
 			float Volume = clamp(0.15, 2.0, get_target_scale(caster)/4);
-			runtime.PlaySound("shrinkSound", caster, Volume, 0.0);
+			Runtime::PlaySound("shrinkSound", caster, Volume, 0.0);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.60);
 		}
 

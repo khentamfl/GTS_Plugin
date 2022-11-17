@@ -10,13 +10,12 @@ namespace Gts {
 	}
 
 	bool TrackSize::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.GetMagicEffect("TrackSize");
+		return effect == Runtime::GetMagicEffect("TrackSize");
 	}
 
 	void TrackSize::OnUpdate() {
 		auto caster = GetCaster();
-        auto target = GetTarget();
+		auto target = GetTarget();
 		if (!caster) {
 			return;
 		}
@@ -24,7 +23,7 @@ namespace Gts {
 			return;
 		}
 		float size = get_visual_scale(target);
-        if (!ShrinkToNothing(caster, target))
-		{} 
+		if (!ShrinkToNothing(caster, target)) {
+		}
 	}
 }

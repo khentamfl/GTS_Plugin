@@ -10,9 +10,8 @@ namespace Gts {
 		return "SmallMassiveThreat";
 	}
 
-    bool SmallMassiveThreat::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.GetMagicEffect("SmallMassiveThreat");
+	bool SmallMassiveThreat::StartEffect(EffectSetting* effect) { // NOLINT
+		return effect == Runtime::GetMagicEffect("SmallMassiveThreat");
 	}
 
 	void SmallMassiveThreat::OnUpdate() {
@@ -23,8 +22,9 @@ namespace Gts {
 			return;
 		}
 		float CasterScale = get_visual_scale(caster);
-        if (CasterScale >= 2.0)
-        {Dispel();} // <- Disallow having it when scale is > 2.0
+		if (CasterScale >= 2.0) {
+			Dispel();
+		} // <- Disallow having it when scale is > 2.0
 	}
 
 }

@@ -59,15 +59,14 @@ namespace Gts {
 
 	void Vore::Update() {
 		auto player = PlayerCharacter::GetSingleton();
-		auto& runtime = Runtime::GetSingleton();
 
-		if (!player->HasPerk(runtime.GetPerk("VorePerk"))) {
+		if (!Runtime::HasPerk(player, "VorePerk")) {
 			return;
 		}
 		static Timer timer = Timer(3.00); // Random Vore once per 3 sec
 		if (timer.ShouldRunFrame()) { //Try to not overload
 			for (auto actor: find_actors()) {
-				if ((actor->IsInFaction(runtime.GetFaction("FollowerFaction")) || actor->IsPlayerTeammate()) && player->IsInCombat()) {
+				if ((Runtime::InFaction(actor,"FollowerFaction") || actor->IsPlayerTeammate()) && player->IsInCombat()) {
 					RandomVoreAttempt(actor);
 					//log::info("Found Vore Caster");
 				}
@@ -77,10 +76,9 @@ namespace Gts {
 
 	void Vore::RandomVoreAttempt(Actor* caster) {
 		Actor* player = PlayerCharacter::GetSingleton();
-		auto& runtime = Runtime::GetSingleton();
 		auto VoreManager = Vore::GetSingleton();
 		std::size_t numberOfPrey = 1;
-		if (player->HasPerk(runtime.GetPerk("MassVorePerk"))) {
+		if (Runtime::HasPerk(player, "MassVorePerk")) {
 			numberOfPrey = 3;
 		}
 		//log::info("Attempting Random Vore");
@@ -318,13 +316,12 @@ namespace Gts {
 		if (pred == prey) {
 			return false;
 		}
-		auto& runtime = Runtime::GetSingleton();
 
 		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
-		if (pred->HasPerk(runtime.GetPerk("MassVorePerk"))) {
+		if (Runtime::HasPerk(pred,"MassVorePerk")) {
 			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
 		}
 
@@ -335,7 +332,7 @@ namespace Gts {
 		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
 		    && (!prey->IsEssential())
-		    && (!prey->HasSpell(runtime.GetSpell("StartVore")))) {
+		    && (!Runtime::HasSpell(prey, "StartVore"))) {
 			return true;
 		} else {
 
@@ -344,14 +341,12 @@ namespace Gts {
 	}
 
 	void Vore::StartVore(Actor* pred, Actor* prey) {
-		auto runtime = Runtime::GetSingleton();
-
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 
 		float sizedifference = pred_scale/prey_scale;
 
-		if (pred->HasPerk(runtime.GetPerk("MassVorePerk"))) {
+		if (Runtime::HasPerk(pred, "MassVorePerk")) {
 			sizedifference *= 1.15; // Less stamina drain
 		}
 
@@ -363,25 +358,24 @@ namespace Gts {
 		if (!CanVore(pred, prey)) {
 			return;
 		}
-		if (prey->IsEssential() && runtime.GetGlobal("ProtectEssentials")->value >= 1.0) {
+		if (prey->IsEssential() && Runtime.GetBool("ProtectEssentials")) {
 			Notify("{} is Essential, can't vore.", prey->GetDisplayFullName());
 		}
 		if (staminacheck < wastestamina) {
 			Notify("{} is too tired for vore.", pred->GetDisplayFullName());
 			DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
-			runtime.PlaySound("VoreSound_Fail", pred, 1.8, 0.0);
-			pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.GetSpell("gtsStaggerSpell"), false, prey, 1.00f, false, 0.0f, pred);
+			Runtime::PlaySound("VoreSound_Fail", pred, 1.8, 0.0);
+			Runtime::CastSpell(pred, prey, "gtsStaggerSpell");
 			return;
 		}
 
 		DamageAV(pred, ActorValue::kStamina, wastestamina);
-		runtime.PlaySound("VoreSound_Success", pred, 0.6, 0.0);
+		Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
 		if (!prey->IsDead()) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (prey->IsDead()) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
-		pred->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.GetSpell("StartVore"), false, prey, 1.00f, false, 0.0f, pred);
-
+		Runtime::CastSpell(pred, prey, "StartVore");
 	}
 }

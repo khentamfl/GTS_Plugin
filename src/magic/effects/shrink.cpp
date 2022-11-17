@@ -10,7 +10,6 @@ namespace Gts {
 	}
 
 	bool Shrink::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
 		return effect == Runtime::GetMagicEffect("ShrinkSpell");
 	}
 
@@ -25,11 +24,8 @@ namespace Gts {
 
 		float power = BASE_POWER * SkillMult;
 
-		auto& runtime = Runtime::GetSingleton();
-
 		float bonus = 1.0;
-		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion"))
-		{
+		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
 

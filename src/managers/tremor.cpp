@@ -40,8 +40,8 @@ namespace Gts {
 			return false;
 		}
 		if (playercamera->currentState == playercamera->cameraStates[CameraState::kFirstPerson]) {
-    		return true;
-		} 
+			return true;
+		}
 		return false;
 	}
 
@@ -176,13 +176,11 @@ namespace Gts {
 				float duration = power * tremor_scale * 0.5;
 				duration = smootherstep(0.2, 1.2, duration);
 
-				auto& runtime = Runtime::GetSingleton();
-				bool pcEffects = runtime.GetGlobal("PCAdditionalEffects") ? runtime.GetFloat("NPCSizeEffects") >= 1.0 : true;
+				bool pcEffects = Runtime::GetBoolOr("PCAdditionalEffects", true);
 
 				if (actor->formID == 0x14 && pcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
-						if (GetFP())
-						{
+						if (GetFP()) {
 							intensity *= 0.075; // Shake effects are weaker when in first person
 						}
 						//log::info("Intensity is: {}", intensity);
@@ -206,7 +204,7 @@ namespace Gts {
 					}
 				}
 
-				bool npcEffects = runtime.GetGlobal("NPCSizeEffects") ? runtime.GetFloat("NPCSizeEffects") >= 1.0 : true;
+				bool npcEffects = runtime.GetGlobal("NPCSizeEffects") ? Runtime::GetFloat("NPCSizeEffects") >= 1.0 : true;
 				if (actor->formID != 0x14 && npcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
 						shake_camera(actor, intensity, duration);
