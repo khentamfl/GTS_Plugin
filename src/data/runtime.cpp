@@ -478,7 +478,7 @@ namespace Gts {
 		}
 	}
 
-	void Runtime::Logged(std::string_view catagory, std::string_view key) {
+	bool Runtime::Logged(std::string_view catagory, std::string_view key) {
 		auto& m = Runtime::GetSingleton().logged;
 		std::string logKey = std::format("{}::{}", catagory, key);
 		bool shouldLog = !(m.find(logKey) == m.end());
@@ -506,7 +506,7 @@ namespace Gts {
 			auto form = find_form<EffectSetting>(value);
 			if (form) {
 				this->spellEffects.try_emplace(key, form);
-			} else if (!Runtime::Logged("mgef", tag)) {
+			} else if (!Runtime::Logged("mgef", key)) {
 				log::warn("EffectSetting form not found for {}", key);
 			}
 		}
@@ -515,7 +515,7 @@ namespace Gts {
 			auto form = find_form<SpellItem>(value);
 			if (form) {
 				this->spells.try_emplace(key, form);
-			} else if (!Runtime::Logged("spel", tag)) {
+			} else if (!Runtime::Logged("spel", key)) {
 				log::warn("SpellItem form not found for {}", key);
 			}
 		}
@@ -524,7 +524,7 @@ namespace Gts {
 			auto form = find_form<BGSPerk>(value);
 			if (form) {
 				this->perks.try_emplace(key, form);
-			} else if (!Runtime::Logged("perk", tag)) {
+			} else if (!Runtime::Logged("perk", key)) {
 				log::warn("Perk form not found for {}", key);
 			}
 		}
@@ -533,7 +533,7 @@ namespace Gts {
 			auto form = find_form<BGSExplosion>(value);
 			if (form) {
 				this->explosions.try_emplace(key, form);
-			} else if (!Runtime::Logged("expl", tag)) {
+			} else if (!Runtime::Logged("expl", key)) {
 				log::warn("Explosion form not found for {}", key);
 			}
 		}
@@ -542,7 +542,7 @@ namespace Gts {
 			auto form = find_form<TESGlobal>(value);
 			if (form) {
 				this->globals.try_emplace(key, form);
-			} else if (!Runtime::Logged("glob", tag)) {
+			} else if (!Runtime::Logged("glob", key)) {
 				log::warn("Global form not found for {}", key);
 			}
 		}
@@ -551,7 +551,7 @@ namespace Gts {
 			auto form = find_form<TESQuest>(value);
 			if (form) {
 				this->quests.try_emplace(key, form);
-			} else if (!Runtime::Logged("qust", tag)) {
+			} else if (!Runtime::Logged("qust", key)) {
 				log::warn("Quest form not found for {}", key);
 			}
 		}
@@ -560,7 +560,7 @@ namespace Gts {
 			auto form = find_form<TESFaction>(value);
 			if (form) {
 				this->factions.try_emplace(key, form);
-			} else if (!Runtime::Logged("facn", tag)) {
+			} else if (!Runtime::Logged("facn", key)) {
 				log::warn("FactionData form not found for {}", key);
 			}
 		}
@@ -569,7 +569,7 @@ namespace Gts {
 			auto form = find_form<BGSImpactDataSet>(value);
 			if (form) {
 				this->impacts.try_emplace(key, form);
-			} else if (!Runtime::Logged("impc", tag)) {
+			} else if (!Runtime::Logged("impc", key)) {
 				log::warn("ImpactData form not found for {}", key);
 			}
 		}
