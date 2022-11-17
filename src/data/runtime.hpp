@@ -97,7 +97,7 @@ namespace Gts {
 			static bool InFactionOr(Actor* actor, std::string_view tag, bool default_value);
 			// Impacts
 			static BGSImpactDataSet* GetImpactEffect(std::string_view tag);
-			static void PlayImpactEffect(Actor* actor, std::string_view tag, std::string_view node, const NiPoint3& direction, float length, bool applyRotation, bool useLocalRotation);
+			static void PlayImpactEffect(Actor* actor, std::string_view tag, std::string_view node, NiPoint3 direction, float length, bool applyRotation, bool useLocalRotation);
 
 			// Team Functions
 			static bool HasMagicEffectTeam(Actor* actor, std::string_view tag);
