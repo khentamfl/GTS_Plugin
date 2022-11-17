@@ -481,7 +481,9 @@ namespace Gts {
 	void Runtime::Logged(std::string_view class, std::string_view key) {
 		auto& m = Runtime::GetSingleton().logged;
 		std::string logKey = std::format("{}::{}", class, key);
-		return !(m.find(logKey) == m.end());
+		bool shouldLog = !(m.find(logKey) == m.end());
+		m.emplace(logKey);
+		return shouldLog;
 	}
 
 	void Runtime::DataReady() {
