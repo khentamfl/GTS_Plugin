@@ -54,7 +54,7 @@ namespace Hooks
 
 		static Timer timer = Timer(5.0);
 		if (timer.ShouldRun()) {
-			//EventDispatcher::ReportProfilers();
+			EventDispatcher::ReportProfilers();
 		}
 	}
 }
