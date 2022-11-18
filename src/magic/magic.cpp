@@ -202,28 +202,28 @@ namespace Gts {
 	}
 
 	void MagicManager::DataReady() {
-		RegisterMagic<Gigantism>("EnchGigantism")
-		RegisterMagic<GrowthPotion>("EffectGrowthPotion")
-		// RegisterMagic<SizePotion>()
-		// RegisterMagic<SizeHunger>()
-		RegisterMagic<CrushGrowth>("CrushGrowthMGEF")
-		// RegisterMagic<TrackSize>()
-		// RegisterMagic<ShrinkFoe>()
-		// RegisterMagic<SwordOfSize>()
-		// RegisterMagic<ShrinkButton>()
-		// RegisterMagic<GrowButton>()
-		// RegisterMagic<SlowGrow>()
-		// RegisterMagic<SmallMassiveThreat>()
-		// RegisterMagic<Growth>()
-		// RegisterMagic<Shrink>()
-		// RegisterMagic<GrowOther>()
-		// RegisterMagic<ShrinkOther>()
-		// RegisterMagic<GrowOtherButton>()
-		// RegisterMagic<ShrinkOtherButton>()
-		// RegisterMagic<ShrinkBack>()
-		// RegisterMagic<ShrinkBackOther>()
-		// RegisterMagic<VoreGrowth>()
-		// RegisterMagic<SizeDamage>()
+		RegisterMagic<Gigantism>("EnchGigantism");
+		RegisterMagic<GrowthPotion>("EffectGrowthPotion");
+		// RegisterMagic<SizePotion>();
+		// RegisterMagic<SizeHunger>();
+		RegisterMagic<CrushGrowth>("CrushGrowthMGEF");
+		// RegisterMagic<TrackSize>();
+		// RegisterMagic<ShrinkFoe>();
+		// RegisterMagic<SwordOfSize>();
+		// RegisterMagic<ShrinkButton>();
+		// RegisterMagic<GrowButton>();
+		// RegisterMagic<SlowGrow>();
+		// RegisterMagic<SmallMassiveThreat>();
+		// RegisterMagic<Growth>();
+		// RegisterMagic<Shrink>();
+		// RegisterMagic<GrowOther>();
+		// RegisterMagic<ShrinkOther>();
+		// RegisterMagic<GrowOtherButton>();
+		// RegisterMagic<ShrinkOtherButton>();
+		// RegisterMagic<ShrinkBack>();
+		// RegisterMagic<ShrinkBackOther>();
+		// RegisterMagic<VoreGrowth>();
+		// RegisterMagic<SizeDamage>();
 		RegisterMagic<Absorb>("AbsorbMGEF");
 		RegisterMagic<Absorb>("TrueAbsorb");
 	}
