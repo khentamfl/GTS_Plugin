@@ -13,10 +13,6 @@ namespace Gts {
 		return "GrowthPotion";
 	}
 
-	bool GrowthPotion::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("EffectGrowthPotion");
-	}
-
 	void GrowthPotion::OnStart() {
 		auto caster = GetCaster();
 		auto player = PlayerCharacter::GetSingleton();

@@ -202,29 +202,28 @@ namespace Gts {
 	}
 
 	void MagicManager::DataReady() {
-		// ExplosiveGrowth::Register(this->generators);
-		// Gigantism::Register(this->generators);
-		// GrowthPotion::Register(this->generators);
-		// SizePotion::Register(this->generators);
-		// SizeHunger::Register(this->generators);
-		// CrushGrowth::Register(this->generators);
-		// TrackSize::Register(this->generators);
-		// ShrinkFoe::Register(this->generators);
-		// SwordOfSize::Register(this->generators);
-		// ShrinkButton::Register(this->generators);
-		// GrowButton::Register(this->generators);
-		// SlowGrow::Register(this->generators);
-		// SmallMassiveThreat::Register(this->generators);
-		// Growth::Register(this->generators);
-		// Shrink::Register(this->generators);
-		// GrowOther::Register(this->generators);
-		// ShrinkOther::Register(this->generators);
-		// GrowOtherButton::Register(this->generators);
-		// ShrinkOtherButton::Register(this->generators);
-		// ShrinkBack::Register(this->generators);
-		// ShrinkBackOther::Register(this->generators);
-		// VoreGrowth::Register(this->generators);
-		// SizeDamage::Register(this->generators);
+		RegisterMagic<Gigantism>("EnchGigantism")
+		RegisterMagic<GrowthPotion>("EffectGrowthPotion")
+		// RegisterMagic<SizePotion>()
+		// RegisterMagic<SizeHunger>()
+		RegisterMagic<CrushGrowth>("CrushGrowthMGEF")
+		// RegisterMagic<TrackSize>()
+		// RegisterMagic<ShrinkFoe>()
+		// RegisterMagic<SwordOfSize>()
+		// RegisterMagic<ShrinkButton>()
+		// RegisterMagic<GrowButton>()
+		// RegisterMagic<SlowGrow>()
+		// RegisterMagic<SmallMassiveThreat>()
+		// RegisterMagic<Growth>()
+		// RegisterMagic<Shrink>()
+		// RegisterMagic<GrowOther>()
+		// RegisterMagic<ShrinkOther>()
+		// RegisterMagic<GrowOtherButton>()
+		// RegisterMagic<ShrinkOtherButton>()
+		// RegisterMagic<ShrinkBack>()
+		// RegisterMagic<ShrinkBackOther>()
+		// RegisterMagic<VoreGrowth>()
+		// RegisterMagic<SizeDamage>()
 		RegisterMagic<Absorb>("AbsorbMGEF");
 		RegisterMagic<Absorb>("TrueAbsorb");
 	}

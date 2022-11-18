@@ -11,10 +11,6 @@ namespace Gts {
 		return "CrushGrowth";
 	}
 
-	bool CrushGrowth::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("CrushGrowthMGEF");
-	}
-
 	void CrushGrowth::OnStart() {
 		auto CrushedFoe = GetTarget();
 		this->CrushGrowthAmount += 1.0;

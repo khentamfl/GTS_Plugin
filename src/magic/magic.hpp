@@ -100,6 +100,14 @@ namespace Gts {
 			virtual void DataReady() override;
 
 			void ProcessActiveEffects(Actor* actor);
+
+			template<class MagicCls>
+			void RegisterMagic(std::string_view tag) {
+				auto magic = Runtime::GetMagicEffect(tag);
+				if (magic) {
+					this->factories.try_emplace(magic,MagicFactory<MagicCls>());
+				}
+			}
 		private:
 			std::map<ActiveEffect*, std::unique_ptr<Magic> > active_effects;
 			std::unordered_map<EffectSetting*, std::unique_ptr<MagicFactoryBase> > factories;
@@ -107,9 +115,6 @@ namespace Gts {
 
 	template<class MagicCls>
 	void RegisterMagic(std::string_view tag) {
-		auto magic = Runtime::GetMagicEffect(tag);
-		if (magic) {
-			MagicManager::GetSingleton().factories.try_emplace(magic,MagicFactory<MagicCls>());
-		}
+		MagicManager::GetSingleton().RegisterMagic(tag);
 	}
 }

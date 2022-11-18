@@ -12,11 +12,6 @@ namespace Gts {
 		return "Gigantism";
 	}
 
-	bool Gigantism::StartEffect(EffectSetting* effect) { // NOLINT
-		//log::info("Starting Gigantism Effect");
-		return effect == Runtime::GetMagicEffect("EnchGigantism");
-	}
-
 	void Gigantism::OnStart() {
 		auto caster = GetCaster();
 

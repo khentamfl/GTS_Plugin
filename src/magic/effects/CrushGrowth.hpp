@@ -16,14 +16,12 @@ namespace Gts {
 
 			virtual void OnUpdate() override;
 
-            virtual void OnFinish() override;
+			virtual void OnFinish() override;
 
 			virtual std::string GetName() override;
 
-			static bool StartEffect(EffectSetting* effect);
-
-            private:
-            float CrushGrowthAmount = 0.0;
+		private:
+			float CrushGrowthAmount = 0.0;
 			float ScaleOnCrush = 1.0;
 	};
 }
