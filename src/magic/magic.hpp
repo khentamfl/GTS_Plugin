@@ -79,7 +79,7 @@ namespace Gts {
 			virtual Magic* MakeNew(EffectSetting* effect) override;
 	};
 	template<class MagicCls>
-	Magic* MagicFactory::MakeNew<MagicCls>(EffectSetting* effect) override {
+	Magic* MagicFactory<MagicCls>::MakeNew(EffectSetting* effect) override {
 		if (effect) {
 			return new MagicCls(effect);
 		} else {
