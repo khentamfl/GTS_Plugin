@@ -69,17 +69,19 @@ namespace Gts {
 	};
 
 	class MagicFactoryBase {
-		virtual Magic* MakeNew(EffectSetting* effect) = 0;
+		public:
+			virtual Magic* MakeNew(EffectSetting* effect) = 0;
 	}
 	template<class MagicCls>
-	class MagicFactory<MagicCls>: MagicFactoryBase {
-		virtual Magic* MakeNew(EffectSetting* effect) override {
-			if (effect) {
-				return new MagicCls(effect);
-			} else {
-				return nullptr;
+	class MagicFactory<MagicCls>: public MagicFactoryBase {
+		public:
+			virtual Magic* MakeNew(EffectSetting* effect) override {
+				if (effect) {
+					return new MagicCls(effect);
+				} else {
+					return nullptr;
+				}
 			}
-		}
 	};
 
 	void RegisterMagic<MagicCls>(std::string_view tag) {
