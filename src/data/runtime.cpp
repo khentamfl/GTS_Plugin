@@ -62,7 +62,7 @@ namespace Gts {
 
 
 	// Sound
-	BSISoundDescriptor* Runtime::GetSound(std::string_view tag) {
+	BSISoundDescriptor* Runtime::GetSound(const std::string_view& tag) {
 		BSISoundDescriptor* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().sounds.at(std::string(tag)).data;
@@ -74,7 +74,7 @@ namespace Gts {
 		}
 		return data;
 	}
-	void Runtime::PlaySound(std::string_view tag, Actor* actor, float volume, float frequency) {
+	void Runtime::PlaySound(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency) {
 		auto soundDescriptor = Runtime::GetSound(tag);
 		if (!soundDescriptor) {
 			log::error("Sound invalid");
@@ -105,7 +105,7 @@ namespace Gts {
 	}
 
 	// Spell Effects
-	EffectSetting* Runtime::GetMagicEffect(std::string_view tag) {
+	EffectSetting* Runtime::GetMagicEffect(const std::string_view& tag) {
 		EffectSetting* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().spellEffects.at(std::string(tag)).data;
@@ -118,11 +118,11 @@ namespace Gts {
 		return data;
 	}
 
-	bool Runtime::HasMagicEffect(Actor* actor, std::string_view tag) {
+	bool Runtime::HasMagicEffect(Actor* actor, const std::string_view& tag) {
 		return Runtime::HasMagicEffectOr(actor, tag, false);
 	}
 
-	bool Runtime::HasMagicEffectOr(Actor* actor, std::string_view tag, bool default_value) {
+	bool Runtime::HasMagicEffectOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
 		auto data = Runtime::GetMagicEffect(tag);
 		if (data) {
 			return actor->HasMagicEffect(data);
@@ -132,7 +132,7 @@ namespace Gts {
 	}
 
 	// Spells
-	SpellItem* Runtime::GetSpell(std::string_view tag) {
+	SpellItem* Runtime::GetSpell(const std::string_view& tag) {
 		SpellItem* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().spells.at(std::string(tag)).data;
@@ -145,7 +145,7 @@ namespace Gts {
 		return data;
 	}
 
-	void Runtime::AddSpell(Actor* actor, std::string_view tag) {
+	void Runtime::AddSpell(Actor* actor, const std::string_view& tag) {
 		auto data = Runtime::GetSpell(tag);
 		if (data) {
 			if (!Runtime::HasSpell(actor, tag)) {
@@ -153,7 +153,7 @@ namespace Gts {
 			}
 		}
 	}
-	void Runtime::RemoveSpell(Actor* actor, std::string_view tag) {
+	void Runtime::RemoveSpell(Actor* actor, const std::string_view& tag) {
 		auto data = Runtime::GetSpell(tag);
 		if (data) {
 			if (Runtime::HasSpell(actor, tag)) {
@@ -162,11 +162,11 @@ namespace Gts {
 		}
 	}
 
-	bool Runtime::HasSpell(Actor* actor, std::string_view tag) {
+	bool Runtime::HasSpell(Actor* actor, const std::string_view& tag) {
 		return Runtime::HasSpellOr(actor, tag, false);
 	}
 
-	bool Runtime::HasSpellOr(Actor* actor, std::string_view tag, bool default_value) {
+	bool Runtime::HasSpellOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
 		auto data = Runtime::GetSpell(tag);
 		if (data) {
 			return actor->HasSpell(data);
@@ -175,7 +175,7 @@ namespace Gts {
 		}
 	}
 
-	void Runtime::CastSpell(Actor* caster, Actor* target, std::string_view tag) {
+	void Runtime::CastSpell(Actor* caster, Actor* target, const std::string_view& tag) {
 		auto data = GetSpell(tag);
 		if (data) {
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(data, false, target, 1.00f, false, 0.0f, caster);
@@ -183,7 +183,7 @@ namespace Gts {
 	}
 
 	// Perks
-	BGSPerk* Runtime::GetPerk(std::string_view tag) {
+	BGSPerk* Runtime::GetPerk(const std::string_view& tag) {
 		BGSPerk* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().perks.at(std::string(tag)).data;
@@ -196,7 +196,7 @@ namespace Gts {
 		return data;
 	}
 
-	void Runtime::AddPerk(Actor* actor, std::string_view tag) {
+	void Runtime::AddPerk(Actor* actor, const std::string_view& tag) {
 		auto data = Runtime::GetPerk(tag);
 		if (data) {
 			if (!Runtime::HasPerk(actor, tag)) {
@@ -204,7 +204,7 @@ namespace Gts {
 			}
 		}
 	}
-	void Runtime::RemovePerk(Actor* actor, std::string_view tag) {
+	void Runtime::RemovePerk(Actor* actor, const std::string_view& tag) {
 		auto data = Runtime::GetPerk(tag);
 		if (data) {
 			if (Runtime::HasPerk(actor, tag)) {
@@ -213,11 +213,11 @@ namespace Gts {
 		}
 	}
 
-	bool Runtime::HasPerk(Actor* actor, std::string_view tag) {
+	bool Runtime::HasPerk(Actor* actor, const std::string_view& tag) {
 		return Runtime::HasPerkOr(actor, tag, false);
 	}
 
-	bool Runtime::HasPerkOr(Actor* actor, std::string_view tag, bool default_value) {
+	bool Runtime::HasPerkOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
 		auto data = Runtime::GetPerk(tag);
 		if (data) {
 			return actor->HasPerk(data);
@@ -227,7 +227,7 @@ namespace Gts {
 	}
 
 	// Explosion
-	BGSExplosion* Runtime::GetExplosion(std::string_view tag) {
+	BGSExplosion* Runtime::GetExplosion(const std::string_view& tag) {
 		BGSExplosion* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().explosions.at(std::string(tag)).data;
@@ -240,13 +240,13 @@ namespace Gts {
 		return data;
 	}
 
-	void Runtime::CreateExplosion(Actor* actor, float scale, std::string_view tag) {
+	void Runtime::CreateExplosion(Actor* actor, const float& scale, const std::string_view& tag) {
 		if (actor) {
 			CreateExplosionAtPos(actor, actor->GetPosition(), scale, tag);
 		}
 	}
 
-	void Runtime::CreateExplosionAtNode(Actor* actor, std::string_view node_name, float scale, std::string_view tag) {
+	void Runtime::CreateExplosionAtNode(Actor* actor, const std::string_view& node_name, const float& scale, const std::string_view& tag) {
 		if (actor) {
 			if (actor->Is3DLoaded()) {
 				auto model = actor->GetCurrent3D();
@@ -260,7 +260,7 @@ namespace Gts {
 		}
 	}
 
-	void Runtime::CreateExplosionAtPos(Actor* actor, NiPoint3 pos, float scale, std::string_view tag) {
+	void Runtime::CreateExplosionAtPos(Actor* actor, NiPoint3 pos, const float& scale, const std::string_view& tag) {
 		auto data = GetExplosion(tag);
 		if (data) {
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(data, false);
@@ -279,7 +279,7 @@ namespace Gts {
 	}
 
 	// Globals
-	TESGlobal* Runtime::GetGlobal(std::string_view tag) {
+	TESGlobal* Runtime::GetGlobal(const std::string_view& tag) {
 		TESGlobal* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().globals.at(std::string(tag)).data;
@@ -292,11 +292,11 @@ namespace Gts {
 		return data;
 	}
 
-	bool Runtime::GetBool(std::string_view tag) {
+	bool Runtime::GetBool(const std::string_view& tag) {
 		return Runtime::GetBoolOr(tag, false);
 	}
 
-	bool Runtime::GetBoolOr(std::string_view tag, bool default_value) {
+	bool Runtime::GetBoolOr(const std::string_view& tag, const bool& default_value) {
 		auto data = GetGlobal(tag);
 		if (data) {
 			return fabs(data->value - 0.0) > 1e-4;
@@ -305,7 +305,7 @@ namespace Gts {
 		}
 	}
 
-	void Runtime::SetBool(std::string_view tag, bool value) {
+	void Runtime::SetBool(const std::string_view& tag, const bool& value) {
 		auto data = GetGlobal(tag);
 		if (data) {
 			if (value) {
@@ -316,11 +316,11 @@ namespace Gts {
 		}
 	}
 
-	int Runtime::GetInt(std::string_view tag) {
+	int Runtime::GetInt(const std::string_view& tag) {
 		return Runtime::GetIntOr(tag, false);
 	}
 
-	int Runtime::GetIntOr(std::string_view tag, int default_value) {
+	int Runtime::GetIntOr(const std::string_view& tag, const int& default_value) {
 		auto data = GetGlobal(tag);
 		if (data) {
 			return data->value;
@@ -329,18 +329,18 @@ namespace Gts {
 		}
 	}
 
-	void Runtime::SetInt(std::string_view tag, int value) {
+	void Runtime::SetInt(const std::string_view& tag, const int& value) {
 		auto data = GetGlobal(tag);
 		if (data) {
 			data->value = value;
 		}
 	}
 
-	int Runtime::GetFloat(std::string_view tag) {
+	float Runtime::GetFloat(const std::string_view& tag) {
 		return Runtime::GetFloatOr(tag, false);
 	}
 
-	int Runtime::GetFloatOr(std::string_view tag, float default_value) {
+	float Runtime::GetFloatOr(const std::string_view& tag, const float& default_value) {
 		auto data = GetGlobal(tag);
 		if (data) {
 			return data->value;
@@ -349,7 +349,7 @@ namespace Gts {
 		}
 	}
 
-	void Runtime::SetFloat(std::string_view tag, float value) {
+	void Runtime::SetFloat(const std::string_view& tag, const float& value) {
 		auto data = GetGlobal(tag);
 		if (data) {
 			data->value = value;
@@ -357,7 +357,7 @@ namespace Gts {
 	}
 
 	// Quests
-	TESQuest* Runtime::GetQuest(std::string_view tag) {
+	TESQuest* Runtime::GetQuest(const std::string_view& tag) {
 		TESQuest* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().quests.at(std::string(tag)).data;
@@ -370,11 +370,11 @@ namespace Gts {
 		return data;
 	}
 
-	std::uint16_t Runtime::GetStage(std::string_view tag) {
+	std::uint16_t Runtime::GetStage(const std::string_view& tag) {
 		return Runtime::GetStageOr(tag, 0);
 	}
 
-	std::uint16_t Runtime::GetStageOr(std::string_view tag, std::uint16_t default_value) {
+	std::uint16_t Runtime::GetStageOr(const std::string_view& tag, const std::uint16_t& default_value) {
 		auto data = GetQuest(tag);
 		if (data) {
 			return data->GetCurrentStageID();
@@ -384,7 +384,7 @@ namespace Gts {
 	}
 
 	// Factions
-	TESFaction* Runtime::GetFaction(std::string_view tag) {
+	TESFaction* Runtime::GetFaction(const std::string_view& tag) {
 		TESFaction* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().factions.at(std::string(tag)).data;
@@ -395,11 +395,11 @@ namespace Gts {
 	}
 
 
-	bool Runtime::InFaction(Actor* actor, std::string_view tag) {
+	bool Runtime::InFaction(Actor* actor, const std::string_view& tag) {
 		return Runtime::InFactionOr(actor, tag, false);
 	}
 
-	bool Runtime::InFactionOr(Actor* actor, std::string_view tag, bool default_value) {
+	bool Runtime::InFactionOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
 		auto data = GetFaction(tag);
 		if (data) {
 			return actor->IsInFaction(data);
@@ -409,7 +409,7 @@ namespace Gts {
 	}
 
 	// Impacts
-	BGSImpactDataSet* Runtime::GetImpactEffect(std::string_view tag) {
+	BGSImpactDataSet* Runtime::GetImpactEffect(const std::string_view& tag) {
 		BGSImpactDataSet* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().impacts.at(std::string(tag)).data;
@@ -421,7 +421,7 @@ namespace Gts {
 		}
 		return data;
 	}
-	void Runtime::PlayImpactEffect(Actor* actor, std::string_view tag, std::string_view node, NiPoint3 direction, float length, bool applyRotation, bool useLocalRotation) {
+	void Runtime::PlayImpactEffect(Actor* actor, const std::string_view& tag, const std::string_view& node, NiPoint3 direction, const float& length, const bool& applyRotation, const bool& useLocalRotation) {
 		auto data = GetImpactEffect(tag);
 		if (data) {
 			auto impact = BGSImpactManager::GetSingleton();
@@ -430,11 +430,11 @@ namespace Gts {
 	}
 
 	// Team Functions
-	bool Runtime::HasMagicEffectTeam(Actor* actor, std::string_view tag) {
+	bool Runtime::HasMagicEffectTeam(Actor* actor, const std::string_view& tag) {
 		return Runtime::HasMagicEffectTeamOr(actor, tag, false);
 	}
 
-	bool Runtime::HasMagicEffectTeamOr(Actor* actor, std::string_view tag, bool default_value) {
+	bool Runtime::HasMagicEffectTeamOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
 		if (Runtime::HasMagicEffectOr(actor, tag, default_value)) {
 			return true;
 		}
@@ -446,11 +446,11 @@ namespace Gts {
 		}
 	}
 
-	bool Runtime::HasSpellTeam(Actor* actor, std::string_view tag) {
+	bool Runtime::HasSpellTeam(Actor* actor, const std::string_view& tag) {
 		return Runtime::HasMagicEffectTeamOr(actor, tag, false);
 	}
 
-	bool Runtime::HasSpellTeamOr(Actor* actor, std::string_view tag, bool default_value) {
+	bool Runtime::HasSpellTeamOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
 		if (Runtime::HasSpellTeam(actor, tag)) {
 			return true;
 		}
@@ -462,11 +462,11 @@ namespace Gts {
 		}
 	}
 
-	bool Runtime::HasPerkTeam(Actor* actor, std::string_view tag) {
+	bool Runtime::HasPerkTeam(Actor* actor, const std::string_view& tag) {
 		return Runtime::HasPerkTeamOr(actor, tag, false);
 	}
 
-	bool Runtime::HasPerkTeamOr(Actor* actor, std::string_view tag, bool default_value) {
+	bool Runtime::HasPerkTeamOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
 		if (Runtime::HasPerk(actor, tag)) {
 			return true;
 		}
@@ -478,7 +478,7 @@ namespace Gts {
 		}
 	}
 
-	bool Runtime::Logged(std::string_view catagory, std::string_view key) {
+	bool Runtime::Logged(const std::string_view& catagory, const std::string_view& key) {
 		auto& m = Runtime::GetSingleton().logged;
 		std::string logKey = std::format("{}::{}", catagory, key);
 		bool shouldLog = !(m.find(logKey) == m.end());
