@@ -166,8 +166,8 @@ namespace Gts {
 		for (auto effect: (*effect_list)) {
 			EffectSetting* base_spell = effect->GetBaseObject();
 			try {
-				auto& factory = this->factories.at(effect);
-				auto magic_effect = factory.MakeNew(effect);
+				auto& factory = this->factories.at(base_spell);
+				auto magic_effect = factory.MakeNew(base_spell);
 				if (magic_effect) {
 					this->active_effects.try_emplace(effect, std::move(magic_effect));
 				}
