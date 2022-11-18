@@ -71,7 +71,8 @@ namespace Gts {
 	class MagicFactoryBase {
 		public:
 			virtual Magic* MakeNew(EffectSetting* effect) = 0;
-	}
+	};
+
 	template<class MagicCls>
 	class MagicFactory<MagicCls>: public MagicFactoryBase {
 		public:
