@@ -68,9 +68,12 @@ namespace Gts {
 			bool hasDuration = false;
 	};
 
+	class MagicFactoryBase {
+		virtual Magic* MakeNew(EffectSetting* effect) = 0;
+	}
 	template<class MagicCls>
-	class MagicFactory<MagicCls> {
-		MagicCls* MakeNew(EffectSetting* effect) {
+	class MagicFactory<MagicCls>: MagicFactoryBase {
+		virtual Magic* MakeNew(EffectSetting* effect) override {
 			if (effect) {
 				return new MagicCls(effect);
 			} else {
@@ -78,6 +81,13 @@ namespace Gts {
 			}
 		}
 	};
+
+	void RegisterMagic<MagicCls>(std::string_view tag) {
+		auto magic = Runtime::GetMagicEffect(tag);
+		if (tag) {
+			MagicManager::GetSingleton().factories.try_emplace(magic,MagicFactory<MagicCls>());
+		}
+	}
 
 	class MagicManager : public EventListener {
 		public:
@@ -92,15 +102,8 @@ namespace Gts {
 			virtual void DataReady() override;
 
 			void ProcessActiveEffects(Actor* actor);
-
-			void RegisterMagic<MagicCls>(std::string_view tag) {
-				auto magic = Runtime::GetMagicEffect(tag);
-				if (tag) {
-					this->factories.try_emplace(magic,MagicFactory<MagicCls>());
-				}
-			}
 		private:
 			std::map<ActiveEffect*, std::unique_ptr<Magic> > active_effects;
-			std::unordered_map<EffectSetting*, std::unique_ptr<MagicFactory> > factories;
+			std::unordered_map<EffectSetting*, std::unique_ptr<MagicFactoryBase> > factories;
 	};
 }
