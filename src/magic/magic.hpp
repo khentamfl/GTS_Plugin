@@ -87,6 +87,7 @@ namespace Gts {
 		}
 	}
 
+	template<class MagicCls>
 	void RegisterMagic<MagicCls>(std::string_view tag) {
 		auto magic = Runtime::GetMagicEffect(tag);
 		if (tag) {

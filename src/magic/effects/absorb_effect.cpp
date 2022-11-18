@@ -17,8 +17,8 @@ namespace Gts {
 	}
 
 	void Absorb::Register(EffectSetting* effect) { // NOLINT
-		MagicManager::GetSingleton().RegisterMagic<Absorb>("AbsorbMGEF");
-		MagicManager::GetSingleton().RegisterMagic<Absorb>("TrueAbsorb");
+		RegisterMagic<Absorb>("AbsorbMGEF");
+		RegisterMagic<Absorb>("TrueAbsorb");
 	}
 
 	void Absorb::OnUpdate() {
