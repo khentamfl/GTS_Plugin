@@ -68,15 +68,16 @@ namespace Gts {
 			bool hasDuration = false;
 	};
 
-	typedef std::unique_ptr<Magic> (*MagicGeneratorFunction)(ActiveEffect*);
-
 	template<class MagicCls>
-	std::unique_ptr<Magic> GenerateMagicEffect<MagicCls>(ActiveEffect* effect);
-
-	template<>
-	std::unique_ptr<Magic> GenerateMagicEffect<Magic>(ActiveEffect* effect) {
-		return std::unique_ptr(MagicCls(effect));
-	}
+	class MagicFactory<MagicCls> {
+		MagicCls* MakeNew(EffectSetting* effect) {
+			if (effect) {
+				return new MagicCls(effect);
+			} else {
+				return nullptr;
+			}
+		}
+	};
 
 	class MagicManager : public EventListener {
 		public:
@@ -92,15 +93,14 @@ namespace Gts {
 
 			void ProcessActiveEffects(Actor* actor);
 
-			template<typename MagicCls>
 			void RegisterMagic<MagicCls>(std::string_view tag) {
 				auto magic = Runtime::GetMagicEffect(tag);
 				if (tag) {
-					this->generators.try_emplace(magic, GenerateMagicEffect<MagicCls>);
+					this->factories.try_emplace(magic,MagicFactory<MagicCls>());
 				}
 			}
 		private:
 			std::map<ActiveEffect*, std::unique_ptr<Magic> > active_effects;
-			std::unordered_map<EffectSetting*, SDLEventFunction> generators;
+			std::unordered_map<EffectSetting*, std::unique_ptr<MagicFactory> > factories;
 	};
 }
