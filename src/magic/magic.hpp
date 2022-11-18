@@ -70,7 +70,10 @@ namespace Gts {
 
 	typedef std::unique_ptr<Magic> (*MagicGeneratorFunction)(ActiveEffect*);
 
-	template<typename MagicCls>
+	template<class MagicCls>
+	std::unique_ptr<Magic> GenerateMagicEffect<MagicCls>(ActiveEffect* effect);
+
+	template<>
 	std::unique_ptr<Magic> GenerateMagicEffect<Magic>(ActiveEffect* effect) {
 		return std::unique_ptr(MagicCls(effect));
 	}
@@ -90,7 +93,7 @@ namespace Gts {
 			void ProcessActiveEffects(Actor* actor);
 
 			template<typename MagicCls>
-			void RegisterMagic<Magic>(std::string_view tag) {
+			void RegisterMagic<MagicCls>(std::string_view tag) {
 				auto magic = Runtime::GetMagicEffect(tag);
 				if (tag) {
 					this->generators.try_emplace(magic, GenerateMagicEffect<MagicCls>);
