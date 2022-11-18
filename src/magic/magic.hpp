@@ -1,6 +1,7 @@
 #pragma once
 // Module that handles footsteps
 #include "events.hpp"
+#include "runtime.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -87,14 +88,6 @@ namespace Gts {
 		}
 	}
 
-	template<class MagicCls>
-	void RegisterMagic<MagicCls>(std::string_view tag) {
-		auto magic = Runtime::GetMagicEffect(tag);
-		if (tag) {
-			MagicManager::GetSingleton().factories.try_emplace(magic,MagicFactory<MagicCls>());
-		}
-	}
-
 	class MagicManager : public EventListener {
 		public:
 
@@ -102,7 +95,6 @@ namespace Gts {
 			[[nodiscard]] static MagicManager& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-			virtual void Update() override;
 			virtual void Update() override;
 			virtual void Reset() override;
 			virtual void DataReady() override;
@@ -112,4 +104,13 @@ namespace Gts {
 			std::map<ActiveEffect*, std::unique_ptr<Magic> > active_effects;
 			std::unordered_map<EffectSetting*, std::unique_ptr<MagicFactoryBase> > factories;
 	};
+
+	template<class MagicCls>
+	Magic* RegisterMagic<MagicCls>(std::string_view tag) {
+		auto magic = Runtime::GetMagicEffect(tag);
+		if (magic) {
+			MagicManager::GetSingleton().factories.try_emplace(magic,MagicFactory<MagicCls>());
+		}
+		return magic;
+	}
 }
