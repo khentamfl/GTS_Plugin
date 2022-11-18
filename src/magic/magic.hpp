@@ -106,11 +106,10 @@ namespace Gts {
 	};
 
 	template<class MagicCls>
-	Magic* RegisterMagic<MagicCls>(std::string_view tag) {
+	void RegisterMagic(std::string_view tag) {
 		auto magic = Runtime::GetMagicEffect(tag);
 		if (magic) {
 			MagicManager::GetSingleton().factories.try_emplace(magic,MagicFactory<MagicCls>());
 		}
-		return magic;
 	}
 }
