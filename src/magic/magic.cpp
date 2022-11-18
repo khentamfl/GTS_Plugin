@@ -166,7 +166,7 @@ namespace Gts {
 		for (auto effect: (*effect_list)) {
 			EffectSetting* base_spell = effect->GetBaseObject();
 			try {
-				auto& factory = this->factories.at(base_spell);
+				const auto& factory = this->factories.at(base_spell);
 				auto magic_effect = factory->MakeNew(effect);
 				if (magic_effect) {
 					this->active_effects.try_emplace(effect, std::move(magic_effect));
@@ -204,13 +204,20 @@ namespace Gts {
 	void MagicManager::DataReady() {
 		RegisterMagic<Gigantism>("EnchGigantism");
 		RegisterMagic<GrowthPotion>("EffectGrowthPotion");
-		// RegisterMagic<SizePotion>();
-		// RegisterMagic<SizeHunger>();
+		RegisterMagic<SizePotion>("EffectSizePotionStrong");
+		RegisterMagic<SizePotion>("EffectSizePotionNormal");
+		RegisterMagic<SizePotion>("EffectSizePotionWeak");
+		RegisterMagic<SizePotion>("EffectSizePotionExtreme");
+		RegisterMagic<SizeHunger>("EffectSizeHungerPotion");
 		RegisterMagic<CrushGrowth>("CrushGrowthMGEF");
-		// RegisterMagic<TrackSize>();
-		// RegisterMagic<ShrinkFoe>();
-		// RegisterMagic<SwordOfSize>();
-		// RegisterMagic<ShrinkButton>();
+		RegisterMagic<TrackSize>("TrackSize");
+		RegisterMagic<ShrinkFoe>("ShrinkEnemy");
+		RegisterMagic<ShrinkFoe>("ShrinkEnemyAOE");
+		RegisterMagic<ShrinkFoe>("ShrinkEnemyAOEMast");
+		RegisterMagic<ShrinkFoe>("ShrinkBolt");
+		RegisterMagic<ShrinkFoe>("ShrinkStorm");
+		RegisterMagic<SwordOfSize>("SwordEnchant");
+		RegisterMagic<ShrinkButton>("ShrinkPCButton");
 		// RegisterMagic<GrowButton>();
 		// RegisterMagic<SlowGrow>();
 		// RegisterMagic<SmallMassiveThreat>();

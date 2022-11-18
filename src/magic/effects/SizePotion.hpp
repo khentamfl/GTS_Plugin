@@ -12,7 +12,7 @@ namespace Gts {
 		public:
 			using Magic::Magic;
 
-            virtual void OnStart() override;
+			virtual void OnStart() override;
 
 			virtual void OnUpdate() override;
 
@@ -20,10 +20,8 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-            SizePotion(ActiveEffect* effect);
-
 			static bool StartEffect(EffectSetting* effect);
-            private:
-            float Strenght = 0.0;
+		private:
+			float Strenght = 0.0;
 	};
 }

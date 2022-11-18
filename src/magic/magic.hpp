@@ -71,16 +71,16 @@ namespace Gts {
 
 	class MagicFactoryBase {
 		public:
-			virtual Magic* MakeNew(ActiveEffect* effect) = 0;
+			virtual Magic* MakeNew(ActiveEffect* effect) const = 0;
 	};
 
 	template<class MagicCls>
 	class MagicFactory : public MagicFactoryBase {
 		public:
-			virtual Magic* MakeNew(ActiveEffect* effect) override;
+			virtual Magic* MakeNew(ActiveEffect* effect)  const override;
 	};
 	template<class MagicCls>
-	Magic* MagicFactory<MagicCls>::MakeNew(ActiveEffect* effect) {
+	Magic* MagicFactory<MagicCls>::MakeNew(ActiveEffect* effect) const {
 		if (effect) {
 			return new MagicCls(effect);
 		} else {

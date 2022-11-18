@@ -12,7 +12,7 @@ namespace Gts {
 		public:
 			using Magic::Magic;
 
-            virtual void OnStart() override;
+			virtual void OnStart() override;
 
 			virtual void OnUpdate() override;
 
@@ -20,6 +20,5 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-			static bool StartEffect(EffectSetting* effect);
 	};
 }

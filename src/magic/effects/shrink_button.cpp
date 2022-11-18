@@ -11,10 +11,6 @@ namespace Gts {
 		return "ShrinkButton";
 	}
 
-	bool ShrinkButton::StartEffect(EffectSetting* effect) { // NOLINT
-		return (effect == Runtime::GetMagicEffect("ShrinkPCButton"));
-	}
-
 	void ShrinkButton::OnStart() {
 		auto caster = GetCaster();
 		if (!caster) {

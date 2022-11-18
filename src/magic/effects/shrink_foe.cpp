@@ -45,10 +45,6 @@ namespace Gts {
 		}
 	}
 
-	bool ShrinkFoe::StartEffect(EffectSetting* effect) { // NOLINT
-		return (effect == Runtime::GetMagicEffect("ShrinkEnemy") || effect == Runtime::GetMagicEffect("ShrinkEnemyAOE") || effect == Runtime::GetMagicEffect("ShrinkEnemyAOEMast") || effect == Runtime::GetMagicEffect("ShrinkBolt") || effect == Runtime::GetMagicEffect("ShrinkStorm"));
-	}
-
 	void ShrinkFoe::OnUpdate() {
 		auto caster = GetCaster();
 

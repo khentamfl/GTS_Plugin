@@ -12,10 +12,6 @@ namespace Gts {
 	SwordOfSize::SwordOfSize(ActiveEffect* effect) : Magic(effect) {
 	}
 
-	bool SwordOfSize::StartEffect(EffectSetting* effect) { // NOLINT
-		return (effect == Runtime::GetMagicEffect("SwordEnchant"));
-	}
-
 	void SwordOfSize::OnUpdate() {
 		auto caster = GetCaster();
 		if (!caster) {

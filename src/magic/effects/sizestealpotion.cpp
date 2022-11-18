@@ -12,10 +12,6 @@ namespace Gts {
 		return "SizeHunger";
 	}
 
-	bool SizeHunger::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("EffectSizeHungerPotion");
-	}
-
 	void SizeHunger::OnStart() {
 		auto caster = GetCaster();
 

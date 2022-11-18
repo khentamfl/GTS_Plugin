@@ -33,10 +33,6 @@ namespace Gts {
 	}
 
 
-	bool SizePotion::StartEffect(EffectSetting* effect) {
-		return (effect == Runtime::GetMagicEffect("EffectSizePotionStrong") || effect ==  Runtime::GetMagicEffect("EffectSizePotionNormal") || effect == Runtime::GetMagicEffect("EffectSizePotionWeak") || effect == Runtime::GetMagicEffect("EffectSizePotionExtreme"));
-	}
-
 	void SizePotion::OnStart() {
 		auto caster = GetCaster();
 		if (!caster) {

@@ -18,6 +18,5 @@ namespace Gts {
 
 			static bool StartEffect(EffectSetting* effect);
 
-			SwordOfSize(ActiveEffect* effect);
 	};
 }

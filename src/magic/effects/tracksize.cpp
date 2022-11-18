@@ -9,10 +9,6 @@ namespace Gts {
 		return "TrackSize";
 	}
 
-	bool TrackSize::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("TrackSize");
-	}
-
 	void TrackSize::OnUpdate() {
 		auto caster = GetCaster();
 		auto target = GetTarget();
