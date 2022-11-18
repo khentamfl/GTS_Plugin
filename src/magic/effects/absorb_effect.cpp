@@ -16,11 +16,6 @@ namespace Gts {
 		return "Absorb";
 	}
 
-	void Absorb::Register(EffectSetting* effect) { // NOLINT
-		RegisterMagic<Absorb>("AbsorbMGEF");
-		RegisterMagic<Absorb>("TrueAbsorb");
-	}
-
 	void Absorb::OnUpdate() {
 		const float SMT_BONUS = 3.0;
 		const float TRUE_ABSORB_UPGRADE = 4.0;

@@ -225,6 +225,7 @@ namespace Gts {
 		// ShrinkBackOther::Register(this->generators);
 		// VoreGrowth::Register(this->generators);
 		// SizeDamage::Register(this->generators);
-		Absorb::Register(this->generators);
+		RegisterMagic<Absorb>("AbsorbMGEF");
+		RegisterMagic<Absorb>("TrueAbsorb");
 	}
 }
