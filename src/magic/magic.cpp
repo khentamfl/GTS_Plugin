@@ -165,93 +165,14 @@ namespace Gts {
 		}
 		for (auto effect: (*effect_list)) {
 			EffectSetting* base_spell = effect->GetBaseObject();
-			if (ExplosiveGrowth::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
-			}
-
-			if (Gigantism::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new Gigantism(effect));
-			}
-
-			if (GrowthPotion::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new GrowthPotion(effect));
-			}
-
-			if (SizePotion::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SizePotion(effect));
-			}
-
-			if (SizeHunger::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SizeHunger(effect));
-			}
-
-			if (CrushGrowth::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new CrushGrowth(effect));
-			}
-
-			if (TrackSize::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new TrackSize(effect));
-			}
-
-			if (ShrinkFoe::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkFoe(effect));
-			}
-
-			if (SwordOfSize::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SwordOfSize(effect));
-			}
-
-			if (ShrinkButton::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkButton(effect));
-			}
-			if (GrowButton::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new GrowButton(effect));
-			}
-
-			if (SlowGrow::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SlowGrow(effect));
-			}
-
-			if (SmallMassiveThreat::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SmallMassiveThreat(effect));
-			}
-
-			if (Growth::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new Growth(effect));
-			}
-			if (Shrink::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new Shrink(effect));
-			}
-
-			if (GrowOther::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new GrowOther(effect));
-			}
-			if (ShrinkOther::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkOther(effect));
-			}
-
-			if (GrowOtherButton::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new GrowOtherButton(effect));
-			}
-			if (ShrinkOtherButton::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkOtherButton(effect));
-			}
-
-			if (ShrinkBack::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkBack(effect));
-			}
-			if (ShrinkBackOther::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkBackOther(effect));
-			}
-
-			if (VoreGrowth::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new VoreGrowth(effect));
-			}
-			if (SizeDamage::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SizeDamage(effect));
-			}
-			if (Absorb::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new Absorb(effect));
+			try {
+				auto generator = this->generator.at(effect);
+				auto magic_effect = generator(effect);
+				if (magic_effect) {
+					this->active_effects.try_emplace(effect, std::move(magic_effect));
+				}
+			}  catch (const std::out_of_range& oor) {
+				continue;
 			}
 		}
 	}
@@ -278,5 +199,32 @@ namespace Gts {
 
 	void MagicManager::Reset() {
 		this->active_effects.clear();
+	}
+
+	void MagicManager::DataReady() {
+		// ExplosiveGrowth::Register(this->generators);
+		// Gigantism::Register(this->generators);
+		// GrowthPotion::Register(this->generators);
+		// SizePotion::Register(this->generators);
+		// SizeHunger::Register(this->generators);
+		// CrushGrowth::Register(this->generators);
+		// TrackSize::Register(this->generators);
+		// ShrinkFoe::Register(this->generators);
+		// SwordOfSize::Register(this->generators);
+		// ShrinkButton::Register(this->generators);
+		// GrowButton::Register(this->generators);
+		// SlowGrow::Register(this->generators);
+		// SmallMassiveThreat::Register(this->generators);
+		// Growth::Register(this->generators);
+		// Shrink::Register(this->generators);
+		// GrowOther::Register(this->generators);
+		// ShrinkOther::Register(this->generators);
+		// GrowOtherButton::Register(this->generators);
+		// ShrinkOtherButton::Register(this->generators);
+		// ShrinkBack::Register(this->generators);
+		// ShrinkBackOther::Register(this->generators);
+		// VoreGrowth::Register(this->generators);
+		// SizeDamage::Register(this->generators);
+		Absorb::Register(this->generators);
 	}
 }

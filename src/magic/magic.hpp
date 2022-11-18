@@ -68,16 +68,36 @@ namespace Gts {
 			bool hasDuration = false;
 	};
 
+	typedef std::unique_ptr<Magic> (*MagicGeneratorFunction)(ActiveEffect*);
+
+	template<typename MagicCls>
+	std::unique_ptr<Magic> GenerateMagicEffect<Magic>(ActiveEffect* effect) {
+		return std::unique_ptr(MagicCls(effect));
+	}
+
 	class MagicManager : public EventListener {
 		public:
+
+
 			[[nodiscard]] static MagicManager& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;
+			virtual void Update() override;
 			virtual void Reset() override;
+			virtual void DataReady() override;
 
 			void ProcessActiveEffects(Actor* actor);
+
+			template<typename MagicCls>
+			void RegisterMagic<Magic>(std::string_view tag) {
+				auto magic = Runtime::GetMagicEffect(tag);
+				if (tag) {
+					this->generators.try_emplace(magic, GenerateMagicEffect<MagicCls>);
+				}
+			}
 		private:
 			std::map<ActiveEffect*, std::unique_ptr<Magic> > active_effects;
+			std::unordered_map<EffectSetting*, SDLEventFunction> generators;
 	};
 }
