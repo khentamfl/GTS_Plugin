@@ -10,10 +10,6 @@ namespace Gts {
 		return "VoreGrowth";
 	}
 
-	bool VoreGrowth::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("GlobalVoreGrowth");
-	}
-
 	void VoreGrowth::OnStart() {
 		auto target = GetTarget();
 		float Scale = get_target_scale(target);

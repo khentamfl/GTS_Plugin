@@ -9,10 +9,6 @@ namespace Gts {
 		return "ShrinkOther";
 	}
 
-	bool ShrinkOther::StartEffect(EffectSetting* effect) { // NOLINT
-		return (effect == Runtime::GetMagicEffect("ShrinkAlly") || effect == Runtime::GetMagicEffect("ShrinkAllyAdept") || effect == Runtime::GetMagicEffect("ShrinkAllyExpert"));
-	}
-
 	void ShrinkOther::OnUpdate() {
 		const float BASE_POWER = 0.00180;
 		const float CRUSH_BONUS = 0.00180;

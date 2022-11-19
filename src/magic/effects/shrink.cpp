@@ -9,10 +9,6 @@ namespace Gts {
 		return "Shrink";
 	}
 
-	bool Shrink::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("ShrinkSpell");
-	}
-
 	void Shrink::OnUpdate() {
 		const float BASE_POWER = 0.00360;
 		const float DUAL_CAST_BONUS = 2.0;

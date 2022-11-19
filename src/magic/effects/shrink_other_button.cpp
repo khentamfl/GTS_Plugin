@@ -11,10 +11,6 @@ namespace Gts {
 		return "ShrinkOtherButton";
 	}
 
-	bool ShrinkOtherButton::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("ShrinkAllySizeButton");
-	}
-
 	void ShrinkOtherButton::OnStart() {
 		auto target = GetTarget();
 		if (!target) {

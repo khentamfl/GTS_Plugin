@@ -10,11 +10,6 @@ namespace Gts {
 		return "Growth";
 	}
 
-	bool Growth::StartEffect(EffectSetting* effect) { // NOLINT
-		return (effect == Runtime::GetMagicEffect("GrowthSpell") || effect == Runtime::GetMagicEffect("GrowthSpellAdept") || effect == Runtime::GetMagicEffect("GrowthSpellExpert"));
-
-	}
-
 	void Growth::OnUpdate() {
 		const float BASE_POWER = 0.00150;
 		const float DUAL_CAST_BONUS = 2.0;

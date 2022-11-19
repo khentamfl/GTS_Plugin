@@ -20,8 +20,6 @@ namespace Gts {
 			virtual void OnFinish() override;
 
 			virtual std::string GetName() override;
-
-			static bool StartEffect(EffectSetting* effect);
 		private:
 			bool IsDual = false;
 			Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can

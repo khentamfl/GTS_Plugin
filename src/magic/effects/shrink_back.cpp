@@ -13,10 +13,6 @@ namespace Gts {
 		return "ShrinkBack";
 	}
 
-	bool ShrinkBack::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("ShrinkBack");
-	}
-
 	void ShrinkBack::OnStart() {
 		Actor* caster = GetCaster();
 		if (!caster) {

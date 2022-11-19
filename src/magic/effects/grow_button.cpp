@@ -11,10 +11,6 @@ namespace Gts {
 		return "GrowButton";
 	}
 
-	bool GrowButton::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("GrowPcButton");
-	}
-
 	void GrowButton::OnStart() {
 		Actor* caster = GetCaster();
 		if (!caster) {

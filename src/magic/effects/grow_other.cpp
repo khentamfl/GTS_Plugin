@@ -9,10 +9,6 @@ namespace Gts {
 		return "GrowOther";
 	}
 
-	bool GrowOther::StartEffect(EffectSetting* effect) { // NOLINT
-		return (effect == Runtime::GetMagicEffect("GrowAlly") || effect == Runtime::GetMagicEffect("GrowAllyAdept") || effect == Runtime::GetMagicEffect("GrowAllyExpert"));
-	}
-
 	void GrowOther::OnUpdate() {
 		const float BASE_POWER = 0.00045;
 		const float BONUS = 0.00045;

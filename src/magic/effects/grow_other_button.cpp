@@ -11,10 +11,6 @@ namespace Gts {
 		return "GrowOtherButton";
 	}
 
-	bool GrowOtherButton::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("GrowAllySizeButton");
-	}
-
 	void GrowOtherButton::OnStart() {
 		Actor* caster = GetCaster();
 		if (!caster) {

@@ -10,10 +10,6 @@ namespace Gts {
 		return "SmallMassiveThreat";
 	}
 
-	bool SmallMassiveThreat::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("SmallMassiveThreat");
-	}
-
 	void SmallMassiveThreat::OnUpdate() {
 		const float BASE_POWER = 0.00035;
 		const float DUAL_CAST_BONUS = 2.0;

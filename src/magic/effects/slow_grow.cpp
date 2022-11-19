@@ -11,12 +11,6 @@ namespace Gts {
 		return "SlowGrow";
 	}
 
-
-	bool SlowGrow::StartEffect(EffectSetting* effect) { // NOLINT
-		return effect == Runtime::GetMagicEffect("SlowGrowth");
-
-	}
-
 	void SlowGrow::OnUpdate() {
 		const float BASE_POWER = 0.000125;
 		const float DUAL_CAST_BONUS = 2.0;

@@ -16,11 +16,6 @@ namespace Gts {
 		return "SizeDamage";
 	}
 
-
-	bool SizeDamage::StartEffect(EffectSetting* effect) {
-		return (effect == Runtime::GetMagicEffect("SizeRelatedDamage0") || effect == Runtime::GetMagicEffect("SizeRelatedDamage1") || effect == Runtime::GetMagicEffect("SizeRelatedDamage2"));
-	}
-
 	void SizeDamage::OnUpdate() {
 		auto caster = GetCaster();
 		if (!caster) {
