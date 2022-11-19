@@ -19,7 +19,7 @@ namespace Gts {
 		public:
 			ShrinkData(Actor* giant, Actor* tiny);
 
-			CrushState state;
+			ShrinkState state;
 			Timer delay;
 			Actor* giant;
 	};
