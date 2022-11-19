@@ -64,6 +64,15 @@ namespace Gts {
 						}
 						Disintegrate(tiny);
 
+						std::random_device rd;
+						std::mt19937 gen(rd());
+						std::uniform_real_distribution<float> dis(-0.2, 0.2);
+
+						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head", NiPoint3{dis(gen), dis(gen), -1}, 512, true, true);
+						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft]", NiPoint3{dis(gen), dis(gen), -1}, 512, true, false);
+						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft]", NiPoint3{dis(gen), dis(gen), -1}, 512, true, false);
+						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{dis(gen), dis(gen), -1}, 512, true, false);
+
 						data.state = ShrinkState::Shrinked;
 					}
 
