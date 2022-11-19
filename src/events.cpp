@@ -64,6 +64,12 @@ namespace Gts {
 
 	void EventDispatcher::ReportProfilers() {
 		std::string report = "Reporting Profilers:";
+		report += std::format("\n{:30s}|", "Name");
+		report += std::format("{:15s}|", "Seconds");
+		report += std::format("{:15s}|", "% OurCode");
+		report += std::format("{:15s}|", "s per frame");
+		report += std::format("{:15s}|", "% of frame");
+
 		static std::uint64_t last_report_frame = 0;
 		static double last_report_time = 0.0;
 		std::uint64_t current_report_frame = Time::WorldTimeElapsed();
@@ -78,7 +84,7 @@ namespace Gts {
 			double elapsed = listener->profiler.Elapsed();
 			double spf = elapsed / (current_report_frame - last_report_frame);
 			double time_percent = elapsed/total_time;
-			report += std::format("\n  {:30s}: {:6.3f}seconds of computation, {:3.0f}% time of our code, {:6.3} seconds per frame, {:3.0}% of frame", listener->DebugName(), elapsed, elapsed*100.0/total, spf, time_percent);
+			report += std::format("\n  {:30s}:{:15.3f},{:14.0f}%,{:15.3f},{:14.0f}%", listener->DebugName(), elapsed, elapsed*100.0/total, spf, time_percent);
 			listener->profiler.Reset();
 		}
 		log::info("{}", report);
