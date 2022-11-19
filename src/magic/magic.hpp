@@ -105,7 +105,8 @@ namespace Gts {
 			void RegisterMagic(std::string_view tag) {
 				auto magic = Runtime::GetMagicEffect(tag);
 				if (magic) {
-					this->factories.try_emplace(magic,MagicFactory<MagicCls>());
+					// this->factories.try_emplace(magic,MagicFactory<MagicCls>());
+					return;
 				}
 			}
 		private:
