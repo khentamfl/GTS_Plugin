@@ -44,6 +44,10 @@ namespace Gts {
 		BGSImpactDataSet* data;
 	};
 
+	struct RaceData {
+		TESRace* data;
+	};
+
 	class Runtime : public EventListener {
 		public:
 			[[nodiscard]] static Runtime& GetSingleton() noexcept;
@@ -97,6 +101,8 @@ namespace Gts {
 			// Impacts
 			static BGSImpactDataSet* GetImpactEffect(const std::string_view& tag);
 			static void PlayImpactEffect(Actor* actor, const std::string_view& tag, const std::string_view& node, NiPoint3 direction, const float& length, const bool& applyRotation, const bool& useLocalRotation);
+			// Races
+			static TESRace* GetRace(const std::string_view& tag);
 
 			// Team Functions
 			static bool HasMagicEffectTeam(Actor* actor, const std::string_view& tag);
@@ -119,6 +125,7 @@ namespace Gts {
 			std::unordered_map<std::string, QuestData> quests;
 			std::unordered_map<std::string, FactionData> factions;
 			std::unordered_map<std::string, ImpactData> impacts;
+			std::unordered_map<std::string, RaceData> races;
 
 			std::unordered_set<std::string> logged;
 	};

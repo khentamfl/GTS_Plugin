@@ -35,6 +35,7 @@ namespace {
 		std::unordered_map<std::string, std::string> quests;
 		std::unordered_map<std::string, std::string> factions;
 		std::unordered_map<std::string, std::string> impacts;
+		std::unordered_map<std::string, std::string> races;
 
 		articuno_serde(ar) {
 			ar <=> kv(sounds, "sounds");
@@ -46,6 +47,7 @@ namespace {
 			ar <=> kv(quests, "quests");
 			ar <=> kv(factions, "factions");
 			ar <=> kv(impacts, "impacts");
+			ar <=> kv(impacts, "races");
 		}
 	};
 }
@@ -429,6 +431,20 @@ namespace Gts {
 		}
 	}
 
+	// Races
+	TESRace* Runtime::GetRace(const std::string_view& tag) {
+		TESRace* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().races.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("impc", tag)) {
+				log::warn("ImpactEffect: {} not found", tag);
+			}
+		}
+		return data;
+	}
+
 	// Team Functions
 	bool Runtime::HasMagicEffectTeam(Actor* actor, const std::string_view& tag) {
 		return Runtime::HasMagicEffectTeamOr(actor, tag, false);
@@ -571,6 +587,15 @@ namespace Gts {
 				this->impacts.try_emplace(key, form);
 			} else if (!Runtime::Logged("impc", key)) {
 				log::warn("ImpactData form not found for {}", key);
+			}
+		}
+
+		for (auto &[key, value]: config.races) {
+			auto form = find_form<TESRace>(value);
+			if (form) {
+				this->races.try_emplace(key, form);
+			} else if (!Runtime::Logged("race", key)) {
+				log::warn("RaceData form not found for {}", key);
 			}
 		}
 

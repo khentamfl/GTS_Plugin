@@ -200,3 +200,6 @@ factions:
 impacts:
   GtsBloodSprayImpactSet: "GTS.esp|01CEA7"
   GtsBloodSprayImpactSetVore: "GTS.esp|024578"
+
+races:
+  dragonRace: "skyrim.esm|012E82"

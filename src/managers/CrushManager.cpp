@@ -3,6 +3,7 @@
 #include "data/time.hpp"
 #include "scale/scale.hpp"
 #include "actorUtils.hpp"
+#include "papyrusUtils.hpp"
 #include "util.hpp"
 
 #include <random>
@@ -112,7 +113,12 @@ namespace Gts {
 					Runtime::PlaySound("GtsFallSound", giant, 1.0, 1.0);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
 					GrowAfterTheKill(giant);
-
+					if (giant->formID == 0x14 && tiny->GetRace() == Runtime::GetRace("dragonRace")) {
+						auto progressionQuest = Runtime::GetQuest("MainQuest");
+						if (progressionQuest) {
+							CallFunctionOn(progressionQuest, "Quest", "DevourDragon");
+						}
+					}
 					shake_camera(giant, 1.8, 1);
 					if (giant->formID == 0x14) {
 						TriggerScreenBlood(1);
