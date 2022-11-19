@@ -241,5 +241,8 @@ namespace Gts {
 		RegisterMagic<SizeDamage>("SizeRelatedDamage2");
 		RegisterMagic<Absorb>("AbsorbMGEF");
 		RegisterMagic<Absorb>("TrueAbsorb");
+		RegisterMagic<ExplosiveGrowth>("explosiveGrowth1");
+		RegisterMagic<ExplosiveGrowth>("explosiveGrowth2");
+		RegisterMagic<ExplosiveGrowth>("explosiveGrowth3");
 	}
 }

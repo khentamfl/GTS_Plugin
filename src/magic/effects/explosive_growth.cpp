@@ -20,10 +20,6 @@ namespace Gts {
 
 	}
 
-	bool ExplosiveGrowth::StartEffect(EffectSetting* effect) { // NOLINT
-		return (effect == Runtime::GetMagicEffect("explosiveGrowth1") || effect == Runtime::GetMagicEffect("explosiveGrowth2") || effect == Runtime::GetMagicEffect("explosiveGrowth3"));
-	}
-
 	void ExplosiveGrowth::OnStart() {
 
 	}
