@@ -444,6 +444,14 @@ namespace Gts {
 		}
 		return data;
 	}
+	bool Runtime::IsRace(Actor* actor, const std::string_view& tag) {
+		auto data = GetRace(tag);
+		if (data) {
+			return actor->GetRace() == data;
+		} else {
+			return false;
+		}
+	}
 
 	// Team Functions
 	bool Runtime::HasMagicEffectTeam(Actor* actor, const std::string_view& tag) {

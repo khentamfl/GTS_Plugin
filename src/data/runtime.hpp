@@ -103,6 +103,7 @@ namespace Gts {
 			static void PlayImpactEffect(Actor* actor, const std::string_view& tag, const std::string_view& node, NiPoint3 direction, const float& length, const bool& applyRotation, const bool& useLocalRotation);
 			// Races
 			static TESRace* GetRace(const std::string_view& tag);
+			static bool IsRace(Actor* actor, const std::string_view& tag);
 
 			// Team Functions
 			static bool HasMagicEffectTeam(Actor* actor, const std::string_view& tag);

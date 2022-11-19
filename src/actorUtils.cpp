@@ -1,5 +1,6 @@
 #include "actorUtils.hpp"
 #include "papyrusUtils.hpp"
+#include "data/runtime.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -72,5 +73,12 @@ namespace Gts {
 			auto actorPtr = GetObjectPtr(actor, "Actor", false);
 			vm->DispatchMethodCall(actorPtr, "KnockAreaEffect", args, callback);
 		}
+	}
+
+	bool IsDragon(Actor* actor) {
+		return (
+			std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos
+			|| Runtime::IsRace("dragonRace")
+			);
 	}
 }

@@ -11,7 +11,7 @@ namespace Gts {
 
 	enum class ShrinkState {
 		Healthy,
-		Shinking,
+		Shrinking,
 		Shrinked
 	};
 

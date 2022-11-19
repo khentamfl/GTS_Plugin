@@ -7,6 +7,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
+#include "actorUtils.hpp"
 // Module that handles various magic effects
 
 namespace {
@@ -49,7 +50,7 @@ namespace Gts {
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
 		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel)) * progression_multiplier;
-		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
+		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
 		}
 		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
@@ -71,7 +72,7 @@ namespace Gts {
 		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel));
 		//log::info("LevelDifference: {}, caster level: {}, target level: {}", efficiency, casterlevel, targetlevel);
-		if (std::string(target->GetDisplayFullName()).find("ragon") != std::string::npos) {
+		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
 		}
 		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {

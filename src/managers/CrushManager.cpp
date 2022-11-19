@@ -113,7 +113,7 @@ namespace Gts {
 					Runtime::PlaySound("GtsFallSound", giant, 1.0, 1.0);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
 					GrowAfterTheKill(giant);
-					if (giant->formID == 0x14 && tiny->GetRace() == Runtime::GetRace("dragonRace")) {
+					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						auto progressionQuest = Runtime::GetQuest("MainQuest");
 						if (progressionQuest) {
 							CallFunctionOn(progressionQuest, "Quest", "DevourDragon");

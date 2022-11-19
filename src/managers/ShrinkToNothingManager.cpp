@@ -99,9 +99,9 @@ namespace Gts {
 		return true;
 	}
 
-	CrushData::CrushData(Actor* giant, Actor* tiny) :
+	ShrinkData::ShrinkData(Actor* giant, Actor* tiny) :
 		delay(Timer(0.01)),
-		state(CrushState::Healthy),
+		state(ShrinkState::Healthy),
 		giant(giant) {
 	}
 }
