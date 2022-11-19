@@ -1,5 +1,6 @@
 #include "events.hpp"
 #include <format>
+## include "data/time.hpp"
 
 using namespace std;
 using namespace RE;
@@ -63,15 +64,27 @@ namespace Gts {
 
 	void EventDispatcher::ReportProfilers() {
 		std::string report = "Reporting Profilers:";
+		static std::uint64_t last_report_frame = 0;
+		static double last_report_time = 0.0;
+		std::uint64_t current_report_frame = Time::WorldTimeElapsed();
+		double current_report_time = Time::WorldTimeElapsed();
+		double total_time = current_report_time - last_report_time;
+
 		double total = 0.0;
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
 			total += listener->profiler.Elapsed();
 		}
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
 			double elapsed = listener->profiler.Elapsed();
-			report += std::format("\n  {:30s}: {:.3f}s ({:.0f}%)", listener->DebugName(), elapsed, elapsed*100.0/total);
+			double spf = elapsed / (current_report_frame - last_report_frame);
+			double time_percent = elapsed/total_time;
+			report += std::format("\n  {:30s}: {:10.3f}seconds of computation, {:3.0f}% time of our code, {:10.3} seconds per frame, {:3.0}% of frame", listener->DebugName(), elapsed, elapsed*100.0/total, spf, time_percent);
+			listener->profiler.Reset();
 		}
 		log::info("{}", report);
+
+		last_report_frame = current_report_frame;
+		last_report_time = current_report_time;
 	}
 
 	void EventDispatcher::AddListener(EventListener* listener) {

@@ -12,6 +12,11 @@ namespace Gts {
 		this->elapsed += std::chrono::duration_cast<Second>(Clock::now() - m_beg).count();
 	}
 
+	void Profiler::Reset()
+	{
+		this->elapsed = 0.0;
+	}
+
 	double Profiler::Elapsed() {
 		return this->elapsed;
 	}

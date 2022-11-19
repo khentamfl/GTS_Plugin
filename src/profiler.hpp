@@ -16,6 +16,8 @@ namespace Gts {
 
 			void Stop();
 
+			void Reset();
+
 			double Elapsed();
 	};
 }
