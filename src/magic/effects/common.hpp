@@ -1,5 +1,6 @@
 #pragma once
 #include "managers/GtsSizeManager.hpp"
+#include "managers/ShrinkToNothingManager.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
@@ -210,7 +211,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
-			Runtime::CastSpell(caster, target, "ShrinkToNothingSpell");
+			ShrinkToNothingManager::Shrink(caster, target);
 			AdjustSizeLimit(0.0117);
 			auto Cache = Runtime::GetFloat("ManualGrowthStorage");
 			if (caster->formID == 0x14 && Runtime::HasPerk(caster, "SizeReserve")) {

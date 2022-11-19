@@ -98,14 +98,14 @@ namespace Gts {
 			float Multiplier = (caster_scale/target_scale);
 			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
 			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
-			if (CasterHp >= (TargetHp / Multiplier) && !Runtime::HasMagicEffect(Target, "FakeCrushEffect") && !Runtime::HasSpell(Target, "FakeCrushSpell")) {
+			if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 				CrushManager::Crush(Caster, Target);
 				shake_camera(Caster, 0.25 * caster_scale, 0.25);
 
 				if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
 					AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce speed after crush
 				}
-			} else if (CasterHp < (TargetHp / Multiplier) && !Runtime::HasMagicEffect(Target, "FakeCrushEffect") && !Runtime::HasSpell(Target, "FakeCrushSpell")) {
+			} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
 				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.35); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.15);
 				shake_camera(Caster, 0.35, 0.5);
