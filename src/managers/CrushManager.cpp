@@ -125,7 +125,7 @@ namespace Gts {
 					}
 					std::random_device rd;
 					std::mt19937 gen(rd());
-					std::uniform_real_distribution<> dis(-0.2, 0.2);
+					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 
 					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), dis(gen), -1}, 512, true, true);
