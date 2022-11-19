@@ -127,7 +127,6 @@ namespace Gts {
 					std::mt19937 gen(rd());
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-
 					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), dis(gen), -1}, 512, true, true);
 					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{dis(gen), dis(gen), -1}, 512, true, false);
 					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{dis(gen), dis(gen), -1}, 512, true, false);
