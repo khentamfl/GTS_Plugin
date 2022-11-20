@@ -37,6 +37,7 @@ namespace {
 		SetINIFloat("fVanityModeMinDist:Camera", 155.0);
 		SetINIFloat("fMouseWheelZoomSpeed:Camera", 0.8000000119);
 		SetINIFloat("fMouseWheelZoomIncrement:Camera", 0.075000003);
+		UpdateThirdPerson();
 	}
 }
 

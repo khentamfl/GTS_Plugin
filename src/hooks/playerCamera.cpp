@@ -14,7 +14,7 @@ namespace Hooks
 
 	void Hook_PlayerCamera::SetCameraRoot(PlayerCamera* a_this, NiPointer<NiNode> a_root) {
 		log::info("Player camera SetCameraRoot");
-		_SetCameraRoot(a_this, a_root);
+		_SetCameraRoot(a_this, nullptr);
 	}
 
 	void Hook_PlayerCamera::Update(PlayerCamera* a_this) {
