@@ -21,7 +21,10 @@ namespace Hooks
 		if (player) {
 			auto model = player->GetCurrent3D();
 			if (model) {
-				_SetCameraRoot(a_this, NiPointer<NiNode>(model));
+				auto node = model->AsNode();
+				if (node) {
+					_SetCameraRoot(a_this, NiPointer<NiNode>(model));
+				}
 				return;
 			}
 		}
