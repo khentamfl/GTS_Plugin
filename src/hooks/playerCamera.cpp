@@ -23,7 +23,7 @@ namespace Hooks
 			if (model) {
 				auto node = model->AsNode();
 				if (node) {
-					_SetCameraRoot(a_this, NiPointer<NiNode>(model));
+					_SetCameraRoot(a_this, NiPointer<NiNode>(node));
 				}
 				return;
 			}
