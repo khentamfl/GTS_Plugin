@@ -14,6 +14,17 @@ namespace Hooks
 
 	void Hook_PlayerCamera::SetCameraRoot(PlayerCamera* a_this, NiPointer<NiNode> a_root) {
 		log::info("Player camera SetCameraRoot");
+		if (a_root) {
+			log::trace("  - Node {}", a_root->name);
+		}
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			auto model = player->GetCurrent3D();
+			if (model) {
+				_SetCameraRoot(a_this, NiPointer<NiNode>(model));
+				return;
+			}
+		}
 		_SetCameraRoot(a_this, nullptr);
 	}
 
