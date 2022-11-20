@@ -47,7 +47,7 @@ namespace {
 			ar <=> kv(quests, "quests");
 			ar <=> kv(factions, "factions");
 			ar <=> kv(impacts, "impacts");
-			ar <=> kv(impacts, "races");
+			ar <=> kv(races, "races");
 		}
 	};
 }
