@@ -169,7 +169,7 @@ namespace Gts {
 				EffectSetting* base_spell = effect->GetBaseObject();
 				this->runtimeProfiler.Start();
 				auto factorySearch = this->factories.find(base_spell);
-				this->runtimeProfiler.End();
+				this->runtimeProfiler.Stop();
 				if (factorySearch != this->factories.end()) {
 					auto &[key, factory] = (*factorySearch);
 					auto magic_effect = factory->MakeNew(effect);
