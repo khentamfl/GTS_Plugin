@@ -265,7 +265,7 @@ namespace {
 		const float EPS = 1e-7;
 		if (game_mode != ChosenGameMode::None) {
 			float natural_scale = get_natural_scale(actor);
-			float Scale = get_visual_scale(actor);
+			float Scale = get_target_scale(actor);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
 			switch (game_mode) {
@@ -338,7 +338,7 @@ namespace {
 		int game_mode_int = 0;
 		float QuestStage = Runtime::GetStage("MainQuest");
 		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
-		float scale = get_visual_scale(actor);
+		float scale = get_target_scale(actor);
 		float BonusShrink = 1.0;
 		float bonus = 1.0;
 		if (BalanceMode >= 2.0) {
