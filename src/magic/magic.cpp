@@ -164,6 +164,7 @@ namespace Gts {
 			return;
 		}
 		for (auto effect: (*effect_list)) {
+			this->numberOfEffects += 1;
 			EffectSetting* base_spell = effect->GetBaseObject();
 			try {
 				std::unique_ptr<MagicFactoryBase>& factory = this->factories.at(base_spell);
@@ -182,18 +183,41 @@ namespace Gts {
 	}
 
 	void MagicManager::Update() {
+		this->lookupProfiler.Start();
 		for (auto actor: find_actors()) {
 			this->ProcessActiveEffects(actor);
 		}
+		this->lookupProfiler.Stop();
 
 		for (auto i = this->active_effects.begin(); i != this->active_effects.end();) {
+			this->numberOfOurEffects += 1;
 			auto& magic = (*i);
+			auto base_spell = magic.first.GetBaseEffect();
+			Profiler* profiler = nullptr;
+			if (base_spell) {
+				try {
+					profiler = &this->profilers.at(base_spell);
+				}  catch (const std::out_of_range& oor) {
+					profiler = nullptr;
+				}
+			}
+
+			if (profiler) {
+				profiler->Start();
+			}
 			magic.second->poll();
+			if (profiler) {
+				profiler->Stop();
+			}
 			if (magic.second->IsFinished()) {
 				i = this->active_effects.erase(i);
 			} else {
 				++i;
 			}
+		}
+		static Timer timer = Timer(5.0);
+		if (timer.ShouldRun()) {
+			this->PrintReport();
 		}
 	}
 
@@ -244,5 +268,39 @@ namespace Gts {
 		RegisterMagic<ExplosiveGrowth>("explosiveGrowth1");
 		RegisterMagic<ExplosiveGrowth>("explosiveGrowth2");
 		RegisterMagic<ExplosiveGrowth>("explosiveGrowth3");
+	}
+
+	void MagicManager::PrintReport() {
+		static std::uint64_t last_report_frame = 0;
+		static double last_report_time = 0.0;
+		std::uint64_t current_report_frame = Time::WorldTimeElapsed();
+		double current_report_time = Time::WorldTimeElapsed();
+		double total_time = current_report_time - last_report_time;
+
+		std::string report = "Reporting Spell Profilers:";
+		report += std::format("\nAverage Number of Spells Per Frame: {:.3f}", this->numberOfEffects / (current_report_frame - last_report_frame));
+		report += std::format("\nAverage Number of Our Spells Per Frame: {:.3f}", this->numberOfOurEffects / (current_report_frame - last_report_frame));
+		report += std::format("\n|{:20}|", "Name");
+		report += std::format("{:15s}|", "Seconds");
+		report += std::format("{:15s}|", "% OurCode");
+		report += std::format("{:15s}|", "s per frame");
+		report += std::format("{:15s}|", "% of frame");
+		report += "\n------------------------------------------------------------------------------------------------";
+
+		double total = 0.0;
+		for (auto &[key, profiler]: this->profilers) {
+			total += profiler.Elapsed();
+		}
+		for (auto &[baseSpell, profiler]: this->profilers) {
+			double elapsed = profiler.Elapsed();
+			double spf = elapsed / (current_report_frame - last_report_frame);
+			double time_percent = elapsed/total_time;
+			report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", baseSpell->GetFullName(), elapsed, elapsed*100.0/total, spf, time_percent);
+			profiler.Reset();
+		}
+		log::info("{}", report);
+
+		last_report_frame = current_report_frame;
+		last_report_time = current_report_time;
 	}
 }
