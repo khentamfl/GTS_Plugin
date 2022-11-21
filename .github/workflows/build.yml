@@ -38,6 +38,8 @@ jobs:
           fi
           if [ -n "${root_folder}" ]; then
             cp "${root_folder}"/*.dll contrib/Distribution/Plugin/
+            ls -la "${root_folder}"/
+            ls -la "${root_folder}"/*.pdb
             pdbs=( "${root_folder}"/*.pdb )
             if [ "${#pdbs[@]}"]; then
               cp "${pdbs[@]}" contrib/
