@@ -167,7 +167,9 @@ namespace Gts {
 			this->numberOfEffects += 1;
 			if (this->active_effects.find(effect) == this->active_effects.end()) {
 				EffectSetting* base_spell = effect->GetBaseObject();
+				this->runtimeProfiler.Start();
 				auto factorySearch = this->factories.find(base_spell);
+				this->runtimeProfiler.End();
 				if (factorySearch != this->factories.end()) {
 					auto &[key, factory] = (*factorySearch);
 					auto magic_effect = factory->MakeNew(effect);
@@ -294,16 +296,22 @@ namespace Gts {
 			total += profiler.Elapsed();
 		}
 		total += this->lookupProfiler.Elapsed();
+		total += this->runtimeProfiler.Elapsed();
 
-		double elapsed = profiler.Elapsed();
+		double elapsed = this->lookupProfiler.Elapsed();
 		double spf = elapsed / (current_report_frame - last_report_frame);
-		double time_percent = elapsed/total_time;
+		double time_percent = elapsed/total_time*100;
 		report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", "Lookup", elapsed, elapsed*100.0/total, spf, time_percent);
+
+		elapsed = this->runtimeProfiler.Elapsed();
+		spf = elapsed / (current_report_frame - last_report_frame);
+		time_percent = elapsed/total_time*100;
+		report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", "Runtime", elapsed, elapsed*100.0/total, spf, time_percent);
 
 		for (auto &[baseSpell, profiler]: this->profilers) {
 			elapsed = profiler.Elapsed();
 			spf = elapsed / (current_report_frame - last_report_frame);
-			time_percent = elapsed/total_time;
+			time_percent = elapsed/total_time*100;
 			report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", baseSpell->GetFullName(), elapsed, elapsed*100.0/total, spf, time_percent);
 			profiler.Reset();
 		}
@@ -311,6 +319,8 @@ namespace Gts {
 
 		this->numberOfEffects = 0;
 		this->numberOfOurEffects = 0;
+		this->lookupProfiler.Reset();
+		this->runtimeProfiler.Reset();
 		last_report_frame = current_report_frame;
 		last_report_time = current_report_time;
 	}

@@ -118,6 +118,7 @@ namespace Gts {
 			std::unordered_map<EffectSetting*, std::unique_ptr<MagicFactoryBase> > factories;
 
 			Profiler lookupProfiler;
+			Profiler runtimeProfiler;
 			std::uint64_t numberOfEffects = 0;
 			std::uint64_t numberOfOurEffects = 0;
 			std::unordered_map<EffectSetting*, Profiler> profilers;
