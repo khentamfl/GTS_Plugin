@@ -31,7 +31,7 @@ namespace Hooks
 				}
 			}
 		}
-		_SetCameraRoot(a_this, nullptr);
+		_SetCameraRoot(a_this, a_root);
 	}
 
 	void Hook_PlayerCamera::Update(PlayerCamera* a_this) {
