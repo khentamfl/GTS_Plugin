@@ -19,7 +19,7 @@ namespace Hooks
 			log::info("In Game");
 			auto player = PlayerCharacter::GetSingleton();
 			if (player) {
-				log::Info("Player exists");
+				log::info("Player exists");
 				if (a_root) {
 					log::info("Getting name");
 					log::trace("  - Node {}", a_root->name);
