@@ -41,7 +41,7 @@ jobs:
             ls -la "${root_folder}"/
             ls -la "${root_folder}"/*.pdb
             pdbs=( "${root_folder}"/*.pdb )
-            if [ "${#pdbs[@]}"]; then
+            if [ "${#pdbs[@]}" -gt 0 ]; then
               cp "${pdbs[@]}" contrib/
             fi
           fi
