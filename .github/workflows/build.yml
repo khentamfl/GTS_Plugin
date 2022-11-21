@@ -30,15 +30,23 @@ jobs:
         run: |
           mkdir contrib/Distribution/Plugin || exit 1
           shopt -s nullglob
-          if [ -d contrib/Distribution/PluginDebug ]; then
-            if [ ! -d contrib/Distribution/PluginRelease ]; then
-              cp contrib/Distribution/PluginDebug/*{dll,pdb} contrib/Distribution/Plugin/
-              rm -rf contrib/Distribution/PluginDebug
+          root_folder=""
+          if [ -d contrib/Distribution/PluginRelease ]; then
+            root_folder=contrib/Distribution/PluginRelease
+          elif [ -d contrib/Distribution/PluginDebug ]; then
+            root_folder=contrib/Distribution/PluginDebug
+          fi
+          if [ -n "${root_folder}" ]; then
+            cp "${root_folder}"/*.dll contrib/Distribution/Plugin/
+            pdbs=( "${root_folder}"/*.pdb )
+            if [ "${#pdbs[@]}"]; then
+              cp "${pdbs[@]}" contrib/
             fi
           fi
           if [ -d contrib/Distribution/PluginRelease ]; then
-            cp contrib/Distribution/PluginRelease/*.{dll,pdb} contrib/Distribution/Plugin/
-            rm -rf contrib/Distribution/PluginRelease
+            rm -rf "contrib/Distribution/PluginRelease"
+          elif [ -d contrib/Distribution/PluginDebug ]; then
+            rm -rf "contrib/Distribution/PluginDebug"
           fi
           shopt -u nullglob
       - uses: actions/upload-artifact@v2
