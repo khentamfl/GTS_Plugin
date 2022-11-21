@@ -277,8 +277,8 @@ namespace Gts {
 		std::uint64_t current_report_frame = Time::WorldTimeElapsed();
 		double current_report_time = Time::WorldTimeElapsed();
 		double total_time = current_report_time - last_report_time;
-		float averageNumberOfEffects = this->numberOfEffects / (current_report_frame - last_report_frame);
-		float averageNumberOfOurEffects = this->numberOfOurEffects / (current_report_frame - last_report_frame);
+		float averageNumberOfEffects = float(this->numberOfEffects) / (float(current_report_frame) - float(last_report_frame));
+		float averageNumberOfOurEffects = float(this->numberOfOurEffects) / (float(current_report_frame) - float(last_report_frame));
 		std::string report = "Reporting Spell Profilers:";
 		report += std::format("\nAverage Number of Spells Per Frame: {:.3f}", averageNumberOfEffects);
 		report += std::format("\nAverage Number of Our Spells Per Frame: {:.3f}", averageNumberOfOurEffects);
