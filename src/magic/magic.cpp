@@ -292,15 +292,24 @@ namespace Gts {
 		for (auto &[key, profiler]: this->profilers) {
 			total += profiler.Elapsed();
 		}
+		total += this->lookupProfiler.Elapsed();
+
+		double elapsed = profiler.Elapsed();
+		double spf = elapsed / (current_report_frame - last_report_frame);
+		double time_percent = elapsed/total_time;
+		report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", "Lookup", elapsed, elapsed*100.0/total, spf, time_percent);
+
 		for (auto &[baseSpell, profiler]: this->profilers) {
-			double elapsed = profiler.Elapsed();
-			double spf = elapsed / (current_report_frame - last_report_frame);
-			double time_percent = elapsed/total_time;
+			elapsed = profiler.Elapsed();
+			spf = elapsed / (current_report_frame - last_report_frame);
+			time_percent = elapsed/total_time;
 			report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", baseSpell->GetFullName(), elapsed, elapsed*100.0/total, spf, time_percent);
 			profiler.Reset();
 		}
 		log::info("{}", report);
 
+		this->numberOfEffects = 0;
+		this->numberOfOurEffects = 0;
 		last_report_frame = current_report_frame;
 		last_report_time = current_report_time;
 	}
