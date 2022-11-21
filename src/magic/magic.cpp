@@ -192,7 +192,7 @@ namespace Gts {
 		for (auto i = this->active_effects.begin(); i != this->active_effects.end();) {
 			this->numberOfOurEffects += 1;
 			auto& magic = (*i);
-			auto base_spell = magic.first->GetBaseEffect();
+			auto base_spell = magic.first->GetBaseObject();
 			Profiler* profiler = nullptr;
 			if (base_spell) {
 				try {
