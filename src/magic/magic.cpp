@@ -169,7 +169,7 @@ namespace Gts {
 				EffectSetting* base_spell = effect->GetBaseObject();
 				auto factorySearch = this->factories.find(base_spell);
 				if (factorySearch != this->factories.end()) {
-					auto &[key, factory] = factorySearch;
+					auto &[key, factory] = (*factorySearch);
 					auto magic_effect = factory->MakeNew(effect);
 					if (magic_effect) {
 						this->active_effects.try_emplace(effect, std::move(magic_effect));
