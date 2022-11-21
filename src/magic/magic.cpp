@@ -167,15 +167,13 @@ namespace Gts {
 			this->numberOfEffects += 1;
 			if (this->active_effects.find(effect) == this->active_effects.end()) {
 				EffectSetting* base_spell = effect->GetBaseObject();
-				try {
-					std::unique_ptr<MagicFactoryBase>& factory = this->factories.at(base_spell);
+				auto factorySearch = this->factories.find(base_spell);
+				if (factorySearch != this->factories.end()) {
+					auto &[key, factory] = factorySearch;
 					auto magic_effect = factory->MakeNew(effect);
 					if (magic_effect) {
 						this->active_effects.try_emplace(effect, std::move(magic_effect));
 					}
-				}
-				catch (const std::out_of_range& oor) {
-					continue;
 				}
 			}
 		}
