@@ -15,7 +15,7 @@ namespace Hooks
 
 	void Hook_PlayerCamera::SetCameraRoot(PlayerCamera* a_this, NiPointer<NiNode> a_root) {
 		log::info("Player camera SetCameraRoot");
-		if (Plugin::InGame()) {
+		if (Gts::Plugin::InGame()) {
 			auto player = PlayerCharacter::GetSingleton();
 			if (player) {
 				if (a_root) {
