@@ -1,4 +1,5 @@
 #include "hooks/playerCamera.hpp"
+#include "data/plugin.hpp"
 
 using namespace RE;
 
@@ -14,18 +15,20 @@ namespace Hooks
 
 	void Hook_PlayerCamera::SetCameraRoot(PlayerCamera* a_this, NiPointer<NiNode> a_root) {
 		log::info("Player camera SetCameraRoot");
-		if (a_root) {
-			log::trace("  - Node {}", a_root->name);
-		}
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			auto model = player->GetCurrent3D();
-			if (model) {
-				auto node = model->AsNode();
-				if (node) {
-					_SetCameraRoot(a_this, NiPointer<NiNode>(node));
+		if (Plugin::InGame()) {
+			auto player = PlayerCharacter::GetSingleton();
+			if (player) {
+				if (a_root) {
+					log::trace("  - Node {}", a_root->name);
 				}
-				return;
+				auto model = player->GetCurrent3D();
+				if (model) {
+					auto node = model->AsNode();
+					if (node) {
+						_SetCameraRoot(a_this, NiPointer<NiNode>(node));
+					}
+					return;
+				}
 			}
 		}
 		_SetCameraRoot(a_this, nullptr);
