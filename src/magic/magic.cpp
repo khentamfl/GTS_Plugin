@@ -192,7 +192,7 @@ namespace Gts {
 		for (auto i = this->active_effects.begin(); i != this->active_effects.end();) {
 			this->numberOfOurEffects += 1;
 			auto& magic = (*i);
-			auto base_spell = magic.first.GetBaseEffect();
+			auto base_spell = magic.first->GetBaseEffect();
 			Profiler* profiler = nullptr;
 			if (base_spell) {
 				try {
@@ -276,10 +276,11 @@ namespace Gts {
 		std::uint64_t current_report_frame = Time::WorldTimeElapsed();
 		double current_report_time = Time::WorldTimeElapsed();
 		double total_time = current_report_time - last_report_time;
-
+		float averageNumberOfEffects = this->numberOfEffects / (current_report_frame - last_report_frame);
+		float averageNumberOfOurEffects = this->numberOfOurEffects / (current_report_frame - last_report_frame);
 		std::string report = "Reporting Spell Profilers:";
-		report += std::format("\nAverage Number of Spells Per Frame: {:.3f}", this->numberOfEffects / (current_report_frame - last_report_frame));
-		report += std::format("\nAverage Number of Our Spells Per Frame: {:.3f}", this->numberOfOurEffects / (current_report_frame - last_report_frame));
+		report += std::format("\nAverage Number of Spells Per Frame: {:.3f}", averageNumberOfEffects);
+		report += std::format("\nAverage Number of Our Spells Per Frame: {:.3f}", averageNumberOfOurEffects);
 		report += std::format("\n|{:20}|", "Name");
 		report += std::format("{:15s}|", "Seconds");
 		report += std::format("{:15s}|", "% OurCode");
