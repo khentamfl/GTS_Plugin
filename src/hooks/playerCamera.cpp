@@ -37,7 +37,7 @@ namespace Hooks
 			}
 		}
 		log::info("Nomral Set");
-		_SetCameraRoot(a_this, a_root);
+		//_SetCameraRoot(a_this, a_root);
 	}
 
 	void Hook_PlayerCamera::Update(PlayerCamera* a_this) {
