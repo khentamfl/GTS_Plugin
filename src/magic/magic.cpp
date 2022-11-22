@@ -1,4 +1,5 @@
 #include "magic/magic.hpp"
+#include "Config.hpp"
 #include "util.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/effects/absorb_effect.hpp"
@@ -218,9 +219,11 @@ namespace Gts {
 				++i;
 			}
 		}
-		static Timer timer = Timer(5.0);
-		if (timer.ShouldRun()) {
-			this->PrintReport();
+		if (Config::GetSingleton().ShouldProfile()) {
+			static Timer timer = Timer(5.0);
+			if (timer.ShouldRun()) {
+				this->PrintReport();
+			}
 		}
 	}
 

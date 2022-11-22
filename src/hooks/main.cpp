@@ -4,6 +4,7 @@
 #include "data/time.hpp"
 #include "data/plugin.hpp"
 #include "timer.hpp"
+#include "Config.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -52,9 +53,11 @@ namespace Hooks
 		}
 		Plugin::SetOnMainThread(false);
 
-		static Timer timer = Timer(5.0);
-		if (timer.ShouldRun()) {
-			EventDispatcher::ReportProfilers();
+		if (Config::GetSingleton().ShouldProfile()) {
+			static Timer timer = Timer(5.0);
+			if (timer.ShouldRun()) {
+				EventDispatcher::ReportProfilers();
+			}
 		}
 	}
 }
