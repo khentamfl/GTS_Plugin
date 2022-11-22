@@ -78,7 +78,7 @@ namespace {
 
 	void Experiment03() {
 		auto camera = PlayerCamera::GetSingleton();
-		auto third = skyrim_cast<ThirdPersonState>(camera->cameraStates[CameraState::kThirdPerson].get());
+		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
 		log::info("Third Camera OBJ: {}", GetRawName(third->thirdPersonCameraObj));
 		log::info("Third Camera FOV: {}", GetRawName(third->thirdPersonFOVControl));
 		log::info("Third Camera animatedBoneName: {}", third->animatedBoneName);
