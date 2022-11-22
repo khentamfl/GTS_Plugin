@@ -219,7 +219,7 @@ namespace Gts {
 				++i;
 			}
 		}
-		if (Config::GetSingleton().ShouldProfile()) {
+		if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 			static Timer timer = Timer(5.0);
 			if (timer.ShouldRun()) {
 				this->PrintReport();

@@ -40,7 +40,7 @@ namespace {
 		UpdateThirdPerson();
 	}
 
-	void Experiment01() {
+	void PrintCameraNode() {
 		auto camera = PlayerCamera::GetSingleton();
 		NiAVObject* root = camera->cameraRoot.get();
 		while (root) {
@@ -52,6 +52,12 @@ namespace {
 				break;
 			}
 		}
+	}
+	void Experiment01() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto player = PlayerCharacter::GetSingleton();
+		auto model = player->GetCurrent3D()->AsNode();
+		camera->cameraRoot = model;
 	}
 }
 
@@ -66,8 +72,12 @@ namespace Gts {
 	}
 
 	void CameraManager::Start() {
+		log::info("++Camera Experiemnts");
 		ResetIniSettings();
+		PrintCameraNode();
 		Experiment01();
+		PrintCameraNode();
+		log::info("--Camera Experiemnts");
 	}
 
 	void CameraManager::Update() {
