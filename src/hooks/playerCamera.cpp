@@ -14,7 +14,7 @@ namespace Hooks
 		_Update = Vtbl.write_vfunc(0x02, Update);
 	}
 
-	void Hook_PlayerCamera::SetCameraRoot(TESCamera* a_this, NiPointer<NiNode> a_root) {
+	void Hook_PlayerCamera::SetCameraRoot(TESCamera* a_this, NiNode a_root) {
 		log::info("Player camera SetCameraRoot");
 		log::info("Grabbing RAW NAME");
 		log::info("a_this: {}", Gts::GetRawName(a_this));
@@ -26,7 +26,7 @@ namespace Hooks
 				log::info("Player exists");
 				if (a_root) {
 					log::info("Getting name");
-					log::trace("  - Node {}", a_root->name);
+					log::trace("  - Node {}", a_root.name);
 				}
 				log::info("Getting model");
 				auto model = player->GetCurrent3D();
