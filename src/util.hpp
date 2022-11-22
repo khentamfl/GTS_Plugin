@@ -8,6 +8,7 @@ using namespace RE;
 using namespace SKSE;
 
 namespace Gts {
+	std::string GetRawName(const void* obj);
 
 	template< typename ... Args >
 	void Notify(std::string_view rt_fmt_str, Args&&... args) {

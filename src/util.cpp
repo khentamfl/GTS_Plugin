@@ -1,4 +1,6 @@
 #include "util.hpp"
+#include <ehdata.h>
+#include <rttidata.h>
 
 using namespace Gts;
 
@@ -19,6 +21,22 @@ namespace {
 	}
 }
 namespace Gts {
+	std::string GetRawName(const void* obj_c) {
+		// Get the meta entry in vftable
+		void* obj = const_cast<void*>(obj_c);
+		_RTTICompleteObjectLocator* col = reinterpret_cast<_RTTICompleteObjectLocator***>(obj)[0][-1];
+
+		// Calculate image base by subtracting the RTTICompleteObjectLocator's pSelf offset from RTTICompleteObjectLocator's pointer
+		uintptr_t imageBase = reinterpret_cast<uintptr_t>(col) - col->pSelf;
+
+		// Get the type descriptor by adding TypeDescriptor's offset to the image base
+		TypeDescriptor* tDesc = reinterpret_cast<TypeDescriptor*>(imageBase + col->pTypeDescriptor);
+
+		// At the end, we can get the type's mangled name
+		const char* colName = tDesc->name;
+		return colName;
+	}
+
 	/**
 	 * Find actors in ai manager that are loaded
 	 */
