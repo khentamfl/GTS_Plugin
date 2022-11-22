@@ -39,6 +39,20 @@ namespace {
 		SetINIFloat("fMouseWheelZoomIncrement:Camera", 0.075000003);
 		UpdateThirdPerson();
 	}
+
+	void Experiment01() {
+		auto camera = PlayerCamera::GetSingleton();
+		NiAVObject* root = camera->cameraRoot;
+		while (root) {
+			log::info("Camera: {}", root.name);
+			auto parent = root.parent;
+			if (parent) {
+				root = parent;
+			} else {
+				break;
+			}
+		}
+	}
 }
 
 namespace Gts {
@@ -53,6 +67,7 @@ namespace Gts {
 
 	void CameraManager::Start() {
 		ResetIniSettings();
+		Experiment01();
 	}
 
 	void CameraManager::Update() {
