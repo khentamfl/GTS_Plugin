@@ -12,7 +12,7 @@ namespace Hooks
 			static void Hook();
 		private:
 
-			static void SetCameraRoot(TESCamera* a_this, NiNode a_root);
+			static void SetCameraRoot(TESCamera* a_this, NiNode* a_root);
 			static inline REL::Relocation<decltype(SetCameraRoot)> _SetCameraRoot;
 
 			static void Update(TESCamera* a_this);
