@@ -54,6 +54,7 @@ namespace {
 		}
 	}
 	void Experiment01() {
+		// Causes player to move with camera controls
 		auto camera = PlayerCamera::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
 		auto model = player->GetCurrent3D()->AsNode();
@@ -61,17 +62,26 @@ namespace {
 	}
 
 	void Experiment02() {
+		// CTDS on load
 		auto camera = PlayerCamera::GetSingleton();
 		auto root = camera->cameraRoot;
 		auto parent = root->parent;
 
-		static NiPointer<NiAVObject> oldRoot;
+		NiPointer<NiAVObject> oldRoot;
 		parent->DetachChild(root.get(), oldRoot);
 
 		auto gtsRoot = NiNode::Create();
 		parent->AttachChild(oldRoot.get());
 
 		gtsRoot->AttachChild(root.get());
+	}
+
+	void Experiment03() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto third = camera->cameraStates[CameraState::kThirdPerson];
+		log::info("Third Camera OBJ: {}", GetRawName(third->thirdPersonCameraObj));
+		log::info("Third Camera FOV: {}", GetRawName(third->thirdPersonFOVControl));
+		log::info("Third Camera animatedBoneName: {}", this->animatedBoneName);
 	}
 }
 
