@@ -44,8 +44,8 @@ namespace {
 		auto camera = PlayerCamera::GetSingleton();
 		NiAVObject* root = camera->cameraRoot.get();
 		while (root) {
-			log::info("Camera: {}", root.name);
-			auto parent = root.parent;
+			log::info("Camera: {}", root->name);
+			auto parent = root->parent;
 			if (parent) {
 				root = parent;
 			} else {
