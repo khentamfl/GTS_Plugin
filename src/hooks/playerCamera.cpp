@@ -17,8 +17,8 @@ namespace Hooks
 	void Hook_PlayerCamera::SetCameraRoot(TESCamera* a_this, NiPointer<NiNode> a_root) {
 		log::info("Player camera SetCameraRoot");
 		log::info("Grabbing RAW NAME");
-		log::info("a_this: {}", GetRawName(a_this));
-		log::info("a_root: {}", GetRawName(&a_root));
+		log::info("a_this: {}", Gts::GetRawName(a_this));
+		log::info("a_root: {}", Gts::GetRawName(&a_root));
 		if (Gts::Plugin::InGame()) {
 			log::info("In Game");
 			auto player = PlayerCharacter::GetSingleton();
