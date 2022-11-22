@@ -57,7 +57,7 @@ namespace {
 		auto camera = PlayerCamera::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
 		auto model = player->GetCurrent3D()->AsNode();
-		camera->cameraRoot = model;
+		camera->cameraRoot = NiPointer(model);
 	}
 }
 
