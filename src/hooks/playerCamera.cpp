@@ -13,7 +13,7 @@ namespace Hooks
 		_Update = Vtbl.write_vfunc(0x02, Update);
 	}
 
-	void Hook_PlayerCamera::SetCameraRoot(PlayerCamera* a_this, NiPointer<NiNode> a_root) {
+	void Hook_PlayerCamera::SetCameraRoot(TESCamera* a_this, NiPointer<NiNode> a_root) {
 		log::info("Player camera SetCameraRoot");
 		if (Gts::Plugin::InGame()) {
 			log::info("In Game");
@@ -36,11 +36,11 @@ namespace Hooks
 				}
 			}
 		}
-		log::info("Nomral Set");
+		log::info("Normal Set");
 		_SetCameraRoot(a_this, a_root);
 	}
 
-	void Hook_PlayerCamera::Update(PlayerCamera* a_this) {
+	void Hook_PlayerCamera::Update(TESCamera* a_this) {
 		log::info("Player camera Update");
 		_Update(a_this);
 	}

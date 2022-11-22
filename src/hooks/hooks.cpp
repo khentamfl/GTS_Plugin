@@ -26,7 +26,7 @@ namespace Hooks
 		Hook_HeadTracking::Hook(trampoline);
 		//Hook_MagicTarget::Hook();
 		Hook_hkbBehaviorGraph::Hook();
-		//Hook_PlayerCamera::Hook();
+		Hook_PlayerCamera::Hook();
 
 		logger::info("Gts finished applying hooks...");
 	}
