@@ -42,7 +42,7 @@ namespace {
 
 	void Experiment01() {
 		auto camera = PlayerCamera::GetSingleton();
-		NiAVObject* root = camera->cameraRoot;
+		NiAVObject* root = camera->cameraRoot.get();
 		while (root) {
 			log::info("Camera: {}", root.name);
 			auto parent = root.parent;
