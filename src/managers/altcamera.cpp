@@ -65,11 +65,11 @@ namespace {
 		auto root = camera->cameraRoot;
 		auto parent = root->parent;
 
-		NiPointer<NiAVObject> oldRoot;
+		static NiPointer<NiAVObject> oldRoot;
 		parent->DetachChild(root.get(), oldRoot);
 
 		auto gtsRoot = NiNode::Create();
-		parent->AttachChild(gtsRoot);
+		parent->AttachChild(oldRoot.get());
 
 		gtsRoot->AttachChild(root.get());
 	}
