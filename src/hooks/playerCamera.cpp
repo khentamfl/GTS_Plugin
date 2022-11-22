@@ -34,7 +34,7 @@ namespace Hooks
 					auto node = model->AsNode();
 					if (node) {
 						log::info("Alternative Set");
-						_SetCameraRoot(a_this, NiPointer<NiNode>(node));
+						_SetCameraRoot(a_this, node);
 						return;
 					}
 				}
