@@ -59,6 +59,8 @@ namespace {
 		auto model = player->GetCurrent3D()->AsNode();
 		camera->cameraRoot = NiPointer(model);
 	}
+
+
 }
 
 namespace Gts {
@@ -74,8 +76,15 @@ namespace Gts {
 	void CameraManager::Start() {
 		log::info("++Camera Experiemnts");
 		ResetIniSettings();
+		log::info("+ Pre Experiements");
 		PrintCameraNode();
+		log::info("-");
+
+		log::info("+ Experiement 01");
 		Experiment01();
+		log::info("-");
+
+		log::info("+ Post Experiemnts")
 		PrintCameraNode();
 		log::info("--Camera Experiemnts");
 	}
