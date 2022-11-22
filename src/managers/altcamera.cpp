@@ -60,7 +60,19 @@ namespace {
 		camera->cameraRoot = NiPointer(model);
 	}
 
+	void Experiment02() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto root = camera->cameraRoot;
+		auto parent = root->parent;
 
+		NiPointer<NiAVObject> oldRoot;
+		parent->DetachChild(root.get(), oldRoot);
+
+		auto gtsRoot = NiNode::Create();
+		parent->AttachChild(gtsRoot);
+
+		gtsRoot->AttachChild(root.get());
+	}
 }
 
 namespace Gts {
@@ -80,11 +92,15 @@ namespace Gts {
 		PrintCameraNode();
 		log::info("-");
 
-		log::info("+ Experiement 01");
-		Experiment01();
+		// log::info("+ Experiement 01");
+		// Experiment01();
+		// log::info("-");
+
+		log::info("+ Experiement 02");
+		Experiment02();
 		log::info("-");
 
-		log::info("+ Post Experiemnts")
+		log::info("+ Post Experiemnts");
 		PrintCameraNode();
 		log::info("--Camera Experiemnts");
 	}
