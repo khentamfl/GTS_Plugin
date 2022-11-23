@@ -76,11 +76,43 @@ namespace {
 		gtsRoot->AttachChild(root.get());
 	}
 
+	std::string PrintParents(NiAVObject* node, std::string_view prefix = "") {
+		std::string result = "";
+		std::string name = node->name.c_str();
+		result += std::format("{}- {}", prefix, name);
+		if (node->parent) {
+			result += PrintParents(node->parent, std::format("{}  ", prefix));
+		}
+		return result;
+	}
+
+
+	std::string PrintNode(NiAVObject* node, std::string_view prefix = "") {
+		std::string result = "";
+		std::string name = node->name.c_str();
+		std::string rawName = GetRawName(node);
+		result += std::format("{}- {}", prefix, name);
+		result += std::format("{}  = {}", prefix, rawName);
+		auto niNode = node->AsNode();
+		if (niNode) {
+			for (auto child: niNode->GetChildren()) {
+				if (child) {
+					result += PrintNode(child.get(), std::format("  {}", prefix));
+				}
+			}
+		}
+		return result;
+	}
+
 	void Experiment03() {
 		auto camera = PlayerCamera::GetSingleton();
 		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
 		log::info("Third Camera OBJ: {}", GetRawName(third->thirdPersonCameraObj));
+		log::info("{}", PrintNode(third->thirdPersonCameraObj));
+		log::info("{}", PrintParents(third->thirdPersonCameraObj));
 		log::info("Third Camera FOV: {}", GetRawName(third->thirdPersonFOVControl));
+		log::info("{}", PrintNode(third->thirdPersonFOVControl));
+		log::info("{}", PrintParents(third->thirdPersonFOVControl));
 		log::info("Third Camera animatedBoneName: {}", third->animatedBoneName);
 	}
 }
