@@ -10,7 +10,7 @@ namespace Hooks
 	void Hook_PlayerCamera::Hook() {
 		logger::info("Hooking PlayerCamera");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_PlayerCamera[0] };
-		_SetCameraRoot = Vtbl.write_vfunc(0x01, SetCameraRoot);
+		// _SetCameraRoot = Vtbl.write_vfunc(0x01, SetCameraRoot);
 		_Update = Vtbl.write_vfunc(0x02, Update);
 	}
 
