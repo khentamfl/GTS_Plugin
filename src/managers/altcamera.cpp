@@ -4,6 +4,7 @@
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "Config.hpp"
+#include "node.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -134,13 +135,22 @@ namespace {
 			if (scale > 1e-4) {
 				auto model = player->Get3D(false);
 				if (model) {
-					auto playerLocation = model->world.translate;
+					auto playerTrans = model->world;
+					auto playerTransInve = model->world.Invert();
+
 					auto cameraLocation = third->thirdPersonCameraObj->world.translate;
-					auto targetLocationWorld = (cameraLocation - playerLocation) * scale + playerLocation;
+					log::info("cameraLocationWorld: {}", Vector2Str(cameraLocation));
+					auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
+					log::info("targetLocationWorld: {}", Vector2Str(targetLocationWorld));
 					NiTransform transform = third->thirdPersonCameraObj->world;
 					auto targetLocationLocal = transform * targetLocationWorld;
+					log::info("targetLocationWorld: {}", Vector2Str(third->thirdPersonCameraObj->local.translate));
+					log::info("targetLocationLocal: {}", Vector2Str(targetLocationLocal));
 
+					log::info("Pre: {}", Vector2Str(third->thirdPersonCameraObj->local.translate));
 					third->thirdPersonCameraObj->local.translate = targetLocationLocal;
+					log::info("Post: {}", Vector2Str(third->thirdPersonCameraObj->local.translate));
+					update_node(third->thirdPersonCameraObj);
 				}
 			}
 		}
