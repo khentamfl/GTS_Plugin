@@ -120,7 +120,7 @@ namespace {
 		auto camera = PlayerCamera::GetSingleton();
 		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
 		log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
-		third->thirdPersonCameraObj->local.translate *= 2;
+		third->thirdPersonCameraObj->local.translate *= get_visual_scale(PlayerCharacter::GetSingleton());
 	}
 }
 
