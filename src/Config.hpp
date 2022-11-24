@@ -23,7 +23,7 @@ namespace Gts {
 				auto flushLevel = spdlog::level::to_string_view(_flushLevel);
 				ar <=> articuno::kv(logLevel, "logLevel");
 				ar <=> articuno::kv(flushLevel, "flushLevel");
-				ar <=> articuno::kv(flushLevel, "profile");
+				ar <=> articuno::kv(_shouldProfile, "profile");
 			}
 
 			articuno_deserialize(ar) {
@@ -36,6 +36,7 @@ namespace Gts {
 				if (ar <=> articuno::kv(flushLevel, "flushLevel")) {
 					_flushLevel = spdlog::level::from_str(flushLevel);
 				}
+				ar <=> articuno::kv(_shouldProfile, "profile");
 			}
 
 			spdlog::level::level_enum _logLevel{spdlog::level::level_enum::info};
