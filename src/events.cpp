@@ -102,23 +102,35 @@ namespace Gts {
 
 	void EventDispatcher::DoUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->Update();
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	void EventDispatcher::DoPapyrusUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->PapyrusUpdate();
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	void EventDispatcher::DoHavokUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->HavokUpdate();
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	void EventDispatcher::DoReset() {
@@ -130,58 +142,90 @@ namespace Gts {
 	}
 	void EventDispatcher::DoEnabled() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->Enabled();
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	void EventDispatcher::DoDisabled() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->Disabled();
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	void EventDispatcher::DoStart() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->Start();
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	void EventDispatcher::DoDataReady() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->DataReady();
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	void EventDispatcher::DoResetActor(Actor* actor) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->ResetActor(actor);
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	void EventDispatcher::DoActorEquip(Actor* actor) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->ActorEquip(actor);
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	void EventDispatcher::DoActorLoaded(Actor* actor) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->ActorLoaded(actor);
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	void EventDispatcher::DoHitEvent(const TESHitEvent* evt) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			listener->profiler.Start();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
 			listener->HitEvent(evt);
-			listener->profiler.Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
 	EventDispatcher& EventDispatcher::GetSingleton() {

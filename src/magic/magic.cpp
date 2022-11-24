@@ -201,22 +201,28 @@ namespace Gts {
 		for (auto i = this->active_effects.begin(); i != this->active_effects.end();) {
 			this->numberOfOurEffects += 1;
 			auto& magic = (*i);
-			auto base_spell = magic.first->GetBaseObject();
-			Profiler* profiler = nullptr;
-			if (base_spell) {
-				try {
-					profiler = &this->profilers.at(base_spell);
-				}  catch (const std::out_of_range& oor) {
-					profiler = nullptr;
+
+
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				auto base_spell = magic.first->GetBaseObject();
+				Profiler* profiler = nullptr;
+				if (base_spell) {
+					try {
+						profiler = &this->profilers.at(base_spell);
+					}  catch (const std::out_of_range& oor) {
+						profiler = nullptr;
+					}
+				}
+
+				if (profiler) {
+					profiler->Start();
 				}
 			}
-
-			if (profiler) {
-				profiler->Start();
-			}
 			magic.second->poll();
-			if (profiler) {
-				profiler->Stop();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				if (profiler) {
+					profiler->Stop();
+				}
 			}
 			if (magic.second->IsFinished()) {
 				i = this->active_effects.erase(i);
