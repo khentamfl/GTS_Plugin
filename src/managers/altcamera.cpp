@@ -137,7 +137,7 @@ namespace {
 					auto playerLocation = model->world.translate;
 					auto cameraLocation = third->thirdPersonCameraObj->world.translate;
 					auto targetLocationWorld = (cameraLocation - playerLocation) * scale + playerLocation;
-					NiTransform transform = third->thirdPersonCameraObj->world.Invert();
+					NiTransform transform = third->thirdPersonCameraObj->world;
 					auto targetLocationLocal = transform * targetLocationWorld;
 
 					third->thirdPersonCameraObj->local.translate = targetLocationLocal;
