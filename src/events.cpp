@@ -1,6 +1,7 @@
 #include "events.hpp"
 #include <format>
 #include "data/time.hpp"
+#include "Config.hpp"
 
 using namespace std;
 using namespace RE;
