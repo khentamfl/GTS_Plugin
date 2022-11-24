@@ -3,6 +3,7 @@
 #include "util.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
+#include "Config.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -127,7 +128,22 @@ namespace {
 		auto camera = PlayerCamera::GetSingleton();
 		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
 		// log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
-		third->thirdPersonCameraObj->local.translate *= get_visual_scale(PlayerCharacter::GetSingleton());
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			float scale = get_visual_scale(player);
+			if (scale > 1e-4) {
+				auto model = player->Get3D(false);
+				if (model) {
+					auto playerLocation = model->world.translate;
+					auto cameraLocation = third->thirdPersonCameraObj->world.translate;
+					auto targetLocationWorld = (cameraLocation - playerLocation) * scale + playerLocation;
+					NiTransform transform = third->thirdPersonCameraObj->world.Invert();
+					auto targetLocationLocal = transform * targetLocationWorld;
+
+					third->thirdPersonCameraObj->local.translate = targetLocationLocal;
+				}
+			}
+		}
 	}
 }
 
