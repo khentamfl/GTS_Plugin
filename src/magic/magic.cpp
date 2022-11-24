@@ -203,9 +203,13 @@ namespace Gts {
 			auto& magic = (*i);
 
 
+			Profiler* profiler = nullptr;
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				// This can CTD
+				// We should cache the base spell form ID and look up that way instead
+				// But this way is faster
 				auto base_spell = magic.first->GetBaseObject();
-				Profiler* profiler = nullptr;
+
 				if (base_spell) {
 					try {
 						profiler = &this->profilers.at(base_spell);
@@ -213,16 +217,14 @@ namespace Gts {
 						profiler = nullptr;
 					}
 				}
+			}
 
-				if (profiler) {
-					profiler->Start();
-				}
+			if (profiler) {
+				profiler->Start();
 			}
 			magic.second->poll();
-			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
-				if (profiler) {
-					profiler->Stop();
-				}
+			if (profiler) {
+				profiler->Stop();
 			}
 			if (magic.second->IsFinished()) {
 				i = this->active_effects.erase(i);
