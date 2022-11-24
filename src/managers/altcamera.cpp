@@ -119,14 +119,14 @@ namespace {
 	void Experiment04() {
 		auto camera = PlayerCamera::GetSingleton();
 		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
-		log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
+		// log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
 		third->thirdPersonCameraObj->local.translate *= get_visual_scale(PlayerCharacter::GetSingleton());
 	}
 
 	void Experiment05() {
 		auto camera = PlayerCamera::GetSingleton();
 		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
-		log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
+		// log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
 		third->thirdPersonCameraObj->local.translate *= get_visual_scale(PlayerCharacter::GetSingleton());
 	}
 }
@@ -168,7 +168,11 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			log::info(" - Actor: {}", actor->GetDisplayFullName());
 			auto meffs = actor->GetActiveEffectList();
-			log::info("    = Total Effects: {}", meffs->size());
+			std::size_type count = 0;
+			for (auto meff: (*meffs)) {
+				count += 1;
+			}
+			log::info("    = Total Effects: {}", count);
 			for (auto meff: (*meffs)) {
 				log::info("    - {}", reinterpret_cast<std::uintptr_t>(meff));
 				auto spell = meff->spell;
@@ -184,7 +188,7 @@ namespace Gts {
 	}
 
 	void CameraManager::Update() {
-		Experiment04();
+		Experiment05();
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {
