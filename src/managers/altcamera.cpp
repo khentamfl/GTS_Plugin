@@ -115,6 +115,13 @@ namespace {
 		log::info("{}", PrintParents(third->thirdPersonFOVControl));
 		log::info("Third Camera animatedBoneName: {}", third->animatedBoneName);
 	}
+
+	void Experiment04() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
+		log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
+		third->thirdPersonCameraObj->local.translate *= 2;
+	}
 }
 
 namespace Gts {
@@ -152,6 +159,7 @@ namespace Gts {
 	}
 
 	void CameraManager::Update() {
+		Experiment04();
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {
