@@ -168,7 +168,7 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			log::info(" - Actor: {}", actor->GetDisplayFullName());
 			auto meffs = actor->GetActiveEffectList();
-			std::size_type count = 0;
+			std::size_t count = 0;
 			for (auto meff: (*meffs)) {
 				count += 1;
 			}
