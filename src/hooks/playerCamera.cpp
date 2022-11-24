@@ -3,6 +3,7 @@
 #include "util.hpp"
 
 using namespace RE;
+using namespace Gts;
 
 namespace Hooks
 {
@@ -45,7 +46,13 @@ namespace Hooks
 	}
 
 	void Hook_PlayerCamera::Update(TESCamera* a_this) {
-		log::info("Player camera Update");
+		auto camera = PlayerCamera::GetSingleton();
+		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
+		log::info("Pre PlayerCamera Update");
+		log::info("cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
 		_Update(a_this);
+		log::info("Post PlayerCamera Update");
+		log::info("cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
+
 	}
 }
