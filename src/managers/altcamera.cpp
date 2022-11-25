@@ -242,10 +242,15 @@ namespace {
 
 						// Camera Root Object
 						auto cameraLocation = niCamera->world.translate;
+						log::info("cameraLocation: {}", Vector2Str(cameraLocation));
 						auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
+						log::info("targetLocationWorld: {}", Vector2Str(targetLocationWorld));
 						auto parent = niCamera->parent;
 						NiTransform transform = parent->world.Invert();
 						auto targetLocationLocal = transform * targetLocationWorld;
+						auto cameraLocationLocal = niCamera->local.translate;
+						log::info("cameraLocationLocal: {}", Vector2Str(cameraLocationLocal));
+						log::info("targetLocationLocal: {}", Vector2Str(targetLocationLocal));
 						niCamera->local.translate = targetLocationLocal;
 						update_node(niCamera);
 					}
