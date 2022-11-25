@@ -23,8 +23,13 @@ namespace Gts {
 
 			void UpdateFirstPerson(bool ImProne);
 
+			void ApplyCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
+			void ApplyFeetCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
+
 		private:
 			inline static float deltaX = 0.0;
 			inline static float deltaZ = 0.0;
+			inline static float CameraX = 0.0;
+			inline static float CameraZ = 0.0;
 	};
 }

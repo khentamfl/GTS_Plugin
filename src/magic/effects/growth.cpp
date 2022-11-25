@@ -39,6 +39,8 @@ namespace Gts {
 		} else if (base_spell == Runtime::GetMagicEffect("GrowthSpellExpert")) {
 			power *= 1.75;
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
+		} else if (base_spell == Runtime::GetMagicEffect("DevourmentEnlarge")) {
+			power *= 1.25;
 		}
 
 
