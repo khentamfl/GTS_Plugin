@@ -98,15 +98,20 @@ namespace Gts {
 
 				if (key == 0x38) {
 					AltPressed = true;
+					log::info("ALT");
 				} else if (key == 0x1D) {
 					CtrlPressed = true;
 				} else if (key == 0xCD) {
+					log::info("RIGHT");
 					RightArrow = true;
 				} else if (key == 0xCB) {
+					log::info("LEFT");
 					LeftArrow = true;
 				} else if (key == 0xC8) {
+					log::info("UP");
 					ArrowUp = true;
 				} else if (key == 0xD0) {
+					log::info("DOWN");
 					ArrowDown = true;
 				} else if (key == 0x2A) {
 					ShiftPressed = true;
