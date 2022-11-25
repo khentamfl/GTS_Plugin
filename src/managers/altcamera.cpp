@@ -72,10 +72,38 @@ namespace Gts {
 		auto camera = PlayerCamera::GetSingleton();
 		auto cameraRoot = camera->cameraRoot.get();
 		NiCamera* niCamera = nullptr;
-		
-		float ImCrouching = Runtime::GetInt("ImCrouching");
+
 		bool ImProne = false;
 		bool WeaponSheathed = PlayerCharacter::GetSingleton()->IsWeaponDrawn();
+		
+		float ImCrouching = Runtime::GetInt("ImCrouching");
+		float FeetCamera = Runtime::GetInt("FeetCamera");
+		float usingAutoDistance = Runtime::GetInt("usingAutoDistance");
+		float MinDistance = Runtime::GetFloat("MinDistance");
+		float MaxDistance = Runtime::GetFloat("MaxDistance");
+		float CameraZoomSpeed = Runtime::GetFloat("CameraZoomSpeed");
+		float CameraZoomPrecision = Runtime::GetFloat("CameraZoomPrecision");
+		//////////Normal - Prone
+		float proneCameraX = Runtime::GetFloat("proneCameraX");
+		float proneCameraY = Runtime::GetFloat("proneCameraY");
+		float proneCombatCameraX = Runtime::GetFloat("proneCombatCameraX");
+		float proneCombatCameraY = Runtime::GetFloat("proneCombatCameraY");
+		/////////Normal - Normal
+		float cameraX = Runtime::GetFloat("cameraX");
+		float cameraY = Runtime::GetFloat("cameraY");
+		float combatCameraX = Runtime::GetFloat("combatCameraX");
+		float combatCameraY = Runtime::GetFloat("combatCameraY");
+		/////////Alternate - Prone
+		float proneCameraAlternateX = Runtime::GetFloat("proneCameraAlternateX");
+		float proneCameraAlternateY = Runtime::GetFloat("proneCameraAlternateY");
+		float proneCombatCameraAlternateX = Runtime::GetFloat("proneCombatCameraAlternateX");
+		float proneCombatCameraAlternateY = Runtime::GetFloat("proneCameraAlternateY");
+		////////Alternate - Normal
+		float cameraAlternateX = Runtime::GetFloat("cameraAlternateX");
+		float cameraAlternateY = Runtime::GetFloat("cameraAlternateY");
+		float combatCameraAlternateX = Runtime::GetFloat("combatCameraAlternateX");
+		float combatCameraAlternateY = Runtime::GetFloat("combatCameraAlternateY");
+
 
 		if (ImCrouching >= 1.0) {
 			ImProne = true;
