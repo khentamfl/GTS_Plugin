@@ -124,8 +124,8 @@ namespace Gts {
 						
 						// Add adjustments
 						//log::info("Delta: {},{}", deltaX, deltaZ);
-						targetLocationLocal.x += ((CameraX + deltaX) * scale) * AllowChanges;
-						targetLocationLocal.z += ((CameraZ + deltaZ) * scale) * AllowChanges;
+						targetLocationLocal.x += ((CameraX + deltaX)) * AllowChanges;
+						targetLocationLocal.z += ((CameraZ + deltaZ)) * AllowChanges;
 
 						
 						// Set Camera
