@@ -178,7 +178,7 @@ namespace Gts {
 
 	}
 
-	void CameraManager::ApplyFeetCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
+	void CameraManager::ApplyFeetCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne, bool IsWeaponDrawn) {
 		float cameraYCorrection = 205.0 * (size * 0.33) + 70;
 		float CalcProne = Runtime::GetFloat("CalcProne");
 		float ProneOffsetFP = 1.0;
