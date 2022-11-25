@@ -129,7 +129,7 @@ namespace Gts {
 
 						
 						// Set Camera
-						niCamera->local.translate = targetLocationLocal;
+						niCamera->world.translate = targetLocationLocal;
 						update_node(niCamera);
 					}
 				}
