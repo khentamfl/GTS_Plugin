@@ -110,7 +110,7 @@ namespace Gts {
 						}
 
 						auto playerTrans = model->world;
-						auto playerTransInve = model->world;//.Invert();
+						auto playerTransInve = model->world.Invert();
 
 						// Get Scaled Camera Location
 						auto cameraLocation = cameraRoot->world.translate;
@@ -119,7 +119,7 @@ namespace Gts {
 
 						auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
 						auto parent = niCamera->parent;
-						NiTransform transform = parent->world;//.Invert();
+						NiTransform transform = parent->world.Invert();
 						auto targetLocationLocal = transform * targetLocationWorld;
 						
 						// Add adjustments
