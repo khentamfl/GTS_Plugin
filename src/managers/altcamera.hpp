@@ -25,6 +25,6 @@ namespace Gts {
 
 		private:
 			inline static float deltaX = 0.0;
-			inline static float deltaY = 0.0;
+			inline static float deltaZ = 0.0;
 	};
 }

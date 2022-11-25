@@ -105,6 +105,8 @@ namespace Gts {
 
 						if (player && TremorManager::GetSingleton().GetFP()) { // Rough fix
 							scale = 1.0;
+							deltaX = 0.0;
+							deltaZ = 0.0;
 						}
 
 						auto playerTrans = model->world;
@@ -121,9 +123,9 @@ namespace Gts {
 						auto targetLocationLocal = transform * targetLocationWorld;
 						
 						// Add adjustments
-						log::info("Delta: {},{}", deltaX, deltaY);
+						log::info("Delta: {},{}", deltaX, deltaZ);
 						targetLocationLocal.x += deltaX * scale;
-						targetLocationLocal.z += deltaY * scale;
+						targetLocationLocal.z += deltaZ * scale;
 
 						
 						// Set Camera
@@ -136,10 +138,10 @@ namespace Gts {
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {
-		deltaY += amt;
+		deltaZ += amt;
 	}
 	void CameraManager::ResetUpDown() {
-		deltaY = 0.0;
+		deltaZ = 0.0;
 	}
 
 	void CameraManager::AdjustLeftRight(float amt) {
