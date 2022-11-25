@@ -45,7 +45,7 @@ namespace Gts {
 			this->power = SHRINK_STORM_POWER;
 			this->efficiency = SHRINK_STORM_EFFIC;
 		}
-		else if (base_spell == Runtime::GetMagicEffect("DevourmentDiminuation")) {
+		else if (base_spell == Runtime::GetMagicEffect("DevourmentDiminuationOther")) {
 			// Devourment Shrink
 			this->power = SHRINK_DEVOURMENT_POWER;
 			this->efficiency = SHRINK_DEVOURMENT_EFFIC;

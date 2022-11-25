@@ -12,6 +12,7 @@ namespace Gts {
 	void Shrink::OnUpdate() {
 		const float BASE_POWER = 0.00360;
 		const float DUAL_CAST_BONUS = 2.0;
+		auto base_spell = GetBaseEffect();
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
@@ -23,6 +24,9 @@ namespace Gts {
 		float bonus = 1.0;
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
+		}
+		if (base_spell == Runtime::GetMagicEffect("DevourmentDiminuationSelf")) {
+			power * = 2.0;
 		}
 
 		if (IsDualCasting()) {
