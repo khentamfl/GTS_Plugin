@@ -25,6 +25,7 @@ namespace Gts {
 
 			void ApplyCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
 			void ApplyFeetCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne);
+			void UpdateCamera(bool ImProne);
 
 		private:
 			inline static float deltaX = 0.0;

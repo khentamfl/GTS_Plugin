@@ -74,36 +74,7 @@ namespace Gts {
 		NiCamera* niCamera = nullptr;
 
 		bool ImProne = false;
-		bool WeaponSheathed = PlayerCharacter::GetSingleton()->IsWeaponDrawn();
-		
 		float ImCrouching = Runtime::GetInt("ImCrouching");
-		float FeetCamera = Runtime::GetInt("FeetCamera");
-		float usingAutoDistance = Runtime::GetInt("usingAutoDistance");
-		float MinDistance = Runtime::GetFloat("MinDistance");
-		float MaxDistance = Runtime::GetFloat("MaxDistance");
-		float CameraZoomSpeed = Runtime::GetFloat("CameraZoomSpeed");
-		float CameraZoomPrecision = Runtime::GetFloat("CameraZoomPrecision");
-		//////////Normal - Prone
-		float proneCameraX = Runtime::GetFloat("proneCameraX");
-		float proneCameraY = Runtime::GetFloat("proneCameraY");
-		float proneCombatCameraX = Runtime::GetFloat("proneCombatCameraX");
-		float proneCombatCameraY = Runtime::GetFloat("proneCombatCameraY");
-		/////////Normal - Normal
-		float cameraX = Runtime::GetFloat("cameraX");
-		float cameraY = Runtime::GetFloat("cameraY");
-		float combatCameraX = Runtime::GetFloat("combatCameraX");
-		float combatCameraY = Runtime::GetFloat("combatCameraY");
-		/////////Alternate - Prone
-		float proneCameraAlternateX = Runtime::GetFloat("proneCameraAlternateX");
-		float proneCameraAlternateY = Runtime::GetFloat("proneCameraAlternateY");
-		float proneCombatCameraAlternateX = Runtime::GetFloat("proneCombatCameraAlternateX");
-		float proneCombatCameraAlternateY = Runtime::GetFloat("proneCameraAlternateY");
-		////////Alternate - Normal
-		float cameraAlternateX = Runtime::GetFloat("cameraAlternateX");
-		float cameraAlternateY = Runtime::GetFloat("cameraAlternateY");
-		float combatCameraAlternateX = Runtime::GetFloat("combatCameraAlternateX");
-		float combatCameraAlternateY = Runtime::GetFloat("combatCameraAlternateY");
-
 
 		if (ImCrouching >= 1.0) {
 			ImProne = true;
@@ -112,7 +83,7 @@ namespace Gts {
 		}
 
 		UpdateFirstPerson(ImProne); // Update FP camera
-		UpdateCamera(); // Update third person values
+		UpdateCamera(ImProne); // Update third person values
 
 		for (auto child: cameraRoot->GetChildren()) {
 			NiAVObject* node = child.get();
@@ -152,9 +123,9 @@ namespace Gts {
 						auto targetLocationLocal = transform * targetLocationWorld;
 						
 						// Add adjustments
-						log::info("Delta: {},{}", deltaX, deltaZ);
-						targetLocationLocal.x += CameraX + (deltaX * scale) * AllowChanges;
-						targetLocationLocal.z += CameraZ + (deltaZ * scale) * AllowChanges;
+						//log::info("Delta: {},{}", deltaX, deltaZ);
+						targetLocationLocal.x += ((CameraX + deltaX) * scale) * AllowChanges;
+						targetLocationLocal.z += ((CameraZ + deltaZ) * scale) * AllowChanges;
 
 						
 						// Set Camera
@@ -188,12 +159,12 @@ namespace Gts {
 
 		if (!IsWeaponDrawn) {
 			CameraX = (X * size);
-			CameraZ = (Y * size) - cameraYCorrection;
+			CameraZ = ((Y * size) - cameraYCorrection) / 10;
 		} 
 
 		else if (IsWeaponDrawn) {
-			CameraX = (AltX) * size;
-			CameraZ = (AltY) * size - cameraYCorrection;
+			CameraX = (AltX * size);
+			CameraZ = ((AltY * size) - cameraYCorrection) / 10;
 		}
 		if (usingAutoDistance <= 0.0) {
 			//SetfVanityModeMinDist(MinDistance * size);
@@ -201,9 +172,10 @@ namespace Gts {
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
-				CameraZ * = (1.0 - Runtime::GetFloat("CalcProne"));
+				CameraZ * = (1.0 - CalcProne);
 			}
 		}
+
 	}
 
 	void CameraManager::ApplyFeetCameraSettings(float size, float X, float Y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne) {
@@ -213,12 +185,12 @@ namespace Gts {
 
 		if (!IsWeaponDrawn) {
 			CameraX = (X * size);
-			CameraZ = (Y * size) - cameraYCorrection;
+			CameraZ = ((Y * size) - cameraYCorrection) / 10;
 		} 
 
 		else if (IsWeaponDrawn) {
-			CameraX = (AltX) * size;
-			CameraZ = (AltY) * size - cameraYCorrection;
+			CameraX = (AltX * size);
+			CameraZ = ((AltY * size) - cameraYCorrection) / 10;
 		}
 		if (usingAutoDistance <= 0.0) {
 			//SetfVanityModeMinDist(MinDistance * size);
@@ -226,14 +198,42 @@ namespace Gts {
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
-				CameraZ * = (1.0 - Runtime::GetFloat("CalcProne"));
+				CameraZ * = (1.0 - CalcProne);
 			}
 	}
 
 	void CameraManager::UpdateCamera(bool ImProne) {
+		auto player = PlayerCharacter::GetSingleton();
+		bool WeaponSheathed = player->IsWeaponDrawn();
+
 		float EnableAltCamera = Runtime::GetInt("EnableAltCamera");
 		float EnableCamera = Runtime::GetInt("EnableCamera");
-		auto player = PlayerCharacter::GetSingleton();
+		float FeetCamera = Runtime::GetInt("FeetCamera");
+		float usingAutoDistance = Runtime::GetInt("usingAutoDistance");
+		float MinDistance = Runtime::GetFloat("MinDistance");
+		float MaxDistance = Runtime::GetFloat("MaxDistance");
+		float CameraZoomSpeed = Runtime::GetFloat("CameraZoomSpeed");
+		float CameraZoomPrecision = Runtime::GetFloat("CameraZoomPrecision");
+		//////////Normal - Prone
+		float proneCameraX = Runtime::GetFloat("proneCameraX");
+		float proneCameraY = Runtime::GetFloat("proneCameraY");
+		float proneCombatCameraX = Runtime::GetFloat("proneCombatCameraX");
+		float proneCombatCameraY = Runtime::GetFloat("proneCombatCameraY");
+		/////////Normal - Normal
+		float cameraX = Runtime::GetFloat("cameraX");
+		float cameraY = Runtime::GetFloat("cameraY");
+		float combatCameraX = Runtime::GetFloat("combatCameraX");
+		float combatCameraY = Runtime::GetFloat("combatCameraY");
+		/////////Alternate - Prone
+		float proneCameraAlternateX = Runtime::GetFloat("proneCameraAlternateX");
+		float proneCameraAlternateY = Runtime::GetFloat("proneCameraAlternateY");
+		float proneCombatCameraAlternateX = Runtime::GetFloat("proneCombatCameraAlternateX");
+		float proneCombatCameraAlternateY = Runtime::GetFloat("proneCameraAlternateY");
+		////////Alternate - Normal
+		float cameraAlternateX = Runtime::GetFloat("cameraAlternateX");
+		float cameraAlternateY = Runtime::GetFloat("cameraAlternateY");
+		float combatCameraAlternateX = Runtime::GetFloat("combatCameraAlternateX");
+		float combatCameraAlternateY = Runtime::GetFloat("combatCameraAlternateY");
 		if (EnableCamera < 1.0) {
 			CameraX = 0.0;
 			CameraZ = 0.0;
@@ -242,22 +242,22 @@ namespace Gts {
 
 		if (EnableAltCamera >= 3.0) { // Adjustment for Feet Camera
 			if (player->IsSneaking() == true && ImProne == true) {
-				CameraManager::ApplyFeetCameraSettings(size, proneCameraAlternateX, proneCameraAlternateY, proneCombatCameraAlternateX, proneCombatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
+				CameraManager::ApplyFeetCameraSettings(size, proneCameraAlternateX, proneCameraAlternateY, proneCombatCameraAlternateX, proneCombatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne, WeaponSheathed);
 			} else {
-				CameraManager::ApplyFeetCameraSettings(size, cameraAlternateX, cameraAlternateY, combatCameraAlternateX, combatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
+				CameraManager::ApplyFeetCameraSettings(size, cameraAlternateX, cameraAlternateY, combatCameraAlternateX, combatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne, WeaponSheathed);
 			}
 		} else if (EnableAltCamera >= 2.0 && EnableAltCamera < 3.0) { // Adjustment for Alternate Camera
 			if (player->IsSneaking() == true && ImProne == true) {
-				CameraManager::ApplyCameraSettings(size, proneCameraAlternateX, proneCameraAlternateY, proneCombatCameraAlternateX, proneCombatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
+				CameraManager::ApplyCameraSettings(size, proneCameraAlternateX, proneCameraAlternateY, proneCombatCameraAlternateX, proneCombatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne, WeaponSheathed);
 			} else {
-				CameraManager::ApplyCameraSettings(size, cameraAlternateX, cameraAlternateY, combatCameraAlternateX, combatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
+				CameraManager::ApplyCameraSettings(size, cameraAlternateX, cameraAlternateY, combatCameraAlternateX, combatCameraAlternateY, MinDistance, MaxDistance, usingAutoDistance, ImProne, WeaponSheathed);
 			}
 		} else if (EnableCamera >= 1.0) { // Regular Camera
 
 			if (player->IsSneaking() == true && ImProne == true) {
-				CameraManager::ApplyCameraSettings(size, proneCameraX, proneCameraY, proneCombatCameraX, proneCombatCameraY, MinDistance, MaxDistance,usingAutoDistance, ImProne);
+				CameraManager::ApplyCameraSettings(size, proneCameraX, proneCameraY, proneCombatCameraX, proneCombatCameraY, MinDistance, MaxDistance,usingAutoDistance, ImProne, WeaponSheathed);
 			} else {
-				CameraManager::ApplyCameraSettings(size, cameraX, cameraY, combatCameraX, combatCameraY, MinDistance, MaxDistance, usingAutoDistance, ImProne);
+				CameraManager::ApplyCameraSettings(size, cameraX, cameraY, combatCameraX, combatCameraY, MinDistance, MaxDistance, usingAutoDistance, ImProne, WeaponSheathed);
 			}
 		}
 }
