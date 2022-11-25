@@ -81,7 +81,9 @@ namespace {
 	std::string PrintParents(NiAVObject* node, std::string_view prefix = "") {
 		std::string result = "";
 		std::string name = node->name.c_str();
+		std::string rawName = GetRawName(node);
 		result += std::format("{}- {}", prefix, name);
+		result += std::format("\n{}  = {}", prefix, rawName);
 		if (node->parent) {
 			result += std::format("\n{}", PrintParents(node->parent, std::format("{}  ", prefix)));
 		}
@@ -162,7 +164,7 @@ namespace {
 
 	void Experiment06() {
 		auto camera = PlayerCamera::GetSingleton();
-		auto cameraRoot = camera->cameraRoot;
+		auto cameraRoot = camera->cameraRoot.get();
 		log::info("{}", PrintNode(cameraRoot));
 		log::info("{}", PrintParents(cameraRoot));
 	}
