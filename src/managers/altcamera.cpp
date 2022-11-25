@@ -179,7 +179,7 @@ namespace {
 			if (node) {
 				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
 				if (casted) {
-					niCamera == casted;
+					niCamera = casted;
 					break;
 				}
 			}
