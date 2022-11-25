@@ -27,52 +27,31 @@ namespace Gts {
 	}
 
 	void Disintegrate(Actor* actor) {
-		actor->criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+		CallFunctionOn(actor, "Actor", "SetCriticalStage", 4);
 	}
 
 	void UnDisintegrate(Actor* actor) {
-		actor->criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+		CallFunctionOn(actor, "Actor", "SetCriticalStage", 0);
 	}
 
 	void SetRestrained(Actor* actor) {
-		actor->actorState1.lifeState = ACTOR_LIFE_STATE::kRestrained;
+		CallFunctionOn(actor, "Actor", "SetRestrained", true);
 	}
 
 	void SetUnRestrained(Actor* actor) {
-		actor->actorState1.lifeState = ACTOR_LIFE_STATE::kAlive;
+		CallFunctionOn(actor, "Actor", "SetRestrained", false);
 	}
 
 	void SetDontMove(Actor* actor) {
-		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-		if (vm) {
-			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-			auto args = RE::MakeFunctionArguments(std::move(true));
-			auto actorPtr = GetObjectPtr(actor, "Actor", false);
-			vm->DispatchMethodCall(actorPtr, "SetDontMove", args, callback);
-		}
+		CallFunctionOn(actor, "Actor", "SetDontMove", true);
 	}
 
 	void SetMove(Actor* actor) {
-		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-		if (vm) {
-			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-			auto args = RE::MakeFunctionArguments(std::move(false));
-			auto actorPtr = GetObjectPtr(actor, "Actor", false);
-			vm->DispatchMethodCall(actorPtr, "SetDontMove", args, callback);
-		}
+		CallFunctionOn(actor, "Actor", "SetDontMove", true);
 	}
 
 	void KnockAreaEffect(Actor* actor, float afMagnitude, float afRadius) {
-		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-		if (vm) {
-			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-			auto args = RE::MakeFunctionArguments(std::move(afMagnitude), std::move(afRadius));
-			auto actorPtr = GetObjectPtr(actor, "Actor", false);
-			vm->DispatchMethodCall(actorPtr, "KnockAreaEffect", args, callback);
-		}
+		CallFunctionOn(actor, "Actor", "KnockAreaEffect", afMagnitude, afRadius);
 	}
 
 	bool IsDragon(Actor* actor) {
