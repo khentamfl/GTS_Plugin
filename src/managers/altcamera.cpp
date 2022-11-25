@@ -102,6 +102,11 @@ namespace Gts {
 				if (scale > 1e-4) {
 					auto model = player->Get3D(false);
 					if (model) {
+
+						if (player && TremorManager::GetSingleton().GetFP()) { // Rough fix
+							scale = 1.0;
+						}
+
 						auto playerTrans = model->world;
 						auto playerTransInve = model->world.Invert();
 
@@ -118,17 +123,9 @@ namespace Gts {
 						// Add adjustments
 						log::info("Delta: {},{}", deltaX, deltaY);
 						targetLocationLocal.x += deltaX * scale;
-						targetLocationLocal.y += deltaY * scale;
+						targetLocationLocal.z += deltaY * scale;
 
-						if (player && TremorManager::GetSingleton().GetFP()) { // Rough fix
-							targetLocationWorld = playerTrans*((playerTransInve*cameraLocation));
-							targetLocationLocal = transform * targetLocationWorld;
-							parent = niCamera->parent;
-							NiTransform transform = parent->world.Invert();
-							niCamera->local.translate = targetLocationLocal;
-							update_node(niCamera);
-							return;
-						}
+						
 						// Set Camera
 						niCamera->local.translate = targetLocationLocal;
 						update_node(niCamera);
