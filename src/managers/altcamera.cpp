@@ -138,18 +138,17 @@ namespace {
 					auto playerTrans = model->world;
 					auto playerTransInve = model->world.Invert();
 
+					log::info("Scaling camera by: {}", scale);
 					auto cameraLocation = third->thirdPersonCameraObj->world.translate;
 					log::info("cameraLocationWorld: {}", Vector2Str(cameraLocation));
 					auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
 					log::info("targetLocationWorld: {}", Vector2Str(targetLocationWorld));
-					NiTransform transform = third->thirdPersonCameraObj->world;
+					NiTransform transform = third->thirdPersonCameraObj->world.Inverse();
 					auto targetLocationLocal = transform * targetLocationWorld;
-					log::info("targetLocationWorld: {}", Vector2Str(third->thirdPersonCameraObj->local.translate));
-					log::info("targetLocationLocal: {}", Vector2Str(targetLocationLocal));
+					log::info("Current: {}", Vector2Str(third->thirdPersonCameraObj->local.translate));
+					log::info("New: {}", Vector2Str(targetLocationLocal));
 
-					log::info("Pre: {}", Vector2Str(third->thirdPersonCameraObj->local.translate));
 					third->thirdPersonCameraObj->local.translate = targetLocationLocal;
-					log::info("Post: {}", Vector2Str(third->thirdPersonCameraObj->local.translate));
 					update_node(third->thirdPersonCameraObj);
 				}
 			}
