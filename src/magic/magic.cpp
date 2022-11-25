@@ -276,6 +276,7 @@ namespace Gts {
 		RegisterMagic<GrowOther>("GrowAlly");
 		RegisterMagic<GrowOther>("GrowAllyAdept");
 		RegisterMagic<GrowOther>("GrowAllyExpert");
+		RegisterMagic<GrowOther>("DevourmentEnlargeOther"); // Devourment enlarge other
 		RegisterMagic<ShrinkOther>("ShrinkAlly");
 		RegisterMagic<ShrinkOther>("ShrinkAllyAdept");
 		RegisterMagic<ShrinkOther>("ShrinkAllyExpert");

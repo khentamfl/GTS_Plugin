@@ -79,9 +79,10 @@ spellEffects:
   # Crushing
   FakeCrushEffect: "GTS.esp|271EF9"
   # Devourment
-  DevourmentDiminuationSelf: "Devourment.esp|002A8E"
-  DevourmentDiminuationOther: "Devourment.esp|002A8D"
-  DevourmentEnlargeSelf: "Devourment.esp|002A8B"
+  DevourmentDiminuationSelf: "Devourment.esp|0028C5"
+  DevourmentDiminuationOther: "Devourment.esp|0028CB"
+  DevourmentEnlargeSelf: "Devourment.esp|0028BA"
+  DevourmentEnlargeOther: "Devourment.esp|0028B9"
 
 spells:
   SmallMassiveThreatSpell: "GTS.esp|1A2566"
