@@ -90,6 +90,7 @@ namespace Gts {
 						auto targetLocationLocal = transform * targetLocationWorld;
 
 						// Add adjustments
+						log::info("Delta: {},{}", deltaX, deltaY);
 						targetLocationLocal.x += deltaX * scale;
 						targetLocationLocal.y += deltaY * scale;
 
