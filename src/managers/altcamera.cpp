@@ -164,7 +164,6 @@ namespace Gts {
 			CameraX = AltX;
 			CameraZ = (AltY - cameraYCorrection);
 		}
-		if (usingAutoDistance <= 0.0) {
 			if (CameraMin != MinDistance) {
 				SetINIFloat("fVanityModeMinDist:Camera", MinDistance);
 				CameraMin = MinDistance;
@@ -174,7 +173,6 @@ namespace Gts {
 				SetINIFloat("fVanityModeMaxDist:Camera", MaxDistance * size);
 				CameraMax = MaxDistance;
 			}
-		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
 				CameraZ *= (1.0 - CalcProne);
@@ -197,7 +195,6 @@ namespace Gts {
 			CameraX = AltX;
 			CameraZ = (AltY - cameraYCorrection);
 		}
-		if (usingAutoDistance <= 0.0) {
 			if (CameraMin != MinDistance) {
 				SetINIFloat("fVanityModeMinDist:Camera", MinDistance);
 				CameraMin = MinDistance;
@@ -206,7 +203,6 @@ namespace Gts {
 				SetINIFloat("fVanityModeMaxDist:Camera", MaxDistance * size);
 				CameraMax = MaxDistance;
 			}
-		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
 				CameraZ *= (1.0 - CalcProne);
