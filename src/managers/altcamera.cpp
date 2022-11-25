@@ -159,12 +159,12 @@ namespace Gts {
 
 		if (!IsWeaponDrawn) {
 			CameraX = (X * size);
-			CameraZ = ((Y * size) - cameraYCorrection) / 10;
+			CameraZ = ((Y * size) - cameraYCorrection);
 		} 
 
 		else if (IsWeaponDrawn) {
 			CameraX = (AltX * size);
-			CameraZ = ((AltY * size) - cameraYCorrection) / 10;
+			CameraZ = ((AltY * size) - cameraYCorrection);
 		}
 		if (usingAutoDistance <= 0.0) {
 			//SetfVanityModeMinDist(MinDistance * size);
@@ -185,12 +185,12 @@ namespace Gts {
 
 		if (!IsWeaponDrawn) {
 			CameraX = (X * size);
-			CameraZ = ((Y * size) - cameraYCorrection) / 10;
+			CameraZ = ((Y * size) - cameraYCorrection);
 		} 
 
 		else if (IsWeaponDrawn) {
 			CameraX = (AltX * size);
-			CameraZ = ((AltY * size) - cameraYCorrection) / 10;
+			CameraZ = ((AltY * size) - cameraYCorrection);
 		}
 		if (usingAutoDistance <= 0.0) {
 			//SetfVanityModeMinDist(MinDistance * size);
