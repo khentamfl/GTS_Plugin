@@ -187,6 +187,32 @@ namespace {
 			log::info("Camera found");
 		}
 	}
+
+	void Experiment08() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto cameraRoot = camera->cameraRoot.get();
+
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			float scale = get_visual_scale(player);
+			if (scale > 1e-4) {
+				auto model = player->Get3D(false);
+				if (model) {
+					auto playerTrans = model->world;
+					auto playerTransInve = model->world.Invert();
+
+					// Camera Root Object
+					auto cameraLocation = cameraRoot->world.translate;
+					auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
+					auto parent = cameraRoot->parent;
+					NiTransform transform = parent->world.Invert();
+					auto targetLocationLocal = transform * targetLocationWorld;
+					cameraRoot->local.translate = targetLocationLocal;
+					update_node(cameraRoot);
+				}
+			}
+		}
+	}
 }
 
 namespace Gts {
@@ -206,7 +232,7 @@ namespace Gts {
 	}
 
 	void CameraManager::Update() {
-		Experiment05();
+		Experiment08();
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {
