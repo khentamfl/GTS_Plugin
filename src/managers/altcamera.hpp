@@ -21,6 +21,8 @@ namespace Gts {
 			void AdjustLeftRight(float amt);
 			void ResetLeftRight();
 
+			void UpdateFirstPerson(bool ImProne);
+
 		private:
 			float deltaX = 0.0;
 			float deltaY = 0.0;

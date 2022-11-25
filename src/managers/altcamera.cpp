@@ -57,10 +57,31 @@ namespace Gts {
 		ResetIniSettings();
 	}
 
+	void CameraManager::UpdateFirstPerson(bool ImProne) {
+		auto player = PlayerCharacter::GetSingleton();
+		float scale = get_target_scale(player);
+		float ProneOffsetFP = 1.0;
+		if (player->IsSneaking() == true && ImProne == true) {
+			ProneOffsetFP = clamp(0.25, 20.0, 3.0 * Runtime::GetFloat("ProneOffsetFP"));
+		}
+		set_fp_scale(player, scale, ProneOffsetFP);
+	}
+
 	void CameraManager::Update() {
 		auto camera = PlayerCamera::GetSingleton();
 		auto cameraRoot = camera->cameraRoot.get();
 		NiCamera* niCamera = nullptr;
+
+		bool ImProne = false;
+
+		if (ImCrouching >= 1.0) {
+			ImProne = true;
+		} else {
+			ImProne = false;
+		}
+
+		UpdateFirstPerson(ImProne); // Update FP camera
+
 		for (auto child: cameraRoot->GetChildren()) {
 			NiAVObject* node = child.get();
 			log::info("- {}", GetRawName(node));
