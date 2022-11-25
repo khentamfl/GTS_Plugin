@@ -214,6 +214,45 @@ namespace {
 			}
 		}
 	}
+
+	void Experiment09() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto cameraRoot = camera->cameraRoot.get();
+		NiCamera* niCamera = nullptr;
+		for (auto child: cameraRoot->GetChildren()) {
+			NiAVObject* node = child.get();
+			log::info("- {}", GetRawName(node));
+			if (node) {
+				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
+				if (casted) {
+					niCamera = casted;
+					break;
+				}
+			}
+		}
+		if (niCamera) {
+			auto player = PlayerCharacter::GetSingleton();
+			if (player) {
+				float scale = get_visual_scale(player);
+				if (scale > 1e-4) {
+					auto model = player->Get3D(false);
+					if (model) {
+						auto playerTrans = model->world;
+						auto playerTransInve = model->world.Invert();
+
+						// Camera Root Object
+						auto cameraLocation = niCamera->world.translate;
+						auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
+						auto parent = niCamera->parent;
+						NiTransform transform = parent->world.Invert();
+						auto targetLocationLocal = transform * targetLocationWorld;
+						niCamera->local.translate = targetLocationLocal;
+						update_node(niCamera);
+					}
+				}
+			}
+		}
+	}
 }
 
 namespace Gts {
@@ -233,7 +272,7 @@ namespace Gts {
 	}
 
 	void CameraManager::Update() {
-		Experiment08();
+		Experiment09();
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {
