@@ -102,11 +102,10 @@ namespace Gts {
 				if (scale > 1e-4) {
 					auto model = player->Get3D(false);
 					if (model) {
-
-						if (player && TremorManager::GetSingleton().GetFP()) { // Rough fix
+						float AllowChanges = 1.0;
+						if (player && TremorManager::GetSingleton().GetFP()) { // Rough first person fix
 							scale = 1.0;
-							deltaX = 0.0;
-							deltaZ = 0.0;
+							AllowChanges = 0.0; // Disallow FP edits
 						}
 
 						auto playerTrans = model->world;
@@ -124,8 +123,8 @@ namespace Gts {
 						
 						// Add adjustments
 						log::info("Delta: {},{}", deltaX, deltaZ);
-						targetLocationLocal.x += deltaX * scale;
-						targetLocationLocal.z += deltaZ * scale;
+						targetLocationLocal.x += (deltaX * scale) * AllowChanges;
+						targetLocationLocal.z += (deltaZ * scale) * AllowChanges;
 
 						
 						// Set Camera

@@ -42,6 +42,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		auto caster = player;
 		auto VoreManager = Vore::GetSingleton();
+		float size = get_target_scale(player);
 
 
 		for (auto event = *a_event; event; event = event->next) {
@@ -159,10 +160,10 @@ namespace Gts {
 			Camera.ResetLeftRight();
 		}
 		if (AltPressed == true && RightArrow == true) {
-			Camera.AdjustLeftRight(1.0);
+			Camera.AdjustLeftRight(0.6 + (size * 0.0125 - 0.0125));
 		}
 		if (AltPressed == true && LeftArrow == true) {
-			Camera.AdjustLeftRight(-1.0);
+			Camera.AdjustLeftRight(-0.6 + (size * 0.0125 - 0.0125));
 		} // Left or Right end
 
 
@@ -170,10 +171,10 @@ namespace Gts {
 			Camera.ResetUpDown();
 		}
 		if (AltPressed == true && ArrowUp == true) {
-			Camera.AdjustUpDown(1.0);
+			Camera.AdjustUpDown(0.6 + (size * 0.0125 - 0.0125));
 		}
 		if (AltPressed == true && ArrowDown == true) {
-			Camera.AdjustUpDown(-1.0);
+			Camera.AdjustUpDown(-0.6 + (size * 0.0125 - 0.0125));
 			//log::info("Alt + Down");
 		} // Up or Down end
 
