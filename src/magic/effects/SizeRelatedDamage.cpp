@@ -48,7 +48,7 @@ namespace Gts {
 			return;
 		} // ^ Do not apply if those are true
 
-		if (Runtime::HasMagicEffect(target, "FakeCrushEffect")) {
+		if (Runtime::HasMagicEffect(target, "FakeCrushEffect") || CrushManager::AlreadyCrushed(target)) {
 			return;
 		}
 

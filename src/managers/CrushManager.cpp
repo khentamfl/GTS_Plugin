@@ -170,7 +170,7 @@ namespace Gts {
 
 	bool CrushManager::AlreadyCrushed(Actor* actor) {
 		auto& m = CrushManager::GetSingleton().data;
-		return !(m.find(actor) == m.end());
+		return (m.find(actor) != m.end());
 	}
 
 	bool CrushManager::CanCrush(Actor* giant, Actor* tiny) {
