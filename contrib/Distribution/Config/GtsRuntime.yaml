@@ -78,11 +78,11 @@ spellEffects:
   EffectSizeAmplifyPotion: "GTS.esp|452F1D"
   # Crushing
   FakeCrushEffect: "GTS.esp|271EF9"
-  # Devourment
-  DevourmentDiminuationSelf: "Devourment.esm|0028C5"
-  DevourmentDiminuationOther: "Devourment.esm|0028CB"
-  DevourmentEnlargeSelf: "Devourment.esm|0028BA"
-  DevourmentEnlargeOther: "Devourment.esm|0028B9"
+  # Devourment // For some reason Devourment.esp changes forms in-game so those aren't accurate and we have to manually type correct forms from the console.
+  DevourmentDiminuationSelf: "Devourment.esp|0028C5"
+  DevourmentDiminuationOther: "Devourment.esp|0028CB"
+  DevourmentEnlargeSelf: "Devourment.esp|0028BA"
+  DevourmentEnlargeOther: "Devourment.esp|0028B9"
 
 spells:
   SmallMassiveThreatSpell: "GTS.esp|1A2566"
