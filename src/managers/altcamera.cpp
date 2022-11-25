@@ -83,7 +83,7 @@ namespace {
 		std::string name = node->name.c_str();
 		result += std::format("{}- {}", prefix, name);
 		if (node->parent) {
-			result += PrintParents(node->parent, std::format("{}  ", prefix));
+			result += std::format("\n{}", PrintParents(node->parent, std::format("{}  ", prefix)));
 		}
 		return result;
 	}
@@ -94,12 +94,12 @@ namespace {
 		std::string name = node->name.c_str();
 		std::string rawName = GetRawName(node);
 		result += std::format("{}- {}", prefix, name);
-		result += std::format("{}  = {}", prefix, rawName);
+		result += std::format("\n{}  = {}", prefix, rawName);
 		auto niNode = node->AsNode();
 		if (niNode) {
 			for (auto child: niNode->GetChildren()) {
 				if (child) {
-					result += PrintNode(child.get(), std::format("  {}", prefix));
+					result += std::format("\n{}", PrintNode(child.get(), std::format("  {}", prefix)));
 				}
 			}
 		}
@@ -159,6 +159,13 @@ namespace {
 			}
 		}
 	}
+
+	void Experiment06() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto cameraRoot = camera->cameraRoot;
+		log::info("{}", PrintNode(cameraRoot));
+		log::info("{}", PrintParents(cameraRoot));
+	}
 }
 
 namespace Gts {
@@ -172,49 +179,9 @@ namespace Gts {
 	}
 
 	void CameraManager::Start() {
-		log::info("++Camera Experiemnts");
-		ResetIniSettings();
-		log::info("+ Pre Experiements");
-		PrintCameraNode();
+		log::info("+ Experiement 06");
+		Experiment06();
 		log::info("-");
-
-		// log::info("+ Experiement 01");
-		// Experiment01();
-		// log::info("-");
-
-		// log::info("+ Experiement 02");
-		// Experiment02();
-		// log::info("-");
-
-		log::info("+ Experiement 03");
-		Experiment03();
-		log::info("-");
-
-		log::info("+ Post Experiemnts");
-		PrintCameraNode();
-		log::info("--Camera Experiemnts");
-
-		log::info("================== DEBUG SPELLS ==================");
-		for (auto actor: find_actors()) {
-			log::info(" - Actor: {}", actor->GetDisplayFullName());
-			auto meffs = actor->GetActiveEffectList();
-			std::size_t count = 0;
-			for (auto meff: (*meffs)) {
-				count += 1;
-			}
-			log::info("    = Total Effects: {}", count);
-			for (auto meff: (*meffs)) {
-				log::info("    - {}", reinterpret_cast<std::uintptr_t>(meff));
-				auto spell = meff->spell;
-				if (spell) {
-					log::info("      = {}", spell->GetFullName());
-				}
-				auto baseEff = meff->GetBaseObject();
-				if (spell) {
-					log::info("      = {}", baseEff->GetFullName());
-				}
-			}
-		}
 	}
 
 	void CameraManager::Update() {
