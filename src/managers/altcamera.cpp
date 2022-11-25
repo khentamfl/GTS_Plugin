@@ -88,11 +88,10 @@ namespace Gts {
 						auto parent = niCamera->parent;
 						NiTransform transform = parent->world.Invert();
 						auto targetLocationLocal = transform * targetLocationWorld;
-						auto cameraLocationLocal = niCamera->local.translate;
 
 						// Add adjustments
-						cameraLocationLocal.x += deltaX * scale;
-						cameraLocationLocal.y += deltaY * scale;
+						targetLocationLocal.x += deltaX * scale;
+						targetLocationLocal.y += deltaY * scale;
 
 						// Set Camera
 						niCamera->local.translate = targetLocationLocal;
