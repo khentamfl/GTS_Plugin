@@ -158,13 +158,13 @@ namespace Gts {
 		float ProneOffsetFP = 1.0;
 
 		if (!IsWeaponDrawn) {
-			CameraX = (X * size);
-			CameraZ = ((Y * size) - cameraYCorrection);
+			CameraX = X;
+			CameraZ = (Y - cameraYCorrection);
 		} 
 
 		else if (IsWeaponDrawn) {
-			CameraX = (AltX * size);
-			CameraZ = ((AltY * size) - cameraYCorrection);
+			CameraX = AltX;
+			CameraZ = (AltY - cameraYCorrection);
 		}
 		if (usingAutoDistance <= 0.0) {
 			//SetfVanityModeMinDist(MinDistance * size);
@@ -184,13 +184,13 @@ namespace Gts {
 		float ProneOffsetFP = 1.0;
 
 		if (!IsWeaponDrawn) {
-			CameraX = (X * size);
-			CameraZ = ((Y * size) - cameraYCorrection);
+			CameraX = X;
+			CameraZ = (Y - cameraYCorrection);
 		} 
 
 		else if (IsWeaponDrawn) {
-			CameraX = (AltX * size);
-			CameraZ = ((AltY * size) - cameraYCorrection);
+			CameraX = AltX;
+			CameraZ = (AltY - cameraYCorrection);
 		}
 		if (usingAutoDistance <= 0.0) {
 			//SetfVanityModeMinDist(MinDistance * size);
@@ -235,6 +235,7 @@ namespace Gts {
 		float cameraAlternateY = Runtime::GetFloat("cameraAlternateY");
 		float combatCameraAlternateX = Runtime::GetFloat("combatCameraAlternateX");
 		float combatCameraAlternateY = Runtime::GetFloat("combatCameraAlternateY");
+		
 		if (EnableCamera < 1.0) {
 			CameraX = 0.0;
 			CameraZ = 0.0;
