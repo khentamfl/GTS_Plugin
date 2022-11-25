@@ -21,6 +21,7 @@ namespace {
 			ini_conf->WriteSetting(setting);
 		}
 	}
+
 	void UpdateThirdPerson() {
 		auto camera = PlayerCamera::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
@@ -115,8 +116,6 @@ namespace Gts {
 						// Get Scaled Camera Location
 						auto cameraLocation = cameraRoot->world.translate;
 
-						
-
 						auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
 						auto parent = niCamera->parent;
 						NiTransform transform = parent->world.Invert();
@@ -124,10 +123,9 @@ namespace Gts {
 						
 						// Add adjustments
 						//log::info("Delta: {},{}", deltaX, deltaZ);
-						targetLocationLocal.x += (CameraX + (deltaX)) * AllowChanges;
-						targetLocationLocal.z += (CameraZ + (deltaZ)) * AllowChanges;
+						targetLocationLocal.x += (CameraX + (deltaX * scale)) * AllowChanges;
+						targetLocationLocal.z += (CameraZ + (deltaZ * scale)) * AllowChanges;
 
-						
 						// Set Camera
 						niCamera->local.translate = targetLocationLocal;
 						update_node(niCamera);
@@ -167,8 +165,15 @@ namespace Gts {
 			CameraZ = (AltY - cameraYCorrection);
 		}
 		if (usingAutoDistance <= 0.0) {
-			//SetfVanityModeMinDist(MinDistance * size);
-			//SetfVanityModeMaxDist(MaxDistance * size);
+			if (CameraMin != MinDistance) {
+				SetINIFloat("fVanityModeMinDist:Camera", MinDistance);
+				CameraMin = MinDistance;
+			}
+
+			if (CameraMax != MaxDistance) {
+				SetINIFloat("fVanityModeMaxDist:Camera", MaxDistance * size);
+				CameraMax = MaxDistance;
+			}
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {
@@ -193,8 +198,14 @@ namespace Gts {
 			CameraZ = (AltY - cameraYCorrection);
 		}
 		if (usingAutoDistance <= 0.0) {
-			//SetfVanityModeMinDist(MinDistance * size);
-			//SetfVanityModeMaxDist(MaxDistance * size);
+			if (CameraMin != MinDistance) {
+				SetINIFloat("fVanityModeMinDist:Camera", MinDistance);
+				CameraMin = MinDistance;
+			}
+			if (CameraMax != MaxDistance) {
+				SetINIFloat("fVanityModeMaxDist:Camera", MaxDistance * size);
+				CameraMax = MaxDistance;
+			}
 		}
 
 		if (PlayerCharacter::GetSingleton()->IsSneaking() == true && ImProne == true) {

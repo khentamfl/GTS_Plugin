@@ -32,5 +32,8 @@ namespace Gts {
 			inline static float deltaZ = 0.0;
 			inline static float CameraX = 0.0;
 			inline static float CameraZ = 0.0;
+			inline static float CameraMin = 0.0;
+			inline static float CameraMax = 0.0;
+
 	};
 }
