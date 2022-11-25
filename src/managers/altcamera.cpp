@@ -71,7 +71,8 @@ namespace Gts {
 		auto camera = PlayerCamera::GetSingleton();
 		auto cameraRoot = camera->cameraRoot.get();
 		NiCamera* niCamera = nullptr;
-
+		
+		float ImCrouching = Runtime::GetInt("ImCrouching");
 		bool ImProne = false;
 
 		if (ImCrouching >= 1.0) {
