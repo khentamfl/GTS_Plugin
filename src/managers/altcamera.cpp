@@ -1,5 +1,6 @@
 #include "managers/altcamera.hpp"
 #include "scale/scale.hpp"
+#include "managers/tremor.hpp"
 #include "util.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
@@ -106,16 +107,28 @@ namespace Gts {
 
 						// Get Scaled Camera Location
 						auto cameraLocation = cameraRoot->world.translate;
+
+						
+
 						auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
 						auto parent = niCamera->parent;
 						NiTransform transform = parent->world.Invert();
 						auto targetLocationLocal = transform * targetLocationWorld;
-
+						
 						// Add adjustments
 						log::info("Delta: {},{}", deltaX, deltaY);
 						targetLocationLocal.x += deltaX * scale;
 						targetLocationLocal.y += deltaY * scale;
 
+						if (player && TremorManager::GetSingleton().GetFP()) { // Rough fix
+							targetLocationWorld = playerTrans*((playerTransInve*cameraLocation));
+							targetLocationLocal = transform * targetLocationWorld;
+							parent = niCamera->parent;
+							NiTransform transform = parent->world.Invert();
+							niCamera->local.translate = targetLocationLocal;
+							update_node(niCamera);
+							return;
+						}
 						// Set Camera
 						niCamera->local.translate = targetLocationLocal;
 						update_node(niCamera);
