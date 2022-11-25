@@ -32,7 +32,7 @@ namespace Gts {
 	}
 
 	template <class ... Args>
-	inline void CallFunctionOn(TESForm* a_form, std::string_view formKind, std::string_view function, Args&&... a_args) {
+	inline void CallFunctionOn(TESForm* a_form, std::string_view formKind, std::string_view function, Args... a_args) {
 		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
 		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
 		if (vm) {
