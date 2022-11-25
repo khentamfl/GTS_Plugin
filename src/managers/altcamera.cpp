@@ -143,7 +143,8 @@ namespace {
 					log::info("cameraLocationWorld: {}", Vector2Str(cameraLocation));
 					auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
 					log::info("targetLocationWorld: {}", Vector2Str(targetLocationWorld));
-					NiTransform transform = third->thirdPersonCameraObj->world.Invert();
+					auto parent = third->thirdPersonCameraObj.parent;
+					NiTransform transform = parent->world.Invert();
 					auto targetLocationLocal = transform * targetLocationWorld;
 					log::info("Current: {}", Vector2Str(third->thirdPersonCameraObj->local.translate));
 					log::info("New: {}", Vector2Str(targetLocationLocal));
