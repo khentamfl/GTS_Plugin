@@ -168,6 +168,25 @@ namespace {
 		log::info("{}", PrintNode(cameraRoot));
 		log::info("{}", PrintParents(cameraRoot));
 	}
+
+	void Experiment07() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto cameraRoot = camera->cameraRoot.get();
+		NiCamera* niCamera = nullptr;
+		for (auto child: cameraRoot->GetChildren()) {
+			NiAVObject* node = child.get();
+			if (node) {
+				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
+				if (casted) {
+					niCamera == casted;
+					break;
+				}
+			}
+		}
+		if (niCamera) {
+			log::info("Camera found");
+		}
+	}
 }
 
 namespace Gts {
@@ -181,8 +200,8 @@ namespace Gts {
 	}
 
 	void CameraManager::Start() {
-		log::info("+ Experiement 06");
-		Experiment06();
+		log::info("+ Experiement 07");
+		Experiment07();
 		log::info("-");
 	}
 
