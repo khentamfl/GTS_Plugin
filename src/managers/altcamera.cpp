@@ -41,181 +41,23 @@ namespace {
 		SetINIFloat("fMouseWheelZoomIncrement:Camera", 0.075000003);
 		UpdateThirdPerson();
 	}
+}
 
-	void PrintCameraNode() {
-		auto camera = PlayerCamera::GetSingleton();
-		NiAVObject* root = camera->cameraRoot.get();
-		while (root) {
-			log::info("Camera: {}", root->name);
-			auto parent = root->parent;
-			if (parent) {
-				root = parent;
-			} else {
-				break;
-			}
-		}
-	}
-	void Experiment01() {
-		// Causes player to move with camera controls
-		auto camera = PlayerCamera::GetSingleton();
-		auto player = PlayerCharacter::GetSingleton();
-		auto model = player->GetCurrent3D()->AsNode();
-		camera->cameraRoot = NiPointer(model);
+namespace Gts {
+	CameraManager& CameraManager::GetSingleton() noexcept {
+		static CameraManager instance;
+		return instance;
 	}
 
-	void Experiment02() {
-		// CTDS on load
-		auto camera = PlayerCamera::GetSingleton();
-		auto root = camera->cameraRoot;
-		auto parent = root->parent;
-
-		NiPointer<NiAVObject> oldRoot;
-		parent->DetachChild(root.get(), oldRoot);
-
-		auto gtsRoot = NiNode::Create();
-		parent->AttachChild(oldRoot.get());
-
-		gtsRoot->AttachChild(root.get());
+	std::string CameraManager::DebugName() {
+		return "CameraManager";
 	}
 
-	std::string PrintParents(NiAVObject* node, std::string_view prefix = "") {
-		std::string result = "";
-		std::string name = node->name.c_str();
-		std::string rawName = GetRawName(node);
-		result += std::format("{}- {}", prefix, name);
-		result += std::format("\n{}  = {}", prefix, rawName);
-		if (node->parent) {
-			result += std::format("\n{}", PrintParents(node->parent, std::format("{}  ", prefix)));
-		}
-		return result;
+	void CameraManager::Start() {
+		ResetIniSettings();
 	}
 
-
-	std::string PrintNode(NiAVObject* node, std::string_view prefix = "") {
-		std::string result = "";
-		std::string name = node->name.c_str();
-		std::string rawName = GetRawName(node);
-		result += std::format("{}- {}", prefix, name);
-		result += std::format("\n{}  = {}", prefix, rawName);
-		auto niNode = node->AsNode();
-		if (niNode) {
-			for (auto child: niNode->GetChildren()) {
-				if (child) {
-					result += std::format("\n{}", PrintNode(child.get(), std::format("  {}", prefix)));
-				}
-			}
-		}
-		return result;
-	}
-
-	void Experiment03() {
-		auto camera = PlayerCamera::GetSingleton();
-		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
-		log::info("Third Camera OBJ: {}", GetRawName(third->thirdPersonCameraObj));
-		log::info("{}", PrintNode(third->thirdPersonCameraObj));
-		log::info("{}", PrintParents(third->thirdPersonCameraObj));
-		log::info("Third Camera FOV: {}", GetRawName(third->thirdPersonFOVControl));
-		log::info("{}", PrintNode(third->thirdPersonFOVControl));
-		log::info("{}", PrintParents(third->thirdPersonFOVControl));
-		log::info("Third Camera animatedBoneName: {}", third->animatedBoneName);
-	}
-
-	void Experiment04() {
-		auto camera = PlayerCamera::GetSingleton();
-		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
-		// log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
-		third->thirdPersonCameraObj->local.translate *= get_visual_scale(PlayerCharacter::GetSingleton());
-	}
-
-	void Experiment05() {
-		auto camera = PlayerCamera::GetSingleton();
-		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
-		// log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			float scale = get_visual_scale(player);
-			if (scale > 1e-4) {
-				auto model = player->Get3D(false);
-				if (model) {
-					auto playerTrans = model->world;
-					auto playerTransInve = model->world.Invert();
-
-					// Third Person Camera Object
-					auto cameraLocation = third->thirdPersonCameraObj->world.translate;
-					auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
-					auto parent = third->thirdPersonCameraObj->parent;
-					NiTransform transform = parent->world.Invert();
-					auto targetLocationLocal = transform * targetLocationWorld;
-					third->thirdPersonCameraObj->local.translate = targetLocationLocal;
-					update_node(third->thirdPersonCameraObj);
-
-					// Third Person Camera FOV Object
-					cameraLocation = third->thirdPersonFOVControl->world.translate;
-					targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
-					parent = third->thirdPersonFOVControl->parent;
-					transform = parent->world.Invert();
-					targetLocationLocal = transform * targetLocationWorld;
-					third->thirdPersonFOVControl->local.translate = targetLocationLocal;
-					update_node(third->thirdPersonFOVControl);
-				}
-			}
-		}
-	}
-
-	void Experiment06() {
-		auto camera = PlayerCamera::GetSingleton();
-		auto cameraRoot = camera->cameraRoot.get();
-		log::info("{}", PrintNode(cameraRoot));
-		log::info("{}", PrintParents(cameraRoot));
-	}
-
-	void Experiment07() {
-		auto camera = PlayerCamera::GetSingleton();
-		auto cameraRoot = camera->cameraRoot.get();
-		NiCamera* niCamera = nullptr;
-		for (auto child: cameraRoot->GetChildren()) {
-			NiAVObject* node = child.get();
-			log::info("- {}", GetRawName(node));
-			if (node) {
-				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
-				if (casted) {
-					niCamera = casted;
-					break;
-				}
-			}
-		}
-		if (niCamera) {
-			log::info("Camera found");
-		}
-	}
-
-	void Experiment08() {
-		auto camera = PlayerCamera::GetSingleton();
-		auto cameraRoot = camera->cameraRoot.get();
-
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			float scale = get_visual_scale(player);
-			if (scale > 1e-4) {
-				auto model = player->Get3D(false);
-				if (model) {
-					auto playerTrans = model->world;
-					auto playerTransInve = model->world.Invert();
-
-					// Camera Root Object
-					auto cameraLocation = cameraRoot->world.translate;
-					auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
-					auto parent = cameraRoot->parent;
-					NiTransform transform = parent->world.Invert();
-					auto targetLocationLocal = transform * targetLocationWorld;
-					cameraRoot->local.translate = targetLocationLocal;
-					update_node(cameraRoot);
-				}
-			}
-		}
-	}
-
-	void Experiment09() {
+	void CameraManager::Update() {
 		auto camera = PlayerCamera::GetSingleton();
 		auto cameraRoot = camera->cameraRoot.get();
 		NiCamera* niCamera = nullptr;
@@ -240,17 +82,19 @@ namespace {
 						auto playerTrans = model->world;
 						auto playerTransInve = model->world.Invert();
 
-						// Camera Root Object
+						// Get Scaled Camera Location
 						auto cameraLocation = cameraRoot->world.translate;
-						log::info("cameraLocation: {}", Vector2Str(cameraLocation));
 						auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
-						log::info("targetLocationWorld: {}", Vector2Str(targetLocationWorld));
 						auto parent = niCamera->parent;
 						NiTransform transform = parent->world.Invert();
 						auto targetLocationLocal = transform * targetLocationWorld;
 						auto cameraLocationLocal = niCamera->local.translate;
-						log::info("cameraLocationLocal: {}", Vector2Str(cameraLocationLocal));
-						log::info("targetLocationLocal: {}", Vector2Str(targetLocationLocal));
+
+						// Add adjustments
+						cameraLocationLocal.x += deltaX * scale;
+						cameraLocationLocal.y += deltaY * scale;
+
+						// Set Camera
 						niCamera->local.translate = targetLocationLocal;
 						update_node(niCamera);
 					}
@@ -258,35 +102,18 @@ namespace {
 			}
 		}
 	}
-}
-
-namespace Gts {
-	CameraManager& CameraManager::GetSingleton() noexcept {
-		static CameraManager instance;
-		return instance;
-	}
-
-	std::string CameraManager::DebugName() {
-		return "CameraManager";
-	}
-
-	void CameraManager::Start() {
-		log::info("+ Experiement 07");
-		Experiment07();
-		log::info("-");
-	}
-
-	void CameraManager::Update() {
-		Experiment09();
-	}
 
 	void CameraManager::AdjustUpDown(float amt) {
+		deltaY += amt;
 	}
 	void CameraManager::ResetUpDown() {
+		deltaY = 0.0;
 	}
 
 	void CameraManager::AdjustLeftRight(float amt) {
+		deltaX += amt;
 	}
 	void CameraManager::ResetLeftRight() {
+		deltaX = 0.0;
 	}
 }

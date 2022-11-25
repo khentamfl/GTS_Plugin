@@ -20,5 +20,9 @@ namespace Gts {
 
 			void AdjustLeftRight(float amt);
 			void ResetLeftRight();
+
+		private:
+			float deltaX = 0.0;
+			float deltaY = 0.0;
 	};
 }
