@@ -241,7 +241,7 @@ namespace {
 						auto playerTransInve = model->world.Invert();
 
 						// Camera Root Object
-						auto cameraLocation = niCamera->world.translate;
+						auto cameraLocation = cameraRoot->world.translate;
 						log::info("cameraLocation: {}", Vector2Str(cameraLocation));
 						auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
 						log::info("targetLocationWorld: {}", Vector2Str(targetLocationWorld));
