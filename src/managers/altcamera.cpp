@@ -52,6 +52,7 @@ namespace {
 				auto parentIndex = cameraRoot->parentIndex;
 				auto newParent = NiNode::Create();
 				newParent->name = ROOT_NAME;
+				newParent->IncRefCount();
 				NiPointer<NiAVObject> camera;
 				currentParent->SetAt(parentIndex, cameraRoot, camera);
 				camera.get()->IncRefCount();
