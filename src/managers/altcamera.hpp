@@ -13,6 +13,7 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;
+			virtual void HavokUpdate() override;
 			virtual void Start() override;
 
 			void AdjustUpDown(float amt);

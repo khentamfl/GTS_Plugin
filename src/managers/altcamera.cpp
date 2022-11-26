@@ -43,28 +43,90 @@ namespace {
 		UpdateThirdPerson();
 	}
 
-	NiNode* EnsureGtsRoot(NiNode* cameraRoot) {
-		const char* ROOT_NAME = "GTSRoot";
-		auto currentParent = cameraRoot->parent;
-		if (currentParent) {
-			if (currentParent->name != ROOT_NAME) {
-				log::info("Insterting new node");
-				auto parentIndex = cameraRoot->parentIndex;
-				auto newParent = NiNode::Create();
-				newParent->name = ROOT_NAME;
-				newParent->IncRefCount();
-				NiPointer<NiAVObject> camera;
-				currentParent->SetAt(parentIndex, cameraRoot, camera);
-				camera.get()->IncRefCount();
-				newParent->AttachChild(camera.get());
-				update_node(cameraRoot);
-				update_node(newParent);
-				update_node(currentParent);
-				update_node(camera.get());
-				return newParent;
+	void Experiment10() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto cameraRoot = camera->cameraRoot.get();
+		NiCamera* niCamera = nullptr;
+		for (auto child: cameraRoot->GetChildren()) {
+			NiAVObject* node = child.get();
+			log::info("- {}", GetRawName(node));
+			if (node) {
+				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
+				if (casted) {
+					niCamera = casted;
+					break;
+				}
 			}
 		}
-		return nullptr;
+		if (niCamera) {
+			auto player = PlayerCharacter::GetSingleton();
+			if (player) {
+				float scale = get_visual_scale(player);
+				if (scale > 1e-4) {
+					auto model = player->Get3D(false);
+					if (model) {
+						auto playerTrans = model->world;
+						auto playerTransInve = model->world.Invert();
+
+						// Get Scaled Camera Location
+						auto cameraLocation = cameraRoot->world.translate;
+						auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
+						auto parent = niCamera->parent;
+						NiTransform transform = parent->world.Invert();
+						auto targetLocationLocal = transform * targetLocationWorld;
+
+						// Add adjustments
+						// log::info("Delta: {},{}", deltaX, deltaY);
+						// targetLocationLocal.x += deltaX * scale;
+						// targetLocationLocal.y += deltaY * scale;
+
+						// Set Camera
+						niCamera->local.translate = targetLocationLocal;
+						update_node(niCamera);
+					}
+				}
+			}
+		}
+	}
+
+	void Experiment11() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
+		// log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
+		NiPoint3 thirdLocation;
+		third->GetTranslation(thirdLocation);
+
+		auto cameraRoot = camera->cameraRoot;
+
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			float scale = get_visual_scale(player);
+			if (scale > 1e-4) {
+				auto model = player->Get3D(false);
+				if (model) {
+					auto playerTrans = model->world;
+					auto playerTransInve = model->world.Invert();
+
+					// Get Scaled Camera Location
+					auto cameraLocation = thirdLocation;
+					log::info("cameraLocation: {}", Vector2Str(cameraLocation));
+					auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
+					auto parent = cameraRoot->parent;
+					NiTransform transform = parent->world.Invert();
+					auto targetLocationLocal = transform * targetLocationWorld;
+					log::info("targetLocationLocal: {}", Vector2Str(targetLocationLocal));
+
+					// Add adjustments
+					// log::info("Delta: {},{}", deltaX, deltaY);
+					// targetLocationLocal.x += deltaX * scale;
+					// targetLocationLocal.y += deltaY * scale;
+
+					// Set Camera
+					cameraRoot->local.translate = targetLocationLocal;
+					update_node(cameraRoot.get());
+				}
+			}
+		}
 	}
 }
 
@@ -83,62 +145,10 @@ namespace Gts {
 	}
 
 	void CameraManager::Update() {
-		auto camera = PlayerCamera::GetSingleton();
-		auto cameraRoot = camera->cameraRoot.get();
-		NiCamera* niCamera = nullptr;
 
-		for (auto child: cameraRoot->GetChildren()) {
-			NiAVObject* node = child.get();
-			log::info("- {}", GetRawName(node));
-			if (node) {
-				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
-				if (casted) {
-					niCamera = casted;
-					break;
-				}
-			}
-		}
-		if (niCamera) {
-			auto gtsRoot = EnsureGtsRoot(cameraRoot);
-			if (gtsRoot) {
-				auto gtsParent = gtsRoot->parent;
-				if (gtsParent) {
-					auto player = PlayerCharacter::GetSingleton();
-					if (player) {
-						float scale = get_visual_scale(player);
-						if (scale > 1e-4) {
-							auto model = player->Get3D(false);
-							if (model) {
-								auto playerTrans = model->world;
-								auto playerTransInve = model->world.Invert();
-
-								auto gtsParentTrans = gtsParent->world;
-								auto cameraRootTrans = cameraRoot->local;
-								// Get Camera Location without alterations from gtsRoot;
-								auto cameraLocation = gtsParentTrans*(cameraRootTrans*NiPoint3(0.0,0.0,0.0));
-								log::info("cameraLocation: {}", Vector2Str(cameraLocation));
-
-								// Get target location
-								auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
-
-								NiTransform parentTransInve = gtsParent->world.Invert();
-								NiTransform cameraRootTransInve = cameraRootTrans.Invert();
-								auto targetLocationLocal = parentTransInve * (cameraRootTransInve * targetLocationWorld);
-
-								// Add adjustments
-								// log::info("Delta: {},{}", this->deltaX, this->deltaZ);
-								// targetLocationLocal.x += this->deltaX * scale;
-								// targetLocationLocal.z += this->deltaZ * scale ;
-
-								// Set Camera
-								gtsRoot->local.translate = targetLocationLocal;
-								update_node(gtsRoot);
-							}
-						}
-					}
-				}
-			}
-		}
+	}
+	void CameraManager::HavokUpdate() {
+		Experiment11();
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {
