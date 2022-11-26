@@ -21,19 +21,8 @@ namespace Gts {
 			void AdjustLeftRight(float amt);
 			void ResetLeftRight();
 
-			void UpdateFirstPerson(bool ImProne);
-
-			void ApplyCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne, bool IsWeaponDrawn);
-			void ApplyFeetCameraSettings(float size, float x, float y, float AltX, float AltY, float MinDistance, float MaxDistance, float usingAutoDistance, bool ImProne, bool IsWeaponDrawn);
-			void UpdateCamera(bool ImProne);
-
 		private:
-			inline static float deltaX = 0.0;
-			inline static float deltaZ = 0.0;
-			inline static float CameraX = 0.0;
-			inline static float CameraZ = 0.0;
-			inline static float CameraMin = 0.0;
-			inline static float CameraMax = 0.0;
-
+			float deltaX = 0.0;
+			float deltaZ = 0.0;
 	};
 }
