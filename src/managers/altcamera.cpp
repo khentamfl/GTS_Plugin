@@ -123,6 +123,7 @@ namespace {
 
 					// Set Camera
 					cameraRoot->local.translate = targetLocationLocal;
+					third->translation = targetLocationLocal;
 					update_node(cameraRoot.get());
 				}
 			}
@@ -145,6 +146,7 @@ namespace Gts {
 	}
 
 	void CameraManager::Update() {
+		Experiment11();
 		auto camera = PlayerCamera::GetSingleton();
 		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
 
@@ -153,6 +155,7 @@ namespace Gts {
 		log::info("third Update: {}", Vector2Str(third->translation));
 	}
 	void CameraManager::HavokUpdate() {
+		Experiment11();
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {
