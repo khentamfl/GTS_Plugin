@@ -20,5 +20,8 @@ namespace Hooks
 
 			static void GetTranslation(ThirdPersonState* a_this, NiPoint3& a_translation);
 			static inline REL::Relocation<decltype(GetTranslation)> _GetTranslation;
+
+			static void UpdateRotation(ThirdPersonState* a_this);
+			static inline REL::Relocation<decltype(UpdateRotation)> _UpdateRotation;
 	};
 }
