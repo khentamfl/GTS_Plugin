@@ -17,7 +17,7 @@ namespace Hooks
 	}
 
 	void Hook_CameraState::Update(ThirdPersonState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
-		log::info("Update");
+		log::info("Update: {}", GetRawName(a_this));
 		if (a_nextState) {
 			log::info("  - {}", GetRawName(a_nextState.get()));
 		}
