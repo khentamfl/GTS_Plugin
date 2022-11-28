@@ -145,10 +145,9 @@ namespace Gts {
 	}
 
 	void CameraManager::Update() {
-
+		UpdateThirdPerson();
 	}
 	void CameraManager::HavokUpdate() {
-		Experiment11();
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {
