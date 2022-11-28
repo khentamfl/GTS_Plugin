@@ -145,7 +145,12 @@ namespace Gts {
 	}
 
 	void CameraManager::Update() {
-		UpdateThirdPerson();
+		auto camera = PlayerCamera::GetSingleton();
+		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
+
+		auto cameraRoot = camera->cameraRoot;
+		log::info("cameraRoot Update: {}", Vector2Str(cameraRoot->local.translate));
+		log::info("third Update: {}", Vector2Str(third->translation));
 	}
 	void CameraManager::HavokUpdate() {
 	}

@@ -17,7 +17,6 @@ namespace Hooks
 	}
 
 	void Hook_CameraState::Update(ThirdPersonState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
-		log::info("Update: {}", GetRawName(a_this));
 		if (a_nextState) {
 			log::info("  - {}", GetRawName(a_nextState.get()));
 		}
@@ -43,16 +42,16 @@ namespace Hooks
 
 									// Get Scaled Camera Location
 									auto cameraLocation = thirdLocation;
-									log::info("cameraLocation: {}", Vector2Str(cameraLocation));
 									auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
 									auto parent = cameraRoot->parent;
 									NiTransform transform = parent->world.Invert();
 									auto targetLocationLocal = transform * targetLocationWorld;
-									log::info("targetLocationLocal: {}", Vector2Str(targetLocationLocal));
 
 									// Set Camera
+									log::info("PRE: translation: {}", Vector2Str(a_this->translation));
 									cameraRoot->local.translate = targetLocationLocal;
 									a_this->translation = targetLocationLocal;
+									log::info("POST: translation: {}", Vector2Str(a_this->translation));
 									update_node(cameraRoot.get());
 								}
 							}
