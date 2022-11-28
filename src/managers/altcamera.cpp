@@ -145,7 +145,6 @@ namespace Gts {
 	}
 
 	void CameraManager::Update() {
-		UpdateThirdPerson();
 	}
 	void CameraManager::HavokUpdate() {
 	}
