@@ -59,6 +59,7 @@ namespace Hooks
 
 									// Set Camera
 									cameraRoot->local.translate = targetLocationLocal;
+									a_this->translation = targetLocationLocal;
 									update_node(cameraRoot.get());
 								}
 							}
