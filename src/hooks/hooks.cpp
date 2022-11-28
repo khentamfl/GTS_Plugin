@@ -7,6 +7,7 @@
 #include "hooks/magicTarget.hpp"
 #include "hooks/hkbBehaviorGraph.hpp"
 #include "hooks/playerCamera.hpp"
+#include "hooks/tesCamera.hpp"
 #include "hooks/cameraState.hpp"
 
 using namespace RE;
@@ -28,6 +29,7 @@ namespace Hooks
 		//Hook_MagicTarget::Hook();
 		Hook_hkbBehaviorGraph::Hook();
 		Hook_PlayerCamera::Hook();
+		Hook_TESCamera::Hook();
 		Hook_CameraState::Hook();
 
 		logger::info("Gts finished applying hooks...");
