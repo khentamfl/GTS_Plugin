@@ -21,8 +21,6 @@ namespace Hooks
 		if (a_nextState) {
 			log::info("  - {}", GetRawName(a_nextState.get()));
 		}
-		_Update(a_this, a_nextState);
-
 
 		if (!a_nextState) {
 			// When a_nextState is nullptr we are updating current state
@@ -52,11 +50,6 @@ namespace Hooks
 									auto targetLocationLocal = transform * targetLocationWorld;
 									log::info("targetLocationLocal: {}", Vector2Str(targetLocationLocal));
 
-									// Add adjustments
-									// log::info("Delta: {},{}", deltaX, deltaY);
-									// targetLocationLocal.x += deltaX * scale;
-									// targetLocationLocal.y += deltaY * scale;
-
 									// Set Camera
 									cameraRoot->local.translate = targetLocationLocal;
 									a_this->translation = targetLocationLocal;
@@ -68,6 +61,8 @@ namespace Hooks
 				}
 			}
 		}
+
+		_Update(a_this, a_nextState);
 	}
 
 	void Hook_CameraState::GetRotation(ThirdPersonState* a_this, NiQuaternion& a_rotation) {
