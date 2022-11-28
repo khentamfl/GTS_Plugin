@@ -27,6 +27,8 @@ namespace {
 		if (camera && player) {
 			camera->UpdateThirdPerson(player->IsWeaponDrawn());
 		}
+		camera->ToggleFreeCameraMode(false);
+		camera->ToggleFreeCameraMode(false);
 	}
 
 	void ResetIniSettings() {
