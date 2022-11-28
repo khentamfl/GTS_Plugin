@@ -53,6 +53,18 @@ namespace Gts {
 		}
 	}
 
+	inline std::string Vector2Str(const NiQuaternion& vector) {
+		return std::format("{:.2f},{:.2f},{:.2f},{:.2f}", vector.x, vector.y, vector.z, vector.w);
+	}
+
+	inline std::string Vector2Str(const NiQuaternion* vector) {
+		if (vector) {
+			return std::format("{:.2f},{:.2f},{:.2f},{:.2f}", vector->x, vector->y, vector->z, vector->w);
+		} else {
+			return "";
+		}
+	}
+
 	inline bool starts_with(std::string_view arg, std::string_view prefix) {
 		return arg.compare(0, prefix.size(), prefix);
 	}
