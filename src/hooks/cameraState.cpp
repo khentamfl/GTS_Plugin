@@ -71,7 +71,7 @@ namespace {
 						// Set Camera
 						niCamera->local.translate = targetLocationLocal;
 						update_node(niCamera);
-						UpdateWorldToScreenMtx(niCamera);
+						UpdateWorld2ScreetMat(niCamera);
 					}
 				}
 			}
