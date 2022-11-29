@@ -76,7 +76,7 @@ namespace {
 						if (sky) {
 							log::info("Sky: {}", GetRawName(sky));
 							auto skyRoot = sky->root;
-							if (root) {
+							if (skyRoot) {
 								log::info("SkyRoot: {}", GetRawName(skyRoot.get()));
 							}
 						}
