@@ -80,6 +80,16 @@ namespace {
 								log::info("SkyRoot: {}", GetRawName(skyRoot.get()));
 								log::info("SkyRoot Name: {}", skyRoot->name);
 								log::info("SkyRoot Pos: {}", Vector2Str(skyRoot->world.translate));
+								auto skyParent = skyRoot->parent;
+								if (skyParent) {
+									log::info("SkyRoot Parent: {}", skyParent->name);
+									auto skyParentParent = skyParent->parent;
+									if (skyParentParent) {
+										log::info("SkyRoot Parent Paren: {}", skyParentParent->name);
+									}
+								}
+
+								log::info("cameraRoot Location: {}", Vector2Str(cameraLocation));
 							}
 						}
 
