@@ -6,12 +6,37 @@
 using namespace RE;
 using namespace Gts;
 
+namespace {
+	NiCamera* GetNiCamera() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto cameraRoot = camera->cameraRoot.get();
+		NiCamera* niCamera = nullptr;
+		for (auto child: cameraRoot->GetChildren()) {
+			NiAVObject* node = child.get();
+			log::info("- {}", GetRawName(node));
+			if (node) {
+				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
+				if (casted) {
+					niCamera = casted;
+					break;
+				}
+			}
+		}
+	}
+	void UpdateWorld2ScreetMat(NiCamera* nicamera) {
+		auto camNi = niCamera ? niCamera : GetNiCamera();
+		typedef void (*UpdateWorldToScreenMtx)(RE::NiCamera*);
+		static auto toScreenFunc = REL::Relocation<UpdateWorldToScreenMtx>(REL::RelocationID(69271, 70641).address());
+		toScreenFunc(camNi);
+	}
+}
+
 namespace Hooks
 {
 	void Hook_CameraState::Hook() {
 		logger::info("Hooking ThirdPersonState");
 		REL::Relocation<std::uintptr_t> Vtbl{ ThirdPersonState::VTABLE[0] };
-		// _Update = Vtbl.write_vfunc(0x03, Update);
+		_Update = Vtbl.write_vfunc(0x03, Update);
 		// _GetRotation = Vtbl.write_vfunc(0x04, GetRotation);
 		// _GetTranslation = Vtbl.write_vfunc(0x05, GetTranslation);
 		// _UpdateRotation = Vtbl.write_vfunc(0x0E, UpdateRotation);
@@ -56,6 +81,7 @@ namespace Hooks
 									a_this->translation = targetLocationLocal;
 									log::info("POST: translation: {}", Vector2Str(a_this->translation));
 									update_node(cameraRoot.get());
+									UpdateWorld2ScreetMat(nullptr);
 								}
 							}
 						}

@@ -138,8 +138,11 @@ namespace {
 			if (scale > 1e-4) {
 				auto model = player->Get3D(false);
 				if (model) {
-					log::info("Can the roo t be changed.");
-					camera->SetCameraRoot(model);
+					auto node = model->AsNode();
+					if (node) {
+						log::info("Can the roo t be changed.");
+						camera->SetCameraRoot(node);
+					}
 				}
 			}
 		}
@@ -158,7 +161,7 @@ namespace Gts {
 
 	void CameraManager::Start() {
 		ResetIniSettings();
-		Experiment12();
+		// Experiment12();
 	}
 
 	void CameraManager::Update() {
