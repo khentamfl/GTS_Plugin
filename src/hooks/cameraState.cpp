@@ -11,10 +11,10 @@ namespace Hooks
 	void Hook_CameraState::Hook() {
 		logger::info("Hooking ThirdPersonState");
 		REL::Relocation<std::uintptr_t> Vtbl{ ThirdPersonState::VTABLE[0] };
-		_Update = Vtbl.write_vfunc(0x03, Update);
+		// _Update = Vtbl.write_vfunc(0x03, Update);
 		// _GetRotation = Vtbl.write_vfunc(0x04, GetRotation);
 		// _GetTranslation = Vtbl.write_vfunc(0x05, GetTranslation);
-		_UpdateRotation = Vtbl.write_vfunc(0x0E, UpdateRotation);
+		// _UpdateRotation = Vtbl.write_vfunc(0x0E, UpdateRotation);
 	}
 
 	void Hook_CameraState::Update(ThirdPersonState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {

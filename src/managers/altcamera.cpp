@@ -129,6 +129,21 @@ namespace {
 			}
 		}
 	}
+
+	void Experiment12() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			float scale = get_visual_scale(player);
+			if (scale > 1e-4) {
+				auto model = player->Get3D(false);
+				if (model) {
+					log::info("Can the roo t be changed.");
+					camera->SetCameraRoot(model);
+				}
+			}
+		}
+	}
 }
 
 namespace Gts {
@@ -143,6 +158,7 @@ namespace Gts {
 
 	void CameraManager::Start() {
 		ResetIniSettings();
+		Experiment12();
 	}
 
 	void CameraManager::Update() {
