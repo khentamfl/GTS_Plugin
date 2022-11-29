@@ -92,7 +92,6 @@ namespace {
 								log::info("cameraRoot Location: {}", Vector2Str(cameraLocation));
 							}
 						}
-
 					}
 				}
 			}
@@ -119,7 +118,7 @@ namespace Hooks
 		_Update(a_this, a_nextState);
 
 		if (!a_nextState) {
-			Experiment09();
+			// Experiment09();
 		}
 	}
 
@@ -136,42 +135,5 @@ namespace Hooks
 	void Hook_CameraState::UpdateRotation(ThirdPersonState* a_this) {
 		log::info("UpdateRotation");
 		_UpdateRotation(a_this);
-
-		auto camera = PlayerCamera::GetSingleton();
-		if (camera) {
-			if (camera == a_this->camera) {
-				auto cameraRoot = camera->cameraRoot;
-				if (cameraRoot) {
-					NiPoint3 thirdLocation;
-					a_this->GetTranslation(thirdLocation);
-
-					auto player = PlayerCharacter::GetSingleton();
-					if (player) {
-						float scale = get_visual_scale(player);
-						if (scale > 1e-4) {
-							auto model = player->Get3D(false);
-							if (model) {
-								auto playerTrans = model->world;
-								auto playerTransInve = model->world.Invert();
-
-								// Get Scaled Camera Location
-								auto cameraLocation = thirdLocation;
-								auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
-								auto parent = cameraRoot->parent;
-								NiTransform transform = parent->world.Invert();
-								auto targetLocationLocal = transform * targetLocationWorld;
-
-								// Set Camera
-								log::info("PRE: translation: {}", Vector2Str(a_this->translation));
-								cameraRoot->local.translate = targetLocationLocal;
-								a_this->translation = targetLocationLocal;
-								log::info("POST: translation: {}", Vector2Str(a_this->translation));
-								update_node(cameraRoot.get());
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 }

@@ -161,7 +161,7 @@ namespace Gts {
 
 	void CameraManager::Start() {
 		ResetIniSettings();
-		// Experiment12();
+		Experiment12();
 	}
 
 	void CameraManager::Update() {
