@@ -30,6 +30,53 @@ namespace {
 		static auto toScreenFunc = REL::Relocation<UpdateWorldToScreenMtx>(REL::RelocationID(69271, 70641).address());
 		toScreenFunc(camNi);
 	}
+
+	void Experiment09() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto cameraRoot = camera->cameraRoot.get();
+		NiCamera* niCamera = nullptr;
+		for (auto child: cameraRoot->GetChildren()) {
+			NiAVObject* node = child.get();
+			log::info("- {}", GetRawName(node));
+			if (node) {
+				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
+				if (casted) {
+					niCamera = casted;
+					break;
+				}
+			}
+		}
+		if (niCamera) {
+			auto player = PlayerCharacter::GetSingleton();
+			if (player) {
+				float scale = get_visual_scale(player);
+				if (scale > 1e-4) {
+					auto model = player->Get3D(false);
+					if (model) {
+						auto playerTrans = model->world;
+						auto playerTransInve = model->world.Invert();
+
+						// Get Scaled Camera Location
+						auto cameraLocation = cameraRoot->world.translate;
+						auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
+						auto parent = niCamera->parent;
+						NiTransform transform = parent->world.Invert();
+						auto targetLocationLocal = transform * targetLocationWorld;
+
+						// Add adjustments
+						// log::info("Delta: {},{}", deltaX, deltaY);
+						// targetLocationLocal.x += deltaX * scale;
+						// targetLocationLocal.y += deltaY * scale;
+
+						// Set Camera
+						niCamera->local.translate = targetLocationLocal;
+						update_node(niCamera);
+						UpdateWorldToScreenMtx(niCamera);
+					}
+				}
+			}
+		}
+	}
 }
 
 namespace Hooks
@@ -51,44 +98,7 @@ namespace Hooks
 		_Update(a_this, a_nextState);
 
 		if (!a_nextState) {
-			// When a_nextState is nullptr we are updating current state
-			auto camera = PlayerCamera::GetSingleton();
-			if (camera) {
-				if (camera == a_this->camera) {
-					auto cameraRoot = camera->cameraRoot;
-					if (cameraRoot) {
-						NiPoint3 thirdLocation;
-						a_this->GetTranslation(thirdLocation);
-
-						auto player = PlayerCharacter::GetSingleton();
-						if (player) {
-							float scale = get_visual_scale(player);
-							if (scale > 1e-4) {
-								auto model = player->Get3D(false);
-								if (model) {
-									auto playerTrans = model->world;
-									auto playerTransInve = model->world.Invert();
-
-									// Get Scaled Camera Location
-									auto cameraLocation = thirdLocation;
-									auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
-									auto parent = cameraRoot->parent;
-									NiTransform transform = parent->world.Invert();
-									auto targetLocationLocal = transform * targetLocationWorld;
-
-									// Set Camera
-									log::info("PRE: translation: {}", Vector2Str(a_this->translation));
-									cameraRoot->local.translate = targetLocationLocal;
-									a_this->translation = targetLocationLocal;
-									log::info("POST: translation: {}", Vector2Str(a_this->translation));
-									update_node(cameraRoot.get());
-									UpdateWorld2ScreetMat(nullptr);
-								}
-							}
-						}
-					}
-				}
-			}
+			Experiment09();
 		}
 	}
 
