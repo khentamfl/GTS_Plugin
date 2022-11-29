@@ -22,6 +22,7 @@ namespace {
 				}
 			}
 		}
+		return niCamera;
 	}
 	void UpdateWorld2ScreetMat(NiCamera* niCamera) {
 		auto camNi = niCamera ? niCamera : GetNiCamera();
