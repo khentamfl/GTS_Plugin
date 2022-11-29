@@ -72,6 +72,15 @@ namespace {
 						niCamera->local.translate = targetLocationLocal;
 						update_node(niCamera);
 						UpdateWorld2ScreetMat(niCamera);
+						auto sky = Sky::GetSingleton();
+						if (sky) {
+							log::info("Sky: {}", GetRawName(sky));
+							auto skyRoot = sky->root;
+							if (root) {
+								log::info("SkyRoot: {}", GetRawName(skyRoot.get()));
+							}
+						}
+
 					}
 				}
 			}
