@@ -23,7 +23,7 @@ namespace {
 			}
 		}
 	}
-	void UpdateWorld2ScreetMat(NiCamera* nicamera) {
+	void UpdateWorld2ScreetMat(NiCamera* niCamera) {
 		auto camNi = niCamera ? niCamera : GetNiCamera();
 		typedef void (*UpdateWorldToScreenMtx)(RE::NiCamera*);
 		static auto toScreenFunc = REL::Relocation<UpdateWorldToScreenMtx>(REL::RelocationID(69271, 70641).address());
