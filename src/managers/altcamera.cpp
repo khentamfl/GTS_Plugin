@@ -141,7 +141,7 @@ namespace {
 					auto node = model->AsNode();
 					if (node) {
 						log::info("Can the roo t be changed.");
-						camera->SetCameraRoot(node);
+						camera->SetCameraRoot(NiPointer(node));
 					}
 				}
 			}
