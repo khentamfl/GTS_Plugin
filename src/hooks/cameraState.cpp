@@ -78,6 +78,8 @@ namespace {
 							auto skyRoot = sky->root;
 							if (skyRoot) {
 								log::info("SkyRoot: {}", GetRawName(skyRoot.get()));
+								log::info("SkyRoot Name: {}", skyRoot->name);
+								log::info("SkyRoot Pos: {}", Vector2Str(skyRoot->world.translate));
 							}
 						}
 
