@@ -139,9 +139,11 @@ namespace {
 				auto model = player->Get3D(false);
 				if (model) {
 					auto node = model->AsNode();
+					static NiPointer<NiNode> nodePtr = NiPointer(node);
 					if (node) {
-						log::info("Can the roo t be changed.");
-						camera->SetCameraRoot(NiPointer(node));
+						log::info("Can the root be changed.");
+						camera->SetCameraRoot(nodePtr);
+						log::info("Changed.");
 					}
 				}
 			}
