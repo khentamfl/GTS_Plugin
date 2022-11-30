@@ -142,7 +142,7 @@ namespace {
 				static NiPointer<NiNode> nodePtr = NiPointer(node);
 				if (node) {
 					log::info("Can the root be changed.");
-					camera->SetCameraRoot(nodePtr);
+					camera->cameraRoot = nodePtr;
 					log::info("Changed.");
 				}
 			}
