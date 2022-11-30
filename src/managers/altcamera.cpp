@@ -75,6 +75,7 @@ namespace {
 				if (shadowNode) {
 					return shadowNode;
 				}
+				parent = parent->parent;
 			}
 		}
 		return nullptr;
