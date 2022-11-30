@@ -264,7 +264,7 @@ namespace Gts {
 	}
 	void CameraManager::HavokUpdate() {
 		// Experiment11();
-		Experiment13();
+		// Experiment13();
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {

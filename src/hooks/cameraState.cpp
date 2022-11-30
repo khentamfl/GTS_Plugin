@@ -20,6 +20,7 @@ namespace Hooks
 	void Hook_CameraState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		log::info("TESCameraState: Update");
 		_Update(a_this, a_nextState);
+		CameraManager::GetSingleton().Update();
 	}
 
 	void Hook_CameraState::GetRotation(TESCameraState* a_this, NiQuaternion& a_rotation) {

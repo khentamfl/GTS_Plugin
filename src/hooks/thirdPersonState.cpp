@@ -34,6 +34,7 @@ namespace Hooks
 	void Hook_ThirdPersonState::Update(ThirdPersonState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		log::info("ThirdPersonState: Update");
 		_Update(a_this, a_nextState);
+		CameraManager::GetSingleton().Update();
 	}
 
 	void Hook_ThirdPersonState::GetRotation(ThirdPersonState* a_this, NiQuaternion& a_rotation) {
@@ -49,5 +50,6 @@ namespace Hooks
 	void Hook_ThirdPersonState::UpdateRotation(ThirdPersonState* a_this) {
 		log::info("ThirdPersonState: UpdateRotation");
 		_UpdateRotation(a_this);
+		CameraManager::GetSingleton().Update();
 	}
 }
