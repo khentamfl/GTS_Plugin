@@ -66,17 +66,20 @@ namespace {
 		toScreenFunc(camNi);
 	}
 	ShadowSceneNode* GetShadowMap() {
-		auto niCamera = GetNiCamera();
-		if (niCamera) {
-			NiNode* parent = niCamera->parent;
-			while (parent) {
-				log::info("- {}", GetRawName(parent));
-				log::info("- {}", parent->name);
-				ShadowSceneNode* shadowNode = skyrim_cast<ShadowSceneNode*>(parent);
-				if (shadowNode) {
-					return shadowNode;
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			auto searchRoot = player->GetCurrent3D();
+			if (searchRoot) {
+				NiNode* parent = searchRoot->parent;
+				while (parent) {
+					log::info("- {}", GetRawName(parent));
+					log::info("- {}", parent->name);
+					ShadowSceneNode* shadowNode = skyrim_cast<ShadowSceneNode*>(parent);
+					if (shadowNode) {
+						return shadowNode;
+					}
+					parent = parent->parent;
 				}
-				parent = parent->parent;
 			}
 		}
 		return nullptr;
