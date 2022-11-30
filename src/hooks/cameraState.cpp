@@ -2,6 +2,7 @@
 #include "util.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
+#include "managers/altcamera.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -119,6 +120,7 @@ namespace Hooks
 
 		if (!a_nextState) {
 			// Experiment09();
+			CameraManager::GetSingleton().Update();
 		}
 	}
 
@@ -135,5 +137,6 @@ namespace Hooks
 	void Hook_CameraState::UpdateRotation(ThirdPersonState* a_this) {
 		log::info("UpdateRotation");
 		_UpdateRotation(a_this);
+		CameraManager::GetSingleton().Update();
 	}
 }

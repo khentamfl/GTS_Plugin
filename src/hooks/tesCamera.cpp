@@ -1,6 +1,7 @@
 #include "hooks/tesCamera.hpp"
 #include "data/plugin.hpp"
 #include "util.hpp"
+#include "managers/altcamera.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -17,5 +18,6 @@ namespace Hooks
 	void Hook_TESCamera::Update(TESCamera* a_this) {
 		log::info("Hook_TESCamera::Update");
 		_Update(a_this);
+		CameraManager::GetSingleton().Update();
 	}
 }
