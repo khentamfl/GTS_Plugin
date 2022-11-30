@@ -148,6 +148,45 @@ namespace {
 			}
 		}
 	}
+
+	void Experiment13() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto cameraRoot = camera->cameraRoot;
+		auto player = PlayerCharacter::GetSingleton();
+		auto currentState = camera->currentState;
+
+		if (cameraRoot) {
+			NiPoint3 cameraLocation;
+			currentState->GetTranslation(cameraLocation);
+			if (currentState) {
+				if (player) {
+					float scale = get_visual_scale(player);
+					if (scale > 1e-4) {
+						auto model = player->Get3D(false);
+						if (model) {
+							auto playerTrans = model->world;
+							auto playerTransInve = model->world.Invert();
+
+							// Get Scaled Camera Location
+							auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
+							auto parent = cameraRoot->parent;
+							NiTransform transform = parent->world.Invert();
+							auto targetLocationLocal = transform * targetLocationWorld;
+
+							// Add adjustments
+							// log::info("Delta: {},{}", deltaX, deltaY);
+							// targetLocationLocal.x += deltaX * scale;
+							// targetLocationLocal.y += deltaY * scale;
+
+							// Set Camera
+							cameraRoot->local.translate = targetLocationLocal;
+							update_node(cameraRoot.get());
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 namespace Gts {
@@ -162,11 +201,12 @@ namespace Gts {
 
 	void CameraManager::Start() {
 		ResetIniSettings();
-		Experiment12();
+		// Experiment12();
 	}
 
 	void CameraManager::Update() {
 		// Experiment11();
+		Experiment13();
 	}
 	void CameraManager::HavokUpdate() {
 		// Experiment11();
