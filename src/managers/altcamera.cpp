@@ -43,6 +43,30 @@ namespace {
 		UpdateThirdPerson();
 	}
 
+	NiCamera* GetNiCamera() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto cameraRoot = camera->cameraRoot.get();
+		NiCamera* niCamera = nullptr;
+		for (auto child: cameraRoot->GetChildren()) {
+			NiAVObject* node = child.get();
+			log::info("- {}", GetRawName(node));
+			if (node) {
+				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
+				if (casted) {
+					niCamera = casted;
+					break;
+				}
+			}
+		}
+		return niCamera;
+	}
+	void UpdateWorld2ScreetMat(NiCamera* niCamera) {
+		auto camNi = niCamera ? niCamera : GetNiCamera();
+		typedef void (*UpdateWorldToScreenMtx)(RE::NiCamera*);
+		static auto toScreenFunc = REL::Relocation<UpdateWorldToScreenMtx>(REL::RelocationID(69271, 70641).address());
+		toScreenFunc(camNi);
+	}
+
 	void Experiment10() {
 		auto camera = PlayerCamera::GetSingleton();
 		auto cameraRoot = camera->cameraRoot.get();
@@ -82,7 +106,9 @@ namespace {
 
 						// Set Camera
 						niCamera->local.translate = targetLocationLocal;
+						niCamera->world.translate = targetLocationLocal;
 						update_node(niCamera);
+						UpdateWorld2ScreetMat(nullptr);
 					}
 				}
 			}
