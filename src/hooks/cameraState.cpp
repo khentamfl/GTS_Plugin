@@ -2,7 +2,7 @@
 #include "util.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
-#include "managers/altcamera.hpp"
+// #include "managers/altcamera.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -20,7 +20,7 @@ namespace Hooks
 	void Hook_CameraState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		log::info("TESCameraState: Update");
 		_Update(a_this, a_nextState);
-		CameraManager::GetSingleton().Update();
+		// CameraManager::GetSingleton().Update();
 	}
 
 	void Hook_CameraState::GetRotation(TESCameraState* a_this, NiQuaternion& a_rotation) {

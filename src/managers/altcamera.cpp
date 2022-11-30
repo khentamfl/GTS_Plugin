@@ -49,7 +49,6 @@ namespace {
 		NiCamera* niCamera = nullptr;
 		for (auto child: cameraRoot->GetChildren()) {
 			NiAVObject* node = child.get();
-			log::info("- {}", GetRawName(node));
 			if (node) {
 				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
 				if (casted) {
@@ -71,6 +70,7 @@ namespace {
 		if (niCamera) {
 			NiNode* parent = niCamera->parent;
 			while (parent) {
+				log::info("- {}", GetRawName(parent));
 				ShadowSceneNode* shadowNode = skyrim_cast<ShadowSceneNode*>(parent);
 				if (shadowNode) {
 					return shadowNode;
