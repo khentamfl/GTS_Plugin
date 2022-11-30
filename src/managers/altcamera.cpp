@@ -71,6 +71,7 @@ namespace {
 			NiNode* parent = niCamera->parent;
 			while (parent) {
 				log::info("- {}", GetRawName(parent));
+				log::info("- {}", parent->name);
 				ShadowSceneNode* shadowNode = skyrim_cast<ShadowSceneNode*>(parent);
 				if (shadowNode) {
 					return shadowNode;
