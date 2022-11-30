@@ -9,6 +9,7 @@
 #include "hooks/playerCamera.hpp"
 #include "hooks/tesCamera.hpp"
 #include "hooks/cameraState.hpp"
+#include "hooks/thirdPersonState.hpp"
 
 using namespace RE;
 
@@ -31,6 +32,7 @@ namespace Hooks
 		Hook_PlayerCamera::Hook();
 		Hook_TESCamera::Hook();
 		Hook_CameraState::Hook();
+		Hook_ThirdPersonState::Hook();
 
 		logger::info("Gts finished applying hooks...");
 	}
