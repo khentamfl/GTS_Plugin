@@ -20,8 +20,5 @@ namespace Hooks
 
 			static void GetTranslation(TESCameraState* a_this, NiPoint3& a_translation);
 			static inline REL::Relocation<decltype(GetTranslation)> _GetTranslation;
-
-			static void UpdateRotation(TESCameraState* a_this);
-			static inline REL::Relocation<decltype(UpdateRotation)> _UpdateRotation;
 	};
 }

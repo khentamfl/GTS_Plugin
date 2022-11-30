@@ -15,7 +15,6 @@ namespace Hooks
 		_Update = Vtbl.write_vfunc(0x03, Update);
 		_GetRotation = Vtbl.write_vfunc(0x04, GetRotation);
 		_GetTranslation = Vtbl.write_vfunc(0x05, GetTranslation);
-		_UpdateRotation = Vtbl.write_vfunc(0x0E, UpdateRotation);
 	}
 
 	void Hook_CameraState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {

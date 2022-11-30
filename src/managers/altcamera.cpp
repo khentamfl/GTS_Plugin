@@ -66,6 +66,19 @@ namespace {
 		static auto toScreenFunc = REL::Relocation<UpdateWorldToScreenMtx>(REL::RelocationID(69271, 70641).address());
 		toScreenFunc(camNi);
 	}
+	ShadowSceneNode* GetShadowMap() {
+		auto niCamera = GetNiCamera();
+		if (niCamera) {
+			NiNode* parent = niCamera->parent;
+			while (parent) {
+				ShadowSceneNode* shadowNode = skyrim_cast<ShadowSceneNode*>(parent);
+				if (shadowNode) {
+					return shadowNode;
+				}
+			}
+		}
+		return nullptr;
+	}
 
 	void Experiment10() {
 		auto camera = PlayerCamera::GetSingleton();
@@ -214,6 +227,11 @@ namespace {
 								log::info("NiUpdate");
 								niCamera->world.translate = targetLocationLocal;
 								UpdateWorld2ScreetMat(niCamera);
+							}
+							auto shadowNode = GetShadowMap();
+							if (shadowNode) {
+								log::info("Update shadow map");
+								shadowNode->GetRuntimeData().cameraPos = targetLocationLocal;
 							}
 							log::info("Set EXP13");
 						}
