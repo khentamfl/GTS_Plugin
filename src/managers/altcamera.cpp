@@ -181,6 +181,7 @@ namespace {
 							// Set Camera
 							cameraRoot->local.translate = targetLocationLocal;
 							update_node(cameraRoot.get());
+							log::info("Set EXP13");
 						}
 					}
 				}
@@ -210,6 +211,7 @@ namespace Gts {
 	}
 	void CameraManager::HavokUpdate() {
 		// Experiment11();
+		Experiment13();
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {
