@@ -221,6 +221,10 @@ namespace {
 								log::info("Update shadow map");
 								shadowNode->GetRuntimeData().cameraPos = targetLocationLocal;
 							}
+							auto sceneManager = UI3DSceneManager::GetSingleton();
+							if (sceneManager) {
+								sceneManager->cachedCameraPos = niCamera.world.translate;
+							}
 							log::info("Set EXP13");
 						}
 					}
