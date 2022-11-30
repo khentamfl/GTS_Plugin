@@ -206,7 +206,15 @@ namespace {
 
 							// Set Camera
 							cameraRoot->local.translate = targetLocationLocal;
+							cameraRoot->world.translate = targetLocationLocal;
 							update_node(cameraRoot.get());
+
+							auto niCamera = GetNiCamera();
+							if (niCamera) {
+								log::info("NiUpdate");
+								niCamera->world.translate = targetLocationLocal;
+								UpdateWorld2ScreetMat(niCamera);
+							}
 							log::info("Set EXP13");
 						}
 					}
