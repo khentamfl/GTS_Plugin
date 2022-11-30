@@ -44,20 +44,13 @@ namespace {
 	}
 
 	NiCamera* GetNiCamera() {
-		auto camera = PlayerCamera::GetSingleton();
-		auto cameraRoot = camera->cameraRoot.get();
-		NiCamera* niCamera = nullptr;
-		for (auto child: cameraRoot->GetChildren()) {
-			NiAVObject* node = child.get();
-			if (node) {
-				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
-				if (casted) {
-					niCamera = casted;
-					break;
-				}
+		auto sceneManager = UI3DSceneManager::GetSingleton();
+		if (sceneManager) {
+			if (sceneManager->camera) {
+				return sceneManager->camera.get();
 			}
 		}
-		return niCamera;
+		return nullptr;
 	}
 	void UpdateWorld2ScreetMat(NiCamera* niCamera) {
 		auto camNi = niCamera ? niCamera : GetNiCamera();
@@ -66,20 +59,10 @@ namespace {
 		toScreenFunc(camNi);
 	}
 	ShadowSceneNode* GetShadowMap() {
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			auto searchRoot = player->GetCurrent3D();
-			if (searchRoot) {
-				NiNode* parent = searchRoot->parent;
-				while (parent) {
-					log::info("- {}", GetRawName(parent));
-					log::info("- {}", parent->name);
-					ShadowSceneNode* shadowNode = skyrim_cast<ShadowSceneNode*>(parent);
-					if (shadowNode) {
-						return shadowNode;
-					}
-					parent = parent->parent;
-				}
+		auto sceneManager = UI3DSceneManager::GetSingleton();
+		if (sceneManager) {
+			if (sceneManager->shadowSceneNode) {
+				return sceneManager->shadowSceneNode;
 			}
 		}
 		return nullptr;
