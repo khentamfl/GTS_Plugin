@@ -136,15 +136,15 @@ namespace {
 		if (player) {
 			float scale = get_visual_scale(player);
 			if (scale > 1e-4) {
-				auto model = player->Get3D(false);
-				if (model) {
-					auto node = model->AsNode();
-					static NiPointer<NiNode> nodePtr = NiPointer(node);
-					if (node) {
-						log::info("Can the root be changed.");
-						camera->SetCameraRoot(nodePtr);
-						log::info("Changed.");
-					}
+				string node_name = "NPC Root [Root]";
+				bool result = false;
+				auto node = find_node(actor, node_name, false);
+				auto node = model->AsNode();
+				static NiPointer<NiNode> nodePtr = NiPointer(node);
+				if (node) {
+					log::info("Can the root be changed.");
+					camera->SetCameraRoot(nodePtr);
+					log::info("Changed.");
 				}
 			}
 		}
