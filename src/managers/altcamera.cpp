@@ -137,8 +137,7 @@ namespace {
 			float scale = get_visual_scale(player);
 			if (scale > 1e-4) {
 				string node_name = "NPC Root [Root]";
-				bool result = false;
-				auto node = find_node(actor, node_name, false);
+				auto model = find_node(player, node_name, false);
 				auto node = model->AsNode();
 				static NiPointer<NiNode> nodePtr = NiPointer(node);
 				if (node) {
