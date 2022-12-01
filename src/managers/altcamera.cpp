@@ -223,7 +223,7 @@ namespace {
 							}
 							auto sceneManager = UI3DSceneManager::GetSingleton();
 							if (sceneManager) {
-								sceneManager->cachedCameraPos = niCamera->world->translate;
+								sceneManager->cachedCameraPos = niCamera->world.translate;
 							}
 							log::info("Set EXP13");
 						}
