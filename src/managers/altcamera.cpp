@@ -1,5 +1,5 @@
 #include "managers/altcamera.hpp"
-#include "managers/cameras/utils.hpp"
+#include "managers/cameras/util.hpp"
 #include "util.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
@@ -36,7 +36,7 @@ namespace Gts {
 		CameraState* currentState = this->GetCameraState();
 		if (currentState) {
 			// Get scale based on camera state
-			flaot scale = currentState->GetScale();
+			float scale = currentState->GetScale();
 
 			// Get current camera position in player space
 			auto cameraPosLocal  = GetCameraPosLocal();
@@ -69,7 +69,7 @@ namespace Gts {
 	}
 
 	// Decide which camera state to use
-	CameraState* GetCameraState() {
+	CameraState* CameraManager::GetCameraState() {
 		if (!Runtime::GetBool("EnableCamera")) {
 			return nullptr;
 		}
@@ -90,16 +90,16 @@ namespace Gts {
 		switch (cameraMode) {
 			case 1: {
 				if (isProne) {
-					return this->proneState;
+					return &this->proneState;
 				} else {
-					return this->normalState;
+					return &this->normalState;
 				}
 			}
 			case 2: {
 				if (isProne) {
-					return this->altProneState;
+					return &this->altProneState;
 				} else {
-					return this->altState;
+					return &this->altState;
 				}
 			}
 			default: {

@@ -13,5 +13,5 @@ namespace Gts {
 			float halflife = 1.0;
 
 			void Update(float delta);
-	}
+	};
 }

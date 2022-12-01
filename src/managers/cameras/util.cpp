@@ -1,6 +1,7 @@
-#include "managers/cameras/util.cpp"
+#include "managers/cameras/util.hpp"
 #include "node.hpp"
 
+using namespace RE;
 
 namespace Gts {
 	void SetINIFloat(std::string_view name, float value) {
@@ -21,7 +22,7 @@ namespace Gts {
 		return -1.0;
 	}
 
-	float EnsureINIFloat(std::string_view name, float value) {
+	void EnsureINIFloat(std::string_view name, float value) {
 		auto currentValue = GetINIFloat(name);
 		if (fabs(currentValue - value) > 1e-3) {
 			SetINIFloat(name, value);

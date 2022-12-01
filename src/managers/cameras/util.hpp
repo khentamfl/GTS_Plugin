@@ -2,12 +2,14 @@
 
 // #define ENABLED_SHADOW
 
+using namespace RE;
+
 namespace Gts {
 	void SetINIFloat(std::string_view name, float value);
 
 	float GetINIFloat(std::string_view name);
 
-	float EnsureINIFloat(std::string_view name, float value);
+	void EnsureINIFloat(std::string_view name, float value);
 
 	void UpdateThirdPerson();
 

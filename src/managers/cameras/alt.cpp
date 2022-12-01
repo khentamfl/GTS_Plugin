@@ -1,6 +1,8 @@
 #include "managers/cameras/alt.hpp"
 #include "data/runtime.hpp"
 
+using namespace RE;
+
 namespace Gts {
 	NiPoint3 Alt::GetOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(

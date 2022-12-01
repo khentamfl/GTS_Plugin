@@ -1,6 +1,9 @@
 #include "managers/cameras/altProne.hpp"
 #include "data/runtime.hpp"
 
+using namespace RE;
+using namespace Gts;
+
 namespace {
 	NiPoint3 ProneAdjustment(const NiPoint3& cameraPos) {
 		float proneFactor = Runtime::GetFloat("CalcProne");

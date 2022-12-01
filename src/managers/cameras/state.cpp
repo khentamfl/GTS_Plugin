@@ -1,9 +1,11 @@
 #include "managers/cameras/state.hpp"
 #include "scale/scale.hpp"
 
+using namespace RE;
+
 namespace Gts {
 	float CameraState::GetScale() {
-		auto player = PlayerCamera::GetSingleton();
+		auto player = PlayerCharacter::GetSingleton();
 		if (!player) {
 			return 1.0;
 		}
