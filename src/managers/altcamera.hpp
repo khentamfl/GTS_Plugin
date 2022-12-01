@@ -1,6 +1,10 @@
 #pragma once
 // Module that handles the Camera
 #include "events.hpp"
+#include "managers/cameras/alt.hpp"
+#include "managers/cameras/altProne.hpp"
+#include "managers/cameras/normal.hpp"
+#include "managers/cameras/prone.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -17,6 +21,8 @@ namespace Gts {
 			static void UpdateCamera();
 			void ApplyCamera();
 
+			CameraState* GetCameraState();
+
 			void AdjustUpDown(float amt);
 			void ResetUpDown();
 
@@ -24,6 +30,10 @@ namespace Gts {
 			void ResetLeftRight();
 
 		private:
+			Normal normalState;
+			Prone proneState;
+			Alt altState;
+			AltProne altProneState;
 
 			float deltaX = 0.0;
 			float deltaZ = 0.0;
