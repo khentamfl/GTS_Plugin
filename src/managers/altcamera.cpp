@@ -11,6 +11,8 @@ using namespace RE;
 using namespace REL;
 using namespace Gts;
 
+// #define ENABLED_SHADOW
+
 namespace {
 	void SetINIFloat(std::string_view name, float value) {
 		auto ini_conf = INISettingCollection::GetSingleton();
@@ -65,6 +67,8 @@ namespace {
 		static auto toScreenFunc = REL::Relocation<UpdateWorldToScreenMtx>(REL::RelocationID(69271, 70641).address());
 		toScreenFunc(camNi);
 	}
+
+	#ifdef ENABLED_SHADOW
 	ShadowSceneNode* GetShadowMap() {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
@@ -84,6 +88,7 @@ namespace {
 		}
 		return nullptr;
 	}
+	#endif
 
 	void UpdateSceneManager(NiPoint3 camLoc) {
 		auto sceneManager = UI3DSceneManager::GetSingleton();
@@ -92,11 +97,13 @@ namespace {
 			// Cache
 			sceneManager->cachedCameraPos = camLoc;
 
+			#ifdef ENABLED_SHADOW
 			// Shadow Map
 			auto shadowNode = sceneManager->shadowSceneNode;
 			if (shadowNode) {
 				shadowNode->GetRuntimeData().cameraPos = camLoc;
 			}
+			#endif
 
 			// Camera
 			auto niCamera = sceneManager->camera;
@@ -111,11 +118,14 @@ namespace {
 		auto renderManager = UIRenderManager::GetSingleton();
 		if (renderManager) {
 			log::info("Update renderManager");
+
+			#ifdef ENABLED_SHADOW
 			// Shadow Map
 			auto shadowNode = renderManager->shadowSceneNode;
 			if (shadowNode) {
 				shadowNode->GetRuntimeData().cameraPos = camLoc;
 			}
+			#endif
 
 			// Camera
 			auto niCamera = renderManager->camera;
@@ -133,10 +143,13 @@ namespace {
 			UpdateWorld2ScreetMat(niCamera);
 			update_node(niCamera);
 		}
+
+		#ifdef ENABLED_SHADOW
 		auto shadowNode = GetShadowMap();
 		if (shadowNode) {
 			shadowNode->GetRuntimeData().cameraPos = camLoc;
 		}
+		#endif
 	}
 
 	void UpdatePlayerCamera(NiPoint3 camLoc) {
