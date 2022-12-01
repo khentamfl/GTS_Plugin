@@ -44,13 +44,20 @@ namespace {
 	}
 
 	NiCamera* GetNiCamera() {
-		auto sceneManager = UI3DSceneManager::GetSingleton();
-		if (sceneManager) {
-			if (sceneManager->camera) {
-				return sceneManager->camera.get();
+		auto camera = PlayerCamera::GetSingleton();
+		auto cameraRoot = camera->cameraRoot.get();
+		NiCamera* niCamera = nullptr;
+		for (auto child: cameraRoot->GetChildren()) {
+			NiAVObject* node = child.get();
+			if (node) {
+				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
+				if (casted) {
+					niCamera = casted;
+					break;
+				}
 			}
 		}
-		return nullptr;
+		return niCamera;
 	}
 	void UpdateWorld2ScreetMat(NiCamera* niCamera) {
 		auto camNi = niCamera ? niCamera : GetNiCamera();
@@ -59,10 +66,20 @@ namespace {
 		toScreenFunc(camNi);
 	}
 	ShadowSceneNode* GetShadowMap() {
-		auto sceneManager = UI3DSceneManager::GetSingleton();
-		if (sceneManager) {
-			if (sceneManager->shadowSceneNode) {
-				return sceneManager->shadowSceneNode;
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			auto searchRoot = player->GetCurrent3D();
+			if (searchRoot) {
+				NiNode* parent = searchRoot->parent;
+				while (parent) {
+					log::info("- {}", GetRawName(parent));
+					log::info("- {}", parent->name);
+					ShadowSceneNode* shadowNode = skyrim_cast<ShadowSceneNode*>(parent);
+					if (shadowNode) {
+						return shadowNode;
+					}
+					parent = parent->parent;
+				}
 			}
 		}
 		return nullptr;
@@ -245,6 +262,16 @@ namespace {
 									niCamera->world.translate = targetLocationLocal;
 									UpdateWorld2ScreetMat(niCamera.get());
 								}
+							}
+
+							auto niCamera = GetNiCamera();
+							if (niCamera) {
+								niCamera->world.translate = targetLocationLocal;
+								UpdateWorld2ScreetMat(niCamera);
+							}
+							auto shadowNode = GetShadowMap();
+							if (shadowNode) {
+								shadowNode->GetRuntimeData().cameraPos = targetLocationLocal;
 							}
 
 							log::info("Set EXP13");
