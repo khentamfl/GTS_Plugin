@@ -1,6 +1,7 @@
 #pragma once
 // Module that handles the Camera
 #include "events.hpp"
+#include "spring.hpp"
 #include "managers/cameras/alt.hpp"
 #include "managers/cameras/altProne.hpp"
 #include "managers/cameras/normal.hpp"
@@ -35,7 +36,7 @@ namespace Gts {
 			Alt altState;
 			AltProne altProneState;
 
-			float deltaX = 0.0;
-			float deltaZ = 0.0;
+			Spring deltaX = 0.0;
+			Spring deltaZ = 0.0;
 	};
 }

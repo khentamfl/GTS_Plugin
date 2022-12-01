@@ -2,6 +2,7 @@
 #include "managers/cameras/utils.hpp"
 #include "util.hpp"
 #include "data/runtime.hpp"
+#include "data/time.hpp"
 #include "data/persistent.hpp"
 #include "Config.hpp"
 #include "node.hpp"
@@ -49,6 +50,13 @@ namespace Gts {
 				offset = currentState->GetOffset(cameraPosLocal);
 			}
 
+			float dt = Time::WorldTimeElapsed();
+			this->deltaX.Update(dt);
+			this->deltaZ.Update(dt);
+
+			offset.x += this->deltaX.value;
+			offset.z += this->deltaZ.value;
+
 			// Apply camera scale and offset
 			ScaleCamera(scale, offset);
 
@@ -58,13 +66,6 @@ namespace Gts {
 			EnsureINIFloat("fVanityModeMinDist:Camera", Runtime::GetFloat("MinDistance"));
 			EnsureINIFloat("fVanityModeMaxDist:Camera", Runtime::GetFloat("MaxDistance"));
 		}
-	}
-
-	void CameraManager::AdjustUpDown(float amt) {
-		this->deltaZ += amt;
-	}
-	void CameraManager::ResetUpDown() {
-		this->deltaZ = 0.0;
 	}
 
 	// Decide which camera state to use
@@ -108,10 +109,17 @@ namespace Gts {
 		return nullptr;
 	}
 
+	void CameraManager::AdjustUpDown(float amt) {
+		this->deltaZ.target += amt;
+	}
+	void CameraManager::ResetUpDown() {
+		this->deltaZ.target = 0.0;
+	}
+
 	void CameraManager::AdjustLeftRight(float amt) {
-		this->deltaX += amt;
+		this->deltaX.target += amt;
 	}
 	void CameraManager::ResetLeftRight() {
-		this->deltaX = 0.0;
+		this->deltaX.target = 0.0;
 	}
 }
