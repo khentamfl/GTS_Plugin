@@ -28,4 +28,7 @@ namespace Gts {
 		this->value = eydt*(j0 + j1*dt) + this->target;
 		this->velocity = eydt*(this->velocity - j1*y*dt);
 	}
+
+	Spring::Spring(float initial, float halflife) : value(initial), target(initial), halflife(halflife) {
+	}
 }
