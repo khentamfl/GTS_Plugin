@@ -6,6 +6,8 @@ using namespace SKSE;
 
 namespace Hooks
 {
+	void HookCameraStates();
+
 	class Hook_CameraState
 	{
 		public:
@@ -14,11 +16,125 @@ namespace Hooks
 
 			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
 			static inline REL::Relocation<decltype(Update)> _Update;
+	};
 
-			static void GetRotation(TESCameraState* a_this, NiQuaternion& a_rotation);
-			static inline REL::Relocation<decltype(GetRotation)> _GetRotation;
+	class Hook_ThirdPersonState
+	{
+		public:
+			static void Hook();
+		private:
 
-			static void GetTranslation(TESCameraState* a_this, NiPoint3& a_translation);
-			static inline REL::Relocation<decltype(GetTranslation)> _GetTranslation;
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_HorseState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_DragonState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_FirstPersonState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_FreeState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_TransitionState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_BleedoutState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_VATState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_FurnitureState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_IronSightState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_VanityState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
+	};
+
+	class Hook_TweenState
+	{
+		public:
+			static void Hook();
+		private:
+
+			static void Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState);
+			static inline REL::Relocation<decltype(Update)> _Update;
 	};
 }

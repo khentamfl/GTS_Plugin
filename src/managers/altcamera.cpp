@@ -85,115 +85,73 @@ namespace {
 		return nullptr;
 	}
 
-	void Experiment10() {
-		auto camera = PlayerCamera::GetSingleton();
-		auto cameraRoot = camera->cameraRoot.get();
-		NiCamera* niCamera = nullptr;
-		for (auto child: cameraRoot->GetChildren()) {
-			NiAVObject* node = child.get();
-			log::info("- {}", GetRawName(node));
-			if (node) {
-				NiCamera* casted = netimmerse_cast<NiCamera*>(node);
-				if (casted) {
-					niCamera = casted;
-					break;
-				}
+	void UpdateSceneManager(NiPoint3 camLoc) {
+		auto sceneManager = UI3DSceneManager::GetSingleton();
+		if (sceneManager) {
+			log::info("Update sceneManager");
+			// Cache
+			sceneManager->cachedCameraPos = camLoc;
+
+			// Shadow Map
+			auto shadowNode = sceneManager->shadowSceneNode;
+			if (shadowNode) {
+				shadowNode->GetRuntimeData().cameraPos = camLoc;
+			}
+
+			// Camera
+			auto niCamera = sceneManager->camera;
+			if (niCamera) {
+				niCamera->world.translate = camLoc;
+				UpdateWorld2ScreetMat(niCamera.get());
 			}
 		}
+	}
+
+	void UpdateRenderManager(NiPoint3 camLoc) {
+		auto renderManager = UIRenderManager::GetSingleton();
+		if (renderManager) {
+			log::info("Update renderManager");
+			// Shadow Map
+			auto shadowNode = renderManager->shadowSceneNode;
+			if (shadowNode) {
+				shadowNode->GetRuntimeData().cameraPos = camLoc;
+			}
+
+			// Camera
+			auto niCamera = renderManager->camera;
+			if (niCamera) {
+				niCamera->world.translate = camLoc;
+				UpdateWorld2ScreetMat(niCamera.get());
+			}
+		}
+	}
+
+	void UpdateNiCamera(NiPoint3 camLoc) {
+		auto niCamera = GetNiCamera();
 		if (niCamera) {
-			auto player = PlayerCharacter::GetSingleton();
-			if (player) {
-				float scale = get_visual_scale(player);
-				if (scale > 1e-4) {
-					auto model = player->Get3D(false);
-					if (model) {
-						auto playerTrans = model->world;
-						auto playerTransInve = model->world.Invert();
-
-						// Get Scaled Camera Location
-						auto cameraLocation = cameraRoot->world.translate;
-						auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
-						auto parent = niCamera->parent;
-						NiTransform transform = parent->world.Invert();
-						auto targetLocationLocal = transform * targetLocationWorld;
-
-						// Add adjustments
-						// log::info("Delta: {},{}", deltaX, deltaY);
-						// targetLocationLocal.x += deltaX * scale;
-						// targetLocationLocal.y += deltaY * scale;
-
-						// Set Camera
-						niCamera->local.translate = targetLocationLocal;
-						niCamera->world.translate = targetLocationLocal;
-						update_node(niCamera);
-						UpdateWorld2ScreetMat(nullptr);
-					}
-				}
-			}
+			niCamera->world.translate = camLoc;
+			UpdateWorld2ScreetMat(niCamera);
+			update_node(niCamera);
+		}
+		auto shadowNode = GetShadowMap();
+		if (shadowNode) {
+			shadowNode->GetRuntimeData().cameraPos = camLoc;
 		}
 	}
 
-	void Experiment11() {
+	void UpdatePlayerCamera(NiPoint3 camLoc) {
 		auto camera = PlayerCamera::GetSingleton();
-		auto third = skyrim_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
-		// log::info("Cam node pos: {}::{}", Vector2Str(third->thirdPersonCameraObj->world.translate), Vector2Str(third->thirdPersonCameraObj->local.translate));
-		NiPoint3 thirdLocation;
-		third->GetTranslation(thirdLocation);
-
-		auto cameraRoot = camera->cameraRoot;
-
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			float scale = get_visual_scale(player);
-			if (scale > 1e-4) {
-				auto model = player->Get3D(false);
-				if (model) {
-					auto playerTrans = model->world;
-					auto playerTransInve = model->world.Invert();
-
-					// Get Scaled Camera Location
-					auto cameraLocation = thirdLocation;
-					log::info("cameraLocation: {}", Vector2Str(cameraLocation));
-					auto targetLocationWorld = playerTrans*((playerTransInve*cameraLocation) * scale);
-					auto parent = cameraRoot->parent;
-					NiTransform transform = parent->world.Invert();
-					auto targetLocationLocal = transform * targetLocationWorld;
-					log::info("targetLocationLocal: {}", Vector2Str(targetLocationLocal));
-
-					// Add adjustments
-					// log::info("Delta: {},{}", deltaX, deltaY);
-					// targetLocationLocal.x += deltaX * scale;
-					// targetLocationLocal.y += deltaY * scale;
-
-					// Set Camera
-					cameraRoot->local.translate = targetLocationLocal;
-					third->translation = targetLocationLocal;
-					update_node(cameraRoot.get());
-				}
+		if (camera) {
+			auto cameraRoot = camera->cameraRoot;
+			if (cameraRoot) {
+				cameraRoot->local.translate = camLoc;
+				cameraRoot->world.translate = camLoc;
+				update_node(cameraRoot.get());
 			}
 		}
 	}
 
-	void Experiment12() {
-		auto camera = PlayerCamera::GetSingleton();
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			float scale = get_visual_scale(player);
-			if (scale > 1e-4) {
-				string node_name = "NPC Root [Root]";
-				auto model = find_node(player, node_name, false);
-				auto node = model->AsNode();
-				static NiPointer<NiNode> nodePtr = NiPointer(node);
-				if (node) {
-					log::info("Can the root be changed.");
-					camera->cameraRoot = nodePtr;
-					log::info("Changed.");
-				}
-			}
-		}
-	}
-
-	void Experiment13() {
+	void ScaleCamera(NiPoint3 offset) {
 		auto camera = PlayerCamera::GetSingleton();
 		auto cameraRoot = camera->cameraRoot;
 		auto player = PlayerCharacter::GetSingleton();
@@ -218,63 +176,13 @@ namespace {
 							auto targetLocationLocal = transform * targetLocationWorld;
 
 							// Add adjustments
-							// log::info("Delta: {},{}", deltaX, deltaY);
-							// targetLocationLocal.x += deltaX * scale;
-							// targetLocationLocal.y += deltaY * scale;
+							targetLocationLocal.x += offset.x * scale;
+							targetLocationLocal.z += offset.z * scale;
 
-							// Set Camera
-							cameraRoot->local.translate = targetLocationLocal;
-							cameraRoot->world.translate = targetLocationLocal;
-							update_node(cameraRoot.get());
-
-							auto sceneManager = UI3DSceneManager::GetSingleton();
-							if (sceneManager) {
-								log::info("Update sceneManager");
-								// Cache
-								sceneManager->cachedCameraPos = targetLocationLocal;
-
-								// Shadow Map
-								auto shadowNode = sceneManager->shadowSceneNode;
-								if (shadowNode) {
-									shadowNode->GetRuntimeData().cameraPos = targetLocationLocal;
-								}
-
-								// Camera
-								auto niCamera = sceneManager->camera;
-								if (niCamera) {
-									niCamera->world.translate = targetLocationLocal;
-									UpdateWorld2ScreetMat(niCamera.get());
-								}
-							}
-
-							auto renderManager = UIRenderManager::GetSingleton();
-							if (renderManager) {
-								log::info("Update renderManager");
-								// Shadow Map
-								auto shadowNode = renderManager->shadowSceneNode;
-								if (shadowNode) {
-									shadowNode->GetRuntimeData().cameraPos = targetLocationLocal;
-								}
-
-								// Camera
-								auto niCamera = renderManager->camera;
-								if (niCamera) {
-									niCamera->world.translate = targetLocationLocal;
-									UpdateWorld2ScreetMat(niCamera.get());
-								}
-							}
-
-							auto niCamera = GetNiCamera();
-							if (niCamera) {
-								niCamera->world.translate = targetLocationLocal;
-								UpdateWorld2ScreetMat(niCamera);
-							}
-							auto shadowNode = GetShadowMap();
-							if (shadowNode) {
-								shadowNode->GetRuntimeData().cameraPos = targetLocationLocal;
-							}
-
-							log::info("Set EXP13");
+							UpdatePlayerCamera(targetLocationLocal);
+							UpdateNiCamera(targetLocationLocal);
+							UpdateSceneManager(targetLocationLocal);
+							UpdateRenderManager(targetLocationLocal);
 						}
 					}
 				}
@@ -295,16 +203,17 @@ namespace Gts {
 
 	void CameraManager::Start() {
 		ResetIniSettings();
-		// Experiment12();
 	}
 
-	void CameraManager::Update() {
-		// Experiment11();
-		Experiment13();
+	void CameraManager::UpdateCamera() {
+		CameraManager::GetSingleton().ApplyCamera();
 	}
-	void CameraManager::HavokUpdate() {
-		// Experiment11();
-		// Experiment13();
+
+	void CameraManager::ApplyCamera() {
+		NiPoint3 offset;
+		offset.x += this->deltaX;
+		offset.z += this->deltaZ;
+		ScaleCamera(offset);
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {

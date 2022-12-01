@@ -12,9 +12,10 @@ namespace Gts {
 			[[nodiscard]] static CameraManager& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-			virtual void Update() override;
-			virtual void HavokUpdate() override;
 			virtual void Start() override;
+
+			static void UpdateCamera();
+			void ApplyCamera();
 
 			void AdjustUpDown(float amt);
 			void ResetUpDown();
@@ -23,6 +24,7 @@ namespace Gts {
 			void ResetLeftRight();
 
 		private:
+
 			float deltaX = 0.0;
 			float deltaZ = 0.0;
 	};

@@ -6,10 +6,7 @@
 #include "hooks/havok.hpp"
 #include "hooks/magicTarget.hpp"
 #include "hooks/hkbBehaviorGraph.hpp"
-#include "hooks/playerCamera.hpp"
-#include "hooks/tesCamera.hpp"
 #include "hooks/cameraState.hpp"
-#include "hooks/thirdPersonState.hpp"
 
 using namespace RE;
 
@@ -29,10 +26,7 @@ namespace Hooks
 		Hook_HeadTracking::Hook(trampoline);
 		//Hook_MagicTarget::Hook();
 		Hook_hkbBehaviorGraph::Hook();
-		Hook_PlayerCamera::Hook();
-		Hook_TESCamera::Hook();
-		Hook_CameraState::Hook();
-		Hook_ThirdPersonState::Hook();
+		HookCameraStates();
 
 		logger::info("Gts finished applying hooks...");
 	}

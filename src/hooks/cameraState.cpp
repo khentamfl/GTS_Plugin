@@ -2,34 +2,185 @@
 #include "util.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
-// #include "managers/altcamera.hpp"
+#include "managers/altcamera.hpp"
 
 using namespace RE;
 using namespace Gts;
 
 namespace Hooks
 {
+	void HookCameraStates() {
+		Hook_CameraState::Hook();
+		Hook_ThirdPersonState::Hook();
+		Hook_DragonState::Hook();
+		Hook_HorseState::Hook();
+		Hook_FirstPersonState::Hook();
+		Hook_FreeState::Hook();
+		Hook_TransitionState::Hook();
+		Hook_BleedoutState::Hook();
+		Hook_VATState::Hook();
+		Hook_FurnitureState::Hook();
+		Hook_IronSightState::Hook();
+		Hook_VanityState::Hook();
+		Hook_TweenState::Hook();
+	};
+
+	// Base
 	void Hook_CameraState::Hook() {
 		logger::info("Hooking TESCameraState");
 		REL::Relocation<std::uintptr_t> Vtbl{ TESCameraState::VTABLE[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
-		_GetRotation = Vtbl.write_vfunc(0x04, GetRotation);
-		_GetTranslation = Vtbl.write_vfunc(0x05, GetTranslation);
 	}
 
 	void Hook_CameraState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
-		log::info("TESCameraState: Update");
 		_Update(a_this, a_nextState);
-		// CameraManager::GetSingleton().Update();
+		CameraManager::UpdateCamera();
 	}
 
-	void Hook_CameraState::GetRotation(TESCameraState* a_this, NiQuaternion& a_rotation) {
-		log::info("TESCameraState: GetRotation");
-		_GetRotation(a_this, a_rotation);
+	// Third
+	void Hook_ThirdPersonState::Hook() {
+		logger::info("Hooking ThirdPersonState");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_ThirdPersonState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
 
-	void Hook_CameraState::GetTranslation(TESCameraState* a_this, NiPoint3& a_translation) {
-		log::info("TESCameraState: GetTranslation");
-		_GetTranslation(a_this, a_translation);
+	void Hook_ThirdPersonState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
 	}
+
+	// Dragon
+	void Hook_DragonState::Hook() {
+		logger::info("Hooking DragonState");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_DragonCameraState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_DragonState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+	// Horse
+	void Hook_HorseState::Hook() {
+		logger::info("Hooking HorseState");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_HorseCameraState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_HorseState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+	// First
+	void Hook_FirstPersonState::Hook() {
+		logger::info("Hooking FirstPersonState");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_FirstPersonState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_FirstPersonState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+	// FreeCamera
+	void Hook_FreeState::Hook() {
+		logger::info("Hooking FreeCamera");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_FreeCameraState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_FreeState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+	// Transistion
+	void Hook_TransitionState::Hook() {
+		logger::info("Hooking TransitionCamera");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_PlayerCameraTransitionState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_TransitionState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+	// Bleedout
+	void Hook_BleedoutState::Hook() {
+		logger::info("Hooking BleedoutCamera");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_BleedoutCameraState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_BleedoutState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+	// Vats
+	void Hook_VATState::Hook() {
+		logger::info("Hooking VATCamera");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_VATSCameraState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_VATState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+	// Furniture
+	void Hook_FurnitureState::Hook() {
+		logger::info("Hooking Furniture");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_FurnitureCameraState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_FurnitureState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+	// IronSights
+	void Hook_IronSightState::Hook() {
+		logger::info("Hooking IronSightState");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_IronSightsState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_IronSightState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+	// IronSights
+	void Hook_VanityState::Hook() {
+		logger::info("Hooking VanityState");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_AutoVanityState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_VanityState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+	// Tween
+	void Hook_TweenState::Hook() {
+		logger::info("Hooking TweenCameraState");
+		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_TweenMenuCameraState[0] };
+		_Update = Vtbl.write_vfunc(0x03, Update);
+	}
+
+	void Hook_TweenState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
+		_Update(a_this, a_nextState);
+		CameraManager::UpdateCamera();
+	}
+
+
+
 }
