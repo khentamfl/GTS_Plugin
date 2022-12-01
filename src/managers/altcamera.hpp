@@ -36,7 +36,7 @@ namespace Gts {
 			Alt altState;
 			AltProne altProneState;
 
-			Spring deltaX = Spring(0.0, 2.20);
-			Spring deltaZ = Spring(0.0, 2.20);
+			Spring deltaX = Spring(0.0, 0.02);
+			Spring deltaZ = Spring(0.0, 0.02);
 	};
 }
