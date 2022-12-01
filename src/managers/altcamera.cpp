@@ -210,21 +210,43 @@ namespace {
 							cameraRoot->world.translate = targetLocationLocal;
 							update_node(cameraRoot.get());
 
-							auto niCamera = GetNiCamera();
-							if (niCamera) {
-								log::info("NiUpdate");
-								niCamera->world.translate = targetLocationLocal;
-								UpdateWorld2ScreetMat(niCamera);
-							}
-							auto shadowNode = GetShadowMap();
-							if (shadowNode) {
-								log::info("Update shadow map");
-								shadowNode->GetRuntimeData().cameraPos = targetLocationLocal;
-							}
 							auto sceneManager = UI3DSceneManager::GetSingleton();
 							if (sceneManager) {
-								sceneManager->cachedCameraPos = niCamera->world.translate;
+								log::info("Update sceneManager");
+								// Cache
+								sceneManager->cachedCameraPos = targetLocationLocal;
+
+								// Shadow Map
+								auto shadowNode = sceneManager->shadowSceneNode;
+								if (shadowNode) {
+									shadowNode->GetRuntimeData().cameraPos = targetLocationLocal;
+								}
+
+								// Camera
+								auto niCamera = sceneManager->camera;
+								if (niCamera) {
+									niCamera->world.translate = targetLocationLocal;
+									UpdateWorld2ScreetMat(niCamera.get());
+								}
 							}
+
+							auto renderManager = UIRenderManager::GetSingleton();
+							if (renderManager) {
+								log::info("Update renderManager");
+								// Shadow Map
+								auto shadowNode = renderManager->shadowSceneNode;
+								if (shadowNode) {
+									shadowNode->GetRuntimeData().cameraPos = targetLocationLocal;
+								}
+
+								// Camera
+								auto niCamera = renderManager->camera;
+								if (niCamera) {
+									niCamera->world.translate = targetLocationLocal;
+									UpdateWorld2ScreetMat(niCamera.get());
+								}
+							}
+
 							log::info("Set EXP13");
 						}
 					}
