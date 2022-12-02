@@ -1,14 +1,17 @@
 #include "managers/cameras/foot.hpp"
+#include "managers/cameras/util.hpp"
 #include "data/runtime.hpp"
 #include "node.hpp"
 
 using namespace RE;
 
-const float CAMERA_FACTOR = 1.0;
+const float CAMERA_FACTOR = 0.75;
 
 namespace Gts {
 	NiPoint3 Foot::GetOffset(const NiPoint3& cameraPos) {
-		return -(cameraPos*CAMERA_FACTOR) + GetFootPos() + NiPoint3(
+		float lookY = GetINIFloat("fOverShoulderPosY:Camera");
+
+		return -(cameraPos*CAMERA_FACTOR) - NiPoint3(0.0, lookY, 0.0)*CAMERA_FACTOR + GetFootPos() + NiPoint3(
 			Runtime::GetFloat("cameraAlternateX"),
 			0.0,
 			Runtime::GetFloat("cameraAlternateY")
@@ -16,7 +19,9 @@ namespace Gts {
 	}
 
 	NiPoint3 Foot::GetCombatOffset(const NiPoint3& cameraPos) {
-		return -(cameraPos*CAMERA_FACTOR) + GetFootPos() + NiPoint3(
+		float lookY = GetINIFloat("fOverShoulderPosY:Camera");
+
+		return -(cameraPos*CAMERA_FACTOR) - NiPoint3(0.0, lookY, 0.0)*CAMERA_FACTOR + GetFootPos() + NiPoint3(
 			Runtime::GetFloat("combatCameraAlternateX"),
 			0.0,
 			Runtime::GetFloat("combatCameraAlternateY")
