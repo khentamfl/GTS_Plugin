@@ -23,6 +23,9 @@ namespace Gts {
 			// Called on Havok update (when processing hitjobs)
 			virtual void HavokUpdate();
 
+			// Called when the camera update event is fired (in the TESCameraState)
+			virtual void CameraUpdate();
+
 			// Called on game load started (not yet finished)
 			// and when new game is selected
 			virtual void Reset();
@@ -59,6 +62,7 @@ namespace Gts {
 			static void DoUpdate();
 			static void DoPapyrusUpdate();
 			static void DoHavokUpdate();
+			static void DoCameraUpdate();
 			static void DoReset();
 			static void DoEnabled();
 			static void DoDisabled();

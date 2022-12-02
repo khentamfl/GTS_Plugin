@@ -28,11 +28,7 @@ namespace Gts {
 		ResetIniSettings();
 	}
 
-	void CameraManager::UpdateCamera() {
-		CameraManager::GetSingleton().ApplyCamera();
-	}
-
-	void CameraManager::ApplyCamera() {
+	void CameraManager::CameraUpdate() {
 		CameraState* currentState = this->GetCameraState();
 		if (currentState) {
 			// Get scale based on camera state

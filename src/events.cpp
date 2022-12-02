@@ -22,6 +22,11 @@ namespace Gts {
 
 	}
 
+	// Called when the camera update event is fired (in the TESCameraState)
+	void EventListener::CameraUpdate() {
+
+	}
+
 	// Called on game load started (not yet finished)
 	// and when new game is selected
 	void EventListener::Reset() {
@@ -129,6 +134,17 @@ namespace Gts {
 				listener->profiler.Start();
 			}
 			listener->HavokUpdate();
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
+		}
+	}
+	void EventDispatcher::DoCameraUpdate() {
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
+			listener->CameraUpdate();
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Stop();
 			}

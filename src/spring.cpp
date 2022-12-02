@@ -55,10 +55,14 @@ namespace Gts {
 		SpringManager::GetSingleton().springs.erase(spring);
 	}
 
+	std::string SpringManager::DebugName()  {
+		return "SpringManager";
+	}
+
 	void SpringManager::Update() {
 		float dt = Time::WorldTimeElapsed();
 		for (auto spring: this->springs) {
-			spring->update(dt);
+			spring->Update(dt);
 		}
 	}
 }

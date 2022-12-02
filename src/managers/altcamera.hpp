@@ -19,8 +19,7 @@ namespace Gts {
 			virtual std::string DebugName() override;
 			virtual void Start() override;
 
-			static void UpdateCamera();
-			void ApplyCamera();
+			virtual void CameraUpdate() override;
 
 			CameraState* GetCameraState();
 

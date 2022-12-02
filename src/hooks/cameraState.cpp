@@ -2,7 +2,7 @@
 #include "util.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
-#include "managers/altcamera.hpp"
+#include "events.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -34,7 +34,7 @@ namespace Hooks
 
 	void Hook_CameraState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// Third
@@ -46,7 +46,7 @@ namespace Hooks
 
 	void Hook_ThirdPersonState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// Dragon
@@ -58,7 +58,7 @@ namespace Hooks
 
 	void Hook_DragonState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// Horse
@@ -70,7 +70,7 @@ namespace Hooks
 
 	void Hook_HorseState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// First
@@ -82,7 +82,7 @@ namespace Hooks
 
 	void Hook_FirstPersonState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// FreeCamera
@@ -94,7 +94,7 @@ namespace Hooks
 
 	void Hook_FreeState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// Transistion
@@ -106,7 +106,7 @@ namespace Hooks
 
 	void Hook_TransitionState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// Bleedout
@@ -118,7 +118,7 @@ namespace Hooks
 
 	void Hook_BleedoutState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// Vats
@@ -130,7 +130,7 @@ namespace Hooks
 
 	void Hook_VATState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// Furniture
@@ -142,7 +142,7 @@ namespace Hooks
 
 	void Hook_FurnitureState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// IronSights
@@ -154,7 +154,7 @@ namespace Hooks
 
 	void Hook_IronSightState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// IronSights
@@ -166,7 +166,7 @@ namespace Hooks
 
 	void Hook_VanityState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 	// Tween
@@ -178,7 +178,7 @@ namespace Hooks
 
 	void Hook_TweenState::Update(TESCameraState* a_this, BSTSmartPointer<TESCameraState>& a_nextState) {
 		_Update(a_this, a_nextState);
-		CameraManager::UpdateCamera();
+		EventDispatcher::DoCameraUpdate();
 	}
 
 
