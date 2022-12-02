@@ -62,7 +62,7 @@ namespace Gts {
 
 			// Adjust other ini stuff
 			EnsureINIFloat("fMouseWheelZoomIncrement:Camera", Runtime::GetFloat("CameraZoomPrecision"));
-			EnsureINIFloat("fMouseWheelZoomSpeed:Camera", Runtime::GetFloat("CameraZoomPrecision")/2);
+			EnsureINIFloat("fMouseWheelZoomSpeed:Camera", Runtime::GetFloat("CameraZoomSpeed")/2);
 			EnsureINIFloat("fVanityModeMinDist:Camera", Runtime::GetFloat("MinDistance"));
 			EnsureINIFloat("fVanityModeMaxDist:Camera", Runtime::GetFloat("MaxDistance"));
 		}
