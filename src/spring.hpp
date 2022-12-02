@@ -7,8 +7,10 @@ using namespace SKSE;
 
 namespace Gts {
 	class SpringBase {
-		public
-		virtual void Update(float delta) = 0;
+		public:
+			virtual void Update(float delta) = 0;
+		protected:
+			void UpdateValues(float& value, const float& target, float & velocity, const float& halflife, const float& dt);
 	};
 
 	class Spring : public SpringBase {
@@ -24,16 +26,13 @@ namespace Gts {
 			Spring(float initial, float halflife);
 
 			~Spring();
-
-		protected:
-			void UpdateValues(float& value, const float& target, float & velocity, const float& halflife, const float& dt)
 	};
 
 	class Spring3 : public SpringBase {
 		public:
-			NiPoint3 value = 0.0;
-			NiPoint3 target = 0.0;
-			NiPoint3 velocity = 0.0;
+			NiPoint3 value = NiPoint3(0.0, 0.0, 0.0);
+			NiPoint3 target = NiPoint3(0.0, 0.0, 0.0);
+			NiPoint3 velocity = NiPoint3(0.0, 0.0, 0.0);
 			float halflife = 1.0;
 
 			void Update(float delta) override;

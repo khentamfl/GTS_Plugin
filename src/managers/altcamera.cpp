@@ -104,16 +104,16 @@ namespace Gts {
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {
-		this->deltaZ.target += amt;
+		this->manualEdit.z += amt;
 	}
 	void CameraManager::ResetUpDown() {
-		this->deltaZ.target = 0.0;
+		this->manualEdit.z = 0.0;
 	}
 
 	void CameraManager::AdjustLeftRight(float amt) {
-		this->deltaX.target += amt;
+		this->manualEdit.x += amt;
 	}
 	void CameraManager::ResetLeftRight() {
-		this->deltaX.target = 0.0;
+		this->manualEdit.x = 0.0;
 	}
 }
