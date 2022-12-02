@@ -92,27 +92,27 @@ namespace Gts {
 							float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
 							float Scale = get_target_scale(actor);
 							float MaxScale = get_max_scale(actor);
-							ConsoleLog::GetSingleton()->Print("%s Scale is: %g; Size Limit is: %g; Aspect Of Giantess: %g", actor->GetDisplayFullName(), Scale, MaxScale, gigantism);
+							// ConsoleLog::GetSingleton()->Print("%s Scale is: %g; Size Limit is: %g; Aspect Of Giantess: %g", actor->GetDisplayFullName(), Scale, MaxScale, gigantism);
 						}
 					}
 				}
 
 				if (key == 0x38) {
 					AltPressed = true;
-					log::info("ALT");
+					// log::info("ALT");
 				} else if (key == 0x1D) {
 					CtrlPressed = true;
 				} else if (key == 0xCD) {
-					log::info("RIGHT");
+					// log::info("RIGHT");
 					RightArrow = true;
 				} else if (key == 0xCB) {
-					log::info("LEFT");
+					// log::info("LEFT");
 					LeftArrow = true;
 				} else if (key == 0xC8) {
-					log::info("UP");
+					// log::info("UP");
 					ArrowUp = true;
 				} else if (key == 0xD0) {
-					log::info("DOWN");
+					// log::info("DOWN");
 					ArrowDown = true;
 				} else if (key == 0x2A) {
 					ShiftPressed = true;
