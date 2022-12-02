@@ -50,6 +50,7 @@ namespace Gts {
 				offset = currentState->GetOffset(cameraPosLocal);
 			}
 
+			log::info("Using updown of: {}->{}", this->deltaZ.target, this->deltaZ.value);
 			offset.x += this->deltaX.value;
 			offset.z += this->deltaZ.value;
 
