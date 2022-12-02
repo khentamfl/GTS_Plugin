@@ -46,7 +46,7 @@ namespace Gts {
 				offset = currentState->GetOffset(cameraPosLocal);
 			}
 
-			offset.y += this->deltaX.value; // Y is left right??
+			offset.x += this->deltaX.value; // Y is left right??
 			offset.z += this->deltaZ.value;
 
 			// Apply camera scale and offset
