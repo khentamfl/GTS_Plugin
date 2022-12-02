@@ -46,8 +46,7 @@ namespace Gts {
 				offset = currentState->GetOffset(cameraPosLocal);
 			}
 
-			log::info("Using updown of: {}->{}", this->deltaZ.target, this->deltaZ.value);
-			offset.x += this->deltaX.value;
+			offset.y += this->deltaX.value; // Y is left right??
 			offset.z += this->deltaZ.value;
 
 			// Apply camera scale and offset
@@ -104,7 +103,6 @@ namespace Gts {
 
 	void CameraManager::AdjustUpDown(float amt) {
 		this->deltaZ.target += amt;
-		log::info("Adjusted updown to: {}", this->deltaZ.target);
 	}
 	void CameraManager::ResetUpDown() {
 		this->deltaZ.target = 0.0;

@@ -18,16 +18,16 @@ namespace {
 namespace Gts {
 	NiPoint3 AltProne::GetOffset(const NiPoint3& cameraPos) {
 		return ProneAdjustment(cameraPos) + NiPoint3(
-			Runtime::GetFloat("proneCameraAlternateX"),
 			0.0,
+			Runtime::GetFloat("proneCameraAlternateX"),
 			Runtime::GetFloat("proneCameraAlternateY")
 			);
 	}
 
 	NiPoint3 AltProne::GetCombatOffset(const NiPoint3& cameraPos) {
 		return ProneAdjustment(cameraPos) + NiPoint3(
-			Runtime::GetFloat("proneCombatCameraAlternateX"),
 			0.0,
+			Runtime::GetFloat("proneCombatCameraAlternateX"),
 			Runtime::GetFloat("proneCombatCameraAlternateY")
 			);
 	}

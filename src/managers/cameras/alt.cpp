@@ -6,16 +6,16 @@ using namespace RE;
 namespace Gts {
 	NiPoint3 Alt::GetOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
-			Runtime::GetFloat("cameraAlternateX"),
 			0.0,
+			Runtime::GetFloat("cameraAlternateX"),
 			Runtime::GetFloat("cameraAlternateY")
 			);
 	}
 
 	NiPoint3 Alt::GetCombatOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
-			Runtime::GetFloat("combatCameraAlternateX"),
 			0.0,
+			Runtime::GetFloat("combatCameraAlternateX"),
 			Runtime::GetFloat("combatCameraAlternateY")
 			);
 	}
