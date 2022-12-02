@@ -11,6 +11,7 @@ namespace {
 		NiPoint3 result = NiPoint3();
 
 		result.z = -cameraPos.z * proneFactor;
+		log::info("Adjsuting Z by {}", result.z);
 		return result;
 	}
 }
