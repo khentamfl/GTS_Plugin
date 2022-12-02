@@ -46,11 +46,13 @@ namespace Gts {
 				offset = currentState->GetOffset(cameraPosLocal);
 			}
 
-			offset.x += this->deltaX.value; // Y is left right??
-			offset.z += this->deltaZ.value;
+			offset += this->manualEdit;
+
+			this->smoothOffset.target = offset;
+			this->smoothScale.target = scale;
 
 			// Apply camera scale and offset
-			ScaleCamera(scale, offset);
+			ScaleCamera(this->smoothScale.value, this->smoothOffset.value);
 
 			// Adjust other ini stuff
 			EnsureINIFloat("fMouseWheelZoomIncrement:Camera", Runtime::GetFloat("CameraZoomPrecision"));

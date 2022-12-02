@@ -20,14 +20,18 @@ namespace {
 
 namespace Gts {
 
-	void Spring::Update(float dt) {
-		float y = halflife_to_damping(this->halflife) / 2.0f;
-		float j0 = this->value - this->target;
-		float j1 = this->velocity + j0*y;
+	void SpringBase::UpdateValues(float& value, const float& target, float & velocity, const float& halflife, const float& dt) {
+		float y = halflife_to_damping(halflife) / 2.0f;
+		float j0 = value - target;
+		float j1 = velocity + j0*y;
 		float eydt = fast_negexp(y*dt);
 
-		this->value = eydt*(j0 + j1*dt) + this->target;
-		this->velocity = eydt*(this->velocity - j1*y*dt);
+		value = eydt*(j0 + j1*dt) + target;
+		velocity = eydt*(velocity - j1*y*dt);
+	}
+
+	void Spring::Update(float dt) {
+		UpdateValues(this->value, this->target, this->velocity, this->halflife, dt);
 	}
 
 	Spring::Spring() {
@@ -43,15 +47,35 @@ namespace Gts {
 	}
 
 
+
+	void Spring3::Update(float dt) {
+		UpdateValues(this->value.x, this->target.x, this->velocity.x, this->halflife, dt);
+		UpdateValues(this->value.y, this->target.y, this->velocity.y, this->halflife, dt);
+		UpdateValues(this->value.z, this->target.z, this->velocity.z, this->halflife, dt);
+	}
+
+	Spring3::Spring3() {
+		SpringManager::AddSpring(this);
+	}
+
+	Spring3::Spring3(NiPoint3 initial, float halflife) : value(initial), target(initial), halflife(halflife) {
+		SpringManager::AddSpring(this);
+	}
+
+	Spring3::~Spring3() {
+		SpringManager::RemoveSpring(this);
+	}
+
+
 	SpringManager& SpringManager::GetSingleton() {
 		static SpringManager instance;
 		return instance;
 	}
 
-	void SpringManager::AddSpring(Spring* spring)  {
+	void SpringManager::AddSpring(SpringBase* spring)  {
 		SpringManager::GetSingleton().springs.insert(spring);
 	}
-	void SpringManager::RemoveSpring(Spring* spring) {
+	void SpringManager::RemoveSpring(SpringBase* spring) {
 		SpringManager::GetSingleton().springs.erase(spring);
 	}
 

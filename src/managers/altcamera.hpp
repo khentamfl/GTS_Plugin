@@ -35,7 +35,8 @@ namespace Gts {
 			Alt altState;
 			AltProne altProneState;
 
-			Spring deltaX = Spring(0.0, 0.0002);
-			Spring deltaZ = Spring(0.0, 0.0002);
+			NiPoint3 manualEdit;
+			Spring smoothScale = Spring(1.0, 0.2);
+			Spring3 smoothOffset = Spring3(NiPoint3(0.0, 0.0, 0.0), NiPoint3(0.2, 0.2, 0.2));
 	};
 }

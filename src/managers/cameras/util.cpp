@@ -168,16 +168,15 @@ namespace Gts {
 	// Get's camera position relative to the player
 	NiPoint3 GetCameraPosLocal() {
 		auto camera = PlayerCamera::GetSingleton();
-		auto cameraRoot = camera->cameraRoot;
-		auto player = PlayerCharacter::GetSingleton();
-		auto currentState = camera->currentState;
-		if (cameraRoot) {
+		if (camera) {
+			auto currentState = camera->currentState;
 			if (currentState) {
-				NiPoint3 cameraLocation;
-				currentState->GetTranslation(cameraLocation);
+				auto player = PlayerCharacter::GetSingleton();
 				if (player) {
 					auto model = player->Get3D(false);
 					if (model) {
+						NiPoint3 cameraLocation;
+						currentState->GetTranslation(cameraLocation);
 						auto playerTransInve = model->world.Invert();
 						// Get Scaled Camera Location
 						return playerTransInve*cameraLocation;
