@@ -4,7 +4,7 @@
 
 using namespace RE;
 
-const float CAMERA_FACTOR = 0.9;
+const float CAMERA_FACTOR = 1.0;
 
 namespace Gts {
 	NiPoint3 Foot::GetOffset(const NiPoint3& cameraPos) {
@@ -31,8 +31,8 @@ namespace Gts {
 			auto rootModel = player->Get3D(false);
 			if (rootModel) {
 				auto transform = rootModel->world.Invert();
-				auto leftFoot = find_node_regex_any(player, leftFootRegex);
-				auto rightFoot = find_node_regex_any(player, rightFootRegex);
+				auto leftFoot = find_node_regex(player, leftFootRegex);
+				auto rightFoot = find_node_regex(player, rightFootRegex);
 				if (leftFoot != nullptr && rightFoot != nullptr) {
 					auto leftPosLocal = transform * (leftFoot->world * NiPoint3());
 					auto rightPosLocal = transform * (rightFoot->world * NiPoint3());
