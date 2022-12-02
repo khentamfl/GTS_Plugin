@@ -1,6 +1,7 @@
 #pragma once
 // Critically Damped Springs
 //
+#include "events.hpp"
 
 using namespace SKSE;
 
@@ -14,6 +15,21 @@ namespace Gts {
 
 			void Update(float delta);
 
+			Spring();
 			Spring(float initial, float halflife);
+
+			~Spring();
 	};
+
+	class SpringManager : public EventListener {
+		public:
+			static SpringManager& GetSingleton();
+
+			static void AddSpring(Spring* spring);
+			static void RemoveSpring(Spring* spring);
+
+			virtual void Update() override;
+
+			std::unordered_set<Spring*> springs;
+	}
 }

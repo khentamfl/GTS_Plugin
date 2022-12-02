@@ -38,16 +38,16 @@ namespace Gts {
 	}
 
 	void ResetIniSettings() {
-		SetINIFloat("fOverShoulderPosX:Camera", 30.0);
-		SetINIFloat("fOverShoulderPosY:Camera", 30.0);
-		SetINIFloat("fOverShoulderPosZ:Camera", -10.0);
-		SetINIFloat("fOverShoulderCombatPosX:Camera", 0.0);
-		SetINIFloat("fOverShoulderCombatPosY:Camera", 0.0);
-		SetINIFloat("fOverShoulderCombatPosZ:Camera", 20.0);
-		SetINIFloat("fVanityModeMaxDist:Camera", 600.0);
-		SetINIFloat("fVanityModeMinDist:Camera", 155.0);
-		SetINIFloat("fMouseWheelZoomSpeed:Camera", 0.8000000119);
-		SetINIFloat("fMouseWheelZoomIncrement:Camera", 0.075000003);
+		EnsureINIFloat("fOverShoulderPosX:Camera", 30.0);
+		EnsureINIFloat("fOverShoulderPosY:Camera", 30.0);
+		EnsureINIFloat("fOverShoulderPosZ:Camera", -10.0);
+		EnsureINIFloat("fOverShoulderCombatPosX:Camera", 0.0);
+		EnsureINIFloat("fOverShoulderCombatPosY:Camera", 0.0);
+		EnsureINIFloat("fOverShoulderCombatPosZ:Camera", 20.0);
+		EnsureINIFloat("fVanityModeMaxDist:Camera", 600.0);
+		EnsureINIFloat("fVanityModeMinDist:Camera", 155.0);
+		EnsureINIFloat("fMouseWheelZoomSpeed:Camera", 0.8000000119);
+		EnsureINIFloat("fMouseWheelZoomIncrement:Camera", 0.075000003);
 		UpdateThirdPerson();
 	}
 

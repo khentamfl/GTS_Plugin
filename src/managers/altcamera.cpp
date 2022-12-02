@@ -50,10 +50,6 @@ namespace Gts {
 				offset = currentState->GetOffset(cameraPosLocal);
 			}
 
-			float dt = Time::WorldTimeElapsed();
-			this->deltaX.Update(dt);
-			this->deltaZ.Update(dt);
-
 			offset.x += this->deltaX.value;
 			offset.z += this->deltaZ.value;
 
@@ -111,6 +107,7 @@ namespace Gts {
 
 	void CameraManager::AdjustUpDown(float amt) {
 		this->deltaZ.target += amt;
+		log::info("Adjusted updown to: {}", this->deltaZ.target);
 	}
 	void CameraManager::ResetUpDown() {
 		this->deltaZ.target = 0.0;

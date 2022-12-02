@@ -1,4 +1,5 @@
 #include "spring.hpp"
+#include "data/time.hpp"
 
 namespace {
 	// Spring code from https://theorangeduck.com/page/spring-roll-call
@@ -29,6 +30,35 @@ namespace Gts {
 		this->velocity = eydt*(this->velocity - j1*y*dt);
 	}
 
+	Spring::Spring() {
+		SpringManager::AddSpring(this);
+	}
+
 	Spring::Spring(float initial, float halflife) : value(initial), target(initial), halflife(halflife) {
+		SpringManager::AddSpring(this);
+	}
+
+	Spring::~Spring() {
+		SpringManager::RemoveSpring(this);
+	}
+
+
+	SpringManager& SpringManager::GetSingleton() {
+		static SpringManager instance;
+		return instance;
+	}
+
+	void SpringManager::AddSpring(Spring* spring)  {
+		SpringManager::GetSingleton().springs.insert(spring);
+	}
+	void SpringManager::RemoveSpring(Spring* spring) {
+		SpringManager::GetSingleton().springs.erase(spring);
+	}
+
+	void SpringManager::Update() {
+		float dt = Time::WorldTimeElapsed();
+		for (auto spring: this->springs) {
+			spring->update(dt);
+		}
 	}
 }
