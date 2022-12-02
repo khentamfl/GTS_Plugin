@@ -96,6 +96,9 @@ namespace Gts {
 					return &this->altState;
 				}
 			}
+			case 3: {
+				return &this->footState;
+			}
 			default: {
 				return nullptr;
 			}

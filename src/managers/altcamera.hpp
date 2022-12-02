@@ -6,6 +6,7 @@
 #include "managers/cameras/altProne.hpp"
 #include "managers/cameras/normal.hpp"
 #include "managers/cameras/prone.hpp"
+#include "managers/cameras/foot.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -34,6 +35,7 @@ namespace Gts {
 			Prone proneState;
 			Alt altState;
 			AltProne altProneState;
+			Foot footState;
 
 			NiPoint3 manualEdit;
 			Spring smoothScale = Spring(1.0, 0.2);
