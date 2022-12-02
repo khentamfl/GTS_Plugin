@@ -178,7 +178,7 @@ namespace Gts {
 			//log::info("Alt + Down");
 		} // Up or Down end
 
-		if (Runtime::HasPerk(player, "TotalControl") && !ShiftPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow self
+		if (Runtime::HasPerk(player, "TotalControl") && !ShiftPressed && !AltPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow self
 			float scale = get_visual_scale(player);
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
@@ -190,7 +190,7 @@ namespace Gts {
 				Runtime::PlaySound("growthSound", caster, Volume, 0.0);
 			}
 		}
-		if (Runtime::HasPerk(player, "TotalControl") && !ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Self
+		if (Runtime::HasPerk(player, "TotalControl") && !ShiftPressed && !AltPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Self
 			float scale = get_visual_scale(player);
 			auto caster = player;
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
@@ -201,7 +201,7 @@ namespace Gts {
 			if (this->timergrowth.ShouldRun()) {
 				Runtime::PlaySound("shrinkSound", caster, Volume, 0.0);
 			}
-		} else if (Runtime::HasPerk(player, "TotalControl") && ShiftPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow Ally
+		} else if (Runtime::HasPerk(player, "TotalControl") && ShiftPressed && !AltPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow Ally
 			for (auto actor: find_actors()) {
 				if (!actor) {
 					continue;
@@ -221,7 +221,7 @@ namespace Gts {
 					}
 				}
 			}
-		} else if (Runtime::HasPerk(player, "TotalControl") && ShiftPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Ally
+		} else if (Runtime::HasPerk(player, "TotalControl") && ShiftPressed && !AltPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Ally
 			for (auto actor: find_actors()) {
 				if (!actor) {
 					continue;
