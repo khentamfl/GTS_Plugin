@@ -180,7 +180,7 @@ namespace Gts {
 					if (model) {
 						auto playerTransInve = model->world.Invert();
 						// Get Scaled Camera Location
-						auto targetLocationWorld = (playerTransInve*cameraLocation);
+						return playerTransInve*cameraLocation;
 					}
 				}
 			}
