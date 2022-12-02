@@ -155,7 +155,7 @@ namespace Gts {
 			}
 		}
 
-		auto Camera = CameraManager::GetSingleton();
+		auto& Camera = CameraManager::GetSingleton();
 		if (AltPressed == true && RightArrow == true && LeftArrow == true) {
 			Camera.ResetLeftRight();
 		}
