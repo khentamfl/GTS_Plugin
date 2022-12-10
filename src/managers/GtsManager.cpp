@@ -257,6 +257,7 @@ namespace {
 		Grow,
 		Shrink,
 		Standard,
+		StandardNoShrink,
 		Quest,
 	};
 
@@ -316,6 +317,19 @@ namespace {
 						} // Need to have size restored by someone
 					}
 				}
+				case ChosenGameMode::StandardNoShrink: {
+					if (actor->IsInCombat()) {
+						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
+						if (fabs(GrowthRate) < EPS) {
+							return;
+						}
+						if ((targetScale + modAmount) < maxScale) {
+							mod_target_scale(actor, modAmount / 2);
+						} else if (targetScale < maxScale) {
+							set_target_scale(actor, maxScale);
+						} // else let spring handle it
+					} 
+				}
 				case ChosenGameMode::Quest: {
 					float modAmount = -ShrinkRate * Time::WorldTimeDelta();
 					if (fabs(ShrinkRate) < EPS) {
@@ -347,7 +361,7 @@ namespace {
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
 			if (actor->formID == 0x14 && !actor->IsInCombat()) {
-				game_mode_int = 4; // QuestMode
+				game_mode_int = 5; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 2.2);
 				} else if (QuestStage >= 60 && QuestStage < 70) {
@@ -386,7 +400,7 @@ namespace {
 			}
 		}
 
-		if (game_mode_int >=0 && game_mode_int <= 4) {
+		if (game_mode_int >=0 && game_mode_int <= 5) {
 			gameMode = static_cast<ChosenGameMode>(game_mode_int);
 		}
 

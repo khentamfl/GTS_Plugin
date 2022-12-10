@@ -12,6 +12,7 @@ namespace Gts {
 		// This is how the game sets scale with the `SetScale` command
 		// It is limited to x10 and messes up all sorts of things like actor damage
 		// and anim speeds
+		// Calling too fast also kills frames
 		float refScale = static_cast<float>(actor->refScale) / 100.0F;
 		if (fabs(refScale - target_scale) > 1e-5) {
 			actor->refScale = static_cast<std::uint16_t>(target_scale * 100.0F);
@@ -183,7 +184,12 @@ namespace Gts {
 				return set_npcnode_scale(actor, scale/(get_ref_scale(actor)*get_model_scale(actor)));
 				break;
 			case SizeMethod::RefScale:
-				set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
+				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
+				if (actor->formID == 0x14) {
+					return set_npcnode_scale(actor, scale/(get_ref_scale(actor)*get_model_scale(actor)));
+				} else {
+					return set_model_scale(actor, scale/(get_ref_scale(actor)*get_npcnode_scale(actor)));
+				}
 				return true;
 				break;
 		}
