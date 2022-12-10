@@ -260,7 +260,6 @@ namespace Gts {
 		RegisterMagic<ShrinkFoe>("ShrinkBolt");
 		RegisterMagic<ShrinkFoe>("ShrinkStorm");
 
-		RegisterMagic<ShrinkFoe>("DevourmentDiminuationOther"); // Devourment compatibility
 
 		RegisterMagic<SwordOfSize>("SwordEnchant");
 		RegisterMagic<ShrinkButton>("ShrinkPCButton");
@@ -270,13 +269,11 @@ namespace Gts {
 		RegisterMagic<Growth>("GrowthSpell");
 		RegisterMagic<Growth>("GrowthSpellAdept");
 		RegisterMagic<Growth>("GrowthSpellExpert");
-		RegisterMagic<Growth>("DevourmentEnlargeSelf"); // Devourment Enlarge Self
 		RegisterMagic<Shrink>("ShrinkSpell");
-		RegisterMagic<Shrink>("DevourmentDiminuationSelf"); // Devourment Shrink Self
 		RegisterMagic<GrowOther>("GrowAlly");
 		RegisterMagic<GrowOther>("GrowAllyAdept");
 		RegisterMagic<GrowOther>("GrowAllyExpert");
-		RegisterMagic<GrowOther>("DevourmentEnlargeOther"); // Devourment enlarge other
+
 		RegisterMagic<ShrinkOther>("ShrinkAlly");
 		RegisterMagic<ShrinkOther>("ShrinkAllyAdept");
 		RegisterMagic<ShrinkOther>("ShrinkAllyExpert");

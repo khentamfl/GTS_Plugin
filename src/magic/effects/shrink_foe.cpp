@@ -21,8 +21,7 @@ namespace Gts {
 		const float SHRINK_BOLT_EFFIC = 0.18;
 		const float SHRINK_STORM_POWER = 50.80;
 		const float SHRINK_STORM_EFFIC = 0.20;
-		const float SHRINK_DEVOURMENT_POWER = 1.90;
-		const float SHRINK_DEVOURMENT_EFFIC = 0.0;
+
 
 		auto base_spell = GetBaseEffect();
 
@@ -44,11 +43,6 @@ namespace Gts {
 			// ShrinkBolt
 			this->power = SHRINK_STORM_POWER;
 			this->efficiency = SHRINK_STORM_EFFIC;
-		}
-		else if (base_spell == Runtime::GetMagicEffect("DevourmentDiminuationOther")) {
-			// Devourment Shrink
-			this->power = SHRINK_DEVOURMENT_POWER;
-			this->efficiency = SHRINK_DEVOURMENT_EFFIC;
 		}
 	}
 

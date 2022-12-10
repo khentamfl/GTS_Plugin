@@ -25,9 +25,6 @@ namespace Gts {
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
-		if (base_spell == Runtime::GetMagicEffect("DevourmentDiminuationSelf")) {
-			power *= 2.0;
-		}
 
 		if (IsDualCasting()) {
 			power *= DUAL_CAST_BONUS;
