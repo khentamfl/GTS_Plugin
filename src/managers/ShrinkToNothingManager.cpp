@@ -55,10 +55,10 @@ namespace Gts {
 						set_target_scale(tiny, 0.005);
 					} else {
 						// Fully shrunk
-						if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLoot")) {
+						if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 							Actor* into = giant;
 							TransferInventory(tiny, into, false, true);
-						} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLoot")) {
+						} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
 							Actor* into = giant;
 							TransferInventory(tiny, into, false, true);
 						}

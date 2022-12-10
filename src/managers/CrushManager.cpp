@@ -130,10 +130,10 @@ namespace Gts {
 					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLoot")) {
+					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
-					} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLoot")) {
+					} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
 					}
