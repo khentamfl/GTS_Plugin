@@ -160,10 +160,10 @@ namespace Gts {
 			Camera.ResetLeftRight();
 		}
 		if (AltPressed == true && RightArrow == true) {
-			Camera.AdjustLeftRight(0.6 + (size * 0.0125 - 0.0125));
+			Camera.AdjustLeftRight(0.6 + (size * 0.05 - 0.05));
 		}
 		if (AltPressed == true && LeftArrow == true) {
-			Camera.AdjustLeftRight(-0.6 + (size * 0.0125 - 0.0125));
+			Camera.AdjustLeftRight(-0.6 + (size * 0.05 - 0.05));
 		} // Left or Right end
 
 
@@ -171,10 +171,10 @@ namespace Gts {
 			Camera.ResetUpDown();
 		}
 		if (AltPressed == true && ArrowUp == true) {
-			Camera.AdjustUpDown(0.6 + (size * 0.0125 - 0.0125));
+			Camera.AdjustUpDown(0.6 + (size * 0.05 - 0.05));
 		}
 		if (AltPressed == true && ArrowDown == true) {
-			Camera.AdjustUpDown(-0.6 + (size * 0.0125 - 0.0125));
+			Camera.AdjustUpDown(-0.6 + (size * 0.05 - 0.05));
 			//log::info("Alt + Down");
 		} // Up or Down end
 
