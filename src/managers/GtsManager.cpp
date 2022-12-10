@@ -324,7 +324,7 @@ namespace {
 							return;
 						}
 						if ((targetScale + modAmount) < maxScale) {
-							mod_target_scale(actor, modAmount / 2);
+							mod_target_scale(actor, modAmount * 0.33);
 						} else if (targetScale < maxScale) {
 							set_target_scale(actor, maxScale);
 						} // else let spring handle it
