@@ -270,7 +270,7 @@ namespace {
 			if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor->formID == 0x14) {
 				Scale = 1.0; // Do not Multiply PC Scale MCM
 			} 
-			(Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14) {
+			else if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14) {
 				Scale = 1.0; // Do not Multiply NPC Scale MCM
 			} 
 			float maxScale = get_max_scale(actor);
