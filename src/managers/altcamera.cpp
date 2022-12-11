@@ -70,7 +70,9 @@ namespace Gts {
 		// 0 is disabled
 		// 1 is normal
 		// 2 is alt camera
-		// 3 is feet
+		// 3 is Between Feet
+		// 4 is Left Feet
+		// 5 is Right Feet
 		int cameraMode = Runtime::GetInt("CameraMode");
 
 		bool isProne;

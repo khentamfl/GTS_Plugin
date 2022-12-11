@@ -42,7 +42,7 @@ namespace Gts {
 		float size = get_visual_scale(caster);
 		float size2 = get_visual_scale(target);
 		//log::info("Caster {}, target {}, GrowAmount {}, CrushGrowth Amount {}", size, size2, GrowAmount, CrushGrowthAmount);
-		CrushGrow(caster, Rate, 0);
+		CrushGrow(caster, 0, Rate);
 	}
 
 

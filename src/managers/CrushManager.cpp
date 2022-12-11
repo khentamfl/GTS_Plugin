@@ -35,7 +35,7 @@ namespace {
 		// If you have small massive threat then the max value is ALWAYS 4
 
 		// S.Answer: It's supposed to proc more often with SMT active, so having it always 4 is fine ^
-		if (MaxValue <= 4 || Runtime::HasMagicEffect(giant, "GtsSmallMassiveThreatMe")) {
+		if (MaxValue <= 4 || Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
 			MaxValue = 4;
 		}
 		int FearChance = rand() % MaxValue;
@@ -59,10 +59,10 @@ namespace {
 	}
 
 	void GrowAfterTheKill(Actor* actor) {
-		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(actor, "GtsSmallMassiveThreat")) {
+		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
 			return;
 		} else if (Runtime::HasPerk(actor, "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1 ) {
-			Runtime::CastSpell(actor, actor, "GtsSmallCrushGrowthSpell");
+			Runtime::CastSpell(actor, actor, "CrushGrowthSpell");
 		}
 		PleasureText(actor);
 	}
