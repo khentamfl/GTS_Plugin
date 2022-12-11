@@ -269,12 +269,6 @@ namespace {
 			float Scale = get_target_scale(actor);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
-
-			if (Runtime::GetFloat("MultiplyGameModePC") == 1 && actor->formID == 0x14) {
-				GrowthRate *= Scale;
-			} if (Runtime::GetFloat("MultiplyGameModeNPC") == 1 && actor->formID != 0x14)  {
-				GrowthRate *= Scale;
-			} 
 			
 			if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor->formID == 0x14) {
 				Scale = 1.0;
@@ -416,6 +410,12 @@ namespace {
 		if (game_mode_int >=0 && game_mode_int <= 5) {
 			gameMode = static_cast<ChosenGameMode>(game_mode_int);
 		}
+
+		if (Runtime::GetFloat("MultiplyGameModePC") == 1 && actor->formID == 0x14) {
+				growthRate *= scale;
+		} if (Runtime::GetFloat("MultiplyGameModeNPC") == 1 && actor->formID != 0x14)  {
+				growthRate *= scale;
+		} 
 
 		ApplyGameMode(actor, gameMode, growthRate, shrinkRate);
 	}
