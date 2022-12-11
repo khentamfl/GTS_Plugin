@@ -31,6 +31,7 @@ namespace Gts {
 	void CameraManager::CameraUpdate() {
 		CameraState* currentState = this->GetCameraState();
 		if (IsFirstPerson()) {
+			set_fp_scale(player, scale, ProneOffsetFP);
 			return; // Do not edit the camera in first person. It causes HUGE issues.
 		}
 		if (currentState) {
