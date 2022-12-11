@@ -104,7 +104,7 @@ namespace Gts {
 				//continue;
 			//}
 			if (data.state == CrushState::Healthy) {
-				RandomMoan(data.giant, data.tiny);
+				RandomMoan(data.giant, tiny);
 				data.state = CrushState::Crushing;
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {
