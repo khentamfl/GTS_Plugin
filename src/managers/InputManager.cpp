@@ -83,7 +83,6 @@ namespace Gts {
 					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 					float Value = Cache * gigantism;
 					Notify("Reserved Size: {}", Value);
-					//ConsoleLog::GetSingleton()->Print("tfc");
 				}
 
 				if (key == 0x1d && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) { // Left CTRL
@@ -92,7 +91,7 @@ namespace Gts {
 							float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
 							float Scale = get_target_scale(actor);
 							float MaxScale = get_max_scale(actor);
-							// ConsoleLog::GetSingleton()->Print("%s Scale is: %g; Size Limit is: %g; Aspect Of Giantess: %g", actor->GetDisplayFullName(), Scale, MaxScale, gigantism);
+							ConsoleLog::GetSingleton()->Print("%s Scale is: %g; Size Limit is: %g; Aspect Of Giantess: %g", actor->GetDisplayFullName(), Scale, MaxScale, gigantism);
 						}
 					}
 				}
