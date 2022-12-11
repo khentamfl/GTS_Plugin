@@ -24,6 +24,8 @@ namespace Gts {
 
 			CameraState* GetCameraState();
 
+			void ApplyFirstPerson();
+
 			void AdjustUpDown(float amt);
 			void ResetUpDown();
 
