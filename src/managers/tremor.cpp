@@ -170,7 +170,7 @@ namespace Gts {
 
 				if (actor->formID == 0x14 && pcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
-						if (IsFirstPerson) {
+						if (IsFirstPerson()) {
 							intensity *= 0.075; // Shake effects are weaker when in first person
 						}
 						//log::info("Intensity is: {}", intensity);
