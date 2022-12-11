@@ -219,4 +219,15 @@ namespace Gts {
 		actor->GetGraphVariableBool("bInJumpState", result);
 		return result;
 	}
+
+	inline bool IsFirstPerson() {
+		auto playercamera = PlayerCamera::GetSingleton();
+		if (!playercamera) {
+			return false;
+		}
+		if (playercamera->currentState == playercamera->cameraStates[CameraState::kFirstPerson]) {
+			return true;
+		}
+		return false;
+	}
 }

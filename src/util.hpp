@@ -207,6 +207,8 @@ namespace Gts {
 	}
 
 	bool IsJumping(Actor* actor);
+	
+	inline bool IsFirstPerson();
 
 	inline float GetMaxAV(Actor* actor, ActorValue av) {
 		auto baseValue = actor->GetPermanentActorValue(av);
@@ -327,14 +329,5 @@ namespace Gts {
 		}
 	}
 
-	inline bool IsFirstPerson() {
-		auto playercamera = PlayerCamera::GetSingleton();
-		if (!playercamera) {
-			return false;
-		}
-		if (playercamera->currentState == playercamera->cameraStates[CameraState::kFirstPerson]) {
-			return true;
-		}
-		return false;
-	}
+	
 }
