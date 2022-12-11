@@ -1,4 +1,5 @@
 #include "managers/CrushManager.hpp"
+#include "magic/effects/CrushGrowth.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "scale/scale.hpp"
@@ -58,20 +59,21 @@ namespace {
 		}
 	}
 
-	void GrowAfterTheKill(Actor* actor) {
-		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
+	void GrowAfterTheKill(Actor* caster, actor target) {
+		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
 			return;
-		} else if (Runtime::HasPerk(actor, "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1 ) {
-			Runtime::CastSpell(actor, actor, "CrushGrowthSpell");
+		} else if (Runtime::HasPerk(caster, "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1) {
+			float Rate = (0.00050 * get_target_scale(target)) * 120;
+			CrushGrow(caster, 0, Rate);
 		}
 		PleasureText(actor);
 	}
 
-	void RandomMoan(Actor* actor) {
+	void RandomMoan(Actor* actor, actor target) {
 		auto randomInt = rand() % 10;
 		if (randomInt < 1 ) {
 			Runtime::PlaySound("MoanSound", actor, 1.0, 1.0);
-			GrowAfterTheKill(actor);
+			GrowAfterTheKill(caster, target);
 		}
 	}
 }
@@ -102,17 +104,17 @@ namespace Gts {
 				//continue;
 			//}
 			if (data.state == CrushState::Healthy) {
-				RandomMoan(data.giant);
+				RandomMoan(data.giant, data.tiny);
 				data.state = CrushState::Crushing;
 			} else if (data.state == CrushState::Crushing) {
-				if (data.delay.ShouldRun()) { // <   ================================  it was data.time
+				if (data.delay.ShouldRun()) {
 					data.state = CrushState::Crushed;
 
 					// Do crush
 					Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", giant, 1.0, 1.0);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
-					GrowAfterTheKill(giant);
+					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						auto progressionQuest = Runtime::GetQuest("MainQuest");
 						if (progressionQuest) {

@@ -413,13 +413,13 @@ namespace {
 			gameMode = static_cast<ChosenGameMode>(game_mode_int);
 		}
 
-		if (Runtime::GetFloat("MultiplyGameModePC") == 1 && actor->formID == 0x14) {
-				growthRate *= scale;
-		} if (Runtime::GetFloat("MultiplyGameModeNPC") == 1 && actor->formID != 0x14)  {
-				growthRate *= scale;
+		if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor->formID == 0x14) {
+				scale = 1.0;
+		} if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14)  {
+				scale = 1.0;
 		} 
 
-		ApplyGameMode(actor, gameMode, growthRate, shrinkRate);
+		ApplyGameMode(actor, gameMode, growthRate * scale, shrinkRate);
 	}
 }
 
