@@ -97,6 +97,7 @@ namespace Gts {
 			if (!giant) {
 				continue;
 			}
+			auto progressionQuest = Runtime::GetQuest("MainQuest");
 			//if (!tiny->Is3DLoaded()) {
 				//continue;
 			//}
@@ -116,13 +117,12 @@ namespace Gts {
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
-						auto progressionQuest = Runtime::GetQuest("MainQuest");
 						if (progressionQuest) {
 							CallFunctionOn(progressionQuest, "Quest", "DevourDragon");
 						}
 					}
 					shake_camera(giant, 1.8, 1);
-					if (giant->formID == 0x14) {
+					if (giant->formID == 0x14) {   
 						TriggerScreenBlood(1);
 					}
 					std::random_device rd;
@@ -142,7 +142,11 @@ namespace Gts {
 					ScareChance(giant);
 
 					if (tiny->formID != 0x14) {
-						Disintegrate(tiny); // CTD if we Disintegrate the player
+						//Disintegrate(tiny); // CTD if we Disintegrate the player	
+						if (progressionQuest) {
+							CallFunctionOn(progressionQuest, "Quest", "Disintegrate", tiny);
+						}
+						
 					}
 
 					FearChance(giant);

@@ -198,6 +198,7 @@ globals:
 
 quests:
   MainQuest: "GTS.esp|005E3A"
+  ManagerQuest: "GTS.esp|000D62"
 
 factions:
   FollowerFaction: "Skyrim.esm|084D1B"

@@ -14,7 +14,7 @@ namespace Hooks
 		Hook_ThirdPersonState::Hook();
 		Hook_DragonState::Hook();
 		Hook_HorseState::Hook();
-		Hook_FirstPersonState::Hook();
+		//Hook_FirstPersonState::Hook();
 		Hook_FreeState::Hook();
 		Hook_TransitionState::Hook();
 		Hook_BleedoutState::Hook();
