@@ -272,11 +272,13 @@ namespace {
 
 			if (Runtime::GetFloat("MultiplyGameModePC") == 1 && actor->formID == 0x14) {
 				GrowthRate *= Scale;
-			} else if (Runtime::GetFloat("MultiplyGameModeNPC") == 1 && actor->formID != 0x14)  {
+			} if (Runtime::GetFloat("MultiplyGameModeNPC") == 1 && actor->formID != 0x14)  {
 				GrowthRate *= Scale;
-			} else if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor->formID == 0x14) {
+			} 
+			
+			if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor->formID == 0x14) {
 				Scale = 1.0;
-			} else if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14) {
+			} if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14) {
 				Scale = 1.0;
 			}
 
