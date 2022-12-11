@@ -275,11 +275,13 @@ namespace {
 			} if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14) {
 				Scale = 1.0;
 			}
+			log::info(actor->GetDisplayFullName(), Scale, GrowthRate);
 
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
 					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
 					if (fabs(GrowthRate) < EPS) {
+						log::info("Returning");
 						return;
 					}
 					if ((targetScale + modAmount) < maxScale) {
