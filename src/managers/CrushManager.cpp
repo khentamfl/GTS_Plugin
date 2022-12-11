@@ -59,20 +59,20 @@ namespace {
 		}
 	}
 
-	void GrowAfterTheKill(Actor* caster, actor target) {
+	void GrowAfterTheKill(Actor* caster, Actor* target) {
 		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
 			return;
-		} else if (Runtime::HasPerk(caster, "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1) {
+		} else if (Runtime::HasPerk(PlayerCharacter::GetSingleton(), "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1) {
 			float Rate = (0.00050 * get_target_scale(target)) * 120;
 			CrushGrow(caster, 0, Rate);
 		}
-		PleasureText(actor);
+		PleasureText(caster);
 	}
 
-	void RandomMoan(Actor* actor, actor target) {
+	void RandomMoan(Actor* caster, Actor* target) {
 		auto randomInt = rand() % 10;
 		if (randomInt < 1 ) {
-			Runtime::PlaySound("MoanSound", actor, 1.0, 1.0);
+			Runtime::PlaySound("MoanSound", caster, 1.0, 1.0);
 			GrowAfterTheKill(caster, target);
 		}
 	}
