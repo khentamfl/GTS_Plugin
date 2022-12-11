@@ -142,11 +142,7 @@ namespace Gts {
 					ScareChance(giant);
 
 					if (tiny->formID != 0x14) {
-						//Disintegrate(tiny); // CTD if we Disintegrate the player	
-						if (progressionQuest) {
-							CallFunctionOn(progressionQuest, "Quest", "Disintegrate", tiny);
-						}
-						
+						Disintegrate(tiny); // CTD if we Disintegrate the player	
 					}
 
 					FearChance(giant);
