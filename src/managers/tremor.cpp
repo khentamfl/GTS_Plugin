@@ -34,16 +34,6 @@ namespace Gts {
 		return instance;
 	}
 
-	inline bool TremorManager::GetFP() {
-		auto playercamera = PlayerCamera::GetSingleton();
-		if (!playercamera) {
-			return false;
-		}
-		if (playercamera->currentState == playercamera->cameraStates[CameraState::kFirstPerson]) {
-			return true;
-		}
-		return false;
-	}
 
 	void TremorManager::OnImpact(const Impact& impact) {
 		if (!impact.actor) {
@@ -180,7 +170,7 @@ namespace Gts {
 
 				if (actor->formID == 0x14 && pcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
-						if (GetFP()) {
+						if (IsFirstPerson) {
 							intensity *= 0.075; // Shake effects are weaker when in first person
 						}
 						//log::info("Intensity is: {}", intensity);

@@ -185,7 +185,7 @@ namespace Gts {
 					scale *= 0.85; // Walking makes you sound quieter
 				}
 
-				if (actor->formID == 0x14 && TremorManager::GetSingleton().GetFP()) { // Footsteps are quieter when in first person
+				if (actor->formID == 0x14 && IsFirstPerson) { // Footsteps are quieter when in first person
 					scale *= 0.25;
 				}
 

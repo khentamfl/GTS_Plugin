@@ -326,4 +326,15 @@ namespace Gts {
 			log::error("Could not build sound");
 		}
 	}
+
+	inline bool IsFirstPerson() {
+		auto playercamera = PlayerCamera::GetSingleton();
+		if (!playercamera) {
+			return false;
+		}
+		if (playercamera->currentState == playercamera->cameraStates[CameraState::kFirstPerson]) {
+			return true;
+		}
+		return false;
+	}
 }

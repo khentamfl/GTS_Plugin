@@ -30,6 +30,9 @@ namespace Gts {
 
 	void CameraManager::CameraUpdate() {
 		CameraState* currentState = this->GetCameraState();
+		if (IsFirstPerson) {
+			return; // Do not edit the camera in first person. It causes HUGE issues.
+		}
 		if (currentState) {
 			// Get scale based on camera state
 			float scale = currentState->GetScale();

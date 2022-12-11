@@ -419,7 +419,7 @@ namespace {
 				scale = 1.0;
 		} 
 
-		ApplyGameMode(actor, gameMode, growthRate * scale, shrinkRate);
+		ApplyGameMode(actor, gameMode, growthRate * scale * 0.15 + 0.85, shrinkRate);
 	}
 }
 
