@@ -1,4 +1,5 @@
 #include "managers/altcamera.hpp"
+#include "managers/camera.hpp"
 #include "managers/cameras/util.hpp"
 #include "util.hpp"
 #include "data/runtime.hpp"
@@ -27,11 +28,21 @@ namespace Gts {
 	void CameraManager::Start() {
 		ResetIniSettings();
 	}
+	void CameraManager::ApplyFirstPerson() {
+		bool ImProne = false;
+		float ImCrouching = Runtime::GetInt("ImCrouching");
+		if (ImCrouching >= 1.0) {
+			ImProne = true;
+		} else {
+			ImProne = false;
+		}
+		CameraManagerOld::GetSingleton().UpdateFirstPerson(ImProne);
+	}
 
 	void CameraManager::CameraUpdate() {
 		CameraState* currentState = this->GetCameraState();
 		if (IsFirstPerson()) {
-			set_fp_scale(player, scale, ProneOffsetFP);
+			ApplyFirstPerson();
 			return; // Do not edit the camera in first person. It causes HUGE issues.
 		}
 		if (currentState) {
