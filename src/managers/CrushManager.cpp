@@ -1,5 +1,5 @@
 #include "managers/CrushManager.hpp"
-#include "magic/effects/CrushGrowth.hpp"
+#include "magic/effects/common.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "scale/scale.hpp"
