@@ -208,7 +208,7 @@ namespace Gts {
 
 	bool IsJumping(Actor* actor);
 	
-	inline bool IsFirstPerson();
+	bool IsFirstPerson();
 
 	inline float GetMaxAV(Actor* actor, ActorValue av) {
 		auto baseValue = actor->GetPermanentActorValue(av);

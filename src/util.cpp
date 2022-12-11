@@ -220,7 +220,7 @@ namespace Gts {
 		return result;
 	}
 
-	inline bool IsFirstPerson() {
+	bool IsFirstPerson() {
 		auto playercamera = PlayerCamera::GetSingleton();
 		if (!playercamera) {
 			return false;
