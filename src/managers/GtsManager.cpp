@@ -267,11 +267,19 @@ namespace {
 		if (game_mode != ChosenGameMode::None) {
 			float natural_scale = get_natural_scale(actor);
 			float Scale = get_target_scale(actor);
-			if ((Runtime::GetFloat("MultiplyGameModePC") == 0 && actor->formID == 0x14) || (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14)) {
-				Scale = 1.0; // Do not Multiply Scale if True
-			} 
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
+
+			if (Runtime::GetFloat("MultiplyGameModePC") == 1 && actor->formID == 0x14) {
+				GrowthRate *= Scale;
+			} else if (Runtime::GetFloat("MultiplyGameModeNPC") == 1 && actor->formID != 0x14)  {
+				GrowthRate *= Scale;
+			} else if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor->formID == 0x14) {
+				Scale = 1.0;
+			} else if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14) {
+				Scale = 1.0;
+			}
+
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
 					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
