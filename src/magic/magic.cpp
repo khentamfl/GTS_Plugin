@@ -47,7 +47,7 @@ namespace Gts {
 		if (this->activeEffect) {
 			auto spell = this->activeEffect->spell;
 			if (spell) {
-				log::info("      = {}", spell->GetFullName());
+				//log::info("      = {}", spell->GetFullName());
 			}
 
 			this->effectSetting = this->activeEffect->GetBaseObject();

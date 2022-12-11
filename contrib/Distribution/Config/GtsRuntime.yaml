@@ -80,6 +80,7 @@ spellEffects:
   FakeCrushEffect: "GTS.esp|271EF9"
 
 spells:
+  GtsVoreFearSpell: "GTS.esp|026D15"
   SmallMassiveThreatSpell: "GTS.esp|1A2566"
   CrushGrowthSpell: "GTS.esp|2028B7"
   TrackSizeSpell: "GTS.esp|3B0E73"
@@ -100,6 +101,7 @@ spells:
   FakeCrushSpell: "GTS.esp|271EF7"
   ShrinkBackNPCSpell: "GTS.esp|00536B"
   ShrinkBackSpell: "GTS.esp|005368"
+  GtsBleedSpell: "GTS.esp|01CEA2"
 
 perks:
   SmallMassiveThreatSizeSteal: "GTS.esp|2496E8"
@@ -131,6 +133,7 @@ explosions:
   footstepExplosion: "GTS.esp|035C81"
 
 globals:
+  GtsDecideGrowth: "GTS.esp|15661D" 
   sizeLimit: "GTS.esp|2028B4"
   GtsNPCEffectImmunityToggle: "GTS.esp|271EFA"
   ProgressionMultiplier: "GTS.esp|37E46E"

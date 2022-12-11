@@ -16,7 +16,7 @@ using namespace Gts;
 namespace {
 	void ScareChance(Actor* actor) {
 		int voreFearRoll = rand() % 5;
-		if (Runtime::HasMagicEffect(actor, "gtsSmallMassiveThreatMe")) {
+		if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
 			voreFearRoll = rand() % 2;
 			shake_camera(actor, 0.4, 0.25);
 		}
@@ -61,7 +61,7 @@ namespace {
 	void GrowAfterTheKill(Actor* actor) {
 		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(actor, "GtsSmallMassiveThreat")) {
 			return;
-		} else if (Runtime::HasPerk(actor, "GtsCrushGrowth") && Runtime::GetInt("GtsDecideGrowth") >= 1 ) {
+		} else if (Runtime::HasPerk(actor, "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1 ) {
 			Runtime::CastSpell(actor, actor, "GtsSmallCrushGrowthSpell");
 		}
 		PleasureText(actor);
@@ -70,7 +70,7 @@ namespace {
 	void RandomMoan(Actor* actor) {
 		auto randomInt = rand() % 10;
 		if (randomInt < 1 ) {
-			Runtime::PlaySound("GtsMoanSound", actor, 1.0, 1.0);
+			Runtime::PlaySound("MoanSound", actor, 1.0, 1.0);
 			GrowAfterTheKill(actor);
 		}
 	}
@@ -95,12 +95,12 @@ namespace Gts {
 			if (!giant) {
 				continue;
 			}
-			if (!tiny->Is3DLoaded()) {
-				continue;
-			}
-			if (!giant->Is3DLoaded()) {
-				continue;
-			}
+			//if (!tiny->Is3DLoaded()) {
+				//continue;
+			//}
+			//if (!giant->Is3DLoaded()) {
+				//continue;
+			//}
 			if (data.state == CrushState::Healthy) {
 				RandomMoan(data.giant);
 				data.state = CrushState::Crushing;

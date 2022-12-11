@@ -32,12 +32,12 @@ namespace Gts {
 			if (!giant) {
 				continue;
 			}
-			if (!tiny->Is3DLoaded()) {
-				continue;
-			}
-			if (!giant->Is3DLoaded()) {
-				continue;
-			}
+			//if (!tiny->Is3DLoaded()) {
+				//continue;
+			//}
+			//if (!giant->Is3DLoaded()) {
+				//continue;
+			//}
 			if (data.state == ShrinkState::Healthy) {
 				tiny->KillImmediate();
 				data.state = ShrinkState::Shrinking;
