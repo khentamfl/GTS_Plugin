@@ -267,6 +267,12 @@ namespace {
 		if (game_mode != ChosenGameMode::None) {
 			float natural_scale = get_natural_scale(actor);
 			float Scale = get_target_scale(actor);
+			if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor->formID == 0x14) {
+				Scale = 1.0; // Do not Multiply PC Scale MCM
+			} 
+			(Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14) {
+				Scale = 1.0; // Do not Multiply NPC Scale MCM
+			} 
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
 			switch (game_mode) {

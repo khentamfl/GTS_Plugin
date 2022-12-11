@@ -133,6 +133,8 @@ explosions:
   footstepExplosion: "GTS.esp|035C81"
 
 globals:
+  MultiplyGameModePC: "GTS.esp|47B72C"
+  MultiplyGameModeNPC: "GTS.esp|47B72B"
   GtsDecideGrowth: "GTS.esp|15661D" 
   sizeLimit: "GTS.esp|2028B4"
   GtsNPCEffectImmunityToggle: "GTS.esp|271EFA"
