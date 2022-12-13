@@ -192,7 +192,7 @@ namespace Gts {
 			auto node_name_a = node_a->name;
 			auto node_name_b = node_b->name;
 			log::info("Contact: Actor {}-{}, Node: {}-{}", name_a, name_b, node_name_a, node_name_b);
-			float SizeDifference = get_target_scale(actor_a)/get_target_scale(actor_b)
+			float SizeDifference = get_target_scale(actor_a)/get_target_scale(actor_b);
 			if (SizeDifference >= 1.25) {
 				DamageAV(actor_b, ActorValue::kHealth, 0.25 * SizeDifference);
 			}
