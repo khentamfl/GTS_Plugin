@@ -419,7 +419,7 @@ namespace {
 				scale = 1.0;
 		} 
 		float ScaleLimit = clamp(1.0, 10.0, (scale * 0.15));
-		log::info(ScaleLimit);
+		log::info("ScaleLimit: {}", ScaleLimit);
 
 		ApplyGameMode(actor, gameMode, growthRate/2 * ScaleLimit, shrinkRate);
 	}
