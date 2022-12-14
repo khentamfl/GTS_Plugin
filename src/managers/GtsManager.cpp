@@ -418,7 +418,8 @@ namespace {
 		} if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14)  {
 				scale = 1.0;
 		} 
-		float ScaleLimit = clamp (1.0, 10.0, scale/6.6);
+		float ScaleLimit = clamp(1.0, 10.0, (scale * 0.15));
+		log::info(ScaleLimit);
 
 		ApplyGameMode(actor, gameMode, growthRate/2 * ScaleLimit, shrinkRate);
 	}
