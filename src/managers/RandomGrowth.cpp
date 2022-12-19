@@ -19,14 +19,16 @@ namespace {
 		if (!Runtime::HasPerk(Player, "GrowthPerk") || Runtime::GetFloat("RandomGrowthMultiply") == 0) {
 			return false;
 		}
-		float Multiply = Runtime::GetFloat("RandomGrowthMultiply");
+		float MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyPC");
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
-			Multiply = 1.0; // Disable effect in Balance Mode, so it's always 1.0
+			MultiplySlider = 1.0; // Disable effect in Balance Mode, so it's always 1.0
+			log::info("Balance Mode True");
 		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		int Requirement = (250 * Gigantism * Multiply) * SizeManager::GetSingleton().BalancedMode();
+		int Requirement = ((250 * MultiplySlider) * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 		int random = rand() % Requirement;
 		int decide_chance = 1;
+		log::info("Requirement: {}" Requirement);
 		if (random <= decide_chance) {
 			return true;
 		} else {
