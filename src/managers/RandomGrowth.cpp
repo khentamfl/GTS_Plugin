@@ -16,7 +16,7 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		auto Player = PlayerCharacter::GetSingleton();
-		if (!Runtime::HasPerk(Player, "GrowthPerk") || Runtime::GetFloat("RandomGrowthMultiply") == 0) {
+		if (!Runtime::HasPerk(Player, "GrowthPerk") || Runtime::GetFloat("RandomGrowthMultiplyPC") == 0) {
 			return false;
 		}
 		float MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyPC");
