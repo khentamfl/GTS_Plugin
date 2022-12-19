@@ -16,11 +16,15 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		auto Player = PlayerCharacter::GetSingleton();
-		if (!Runtime::HasPerk(Player, "GrowthPerk") || Runtime::GetFloat("AllowRandomGrowth") == 0) {
+		if (!Runtime::HasPerk(Player, "GrowthPerk") || Runtime::GetFloat("RandomGrowthMultiply") == 0) {
 			return false;
 		}
+		float Multiply = Runtime::GetFloat("RandomGrowthMultiply");
+		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
+			Multiply = 1.0; // Disable effect in Balance Mode, so it's always 1.0
+		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		int Requirement = (250 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
+		int Requirement = (250 * Gigantism * Multiply) * SizeManager::GetSingleton().BalancedMode();
 		int random = rand() % Requirement;
 		int decide_chance = 1;
 		if (random <= decide_chance) {
