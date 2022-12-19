@@ -64,7 +64,7 @@ namespace Gts {
 
 		// Apply it
 
-		if (Runtime::HasPerk(receiver, "GrowthOnHitPerk") && !this->CanGrow && !this->BlockEffect && receiver == player ) {
+		if (Runtime::HasPerk(receiver, "GrowthOnHitPerk") && Runtime::GetFloat("AllowHitGrowth") == 1 && !this->CanGrow && !this->BlockEffect && receiver == player ) {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
 				this->BlockEffect = true;
 				this->CanGrow = true;

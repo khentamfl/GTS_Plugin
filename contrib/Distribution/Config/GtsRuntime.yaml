@@ -144,6 +144,8 @@ globals:
   ChosenGameMode: "GTS.esp|2EB74C"
   GrowthModeRate: "GTS.esp|2028C3"
   ShrinkModeRate: "GTS.esp|2028C4"
+  AllowHitGrowth: "GTS.esp|000000"
+  AllowRandomGrowth: "GTS.esp|000000"
   ChosenGameModeNPC: "GTS.esp|2EB747"
   GrowthModeRateNPC: "GTS.esp|2EB74B"
   ShrinkModeRateNPC: "GTS.esp|2EB74A"

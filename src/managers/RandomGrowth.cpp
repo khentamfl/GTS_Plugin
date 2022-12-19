@@ -16,7 +16,7 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		auto Player = PlayerCharacter::GetSingleton();
-		if (!Runtime::HasPerk(Player, "GrowthPerk")) {
+		if (!Runtime::HasPerk(Player, "GrowthPerk") || Runtime::GetFloat("AllowRandomGrowth") == 0) {
 			return false;
 		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
