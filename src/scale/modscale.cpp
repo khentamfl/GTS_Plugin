@@ -76,7 +76,7 @@ namespace Gts {
 		auto first_model = actor->Get3D(true);
 		float FirstPersonMode = Runtime::GetInt("FirstPersonMode"); // TODO: Fix detection
 
-		if (size_method == (RootScale || RefScale) && first_node) {
+		if (size_method == RootScale || size_method == RefScale) && first_node) {
 			result = true;
 			if (FirstPersonMode == 0.0) {
 				first_node->local.scale = target_scale * prone;
