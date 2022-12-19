@@ -37,15 +37,20 @@ namespace Gts {
 			bool Balance = false; // Toggles Balance Mode for the mod. False = off, true = on.
 
 			float Gigantism = this->GetEnchantmentBonus(actor)/100;
-			float GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("sizeLimit"));
+			float GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("sizeLimit")); // Default size limit
 			float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
 			float SelectedFormula = Runtime::GetInt("SelectedSizeFormula");
 
-			//BalancedMode(Balance);
-
-			if (SelectedFormula >= 2.0) {
+			if (SelectedFormula >= 2.0 && actor->formID == 0x14) { // Apply Player Mass-Based max size
 				GetLimit = Runtime::GetFloat("MassBasedSizeLimit") +1.0;
 			}
+			else if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate())) { // Apply Follower Max Size
+				GetLimit = Runtime::GetFloat("FollowersSizeLimit") + 1.0;
+			}
+			else if (actor->formID != 0x14 && (!Runtime::InFaction(actor, "FollowerFaction") && !actor->IsPlayerTeammate())) {  // Apply Other NPC's max size
+				GetLimit = Runtime::GetFloat("NPCSizeLimit") + 1.0;
+			}
+
 			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
 			float TotalLimit = (GetLimit + Persistent_Size) * (1.0 + Gigantism);
 
