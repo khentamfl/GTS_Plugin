@@ -146,6 +146,7 @@ globals:
   ShrinkModeRate: "GTS.esp|2028C4"
   AllowHitGrowth: "GTS.esp|485931"
   AllowHitGrowthNPC: "GTS.esp|47662A"
+  AllowHMoanSounds: "GTS.esp|48FB32"
   RandomGrowthMultiplyPC: "GTS.esp|48592F"
   RandomGrowthMultiplyNPC: "GTS.esp|485930"
   ChosenGameModeNPC: "GTS.esp|2EB747"

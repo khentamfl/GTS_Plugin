@@ -25,6 +25,10 @@ namespace Gts {
 			float Volume = clamp(0.15, 1.0, get_visual_scale(caster)/8);
 			Runtime::PlaySound("growthSound", caster, Volume, 1.0);
 		}
+		if (this->MoanTimer.ShouldRun() && Runtime::GetFloat("AllowGrowthMoanSounds") == 1.0)
+			float MoanVolume = clamp(0.10, 2.0, get_visual_scale(caster)/8);
+			Runtime::PlaySound("MoanSound", caster, MoanVolume, 1.0);
+	    }
 		float bonus = 1.0;
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
