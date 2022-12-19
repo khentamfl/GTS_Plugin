@@ -16,10 +16,11 @@ using namespace Gts;
 namespace {
 	bool ShouldGrow() {
 		auto Player = PlayerCharacter::GetSingleton();
-		if (!Runtime::HasPerk(Player, "GrowthPerk") || Runtime::GetFloat("RandomGrowthMultiplyPC") == 0) {
+		float MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyPC");
+		if (!Runtime::HasPerk(Player, "GrowthPerk") || MultiplySlider == 0) {
 			return false;
 		}
-		float MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyPC");
+		
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
 			MultiplySlider = 1.0; // Disable effect in Balance Mode, so it's always 1.0
 			log::info("Balance Mode True");
