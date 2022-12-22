@@ -33,7 +33,7 @@ namespace Gts {
 		const std::string_view rightFootRegex = ".*(R.*Foot|R.*Leg.*Tip).*";
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
-			auto rootModel = player->Get3D(false);
+			auto rootModel = find_node(player, "CME Body [Body]", false);
 			if (rootModel) {
 				auto transform = rootModel->world.Invert();
 				auto leftFoot = find_node_regex(player, leftFootRegex);

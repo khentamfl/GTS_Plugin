@@ -206,17 +206,22 @@ namespace Gts {
 
 							// Make the transform matrix for our changes
 							NiTransform adjustments = NiTransform();
-							adjustments.translate = offset;
 							adjustments.scale = scale;
 
 							// Get Scaled Camera Location
 							auto targetLocationWorld = playerTrans*(adjustments*(playerTransInve*cameraLocation));
+
 							auto parent = cameraRoot->parent;
 							NiTransform transform = parent->world.Invert();
 							auto targetLocationLocal = transform * targetLocationWorld;
 
-							UpdatePlayerCamera(targetLocationLocal);
-							UpdateNiCamera(targetLocationLocal);
+							// Get shifted Camera Location
+							NiTransform adjustments2 = NiTransform();
+							adjustments2.transform = offset * scale;
+							auto targetLocationLocalShifted = adjustments2 * targetLocationLocal;
+
+							UpdatePlayerCamera(targetLocationLocalShifted);
+							UpdateNiCamera(targetLocationLocalShifted);
 							// UpdateSceneManager(targetLocationLocal);
 							// UpdateRenderManager(targetLocationLocal);
 						}
