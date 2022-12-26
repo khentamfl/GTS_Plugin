@@ -317,13 +317,35 @@ namespace Gts {
 			return false;
 		}
 
+		float sizedifference = pred_scale/prey_scale;
+
+		if (Runtime::HasPerk(pred, "MassVorePerk")) {
+			sizedifference *= 1.15; // Less stamina drain
+		}
+
 		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
+
+		float balancemode = SizeManager::GetSingleton().BalancedMode();
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (Runtime::HasPerk(pred,"MassVorePerk")) {
 			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
 		}
+
+		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Enables HP requirement on Vore.
+			float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);
+			float gethp = GetActorValue(prey, ActorValue::kHealth);
+			float healthrequirement = getmaxhp/pred_scale;
+			if (gethp > healthrequirement) {
+				DamageAV(prey, ActorValue::kHealth, 6 * sizedifference);
+				DamageAV(pred, ActorValue::kStamina, 26/sizedifference);
+				Notify("{} is too healthy to be eaten", prey->GetDisplayFullName());
+				return false;
+			}
+		}
+
+		
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
@@ -349,9 +371,13 @@ namespace Gts {
 		if (Runtime::HasPerk(pred, "MassVorePerk")) {
 			sizedifference *= 1.15; // Less stamina drain
 		}
-
+		
 		float wastestamina = 180/sizedifference; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
+
+		if (pred->formID != 0x14) {
+			wastestamina = 100/sizedifference; // Less tamina drain for non Player
+		}
 
 
 
