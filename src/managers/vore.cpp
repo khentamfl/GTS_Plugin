@@ -319,7 +319,7 @@ namespace Gts {
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
-		
+
 		float sizedifference = pred_scale/prey_scale;
 
 		if (Runtime::HasPerk(pred, "MassVorePerk")) {
@@ -335,7 +335,7 @@ namespace Gts {
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Enables HP requirement on Vore.
 			float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);
-			float gethp = GetActorValue(prey, ActorValue::kHealth);
+			float gethp = GetAV(prey, ActorValue::kHealth);
 			float healthrequirement = getmaxhp/pred_scale;
 			if (gethp > healthrequirement) {
 				DamageAV(prey, ActorValue::kHealth, 6 * sizedifference);
