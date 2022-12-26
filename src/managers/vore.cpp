@@ -317,6 +317,9 @@ namespace Gts {
 			return false;
 		}
 
+		float pred_scale = get_visual_scale(pred);
+		float prey_scale = get_visual_scale(prey);
+		
 		float sizedifference = pred_scale/prey_scale;
 
 		if (Runtime::HasPerk(pred, "MassVorePerk")) {
@@ -326,9 +329,6 @@ namespace Gts {
 		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
-
-		float pred_scale = get_visual_scale(pred);
-		float prey_scale = get_visual_scale(prey);
 		if (Runtime::HasPerk(pred,"MassVorePerk")) {
 			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
 		}
