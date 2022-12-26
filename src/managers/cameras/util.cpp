@@ -153,6 +153,17 @@ namespace Gts {
 		#endif
 	}
 
+	NiTransform GetCameraWorldTransform() {
+		auto camera = PlayerCamera::GetSingleton();
+		if (camera) {
+			auto cameraRoot = camera->cameraRoot;
+			if (cameraRoot) {
+				return cameraRoot->world;
+			}
+		}
+		return NiTransform();
+	}
+
 	void UpdatePlayerCamera(NiPoint3 camLoc) {
 		auto camera = PlayerCamera::GetSingleton();
 		if (camera) {
@@ -195,6 +206,7 @@ namespace Gts {
 
 		if (cameraRoot) {
 			if (currentState) {
+				auto cameraWorldTranform = GetCameraWorldTransform();
 				NiPoint3 cameraLocation;
 				currentState->GetTranslation(cameraLocation);
 				if (player) {
@@ -216,9 +228,12 @@ namespace Gts {
 							auto targetLocationLocal = transform * targetLocationWorld;
 
 							// Get shifted Camera Location
+							cameraWorldTranform.translate = targetLocationLocal; // Update with latest position
 							NiTransform adjustments2 = NiTransform();
-							adjustments2.transform = offset * scale;
-							auto targetLocationLocalShifted = adjustments2 * targetLocationLocal;
+							adjustments2.translate = offset * scale;
+							auto worldShifted =  cameraWorldTranform * adjustments2 * NiPoint3();
+							auto localShifted = transform * worldShifted;
+							auto targetLocationLocalShifted = localShifted;
 
 							UpdatePlayerCamera(targetLocationLocalShifted);
 							UpdateNiCamera(targetLocationLocalShifted);
