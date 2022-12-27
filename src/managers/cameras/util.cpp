@@ -214,7 +214,7 @@ namespace Gts {
 						auto model = player->Get3D(false);
 						if (model) {
 							NiTransform playerTrans = model->world;
-							playerTrans.rotate = NiMatrix3(); // Remove rotation
+							// playerTrans.rotate = NiMatrix3(); // Remove rotation
 							auto playerTransInve = playerTrans.Invert();
 
 							// Make the transform matrix for our changes

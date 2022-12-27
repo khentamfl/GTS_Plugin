@@ -1,11 +1,12 @@
 #include "managers/cameras/foot.hpp"
 #include "managers/cameras/util.hpp"
 #include "data/runtime.hpp"
+#include "scale/scale.hpp"
 #include "node.hpp"
 
 using namespace RE;
 
-const float CAMERA_FACTOR = 100.00;
+const float CAMERA_FACTOR = 70.00;
 
 namespace Gts {
 	NiPoint3 Foot::GetOffset(const NiPoint3& cameraPos) {
@@ -17,7 +18,11 @@ namespace Gts {
 	}
 
 	NiPoint3 Foot::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
-		return NiPoint3(0.0, -CAMERA_FACTOR, 0.0);
+		NiPoint3 footPos = this->GetFootPos();
+		auto player = PlayerCharacter::GetSingleton();
+		float playerScale = get_visual_scale(player);
+
+		return footPos - NiPoint3(0.0, 0.0, CAMERA_FACTOR*playerScale);
 	}
 
 	NiPoint3 Foot::GetFootPos() {
@@ -25,7 +30,7 @@ namespace Gts {
 		const std::string_view rightFootRegex = ".*(R.*Foot|R.*Leg.*Tip).*";
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
-			auto rootModel = find_node(player, "CME Body [Body]", false);
+			auto rootModel = player->Get3D(false);
 			if (rootModel) {
 				auto transform = rootModel->world.Invert();
 				auto leftFoot = find_node_regex(player, leftFootRegex);
