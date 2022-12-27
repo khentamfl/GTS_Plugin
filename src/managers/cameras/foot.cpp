@@ -47,4 +47,6 @@ namespace Gts {
 		log::info("Spring value: {}", Vector2Str(this->smoothFootPos.value));
 		return this->smoothFootPos.value;
 	}
+
+	
 }
