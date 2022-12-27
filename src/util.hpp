@@ -29,11 +29,11 @@ namespace Gts {
 		return "";
 	}
 
-	inline void std::string Vector2Str(const hkVector4& vector) {
+	inline std::string Vector2Str(const hkVector4& vector) {
 		return std::format("{:.2f},{:.2f},{:.2f},{:.2f}", vector.quad.m128_f32[0], vector.quad.m128_f32[1], vector.quad.m128_f32[2], vector.quad.m128_f32[3]);
 	}
 
-	inline void std::string Vector2Str(const hkVector4* vector) {
+	inline std::string Vector2Str(const hkVector4* vector) {
 		if (vector) {
 			return std::format("{:.2f},{:.2f},{:.2f},{:.2f}", vector->quad.m128_f32[0], vector->quad.m128_f32[1], vector->quad.m128_f32[2], vector->quad.m128_f32[3]);
 		} else {
@@ -41,11 +41,11 @@ namespace Gts {
 		}
 	}
 
-	inline void std::string Vector2Str(const NiPoint3& vector) {
+	inline std::string Vector2Str(const NiPoint3& vector) {
 		return std::format("{:.2f},{:.2f},{:.2f}", vector.x, vector.y, vector.z);
 	}
 
-	inline void std::string Vector2Str(const NiPoint3* vector) {
+	inline std::string Vector2Str(const NiPoint3* vector) {
 		if (vector) {
 			return std::format("{:.2f},{:.2f},{:.2f}", vector->x, vector->y, vector->z);
 		} else {
@@ -53,11 +53,11 @@ namespace Gts {
 		}
 	}
 
-	inline void std::string Vector2Str(const NiQuaternion& vector) {
+	inline std::string Vector2Str(const NiQuaternion& vector) {
 		return std::format("{:.2f},{:.2f},{:.2f},{:.2f}", vector.x, vector.y, vector.z, vector.w);
 	}
 
-	inline void std::string Vector2Str(const NiQuaternion* vector) {
+	inline std::string Vector2Str(const NiQuaternion* vector) {
 		if (vector) {
 			return std::format("{:.2f},{:.2f},{:.2f},{:.2f}", vector->x, vector->y, vector->z, vector->w);
 		} else {
