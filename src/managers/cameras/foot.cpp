@@ -43,8 +43,8 @@ namespace Gts {
 				}
 			}
 		}
-		log::info("Spring target: {}", Vector2Str(this-smoothFootPos.target));
-		log::info("Spring value: {}", Vector2Str(this-smoothFootPos.value));
+		log::info("Spring target: {}", Vector2Str(this->smoothFootPos.target));
+		log::info("Spring value: {}", Vector2Str(this->smoothFootPos.value));
 		return this->smoothFootPos.value;
 	}
 }
