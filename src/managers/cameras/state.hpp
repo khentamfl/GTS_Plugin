@@ -8,5 +8,6 @@ namespace Gts {
 			virtual float GetScale();
 			virtual NiPoint3 GetOffset(const NiPoint3& cameraPosLocal);
 			virtual NiPoint3 GetCombatOffset(const NiPoint3& cameraPosLocal);
+			virtual NiPoint3 GetPlayerLocalOffset(const NiPoint3& cameraPosLocal);
 	};
 }

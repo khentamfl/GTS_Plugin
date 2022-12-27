@@ -9,23 +9,15 @@ const float CAMERA_FACTOR = 0.75;
 
 namespace Gts {
 	NiPoint3 Foot::GetOffset(const NiPoint3& cameraPos) {
-		float lookY = GetINIFloat("fOverShoulderPosY:Camera");
-
-		return -(cameraPos*CAMERA_FACTOR) - NiPoint3(0.0, lookY, 0.0)*CAMERA_FACTOR + GetFootPos() + NiPoint3(
-			Runtime::GetFloat("cameraAlternateX"),
-			0.0,
-			Runtime::GetFloat("cameraAlternateY")
-			);
+		return NiPoint3();
 	}
 
 	NiPoint3 Foot::GetCombatOffset(const NiPoint3& cameraPos) {
-		float lookY = GetINIFloat("fOverShoulderPosY:Camera");
+		return NiPoint3();
+	}
 
-		return -(cameraPos*CAMERA_FACTOR) - NiPoint3(0.0, lookY, 0.0)*CAMERA_FACTOR + GetFootPos() + NiPoint3(
-			Runtime::GetFloat("combatCameraAlternateX"),
-			0.0,
-			Runtime::GetFloat("combatCameraAlternateY")
-			);
+	NiPoint3 Foot::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
+		return NiPoint3(0.0, =CAMERA_FACTOR, 0.0);
 	}
 
 	NiPoint3 Foot::GetFootPos() {

@@ -61,13 +61,15 @@ namespace Gts {
 				offset = currentState->GetOffset(cameraPosLocal);
 			}
 
+			NiPoint3 playerLocalOffset = currentState->GetPlayerLocalOffset(cameraPosLocal);
+
 			offset += this->manualEdit;
 
 			this->smoothOffset.target = offset;
 			this->smoothScale.target = scale;
 
 			// Apply camera scale and offset
-			ScaleCamera(this->smoothScale.value, this->smoothOffset.value);
+			UpdateCamera(this->smoothScale.value, this->smoothOffset.value, playerLocalOffset);
 
 			// Adjust other ini stuff
 			EnsureINIFloat("fMouseWheelZoomIncrement:Camera", Runtime::GetFloat("CameraZoomPrecision"));

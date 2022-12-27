@@ -198,7 +198,7 @@ namespace Gts {
 		return NiPoint3();
 	}
 
-	void ScaleCamera(float scale, NiPoint3 offset) {
+	void UpdateCamera(float scale, NiPoint3 cameraLocalOffset, NiPoint3 playerLocalOffset) {
 		auto camera = PlayerCamera::GetSingleton();
 		auto cameraRoot = camera->cameraRoot;
 		auto player = PlayerCharacter::GetSingleton();
@@ -213,25 +213,27 @@ namespace Gts {
 					if (scale > 1e-4) {
 						auto model = player->Get3D(false);
 						if (model) {
-							auto playerTrans = model->world;
-							auto playerTransInve = model->world.Invert();
+							NiTransform playerTrans = model->world;
+							playerTrans.rotate = NiMatrix3(); // Remove rotation
+							auto playerTransInve = playerTrans.Invert();
 
 							// Make the transform matrix for our changes
 							NiTransform adjustments = NiTransform();
 							adjustments.scale = scale;
+							adjustments.translate = playerLocalOffset;
 
 							// Get Scaled Camera Location
 							auto targetLocationWorld = playerTrans*(adjustments*(playerTransInve*cameraLocation));
 
+							// Get shifted Camera Location
+							cameraWorldTranform.translate = targetLocationWorld; // Update with latest position
+							NiTransform adjustments2 = NiTransform();
+							adjustments2.translate = cameraLocalOffset * scale;
+							auto worldShifted =  cameraWorldTranform * adjustments2 * NiPoint3();
+
+							// Convert to local space
 							auto parent = cameraRoot->parent;
 							NiTransform transform = parent->world.Invert();
-							auto targetLocationLocal = transform * targetLocationWorld;
-
-							// Get shifted Camera Location
-							cameraWorldTranform.translate = targetLocationLocal; // Update with latest position
-							NiTransform adjustments2 = NiTransform();
-							adjustments2.translate = offset * scale;
-							auto worldShifted =  cameraWorldTranform * adjustments2 * NiPoint3();
 							auto localShifted = transform * worldShifted;
 							auto targetLocationLocalShifted = localShifted;
 

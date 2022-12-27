@@ -19,4 +19,8 @@ namespace Gts {
 	NiPoint3 CameraState::GetCombatOffset(const NiPoint3& cameraPosLocal) {
 		return NiPoint3(0.0, 0.0, 0.0);
 	}
+
+	NiPoint3 CameraState::GetPlayerLocalOffset(const NiPoint3& cameraPosLocal) {
+		return NiPoint3(0.0, 0.0, 0.0);
+	}
 }

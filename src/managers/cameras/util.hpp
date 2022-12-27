@@ -33,5 +33,5 @@ namespace Gts {
 	// Get's camera position relative to the player
 	NiPoint3 GetCameraPosLocal();
 
-	void ScaleCamera(float scale, NiPoint3 offset);
+	void UpdateCamera(float scale, NiPoint3 cameraLocalOffset, NiPoint3 playerLocalOffset);
 }
