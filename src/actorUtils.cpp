@@ -27,7 +27,7 @@ namespace Gts {
 	}
 
 	void Disintegrate(Actor* actor) {
-		CallFunctionOn(actor, "Actor", "SetCriticalStage", "CritStage_DisintegrateEnd");
+		CallFunctionOn(actor, "Actor", "SetCriticalStage", 4);
 	}
 
 	void UnDisintegrate(Actor* actor) {
