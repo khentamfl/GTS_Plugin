@@ -11,6 +11,8 @@ namespace Gts {
 
 			virtual NiPoint3 GetCombatOffset(const NiPoint3& cameraPos) override;
 
+			virtual NiPoint3 GetPlayerLocalOffset(const NiPoint3& cameraPos) override;
+
 		private:
 			NiPoint3 GetFootPos();
 
