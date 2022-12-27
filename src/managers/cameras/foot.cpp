@@ -17,7 +17,7 @@ namespace Gts {
 	}
 
 	NiPoint3 Foot::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
-		return NiPoint3(0.0, =CAMERA_FACTOR, 0.0);
+		return NiPoint3(0.0, -CAMERA_FACTOR, 0.0);
 	}
 
 	NiPoint3 Foot::GetFootPos() {
