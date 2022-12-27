@@ -155,7 +155,7 @@ namespace Gts {
 		}
 
 		auto& Camera = CameraManager::GetSingleton();
-		if (AltPressed == true && RightArrow == true && LeftArrow == true) {
+		if (AltPressed == false && RightArrow == true && LeftArrow == true) {
 			Camera.ResetLeftRight();
 		}
 		if (AltPressed == true && RightArrow == true) {
@@ -166,7 +166,7 @@ namespace Gts {
 		} // Left or Right end
 
 
-		if (AltPressed == true && ArrowDown == true && ArrowUp == true) {
+		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
 			Camera.ResetUpDown();
 		}
 		if (AltPressed == true && ArrowUp == true) {
