@@ -43,7 +43,7 @@ namespace Gts {
 				}
 			}
 		}
-		log::info("Spring Target: {}, Spring Value is: {}",Vector2Str(this->smoothFootPos.target),Vector2Str(this->smoothFootPos.value));
+		log::info("Spring Target: {}, Spring Value is: {}",std::string Vector2Str(this->smoothFootPos.target),std::string Vector2Str(this->smoothFootPos.value));
 		return this->smoothFootPos.value;
 	}
 }
