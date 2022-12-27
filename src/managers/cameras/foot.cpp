@@ -6,7 +6,7 @@
 
 using namespace RE;
 
-const float CAMERA_FACTOR = 70.00;
+const float CAMERA_FACTOR = 110.00;
 
 namespace Gts {
 	NiPoint3 Foot::GetOffset(const NiPoint3& cameraPos) {
@@ -42,6 +42,7 @@ namespace Gts {
 				}
 			}
 		}
+		log::info("Spring Target: {}, Spring Value is: {}",Vector2Str(this->smoothFootPos.target),Vector2Str(this->smoothFootPos.value));
 		return this->smoothFootPos.value;
 	}
 }
