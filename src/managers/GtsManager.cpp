@@ -347,8 +347,8 @@ namespace {
 						float sizelimit = 1.00 * CalcAv/25; // Roughly 4.0
 						int Random = rand() % 20;
 						int GrowthTimer = rand() % 10;
-						float GrowthPower = CalcAv*0.012 / Random;
-						static Timer timer = Timer(0.50 * GrowthTimer);
+						float GrowthPower = CalcAv*0.002 / Random;
+						static Timer timer = Timer(0.80 * GrowthTimer);
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) {
 							return;
 						}
@@ -362,7 +362,7 @@ namespace {
 						if (targetScale < maxScale && timer.ShouldRunFrame()) {
 							mod_target_scale(actor, GrowthPower);
 							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
-							Runtime::PlaySound("growthSound", actor, GrowthPower * 10, 1.0);
+							Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
 						}
 						log::info("Calc AV: {}, GrowthPower: {}, Limit: {}", CalcAv, GrowthPower, sizelimit);
 						}
