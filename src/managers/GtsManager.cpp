@@ -344,26 +344,31 @@ namespace {
 				case ChosenGameMode::CurseOfGrowth: {
 					 
 						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
-						float sizelimit = 1.00 * CalcAv/25; // Roughly 4.0
+						float sizelimit = clamp(1.0, 4.0, (1.00 * CalcAv/25)); // Roughly 4.0
 						int Random = rand() % 20;
 						int GrowthTimer = rand() % 10;
+						int StrongGrowthChance = rand() % 20;
 						float GrowthPower = CalcAv*0.002 / Random;
 						static Timer timer = Timer(0.80 * GrowthTimer);
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) {
 							return;
 						}
 						if (timer.ShouldRunFrame()) {
-						if (targetScale >= sizelimit) {
-							set_target_scale(actor, sizelimit);
-						}
-						if (GrowthTimer == 1 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
-							Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
-						}
-						if (targetScale < maxScale && timer.ShouldRunFrame()) {
-							mod_target_scale(actor, GrowthPower);
-							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
-							Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
-						}
+							if (StrongGrowthChance >= 20.0) {
+								GrowthPower *= 3.0;
+								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 40);
+							}
+							if (targetScale >= sizelimit) {
+								set_target_scale(actor, sizelimit);
+							}
+							if (GrowthTimer == 1 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
+								Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
+							}
+							if (targetScale < maxScale && timer.ShouldRunFrame()) {
+								mod_target_scale(actor, GrowthPower);
+								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
+								Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
+							}
 						log::info("Calc AV: {}, GrowthPower: {}, Limit: {}", CalcAv, GrowthPower, sizelimit);
 						}
 					}
