@@ -8,7 +8,7 @@
 using namespace RE;
 
 const float CAMERA_FACTOR = 90.00;
-const float CAMERA_ZOOM = 25.0;
+const float CAMERA_ZOOM = -30.0;
 
 namespace Gts {
 	NiPoint3 Foot::GetOffset(const NiPoint3& cameraPos) {
