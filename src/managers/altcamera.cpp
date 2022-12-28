@@ -112,21 +112,27 @@ namespace Gts {
 			// 5 is Right Feet
 			switch (cameraMode) {
 				case 1: {
+					SetCameraRoot(1);
 					return &this->normalState;
 				}
 				case 2: {
+					SetCameraRoot(2);
 					return &this->altState;
 				}
 				case 3: {
+					SetCameraRoot(3);
 					return &this->footState;
 				}
 				case 4: {
+					SetCameraRoot(4);
 					return &this->footLState;
 				}
 				case 5: {
+					SetCameraRoot(5);
 					return &this->footRState;
 				}
 				default: {
+					SetCameraRoot(1);
 					return nullptr;
 				}
 			}
