@@ -258,6 +258,7 @@ namespace {
 		Shrink,
 		Standard,
 		StandardNoShrink,
+		CurseOfGrowth,
 		Quest,
 	};
 
@@ -265,6 +266,7 @@ namespace {
 	void ApplyGameMode(Actor* actor, const ChosenGameMode& game_mode, const float& GrowthRate, const float& ShrinkRate )  {
 		const float EPS = 1e-7;
 		if (game_mode != ChosenGameMode::None) {
+			auto player = PlayerCharacter::GetSingleton();
 			float natural_scale = get_natural_scale(actor);
 			float Scale = get_target_scale(actor);
 			float maxScale = get_max_scale(actor);
@@ -339,6 +341,26 @@ namespace {
 						} // else let spring handle it
 					} 
 				}
+				case ChosenGameMode::CurseOfGrowth: {
+					 
+						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
+						float sizelimit = 1.25 * CalcAV/33
+						int Random = rand() % 100;
+						int GrowthRandom = rand() % 10;
+						float GrowthPower = CalcAV*0.02 / Random;
+						static Timer timer = Timer(0.50 * GrowthTimer);
+						if (target_scale >= sizelimit) {
+							return;
+						}
+						if (GrowthRandom == 1 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
+							Runtime::PlaySound("MoanSound", actor, MoanVolume, 1.0);
+						 }
+						if (targetScale < maxScale && timer.ShouldRunFrame()) {
+							mod_target_scale(actor, GrowthPower);
+							GrowthTremorManager::GetSingleton().CallRumble(actor, player, 0.5);
+						}
+					}
+				
 				case ChosenGameMode::Quest: {
 					float modAmount = -ShrinkRate * Time::WorldTimeDelta();
 					if (fabs(ShrinkRate) < EPS) {
@@ -370,7 +392,7 @@ namespace {
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
 			if (actor->formID == 0x14 && !actor->IsInCombat()) {
-				game_mode_int = 5; // QuestMode
+				game_mode_int = 6; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 2.2);
 				} else if (QuestStage >= 60 && QuestStage < 70) {
@@ -409,7 +431,7 @@ namespace {
 			}
 		}
 
-		if (game_mode_int >=0 && game_mode_int <= 5) {
+		if (game_mode_int >=0 && game_mode_int <= 6) {
 			gameMode = static_cast<ChosenGameMode>(game_mode_int);
 		}
 
