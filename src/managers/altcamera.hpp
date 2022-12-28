@@ -40,7 +40,8 @@ namespace Gts {
 			Foot footState;
 
 			NiPoint3 manualEdit;
-			Spring smoothScale = Spring(1.0, 1.0);
-			Spring3 smoothOffset = Spring3(NiPoint3(0.0, 0.0, 0.0), 1.0);
+			Spring smoothScale = Spring(1.0, 3.0);
+			Spring3 smoothOffset = Spring3(NiPoint3(0.0, 0.0, 0.0), 3.0);
+			Spring3 smoothPlayerOffset = Spring3(NiPoint3(0.0, 0.0, 0.0), 3.0);
 	};
 }

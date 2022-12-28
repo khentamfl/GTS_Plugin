@@ -67,9 +67,10 @@ namespace Gts {
 
 			this->smoothOffset.target = offset;
 			this->smoothScale.target = scale;
+			this->smoothPlayerOffset.target = playerLocalOffset;
 
 			// Apply camera scale and offset
-			UpdateCamera(this->smoothScale.value, this->smoothOffset.value, playerLocalOffset);
+			UpdateCamera(this->smoothScale.value, this->smoothOffset.value, this->smoothPlayerOffset.value);
 
 			// Adjust other ini stuff
 			EnsureINIFloat("fMouseWheelZoomIncrement:Camera", Runtime::GetFloat("CameraZoomPrecision"));
