@@ -344,16 +344,16 @@ namespace {
 				case ChosenGameMode::CurseOfGrowth: {
 					 
 						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
-						float sizelimit = 1.25 * CalcAV/33
+						float sizelimit = 1.25 * CalcAV/33;
 						int Random = rand() % 100;
-						int GrowthRandom = rand() % 10;
+						int GrowthTimer = rand() % 10;
 						float GrowthPower = CalcAV*0.02 / Random;
 						static Timer timer = Timer(0.50 * GrowthTimer);
-						if (target_scale >= sizelimit) {
+						if (targetScale >= sizelimit) {
 							return;
 						}
-						if (GrowthRandom == 1 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
-							Runtime::PlaySound("MoanSound", actor, MoanVolume, 1.0);
+						if (GrowthTimer == 1 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
+							Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
 						 }
 						if (targetScale < maxScale && timer.ShouldRunFrame()) {
 							mod_target_scale(actor, GrowthPower);
