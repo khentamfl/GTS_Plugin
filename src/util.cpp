@@ -246,10 +246,10 @@ namespace Gts {
 	void SetCameraRoot(float number) {
 		auto playercamera = PlayerCamera::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
-		auto root = RE::NiPointer<RE::NiNode> find_node(player, "NPC Root [Root]", false)->AsNode();
-		auto butt = RE::NiPointer<RE::NiNode> find_node(player, "Butt", false)->AsNode();
-		auto lfeet = RE::NiPointer<RE::NiNode> find_node(player, "NPC L Foot [Lft ]", false)->AsNode();
-		auto rfeet = RE::NiPointer<RE::NiNode> find_node(player, "NPC R Foot [Rft ]", false)->AsNode();
+		auto root = RE::NiPointer<find_node(player, "NPC Root [Root]", false)->AsNode()>;
+		auto butt = RE::NiPointer<find_node(player, "Butt", false)->AsNode()>;
+		auto lfeet = RE::NiPointer<find_node(player, "NPC L Foot [Lft ]", false)->AsNode()>;
+		auto rfeet = RE::NiPointer<find_node(player, "NPC R Foot [Rft ]", false)->AsNode()>;
 
 		if (number == 1.0 || number == 2.0) {
 			playercamera->SetCameraRoot(root);
