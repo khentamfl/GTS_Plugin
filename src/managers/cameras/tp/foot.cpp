@@ -9,6 +9,7 @@ using namespace RE;
 
 const float CAMERA_FACTOR = 110.00;
 const float CAMERA_ZOOM = -30.0;
+const float CAMERA_SIDE = 10.0;
 
 namespace Gts {
 	NiPoint3 Foot::GetOffset(const NiPoint3& cameraPos) {
@@ -24,7 +25,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		float playerScale = get_visual_scale(player);
 
-		return footPos - NiPoint3(0.0, CAMERA_ZOOM*playerScale, CAMERA_FACTOR*playerScale);
+		return footPos - NiPoint3(CAMERA_SIDE*playerScale, CAMERA_ZOOM*playerScale, CAMERA_FACTOR*playerScale);
 	}
 
 	NiPoint3 Foot::GetFootPos() {
