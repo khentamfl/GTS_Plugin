@@ -344,10 +344,10 @@ namespace {
 				case ChosenGameMode::CurseOfGrowth: {
 					 
 						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
-						float sizelimit = 1.25 * CalcAV/33;
+						float sizelimit = 1.25 * CalcAv/33;
 						int Random = rand() % 100;
 						int GrowthTimer = rand() % 10;
-						float GrowthPower = CalcAV*0.02 / Random;
+						float GrowthPower = CalcAv*0.02 / Random;
 						static Timer timer = Timer(0.50 * GrowthTimer);
 						if (targetScale >= sizelimit) {
 							return;
