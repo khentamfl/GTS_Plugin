@@ -46,8 +46,8 @@ namespace Gts {
 			FirstPersonLoot fpLootState;
 
 			NiPoint3 manualEdit;
-			Spring smoothScale = Spring(1.0, 2000.0);
-			Spring3 smoothOffset = Spring3(NiPoint3(1.0, 1.0, 1.0), 2000.0);
-			Spring3 smoothPlayerOffset = Spring3(NiPoint3(1.0, 1.0, 1.0), 2000.0);
+			Spring smoothScale = Spring(1000.0, 2000.0);
+			Spring3 smoothOffset = Spring3(NiPoint3(1000.0, 1000.0, 1000.0), 2000.0);
+			Spring3 smoothPlayerOffset = Spring3(NiPoint3(1000.0, 1000.0, 1000.0), 2000.0);
 	};
 }
