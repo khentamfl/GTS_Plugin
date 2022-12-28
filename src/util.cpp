@@ -245,10 +245,11 @@ namespace Gts {
 
 	void SetCameraRoot(float number) {
 		auto playercamera = PlayerCamera::GetSingleton();
-		auto root = find_node("NPC Root [Root]")->AsNode();
-		auto butt = find_node("Butt")->AsNode();
-		auto lfeet = find_node("NPC L Foot [Lft ]")->AsNode();
-		auto rfeet = find_node("NPC R Foot [Rft ]")->AsNode();
+		auto player = PlayerCharacter::GetSingleton();
+		auto root = find_node(player, "NPC Root [Root]", false)->AsNode();
+		auto butt = find_node(player, "Butt", false)->AsNode();
+		auto lfeet = find_node(player, "NPC L Foot [Lft ]", false)->AsNode();
+		auto rfeet = find_node(player, "NPC R Foot [Rft ]", false)->AsNode();
 		if (number == 1.0 || number == 2.0) {
 			playercamera->SetCameraRoot(root);
 		}
