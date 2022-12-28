@@ -7,7 +7,7 @@
 
 using namespace RE;
 
-const float CAMERA_FACTOR = 130.00;
+const float CAMERA_FACTOR = 110.00;
 const float CAMERA_SIDE = 20.0;
 const float CAMERA_ZOOM = -60.0;
 
