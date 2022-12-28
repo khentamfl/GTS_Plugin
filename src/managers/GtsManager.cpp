@@ -277,7 +277,7 @@ namespace {
 			} if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14) {
 				Scale = 1.0;
 			}
-			log::info(actor->GetDisplayFullName(), Scale, GrowthRate);
+			//log::info(actor->GetDisplayFullName(), Scale, GrowthRate);
 
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
@@ -352,14 +352,18 @@ namespace {
 						if (targetScale >= sizelimit || !timer.ShouldRunFrame()) {
 							return;
 						}
+						if (target_scale >= sizelimit) {
+							set_target_scale(actor, sizelimit);
+						}
 						if (GrowthTimer == 1 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
 							Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
-						 }
+						}
 						if (targetScale < maxScale && timer.ShouldRunFrame()) {
 							mod_target_scale(actor, GrowthPower);
-							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 10);
-							Runtime::PlaySound("GrowthSound", actor, GrowthPower * 20, 1.0);
+							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
+							Runtime::PlaySound("growthSound", actor, GrowthPower * 10, 1.0);
 						}
+						log::info("Calc AV: {}, GrowtPower: {}", CalcAv, GrowthPower);
 					}
 				
 				case ChosenGameMode::Quest: {
