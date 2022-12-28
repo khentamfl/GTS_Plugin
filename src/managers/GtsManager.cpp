@@ -345,9 +345,9 @@ namespace {
 					 
 						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
 						float sizelimit = 1.25 * CalcAv/33;
-						int Random = rand() % 100;
+						int Random = rand() % 20;
 						int GrowthTimer = rand() % 10;
-						float GrowthPower = CalcAv*0.10 / Random;
+						float GrowthPower = CalcAv*0.045 * Random;
 						static Timer timer = Timer(0.50 * GrowthTimer);
 						if (targetScale >= sizelimit || !timer.ShouldRunFrame()) {
 							return;
@@ -357,7 +357,8 @@ namespace {
 						 }
 						if (targetScale < maxScale && timer.ShouldRunFrame()) {
 							mod_target_scale(actor, GrowthPower);
-							GrowthTremorManager::GetSingleton().CallRumble(actor, player, 0.5);
+							GrowthTremorManager::GetSingleton().CallRumble(actor, GrowthPower, 0.5);
+							Runtime::PlaySound("GrowthSound", actor, GrowthPower, 1.0);
 						}
 					}
 				
