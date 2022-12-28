@@ -32,6 +32,14 @@ namespace Gts {
 	void CameraManager::CameraUpdate() {
 		CameraState* currentState = this->GetCameraState();
 		if (currentState) {
+			bool isProne;
+			auto player = PlayerCharacter::GetSingleton();
+			if (Runtime::GetBool("ProneEnabled") && player != nullptr && player->IsSneaking()) {
+				isProne = true;
+			} else {
+				isProne = false;
+			}
+
 			// Get scale based on camera state
 			float scale = currentState->GetScale();
 
@@ -40,14 +48,13 @@ namespace Gts {
 
 			// Get either normal or combat offset
 			NiPoint3 offset;
-			auto player = PlayerCharacter::GetSingleton();
 			if (player != nullptr && player->IsWeaponDrawn()) {
-				offset = currentState->GetCombatOffset(cameraPosLocal);
+				offset = currentState->GetCombatOffset(cameraPosLocal, isProne);
 			} else {
-				offset = currentState->GetOffset(cameraPosLocal);
+				offset = currentState->GetOffset(cameraPosLocal, isProne);
 			}
 
-			NiPoint3 playerLocalOffset = currentState->GetPlayerLocalOffset(cameraPosLocal);
+			NiPoint3 playerLocalOffset = currentState->GetPlayerLocalOffset(cameraPosLocal, isProne);
 
 			if (currentState->PermitManualEdit()) {
 				offset += this->manualEdit;
@@ -75,14 +82,6 @@ namespace Gts {
 		}
 		int cameraMode = Runtime::GetInt("CameraMode");
 
-		bool isProne;
-		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::GetBool("ProneEnabled") && player != nullptr && player->IsSneaking()) {
-			isProne = true;
-		} else {
-			isProne = false;
-		}
-
 		if (IsFirstPerson()) {
 			// First Person states
 			// 0 is normal
@@ -91,25 +90,13 @@ namespace Gts {
 			int FirstPersonMode = Runtime::GetInt("FirstPersonMode"); // TODO: Fix detection
 			switch (cameraMode) {
 				case 0: {
-					if (isProne) {
-						return &this->fpProneState;
-					} else {
-						return &this->fpState;
-					}
+					return &this->fpState;
 				}
 				case 1: {
-					if (isProne) {
-						return &this->fpCombatProneState;
-					} else {
-						return &this->fpCombatState;
-					}
+					return &this->fpCombatState;
 				}
 				case 2: {
-					if (isProne) {
-						return &this->fpLootProneState;
-					} else {
-						return &this->fpLootState;
-					}
+					return &this->fpLootState;
 				}
 				default: {
 					return nullptr;
@@ -125,18 +112,10 @@ namespace Gts {
 			// 5 is Right Feet
 			switch (cameraMode) {
 				case 1: {
-					if (isProne) {
-						return &this->proneState;
-					} else {
-						return &this->normalState;
-					}
+					return &this->normalState;
 				}
 				case 2: {
-					if (isProne) {
-						return &this->altProneState;
-					} else {
-						return &this->altState;
-					}
+					return &this->altState;
 				}
 				case 3: {
 					return &this->footState;
