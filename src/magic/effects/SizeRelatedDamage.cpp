@@ -1,5 +1,6 @@
 #include "magic/effects/SizeRelatedDamage.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
@@ -31,8 +32,8 @@ namespace Gts {
 		if (target == caster) {
 			return;
 		}
-
-		float InstaCrushRequirement = 24.0;
+		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+		float InstaCrushRequirement = 24.0 * Gigantism;
 		float caster_scale = get_target_scale(caster);
 		float target_scale = get_target_scale(target);
 		float BonusShrink = 1.0; //IsJumping(caster) * 3.0 + 1.0;
@@ -53,7 +54,7 @@ namespace Gts {
 		}
 
 		if (Runtime::HasPerk(caster, "LethalSprint") && caster->IsSprinting()) {
-			InstaCrushRequirement = 14.0;
+			InstaCrushRequirement = 14.0 * Gigantism;
 		}
 
 		if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
@@ -80,7 +81,7 @@ namespace Gts {
 		}
 
 
-		if (size_difference >= 4.0 && target->IsDead() && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
+		if (size_difference >= 4.0 * Gigantism && target->IsDead() && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
 			// ^ We don't want to crush allies
 			CrushManager::Crush(caster, target);
 			CrushToNothing(caster, target);

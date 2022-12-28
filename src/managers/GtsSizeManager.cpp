@@ -42,13 +42,13 @@ namespace Gts {
 			float SelectedFormula = Runtime::GetInt("SelectedSizeFormula");
 
 			if (SelectedFormula >= 2.0 && actor->formID == 0x14) { // Apply Player Mass-Based max size
-				GetLimit = Runtime::GetFloat("MassBasedSizeLimit") +1.0;
+				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("MassBasedSizeLimit"));
 			}
 			else if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate())) { // Apply Follower Max Size
-				GetLimit = Runtime::GetFloat("FollowersSizeLimit") + 1.0;
+				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("FollowersSizeLimit"));
 			}
 			else if (actor->formID != 0x14 && (!Runtime::InFaction(actor, "FollowerFaction") && !actor->IsPlayerTeammate())) {  // Apply Other NPC's max size
-				GetLimit = Runtime::GetFloat("NPCSizeLimit") + 1.0;
+				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("NPCSizeLimit"));
 			}
 
 			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
