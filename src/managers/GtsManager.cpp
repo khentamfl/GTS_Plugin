@@ -344,7 +344,7 @@ namespace {
 				case ChosenGameMode::CurseOfGrowth: {
 					 
 						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
-						float sizelimit = 1.25 * CalcAv/33;
+						float sizelimit = 1.00 * CalcAv/25; // Roughly 4.0
 						int Random = rand() % 20;
 						int GrowthTimer = rand() % 10;
 						float GrowthPower = CalcAv*0.045 * Random;
@@ -357,7 +357,7 @@ namespace {
 						 }
 						if (targetScale < maxScale && timer.ShouldRunFrame()) {
 							mod_target_scale(actor, GrowthPower);
-							GrowthTremorManager::GetSingleton().CallRumble(actor, GrowthPower, 0.5);
+							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 2);
 							Runtime::PlaySound("GrowthSound", actor, GrowthPower, 1.0);
 						}
 					}
