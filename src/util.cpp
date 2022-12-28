@@ -244,17 +244,21 @@ namespace Gts {
 
 	void SetCameraRoot(float number) {
 		auto playercamera = PlayerCamera::GetSingleton();
+		auto root = find_node("NPC Root [Root]")->AsNode();
+		auto butt = find_node("Butt")->AsNode();
+		auto lfeet = find_node("NPC L Foot [Lft ]")->AsNode();
+		auto rfeet = find_node("NPC R Foot [Rft ]")->AsNode();
 		if (number == 1.0 || number == 2.0) {
-			playercamera->SetCameraRoot("NPC Root [Root]");
+			playercamera->SetCameraRoot(root);
 		}
 		else if (number == 3.0) {
-			playercamera->SetCameraRoot("Butt");
+			playercamera->SetCameraRoot(butt);
 		}
 		else if (number == 4.0) {
-			playercamera->SetCameraRoot("NPC L Foot [Lft ]");
+			playercamera->SetCameraRoot(lfeet);
 		}
 		else if (number == 5.0) {
-			playercamera->SetCameraRoot("NPC R Foot [Rft ]");
+			playercamera->SetCameraRoot(rfeet);
 		}
 	}
 
