@@ -77,8 +77,7 @@ namespace Gts {
 
 	// Decide which camera state to use
 	CameraState* CameraManager::GetCameraState() {
-		auto playercamera = PlayerCamera::GetSingleton();
-		if (!Runtime::GetBool("EnableCamera") || playercamera->currentState == playercamera->cameraStates[CameraState::kFree]) {
+		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera()) {
 			return nullptr;
 		}
 		int cameraMode = Runtime::GetInt("CameraMode");
