@@ -347,9 +347,9 @@ namespace {
 						float sizelimit = 1.25 * CalcAv/33;
 						int Random = rand() % 100;
 						int GrowthTimer = rand() % 10;
-						float GrowthPower = CalcAv*0.02 / Random;
+						float GrowthPower = CalcAv*0.10 / Random;
 						static Timer timer = Timer(0.50 * GrowthTimer);
-						if (targetScale >= sizelimit) {
+						if (targetScale >= sizelimit || !timer.ShouldRunFrame()) {
 							return;
 						}
 						if (GrowthTimer == 1 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
