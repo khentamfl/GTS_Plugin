@@ -119,6 +119,12 @@ namespace Gts {
 			case 3: {
 				return &this->footState;
 			}
+			case 4: {
+				return &this->footLState;
+			}
+			case 5: {
+				return &this->footRState;
+			}
 			default: {
 				return nullptr;
 			}
