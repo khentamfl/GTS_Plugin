@@ -1,4 +1,4 @@
-#include "managers/cameras/util.hpp"
+#include "managers/cameras/camutil.hpp"
 #include "node.hpp"
 
 using namespace RE;

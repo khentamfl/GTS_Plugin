@@ -1,5 +1,5 @@
 #include "managers/cameras/foot.hpp"
-#include "managers/cameras/util.hpp"
+#include "managers/cameras/camutil.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
@@ -48,5 +48,5 @@ namespace Gts {
 		return this->smoothFootPos.value;
 	}
 
-	
+
 }

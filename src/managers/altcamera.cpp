@@ -1,6 +1,6 @@
 #include "managers/altcamera.hpp"
 #include "managers/camera.hpp"
-#include "managers/cameras/util.hpp"
+#include "managers/cameras/camutil.hpp"
 #include "util.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
