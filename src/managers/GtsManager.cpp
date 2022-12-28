@@ -349,7 +349,7 @@ namespace {
 						int GrowthTimer = rand() % 10;
 						float GrowthPower = CalcAv*0.012 / Random;
 						static Timer timer = Timer(0.50 * GrowthTimer);
-						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <=>= 0) {
+						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) {
 							return;
 						}
 						if (timer.ShouldRunFrame()) {
