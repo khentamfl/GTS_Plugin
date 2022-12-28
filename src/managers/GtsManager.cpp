@@ -352,7 +352,7 @@ namespace {
 						if (targetScale >= sizelimit || !timer.ShouldRunFrame()) {
 							return;
 						}
-						if (target_scale >= sizelimit) {
+						if (targetScale >= sizelimit) {
 							set_target_scale(actor, sizelimit);
 						}
 						if (GrowthTimer == 1 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
