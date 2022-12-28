@@ -10,6 +10,13 @@
 #include "managers/cameras/footL.hpp"
 #include "managers/cameras/footR.hpp"
 
+#include "managers/cameras/fp.hpp"
+#include "managers/cameras/fpProne.hpp"
+#include "managers/cameras/fpCombat.hpp"
+#include "managers/cameras/fpCombatProne.hpp"
+#include "managers/cameras/fpLoot.hpp"
+#include "managers/cameras/fpLootProne.hpp"
+
 using namespace std;
 using namespace SKSE;
 using namespace RE;
@@ -26,8 +33,6 @@ namespace Gts {
 
 			CameraState* GetCameraState();
 
-			void ApplyFirstPerson();
-
 			void AdjustUpDown(float amt);
 			void ResetUpDown();
 
@@ -42,6 +47,13 @@ namespace Gts {
 			Foot footState;
 			FootR footRState;
 			FootL footLState;
+
+			FirstPerson fpState;
+			FirstPersonProne fpProneState;
+			FirstPersonCombat fpCombatState;
+			FirstPersonCombatProne fpCombatProneState;
+			FirstPersonLoot fpLootState;
+			FirstPersonLootProne fpLootProneState;
 
 			NiPoint3 manualEdit;
 			Spring smoothScale = Spring(1.0, 3.0);

@@ -28,23 +28,9 @@ namespace Gts {
 	void CameraManager::Start() {
 		ResetIniSettings();
 	}
-	void CameraManager::ApplyFirstPerson() {
-		bool ImProne = false;
-		float ImCrouching = Runtime::GetInt("ImCrouching");
-		if (ImCrouching >= 1.0) {
-			ImProne = true;
-		} else {
-			ImProne = false;
-		}
-		CameraManagerOld::GetSingleton().UpdateFirstPerson(ImProne);
-	}
 
 	void CameraManager::CameraUpdate() {
 		CameraState* currentState = this->GetCameraState();
-		if (IsFirstPerson()) {
-			ApplyFirstPerson();
-			return; // Do not edit the camera in first person. It causes HUGE issues.
-		}
 		if (currentState) {
 			// Get scale based on camera state
 			float scale = currentState->GetScale();
@@ -63,7 +49,9 @@ namespace Gts {
 
 			NiPoint3 playerLocalOffset = currentState->GetPlayerLocalOffset(cameraPosLocal);
 
-			offset += this->manualEdit;
+			if (currentState->PermitManualEdit()) {
+				offset += this->manualEdit;
+			}
 
 			this->smoothOffset.target = offset;
 			this->smoothScale.target = scale;
@@ -85,12 +73,6 @@ namespace Gts {
 		if (!Runtime::GetBool("EnableCamera")) {
 			return nullptr;
 		}
-		// 0 is disabled
-		// 1 is normal
-		// 2 is alt camera
-		// 3 is Between Feet
-		// 4 is Left Feet
-		// 5 is Right Feet
 		int cameraMode = Runtime::GetInt("CameraMode");
 
 		bool isProne;
@@ -101,32 +83,73 @@ namespace Gts {
 			isProne = false;
 		}
 
-		switch (cameraMode) {
-			case 1: {
-				if (isProne) {
-					return &this->proneState;
-				} else {
-					return &this->normalState;
+		if (IsFirstPerson()) {
+			// First Person states
+			// 0 is normal
+			// 1 is combat
+			// 2 is loot
+			int FirstPersonMode = Runtime::GetInt("FirstPersonMode"); // TODO: Fix detection
+			switch (cameraMode) {
+				case 0: {
+					if (isProne) {
+						return &this->fpProneState;
+					} else {
+						return &this->fpState;
+					}
+				}
+				case 1: {
+					if (isProne) {
+						return &this->fpCombatProneState;
+					} else {
+						return &this->fpCombatState;
+					}
+				}
+				case 2: {
+					if (isProne) {
+						return &this->fpLootProneState;
+					} else {
+						return &this->fpLootState;
+					}
+				}
+				default: {
+					return nullptr;
 				}
 			}
-			case 2: {
-				if (isProne) {
-					return &this->altProneState;
-				} else {
-					return &this->altState;
+		} else {
+			// Third Person states
+			// 0 is disabled
+			// 1 is normal
+			// 2 is alt camera
+			// 3 is Between Feet
+			// 4 is Left Feet
+			// 5 is Right Feet
+			switch (cameraMode) {
+				case 1: {
+					if (isProne) {
+						return &this->proneState;
+					} else {
+						return &this->normalState;
+					}
 				}
-			}
-			case 3: {
-				return &this->footState;
-			}
-			case 4: {
-				return &this->footLState;
-			}
-			case 5: {
-				return &this->footRState;
-			}
-			default: {
-				return nullptr;
+				case 2: {
+					if (isProne) {
+						return &this->altProneState;
+					} else {
+						return &this->altState;
+					}
+				}
+				case 3: {
+					return &this->footState;
+				}
+				case 4: {
+					return &this->footLState;
+				}
+				case 5: {
+					return &this->footRState;
+				}
+				default: {
+					return nullptr;
+				}
 			}
 		}
 		return nullptr;
