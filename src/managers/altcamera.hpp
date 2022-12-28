@@ -2,6 +2,8 @@
 // Module that handles the Camera
 #include "events.hpp"
 #include "spring.hpp"
+#include "timer.hpp"
+
 #include "managers/cameras/tp/alt.hpp"
 #include "managers/cameras/tp/normal.hpp"
 #include "managers/cameras/tp/foot.hpp"
