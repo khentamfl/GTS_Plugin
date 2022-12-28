@@ -1,6 +1,7 @@
 #include "util.hpp"
 #include <ehdata.h>
 #include <rttidata.h>
+#include "node.hpp"
 
 using namespace Gts;
 
