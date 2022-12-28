@@ -24,7 +24,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		float playerScale = get_visual_scale(player);
 
-		return footPos - NiPoint3(0.0, CAMERA_SIDE*playerScale, CAMERA_FACTOR*playerScale);
+		return footPos - NiPoint3(CAMERA_SIDE*playerScale, 0.0, CAMERA_FACTOR*playerScale);
 	}
 
 	NiPoint3 FootL::GetFootPos() {
