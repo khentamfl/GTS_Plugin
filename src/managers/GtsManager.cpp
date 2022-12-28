@@ -349,9 +349,10 @@ namespace {
 						int GrowthTimer = rand() % 10;
 						float GrowthPower = CalcAv*0.045 / Random;
 						static Timer timer = Timer(0.50 * GrowthTimer);
-						if (targetScale >= sizelimit || !timer.ShouldRunFrame()) {
+						if (targetScale >= sizelimit) {
 							return;
 						}
+						if (timer.ShouldRunFrame()) {
 						if (targetScale >= sizelimit) {
 							set_target_scale(actor, sizelimit);
 						}
@@ -364,6 +365,7 @@ namespace {
 							Runtime::PlaySound("growthSound", actor, GrowthPower * 10, 1.0);
 						}
 						log::info("Calc AV: {}, GrowtPower: {}", CalcAv, GrowthPower);
+						}
 					}
 				
 				case ChosenGameMode::Quest: {
