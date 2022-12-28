@@ -212,7 +212,7 @@ namespace Gts {
 
 	bool IsFreeCamera();
 
-	void SetCameraRoot(float Number);
+	void SetCameraRoot(float number);
 
 	inline float GetMaxAV(Actor* actor, ActorValue av) {
 		auto baseValue = actor->GetPermanentActorValue(av);
