@@ -357,8 +357,8 @@ namespace {
 						 }
 						if (targetScale < maxScale && timer.ShouldRunFrame()) {
 							mod_target_scale(actor, GrowthPower);
-							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 2);
-							Runtime::PlaySound("GrowthSound", actor, GrowthPower, 1.0);
+							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 10);
+							Runtime::PlaySound("GrowthSound", actor, GrowthPower * 20, 1.0);
 						}
 					}
 				
