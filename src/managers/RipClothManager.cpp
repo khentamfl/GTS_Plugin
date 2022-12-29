@@ -29,15 +29,16 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
         float scale = get_target_scale(player);
 
-        auto ArmorSlot = feet;
-
         auto feet = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
         auto head = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHead);
         auto body = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kBody);
         auto hands = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHands);
         auto forearms = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kForearms);
         auto calves = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kCalves);
-        int RandomSlot = rand() % 6; // Randomly choose slot to strip
+        int RandomSlot = rand() % 5; // Randomly choose slot to strip
+
+        auto ArmorSlot = feet;
+
         if (RandomSlot == 0) {
             ArmorSlot = feet;
         }
@@ -57,7 +58,6 @@ namespace Gts {
             ArmorSlot = calves;
         }
     
-
         auto Armor = player->GetWornArmor(ArmorSlot);
         static Timer timer = Timer(4.5);
         if (timer.ShouldRunFrame()) {
@@ -75,7 +75,7 @@ namespace Gts {
                 this->clothtearthreshold = 2.5; // reset stuff
              }
              if (Armor != nullptr) {
-                log::info("Armor not null");
+                log::info("Armor Name: {}", Armor->GetName());
              }
              if (scale >= this->clothtearthreshold) {
                 log::info("Scale >= threshold");
