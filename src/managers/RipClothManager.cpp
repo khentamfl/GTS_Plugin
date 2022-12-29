@@ -58,7 +58,6 @@ namespace Gts {
             ArmorSlot = calves;
         }
     
-        auto Armor = player->GetWornArmor(ArmorSlot);
         static Timer timer = Timer(4.5);
         if (timer.ShouldRunFrame()) {
             log::info("Armor Slot: {}", ArmorSlot);
@@ -74,17 +73,17 @@ namespace Gts {
                 this->clothtearcount = 0.0;
                 this->clothtearthreshold = 2.5; // reset stuff
              }
-             if (Armor != nullptr) {
-                log::info("Armor Name: {}", Armor->GetName());
+             if (ArmorSlot != nullptr) {
+                log::info("Armor Name: {}", ArmorSlot->GetName());
              }
              if (scale >= this->clothtearthreshold) {
                 log::info("Scale >= threshold");
              }
-             if (Armor != nullptr && scale >= this->clothtearthreshold)
+             if (ArmorSlot != nullptr && scale >= this->clothtearthreshold)
              {
                 this->clothtearthreshold += rand() % 75; 
                 this->clothtearcount +=1.0;
-                Armor->As<TESObjectREFR>()->UnequipItem(true, Armor);
+                ArmorSlot->As<TESObjectREFR>()->UnequipItem(true, ArmorSlot);
                 Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
                 Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
                 GrowthTremorManager::GetSingleton().CallRumble(player, player, 2 * scale);
