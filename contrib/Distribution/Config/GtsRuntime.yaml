@@ -147,6 +147,7 @@ globals:
   AllowHitGrowth: "GTS.esp|485931"
   AllowHitGrowthNPC: "GTS.esp|47662A"
   AllowMoanSounds: "GTS.esp|48FB32"
+  CurseOfGrowthMaxSize: "GTS.esp|499D34"
   RandomGrowthMultiplyPC: "GTS.esp|48592F"
   RandomGrowthMultiplyNPC: "GTS.esp|485930"
   ChosenGameModeNPC: "GTS.esp|2EB747"
