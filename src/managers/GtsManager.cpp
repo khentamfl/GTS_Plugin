@@ -344,13 +344,13 @@ namespace {
 				case ChosenGameMode::CurseOfGrowth: {
 					 
 						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
-						float sizelimit = clamp(1.0, 4.0, (1.00 * CalcAv/25)); // Roughly 4.0
-						int Random = rand() % 20;
-						int GrowthTimer = rand() % 10;
-						int StrongGrowthChance = rand() % 20;
-						int MegaGrowth = rand() % 20;
-						float GrowthPower = CalcAv*0.0025 / Random;
-						static Timer timer = Timer(0.80 * GrowthTimer);
+						float sizelimit = clamp(1.0, 4.0, (1.00 * CalcAv/25));  // Size limit between 1 and 4, based on Alteration. Cap is 4.0.
+						int Random = rand() % 20; 								// Randomize power
+						int GrowthTimer = rand() % 10; 							// Randomize 're-trigger' delay, kinda
+						int StrongGrowthChance = rand() % 20; 					// Self-explanatory
+						int MegaGrowth = rand() % 20; 							// A chance to multiply growth again
+						float GrowthPower = CalcAv*0.0020 / Random; 			// Randomized strength of growth
+						static Timer timer = Timer(0.80 * GrowthTimer); 		// How often it procs
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) {
 							return;
 						}
@@ -365,10 +365,10 @@ namespace {
 							if (targetScale >= sizelimit) {
 								set_target_scale(actor, sizelimit);
 							}
-							if (GrowthTimer >= 19 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
+							if ((StrongGrowthChance >= 20 || Random >= 20.0) && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
 								Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
 							}
-							if (targetScale < maxScale && timer.ShouldRunFrame()) {
+							if (targetScale < maxScale) {
 								mod_target_scale(actor, GrowthPower);
 								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
 								Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
