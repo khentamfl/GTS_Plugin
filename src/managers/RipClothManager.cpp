@@ -31,14 +31,14 @@ namespace Gts {
         int AllSlots[] = {30, 32, 33, 34, 37}; // Should strip only these slots
         static Timer timer = Timer(4.5);
         const RandomSlot = rand() % 5; // Randomly choose slot to strip
-        if (timer->ShouldRunFrame()) {
+        if (timer.ShouldRunFrame()) {
 		    if (!player || scale <= 2.5) {
 			    return;
 		    }
              if (Runtime::GetFloat("AllowClothTearing") == 0.0) {
                  return; // Return of not set to 1
              }
-             if (this->clothteartcount >= 5.0) {
+             if (this->clothtearcount >= 5.0) {
                 this->clothtearcount = 0.0;
                 this->clothtearthreshold = 0.0; // reset stuff
              }
