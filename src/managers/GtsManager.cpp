@@ -351,8 +351,8 @@ namespace {
 						int GrowthTimer = rand() % 10; 										 	 // Randomize 're-trigger' delay, kinda
 						int StrongGrowthChance = rand() % 20; 									 // Self-explanatory
 						int MegaGrowth = rand() % 20; 							 				 // A chance to multiply growth again
-						float GrowthPower = CalcAv*0.00120 / Random; 			 				 // Randomized strength of growth
-						static Timer timer = Timer(1.20 * GrowthTimer); 		 			 	 // How often it procs
+						float GrowthPower = CalcAv*0.00200 / Random; 			 				 // Randomized strength of growth
+						static Timer timer = Timer(1.80 * GrowthTimer); 		 			 	 // How often it procs
 						//log::info("SizeLimit:{}, MaxSize Slider: {}", sizelimit, MaxSize);
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) { 
 							return; // Protections against infinity
