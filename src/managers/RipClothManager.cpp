@@ -31,7 +31,7 @@ namespace Gts {
         auto Armor = player->GetWornArmor(GetRandomArmorSlot());
         static Timer timer = Timer(4.5);
         if (timer.ShouldRunFrame()) {
-            log::info("Armor Slot: {}, Chosen Value: {}", AllSlots[RandomSlot], RandomSlot);
+            log::info("Armor Slot: {}", GetRandomArmorSlot());
 		    if (!player || scale <= 2.5) {
                 log::info("Scale <= 2.5");
 			    return;
