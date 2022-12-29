@@ -348,14 +348,14 @@ namespace {
 						int Random = rand() % 20;
 						int GrowthTimer = rand() % 10;
 						int StrongGrowthChance = rand() % 20;
-						float GrowthPower = CalcAv*0.00125 / Random;
+						float GrowthPower = CalcAv*0.0025 / Random;
 						static Timer timer = Timer(0.80 * GrowthTimer);
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) {
 							return;
 						}
 						if (timer.ShouldRunFrame()) {
 							if (StrongGrowthChance >= 20.0) {
-								GrowthPower *= 3.0;
+								GrowthPower *= 4.0;
 								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 40);
 							}
 							if (targetScale >= sizelimit) {
