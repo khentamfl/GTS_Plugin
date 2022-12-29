@@ -28,13 +28,13 @@ namespace Gts {
 	void ClothManager::CheckRip() {
 		auto player = PlayerCharacter::GetSingleton();
         float scale = get_target_scale(player);
-        auto 0 = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
-        auto 1 = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHead);
-        auto 2 = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kBody);
-        auto 3 = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHands);
-        auto 4 = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kForearms);
-        auto 5 = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kCalves);
-        int AllSlots[] = {0, 1, 2, 3, 4, 5}; // Should strip only these slots
+        auto feet = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+        auto head = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHead);
+        auto body = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kBody);
+        auto hands = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHands);
+        auto forearms = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kForearms);
+        auto calves = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kCalves);
+        int AllSlots[] = {feet, head, body, hands, forearms, calves}; // Should strip only these slots
         int RandomSlot = rand() % 6; // Randomly choose slot to strip
         auto Armor = player->GetWornArmor(AllSlots[RandomSlot]);
         static Timer timer = Timer(4.5);
