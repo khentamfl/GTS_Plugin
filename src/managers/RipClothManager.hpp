@@ -14,7 +14,6 @@ namespace Gts {
 			virtual std::string DebugName() override;
 
 			void CheckRip();
-			void GetRandomArmorSlot();
 
 		private:
             float clothtearthreshold = 2.5;
