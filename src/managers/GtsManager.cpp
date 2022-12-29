@@ -352,6 +352,7 @@ namespace {
 						int MegaGrowth = rand() % 20; 							 			 // A chance to multiply growth again
 						float GrowthPower = CalcAv*0.0020 / Random; 			 			 // Randomized strength of growth
 						static Timer timer = Timer(0.80 * GrowthTimer); 		 			 // How often it procs
+						log::info("SizeLimit:{}, MaxSize Slider: {}" sizelimit, MaxSize);
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) { 
 							return; // Protections against infinity
 						}
