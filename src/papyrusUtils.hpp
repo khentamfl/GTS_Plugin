@@ -40,6 +40,7 @@ namespace Gts {
 			auto args = RE::MakeFunctionArguments(std::forward<Args>(a_args)...);
 			auto objectPtr = GetObjectPtr(a_form, std::string(formKind).c_str(), false);
 			vm->DispatchMethodCall(objectPtr, std::string(formKind).c_str(), args, callback);
+			log::info("VM attempts to call a function.");
 		}
 	}
 }
