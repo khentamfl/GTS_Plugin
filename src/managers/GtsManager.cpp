@@ -348,7 +348,7 @@ namespace {
 						int Random = rand() % 20;
 						int GrowthTimer = rand() % 10;
 						int StrongGrowthChance = rand() % 20;
-						float GrowthPower = CalcAv*0.002 / Random;
+						float GrowthPower = CalcAv*0.00125 / Random;
 						static Timer timer = Timer(0.80 * GrowthTimer);
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) {
 							return;
