@@ -34,9 +34,11 @@ namespace Gts {
         static Timer timer = Timer(4.5);
         if (timer.ShouldRunFrame()) {
 		    if (!player || scale <= 2.5) {
+                log::info("Scale <= 2.5");
 			    return;
 		    }
              if (Runtime::GetFloat("AllowClothTearing") == 0.0) {
+                 log::info("Cloth Tearing Disabled");
                  return; // Abort doing anything if not set to 1
              }
              if (this->clothtearcount >= 5.0) {
@@ -51,6 +53,7 @@ namespace Gts {
                 Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
                 Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
                 GrowthTremorManager::GetSingleton().CallRumble(player, player, 2 * scale);
+                log::info("Cloth Tearing Success. Threshold: {}, count: {}", this->clothtearthreshold, this->clothtearcount);
             }
 	    }
     }

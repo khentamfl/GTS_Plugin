@@ -1,5 +1,6 @@
 #include "Config.hpp"
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
@@ -488,6 +489,7 @@ void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 
 	HitManager::GetSingleton().Update();
+	ClothManager::GetSingleton().CheckRip();
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
