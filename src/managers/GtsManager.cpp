@@ -489,7 +489,7 @@ void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 
 	HitManager::GetSingleton().Update();
-	ClothManager::GetSingleton().CheckRip();
+	//ClothManager::GetSingleton().CheckRip();
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
