@@ -32,7 +32,6 @@ namespace Gts {
 
 	void Spring::Update(float dt) {
 		UpdateValues(this->value, this->target, this->velocity, this->halflife, dt);
-		log::info("Spring: value: {}, target: {}, velocity: {}, halflife: {}, dt: {}", this->value, this->target, this->velocity, this->halflife, dt);
 	}
 
 	Spring::Spring() {
@@ -88,6 +87,7 @@ namespace Gts {
 		float dt = Time::WorldTimeElapsed();
 		for (auto spring: this->springs) {
 			spring->Update(dt);
+			log::info("Spring: dt: {}", dt);
 		}
 	}
 }
