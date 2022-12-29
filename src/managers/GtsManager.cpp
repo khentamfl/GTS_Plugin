@@ -344,14 +344,14 @@ namespace {
 				case ChosenGameMode::CurseOfGrowth: {
 					 
 						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
-						float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");           // Slider that determines max size cap.
-						float sizelimit = clamp(1.0, MaxSize, (1.00 * (CalcAv/(MaxSize*5))));  // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
-						int Random = rand() % 20; 											 // Randomize power
-						int GrowthTimer = rand() % 10; 										 // Randomize 're-trigger' delay, kinda
-						int StrongGrowthChance = rand() % 20; 								 // Self-explanatory
-						int MegaGrowth = rand() % 20; 							 			 // A chance to multiply growth again
-						float GrowthPower = CalcAv*0.0020 / Random; 			 			 // Randomized strength of growth
-						static Timer timer = Timer(0.80 * GrowthTimer); 		 			 // How often it procs
+						float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");          	 // Slider that determines max size cap.
+						float sizelimit = clamp(1.0, MaxSize, (1.00 * (CalcAv/100 * MaxSize)));  // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
+						int Random = rand() % 20; 												 // Randomize power
+						int GrowthTimer = rand() % 10; 										 	 // Randomize 're-trigger' delay, kinda
+						int StrongGrowthChance = rand() % 20; 									 // Self-explanatory
+						int MegaGrowth = rand() % 20; 							 				 // A chance to multiply growth again
+						float GrowthPower = CalcAv*0.0018 / Random; 			 				 // Randomized strength of growth
+						static Timer timer = Timer(0.80 * GrowthTimer); 		 			 	 // How often it procs
 						log::info("SizeLimit:{}, MaxSize Slider: {}", sizelimit, MaxSize);
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) { 
 							return; // Protections against infinity
