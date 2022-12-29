@@ -32,6 +32,7 @@ namespace Gts {
 
 	void Spring::Update(float dt) {
 		UpdateValues(this->value, this->target, this->velocity, this->halflife, dt);
+		log::info("Spring: value: {}, target: {}, velocity: {}, halflife: {}, dt: {}", this->value, this->target, this-velocity, this->halflife, dt);
 	}
 
 	Spring::Spring() {
