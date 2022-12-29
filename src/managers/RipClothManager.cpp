@@ -34,7 +34,7 @@ namespace Gts {
         auto hands = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHands);
         auto forearms = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kForearms);
         auto calves = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kCalves);
-        int AllSlots[] = {feet, head, body, hands, forearms, calves}; // Should strip only these slots
+        auto AllSlots[] = {feet, head, body, hands, forearms, calves}; // Should strip only these slots
         int RandomSlot = rand() % 6; // Randomly choose slot to strip
         auto Armor = player->GetWornArmor(AllSlots[RandomSlot]);
         static Timer timer = Timer(4.5);
