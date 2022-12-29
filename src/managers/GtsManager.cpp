@@ -350,24 +350,24 @@ namespace {
 						int GrowthTimer = rand() % 10; 										 	 // Randomize 're-trigger' delay, kinda
 						int StrongGrowthChance = rand() % 20; 									 // Self-explanatory
 						int MegaGrowth = rand() % 20; 							 				 // A chance to multiply growth again
-						float GrowthPower = CalcAv*0.0018 / Random; 			 				 // Randomized strength of growth
-						static Timer timer = Timer(0.80 * GrowthTimer); 		 			 	 // How often it procs
+						float GrowthPower = CalcAv*0.00185 / Random; 			 				 // Randomized strength of growth
+						static Timer timer = Timer(0.70 * GrowthTimer); 		 			 	 // How often it procs
 						log::info("SizeLimit:{}, MaxSize Slider: {}", sizelimit, MaxSize);
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) { 
 							return; // Protections against infinity
 						}
 						if (timer.ShouldRunFrame()) {
-							if (StrongGrowthChance >= 20 && MegaGrowth >= 20.0) {
+							if (StrongGrowthChance >= 19 && MegaGrowth >= 19.0) {
 								GrowthPower *= 4.0; 										 // Proc super growth if conditions are met
 							}
-							if (StrongGrowthChance >= 20.0) {
+							if (StrongGrowthChance >= 19.0) {
 								GrowthPower *= 4.0; 										 // Stronger growth if procs
 								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 40);
 							}
 							if (targetScale >= sizelimit) {
 								set_target_scale(actor, sizelimit);
 							}
-							if ((StrongGrowthChance >= 20 || Random >= 20.0) && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
+							if ((StrongGrowthChance >= 19 || Random >= 19.0) && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
 								Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
 							}
 							if (targetScale < maxScale) {
