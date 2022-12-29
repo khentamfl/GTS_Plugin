@@ -29,13 +29,13 @@ namespace Gts {
 	}
 
 	NiPoint3 FootL::GetFootPos() {
-		const std::string_view leftFootRegex = ".*(L.*Foot|L.*Leg.*Tip).*";
+		const std::string_view leftFootRegex = "NPC L Foot [Lft ]";
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			auto rootModel = player->Get3D(false);
 			if (rootModel) {
 				auto transform = rootModel->world.Invert();
-				auto leftFoot = find_node_regex(player, leftFootRegex);
+				auto leftFoot = find_node(player, leftFootRegex);
 				if (leftFoot != nullptr) {
 					auto leftPosLocal = transform * (leftFoot->world * NiPoint3());
 					this->smoothFootPos.target = leftPosLocal;
