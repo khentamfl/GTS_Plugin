@@ -37,6 +37,7 @@ namespace Gts {
                 log::info("Scale <= 2.5");
 			    return;
 		    }
+            log::info("Armor Name: {}, Armor Slot: {}", Armor->GetName(), AllSlots[RandomSlot]);
              if (Runtime::GetFloat("AllowClothTearing") == 0.0) {
                  log::info("Cloth Tearing Disabled");
                  return; // Abort doing anything if not set to 1
