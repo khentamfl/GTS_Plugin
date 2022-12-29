@@ -29,13 +29,13 @@ namespace Gts {
 	}
 
 	NiPoint3 FootR::GetFootPos() {
-		const std::string_view rightFoot = "NPC R Foot [Rft ]";
+		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			auto rootModel = player->Get3D(false);
 			if (rootModel) {
 				auto transform = rootModel->world.Invert();
-				auto rightFoot = find_node(player, rightFoot);
+				auto rightFoot = find_node(player, rightFootLookup);
 				if (rightFoot != nullptr) {
 					auto rightPosLocal = transform * (rightFoot->world * NiPoint3());
 					this->smoothFootPos.target = rightPosLocal;
