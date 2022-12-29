@@ -8,14 +8,16 @@ using namespace RE;
 
 namespace Gts {
 
-	class RipClothManager : public EventListener {
+	class ClothManager : public EventListener {
 		public:
-			[[nodiscard]] static RipClothManager& GetSingleton() noexcept;
+			[[nodiscard]] static ClothManager& GetSingleton() noexcept;
+			virtual std::string DebugName() override;
 
 			void CheckRip();
 
 		private:
             float clothtearthreshold = 2.5;
+            float clothtearcount = 0.0;
 
 	};
 }
