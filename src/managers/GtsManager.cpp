@@ -344,8 +344,8 @@ namespace {
 				case ChosenGameMode::CurseOfGrowth: {
 					 
 						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
-						float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize";)
-						float sizelimit = clamp(1.0, MaxSize, (1.00 * CalcAv/(MaxSize*5)));  // Size limit between 1 and 4, based on Alteration. Cap is 4.0.
+						float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");           // Slider that determines max size cap.
+						float sizelimit = clamp(1.0, MaxSize, (1.00 * CalcAv/(MaxSize*5)));  // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
 						int Random = rand() % 20; 											 // Randomize power
 						int GrowthTimer = rand() % 10; 										 // Randomize 're-trigger' delay, kinda
 						int StrongGrowthChance = rand() % 20; 								 // Self-explanatory
@@ -357,10 +357,10 @@ namespace {
 						}
 						if (timer.ShouldRunFrame()) {
 							if (StrongGrowthChance >= 20 && MegaGrowth >= 20.0) {
-								GrowthPower *= 4.0; // Proc super growth if conditions are met
+								GrowthPower *= 4.0; 										 // Proc super growth if conditions are met
 							}
 							if (StrongGrowthChance >= 20.0) {
-								GrowthPower *= 4.0; // Stronger growth if procs
+								GrowthPower *= 4.0; 										 // Stronger growth if procs
 								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 40);
 							}
 							if (targetScale >= sizelimit) {
