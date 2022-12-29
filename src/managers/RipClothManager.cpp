@@ -45,8 +45,14 @@ namespace Gts {
                 this->clothtearcount = 0.0;
                 this->clothtearthreshold = 2.5; // reset stuff
              }
+             if (Armor != nullptr) {
+                log::info("Armor not null");
+             }
+             if (scale >= this->clothtearthreshold) {
+                log::info("Scale >= threshold");
+             }
              if (Armor != nullptr && scale >= this->clothtearthreshold)
-            {
+             {
                 this->clothtearthreshold += rand() % 75; 
                 this->clothtearcount +=1.0;
                 Armor->As<TESObjectREFR>()->UnequipItem(true, Armor);
