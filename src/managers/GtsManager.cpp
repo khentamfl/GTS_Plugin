@@ -348,12 +348,16 @@ namespace {
 						int Random = rand() % 20;
 						int GrowthTimer = rand() % 10;
 						int StrongGrowthChance = rand() % 20;
+						int MegaGrowth = rand() % 20;
 						float GrowthPower = CalcAv*0.0025 / Random;
 						static Timer timer = Timer(0.80 * GrowthTimer);
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) {
 							return;
 						}
 						if (timer.ShouldRunFrame()) {
+							if (StrongGrowthChance >= 20 && MegaGrowth >= 20.0) {
+								GrowthPower *= 4.0;
+							}
 							if (StrongGrowthChance >= 20.0) {
 								GrowthPower *= 4.0;
 								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 40);
@@ -361,7 +365,7 @@ namespace {
 							if (targetScale >= sizelimit) {
 								set_target_scale(actor, sizelimit);
 							}
-							if (GrowthTimer == 1 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
+							if (GrowthTimer >= 19 && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
 								Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
 							}
 							if (targetScale < maxScale && timer.ShouldRunFrame()) {
