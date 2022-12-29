@@ -85,9 +85,9 @@ namespace Gts {
 
 	void SpringManager::Update() {
 		float dt = Time::WorldTimeElapsed();
+		log::info("Spring: dt: {}", dt);
 		for (auto spring: this->springs) {
 			spring->Update(dt);
-			log::info("Spring: dt: {}", dt);
 		}
 	}
 }
