@@ -8,7 +8,7 @@
 using namespace RE;
 
 const float CAMERA_FACTOR = 130.00;
-const float CAMERA_SIDE = 27.5;
+const float CAMERA_SIDE = 31.5;
 const float CAMERA_ZOOM = -90.0;
 
 namespace Gts {
