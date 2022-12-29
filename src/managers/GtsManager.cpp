@@ -345,7 +345,7 @@ namespace {
 					 
 						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
 						float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");           // Slider that determines max size cap.
-						float sizelimit = clamp(1.0, MaxSize, (1.00 * CalcAv/(MaxSize*5)));  // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
+						float sizelimit = clamp(1.0, MaxSize, (1.00 * (CalcAv/(MaxSize*5))));  // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
 						int Random = rand() % 20; 											 // Randomize power
 						int GrowthTimer = rand() % 10; 										 // Randomize 're-trigger' delay, kinda
 						int StrongGrowthChance = rand() % 20; 								 // Self-explanatory
