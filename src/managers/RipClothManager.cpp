@@ -28,15 +28,7 @@ namespace Gts {
 	void ClothManager::CheckRip() {
 		auto player = PlayerCharacter::GetSingleton();
         float scale = get_target_scale(player);
-        auto feet = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
-        auto head = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHead);
-        auto body = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kBody);
-        auto hands = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHands);
-        auto forearms = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kForearms);
-        auto calves = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kCalves);
-        auto AllSlots[] = {feet, head, body, hands, forearms, calves}; // Should strip only these slots
-        int RandomSlot = rand() % 6; // Randomly choose slot to strip
-        auto Armor = player->GetWornArmor(AllSlots[RandomSlot]);
+        auto Armor = player->GetWornArmor(GetRandomArmorSlot());
         static Timer timer = Timer(4.5);
         if (timer.ShouldRunFrame()) {
             log::info("Armor Slot: {}, Chosen Value: {}", AllSlots[RandomSlot], RandomSlot);
@@ -69,5 +61,34 @@ namespace Gts {
                 log::info("Cloth Tearing Success. Threshold: {}, count: {}", this->clothtearthreshold, this->clothtearcount);
             }
 	    }
+    }
+
+    void ClothManager::GetRandomArmorSlot() {
+        auto feet = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+        auto head = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHead);
+        auto body = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kBody);
+        auto hands = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHands);
+        auto forearms = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kForearms);
+        auto calves = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kCalves);
+        int RandomSlot = rand() % 6; // Randomly choose slot to strip
+        if (RandomSlot == 0) {
+            return feet;
+        }
+        else if (RandomSlot == 1) {
+            return head;
+        }
+        else if (RandomSlot == 2) {
+            return body;
+        }
+        else if (RandomSlot == 3) {
+            return hands;
+        }
+        else if (RandomSlot == 4) {
+            return forearms;
+        }
+        else if (RandomSlot == 5) {
+            return calves;
+        }
+        return feet;
     }
 }
