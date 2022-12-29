@@ -28,10 +28,11 @@ namespace Gts {
 	void ClothManager::CheckRip() {
 		auto player = PlayerCharacter::GetSingleton();
         float scale = get_target_scale(player);
-        auto Armor = player->GetWornArmor(GetRandomArmorSlot());
+        auto ArmorSlot = GetRandomArmorSlot();
+        auto Armor = player->GetWornArmor(ArmorSlot);
         static Timer timer = Timer(4.5);
         if (timer.ShouldRunFrame()) {
-            log::info("Armor Slot: {}", GetRandomArmorSlot());
+            log::info("Armor Slot: {}", ArmorSlot);
 		    if (!player || scale <= 2.5) {
                 log::info("Scale <= 2.5");
 			    return;
