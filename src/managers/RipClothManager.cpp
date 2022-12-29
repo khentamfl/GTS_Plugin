@@ -47,7 +47,7 @@ namespace Gts {
             {
                 this->clothtearthreshold += rand() % 75; 
                 this->clothtearcount +=1.0;
-                Armor->unequipItem(true, Armor);
+                Armor->As<TESObjectREFR>->unequipItem(true, Armor);
                 Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
                 Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
                 GrowthTremorManager::GetSingleton().CallRumble(player, player, 2 * scale);
