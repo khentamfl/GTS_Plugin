@@ -352,7 +352,7 @@ namespace {
 						int MegaGrowth = rand() % 20; 							 				 // A chance to multiply growth again
 						float GrowthPower = CalcAv*0.00185 / Random; 			 				 // Randomized strength of growth
 						static Timer timer = Timer(0.70 * GrowthTimer); 		 			 	 // How often it procs
-						log::info("SizeLimit:{}, MaxSize Slider: {}", sizelimit, MaxSize);
+						//log::info("SizeLimit:{}, MaxSize Slider: {}", sizelimit, MaxSize);
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) { 
 							return; // Protections against infinity
 						}
@@ -375,7 +375,7 @@ namespace {
 								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
 								Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
 							}
-						log::info("Calc AV: {}, GrowthPower: {}, Limit: {}", CalcAv, GrowthPower, sizelimit);
+						//log::info("Calc AV: {}, GrowthPower: {}, Limit: {}", CalcAv, GrowthPower, sizelimit);
 						}
 					}
 				
