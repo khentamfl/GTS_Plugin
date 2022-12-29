@@ -348,12 +348,11 @@ namespace {
 						float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");          	 // Slider that determines max size cap.
 						float sizelimit = clamp(1.0, MaxSize, (1.00 * (CalcAv/100 * MaxSize)));  // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
 						int Random = rand() % 20; 												 // Randomize power
-						int GrowthTimer = rand() % 10; 										 	 // Randomize 're-trigger' delay, kinda
+						int GrowthTimer = rand() % 7; 										 	 // Randomize 're-trigger' delay, kinda
 						int StrongGrowthChance = rand() % 20; 									 // Self-explanatory
 						int MegaGrowth = rand() % 20; 							 				 // A chance to multiply growth again
 						float GrowthPower = CalcAv*0.00200 / Random; 			 				 // Randomized strength of growth
-						static Timer timer = Timer(1.80 * GrowthTimer); 		 			 	 // How often it procs
-						//log::info("SizeLimit:{}, MaxSize Slider: {}", sizelimit, MaxSize);
+						static Timer timer = Timer(1.40 * GrowthTimer); 		 			 	 // How often it procs
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) { 
 							return; // Protections against infinity
 						}
@@ -368,7 +367,7 @@ namespace {
 							if (targetScale >= sizelimit) {
 								set_target_scale(actor, sizelimit);
 							}
-							if ((StrongGrowthChance >= 19 || Random >= 19.0) && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
+							if (((StrongGrowthChance >= 19 && Random >= 19.0) || (StrongGrowthChance >= 19 && MegaGrowth >= 19.0)) && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
 								Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
 							}
 							if (targetScale < maxScale) {
