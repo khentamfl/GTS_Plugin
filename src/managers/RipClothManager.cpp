@@ -21,10 +21,6 @@ namespace Gts {
 		return instance;
 	}
 
-	std::string RipClothManager::DebugName() {
-		return "RipClothManager";
-	}
-
 	void RipClothManager::CheckRip() {
 		auto player = PlayerCharacter::GetSingleton();
         float scale = get_target_scale(player);
@@ -41,10 +37,14 @@ namespace Gts {
         {
             const RandomClothReq = Utility.randomFloat(0.15, 0.95)
             this->clothtearthreshold += rand() % 75; 
+            this->clothtearcount +=1.0;
             player->unequipItem(true, player->GetWornArmor(AllSlots[RandomSlot]));
             Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
             Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
             GrowthTremorManager::GetSingleton().CallRumble(player, player, 5);
+            if (clothtearcount >= 5.0) {
+
+            }
         }
 
 	}
