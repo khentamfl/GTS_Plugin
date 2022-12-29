@@ -60,7 +60,7 @@ namespace Gts {
     
         static Timer timer = Timer(4.5);
         if (timer.ShouldRunFrame()) {
-            log::info("Armor Slot: {}", ArmorSlot);
+            //log::info("Armor Slot: {}", ArmorSlot);
 		    if (!player || scale <= 2.5) {
                 log::info("Scale <= 2.5");
 			    return;
@@ -74,7 +74,8 @@ namespace Gts {
                 this->clothtearthreshold = 2.5; // reset stuff
              }
              if (ArmorSlot != nullptr) {
-                log::info("Armor Name: {}", ArmorSlot->GetName());
+                //log::info("Armor Name: {}", ArmorSlot->GetName());
+                log::info("Armor is not nullptr");
              }
              if (scale >= this->clothtearthreshold) {
                 log::info("Scale >= threshold");
