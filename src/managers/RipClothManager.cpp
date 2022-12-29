@@ -28,7 +28,7 @@ namespace Gts {
 	void ClothManager::CheckRip() {
 		auto player = PlayerCharacter::GetSingleton();
         float scale = get_target_scale(player);
-        const AllSlots = new array(30, 32, 33, 34, 37); // Should strip only these slots
+        int AllSlots[] = {30, 32, 33, 34, 37}; // Should strip only these slots
         static Timer timer = Timer(4.5);
         const RandomSlot = rand() % 5; // Randomly choose slot to strip
         if (timer->ShouldRunFrame()) {
