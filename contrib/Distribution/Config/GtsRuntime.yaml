@@ -19,6 +19,7 @@ sounds:
   VoreSound_Fail: "Skyrim.esm|000F8B"
   GtsCrushSound: "GTS.esp|01102F"
   GtsFallSound: "GTS.esp|183F43"
+  ClothTearSound: "GTS.esp|30EE53"
 
 spellEffects:
   SmallMassiveThreat: "GTS.esp|1A2568"
@@ -137,6 +138,7 @@ globals:
   MultiplyGameModeNPC: "GTS.esp|47B72C"
   GtsDecideGrowth: "GTS.esp|15661D" 
   sizeLimit: "GTS.esp|2028B4"
+  AllowClothTearing: "GTS.esp|30EE55"
   GtsNPCEffectImmunityToggle: "GTS.esp|271EFA"
   ProgressionMultiplier: "GTS.esp|37E46E"
   CrushGrowthRate: "GTS.esp|2028B9"
