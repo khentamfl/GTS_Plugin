@@ -210,7 +210,7 @@ namespace Gts {
 					float scale = get_visual_scale(actor);
 					auto caster = player;
 					auto target = actor;
-					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
 					DamageAV(caster, ActorValue::kMagicka, 0.15 * (scale * 0.5 + 0.5) * magicka * TimeScale());
 					mod_target_scale(target, 0.0012 * scale * magicka);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
@@ -230,7 +230,7 @@ namespace Gts {
 					float scale = get_visual_scale(actor);
 					auto caster = player;
 					auto target = actor;
-					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(target));
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
 					DamageAV(target, ActorValue::kMagicka, 0.10 * (scale * 0.5 + 0.5) * magicka * TimeScale());
 					mod_target_scale(target, -0.0012 * scale * magicka);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
