@@ -96,7 +96,7 @@ namespace Gts {
 			// 0 is normal
 			// 1 is combat
 			// 2 is loot
-			int FirstPersonMode = Runtime::GetInt("FirstPersonMode"); // TODO: Fix detection
+			int FirstPersonMode = Runtime::GetInt("FirstPersonMode");  // TODO: Fix detection
 			switch (cameraMode) {
 				case 0: {
 					return &this->fpState;
