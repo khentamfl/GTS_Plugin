@@ -33,9 +33,9 @@ namespace {
 		float BaseGlobalDamage = Runtime::GetFloat("TotalSizeDamage");
 		float BaseSprintDamage = Runtime::GetFloat("TotalSprintDamage");
 		float BaseFallDamage = Runtime::GetFloat("TotalFallDamage");
-		float ExpectedGlobalDamage = 1.0/BalancedMode;
-		float ExpectedSprintDamage = 1.0/BalancedMode;
-		float ExpectedFallDamage = 1.0/BalancedMode;
+		float ExpectedGlobalDamage = 1.0;
+		float ExpectedSprintDamage = 1.0;
+		float ExpectedFallDamage = 1.0;
 	
 		///Normal Damage
 		if (Runtime::HasPerk(player, "Cruelty")) {
@@ -62,15 +62,15 @@ namespace {
 
 		if (BaseGlobalDamage != ExpectedGlobalDamage) {
 			Runtime::SetFloat("TotalSizeDamage", ExpectedGlobalDamage);
-			log::info("Setting Global Damage: {}, gigantism: {}", ExpectedGlobalDamage, gigantism);
+			//log::info("Setting Global Damage: {}, gigantism: {}", ExpectedGlobalDamage, gigantism);
 		}
 		if (BaseSprintDamage != ExpectedSprintDamage) {
 			Runtime::SetFloat("TotalSprintDamage", ExpectedSprintDamage);
-			log::info("Setting Sprint Damage: {}, gigantism: {}", ExpectedSprintDamage, gigantism);
+			//log::info("Setting Sprint Damage: {}, gigantism: {}", ExpectedSprintDamage, gigantism);
 		}
 		if (BaseFallDamage != ExpectedFallDamage) {
 			Runtime::SetFloat("TotalFallDamage", ExpectedFallDamage);
-			log::info("Setting Fall Damage: {}, gigantism: {}", ExpectedFallDamage, gigantism);
+			//log::info("Setting Fall Damage: {}, gigantism: {}", ExpectedFallDamage, gigantism);
 		}
 	}
 
