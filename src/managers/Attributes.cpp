@@ -28,31 +28,32 @@ namespace {
 
 	void ManagePerkBonuses() {
 		auto player = PlayerCharacter::GetSingleton();
+		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
 		float BaseGlobalDamage = Runtime::GetFloat("TotalSizeDamage");
 		float BaseSprintDamage = Runtime::GetFloat("TotalSprintDamage");
 		float BaseFallDamage = Runtime::GetFloat("TotalFallDamage");
-		float ExpectedGlobalDamage = 1.0;
-		float ExpectedSprintDamage = 1.0;
-		float ExpectedFallDamage = 1.0;
+		float ExpectedGlobalDamage = 1.0/BalancedMode;
+		float ExpectedSprintDamage = 1.0/BalancedMode;
+		float ExpectedFallDamage = 1.0/BalancedMode;
 	
 		///Normal Damage
 		if (Runtime::HasPerk(player, "Cruelty")) {
-			ExpectedGlobalDamage += 0.35;
+			ExpectedGlobalDamage += 0.35/BalancedMode;
 		}
 		if (Runtime::HasPerk(player, "RealCruelty")) {
-			ExpectedGlobalDamage += 1.0;
+			ExpectedGlobalDamage += 0.65/BalancedMode;
 		}
 		///Sprint Damage
 		if (Runtime::HasPerk(player, "SprintDamageMult1")) {
-			ExpectedSprintDamage += 0.5;
+			ExpectedSprintDamage += 0.25/BalancedMode;
 		}
 		if (Runtime::HasPerk(player, "SprintDamageMult2")) {
-			ExpectedSprintDamage += 3.5;
+			ExpectedSprintDamage += 1.0/BalancedMode;
 		}
 		///Fall Damage
 		if (Runtime::HasPerk(player, "MightyLegs")) {
-			ExpectedFallDamage += 1.0;
+			ExpectedFallDamage += 0.5/BalancedMode;
 		}
 		///Buff by enchantment 
 		ExpectedGlobalDamage *= gigantism;
@@ -61,15 +62,15 @@ namespace {
 
 		if (BaseGlobalDamage != ExpectedGlobalDamage) {
 			Runtime::SetFloat("TotalSizeDamage", ExpectedGlobalDamage);
-			log::info("Setting Global Damage: {}", ExpectedGlobalDamage);
+			log::info("Setting Global Damage: {}, gigantism: {}", ExpectedGlobalDamage, gigantism);
 		}
 		if (BaseSprintDamage != ExpectedSprintDamage) {
 			Runtime::SetFloat("TotalSprintDamage", ExpectedSprintDamage);
-			log::info("Setting Sprint Damage: {}", ExpectedSprintDamage);
+			log::info("Setting Sprint Damage: {}, gigantism: {}", ExpectedSprintDamage, gigantism);
 		}
 		if (BaseFallDamage != ExpectedFallDamage) {
 			Runtime::SetFloat("TotalFallDamage", ExpectedFallDamage);
-			log::info("Setting Fall Damage: {}", ExpectedFallDamage);
+			log::info("Setting Fall Damage: {}, gigantism: {}", ExpectedFallDamage, gigantism);
 		}
 	}
 
