@@ -128,6 +128,12 @@ perks:
   LethalSprint: "GTS.esp|123BEB"
   hhBonus: "GTS.esp|271EF1"
 
+  MightyLegs: "GTS.esp|123BE9"
+  SprintDamageMult1: "GTS.esp|123BEA"
+  SprintDamageMult2: "GTS.esp|123BEB"
+  Cruelty: "GTS.esp|128CF8"
+  RealCruelty: "GTS.esp|142205"
+
 explosions:
   BloodExplosion: "GTS.esp|01CE9D"
   BloodFX: "Dawnguard.esm|00E7B4"
@@ -205,6 +211,10 @@ globals:
   bonusSpeedMax: "GTS.esp|28B40C"
   GtsEnableLooting: "GTS.esp|2EB748"
   GtsNPCEnableLooting: "GTS.esp|2EB749"
+
+  TotalSprintDamage: "GTS.esp|142206"
+  TotalSizeDamage: "GTS.esp|151517"
+  TotalFallDamage: "GTS.esp|151516"
 
 quests:
   MainQuest: "GTS.esp|005E3A"

@@ -185,8 +185,10 @@ namespace {
 		float bonusSpeedMultiplier = Runtime::GetFloat("bonusSpeedMultiplier");
 
 		float size = get_target_scale(Player);
-
+		
 		static Timer timer = Timer(0.05);
+
+		ManagePerkBonuses()
 
 		if (size > 0) {
 
@@ -239,6 +241,49 @@ namespace {
 			}
 			BoostAttackDmg(npc, 1.0);
 		}
+	}
+
+	void ManagePerkBonuses() {
+		auto player = PlayerCharacter::GetSingleton();
+		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+		float BaseGlobalDamage = Runtime::GetFloat("TotalSizeDamage");
+		float BaseSprintDamage = Runtime::GetFloat("TotalSprintDamage");
+		float BaseFallDamage = Runtime::GetFloat("TotalFallDamage");
+		float ExpectedGlobalDamage = 1.0;
+		float ExpectedSprintDamage = 1.0;
+		float ExpectedJumpDamage = 1.0;
+	
+		///Normal Damage
+		if (Runtime::HasPerk(player, "Cruelty")) {
+			ExpectedGlobalDamage += 0.35;
+		}
+		if (Runtime::HasPerk(player, "RealCruelty")) {
+			ExpectedGlobalDamage += 1.0;
+		}
+		///Sprint Damage
+		if (Runtime::HasPerk(player, "SprintDamageMult1")) {
+			ExpectedSprintDamage += 0.5;
+		}
+		if (Runtime::HasPerk(player, "SprintDamageMult2")) {
+			ExpectedSprintDamage += 3.5;
+		}
+		///Fall Damage
+		if (Runtime::HasPerk(player, "MightyLegs")) {
+			ExpectedFallDamage += 1.0;
+		}
+		if (BaseGlobalDamage != ExpectedGlobalDamage) {
+			Runtime::SetFloat(BaseGlobalDamage, ExpectedGlobalDamage);
+			log::info("Setting Global Damage: {}", ExpectedGlobalDamage);
+		}
+		if (BaseSprintDamage != ExpectedSprintDamage) {
+			Runtime::SetFloat(BaseSprintDamage, ExpectedSprintDamage);
+			log::info("Setting Sprint Damage: {}", ExpectedSprintDamage);
+		}
+		if (BaseFallDamage != ExpectedFallDamage) {
+			Runtime::SetFloat(BaseFallDamage, ExpectedFallDamage);
+			log::info("Setting Fall Damage: {}", ExpectedFallDamage);
+		}
+
 	}
 }
 
