@@ -84,7 +84,14 @@ namespace Gts {
 		}
 		int cameraMode = Runtime::GetInt("CameraMode");
 
-		if (IsFirstPerson()) {
+
+        //===================================================================
+
+		bool AllowFpCamera = false; // !!!!!Disabled for global release for now!!!!!
+
+		//^^^^^^^===================================================================
+
+		if (IsFirstPerson() && AllowFpCamera) {
 			// First Person states
 			// 0 is normal
 			// 1 is combat
