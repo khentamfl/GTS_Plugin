@@ -26,6 +26,48 @@ namespace {
 		}
 	}
 
+	void ManagePerkBonuses() {
+		auto player = PlayerCharacter::GetSingleton();
+		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
+		float BaseGlobalDamage = Runtime::GetFloat("TotalSizeDamage");
+		float BaseSprintDamage = Runtime::GetFloat("TotalSprintDamage");
+		float BaseFallDamage = Runtime::GetFloat("TotalFallDamage");
+		float ExpectedGlobalDamage = 1.0;
+		float ExpectedSprintDamage = 1.0;
+		float ExpectedJumpDamage = 1.0;
+	
+		///Normal Damage
+		if (Runtime::HasPerk(player, "Cruelty")) {
+			ExpectedGlobalDamage += 0.35 * gigantism;
+		}
+		if (Runtime::HasPerk(player, "RealCruelty")) {
+			ExpectedGlobalDamage += 1.0 * gigantism;
+		}
+		///Sprint Damage
+		if (Runtime::HasPerk(player, "SprintDamageMult1")) {
+			ExpectedSprintDamage += 0.5 * gigantism;
+		}
+		if (Runtime::HasPerk(player, "SprintDamageMult2")) {
+			ExpectedSprintDamage += 3.5 * gigantism;
+		}
+		///Fall Damage
+		if (Runtime::HasPerk(player, "MightyLegs")) {
+			ExpectedFallDamage += 1.0 * gigantism;
+		}
+		if (BaseGlobalDamage != ExpectedGlobalDamage) {
+			Runtime::SetFloat(BaseGlobalDamage, ExpectedGlobalDamage);
+			log::info("Setting Global Damage: {}", ExpectedGlobalDamage);
+		}
+		if (BaseSprintDamage != ExpectedSprintDamage) {
+			Runtime::SetFloat(BaseSprintDamage, ExpectedSprintDamage);
+			log::info("Setting Sprint Damage: {}", ExpectedSprintDamage);
+		}
+		if (BaseFallDamage != ExpectedFallDamage) {
+			Runtime::SetFloat(BaseFallDamage, ExpectedFallDamage);
+			log::info("Setting Fall Damage: {}", ExpectedFallDamage);
+		}
+	}
+
 	void BoostCarry(Actor* actor, float power) {
 		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (!actor_data) {
@@ -243,48 +285,6 @@ namespace {
 		}
 	}
 
-	void ManagePerkBonuses() {
-		auto player = PlayerCharacter::GetSingleton();
-		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-		float BaseGlobalDamage = Runtime::GetFloat("TotalSizeDamage");
-		float BaseSprintDamage = Runtime::GetFloat("TotalSprintDamage");
-		float BaseFallDamage = Runtime::GetFloat("TotalFallDamage");
-		float ExpectedGlobalDamage = 1.0;
-		float ExpectedSprintDamage = 1.0;
-		float ExpectedJumpDamage = 1.0;
-	
-		///Normal Damage
-		if (Runtime::HasPerk(player, "Cruelty")) {
-			ExpectedGlobalDamage += 0.35;
-		}
-		if (Runtime::HasPerk(player, "RealCruelty")) {
-			ExpectedGlobalDamage += 1.0;
-		}
-		///Sprint Damage
-		if (Runtime::HasPerk(player, "SprintDamageMult1")) {
-			ExpectedSprintDamage += 0.5;
-		}
-		if (Runtime::HasPerk(player, "SprintDamageMult2")) {
-			ExpectedSprintDamage += 3.5;
-		}
-		///Fall Damage
-		if (Runtime::HasPerk(player, "MightyLegs")) {
-			ExpectedFallDamage += 1.0;
-		}
-		if (BaseGlobalDamage != ExpectedGlobalDamage) {
-			Runtime::SetFloat(BaseGlobalDamage, ExpectedGlobalDamage);
-			log::info("Setting Global Damage: {}", ExpectedGlobalDamage);
-		}
-		if (BaseSprintDamage != ExpectedSprintDamage) {
-			Runtime::SetFloat(BaseSprintDamage, ExpectedSprintDamage);
-			log::info("Setting Sprint Damage: {}", ExpectedSprintDamage);
-		}
-		if (BaseFallDamage != ExpectedFallDamage) {
-			Runtime::SetFloat(BaseFallDamage, ExpectedFallDamage);
-			log::info("Setting Fall Damage: {}", ExpectedFallDamage);
-		}
-
-	}
 }
 
 
