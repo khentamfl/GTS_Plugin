@@ -63,7 +63,7 @@ namespace {
 		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
 			return;
 		} else if (Runtime::HasPerk(PlayerCharacter::GetSingleton(), "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1) {
-			float Rate = (0.00050 * get_target_scale(target)) * 120;
+			float Rate = (0.0050 * get_target_scale(target)) * 120;
 			CrushGrow(caster, 0, Rate);
 		}
 		PleasureText(caster);
