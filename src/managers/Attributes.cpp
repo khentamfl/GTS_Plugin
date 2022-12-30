@@ -188,7 +188,7 @@ namespace {
 		
 		static Timer timer = Timer(0.05);
 
-		ManagePerkBonuses()
+		ManagePerkBonuses();
 
 		if (size > 0) {
 
