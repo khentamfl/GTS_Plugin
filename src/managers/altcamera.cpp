@@ -111,7 +111,7 @@ namespace Gts {
 					return nullptr;
 				}
 			}
-		} else {
+		} else if (!IsFirstPerson()) {
 			// Third Person states
 			// 0 is disabled
 			// 1 is normal
