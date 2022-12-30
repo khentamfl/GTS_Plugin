@@ -38,22 +38,27 @@ namespace {
 	
 		///Normal Damage
 		if (Runtime::HasPerk(player, "Cruelty")) {
-			ExpectedGlobalDamage += 0.35 * gigantism;
+			ExpectedGlobalDamage += 0.35;
 		}
 		if (Runtime::HasPerk(player, "RealCruelty")) {
-			ExpectedGlobalDamage += 1.0 * gigantism;
+			ExpectedGlobalDamage += 1.0;
 		}
 		///Sprint Damage
 		if (Runtime::HasPerk(player, "SprintDamageMult1")) {
-			ExpectedSprintDamage += 0.5 * gigantism;
+			ExpectedSprintDamage += 0.5;
 		}
 		if (Runtime::HasPerk(player, "SprintDamageMult2")) {
-			ExpectedSprintDamage += 3.5 * gigantism;
+			ExpectedSprintDamage += 3.5;
 		}
 		///Fall Damage
 		if (Runtime::HasPerk(player, "MightyLegs")) {
-			ExpectedFallDamage += 1.0 * gigantism;
+			ExpectedFallDamage += 1.0;
 		}
+		///Buff by enchantment 
+		ExpectedGlobalDamage *= gigantism;
+		ExpectedSprintDamage *= gigantism;
+		ExpectedFallDamage *= gigantism;
+
 		if (BaseGlobalDamage != ExpectedGlobalDamage) {
 			Runtime::SetFloat("TotalSizeDamage", ExpectedGlobalDamage);
 			log::info("Setting Global Damage: {}", ExpectedGlobalDamage);
