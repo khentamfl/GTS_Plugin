@@ -351,7 +351,7 @@ namespace {
 						int GrowthTimer = rand() % 7; 										 	 // Randomize 're-trigger' delay, kinda
 						int StrongGrowthChance = rand() % 20; 									 // Self-explanatory
 						int MegaGrowth = rand() % 20; 							 				 // A chance to multiply growth again
-						float GrowthPower = CalcAv*0.00200 / Random; 			 				 // Randomized strength of growth
+						float GrowthPower = CalcAv*0.00240 / Random; 			 				 // Randomized strength of growth
 						static Timer timer = Timer(1.40 * GrowthTimer); 		 			 	 // How often it procs
 						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) { 
 							return; // Protections against infinity
