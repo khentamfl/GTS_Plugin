@@ -18,7 +18,7 @@ namespace Gts {
 	}
 
 	void VoreGrowth::OnUpdate() {
-		float BASE_POWER = 0.0000210;
+		float BASE_POWER = 0.0000520;
 		auto caster = GetCaster();
 		auto target = GetTarget();
 		if (!caster || !target) {
