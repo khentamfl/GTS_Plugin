@@ -63,7 +63,7 @@ namespace {
 		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
 			return;
 		} else if (Runtime::HasPerk(PlayerCharacter::GetSingleton(), "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1) {
-			float Rate = (0.0050 * get_target_scale(target)) * 120;
+			float Rate = (0.00050 * get_target_scale(target)) * 120;
 			CrushGrow(caster, 0, Rate);
 		}
 		PleasureText(caster);
@@ -98,12 +98,7 @@ namespace Gts {
 				continue;
 			}
 			auto progressionQuest = Runtime::GetQuest("MainQuest");
-			//if (!tiny->Is3DLoaded()) {
-				//continue;
-			//}
-			//if (!giant->Is3DLoaded()) {
-				//continue;
-			//}
+
 			if (data.state == CrushState::Healthy) {
 				RandomMoan(data.giant, tiny);
 				data.state = CrushState::Crushing;
