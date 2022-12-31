@@ -26,6 +26,12 @@ namespace Gts {
 		float bonus_max_size;
 		float smt_run_speed;
 
+		float NormalDamage; // 0
+		float SprintDamage; // 1
+		float FallDamage; // 2
+		float HHDamage; // 3
+		float SizeVulnerability;
+
 		ActorData();
 		ActorData(Actor* actor);
 	};

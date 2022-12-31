@@ -112,25 +112,27 @@ namespace Gts {
 
 	//================Size-Related Damage
 	void SizeManager::SetSizeAttribute(Actor* actor, float amt, float attribute) {
+		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (attribute == 0) {
-			this->GetData(actor).NormalDamage = amt;
+			Persistent->NormalDamage = amt;
 		}
 		else if (attribute == 1) {
-			this->GetData(actor).SprintDamage = amt;
+			Persistent->SprintDamage = amt;
 		}
 		else if (attribute == 2) {
-			this->GetData(actor).FallDamage = amt;
+			Persistent->FallDamage = amt;
 		} 
 		else if (attribute == 3) {
-			this->GetData(actor).HHDamage = amt;
+			Persistent->HHDamage = amt;
 		}
 	}
 
 	float SizeManager::GetSizeAttribute(Actor* actor, float attribute) {
-		float Normal = clamp (1.0, 999999.0, this->GetData(actor).NormalDamage);
-		float Sprint = clamp (1.0, 999999.0, this->GetData(actor).SprintDamage);
-		float Fall = clamp (1.0, 999999.0, this->GetData(actor).FallDamage);
-		float HH = clamp (1.0, 999999.0, this->GetData(actor).HHDamage);
+		auto Persistent = Persistent::GetSingleton().GetData(actor);
+		float Normal = clamp (1.0, 999999.0, Persistent->NormalDamage);
+		float Sprint = clamp (1.0, 999999.0, Persistent->SprintDamage);
+		float Fall = clamp (1.0, 999999.0, Persistent->FallDamage);
+		float HH = clamp (1.0, 999999.0, Persistent->HHDamage);
 		if (attribute == 0) {
 			return Normal;
 		}
@@ -143,21 +145,22 @@ namespace Gts {
 		else if (attribute == 3) {
 			return HH;
 		}
-		return 1.0;
+		return 250.0;
 	}
 
 	void SizeManager::ModSizeAttribute(Actor* actor, float amt, float attribute) {
+		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (attribute == 0) {
-			this->GetData(actor).NormalDamage += amt;
+			Persistent->NormalDamage += amt;
 		}
 		else if (attribute == 1) {
-			this->GetData(actor).SprintDamage += amt;
+			Persistent->SprintDamage += amt;
 		}
 		else if (attribute == 2) {
-			this->GetData(actor).FallDamage += amt;
+			Persistent->FallDamage += amt;
 		} 
 		else if (attribute == 3) {
-			this->GetData(actor).HHDamage += amt;
+			Persistent->HHDamage += amt;
 		}
 	}
     //===============Size-Related Attribute End
@@ -166,18 +169,18 @@ namespace Gts {
 	//===============Size-Vulnerability
 
 	void SizeManager::SetSizeVulnerability(Actor* actor, float amt) {
-		this->GetData(actor).SizeVulnerability = amt;
+		Persistent::GetSingleton().GetData(actor)->SizeVulnerability = amt;
 		log::info("Set Size Vulnerability");
 	}
 
 	float SizeManager::GetSizeVulnerability(Actor* actor) {
 		log::info("Obtain Size Vulnerability");
-		return clamp (0.0, 999999.0, this->GetData(actor).SizeVulnerability);
+		return clamp (0.0, 999999.0, Persistent::GetSingleton().GetData(actor)->SizeVulnerability);
 	}
 
 	void SizeManager::ModSizeVulnerability(Actor* actor, float amt) {
 		log::info("Mod Size Vulnerability");
-		this->GetData(actor).SizeVulnerability += amt;
+		Persistent::GetSingleton().GetData(actor)->SizeVulnerability += amt;
 	}
     //===============Size-Vulnerability
 

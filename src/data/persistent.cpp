@@ -156,6 +156,56 @@ namespace Gts {
 							smt_run_speed = 0.0;
 						}
 
+						float NormalDamage; //0
+						if (version >= 6) {
+							serde->ReadRecordData(&NormalDamage, sizeof(NormalDamage));
+						} else {
+							NormalDamage = 0.0;
+						}
+						if (std::isnan(NormalDamage)) {
+							NormalDamage = 0.0;
+						}
+
+						float SprintDamage; //1
+						if (version >= 6) {
+							serde->ReadRecordData(&SprintDamage, sizeof(SprintDamage));
+						} else {
+							SprintDamage = 0.0;
+						}
+						if (std::isnan(SprintDamage)) {
+							SprintDamage = 0.0;
+						}
+
+						float FallDamage; //2
+						if (version >= 6) {
+							serde->ReadRecordData(&FallDamage, sizeof(FallDamage));
+						} else {
+							FallDamage = 0.0;
+						}
+						if (std::isnan(FallDamage)) {
+							FallDamage = 0.0;
+						}
+
+						float HHDamage; //3
+						if (version >= 6) {
+							serde->ReadRecordData(&HHDamage, sizeof(HHDamage));
+						} else {
+							HHDamage = 0.0;
+						}
+						if (std::isnan(HHDamage)) {
+							HHDamage = 0.0;
+						}
+
+						float SizeVulnerability;
+						if (version >= 6) {
+							serde->ReadRecordData(&SizeVulnerability, sizeof(SizeVulnerability));
+						} else {
+							SizeVulnerability = 0.0;
+						}
+						if (std::isnan(SizeVulnerability)) {
+							SizeVulnerability = 0.0;
+						}
+
 						float target_scale_v;
 						if (version >= 7) {
 							serde->ReadRecordData(&target_scale_v, sizeof(target_scale_v));
@@ -180,6 +230,11 @@ namespace Gts {
 						data.bonus_carry = bonus_carry;
 						data.bonus_max_size = bonus_max_size;
 						data.smt_run_speed = smt_run_speed;
+						data.NormalDamage = NormalDamage;
+						data.SprintDamage = SprintDamage;
+						data.FallDamage = FallDamage;
+						data.HHDamage = HHDamage;
+						data.SizeVulnerability = SizeVulnerability;
 						data.target_scale_v = target_scale_v;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
@@ -290,6 +345,11 @@ namespace Gts {
 			float bonus_carry = data.bonus_carry;
 			float bonus_max_size = data.bonus_max_size;
 			float smt_run_speed = data.smt_run_speed;
+			float NormalDamage = data.NormalDamage;
+			float SprintDamage = data.SprintDamage;
+			float FallDamage = data.FallDamage;
+			float HHDamage = data.HHDamage;
+			float SizeVulnerability = data.SizeVulnerability;
 			float target_scale_v = data.target_scale_v;
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
@@ -305,6 +365,13 @@ namespace Gts {
 			serde->WriteRecordData(&bonus_carry, sizeof(bonus_carry));
 			serde->WriteRecordData(&bonus_max_size, sizeof(bonus_max_size));
 			serde->WriteRecordData(&smt_run_speed, sizeof(smt_run_speed));
+
+			serde->WriteRecordData(&NormalDamage, sizeof(NormalDamage));
+			serde->WriteRecordData(&SprintDamage, sizeof(SprintDamage));
+			serde->WriteRecordData(&FallDamage, sizeof(FallDamage));
+			serde->WriteRecordData(&HHDamage, sizeof(HHDamage));
+			serde->WriteRecordData(&SizeVulnerability, sizeof(SizeVulnerability));
+
 			serde->WriteRecordData(&target_scale_v, sizeof(target_scale_v));
 		}
 
@@ -385,6 +452,11 @@ namespace Gts {
 		this->bonus_carry = 0.0;
 		this->bonus_max_size = 0.0;
 		this->smt_run_speed = 0.0;
+		this->NormalDamage = 1.0;
+		this->SprintDamage = 1.0;
+		this->FallDamage = 1.0;
+		this->HHDamage = 1.0;
+		this->SizeVulnerability = 0.0;
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
@@ -444,6 +516,11 @@ namespace Gts {
 			data->bonus_carry = 0.0;
 			data->bonus_max_size = 0.0;
 			data->smt_run_speed = 0.0;
+			data->NormalDamage = 1.0;
+			data->SprintDamage = 1.0;
+			data->FallDamage = 1.0;
+			data->HHDamage = 1.0;
+			data->SizeVulnerability = 0.0;
 		}
 	}
 }
