@@ -12,13 +12,13 @@ namespace Gts {
 	}
 
 	void SlowGrow::OnUpdate() {
-		const float BASE_POWER = 0.000125;
+		const float BASE_POWER = 0.000025;
 		const float DUAL_CAST_BONUS = 2.0;
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		}
-		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.000025;
+		float AlterBonus = caster->GetActorValue(ActorValue::kAlteration) * 0.000005;
 		float power = BASE_POWER + AlterBonus;
 
 		if (this->timer.ShouldRun()) {
