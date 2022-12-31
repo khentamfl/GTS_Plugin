@@ -110,6 +110,57 @@ namespace Gts {
 		this->GetData(actor).GrowthSpurt += amt;
 	}
 
+	//================Size-Related Damage
+	void SizeManager::SetSizeAttribute(Actor* actor, float amt, float attribute) {
+		if (attribute == 0) {
+			this->GetData(actor).NormalDamage = amt;
+		}
+		else if (attribute == 1) {
+			this->GetData(actor).SprintDamage = amt;
+		}
+		else if (attribute == 2) {
+			this->GetData(actor).FallDamage = amt;
+		} 
+		else if (attribute == 3) {
+			this->GetData(actor).HHDamage = amt;
+		}
+	}
+
+	float SizeManager::GetSizeAttribute(Actor* actor, float attribute) {
+		float Normal = clamp (1.0, 999999.0, this->GetData(actor).NormalDamage);
+		float Sprint = clamp (1.0, 999999.0, this->GetData(actor).SprintDamage);
+		float Fall = clamp (1.0, 999999.0, this->GetData(actor).FallDamage);
+		float HH = clamp (1.0, 999999.0, this->GetData(actor).HHDamage);
+		if (attribute == 0) {
+			return Normal;
+		}
+		else if (attribute == 1) {
+			return Sprint;
+		}
+		else if (attribute == 2) {
+			return Fall;
+		} 
+		else if (attribute == 3) {
+			return HH;
+		}
+		return 1.0;
+	}
+
+	void SizeManager::ModSizeAttribute(Actor* actor, float amt, float attribute) {
+		if (attribute == 0) {
+			this->GetData(actor).NormalDamage += amt;
+		}
+		else if (attribute == 1) {
+			this->GetData(actor).SprintDamage += amt;
+		}
+		else if (attribute == 2) {
+			this->GetData(actor).FallDamage += amt;
+		} 
+		else if (attribute == 3) {
+			this->GetData(actor).HHDamage += amt;
+		}
+	}
+
 
 	//===============Balance Mode
 	float SizeManager::BalancedMode()

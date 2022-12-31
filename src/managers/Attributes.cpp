@@ -26,8 +26,9 @@ namespace {
 		}
 	}
 
-	void ManagePerkBonuses() {
+	void ManagePerkBonuses(Actor* npc) {
 		auto player = PlayerCharacter::GetSingleton();
+		auto SizeManager = SizeManager::GetSingleton();
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
 		float BaseGlobalDamage = Runtime::GetFloat("TotalSizeDamage");
@@ -36,7 +37,7 @@ namespace {
 		float ExpectedGlobalDamage = 1.0;
 		float ExpectedSprintDamage = 1.0;
 		float ExpectedFallDamage = 1.0;
-	
+
 		///Normal Damage
 		if (Runtime::HasPerk(player, "Cruelty")) {
 			ExpectedGlobalDamage += 0.35/BalancedMode;
@@ -62,14 +63,20 @@ namespace {
 
 		if (BaseGlobalDamage != ExpectedGlobalDamage) {
 			Runtime::SetFloat("TotalSizeDamage", ExpectedGlobalDamage);
+			SizeManager.SetSizeAttribute(npc, ExpectedGlobalDamage, 0);
+			log::info("SizeManager Normal Actor {} value: {}", npc->GetDisplayFullName(), SizeManager.GetSizeAttribute(npc, 0));
 			//log::info("Setting Global Damage: {}, gigantism: {}", ExpectedGlobalDamage, gigantism);
 		}
 		if (BaseSprintDamage != ExpectedSprintDamage) {
 			Runtime::SetFloat("TotalSprintDamage", ExpectedSprintDamage);
+			SizeManager.SetSizeAttribute(npc, ExpectedSprintDamage, 1);
+			log::info("SizeManager Sprint Actor {} value: {}", npc->GetDisplayFullName(), SizeManager.GetSizeAttribute(npc, 1));
 			//log::info("Setting Sprint Damage: {}, gigantism: {}", ExpectedSprintDamage, gigantism);
 		}
 		if (BaseFallDamage != ExpectedFallDamage) {
 			Runtime::SetFloat("TotalFallDamage", ExpectedFallDamage);
+			SizeManager.SetSizeAttribute(npc, ExpectedFallDamage, 2);
+			log::info("SizeManager Fall Actor {} value: {}", npc->GetDisplayFullName(), SizeManager.GetSizeAttribute(npc, 2));
 			//log::info("Setting Fall Damage: {}, gigantism: {}", ExpectedFallDamage, gigantism);
 		}
 	}
@@ -236,7 +243,7 @@ namespace {
 		
 		static Timer timer = Timer(0.05);
 
-		ManagePerkBonuses();
+		ManagePerkBonuses(Player);
 
 		if (size > 0) {
 
@@ -277,10 +284,12 @@ namespace {
 		}
 		static Timer timer = Timer(0.05);
 		float size = get_target_scale(npc);
+		
 		if (timer.ShouldRunFrame()) {
 			if (npc->IsPlayerTeammate() || Runtime::InFaction(npc, "FollowerFaction")) {
 				BoostHP(npc, 1.0);
 				BoostCarry(npc, 1.0);
+				ManagePerkBonuses(npc);
 			}
 			if (!Runtime::HasPerk(npc, "StaggerImmunity") && size > 1.33) {
 				Runtime::AddPerk(npc, "StaggerImmunity");

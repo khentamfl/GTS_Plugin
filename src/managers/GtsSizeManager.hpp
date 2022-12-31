@@ -17,6 +17,11 @@ namespace Gts {
 		float CrushGrowthStacks = 0.0;
 		float VoreStacks = 0.0;
 
+		float NormalDamage = 1.0; // 0
+		float SprintDamage = 1.0; // 1
+		float FallDamage = 1.0; // 2
+		float HHDamage = 1.0; // 3
+
 	};
 	class SizeManager : public EventListener {
 		public:
@@ -42,6 +47,10 @@ namespace Gts {
 			void SetGrowthSpurt(Actor* actor, float amt);
 			float GetGrowthSpurt(Actor* actor);
 			void ModGrowthSpurt(Actor* actor, float amt);
+
+			void SetSizeAttribute(Actor* actor, float amt, float attribute);
+			float GetSizeAttribute(Actor* actor, float attribute);
+			void ModSizeAttribute(Actor* actor, float amt, float attribute);
 
 			float BalancedMode();
 

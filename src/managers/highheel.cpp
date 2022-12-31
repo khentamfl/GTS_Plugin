@@ -2,6 +2,7 @@
 #include "data/runtime.hpp"
 #include "node.hpp"
 #include "managers/GtsManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "util.hpp"
@@ -47,7 +48,7 @@ namespace Gts {
 		if (!temp_data) {
 			return;
 		}
-
+		auto SizeManager = SizeManager::GetSingleton();
 		float new_hh = 0.0;
 		float base_hh;
 		float last_hh_adjustment = temp_data->last_hh_adjustment;
@@ -107,9 +108,13 @@ namespace Gts {
 					shoe_weight = shoe->weight/10;
 				}
 				Runtime::GetGlobal("HighHeelDamage")->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
+				SizeManager.SetSizeAttribute(actor, 1.5 + shoe_weight + char_weight, 3);
+				log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 3));
 				// Feel free to remove it once we move it to DLL completely ^
 			} else if (actor->formID == 0x14 && base_hh <= 0) {
 				Runtime::GetGlobal("HighHeelDamage")->value = 1.0;
+				SizeManager.SetSizeAttribute(actor, 1.0, 3);
+				log::info("SizeManager HH Actor {} RESET value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 3));
 			}
 		}
 	}
