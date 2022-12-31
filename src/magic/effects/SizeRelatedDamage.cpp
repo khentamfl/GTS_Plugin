@@ -32,11 +32,11 @@ namespace Gts {
 		if (target == caster) {
 			return;
 		}
-		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/200; // 50% less effective threshold decrease.
 		float InstaCrushRequirement = 24.0 * Gigantism;
 		float caster_scale = get_target_scale(caster);
 		float target_scale = get_target_scale(target);
-		float BonusShrink = 1.0; //IsJumping(caster) * 3.0 + 1.0;
+		float BonusShrink = (IsJumping(caster) * 3.0) + 1.0;
 		float size_difference = caster_scale/target_scale;
 
 		//log::info("Caster: {}, Target: {}, TargetScale: {}, CasterScale: {}, SizeDifference: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), target_scale, caster_scale, size_difference);
