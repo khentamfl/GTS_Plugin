@@ -50,6 +50,7 @@ namespace Gts {
 		}
 		auto SizeManager = SizeManager::GetSingleton();
 		float new_hh = 0.0;
+		float currentbonus = Runtime::GetGlobal("HighHeelDamage");
 		float base_hh;
 		float last_hh_adjustment = temp_data->last_hh_adjustment;
 		if (!Persistent::GetSingleton().highheel_correction) {
@@ -100,7 +101,7 @@ namespace Gts {
 			temp_data->last_hh_adjustment = new_hh;
 			temp_data->total_hh_adjustment = new_hh + base_hh;
 
-			if (actor->formID == 0x14 && base_hh > 0 && has_hhBonus_perk) { // HH damage bonus start
+			if (actor->formID == 0x14 && base_hh > 0 && temp_data->has_hhBonus_perk) { // HH damage bonus start
 				auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 				float shoe_weight = 1.0;
 				auto char_weight = actor->GetWeight()/260;
@@ -108,7 +109,7 @@ namespace Gts {
 					shoe_weight = shoe->weight/10;
 				}
 				float expectedhhdamage =  1.5 + shoe_weight + char_weight;
-				if (Runtime::GetGlobal("HighHeelDamage") != expectedhhdamage) {
+				if (currentbonus != expectedhhdamage) {
 					Runtime::GetGlobal("HighHeelDamage")->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
 					SizeManager.SetSizeAttribute(actor, 1.5 + shoe_weight + char_weight, 3); // <-- Preparing to move it onto .dll entirely. 
 					log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 3));
@@ -116,7 +117,7 @@ namespace Gts {
 				}
 			} else if (actor->formID == 0x14 && base_hh <= 0) {
 				float expectedhhdamage =  1.0;
-				if (Runtime::GetGlobal("HighHeelDamage") != 1.0) {
+				if (currentbonus != 1.0) {
 					Runtime::GetGlobal("HighHeelDamage")->value = 1.0;
 					SizeManager.SetSizeAttribute(actor, 1.0, 3);
 					log::info("SizeManager HH Actor {} RESET value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 3));
