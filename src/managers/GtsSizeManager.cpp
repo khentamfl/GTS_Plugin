@@ -160,7 +160,7 @@ namespace Gts {
 			this->GetData(actor).HHDamage += amt;
 		}
 	}
-
+    //===============Size-Related Attribute End
 
 	//===============Balance Mode
 	float SizeManager::BalancedMode()

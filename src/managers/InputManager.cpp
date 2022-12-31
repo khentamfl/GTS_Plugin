@@ -207,14 +207,15 @@ namespace Gts {
 				}
 
 				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-					float scale = get_visual_scale(actor);
+					float npcscale = get_visual_scale(actor);
 					auto caster = player;
 					auto target = actor;
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
-					DamageAV(caster, ActorValue::kMagicka, 0.15 * (scale * 0.5 + 0.5) * magicka * TimeScale());
-					mod_target_scale(target, 0.0012 * scale * magicka);
+					DamageAV(caster, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
+					mod_target_scale(target, (0.0012 * npcscale) * magicka);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.25);
+					log::info("Growing {}, rate: {}", actor->GetDisplayFullName(), (0.0012 * npcscale) * magicka);
 					if (this->timergrowth.ShouldRun()) {
 						Runtime::PlaySound("growthSound", target, Volume, 0.0);
 					}
@@ -227,12 +228,12 @@ namespace Gts {
 				}
 
 				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-					float scale = get_visual_scale(actor);
+					float npcscale = get_visual_scale(actor);
 					auto caster = player;
 					auto target = actor;
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
-					DamageAV(target, ActorValue::kMagicka, 0.10 * (scale * 0.5 + 0.5) * magicka * TimeScale());
-					mod_target_scale(target, -0.0012 * scale * magicka);
+					DamageAV(target, ActorValue::kMagicka, 0.10 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
+					mod_target_scale(target, (-0.0012 * npcscale) * magicka);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(target)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.20);
 					if (this->timergrowth.ShouldRun()) {
