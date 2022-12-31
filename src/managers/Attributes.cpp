@@ -27,6 +27,11 @@ namespace {
 	}
 
 	void ManagePerkBonuses(Actor* actor) {
+		static Timer timer = Timer(1.0);
+		if (!timer.ShouldRunFrame()) {
+			return;
+		}
+
 		auto player = PlayerCharacter::GetSingleton();
 		auto SizeManager = SizeManager::GetSingleton();
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
@@ -35,33 +40,34 @@ namespace {
 		float BaseGlobalDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 0);
 		float BaseSprintDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 1);
 		float BaseFallDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 2);
-		
+
 		float ExpectedGlobalDamage = 1.0;
 		float ExpectedSprintDamage = 1.0;
 		float ExpectedFallDamage = 1.0;
 
 		///Normal Damage
-		if (Runtime::HasPerk(player, "Cruelty")) {
+		if (Runtime::HasPerk(actor, "Cruelty")) {
 			ExpectedGlobalDamage += 0.35/BalancedMode;
 		}
-		if (Runtime::HasPerk(player, "RealCruelty")) {
+		if (Runtime::HasPerk(actor, "RealCruelty")) {
 			ExpectedGlobalDamage += 0.65/BalancedMode;
 		}
 		///Sprint Damage
-		if (Runtime::HasPerk(player, "SprintDamageMult1")) {
+		if (Runtime::HasPerk(actor, "SprintDamageMult1")) {
 			ExpectedSprintDamage += 0.25/BalancedMode;
 		}
-		if (Runtime::HasPerk(player, "SprintDamageMult2")) {
+		if (Runtime::HasPerk(actor, "SprintDamageMult2")) {
 			ExpectedSprintDamage += 1.0/BalancedMode;
 		}
 		///Fall Damage
-		if (Runtime::HasPerk(player, "MightyLegs")) {
+		if (Runtime::HasPerk(actor, "MightyLegs")) {
 			ExpectedFallDamage += 0.5/BalancedMode;
 		}
 		///Buff by enchantment 
 		ExpectedGlobalDamage *= gigantism;
 		ExpectedSprintDamage *= gigantism;
 		ExpectedFallDamage *= gigantism;
+		log::info("Global: {}, Sprint {}, Fall: {}", BaseGlobalDamage, BaseSprintDamage, BaseFallDamage);
 
 		if (BaseGlobalDamage != ExpectedGlobalDamage) {
 			SizeManager.SetSizeAttribute(actor, ExpectedGlobalDamage, 0);
