@@ -50,7 +50,7 @@ namespace Gts {
 		}
 		auto SizeManager = SizeManager::GetSingleton();
 		float new_hh = 0.0;
-		float currentbonus = Runtime::GetGlobal("HighHeelDamage");
+		float currentbonus = Runtime::GetGlobal("HighHeelDamage")->value;
 		float base_hh;
 		float last_hh_adjustment = temp_data->last_hh_adjustment;
 		if (!Persistent::GetSingleton().highheel_correction) {
