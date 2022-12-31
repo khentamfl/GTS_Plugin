@@ -1,6 +1,7 @@
 #include "papyrus/plugin.hpp"
 #include "data/persistent.hpp"
 #include "managers/GtsManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "util.hpp"
 #include <math.h>
 #include <sstream>
@@ -16,6 +17,10 @@ namespace {
 	constexpr std::string_view PapyrusClass = "GtsPlugin";
 	float GetDistanceToCamera(StaticFunctionTag*, Actor* actor) {
 		return get_distance_to_camera(actor);
+	}
+
+	float GetSizeRelatedDamage(StaticFunctionTag*, Actor* actor, float attribute) {
+		return SizeManager::GetSingleton().GetSizeAttribute(actor, attribute)
 	}
 
 	bool SetGrowthHalfLife(StaticFunctionTag*, Actor* actor, float halflife) {
@@ -139,6 +144,7 @@ namespace {
 namespace Gts {
 	bool register_papyrus_plugin(IVirtualMachine* vm) {
 		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
+		vm->RegisterFunction("GetSizeRelatedDamage", PapyrusClass, GetSizeRelatedDamage)
 		vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
 		vm->RegisterFunction("GetGrowthHalfLife", PapyrusClass, GetGrowthHalfLife);
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
