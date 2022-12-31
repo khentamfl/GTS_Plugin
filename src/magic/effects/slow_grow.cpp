@@ -12,7 +12,7 @@ namespace Gts {
 	}
 
 	void SlowGrow::OnUpdate() {
-		const float BASE_POWER = 0.000018;
+		const float BASE_POWER = 0.000030;
 		const float DUAL_CAST_BONUS = 2.0;
 		auto caster = GetCaster();
 		if (!caster) {
