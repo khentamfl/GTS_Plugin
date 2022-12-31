@@ -26,14 +26,13 @@ namespace {
 		}
 	}
 
-	void ManagePerkBonuses(Actor* npc) {
-		auto player = PlayerCharacter::GetSingleton();
+	void ManagePerkBonuses(Actor* actor) {
 		auto SizeManager = SizeManager::GetSingleton();
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
-		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
-		float BaseGlobalDamage = SizeManager::GetSingleton().GetSizeAttribute(0);
-		float BaseSprintDamage = SizeManager::GetSingleton().GetSizeAttribute(1);
-		float BaseFallDamage = SizeManager::GetSingleton().GetSizeAttribute(2);
+		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
+		float BaseGlobalDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 0);
+		float BaseSprintDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 1);
+		float BaseFallDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 2);
 		float ExpectedGlobalDamage = 1.0;
 		float ExpectedSprintDamage = 1.0;
 		float ExpectedFallDamage = 1.0;
@@ -62,18 +61,18 @@ namespace {
 		ExpectedFallDamage *= gigantism;
 
 		if (BaseGlobalDamage != ExpectedGlobalDamage) {
-			SizeManager.SetSizeAttribute(npc, ExpectedGlobalDamage, 0);
-			log::info("SizeManager Normal Actor {} value: {}", npc->GetDisplayFullName(), SizeManager.GetSizeAttribute(npc, 0));
+			SizeManager.SetSizeAttribute(actor, ExpectedGlobalDamage, 0);
+			log::info("SizeManager Normal Actor {} value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 0));
 			//log::info("Setting Global Damage: {}, gigantism: {}", ExpectedGlobalDamage, gigantism);
 		}
 		if (BaseSprintDamage != ExpectedSprintDamage) {
-			SizeManager.SetSizeAttribute(npc, ExpectedSprintDamage, 1);
-			log::info("SizeManager Sprint Actor {} value: {}", npc->GetDisplayFullName(), SizeManager.GetSizeAttribute(npc, 1));
+			SizeManager.SetSizeAttribute(actor, ExpectedSprintDamage, 1);
+			log::info("SizeManager Sprint Actor {} value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 1));
 			//log::info("Setting Sprint Damage: {}, gigantism: {}", ExpectedSprintDamage, gigantism);
 		}
 		if (BaseFallDamage != ExpectedFallDamage) {
-			SizeManager.SetSizeAttribute(npc, ExpectedFallDamage, 2);
-			log::info("SizeManager Fall Actor {} value: {}", npc->GetDisplayFullName(), SizeManager.GetSizeAttribute(npc, 2));
+			SizeManager.SetSizeAttribute(actor, ExpectedFallDamage, 2);
+			log::info("SizeManager Fall Actor {} value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 2));
 			//log::info("Setting Fall Damage: {}, gigantism: {}", ExpectedFallDamage, gigantism);
 		}
 	}
