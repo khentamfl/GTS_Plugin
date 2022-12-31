@@ -162,7 +162,7 @@ namespace Gts {
 			Camera.AdjustLeftRight(0.6 + (size * 0.05 - 0.05));
 		}
 		if (AltPressed == true && LeftArrow == true) {
-			Camera.AdjustLeftRight(-0.6 + (size * 0.05 - 0.05));
+			Camera.AdjustLeftRight(-(0.6 + (size * 0.05 - 0.05)));
 		} // Left or Right end
 
 
@@ -173,7 +173,7 @@ namespace Gts {
 			Camera.AdjustUpDown(0.6 + (size * 0.05 - 0.05));
 		}
 		if (AltPressed == true && ArrowDown == true) {
-			Camera.AdjustUpDown(-0.6 + (size * 0.05 - 0.05));
+			Camera.AdjustUpDown(-(0.6 + (size * 0.05 - 0.05)));
 			//log::info("Alt + Down");
 		} // Up or Down end
 

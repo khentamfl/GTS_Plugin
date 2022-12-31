@@ -145,7 +145,7 @@ namespace Gts {
 		else if (attribute == 3) {
 			return HH;
 		}
-		return 250.0;
+		return 1.0;
 	}
 
 	void SizeManager::ModSizeAttribute(Actor* actor, float amt, float attribute) {
@@ -170,16 +170,13 @@ namespace Gts {
 
 	void SizeManager::SetSizeVulnerability(Actor* actor, float amt) {
 		Persistent::GetSingleton().GetData(actor)->SizeVulnerability = amt;
-		log::info("Set Size Vulnerability: {}", amt);
 	}
 
 	float SizeManager::GetSizeVulnerability(Actor* actor) {
-		log::info("Obtain Size Vulnerability, {} - {}", actor->GetDisplayFullName(), Persistent::GetSingleton().GetData(actor)->SizeVulnerability);
 		return clamp (0.0, 999999.0, Persistent::GetSingleton().GetData(actor)->SizeVulnerability);
 	}
 
 	void SizeManager::ModSizeVulnerability(Actor* actor, float amt) {
-		log::info("Mod Size Vulnerability");
 		Persistent::GetSingleton().GetData(actor)->SizeVulnerability += amt;
 	}
     //===============Size-Vulnerability

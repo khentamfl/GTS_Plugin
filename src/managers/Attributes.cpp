@@ -27,11 +27,6 @@ namespace {
 	}
 
 	void ManagePerkBonuses(Actor* actor) {
-		static Timer timer = Timer(1.0);
-		if (!timer.ShouldRunFrame()) {
-			return;
-		}
-
 		auto player = PlayerCharacter::GetSingleton();
 		auto SizeManager = SizeManager::GetSingleton();
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
