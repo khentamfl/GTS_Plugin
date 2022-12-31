@@ -20,7 +20,14 @@ namespace {
 	}
 
 	float GetSizeRelatedDamage(StaticFunctionTag*, Actor* actor, float attribute) {
-		return SizeManager::GetSingleton().GetSizeAttribute(actor, attribute)
+		return SizeManager::GetSingleton().GetSizeAttribute(actor, attribute);
+	}
+	float GetSizeVulnerability(StaticFunctionTag*, Actor* actor) {
+		return SizeManager::GetSingleton().GetSizeVulnerability(actor);
+	}
+
+	void ModSizeVulnerability(StaticFunctionTag*, Actor* actor, float value) {
+		SizeManager::GetSingleton().ModSizeVulnerability(actor, value);
 	}
 
 	bool SetGrowthHalfLife(StaticFunctionTag*, Actor* actor, float halflife) {
@@ -144,7 +151,9 @@ namespace {
 namespace Gts {
 	bool register_papyrus_plugin(IVirtualMachine* vm) {
 		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
-		vm->RegisterFunction("GetSizeRelatedDamage", PapyrusClass, GetSizeRelatedDamage)
+		vm->RegisterFunction("GetSizeRelatedDamage", PapyrusClass, GetSizeRelatedDamage);
+		vm->RegisterFunction("ModSizeVulnerability", PapyrusClass, ModSizeVulnerability);
+		vm->RegisterFunction("GetSizeVulnerability", PapyrusClass, GetSizeVulnerability);
 		vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
 		vm->RegisterFunction("GetGrowthHalfLife", PapyrusClass, GetGrowthHalfLife);
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);

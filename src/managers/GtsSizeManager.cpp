@@ -162,6 +162,25 @@ namespace Gts {
 	}
     //===============Size-Related Attribute End
 
+
+	//===============Size-Vulnerability
+
+	void SizeManager::SetSizeVulnerability(Actor* actor, float amt) {
+		this->GetData(actor).SizeVulnerability = amt;
+		log::info("Set Size Vulnerability");
+	}
+
+	float SizeManager::GetSizeVulnerability(Actor* actor) {
+		log::info("Obtain Size Vulnerability");
+		return clamp (0.0, 999999.0, this->GetData(actor).SizeVulnerability);
+	}
+
+	void SizeManager::ModSizeVulnerability(Actor* actor, float amt) {
+		log::info("Mod Size Vulnerability");
+		this->GetData(actor).SizeVulnerability += amt;
+	}
+    //===============Size-Vulnerability
+
 	//===============Balance Mode
 	float SizeManager::BalancedMode()
 	{

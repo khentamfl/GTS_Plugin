@@ -21,6 +21,7 @@ namespace Gts {
 		float SprintDamage = 1.0; // 1
 		float FallDamage = 1.0; // 2
 		float HHDamage = 1.0; // 3
+		float SizeVulnerability = 0.0;
 
 	};
 	class SizeManager : public EventListener {
@@ -51,6 +52,10 @@ namespace Gts {
 			void SetSizeAttribute(Actor* actor, float amt, float attribute);
 			float GetSizeAttribute(Actor* actor, float attribute);
 			void ModSizeAttribute(Actor* actor, float amt, float attribute);
+
+			void SetSizeVulnerability(Actor* actor, float amt);
+			float GetSizeVulnerability(Actor* actor);
+			void ModSizeVulnerability(Actor* actor, float amt);
 
 			float BalancedMode();
 
