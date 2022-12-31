@@ -170,11 +170,11 @@ namespace Gts {
 
 	void SizeManager::SetSizeVulnerability(Actor* actor, float amt) {
 		Persistent::GetSingleton().GetData(actor)->SizeVulnerability = amt;
-		log::info("Set Size Vulnerability");
+		log::info("Set Size Vulnerability: {}", amt);
 	}
 
 	float SizeManager::GetSizeVulnerability(Actor* actor) {
-		log::info("Obtain Size Vulnerability");
+		log::info("Obtain Size Vulnerability, {} - {}", actor->GetDisplayFullName(), Persistent::GetSingleton().GetData(actor)->SizeVulnerability);
 		return clamp (0.0, 999999.0, Persistent::GetSingleton().GetData(actor)->SizeVulnerability);
 	}
 

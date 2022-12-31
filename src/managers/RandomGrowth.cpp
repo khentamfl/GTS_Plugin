@@ -23,7 +23,7 @@ namespace {
 		
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
 			MultiplySlider = 1.0; // Disable effect in Balance Mode, so it's always 1.0
-			log::info("Balance Mode True");
+			//log::info("Balance Mode True");
 		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
 		int Requirement = ((250 * MultiplySlider) * Gigantism) * SizeManager::GetSingleton().BalancedMode();

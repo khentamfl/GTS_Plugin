@@ -67,7 +67,6 @@ namespace {
 		ExpectedGlobalDamage *= gigantism;
 		ExpectedSprintDamage *= gigantism;
 		ExpectedFallDamage *= gigantism;
-		log::info("Global: {}, Sprint {}, Fall: {}", BaseGlobalDamage, BaseSprintDamage, BaseFallDamage);
 
 		if (BaseGlobalDamage != ExpectedGlobalDamage) {
 			SizeManager.SetSizeAttribute(actor, ExpectedGlobalDamage, 0);

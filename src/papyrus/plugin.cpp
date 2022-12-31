@@ -26,8 +26,12 @@ namespace {
 		return SizeManager::GetSingleton().GetSizeVulnerability(actor);
 	}
 
-	void ModSizeVulnerability(StaticFunctionTag*, Actor* actor, float amt) {
-		SizeManager::GetSingleton().ModSizeVulnerability(actor, amt);
+	bool ModSizeVulnerability(StaticFunctionTag*, Actor* actor, float amt) {
+		if (actor) {
+			SizeManager::GetSingleton().ModSizeVulnerability(actor, amt);
+			return true;
+		}
+		return false;
 	}
 
 	bool SetGrowthHalfLife(StaticFunctionTag*, Actor* actor, float halflife) {
