@@ -27,6 +27,7 @@ namespace {
 	}
 
 	void ManagePerkBonuses(Actor* actor) {
+		auto Player = PlayerCharacter::GetSingleton();
 		auto SizeManager = SizeManager::GetSingleton();
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
