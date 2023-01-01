@@ -30,7 +30,7 @@ namespace {
 		if (!Runtime::HasPerk(actor, "GrowthOfStrength")) {
 			return false;
 		}
-		if (Runtime::HasMagicEffect(actor, "explosiveGrowth1")||Runtime::HasMagicEffect(actor, "explosiveGrowth2")||Runtime::HasMagicEffect(actor, "explosiveGrowth3"))) {
+		if (Runtime::HasMagicEffect(actor, "explosiveGrowth1")||Runtime::HasMagicEffect(actor, "explosiveGrowth2")||Runtime::HasMagicEffect(actor, "explosiveGrowth3")) {
 			return true;
 		}
 		return false;
