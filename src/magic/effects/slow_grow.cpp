@@ -12,13 +12,13 @@ namespace Gts {
 	}
 
 	void SlowGrow::OnUpdate() {
-		const float BASE_POWER = 0.000025;
+		const float BASE_POWER = 0.000025; // Default growth over time.
 		const float DUAL_CAST_BONUS = 2.0;
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		}
-		float AlterBonus = 1.0 + caster->GetActorValue(ActorValue::kAlteration)/100;
+		float AlterBonus = 1.0 + caster->GetActorValue(ActorValue::kAlteration)/100; // Calculate bonus power. At the Alteration of 100 it becomes 200%.
 		float power = BASE_POWER * AlterBonus;
 
 		if (this->timer.ShouldRun()) {
