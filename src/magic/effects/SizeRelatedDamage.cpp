@@ -77,8 +77,8 @@ namespace Gts {
 				float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.0008;
 				caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
 
-				ShrinkActor(target, 0.002 * BonusShrink, 0.0);
-				Grow(caster, 0.001 * target_scale * BonusShrink, 0.0);
+				ShrinkActor(target, 0.0015 * BonusShrink, 0.0);
+				Grow(caster, 0.00045 * target_scale * BonusShrink, 0.0);
 			}
 		}
 
