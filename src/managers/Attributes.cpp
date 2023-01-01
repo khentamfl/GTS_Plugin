@@ -142,7 +142,7 @@ namespace {
 	void BoostSpeedMulti(Actor* actor, float power) {
 		float scale = get_target_scale(actor);
 		auto actor_data = Transient::GetSingleton().GetData(actor);
-		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/3.0;
+		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/2.5;
 		float base_speed = actor_data->base_walkspeedmult;
 		float bonusSpeedMax = Runtime::GetFloat("bonusSpeedMax");
 		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
@@ -201,12 +201,12 @@ namespace {
 		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
 		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
 		if (Player->IsSprinting() && Runtime::HasPerk(Player, "NoSpeedLoss") && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
-			ActorAttributes->smt_run_speed += 0.002400 * Gigantism;
+			ActorAttributes->smt_run_speed += 0.003800 * Gigantism;
 			if (ActorAttributes->smt_run_speed < 1.0) {
 				BlockMessage = false;
 			}
 		} else if (Player->IsSprinting() && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
-			ActorAttributes->smt_run_speed += 0.001600 * Gigantism;
+			ActorAttributes->smt_run_speed += 0.002600 * Gigantism;
 			if (ActorAttributes->smt_run_speed < 1.0) {
 				BlockMessage = false;
 			}
