@@ -64,8 +64,9 @@ namespace Gts {
 
 		// ^ Crush anyway, no conditions needed since size difference is too massive
 		if (Runtime::HasPerk(caster, "ExtraGrowth") && caster != target && (Runtime::HasMagicEffect(caster, "explosiveGrowth1") || Runtime::HasMagicEffect(caster, "explosiveGrowth2") || Runtime::HasMagicEffect(caster, "explosiveGrowth3"))) {
-			ShrinkActor(target, 0.0026 * BonusShrink, 0.0);
-			Grow(caster, 0.0006 * BonusShrink, 0.0);
+			ShrinkActor(target, 0.0014 * BonusShrink, 0.0);
+			Grow(caster, 0.0, (0.0006 * BonusShrink) * get_target_scale(target));
+			// ^ Augmentation for Growth Spurt: Steal size of enemies.
 		}
 
 		if (Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {

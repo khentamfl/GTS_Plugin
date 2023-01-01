@@ -27,7 +27,7 @@ namespace {
 	}
 
 	bool HasGrowthPerk(Actor* actor) {
-		if (!Runtime::HasPerk(actor, "GrowthOfStrength") {
+		if (!Runtime::HasPerk(actor, "GrowthOfStrength")) {
 			return false;
 		}
 		if (Runtime::HasMagicEffect(actor, "explosiveGrowth1")||Runtime::HasMagicEffect(actor, "explosiveGrowth2")||Runtime::HasMagicEffect(actor, "explosiveGrowth3"))) {
