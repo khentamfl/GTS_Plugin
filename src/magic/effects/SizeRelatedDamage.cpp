@@ -70,9 +70,9 @@ namespace Gts {
 		}
 
 		if (Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
+			SmallMassiveThreatModification(caster, target);
 			size_difference += 3.2;
 			if (Runtime::HasPerk(caster, "SmallMassiveThreatSizeSteal") && caster != target) {
-				SmallMassiveThreatModification(caster, target);
 				float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.0008;
 				caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
 
@@ -95,17 +95,22 @@ namespace Gts {
 		}
 		auto& persistent = Persistent::GetSingleton();
 		if (persistent.GetData(Caster)->smt_run_speed >= 1.0) {
-			float caster_scale = get_visual_scale(Caster);
-			float target_scale = get_visual_scale(Target);
+			log::info("Caster's: {} SMT run speed is >= 1.0", Caster->GetDisplayFullName());
+			float caster_scale = get_target_scale(Caster);
+			float target_scale = get_target_scale(Target);
 			float Multiplier = (caster_scale/target_scale);
 			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
 			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
 			if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 				CrushManager::Crush(Caster, Target);
 				shake_camera(Caster, 0.25 * caster_scale, 0.25);
+				log::info("Caster: {} is ready to crush {}", Caster->GetDisplayFullName(), Target->GetDisplayFullName());
+				if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
+					AttributeManager::GetSingleton().OverrideBonus(0.65); // Reduce speed after crush
+				}
 
 				if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
-					AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce speed after crush
+					AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce more speed after crush
 				}
 			} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision

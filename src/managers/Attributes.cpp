@@ -201,12 +201,12 @@ namespace {
 		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
 		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
 		if (Player->IsSprinting() && Runtime::HasPerk(Player, "NoSpeedLoss") && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
-			ActorAttributes->smt_run_speed += 0.001480 * Gigantism;
+			ActorAttributes->smt_run_speed += 0.002400 * Gigantism;
 			if (ActorAttributes->smt_run_speed < 1.0) {
 				BlockMessage = false;
 			}
 		} else if (Player->IsSprinting() && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
-			ActorAttributes->smt_run_speed += 0.000960 * Gigantism;
+			ActorAttributes->smt_run_speed += 0.001600 * Gigantism;
 			if (ActorAttributes->smt_run_speed < 1.0) {
 				BlockMessage = false;
 			}
