@@ -6,7 +6,7 @@ scriptName GtsPlugin hidden
 Float function GetDistanceToCamera(Actor target) global native
 
 ; Get size related damage modifier.
-; This function reports damage modifiers for: Normal, Fall, Sprint and High Heel damage bonuses.
+; This functions reports damage modifiers for: Normal, Fall, Sprint and High Heel damage bonuses.
 ; The damage is calculated through the .dll.
 ; 0 = Get Normal    Size-Related Damage
 ; 1 = Get Sprint    Size-Related Damage
@@ -20,6 +20,7 @@ Float function GetSizeVulnerability(Actor target) global native
 
 ; apply increased size-related damage debuff 
 Bool function ModSizeVulnerability(Actor target, Float amt) global native
+
 
 ; This is the time it takes to reach half of the target height
 ; By default this is 0.05s (instantaneous)
@@ -88,4 +89,3 @@ Function SetTremorScaleNPC(Float value) global native
 ; Debug functions
 Float Function GetExperimentFloat() global native
 Function SetExperimentFloat(Float value) global native
-
