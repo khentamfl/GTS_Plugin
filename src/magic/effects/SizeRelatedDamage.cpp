@@ -106,7 +106,7 @@ namespace Gts {
 				CrushManager::Crush(Caster, Target);
 				shake_camera(Caster, 0.25 * caster_scale, 0.25);
 				log::info("Caster: {} is ready to crush {}", Caster->GetDisplayFullName(), Target->GetDisplayFullName());
-				ConsoleLog::GetSingleton()->Print("%s was instantly turned into mush by the body of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+				ConsoleLog::GetSingleton()->Print("%s was instantly turned into mush by the body of %s", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 				if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
 					AttributeManager::GetSingleton().OverrideBonus(0.65); // Reduce speed after crush
 				}
