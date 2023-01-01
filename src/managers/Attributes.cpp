@@ -26,6 +26,16 @@ namespace {
 		}
 	}
 
+	bool HasGrowthPerk(Actor* actor) {
+		if (!Runtime::HasPerk(actor, "GrowthOfStrength") {
+			return false;
+		}
+		if (Runtime::HasMagicEffect(actor, "explosiveGrowth1")||Runtime::HasMagicEffect(actor, "explosiveGrowth2")||Runtime::HasMagicEffect(actor, "explosiveGrowth3"))) {
+			return true;
+		}
+		return false;
+	}
+
 	void ManagePerkBonuses(Actor* actor) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto SizeManager = SizeManager::GetSingleton();
@@ -46,6 +56,9 @@ namespace {
 		}
 		if (Runtime::HasPerk(actor, "RealCruelty")) {
 			ExpectedGlobalDamage += 0.65/BalancedMode;
+		}
+		if (HasGrowthPerk(actor)) {
+			ExpectedGlobalDamage *= (1.0 + (0.35/BalancedMode));
 		}
 		///Sprint Damage
 		if (Runtime::HasPerk(actor, "SprintDamageMult1")) {
