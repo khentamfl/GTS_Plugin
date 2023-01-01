@@ -53,9 +53,7 @@ namespace Gts {
 					GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("FollowersSizeLimit")); // Apply only if Quest is done.
 			}
 			else if (QuestStage > 100 && NPCLimit > 1 &&  actor->formID != 0x14 && (!Runtime::InFaction(actor, "FollowerFaction") && !actor->IsPlayerTeammate())) {  // Apply Other NPC's max size
-				if (QuestStage > 100) {
 					GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("NPCSizeLimit")); 		// Apply only if Quest is done.
-				}
 			}
 
 			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
