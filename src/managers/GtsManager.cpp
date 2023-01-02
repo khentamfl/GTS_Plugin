@@ -30,12 +30,6 @@ namespace {
 		if (!actor) {
 			return;
 		}
-		//if (actor->formID==0x14) {
-		//log::info("Player's VS:{}, VS_V: {}", persi_actor_data->visual_scale, persi_actor_data->visual_scale_v);
-		//}
-		//if (!actor->Is3DLoaded()) {
-			//return;
-		//}
 		if (!trans_actor_data) {
 			return;
 		}
@@ -43,11 +37,11 @@ namespace {
 			return;
 		}
 		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor);
-		float target_scale = persi_actor_data->target_scale * racescale;
+		float target_scale = persi_actor_data->target_scale;
 
 		// Smooth target_scale towards max_scale if target_scale > max_scale
 		float max_scale = persi_actor_data->max_scale;
-		if (target_scale > max_scale) {
+		if (target_scale * racescale > max_scale) {
 			float minimum_scale_delta = 0.000005; // 0.00005%
 			if (fabs(target_scale - max_scale) < minimum_scale_delta) {
 				persi_actor_data->target_scale = max_scale;
@@ -99,7 +93,7 @@ namespace {
 		if (scale < 0.0) {
 			return;
 		}
-		float visual_scale = persi_actor_data->visual_scale * racescale;
+		float visual_scale = persi_actor_data->visual_scale;
 		float change_requirement = Runtime::GetFloat("sizeLimit") + persi_actor_data->bonus_max_size;
 
 		// Is scale correct already?
@@ -113,7 +107,7 @@ namespace {
 		}
 
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
-		set_scale(actor, visual_scale);
+		set_scale(actor, visual_scale * racescale);
 	}
 
 
