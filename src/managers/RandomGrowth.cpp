@@ -31,14 +31,15 @@ namespace {
 		int Requirement = ((250 * MultiplySlider) * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 		int random = rand() % Requirement;
 		int decide_chance = 1;
-		//log::info("Requirement: {}", Requirement);
+			}
+		}
 		if (random <= decide_chance) {
 			return true;
 		} else {
 			return false;
-				}
-			}
 		}
+			
+		
 	}
 
 	void RestoreStats() {
