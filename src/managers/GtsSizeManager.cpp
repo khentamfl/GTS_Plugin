@@ -56,6 +56,7 @@ namespace Gts {
 					GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("NPCSizeLimit")); 		// Apply only if Quest is done.
 			}
 
+			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
 			float TotalLimit = ((GetLimit + Persistent_Size) * (1.0 + Gigantism));
 
 			if (TotalLimit < 1.0) {

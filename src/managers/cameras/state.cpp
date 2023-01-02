@@ -1,4 +1,5 @@
 #include "managers/cameras/state.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 
@@ -19,10 +20,11 @@ namespace {
 namespace Gts {
 	float CameraState::GetScale() {
 		auto player = PlayerCharacter::GetSingleton();
+		auto 
 		if (!player) {
 			return 1.0;
 		}
-		return get_visual_scale(player);
+		return get_target_scale(player) * SizeManager::GetRaceScale(player);
 	}
 
 	NiPoint3 CameraState::GetOffset(const NiPoint3& cameraPosLocal) {
