@@ -42,8 +42,8 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-
-		float target_scale = persi_actor_data->target_scale;
+		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor);
+		float target_scale = persi_actor_data->target_scale * racescale;
 
 		// Smooth target_scale towards max_scale if target_scale > max_scale
 		float max_scale = persi_actor_data->max_scale;
@@ -94,11 +94,12 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		float scale = get_scale(actor);
+		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor);
+		float scale = get_scale(actor) * racescale;
 		if (scale < 0.0) {
 			return;
 		}
-		float visual_scale = persi_actor_data->visual_scale;
+		float visual_scale = persi_actor_data->visual_scale * racescale;
 		float change_requirement = Runtime::GetFloat("sizeLimit") + persi_actor_data->bonus_max_size;
 
 		// Is scale correct already?
