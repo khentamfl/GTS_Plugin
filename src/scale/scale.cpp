@@ -34,7 +34,7 @@ namespace Gts {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
 			if (actor_data) {
-				return actor_data->target_scale *= racescale;
+				return actor_data->target_scale * racescale;
 			}
 		}
 		return -1.0;
