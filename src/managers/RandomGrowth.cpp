@@ -27,7 +27,7 @@ namespace {
 			MultiplySlider = 1.0; // Disable effect in Balance Mode, so it's always 1.0
 			//log::info("Balance Mode True");
 		}
-		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
+		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
 		int Requirement = ((250 * MultiplySlider) * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 		int random = rand() % Requirement;
 		int decide_chance = 1;
