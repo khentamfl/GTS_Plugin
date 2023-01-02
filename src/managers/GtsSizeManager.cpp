@@ -56,15 +56,14 @@ namespace Gts {
 					GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("NPCSizeLimit")); 		// Apply only if Quest is done.
 			}
 
-			float RaceScale = (GetRaceScale(actor));
-			float TotalLimit = ((GetLimit + Persistent_Size) * (1.0 + Gigantism)) * RaceScale;
+			float TotalLimit = ((GetLimit + Persistent_Size) * (1.0 + Gigantism));
 
 			if (TotalLimit < 1.0) {
 				TotalLimit = 1.0;
 			}
 			if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 				set_max_scale(actor, TotalLimit);
-				log::info("Current Size Limit of: {} is {}, RaceScale: {}", actor->GetDisplayFullName(), get_max_scale(actor), RaceScale);
+				log::info("Current Size Limit of: {} is {}", actor->GetDisplayFullName(), get_max_scale(actor));
 			}
 		}
 	}
