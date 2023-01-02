@@ -133,7 +133,7 @@ namespace {
 			return;
 		}
 
-		float scale = persi_actor_data->visual_scale;
+		float scale = persi_actor_data->target_scale;
 		if (scale < 1e-5) {
 			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
