@@ -42,8 +42,8 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
-		float target_scale = persi_actor_data->target_scale * racescale;
+
+		float target_scale = persi_actor_data->target_scale;
 
 		// Smooth target_scale towards max_scale if target_scale > max_scale
 		float max_scale = persi_actor_data->max_scale;
@@ -133,8 +133,8 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-
-		float scale = persi_actor_data->target_scale * ;
+		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
+		float scale = persi_actor_data->target_scale * racescale;
 		if (scale < 1e-5) {
 			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;

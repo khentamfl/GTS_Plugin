@@ -15,11 +15,13 @@ using namespace Gts;
 
 namespace {
 	bool ShouldGrow() {
-		auto Player = PlayerCharacter::GetSingleton();
-		float MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyPC");
-		if (!Runtime::HasPerk(Player, "GrowthPerk") || MultiplySlider == 0) {
-			return false;
-		}
+		//auto Player = PlayerCharacter::GetSingleton();
+		for (auto player: find_actors()) { 
+			float MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyPC");
+		//if (!Runtime::HasPerk(Player, "GrowthPerk") || MultiplySlider == 0) {
+			//return false;
+		//}
+		if (Runtime::InFaction(player, "FollowerFaction") || !player->IsPlayerTeammate()) {
 		
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
 			MultiplySlider = 1.0; // Disable effect in Balance Mode, so it's always 1.0
@@ -34,6 +36,8 @@ namespace {
 			return true;
 		} else {
 			return false;
+				}
+			}
 		}
 	}
 
@@ -66,7 +70,8 @@ namespace Gts {
 	}
 
 	void RandomGrowth::Update() {
-		auto player = PlayerCharacter::GetSingleton();
+		//auto player = PlayerCharacter::GetSingleton();
+		for (auto player: find_actors()) { 
 
 		if (!player) {
 			return;
@@ -74,7 +79,7 @@ namespace Gts {
 		if (!player->Is3DLoaded()) {
 			return;
 		}
-
+		if (Runtime::InFaction(player, "FollowerFaction") || !player->IsPlayerTeammate()) {
 		bool hasSMT = Runtime::HasMagicEffect(player, "SmallMassiveThreat");
 
 		if (this->CallInputGrowth == true) {
@@ -130,8 +135,9 @@ namespace Gts {
 			if (this->growth_time >= 2.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 				// End growing
 				this->AllowGrowth = false;
+					}
+				}
 			}
 		}
-
 	}
 }
