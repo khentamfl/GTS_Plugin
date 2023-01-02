@@ -33,16 +33,17 @@ namespace {
 		//if (actor->formID==0x14) {
 		//log::info("Player's VS:{}, VS_V: {}", persi_actor_data->visual_scale, persi_actor_data->visual_scale_v);
 		//}
-		if (!actor->Is3DLoaded()) {
-			return;
-		}
+		//if (!actor->Is3DLoaded()) {
+			//return;
+		//}
 		if (!trans_actor_data) {
 			return;
 		}
 		if (!persi_actor_data) {
 			return;
 		}
-		float target_scale = persi_actor_data->target_scale;
+		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
+		float target_scale = persi_actor_data->target_scale * racescale;
 
 		// Smooth target_scale towards max_scale if target_scale > max_scale
 		float max_scale = persi_actor_data->max_scale;
@@ -133,7 +134,7 @@ namespace {
 			return;
 		}
 
-		float scale = persi_actor_data->target_scale;
+		float scale = persi_actor_data->target_scale * ;
 		if (scale < 1e-5) {
 			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
