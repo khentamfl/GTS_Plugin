@@ -51,8 +51,8 @@ namespace Gts {
 
 			Timer initimer = Timer(3.00);
 
-			Spring smoothScale = Spring(0.20, 0.40);
-			Spring3 smoothOffset = Spring3(NiPoint3(0.20, 0.20, 0.20), 0.40);
-			Spring3 smoothPlayerOffset = Spring3(NiPoint3(0.20, 0.20, 0.20), 0.40);
+			Spring smoothScale = Spring(0.30, 0.50);
+			Spring3 smoothOffset = Spring3(NiPoint3(0.30, 0.30, 0.30), 0.50);
+			Spring3 smoothPlayerOffset = Spring3(NiPoint3(0.30, 0.30, 0.30), 0.50);
 	};
 }
