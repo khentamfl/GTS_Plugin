@@ -28,7 +28,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static SizeManager& GetSingleton() noexcept;
 
-			inline float GetRaceScale(Actor* actor);
+			float GetRaceScale(Actor* actor);
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;

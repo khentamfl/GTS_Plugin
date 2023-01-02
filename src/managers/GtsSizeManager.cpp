@@ -21,7 +21,7 @@ namespace Gts {
 		return instance;
 	}
 
-	inline float SizeManager::GetRaceScale(Actor* actor) {
+	float SizeManager::GetRaceScale(Actor* actor) {
 		auto GetNode = find_node(actor, "NPC", false);
 		float NodeScale = GetNode->world.scale;
 		return GetNode ? NodeScale : 1; // <- not used, causes troubles with quest progression. (Can't reach 1.44 for example when 1.50 is needed.)

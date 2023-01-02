@@ -20,7 +20,6 @@ namespace {
 namespace Gts {
 	float CameraState::GetScale() {
 		auto player = PlayerCharacter::GetSingleton();
-		auto 
 		if (!player) {
 			return 1.0;
 		}
