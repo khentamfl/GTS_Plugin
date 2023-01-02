@@ -20,18 +20,16 @@ namespace {
 		if (!Runtime::HasPerk(Player, "GrowthPerk") || MultiplySlider == 0) {
 			return false;
 		}
-		int RandomizeGrowth = rand()% 50;
-		this->Randomize = RandomizeGrowth;
-		
+		int RNG = rand()% 50;
+		RandomizeGrowth(RNG);
+
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
-			MultiplySlider = 1.0; // Disable effect in Balance Mode, so it's always 1.0
-			//log::info("Balance Mode True");
+			MultiplySlider = 1.0; // Disable effect in Balance Mode, so slider is always 1.0
 		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		int Requirement = ((250 * MultiplySlider) * Gigantism) * SizeManager::GetSingleton().BalancedMode();
+		int Requirement = ((250 * MultiplySlider) * Gigantism) * SizeManager::GetSingleton().BalancedMode(); // Doubles random in Balance Mode
 		int random = rand() % Requirement;
 		int decide_chance = 1;
-		//log::info("Requirement: {}", Requirement);
 		if (random <= decide_chance) {
 			return true;
 		} else {
@@ -39,7 +37,7 @@ namespace {
 		}
 	}
 
-	void RestoreStats() {
+	void RestoreStats() { // Regenerate attributes
 		auto Player = PlayerCharacter::GetSingleton();
 		if (Runtime::HasPerk(Player, "GrowthAugmentation")) {
 			float HP = Player->GetPermanentActorValue(ActorValue::kHealth) * 0.00085;
@@ -60,7 +58,6 @@ namespace Gts {
 	void RandomGrowth::CallShake(float value) {
 		this->CallInputGrowth = true;
 		this->ShakePower = value;
-		//log::info("ShakePower is {}", this->ShakePower);
 	}
 
 	std::string RandomGrowth::DebugName() {
@@ -79,7 +76,7 @@ namespace Gts {
 
 		bool hasSMT = Runtime::HasMagicEffect(player, "SmallMassiveThreat");
 
-		if (this->CallInputGrowth == true) {
+		if (this->CallInputGrowth == true) { // Shake the screen, play sounds
 
 			auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetData(player);
@@ -94,7 +91,6 @@ namespace Gts {
 			if (timer.ShouldRunFrame() && this->ShakePower > 6.0) {
 				Runtime::PlaySound("xlRumbleL", player, this->ShakePower/10, 0.0);
 			}
-			//log::info("Calling Growth Shake, power: {}", this->ShakePower);
 			if (this->growth_time_input >= actor_data->half_life) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 				this->CallInputGrowth = false;
 				this->growth_time_input = 0.0;
@@ -107,7 +103,6 @@ namespace Gts {
 			static Timer timer = Timer(3.0); // Run every 3.0s or as soon as we can
 			if (timer.ShouldRun()) {
 				if (ShouldGrow()) {
-					//log::info("Random Growth True");
 					// Start growing
 					this->growth_time = 0.0;
 					this->AllowGrowth = true;
@@ -135,6 +130,8 @@ namespace Gts {
 				this->AllowGrowth = false;
 			}
 		}
-
+	}
+	void RandomGrowth::RandomizeGrowth(float value) {
+		this->Randomize = value;
 	}
 }

@@ -15,6 +15,7 @@ namespace Gts {
 			virtual std::string DebugName() override;
 			virtual void Update() override;
 			void CallShake(float value);
+			void RandomizeGrowth(float value);
 
 		private:
 			bool AllowGrowth = false;
