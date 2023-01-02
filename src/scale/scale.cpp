@@ -57,6 +57,13 @@ namespace Gts {
 					amt *= GetHP;
 				}
 			}
+			if (actor->formID == 0x14) {
+				float RaceScale = SizeManager::GetSingleton().GetRaceScale(actor);
+				if (RaceScale <= 1.0) {
+					amt *= RaceScale; // Make RaceScale affect size gain/decrease.
+				}
+			}
+
 			if (actor_data) {
 				if (amt - EPS < 0.0) {
 					// If neative change always: allow
