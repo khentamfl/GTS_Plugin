@@ -112,9 +112,8 @@ namespace Gts {
 	float get_visual_scale(Actor* actor) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
-			auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
 			if (actor_data) {
-				return actor_data->visual_scale * racescale;
+				return actor_data->visual_scale;
 			}
 		}
 		return -1.0;

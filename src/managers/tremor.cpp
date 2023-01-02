@@ -1,5 +1,6 @@
 #include "managers/tremor.hpp"
 #include "managers/impact.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -40,19 +41,20 @@ namespace Gts {
 			return;
 		}
 		auto actor = impact.actor;
+		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
 
 		float tremor_scale;
 		if (actor->formID == 0x14) {
-			tremor_scale = Persistent::GetSingleton().tremor_scale * (0.965 + get_visual_scale(actor) * 0.035);
+			tremor_scale = Persistent::GetSingleton().tremor_scale * (0.965 + get_target_scale(actor) * 0.035);
 		} else {
-			tremor_scale = Persistent::GetSingleton().npc_tremor_scale * (0.95 + get_visual_scale(actor) * 0.05);
+			tremor_scale = Persistent::GetSingleton().npc_tremor_scale * (0.95 + get_target_scale(actor) * 0.05);
 		}
 
 		if (tremor_scale < 1e-5) {
 			return;
 		}
 
-		float scale = impact.effective_scale;
+		float scale = impact.effective_scale * racescale;
 		if (!actor->IsSwimming()) {
 			if (actor->IsSprinting()) {
 				scale *= 1.25; // Sprinting makes you seem bigger

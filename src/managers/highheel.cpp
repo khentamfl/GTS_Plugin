@@ -23,9 +23,6 @@ namespace Gts {
 	void HighHeelManager::PapyrusUpdate() {
 		const bool FORCE_APPLY = false;
 		auto actors = find_actors();
-		for (auto actor: actors) {
-			//ApplyHH(actor, FORCE_APPLY);
-		}
 	}
 
 	void HighHeelManager::ActorEquip(Actor* actor) {
@@ -79,10 +76,10 @@ namespace Gts {
 			if (!body_node) {
 				return;
 			}
-
+			auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
 			base_hh = npc_node->local.translate.z;
-			float scale = root_node->local.scale;
-			new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale);
+			float scale = root_node->local.scale * racescale;
+			new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale * racescale);
 		}
 
 		bool adjusted = false;
