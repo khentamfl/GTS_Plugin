@@ -15,32 +15,28 @@ using namespace Gts;
 
 namespace {
 	bool ShouldGrow() {
-		//auto Player = PlayerCharacter::GetSingleton();
-		for (auto player: find_actors()) { 
-			float MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyPC");
-		//if (!Runtime::HasPerk(Player, "GrowthPerk") || MultiplySlider == 0) {
-			//return false;
-		//}
-		if (Runtime::InFaction(player, "FollowerFaction") || !player->IsPlayerTeammate()) {
+		auto Player = PlayerCharacter::GetSingleton();
+		float MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyPC");
+		if (!Runtime::HasPerk(Player, "GrowthPerk") || MultiplySlider == 0) {
+			return false;
+		}
+		int RandomizeGrowth = rand()% 50;
+		this->Randomize = RandomizeGrowth;
 		
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
 			MultiplySlider = 1.0; // Disable effect in Balance Mode, so it's always 1.0
 			//log::info("Balance Mode True");
 		}
-		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
+		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
 		int Requirement = ((250 * MultiplySlider) * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 		int random = rand() % Requirement;
 		int decide_chance = 1;
-			
-		
+		//log::info("Requirement: {}", Requirement);
 		if (random <= decide_chance) {
 			return true;
 		} else {
 			return false;
-				}
-			}
 		}
-		return false;	
 	}
 
 	void RestoreStats() {
@@ -72,8 +68,7 @@ namespace Gts {
 	}
 
 	void RandomGrowth::Update() {
-		//auto player = PlayerCharacter::GetSingleton();
-		for (auto player: find_actors()) { 
+		auto player = PlayerCharacter::GetSingleton();
 
 		if (!player) {
 			return;
@@ -81,7 +76,7 @@ namespace Gts {
 		if (!player->Is3DLoaded()) {
 			return;
 		}
-		if (Runtime::InFaction(player, "FollowerFaction") || !player->IsPlayerTeammate()) {
+
 		bool hasSMT = Runtime::HasMagicEffect(player, "SmallMassiveThreat");
 
 		if (this->CallInputGrowth == true) {
@@ -127,9 +122,10 @@ namespace Gts {
 		} else if (this->AllowGrowth == true && !hasSMT) {
 			// Do the growing
 			float delta_time = Time::WorldTimeDelta();
+			int TotalPower = (100 + this->Randomize)/100;
 			float Scale = get_visual_scale(player);
 			float ProgressionMultiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
-			float base_power = ((0.0025 * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
+			float base_power = ((0.0018 * TotalPower * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
 			RestoreStats(); // Regens Attributes if PC has perk
 			mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps
 			GrowthTremorManager::GetSingleton().CallRumble(player, player, 1.5);
@@ -137,9 +133,8 @@ namespace Gts {
 			if (this->growth_time >= 2.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 				// End growing
 				this->AllowGrowth = false;
-					}
-				}
 			}
 		}
+
 	}
 }
