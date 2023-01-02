@@ -21,7 +21,7 @@ namespace {
 			return false;
 		}
 		int RNG = rand()% 50;
-		RandomizeGrowth(RNG);
+		RandomGrowth::RandomizeGrowth(RNG);
 
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
 			MultiplySlider = 1.0; // Disable effect in Balance Mode, so slider is always 1.0
