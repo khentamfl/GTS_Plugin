@@ -79,7 +79,7 @@ namespace Gts {
 			auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
 			base_hh = npc_node->local.translate.z;
 			float scale = root_node->local.scale * racescale;
-			new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale * racescale);
+			new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale);
 		}
 
 		bool adjusted = false;
