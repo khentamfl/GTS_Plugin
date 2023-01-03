@@ -62,6 +62,8 @@ namespace Gts {
 			return;
 		}
 
+		DoSizeRelatedDamage(Caster, Target); // Apply Damage
+
 		if (Runtime::HasPerk(caster, "LethalSprint") && caster->IsSprinting()) {
 			InstaCrushRequirement = 14.0 * HighHeels * Gigantism;
 		}
@@ -144,7 +146,7 @@ namespace Gts {
 		float targetsize = get_visual_scale(Target);
 		float multiplier = castersize / targetsize;
 		float SprintDamage = 1.0;
-		if (timer.ShouldRunFrame() && multiplier >= 1.33) {
+		if (multiplier >= 1.33) {
 			if (Caster->IsSprinting()) {
 				SprintDamage *= 10.5;
 			}
