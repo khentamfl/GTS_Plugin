@@ -43,6 +43,7 @@ namespace {
 			log::info("Hit Growth: {}, {}", actor->GetDisplayFullName(), allow);
 			return true;
 		}
+		log::info("Hit Growth incorrect");
 		return false;
 	}
 
