@@ -62,8 +62,6 @@ namespace Gts {
 			return;
 		}
 
-		DoSizeRelatedDamage(caster, target); // Apply Damage
-
 		if (Runtime::HasPerk(caster, "LethalSprint") && caster->IsSprinting()) {
 			InstaCrushRequirement = 14.0 * HighHeels * Gigantism;
 		}
