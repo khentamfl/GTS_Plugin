@@ -184,11 +184,11 @@ namespace Gts {
 
 	//===============Hit Growth
 
-	bool SizeManager::GetHitGrowth(Actor* actor) {
+	float SizeManager::GetHitGrowth(Actor* actor) {
 		return Persistent::GetSingleton().GetData(actor)->AllowHitGrowth;
 	}
 
-	void SizeManager::SetHitGrowth(Actor* actor, bool allow) {
+	void SizeManager::SetHitGrowth(Actor* actor, float allow) {
 		Persistent::GetSingleton().GetData(actor)->AllowHitGrowth = allow;
 	}
 

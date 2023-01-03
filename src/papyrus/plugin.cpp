@@ -34,7 +34,7 @@ namespace {
 		return false;
 	}
 
-	bool GetHitGrowth(StaticFunctionTag*, Actor* actor) {
+	float GetHitGrowth(StaticFunctionTag*, Actor* actor) {
 		if (actor) {
 			SizeManager::GetSingleton().GetHitGrowth(actor);
 		}

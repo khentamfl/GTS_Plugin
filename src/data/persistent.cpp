@@ -206,7 +206,7 @@ namespace Gts {
 							SizeVulnerability = 0.0;
 						}
 
-						bool AllowHitGrowth;
+						float AllowHitGrowth;
 						if (version >= 6) {
 							serde->ReadRecordData(&AllowHitGrowth, sizeof(AllowHitGrowth));
 						} else {
@@ -362,7 +362,7 @@ namespace Gts {
 			float FallDamage = data.FallDamage;
 			float HHDamage = data.HHDamage;
 			float SizeVulnerability = data.SizeVulnerability;
-			bool AllowHitGrowth = data.AllowHitGrowth;
+			float AllowHitGrowth = data.AllowHitGrowth;
 			float target_scale_v = data.target_scale_v;
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
@@ -471,7 +471,7 @@ namespace Gts {
 		this->FallDamage = 1.0;
 		this->HHDamage = 1.0;
 		this->SizeVulnerability = 0.0;
-		this->AllowHitGrowth = true;
+		this->AllowHitGrowth = 1.0;
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
@@ -536,7 +536,7 @@ namespace Gts {
 			data->FallDamage = 1.0;
 			data->HHDamage = 1.0;
 			data->SizeVulnerability = 0.0;
-			data->AllowHitGrowth = true;
+			data->AllowHitGrowth = 1.0;
 		}
 	}
 }

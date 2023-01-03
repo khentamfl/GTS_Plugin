@@ -32,7 +32,7 @@ namespace Gts {
 		float HHDamage; // 3
 		float SizeVulnerability;
 
-		bool AllowHitGrowth;
+		float AllowHitGrowth;
 
 		ActorData();
 		ActorData(Actor* actor);
