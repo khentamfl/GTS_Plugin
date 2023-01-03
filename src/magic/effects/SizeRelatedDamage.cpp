@@ -37,7 +37,7 @@ namespace Gts {
 		if (!npc_node) {
 				return;
 		}
-		float HighHeels = 1.0 - npc_node->local.translate.z/100;
+		float HighHeels = 1.0 + npc_node->local.translate.z/100;
 		log::info("High Heels: {}, {}", caster->GetDisplayFullName(), HighHeels);
 
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/200; // 50% less effective threshold decrease.
