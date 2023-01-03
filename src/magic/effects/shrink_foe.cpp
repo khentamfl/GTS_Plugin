@@ -17,9 +17,9 @@ namespace Gts {
 		const float SHRINK_AOE_EFFIC = 0.22;
 		const float SHRINK_AOE_MASTER_POWER = 1.75;
 		const float SHRINK_AOE_MASTER_EFFIC = 0.26;
-		const float SHRINK_BOLT_POWER = 28.40;
+		const float SHRINK_BOLT_POWER = 14.00;
 		const float SHRINK_BOLT_EFFIC = 0.05;
-		const float SHRINK_STORM_POWER = 50.80;
+		const float SHRINK_STORM_POWER = 21.00;
 		const float SHRINK_STORM_EFFIC = 0.10;
 
 
