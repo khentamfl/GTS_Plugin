@@ -218,33 +218,33 @@ namespace Gts {
 		if (!actor) {
 			return;
 		}
-		auto Persistent = Persistent::GetSingleton();
+		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (!Persistent) {
 			return;
 		}
-		Persistent.GetData(actor)->SizeVulnerability = amt;
+		Persistent->SizeVulnerability = amt;
 	}
 
 	float SizeManager::GetSizeVulnerability(Actor* actor) {
 		if (!actor) {
 			return 0.0;
 		}
-		auto Persistent = Persistent::GetSingleton();
+		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (!Persistent) {
-			return 0.0;
+			return;
 		}
-		return clamp (0.0, 999999.0, Persistent::GetSingleton().GetData(actor)->SizeVulnerability);
+		return clamp (0.0, 999999.0, Persistent->SizeVulnerability);
 	}
 
 	void SizeManager::ModSizeVulnerability(Actor* actor, float amt) {
 		if (!actor) {
 			return;
 		}
-		auto Persistent = Persistent::GetSingleton();
+		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (!Persistent) {
 			return;
 		}
-		Persistent::GetSingleton().GetData(actor)->SizeVulnerability += amt;
+		Persistent->SizeVulnerability += amt;
 	}
     //===============Size-Vulnerability
 
@@ -254,22 +254,22 @@ namespace Gts {
 		if (!actor) {
 			return 0.0;
 		}
-		auto Persistent = Persistent::GetSingleton();
+		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (!Persistent) {
-			return 0.0;
+			return;
 		}
-		return Persistent::GetSingleton().GetData(actor)->AllowHitGrowth;
+		return Persistent->AllowHitGrowth;
 	}
 
 	void SizeManager::SetHitGrowth(Actor* actor, float allow) {
 		if (!actor) {
 			return 0.0;
 		}
-		auto Persistent = Persistent::GetSingleton();
+		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (!Persistent) {
-			return 0.0;
+			return;
 		}
-		Persistent::GetSingleton().GetData(actor)->AllowHitGrowth = allow;
+		Persistent->AllowHitGrowth = allow;
 	}
 
     //===============Size-Vulnerability
