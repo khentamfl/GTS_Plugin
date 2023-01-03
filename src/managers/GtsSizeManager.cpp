@@ -231,7 +231,7 @@ namespace Gts {
 		}
 		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (!Persistent) {
-			return;
+			return 0.0;
 		}
 		return clamp (0.0, 999999.0, Persistent->SizeVulnerability);
 	}
@@ -256,14 +256,14 @@ namespace Gts {
 		}
 		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (!Persistent) {
-			return;
+			return 0.0;
 		}
 		return Persistent->AllowHitGrowth;
 	}
 
 	void SizeManager::SetHitGrowth(Actor* actor, float allow) {
 		if (!actor) {
-			return 0.0;
+			return;
 		}
 		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (!Persistent) {
