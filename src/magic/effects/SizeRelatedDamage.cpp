@@ -11,6 +11,7 @@
 #include "managers/CrushManager.hpp"
 #include "util.hpp"
 #include "timer.hpp"
+#include "node.hpp"
 
 namespace Gts {
 	std::string SizeDamage::GetName() {
