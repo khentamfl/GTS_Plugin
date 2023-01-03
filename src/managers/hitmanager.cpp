@@ -76,8 +76,6 @@ namespace Gts {
 
 				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
-				float HealthPercentage = clamp(0.02, 1.0, GetHealthPercentage(actor));
-				float GrowthValue = (0.0000245 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
 
 				float LaughChance = rand() % 12;
 				float ShrinkChance = rand() % 11;
@@ -89,6 +87,8 @@ namespace Gts {
 
 				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
 				float HealthPercentage = clamp(0.10, 0.50, GetHealthPercentage(receiver));
+
+				float GrowthValue = (0.0000245 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
 
 				float SizeDifference = ReceiverScale/DealerScale;
 
