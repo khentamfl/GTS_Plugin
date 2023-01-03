@@ -98,7 +98,7 @@ namespace Gts {
 				auto actor_data = Persist.GetData(receiver);
 				actor_data->half_life = clampduration;
 
-				Runtime::PlaySound("growthSound", receiver, GrowthValue, 1.0);
+				Runtime::PlaySound("growthSound", receiver, GrowthValue * 15, 1.0);
 
 				this->GrowthTick +=HealthPercentage;
 
@@ -172,7 +172,7 @@ namespace Gts {
 			}
 			if (this->GrowthTick > 0.01 && GrowthValue > 0) {
 				GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 4);
-				mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
+				mod_target_scale(actor, GrowthValue);
 				this->GrowthTick -= 0.0005 * TimeScale();
 			} else if (this->GrowthTick <= 0.01) {
 				actor_data->half_life = 1.0;
@@ -188,7 +188,7 @@ namespace Gts {
 				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
 				auto actor_data = Persist.GetData(actor);
 				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
-				float ShrinkValue = -(0.000085/HealthPercentage) * (get_visual_scale(actor) * 0.10 + 0.90) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;
+				float ShrinkValue = -(0.000085/HealthPercentage) * (get_visual_scale(actor) * 0.08 + 0.92) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;
 
 				if (this->GrowthTick > 0.01 && ShrinkValue < 0) {
 					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2.5);
