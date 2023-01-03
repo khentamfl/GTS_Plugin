@@ -113,55 +113,70 @@ namespace Gts {
 
 	//================Size-Related Damage
 	void SizeManager::SetSizeAttribute(Actor* actor, float amt, float attribute) {
+		if (!actor) {
+			return;
+		}
 		auto Persistent = Persistent::GetSingleton().GetData(actor);
-		if (attribute == 0) {
-			Persistent->NormalDamage = amt;
-		}
-		else if (attribute == 1) {
-			Persistent->SprintDamage = amt;
-		}
-		else if (attribute == 2) {
-			Persistent->FallDamage = amt;
-		} 
-		else if (attribute == 3) {
-			Persistent->HHDamage = amt;
+		if (Persistent) {
+			if (attribute == 0) {
+				Persistent->NormalDamage = amt;
+			}
+			else if (attribute == 1) {
+				Persistent->SprintDamage = amt;
+			}
+			else if (attribute == 2) {
+				Persistent->FallDamage = amt;
+			} 
+			else if (attribute == 3) {
+				Persistent->HHDamage = amt;
+			}
 		}
 	}
 
 	float SizeManager::GetSizeAttribute(Actor* actor, float attribute) {
+		if (!actor) {
+			return 1.0;
+		}
 		auto Persistent = Persistent::GetSingleton().GetData(actor);
-		float Normal = clamp (1.0, 999999.0, Persistent->NormalDamage);
-		float Sprint = clamp (1.0, 999999.0, Persistent->SprintDamage);
-		float Fall = clamp (1.0, 999999.0, Persistent->FallDamage);
-		float HH = clamp (1.0, 999999.0, Persistent->HHDamage);
-		if (attribute == 0) {
-			return Normal;
-		}
-		else if (attribute == 1) {
-			return Sprint;
-		}
-		else if (attribute == 2) {
-			return Fall;
-		} 
-		else if (attribute == 3) {
-			return HH;
-		}
+		if (Persistent) {
+			float Normal = clamp (1.0, 999999.0, Persistent->NormalDamage);
+			float Sprint = clamp (1.0, 999999.0, Persistent->SprintDamage);
+			float Fall = clamp (1.0, 999999.0, Persistent->FallDamage);
+			float HH = clamp (1.0, 999999.0, Persistent->HHDamage);
+				if (attribute == 0) {
+					return Normal;
+				}
+				else if (attribute == 1) {
+					return Sprint;
+				}
+				else if (attribute == 2) {
+					return Fall;
+				} 	
+				else if (attribute == 3) {
+					return HH;
+				}
+			}
 		return 1.0;
 	}
 
 	void SizeManager::ModSizeAttribute(Actor* actor, float amt, float attribute) {
+		if (!actor) {
+			return;
+		}
 		auto Persistent = Persistent::GetSingleton().GetData(actor);
-		if (attribute == 0) {
-			Persistent->NormalDamage += amt;
-		}
-		else if (attribute == 1) {
-			Persistent->SprintDamage += amt;
-		}
-		else if (attribute == 2) {
-			Persistent->FallDamage += amt;
-		} 
-		else if (attribute == 3) {
-			Persistent->HHDamage += amt;
+		if (Persistent) {
+			if (attribute == 0) {
+				Persistent->NormalDamage += amt;
+			}
+			else if (attribute == 1) {
+				Persistent->SprintDamage += amt;
+			}
+			else if (attribute == 2) {
+				Persistent->FallDamage += amt;
+			} 
+			else if (attribute == 3) {
+				Persistent->HHDamage += amt;
+			}
 		}
 	}
     //===============Size-Related Attribute End
