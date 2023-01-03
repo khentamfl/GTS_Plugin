@@ -40,6 +40,7 @@ namespace {
 	bool SetHitGrowth(StaticFunctionTag*, Actor* actor, float allow) {
 		if (actor) {
 			SizeManager::GetSingleton().SetHitGrowth(actor, allow);
+			log::info("Hit Growth: {}, {}", actor->GetDisplayFullName(), allow);
 			return true;
 		}
 		return false;

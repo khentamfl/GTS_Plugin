@@ -19,7 +19,7 @@ sounds:
   VoreSound_Fail: "Skyrim.esm|000F8B"
   GtsCrushSound: "GTS.esp|01102F"
   GtsFallSound: "GTS.esp|183F43"
-  ClothTearSound: "GTS.esp|30EE53"
+  ClothTearSound: "GTS.esp|30EE54"
 
 spellEffects:
   SmallMassiveThreat: "GTS.esp|1A2568"
