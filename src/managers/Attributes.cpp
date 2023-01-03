@@ -54,7 +54,7 @@ namespace {
 		if (!npc_node) {
 				return;
 		}
-		float HighHeels = npc_node->local.translate.z + 1.0;
+		float HighHeels = npc_node->local.translate.z/100 + 1.0;
 		log::info("High Heels: {}", HighHeels);
 		///Normal Damage
 		if (Runtime::HasPerk(actor, "Cruelty")) {
