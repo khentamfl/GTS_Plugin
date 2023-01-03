@@ -76,6 +76,8 @@ namespace Gts {
 
 				float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 				float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
+				float HealthPercentage = clamp(0.02, 1.0, GetHealthPercentage(actor));
+				float GrowthValue = (0.0000245 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
 
 				float LaughChance = rand() % 12;
 				float ShrinkChance = rand() % 11;
@@ -96,7 +98,7 @@ namespace Gts {
 				auto actor_data = Persist.GetData(receiver);
 				actor_data->half_life = clampduration;
 
-				Runtime::PlaySound("growthSound", receiver, ReceiverScale/15, 0.0);
+				Runtime::PlaySound("growthSound", receiver, GrowthValue * 2.5, 1.0);
 
 				this->GrowthTick +=HealthPercentage;
 
@@ -169,7 +171,7 @@ namespace Gts {
 				GrowthValue *= 0.50;
 			}
 			if (this->GrowthTick > 0.01 && GrowthValue > 0) {
-				GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2);
+				GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 4);
 				mod_target_scale(actor, GrowthValue * (get_visual_scale(actor) * 0.25 + 0.75));
 				this->GrowthTick -= 0.0005 * TimeScale();
 			} else if (this->GrowthTick <= 0.01) {
@@ -181,7 +183,7 @@ namespace Gts {
 				this->GrowthTick = 0.0;
 			}
 		} else if (this->Balance_CanShrink) { // Shrink on hit
-			if (get_visual_scale(actor) > 1.00) {
+			if (get_target_scale(actor) > 1.00) {
 				float SizeHunger = 1.0 - sizemanager.GetSizeHungerBonus(actor)/100;
 				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
 				auto actor_data = Persist.GetData(actor);
@@ -189,7 +191,7 @@ namespace Gts {
 				float ShrinkValue = -(0.000085/HealthPercentage) * (get_visual_scale(actor) * 0.10 + 0.90) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;
 
 				if (this->GrowthTick > 0.01 && ShrinkValue < 0) {
-					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life);
+					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2.5);
 					mod_target_scale(actor, ShrinkValue);
 					this->GrowthTick -= 0.0005 * TimeScale();
 				} else if (this->GrowthTick <= 0.01) {
@@ -199,7 +201,7 @@ namespace Gts {
 					this->GrowthTick = 0.0;
 					this->AdjustValue = 1.0;
 
-					log::info("Shrink Value is: {}, SizeHunger: {}, Gigantism: {}", ShrinkValue, SizeHunger, Gigantism);
+					//log::info("Shrink Value is: {}, SizeHunger: {}, Gigantism: {}", ShrinkValue, SizeHunger, Gigantism);
 				} else {
 					this->GrowthTick = 0.0;
 				}
