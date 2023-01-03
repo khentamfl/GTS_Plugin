@@ -50,6 +50,12 @@ namespace {
 		float ExpectedSprintDamage = 1.0;
 		float ExpectedFallDamage = 1.0;
 
+		NiAVObject* npc_node = find_node(actor, "NPC");
+		if (!npc_node) {
+				return;
+		}
+		float HighHeels = npc_node->local.translate.z + 1.0;
+		log::info("High Heels: {}", HighHeels);
 		///Normal Damage
 		if (Runtime::HasPerk(actor, "Cruelty")) {
 			ExpectedGlobalDamage += 0.35/BalancedMode;
@@ -60,6 +66,9 @@ namespace {
 		if (HasGrowthPerk(actor)) {
 			ExpectedGlobalDamage *= (1.0 + (0.35/BalancedMode));
 		}
+
+		ExpectedGlobalDamage *= HighHeels; // Apply Base HH damage.
+
 		///Sprint Damage
 		if (Runtime::HasPerk(actor, "SprintDamageMult1")) {
 			ExpectedSprintDamage += 0.25/BalancedMode;
