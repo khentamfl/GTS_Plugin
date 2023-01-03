@@ -32,12 +32,20 @@ namespace Gts {
 		if (target == caster) {
 			return;
 		}
+		NiAVObject* npc_node = find_node(actor, "NPC");
+		if (!npc_node) {
+				return;
+		}
+		float HighHeels = 1.0 - npc_node->local.translate.z/100;
+		log::info("High Heels: {}, {}", caster->GetDisplayFullName(), HighHeels);
+
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/200; // 50% less effective threshold decrease.
-		float InstaCrushRequirement = 24.0 * Gigantism;
+		float InstaCrushRequirement = 24.0 * HighHeels * Gigantism;
 		float caster_scale = get_target_scale(caster);
 		float target_scale = get_target_scale(target);
 		float BonusShrink = (IsJumping(caster) * 3.0) + 1.0;
 		float size_difference = caster_scale/target_scale;
+
 
 		//log::info("Caster: {}, Target: {}, TargetScale: {}, CasterScale: {}, SizeDifference: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), target_scale, caster_scale, size_difference);
 
@@ -54,7 +62,7 @@ namespace Gts {
 		}
 
 		if (Runtime::HasPerk(caster, "LethalSprint") && caster->IsSprinting()) {
-			InstaCrushRequirement = 14.0 * Gigantism;
+			InstaCrushRequirement = 14.0 * HighHeels * Gigantism;
 		}
 
 		if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
@@ -83,7 +91,7 @@ namespace Gts {
 		}
 
 
-		if (size_difference >= 4.0 * Gigantism && target->IsDead() && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
+		if (size_difference >= 4.0 * HighHeels * Gigantism && target->IsDead() && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
 			// ^ We don't want to crush allies
 			CrushManager::Crush(caster, target);
 			CrushToNothing(caster, target);
