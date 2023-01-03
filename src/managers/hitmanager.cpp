@@ -98,7 +98,7 @@ namespace Gts {
 				auto actor_data = Persist.GetData(receiver);
 				actor_data->half_life = clampduration;
 
-				Runtime::PlaySound("growthSound", receiver, GrowthValue * 300, 1.0);
+				Runtime::PlaySound("growthSound", receiver, GrowthValue * 900, 1.0);
 
 				this->GrowthTick +=HealthPercentage;
 
