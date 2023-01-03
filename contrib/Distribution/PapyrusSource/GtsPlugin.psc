@@ -22,9 +22,12 @@ Float function GetSizeVulnerability(Actor target) global native
 Bool function ModSizeVulnerability(Actor target, Float amt) global native
 
 ; Check if Hit Growth is allowed
+
 Float function GetHitGrowth(Actor target) global native
 
 ; Set hit growth
+; 1 == True
+; 0 == False 
 Bool function SetHitGrowth(Actor target, float allow) global native
 
 ; This is the time it takes to reach half of the target height
