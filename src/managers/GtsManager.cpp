@@ -36,12 +36,11 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor);
 		float target_scale = persi_actor_data->target_scale;
 
 		// Smooth target_scale towards max_scale if target_scale > max_scale
 		float max_scale = persi_actor_data->max_scale;
-		if (target_scale * racescale > max_scale) {
+		if (target_scale > max_scale) {
 			float minimum_scale_delta = 0.000005; // 0.00005%
 			if (fabs(target_scale - max_scale) < minimum_scale_delta) {
 				persi_actor_data->target_scale = max_scale;
@@ -88,8 +87,7 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor);
-		float scale = get_scale(actor) * racescale;
+		float scale = get_scale(actor);
 		if (scale < 0.0) {
 			return;
 		}
@@ -107,7 +105,7 @@ namespace {
 		}
 
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
-		set_scale(actor, visual_scale * racescale);
+		set_scale(actor, visual_scale);
 	}
 
 
@@ -128,8 +126,7 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
-		float scale = persi_actor_data->target_scale * racescale;
+		float scale = persi_actor_data->target_scale;
 		if (scale < 1e-5) {
 			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;

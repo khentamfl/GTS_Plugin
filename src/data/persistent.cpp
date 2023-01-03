@@ -206,6 +206,17 @@ namespace Gts {
 							SizeVulnerability = 0.0;
 						}
 
+						bool AllowHitGrowth;
+						if (version >= 6) {
+							serde->ReadRecordData(&AllowHitGrowth, sizeof(AllowHitGrowth));
+						} else {
+							AllowHitGrowth = true;
+						}
+						if (std::isnan(AllowHitGrowth)) {
+							AllowHitGrowth = false;
+						}
+
+
 						float target_scale_v;
 						if (version >= 7) {
 							serde->ReadRecordData(&target_scale_v, sizeof(target_scale_v));
@@ -235,6 +246,7 @@ namespace Gts {
 						data.FallDamage = FallDamage;
 						data.HHDamage = HHDamage;
 						data.SizeVulnerability = SizeVulnerability;
+						data.AllowHitGrowth = AllowHitGrowth;
 						data.target_scale_v = target_scale_v;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
@@ -350,6 +362,7 @@ namespace Gts {
 			float FallDamage = data.FallDamage;
 			float HHDamage = data.HHDamage;
 			float SizeVulnerability = data.SizeVulnerability;
+			bool AllowHitGrowth = data.AllowHitGrowth;
 			float target_scale_v = data.target_scale_v;
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
@@ -371,6 +384,7 @@ namespace Gts {
 			serde->WriteRecordData(&FallDamage, sizeof(FallDamage));
 			serde->WriteRecordData(&HHDamage, sizeof(HHDamage));
 			serde->WriteRecordData(&SizeVulnerability, sizeof(SizeVulnerability));
+			serde->WriteRecordData(&AllowHitGrowth, sizeof(AllowHitGrowth));
 
 			serde->WriteRecordData(&target_scale_v, sizeof(target_scale_v));
 		}
@@ -457,6 +471,7 @@ namespace Gts {
 		this->FallDamage = 1.0;
 		this->HHDamage = 1.0;
 		this->SizeVulnerability = 0.0;
+		this->AllowHitGrowth = true;
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
@@ -521,6 +536,7 @@ namespace Gts {
 			data->FallDamage = 1.0;
 			data->HHDamage = 1.0;
 			data->SizeVulnerability = 0.0;
+			data->AllowHitGrowth = true;
 		}
 	}
 }

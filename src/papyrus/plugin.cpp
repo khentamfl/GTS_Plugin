@@ -34,6 +34,19 @@ namespace {
 		return false;
 	}
 
+	bool GetHitGrowth(StaticFunctionTag*, Actor* actor) {
+		if (actor) {
+			SizeManager::GetSingleton().GetHitGrowth(actor);
+		}
+	}
+	bool SetHitGrowth(StaticFunctionTag*, Actor* actor, bool allow) {
+		if (actor) {
+			SizeManager::GetSingleton().SetHitGrowth(actor, allow);
+			return true;
+		}
+		return false;
+	}
+
 	bool SetGrowthHalfLife(StaticFunctionTag*, Actor* actor, float halflife) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
@@ -158,6 +171,8 @@ namespace Gts {
 		vm->RegisterFunction("GetSizeRelatedDamage", PapyrusClass, GetSizeRelatedDamage);
 		vm->RegisterFunction("ModSizeVulnerability", PapyrusClass, ModSizeVulnerability);
 		vm->RegisterFunction("GetSizeVulnerability", PapyrusClass, GetSizeVulnerability);
+		vm->RegisterFunction("GetHitGrowth", PapyrusClass, GetHitGrowth);
+		vm->RegisterFunction("SetHitGrowth", PapyrusClass, SetHitGrowth);
 		vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
 		vm->RegisterFunction("GetGrowthHalfLife", PapyrusClass, GetGrowthHalfLife);
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);

@@ -20,11 +20,12 @@ namespace {
 namespace Gts {
 	float CameraState::GetScale() {
 		auto player = PlayerCharacter::GetSingleton();
-
+		float racescale = SizeManager::GetSingleton().GetRaceScale(actor);
+		float result = get_target_scale(player) * racescale;
 		if (!player) {
 			return 1.0;
 		}
-		return get_target_scale(player);
+		return result;
 	}
 
 	NiPoint3 CameraState::GetOffset(const NiPoint3& cameraPosLocal) {

@@ -1,7 +1,6 @@
 #include "managers/explosion.hpp"
 #include "managers/impact.hpp"
 #include "managers/GtsManager.hpp"
-#include "managers/GtsSizeManager.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "data/transient.hpp"
@@ -61,8 +60,8 @@ namespace Gts {
 			return;
 		}
 		auto actor = impact.actor;
-		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor);
-		float scale = impact.effective_scale * racescale;
+
+		float scale = impact.effective_scale;
 		float minimal_size = 3.0;
 		if (scale > minimal_size && !actor->IsSwimming()) {
 			if (actor->IsSprinting()) {

@@ -41,7 +41,6 @@ namespace Gts {
 			return;
 		}
 		auto actor = impact.actor;
-		auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
 
 		float tremor_scale;
 		if (actor->formID == 0x14) {
@@ -54,7 +53,7 @@ namespace Gts {
 			return;
 		}
 
-		float scale = impact.effective_scale * racescale;
+		float scale = impact.effective_scale;
 		if (!actor->IsSwimming()) {
 			if (actor->IsSprinting()) {
 				scale *= 1.25; // Sprinting makes you seem bigger

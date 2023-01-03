@@ -21,6 +21,11 @@ Float function GetSizeVulnerability(Actor target) global native
 ; apply increased size-related damage debuff 
 Bool function ModSizeVulnerability(Actor target, Float amt) global native
 
+; Check if Hit Growth is allowed
+Bool function GetHitGrowth(Actor target) global native
+
+; Set hit growth
+Bool function SetHitGrowth(Actor target, bool allow) global native
 
 ; This is the time it takes to reach half of the target height
 ; By default this is 0.05s (instantaneous)

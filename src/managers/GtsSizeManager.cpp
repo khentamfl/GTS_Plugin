@@ -182,6 +182,18 @@ namespace Gts {
 	}
     //===============Size-Vulnerability
 
+	//===============Hit Growth
+
+	void SizeManager::GetHitGrowth(Actor* actor) {
+		return Persistent::GetSingleton().GetData(actor)->AllowHitGrowth;
+	}
+
+	float SizeManager::SetHitGrowth(Actor* actor, bool allow) {
+		Persistent::GetSingleton().GetData(actor)->AllowHitGrowth = allow;
+	}
+
+    //===============Size-Vulnerability
+
 	//===============Balance Mode
 	float SizeManager::BalancedMode()
 	{

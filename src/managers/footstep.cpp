@@ -2,8 +2,6 @@
 #include "managers/impact.hpp"
 #include "managers/tremor.hpp"
 
-#include "managers/GtsSizeManager.hpp"
-
 #include "scale/scale.hpp"
 #include "managers/modevent.hpp"
 #include "util.hpp"
@@ -168,8 +166,7 @@ namespace Gts {
 	void FootStepManager::OnImpact(const Impact& impact) {
 		if (impact.actor) {
 			auto actor = impact.actor;
-			auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
-			float scale = impact.effective_scale * racescale;
+			float scale = impact.effective_scale;
 
 			float minimal_size = 1.2;
 			if (scale > minimal_size && !actor->IsSwimming()) {

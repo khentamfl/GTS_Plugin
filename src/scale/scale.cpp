@@ -32,9 +32,8 @@ namespace Gts {
 	float get_target_scale(Actor* actor) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
-			auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
 			if (actor_data) {
-				return actor_data->target_scale * racescale;
+				return actor_data->target_scale;
 			}
 		}
 		return -1.0;
@@ -44,8 +43,8 @@ namespace Gts {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			// TODO: Fix this
-			if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-				float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency for Player and Followers.
+			if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+				float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 				if (scale >= 1.0) {
 					amt /= (1.5 + (scale/1.5));
 				}
@@ -58,13 +57,6 @@ namespace Gts {
 					amt *= GetHP;
 				}
 			}
-			if (actor->formID == 0x14) {
-				float RaceScale = SizeManager::GetSingleton().GetRaceScale(actor);
-				if (RaceScale <= 1.0) {
-					amt *= RaceScale; // Make RaceScale affect size gain/decrease.
-				}
-			}
-
 			if (actor_data) {
 				if (amt - EPS < 0.0) {
 					// If neative change always: allow
@@ -112,7 +104,6 @@ namespace Gts {
 	float get_visual_scale(Actor* actor) {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
-			auto racescale = SizeManager::GetSingleton().GetRaceScale(actor); // 02 jan 2023: Added to check RaceMenu scale.
 			if (actor_data) {
 				return actor_data->visual_scale;
 			}

@@ -57,6 +57,9 @@ namespace Gts {
 			float GetSizeVulnerability(Actor* actor);
 			void ModSizeVulnerability(Actor* actor, float amt);
 
+			bool GetHitGrowth(Actor* actor);
+			void SetHitGrowth(Actor* actor, bool allow);
+
 			float BalancedMode();
 
 		private:
