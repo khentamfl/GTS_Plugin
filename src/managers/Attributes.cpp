@@ -55,7 +55,7 @@ namespace {
 				return;
 		}
 		float HighHeels = npc_node->local.translate.z/100 + 1.0;
-		log::info("High Heels: {}", HighHeels);
+		//log::info("High Heels: {}", HighHeels);
 		///Normal Damage
 		if (Runtime::HasPerk(actor, "Cruelty")) {
 			ExpectedGlobalDamage += 0.35/BalancedMode;
