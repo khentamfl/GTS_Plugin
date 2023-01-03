@@ -163,6 +163,11 @@ namespace Gts {
 			float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(actor)/100;
 			float HealthPercentage = clamp(0.02, 1.0, GetHealthPercentage(actor));
 			float GrowthValue = (0.0000245 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
+			float ShakePower = 1.0;
+
+			if (IsFirstPerson()) {
+				ShakePower = 0.02;
+			}
 
 			auto actor_data = Persist.GetData(actor);
 			//log::info("SizeHunger, {}, Gigantism: {}", SizeHunger, Gigantism);
@@ -171,7 +176,7 @@ namespace Gts {
 				GrowthValue *= 0.50;
 			}
 			if (this->GrowthTick > 0.01 && GrowthValue > 0) {
-				GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 4);
+				GrowthTremorManager::GetSingleton().CallRumble(actor, actor, (actor_data->half_life * 4) * ShakePower);
 				mod_target_scale(actor, GrowthValue);
 				this->GrowthTick -= 0.0005 * TimeScale();
 			} else if (this->GrowthTick <= 0.01) {
@@ -189,9 +194,14 @@ namespace Gts {
 				auto actor_data = Persist.GetData(actor);
 				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
 				float ShrinkValue = -(0.000085/HealthPercentage) * (get_visual_scale(actor) * 0.08 + 0.92) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;
+				float ShakePower = 1.0;
+
+				if (IsFirstPerson()) {
+					ShakePower = 0.02;
+				}
 
 				if (this->GrowthTick > 0.01 && ShrinkValue < 0) {
-					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, actor_data->half_life * 2.5);
+					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, (actor_data->half_life * 2.5) * ShakePower);
 					mod_target_scale(actor, ShrinkValue);
 					this->GrowthTick -= 0.0005 * TimeScale();
 				} else if (this->GrowthTick <= 0.01) {
