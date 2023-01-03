@@ -64,7 +64,7 @@ namespace Gts {
 
 		// Apply it
 
-		if (Runtime::HasPerk(receiver, "GrowthOnHitPerk") && Runtime::GetFloat("AllowHitGrowth") == 1 && !this->CanGrow && !this->BlockEffect && receiver == player ) {
+		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
 				this->BlockEffect = true;
 				this->CanGrow = true;
@@ -113,7 +113,7 @@ namespace Gts {
 				}
 				return;
 			}
-		} else if (sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && !this->BlockEffect && receiver == player && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
+		} else if (receiver == player && sizemanager.BalancedMode() >= 2.0 && !this->Balance_CanShrink && !this->BlockEffect && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) { // If BalanceMode is 2, shrink player on hit
 				this->BlockEffect = true;
 				this->Balance_CanShrink = true;

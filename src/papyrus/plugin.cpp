@@ -39,7 +39,7 @@ namespace {
 			SizeManager::GetSingleton().GetHitGrowth(actor);
 		}
 	}
-	bool SetHitGrowth(StaticFunctionTag*, Actor* actor, bool allow) {
+	bool SetHitGrowth(StaticFunctionTag*, Actor* actor, float allow) {
 		if (actor) {
 			SizeManager::GetSingleton().SetHitGrowth(actor, allow);
 			return true;
