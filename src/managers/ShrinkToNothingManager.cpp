@@ -50,9 +50,9 @@ namespace Gts {
 					}
 
 					// Do shrink
-					float currentSize = get_visual_scale(tiny);
-					if (currentSize > 0.01) {
-						set_target_scale(tiny, 0.005);
+					float currentSize = get_target_scale(tiny);
+					if (currentSize > 0.14) {
+						set_target_scale(tiny, 0.14);
 					} else {
 						// Fully shrunk
 						if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {

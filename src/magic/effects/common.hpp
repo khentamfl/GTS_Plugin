@@ -203,7 +203,7 @@ namespace Gts {
 			power *= PERK2_BONUS;
 		}
 		AdjustSizeLimit(0.0010 * target_scale * power);
-		float alteration_level_bonus = 0.0332 + caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 80; // 0.0332 is a equivallent to lvl 20 skill
+		float alteration_level_bonus = 0.0332 + caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
 

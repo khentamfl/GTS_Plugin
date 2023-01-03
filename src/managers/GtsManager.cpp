@@ -398,7 +398,7 @@ namespace {
 		float BonusShrink = 1.0;
 		float bonus = 1.0;
 		if (BalanceMode >= 2.0) {
-			BonusShrink = (2.0 * (scale * 2));
+			BonusShrink = (3.5 * (scale * 2));
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
