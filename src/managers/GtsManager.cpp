@@ -300,6 +300,7 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Standard: {
+					log::info("Standart Game Mode; Character {} is In Combat: {}", actor->GetDisplayFullName(), actor->IsInCombat());
 					if (actor->IsInCombat()) {
 						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
 						if (fabs(GrowthRate) < EPS) {
@@ -323,6 +324,7 @@ namespace {
 					}
 				}
 				case ChosenGameMode::StandardNoShrink: {
+					log::info("Standart No Shrink Game Mode; Character {} is In Combat: {}", actor->GetDisplayFullName(), actor->IsInCombat());
 					if (actor->IsInCombat()) {
 						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
 						if (fabs(GrowthRate) < EPS) {
