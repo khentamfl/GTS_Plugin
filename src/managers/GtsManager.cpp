@@ -654,7 +654,7 @@ namespace {
 		}
 
 		if (game_mode_int >=0 && game_mode_int <= 6) {
-			GameModeNPC = static_cast<ChosenGameModeNPC>(game_mode_int);
+			GameMode_NPC = static_cast<ChosenGameModeNPC>(game_mode_int);
 		}
 
 		if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14)  {
@@ -664,7 +664,7 @@ namespace {
 		float ScaleLimit = clamp(1.0, 10.0, ScaleCheck);
 		//log::info("Growth Scale Limit is: {}", ScaleLimit);
 
-		ApplyGameModeNPC(actor, GameModeNPC, growthRate/2 * ScaleLimit, shrinkRate);
+		ApplyGameModeNPC(actor, GameMode_NPC, growthRate/2 * ScaleLimit, shrinkRate);
 		} 
 	}
 }
