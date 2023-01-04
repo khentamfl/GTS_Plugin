@@ -75,7 +75,7 @@ namespace Gts {
 						Runtime::PlaySound("MoanSound", caster, Volume, 0.0);
 						RandomGrowth::GetSingleton().CallShake(Cache);
 						mod_target_scale(caster, Cache * gigantism);
-						Runtime::SetFloat("MaunualGrowthStorage", 0);
+						Runtime::SetFloat("ManualGrowthStorage", 0);
 					}
 				}
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && Runtime::HasPerk(caster, "SizeReserve")) { //F
