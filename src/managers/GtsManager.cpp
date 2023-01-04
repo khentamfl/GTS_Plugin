@@ -380,7 +380,7 @@ namespace {
 								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
 								Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
 							}
-						//log::info("Calc AV: {}, GrowthPower: {}, Limit: {}", CalcAv, GrowthPower, sizelimit);
+						log::info("Calc AV: {}, GrowthPower: {}, Limit: {}", CalcAv, GrowthPower, sizelimit);
 						}
 					}
 				
@@ -510,7 +510,7 @@ namespace {
 								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
 								Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
 							}
-						//log::info("Calc AV: {}, GrowthPower: {}, Limit: {}", CalcAv, GrowthPower, sizelimit);
+						log::info("Calc AV: {}, GrowthPower: {}, Limit: {}", CalcAv, GrowthPower, sizelimit);
 						}
 					}
 				
