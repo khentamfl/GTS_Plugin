@@ -399,7 +399,7 @@ namespace {
 		}
 	}
 
-	void ApplyGameModeNPC(Actor* actor, const ChosenGameMode& game_mode, const float& GrowthRate, const float& ShrinkRate )  {
+	void ApplyGameModeNPC(Actor* actor, const ChosenGameModeNPC& game_mode, const float& GrowthRate, const float& ShrinkRate )  {
 		const float EPS = 1e-7;
 		if (game_mode != ChosenGameModeNPC::NPCNone) {
 			auto player = PlayerCharacter::GetSingleton();
@@ -606,7 +606,7 @@ namespace {
 
 	void GameModeNPC(Actor* actor)  {
 		if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-		ChosenGameMode_NPC GameMode_NPC = ChosenGameModeNPC::NPCNone;
+		ChosenGameModeNPC GameMode_NPC = ChosenGameModeNPC::NPCNone;
 		float growthRate = 0.0;
 		float shrinkRate = 0.0;
 		auto player = PlayerCharacter::GetSingleton();
@@ -654,7 +654,7 @@ namespace {
 		}
 
 		if (game_mode_int >=0 && game_mode_int <= 6) {
-			GameMode_NPC = static_cast<ChosenGameMode_NPC>(game_mode_int);
+			GameMode_NPC = static_cast<ChosenGameModeNPC>(game_mode_int);
 		}
 
 		if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14)  {
