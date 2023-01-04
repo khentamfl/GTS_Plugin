@@ -606,7 +606,7 @@ namespace {
 
 	void GameModeNPC(Actor* actor)  {
 		if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-		ChosenGameMode gameMode = ChosenGameModeNPC::NPCNone;
+		ChosenGameModeNPC gameMode = ChosenGameModeNPC::NPCNone;
 		float growthRate = 0.0;
 		float shrinkRate = 0.0;
 		auto player = PlayerCharacter::GetSingleton();
