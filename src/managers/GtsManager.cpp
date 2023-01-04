@@ -257,7 +257,7 @@ namespace {
 	};
 
 	enum ChosenGameModeNPC {
-		None,
+		NPCNone,
 		NPCGrow,
 		NPCShrink,
 		NPCStandard,
@@ -401,14 +401,14 @@ namespace {
 
 	void ApplyGameModeNPC(Actor* actor, const ChosenGameMode& game_mode, const float& GrowthRate, const float& ShrinkRate )  {
 		const float EPS = 1e-7;
-		if (game_mode != ChosenGameMode::None) {
+		if (game_mode != ChosenGameModeNPC::NPCNone) {
 			auto player = PlayerCharacter::GetSingleton();
 			float natural_scale = get_natural_scale(actor);
 			float Scale = get_target_scale(actor);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
 			
-			if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor != player) {
+			if (Runtime::GetFloat("MultiplyGameModeNPC") == 0) {
 				Scale = 1.0;
 			}
 			//log::info(actor->GetDisplayFullName(), Scale, GrowthRate);
@@ -514,7 +514,7 @@ namespace {
 						}
 					}
 				
-				case ChosenGameMode::NPCQuest: {
+				case ChosenGameModeNPC::NPCQuest: {
 					float modAmount = -ShrinkRate * Time::WorldTimeDelta();
 					if (fabs(ShrinkRate) < EPS) {
 						return;
@@ -606,7 +606,7 @@ namespace {
 
 	void GameModeNPC(Actor* actor)  {
 		if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-		ChosenGameMode gameMode = ChosenGameModeNPC::None;
+		ChosenGameMode gameMode = ChosenGameModeNPC::NPCNone;
 		float growthRate = 0.0;
 		float shrinkRate = 0.0;
 		auto player = PlayerCharacter::GetSingleton();
