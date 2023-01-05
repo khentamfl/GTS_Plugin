@@ -280,7 +280,7 @@ namespace Gts {
 				return;
 			} 
 		if (Runtime::HasPerk(player, "SizeReserve")) {
-			Cache->SizeReserve += target_scale/50;
+			Cache->SizeReserve += target_scale/25;
 		}
 		if (caster->formID == 0x14) {
 			AdjustSizeLimit(0.0417 * target_scale);
