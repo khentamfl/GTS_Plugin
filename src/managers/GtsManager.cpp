@@ -324,6 +324,7 @@ namespace {
 							set_target_scale(actor, natural_scale);
 						} // Need to have size restored by someone
 					}
+					break;
 				}
 				case ChosenGameMode::StandardNoShrink: {
 					log::info("Slow Growth In Combat, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
@@ -339,6 +340,7 @@ namespace {
 							set_target_scale(actor, maxScale);
 						} // else let spring handle it
 					} 
+					break;
 				}
 				case ChosenGameMode::CurseOfGrowth: {
 					 	log::info("Curse Of Growth, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
@@ -375,6 +377,7 @@ namespace {
 							}
 						//log::info("Calc AV: {}, GrowthPower: {}, Limit: {}", CalcAv, GrowthPower, sizelimit);
 						}
+						break;
 					}
 				
 				case ChosenGameMode::Quest: {
