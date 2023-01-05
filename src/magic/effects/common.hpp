@@ -211,7 +211,7 @@ namespace Gts {
 		const float SHRINK_TO_NOTHING_SCALE = 0.14;
 		float target_scale = get_visual_scale(target);
 		if (!caster) {
-			return;
+			return false;
 		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
@@ -221,7 +221,7 @@ namespace Gts {
 			auto Cache = Persistent::GetSingleton().GetData(caster);
 
 			if (!Cache) {
-				return;
+				return false;
 			}
 			if (Runtime::HasPerk(PlayerCharacter::GetSingleton(), "SizeReserve")) {
 				Cache->SizeReserve += target_scale/25;
