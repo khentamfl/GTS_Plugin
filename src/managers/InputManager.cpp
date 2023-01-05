@@ -60,7 +60,7 @@ namespace Gts {
 			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
 				// log::info("ButtonEvent == Keyboard");
 				auto key = buttonEvent->GetIDCode();
-				auto BaseCache = Persistent::GetSingleton().GetData(player);
+				auto Cache = Persistent::GetSingleton().GetData(player);
 				if (!Cache) {
 					return;
 				}
