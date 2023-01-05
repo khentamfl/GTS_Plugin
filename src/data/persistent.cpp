@@ -397,7 +397,7 @@ namespace Gts {
 			serde->WriteRecordData(&HHDamage, sizeof(HHDamage));
 			serde->WriteRecordData(&SizeVulnerability, sizeof(SizeVulnerability));
 			serde->WriteRecordData(&AllowHitGrowth, sizeof(AllowHitGrowth));
-			serge->WriteRecordData(&SizeReserve, sizeof(SizeReserve));
+			serde->WriteRecordData(&SizeReserve, sizeof(SizeReserve));
 
 			serde->WriteRecordData(&target_scale_v, sizeof(target_scale_v));
 		}
