@@ -68,14 +68,18 @@ namespace Gts {
 					}
 
 					if (this->timer.ShouldRun() && buttonEvent->HeldDuration() >= 1.2 && Runtime::HasPerk(caster, "SizeReserve") && Cache > 0) {
+						float SizeCalculation = buttonEvent->HeldDuration() - 1.2;
 						float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 						this->TickCheck = 0.0;
 						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache);
 						Runtime::PlaySound("growthSound", caster, Volume, 0.0);
 						Runtime::PlaySound("MoanSound", caster, Volume, 0.0);
 						RandomGrowth::GetSingleton().CallShake(Cache);
-						mod_target_scale(caster, Cache * gigantism);
-						Runtime::SetFloat("ManualGrowthStorage", 0);
+						mod_target_scale(caster, SizeCalculation * gigantism);
+						Runtime::SetFloat("ManualGrowthStorage", Cache - SizeCalculation);
+						if (Cache <0) {
+							Runtime::SetFloat("ManualGrowthStorage", 0); // Protect against negative values.
+						}
 					}
 				}
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && Runtime::HasPerk(caster, "SizeReserve")) { //F
