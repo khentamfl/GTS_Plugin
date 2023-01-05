@@ -274,7 +274,7 @@ namespace {
 
 			switch (game_mode) {
 				case ChosenGameMode::Grow: {
-					log::info("Growth, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
+					//log::info("Growth, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
 					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
 					if (fabs(GrowthRate) < EPS) {
 						log::info("Returning");
@@ -288,7 +288,7 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Shrink: {
-					log::info("Shrink, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
+					//log::info("Shrink, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
 					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * 60 * Time::WorldTimeDelta();
 					if (fabs(ShrinkRate) < EPS) {
 						return;
@@ -301,7 +301,7 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::Standard: {
-					log::info("Growth In Combat, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
+					//log::info("Growth In Combat, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
 					//log::info("Standart Game Mode; Character {} is In Combat: {}", actor->GetDisplayFullName(), actor->IsInCombat());
 					if (actor->IsInCombat()) {
 						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
@@ -327,7 +327,7 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::StandardNoShrink: {
-					log::info("Slow Growth In Combat, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
+					//log::info("Slow Growth In Combat, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
 					//log::info("Standart No Shrink Game Mode; Character {} is In Combat: {}", actor->GetDisplayFullName(), actor->IsInCombat());
 					if (actor->IsInCombat()) {
 						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
@@ -343,7 +343,7 @@ namespace {
 					break;
 				}
 				case ChosenGameMode::CurseOfGrowth: {
-					 	log::info("Curse Of Growth, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
+					 	//log::info("Curse Of Growth, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
 						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
 						float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");          	 // Slider that determines max size cap.
 						float sizelimit = clamp(1.0, MaxSize, (1.00 * (CalcAv/100 * MaxSize)));  // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
@@ -375,7 +375,6 @@ namespace {
 								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
 								Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
 							}
-						//log::info("Calc AV: {}, GrowthPower: {}, Limit: {}", CalcAv, GrowthPower, sizelimit);
 						}
 						break;
 					}
