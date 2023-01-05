@@ -45,7 +45,7 @@ namespace Gts {
 		float size = get_target_scale(player);
 
 		if (!player) {
-			return;
+			return BSEventNotifyControl::kContinue;
 		}
 
 
@@ -62,12 +62,12 @@ namespace Gts {
 				auto key = buttonEvent->GetIDCode();
 				auto Cache = Persistent::GetSingleton().GetData(player);
 				if (!Cache) {
-					return;
+					return BSEventNotifyControl::kContinue;
 				}
 
 				if (key == 0x12 && Cache->SizeReserve > 0.0) { // E
 					this->TickCheck += 1.0;
-					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache/15 * buttonEvent->HeldDuration());
+					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->SizeReserve/15 * buttonEvent->HeldDuration());
 					if (this->timergrowth.ShouldRunFrame()) {
 						Runtime::PlaySound("growthSound", caster, Cache->SizeReserve/25 * buttonEvent->HeldDuration(), 0.0);
 					}
@@ -78,7 +78,7 @@ namespace Gts {
 						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->SizeReserve);
 						Runtime::PlaySound("growthSound", caster, Volume, 0.0);  
 						Runtime::PlaySound("MoanSound", caster, Volume, 0.0);
-						RandomGrowth::GetSingleton().CallShake(Cache);
+						RandomGrowth::GetSingleton().CallShake(Cache->SizeReserve);
 						mod_target_scale(caster, SizeCalculation/2 * gigantism);
 						Cache->SizeReserve -= SizeCalculation/2;
 						if (Cache->SizeReserve <= 0) {
