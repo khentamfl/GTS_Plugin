@@ -71,7 +71,7 @@ namespace Gts {
 					if (buttonEvent->HeldDuration() >= 1.2 && Runtime::HasPerk(player, "SizeReserve") && Cache->SizeReserve > 0) {
 						float SizeCalculation = buttonEvent->HeldDuration() - 1.2;
 						float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->SizeReserve); 
+						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->SizeReserve/10); 
 
 						if (this->timergrowth.ShouldRunFrame()) {
 							Runtime::PlaySound("growthSound", caster, Cache->SizeReserve/50 * buttonEvent->HeldDuration(), 0.0);
