@@ -79,8 +79,8 @@ namespace Gts {
 						}
 						
 						RandomGrowth::GetSingleton().CallShake(Cache->SizeReserve);
-						mod_target_scale(caster, SizeCalculation/10 * gigantism);
-						Cache->SizeReserve -= SizeCalculation/10;
+						mod_target_scale(caster, SizeCalculation/80 * gigantism);
+						Cache->SizeReserve -= SizeCalculation/80;
 						if (Cache->SizeReserve <= 0) {
 							Cache->SizeReserve = 0.0; // Protect against negative values.
 						}
