@@ -210,13 +210,21 @@ namespace Gts {
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
 		const float SHRINK_TO_NOTHING_SCALE = 0.14;
 		float target_scale = get_visual_scale(target);
+		if (!caster) {
+			return;
+		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
 			ShrinkToNothingManager::Shrink(caster, target);
 			AdjustSizeLimit(0.0117);
-			auto Cache = Runtime::GetFloat("ManualGrowthStorage");
-			if (caster->formID == 0x14 && Runtime::HasPerk(caster, "SizeReserve")) {
-				Runtime::SetFloat("ManualGrowthStorage", Cache + target_scale/25);
+
+			auto Cache = Persistent::GetSingleton().GetData(caster);
+
+			if (!Cache) {
+				return;
+			}
+			if (Runtime::HasPerk(PlayerCharacter::GetSingleton(), "SizeReserve")) {
+				Cache->SizeReserve += target_scale/25;
 			}
 			ConsoleLog::GetSingleton()->Print("%s Was absorbed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			return true;
@@ -267,9 +275,12 @@ namespace Gts {
 		if (get_visual_scale(caster) <= 12.0 && !caster->IsSprinting() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
 			caster->NotifyAnimationGraph("JumpLand");
 		}
-		auto Cache = Runtime::GetFloat("ManualGrowthStorage"); // TODO: Fix this properly
-		if (caster->formID == 0x14 && Runtime::HasPerk(caster, "SizeReserve")) {
-			Runtime::SetFloat("ManualGrowthStorage", Cache+ target_scale/25);
+		auto Cache = Persistent::GetSingleton().GetData(caster); // TODO: Fix this properly
+			if (!Cache) {
+				return;
+			} 
+		if (Runtime::HasPerk(player, "SizeReserve")) {
+			Cache->SizeReserve += target_scale/50;
 		}
 		if (caster->formID == 0x14) {
 			AdjustSizeLimit(0.0417 * target_scale);
@@ -279,7 +290,7 @@ namespace Gts {
 			bool hasExplosiveGrowth1 = Runtime::HasMagicEffect(caster, "explosiveGrowth1");
 			bool hasExplosiveGrowth2 = Runtime::HasMagicEffect(caster, "explosiveGrowth2");
 			bool hasExplosiveGrowth3 = Runtime::HasMagicEffect(caster, "explosiveGrowth3");
-
+			
 			if (Runtime::HasPerk(caster, "ExtraGrowth") && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
 				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
 				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());
