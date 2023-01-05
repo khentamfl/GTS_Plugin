@@ -67,7 +67,6 @@ namespace Gts {
 
 				if (key == 0x12 && Cache->SizeReserve > 0.0) { // E
 					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->SizeReserve/15 * buttonEvent->HeldDuration());
-					
 
 					if (buttonEvent->HeldDuration() >= 1.2 && Runtime::HasPerk(player, "SizeReserve") && Cache->SizeReserve > 0) {
 						float SizeCalculation = buttonEvent->HeldDuration() - 1.2;
@@ -80,8 +79,8 @@ namespace Gts {
 						}
 						
 						RandomGrowth::GetSingleton().CallShake(Cache->SizeReserve);
-						mod_target_scale(caster, SizeCalculation/2 * gigantism);
-						Cache->SizeReserve -= SizeCalculation/2;
+						mod_target_scale(caster, SizeCalculation/10 * gigantism);
+						Cache->SizeReserve -= SizeCalculation/10;
 						if (Cache->SizeReserve <= 0) {
 							Cache->SizeReserve = 0.0; // Protect against negative values.
 						}
