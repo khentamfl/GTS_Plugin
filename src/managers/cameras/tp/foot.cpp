@@ -72,6 +72,7 @@ namespace {
 				camState->GetRotation(cameraRot);
 				NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
 				float zoomOffset = (cameraTrans - FirstPersonPoint()).Length();
+				log::info("zoomOffset: {}", zoomOffset);
 				NiPoint3 zoomOffsetVec = NiPoint3(0.0, zoomOffset, 0.0);
 				return cameraRotMat * zoomOffsetVec + cameraTrans;
 			}
