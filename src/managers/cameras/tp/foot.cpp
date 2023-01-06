@@ -42,13 +42,13 @@ namespace {
 		return NiMatrix3(
 			NiPoint3(m00, m01, m02),
 			NiPoint3(m10, m11, m12),
-			NiPoint3(m20, m21, m22),
+			NiPoint3(m20, m21, m22)
 			);
 	}
 
 	NiPoint3 CompuleLookAt() {
 		auto camera = PlayerCamera::GetSingleton();
-		auto camState = camera->cameraStates[CameraState::kThirdPerson];
+		auto camState = camera->cameraStates[CameraState::kThirdPerson].get();
 		ThirdPersonState* tpstate = static_cast<ThirdPersonState*>(camState);
 		NiPoint3 cameraTrans;
 		tpstate->GetTranslation(cameraTrans);
@@ -76,7 +76,7 @@ namespace Gts {
 		float playerScale = get_visual_scale(player);
 
 		NiPoint3 lookAt = CompuleLookAt();
-		
+
 		if (player) {
 			auto rootModel = player->Get3D(false);
 			if (rootModel) {
