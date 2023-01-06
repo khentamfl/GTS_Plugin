@@ -86,6 +86,16 @@ namespace Gts {
 		this->smoothIn.value = 0.0;
 		this->smoothIn.target = 1.0;
 		this->smoothIn.velocity = 0.0;
+
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			float playerScale = get_visual_scale(player);
+			if (playerScale > 0.0) {
+				this->smoothScale.value = playerScale;
+				this->smoothScale.target = playerScale;
+				this->smoothScale.velocity = 0.0;
+			}
+		}
 	}
 
 	NiPoint3 Foot::GetOffset(const NiPoint3& cameraPos) {
