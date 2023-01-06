@@ -85,11 +85,11 @@ namespace Gts {
 			auto rootModel = player->Get3D(false);
 			if (rootModel) {
 				auto transform = rootModel->world.Invert();
-				auto localLookAt = transform*lookAt;
-				return -this->smoothIn.value * localLookAt;
+				NiPoint3 localLookAt = transform*lookAt;
+				return localLookAt * -this->smoothIn.value;
 			}
 		}
-		return NiPoint3()
+		return NiPoint3();
 	}
 
 	NiPoint3 Foot::GetFootPos() {
