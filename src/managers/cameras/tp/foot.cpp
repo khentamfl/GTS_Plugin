@@ -46,12 +46,37 @@ namespace {
 			);
 	}
 
-	NiPoint3 CompuleLookAt() {
+	NiPoint3 FirstPersonPoint() {
 		auto camera = PlayerCamera::GetSingleton();
 		auto camState = camera->cameraStates[CameraState::kFirstPerson].get();
 		NiPoint3 cameraTrans;
 		camState->GetTranslation(cameraTrans);
 		return cameraTrans;
+	}
+	NiPoint3 ThirdPersonPoint() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto camState = camera->cameraStates[CameraState::kThirdPerson].get();
+		NiPoint3 cameraTrans;
+		camState->GetTranslation(cameraTrans);
+		return cameraTrans;
+	}
+
+	NiPoint3 CompuleLookAt() {
+		auto camera = PlayerCamera::GetSingleton();
+		if (camera) {
+			auto camState = camera->currentState;
+			if (camState) {
+				NiPoint3 cameraTrans;
+				camState->GetTranslation(cameraTrans);
+				NiQuaternion cameraRot;
+				camState->GetRotation(cameraRot);
+				NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
+				float zoomOffset = (ThirdPersonPoint() - FirstPersonPoint()).Length();
+				NiPoint3 zoomOffsetVec = NiPoint3(0.0, 0.0, zoomOffset);
+				return cameraRotMat * zoomOffsetVec + cameraTrans;
+			}
+		}
+		return NiPoint3();
 	}
 }
 
