@@ -7,8 +7,6 @@
 
 using namespace RE;
 
-const float ZOOM_CORRECTION = 0.90;
-
 namespace Gts {
 	void Foot::EnterState() {
 		this->smoothIn.value = 0.0;

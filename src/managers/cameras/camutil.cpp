@@ -3,6 +3,10 @@
 
 using namespace RE;
 
+namespace {
+	const float ZOOM_CORRECTION = 0.90;
+}
+
 namespace Gts {
 	void SetINIFloat(std::string_view name, float value) {
 		auto ini_conf = INISettingCollection::GetSingleton();
