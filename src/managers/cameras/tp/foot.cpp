@@ -56,6 +56,8 @@ namespace {
 		tpstate->GetRotation(cameraRot);
 		NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
 		float zoomOffset = tpstate->currentZoomOffset;
+		float zoomInput = camera->zoomInput;
+		log::info("zoomInput: {}, zoomOffset: {}, zoomOffset/zoomInput: {}", zoomInput, zoomOffset, zoomOffset/zoomInput);
 		NiPoint3 zoomOffsetVec = NiPoint3(0.0, 0.0, zoomOffset);
 		return cameraRotMat * zoomOffsetVec + cameraTrans;
 	}

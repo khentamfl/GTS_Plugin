@@ -1,5 +1,4 @@
 #include "managers/altcamera.hpp"
-#include "managers/camera.hpp"
 #include "managers/cameras/camutil.hpp"
 #include "util.hpp"
 #include "data/runtime.hpp"
@@ -69,6 +68,7 @@ namespace Gts {
 
 			// Adjust other ini stuff
 			if (this->initimer.ShouldRunFrame()) {
+				log::info("fMouseWheelZoomIncrement: {}", GetIniFloat("fMouseWheelZoomIncrement: Camera"));
 				EnsureINIFloat("fMouseWheelZoomIncrement:Camera", Runtime::GetFloat("CameraZoomPrecision"));
 				EnsureINIFloat("fMouseWheelZoomSpeed:Camera", Runtime::GetFloat("CameraZoomSpeed")/2);
 				EnsureINIFloat("fVanityModeMinDist:Camera", Runtime::GetFloat("MinDistance"));
