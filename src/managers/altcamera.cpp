@@ -65,7 +65,7 @@ namespace Gts {
 			this->smoothPlayerOffset.target = playerLocalOffset;
 
 			// Apply camera scale and offset
-			UpdateCamera(this->smoothScale.value, this->smoothOffset.value, this->smoothPlayerOffset.value);
+			UpdateCamera(this->smoothScale.value, this->smoothOffset.value, this->smoothPlayerOffset.target);
 
 			// Adjust other ini stuff
 			if (this->initimer.ShouldRunFrame()) {
@@ -85,7 +85,7 @@ namespace Gts {
 		int cameraMode = Runtime::GetInt("CameraMode");
 
 
-        //===================================================================
+		//===================================================================
 
 		bool AllowFpCamera = false; // !!!!!Disabled for global release for now!!!!!
 
