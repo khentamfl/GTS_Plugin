@@ -7,6 +7,7 @@
 
 using namespace RE;
 
+const float ZOOM_CORRECTION = 0.90;
 const float CAMERA_FACTOR = 95.00;
 const float CAMERA_ZOOM = -30.0;
 const float CAMERA_SIDE = 30.0;
@@ -71,7 +72,7 @@ namespace {
 				NiQuaternion cameraRot;
 				camState->GetRotation(cameraRot);
 				NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
-				float zoomOffset = (cameraTrans - FirstPersonPoint()).Length();
+				float zoomOffset = (cameraTrans - FirstPersonPoint()).Length() * ZOOM_CORRECTION;
 				log::info("zoomOffset: {}", zoomOffset);
 				NiPoint3 zoomOffsetVec = NiPoint3(0.0, zoomOffset, 0.0);
 				return cameraRotMat * zoomOffsetVec + cameraTrans;
