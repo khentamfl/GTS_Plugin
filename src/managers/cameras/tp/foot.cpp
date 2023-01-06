@@ -112,7 +112,7 @@ namespace Gts {
 			if (rootModel) {
 				auto transform = rootModel->world.Invert();
 				NiPoint3 localLookAt = transform*lookAt;
-				return localLookAt * -this->smoothIn.value;
+				return localLookAt * -this->smoothIn.value * playerScale;
 			}
 		}
 		return NiPoint3();
