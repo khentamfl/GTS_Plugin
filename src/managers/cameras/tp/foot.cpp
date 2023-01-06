@@ -71,8 +71,8 @@ namespace {
 				NiQuaternion cameraRot;
 				camState->GetRotation(cameraRot);
 				NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
-				float zoomOffset = (ThirdPersonPoint() - FirstPersonPoint()).Length();
-				NiPoint3 zoomOffsetVec = NiPoint3(0.0, 0.0, zoomOffset);
+				float zoomOffset = (cameraTrans - FirstPersonPoint()).Length();
+				NiPoint3 zoomOffsetVec = NiPoint3(0.0, zoomOffset, 0.0);
 				return cameraRotMat * zoomOffsetVec + cameraTrans;
 			}
 		}
