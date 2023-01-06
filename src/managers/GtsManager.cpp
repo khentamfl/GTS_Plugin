@@ -246,14 +246,14 @@ namespace {
 		apply_speed(actor, saved_data, temp_data, force);
 	}
 
-	enum ChosenGameMode {
-		None, // 0
-		Grow, // 1
-		Shrink, // 2
-		Standard, //3 
-		StandardNoShrink, // 4
-		CurseOfGrowth, // 5
-		Quest, // 6
+	enum class ChosenGameMode {
+		None = 0,
+		Grow = 1,
+		Shrink = 2,
+		Standard = 3,
+		StandardNoShrink = 4,
+		CurseOfGrowth = 5,
+		Quest = 6,
 	};
 
 
@@ -265,10 +265,11 @@ namespace {
 			float Scale = get_target_scale(actor);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
-			
+
 			if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor == player) {
 				Scale = 1.0;
-			} if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor != player) {
+			}
+			if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor != player) {
 				Scale = 1.0;
 			}
 
@@ -339,46 +340,45 @@ namespace {
 						} else if (targetScale < maxScale) {
 							set_target_scale(actor, maxScale);
 						} // else let spring handle it
-					} 
+					}
 					break;
 				}
 				case ChosenGameMode::CurseOfGrowth: {
-					 	//log::info("Curse Of Growth, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
-						float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
-						float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");          	 // Slider that determines max size cap.
-						float sizelimit = clamp(1.0, MaxSize, (1.00 * (CalcAv/100 * MaxSize)));  // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
-						int Random = rand() % 20; 												 // Randomize power
-						int GrowthTimer = rand() % 7; 										 	 // Randomize 're-trigger' delay, kinda
-						int StrongGrowthChance = rand() % 20; 									 // Self-explanatory
-						int MegaGrowth = rand() % 20; 							 				 // A chance to multiply growth again
-						float GrowthPower = CalcAv*0.00240 / Random; 			 				 // Randomized strength of growth
-						static Timer timer = Timer(1.40 * GrowthTimer); 		 			 	 // How often it procs
-						if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) { 
-							return; // Protections against infinity
-						}
-						if (timer.ShouldRunFrame()) {
-							if (StrongGrowthChance >= 19 && MegaGrowth >= 19.0) {
-								GrowthPower *= 4.0; 										 // Proc super growth if conditions are met
-							}
-							if (StrongGrowthChance >= 19.0) {
-								GrowthPower *= 4.0; 										 // Stronger growth if procs
-								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 40);
-							}
-							if (targetScale >= sizelimit) {
-								set_target_scale(actor, sizelimit);
-							}
-							if (((StrongGrowthChance >= 19 && Random >= 19.0) || (StrongGrowthChance >= 19 && MegaGrowth >= 19.0)) && Runtime::GetFloat("AllowMoanSounds") == 1.0) { 
-								Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
-							}
-							if (targetScale < maxScale) {
-								mod_target_scale(actor, GrowthPower);
-								GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
-								Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
-							}
-						}
-						break;
+					//log::info("Curse Of Growth, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
+					float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
+					float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");               // Slider that determines max size cap.
+					float sizelimit = clamp(1.0, MaxSize, (1.00 * (CalcAv/100 * MaxSize)));  // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
+					int Random = rand() % 20;                                                                                                // Randomize power
+					int GrowthTimer = rand() % 7;                                                                                    // Randomize 're-trigger' delay, kinda
+					int StrongGrowthChance = rand() % 20;                                                                    // Self-explanatory
+					int MegaGrowth = rand() % 20;                                                                                    // A chance to multiply growth again
+					float GrowthPower = CalcAv*0.00240 / Random;                                                     // Randomized strength of growth
+					static Timer timer = Timer(1.40 * GrowthTimer);                                                  // How often it procs
+					if (targetScale >= sizelimit || Random <= 0 || GrowthTimer <= 0) {
+						return; // Protections against infinity
 					}
-				
+					if (timer.ShouldRunFrame()) {
+						if (StrongGrowthChance >= 19 && MegaGrowth >= 19.0) {
+							GrowthPower *= 4.0;                                                                              // Proc super growth if conditions are met
+						}
+						if (StrongGrowthChance >= 19.0) {
+							GrowthPower *= 4.0;                                                                              // Stronger growth if procs
+							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 40);
+						}
+						if (targetScale >= sizelimit) {
+							set_target_scale(actor, sizelimit);
+						}
+						if (((StrongGrowthChance >= 19 && Random >= 19.0) || (StrongGrowthChance >= 19 && MegaGrowth >= 19.0)) && Runtime::GetFloat("AllowMoanSounds") == 1.0) {
+							Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
+						}
+						if (targetScale < maxScale) {
+							mod_target_scale(actor, GrowthPower);
+							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
+							Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
+						}
+					}
+					break;
+				}
 				case ChosenGameMode::Quest: {
 					float modAmount = -ShrinkRate * Time::WorldTimeDelta();
 					if (fabs(ShrinkRate) < EPS) {
@@ -390,6 +390,7 @@ namespace {
 						set_target_scale(actor, natural_scale);
 					} // Need to have size restored by somethig
 				}
+				break;
 			}
 		}
 	}
@@ -454,10 +455,11 @@ namespace {
 		}
 
 		if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor->formID == 0x14) {
-				scale = 1.0;
-		} if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14)  {
-				scale = 1.0;
-		} 
+			scale = 1.0;
+		}
+		if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14) {
+			scale = 1.0;
+		}
 		float ScaleCheck = scale * 0.15;
 		float ScaleLimit = clamp(1.0, 10.0, ScaleCheck);
 		//log::info("Growth Scale Limit is: {}", ScaleLimit);
