@@ -7,11 +7,25 @@
 
 using namespace RE;
 
-const float CAMERA_FACTOR = 130.00;
-const float CAMERA_SIDE = 30.0;
-const float CAMERA_ZOOM = -90.0;
+const float ZOOM_CORRECTION = 0.90;
 
 namespace Gts {
+	void FootL::EnterState() {
+		this->smoothIn.value = 0.0;
+		this->smoothIn.target = 1.0;
+		this->smoothIn.velocity = 0.0;
+
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			float playerScale = get_visual_scale(player);
+			if (playerScale > 0.0) {
+				this->smoothScale.value = playerScale;
+				this->smoothScale.target = playerScale;
+				this->smoothScale.velocity = 0.0;
+			}
+		}
+	}
+
 	NiPoint3 FootL::GetOffset(const NiPoint3& cameraPos) {
 		return NiPoint3();
 	}
@@ -22,10 +36,25 @@ namespace Gts {
 
 	NiPoint3 FootL::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
 		NiPoint3 footPos = this->GetFootPos();
-		auto player = PlayerCharacter::GetSingleton();
-		float playerScale = get_target_scale(player);
+		return footPos;
+	}
 
-		return footPos - NiPoint3(CAMERA_SIDE*playerScale, CAMERA_ZOOM*playerScale, CAMERA_FACTOR*playerScale);
+	NiPoint3 FootL::GetPlayerLocalOffsetInstant() {
+		auto player = PlayerCharacter::GetSingleton();
+		float playerScale = get_visual_scale(player);
+
+		NiPoint3 lookAt = CompuleLookAt();
+
+		if (player) {
+			auto rootModel = player->Get3D(false);
+			if (rootModel) {
+				auto transform = rootModel->world.Invert();
+				NiPoint3 localLookAt = transform*lookAt;
+				this->smoothScale.target = playerScale;
+				return localLookAt * -this->smoothIn.value * this->smoothScale.value;
+			}
+		}
+		return NiPoint3();
 	}
 
 	NiPoint3 FootL::GetFootPos() {

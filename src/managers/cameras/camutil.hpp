@@ -30,6 +30,14 @@ namespace Gts {
 
 	void UpdatePlayerCamera(NiPoint3 camLoc);
 
+	NiMatrix3 QuatToMatrix(const NiQuaternion& q);
+
+	NiPoint3 FirstPersonPoint();
+
+	NiPoint3 ThirdPersonPoint();
+
+	NiPoint3 CompuleLookAt();
+
 	// Get's camera position relative to the player
 	NiPoint3 GetCameraPosLocal();
 
