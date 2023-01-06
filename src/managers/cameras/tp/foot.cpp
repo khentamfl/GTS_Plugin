@@ -48,21 +48,10 @@ namespace {
 
 	NiPoint3 CompuleLookAt() {
 		auto camera = PlayerCamera::GetSingleton();
-		auto camState = camera->cameraStates[CameraState::kThirdPerson].get();
-		ThirdPersonState* tpstate = static_cast<ThirdPersonState*>(camState);
+		auto camState = camera->cameraStates[CameraState::kFirstPerson].get();
 		NiPoint3 cameraTrans;
-		tpstate->GetTranslation(cameraTrans);
-		NiQuaternion cameraRot;
-		tpstate->GetRotation(cameraRot);
-		NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
-		float increment = GetINIFloat("fMouseWheelZoomIncrement:Camera") * 70.0;
-		log::info("targetZoomOffset: {}", tpstate->targetZoomOffset);
-		log::info("currentZoomOffset: {}", tpstate->currentZoomOffset);
-		log::info("savedZoomOffset: {}", tpstate->savedZoomOffset);
-		log::info("pitchZoomOffset: {}", tpstate->pitchZoomOffset);
-		float zoomOffset = tpstate->currentZoomOffset*increment;
-		NiPoint3 zoomOffsetVec = NiPoint3(0.0, 0.0, zoomOffset);
-		return cameraRotMat * zoomOffsetVec + cameraTrans;
+		camState->GetTranslation(cameraTrans);
+		return cameraTrans;
 	}
 }
 
