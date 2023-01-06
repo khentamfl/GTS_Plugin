@@ -21,7 +21,7 @@ namespace {
 
 		// invs (inverse square length) is only required if quaternion is not already normalised
 		float invs = 1 / (sqx + sqy + sqz + sqw);
-		             m00 = ( sqx - sqy - sqz + sqw)*invs; // since sqw + sqx + sqy + sqz =1/invs*invs
+		float m00 = ( sqx - sqy - sqz + sqw)*invs; // since sqw + sqx + sqy + sqz =1/invs*invs
 		float m11 = (-sqx + sqy - sqz + sqw)*invs;
 		float m22 = (-sqx - sqy + sqz + sqw)*invs;
 
@@ -73,10 +73,10 @@ namespace Gts {
 	NiPoint3 Foot::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
 		NiPoint3 footPos = this->GetFootPos();
 		auto player = PlayerCharacter::GetSingleton();
-		float playerScale = get_target_scale(player);
+		float playerScale = get_visual_scale(player);
 
 		NiPoint3 lookAt = CompuleLookAt();
-		auto player = PlayerCharacter::GetSingleton();
+		
 		if (player) {
 			auto rootModel = player->Get3D(false);
 			if (rootModel) {
