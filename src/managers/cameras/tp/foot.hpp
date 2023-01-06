@@ -23,5 +23,6 @@ namespace Gts {
 			Spring3 smoothFootPos = Spring3(NiPoint3(0.0, 0.0, 0.0), 0.01);
 
 			Spring smoothIn = Spring(0.0, 0.5);
+			Spring smoothScale = Spring(1.0, 0.5);
 	};
 }
