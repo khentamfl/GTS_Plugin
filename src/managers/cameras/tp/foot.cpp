@@ -22,22 +22,22 @@ namespace {
 		// invs (inverse square length) is only required if quaternion is not already normalised
 		float invs = 1 / (sqx + sqy + sqz + sqw)
 		             m00 = ( sqx - sqy - sqz + sqw)*invs; // since sqw + sqx + sqy + sqz =1/invs*invs
-		m11 = (-sqx + sqy - sqz + sqw)*invs;
-		m22 = (-sqx - sqy + sqz + sqw)*invs;
+		float m11 = (-sqx + sqy - sqz + sqw)*invs;
+		float m22 = (-sqx - sqy + sqz + sqw)*invs;
 
 		float tmp1 = q.x*q.y;
 		float tmp2 = q.z*q.w;
-		m10 = 2.0 * (tmp1 + tmp2)*invs;
-		m01 = 2.0 * (tmp1 - tmp2)*invs;
+		float m10 = 2.0 * (tmp1 + tmp2)*invs;
+		float m01 = 2.0 * (tmp1 - tmp2)*invs;
 
 		tmp1 = q.x*q.z;
 		tmp2 = q.y*q.w;
-		m20 = 2.0 * (tmp1 - tmp2)*invs;
-		m02 = 2.0 * (tmp1 + tmp2)*invs;
+		float m20 = 2.0 * (tmp1 - tmp2)*invs;
+		float m02 = 2.0 * (tmp1 + tmp2)*invs;
 		tmp1 = q.y*q.z;
 		tmp2 = q.x*q.w;
-		m21 = 2.0 * (tmp1 + tmp2)*invs;
-		m12 = 2.0 * (tmp1 - tmp2)*invs;
+		float m21 = 2.0 * (tmp1 + tmp2)*invs;
+		float m12 = 2.0 * (tmp1 - tmp2)*invs;
 
 		return NiMatrix3(
 			NiPoint3(m00, m01, m02),
