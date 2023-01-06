@@ -5,6 +5,9 @@ using namespace RE;
 namespace Gts {
 	class CameraState {
 		public:
+			virtual void EnterState();
+			virtual void ExitState();
+
 			virtual float GetScale();
 			virtual NiPoint3 GetOffset(const NiPoint3& cameraPosLocal);
 			virtual NiPoint3 GetOffset(const NiPoint3& cameraPosLocal, bool isProne);
@@ -17,6 +20,8 @@ namespace Gts {
 			virtual NiPoint3 GetPlayerLocalOffset(const NiPoint3& cameraPosLocal);
 			virtual NiPoint3 GetPlayerLocalOffset(const NiPoint3& cameraPosLocal, bool isProne);
 			virtual NiPoint3 GetPlayerLocalOffsetProne(const NiPoint3& cameraPosLocal);
+
+			virtual NiPoint3 GetPlayerLocalOffsetInstant();
 
 			virtual bool PermitManualEdit();
 	};

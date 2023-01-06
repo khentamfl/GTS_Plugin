@@ -30,6 +30,16 @@ namespace Gts {
 
 	void CameraManager::CameraUpdate() {
 		CameraState* currentState = this->GetCameraState();
+		if (currentState != this->currentState) {
+			if (this->currentState) {
+				this->currentState->ExitState();
+			}
+			if (currentState) {
+				currentState->EnterState();
+			}
+			this->currentState = currentState;
+		}
+
 		if (currentState) {
 			bool isProne;
 			auto player = PlayerCharacter::GetSingleton();
@@ -62,9 +72,14 @@ namespace Gts {
 			this->smoothOffset.target = offset;
 			this->smoothScale.target = scale;
 			this->smoothPlayerOffset.target = playerLocalOffset;
+			NiPoint3 smoothedPlayerLocalOffset = this->smoothPlayerOffset.value;
+
+			// Unsmoothed adjustmnets
+			NiPoint3 instant = currentState->GetPlayerLocalOffsetInstant();
+			smoothedPlayerLocalOffset += instant;
 
 			// Apply camera scale and offset
-			UpdateCamera(this->smoothScale.value, this->smoothOffset.value, this->smoothPlayerOffset.target);
+			UpdateCamera(this->smoothScale.value, this->smoothOffset.value, smoothedPlayerLocalOffset);
 
 			// Adjust other ini stuff
 			if (this->initimer.ShouldRunFrame()) {

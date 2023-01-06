@@ -18,6 +18,11 @@ namespace {
 }
 
 namespace Gts {
+	void CameraState::EnterState() {
+	}
+	void CameraState::ExitState() {
+	}
+
 	float CameraState::GetScale() {
 		auto player = PlayerCharacter::GetSingleton();
 		float racescale = SizeManager::GetSingleton().GetRaceScale(player);
@@ -72,5 +77,9 @@ namespace Gts {
 
 	bool CameraState::PermitManualEdit() {
 		return true;
+	}
+
+	NiPoint3 CameraState::GetPlayerLocalOffsetInstant() {
+		return NiPoint3();
 	}
 }
