@@ -83,7 +83,6 @@ namespace Gts {
 
 			// Adjust other ini stuff
 			if (this->initimer.ShouldRunFrame()) {
-				log::info("fMouseWheelZoomIncrement: {}", GetINIFloat("fMouseWheelZoomIncrement:Camera"));
 				EnsureINIFloat("fMouseWheelZoomIncrement:Camera", Runtime::GetFloat("CameraZoomPrecision"));
 				EnsureINIFloat("fMouseWheelZoomSpeed:Camera", Runtime::GetFloat("CameraZoomSpeed")/2);
 				EnsureINIFloat("fVanityModeMinDist:Camera", Runtime::GetFloat("MinDistance"));
@@ -97,8 +96,6 @@ namespace Gts {
 		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera()) {
 			return nullptr;
 		}
-		int cameraMode = Runtime::GetInt("CameraMode");
-
 
 		//===================================================================
 
@@ -111,8 +108,8 @@ namespace Gts {
 			// 0 is normal
 			// 1 is combat
 			// 2 is loot
-			int FirstPersonMode = Runtime::GetInt("FirstPersonMode");  // TODO: Fix detection
-			switch (cameraMode) {
+			int FirstPersonMode = Runtime::GetInt("FirstPersonMode");
+			switch (FirstPersonMode) {
 				case 0: {
 					return &this->fpState;
 				}
@@ -127,6 +124,7 @@ namespace Gts {
 				}
 			}
 		} else if (!IsFirstPerson()) {
+			int cameraMode = Runtime::GetInt("CameraMode");
 			// Third Person states
 			// 0 is disabled
 			// 1 is normal
