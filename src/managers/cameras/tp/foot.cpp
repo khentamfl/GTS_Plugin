@@ -20,7 +20,7 @@ namespace {
 		float sqz = q.z*q.z;
 
 		// invs (inverse square length) is only required if quaternion is not already normalised
-		float invs = 1 / (sqx + sqy + sqz + sqw)
+		float invs = 1 / (sqx + sqy + sqz + sqw);
 		             m00 = ( sqx - sqy - sqz + sqw)*invs; // since sqw + sqx + sqy + sqz =1/invs*invs
 		float m11 = (-sqx + sqy - sqz + sqw)*invs;
 		float m22 = (-sqx - sqy + sqz + sqw)*invs;
@@ -54,7 +54,7 @@ namespace {
 		NiQuaternion cameraRot;
 		tpstate->GetRotation(cameraRot);
 		NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
-		flaot zoomOffset = tpstate->currentZoomOffset;
+		float zoomOffset = tpstate->currentZoomOffset;
 		NiPoint3 zoomOffsetVec = NiPoint3(0.0, 0.0, zoomOffset);
 		return cameraRotMat * zoomOffsetVec + cameraTrans;
 	}
