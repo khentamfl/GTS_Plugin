@@ -48,7 +48,8 @@ namespace {
 
 	NiPoint3 CompuleLookAt() {
 		auto camera = PlayerCamera::GetSingleton();
-		auto tpstate = camera->cameraStates[CameraState::kThirdPerson];
+		auto camState = camera->cameraStates[CameraState::kThirdPerson];
+		ThirdPersonState* tpstate = static_cast<ThirdPersonState*>(camState);
 		NiPoint3 cameraTrans;
 		tpstate->GetTranslation(cameraTrans);
 		NiQuaternion cameraRot;
