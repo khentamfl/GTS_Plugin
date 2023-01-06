@@ -56,6 +56,10 @@ namespace {
 		tpstate->GetRotation(cameraRot);
 		NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
 		float increment = GetINIFloat("fMouseWheelZoomIncrement:Camera") * 70.0;
+		log::info("targetZoomOffset: {}", tpstate->targetZoomOffset);
+		log::info("currentZoomOffset: {}", tpstate->currentZoomOffset);
+		log::info("savedZoomOffset: {}", tpstate->savedZoomOffset);
+		log::info("pitchZoomOffset: {}", tpstate->pitchZoomOffset);
 		float zoomOffset = tpstate->currentZoomOffset*increment;
 		NiPoint3 zoomOffsetVec = NiPoint3(0.0, 0.0, zoomOffset);
 		return cameraRotMat * zoomOffsetVec + cameraTrans;
