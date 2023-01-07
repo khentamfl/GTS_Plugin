@@ -99,7 +99,7 @@ namespace Gts {
 			return nullptr;
 		}
 		if (this->CameraDelay > 0.0) {
-			this->CameraDelay -= 0.025
+			this->CameraDelay -= 0.025;
 		}
 		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera() || CameraDelay > 0.0) {
 			return nullptr;
