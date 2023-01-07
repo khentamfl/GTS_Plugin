@@ -31,6 +31,8 @@ namespace Gts {
 
 	void CameraManager::CameraUpdate() {
 		CameraState* currentState = this->GetCameraState();
+
+		// Handles Transitioning
 		if (currentState != this->currentState) {
 			if (this->currentState) {
 				this->currentState->ExitState();
@@ -38,9 +40,29 @@ namespace Gts {
 			if (currentState) {
 				currentState->EnterState();
 			}
+			auto prevState = this->currentState;
 			this->currentState = currentState;
+			if (prevState) {
+				if (currentState) {
+					this->transitionState.reset(new TransState(prevState, currentState));
+					currentState = this->transitionState.get();
+				} else {
+					this->transitionState.reset(nullptr);
+				}
+			} else {
+				this->transitionState.reset(nullptr);
+			}
+		} else {
+			if (this->transitionState) {
+				if (!this->transitionState->IsDone()) {
+					currentState = this->transitionState.get();
+				} else {
+					this->transitionState.reset(nullptr);
+				}
+			}
 		}
 
+		// Handles updating the camera
 		if (currentState) {
 			bool isProne;
 			auto player = PlayerCharacter::GetSingleton();
@@ -94,17 +116,9 @@ namespace Gts {
 
 	// Decide which camera state to use
 	CameraState* CameraManager::GetCameraState() {
-		if (UI::GetSingleton()->GameIsPaused()) {
-			this->CameraDelay = 1.0;
+		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera()) {
 			return nullptr;
 		}
-		if (this->CameraDelay > 0.0) {
-			this->CameraDelay -= 0.025;
-		}
-		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera() || this->CameraDelay > 0.0) {
-			return nullptr;
-		}
-
 		//=========================================================================
 
 		bool AllowFpCamera = false; // !!!!!Disabled for global release for now!!!!!

@@ -4,6 +4,7 @@
 #include "spring.hpp"
 #include "timer.hpp"
 
+#include "managers/cameras/trans.hpp"
 #include "managers/cameras/tp/alt.hpp"
 #include "managers/cameras/tp/normal.hpp"
 #include "managers/cameras/tp/foot.hpp"
@@ -57,5 +58,6 @@ namespace Gts {
 			float CameraDelay = 0.0;
 
 			CameraState* currentState = nullptr;
+			std::unique_ptr<TransState> transitionState = std::unique_ptr<TransState>(nullptr);
 	};
 }

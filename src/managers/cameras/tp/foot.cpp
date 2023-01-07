@@ -9,10 +9,6 @@ using namespace RE;
 
 namespace Gts {
 	void Foot::EnterState() {
-		this->smoothIn.value = 0.0;
-		this->smoothIn.target = 1.0;
-		this->smoothIn.velocity = 0.0;
-
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			float playerScale = get_visual_scale(player);
@@ -49,7 +45,7 @@ namespace Gts {
 				auto transform = rootModel->world.Invert();
 				NiPoint3 localLookAt = transform*lookAt;
 				this->smoothScale.target = playerScale;
-				return localLookAt * -this->smoothIn.value * this->smoothScale.value;
+				return localLookAt * -1 * this->smoothScale.value;
 			}
 		}
 		return NiPoint3();
