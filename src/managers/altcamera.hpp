@@ -54,6 +54,7 @@ namespace Gts {
 			Spring smoothScale = Spring(0.30, 0.50);
 			Spring3 smoothOffset = Spring3(NiPoint3(0.30, 0.30, 0.30), 0.50);
 			Spring3 smoothPlayerOffset = Spring3(NiPoint3(0.30, 0.30, 0.30), 0.50);
+			float CameraDelay = 0.0;
 
 			CameraState* currentState = nullptr;
 	};

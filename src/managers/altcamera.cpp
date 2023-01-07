@@ -94,7 +94,14 @@ namespace Gts {
 
 	// Decide which camera state to use
 	CameraState* CameraManager::GetCameraState() {
-		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera() || UI::GetSingleton()->GameIsPaused()) {
+		if (UI::GetSingleton()->GameIsPaused()) {
+			this->CameraDelay = 1.0;
+			return nullptr;
+		}
+		if (this->CameraDelay > 0.0) {
+			this->CameraDelay -= 0.025
+		}
+		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera() || CameraDelay > 0.0) {
 			return nullptr;
 		}
 
