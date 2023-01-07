@@ -6,6 +6,7 @@
 #include "data/persistent.hpp"
 #include "Config.hpp"
 #include "node.hpp"
+#include "data/time.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -96,8 +97,9 @@ namespace Gts {
 		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera()) {
 			return nullptr;
 		}
+		log::info("Game Delta is: {}", Time::WorldTimeDelta())
 
-		//===================================================================
+		//=========================================================================
 
 		bool AllowFpCamera = false; // !!!!!Disabled for global release for now!!!!!
 
