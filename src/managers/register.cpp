@@ -1,5 +1,4 @@
 #include "managers/register.hpp"
-
 #include "events.hpp"
 #include "magic/magic.hpp"
 #include "managers/highheel.hpp"
