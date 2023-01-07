@@ -35,7 +35,7 @@ namespace Gts {
 				auto globalMassSize = Runtime::GetFloat("MassBasedSizeLimit"); // <- Applies it
 				auto sizeLimit = Runtime::GetFloat("sizeLimit");
 				if (globalMassSize < sizeLimit) {
-					Runtime::SetFloat("globalMassSize", globalMassSize + value * progressionMultiplier * TimeScale());
+					Runtime::SetFloat("MassBasedSizeLimit", globalMassSize + value * progressionMultiplier * TimeScale());
 				}
 			}
 		}
