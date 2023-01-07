@@ -97,7 +97,7 @@ namespace Gts {
 		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera()) {
 			return nullptr;
 		}
-		log::info("Game Delta is: {}", Time::WorldTimeDelta())
+		log::info("Game Delta is: {}", Time::WorldTimeDelta());
 
 		//=========================================================================
 
