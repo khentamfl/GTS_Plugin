@@ -6,17 +6,6 @@
 using namespace RE;
 using namespace Gts;
 
-namespace {
-	NiPoint3 ProneAdjustment(const NiPoint3& cameraPos) {
-		float proneFactor = 1.0 - Runtime::GetFloat("CalcProne");
-
-		NiPoint3 result = NiPoint3();
-
-		result.z = -cameraPos.z * proneFactor;
-		return result;
-	}
-}
-
 namespace Gts {
 	void CameraState::EnterState() {
 	}

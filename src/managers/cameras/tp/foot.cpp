@@ -51,6 +51,10 @@ namespace Gts {
 		return NiPoint3();
 	}
 
+	NiPoint3 GetPlayerLocalOffsetProne(const NiPoint3& cameraPos)  {
+		return this->GetPlayerLocalOffset(cameraPos); // No prone adjustment in foot mode
+	}
+
 	NiPoint3 Foot::GetFootPos() {
 		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";

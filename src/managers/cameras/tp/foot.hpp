@@ -1,11 +1,11 @@
 #pragma once
-#include "managers/cameras/state.hpp"
+#include "managers/cameras/tpState.hpp"
 #include "spring.hpp"
 
 using namespace RE;
 
 namespace Gts {
-	class Foot : public CameraState {
+	class Foot : public ThirdPersonCameraState {
 		public:
 			virtual void EnterState() override;
 
@@ -14,6 +14,8 @@ namespace Gts {
 			virtual NiPoint3 GetCombatOffset(const NiPoint3& cameraPos) override;
 
 			virtual NiPoint3 GetPlayerLocalOffset(const NiPoint3& cameraPos) override;
+
+			virtual NiPoint3 GetPlayerLocalOffsetProne(const NiPoint3& cameraPos) override;
 
 			virtual NiPoint3 GetPlayerLocalOffsetInstant() override;
 		protected:
