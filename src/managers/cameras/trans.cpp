@@ -4,7 +4,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
-	TransState::TransState(CameraState* stateB, CameraState* stateA) : stateB(stateB), stateA(stateA) {
+	TransState::TransState(CameraState* stateA, CameraState* stateB) : stateA(stateA), stateB(stateB) {
 		this->smoothIn.value = 0.0;
 		this->smoothIn.target = 1.0;
 		this->smoothIn.velocity = 0.0;
