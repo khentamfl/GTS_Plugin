@@ -19,7 +19,7 @@ namespace Gts {
 				if (rightFoot != nullptr) {
 					auto rightPosLocal = transform * (rightFoot->world * NiPoint3());
 					this->smoothFootPos.target = rightPosLocal;
-					this->smoothFootPos.target.z *= 0.9; // Shift down 10%ish
+					this->smoothFootPos.target.z *= 0.7; // Shift down 30%ish
 				}
 			}
 		}

@@ -80,7 +80,7 @@ namespace Gts {
 
 		if (Runtime::HasMagicEffect(caster, "SmallMassiveThreat") && caster != target) {
 			SmallMassiveThreatModification(caster, target);
-			size_difference += 3.2; // Allows to crush same size targets.
+			size_difference += 5.2; // Allows to crush same size targets.
 
 			if (Runtime::HasPerk(caster, "SmallMassiveThreatSizeSteal")) {
 				float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.0008;
@@ -92,7 +92,7 @@ namespace Gts {
 		}
 
 
-		if (size_difference >= 4.0 * Gigantism && target->IsDead() && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
+		if (size_difference >= 6.0 * Gigantism && target->IsDead() && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
 			// ^ We don't want to crush allies
 			CrushManager::Crush(caster, target);
 			CrushToNothing(caster, target);
