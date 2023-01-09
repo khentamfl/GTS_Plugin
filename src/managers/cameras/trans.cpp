@@ -52,6 +52,6 @@ namespace Gts {
 	}
 
 	bool TransState::IsDone() {
-		return this->smoothIn.value > 0.95;
+		return this->smoothIn.value > 0.995;
 	}
 }
