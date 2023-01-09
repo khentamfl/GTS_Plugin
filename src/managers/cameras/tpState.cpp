@@ -1,5 +1,6 @@
 #include "managers/cameras/tpState.hpp"
 #include "data/runtime.hpp"
+#include "scale/scale.hpp"
 
 using namespace RE;
 using namespace Gts;

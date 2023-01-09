@@ -10,41 +10,41 @@ namespace Gts {
 		this->smoothIn.velocity = 0.0;
 	}
 	float TransState::GetScale() {
-		return this->stateB->GetScale() * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetScale() * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetScale() * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetScale() * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 
 	NiPoint3 TransState::GetOffset(const NiPoint3& cameraPosLocal) {
-		return this->stateB->GetOffset(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetOffset(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetOffset(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetOffset(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 	NiPoint3 TransState::GetOffset(const NiPoint3& cameraPosLocal, bool isProne) {
-		return this->stateB->GetOffset(cameraPosLocal, isProne) * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetOffset(cameraPosLocal, isProne) * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetOffset(cameraPosLocal, isProne) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetOffset(cameraPosLocal, isProne) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 	NiPoint3 TransState::GetOffsetProne(const NiPoint3& cameraPosLocal) {
-		return this->stateB->GetOffsetProne(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetOffsetProne(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetOffsetProne(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetOffsetProne(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 
 	NiPoint3 TransState::GetCombatOffset(const NiPoint3& cameraPosLocal) {
-		return this->stateB->GetCombatOffset(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetCombatOffset(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetCombatOffset(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetCombatOffset(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 	NiPoint3 TransState::GetCombatOffset(const NiPoint3& cameraPosLocal, bool isProne) {
-		return this->stateB->GetCombatOffset(cameraPosLocal, isProne) * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetCombatOffset(cameraPosLocal, isProne) * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetCombatOffset(cameraPosLocal, isProne) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetCombatOffset(cameraPosLocal, isProne) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 	NiPoint3 TransState::GetCombatOffsetProne(const NiPoint3& cameraPosLocal) {
-		return this->stateB->GetCombatOffsetProne(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetCombatOffsetProne(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetCombatOffsetProne(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetCombatOffsetProne(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 
 	NiPoint3 TransState::GetPlayerLocalOffset(const NiPoint3& cameraPosLocal) {
-		return this->stateB->GetPlayerLocalOffset(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetPlayerLocalOffset(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetPlayerLocalOffset(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetPlayerLocalOffset(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 	NiPoint3 TransState::GetPlayerLocalOffset(const NiPoint3& cameraPosLocal, bool isProne) {
-		return this->stateB->GetPlayerLocalOffset(cameraPosLocal, isProne) * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetPlayerLocalOffset(cameraPosLocal, isProne) * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetPlayerLocalOffset(cameraPosLocal, isProne) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetPlayerLocalOffset(cameraPosLocal, isProne) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 	NiPoint3 TransState::GetPlayerLocalOffsetProne(const NiPoint3& cameraPosLocal) {
-		return this->stateB->GetPlayerLocalOffsetProne(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetPlayerLocalOffsetProne(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetPlayerLocalOffsetProne(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetPlayerLocalOffsetProne(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 
 	NiPoint3 TransState::GetPlayerLocalOffsetInstant(const NiPoint3& cameraPos) {
-		return this->stateB->GetPlayerLocalOffsetInstant(cameraPos) * std::clamp(this->smoothIn.value, 0.0, 1.0) + this->stateA->GetPlayerLocalOffsetInstant(cameraPos) * (1.0 - std::clamp(this->smoothIn.value, 0.0, 1.0));
+		return this->stateB->GetPlayerLocalOffsetInstant(cameraPos) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetPlayerLocalOffsetInstant(cameraPos) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 
 	bool TransState::PermitManualEdit() {
@@ -52,6 +52,6 @@ namespace Gts {
 	}
 
 	bool TransState::IsDone() {
-		return std::clamp(this->smoothIn.value, 0.0, 1.0) > 0.995;
+		return std::clamp(this->smoothIn.value, 0.0f, 1.0f) > 0.995;
 	}
 }
