@@ -33,7 +33,7 @@ namespace Gts {
 		return footPos;
 	}
 
-	NiPoint3 Foot::GetPlayerLocalOffsetInstant() {
+	NiPoint3 Foot::GetPlayerLocalOffsetInstant(const NiPoint3& cameraPos) {
 		auto player = PlayerCharacter::GetSingleton();
 		float playerScale = get_visual_scale(player);
 

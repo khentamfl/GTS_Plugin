@@ -20,7 +20,7 @@ namespace Gts {
 			virtual NiPoint3 GetPlayerLocalOffset(const NiPoint3& cameraPosLocal, bool isProne) override;
 			virtual NiPoint3 GetPlayerLocalOffsetProne(const NiPoint3& cameraPosLocal) override;
 
-			virtual NiPoint3 GetPlayerLocalOffsetInstant() override;
+			virtual NiPoint3 GetPlayerLocalOffsetInstant(const NiPoint3& cameraPos) override;
 
 			virtual bool PermitManualEdit() override;
 

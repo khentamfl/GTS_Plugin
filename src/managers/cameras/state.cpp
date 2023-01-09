@@ -68,7 +68,7 @@ namespace Gts {
 		return true;
 	}
 
-	NiPoint3 CameraState::GetPlayerLocalOffsetInstant() {
+	NiPoint3 CameraState::GetPlayerLocalOffsetInstant(const NiPoint3& cameraPos) {
 		return NiPoint3();
 	}
 }

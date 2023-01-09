@@ -98,7 +98,7 @@ namespace Gts {
 			NiPoint3 smoothedPlayerLocalOffset = this->smoothPlayerOffset.value;
 
 			// Unsmoothed adjustmnets
-			NiPoint3 instant = currentState->GetPlayerLocalOffsetInstant();
+			NiPoint3 instant = currentState->GetPlayerLocalOffsetInstant(cameraPosLocal);
 			smoothedPlayerLocalOffset += instant;
 
 			// Apply camera scale and offset
