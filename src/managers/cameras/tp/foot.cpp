@@ -51,7 +51,7 @@ namespace Gts {
 		return NiPoint3();
 	}
 
-	NiPoint3 GetPlayerLocalOffsetProne(const NiPoint3& cameraPos)  {
+	NiPoint3 Foot::GetPlayerLocalOffsetProne(const NiPoint3& cameraPos)  {
 		return this->GetPlayerLocalOffset(cameraPos); // No prone adjustment in foot mode
 	}
 

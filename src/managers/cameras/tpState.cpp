@@ -5,7 +5,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
-	NiPoint3 GetPlayerLocalOffsetProne(const NiPoint3& cameraPosLocal) {
+	NiPoint3 ThirdPersonCameraState::GetPlayerLocalOffsetProne(const NiPoint3& cameraPosLocal) {
 		return this->GetPlayerLocalOffsetProne(cameraPosLocal) + this->ProneAdjustment(cameraPosLocal);
 	}
 
