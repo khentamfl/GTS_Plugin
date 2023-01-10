@@ -115,6 +115,59 @@ namespace Gts {
 		}
 	}
 
+	CameraState* CameraManager::GetCameraStateTP() {
+		int cameraMode = Runtime::GetInt("CameraMode");
+		// Third Person states
+		// 0 is disabled
+		// 1 is normal
+		// 2 is alt camera
+		// 3 is Between Feet
+		// 4 is Left Feet
+		// 5 is Right Feet
+		switch (cameraMode) {
+			case 1: {
+				return &this->normalState;
+			}
+			case 2: {
+				return &this->altState;
+			}
+			case 3: {
+				return &this->footState;
+			}
+			case 4: {
+				return &this->footLState;
+			}
+			case 5: {
+				return &this->footRState;
+			}
+			default: {
+				return nullptr;
+			}
+		}
+	}
+
+	CameraState* CameraManager::GetCameraStateFP() {
+		// First Person states
+		// 0 is normal
+		// 1 is combat
+		// 2 is loot
+		int FirstPersonMode = Runtime::GetInt("FirstPersonMode");
+		switch (FirstPersonMode) {
+			case 0: {
+				return &this->fpState;
+			}
+			case 1: {
+				return &this->fpCombatState;
+			}
+			case 2: {
+				return &this->fpLootState;
+			}
+			default: {
+				return nullptr;
+			}
+		}
+	}
+
 	// Decide which camera state to use
 	CameraState* CameraManager::GetCameraState() {
 		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera()) {
@@ -125,58 +178,53 @@ namespace Gts {
 		bool AllowFpCamera = false; // !!!!!Disabled for global release for now!!!!!
 
 		//^^^^^^^===================================================================
-
-		if (IsFirstPerson() && AllowFpCamera) {
-			// First Person states
-			// 0 is normal
-			// 1 is combat
-			// 2 is loot
-			int FirstPersonMode = Runtime::GetInt("FirstPersonMode");
-			switch (FirstPersonMode) {
-				case 0: {
-					return &this->fpState;
-				}
-				case 1: {
-					return &this->fpCombatState;
-				}
-				case 2: {
-					return &this->fpLootState;
-				}
-				default: {
+		auto playerCamera = PlayerCamera::GetSingleton();
+		if (!playerCamera) {
+			return nullptr;
+		}
+		auto playerCameraState = playerCamera->currentState;
+		if (!playerCameraState) {
+			return nullptr;
+		}
+		RE::CameraState playerCameraMode = playerCameraState->id;
+		switch (playerCameraMode) {
+			// Fp state
+			case RE::CameraState::kFirstPerson: {
+				if (AllowFpCamera) {
+					return this->GetCameraStateFP();
+				} else {
 					return nullptr;
 				}
 			}
-		} else if (!IsFirstPerson()) {
-			int cameraMode = Runtime::GetInt("CameraMode");
-			// Third Person states
-			// 0 is disabled
-			// 1 is normal
-			// 2 is alt camera
-			// 3 is Between Feet
-			// 4 is Left Feet
-			// 5 is Right Feet
-			switch (cameraMode) {
-				case 1: {
-					return &this->normalState;
-				}
-				case 2: {
-					return &this->altState;
-				}
-				case 3: {
-					return &this->footState;
-				}
-				case 4: {
-					return &this->footLState;
-				}
-				case 5: {
-					return &this->footRState;
-				}
-				default: {
-					return nullptr;
-				}
+			// All these are TP like states
+			case RE::CameraState::kThirdPerson:
+			case RE::CameraState::kAutoVanity:
+			case RE::CameraState::kFurniture:
+			case RE::CameraState::kMount:
+			case RE::CameraState::kBleedout:
+			case RE::CameraState::kDragon: {
+				return this->GetCameraStateTP();
+			}
+			// These ones should be scaled but not adjusted
+			// any other way like pointing at feet when using
+			// kIronSights
+			case RE::CameraState::kVATS:
+			case RE::CameraState::kFree:
+			case RE::CameraState::kIronSights:
+			case RE::CameraState::kPCTransition:
+			case RE::CameraState::kIronSights: {
+				return &this->vanillaState;
+			}
+			// These should not be touched at all
+			case RE::CameraState::kTween:
+			case RE::CameraState::kAnimated: {
+				return nullptr;
+			}
+			// Catch all in case I forgot something
+			default: {
+				return nullptr;
 			}
 		}
-		return nullptr;
 	}
 
 	void CameraManager::AdjustUpDown(float amt) {

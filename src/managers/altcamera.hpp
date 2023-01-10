@@ -4,6 +4,7 @@
 #include "spring.hpp"
 #include "timer.hpp"
 
+#include "managers/cameras/state.hpp"
 #include "managers/cameras/trans.hpp"
 #include "managers/cameras/tp/alt.hpp"
 #include "managers/cameras/tp/normal.hpp"
@@ -20,6 +21,10 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
+	enum class CameraMode {
+
+	};
+
 	class CameraManager : public EventListener {
 		public:
 			[[nodiscard]] static CameraManager& GetSingleton() noexcept;
@@ -38,6 +43,11 @@ namespace Gts {
 			void ResetLeftRight();
 
 		private:
+			CameraState* GetCameraStateTP();
+			CameraState* GetCameraStateFP();
+
+			CameraState vanillaState;  // Like vanilla only scaled
+
 			Normal normalState;
 			Alt altState;
 			Foot footState;
