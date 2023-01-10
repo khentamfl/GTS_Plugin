@@ -186,12 +186,12 @@ namespace {
 			if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
 				if (actor->formID == 0x14) {
-					log::info("Player Scale is < 1.0, Scale: {}, BaseWalkSpeedMult with ADjustments: {}, Total: {} ", scale, trans_actor_data->base_walkspeedmult * scale, trans_actor_data->base_walkspeedmult);
+					//log::info("Player Scale is < 1.0, Scale: {}, BaseWalkSpeedMult with ADjustments: {}, Total: {} ", scale, trans_actor_data->base_walkspeedmult * scale, trans_actor_data->base_walkspeedmult);
 				}
 			} else {
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/2.4 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 				if (actor->formID == 0x14) {
-					log::info("Player Scale is > 1.0, Scale: {}, BaseWalkSpeedMult with Adjustments: {}, Total: {} ", scale, ((trans_actor_data->base_walkspeedmult * (Bonus/2.4 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed, trans_actor_data->base_walkspeedmult);
+					//log::info("Player Scale is > 1.0, Scale: {}, BaseWalkSpeedMult with Adjustments: {}, Total: {} ", scale, ((trans_actor_data->base_walkspeedmult * (Bonus/2.4 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed, trans_actor_data->base_walkspeedmult);
 				}
 			}
 		}
@@ -494,13 +494,13 @@ std::string GtsManager::DebugName() {
 // Poll for updates
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
-	auto ai = PC->currentProcess;
+	/*auto ai = PC->currentProcess;
 	if (ai) {
 		auto highAi = ai->high;
 		if (highAi) {
-			log::info("Heatracking Test: {}", highAi->headTrackTargetOffset.z);
+			log::info("Heatracking Test: {}", highAi->headTrackTargetOffset);
 		}
-	}
+	*/}
 
 
 	for (auto actor: find_actors()) {

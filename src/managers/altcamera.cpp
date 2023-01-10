@@ -32,13 +32,6 @@ namespace Gts {
 
 	void CameraManager::CameraUpdate() {
 		CameraState* currentState = this->GetCameraState();
-		auto camera = PlayerCamera::GetSingleton();
-		if (camera) {
-			TESCameraState* state = camera->currentState.get();
-			if (state) {
-				log::info("currentState: {}", GetRawName(state));
-			}
-		}
 
 		// Handles Transitioning
 		if (currentState != this->currentState) {
