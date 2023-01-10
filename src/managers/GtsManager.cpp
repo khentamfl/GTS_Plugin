@@ -500,7 +500,7 @@ void GtsManager::Update() {
 		if (highAi) {
 			log::info("Heatracking Test: {}", highAi->headTrackTargetOffset);
 		}
-	*/}
+	}*/
 
 
 	for (auto actor: find_actors()) {
