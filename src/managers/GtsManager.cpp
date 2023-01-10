@@ -498,7 +498,7 @@ void GtsManager::Update() {
 	if (ai) {
 		auto highAi = ai->high;
 		if (highAi) {
-			log::info("Heatracking Test: {}", highAi->headTrackTargetOffset->z);
+			log::info("Heatracking Test: {}", highAi->headTrackTargetOffset.z);
 		}
 	}
 
