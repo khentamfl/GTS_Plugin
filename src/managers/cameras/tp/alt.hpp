@@ -13,5 +13,7 @@ namespace Gts {
 			virtual NiPoint3 GetOffsetProne(const NiPoint3& cameraPos) override;
 
 			virtual NiPoint3 GetCombatOffsetProne(const NiPoint3& cameraPos) override;
+
+			virtual std::vector<std::string> GetBoneTargets() override;
 	};
 }
