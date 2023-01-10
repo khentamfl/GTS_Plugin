@@ -33,7 +33,10 @@ namespace Gts {
 		CameraState* currentState = this->GetCameraState();
 		auto camera = PlayerCamera::GetSingleton();
 		if (camera) {
-			log::info("currentState: ", GetRawName(camera->currentState.get()));
+			TESCameraState* state = camera->currentState.get();
+			if (state) {
+				log::info("currentState: {}", GetRawName(state));
+			}
 		}
 
 		// Handles Transitioning
