@@ -174,10 +174,10 @@ namespace Gts {
 										vector<RaceMenuSDTA> alterations;
 										ar >> alterations;
 										for (auto alteration: alterations) {
-											if (instance.name == "NPC") {
+											if (alteration.name == "NPC") {
 												log::info("NPC Extracted");
-												if (instance.pos.size() > 2) {
-													return fabs(instance.pos[2]) > 1e-4;
+												if (alteration.pos.size() > 2) {
+													return fabs(alteration.pos[2]) > 1e-4;
 												}
 											}
 										}
