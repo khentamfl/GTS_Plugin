@@ -8,7 +8,7 @@
 using namespace RE;
 
 namespace {
-	const float OFFSET = 0.04f * 70.0f; // About 4cm
+	const float OFFSET = 0.10f * 70.0f; // About 10cm
 }
 
 namespace Gts {
