@@ -6,6 +6,8 @@
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "util.hpp"
+#include <articuno/archives/ryml/ryml.h>
+#include <articuno/types/auto.h>
 
 using namespace RE;
 using namespace Gts;
@@ -124,6 +126,15 @@ namespace Gts {
 		}
 	}
 
+	struct RaceMenuSDTA {
+		std::string name;
+		std::vector<float> pos;
+		articuno_serde(ar) {
+			ar <=> kv(name, "name");
+			ar <=> kv(pos, "pos");
+		}
+	}
+
 	bool HighHeelManager::IsWearingHH(Actor* actor) {
 		auto armo = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 		if (armo) {
@@ -134,13 +145,39 @@ namespace Gts {
 					auto model = actor->Get3D(first);
 					if (model) {
 						auto node = model->GetObjectByName(addonString);
-						NiExtraData* extraData = node->GetExtraData("HH_OFFSET");
-						if (extraData) {
-							log::info("Extra");
-							NiFloatExtraData* floatData = netimmerse_cast<NiFloatExtraData*>(extraData);
-							if (floatData) {
-								log::info("ExtraFloat");
-								return fabs(floatData->value) > 1e-4;
+						{
+							NiExtraData* extraData = node->GetExtraData("HH_OFFSET");
+							if (extraData) {
+								log::info("Extra");
+								NiFloatExtraData* floatData = netimmerse_cast<NiFloatExtraData*>(extraData);
+								if (floatData) {
+									log::info("ExtraFloat");
+									return fabs(floatData->value) > 1e-4;
+								}
+							}
+						}
+						{
+							NiExtraData* extraData = node->GetExtraData("SDTA");
+							if (extraData) {
+								log::info("Extra2");
+								NiStringExtraData* stringData = netimmerse_cast<NiFloatExtraData*>(extraData);
+								if (stringData) {
+									log::info("ExtraString");
+									std::string jsonData = stringData->value;
+									yaml_source ar(jsonData);
+									for (auto node: ar) {
+										RaceMenuSDTA instance;
+										node >> instance;
+										if (instance.name == "NPC") {
+											log::info("NPC Extracted");
+											if (instance.pos.size() > 2) {
+												return fabs(instance.pos[2]) > 1e-4;
+											}
+										}
+									}
+
+									return fabs(floatData.value) > 1e-4;
+								}
 							}
 						}
 					}
