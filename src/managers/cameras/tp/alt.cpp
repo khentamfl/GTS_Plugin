@@ -45,6 +45,7 @@ namespace Gts {
 			case 1: {
 				return {
 				        "NPC Spine2 [Spn2]",
+						"NPC Neck [Neck]",
 				};
 			}
 			case 2: {

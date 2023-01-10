@@ -118,6 +118,7 @@ namespace {
         	GtsSkillProgress->value = TotalLevel;
         	GtsSkillRatio->value = 0.0;
 		}
+		log::info("Total {}, AbsorbedSize {}, Value: {}, random: {}", Total, absorbedSize, ValueEffectiveness, random);
 	}
 }
 

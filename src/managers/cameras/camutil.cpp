@@ -4,7 +4,7 @@
 using namespace RE;
 
 namespace {
-	const float ZOOM_CORRECTION = 0.90;
+	const float ZOOM_CORRECTION = 0.25;
 }
 
 namespace Gts {
