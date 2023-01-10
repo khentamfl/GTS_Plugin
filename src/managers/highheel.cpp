@@ -129,7 +129,7 @@ namespace Gts {
 		if (armo) {
 			for (auto arma: armo->armorAddons) {
 				char addonString[MAX_PATH]{ '\0' };
-				arma->GetNodeName(addonString, actor, a_armor, -1);
+				arma->GetNodeName(addonString, actor, armo, -1);
 				log::info("arma::name: {}", addonString);
 			}
 		}
