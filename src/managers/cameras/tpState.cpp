@@ -27,7 +27,7 @@ namespace Gts {
 						this->smoothScale.target = scale;
 						pos += localLookAt * -1 * this->smoothScale.value;
 
-						std::vector<NiAvObject*> bones = {};
+						std::vector<NiAVObject*> bones = {};
 						for (auto bone_name: bones_names) {
 							auto node = find_node(player, bone_name);
 							if (node) {
