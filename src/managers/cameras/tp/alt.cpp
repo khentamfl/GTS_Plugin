@@ -35,4 +35,11 @@ namespace Gts {
 			Runtime::GetFloat("proneCombatCameraAlternateY")
 			);
 	}
+
+	std::vector<std::string> Alt::GetBoneTargets() {
+		return {
+		        "BONEA",
+		        "BONEB",
+		};
+	}
 }
