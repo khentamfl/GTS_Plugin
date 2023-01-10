@@ -494,7 +494,7 @@ std::string GtsManager::DebugName() {
 // Poll for updates
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
-	log::info("Heatracking Test: {}", PC->headTrackTargetOffset->z);
+	log::info("Heatracking Test: {}", PC->currentProcess->middleHigh->headTrackTargetOffset);
 
 	HitManager::GetSingleton().Update();
 	//ClothManager::GetSingleton().CheckRip();
