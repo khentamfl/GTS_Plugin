@@ -14,6 +14,6 @@ namespace Gts {
 
 		private:
 			Spring smoothScale = Spring(1.0, 0.5);
-			Spring3 smoothedBonePos = Spring(NiPoint3(0.0, 0.0, 0.0), 0.5);
+			Spring3 smoothedBonePos = Spring3(NiPoint3(0.0, 0.0, 0.0), 0.5);
 	};
 }
