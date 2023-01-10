@@ -81,13 +81,22 @@ namespace {
 		}
 	}
 
-	void AdjustGiantessSkill(Actor* Caster, Actor* Target) {
+	void AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill on Crush
 		if (Caster->formID !=0x14) {
 			return; //Bye
 		}
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		if (!GtsSkillLevel) {
+			return;
+		}
 		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
+		if (!GtsSkillRatio) {
+			return;
+		}
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
+		if (!GtsSkillProgress) {
+			return;
+		}
 
 		int random = (100 + (rand()% 50 + 1)) / 100;
 
