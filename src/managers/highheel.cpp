@@ -6,6 +6,7 @@
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "util.hpp"
+#include <articuno/articuno.h>
 #include <articuno/archives/ryml/ryml.h>
 #include <articuno/types/auto.h>
 
@@ -133,7 +134,7 @@ namespace Gts {
 			ar <=> kv(name, "name");
 			ar <=> kv(pos, "pos");
 		}
-	}
+	};
 
 	bool HighHeelManager::IsWearingHH(Actor* actor) {
 		auto armo = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
