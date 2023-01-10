@@ -62,6 +62,7 @@ namespace Gts {
 							Actor* into = giant;
 							TransferInventory(tiny, into, false, true);
 						}
+						ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny);
 						Disintegrate(tiny);
 
 						std::random_device rd;
@@ -106,6 +107,36 @@ namespace Gts {
 		}
 
 		return true;
+	}
+
+	void ShrinkToNothingManager::AdjustGiantessSkill(Actor* Caster, Actor* Target) {
+		if (Caster->formID !=0x14) {
+			return; //Bye
+		}
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
+		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
+
+		int random = (100 + (rand()% 50 + 1)) / 100;
+
+    	if (GtsSkillLevel->value >= 100;) {
+       	 	GtsSkillLevel->value = 100.0;
+        	GtsSkillRatio->value = 0.0;
+        	return;
+    	}
+    
+    	float ValueEffectiveness = clamp(0.20, 1.0, 1.0 - GtsSkillLevel->value);
+
+    	float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
+    	float Total = (((0.14 * random) + absorbedSize/50) * ValueEffectiveness * 0.55);
+   		GtsSkillRatio->value += Total; 
+		int TotalLevel = GtsSkillLevel->value;
+    
+    	if (GtsSkillRatio->value >= 1.0) {
+        	GtsSkillLevel->value += 1.0;
+        	GtsSkillProgress->value = TotalLevel;
+        	GtsSkillRatio->value = 0.0;
+		}
 	}
 
 	ShrinkData::ShrinkData(Actor* giant, Actor* tiny) :

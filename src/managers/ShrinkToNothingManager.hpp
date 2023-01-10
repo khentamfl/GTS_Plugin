@@ -36,6 +36,7 @@ namespace Gts {
 			static bool CanShrink(Actor* giant, Actor* tiny);
 			static bool AlreadyShrinked(Actor* actor);
 			static void Shrink(Actor* giant, Actor* tiny);
+			static void AdjustGiantessSkill(Actor* Caster, Actor* Target);
 		private:
 			std::unordered_map<Actor*, ShrinkData> data;
 	};

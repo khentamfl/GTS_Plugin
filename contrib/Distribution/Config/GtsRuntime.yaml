@@ -219,6 +219,10 @@ globals:
   TotalSizeDamage: "GTS.esp|151517"
   TotalFallDamage: "GTS.esp|151516"
 
+  GtsSkillLevel: "GTS.esp|142200"
+  GtsSkillRatio: "GTS.esp|142202"
+  GtsSkillProgress: "GTS.esp|142201"
+
 quests:
   MainQuest: "GTS.esp|005E3A"
   ManagerQuest: "GTS.esp|000D62"

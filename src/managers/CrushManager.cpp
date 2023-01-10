@@ -80,6 +80,36 @@ namespace {
 			GrowAfterTheKill(caster, target);
 		}
 	}
+
+	void AdjustGiantessSkill(Actor* Caster, Actor* Target) {
+		if (Caster->formID !=0x14) {
+			return; //Bye
+		}
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
+		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
+
+		int random = (100 + (rand()% 50 + 1)) / 100;
+
+    	if (GtsSkillLevel->value >= 100;) {
+       	 	GtsSkillLevel->value = 100.0;
+        	GtsSkillRatio->value = 0.0;
+        	return;
+    	}
+    
+    	float ValueEffectiveness = clamp(0.10, 1.0, 1.0 - GtsSkillLevel->value);
+
+    	float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
+    	float Total = (((0.14 * random) + absorbedSize/50) * ValueEffectiveness);
+   		GtsSkillRatio->value += Total; 
+		int TotalLevel = GtsSkillLevel->value;
+    
+    	if (GtsSkillRatio->value >= 1.0) {
+        	GtsSkillLevel->value += 1.0;
+        	GtsSkillProgress->value = TotalLevel;
+        	GtsSkillRatio->value = 0.0;
+		}
+	}
 }
 
 namespace Gts {
@@ -114,6 +144,7 @@ namespace Gts {
 					Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", giant, 1.0, 1.0);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
+					AdjustGiantessSkill(giant, tiny);
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						if (progressionQuest) {
