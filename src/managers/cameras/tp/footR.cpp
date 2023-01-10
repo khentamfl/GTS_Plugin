@@ -16,7 +16,7 @@ namespace Gts {
 		float base_hh;
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 		auto player = PlayerCharacter::GetSingleton();
-		NiAVObject* npc_node = find_node_any(actor, "NPC");
+		NiAVObject* npc_node = find_node_any(player, "NPC");
 			if (!npc_node) {
 				return;
 			}

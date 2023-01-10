@@ -134,7 +134,7 @@ namespace Gts {
         	return;
     	}
     
-    	float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100 ,0.20, 1.0);
+    	float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.20, 1.0);
 
     	float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
     	float Total = (((0.06 * random) + absorbedSize/50) * ValueEffectiveness * 0.55);
