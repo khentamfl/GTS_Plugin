@@ -10,6 +10,8 @@
 #include <articuno/archives/ryml/ryml.h>
 #include <articuno/types/auto.h>
 
+using namespace articuno;
+using namespace articuno::ryml;
 using namespace RE;
 using namespace Gts;
 
