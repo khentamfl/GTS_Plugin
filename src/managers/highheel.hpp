@@ -15,7 +15,7 @@ namespace Gts {
 			virtual void ActorEquip(Actor* actor) override;
 			virtual void ActorLoaded(Actor* actor) override;
 
-			//bool IsWearingHH(Actor* actor);
+			bool IsWearingHH(Actor* actor);
 
 			void ApplyHH(Actor* actor, bool force);
 	};

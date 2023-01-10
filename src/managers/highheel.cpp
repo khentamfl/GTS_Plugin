@@ -130,7 +130,7 @@ namespace Gts {
 	}
 
 
-	/*struct RaceMenuSDTA {
+	struct RaceMenuSDTA {
 		std::string name;
 		std::vector<float> pos;
 		articuno_serde(ar) {
@@ -192,5 +192,5 @@ namespace Gts {
 			}
 		}
 		return false;
-	}*/
+	}
 }
