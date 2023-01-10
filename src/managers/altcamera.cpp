@@ -210,7 +210,6 @@ namespace Gts {
 			// kIronSights
 			case RE::CameraState::kVATS:
 			case RE::CameraState::kFree:
-			case RE::CameraState::kIronSights:
 			case RE::CameraState::kPCTransition:
 			case RE::CameraState::kIronSights: {
 				return &this->vanillaState;
