@@ -46,7 +46,7 @@ namespace Gts {
 			CameraState* GetCameraStateTP();
 			CameraState* GetCameraStateFP();
 
-			CameraState vanillaState;  // Like vanilla only scaled
+			CameraState scaledVanillaState;  // Like vanilla only scaled
 
 			Normal normalState;
 			Alt altState;

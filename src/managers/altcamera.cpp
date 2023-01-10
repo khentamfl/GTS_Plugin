@@ -73,6 +73,8 @@ namespace Gts {
 		if (currentState) {
 			bool isProne;
 			auto player = PlayerCharacter::GetSingleton();
+			log::info("TestHH: {}", HighHeelManager::GetSingleton().IsWearingHH(player));
+
 			if (Runtime::GetBool("ProneEnabled") && player != nullptr && player->IsSneaking()) {
 				isProne = true;
 			} else {
@@ -212,7 +214,7 @@ namespace Gts {
 			case RE::CameraState::kFree:
 			case RE::CameraState::kPCTransition:
 			case RE::CameraState::kIronSights: {
-				return &this->vanillaState;
+				return &this->scaledVanillaState;
 			}
 			// These should not be touched at all
 			case RE::CameraState::kTween:

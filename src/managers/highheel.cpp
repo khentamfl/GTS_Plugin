@@ -111,7 +111,7 @@ namespace Gts {
 				float expectedhhdamage = 1.5 + shoe_weight + char_weight;
 				if (SizeManager.GetSizeAttribute(actor, 3) != expectedhhdamage) {
 					Runtime::GetGlobal("HighHeelDamage")->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
-					SizeManager.SetSizeAttribute(actor, 1.5 + shoe_weight + char_weight, 3); // <-- Preparing to move it onto .dll entirely. 
+					SizeManager.SetSizeAttribute(actor, 1.5 + shoe_weight + char_weight, 3); // <-- Preparing to move it onto .dll entirely.
 					log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 3));
 					// Feel free to remove it once we move it to DLL completely ^
 				}
@@ -122,5 +122,17 @@ namespace Gts {
 				}
 			}
 		}
+	}
+
+	bool HighHeelManager::IsWearingHH(Actor* actor) {
+		auto armo = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+		if (armo) {
+			for (auto arma: armo->armorAddons) {
+				char addonString[MAX_PATH]{ '\0' };
+				arma->GetNodeName(addonString, actor, a_armor, -1);
+				log::info("arma::name: {}", addonString);
+			}
+		}
+		return false;
 	}
 }
