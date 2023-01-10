@@ -140,7 +140,7 @@ namespace Gts {
 							NiFloatExtraData* floatData = netimmerse_cast<NiFloatExtraData*>(extraData);
 							if (floatData) {
 								log::info("ExtraFloat");
-								return fabs(floatData.value) > 1e-4;
+								return fabs(floatData->value) > 1e-4;
 							}
 						}
 					}

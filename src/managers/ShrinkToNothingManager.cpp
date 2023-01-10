@@ -137,7 +137,7 @@ namespace Gts {
     	float ValueEffectiveness = clamp(0.20, 1.0, 1.0 - GtsSkillLevel->value/100);
 
     	float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
-    	float Total = (((0.14 * random) + absorbedSize/50) * ValueEffectiveness * 0.55);
+    	float Total = (((0.06 * random) + absorbedSize/50) * ValueEffectiveness * 0.55);
    		GtsSkillRatio->value += Total; 
 		int TotalLevel = GtsSkillLevel->value;
     
