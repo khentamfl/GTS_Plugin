@@ -9,15 +9,9 @@ namespace Gts {
 		public:
 			virtual void EnterState() override;
 
-			virtual NiPoint3 GetOffset(const NiPoint3& cameraPos) override;
-
-			virtual NiPoint3 GetCombatOffset(const NiPoint3& cameraPos) override;
-
 			virtual NiPoint3 GetPlayerLocalOffset(const NiPoint3& cameraPos) override;
 
 			virtual NiPoint3 GetPlayerLocalOffsetProne(const NiPoint3& cameraPos) override;
-
-			virtual NiPoint3 GetPlayerLocalOffsetInstant(const NiPoint3& cameraPos) override;
 		protected:
 			virtual NiPoint3 GetFootPos();
 

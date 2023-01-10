@@ -13,14 +13,13 @@ namespace  Gts {
 		return result;
 	}
 
-	NiPoint3 FirstPersonCameraState::GetPlayerLocalOffsetInstant(const NiPoint3& cameraPos) {
-		NiPoint3 pos = NiPoint3();
+	NiPoint3 FirstPersonCameraState::GetPlayerLocalOffsetProne(const NiPoint3& cameraPos) {
+		NiPoint3 pos = this->GetPlayerLocalOffset(cameraPos);
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			auto scale = get_visual_scale(player);
 			pos += this->ProneAdjustment(cameraPos)*scale;
 		}
-
 		return pos;
 	}
 

@@ -20,24 +20,13 @@ namespace Gts {
 		}
 	}
 
-	NiPoint3 Foot::GetOffset(const NiPoint3& cameraPos) {
-		return NiPoint3();
-	}
-
-	NiPoint3 Foot::GetCombatOffset(const NiPoint3& cameraPos) {
-		return NiPoint3();
-	}
-
 	NiPoint3 Foot::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
-		NiPoint3 footPos = this->GetFootPos();
-		return footPos;
-	}
-
-	NiPoint3 Foot::GetPlayerLocalOffsetInstant(const NiPoint3& cameraPos) {
 		auto player = PlayerCharacter::GetSingleton();
 		float playerScale = get_visual_scale(player);
 
 		NiPoint3 lookAt = CompuleLookAt();
+
+		NiPoint3 footPos = this->GetFootPos();
 
 		if (player) {
 			auto rootModel = player->Get3D(false);
@@ -45,7 +34,7 @@ namespace Gts {
 				auto transform = rootModel->world.Invert();
 				NiPoint3 localLookAt = transform*lookAt;
 				this->smoothScale.target = playerScale;
-				return localLookAt * -1 * this->smoothScale.value;
+				return localLookAt * -1 * this->smoothScale.value + footPos;
 			}
 		}
 		return NiPoint3();

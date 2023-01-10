@@ -89,20 +89,14 @@ namespace Gts {
 			NiPoint3 playerLocalOffset = currentState->GetPlayerLocalOffset(cameraPosLocal, isProne);
 
 			if (currentState->PermitManualEdit()) {
-				offset += this->manualEdit;
+				this->smoothOffset.target = this->manualEdit;
 			}
 
-			this->smoothOffset.target = offset;
+			offset += this->smoothOffset.value;
 			this->smoothScale.target = scale;
-			this->smoothPlayerOffset.target = playerLocalOffset;
-			NiPoint3 smoothedPlayerLocalOffset = this->smoothPlayerOffset.value;
-
-			// Unsmoothed adjustmnets
-			NiPoint3 instant = currentState->GetPlayerLocalOffsetInstant(cameraPosLocal);
-			smoothedPlayerLocalOffset += instant;
 
 			// Apply camera scale and offset
-			UpdateCamera(this->smoothScale.value, this->smoothOffset.value, smoothedPlayerLocalOffset);
+			UpdateCamera(this->smoothScale.value, offset, playerLocalOffset);
 
 			// Adjust other ini stuff
 			if (this->initimer.ShouldRunFrame()) {

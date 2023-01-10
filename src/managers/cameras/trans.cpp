@@ -43,10 +43,6 @@ namespace Gts {
 		return this->stateB->GetPlayerLocalOffsetProne(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetPlayerLocalOffsetProne(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 
-	NiPoint3 TransState::GetPlayerLocalOffsetInstant(const NiPoint3& cameraPos) {
-		return this->stateB->GetPlayerLocalOffsetInstant(cameraPos) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetPlayerLocalOffsetInstant(cameraPos) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
-	}
-
 	bool TransState::PermitManualEdit() {
 		return false;
 	}

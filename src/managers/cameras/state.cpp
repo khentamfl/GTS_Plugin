@@ -67,8 +67,4 @@ namespace Gts {
 	bool CameraState::PermitManualEdit() {
 		return true;
 	}
-
-	NiPoint3 CameraState::GetPlayerLocalOffsetInstant(const NiPoint3& cameraPos) {
-		return NiPoint3();
-	}
 }
