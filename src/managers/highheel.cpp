@@ -181,8 +181,6 @@ namespace Gts {
 												}
 											}
 										}
-
-										return fabs(floatData.value) > 1e-4;
 									}
 								}
 							}
