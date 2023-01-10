@@ -130,7 +130,21 @@ namespace Gts {
 			for (auto arma: armo->armorAddons) {
 				char addonString[MAX_PATH]{ '\0' };
 				arma->GetNodeName(addonString, actor, armo, -1);
-				log::info("arma::name: {}", addonString);
+				for (bool first: {true, false}) {
+					auto model = actor->Get3D(first);
+					if (model) {
+						auto node = model->GetObjectByName(addonString);
+						NiExtraData* extraData = node->GetExtraData("HH_OFFSET");
+						if (extraData) {
+							log::info("Extra");
+							NiFloatExtraData* floatData = netimmerse_cast<NiFloatExtraData*>(extraData);
+							if (floatData) {
+								log::info("ExtraFloat");
+								return fabs(floatData.value) > 1e-4;
+							}
+						}
+					}
+				}
 			}
 		}
 		return false;
