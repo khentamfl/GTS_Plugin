@@ -14,20 +14,30 @@ namespace Gts {
 			auto scale = get_visual_scale(player);
 			auto bones = this->GetBoneTargets();
 			auto bone_count = bones.size();
+			if (bone_count > 0 ) {
+				auto player = PlayerCharacter::GetSingleton();
+				if (player) {
+					auto rootModel = player->Get3D(false);
+					if (rootModel) {
+						auto transform = rootModel->world.Invert();
 
-			auto player = PlayerCharacter::GetSingleton();
-			if (player) {
-				auto rootModel = player->Get3D(false);
-				if (rootModel) {
-					auto transform = rootModel->world.Invert();
-					for (auto bone_name: bones) {
-						auto node = find_node(player, bone_name);
-						if (node) {
-							auto localPos = transform * (node->world * NiPoint3());
-							pos += localPos * (1.0/bone_count);
-						} else {
-							log::error("Bone not found for camera target: {}", bone_name);
+						NiPoint3 lookAt = CompuleLookAt();
+						NiPoint3 localLookAt = transform*lookAt;
+						this->smoothScale.target = scale;
+						pos += localLookAt * -1 * this->smoothScale.value;
+
+						NiPoint3 bonePos = NiPoint3();
+						for (auto bone_name: bones) {
+							auto node = find_node(player, bone_name);
+							if (node) {
+								auto localPos = transform * (node->world * NiPoint3());
+								bonePos += localPos * (1.0/bone_count);
+							} else {
+								log::error("Bone not found for camera target: {}", bone_name);
+							}
 						}
+						smoothedBonePos.target = bonePos;
+						pos += smoothedBonePos.value;
 					}
 				}
 			}
