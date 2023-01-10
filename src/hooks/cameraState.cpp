@@ -157,7 +157,7 @@ namespace Hooks
 		EventDispatcher::DoCameraUpdate();
 	}
 
-	// IronSights
+	// Vanity
 	void Hook_VanityState::Hook() {
 		logger::info("Hooking VanityState");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_AutoVanityState[0] };
