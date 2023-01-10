@@ -161,7 +161,7 @@ namespace Gts {
 							NiExtraData* extraData = node->GetExtraData("SDTA");
 							if (extraData) {
 								log::info("Extra2");
-								NiStringExtraData* stringData = netimmerse_cast<NiFloatExtraData*>(extraData);
+								NiStringExtraData* stringData = netimmerse_cast<NiStringExtraData*>(extraData);
 								if (stringData) {
 									log::info("ExtraString");
 									std::string jsonData = stringData->value;
