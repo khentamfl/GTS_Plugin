@@ -467,7 +467,7 @@ namespace {
 			scale = 1.0;
 		}
 		float ScaleCheck = scale * 0.15;
-		float ScaleLimit = std::clamp(ScaleCheck, 1.0, 10.0);
+		float ScaleLimit = Gts::clamp(1.0, 10.0, ScaleCheck);
 		//log::info("Growth Scale Limit is: {}", ScaleLimit);
 
 		ApplyGameMode(actor, gameMode, growthRate/2 * ScaleLimit, shrinkRate);
