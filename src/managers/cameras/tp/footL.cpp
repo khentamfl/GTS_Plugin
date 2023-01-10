@@ -13,14 +13,14 @@ namespace {
 
 namespace Gts {
 	NiPoint3 FootL::GetFootPos() {
-		float base_hh;
+		float base_hh = 0;
 		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 		auto player = PlayerCharacter::GetSingleton();
 		NiAVObject* npc_node = find_node_any(player, "NPC");
-			if (!npc_node) {
-				return;
+			if (npc_node) {
+				base_hh = npc_node->local.translate.z;
 			}
-			base_hh = npc_node->local.translate.z;
+			
 		
 		if (player) {
 			auto rootModel = player->Get3D(false);
