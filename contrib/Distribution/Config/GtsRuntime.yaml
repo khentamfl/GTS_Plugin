@@ -143,7 +143,7 @@ explosions:
 globals:
   MultiplyGameModePC: "GTS.esp|47B72B"
   MultiplyGameModeNPC: "GTS.esp|47B72C"
-  GtsDecideGrowth: "GTS.esp|15661D" 
+  GtsDecideGrowth: "GTS.esp|15661D"
   sizeLimit: "GTS.esp|2028B4"
   AllowClothTearing: "GTS.esp|30EE55"
   GtsNPCEffectImmunityToggle: "GTS.esp|271EFA"
@@ -212,6 +212,8 @@ globals:
   bonusSpeedMax: "GTS.esp|28B40C"
   GtsEnableLooting: "GTS.esp|2EB748"
   GtsNPCEnableLooting: "GTS.esp|2EB749"
+  NormalCameraTarget: "GTS.esp|000000"
+  AltCameraTarget: "GTS.esp|000000"
 
   TotalSprintDamage: "GTS.esp|142206"
   TotalSizeDamage: "GTS.esp|151517"

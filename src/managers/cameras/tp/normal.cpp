@@ -37,4 +37,47 @@ namespace Gts {
 			Runtime::GetFloat("proneCombatCameraY")
 			);
 	}
+
+	std::vector<std::string> Normal::GetBoneTargets() {
+		int altMode = Runtime::GetInt("NormalCameraTarget");
+		switch (altMode) {
+			case 0: {
+				return {};
+			}
+			case 1: {
+				return {
+				        "NPC Spine [Spn0]",
+				};
+			}
+			case 2: {
+				return {
+				        "NPC Spine1 [Spn1]",
+				};
+			}
+			case 3: {
+				return {
+				        "NPC L Breast",
+				        "NPC R Breast",
+				};
+			}
+			case 4: {
+				return {
+				        "L Breast02",
+				        "R Breast02",
+				};
+			}
+			case 5: {
+				return {
+				        "NPC Neck [Neck]",
+				};
+			}
+			case 6: {
+				return {
+				        "NPC L Butt",
+				        "NPC R Butt",
+				};
+			}
+		}
+		return {};
+	}
 }
