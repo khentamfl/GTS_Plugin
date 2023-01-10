@@ -119,7 +119,7 @@ namespace Gts {
 
 		int random = (100 + (rand()% 50 + 1)) / 100;
 
-    	if (GtsSkillLevel->value >= 100;) {
+    	if (GtsSkillLevel->value >= 100) {
        	 	GtsSkillLevel->value = 100.0;
         	GtsSkillRatio->value = 0.0;
         	return;

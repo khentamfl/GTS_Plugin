@@ -144,7 +144,6 @@ namespace Gts {
 					Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", giant, 1.0, 1.0);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
-					AdjustGiantessSkill(giant, tiny);
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						if (progressionQuest) {
@@ -174,7 +173,7 @@ namespace Gts {
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // CTD if we Disintegrate the player	
 					}
-
+					AdjustGiantessSkill(giant, tiny);
 					FearChance(giant);
 				}
 			}
