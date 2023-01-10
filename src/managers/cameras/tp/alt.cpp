@@ -44,12 +44,13 @@ namespace Gts {
 			}
 			case 1: {
 				return {
-				        "NPC Spine [Spn0]",
+				        "NPC Spine2 [Spn2]",
 				};
 			}
 			case 2: {
 				return {
-				        "NPC Spine1 [Spn1]",
+				        "NPC R Clavicle [RClv]",
+						"NPC L Clavicle [LClv]",
 				};
 			}
 			case 3: {
