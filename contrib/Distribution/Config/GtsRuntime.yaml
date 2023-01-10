@@ -212,8 +212,8 @@ globals:
   bonusSpeedMax: "GTS.esp|28B40C"
   GtsEnableLooting: "GTS.esp|2EB748"
   GtsNPCEnableLooting: "GTS.esp|2EB749"
-  NormalCameraTarget: "GTS.esp|000000"
-  AltCameraTarget: "GTS.esp|000000"
+  NormalCameraTarget: "GTS.esp|4B8335"
+  AltCameraTarget: "GTS.esp|4B8336"
 
   TotalSprintDamage: "GTS.esp|142206"
   TotalSizeDamage: "GTS.esp|151517"

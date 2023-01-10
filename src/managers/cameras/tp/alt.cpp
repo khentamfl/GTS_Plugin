@@ -60,8 +60,8 @@ namespace Gts {
 			}
 			case 4: {
 				return {
-				        "L Breast02",
-				        "R Breast02",
+				        "L Breast03",
+				        "R Breast03",
 				};
 			}
 			case 5: {
