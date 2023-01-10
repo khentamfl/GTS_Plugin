@@ -168,11 +168,12 @@ namespace Gts {
 									NiStringExtraData* stringData = netimmerse_cast<NiStringExtraData*>(extraData);
 									if (stringData) {
 										log::info("ExtraString");
-										std::stringstream jsonData = stringData->value;
+										std::string stringDataStr = stringData->value;
+										std::stringstream jsonData(stringDataStr);
 										yaml_source ar(jsonData);
-										for (auto node: ar) {
-											RaceMenuSDTA instance;
-											node >> instance;
+										vector<RaceMenuSDTA> alterations;
+										ar >> alterations;
+										for (auto alteration: alterations) {
 											if (instance.name == "NPC") {
 												log::info("NPC Extracted");
 												if (instance.pos.size() > 2) {
