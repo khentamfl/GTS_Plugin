@@ -7,6 +7,10 @@
 
 using namespace RE;
 
+namespace {
+	const float OFFSET = 0.04f * 70.0f; // About 4cm
+}
+
 namespace Gts {
 	NiPoint3 FootL::GetFootPos() {
 		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
@@ -17,9 +21,10 @@ namespace Gts {
 				auto transform = rootModel->world.Invert();
 				auto leftFoot = find_node(player, leftFootLookup);
 				if (leftFoot != nullptr) {
+					float playerScale = get_visual_scale(player);
 					auto leftPosLocal = transform * (leftFoot->world * NiPoint3());
 					this->smoothFootPos.target = leftPosLocal;
-					this->smoothFootPos.target.z *= 0.7; // Shift down 30%ish
+					this->smoothFootPos.target.z -= OFFSET*playerScale;
 				}
 			}
 		}
