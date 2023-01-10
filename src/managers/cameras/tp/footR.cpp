@@ -13,8 +13,15 @@ namespace {
 
 namespace Gts {
 	NiPoint3 FootR::GetFootPos() {
+		float base_hh;
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 		auto player = PlayerCharacter::GetSingleton();
+		NiAVObject* npc_node = find_node_any(actor, "NPC");
+			if (!npc_node) {
+				return;
+			}
+			base_hh = npc_node->local.translate.z;
+
 		if (player) {
 			auto rootModel = player->Get3D(false);
 			if (rootModel) {
@@ -24,7 +31,9 @@ namespace Gts {
 					float playerScale = get_visual_scale(player);
 					auto rightPosLocal = transform * (rightFoot->world * NiPoint3());
 					this->smoothFootPos.target = rightPosLocal;
-					this->smoothFootPos.target.z -= OFFSET*playerScale;
+					if (base_hh > 0.01) {
+						this->smoothFootPos.target.z -= OFFSET*playerScale;
+					}
 				}
 			}
 		}

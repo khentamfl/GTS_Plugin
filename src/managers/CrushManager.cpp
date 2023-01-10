@@ -109,7 +109,7 @@ namespace {
     	float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
     	float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
-    	float Total = (((0.05 * random) + absorbedSize/50) * ValueEffectiveness);
+    	float Total = (((0.04 * random) + absorbedSize/50) * ValueEffectiveness);
    		GtsSkillRatio->value += Total; 
 		int TotalLevel = GtsSkillLevel->value;
     
