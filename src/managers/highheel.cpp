@@ -167,7 +167,7 @@ namespace Gts {
 									NiStringExtraData* stringData = netimmerse_cast<NiStringExtraData*>(extraData);
 									if (stringData) {
 										log::info("ExtraString");
-										std::string jsonData = stringData->value;
+										std::stringstream jsonData = stringData->value;
 										yaml_source ar(jsonData);
 										for (auto node: ar) {
 											RaceMenuSDTA instance;
