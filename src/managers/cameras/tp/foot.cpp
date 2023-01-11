@@ -29,7 +29,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		float playerScale = get_visual_scale(player);
 
-		NiPoint3 lookAt = CompuleLookAt();
+		NiPoint3 lookAt = CompuleLookAt(0.25);
 
 		NiPoint3 footPos = this->GetFootPos();
 

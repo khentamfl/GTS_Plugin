@@ -3,10 +3,6 @@
 
 using namespace RE;
 
-namespace {
-	const float ZOOM_CORRECTION = 0.95;
-}
-
 namespace Gts {
 	void SetINIFloat(std::string_view name, float value) {
 		auto ini_conf = INISettingCollection::GetSingleton();
@@ -265,7 +261,7 @@ namespace Gts {
 		return GetINIFloat("fVanityModeMaxDist:Camera");
 	}
 
-	NiPoint3 CompuleLookAt() {
+	NiPoint3 CompuleLookAt(float zoomScale) {
 		auto camera = PlayerCamera::GetSingleton();
 		if (camera) {
 			auto camState = camera->currentState;
@@ -276,7 +272,7 @@ namespace Gts {
 				camState->GetRotation(cameraRot);
 				NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
 
-				float zoomOffset = ZoomFactor() * MaxZoom() * ZOOM_CORRECTION;
+				float zoomOffset = ZoomFactor() * MaxZoom() * zoomScale;
 				NiPoint3 zoomOffsetVec = NiPoint3(0.0, zoomOffset, 0.0);
 				return cameraRotMat * zoomOffsetVec + cameraTrans;
 			}

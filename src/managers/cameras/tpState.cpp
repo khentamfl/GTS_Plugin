@@ -22,7 +22,7 @@ namespace Gts {
 					if (rootModel) {
 						auto transform = rootModel->world.Invert();
 
-						NiPoint3 lookAt = CompuleLookAt();
+						NiPoint3 lookAt = CompuleLookAt(0.95);
 						NiPoint3 localLookAt = transform*lookAt;
 						this->smoothScale.target = scale;
 						pos += localLookAt * -1 * this->smoothScale.value;
