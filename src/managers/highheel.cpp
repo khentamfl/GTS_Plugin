@@ -143,6 +143,7 @@ namespace Gts {
 		auto models = GetModelsForSlot(actor, BGSBipedObjectForm::BipedObjectSlot::kFeet);
 		bool result = false;
 		for (auto model: models) {
+			log::info("Found model");
 			if (model) {
 				VisitExtraData<NiFloatExtraData>(model, "HH_OFFSET", [&result](NiAVObject& currentnode, NiFloatExtraData& data) {
 					log::info("ExtraFloat");

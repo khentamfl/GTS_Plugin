@@ -343,40 +343,44 @@ namespace Gts {
 	}
 
 	std::vector<NiAVObject*> GetModelsForSlot(Actor* actor, BGSBipedObjectForm::BipedObjectSlot slot) {
+		enum
+		{
+			k3rd,
+			k1st,
+			kTotal
+		};
+
 		std::vector<NiAVObject*> result = {};
-		auto armo = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
-		if (armo) {
-			for (auto arma: armo->armorAddons) {
+		if (actor) {
+			auto armo = actor->GetWornArmor(slot);
+			if (armo) {
+				auto arma = armo->GetArmorAddonByMask(actor->GetRace(), slot);
 				if (arma) {
 					char addonString[MAX_PATH]{ '\0' };
 					arma->GetNodeName(addonString, actor, armo, -1);
-
-					std::vector<NiAVObject*> skeletons = {};
-					auto first = actor->Get3D(true);
-					auto third = actor->Get3D(false);
-					if (third != first) {
-						skeletons = {
-							first,third
-						};
-					} else if (third) {
-						skeletons = {
-							third
-						};
-					} else if (first) {
-						skeletons = {
-							first
-						};
+					log::info("Looking for: {}", addonString);
+					std::array<NiAVObject*, kTotal> skeletonRoot = { actor->Get3D(k3rd), actor->Get3D(k1st) };
+					if (skeletonRoot[k1st] == skeletonRoot[k3rd]) {
+						skeletonRoot[k1st] = nullptr;
 					}
-					for (auto skeleton: skeletons) {
+					for (auto skeleton: skeletonRoot) {
 						if (skeleton) {
-							auto node = skeleton->GetObjectByName(addonString);
-							if (node) {
-								result.push_back(node);
+							const auto obj = skeleton->GetObjectByName(addonString);
+							if (obj) {
+								result.push_back(obj);
+							} else {
+								log::info("No Node");
 							}
 						}
 					}
+				} else {
+					log::info("No Arma");
 				}
+			} else {
+				log::info("No Armo");
 			}
+		} else {
+			log::info("No Actor");
 		}
 		return result;
 	}
