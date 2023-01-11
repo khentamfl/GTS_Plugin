@@ -67,7 +67,6 @@ namespace Gts {
 		if (currentState) {
 			bool isProne;
 			auto player = PlayerCharacter::GetSingleton();
-			log::info("TestHH: {}", HighHeelManager::GetSingleton().IsWearingHH(player));
 
 			if (Runtime::GetBool("ProneEnabled") && player != nullptr && player->IsSneaking()) {
 				isProne = true;
