@@ -123,6 +123,7 @@ perks:
   TotalControl: "GTS.esp|128CF7"
   NoSpeedLoss: "GTS.esp|2E663B"
   SizeReserve: "GTS.esp|4204CE"
+  SizeReserveAug: "GTS.esp|4C7638"
   BonusSpeedPerk: "GTS.esp|4255D0"
   OnTheEdge: "GTS.esp|4399E3"
   LethalSprint: "GTS.esp|123BEB"

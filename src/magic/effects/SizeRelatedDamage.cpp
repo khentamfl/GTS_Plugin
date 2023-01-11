@@ -1,6 +1,7 @@
 #include "magic/effects/SizeRelatedDamage.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/highheel.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
@@ -37,7 +38,7 @@ namespace Gts {
 		if (!npc_node) {
 				return;
 		}
-		float HighHeels = 1.0 + npc_node->local.translate.z/100;
+		float HighHeels = 1.0 + (HighHeelManager::GetSingleton().GetBaseHHOffset(actor).Length()/100);
 		//log::info("High Heels: {}, {}", caster->GetDisplayFullName(), HighHeels);
 
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/200; // 50% less effective threshold decrease.
