@@ -21,7 +21,7 @@ namespace Gts {
 	template<typename T>
 	void VisitExtraData(NiAVObject* root, std::string_view name, std::function<bool(NiAVObject& a_obj, T& data)> a_visitor) {
 		VisitNodes(root, [&root, &name, &a_visitor](NiAVObject& node) {
-			NiExtraData* extraData = root.GetExtraData(name);
+			NiExtraData* extraData = node.GetExtraData(name);
 			if (extraData) {
 				log::info("Extra: {}", name);
 				T* targetExtraData = netimmerse_cast<T*>(extraData);
