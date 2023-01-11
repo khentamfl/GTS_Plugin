@@ -160,7 +160,6 @@ namespace Gts {
 							//queue.push_front(child.get());
 						}
 					}
-					log::info("Node {}", currentnode->name);
 					{
 						NiExtraData* extraData = currentnode->GetExtraData("HH_OFFSET");
 						if (extraData) {
@@ -169,15 +168,25 @@ namespace Gts {
 							if (floatData) {
 								log::info("SCAN: ExtraFloat");
 							}
+							NiNode* parent = currentnode->parent;
+							while (parent) {
+								log::info("  - {}", parent->name);
+								parent = parent->parent;
+							}
 						}
 					}
 					{
 						NiExtraData* extraData = currentnode->GetExtraData("SDTA");
 						if (extraData) {
-							log::info("Extra2");
+							log::info("SCAN: Extra2");
 							NiStringExtraData* stringData = netimmerse_cast<NiStringExtraData*>(extraData);
 							if (stringData) {
-								log::info("ExtraString");
+								log::info("SCAN: ExtraString");
+							}
+							NiNode* parent = currentnode->parent;
+							while (parent) {
+								log::info("  - {}", parent->name);
+								parent = parent->parent;
 							}
 						}
 					}
