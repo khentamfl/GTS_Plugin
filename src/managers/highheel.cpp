@@ -131,7 +131,7 @@ namespace Gts {
 		return result;
 	}
 
-	NiPoint3 HighHeelManager::GetHHOffset(Actor* actor) {
+	HighHeelManager::GetHHOffset(Actor* actor) {
 		if (actor) {
 			auto scale = get_visual_scale(actor);
 			return this->GetBaseHHOffset(actor) * scale;
@@ -139,7 +139,7 @@ namespace Gts {
 		return NiPoint3();
 	}
 
-	bool HighHeelManager::IsWearingHH(Actor* actor) {
+	HighHeelManager::IsWearingHH(Actor* actor) {
 		return this->GetBaseHHOffset(actor).Length() > 1e-3;
 	}
 }
