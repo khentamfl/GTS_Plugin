@@ -359,18 +359,12 @@ namespace Gts {
 					char addonString[MAX_PATH]{ '\0' };
 					arma->GetNodeName(addonString, actor, armo, -1);
 					log::info("Looking for: {}", addonString);
-					std::array<NiAVObject*, kTotal> skeletonRoot = { actor->Get3D(k3rd), actor->Get3D(k1st) };
-					if (skeletonRoot[k1st] == skeletonRoot[k3rd]) {
-						skeletonRoot[k1st] = nullptr;
-					}
-					for (auto skeleton: skeletonRoot) {
-						if (skeleton) {
-							const auto obj = skeleton->GetObjectByName(addonString);
-							if (obj) {
-								result.push_back(obj);
-							} else {
-								log::info("No Node");
-							}
+					for (auto first: {true, false}) {
+						auto node = find_node(actor, addonString, first);
+						if (node) {
+							result.push_back(node);
+						} else {
+							log::info("No Node");
 						}
 					}
 				} else {
