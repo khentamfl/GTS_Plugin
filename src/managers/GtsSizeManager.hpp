@@ -32,6 +32,7 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;
+			virtual void ActorEquip(Actor* actor) override;
 
 			void Reset();
 

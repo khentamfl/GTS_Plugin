@@ -20,4 +20,6 @@ namespace Gts {
 	void KnockAreaEffect(Actor* actor, float afMagnitude, float afRadius);
 
 	bool IsDragon(Actor* actor);
+
+	bool IsProne(Actor* actor);
 }

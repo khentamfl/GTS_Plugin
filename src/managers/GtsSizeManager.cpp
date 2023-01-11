@@ -1,5 +1,6 @@
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/highheel.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
@@ -8,6 +9,7 @@
 #include "data/time.hpp"
 #include "timer.hpp"
 #include "util.hpp"
+#include "actorUtils.hpp"
 #include "node.hpp"
 
 
@@ -48,12 +50,10 @@ namespace Gts {
 
 			if (SelectedFormula >= 2.0 && actor->formID == 0x14) { // Apply Player Mass-Based max size
 				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("MassBasedSizeLimit"));
-			}
-			else if (QuestStage > 100 && FollowerLimit > 1 && actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate())) { // Apply Follower Max Size
-					GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("FollowersSizeLimit")); // Apply only if Quest is done.
-			}
-			else if (QuestStage > 100 && NPCLimit > 1 &&  actor->formID != 0x14 && (!Runtime::InFaction(actor, "FollowerFaction") && !actor->IsPlayerTeammate())) {  // Apply Other NPC's max size
-					GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("NPCSizeLimit")); 		// Apply only if Quest is done.
+			} else if (QuestStage > 100 && FollowerLimit > 1 && actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate())) { // Apply Follower Max Size
+				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("FollowersSizeLimit")); // Apply only if Quest is done.
+			} else if (QuestStage > 100 && NPCLimit > 1 &&  actor->formID != 0x14 && (!Runtime::InFaction(actor, "FollowerFaction") && !actor->IsPlayerTeammate())) { // Apply Other NPC's max size
+				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("NPCSizeLimit"));           // Apply only if Quest is done.
 			}
 
 			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
@@ -68,6 +68,31 @@ namespace Gts {
 			}
 		}
 	}
+
+	void SizeManager::ActorEquip(Actor* actor) {
+		flaot hh_length = HighHeelManager::GetBaseHHOffset(actor);
+		if (hh_length > 0 && Runtime::HasPerkTeam(actor, "hhBonus")) { // HH damage bonus start
+			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+			float shoe_weight = 1.0;
+			auto char_weight = actor->GetWeight()/280;
+			if (shoe) {
+				shoe_weight = shoe->weight/20;
+			}
+			float expectedhhdamage = 1.5 + shoe_weight + char_weight;
+			if (this->GetSizeAttribute(actor, 3) != expectedhhdamage) {
+				Runtime::GetGlobal("HighHeelDamage")->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
+				this->SetSizeAttribute(actor, 1.5 + shoe_weight + char_weight, 3); // <-- Preparing to move it onto .dll entirely.
+				log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), this->GetSizeAttribute(actor, 3));
+				// Feel free to remove it once we move it to DLL completely ^
+			}
+		} else if (hh_length <= 1e-4) {
+			if (this->GetSizeAttribute(actor, 3) != 1.0) {
+				this->SetSizeAttribute(actor, 1.0, 3);
+				log::info("SizeManager HH Actor {} RESET value: {}", actor->GetDisplayFullName(), this->GetSizeAttribute(actor, 3));
+			}
+		}
+	}
+
 	void SizeManager::SetEnchantmentBonus(Actor* actor, float amt) {
 		if (!actor) {
 			return;
@@ -120,7 +145,7 @@ namespace Gts {
 		if (!actor) {
 			return;
 		}
- 		this->GetData(actor).GrowthSpurt = amt;
+		this->GetData(actor).GrowthSpurt = amt;
 	}
 
 	float SizeManager::GetGrowthSpurt(Actor* actor) {
@@ -147,17 +172,14 @@ namespace Gts {
 		if (!Persistent) {
 			return;
 		}
-			if (attribute == 0) {
-				Persistent->NormalDamage = amt;
-			}
-			else if (attribute == 1) {
-				Persistent->SprintDamage = amt;
-			}
-			else if (attribute == 2) {
-				Persistent->FallDamage = amt;
-			} 
-			else if (attribute == 3) {
-				Persistent->HHDamage = amt;
+		if (attribute == 0) {
+			Persistent->NormalDamage = amt;
+		} else if (attribute == 1) {
+			Persistent->SprintDamage = amt;
+		} else if (attribute == 2) {
+			Persistent->FallDamage = amt;
+		} else if (attribute == 3) {
+			Persistent->HHDamage = amt;
 		}
 	}
 
@@ -166,26 +188,23 @@ namespace Gts {
 			return 1.0;
 		}
 		auto Persistent = Persistent::GetSingleton().GetData(actor);
-		if (!Persistent) { 
+		if (!Persistent) {
 			return 1.0;
 		}
-			float Normal = clamp (1.0, 999999.0, Persistent->NormalDamage);
-			float Sprint = clamp (1.0, 999999.0, Persistent->SprintDamage);
-			float Fall = clamp (1.0, 999999.0, Persistent->FallDamage);
-			float HH = clamp (1.0, 999999.0, Persistent->HHDamage);
-				if (attribute == 0) {
-					return Normal;
-				}
-				else if (attribute == 1) {
-					return Sprint;
-				}
-				else if (attribute == 2) {
-					return Fall;
-				} 	
-				else if (attribute == 3) {
-					return HH;
-				}
-			return 1.0;
+		float Normal = clamp (1.0, 999999.0, Persistent->NormalDamage);
+		float Sprint = clamp (1.0, 999999.0, Persistent->SprintDamage);
+		float Fall = clamp (1.0, 999999.0, Persistent->FallDamage);
+		float HH = clamp (1.0, 999999.0, Persistent->HHDamage);
+		if (attribute == 0) {
+			return Normal;
+		} else if (attribute == 1) {
+			return Sprint;
+		} else if (attribute == 2) {
+			return Fall;
+		} else if (attribute == 3) {
+			return HH;
+		}
+		return 1.0;
 	}
 
 	void SizeManager::ModSizeAttribute(Actor* actor, float amt, float attribute) {
@@ -195,21 +214,18 @@ namespace Gts {
 		auto Persistent = Persistent::GetSingleton().GetData(actor);
 		if (!Persistent) {
 			return;
-		} 
+		}
 		if (attribute == 0) {
 			Persistent->NormalDamage += amt;
-		}
-		else if (attribute == 1) {
+		} else if (attribute == 1) {
 			Persistent->SprintDamage += amt;
-		}
-		else if (attribute == 2) {
+		} else if (attribute == 2) {
 			Persistent->FallDamage += amt;
-		} 
-		else if (attribute == 3) {
+		} else if (attribute == 3) {
 			Persistent->HHDamage += amt;
 		}
 	}
-    //===============Size-Related Attribute End
+	//===============Size-Related Attribute End
 
 
 	//===============Size-Vulnerability
@@ -246,7 +262,7 @@ namespace Gts {
 		}
 		Persistent->SizeVulnerability += amt;
 	}
-    //===============Size-Vulnerability
+	//===============Size-Vulnerability
 
 	//===============Hit Growth
 
@@ -272,7 +288,7 @@ namespace Gts {
 		Persistent->AllowHitGrowth = allow;
 	}
 
-    //===============Size-Vulnerability
+	//===============Size-Vulnerability
 
 	//===============Balance Mode
 	float SizeManager::BalancedMode()

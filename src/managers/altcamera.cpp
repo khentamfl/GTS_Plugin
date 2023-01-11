@@ -2,6 +2,7 @@
 #include "managers/cameras/camutil.hpp"
 #include "managers/highheel.hpp"
 #include "util.hpp"
+#include "actorUtils.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "data/persistent.hpp"
@@ -65,14 +66,9 @@ namespace Gts {
 
 		// Handles updating the camera
 		if (currentState) {
-			bool isProne;
-			auto player = PlayerCharacter::GetSingleton();
 
-			if (Runtime::GetBool("ProneEnabled") && player != nullptr && player->IsSneaking()) {
-				isProne = true;
-			} else {
-				isProne = false;
-			}
+			auto player = PlayerCharacter::GetSingleton();
+			bool isProne = IsProne(player);
 
 			// Get scale based on camera state
 			float scale = currentState->GetScale();
