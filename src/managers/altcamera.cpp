@@ -100,20 +100,6 @@ namespace Gts {
 
 			// Apply camera scale and offset
 			UpdateCamera(this->smoothScale.value, offset, playerLocalOffset);
-
-			// Adjust other ini stuff		
-			if (GetINIFloat("fMouseWheelZoomIncrement:Camera") != Runtime::GetFloat("CameraZoomPrecision")) {
-				EnsureINIFloat("fMouseWheelZoomIncrement:Camera", Runtime::GetFloat("CameraZoomPrecision"));
-			} 
-			if (GetINIFloat("fMouseWheelZoomSpeed:Camera") != Runtime::GetFloat("CameraZoomSpeed")) {
-				EnsureINIFloat("fMouseWheelZoomSpeed:Camera", Runtime::GetFloat("CameraZoomSpeed"));
-			} 
-			if (GetINIFloat("fVanityModeMinDist:Camera") != Runtime::GetFloat("MinDistance")) {
-				EnsureINIFloat("fVanityModeMinDist:Camera", Runtime::GetFloat("MinDistance"));
-			} 
-			if (GetINIFloat("fVanityModeMaxDist:Camera") != Runtime::GetFloat("MaxDistance")) {
-				EnsureINIFloat("fVanityModeMaxDist:Camera", Runtime::GetFloat("MaxDistance"));
-			}
 		}
 	}
 
