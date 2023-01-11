@@ -14,12 +14,13 @@ namespace Gts {
 	void clone_bound(Actor* actor);
 	BSBound* get_bound(Actor* actor);
 	NiAVObject* get_bumper(Actor* actor);
+	void update_node(NiAVObject* node);
 
 	std::vector<NiAVObject*> GetModelsForSlot(Actor* actor, BGSBipedObjectForm::BipedObjectSlot slot);
 	void VisitNodes(NiAVObject* root, std::function<void(NiAVObject& a_obj)> a_visitor);
-	template<class T>
+	template<typename T>
 	void VisitExtraData(NiAVObject* root, std::string_view name, std::function<void(NiAVObject& a_obj, T& data)> a_visitor) {
-		VisitNodes(root, [](node) {
+		VisitNodes(root, [](NiAVObject& node) {
 			NiExtraData* extraData = root.GetExtraData(name);
 			if (extraData) {
 				T* targetExtraData = netimmerse_cast<T*>(extraData);
@@ -29,6 +30,4 @@ namespace Gts {
 			}
 		});
 	}
-
-	void update_node(NiAVObject* node);
 }
