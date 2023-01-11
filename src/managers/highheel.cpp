@@ -5,6 +5,7 @@
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "util.hpp"
+#include "actorUtils.hpp"
 #include "scale/scale.hpp"
 #include <articuno/articuno.h>
 #include <articuno/archives/ryml/ryml.h>

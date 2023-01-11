@@ -40,6 +40,4 @@ namespace Gts {
 		}
 		return this->smoothFootPos.value;
 	}
-
-
 }
