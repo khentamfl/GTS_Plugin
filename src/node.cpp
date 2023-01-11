@@ -398,7 +398,7 @@ namespace Gts {
 						//queue.push_front(child.get());
 					}
 				}
-
+				log::info("VISIT: {}", currentnode->name);
 				a_visitor(*currentnode);
 			}
 		}

@@ -143,11 +143,11 @@ namespace Gts {
 		auto models = GetModelsForSlot(actor, BGSBipedObjectForm::BipedObjectSlot::kFeet);
 		for (auto model: models) {
 			if (model) {
-				VisitExtraData(model, "HH_OFFSET", [](NiAVObject& currentnode, NiFloatExtraData& data) {
+				VisitExtraData<NiFloatExtraData>(model, "HH_OFFSET", [](NiAVObject& currentnode, NiFloatExtraData& data) {
 					log::info("ExtraFloat");
 					return fabs(data.value) > 1e-4;
 				});
-				VisitExtraData(model, "SDTA", [](NiAVObject& currentnode, NiStringExtraData& data) {
+				VisitExtraData<NiStringExtraData>(model, "SDTA", [](NiAVObject& currentnode, NiStringExtraData& data) {
 					log::info("ExtraString");
 					std::string stringDataStr = data.value;
 					std::stringstream jsonData(stringDataStr);

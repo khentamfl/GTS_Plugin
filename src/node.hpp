@@ -23,6 +23,7 @@ namespace Gts {
 		VisitNodes(root, [](NiAVObject& node) {
 			NiExtraData* extraData = root.GetExtraData(name);
 			if (extraData) {
+				log::info("Extra: {}", name);
 				T* targetExtraData = netimmerse_cast<T*>(extraData);
 				if (targetExtraData) {
 					a_visitor(node, *targetExtraData);
