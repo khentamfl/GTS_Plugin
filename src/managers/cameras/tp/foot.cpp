@@ -54,6 +54,7 @@ namespace Gts {
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
+			float playerScale = get_visual_scale(player);
 			auto rootModel = player->Get3D(false);
 			if (rootModel) {
 				auto transform = rootModel->world.Invert();
