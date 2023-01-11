@@ -6,6 +6,7 @@
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "util.hpp"
+#include "scale/scale.hpp"
 #include <articuno/articuno.h>
 #include <articuno/archives/ryml/ryml.h>
 #include <articuno/types/auto.h>
