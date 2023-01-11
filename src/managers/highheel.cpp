@@ -51,11 +51,11 @@ namespace Gts {
 		}
 		bool adjusted = false;
 		NiPoint3 new_hh = this->GetHHOffset(actor);
-		float hh_length = new_hh.Length()
-		                  for (bool person: {false, true}) {
+		float hh_length = new_hh.Length();
+		for (bool person: {false, true}) {
 			auto npc_root_node = find_node(actor, "NPC", person);
 			if (npc_root_node) {
-				float current_value = npc_root_node->local.translate;
+				NiPoint3 current_value = npc_root_node->local.translate;
 				NiPoint3 delta = current_value - new_hh;
 
 				if (delta.Length() > 1e-5 || force) {
