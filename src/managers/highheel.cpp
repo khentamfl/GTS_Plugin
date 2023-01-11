@@ -68,6 +68,7 @@ namespace Gts {
 		if (adjusted) {
 			if (hh_length > 0 && Runtime::HasPerkTeam(actor, "hhBonus")) { // HH damage bonus start
 				auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+				auto SizeManager = SizeManager::GetSingleton();
 				float shoe_weight = 1.0;
 				auto char_weight = actor->GetWeight()/280;
 				if (shoe) {
