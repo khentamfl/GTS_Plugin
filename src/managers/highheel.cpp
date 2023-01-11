@@ -145,11 +145,11 @@ namespace Gts {
 			if (model) {
 				VisitExtraData<NiFloatExtraData>(model, "HH_OFFSET", [](currentnode, data) {
 					log::info("ExtraFloat");
-					return fabs(floatData->value) > 1e-4;
+					return fabs(data.value) > 1e-4;
 				});
 				VisitExtraData<NiStringExtraData>(model, "SDTA", [](currentnode, data) {
 					log::info("ExtraString");
-					std::string stringDataStr = stringData->value;
+					std::string stringDataStr = data.value;
 					std::stringstream jsonData(stringDataStr);
 					yaml_source ar(jsonData);
 					vector<RaceMenuSDTA> alterations;
