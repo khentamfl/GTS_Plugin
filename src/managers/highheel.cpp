@@ -66,23 +66,25 @@ namespace Gts {
 			}
 		}
 		if (adjusted) {
+			auto& sizeManager = SizeManager::GetSingleton();
 			if (hh_length > 0 && Runtime::HasPerkTeam(actor, "hhBonus")) { // HH damage bonus start
 				auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
-				auto SizeManager = SizeManager::GetSingleton();
 				float shoe_weight = 1.0;
 				auto char_weight = actor->GetWeight()/280;
 				if (shoe) {
 					shoe_weight = shoe->weight/20;
 				}
 				float expectedhhdamage = 1.5 + shoe_weight + char_weight;
-				if (SizeManager.GetSizeAttribute(actor, 3) != expectedhhdamage) {
-					SizeManager.SetSizeAttribute(actor, 1.5 + shoe_weight + char_weight, 3); // <-- Apply the damage boost to High Heels..
-					log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 3));
-					// It is now applied in the .DLL purely. ^
+				if (sizeManager.GetSizeAttribute(actor, 3) != expectedhhdamage) {
+					Runtime::GetGlobal("HighHeelDamage")->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
+					sizeManager.SetSizeAttribute(actor, 1.5 + shoe_weight + char_weight, 3); // <-- Preparing to move it onto .dll entirely.
+					log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), sizeManager.GetSizeAttribute(actor, 3));
+					// Feel free to remove it once we move it to DLL completely ^
 				}
-			} else if (hh_length <= 1e-4 && SizeManager.GetSizeAttribute(actor, 3) != 1.0) {
-					SizeManager.SetSizeAttribute(actor, 1.0, 3); // < -- Restore Damage Boost to x1.0
-					log::info("SizeManager HH Actor {} RESET value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 3));
+			} else if (hh_length <= 1e-4) {
+				if (sizeManager.GetSizeAttribute(actor, 3) != 1.0) {
+					sizeManager.SetSizeAttribute(actor, 1.0, 3);
+					log::info("SizeManager HH Actor {} RESET value: {}", actor->GetDisplayFullName(), sizeManager.GetSizeAttribute(actor, 3));
 				}
 			}
 		}
