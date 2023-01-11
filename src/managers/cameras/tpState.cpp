@@ -14,21 +14,21 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			auto scale = get_visual_scale(player);
-			auto bones_names = this->GetBoneTargets();
-			if (!bones_names.empty()) {
+			auto boneTarget = this->GetBoneTarget();
+			if (!boneTarget.bonesNames.empty()) {
 				auto player = PlayerCharacter::GetSingleton();
 				if (player) {
 					auto rootModel = player->Get3D(false);
 					if (rootModel) {
 						auto transform = rootModel->world.Invert();
 
-						NiPoint3 lookAt = CompuleLookAt(0.95);
+						NiPoint3 lookAt = CompuleLookAt(boneTarget.zoomScale);
 						NiPoint3 localLookAt = transform*lookAt;
 						this->smoothScale.target = scale;
 						pos += localLookAt * -1 * this->smoothScale.value;
 
 						std::vector<NiAVObject*> bones = {};
-						for (auto bone_name: bones_names) {
+						for (auto bone_name: boneTarget.boneNames) {
 							auto node = find_node(player, bone_name);
 							if (node) {
 								bones.push_back(node);
@@ -62,8 +62,8 @@ namespace Gts {
 		return pos;
 	}
 
-	std::vector<std::string> ThirdPersonCameraState::GetBoneTargets() {
-		return {};
+	BoneTarget ThirdPersonCameraState::GetBoneTarget() {
+		return BoneTarget();
 	}
 
 	NiPoint3 ThirdPersonCameraState::ProneAdjustment(const NiPoint3& cameraPos) {

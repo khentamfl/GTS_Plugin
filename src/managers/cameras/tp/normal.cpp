@@ -38,54 +38,75 @@ namespace Gts {
 			);
 	}
 
-	std::vector<std::string> Normal::GetBoneTargets() {
+	BoneTarget Normal::GetBoneTarget() {
 		int altMode = Runtime::GetInt("NormalCameraTarget");
 		switch (altMode) {
 			case 0: {
-				return {};
+				return BoneTarget();
 			}
 			case 1: {
-				return {
-				        "NPC Spine2 [Spn2]",
+				return BoneTarget {
+				        .boneNames = {
+						"NPC Spine2 [Spn2]",
 						"NPC Neck [Neck]",
+					},
+				        .zoomScale = 0.95,
 				};
 			}
 			case 2: {
-				return {
-				        "NPC R Clavicle [RClv]",
+				return BoneTarget {
+				        .boneNames = {
+						"NPC R Clavicle [RClv]",
 						"NPC L Clavicle [LClv]",
+					},
+				        .zoomScale = 0.95,
 				};
 			}
 			case 3: {
-				return {
-				        "NPC L Breast",
-				        "NPC R Breast",
+				return BoneTarget {
+				        .boneNames = {
+						"NPC L Breast",
+						"NPC R Breast",
+					},
+				        .zoomScale = 0.95,
 				};
 			}
 			case 4: {
-				return {
-				        "L Breast02",
-				        "R Breast02",
+				return BoneTarget {
+				        .boneNames = {
+						"L Breast02",
+						"R Breast02",
+					},
+				        .zoomScale = 0.95,
 				};
 			}
 			case 5: {
-				return {
-				        "L Breast03",
-				        "R Breast03",
+				return BoneTarget {
+				        .boneNames = {
+						"L Breast03",
+						"R Breast03",
+					},
+				        .zoomScale = 0.95,
 				};
 			}
 			case 6: {
-				return {
-				        "NPC Neck [Neck]",
+				return BoneTarget {
+				        .boneNames = {
+						"NPC Neck [Neck]",
+					},
+				        .zoomScale = 0.95,
 				};
 			}
 			case 7: {
-				return {
-				        "NPC L Butt",
-				        "NPC R Butt",
+				return BoneTarget {
+				        .boneNames = {
+						"NPC L Butt",
+						"NPC R Butt",
+					},
+				        .zoomScale = 0.95,
 				};
 			}
 		}
-		return {};
+		return BoneTarget();
 	}
 }
