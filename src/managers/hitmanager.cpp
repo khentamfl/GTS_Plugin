@@ -62,6 +62,16 @@ namespace Gts {
 		bool wasHitBlocked = a_event->flags.all(TESHitEvent::Flag::kHitBlocked);
 		static Timer timer = Timer(0.25);
 
+		HitData hitData;
+		hitData.Populate(attacker, receiver, attacker->GetAttackingWeapon());
+		log::info("totalDamage: {}", hitData.totalDamage);
+		log::info("physicalDamage: {}", hitData.physicalDamage);
+		log::info("targetedLimbDamage: {}", hitData.targetedLimbDamage);
+		log::info("percentBlocked: {}", hitData.percentBlocked);
+		log::info("resistedPhysicalDamage: {}", hitData.resistedPhysicalDamage);
+		log::info("resistedTypedDamage: {}", hitData.resistedTypedDamage);
+		log::info("reflectedDamage: {}", hitData.reflectedDamage);
+		log::info("reflectedDamage: {}", hitData.reflectedDamage);
 		// Apply it
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {
