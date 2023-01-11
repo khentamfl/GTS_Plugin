@@ -150,7 +150,7 @@ namespace Gts {
 					if (model) {
 						auto node = model->GetObjectByName(addonString);
 						std::deque<NiAVObject*> queue;
-						queue.push_back(model);
+						queue.push_back(node);
 
 						while (!queue.empty()) {
 							auto currentnode = queue.front();
