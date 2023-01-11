@@ -140,6 +140,51 @@ namespace Gts {
 	};
 
 	bool HighHeelManager::IsWearingHH(Actor* actor) {
+
+		// SCAN
+		auto model = actor->Get3D(false);
+		if (model) {
+			std::deque<NiAVObject*> queue;
+			queue.push_back(model);
+
+			while (!queue.empty()) {
+				auto currentnode = queue.front();
+				queue.pop_front();
+				if (currentnode) {
+					auto ninode = currentnode->AsNode();
+					if (ninode) {
+						for (auto child: ninode->GetChildren()) {
+							// Bredth first search
+							queue.push_back(child.get());
+							// Depth first search
+							//queue.push_front(child.get());
+						}
+					}
+					log::trace("Node {}", currentnode->name);
+					{
+						NiExtraData* extraData = currentnode->GetExtraData("HH_OFFSET");
+						if (extraData) {
+							log::info("SCAN: Extra");
+							NiFloatExtraData* floatData = netimmerse_cast<NiFloatExtraData*>(extraData);
+							if (floatData) {
+								log::info("SCAN: ExtraFloat");
+							}
+						}
+					}
+					{
+						NiExtraData* extraData = currentnode->GetExtraData("SDTA");
+						if (extraData) {
+							log::info("Extra2");
+							NiStringExtraData* stringData = netimmerse_cast<NiStringExtraData*>(extraData);
+							if (stringData) {
+								log::info("ExtraString");
+							}
+						}
+					}
+				}
+			}
+		}
+
 		auto armo = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 		if (armo) {
 			for (auto arma: armo->armorAddons) {
