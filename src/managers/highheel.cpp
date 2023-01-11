@@ -154,6 +154,7 @@ namespace Gts {
 
 						while (!queue.empty()) {
 							auto currentnode = queue.front();
+							log::info("node: {}", node->name);
 							queue.pop_front();
 							if (currentnode) {
 								auto ninode = currentnode->AsNode();
