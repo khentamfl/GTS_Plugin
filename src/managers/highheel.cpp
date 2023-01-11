@@ -140,60 +140,6 @@ namespace Gts {
 	};
 
 	bool HighHeelManager::IsWearingHH(Actor* actor) {
-
-		// SCAN
-		auto model = actor->Get3D(false);
-		if (model) {
-			std::deque<NiAVObject*> queue;
-			queue.push_back(model);
-
-			while (!queue.empty()) {
-				auto currentnode = queue.front();
-				queue.pop_front();
-				if (currentnode) {
-					auto ninode = currentnode->AsNode();
-					if (ninode) {
-						for (auto child: ninode->GetChildren()) {
-							// Bredth first search
-							queue.push_back(child.get());
-							// Depth first search
-							//queue.push_front(child.get());
-						}
-					}
-					{
-						NiExtraData* extraData = currentnode->GetExtraData("HH_OFFSET");
-						if (extraData) {
-							log::info("SCAN: Extra");
-							NiFloatExtraData* floatData = netimmerse_cast<NiFloatExtraData*>(extraData);
-							if (floatData) {
-								log::info("SCAN: ExtraFloat");
-							}
-							NiNode* parent = currentnode->parent;
-							while (parent) {
-								log::info("  - {}", parent->name);
-								parent = parent->parent;
-							}
-						}
-					}
-					{
-						NiExtraData* extraData = currentnode->GetExtraData("SDTA");
-						if (extraData) {
-							log::info("SCAN: Extra2");
-							NiStringExtraData* stringData = netimmerse_cast<NiStringExtraData*>(extraData);
-							if (stringData) {
-								log::info("SCAN: ExtraString");
-							}
-							NiNode* parent = currentnode->parent;
-							while (parent) {
-								log::info("  - {}", parent->name);
-								parent = parent->parent;
-							}
-						}
-					}
-				}
-			}
-		}
-
 		auto armo = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 		if (armo) {
 			for (auto arma: armo->armorAddons) {
@@ -203,35 +149,53 @@ namespace Gts {
 					auto model = actor->Get3D(first);
 					if (model) {
 						auto node = model->GetObjectByName(addonString);
-						if (node) {
-							{
-								NiExtraData* extraData = node->GetExtraData("HH_OFFSET");
-								if (extraData) {
-									log::info("Extra");
-									NiFloatExtraData* floatData = netimmerse_cast<NiFloatExtraData*>(extraData);
-									if (floatData) {
-										log::info("ExtraFloat");
-										return fabs(floatData->value) > 1e-4;
+						std::deque<NiAVObject*> queue;
+						queue.push_back(model);
+
+						while (!queue.empty()) {
+							auto currentnode = queue.front();
+							queue.pop_front();
+							if (currentnode) {
+								auto ninode = currentnode->AsNode();
+								if (ninode) {
+									for (auto child: ninode->GetChildren()) {
+										// Bredth first search
+										queue.push_back(child.get());
+										// Depth first search
+										//queue.push_front(child.get());
 									}
 								}
-							}
-							{
-								NiExtraData* extraData = node->GetExtraData("SDTA");
-								if (extraData) {
-									log::info("Extra2");
-									NiStringExtraData* stringData = netimmerse_cast<NiStringExtraData*>(extraData);
-									if (stringData) {
-										log::info("ExtraString");
-										std::string stringDataStr = stringData->value;
-										std::stringstream jsonData(stringDataStr);
-										yaml_source ar(jsonData);
-										vector<RaceMenuSDTA> alterations;
-										ar >> alterations;
-										for (auto alteration: alterations) {
-											if (alteration.name == "NPC") {
-												log::info("NPC Extracted");
-												if (alteration.pos.size() > 2) {
-													return fabs(alteration.pos[2]) > 1e-4;
+								if (currentnode) {
+									{
+										NiExtraData* extraData = currentnode->GetExtraData("HH_OFFSET");
+										if (extraData) {
+											log::info("Extra");
+											NiFloatExtraData* floatData = netimmerse_cast<NiFloatExtraData*>(extraData);
+											if (floatData) {
+												log::info("ExtraFloat");
+												return fabs(floatData->value) > 1e-4;
+											}
+										}
+									}
+									{
+										NiExtraData* extraData = currentnode->GetExtraData("SDTA");
+										if (extraData) {
+											log::info("Extra2");
+											NiStringExtraData* stringData = netimmerse_cast<NiStringExtraData*>(extraData);
+											if (stringData) {
+												log::info("ExtraString");
+												std::string stringDataStr = stringData->value;
+												std::stringstream jsonData(stringDataStr);
+												yaml_source ar(jsonData);
+												vector<RaceMenuSDTA> alterations;
+												ar >> alterations;
+												for (auto alteration: alterations) {
+													if (alteration.name == "NPC") {
+														log::info("NPC Extracted");
+														if (alteration.pos.size() > 2) {
+															return fabs(alteration.pos[2]) > 1e-4;
+														}
+													}
 												}
 											}
 										}
