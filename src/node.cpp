@@ -341,4 +341,66 @@ namespace Gts {
 			}
 		}
 	}
+
+	std::vector<NiAVObject*> GetModelsForSlot(Actor* actor, BGSBipedObjectForm::BipedObjectSlot slot) {
+		std::vector<NiAVObject*> result = {};
+		auto armo = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+		if (armo) {
+			for (auto arma: armo->armorAddons) {
+				if (arma) {
+					char addonString[MAX_PATH]{ '\0' };
+					arma->GetNodeName(addonString, actor, armo, -1);
+
+					std::vector<NiAVObject*> skeletons = {};
+					auto first = actor->Get3D(true);
+					auto third = actor->Get3D(false);
+					if (third != first) {
+						skeletons = {
+							first,third
+						};
+					} else if (third) {
+						skeletons = {
+							third
+						};
+					} else if (first) {
+						skeletons = {
+							first
+						};
+					}
+					for (auto skeleton: skeletons) {
+						if (skeleton) {
+							auto node = skeleton->GetObjectByName(addonString);
+							if (node) {
+								result.push_back(node);
+							}
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	void VisitNodes(NiAVObject* root, std::function<void(NiAVObject& a_obj)> a_visitor) {
+		std::deque<NiAVObject*> queue;
+		queue.push_back(root);
+
+		while (!queue.empty()) {
+			auto currentnode = queue.front();
+			queue.pop_front();
+			if (currentnode) {
+				auto ninode = currentnode->AsNode();
+				if (ninode) {
+					for (auto child: ninode->GetChildren()) {
+						// Bredth first search
+						queue.push_back(child.get());
+						// Depth first search
+						//queue.push_front(child.get());
+					}
+				}
+
+				a_visitor(*currentnode);
+			}
+		}
+	}
 }

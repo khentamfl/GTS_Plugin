@@ -140,72 +140,29 @@ namespace Gts {
 	};
 
 	bool HighHeelManager::IsWearingHH(Actor* actor) {
-		auto armo = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
-		if (armo) {
-			for (auto arma: armo->armorAddons) {
-				char addonString[MAX_PATH]{ '\0' };
-				arma->GetNodeName(addonString, actor, armo, -1);
-				for (bool first: {true, false}) {
-					auto model = actor->Get3D(first);
-					if (model) {
-						auto node = model->GetObjectByName(addonString);
-						std::deque<NiAVObject*> queue;
-						queue.push_back(node);
-
-						while (!queue.empty()) {
-							auto currentnode = queue.front();
-							log::info("node: {}", node->name);
-							queue.pop_front();
-							if (currentnode) {
-								auto ninode = currentnode->AsNode();
-								if (ninode) {
-									for (auto child: ninode->GetChildren()) {
-										// Bredth first search
-										queue.push_back(child.get());
-										// Depth first search
-										//queue.push_front(child.get());
-									}
-								}
-								if (currentnode) {
-									{
-										NiExtraData* extraData = currentnode->GetExtraData("HH_OFFSET");
-										if (extraData) {
-											log::info("Extra");
-											NiFloatExtraData* floatData = netimmerse_cast<NiFloatExtraData*>(extraData);
-											if (floatData) {
-												log::info("ExtraFloat");
-												return fabs(floatData->value) > 1e-4;
-											}
-										}
-									}
-									{
-										NiExtraData* extraData = currentnode->GetExtraData("SDTA");
-										if (extraData) {
-											log::info("Extra2");
-											NiStringExtraData* stringData = netimmerse_cast<NiStringExtraData*>(extraData);
-											if (stringData) {
-												log::info("ExtraString");
-												std::string stringDataStr = stringData->value;
-												std::stringstream jsonData(stringDataStr);
-												yaml_source ar(jsonData);
-												vector<RaceMenuSDTA> alterations;
-												ar >> alterations;
-												for (auto alteration: alterations) {
-													if (alteration.name == "NPC") {
-														log::info("NPC Extracted");
-														if (alteration.pos.size() > 2) {
-															return fabs(alteration.pos[2]) > 1e-4;
-														}
-													}
-												}
-											}
-										}
-									}
-								}
+		auto models = GetModelsForSlot(actor, BGSBipedObjectForm::BipedObjectSlot::kFeet);
+		for (auto model: models) {
+			if (model) {
+				VisitExtraData<NiFloatExtraData>(model, "HH_OFFSET", [](currentnode, data) {
+					log::info("ExtraFloat");
+					return fabs(floatData->value) > 1e-4;
+				});
+				VisitExtraData<NiStringExtraData>(model, "SDTA", [](currentnode, data) {
+					log::info("ExtraString");
+					std::string stringDataStr = stringData->value;
+					std::stringstream jsonData(stringDataStr);
+					yaml_source ar(jsonData);
+					vector<RaceMenuSDTA> alterations;
+					ar >> alterations;
+					for (auto alteration: alterations) {
+						if (alteration.name == "NPC") {
+							log::info("NPC Extracted");
+							if (alteration.pos.size() > 2) {
+								return fabs(alteration.pos[2]) > 1e-4;
 							}
 						}
 					}
-				}
+				});
 			}
 		}
 		return false;
