@@ -10,7 +10,7 @@
 #include "managers/GtsQuest.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/reloader.hpp"
-#include "managers/altcamera.hpp"
+#include "managers/camera.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/vore.hpp"
 #include "managers/CrushManager.hpp"

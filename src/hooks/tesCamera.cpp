@@ -1,7 +1,6 @@
 #include "hooks/tesCamera.hpp"
 #include "data/plugin.hpp"
 #include "util.hpp"
-// #include "managers/altcamera.hpp"
 
 using namespace RE;
 using namespace Gts;

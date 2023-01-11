@@ -3,7 +3,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/vore.hpp"
-#include "managers/altcamera.hpp"
+#include "managers/camera.hpp"
 #include "magic/effects/common.hpp"
 #include "util.hpp"
 #include "scale/scale.hpp"
@@ -71,13 +71,13 @@ namespace Gts {
 					if (buttonEvent->HeldDuration() >= 1.2 && Runtime::HasPerk(player, "SizeReserve") && Cache->SizeReserve > 0) {
 						float SizeCalculation = buttonEvent->HeldDuration() - 1.2;
 						float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->SizeReserve/10); 
+						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->SizeReserve/10);
 
 						if (this->timergrowth.ShouldRunFrame()) {
 							Runtime::PlaySound("growthSound", caster, Cache->SizeReserve/50 * buttonEvent->HeldDuration(), 0.0);
 							Runtime::PlaySound("MoanSound", caster, Volume, 0.0);
 						}
-						
+
 						RandomGrowth::GetSingleton().CallShake(Cache->SizeReserve);
 						mod_target_scale(caster, SizeCalculation/80 * gigantism);
 						Cache->SizeReserve -= SizeCalculation/80;

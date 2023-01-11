@@ -1,4 +1,4 @@
-#include "managers/altcamera.hpp"
+#include "managers/camera.hpp"
 #include "managers/cameras/camutil.hpp"
 #include "managers/highheel.hpp"
 #include "util.hpp"
