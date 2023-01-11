@@ -32,7 +32,7 @@ namespace Gts {
 						NiPoint3 highheelOffset = HighHeelManager::GetHHOffset(player);
 						if (highheelOffset.Length() > 1e-4) {
 							this->smoothFootPos.target.z += OFFSET*playerScale;
-							this-smoothFootPos.target += -0.8 * highheelOffset;
+							this-smoothFootPos.target = this-smoothFootPos.target - highheelOffset * 0.8;
 						}
 					}
 				}
