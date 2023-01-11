@@ -64,43 +64,6 @@ namespace Gts {
 		return result;
 	}
 
-	bool set_fp_scale(Actor* actor, float target_scale, float prone) {
-		// This will set the First Person  scale of the model root and npc root
-		if (!actor->Is3DLoaded()) {
-			return false;
-		}
-		bool result = false;
-		string node_name = "NPC Root [Root]";
-		auto& size_method = Persistent::GetSingleton().size_method;
-		auto first_node = find_node(actor, node_name, true);
-		auto first_model = actor->Get3D(true);
-		float FirstPersonMode = Runtime::GetInt("FirstPersonMode"); // TODO: Fix detection
-
-		if ((size_method == RootScale || size_method == RefScale) && first_node) {
-			result = true;
-			if (FirstPersonMode == 0.0) {
-				first_node->local.scale = target_scale * prone;
-			} else if (FirstPersonMode == 1.0) {
-				first_node->local.scale = 1.0 * prone;
-			} else if (FirstPersonMode == 2.0) {
-				first_node->local.scale = 0.7 * prone;
-			}
-			update_node(first_node);
-		} else if (size_method == ModelScale && first_model) {
-			result = true;
-			if (FirstPersonMode == 0.0) {
-				first_model->local.scale = target_scale * prone;
-			} else if (FirstPersonMode == 1.0) {
-				first_model->local.scale = 1.0 * prone;
-			} else if (FirstPersonMode == 2.0) {
-				first_model->local.scale = 0.7 * prone;
-			}
-			update_node(first_model);
-		}
-		return result;
-	}
-
-
 
 	float get_npcnode_scale(Actor* actor) {
 		// This will set the scale of the root npc node

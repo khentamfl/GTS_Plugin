@@ -17,8 +17,6 @@ namespace Gts {
 	bool set_model_scale(Actor* actor, float target_scale);
 	bool set_npcnode_scale(Actor* actor, float target_scale);
 
-	bool set_fp_scale(Actor* actor, float target_scale, float prone);
-
 	float get_npcnode_scale(Actor* actor);
 	float get_model_scale(Actor* actor);
 	float get_ref_scale(Actor* actor);
