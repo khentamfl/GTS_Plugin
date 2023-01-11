@@ -160,7 +160,7 @@ namespace Gts {
 							//queue.push_front(child.get());
 						}
 					}
-					log::trace("Node {}", currentnode->name);
+					log::info("Node {}", currentnode->name);
 					{
 						NiExtraData* extraData = currentnode->GetExtraData("HH_OFFSET");
 						if (extraData) {
