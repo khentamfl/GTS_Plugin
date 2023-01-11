@@ -381,7 +381,7 @@ namespace Gts {
 		return result;
 	}
 
-	void VisitNodes(NiAVObject* root, std::function<void(NiAVObject& a_obj)> a_visitor) {
+	void VisitNodes(NiAVObject* root, std::function<bool(NiAVObject& a_obj)> a_visitor) {
 		std::deque<NiAVObject*> queue;
 		queue.push_back(root);
 
@@ -399,7 +399,9 @@ namespace Gts {
 					}
 				}
 				log::info("VISIT: {}", currentnode->name);
-				a_visitor(*currentnode);
+				if (!a_visitor(*currentnode)) {
+					return;
+				}
 			}
 		}
 	}
