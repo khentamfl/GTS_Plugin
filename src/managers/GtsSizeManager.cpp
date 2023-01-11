@@ -70,7 +70,7 @@ namespace Gts {
 	}
 
 	void SizeManager::ActorEquip(Actor* actor) {
-		flaot hh_length = HighHeelManager::GetBaseHHOffset(actor);
+		float hh_length = HighHeelManager::GetBaseHHOffset(actor);
 		// TODO move away from polling
 		if (hh_length > 0 && Runtime::HasPerkTeam(actor, "hhBonus")) { // HH damage bonus start
 			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);

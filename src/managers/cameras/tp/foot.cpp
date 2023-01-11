@@ -9,8 +9,8 @@
 using namespace RE;
 
 namespace {
-	const float OFFSET = 0.18f * 70.0f; // About 18cm
-
+	const float OFFSET = 0.04f * 70.0f; // About 4cm up
+}
 
 namespace Gts {
 	void Foot::EnterState() {
@@ -64,8 +64,10 @@ namespace Gts {
 					auto leftPosLocal = transform * (leftFoot->world * NiPoint3());
 					auto rightPosLocal = transform * (rightFoot->world * NiPoint3());
 					this->smoothFootPos.target = (leftPosLocal + rightPosLocal) / 2.0;
-					if (HighHeelManager::IsWearingHH(player)) {
-						this->smoothFootPos.target.z -= OFFSET*playerScale;
+					NiPoint3 highheelOffset = HighHeelManager::GetHHOffset(player);
+					this->smoothFootPos.target.z += OFFSET*playerScale;
+					if (highheelOffset.Length() > 1e-4) {
+						this-smoothFootPos.target += highheelOffset * -0.8;
 					}
 				}
 			}

@@ -9,7 +9,7 @@
 using namespace RE;
 
 namespace {
-	const float OFFSET = 0.18f * 70.0f; // About 18cm
+	const float OFFSET = -0.07f * 70.0f; // About 7cm down
 }
 
 namespace Gts {
@@ -26,8 +26,10 @@ namespace Gts {
 					float playerScale = get_visual_scale(player);
 					auto leftPosLocal = transform * (leftFoot->world * NiPoint3());
 					this->smoothFootPos.target = leftPosLocal;
-					if (HighHeelManager::IsWearingHH(player)) {
-						this->smoothFootPos.target.z -= OFFSET*playerScale;
+					NiPoint3 highheelOffset = HighHeelManager::GetHHOffset(player);
+					if (highheelOffset.Length() > 1e-4) {
+						this->smoothFootPos.target.z += OFFSET*playerScale;
+						this-smoothFootPos.target += highheelOffset * -0.8;
 					}
 				}
 			}
