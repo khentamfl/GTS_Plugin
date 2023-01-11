@@ -50,9 +50,14 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
+		
 		bool adjusted = false;
 		NiPoint3 new_hh = this->GetHHOffset(actor);
 		float hh_length = new_hh.Length();
+		if (Runtime::GetBool("ProneEnabled") && actor->formID == 0x14 && actor->IsSneaking()) {
+			npc_root_node->local.translate = 0;
+			return;
+		}
 		for (bool person: {false, true}) {
 			auto npc_root_node = find_node(actor, "NPC", person);
 			if (npc_root_node) {
