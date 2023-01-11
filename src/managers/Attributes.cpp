@@ -2,6 +2,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
+#include "managers/highheel.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
 #include "data/runtime.hpp"
@@ -49,13 +50,9 @@ namespace {
 		float ExpectedGlobalDamage = 1.0;
 		float ExpectedSprintDamage = 1.0;
 		float ExpectedFallDamage = 1.0;
+		float Highheels = 1.0 + (HighHeelManager::GetSingleton().GetBaseHHOffset(actor).Length()/100);
 
-		NiAVObject* npc_node = find_node(actor, "NPC");
-		if (!npc_node) {
-				return;
-		}
-		float HighHeels = npc_node->local.translate.z/100 + 1.0;
-		//log::info("High Heels: {}", HighHeels);
+		log::info("High Heels Length: {}", HighHeels);
 		///Normal Damage
 		if (Runtime::HasPerk(actor, "Cruelty")) {
 			ExpectedGlobalDamage += 0.35/BalancedMode;
