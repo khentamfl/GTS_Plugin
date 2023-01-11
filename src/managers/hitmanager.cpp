@@ -76,16 +76,17 @@ namespace Gts {
 				log::info("resistedTypedDamage: {}", hitData.resistedTypedDamage);
 				log::info("reflectedDamage: {}", hitData.reflectedDamage);
 				log::info("reflectedDamage: {}", hitData.reflectedDamage);
+				if (receiver == player && Runtime::HasPerk(receiver, "SizeReserveAug")) { // Size Reserve Augmentation
+					auto Cache = Persistent::GetSingleton().GetData(player);
+				if (Cache) {
+					Cache->SizeReserve += hitData.totalDamage/3000; // If received damage is 300, add 0.10 to Size Reserve.
+					}
+				}
 			}
 		}
 
 		// Apply it
-		if (receiver == player && Runtime::HasPerk(receiver, "SizeReserveAug")) { // Size Reserve Augmentation
-			auto Cache = Persistent::GetSingleton().GetData(player);
-			if (Cache) {
-				Cache->SizeReserve += hitData.totalDamage/3000; // If received damage is 300, add 0.10 to Size Reserve.
-			}
-		}
+		
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
