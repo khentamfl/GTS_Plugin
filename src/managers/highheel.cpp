@@ -59,7 +59,7 @@ namespace Gts {
 			auto npc_root_node = find_node(actor, "NPC", person);
 
 			if (actor->formID == 0x14 && Runtime::GetBool("ProneEnabled") && actor->IsSneaking()) {
-				npc_root_node->local.translate = 0.0;
+				npc_root_node->local.translate.z = 0.0;
 				return;
 			}
 			if (npc_root_node) {
