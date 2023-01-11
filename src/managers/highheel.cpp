@@ -49,64 +49,24 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		auto temp_data = Transient::GetSingleton().GetData(actor);
-		if (!temp_data) {
-			return;
-		}
-		auto SizeManager = SizeManager::GetSingleton();
-		float new_hh = 0.0;
-		float currentbonus = Runtime::GetGlobal("HighHeelDamage")->value;
-		float base_hh;
-		float last_hh_adjustment = temp_data->last_hh_adjustment;
-		if (!Persistent::GetSingleton().highheel_correction) {
-			if (fabs(last_hh_adjustment) > 1e-5) {
-				log::trace("Last hh adjustment to turn it off");
-			} else {
-				return;
-			}
-		} else {
-			NiAVObject* npc_node = find_node_any(actor, "NPC");
-			if (!npc_node) {
-				return;
-			}
-
-			NiAVObject* root_node = find_node_any(actor, "NPC Root [Root]");
-			if (!root_node) {
-				return;
-			}
-
-			NiAVObject* com_node = find_node_any(actor, "NPC COM [COM ]");
-			if (!com_node) {
-				return;
-			}
-
-			NiAVObject* body_node = find_node_any(actor, "CME Body [Body]");
-			if (!body_node) {
-				return;
-			}
-
-			base_hh = npc_node->local.translate.z;
-			float scale = root_node->local.scale;
-			new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale);
-		}
-
 		bool adjusted = false;
-		for (bool person: {false, true}) {
-			auto npc_root_node = find_node(actor, "CME Body [Body]", person);
+		NiPoint3 new_hh = this->GetHHOffset(actor);
+		float hh_length = new_hh.Length()
+		                  for (bool person: {false, true}) {
+			auto npc_root_node = find_node(actor, "NPC", person);
 			if (npc_root_node) {
-				float current_value = npc_root_node->local.translate.z;
-				if ((fabs(last_hh_adjustment - new_hh) > 1e-5) || (fabs(current_value - new_hh) > 1e-5) || force) {
-					npc_root_node->local.translate.z = new_hh;
+				float current_value = npc_root_node->local.translate;
+				NiPoint3 delta = current_value - new_hh;
+
+				if (delta.Length() > 1e-5 || force) {
+					npc_root_node->local.translate = new_hh;
 					update_node(npc_root_node);
 					adjusted = true;
 				}
 			}
 		}
 		if (adjusted) {
-			temp_data->last_hh_adjustment = new_hh;
-			temp_data->total_hh_adjustment = new_hh + base_hh;
-
-			if (base_hh > 0 && temp_data->has_hhBonus_perk) { // HH damage bonus start
+			if (hh_length > 0 && Runtime::HasPerkTeam(actor, "hhBonus")) { // HH damage bonus start
 				auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 				float shoe_weight = 1.0;
 				auto char_weight = actor->GetWeight()/280;
@@ -120,7 +80,7 @@ namespace Gts {
 					log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 3));
 					// Feel free to remove it once we move it to DLL completely ^
 				}
-			} else if (base_hh <= 0) {
+			} else if (hh_length <= 1e-4) {
 				if (SizeManager.GetSizeAttribute(actor, 3) != 1.0) {
 					SizeManager.SetSizeAttribute(actor, 1.0, 3);
 					log::info("SizeManager HH Actor {} RESET value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 3));
@@ -139,19 +99,16 @@ namespace Gts {
 		}
 	};
 
-	bool HighHeelManager::IsWearingHH(Actor* actor) {
+	NiPoint3 HighHeelManager::GetBaseHHOffset(Actor* actor) {
 		auto models = GetModelsForSlot(actor, BGSBipedObjectForm::BipedObjectSlot::kFeet);
-		bool result = false;
+		NiPoint3 result = NiPoint3();
 		for (auto model: models) {
-			log::info("Found model");
 			if (model) {
 				VisitExtraData<NiFloatExtraData>(model, "HH_OFFSET", [&result](NiAVObject& currentnode, NiFloatExtraData& data) {
-					log::info("ExtraFloat");
-					result = fabs(data.value) > 1e-4;
+					result.z = fabs(data.value);
 					return false;
 				});
 				VisitExtraData<NiStringExtraData>(model, "SDTA", [&result](NiAVObject& currentnode, NiStringExtraData& data) {
-					log::info("ExtraString");
 					std::string stringDataStr = data.value;
 					std::stringstream jsonData(stringDataStr);
 					yaml_source ar(jsonData);
@@ -159,9 +116,8 @@ namespace Gts {
 					ar >> alterations;
 					for (auto alteration: alterations) {
 						if (alteration.name == "NPC") {
-							log::info("NPC Extracted");
 							if (alteration.pos.size() > 2) {
-								result = fabs(alteration.pos[2]) > 1e-4;
+								result = NiPoint3(alteration.pos[0], alteration.pos[1], alteration.pos[2]);
 								return false;
 							}
 						}
@@ -171,5 +127,17 @@ namespace Gts {
 			}
 		}
 		return result;
+	}
+
+	NiPoint3 HighHeelManager::GetHHOffset(Actor* actor) {
+		if (actor) {
+			auto scale = get_visual_scale(actor);
+			return this->GetBaseHHOffset(actor) * scale;
+		}
+		return NiPoint3();
+	}
+
+	bool HighHeelManager::IsWearingHH(Actor* actor) {
+		return this->GetBaseHHOffset(actor).Length() > 1e-3;
 	}
 }

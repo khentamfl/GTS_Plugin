@@ -358,23 +358,14 @@ namespace Gts {
 				if (arma) {
 					char addonString[MAX_PATH]{ '\0' };
 					arma->GetNodeName(addonString, actor, armo, -1);
-					log::info("Looking for: {}", addonString);
 					for (auto first: {true, false}) {
 						auto node = find_node(actor, addonString, first);
 						if (node) {
 							result.push_back(node);
-						} else {
-							log::info("No Node");
 						}
 					}
-				} else {
-					log::info("No Arma");
 				}
-			} else {
-				log::info("No Armo");
 			}
-		} else {
-			log::info("No Actor");
 		}
 		return result;
 	}
@@ -396,7 +387,6 @@ namespace Gts {
 						//queue.push_front(child.get());
 					}
 				}
-				log::info("VISIT: {}", currentnode->name);
 				if (!a_visitor(*currentnode)) {
 					return;
 				}
