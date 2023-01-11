@@ -149,7 +149,7 @@ namespace Gts {
 					result = fabs(data.value) > 1e-4;
 					return false;
 				});
-				VisitExtraData<NiStringExtraData>(model, "SDTA", [*result](NiAVObject& currentnode, NiStringExtraData& data) {
+				VisitExtraData<NiStringExtraData>(model, "SDTA", [&result](NiAVObject& currentnode, NiStringExtraData& data) {
 					log::info("ExtraString");
 					std::string stringDataStr = data.value;
 					std::stringstream jsonData(stringDataStr);
