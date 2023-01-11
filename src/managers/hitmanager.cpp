@@ -82,7 +82,7 @@ namespace Gts {
 		// Apply it
 		if (receiver == player && Runtime::HasPerk(receiver, "SizeReserveAug")) { // Size Reserve Augmentation
 			auto Cache = Persistent::GetSingleton().GetData(player);
-			if (cache) {
+			if (Cache) {
 				Cache->SizeReserve += hitData.totalDamage/3000; // If received damage is 300, add 0.10 to Size Reserve.
 			}
 		}
