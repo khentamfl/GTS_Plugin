@@ -1,4 +1,3 @@
-#include "managers/camera.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "scale/scale.hpp"
@@ -38,7 +37,7 @@ namespace Gts {
 				duration = 1.2;
 			}
 			//log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, Distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, Distance, falloff);
-			
+
 			if (Receiver == Player) {
 				shake_controller(intensity*Modifier, intensity*Modifier, duration);
 				shake_camera(Receiver, intensity*Modifier, duration);

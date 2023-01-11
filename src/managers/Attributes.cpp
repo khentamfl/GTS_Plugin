@@ -1,4 +1,3 @@
-#include "managers/camera.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
