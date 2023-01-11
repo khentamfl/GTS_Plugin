@@ -52,7 +52,7 @@ namespace Gts {
 
 		NiPoint3 new_hh = this->GetHHOffset(actor);
 		if (IsProne(actor)) {
-			new_hh = NiPoint3()
+			new_hh = NiPoint3();
 		}
 		float hh_length = new_hh.Length();
 
