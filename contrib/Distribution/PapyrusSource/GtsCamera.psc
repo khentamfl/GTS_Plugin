@@ -14,6 +14,8 @@ Bool Function GetEnableCollisionTerrain() global native
 Function SetEnableCollisionStatic(bool enabled) global native
 Bool Function GetEnableCollisionStatic() global native
 
+Function ResetTheCamera() global native
+
 ; Get/Set the scale below which camera collisions acts like default
 ; and above which the camera adheres to the settings above
 ;
