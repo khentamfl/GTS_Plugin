@@ -4,7 +4,7 @@
 using namespace RE;
 
 namespace {
-	const float ZOOM_CORRECTION = 0.25;
+	const float ZOOM_CORRECTION = 0.95;
 }
 
 namespace Gts {
@@ -250,6 +250,21 @@ namespace Gts {
 		return cameraTrans;
 	}
 
+	float ZoomFactor() {
+		auto camera = PlayerCamera::GetSingleton();
+		auto camState = camera->cameraStates[CameraState::kThirdPerson].get();
+		if (camState) {
+			ThirdPersonState* tpState = skyrim_cast<ThirdPersonState*>(camState);
+			if (tpState) {
+				return tpState->currentZoomOffset;
+			}
+		}
+		return 0.0;
+	}
+	float MaxZoom() {
+		return GetINIFloat("fVanityModeMaxDist:Camera");
+	}
+
 	NiPoint3 CompuleLookAt() {
 		auto camera = PlayerCamera::GetSingleton();
 		if (camera) {
@@ -260,8 +275,8 @@ namespace Gts {
 				NiQuaternion cameraRot;
 				camState->GetRotation(cameraRot);
 				NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
-				float zoomOffset = (cameraTrans - FirstPersonPoint()).Length() * ZOOM_CORRECTION;
-				log::info("zoomOffset: {}", zoomOffset);
+
+				float zoomOffset = ZoomFactor() * MaxZoom() * ZOOM_CORRECTION;
 				NiPoint3 zoomOffsetVec = NiPoint3(0.0, zoomOffset, 0.0);
 				return cameraRotMat * zoomOffsetVec + cameraTrans;
 			}
@@ -311,7 +326,7 @@ namespace Gts {
 							UpdatePlayerCamera(targetLocationLocalShifted);
 							UpdateNiCamera(targetLocationLocalShifted);
 							// UpdateSceneManager(targetLocationLocal);
-							// UpdateRenderManager(targetLocationLocal);				
+							// UpdateRenderManager(targetLocationLocal);
 						}
 					}
 				}
