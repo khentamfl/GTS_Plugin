@@ -1,6 +1,6 @@
 #include "managers/cameras/tp/footR.hpp"
 #include "managers/cameras/camutil.hpp"
-#include "manager/highheel.hpp"
+#include "managers/highheel.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
