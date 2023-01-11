@@ -15,7 +15,7 @@ namespace Gts {
 		if (player) {
 			auto scale = get_visual_scale(player);
 			auto boneTarget = this->GetBoneTarget();
-			if (!boneTarget.bonesNames.empty()) {
+			if (!boneTarget.boneNames.empty()) {
 				auto player = PlayerCharacter::GetSingleton();
 				if (player) {
 					auto rootModel = player->Get3D(false);
