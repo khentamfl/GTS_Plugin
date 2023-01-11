@@ -35,7 +35,7 @@ namespace Gts {
 
 	void SizeManager::Update() {
 		for (auto actor: find_actors()) {
-
+			// TODO move away from polling
 			bool Balance = false; // Toggles Balance Mode for the mod. False = off, true = on.
 
 			float QuestStage = Runtime::GetStage("MainQuest");
@@ -71,9 +71,10 @@ namespace Gts {
 
 	void SizeManager::ActorEquip(Actor* actor) {
 		flaot hh_length = HighHeelManager::GetBaseHHOffset(actor);
+		// TODO move away from polling
 		if (hh_length > 0 && Runtime::HasPerkTeam(actor, "hhBonus")) { // HH damage bonus start
 			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
-			float shoe_weight = 1.0;
+			float shoe_weight = 1.0; // TODO: Just absorb it into the base
 			auto char_weight = actor->GetWeight()/280;
 			if (shoe) {
 				shoe_weight = shoe->weight/20;

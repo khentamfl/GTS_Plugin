@@ -16,6 +16,8 @@ using namespace RE;
 using namespace REL;
 using namespace Gts;
 
+// TODO move away from polling
+
 namespace {
 	void SetINIFloat(std::string_view name, float value) {
 		auto ini_conf = GameSettingCollection::GetSingleton();
@@ -77,7 +79,7 @@ namespace {
 		if (Runtime::HasPerk(actor, "MightyLegs")) {
 			ExpectedFallDamage += 0.5/BalancedMode;
 		}
-		///Buff by enchantment 
+		///Buff by enchantment
 		ExpectedGlobalDamage *= gigantism;
 		ExpectedSprintDamage *= gigantism;
 		ExpectedFallDamage *= gigantism;
@@ -258,7 +260,7 @@ namespace {
 		float bonusSpeedMultiplier = Runtime::GetFloat("bonusSpeedMultiplier");
 
 		float size = get_target_scale(Player);
-		
+
 		static Timer timer = Timer(0.05);
 
 		ManagePerkBonuses(Player);
@@ -302,7 +304,7 @@ namespace {
 		}
 		static Timer timer = Timer(0.05);
 		float size = get_target_scale(npc);
-		
+
 		if (timer.ShouldRunFrame()) {
 			if (npc->IsPlayerTeammate() || Runtime::InFaction(npc, "FollowerFaction")) {
 				BoostHP(npc, 1.0);
