@@ -1,5 +1,6 @@
 #include "managers/cameras/tp/footR.hpp"
 #include "managers/cameras/camutil.hpp"
+#include "manager/highheel.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
@@ -16,11 +17,6 @@ namespace Gts {
 		float base_hh = 0;
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 		auto player = PlayerCharacter::GetSingleton();
-		NiAVObject* npc_node = find_node_any(player, "NPC");
-			if (npc_node) {
-				base_hh = npc_node->local.translate.z;
-			}
-			
 
 		if (player) {
 			auto rootModel = player->Get3D(false);
@@ -31,7 +27,7 @@ namespace Gts {
 					float playerScale = get_visual_scale(player);
 					auto rightPosLocal = transform * (rightFoot->world * NiPoint3());
 					this->smoothFootPos.target = rightPosLocal;
-					if (base_hh > 0.01) {
+					if (HighHeelManager::IsWearingHH(player)) {
 						this->smoothFootPos.target.z -= OFFSET*playerScale;
 					}
 				}

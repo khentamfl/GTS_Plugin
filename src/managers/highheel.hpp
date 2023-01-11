@@ -15,9 +15,9 @@ namespace Gts {
 			virtual void ActorEquip(Actor* actor) override;
 			virtual void ActorLoaded(Actor* actor) override;
 
-			bool IsWearingHH(Actor* actor); // Checks if GetBaseHHOffset().Length() > 1e-4
-			NiPoint3 GetBaseHHOffset(Actor* actor); // Unscaled HH as read from the shoe data
-			NiPoint3 GetHHOffset(Actor* actor); // Scaled HH
+			static bool IsWearingHH(Actor* actor); // Checks if GetBaseHHOffset().Length() > 1e-4
+			static NiPoint3 GetBaseHHOffset(Actor* actor); // Unscaled HH as read from the shoe data
+			static NiPoint3 GetHHOffset(Actor* actor); // Scaled HH
 
 			void ApplyHH(Actor* actor, bool force);
 	};
