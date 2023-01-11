@@ -5,6 +5,7 @@
 #include "scale/scale.hpp"
 #include "node.hpp"
 #include "util.hpp"
+#include "actorUtils.hpp"
 
 using namespace RE;
 
@@ -64,10 +65,12 @@ namespace Gts {
 					auto leftPosLocal = transform * (leftFoot->world * NiPoint3());
 					auto rightPosLocal = transform * (rightFoot->world * NiPoint3());
 					this->smoothFootPos.target = (leftPosLocal + rightPosLocal) / 2.0;
-					NiPoint3 highheelOffset = HighHeelManager::GetHHOffset(player);
-					this->smoothFootPos.target.z += OFFSET*playerScale;
-					if (highheelOffset.Length() > 1e-4) {
-						this-smoothFootPos.target += highheelOffset * -0.8;
+					if (!IsProne(player)) {
+						NiPoint3 highheelOffset = HighHeelManager::GetHHOffset(player);
+						this->smoothFootPos.target.z += OFFSET*playerScale;
+						if (highheelOffset.Length() > 1e-4) {
+							this-smoothFootPos.target += highheelOffset * -0.8;
+						}
 					}
 				}
 			}
