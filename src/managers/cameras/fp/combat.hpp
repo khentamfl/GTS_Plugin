@@ -6,6 +6,6 @@ using namespace RE;
 namespace Gts {
 	class FirstPersonCombat : public FirstPersonCameraState {
 		public:
-			virtual NiPoint3 GetPlayerLocalOffset(const NiPoint3& cameraPos) override;
+			virtual float GetScaleOverride(bool isProne) override;
 	};
 }

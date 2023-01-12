@@ -9,6 +9,8 @@ namespace Gts {
 			virtual void ExitState();
 
 			virtual float GetScale();
+			virtual float GetScaleOverride(bool isProne);
+
 			virtual NiPoint3 GetOffset(const NiPoint3& cameraPosLocal);
 			virtual NiPoint3 GetOffset(const NiPoint3& cameraPosLocal, bool isProne);
 			virtual NiPoint3 GetOffsetProne(const NiPoint3& cameraPosLocal);

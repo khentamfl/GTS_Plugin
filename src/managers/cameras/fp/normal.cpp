@@ -6,13 +6,14 @@
 using namespace RE;
 
 namespace Gts {
-	NiPoint3 FirstPerson::GetPlayerLocalOffsetProne(const NiPoint3& cameraPos) {
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
+	float FirstPerson::GetScaleOverride(bool isProne) {
+		float proneFactor = 1.0;
+		if (isProne) {
+			auto player = PlayerCharacter::GetSingleton();
 			float scale = get_visual_scale(player);
-			float base_height = get_base_height(player);
-			return NiPoint3(0.0, 0.0, -base_height*scale) + ProneAdjustment(cameraPos)*scale;
+			return scale * this->ProneAdjustment();
+		} else {
+			return -1.0;;
 		}
-		return NiPoint3();
 	}
 }

@@ -6,11 +6,8 @@ using namespace RE;
 using namespace Gts;
 
 namespace  Gts {
-	NiPoint3 FirstPersonCameraState::ProneAdjustment(const NiPoint3& cameraPos) {
-		float proneFactor = clamp(0.25, 20.0, 3.0 * Runtime::GetFloat("ProneOffsetFP"));
-		NiPoint3 result = NiPoint3();
-		result.z = -cameraPos.z * proneFactor;
-		return result;
+	NiPoint3 FirstPersonCameraState::ProneAdjustment() {
+		return clamp(0.25, 20.0, 3.0 * Runtime::GetFloat("ProneOffsetFP"));
 	}
 
 	NiPoint3 FirstPersonCameraState::GetPlayerLocalOffsetProne(const NiPoint3& cameraPos) {

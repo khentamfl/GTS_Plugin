@@ -5,14 +5,16 @@
 
 using namespace RE;
 
+namespace {
+	const float BASE_OVERRIDE = 0.7;
+}
+
 namespace Gts {
-	NiPoint3 FirstPersonLoot::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			float scale = get_visual_scale(player);
-			float base_height = get_base_height(player);
-			return NiPoint3(0.0, 0.0, -base_height*(scale-0.7));
+	float FirstPersonLoot::GetScaleOverride(bool isProne) {
+		float proneFactor = 1.0;
+		if (isProne) {
+			proneFactor = this->ProneAdjustment();
 		}
-		return NiPoint3();
+		return BASE_OVERRIDE * proneFactor;
 	}
 }

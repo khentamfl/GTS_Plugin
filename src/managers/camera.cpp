@@ -77,6 +77,12 @@ namespace Gts {
 			// Get scale based on camera state
 			float scale = currentState->GetScale();
 
+			// Do any scale overrides
+			auto playerData = Persistent::GetSingleton().GetData(player);
+			if (playerData) {
+				playerData.scaleOverride = currentState->GetScaleOverride();
+			}
+
 			// Get current camera position in player space
 			auto cameraPosLocal  = GetCameraPosLocal();
 

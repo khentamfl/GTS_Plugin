@@ -5,15 +5,16 @@
 
 using namespace RE;
 
+namespace {
+	const float BASE_OVERRIDE = 1.0;
+}
+
 namespace Gts {
-	NiPoint3 FirstPersonCombat::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			float scale = get_visual_scale(player);
-			float base_height = get_base_height(player);
-			log::info("Combat Player Local Offset");
-			return NiPoint3(0.0, 0.0, -base_height*(scale-1.0));
+	float FirstPersonCombat::GetScaleOverride(bool isProne) {
+		float proneFactor = 1.0;
+		if (isProne) {
+			proneFactor = this->ProneAdjustment();
 		}
-		return NiPoint3();
+		return BASE_OVERRIDE * proneFactor;
 	}
 }

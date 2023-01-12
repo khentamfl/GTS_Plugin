@@ -22,6 +22,10 @@ namespace Gts {
 		return result;
 	}
 
+	float CameraState::GetScaleOverride(bool isProne) {
+		return -1.0;
+	}
+
 	NiPoint3 CameraState::GetOffset(const NiPoint3& cameraPosLocal) {
 		return NiPoint3(0.0, 0.0, 0.0);
 	}
