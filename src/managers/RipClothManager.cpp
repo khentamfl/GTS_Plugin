@@ -27,7 +27,6 @@ namespace Gts {
 
 	void ClothManager::CheckRip() {
 		if (Runtime::GetFloat("AllowClothTearing") == 0.0) {
-			log::info("Cloth Tearing Disabled");
 			return; // Abort doing anything if not set to 1
 		}
 		static Timer timer = Timer(4.5);
@@ -63,7 +62,6 @@ namespace Gts {
 
 			//log::info("Armor Slot: {}", ArmorSlot);
 			if (!player || scale <= 2.5) {
-				log::info("Scale <= 2.5");
 				return;
 			}
 
@@ -71,20 +69,14 @@ namespace Gts {
 				this->clothtearcount = 0.0;
 				this->clothtearthreshold = 2.5; // reset stuff
 			}
-			if (ArmorSlot != nullptr) {
-				//log::info("Armor Name: {}", ArmorSlot->GetName());
-				log::info("Armor is not nullptr");
-			}
-			if (scale >= this->clothtearthreshold) {
-				log::info("Scale >= threshold");
-			}
 			if (ArmorSlot != nullptr && scale >= this->clothtearthreshold) {
+				log::info("Unequipping armor");
 				this->clothtearthreshold += (rand() % 750000) / 1000000;
 				this->clothtearcount +=1.0;
-				player->UnequipItem(0, ArmorSlot);
+				player->UnequipItem(1, ArmorSlot);
 				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
 				Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
-				GrowthTremorManager::GetSingleton().CallRumble(player, player, 2 * scale);
+				GrowthTremorManager::GetSingleton().CallRumble(player, player, 8 * scale);
 				log::info("Cloth Tearing Success. Threshold: {}, count: {}, Unequipped Armor: {}", this->clothtearthreshold, this->clothtearcount, ArmorSlot->GetFullName());
 			}
 		}

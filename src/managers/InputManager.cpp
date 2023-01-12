@@ -192,7 +192,7 @@ namespace Gts {
 			mod_target_scale(caster, 0.0012 * scale * stamina);
 			float Volume = clamp(0.10, 2.0, get_target_scale(caster)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, scale/10);
-			log::info("Growing {}, rate: {}, scale: {}, stamina: {}", player->GetDisplayFullName(), (0.0012 * scale) * stamina, scale, stamina);
+			//log::info("Growing {}, rate: {}, scale: {}, stamina: {}", player->GetDisplayFullName(), (0.0012 * scale) * stamina, scale, stamina);
 			if (this->timergrowth.ShouldRun()) {
 				Runtime::PlaySound("growthSound", caster, Volume, 0.0);
 			}
@@ -223,7 +223,7 @@ namespace Gts {
 					mod_target_scale(target, (0.0012 * npcscale) * magicka);
 					float Volume = clamp(0.05, 2.0, get_target_scale(target)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.25);
-					log::info("Growing {}, rate: {}, npcscale: {}, magic: {}", actor->GetDisplayFullName(), (0.0012 * npcscale) * magicka, npcscale, magicka);
+					//log::info("Growing {}, rate: {}, npcscale: {}, magic: {}", actor->GetDisplayFullName(), (0.0012 * npcscale) * magicka, npcscale, magicka);
 					if (this->timergrowth.ShouldRun()) {
 						Runtime::PlaySound("growthSound", target, Volume, 0.0);
 					}
