@@ -132,7 +132,7 @@ namespace Gts {
 		return "CrushManager";
 	}
 
-	void CrushManager::Update() {
+	void CrushManager::PapyrusUpdate() {
 		for (auto &[tiny, data]: this->data) {
 			auto giant = data.giant;
 			if (!tiny) {
