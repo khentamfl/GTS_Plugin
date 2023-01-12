@@ -27,12 +27,15 @@ namespace Gts {
 	}
 
 	void Disintegrate(Actor* actor) {
-		CallFunctionOn(actor, "actor", "SetCriticalStage", 4);
-		// actor->Disable();
+		actor->criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+		// CallFunctionOn(actor, "actor", "SetCriticalStage", 4);
+		actor->Disable();
 	}
 
 	void UnDisintegrate(Actor* actor) {
-		CallFunctionOn(actor, "Actor", "SetCriticalStage", 0);
+		actor->criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+		// CallFunctionOn(actor, "Actor", "SetCriticalStage", 0);
+		// actor->Enable();
 	}
 
 	void SetRestrained(Actor* actor) {
