@@ -34,7 +34,7 @@ namespace Gts {
 		if (timer.ShouldRunFrame()) {
 
 			auto player = PlayerCharacter::GetSingleton();
-			float scale = get_target_scale(player);
+			float scale = get_visual_scale(player);
 
 			auto feet = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 			auto head = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHead);
