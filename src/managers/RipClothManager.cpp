@@ -29,7 +29,7 @@ namespace Gts {
 		if (Runtime::GetFloat("AllowClothTearing") == 0.0) {
 			return; // Abort doing anything if not set to 1
 		}
-		static Timer timer = Timer(4.5);
+		static Timer timer = Timer(2.5);
 		if (timer.ShouldRunFrame()) {
 
 			auto player = PlayerCharacter::GetSingleton();
@@ -71,12 +71,9 @@ namespace Gts {
 			}
 			if (ArmorSlot != nullptr && scale >= this->clothtearthreshold) {
 				log::info("Unequipping armor");
-				this->clothtearthreshold += 0.50;
+				this->clothtearthreshold += ((rand() % 750000) / 1000000) + 0.01;
 				this->clothtearcount +=1.0;
-
-				auto manager = RE::ActorEquipManager::GetSingleton();
-				manager->UnequipObject(player, ArmorSlot);
-
+				player->UnequipItem(1, ArmorSlot);
 				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
 				Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
 				GrowthTremorManager::GetSingleton().CallRumble(player, player, 8 * scale);
