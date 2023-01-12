@@ -63,7 +63,7 @@ namespace Gts {
 		static Timer timer = Timer(0.25);
 
 
-		if (attacker != nullptr && receiver != nullptr) {
+		/*if (attacker != nullptr && receiver != nullptr) {
 			HitData hitData;
 			auto weapon = attacker->GetAttackingWeapon();
 			if (weapon) {
@@ -76,14 +76,14 @@ namespace Gts {
 				log::info("resistedTypedDamage: {}", hitData.resistedTypedDamage);
 				log::info("reflectedDamage: {}", hitData.reflectedDamage);
 				log::info("reflectedDamage: {}", hitData.reflectedDamage);
-				/*if (receiver == player && Runtime::HasPerk(receiver, "SizeReserveAug")) { // Size Reserve Augmentation
+				if (receiver == player && Runtime::HasPerk(receiver, "SizeReserveAug")) { // Size Reserve Augmentation
 					auto Cache = Persistent::GetSingleton().GetData(player);
 				if (Cache) {
 					Cache->SizeReserve += hitData.totalDamage/3000; // If received damage is 300, add 0.10 to Size Reserve.
 					}
-				}*/
+				}
 			}
-		}
+		}*/
 
 		// Apply it
 		
