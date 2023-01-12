@@ -6,7 +6,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace  Gts {
-	NiPoint3 FirstPersonCameraState::ProneAdjustment() {
+	float FirstPersonCameraState::ProneAdjustment() {
 		return clamp(0.25, 20.0, 3.0 * Runtime::GetFloat("ProneOffsetFP"));
 	}
 

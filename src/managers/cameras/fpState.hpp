@@ -10,6 +10,6 @@ namespace Gts {
 			virtual bool PermitManualEdit() override;
 			virtual bool PermitTransition() override;
 
-			virtual NiPoint3 ProneAdjustment();
+			virtual float ProneAdjustment();
 	};
 }
