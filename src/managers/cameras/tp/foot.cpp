@@ -10,7 +10,7 @@
 using namespace RE;
 
 namespace {
-	const float OFFSET = 0.04f * 70.0f; // About 4cm up
+	const float OFFSET = 0.12f * 70.0f; // About 12cm up
 }
 
 namespace Gts {
@@ -69,7 +69,7 @@ namespace Gts {
 						NiPoint3 highheelOffset = HighHeelManager::GetHHOffset(player);
 						this->smoothFootPos.target.z += OFFSET*playerScale;
 						if (highheelOffset.Length() > 1e-4) {
-							this->smoothFootPos.target -= highheelOffset * 0.8;
+							this->smoothFootPos.target -= highheelOffset;
 						}
 					}
 				}
