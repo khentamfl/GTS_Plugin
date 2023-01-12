@@ -21,76 +21,72 @@ namespace Gts {
 		return instance;
 	}
 
-    std::string ClothManager::DebugName() {
+	std::string ClothManager::DebugName() {
 		return "ClothManager";
 	}
 
 	void ClothManager::CheckRip() {
-		auto player = PlayerCharacter::GetSingleton();
-        float scale = get_target_scale(player);
+		if (Runtime::GetFloat("AllowClothTearing") == 0.0) {
+			log::info("Cloth Tearing Disabled");
+			return; // Abort doing anything if not set to 1
+		}
+		static Timer timer = Timer(4.5);
+		if (timer.ShouldRunFrame()) {
 
-        auto feet = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
-        auto head = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHead);
-        auto body = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kBody);
-        auto hands = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHands);
-        auto forearms = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kForearms);
-        auto calves = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kCalves);
-        int RandomSlot = rand() % 5; // Randomly choose slot to strip
+			auto player = PlayerCharacter::GetSingleton();
+			float scale = get_target_scale(player);
 
-        auto ArmorSlot = feet;
+			auto feet = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+			auto head = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHead);
+			auto body = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kBody);
+			auto hands = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHands);
+			auto forearms = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kForearms);
+			auto calves = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kCalves);
+			int RandomSlot = rand() % 6; // Randomly choose slot to strip
 
-        if (RandomSlot == 0) {
-            ArmorSlot = feet;
-        }
-        else if (RandomSlot == 1) {
-            ArmorSlot = head;
-        }
-        else if (RandomSlot == 2) {
-            ArmorSlot = body;
-        }
-        else if (RandomSlot == 3) {
-            ArmorSlot = hands;
-        }
-        else if (RandomSlot == 4) {
-            ArmorSlot = forearms;
-        }
-        else if (RandomSlot == 5) {
-            ArmorSlot = calves;
-        }
-    
-        static Timer timer = Timer(4.5);
-        if (timer.ShouldRunFrame()) {
-            if (Runtime::GetFloat("AllowClothTearing") == 0.0) {
-                 log::info("Cloth Tearing Disabled");
-                 return; // Abort doing anything if not set to 1
-             }
-            //log::info("Armor Slot: {}", ArmorSlot);
-		    if (!player || scale <= 2.5) {
-                log::info("Scale <= 2.5");
-			    return;
-		    }
-             
-             if (this->clothtearcount >= 5.0) {
-                this->clothtearcount = 0.0;
-                this->clothtearthreshold = 2.5; // reset stuff
-             }
-             if (ArmorSlot != nullptr) {
-                //log::info("Armor Name: {}", ArmorSlot->GetName());
-                log::info("Armor is not nullptr");
-             }
-             if (scale >= this->clothtearthreshold) {
-                log::info("Scale >= threshold");
-             }
-             if (ArmorSlot != nullptr && scale >= this->clothtearthreshold)
-             {
-                this->clothtearthreshold += rand() % 75; 
-                this->clothtearcount +=1.0;
-                ArmorSlot->As<TESObjectREFR>()->UnequipItem(true, ArmorSlot); // Crashes here?
-                Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
-                Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
-                GrowthTremorManager::GetSingleton().CallRumble(player, player, 2 * scale);
-                log::info("Cloth Tearing Success. Threshold: {}, count: {}", this->clothtearthreshold, this->clothtearcount);
-            }
-	    }
-    } 
+			auto ArmorSlot = feet;
+
+			if (RandomSlot == 0) {
+				ArmorSlot = feet;
+			} else if (RandomSlot == 1) {
+				ArmorSlot = head;
+			} else if (RandomSlot == 2) {
+				ArmorSlot = body;
+			} else if (RandomSlot == 3) {
+				ArmorSlot = hands;
+			} else if (RandomSlot == 4) {
+				ArmorSlot = forearms;
+			} else if (RandomSlot == 5) {
+				ArmorSlot = calves;
+			}
+
+
+			//log::info("Armor Slot: {}", ArmorSlot);
+			if (!player || scale <= 2.5) {
+				log::info("Scale <= 2.5");
+				return;
+			}
+
+			if (this->clothtearcount >= 5.0) {
+				this->clothtearcount = 0.0;
+				this->clothtearthreshold = 2.5; // reset stuff
+			}
+			if (ArmorSlot != nullptr) {
+				//log::info("Armor Name: {}", ArmorSlot->GetName());
+				log::info("Armor is not nullptr");
+			}
+			if (scale >= this->clothtearthreshold) {
+				log::info("Scale >= threshold");
+			}
+			if (ArmorSlot != nullptr && scale >= this->clothtearthreshold) {
+				this->clothtearthreshold += rand() % 75;
+				this->clothtearcount +=1.0;
+				player->UnequipItem(0, ArmorSlot);
+				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
+				Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
+				GrowthTremorManager::GetSingleton().CallRumble(player, player, 2 * scale);
+				log::info("Cloth Tearing Success. Threshold: {}, count: {}", this->clothtearthreshold, this->clothtearcount);
+			}
+		}
+	}
 }
