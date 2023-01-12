@@ -67,4 +67,7 @@ namespace Gts {
 	bool CameraState::PermitManualEdit() {
 		return true;
 	}
+	bool CameraState::PermitTransition() {
+		return true;
+	}
 }

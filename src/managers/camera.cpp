@@ -46,8 +46,12 @@ namespace Gts {
 			this->currentState = currentState;
 			if (prevState) {
 				if (currentState) {
-					this->transitionState.reset(new TransState(prevState, currentState));
-					currentState = this->transitionState.get();
+					if (currentState->PermitTransition() && prevState->PermitTransition()) {
+						this->transitionState.reset(new TransState(prevState, currentState));
+						currentState = this->transitionState.get();
+					} else {
+						this->transitionState.reset(nullptr);
+					}
 				} else {
 					this->transitionState.reset(nullptr);
 				}

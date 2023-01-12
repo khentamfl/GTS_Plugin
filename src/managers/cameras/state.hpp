@@ -22,5 +22,6 @@ namespace Gts {
 			virtual NiPoint3 GetPlayerLocalOffsetProne(const NiPoint3& cameraPosLocal);
 
 			virtual bool PermitManualEdit();
+			virtual bool PermitTransition();
 	};
 }

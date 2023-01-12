@@ -26,4 +26,7 @@ namespace  Gts {
 	bool FirstPersonCameraState::PermitManualEdit() {
 		return false;
 	}
+	bool FirstPersonCameraState::PermitTransition() {
+		return false;
+	}
 }

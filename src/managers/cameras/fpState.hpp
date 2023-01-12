@@ -8,6 +8,7 @@ namespace Gts {
 		public:
 			virtual NiPoint3 GetPlayerLocalOffsetProne(const NiPoint3& cameraPos) override;
 			virtual bool PermitManualEdit() override;
+			virtual bool PermitTransition() override;
 
 			virtual NiPoint3 ProneAdjustment(const NiPoint3& cameraPosLocal);
 	};
