@@ -65,14 +65,15 @@ namespace Gts {
 				return;
 			}
 
-			if (this->clothtearcount >= 5.0) {
-				this->clothtearcount = 0.0;
+			if (scale < this->clothtearthreshold - 0.5 && this->clothtearthreshold > 2.5) {
 				this->clothtearthreshold = 2.5; // reset stuff
+			}
+			if (this->clothtearthreshold < 2.5) {
+				this->clothtearthreshold = 2.5;
 			}
 			if (ArmorSlot != nullptr && scale >= this->clothtearthreshold) {
 				log::info("Unequipping armor");
-				this->clothtearthreshold += ((rand() % 750000) / 1000000) + 0.01;
-				this->clothtearcount +=1.0;
+				this->clothtearthreshold += 0.10 * ((rand() % 7) + 1.0);
 
 				auto manager = RE::ActorEquipManager::GetSingleton();
 				manager->UnequipObject(player, ArmorSlot);
