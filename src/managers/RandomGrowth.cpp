@@ -123,7 +123,7 @@ namespace Gts {
 			float base_power = ((0.00185 * TotalPower * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
 			RestoreStats(); // Regens Attributes if PC has perk
 			mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps
-			GrowthTremorManager::GetSingleton().CallRumble(player, player, 1.5);
+			GrowthTremorManager::GetSingleton().CallRumble(player, player, base_power * 120);
 			this->growth_time += delta_time;
 			if (this->growth_time >= 2.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 				// End growing

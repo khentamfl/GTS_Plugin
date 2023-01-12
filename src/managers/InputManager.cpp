@@ -78,7 +78,6 @@ namespace Gts {
 							Runtime::PlaySound("MoanSound", caster, Volume, 0.0);
 						}
 
-						RandomGrowth::GetSingleton().CallShake(Cache->SizeReserve);
 						mod_target_scale(caster, SizeCalculation/80 * gigantism);
 						Cache->SizeReserve -= SizeCalculation/80;
 						if (Cache->SizeReserve <= 0) {
