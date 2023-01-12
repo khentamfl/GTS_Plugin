@@ -73,7 +73,21 @@ namespace Gts {
 				log::info("Unequipping armor");
 				this->clothtearthreshold += ((rand() % 750000) / 1000000) + 0.01;
 				this->clothtearcount +=1.0;
-				player->UnequipItem(1, ArmorSlot);
+
+				auto manager = RE::ActorEquipManager::GetSingleton();
+
+				for (const auto& [item, invData] : inv) {
+					const auto& [count, entry] = invData;
+					if (count > 0 && entry->IsWorn()) {
+						armor = item->As<TESObjectARMO>();
+					if (!armor) {
+						return;
+						}
+					}
+				}
+
+				manager->UnequipObject(player, armor);
+
 				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
 				Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
 				GrowthTremorManager::GetSingleton().CallRumble(player, player, 8 * scale);
