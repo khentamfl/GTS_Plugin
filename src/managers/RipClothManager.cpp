@@ -73,7 +73,10 @@ namespace Gts {
 				log::info("Unequipping armor");
 				this->clothtearthreshold += 0.50;
 				this->clothtearcount +=1.0;
-				player->UnequipItem(1, ArmorSlot);
+
+				auto manager = RE::ActorEquipManager::GetSingleton();
+				manager->UnequipObject(player, ArmorSlot);
+
 				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
 				Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
 				GrowthTremorManager::GetSingleton().CallRumble(player, player, 8 * scale);
