@@ -94,7 +94,7 @@ namespace {
 		float visual_scale = persi_actor_data->visual_scale;
 
 		float scaleOverride = persi_actor_data->scaleOverride;
-		if (scaleOverride <= 1e-4) {
+		if (scaleOverride >= 1e-4) {
 			visual_scale = scaleOverride;
 		}
 
