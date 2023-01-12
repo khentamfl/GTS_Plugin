@@ -71,7 +71,7 @@ namespace Gts {
 			}
 			if (ArmorSlot != nullptr && scale >= this->clothtearthreshold) {
 				log::info("Unequipping armor");
-				this->clothtearthreshold += (rand() % 750000) / 1000000;
+				this->clothtearthreshold += 0.50;
 				this->clothtearcount +=1.0;
 				player->UnequipItem(1, ArmorSlot);
 				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
