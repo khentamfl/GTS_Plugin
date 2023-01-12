@@ -507,7 +507,8 @@ void GtsManager::Update() {
 	        }
 	   }*/
 
-
+	ClothManager::GetSingleton().CheckRip();
+	
 	for (auto actor: find_actors()) {
 		if (!actor) {
 			continue;

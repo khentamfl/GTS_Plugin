@@ -53,7 +53,7 @@ namespace {
 		float ExpectedFallDamage = 1.0;
 		float HighHeels = 1.0 + (HighHeelManager::GetSingleton().GetBaseHHOffset(actor).Length()/100);
 
-		log::info("High Heels Length: {}", HighHeels);
+		//log::info("High Heels Length: {}", HighHeels);
 		///Normal Damage
 		if (Runtime::HasPerk(actor, "Cruelty")) {
 			ExpectedGlobalDamage += 0.35/BalancedMode;
