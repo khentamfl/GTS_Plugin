@@ -75,7 +75,7 @@ namespace Gts {
 				this->clothtearcount +=1.0;
 
 				auto manager = RE::ActorEquipManager::GetSingleton();
-				manager->UnequipObject(player, armor);
+				manager->UnequipObject(player, ArmorSlot);
 
 				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
 				Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
