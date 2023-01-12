@@ -168,7 +168,7 @@ namespace Gts {
 		}
 		//=========================================================================
 
-		bool AllowFpCamera = true; // !!!!!Disabled for global release for now!!!!!
+		bool AllowFpCamera = false; // !!!!!Disabled for global release for now!!!!!
 
 		//^^^^^^^===================================================================
 		auto playerCamera = PlayerCamera::GetSingleton();
