@@ -75,17 +75,6 @@ namespace Gts {
 				this->clothtearcount +=1.0;
 
 				auto manager = RE::ActorEquipManager::GetSingleton();
-
-				for (const auto& [item, invData] : inv) {
-					const auto& [count, entry] = invData;
-					if (count > 0 && entry->IsWorn()) {
-						armor = item->As<TESObjectARMO>();
-					if (!armor) {
-						return;
-						}
-					}
-				}
-
 				manager->UnequipObject(player, armor);
 
 				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
