@@ -79,7 +79,6 @@ namespace Gts {
 				log::info("Scale >= threshold");
 			}
 			if (ArmorSlot != nullptr && scale >= this->clothtearthreshold) {
-				float random = (rand() % 0.75) + 0.35;
 				this->clothtearthreshold += (rand() % 750000) / 1000000;
 				this->clothtearcount +=1.0;
 				player->UnequipItem(0, ArmorSlot);
