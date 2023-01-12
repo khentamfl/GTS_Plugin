@@ -81,7 +81,7 @@ namespace Gts {
 				if (Cache) {
 					Cache->SizeReserve += hitData.totalDamage/3000; // If received damage is 300, add 0.10 to Size Reserve.
 					}
-				*/}
+				}*/
 			}
 		}
 
