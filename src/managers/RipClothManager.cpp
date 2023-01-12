@@ -79,13 +79,14 @@ namespace Gts {
 				log::info("Scale >= threshold");
 			}
 			if (ArmorSlot != nullptr && scale >= this->clothtearthreshold) {
-				this->clothtearthreshold += rand() % 75;
+				float random = (rand() % 0.75) + 0.35;
+				this->clothtearthreshold += (rand() % 750000) / 1000000;
 				this->clothtearcount +=1.0;
 				player->UnequipItem(0, ArmorSlot);
 				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
 				Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
 				GrowthTremorManager::GetSingleton().CallRumble(player, player, 2 * scale);
-				log::info("Cloth Tearing Success. Threshold: {}, count: {}", this->clothtearthreshold, this->clothtearcount);
+				log::info("Cloth Tearing Success. Threshold: {}, count: {}, Unequipped Armor: {}", this->clothtearthreshold, this->clothtearcount, ArmorSlot->GetName());
 			}
 		}
 	}
