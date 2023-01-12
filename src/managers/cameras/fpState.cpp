@@ -7,7 +7,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace  Gts {
-	void FirstPersonState::ExitState() {
+	void FirstPersonCameraState::ExitState() {
 		// Reset the override
 		auto player = PlayerCharacter::GetSingleton();
 		auto playerData = Persistent::GetSingleton().GetData(player);
