@@ -96,6 +96,7 @@ namespace {
 		float scaleOverride = persi_actor_data->scaleOverride;
 		if (scaleOverride >= 1e-4) {
 			visual_scale = scaleOverride;
+			log::info("Scale overrided to {}", visual_scale);
 		}
 
 		// Is scale correct already?
