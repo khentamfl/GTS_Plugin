@@ -237,6 +237,16 @@ namespace Gts {
 							target_scale_v = 0.0;
 						}
 
+						float scaleOverride;
+						if (version >= 8) {
+							serde->ReadRecordData(&scaleOverride, sizeof(scaleOverride));
+						} else {
+							scaleOverride = -1.0;
+						}
+						if (std::isnan(scaleOverride)) {
+							scaleOverride = -1.0;
+						}
+
 						ActorData data = ActorData();
 						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, bonus_hp: {}, bonus_carry: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, bonus_hp, bonus_carry);
 						data.native_scale = native_scale;
@@ -259,6 +269,7 @@ namespace Gts {
 						data.AllowHitGrowth = AllowHitGrowth;
 						data.SizeReserve = SizeReserve;
 						data.target_scale_v = target_scale_v;
+						data.scaleOverride = scaleOverride;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
@@ -347,7 +358,7 @@ namespace Gts {
 	void Persistent::OnGameSaved(SerializationInterface* serde) {
 		std::unique_lock lock(GetSingleton()._lock);
 
-		if (!serde->OpenRecord(ActorDataRecord, 7)) {
+		if (!serde->OpenRecord(ActorDataRecord, 8)) {
 			log::error("Unable to open actor data record to write cosave data.");
 			return;
 		}
@@ -376,6 +387,7 @@ namespace Gts {
 			float AllowHitGrowth = data.AllowHitGrowth;
 			float SizeReserve = data.SizeReserve;
 			float target_scale_v = data.target_scale_v;
+			float scaleOverride = data.scaleOverride;
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
@@ -400,6 +412,7 @@ namespace Gts {
 			serde->WriteRecordData(&SizeReserve, sizeof(SizeReserve));
 
 			serde->WriteRecordData(&target_scale_v, sizeof(target_scale_v));
+			serde->WriteRecordData(&scaleOverride, sizeof(scaleOverride));
 		}
 
 		if (!serde->OpenRecord(ScaleMethodRecord, 0)) {
@@ -463,7 +476,7 @@ namespace Gts {
 
 	ActorData::ActorData() {
 		// Uninit data
-		// Make sure it is set
+		// Make sure it is set elsewhere
 	}
 	ActorData::ActorData(Actor* actor) {
 		// DEFAULT VALUES FOR NEW ACTORS
@@ -486,6 +499,7 @@ namespace Gts {
 		this->SizeVulnerability = 0.0;
 		this->AllowHitGrowth = 1.0;
 		this->SizeReserve = 0.0;
+		this->scaleOverride = -1.0;
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
@@ -552,6 +566,7 @@ namespace Gts {
 			data->SizeVulnerability = 0.0;
 			data->AllowHitGrowth = 1.0;
 			data->SizeReserve = 0.0;
+			data->scaleOverride = -1.0;
 		}
 	}
 }

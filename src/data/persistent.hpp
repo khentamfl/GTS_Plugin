@@ -36,6 +36,8 @@ namespace Gts {
 
 		float AllowHitGrowth;
 
+		float scaleOverride;
+
 		ActorData();
 		ActorData(Actor* actor);
 	};

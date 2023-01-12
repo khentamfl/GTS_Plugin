@@ -92,7 +92,11 @@ namespace {
 			return;
 		}
 		float visual_scale = persi_actor_data->visual_scale;
-		float change_requirement = Runtime::GetFloat("sizeLimit") + persi_actor_data->bonus_max_size;
+
+		float scaleOverride = persi_actor_data->scaleOverride;
+		if (scaleOverride <= 1e-4) {
+			visual_scale = scaleOverride;
+		}
 
 		// Is scale correct already?
 		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
@@ -495,12 +499,12 @@ std::string GtsManager::DebugName() {
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 	/*auto ai = PC->currentProcess;
-	if (ai) {
-		auto highAi = ai->high;
-		if (highAi) {
-			log::info("Heatracking Test: {}", highAi->headTrackTargetOffset);
-		}
-	}*/
+	   if (ai) {
+	        auto highAi = ai->high;
+	        if (highAi) {
+	                log::info("Heatracking Test: {}", highAi->headTrackTargetOffset);
+	        }
+	   }*/
 
 
 	for (auto actor: find_actors()) {
