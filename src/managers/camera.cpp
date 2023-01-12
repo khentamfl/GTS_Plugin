@@ -104,7 +104,9 @@ namespace Gts {
 			this->smoothScale.target = scale;
 
 			// Apply camera scale and offset
-			// UpdateCamera(this->smoothScale.value, offset, playerLocalOffset);
+			if (IsFirstPerson()) {
+				 UpdateCamera(this->smoothScale.value, offset, playerLocalOffset);
+			}
 		}
 	}
 
