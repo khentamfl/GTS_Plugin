@@ -80,7 +80,7 @@ namespace Gts {
 			// Do any scale overrides
 			auto playerData = Persistent::GetSingleton().GetData(player);
 			if (playerData) {
-				playerData->scaleOverride = currentState->GetScaleOverride();
+				playerData->scaleOverride = currentState->GetScaleOverride(isProne);
 			}
 
 			// Get current camera position in player space
