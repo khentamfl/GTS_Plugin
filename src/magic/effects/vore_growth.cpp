@@ -20,8 +20,11 @@ namespace Gts {
 	void VoreGrowth::OnUpdate() {
 		float BASE_POWER = 0.0000360;
 		auto caster = GetCaster();
+		if (!caster) {
+			return;
+		}
 		auto target = GetTarget();
-		if (!caster || !target) {
+		if (!target) {
 			return;
 		}
 		float bonus = 1.0;
@@ -50,6 +53,10 @@ namespace Gts {
 		auto Caster = GetCaster();
 		if (!Caster) { // Don't apply bonuses if caster is not player.
 			return;
+		} 
+		auto Target = GetTarget();
+		if (!Target) { // Don't apply bonuses if caster is not player.
+			return;
 		}
 
 		float HpRegen = Caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00145;
@@ -61,13 +68,14 @@ namespace Gts {
 		}
 		if (Runtime::HasPerk(Caster, "VorePerkGreed") && this->BlockVoreMods == false) { // Permamently increases random AV after eating someone
 			this->BlockVoreMods = true;
+			float TotalMod = 0.75 * get_visual_scale(Target);
 			int Boost = rand() % 2;
 			if (Boost == 0) {
-				Caster->ModActorValue(ActorValue::kHealth, 0.50);
+				Caster->ModActorValue(ActorValue::kHealth, TotalMod);
 			} else if (Boost == 1) {
-				Caster->ModActorValue(ActorValue::kMagicka, 0.50);
+				Caster->ModActorValue(ActorValue::kMagicka, TotalMod);
 			} else if (Boost == 2) {
-				Caster->ModActorValue(ActorValue::kStamina, 0.50);
+				Caster->ModActorValue(ActorValue::kStamina, TotalMod);
 			}
 		}
 	}
