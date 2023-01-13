@@ -7,6 +7,12 @@ using namespace RE;
 using namespace SKSE;
 
 namespace Gts {
+	struct UnderFoot {
+		Actor* giant;
+		Actor* small;
+		float force;
+	};
+
 	class EventListener {
 		public:
 			Profiler profiler;
@@ -53,6 +59,9 @@ namespace Gts {
 
 			// Called when a papyrus hit event is fired
 			virtual void HitEvent(const TESHitEvent* evt);
+
+			// Called when an actor is squashed underfoot
+			virtual void UnderFootEvent(const UnderFoot* evt);
 	};
 
 	class EventDispatcher {
@@ -72,6 +81,7 @@ namespace Gts {
 			static void DoActorEquip(Actor* actor);
 			static void DoActorLoaded(Actor* actor);
 			static void DoHitEvent(const TESHitEvent* evt);
+			static void DoUnderFootEvent(const UnderFoot* evt);
 		private:
 			[[nodiscard]] static EventDispatcher& GetSingleton();
 			std::vector<EventListener*> listeners;

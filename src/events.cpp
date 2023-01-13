@@ -68,6 +68,11 @@ namespace Gts {
 	void EventListener::HitEvent(const TESHitEvent* evt) {
 	}
 
+	// Called when an actor is squashed underfoot
+	void EventListener::UnderFootEvent(const UnderFoot* evt) {
+
+	}
+
 	void EventDispatcher::ReportProfilers() {
 		std::string report = "Reporting Profilers:";
 		report += std::format("\n|{:20}|", "Name");
@@ -240,6 +245,17 @@ namespace Gts {
 				listener->profiler.Start();
 			}
 			listener->HitEvent(evt);
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
+		}
+	}
+	void EventDispatcher::DoUnderFootEvent(const UnderFoot* evt) {
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
+			listener->UnderFootEvent(evt);
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Stop();
 			}
