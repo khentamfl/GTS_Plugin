@@ -7,7 +7,7 @@ using namespace RE;
 using namespace SKSE;
 
 namespace Gts {
-	enum Foot {
+	enum Footstep {
 		Left,
 		Right,
 		Front,
@@ -18,7 +18,7 @@ namespace Gts {
 
 	struct Impact {
 		Actor* actor;
-		Foot kind;
+		Footstep kind;
 		float scale;
 		float effective_scale;
 		std::vector<NiAVObject*> nodes;

@@ -5,7 +5,7 @@
 using namespace RE;
 
 namespace Gts {
-	class FootcameraR : public FootcameraR {
+	class FootR : public Foot {
 		protected:
 			virtual NiPoint3 GetFootPos() override;
 	};
