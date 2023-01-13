@@ -17,7 +17,7 @@ namespace Hooks
 	}
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
-		log::info("PlayerCharacter::Update");
+		//log::info("PlayerCharacter::Update");
 		if (a_attacker) {
 			auto player = PlayerCharacter::GetSingleton();
 			if (Runtime::HasPerk(player, "SizeReserveAug")) { // Size Reserve Augmentation
@@ -25,7 +25,7 @@ namespace Hooks
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
 				}
-				log::info("  - Attacker: {}", a_attacker->GetDisplayFullName());
+				log::info("  - Attacker: {}, damage: {}", a_attacker->GetDisplayFullName(), a_damage);
 			}
 		}
 		//log::info("  - Damage: {}", a_damage);
