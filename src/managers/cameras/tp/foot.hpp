@@ -5,7 +5,7 @@
 using namespace RE;
 
 namespace Gts {
-	class Foot : public ThirdPersonCameraState {
+	class FootD : public ThirdPersonCameraState {
 		public:
 			virtual void EnterState() override;
 

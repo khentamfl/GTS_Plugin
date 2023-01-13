@@ -14,7 +14,7 @@ namespace {
 }
 
 namespace Gts {
-	void Foot::EnterState() {
+	void FootD::EnterState() {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			float playerScale = get_visual_scale(player);
@@ -26,7 +26,7 @@ namespace Gts {
 		}
 	}
 
-	NiPoint3 Foot::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
+	NiPoint3 FootD::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
 		auto player = PlayerCharacter::GetSingleton();
 		float playerScale = get_visual_scale(player);
 
@@ -46,11 +46,11 @@ namespace Gts {
 		return NiPoint3();
 	}
 
-	NiPoint3 Foot::GetPlayerLocalOffsetProne(const NiPoint3& cameraPos)  {
+	NiPoint3 FootD::GetPlayerLocalOffsetProne(const NiPoint3& cameraPos)  {
 		return this->GetPlayerLocalOffset(cameraPos); // No prone adjustment in foot mode
 	}
 
-	NiPoint3 Foot::GetFootPos() {
+	NiPoint3 FootD::GetFootPos() {
 		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 		auto player = PlayerCharacter::GetSingleton();
