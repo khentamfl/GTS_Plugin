@@ -35,39 +35,39 @@ namespace Gts {
 			auto player = PlayerCharacter::GetSingleton();
 			float scale = get_visual_scale(player);
 
-			auto slots = {
-				BipedObjectSlot::kHead
-				BipedObjectSlot::kHair
-				BipedObjectSlot::kBody
-				BipedObjectSlot::kHands
-				BipedObjectSlot::kForearms
-				BipedObjectSlot::kAmulet
-				BipedObjectSlot::kRing
-				BipedObjectSlot::kFeet
-				BipedObjectSlot::kCalves
-				// BipedObjectSlot::kShield
-				// BipedObjectSlot::kTail
-				// BipedObjectSlot::kLongHair
-				BipedObjectSlot::kCirclet
-				// BipedObjectSlot::kEars
-				// BipedObjectSlot::kModMouth
-				// BipedObjectSlot::kModNeck
-				// BipedObjectSlot::kModChestPrimary
-				// BipedObjectSlot::kModBack
-				// BipedObjectSlot::kModMisc1
-				// BipedObjectSlot::kModPelvisPrimary
-				// BipedObjectSlot::kDecapitateHead
-				// BipedObjectSlot::kDecapitate
-				// BipedObjectSlot::kModPelvisSecondary
-				// BipedObjectSlot::kModLegRight
-				// BipedObjectSlot::kModLegLeft
-				// BipedObjectSlot::kModFaceJewelry
-				// BipedObjectSlot::kModChestSecondary
-				// BipedObjectSlot::kModShoulder
-				// BipedObjectSlot::kModArmLeft
-				// BipedObjectSlot::kModArmRight
-				// BipedObjectSlot::kModMisc2
-				// BipedObjectSlot::kFX01
+			std::vector<BGSBipedObjectForm::BipedObjectSlot> slots = {
+				BGSBipedObjectForm::BipedObjectSlot::kHead
+				BGSBipedObjectForm::BipedObjectSlot::kHair
+				BGSBipedObjectForm::BipedObjectSlot::kBody
+				BGSBipedObjectForm::BipedObjectSlot::kHands
+				BGSBipedObjectForm::BipedObjectSlot::kForearms
+				BGSBipedObjectForm::BipedObjectSlot::kAmulet
+				BGSBipedObjectForm::BipedObjectSlot::kRing
+				BGSBipedObjectForm::BipedObjectSlot::kFeet
+				BGSBipedObjectForm::BipedObjectSlot::kCalves
+				// BGSBipedObjectForm::BipedObjectSlot::kShield
+				// BGSBipedObjectForm::BipedObjectSlot::kTail
+				// BGSBipedObjectForm::BipedObjectSlot::kLongHair
+				BGSBipedObjectForm::BipedObjectSlot::kCirclet
+				// BGSBipedObjectForm::BipedObjectSlot::kEars
+				// BGSBipedObjectForm::BipedObjectSlot::kModMouth
+				// BGSBipedObjectForm::BipedObjectSlot::kModNeck
+				// BGSBipedObjectForm::BipedObjectSlot::kModChestPrimary
+				// BGSBipedObjectForm::BipedObjectSlot::kModBack
+				// BGSBipedObjectForm::BipedObjectSlot::kModMisc1
+				// BGSBipedObjectForm::BipedObjectSlot::kModPelvisPrimary
+				// BGSBipedObjectForm::BipedObjectSlot::kDecapitateHead
+				// BGSBipedObjectForm::BipedObjectSlot::kDecapitate
+				// BGSBipedObjectForm::BipedObjectSlot::kModPelvisSecondary
+				// BGSBipedObjectForm::BipedObjectSlot::kModLegRight
+				// BGSBipedObjectForm::BipedObjectSlot::kModLegLeft
+				// BGSBipedObjectForm::BipedObjectSlot::kModFaceJewelry
+				// BGSBipedObjectForm::BipedObjectSlot::kModChestSecondary
+				// BGSBipedObjectForm::BipedObjectSlot::kModShoulder
+				// BGSBipedObjectForm::BipedObjectSlot::kModArmLeft
+				// BGSBipedObjectForm::BipedObjectSlot::kModArmRight
+				// BGSBipedObjectForm::BipedObjectSlot::kModMisc2
+				// BGSBipedObjectForm::BipedObjectSlot::kFX01
 			};
 			std::vector<auto> armors = {}
 			for (auto slot: slots) {
