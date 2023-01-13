@@ -3,6 +3,7 @@
 #include "managers/explosion.hpp"
 #include "managers/tremor.hpp"
 #include "managers/modevent.hpp"
+#include "events.hpp"
 
 #include "scale/scale.hpp"
 #include "util.hpp"
@@ -42,29 +43,45 @@ namespace {
 		switch (foot_kind) {
 			case Foot::Left:
 				result = find_node_regex_any(actor, left_foot);
-				if (result) results.push_back(result);
+				if (result) {
+					results.push_back(result);
+				}
 				break;
 			case Foot::Right:
 				result = find_node_regex_any(actor, right_foot);
-				if (result) results.push_back(result);
+				if (result) {
+					results.push_back(result);
+				}
 				break;
 			case Foot::Front:
 				result = find_node_regex_any(actor, left_arm);
-				if (result) results.push_back(result);
+				if (result) {
+					results.push_back(result);
+				}
 				result = find_node_regex_any(actor, right_arm);
-				if (result) results.push_back(result);
+				if (result) {
+					results.push_back(result);
+				}
 				break;
 			case Foot::Back:
 				result = find_node_regex_any(actor, left_foot);
-				if (result) results.push_back(result);
+				if (result) {
+					results.push_back(result);
+				}
 				result = find_node_regex_any(actor, right_foot);
-				if (result) results.push_back(result);
+				if (result) {
+					results.push_back(result);
+				}
 				break;
 			case Foot::JumpLand:
 				result = find_node_regex_any(actor, left_foot);
-				if (result) results.push_back(result);
+				if (result) {
+					results.push_back(result);
+				}
 				result = find_node_regex_any(actor, right_foot);
-				if (result) results.push_back(result);
+				if (result) {
+					results.push_back(result);
+				}
 				break;
 		}
 		return results;
@@ -95,9 +112,7 @@ namespace Gts {
 				.nodes = get_landing_nodes(actor, kind),
 			};
 
-			FootStepManager::GetSingleton().OnImpact(impact_data);
-			ExplosionManager::GetSingleton().OnImpact(impact_data);
-			TremorManager::GetSingleton().OnImpact(impact_data);
+			EventDispatcher::DoOnImpact(impact_data);
 		}
 	}
 }

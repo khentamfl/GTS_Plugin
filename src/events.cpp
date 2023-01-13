@@ -69,7 +69,12 @@ namespace Gts {
 	}
 
 	// Called when an actor is squashed underfoot
-	void EventListener::UnderFootEvent(const UnderFoot* evt) {
+	void EventListener::UnderFootEvent(const UnderFoot& evt) {
+
+	}
+
+	// Fired when a foot lands
+	void EventListener::OnImpact(const Impact& impact) {
 
 	}
 
@@ -256,6 +261,17 @@ namespace Gts {
 				listener->profiler.Start();
 			}
 			listener->UnderFootEvent(evt);
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
+		}
+	}
+	void EventDispatcher::DoOnImpact(const Impact& impact) {
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
+			listener->OnImpact(evt);
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Stop();
 			}

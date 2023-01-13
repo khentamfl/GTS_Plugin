@@ -156,11 +156,19 @@ namespace {
 		}
 		return nullptr;
 	}
+
+	void HandleUnderFoot(Actor* giant) {
+
+	}
 }
 namespace Gts {
 	FootStepManager& FootStepManager::GetSingleton() noexcept {
 		static FootStepManager instance;
 		return instance;
+	}
+
+	std::string FootStepManager::DebugName() {
+		return "FootStepManager";
 	}
 
 	void FootStepManager::OnImpact(const Impact& impact) {

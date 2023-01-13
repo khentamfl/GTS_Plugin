@@ -7,6 +7,22 @@ using namespace RE;
 using namespace SKSE;
 
 namespace Gts {
+	enum Foot {
+		Left,
+		Right,
+		Front,
+		Back,
+		JumpLand,
+		Unknown,
+	};
+
+	struct Impact {
+		Actor* actor;
+		Foot kind;
+		float scale;
+		float effective_scale;
+		std::vector<NiAVObject*> nodes;
+	};
 	struct UnderFoot {
 		Actor* giant;
 		Actor* small;
@@ -61,7 +77,10 @@ namespace Gts {
 			virtual void HitEvent(const TESHitEvent* evt);
 
 			// Called when an actor is squashed underfoot
-			virtual void UnderFootEvent(const UnderFoot* evt);
+			virtual void UnderFootEvent(const UnderFoot& evt);
+
+			// Fired when a foot lands
+			virtual void OnImpact(const Impact& impact);
 	};
 
 	class EventDispatcher {
@@ -81,7 +100,8 @@ namespace Gts {
 			static void DoActorEquip(Actor* actor);
 			static void DoActorLoaded(Actor* actor);
 			static void DoHitEvent(const TESHitEvent* evt);
-			static void DoUnderFootEvent(const UnderFoot* evt);
+			static void DoUnderFootEvent(const UnderFoot& evt);
+			static void DoOnImpact(const Impact& impact);
 		private:
 			[[nodiscard]] static EventDispatcher& GetSingleton();
 			std::vector<EventListener*> listeners;

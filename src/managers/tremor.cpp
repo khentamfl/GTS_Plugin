@@ -35,6 +35,9 @@ namespace Gts {
 		return instance;
 	}
 
+	std::string TremorManager::DebugName() {
+		return "TremorManager";
+	}
 
 	void TremorManager::OnImpact(const Impact& impact) {
 		if (!impact.actor) {

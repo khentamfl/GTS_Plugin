@@ -15,6 +15,9 @@
 #include "managers/vore.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
+#include "managers/tremor.hpp"
+#include "managers/footstep.hpp"
+#include "managers/explosion.hpp"
 
 namespace Gts {
 	void RegisterManagers() {
@@ -28,6 +31,10 @@ namespace Gts {
 		EventDispatcher::AddListener(&Vore::GetSingleton()); // Manages vore
 		EventDispatcher::AddListener(&CrushManager::GetSingleton()); // Manages crushing
 		EventDispatcher::AddListener(&ShrinkToNothingManager::GetSingleton()); // Shrink to nothing manager
+
+		EventDispatcher::AddListener(&FootStepManager::GetSingleton()); // Manages footstep sounds
+		EventDispatcher::AddListener(&TremorManager::GetSingleton()); // Manages tremors on footstop
+		EventDispatcher::AddListener(&ExplosionManager::GetSingleton()); // Manages clouds/explisions on footstep
 
 		EventDispatcher::AddListener(&AttributeManager::GetSingleton()); // Adjusts most attributes
 		EventDispatcher::AddListener(&RandomGrowth::GetSingleton()); // Manages random growth perk
