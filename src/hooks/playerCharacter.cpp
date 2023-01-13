@@ -1,5 +1,6 @@
 #include "hooks/playerCharacter.hpp"
 #include "data/runtime.hpp"
+#include "data/persistent.hpp"
 #include "data/plugin.hpp"
 #include "util.hpp"
 
