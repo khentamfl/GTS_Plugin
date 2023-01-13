@@ -23,7 +23,7 @@ namespace Hooks
 			if (Runtime::HasPerk(player, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(player);
 				if (Cache) {
-					Cache->SizeReserve += a_damage/3000;
+					Cache->SizeReserve += -a_damage/3000;
 				}
 				log::info("  - Attacker: {}", a_attacker->GetDisplayFullName());
 			}
