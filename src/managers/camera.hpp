@@ -50,9 +50,9 @@ namespace Gts {
 
 			Normal normalState;
 			Alt altState;
-			Foot footState;
-			FootR footRState;
-			FootL footLState;
+			Footcamera footState;
+			FootcameraR footRState;
+			FootcameraL footLState;
 
 			FirstPerson fpState;
 			FirstPersonCombat fpCombatState;
