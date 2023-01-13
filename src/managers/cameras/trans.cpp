@@ -47,10 +47,10 @@ namespace Gts {
 		return this->stateB->PermitManualEdit() && this->stateA->PermitManualEdit();
 	}
 
-	bool PermitTransition() {
+	bool TransState::PermitTransition() {
 		return false;
 	}
-	bool PermitCameraTransforms() {
+	bool TransState::PermitCameraTransforms() {
 		return this->stateB->PermitCameraTransforms() && this->stateA->PermitCameraTransforms();
 	}
 
