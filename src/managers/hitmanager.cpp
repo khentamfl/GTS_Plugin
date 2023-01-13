@@ -63,30 +63,31 @@ namespace Gts {
 		static Timer timer = Timer(0.25);
 
 
-		/*if (attacker != nullptr && receiver != nullptr) {
-			HitData hitData;
-			auto weapon = attacker->GetAttackingWeapon();
-			if (weapon) {
-				hitData.Populate(attacker, receiver, weapon);
-				log::info("totalDamage: {}", hitData.totalDamage);
-				log::info("physicalDamage: {}", hitData.physicalDamage);
-				log::info("targetedLimbDamage: {}", hitData.targetedLimbDamage);
-				log::info("percentBlocked: {}", hitData.percentBlocked);
-				log::info("resistedPhysicalDamage: {}", hitData.resistedPhysicalDamage);
-				log::info("resistedTypedDamage: {}", hitData.resistedTypedDamage);
-				log::info("reflectedDamage: {}", hitData.reflectedDamage);
-				log::info("reflectedDamage: {}", hitData.reflectedDamage);
-				if (receiver == player && Runtime::HasPerk(receiver, "SizeReserveAug")) { // Size Reserve Augmentation
-					auto Cache = Persistent::GetSingleton().GetData(player);
+		if (attacker != nullptr && receiver != nullptr) {
+			auto hitDataPtr = receiver->currentProcess->middleHigh->lastHitData;
+			HitData& hitData = *hitDataPtr;
+			// auto weapon = attacker->GetAttackingWeapon();
+			// if (weapon) {
+			// hitData.Populate(attacker, receiver, weapon);
+			log::info("totalDamage: {}", hitData.totalDamage);
+			log::info("physicalDamage: {}", hitData.physicalDamage);
+			log::info("targetedLimbDamage: {}", hitData.targetedLimbDamage);
+			log::info("percentBlocked: {}", hitData.percentBlocked);
+			log::info("resistedPhysicalDamage: {}", hitData.resistedPhysicalDamage);
+			log::info("resistedTypedDamage: {}", hitData.resistedTypedDamage);
+			log::info("reflectedDamage: {}", hitData.reflectedDamage);
+			log::info("reflectedDamage: {}", hitData.reflectedDamage);
+			if (receiver == player && Runtime::HasPerk(receiver, "SizeReserveAug")) { // Size Reserve Augmentation
+				auto Cache = Persistent::GetSingleton().GetData(player);
 				if (Cache) {
 					Cache->SizeReserve += hitData.totalDamage/3000; // If received damage is 300, add 0.10 to Size Reserve.
-					}
 				}
 			}
-		}*/
+			// }
+		}
 
 		// Apply it
-		
+
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
