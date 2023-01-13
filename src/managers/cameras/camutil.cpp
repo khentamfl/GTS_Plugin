@@ -219,7 +219,7 @@ namespace Gts {
 					auto currentState = camera->currentState;
 					if (currentState) {
 						NiQuaternion cameraQuat;
-						camState->GetRotation(cameraQuat);
+						currentState->GetRotation(cameraQuat);
 						cameraRot = QuatToMatrix(cameraQuat);
 					}
 				}
@@ -322,20 +322,13 @@ namespace Gts {
 	}
 
 	NiPoint3 CompuleLookAt(float zoomScale) {
-		auto camera = PlayerCamera::GetSingleton();
-		if (camera) {
-			auto camState = camera->currentState;
-			if (camState) {
-				NiPoint3 cameraTrans = GetCameraPosition();
+		NiPoint3 cameraTrans = GetCameraPosition();
 
-				NiMatrix3 cameraRotMat = GetCameraRotation();
+		NiMatrix3 cameraRotMat = GetCameraRotation();
 
-				float zoomOffset = ZoomFactor() * MaxZoom() * zoomScale;
-				NiPoint3 zoomOffsetVec = NiPoint3(0.0, zoomOffset, 0.0);
-				return cameraRotMat * zoomOffsetVec + cameraTrans;
-			}
-		}
-		return NiPoint3();
+		float zoomOffset = ZoomFactor() * MaxZoom() * zoomScale;
+		NiPoint3 zoomOffsetVec = NiPoint3(0.0, zoomOffset, 0.0);
+		return cameraRotMat * zoomOffsetVec + cameraTrans;
 	}
 
 	void UpdateCamera(float scale, NiPoint3 cameraLocalOffset, NiPoint3 playerLocalOffset) {
