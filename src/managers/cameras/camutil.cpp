@@ -9,7 +9,7 @@ namespace {
 		Transform,
 	};
 
-	const CameraDataMode currentMode = CameraDataMode::Transform;
+	const CameraDataMode currentMode = CameraDataMode::State;
 }
 
 namespace Gts {
