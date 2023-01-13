@@ -69,18 +69,19 @@ namespace Gts {
 			// auto weapon = attacker->GetAttackingWeapon();
 			// if (weapon) {
 			// hitData.Populate(attacker, receiver, weapon);
-			log::info("totalDamage: {}", hitData.totalDamage);
-			log::info("physicalDamage: {}", hitData.physicalDamage);
-			log::info("targetedLimbDamage: {}", hitData.targetedLimbDamage);
-			log::info("percentBlocked: {}", hitData.percentBlocked);
-			log::info("resistedPhysicalDamage: {}", hitData.resistedPhysicalDamage);
-			log::info("resistedTypedDamage: {}", hitData.resistedTypedDamage);
-			log::info("reflectedDamage: {}", hitData.reflectedDamage);
-			log::info("reflectedDamage: {}", hitData.reflectedDamage);
+			
 			if (receiver == player && Runtime::HasPerk(receiver, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(player);
+				log::info("totalDamage: {}", hitData.totalDamage);
+				log::info("physicalDamage: {}", hitData.physicalDamage);
+				log::info("targetedLimbDamage: {}", hitData.targetedLimbDamage);
+				log::info("percentBlocked: {}", hitData.percentBlocked);
+				log::info("resistedPhysicalDamage: {}", hitData.resistedPhysicalDamage);
+				log::info("resistedTypedDamage: {}", hitData.resistedTypedDamage);
+				log::info("reflectedDamage: {}", hitData.reflectedDamage);
+				log::info("reflectedDamage: {}", hitData.reflectedDamage);
 				if (Cache) {
-					Cache->SizeReserve += hitData.totalDamage/1500; // If received damage is 300, add 0.10 to Size Reserve.
+					Cache->SizeReserve += hitData.totalDamage/1000;
 				}
 			}
 			// }
