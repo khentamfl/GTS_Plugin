@@ -35,29 +35,53 @@ namespace Gts {
 			auto player = PlayerCharacter::GetSingleton();
 			float scale = get_visual_scale(player);
 
-			auto feet = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
-			auto head = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHead);
-			auto body = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kBody);
-			auto hands = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kHands);
-			auto forearms = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kForearms);
-			auto calves = player->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kCalves);
-			int RandomSlot = rand() % 6; // Randomly choose slot to strip
-
-			auto ArmorSlot = feet;
-
-			if (RandomSlot == 0) {
-				ArmorSlot = feet;
-			} else if (RandomSlot == 1) {
-				ArmorSlot = head;
-			} else if (RandomSlot == 2) {
-				ArmorSlot = body;
-			} else if (RandomSlot == 3) {
-				ArmorSlot = hands;
-			} else if (RandomSlot == 4) {
-				ArmorSlot = forearms;
-			} else if (RandomSlot == 5) {
-				ArmorSlot = calves;
+			auto slots = {
+				BipedObjectSlot::kHead
+				BipedObjectSlot::kHair
+				BipedObjectSlot::kBody
+				BipedObjectSlot::kHands
+				BipedObjectSlot::kForearms
+				BipedObjectSlot::kAmulet
+				BipedObjectSlot::kRing
+				BipedObjectSlot::kFeet
+				BipedObjectSlot::kCalves
+				// BipedObjectSlot::kShield
+				// BipedObjectSlot::kTail
+				// BipedObjectSlot::kLongHair
+				BipedObjectSlot::kCirclet
+				// BipedObjectSlot::kEars
+				// BipedObjectSlot::kModMouth
+				// BipedObjectSlot::kModNeck
+				// BipedObjectSlot::kModChestPrimary
+				// BipedObjectSlot::kModBack
+				// BipedObjectSlot::kModMisc1
+				// BipedObjectSlot::kModPelvisPrimary
+				// BipedObjectSlot::kDecapitateHead
+				// BipedObjectSlot::kDecapitate
+				// BipedObjectSlot::kModPelvisSecondary
+				// BipedObjectSlot::kModLegRight
+				// BipedObjectSlot::kModLegLeft
+				// BipedObjectSlot::kModFaceJewelry
+				// BipedObjectSlot::kModChestSecondary
+				// BipedObjectSlot::kModShoulder
+				// BipedObjectSlot::kModArmLeft
+				// BipedObjectSlot::kModArmRight
+				// BipedObjectSlot::kModMisc2
+				// BipedObjectSlot::kFX01
+			};
+			std::vector<auto> armors = {}
+			for (auto slot: slots) {
+				auto armor = player->GetWornArmor(slot);
+				if (armor) {
+					armors.push_back(armor);
+				}
 			}
+			auto count = armors.size();
+			if (count == 0) {
+				return; // Naked
+			}
+			auto itemIdx = rand() % count;
+			auto ArmorSlot = armors[itemIdx];
 
 
 			//log::info("Armor Slot: {}", ArmorSlot);
