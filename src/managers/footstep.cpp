@@ -197,8 +197,8 @@ namespace Gts {
 					scale *= 0.50;
 				}
 
-				Foot foot_kind = impact.kind;
-				if (foot_kind == Foot::JumpLand) {
+				FootEvent foot_kind = impact.kind;
+				if (foot_kind == FootEvent::JumpLand) {
 					float jump_factor = 1.2;
 					scale *= jump_factor; // Jumping makes you sound bigger
 					start_xl = 6.99 * jump_factor;
