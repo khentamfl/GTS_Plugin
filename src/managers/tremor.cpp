@@ -65,8 +65,8 @@ namespace Gts {
 			} else if (actor->IsWalking()) {
 				scale *= 0.85; // Walking makes you seem quieter
 			}
-			Foot foot_kind = impact.kind;
-			if (foot_kind == Foot::JumpLand) {
+			FootEvent foot_kind = impact.kind;
+			if (foot_kind == FootEvent::JumpLand) {
 				scale *= 2.0; // Jumping makes you seem bigger
 			}
 			auto actor_data = Transient::GetSingleton().GetData(actor);
@@ -184,12 +184,12 @@ namespace Gts {
 						float right_shake = intensity;
 						if (actor->formID == 0x14) {
 							switch (foot_kind) {
-								case Foot::Left:
-								case Foot::Front:
+								case FootEvent::Left:
+								case FootEvent::Front:
 									right_shake = 0.0;
 									break;
-								case Foot::Right:
-								case Foot::Back:
+								case FootEvent::Right:
+								case FootEvent::Back:
 									left_shake = 0.0;
 									break;
 							}
@@ -207,12 +207,12 @@ namespace Gts {
 						float right_shake = intensity;
 						if (actor->formID == 0x14) {
 							switch (foot_kind) {
-								case Foot::Left:
-								case Foot::Front:
+								case FootEvent::Left:
+								case FootEvent::Front:
 									right_shake = 0.0;
 									break;
-								case Foot::Right:
-								case Foot::Back:
+								case FootEvent::Right:
+								case FootEvent::Back:
 									left_shake = 0.0;
 									break;
 							}
