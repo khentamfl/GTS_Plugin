@@ -255,7 +255,7 @@ namespace Gts {
 			}
 		}
 	}
-	void EventDispatcher::DoUnderFootEvent(const UnderFoot* evt) {
+	void EventDispatcher::DoUnderFootEvent(const UnderFoot& evt) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Start();
@@ -271,7 +271,7 @@ namespace Gts {
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Start();
 			}
-			listener->OnImpact(evt);
+			listener->OnImpact(impact);
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Stop();
 			}
