@@ -81,7 +81,7 @@ namespace Gts {
 				log::info("reflectedDamage: {}", hitData.reflectedDamage);
 				log::info("reflectedDamage: {}", hitData.reflectedDamage);
 				if (Cache) {
-					Cache->SizeReserve += hitData.totalDamage/1000;
+					Cache->SizeReserve += hitData.targetedLimbDamage/2500;
 				}
 			}
 			// }
