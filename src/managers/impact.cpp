@@ -14,25 +14,25 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	Foot get_foot_kind(Actor* actor, std::string_view tag) {
-		Foot foot_kind = Foot::Unknown;
+	FootEvent get_foot_kind(Actor* actor, std::string_view tag) {
+		FootEvent foot_kind = FootEvent::Unknown;
 		bool is_jumping = actor ? IsJumping(actor) : false;
 		bool in_air = actor ? actor->IsInMidair() : false;
 		if (matches(tag, ".*Foot.*Left.*") && !is_jumping && !in_air) {
-			foot_kind = Foot::Left;
+			foot_kind = FootEvent::Left;
 		} else if (matches(tag, ".*Foot.*Right.*") && !is_jumping && !in_air) {
-			foot_kind = Foot::Right;
+			foot_kind = FootEvent::Right;
 		} else if (matches(tag, ".*Foot.*Front.*") && !is_jumping && !in_air) {
-			foot_kind = Foot::Front;
+			foot_kind = FootEvent::Front;
 		} else if (matches(tag, ".*Foot.*Back.*") && !is_jumping && !in_air) {
-			foot_kind = Foot::Back;
+			foot_kind = FootEvent::Back;
 		} else if (matches(tag, ".*Jump.*(Down|Land).*")) {
-			foot_kind = Foot::JumpLand;
+			foot_kind = FootEvent::JumpLand;
 		}
 		return foot_kind;
 	}
 
-	std::vector<NiAVObject*> get_landing_nodes(Actor* actor, const Foot& foot_kind) {
+	std::vector<NiAVObject*> get_landing_nodes(Actor* actor, const FootEvent& foot_kind) {
 		std::vector<NiAVObject*> results;
 		const std::string_view left_foot = ".*(L.*Foot|L.*Leg.*Tip).*";
 		const std::string_view right_foot = ".*(R.*Foot|R.*Leg.*Tip).*";
@@ -41,19 +41,19 @@ namespace {
 
 		NiAVObject* result;
 		switch (foot_kind) {
-			case Foot::Left:
+			case FootEvent::Left:
 				result = find_node_regex_any(actor, left_foot);
 				if (result) {
 					results.push_back(result);
 				}
 				break;
-			case Foot::Right:
+			case FootEvent::Right:
 				result = find_node_regex_any(actor, right_foot);
 				if (result) {
 					results.push_back(result);
 				}
 				break;
-			case Foot::Front:
+			case FootEvent::Front:
 				result = find_node_regex_any(actor, left_arm);
 				if (result) {
 					results.push_back(result);
@@ -63,7 +63,7 @@ namespace {
 					results.push_back(result);
 				}
 				break;
-			case Foot::Back:
+			case FootEvent::Back:
 				result = find_node_regex_any(actor, left_foot);
 				if (result) {
 					results.push_back(result);
@@ -73,7 +73,7 @@ namespace {
 					results.push_back(result);
 				}
 				break;
-			case Foot::JumpLand:
+			case FootEvent::JumpLand:
 				result = find_node_regex_any(actor, left_foot);
 				if (result) {
 					results.push_back(result);
