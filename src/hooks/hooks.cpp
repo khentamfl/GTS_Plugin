@@ -8,6 +8,7 @@
 #include "hooks/hkbBehaviorGraph.hpp"
 #include "hooks/cameraState.hpp"
 #include "hooks/playerCamera.hpp"
+#include "hooks/playerCharacter.hpp"
 
 using namespace RE;
 
