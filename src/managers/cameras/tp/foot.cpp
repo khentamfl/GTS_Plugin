@@ -14,7 +14,7 @@ namespace {
 }
 
 namespace Gts {
-	void Foot::EnterState() {
+	void Footcamera::EnterState() {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			float playerScale = get_visual_scale(player);
@@ -26,7 +26,7 @@ namespace Gts {
 		}
 	}
 
-	NiPoint3 Foot::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
+	NiPoint3 Footcamera::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
 		auto player = PlayerCharacter::GetSingleton();
 		float playerScale = get_visual_scale(player);
 

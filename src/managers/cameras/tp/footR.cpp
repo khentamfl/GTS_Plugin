@@ -14,7 +14,7 @@ namespace {
 }
 
 namespace Gts {
-	NiPoint3 FootR::GetFootPos() {
+	NiPoint3 FootcameraR::GetFootPos() {
 		float base_hh = 0;
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 		auto player = PlayerCharacter::GetSingleton();
