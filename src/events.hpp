@@ -25,7 +25,7 @@ namespace Gts {
 	};
 	struct UnderFoot {
 		Actor* giant;
-		Actor* small;
+		Actor* tiny;
 		float force;
 	};
 
