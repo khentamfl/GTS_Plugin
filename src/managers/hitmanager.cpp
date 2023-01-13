@@ -62,31 +62,6 @@ namespace Gts {
 		bool wasHitBlocked = a_event->flags.all(TESHitEvent::Flag::kHitBlocked);
 		static Timer timer = Timer(0.25);
 
-
-		if (attacker != nullptr && receiver != nullptr) {
-			auto hitDataPtr = receiver->currentProcess->middleHigh->lastHitData;
-			HitData& hitData = *hitDataPtr;
-			// auto weapon = attacker->GetAttackingWeapon();
-			// if (weapon) {
-			// hitData.Populate(attacker, receiver, weapon);
-			
-			if (receiver == player && Runtime::HasPerk(receiver, "SizeReserveAug")) { // Size Reserve Augmentation
-				auto Cache = Persistent::GetSingleton().GetData(player);
-				log::info("totalDamage: {}", hitData.totalDamage);
-				log::info("physicalDamage: {}", hitData.physicalDamage);
-				log::info("targetedLimbDamage: {}", hitData.targetedLimbDamage);
-				log::info("percentBlocked: {}", hitData.percentBlocked);
-				log::info("resistedPhysicalDamage: {}", hitData.resistedPhysicalDamage);
-				log::info("resistedTypedDamage: {}", hitData.resistedTypedDamage);
-				log::info("reflectedDamage: {}", hitData.reflectedDamage);
-				log::info("reflectedDamage: {}", hitData.reflectedDamage);
-				if (Cache) {
-					Cache->SizeReserve += hitData.targetedLimbDamage/2500;
-				}
-			}
-			// }
-		}
-
 		// Apply it
 
 

@@ -17,10 +17,16 @@ namespace Hooks
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
 		log::info("PlayerCharacter::Update");
 		if (a_attacker) {
-			log::info("  - Attacker: {}", a_attacker->GetDisplayFullName());
+			auto player = PlayerCharacter::GetSingleton();
+			if (Runtime::HasPerk(player, "SizeReserveAug")) { // Size Reserve Augmentation
+				auto Cache = Persistent::GetSingleton().GetData(player);
+				if (Cache) {
+					Cache->SizeReserve += a_damage/3000;
+				}
+				log::info("  - Attacker: {}", a_attacker->GetDisplayFullName());
+			}
 		}
-		log::info("  - Damage: {}", a_damage);
+		//log::info("  - Damage: {}", a_damage);
 		_HandleHealthDamage(a_this, a_attacker, a_damage);
-		// CameraManager::GetSingleton().Update();
 	}
 }
