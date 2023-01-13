@@ -12,19 +12,19 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	void make_explosion_at(Foot kind, Actor* actor, NiPoint3 position, float scale) {
+	void make_explosion_at(FootEvent kind, Actor* actor, NiPoint3 position, float scale) {
 		if (!actor) {
 			return;
 		}
 
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
-			case Foot::Left:
-			case Foot::Right:
-			case Foot::Front:
+			case FootEvent::Left:
+			case FootEvent::Right:
+			case FootEvent::Front:
 			case Foot::Back:
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
-			case Foot::JumpLand:
+			case FootEvent::JumpLand:
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 		}
 
@@ -75,8 +75,8 @@ namespace Gts {
 			} else if (actor->IsWalking()) {
 				scale *= 0.85; // Walking makes you seem quieter
 			}
-			Foot foot_kind = impact.kind;
-			if (foot_kind == Foot::JumpLand) {
+			FootEvent foot_kind = impact.kind;
+			if (foot_kind == FootEvent::JumpLand) {
 				scale *= 2.0; // Jumping makes you sound bigger
 			}
 			auto actor_data = Transient::GetSingleton().GetData(actor);
