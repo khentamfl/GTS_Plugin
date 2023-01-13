@@ -12,6 +12,7 @@ namespace Gts {
 
 			virtual bool PermitManualEdit() override;
 			virtual bool PermitTransition() override;
+			virtual bool PermitCameraTransforms() override;
 
 			virtual float ProneAdjustment();
 	};

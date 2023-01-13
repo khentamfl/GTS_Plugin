@@ -3,6 +3,15 @@
 
 using namespace RE;
 
+namespace {
+	enum class CameraDataMode {
+		State,
+		Transform,
+	};
+
+	const CameraDataMode currentMode = CameraDataMode::Transform;
+}
+
 namespace Gts {
 	void SetINIFloat(std::string_view name, float value) {
 		auto ini_conf = INISettingCollection::GetSingleton();
@@ -176,6 +185,58 @@ namespace Gts {
 		}
 	}
 
+	NiPoint3 GetCameraPosition() {
+		NiPoint3 cameraLocation;
+		switch (currentMode) {
+			case CameraDataMode::State: {
+				auto camera = PlayerCamera::GetSingleton();
+				if (camera) {
+					auto currentState = camera->currentState;
+					if (currentState) {
+						currentState->GetTranslation(cameraLocation);
+					}
+				}
+			}
+			case CameraDataMode::Transform: {
+				auto camera = PlayerCamera::GetSingleton();
+				if (camera) {
+					auto cameraRoot = camera->cameraRoot;
+					if (cameraRoot) {
+						cameraLocation = cameraRoot->world.translate;
+					}
+				}
+			}
+		}
+		return cameraLocation;
+	}
+
+	NiMatrix3 GetCameraRotation() {
+		NiMatrix3 cameraRot;
+		switch (currentMode) {
+			case CameraDataMode::State: {
+				auto camera = PlayerCamera::GetSingleton();
+				if (camera) {
+					auto currentState = camera->currentState;
+					if (currentState) {
+						NiQuaternion cameraQuat;
+						camState->GetRotation(cameraQuat);
+						cameraRot = QuatToMatrix(cameraQuat);
+					}
+				}
+			}
+			case CameraDataMode::Transform: {
+				auto camera = PlayerCamera::GetSingleton();
+				if (camera) {
+					auto cameraRoot = camera->cameraRoot;
+					if (cameraRoot) {
+						cameraRot = cameraRoot->world.rotate;
+					}
+				}
+			}
+		}
+		return cameraRot;
+	}
+
 	// Get's camera position relative to the player
 	NiPoint3 GetCameraPosLocal() {
 		auto camera = PlayerCamera::GetSingleton();
@@ -186,8 +247,7 @@ namespace Gts {
 				if (player) {
 					auto model = player->Get3D(false);
 					if (model) {
-						NiPoint3 cameraLocation;
-						currentState->GetTranslation(cameraLocation);
+						NiPoint3 cameraLocation = GetCameraPosition();
 						auto playerTransInve = model->world.Invert();
 						// Get Scaled Camera Location
 						return playerTransInve*cameraLocation;
@@ -266,11 +326,9 @@ namespace Gts {
 		if (camera) {
 			auto camState = camera->currentState;
 			if (camState) {
-				NiPoint3 cameraTrans;
-				camState->GetTranslation(cameraTrans);
-				NiQuaternion cameraRot;
-				camState->GetRotation(cameraRot);
-				NiMatrix3 cameraRotMat = QuatToMatrix(cameraRot);
+				NiPoint3 cameraTrans = GetCameraPosition();
+
+				NiMatrix3 cameraRotMat = GetCameraRotation();
 
 				float zoomOffset = ZoomFactor() * MaxZoom() * zoomScale;
 				NiPoint3 zoomOffsetVec = NiPoint3(0.0, zoomOffset, 0.0);

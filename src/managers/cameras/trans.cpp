@@ -44,7 +44,14 @@ namespace Gts {
 	}
 
 	bool TransState::PermitManualEdit() {
+		return this->stateB->PermitManualEdit() && this->stateA->PermitManualEdit();
+	}
+
+	bool PermitTransition() {
 		return false;
+	}
+	bool PermitCameraTransforms() {
+		return this->stateB->PermitCameraTransforms() && this->stateA->PermitCameraTransforms();
 	}
 
 	bool TransState::IsDone() {

@@ -25,5 +25,6 @@ namespace Gts {
 
 			virtual bool PermitManualEdit();
 			virtual bool PermitTransition();
+			virtual bool PermitCameraTransforms();
 	};
 }
