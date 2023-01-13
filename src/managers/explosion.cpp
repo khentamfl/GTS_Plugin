@@ -22,7 +22,7 @@ namespace {
 			case FootEvent::Left:
 			case FootEvent::Right:
 			case FootEvent::Front:
-			case Foot::Back:
+			case FootEvent::Back:
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 			case FootEvent::JumpLand:
 				base_explosion = Runtime::GetExplosion("footstepExplosion");

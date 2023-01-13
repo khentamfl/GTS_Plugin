@@ -69,88 +69,88 @@ namespace {
 		return result;
 	}
 
-	BSISoundDescriptor* get_lFootstep_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_lFootstep_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
+			case FootEvent::Left:
+			case FootEvent::Front:
 				return Runtime::GetSound("lFootstepL");
 				break;
-			case Foot::Right:
-			case Foot::Back:
+			case FootEvent::Right:
+			case FootEvent::Back:
 				return Runtime::GetSound("lFootstepR");
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_lJumpLand_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_lJumpLand_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::JumpLand:
+			case FootEvent::JumpLand:
 				return Runtime::GetSound("lJumpLand");
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_xlFootstep_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_xlFootstep_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
+			case FootEvent::Left:
+			case FootEvent::Front:
 				return Runtime::GetSound("xlFootstepL");
 				break;
-			case Foot::Right:
-			case Foot::Back:
+			case FootEvent::Right:
+			case FootEvent::Back:
 				return Runtime::GetSound("xlFootstepR");
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_xlRumble_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_xlRumble_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
+			case FootEvent::Left:
+			case FootEvent::Front:
 				return Runtime::GetSound("xlRumbleL");
 				break;
-			case Foot::Right:
-			case Foot::Back:
+			case FootEvent::Right:
+			case FootEvent::Back:
 				return Runtime::GetSound("xlRumbleR");
 				break;
-			case Foot::JumpLand:
+			case FootEvent::JumpLand:
 				return Runtime::GetSound("xlRumbleR");
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_xlSprint_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_xlSprint_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
+			case FootEvent::Left:
+			case FootEvent::Front:
 				return Runtime::GetSound("xlSprintL");
 				break;
-			case Foot::Right:
-			case Foot::Back:
+			case FootEvent::Right:
+			case FootEvent::Back:
 				return Runtime::GetSound("xlSprintR");
 				break;
-			case Foot::JumpLand:
+			case FootEvent::JumpLand:
 				return Runtime::GetSound("xlSprintR");
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_xxlFootstep_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_xxlFootstep_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
+			case FootEvent::Left:
+			case FootEvent::Front:
 				return Runtime::GetSound("xxlFootstepL");
 				break;
-			case Foot::Right:
-			case Foot::Back:
+			case FootEvent::Right:
+			case FootEvent::Back:
 				return Runtime::GetSound("xxlFootstepR");
 				break;
-			case Foot::JumpLand:
+			case FootEvent::JumpLand:
 				return Runtime::GetSound("xxlFootstepR");
 				break;
 		}
