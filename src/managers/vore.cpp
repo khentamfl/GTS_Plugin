@@ -402,7 +402,7 @@ namespace Gts {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} 
 		else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 1) {
-			ConsoleLog::GetSingleton()->Print("%s Forever became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}  
 		else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 2) {
 			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());

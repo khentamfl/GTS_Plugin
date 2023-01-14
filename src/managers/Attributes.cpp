@@ -141,7 +141,7 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float bonus = scale * power;
 		if (actor->formID == 0x14) {
-			if Runtime::HasMagicEffect(actor, "SmallMassiveThreat") {
+			if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
 				bonus *= 3.0;
 			}
 		}
