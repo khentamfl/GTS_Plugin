@@ -51,7 +51,7 @@ namespace Gts {
 		if (HitId->GetName() == "Stagger" || HitId->GetName() == "SizeEffect" || HitId->GetName() == "SprintingSizeEffect" || HitId->GetName() == "GtsTastyFoe") {
 			return;
 		}
-		log::info("Hit Name: {}, HitForm: {}, HitFormFullName: {}, Just Hit ID: {}", HitId->GetName(), HitIdForm, HitIdForm->GetFullName(), HitId);
+		log::info("Hit Name: {}, HitForm: {}, Just Hit ID: {}", HitId->GetName(), HitIdForm, HitId);
 		auto ProjectileIDForm = a_event->projectile;
 		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
 		auto player = PlayerCharacter::GetSingleton();
