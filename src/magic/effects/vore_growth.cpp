@@ -94,7 +94,7 @@ namespace Gts {
 			} else if (Boost == 2) {
 				Caster->ModActorValue(ActorValue::kStamina, TotalMod);
 			}
-			log::info("Buffing Attributes, {}", Boost);
+			log::info("Buffing Attributes {}, Target: {}, Caster: {}", Boost, Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 		}
 		
 	}
