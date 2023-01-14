@@ -83,8 +83,7 @@ namespace Gts {
 			if (wasPowerAttack) {
 				size_difference *= 3.0;
 			}
-			Runtime::PlaySound("GiantImpactSound", receiver, size_difference/4, 0.0);
-			GrowthTremorManager::GetSingleton().CallRumble(attacker, receiver, size_difference * 32);
+			GrowthTremorManager::GetSingleton().CallRumble(receiver, attacker, size_difference * 8);
 			PushActorAway(attacker, receiver, size_difference);
 		}
 
