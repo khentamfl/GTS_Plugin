@@ -118,7 +118,7 @@ perks:
   HealthRegenPerk: "GTS.esp|18E160"
   GrowthAugmentation: "GTS.esp|35AD69"
   VorePerkRegeneration: "GTS.esp|33C764"
-  VorePerkGreed: "GTS.esp|33C765"
+  SoulVorePerk: "GTS.esp|33C765"
   GrowthPerk: "GTS.esp|128CF6"
   TotalControl: "GTS.esp|128CF7"
   NoSpeedLoss: "GTS.esp|2E663B"

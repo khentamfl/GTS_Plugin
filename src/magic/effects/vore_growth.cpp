@@ -29,14 +29,14 @@ namespace Gts {
 		float bonus = 1.0;
 		float GrowAmount = this->ScaleOnVore;
 		BASE_POWER *= GrowAmount;
-		if (Runtime::HasMagicEffect(caster, "AdditionalAbsorption")) {
+		if (Runtime::HasPerk(caster, "AdditionalAbsorption")) {
 			BASE_POWER *= 2.0;
 		}
 
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
-		//log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
+		log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
 		VoreRegeneration(1.0);
 		Grow(caster, 0, BASE_POWER * bonus);
 	}
@@ -76,8 +76,11 @@ namespace Gts {
 		if (!Target) { // Don't apply bonuses if caster is not player.
 			return;
 		}
+		if (Caster == Target) {
+			return; // Don't apply to self
+		}
 		
-		if (Runtime::HasPerk(Caster, "VorePerkGreed")) { // Permamently increases random AV after eating someone
+		if (Runtime::HasPerk(Caster, "SoulVorePerk")) { // Permamently increases random AV after eating someone
 			float TotalMod = (0.75 * get_visual_scale(Target));
 			int Boost = rand() % 2;
 			if (Boost == 0) {
