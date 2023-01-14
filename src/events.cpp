@@ -75,6 +75,7 @@ namespace Gts {
 
 	// Fired when a foot lands
 	void EventListener::OnImpact(const Impact& impact) {
+		log::info("Impact: {}", impact);
 
 	}
 

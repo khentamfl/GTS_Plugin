@@ -1,5 +1,6 @@
 #include "magic/effects/SizeRelatedDamage.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
+#include "managers/GrowthTremorManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/highheel.hpp"
 #include "magic/effects/common.hpp"
@@ -86,7 +87,7 @@ namespace Gts {
 			size_difference += 7.2; // Allows to crush same size targets.
 
 			if (Runtime::HasPerk(caster, "SmallMassiveThreatSizeSteal")) {
-				float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.0002;
+				float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00004;
 				caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -(HpRegen * TimeScale()) * size_difference);
 
 				ShrinkActor(target, 0.0015 * BonusShrink, 0.0);
@@ -99,6 +100,9 @@ namespace Gts {
 			// ^ We don't want to crush allies
 			CrushManager::Crush(caster, target);
 			CrushToNothing(caster, target);
+			if (Runtime::HasMagicEffect(caster, "SmallMassiveThreat") && caster != target) {
+				GrowthTremorManager::GetSingleton().CallRumble(target, caster, 8.0);
+			}
 			KnockAreaEffect(caster, 2, 64 * size_difference);
 			Runtime::CreateExplosion(target, target_scale,"BloodExplosion");
 		}
