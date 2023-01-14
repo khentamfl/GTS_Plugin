@@ -26,6 +26,9 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
+		if (caster == target) {
+			return;
+		}
 		float bonus = 1.0;
 		float GrowAmount = this->ScaleOnVore;
 		BASE_POWER *= GrowAmount;
