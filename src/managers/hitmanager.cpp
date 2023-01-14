@@ -74,7 +74,7 @@ namespace Gts {
 				hitName.find("Sword") == std::string::npos || 
 				hitName.find("Axe") == std::string::npos || 
 				hitName.find("Mace") == std::string::npos || 
-				HitId == 500) {
+				HitIdForm == 500) {
 				float attackerscale = get_visual_scale(attacker) + 3.0; 
 				float receiverscale = get_visual_scale(receiver); 
 				float size_difference = attackerscale/receiverscale;
