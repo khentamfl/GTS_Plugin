@@ -141,7 +141,9 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float bonus = scale * power;
 		if (actor->formID == 0x14) {
-			//log::info("Actor: {}, Scale:{}, Power: {}, Bonus: {}", actor->GetDisplayFullName(), scale, power, bonus);
+			if Runtime::HasMagicEffect(actor, "SmallMassiveThreat") {
+				bonus *= 3.0;
+			}
 		}
 		actor->SetBaseActorValue(ActorValue::kAttackDamageMult, bonus);
 	}
