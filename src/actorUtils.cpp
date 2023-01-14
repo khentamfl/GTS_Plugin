@@ -60,6 +60,9 @@ namespace Gts {
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
+	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude) {
+		CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
+	}
 
 	bool IsDragon(Actor* actor) {
 		return (
