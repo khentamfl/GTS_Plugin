@@ -101,7 +101,7 @@ namespace Gts {
 			CrushManager::Crush(caster, target);
 			CrushToNothing(caster, target);
 			if (Runtime::HasMagicEffect(caster, "SmallMassiveThreat") && caster != target) {
-				GrowthTremorManager::GetSingleton().CallRumble(target, caster, 8.0);
+				GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 24.0);
 			}
 			KnockAreaEffect(caster, 2, 32 * size_difference);
 			Runtime::CreateExplosion(target, target_scale,"BloodExplosion");

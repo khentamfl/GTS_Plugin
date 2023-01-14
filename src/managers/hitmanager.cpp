@@ -83,7 +83,7 @@ namespace Gts {
 			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 2.0;
 			}
-			GrowthTremorManager::GetSingleton().CallRumble(receiver, attacker, size_difference * 24);
+			GrowthTremorManager::GetSingleton().CallRumble(attacker, attacker, size_difference * 16);
 			PushActorAway(attacker, receiver, size_difference);
 		}
 
