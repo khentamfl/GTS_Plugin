@@ -109,7 +109,9 @@ namespace Gts {
 				});
 			}
 		}
-		log::info("High Heels Result for {} : {}, {}, {}", actor->GetDisplayFullName(), result[0], result[1], result[2]);
+		if (actor->formID == 0x14) {
+			log::info("High Heels Result for {} : {}, {}, {}", actor->GetDisplayFullName(), result[0], result[1], result[2]);
+		}
 		return result;
 	}
 
