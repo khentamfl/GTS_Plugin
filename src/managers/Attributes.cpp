@@ -108,7 +108,7 @@ namespace {
 		float last_carry_boost = actor_data->bonus_carry;
 		const ActorValue av = ActorValue::kCarryWeight;
 		float max_stamina = actor->GetPermanentActorValue(ActorValue::kStamina);
-		float visual_scale = get_target_scale(actor);
+		float visual_scale = get_visual_scale(actor);
 		float native_scale = get_natural_scale(actor);
 		float scale = visual_scale;//native_scale;
 		float base_av = actor->GetBaseActorValue(av);
@@ -126,7 +126,7 @@ namespace {
 	}
 
 	void BoostJump(Actor* actor, float power) {
-		float scale = get_target_scale(actor);
+		float scale = get_visual_scale(actor);
 
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
@@ -138,7 +138,7 @@ namespace {
 	}
 
 	void BoostAttackDmg(Actor* actor, float power) {
-		float scale = get_target_scale(actor);
+		float scale = get_visual_scale(actor);
 		float bonus = scale * power;
 		if (actor->formID == 0x14) {
 			//log::info("Actor: {}, Scale:{}, Power: {}, Bonus: {}", actor->GetDisplayFullName(), scale, power, bonus);
@@ -147,7 +147,7 @@ namespace {
 	}
 
 	void BoostSpeedMulti(Actor* actor, float power) {
-		float scale = get_target_scale(actor);
+		float scale = get_visual_scale(actor);
 		auto actor_data = Transient::GetSingleton().GetData(actor);
 		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/2.5;
 		float base_speed = actor_data->base_walkspeedmult;
@@ -176,7 +176,7 @@ namespace {
 		}
 		float last_hp_boost = actor_data->bonus_hp;
 		const ActorValue av = ActorValue::kHealth;
-		float visual_scale = get_target_scale(actor);
+		float visual_scale = get_visual_scale(actor);
 		float native_scale = get_natural_scale(actor);
 		float scale = visual_scale;///native_scale;
 
@@ -258,7 +258,7 @@ namespace {
 		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
 		float bonusSpeedMultiplier = Runtime::GetFloat("bonusSpeedMultiplier");
 
-		float size = get_target_scale(Player);
+		float size = get_visual_scale(Player);
 
 		static Timer timer = Timer(0.05);
 
@@ -302,7 +302,7 @@ namespace {
 			return;
 		}
 		static Timer timer = Timer(0.05);
-		float size = get_target_scale(npc);
+		float size = get_visual_scale(npc);
 
 		if (timer.ShouldRunFrame()) {
 			if (npc->IsPlayerTeammate() || Runtime::InFaction(npc, "FollowerFaction")) {
