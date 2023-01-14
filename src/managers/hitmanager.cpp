@@ -48,10 +48,10 @@ namespace Gts {
 		auto HitIdForm = a_event->source;
 		auto HitId = TESForm::LookupByID(HitIdForm);
 
-		if (HitId->GetName() == "Stagger" || HitId->GetName() == "SizeEffect" || HitId->GetName() == "SprintingSizeEffect" || HitId->GetName() == "GtsTastyFoe") {
+		if (HitIdForm->GetName() == "Stagger" || HitIdForm->GetName() == "SizeEffect" || HitIdForm->GetName() == "SprintingSizeEffect" || HitIdForm->GetName() == "GtsTastyFoe") {
 			return;
 		}
-
+		log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}, HitForm: {}", clampduration, this->GrowthTick, HitId->GetName(), HitIdForm);
 		auto ProjectileIDForm = a_event->projectile;
 		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
 		auto player = PlayerCharacter::GetSingleton();
