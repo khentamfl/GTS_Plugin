@@ -48,7 +48,7 @@ namespace Gts {
 		auto HitIdForm = a_event->source;
 		auto HitId = TESForm::LookupByID(HitIdForm);
 
-		if (HitId->GetName() == "Stagger" || HitId->GetName() == "SizeEffect" || HitId>GetName() == "SprintingSizeEffect" || HitId->GetName() == "GtsTastyFoe") {
+		if (HitId->GetName() == "Stagger" || HitId->GetName() == "SizeEffect" || HitId->GetName() == "SprintingSizeEffect" || HitId->GetName() == "GtsTastyFoe") {
 			return;
 		}
 		log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
