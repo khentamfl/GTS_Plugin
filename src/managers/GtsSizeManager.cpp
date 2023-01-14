@@ -310,8 +310,15 @@ namespace Gts {
 
 	void SizeManager::Reset() {
 		auto caster = PlayerCharacter::GetSingleton();
-		SetEnchantmentBonus(caster, 0.0);
-		SetGrowthSpurt(caster, 0.0);
-		//log::info("Resetting Enchantment and Growth Spurt");
+		if (caster) {
+			auto Persistent = Persistent::GetSingleton().GetData(caster);
+			if (!Persistent) {
+				return;
+			}
+			SetEnchantmentBonus(caster, 0.0);
+			SetGrowthSpurt(caster, 0.0);
+			Persistent->bonus_hp = 0.0;
+			Persistent->bonus_carry = 0.0;
+		}
 	}
 }
