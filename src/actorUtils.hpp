@@ -18,6 +18,7 @@ namespace Gts {
 	void SetMove(Actor* actor);
 
 	void KnockAreaEffect(Actor* actor, float afMagnitude, float afRadius);
+	void PushActorAway(Actor* actor, float afKnockbackForce);
 
 	bool IsDragon(Actor* actor);
 

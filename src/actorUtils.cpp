@@ -54,6 +54,9 @@ namespace Gts {
 		CallFunctionOn(actor, "Actor", "SetDontMove", true);
 	}
 
+	void PushActorAway(Actor* actor, float afKnockbackForce) {
+		CallFunctionOn(actor, "Actor", "PushActorAway", afKnockbackForce);
+	}
 	void KnockAreaEffect(Actor* actor, float afMagnitude, float afRadius) {
 		CallFunctionOn(actor, "Actor", "KnockAreaEffect", afMagnitude, afRadius);
 	}
