@@ -22,7 +22,7 @@ namespace Gts {
 
 
 		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 200;
-		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00035;
+		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00005;
 
 		float bonus = 1.0;
 

@@ -63,7 +63,15 @@ namespace Gts {
 		static Timer timer = Timer(0.25);
 
 		// Apply it
-
+		if (attacker == player && Runtime::HasMagicEffect(player, "SmallMassiveThreat") && receiver != player) {
+			float attackerscale = get_visual_scale(attacker) + 3.0; 
+			float receiverscale = get_visual_scale(receiver); 
+			float size_difference = attackerscale/receiverscale;
+			if (wasPowerAttack) {
+				size_difference *= 3.0;
+			}
+			PushActorAway(receiver, size_difference);
+		}
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
