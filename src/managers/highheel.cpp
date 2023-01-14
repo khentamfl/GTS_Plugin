@@ -109,7 +109,7 @@ namespace Gts {
 				});
 			}
 		}
-		log::info("High Heels Result: {}", result);
+		log::info("High Heels Result: {}, {}, {}", result[0], result[1], result[2]);
 		return result;
 	}
 
