@@ -54,7 +54,7 @@ namespace Gts {
 			return;
 		}
 
-		log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
+		//log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
 		auto ProjectileIDForm = a_event->projectile;
 		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
 		auto player = PlayerCharacter::GetSingleton();
@@ -125,7 +125,7 @@ namespace Gts {
 
 				this->GrowthTick +=HealthPercentage;
 
-				log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}, HitForm: {}", clampduration, this->GrowthTick, HitId->GetName(), HitIdForm);
+				//log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}, HitForm: {}", clampduration, this->GrowthTick, HitId->GetName(), HitIdForm);
 
 				if (ShrinkChance >= 10) {
 					mod_target_scale(attacker, (-0.025 * SizeHunger * Gigantism) * SizeDifference / BalanceMode); // Shrink Attacker
@@ -170,7 +170,7 @@ namespace Gts {
 
 				this->GrowthTick +=HealthPercentage;
 
-				log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}, HitId Form: {}", clampduration, this->GrowthTick, HitId->GetName(), HitIdForm);
+				//log::info("Clamp Duration is: {}, GrowthTicks: {}, Hit Name: {}, HitId Form: {}", clampduration, this->GrowthTick, HitId->GetName(), HitIdForm);
 				return;
 			}
 		}
