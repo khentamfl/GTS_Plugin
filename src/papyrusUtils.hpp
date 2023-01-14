@@ -43,7 +43,6 @@ namespace Gts {
 				log::error("Could not bind form");
 			}
 			vm->DispatchMethodCall(objectPtr, std::string(function).c_str(), args, callback);
-			log::info("VM attempts to call a function.");
 		}
 	}
 }
