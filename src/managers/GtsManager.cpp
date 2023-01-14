@@ -189,7 +189,7 @@ namespace {
 
 		if (timer.ShouldRunFrame()) {
 			if (scale < 1.0) {
-				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
+				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale * (bonus/2.4 + 1.0));
 				if (actor->formID == 0x14) {
 					//log::info("Player Scale is < 1.0, Scale: {}, BaseWalkSpeedMult with ADjustments: {}, Total: {} ", scale, trans_actor_data->base_walkspeedmult * scale, trans_actor_data->base_walkspeedmult);
 				}
