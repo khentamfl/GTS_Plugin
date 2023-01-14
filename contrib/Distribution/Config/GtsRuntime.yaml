@@ -20,6 +20,7 @@ sounds:
   GtsCrushSound: "GTS.esp|01102F"
   GtsFallSound: "GTS.esp|183F43"
   ClothTearSound: "GTS.esp|30EE54"
+  GiantImpactSound: "Skyrim.esm|0C52F7"
 
 spellEffects:
   SmallMassiveThreat: "GTS.esp|1A2568"

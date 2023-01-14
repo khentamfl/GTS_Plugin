@@ -372,11 +372,11 @@ namespace Gts {
 			sizedifference *= 1.15; // Less stamina drain
 		}
 		
-		float wastestamina = 180/sizedifference; // Drain stamina, should be 300 once tests are over
+		float wastestamina = 140/sizedifference; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
 
 		if (pred->formID != 0x14) {
-			wastestamina = 100/sizedifference; // Less tamina drain for non Player
+			wastestamina = 40/sizedifference; // Less tamina drain for non Player
 		}
 
 
@@ -385,7 +385,7 @@ namespace Gts {
 			return;
 		}
 		if (prey->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
-			Notify("{} is Essential, can't vore.", prey->GetDisplayFullName());
+			Notify("{} is important, i shouldn't eat him.", prey->GetDisplayFullName());
 		}
 		if (staminacheck < wastestamina) {
 			Notify("{} is too tired for vore.", pred->GetDisplayFullName());
@@ -397,9 +397,17 @@ namespace Gts {
 
 		DamageAV(pred, ActorValue::kStamina, wastestamina);
 		Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
-		if (!prey->IsDead()) {
+		int Random = rand() % 2;
+		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || Random == 0) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (prey->IsDead()) {
+		} 
+		else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 1) {
+			ConsoleLog::GetSingleton()->Print("%s Forever became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		}  
+		else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 2) {
+			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} 
+		else if (prey->IsDead()) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 		Runtime::CastSpell(pred, prey, "StartVore");
