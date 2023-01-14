@@ -44,7 +44,7 @@ namespace Gts {
 			Runtime::PlaySound("growthSound", caster, Volume, 1.0);
 			log::info("Growth Potion Loop caster: {}", caster->GetDisplayFullName());
 		}
-		float HP = GetMaxAV(caster, ActorValue::kHealth) * 0.00085;
+		float HP = GetMaxAV(caster, ActorValue::kHealth) * 0.00035;
 		caster->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
 
 		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;

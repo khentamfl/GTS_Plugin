@@ -14,7 +14,8 @@ namespace Gts {
 		auto target = GetTarget();
 		float Scale = get_target_scale(target);
 		this->ScaleOnVore = Scale;
-		this->BlockVoreMods = false;
+		this->TargetAmount +=1.0;
+		log::info("Vore Start TargetAmount: {}", this->TargetAmount);
 	}
 
 	void VoreGrowth::OnUpdate() {
@@ -33,22 +34,27 @@ namespace Gts {
 		if (Runtime::HasMagicEffect(caster, "AdditionalAbsorption")) {
 			BASE_POWER *= 2.0;
 		}
+		if (this->TargetAmount < 1.0) {
+			this->TargetAmount = 1.0; // Just in case
+		}
+		log::info("Vore target count: {}", this->TargetAmount);
 
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
 		//log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
-		VoreAugmentations();
+		VoreRegeneration(this->TargetAmount);
 		Grow(caster, 0, BASE_POWER * bonus);
 	}
 
 	void VoreGrowth::OnFinish() {
 		this->ScaleOnVore = 1.0;
-		this->BlockVoreMods = false;
+		VoreBuffAttributes();
+		log::info("Finish Vore Targets: {}", this->TargetAmount);
 	}
 
 
-	void VoreGrowth::VoreAugmentations() {
+	void VoreGrowth::VoreRegeneration(float power) {
 
 		auto Caster = GetCaster();
 		if (!Caster) { // Don't apply bonuses if caster is not player.
@@ -63,12 +69,22 @@ namespace Gts {
 		float SpRegen = GetMaxAV(Caster, ActorValue::kStamina) * 0.00030;
 
 		if (Runtime::HasPerk(Caster, "VorePerkRegeneration")) {
-			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
-			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
+			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale() * power);
+			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale() * power);
 		}
-		if (Runtime::HasPerk(Caster, "VorePerkGreed") && this->BlockVoreMods == false) { // Permamently increases random AV after eating someone
-			this->BlockVoreMods = true;
-			float TotalMod = 0.75 * get_visual_scale(Target);
+	}
+
+	void VoreGrowth::VoreBuffAttributes() {
+		auto Caster = GetCaster();
+		if (!Caster) { // Don't apply bonuses if caster is not player.
+			return;
+		} 
+		auto Target = GetTarget();
+		if (!Target) { // Don't apply bonuses if caster is not player.
+			return;
+		}
+		if (Runtime::HasPerk(Caster, "VorePerkGreed")) { // Permamently increases random AV after eating someone
+			float TotalMod = (0.75 * get_visual_scale(Target)) * power;
 			int Boost = rand() % 2;
 			if (Boost == 0) {
 				Caster->ModActorValue(ActorValue::kHealth, TotalMod);

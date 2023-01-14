@@ -20,11 +20,13 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-			void VoreAugmentations();
+			void VoreRegeneration(float power);
+			void VoreBuffAttributes();
 
 		private:
 
 			float ScaleOnVore = 1.0;
+			float TargetAmount = 0.0;
 			bool BlockVoreMods = false;
 
 	};
