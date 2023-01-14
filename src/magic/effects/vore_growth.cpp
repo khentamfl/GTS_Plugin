@@ -83,8 +83,9 @@ namespace Gts {
 		if (!Target) { // Don't apply bonuses if caster is not player.
 			return;
 		}
+		
 		if (Runtime::HasPerk(Caster, "VorePerkGreed")) { // Permamently increases random AV after eating someone
-			float TotalMod = (0.75 * get_visual_scale(Target)) * power;
+			float TotalMod = (0.75 * get_visual_scale(Target));
 			int Boost = rand() % 2;
 			if (Boost == 0) {
 				Caster->ModActorValue(ActorValue::kHealth, TotalMod);
@@ -93,6 +94,8 @@ namespace Gts {
 			} else if (Boost == 2) {
 				Caster->ModActorValue(ActorValue::kStamina, TotalMod);
 			}
+			log::info("Buffing Attributes, {}", Boost);
 		}
+		
 	}
 }
