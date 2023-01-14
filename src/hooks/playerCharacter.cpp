@@ -26,6 +26,8 @@ namespace Hooks
 					Cache->SizeReserve += -a_damage/3000;
 				}
 				log::info("  - Attacker: {}, damage: {}", a_attacker->GetDisplayFullName(), a_damage);
+				a_damage *= 0.05;
+				log::info("Decreasing damage to {}", a_damage);
 			}
 		}
 		//log::info("  - Damage: {}", a_damage);
