@@ -81,10 +81,8 @@ namespace Gts {
 			}
 			float expectedhhdamage = 1.5 + shoe_weight + char_weight;
 			if (this->GetSizeAttribute(actor, 3) != expectedhhdamage) {
-				Runtime::GetGlobal("HighHeelDamage")->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
-				this->SetSizeAttribute(actor, 1.5 + shoe_weight + char_weight, 3); // <-- Preparing to move it onto .dll entirely.
+				this->SetSizeAttribute(actor, 1.5 + shoe_weight + char_weight, 3);
 				log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), this->GetSizeAttribute(actor, 3));
-				// Feel free to remove it once we move it to DLL completely ^
 			}
 		} else if (hh_length <= 1e-4) {
 			if (this->GetSizeAttribute(actor, 3) != 1.0) {
