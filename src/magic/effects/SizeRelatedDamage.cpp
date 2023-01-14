@@ -10,9 +10,11 @@
 #include "data/persistent.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/CrushManager.hpp"
+#include "actorUtils.hpp"
 #include "util.hpp"
 #include "timer.hpp"
 #include "node.hpp"
+
 
 namespace Gts {
 	std::string SizeDamage::GetName() {
