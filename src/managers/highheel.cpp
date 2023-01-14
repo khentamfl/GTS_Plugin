@@ -89,6 +89,7 @@ namespace Gts {
 			if (model) {
 				VisitExtraData<NiFloatExtraData>(model, "HH_OFFSET", [&result](NiAVObject& currentnode, NiFloatExtraData& data) {
 					result.z = fabs(data.value);
+					log::info("High Heels False");
 					return false;
 				});
 				VisitExtraData<NiStringExtraData>(model, "SDTA", [&result](NiAVObject& currentnode, NiStringExtraData& data) {
@@ -105,6 +106,7 @@ namespace Gts {
 							}
 						}
 					}
+					log::info("High Heels True");
 					return true;
 				});
 			}
