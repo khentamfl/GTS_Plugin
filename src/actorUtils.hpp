@@ -18,7 +18,7 @@ namespace Gts {
 	void SetMove(Actor* actor);
 
 
-	void PushActorAway(TESObjectREFR* source, TESObjectREFR* receiver, float afKnockbackForce);
+	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockbackForce);
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius);
 
 

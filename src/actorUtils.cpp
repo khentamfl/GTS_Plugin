@@ -54,7 +54,7 @@ namespace Gts {
 		CallFunctionOn(actor, "Actor", "SetDontMove", true);
 	}
 
-	void PushActorAway(TESObjectREFR* source, TESObjectREFR* receiver, float afKnockBackForce) {
+	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce) {
   		CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
