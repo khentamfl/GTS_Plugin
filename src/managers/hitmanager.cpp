@@ -70,11 +70,13 @@ namespace Gts {
 		// Apply it
 		if (attacker == player && Runtime::HasMagicEffect(player, "SmallMassiveThreat") && receiver != player) {
 
-			if (hitName.find("Bow") == std::string::npos || 
-				hitName.find("Sword") == std::string::npos || 
-				hitName.find("Axe") == std::string::npos || 
-				hitName.find("Mace") == std::string::npos || 
-				HitIdForm == 500) {
+			if (hitName.find("Bow") == std::string::npos &&
+				hitName.find("Sword") == std::string::npos && 
+				hitName.find("Axe") == std::string::npos && 
+				hitName.find("Mace") == std::string::npos && 
+				HitIdForm != 500) { 
+					return;
+				}
 				float attackerscale = get_visual_scale(attacker) + 3.0; 
 				float receiverscale = get_visual_scale(receiver); 
 				float size_difference = attackerscale/receiverscale;
@@ -84,7 +86,6 @@ namespace Gts {
 			Runtime::PlaySound("GiantImpactSound", receiver, size_difference/4, 0.0);
 			GrowthTremorManager::GetSingleton().CallRumble(attacker, receiver, size_difference * 8);
 			PushActorAway(attacker, receiver, size_difference);
-			}
 		}
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {
