@@ -64,7 +64,7 @@ namespace Gts {
 		}
 
 		if (Runtime::HasPerk(caster, "LethalSprint") && caster->IsSprinting()) {
-			InstaCrushRequirement = 14.0 * HighHeels * Gigantism;
+			InstaCrushRequirement = 18.0 * HighHeels * Gigantism;
 		}
 
 		if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
