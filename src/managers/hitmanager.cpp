@@ -48,9 +48,14 @@ namespace Gts {
 		auto HitIdForm = a_event->source;
 		auto HitId = TESForm::LookupByID(HitIdForm);
 
-		if (HitId->GetFullName() == "Stagger" || HitId->GetFullName() == "SizeEffect" || HitId->GetFullName() == "SprintingSizeEffect" || HitId->GetFullName() == "GtsTastyFoe") {
+		std::string hitName = HitId->GetName();
+
+		if (hitName == "Stagger" || hitName == "SizeEffect" || hitName == "SprintingSizeEffect" || hitName == "GtsTastyFoe") {
 			return;
 		}
+
+		
+
 		log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
 		auto ProjectileIDForm = a_event->projectile;
 		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
@@ -63,16 +68,23 @@ namespace Gts {
 		static Timer timer = Timer(0.25);
 
 		// Apply it
-		if (attacker == player && Runtime::HasMagicEffect(player, "SmallMassiveThreat") && receiver != player && ) {
-			float attackerscale = get_visual_scale(attacker) + 3.0; 
-			float receiverscale = get_visual_scale(receiver); 
-			float size_difference = attackerscale/receiverscale;
+		if (attacker == player && Runtime::HasMagicEffect(player, "SmallMassiveThreat") && receiver != player) {
+
+			if (hitName.find("Bow") == std::string::npos || 
+				hitName.find("Sword") == std::string::npos || 
+				hitName.find("Axe") == std::string::npos || 
+				hitName.find("Mace") == std::string::npos || 
+				HitId == 500) {
+				float attackerscale = get_visual_scale(attacker) + 3.0; 
+				float receiverscale = get_visual_scale(receiver); 
+				float size_difference = attackerscale/receiverscale;
 			if (wasPowerAttack) {
 				size_difference *= 3.0;
 			}
 			Runtime::PlaySound("GiantImpactSound", receiver, size_difference/4, 0.0);
-			GrowthTremorManager::GetSingleton().CallRumble(attacker, receiver, size_difference * 2);
+			GrowthTremorManager::GetSingleton().CallRumble(attacker, receiver, size_difference * 8);
 			PushActorAway(attacker, receiver, size_difference);
+			}
 		}
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {

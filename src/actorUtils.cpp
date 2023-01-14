@@ -68,6 +68,10 @@ namespace Gts {
 			);
 	}
 
+	bool FindString(std::string String) {
+		return (string.)
+	}
+
 	bool IsProne(Actor* actor) {
 		return actor!= nullptr && actor->formID == 0x14 && Runtime::GetBool("ProneEnabled") && actor->IsSneaking();
 	}

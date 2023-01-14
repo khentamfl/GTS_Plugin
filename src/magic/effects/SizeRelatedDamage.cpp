@@ -103,7 +103,7 @@ namespace Gts {
 			if (Runtime::HasMagicEffect(caster, "SmallMassiveThreat") && caster != target) {
 				GrowthTremorManager::GetSingleton().CallRumble(target, caster, 8.0);
 			}
-			KnockAreaEffect(caster, 2, 64 * size_difference);
+			KnockAreaEffect(caster, 2, 32 * size_difference);
 			Runtime::CreateExplosion(target, target_scale,"BloodExplosion");
 		}
 	}
@@ -131,8 +131,8 @@ namespace Gts {
 					AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce more speed after crush
 				}
 			} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
-				PushActorAway(Caster, Target, 50.2); 
-				PushActorAway(Caster, Target, 50.2);
+				PushActorAway(Caster, Target, 0.2); 
+				PushActorAway(Caster, Target, 0.2);
 				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
 				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);
 				shake_camera(Caster, 0.35, 0.5);
