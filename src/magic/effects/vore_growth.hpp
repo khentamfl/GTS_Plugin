@@ -26,7 +26,6 @@ namespace Gts {
 		private:
 
 			float ScaleOnVore = 1.0;
-			float TargetAmount = 0.0;
 			bool BlockVoreMods = false;
 
 	};

@@ -14,8 +14,6 @@ namespace Gts {
 		auto target = GetTarget();
 		float Scale = get_target_scale(target);
 		this->ScaleOnVore = Scale;
-		this->TargetAmount +=1.0;
-		log::info("Vore Start TargetAmount: {}", this->TargetAmount);
 	}
 
 	void VoreGrowth::OnUpdate() {
@@ -34,23 +32,18 @@ namespace Gts {
 		if (Runtime::HasMagicEffect(caster, "AdditionalAbsorption")) {
 			BASE_POWER *= 2.0;
 		}
-		if (this->TargetAmount < 1.0) {
-			this->TargetAmount = 1.0; // Just in case
-		}
-		log::info("Vore target count: {}", this->TargetAmount);
 
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
 		//log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
-		VoreRegeneration(this->TargetAmount);
+		VoreRegeneration(1.0);
 		Grow(caster, 0, BASE_POWER * bonus);
 	}
 
 	void VoreGrowth::OnFinish() {
 		this->ScaleOnVore = 1.0;
 		VoreBuffAttributes();
-		log::info("Finish Vore Targets: {}", this->TargetAmount);
 	}
 
 
