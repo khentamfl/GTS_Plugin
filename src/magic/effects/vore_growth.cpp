@@ -65,6 +65,7 @@ namespace Gts {
 		if (Runtime::HasPerk(Caster, "VorePerkRegeneration")) {
 			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
+			log::info("Player's HP Max {}, Regen: {}", Caster->GetPermanentActorValue(ActorValue::kHealth), HpRegen);
 		}
 		if (Runtime::HasPerk(Caster, "VorePerkGreed") && this->BlockVoreMods == false) { // Permamently increases random AV after eating someone
 			this->BlockVoreMods = true;
