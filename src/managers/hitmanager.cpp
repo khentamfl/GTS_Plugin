@@ -72,7 +72,7 @@ namespace Gts {
 			}
 			Runtime::PlaySound("GiantImpactSound", receiver, size_difference/4, 0.0);
 			GrowthTremorManager::GetSingleton().CallRumble(attacker, receiver, size_difference * 2);
-			PushActorAway(attacker, receiver, size_difference);
+			PushActorAway(receiver, size_difference);
 		}
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {

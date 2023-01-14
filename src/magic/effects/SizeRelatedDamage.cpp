@@ -87,8 +87,8 @@ namespace Gts {
 			size_difference += 7.2; // Allows to crush same size targets.
 
 			if (Runtime::HasPerk(caster, "SmallMassiveThreatSizeSteal")) {
-				float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00001;
-				caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -(HpRegen * TimeScale()) * size_difference);
+				float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.005 * size_difference;
+				caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
 
 				ShrinkActor(target, 0.0015 * BonusShrink, 0.0);
 				Grow(caster, 0.00045 * target_scale * BonusShrink, 0.0);
@@ -131,8 +131,8 @@ namespace Gts {
 					AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce more speed after crush
 				}
 			} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
-				PushActorAway(Caster, Target, 50.2); 
-				PushActorAway(Target, Caster, 50.2);
+				PushActorAway(Caster, 50.2); 
+				PushActorAway(Target, 50.2);
 				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
 				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.35); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.15);
 				shake_camera(Caster, 0.35, 0.5);
