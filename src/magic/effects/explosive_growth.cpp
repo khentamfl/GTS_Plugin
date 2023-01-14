@@ -77,7 +77,7 @@ namespace Gts {
 
 		float limit = this->grow_limit * Gigantism * AdjustLimit;
 
-		float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00080;
+		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00080;
 
 		if (Runtime::HasPerk(caster, "HealthRegenPerk")) {
 			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());

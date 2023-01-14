@@ -59,13 +59,13 @@ namespace Gts {
 			return;
 		}
 
-		float HpRegen = Caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00145;
-		float SpRegen = Caster->GetPermanentActorValue(ActorValue::kStamina) * 0.007;
+		float HpRegen = GetMaxAV(Caster, ActorValue::kHealth) * 0.00105;
+		float SpRegen = GetMaxAV(Caster, ActorValue::kStamina) * 0.0020;
 
 		if (Runtime::HasPerk(Caster, "VorePerkRegeneration")) {
 			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
-			log::info("Player's HP Max {}, Regen: {}", Caster->GetPermanentActorValue(ActorValue::kHealth), HpRegen);
+			log::info("Player's HP Max {}, Regen: {}", Caster->GetMaxAV(ActorValue::kHealth), HpRegen);
 		}
 		if (Runtime::HasPerk(Caster, "VorePerkGreed") && this->BlockVoreMods == false) { // Permamently increases random AV after eating someone
 			this->BlockVoreMods = true;

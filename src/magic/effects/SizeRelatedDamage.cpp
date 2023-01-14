@@ -87,7 +87,7 @@ namespace Gts {
 			size_difference += 7.2; // Allows to crush same size targets.
 
 			if (Runtime::HasPerk(caster, "SmallMassiveThreatSizeSteal")) {
-				float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00004;
+				float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00001;
 				caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -(HpRegen * TimeScale()) * size_difference);
 
 				ShrinkActor(target, 0.0015 * BonusShrink, 0.0);
