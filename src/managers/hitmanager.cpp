@@ -80,7 +80,7 @@ namespace Gts {
 				float attackerscale = get_visual_scale(attacker) + 3.0; 
 				float receiverscale = get_visual_scale(receiver); 
 				float size_difference = attackerscale/receiverscale;
-			if (wasPowerAttack) {
+			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 3.0;
 			}
 			GrowthTremorManager::GetSingleton().CallRumble(receiver, attacker, size_difference * 8);
