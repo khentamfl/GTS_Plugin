@@ -54,8 +54,6 @@ namespace Gts {
 			return;
 		}
 
-		
-
 		log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
 		auto ProjectileIDForm = a_event->projectile;
 		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
@@ -72,6 +70,8 @@ namespace Gts {
 
 			if (hitName.find("Bow") == std::string::npos &&
 				hitName.find("Sword") == std::string::npos && 
+				hitName.find("Greatsword") == std::string::npos && 
+				hitName.find("sword") == std::string::npos && 
 				hitName.find("Axe") == std::string::npos && 
 				hitName.find("Mace") == std::string::npos && 
 				HitIdForm != 500) { 
@@ -84,7 +84,7 @@ namespace Gts {
 				size_difference *= 3.0;
 			}
 			Runtime::PlaySound("GiantImpactSound", receiver, size_difference/4, 0.0);
-			GrowthTremorManager::GetSingleton().CallRumble(attacker, receiver, size_difference * 8);
+			GrowthTremorManager::GetSingleton().CallRumble(attacker, receiver, size_difference * 32);
 			PushActorAway(attacker, receiver, size_difference);
 		}
 
