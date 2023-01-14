@@ -86,8 +86,8 @@ namespace Gts {
 			size_difference += 7.2; // Allows to crush same size targets.
 
 			if (Runtime::HasPerk(caster, "SmallMassiveThreatSizeSteal")) {
-				float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.0008;
-				caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
+				float HpRegen = caster->GetPermanentActorValue(ActorValue::kHealth) * 0.0002;
+				caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -(HpRegen * TimeScale()) * size_difference);
 
 				ShrinkActor(target, 0.0015 * BonusShrink, 0.0);
 				Grow(caster, 0.00045 * target_scale * BonusShrink, 0.0);
@@ -99,6 +99,7 @@ namespace Gts {
 			// ^ We don't want to crush allies
 			CrushManager::Crush(caster, target);
 			CrushToNothing(caster, target);
+			KnockAreaEffect(caster, 2, 64 * size_difference);
 			Runtime::CreateExplosion(target, target_scale,"BloodExplosion");
 		}
 	}

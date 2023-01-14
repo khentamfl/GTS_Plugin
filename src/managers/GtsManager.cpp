@@ -189,12 +189,12 @@ namespace {
 
 		if (timer.ShouldRunFrame()) {
 			if (scale < 1.0) {
-				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale * (Bonus/2.4 + 1.0));
+				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale * (Bonus/2.2 + 1.0));
 				if (actor->formID == 0x14) {
 					//log::info("Player Scale is < 1.0, Scale: {}, BaseWalkSpeedMult with ADjustments: {}, Total: {} ", scale, trans_actor_data->base_walkspeedmult * scale, trans_actor_data->base_walkspeedmult);
 				}
 			} else {
-				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/2.4 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
+				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/2.2 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 				if (actor->formID == 0x14) {
 					//log::info("Player Scale is > 1.0, Scale: {}, BaseWalkSpeedMult with Adjustments: {}, Total: {} ", scale, ((trans_actor_data->base_walkspeedmult * (Bonus/2.4 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed, trans_actor_data->base_walkspeedmult);
 				}
