@@ -48,10 +48,10 @@ namespace Gts {
 		auto HitIdForm = a_event->source;
 		auto HitId = TESForm::LookupByID(HitIdForm);
 
-		if (HitId->GetName() == "Stagger" || HitId->GetName() == "SizeEffect" || HitId->GetName() == "SprintingSizeEffect" || HitId->GetName() == "GtsTastyFoe") {
+		if (HitId->GetFullName() == "Stagger" || HitId->GetFullName() == "SizeEffect" || HitId->GetFullName() == "SprintingSizeEffect" || HitId->GetFullName() == "GtsTastyFoe") {
 			return;
 		}
-		log::info("Hit Name: {}, HitForm: {}, Just Hit ID: {}", HitId->GetName(), HitIdForm, HitId);
+		log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
 		auto ProjectileIDForm = a_event->projectile;
 		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
 		auto player = PlayerCharacter::GetSingleton();
@@ -63,7 +63,7 @@ namespace Gts {
 		static Timer timer = Timer(0.25);
 
 		// Apply it
-		if (attacker == player && Runtime::HasMagicEffect(player, "SmallMassiveThreat") && receiver != player) {
+		if (attacker == player && Runtime::HasMagicEffect(player, "SmallMassiveThreat") && receiver != player && ) {
 			float attackerscale = get_visual_scale(attacker) + 3.0; 
 			float receiverscale = get_visual_scale(receiver); 
 			float size_difference = attackerscale/receiverscale;
