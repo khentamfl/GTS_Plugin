@@ -57,8 +57,8 @@ namespace Gts {
 	void PushActorAway(TESObjectREFR* source, TESObjectREFR* receiver, float afKnockBackForce) {
   		CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
-	void KnockAreaEffect(TESObjectREFR* obj, float afMagnitude, float afRadius) {
-		CallFunctionOn(obj, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
+	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
+		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
 
 	bool IsDragon(Actor* actor) {
