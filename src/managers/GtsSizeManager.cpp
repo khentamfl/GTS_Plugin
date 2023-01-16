@@ -133,6 +133,7 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force;
 
 		if (force > 0.5 && sizeRatio >= 2.5) { // If under the foot
+		log::info("Applying Size Related Damage, Force is > 0.5");
 			DoSizeRelatedDamage(giant, tiny, movementFactor, force);
 			if (sizeRatio >= 4.0) {
 				//PushActorAway(giant, tiny, knockBack);
