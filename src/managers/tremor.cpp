@@ -69,7 +69,7 @@ namespace Gts {
 			if (foot_kind == FootEvent::JumpLand) {
 				scale *= 2.0; // Jumping makes you seem bigger
 			}
-			if (HighHeelManager::IsWearingHH(actior) && Runtime::HasPerkTeam(actor, "hhBonus")) {
+			if (HighHeelManager::IsWearingHH(actor) && Runtime::HasPerkTeam(actor, "hhBonus")) {
 				scale *= 1.5;
 			}
 
