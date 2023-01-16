@@ -152,6 +152,7 @@ namespace Gts {
 												.force = aveForce,
 												.foot = foot,
 												.bodyParts = bodyParts,
+												.footEvent = kind,
 											};
 											EventDispatcher::DoUnderFootEvent(underfoot);
 										}

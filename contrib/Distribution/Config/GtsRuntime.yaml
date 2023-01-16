@@ -130,6 +130,8 @@ perks:
   LethalSprint: "GTS.esp|123BEB"
   hhBonus: "GTS.esp|271EF1"
   GrowthOfStrength: "GTS.esp|151519"
+  LaunchPerk: "GTS.esp|1CAD91"
+  LaunchDamage: "GTS.esp|2496E9"
 
   MightyLegs: "GTS.esp|123BE9"
   SprintDamageMult1: "GTS.esp|123BEA"

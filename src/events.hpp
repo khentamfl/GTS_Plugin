@@ -31,6 +31,7 @@ namespace Gts {
 		NiAVObject* foot;
 		/// Tiny's body parts that are underfoot
 		std::vector<NiAVObject*> bodyParts;
+		FootEvent footEvent;
 	};
 
 	struct HighheelEquip {

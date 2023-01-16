@@ -16,6 +16,12 @@
 using namespace RE;
 using namespace Gts;
 
+namespace {
+	const double LAUNCH_COOLDOWN = 3.0;
+	const float LAUNCH_DAMAGE_BASE = 10.0f;
+	const float LAUNCH_KNOCKBACK_BASE = 10.0f;
+}
+
 
 namespace Gts {
 	SizeManager& SizeManager::GetSingleton() noexcept {
@@ -89,6 +95,50 @@ namespace Gts {
 			if (this->GetSizeAttribute(actor, 3) != 1.0) {
 				this->SetSizeAttribute(actor, 1.0, 3);
 				log::info("SizeManager HH Actor {} RESET value: {}", actor->GetDisplayFullName(), this->GetSizeAttribute(actor, 3));
+			}
+		}
+	}
+
+	void SizeManager::UnderFootEvent(const UnderFoot& evt) {
+		auto giant = evt.giant;
+		auto tiny = evt.tiny;
+		float force = evt.force;
+
+		float giantSize = get_visual_scale(giant);
+		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
+		if (hasSMT) {
+			giantSize += 4.0;
+		}
+
+		float tinySize = get_visual_scale(tiny);
+
+		float movementFactor = 1.0;
+		if (evt.footEvent == FootEvent::JumpLand) {
+			movementFactor *= 2.0;
+		}
+		if (giant->IsSneaking()) {
+			movementFactor *= 0.5;
+		}
+		if (giant->IsSneaking()) {
+			movementFactor *= 0.5;
+		}
+		if (giant->IsSprinting()) {
+			movementFactor *= 1.5;
+		}
+
+		float sizeRatio = giantSize/tinySize * movementFactor;
+
+		if (!SizeManager::IsLaunching(tiny)) {
+			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+				if (sizeRatio >= 8.0) {
+					// Launch
+					SizeManager::GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
+						float damage = LAUNCH_DAMAGE_BASE * giantSize * movementFactor * force;
+						DamageAV(tiny,ActorValue::kHealth, damage);
+					}
+					PushActorAway(giant, tiny, LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force);
+				}
 			}
 		}
 	}
@@ -313,5 +363,14 @@ namespace Gts {
 			SetEnchantmentBonus(caster, 0.0);
 			SetGrowthSpurt(caster, 0.0);
 		}
+	}
+
+	LaunchData& SizeManager::GetLaunchData(Actor* actor) {
+		this->sizeData.try_emplace(actor);
+		return this->sizeData.at(actor);
+	}
+
+	bool SizeManager::IsLaunching(Actor* actor) {
+		return Time::WorldTimeElapsed() <= (SizeManager::GetLaunchData(actor).lastLaunchTime + LAUNCH_COOLDOWN)
 	}
 }

@@ -24,6 +24,11 @@ namespace Gts {
 		float SizeVulnerability = 0.0;
 
 	};
+
+	struct LaunchData {
+		double lastLaunchTime = -1.0e8; //
+	};
+
 	class SizeManager : public EventListener {
 		public:
 			[[nodiscard]] static SizeManager& GetSingleton() noexcept;
@@ -33,6 +38,7 @@ namespace Gts {
 			virtual std::string DebugName() override;
 			virtual void Update() override;
 			virtual void OnHighheelEquip(const HighheelEquip& evt) override;
+			virtual void UnderFootEvent(const UnderFoot& evt) override;
 
 			void Reset();
 
@@ -63,7 +69,11 @@ namespace Gts {
 
 			float BalancedMode();
 
+			static LaunchData& GetLaunchData(Actor* actor);
+			static bool IsLaunching(Actor* actor);
+
 		private:
 			std::map<Actor*, SizeManagerData> sizeData;
+			std::map<Actor*, LaunchData> launchData;
 	};
 }
