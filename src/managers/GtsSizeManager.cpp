@@ -163,7 +163,7 @@ namespace Gts {
 		float tinysize = get_visual_scale(tiny);
 		float multiplier = std::clamp(giantsize/tinysize, 1.0, 4.0);
 		float additionaldamage = 1.0 + this->GetSizeVulnerability(tiny);
-		float normaldamage = std::clamp(this->GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999);
+		float normaldamage = std::clamp(this->GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
 		float highheelsdamage = this->GetSizeAttribute(giant, 3);
 		float sprintdamage = 1.0;
 		float falldamage = 1.0;
@@ -179,8 +179,11 @@ namespace Gts {
 		
 		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult);
+		if (tiny->GetAV(ActorValue::kHealth) < result) {
+			CrushManager::GetSingleton().Crush(giant, tiny);
 		}
 	}
+	
 
 	void SizeManager::SetEnchantmentBonus(Actor* actor, float amt) {
 		if (!actor) {
