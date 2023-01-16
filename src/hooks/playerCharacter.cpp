@@ -39,7 +39,7 @@ namespace Hooks
 
 	void Hook_PlayerCharacter::AddPerk(PlayerCharacter* a_this, BGSPerk* a_perk, std::uint32_t a_rank) {
 		_AddPerk(a_this, a_perk, a_rank);
-		AddPerk evt = AddPerk {
+		AddPerkEvent evt = AddPerkEvent {
 			.actor = a_this,
 			.perk = a_perk,
 			.rank = a_rank,
@@ -48,7 +48,7 @@ namespace Hooks
 	}
 
 	void Hook_PlayerCharacter::RemovePerk(PlayerCharacter* a_this, BGSPerk* a_perk, std::uint32_t a_rank) {
-		RemovePerk evt = RemovePerk {
+		RemovePerkEvent evt = RemovePerkEvent {
 			.actor = a_this,
 			.perk = a_perk,
 		};
