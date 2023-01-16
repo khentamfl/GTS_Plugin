@@ -12,6 +12,8 @@
 #include "actorUtils.hpp"
 #include "node.hpp"
 
+#include <random>
+
 
 using namespace Gts;
 using namespace RE;
@@ -159,19 +161,19 @@ namespace Gts {
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
 		float multiplier = std::clamp(giantsize/tinysize, 1.0, 4.0);
-		float additionaldamage = 1.0 + GetSizeVulnerability(tiny);
-		float normaldamage = std::clamp(GetSizeRelatedDamage(giant, 0) * 0.25, 0.25, 999999);
-		float highheelsdamage = GetSizeRelatedDamage(giant, 3);
+		float additionaldamage = 1.0 + this->GetSizeVulnerability(tiny);
+		float normaldamage = std::clamp(this->GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999);
+		float highheelsdamage = this->GetSizeAttribute(giant, 3);
 		float sprintdamage = 1.0;
 		float falldamage = 1.0;
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 		
 		
 		if (giant->IsSprinting()) {
-			sprintdamage = 1.5 * GetSizeRelatedDamage(giant, 1);
+			sprintdamage = 1.5 * this->GetSizeAttribute(giant, 1);
 		}
 		if (totaldamage >= 3.0) {
-			falldamage = GetSizeRelatedDamage(giant, 2) * 2.0;
+			falldamage = this->GetSizeAttribute(giant, 2) * 2.0;
 		}
 		
 		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
