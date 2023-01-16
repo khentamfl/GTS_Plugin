@@ -42,13 +42,13 @@ namespace Gts {
 		TESObjectARMO* shoe;
 	};
 
-	struct AddPerk {
+	struct AddPerkEvent {
 		Actor* actor;
 		BGSPerk* perk;
 		std::uint32_t rank;
 	};
 
-	struct RemovePerk {
+	struct RemovePerkEvent {
 		Actor* actor;
 		BGSPerk* perk;
 	};
