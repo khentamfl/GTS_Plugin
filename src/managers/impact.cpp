@@ -126,7 +126,7 @@ namespace Gts {
 					giantScale *= 1.5;
 				}
 
-				if (impact_data.nodes.results == FootEvent::JumpLand) {
+				if (impact_data.kind == FootEvent::JumpLand) {
 					giantScale *= 2.0;
 				}
 
