@@ -117,18 +117,20 @@ namespace Gts {
 			const float BASE_DISTANCE = 70.0;
 			const float BASE_FOOT_DISTANCE = 5.0;
 			const float SCALE_RATIO = 3.0;
-			if (!impact_data.nodes.empty() && impact_data.actor != nullptr) {
-				float giantScale = get_visual_scale(impact_data.actor);
+			if (!impact_data.nodes.empty() && actor != nullptr) {
+				float giantScale = get_visual_scale(actor);
 
 				for (auto otherActor: find_actors()) {
-					float tinyScale = get_visual_scale(otherActor);
-					if (giantScale / tinyScale > SCALE_RATIO) {
-						if (otherActor != actor) {
+					if (otherActor != actor) {
+						float tinyScale = get_visual_scale(otherActor);
+						if (giantScale / tinyScale > SCALE_RATIO) {
 							NiPoint3 actorLocation = otherActor->GetPosition();
 							for (auto foot: impact_data.nodes) {
 								NiPoint3 footLocatation = foot->world.translate;
+								log::info("Checking {}'s is over {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName());
 								float distance = (footLocatation - actorLocation).Length();
 								if (distance < BASE_DISTANCE * giantScale) {
+									log::info("  - Maybe");
 									// Close enough for more advance checks
 									auto model = otherActor->GetCurrent3D();
 									if (model) {
@@ -144,6 +146,7 @@ namespace Gts {
 											return true;
 										});
 										if (!bodyParts.empty()) {
+											log::info("  - Yes Underfoot");
 											// Under Foot
 											float aveForce = force / bodyParts.size();
 											UnderFoot underfoot = UnderFoot {
