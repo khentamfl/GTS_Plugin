@@ -67,19 +67,13 @@ namespace Gts {
 
 		// Apply it
 		if (attacker == player && Runtime::HasMagicEffect(player, "SmallMassiveThreat") && receiver != player) {
-
-			if (hitName.find("Bow") == std::string::npos &&
-				hitName.find("Sword") == std::string::npos && 
-				hitName.find("Greatsword") == std::string::npos && 
-				hitName.find("sword") == std::string::npos && 
-				hitName.find("Axe") == std::string::npos && 
-				hitName.find("Mace") == std::string::npos && 
-				HitIdForm != 500) { 
-					return;
-				}
-				float attackerscale = get_visual_scale(attacker) + 3.0; 
-				float receiverscale = get_visual_scale(receiver); 
-				float size_difference = attackerscale/receiverscale;
+			FormType formType = HitId->GetFormType();
+			if (formType != FormType::Weapon) {
+				return;
+			}
+			float attackerscale = get_visual_scale(attacker) + 3.0;
+			float receiverscale = get_visual_scale(receiver);
+			float size_difference = attackerscale/receiverscale;
 			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 2.0;
 			}
