@@ -1,8 +1,9 @@
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/CrushManager.hpp"
+#include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "magic/effects/common.hpp"
-#include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -19,7 +20,6 @@ using namespace Gts;
 using namespace RE;
 using namespace REL;
 using namespace SKSE;
-using namespace std;
 
 namespace {
 	const double LAUNCH_COOLDOWN = 3.0;
@@ -161,7 +161,8 @@ namespace Gts {
 	void SizeManager::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
-		float multiplier = std::clamp(giantsize/tinysize, 1.0, 4.0);
+		float calcmult = giantsize/tinysize;
+		float multiplier = std::clamp(calcmult, 1.0, 4.0);
 		float additionaldamage = 1.0 + this->GetSizeVulnerability(tiny);
 		float normaldamage = std::clamp(this->GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
 		float highheelsdamage = this->GetSizeAttribute(giant, 3);
@@ -179,7 +180,7 @@ namespace Gts {
 		
 		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult);
-		if (tiny->GetAV(ActorValue::kHealth) < result) {
+		if (GetAV(tiny, ActorValue::kHealth) < result * weightdamage * mult) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 		}
 	}
