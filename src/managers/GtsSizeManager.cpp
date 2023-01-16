@@ -187,10 +187,10 @@ namespace Gts {
 			result *= 0.33;
 		}
 		if (multiplier >= 8.0 && GetAV(tiny, ActorValue::kHealth) < result * weightdamage * mult) {
-			CrushManager::GetSingleton().Crush(giant, tiny);
+			//CrushManager::GetSingleton().Crush(giant, tiny);
 			return;
 		}
-		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult);
+		//DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult);
 		
 	}
 	
