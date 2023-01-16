@@ -15,9 +15,9 @@ namespace Hooks
 			static inline REL::Relocation<decltype(HandleHealthDamage)> _HandleHealthDamage;
 
 			static void AddPerk(PlayerCharacter* a_this, BGSPerk* a_perk, std::uint32_t a_rank);
-			static inline REL::Relocation<decltype(AddPerk2)> _AddPerk;
+			static inline REL::Relocation<decltype(AddPerk)> _AddPerk;
 
 			static void RemovePerk(PlayerCharacter* a_this, BGSPerk* a_perk);
-			static inline REL::Relocation<decltype(AddPerk2)> _RemovePerk;
+			static inline REL::Relocation<decltype(AddPerk)> _RemovePerk;
 	};
 }
