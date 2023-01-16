@@ -161,8 +161,10 @@ namespace Gts {
 	void SizeManager::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
-		float calcmult = giantsize/tinysize;
-		float multiplier = std::clamp(calcmult, 1.0, 4.0);
+		float multiplier = giantsize/tinysize;
+		if (multiplier > 4.0) {
+			multiplier = 4.0; // temp fix
+		}
 		float additionaldamage = 1.0 + this->GetSizeVulnerability(tiny);
 		float normaldamage = std::clamp(this->GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
 		float highheelsdamage = this->GetSizeAttribute(giant, 3);
