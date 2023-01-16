@@ -22,7 +22,7 @@ namespace Hooks
 	void Hook_Actor::HandleHealthDamage(Actor* a_this, Actor* a_attacker, float a_damage) {
 		//log::info("Actor::Update");
 		if (a_attacker) {
-			if (Runtime::HasPerkTerm(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
+			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
