@@ -103,6 +103,7 @@ namespace Gts {
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
 		float force = evt.force;
+		log::info("Underfoot event: {} stepping on {} with force {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), force);
 
 		float giantSize = get_visual_scale(giant);
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
@@ -133,8 +134,11 @@ namespace Gts {
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE_BASE * giantSize * movementFactor * force;
 						DamageAV(tiny,ActorValue::kHealth, damage);
+						log::info("Underfoot damage: {} on {}", damage, tiny->GetDisplayFullName());
 					}
-					PushActorAway(giant, tiny, LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force);
+					float knockBack = LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force;
+					log::info("Pushing actor away: {}, force: {}", tiny->GetDisplayFullName(), knockBack);
+					PushActorAway(giant, tiny, knockBack);
 				}
 			}
 		}
