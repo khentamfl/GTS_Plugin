@@ -160,7 +160,7 @@ namespace Gts {
 	}
 
 	void SizeManager::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
-		float giantsize = get_visual_scale(giant) * (1.0 + HighHeelManager::GetBaseHHOffset(giant)/200);
+		float giantsize = get_visual_scale(giant) * (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float tinysize = get_visual_scale(tiny);
 		float multiplier = giantsize/tinysize;
 		if (multiplier > 4.0) {
@@ -174,6 +174,7 @@ namespace Gts {
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 		
 		
+
 		if (giant->IsSprinting()) {
 			sprintdamage = 1.5 * this->GetSizeAttribute(giant, 1);
 		}
@@ -182,10 +183,15 @@ namespace Gts {
 		}
 		
 		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
-		//DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult);
-		if (multiplier >= 8.0 && GetAV(tiny, ActorValue::kHealth) < result * weightdamage * mult) {
-			//CrushManager::GetSingleton().Crush(giant, tiny);
+		if (giant->IsSneaking()) {
+			result *= 0.33;
 		}
+		if (multiplier >= 8.0 && GetAV(tiny, ActorValue::kHealth) < result * weightdamage * mult) {
+			CrushManager::GetSingleton().Crush(giant, tiny);
+			return;
+		}
+		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult);
+		
 	}
 	
 
