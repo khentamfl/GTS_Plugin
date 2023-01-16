@@ -13,8 +13,10 @@
 #include "node.hpp"
 
 
-using namespace RE;
 using namespace Gts;
+using namespace RE;
+using namespace REL;
+using namespace SKSE;
 
 namespace {
 	const double LAUNCH_COOLDOWN = 3.0;
@@ -104,7 +106,7 @@ namespace Gts {
 		auto tiny = evt.tiny;
 		float force = evt.force;
 		log::info("Underfoot event: {} stepping on {} with force {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), force);
-
+		
 		float giantSize = get_visual_scale(giant);
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		if (hasSMT) {
@@ -125,8 +127,10 @@ namespace Gts {
 		}
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
+		float knockBack = LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force;
+
 		if (force > 0.5) { // If under the foot
-			DoSizeRelatedDamage(giant, tiny, movementFactor);
+			DoSizeRelatedDamage(giant, tiny, movementFactor, force);
 			if (sizeRatio >= 4.0) {
 				PushActorAway(giant, tiny, knockBack);
 			}
@@ -143,7 +147,6 @@ namespace Gts {
 						DamageAV(tiny,ActorValue::kHealth, damage);
 						log::info("Underfoot damage: {} on {}", damage, tiny->GetDisplayFullName());
 					}
-					float knockBack = LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force;
 					log::info("Pushing actor away: {}, force: {}", tiny->GetDisplayFullName(), knockBack);
 					PushActorAway(giant, tiny, knockBack);
 					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize, 25 * movementFactor * giantSize);
@@ -152,7 +155,7 @@ namespace Gts {
 		}
 	}
 
-	void SizeManager::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage) {
+	void SizeManager::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
 		float multiplier = std::clamp(giantsize/tinysize, 1.0, 4.0);
@@ -172,7 +175,7 @@ namespace Gts {
 		}
 		
 		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
-		DamageAV(target, ActorValue::kHealth, result);
+		DamageAV(target, ActorValue::kHealth, result * weightdamage * mult);
 		}
 	}
 
