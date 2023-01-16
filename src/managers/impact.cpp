@@ -121,22 +121,22 @@ namespace Gts {
 				float giantScale = get_visual_scale(impact_data.actor);
 
 				for (auto otherActor: find_actors()) {
-					float tinyScale = get_visual_scale(otherActor.actor);
+					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						if (otherActor != actor) {
 							NiPoint3 actorLocation = otherActor->GetPosition();
 							for (auto foot: impact_data.nodes) {
-								NiPoint3 footPosition = foot->world.translate;
+								NiPoint3 footLocatation = foot->world.translate;
 								float distance = (footLocatation - actorLocation).Length();
 								if (distance < BASE_DISTANCE * giantScale) {
 									// Close enough for more advance checks
 									auto model = otherActor->GetCurrent3D();
 									if (model) {
-										std::vector<NiAVObject*> bodyParts;
+										std::vector<NiAVObject*> bodyParts = {};
 										float force = 0.0;
 										float footDistance = BASE_FOOT_DISTANCE*giantScale;
-										VisitNodes(model, [footPosition, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
-											float distance = (a_obj.world.translate - footPosition).Length();
+										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
+											float distance = (a_obj.world.translate - footLocatation).Length();
 											if (distance < footDistance) {
 												bodyParts.push_back(a_obj);
 												force += 1.0 - distance / footDistance;
@@ -153,7 +153,7 @@ namespace Gts {
 												.foot = foot,
 												.bodyParts = bodyParts,
 											};
-											DoUnderFootEvent(underfoot);
+											EventDispatcher::DoUnderFootEvent(underfoot);
 										}
 									}
 								}
