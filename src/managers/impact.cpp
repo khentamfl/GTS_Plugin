@@ -107,12 +107,61 @@ namespace Gts {
 			Impact impact_data = Impact {
 				.actor = actor,
 				.kind = kind,
-				.scale = get_target_scale(actor),  // get_visual_scale(actor),
+				.scale = get_visual_scale(actor),
 				.effective_scale = get_effective_scale(actor),
 				.nodes = get_landing_nodes(actor, kind),
 			};
 
 			EventDispatcher::DoOnImpact(impact_data);
+
+			const float BASE_DISTANCE = 70.0;
+			const float BASE_FOOT_DISTANCE = 5.0;
+			const float SCALE_RATIO = 3.0;
+			if (!impact_data.nodes.empty() && impact_data.actor != nullptr) {
+				float giantScale = get_visual_scale(impact_data.actor);
+
+				for (auto otherActor: find_actors()) {
+					float tinyScale = get_visual_scale(otherActor.actor);
+					if (giantScale / tinyScale > SCALE_RATIO) {
+						if (otherActor != actor) {
+							NiPoint3 actorLocation = otherActor->GetPosition();
+							for (auto foot: impact_data.nodes) {
+								NiPoint3 footPosition = foot->world.translate;
+								float distance = (footLocatation - actorLocation).Length();
+								if (distance < BASE_DISTANCE * giantScale) {
+									// Close enough for more advance checks
+									auto model = otherActor->GetCurrent3D();
+									if (model) {
+										std::vector<NiAVObject*> bodyParts;
+										float force = 0.0;
+										float footDistance = BASE_FOOT_DISTANCE*giantScale;
+										VisitNodes(model, [footPosition, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
+											float distance = (a_obj.world.translate - footPosition).Length();
+											if (distance < footDistance) {
+												bodyParts.push_back(a_obj);
+												force += 1.0 - distance / footDistance;
+											}
+											return true;
+										});
+										if (!bodyParts.empty()) {
+											// Under Foot
+											float aveForce = force / bodyParts.size();
+											UnderFoot underfoot = UnderFoot {
+												.giant = impact_data.actor,
+												.tiny = otherActor,
+												.force = aveForce,
+												.foot = foot,
+												.bodyParts = bodyParts,
+											};
+											DoUnderFootEvent(underfoot);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

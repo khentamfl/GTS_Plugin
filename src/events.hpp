@@ -16,7 +16,7 @@ namespace Gts {
 		Unknown,
 	};
 
-	struct Impact { 
+	struct Impact {
 		Actor* actor;
 		FootEvent kind;
 		float scale;
@@ -27,6 +27,10 @@ namespace Gts {
 		Actor* giant;
 		Actor* tiny;
 		float force;
+		/// Giant foot that is doing the squishing
+		NiAVObject foot;
+		/// Tiny's body parts that are underfoot
+		std::vector<NiAVObject*> bodyParts;
 	};
 
 	class EventListener {
