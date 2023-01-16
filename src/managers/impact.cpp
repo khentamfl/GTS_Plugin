@@ -114,7 +114,7 @@ namespace Gts {
 
 			EventDispatcher::DoOnImpact(impact_data);
 
-			const float BASE_DISTANCE = 30.0;
+			const float BASE_DISTANCE = 60.0;
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 3.0;
 			float bonusscale = 1.0;
@@ -126,9 +126,9 @@ namespace Gts {
 					bonusscale *= 1.5;
 				}
 
-				//if (a_event == FootEvent::JumpLand) {
-					//bonusscale *= 2.0;
-				//}
+				if (impact_data.nodes == FootEvent::JumpLand) {
+					bonusscale *= 2.0;
+				}
 
 				giantScale *= bonusscale;
 
