@@ -138,7 +138,7 @@ namespace Gts {
 										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
 											float distance = (a_obj.world.translate - footLocatation).Length();
 											if (distance < footDistance) {
-												bodyParts.push_back(a_obj);
+												bodyParts.push_back(&a_obj);
 												force += 1.0 - distance / footDistance;
 											}
 											return true;

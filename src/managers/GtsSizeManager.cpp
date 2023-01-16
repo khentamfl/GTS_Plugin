@@ -71,7 +71,7 @@ namespace Gts {
 
 	void SizeManager::OnHighheelEquip(const HighheelEquip& evt) {
 		float hh_length = evt.hhLength;
-		Actor* acor = evt.actor;
+		Actor* actor = evt.actor;
 		// TODO move away from polling
 		if (hh_length > 0 && Runtime::HasPerkTeam(actor, "hhBonus")) { // HH damage bonus start
 			auto shoe = evt.shoe;

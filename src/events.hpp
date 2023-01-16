@@ -28,7 +28,7 @@ namespace Gts {
 		Actor* tiny;
 		float force;
 		/// Giant foot that is doing the squishing
-		NiAVObject foot;
+		NiAVObject* foot;
 		/// Tiny's body parts that are underfoot
 		std::vector<NiAVObject*> bodyParts;
 	};

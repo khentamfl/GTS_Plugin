@@ -68,18 +68,18 @@ namespace Gts {
 					npc_root_node->local.translate = new_hh;
 					update_node(npc_root_node);
 				}
-				auto transient = Transient::GetActorData(person);
-				if (person) {
+				auto transient = Transient::GetActorData(actor);
+				if (actor) {
 					bool wasWearingHh = transient->wearingHh;
 					bool isWearingHH = fabs(new_hh.Length()) > 1e-4;
 					if (isWearingHH != wasWearingHh) {
 						// Just changed hh
 						HighheelEquip hhEvent = HighheelEquip {
-							.actor = person,
+							.actor = actor,
 							.equipping = isWearingHH,
 							.hhLength = new_hh.Length(),
 							.hhOffset = new_hh,
-							.shoe = person->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet),
+							.shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet),
 						};
 						EventDispatcher::DoHighheelEquip(hhEvent);
 						transient->wearingHh = isWearingHH;

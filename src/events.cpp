@@ -79,7 +79,7 @@ namespace Gts {
 	}
 
 	// Fired when a highheel is (un)equiped or when an actor is loaded with HH
-	void EventListener: OnHighheelEquip(const HighheelEquip& impact) {
+	void EventListener::OnHighheelEquip(const HighheelEquip& impact) {
 
 	}
 
