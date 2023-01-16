@@ -114,8 +114,8 @@ namespace Gts {
 
 			EventDispatcher::DoOnImpact(impact_data);
 
-			const float BASE_DISTANCE = 70.0;
-			const float BASE_FOOT_DISTANCE = 5.0;
+			const float BASE_DISTANCE = 140.0;
+			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 3.0;
 			float bonusscale = 1.0;
 			if (!impact_data.nodes.empty() && actor != nullptr) {
@@ -144,11 +144,11 @@ namespace Gts {
 										float footDistance = BASE_FOOT_DISTANCE*giantScale;
 										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
 											float distance = (a_obj.world.translate - footLocatation).Length();
-											log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
-											if (distance < footDistance) {
+											log::info("    - Distance of node from foot {} needs to be {}", distance, BASE_DISTANCE);
+											if (distance < BASE_DISTANCE) {
 												log::info("    - Passed");
 												bodyParts.push_back(&a_obj);
-												force += 1.0 - distance / footDistance;
+												force += 1.0 - distance / BASE_DISTANCE;
 											}
 											log::info("Maybe two");
 											return true;

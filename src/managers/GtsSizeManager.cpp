@@ -125,8 +125,14 @@ namespace Gts {
 		}
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
+		if (force > 0.5) { // If under the foot
+			DoSizeRelatedDamage(giant, tiny, movementFactor);
+			if (sizeRatio >= 4.0) {
+				PushActorAway(giant, tiny, knockBack);
+			}
+		}
 
-		if (!SizeManager::IsLaunching(tiny)) {
+		else if (!SizeManager::IsLaunching(tiny) && force <= 0.5) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				log::info("Launch Perk is True");
 				if (sizeRatio >= 8.0) {
@@ -140,8 +146,33 @@ namespace Gts {
 					float knockBack = LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force;
 					log::info("Pushing actor away: {}, force: {}", tiny->GetDisplayFullName(), knockBack);
 					PushActorAway(giant, tiny, knockBack);
+					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize, 25 * movementFactor * giantSize);
 				}
 			}
+		}
+	}
+
+	void SizeManager::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage) {
+		float giantsize = get_visual_scale(giant);
+		float tinysize = get_visual_scale(tiny);
+		float multiplier = std::clamp(giantsize/tinysize, 1.0, 4.0);
+		float additionaldamage = 1.0 + GetSizeVulnerability(tiny);
+		float normaldamage = std::clamp(GetSizeRelatedDamage(giant, 0) * 0.25, 0.25, 999999);
+		float highheelsdamage = GetSizeRelatedDamage(giant, 3);
+		float sprintdamage = 1.0;
+		float falldamage = 1.0;
+		float weightdamage = giant->GetWeight()/100 + 1.0;
+		
+		
+		if (giant->IsSprinting()) {
+			sprintdamage = 1.5 * GetSizeRelatedDamage(giant, 1);
+		}
+		if (totaldamage >= 3.0) {
+			falldamage = GetSizeRelatedDamage(giant, 2) * 2.0;
+		}
+		
+		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
+		DamageAV(target, ActorValue::kHealth, result);
 		}
 	}
 

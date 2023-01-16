@@ -40,6 +40,8 @@ namespace Gts {
 			virtual void OnHighheelEquip(const HighheelEquip& evt) override;
 			virtual void UnderFootEvent(const UnderFoot& evt) override;
 
+			void DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage);
+
 			void Reset();
 
 			SizeManagerData& GetData(Actor* actor);
