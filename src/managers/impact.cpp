@@ -118,9 +118,7 @@ namespace Gts {
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 3.0;
 			if (!impact_data.nodes.empty() && actor != nullptr) {
-				if (actor->IsSprinting()) {
-					bonusscale = 1.5;
-				}
+
 				float giantScale = get_visual_scale(actor);
 
 				for (auto otherActor: find_actors()) {
