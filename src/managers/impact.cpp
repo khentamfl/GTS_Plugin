@@ -121,7 +121,7 @@ namespace Gts {
 			if (!impact_data.nodes.empty() && actor != nullptr) {
 				if (actor->IsSprinting()) {
 					bonusscale = 1.5;
-				} 
+				}
 				float giantScale = get_visual_scale(actor) * bonusscale;
 
 				for (auto otherActor: find_actors()) {
@@ -146,7 +146,7 @@ namespace Gts {
 											float distance = (a_obj.world.translate - footLocatation).Length();
 											log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
 											if (distance < footDistance) {
-												log::info("    - Passed")
+												log::info("    - Passed");
 												bodyParts.push_back(&a_obj);
 												force += 1.0 - distance / footDistance;
 											}
