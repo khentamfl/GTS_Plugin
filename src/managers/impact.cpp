@@ -114,7 +114,7 @@ namespace Gts {
 
 			EventDispatcher::DoOnImpact(impact_data);
 
-			const float BASE_DISTANCE = 70.0;
+			const float BASE_DISTANCE = 140.0;
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 3.0;
 			if (!impact_data.nodes.empty() && actor != nullptr) {
