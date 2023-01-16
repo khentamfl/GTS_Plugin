@@ -366,11 +366,11 @@ namespace Gts {
 	}
 
 	LaunchData& SizeManager::GetLaunchData(Actor* actor) {
-		this->sizeData.try_emplace(actor);
-		return this->sizeData.at(actor);
+		this->launchData.try_emplace(actor);
+		return this->launchData.at(actor);
 	}
 
 	bool SizeManager::IsLaunching(Actor* actor) {
-		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetLaunchData(actor).lastLaunchTime + LAUNCH_COOLDOWN)
+		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetLaunchData(actor).lastLaunchTime + LAUNCH_COOLDOWN);
 	}
 }
