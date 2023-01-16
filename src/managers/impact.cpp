@@ -122,9 +122,6 @@ namespace Gts {
 				if (actor->IsSprinting()) {
 					bonusscale = 1.5;
 				} 
-				if (actor->IsJumping()) {
-					bonusscale = 3.0;
-				}
 				float giantScale = get_visual_scale(actor) * bonusscale;
 
 				for (auto otherActor: find_actors()) {
