@@ -3,7 +3,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
-#include "data/transient.hpp"
+#include "managers/highheel.hpp"
 #include "scale/scale.hpp"
 #include "Config.hpp"
 #include "node.hpp"
@@ -69,9 +69,8 @@ namespace Gts {
 			if (foot_kind == FootEvent::JumpLand) {
 				scale *= 2.0; // Jumping makes you seem bigger
 			}
-			auto actor_data = Transient::GetSingleton().GetData(actor);
-			if (actor_data) {
-				scale *= actor_data->get_hh_bonus_factor();
+			if (HighHeelManager::IsWearingHH(actior) && Runtime::HasPerkTeam(actor, "hhBonus")) {
+				scale *= 1.5;
 			}
 
 			for (NiAVObject* node: impact.nodes) {

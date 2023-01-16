@@ -14,19 +14,7 @@ namespace Gts {
 		float base_walkspeedmult;
 		float char_weight;
 		float shoe_weight;
-		bool has_hhBonus_perk;
 		bool is_teammate;
-
-		inline bool wearing_hh() {
-			return fabs(last_hh_adjustment) > 1e-5;
-		}
-		inline float get_hh_bonus_factor() {
-			if (wearing_hh() && has_hhBonus_perk) {
-				return 1.5;// + shoe_weight/10.0 + char_weight/260;
-			} else {
-				return 1.0;
-			}
-		}
 	};
 
 	class Transient : public EventListener {

@@ -3,7 +3,7 @@
 #include "managers/GtsManager.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
-#include "data/transient.hpp"
+#include "managers/highheel.hpp"
 #include "raycast.hpp"
 
 
@@ -79,11 +79,8 @@ namespace Gts {
 			if (foot_kind == FootEvent::JumpLand) {
 				scale *= 2.0; // Jumping makes you sound bigger
 			}
-			auto actor_data = Transient::GetSingleton().GetData(actor);
-			if (actor_data) {
-				if (actor_data->wearing_hh()) {
-					scale *= 1.25;
-				}
+			if (HighHeelManager::IsWearingHH(actor)) {
+				scale *= 1.25;
 			}
 
 			for (NiAVObject* node: impact.nodes) {
