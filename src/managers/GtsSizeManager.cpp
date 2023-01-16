@@ -136,7 +136,7 @@ namespace Gts {
 		log::info("Applying Size Related Damage, Force is > 0.5");
 			DoSizeRelatedDamage(giant, tiny, movementFactor, force);
 			if (sizeRatio >= 4.0) {
-				//PushActorAway(giant, tiny, knockBack);
+				PushActorAway(giant, tiny, knockBack/4);
 			}
 		}
 
@@ -187,7 +187,7 @@ namespace Gts {
 			result *= 0.33;
 		}
 		if (multiplier >= 8.0 && GetAV(tiny, ActorValue::kHealth) < result * weightdamage * mult) {
-			//CrushManager::GetSingleton().Crush(giant, tiny);
+			CrushManager::GetSingleton().Crush(giant, tiny);
 			return;
 		}
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.25);
