@@ -119,9 +119,6 @@ namespace Gts {
 		if (giant->IsSneaking()) {
 			movementFactor *= 0.5;
 		}
-		if (giant->IsSneaking()) {
-			movementFactor *= 0.5;
-		}
 		if (giant->IsSprinting()) {
 			movementFactor *= 1.5;
 		}
