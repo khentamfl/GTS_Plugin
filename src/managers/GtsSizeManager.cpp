@@ -69,11 +69,12 @@ namespace Gts {
 		}
 	}
 
-	void SizeManager::ActorEquip(Actor* actor) {
-		float hh_length = HighHeelManager::GetBaseHHOffset(actor).Length();
+	void SizeManager::OnHighheelEquip(const HighheelEquip& evt) {
+		float hh_length = evt.hhLength;
+		Actor* acor = evt.actor;
 		// TODO move away from polling
 		if (hh_length > 0 && Runtime::HasPerkTeam(actor, "hhBonus")) { // HH damage bonus start
-			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
+			auto shoe = evt.shoe;
 			float shoe_weight = 1.0; // TODO: Just absorb it into the base
 			auto char_weight = actor->GetWeight()/280;
 			if (shoe) {

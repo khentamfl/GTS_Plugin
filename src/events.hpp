@@ -38,6 +38,7 @@ namespace Gts {
 		bool equipping;
 		float hhLength;
 		NiPoint3 hhOffset;
+		TESObjectARMO* shoe;
 	};
 
 	class EventListener {
@@ -94,7 +95,7 @@ namespace Gts {
 			virtual void OnImpact(const Impact& impact);
 
 			// Fired when a highheel is (un)equiped or when an actor is loaded with HH
-			virtual void OnHighheelEquip(const HighheelEquip& impact);
+			virtual void OnHighheelEquip(const HighheelEquip& evt);
 	};
 
 	class EventDispatcher {

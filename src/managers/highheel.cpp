@@ -79,6 +79,7 @@ namespace Gts {
 							.equipping = isWearingHH,
 							.hhLength = new_hh.Length(),
 							.hhOffset = new_hh,
+							.shoe = person->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet),
 						};
 						EventDispatcher::DoHighheelEquip(hhEvent);
 					}
