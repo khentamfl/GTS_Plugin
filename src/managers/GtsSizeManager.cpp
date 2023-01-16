@@ -115,7 +115,7 @@ namespace Gts {
 
 		float movementFactor = 1.0;
 		if (evt.footEvent == FootEvent::JumpLand) {
-			movementFactor *= 2.0;
+			movementFactor *= 3.0;
 		}
 		if (giant->IsSneaking()) {
 			movementFactor *= 0.5;
@@ -128,6 +128,7 @@ namespace Gts {
 
 		if (!SizeManager::IsLaunching(tiny)) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+				log::info("Launch Perk is True");
 				if (sizeRatio >= 8.0) {
 					// Launch
 					this->GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
