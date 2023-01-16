@@ -138,12 +138,15 @@ namespace Gts {
 									// Close enough for more advance checks
 									auto model = otherActor->GetCurrent3D();
 									if (model) {
+										log::info("  - Model");
 										std::vector<NiAVObject*> bodyParts = {};
 										float force = 0.0;
 										float footDistance = BASE_FOOT_DISTANCE*giantScale;
 										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
 											float distance = (a_obj.world.translate - footLocatation).Length();
+											log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
 											if (distance < footDistance) {
+												log::info("    - Passed")
 												bodyParts.push_back(&a_obj);
 												force += 1.0 - distance / footDistance;
 											}
