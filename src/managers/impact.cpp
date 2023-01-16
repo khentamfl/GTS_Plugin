@@ -126,7 +126,7 @@ namespace Gts {
 					bonusscale *= 1.5;
 				}
 
-				if (impact_data.nodes == FootEvent::JumpLand) {
+				if (impact_data.nodes.results == FootEvent::JumpLand) {
 					bonusscale *= 2.0;
 				}
 
