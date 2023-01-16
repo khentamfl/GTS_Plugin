@@ -132,7 +132,7 @@ namespace Gts {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				if (sizeRatio >= 8.0) {
 					// Launch
-					SizeManager::GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+					this->GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE_BASE * giantSize * movementFactor * force;
 						DamageAV(tiny,ActorValue::kHealth, damage);
@@ -371,6 +371,6 @@ namespace Gts {
 	}
 
 	bool SizeManager::IsLaunching(Actor* actor) {
-		return Time::WorldTimeElapsed() <= (SizeManager::GetLaunchData(actor).lastLaunchTime + LAUNCH_COOLDOWN)
+		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetLaunchData(actor).lastLaunchTime + LAUNCH_COOLDOWN)
 	}
 }

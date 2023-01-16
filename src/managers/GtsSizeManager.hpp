@@ -69,7 +69,7 @@ namespace Gts {
 
 			float BalancedMode();
 
-			static LaunchData& GetLaunchData(Actor* actor);
+			LaunchData& GetLaunchData(Actor* actor);
 			static bool IsLaunching(Actor* actor);
 
 		private:
