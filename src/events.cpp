@@ -84,12 +84,12 @@ namespace Gts {
 	}
 
 	// Fired when a perk is added
-	void EventListener::OnAddPerk(const AddPerk& evt) {
+	void EventListener::OnAddPerk(const AddPerkEvent& evt) {
 
 	}
 
 	// Fired when a perk about to be removed
-	void EventListener::OnRemovePerk(const RemovePerk& evt) {
+	void EventListener::OnRemovePerk(const RemovePerkEvent& evt) {
 
 	}
 
@@ -303,7 +303,7 @@ namespace Gts {
 			}
 		}
 	}
-	void EventDispatcher::DoAddPerk(const AddPerk& evt)  {
+	void EventDispatcher::DoAddPerk(const AddPerkEvent& evt)  {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Start();
@@ -314,7 +314,7 @@ namespace Gts {
 			}
 		}
 	}
-	void EventDispatcher::DoRemovePerk(const RemovePerk& evt)  {
+	void EventDispatcher::DoRemovePerk(const RemovePerkEvent& evt)  {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Start();
