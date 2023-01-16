@@ -1,4 +1,4 @@
-#include "hooks/playerCharacter.hpp"
+#include "hooks/actor.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/plugin.hpp"
@@ -11,18 +11,18 @@ using namespace Gts;
 namespace Hooks
 {
 	// BGSImpactManager
-	void Hook_PlayerCharacter::Hook() {
-		logger::info("Hooking PlayerCharacter");
-		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_PlayerCharacter[0] };
+	void Hook_Actor::Hook() {
+		logger::info("Hooking Actor");
+		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_Actor[0] };
 		_HandleHealthDamage = Vtbl.write_vfunc(REL::Relocate(0x104, 0x104, 0x106), HandleHealthDamage);
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
 	}
 
-	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
-		//log::info("PlayerCharacter::Update");
+	void Hook_Actor::HandleHealthDamage(Actor* a_this, Actor* a_attacker, float a_damage) {
+		//log::info("Actor::Update");
 		if (a_attacker) {
-			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
+			if (Runtime::HasPerkTerm(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
@@ -36,7 +36,7 @@ namespace Hooks
 		_HandleHealthDamage(a_this, a_attacker, a_damage);
 	}
 
-	void Hook_PlayerCharacter::AddPerk(PlayerCharacter* a_this, BGSPerk* a_perk, std::uint32_t a_rank) {
+	void Hook_Actor::AddPerk(Actor* a_this, BGSPerk* a_perk, std::uint32_t a_rank) {
 		_AddPerk(a_this, a_perk, a_rank);
 		AddPerkEvent evt = AddPerkEvent {
 			.actor = a_this,
@@ -46,7 +46,7 @@ namespace Hooks
 		EventDispatcher::DoPerkAdded(evt);
 	}
 
-	void Hook_PlayerCharacter::RemovePerk(PlayerCharacter* a_this, BGSPerk* a_perk, std::uint32_t a_rank) {
+	void Hook_Actor::RemovePerk(Actor* a_this, BGSPerk* a_perk, std::uint32_t a_rank) {
 		RemovePerkEvent evt = RemovePerkEvent {
 			.actor = a_this,
 			.perk = a_perk,
