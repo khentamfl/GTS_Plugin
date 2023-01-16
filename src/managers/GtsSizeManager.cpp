@@ -190,7 +190,7 @@ namespace Gts {
 			//CrushManager::GetSingleton().Crush(giant, tiny);
 			return;
 		}
-		//DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult);
+		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.25);
 		
 	}
 	
