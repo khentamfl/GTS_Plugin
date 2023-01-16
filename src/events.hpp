@@ -110,10 +110,10 @@ namespace Gts {
 			virtual void OnHighheelEquip(const HighheelEquip& evt);
 
 			// Fired when a perk is added
-			virtual void OnAddPerk(const AddPerk& evt);
+			virtual void OnAddPerk(const AddPerkEvent& evt);
 
 			// Fired when a perk about to be removed
-			virtual void OnRemovePerk(const RemovePerk& evt);
+			virtual void OnRemovePerk(const RemovePerkEvent& evt);
 	};
 
 	class EventDispatcher {
@@ -136,8 +136,8 @@ namespace Gts {
 			static void DoUnderFootEvent(const UnderFoot& evt);
 			static void DoOnImpact(const Impact& impact);
 			static void DoHighheelEquip(const HighheelEquip& impact);
-			static void DoAddPerk(const AddPerk& evt);
-			static void DoRemovePerk(const RemovePerk& evt);
+			static void DoAddPerk(const AddPerkEvent& evt);
+			static void DoRemovePerk(const RemovePerkEvent& evt);
 		private:
 			[[nodiscard]] static EventDispatcher& GetSingleton();
 			std::vector<EventListener*> listeners;
