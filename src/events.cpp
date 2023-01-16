@@ -75,7 +75,12 @@ namespace Gts {
 
 	// Fired when a foot lands
 	void EventListener::OnImpact(const Impact& impact) {
-		
+
+	}
+
+	// Fired when a highheel is (un)equiped or when an actor is loaded with HH
+	void EventListener: OnHighheelEquip(const HighheelEquip& impact) {
+
 	}
 
 	void EventDispatcher::ReportProfilers() {
@@ -272,6 +277,17 @@ namespace Gts {
 				listener->profiler.Start();
 			}
 			listener->OnImpact(impact);
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
+		}
+	}
+	void EventDispatcher::DoHighheelEquip(const HighheelEquip& evt) {
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
+			listener->OnHighheelEquip(evt);
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Stop();
 			}

@@ -10,8 +10,7 @@ namespace Gts {
 	struct TempActorData {
 		float base_height;
 		float base_volume;
-		float last_hh_adjustment;
-		float total_hh_adjustment;
+		bool wearingHh;
 		float base_walkspeedmult;
 		float char_weight;
 		float shoe_weight;

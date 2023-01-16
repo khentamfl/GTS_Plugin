@@ -68,6 +68,21 @@ namespace Gts {
 					npc_root_node->local.translate = new_hh;
 					update_node(npc_root_node);
 				}
+				auto transient = Transient::GetActorData(person);
+				if (person) {
+					bool wasWearingHh = transient->wearingHh;
+					bool isWearingHH = fabs(new_hh.Length()) > 1e-4;
+					if (isWearingHH != wasWearingHh) {
+						// Just changed hh
+						HighheelEquip hhEvent = HighheelEquip {
+							.actor = person,
+							.equipping = isWearingHH,
+							.hhLength = new_hh.Length(),
+							.hhOffset = new_hh,
+						};
+						EventDispatcher::DoHighheelEquip(hhEvent);
+					}
+				}
 			}
 		}
 	}

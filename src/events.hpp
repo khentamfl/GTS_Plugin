@@ -33,6 +33,13 @@ namespace Gts {
 		std::vector<NiAVObject*> bodyParts;
 	};
 
+	struct HighheelEquip {
+		Actor* actor;
+		bool equipping;
+		float hhLength;
+		NiPoint3 hhOffset;
+	};
+
 	class EventListener {
 		public:
 			Profiler profiler;
@@ -85,6 +92,9 @@ namespace Gts {
 
 			// Fired when a foot lands
 			virtual void OnImpact(const Impact& impact);
+
+			// Fired when a highheel is (un)equiped or when an actor is loaded with HH
+			virtual void OnHighheelEquip(const HighheelEquip& impact);
 	};
 
 	class EventDispatcher {
@@ -106,6 +116,7 @@ namespace Gts {
 			static void DoHitEvent(const TESHitEvent* evt);
 			static void DoUnderFootEvent(const UnderFoot& evt);
 			static void DoOnImpact(const Impact& impact);
+			static void DoHighheelEquip(const HighheelEquip& impact);
 		private:
 			[[nodiscard]] static EventDispatcher& GetSingleton();
 			std::vector<EventListener*> listeners;
