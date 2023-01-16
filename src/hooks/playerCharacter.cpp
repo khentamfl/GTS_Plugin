@@ -46,7 +46,7 @@ namespace Hooks
 		EventDispatcher::DoAddPerk(evt);
 	}
 
-	void Hook_PlayerCharacter::RemovePerk(PlayerCharacter* a_this, BGSPerk* a_perk, std::uint32_t a_rank) {
+	void Hook_PlayerCharacter::RemovePerk(PlayerCharacter* a_this, BGSPerk* a_perk) {
 		RemovePerkEvent evt = RemovePerkEvent {
 			.actor = a_this,
 			.perk = a_perk,
