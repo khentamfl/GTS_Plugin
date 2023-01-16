@@ -132,10 +132,10 @@ namespace Gts {
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force;
 
-		if (force > 0.5 && sizeRatio >= ) { // If under the foot
+		if (force > 0.5 && sizeRatio >= 2.5) { // If under the foot
 			DoSizeRelatedDamage(giant, tiny, movementFactor, force);
 			if (sizeRatio >= 4.0) {
-				PushActorAway(giant, tiny, knockBack);
+				//PushActorAway(giant, tiny, knockBack);
 			}
 		}
 
@@ -152,7 +152,7 @@ namespace Gts {
 					}
 					log::info("Pushing actor away: {}, force: {}", tiny->GetDisplayFullName(), knockBack);
 					PushActorAway(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 550 * movementFactor * giantSize, 25 * movementFactor * giantSize);
+					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize, 25 * movementFactor * giantSize);
 				}
 			}
 		}
@@ -181,9 +181,9 @@ namespace Gts {
 		}
 		
 		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
-		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult);
+		//DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult);
 		if (multiplier >= 8.0 && GetAV(tiny, ActorValue::kHealth) < result * weightdamage * mult) {
-			CrushManager::GetSingleton().Crush(giant, tiny);
+			//CrushManager::GetSingleton().Crush(giant, tiny);
 		}
 	}
 	
