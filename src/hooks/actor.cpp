@@ -43,7 +43,7 @@ namespace Hooks
 			.perk = a_perk,
 			.rank = a_rank,
 		};
-		EventDispatcher::DoPerkAdded(evt);
+		EventDispatcher::DoAddPerk(evt);
 	}
 
 	void Hook_Actor::RemovePerk(Actor* a_this, BGSPerk* a_perk, std::uint32_t a_rank) {
@@ -51,7 +51,7 @@ namespace Hooks
 			.actor = a_this,
 			.perk = a_perk,
 		};
-		EventDispatcher::DoPerkRemoved(evt);
+		EventDispatcher::DoRemovePerk(evt);
 		_RemovePerk(a_this, a_perk);
 	}
 }
