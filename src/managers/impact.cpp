@@ -114,7 +114,7 @@ namespace Gts {
 
 			EventDispatcher::DoOnImpact(impact_data);
 
-			const float BASE_DISTANCE = 140.0;
+			const float BASE_DISTANCE = 30.0;
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 3.0;
 			float bonusscale = 1.0;
@@ -139,7 +139,7 @@ namespace Gts {
 							NiPoint3 actorLocation = otherActor->GetPosition();
 							for (auto foot: impact_data.nodes) {
 								NiPoint3 footLocatation = foot->world.translate;
-								log::info("Checking {}'s is over {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName());
+								//log::info("Checking {}'s is over {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName());
 								float distance = (footLocatation - actorLocation).Length();
 								if (distance < BASE_DISTANCE * giantScale) {
 									log::info("  - Maybe");

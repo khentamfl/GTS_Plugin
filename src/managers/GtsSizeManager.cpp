@@ -153,7 +153,7 @@ namespace Gts {
 					}
 					log::info("Pushing actor away: {}, force: {}", tiny->GetDisplayFullName(), knockBack);
 					PushActorAway(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize, 25 * movementFactor * giantSize);
+					ApplyHavokImpulse(tiny, 0, 0, 550 * movementFactor * giantSize, 50 * movementFactor * giantSize);
 				}
 			}
 		}
