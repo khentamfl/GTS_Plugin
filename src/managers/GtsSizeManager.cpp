@@ -19,6 +19,7 @@ using namespace Gts;
 using namespace RE;
 using namespace REL;
 using namespace SKSE;
+using namespace std;
 
 namespace {
 	const double LAUNCH_COOLDOWN = 3.0;
@@ -177,7 +178,7 @@ namespace Gts {
 		}
 		
 		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
-		DamageAV(target, ActorValue::kHealth, result * weightdamage * mult);
+		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult);
 		}
 	}
 
