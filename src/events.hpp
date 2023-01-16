@@ -42,6 +42,17 @@ namespace Gts {
 		TESObjectARMO* shoe;
 	};
 
+	struct AddPerk {
+		Actor* actor;
+		BGSPerk* perk;
+		std::uint32_t rank;
+	};
+
+	struct RemovePerk {
+		Actor* actor;
+		BGSPerk* perk;
+	};
+
 	class EventListener {
 		public:
 			Profiler profiler;
@@ -97,6 +108,12 @@ namespace Gts {
 
 			// Fired when a highheel is (un)equiped or when an actor is loaded with HH
 			virtual void OnHighheelEquip(const HighheelEquip& evt);
+
+			// Fired when a perk is added
+			virtual void OnAddPerk(const AddPerk& evt);
+
+			// Fired when a perk about to be removed
+			virtual void OnRemovePerk(const RemovePerk& evt);
 	};
 
 	class EventDispatcher {
@@ -119,6 +136,8 @@ namespace Gts {
 			static void DoUnderFootEvent(const UnderFoot& evt);
 			static void DoOnImpact(const Impact& impact);
 			static void DoHighheelEquip(const HighheelEquip& impact);
+			static void DoAddPerk(const AddPerk& evt);
+			static void DoRemovePerk(const RemovePerk& evt);
 		private:
 			[[nodiscard]] static EventDispatcher& GetSingleton();
 			std::vector<EventListener*> listeners;

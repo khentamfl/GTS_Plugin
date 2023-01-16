@@ -83,6 +83,16 @@ namespace Gts {
 
 	}
 
+	// Fired when a perk is added
+	void EventListener::OnAddPerk(const AddPerk& evt) {
+
+	}
+
+	// Fired when a perk about to be removed
+	void EventListener::OnRemovePerk(const RemovePerk& evt) {
+
+	}
+
 	void EventDispatcher::ReportProfilers() {
 		std::string report = "Reporting Profilers:";
 		report += std::format("\n|{:20}|", "Name");
@@ -288,6 +298,28 @@ namespace Gts {
 				listener->profiler.Start();
 			}
 			listener->OnHighheelEquip(evt);
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
+		}
+	}
+	void EventDispatcher::DoAddPerk(const AddPerk& evt)  {
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
+			listener->OnAddPerk(evt);
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
+		}
+	}
+	void EventDispatcher::DoRemovePerk(const RemovePerk& evt)  {
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
+			listener->OnRemovePerk(evt);
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Stop();
 			}
