@@ -123,14 +123,12 @@ namespace Gts {
 				float giantScale = get_visual_scale(actor);
 
 				if (actor->IsSprinting()) {
-					bonusscale *= 1.5;
+					giantScale *= 1.5;
 				}
 
 				if (impact_data.nodes.results == FootEvent::JumpLand) {
-					bonusscale *= 2.0;
+					giantScale *= 2.0;
 				}
-
-				giantScale *= bonusscale;
 
 				for (auto otherActor: find_actors()) {
 					if (otherActor != actor) {
