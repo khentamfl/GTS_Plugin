@@ -46,7 +46,6 @@ namespace {
 									auto model = tiny->GetCurrent3D();
 									if (model) {
 										std::vector<NiAVObject*> bodyParts = {};
-										float force = 0.0;
 										float footDistance = 20*giantScale;
 										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
 											float distance = (a_obj.world.translate - footLocatation).Length();
@@ -56,6 +55,7 @@ namespace {
 												force += 1.0 - distance / footDistance;
 												PushActorAway(actor, tiny, force * giantScale);
 											}
+											return true;
 										});
 										}
 									}
