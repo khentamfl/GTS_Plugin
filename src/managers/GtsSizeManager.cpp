@@ -529,8 +529,8 @@ namespace Gts {
 	}
 
 	bool SizeManager::GetPreciseDamage() {
-		bool value = Runtime::GetBool("PreciseDamage");
-		log::info("Value:", value);
-		return value;
+		auto result = Runtime::GetBool("PreciseDamage");
+		log::info("Value: {}", result);
+		return result;
 	}
 }
