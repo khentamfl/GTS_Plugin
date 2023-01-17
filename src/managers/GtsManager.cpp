@@ -31,7 +31,6 @@ namespace {
 			const float BASE_DISTANCE = 14.0;
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 2.0;
-			const double DAMAGE_COOLDOWN = 0.10;
 		for (auto otherActor: find_actors()) {
 					if (otherActor != actor) {
 						float tinyScale = get_visual_scale(otherActor);
@@ -69,6 +68,7 @@ namespace {
 
 											bool IsDamaging = SizeManager::GetSingleton().IsDamaging(otherActor);
 											if (IsDamaging) {
+												log::info("Damage is True");
 												return;
 											}
 
@@ -78,6 +78,7 @@ namespace {
 												if (actor->IsSprinting()) {
 													movementFactor *= 1.5;
 												}
+												log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
 												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, aveForce);
 												PushActorAway(actor, otherActor, aveForce);
 											}
