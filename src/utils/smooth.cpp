@@ -1,4 +1,5 @@
 #include "utils/smooth.hpp"
+#include "spring.hpp"
 
 using namespace RE;
 using namespace SKSE;
