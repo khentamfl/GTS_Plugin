@@ -109,7 +109,7 @@ namespace Gts {
 		auto tiny = evt.tiny;
 		float force = evt.force;
 		log::info("Underfoot event: {} stepping on {} with force {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), force);
-		
+
 		float giantSize = get_visual_scale(giant);
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		if (hasSMT) {
@@ -131,23 +131,22 @@ namespace Gts {
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force;
+		const float UNDERFOOT_FORCE = 0.5;
 
-		if (force > 0.5 && sizeRatio >= 2.5) { // If under the foot
-		log::info("Applying Size Related Damage, Force is > 0.5");
+		if (force > UNDERFOOT_FORCE && sizeRatio >= 2.5) { // If under the foot
+			log::info("Applying Size Related Damage, Force is > 0.5");
 			DoSizeRelatedDamage(giant, tiny, movementFactor, force);
 			if (sizeRatio >= 4.0) {
 				PushActorAway(giant, tiny, knockBack/4);
 			}
-		}
-
-		else if (!SizeManager::IsLaunching(tiny) && force <= 0.5) {
+		} else if (!SizeManager::IsLaunching(tiny) && force <= UNDERFOOT_FORCE) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				log::info("Launch Perk is True");
 				if (sizeRatio >= 8.0) {
 					// Launch
 					this->GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
-						float damage = LAUNCH_DAMAGE_BASE * giantSize * movementFactor * force;
+						float damage = LAUNCH_DAMAGE_BASE * giantSize * movementFactor * force/UNDERFOOT_FORCE;
 						DamageAV(tiny,ActorValue::kHealth, damage);
 						log::info("Underfoot damage: {} on {}", damage, tiny->GetDisplayFullName());
 					}
@@ -172,8 +171,8 @@ namespace Gts {
 		float sprintdamage = 1.0;
 		float falldamage = 1.0;
 		float weightdamage = giant->GetWeight()/100 + 1.0;
-		
-		
+
+
 
 		if (giant->IsSprinting()) {
 			sprintdamage = 1.5 * this->GetSizeAttribute(giant, 1);
@@ -181,7 +180,7 @@ namespace Gts {
 		if (totaldamage >= 3.0) {
 			falldamage = this->GetSizeAttribute(giant, 2) * 2.0;
 		}
-		
+
 		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
 		if (giant->IsSneaking()) {
 			result *= 0.33;
@@ -191,9 +190,9 @@ namespace Gts {
 			return;
 		}
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.25);
-		
+
 	}
-	
+
 
 	void SizeManager::SetEnchantmentBonus(Actor* actor, float amt) {
 		if (!actor) {

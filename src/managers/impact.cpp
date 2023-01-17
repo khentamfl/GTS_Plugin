@@ -126,6 +126,10 @@ namespace Gts {
 					giantScale *= 1.35;
 				}
 
+				if (actor->IsSneaking()) {
+					giantScale *= 0.4;
+				}
+
 				if (impact_data.kind == FootEvent::JumpLand) {
 					giantScale *= 1.75;
 				}
@@ -137,14 +141,11 @@ namespace Gts {
 							NiPoint3 actorLocation = otherActor->GetPosition();
 							for (auto foot: impact_data.nodes) {
 								NiPoint3 footLocatation = foot->world.translate;
-								//log::info("Checking {}'s is over {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName());
 								float distance = (footLocatation - actorLocation).Length();
 								if (distance < BASE_DISTANCE * giantScale) {
-									log::info("  - Maybe");
 									// Close enough for more advance checks
 									auto model = otherActor->GetCurrent3D();
 									if (model) {
-										log::info("  - Model");
 										std::vector<NiAVObject*> bodyParts = {};
 										float force = 0.0;
 										float footDistance = BASE_DISTANCE*giantScale;
@@ -152,15 +153,12 @@ namespace Gts {
 											float distance = (a_obj.world.translate - footLocatation).Length();
 											log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
 											if (distance < footDistance) {
-												log::info("    - Passed");
 												bodyParts.push_back(&a_obj);
 												force += 1.0 - distance / footDistance;
 											}
-											log::info("Maybe two");
 											return true;
 										});
 										if (!bodyParts.empty()) {
-											log::info("  - Yes Underfoot");
 											// Under Foot
 											float aveForce = force / bodyParts.size();
 											UnderFoot underfoot = UnderFoot {
