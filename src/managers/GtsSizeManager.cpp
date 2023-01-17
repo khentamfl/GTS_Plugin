@@ -64,8 +64,11 @@ namespace {
 
 	void SizeModifications(Actor* giant, Actor* target, float HighHeels) {
 		float InstaCrushRequirement = 24.0;
-		float size_difference = get_visual_scale(giant)/get_visual_scale(target);
+		float giantscale = get_visual_scale(giant);
+		float targetscale = get_visual_scale(target);
+		float size_difference = giantscale/targetscale;
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200;
+		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
 
 			if (CrushManager::AlreadyCrushed(target)) {
 				return;
@@ -80,7 +83,7 @@ namespace {
 				CrushToNothing(giant, target);
 			}
 
-			if (Runtime::HasPerk(caster, "ExtraGrowth") && giant != target && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
+			if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != target && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
 				ShrinkActor(giant, 0.0014 * BonusShrink, 0.0);
 				Grow(giant, 0.0, 0.0004 * BonusShrink);
 				// ^ Augmentation for Growth Spurt: Steal size of enemies.
@@ -90,11 +93,11 @@ namespace {
 				SmallMassiveThreatModification(giant, target);
 				size_difference += 7.2; // Allows to crush same size targets.
 
-			if (Runtime::HasPerk(caster, "SmallMassiveThreatSizeSteal")) {
+			if (Runtime::HasPerk(giant, "SmallMassiveThreatSizeSteal")) {
 				float HpRegen = GetMaxAV(giant, ActorValue::kHealth) * 0.005 * size_difference;
 				giant->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
 				ShrinkActor(giant, 0.0015 * BonusShrink, 0.0);
-				Grow(giant, 0.00045 * target_scale * BonusShrink, 0.0);
+				Grow(giant, 0.00045 * targetscale * BonusShrink, 0.0);
 			}
 		}
 		
