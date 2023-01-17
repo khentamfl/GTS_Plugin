@@ -117,14 +117,15 @@ namespace Gts {
 		float tinySize = get_visual_scale(tiny);
 
 		float movementFactor = 1.0;
-		if (evt.footEvent == FootEvent::JumpLand) {
-			movementFactor *= 3.0;
-		}
+		
 		if (giant->IsSneaking()) {
 			movementFactor *= 0.5;
 		}
 		if (giant->IsSprinting()) {
 			movementFactor *= 1.5;
+		}
+		if (evt.footEvent == FootEvent::JumpLand) {
+			movementFactor *= 3.0;
 		}
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
