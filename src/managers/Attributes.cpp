@@ -3,7 +3,6 @@
 #include "managers/Attributes.hpp"
 #include "managers/highheel.hpp"
 #include "scale/scale.hpp"
-#include "util.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"

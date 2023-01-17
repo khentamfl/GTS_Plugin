@@ -3,7 +3,6 @@
 
 #include "events.hpp"
 #include "scale/modscale.hpp"
-#include "util.hpp"
 
 using namespace std;
 using namespace SKSE;

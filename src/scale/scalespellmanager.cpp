@@ -1,6 +1,5 @@
 #include "scale/scale.hpp"
 #include "scale/scalespellmanager.hpp"
-#include "util.hpp"
 #include "data/runtime.hpp"
 #include "timer.hpp"
 

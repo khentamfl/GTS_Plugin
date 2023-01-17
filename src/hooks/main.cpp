@@ -1,5 +1,4 @@
 #include "hooks/main.hpp"
-#include "util.hpp"
 #include "events.hpp"
 #include "data/time.hpp"
 #include "data/plugin.hpp"

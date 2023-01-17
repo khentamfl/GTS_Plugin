@@ -2,7 +2,6 @@
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/plugin.hpp"
-#include "util.hpp"
 #include "events.hpp"
 
 using namespace RE;

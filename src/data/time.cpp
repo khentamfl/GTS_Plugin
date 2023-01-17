@@ -1,5 +1,4 @@
 #include "data/time.hpp"
-#include "util.hpp"
 
 using namespace SKSE;
 using namespace RE;

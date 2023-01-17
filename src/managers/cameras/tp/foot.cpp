@@ -4,7 +4,6 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
-#include "util.hpp"
 
 using namespace RE;
 

@@ -3,7 +3,6 @@
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "scale/height.hpp"
-#include "util.hpp"
 
 using namespace Gts;
 

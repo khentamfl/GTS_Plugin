@@ -6,7 +6,6 @@
 #include "data/time.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
-#include "util.hpp"
 // Module that handles various magic effects
 
 namespace {

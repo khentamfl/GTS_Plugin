@@ -6,7 +6,6 @@
 #include "magic/effects/common.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
-#include "util.hpp"
 #include "timer.hpp"
 
 

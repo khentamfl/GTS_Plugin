@@ -4,7 +4,6 @@
 #include "scale/scale.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
-#include "util.hpp"
 #include "managers/GtsSizeManager.hpp"
 
 namespace Gts {

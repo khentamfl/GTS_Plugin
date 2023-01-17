@@ -1,7 +1,6 @@
 #include "managers/GtsManager.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "scale/scale.hpp"
-#include "util.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"

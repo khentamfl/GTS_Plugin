@@ -1,5 +1,4 @@
 #include "hooks/magicTarget.hpp"
-#include "util.hpp"
 #include "data/persistent.hpp"
 
 using namespace RE;

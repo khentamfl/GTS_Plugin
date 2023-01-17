@@ -2,7 +2,6 @@
 #include "data/persistent.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/GtsSizeManager.hpp"
-#include "util.hpp"
 #include <math.h>
 #include <sstream>
 #include <iomanip>

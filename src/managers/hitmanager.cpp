@@ -8,7 +8,6 @@
 #include "scale/scale.hpp"
 #include "data/time.hpp"
 #include "timer.hpp"
-#include "util.hpp"
 #include "node.hpp"
 
 using namespace RE;

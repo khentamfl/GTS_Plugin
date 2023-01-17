@@ -1,6 +1,5 @@
 #include "magic/magic.hpp"
 #include "Config.hpp"
-#include "util.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/effects/absorb_effect.hpp"
 #include "magic/effects/explosive_growth.hpp"

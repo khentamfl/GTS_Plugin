@@ -1,6 +1,5 @@
 #include "scale/height.hpp"
 #include "scale/scale.hpp"
-#include "util.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/transient.hpp"
 

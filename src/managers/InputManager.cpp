@@ -5,13 +5,11 @@
 #include "managers/vore.hpp"
 #include "managers/camera.hpp"
 #include "magic/effects/common.hpp"
-#include "util.hpp"
 #include "scale/scale.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "timer.hpp"
-#include "util.hpp"
 
 using namespace RE;
 using namespace Gts;

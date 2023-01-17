@@ -3,7 +3,6 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "magic/effects/common.hpp"
-#include "util.hpp"
 #include "scale/scale.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"

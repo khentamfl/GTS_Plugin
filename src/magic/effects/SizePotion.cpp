@@ -7,7 +7,6 @@
 #include "scale/scale.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
-#include "util.hpp"
 
 
 namespace Gts {

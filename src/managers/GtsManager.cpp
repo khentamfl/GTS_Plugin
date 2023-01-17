@@ -14,7 +14,6 @@
 #include "data/time.hpp"
 #include "scale/scale.hpp"
 #include "scale/scalespellmanager.hpp"
-#include "util.hpp"
 #include "node.hpp"
 #include "timer.hpp"
 #include <vector>

@@ -5,7 +5,6 @@
 #include "scale/scale.hpp"
 #include "scale/modscale.hpp"
 
-#include "util.hpp"
 
 using namespace SKSE;
 using namespace RE;

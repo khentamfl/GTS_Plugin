@@ -1,5 +1,4 @@
 #include "scale/modscale.hpp"
-#include "util.hpp"
 #include "node.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"

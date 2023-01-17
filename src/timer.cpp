@@ -1,5 +1,4 @@
 #include "timer.hpp"
-#include "util.hpp"
 #include "data/time.hpp"
 
 using namespace RE;

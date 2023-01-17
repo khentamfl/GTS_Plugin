@@ -2,7 +2,6 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "managers/GtsSizeManager.hpp"
-#include "util.hpp"
 #include "timer.hpp"
 #include <cmath>
 

@@ -1,7 +1,6 @@
 #include "managers/camera.hpp"
 #include "managers/cameras/camutil.hpp"
 #include "managers/highheel.hpp"
-#include "util.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "data/persistent.hpp"

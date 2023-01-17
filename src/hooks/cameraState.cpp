@@ -1,5 +1,4 @@
 #include "hooks/cameraState.hpp"
-#include "util.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
 #include "events.hpp"

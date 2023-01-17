@@ -7,7 +7,6 @@
 #include "scale/scale.hpp"
 #include "Config.hpp"
 #include "node.hpp"
-#include "util.hpp"
 
 
 using namespace SKSE;

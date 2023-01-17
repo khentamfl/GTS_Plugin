@@ -1,4 +1,3 @@
-#include "util.hpp"
 #include "node.hpp"
 
 using namespace Gts;

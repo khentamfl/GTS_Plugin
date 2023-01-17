@@ -1,6 +1,5 @@
 #include "hooks/tesCamera.hpp"
 #include "data/plugin.hpp"
-#include "util.hpp"
 
 using namespace RE;
 using namespace Gts;

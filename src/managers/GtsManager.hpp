@@ -8,7 +8,6 @@
 
 #include "events.hpp"
 #include "node.hpp"
-#include "util.hpp"
 
 using namespace std;
 using namespace RE;

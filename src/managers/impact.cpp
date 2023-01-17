@@ -6,7 +6,6 @@
 #include "events.hpp"
 
 #include "scale/scale.hpp"
-#include "util.hpp"
 #include "node.hpp"
 
 using namespace SKSE;

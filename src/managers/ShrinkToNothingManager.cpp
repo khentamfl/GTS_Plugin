@@ -2,7 +2,6 @@
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "scale/scale.hpp"
-#include "util.hpp"
 
 #include <random>
 

@@ -11,7 +11,6 @@
 #include "data/persistent.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/CrushManager.hpp"
-#include "util.hpp"
 #include "timer.hpp"
 #include "node.hpp"
 

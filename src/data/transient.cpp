@@ -1,7 +1,6 @@
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "node.hpp"
-#include "util.hpp"
 #include "scale/modscale.hpp"
 
 using namespace SKSE;
