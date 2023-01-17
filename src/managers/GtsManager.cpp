@@ -74,10 +74,10 @@ namespace {
 
 											else if (actor->IsSprinting() || actor->IsWalking() || (actor->IsWalking() && actor->IsSneaking())) {
 												float movementFactor = 1.0;
-												if (giant->IsSneaking()) {
+												if (actor->IsSneaking()) {
 													movementFactor *= 0.5;
 												}
-												if (giant->IsSprinting()) {
+												if (actor->IsSprinting()) {
 													movementFactor *= 1.5;
 												}
 												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, aveForce);

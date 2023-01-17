@@ -420,9 +420,9 @@ namespace Gts {
 		return this->launchData.at(actor);
 	}
 
-	LaunchData& SizeManager::GetDamageData(Actor* actor) {
-		this->launchData.try_emplace(actor);
-		return this->launchData.at(actor);
+	DamageData& SizeManager::GetDamageData(Actor* actor) {
+		this->DamageData.try_emplace(actor);
+		return this->DamageData.at(actor);
 	}
 
 	bool SizeManager::IsLaunching(Actor* actor) {
