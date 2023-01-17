@@ -529,7 +529,7 @@ namespace Gts {
 	}
 
 	bool SizeManager::GetPreciseDamage() {
-		bool value = Runtime::GetFloat("PreciseDamage") ? Runtime::GetFloat("PreciseDamage") >= 1.0 : true;
+		bool value = Runtime::GetBool("PreciseDamage");
 		log::info("Value:", value);
 		return value;
 	}
