@@ -89,7 +89,7 @@ namespace {
 												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 												log::info("Trying to push away");
 											}
-											if (actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
+											if (force >= 0.60 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
 												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 												log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
 												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 0.5 * aveForce);
