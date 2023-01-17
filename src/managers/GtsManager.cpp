@@ -75,12 +75,12 @@ namespace {
 
 											if (actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || (actor->IsWalking() && actor->IsSneaking())) {
 												float movementFactor = 1.0;
-												SizeManager::GetSingleton().GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 												if (actor->IsSprinting()) {
 													movementFactor *= 1.5;
 												}
 												log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
-												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0);
+												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 												PushActorAway(actor, otherActor, aveForce);
 											}
 										}
