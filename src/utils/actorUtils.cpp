@@ -106,8 +106,8 @@ namespace Gts {
 		return results;
 	}
 
-	void PushActorAway(Actor* source, TESObjectREFR* receiver, float afKnockBackForce) {
-		NiPoint3 sourceLoc = source->GetPosition();
+	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce) {
+		/*NiPoint3 sourceLoc = source->GetPosition();
 		NiPoint3 destinationLoc = receiver->GetPosition();
 		NiPoint3 direction = destinationLoc - sourceLoc;
 		NiPoint3 niImpulse  = direction * afKnockBackForce/direction.Length();
@@ -117,9 +117,9 @@ namespace Gts {
 		for (auto rb: rbs) {
 			auto& motion = rb->motion;
 			motion.ApplyLinearImpulse(impulse);
-			log::info("Trying to push actor away");
-		}
-		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
+			log::info("Trying to push actor {} away", receiver);
+		}*/
+		CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
 		// NiPoint3 sourceLoc = source->GetPosition();
