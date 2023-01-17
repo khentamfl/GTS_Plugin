@@ -119,7 +119,7 @@ namespace Gts {
 			motion.ApplyLinearImpulse(impulse);
 			log::info("Trying to push actor {} away", receiver);
 		}*/
-		//CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
+		CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
 		// NiPoint3 sourceLoc = source->GetPosition();
@@ -135,8 +135,8 @@ namespace Gts {
 	}
 	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
 		NiPoint3 direction = NiPoint3(afX, afY, afZ);
-		//NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
-		hkVector4 impulse = hkVector4(afX, afY, afZ, afMagnitude);//hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
+		NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
+		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);//hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
 
 		auto rbs = GetActorRB(target);
 		for (auto rb: rbs) {

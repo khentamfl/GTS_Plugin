@@ -25,6 +25,47 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+
+	void TestCollision(Actor* actor) {
+		for (auto tiny: find_actors()) {
+			if (tiny != actor) {
+				float giantScale = get_visual_scale(actor);
+				float tinyScale = get_visual_scale(tiny);
+				float force = 1.0;
+				 if (giantScale / tinyScale > SCALE_RATIO) {
+					const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
+					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
+					NiPoint3 actorLocation = tiny->GetPosition();
+					auto leftFoot = find_node(actor, leftFootLookup);
+				    auto rightFoot = find_node(actor, rightFootLookup);
+						for (auto foot: {leftFoot, rightFoot}) {
+						 NiPoint3 footLocatation = foot->world.translate;
+							float distance = (footLocatation - actorLocation).Length();
+								if (distance < 40 * giantScale) {
+									// Close enough for more advance checks
+									auto model = tiny->GetCurrent3D();
+									if (model) {
+										std::vector<NiAVObject*> bodyParts = {};
+										float force = 0.0;
+										float footDistance = BASE_DISTANCE*giantScale;
+										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
+											float distance = (a_obj.world.translate - footLocatation).Length();
+											//log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
+											if (distance < footDistance) {
+												bodyParts.push_back(&a_obj);
+												force += 1.0 - distance / footDistance;
+											}
+											PushActorAway(tiny, force * giantScale);
+										});
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+	}
+
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
 			return;
@@ -499,6 +540,7 @@ std::string GtsManager::DebugName() {
 // Poll for updates
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
+	TestCollision(PC);
 	/*auto ai = PC->currentProcess;
 	   if (ai) {
 	        auto highAi = ai->high;
