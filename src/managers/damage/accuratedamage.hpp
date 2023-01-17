@@ -18,7 +18,7 @@ namespace Gts {
 	 */
 	class AccurateDamage : public EventListener  {
 		public:
-			[[nodiscard]] static accuratedamage& GetSingleton() noexcept;
+			[[nodiscard]] static AccurateDamage& GetSingleton() noexcept;
 
             virtual void UnderFootEvent(const UnderFoot& evt) override;
 
