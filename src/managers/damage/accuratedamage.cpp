@@ -194,7 +194,7 @@ namespace Gts {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				if (sizeRatio >= 8.0) {
 					// Launch
-					this->GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+					SizeManager::GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE_BASE * giantSize * movementFactor * force/UNDERFOOT_FORCE;
 						DamageAV(tiny,ActorValue::kHealth, damage);
@@ -234,9 +234,9 @@ namespace Gts {
 		if (multiplier > 4.0) {
 			multiplier = 4.0; // temp fix
 		}
-		float additionaldamage = 1.0 + this->GetSizeVulnerability(tiny);
-		float normaldamage = std::clamp(this->GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
-		float highheelsdamage = this->GetSizeAttribute(giant, 3);
+		float additionaldamage = 1.0 + SizeManager::GetSizeVulnerability(tiny);
+		float normaldamage = std::clamp(SizeManager::GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
+		float highheelsdamage = SizeManager::GetSizeAttribute(giant, 3);
 		float sprintdamage = 1.0;
 		float falldamage = 1.0;
 		float weightdamage = giant->GetWeight()/100 + 1.0;
@@ -244,10 +244,10 @@ namespace Gts {
 		SizeModifications(giant, tiny, highheels);
 
 		if (giant->IsSprinting()) {
-			sprintdamage = 1.5 * this->GetSizeAttribute(giant, 1);
+			sprintdamage = 1.5 * SizeManager::GetSizeAttribute(giant, 1);
 		}
 		if (totaldamage >= 3.0) {
-			falldamage = this->GetSizeAttribute(giant, 2) * 2.0;
+			falldamage = SizeManager::GetSizeAttribute(giant, 2) * 2.0;
 		}
 
 		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;

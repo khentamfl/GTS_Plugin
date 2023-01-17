@@ -26,5 +26,6 @@ namespace Gts {
 			virtual void Update() override;
 
 			void DoAccurateCollision(Actor* actor);
+			void DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult);
 	};
 }
