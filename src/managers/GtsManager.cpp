@@ -63,7 +63,8 @@ namespace {
 											// Under Foot
 											float aveForce = force / bodyParts.size();
 											if (!actor->IsSprinting() && !actor->IsWalking()) {
-												PushActorAway(actor, otherActor, aveForce/4);
+												PushActorAway(actor, otherActor, aveForce/2);
+												log::info("Trying to push away");
 											}
 
 											bool IsDamaging = SizeManager::GetSingleton().IsDamaging(otherActor);
