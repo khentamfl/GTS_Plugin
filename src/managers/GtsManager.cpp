@@ -35,6 +35,14 @@ namespace {
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 2.0;
 		for (auto otherActor: find_actors()) {
+			if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->formID == 0x14 && otherActor->IsPlayerTeammate()) {
+				return;
+			}
+			if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->IsPlayerTeammate() && otherActor->IsPlayerTeammate()) {
+				return;
+			} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && otherActor->formID == 0x14) {
+				return;
+			}	
 					if (otherActor != actor) {
 						float tinyScale = get_visual_scale(otherActor);
 						if (giantScale / tinyScale > SCALE_RATIO) {
@@ -76,7 +84,7 @@ namespace {
 
 											float aveForce = force / bodyParts.size();
 											if (!IsDamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-												PushActorAway(actor, otherActor, aveForce * 3);
+												PushActorAway(actor, otherActor, 50 * aveForce);
 												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 												log::info("Trying to push away");
