@@ -115,7 +115,7 @@ namespace Gts {
 		auto rbs = GetActorRB(receiver);
 		for (auto rb: rbs) {
 			auto motion = rb->motion;
-			motion->ApplyLinearImpulse(impulse)
+			motion.ApplyLinearImpulse(impulse);
 		}
 		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
@@ -130,7 +130,7 @@ namespace Gts {
 		auto rbs = GetActorRB(target);
 		for (auto rb: rbs) {
 			auto motion = rb->motion;
-			motion->ApplyLinearImpulse(impulse)
+			motion.ApplyLinearImpulse(impulse);
 		}
 	}
 
