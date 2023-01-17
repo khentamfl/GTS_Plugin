@@ -119,4 +119,4 @@ namespace util {
 	using SKSE::stl::report_and_fail;
 }
 
-#include "utils.hpp"
+#include "util.hpp"
