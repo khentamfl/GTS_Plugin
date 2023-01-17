@@ -199,7 +199,7 @@ namespace Gts {
 		float giantSize = get_visual_scale(giant);
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		if (hasSMT) {
-			giantSize += 4.0;
+			giantSize += 8.0;
 		}
 
 		float tinySize = get_visual_scale(tiny);
