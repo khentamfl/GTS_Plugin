@@ -129,7 +129,7 @@ namespace Gts {
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force;
-		const float UNDERFOOT_FORCE = 0.65;
+		const float UNDERFOOT_FORCE = 0.60;
 
 		if (force > UNDERFOOT_FORCE && sizeRatio >= 2.5) { // If under the foot
 			log::info("Applying Size Related Damage, Force is > 0.5");
