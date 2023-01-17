@@ -92,15 +92,15 @@ namespace Gts {
 			} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && otherActor->formID == 0x14) {
 				return;
 			}	
-					if (otherActor != actor) {
-						float tinyScale = get_visual_scale(otherActor);
-						if (giantScale / tinyScale > SCALE_RATIO) {
-							NiPoint3 actorLocation = otherActor->GetPosition();
-							const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
-							const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
-							auto leftFoot = find_node(actor, leftFootLookup);
-				    		auto rightFoot = find_node(actor, rightFootLookup);
-						for (auto foot: {leftFoot, rightFoot}) {
+			 if (otherActor != actor) {
+				float tinyScale = get_visual_scale(otherActor);
+				if (giantScale / tinyScale > SCALE_RATIO) {
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
+					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
+					auto leftFoot = find_node(actor, leftFootLookup);
+				    auto rightFoot = find_node(actor, rightFootLookup);
+					    for (auto foot: {leftFoot, rightFoot}) {
 							NiPoint3 footLocatation = foot->world.translate;
 							float distance = (footLocatation - actorLocation).Length();
 							if (distance < BASE_DISTANCE * giantScale) {
@@ -121,7 +121,8 @@ namespace Gts {
 								return true;
 							});
 								if (!bodyParts.empty()) {
-									bool IsDamaging = SizeManager::GetSingleton().IsDamaging(otherActor);
+									auto sizemanager = SizeManager::GetSingleton();
+									bool IsDamaging = sizemanager.IsDamaging(otherActor);
 									float movementFactor = 1.0;
 									if (actor->IsSprinting()) {
 										movementFactor *= 1.5;
@@ -130,12 +131,12 @@ namespace Gts {
 									float aveForce = force / bodyParts.size();
 								if (!IsDamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 									PushActorAway(actor, otherActor, 50 * aveForce);
-									SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
+									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
+									sizemanager.DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 									}
 								if (force >= 0.20 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
-									SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 0.60 * aveForce);
+									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
+									sizemanager.DoSizeRelatedDamage(actor, otherActor, movementFactor, 0.60 * aveForce);
 								}
 							}
 						}
@@ -225,7 +226,7 @@ namespace Gts {
 		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
 		}	
-
+		auto sizemanager = SizeManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
@@ -234,9 +235,9 @@ namespace Gts {
 		if (multiplier > 4.0) {
 			multiplier = 4.0; // temp fix
 		}
-		float additionaldamage = 1.0 + SizeManager::GetSizeVulnerability(tiny);
-		float normaldamage = std::clamp(SizeManager::GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
-		float highheelsdamage = SizeManager::GetSizeAttribute(giant, 3);
+		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny);
+		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
+		float highheelsdamage = sizemanager.GetSizeAttribute(giant, 3);
 		float sprintdamage = 1.0;
 		float falldamage = 1.0;
 		float weightdamage = giant->GetWeight()/100 + 1.0;
@@ -244,10 +245,10 @@ namespace Gts {
 		SizeModifications(giant, tiny, highheels);
 
 		if (giant->IsSprinting()) {
-			sprintdamage = 1.5 * SizeManager::GetSizeAttribute(giant, 1);
+			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
 		}
 		if (totaldamage >= 3.0) {
-			falldamage = SizeManager::GetSizeAttribute(giant, 2) * 2.0;
+			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
 		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
