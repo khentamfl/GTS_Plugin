@@ -22,7 +22,7 @@ using namespace SKSE;
 namespace {
 	const double LAUNCH_COOLDOWN = 3.0;
 	const float LAUNCH_DAMAGE_BASE = 2.0f;
-	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
+	const float LAUNCH_KNOCKBACK_BASE = 1.0f;
 }
 
 
@@ -129,13 +129,13 @@ namespace Gts {
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force;
-		const float UNDERFOOT_FORCE = 0.5;
+		const float UNDERFOOT_FORCE = 0.65;
 
 		if (force > UNDERFOOT_FORCE && sizeRatio >= 2.5) { // If under the foot
 			log::info("Applying Size Related Damage, Force is > 0.5");
 			DoSizeRelatedDamage(giant, tiny, movementFactor, force);
 			if (sizeRatio >= 4.0) {
-				PushActorAway(giant, tiny, knockBack/4);
+				PushActorAway(giant, tiny, knockBack);
 			}
 		} else if (!SizeManager::IsLaunching(tiny) && force <= UNDERFOOT_FORCE) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
@@ -149,7 +149,7 @@ namespace Gts {
 						log::info("Underfoot damage: {} on {}", damage, tiny->GetDisplayFullName());
 					}
 					log::info("Pushing actor away: {}, force: {}", tiny->GetDisplayFullName(), knockBack);
-					PushActorAway(giant, tiny, knockBack/4);
+					PushActorAway(giant, tiny, knockBack);
 					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize, 50 * movementFactor * giantSize);
 				}
 			}
