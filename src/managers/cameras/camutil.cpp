@@ -249,7 +249,7 @@ namespace Gts {
 					if (model) {
 						NiPoint3 cameraLocation = GetCameraPosition();
 						auto playerTrans = model->world;
-						playerTrans.scale = 1.0; // Only do translation/rotation
+						playerTrans.scale = model->parent ? model->parent->world.scale : 1.0; // Only do translation/rotation
 						auto playerTransInve = playerTrans.Invert();
 						// Get Scaled Camera Location
 						return playerTransInve*cameraLocation;
