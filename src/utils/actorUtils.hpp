@@ -20,7 +20,7 @@ namespace Gts {
 	std::vector<hkpRigidBody*> GetActorRBs(Actor* actor);
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockbackForce);
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius);
-	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude);
+	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude);
 
 
 	bool IsDragon(Actor* actor);
