@@ -85,7 +85,7 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-    void AccurateDamage::DoAccurateCollision(Actor* actor) {
+    void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
 			return;
 		}
@@ -141,11 +141,11 @@ namespace Gts {
 								if (!IsDamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 									PushActorAway(actor, otherActor, 50 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
+									DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce); // Apply Damage
 									}
 								if (force >= 0.20 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									DoSizeDamage(actor, otherActor, movementFactor, 0.60 * aveForce);
+									DoSizeDamage(actor, otherActor, movementFactor, 0.60 * aveForce); // Apply Damage
 								}
 							}
 						}
@@ -155,7 +155,7 @@ namespace Gts {
 		}
 	}
 
-    void AccurateDamage::UnderFootEvent(const UnderFoot& evt) {
+    void AccurateDamage::UnderFootEvent(const UnderFoot& evt) { // On underfoot event
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
 		float force = evt.force;
@@ -219,7 +219,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
+	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) { // Applies damage and crushing
 		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
 			return;
 		}
