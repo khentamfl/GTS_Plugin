@@ -27,36 +27,38 @@ using namespace std;
 namespace {
 
 	void TestCollision(Actor* actor) {
-		for (auto tiny: find_actors()) {
-			if (tiny != actor) {
-				float giantScale = get_visual_scale(actor);
-				float tinyScale = get_visual_scale(tiny);
-				float force = 1.0;
-				 if (giantScale / tinyScale > 2.0) {
-					const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
-					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
-					NiPoint3 actorLocation = tiny->GetPosition();
-					auto leftFoot = find_node(actor, leftFootLookup);
-				    auto rightFoot = find_node(actor, rightFootLookup);
-						for (auto foot: (leftFoot, rightFoot)) {
-						 NiPoint3 footLocatation = foot->world.translate;
-							float distance = (footLocatation - actorLocation).Length();
-								if (distance < 20 * giantScale) {
+			float giantScale = get_visual_scale(actor);
+			const float BASE_DISTANCE = 20.0;
+			const float BASE_FOOT_DISTANCE = 10.0;
+			const float SCALE_RATIO = 2.0;
+		for (auto otherActor: find_actors()) {
+					if (otherActor != actor) {
+						float tinyScale = get_visual_scale(otherActor);
+						if (giantScale / tinyScale > SCALE_RATIO) {
+							NiPoint3 actorLocation = otherActor->GetPosition();
+							for (auto foot: impact_data.nodes) {
+								NiPoint3 footLocatation = foot->world.translate;
+								float distance = (footLocatation - actorLocation).Length();
+								if (distance < BASE_DISTANCE * giantScale) {
 									// Close enough for more advance checks
-									auto model = tiny->GetCurrent3D();
+									auto model = otherActor->GetCurrent3D();
 									if (model) {
 										std::vector<NiAVObject*> bodyParts = {};
-										float footDistance = 20*giantScale;
+										float force = 0.0;
+										float footDistance = BASE_DISTANCE*giantScale;
 										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
 											float distance = (a_obj.world.translate - footLocatation).Length();
 											//log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
 											if (distance < footDistance) {
 												bodyParts.push_back(&a_obj);
 												force += 1.0 - distance / footDistance;
-												PushActorAway(actor, tiny, force * giantScale);
 											}
 											return true;
 										});
+										if (!bodyParts.empty()) {
+											// Under Foot
+											float aveForce = force / bodyParts.size();
+											PushActorAway(actor, otherActor, aveForce);
 										}
 									}
 								}
@@ -64,6 +66,8 @@ namespace {
 						}
 					}
 				}
+			}
+				
 	
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
