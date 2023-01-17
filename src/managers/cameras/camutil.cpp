@@ -368,7 +368,6 @@ namespace Gts {
 
 							// Convert to local space
 							auto parent = cameraRoot->parent;
-							auto playerTrans = model->world;
 							playerTrans.scale = 1.0; // Only do translation/rotation
 							auto transform = playerTrans.Invert();
 							auto localShifted = transform * worldShifted;
