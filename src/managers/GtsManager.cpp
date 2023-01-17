@@ -1,4 +1,5 @@
 #include "Config.hpp"
+#include "managers/damage/accuratedamage.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -25,83 +26,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-
-	void TestCollision(Actor* actor) {
-		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
-			return;
-		}
-			float giantScale = get_visual_scale(actor);
-			const float BASE_DISTANCE = 16.0;
-			const float BASE_FOOT_DISTANCE = 10.0;
-			const float SCALE_RATIO = 2.0;
-		for (auto otherActor: find_actors()) {
-			if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->formID == 0x14 && otherActor->IsPlayerTeammate()) {
-				return;
-			}
-			if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->IsPlayerTeammate() && otherActor->IsPlayerTeammate()) {
-				return;
-			} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && otherActor->formID == 0x14) {
-				return;
-			}	
-					if (otherActor != actor) {
-						float tinyScale = get_visual_scale(otherActor);
-						if (giantScale / tinyScale > SCALE_RATIO) {
-							NiPoint3 actorLocation = otherActor->GetPosition();
-							const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
-							const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
-							auto leftFoot = find_node(actor, leftFootLookup);
-				    		auto rightFoot = find_node(actor, rightFootLookup);
-							for (auto foot: {leftFoot, rightFoot}) {
-								NiPoint3 footLocatation = foot->world.translate;
-								float distance = (footLocatation - actorLocation).Length();
-								if (distance < BASE_DISTANCE * giantScale) {
-									// Close enough for more advance checks
-									auto model = otherActor->GetCurrent3D();
-									if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
-										giantScale *= 2.0;
-									}
-									if (model) {
-										std::vector<NiAVObject*> bodyParts = {};
-										float force = 0.0;
-										float footDistance = BASE_DISTANCE*giantScale;
-										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
-											float distance = (a_obj.world.translate - footLocatation).Length();
-											//log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
-											if (distance < footDistance) {
-												bodyParts.push_back(&a_obj);
-												force += 1.0 - distance / footDistance;
-											}
-											return true;
-										});
-										if (!bodyParts.empty()) {
-											// Under Foot
-
-											bool IsDamaging = SizeManager::GetSingleton().IsDamaging(otherActor);
-											float movementFactor = 1.0;
-											if (actor->IsSprinting()) {
-												movementFactor *= 1.5;
-											}
-
-											float aveForce = force / bodyParts.size();
-											if (!IsDamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-												PushActorAway(actor, otherActor, 50 * aveForce);
-												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
-											}
-											if (force >= 0.60 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
-												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 0.60 * aveForce);
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-				
-	
-
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
 			return;
@@ -595,7 +519,7 @@ void GtsManager::Update() {
 			continue;
 		}
 		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-			TestCollision(actor);
+			AccurateDamage::GetSingleton().DoAccurateCollision(actor);
 		}
 		update_actor(actor);
 		apply_actor(actor);

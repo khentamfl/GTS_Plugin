@@ -42,7 +42,6 @@ namespace Gts {
 			virtual std::string DebugName() override;
 			virtual void Update() override;
 			virtual void OnHighheelEquip(const HighheelEquip& evt) override;
-			virtual void UnderFootEvent(const UnderFoot& evt) override;
 
 			void DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult);
 
