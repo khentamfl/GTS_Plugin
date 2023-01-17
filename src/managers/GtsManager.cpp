@@ -75,7 +75,7 @@ namespace {
 
 											if (actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || (actor->IsWalking() && actor->IsSneaking())) {
 												float movementFactor = 1.0;
-												
+												SizeManager::GetSingleton().GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 												if (actor->IsSprinting()) {
 													movementFactor *= 1.5;
 												}
