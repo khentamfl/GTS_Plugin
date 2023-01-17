@@ -119,7 +119,7 @@ namespace Gts {
 			motion.ApplyLinearImpulse(impulse);
 			log::info("Trying to push actor {} away", receiver);
 		}*/
-		CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
+		//CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
 		// NiPoint3 sourceLoc = source->GetPosition();
