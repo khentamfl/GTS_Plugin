@@ -28,10 +28,8 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	const double LAUNCH_COOLDOWN = 3.0;
-	const double DAMAGE_COOLDOWN = 0.10;
-	const float LAUNCH_DAMAGE_BASE = 1.0f;
-	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
+	const float LAUNCH_DAMAGE = 1.0f;
+	const float LAUNCH_KNOCKBACK = 0.02f;
 
 	void SizeModifications(Actor* giant, Actor* target, float HighHeels) {
 		float InstaCrushRequirement = 24.0;
@@ -124,7 +122,7 @@ namespace Gts {
 		}
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
-		float knockBack = LAUNCH_KNOCKBACK_BASE  * giantSize * movementFactor * force;
+		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 		const float UNDERFOOT_FORCE = 0.60;
 
 		if (force > UNDERFOOT_FORCE && sizeRatio >= 2.5) { // If under the foot
@@ -138,7 +136,7 @@ namespace Gts {
 					// Launch
 					SizeManager::GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
-						float damage = LAUNCH_DAMAGE_BASE * giantSize * movementFactor * force/UNDERFOOT_FORCE;
+						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_FORCE;
 						DamageAV(tiny,ActorValue::kHealth, damage);
 						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.5)) {
 							CrushManager::GetSingleton().Crush(giant, tiny); // Crush if hp is low
