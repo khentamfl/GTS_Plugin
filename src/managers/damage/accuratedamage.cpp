@@ -6,6 +6,7 @@
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
+#include "managers/CrushManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/hitmanager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
