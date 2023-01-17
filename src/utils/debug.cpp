@@ -1,5 +1,5 @@
 #pragma once
-#include "utils/debug.h"
+#include "utils/debug.hpp"
 #include <ehdata.h>
 #include <rttidata.h>
 
