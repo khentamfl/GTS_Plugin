@@ -186,6 +186,7 @@ namespace Gts {
 		}
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult) || tiny->IsDead() || GetAV(tiny, ActorValue::kHealth) <= 0.0)) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
+			log::info("Trying to crush: {}, multiplier: {}", tiny->GetDisplayFullName(), multiplier);
 			return;
 		}
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.25);

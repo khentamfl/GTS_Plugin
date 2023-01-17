@@ -77,9 +77,7 @@ namespace {
 													movementFactor *= 1.5;
 												}
 												log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
-												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
-												PushActorAway(actor, otherActor, aveForce);
-											
+												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 0.25 * aveForce);
 										}
 									}
 								}
