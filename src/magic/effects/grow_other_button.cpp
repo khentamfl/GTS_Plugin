@@ -34,7 +34,7 @@ namespace Gts {
 			return;
 		}
 
-		float target_scale = get_target_scale(target);
+		float target_scale = get_visual_scale(target);
 		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
 
 		float bonus = 1.0;

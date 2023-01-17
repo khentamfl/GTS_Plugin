@@ -184,6 +184,16 @@ namespace Gts {
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
 		float force = evt.force;
+
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
+			return;
+		}
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+			return;
+		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+			return;
+		}	
+		
 		log::info("Underfoot event: {} stepping on {} with force {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), force);
 
 		float giantSize = get_visual_scale(giant);

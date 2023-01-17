@@ -31,7 +31,7 @@ namespace {
 			return;
 		}
 			float giantScale = get_visual_scale(actor);
-			const float BASE_DISTANCE = 20.0;
+			const float BASE_DISTANCE = 16.0;
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 2.0;
 		for (auto otherActor: find_actors()) {
@@ -72,18 +72,19 @@ namespace {
 
 											float aveForce = force / bodyParts.size();
 											if (!IsDamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-												PushActorAway(actor, otherActor, aveForce);
+												PushActorAway(actor, otherActor, aveForce * 3);
 												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
+												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 												log::info("Trying to push away");
 											}
-
+											if (actor->IsSprinting() || actor->IsWalking() || actor->IsRunning())
 												float movementFactor = 1.0;
 												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 												if (actor->IsSprinting()) {
 													movementFactor *= 1.5;
 												}
 												log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
-												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 0.25 * aveForce);
+												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 0.5 * aveForce);
 										}
 									}
 								}

@@ -147,6 +147,11 @@ namespace Gts {
 				if (impact_data.kind == FootEvent::JumpLand) {
 					giantScale *= 1.75;
 				}
+
+				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
+					giantScale *= 8.0;
+				}
+
 				if (actor->formID == 0x14) {
 					log::info("Giant: {} Scale: {}", actor->GetDisplayFullName(), giantScale);
 				}
