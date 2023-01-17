@@ -36,7 +36,11 @@ namespace {
 						float tinyScale = get_visual_scale(otherActor);
 						if (giantScale / tinyScale > SCALE_RATIO) {
 							NiPoint3 actorLocation = otherActor->GetPosition();
-							for (auto foot: impact_data.nodes) {
+							const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
+							const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
+							auto leftFoot = find_node(actor, leftFootLookup);
+				    		auto rightFoot = find_node(actor, rightFootLookup);
+							for (auto foot: {leftFoot, rightFoot}) {
 								NiPoint3 footLocatation = foot->world.translate;
 								float distance = (footLocatation - actorLocation).Length();
 								if (distance < BASE_DISTANCE * giantScale) {
