@@ -38,7 +38,7 @@ namespace {
 					NiPoint3 actorLocation = tiny->GetPosition();
 					auto leftFoot = find_node(actor, leftFootLookup);
 				    auto rightFoot = find_node(actor, rightFootLookup);
-						for (auto foot: {leftFoot, rightFoot}) {
+						for (auto foot: (leftFoot, rightFoot)) {
 						 NiPoint3 footLocatation = foot->world.translate;
 							float distance = (footLocatation - actorLocation).Length();
 								if (distance < 20 * giantScale) {
