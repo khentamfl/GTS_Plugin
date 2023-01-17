@@ -1,5 +1,6 @@
-#include "actorUtils.hpp"
-#include "papyrusUtils.hpp"
+#include "utils/actorUtils.hpp"
+#include "utils/findActor.hpp"
+#include "utils/papyrusUtils.hpp"
 #include "data/runtime.hpp"
 #include "data/re.hpp"
 
@@ -114,13 +115,23 @@ namespace Gts {
 
 		auto rbs = GetActorRB(receiver);
 		for (auto rb: rbs) {
-			auto motion = rb->motion;
+			auto& motion = rb->motion;
 			motion.ApplyLinearImpulse(impulse);
 		}
 		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
-		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
+		NiPoint3 sourceLoc = source->GetPosition();
+		for (auto actor: find_actors()) {
+			if ((actor->GetPosition() - sourceLoc).Length() < afRadius) {
+				auto aiProc = actor->currentProcess;
+				if (aiProc) {
+					aiProc->KnockExplosion(actor, sourceLoc, afMagnitude);
+					aiProc->KnockExplosion(actor, sourceLoc, afMagnitude);
+				}
+			}
+		}
+		// CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
 	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
 		NiPoint3 direction = NiPoint3(afX, afY, afZ);
@@ -129,7 +140,7 @@ namespace Gts {
 
 		auto rbs = GetActorRB(target);
 		for (auto rb: rbs) {
-			auto motion = rb->motion;
+			auto& motion = rb->motion;
 			motion.ApplyLinearImpulse(impulse);
 		}
 	}
@@ -143,5 +154,27 @@ namespace Gts {
 
 	bool IsProne(Actor* actor) {
 		return actor!= nullptr && actor->formID == 0x14 && Runtime::GetBool("ProneEnabled") && actor->IsSneaking();
+	}
+
+	bool IsJumping(Actor* actor) {
+		if (!actor) {
+			return false;
+		}
+		if (!actor->Is3DLoaded()) {
+			return false;
+		}
+		bool result = false;
+		actor->GetGraphVariableBool("bInJumpState", result);
+		return result;
+	}
+
+	float get_distance_to_actor(Actor* receiver, Actor* target) {
+		if (target) {
+			auto point_a = receiver->GetPosition();
+			auto point_b = target->GetPosition();
+			auto delta = point_a - point_b;
+			return delta.Length();
+		}
+		return 3.4028237E38; // Max float
 	}
 }

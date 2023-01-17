@@ -7,7 +7,6 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "util.hpp"
-#include "actorUtils.hpp"
 // Module that handles various magic effects
 
 namespace {
@@ -276,9 +275,9 @@ namespace Gts {
 			caster->NotifyAnimationGraph("JumpLand");
 		}
 		auto Cache = Persistent::GetSingleton().GetData(caster); // TODO: Fix this properly
-			if (!Cache) {
-				return;
-			} 
+		if (!Cache) {
+			return;
+		}
 		if (Runtime::HasPerk(player, "SizeReserve")) {
 			Cache->SizeReserve += target_scale/25;
 		}
@@ -290,7 +289,7 @@ namespace Gts {
 			bool hasExplosiveGrowth1 = Runtime::HasMagicEffect(caster, "explosiveGrowth1");
 			bool hasExplosiveGrowth2 = Runtime::HasMagicEffect(caster, "explosiveGrowth2");
 			bool hasExplosiveGrowth3 = Runtime::HasMagicEffect(caster, "explosiveGrowth3");
-			
+
 			if (Runtime::HasPerk(caster, "ExtraGrowth") && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
 				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
 				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());

@@ -3,8 +3,6 @@
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "scale/scale.hpp"
-#include "actorUtils.hpp"
-#include "papyrusUtils.hpp"
 #include "util.hpp"
 
 #include <random>
@@ -100,23 +98,23 @@ namespace {
 
 		int random = (100 + (rand()% 24 + 1)) / 100;
 
-    	if (GtsSkillLevel->value >= 100) {
-       	 	GtsSkillLevel->value = 100.0;
-        	GtsSkillRatio->value = 0.0;
-        	return;
-    	}
-    
-    	float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
+		if (GtsSkillLevel->value >= 100) {
+			GtsSkillLevel->value = 100.0;
+			GtsSkillRatio->value = 0.0;
+			return;
+		}
 
-    	float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
-    	float Total = (((0.04 * random) + absorbedSize/50) * ValueEffectiveness);
-   		GtsSkillRatio->value += Total; 
+		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
+
+		float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
+		float Total = (((0.04 * random) + absorbedSize/50) * ValueEffectiveness);
+		GtsSkillRatio->value += Total;
 		int TotalLevel = GtsSkillLevel->value;
-    
-    	if (GtsSkillRatio->value >= 1.0) {
-        	GtsSkillLevel->value += 1.0;
-        	GtsSkillProgress->value = TotalLevel;
-        	GtsSkillRatio->value = 0.0;
+
+		if (GtsSkillRatio->value >= 1.0) {
+			GtsSkillLevel->value += 1.0;
+			GtsSkillProgress->value = TotalLevel;
+			GtsSkillRatio->value = 0.0;
 		}
 		log::info("Total {}, AbsorbedSize {}, Value: {}, random: {}", Total, absorbedSize, ValueEffectiveness, random);
 	}
@@ -161,7 +159,7 @@ namespace Gts {
 						}
 					}
 					shake_camera(giant, 1.8, 1);
-					if (giant->formID == 0x14) {   
+					if (giant->formID == 0x14) {
 						TriggerScreenBlood(1);
 					}
 					std::random_device rd;
@@ -181,7 +179,7 @@ namespace Gts {
 					ScareChance(giant);
 
 					if (tiny->formID != 0x14) {
-						Disintegrate(tiny); // CTD if we Disintegrate the player	
+						Disintegrate(tiny); // CTD if we Disintegrate the player
 					}
 					AdjustGiantessSkill(giant, tiny);
 					FearChance(giant);

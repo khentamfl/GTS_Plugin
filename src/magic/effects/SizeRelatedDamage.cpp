@@ -11,7 +11,6 @@
 #include "data/persistent.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/CrushManager.hpp"
-#include "actorUtils.hpp"
 #include "util.hpp"
 #include "timer.hpp"
 #include "node.hpp"
@@ -39,7 +38,7 @@ namespace Gts {
 		}
 		NiAVObject* npc_node = find_node(caster, "NPC");
 		if (!npc_node) {
-				return;
+			return;
 		}
 		float HighHeels = 1.0 + (HighHeelManager::GetSingleton().GetBaseHHOffset(caster).Length()/200);
 		//log::info("High Heels: {}, {}", caster->GetDisplayFullName(), HighHeels);
@@ -126,12 +125,11 @@ namespace Gts {
 				ConsoleLog::GetSingleton()->Print("%s was instantly turned into mush by the body of %s", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 				if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
 					AttributeManager::GetSingleton().OverrideBonus(0.65); // Reduce speed after crush
-				}
-				else if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
+				} else if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
 					AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce more speed after crush
 				}
 			} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
-				PushActorAway(Caster, Target, 0.2); 
+				PushActorAway(Caster, Target, 0.2);
 				PushActorAway(Caster, Target, 0.2);
 				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
 				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);

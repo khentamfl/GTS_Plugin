@@ -1,0 +1,68 @@
+#include "utils/camera.hpp"
+#include "utils/papyrusUtils.hpp"
+
+using namespace RE;
+using namespace SKSE;
+
+namespace Gts {
+
+	void shake_camera(TESObjectREFR* actor, float intensity, float duration) {
+		CallFunction("Game", "ShakeCamera", args, callback);
+	}
+
+	void TriggerScreenBlood(int aiValue) {
+		CallFunction("Game", "TriggerScreenBlood", args, callback);
+	}
+
+	void shake_controller(float left_intensity, float right_intensity, float duration) {
+		CallFunction("Game", "ShakeController", args, callback);
+	}
+
+	float get_distance_to_camera(const NiPoint3& point) {
+		auto camera = PlayerCamera::GetSingleton();
+		if (camera) {
+			auto point_a = point;
+			auto point_b = camera->pos;
+			auto delta = point_a - point_b;
+			return delta.Length();
+		}
+		return 3.4028237E38; // Max float
+	}
+
+	float get_distance_to_camera(NiAVObject* node) {
+		if (node) {
+			return get_distance_to_camera(node->world.translate);
+		}
+		return 3.4028237E38; // Max float
+	}
+
+	float get_distance_to_camera(Actor* actor) {
+		if (actor) {
+			return get_distance_to_camera(actor->GetPosition());
+		}
+		return 3.4028237E38; // Max float
+	}
+
+	bool IsFirstPerson() {
+		auto playercamera = PlayerCamera::GetSingleton();
+		if (!playercamera) {
+			return false;
+		}
+		if (playercamera->currentState == playercamera->cameraStates[CameraState::kFirstPerson]) {
+			return true;
+		}
+		return false;
+	}
+
+	bool IsFreeCamera() {
+		auto playercamera = PlayerCamera::GetSingleton();
+		if (!playercamera) {
+			return false;
+		}
+		if (playercamera->currentState == playercamera->cameraStates[CameraState::kFree]) {
+			return true;
+		}
+		return false;
+	}
+
+}

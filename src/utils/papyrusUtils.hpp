@@ -45,4 +45,15 @@ namespace Gts {
 			vm->DispatchMethodCall(objectPtr, std::string(function).c_str(), args, callback);
 		}
 	}
+
+	template <class ... Args>
+	inline void CallFunction(std::string_view functionClass, std::string_view function, Args... a_args) {
+		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+		if (vm) {
+			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+			auto args = RE::MakeFunctionArguments(std::forward<Args>(a_args)...);
+			vm->DispatchStaticCall(std::string(functionClass).c_str(), std::string(function).c_str(), args, callback);
+		}
+	}
 }

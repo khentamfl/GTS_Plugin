@@ -2,8 +2,6 @@
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "scale/scale.hpp"
-#include "actorUtils.hpp"
-#include "papyrusUtils.hpp"
 #include "util.hpp"
 
 #include <random>
@@ -33,10 +31,10 @@ namespace Gts {
 				continue;
 			}
 			//if (!tiny->Is3DLoaded()) {
-				//continue;
+			//continue;
 			//}
 			//if (!giant->Is3DLoaded()) {
-				//continue;
+			//continue;
 			//}
 			if (data.state == ShrinkState::Healthy) {
 				tiny->KillImmediate();
@@ -128,23 +126,23 @@ namespace Gts {
 
 		int random = (100 + (rand()% 24 + 1)) / 100;
 
-    	if (GtsSkillLevel->value >= 100) {
-       	 	GtsSkillLevel->value = 100.0;
-        	GtsSkillRatio->value = 0.0;
-        	return;
-    	}
-    
-    	float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.20, 1.0);
+		if (GtsSkillLevel->value >= 100) {
+			GtsSkillLevel->value = 100.0;
+			GtsSkillRatio->value = 0.0;
+			return;
+		}
 
-    	float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
-    	float Total = (((0.06 * random) + absorbedSize/50) * ValueEffectiveness * 0.55);
-   		GtsSkillRatio->value += Total; 
+		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.20, 1.0);
+
+		float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
+		float Total = (((0.06 * random) + absorbedSize/50) * ValueEffectiveness * 0.55);
+		GtsSkillRatio->value += Total;
 		int TotalLevel = GtsSkillLevel->value;
-    
-    	if (GtsSkillRatio->value >= 1.0) {
-        	GtsSkillLevel->value += 1.0;
-        	GtsSkillProgress->value = TotalLevel;
-        	GtsSkillRatio->value = 0.0;
+
+		if (GtsSkillRatio->value >= 1.0) {
+			GtsSkillLevel->value += 1.0;
+			GtsSkillProgress->value = TotalLevel;
+			GtsSkillRatio->value = 0.0;
 		}
 	}
 
