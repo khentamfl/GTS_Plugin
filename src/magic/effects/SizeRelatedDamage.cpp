@@ -22,8 +22,9 @@ namespace Gts {
 
 	void SizeDamage::OnUpdate() {
 		auto caster = GetCaster();
-
-		return; // For now disabled
+		if (SizeManager::GetSingleton().GetPreciseDamage()) {
+			return; 
+		} 
 		if (!caster) {
 			return;
 		}

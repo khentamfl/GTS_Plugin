@@ -81,6 +81,8 @@ namespace Gts {
 			static bool IsLaunching(Actor* actor);
 			static bool IsDamaging(Actor* actor);
 
+			bool GetPreciseDamage();
+
 		private:
 			std::map<Actor*, SizeManagerData> sizeData;
 			std::map<Actor*, LaunchData> launchData;

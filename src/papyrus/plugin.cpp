@@ -103,6 +103,10 @@ namespace {
 		Persistent::GetSingleton().highheel_correction = enabled;
 	}
 
+	bool GetPreciseDamage(StaticFunctionTag*) {
+		return SizeManager::GetSingleton().GetPreciseDamage();
+	}
+
 	bool GetIsSpeedAdjusted(StaticFunctionTag*) {
 		return Persistent::GetSingleton().is_speed_adjusted;
 	}
@@ -171,6 +175,7 @@ namespace Gts {
 		vm->RegisterFunction("ModSizeVulnerability", PapyrusClass, ModSizeVulnerability);
 		vm->RegisterFunction("GetSizeVulnerability", PapyrusClass, GetSizeVulnerability);
 		vm->RegisterFunction("GetHitGrowth", PapyrusClass, GetHitGrowth);
+		vm->RegisterFunction("GetPreciseDamage", PapyrusClass, GetPreciseDamage);
 		vm->RegisterFunction("SetHitGrowth", PapyrusClass, SetHitGrowth);
 		vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
 		vm->RegisterFunction("GetGrowthHalfLife", PapyrusClass, GetGrowthHalfLife);

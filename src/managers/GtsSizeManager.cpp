@@ -433,4 +433,10 @@ namespace Gts {
 	bool SizeManager::IsDamaging(Actor* actor) {
 		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetDamageData(actor).lastDamageTime + DAMAGE_COOLDOWN);
 	}
+
+	bool SizeManager::GetPreciseDamage() {
+		bool value = Runtime::GetFloat("PreciseDamage") ? Runtime::GetFloat("PreciseDamage") >= 1.0 : true
+		log::info("Value:", value);
+		return value;
+	}
 }

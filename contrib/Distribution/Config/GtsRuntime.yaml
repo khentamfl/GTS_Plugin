@@ -227,6 +227,8 @@ globals:
   GtsSkillRatio: "GTS.esp|142202"
   GtsSkillProgress: "GTS.esp|142201"
 
+  PreciseDamage: "GTS.esp|4F4F3A"
+
 quests:
   MainQuest: "GTS.esp|005E3A"
   ManagerQuest: "GTS.esp|000D62"

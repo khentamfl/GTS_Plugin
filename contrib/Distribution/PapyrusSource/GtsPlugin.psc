@@ -58,6 +58,10 @@ String function SigFig(Float number, Int sf) global native
 Function SetIsHighHeelEnabled(Bool enabled) global native
 Bool Function GetIsHighHeelEnabled() global native
 
+
+; Allow/Get precise damage toggle
+Bool Function GetPreciseDamage() global native
+
 ; Controls if the Anim and Walk speeds adjustments are enabled or not
 ;
 ; Value is saved into the cosave
