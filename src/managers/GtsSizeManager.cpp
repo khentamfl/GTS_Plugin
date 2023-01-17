@@ -20,6 +20,13 @@ using namespace RE;
 using namespace REL;
 using namespace SKSE;
 
+namespace {
+	const double LAUNCH_COOLDOWN = 3.0;
+	const double DAMAGE_COOLDOWN = 0.10;
+	const float LAUNCH_DAMAGE_BASE = 1.0f;
+	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
+}
+
 namespace Gts {
 	SizeManager& SizeManager::GetSingleton() noexcept {
 		static SizeManager instance;
