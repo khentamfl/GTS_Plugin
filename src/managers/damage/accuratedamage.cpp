@@ -76,6 +76,11 @@ namespace {
 
 namespace Gts {
 
+	AccurateDamage& AccurateDamage::GetSingleton() noexcept {
+		static AccurateDamage instance;
+		return instance;
+	}
+
     void AccurateDamage::DoAccurateCollision(Actor* actor) {
 		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
 			return;
