@@ -4,6 +4,7 @@
 #include "utils/av.hpp"
 #include "utils/camera.hpp"
 #include "utils/debug.hpp"
+#include "utils/findActor.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "utils/smooth.hpp"
 #include "utils/sound.hpp"
