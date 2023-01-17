@@ -69,6 +69,10 @@ namespace {
 											// Under Foot
 
 											bool IsDamaging = SizeManager::GetSingleton().IsDamaging(otherActor);
+											float movementFactor = 1.0;
+											if (actor->IsSprinting()) {
+												movementFactor *= 1.5;
+											}
 
 											float aveForce = force / bodyParts.size();
 											if (!IsDamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
@@ -77,12 +81,8 @@ namespace {
 												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 												log::info("Trying to push away");
 											}
-											if (actor->IsSprinting() || actor->IsWalking() || actor->IsRunning())
-												float movementFactor = 1.0;
+											if (actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
 												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-												if (actor->IsSprinting()) {
-													movementFactor *= 1.5;
-												}
 												log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
 												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 0.5 * aveForce);
 										}

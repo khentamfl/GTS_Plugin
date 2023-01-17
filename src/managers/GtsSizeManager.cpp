@@ -238,7 +238,7 @@ namespace Gts {
 						log::info("Underfoot damage: {} on {}", damage, tiny->GetDisplayFullName());
 					}
 					PushActorAway(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 200 * movementFactor * giantSize * force, 200 * movementFactor * giantSize * force);
+					ApplyHavokImpulse(tiny, 0, 0, 100 * movementFactor * giantSize * force, 50 * movementFactor * giantSize * force);
 				}
 			}
 		}

@@ -133,8 +133,8 @@ namespace Gts {
 		// }
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
-	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
-		NiPoint3 direction = NiPoint3(afX, afY, afZ);
+	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude) {
+		/*NiPoint3 direction = NiPoint3(afX, afY, afZ);
 		NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
 		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);//hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
 
@@ -142,7 +142,8 @@ namespace Gts {
 		for (auto rb: rbs) {
 			auto& motion = rb->motion;
 			motion.ApplyLinearImpulse(impulse);
-		}
+		}*/
+		CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
 	}
 
 	bool IsDragon(Actor* actor) {
