@@ -28,7 +28,7 @@ namespace {
 
 	void TestCollision(Actor* actor) {
 			float giantScale = get_visual_scale(actor);
-			const float BASE_DISTANCE = 17.0;
+			const float BASE_DISTANCE = 18.25;
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 2.0;
 		for (auto otherActor: find_actors()) {
@@ -61,16 +61,18 @@ namespace {
 										});
 										if (!bodyParts.empty()) {
 											// Under Foot
-											float aveForce = force / bodyParts.size();
-											if (!actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-												PushActorAway(actor, otherActor, aveForce/2.5);
-												log::info("Trying to push away");
-											}
 
 											bool IsDamaging = SizeManager::GetSingleton().IsDamaging(otherActor);
 											if (IsDamaging) {
-												log::info("Damage is True");
+												log::info("Damage is on a cooldown");
 												return;
+											}
+
+											float aveForce = force / bodyParts.size();
+											if (!actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
+												PushActorAway(actor, otherActor, aveForce/2.5);
+												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
+												log::info("Trying to push away");
 											}
 
 											if (actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || (actor->IsWalking() && actor->IsSneaking())) {
@@ -80,7 +82,7 @@ namespace {
 													movementFactor *= 1.5;
 												}
 												log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
-												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
+												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 20.0 * aveForce);
 												PushActorAway(actor, otherActor, aveForce);
 											}
 										}
