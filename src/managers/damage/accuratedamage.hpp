@@ -16,7 +16,7 @@ namespace Gts {
 	/**
 	 * The class which tracks gts size effects.
 	 */
-	class accuratedamage : public EventListener  {
+	class AccurateDamage : public EventListener  {
 		public:
 			[[nodiscard]] static accuratedamage& GetSingleton() noexcept;
 
