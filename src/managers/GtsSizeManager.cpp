@@ -22,7 +22,7 @@ using namespace SKSE;
 namespace {
 	const double LAUNCH_COOLDOWN = 3.0;
 	const float LAUNCH_DAMAGE_BASE = 2.0f;
-	const float LAUNCH_KNOCKBACK_BASE = 1.0f;
+	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
 }
 
 
@@ -149,7 +149,7 @@ namespace Gts {
 						log::info("Underfoot damage: {} on {}", damage, tiny->GetDisplayFullName());
 					}
 					PushActorAway(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize, 50 * movementFactor * giantSize);
+					ApplyHavokImpulse(tiny, 0, 0, 950 * movementFactor * giantSize, 950 * movementFactor * giantSize);
 				}
 			}
 		}
