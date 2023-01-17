@@ -17,7 +17,7 @@ namespace Gts {
 	void SetDontMove(Actor* actor);
 	void SetMove(Actor* actor);
 
-
+	std::vector<hkpRigidBody*> GetActorRBs(Actor* actor);
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockbackForce);
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius);
 	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude);
