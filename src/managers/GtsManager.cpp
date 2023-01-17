@@ -71,14 +71,13 @@ namespace {
 												log::info("Trying to push away");
 											}
 
-											 
 												float movementFactor = 1.0;
 												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 												if (actor->IsSprinting()) {
 													movementFactor *= 1.5;
 												}
 												log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
-												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 20.0 * aveForce);
+												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 												PushActorAway(actor, otherActor, aveForce);
 											
 										}

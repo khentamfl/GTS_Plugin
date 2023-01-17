@@ -184,7 +184,7 @@ namespace Gts {
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
-		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) < (result * weightdamage * mult))) {
+		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult) || tiny->IsDead() || GetAV(tiny, ActorValue::kHealth) <= 0.0)) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			return;
 		}
