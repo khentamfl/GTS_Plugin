@@ -50,8 +50,9 @@ namespace Gts {
 		}
 
 		NiPoint3 new_hh = this->GetHHOffset(actor);
-		if (IsProne(actor)) {  // || Gts::SizeMethod == 1
+		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {  // || Gts::SizeMethod == 1
 			new_hh = NiPoint3();
+			return;
 		}
 		float hh_length = new_hh.Length();
 
