@@ -54,8 +54,8 @@ namespace {
 											if (distance < footDistance) {
 												bodyParts.push_back(&a_obj);
 												force += 1.0 - distance / footDistance;
+												PushActorAway(actor, tiny, force * giantScale);
 											}
-											PushActorAway(actor, tiny, force * giantScale);
 										});
 										}
 									}
