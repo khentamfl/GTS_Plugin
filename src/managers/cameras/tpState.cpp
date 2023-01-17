@@ -21,7 +21,7 @@ namespace Gts {
 					auto rootModel = player->Get3D(false);
 					if (rootModel) {
 						auto playerTrans = rootModel->world;
-						playerTrans.scale = 1.0; // Only do translation/rotation
+						playerTrans.scale = model->parent ? model->parent->world.scale : 1.0;  // Only do translation/rotation
 						auto transform = playerTrans.Invert();
 
 						NiPoint3 lookAt = CompuleLookAt(boneTarget.zoomScale);

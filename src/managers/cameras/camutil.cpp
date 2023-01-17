@@ -349,7 +349,7 @@ namespace Gts {
 						auto model = player->Get3D(false);
 						if (model) {
 							auto playerTrans = model->world;
-							playerTrans.scale = 1.0; // Only do translation/rotation
+							playerTrans.scale = model->parent ? model->parent->world.scale : 1.0;  // Only do translation/rotation
 							auto playerTransInve = playerTrans.Invert();
 
 							// Make the transform matrix for our changes
@@ -368,7 +368,7 @@ namespace Gts {
 
 							// Convert to local space
 							auto parent = cameraRoot->parent;
-							playerTrans.scale = 1.0; // Only do translation/rotation
+							playerTrans.scale = model->parent ? model->parent->world.scale : 1.0;  // Only do translation/rotation
 							auto transform = playerTrans.Invert();
 							auto localShifted = transform * worldShifted;
 							auto targetLocationLocalShifted = localShifted;
