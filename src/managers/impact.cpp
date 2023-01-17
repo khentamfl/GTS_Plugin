@@ -168,7 +168,7 @@ namespace Gts {
 										float footDistance = BASE_DISTANCE*giantScale;
 										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
 											float distance = (a_obj.world.translate - footLocatation).Length();
-											log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
+											//log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
 											if (distance < footDistance) {
 												bodyParts.push_back(&a_obj);
 												force += 1.0 - distance / footDistance;
