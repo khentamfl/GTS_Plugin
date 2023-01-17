@@ -27,6 +27,9 @@ using namespace std;
 namespace {
 
 	void TestCollision(Actor* actor) {
+		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
+			return;
+		}
 			float giantScale = get_visual_scale(actor);
 			const float BASE_DISTANCE = 20.0;
 			const float BASE_FOOT_DISTANCE = 10.0;
@@ -46,6 +49,9 @@ namespace {
 								if (distance < BASE_DISTANCE * giantScale) {
 									// Close enough for more advance checks
 									auto model = otherActor->GetCurrent3D();
+									if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+										giantScale *= 2.0;
+									}
 									if (model) {
 										std::vector<NiAVObject*> bodyParts = {};
 										float force = 0.0;
@@ -563,7 +569,7 @@ std::string GtsManager::DebugName() {
 // Poll for updates
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
-	TestCollision(PC);
+
 	/*auto ai = PC->currentProcess;
 	   if (ai) {
 	        auto highAi = ai->high;
@@ -581,7 +587,9 @@ void GtsManager::Update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		//log::info("Found Actor {}", actor->GetDisplayFullName());
+		if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			TestCollision(actor);
+		}
 		update_actor(actor);
 		apply_actor(actor);
 		GameMode(actor);

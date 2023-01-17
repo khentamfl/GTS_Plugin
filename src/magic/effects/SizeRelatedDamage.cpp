@@ -24,27 +24,20 @@ namespace Gts {
 		auto caster = GetCaster();
 		if (SizeManager::GetSingleton().GetPreciseDamage()) {
 			return; 
-		} 
-		if (!caster) {
+		} if (!caster) {
 			return;
 		}
+		
 		auto target = GetTarget();
+
 		if (!target) {
 			return;
-		}
-		if (caster == target) {
+		} if (caster == target) {
 			return;
-		}
-		if (target == caster) {
-			return;
-		}
-		NiAVObject* npc_node = find_node(caster, "NPC");
-		if (!npc_node) {
+		} if (target == caster) {
 			return;
 		}
 		float HighHeels = 1.0 + (HighHeelManager::GetSingleton().GetBaseHHOffset(caster).Length()/200);
-		//log::info("High Heels: {}, {}", caster->GetDisplayFullName(), HighHeels);
-
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/200; // 50% less effective threshold decrease.
 		float InstaCrushRequirement = 24.0 * Gigantism;
 		float caster_scale = get_target_scale(caster) * HighHeels;
@@ -52,16 +45,14 @@ namespace Gts {
 		float BonusShrink = (IsJumping(caster) * 3.0) + 1.0;
 		float size_difference = caster_scale/target_scale;
 
-
-		//log::info("Caster: {}, Target: {}, TargetScale: {}, CasterScale: {}, SizeDifference: {}", caster->GetDisplayFullName(),target->GetDisplayFullName(), target_scale, caster_scale, size_difference);
-
-
-		if (caster->formID == 0x14 && target->IsPlayerTeammate() && Runtime::GetBool("GtsNPCEffectImmunityToggle")) {
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && caster->formID == 0x14 && target->IsPlayerTeammate()) {
 			return;
 		}
-		if (caster->IsPlayerTeammate() && target->IsPlayerTeammate() && Runtime::GetBool("GtsNPCEffectImmunityToggle")) {
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && caster->IsPlayerTeammate() && target->IsPlayerTeammate()) {
 			return;
-		} // ^ Do not apply if those are true
+		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && target->formID == 0x14) {
+			return;
+		}							// ^ Do not apply if those are true
 
 		if (Runtime::HasMagicEffect(target, "FakeCrushEffect") || CrushManager::AlreadyCrushed(target)) {
 			return;

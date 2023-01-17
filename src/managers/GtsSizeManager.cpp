@@ -24,8 +24,81 @@ namespace {
 	const double DAMAGE_COOLDOWN = 0.10;
 	const float LAUNCH_DAMAGE_BASE = 2.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
-}
 
+	void SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
+		if (!Caster || !Target || Caster == Target) {
+			return;
+		}
+		auto& persistent = Persistent::GetSingleton();
+		if (persistent.GetData(Caster)->smt_run_speed >= 1.0) {
+			float caster_scale = get_target_scale(Caster);
+			float target_scale = get_target_scale(Target);
+			float Multiplier = (caster_scale/target_scale);
+			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
+			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
+			if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
+				CrushManager::Crush(Caster, Target);
+				shake_camera(Caster, 0.25 * caster_scale, 0.25);
+				ConsoleLog::GetSingleton()->Print("%s was instantly turned into mush by the body of %s", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
+				if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
+					AttributeManager::GetSingleton().OverrideBonus(0.65); // Reduce speed after crush
+				} else if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
+					AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce more speed after crush
+				}
+			} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
+				PushActorAway(Caster, Target, 0.8);
+				PushActorAway(Target, Caster, 0.2);
+				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
+				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);
+				shake_camera(Caster, 0.35, 0.5);
+				Runtime::PlaySound("lJumpLand", Caster, 0.5, 1.0);
+				std::string text_a = Target->GetDisplayFullName();
+				std::string text_b = " is too tough to be crushed";
+				std::string Message = text_a + text_b;
+				DebugNotification(Message.c_str(), 0, true);
+				AttributeManager::GetSingleton().OverrideBonus(0.75); // Less speed loss after force crush
+			}
+		}
+	}
+
+	void SizeModifications(Actor* giant, Actor* target, float HighHeels) {
+		float InstaCrushRequirement = 24.0;
+		float size_difference = get_visual_scale(giant)/get_visual_scale(target);
+		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200;
+
+			if (CrushManager::AlreadyCrushed(target)) {
+				return;
+			}
+
+			if (Runtime::HasPerk(giant, "LethalSprint") && giant->IsSprinting()) {
+				InstaCrushRequirement = 18.0 * HighHeels * Gigantism;
+			}
+
+			if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
+				CrushManager::Crush(giant, target);
+				CrushToNothing(giant, target);
+			}
+
+			if (Runtime::HasPerk(caster, "ExtraGrowth") && giant != target && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
+				ShrinkActor(giant, 0.0014 * BonusShrink, 0.0);
+				Grow(giant, 0.0, 0.0004 * BonusShrink);
+				// ^ Augmentation for Growth Spurt: Steal size of enemies.
+			}
+
+			if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat") && giant != target) {
+				SmallMassiveThreatModification(giant, target);
+				size_difference += 7.2; // Allows to crush same size targets.
+
+			if (Runtime::HasPerk(caster, "SmallMassiveThreatSizeSteal")) {
+				float HpRegen = GetMaxAV(giant, ActorValue::kHealth) * 0.005 * size_difference;
+				giant->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
+				ShrinkActor(giant, 0.0015 * BonusShrink, 0.0);
+				Grow(giant, 0.00045 * target_scale * BonusShrink, 0.0);
+			}
+		}
+		
+	}
+}
 
 namespace Gts {
 	SizeManager& SizeManager::GetSingleton() noexcept {
@@ -158,9 +231,23 @@ namespace Gts {
 	}
 
 	void SizeManager::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
-		float giantsize = get_visual_scale(giant) * (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
+		if (!giant) {
+			return;
+		} if (!tiny) {
+			return;
+		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
+			return;
+		}
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+			return;
+		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+			return;
+		}	
+
+		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
-		float multiplier = giantsize/tinysize;
+		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
+		float multiplier = giantsize/tinysize  * highheels;
 		if (multiplier > 4.0) {
 			multiplier = 4.0; // temp fix
 		}
@@ -171,7 +258,7 @@ namespace Gts {
 		float falldamage = 1.0;
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 
-
+		SizeModifications(giant, tiny, highheels);
 
 		if (giant->IsSprinting()) {
 			sprintdamage = 1.5 * this->GetSizeAttribute(giant, 1);
@@ -184,13 +271,13 @@ namespace Gts {
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
+		
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult) || tiny->IsDead() || GetAV(tiny, ActorValue::kHealth) <= 0.0)) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			log::info("Trying to crush: {}, multiplier: {}", tiny->GetDisplayFullName(), multiplier);
 			return;
 		}
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.25);
-
 	}
 
 
@@ -435,7 +522,7 @@ namespace Gts {
 	}
 
 	bool SizeManager::GetPreciseDamage() {
-		bool value = Runtime::GetFloat("PreciseDamage") ? Runtime::GetFloat("PreciseDamage") >= 1.0 : true
+		bool value = Runtime::GetFloat("PreciseDamage") ? Runtime::GetFloat("PreciseDamage") >= 1.0 : true;
 		log::info("Value:", value);
 		return value;
 	}

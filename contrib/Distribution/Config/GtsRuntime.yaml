@@ -151,6 +151,7 @@ globals:
   sizeLimit: "GTS.esp|2028B4"
   AllowClothTearing: "GTS.esp|30EE55"
   GtsNPCEffectImmunityToggle: "GTS.esp|271EFA"
+  GtsPCEffectImmunityToggle: "GTS.esp|4F4F3B"
   ProgressionMultiplier: "GTS.esp|37E46E"
   CrushGrowthRate: "GTS.esp|2028B9"
   IsFalling: "GTS.esp|1CAD98"
