@@ -148,7 +148,6 @@ namespace Gts {
 						DamageAV(tiny,ActorValue::kHealth, damage);
 						log::info("Underfoot damage: {} on {}", damage, tiny->GetDisplayFullName());
 					}
-					log::info("Pushing actor away: {}, force: {}", tiny->GetDisplayFullName(), knockBack);
 					PushActorAway(giant, tiny, knockBack);
 					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize, 50 * movementFactor * giantSize);
 				}

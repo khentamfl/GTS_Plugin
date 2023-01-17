@@ -106,7 +106,7 @@ namespace Gts {
 		return results;
 	}
 
-	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce) {
+	void PushActorAway(Actor* source, TESObjectREFR* receiver, float afKnockBackForce) {
 		NiPoint3 sourceLoc = source->GetPosition();
 		NiPoint3 destinationLoc = receiver->GetPosition();
 		NiPoint3 direction = destinationLoc - sourceLoc;
