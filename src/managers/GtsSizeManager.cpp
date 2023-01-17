@@ -430,6 +430,6 @@ namespace Gts {
 	}
 
 	bool SizeManager::IsDamaging(Actor* actor) {
-		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetLaunchData(actor).lastDamageTime + DAMAGE_COOLDOWN);
+		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetDamagaData(actor).lastDamageTime + DAMAGE_COOLDOWN);
 	}
 }
