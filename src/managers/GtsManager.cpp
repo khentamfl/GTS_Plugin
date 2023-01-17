@@ -28,9 +28,10 @@ namespace {
 
 	void TestCollision(Actor* actor) {
 			float giantScale = get_visual_scale(actor);
-			const float BASE_DISTANCE = 20.0;
+			const float BASE_DISTANCE = 14.0;
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 2.0;
+			const double DAMAGE_COOLDOWN = 0.10;
 		for (auto otherActor: find_actors()) {
 					if (otherActor != actor) {
 						float tinyScale = get_visual_scale(otherActor);
@@ -62,7 +63,26 @@ namespace {
 										if (!bodyParts.empty()) {
 											// Under Foot
 											float aveForce = force / bodyParts.size();
-											PushActorAway(actor, otherActor, aveForce);
+											if (!actor->IsSprinting() && !actor->IsWalking()) {
+												PushActorAway(actor, otherActor, aveForce/4);
+											}
+
+											bool IsDamaging = SizeManager::GetSingleton().IsDamaging(otherActor);
+											if (IsDamaging) {
+												return;
+											}
+
+											else if (actor->IsSprinting() || actor->IsWalking() || (actor->IsWalking() && actor->IsSneaking())) {
+												float movementFactor = 1.0;
+												if (giant->IsSneaking()) {
+													movementFactor *= 0.5;
+												}
+												if (giant->IsSprinting()) {
+													movementFactor *= 1.5;
+												}
+												SizeManager::GetSingleton().DoSizeRelatedDamage(actor, otherActor, movementFactor, aveForce);
+												PushActorAway(actor, otherActor, aveForce);
+											}
 										}
 									}
 								}

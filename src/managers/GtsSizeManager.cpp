@@ -21,6 +21,7 @@ using namespace SKSE;
 
 namespace {
 	const double LAUNCH_COOLDOWN = 3.0;
+	const double DAMAGE_COOLDOWN = 0.15;
 	const float LAUNCH_DAMAGE_BASE = 2.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
 }
@@ -419,7 +420,16 @@ namespace Gts {
 		return this->launchData.at(actor);
 	}
 
+	LaunchData& SizeManager::GetDamageData(Actor* actor) {
+		this->launchData.try_emplace(actor);
+		return this->launchData.at(actor);
+	}
+
 	bool SizeManager::IsLaunching(Actor* actor) {
 		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetLaunchData(actor).lastLaunchTime + LAUNCH_COOLDOWN);
+	}
+
+	bool SizeManager::IsDamaging(Actor* actor) {
+		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetLaunchData(actor).lastDamageTime + DAMAGE_COOLDOWN);
 	}
 }

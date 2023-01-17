@@ -29,6 +29,10 @@ namespace Gts {
 		double lastLaunchTime = -1.0e8; //
 	};
 
+	struct DamageData {
+		double lastDamageTime = -1.0e8; //
+	};
+
 	class SizeManager : public EventListener {
 		public:
 			[[nodiscard]] static SizeManager& GetSingleton() noexcept;
@@ -72,10 +76,14 @@ namespace Gts {
 			float BalancedMode();
 
 			LaunchData& GetLaunchData(Actor* actor);
+			DamageData& GetDamageData(Actor* actor);
+
 			static bool IsLaunching(Actor* actor);
+			static bool IsDamaging(Actor* actor);
 
 		private:
 			std::map<Actor*, SizeManagerData> sizeData;
 			std::map<Actor*, LaunchData> launchData;
+			std::map<Actor*, DamageData> DamageData;
 	};
 }

@@ -22,6 +22,8 @@ namespace Gts {
 
 	void SizeDamage::OnUpdate() {
 		auto caster = GetCaster();
+
+		return; // For now disabled
 		if (!caster) {
 			return;
 		}
@@ -142,20 +144,6 @@ namespace Gts {
 
 				AttributeManager::GetSingleton().OverrideBonus(0.75); // Less speed loss after force crush
 			}
-		}
-	}
-
-	void SizeDamage::DoSizeRelatedDamage(Actor* Caster, Actor* Target) {
-		float castersize = get_visual_scale(Caster);
-		float targetsize = get_visual_scale(Target);
-		float multiplier = castersize / targetsize;
-		float SprintDamage = 1.0;
-		log::info("Caster: {}, Target: {}, Multiplier: {}",Caster->GetDisplayFullName(), Target->GetDisplayFullName(), multiplier);
-		if (multiplier >= 1.33) {
-			if (Caster->IsSprinting()) {
-				SprintDamage *= 10.5;
-			}
-			DamageAV(Target, ActorValue::kHealth, multiplier);
 		}
 	}
 }

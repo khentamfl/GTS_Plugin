@@ -18,7 +18,6 @@ namespace Gts {
 			virtual std::string GetName() override;
 
 			void SmallMassiveThreatModification(Actor* Caster, Actor* Target);
-			void DoSizeRelatedDamage(Actor* Caster, Actor* Target);
 
 		private:
 			bool AllowOneShot = false;
