@@ -10,6 +10,7 @@
 #include "managers/InputManager.hpp"
 #include "managers/hitmanager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
+#include "magic/effects/common.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
@@ -31,41 +32,6 @@ namespace {
 	const double DAMAGE_COOLDOWN = 0.10;
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
-
-	void SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
-		if (!Caster || !Target || Caster == Target) {
-			return;
-		}
-		auto& persistent = Persistent::GetSingleton();
-		if (persistent.GetData(Caster)->smt_run_speed >= 1.0) {
-			float caster_scale = get_target_scale(Caster);
-			float target_scale = get_target_scale(Target);
-			float Multiplier = (caster_scale/target_scale);
-			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
-			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
-			if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
-				CrushManager::Crush(Caster, Target);
-				shake_camera(Caster, 0.25 * caster_scale, 0.25);
-				ConsoleLog::GetSingleton()->Print("%s was instantly turned into mush by the body of %s", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
-				if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
-					AttributeManager::GetSingleton().OverrideBonus(0.65); // Reduce speed after crush
-				} else if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
-					AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce more speed after crush
-				}
-			} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
-				PushActorAway(Caster, Target, 0.8);  PushActorAway(Target, Caster, 0.2);
-				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
-				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);
-				shake_camera(Caster, 0.35, 0.5);
-				Runtime::PlaySound("lJumpLand", Caster, 2.0, 1.0);
-				std::string text_a = Target->GetDisplayFullName();
-				std::string text_b = " is too tough to be crushed";
-				std::string Message = text_a + text_b;
-				DebugNotification(Message.c_str(), 0, true);
-				AttributeManager::GetSingleton().OverrideBonus(0.75); // Less speed loss after force crush
-			}
-		}
-	}
 
 	void SizeModifications(Actor* giant, Actor* target, float HighHeels) {
 		float InstaCrushRequirement = 24.0;
@@ -95,7 +61,6 @@ namespace {
 			}
 
 			if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat") && giant != target) {
-				SmallMassiveThreatModification(giant, target);
 				size_difference += 7.2; // Allows to crush same size targets.
 
 			if (Runtime::HasPerk(giant, "SmallMassiveThreatSizeSteal")) {
@@ -105,14 +70,13 @@ namespace {
 				Grow(giant, 0.00045 * targetscale * BonusShrink, 0.0);
 			}
 		}
-		
 	}
 }
 
 
 namespace Gts {
 
-    void AccurateCollision::DoAccurateCollision(Actor* actor) {
+    void AccurateDamage::DoAccurateCollision(Actor* actor) {
 		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
 			return;
 		}
@@ -181,7 +145,7 @@ namespace Gts {
 		}
 	}
 
-    void AccurateCollision::UnderFootEvent(const UnderFoot& evt) {
+    void AccurateDamage::UnderFootEvent(const UnderFoot& evt) {
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
 		float force = evt.force;
@@ -245,7 +209,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateCollision::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
+	void AccurateDamage::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
 		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
 			return;
 		}
