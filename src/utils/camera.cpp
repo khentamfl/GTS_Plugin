@@ -7,15 +7,15 @@ using namespace SKSE;
 namespace Gts {
 
 	void shake_camera(TESObjectREFR* actor, float intensity, float duration) {
-		CallFunction("Game", "ShakeCamera", args, callback);
+		CallFunction("Game", "ShakeCamera", actor, intensity, duration);
 	}
 
 	void TriggerScreenBlood(int aiValue) {
-		CallFunction("Game", "TriggerScreenBlood", args, callback);
+		CallFunction("Game", "TriggerScreenBlood", aiValue);
 	}
 
 	void shake_controller(float left_intensity, float right_intensity, float duration) {
-		CallFunction("Game", "ShakeController", args, callback);
+		CallFunction("Game", "ShakeController", left_intensity, right_intensity, duration);
 	}
 
 	float get_distance_to_camera(const NiPoint3& point) {

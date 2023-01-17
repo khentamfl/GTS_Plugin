@@ -121,17 +121,16 @@ namespace Gts {
 		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
-		NiPoint3 sourceLoc = source->GetPosition();
-		for (auto actor: find_actors()) {
-			if ((actor->GetPosition() - sourceLoc).Length() < afRadius) {
-				auto aiProc = actor->currentProcess;
-				if (aiProc) {
-					aiProc->KnockExplosion(actor, sourceLoc, afMagnitude);
-					aiProc->KnockExplosion(actor, sourceLoc, afMagnitude);
-				}
-			}
-		}
-		// CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
+		// NiPoint3 sourceLoc = source->GetPosition();
+		// for (auto actor: find_actors()) {
+		// 	if ((actor->GetPosition() - sourceLoc).Length() < afRadius) {
+		// 		auto aiProc = actor->currentProcess;
+		// 		if (aiProc) {
+		// 			aiProc->KnockExplosion(actor, sourceLoc, afMagnitude);
+		// 		}
+		// 	}
+		// }
+		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
 	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
 		NiPoint3 direction = NiPoint3(afX, afY, afZ);
