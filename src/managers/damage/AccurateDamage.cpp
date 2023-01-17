@@ -160,6 +160,8 @@ namespace Gts {
 		auto tiny = evt.tiny;
 		float force = evt.force;
 
+		log::info("Foot event True");
+
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
 		}
@@ -220,6 +222,7 @@ namespace Gts {
 	}
 
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) { // Applies damage and crushing
+		log::info("Trying to do size damage");
 		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
 			return;
 		}
@@ -235,6 +238,8 @@ namespace Gts {
 		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
 		}	
+
+		
 		auto sizemanager = SizeManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
