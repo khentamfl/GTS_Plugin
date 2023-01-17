@@ -122,8 +122,16 @@ namespace Gts {
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
-	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude) {
-		CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
+	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
+		NiPoint3 direction = NiPoint3(afX, afY, afZ);
+		NiPoint3 niImpulse  = direction * afMagnitude/direction.Length();
+		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
+
+		auto rbs = GetActorRB(target);
+		for (auto rb: rbs) {
+			auto motion = rb->motion;
+			motion->ApplyLinearImpulse(impulse)
+		}
 	}
 
 	bool IsDragon(Actor* actor) {
