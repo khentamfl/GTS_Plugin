@@ -32,7 +32,7 @@ namespace {
 				float giantScale = get_visual_scale(actor);
 				float tinyScale = get_visual_scale(tiny);
 				float force = 1.0;
-				 if (giantScale / tinyScale > SCALE_RATIO) {
+				 if (giantScale / tinyScale > 2.0) {
 					const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 					NiPoint3 actorLocation = tiny->GetPosition();
@@ -41,13 +41,13 @@ namespace {
 						for (auto foot: {leftFoot, rightFoot}) {
 						 NiPoint3 footLocatation = foot->world.translate;
 							float distance = (footLocatation - actorLocation).Length();
-								if (distance < 40 * giantScale) {
+								if (distance < 20 * giantScale) {
 									// Close enough for more advance checks
 									auto model = tiny->GetCurrent3D();
 									if (model) {
 										std::vector<NiAVObject*> bodyParts = {};
 										float force = 0.0;
-										float footDistance = BASE_DISTANCE*giantScale;
+										float footDistance = 20*giantScale;
 										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
 											float distance = (a_obj.world.translate - footLocatation).Length();
 											//log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
@@ -55,7 +55,7 @@ namespace {
 												bodyParts.push_back(&a_obj);
 												force += 1.0 - distance / footDistance;
 											}
-											PushActorAway(tiny, force * giantScale);
+											PushActorAway(actor, tiny, force * giantScale);
 										});
 										}
 									}
@@ -64,7 +64,7 @@ namespace {
 						}
 					}
 				}
-	}
+	
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
