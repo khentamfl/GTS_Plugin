@@ -2,6 +2,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/GtsManager.hpp"
+#include "managers/Attributes.hpp"
 #include "managers/highheel.hpp"
 #include "magic/effects/common.hpp"
 #include "data/persistent.hpp"
@@ -74,7 +75,7 @@ namespace {
 				InstaCrushRequirement = 18.0 * HighHeels * Gigantism;
 			}
 
-			if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
+			if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate()) {
 				CrushManager::Crush(giant, target);
 				CrushToNothing(giant, target);
 			}
@@ -231,6 +232,9 @@ namespace Gts {
 	}
 
 	void SizeManager::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
+		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
+			return;
+		}
 		if (!giant) {
 			return;
 		} if (!tiny) {

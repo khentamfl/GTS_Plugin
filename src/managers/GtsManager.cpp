@@ -49,7 +49,7 @@ namespace {
 								if (distance < BASE_DISTANCE * giantScale) {
 									// Close enough for more advance checks
 									auto model = otherActor->GetCurrent3D();
-									if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+									if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
 										giantScale *= 2.0;
 									}
 									if (model) {
