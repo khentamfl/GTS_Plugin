@@ -70,7 +70,7 @@ namespace {
 
 											float aveForce = force / bodyParts.size();
 											if (!actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-												PushActorAway(actor, otherActor, aveForce/2.5);
+												PushActorAway(actor, otherActor, aveForce);
 												SizeManager::GetSingleton().GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 												log::info("Trying to push away");
 											}
