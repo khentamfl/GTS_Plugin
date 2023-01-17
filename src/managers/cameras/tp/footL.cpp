@@ -19,7 +19,9 @@ namespace Gts {
 		if (player) {
 			auto rootModel = player->Get3D(false);
 			if (rootModel) {
-				auto transform = rootModel->world.Invert();
+				auto playerTrans = rootModel->world;
+				playerTrans.scale = 1.0; // Only do translation/rotation
+				auto transform = playerTrans.Invert();
 				auto leftFoot = find_node(player, leftFootLookup);
 				if (leftFoot != nullptr) {
 					float playerScale = get_visual_scale(player);

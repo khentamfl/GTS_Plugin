@@ -20,7 +20,9 @@ namespace Gts {
 				if (player) {
 					auto rootModel = player->Get3D(false);
 					if (rootModel) {
-						auto transform = rootModel->world.Invert();
+						auto playerTrans = rootModel->world;
+						playerTrans.scale = 1.0; // Only do translation/rotation
+						auto transform = playerTrans.Invert();
 
 						NiPoint3 lookAt = CompuleLookAt(boneTarget.zoomScale);
 						NiPoint3 localLookAt = transform*lookAt;
