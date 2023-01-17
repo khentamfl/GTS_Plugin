@@ -62,7 +62,7 @@ namespace {
 										if (!bodyParts.empty()) {
 											// Under Foot
 											float aveForce = force / bodyParts.size();
-											if (!actor->IsSprinting() && !actor->IsWalking()) {
+											if (!actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 												PushActorAway(actor, otherActor, aveForce);
 												log::info("Trying to push away");
 											}
@@ -73,7 +73,7 @@ namespace {
 												return;
 											}
 
-											else if (actor->IsSprinting() || actor->IsWalking() || (actor->IsWalking() && actor->IsSneaking())) {
+											else if (actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || (actor->IsWalking() && actor->IsSneaking())) {
 												float movementFactor = 1.0;
 												
 												if (actor->IsSprinting()) {
