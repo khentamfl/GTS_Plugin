@@ -23,7 +23,7 @@ using namespace SKSE;
 namespace {
 	const double LAUNCH_COOLDOWN = 3.0;
 	const double DAMAGE_COOLDOWN = 0.10;
-	const float LAUNCH_DAMAGE_BASE = 2.0f;
+	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
 
 	void SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
@@ -221,21 +221,21 @@ namespace Gts {
 		const float UNDERFOOT_FORCE = 0.60;
 
 		if (force > UNDERFOOT_FORCE && sizeRatio >= 2.5) { // If under the foot
-			log::info("Applying Size Related Damage, Force is > 0.5");
 			DoSizeRelatedDamage(giant, tiny, movementFactor, force);
 			if (sizeRatio >= 4.0) {
 				PushActorAway(giant, tiny, knockBack);
 			}
 		} else if (!SizeManager::IsLaunching(tiny) && force <= UNDERFOOT_FORCE) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-				log::info("Launch Perk is True");
 				if (sizeRatio >= 8.0) {
 					// Launch
 					this->GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE_BASE * giantSize * movementFactor * force/UNDERFOOT_FORCE;
 						DamageAV(tiny,ActorValue::kHealth, damage);
-						log::info("Underfoot damage: {} on {}", damage, tiny->GetDisplayFullName());
+						if (GetAV(tiny, ActorValue::kHealth < (damage * 0.5))) {
+							CrushManager::GetSingleton().Crush(giant, tiny); // Crush if hp is low
+						}
 					}
 					PushActorAway(giant, tiny, knockBack);
 					ApplyHavokImpulse(tiny, 0, 0, 100 * movementFactor * giantSize * force, 50 * movementFactor * giantSize * force);
@@ -290,7 +290,7 @@ namespace Gts {
 			result *= 0.33;
 		}
 		
-		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult) || tiny->IsDead() || GetAV(tiny, ActorValue::kHealth) <= 0.0)) {
+		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult))) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			log::info("Trying to crush: {}, multiplier: {}", tiny->GetDisplayFullName(), multiplier);
 			return;
