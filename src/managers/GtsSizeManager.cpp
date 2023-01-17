@@ -10,6 +10,7 @@
 #include "data/time.hpp"
 #include "timer.hpp"
 #include "node.hpp"
+#include "utils/actorUtils.hpp"
 
 #include <random>
 
