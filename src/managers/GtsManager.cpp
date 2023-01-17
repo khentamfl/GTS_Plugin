@@ -587,7 +587,7 @@ void GtsManager::Update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
 			TestCollision(actor);
 		}
 		update_actor(actor);

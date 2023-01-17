@@ -255,6 +255,7 @@ namespace Gts {
 		float tinysize = get_visual_scale(tiny);
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float multiplier = giantsize/tinysize  * highheels;
+		float multipliernolimit = giantsize/tinysize  * highheels;
 		if (multiplier > 4.0) {
 			multiplier = 4.0; // temp fix
 		}
@@ -279,7 +280,7 @@ namespace Gts {
 			result *= 0.33;
 		}
 		
-		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult) || tiny->IsDead() || GetAV(tiny, ActorValue::kHealth) <= 0.0)) {
+		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult) || tiny->IsDead() || GetAV(tiny, ActorValue::kHealth) <= 0.0)) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			log::info("Trying to crush: {}, multiplier: {}", tiny->GetDisplayFullName(), multiplier);
 			return;
@@ -530,7 +531,7 @@ namespace Gts {
 
 	bool SizeManager::GetPreciseDamage() {
 		auto result = Runtime::GetBool("PreciseDamage");
-		log::info("Value: {}", result);
+		//log::info("Value: {}", result);
 		return result;
 	}
 }
