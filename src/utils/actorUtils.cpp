@@ -111,12 +111,13 @@ namespace Gts {
 		NiPoint3 destinationLoc = receiver->GetPosition();
 		NiPoint3 direction = destinationLoc - sourceLoc;
 		NiPoint3 niImpulse  = direction * afKnockBackForce/direction.Length();
-		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
+		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 1.0);
 
 		auto rbs = GetActorRB(receiver);
 		for (auto rb: rbs) {
 			auto& motion = rb->motion;
 			motion.ApplyLinearImpulse(impulse);
+			log::info("Trying to push actor away");
 		}
 		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
