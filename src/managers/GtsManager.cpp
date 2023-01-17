@@ -28,7 +28,7 @@ namespace {
 
 	void TestCollision(Actor* actor) {
 			float giantScale = get_visual_scale(actor);
-			const float BASE_DISTANCE = 20.0;
+			const float BASE_DISTANCE = 17.0;
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 2.0;
 		for (auto otherActor: find_actors()) {
@@ -63,7 +63,7 @@ namespace {
 											// Under Foot
 											float aveForce = force / bodyParts.size();
 											if (!actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-												PushActorAway(actor, otherActor, aveForce);
+												PushActorAway(actor, otherActor, aveForce/2.5);
 												log::info("Trying to push away");
 											}
 
@@ -73,7 +73,7 @@ namespace {
 												return;
 											}
 
-											else if (actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || (actor->IsWalking() && actor->IsSneaking())) {
+											if (actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || (actor->IsWalking() && actor->IsSneaking())) {
 												float movementFactor = 1.0;
 												
 												if (actor->IsSprinting()) {
