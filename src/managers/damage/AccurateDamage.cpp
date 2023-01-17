@@ -141,11 +141,11 @@ namespace Gts {
 								if (!IsDamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 									PushActorAway(actor, otherActor, 50 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									sizemanager.DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
+									DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 									}
 								if (force >= 0.20 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									sizemanager.DoSizeDamage(actor, otherActor, movementFactor, 0.60 * aveForce);
+									DoSizeDamage(actor, otherActor, movementFactor, 0.60 * aveForce);
 								}
 							}
 						}
