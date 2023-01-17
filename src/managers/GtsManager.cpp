@@ -1,5 +1,5 @@
 #include "Config.hpp"
-#include "managers/damage/accuratedamage.hpp"
+#include "managers/damage/AccurateDamage.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"

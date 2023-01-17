@@ -2,7 +2,7 @@
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
-#include "managers/damage/accuratedamage.hpp"
+#include "managers/damage/AccurateDamage.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
@@ -79,6 +79,10 @@ namespace Gts {
 	AccurateDamage& AccurateDamage::GetSingleton() noexcept {
 		static AccurateDamage instance;
 		return instance;
+	}
+
+    std::string AccurateDamage::DebugName() {
+		return "AccurateDamage";
 	}
 
     void AccurateDamage::DoAccurateCollision(Actor* actor) {
