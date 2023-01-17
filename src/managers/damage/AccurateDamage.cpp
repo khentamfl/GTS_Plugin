@@ -141,11 +141,11 @@ namespace Gts {
 								if (!IsDamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 									PushActorAway(actor, otherActor, 50 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									sizemanager.DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
+									sizemanager.DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 									}
 								if (force >= 0.20 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									sizemanager.DoSizeRelatedDamage(actor, otherActor, movementFactor, 0.60 * aveForce);
+									sizemanager.DoSizeDamage(actor, otherActor, movementFactor, 0.60 * aveForce);
 								}
 							}
 						}
@@ -196,7 +196,7 @@ namespace Gts {
 		const float UNDERFOOT_FORCE = 0.60;
 
 		if (force > UNDERFOOT_FORCE && sizeRatio >= 2.5) { // If under the foot
-			DoSizeRelatedDamage(giant, tiny, movementFactor, force);
+			DoSizeDamage(giant, tiny, movementFactor, force);
 			if (sizeRatio >= 4.0) {
 				PushActorAway(giant, tiny, knockBack);
 			}
@@ -219,7 +219,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateDamage::DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
+	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) {
 		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
 			return;
 		}

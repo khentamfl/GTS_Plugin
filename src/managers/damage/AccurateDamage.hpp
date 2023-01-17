@@ -26,6 +26,6 @@ namespace Gts {
 
 
 			void DoAccurateCollision(Actor* actor);
-			void DoSizeRelatedDamage(Actor* giant, Actor* tiny, float totaldamage, float mult);
+			void DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult);
 	};
 }
