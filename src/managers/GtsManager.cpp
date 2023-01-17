@@ -74,9 +74,7 @@ namespace {
 
 											else if (actor->IsSprinting() || actor->IsWalking() || (actor->IsWalking() && actor->IsSneaking())) {
 												float movementFactor = 1.0;
-												if (actor->IsSneaking()) {
-													movementFactor *= 0.5;
-												}
+												
 												if (actor->IsSprinting()) {
 													movementFactor *= 1.5;
 												}
