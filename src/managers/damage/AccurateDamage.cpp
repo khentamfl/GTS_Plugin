@@ -32,6 +32,30 @@ namespace {
 	const float UNDERFOOT_POWER = 0.60;
 	const float LAUNCH_KNOCKBACK = 0.02f;
 
+	void ApplySizeEffect(Actor* giant, Actor* tiny, float Force) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		auto& accuratedamage = AccurateDamage::GetSingleton();
+		log::info("Contact True");
+		auto model = tiny->GetCurrent3D();
+		if (model) {
+			bool isdamaging = sizemanager.IsDamaging(otherActor);
+			float movementFactor = 1.0;
+			if (giant->IsSprinting()) {
+				movementFactor *= 1.5;
+			}
+			if (!isdamaging && !giant->IsSprinting() && !giant->IsWalking() && !giant->IsRunning()) {
+				PushActorAway(giant, tiny, 1 * force);
+				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 1.0 * force);
+			}
+			if (aveForce >= 0.25 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking()) {
+				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+			}
+			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.6 * force);
+		}
+	}
+
+
 	void SizeModifications(Actor* giant, Actor* target, float HighHeels) {
 		float InstaCrushRequirement = 24.0;
 		float giantscale = get_visual_scale(giant);
@@ -122,37 +146,16 @@ namespace Gts {
 						}
 						// Check the tiny's nodes against the giant's foot points
 						float maxFootDistance = BASE_DISTANCE * giantScale;
-						bool contact = false;
 						for (auto point: footPoints) {
 							float distance = (point - actorLocation).Length();
 							if (distance < maxFootDistance) {
-								contact = true;
+								float force = 1.0 - distance / maxFootDistance;
+								ApplySizeEffect(actor, otherActor, force);
 								log::info("Distance is < MaxFootDistance, break");
 								break;
 							}
 						}
-						if (contact) {
-							// Close enough for more advance checks
-							log::info("Contact True");
-							auto model = otherActor->GetCurrent3D();
-							if (model) {
-								bool isdamaging = sizemanager.IsDamaging(otherActor);
-								float movementFactor = 1.0;
-								if (actor->IsSprinting()) {
-									movementFactor *= 1.5;
-								}
-								float aveForce = force / bodyParts.size();
-								if (!isdamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-									PushActorAway(actor, otherActor, 1 * aveForce);
-									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
-								}
-								if (aveForce >= 0.25 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking()) {
-									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-								}
-								accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 0.6 * aveForce);
-							}
-						}
+						log::info("breaking entirely");
 						break;
 					}
 				}
