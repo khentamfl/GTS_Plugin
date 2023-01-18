@@ -122,7 +122,6 @@ namespace Gts {
 							if (hhOffset.Length() > 1e-4) {
 								footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
 							}
-							break;
 						}
 						// Check the tiny's nodes against the giant's foot points
 						float maxFootDistance = BASE_DISTANCE * giantScale;
