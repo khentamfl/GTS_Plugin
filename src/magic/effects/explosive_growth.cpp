@@ -66,7 +66,7 @@ namespace Gts {
 			}
 		}
 
-		auto sizemanager = SizeManager::GetSingleton();
+		auto& sizemanager = SizeManager::GetSingleton();
 		float AdjustLimit = clamp(1.0, 12.0, Runtime::GetFloatOr("CrushGrowthStorage", 0.0) + 1.0);
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(caster)/100;
 		float GetGrowthSpurt = SizeManager::GetSingleton().GetGrowthSpurt(caster);
