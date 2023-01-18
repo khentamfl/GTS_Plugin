@@ -34,7 +34,7 @@ namespace {
 				return;
 			}
 			float giantScale = get_visual_scale(actor);
-			const float BASE_DISTANCE = 16.0;
+			const float BASE_DISTANCE = 160.0;
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 2.0;
 			
