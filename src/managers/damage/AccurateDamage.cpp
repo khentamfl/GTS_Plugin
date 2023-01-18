@@ -101,8 +101,12 @@ namespace Gts {
 				float tinyScale = get_visual_scale(otherActor);
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
-					for (auto foot: impact_data.nodes) {
-					// Make a list of points to check
+					const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
+					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
+					auto leftFoot = find_node(actor, leftFootLookup);
+				    auto rightFoot = find_node(actor, rightFootLookup);
+					for (auto foot: {leftFoot, rightFoot}) {
+						// Make a list of points to check
 						std::vector<NiPoint3> footPoints = {};
 						std::vector<NiPoint3> points = {
 						NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
@@ -116,7 +120,7 @@ namespace Gts {
 						}
 					}
 								// Check the tiny's nodes against the giant's foot points
-					float distance = (footLocatation - actorLocation).Length();
+					float distance = (foot->world.translate - actorLocation).Length();
 						if (distance < BASE_DISTANCE * giantScale) {
 								// Close enough for more advance checks
 							auto model = otherActor->GetCurrent3D();

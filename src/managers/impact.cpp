@@ -1,7 +1,7 @@
 #include "managers/impact.hpp"
 #include "managers/footstep.hpp"
-#include "managers/explosion.hpp"
 #include "managers/highheel.hpp"
+#include "managers/explosion.hpp"
 #include "managers/tremor.hpp"
 #include "managers/modevent.hpp"
 #include "data/runtime.hpp"
@@ -146,7 +146,6 @@ namespace Gts {
 						if (giantScale / tinyScale > SCALE_RATIO) {
 							NiPoint3 actorLocation = otherActor->GetPosition();
 							for (auto foot: impact_data.nodes) {
-								NiPoint3 footLocatation = foot->world.translate;
 								// Make a list of points to check
 								std::vector<NiPoint3> footPoints = {};
 								std::vector<NiPoint3> points = {
@@ -162,7 +161,7 @@ namespace Gts {
 								}
 
 								// Check the tiny's nodes against the giant's foot points
-								float distance = (footPoints - actorLocation).Length();
+								float distance = (foot->world.translate - actorLocation).Length();
 								if (distance < BASE_DISTANCE * giantScale) {
 									// Close enough for more advance checks
 									auto model = otherActor->GetCurrent3D();
