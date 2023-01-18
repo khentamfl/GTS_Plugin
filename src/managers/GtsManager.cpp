@@ -28,6 +28,7 @@ using namespace std;
 namespace {
 		void DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 			auto& sizemanager = SizeManager::GetSingleton();
+			auto& accuratedamage = AccurateDamage::GetSingleton();
 			if (!SizeManager::GetSingleton().GetPreciseDamage()) {
 				return;
 			}
@@ -79,18 +80,18 @@ namespace {
 									if (actor->IsSprinting()) {
 										movementFactor *= 1.5;
 									}
-
+									log::info("Someone is close enough");
 									float aveForce = force / bodyParts.size();
 								if (!isdamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 									PushActorAway(actor, otherActor, 50 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									sizemanager.DoSizeRelatedDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
+									accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 									log::info("Trying to push away");
 								}
 								if (aveForce >= 0.25 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 									log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
-									sizemanager.DoSizeRelatedDamage(actor, otherActor, movementFactor, 0.5 * aveForce);
+									accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 0.6 * aveForce);
 								}
 							}
 						}
