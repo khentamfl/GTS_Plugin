@@ -127,7 +127,7 @@ namespace Gts {
 										bodyParts.push_back(&a_obj);
 										force += 1.0 - distance / footDistance;
 								}
-								//return true;
+								return true;
 							});
 								if (!bodyParts.empty()) {
 									auto& sizemanager = SizeManager::GetSingleton();
