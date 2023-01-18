@@ -49,9 +49,14 @@ namespace Gts {
 			return;
 		}
 
-		NiPoint3 new_hh = this->GetHHOffset(actor);
-		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {  // || Gts::SizeMethod == 1
+		NiPoint3 new_hh
+		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {
 			new_hh = NiPoint3();
+		} else if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
+			new_hh = this->GetHHOffset(actor);
+		} else {
+			// With model scale do it in unscaled coords
+			new_hh = this->GetBaseHHOffset(actor);
 		}
 		float hh_length = new_hh.Length();
 
@@ -63,10 +68,8 @@ namespace Gts {
 				NiPoint3 delta = current_value - new_hh;
 
 				if (delta.Length() > 1e-5 || force) {
-					if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
-						npc_root_node->local.translate = new_hh;
-						update_node(npc_root_node);
-					}
+					npc_root_node->local.translate = new_hh;
+					update_node(npc_root_node);
 				}
 				auto transient = Transient::GetSingleton().GetActorData(actor);
 				if (actor) {
