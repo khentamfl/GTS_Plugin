@@ -115,7 +115,7 @@ namespace Gts {
 
 			EventDispatcher::DoOnImpact(impact_data);
 
-			const float BASE_DISTANCE = 40.0;
+			const float BASE_DISTANCE = 50.0;
 			const float BASE_FOOT_DISTANCE = 10.0;
 			const float SCALE_RATIO = 3.0;
 			float bonusscale = 1.0;
