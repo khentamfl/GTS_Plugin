@@ -29,7 +29,6 @@ using namespace std;
 
 namespace {
 	const float LAUNCH_DAMAGE = 1.0f;
-	const float UNDERFOOT_POWER = 0.60;
 	const float LAUNCH_KNOCKBACK = 0.02f;
 
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
@@ -141,7 +140,6 @@ namespace Gts {
 							if (hhOffset.Length() > 1e-4) {
 								footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
 								log::info("Breaking High Heels");
-								break;
 							}
 						}
 						// Check the tiny's nodes against the giant's foot points
