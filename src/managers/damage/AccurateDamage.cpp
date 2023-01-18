@@ -122,7 +122,7 @@ namespace Gts {
 					}
 								// Check the tiny's nodes against the giant's foot points
 					float distance = (foot->world.translate - actorLocation).Length();
-						if (distance < BASE_DISTANCE * giantScale) {
+						if (distance < BASE_DISTANCE_CHECK * giantScale) {
 								// Close enough for more advance checks
 							auto model = otherActor->GetCurrent3D();
 							if (model) {
