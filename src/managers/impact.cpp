@@ -161,9 +161,9 @@ namespace Gts {
 								}
 
 								// Check the tiny's nodes against the giant's foot points
+								float maxFootDistance = BASE_FOOT_DISTANCE * giantScale;
 								for (auto point: footPoints) {
 									float distance = (point - actorLocation).Length();
-									float maxFootDistance = BASE_FOOT_DISTANCE * giantScale;
 									if (distance < maxFootDistance) {
 										// Under Foot
 										float aveForce = 1.0 - distance / maxFootDistance;
@@ -187,4 +187,3 @@ namespace Gts {
 		}
 	}
 }
-
