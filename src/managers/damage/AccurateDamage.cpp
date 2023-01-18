@@ -93,7 +93,7 @@ namespace Gts {
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
 		const float BASE_DISTANCE_CHECK = 32.0;
-		const float BASE_DISTANCE = 16.0;
+		const float BASE_DISTANCE = 14.0;
 		const float SCALE_RATIO = 2.0;
 
 		for (auto otherActor: find_actors()) {
@@ -107,7 +107,7 @@ namespace Gts {
 					auto rightFoot = find_node(actor, rightFootLookup);
 					for (auto foot: {leftFoot, rightFoot}) {
 						// Make a list of points to check
-						float hhOffset = -HighHeelManager::GetBaseHHOffset(actor).Length()/100;
+						float hhOffset = HighHeelManager::GetBaseHHOffset(actor).Length()/100;
 						std::vector<NiPoint3> footPoints = {};
 						std::vector<NiPoint3> points = {
 							NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
@@ -115,6 +115,7 @@ namespace Gts {
 							NiPoint3(0.0, 0.0, hhOffset)*actualGiantScale,
 							NiPoint3(1.0, 0.0, hhOffset)*actualGiantScale,
 							log::info("Base HH Offset: {}", hhoffset);
+							break;
 						};
 						/*for (NiPoint3 point:  points) {
 							footPoints.push_back(foot->world*point);
@@ -125,7 +126,7 @@ namespace Gts {
 						}*/
 						// Check the tiny's nodes against the giant's foot points
 						float maxFootDistance = BASE_DISTANCE * giantScale;
-						for (auto point: footPoints) {
+						for (auto point: points) {
 							float distance = (point - actorLocation).Length();
 							if (distance < maxFootDistance) {
 							// Close enough for more advance checks
@@ -153,6 +154,7 @@ namespace Gts {
 					}
 				}
 			}
+			break;
 		}
 	}
 
