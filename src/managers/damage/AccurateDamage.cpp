@@ -131,14 +131,16 @@ namespace Gts {
 							});
 								if (!bodyParts.empty()) {
 									auto& sizemanager = SizeManager::GetSingleton();
-									bool AllowPushback = sizemanager.IsDamaging(otherActor);
+									bool ispushing = sizemanager.IsDamaging(otherActor);
 									float movementFactor = 1.0;
 									if (actor->IsSprinting()) {
 										movementFactor *= 1.5;
 									}
 
 									float aveForce = force / bodyParts.size();
-								if (!AllowPushback && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
+									log::info("Pushing actor away no check, force: {}", aveForce);
+									PushActorAway(actor, otherActor, 50 * aveForce);
+								if (!ispushing && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 									log::info("Pushing actor away, force: {}", aveForce);
 									PushActorAway(actor, otherActor, 50 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
@@ -161,7 +163,7 @@ namespace Gts {
 		auto tiny = evt.tiny;
 		float force = evt.force;
 
-		log::info("Foot event True");
+		//log::info("Foot event True");
 
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
@@ -172,7 +174,7 @@ namespace Gts {
 			return;
 		}	
 		
-		log::info("Underfoot event: {} stepping on {} with force {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), force);
+		//log::info("Underfoot event: {} stepping on {} with force {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), force);
 
 		float giantSize = get_visual_scale(giant);
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
