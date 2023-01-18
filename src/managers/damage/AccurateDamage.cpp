@@ -88,7 +88,6 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!sizemanager.GetPreciseDamage()) {
-			log::info("Precise damage is off");
 			return;
 		}
 		float actualGiantScale = get_visual_scale(actor);
@@ -113,13 +112,13 @@ namespace Gts {
 							NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
 							NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
 						};
-						for (NiPoint3 point:  points) {
+						/*for (NiPoint3 point:  points) {
 							footPoints.push_back(foot->world*point);
 							NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 							if (hhOffset.Length() > 1e-4) {
 								footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
 							}
-						}
+						}*/
 						// Check the tiny's nodes against the giant's foot points
 						float maxFootDistance = BASE_DISTANCE * giantScale;
 						for (auto point: footPoints) {
@@ -133,18 +132,15 @@ namespace Gts {
 								if (actor->IsSprinting()) {
 									movementFactor *= 1.5;
 								}
-								log::info("Someone is close enough");
 								float aveForce = 1.0 - distance / maxFootDistance;
 								if (!isdamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-									PushActorAway(actor, otherActor, 10 * aveForce);
+									PushActorAway(actor, otherActor, 1 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 									accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
-									log::info("Trying to push away");
 								}
 								if (aveForce >= 0.25 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking()) {
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 								}
-								log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
 								accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 0.6 * aveForce);
 								break;
 								}
