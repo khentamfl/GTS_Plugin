@@ -28,9 +28,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	const float LAUNCH_DAMAGE = 1.0f;
-	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float BASE_DISTANCE = 16.0;
 	const float SCALE_RATIO = 2.0;
 	const float UNDERFOOT_FORCE = 0.60;
 
@@ -84,82 +81,6 @@ namespace Gts {
 
     std::string AccurateDamage::DebugName() {
 		return "AccurateDamage";
-	}
-
-	void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
-	auto& sizemanager = SizeManager::GetSingleton();
-		if (!sizemanager.GetPreciseDamage()) {
-			return;
-		}
-			float giantScale = get_visual_scale(actor);
-
-		for (auto otherActor: find_actors()) {
-			if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->formID == 0x14 && otherActor->IsPlayerTeammate()) {
-				return;
-			} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->IsPlayerTeammate() && otherActor->IsPlayerTeammate()) {
-				return;
-			} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && otherActor->formID == 0x14) {
-				return;
-			}	
-			 if (otherActor != actor) {
-				float tinyScale = get_visual_scale(otherActor);
-				if (giantScale / tinyScale > SCALE_RATIO) {
-					NiPoint3 actorLocation = otherActor->GetPosition();
-					const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
-					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
-					auto leftFoot = find_node(actor, leftFootLookup);
-				    auto rightFoot = find_node(actor, rightFootLookup);
-					    for (auto foot: {leftFoot, rightFoot}) {
-							NiPoint3 footLocatation = foot->world.translate;
-							float distance = (footLocatation - actorLocation).Length();
-							if (distance < BASE_DISTANCE * giantScale) {
-								auto model = otherActor->GetCurrent3D();
-								if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
-									giantScale *= 2.0;
-								}
-							if (model) {
-								std::vector<NiAVObject*> bodyParts = {};
-								float force = 0.0;
-								float footDistance = BASE_DISTANCE*giantScale;
-								VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
-								float distance = (a_obj.world.translate - footLocatation).Length();
-							if (distance < footDistance) {
-										bodyParts.push_back(&a_obj);
-										force += 1.0 - distance / footDistance;
-								}
-								return true;
-							});
-								if (!bodyParts.empty()) {
-									auto& sizemanager = SizeManager::GetSingleton();
-									bool ispushing = sizemanager.IsDamaging(otherActor);
-									float movementFactor = 1.0;
-									if (actor->IsSprinting()) {
-										movementFactor *= 1.5;
-									}
-
-									float aveForce = force / bodyParts.size();
-									
-									if (!ispushing) {
-										PushActorAway(actor, otherActor, 5 * aveForce);
-										sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-										log::info("Pushing actor away no check, force: {}", aveForce);
-										}
-								if (!ispushing && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-									log::info("Pushing actor away, force: {}", aveForce);
-									PushActorAway(actor, otherActor, 5 * aveForce);
-									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce); // Apply Damage
-								}
-								if (aveForce >= 0.25 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
-									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
-									DoSizeDamage(actor, otherActor, movementFactor, 0.60 * aveForce); // Apply Damage
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 
 	void AccurateDamage::UnderFootEvent(const UnderFoot& evt) { // On underfoot event

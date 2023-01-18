@@ -26,6 +26,90 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+		const float LAUNCH_DAMAGE = 1.0f;
+		const float LAUNCH_KNOCKBACK = 0.02f;
+		const float BASE_DISTANCE = 16.0;
+
+		void DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+			auto& sizemanager = SizeManager::GetSingleton();
+			if (!sizemanager.GetPreciseDamage()) {
+				return;
+			}
+			float giantScale = get_visual_scale(actor);
+			auto& accuratedamage = AccurateDamage::GetSingleton();
+
+			for (auto otherActor: find_actors()) {
+			if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->formID == 0x14 && otherActor->IsPlayerTeammate()) {
+				return;
+			} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->IsPlayerTeammate() && otherActor->IsPlayerTeammate()) {
+				return;
+			} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && otherActor->formID == 0x14) {
+				return;
+			}	
+			 if (otherActor != actor) {
+				float tinyScale = get_visual_scale(otherActor);
+				if (giantScale / tinyScale > SCALE_RATIO) {
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
+					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
+					auto leftFoot = find_node(actor, leftFootLookup);
+				    auto rightFoot = find_node(actor, rightFootLookup);
+					    for (auto foot: {leftFoot, rightFoot}) {
+							NiPoint3 footLocatation = foot->world.translate;
+							float distance = (footLocatation - actorLocation).Length();
+							if (distance < BASE_DISTANCE * giantScale) {
+								auto model = otherActor->GetCurrent3D();
+								if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
+									giantScale *= 2.0;
+								}
+							if (model) {
+								std::vector<NiAVObject*> bodyParts = {};
+								float force = 0.0;
+								float footDistance = BASE_DISTANCE*giantScale;
+								VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
+								float distance = (a_obj.world.translate - footLocatation).Length();
+							if (distance < footDistance) {
+										bodyParts.push_back(&a_obj);
+										force += 1.0 - distance / footDistance;
+								}
+								return true;
+							});
+								if (!bodyParts.empty()) {
+									auto& sizemanager = SizeManager::GetSingleton();
+									bool ispushing = sizemanager.IsDamaging(otherActor);
+									float movementFactor = 1.0;
+									if (actor->IsSprinting()) {
+										movementFactor *= 1.5;
+									}
+
+									float aveForce = force / bodyParts.size();
+									
+									if (!ispushing) {
+										PushActorAway(actor, otherActor, 50 * aveForce);
+										sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
+										log::info("Pushing actor away no check, force: {}", aveForce);
+										}
+								if (!ispushing && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
+									log::info("Pushing actor away, force: {}", aveForce);
+									PushActorAway(actor, otherActor, 50 * aveForce);
+									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
+									accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce); // Apply Damage
+								}
+								if (aveForce >= 0.25 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
+									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
+									accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 0.60 * aveForce); // Apply Damage
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
 			return;
@@ -520,7 +604,7 @@ void GtsManager::Update() {
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-			accuratedamage.DoAccurateCollision(actor);
+			DoAccurateCollision(actor);
 		}
 		update_actor(actor);
 		apply_actor(actor);
