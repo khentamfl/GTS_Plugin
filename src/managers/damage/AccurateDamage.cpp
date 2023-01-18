@@ -30,7 +30,7 @@ using namespace std;
 namespace {
 	const float LAUNCH_DAMAGE = 1.0f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float UNDERFOOT_POWER = 0.60;
+	const float UNDERFOOT_POWER = 0.50;
 
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
 		auto& sizemanager = SizeManager::GetSingleton();
@@ -137,11 +137,10 @@ namespace Gts {
 							NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
 						};
 						for (NiPoint3 point:  points) {
+							footPoints.push_back(foot->world*point);
 							NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 							if (hhOffset.Length() > 1e-4) {
 								footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
-							} else {
-								footPoints.push_back(foot->world*point);
 							}
 						}
 						// Check the tiny's nodes against the giant's foot points
