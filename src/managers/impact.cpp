@@ -115,14 +115,14 @@ namespace Gts {
 
 			EventDispatcher::DoOnImpact(impact_data);
 
-			const float BASE_DISTANCE = 50.0;
-			const float BASE_FOOT_DISTANCE = 10.0;
+			const float BASE_DISTANCE = 180.0; // Checks the distance of the tiny against giany. Should be large to encompass giant's general area
+			const float BASE_FOOT_DISTANCE = 50.0; // Checks the distance of foot squishing
 			const float SCALE_RATIO = 3.0;
 			float bonusscale = 1.0;
 			if (!impact_data.nodes.empty() && actor != nullptr) {
 
-				float giantScale = get_visual_scale(actor);
-
+				float actualGiantScale = get_visual_scale(actor);
+				float giantScale = actualGiantScale;
 				if (actor->IsSprinting()) {
 					giantScale *= 1.35;
 				}
@@ -145,7 +145,21 @@ namespace Gts {
 						if (giantScale / tinyScale > SCALE_RATIO) {
 							NiPoint3 actorLocation = otherActor->GetPosition();
 							for (auto foot: impact_data.nodes) {
-								NiPoint3 footLocatation = foot->world.translate;
+								// Make a list of points to check
+								std::vector<NiPoint3> footPoints = {};
+								std::vector<NiPoint3> points = {
+									NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
+									NiPoint3(0.0, 1.0, 0.0)*actualGiantScale,
+								};
+								for (NiPoint3 point:  points) {
+									footPoints.push_back(foot->world*point);
+									NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+									if (hhOffset.Length() > 1e-4) {
+										footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
+									}
+								}
+
+								// Check the tiny's nodes against the giant's foot points
 								float distance = (footLocatation - actorLocation).Length();
 								if (distance < BASE_DISTANCE * giantScale) {
 									// Close enough for more advance checks
@@ -153,13 +167,16 @@ namespace Gts {
 									if (model) {
 										std::vector<NiAVObject*> bodyParts = {};
 										float force = 0.0;
-										float footDistance = BASE_DISTANCE*giantScale;
-										VisitNodes(model, [footLocatation, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
-											float distance = (a_obj.world.translate - footLocatation).Length();
-											//log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
-											if (distance < footDistance) {
-												bodyParts.push_back(&a_obj);
-												force += 1.0 - distance / footDistance;
+										float footDistance = BASE_FOOT_DISTANCE*giantScale;
+										VisitNodes(model, [footPoints, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
+											for (auto footPoint: footPoints) {
+												float distance = (a_obj.world.translate - footPoint).Length();
+												//log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
+												if (distance < footDistance) {
+													bodyParts.push_back(&a_obj);
+													force += 1.0 - distance / footDistance;
+													break;
+												}
 											}
 											return true;
 										});
