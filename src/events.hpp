@@ -57,6 +57,8 @@ namespace Gts {
 		public:
 			Profiler profiler;
 
+			EventListener() = default;
+			~EventListener() = default;
 			EventListener(EventListener const&) = delete;
 			EventListener& operator=(EventListener const&) = delete;
 
