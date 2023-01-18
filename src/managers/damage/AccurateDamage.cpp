@@ -186,6 +186,7 @@ namespace Gts {
 			giantSize += 8.0;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
+		auto& crushmanager = CrushManager::GetSingleton();
 		float tinySize = get_visual_scale(tiny);
 
 		float movementFactor = 1.0;
@@ -217,7 +218,7 @@ namespace Gts {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_FORCE;
 						DamageAV(tiny,ActorValue::kHealth, damage);
 						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.5)) {
-							CrushManager::GetSingleton().Crush(giant, tiny); // Crush if hp is low
+							crushmanager.Crush(giant, tiny); // Crush if hp is low
 						}
 					}
 					PushActorAway(giant, tiny, knockBack);
@@ -246,7 +247,7 @@ namespace Gts {
 		}	
 
 		
-		
+		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
@@ -277,7 +278,7 @@ namespace Gts {
 		}
 		
 		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult))) {
-			CrushManager::GetSingleton().Crush(giant, tiny);
+			crushmanager.Crush(giant, tiny);
 			log::info("Trying to crush: {}, multiplier: {}", tiny->GetDisplayFullName(), multiplier);
 			return;
 		}
