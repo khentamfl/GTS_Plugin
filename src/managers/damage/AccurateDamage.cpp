@@ -93,8 +93,8 @@ namespace Gts {
 			}
 			float actualGiantScale = get_visual_scale(actor);
 			float giantScale = get_visual_scale(actor);
-			const float BASE_DISTANCE_CHECK = 64.0;
-			const float BASE_DISTANCE = 16.0;
+			const float BASE_DISTANCE_CHECK = 32.0;
+			const float BASE_DISTANCE = 10.0;
 			const float SCALE_RATIO = 2.0;
 			
 		for (auto otherActor: find_actors()) {
