@@ -1,6 +1,7 @@
 #include "managers/register.hpp"
 #include "events.hpp"
 #include "magic/magic.hpp"
+#include "managers/damage/AccurateDamage.hpp"
 #include "managers/highheel.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
@@ -26,6 +27,7 @@ namespace Gts {
 		EventDispatcher::AddListener(&HighHeelManager::GetSingleton()); // Applies high heels
 		EventDispatcher::AddListener(&CameraManager::GetSingleton()); // Edits the camera
 		EventDispatcher::AddListener(&ReloadManager::GetSingleton()); // Handles Skyrim Events
+		EventDispatcher::AddListener(&AccurateDamage::GetSingleton()); // Handles precise size-related damage
 
 		EventDispatcher::AddListener(&MagicManager::GetSingleton()); // Manages spells and size changes in general
 		EventDispatcher::AddListener(&Vore::GetSingleton()); // Manages vore
@@ -34,7 +36,7 @@ namespace Gts {
 
 		EventDispatcher::AddListener(&FootStepManager::GetSingleton()); // Manages footstep sounds
 		EventDispatcher::AddListener(&TremorManager::GetSingleton()); // Manages tremors on footstop
-		EventDispatcher::AddListener(&ExplosionManager::GetSingleton()); // Manages clouds/explisions on footstep
+		EventDispatcher::AddListener(&ExplosionManager::GetSingleton()); // Manages clouds/exposions on footstep
 
 		EventDispatcher::AddListener(&AttributeManager::GetSingleton()); // Adjusts most attributes
 		EventDispatcher::AddListener(&RandomGrowth::GetSingleton()); // Manages random growth perk
