@@ -20,7 +20,7 @@ namespace {
 
 namespace Gts {
 	Persistent& Persistent::GetSingleton() noexcept {
-		static Persistent instance();
+		static Persistent instance;
 		return instance;
 	}
 
