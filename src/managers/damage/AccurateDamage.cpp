@@ -35,7 +35,6 @@ namespace {
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
-		log::info("Contact True");
 		auto model = tiny->GetCurrent3D();
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
@@ -112,7 +111,6 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!sizemanager.GetPreciseDamage()) {
-			log::info("Precise damage is off");
 			return;
 		}
 		float actualGiantScale = get_visual_scale(actor);
@@ -282,7 +280,6 @@ namespace Gts {
 
 		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult))) {
 			crushmanager.Crush(giant, tiny);
-			log::info("Trying to crush: {}, multiplier: {}", tiny->GetDisplayFullName(), multiplier);
 			return;
 		}
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.25);
