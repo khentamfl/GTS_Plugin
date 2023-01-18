@@ -139,10 +139,6 @@ namespace Gts {
 					giantScale *= 8.0;
 				}
 
-				if (actor->formID == 0x14) {
-					//log::info("Giant: {} Scale: {}", actor->GetDisplayFullName(), giantScale);
-				}
-
 				for (auto otherActor: find_actors()) {
 					if (otherActor != actor) {
 						float tinyScale = get_visual_scale(otherActor);

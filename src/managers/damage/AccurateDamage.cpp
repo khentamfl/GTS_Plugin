@@ -109,7 +109,7 @@ namespace Gts {
 					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 					auto leftFoot = find_node(actor, leftFootLookup);
 				    auto rightFoot = find_node(actor, rightFootLookup);
-					    for (auto& foot: {leftFoot, rightFoot}) {
+					    for (auto foot: {leftFoot, rightFoot}) {
 							NiPoint3 footLocatation = foot->world.translate;
 							float distance = (footLocatation - actorLocation).Length();
 							if (distance < BASE_DISTANCE * giantScale) {
@@ -127,7 +127,7 @@ namespace Gts {
 										bodyParts.push_back(&a_obj);
 										force += 1.0 - distance / footDistance;
 								}
-								return true;
+								//return true;
 							});
 								if (!bodyParts.empty()) {
 									auto& sizemanager = SizeManager::GetSingleton();
@@ -138,14 +138,18 @@ namespace Gts {
 									}
 
 									float aveForce = force / bodyParts.size();
-									log::info("Pushing actor away no check, force: {}", aveForce);
-									PushActorAway(actor, otherActor, 5 * aveForce);
+									
+									if (!ispushing) {
+										PushActorAway(actor, otherActor, 5 * aveForce);
+										sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
+										log::info("Pushing actor away no check, force: {}", aveForce);
+										}
 								if (!ispushing && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 									log::info("Pushing actor away, force: {}", aveForce);
 									PushActorAway(actor, otherActor, 5 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 									DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce); // Apply Damage
-									}
+								}
 								if (aveForce >= 0.25 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 									DoSizeDamage(actor, otherActor, movementFactor, 0.60 * aveForce); // Apply Damage
