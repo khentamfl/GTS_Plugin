@@ -150,7 +150,7 @@ namespace Gts {
 									log::info("Someone is close enough");
 									float aveForce = force / bodyParts.size();
 								if (!isdamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-									PushActorAway(actor, otherActor, 50 * aveForce);
+									PushActorAway(actor, otherActor, 10 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 									accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce);
 									log::info("Trying to push away");
