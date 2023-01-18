@@ -111,7 +111,7 @@ namespace Gts {
 						std::vector<NiPoint3> footPoints = {};
 						std::vector<NiPoint3> points = {
 						NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
-						NiPoint3(0.0, 1.0, 0.0)*actualGiantScale,
+						NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
 						};
 					for (NiPoint3 point:  points) {
 						footPoints.push_back(foot->world*point);
