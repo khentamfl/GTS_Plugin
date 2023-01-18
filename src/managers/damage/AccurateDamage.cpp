@@ -28,8 +28,7 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	const float SCALE_RATIO = 2.0;
-	const float UNDERFOOT_FORCE = 0.60;
+	const float UNDERFOOT_POWER = 0.60;
 
 	void SizeModifications(Actor* giant, Actor* target, float HighHeels) {
 		float InstaCrushRequirement = 24.0;
@@ -125,18 +124,18 @@ namespace Gts {
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
-		if (force > UNDERFOOT_FORCE && sizeRatio >= 2.5) { // If under the foot
+		if (force > UNDERFOOT_POWER && sizeRatio >= 2.5) { // If under the foot
 			DoSizeDamage(giant, tiny, movementFactor, force);
 			if (sizeRatio >= 4.0) {
 				//PushActorAway(giant, tiny, knockBack);
 			}
-		} else if (!sizemanager.IsLaunching(tiny) && force <= UNDERFOOT_FORCE) {
+		} else if (!sizemanager.IsLaunching(tiny) && force <= UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				if (sizeRatio >= 8.0) {
 					// Launch
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
-						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_FORCE;
+						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
 						DamageAV(tiny,ActorValue::kHealth, damage);
 						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.5)) {
 							crushmanager.Crush(giant, tiny); // Crush if hp is low

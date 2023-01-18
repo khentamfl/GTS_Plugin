@@ -29,6 +29,7 @@ namespace {
 		const float LAUNCH_DAMAGE = 1.0f;
 		const float LAUNCH_KNOCKBACK = 0.02f;
 		const float BASE_DISTANCE = 16.0;
+		const float MIN_SCALE = 2.0;
 
 		void DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 			auto& sizemanager = SizeManager::GetSingleton();
@@ -48,7 +49,7 @@ namespace {
 			}	
 			 if (otherActor != actor) {
 				float tinyScale = get_visual_scale(otherActor);
-				if (giantScale / tinyScale > SCALE_RATIO) {
+				if (giantScale / tinyScale > MIN_SCALE) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
