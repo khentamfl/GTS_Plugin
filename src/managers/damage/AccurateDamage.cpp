@@ -146,14 +146,14 @@ namespace Gts {
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 								}
 								accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 0.6 * aveForce);
-								break;
+								
 								}
 							}
 						}
 					}
 				}
 			}
-			break;
+		
 		}
 	}
 
