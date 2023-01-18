@@ -146,7 +146,7 @@ namespace Gts {
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 									DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce); // Apply Damage
 									}
-								if (force >= 0.20 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
+								if (aveForce >= 0.25 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking())
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 									DoSizeDamage(actor, otherActor, movementFactor, 0.60 * aveForce); // Apply Damage
 								}
