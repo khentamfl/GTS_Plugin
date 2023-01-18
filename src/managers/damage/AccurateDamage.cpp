@@ -116,16 +116,17 @@ namespace Gts {
 							NiPoint3(0.0, 0.0, hhOffset)*actualGiantScale,
 							NiPoint3(1.0, 0.0, hhOffset)*actualGiantScale,
 						};
-						/*for (NiPoint3 point:  points) {
+						for (NiPoint3 point:  points) {
 							footPoints.push_back(foot->world*point);
 							NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 							if (hhOffset.Length() > 1e-4) {
 								footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
 							}
-						}*/
+							break;
+						}
 						// Check the tiny's nodes against the giant's foot points
 						float maxFootDistance = BASE_DISTANCE * giantScale;
-						for (auto point: points) {
+						for (auto point: footPoints) {
 							float distance = (point - actorLocation).Length();
 							if (distance < maxFootDistance) {
 							// Close enough for more advance checks
@@ -146,14 +147,14 @@ namespace Gts {
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 								}
 								accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 0.6 * aveForce);
-								
+								break;
 								}
 							}
 						}
 					}
 				}
 			}
-		
+			break;
 		}
 	}
 
