@@ -518,8 +518,9 @@ void GtsManager::Update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
+		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-			AccurateDamage::GetSingleton().DoAccurateCollision(actor);
+			accuratedamage.DoAccurateCollision(actor);
 		}
 		update_actor(actor);
 		apply_actor(actor);
