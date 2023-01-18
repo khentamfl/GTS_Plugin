@@ -38,14 +38,6 @@ namespace {
 			const float SCALE_RATIO = 2.0;
 			
 		for (auto otherActor: find_actors()) {
-			if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->formID == 0x14 && otherActor->IsPlayerTeammate()) {
-				return;
-			}
-			if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->IsPlayerTeammate() && otherActor->IsPlayerTeammate()) {
-				return;
-			} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && otherActor->formID == 0x14) {
-				return;
-			}	
 			if (otherActor != actor) {
 				float tinyScale = get_visual_scale(otherActor);
 				if (giantScale / tinyScale > SCALE_RATIO) {
