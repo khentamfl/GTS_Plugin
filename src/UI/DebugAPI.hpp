@@ -7,7 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "util.hpp"
-
+/*
 namespace Util {
 
 	inline glm::vec3 CompMult(const glm::vec3& a, const glm::vec3& b) {
@@ -303,7 +303,7 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 		static constexpr const char* MENU_PATH = "GTS_Plugin/GTS_overlay_menu";
 		static constexpr const char* MENU_NAME = "GTS Ovelay Menu";
 
-		DebugOverlay();
+		DebugOverlayMenu();
 
 		[[nodiscard]] static DebugOverlayMenu& GetSingleton() noexcept;
 		void DataReady() override;

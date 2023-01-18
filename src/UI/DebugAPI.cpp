@@ -4,7 +4,7 @@
 
 #include <windows.h>
 
-std::vector<DebugAPILine*> DebugAPI::LinesToDraw;
+/*std::vector<DebugAPILine*> DebugAPI::LinesToDraw;
 
 bool DebugAPI::CachedMenuData;
 
@@ -562,7 +562,7 @@ glm::vec2 DebugAPI::WorldToScreenLoc(RE::GPtr<RE::GFxMovieView> movie, glm::vec3
 	return screenLocOut;
 }
 
-DebugOverlayMenu::DebugOverlay()
+DebugOverlayMenu::DebugOverlayMenu()
 {
 	auto scaleformManager = RE::BSScaleformManager::GetSingleton();
 	if (!scaleformManager) {
