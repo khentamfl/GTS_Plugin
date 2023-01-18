@@ -562,7 +562,7 @@ glm::vec2 DebugAPI::WorldToScreenLoc(RE::GPtr<RE::GFxMovieView> movie, glm::vec3
 	return screenLocOut;
 }
 
-DebugOverlayMenu::DebugOverlayMenu()
+DebugOverlayMenu::DebugOverlay()
 {
 	auto scaleformManager = RE::BSScaleformManager::GetSingleton();
 	if (!scaleformManager) {

@@ -303,7 +303,7 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 		static constexpr const char* MENU_PATH = "GTS_Plugin/GTS_overlay_menu";
 		static constexpr const char* MENU_NAME = "GTS Ovelay Menu";
 
-		DebugOverlayMenu();
+		DebugOverlay();
 
 		[[nodiscard]] static DebugOverlayMenu& GetSingleton() noexcept;
 		void DataReady() override;
