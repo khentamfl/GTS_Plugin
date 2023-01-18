@@ -115,7 +115,6 @@ namespace Gts {
 							NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
 							NiPoint3(0.0, 0.0, hhOffset)*actualGiantScale,
 							NiPoint3(1.0, 0.0, hhOffset)*actualGiantScale,
-							break;
 						};
 						/*for (NiPoint3 point:  points) {
 							footPoints.push_back(foot->world*point);
