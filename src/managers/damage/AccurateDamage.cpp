@@ -30,6 +30,7 @@ using namespace std;
 namespace {
 	const float LAUNCH_DAMAGE = 1.0f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
+	const float UNDERFOOT_POWER = 0.60;
 
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
 		auto& sizemanager = SizeManager::GetSingleton();
