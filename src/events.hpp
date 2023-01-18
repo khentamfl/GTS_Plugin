@@ -121,6 +121,8 @@ namespace Gts {
 
 	class EventDispatcher {
 		public:
+			EventDispatcher() = default;
+			~EventDispatcher() = default;
 			EventDispatcher(EventDispatcher const&) = delete;
 			EventDispatcher& operator=(EventDispatcher const&) = delete;
 
