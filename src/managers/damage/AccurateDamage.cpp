@@ -30,6 +30,9 @@ using namespace std;
 namespace {
 	const float LAUNCH_DAMAGE = 1.0f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
+	const float BASE_DISTANCE = 16.0;
+	const float SCALE_RATIO = 2.0;
+	const float UNDERFOOT_FORCE = 0.60;
 
 	void SizeModifications(Actor* giant, Actor* target, float HighHeels) {
 		float InstaCrushRequirement = 24.0;
@@ -89,9 +92,7 @@ namespace Gts {
 			return;
 		}
 			float giantScale = get_visual_scale(actor);
-			const float BASE_DISTANCE = 16.0;
-			const float BASE_FOOT_DISTANCE = 10.0;
-			const float SCALE_RATIO = 2.0;
+
 		for (auto otherActor: find_actors()) {
 			if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && actor->formID == 0x14 && otherActor->IsPlayerTeammate()) {
 				return;
@@ -138,7 +139,7 @@ namespace Gts {
 
 									float aveForce = force / bodyParts.size();
 								if (!AllowPushback && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
-									log::info("Pushing actor away");
+									log::info("Pushing actor away, force: {}", aveForce);
 									PushActorAway(actor, otherActor, 50 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 									DoSizeDamage(actor, otherActor, movementFactor, 1.0 * aveForce); // Apply Damage
@@ -195,12 +196,11 @@ namespace Gts {
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
-		const float UNDERFOOT_FORCE = 0.60;
 
 		if (force > UNDERFOOT_FORCE && sizeRatio >= 2.5) { // If under the foot
 			DoSizeDamage(giant, tiny, movementFactor, force);
 			if (sizeRatio >= 4.0) {
-				PushActorAway(giant, tiny, knockBack);
+				//PushActorAway(giant, tiny, knockBack);
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force <= UNDERFOOT_FORCE) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
@@ -222,7 +222,6 @@ namespace Gts {
 	}
 	
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) { // Applies damage and crushing
-		log::info("Trying to do size damage");
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (!sizemanager.GetPreciseDamage()) {
 			return;

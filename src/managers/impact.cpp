@@ -21,29 +21,14 @@ namespace {
 		bool in_air = actor ? actor->IsInMidair() : false;
 		if (matches(tag, ".*Foot.*Left.*") && !is_jumping && !in_air) {
 			foot_kind = FootEvent::Left;
-			if (actor->formID == 0x14) {
-					log::info("FootEvent Left");
-			}
 		} else if (matches(tag, ".*Foot.*Right.*") && !is_jumping && !in_air) {
 			foot_kind = FootEvent::Right;
-			if (actor->formID == 0x14) {
-					log::info("FootEvent Right");
-			}
 		} else if (matches(tag, ".*Foot.*Front.*") && !is_jumping && !in_air) {
 			foot_kind = FootEvent::Front;
-			if (actor->formID == 0x14) {
-					log::info("FootEvent Front");
-			}
 		} else if (matches(tag, ".*Foot.*Back.*") && !is_jumping && !in_air) {
 			foot_kind = FootEvent::Back;
-			if (actor->formID == 0x14) {
-					log::info("FootEvent Back");
-			}
 		} else if (matches(tag, ".*Jump.*(Down|Land).*")) {
 			foot_kind = FootEvent::JumpLand;
-			if (actor->formID == 0x14) {
-					log::info("FootEvent JumpLand");
-			}
 		}
 		return foot_kind;
 	}
@@ -155,7 +140,7 @@ namespace Gts {
 				}
 
 				if (actor->formID == 0x14) {
-					log::info("Giant: {} Scale: {}", actor->GetDisplayFullName(), giantScale);
+					//log::info("Giant: {} Scale: {}", actor->GetDisplayFullName(), giantScale);
 				}
 
 				for (auto otherActor: find_actors()) {
