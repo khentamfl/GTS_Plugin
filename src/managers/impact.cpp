@@ -162,39 +162,19 @@ namespace Gts {
 
 								// Check the tiny's nodes against the giant's foot points
 								float distance = (foot->world.translate - actorLocation).Length();
-								if (distance < BASE_DISTANCE * giantScale) {
-									// Close enough for more advance checks
-									auto model = otherActor->GetCurrent3D();
-									if (model) {
-										std::vector<NiAVObject*> bodyParts = {};
-										float force = 0.0;
-										float footDistance = BASE_FOOT_DISTANCE*giantScale;
-										VisitNodes(model, [footPoints, footDistance, &bodyParts, &force](NiAVObject& a_obj) {
-											for (auto footPoint: footPoints) {
-												float distance = (a_obj.world.translate - footPoint).Length();
-												//log::info("    - Distance of node from foot {} needs to be {}", distance, footDistance);
-												if (distance < footDistance) {
-													bodyParts.push_back(&a_obj);
-													force += 1.0 - distance / footDistance;
-													break;
-												}
-											}
-											return true;
-										});
-										if (!bodyParts.empty()) {
-											// Under Foot
-											float aveForce = force / bodyParts.size();
-											UnderFoot underfoot = UnderFoot {
-												.giant = impact_data.actor,
-												.tiny = otherActor,
-												.force = aveForce,
-												.foot = foot,
-												.bodyParts = bodyParts,
-												.footEvent = kind,
-											};
-											EventDispatcher::DoUnderFootEvent(underfoot);
-										}
-									}
+								float maxFootDistance = BASE_FOOT_DISTANCE * giantScale;
+								if (distance < maxFootDistance) {
+									// Under Foot
+									float aveForce = 1.0 - distance / maxFootDistance;
+									UnderFoot underfoot = UnderFoot {
+										.giant = impact_data.actor,
+										.tiny = otherActor,
+										.force = aveForce,
+										.foot = foot,
+										.bodyParts = {otherActor->GetCurrent3D()},
+										.footEvent = kind,
+									};
+									EventDispatcher::DoUnderFootEvent(underfoot);
 								}
 							}
 						}
@@ -203,4 +183,5 @@ namespace Gts {
 			}
 		}
 	}
+}
 }
