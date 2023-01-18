@@ -108,13 +108,13 @@ namespace Gts {
 					for (auto foot: {leftFoot, rightFoot}) {
 						// Make a list of points to check
 						float hhOffset = HighHeelManager::GetBaseHHOffset(actor).Length()/100;
+						log::info("Base HH Offset: {}", hhOffset);
 						std::vector<NiPoint3> footPoints = {};
 						std::vector<NiPoint3> points = {
 							NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
 							NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
 							NiPoint3(0.0, 0.0, hhOffset)*actualGiantScale,
 							NiPoint3(1.0, 0.0, hhOffset)*actualGiantScale,
-							log::info("Base HH Offset: {}", hhoffset);
 							break;
 						};
 						/*for (NiPoint3 point:  points) {
