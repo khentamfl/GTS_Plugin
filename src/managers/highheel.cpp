@@ -63,8 +63,10 @@ namespace Gts {
 				NiPoint3 delta = current_value - new_hh;
 
 				if (delta.Length() > 1e-5 || force) {
-					npc_root_node->local.translate = new_hh;
-					update_node(npc_root_node);
+					if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
+						npc_root_node->local.translate = new_hh;
+						update_node(npc_root_node);
+					}
 				}
 				auto transient = Transient::GetSingleton().GetActorData(actor);
 				if (actor) {
