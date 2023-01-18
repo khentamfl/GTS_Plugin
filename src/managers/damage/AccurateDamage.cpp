@@ -32,13 +32,13 @@ namespace {
 	const float UNDERFOOT_POWER = 0.60;
 	const float LAUNCH_KNOCKBACK = 0.02f;
 
-	void ApplySizeEffect(Actor* giant, Actor* tiny, float Force) {
+	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		log::info("Contact True");
 		auto model = tiny->GetCurrent3D();
 		if (model) {
-			bool isdamaging = sizemanager.IsDamaging(otherActor);
+			bool isdamaging = sizemanager.IsDamaging(tiny);
 			float movementFactor = 1.0;
 			if (giant->IsSprinting()) {
 				movementFactor *= 1.5;
@@ -48,7 +48,7 @@ namespace {
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 1.0 * force);
 			}
-			if (aveForce >= 0.25 || actor->IsSprinting() || actor->IsWalking() || actor->IsRunning() || actor->IsSneaking()) {
+			if (force >= 0.25 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking()) {
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
 			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.6 * force);
