@@ -346,4 +346,4 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 					logger::info("{}"sv, buf.data());
 				}
 		};
-};
+};*/
