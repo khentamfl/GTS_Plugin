@@ -149,7 +149,6 @@ namespace Gts {
 					}
 				}
 			}
-			break;
 		}
 	}
 
