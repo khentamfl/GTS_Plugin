@@ -137,7 +137,7 @@ namespace Gts {
 							NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
 							NiPoint3(0.0, 0.0, -HighHeel)*actualGiantScale,
 							NiPoint3(1.0, 0.0, -HighHeel)*actualGiantScale,
-						};
+						}; 
 						/*for (NiPoint3 point:  points) {
 							footPoints.push_back(foot->world*point);
 							NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
