@@ -49,7 +49,7 @@ namespace Gts {
 			return;
 		}
 
-		NiPoint3 new_hh
+		NiPoint3 new_hh;
 		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {
 			new_hh = NiPoint3();
 		} else if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
