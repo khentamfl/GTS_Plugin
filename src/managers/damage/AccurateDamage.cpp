@@ -30,7 +30,7 @@ using namespace std;
 namespace {
 	const float LAUNCH_DAMAGE = 1.0f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	
+
 	void SizeModifications(Actor* giant, Actor* target, float HighHeels) {
 		float InstaCrushRequirement = 24.0;
 		float giantscale = get_visual_scale(giant);
@@ -84,7 +84,8 @@ namespace Gts {
 	}
 
 	void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
-		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
+	auto& sizemanager = SizeManager::GetSingleton();
+		if (!sizemanager.GetPreciseDamage()) {
 			return;
 		}
 			float giantScale = get_visual_scale(actor);
@@ -128,15 +129,15 @@ namespace Gts {
 								return true;
 							});
 								if (!bodyParts.empty()) {
-									auto sizemanager = SizeManager::GetSingleton();
-									bool IsDamaging = sizemanager.IsDamaging(otherActor);
+									auto& sizemanager = SizeManager::GetSingleton();
+									bool AllowPushback = sizemanager.IsDamaging(otherActor);
 									float movementFactor = 1.0;
 									if (actor->IsSprinting()) {
 										movementFactor *= 1.5;
 									}
 
 									float aveForce = force / bodyParts.size();
-								if (!IsDamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
+								if (!AllowPushback && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 									log::info("Pushing actor away");
 									PushActorAway(actor, otherActor, 50 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
@@ -177,7 +178,7 @@ namespace Gts {
 		if (hasSMT) {
 			giantSize += 8.0;
 		}
-
+		auto& sizemanager = SizeManager::GetSingleton();
 		float tinySize = get_visual_scale(tiny);
 
 		float movementFactor = 1.0;
@@ -201,11 +202,11 @@ namespace Gts {
 			if (sizeRatio >= 4.0) {
 				PushActorAway(giant, tiny, knockBack);
 			}
-		} else if (!SizeManager::IsLaunching(tiny) && force <= UNDERFOOT_FORCE) {
+		} else if (!sizemanager.IsLaunching(tiny) && force <= UNDERFOOT_FORCE) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				if (sizeRatio >= 8.0) {
 					// Launch
-					SizeManager::GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_FORCE;
 						DamageAV(tiny,ActorValue::kHealth, damage);
@@ -222,7 +223,8 @@ namespace Gts {
 	
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) { // Applies damage and crushing
 		log::info("Trying to do size damage");
-		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		if (!sizemanager.GetPreciseDamage()) {
 			return;
 		}
 		if (!giant) {
@@ -239,7 +241,7 @@ namespace Gts {
 		}	
 
 		
-		auto sizemanager = SizeManager::GetSingleton();
+		
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
