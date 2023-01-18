@@ -57,6 +57,9 @@ namespace Gts {
 		public:
 			Profiler profiler;
 
+			EventListener(EventListener const&) = delete;
+			EventListener& operator=(EventListener const&) = delete;
+
 			// Get name used for debug prints
 			virtual std::string DebugName() = 0;
 
@@ -118,6 +121,9 @@ namespace Gts {
 
 	class EventDispatcher {
 		public:
+			EventDispatcher(EventDispatcher const&) = delete;
+			EventDispatcher& operator=(EventDispatcher const&) = delete;
+
 			static void ReportProfilers();
 			static void AddListener(EventListener* listener);
 			static void DoUpdate();

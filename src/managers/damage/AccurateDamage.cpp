@@ -40,27 +40,27 @@ namespace {
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200;
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
 
-			if (CrushManager::AlreadyCrushed(target)) {
-				return;
-			}
+		if (CrushManager::AlreadyCrushed(target)) {
+			return;
+		}
 
-			if (Runtime::HasPerk(giant, "LethalSprint") && giant->IsSprinting()) {
-				InstaCrushRequirement = 18.0 * HighHeels * Gigantism;
-			}
+		if (Runtime::HasPerk(giant, "LethalSprint") && giant->IsSprinting()) {
+			InstaCrushRequirement = 18.0 * HighHeels * Gigantism;
+		}
 
-			if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate()) {
-				CrushManager::Crush(giant, target);
-				CrushToNothing(giant, target);
-			}
+		if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate()) {
+			CrushManager::Crush(giant, target);
+			CrushToNothing(giant, target);
+		}
 
-			if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != target && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
-				ShrinkActor(giant, 0.0014 * BonusShrink, 0.0);
-				Grow(giant, 0.0, 0.0004 * BonusShrink);
-				// ^ Augmentation for Growth Spurt: Steal size of enemies.
-			}
+		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != target && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
+			ShrinkActor(giant, 0.0014 * BonusShrink, 0.0);
+			Grow(giant, 0.0, 0.0004 * BonusShrink);
+			// ^ Augmentation for Growth Spurt: Steal size of enemies.
+		}
 
-			if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat") && giant != target) {
-				size_difference += 7.2; // Allows to crush same size targets.
+		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat") && giant != target) {
+			size_difference += 7.2; // Allows to crush same size targets.
 
 			if (Runtime::HasPerk(giant, "SmallMassiveThreatSizeSteal")) {
 				float HpRegen = GetMaxAV(giant, ActorValue::kHealth) * 0.005 * size_difference;
@@ -80,7 +80,7 @@ namespace Gts {
 		return instance;
 	}
 
-    std::string AccurateDamage::DebugName() {
+	std::string AccurateDamage::DebugName() {
 		return "AccurateDamage";
 	}
 
@@ -163,10 +163,11 @@ namespace Gts {
 		}
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
 			return;
-		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+		}
+		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
-		}	
-		
+		}
+
 		//log::info("Underfoot event: {} stepping on {} with force {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), force);
 
 		float giantSize = get_visual_scale(giant);
@@ -179,7 +180,7 @@ namespace Gts {
 		float tinySize = get_visual_scale(tiny);
 
 		float movementFactor = 1.0;
-		
+
 		if (giant->IsSneaking()) {
 			movementFactor *= 0.5;
 		}
@@ -216,7 +217,7 @@ namespace Gts {
 			}
 		}
 	}
-	
+
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) { // Applies damage and crushing
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (!sizemanager.GetPreciseDamage()) {
@@ -224,18 +225,21 @@ namespace Gts {
 		}
 		if (!giant) {
 			return;
-		} if (!tiny) {
+		}
+		if (!tiny) {
 			return;
-		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
+		}
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
 		}
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
 			return;
-		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+		}
+		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
-		}	
+		}
 
-		
+
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
@@ -265,7 +269,7 @@ namespace Gts {
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
-		
+
 		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult))) {
 			crushmanager.Crush(giant, tiny);
 			log::info("Trying to crush: {}, multiplier: {}", tiny->GetDisplayFullName(), multiplier);
