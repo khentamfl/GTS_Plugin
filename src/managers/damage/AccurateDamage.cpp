@@ -147,6 +147,7 @@ namespace Gts {
 								log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
 								accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 0.6 * aveForce);
 								break;
+								}
 							}
 						}
 					}
