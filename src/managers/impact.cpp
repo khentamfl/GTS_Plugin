@@ -161,20 +161,23 @@ namespace Gts {
 								}
 
 								// Check the tiny's nodes against the giant's foot points
-								float distance = (foot->world.translate - actorLocation).Length();
-								float maxFootDistance = BASE_FOOT_DISTANCE * giantScale;
-								if (distance < maxFootDistance) {
-									// Under Foot
-									float aveForce = 1.0 - distance / maxFootDistance;
-									UnderFoot underfoot = UnderFoot {
-										.giant = impact_data.actor,
-										.tiny = otherActor,
-										.force = aveForce,
-										.foot = foot,
-										.bodyParts = {otherActor->GetCurrent3D()},
-										.footEvent = kind,
-									};
-									EventDispatcher::DoUnderFootEvent(underfoot);
+								for (auto point: footPoints) {
+									float distance = (point - actorLocation).Length();
+									float maxFootDistance = BASE_FOOT_DISTANCE * giantScale;
+									if (distance < maxFootDistance) {
+										// Under Foot
+										float aveForce = 1.0 - distance / maxFootDistance;
+										UnderFoot underfoot = UnderFoot {
+											.giant = impact_data.actor,
+											.tiny = otherActor,
+											.force = aveForce,
+											.foot = foot,
+											.bodyParts = {otherActor->GetCurrent3D()},
+											.footEvent = kind,
+										};
+										EventDispatcher::DoUnderFootEvent(underfoot);
+										break;
+									}
 								}
 							}
 						}
