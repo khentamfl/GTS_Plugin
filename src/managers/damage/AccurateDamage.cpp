@@ -135,7 +135,7 @@ namespace Gts {
 								float movementFactor = 1.0;
 								if (actor->IsSprinting()) {
 									movementFactor *= 1.5;
-								}
+								} 
 								float aveForce = 1.0 - distance / maxFootDistance;
 								if (!isdamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 									PushActorAway(actor, otherActor, 1 * aveForce);
