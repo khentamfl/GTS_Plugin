@@ -112,15 +112,12 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!sizemanager.GetPreciseDamage()) {
+			log::info("Precise damage is off");
 			return;
 		}
-		static Timer timer = Timer(0.025); 
-		if (!timer.ShouldRunFrame()) {
-			return;
-		} 
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
-		const float BASE_DISTANCE = 14.0;
+		const float BASE_DISTANCE = 14.5;
 		const float SCALE_RATIO = 2.0;
 
 		for (auto otherActor: find_actors()) {
@@ -132,20 +129,18 @@ namespace Gts {
 					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 					auto leftFoot = find_node(actor, leftFootLookup);
 					auto rightFoot = find_node(actor, rightFootLookup);
-					float HighHeel = HighHeelManager::GetBaseHHOffset(actor).Length()/100;
 					for (auto foot: {leftFoot, rightFoot}) {
 						// Make a list of points to check
 						std::vector<NiPoint3> footPoints = {};
 						std::vector<NiPoint3> points = {
 							NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
 							NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
-						}; 
+						};
 						for (NiPoint3 point:  points) {
 							NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 							if (hhOffset.Length() > 1e-4) {
 								footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
-							}
-							else {
+							} else {
 								footPoints.push_back(foot->world*point);
 							}
 						}
@@ -156,8 +151,9 @@ namespace Gts {
 							if (distance < maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;
 								ApplySizeEffect(actor, otherActor, force);
+								break;
+								}
 							}
-							break;
 						}
 					}
 				}
