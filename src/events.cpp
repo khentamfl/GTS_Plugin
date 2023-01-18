@@ -93,6 +93,11 @@ namespace Gts {
 
 	}
 
+	// Fired when a skyrim menu event occurs
+	void EventListener::MenuChange(const MenuOpenCloseEvent* menu_event) {
+
+	}
+
 	void EventDispatcher::ReportProfilers() {
 		std::string report = "Reporting Profilers:";
 		report += std::format("\n|{:20}|", "Name");
@@ -320,6 +325,17 @@ namespace Gts {
 				listener->profiler.Start();
 			}
 			listener->OnRemovePerk(evt);
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
+		}
+	}
+	void EventDispatcher::DoMenuChange(const MenuOpenCloseEvent* menu_event) {
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
+			listener->MenuChange(menu_event);
 			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 				listener->profiler.Stop();
 			}

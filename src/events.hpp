@@ -119,6 +119,9 @@ namespace Gts {
 
 			// Fired when a perk about to be removed
 			virtual void OnRemovePerk(const RemovePerkEvent& evt);
+
+			// Fired when a skyrim menu event occurs
+			virtual void MenuChange(const MenuOpenCloseEvent* menu_event);
 	};
 
 	class EventDispatcher {
@@ -148,6 +151,7 @@ namespace Gts {
 			static void DoHighheelEquip(const HighheelEquip& impact);
 			static void DoAddPerk(const AddPerkEvent& evt);
 			static void DoRemovePerk(const RemovePerkEvent& evt);
+			static void DoMenuChange(const MenuOpenCloseEvent* menu_event);
 		private:
 			[[nodiscard]] static EventDispatcher& GetSingleton();
 			std::vector<EventListener*> listeners;
