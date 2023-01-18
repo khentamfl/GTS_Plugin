@@ -94,7 +94,7 @@ namespace Gts {
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
 		const float BASE_DISTANCE_CHECK = 32.0;
-		const float BASE_DISTANCE = 10.0;
+		const float BASE_DISTANCE = 16.0;
 		const float SCALE_RATIO = 2.0;
 
 		for (auto otherActor: find_actors()) {
@@ -123,9 +123,9 @@ namespace Gts {
 						// Check the tiny's nodes against the giant's foot points
 						float maxFootDistance = BASE_DISTANCE * giantScale;
 						bool contact = false;
-						for (auto point: footPoint) {
+						for (auto point: footPoints) {
 							float distance = (point - actorLocation).Length();
-							if (distance < BASE_DISTANCE_CHECK * giantScale) {
+							if (distance < maxFootDistance) {
 								contact = true;
 								break;
 							}
