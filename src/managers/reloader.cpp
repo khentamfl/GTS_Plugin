@@ -72,12 +72,12 @@ namespace Gts {
 		return BSEventNotifyControl::kContinue;
 	}
 
-	BSEventNotifyControl ReloadManager::ProcessEvent(const MenuOpenCloseEvent* a_event, BSTEventSource<MenuOpenCloseEvent>* a_eventSource)
+	/*BSEventNotifyControl ReloadManager::ProcessEvent(const MenuOpenCloseEvent* a_event, BSTEventSource<MenuOpenCloseEvent>* a_eventSource)
 	{
 		if (a_event) {
 			EventDispatcher::DoMenuChange(a_event);
 		}
 
 		return RE::BSEventNotifyControl::kContinue;
-	}
+	}*/
 }
