@@ -122,15 +122,9 @@ namespace Gts {
 						}
 						// Check the tiny's nodes against the giant's foot points
 						float maxFootDistance = BASE_DISTANCE * giantScale;
-						bool contact = false;
 						for (auto point: footPoints) {
 							float distance = (point - actorLocation).Length();
 							if (distance < maxFootDistance) {
-								contact = true;
-								break;
-							}
-						}
-						if (contact) {
 							// Close enough for more advance checks
 							auto model = otherActor->GetCurrent3D();
 							if (model) {
@@ -152,6 +146,7 @@ namespace Gts {
 								}
 								log::info("Damaging an actor {}", otherActor->GetDisplayFullName());
 								accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 0.6 * aveForce);
+								break;
 							}
 						}
 					}
