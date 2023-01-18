@@ -159,7 +159,7 @@ namespace Gts {
 				}
 			}
 		}
-	}
+	
 
 	void AccurateDamage::UnderFootEvent(const UnderFoot& evt) { // On underfoot event
 		auto giant = evt.giant;
