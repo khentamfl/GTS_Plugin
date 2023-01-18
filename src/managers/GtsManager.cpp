@@ -29,7 +29,8 @@ namespace {
 		void DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 			auto& sizemanager = SizeManager::GetSingleton();
 			auto& accuratedamage = AccurateDamage::GetSingleton();
-			if (!SizeManager::GetSingleton().GetPreciseDamage()) {
+			if (!sizemanager.GetPreciseDamage()) {
+				log::info("Precise damage is off");
 				return;
 			}
 			float giantScale = get_visual_scale(actor);
