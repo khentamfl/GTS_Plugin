@@ -84,7 +84,7 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-	void AccurateDAmage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 			auto& sizemanager = SizeManager::GetSingleton();
 			auto& accuratedamage = AccurateDamage::GetSingleton();
 			if (!sizemanager.GetPreciseDamage()) {
