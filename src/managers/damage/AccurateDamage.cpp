@@ -84,7 +84,7 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-	void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+		void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!sizemanager.GetPreciseDamage()) {
@@ -92,7 +92,6 @@ namespace Gts {
 		}
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
-		const float BASE_DISTANCE_CHECK = 32.0;
 		const float BASE_DISTANCE = 14.0;
 		const float SCALE_RATIO = 2.0;
 
@@ -117,13 +116,21 @@ namespace Gts {
 							NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 							if (hhOffset.Length() > 1e-4) {
 								footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
+								log::info("Breaking High Heels");
+								break;
 							}
 						}
 						// Check the tiny's nodes against the giant's foot points
 						float maxFootDistance = BASE_DISTANCE * giantScale;
-						for (auto point: footPoints) {
+						bool contact = false;
+						for (auto point: footPoint) {
 							float distance = (point - actorLocation).Length();
 							if (distance < maxFootDistance) {
+								contact = true;
+								break;
+							}
+						}
+						if (contact) {
 							// Close enough for more advance checks
 							auto model = otherActor->GetCurrent3D();
 							if (model) {
@@ -131,8 +138,8 @@ namespace Gts {
 								float movementFactor = 1.0;
 								if (actor->IsSprinting()) {
 									movementFactor *= 1.5;
-								} 
-								float aveForce = 1.0 - distance / maxFootDistance;
+								}
+								float aveForce = force / bodyParts.size();
 								if (!isdamaging && !actor->IsSprinting() && !actor->IsWalking() && !actor->IsRunning()) {
 									PushActorAway(actor, otherActor, 1 * aveForce);
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
@@ -142,8 +149,6 @@ namespace Gts {
 									sizemanager.GetDamageData(otherActor).lastDamageTime = Time::WorldTimeElapsed();
 								}
 								accuratedamage.DoSizeDamage(actor, otherActor, movementFactor, 0.6 * aveForce);
-								break;
-								}
 							}
 						}
 					}
