@@ -26,7 +26,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-		const float LAUNCH_DAMAGE = 1.0f;
 		const float LAUNCH_KNOCKBACK = 0.02f;
 		const float BASE_DISTANCE = 16.0;
 		const float MIN_SCALE = 2.0;

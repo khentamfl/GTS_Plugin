@@ -28,7 +28,9 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+	const float LAUNCH_DAMAGE = 1.0f;
 	const float UNDERFOOT_POWER = 0.60;
+	const float LAUNCH_KNOCKBACK = 0.02f;
 
 	void SizeModifications(Actor* giant, Actor* target, float HighHeels) {
 		float InstaCrushRequirement = 24.0;
