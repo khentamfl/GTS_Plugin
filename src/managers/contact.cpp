@@ -421,8 +421,8 @@ namespace Gts {
 		}
 		ContactListener& contactListener = this->listener;
 		auto PC = PlayerCharacter::GetSingleton();
-		auto HighHeel = HighHeelManager::GetSingleton();
-		auto Manager = GtsManager::GetSingleton();
+		auto& HighHeel = HighHeelManager::GetSingleton();
+		auto& Manager = GtsManager::GetSingleton();
 		auto actors = find_actors();
 		for (auto actor: actors) {
 			HighHeel.ApplyHH(actor, false);

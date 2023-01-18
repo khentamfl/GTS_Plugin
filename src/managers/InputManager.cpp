@@ -39,7 +39,7 @@ namespace Gts {
 		bool ArrowDown = false;
 		auto player = PlayerCharacter::GetSingleton();
 		auto caster = player;
-		auto VoreManager = Vore::GetSingleton();
+		auto& VoreManager = Vore::GetSingleton();
 		float size = get_target_scale(player);
 
 		if (!player) {

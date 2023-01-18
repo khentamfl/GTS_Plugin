@@ -75,7 +75,7 @@ namespace Gts {
 
 	void Vore::RandomVoreAttempt(Actor* caster) {
 		Actor* player = PlayerCharacter::GetSingleton();
-		auto VoreManager = Vore::GetSingleton();
+		auto& VoreManager = Vore::GetSingleton();
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerk(player, "MassVorePerk")) {
 			numberOfPrey = 3;
@@ -344,7 +344,7 @@ namespace Gts {
 			}
 		}
 
-		
+
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
@@ -370,7 +370,7 @@ namespace Gts {
 		if (Runtime::HasPerk(pred, "MassVorePerk")) {
 			sizedifference *= 1.15; // Less stamina drain
 		}
-		
+
 		float wastestamina = 140/sizedifference; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
 
@@ -399,14 +399,11 @@ namespace Gts {
 		int Random = rand() % 2;
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || Random == 0) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} 
-		else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 1) {
+		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 1) {
 			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		}  
-		else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 2) {
+		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 2) {
 			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} 
-		else if (prey->IsDead()) {
+		} else if (prey->IsDead()) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 		Runtime::CastSpell(pred, prey, "StartVore");

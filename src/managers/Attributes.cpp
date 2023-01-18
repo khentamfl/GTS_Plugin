@@ -39,7 +39,7 @@ namespace {
 
 	void ManagePerkBonuses(Actor* actor) {
 		auto player = PlayerCharacter::GetSingleton();
-		auto SizeManager = SizeManager::GetSingleton();
+		auto& SizeManager = SizeManager::GetSingleton();
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
 
@@ -249,7 +249,7 @@ namespace {
 		if (!Player->Is3DLoaded()) {
 			return;
 		}
-		auto sizemanager = SizeManager::GetSingleton();
+		auto& sizemanager = SizeManager::GetSingleton();
 
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 

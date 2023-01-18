@@ -41,7 +41,7 @@ namespace Gts {
 			return;
 		}
 
-		auto sizemanager = SizeManager::GetSingleton();
+		auto& sizemanager = SizeManager::GetSingleton();
 		auto& Persist = Persistent::GetSingleton();
 
 		auto HitIdForm = a_event->source;
@@ -171,7 +171,7 @@ namespace Gts {
 
 	void HitManager::Update() {
 		auto actor = PlayerCharacter::GetSingleton();
-		auto sizemanager = SizeManager::GetSingleton();
+		auto& sizemanager = SizeManager::GetSingleton();
 		auto& Persist = Persistent::GetSingleton();
 
 		if (this->CanGrow) { // Grow on hit
