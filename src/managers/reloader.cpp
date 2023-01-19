@@ -17,13 +17,13 @@ namespace Gts {
 			event_sources->AddEventSink<TESEquipEvent>(this);
 		}
 		/*auto ui = UI::GetSingleton();
-		if (ui) {
-			ui->AddEventSink<MenuOpenCloseEvent>(this);
-			logger::info("Gts: successfully registered MenuOpenCloseEventHandler");
-		} else {
-			logger::error("Gts: failed to register MenuOpenCloseEventHandler");
-			return;
-		}*/
+		   if (ui) {
+		        ui->AddEventSink<MenuOpenCloseEvent>(this);
+		        logger::info("Gts: successfully registered MenuOpenCloseEventHandler");
+		   } else {
+		        logger::error("Gts: failed to register MenuOpenCloseEventHandler");
+		        return;
+		   }*/
 	}
 
 	ReloadManager& ReloadManager::GetSingleton() noexcept {
@@ -72,12 +72,12 @@ namespace Gts {
 		return BSEventNotifyControl::kContinue;
 	}
 
-	/*BSEventNotifyControl ReloadManager::ProcessEvent(const MenuOpenCloseEvent* a_event, BSTEventSource<MenuOpenCloseEvent>* a_eventSource)
+	BSEventNotifyControl ReloadManager::ProcessEvent(const MenuOpenCloseEvent* a_event, BSTEventSource<MenuOpenCloseEvent>* a_eventSource)
 	{
 		if (a_event) {
 			EventDispatcher::DoMenuChange(a_event);
 		}
 
 		return RE::BSEventNotifyControl::kContinue;
-	}*/
+	}
 }
