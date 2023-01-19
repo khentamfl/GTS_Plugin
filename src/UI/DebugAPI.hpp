@@ -18,7 +18,7 @@ namespace Util {
 	}
 
 	inline glm::vec3 HkToGlm(const RE::hkVector4 &vec) {
-		return HkVecToGlmVec(vec)  * *Gts::g_worldScaleInverse;
+		return HkVecToGlmVec(vec)  * World::WorldScaleInverse();
 	}
 	inline glm::mat3 HkToGlm(const RE::hkRotation &mat) {
 		return glm::mat3(
