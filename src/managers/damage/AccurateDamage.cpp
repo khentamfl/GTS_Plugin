@@ -148,26 +148,29 @@ namespace Gts {
 				}
 			}
 
+			NiPoint3 giantLocation = actor->GetPosition();
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
-						if (actorLocation < BASE_CHECK_DISTANCE*giantScale) {
+						if ((actorLocation-giantLocation).Length()- < BASE_CHECK_DISTANCE*giantScale) {
 							// Check the tiny's nodes against the giant's foot points
-							bool nodeCollisions = 0;
+							int nodeCollisions = 0;
 							float force = 0.0;
 
 							auto model = otherActor->GetCurrent3D();
 							if (model) {
-								VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
-									float distance = (point - a_obj.world.translate).Length();
-									if (distance < maxFootDistance) {
-										nodeCollisions += 1;
-										force += 1.0 - distance / maxFootDistance;
-									}
-									return true;
-								});
+								for (auto point: footPoints) {
+									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
+										float distance = (point - a_obj.world.translate).Length();
+										if (distance < maxFootDistance) {
+											nodeCollisions += 1;
+											force += 1.0 - distance / maxFootDistance;
+										}
+										return true;
+									});
+								}
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = force/nodeCollisions;
