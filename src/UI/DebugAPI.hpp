@@ -308,6 +308,7 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 		DebugOverlayMenu();
 
 		[[nodiscard]] static DebugOverlayMenu& GetSingleton() noexcept;
+
 		std::string DebugName() override;
 		void DataReady() override;
 		void Start() override;
@@ -330,6 +331,9 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 		void AdvanceMovie(float a_interval, std::uint32_t a_currentTime) override;
 
 	private:
+		void Init();
+		bool inited = false;
+
 		class Logger : public RE::GFxLog
 		{
 			public:

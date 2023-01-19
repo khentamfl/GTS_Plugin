@@ -566,6 +566,12 @@ glm::vec2 DebugAPI::WorldToScreenLoc(RE::GPtr<RE::GFxMovieView> movie, glm::vec3
 
 DebugOverlayMenu::DebugOverlayMenu()
 {
+	Init();
+}
+void DebugOverlayMenu::Init() {
+	if (this->inited) {
+		return;
+	}
 	auto scaleformManager = RE::BSScaleformManager::GetSingleton();
 	if (!scaleformManager) {
 		logger::error("Gts: failed to initialize DebugOverlayMenu - ScaleformManager not found");
@@ -585,10 +591,12 @@ DebugOverlayMenu::DebugOverlayMenu()
 		a_def->SetState(RE::GFxState::StateType::kLog,
 		                RE::make_gptr<Logger>().get());
 	});
+	this->inited = true;
 }
 
 DebugOverlayMenu& DebugOverlayMenu::GetSingleton() noexcept {
 	static DebugOverlayMenu instance;
+	instance.Init();
 	return instance;
 }
 
