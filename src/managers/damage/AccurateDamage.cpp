@@ -116,6 +116,7 @@ namespace Gts {
 		}
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
+		const float BASE_CHECK_DISTANCE = 50;
 		const float BASE_DISTANCE = 14;
 		const float SCALE_RATIO = 2.0;
 
@@ -152,13 +153,25 @@ namespace Gts {
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
+						if (actorLocation < BASE_CHECK_DISTANCE*giantScale) {
+							// Check the tiny's nodes against the giant's foot points
+							bool nodeCollisions = 0;
+							float force = 0.0;
 
-						// Check the tiny's nodes against the giant's foot points
-						for (auto point: footPoints) {
-							float distance = (point - actorLocation).Length();
-							if (distance < maxFootDistance) {
-								float force = 1.0 - distance / maxFootDistance;
-								ApplySizeEffect(actor, otherActor, force);
+							auto model = otherActor->GetCurrent3D();
+							if (model) {
+								VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
+									float distance = (point - a_obj.world.translate).Length();
+									if (distance < maxFootDistance) {
+										nodeCollisions += 1;
+										force += 1.0 - distance / maxFootDistance;
+									}
+									return true;
+								});
+							}
+							if (nodeCollisions > 0) {
+								float aveForce = force/nodeCollisions;
+								ApplySizeEffect(actor, otherActor, aveForce);
 								break;
 							}
 						}
