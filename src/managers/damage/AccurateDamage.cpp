@@ -120,7 +120,7 @@ namespace Gts {
 		const float BASE_DISTANCE = 14;
 		const float SCALE_RATIO = 2.0;
 
-		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+		NiPoint3 hhOffset = HighHeelManager::GetBaseHHOffset(actor);
 		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 		auto leftFoot = find_node(actor, leftFootLookup);
