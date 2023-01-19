@@ -140,6 +140,13 @@ namespace Gts {
 					giantScale *= 8.0;
 				}
 
+				NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+				std::vector<NiPoint3> points = {
+					NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
+					NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
+				};
+				float maxFootDistance = BASE_FOOT_DISTANCE * giantScale;
+
 				for (auto otherActor: find_actors()) {
 					if (otherActor != actor) {
 						float tinyScale = get_visual_scale(otherActor);
@@ -148,20 +155,14 @@ namespace Gts {
 							for (auto foot: impact_data.nodes) {
 								// Make a list of points to check
 								std::vector<NiPoint3> footPoints = {};
-								std::vector<NiPoint3> points = {
-									NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
-									NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
-								};
 								for (NiPoint3 point:  points) {
 									footPoints.push_back(foot->world*point);
-									NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 									if (hhOffset.Length() > 1e-4) {
 										footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
 									}
 								}
 
 								// Check the tiny's nodes against the giant's foot points
-								float maxFootDistance = BASE_FOOT_DISTANCE * giantScale;
 								for (auto point: footPoints) {
 									float distance = (point - actorLocation).Length();
 									if (distance < maxFootDistance) {
