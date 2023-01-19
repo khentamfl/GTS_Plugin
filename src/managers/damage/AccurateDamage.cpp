@@ -107,7 +107,7 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-		void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!sizemanager.GetPreciseDamage()) {
@@ -138,7 +138,7 @@ namespace Gts {
 							footPoints.push_back(foot->world*point);
 							NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 							if (hhOffset.Length() > 1e-4) {
-								footPoints.push_back(foot->world*(point-hhOffset)); // Add HH offsetted version
+								footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
 							}
 						}
 						// Check the tiny's nodes against the giant's foot points
@@ -149,14 +149,14 @@ namespace Gts {
 								float force = 1.0 - distance / maxFootDistance;
 								ApplySizeEffect(actor, otherActor, force);
 								break;
-								}
 							}
 						}
 					}
 				}
 			}
 		}
-	
+	}
+
 
 	void AccurateDamage::UnderFootEvent(const UnderFoot& evt) { // On underfoot event
 		auto giant = evt.giant;

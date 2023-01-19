@@ -306,6 +306,7 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 		DebugOverlayMenu();
 
 		[[nodiscard]] static DebugOverlayMenu& GetSingleton() noexcept;
+		std::string DebugName() override;
 		void DataReady() override;
 		void Start() override;
 		void Update() override;

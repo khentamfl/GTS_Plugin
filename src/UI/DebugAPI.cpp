@@ -590,6 +590,10 @@ DebugOverlayMenu& DebugOverlayMenu::GetSingleton() noexcept {
 	return instance;
 }
 
+std::string DebugOverlayMenu::DebugName() {
+	return "DebugOverlayMenu";
+}
+
 void DebugOverlayMenu::DataReady()
 {
 	logger::info("Gts: registering DebugOverlayMenu...");
