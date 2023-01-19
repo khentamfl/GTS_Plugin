@@ -566,7 +566,6 @@ glm::vec2 DebugAPI::WorldToScreenLoc(RE::GPtr<RE::GFxMovieView> movie, glm::vec3
 
 DebugOverlayMenu::DebugOverlayMenu()
 {
-	Init();
 }
 void DebugOverlayMenu::Init() {
 	if (this->inited) {
@@ -606,6 +605,7 @@ std::string DebugOverlayMenu::DebugName() {
 
 void DebugOverlayMenu::DataReady()
 {
+	Init();
 	logger::info("Gts: registering DebugOverlayMenu...");
 
 	auto ui = RE::UI::GetSingleton();
