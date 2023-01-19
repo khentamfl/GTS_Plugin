@@ -118,31 +118,34 @@ namespace Gts {
 		const float BASE_DISTANCE = 14;
 		const float SCALE_RATIO = 2.0;
 
+		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
+		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
+		auto leftFoot = find_node(actor, leftFootLookup);
+		auto rightFoot = find_node(actor, rightFootLookup);
+		float maxFootDistance = BASE_DISTANCE * giantScale;
+		// Make a list of points to check
+		std::vector<NiPoint3> footPoints = {};
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
+			NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
+		};
+
 		for (auto otherActor: find_actors()) {
 			if (otherActor != actor) {
 				float tinyScale = get_visual_scale(otherActor);
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
-					const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
-					const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
-					auto leftFoot = find_node(actor, leftFootLookup);
-					auto rightFoot = find_node(actor, rightFootLookup);
 					for (auto foot: {leftFoot, rightFoot}) {
-						// Make a list of points to check
-						std::vector<NiPoint3> footPoints = {};
-						std::vector<NiPoint3> points = {
-							NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
-							NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
-						};
 						for (NiPoint3 point: points) {
 							footPoints.push_back(foot->world*point);
-							NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+
 							if (hhOffset.Length() > 1e-4) {
 								footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
 							}
 						}
+
 						// Check the tiny's nodes against the giant's foot points
-						float maxFootDistance = BASE_DISTANCE * giantScale;
 						for (auto point: footPoints) {
 							float distance = (point - actorLocation).Length();
 							if (distance < maxFootDistance) {
