@@ -326,7 +326,7 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 
 		static RE::stl::owner<RE::IMenu*> Creator() {
 			auto& instance = GetSingleton();
-			instance->Init();
+			instance.Init();
 			return &instance;
 		}
 
