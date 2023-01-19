@@ -129,7 +129,7 @@ namespace Gts {
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
-			NiPoint3(0.0, 12.5, -12.5),
+			NiPoint3(0.0, 12.5, 12.5),
 		};
 
 
@@ -139,7 +139,7 @@ namespace Gts {
 				footPoints.push_back(foot->world*point);
 
 				if (hhOffset.Length() > 1e-4) {
-					footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
+					footPoints.push_back(foot->world*(point-hhOffset)); // Add HH offsetted version
 				}
 			}
 			if (Runtime::GetBool("EnableDebugOverlay")) {
