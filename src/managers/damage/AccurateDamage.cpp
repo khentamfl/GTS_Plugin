@@ -149,7 +149,9 @@ namespace Gts {
 						// Check the tiny's nodes against the giant's foot points
 						for (auto point: footPoints) {
 							float distance = (point - actorLocation).Length();
-							DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z),maxFootDistance);
+							if (Runtime::GetBool("EnableDebugOverlay")) {
+								DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z),maxFootDistance);
+							}
 							if (distance < maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;
 								ApplySizeEffect(actor, otherActor, force);

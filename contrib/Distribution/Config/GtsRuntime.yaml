@@ -224,6 +224,9 @@ globals:
   TotalSizeDamage: "GTS.esp|151517"
   TotalFallDamage: "GTS.esp|151516"
 
+  EnableColliders: "GTS.esp|42A6D2"
+  EnableDebugOverlay: "GTS.esp|42A6D1"
+
   GtsSkillLevel: "GTS.esp|142200"
   GtsSkillRatio: "GTS.esp|142202"
   GtsSkillProgress: "GTS.esp|142201"
