@@ -117,7 +117,7 @@ namespace Gts {
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 30;
-		const float BASE_DISTANCE = 5.8;
+		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 2.0;
 
 		// Get world HH offset
