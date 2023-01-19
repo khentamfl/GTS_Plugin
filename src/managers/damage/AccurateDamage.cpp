@@ -129,7 +129,7 @@ namespace Gts {
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
-			NiPoint3(0.0, 12.5, 12.5),
+			NiPoint3(0.5, 2.0, 7.5), // Offset it forward
 		};
 
 
