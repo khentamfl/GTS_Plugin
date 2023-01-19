@@ -628,7 +628,6 @@ void DebugOverlayMenu::Start()
 	} else {
 		logger::warn("Gts: failed to show DebugOverlayMenu");
 	}
-	DebugOverlayMenu::Show();
 }
 
 void DebugOverlayMenu::Update()
