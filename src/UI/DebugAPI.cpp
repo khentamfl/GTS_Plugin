@@ -4,6 +4,8 @@
 
 #include <windows.h>
 
+using namespace Gts;
+
 std::vector<DebugAPILine*> DebugAPI::LinesToDraw;
 
 bool DebugAPI::CachedMenuData;
