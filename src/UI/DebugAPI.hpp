@@ -7,7 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "util.hpp"
-/*
+
 namespace Util {
 
 	inline glm::vec3 CompMult(const glm::vec3& a, const glm::vec3& b) {
@@ -346,4 +346,4 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 					logger::info("{}"sv, buf.data());
 				}
 		};
-};*/
+};

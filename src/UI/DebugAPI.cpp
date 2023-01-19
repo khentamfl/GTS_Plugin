@@ -4,7 +4,7 @@
 
 #include <windows.h>
 
-/*std::vector<DebugAPILine*> DebugAPI::LinesToDraw;
+std::vector<DebugAPILine*> DebugAPI::LinesToDraw;
 
 bool DebugAPI::CachedMenuData;
 
@@ -791,4 +791,4 @@ void DebugOverlayMenu::AdvanceMovie(float a_interval, std::uint32_t a_currentTim
 	RE::IMenu::AdvanceMovie(a_interval, a_currentTime);
 
 	DebugAPI::Update();
-} */
+}
