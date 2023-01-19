@@ -606,8 +606,6 @@ std::string DebugOverlayMenu::DebugName() {
 
 void DebugOverlayMenu::DataReady()
 {
-	this->Init();
-
 	logger::info("Gts: registering DebugOverlayMenu...");
 
 	auto ui = RE::UI::GetSingleton();

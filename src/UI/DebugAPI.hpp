@@ -325,7 +325,9 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 		static void ToggleVisibility(bool mode);
 
 		static RE::stl::owner<RE::IMenu*> Creator() {
-			return new DebugOverlayMenu();
+			auto& instance = GetSingleton();
+			instance->Init();
+			return &instance;
 		}
 
 		void AdvanceMovie(float a_interval, std::uint32_t a_currentTime) override;
