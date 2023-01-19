@@ -126,32 +126,36 @@ namespace Gts {
 		auto rightFoot = find_node(actor, rightFootLookup);
 		float maxFootDistance = BASE_DISTANCE * giantScale;
 		// Make a list of points to check
-		std::vector<NiPoint3> footPoints = {};
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
 			NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
 		};
 
-		for (auto otherActor: find_actors()) {
-			if (otherActor != actor) {
-				float tinyScale = get_visual_scale(otherActor);
-				if (giantScale / tinyScale > SCALE_RATIO) {
-					NiPoint3 actorLocation = otherActor->GetPosition();
-					for (auto foot: {leftFoot, rightFoot}) {
-						for (NiPoint3 point: points) {
-							footPoints.push_back(foot->world*point);
 
-							if (hhOffset.Length() > 1e-4) {
-								footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
-							}
-						}
+		for (auto foot: {leftFoot, rightFoot}) {
+			std::vector<NiPoint3> footPoints = {};
+			for (NiPoint3 point: points) {
+				footPoints.push_back(foot->world*point);
+
+				if (hhOffset.Length() > 1e-4) {
+					footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
+				}
+			}
+			if (Runtime::GetBool("EnableDebugOverlay")) {
+				for (auto point: footPoints) {
+					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
+				}
+			}
+
+			for (auto otherActor: find_actors()) {
+				if (otherActor != actor) {
+					float tinyScale = get_visual_scale(otherActor);
+					if (giantScale / tinyScale > SCALE_RATIO) {
+						NiPoint3 actorLocation = otherActor->GetPosition();
 
 						// Check the tiny's nodes against the giant's foot points
 						for (auto point: footPoints) {
 							float distance = (point - actorLocation).Length();
-							if (Runtime::GetBool("EnableDebugOverlay")) {
-								DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z),maxFootDistance);
-							}
 							if (distance < maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;
 								ApplySizeEffect(actor, otherActor, force);
