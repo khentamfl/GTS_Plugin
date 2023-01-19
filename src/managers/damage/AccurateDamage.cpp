@@ -120,7 +120,16 @@ namespace Gts {
 		const float BASE_DISTANCE = 5.8;
 		const float SCALE_RATIO = 2.0;
 
-		NiPoint3 hhOffset = HighHeelManager::GetBaseHHOffset(actor);
+		// Get world HH offset
+		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+		NiAVObject* NPCNode = find_node(actor, "NPC");
+		if (!NPCNode) {
+			return;
+		}
+		NiTransform NPCTransform = NPCNode->world;
+		NPCTransform.translate = NiPoint3();
+		NiPoint3 worldHHOffset = NPCTransform*hhOffset;
+
 		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 		auto leftFoot = find_node(actor, leftFootLookup);
@@ -140,7 +149,7 @@ namespace Gts {
 				footPoints.push_back(foot->world*point);
 
 				if (hhOffset.Length() > 1e-4) {
-					footPoints.push_back(foot->world*(point-hhOffset)); // Add HH offsetted version
+					footPoints.push_back(foot->world*(point)-worldHHOffset); // Add HH offsetted version
 				}
 			}
 			if (Runtime::GetBool("EnableDebugOverlay")) {
