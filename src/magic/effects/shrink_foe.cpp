@@ -67,6 +67,9 @@ namespace Gts {
 		}
 
 		bool has_smt = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
+		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
+			return; // Disallow shrinking Essentials
+		}
 		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();

@@ -117,7 +117,7 @@ namespace Gts {
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 30;
-		const float BASE_DISTANCE = 6;
+		const float BASE_DISTANCE = 5.8;
 		const float SCALE_RATIO = 2.0;
 
 		NiPoint3 hhOffset = HighHeelManager::GetBaseHHOffset(actor);
@@ -130,6 +130,7 @@ namespace Gts {
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
 			NiPoint3(0.5, 2.0, 7.5), // Offset it forward
+			//NiPoint3(0.45, 1.0, 5.6), // Second offset 
 		};
 
 
@@ -222,7 +223,7 @@ namespace Gts {
 			movementFactor *= 1.5;
 		}
 		if (evt.footEvent == FootEvent::JumpLand) {
-			movementFactor *= 3.0;
+			movementFactor *= 2.0;
 		}
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
@@ -241,7 +242,7 @@ namespace Gts {
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
 						DamageAV(tiny,ActorValue::kHealth, damage);
-						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.5)) {
+						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.25)) {
 							crushmanager.Crush(giant, tiny); // Crush if hp is low
 						}
 					}
@@ -304,7 +305,7 @@ namespace Gts {
 			result *= 0.33;
 		}
 
-		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult))) {
+		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
 			crushmanager.Crush(giant, tiny);
 			return;
 		}

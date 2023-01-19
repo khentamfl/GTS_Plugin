@@ -102,6 +102,9 @@ namespace Gts {
 		if (ShrinkToNothingManager::AlreadyShrinked(tiny)) {
 			return false;
 		}
+		if (tiny->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
+			return false;
+		}
 
 		return true;
 	}

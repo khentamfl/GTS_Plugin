@@ -6,6 +6,7 @@
 #include "managers/modevent.hpp"
 #include "data/runtime.hpp"
 #include "events.hpp"
+#include "UI/DebugAPI.hpp"
 
 
 #include "scale/scale.hpp"
@@ -116,8 +117,8 @@ namespace Gts {
 
 			EventDispatcher::DoOnImpact(impact_data);
 
-			const float BASE_DISTANCE = 65.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
-			const float BASE_FOOT_DISTANCE = 50.0; // Checks the distance of foot squishing
+			const float BASE_DISTANCE = 30.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
+			const float BASE_FOOT_DISTANCE = 6.0; // Checks the distance of foot squishing
 			const float SCALE_RATIO = 3.0;
 			float bonusscale = 1.0;
 			if (!impact_data.nodes.empty() && actor != nullptr) {
@@ -129,7 +130,7 @@ namespace Gts {
 				}
 
 				if (actor->IsSneaking()) {
-					giantScale *= 0.4;
+					giantScale *= 0.5;
 				}
 
 				if (impact_data.kind == FootEvent::JumpLand) {
@@ -143,7 +144,7 @@ namespace Gts {
 				NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 				std::vector<NiPoint3> points = {
 					NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
-					NiPoint3(1.0, 0.0, 0.0)*actualGiantScale,
+					NiPoint3(0.5, 2.0, 7.5),
 				};
 				float maxFootDistance = BASE_FOOT_DISTANCE * giantScale;
 
@@ -153,9 +154,14 @@ namespace Gts {
 					for (NiPoint3 point:  points) {
 						footPoints.push_back(foot->world*point);
 						if (hhOffset.Length() > 1e-4) {
-							footPoints.push_back(foot->world*(point+hhOffset)); // Add HH offsetted version
+							footPoints.push_back(foot->world*(point-hhOffset)); // Add HH offsetted version
 						}
 					}
+				if (Runtime::GetBool("EnableDebugOverlay")) {
+					for (auto point: footPoints) {
+						DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
+					}
+				}
 					for (auto otherActor: find_actors()) {
 						if (otherActor != actor) {
 							float tinyScale = get_visual_scale(otherActor);
