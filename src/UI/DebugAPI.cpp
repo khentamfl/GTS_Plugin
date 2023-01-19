@@ -623,12 +623,14 @@ void DebugOverlayMenu::DataReady()
 
 void DebugOverlayMenu::Start()
 {
+	log::info("Start menu");
 	auto msgQ = RE::UIMessageQueue::GetSingleton();
 	if (msgQ) {
 		msgQ->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
 	} else {
 		logger::warn("Gts: failed to show DebugOverlayMenu");
 	}
+	DebugOverlayMenu::Show();
 }
 
 void DebugOverlayMenu::Update()
@@ -648,6 +650,7 @@ void DebugOverlayMenu::Unload()
 
 void DebugOverlayMenu::Show(std::string source)
 {
+	log::info("Show");
 	auto sourceIdx = std::find(Hidden_Sources.begin(), Hidden_Sources.end(), source);
 	if (sourceIdx != Hidden_Sources.end()) {
 		Hidden_Sources.erase(sourceIdx);
@@ -660,6 +663,7 @@ void DebugOverlayMenu::Show(std::string source)
 
 void DebugOverlayMenu::Hide(std::string source)
 {
+	log::info("Hide");
 	auto sourceIdx = std::find(Hidden_Sources.begin(), Hidden_Sources.end(), source);
 	if (sourceIdx == Hidden_Sources.end()) {
 		Hidden_Sources.push_back(source);
