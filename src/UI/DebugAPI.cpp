@@ -597,7 +597,7 @@ void DebugOverlayMenu::Init() {
 
 DebugOverlayMenu& DebugOverlayMenu::GetSingleton() noexcept {
 	static DebugOverlayMenu instance;
-	instance->Init();
+	instance.Init();
 	return instance;
 }
 
