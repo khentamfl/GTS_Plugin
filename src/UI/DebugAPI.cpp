@@ -591,11 +591,12 @@ void DebugOverlayMenu::Init() {
 		                RE::make_gptr<Logger>().get());
 	});
 	this->inited = true;
+
+	logger::error("Gts: initialize scale forms");
 }
 
 DebugOverlayMenu& DebugOverlayMenu::GetSingleton() noexcept {
 	static DebugOverlayMenu instance;
-	instance.Init();
 	return instance;
 }
 
@@ -605,7 +606,7 @@ std::string DebugOverlayMenu::DebugName() {
 
 void DebugOverlayMenu::DataReady()
 {
-	Init();
+	this->Init();
 	logger::info("Gts: registering DebugOverlayMenu...");
 
 	auto ui = RE::UI::GetSingleton();
