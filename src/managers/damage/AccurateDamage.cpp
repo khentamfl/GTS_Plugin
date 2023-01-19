@@ -116,8 +116,8 @@ namespace Gts {
 		}
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
-		const float BASE_CHECK_DISTANCE = 50;
-		const float BASE_DISTANCE = 14;
+		const float BASE_CHECK_DISTANCE = 30;
+		const float BASE_DISTANCE = 6;
 		const float SCALE_RATIO = 2.0;
 
 		NiPoint3 hhOffset = HighHeelManager::GetBaseHHOffset(actor);
@@ -129,7 +129,7 @@ namespace Gts {
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
-			NiPoint3(0.0, 3.5, 0.0),
+			NiPoint3(0.0, 12.5, 0.0),
 		};
 
 
