@@ -254,7 +254,7 @@ namespace Gts {
 						}
 					}
 					PushActorAway(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 70 * movementFactor * giantSize * force, 50 * movementFactor * giantSize * force);
+					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 30 * movementFactor * giantSize * force);
 				}
 			}
 		}
