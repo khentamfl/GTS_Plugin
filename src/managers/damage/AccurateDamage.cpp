@@ -300,7 +300,7 @@ namespace Gts {
 		float falldamage = 1.0;
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 
-		SizeModifications(giant, tiny);
+		SizeModifications(giant, tiny, highheels);
 
 		if (giant->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
