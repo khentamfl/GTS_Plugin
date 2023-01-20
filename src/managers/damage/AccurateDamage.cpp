@@ -31,7 +31,7 @@ using namespace std;
 namespace {
 	const float LAUNCH_DAMAGE = 1.0f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float UNDERFOOT_POWER = 0.50;
+	const float UNDERFOOT_POWER = 0.70;
 
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
 		auto& sizemanager = SizeManager::GetSingleton();
@@ -69,7 +69,7 @@ namespace {
 		}
 
 		if (Runtime::HasPerk(giant, "LethalSprint") && giant->IsSprinting()) {
-			InstaCrushRequirement = 18.0 * HighHeels * Gigantism;
+			InstaCrushRequirement = (18.0 / HighHeels) * Gigantism;
 		}
 
 		if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate()) {
@@ -116,8 +116,8 @@ namespace Gts {
 		}
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
-		const float BASE_CHECK_DISTANCE = 30;
-		const float BASE_DISTANCE = 6.0;
+		const float BASE_CHECK_DISTANCE = 40;
+		const float BASE_DISTANCE = 6.4;
 		const float SCALE_RATIO = 2.0;
 
 		// Get world HH offset
@@ -251,7 +251,7 @@ namespace Gts {
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
 						DamageAV(tiny,ActorValue::kHealth, damage);
-						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.25) || tiny->IsDead()) {
+						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.5) || tiny->IsDead()) {
 							crushmanager.Crush(giant, tiny); // Crush if hp is low
 						}
 					}
@@ -300,7 +300,7 @@ namespace Gts {
 		float falldamage = 1.0;
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 
-		SizeModifications(giant, tiny, highheels);
+		SizeModifications(giant, tiny);
 
 		if (giant->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
@@ -314,10 +314,10 @@ namespace Gts {
 			result *= 0.33;
 		}
 
-		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.25)) || multipliernolimit >= 8.0 && tiny->IsDead()) {
+		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult))) {
 			crushmanager.Crush(giant, tiny);
 			return;
 		}
-		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.25);
+		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.15);
 	}
 }
