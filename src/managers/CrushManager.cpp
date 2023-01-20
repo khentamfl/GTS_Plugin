@@ -222,10 +222,7 @@ namespace Gts {
 			// TODO: Check GtsCantStomp is a valid keyword
 			return false;
 		}
-		//Check for Essential
-		if (tiny->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
-			return false;
-		}
+
 		// Check skin
 		auto skin = tiny->GetSkin();
 		if (skin) {

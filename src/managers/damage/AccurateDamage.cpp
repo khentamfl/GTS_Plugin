@@ -44,14 +44,14 @@ namespace {
 				movementFactor *= 1.5;
 			}
 			if (!isdamaging && !giant->IsSprinting() && !giant->IsWalking() && !giant->IsRunning()) {
-				PushActorAway(giant, tiny, 1 * force);
+				PushActorAway(giant, tiny, 2 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 1.0 * force);
+				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
 			}
-			if (force >= 0.25 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking()) {
+			if (force >= 0.55 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking()) {
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
-			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.6 * force);
+			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
 		}
 	}
 
@@ -152,7 +152,7 @@ namespace Gts {
 					footPoints.push_back(foot->world*(point)-worldHHOffset); // Add HH offsetted version
 				}
 			}
-			if (Runtime::GetBool("EnableDebugOverlay")) {
+			if (Runtime::GetBool("EnableDebugOverlay") && actor->formID == 0x14) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
 				}
@@ -229,10 +229,10 @@ namespace Gts {
 			movementFactor *= 0.5;
 		}
 		if (giant->IsSprinting()) {
-			movementFactor *= 1.5;
+			movementFactor *= 1.75;
 		}
 		if (evt.footEvent == FootEvent::JumpLand) {
-			movementFactor *= 2.0;
+			movementFactor *= 3.0;
 		}
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
@@ -251,7 +251,7 @@ namespace Gts {
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
 						DamageAV(tiny,ActorValue::kHealth, damage);
-						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.25)) {
+						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.25) || tiny->IsDead()) {
 							crushmanager.Crush(giant, tiny); // Crush if hp is low
 						}
 					}
@@ -314,7 +314,7 @@ namespace Gts {
 			result *= 0.33;
 		}
 
-		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
+		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.25)) || multipliernolimit >= 8.0 && tiny->IsDead()) {
 			crushmanager.Crush(giant, tiny);
 			return;
 		}

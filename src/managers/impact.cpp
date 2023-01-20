@@ -117,8 +117,8 @@ namespace Gts {
 
 			EventDispatcher::DoOnImpact(impact_data);
 
-			const float BASE_DISTANCE = 30.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
-			const float BASE_FOOT_DISTANCE = 6.0; // Checks the distance of foot squishing
+			const float BASE_DISTANCE = 60.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
+			const float BASE_FOOT_DISTANCE = 6.5; // Checks the distance of foot squishing
 			const float SCALE_RATIO = 3.0;
 			float bonusscale = 1.0;
 			if (!impact_data.nodes.empty() && actor != nullptr) {
@@ -126,7 +126,7 @@ namespace Gts {
 				float actualGiantScale = get_visual_scale(actor);
 				float giantScale = actualGiantScale;
 				if (actor->IsSprinting()) {
-					giantScale *= 1.35;
+					giantScale *= 1.75;
 				}
 
 				if (actor->IsSneaking()) {
@@ -134,7 +134,7 @@ namespace Gts {
 				}
 
 				if (impact_data.kind == FootEvent::JumpLand) {
-					giantScale *= 1.75;
+					giantScale *= 3.0;
 				}
 
 				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
@@ -157,11 +157,6 @@ namespace Gts {
 							footPoints.push_back(foot->world*(point-hhOffset)); // Add HH offsetted version
 						}
 					}
-				if (Runtime::GetBool("EnableDebugOverlay")) {
-					for (auto point: footPoints) {
-						DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
-					}
-				}
 					for (auto otherActor: find_actors()) {
 						if (otherActor != actor) {
 							float tinyScale = get_visual_scale(otherActor);
