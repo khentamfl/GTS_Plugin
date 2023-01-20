@@ -64,7 +64,7 @@ namespace {
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200;
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
 
-		if (CrushManager::AlreadyCrushed(target)) {
+		if (!CrushManager::CanCrush(giant, tiny)) {
 			return;
 		}
 
@@ -74,7 +74,6 @@ namespace {
 
 		if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate()) {
 			CrushManager::Crush(giant, target);
-			CrushToNothing(giant, target);
 		}
 
 		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != target && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
@@ -139,7 +138,6 @@ namespace Gts {
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
 			NiPoint3(0.5, 2.0, 7.5), // Offset it forward
-			//NiPoint3(0.45, 1.0, 5.6), // Second offset 
 		};
 
 
@@ -251,12 +249,12 @@ namespace Gts {
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
 						DamageAV(tiny,ActorValue::kHealth, damage);
-						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.5) || tiny->IsDead()) {
+						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.5)) {
 							crushmanager.Crush(giant, tiny); // Crush if hp is low
 						}
 					}
 					PushActorAway(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 25 * movementFactor * giantSize * force);
+					ApplyHavokImpulse(tiny, 0, 0, 70 * movementFactor * giantSize * force, 50 * movementFactor * giantSize * force);
 				}
 			}
 		}
@@ -314,7 +312,7 @@ namespace Gts {
 			result *= 0.33;
 		}
 
-		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult))) {
+		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.15))) {
 			crushmanager.Crush(giant, tiny);
 			return;
 		}
