@@ -29,7 +29,7 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	const float LAUNCH_DAMAGE = 1.0f;
+	const float LAUNCH_DAMAGE = 0.6f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.75;
 
