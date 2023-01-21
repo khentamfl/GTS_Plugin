@@ -64,7 +64,7 @@ namespace {
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200;
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
 
-		if (CrushManager::CanCrush(giant, target)) {
+		if (!CrushManager::CanCrush(giant, target)) {
 			return;
 		}
 
@@ -249,7 +249,7 @@ namespace Gts {
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
 						DamageAV(tiny,ActorValue::kHealth, damage);
-						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.5)) {
+						if (GetAV(tiny, ActorValue::kHealth) < (damage * 0.5) && CrushManager::CanCrush(giant, tiny)) {
 							crushmanager.Crush(giant, tiny); // Crush if hp is low
 						}
 					}
@@ -313,8 +313,10 @@ namespace Gts {
 		}
 
 		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.15))) {
-			crushmanager.Crush(giant, tiny);
-			return;
+			if (CrushManager::CanCrush(giant, tiny)) {
+				crushmanager.Crush(giant, tiny);
+				return;
+			}
 		}
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.15);
 	}
