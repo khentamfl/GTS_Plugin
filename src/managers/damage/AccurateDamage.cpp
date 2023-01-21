@@ -315,7 +315,6 @@ namespace Gts {
 		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.15))) {
 			if (CrushManager::CanCrush(giant, tiny)) {
 				crushmanager.Crush(giant, tiny);
-				return;
 			}
 		}
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.15);
