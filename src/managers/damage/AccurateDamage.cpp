@@ -50,7 +50,7 @@ namespace {
 			}
 			if (force >= 0.55 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking()) {
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-			}Н
+			}
 			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
 		}
 	}
