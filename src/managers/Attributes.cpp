@@ -121,7 +121,7 @@ namespace {
 			boost = base_av * (scale-1.0);
 		};
 		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, av, boost - last_carry_boost);
-		actor_data->bonus_carry = boost;
+		actor_data->bonus_carry = boost; 
 	}
 
 	void BoostJump(Actor* actor, float power) {
