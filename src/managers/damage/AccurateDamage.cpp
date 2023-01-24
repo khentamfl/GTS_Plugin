@@ -121,18 +121,21 @@ namespace Gts {
 
 		// Get world HH offset
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
-		NiAVObject* NPCNode = find_node(actor, "NPC");
-		if (!NPCNode) {
-			return;
-		}
-		NiTransform NPCTransform = NPCNode->world;
-		NPCTransform.translate = NiPoint3();
-		NiPoint3 worldHHOffset = NPCTransform*hhOffset;
 
 		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
+		const std::string_view leftCalfLookup = "NPC L Calf [LClf]";
+		const std::string_view rightCalfLookup = "NPC R Calf [RClf]";
+		const std::string_view leftToeLookup = "NPC L Toe0 [LToe]";
+		const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
+
 		auto leftFoot = find_node(actor, leftFootLookup);
 		auto rightFoot = find_node(actor, rightFootLookup);
+		auto leftCalf = find_node(actor, leftCalfLookup);
+		auto rightCalf = find_node(actor, rightCalfLookup);
+		auto leftToe = find_node(actor, leftToeLookup);
+		auto rightToe = find_node(actor, rightToeLookup);
+
 		float maxFootDistance = BASE_DISTANCE * giantScale;
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
@@ -141,13 +144,25 @@ namespace Gts {
 		};
 
 
-		for (auto foot: {leftFoot, rightFoot}) {
+		for (const auto &[foot, toe, calf]: {{leftFoot, leftToe, leftCalf}, {rightFoot, rightToe, rightCalf}}) {
+			NiTransform inverseFoot = foot->world.Invert();
+			NiPoint3 forward = inverseFoot*toe->world.translate;
+			forward = forward / forward.Length();
+
+			NiPoint3 up = inverseFoot*calf->world.translate;
+			up = up / up.Length();
+
+			NiPoint3 right = forward.UnitCross(up);
+			forward = up.UnitCross(right); // Reorthonalize
+
+			NiMatrix3 rotMat = NiMatrix3(right, forward, up);
+
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
-				footPoints.push_back(foot->world*point);
+				footPoints.push_back(foot->world*(rotMat*point));
 
 				if (hhOffset.Length() > 1e-4) {
-					footPoints.push_back(foot->world*(point)-worldHHOffset); // Add HH offsetted version
+					footPoints.push_back(foot->world*(rotMat*(point-hhOffset))); // Add HH offsetted version
 				}
 			}
 			if (Runtime::GetBool("EnableDebugOverlay") && actor->formID == 0x14) {
