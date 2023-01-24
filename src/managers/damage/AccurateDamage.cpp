@@ -146,7 +146,7 @@ namespace Gts {
 		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> right(rightFoot, rightToe, rightCalf);
 
 		for (const auto& [foot, toe, calf]: {left, right}) {
-			NiTransform in verseFoot = foot->world.Invert();
+			NiTransform inverseFoot = foot->world.Invert();
 			NiPoint3 forward = inverseFoot*toe->world.translate;
 			forward = forward / forward.Length();
 
