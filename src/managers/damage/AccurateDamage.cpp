@@ -142,10 +142,11 @@ namespace Gts {
 			NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
 			NiPoint3(0.5, 2.0, 7.5), // Offset it forward
 		};
+		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> left(leftFoot, leftToe, leftCalf);
+		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> right(rightFoot, rightToe, rightCalf);
 
-
-		for (const auto &[foot, toe, calf]: {{leftFoot, leftToe, leftCalf}, {rightFoot, rightToe, rightCalf}}) {
-			NiTransform inverseFoot = foot->world.Invert();
+		for (const auto& [foot, toe, calf]: {left, right}) {
+			NiTransform in verseFoot = foot->world.Invert();
 			NiPoint3 forward = inverseFoot*toe->world.translate;
 			forward = forward / forward.Length();
 
