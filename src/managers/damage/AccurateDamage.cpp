@@ -116,11 +116,12 @@ namespace Gts {
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 40;
-		const float BASE_DISTANCE = 5.9;
+		const float BASE_DISTANCE = 6.2;
 		const float SCALE_RATIO = 2.0;
 
 		// Get world HH offset
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+		NiPoint3 hhOffsetbase= HighHeelManager::GetBaseHHOffset(actor);
 
 		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
@@ -139,12 +140,12 @@ namespace Gts {
 		auto rightToe = find_node(actor, rightToeLookup);
 
 		float maxFootDistance = BASE_DISTANCE * giantScale;
-		float hh = hhOffset[2];
+		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
-			NiPoint3(0.0, 0.0, -(hh * 0.3)), // The standard at the foot position
-			NiPoint3(-2.0, 7.7 + (hh/60), -0.6 + -(hh * 0.9)), // Offset it forward 
-			NiPoint3(-2.0, (hh/60), -hh * 0.9), // Offset for HH
+			NiPoint3(0.0, hh*0.1, -(hh * 0.3)), // The standard at the foot position
+			NiPoint3(-2.0, 7.7 + (hh/60), -0.6 + -(hh * 0.8)), // Offset it forward 
+			NiPoint3(0.0, (hh/60), -hh * 0.8), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> left(leftFoot, leftToe, leftCalf);
 		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> right(rightFoot, rightToe, rightCalf);
@@ -329,11 +330,11 @@ namespace Gts {
 			result *= 0.33;
 		}
 
-		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.15))) {
+		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.12))) {
 			if (CrushManager::CanCrush(giant, tiny)) {
 				crushmanager.Crush(giant, tiny);
 			}
 		}
-		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.15);
+		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.12);
 	}
 }
