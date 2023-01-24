@@ -116,7 +116,7 @@ namespace Gts {
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 40;
-		const float BASE_DISTANCE = 6.2;
+		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 2.0;
 
 		// Get world HH offset
@@ -144,8 +144,8 @@ namespace Gts {
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, hh*0.08, -(hh * 0.25)), // The standard at the foot position
-			NiPoint3(-2.0, 7.7 + (hh/70), -0.6 + -(hh)), // Offset it forward 
-			NiPoint3(0.0, (hh/60), -hh), // Offset for HH
+			NiPoint3(-1.6, 7.7 + (hh/70), -0.6 + -hh), // Offset it forward 
+			NiPoint3(0.0, (hh/50), -hh), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> left(leftFoot, leftToe, leftCalf);
 		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> right(rightFoot, rightToe, rightCalf);
@@ -258,7 +258,7 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.5) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force);
+			DoSizeDamage(giant, tiny, movementFactor, force * 4);
 			if (sizeRatio >= 4.0) {
 				//PushActorAway(giant, tiny, knockBack);
 			}
@@ -330,11 +330,11 @@ namespace Gts {
 			result *= 0.33;
 		}
 
-		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.12))) {
+		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.20))) {
 			if (CrushManager::CanCrush(giant, tiny)) {
 				crushmanager.Crush(giant, tiny);
 			}
 		}
-		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.12);
+		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.20);
 	}
 }
