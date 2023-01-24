@@ -116,7 +116,7 @@ namespace Gts {
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 40;
-		const float BASE_DISTANCE = 6.2;
+		const float BASE_DISTANCE = 5.9;
 		const float SCALE_RATIO = 2.0;
 
 		// Get world HH offset
@@ -142,7 +142,8 @@ namespace Gts {
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
-			NiPoint3(0.0, 7.7, 0.0), // Offset it forward 
+			NiPoint3(0.0, 7.7, -0.6 + -hhOffset), // Offset it forward 
+			NiPoint3(0.0, 0.0, -hhOffset), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> left(leftFoot, leftToe, leftCalf);
 		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> right(rightFoot, rightToe, rightCalf);
@@ -164,9 +165,9 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 
-				if (hhOffset.Length() > 1e-4) {
-					footPoints.push_back(foot->world*(rotMat*(point-hhOffset))); // Add HH offsetted version
-				}
+				//if (hhOffset.Length() > 1e-4) {
+					//footPoints.push_back(foot->world*(rotMat*(point-hhOffset))); // Add HH offsetted version
+				//}
 			}
 			if (Runtime::GetBool("EnableDebugOverlay") && actor->formID == 0x14) {
 				for (auto point: footPoints) {
