@@ -143,9 +143,9 @@ namespace Gts {
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
-			NiPoint3(0.0, hh*0.1, -(hh * 0.3)), // The standard at the foot position
-			NiPoint3(-2.0, 7.7 + (hh/60), -0.6 + -(hh * 0.8)), // Offset it forward 
-			NiPoint3(0.0, (hh/60), -hh * 0.8), // Offset for HH
+			NiPoint3(0.0, hh*0.08, -(hh * 0.25)), // The standard at the foot position
+			NiPoint3(-2.0, 7.7 + (hh/70), -0.6 + -(hh * 0.9)), // Offset it forward 
+			NiPoint3(0.0, (hh/60), -hh * 0.9), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> left(leftFoot, leftToe, leftCalf);
 		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> right(rightFoot, rightToe, rightCalf);
