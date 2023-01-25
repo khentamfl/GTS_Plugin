@@ -264,10 +264,7 @@ namespace Gts {
 		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthPerk")) {
 			Runtime::PlaySound("MoanSound",caster, 1.0, 1.0);
 		}
-		if (Runtime::HasPerk(player, "GrowthPerk") && !target->IsEssential()) {
-			Runtime::CastSpell(caster, target, "CrushGrowthSpell");
-			PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement);
-		}
+		PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement);
 		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 		if (get_visual_scale(caster) <= 12.0 && !caster->IsSprinting() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
 			caster->NotifyAnimationGraph("JumpLand");

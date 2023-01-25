@@ -198,7 +198,10 @@ namespace Gts {
 
 				bool npcEffects = Runtime::GetBoolOr("NPCSizeEffects", true);
 				if (actor->formID != 0x14 && npcEffects) {
+						float sizedifference = -1.0 + (get_visual_scale(PlayerCharacter::GetSingleton())/get_visual_scale(actor));
+						intensity *= sizedifference; // Attempt to improve logic
 					if (intensity > 0.01 && duration > 0.01) {
+						
 						shake_camera(actor, intensity, duration);
 
 						float left_shake = intensity;

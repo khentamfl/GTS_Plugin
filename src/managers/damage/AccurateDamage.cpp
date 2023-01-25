@@ -36,7 +36,7 @@ namespace {
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		if (sizedifference >= 1.33 && sizedifference < 2.0) {
-			PlayAnimation(tiny, "StaggerPlayer");
+			PlayAnimation(tiny, "Ragdoll");
 		}
 		else if (sizedifference >= 2.0) {
 			PushActorAway(giant, tiny, power);
@@ -353,7 +353,7 @@ namespace Gts {
 			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
-		float result = ((multiplier * 4 * giantsize * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
+		float result = ((multiplier * 8 * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}

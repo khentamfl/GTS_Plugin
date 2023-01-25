@@ -14,7 +14,5 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 			virtual void OnImpact(const Impact& impact) override;
-
-			inline bool GetFP(); // TODO: Fix this
 	};
 }

@@ -183,21 +183,15 @@ namespace {
 		if (!actor->IsRunning()) {
 			persi_actor_data->anim_speed = speed_mult_others;//MS_mult;
 		} else if (actor->IsRunning() && !actor->IsSprinting() && !actor->IsSneaking()) {
-			persi_actor_data->anim_speed = speed_mult_walk * PerkSpeed;
+			persi_actor_data->anim_speed = speed_mult_others/(getAV(actor, ActorValue::kSpeedMult)/100);//speed_mult_walk * PerkSpeed;
 		}
 
 
 		if (timer.ShouldRunFrame()) {
 			if (scale < 1.0) {
 				actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale * (Bonus/2.2 + 1.0));
-				if (actor->formID == 0x14) {
-					//log::info("Player Scale is < 1.0, Scale: {}, BaseWalkSpeedMult with ADjustments: {}, Total: {} ", scale, trans_actor_data->base_walkspeedmult * scale, trans_actor_data->base_walkspeedmult);
-				}
 			} else {
 				actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/2.2 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
-				if (actor->formID == 0x14) {
-					//log::info("Player Scale is > 1.0, Scale: {}, BaseWalkSpeedMult with Adjustments: {}, Total: {} ", scale, ((trans_actor_data->base_walkspeedmult * (Bonus/2.4 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed, trans_actor_data->base_walkspeedmult);
-				}
 			}
 		}
 		// Experiement
@@ -358,8 +352,8 @@ namespace {
 				case ChosenGameMode::CurseOfGrowth: {
 					//log::info("Curse Of Growth, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
 					float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
-					float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");                                                               // Slider that determines max size cap.
-					float sizelimit = clamp(1.0, MaxSize, (1.00 * (CalcAv/100 * MaxSize)));                                                  // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
+					float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");                                       // Slider that determines max size cap.
+					float sizelimit = std::clamp((1.00 * (CalcAv/100 * MaxSize)), 1.0, MaxSize);                     // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
 					int Random = rand() % 20;                                                                        // Randomize power
 					int GrowthTimer = rand() % 7;                                                                    // Randomize 're-trigger' delay, kinda
 					int StrongGrowthChance = rand() % 20;                                                            // Self-explanatory
@@ -371,10 +365,10 @@ namespace {
 					}
 					if (timer.ShouldRunFrame()) {
 						if (StrongGrowthChance >= 19 && MegaGrowth >= 19.0) {
-							GrowthPower *= 4.0;                                                                        // Proc super growth if conditions are met
+							GrowthPower *= 4.0;                                                                       // Proc super growth if conditions are met
 						}
 						if (StrongGrowthChance >= 19.0) {
-							GrowthPower *= 4.0;                                                                         // Stronger growth if procs
+							GrowthPower *= 4.0;                                                                       // Stronger growth if procs
 							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 40);
 						}
 						if (targetScale >= sizelimit) {
