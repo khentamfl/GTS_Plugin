@@ -5,6 +5,8 @@
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 
+using namespace std;
+
 namespace Gts {
 	std::string GrowOtherButton::GetName() {
 		return "GrowOtherButton";
