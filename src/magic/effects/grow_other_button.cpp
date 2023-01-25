@@ -35,11 +35,11 @@ namespace Gts {
 		}
 
 		float target_scale = get_visual_scale(target);
-		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
+		float magicka = std::clamp(GetMagikaPercentage(caster), 0.05, 1.0);
 
 		float bonus = 1.0;
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
-			bonus = get_target_scale(target) * 0.25 + 0.75;
+			bonus = get_visual_scale(target) * 0.25 + 0.75;
 		}
 
 		DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * bonus * TimeScale());
