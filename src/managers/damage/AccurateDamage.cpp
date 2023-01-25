@@ -65,13 +65,13 @@ namespace {
 			if (!isdamaging && !giant->IsSprinting() && !giant->IsWalking() && !giant->IsRunning()) {
 				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
+				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force);
 			}
 			if (!isdamaging && (force >= 0.55 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
 				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
-			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
+			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force);
 		}
 	}
 
@@ -350,7 +350,7 @@ namespace Gts {
 			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
-		float result = ((0.20 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * 0.25 * (highheelsdamage * additionaldamage * weightdamage * mult);
+		float result = ((0.20 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * 0.5 * (highheelsdamage * additionaldamage * weightdamage * mult);
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
