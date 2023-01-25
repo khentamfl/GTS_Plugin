@@ -177,9 +177,9 @@ namespace Gts {
 					}
 					ScareChance(giant);
 
-					if (tiny->formID != 0x14) {
+					//if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // CTD if we Disintegrate the player
-					}
+					//}
 					AdjustGiantessSkill(giant, tiny);
 					FearChance(giant);
 				}

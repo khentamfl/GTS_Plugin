@@ -126,6 +126,14 @@ namespace Gts {
 				float actualGiantScale = get_visual_scale(actor);
 				float giantScale = actualGiantScale;
 
+				if (actor->IsSneaking()) {
+					giantScale *= 0.5;
+				} if (actor->IsSprinting()) {
+					giantScale *= 2.0;
+				} if (impact_data.kind == FootEvent::JumpLand) {
+					giantScale *= 3.0;
+				}
+
 				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
 					giantScale *= 8.0;
 				}

@@ -192,7 +192,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay") && actor->formID == 0x14) {
+			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
 				}
@@ -239,20 +239,13 @@ namespace Gts {
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
 		float force = evt.force;
-
-		//log::info("Foot event True");
-
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
-		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+			return;
+		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
 		}
-		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
-			return;
-		}
-
-		//log::info("Underfoot event: {} stepping on {} with force {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), force);
 
 		float giantSize = get_visual_scale(giant);
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
@@ -267,20 +260,18 @@ namespace Gts {
 
 		if (giant->IsSneaking()) {
 			movementFactor *= 0.5;
-		}
-		if (giant->IsSprinting()) {
+		} if (giant->IsSprinting()) {
 			movementFactor *= 1.75;
-		}
-		if (evt.footEvent == FootEvent::JumpLand) {
+		} if (evt.footEvent == FootEvent::JumpLand) {
 			movementFactor *= 3.0;
 		}
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
-		if (force > UNDERFOOT_POWER && sizeRatio >= 2.5) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 40);
-			if (!sizemanager.IsLaunching(tiny) && sizeRatio >= 2.0) {
+		if (force > UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
+			DoSizeDamage(giant, tiny, movementFactor, force * 100);
+			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				PushActorAway(giant, tiny, knockBack);
 			}

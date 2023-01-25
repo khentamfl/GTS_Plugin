@@ -281,12 +281,12 @@ namespace {
 
 				BoostAttackDmg(Player, bonusDamageMultiplier);
 
-				if (!Runtime::HasPerk(Player, "StaggerImmunity") && size > 1.33) {
+				/*if (!Runtime::HasPerk(Player, "StaggerImmunity") && size > 1.33) {
 					Runtime::AddPerk(Player, "StaggerImmunity");
 					return;
 				} else if (size < 1.33 && Runtime::HasPerk(Player, "StaggerImmunity")) {
 					Runtime::RemovePerk(Player, "StaggerImmunity");
-				}
+				}*/
 			}
 		}
 	}
