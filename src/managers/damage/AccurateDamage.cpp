@@ -201,8 +201,8 @@ namespace Gts {
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, hh*0.08, -(hh * 0.25)), // The standard at the foot position
-			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + -hh), // Offset it forward
-			NiPoint3(0.0, (hh/50), -hh), // Offset for HH
+			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + -hh * 1.10), // Offset it forward
+			NiPoint3(0.0, (hh/50), -hh * 1.10), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
 		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
@@ -351,7 +351,7 @@ namespace Gts {
 			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
-		float result = ((multiplier * 16 * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
+		float result = ((multiplier * 32 * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
