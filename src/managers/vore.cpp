@@ -384,7 +384,7 @@ namespace Gts {
 			return;
 		}
 		if (prey->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
-			Notify("{} is important, i shouldn't eat him.", prey->GetDisplayFullName());
+			Notify("{} is important, i shouldn't eat {}.", prey->GetDisplayFullName(), prey->GetDisplayFullName());
 		}
 		if (staminacheck < wastestamina) {
 			Notify("{} is too tired for vore.", pred->GetDisplayFullName());

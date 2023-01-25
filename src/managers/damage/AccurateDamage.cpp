@@ -31,12 +31,20 @@ using namespace std;
 namespace {
 	const float LAUNCH_DAMAGE = 0.4f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float UNDERFOOT_POWER = 0.50;
+	const float UNDERFOOT_POWER = 0.60;
 
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
+			return;
+		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+			return;
+		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+			return;
+		}
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto model = tiny->GetCurrent3D();
+
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			float movementFactor = 1.0;
@@ -44,15 +52,13 @@ namespace {
 				movementFactor *= 1.5;
 			}
 			if (!isdamaging && !giant->IsSprinting() && !giant->IsWalking() && !giant->IsRunning()) {
-				PushActorAway(giant, tiny, 2 * force);
+				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
-				log::info("Not moving, Doing damage from {} - to: {}", giant->GetDisplayFullName(),tiny->GetDisplayFullName());
 			}
 			if (!isdamaging && (force >= 0.55 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
-				PushActorAway(giant, tiny, 2 * force);
+				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-				log::info("Moving, Doing damage to: {}", tiny->GetDisplayFullName());
 			}
 			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
 		}
@@ -75,7 +81,7 @@ namespace {
 			InstaCrushRequirement = (18.0 / HighHeels) * Gigantism;
 		}
 
-		if (size_difference >= InstaCrushRequirement) {// && !target->IsPlayerTeammate()) {
+		if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate()) {
 			CrushManager::Crush(giant, target);
 		}
 
@@ -94,6 +100,17 @@ namespace {
 				ShrinkActor(giant, 0.0015 * BonusShrink, 0.0);
 				Grow(giant, 0.00045 * targetscale * BonusShrink, 0.0);
 			}
+		}
+	}
+
+
+	void StaggerOr(Actor* giant, Actor* tiny, float power) {
+		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+		if (size_difference >= 1.33 && size_difference < 2.0) {
+			PlayAnimation(tiny, staggerStart);
+		}
+		else if (size_difference >= 2.0) {
+			PushActorAway(giant, tiny, power);
 		}
 	}
 }
@@ -124,7 +141,7 @@ namespace Gts {
 
 		// Get world HH offset
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
-		NiPoint3 hhOffsetbase= HighHeelManager::GetBaseHHOffset(actor);
+		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
 
 		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
@@ -277,7 +294,7 @@ namespace Gts {
 			DoSizeDamage(giant, tiny, movementFactor, force * 1.5);
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
-				PushActorAway(giant, tiny, knockBack);
+				StaggerOr(giant, tiny, knockBack);
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force <= UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
@@ -288,7 +305,7 @@ namespace Gts {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
 						DamageAV(tiny,ActorValue::kHealth, damage);
 					}
-					PushActorAway(giant, tiny, knockBack);
+					StaggerOr(giant, tiny, knockBack);
 					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 35 * movementFactor * giantSize * force);
 				}
 			}
@@ -311,7 +328,6 @@ namespace Gts {
 		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
 		}
-
 
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);

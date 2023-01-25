@@ -177,11 +177,12 @@ namespace Gts {
 					}
 					ScareChance(giant);
 
-					//if (tiny->formID != 0x14) {
+					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // CTD if we Disintegrate the player
 						log::info("Trying to Disintegrate {}", tiny->GetDisplayFullName());
-					//}
+					}
 					AdjustGiantessSkill(giant, tiny);
+					CrushBonuses(giant, tiny);
 					FearChance(giant);
 				}
 			}
@@ -216,7 +217,9 @@ namespace Gts {
 		if (CrushManager::AlreadyCrushed(tiny)) {
 			return false;
 		}
-
+		if (tiny->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
+			return false;
+		}
 		// Check if they are immune
 		const std::string_view CANT_CRUSH_EDITORID = "GtsCantStomp";
 		if (tiny->HasKeywordString(CANT_CRUSH_EDITORID)) {
@@ -224,9 +227,7 @@ namespace Gts {
 			return false;
 		}
 		//Check for Essential
-		if (tiny->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
-			return false;
-		}
+		
 		// Check skin
 		auto skin = tiny->GetSkin();
 		if (skin) {

@@ -250,13 +250,12 @@ namespace Gts {
 		}
 	}
 
-	inline void CrushToNothing(Actor* caster, Actor* target) {
+	inline void CrushBonuses(Actor* caster, Actor* target) {
 		float target_scale = get_target_scale(target);
 		float caster_scale = get_target_scale(caster);
 		auto player = PlayerCharacter::GetSingleton();
 		float sizedifference = caster_scale/target_scale;
 		float instacrushrequirement = 24.0;
-
 
 		if (Runtime::GetBool("ProtectEssentials") && target->IsEssential()) {
 			return;
@@ -277,24 +276,22 @@ namespace Gts {
 		if (!Cache) {
 			return;
 		}
-		if (Runtime::HasPerk(player, "SizeReserve")) {
-			Cache->SizeReserve += target_scale/25;
-		}
-		if (caster->formID == 0x14) {
-			AdjustSizeLimit(0.0417 * target_scale);
-		}
-
-		if (caster->formID == 0x14) {
-			bool hasExplosiveGrowth1 = Runtime::HasMagicEffect(caster, "explosiveGrowth1");
-			bool hasExplosiveGrowth2 = Runtime::HasMagicEffect(caster, "explosiveGrowth2");
-			bool hasExplosiveGrowth3 = Runtime::HasMagicEffect(caster, "explosiveGrowth3");
-
+		if (caster == player)  {
+				bool hasExplosiveGrowth1 = Runtime::HasMagicEffect(caster, "explosiveGrowth1");
+				bool hasExplosiveGrowth2 = Runtime::HasMagicEffect(caster, "explosiveGrowth2");
+				bool hasExplosiveGrowth3 = Runtime::HasMagicEffect(caster, "explosiveGrowth3");
+			if (Runtime::HasPerk(player, "SizeReserve")) {
+				Cache->SizeReserve += target_scale/25;
+			}
+				AdjustSizeLimit(0.0417 * target_scale);
 			if (Runtime::HasPerk(caster, "ExtraGrowth") && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
 				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
 				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());
-			} // Slowly increase Limit after crushing someone while Growth Spurt is active.
+			} 
+			// Slowly increase Crush Growth Limit after crushing someone while Growth Spurt is active.
 		}
 	}
+	
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
 		Runtime::CastSpell(caster, target, "TrackSizeSpell");

@@ -64,7 +64,7 @@ namespace Gts {
 
 		if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
 			CrushManager::Crush(caster, target);
-			CrushToNothing(caster, target);
+			CrushBonuses(caster, target);
 		}
 
 		// ^ Crush anyway, no conditions needed since size difference is too massive
@@ -91,7 +91,7 @@ namespace Gts {
 		if (size_difference >= 8.0 * Gigantism && target->IsDead() && !target->IsPlayerTeammate() && this->crushtimer.ShouldRunFrame()) {
 			// ^ We don't want to crush allies
 			CrushManager::Crush(caster, target);
-			CrushToNothing(caster, target);
+			CrushBonuses(caster, target);
 			if (Runtime::HasMagicEffect(caster, "SmallMassiveThreat") && caster != target) {
 				GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 24.0);
 			}
