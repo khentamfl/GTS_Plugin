@@ -49,7 +49,8 @@ namespace {
 				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
 				log::info("Not moving, Doing damage from {} - to: {}", giant->GetDisplayFullName(),tiny->GetDisplayFullName());
 			}
-			if (force >= 0.55 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking()) {
+			if (!isdamaging && (force >= 0.55 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
+				PushActorAway(giant, tiny, 2 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 				log::info("Moving, Doing damage to: {}", tiny->GetDisplayFullName());
 			}
@@ -298,20 +299,16 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (!sizemanager.GetPreciseDamage()) {
 			return;
-		}
-		if (!giant) {
+		} if (!giant) {
 			return;
-		}
-		if (!tiny) {
+		} if (!tiny) {
 			return;
 		}
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
-		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
 			return;
-		}
-		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
 		}
 
