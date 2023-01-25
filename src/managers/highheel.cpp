@@ -129,7 +129,7 @@ namespace Gts {
 				});
 			}
 		}
-		log::info("Base HHOffset: {}", Vector2Str(result));
+		//log::info("Base HHOffset: {}", Vector2Str(result));
 		return result;
 	}
 
