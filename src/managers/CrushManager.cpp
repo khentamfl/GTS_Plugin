@@ -179,6 +179,7 @@ namespace Gts {
 
 					//if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // CTD if we Disintegrate the player
+						log::info("Trying to Disintegrate {}", tiny->GetDisplayFullName());
 					//}
 					AdjustGiantessSkill(giant, tiny);
 					FearChance(giant);
@@ -247,7 +248,7 @@ namespace Gts {
 				}
 			}
 		}
-
+		log::info("Can crush {}", tiny->GetDisplayFullName());
 		return true;
 	}
 

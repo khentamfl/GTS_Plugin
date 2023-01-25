@@ -47,7 +47,7 @@ namespace {
 				PushActorAway(giant, tiny, 2 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
-				log::info("Not moving, Doing damage to: {}", tiny->GetDisplayFullName());
+				log::info("Not moving, Doing damage from {} - to: {}", giant->GetDisplayFullName(),tiny->GetDisplayFullName());
 			}
 			if (force >= 0.55 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking()) {
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
@@ -227,7 +227,7 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = force/50;///nodeCollisions;
 								ApplySizeEffect(actor, otherActor, aveForce);
-								log::info("NodeCollision, Giant: {} Tiny: {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName());
+								log::info("NodeCollision, Giant: {}; Tiny: {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName());
 								//break;
 							}
 						}
