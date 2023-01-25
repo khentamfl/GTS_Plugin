@@ -29,9 +29,9 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	const float LAUNCH_DAMAGE = 0.6f;
+	const float LAUNCH_DAMAGE = 0.4f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float UNDERFOOT_POWER = 0.75;
+	const float UNDERFOOT_POWER = 0.60;
 
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
 		auto& sizemanager = SizeManager::GetSingleton();
@@ -280,8 +280,9 @@ namespace Gts {
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.5) { // If under the foot
 			DoSizeDamage(giant, tiny, movementFactor, force * 4);
-			if (sizeRatio >= 4.0) {
-				//PushActorAway(giant, tiny, knockBack);
+			if (!sizemanager.IsLaunching(tiny) && sizeRatio >= 2.0) {
+				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+				PushActorAway(giant, tiny, knockBack);
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force <= UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
@@ -351,11 +352,11 @@ namespace Gts {
 			result *= 0.33;
 		}
 
-		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.20))) {
+		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.10))) {
 			if (CrushManager::CanCrush(giant, tiny)) {
 				crushmanager.Crush(giant, tiny);
 			}
 		}
-		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.20);
+		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.10);
 	}
 }

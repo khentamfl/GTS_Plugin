@@ -408,6 +408,9 @@ namespace {
 	}
 
 	void GameMode(Actor* actor)  {
+		if (!actor) {
+			return;
+		}
 		ChosenGameMode gameMode = ChosenGameMode::None;
 		float growthRate = 0.0;
 		float shrinkRate = 0.0;
@@ -509,8 +512,6 @@ void GtsManager::Update() {
 	        }
 	   }*/
 
-	ClothManager::GetSingleton().CheckRip();
-
 	for (auto actor: find_actors()) {
 		if (!actor) {
 			continue;
@@ -521,6 +522,7 @@ void GtsManager::Update() {
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
 			accuratedamage.DoAccurateCollision(actor);
+			ClothManager::GetSingleton().CheckRip();
 		}
 		update_actor(actor);
 		apply_actor(actor);
