@@ -31,7 +31,7 @@ using namespace std;
 namespace {
 	const float LAUNCH_DAMAGE = 0.4f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float UNDERFOOT_POWER = 0.60;
+	const float UNDERFOOT_POWER = 0.70;
 
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
 		auto& sizemanager = SizeManager::GetSingleton();
@@ -181,7 +181,7 @@ namespace Gts {
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, hh*0.08, -(hh * 0.25)), // The standard at the foot position
-			NiPoint3(-1.6, 7.7 + (hh/70), -0.6 + -hh), // Offset it forward
+			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + -hh), // Offset it forward
 			NiPoint3(0.0, (hh/50), -hh), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
@@ -279,7 +279,7 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.5) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 4);
+			DoSizeDamage(giant, tiny, movementFactor, force * 40);
 			if (!sizemanager.IsLaunching(tiny) && sizeRatio >= 2.0) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				PushActorAway(giant, tiny, knockBack);
@@ -356,6 +356,10 @@ namespace Gts {
 			if (CrushManager::CanCrush(giant, tiny)) {
 				crushmanager.Crush(giant, tiny);
 			}
+		}
+		if (SizeManager::BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
+			DamageAV(tiny, ActorValue::kStamina, result * weightdamage * mult * 0.30);
+			return; // Stamina protection, emulate Size Damage resistance
 		}
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.10);
 	}
