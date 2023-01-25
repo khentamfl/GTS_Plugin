@@ -94,7 +94,7 @@ namespace Gts {
 				if (key == 0x1d && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) { // Left CTRL
 					for (auto actor: find_actors()) {
 						if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
-							float hh = HighHeelManager::GetBaseHHOffset(actor)/100;
+							float hh = HighHeelManager::GetBaseHHOffset(actor)[2]/100;
 							float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
 							float scale = get_target_scale(actor);
 							float maxscale = get_max_scale(actor);
