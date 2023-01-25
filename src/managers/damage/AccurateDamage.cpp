@@ -35,10 +35,11 @@ namespace {
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-		if (sizedifference >= 1.33 && sizedifference < 2.0) {
+		if (sizedifference >= 1.33 && sizedifference < 3.0) {
 			PlayAnimation(tiny, "Ragdoll");
+			PlayAnimation(giant, "Ragdoll");
 		}
-		else if (sizedifference >= 2.0) {
+		else if (sizedifference >= 3.0) {
 			PushActorAway(giant, tiny, power);
 		}
 	}
@@ -334,9 +335,6 @@ namespace Gts {
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float multiplier = giantsize/tinysize  * highheels;
 		float multipliernolimit = giantsize/tinysize  * highheels;
-		if (multiplier > 4.0) {
-			multiplier = 4.0; // temp fix
-		}
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny);
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
 		float highheelsdamage = sizemanager.GetSizeAttribute(giant, 3);

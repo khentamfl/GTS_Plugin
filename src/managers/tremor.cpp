@@ -43,6 +43,7 @@ namespace Gts {
 			return;
 		}
 		auto actor = impact.actor;
+		autu player = PlayerCharacter::GetSingleton();
 
 		float tremor_scale;
 		if (actor->formID == 0x14) {
@@ -162,7 +163,10 @@ namespace Gts {
 						break;
 					}
 				}
-
+				if (actor->formID != 0x14) {
+					float sizedifference = -1.0 + (get_visual_scale(actor)/get_visual_scale(player));
+					power *= sizedifference;
+				}
 				float intensity = power * falloff * tremor_scale;
 
 				float duration = power * tremor_scale * 0.5;
@@ -198,8 +202,6 @@ namespace Gts {
 
 				bool npcEffects = Runtime::GetBoolOr("NPCSizeEffects", true);
 				if (actor->formID != 0x14 && npcEffects) {
-						float sizedifference = -1.0 + (get_visual_scale(PlayerCharacter::GetSingleton())/get_visual_scale(actor));
-						intensity *= sizedifference; // Attempt to improve logic
 					if (intensity > 0.01 && duration > 0.01) {
 						
 						shake_camera(actor, intensity, duration);
