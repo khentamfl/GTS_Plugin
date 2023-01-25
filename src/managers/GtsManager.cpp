@@ -183,7 +183,7 @@ namespace {
 		if (!actor->IsRunning()) {
 			persi_actor_data->anim_speed = speed_mult_others;//MS_mult;
 		} else if (actor->IsRunning() && !actor->IsSprinting() && !actor->IsSneaking()) {
-			persi_actor_data->anim_speed = speed_mult_others/(getAV(actor, ActorValue::kSpeedMult)/100);//speed_mult_walk * PerkSpeed;
+			persi_actor_data->anim_speed = speed_mult_others/(GetAV(actor, ActorValue::kSpeedMult)/100);//speed_mult_walk * PerkSpeed;
 		}
 
 
@@ -353,7 +353,7 @@ namespace {
 					//log::info("Curse Of Growth, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
 					float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
 					float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");                                       // Slider that determines max size cap.
-					float sizelimit = std::clamp((1.00 * (CalcAv/100 * MaxSize)), 1.0, MaxSize);                     // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
+					float sizelimit = clamp((1.0, MaxSize, 1.00 * (CalcAv/100 * MaxSize)));                          // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
 					int Random = rand() % 20;                                                                        // Randomize power
 					int GrowthTimer = rand() % 7;                                                                    // Randomize 're-trigger' delay, kinda
 					int StrongGrowthChance = rand() % 20;                                                            // Self-explanatory
