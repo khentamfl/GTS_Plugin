@@ -98,7 +98,7 @@ namespace Gts {
 							float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
 							float scale = get_target_scale(actor);
 							float maxscale = get_max_scale(actor);
-							ConsoleLog::GetSingleton()->Print("%s Scale is: %g; Size Limit is: %g; High Heels: %g; Aspect Of Giantess: %g", actor->GetDisplayFullName(), scale, hh, maxscale, gigantism);
+							ConsoleLog::GetSingleton()->Print("%s Scale is: %g; Size Limit is: %g; High Heels: %g; Aspect Of Giantess: %g", actor->GetDisplayFullName(), scale, maxscale, hh, gigantism);
 						}
 					}
 				}
@@ -214,7 +214,7 @@ namespace Gts {
 					float npcscale = get_visual_scale(actor);
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
 					DamageAV(player, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
-					Grow(actor, (0.0012 * npcscale) * magicka, 0.0);
+					Grow(actor, 0.0012 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_target_scale(actor)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(actor, player, 0.25);
 					if (this->timergrowth.ShouldRun()) {
@@ -231,7 +231,7 @@ namespace Gts {
 					float npcscale = get_target_scale(actor);
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
 					DamageAV(player, ActorValue::kMagicka, 0.10 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
-					ShrinkActor(actor, (-0.0012 * npcscale) * magicka, 0.0);
+					ShrinkActor(actor, -0.0012 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_target_scale(actor)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(actor, player, 0.20);
 					if (this->timergrowth.ShouldRun()) {

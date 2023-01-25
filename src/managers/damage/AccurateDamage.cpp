@@ -36,7 +36,7 @@ namespace {
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		if (sizedifference >= 1.33 && sizedifference < 2.0) {
-			PlayAnimation(tiny, "staggerStart");
+			PlayAnimation(tiny, "StaggerPlayer");
 		}
 		else if (sizedifference >= 2.0) {
 			PushActorAway(giant, tiny, power);
@@ -349,7 +349,7 @@ namespace Gts {
 		if (giant->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
 		}
-		if (totaldamage >= 3.0) {
+		if (IsJumping(giant)) {
 			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
@@ -365,7 +365,7 @@ namespace Gts {
 		}
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * weightdamage * mult * 0.30);
-			return; // Stamina protection, emulate Size Damage resistance
+			return; // Stamina protection, emulates Size Damage resistance
 		}
 		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.10);
 	}
