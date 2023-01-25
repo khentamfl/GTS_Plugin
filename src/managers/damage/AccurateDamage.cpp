@@ -33,6 +33,16 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.60;
 
+	void StaggerOr(Actor* giant, Actor* tiny, float power) {
+		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+		if (sizedifference >= 1.33 && sizedifference < 2.0) {
+			PlayAnimation(tiny, "staggerStart");
+		}
+		else if (sizedifference >= 2.0) {
+			PushActorAway(giant, tiny, power);
+		}
+	}
+
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
@@ -100,17 +110,6 @@ namespace {
 				ShrinkActor(giant, 0.0015 * BonusShrink, 0.0);
 				Grow(giant, 0.00045 * targetscale * BonusShrink, 0.0);
 			}
-		}
-	}
-
-
-	void StaggerOr(Actor* giant, Actor* tiny, float power) {
-		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-		if (size_difference >= 1.33 && size_difference < 2.0) {
-			PlayAnimation(tiny, "staggerStart");
-		}
-		else if (size_difference >= 2.0) {
-			PushActorAway(giant, tiny, power);
 		}
 	}
 }
