@@ -69,7 +69,7 @@ namespace Gts {
 					if (buttonEvent->HeldDuration() >= 1.2 && Runtime::HasPerk(player, "SizeReserve") && Cache->SizeReserve > 0) {
 						float SizeCalculation = buttonEvent->HeldDuration() - 1.2;
 						float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-						float Volume = std::clamp(get_visual_scale(caster) * Cache->SizeReserve/10, 0.10, 2.0);
+						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->SizeReserve/10);
 
 						if (this->timergrowth.ShouldRunFrame()) {
 							Runtime::PlaySound("growthSound", caster, Cache->SizeReserve/50 * buttonEvent->HeldDuration(), 0.0);
@@ -184,7 +184,7 @@ namespace Gts {
 
 		if (Runtime::HasPerk(player, "TotalControl") && !ShiftPressed && !AltPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow self
 			float scale = get_visual_scale(player);
-			float stamina = std::clamp(GetStaminaPercentage(player), 0.05, 1.0);
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
 			DamageAV(player, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			mod_target_scale(player, 0.0012 * scale * stamina);
 			float Volume = clamp(0.10, 2.0, get_target_scale(player)/10);
@@ -212,7 +212,7 @@ namespace Gts {
 
 				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 					float npcscale = get_visual_scale(actor);
-					float magicka = std::clamp(GetMagikaPercentage(player), 0.05, 1.0);
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
 					DamageAV(player, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					mod_target_scale(actor, (0.0012 * npcscale) * magicka);
 					float Volume = clamp(0.05, 2.0, get_target_scale(Actor)/10);
@@ -234,7 +234,7 @@ namespace Gts {
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
 					DamageAV(player, ActorValue::kMagicka, 0.10 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					mod_target_scale(actor, (-0.0012 * npcscale) * magicka);
-					float Volume = std::clamp( get_target_scale(actor)/10, 0.05, 2.0);
+					float Volume = clamp(0.05, 2.0, get_target_scale(actor)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(actor, player, 0.20);
 					if (this->timergrowth.ShouldRun()) {
 						Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);
