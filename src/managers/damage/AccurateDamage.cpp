@@ -47,9 +47,11 @@ namespace {
 				PushActorAway(giant, tiny, 2 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
+				log::info("Not moving, Doing damage to: {}", tiny->GetDisplayFullName());
 			}
 			if (force >= 0.55 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking()) {
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+				log::info("Moving, Doing damage to: {}", tiny->GetDisplayFullName());
 			}
 			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, 0.35 * force);
 		}
@@ -72,7 +74,7 @@ namespace {
 			InstaCrushRequirement = (18.0 / HighHeels) * Gigantism;
 		}
 
-		if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate()) {
+		if (size_difference >= InstaCrushRequirement) {// && !target->IsPlayerTeammate()) {
 			CrushManager::Crush(giant, target);
 		}
 
@@ -223,8 +225,9 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = force/nodeCollisions;
+								float aveForce = force;///nodeCollisions;
 								ApplySizeEffect(actor, otherActor, aveForce);
+								log::info("NodeCollision, Giant: {} Tiny: {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName());
 								//break;
 							}
 						}
