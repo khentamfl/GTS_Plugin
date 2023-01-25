@@ -135,22 +135,15 @@ namespace Gts {
 
 		auto leftCalf = find_node(actor, leftCalfLookup);
 		auto rightCalf = find_node(actor, rightCalfLookup);
-		
+
 		auto leftToe = find_node(actor, leftToeLookup);
 		auto rightToe = find_node(actor, rightToeLookup);
 
-		float maxFootDistance = BASE_DISTANCE * giantScale;
-		float hh = hhOffsetbase[2];
-		// Make a list of points to check
-		std::vector<NiPoint3> points = {
-			NiPoint3(0.0, hh*0.08, -(hh * 0.25)), // The standard at the foot position
-			NiPoint3(-1.6, 7.7 + (hh/70), -0.6 + -hh), // Offset it forward 
-			NiPoint3(0.0, (hh/50), -hh), // Offset for HH
-		};
-		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> left(leftFoot, leftToe, leftCalf);
-		std::tuple<NiAVObject*, NiAVObject*, NiAVObject*> right(rightFoot, rightToe, rightCalf);
-
-		for (const auto& [foot, toe, calf]: {left, right}) {
+		NiMatrix3 leftRotMat;
+		{
+			NiAVObject* foot = leftFoot;
+			NiAVObject* calf = leftCalf;
+			NiAVObject* toe = leftToe;
 			NiTransform inverseFoot = foot->world.Invert();
 			NiPoint3 forward = inverseFoot*toe->world.translate;
 			forward = forward / forward.Length();
@@ -161,15 +154,43 @@ namespace Gts {
 			NiPoint3 right = forward.UnitCross(up);
 			forward = up.UnitCross(right); // Reorthonalize
 
-			NiMatrix3 rotMat = NiMatrix3(right, forward, up);
+			leftRotMat = NiMatrix3(right, forward, up);
+		}
 
+		NiMatrix3 rightRotMat;
+		{
+			NiAVObject* foot = rightFoot;
+			NiAVObject* calf = rightCalf;
+			NiAVObject* toe = rightToe;
+
+			NiTransform inverseFoot = foot->world.Invert();
+			NiPoint3 forward = inverseFoot*toe->world.translate;
+			forward = forward / forward.Length();
+
+			NiPoint3 up = inverseFoot*calf->world.translate;
+			up = up / up.Length();
+
+			NiPoint3 right = up.UnitCross(forward);
+			forward = right.UnitCross(up); // Reorthonalize
+
+			rightRotMat = NiMatrix3(right, forward, up);
+		}
+
+		float maxFootDistance = BASE_DISTANCE * giantScale;
+		float hh = hhOffsetbase[2];
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, hh*0.08, -(hh * 0.25)), // The standard at the foot position
+			NiPoint3(-1.6, 7.7 + (hh/70), -0.6 + -hh), // Offset it forward
+			NiPoint3(0.0, (hh/50), -hh), // Offset for HH
+		};
+		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
+		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
+
+		for (const auto& [foot, rotMat]: {left, right}) {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
-
-				//if (hhOffset.Length() > 1e-4) {
-					//footPoints.push_back(foot->world*(rotMat*(point-hhOffset))); // Add HH offsetted version
-				//}
 			}
 			if (Runtime::GetBool("EnableDebugOverlay") && actor->formID == 0x14) {
 				for (auto point: footPoints) {
