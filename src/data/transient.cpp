@@ -62,7 +62,7 @@ namespace Gts {
 			result.base_height = base_height_meters;
 			result.base_volume = base_volume_meters;
 			result.wearingHh = false;
-			result.base_walkspeedmult = actor->GetActorValue(ActorValue::kSpeedMult);
+			result.base_walkspeedmult = actor->GetBaseActorValue(ActorValue::kSpeedMult);
 			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 			float shoe_weight = 1.0;
 			if (shoe) {
