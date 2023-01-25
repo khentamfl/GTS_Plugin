@@ -357,7 +357,7 @@ namespace Gts {
 				crushmanager.Crush(giant, tiny);
 			}
 		}
-		if (SizeManager::BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
+		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * weightdamage * mult * 0.30);
 			return; // Stamina protection, emulate Size Damage resistance
 		}
