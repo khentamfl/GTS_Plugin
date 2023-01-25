@@ -183,7 +183,7 @@ namespace {
 		if (!actor->IsRunning()) {
 			persi_actor_data->anim_speed = speed_mult_others;//MS_mult;
 		} else if (actor->IsRunning() && !actor->IsSprinting() && !actor->IsSneaking()) {
-			persi_actor_data->anim_speed = speed_mult_others/(GetAV(actor, ActorValue::kSpeedMult)/100);//speed_mult_walk * PerkSpeed;
+			persi_actor_data->anim_speed = speed_mult_others/1.0 - (GetAV(actor, ActorValue::kSpeedMult)/200);//speed_mult_walk * PerkSpeed;
 		}
 
 
