@@ -107,7 +107,7 @@ namespace {
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		if (size_difference >= 1.33 && size_difference < 2.0) {
-			PlayAnimation(tiny, staggerStart);
+			PlayAnimation(tiny, "staggerStart");
 		}
 		else if (size_difference >= 2.0) {
 			PushActorAway(giant, tiny, power);
