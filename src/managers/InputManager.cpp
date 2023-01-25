@@ -215,7 +215,7 @@ namespace Gts {
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
 					DamageAV(player, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					mod_target_scale(actor, (0.0012 * npcscale) * magicka);
-					float Volume = clamp(0.05, 2.0, get_target_scale(Actor)/10);
+					float Volume = clamp(0.05, 2.0, get_target_scale(actor)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(actor, player, 0.25);
 					//log::info("Growing {}, rate: {}, npcscale: {}, magic: {}", actor->GetDisplayFullName(), (0.0012 * npcscale) * magicka, npcscale, magicka);
 					if (this->timergrowth.ShouldRun()) {
