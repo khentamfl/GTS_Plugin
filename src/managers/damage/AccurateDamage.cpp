@@ -225,7 +225,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = force;///nodeCollisions;
+								float aveForce = force/50;///nodeCollisions;
 								ApplySizeEffect(actor, otherActor, aveForce);
 								log::info("NodeCollision, Giant: {} Tiny: {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName());
 								//break;
