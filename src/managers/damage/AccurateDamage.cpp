@@ -333,13 +333,12 @@ namespace Gts {
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
-		float multiplier = giantsize/tinysize  * highheels;
-		float multipliernolimit = giantsize/tinysize  * highheels;
-		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny);
+		float multiplier = giantsize/tinysize * highheels;
+		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
 		float highheelsdamage = sizemanager.GetSizeAttribute(giant, 3);
-		float sprintdamage = 1.0;
-		float falldamage = 1.0;
+		float sprintdamage = 1.0; // default Sprint damage of 1.0
+		float falldamage = 1.0; // default Fall damage of 1.0
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 
 		SizeModifications(giant, tiny, highheels);
@@ -351,12 +350,12 @@ namespace Gts {
 			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
-		float result = ((multiplier * 32 * 9.0) * totaldamage * 0.12) * (normaldamage * sprintdamage * falldamage) * 0.38 * highheelsdamage * additionaldamage;
+		float result = ((0.20 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * 0.25 * (highheelsdamage * additionaldamage * weightdamage * mult);
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
 
-		if (multipliernolimit >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result * weightdamage * mult * 0.10))) {
+		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
 			if (CrushManager::CanCrush(giant, tiny)) {
 				crushmanager.Crush(giant, tiny);
 			}
@@ -365,6 +364,6 @@ namespace Gts {
 			DamageAV(tiny, ActorValue::kStamina, result * weightdamage * mult * 0.30);
 			return; // Stamina protection, emulates Size Damage resistance
 		}
-		DamageAV(tiny, ActorValue::kHealth, result * weightdamage * mult * 0.10);
+		DamageAV(tiny, ActorValue::kHealth, result);
 	}
 }
