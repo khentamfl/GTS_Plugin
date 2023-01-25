@@ -43,7 +43,7 @@ namespace Gts {
 			return;
 		}
 		auto actor = impact.actor;
-		autu player = PlayerCharacter::GetSingleton();
+		auto player = PlayerCharacter::GetSingleton();
 
 		float tremor_scale;
 		if (actor->formID == 0x14) {
