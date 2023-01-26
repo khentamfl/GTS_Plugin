@@ -163,8 +163,8 @@ namespace Gts {
 						break;
 					}
 				}
-				if (actor->formID !=0x14) {
-					float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)) * 0.8);
+				if (actor->formID != 0x14) {
+					float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)) * 0.3);
 					tremor_scale = sizedifference;
 				}
 				float intensity = power * falloff * tremor_scale;
