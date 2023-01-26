@@ -173,7 +173,7 @@ namespace Gts {
 
 				if (actor->formID == 0x14 && pcEffects) {
 					if (actor->formID != 0x14) {
-						float sizedifference = -1.0 + (get_visual_scale(actor)/get_visual_scale(player));
+						float sizedifference = 1.0 + ((get_visual_scale(actor)/get_visual_scale(player) * 0.20));
 						intensity *= sizedifference;
 					}
 					if (intensity > 0.01 && duration > 0.01) {
