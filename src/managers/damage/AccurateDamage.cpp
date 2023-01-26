@@ -37,7 +37,7 @@ namespace {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		int ragdollchance = rand() % 10 + 1.0;
 		if (sizedifference >= 1.33 && sizedifference < 3.0) {
-			if (ragdollchance < 10.0 && size_difference < 2.0) {
+			if (ragdollchance < 10.0 && sizedifference < 2.0) {
 				PlayAnimation(tiny, "StaggerPlayer");
 				PlayAnimation(giant, "StaggerPlayer"); // Only stagger
 			}
