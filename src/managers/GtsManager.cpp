@@ -131,7 +131,7 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		float scale = get_target_scale(actor);
+		float scale = get_visual_scale(actor);
 		if (scale < 1e-5) {
 			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;

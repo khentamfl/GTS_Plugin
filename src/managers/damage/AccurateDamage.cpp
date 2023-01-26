@@ -36,8 +36,8 @@ namespace {
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		if (sizedifference >= 1.33 && sizedifference < 3.0) {
-			PlayAnimation(tiny, "Ragdoll");
-			PlayAnimation(giant, "Ragdoll");
+			PlayAnimation(tiny, "PlayerStagger");
+			PlayAnimation(giant, "PlayerStagger");
 		}
 		else if (sizedifference >= 3.0) {
 			PushActorAway(giant, tiny, power);
@@ -291,7 +291,7 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 1.5);
+			DoSizeDamage(giant, tiny, movementFactor, force * 4);
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				StaggerOr(giant, tiny, knockBack);

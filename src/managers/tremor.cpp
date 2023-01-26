@@ -163,10 +163,7 @@ namespace Gts {
 						break;
 					}
 				}
-				if (actor->formID != 0x14) {
-					float sizedifference = -1.0 + (get_visual_scale(actor)/get_visual_scale(player));
-					power *= sizedifference;
-				}
+				
 				float intensity = power * falloff * tremor_scale;
 
 				float duration = power * tremor_scale * 0.5;
@@ -175,6 +172,10 @@ namespace Gts {
 				bool pcEffects = Runtime::GetBoolOr("PCAdditionalEffects", true);
 
 				if (actor->formID == 0x14 && pcEffects) {
+					if (actor->formID != 0x14) {
+						float sizedifference = -1.0 + (get_visual_scale(actor)/get_visual_scale(player));
+						intensity *= sizedifference;
+					}
 					if (intensity > 0.01 && duration > 0.01) {
 						if (IsFirstPerson()) {
 							intensity *= 0.075; // Shake effects are weaker when in first person
