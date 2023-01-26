@@ -52,6 +52,11 @@ namespace Gts {
 			tremor_scale = Persistent::GetSingleton().npc_tremor_scale * (0.95 + get_target_scale(actor) * 0.05);
 		}
 
+		if (actor->formID != 0x14) {
+			float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)) * 0.20);
+			tremor_scale = sizedifference;
+		}
+
 		if (tremor_scale < 1e-5) {
 			return;
 		}
@@ -163,10 +168,7 @@ namespace Gts {
 						break;
 					}
 				}
-				if (actor->formID != 0x14) {
-					float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)) * 0.25);
-					tremor_scale = sizedifference;
-				}
+				
 				float intensity = power * falloff * tremor_scale;
 
 				float duration = power * tremor_scale * 0.5;
