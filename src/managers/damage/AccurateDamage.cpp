@@ -36,6 +36,10 @@ namespace {
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		int ragdollchance = rand() % 10 + 1.0;
+		PlayAnimation(tiny, "staggerStart"); // staggerStart, RagdollInstant
+		PlayAnimation(giant, "staggerStart");
+		PlayAnimation(tiny, "StaggerStart");
+		PlayAnimation(giant, "StaggerStart");
 		if (sizedifference >= 1.33 && sizedifference < 3.0) {
 			if (ragdollchance < 10.0 && sizedifference < 2.0) {
 				PlayAnimation(tiny, "staggerStart"); // staggerStart, RagdollInstant
