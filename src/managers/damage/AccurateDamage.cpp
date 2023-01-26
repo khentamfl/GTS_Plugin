@@ -207,8 +207,8 @@ namespace Gts {
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, hh*0.08, -(hh * 0.25)), // The standard at the foot position
-			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + -hh * 1.10), // Offset it forward
-			NiPoint3(0.0, (hh/50), -hh * 1.10), // Offset for HH
+			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + -hh * 1.15), // Offset it forward
+			NiPoint3(0.0, (hh/50), -hh * 1.15), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
 		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
@@ -297,7 +297,7 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 10);
+			DoSizeDamage(giant, tiny, movementFactor, force * 6);
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				StaggerOr(giant, tiny, knockBack);
@@ -356,7 +356,7 @@ namespace Gts {
 			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
-		float result = ((0.20 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * 0.75 * (highheelsdamage * additionaldamage * weightdamage * mult);
+		float result = ((0.25 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * additionaldamage * weightdamage * mult);
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
@@ -367,7 +367,7 @@ namespace Gts {
 			}
 		}
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
-			DamageAV(tiny, ActorValue::kStamina, result * weightdamage * mult * 0.30);
+			DamageAV(tiny, ActorValue::kStamina, result * 0.30);
 			return; // Stamina protection, emulates Size Damage resistance
 		}
 		DamageAV(tiny, ActorValue::kHealth, result);
