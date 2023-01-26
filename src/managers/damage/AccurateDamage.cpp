@@ -38,8 +38,8 @@ namespace {
 		int ragdollchance = rand() % 10 + 1.0;
 		if (sizedifference >= 1.33 && sizedifference < 3.0) {
 			if (ragdollchance < 10.0 && sizedifference < 2.0) {
-				PlayAnimation(tiny, "staggerIdleStart"); // staggerStart, RagdollInstant
-				PlayAnimation(giant, "staggerIdleStart"); // Only stagger
+				PlayAnimation(tiny, "staggerStart"); // staggerStart, RagdollInstant
+				PlayAnimation(giant, "staggerStart"); // Only stagger
 			}
 			else {
 				PushActorAway(giant, tiny, power); // Push instead
