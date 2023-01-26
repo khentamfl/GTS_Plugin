@@ -30,10 +30,10 @@ namespace Gts {
 			return;
 		}
 
-		float caster_scale = get_target_scale(caster);
-		float stamina = clamp(0.25, 1.0, GetStaminaPercentage(caster));
+		float caster_scale = get_visual_scale(caster);
+		float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 
-		if (caster_scale > 0.25) {
+		if (caster_scale > 0.10) {
 			DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
 			ShrinkActor(caster, 0.0030* stamina, 0.0);
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.60);

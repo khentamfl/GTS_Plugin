@@ -36,14 +36,11 @@ namespace {
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		int ragdollchance = rand() % 10 + 1.0;
-		PlayAnimation(tiny, "staggerStart"); // staggerStart, RagdollInstant
-		PlayAnimation(giant, "staggerStart");
-		PlayAnimation(tiny, "StaggerStart");
-		PlayAnimation(giant, "StaggerStart");
+		//PlayAnimation(tiny, "staggerStart");//PlayAnimation(giant, "staggerStart");
+		//PlayAnimation(tiny, "StaggerStart");//PlayAnimation(giant, "StaggerStart");
 		if (sizedifference >= 1.33 && sizedifference < 3.0) {
 			if (ragdollchance < 10.0 && sizedifference < 2.0) {
-				PlayAnimation(tiny, "staggerStart"); // staggerStart, RagdollInstant
-				PlayAnimation(giant, "staggerStart"); // Only stagger
+				PlayAnimation(tiny, "StaggerStart"); // staggerStart, RagdollInstant
 			}
 			else {
 				PushActorAway(giant, tiny, power); // Push instead
@@ -255,7 +252,6 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = force/50;///nodeCollisions;
 								ApplySizeEffect(actor, otherActor, aveForce);
-								log::info("NodeCollision, Giant: {}; Tiny: {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName());
 								//break;
 							}
 						}

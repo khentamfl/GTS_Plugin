@@ -249,7 +249,7 @@ namespace Gts {
 				}
 			}
 		}
-		log::info("Can crush {}", tiny->GetDisplayFullName());
+		//log::info("Can crush {}", tiny->GetDisplayFullName());
 		return true;
 	}
 
