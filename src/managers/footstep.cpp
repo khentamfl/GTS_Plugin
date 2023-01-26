@@ -175,6 +175,10 @@ namespace Gts {
 			auto player = PlayerCharacter::GetSingleton();
 			auto actor = impact.actor;
 			float scale = impact.effective_scale;
+			if (actor->formID != 0x14) {
+					float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)));
+					scale = sizedifference;
+			}
 
 			float minimal_size = 1.2;
 			if (scale > minimal_size && !actor->IsSwimming()) {
@@ -196,10 +200,7 @@ namespace Gts {
 				if (actor->formID == 0x14 && IsFirstPerson()) { // Footsteps are quieter when in first person
 					scale *= 0.50;
 				}
-				if (actor->formID != 0x14) {
-					float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)));
-					scale = sizedifference;
-				}
+				
 
 				FootEvent foot_kind = impact.kind;
 				if (foot_kind == FootEvent::JumpLand) {
