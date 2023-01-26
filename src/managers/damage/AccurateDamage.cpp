@@ -35,12 +35,18 @@ namespace {
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+		int ragdollchance = rand() % 10 + 1.0;
 		if (sizedifference >= 1.33 && sizedifference < 3.0) {
-			PlayAnimation(tiny, "PlayerStagger");
-			PlayAnimation(giant, "PlayerStagger");
+			if (ragdollchance < 10.0 && size_difference < 2.0) {
+				PlayAnimation(tiny, "StaggerPlayer");
+				PlayAnimation(giant, "StaggerPlayer"); // Only stagger
+			}
+			else {
+				PushActorAway(giant, tiny, power); // Push instead
+			}
 		}
 		else if (sizedifference >= 3.0) {
-			PushActorAway(giant, tiny, power);
+			PushActorAway(giant, tiny, power); // Always push
 		}
 	}
 
@@ -291,7 +297,7 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 4);
+			DoSizeDamage(giant, tiny, movementFactor, force * 10);
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				StaggerOr(giant, tiny, knockBack);
@@ -350,7 +356,7 @@ namespace Gts {
 			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
-		float result = ((0.20 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * 0.5 * (highheelsdamage * additionaldamage * weightdamage * mult);
+		float result = ((0.20 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * 0.75 * (highheelsdamage * additionaldamage * weightdamage * mult);
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
