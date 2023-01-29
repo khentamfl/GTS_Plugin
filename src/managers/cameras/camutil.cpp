@@ -244,6 +244,7 @@ namespace Gts {
 			auto currentState = camera->currentState;
 			if (currentState) {
 				auto player = PlayerCharacter::GetSingleton();
+				log::info("Camera follows: {}", camera->cameraTarget);
 				if (player) {
 					auto model = player->Get3D(false);
 					if (model) {
