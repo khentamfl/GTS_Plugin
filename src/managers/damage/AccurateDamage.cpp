@@ -39,7 +39,7 @@ namespace {
 		//PlayAnimation(tiny, "staggerStart");//PlayAnimation(giant, "staggerStart");
 		//PlayAnimation(tiny, "StaggerStart");//PlayAnimation(giant, "StaggerStart");
 		if (sizedifference >= 1.33 && sizedifference < 3.0) {
-			if (ragdollchance < 10.0 && sizedifference < 2.0) {
+			if (ragdollchance < 10.0 && sizedifference < 2.0) { 
 				PlayAnimation(tiny, "StaggerStart"); // staggerStart, RagdollInstant
 			}
 			else {
