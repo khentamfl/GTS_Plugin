@@ -241,6 +241,9 @@ namespace Gts {
 	NiPoint3 GetCameraPosLocal() {
 		auto camera = PlayerCamera::GetSingleton();
 		if (camera) {
+			Actor* Target = camera->cameraTarget.get();
+			log::info("Camera Target is: {}", Target->GetDisplayFullName());
+			
 			auto currentState = camera->currentState;
 			if (currentState) {
 				auto player = PlayerCharacter::GetSingleton();
