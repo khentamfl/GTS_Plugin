@@ -17,7 +17,7 @@ namespace Gts {
 			auto scale = get_visual_scale(player);
 			auto boneTarget = this->GetBoneTarget();
 			if (!boneTarget.boneNames.empty()) {
-				auto player = PlayerCharacter::GetSingleton();
+				auto player = GetCameraActor();
 				if (player) {
 					auto rootModel = player->Get3D(false);
 					if (rootModel) {
@@ -57,7 +57,7 @@ namespace Gts {
 
 	NiPoint3 ThirdPersonCameraState::GetPlayerLocalOffsetProne(const NiPoint3& cameraPos) {
 		NiPoint3 pos = this->GetPlayerLocalOffset(cameraPos);
-		auto player = PlayerCharacter::GetSingleton();
+		auto player = GetCameraActor();
 		if (player) {
 			auto scale = get_visual_scale(player);
 			pos += this->ProneAdjustment(cameraPos)*scale;
