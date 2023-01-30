@@ -85,7 +85,7 @@ namespace Gts {
 
 	Actor* GetCameraActor() {
 		auto camera = PlayerCamera::GetSingleton();
-		log::info("Current Camera Target: {}", camera->cameraTarget.get().get());
+		log::info("Current Camera Target: {}", camera->cameraTarget.get().get()->GetDisplayFullName());
 		return camera->cameraTarget.get().get();
 	}
 
