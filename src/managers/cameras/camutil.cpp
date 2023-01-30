@@ -85,7 +85,7 @@ namespace Gts {
 
 	Actor* GetCameraActor() {
 		auto camera = PlayerCamera::GetSingleton();
-		return camera->cameraTarget.get();
+		return camera->cameraTarget.get().get();
 	}
 
 	#ifdef ENABLED_SHADOW
