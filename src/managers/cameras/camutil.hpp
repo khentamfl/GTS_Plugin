@@ -18,6 +18,8 @@ namespace Gts {
 	NiCamera* GetNiCamera();
 	void UpdateWorld2ScreetMat(NiCamera* niCamera);
 
+	Actor* GetCameraActor();
+
 	#ifdef ENABLED_SHADOW
 	ShadowSceneNode* GetShadowMap();
 	#endif

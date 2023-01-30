@@ -1,5 +1,6 @@
 #include "managers/cameras/tpState.hpp"
 #include "managers/cameras/camutil.hpp"
+#include "managers/cameras/camutil.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
@@ -11,7 +12,7 @@ using namespace Gts;
 namespace Gts {
 	NiPoint3 ThirdPersonCameraState::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
 		NiPoint3 pos = NiPoint3();
-		auto player = PlayerCharacter::GetSingleton();
+		auto player = GetCameraActor();
 		if (player) {
 			auto scale = get_visual_scale(player);
 			auto boneTarget = this->GetBoneTarget();

@@ -2,6 +2,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/persistent.hpp"
+#include "managers/cameras/camutil.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -9,7 +10,7 @@ using namespace Gts;
 namespace  Gts {
 	void FirstPersonCameraState::ExitState() {
 		// Reset the override
-		auto player = PlayerCharacter::GetSingleton();
+		auto player = GetCameraActor();
 		auto playerData = Persistent::GetSingleton().GetData(player);
 		if (playerData) {
 			playerData->scaleOverride = -1.0;

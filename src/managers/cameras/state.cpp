@@ -2,6 +2,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "managers/cameras/camutil.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -13,7 +14,7 @@ namespace Gts {
 	}
 
 	float CameraState::GetScale() {
-		auto player = PlayerCharacter::GetSingleton();
+		auto player = GetCameraActor();
 		float racescale = SizeManager::GetSingleton().GetRaceScale(player);
 		float result = get_visual_scale(player) * racescale;
 		if (!player) {

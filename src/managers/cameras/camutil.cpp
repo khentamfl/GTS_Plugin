@@ -40,7 +40,7 @@ namespace Gts {
 
 	void UpdateThirdPerson() {
 		auto camera = PlayerCamera::GetSingleton();
-		auto player = PlayerCharacter::GetSingleton();
+		auto player = GetCameraActor();
 		if (camera && player) {
 			camera->UpdateThirdPerson(player->IsWeaponDrawn());
 		}
@@ -83,9 +83,14 @@ namespace Gts {
 		toScreenFunc(camNi);
 	}
 
+	Actor* GetCameraActor() {
+		auto camera = PlayerCamera::GetSingleton();
+		return camera->cameraTarget.get();
+	}
+
 	#ifdef ENABLED_SHADOW
 	ShadowSceneNode* GetShadowMap() {
-		auto player = PlayerCharacter::GetSingleton();
+		auto player = GetCameraActor();
 		if (player) {
 			auto searchRoot = player->GetCurrent3D();
 			if (searchRoot) {
@@ -246,7 +251,7 @@ namespace Gts {
 
 			auto currentState = camera->currentState;
 			if (currentState) {
-				auto player = PlayerCharacter::GetSingleton();
+				auto player = GetCameraActor();
 				if (player) {
 					auto model = player->Get3D(false);
 					if (model) {
@@ -339,7 +344,7 @@ namespace Gts {
 	void UpdateCamera(float scale, NiPoint3 cameraLocalOffset, NiPoint3 playerLocalOffset) {
 		auto camera = PlayerCamera::GetSingleton();
 		auto cameraRoot = camera->cameraRoot;
-		auto player = PlayerCharacter::GetSingleton();
+		auto player = GetCameraActor();
 		auto currentState = camera->currentState;
 
 		if (cameraRoot) {
