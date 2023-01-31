@@ -351,6 +351,9 @@ namespace Gts {
 		float bonusCarryWeightMultiplier = Runtime::GetFloat("bonusCarryWeightMultiplier");
 		float bonusHPMultiplier = Runtime::GetFloat("bonusHPMultiplier");
 		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
+		if (!bonusCarryWeightMultiplier || !bonusHPMultiplier || !bonusDamageMultiplier) {
+			return 1.0;
+		}
 
 		if (Value == 1.0) {   // boost hp
 			return (bonusHPMultiplier/BalancedMode)*scale;
