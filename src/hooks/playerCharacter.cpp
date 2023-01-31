@@ -21,6 +21,7 @@ namespace Hooks
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_PlayerCharacter[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
+		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
 	}
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
@@ -82,6 +83,16 @@ namespace Hooks
 			}
 		} else {
 			return _GetActorValue(a_this, a_akValue);
+		}
+
+		float Hook_PlayerCharacter::GetPermanentActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
+			if (Plugin::InGame()) {
+				log::info("Get Perma AV");
+				float actual_value = _GetPermanentActorValue(a_this, a_akValue);
+				return actual_value;
+			} else {
+				return _GetPermanentActorValue(a_this, a_akValue);
+			}
 		}
 	}
 }
