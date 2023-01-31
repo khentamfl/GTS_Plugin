@@ -53,7 +53,7 @@ namespace Hooks
 		_RemovePerk(a_this, a_perk);
 	}
 
-	float Hook_Actor::GetActorValue(ActorValueOwner* a_this, ActorValue a_akValue) {
+	float Hook_Actor::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {

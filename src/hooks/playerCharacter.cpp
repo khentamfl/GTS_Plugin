@@ -61,8 +61,8 @@ namespace Hooks
 			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
 			if (a_this) {
 				log::info("Get AV");
-				log::info("a_this: {}", GetRawName(casted));
-				log::info("formID: {}", casted->formID);
+				log::info("a_this: {}", GetRawName(a_this));
+				log::info("formID: {}", a_this->formID);
 			
 				float actual_value = _GetActorValue(a_owner, a_akValue);
 				float bonus = 1.0;
@@ -70,19 +70,19 @@ namespace Hooks
 				auto& attributes = AttributeManager::GetSingleton();
 				log::info("Get AV, scale: {}", scale);
 				if (a_akValue == ActorValue::kHealth) {
-					bonus = attributes.GetAttributeBonus(player, 1.0);
+					bonus = attributes.GetAttributeBonus(a_this, 1.0);
 					return actual_value * bonus;
 				}
 				if (a_akValue == ActorValue::kCarryWeight) {
-					bonus = attributes.GetAttributeBonus(player, 2.0);
+					bonus = attributes.GetAttributeBonus(a_this, 2.0);
 					return actual_value * bonus;
 				}
 				if (a_akValue == ActorValue::kSpeedMult) {
-					bonus = attributes.GetAttributeBonus(player, 3.0);
+					bonus = attributes.GetAttributeBonus(a_this, 3.0);
 					return actual_value * bonus;
 				}
 				if (a_akValue == ActorValue::kAttackDamageMult) {
-					bonus = attributes.GetAttributeBonus(player, 4.0);
+					bonus = attributes.GetAttributeBonus(a_this, 4.0);
 					
 					return actual_value * bonus;
 				} else {
@@ -102,8 +102,10 @@ namespace Hooks
 			if (a_this) {
 				log::info("Get Perma AV");
 				log::info("a_this: {}", GetRawName(a_this));
+				auto& attributes = AttributeManager::GetSingleton();
+				bonus = attributes.GetAttributeBonus(a_this, 1.0);
 				float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
-				return actual_value * 2.5;
+				return actual_value * bonus;
 			} else {
 				return _GetPermanentActorValue(a_owner, a_akValue);
 			}
