@@ -346,14 +346,20 @@ namespace Gts {
 		if (!actor) {
 			return 1.0;
 		}
-		float scale = get_visual_scale(actor);
-		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
+		
 		float bonusCarryWeightMultiplier = Runtime::GetFloat("bonusCarryWeightMultiplier");
 		float bonusHPMultiplier = Runtime::GetFloat("bonusHPMultiplier");
 		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
 		if (!bonusCarryWeightMultiplier || !bonusHPMultiplier || !bonusDamageMultiplier) {
 			return 1.0;
 		}
+		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
+		if (!Persistent::GetSingleton().GetActorData(actor)) {
+			return 1.0;
+		}
+
+		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
+		float scale = get_visual_scale(actor);
 
 		if (Value == 1.0) {   // boost hp
 			return (bonusHPMultiplier/BalancedMode)*scale;
@@ -367,7 +373,7 @@ namespace Gts {
 			.o = 1.0,
 			.a = 0.0,  //Default is 0
 			};
-			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
+			
 			SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 			float MS_mult = soft_core(scale, MS_adjustment);
 			float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
