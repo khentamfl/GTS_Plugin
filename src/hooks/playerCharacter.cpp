@@ -58,6 +58,10 @@ namespace Hooks
 
 	float Hook_PlayerCharacter::GetActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
+			log::info("Get AV");
+			log::info("a_this: {}", GetRawName(a_this));
+			log::info("formID: {}", a_this->formID);
+			
 			float actual_value = _GetActorValue(a_this, a_akValue);
 			float bonus = 1.0;
 			auto player = PlayerCharacter::GetSingleton();
