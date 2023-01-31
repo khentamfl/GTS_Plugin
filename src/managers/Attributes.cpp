@@ -377,12 +377,9 @@ namespace Gts {
 			float MS_mult = soft_core(scale, MS_adjustment);
 			float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
 			float Multy = clamp(0.70, 1.0, MS_mult); 
-			float PerkSpeed = 1.0;
 			float speed_mult_walk = soft_core(scale, speed_adjustment_walk); 
-			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
-				PerkSpeed = clamp(0.80, 1.0, speed_mult_walk);
-			}
-			return 1.0 * (Bonus/2.2 + 1.0)/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed;
+			float PerkSpeed = clamp(0.80, 1.0, speed_mult_walk);
+			return 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
 		} if (Value == 4.0) { // Boost Attack Damage
 			return 1.0 * (bonusDamageMultiplier * scale);
 		}
