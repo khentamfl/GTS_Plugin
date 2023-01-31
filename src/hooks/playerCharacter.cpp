@@ -64,7 +64,7 @@ namespace Hooks
 				log::info("a_this: {}", GetRawName(casted));
 				log::info("formID: {}", casted->formID);
 			
-				float actual_value = _GetActorValue(a_this, a_akValue);
+				float actual_value = _GetActorValue(a_owner, a_akValue);
 				float bonus = 1.0;
 				float scale = get_visual_scale(a_this);
 				auto& attributes = AttributeManager::GetSingleton();
@@ -102,7 +102,7 @@ namespace Hooks
 			if (a_this) {
 				log::info("Get Perma AV");
 				log::info("a_this: {}", GetRawName(a_this));
-				float actual_value = _GetPermanentActorValue(a_this, a_akValue);
+				float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
 				return actual_value * 2.5;
 			} else {
 				return _GetPermanentActorValue(a_owner, a_akValue);

@@ -53,27 +53,37 @@ namespace Hooks
 		_RemovePerk(a_this, a_perk);
 	}
 
-	float Hook_Actor::GetActorValue(Actor* a_this, ActorValue a_akValue) {
+	float Hook_Actor::GetActorValue(ActorValueOwner* a_this, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
-			log::info("Get AV");
-			float actual_value = _GetActorValue(a_this, a_akValue);
-			if (a_akValue == ActorValue::kArchery) {
-				return actual_value + 100000.0;
+			Actor* a_this = skyrim_cast<Actor*>(a_owner);
+			if (a_this) {
+				log::info("Get AV");
+				float actual_value = _GetActorValue(a_owner, a_akValue);
+				if (a_akValue == ActorValue::kArchery) {
+					return actual_value + 100000.0;
+				} else {
+					return actual_value;
+				}
 			} else {
-				return actual_value;
+				return _GetActorValue(a_owner, a_akValue);
 			}
 		} else {
-			return _GetActorValue(a_this, a_akValue);
+			return _GetActorValue(a_owner, a_akValue);
 		}
 	}
 
-	float Hook_Actor::GetPermanentActorValue(Actor* a_this, ActorValue a_akValue) {
+	float Hook_Actor::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
-			log::info("Get Perma AV");
-			float actual_value = _GetPermanentActorValue(a_this, a_akValue);
-			return actual_value;
+			Actor* a_this = skyrim_cast<Actor*>(a_owner);
+			if (a_this) {
+				log::info("Get Perma AV");
+				float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
+				return actual_value;
+			} else {
+				return _GetPermanentActorValue(a_owner, a_akValue);
+			}
 		} else {
-			return _GetPermanentActorValue(a_this, a_akValue);
+			return _GetPermanentActorValue(a_owner, a_akValue);
 		}
 	}
 }
