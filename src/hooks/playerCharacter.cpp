@@ -59,50 +59,51 @@ namespace Hooks
 	float Hook_PlayerCharacter::GetActorValue(ActorValueOwner* a_this, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
 			PlayerCharacter* casted = skyrim_cast<PlayerCharacter*>(a_this);
-			if (casted) {
-				log::info("Get AV");
-				log::info("a_this: {}", GetRawName(casted));
-				log::info("formID: {}", casted->formID);
-			} else {
-				log::info("Cast Fail");
-			}
-			
-			float actual_value = _GetActorValue(a_this, a_akValue);
 			float bonus = 1.0;
-			auto player = PlayerCharacter::GetSingleton();
-			float scale = get_visual_scale(player);
-			auto& attributes = AttributeManager::GetSingleton();
-			log::info("Get AV, scale: {}", scale);
-			if (a_akValue == ActorValue::kHealth) {
-				bonus = attributes.GetAttributeBonus(player, 1.0);
-				return actual_value * bonus;
+			if (casted) {
+				auto& attributes = AttributeManager::GetSingleton();
+				if (a_akValue == ActorValue::kHealth) {
+					bonus = attributes.GetAttributeBonus(casted, 1.0);
+					return actual_value * bonus;
+				}
+				if (a_akValue == ActorValue::kCarryWeight) {
+					bonus = attributes.GetAttributeBonus(casted, 2.0);
+					return actual_value * bonus;
+				}
+				if (a_akValue == ActorValue::kSpeedMult) {
+					bonus = attributes.GetAttributeBonus(casted, 3.0);
+					return actual_value * bonus;
+				}
+				if (a_akValue == ActorValue::kAttackDamageMult) {
+					bonus = attributes.GetAttributeBonus(casted, 4.0);
+					return actual_value * bonus;
+				} else {
+					return actual_value;
+				}
 			}
-			if (a_akValue == ActorValue::kCarryWeight) {
-				bonus = attributes.GetAttributeBonus(player, 2.0);
-				return actual_value * bonus;
-			}
-			if (a_akValue == ActorValue::kSpeedMult) {
-				bonus = attributes.GetAttributeBonus(player, 3.0);
-				return actual_value * bonus;
-			}
-			if (a_akValue == ActorValue::kAttackDamageMult) {
-				bonus = attributes.GetAttributeBonus(player, 4.0);
-				return actual_value * bonus;
-			} else {
-				return actual_value;
-			}
-		} else {
+			return _GetActorValue(a_this, a_akValue);
+		}
+		 else {
 			return _GetActorValue(a_this, a_akValue);
 		}
 	}
 
 	float Hook_PlayerCharacter::GetPermanentActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
-			log::info("Get Perma AV");
-			log::info("a_this: {}", GetRawName(a_this));
-			float actual_value = _GetPermanentActorValue(a_this, a_akValue);
-			return actual_value * 2.5;
-		} else {
+			PlayerCharacter* casted = skyrim_cast<PlayerCharacter*>(a_this);
+			float bonus = 1.0;
+			if (casted) {
+				auto& attributes = AttributeManager::GetSingleton();
+				float actual_value = _GetPermanentActorValue(a_this, a_akValue);
+			if (a_akValue == ActorValue::kHealth) {
+				bonus = attributes.GetAttributeBonus(casted, 1.0);
+				log::info("Max Hp is : {}" actual_value * bonus);
+				return actual_value * bonus;
+				}
+			}
+			return _GetPermanentActorValue(a_this, a_akValue);
+		}
+		 else {
 			return _GetPermanentActorValue(a_this, a_akValue);
 		}
 	}
