@@ -55,10 +55,12 @@ namespace Hooks
 	}
 
 	float Hook_PlayerCharacter::GetActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
-		log::info("Get AV");
+		
 		float actual_value = _GetActorValue(a_this, a_akValue);
 		float bonus = 1.0;
+		float scale = get_visual_scale(a_this);
 		auto& attributes = AttributeManager::GetSingleton();
+		log::info("Get AV, scale: {}", scale);
 		if (a_akValue == ActorValue::kHealth) {
 			bonus = attributes.GetAttributeBonus(a_this, 1.0);
 			return actual_value * bonus;
