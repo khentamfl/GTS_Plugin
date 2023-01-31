@@ -378,6 +378,7 @@ namespace Gts {
 		} if (Value == 4.0) { // Boost Attack Damage
 			return 1.0 + (bonusDamageMultiplier * scale);
 		} 
+		return 1.0;
 	} 
 
 }
