@@ -353,9 +353,9 @@ namespace Gts {
 		if (!bonusCarryWeightMultiplier || !bonusHPMultiplier || !bonusDamageMultiplier) {
 			return 1.0;
 		}
-		if (!Persistent::GetSingleton().GetActorData(actor)) {
-			return 1.0;
-		}
+		//if (!Persistent::GetSingleton().GetActorData(actor)) {
+			//return 1.0;
+		//}
 		//float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		
 
