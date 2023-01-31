@@ -17,7 +17,7 @@ namespace Hooks
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
 
-		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Actor[1] };
+		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Actor[2] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 	}
 
