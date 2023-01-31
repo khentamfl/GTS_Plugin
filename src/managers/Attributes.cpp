@@ -382,7 +382,7 @@ namespace Gts {
 		};
 			
 			SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
-			float MS_mult = soft_core(scale, speed_adjustment_others);
+			float MS_mult = soft_core(scale, speed_adjustment_walk);
 			float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
 			float Multy = clamp(0.70, 1.0, MS_mult); 
 			float PerkSpeed = 1.0;
