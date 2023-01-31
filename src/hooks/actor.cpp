@@ -54,7 +54,7 @@ namespace Hooks
 	}
 
 	float Hook_Actor::GetActorValue(Actor* a_this, ActorValue a_akValue) {
-		if (Plugin::InGame()) {
+		if (Plugin::Ready()) {
 			log::info("Get AV");
 			float actual_value = _GetActorValue(a_this, a_akValue);
 			if (a_akValue == ActorValue::kArchery) {
@@ -68,7 +68,7 @@ namespace Hooks
 	}
 
 	float Hook_Actor::GetPermanentActorValue(Actor* a_this, ActorValue a_akValue) {
-		if (Plugin::InGame()) {
+		if (Plugin::Ready()) {
 			log::info("Get Perma AV");
 			float actual_value = _GetPermanentActorValue(a_this, a_akValue);
 			return actual_value;

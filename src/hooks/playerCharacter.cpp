@@ -57,7 +57,7 @@ namespace Hooks
 	}
 
 	float Hook_PlayerCharacter::GetActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
-		if (Plugin::InGame()) {
+		if (Plugin::Ready()) {
 			float actual_value = _GetActorValue(a_this, a_akValue);
 			float bonus = 1.0;
 			float scale = get_visual_scale(a_this);
@@ -87,8 +87,9 @@ namespace Hooks
 	}
 
 	float Hook_PlayerCharacter::GetPermanentActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
-		if (Plugin::InGame()) {
+		if (Plugin::Ready()) {
 			log::info("Get Perma AV");
+			log::info("a_this: {}", GetRawName(a_this));
 			float actual_value = _GetPermanentActorValue(a_this, a_akValue);
 			return actual_value;
 		} else {

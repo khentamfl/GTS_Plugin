@@ -28,21 +28,14 @@ namespace Hooks
 		if (Plugin::Enabled()) {
 			if (Plugin::InGame()) {
 				// We are not loading or in the mainmenu
-				auto player_char = RE::PlayerCharacter::GetSingleton();
-				if (player_char) {
-					if (player_char->Is3DLoaded()) {
-						// Player is loaded
-						auto ui = RE::UI::GetSingleton();
-						if (!ui->GameIsPaused()) {
-							// Not paused
-							if (started.exchange(true)) {
-								// Not first updated
-								EventDispatcher::DoUpdate();
-							} else {
-								// First update this load
-								EventDispatcher::DoStart();
-							}
-						}
+				if (Plugin::Ready()) {
+					// Player loaded and not paused
+					if (started.exchange(true)) {
+						// Not first updated
+						EventDispatcher::DoUpdate();
+					} else {
+						// First update this load
+						EventDispatcher::DoStart();
 					}
 				}
 			} else {
