@@ -99,6 +99,7 @@ namespace Hooks
 	float Hook_PlayerCharacter::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
 			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
+			float bonus = 1.0;
 			if (a_this) {
 				log::info("Get Perma AV");
 				log::info("a_this: {}", GetRawName(a_this));
