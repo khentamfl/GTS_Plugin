@@ -60,16 +60,16 @@ namespace Hooks
 		float bonus = 1.0;
 		auto& attributes = AttributeManager::GetSingleton();
 		 if (a_akValue == ActorValue::kHealth) {
-			bonus = attributes->GetAttributeBonus(a_this, 1.0);
+			bonus = attributes.GetAttributeBonus(a_this, 1.0);
 			return actual_value * bonus;
 		} if (a_akValue == ActorValue::kCarryWeight) {
-			bonus = attributes->GetAttributeBonus(a_this, 2.0);
+			bonus = attributes.GetAttributeBonus(a_this, 2.0);
 			return actual_value * bonus;
 		} if (a_akValue == ActorValue::kSpeedMult) {
-			bonus = attributes->GetAttributeBonus(a_this, 3.0);
+			bonus = attributes.GetAttributeBonus(a_this, 3.0);
 			return actual_value * bonus;
 		} if (a_akValue == ActorValue::kAttackDamageMult) {
-			bonus = attributes->GetAttributeBonus(a_this, 4.0);
+			bonus = attributes.GetAttributeBonus(a_this, 4.0);
 			return actual_value * bonus;
 		} else {
 			return actual_value;
