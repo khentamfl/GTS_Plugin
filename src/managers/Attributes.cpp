@@ -343,19 +343,19 @@ namespace Gts {
 	}
 
 	float AttributeManager::GetAttributeBonus(Actor* actor, float Value) {
-		if (!Actor) {
+		if (!actor) {
 			return 1.0;
 		}
-		float Scale = get_visual_scale(actor);
+		float scale = get_visual_scale(actor);
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float bonusCarryWeightMultiplier = Runtime::GetFloat("bonusCarryWeightMultiplier");
 		float bonusHPMultiplier = Runtime::GetFloat("bonusHPMultiplier");
 		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
 
 		if (Value == 1.0) {   // boost hp
-			return (bonusHPMultiplier/BalancedMode)*Scale;
+			return (bonusHPMultiplier/BalancedMode)*scale;
 		} if (Value == 2.0) { // boost Carry Weight
-			return (bonusCarryWeightMultiplier/BalancedMode)*Scale;
+			return (bonusCarryWeightMultiplier/BalancedMode)*scale;
 		} if (Value == 3.0) { // Boost SpeedMult
 			SoftPotential speed_adjustment_walk { 
 			.k = 0.265, // 0.125
