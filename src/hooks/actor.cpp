@@ -17,7 +17,7 @@ namespace Hooks
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
 
-		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Actor[4] };
+		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Actor[3] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 	}
 
@@ -58,6 +58,7 @@ namespace Hooks
 	}
 
 	float Hook_Actor::GetActorValue(Actor* a_this, ActorValue a_akValue) {
+		log::info("Get AV");
 		float actual_value = _GetActorValue(a_this, a_akValue);
 		if (a_akValue == ActorValue::kArchery) {
 			return actual_value + 100000.0;
