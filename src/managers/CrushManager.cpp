@@ -182,6 +182,7 @@ namespace Gts {
 					} else if (tiny->formID == 0x14) {
 						tiny->SetAlpha(0.0);
 					}
+					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 					AdjustGiantessSkill(giant, tiny);
 					CrushBonuses(giant, tiny);
 					FearChance(giant);

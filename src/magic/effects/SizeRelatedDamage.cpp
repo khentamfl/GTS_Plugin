@@ -96,7 +96,6 @@ namespace Gts {
 				GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 24.0);
 			}
 			KnockAreaEffect(caster, 2, 32 * size_difference);
-			Runtime::CreateExplosion(target, target_scale,"BloodExplosion");
 		}
 	}
 	void SizeDamage::SmallMassiveThreatModification(Actor* Caster, Actor* Target) {
