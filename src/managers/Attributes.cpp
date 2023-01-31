@@ -373,9 +373,16 @@ namespace Gts {
 			.o = 1.0,
 			.a = 0.0,  //Default is 0
 			};
+			SoftPotential speed_adjustment_others { // Even though it is named 'sprint', it is used for all other movement states
+			.k = 0.142, // 0.125
+			.n = 0.82, // 0.86
+			.s = 1.90, // 1.12
+			.o = 1.0,
+			.a = 0.0,  //Default is 0
+		};
 			
 			SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
-			float MS_mult = soft_core(scale, MS_adjustment);
+			float MS_mult = soft_core(scale, speed_adjustment_others);
 			float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
 			float Multy = clamp(0.70, 1.0, MS_mult); 
 			float PerkSpeed = 1.0;
