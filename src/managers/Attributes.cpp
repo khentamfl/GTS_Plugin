@@ -363,8 +363,8 @@ namespace Gts {
 		float scale = get_visual_scale(actor);
 
 		if (Value == 1.0) {   // boost hp
-		log::info("Att bonus: {}", 1.0 * (bonusHPMultiplier/BalancedMode)*scale);
-			return 1.0 * (bonusHPMultiplier/BalancedMode)*scale;
+			log::info("Att bonus: {}", 1.0 * scale);
+			return 1.0 * scale;
 		} else /* if (Value == 2.0) { // boost Carry Weight
 			return (bonusCarryWeightMultiplier/BalancedMode)*scale;
 		} if (Value == 3.0) { // Boost SpeedMult
