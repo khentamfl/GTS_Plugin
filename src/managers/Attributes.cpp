@@ -376,7 +376,7 @@ namespace Gts {
 			}
 			return 1.0 * (Bonus/2.2 + 1.0)/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed;
 		} if (Value == 4.0) { // Boost Attack Damage
-			return 1.0 + (bonusDamageMultiplier * scale);
+			return 1.0 * (bonusDamageMultiplier * scale);
 		} 
 		return 1.0;
 	} 

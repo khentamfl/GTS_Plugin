@@ -59,7 +59,7 @@ namespace Hooks
 		float actual_value = _GetActorValue(a_this, a_akValue);
 		float bonus = 1.0;
 		auto& attributes = AttributeManager::GetSingleton();
-		 if (a_akValue == ActorValue::kHealth) {
+		/* if (a_akValue == ActorValue::kHealth) {
 			bonus = attributes.GetAttributeBonus(a_this, 1.0);
 			return actual_value * bonus;
 		} if (a_akValue == ActorValue::kCarryWeight) {
@@ -71,7 +71,7 @@ namespace Hooks
 		} if (a_akValue == ActorValue::kAttackDamageMult) {
 			bonus = attributes.GetAttributeBonus(a_this, 4.0);
 			return actual_value * bonus;
-		} else {
+		} else */{
 			return actual_value;
 		}
 	}
