@@ -5,6 +5,7 @@
 #include "data/plugin.hpp"
 #include "events.hpp"
 #include "scale/scale.hpp"
+#include "timer.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -59,16 +60,11 @@ namespace Hooks
 	float Hook_PlayerCharacter::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
 			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
+			static Timer timer = Timer(0.15);
 			if (a_this) {
-				log::info("Get AV");
-				log::info("a_this: {}", GetRawName(a_this));
-				log::info("formID: {}", a_this->formID);
-			
 				float actual_value = _GetActorValue(a_owner, a_akValue);
 				float bonus = 1.0;
-				float scale = get_visual_scale(a_this);
 				auto& attributes = AttributeManager::GetSingleton();
-				log::info("Get AV, scale: {}", scale);
 				if (a_akValue == ActorValue::kHealth) {
 					bonus = attributes.GetAttributeBonus(a_this, 1.0);
 					return actual_value * bonus;
@@ -77,13 +73,12 @@ namespace Hooks
 					bonus = attributes.GetAttributeBonus(a_this, 2.0);
 					return actual_value * bonus;
 				}
-				if (a_akValue == ActorValue::kSpeedMult) {
+				if (a_akValue == ActorValue::kSpeedMult && timer.ShouldRunFrame()) {
 					bonus = attributes.GetAttributeBonus(a_this, 3.0);
 					return actual_value * bonus;
 				}
-				if (a_akValue == ActorValue::kAttackDamageMult) {
+				if (a_akValue == ActorValue::kAttackDamageMult && timer.ShouldRunFrame()) {
 					bonus = attributes.GetAttributeBonus(a_this, 4.0);
-					
 					return actual_value * bonus;
 				} else {
 					return actual_value;
@@ -101,12 +96,15 @@ namespace Hooks
 			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {
-				log::info("Get Perma AV");
-				log::info("a_this: {}", GetRawName(a_this));
-				auto& attributes = AttributeManager::GetSingleton();
-				bonus = attributes.GetAttributeBonus(a_this, 1.0);
+				log::info("Actual Value: {}", _GetPermanentActorValue(a_owner, a_akValue));
 				float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
-				return actual_value * bonus;
+				if (a_akValue == ActorValue::kHealth) {
+					log::info("Health Value: {}", _GetPermanentActorValue(a_owner, a_akValue));
+					auto& attributes = AttributeManager::GetSingleton();
+					bonus = attributes.GetAttributeBonus(a_this, 1.0);
+					return actual_value * bonus;
+				}
+				return actual_value;
 			} else {
 				return _GetPermanentActorValue(a_owner, a_akValue);
 			}
