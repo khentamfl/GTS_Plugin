@@ -84,15 +84,15 @@ namespace Hooks
 		} else {
 			return _GetActorValue(a_this, a_akValue);
 		}
+	}
 
-		float Hook_PlayerCharacter::GetPermanentActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
-			if (Plugin::InGame()) {
-				log::info("Get Perma AV");
-				float actual_value = _GetPermanentActorValue(a_this, a_akValue);
-				return actual_value;
-			} else {
-				return _GetPermanentActorValue(a_this, a_akValue);
-			}
+	float Hook_PlayerCharacter::GetPermanentActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
+		if (Plugin::InGame()) {
+			log::info("Get Perma AV");
+			float actual_value = _GetPermanentActorValue(a_this, a_akValue);
+			return actual_value;
+		} else {
+			return _GetPermanentActorValue(a_this, a_akValue);
 		}
 	}
 }
