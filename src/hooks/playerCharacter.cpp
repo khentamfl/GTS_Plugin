@@ -74,7 +74,7 @@ namespace Hooks
 				}
 				if (a_akValue == ActorValue::kSpeedMult) {
 					bonus = attributes.GetAttributeBonus(a_this, 3.0);
-					return actual_value * bonus;
+					return actual_value * 2.5;
 				}
 				if (a_akValue == ActorValue::kAttackDamageMult) {
 					bonus = attributes.GetAttributeBonus(a_this, 4.0);
@@ -102,7 +102,7 @@ namespace Hooks
 					log::info("Health Value: {}, Expected Value: {}", actual_value, actual_value * bonus);
 					return actual_value * bonus;
 				}
-				return actual_value;
+				return _GetPermanentActorValue(a_owner, a_akValue);
 			} else {
 				return _GetPermanentActorValue(a_owner, a_akValue);
 			}
