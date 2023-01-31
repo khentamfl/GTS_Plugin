@@ -342,7 +342,7 @@ namespace Gts {
 		ActorAttributes->smt_run_speed = Value;
 	}
 
-	inline float AttributeManager::GetAttributeBonus(Actor* actor, float Value) {
+	float AttributeManager::GetAttributeBonus(Actor* actor, float Value) {
 		if (!actor) {
 			return 1.0;
 		}
