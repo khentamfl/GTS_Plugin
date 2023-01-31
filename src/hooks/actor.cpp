@@ -53,12 +53,16 @@ namespace Hooks
 	}
 
 	float Hook_Actor::GetActorValue(Actor* a_this, ActorValue a_akValue) {
-		log::info("Get AV");
-		float actual_value = _GetActorValue(a_this, a_akValue);
-		if (a_akValue == ActorValue::kArchery) {
-			return actual_value + 100000.0;
+		if (Plugin::InGame()) {
+			log::info("Get AV");
+			float actual_value = _GetActorValue(a_this, a_akValue);
+			if (a_akValue == ActorValue::kArchery) {
+				return actual_value + 100000.0;
+			} else {
+				return actual_value;
+			}
 		} else {
-			return actual_value;
+			return _GetActorValue(a_this, a_akValue);
 		}
 	}
 }

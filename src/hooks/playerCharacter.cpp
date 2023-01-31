@@ -56,26 +56,32 @@ namespace Hooks
 	}
 
 	float Hook_PlayerCharacter::GetActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
-		
-		float actual_value = _GetActorValue(a_this, a_akValue);
-		float bonus = 1.0;
-		float scale = get_visual_scale(a_this);
-		auto& attributes = AttributeManager::GetSingleton();
-		log::info("Get AV, scale: {}", scale);
-		if (a_akValue == ActorValue::kHealth) {
-			bonus = attributes.GetAttributeBonus(a_this, 1.0);
-			return actual_value * bonus;
-		} if (a_akValue == ActorValue::kCarryWeight) {
-			bonus = attributes.GetAttributeBonus(a_this, 2.0);
-			return actual_value * bonus;
-		} if (a_akValue == ActorValue::kSpeedMult) {
-			bonus = attributes.GetAttributeBonus(a_this, 3.0);
-			return actual_value * bonus;
-		} if (a_akValue == ActorValue::kAttackDamageMult) {
-			bonus = attributes.GetAttributeBonus(a_this, 4.0);
-			return actual_value * bonus;
+		if (Plugin::InGame()) {
+			float actual_value = _GetActorValue(a_this, a_akValue);
+			float bonus = 1.0;
+			float scale = get_visual_scale(a_this);
+			auto& attributes = AttributeManager::GetSingleton();
+			log::info("Get AV, scale: {}", scale);
+			if (a_akValue == ActorValue::kHealth) {
+				bonus = attributes.GetAttributeBonus(a_this, 1.0);
+				return actual_value * bonus;
+			}
+			if (a_akValue == ActorValue::kCarryWeight) {
+				bonus = attributes.GetAttributeBonus(a_this, 2.0);
+				return actual_value * bonus;
+			}
+			if (a_akValue == ActorValue::kSpeedMult) {
+				bonus = attributes.GetAttributeBonus(a_this, 3.0);
+				return actual_value * bonus;
+			}
+			if (a_akValue == ActorValue::kAttackDamageMult) {
+				bonus = attributes.GetAttributeBonus(a_this, 4.0);
+				return actual_value * bonus;
+			} else {
+				return actual_value;
+			}
 		} else {
-			return actual_value;
+			return _GetActorValue(a_this, a_akValue);
 		}
 	}
 }
