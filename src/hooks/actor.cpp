@@ -9,7 +9,6 @@ using namespace Gts;
 
 namespace Hooks
 {
-	// BGSImpactManager
 	void Hook_Actor::Hook() {
 		logger::info("Hooking Actor");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_Actor[0] };
@@ -22,20 +21,16 @@ namespace Hooks
 	}
 
 	void Hook_Actor::HandleHealthDamage(Actor* a_this, Actor* a_attacker, float a_damage) {
-		//log::info("Actor::Update");
 		if (a_attacker) {
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
 				}
-				log::info("  - Attacker: {}, damage: {}", a_attacker->GetDisplayFullName(), a_damage);
-				a_damage *= 0.05;
-				log::info("Decreasing damage to {}", a_damage);
+				a_damage *= 0.05; // Decrease received damage
 			}
 		}
-		//log::info("  - Damage: {}", a_damage);
-		_HandleHealthDamage(a_this, a_attacker, a_damage);
+		_HandleHealthDamage(a_this, a_attacker, a_damage);  // Just reports the value, can't override it.
 	}
 
 	void Hook_Actor::AddPerk(Actor* a_this, BGSPerk* a_perk, std::uint32_t a_rank) {

@@ -1,4 +1,5 @@
 #include "hooks/playerCharacter.hpp"
+#include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/plugin.hpp"
@@ -22,19 +23,15 @@ namespace Hooks
 	}
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
-		//log::info("PlayerCharacter::Update");
 		if (a_attacker) {
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
 				}
-				log::info("  - Attacker: {}, damage: {}", a_attacker->GetDisplayFullName(), a_damage);
 				a_damage *= 0.05;
-				log::info("Decreasing damage to {}", a_damage);
 			}
 		}
-		//log::info("  - Damage: {}", a_damage);
 		_HandleHealthDamage(a_this, a_attacker, a_damage);
 	}
 
@@ -60,8 +57,20 @@ namespace Hooks
 	float Hook_PlayerCharacter::GetActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
 		log::info("Get AV");
 		float actual_value = _GetActorValue(a_this, a_akValue);
-		if (a_akValue == ActorValue::kArchery) {
-			return actual_value + 100000.0;
+		float bonus = 1.0;
+		auto& attributes = AttributeManager::GetSingleton();
+		 if (a_akValue == ActorValue::kHealth) {
+			bonus = attributes->GetAttributeBonus(a_this, 1.0);
+			return actual_value * bonus;
+		} if (a_akValue == ActorValue::kCarryWeight) {
+			bonus = attributes->GetAttributeBonus(a_this, 2.0);
+			return actual_value * bonus;
+		} if (a_akValue == ActorValue::kSpeedMult) {
+			bonus = attributes->GetAttributeBonus(a_this, 3.0);
+			return actual_value * bonus;
+		} if (a_akValue == ActorValue::kAttackDamageMult) {
+			bonus = attributes->GetAttributeBonus(a_this, 4.0);
+			return actual_value * bonus;
 		} else {
 			return actual_value;
 		}

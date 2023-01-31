@@ -17,6 +17,7 @@ namespace Gts {
 
 			void Augmentation();
 			void OverrideBonus(float Value);
+			void GetAttributeBonus(Actor* actor, float Value)
 		private:
 			float MovementSpeedBonus = 0.0;
 			bool BlockMessage = false;

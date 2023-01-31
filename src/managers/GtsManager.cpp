@@ -189,9 +189,9 @@ namespace {
 		//trans_actor_data->base_walkspeedmult = Default MS bonus
 		if (timer.ShouldRunFrame()) {
 			if (scale < 1.0) {
-				actor->SetActorValue(ActorValue::kSpeedMult, 100 * scale * (Bonus/2.2 + 1.0));
+				//actor->SetActorValue(ActorValue::kSpeedMult, 100 * scale * (Bonus/2.2 + 1.0));
 			} else {
-				actor->SetActorValue(ActorValue::kSpeedMult, ((100 * (Bonus/2.2 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
+				//actor->SetActorValue(ActorValue::kSpeedMult, ((100 * (Bonus/2.2 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
 			}
 		}
 		// Experiement

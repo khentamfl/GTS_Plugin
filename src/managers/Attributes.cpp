@@ -271,22 +271,16 @@ namespace {
 				BoostSpeedMulti(Player, bonusSpeedMultiplier);
 			}
 			if (timer.ShouldRunFrame()) {
-				BoostHP(Player, bonusHPMultiplier/BalancedMode);
-
 				Augmentation(Player, BlockMessage);
-
-				BoostCarry(Player, bonusCarryWeightMultiplier/BalancedMode);
 
 				BoostJump(Player, bonusJumpHeightMultiplier);
 
-				BoostAttackDmg(Player, bonusDamageMultiplier);
-
-				/*if (!Runtime::HasPerk(Player, "StaggerImmunity") && size > 1.33) {
+				if (!Runtime::HasPerk(Player, "StaggerImmunity") && size > 1.33) {
 					Runtime::AddPerk(Player, "StaggerImmunity");
 					return;
 				} else if (size < 1.33 && Runtime::HasPerk(Player, "StaggerImmunity")) {
 					Runtime::RemovePerk(Player, "StaggerImmunity");
-				}*/
+				}
 			}
 		}
 	}
@@ -307,8 +301,8 @@ namespace {
 
 		if (timer.ShouldRunFrame()) {
 			if (npc->IsPlayerTeammate() || Runtime::InFaction(npc, "FollowerFaction")) {
-				BoostHP(npc, 1.0);
-				BoostCarry(npc, 1.0);
+				//BoostHP(npc, 1.0);
+				//BoostCarry(npc, 1.0);
 				ManagePerkBonuses(npc);
 			}
 			if (!Runtime::HasPerk(npc, "StaggerImmunity") && size > 1.33) {
@@ -316,7 +310,7 @@ namespace {
 			} else if (size < 1.33 && Runtime::HasPerk(npc, "StaggerImmunity")) {
 				Runtime::RemovePerk(npc, "StaggerImmunity");
 			}
-			BoostAttackDmg(npc, 1.0);
+			//BoostAttackDmg(npc, 1.0);
 		}
 	}
 
@@ -347,5 +341,43 @@ namespace Gts {
 		auto ActorAttributes = Persistent::GetSingleton().GetActorData(PlayerCharacter::GetSingleton());
 		ActorAttributes->smt_run_speed = Value;
 	}
+
+	void AtributeManager::GetAttributeBonus(Actor* actor, float Value) {
+		if (!Actor) {
+			return 1.0;
+		}
+		float Scale = get_visual_scale(actor);
+		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
+		float bonusCarryWeightMultiplier = Runtime::GetFloat("bonusCarryWeightMultiplier");
+		float bonusHPMultiplier = Runtime::GetFloat("bonusHPMultiplier");
+		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
+
+		if (Value == 1.0) {   // boost hp
+			return (bonusHPMultiplier/BalancedMode)*Scale;
+		} if (Value == 2.0) { // boost Carry Weight
+			return (bonusCarryWeightMultiplier/BalancedMode)*Scale;
+		} if (Value == 3.0) { // Boost SpeedMult
+			SoftPotential speed_adjustment_walk { 
+			.k = 0.265, // 0.125
+			.n = 1.11, // 0.86
+			.s = 2.0, // 1.12
+			.o = 1.0,
+			.a = 0.0,  //Default is 0
+			};
+			float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
+			SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
+			float MS_mult = soft_core(scale, MS_adjustment);
+			float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
+			float Multy = clamp(0.70, 1.0, MS_mult); 
+			float PerkSpeed = 1.0;
+			float speed_mult_walk = soft_core(scale, speed_adjustment_walk); 
+			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
+				PerkSpeed = clamp(0.80, 1.0, speed_mult_walk);
+			}
+			return 1.0 * (Bonus/2.2 + 1.0)/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed;
+		} if (Value == 4.0) { // Boost Attack Damage
+			return 1.0 + (bonusDamageMultiplier * scale);
+		} 
+	} 
 
 }
