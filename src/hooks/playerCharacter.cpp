@@ -60,29 +60,30 @@ namespace Hooks
 		if (Plugin::Ready()) {
 			float actual_value = _GetActorValue(a_this, a_akValue);
 			float bonus = 1.0;
-			float scale = get_visual_scale(a_this);
+			auto player = PlayerCharacter::GetSingleton();
+			float scale = get_visual_scale(player);
 			auto& attributes = AttributeManager::GetSingleton();
 			log::info("Get AV, scale: {}", scale);
 			if (a_akValue == ActorValue::kHealth) {
-				bonus = attributes.GetAttributeBonus(a_this, 1.0);
+				bonus = attributes.GetAttributeBonus(player, 1.0);
 				return actual_value * bonus;
 			}
 			if (a_akValue == ActorValue::kCarryWeight) {
-				bonus = attributes.GetAttributeBonus(a_this, 2.0);
+				bonus = attributes.GetAttributeBonus(player, 2.0);
 				return actual_value * bonus;
 			}
 			if (a_akValue == ActorValue::kSpeedMult) {
-				bonus = attributes.GetAttributeBonus(a_this, 3.0);
+				bonus = attributes.GetAttributeBonus(player, 3.0);
 				return actual_value * bonus;
 			}
 			if (a_akValue == ActorValue::kAttackDamageMult) {
-				bonus = attributes.GetAttributeBonus(a_this, 4.0);
+				bonus = attributes.GetAttributeBonus(player, 4.0);
 				return actual_value * bonus;
 			} else {
 				return actual_value;
 			}
 		} else {
-			return _GetActorValue(a_this, a_akValue);
+			return _GetActorValue(player, a_akValue);
 		}
 	}
 
@@ -91,7 +92,7 @@ namespace Hooks
 			log::info("Get Perma AV");
 			log::info("a_this: {}", GetRawName(a_this));
 			float actual_value = _GetPermanentActorValue(a_this, a_akValue);
-			return actual_value;
+			return actual_value * 2.5;
 		} else {
 			return _GetPermanentActorValue(a_this, a_akValue);
 		}
