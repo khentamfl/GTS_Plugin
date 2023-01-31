@@ -16,6 +16,9 @@ namespace Hooks
 		_HandleHealthDamage = Vtbl.write_vfunc(REL::Relocate(0x104, 0x104, 0x106), HandleHealthDamage);
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
+
+		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Actor[4] };
+		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 	}
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
@@ -52,5 +55,14 @@ namespace Hooks
 		};
 		EventDispatcher::DoRemovePerk(evt);
 		_RemovePerk(a_this, a_perk);
+	}
+
+	float Hook_PlayerCharacter::GetActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
+		float actual_value = _GetActorValue(a_this, a_akValue);
+		if (a_akValue == ActorValue::kArchery) {
+			return actual_value + 100000.0;
+		} else {
+			return actual_value;
+		}
 	}
 }

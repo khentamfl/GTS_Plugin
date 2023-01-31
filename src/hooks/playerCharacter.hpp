@@ -19,5 +19,8 @@ namespace Hooks
 
 			static void RemovePerk(PlayerCharacter* a_this, BGSPerk* a_perk);
 			static inline REL::Relocation<decltype(RemovePerk)> _RemovePerk;
+
+			static float  GetActorValue(PlayerCharacter* a_this, ActorValue a_akValue);
+			static inline REL::Relocation<decltype(GetActorValue)> _GetActorValue;
 	};
 }
