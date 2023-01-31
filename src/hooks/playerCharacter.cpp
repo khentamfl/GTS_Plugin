@@ -56,11 +56,16 @@ namespace Hooks
 		_RemovePerk(a_this, a_perk);
 	}
 
-	float Hook_PlayerCharacter::GetActorValue(PlayerCharacter* a_this, ActorValue a_akValue) {
+	float Hook_PlayerCharacter::GetActorValue(ActorValueOwner* a_this, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
-			log::info("Get AV");
-			log::info("a_this: {}", GetRawName(a_this));
-			log::info("formID: {}", a_this->formID);
+			PlayerCharacter* casted = skyrim_cast<PlayerCharacter*>(a_this);
+			if (casted) {
+				log::info("Get AV");
+				log::info("a_this: {}", GetRawName(casted));
+				log::info("formID: {}", casted->formID);
+			} else {
+				log::info("Cast Fail");
+			}
 			
 			float actual_value = _GetActorValue(a_this, a_akValue);
 			float bonus = 1.0;
