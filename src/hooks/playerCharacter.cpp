@@ -95,12 +95,11 @@ namespace Hooks
 			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {
-				log::info("Actual Value: {}", _GetPermanentActorValue(a_owner, a_akValue));
-				float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
 				if (a_akValue == ActorValue::kHealth) {
-					log::info("Health Value: {}", _GetPermanentActorValue(a_owner, a_akValue));
+					float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
 					auto& attributes = AttributeManager::GetSingleton();
 					bonus = attributes.GetAttributeBonus(a_this, 1.0);
+					log::info("Health Value: {}, Expected Value: {}", actual_value, actual_value * bonus);
 					return actual_value * bonus;
 				}
 				return actual_value;
