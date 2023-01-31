@@ -83,6 +83,7 @@ namespace Hooks
 				}
 				if (a_akValue == ActorValue::kAttackDamageMult) {
 					bonus = attributes.GetAttributeBonus(player, 4.0);
+					
 					return actual_value * bonus;
 				} else {
 					return actual_value;
