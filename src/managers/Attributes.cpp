@@ -353,10 +353,11 @@ namespace Gts {
 		if (!bonusCarryWeightMultiplier || !bonusHPMultiplier || !bonusDamageMultiplier) {
 			return 1.0;
 		}
-		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		if (!Persistent::GetSingleton().GetActorData(actor)) {
 			return 1.0;
 		}
+		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
+		
 
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
