@@ -83,7 +83,7 @@ namespace Hooks
 				return actual_value;
 			}
 		} else {
-			return _GetActorValue(player, a_akValue);
+			return _GetActorValue(a_this, a_akValue);
 		}
 	}
 
