@@ -356,7 +356,7 @@ namespace Gts {
 		if (!Persistent::GetSingleton().GetActorData(actor)) {
 			return 1.0;
 		}
-		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
+		//float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		
 
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
@@ -364,7 +364,7 @@ namespace Gts {
 
 		if (Value == 1.0) {   // boost hp
 			return (bonusHPMultiplier/BalancedMode)*scale;
-		} if (Value == 2.0) { // boost Carry Weight
+		} else /* if (Value == 2.0) { // boost Carry Weight
 			return (bonusCarryWeightMultiplier/BalancedMode)*scale;
 		} if (Value == 3.0) { // Boost SpeedMult
 			SoftPotential speed_adjustment_walk { 
@@ -387,8 +387,7 @@ namespace Gts {
 			return 1.0 * (Bonus/2.2 + 1.0)/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed;
 		} if (Value == 4.0) { // Boost Attack Damage
 			return 1.0 * (bonusDamageMultiplier * scale);
-		} 
+		} */
 		return 1.0;
 	} 
-
 }
