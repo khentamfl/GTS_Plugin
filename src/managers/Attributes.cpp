@@ -378,13 +378,11 @@ namespace Gts {
 			if (speedtimer.ShouldRunFrame()) {
 				this->speedboost = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
 			}
-			log::info("Speed boost: {}", this->speedboost);
 			return this->speedboost; 
 		} if (Value == 4.0) { // Boost Attack Damage
 		    if (damagetimer.ShouldRunFrame()) {
 				this->damageboost = 1.0 * (bonusDamageMultiplier * scale);
 			}
-			log::info("Damage boost: {}", this->damageboost);
 			return this->damageboost;
 		}
 		return 1.0;
