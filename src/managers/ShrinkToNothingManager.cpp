@@ -149,7 +149,8 @@ namespace Gts {
 		if (GtsSkillRatio->value >= 1.0) {
 			GtsSkillLevel->value += 1.0;
 			GtsSkillProgress->value = GtsSkillLevel->value;
-			GtsSkillRatio->value = 0.0;
+			GtsSkillRatio->value -= GtsSkillRatio->value;
+			GtsSkillRatio->value += Total;
 		}
 	}
 

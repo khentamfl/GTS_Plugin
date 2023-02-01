@@ -112,7 +112,8 @@ namespace {
 		if (GtsSkillRatio->value >= 1.0) {
 			GtsSkillLevel->value += 1.0;
 			GtsSkillProgress->value = GtsSkillLevel->value;
-			GtsSkillRatio->value = 0.0;
+			GtsSkillRatio->value -= GtsSkillRatio->value;
+			GtsSkillRatio->value += Total;
 		}
 		log::info("Total {}, AbsorbedSize {}, Value: {}, random: {}", Total, absorbedSize, ValueEffectiveness, random);
 	}
@@ -147,6 +148,7 @@ namespace Gts {
 					data.state = CrushState::Crushed;
 
 					// Do crush
+					tiny->KillImmediate();
 					Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", giant, 1.0, 1.0);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
