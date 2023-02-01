@@ -106,13 +106,12 @@ namespace {
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
 		float absorbedSize = (get_visual_scale(Target));
-		float Total = (((0.04 * random) + absorbedSize/50) * ValueEffectiveness);
+		float Total = (((0.12 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
-		int TotalLevel = GtsSkillLevel->value;
 
 		if (GtsSkillRatio->value >= 1.0) {
 			GtsSkillLevel->value += 1.0;
-			GtsSkillProgress->value = TotalLevel;
+			GtsSkillProgress->value = GtsSkillLevel->value;
 			GtsSkillRatio->value = 0.0;
 		}
 		log::info("Total {}, AbsorbedSize {}, Value: {}, random: {}", Total, absorbedSize, ValueEffectiveness, random);
