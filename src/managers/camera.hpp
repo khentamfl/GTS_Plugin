@@ -33,7 +33,7 @@ namespace Gts {
 			virtual void Start() override;
 
 			virtual void Update() override;
-
+ 
 			CameraState* GetCameraState();
 
 			void AdjustUpDown(float amt);
