@@ -59,8 +59,13 @@ namespace Gts {
 							Actor* into = giant;
 							TransferInventory(tiny, into, false, true);
 						}
-						ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny);
-						Disintegrate(tiny);
+						ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
+						if (tiny->formID != 0x14) {
+							Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
+						} elseif (tiny->formID == 0x14) {
+							tiny->SetAlpha(0.0); // Just make player Invisible
+						}
+						Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 
 						std::random_device rd;
 						std::mt19937 gen(rd());
@@ -136,7 +141,7 @@ namespace Gts {
 
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.20, 1.0);
 
-		float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
+		float absorbedSize = (get_visual_scale(Target));
 		float Total = (((0.06 * random) + absorbedSize/50) * ValueEffectiveness * 0.55);
 		GtsSkillRatio->value += Total;
 		int TotalLevel = GtsSkillLevel->value;

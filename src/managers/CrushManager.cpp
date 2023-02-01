@@ -79,7 +79,7 @@ namespace {
 	}
 
 	void AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill on Crush
-		if (Caster->formID !=0x14) {
+		if (Caster->formID != 0x14) {
 			return; //Bye
 		}
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
@@ -105,7 +105,7 @@ namespace {
 
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
-		float absorbedSize = (get_target_scale(Target)) + (Target->GetLevel() * 4.0);
+		float absorbedSize = (get_visual_scale(Target));
 		float Total = (((0.04 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
 		int TotalLevel = GtsSkillLevel->value;
@@ -178,12 +178,12 @@ namespace Gts {
 					ScareChance(giant);
 
 					if (tiny->formID != 0x14) {
-						Disintegrate(tiny); // CTD if we Disintegrate the player
+						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
 					} else if (tiny->formID == 0x14) {
-						tiny->SetAlpha(0.0);
+						tiny->SetAlpha(0.0); // Fake crush effect, just make player invisible
 					}
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
-					AdjustGiantessSkill(giant, tiny);
+					AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 					CrushBonuses(giant, tiny);
 					FearChance(giant);
 				}
