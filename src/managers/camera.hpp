@@ -32,7 +32,7 @@ namespace Gts {
 			virtual std::string DebugName() override; 
 			virtual void Start() override;
 
-			virtual void PapyrusUpdate() override;
+			virtual void Update() override;
 
 			CameraState* GetCameraState();
 

@@ -29,7 +29,7 @@ namespace Gts {
 		//ResetIniSettings();
 	}
 
-	void CameraManager::PapyrusUpdate() {
+	void CameraManager::Update() {
 		CameraState* currentState = this->GetCameraState();
 		log::info("Firing Camera Update");
 
