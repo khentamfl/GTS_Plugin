@@ -72,14 +72,11 @@ namespace Hooks
 					bonus = attributes.GetAttributeBonus(a_this, 2.0);
 					return actual_value * bonus;
 				}
-				if (a_akValue == ActorValue::kSpeedMult) {
+				/*if (a_akValue == ActorValue::kSpeedMult) {
 					bonus = attributes.GetAttributeBonus(a_this, 3.0);
 					return actual_value * bonus;
-				}
-				if (a_akValue == ActorValue::kAttackDamageMult) {
-					bonus = attributes.GetAttributeBonus(a_this, 4.0);
-					return actual_value * bonus;
-				} else {
+				}*/
+				 else {
 					return actual_value;
 				}
 			} else {
@@ -100,6 +97,14 @@ namespace Hooks
 					auto& attributes = AttributeManager::GetSingleton();
 					bonus = attributes.GetAttributeBonus(a_this, 1.0);
 					log::info("Health Value: {}, Expected Value: {}", actual_value, actual_value * bonus);
+					return actual_value * bonus;
+				} if (a_akValue == ActorValue::kSpeedMult) {
+					float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
+					bonus = attributes.GetAttributeBonus(a_this, 3.0);
+					return actual_value * bonus;
+				} if (a_akValue == ActorValue::kAttackDamageMult) {
+					float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
+					bonus = attributes.GetAttributeBonus(a_this, 4.0);
 					return actual_value * bonus;
 				}
 				return _GetPermanentActorValue(a_owner, a_akValue);

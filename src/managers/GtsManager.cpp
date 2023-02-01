@@ -411,7 +411,7 @@ namespace {
 		int game_mode_int = 0;
 		float QuestStage = Runtime::GetStage("MainQuest");
 		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
-		float scale = get_target_scale(actor);
+		float scale = get_visual_scale(actor);
 		float BonusShrink = 1.0;
 		float bonus = 1.0;
 		if (BalanceMode >= 2.0) {
@@ -426,7 +426,7 @@ namespace {
 				} else if (QuestStage >= 60 && QuestStage < 70) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.6);
 				} else if (BalanceMode >= 2.0 && QuestStage > 70) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 0.75);
+					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.5);
 				}
 
 
