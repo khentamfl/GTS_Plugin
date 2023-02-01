@@ -366,18 +366,11 @@ namespace Gts {
 		} if (Value == 2.0) { // boost Carry Weight
 			return (bonusCarryWeightMultiplier/BalancedMode)*scale;
 		} if (Value == 3.0) { // Boost SpeedMult
-			SoftPotential speed_adjustment_walk { 
-			.k = 0.265, // 0.125
-			.n = 1.11, // 0.86
-			.s = 2.0, // 1.12 
-			.o = 1.0,
-			.a = 0.0,  //Default is 0
-			};	
 			SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 			float MS_mult = soft_core(scale, MS_adjustment);
 			float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
 			float Multy = clamp(0.70, 1.0, MS_mult); 
-			float speed_mult_walk = soft_core(scale, speed_adjustment_walk); 
+			float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk); 
 			float PerkSpeed = clamp(0.90, 1.0, speed_mult_walk);
 			return 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
 		} if (Value == 4.0) { // Boost Attack Damage

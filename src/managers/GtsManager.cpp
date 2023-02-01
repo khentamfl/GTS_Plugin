@@ -426,9 +426,8 @@ namespace {
 				} else if (QuestStage >= 60 && QuestStage < 70) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.6);
 				} else if (BalanceMode >= 2.0 && QuestStage > 70) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.5);
+					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.25);
 				}
-
 
 				if (Runtime::HasMagicEffect(actor, "EffectGrowthPotion")) {
 					shrinkRate *= 0.0;

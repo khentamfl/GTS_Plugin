@@ -21,5 +21,12 @@ namespace Gts {
 		private:
 			float MovementSpeedBonus = 0.0;
 			bool BlockMessage = false;
+			SoftPotential speed_adjustment_walk { 
+				.k = 0.265, // 0.125
+				.n = 1.11, // 0.86
+				.s = 2.0, // 1.12 
+				.o = 1.0,
+				.a = 0.0,  //Default is 0
+			};	
 	};
 }
