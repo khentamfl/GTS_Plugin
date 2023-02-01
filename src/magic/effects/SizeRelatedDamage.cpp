@@ -22,10 +22,10 @@ namespace Gts {
 
 	void SizeDamage::OnUpdate() {
 		auto caster = GetCaster();
-		if (SizeManager::GetSingleton().GetPreciseDamage() && !Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
-			return; 
-		} if (!caster) {
+		 if (!caster) {
 			return;
+		} if (SizeManager::GetSingleton().GetPreciseDamage() && !Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
+			return; 
 		}
 		
 		auto target = GetTarget();
