@@ -107,7 +107,7 @@ namespace {
 
 		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.36 * random) + absorbedSize/50) * ValueEffectiveness);
+		float Total = (((0.32 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
@@ -148,7 +148,9 @@ namespace Gts {
 					data.state = CrushState::Crushed;
 
 					// Do crush
-					tiny->KillImmediate();
+					if (!tiny->IsDead()) {
+						tiny->KillImmediate();
+					}
 					Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", giant, 1.0, 1.0);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
