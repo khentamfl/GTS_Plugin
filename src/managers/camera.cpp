@@ -29,7 +29,7 @@ namespace Gts {
 		//ResetIniSettings();
 	}
 
-	void CameraManager::HavokUpdate() {
+	void CameraManager::PapyrusUpdate() {
 		CameraState* currentState = this->GetCameraState();
 		log::info("Firing Camera Update");
 

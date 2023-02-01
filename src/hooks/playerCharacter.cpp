@@ -100,7 +100,6 @@ namespace Hooks
 				if (a_akValue == ActorValue::kHealth) {
 					float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
 					bonus = attributes.GetAttributeBonus(a_this, 1.0);
-					log::info("Health Value: {}, Expected Value: {}", actual_value, actual_value * bonus);
 					return actual_value * bonus;
 				} 
 				return _GetPermanentActorValue(a_owner, a_akValue);
