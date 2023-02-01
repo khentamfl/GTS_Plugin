@@ -29,7 +29,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static CameraManager& GetSingleton() noexcept;
 
-			virtual std::string DebugName() override;
+			virtual std::string DebugName() override; 
 			virtual void Start() override;
 
 			virtual void HavokUpdate() override;
