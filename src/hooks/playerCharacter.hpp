@@ -25,8 +25,5 @@ namespace Hooks
 
 			static float GetPermanentActorValue(ActorValueOwner* a_this, ActorValue a_akValue);
 			static inline REL::Relocation<decltype(GetPermanentActorValue)> _GetPermanentActorValue;
-
-			float damagebonus = 1.0;
-			float movementbonus = 1.0;
 	};
 }

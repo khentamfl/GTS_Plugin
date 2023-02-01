@@ -60,8 +60,6 @@ namespace Hooks
 	float Hook_PlayerCharacter::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
 			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
-			static Timer speedtimer = Timer(0.15);
-			static Timer damagetimer = Timer(0.15);
 			if (a_this) {
 				float actual_value = _GetActorValue(a_owner, a_akValue);
 				float bonus = 1.0;
@@ -75,19 +73,12 @@ namespace Hooks
 					return actual_value * bonus;
 				}
 				if (a_akValue == ActorValue::kSpeedMult) {
-					if (speedtimer.shouldRunFrame()) {
-						this->movementbonus = attributes.GetAttributeBonus(a_this, 3.0);
-					}
-					log::info("MS bonus: {}",this->movementbonus);
-					return actual_value * this->movementbonus;
+					bonus = attributes.GetAttributeBonus(a_this, 3.0);
+					return actual_value * bonus;
 				} 
 				if (a_akValue == ActorValue::kAttackDamageMult) {
-					if (damagetimer.shouldRunFrame()) {
-						this->damagebonus = attributes.GetAttributeBonus(a_this, 4.0);
-					}
 					bonus = attributes.GetAttributeBonus(a_this, 4.0);
-					log::info("Dmg bonus: {}",this->damagebonus);
-					return actual_value * this->damagebonus;
+					return actual_value * bonus;
 				}
 				 else {
 					return actual_value;

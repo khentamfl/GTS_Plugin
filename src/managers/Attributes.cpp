@@ -346,7 +346,8 @@ namespace Gts {
 		if (!actor) {
 			return 1.0;
 		}
-		
+		static Timer speedtimer = Timer(0.15);
+		static Timer damagetimer = Timer(0.15);
 		float bonusCarryWeightMultiplier = Runtime::GetFloat("bonusCarryWeightMultiplier");
 		float bonusHPMultiplier = Runtime::GetFloat("bonusHPMultiplier");
 		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
@@ -356,6 +357,8 @@ namespace Gts {
 		if (!Persistent::GetSingleton().GetActorData(actor)) {
 			return 1.0;
 		}
+		
+
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
@@ -372,9 +375,17 @@ namespace Gts {
 			float Multy = clamp(0.70, 1.0, MS_mult); 
 			float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk); 
 			float PerkSpeed = clamp(0.90, 1.0, speed_mult_walk);
-			return 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
+			if (speedtimer.ShouldRunFrame()) {
+				this->speedboost = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
+			}
+			log::info("Speed boost: {}", this->speedboost);
+			return this->speedboost; 
 		} if (Value == 4.0) { // Boost Attack Damage
-			return 1.0 * (bonusDamageMultiplier * scale);
+		    if (damagetimer.ShouldRunFrame()) {
+				this->damageboost = 1.0 * (bonusDamageMultiplier * scale);
+			}
+			log::info("Damage boost: {}", this->damageboost);
+			return this->damageboost;
 		}
 		return 1.0;
 	} 
