@@ -16,7 +16,7 @@ namespace Gts {
 			virtual void Update() override;
 
 			void Augmentation();
-			void OverrideBonus(float Value);
+			void OverrideSMTBonus(float Value);
 			float GetAttributeBonus(Actor* actor, float Value);
 		private:
 			float MovementSpeedBonus = 0.0;

@@ -29,8 +29,9 @@ namespace Gts {
 		//ResetIniSettings();
 	}
 
-	void CameraManager::CameraUpdate() {
+	void CameraManager::HavokUpdate() {
 		CameraState* currentState = this->GetCameraState();
+		log::info("Firing Camera Update");
 
 		// Handles Transitioning
 		if (currentState != this->currentState) {

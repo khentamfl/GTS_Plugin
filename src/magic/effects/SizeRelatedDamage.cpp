@@ -116,9 +116,9 @@ namespace Gts {
 				log::info("Caster: {} is ready to crush {}", Caster->GetDisplayFullName(), Target->GetDisplayFullName());
 				ConsoleLog::GetSingleton()->Print("%s was instantly turned into mush by the body of %s", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 				if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
-					AttributeManager::GetSingleton().OverrideBonus(0.65); // Reduce speed after crush
+					AttributeManager::GetSingleton().OverrideSMTBonus(0.65); // Reduce speed after crush
 				} else if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
-					AttributeManager::GetSingleton().OverrideBonus(0.35); // Reduce more speed after crush
+					AttributeManager::GetSingleton().OverrideSMTBonus(0.35); // Reduce more speed after crush
 				}
 			} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 				PushActorAway(Caster, Target, 0.8);
@@ -133,7 +133,7 @@ namespace Gts {
 				std::string Message = text_a + text_b;
 				DebugNotification(Message.c_str(), 0, true);
 
-				AttributeManager::GetSingleton().OverrideBonus(0.75); // Less speed loss after force crush
+				AttributeManager::GetSingleton().OverrideSMTBonus(0.75); // Less speed loss after force crush
 			}
 		}
 	}
