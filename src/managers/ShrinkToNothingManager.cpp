@@ -148,7 +148,7 @@ namespace Gts {
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
-			float transfer = std::clamp(Total - oldvaluecalc, 0.0, 1.0);
+			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
 			GtsSkillLevel->value += 1.0;
 			GtsSkillProgress->value = GtsSkillLevel->value;
 			GtsSkillRatio->value = 0.0 + transfer;
