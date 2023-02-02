@@ -378,17 +378,14 @@ namespace Gts {
 			float Multy = clamp(0.70, 1.0, MS_mult); 
 			float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk); 
 			float PerkSpeed = clamp(0.90, 1.0, speed_mult_walk);
-
 			if (speedtimer.ShouldRunFrame()) {
 				transient->speedmult_storage = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
 			}
-			log::info("SpeedStorage: {}", transient->speedmult_storage);
 			return transient->speedmult_storage; 
 		} if (Value == 4.0) { // Boost Attack Damage
 		    if (damagetimer.ShouldRunFrame()) {
 				transient->damage_storage = 1.0 * (bonusDamageMultiplier * scale);
 			}
-			log::info("DamageStorage: {}", transient->damage_storage);
 			return transient->damage_storage;
 		}
 		return 1.0;
