@@ -60,7 +60,7 @@ namespace {
 		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
 			return;
 		} else if (Runtime::HasPerk(PlayerCharacter::GetSingleton(), "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1) {
-			float Rate = (0.00020 * get_target_scale(target)) * 120;
+			float Rate = (0.00016 * get_target_scale(target)) * 120;
 			if (Runtime::HasPerk(PlayerCharacter::GetSingleton(), "AdditionalAbsorption")) {
 				Rate *= 2.0;
 			}
