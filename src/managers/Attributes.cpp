@@ -346,7 +346,8 @@ namespace Gts {
 		if (!actor) {
 			return 1.0;
 		}
-		static Timer checktimer = Timer(0.15);
+		static Timer speedtimer = Timer(0.15);
+		static Timer damageimer = Timer(0.15);
 		float bonusCarryWeightMultiplier = Runtime::GetFloat("bonusCarryWeightMultiplier");
 		float bonusHPMultiplier = Runtime::GetFloat("bonusHPMultiplier");
 		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
@@ -377,12 +378,12 @@ namespace Gts {
 			float Multy = clamp(0.70, 1.0, MS_mult); 
 			float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk); 
 			float PerkSpeed = clamp(0.90, 1.0, speed_mult_walk);
-			if (checktimer.ShouldRunFrame()) {
+			if (speedtimer.ShouldRunFrame()) {
 				transient->speedmult_storage = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
 			}
 			return transient->speedmult_storage; 
 		} if (Value == 4.0) { // Boost Attack Damage
-		    if (checktimer.ShouldRunFrame()) {
+		    if (damagetimer.ShouldRunFrame()) {
 				transient->damage_storage = 1.0 * (bonusDamageMultiplier * scale);
 			}
 			return transient->damage_storage;
