@@ -64,15 +64,17 @@ namespace Gts {
 		bool wasHitBlocked = a_event->flags.all(TESHitEvent::Flag::kHitBlocked);
 		static Timer timer = Timer(0.25);
 
+		float size_difference = attackerscale/receiverscale;
+		
 		// Apply it
-		if (attacker == player && Runtime::HasMagicEffect(player, "SmallMassiveThreat") && receiver != player) {
+		if (attacker == player && (Runtime::HasMagicEffect(player, "SmallMassiveThreat") || size_difference >= 4.0) && receiver != player) {
 			FormType formType = HitId->GetFormType();
 			if (formType != FormType::Weapon) {
 				return;
 			}
 			float attackerscale = get_visual_scale(attacker) + 3.0;
 			float receiverscale = get_visual_scale(receiver);
-			float size_difference = attackerscale/receiverscale;
+			
 			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 2.0;
 			}
