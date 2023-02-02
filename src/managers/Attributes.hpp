@@ -28,7 +28,5 @@ namespace Gts {
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 			};	
-			float speedboost = 1.0;
-			float damageboost = 1.0;
 	};
 }
