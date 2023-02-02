@@ -30,14 +30,12 @@ namespace Gts {
 			return;
 		}
 		float bonus = 1.0;
-		float GrowAmount = this->ScaleOnVore;
-		BASE_POWER *= GrowAmount;
 		if (Runtime::HasPerk(caster, "AdditionalAbsorption")) {
 			BASE_POWER *= 2.0;
 		}
 
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion")) {
-			bonus = get_target_scale(caster) * 0.25 + 0.75;
+			bonus = get_visual_scale(caster) * 0.25 + 0.75;
 		}
 		log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
 		VoreRegeneration(1.0);

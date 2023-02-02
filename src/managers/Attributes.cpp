@@ -346,7 +346,7 @@ namespace Gts {
 		if (!actor) {
 			return 1.0;
 		}
-		static Timer checktimer = Timer(2);
+		static Timer checktimer = Timer(0.15);
 		float bonusCarryWeightMultiplier = Runtime::GetFloat("bonusCarryWeightMultiplier");
 		float bonusHPMultiplier = Runtime::GetFloat("bonusHPMultiplier");
 		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
