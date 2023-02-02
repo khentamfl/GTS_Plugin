@@ -71,6 +71,10 @@ namespace Gts {
 			result.shoe_weight = shoe_weight;
 			result.char_weight = actor->GetWeight();
 
+			float health_storage = 1.0;
+			float speedmult_storage = 1.0;
+			float damage_storage = 1.0;
+
 			result.health_storage = health_storage;
 		    result.speedmult_storage = speedmult_storage;
 	        result.damage_storage = damage_storage;
