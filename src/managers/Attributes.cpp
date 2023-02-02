@@ -357,7 +357,7 @@ namespace Gts {
 		if (!Persistent::GetSingleton().GetActorData(actor)) {
 			return 1.0;
 		}
-		auto& transient = Transient::GetSingleton().GetActorData(actor);
+		auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (!transient) {
 			return 1.0;
 		}
