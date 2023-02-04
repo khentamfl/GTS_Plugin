@@ -18,13 +18,18 @@ namespace Gts {
 			void Augmentation();
 			void OverrideSMTBonus(float Value);
 			float GetAttributeBonus(Actor* actor, float Value);
+
+			static float AlterGetAv(Actor* actor, ActorValue av, float originalValue);
+			static float AlterGetBaseAv(Actor* actor, ActorValue av, float originalValue);
+			static float AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue);
+
 		private:
 			float MovementSpeedBonus = 0.0;
 			bool BlockMessage = false;
-			SoftPotential speed_adjustment_walk { 
+			SoftPotential speed_adjustment_walk {
 				.k = 0.265, // 0.125
 				.n = 1.11, // 0.86
-				.s = 2.0, // 1.12 
+				.s = 2.0, // 1.12
 				.o = 1.0,
 				.a = 0.0,  //Default is 0
 			};

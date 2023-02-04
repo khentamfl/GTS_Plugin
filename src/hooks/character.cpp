@@ -22,6 +22,7 @@ namespace Hooks
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Character[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
+		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
 		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 	}
 
@@ -58,50 +59,37 @@ namespace Hooks
 	}
 
 	float Hook_Character::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
+		float value = _GetActorValue(a_owner, a_akValue);
 		if (Plugin::InGame()) {
-			Character* a_this = skyrim_cast<Character*>(a_owner);
+			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
-				float actual_value = _GetActorValue(a_owner, a_akValue);
-				float bonus = 1.0;
-				auto& attributes = AttributeManager::GetSingleton();
-				if (a_akValue == ActorValue::kCarryWeight) {
-					bonus = attributes.GetAttributeBonus(a_this, 2.0);
-					return actual_value * bonus;
-				}
-				if (a_akValue == ActorValue::kAttackDamageMult) {
-					bonus = attributes.GetAttributeBonus(a_this, 4.0);
-					return actual_value * bonus;
-				} else {
-					return actual_value;
-				}
-			} else {
-				return _GetActorValue(a_owner, a_akValue);
+				value = AttributeManager::AlterGetAv(a_owner, a_akValue, value);
 			}
-		} else {
-			return _GetActorValue(a_owner, a_akValue);
 		}
+		return value;
 	}
 
 	float Hook_Character::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health
+		float value = _GetBaseActorValue(a_owner, a_akValue);
 		if (Plugin::InGame()) {
-			Character* a_this = skyrim_cast<Character*>(a_owner);
+			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {
-				auto& attributes = AttributeManager::GetSingleton();
-				if (a_akValue == ActorValue::kHealth) {
-					float scale = get_visual_scale(a_this);
-					float modav = a_this->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, ActorValue::kHealth);
-					float actual_value = _GetBaseActorValue(a_owner, a_akValue);
-					bonus = attributes.GetAttributeBonus(a_this, 1.0);
-					return actual_value*bonus + (modav*bonus -1.0);
-				}
-				return _GetBaseActorValue(a_owner, a_akValue);
-			} else {
-				return _GetBaseActorValue(a_owner, a_akValue);
+				value = AttributeManager::AlterGetBaseAv(a_owner, a_akValue, value);
 			}
-		} else {
-			return _GetBaseActorValue(a_owner, a_akValue);
 		}
+		return value;
+	}
+
+	float Hook_Character::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
+		float value = _GetPermanentActorValue(a_owner, a_akValue);
+		if (Plugin::InGame()) {
+			Actor* a_this = skyrim_cast<Actor*>(a_owner);
+			if (a_this) {
+				value = AttributeManager::AlterGetPermenantAv(a_owner, a_akValue, value);
+			}
+		}
+		return value;
 	}
 
 	void Hook_Character::Move(Character* a_this, float a_arg2, const NiPoint3& a_position) { // Override Movement Speed

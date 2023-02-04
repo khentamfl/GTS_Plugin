@@ -121,7 +121,7 @@ namespace {
 			boost = base_av * (scale-1.0);
 		};
 		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, av, boost - last_carry_boost);
-		actor_data->bonus_carry = boost; 
+		actor_data->bonus_carry = boost;
 	}
 
 	void BoostJump(Actor* actor, float power) {
@@ -176,24 +176,24 @@ namespace {
 			return;
 		}
 		/*float last_hp_boost = actor_data->bonus_hp;
-		const ActorValue av = ActorValue::kHealth;
-		float visual_scale = get_visual_scale(actor);
-		float native_scale = get_natural_scale(actor);
-		float scale = visual_scale;///native_scale;
+		   const ActorValue av = ActorValue::kHealth;
+		   float visual_scale = get_visual_scale(actor);
+		   float native_scale = get_natural_scale(actor);
+		   float scale = visual_scale;///native_scale;
 
-		float base_av = actor->GetBaseActorValue(av);
-		float current_tempav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
+		   float base_av = actor->GetBaseActorValue(av);
+		   float current_tempav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 
-		float boost;
-		if (scale > 1.0) {
-			boost = base_av * (scale - 1.0) * power;
-		} else {
-			// Linearly decrease such that:
-			//   boost = -base_av when scale==0.0
-			//   This way we shouldn't kill them by scaling them
-			//   to zero
-			boost = base_av * (scale - 1.0);
-		}*/
+		   float boost;
+		   if (scale > 1.0) {
+		        boost = base_av * (scale - 1.0) * power;
+		   } else {
+		        // Linearly decrease such that:
+		        //   boost = -base_av when scale==0.0
+		        //   This way we shouldn't kill them by scaling them
+		        //   to zero
+		        boost = base_av * (scale - 1.0);
+		   }*/
 
 		float current_health_percentage = GetHealthPercentage(actor);
 
@@ -359,7 +359,7 @@ namespace Gts {
 		if (!transient) {
 			return 1.0;
 		}
-	
+
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float PerkSpeed = 1.0;
@@ -368,15 +368,17 @@ namespace Gts {
 		if (Value == 1.0) {   // boost hp
 			//BoostHP(actor);
 			return scale + ((bonusHPMultiplier/BalancedMode) * scale - 1.0);
-		} if (Value == 2.0) { // boost Carry Weight
+		}
+		if (Value == 2.0) { // boost Carry Weight
 			return scale + ((bonusCarryWeightMultiplier/BalancedMode) * scale - 1.0);
-		} if (Value == 3.0) { // Boost SpeedMult
-			
+		}
+		if (Value == 3.0) { // Boost SpeedMult
+
 			SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 			float MS_mult = soft_core(scale, MS_adjustment);
 			float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
-			float Multy = clamp(0.70, 1.0, MS_mult); 
-			float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk); 
+			float Multy = clamp(0.70, 1.0, MS_mult);
+			float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk);
 			float bonusspeed = clamp(0.90, 1.0, speed_mult_walk);
 			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
 				PerkSpeed = clamp(0.80, 1.0, speed_mult_walk);
@@ -387,11 +389,48 @@ namespace Gts {
 			if (actor->formID == 0x14) {
 				log::info("SpeedMult: {}", transient->speedmult_storage);
 			}
-			return transient->speedmult_storage; 
-		} if (Value == 4.0) { // Boost Attack Damage
-				transient->damage_storage = scale + ((bonusDamageMultiplier) * scale - 1.0);
+			return transient->speedmult_storage;
+		}
+		if (Value == 4.0) { // Boost Attack Damage
+			transient->damage_storage = scale + ((bonusDamageMultiplier) * scale - 1.0);
 			return transient->damage_storage;
 		}
 		return 1.0;
-	} 
+	}
+
+	float AttributeManager::AlterGetAv(Actor* actor, ActorValue av, float originalValue) {
+		float bonus = 1.0;
+
+		auto& attributes = AttributeManager::GetSingleton();
+		switch (av) {
+			case ActorValue::kCarryWeight: {
+				bonus = attributes.GetAttributeBonus(actor, 2.0);
+				break;
+			}
+			case ActorValue::kAttackDamageMult: {
+				bonus = attributes.GetAttributeBonus(actor, 4.0);
+				break;
+			}
+		}
+
+		return originalValue * bonus;
+	}
+	float AttributeManager::AlterGetBaseAv(Actor* actor, ActorValue av, float originalValue) {
+		float bonus = 1.0;
+		auto& attributes = AttributeManager::GetSingleton();
+		switch (av) {
+			case ActorValue::kHealth: {
+				float modav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
+				bonus = attributes.GetAttributeBonus(actor, 1.0);
+
+				return actual_value*bonus + (bonus - 1.0)*modav;
+			}
+		}
+
+		return originalValue * bonus;
+	}
+	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
+		float bonus = 1.0;
+		return originalValue * bonus;
+	}
 }

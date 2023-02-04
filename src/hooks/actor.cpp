@@ -19,6 +19,7 @@ namespace Hooks
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Actor[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
+		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 	}
 
 	void Hook_Actor::HandleHealthDamage(Actor* a_this, Actor* a_attacker, float a_damage) {
@@ -53,40 +54,37 @@ namespace Hooks
 		_RemovePerk(a_this, a_perk);
 	}
 
-	float Hook_Actor::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
-		log::info("Get AV Actor");
+	float Hook_Actor::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
+		float value = _GetActorValue(a_owner, a_akValue);
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
-				log::info("casted");
-				float actual_value = _GetActorValue(a_owner, a_akValue);
-				if (a_akValue == ActorValue::kArchery) {
-					return actual_value + 100000.0;
-				} else {
-					return actual_value;
-				}
-			} else {
-				log::info("Cant cast");
-				return _GetActorValue(a_owner, a_akValue);
+				value = AttributeManager::AlterGetAv(a_owner, a_akValue, value);
 			}
-		} else {
-			log::info("Not Ready");
-			return _GetActorValue(a_owner, a_akValue);
 		}
+		return value;
 	}
 
-	float Hook_Actor::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
+	float Hook_Actor::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health
+		float value = _GetBaseActorValue(a_owner, a_akValue);
+		if (Plugin::InGame()) {
+			Actor* a_this = skyrim_cast<Actor*>(a_owner);
+			float bonus = 1.0;
+			if (a_this) {
+				value = AttributeManager::AlterGetBaseAv(a_owner, a_akValue, value);
+			}
+		}
+		return value;
+	}
+
+	float Hook_Actor::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
+		float value = _GetPermanentActorValue(a_owner, a_akValue);
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
-				log::info("Get Perma AV");
-				float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
-				return actual_value;
-			} else {
-				return _GetPermanentActorValue(a_owner, a_akValue);
+				value = AttributeManager::AlterGetPermenantAv(a_owner, a_akValue, value);
 			}
-		} else {
-			return _GetPermanentActorValue(a_owner, a_akValue);
 		}
+		return value;
 	}
 }
