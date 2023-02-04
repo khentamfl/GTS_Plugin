@@ -5,7 +5,6 @@
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
-#include "data/transient.hpp"
 #include "magic/effects/common.hpp"
 #include "timer.hpp"
 
@@ -136,6 +135,7 @@ namespace {
 
 
 	void Augmentation(Actor* Player, bool& BlockMessage) {
+		// TODO: Calc on demand rather than poll
 		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
 		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
 		if (Player->IsSprinting() && Runtime::HasPerk(Player, "NoSpeedLoss") && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
@@ -309,7 +309,7 @@ namespace Gts {
 			case ActorValue::kAttackDamageMult: {
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
 				float damage_storage = scale + ((bonusDamageMultiplier) * scale - 1.0);
-				return transient->damage_storage;
+				return damage_storage;
 			}
 			default: {
 				return 1.0;
