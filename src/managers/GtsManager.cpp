@@ -143,7 +143,7 @@ namespace {
 				.a = 0.0,  //Default is 0
 		};
 
-		float speedmultcalc = soft_core(scale, GtsManager::getspeed); // For all other movement types
+		float speedmultcalc = soft_core(scale, getspeed); // For all other movement types
 		float bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float perkspeed = 1.0;
 
