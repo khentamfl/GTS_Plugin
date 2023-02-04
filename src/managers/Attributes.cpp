@@ -375,7 +375,7 @@ namespace Gts {
 			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
 				PerkSpeed = clamp(0.80, 1.0, speedmult);
 			}
-				transient->speedmult_storage = 1.0 * (Bonus/2.2 + 1.0)/speedmult/speedmult/PerkSpeed;
+				transient->speedmult_storage = 1.0 * (Bonus/2.2 + 1.0)/speedmult/speedmult/speedmult/PerkSpeed;
 			if (actor->formID == 0x14) {
 				log::info("SpeedMult: {}", transient->speedmult_storage);
 			}
