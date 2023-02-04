@@ -434,6 +434,9 @@ namespace Gts {
 
 				return actual_value*bonus + (bonus - 1.0)*modav;
 			}
+			case ActorValue::kJumpingBonus: {
+				bonus = 100.0;
+			}
 		}
 
 		return originalValue * bonus;
