@@ -137,6 +137,7 @@ namespace Hooks
 		// _SetSize(a_this, a_size);
 	}
 
-	void Hook_PlayerCharacter::Move(PlayerCharacter* a_this, float a_arg2, const NiPoint3& a_position)
+	void Hook_PlayerCharacter::Move(PlayerCharacter* a_this, float a_arg2, const NiPoint3& a_position) {
 		return _Move(a_this, a_arg*10, a_position);
+	}
 }
