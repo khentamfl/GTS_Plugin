@@ -142,13 +142,18 @@ namespace Hooks
 	}
 
 	void Hook_PlayerCharacter::Move(PlayerCharacter* a_this, float a_arg2, const NiPoint3& a_position) {
+		float bonus = 1.0;
+		if (a_this) {
+			auto& attributes = AttributeManager::GetSingleton();
+			bonus = attributes.GetAttributeBonus(a_this, 1.0);
+		}
 		log::info("a_move, arg2: {}, apos: {}", a_arg2, Vector2Str(a_position));
-		return _Move(a_this, a_arg2, a_position);
+		return _Move(a_this, a_arg2, a_position * 10);
 	}
 
 	void Hook_PlayerCharacter::ModifyMovementData(PlayerCharacter* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4)
 	{
 		log::info("Modifying Movement Data, a_this: {}", a_delta);
-		return _ModifyMovementData(a_this, a_delta, a_arg3, a_arg4);
+		return _ModifyMovementData(a_this, a_delta * 1000, a_arg3, a_arg4);
 	}
 }
