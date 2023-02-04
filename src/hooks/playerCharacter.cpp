@@ -147,6 +147,7 @@ namespace Hooks
 	void Hook_PlayerCharacter::ModifyMovementData(PlayerCharacter* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4)
 	{
 		log::info("Modifying Movement Data");
-		return _ModifyMovementData(a_this, a_delta * 10, a_arg3 * [10, 10, 10], a_arg4);
+		//NiPoint3 Multiply = (10, 10, 10);
+		return _ModifyMovementData(a_this, a_delta * 10, a_arg3 * (10, 10, 10), a_arg4);
 	}
 }
