@@ -23,6 +23,7 @@ namespace Hooks
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_PlayerCharacter[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
+		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 	}
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
@@ -91,6 +92,26 @@ namespace Hooks
 	}
 
 	float Hook_PlayerCharacter::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
+		if (Plugin::Ready()) {
+			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
+			float bonus = 1.0;
+			if (a_this) {
+				//auto& attributes = AttributeManager::GetSingleton();
+				//if (a_akValue == ActorValue::kHealth) {
+				//	float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
+				//	bonus = attributes.GetAttributeBonus(a_this, 1.0);
+				//	return actual_value * bonus;
+				//}
+				return _GetPermanentActorValue(a_owner, a_akValue);
+			} else {
+				return _GetPermanentActorValue(a_owner, a_akValue);
+			}
+		} else {
+			return _GetPermanentActorValue(a_owner, a_akValue);
+		}
+	}
+	
+	float Hook_PlayerCharacter::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
 			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
 			float bonus = 1.0;
