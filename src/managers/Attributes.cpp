@@ -283,7 +283,7 @@ namespace Gts {
 				float power = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
 
 				if (actor->formID == 0x14) {
-					log::info("SpeedMult: {}", power);
+					//log::info("SpeedMult: {}", power);
 				}
 
 				return power;
