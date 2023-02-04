@@ -110,9 +110,11 @@ namespace {
 		}
 
 		float current_health_percentage = GetHealthPercentage(actor);
+		log::info("Health% before scale: {}", current_health_percentage);
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
 		SetHealthPercentage(actor, current_health_percentage);
+		log::info("Health% after scale: {}", GetHealthPercentage(actor));
 	}
 
 
