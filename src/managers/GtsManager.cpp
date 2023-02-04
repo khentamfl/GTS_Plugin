@@ -109,8 +109,10 @@ namespace {
 			return;
 		}
 
+		float current_health_percentage = GetHealthPercentage(actor);
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
+		SetHealthPercentage(actor, current_health_percentage);
 	}
 
 
@@ -135,12 +137,12 @@ namespace {
 		if (scale < 1e-5) {
 			return;
 		}
-		SoftPotential getspeed { 
-				.k = 0.142, // 0.125
-				.n = 0.82, // 0.86
-				.s = 1.90, // 1.12
-				.o = 1.0,
-				.a = 0.0,  //Default is 0
+		SoftPotential getspeed {
+			.k = 0.142, // 0.125
+			.n = 0.82, // 0.86
+			.s = 1.90, // 1.12
+			.o = 1.0,
+			.a = 0.0,  //Default is 0
 		};
 
 		float speedmultcalc = soft_core(scale, getspeed); // For all other movement types

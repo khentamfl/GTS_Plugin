@@ -1,4 +1,5 @@
 #include "hooks/actor.hpp"
+#include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/plugin.hpp"
