@@ -31,5 +31,8 @@ namespace Hooks
 
 			static void SetSize(PlayerCharacter* a_this, float a_size);
 			static inline REL::Relocation<decltype(SetSize)> _SetSize;
+
+			static void Move(PlayerCharacter* a_this, float a_arg2, const NiPoint3& a_position);
+			static inline REL::Relocation<decltype(Move)> _Move;
 	};
 }
