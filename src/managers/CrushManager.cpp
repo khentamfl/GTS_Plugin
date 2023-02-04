@@ -151,8 +151,8 @@ namespace Gts {
 					if (!tiny->IsDead()) {
 						tiny->KillImmediate();
 					}
-					Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
-					Runtime::PlaySound("GtsFallSound", giant, 1.0, 1.0);
+					Runtime::PlaySound("GtsCrushSound", tiny, 1.0, 1.0);
+					Runtime::PlaySound("GtsFallSound", tiny, 1.0, 1.0);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {

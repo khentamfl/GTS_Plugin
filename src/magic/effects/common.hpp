@@ -266,7 +266,7 @@ namespace Gts {
 		}
 		PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement);
 		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
-		if (get_visual_scale(caster) <= 12.0 && !caster->IsSprinting() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
+		if (get_visual_scale(caster) <= 12.0 && !caster->IsSprinting() && !caster->IsWalking() && !caster->IsRunning() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
 			PlayAnimation(caster, "JumpLand");
 		}
 		auto Cache = Persistent::GetSingleton().GetData(caster); // TODO: Fix this properly

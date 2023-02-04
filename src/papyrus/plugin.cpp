@@ -45,7 +45,7 @@ namespace {
 			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kSpeedMult) - 1.0; // Speed Multi
 		}
 		if (value == 4.0) {
-			return transient->damage_storage - 1.0;
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kAttackDamageMult) - 1.0;
 		}
 		return 1.0;
 	}
