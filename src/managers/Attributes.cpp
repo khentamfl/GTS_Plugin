@@ -380,6 +380,9 @@ namespace Gts {
 			if (speedtimer.ShouldRunFrame()) {
 				transient->speedmult_storage = (Bonus/2.2 + 1.0)/speedmult/PerkSpeed;
 			}
+			if (actor->formID == 0x14) {
+				log::info("SpeedMult: {}", transient->speedmult_storage);
+			}
 			return transient->speedmult_storage; 
 		} if (Value == 4.0) { // Boost Attack Damage
 		    if (damagetimer.ShouldRunFrame()) {

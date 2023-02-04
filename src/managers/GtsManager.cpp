@@ -152,6 +152,9 @@ namespace {
 		}
 
 		persi_actor_data->anim_speed = speedmultcalc/perkspeed;//MS_mult;
+		if (actor->formID == 0x14) {
+			log::info("AnimSpeed: {}", persi_actor_data->anim_speed);
+		}
 	}
 
 	void update_effective_multi(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
