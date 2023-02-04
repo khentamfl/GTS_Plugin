@@ -75,7 +75,7 @@ namespace Hooks
 					return actual_value * bonus;
 				}
 				if (a_akValue == ActorValue::kSpeedMult) {
-					bonus = 1.0//attributes.GetAttributeBonus(a_this, 3.0);
+					bonus = 1.0; //attributes.GetAttributeBonus(a_this, 3.0);
 					return actual_value * bonus;
 				}
 				if (a_akValue == ActorValue::kAttackDamageMult) {
