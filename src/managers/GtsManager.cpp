@@ -136,10 +136,8 @@ namespace {
 			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
 		}
-		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
-		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
 
-		SoftPotential speed_adjustment_others { // Even though it is named 'sprint', it is used for all other movement states
+		SoftPotential speed_adjustment { // Even though it is named 'sprint', it is used for all other movement states
 			.k = 0.142, // 0.125
 			.n = 0.82, // 0.86
 			.s = 1.90, // 1.12
@@ -147,15 +145,7 @@ namespace {
 			.a = 0.0,  //Default is 0
 		};
 
-		SoftPotential speed_adjustment_walk { // Used for normal walk, it has faster animation speed for some reason, so it needs a custom one
-			.k = 0.265, // 0.125
-			.n = 1.11, // 0.86
-			.s = 2.0, // 1.12
-			.o = 1.0,
-			.a = 0.0,  //Default is 0
-		};
-
-		float speed_mult_others = soft_core(scale, speed_adjustment_others); // For all other movement types
+		float speedmultcalc = soft_core(scale, speed_adjustment); // For all other movement types
 		float speed_mult_walk = soft_core(scale, speed_adjustment_walk); // For Walking
 
 		float speed_mult = soft_core(scale, speed_adjustment);
@@ -180,13 +170,8 @@ namespace {
 			PerkSpeed = clamp(0.80, 1.0, speed_mult_walk); // Used as a bonus 20% MS if PC has perk.
 		}
 
-		if (!actor->IsRunning()) {
-			persi_actor_data->anim_speed = speed_mult_others;//MS_mult;
-		} else if (actor->IsRunning() && !actor->IsSprinting() && !actor->IsSneaking()) {
-			persi_actor_data->anim_speed = speed_mult_walk * PerkSpeed;
-		}
+		persi_actor_data->anim_speed = speedmultcalc;//MS_mult;
 
-		//trans_actor_data->base_walkspeedmult = Default MS bonus
 		if (timer.ShouldRunFrame()) {
 			if (scale < 1.0) {
 				//actor->SetActorValue(ActorValue::kSpeedMult, 100 * scale * (Bonus/2.2 + 1.0));
