@@ -372,7 +372,7 @@ namespace Gts {
 		} if (Value == 2.0) { // boost Carry Weight
 			return (bonusCarryWeightMultiplier/BalancedMode)*scale;
 		} if (Value == 3.0) { // Boost SpeedMult
-			float speedmult = soft_core(scale, GtsManager::GetSingleton().speed_adjustment); 
+			float speedmult = soft_core(scale, GtsManager::GetSingleton().speedadjustment); 
 			float PerkSpeed = 1.0;
 			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
 				PerkSpeed = clamp(0.80, 1.0, speedmult);
