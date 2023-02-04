@@ -1,6 +1,7 @@
 #include "managers/highheel.hpp"
 #include "data/runtime.hpp"
 #include "node.hpp"
+#include "scale/modscale.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -48,10 +49,6 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		auto transient = Transient::GetSingleton().GetActorData(actor);
-		if (!transient) {
-			return;
-		}
 		NiPoint3 new_hh;
 		//log::info("Actor: {}, BaseHeight: {}, BaseVolume: {}", actor->GetDisplayFullName(), transient->base_height, transient->base_volume);
 		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {
@@ -76,7 +73,7 @@ namespace Gts {
 					update_node(npc_root_node);
 				}
 				auto transient = Transient::GetSingleton().GetActorData(actor);
-				if (actor) {
+				if (transient) {
 					bool wasWearingHh = transient->wearingHh;
 					bool isWearingHH = fabs(new_hh.Length()) > 1e-4;
 					if (isWearingHH != wasWearingHh) {
@@ -134,13 +131,14 @@ namespace Gts {
 			}
 		}
 		//log::info("Base HHOffset: {}", Vector2Str(result));
-		return result;
+		auto npcNodeScale = get_npcparentnode_scale(actor);
+		return result * npcNodeScale;
 	}
 
 	NiPoint3 HighHeelManager::GetHHOffset(Actor* actor) {
 		if (actor) {
-			auto scale = get_visual_scale(actor);
-			return HighHeelManager::GetBaseHHOffset(actor) * scale;
+			auto npcRootNodeScale = get_npcnode_scale(actor);
+			return HighHeelManager::GetBaseHHOffset(actor) * npcRootNodeScale;
 		}
 		return NiPoint3();
 	}
