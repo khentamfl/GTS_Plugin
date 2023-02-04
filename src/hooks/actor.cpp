@@ -55,7 +55,7 @@ namespace Hooks
 
 	float Hook_Actor::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
 		log::info("Get AV Actor");
-		if (Plugin::Ready()) {
+		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
 				log::info("casted");
@@ -76,7 +76,7 @@ namespace Hooks
 	}
 
 	float Hook_Actor::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
-		if (Plugin::Ready()) {
+		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
 				log::info("Get Perma AV");

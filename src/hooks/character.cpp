@@ -57,7 +57,7 @@ namespace Hooks
 	}
 
 	float Hook_Character::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
-		if (Plugin::Ready()) {
+		if (Plugin::InGame()) {
 			Character* a_this = skyrim_cast<Character*>(a_owner);
 			if (a_this) {
 				float actual_value = _GetActorValue(a_owner, a_akValue);
@@ -90,7 +90,7 @@ namespace Hooks
 	}
 
 	float Hook_Character::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
-		if (Plugin::Ready()) {
+		if (Plugin::InGame()) {
 			Character* a_this = skyrim_cast<Character*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {

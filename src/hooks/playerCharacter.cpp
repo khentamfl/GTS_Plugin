@@ -59,7 +59,7 @@ namespace Hooks
 	}
 
 	float Hook_PlayerCharacter::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
-		if (Plugin::Ready()) {
+		if (Plugin::InGame()) {
 			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
 			if (a_this) {
 				float actual_value = _GetActorValue(a_owner, a_akValue);
@@ -92,7 +92,7 @@ namespace Hooks
 	}
 
 	float Hook_PlayerCharacter::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
-		if (Plugin::Ready()) {
+		if (Plugin::InGame()) {
 			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {
@@ -112,22 +112,22 @@ namespace Hooks
 	}
 	
 	float Hook_PlayerCharacter::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
-		if (Plugin::Ready()) {
+		if (Plugin::InGame()) {
 			PlayerCharacter* a_this = skyrim_cast<PlayerCharacter*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {
 				auto& attributes = AttributeManager::GetSingleton();
 				if (a_akValue == ActorValue::kHealth) {
-					float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
+					float actual_value = _GetBaseActorValue(a_owner, a_akValue);
 					bonus = attributes.GetAttributeBonus(a_this, 1.0);
 					return actual_value * bonus;
 				}
-				return _GetPermanentActorValue(a_owner, a_akValue);
+				return _GetBaseActorValue(a_owner, a_akValue);
 			} else {
-				return _GetPermanentActorValue(a_owner, a_akValue);
+				return _GetBaseActorValue(a_owner, a_akValue);
 			}
 		} else {
-			return _GetPermanentActorValue(a_owner, a_akValue);
+			return _GetBaseActorValue(a_owner, a_akValue);
 		}
 	}
 
