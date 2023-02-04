@@ -417,10 +417,12 @@ namespace Gts {
 	}
 	float AttributeManager::AlterGetBaseAv(Actor* actor, ActorValue av, float originalValue) {
 		float bonus = 1.0;
+		float modav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av); // Do temp boosts here too
+
 		auto& attributes = AttributeManager::GetSingleton();
 		switch (av) {
 			case ActorValue::kHealth: {
-				float modav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
+				modav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 
 				float scale = get_visual_scale(actor);
 
@@ -431,8 +433,7 @@ namespace Gts {
 					//   at zero scale health=0.0
 					bonus = scale;
 				}
-
-				return actual_value*bonus + (bonus - 1.0)*modav;
+				break;
 			}
 			case ActorValue::kJumpingBonus: {
 				bonus = 100.0;
@@ -440,7 +441,7 @@ namespace Gts {
 			}
 		}
 
-		return originalValue * bonus;
+		return originalValue * bonus + (bonus - 1.0)*modav;
 	}
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
 		float bonus = 1.0;
