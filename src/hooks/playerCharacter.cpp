@@ -120,9 +120,11 @@ namespace Hooks
 			if (a_this) {
 				auto& attributes = AttributeManager::GetSingleton();
 				if (a_akValue == ActorValue::kHealth) {
+					float scale = get_visual_scale(a_this);
+					float ModAV = a_this->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, ActorValue::kHealth);
 					float actual_value = _GetBaseActorValue(a_owner, a_akValue);
 					bonus = attributes.GetAttributeBonus(a_this, 1.0);
-					return actual_value * bonus;
+					return actual_value + ((Scale - 1.0) * ModAV) * bonus;
 				}
 				return _GetBaseActorValue(a_owner, a_akValue);
 			} else {
@@ -144,6 +146,6 @@ namespace Hooks
 
 	void Hook_PlayerCharacter::ModifyMovementData(PlayerCharacter* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4)
 	{
-		return _ModifyMovementData(a_this, a_delta * 10, a_arg3, a_arg4);
+		return _ModifyMovementData(a_this, a_delta * 10, a_arg3 * 10, a_arg4 * 10);
 	}
 }
