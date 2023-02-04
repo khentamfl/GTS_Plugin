@@ -93,17 +93,7 @@ namespace Hooks
 	}
 
 	void Hook_Character::Move(Character* a_this, float a_arg2, const NiPoint3& a_position) { // Override Movement Speed
-		float bonus = 1.0;
-		static Timer soundtimer = Timer(0.80);
-		if (a_this) {
-			auto& attributes = AttributeManager::GetSingleton();
-			bonus = attributes.GetAttributeBonus(a_this, 3.0);
-			float sizedifference = get_visual_scale(a_this)/get_visual_scale(PlayerCharacter::GetSingleton());
-			float volume = a_position[1] * bonus * sizedifference / 250;
-			if (soundtimer.ShouldRunFrame()) {
-				Runtime::PlaySound("RumbleWalkSound", a_this, volume, 1.0);
-			}
-		}
+		float bonus = AttributeManager::AlterMovementSpeed(a_this);
 		return _Move(a_this, a_arg2, a_position * bonus);
 	}
 }

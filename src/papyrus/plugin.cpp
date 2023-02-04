@@ -36,13 +36,13 @@ namespace {
 			return 1.0;
 		}
 		if (value == 1.0) {
-			return AttributeManager::GetSingleton().GetAttributeBonus(actor, 1.0); // Health
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kHealth); // Health
 		}
 		if (value == 2.0) {
-			return AttributeManager::GetSingleton().GetAttributeBonus(actor, 2.0); // Carry Weight
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kCarryWeight); // Carry Weight
 		}
 		if (value == 3.0) {
-			return transient->speedmult_storage - 1.0;
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kSpeedMult) - 1.0; // Speed Multi
 		}
 		if (value == 4.0) {
 			return transient->damage_storage - 1.0;
@@ -164,7 +164,9 @@ namespace {
 	}
 
 	bool IsInAir(StaticFunctionTag*, Actor* actor) {
-		if (!actor) return false;
+		if (!actor) {
+			return false;
+		}
 		return actor->IsInMidair();
 	}
 

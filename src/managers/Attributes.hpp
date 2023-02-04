@@ -17,11 +17,12 @@ namespace Gts {
 
 			void Augmentation();
 			void OverrideSMTBonus(float Value);
-			float GetAttributeBonus(Actor* actor, float Value);
+			float GetAttributeBonus(Actor* actor, ActorValue av);
 
 			static float AlterGetAv(Actor* actor, ActorValue av, float originalValue);
 			static float AlterGetBaseAv(Actor* actor, ActorValue av, float originalValue);
 			static float AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue);
+			static float AlterMovementSpeed(Actor* actor);
 
 		private:
 			float MovementSpeedBonus = 0.0;
