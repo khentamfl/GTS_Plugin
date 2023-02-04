@@ -1,5 +1,6 @@
 #include "papyrus/plugin.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include <math.h>
@@ -23,6 +24,33 @@ namespace {
 	}
 	float GetSizeVulnerability(StaticFunctionTag*, Actor* actor) {
 		return SizeManager::GetSingleton().GetSizeVulnerability(actor);
+	}
+
+	float GetAttributeBonus(StaticFunctionTag*, Actor* actor, float value) {
+		auto transient = Transient::GetSingleton().GetActorData(actor);
+		auto& attributes = AttributeManager::GetSingleton();
+		if (!actor) {
+			return 1.0;
+		}
+		if (!transient) {
+			return 1.0;
+		}
+		if (!attributes) {
+			return 1.0;
+		}
+		if (value == 1.0) {
+			return actor->GetBaseActorValue(ActorValue::kHealth)/attributes.GetAttributeBonus(actor, 1.0);
+		}
+		if (value == 2.0) {
+			return actor->GetBaseActorValue(ActorValue::kCarryWeight)/attributes.GetAttributeBonus(actor, 2.0);;
+		}
+		if (value == 3.0) {
+			return actor->GetActorValue(ActorValue::kSpeedMult)/transient->speedmult_storage;
+		}
+		if (value == 4.0) {
+			return actor->GetActorValue(ActorValue::kAttackDamageMult)/transient->damage_storage;
+		}
+		return 1.0;
 	}
 
 	bool ModSizeVulnerability(StaticFunctionTag*, Actor* actor, float amt) {
@@ -174,6 +202,7 @@ namespace Gts {
 		vm->RegisterFunction("GetSizeRelatedDamage", PapyrusClass, GetSizeRelatedDamage);
 		vm->RegisterFunction("ModSizeVulnerability", PapyrusClass, ModSizeVulnerability);
 		vm->RegisterFunction("GetSizeVulnerability", PapyrusClass, GetSizeVulnerability);
+		vm->RegisterFunction("GetAttributeBonus", PapyrusClass, GetAttributeBonus);
 		vm->RegisterFunction("GetHitGrowth", PapyrusClass, GetHitGrowth);
 		vm->RegisterFunction("GetPreciseDamage", PapyrusClass, GetPreciseDamage);
 		vm->RegisterFunction("SetHitGrowth", PapyrusClass, SetHitGrowth);

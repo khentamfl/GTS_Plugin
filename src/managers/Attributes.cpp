@@ -362,6 +362,7 @@ namespace Gts {
 	
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
+		float PerkSpeed = 1.0;
 		float scale = get_visual_scale(actor);
 
 		if (Value == 1.0) {   // boost hp
@@ -370,12 +371,17 @@ namespace Gts {
 		} if (Value == 2.0) { // boost Carry Weight
 			return scale + ((bonusCarryWeightMultiplier/BalancedMode) * scale - 1.0);
 		} if (Value == 3.0) { // Boost SpeedMult
-			float speedmult = soft_core(scale, this->getspeed); 
-			float PerkSpeed = 1.0;
 			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
 				PerkSpeed = clamp(0.80, 1.0, speedmult);
 			}
-				transient->speedmult_storage = 1.0 * (Bonus/2.2 + 1.0)/speedmult/speedmult/speedmult/speedmult/speedmult/PerkSpeed;
+			SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
+			float MS_mult = soft_core(scale, MS_adjustment);
+			float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
+			float Multy = clamp(0.70, 1.0, MS_mult); 
+			float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk); 
+
+			transient->speedmult_storage = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
+
 			if (actor->formID == 0x14) {
 				log::info("SpeedMult: {}", transient->speedmult_storage);
 			}

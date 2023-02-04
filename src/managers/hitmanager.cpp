@@ -1,6 +1,7 @@
 #include "managers/hitmanager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
@@ -84,6 +85,9 @@ namespace Gts {
 			}
 			GrowthTremorManager::GetSingleton().CallRumble(attacker, attacker, size_difference * 16);
 			PushActorAway(attacker, receiver, size_difference);
+		}
+		if (size_difference >= 22.0 && GetAV(receiver, ActorValue::kHealth) <= 1.0) {
+			CrushManager::Crush(attacker, receiver);
 		}
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {

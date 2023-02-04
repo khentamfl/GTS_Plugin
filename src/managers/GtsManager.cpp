@@ -148,7 +148,7 @@ namespace {
 		float perkspeed = 1.0;
 
 		if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
-			perkspeed = clamp(0.80, 1.0, speedmultcalc); // Used as a bonus 20% MS if PC has perk.
+			//perkspeed = clamp(0.80, 1.0, speedmultcalc); // Used as a bonus 20% MS if PC has perk.
 		}
 
 		persi_actor_data->anim_speed = speedmultcalc*perkspeed;//MS_mult;

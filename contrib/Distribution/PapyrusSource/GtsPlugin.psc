@@ -21,6 +21,13 @@ Float function GetSizeVulnerability(Actor target) global native
 ; apply increased size-related damage debuff 
 Bool function ModSizeVulnerability(Actor target, Float amt) global native
 
+;Reports bonus attributes
+; 1 = health
+; 2 = carry weight
+; 3 = speed
+; 4 = damage
+Float function GetAttributeBonus(Actor target, float value) global native
+
 ; Check if Hit Growth is allowed
 
 Float function GetHitGrowth(Actor target) global native
@@ -57,7 +64,6 @@ String function SigFig(Float number, Int sf) global native
 ; Value is saved into the cosave
 Function SetIsHighHeelEnabled(Bool enabled) global native
 Bool Function GetIsHighHeelEnabled() global native
-
 
 ; Allow/Get precise damage toggle
 Bool Function GetPreciseDamage() global native
