@@ -110,29 +110,6 @@ namespace {
 		}
 	}
 
-	void BoostSpeedMulti(Actor* actor, float power) {
-		float scale = get_visual_scale(actor);
-		auto actor_data = Transient::GetSingleton().GetData(actor);
-		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/2.5;
-		float base_speed = actor_data->base_walkspeedmult;
-		float bonusSpeedMax = Runtime::GetFloat("bonusSpeedMax");
-		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
-		if (speedEffectiveSize > scale) {
-			speedEffectiveSize = scale;
-		}
-
-		static Timer timer = Timer(0.15); // Run every 0.5s or as soon as we can
-		if (timer.ShouldRunFrame()) {
-			if (scale > 1) {
-				actor->SetActorValue(ActorValue::kSpeedMult, 100 + ((speedEffectiveSize - 1) * (100 * power)));
-			} else if (scale < 1) {
-				actor->SetActorValue(ActorValue::kSpeedMult, 100 * (scale * 0.90 +0.10));
-			} else {
-				actor->SetActorValue(ActorValue::kSpeedMult, 100);
-			}
-		}
-	}
-
 
 	void Augmentation(Actor* Player, bool& BlockMessage) {
 		// TODO: Calc on demand rather than poll
