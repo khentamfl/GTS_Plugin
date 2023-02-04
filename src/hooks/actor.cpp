@@ -16,7 +16,7 @@ namespace Hooks
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
 
-		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Actor[9] };
+		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Actor[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
 	}
@@ -54,10 +54,11 @@ namespace Hooks
 	}
 
 	float Hook_Actor::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
+		log::info("Get AV Actor");
 		if (Plugin::Ready()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
-				log::info("Get AV");
+				log::info("casted");
 				float actual_value = _GetActorValue(a_owner, a_akValue);
 				if (a_akValue == ActorValue::kArchery) {
 					return actual_value + 100000.0;
@@ -65,9 +66,11 @@ namespace Hooks
 					return actual_value;
 				}
 			} else {
+				log::info("Cant cast");
 				return _GetActorValue(a_owner, a_akValue);
 			}
 		} else {
+			log::info("Not Ready");
 			return _GetActorValue(a_owner, a_akValue);
 		}
 	}

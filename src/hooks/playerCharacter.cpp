@@ -19,6 +19,7 @@ namespace Hooks
 		_HandleHealthDamage = Vtbl.write_vfunc(REL::Relocate(0x104, 0x104, 0x106), HandleHealthDamage);
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
+		_SetSize = Vtbl.write_vfunc(REL::Relocate(0D 9, 0D 9, 0x0DB), SetSize);
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_PlayerCharacter[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
@@ -75,12 +76,11 @@ namespace Hooks
 				if (a_akValue == ActorValue::kSpeedMult) {
 					bonus = attributes.GetAttributeBonus(a_this, 3.0);
 					return actual_value * bonus;
-				} 
+				}
 				if (a_akValue == ActorValue::kAttackDamageMult) {
 					bonus = attributes.GetAttributeBonus(a_this, 4.0);
 					return actual_value * bonus;
-				}
-				 else {
+				} else {
 					return actual_value;
 				}
 			} else {
@@ -101,7 +101,7 @@ namespace Hooks
 					float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
 					bonus = attributes.GetAttributeBonus(a_this, 1.0);
 					return actual_value * bonus;
-				} 
+				}
 				return _GetPermanentActorValue(a_owner, a_akValue);
 			} else {
 				return _GetPermanentActorValue(a_owner, a_akValue);
@@ -109,5 +109,10 @@ namespace Hooks
 		} else {
 			return _GetPermanentActorValue(a_owner, a_akValue);
 		}
+	}
+
+	void Hook_PlayerCharacter::SetSize(PlayerCharacter* a_this, float a_size) {
+		log::info("Set SIZE: {}", a_size);
+		// _SetSize(a_this, a_size);
 	}
 }
