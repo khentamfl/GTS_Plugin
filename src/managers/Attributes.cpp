@@ -346,8 +346,6 @@ namespace Gts {
 		if (!actor) {
 			return 1.0;
 		}
-		static Timer speedtimer = Timer(0.15);
-		static Timer damagetimer = Timer(0.15);
 		float bonusCarryWeightMultiplier = Runtime::GetFloat("bonusCarryWeightMultiplier");
 		float bonusHPMultiplier = Runtime::GetFloat("bonusHPMultiplier");
 		float bonusDamageMultiplier = Runtime::GetFloat("bonusDamageMultiplier");
@@ -377,17 +375,13 @@ namespace Gts {
 			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
 				PerkSpeed = clamp(0.80, 1.0, speedmult);
 			}
-			if (speedtimer.ShouldRunFrame()) {
 				transient->speedmult_storage = (Bonus/2.2 + 1.0)/speedmult/PerkSpeed;
-			}
 			if (actor->formID == 0x14) {
 				log::info("SpeedMult: {}", transient->speedmult_storage);
 			}
 			return transient->speedmult_storage; 
 		} if (Value == 4.0) { // Boost Attack Damage
-		    if (damagetimer.ShouldRunFrame()) {
 				transient->damage_storage = scale + ((bonusDamageMultiplier) * scale - 1.0);
-			}
 			return transient->damage_storage;
 		}
 		return 1.0;

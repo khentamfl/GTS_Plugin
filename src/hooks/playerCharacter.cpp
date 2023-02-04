@@ -117,7 +117,6 @@ namespace Hooks
 			auto& attributes = AttributeManager::GetSingleton();
 			bonus = attributes.GetAttributeBonus(a_this, 3.0);
 		}
-		log::info("a_move, arg2: {}, apos: {}", a_arg2, Vector2Str(a_position));
 		return _Move(a_this, a_arg2, a_position * bonus);
 	}
 }
