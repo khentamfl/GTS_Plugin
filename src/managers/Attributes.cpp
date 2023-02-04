@@ -332,16 +332,18 @@ namespace Gts {
 				}
 				break;
 			}
-			case ActorValue::kJumpingBonus: {
-				bonus = 100.0;
-				break;
-			}
 		}
 
 		return originalValue * bonus + (bonus - 1.0)*modav;
 	}
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
 		float bonus = 1.0;
+		switch (av) {
+			case ActorValue::kHealth: {
+				bonus = 100.0;
+				break;
+			}
+		}
 		return originalValue * bonus;
 	}
 
