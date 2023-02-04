@@ -48,8 +48,12 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-
+		auto transient = Transient::GetSingleton().GetActorData(actor);
+		if (!transient) {
+			return;
+		}
 		NiPoint3 new_hh;
+		log::info("Actor: {}, BaseHeight: {}, BaseVolume: {}", transient->base_height, transient->base_volume);
 		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {
 			new_hh = NiPoint3();
 		} else if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
