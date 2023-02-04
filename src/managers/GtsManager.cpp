@@ -146,7 +146,6 @@ namespace {
 		};
 
 		float speedmultcalc = soft_core(scale, speed_adjustment); // For all other movement types
-		float speed_mult_walk = soft_core(scale, speed_adjustment_walk); // For Walking
 
 		float speed_mult = soft_core(scale, speed_adjustment);
 		float MS_mult = soft_core(scale, MS_adjustment);
@@ -167,10 +166,10 @@ namespace {
 			Runtime::SetInt("IsFalling", 0);
 		}
 		if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
-			PerkSpeed = clamp(0.80, 1.0, speed_mult_walk); // Used as a bonus 20% MS if PC has perk.
+			PerkSpeed = clamp(0.80, 1.0, speedmultcalc); // Used as a bonus 20% MS if PC has perk.
 		}
 
-		persi_actor_data->anim_speed = speedmultcalc;//MS_mult;
+		persi_actor_data->anim_speed = speedmultcalc/PerkSpeed;//MS_mult;
 
 		if (timer.ShouldRunFrame()) {
 			if (scale < 1.0) {

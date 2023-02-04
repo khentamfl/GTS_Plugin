@@ -372,14 +372,13 @@ namespace Gts {
 		} if (Value == 2.0) { // boost Carry Weight
 			return (bonusCarryWeightMultiplier/BalancedMode)*scale;
 		} if (Value == 3.0) { // Boost SpeedMult
-			SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
-			float MS_mult = soft_core(scale, MS_adjustment);
-			float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
-			float Multy = clamp(0.70, 1.0, MS_mult); 
-			float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk); 
-			float PerkSpeed = clamp(0.90, 1.0, speed_mult_walk);
+			float speedmult = soft_core(scale, this->speed_adjustment); 
+			float PerkSpeed = 1.0;
+			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
+				PerkSpeed = clamp(0.80, 1.0, speedmult);
+			}
 			if (speedtimer.ShouldRunFrame()) {
-				transient->speedmult_storage = (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
+				transient->speedmult_storage = (Bonus/2.2 + 1.0)/speedmult/PerkSpeed;
 			}
 			return transient->speedmult_storage; 
 		} if (Value == 4.0) { // Boost Attack Damage
