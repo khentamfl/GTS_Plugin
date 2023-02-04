@@ -60,7 +60,7 @@ namespace Hooks
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
-				value = AttributeManager::AlterGetAv(a_owner, a_akValue, value);
+				value = AttributeManager::AlterGetAv(a_this, a_akValue, value);
 			}
 		}
 		return value;
@@ -72,7 +72,7 @@ namespace Hooks
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {
-				value = AttributeManager::AlterGetBaseAv(a_owner, a_akValue, value);
+				value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
 			}
 		}
 		return value;
@@ -83,7 +83,7 @@ namespace Hooks
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
-				value = AttributeManager::AlterGetPermenantAv(a_owner, a_akValue, value);
+				value = AttributeManager::AlterGetPermenantAv(a_this, a_akValue, value);
 			}
 		}
 		return value;

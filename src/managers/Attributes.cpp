@@ -436,6 +436,7 @@ namespace Gts {
 			}
 			case ActorValue::kJumpingBonus: {
 				bonus = 100.0;
+				break;
 			}
 		}
 
