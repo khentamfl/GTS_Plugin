@@ -18,10 +18,12 @@ namespace Hooks
 		_HandleHealthDamage = Vtbl.write_vfunc(REL::Relocate(0x104, 0x104, 0x106), HandleHealthDamage);
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
+		_Move = Vtbl.write_vfunc(REL::Relocate(0x0C8, 0x0C8, 0x0CA), Move);
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Character[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
+		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 	}
 
 	void Hook_Character::HandleHealthDamage(Character* a_this, Character* a_attacker, float a_damage) {
@@ -63,10 +65,6 @@ namespace Hooks
 				float actual_value = _GetActorValue(a_owner, a_akValue);
 				float bonus = 1.0;
 				auto& attributes = AttributeManager::GetSingleton();
-				//if (a_akValue == ActorValue::kHealth) {
-					//bonus = attributes.GetAttributeBonus(a_this, 1.0);
-					//return actual_value * bonus;
-				//}
 				if (a_akValue == ActorValue::kCarryWeight) {
 					bonus = attributes.GetAttributeBonus(a_this, 2.0);
 					return actual_value * bonus;
@@ -107,5 +105,36 @@ namespace Hooks
 		} else {
 			return _GetPermanentActorValue(a_owner, a_akValue);
 		}
+	}
+
+	float Hook_Character::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
+		if (Plugin::InGame()) {
+			Character* a_this = skyrim_cast<Character*>(a_owner);
+			float bonus = 1.0;
+			if (a_this) {
+				auto& attributes = AttributeManager::GetSingleton();
+				if (a_akValue == ActorValue::kHealth) {
+					float scale = get_visual_scale(a_this);
+					float modav = a_this->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, ActorValue::kHealth);
+					float actual_value = _GetBaseActorValue(a_owner, a_akValue);
+					bonus = attributes.GetAttributeBonus(a_this, 1.0);
+					return actual_value*bonus + (modav*bonus -1.0);
+				}
+				return _GetBaseActorValue(a_owner, a_akValue);
+			} else {
+				return _GetBaseActorValue(a_owner, a_akValue);
+			}
+		} else {
+			return _GetBaseActorValue(a_owner, a_akValue);
+		}
+	}
+
+	void Hook_Character::Move(Character* a_this, float a_arg2, const NiPoint3& a_position) {
+		float bonus = 1.0;
+		if (a_this) {
+			auto& attributes = AttributeManager::GetSingleton();
+			bonus = attributes.GetAttributeBonus(a_this, 3.0);
+		}
+		return _Move(a_this, a_arg2, a_position * bonus);
 	}
 }

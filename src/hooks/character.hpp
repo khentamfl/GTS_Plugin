@@ -25,5 +25,11 @@ namespace Hooks
 
 			static float GetPermanentActorValue(ActorValueOwner* a_this, ActorValue a_akValue);
 			static inline REL::Relocation<decltype(GetPermanentActorValue)> _GetPermanentActorValue;
+
+			static float GetBaseActorValue(ActorValueOwner* a_this, ActorValue a_akValue);
+			static inline REL::Relocation<decltype(GetBaseActorValue)> _GetBaseActorValue;
+
+			static void Move(Character* a_this, float a_arg2, const NiPoint3& a_position);
+			static inline REL::Relocation<decltype(Move)> _Move;
 	};
 }

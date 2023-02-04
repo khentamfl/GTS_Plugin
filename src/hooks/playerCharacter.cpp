@@ -21,7 +21,6 @@ namespace Hooks
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
 		_SetSize = Vtbl.write_vfunc(REL::Relocate(0x0D9, 0x0D9, 0x0DB), SetSize);
 		_Move = Vtbl.write_vfunc(REL::Relocate(0x0C8, 0x0C8, 0x0CA), Move);
-		_ModifyMovementData = Vtbl.write_vfunc(REL::Relocate(0x11A, 0x11A, 0x11C), ModifyMovementData);
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_PlayerCharacter[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
@@ -145,15 +144,9 @@ namespace Hooks
 		float bonus = 1.0;
 		if (a_this) {
 			auto& attributes = AttributeManager::GetSingleton();
-			bonus = attributes.GetAttributeBonus(a_this, 1.0);
+			bonus = attributes.GetAttributeBonus(a_this, 3.0);
 		}
 		log::info("a_move, arg2: {}, apos: {}", a_arg2, Vector2Str(a_position));
 		return _Move(a_this, a_arg2, a_position * bonus);
-	}
-
-	void Hook_PlayerCharacter::ModifyMovementData(PlayerCharacter* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4)
-	{
-		log::info("Modifying Movement Data, a_this: {}", a_delta);
-		return _ModifyMovementData(a_this, a_delta, a_arg3, a_arg4);
 	}
 }
