@@ -111,12 +111,12 @@ namespace {
 
 		float current_health_percentage = GetHealthPercentage(actor);
 		log::info("Health% before scale: {}", current_health_percentage);
-		log::info("MaxHP Before: {}", GetMaxAV(actor));
+		log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
 		SetHealthPercentage(actor, current_health_percentage);
 		log::info("Health% after scale: {}", GetHealthPercentage(actor));
-		log::info("MaxHP After: {}", GetMaxAV(actor));
+		log::info("MaxHP After: {}", GetMaxAV(actor, ActorValue::kHealth));
 	}
 
 
