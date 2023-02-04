@@ -57,10 +57,10 @@ namespace Gts {
 		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {
 			new_hh = NiPoint3();
 		} else if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
-			new_hh = this->GetHHOffset(actor) * transient->base_height;
+			new_hh = this->GetHHOffset(actor);
 		} else {
 			// With model scale do it in unscaled coords
-			new_hh = this->GetBaseHHOffset(actor) * transient->base_height;
+			new_hh = this->GetBaseHHOffset(actor);
 		}
 		float hh_length = new_hh.Length();
 
