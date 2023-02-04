@@ -45,7 +45,7 @@ namespace {
 			return actor->GetActorValue(ActorValue::kSpeedMult) / transient->speedmult_storage;
 		}
 		if (value == 4.0) {
-			return actor->GetActorValue(ActorValue::kAttackDamageMult) * transient->damage_storage;
+			return transient->damage_storage;
 		}
 		return 1.0;
 	}

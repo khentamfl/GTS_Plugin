@@ -377,11 +377,12 @@ namespace Gts {
 			float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
 			float Multy = clamp(0.70, 1.0, MS_mult); 
 			float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk); 
+			float bonusspeed = clamp(0.90, 1.0, speed_mult_walk);
 			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
 				PerkSpeed = clamp(0.80, 1.0, speed_mult_walk);
 			}
 
-			transient->speedmult_storage = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
+			transient->speedmult_storage = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
 
 			if (actor->formID == 0x14) {
 				log::info("SpeedMult: {}", transient->speedmult_storage);
