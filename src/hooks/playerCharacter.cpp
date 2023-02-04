@@ -121,10 +121,10 @@ namespace Hooks
 				auto& attributes = AttributeManager::GetSingleton();
 				if (a_akValue == ActorValue::kHealth) {
 					float scale = get_visual_scale(a_this);
-					float ModAV = a_this->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, ActorValue::kHealth);
+					float modav = a_this->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, ActorValue::kHealth);
 					float actual_value = _GetBaseActorValue(a_owner, a_akValue);
 					bonus = attributes.GetAttributeBonus(a_this, 1.0);
-					return actual_value + ((Scale - 1.0) * ModAV) * bonus;
+					return actual_value + ((scale - 1.0) * modav) * bonus;
 				}
 				return _GetBaseActorValue(a_owner, a_akValue);
 			} else {
