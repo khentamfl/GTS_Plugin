@@ -148,7 +148,7 @@ namespace Hooks
 			bonus = attributes.GetAttributeBonus(a_this, 1.0);
 		}
 		log::info("a_move, arg2: {}, apos: {}", a_arg2, Vector2Str(a_position));
-		return _Move(a_this, a_arg2, a_position * 10);
+		return _Move(a_this, a_arg2, a_position * bonus);
 	}
 
 	void Hook_PlayerCharacter::ModifyMovementData(PlayerCharacter* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4)
