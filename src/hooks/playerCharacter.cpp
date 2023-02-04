@@ -124,7 +124,7 @@ namespace Hooks
 					float modav = a_this->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, ActorValue::kHealth);
 					float actual_value = _GetBaseActorValue(a_owner, a_akValue);
 					bonus = attributes.GetAttributeBonus(a_this, 1.0);
-					return actual_value + ((scale - 1.0) * modav) * bonus;
+					return actual_value*bonus + (modav*bonus -1.0);
 				}
 				return _GetBaseActorValue(a_owner, a_akValue);
 			} else {
@@ -147,6 +147,6 @@ namespace Hooks
 	void Hook_PlayerCharacter::ModifyMovementData(PlayerCharacter* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4)
 	{
 		log::info("Modifying Movement Data");
-		return _ModifyMovementData(a_this, a_delta * 10, a_arg3, a_arg4);
+		return _ModifyMovementData(a_this, a_delta * 10, a_arg3 * [10, 10, 10], a_arg4);
 	}
 }
