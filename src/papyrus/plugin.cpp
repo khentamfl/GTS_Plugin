@@ -29,7 +29,6 @@ namespace {
 
 	float GetAttributeBonus(StaticFunctionTag*, Actor* actor, float value) {
 		auto transient = Transient::GetSingleton().GetActorData(actor);
-		auto& attributes = AttributeManager::GetSingleton();
 		if (!actor) {
 			return 1.0;
 		}
@@ -40,16 +39,16 @@ namespace {
 			return 1.0;
 		}
 		if (value == 1.0) {
-			return actor->GetBaseActorValue(ActorValue::kHealth)/attributes.GetAttributeBonus(actor, 1.0);
+			return actor->GetBaseActorValue(ActorValue::kHealth) * AttributeManager::GetSingleton().GetAttributeBonus(actor, 1.0) - 1.0;
 		}
 		if (value == 2.0) {
-			return actor->GetBaseActorValue(ActorValue::kCarryWeight)/attributes.GetAttributeBonus(actor, 2.0);;
+			return actor->GetBaseActorValue(ActorValue::kCarryWeight) * AttributeManager::GetSingleton().GetAttributeBonus(actor, 2.0) - 1.0;
 		}
 		if (value == 3.0) {
-			return actor->GetActorValue(ActorValue::kSpeedMult)/transient->speedmult_storage;
+			return actor->GetActorValue(ActorValue::kSpeedMult) * transient->speedmult_storage - 1.0;
 		}
 		if (value == 4.0) {
-			return actor->GetActorValue(ActorValue::kAttackDamageMult)/transient->damage_storage;
+			return actor->GetActorValue(ActorValue::kAttackDamageMult) * transient->damage_storage - 1.0;
 		}
 		return 1.0;
 	}
