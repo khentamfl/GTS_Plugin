@@ -379,7 +379,7 @@ namespace Gts {
 			float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk); 
 			float PerkSpeed = clamp(0.90, 1.0, speed_mult_walk);
 			if (speedtimer.ShouldRunFrame()) {
-				transient->speedmult_storage = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
+				transient->speedmult_storage = (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/PerkSpeed;
 			}
 			return transient->speedmult_storage; 
 		} if (Value == 4.0) { // Boost Attack Damage
