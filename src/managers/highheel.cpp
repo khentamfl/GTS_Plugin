@@ -53,14 +53,14 @@ namespace Gts {
 			return;
 		}
 		NiPoint3 new_hh;
-		log::info("Actor: {}, BaseHeight: {}, BaseVolume: {}", actor->GetDisplayFullName(), transient->base_height, transient->base_volume);
+		//log::info("Actor: {}, BaseHeight: {}, BaseVolume: {}", actor->GetDisplayFullName(), transient->base_height, transient->base_volume);
 		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {
 			new_hh = NiPoint3();
 		} else if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
-			new_hh = this->GetHHOffset(actor);
+			new_hh = this->GetHHOffset(actor) * transient->base_height;
 		} else {
 			// With model scale do it in unscaled coords
-			new_hh = this->GetBaseHHOffset(actor);
+			new_hh = this->GetBaseHHOffset(actor) * transient->base_height;
 		}
 		float hh_length = new_hh.Length();
 

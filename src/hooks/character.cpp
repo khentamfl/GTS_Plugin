@@ -106,9 +106,15 @@ namespace Hooks
 
 	void Hook_Character::Move(Character* a_this, float a_arg2, const NiPoint3& a_position) { // Override Movement Speed
 		float bonus = 1.0;
+		static Timer soundtimer = Timer(0.80);
 		if (a_this) {
 			auto& attributes = AttributeManager::GetSingleton();
 			bonus = attributes.GetAttributeBonus(a_this, 3.0);
+			float sizedifference = get_visual_scale(a_this)/get_visual_scale(PlayerCharacter::GetSingleton());
+			float volume = a_position * bonus * sizedifference / 500;
+			if (soundtimer.ShouldRunFrame()) {
+				Persistent::PlaySound("RumbleWalkSound", a_this, volume, 1.0);
+			}
 		}
 		return _Move(a_this, a_arg2, a_position * bonus);
 	}
