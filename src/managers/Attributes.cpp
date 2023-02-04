@@ -421,7 +421,16 @@ namespace Gts {
 		switch (av) {
 			case ActorValue::kHealth: {
 				float modav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-				bonus = attributes.GetAttributeBonus(actor, 1.0);
+
+				float scale = get_visual_scale(actor);
+
+				if (scale > 1.0) {
+					bonus = attributes.GetAttributeBonus(actor, 1.0);
+				} else {
+					// Linearly decrease such that:
+					//   at zero scale health=0.0
+					bonus = scale;
+				}
 
 				return actual_value*bonus + (bonus - 1.0)*modav;
 			}
