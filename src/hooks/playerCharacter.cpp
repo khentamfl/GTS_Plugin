@@ -19,6 +19,7 @@ namespace Hooks
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
 		_SetSize = Vtbl.write_vfunc(REL::Relocate(0x0D9, 0x0D9, 0x0DB), SetSize);
+		_Move = Vtbl.write_vfunc(REL::Relocate(0x0C8, 0x0C8, 0x0CA), Move);
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_PlayerCharacter[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
@@ -74,7 +75,7 @@ namespace Hooks
 					return actual_value * bonus;
 				}
 				if (a_akValue == ActorValue::kSpeedMult) {
-					bonus = attributes.GetAttributeBonus(a_this, 3.0);
+					bonus = 1.0//attributes.GetAttributeBonus(a_this, 3.0);
 					return actual_value * bonus;
 				}
 				if (a_akValue == ActorValue::kAttackDamageMult) {
@@ -135,4 +136,7 @@ namespace Hooks
 		log::info("Set SIZE: {}", a_size);
 		// _SetSize(a_this, a_size);
 	}
+
+	void Hook_PlayerCharacter::Move(PlayerCharacter* a_this, float a_arg2, const NiPoint3& a_position)
+		return _Move(a_this, a_arg*10, a_position);
 }
