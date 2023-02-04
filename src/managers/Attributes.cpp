@@ -175,7 +175,7 @@ namespace {
 		if (!actor_data) {
 			return;
 		}
-		float last_hp_boost = actor_data->bonus_hp;
+		/*float last_hp_boost = actor_data->bonus_hp;
 		const ActorValue av = ActorValue::kHealth;
 		float visual_scale = get_visual_scale(actor);
 		float native_scale = get_natural_scale(actor);
@@ -193,13 +193,13 @@ namespace {
 			//   This way we shouldn't kill them by scaling them
 			//   to zero
 			boost = base_av * (scale - 1.0);
-		}
+		}*/
 
 		float current_health_percentage = GetHealthPercentage(actor);
 
-		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav - last_hp_boost + boost;
+		//actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav - last_hp_boost + boost;
 
-		actor_data->bonus_hp = boost;
+		//actor_data->bonus_hp = boost;
 
 		SetHealthPercentage(actor, current_health_percentage);
 		// Fill up the new healthbar
