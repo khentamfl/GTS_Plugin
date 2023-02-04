@@ -1,8 +1,11 @@
 #include "hooks/character.hpp"
+#include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/plugin.hpp"
 #include "events.hpp"
+#include "scale/scale.hpp"
+#include "timer.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -54,23 +57,34 @@ namespace Hooks
 	}
 
 	float Hook_Character::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
-		log::info("Get AV Actor");
 		if (Plugin::Ready()) {
 			Character* a_this = skyrim_cast<Character*>(a_owner);
 			if (a_this) {
-				log::info("casted");
 				float actual_value = _GetActorValue(a_owner, a_akValue);
-				if (a_akValue == ActorValue::kArchery) {
-					return actual_value + 100000.0;
+				float bonus = 1.0;
+				auto& attributes = AttributeManager::GetSingleton();
+				if (a_akValue == ActorValue::kHealth) {
+					bonus = attributes.GetAttributeBonus(a_this, 1.0);
+					return actual_value * bonus;
+				}
+				if (a_akValue == ActorValue::kCarryWeight) {
+					bonus = attributes.GetAttributeBonus(a_this, 2.0);
+					return actual_value * bonus;
+				}
+				if (a_akValue == ActorValue::kSpeedMult) {
+					bonus = attributes.GetAttributeBonus(a_this, 3.0);
+					return actual_value * bonus;
+				}
+				if (a_akValue == ActorValue::kAttackDamageMult) {
+					bonus = attributes.GetAttributeBonus(a_this, 4.0);
+					return actual_value * bonus;
 				} else {
 					return actual_value;
 				}
 			} else {
-				log::info("Cant cast");
 				return _GetActorValue(a_owner, a_akValue);
 			}
 		} else {
-			log::info("Not Ready");
 			return _GetActorValue(a_owner, a_akValue);
 		}
 	}
@@ -78,10 +92,15 @@ namespace Hooks
 	float Hook_Character::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
 		if (Plugin::Ready()) {
 			Character* a_this = skyrim_cast<Character*>(a_owner);
+			float bonus = 1.0;
 			if (a_this) {
-				log::info("Get Perma AV");
-				float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
-				return actual_value;
+				auto& attributes = AttributeManager::GetSingleton();
+				if (a_akValue == ActorValue::kHealth) {
+					float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
+					bonus = attributes.GetAttributeBonus(a_this, 1.0);
+					return actual_value * bonus;
+				}
+				return _GetPermanentActorValue(a_owner, a_akValue);
 			} else {
 				return _GetPermanentActorValue(a_owner, a_akValue);
 			}

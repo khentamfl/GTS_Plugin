@@ -12,7 +12,6 @@ using namespace Gts;
 
 namespace Hooks
 {
-	// BGSImpactManager
 	void Hook_PlayerCharacter::Hook() {
 		logger::info("Hooking PlayerCharacter");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_PlayerCharacter[0] };
