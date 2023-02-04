@@ -119,7 +119,7 @@ namespace Hooks
 			bonus = attributes.GetAttributeBonus(a_this, 3.0);
 			float volume = a_position[1] * bonus / 500;
 			if (soundtimer.ShouldRunFrame()) {
-				Persistent::PlaySound("RumbleWalkSound", a_this, volume, 1.0);
+				Runtime::PlaySound("RumbleWalkSound", a_this, volume, 1.0);
 			}
 		}
 		return _Move(a_this, a_arg2, a_position * bonus);
