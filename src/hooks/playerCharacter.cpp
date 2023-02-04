@@ -6,6 +6,7 @@
 #include "events.hpp"
 #include "scale/scale.hpp"
 #include "timer.hpp"
+#include "utils/debug.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -146,8 +147,7 @@ namespace Hooks
 
 	void Hook_PlayerCharacter::ModifyMovementData(PlayerCharacter* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4)
 	{
-		log::info("Modifying Movement Data");
-		NiPoint3 Multiply = (10, 10, 10);
-		return _ModifyMovementData(a_this, a_delta * 10, a_arg3 * Multiply, a_arg4);
+		log::info("Modifying Movement Data, arg3: {}, arg4: {}", Vector2Str(a_arg3), Vector2Str(a_arg4));
+		return _ModifyMovementData(a_this, a_delta * 10, a_arg3, a_arg4);
 	}
 }
