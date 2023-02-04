@@ -21,12 +21,5 @@ namespace Gts {
 		private:
 			float MovementSpeedBonus = 0.0;
 			bool BlockMessage = false;
-			SoftPotential speed_adjustment { // Even though it is named 'sprint', it is used for all other movement states
-				.k = 0.142, // 0.125
-				.n = 0.82, // 0.86
-				.s = 1.90, // 1.12
-				.o = 1.0,
-				.a = 0.0,  //Default is 0
-		};
 	};
 }
