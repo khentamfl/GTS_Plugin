@@ -20,6 +20,7 @@ namespace Hooks
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
 		_SetSize = Vtbl.write_vfunc(REL::Relocate(0x0D9, 0x0D9, 0x0DB), SetSize);
 		_Move = Vtbl.write_vfunc(REL::Relocate(0x0C8, 0x0C8, 0x0CA), Move);
+		_ModifyMovementData = Vtbl.write_vfunc(REL::Relocate(0x11A, 0x11A, 0x11C), )
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_PlayerCharacter[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
@@ -138,6 +139,11 @@ namespace Hooks
 	}
 
 	void Hook_PlayerCharacter::Move(PlayerCharacter* a_this, float a_arg2, const NiPoint3& a_position) {
-		return _Move(a_this, a_arg2*10, a_position);
+		return _Move(a_this, a_arg2, a_position);
+	}
+
+	void Hook_PlayerCharacter::ModifyMovementData(PlayerCharacter* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4)
+	{
+		return _ModifyMovementData(a_this, a_delta * 10, a_arg3, a_arg4);
 	}
 }

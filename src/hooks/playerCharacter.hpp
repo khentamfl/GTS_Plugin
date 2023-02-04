@@ -34,5 +34,8 @@ namespace Hooks
 
 			static void Move(PlayerCharacter* a_this, float a_arg2, const NiPoint3& a_position);
 			static inline REL::Relocation<decltype(Move)> _Move;
+
+			static void ModifyMovementData(PlayerCharacter* a_this, float a_delta, NiPoint3& a_arg3, NiPoint3& a_arg4);
+			static inline REL::Relocation<decltype(ModifyMovementData)> _ModifyMovementData;
 	};
 }
