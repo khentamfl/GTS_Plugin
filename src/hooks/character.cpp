@@ -111,7 +111,7 @@ namespace Hooks
 			auto& attributes = AttributeManager::GetSingleton();
 			bonus = attributes.GetAttributeBonus(a_this, 3.0);
 			float sizedifference = get_visual_scale(a_this)/get_visual_scale(PlayerCharacter::GetSingleton());
-			float volume = a_position[1] * bonus * sizedifference / 500;
+			float volume = a_position[1] * bonus * sizedifference / 250;
 			if (soundtimer.ShouldRunFrame()) {
 				Runtime::PlaySound("RumbleWalkSound", a_this, volume, 1.0);
 			}
