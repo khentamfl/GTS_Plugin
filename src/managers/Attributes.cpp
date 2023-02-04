@@ -269,11 +269,21 @@ namespace Gts {
 		switch (av) {
 			case ActorValue::kHealth: {
 				float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
-				return scale + ((bonusHPMultiplier/BalancedMode) * scale - 1.0);
+				float power = (bonusHPMultiplier/BalancedMode);
+				if (scale > 1.0) {
+					return power*scale + 1.0 - power;
+				} else {
+					return scale;
+				}
 			}
 			case ActorValue::kCarryWeight: {
 				float bonusCarryWeightMultiplier = Runtime::GetFloatOr("bonusCarryWeightMultiplier", 1.0);
-				return scale + ((bonusCarryWeightMultiplier/BalancedMode) * scale - 1.0);
+				float power = (bonusCarryWeightMultiplier/BalancedMode);
+				if (scale > 1.0) {
+					return power*scale + 1.0 - power;
+				} else {
+					return scale;
+				}
 			}
 			case ActorValue::kSpeedMult: {
 				SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
@@ -288,12 +298,13 @@ namespace Gts {
 					PerkSpeed = clamp(0.80, 1.0, speed_mult_walk);
 				}
 
-				float speedmult_storage = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
+				float power = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
 
 				if (actor->formID == 0x14) {
-					log::info("SpeedMult: {}", transient->speedmult_storage);
+					log::info("SpeedMult: {}", power);
 				}
-				return speedmult_storage;
+
+				return power;
 			}
 			case ActorValue::kAttackDamageMult: {
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
