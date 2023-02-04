@@ -24,7 +24,6 @@ namespace Hooks
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_PlayerCharacter[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
-		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
 		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 	}
 
