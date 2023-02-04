@@ -1,4 +1,4 @@
-#include "hooks/actor.hpp"
+#include "hooks/character.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/plugin.hpp"
