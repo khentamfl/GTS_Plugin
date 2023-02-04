@@ -33,7 +33,7 @@ namespace Gts {
 			// Reapply changes (used after reload events)
 			void reapply(bool force = true);
 			void reapply_actor(Actor* actor, bool force = true);
-		private:
+			
 			SoftPotential speedadjustment { 
 				.k = 0.142, // 0.125
 				.n = 0.82, // 0.86
