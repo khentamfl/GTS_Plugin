@@ -1,6 +1,7 @@
 #include "papyrus/plugin.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
+#include "managers/Attributes.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include <math.h>
