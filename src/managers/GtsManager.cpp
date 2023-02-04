@@ -133,78 +133,18 @@ namespace {
 		}
 		float scale = get_visual_scale(actor);
 		if (scale < 1e-5) {
-			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
 		}
 
-		SoftPotential speed_adjustment { // Even though it is named 'sprint', it is used for all other movement states
-			.k = 0.142, // 0.125
-			.n = 0.82, // 0.86
-			.s = 1.90, // 1.12
-			.o = 1.0,
-			.a = 0.0,  //Default is 0
-		};
+		float speedmultcalc = soft_core(scale, this->speed_adjustment); // For all other movement types
+		float bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
+		float perkspeed = 1.0;
 
-		float speedmultcalc = soft_core(scale, speed_adjustment); // For all other movement types
-
-		float speed_mult = soft_core(scale, speed_adjustment);
-		float MS_mult = soft_core(scale, MS_adjustment);
-		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
-		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
-		float MS_mult_limit = clamp(0.750, 1.0, MS_mult); // For Walk speed
-		float Multy = clamp(0.70, 1.0, MS_mult); // Additional 30% ms
-		//float WalkSpeedLimit = clamp(0.33, 1.0, MS_mult);
-		float WalkSpeedLimit = clamp(0.02, 1.0, MS_mult);
-		float PerkSpeed = 1.0;
-
-		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
-		float IsFalling = Runtime::GetInt("IsFalling");
-
-		if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
-			Runtime::SetInt("IsFalling", 1.0);
-		} else if (actor->formID == 0x14 && !IsJumping(actor) && IsFalling >= 1.0) {
-			Runtime::SetInt("IsFalling", 0);
-		}
 		if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
-			PerkSpeed = clamp(0.80, 1.0, speedmultcalc); // Used as a bonus 20% MS if PC has perk.
+			perkspeed = clamp(0.80, 1.0, speedmultcalc); // Used as a bonus 20% MS if PC has perk.
 		}
 
-		persi_actor_data->anim_speed = speedmultcalc/PerkSpeed;//MS_mult;
-
-		if (timer.ShouldRunFrame()) {
-			if (scale < 1.0) {
-				//actor->SetActorValue(ActorValue::kSpeedMult, 100 * scale * (Bonus/2.2 + 1.0));
-			} else {
-				//actor->SetActorValue(ActorValue::kSpeedMult, ((100 * (Bonus/2.2 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
-			}
-		}
-		// Experiement
-		if (false) {
-			auto& rot_speed = actor->currentProcess->middleHigh->rotationSpeed;
-			auto actor_name = actor->GetDisplayFullName();
-			if (fabs(rot_speed.x) > 1e-5 || fabs(rot_speed.y) > 1e-5 || fabs(rot_speed.z) > 1e-5) {
-				log::info("{} rotationSpeed: {},{},{}", actor_name, rot_speed.x,rot_speed.y,rot_speed.z);
-				actor->currentProcess->middleHigh->rotationSpeed.x *= speed_mult;
-				actor->currentProcess->middleHigh->rotationSpeed.y *= speed_mult;
-				actor->currentProcess->middleHigh->rotationSpeed.z *= speed_mult;
-			}
-			auto& animationDelta = actor->currentProcess->high->animationDelta;
-			if (fabs(animationDelta.x) > 1e-5 || fabs(animationDelta.y) > 1e-5 || fabs(animationDelta.z) > 1e-5) {
-				log::info("{} animationDelta: {},{},{}", actor_name, animationDelta.x,animationDelta.y,animationDelta.z);
-			}
-			auto& animationAngleMod = actor->currentProcess->high->animationAngleMod;
-			if (fabs(animationAngleMod.x) > 1e-5 || fabs(animationAngleMod.y) > 1e-5 || fabs(animationAngleMod.z) > 1e-5) {
-				log::info("{} animationAngleMod: {},{},{}", actor_name, animationAngleMod.x,animationAngleMod.y,animationAngleMod.z);
-			}
-			auto& pathingCurrentRotationSpeed = actor->currentProcess->high->pathingCurrentRotationSpeed;
-			if (fabs(pathingCurrentRotationSpeed.x) > 1e-5 || fabs(pathingCurrentRotationSpeed.y) > 1e-5 || fabs(pathingCurrentRotationSpeed.z) > 1e-5) {
-				log::info("{} pathingCurrentRotationSpeed: {},{},{}", actor_name, pathingCurrentRotationSpeed.x,pathingCurrentRotationSpeed.y,pathingCurrentRotationSpeed.z);
-			}
-			auto& pathingDesiredRotationSpeed = actor->currentProcess->high->pathingDesiredRotationSpeed;
-			if (fabs(pathingDesiredRotationSpeed.x) > 1e-5 || fabs(pathingDesiredRotationSpeed.y) > 1e-5 || fabs(pathingDesiredRotationSpeed.z) > 1e-5) {
-				log::info("{} pathingDesiredRotationSpeed: {},{},{}", actor_name, pathingDesiredRotationSpeed.x,pathingDesiredRotationSpeed.y,pathingDesiredRotationSpeed.z);
-			}
-		}
+		persi_actor_data->anim_speed = speedmultcalc/perkspeed;//MS_mult;
 	}
 
 	void update_effective_multi(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
