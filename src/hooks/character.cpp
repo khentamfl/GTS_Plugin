@@ -22,7 +22,6 @@ namespace Hooks
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Character[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
-		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
 		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 	}
 
@@ -58,7 +57,7 @@ namespace Hooks
 		_RemovePerk(a_this, a_perk);
 	}
 
-	float Hook_Character::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
+	float Hook_Character::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
 		if (Plugin::InGame()) {
 			Character* a_this = skyrim_cast<Character*>(a_owner);
 			if (a_this) {
@@ -67,10 +66,6 @@ namespace Hooks
 				auto& attributes = AttributeManager::GetSingleton();
 				if (a_akValue == ActorValue::kCarryWeight) {
 					bonus = attributes.GetAttributeBonus(a_this, 2.0);
-					return actual_value * bonus;
-				}
-				if (a_akValue == ActorValue::kSpeedMult) {
-					bonus = attributes.GetAttributeBonus(a_this, 3.0);
 					return actual_value * bonus;
 				}
 				if (a_akValue == ActorValue::kAttackDamageMult) {
@@ -87,27 +82,7 @@ namespace Hooks
 		}
 	}
 
-	float Hook_Character::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
-		if (Plugin::InGame()) {
-			Character* a_this = skyrim_cast<Character*>(a_owner);
-			float bonus = 1.0;
-			if (a_this) {
-				auto& attributes = AttributeManager::GetSingleton();
-				if (a_akValue == ActorValue::kHealth) {
-					float actual_value = _GetPermanentActorValue(a_owner, a_akValue);
-					bonus = attributes.GetAttributeBonus(a_this, 1.0);
-					return actual_value * bonus;
-				}
-				return _GetPermanentActorValue(a_owner, a_akValue);
-			} else {
-				return _GetPermanentActorValue(a_owner, a_akValue);
-			}
-		} else {
-			return _GetPermanentActorValue(a_owner, a_akValue);
-		}
-	}
-
-	float Hook_Character::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) {
+	float Hook_Character::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health
 		if (Plugin::InGame()) {
 			Character* a_this = skyrim_cast<Character*>(a_owner);
 			float bonus = 1.0;
@@ -129,7 +104,7 @@ namespace Hooks
 		}
 	}
 
-	void Hook_Character::Move(Character* a_this, float a_arg2, const NiPoint3& a_position) {
+	void Hook_Character::Move(Character* a_this, float a_arg2, const NiPoint3& a_position) { // Override Movement Speed
 		float bonus = 1.0;
 		if (a_this) {
 			auto& attributes = AttributeManager::GetSingleton();

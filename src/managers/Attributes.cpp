@@ -361,15 +361,7 @@ namespace Gts {
 		if (!transient) {
 			return 1.0;
 		}
-
-		SoftPotential getspeed { 
-				.k = 0.142, // 0.125
-				.n = 0.82, // 0.86
-				.s = 1.90, // 1.12
-				.o = 1.0,
-				.a = 0.0,  //Default is 0
-		};
-		
+	
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
@@ -380,7 +372,7 @@ namespace Gts {
 		} if (Value == 2.0) { // boost Carry Weight
 			return scale + ((bonusCarryWeightMultiplier/BalancedMode) * scale - 1.0);
 		} if (Value == 3.0) { // Boost SpeedMult
-			float speedmult = soft_core(scale, getspeed); 
+			float speedmult = soft_core(scale, this->getspeed); 
 			float PerkSpeed = 1.0;
 			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
 				PerkSpeed = clamp(0.80, 1.0, speedmult);
