@@ -117,7 +117,7 @@ namespace Hooks
 		if (a_this) {
 			auto& attributes = AttributeManager::GetSingleton();
 			bonus = attributes.GetAttributeBonus(a_this, 3.0);
-			float volume = a_position * bonus / 500;
+			float volume = a_position[1] * bonus / 500;
 			if (soundtimer.ShouldRunFrame()) {
 				Persistent::PlaySound("RumbleWalkSound", a_this, volume, 1.0);
 			}
