@@ -32,14 +32,6 @@ namespace Gts {
 
 			// Reapply changes (used after reload events)
 			void reapply(bool force = true);
-			void reapply_actor(Actor* actor, bool force = true);
-
-			SoftPotential getspeed { 
-				.k = 0.142, // 0.125
-				.n = 0.82, // 0.86
-				.s = 1.90, // 1.12
-				.o = 1.0,
-				.a = 0.0,  //Default is 0
-		};
+			void reapply_actor(Actor* actor, bool force = true);		
 	};
 }

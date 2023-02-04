@@ -170,7 +170,7 @@ namespace {
 		}
 	}
 
-	void BoostHP(Actor* actor, float power) {
+	void BoostHP(Actor* actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (!actor_data) {
 			return;
@@ -362,17 +362,17 @@ namespace Gts {
 			return 1.0;
 		}
 		
-
 		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
 
 		if (Value == 1.0) {   // boost hp
-			return 1.0 * (bonusHPMultiplier/BalancedMode) * scale;
+			BoostHP(actor);
+			return scale + ((bonusHPMultiplier/BalancedMode) * scale - 1.0);
 		} if (Value == 2.0) { // boost Carry Weight
-			return (bonusCarryWeightMultiplier/BalancedMode)*scale;
+			return scale + ((bonusCarryWeightMultiplier/BalancedMode) * scale - 1.0);
 		} if (Value == 3.0) { // Boost SpeedMult
-			float speedmult = soft_core(scale, GtsManager::GetSingleton().getspeed); 
+			float speedmult = soft_core(scale, this->getspeed); 
 			float PerkSpeed = 1.0;
 			if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
 				PerkSpeed = clamp(0.80, 1.0, speedmult);
@@ -383,7 +383,7 @@ namespace Gts {
 			return transient->speedmult_storage; 
 		} if (Value == 4.0) { // Boost Attack Damage
 		    if (damagetimer.ShouldRunFrame()) {
-				transient->damage_storage = 1.0 * (bonusDamageMultiplier * scale);
+				transient->damage_storage = scale + (bonusDamageMultiplier * scale - 1.0);
 			}
 			return transient->damage_storage;
 		}

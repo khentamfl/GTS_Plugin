@@ -135,6 +135,13 @@ namespace {
 		if (scale < 1e-5) {
 			return;
 		}
+		SoftPotential getspeed { 
+				.k = 0.142, // 0.125
+				.n = 0.82, // 0.86
+				.s = 1.90, // 1.12
+				.o = 1.0,
+				.a = 0.0,  //Default is 0
+		};
 
 		float speedmultcalc = soft_core(scale, GtsManager::getspeed); // For all other movement types
 		float bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
