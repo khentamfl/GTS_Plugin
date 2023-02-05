@@ -188,19 +188,19 @@ namespace Gts {
 			float scale = get_visual_scale(player);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
 			DamageAV(player, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			Grow(player, 0.0012 * scale * stamina, 0.0);
-			float Volume = clamp(0.10, 2.0, get_target_scale(player)/10);
+			Grow(player, 0.0012 * stamina, 0.0);
+			float Volume = clamp(0.10, 2.0, get_visual_scale(player)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(player, player, scale/10);
 			if (this->timergrowth.ShouldRun()) {
 				Runtime::PlaySound("growthSound", player, Volume, 0.0);
 			}
 		}
 		if (Runtime::HasPerk(player, "TotalControl") && !ShiftPressed && !AltPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Self
-			float scale = get_target_scale(player);
+			float scale = get_visual_scale(player);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
 			DamageAV(player, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			ShrinkActor(player, 0.0012 * scale * stamina, 0.0);
-			float Volume = clamp(0.05, 2.0, get_target_scale(player)/10);
+			ShrinkActor(player, 0.0012 * stamina, 0.0);
+			float Volume = clamp(0.05, 2.0, get_visual_scale(player)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(player, player, scale/14);
 			if (this->timergrowth.ShouldRun()) {
 				Runtime::PlaySound("shrinkSound", player, Volume, 0.0);
