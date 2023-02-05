@@ -6,9 +6,10 @@ using namespace SKSE;
 namespace Gts {
 
 	float GetMaxAV(Actor* actor, ActorValue av) {
-		auto baseValue = actor->GetPermanentActorValue(av);
+		auto baseValue = actor->GetBaseActorValue(av);
+		auto permMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kPermanent, av);
 		auto tempMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av);
-		return baseValue + tempMod;
+		return baseValue + permMod + tempMod;
 	}
 	float GetAV(Actor* actor, ActorValue av) {
 		// actor->GetActorValue(av); returns a cached value so we calc directly from mods
@@ -54,11 +55,11 @@ namespace Gts {
 	}
 
 	void SetPercentageAV(Actor* actor, ActorValue av, float target) {
-		auto currentValue = GetAV(actor, av);
-		auto maxValue = GetMaxAV(actor, av);
-		auto percentage = currentValue/maxValue;
-		auto targetValue = target * maxValue;
-		float delta = targetValue - currentValue;
+		double currentValue = GetAV(actor, av);
+		double maxValue = GetMaxAV(actor, av);
+		double percentage = currentValue/maxValue;
+		double targetValue = target * maxValue;
+		double delta = targetValue - currentValue;
 		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
 	}
 

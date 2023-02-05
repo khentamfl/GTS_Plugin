@@ -60,10 +60,6 @@ namespace {
 		}
 
 		if (fabs(target_scale - persi_actor_data->visual_scale) > 1e-5) {
-			float current_health_percentage = GetHealthPercentage(actor);
-			log::info("Health% before scale: {}", current_health_percentage);
-			log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
-
 			float minimum_scale_delta = 0.000005; // 0.00005%
 			if (fabs(target_scale - persi_actor_data->visual_scale) < minimum_scale_delta) {
 				persi_actor_data->visual_scale = target_scale;
@@ -77,10 +73,6 @@ namespace {
 					Time::WorldTimeDelta()
 					);
 			}
-
-			SetHealthPercentage(actor, current_health_percentage);
-			log::info("Health% after scale: {}", GetHealthPercentage(actor));
-			log::info("MaxHP After: {}", GetMaxAV(actor, ActorValue::kHealth));
 		}
 	}
 	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
@@ -482,9 +474,19 @@ void GtsManager::Update() {
 			accuratedamage.DoAccurateCollision(actor);
 			ClothManager::GetSingleton().CheckRip();
 		}
+		float current_health_percentage = GetHealthPercentage(actor);
+		log::info("Health% before scale: {}", current_health_percentage);
+		log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
+
 		update_actor(actor);
 		apply_actor(actor);
+
+		SetHealthPercentage(actor, current_health_percentage);
+		log::info("Health% after scale: {}", GetHealthPercentage(actor));
+		log::info("MaxHP After: {}", GetMaxAV(actor, ActorValue::kHealth));
+
 		GameMode(actor);
+
 		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
 		if (timer.ShouldRunFrame()) {
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
