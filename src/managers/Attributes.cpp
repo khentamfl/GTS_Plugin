@@ -98,7 +98,7 @@ namespace {
 		}
 		auto charCont = actor->GetCharController();
 		if (charCont) { 
-			float defaultjump = this->GetAttributeBonus(actor, ActorValue::kJumpingBonus);
+			float defaultjump = GetAttributeBonus(actor, ActorValue::kJumpingBonus);
 			charCont->jumpHeight = defaultjump;
 		}
 	}
