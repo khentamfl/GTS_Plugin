@@ -19,6 +19,7 @@
 #include "timer.hpp"
 #include <vector>
 #include <string>
+#include "utils/debug.hpp"
 
 using namespace Gts;
 using namespace RE;
@@ -159,17 +160,16 @@ namespace {
 			//perkspeed = clamp(0.80, 1.0, speedmultcalc); // Used as a bonus 20% MS if PC has perk.
 		}
 
-		/*auto charCont = actor->GetCharController();
+		auto charCont = actor->GetCharController();
 		if (charCont) {
 			float falltime = charCont->fallTime;
-			charCont->fallTime /= scale;
 			float fallheight = charCont->fallStartHeight;
 			float acrobatics = charCont->acrobatics;
 			if (actor->formID == 0x14) {
-				log::info("FallTime: {}, FallHeight {}, Acrobatics: {}", falltime, fallheight, acrobatics);
+				log::info("Up: {}", Vector2Str(charCont->up));
 			}
 			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
-		}*/
+		}
 
 		
 
