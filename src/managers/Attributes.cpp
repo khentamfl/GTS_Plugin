@@ -95,14 +95,15 @@ namespace {
 		if (!actor) {
 			return;
 		}
+		float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
 		float scale = get_visual_scale(actor);
 		float fJumpFallHeightMin = 600.0 + ((-scale + 1.0) * 300 * power);
-  		auto charCont = actor->GetCharacterController();
+  		auto charCont = actor->GetCharController();
   			if (charCont) {
+				float jumpbonus = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus);
    				float currentHeight = actor->GetPosition()[1];
-				float defaultjump = AttributeManager::GetAttributeBonus(actor, ActorValue::kJumpingBonus);
     			float fallen = currentHeight - charCont->fallStartHeight;
-				charCont->jumpHeight = defaultjump; // boost jump height
+				charCont->jumpHeight = jumpbonus; // boost jump height
     		if (fallen < fJumpFallHeightMin) {
       			charCont->fallTime = 0.0;	
 			}
@@ -160,7 +161,7 @@ namespace {
 		if (timer.ShouldRunFrame()) { // Run once per 0.05 sec
 			ManagePerkBonuses(actor);
 			if (actor->formID == 0x14) {
-				Augmentation(Player, this->BlockMessage); // Manages SMT bonuses
+				Augmentation(actor, this->BlockMessage); // Manages SMT bonuses
 			}
 			if (!Runtime::HasPerk(actor, "StaggerImmunity") && size > 1.33) {
 				Runtime::AddPerk(actor, "StaggerImmunity");
