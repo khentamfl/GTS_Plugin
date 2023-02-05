@@ -122,7 +122,6 @@ namespace Gts {
 		if (receiver->IsDead()) {
 			return;
 		}
-		log::info("Pushing {} from {} Away", receiver->GetDisplayFullName(), source->GetDisplayFullName()); 
 		CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {

@@ -159,7 +159,6 @@ namespace Gts {
 							float tinyScale = get_visual_scale(otherActor);
 							if (giantScale / tinyScale > SCALE_RATIO) {
 								NiPoint3 actorLocation = otherActor->GetPosition();
-								log::info("Giant: {}, Giant Scale: {}, Tiny Scale:{}, SizeRatio: {}", actor->GetDisplayFullName(), giantScale, tinyScale, SCALE_RATIO);
 								// Check the tiny's nodes against the giant's foot points
 								for (auto point: footPoints) {
 									float distance = (point - actorLocation).Length();
