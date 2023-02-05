@@ -48,7 +48,7 @@ namespace {
 			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kAttackDamageMult) - 1.0;
 		}
 		if (value == 5.0) {
-			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpMult) - 1.0;
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) - 1.0;
 		}
 		return 1.0;
 	}

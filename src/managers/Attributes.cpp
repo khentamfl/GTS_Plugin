@@ -83,30 +83,20 @@ namespace {
 
 		if (BaseGlobalDamage != ExpectedGlobalDamage) {
 			SizeManager.SetSizeAttribute(actor, ExpectedGlobalDamage, 0);
-			//log::info("SizeManager Normal Actor {} value: {}, expected Value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 0), ExpectedGlobalDamage);
-			//log::info("Setting Global Damage: {}, gigantism: {}", ExpectedGlobalDamage, gigantism);
 		}
 		if (BaseSprintDamage != ExpectedSprintDamage) {
 			SizeManager.SetSizeAttribute(actor, ExpectedSprintDamage, 1);
-			//log::info("SizeManager Sprint Actor {} value: {}, expected Value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 1), ExpectedSprintDamage);
-			//log::info("Setting Sprint Damage: {}, gigantism: {}", ExpectedSprintDamage, gigantism);
 		}
 		if (BaseFallDamage != ExpectedFallDamage) {
 			SizeManager.SetSizeAttribute(actor, ExpectedFallDamage, 2);
-			//log::info("SizeManager Fall Actor {} value: {}, expected Value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 2), ExpectedFallDamage);
-			//log::info("Setting Fall Damage: {}, gigantism: {}", ExpectedFallDamage, gigantism);
 		}
 	}
 
-	void BoostJump(Actor* actor, float power) {
-		float scale = get_visual_scale(actor);
-		return;
-		if (fabs(power) > 1e-5) { // != 0.0
-			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
-			SetINIFloat("fJumpFallHeightMin", 600.0 + ( 600.0 * (scale - 1) * power));
-		} else {
-			SetINIFloat("fJumpHeightMin", 76.0);
-			SetINIFloat("fJumpFallHeightMin", 600.0 + ((-scale + 1.0) * 300 * power));
+	void BoostJump(Actor* actor) {
+		auto charCont = actor->GetCharController();
+		if (charCont) { 
+			float power = this->GetAttributeBonus(actor, ActorValue::kJumpingBonus);
+			charCont->jumpHeight = defaultjump;
 		}
 	}
 
@@ -157,19 +147,15 @@ namespace {
 			return;
 		}
 
-		float bonusJumpHeightMultiplier = Runtime::GetFloat("bonusJumpHeightMultiplier");
-
 		float size = get_visual_scale(Player);
-
 		static Timer timer = Timer(0.05);
-
 		ManagePerkBonuses(Player);
 
 		if (size > 0) {
 			if (timer.ShouldRunFrame()) {
 				Augmentation(Player, BlockMessage);
 
-				BoostJump(Player, bonusJumpHeightMultiplier);
+				BoostJump(Player);
 
 				if (!Runtime::HasPerk(Player, "StaggerImmunity") && size > 1.33) {
 					Runtime::AddPerk(Player, "StaggerImmunity");
@@ -194,6 +180,8 @@ namespace {
 		}
 		static Timer timer = Timer(0.05);
 		float size = get_visual_scale(npc);
+
+		ManagePerkBonuses(npc);
 
 		if (timer.ShouldRunFrame()) {
 			if (npc->IsPlayerTeammate() || Runtime::InFaction(npc, "FollowerFaction")) {
@@ -296,7 +284,7 @@ namespace Gts {
 					return scale;
 				}
 			}
-			case ActorValue::kJumpMult: {
+			case ActorValue::kJumpingBonus: {
 				float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
 				float defaultjump = 1.0 + (1.0 * (scale - 1) * power);
 				if (scale > 1.0) {
