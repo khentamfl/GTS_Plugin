@@ -156,7 +156,7 @@ namespace {
 		if (charCont) {
 			if (actor->formID == 0x14) {
 				float defaultjump = 1.0 * scale;
-				float swim = 1.6 - (1.6 * scale - 1.0);
+				float swim = 1.6 * scale;
 				charCont->jumpHeight = defaultjump;
 				charCont->swimFloatHeight = swim;
 				charCont->scale = scale;
