@@ -31,8 +31,8 @@ namespace Gts {
 	}
 
 	float GetPercentageAV(Actor* actor, ActorValue av) {
-		if (av == ActorValue::kHealth && actor->formID == 0x14) {
-			log::info("HP For: {}", actor->GetDisplayFullName());
+		if (av == ActorValue::kAttackDamageMult && actor->formID == 0x14) {
+			log::info("AttackDamageMult For: {}", actor->GetDisplayFullName());
 			log::info("  - GetActorValueModifier:");
 			log::info("    - Damage: {}", actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av));
 			log::info("    - Temp: {}", actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av));
@@ -45,7 +45,7 @@ namespace Gts {
 			log::info("    - Value: {}", actor->GetActorValue(av));
 			log::info("    - Base: {}", actor->GetBaseActorValue(av));
 			log::info("    - Perm: {}", actor->GetPermanentActorValue(av));
-			log::info("  - Papyrus:");
+			//log::info("  - Papyrus:");
 			/*log::info("    - Value: ", CallFunctionOn(actor, "Actor", "GetActorValue", "health"));
 			   log::info("    - Base: ", CallFunctionOn(actor, "Actor", "GetBaseActorValue", "health"));
 			   log::info("    - Percentage: ", CallFunctionOn(actor, "Actor", "GetActorValuePercentage", "health"));*/

@@ -475,20 +475,20 @@ void GtsManager::Update() {
 			ClothManager::GetSingleton().CheckRip();
 		}
 		float current_health_percentage = GetHealthPercentage(actor);
-		log::info("Health% before scale: {}", current_health_percentage);
-		log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
+		//log::info("Health% before scale: {}", current_health_percentage);
+		//log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
 
 		update_actor(actor);
 		apply_actor(actor);
 
 		SetHealthPercentage(actor, current_health_percentage);
-		log::info("Health% after scale: {}", GetHealthPercentage(actor));
-		log::info("MaxHP After: {}", GetMaxAV(actor, ActorValue::kHealth));
+		//log::info("Health% after scale: {}", GetHealthPercentage(actor));
+		//log::info("MaxHP After: {}", GetMaxAV(actor, ActorValue::kHealth));
 
 		GameMode(actor);
 
 		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
-		if (timer.ShouldRunFrame()) {
+		if (timer.ShouldRunFrame() && SizeManager::GetSingleton().GetPreciseDamage()) {
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
 		}
 	}

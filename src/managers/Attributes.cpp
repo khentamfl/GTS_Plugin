@@ -83,17 +83,17 @@ namespace {
 
 		if (BaseGlobalDamage != ExpectedGlobalDamage) {
 			SizeManager.SetSizeAttribute(actor, ExpectedGlobalDamage, 0);
-			log::info("SizeManager Normal Actor {} value: {}, expected Value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 0), ExpectedGlobalDamage);
+			//log::info("SizeManager Normal Actor {} value: {}, expected Value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 0), ExpectedGlobalDamage);
 			//log::info("Setting Global Damage: {}, gigantism: {}", ExpectedGlobalDamage, gigantism);
 		}
 		if (BaseSprintDamage != ExpectedSprintDamage) {
 			SizeManager.SetSizeAttribute(actor, ExpectedSprintDamage, 1);
-			log::info("SizeManager Sprint Actor {} value: {}, expected Value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 1), ExpectedSprintDamage);
+			//log::info("SizeManager Sprint Actor {} value: {}, expected Value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 1), ExpectedSprintDamage);
 			//log::info("Setting Sprint Damage: {}, gigantism: {}", ExpectedSprintDamage, gigantism);
 		}
 		if (BaseFallDamage != ExpectedFallDamage) {
 			SizeManager.SetSizeAttribute(actor, ExpectedFallDamage, 2);
-			log::info("SizeManager Fall Actor {} value: {}, expected Value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 2), ExpectedFallDamage);
+			//log::info("SizeManager Fall Actor {} value: {}, expected Value: {}", actor->GetDisplayFullName(), SizeManager.GetSizeAttribute(actor, 2), ExpectedFallDamage);
 			//log::info("Setting Fall Damage: {}, gigantism: {}", ExpectedFallDamage, gigantism);
 		}
 	}
