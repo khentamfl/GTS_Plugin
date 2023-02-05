@@ -285,7 +285,7 @@ namespace Gts {
 				if (actor->formID == 0x14) {
 					//log::info("SpeedMult: {}", power);
 				}
-				if (scale > 1.0)
+				if (scale > 1.0) {
 					return power;
 				} else {
 					return scale;
