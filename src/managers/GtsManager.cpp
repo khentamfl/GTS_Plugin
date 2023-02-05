@@ -155,7 +155,7 @@ namespace {
 		auto charCont = actor->GetCharController();
 		if (charCont) {
 			if (actor->formID == 0x14) {
-				actor->GetLookingAtLocation()[2] /= scale; 
+				actor->GetLookingAtLocation()[2] = -1900; 
 				//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
 				log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
 				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
