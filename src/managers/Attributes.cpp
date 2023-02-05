@@ -342,27 +342,28 @@ namespace Gts {
 	}
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
 		float bonus = 1.0;
-		switch (av) {
-			case ActorValue::kHealth: {
-				bonus = 100.0;
-				break;
-			}
-		}
+		// switch (av) {
+		// 	case ActorValue::kHealth: {
+		// 		bonus = 100.0;
+		// 		break;
+		// 	}
+		// }
 		return originalValue * bonus;
 	}
 
-	float AttributeManager::AlterMovementSpeed(Actor* actor) {
+	float AttributeManager::AlterMovementSpeed(Actor* actor, const NiPoint3& direction) {
 		float bonus = 1.0;
 		static Timer soundtimer = Timer(0.80);
 		if (actor) {
 			auto& attributes = AttributeManager::GetSingleton();
 			bonus = attributes.GetAttributeBonus(actor, ActorValue::kSpeedMult);
 			float volume = 0.0;
+			float origSpeed = direction.Length();
 			if (actor->formID != 0x14) {
 				float sizedifference = get_visual_scale(actor)/get_visual_scale(PlayerCharacter::GetSingleton());
-				volume = bonus * sizedifference / 250;
+				volume = bonus * origSpeed * sizedifference / 250;
 			} else {
-				volume = bonus / 250;
+				volume = bonus * origSpeed / 250;
 			}
 			if (soundtimer.ShouldRunFrame()) {
 				Runtime::PlaySound("RumbleWalkSound", actor, volume, 1.0);

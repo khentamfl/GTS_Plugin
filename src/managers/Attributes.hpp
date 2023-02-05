@@ -22,7 +22,7 @@ namespace Gts {
 			static float AlterGetAv(Actor* actor, ActorValue av, float originalValue);
 			static float AlterGetBaseAv(Actor* actor, ActorValue av, float originalValue);
 			static float AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue);
-			static float AlterMovementSpeed(Actor* actor);
+			static float AlterMovementSpeed(Actor* actor, const NiPoint3& direction);
 
 		private:
 			float MovementSpeedBonus = 0.0;

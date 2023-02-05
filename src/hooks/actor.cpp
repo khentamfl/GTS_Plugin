@@ -91,7 +91,7 @@ namespace Hooks
 	}
 
 	void Hook_Actor::Move(Actor* a_this, float a_arg2, const NiPoint3& a_position) { // Override Movement Speed
-		float bonus = AttributeManager::AlterMovementSpeed(a_this);
+		float bonus = AttributeManager::AlterMovementSpeed(a_this, a_position);
 		return _Move(a_this, a_arg2, a_position * bonus);
 	}
 }
