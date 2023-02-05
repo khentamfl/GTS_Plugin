@@ -444,14 +444,15 @@ std::string GtsManager::DebugName() {
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 
-	/*auto ai = PC->currentProcess;
+	auto ai = PC->currentProcess;
 	   if (ai) {
-	        auto highAi = ai->high;
+	        auto highAi = ai->middleHigh;
 	        if (highAi) {
-				highAi->headTrackTargetOffset[2] = -9000;
-	                log::info("Heatracking Offset: {}", Vector2Str(highAi->headTrackTargetOffset));
+				highAi->rotationSpeed.x *= get_visual_scale(ai);
+				highAi->rotationSpeed.y *= get_visual_scale(ai);
+	                log::info("rotationSpeed: {}", Vector2Str(highAi->rotationSpeed));
 	        }
-	   }*/
+	   }
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
