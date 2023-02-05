@@ -39,6 +39,28 @@ namespace Gts {
 		auto percentage = currentValue/maxValue;
 		auto targetValue = target * maxValue;
 		float delta = targetValue - currentValue;
+
+		if (av == ActorValue::kHealth) {
+			log::info("HP For: {}", actor->GetDisplayFullName());
+			log::info("  - GetActorValueModifier:");
+			log::info("    - Damage: " actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av));
+			log::info("    - Temp: " actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av));
+			log::info("    - Perm: " actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kPermanent, av));
+			log::info("  - Modifers:");
+			log::info("    - Damage: " actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kDamage]);
+			log::info("    - Temp: " actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary]);
+			log::info("    - Perm: " actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kPermanent]);
+			log::info("  - Cpp:");
+			log::info("    - Value: " actor->GetActorValue(av));
+			log::info("    - Base: " actor->GetBaseActorValue(av));
+			log::info("    - Perm: " actor->GetPermanentActorValue(av));
+			log::info("  - Papyrus:");
+			log::info("    - Value: " CallFunctionOn(actor, "Actor", "GetActorValue", "health"));
+			log::info("    - Base: " CallFunctionOn(actor, "Actor", "GetBaseActorValue", "health"));
+			log::info("    - Percentage: " CallFunctionOn(actor, "Actor", "GetActorValuePercentage", "health"));
+
+		}
+
 		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
 	}
 

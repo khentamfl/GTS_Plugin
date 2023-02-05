@@ -244,15 +244,15 @@ namespace Gts {
 		float scale = get_visual_scale(actor);
 
 		switch (av) {
-			case ActorValue::kHealth: {
-				float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
-				float power = (bonusHPMultiplier/BalancedMode);
-				if (scale > 1.0) {
-					return power*scale + 1.0 - power;
-				} else {
-					return scale;
-				}
-			}
+			// case ActorValue::kHealth: {
+			// 	float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
+			// 	float power = (bonusHPMultiplier/BalancedMode);
+			// 	if (scale > 1.0) {
+			// 		return power*scale + 1.0 - power;
+			// 	} else {
+			// 		return scale;
+			// 	}
+			// }
 			case ActorValue::kCarryWeight: {
 				float bonusCarryWeightMultiplier = Runtime::GetFloatOr("bonusCarryWeightMultiplier", 1.0);
 				float power = (bonusCarryWeightMultiplier/BalancedMode);
