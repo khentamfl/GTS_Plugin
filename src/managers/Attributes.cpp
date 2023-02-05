@@ -37,7 +37,6 @@ namespace {
 	}
 
 	void ManagePerkBonuses(Actor* actor) {
-		auto player = PlayerCharacter::GetSingleton();
 		auto& SizeManager = SizeManager::GetSingleton();
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
@@ -96,15 +95,23 @@ namespace {
 		if (!actor) {
 			return;
 		}
-		auto charCont = actor->GetCharController();
-		if (charCont) { 
-			float defaultjump = GetAttributeBonus(actor, ActorValue::kJumpingBonus);
-			charCont->jumpHeight = defaultjump;
+		float scale = get_visual_scale(actor);
+		float fJumpFallHeightMin = 600.0 + ((-scale + 1.0) * 300 * power);
+			for (auto actor: find_actors()) {
+  				auto charCont = actor->GetCharacterController();
+  			if (charCont) {
+   				float currentHeight = actor->GetPosition()[1];
+				float defaultjump = AttributeManager::GetAttributeBonus(actor, ActorValue::kJumpingBonus);
+    			float fallen = currentHeight - charCont->fallStartHeight;
+				charCont->jumpHeight = defaultjump; // boost jump height
+    		if (fallen < fJumpFallHeightMin) {
+      			charCont->fallTime = 0.0;	
+  				}
+			}
 		}
 	}
 
-
-	void Augmentation(Actor* Player, bool& BlockMessage) {
+	void Augmentation(Actor* Player, bool& BlockMessage) { // Manages SMT bonus speed 
 		// TODO: Calc on demand rather than poll
 		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
 		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
@@ -139,65 +146,31 @@ namespace {
 		}
 		//log::info("SMT Bonus: {}", ActorAttributes->smt_run_speed);
 	}
-
-	void UpdatePlayer(Actor* Player, bool& BlockMessage) {
-		// Reapply Player Only
-
-		if (!Player) {
-			return;
-		}
-		if (!Player->Is3DLoaded()) {
-			return;
-		}
-
-		float size = get_visual_scale(Player);
-		static Timer timer = Timer(0.05);
-		ManagePerkBonuses(Player);
-
-		if (size > 0) {
-			if (timer.ShouldRunFrame()) {
-				Augmentation(Player, BlockMessage);
-
-				BoostJump(Player);
-
-				if (!Runtime::HasPerk(Player, "StaggerImmunity") && size > 1.33) {
-					Runtime::AddPerk(Player, "StaggerImmunity");
-					return;
-				} else if (size < 1.33 && Runtime::HasPerk(Player, "StaggerImmunity")) {
-					Runtime::RemovePerk(Player, "StaggerImmunity");
-				}
-			}
-		}
-	}
-
 	// Todo unify the functions
-	void UpdateNPC(Actor* npc) {
-		if (!npc) {
+	void UpdateActors(Actor* actor) {
+		if (!actor) {
 			return;
 		}
-		if (npc->formID == 0x14) {
-			return;
-		}
-		if (!npc->Is3DLoaded()) {
+		if (!actor->Is3DLoaded()) {
 			return;
 		}
 		static Timer timer = Timer(0.05);
-		float size = get_visual_scale(npc);
+		float size = get_visual_scale(actor);
 
-		ManagePerkBonuses(npc);
+		ManagePerkBonuses(actor);
 
-		if (timer.ShouldRunFrame()) {
-			if (npc->IsPlayerTeammate() || Runtime::InFaction(npc, "FollowerFaction")) {
-				ManagePerkBonuses(npc);
+		if (timer.ShouldRunFrame()) { // Run once per 0.05 sec
+			ManagePerkBonuses(actor);
+			if (actor->formID == 0x14) {
+				Augmentation(Player, this->BlockMessage); // Manages SMT bonuses
 			}
-			if (!Runtime::HasPerk(npc, "StaggerImmunity") && size > 1.33) {
-				Runtime::AddPerk(npc, "StaggerImmunity");
-			} else if (size < 1.33 && Runtime::HasPerk(npc, "StaggerImmunity")) {
-				Runtime::RemovePerk(npc, "StaggerImmunity");
+			if (!Runtime::HasPerk(actor, "StaggerImmunity") && size > 1.33) {
+				Runtime::AddPerk(actor, "StaggerImmunity");
+			} else if (size < 1.33 && Runtime::HasPerk(actor, "StaggerImmunity")) {
+				Runtime::RemovePerk(actor, "StaggerImmunity");
 			}
 		}
 	}
-
 }
 
 
@@ -213,11 +186,7 @@ namespace Gts {
 
 	void AttributeManager::Update() {
 		for (auto actor: find_actors()) {
-			if (actor->formID == 0x14) {
-				UpdatePlayer(actor, this->BlockMessage);
-			} else {
-				UpdateNPC(actor);
-			}
+			UpdateActors(actor);
 		}
 	}
 
