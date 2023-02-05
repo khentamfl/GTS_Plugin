@@ -161,8 +161,8 @@ namespace {
 
 		auto charCont = actor->GetCharController();
 		if (charCont) {
-			charCont->fallTime = 0.0;
-			charCont->fallStartHeight = 0.0;
+			charCont->fallTime = 1.0 * scale;
+			charCont->fallStartHeight = 1.0 * scale;
 			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
 		}
 
