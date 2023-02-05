@@ -35,10 +35,11 @@ namespace {
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power, float bonus) {
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
+		float giantSize = get_visual_scale(giant);
 		if (hasSMT) {
 			giantSize *= 4.0;
 		}
-		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+		float sizedifference = giantSize/get_visual_scale(tiny);
 		int ragdollchance = rand() % 10 + 1.0;
 		//PlayAnimation(tiny, "staggerStart");//PlayAnimation(giant, "staggerStart");
 		//PlayAnimation(tiny, "StaggerStart");//PlayAnimation(giant, "StaggerStart");
