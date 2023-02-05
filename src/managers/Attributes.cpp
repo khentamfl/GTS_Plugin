@@ -102,7 +102,7 @@ namespace {
   			if (charCont) {
 				float jumpbonus = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus);
    				float currentHeight = actor->GetPosition()[2];
-    			float fallen = currentHeight - charCont->fallStartHeight;
+    			float fallen = charCont->fallStartHeight - currentHeight;
 				charCont->jumpHeight = jumpbonus; // boost jump height
 				if (actor->formID == 0x14) {
 					log::info("FallTime: {}", charCont->fallTime);
