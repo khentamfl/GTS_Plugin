@@ -156,7 +156,7 @@ namespace {
 		if (charCont) {
 			if (actor->formID == 0x14) {
 				//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
-				log::info("Look At Location: {}", actor->GetLookingAtLocation());
+				log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
 				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
 			}
 			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
@@ -448,8 +448,8 @@ void GtsManager::Update() {
 	   if (ai) {
 	        auto highAi = ai->middleHigh;
 	        if (highAi) {
-				highAi->rotationSpeed.x *= get_visual_scale(ai);
-				highAi->rotationSpeed.y *= get_visual_scale(ai);
+				highAi->rotationSpeed.x *= get_visual_scale(PC);
+				highAi->rotationSpeed.y *= get_visual_scale(PC);
 	                log::info("rotationSpeed: {}", Vector2Str(highAi->rotationSpeed));
 	        }
 	   }
