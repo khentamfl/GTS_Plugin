@@ -30,16 +30,6 @@ namespace Gts {
 	}
 
 	float GetPercentageAV(Actor* actor, ActorValue av) {
-		return GetAV(actor, av)/GetMaxAV(actor, av);
-	}
-
-	void SetPercentageAV(Actor* actor, ActorValue av, float target) {
-		auto currentValue = GetAV(actor, av);
-		auto maxValue = GetMaxAV(actor, av);
-		auto percentage = currentValue/maxValue;
-		auto targetValue = target * maxValue;
-		float delta = targetValue - currentValue;
-
 		if (av == ActorValue::kHealth && actor->formID == 0x14) {
 			log::info("HP For: {}", actor->GetDisplayFullName());
 			log::info("  - GetActorValueModifier:");
@@ -56,11 +46,19 @@ namespace Gts {
 			log::info("    - Perm: {}", actor->GetPermanentActorValue(av));
 			log::info("  - Papyrus:");
 			/*log::info("    - Value: ", CallFunctionOn(actor, "Actor", "GetActorValue", "health"));
-			log::info("    - Base: ", CallFunctionOn(actor, "Actor", "GetBaseActorValue", "health"));
-			log::info("    - Percentage: ", CallFunctionOn(actor, "Actor", "GetActorValuePercentage", "health"));*/
+			   log::info("    - Base: ", CallFunctionOn(actor, "Actor", "GetBaseActorValue", "health"));
+			   log::info("    - Percentage: ", CallFunctionOn(actor, "Actor", "GetActorValuePercentage", "health"));*/
 
 		}
+		return GetAV(actor, av)/GetMaxAV(actor, av);
+	}
 
+	void SetPercentageAV(Actor* actor, ActorValue av, float target) {
+		auto currentValue = GetAV(actor, av);
+		auto maxValue = GetMaxAV(actor, av);
+		auto percentage = currentValue/maxValue;
+		auto targetValue = target * maxValue;
+		float delta = targetValue - currentValue;
 		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
 	}
 
