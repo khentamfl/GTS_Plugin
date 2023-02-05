@@ -159,6 +159,15 @@ namespace {
 			//perkspeed = clamp(0.80, 1.0, speedmultcalc); // Used as a bonus 20% MS if PC has perk.
 		}
 
+		auto charCont = actor->GetCharController();
+		if (charCont) {
+			charCont->fallTime = 0.0;
+			charCont->fallStartHeight = 0.0;
+			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
+		}
+
+		
+
 		persi_actor_data->anim_speed = speedmultcalc*perkspeed;//MS_mult;
 		if (actor->formID == 0x14) {
 			//log::info("AnimSpeed: {}", persi_actor_data->anim_speed);
