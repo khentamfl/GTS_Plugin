@@ -155,19 +155,12 @@ namespace {
 		auto charCont = actor->GetCharController();
 		if (charCont) {
 			if (actor->formID == 0x14) {
-				float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
-				float defaultjump = 1.0 + (1.0 * (scale - 1) * power);
-				float swim = 36.0;
-				charCont->jumpHeight = defaultjump;
-				charCont->swimFloatHeight = swim;
-				charCont->scale = scale;
-				charCont->actorHeight = 1.82 * scale;
-				charCont->rotMod = 10.0;
-				charCont->rotModTime = 10.0;
 				//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
 				log::info("RotMod: {}, RotModTime: {}, Scale: {}, SwimHeight: {}, ActorHeight: {}, WaterHeight: {}", charCont->rotMod, charCont->rotModTime, charCont->scale, charCont->swimFloatHeight, charCont->actorHeight, charCont->waterHeight);
 				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
 			}
+			charCont->rotMod = -100.0;
+			charCont->rotModTime = -100.0;
 			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
 		}
 
