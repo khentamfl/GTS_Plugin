@@ -292,20 +292,23 @@ namespace Gts {
 		} if (evt.footEvent == FootEvent::JumpLand) {
 			movementFactor *= 3.0;
 		}
-
+		log::info("Giant: {}, Giant Size: {}", giant->GetDisplayFullName(), giantSize);
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
 			DoSizeDamage(giant, tiny, movementFactor, force * 6);
+			log::info("Doing Size Damage");
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				StaggerOr(giant, tiny, knockBack);
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force <= UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+				log::info("Trying to Launch");
 				if (sizeRatio >= 6.0) {
 					// Launch
+					log::info("Launch Success");
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
