@@ -156,7 +156,11 @@ namespace {
 		if (charCont) {
 			if (actor->formID == 0x14) {
 				float defaultjump = 1.0 * scale;
+				float swim = 1.6 - (1.6 * scale - 1.0);
 				charCont->jumpHeight = defaultjump;
+				charCont->swimFloatHeight = swim;
+				charCont->scale = scale;
+				charCont->actorHeight = 1.82 * scale;
 				log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor));
 				log::info("RotMod: {}, RotModTime: {}, Scale: {}, SwimHeight: {}, ActorHeight: {}, ", charCont->rotMod, charCont->rotModTime, charCont->scale, charCont->swimFloatHeight, charCont->actorHeight);
 				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
