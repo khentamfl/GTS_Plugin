@@ -42,13 +42,13 @@ namespace Gts {
 		if (actor) {
 			auto actor_data = Persistent::GetSingleton().GetData(actor);
 			// TODO: Fix this
-			if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+			if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 				float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 				if (scale >= 1.0) {
 					amt /= (1.5 + (scale/1.5));
 				}
 			}
-			if (Runtime::HasPerk(actor, "OnTheEdge")) {
+			if (Runtime::HasPerkTeam(actor, "OnTheEdge")) {
 				float GetHP = clamp(0.5, 1.0, GetHealthPercentage(actor) + 0.4); // Bonus Size Gain if Actor has perk
 				if (amt > 0) {
 					amt /= GetHP;

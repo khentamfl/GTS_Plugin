@@ -212,7 +212,7 @@ namespace Gts {
 				}
 				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 					float npcscale = get_visual_scale(actor);
-					float magicka = 1.0; //clamp(0.05, 1.0, GetMagikaPercentage(player));
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
 					DamageAV(player, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					Grow(actor, 0.0024 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
@@ -229,7 +229,7 @@ namespace Gts {
 				}
 				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 					float npcscale = get_visual_scale(actor);
-					float magicka = 1.0; //clamp(0.05, 1.0, GetMagikaPercentage(player));
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
 					DamageAV(player, ActorValue::kMagicka, 0.10 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					ShrinkActor(actor, 0.0012 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);

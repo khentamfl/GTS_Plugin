@@ -35,7 +35,7 @@ namespace Gts {
 		}
 
 		float scale = get_visual_scale(target);
-		float magicka = 1.0;//clamp(0.05, 1.0, GetMagikaPercentage(caster));
+		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
 
 		float bonus = 1.0;
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
