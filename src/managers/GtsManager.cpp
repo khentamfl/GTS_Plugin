@@ -455,6 +455,7 @@ void GtsManager::Update() {
 	   if (ai) {
 	        auto highAi = ai->high;
 	        if (highAi) {
+				highAi->headTrackTargetOffset[2] = -9000;
 	                log::info("Heatracking Offset: {}", Vector2Str(highAi->headTrackTargetOffset));
 	        }
 	   }
