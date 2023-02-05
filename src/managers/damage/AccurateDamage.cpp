@@ -33,7 +33,7 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.60;
 
-	void StaggerOr(Actor* giant, Actor* tiny, float power, float bonus) {
+	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		float giantSize = get_visual_scale(giant);
 		if (hasSMT) {
