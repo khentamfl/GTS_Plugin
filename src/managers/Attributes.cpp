@@ -281,10 +281,6 @@ namespace Gts {
 				}
 
 				float power = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
-
-				if (actor->formID == 0x14) {
-					//log::info("SpeedMult: {}", power);
-				}
 				if (scale > 1.0) {
 					return power;
 				} else {
@@ -293,8 +289,12 @@ namespace Gts {
 			}
 			case ActorValue::kAttackDamageMult: {
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
-				float damage_storage = scale + ((bonusDamageMultiplier) * scale - 1.0);
-				return damage_storage;
+				float damage_storage = 1.0 + ((bonusDamageMultiplier) * scale - 1.0);
+				if (scale > 1.0) {
+					return damage_storage;
+				} else {
+					return scale;
+				}
 			}
 			default: {
 				return 1.0;
