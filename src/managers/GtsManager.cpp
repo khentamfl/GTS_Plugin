@@ -175,7 +175,7 @@ namespace {
 				log::info("PushDelta: {}", Vector2Str(charCont->pushDelta));
 				log::info("fakeSupportStart: {}", Vector2Str(charCont->fakeSupportStart));
 				log::info("supportNorm: {}", Vector2Str(charCont->supportNorm));
-				log::info("orientationCtrl: {}", charCont->orientationCtrl);		
+				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
 			}
 			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
 		}
