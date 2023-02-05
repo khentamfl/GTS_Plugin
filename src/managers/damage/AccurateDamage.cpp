@@ -33,7 +33,11 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.60;
 
-	void StaggerOr(Actor* giant, Actor* tiny, float power) {
+	void StaggerOr(Actor* giant, Actor* tiny, float power, float bonus) {
+		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
+		if (hasSMT) {
+			giantSize *= 4.0;
+		}
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		int ragdollchance = rand() % 10 + 1.0;
 		//PlayAnimation(tiny, "staggerStart");//PlayAnimation(giant, "staggerStart");
