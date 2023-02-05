@@ -162,7 +162,7 @@ namespace {
 		auto charCont = actor->GetCharController();
 		if (charCont) {
 			float falltime = charCont->fallTime;
-			charCont->falltime /= scale;
+			charCont->fallTime /= scale;
 			float fallheight = charCont->fallStartHeight;
 			float acrobatics = charCont->acrobatics;
 			if (actor->formID == 0x14) {
