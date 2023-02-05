@@ -97,8 +97,7 @@ namespace {
 		}
 		float scale = get_visual_scale(actor);
 		float fJumpFallHeightMin = 600.0 + ((-scale + 1.0) * 300 * power);
-			for (auto actor: find_actors()) {
-  				auto charCont = actor->GetCharacterController();
+  		auto charCont = actor->GetCharacterController();
   			if (charCont) {
    				float currentHeight = actor->GetPosition()[1];
 				float defaultjump = AttributeManager::GetAttributeBonus(actor, ActorValue::kJumpingBonus);
@@ -106,7 +105,6 @@ namespace {
 				charCont->jumpHeight = defaultjump; // boost jump height
     		if (fallen < fJumpFallHeightMin) {
       			charCont->fallTime = 0.0;	
-  				}
 			}
 		}
 	}
