@@ -188,7 +188,7 @@ namespace Gts {
 			float scale = get_visual_scale(player);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
 			DamageAV(player, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			Grow(player, 0.0012 * stamina, 0.0);
+			Grow(player, 0.0010 * stamina, 0.0);
 			float Volume = clamp(0.10, 2.0, get_visual_scale(player)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(player, player, scale/10);
 			if (this->timergrowth.ShouldRun()) {
@@ -199,7 +199,7 @@ namespace Gts {
 			float scale = get_visual_scale(player);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
 			DamageAV(player, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			ShrinkActor(player, 0.0012 * stamina, 0.0);
+			ShrinkActor(player, 0.0010 * stamina, 0.0);
 			float Volume = clamp(0.05, 2.0, get_visual_scale(player)/10);
 			GrowthTremorManager::GetSingleton().CallRumble(player, player, scale/14);
 			if (this->timergrowth.ShouldRun()) {
@@ -214,7 +214,7 @@ namespace Gts {
 					float npcscale = get_visual_scale(actor);
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
 					DamageAV(player, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
-					Grow(actor, 0.0024 * magicka, 0.0);
+					Grow(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(actor, player, 0.25);
 					if (this->timergrowth.ShouldRun()) {
@@ -231,7 +231,7 @@ namespace Gts {
 					float npcscale = get_visual_scale(actor);
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
 					DamageAV(player, ActorValue::kMagicka, 0.10 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
-					ShrinkActor(actor, 0.0012 * magicka, 0.0);
+					ShrinkActor(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
 					GrowthTremorManager::GetSingleton().CallRumble(actor, player, 0.20);
 					if (this->timergrowth.ShouldRun()) {
