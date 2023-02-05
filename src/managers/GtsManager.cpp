@@ -156,11 +156,9 @@ namespace {
 		if (charCont) {
 			if (actor->formID == 0x14) {
 				//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
-				log::info("RotMod: {}, RotModTime: {}, Scale: {}, SwimHeight: {}, ActorHeight: {}, WaterHeight: {}", charCont->rotMod, charCont->rotModTime, charCont->scale, charCont->swimFloatHeight, charCont->actorHeight, charCont->waterHeight);
+				log::info("Look At Location: {}", actor->GetLookingAtLocation());
 				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
 			}
-			charCont->rotMod = -100.0;
-			charCont->rotModTime = -100.0;
 			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
 		}
 
