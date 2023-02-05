@@ -59,6 +59,10 @@ namespace {
 		}
 
 		if (fabs(target_scale - persi_actor_data->visual_scale) > 1e-5) {
+			float current_health_percentage = GetHealthPercentage(actor);
+			log::info("Health% before scale: {}", current_health_percentage);
+			log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
+
 			float minimum_scale_delta = 0.000005; // 0.00005%
 			if (fabs(target_scale - persi_actor_data->visual_scale) < minimum_scale_delta) {
 				persi_actor_data->visual_scale = target_scale;
@@ -72,6 +76,10 @@ namespace {
 					Time::WorldTimeDelta()
 					);
 			}
+
+			SetHealthPercentage(actor, current_health_percentage);
+			log::info("Health% after scale: {}", GetHealthPercentage(actor));
+			log::info("MaxHP After: {}", GetMaxAV(actor, ActorValue::kHealth));
 		}
 	}
 	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
@@ -109,14 +117,8 @@ namespace {
 			return;
 		}
 
-		float current_health_percentage = GetHealthPercentage(actor);
-		log::info("Health% before scale: {}", current_health_percentage);
-		log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
 		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
-		SetHealthPercentage(actor, current_health_percentage);
-		log::info("Health% after scale: {}", GetHealthPercentage(actor));
-		log::info("MaxHP After: {}", GetMaxAV(actor, ActorValue::kHealth));
 	}
 
 
