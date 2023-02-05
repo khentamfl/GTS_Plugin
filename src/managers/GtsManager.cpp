@@ -162,10 +162,11 @@ namespace {
 		auto charCont = actor->GetCharController();
 		if (charCont) {
 			float falltime = charCont->fallTime;
+			charCont->falltime /= scale;
 			float fallheight = charCont->fallStartHeight;
 			float acrobatics = charCont->acrobatics;
 			if (actor->formID == 0x14) {
-			log::info("FallTime: {}, FallHeight {}, Acrobatics: {}", falltime, fallheight, acrobatics);
+				log::info("FallTime: {}, FallHeight {}, Acrobatics: {}", falltime, fallheight, acrobatics);
 			}
 			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
 		}
