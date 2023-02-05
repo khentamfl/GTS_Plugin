@@ -277,7 +277,7 @@ namespace Gts {
 		float giantSize = get_visual_scale(giant);
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		if (hasSMT) {
-			giantSize += 8.0;
+			giantSize *= 6.0;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
@@ -304,7 +304,7 @@ namespace Gts {
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force <= UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-				if (sizeRatio >= 8.0) {
+				if (sizeRatio >= 6.0) {
 					// Launch
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {

@@ -135,7 +135,7 @@ namespace Gts {
 				}
 
 				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
-					giantScale *= 8.0;
+					giantScale *= 2.0;
 				}
 
 				NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
