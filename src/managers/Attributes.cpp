@@ -93,9 +93,12 @@ namespace {
 	}
 
 	void BoostJump(Actor* actor) {
+		if (!actor) {
+			return;
+		}
 		auto charCont = actor->GetCharController();
 		if (charCont) { 
-			float power = this->GetAttributeBonus(actor, ActorValue::kJumpingBonus);
+			float defaultjump = this->GetAttributeBonus(actor, ActorValue::kJumpingBonus);
 			charCont->jumpHeight = defaultjump;
 		}
 	}
