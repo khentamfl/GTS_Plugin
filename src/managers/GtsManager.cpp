@@ -166,7 +166,16 @@ namespace {
 			float fallheight = charCont->fallStartHeight;
 			float acrobatics = charCont->acrobatics;
 			if (actor->formID == 0x14) {
-				log::info("Up: {}", Vector2Str(charCont->up));
+				log::info("forwardVec: {}", Vector2Str(charCont->forwardVec));
+				log::info("OutVelociy: {}", Vector2Str(charCont->outVelocity));
+				log::info("InitialVelociy: {}", Vector2Str(charCont->initialVelocity));
+				log::info("VelocityMod: {}", Vector2Str(charCont->velocityMod));
+				log::info("Direction: {}", Vector2Str(charCont->direction));
+				log::info("RotCenter: {}", Vector2Str(charCont->rotCenter));
+				log::info("PushDelta: {}", Vector2Str(charCont->pushDelta));
+				log::info("fakeSupportStart: {}", Vector2Str(charCont->fakeSupportStart));
+				log::info("supportNorm: {}", Vector2Str(charCont->supportNorm));
+				log::info("orientationCtrl: {}", charCont->orientationCtrl);		
 			}
 			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
 		}
