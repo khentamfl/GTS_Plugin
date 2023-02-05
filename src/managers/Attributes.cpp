@@ -245,12 +245,12 @@ namespace Gts {
 
 		switch (av) {
 			case ActorValue::kHealth: {
-			 	float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
-			 	float power = (bonusHPMultiplier/BalancedMode);
-			 	if (scale > 1.0) {
-			 		return power*scale + 1.0 - power;
-			 	} else {
-			 		return scale;
+				float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
+				float power = (bonusHPMultiplier/BalancedMode);
+				if (scale > 1.0) {
+					return power*scale + 1.0 - power;
+				} else {
+					return scale;
 				}
 			}
 			case ActorValue::kCarryWeight: {
@@ -318,12 +318,12 @@ namespace Gts {
 	}
 	float AttributeManager::AlterGetBaseAv(Actor* actor, ActorValue av, float originalValue) {
 		float bonus = 1.0;
-		float modav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av); // Do temp boosts here too
+		float tempav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av); // Do temp boosts here too
+		float permav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av); // Do perm boosts here too
 
 		auto& attributes = AttributeManager::GetSingleton();
 		switch (av) {
 			case ActorValue::kHealth: {
-				modav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
 
 				float scale = get_visual_scale(actor);
 
@@ -338,7 +338,7 @@ namespace Gts {
 			}
 		}
 
-		return originalValue * bonus + (bonus - 1.0)*modav;
+		return originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
 	}
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
 		float bonus = 1.0;
