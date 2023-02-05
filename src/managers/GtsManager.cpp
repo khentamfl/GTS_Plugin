@@ -159,7 +159,7 @@ namespace {
 			//perkspeed = clamp(0.80, 1.0, speedmultcalc); // Used as a bonus 20% MS if PC has perk.
 		}
 
-		auto charCont = actor->GetCharController();
+		/*auto charCont = actor->GetCharController();
 		if (charCont) {
 			float falltime = charCont->fallTime;
 			charCont->fallTime /= scale;
@@ -169,7 +169,7 @@ namespace {
 				log::info("FallTime: {}, FallHeight {}, Acrobatics: {}", falltime, fallheight, acrobatics);
 			}
 			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
-		}
+		}*/
 
 		
 
