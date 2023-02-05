@@ -162,8 +162,8 @@ namespace {
 				charCont->swimFloatHeight = swim;
 				charCont->scale = scale;
 				charCont->actorHeight = 1.82 * scale;
-				log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
-				log::info("RotMod: {}, RotModTime: {}, Scale: {}, SwimHeight: {}, ActorHeight: {}, WaterHeight: {}", charCont->rotMod, charCont->rotModTime, charCont->scale, charCont->swimFloatHeight, charCont->actorHeight, charCont->waterHeight);
+				//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
+				//log::info("RotMod: {}, RotModTime: {}, Scale: {}, SwimHeight: {}, ActorHeight: {}, WaterHeight: {}", charCont->rotMod, charCont->rotModTime, charCont->scale, charCont->swimFloatHeight, charCont->actorHeight, charCont->waterHeight);
 				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
 			}
 			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
@@ -451,13 +451,13 @@ std::string GtsManager::DebugName() {
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 
-	/*auto ai = PC->currentProcess;
+	auto ai = PC->currentProcess;
 	   if (ai) {
 	        auto highAi = ai->high;
 	        if (highAi) {
-	                log::info("Heatracking Test: {}", highAi->headTrackTargetOffset);
+	                log::info("Heatracking Offset: {}", Vector2Str(highAi->headTrackTargetOffset));
 	        }
-	   }*/
+	   }
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
