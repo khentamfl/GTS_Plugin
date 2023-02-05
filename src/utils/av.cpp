@@ -40,7 +40,7 @@ namespace Gts {
 		auto targetValue = target * maxValue;
 		float delta = targetValue - currentValue;
 
-		if (av == ActorValue::kHealth) {
+		if (av == ActorValue::kHealth && actor->formID -- 0x14) {
 			log::info("HP For: {}", actor->GetDisplayFullName());
 			log::info("  - GetActorValueModifier:");
 			log::info("    - Damage: {}", actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av));
