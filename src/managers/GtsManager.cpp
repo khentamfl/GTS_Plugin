@@ -448,8 +448,8 @@ void GtsManager::Update() {
 	   if (ai) {
 	        auto highAi = ai->middleHigh;
 	        if (highAi) {
-				highAi->rotationSpeed.x *= get_visual_scale(PC);
-				highAi->rotationSpeed.y *= get_visual_scale(PC);
+				highAi->rotationSpeed.x = -get_visual_scale(PC);
+				highAi->rotationSpeed.y = -get_visual_scale(PC);
 	                log::info("rotationSpeed: {}", Vector2Str(highAi->rotationSpeed));
 	        }
 	   }
