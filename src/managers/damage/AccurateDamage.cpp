@@ -277,7 +277,7 @@ namespace Gts {
 		float giantSize = get_visual_scale(giant);
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		if (hasSMT) {
-			giantSize *= 6.0;
+			giantSize *= 8.0;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
