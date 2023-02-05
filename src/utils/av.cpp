@@ -55,9 +55,9 @@ namespace Gts {
 			log::info("    - Base: {}", actor->GetBaseActorValue(av));
 			log::info("    - Perm: {}", actor->GetPermanentActorValue(av));
 			log::info("  - Papyrus:");
-			log::info("    - Value: {}", CallFunctionOn(actor, "Actor", "GetActorValue", "health"));
-			log::info("    - Base: {}", CallFunctionOn(actor, "Actor", "GetBaseActorValue", "health"));
-			log::info("    - Percentage: {}", CallFunctionOn(actor, "Actor", "GetActorValuePercentage", "health"));
+			log::info("    - Value: ", CallFunctionOn(actor, "Actor", "GetActorValue", "health"));
+			log::info("    - Base: ", CallFunctionOn(actor, "Actor", "GetBaseActorValue", "health"));
+			log::info("    - Percentage: ", CallFunctionOn(actor, "Actor", "GetActorValuePercentage", "health"));
 
 		}
 
