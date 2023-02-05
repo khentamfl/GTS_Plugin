@@ -162,6 +162,7 @@ namespace {
 			ManagePerkBonuses(actor);
 			if (actor->formID == 0x14) {
 				Augmentation(actor, BlockMessage); // Manages SMT bonuses
+				log::info("Player POS: X: {}, Y{} , Z{}", actor->GetPosition()[0], actor->GetPosition()[1],actor->GetPosition()[2]);
 			}
 			if (!Runtime::HasPerk(actor, "StaggerImmunity") && size > 1.33) {
 				Runtime::AddPerk(actor, "StaggerImmunity");
