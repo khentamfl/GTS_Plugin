@@ -160,6 +160,7 @@ namespace {
 		float size = get_visual_scale(actor);
 
 		ManagePerkBonuses(actor);
+		BoostJump(actor);
 
 		if (timer.ShouldRunFrame()) { // Run once per 0.05 sec
 			ManagePerkBonuses(actor);
