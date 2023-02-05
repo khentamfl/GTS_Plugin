@@ -100,7 +100,7 @@ namespace {
 
 	void BoostJump(Actor* actor, float power) {
 		float scale = get_visual_scale(actor);
-
+		return;
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
 			SetINIFloat("fJumpFallHeightMin", 600.0 + ( 600.0 * (scale - 1) * power));
@@ -285,8 +285,11 @@ namespace Gts {
 				if (actor->formID == 0x14) {
 					//log::info("SpeedMult: {}", power);
 				}
-
-				return power;
+				if (scale > 1.0)
+					return power;
+				} else {
+					return scale;
+				}
 			}
 			case ActorValue::kAttackDamageMult: {
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
