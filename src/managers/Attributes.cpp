@@ -146,7 +146,7 @@ namespace {
 		//log::info("SMT Bonus: {}", ActorAttributes->smt_run_speed);
 	}
 	// Todo unify the functions
-	void UpdateActors(Actor* actor) {
+	void UpdateActors(Actor* actor, bool& BlockMessage) {
 		if (!actor) {
 			return;
 		}
@@ -161,7 +161,7 @@ namespace {
 		if (timer.ShouldRunFrame()) { // Run once per 0.05 sec
 			ManagePerkBonuses(actor);
 			if (actor->formID == 0x14) {
-				Augmentation(actor, this->BlockMessage); // Manages SMT bonuses
+				Augmentation(actor, BlockMessage); // Manages SMT bonuses
 			}
 			if (!Runtime::HasPerk(actor, "StaggerImmunity") && size > 1.33) {
 				Runtime::AddPerk(actor, "StaggerImmunity");
@@ -185,7 +185,7 @@ namespace Gts {
 
 	void AttributeManager::Update() {
 		for (auto actor: find_actors()) {
-			UpdateActors(actor);
+			UpdateActors(actor, this->BlockMessage);
 		}
 	}
 
