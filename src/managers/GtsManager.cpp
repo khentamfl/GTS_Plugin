@@ -158,12 +158,10 @@ namespace {
 				float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
 				float defaultjump = 1.0 + (1.0 * (scale - 1) * power);
 				float swim = 36.0;
-				float waterheight = -680;
 				charCont->jumpHeight = defaultjump;
 				charCont->swimFloatHeight = swim;
 				charCont->scale = scale;
 				charCont->actorHeight = 1.82 * scale;
-				charCont->waterHeight = waterheight;
 				log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
 				log::info("RotMod: {}, RotModTime: {}, Scale: {}, SwimHeight: {}, ActorHeight: {}, WaterHeight: {}", charCont->rotMod, charCont->rotModTime, charCont->scale, charCont->swimFloatHeight, charCont->actorHeight, charCont->waterHeight);
 				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
