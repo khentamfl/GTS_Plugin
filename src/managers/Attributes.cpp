@@ -296,6 +296,15 @@ namespace Gts {
 					return scale;
 				}
 			}
+			case ActorValue::kJumpMult: {
+				float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
+				float defaultjump = 1.0 + (1.0 * (scale - 1) * power);
+				if (scale > 1.0) {
+					return defaultjump;
+				} else {
+					return scale;
+				}
+			}
 			default: {
 				return 1.0;
 			}
