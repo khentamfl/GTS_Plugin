@@ -98,19 +98,30 @@ namespace {
 		float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
 		float scale = get_visual_scale(actor);
 		float fJumpFallHeightMin = 600.0 + ((-scale + 1.0) * 300 * power);
-  		auto charCont = actor->GetCharController();
-  			if (charCont) {
-				float jumpbonus = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus);
-   				float currentHeight = actor->GetPosition()[2];
-    			float fallen = charCont->fallStartHeight - currentHeight;
-				charCont->jumpHeight = jumpbonus; // boost jump height
-    		if (fallen < fJumpFallHeightMin) {
-      			charCont->fallTime = 0.0;	
+		auto charCont = actor->GetCharController();
+		if (charCont) {
+			float jumpbonus = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus);
+			float currentHeight = actor->GetPosition()[2];
+			float fallen = charCont->fallStartHeight - currentHeight;
+			charCont->jumpHeight = jumpbonus; // boost jump height
+			if (fallen < fJumpFallHeightMin) {
+				charCont->fallTime = 0.0;
+			}
+			if (actor->formID == 0x14) {
+				log::info("power: ", power);
+				log::info("scale: ", scale);
+				log::info("fJumpFallHeightMin: {}", fJumpFallHeightMin);
+				log::info("jumpbonus: {}", jumpbonus);
+				log::info("currentHeight: {}", currentHeight);
+				log::info("fallen: {}", fallen);
+				log::info("charCont->jumpHeigh: ", charCont->jumpHeigh);
+				log::info("charCont->fallStartHeight: ", charCont->fallStartHeight);
+				log::info("charCont->fallTime: ", charCont->fallTime);
 			}
 		}
 	}
 
-	void Augmentation(Actor* Player, bool& BlockMessage) { // Manages SMT bonus speed 
+	void Augmentation(Actor* Player, bool& BlockMessage) { // Manages SMT bonus speed
 		// TODO: Calc on demand rather than poll
 		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
 		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
