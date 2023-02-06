@@ -15,6 +15,7 @@ namespace Gts {
 		float char_weight;
 		float shoe_weight;
 		float fall_start;
+		float last_set_fall_start;
 		bool is_teammate;
 	};
 
