@@ -114,7 +114,7 @@ namespace {
 				log::info("jumpbonus: {}", jumpbonus);
 				log::info("currentHeight: {}", currentHeight);
 				log::info("fallen: {}", fallen);
-				log::info("charCont->jumpHeigh: ", charCont->jumpHeigh);
+				log::info("charCont->jumpHeight: ", charCont->jumpHeight);
 				log::info("charCont->fallStartHeight: ", charCont->fallStartHeight);
 				log::info("charCont->fallTime: ", charCont->fallTime);
 			}
