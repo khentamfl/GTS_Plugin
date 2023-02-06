@@ -92,6 +92,7 @@ namespace {
 	}
 
 	void BoostJump(Actor* actor) {
+		// TODO: Write a real hook inside skyrims GETINI FLOAT
 		if (!actor) {
 			return;
 		}
