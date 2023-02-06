@@ -95,6 +95,10 @@ namespace {
 		if (!actor) {
 			return;
 		}
+		auto transient = Transient::GetSingleton().GetActorData(actor);
+		if (!transient) {
+			return;
+		}
 		float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
 		float scale = get_visual_scale(actor);
 		float fJumpFallHeightMin = 600.0 + ((-scale + 1.0) * 300 * power);
@@ -104,9 +108,22 @@ namespace {
 			float currentHeight = actor->GetPosition()[2];
 			float fallen = charCont->fallStartHeight - currentHeight;
 			charCont->jumpHeight = jumpbonus; // boost jump height
-			//if (fallen < fJumpFallHeightMin) {
-				charCont->fallTime = 0.0;
-			//}
+			if (fallen < transient->fallStart + fJumpFallHeightMin) {
+				charCont->fallStartHeight = actor->GetPosition()[2];
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+			
 			if (actor->formID == 0x14) {
 				log::info("power: {}", power);
 				log::info("scale: {}", scale);

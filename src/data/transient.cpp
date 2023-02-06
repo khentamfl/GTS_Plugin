@@ -54,6 +54,7 @@ namespace Gts {
 			}
 			float base_height_unit = bound->extents[2] * scale;
 			float base_height_meters = unit_to_meter(base_height_unit);
+			float fall_start = actor->GetPosition()[2];
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
@@ -70,6 +71,7 @@ namespace Gts {
 			}
 			result.shoe_weight = shoe_weight;
 			result.char_weight = actor->GetWeight();
+			result.fall_start = fall_start;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

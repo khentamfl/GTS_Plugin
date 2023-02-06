@@ -14,6 +14,7 @@ namespace Gts {
 		float base_walkspeedmult;
 		float char_weight;
 		float shoe_weight;
+		float fall_start;
 		bool is_teammate;
 	};
 
