@@ -108,7 +108,7 @@ namespace {
 			float currentHeight = actor->GetPosition()[2];
 			float fallen = charCont->fallStartHeight - currentHeight;
 			charCont->jumpHeight = jumpbonus; // boost jump height
-			if (fallen < transient->fallStart + fJumpFallHeightMin) {
+			if (fallen < transient->fall_start + fJumpFallHeightMin) {
 				charCont->fallStartHeight = actor->GetPosition()[2];
 			}
 
@@ -123,7 +123,7 @@ namespace {
 
 
 
-			
+
 			if (actor->formID == 0x14) {
 				log::info("power: {}", power);
 				log::info("scale: {}", scale);
