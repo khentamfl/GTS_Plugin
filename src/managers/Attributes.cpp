@@ -108,15 +108,15 @@ namespace {
 				charCont->fallTime = 0.0;
 			}
 			if (actor->formID == 0x14) {
-				log::info("power: ", power);
-				log::info("scale: ", scale);
+				log::info("power: {}", power);
+				log::info("scale: {}", scale);
 				log::info("fJumpFallHeightMin: {}", fJumpFallHeightMin);
 				log::info("jumpbonus: {}", jumpbonus);
 				log::info("currentHeight: {}", currentHeight);
 				log::info("fallen: {}", fallen);
-				log::info("charCont->jumpHeight: ", charCont->jumpHeight);
-				log::info("charCont->fallStartHeight: ", charCont->fallStartHeight);
-				log::info("charCont->fallTime: ", charCont->fallTime);
+				log::info("charCont->jumpHeight: {} ", charCont->jumpHeight);
+				log::info("charCont->fallStartHeight: {} ", charCont->fallStartHeight);
+				log::info("charCont->fallTime: {}", charCont->fallTime);
 			}
 		}
 	}
