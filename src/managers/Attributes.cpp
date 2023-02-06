@@ -104,9 +104,9 @@ namespace {
 			float currentHeight = actor->GetPosition()[2];
 			float fallen = charCont->fallStartHeight - currentHeight;
 			charCont->jumpHeight = jumpbonus; // boost jump height
-			if (fallen < fJumpFallHeightMin) {
+			//if (fallen < fJumpFallHeightMin) {
 				charCont->fallTime = 0.0;
-			}
+			//}
 			if (actor->formID == 0x14) {
 				log::info("power: {}", power);
 				log::info("scale: {}", scale);
