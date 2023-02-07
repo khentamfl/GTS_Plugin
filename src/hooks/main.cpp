@@ -18,6 +18,9 @@ namespace Hooks
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
 
 		if (REL::Module::IsSE()) {
+			auto offsetHelper = REL::Offset2ID();
+			log::info("OFFSET 01: {}", offsetHelper(0x14067bfa0));
+			log::info("OFFSET 02: {}", offsetHelper(0x14067C659));
 
 			REL::Relocation<uintptr_t> unknown_hook(REL::Offset(0x14067C659));
 			logger::info("Applying experimental hook: {:X}", unknown_hook.address());
