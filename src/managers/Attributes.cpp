@@ -101,15 +101,15 @@ namespace {
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
 			SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
-			log::info("Jump Height Min: {}", 76.0 + (76.0 * power));
-			log::info("Jump Fall Height Min: {}", 600.0 + (600.0 * power));
-			log::info("Jump Power: {}", power);
+			//log::info("Jump Height Min: {}", 76.0 + (76.0 * power));
+			//log::info("Jump Fall Height Min: {}", 600.0 + (600.0 * power));
+			//log::info("Jump Power: {}", power);
 		} else {
 			SetINIFloat("fJumpHeightMin", 76.0 * power);
 			SetINIFloat("fJumpFallHeightMin", 600.0 * power);
-			log::info("Jump Height Min Else: {}", 76.0 * power);
-			log::info("Jump Fall Height Min Else: {}", 600.0 * power);
-			log::info("Jump Power: {}", power);
+			//log::info("Jump Height Min Else: {}", 76.0 * power);
+			//log::info("Jump Fall Height Min Else: {}", 600.0 * power);
+			//log::info("Jump Power: {}", power);
 		}
 	}
 
