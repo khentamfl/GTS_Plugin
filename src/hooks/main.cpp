@@ -24,12 +24,12 @@ namespace Hooks
 			//log::info("OFFSET 02: {}", offsetHelper(0x14067C659));
 
 			//REL::Relocation<uintptr_t> unknown_hook(REL::Offset(0x14067C659));
-			REL::Relocation<uintptr_t> unknown_hook{REL::RelocationID(38831, 38831)};
-			REL::Relocation<uintptr_t> unknown_hook2{REL::RelocationID(36343, 36343)};
+			REL::Relocation<uintptr_t> unknown_hook{REL::RelocationID(38831, 38831)};  // Test, please correct/fix
+			REL::Relocation<uintptr_t> unknown_hook2{REL::RelocationID(36343, 36343)}; // Test, please correct/fix
 			logger::info("Applying experimental hook: {:X}", unknown_hook.address());
 			logger::info("Applying experimental hook2: {:X}", unknown_hook2.address());
-			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address() + RELOCATION_OFFSET(0x6B9,0x6B9), UnknownMaybeScale);
-			_UnknownMaybeScale2 = trampoline.write_call<5>(unknown_hook2.address() + RELOCATION_OFFSET(0x6B9,0x6B9), UnknownMaybeScale2);
+			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address() + RELOCATION_OFFSET(0x6B9,0x6B9), UnknownMaybeScale); // Unsure if it is correct
+			_UnknownMaybeScale2 = trampoline.write_call<5>(unknown_hook2.address() + RELOCATION_OFFSET(0x6B9,0x6B9), UnknownMaybeScale2); // Unsure if it is correct
 			logger::info("  - Applied experimental hook");
 		}
 	}
@@ -70,6 +70,7 @@ namespace Hooks
 	}
 
 	void Hook_MainUpdate::UnknownMaybeScale(UnknownMaybeScaleObject* unknown_a, float a1) {
+		// Prints nothing at all.
 		log::info("UnknownMaybeScale");
 		log::info("unknown_a: {}", GetRawName(unknown_a));
 		log::info("unknown_b: {}", a1);
@@ -78,7 +79,8 @@ namespace Hooks
 		// _UnknownMaybeScale(unknown_a, a1, a2);
 	}
 	void Hook_MainUpdate::UnknownMaybeScale2(Actor* actor, float scale) {
-		log::info("UnknownMaybeScale2");
+		log::info("UnknownMaybeScale2"); //<------ Prints it about 5 times, then crashes on save load
+		//// ^ isn't printing anything below that. Tried both UnknownMaybeScaleObject* unknown_a and Actor* actor.
 		log::info("Actor: {}", actor->GetDisplayFullName());
 		log::info("Scale: {}", scale);
 		//log::info("scale: {}", a2);
