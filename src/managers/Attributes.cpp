@@ -151,13 +151,18 @@ namespace {
 			return;
 		}
 		static Timer timer = Timer(0.05);
+		static Timer jumptimer = Timer (0.20);
 		float size = get_visual_scale(actor);
 
 		ManagePerkBonuses(actor);
-		BoostJump(actor);
+
+		if (jumptimer.ShouldRunFrame()) {
+			BoostJump(actor);
+		}
 
 		if (timer.ShouldRunFrame()) { // Run once per 0.05 sec
 			ManagePerkBonuses(actor);
+			
 			if (actor->formID == 0x14) {
 				Augmentation(actor, BlockMessage); // Manages SMT bonuses
 			}
@@ -308,7 +313,7 @@ namespace Gts {
 		}
 		auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (transient) {
-			float finalValue = originalValue * bonus + (bonus....)
+			float finalValue = originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
 			float change = finalValue - originalValue;
 			if (av == ActorValue::kHealth) {
 				transient.health_boost = change;
