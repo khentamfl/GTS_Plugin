@@ -77,10 +77,10 @@ namespace Hooks
 
 		// _UnknownMaybeScale(unknown_a, a1, a2);
 	}
-	void Hook_MainUpdate::UnknownMaybeScale2(UnknownMaybeScaleObject* unknown_a, float a1) {
-		log::info("UnknownMaybeScale");
-		log::info("unknown_a: {}", GetRawName(unknown_a));
-		log::info("unknown_b: {}", a1);
+	void Hook_MainUpdate::UnknownMaybeScale2(Actor* actor, float scale) {
+		log::info("UnknownMaybeScale2");
+		log::info("Actor: {}", actor->GetDisplayFullName());
+		log::info("Scale: {}", scale);
 		//log::info("scale: {}", a2);
 
 		// _UnknownMaybeScale(unknown_a, a1, a2);
