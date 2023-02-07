@@ -19,7 +19,7 @@ namespace Hooks
 
 		if (REL::Module::IsSE()) {
 
-			REL::Offset unknown_hook(0x14067C659);
+			REL::Relocation<uintptr_t> unknown_hook(REL::Offset(0x14067C659));
 			logger::info("Applying experimental hook: {:X}", unknown_hook.address());
 			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address(), UnknownMaybeScale);
 			logger::info("  - Applied experimental hook");
