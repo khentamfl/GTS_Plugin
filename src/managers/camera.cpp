@@ -178,8 +178,7 @@ namespace Gts {
 		}
 		if (Runtime::GetBool("ConversationCameraComp")) {
 			auto player = PlayerCharacter::GetSingleton();
-			Actor* target = static_cast<Actor*>(player->dialogueItemTarget.get().get());
-			if (target) {
+			if (player->dialogueTarget) {
 				return nullptr; //Do nothing 
 			}
 		}
