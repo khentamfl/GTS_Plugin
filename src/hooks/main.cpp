@@ -18,8 +18,11 @@ namespace Hooks
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
 
 		if (REL::Module::IsSE()) {
-			logger::info("Applying experimental hook");
-			_UnknownMaybeScale = trampoline.write_call<5>(0x14067C659, UnknownMaybeScale);
+
+			REL::Relocation<uintptr_t> unknown_hook{0x14067C659};
+			logger::info("Applying experimental hook: {}", unknown_hook.address());
+			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address(), UnknownMaybeScale);
+			logger::info("  - Applied experimental hook: {}");
 		}
 	}
 
