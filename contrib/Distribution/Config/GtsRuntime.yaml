@@ -233,9 +233,9 @@ globals:
   GtsSkillRatio: "GTS.esp|142202"
   GtsSkillProgress: "GTS.esp|142201"
 
-  PreciseDamage: "GTS.esp|4F4F3A"
+  ConversationCameraComp: "GTS.esp|50933F"
 
-  ConversationCameraComp: "GTS.esp|XXXXXX"
+  PreciseDamage: "GTS.esp|4F4F3A"
 
 quests:
   MainQuest: "GTS.esp|005E3A"

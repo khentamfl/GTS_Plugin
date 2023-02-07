@@ -463,7 +463,7 @@ void GtsManager::Update() {
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-			log::info("{}, Sneak Power: {}",actor->GetDisplayFullName(), GetAV(actor, ActorValue::kSneakingPowerModifier));
+			log::info("{}, Sneak Power: {}, Noise Mult: {}",actor->GetDisplayFullName(), GetAV(actor, ActorValue::kSneakingPowerModifier), GetAV(actor, ActorValue::kMovementNoiseMult));
 			accuratedamage.DoAccurateCollision(actor);
 			ClothManager::GetSingleton().CheckRip();
 		}
