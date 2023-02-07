@@ -312,7 +312,7 @@ namespace Gts {
 			}
 		}
 		auto transient = Transient::GetSingleton().GetActorData(actor);
-		if (transient && actor->formID == 0x14) {
+		if (transient != nullptr && actor->formID == 0x14) {
 			float finalValue = originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
 			float change = finalValue - originalValue;
 			if (av == ActorValue::kHealth) {
