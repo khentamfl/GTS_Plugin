@@ -16,6 +16,11 @@ namespace Hooks
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(35551, 36544)};
 		logger::info("Gts applying Main Update Hook at {}", hook.address());
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
+
+		if (REL::Module::IsSE()) {
+			logger::info("Applying experimental hook");
+			_UnknownMaybeScale = trampoline.write_call<5>(0x14067C659, UnknownMaybeScale);
+		}
 	}
 
 	void Hook_MainUpdate::Update(RE::Main* a_this, float a2)
@@ -51,5 +56,14 @@ namespace Hooks
 				EventDispatcher::ReportProfilers();
 			}
 		}
+	}
+
+	void Hook_MainUpdate::UnknownMaybeScale(void* unknown_a, float scale, void* unknown_b) {
+		log::info("UnknownMaybeScale");
+		log::info("unknown_a: {}", GetRawName(unknown_a));
+		log::info("unknown_b: {}", GetRawName(unknown_b));
+		log::info("scale: {}", scale);
+
+		_UnknownMaybeScale(unknown_a, scale, unknown_b);
 	}
 }
