@@ -178,7 +178,7 @@ namespace Gts {
 		}
 		if (Runtime::GetBool("ConversationCameraComp")) {
 			auto player = PlayerCharacter::GetSingleton();
-			if (player->dialogueTarget) {
+			if (player->dialogueItemTarget) {
 				return nullptr; //Do nothing 
 			}
 		}
