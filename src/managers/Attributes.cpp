@@ -93,17 +93,23 @@ namespace {
 
 	void BoostJump(Actor* actor) {
 		// TODO: Write a real hook inside skyrims GETINI FLOAT
-		if (actor->formID !=0x14) {
+		if (actor->formID != 0x14) {
 			return;
 		}
 		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus);
 		float scale = get_visual_scale(actor);
 		if (fabs(power) > 1e-5) { // != 0.0
-			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
-			SetINIFloat("fJumpFallHeightMin", 600.0 + ( 600.0 * (scale - 1) * power));
+			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
+			SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
+			log::info("Jump Height Min: {}", 76.0 + (76.0 * power));
+			log::info("Jump Fall Height Min: {}", 600.0 + (600.0 * power));
+			log::info("Jump Power: {}", power);
 		} else {
-			SetINIFloat("fJumpHeightMin", 76.0);
-			SetINIFloat("fJumpFallHeightMin", 600.0 + ((-scale + 1.0) * 300 * power));
+			SetINIFloat("fJumpHeightMin", 76.0 * power);
+			SetINIFloat("fJumpFallHeightMin", 600.0 * power);
+			log::info("Jump Height Min Else: {}", 76.0 * power);
+			log::info("Jump Fall Height Min Else: {}", 600.0 * power);
+			log::info("Jump Power: {}", power);
 		}
 	}
 

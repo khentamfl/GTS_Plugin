@@ -235,6 +235,8 @@ globals:
 
   PreciseDamage: "GTS.esp|4F4F3A"
 
+  ConversationCameraComp: "GTS.esp|XXXXXX"
+
 quests:
   MainQuest: "GTS.esp|005E3A"
   ManagerQuest: "GTS.esp|000D62"
