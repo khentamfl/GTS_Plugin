@@ -304,18 +304,17 @@ namespace Gts {
 			case ActorValue::kHealth: {
 				float scale = get_visual_scale(actor);
 				auto transient = Transient::GetSingleton().GetActorData(actor);
-				if (transient != nullptr && actor->formID == 0x14) {
-					float finalValue = originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
-					float change = finalValue - originalValue;
-					transient->health_boost = change;
-				}
-
 				if (scale > 1.0) {
 					bonus = attributes.GetAttributeBonus(actor, av);
 				} else {
 					// Linearly decrease such that:
 					//   at zero scale health=0.0
 					bonus = scale;
+				}
+				if (actor->formID == 0x14 && transient != nullptr) {
+					float finalValue = originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
+					float change = finalValue - originalValue;
+					transient->health_boost = change;
 				}
 				break;
 			}
