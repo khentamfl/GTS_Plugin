@@ -11,6 +11,7 @@ using namespace Gts;
 
 namespace Hooks
 {
+
 	void Hook_MainUpdate::Hook(Trampoline& trampoline)
 	{
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(35551, 36544)};
@@ -18,7 +19,7 @@ namespace Hooks
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
 
 		if (REL::Module::IsSE()) {
-			auto offsetHelper = REL::Offset2ID();
+			auto offsetHelper = REL::IDDatabase::Offset2ID();
 			log::info("OFFSET 01: {}", offsetHelper(0x14067bfa0));
 			log::info("OFFSET 02: {}", offsetHelper(0x14067C659));
 
@@ -64,12 +65,12 @@ namespace Hooks
 		}
 	}
 
-	void Hook_MainUpdate::UnknownMaybeScale(void* unknown_a, float scale, void* unknown_b) {
+	void Hook_MainUpdate::UnknownMaybeScaleUnknownMaybeScale(UnknownMaybeScaleObject* unknown_a, float a1, float a2) {
 		log::info("UnknownMaybeScale");
 		log::info("unknown_a: {}", GetRawName(unknown_a));
-		log::info("unknown_b: {}", GetRawName(unknown_b));
-		log::info("scale: {}", scale);
+		log::info("unknown_b: {}", a1);
+		log::info("scale: {}", a2);
 
-		// _UnknownMaybeScale(unknown_a, scale, unknown_b);
+		// _UnknownMaybeScale(unknown_a, a1, a2);
 	}
 }

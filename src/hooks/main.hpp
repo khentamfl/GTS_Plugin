@@ -16,7 +16,8 @@ namespace Hooks
 			static void Update(RE::Main* a_this, float a2);
 			static inline REL::Relocation<decltype(Update)> _Update;
 
-			static void UnknownMaybeScale(void* unknown_a, float a2, void* unknown_b);
+			class UnknownMaybeScaleObject;
+			static void UnknownMaybeScale(UnknownMaybeScaleObject* unknown_a, float a1, float a2);
 			static inline REL::Relocation<decltype(UnknownMaybeScale)> _UnknownMaybeScale;
 	};
 }
