@@ -62,10 +62,10 @@ namespace {
 			return 0.0;
 		}
 		if (value == 1.0) { //get hp
-			return transient.health_boost;
+			return transient->health_boost;
 		}
 		if (value == 2.0) { // get carry weight
-			return transient.carryweight_boost; 
+			return transient->carryweight_boost; 
 		}
 	}
 
