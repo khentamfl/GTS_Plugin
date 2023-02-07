@@ -177,7 +177,7 @@ namespace Gts {
 			return nullptr;
 		}
 		if (Runtime::GetBool("ConversationCameraComp")) {
-			Actor* target = PlayerCharacter::GetSingleton()->dialogueItemTarget.get();
+			Actor* target = PlayerCharacter::GetSingleton()->dialogueItemTarget.get().get();
 			if (target) {
 				return nullptr; //Do nothing 
 			}
