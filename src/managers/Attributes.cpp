@@ -284,6 +284,10 @@ namespace Gts {
 			}
 			case ActorValue::kAttackDamageMult: {
 				bonus = attributes.GetAttributeBonus(actor, av);
+				auto transient = Transient::GetSingleton().GetActorData(actor);
+				if (transient) {
+					transient->carryweight_boost = (originalValue * bonus) - originalValue;
+				}
 				break;
 			}
 		}
@@ -298,8 +302,13 @@ namespace Gts {
 		auto& attributes = AttributeManager::GetSingleton();
 		switch (av) {
 			case ActorValue::kHealth: {
-
 				float scale = get_visual_scale(actor);
+				auto transient = Transient::GetSingleton().GetActorData(actor);
+				if (transient != nullptr && actor->formID == 0x14) {
+					float finalValue = originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
+					float change = finalValue - originalValue;
+					transient->health_boost = change;
+				}
 
 				if (scale > 1.0) {
 					bonus = attributes.GetAttributeBonus(actor, av);
@@ -311,17 +320,7 @@ namespace Gts {
 				break;
 			}
 		}
-		auto transient = Transient::GetSingleton().GetActorData(actor);
-		if (transient != nullptr && actor->formID == 0x14) {
-			float finalValue = originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
-			float change = finalValue - originalValue;
-			if (av == ActorValue::kHealth) {
-				transient->health_boost = change;
-			} else if (av == ActorValue::kCarryWeight) {
-				transient->carryweight_boost = change;
-			}
-		}
-
+		
 		return originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
 	}
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
