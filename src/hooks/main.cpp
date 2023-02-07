@@ -14,15 +14,15 @@ namespace Hooks
 	void Hook_MainUpdate::Hook(Trampoline& trampoline)
 	{
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(35551, 36544)};
-		logger::info("Gts applying Main Update Hook at {}", hook.address());
+		logger::info("Gts applying Main Update Hook at {:X}", hook.address());
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
 
 		if (REL::Module::IsSE()) {
 
-			REL::Relocation<uintptr_t> unknown_hook{0x14067C659};
-			logger::info("Applying experimental hook: {}", unknown_hook.address());
+			REL::Offset unknown_hook(0x14067C659);
+			logger::info("Applying experimental hook: {:X}", unknown_hook.address());
 			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address(), UnknownMaybeScale);
-			logger::info("  - Applied experimental hook: {}");
+			logger::info("  - Applied experimental hook");
 		}
 	}
 
