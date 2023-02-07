@@ -67,6 +67,7 @@ namespace {
 		if (value == 2.0) { // get carry weight
 			return transient->carryweight_boost; 
 		}
+		return 0.0;
 	}
 
 	bool ModSizeVulnerability(StaticFunctionTag*, Actor* actor, float amt) {
