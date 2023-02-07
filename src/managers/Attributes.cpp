@@ -102,7 +102,10 @@ namespace {
 		}
 		float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
 		float scale = get_visual_scale(actor);
-		float fJumpFallHeightMin = 600.0 * (scale * power);
+		float fJumpFallHeightMin = 600.0 + ((600 * scale * power) - (600 * power));
+		if (scale <1) {
+			fJumpFallHeightMin = (600 * scale);
+		}
 		auto charCont = actor->GetCharController();
 		if (charCont) {
 			if (fabs(transient->last_set_fall_start - charCont->fallStartHeight) < 1e-3) {
