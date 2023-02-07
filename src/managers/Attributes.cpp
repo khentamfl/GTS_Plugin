@@ -312,13 +312,13 @@ namespace Gts {
 			}
 		}
 		auto transient = Transient::GetSingleton().GetActorData(actor);
-		if (transient) {
+		if (transient && actor->formID == 0x14) {
 			float finalValue = originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
 			float change = finalValue - originalValue;
 			if (av == ActorValue::kHealth) {
-				transient.health_boost = change;
+				transient->health_boost = change;
 			} else if (av == ActorValue::kCarryWeight) {
-				transient.carryweight_boost = change;
+				transient->carryweight_boost = change;
 			}
 		}
 

@@ -36,12 +36,10 @@ namespace {
 			return 1.0;
 		}
 		if (value == 1.0) {
-			//return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kHealth); // Health
-			return transient.health_boost;
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kHealth); // Health
 		}
 		if (value == 2.0) {
-			//return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kCarryWeight); // Carry Weight
-			return transient.carryweight_boost;
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kCarryWeight); // Carry Weight
 		}
 		if (value == 3.0) {
 			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kSpeedMult) - 1.0; // Speed Multi
@@ -53,6 +51,22 @@ namespace {
 			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) - 1.0;
 		}
 		return 1.0;
+	}
+
+	float GetFlatAttributeBonus(StaticFunctionTag*, Actor* actor, float value) {
+		auto transient = Transient::GetSingleton().GetActorData(actor);
+		if (!actor) {
+			return 0.0;
+		}
+		if (!transient) {
+			return 0.0;
+		}
+		if (value == 1.0) { //get hp
+			return transient.health_boost;
+		}
+		if (value == 2.0) { // get carry weight
+			return transient.carryweight_boost; 
+		}
 	}
 
 	bool ModSizeVulnerability(StaticFunctionTag*, Actor* actor, float amt) {
@@ -207,6 +221,7 @@ namespace Gts {
 		vm->RegisterFunction("ModSizeVulnerability", PapyrusClass, ModSizeVulnerability);
 		vm->RegisterFunction("GetSizeVulnerability", PapyrusClass, GetSizeVulnerability);
 		vm->RegisterFunction("GetAttributeBonus", PapyrusClass, GetAttributeBonus);
+		vm->RegisterFunction("GetFlatAttributeBonus", PapyrusClass, GetFlatAttributeBonus);
 		vm->RegisterFunction("GetHitGrowth", PapyrusClass, GetHitGrowth);
 		vm->RegisterFunction("GetPreciseDamage", PapyrusClass, GetPreciseDamage);
 		vm->RegisterFunction("SetHitGrowth", PapyrusClass, SetHitGrowth);

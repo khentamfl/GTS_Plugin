@@ -21,13 +21,17 @@ Float function GetSizeVulnerability(Actor target) global native
 ; apply increased size-related damage debuff 
 Bool function ModSizeVulnerability(Actor target, Float amt) global native
 
-;Reports bonus attributes
+;Reports bonus attributes in %
 ; 1 = health
 ; 2 = carry weight
 ; 3 = speed
 ; 4 = damage
 Float function GetAttributeBonus(Actor target, float value) global native
 
+; Reports bonus attribute in flat numbers
+; 1 = health
+; 2 = carry weight
+Float function GetFlatAttributeBonus(Actor target, float value) global native
 ; Check if Hit Growth is allowed
 
 Float function GetHitGrowth(Actor target) global native
