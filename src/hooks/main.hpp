@@ -18,6 +18,7 @@ namespace Hooks
 
 			class UnknownMaybeScaleObject;
 			static void UnknownMaybeScale(UnknownMaybeScaleObject* unknown_a, float a1);
+			static void UnknownMaybeScale2(UnknownMaybeScaleObject* unknown_a, float a1);
 			static inline REL::Relocation<decltype(UnknownMaybeScale)> _UnknownMaybeScale;
 	};
 }

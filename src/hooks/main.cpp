@@ -25,8 +25,11 @@ namespace Hooks
 
 			//REL::Relocation<uintptr_t> unknown_hook(REL::Offset(0x14067C659));
 			REL::Relocation<uintptr_t> unknown_hook{REL::RelocationID(38831, 38831)};
+			REL::Relocation<uintptr_t> unknown_hook2{REL::RelocationID(36343, 36343)};
 			logger::info("Applying experimental hook: {:X}", unknown_hook.address());
+			logger::info("Applying experimental hook2: {:X}", unknown_hook2.address());
 			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address() + RELOCATION_OFFSET(0x6B9,0x6B9), UnknownMaybeScale);
+			_UnknownMaybeScale2 = trampoline.write_call<5>(unknown_hook2.address() + RELOCATION_OFFSET(0x6B9,0x6B9), UnknownMaybeScale2);
 			logger::info("  - Applied experimental hook");
 		}
 	}
@@ -67,6 +70,14 @@ namespace Hooks
 	}
 
 	void Hook_MainUpdate::UnknownMaybeScale(UnknownMaybeScaleObject* unknown_a, float a1) {
+		log::info("UnknownMaybeScale");
+		log::info("unknown_a: {}", GetRawName(unknown_a));
+		log::info("unknown_b: {}", a1);
+		//log::info("scale: {}", a2);
+
+		// _UnknownMaybeScale(unknown_a, a1, a2);
+	}
+	void Hook_MainUpdate::UnknownMaybeScale2(UnknownMaybeScaleObject* unknown_a, float a1) {
 		log::info("UnknownMaybeScale");
 		log::info("unknown_a: {}", GetRawName(unknown_a));
 		log::info("unknown_b: {}", a1);
