@@ -176,7 +176,7 @@ namespace Gts {
 		if (!playerCamera) {
 			return nullptr;
 		}
-		if (Runtime::GetBool("ConversationCameraComp") && PlayerCharacter::GetSingleton()->dialogueItemTarget != nullptr) {
+		if (Runtime::GetBool("ConversationCameraComp") && !PlayerCharacter::GetSingleton()->dialogueItemTarget == nullptr) {
 			return nullptr; //Do nothing 
 		}
 		auto playerCameraState = playerCamera->currentState;
