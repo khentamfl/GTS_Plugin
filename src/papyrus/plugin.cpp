@@ -36,10 +36,12 @@ namespace {
 			return 1.0;
 		}
 		if (value == 1.0) {
-			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kHealth); // Health
+			//return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kHealth); // Health
+			return transient.health_boost;
 		}
 		if (value == 2.0) {
-			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kCarryWeight); // Carry Weight
+			//return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kCarryWeight); // Carry Weight
+			return transient.carryweight_boost;
 		}
 		if (value == 3.0) {
 			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kSpeedMult) - 1.0; // Speed Multi

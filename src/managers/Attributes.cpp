@@ -93,46 +93,17 @@ namespace {
 
 	void BoostJump(Actor* actor) {
 		// TODO: Write a real hook inside skyrims GETINI FLOAT
-		if (!actor) {
+		if (actor->formID !=0x14) {
 			return;
 		}
-		auto transient = Transient::GetSingleton().GetActorData(actor);
-		if (!transient) {
-			return;
-		}
-		float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
+		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus);
 		float scale = get_visual_scale(actor);
-		float fJumpFallHeightMin = 600.0 + ((600 * scale * power) - (600 * power));
-		if (scale <1) {
-			fJumpFallHeightMin = (600 * scale);
-		}
-		auto charCont = actor->GetCharController();
-		if (charCont) {
-			if (fabs(transient->last_set_fall_start - charCont->fallStartHeight) < 1e-3) {
-				// Skyrim altered the value
-				transient->last_set_fall_start = charCont->fallStartHeight;
-				transient->fall_start = charCont->fallStartHeight; // Cache real value
-			}
-			float jumpbonus = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus);
-			float currentHeight = actor->GetPosition()[2];
-			float fallen = transient->fall_start - currentHeight; // Get actuall falled height by quering the cache
-			charCont->jumpHeight = jumpbonus; // boost jump height
-			if (fallen < fJumpFallHeightMin) {
-				charCont->fallStartHeight = actor->GetPosition()[2]; // Reset falling
-				transient->last_set_fall_start = charCont->fallStartHeight; // Track our changes so we know when skyrim edits it
-			}
-
-			if (actor->formID == 0x14) {
-				log::info("power: {}", power);
-				log::info("scale: {}", scale);
-				log::info("fJumpFallHeightMin: {}", fJumpFallHeightMin);
-				log::info("jumpbonus: {}", jumpbonus);
-				log::info("currentHeight: {}", currentHeight);
-				log::info("fallen: {}", fallen);
-				log::info("charCont->jumpHeight: {} ", charCont->jumpHeight);
-				log::info("charCont->fallStartHeight: {} ", charCont->fallStartHeight);
-				log::info("charCont->fallTime: {}", charCont->fallTime);
-			}
+		if (fabs(power) > 1e-5) { // != 0.0
+			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
+			SetINIFloat("fJumpFallHeightMin", 600.0 + ( 600.0 * (scale - 1) * power));
+		} else {
+			SetINIFloat("fJumpHeightMin", 76.0);
+			SetINIFloat("fJumpFallHeightMin", 600.0 + ((-scale + 1.0) * 300 * power));
 		}
 	}
 
@@ -333,6 +304,16 @@ namespace Gts {
 					bonus = scale;
 				}
 				break;
+			}
+		}
+		auto transient = Transient::GetSingleton().GetActorData(actor);
+		if (transient) {
+			float finalValue = originalValue * bonus + (bonus....)
+			float change = finalValue - originalValue;
+			if (av == ActorValue::kHealth) {
+				transient.health_boost = change;
+			} else if (av == ActorValue::kCarryWeight) {
+				transient.carryweight_boost = change;
 			}
 		}
 
