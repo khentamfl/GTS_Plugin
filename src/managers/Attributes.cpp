@@ -280,14 +280,14 @@ namespace Gts {
 		switch (av) {
 			case ActorValue::kCarryWeight: {
 				bonus = attributes.GetAttributeBonus(actor, av);
+				auto transient = Transient::GetSingleton().GetActorData(actor);
+				if (transient != nullptr) {
+					transient->carryweight_boost = (originalValue * bonus) - originalValue;
+				}
 				break;
 			}
 			case ActorValue::kAttackDamageMult: {
 				bonus = attributes.GetAttributeBonus(actor, av);
-				auto transient = Transient::GetSingleton().GetActorData(actor);
-				if (transient) {
-					transient->carryweight_boost = (originalValue * bonus) - originalValue;
-				}
 				break;
 			}
 		}
