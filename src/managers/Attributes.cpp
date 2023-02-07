@@ -105,10 +105,10 @@ namespace {
 		float fJumpFallHeightMin = 600.0 + ((-scale + 1.0) * 300 * power);
 		auto charCont = actor->GetCharController();
 		if (charCont) {
-			if (fabs(transient->last_set_fall_start - charCont->fall_start) < 1e-3) {
+			if (fabs(transient->last_set_fall_start - charCont->fallStartHeight) < 1e-3) {
 				// Skyrim altered the value
-				transient->last_set_fall_start = charCont->fall_start;
-				transient->fall_start = charCont->fall_start; // Cache real value
+				transient->last_set_fall_start = charCont->fallStartHeight;
+				transient->fall_start = charCont->fallStartHeight; // Cache real value
 			}
 			float jumpbonus = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus);
 			float currentHeight = actor->GetPosition()[2];
@@ -118,18 +118,6 @@ namespace {
 				charCont->fallStartHeight = actor->GetPosition()[2]; // Reset falling
 				transient->last_set_fall_start = charCont->fallStartHeight; // Track our changes so we know when skyrim edits it
 			}
-
-
-
-
-
-
-
-
-
-
-
-
 
 			if (actor->formID == 0x14) {
 				log::info("power: {}", power);
