@@ -19,11 +19,11 @@ namespace Hooks
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
 
 		if (REL::Module::IsSE()) {
-			auto offsetHelper = REL::IDDatabase::Offset2ID();
-			log::info("Dumping OFFSETS");
-			for (auto& offsetData: offsetHelper) {
-				log::info("{}:{:X}:{}", offsetData.id, offsetData.offset, offsetData.offset);
-			}
+			// auto offsetHelper = REL::IDDatabase::Offset2ID();
+			// log::info("Dumping OFFSETS");
+			// for (auto& offsetData: offsetHelper) {
+			// 	log::info("{}:{:X}:{}", offsetData.id, offsetData.offset, offsetData.offset);
+			// }
 
 			REL::Relocation<uintptr_t*> unknown_hook(REL::ID(38871), REL::Offset(0x3d4));
 			// REL::Relocation<uintptr_t> unknown_hook(REL::Offset(0x14067e824));
