@@ -71,7 +71,11 @@ namespace Hooks
 	void Hook_MainUpdate::UnknownMaybeScale(UnknownMaybeScaleObject* unknown_a, float a1) {
 		// Prints nothing at all.
 		log::info("UnknownMaybeScale");
-		log::info("unknown_a: {}", GetRawName(unknown_a));
+		if (unknown_a) {
+			log::info("unknown_a: {}", GetRawName(unknown_a));
+		} else {
+			log::info("unknown_a: Nullprt");
+		}
 		log::info("unknown_b: {}", a1);
 		//log::info("scale: {}", a2);
 
