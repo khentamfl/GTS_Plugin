@@ -20,7 +20,7 @@ namespace Gts {
 		}
 
 
-		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 200;
+		float SkillMult = 1.0 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) / 200;
 		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00005;
 
 		float bonus = 1.0;
@@ -37,7 +37,7 @@ namespace Gts {
 			power *= 1.33;
 		} else if (base_spell == Runtime::GetMagicEffect("GrowthSpellExpert")) {
 			power *= 1.75;
-			caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
+			caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 
 
