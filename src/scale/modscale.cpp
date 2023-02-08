@@ -14,7 +14,7 @@ namespace Gts {
 		// Calling too fast also kills frames
 		float refScale = static_cast<float>(actor->GetReferenceRuntimeData().refScale) / 100.0F;
 		if (fabs(refScale - target_scale) > 1e-5) {
-			actor->refScale = static_cast<std::uint16_t>(target_scale * 100.0F);
+			actor->GetReferenceRuntimeData().refScale = static_cast<std::uint16_t>(target_scale * 100.0F);
 			actor->DoReset3D(false);
 		}
 	}
