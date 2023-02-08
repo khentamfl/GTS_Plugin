@@ -18,7 +18,7 @@ namespace Hooks
 		logger::info("Gts applying Main Update Hook at {:X}", hook.address());
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
 
-		if (REL::Module::IsSE()) {
+		/*if (REL::Module::IsSE()) {
 			// auto offsetHelper = REL::IDDatabase::Offset2ID();
 			// log::info("Dumping OFFSETS");
 			// for (auto& offsetData: offsetHelper) {
@@ -30,7 +30,7 @@ namespace Hooks
 			logger::info("Applying experimental hook: {:X}:{:X}", unknown_hook.address(), *unknown_hook.get());
 			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address(), UnknownMaybeScale);
 			logger::info("  - Applied experimental hook");
-		}
+		}*/
 	}
 
 	void Hook_MainUpdate::Update(RE::Main* a_this, float a2)
