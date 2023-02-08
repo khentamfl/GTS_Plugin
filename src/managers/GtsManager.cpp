@@ -444,15 +444,13 @@ std::string GtsManager::DebugName() {
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 
-	/*auto ai = PC->currentProcess;
+	auto ai = PC->currentProcess;
 	   if (ai) {
 	        auto highAi = ai->middleHigh;
 	        if (highAi) {
-				highAi->rotationSpeed.x = get_visual_scale(PC);
-				highAi->rotationSpeed.y = get_visual_scale(PC);
-	                log::info("rotationSpeed: {}", Vector2Str(highAi->rotationSpeed));
+	            log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
 	        }
-	   }*/
+	   }
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
