@@ -23,9 +23,9 @@ namespace Hooks
 		//_Move = Vtbl.write_vfunc(REL::Relocate(0x0C8, 0x0C8, 0x0CA), Move);
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_PlayerCharacter[5] };
-		//_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
-		//_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
-		//_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
+		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
+		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
+		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 	}
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
@@ -61,7 +61,7 @@ namespace Hooks
 
 	float Hook_PlayerCharacter::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
 		float value = _GetActorValue(a_owner, a_akValue);
-		if (Plugin::InGame()) {
+		if (Plugin::Ready()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
 				value = AttributeManager::AlterGetAv(a_this, a_akValue, value);
@@ -72,7 +72,7 @@ namespace Hooks
 
 	float Hook_PlayerCharacter::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health and Sneak 
 		float value = _GetBaseActorValue(a_owner, a_akValue);
-		if (Plugin::InGame()) {
+		if (Plugin::Ready()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {
@@ -84,7 +84,7 @@ namespace Hooks
 
 	float Hook_PlayerCharacter::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
 		float value = _GetPermanentActorValue(a_owner, a_akValue);
-		if (Plugin::InGame()) {
+		if (Plugin::Ready()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
 				value = AttributeManager::AlterGetPermenantAv(a_this, a_akValue, value);
