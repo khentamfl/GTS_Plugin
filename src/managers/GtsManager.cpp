@@ -446,7 +446,7 @@ void GtsManager::Update() {
 
 	auto ai = PC->currentProcess;
 	   if (ai) {
-	        auto highAi = ai->middleHigh;
+	        auto highAi = ai->High;
 	        if (highAi) {
 	            log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
 				log::info("Player Melee Damage: {}, Unarmed Damage: {}", GetAV(PC, ActorValue::kMeleeDamage), GetAV(PC, ActorValue::kUnarmedDamage));
