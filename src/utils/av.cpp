@@ -31,26 +31,26 @@ namespace Gts {
 	}
 
 	float GetPercentageAV(Actor* actor, ActorValue av) {
-		/*if (av == ActorValue::kAttackDamageMult && actor->formID == 0x14) {
+		if (av == ActorValue::kAttackDamageMult && actor->formID == 0x14) {
 			log::info("AttackDamageMult For: {}", actor->GetDisplayFullName());
 			log::info("  - GetActorValueModifier:");
-			log::info("    - Damage: {}", actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av));
-			log::info("    - Temp: {}", actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av));
-			log::info("    - Perm: {}", actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kPermanent, av));
+			log::info("    - Damage: {}", actor->AsActorValueOwner()->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av));
+			log::info("    - Temp: {}", actor->AsActorValueOwner()->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av));
+			log::info("    - Perm: {}", actor->AsActorValueOwner()->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kPermanent, av));
 			log::info("  - Modifers:");
-			log::info("    - Damage {}: ", actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kDamage]);
-			log::info("    - Temp: {}", actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary]);
-			log::info("    - Perm: {}", actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kPermanent]);
+			log::info("    - Damage {}: ", actor->GetRuntimeData().healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kDamage]);
+			log::info("    - Temp: {}", actor->GetRuntimeData().healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary]);
+			log::info("    - Perm: {}", actor->GetRuntimeData().healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kPermanent]);
 			log::info("  - Cpp:");
-			log::info("    - Value: {}", actor->GetActorValue(av));
-			log::info("    - Base: {}", actor->GetBaseActorValue(av));
-			log::info("    - Perm: {}", actor->GetPermanentActorValue(av));
+			log::info("    - Value: {}", actor->AsActorValueOwner()->GetActorValue(av));
+			log::info("    - Base: {}", actor->AsActorValueOwner()->GetBaseActorValue(av));
+			log::info("    - Perm: {}", actor->AsActorValueOwner()->GetPermanentActorValue(av));
 			//log::info("  - Papyrus:");
-			log::info("    - Value: ", CallFunctionOn(actor, "Actor", "GetActorValue", "health"));
+			/*log::info("    - Value: ", CallFunctionOn(actor, "Actor", "GetActorValue", "health"));
 			   log::info("    - Base: ", CallFunctionOn(actor, "Actor", "GetBaseActorValue", "health"));
-			   log::info("    - Percentage: ", CallFunctionOn(actor, "Actor", "GetActorValuePercentage", "health"));
+			   log::info("    - Percentage: ", CallFunctionOn(actor, "Actor", "GetActorValuePercentage", "health"));*/
 
-		}*/
+		}
 		return GetAV(actor, av)/GetMaxAV(actor, av);
 	}
 
