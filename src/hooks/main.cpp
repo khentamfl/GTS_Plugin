@@ -73,7 +73,7 @@ namespace Hooks
 		log::info("UnknownMaybeScale");
 		log::info("unknown_a: {}", GetRawName(unknown_a));
 		log::info("unknown_b: {}", a1);
-		//log::info("scale: {}", a2);
+		//log::info("scale: {}", a2); 
 
 		// _UnknownMaybeScale(unknown_a, a1, a2);
 	}
