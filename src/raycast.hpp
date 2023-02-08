@@ -13,7 +13,7 @@ namespace Gts {
 		float fraction;
 	};
 
-	class RayCollector : public hkpRayHitCollector
+	class RayCollector : public hkpClosestRayHitCollector
 	{
 		public:
 			void add_filter(NiObject* obj) noexcept;
