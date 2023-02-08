@@ -111,12 +111,12 @@ namespace {
 		// TODO: Calc on demand rather than poll
 		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
 		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		if (Player->IsSprinting() && Runtime::HasPerk(Player, "NoSpeedLoss") && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
+		if (Player->AsActorState()->IsSprinting() && Runtime::HasPerk(Player, "NoSpeedLoss") && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
 			ActorAttributes->smt_run_speed += 0.005400 * Gigantism;
 			if (ActorAttributes->smt_run_speed < 1.0) {
 				BlockMessage = false;
 			}
-		} else if (Player->IsSprinting() && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
+		} else if (Player->AsActorState()->IsSprinting() && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
 			ActorAttributes->smt_run_speed += 0.003600 * Gigantism;
 			if (ActorAttributes->smt_run_speed < 1.0) {
 				BlockMessage = false;

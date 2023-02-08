@@ -65,8 +65,8 @@ namespace Gts {
 		float SpRegen = GetMaxAV(Caster, ActorValue::kStamina) * 0.00030;
 
 		if (Runtime::HasPerk(Caster, "VorePerkRegeneration")) {
-			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale() * power);
-			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale() * power);
+			Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale() * power);
+			Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale() * power);
 		}
 	}
 
@@ -87,11 +87,11 @@ namespace Gts {
 			float TotalMod = (0.75 * get_visual_scale(Target));
 			int Boost = rand() % 2;
 			if (Boost == 0) {
-				Caster->ModActorValue(ActorValue::kHealth, TotalMod);
+				Caster->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, TotalMod);
 			} else if (Boost == 1) {
-				Caster->ModActorValue(ActorValue::kMagicka, TotalMod);
+				Caster->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, TotalMod);
 			} else if (Boost == 2) {
-				Caster->ModActorValue(ActorValue::kStamina, TotalMod);
+				Caster->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, TotalMod);
 			}
 			log::info("Buffing Attributes {}, Target: {}, Caster: {}", Boost, Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 		}
