@@ -19,18 +19,17 @@ namespace Hooks
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
 
 		if (REL::Module::IsSE()) {
-			//auto offsetHelper = REL::IDDatabase::Offset2ID();
-			//log::info("OFFSET 01: {}", offsetHelper(0x14067bfa0));
-			//log::info("OFFSET 02: {}", offsetHelper(0x14067C659));
+			auto offsetHelper = REL::IDDatabase::Offset2ID();
+			log::info("Dumping OFFSETS");
+			for (auto& offsetData: offsetHelper) {
+				log::info("{}:{}", offsetData.id, id.offset);
+			}
 
-			//REL::Relocation<uintptr_t> unknown_hook(REL::Offset(0x14067C659));
-			REL::Relocation<uintptr_t> unknown_hook{REL::RelocationID(38831, 38831)};  // Test, please correct/fix
-			REL::Relocation<uintptr_t> unknown_hook2{REL::RelocationID(36343, 36343)}; // Test, please correct/fix
+			REL::Relocation<uintptr_t> unknown_hook(REL::ID(38831), REL::Offset(0x6B9));
 			logger::info("Applying experimental hook: {:X}", unknown_hook.address());
-			logger::info("Applying experimental hook2: {:X}", unknown_hook2.address());
-			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address() + RELOCATION_OFFSET(0x6B9,0x6B9), UnknownMaybeScale); // Unsure if it is correct
-			_UnknownMaybeScale2 = trampoline.write_call<5>(unknown_hook2.address() + RELOCATION_OFFSET(0x6B9,0x6B9), UnknownMaybeScale2); // Unsure if it is correct
+			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address(), UnknownMaybeScale);
 			logger::info("  - Applied experimental hook");
+			log::info("Dumping: {:X}", unknown_hook.get());
 		}
 	}
 
