@@ -42,9 +42,9 @@ namespace {
 			float HP = GetMaxAV(Player, ActorValue::kHealth) * 0.00085;
 			float MP = GetMaxAV(Player, ActorValue::kMagicka) * 0.00085;
 			float SP = GetMaxAV(Player, ActorValue::kStamina) * 0.00085;
-			Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
-			Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
-			Player->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, MP * TimeScale());
+			Player->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
+			Player->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
+			Player->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, MP * TimeScale());
 		}
 	}
 }

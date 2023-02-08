@@ -298,7 +298,7 @@ namespace {
 				}
 				case ChosenGameMode::CurseOfGrowth: {
 					//log::info("Curse Of Growth, GameMode PC: {}, NPC: {}", Runtime::GetInt("ChosenGameMode"), Runtime::GetInt("ChosenGameModeNPC"));
-					float CalcAv = actor->GetActorValue(ActorValue::kAlteration);
+					float CalcAv = actor->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration);
 					float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");                                       // Slider that determines max size cap.
 					float sizelimit = clamp(1.0, MaxSize, 1.00 * (CalcAv/100 * MaxSize));                          // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
 					int Random = rand() % 20;                                                                        // Randomize power
@@ -444,7 +444,7 @@ std::string GtsManager::DebugName() {
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 
-	auto ai = PC->currentProcess;
+	auto ai = PC->GetActorRuntimeData().currentProcess;
 	static Timer atttimer = Timer(5.00);
 	   if (ai) {
 	        auto highAi = ai->high;
