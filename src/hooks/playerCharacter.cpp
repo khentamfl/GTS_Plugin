@@ -23,7 +23,7 @@ namespace Hooks
 		//_Move = Vtbl.write_vfunc(REL::Relocate(0x0C8, 0x0C8, 0x0CA), Move);
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_PlayerCharacter[5] };
-		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
+		//_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
 		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 	}
@@ -35,7 +35,6 @@ namespace Hooks
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
 				}
-				a_damage *= 0.05;
 			}
 		}
 		_HandleHealthDamage(a_this, a_attacker, a_damage);
