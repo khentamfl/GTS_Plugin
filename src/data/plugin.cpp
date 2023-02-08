@@ -1,5 +1,3 @@
-#include "data/plugin.hpp"
-
 using namespace std;
 using namespace RE;
 using namespace SKSE;
@@ -10,6 +8,14 @@ namespace Gts {
 	}
 
 	bool Plugin::InGame() {
+		auto ui = RE::UI::GetSingleton();
+		if (!ui) {
+			return false;
+		}
+		if (ui->IsMenuOpen(MainMenu::MENU_NAME)) {
+			return false;
+		}
+
 		return Plugin::GetSingleton().ingame.load();
 	}
 	void Plugin::SetInGame(bool value) {
@@ -23,12 +29,19 @@ namespace Gts {
 			if (player_char) {
 				if (player_char->Is3DLoaded()) {
 					// Player is loaded
-					auto ui = RE::UI::GetSingleton();
-					if (!ui->GameIsPaused()) {
-						// Not paused
-						return true;
-					}
+					return true;
 				}
+			}
+		}
+		return false;
+	}
+
+	bool Plugin::Live() {
+		if (Plugin::Ready()) {
+			auto ui = RE::UI::GetSingleton();
+			if (!ui->GameIsPaused()) {
+				// Not paused
+				return true;
 			}
 		}
 		return false;

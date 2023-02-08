@@ -13,7 +13,7 @@ using namespace Gts;
 namespace Hooks
 {
 	void Hook_Character::Hook() {
-		/*logger::info("Hooking Character");
+		logger::info("Hooking Character");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_Character[0] };
 		_HandleHealthDamage = Vtbl.write_vfunc(REL::Relocate(0x104, 0x104, 0x106), HandleHealthDamage);
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
@@ -23,7 +23,7 @@ namespace Hooks
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Character[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
-		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);*/
+		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 	}
 
 	void Hook_Character::HandleHealthDamage(Character* a_this, Character* a_attacker, float a_damage) {

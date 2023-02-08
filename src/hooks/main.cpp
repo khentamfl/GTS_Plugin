@@ -19,18 +19,18 @@ namespace Hooks
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
 
 		/*if (REL::Module::IsSE()) {
-			// auto offsetHelper = REL::IDDatabase::Offset2ID();
-			// log::info("Dumping OFFSETS");
-			// for (auto& offsetData: offsetHelper) {
-			// 	log::info("{}:{:X}:{}", offsetData.id, offsetData.offset, offsetData.offset);
-			// }
+		        // auto offsetHelper = REL::IDDatabase::Offset2ID();
+		        // log::info("Dumping OFFSETS");
+		        // for (auto& offsetData: offsetHelper) {
+		        // 	log::info("{}:{:X}:{}", offsetData.id, offsetData.offset, offsetData.offset);
+		        // }
 
-			REL::Relocation<uintptr_t*> unknown_hook(REL::ID(38871), REL::Offset(0x3d4));
-			// REL::Relocation<uintptr_t> unknown_hook(REL::Offset(0x14067e824));
-			logger::info("Applying experimental hook: {:X}:{:X}", unknown_hook.address(), *unknown_hook.get());
-			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address(), UnknownMaybeScale);
-			logger::info("  - Applied experimental hook");
-		}*/
+		        REL::Relocation<uintptr_t*> unknown_hook(REL::ID(38871), REL::Offset(0x3d4));
+		        // REL::Relocation<uintptr_t> unknown_hook(REL::Offset(0x14067e824));
+		        logger::info("Applying experimental hook: {:X}:{:X}", unknown_hook.address(), *unknown_hook.get());
+		        _UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address(), UnknownMaybeScale);
+		        logger::info("  - Applied experimental hook");
+		   }*/
 	}
 
 	void Hook_MainUpdate::Update(RE::Main* a_this, float a2)
@@ -40,23 +40,19 @@ namespace Hooks
 
 		static std::atomic_bool started = std::atomic_bool(false);
 		Plugin::SetOnMainThread(true);
-		if (Plugin::Enabled()) {
-			if (Plugin::InGame()) {
-				// We are not loading or in the mainmenu
-				if (Plugin::Ready()) {
-					// Player loaded and not paused
-					if (started.exchange(true)) {
-						// Not first updated
-						EventDispatcher::DoUpdate();
-					} else {
-						// First update this load
-						EventDispatcher::DoStart();
-					}
-				}
+		if (Plugin::Live()) {
+			// We are not loading or in the mainmenu
+			// Player loaded and not paused
+			if (started.exchange(true)) {
+				// Not first updated
+				EventDispatcher::DoUpdate();
 			} else {
-				// Loading or in main menu
-				started.store(false);
+				// First update this load
+				EventDispatcher::DoStart();
 			}
+		} else if (!Plugin::InGame()) {
+			// Loading or in main menu
+			started.store(false);
 		}
 		Plugin::SetOnMainThread(false);
 
