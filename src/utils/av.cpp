@@ -34,13 +34,13 @@ namespace Gts {
 		if (av == ActorValue::kAttackDamageMult && actor->formID == 0x14) {
 			log::info("AttackDamageMult For: {}", actor->GetDisplayFullName());
 			log::info("  - GetActorValueModifier:");
-			log::info("    - Damage: {}", actor->AsActorValueOwner()->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av));
-			log::info("    - Temp: {}", actor->AsActorValueOwner()->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av));
-			log::info("    - Perm: {}", actor->AsActorValueOwner()->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kPermanent, av));
+			log::info("    - Damage: {}", actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av));
+			log::info("    - Temp: {}", actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av));
+			log::info("    - Perm: {}", actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kPermanent, av));
 			log::info("  - Modifers:");
-			log::info("    - Damage {}: ", actor->GetRuntimeData().healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kDamage]);
-			log::info("    - Temp: {}", actor->GetRuntimeData().healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary]);
-			log::info("    - Perm: {}", actor->GetRuntimeData().healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kPermanent]);
+			log::info("    - Damage {}: ", actor->GetActorRuntimeData().healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kDamage]);
+			log::info("    - Temp: {}", actor->GetActorRuntimeData().healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary]);
+			log::info("    - Perm: {}", actor->GetActorRuntimeData().healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kPermanent]);
 			log::info("  - Cpp:");
 			log::info("    - Value: {}", actor->AsActorValueOwner()->GetActorValue(av));
 			log::info("    - Base: {}", actor->AsActorValueOwner()->GetBaseActorValue(av));
