@@ -445,7 +445,7 @@ void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 
 	auto ai = PC->currentProcess;
-	static Timer atttimer = Timer(5.00)
+	static Timer atttimer = Timer(5.00);
 	   if (ai) {
 	        auto highAi = ai->high;
 	        if (highAi && atttimer.ShouldRunFrame()) {

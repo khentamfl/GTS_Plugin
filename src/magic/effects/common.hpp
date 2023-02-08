@@ -211,6 +211,9 @@ namespace Gts {
 		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
+			if (!ShrinkToNothingManager::CanShrink(caster, target)) {
+				return false;
+			}
 			ShrinkToNothingManager::Shrink(caster, target);
 			AdjustSizeLimit(0.0117);
 
@@ -219,6 +222,7 @@ namespace Gts {
 			if (!Cache) {
 				return false;
 			}
+
 			if (Runtime::HasPerk(PlayerCharacter::GetSingleton(), "SizeReserve")) {
 				Cache->SizeReserve += target_scale/25;
 			}
