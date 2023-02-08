@@ -77,9 +77,8 @@ namespace Hooks
 			log::info("unknown_a: Nullprt");
 		}
 		log::info("unknown_b: {}", a1);
-		//log::info("scale: {}", a2);
 
-		// _UnknownMaybeScale(unknown_a, a1, a2);
+		_UnknownMaybeScale(unknown_a, a1);
 	}
 	void Hook_MainUpdate::UnknownMaybeScale2(Actor* actor, float scale) {
 		log::info("UnknownMaybeScale2"); //<------ Prints it about 5 times, then crashes on save load
