@@ -128,7 +128,7 @@ namespace Gts {
 
 				if (actor->IsSneaking()) {
 					giantScale *= 0.5;
-				} if (actor->IsSprinting()) {
+				} if (actor->AsActorState()->IsSprinting()) {
 					giantScale *= 1.5;
 				} if (impact_data.kind == FootEvent::JumpLand) {
 					giantScale *= 2.0;
