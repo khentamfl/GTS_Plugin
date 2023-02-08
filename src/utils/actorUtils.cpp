@@ -29,13 +29,13 @@ namespace Gts {
 	}
 
 	void Disintegrate(Actor* actor) {
-		actor->criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 		// CallFunctionOn(actor, "actor", "SetCriticalStage", 4);
 		actor->Disable();
 	}
 
 	void UnDisintegrate(Actor* actor) {
-		actor->criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+		actor->GetActorRuntimeData().criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 		// CallFunctionOn(actor, "Actor", "SetCriticalStage", 0);
 		// actor->Enable();
 	}
@@ -157,7 +157,7 @@ namespace Gts {
 	}
 
 	bool IsProne(Actor* actor) {
-		return actor!= nullptr && actor->formID == 0x14 && Runtime::GetBool("ProneEnabled") && actor->IsSneaking();
+		return actor!= nullptr && actor->formID == 0x14 && Runtime::GetBool("ProneEnabled") && actor->AsActorState()->IsSneaking();
 	}
 
 	bool IsJumping(Actor* actor) {
