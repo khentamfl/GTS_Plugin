@@ -58,7 +58,7 @@ namespace Gts {
 			return;
 		}
 
-		if (Runtime::HasPerk(caster, "LethalSprint") && caster->IsSprinting()) {
+		if (Runtime::HasPerk(caster, "LethalSprint") && caster->AsActorState()->IsSprinting()) {
 			InstaCrushRequirement = 18.0 * HighHeels * Gigantism;
 		}
 
@@ -80,7 +80,7 @@ namespace Gts {
 
 			if (Runtime::HasPerk(caster, "SmallMassiveThreatSizeSteal")) {
 				float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.005 * size_difference;
-				caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
+				caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
 
 				ShrinkActor(target, 0.0015 * BonusShrink, 0.0);
 				Grow(caster, 0.00045 * target_scale * BonusShrink, 0.0);
@@ -108,8 +108,8 @@ namespace Gts {
 			float caster_scale = get_target_scale(Caster);
 			float target_scale = get_target_scale(Target);
 			float Multiplier = (caster_scale/target_scale);
-			float CasterHp = Caster->GetActorValue(ActorValue::kHealth);
-			float TargetHp = Target->GetActorValue(ActorValue::kHealth);
+			float CasterHp = Caster->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
+			float TargetHp = Target->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
 			if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 				CrushManager::Crush(Caster, Target);
 				shake_camera(Caster, 0.25 * caster_scale, 0.25);
@@ -124,7 +124,8 @@ namespace Gts {
 				PushActorAway(Caster, Target, 0.8);
 				PushActorAway(Target, Caster, 0.2);
 				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
-				Target->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75); Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);
+				Target->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75);
+				Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);
 				shake_camera(Caster, 0.35, 0.5);
 				Runtime::PlaySound("lJumpLand", Caster, 0.5, 1.0);
 

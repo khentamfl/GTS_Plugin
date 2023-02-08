@@ -33,7 +33,7 @@ namespace Gts {
 			return;
 		}
 
-		float AlchemyLevel = clamp(1.0, 2.0, caster->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
+		float AlchemyLevel = clamp(1.0, 2.0, caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
 		if (caster == PlayerCharacter::GetSingleton()) {
 			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.4);
 		}
@@ -44,7 +44,7 @@ namespace Gts {
 			log::info("Growth Potion Loop caster: {}", caster->GetDisplayFullName());
 		}
 		float HP = GetMaxAV(caster, ActorValue::kHealth) * 0.00035;
-		caster->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
+		caster->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
 
 		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 
