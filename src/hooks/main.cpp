@@ -29,7 +29,7 @@ namespace Hooks
 			logger::info("Applying experimental hook: {:X}", unknown_hook.address());
 			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address(), UnknownMaybeScale);
 			logger::info("  - Applied experimental hook");
-			log::info("Dumping: {:X}", unknown_hook.get());
+			log::info("Dumping: {:X}", *unknown_hook.get());
 		}
 	}
 
