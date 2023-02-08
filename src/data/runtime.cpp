@@ -127,7 +127,7 @@ namespace Gts {
 	bool Runtime::HasMagicEffectOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
 		auto data = Runtime::GetMagicEffect(tag);
 		if (data) {
-			return actor->HasMagicEffect(data);
+			return actor->AsMagicTarget()->HasMagicEffect(data);
 		} else {
 			return default_value;
 		}
