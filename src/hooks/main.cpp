@@ -26,10 +26,11 @@ namespace Hooks
 			}
 
 			REL::Relocation<uintptr_t*> unknown_hook(REL::ID(38831), REL::Offset(0x6B9));
+			log::info("DumpingBefore: {:X}", *unknown_hook.get());
 			logger::info("Applying experimental hook: {:X}", unknown_hook.address());
 			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address(), UnknownMaybeScale);
 			logger::info("  - Applied experimental hook");
-			log::info("Dumping: {:X}", *unknown_hook.get());
+			log::info("DumpingAfter: {:X}", *unknown_hook.get());
 		}
 	}
 
@@ -73,7 +74,7 @@ namespace Hooks
 		log::info("UnknownMaybeScale");
 		log::info("unknown_a: {}", GetRawName(unknown_a));
 		log::info("unknown_b: {}", a1);
-		//log::info("scale: {}", a2); 
+		//log::info("scale: {}", a2);
 
 		// _UnknownMaybeScale(unknown_a, a1, a2);
 	}
