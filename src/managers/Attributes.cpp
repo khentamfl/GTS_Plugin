@@ -96,7 +96,7 @@ namespace {
 		if (actor->formID != 0x14) {
 			return;
 		}
-		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus);
+		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) - 1.0;
 		float scale = get_visual_scale(actor);
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
