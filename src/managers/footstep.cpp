@@ -181,19 +181,19 @@ namespace Gts {
 			}
 
 			float minimal_size = 1.2;
-			if (scale > minimal_size && !actor->IsSwimming()) {
+			if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
 				float start_l = 1.2;
 				float start_xl = 11.99;
 				float start_xlJumpLand= 1.99;
 				float start_xxl = 20.0;
-				if (actor->IsSprinting()) {
+				if (actor->AsActorState()->IsSprinting()) {
 					float sprint_factor = 1.2;
 					scale *= sprint_factor; // Sprinting makes you sound bigger
 					start_xl = 7.99 * sprint_factor;
 					start_xxl = 15.99 * sprint_factor;
 				} else if (actor->IsSneaking()) {
 					scale *= 0.55; // Sneaking makes you sound quieter
-				} else if (actor->IsWalking()) {
+				} else if (actor->AsActorState()->IsWalking()) {
 					scale *= 0.85; // Walking makes you sound quieter
 				}
 

@@ -67,12 +67,12 @@ namespace Gts {
 
 		float scale = impact.effective_scale;
 		float minimal_size = 3.0;
-		if (scale > minimal_size && !actor->IsSwimming()) {
-			if (actor->IsSprinting()) {
+		if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
+			if (actor->AsActorState()->IsSprinting()) {
 				scale *= 1.2; // Sprinting makes you seem bigger
 			} else if (actor->IsSneaking()) {
 				scale *= 0.55; // Sneaking makes you seem quieter
-			} else if (actor->IsWalking()) {
+			} else if (actor->AsActorState()->IsWalking()) {
 				scale *= 0.85; // Walking makes you seem quieter
 			}
 			FootEvent foot_kind = impact.kind;

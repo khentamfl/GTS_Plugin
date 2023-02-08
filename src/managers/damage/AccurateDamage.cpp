@@ -71,15 +71,15 @@ namespace {
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			float movementFactor = 1.0;
-			if (giant->IsSprinting()) {
+			if (giant->AsActorState()->IsSprinting()) {
 				movementFactor *= 1.5;
 			}
-			if (!isdamaging && !giant->IsSprinting() && !giant->IsWalking() && !giant->IsRunning()) {
+			if (!isdamaging && !giant->AsActorState()->IsSprinting() && !giant->AsActorState()->IsWalking() && !giant->IsRunning()) {
 				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force);
 			}
-			if (!isdamaging && (force >= 0.55 || giant->IsSprinting() || giant->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
+			if (!isdamaging && (force >= 0.55 || giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
 				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
@@ -100,7 +100,7 @@ namespace {
 			return;
 		}
 
-		if (Runtime::HasPerk(giant, "LethalSprint") && giant->IsSprinting()) {
+		if (Runtime::HasPerk(giant, "LethalSprint") && giant->AsActorState()->IsSprinting()) {
 			InstaCrushRequirement = (18.0 / HighHeels) * Gigantism;
 		}
 
@@ -292,7 +292,7 @@ namespace Gts {
 
 		if (giant->IsSneaking()) {
 			movementFactor *= 0.5;
-		} if (giant->IsSprinting()) {
+		} if (giant->AsActorState()->IsSprinting()) {
 			movementFactor *= 1.75;
 		} if (evt.footEvent == FootEvent::JumpLand) {
 			movementFactor *= 3.0;
@@ -355,7 +355,7 @@ namespace Gts {
 
 		SizeModifications(giant, tiny, highheels);
 
-		if (giant->IsSprinting()) {
+		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
 		}
 		if (IsJumping(giant)) {
