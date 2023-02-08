@@ -6,7 +6,7 @@ using namespace SKSE;
 namespace Gts {
 
 	float GetMaxAV(Actor* actor, ActorValue av) {
-		auto baseValue = actor->GetBaseActorValue(av);
+		auto baseValue = actor->AsActorValueOwner()->GetBaseActorValue(av);
 		auto permMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kPermanent, av);
 		auto tempMod = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kTemporary, av);
 		return baseValue + permMod + tempMod;
@@ -18,7 +18,7 @@ namespace Gts {
 		return max_av + damageMod;
 	}
 	void ModAV(Actor* actor, ActorValue av, float amount) {
-		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kTemporary, av, amount);
+		actor->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kTemporary, av, amount);
 	}
 	void SetAV(Actor* actor, ActorValue av, float amount) {
 		float currentValue = GetAV(actor, av);
@@ -27,11 +27,11 @@ namespace Gts {
 	}
 
 	void DamageAV(Actor* actor, ActorValue av, float amount) {
-		actor->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, av, -amount);
+		actor->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, av, -amount);
 	}
 
 	float GetPercentageAV(Actor* actor, ActorValue av) {
-		if (av == ActorValue::kAttackDamageMult && actor->formID == 0x14) {
+		/*if (av == ActorValue::kAttackDamageMult && actor->formID == 0x14) {
 			log::info("AttackDamageMult For: {}", actor->GetDisplayFullName());
 			log::info("  - GetActorValueModifier:");
 			log::info("    - Damage: {}", actor->GetActorValueModifier(ACTOR_VALUE_MODIFIERS::kDamage, av));
@@ -46,11 +46,11 @@ namespace Gts {
 			log::info("    - Base: {}", actor->GetBaseActorValue(av));
 			log::info("    - Perm: {}", actor->GetPermanentActorValue(av));
 			//log::info("  - Papyrus:");
-			/*log::info("    - Value: ", CallFunctionOn(actor, "Actor", "GetActorValue", "health"));
+			log::info("    - Value: ", CallFunctionOn(actor, "Actor", "GetActorValue", "health"));
 			   log::info("    - Base: ", CallFunctionOn(actor, "Actor", "GetBaseActorValue", "health"));
-			   log::info("    - Percentage: ", CallFunctionOn(actor, "Actor", "GetActorValuePercentage", "health"));*/
+			   log::info("    - Percentage: ", CallFunctionOn(actor, "Actor", "GetActorValuePercentage", "health"));
 
-		}
+		}*/
 		return GetAV(actor, av)/GetMaxAV(actor, av);
 	}
 
@@ -60,7 +60,7 @@ namespace Gts {
 		double percentage = currentValue/maxValue;
 		double targetValue = target * maxValue;
 		double delta = targetValue - currentValue;
-		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
+		actor->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, av, delta);
 	}
 
 	float GetStaminaPercentage(Actor* actor) {
