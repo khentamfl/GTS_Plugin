@@ -199,7 +199,7 @@ namespace Gts {
 			power *= PERK2_BONUS;
 		}
 		AdjustSizeLimit(0.0010 * target_scale * power);
-		float alteration_level_bonus = 0.0332 + caster->GetActorValue(ActorValue::kAlteration) * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
+		float alteration_level_bonus = 0.0332 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
 
@@ -268,7 +268,7 @@ namespace Gts {
 		}
 		PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement);
 		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
-		if (get_visual_scale(caster) <= 12.0 && !caster->IsSprinting() && !caster->IsWalking() && !caster->IsRunning() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
+		if (get_visual_scale(caster) <= 12.0 && !caster->AsActorState()->IsSprinting() && !caster->AsActorState()->IsWalking() && !caster->AsActorState()->IsRunning() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
 			PlayAnimation(caster, "JumpLand");
 		}
 		auto Cache = Persistent::GetSingleton().GetData(caster); // TODO: Fix this properly
