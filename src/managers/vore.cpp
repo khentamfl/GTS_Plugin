@@ -372,7 +372,7 @@ namespace Gts {
 		}
 
 		float wastestamina = 140/sizedifference; // Drain stamina, should be 300 once tests are over
-		float staminacheck = pred->GetActorValue(ActorValue::kStamina);
+		float staminacheck = pred->AsActorValueOwner()->GetActorValue(ActorValue::kStamina);
 
 		if (pred->formID != 0x14) {
 			wastestamina = 40/sizedifference; // Less tamina drain for non Player
