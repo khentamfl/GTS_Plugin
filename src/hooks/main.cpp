@@ -26,7 +26,7 @@ namespace Hooks
 			}
 
 			// REL::Relocation<uintptr_t> unknown_hook(REL::ID(38831), REL::Offset(0x6B9));
-			REL::Relocation<uintptr_t> unknown_hook(REL::Offset(0x1405d68e3));
+			REL::Relocation<uintptr_t> unknown_hook(REL::Offset(0x14067e824));
 			logger::info("Applying experimental hook: {:X}", unknown_hook.address());
 			_UnknownMaybeScale = trampoline.write_call<5>(unknown_hook.address(), UnknownMaybeScale);
 			logger::info("  - Applied experimental hook");
@@ -78,7 +78,7 @@ namespace Hooks
 		}
 		log::info("unknown_b: {}", a1);
 
-		_UnknownMaybeScale(unknown_a, a1);
+		// _UnknownMaybeScale(unknown_a, a1);
 	}
 	void Hook_MainUpdate::UnknownMaybeScale2(Actor* actor, float scale) {
 		log::info("UnknownMaybeScale2"); //<------ Prints it about 5 times, then crashes on save load
