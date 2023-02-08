@@ -111,7 +111,7 @@ namespace Gts {
 
 				float BalanceMode = sizemanager.BalancedMode();
 
-				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->GetActorValue(ActorValue::kHealth);
+				float HealthMult = GetMaxAV(receiver, ActorValue::kHealth) / receiver->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
 				float HealthPercentage = clamp(0.10, 0.50, GetHealthPercentage(receiver));
 
 				float GrowthValue = (0.0000245 / HealthPercentage * SizeHunger * Gigantism) * this->BonusPower / sizemanager.BalancedMode();
