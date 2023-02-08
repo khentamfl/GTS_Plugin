@@ -96,14 +96,20 @@ namespace {
 		if (actor->formID != 0x14) {
 			return;
 		}
-		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) - 1.0;
+		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) -1.0;
 		float scale = get_visual_scale(actor);
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
 			SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
+			//log::info("Jump Height Min: {}", 76.0 + (76.0 * power));
+			//log::info("Jump Fall Height Min: {}", 600.0 + (600.0 * power));
+			//log::info("Jump Power: {}", power);
 		} else {
 			SetINIFloat("fJumpHeightMin", 76.0 * power);
 			SetINIFloat("fJumpFallHeightMin", 600.0 * power);
+			//log::info("Jump Height Min Else: {}", 76.0 * power);
+			//log::info("Jump Fall Height Min Else: {}", 600.0 * power);
+			//log::info("Jump Power Else: {}", power);
 		}
 	}
 
@@ -290,6 +296,11 @@ namespace Gts {
 				bonus = attributes.GetAttributeBonus(actor, av);
 				break;
 			}
+			case ActorValue::kMovementNoiseMult: {
+				float scale = get_visual_scale(actor);
+				bonus = scale;
+				break;
+			}
 		}
 
 		return originalValue * bonus;
@@ -316,12 +327,6 @@ namespace Gts {
 					float change = finalValue - originalValue;
 					transient->health_boost = change;
 				}
-				break;
-			}
-			case ActorValue::kMovementNoiseMult: {
-				float scale = get_visual_scale(actor);
-				bonus = scale;
-				return originalValue * bonus;
 				break;
 			}
 		}
