@@ -42,7 +42,7 @@ namespace Gts {
 		auto camera = PlayerCamera::GetSingleton();
 		auto player = GetCameraActor();
 		if (camera && player) {
-			camera->UpdateThirdPerson(player->IsWeaponDrawn());
+			camera->UpdateThirdPerson(player->AsActorState()->IsWeaponDrawn());
 		}
 	}
 

@@ -86,7 +86,7 @@ namespace Gts {
 
 			// Get either normal or combat offset
 			NiPoint3 offset;
-			if (player != nullptr && player->IsWeaponDrawn()) {
+			if (player != nullptr && player->AsActorState()->IsWeaponDrawn()) {
 				offset = currentState->GetCombatOffset(cameraPosLocal, isProne);
 			} else {
 				offset = currentState->GetOffset(cameraPosLocal, isProne);
@@ -176,12 +176,12 @@ namespace Gts {
 		if (!playerCamera) {
 			return nullptr;
 		}
-		if (Runtime::GetBool("ConversationCameraComp")) {
+		/*if (Runtime::GetBool("ConversationCameraComp")) {
 			auto player = PlayerCharacter::GetSingleton();
 			if (player->dialogueItemTarget) {
 				return nullptr; //Do nothing 
 			}
-		}
+		}*/
 		auto playerCameraState = playerCamera->currentState;
 		if (!playerCameraState) {
 			return nullptr;
