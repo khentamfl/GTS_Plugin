@@ -445,11 +445,13 @@ void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 
 	auto ai = PC->currentProcess;
+	static Timer atttimer = Timer(5.00)
 	   if (ai) {
 	        auto highAi = ai->high;
-	        if (highAi) {
+	        if (highAi && atttimer.ShouldRunFrame()) {
 	            log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
 				log::info("Player Melee Damage: {}, Unarmed Damage: {}", GetAV(PC, ActorValue::kMeleeDamage), GetAV(PC, ActorValue::kUnarmedDamage));
+				log::info("{}, Sneak Power: {}, Noise Mult: {}",actor->GetDisplayFullName(), GetAV(actor, ActorValue::kSneakingPowerModifier), GetAV(actor, ActorValue::kMovementNoiseMult));
 	        }
 	   }
 
@@ -462,7 +464,6 @@ void GtsManager::Update() {
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-			//log::info("{}, Sneak Power: {}, Noise Mult: {}",actor->GetDisplayFullName(), GetAV(actor, ActorValue::kSneakingPowerModifier), GetAV(actor, ActorValue::kMovementNoiseMult));
 			accuratedamage.DoAccurateCollision(actor);
 			ClothManager::GetSingleton().CheckRip();
 		}
