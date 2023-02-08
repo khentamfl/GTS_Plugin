@@ -322,6 +322,7 @@ namespace Gts {
 				float scale = get_visual_scale(actor);
 				bonus = scale;
 				return originalValue * bonus;
+				break;
 			}
 		}
 		
