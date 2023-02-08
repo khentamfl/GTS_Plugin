@@ -22,7 +22,7 @@ namespace Hooks
 			auto offsetHelper = REL::IDDatabase::Offset2ID();
 			log::info("Dumping OFFSETS");
 			for (auto& offsetData: offsetHelper) {
-				log::info("{}:{}", offsetData.id, id.offset);
+				log::info("{}:{}", offsetData.id, offsetData.offset);
 			}
 
 			REL::Relocation<uintptr_t> unknown_hook(REL::ID(38831), REL::Offset(0x6B9));
