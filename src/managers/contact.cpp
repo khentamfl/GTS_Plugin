@@ -92,7 +92,7 @@ namespace {
 		} if (giant->AsActorState()->IsSprinting()) {
 			movementFactor *= 1.75;
 		} 
-		AccurateDamage::GetSingleton().DoSizeDamage(giant, tiny, movementFactor, 1.0);
+		AccurateDamage::GetSingleton().DoSizeDamage(giant, tiny, movementFactor, 1.0, true);
 	}
 
 	void print_collision_groups(std::uint64_t flags) {

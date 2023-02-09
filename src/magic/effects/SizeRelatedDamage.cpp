@@ -33,6 +33,11 @@ namespace Gts {
 		if (!target) {
 			return;
 		} 
-		AccurateDamage::GetSingleton().DoSizeDamage(caster, target, 10.0, 1.0);
+		float castersize = get_visual_scale(caster);
+		float targetsize = get_visual_scale(target);
+		float sizedifference = castersize/targetsize;
+		if (sizedifference > 2.0) {
+			AccurateDamage::GetSingleton().DoSizeDamage(caster, target, 10, 1, false);
+		}
 	}
 }

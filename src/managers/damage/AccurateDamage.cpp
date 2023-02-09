@@ -118,13 +118,13 @@ namespace {
 			if (!isdamaging && !giant->AsActorState()->IsSprinting() && !giant->AsActorState()->IsWalking() && !giant->IsRunning()) {
 				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force);
+				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, true);
 			}
 			if (!isdamaging && (force >= 0.55 || giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
 				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
-			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force);
+			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, true);
 		}
 	}
 
@@ -284,7 +284,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay")) {// && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
 				}
@@ -362,7 +362,7 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 6);
+			DoSizeDamage(giant, tiny, movementFactor, force * 6, true);
 
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
@@ -384,7 +384,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) { // Applies damage and crushing
+	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, bool DoDamage) { // Applies damage and crushing
 		if (!giant) {
 			return;
 		} if (!tiny) {
@@ -435,6 +435,8 @@ namespace Gts {
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.30);
 			return; // Stamina protection, emulates Size Damage resistance
+		} if (!DoDamage) {
+			return;
 		}
 		DamageAV(tiny, ActorValue::kHealth, result);
 	}

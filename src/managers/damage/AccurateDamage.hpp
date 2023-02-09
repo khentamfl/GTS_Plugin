@@ -23,6 +23,6 @@ namespace Gts {
 			virtual void UnderFootEvent(const UnderFoot& evt) override;
 
 			void DoAccurateCollision(Actor* actor);
-			void DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult);
+			void DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, bool DoDamage);
 	};
 }
