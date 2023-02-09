@@ -45,8 +45,8 @@ namespace {
 			if (!explosion) {
 				return;
 			}
-			log::info("Base Explosion True, scale {}, radius: {}, scale: {}", explosion->radius * scale, explosion->imodRadius * scale, scale);
-			explosion->GetExplosionRuntimeData().SetPosition(position);
+			log::info("Base Explosion True, scale {}, radius: {}, scale: {}", explosion->GetExplosionRuntimeData().radius * scale, explosion->GetExplosionRuntimeData().imodRadius * scale, scale);
+			explosion->SetPosition(position);
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
 			explosion->GetExplosionRuntimeData().unkB8 = nullptr;
