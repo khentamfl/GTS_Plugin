@@ -441,9 +441,9 @@ std::string GtsManager::DebugName() {
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 	if (PC) {
-		log::info("EyeHeight Before: {}", PC->GetInfoRuntimeData()->eyeHeight);
-		PC->GetInfoRuntimeData()->eyeHeight += Runtime::GetFloat("ConversationCameraComp");
-		log::info("EyeHeight After: {}", PC->GetInfoRuntimeData()->eyeHeight);
+		log::info("EyeHeight Before: {}", PC->GetInfoRuntimeData().eyeHeight);
+		PC->GetInfoRuntimeData().eyeHeight += Runtime::GetFloat("ConversationCameraComp");
+		log::info("EyeHeight After: {}", PC->GetInfoRuntimeData().eyeHeight);
 	}
 
 	auto ai = PC->GetActorRuntimeData().currentProcess;
