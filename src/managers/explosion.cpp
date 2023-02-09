@@ -29,6 +29,7 @@ namespace {
 		}
 
 		if (base_explosion) {
+			log::info("Base Explosion True");
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
 			if (!instance_ptr) {
 				return;
@@ -41,6 +42,7 @@ namespace {
 			if (!explosion) {
 				return;
 			}
+			log::info("Base Explosion True, scale {}, radius: {}", explosion->radius * scale, explosion->imodRadius * scale);
 			explosion->SetPosition(position);
 			explosion->radius *= scale;
 			explosion->imodRadius *= scale;
@@ -97,12 +99,15 @@ namespace Gts {
 				if (!success) {
 					explosion_pos = foot_location;
 					explosion_pos.z = actor->GetPosition().z;
+					log::info("Explosion Fail");
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
 					make_explosion_at(impact.kind, actor, explosion_pos, scale);
+					log::info("PC Explosion Make_Explosion_At attempt");
 				}
 				if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
 					make_explosion_at(impact.kind, actor, explosion_pos, scale);
+					log::info("NPC Explosion Make_Explosion_At attempt");
 				}
 			}
 		}
