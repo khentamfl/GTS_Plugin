@@ -24,7 +24,7 @@ namespace Hooks
 		auto owner = a_this->GetUserData();
 		if (owner) {
 			if (a_target) {
-				log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
+				//log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
 			}
 		}
 		_SetHeadtrackTarget0(a_this, a_target);
@@ -34,7 +34,7 @@ namespace Hooks
 		auto owner = a_this->GetUserData();
 		if (owner) {
 			if (a_target) {
-				log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
+				//log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
 			}
 		}
 		_SetHeadtrackTarget4A(a_this, a_target);
@@ -44,7 +44,7 @@ namespace Hooks
 		auto owner = a_this->GetUserData();
 		if (owner) {
 			if (a_target) {
-				log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
+				//log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
 			}
 		}
 		_SetHeadtrackTarget4B(a_this, a_target);
@@ -54,7 +54,7 @@ namespace Hooks
 		auto owner = a_this->GetUserData();
 		if (owner) {
 			if (a_target) {
-				log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
+				//log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
 			}
 		}
 		_SetHeadtrackTarget4C(a_this, a_target);
@@ -64,7 +64,7 @@ namespace Hooks
 		auto owner = a_this->GetUserData();
 		if (owner) {
 			if (a_target) {
-				log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
+				//log::info("{} is head tracking: {}", owner->GetDisplayFullName(), a_target->GetDisplayFullName());
 			}
 		}
 		_SetHeadtrackTarget4D(a_this, a_target);

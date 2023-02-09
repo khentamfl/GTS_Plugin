@@ -42,7 +42,7 @@ namespace {
 			if (!explosion) {
 				return;
 			}
-			log::info("Base Explosion True, scale {}, radius: {}", explosion->radius * scale, explosion->imodRadius * scale);
+			log::info("Base Explosion True, scale {}, radius: {}, scale: {}", explosion->radius * scale, explosion->imodRadius * scale, scale);
 			explosion->SetPosition(position);
 			explosion->radius *= scale;
 			explosion->imodRadius *= scale;
@@ -72,9 +72,9 @@ namespace Gts {
 		if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
 				scale *= 1.2; // Sprinting makes you seem bigger
-			} else if (actor->IsSneaking()) {
+			} if (actor->IsSneaking()) {
 				scale *= 0.55; // Sneaking makes you seem quieter
-			} else if (actor->AsActorState()->IsWalking()) {
+			} if (actor->AsActorState()->IsWalking()) {
 				scale *= 0.85; // Walking makes you seem quieter
 			}
 			FootEvent foot_kind = impact.kind;

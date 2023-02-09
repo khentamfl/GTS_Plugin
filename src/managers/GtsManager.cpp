@@ -449,9 +449,9 @@ void GtsManager::Update() {
 	   if (ai) {
 	        auto highAi = ai->high;
 	        if (highAi && atttimer.ShouldRunFrame()) {
-	            log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
-				log::info("Player Melee Damage: {}, Unarmed Damage: {}", GetAV(PC, ActorValue::kMeleeDamage), GetAV(PC, ActorValue::kUnarmedDamage));
-				log::info("{}, Sneak Power: {}, Sneak Mod: {}, Noise Mult: {}", PC->GetDisplayFullName(), GetAV(PC, ActorValue::kSneakingPowerModifier), GetAV(PC, ActorValue::kSneakingModifier), GetAV(PC, ActorValue::kMovementNoiseMult));
+	            //log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
+				//log::info("Player Melee Damage: {}, Unarmed Damage: {}", GetAV(PC, ActorValue::kMeleeDamage), GetAV(PC, ActorValue::kUnarmedDamage));
+				//log::info("{}, Sneak Power: {}, Sneak Mod: {}, Noise Mult: {}", PC->GetDisplayFullName(), GetAV(PC, ActorValue::kSneakingPowerModifier), GetAV(PC, ActorValue::kSneakingModifier), GetAV(PC, ActorValue::kMovementNoiseMult));
 	        }
 	   }
 
