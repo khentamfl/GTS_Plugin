@@ -21,8 +21,8 @@ namespace Gts {
 		return "SizeDamage";
 	}
 
-	void SizeDamage::OnUpdate() {
-		if (SizeManager::GetSingleton().GetPreciseDamage()) {
+	void SizeDamage::OnUpdate() { // This is used when actors have Size effect on them from magic effect, and when Precise Damage is off.
+		if (SizeManager::GetSingleton().GetPreciseDamage()) { // This method damages actors once per 0.10 sec because of Papyrus being 'amazing'.
 			return; 
 		}
 		auto caster = GetCaster();
