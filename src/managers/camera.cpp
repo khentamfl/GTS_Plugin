@@ -167,21 +167,19 @@ namespace Gts {
 			return nullptr;
 		} 
 		
-		//=========================================================================
 
-		bool AllowFpCamera = true; // !!!!!Disabled for global release for now!!!!!
-
-		//^^^^^^^===================================================================
+		bool AllowFpCamera = true;
 		auto playerCamera = PlayerCamera::GetSingleton();
 		if (!playerCamera) {
 			return nullptr;
 		}
-		/*if (Runtime::GetBool("ConversationCameraComp")) {
+		if (Runtime::GetBool("ConversationCameraComp")) {
 			auto player = PlayerCharacter::GetSingleton();
-			if (player->dialogueItemTarget) {
+			if (player->GetActorRuntimeData().dialogueItemTarget) {
+				log::info("Player is talking with someone");
 				return nullptr; //Do nothing 
 			}
-		}*/
+		}
 		auto playerCameraState = playerCamera->currentState;
 		if (!playerCameraState) {
 			return nullptr;

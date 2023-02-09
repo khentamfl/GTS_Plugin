@@ -366,7 +366,7 @@ namespace {
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
-			if (actor->formID == 0x14 && !actor->IsInCombat()) {
+			if ((actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) && !actor->IsInCombat()) {
 				game_mode_int = 6; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 2.2);
