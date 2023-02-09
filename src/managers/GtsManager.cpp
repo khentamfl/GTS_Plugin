@@ -462,7 +462,7 @@ void GtsManager::Update() {
 	auto ai = PC->GetActorRuntimeData().currentProcess;
 	static Timer atttimer = Timer(5.00);
 	   if (ai) {
-			log::info("Player Eye Level: {}", ai->CachedValues->cachedEyeLevel);
+			log::info("Player Eye Level: {}", ai->cachedValues->cachedEyeLevel);
 	        auto highAi = ai->high;
 	        if (highAi && atttimer.ShouldRunFrame()) {
 	            //log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
