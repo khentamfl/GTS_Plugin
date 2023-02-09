@@ -172,7 +172,10 @@ namespace Gts {
 		if (!objref_b) {
 			return;
 		}
-		if (objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE) {
+		if ((objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE) || 
+			|| (objref_a->GetFormType() == PlayerCharacter::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE)
+			|| (objref_a->GetFormType() == PlayerCharacter::FORMTYPE && objref_b->GetFormType() == Character::FORMTYPE)
+		) {
 			//log::info("Both collisions are actors");
 			Actor* actor_a = skyrim_cast<Actor*>(objref_a);
 			if (!actor_a) {
@@ -207,76 +210,8 @@ namespace Gts {
 			float sizedifference = A_size/B_size;
 
 			auto node_name_a = node_a->name;
-			if (sizedifference >= 1.33 && A_size < 2.5) {
-				log::info("Size Difference Colliding: {} with: {}", name_a, name_b);
-				inflictSizeDamage(actor_a, actor_b);
-			}
-			if (!node_name_a.empty()) {
-				//log::info("  - Node A: {}", node_name_a.c_str());
-			}
-			auto node_name_b = node_b->name;
-			if (!node_name_b.empty()) {
-				//log::info("  - Node B: {}", node_name_b.c_str());
-			}
-		}
-		// log::info("ContactPointCallback");
-	}
-
-	void ContactListener::ContactProcessCallback(hkpContactPointEvent& a_event)
-	{
-		auto rigid_a = a_event.bodies[0];
-		if (!rigid_a) {
-			return;
-		}
-		auto rigid_b = a_event.bodies[1];
-		if (!rigid_b) {
-			return;
-		}
-		auto objref_a = rigid_a->GetUserData();
-		if (!objref_a) {
-			return;
-		}
-		auto objref_b = rigid_b->GetUserData();
-		if (!objref_b) {
-			return;
-		}
-		if (objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE) {
-			//log::info("Both collisions are actors");
-			Actor* actor_a = skyrim_cast<Actor*>(objref_a);
-			if (!actor_a) {
-				return;
-			}
-			Actor* actor_b = skyrim_cast<Actor*>(objref_b);
-			if (!actor_b) {
-				return;
-			}
-			if (actor_a == actor_b) {
-				return;
-			}
-			auto name_a = actor_a->GetDisplayFullName();
-			if (!name_a) {
-				return;
-			}
-			auto name_b = actor_b->GetDisplayFullName();
-			if (!name_b) {
-				return;
-			}
-			log::info("Callback Colliding: {} with: {}", name_a, name_b);
-			NiAVObject* node_a = getNodeFromCollidable(rigid_a);
-			if (!node_a) {
-				return;
-			}
-			NiAVObject* node_b = getNodeFromCollidable(rigid_b);
-			if (!node_b) {
-				return;
-			}
-			float A_size = get_visual_scale(actor_a);
-			float B_size = get_visual_scale(actor_b);
-			float sizedifference = A_size/B_size;
-
-			auto node_name_a = node_a->name;
 			if (sizedifference >= 1.33) {
-				log::info("Callback Size Difference Colliding: {} with: {}", name_a, name_b);
+				log::info("Size Difference Colliding: {} with: {}", name_a, name_b);
 				inflictSizeDamage(actor_a, actor_b);
 			}
 			if (!node_name_a.empty()) {

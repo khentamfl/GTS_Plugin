@@ -13,8 +13,6 @@ namespace Gts {
 		public:
 			void ContactPointCallback(const hkpContactPointEvent& a_event) override;
 
-			void ContactProcessCallback(hkpContactProcessEvent& a_event) override; // new one
-
 			void CollisionAddedCallback(const hkpCollisionEvent& a_event) override;
 
 			void CollisionRemovedCallback(const hkpCollisionEvent& a_event) override;
