@@ -474,6 +474,7 @@ void GtsManager::Update() {
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
+		log::info("Running latest build");
 
 		if (sizemanager.GetPreciseDamage()) {
 			if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
