@@ -78,7 +78,9 @@ namespace Gts {
 			return NiPoint3();
 		}
 		auto cell = actor->GetParentCell();
-		if (!cell) return NiPoint3();
+		if (!cell) {
+			return NiPoint3();
+		}
 		auto collision_world = cell->GetbhkWorld();
 		if (!collision_world) {
 			return NiPoint3();
@@ -126,5 +128,14 @@ void hkpClosestRayHitCollector::AddRayHit(const hkpCdBody& a_body, const hkpShap
 }
 
 hkpClosestRayHitCollector::~hkpClosestRayHitCollector() {
+	// Dummy
+}
+
+hkpRayHitCollector::~hkpRayHitCollector() {
+	// Dummy
+}
+
+
+ExtraDataList::ExtraDataList() {
 	// Dummy
 }
