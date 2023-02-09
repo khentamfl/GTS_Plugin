@@ -147,6 +147,8 @@ namespace Gts {
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!sizemanager.GetPreciseDamage()) {
 			return;
+		} if (!actor) {
+			return;
 		}
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
