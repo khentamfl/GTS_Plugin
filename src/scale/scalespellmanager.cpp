@@ -22,11 +22,8 @@ namespace Gts {
 			return;
 		}
 		if (actor->formID != 0x14) {
-			auto player = PlayerCharacter::GetSingleton();
-			float sizedifference = get_visual_scale(player)/get_visual_height(actor);
-			if (sizedifference >= 1.25) {
-				ApplySpellBonus(actor, actorscale);
-			}
+			float actorscale = get_visual_scale(actor);
+			ApplySpellBonus(actor, actorscale);
 		}
 	}
 
