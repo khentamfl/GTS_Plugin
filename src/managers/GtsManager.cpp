@@ -440,8 +440,6 @@ std::string GtsManager::DebugName() {
 // Poll for updates
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
-	
-
 	//auto ai = PC->GetActorRuntimeData().currentProcess;
 	//static Timer atttimer = Timer(5.00);
 	//auto charCont = PC->GetCharController();
@@ -475,10 +473,20 @@ void GtsManager::Update() {
 			continue;
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
-		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-			ClothManager::GetSingleton().CheckRip();
+		auto& sizemanager = SizeManager::GetSingleton();
+
+		if (sizemanager.GetPreciseDamage()) {
+			if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+				accuratedamage.DoAccurateCollision(actor);
+				ClothManager::GetSingleton().CheckRip();
+			}
 		}
-		accuratedamage.DoAccurateCollision(actor);
+		if (Runtime::GetBool("PreciseDamageOthers")) {
+			if (!actor->formID == 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
+				accuratedamage.DoAccurateCollision(actor);
+			}
+		}
+
 		float current_health_percentage = GetHealthPercentage(actor);
 		//log::info("Health% before scale: {}", current_health_percentage);
 		//log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
