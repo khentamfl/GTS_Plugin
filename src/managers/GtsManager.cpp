@@ -160,7 +160,10 @@ namespace {
 				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
 				bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
 			if (charProxyController) {
-				log::Info("{} Character Strength: {}", actor->GetDisplayFullNam(), charProxyController->characterStrength);
+				auto proxy = charProxyController->GetCharacterProxy();
+				if (proxy) {
+				log::info("{} Character Strength: {}", actor->GetDisplayFullName(), proxy.characterStrength);
+					}
 				}
 			}
 		}
@@ -459,6 +462,7 @@ void GtsManager::Update() {
 	auto ai = PC->GetActorRuntimeData().currentProcess;
 	static Timer atttimer = Timer(5.00);
 	   if (ai) {
+			log::info("Player Eye Level: {}", ai->cachedEyeLevel);
 	        auto highAi = ai->high;
 	        if (highAi && atttimer.ShouldRunFrame()) {
 	            //log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
