@@ -202,15 +202,7 @@ namespace Gts {
 			if (!node_b) {
 				return;
 			}
-			//float A_size = get_visual_scale(actor_a);
-			//float B_size = get_visual_scale(actor_b);
-			//float sizedifference = A_size/B_size;
-
 			auto node_name_a = node_a->name;
-			//if (sizedifference >= 1.33) {
-				//log::info("Size Difference Colliding: {} with: {}", name_a, name_b);
-				//inflictSizeDamage(actor_a, actor_b);
-			//}
 			if (!node_name_a.empty()) {
 				//log::info("  - Node A: {}", node_name_a.c_str());
 			}

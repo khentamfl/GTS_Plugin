@@ -32,7 +32,7 @@ namespace Gts {
 		auto target = GetTarget();
 		if (!target) {
 			return;
-		}
+		} 
 		AccurateDamage::GetSingleton().DoSizeDamage(caster, target, 10.0, 1.0);
 	}
 }
