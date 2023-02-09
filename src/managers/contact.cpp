@@ -193,7 +193,7 @@ namespace Gts {
 			if (!name_b) {
 				return;
 			}
-			//log::info("Colliding: {} with: {}", name_a, name_b);
+			log::info("Colliding: {} with: {}", name_a, name_b);
 			NiAVObject* node_a = getNodeFromCollidable(rigid_a);
 			if (!node_a) {
 				return;
@@ -207,7 +207,8 @@ namespace Gts {
 			float sizedifference = A_size/B_size;
 
 			auto node_name_a = node_a->name;
-			if (sizedifference >= 1.33) {
+			if (sizedifference >= 1.33 && A_size < 2.5) {
+				log::info("Size Difference Colliding: {} with: {}", name_a, name_b);
 				inflictSizeDamage(actor_a, actor_b);
 			}
 			if (!node_name_a.empty()) {
