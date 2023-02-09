@@ -473,10 +473,10 @@ void GtsManager::Update() {
 			continue;
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
-		//if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
 			accuratedamage.DoAccurateCollision(actor);
 			ClothManager::GetSingleton().CheckRip();
-		//}
+		}
 		float current_health_percentage = GetHealthPercentage(actor);
 		//log::info("Health% before scale: {}", current_health_percentage);
 		//log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
@@ -491,7 +491,7 @@ void GtsManager::Update() {
 		GameMode(actor);
 
 		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
-		if (timer.ShouldRunFrame() && SizeManager::GetSingleton().GetPreciseDamage()) {
+		if (timer.ShouldRunFrame()) {
 			ScaleSpellManager::GetSingleton().CheckSize(actor);
 		}
 	}
