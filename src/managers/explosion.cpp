@@ -16,7 +16,10 @@ namespace {
 		if (!actor) {
 			return;
 		}
-
+		float actorscale = get_visual_scale(actor);
+		if (actor->formID == 0x14) {
+			log::info("Explosion Actor Scale: {}", actorscale);
+		}
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
 			case FootEvent::Left:
@@ -44,8 +47,8 @@ namespace {
 			}
 			log::info("Base Explosion True, scale {}, radius: {}, scale: {}", explosion->radius * scale, explosion->imodRadius * scale, scale);
 			explosion->SetPosition(position);
-			explosion->radius *= scale;
-			explosion->imodRadius *= scale;
+			explosion->radius = scale;
+			explosion->imodRadius = scale;
 			explosion->unkB8 = nullptr;
 		}
 	}
