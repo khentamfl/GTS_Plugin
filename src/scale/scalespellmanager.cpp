@@ -1,5 +1,6 @@
-#include "scale/scale.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "scale/scalespellmanager.hpp"
+#include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "timer.hpp"
 
@@ -17,12 +18,15 @@ namespace Gts {
 		if (!actor || !actor->Is3DLoaded() || actor->IsDead()) {
 			return;
 		}
-		float actorscale = get_target_scale(actor);
 		if (SizeManager::GetSingleton().GetPreciseDamage() && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			return;
 		}
-		else if (actorscale >= 1.25) {
-			ApplySpellBonus(actor, actorscale);
+		if (actor->formID != 0x14) {
+			auto player = PlayerCharacter::GetSingleton();
+			float sizedifference = get_visual_scale(player)/get_visual_height(actor);
+			if (sizedifference >= 1.25) {
+				ApplySpellBonus(actor, actorscale);
+			}
 		}
 	}
 
