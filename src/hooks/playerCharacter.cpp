@@ -105,9 +105,8 @@ namespace Hooks
 	}
 
 	void Hook_PlayerCharacter::ProcessTracking(PlayerCharacter* a_this, float a_delta, NiAVObject* a_obj3D) {
-		log::info("Tracking, delta default: {}", a_delta);
-		a_delta = Runtime::GetFloat("ConversationCameraComp");
-		log::info("Tracking, delta adjusted: {}", a_delta);
+		float adjust = Runtime::GetFloat("ConversationCameraComp");
+		auto player = PlayerCharacter::GetSingleton()->Get3D();
 		_ProcessTracking(a_this, a_delta, a_obj3D);
 	}
 }

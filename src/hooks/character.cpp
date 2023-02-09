@@ -19,6 +19,7 @@ namespace Hooks
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
 		_Move = Vtbl.write_vfunc(REL::Relocate(0x0C8, 0x0C8, 0x0CA), Move);
+		_ProcessTracking = (Vtbl.write_vfunc(REL::Relocate(0x122, 0x122, 0x124), ProcessTracking));
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Character[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
@@ -95,5 +96,11 @@ namespace Hooks
 	void Hook_Character::Move(Character* a_this, float a_arg2, const NiPoint3& a_position) { // Override Movement Speed
 		float bonus = AttributeManager::AlterMovementSpeed(a_this, a_position);
 		return _Move(a_this, a_arg2, a_position * bonus);
+	}
+
+	void Hook_Character::ProcessTracking(Character* a_this, float a_delta, NiAVObject* a_obj3D) {
+		float adjust = Runtime::GetFloat("ConversationCameraComp");
+		auto player = PlayerCharacter::GetSingleton()->Get3D();
+		_ProcessTracking(a_this, a_delta, player);
 	}
 }
