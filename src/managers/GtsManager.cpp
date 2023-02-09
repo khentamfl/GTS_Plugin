@@ -454,14 +454,14 @@ void GtsManager::Update() {
 			auto proxy = charProxyController->GetCharacterProxy();
 				if (proxy) {
 					log::info("{} Character Strength: {}", PC->GetDisplayFullName(), proxy->characterStrength);
-					proxy->characterStrength = 5 * scale;
+					proxy->characterStrength = Runtime::GetFloat("ConversationCameraComp");
 				}
 			}
 		}
 		
 	   if (ai) {
 			log::info("Player Eye Level: {}", ai->cachedValues->cachedEyeLevel);
-			ai->cachedValues->cachedEyeLevel = -1.0 * scale;
+			ai->cachedValues->cachedEyeLevel = Runtime::GetFloat("ConversationCameraComp");
 	        auto highAi = ai->high;
 	        if (highAi && atttimer.ShouldRunFrame()) {
 	            //log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
