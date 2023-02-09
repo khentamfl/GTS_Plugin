@@ -46,10 +46,11 @@ namespace {
 				return;
 			}
 			log::info("Base Explosion True, scale {}, radius: {}, scale: {}", explosion->radius * scale, explosion->imodRadius * scale, scale);
-			explosion->SetPosition(position);
-			explosion->radius = scale;
-			explosion->imodRadius = scale;
-			explosion->unkB8 = nullptr;
+			explosion.EXPLOSION_RUNTIME_DATA_CONTENT().SetPosition(position);
+			explosion.EXPLOSION_RUNTIME_DATA_CONTENT().radius *= scale;
+			explosion.EXPLOSION_RUNTIME_DATA_CONTENT().imodRadius *= scale;
+			explosion.EXPLOSION_RUNTIME_DATA_CONTENT().unkB8 = nullptr;
+			explosion.EXPLOSION_RUNTIME_DATA_CONTENT().negativeVelocity *= 0.0;
 		}
 	}
 }
