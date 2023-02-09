@@ -381,16 +381,14 @@ namespace {
 				} else if (Runtime::HasMagicEffect(actor, "ResistShrinkPotion")) {
 					shrinkRate *= 0.25;
 				} 
-				if (actor->IsInCombat() && BalanceMode == 1.0) {
-					shrinkRate *= 0.0;
-				} if (Runtime::HasMagicEffect(actor, "explosiveGrowth1") || Runtime::HasMagicEffect(actor, "explosiveGrowth2") || Runtime::HasMagicEffect(actor, "explosiveGrowth3"))
+				if (Runtime::HasMagicEffect(actor, "explosiveGrowth1") || Runtime::HasMagicEffect(actor, "explosiveGrowth2") || Runtime::HasMagicEffect(actor, "explosiveGrowth3"))
 				{
 					shrinkRate *= 0.15;
 				}
-
-				
-				else if (actor->IsInCombat() && BalanceMode >= 2.0) {
-					shrinkRate *= 0.25;
+				if (actor->IsInCombat() && BalanceMode == 1.0) {
+					shrinkRate *= 0.0;
+				} else if (actor->IsInCombat() && BalanceMode >= 2.0) {
+					shrinkRate *= 0.15;
 				}
 
 				if (fabs(shrinkRate) <= 1e-6) {

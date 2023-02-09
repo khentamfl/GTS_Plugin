@@ -88,15 +88,18 @@ namespace {
 	}
 
 
-	void SizeModifications(Actor* giant, Actor* target, float HighHeels) {
+	void SizeModifications(Actor* giant, Actor* tiny, float HighHeels) {
 		float InstaCrushRequirement = 24.0;
 		float giantscale = get_visual_scale(giant);
-		float targetscale = get_visual_scale(target);
-		float size_difference = giantscale/targetscale;
+		float tinyscale = get_visual_scale(tiny);
+		float size_difference = giantscale/tinyscale;
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200;
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
 
-		if (!CrushManager::CanCrush(giant, target)) {
+		if (!CrushManager::CanCrush(giant, tiny)) {
+			return;
+		}
+		if (tiny == giant) {
 			return;
 		}
 
@@ -104,24 +107,24 @@ namespace {
 			InstaCrushRequirement = (18.0 / HighHeels) * Gigantism;
 		}
 
-		if (size_difference >= InstaCrushRequirement && !target->IsPlayerTeammate()) {
-			CrushManager::Crush(giant, target);
+		if (size_difference >= InstaCrushRequirement && !tiny->IsPlayerTeammate()) {
+			CrushManager::Crush(giant, tiny);
 		}
 
-		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != target && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
-			ShrinkActor(giant, 0.0014 * BonusShrink, 0.0);
+		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != tiny && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
+			ShrinkActor(tiny, 0.0014 * BonusShrink, 0.0);
 			Grow(giant, 0.0, 0.0004 * BonusShrink);
 			// ^ Augmentation for Growth Spurt: Steal size of enemies.
 		}
 
-		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat") && giant != target) {
+		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat") && giant != tiny) {
 			size_difference += 7.2; // Allows to crush same size targets.
 
 			if (Runtime::HasPerk(giant, "SmallMassiveThreatSizeSteal")) {
 				float HpRegen = GetMaxAV(giant, ActorValue::kHealth) * 0.005 * size_difference;
 				giant->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
-				ShrinkActor(giant, 0.0015 * BonusShrink, 0.0);
-				Grow(giant, 0.00045 * targetscale * BonusShrink, 0.0);
+				ShrinkActor(tiny, 0.0015 * BonusShrink, 0.0);
+				Grow(giant, 0.00045 * tinyscale * BonusShrink, 0.0);
 			}
 		}
 	}
