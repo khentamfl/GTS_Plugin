@@ -22,17 +22,18 @@ namespace Gts {
 	}
 
 	void SizeDamage::OnUpdate() { // This is used when actors have Size effect on them from magic effect, and when Precise Damage is off.
-		if (SizeManager::GetSingleton().GetPreciseDamage()) { // This method damages actors once per 0.10 sec because of Papyrus being 'amazing'.
-			return; 
-		}
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		} 
+		if (SizeManager::GetSingleton().GetPreciseDamage() && !Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) { // This method damages actors once per 0.10 sec because of Papyrus being 'amazing'.
+			return; 
+		}
 		auto target = GetTarget();
 		if (!target) {
 			return;
 		} if (caster == target) {
+			log::info("Caster == target, returning");
 			return;
 		}
 		float castersize = get_visual_scale(caster);
