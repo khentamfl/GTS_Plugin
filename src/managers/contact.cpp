@@ -175,7 +175,10 @@ namespace Gts {
 		if ((objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE)
 			|| (objref_a->GetFormType() == PlayerCharacter::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE)
 			|| (objref_a->GetFormType() == PlayerCharacter::FORMTYPE && objref_b->GetFormType() == Character::FORMTYPE)
-			|| (objref_a->GetFormType() == ActorCharacter::FORMTYPE && objref_b->GetFormType() == ActorCharacter::FORMTYPE)
+			|| (objref_a->GetFormType() == PlayerCharacter::FORMTYPE && objref_b->GetFormType() == TESNPC::FORMTYPE)
+			|| (objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == PlayerCharacter::FORMTYPE)
+			|| (objref_a->GetFormType() == Character::FORMTYPE && objref_b->GetFormType() == PlayerCharacter::FORMTYPE)
+			|| (objref_a->GetFormType() == TESNPC::FORMTYPE && objref_b->GetFormType() == PlayerCharacter::FORMTYPE)
 		) {
 			//log::info("Both collisions are actors");
 			Actor* actor_a = skyrim_cast<Actor*>(objref_a);
