@@ -252,6 +252,7 @@ namespace Gts {
 			case ActorValue::kAttackDamageMult: {
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
 				float damage_storage = 1.0 + ((bonusDamageMultiplier) * scale - 1.0);
+				return 1.0; // Remove later
 				if (scale > 1.0) {
 					return damage_storage;
 				} else {

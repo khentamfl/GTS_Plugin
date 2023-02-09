@@ -444,22 +444,21 @@ void GtsManager::Update() {
 	auto ai = PC->GetActorRuntimeData().currentProcess;
 	static Timer atttimer = Timer(5.00);
 	float scale = get_visual_scale(PC);
-	auto charCont = actor->GetCharController();
+	auto charCont = PC->GetCharController();
 		if (charCont) {
-			if (actor->formID == 0x14) {
-				//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
-				//log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
-				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
-				bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
-			if (charProxyController) {
-				auto proxy = charProxyController->GetCharacterProxy();
-					if (proxy) {
-						log::info("{} Character Strength: {}", actor->GetDisplayFullName(), proxy->characterStrength);
-						proxy->characterStrength = 5 * scale;
-					}
+			//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
+			//log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
+			//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
+			bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
+		if (charProxyController) {
+			auto proxy = charProxyController->GetCharacterProxy();
+				if (proxy) {
+					log::info("{} Character Strength: {}", PC->GetDisplayFullName(), proxy->characterStrength);
+					proxy->characterStrength = 5 * scale;
 				}
 			}
 		}
+		
 	   if (ai) {
 			log::info("Player Eye Level: {}", ai->cachedValues->cachedEyeLevel);
 			ai->cachedValues->cachedEyeLevel = -1.0 * scale;
