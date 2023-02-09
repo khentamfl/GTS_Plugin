@@ -366,19 +366,30 @@ namespace {
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
-			if ((actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) && !actor->IsInCombat()) {
+			if ((actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 				game_mode_int = 6; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 2.2);
 				} else if (QuestStage >= 60 && QuestStage < 70) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.6);
 				} else if (BalanceMode >= 2.0 && QuestStage > 70) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.25);
+					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.50);
 				}
 
 				if (Runtime::HasMagicEffect(actor, "EffectGrowthPotion")) {
 					shrinkRate *= 0.0;
 				} else if (Runtime::HasMagicEffect(actor, "ResistShrinkPotion")) {
+					shrinkRate *= 0.25;
+				} 
+				if (actor->IsInCombat() && BalanceMode == 1.0) {
+					shrinkRate *= 0.0;
+				} if (Runtime::HasMagicEffect(actor, "explosiveGrowth1") || Runtime::HasMagicEffect(actor, "explosiveGrowth2") || Runtime::HasMagicEffect(actor, "explosiveGrowth3"))
+				{
+					shrinkRate *= 0.15;
+				}
+
+				
+				else if (actor->IsInCombat() && BalanceMode >= 2.0) {
 					shrinkRate *= 0.25;
 				}
 

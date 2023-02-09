@@ -19,14 +19,14 @@ namespace {
 		if (!Runtime::HasPerk(Player, "GrowthPerk") || MultiplySlider == 0) {
 			return false;
 		}
-		int RNG = rand()% 50;
+		int RNG = rand()% 49 + 1;
 		RandomGrowth::GetSingleton().RandomizeGrowth(RNG);
 
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
 			MultiplySlider = 1.0; // Disable effect in Balance Mode, so slider is always 1.0
 		}
 		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		int Requirement = ((250 * MultiplySlider) * Gigantism) * SizeManager::GetSingleton().BalancedMode(); // Doubles random in Balance Mode
+		int Requirement = ((250 * MultiplySlider * SizeManager::GetSingleton().BalancedMode()) * Gigantism); // Doubles random in Balance Mode
 		int random = rand() % Requirement;
 		int decide_chance = 1;
 		if (random <= decide_chance) {
