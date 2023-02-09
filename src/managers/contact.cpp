@@ -222,7 +222,7 @@ namespace Gts {
 		// log::info("ContactPointCallback");
 	}
 
-	void ContactListener::ContactProcessCallback(hkpContactProcessEvent& a_event)
+	void ContactListener::ContactPointCallback(hkpContactPointEvent& a_event)
 	{
 		auto rigid_a = a_event.bodies[0];
 		if (!rigid_a) {
