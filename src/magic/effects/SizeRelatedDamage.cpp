@@ -33,7 +33,7 @@ namespace Gts {
 		if (!target) {
 			return;
 		} if (caster == target) {
-			log::info("Caster == target, returning");
+			//log::info("Caster == target, returning");
 			return;
 		}
 		float castersize = get_visual_scale(caster);

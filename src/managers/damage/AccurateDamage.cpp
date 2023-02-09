@@ -396,7 +396,7 @@ namespace Gts {
 		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
 		}
-		log::info("Doing size damage: {} to {}, Do Damage?: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), DoDamage);
+		//log::info("Doing size damage: {} to {}, Do Damage?: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), DoDamage);
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
