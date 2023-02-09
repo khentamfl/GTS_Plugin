@@ -21,6 +21,7 @@ namespace Hooks
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
 		_SetSize = Vtbl.write_vfunc(REL::Relocate(0x0D9, 0x0D9, 0x0DB), SetSize);
 		_Move = Vtbl.write_vfunc(REL::Relocate(0x0C8, 0x0C8, 0x0CA), Move);
+		_ProcessTracking = (Vtbl.write_vfunc(REL::Relocate(0x122, 0x122, 0x124), ProcessTracking));
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_PlayerCharacter[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
@@ -38,6 +39,12 @@ namespace Hooks
 			}
 		}
 		_HandleHealthDamage(a_this, a_attacker, a_damage);
+	}
+
+	void Hook_PlayerCharacter::ProcessTracking(PlayerCharacter* a_this, float a_delta, NiAVObject* a_obj3D)
+	{
+		log::info("Object Location: {}", a_obj3D->GetPosition());
+		_ProcessTracking(a_this, a_delta, a_obj3d);
 	}
 
 	void Hook_PlayerCharacter::AddPerk(PlayerCharacter* a_this, BGSPerk* a_perk, std::uint32_t a_rank) {
