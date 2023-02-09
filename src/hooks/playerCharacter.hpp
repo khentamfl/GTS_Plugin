@@ -35,7 +35,7 @@ namespace Hooks
 			static void Move(PlayerCharacter* a_this, float a_arg2, const NiPoint3& a_position);
 			static inline REL::Relocation<decltype(Move)> _Move;
 
-			static void ProcessTracking(PlayerCharacter* a_this, float a_delta, const NiAVObject* a_obj3D);
+			static void ProcessTracking(PlayerCharacter* a_this, float a_delta, NiAVObject* a_obj3D);
 			static inline REL::Relocation<decltype(ProcessTracking)> _ProcessTracking;
 	};
 }

@@ -152,15 +152,18 @@ namespace {
 			//perkspeed = clamp(0.80, 1.0, speedmultcalc); // Used as a bonus 20% MS if PC has perk.
 		}
 
-		/*auto charCont = actor->GetCharController();
+		auto charCont = actor->GetCharController();
 		if (charCont) {
 			if (actor->formID == 0x14) {
 				//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
-				log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
+				//log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
 				//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
+				bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
+			if (charProxyController) {
+				log::Info("{} Character Strength: {}", actor->GetDisplayFullNam(), charProxyController->characterStrength);
+				}
 			}
-			//bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
-		}*/
+		}
 
 		
 
