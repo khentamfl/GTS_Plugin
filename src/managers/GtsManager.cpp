@@ -440,15 +440,17 @@ std::string GtsManager::DebugName() {
 // Poll for updates
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
-	if (PC) {
-		log::info("EyeHeight Before: {}", PC->GetInfoRuntimeData().eyeHeight);
-		PC->GetInfoRuntimeData().eyeHeight = 120.5 + Runtime::GetFloat("ConversationCameraComp");
-		log::info("EyeHeight After: {}", PC->GetInfoRuntimeData().eyeHeight);
-	}
+	
 
 	auto ai = PC->GetActorRuntimeData().currentProcess;
 	static Timer atttimer = Timer(5.00);
 	auto charCont = PC->GetCharController();
+
+	if (PC && atttimer.ShouldRunFrame()) {
+		log::info("EyeHeight Before: {}", PC->GetInfoRuntimeData().eyeHeight);
+		PC->GetInfoRuntimeData().eyeHeight = 120.5 + Runtime::GetFloat("ConversationCameraComp");
+		log::info("EyeHeight After: {}", PC->GetInfoRuntimeData().eyeHeight);
+	}
 		/*if (charCont) {
 			//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
 			//log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
