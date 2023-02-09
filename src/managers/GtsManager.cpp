@@ -442,7 +442,7 @@ void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 	if (PC) {
 		log::info("EyeHeight Before: {}", PC->GetInfoRuntimeData().eyeHeight);
-		PC->GetInfoRuntimeData().eyeHeight += Runtime::GetFloat("ConversationCameraComp");
+		PC->GetInfoRuntimeData().eyeHeight = 120.5 + Runtime::GetFloat("ConversationCameraComp");
 		log::info("EyeHeight After: {}", PC->GetInfoRuntimeData().eyeHeight);
 	}
 
