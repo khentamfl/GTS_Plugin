@@ -209,6 +209,9 @@ namespace Gts {
 			case ActorValue::kHealth: {
 				float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
 				float power = (bonusHPMultiplier/BalancedMode);
+				if (actor->formID != 0x14) {
+					return scale;
+				}
 				if (scale > 1.0) {
 					return power*scale + 1.0 - power;
 				} else {
@@ -218,6 +221,9 @@ namespace Gts {
 			case ActorValue::kCarryWeight: {
 				float bonusCarryWeightMultiplier = Runtime::GetFloatOr("bonusCarryWeightMultiplier", 1.0);
 				float power = (bonusCarryWeightMultiplier/BalancedMode);
+				if (actor->formID != 0x14) {
+					return scale;
+				}
 				if (scale > 1.0) {
 					return power*scale + 1.0 - power;
 				} else {
@@ -310,6 +316,9 @@ namespace Gts {
 			case ActorValue::kHealth: {
 				float scale = get_visual_scale(actor);
 				auto transient = Transient::GetSingleton().GetActorData(actor);
+				if (actor->formID != 0x14) {
+					bonus = scale;
+				}
 				if (scale > 1.0) {
 					bonus = attributes.GetAttributeBonus(actor, av);
 				} else {
