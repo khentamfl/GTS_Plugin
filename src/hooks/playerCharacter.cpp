@@ -44,7 +44,7 @@ namespace Hooks
 	void Hook_PlayerCharacter::ProcessTracking(PlayerCharacter* a_this, float a_delta, NiAVObject* a_obj3D)
 	{
 		if (a_obj3D) {
-			log::info("Location L: {}, Location W: {}", Vector2Str(a_obj3D->local), Vector2Str(a_obj3D->world));
+			log::info("Obj Name: {}, Location L: x {}, y {}, z {}, Location W: x{}, y {}, z {}", a_obj3D->GetUserData()->GetActorOwner()->GetFullName(),a_obj3D->local.x, a_obj3D->local.y, a_obj3D->local.z, a_obj3D->world.x,a_obj3D->world.y,a_obj3D->world.z);
 		}
 		_ProcessTracking(a_this, a_delta, a_obj3D);
 	}
