@@ -443,9 +443,8 @@ void GtsManager::Update() {
 
 	auto ai = PC->GetActorRuntimeData().currentProcess;
 	static Timer atttimer = Timer(5.00);
-	float scale = get_visual_scale(PC);
 	auto charCont = PC->GetCharController();
-		if (charCont) {
+		/*if (charCont) {
 			//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
 			//log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
 			//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
@@ -453,22 +452,18 @@ void GtsManager::Update() {
 		if (charProxyController) {
 			auto proxy = charProxyController->GetCharacterProxy();
 				if (proxy) {
-					log::info("{} Character Strength: {}", PC->GetDisplayFullName(), proxy->characterStrength);
 					proxy->characterStrength = Runtime::GetFloat("ConversationCameraComp");
 				}
 			}
 		}
-		
 	   if (ai) {
-			log::info("Player Eye Level: {}", ai->cachedValues->cachedEyeLevel);
-			ai->cachedValues->cachedEyeLevel = Runtime::GetFloat("ConversationCameraComp");
 	        auto highAi = ai->high;
 	        if (highAi && atttimer.ShouldRunFrame()) {
 	            //log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
 				//log::info("Player Melee Damage: {}, Unarmed Damage: {}", GetAV(PC, ActorValue::kMeleeDamage), GetAV(PC, ActorValue::kUnarmedDamage));
 				//log::info("{}, Sneak Power: {}, Sneak Mod: {}, Noise Mult: {}", PC->GetDisplayFullName(), GetAV(PC, ActorValue::kSneakingPowerModifier), GetAV(PC, ActorValue::kSneakingModifier), GetAV(PC, ActorValue::kMovementNoiseMult));
 	        }
-	   }
+	   }*/
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
