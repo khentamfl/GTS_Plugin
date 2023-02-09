@@ -102,8 +102,8 @@ namespace {
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
 			SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
 		} else {
-			SetINIFloat("fJumpHeightMin", 76.0 * power);
-			SetINIFloat("fJumpFallHeightMin", 600.0 * power);
+			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
+			SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
 		}
 	}
 
