@@ -31,7 +31,6 @@ namespace Hooks
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
 				}
-				a_damage *= 0.05; // Decrease received damage
 			}
 		}
 		_HandleHealthDamage(a_this, a_attacker, a_damage);  // Just reports the value, can't override it.
