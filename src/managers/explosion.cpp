@@ -28,7 +28,6 @@ namespace {
 		}
 
 		if (base_explosion) {
-			log::info("Base Explosion True");
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
 			if (!instance_ptr) {
 				return;
