@@ -56,6 +56,47 @@ namespace {
 		}
 	}
 
+	void SMTCrushCheck(Actor* Caster, Actor* Target) {
+		if (Caster == Target) {
+			return;
+		}
+		auto& persistent = Persistent::GetSingleton();
+		if (persistent.GetData(Caster)) {
+			if (persistent.GetData(Caster)->smt_run_speed >= 1.0) {
+			float caster_scale = get_target_scale(Caster);
+			float target_scale = get_target_scale(Target);
+			float Multiplier = (caster_scale/target_scale);
+			float CasterHp = Caster->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
+			float TargetHp = Target->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
+			if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
+				CrushManager::Crush(Caster, Target);
+				shake_camera(Caster, 0.75 * caster_scale, 0.45);
+				ConsoleLog::GetSingleton()->Print("%s was instantly turned into mush by the body of %s", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
+				if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
+					AttributeManager::GetSingleton().OverrideSMTBonus(0.65); // Reduce speed after crush
+				} else if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
+					AttributeManager::GetSingleton().OverrideSMTBonus(0.35); // Reduce more speed after crush
+				}
+			} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
+				PushActorAway(Caster, Target, 0.8);
+				PushActorAway(Target, Caster, 0.2);
+				Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
+				Target->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75);
+				Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);
+				shake_camera(Caster, 2.35, 0.5);
+				Runtime::PlaySound("lJumpLand", Caster, 0.5, 1.0);
+
+				std::string text_a = Target->GetDisplayFullName();
+				std::string text_b = " is too tough to be crushed";
+				std::string Message = text_a + text_b;
+				DebugNotification(Message.c_str(), 0, true);
+
+				AttributeManager::GetSingleton().OverrideSMTBonus(0.75); // Less speed loss after force crush
+				}
+			}
+		}
+	}
+
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
@@ -109,6 +150,7 @@ namespace {
 
 		if (size_difference >= InstaCrushRequirement && !tiny->IsPlayerTeammate()) {
 			CrushManager::Crush(giant, tiny);
+			KnockAreaEffect(caster, 2, 16 * size_difference);
 		}
 
 		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != tiny && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
@@ -359,6 +401,7 @@ namespace Gts {
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 
 		SizeModifications(giant, tiny, highheels);
+		SMTCrushCheck(giant, tiny);
 
 		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
@@ -384,3 +427,4 @@ namespace Gts {
 		DamageAV(tiny, ActorValue::kHealth, result);
 	}
 }
+

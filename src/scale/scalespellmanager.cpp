@@ -18,7 +18,7 @@ namespace Gts {
 		if (!actor || !actor->Is3DLoaded() || actor->IsDead()) {
 			return;
 		}
-		if (SizeManager::GetSingleton().GetPreciseDamage() && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+		if (SizeManager::GetSingleton().GetPreciseDamage()) {
 			return;
 		}
 		if (actor->formID != 0x14) {

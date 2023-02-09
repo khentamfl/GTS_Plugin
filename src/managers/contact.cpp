@@ -1,5 +1,6 @@
 #include "managers/contact.hpp"
 #include "data/persistent.hpp"
+#include "managers/damage/AccurateDamage.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "scale/scale.hpp"
@@ -81,7 +82,15 @@ namespace {
 		return hkpCollidable ? getNodeFromCollidable(hkpCollidable) : nullptr;
 	}
 
-
+	void inflictSizeDamage(Actor* giant, Actor* tiny) {
+		float movementFactor = 1.0;
+		if (giant->IsSneaking()) {
+			movementFactor *= 0.5;
+		} if (giant->AsActorState()->IsSprinting()) {
+			movementFactor *= 1.75;
+		} 
+		AccurateDamage::GetSingleton().DoSizeDamage(giant, tiny, movementFactor, 1.0);
+	}
 
 	void print_collision_groups(std::uint64_t flags) {
 		std::map<std::string, COL_LAYER> named_layers {
@@ -190,7 +199,14 @@ namespace Gts {
 			if (!node_b) {
 				return;
 			}
+			float A_size = get_visual_scale(name_a);
+			float B_size = get_visual_scale(name_b);
+			float sizedifference = A_size/B_size;
+
 			auto node_name_a = node_a->name;
+			if (sizedifference >= 1.33) {
+				inflictSizeDamage(name_a, name_b);
+			}
 			if (!node_name_a.empty()) {
 				//log::info("  - Node A: {}", node_name_a.c_str());
 			}
