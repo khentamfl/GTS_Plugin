@@ -442,15 +442,10 @@ void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 	
 
-	auto ai = PC->GetActorRuntimeData().currentProcess;
-	static Timer atttimer = Timer(5.00);
-	auto charCont = PC->GetCharController();
+	//auto ai = PC->GetActorRuntimeData().currentProcess;
+	//static Timer atttimer = Timer(5.00);
+	//auto charCont = PC->GetCharController();
 
-	if (PC && atttimer.ShouldRunFrame()) {
-		log::info("EyeHeight Before: {}", PC->GetInfoRuntimeData().eyeHeight);
-		PC->GetInfoRuntimeData().eyeHeight = 120.5 + Runtime::GetFloat("ConversationCameraComp");
-		log::info("EyeHeight After: {}", PC->GetInfoRuntimeData().eyeHeight);
-	}
 		/*if (charCont) {
 			//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
 			//log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
@@ -481,9 +476,9 @@ void GtsManager::Update() {
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-			accuratedamage.DoAccurateCollision(actor);
 			ClothManager::GetSingleton().CheckRip();
 		}
+		accuratedamage.DoAccurateCollision(actor);
 		float current_health_percentage = GetHealthPercentage(actor);
 		//log::info("Health% before scale: {}", current_health_percentage);
 		//log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));

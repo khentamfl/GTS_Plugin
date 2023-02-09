@@ -217,6 +217,19 @@ namespace Gts {
 
 		auto leftToe = find_node(actor, leftToeLookup);
 		auto rightToe = find_node(actor, rightToeLookup);
+		if (!leftFoot) {
+			return;
+		} if (!rightFoot) {
+			return;
+		} if (!leftCalf) {
+			return;
+		} if (!rightCalf) {
+			return;
+		} if (!leftToe) {
+			return;
+		} if (!rightToe) {
+			return; // CTD protection attempts
+		}
 
 		NiMatrix3 leftRotMat;
 		{
@@ -372,10 +385,7 @@ namespace Gts {
 	}
 
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult) { // Applies damage and crushing
-		auto& sizemanager = SizeManager::GetSingleton();
-		if (!sizemanager.GetPreciseDamage()) {
-			return;
-		} if (!giant) {
+		if (!giant) {
 			return;
 		} if (!tiny) {
 			return;

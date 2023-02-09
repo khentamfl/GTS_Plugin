@@ -172,14 +172,7 @@ namespace Gts {
 		if (!objref_b) {
 			return;
 		}
-		if ((objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE)
-			|| (objref_a->GetFormType() == PlayerCharacter::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE)
-			|| (objref_a->GetFormType() == PlayerCharacter::FORMTYPE && objref_b->GetFormType() == Character::FORMTYPE)
-			|| (objref_a->GetFormType() == PlayerCharacter::FORMTYPE && objref_b->GetFormType() == TESNPC::FORMTYPE)
-			|| (objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == PlayerCharacter::FORMTYPE)
-			|| (objref_a->GetFormType() == Character::FORMTYPE && objref_b->GetFormType() == PlayerCharacter::FORMTYPE)
-			|| (objref_a->GetFormType() == TESNPC::FORMTYPE && objref_b->GetFormType() == PlayerCharacter::FORMTYPE)
-		) {
+		if (objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE) {
 			//log::info("Both collisions are actors");
 			Actor* actor_a = skyrim_cast<Actor*>(objref_a);
 			if (!actor_a) {
@@ -200,7 +193,7 @@ namespace Gts {
 			if (!name_b) {
 				return;
 			}
-			log::info("Colliding: {} with: {}", name_a, name_b);
+			//log::info("Colliding: {} with: {}", name_a, name_b);
 			NiAVObject* node_a = getNodeFromCollidable(rigid_a);
 			if (!node_a) {
 				return;
@@ -209,15 +202,15 @@ namespace Gts {
 			if (!node_b) {
 				return;
 			}
-			float A_size = get_visual_scale(actor_a);
-			float B_size = get_visual_scale(actor_b);
-			float sizedifference = A_size/B_size;
+			//float A_size = get_visual_scale(actor_a);
+			//float B_size = get_visual_scale(actor_b);
+			//float sizedifference = A_size/B_size;
 
 			auto node_name_a = node_a->name;
-			if (sizedifference >= 1.33) {
-				log::info("Size Difference Colliding: {} with: {}", name_a, name_b);
-				inflictSizeDamage(actor_a, actor_b);
-			}
+			//if (sizedifference >= 1.33) {
+				//log::info("Size Difference Colliding: {} with: {}", name_a, name_b);
+				//inflictSizeDamage(actor_a, actor_b);
+			//}
 			if (!node_name_a.empty()) {
 				//log::info("  - Node A: {}", node_name_a.c_str());
 			}
