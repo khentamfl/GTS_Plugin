@@ -172,7 +172,7 @@ namespace Gts {
 		if (!objref_b) {
 			return;
 		}
-		if ((objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE) || 
+		if ((objref_a->GetFormType() == Actor::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE)
 			|| (objref_a->GetFormType() == PlayerCharacter::FORMTYPE && objref_b->GetFormType() == Actor::FORMTYPE)
 			|| (objref_a->GetFormType() == PlayerCharacter::FORMTYPE && objref_b->GetFormType() == Character::FORMTYPE)
 		) {
