@@ -16,10 +16,6 @@ namespace {
 		if (!actor) {
 			return;
 		}
-		float actorscale = get_visual_scale(actor);
-		if (actor->formID == 0x14) {
-			log::info("Explosion Actor Scale: {}", actorscale);
-		}
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
 			case FootEvent::Left:
@@ -45,7 +41,6 @@ namespace {
 			if (!explosion) {
 				return;
 			}
-			log::info("Base Explosion True, scale {}, radius: {}, scale: {}", explosion->GetExplosionRuntimeData().radius * scale, explosion->GetExplosionRuntimeData().imodRadius * scale, scale);
 			explosion->SetPosition(position);
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
@@ -97,21 +92,18 @@ namespace Gts {
 				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05*impact.scale - hh_offset)); // Shift up a little then subtract the hh offset
 				NiPoint3 ray_direction(0.0, 0.0, -1.0);
 				bool success = false;
-				float ray_length = meter_to_unit(std::max(1.05*impact.scale, 1.05));
+				float ray_length = meter_to_unit(std::max(1.25*impact.scale, 1.25));
 				NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, ray_length, success);
 
 				if (!success) {
 					explosion_pos = foot_location;
 					explosion_pos.z = actor->GetPosition().z;
-					log::info("Explosion Fail");
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
 					make_explosion_at(impact.kind, actor, explosion_pos, scale);
-					log::info("PC Explosion Make_Explosion_At attempt");
 				}
 				if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
 					make_explosion_at(impact.kind, actor, explosion_pos, scale);
-					log::info("NPC Explosion Make_Explosion_At attempt");
 				}
 			}
 		}
