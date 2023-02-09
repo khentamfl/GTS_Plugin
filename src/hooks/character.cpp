@@ -100,6 +100,9 @@ namespace Hooks
 
 	void Hook_Character::ProcessTracking(Character* a_this, float a_delta, NiAVObject* a_obj3D) {
 		float adjust = Runtime::GetFloat("ConversationCameraComp");
+		if (a_this) {
+			log::info("{} Is head-tracking the Player", a_this->GetDisplayFullName());
+		}
 		auto player = PlayerCharacter::GetSingleton()->Get3D();
 		_ProcessTracking(a_this, a_delta, player);
 	}

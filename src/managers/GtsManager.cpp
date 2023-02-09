@@ -473,10 +473,10 @@ void GtsManager::Update() {
 			continue;
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
-		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+		//if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
 			accuratedamage.DoAccurateCollision(actor);
 			ClothManager::GetSingleton().CheckRip();
-		}
+		//}
 		float current_health_percentage = GetHealthPercentage(actor);
 		//log::info("Health% before scale: {}", current_health_percentage);
 		//log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
