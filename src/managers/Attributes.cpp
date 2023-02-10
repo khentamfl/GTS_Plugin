@@ -255,9 +255,9 @@ namespace Gts {
 				}
 			}
 			case ActorValue::kAttackDamageMult: {
+				
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
 				float damage_storage = 1.0 + ((bonusDamageMultiplier) * scale - 1.0);
-				return 1.0;
 				if (scale > 1.0) {
 					return damage_storage;
 				} else {
@@ -290,10 +290,6 @@ namespace Gts {
 				if (transient != nullptr) {
 					transient->carryweight_boost = (originalValue * bonus) - originalValue;
 				}
-				break;
-			}
-			case ActorValue::kAttackDamageMult: {
-				bonus = attributes.GetAttributeBonus(actor, av);
 				break;
 			}
 			case ActorValue::kMovementNoiseMult: {

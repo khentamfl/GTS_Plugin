@@ -1,4 +1,5 @@
 #include "hooks/main.hpp"
+#include "managers/Attributes.hpp"
 #include "events.hpp"
 #include "data/time.hpp"
 #include "data/plugin.hpp"
@@ -11,9 +12,20 @@ using namespace Gts;
 
 namespace {
 	void PopulateHook(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon) {
+		//auto& attributes = AttributeManager::GetSingleton();
+		//if (Attributes) {
+			//a_this->totalDamage *= GetAttributeBonus(a_aggressor, ActorValue::kAttackDamageMult);
+		//}
+		a_this->totalDamage = 0;
 		log::info("totalDamage: {}", a_this->totalDamage);
 	}
+
+	//bool CheckHealthGate(Actor* receiver, float damage) {
+
+	//}
 }
+
+
 
 namespace Hooks
 {
