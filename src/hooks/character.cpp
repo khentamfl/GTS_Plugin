@@ -30,6 +30,7 @@ namespace Hooks
 	void Hook_Character::HandleHealthDamage(Character* a_this, Character* a_attacker, float a_damage) {
 		if (a_attacker) {
 			float damage = (a_damage * AttributeManager::GetSingleton().GetAttributeBonus(a_attacker, ActorValue::kAttackDamageMult)) - a_damage;
+			log::info("damage: {}", damage);
 			if (damage > 0) {
 				DamageAV(a_this, ActorValue::kHealth, damage);
 				log::info("Bonus Damage: {}", damage);
