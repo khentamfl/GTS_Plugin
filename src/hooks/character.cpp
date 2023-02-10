@@ -31,10 +31,10 @@ namespace Hooks
 		if (a_attacker) {
 			float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(a_attacker, ActorValue::kAttackDamageMult);
 			float damage = (a_damage * damagemult) - a_damage;
-			log::info("a_damage: {}, damage: {}, damagemult: {}", a_damage, damage, damagemult);
 			if (damage < 0) {
-				DamageAV(a_this, ActorValue::kHealth, -damage);
-				log::info("Bonus Damage: {}", damage);
+				DamageAV(a_this, ActorValue::kHealth, -damage); // Damage hp
+			} if (damage > 0) {
+				DamageAV(a_this, ActorValue::kHealth, damage); // Restore hp
 			}
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);

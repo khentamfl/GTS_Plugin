@@ -1,6 +1,7 @@
 #include "managers/hitmanager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/ShrinkToNothingManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
@@ -83,12 +84,12 @@ namespace Gts {
 			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 2.0;
 			} if (hitName.find("Bow") == std::string::npos) {
-				shake_camera(attacker, size_difference * 0.10, 0.35);
+				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
 			PushActorAway(attacker, receiver, size_difference);
 		}
 		if (size_difference >= 22.0 && GetAV(receiver, ActorValue::kHealth) <= 1.0) {
-			CrushManager::Crush(attacker, receiver);
+			ShrinkToNothingManager::Shrink(attacker, receiver);
 		}
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {

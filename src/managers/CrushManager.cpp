@@ -65,7 +65,6 @@ namespace {
 				Rate *= 2.0;
 			}
 			CrushGrow(caster, 0, Rate);
-			log::info("Caster: {}, Growth Value: {}", caster->GetDisplayFullName(), Rate);
 		}
 		PleasureText(caster);
 	}
