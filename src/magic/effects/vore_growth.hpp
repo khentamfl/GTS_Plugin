@@ -20,7 +20,7 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-			void VoreRegeneration(float power);
+			void VoreRegeneration(Actor* Caster);
 			void VoreBuffAttributes();
 
 		private:

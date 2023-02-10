@@ -40,7 +40,7 @@ namespace Gts {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
 		log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
-		VoreRegeneration(1.0);
+		VoreRegeneration(caster);
 		Grow(caster, 0, BASE_POWER * bonus);
 	}
 
@@ -50,23 +50,13 @@ namespace Gts {
 	}
 
 
-	void VoreGrowth::VoreRegeneration(float power) {
-
-		auto Caster = GetCaster();
-		if (!Caster) { // Don't apply bonuses if caster is not player.
-			return;
-		} 
-		auto Target = GetTarget();
-		if (!Target) { // Don't apply bonuses if caster is not player.
-			return;
-		}
-
+	void VoreGrowth::VoreRegeneration(Actor* Caster) {
 		float HpRegen = GetMaxAV(Caster, ActorValue::kHealth) *  0.00015;
 		float SpRegen = GetMaxAV(Caster, ActorValue::kStamina) * 0.00030;
 
-		if (Runtime::HasPerk(Caster, "VorePerkRegeneration")) {
-			Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale() * power);
-			Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale() * power);
+		if (Runtime::HasPerkTeam(Caster, "VorePerkRegeneration")) {
+			Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
+			Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
 		}
 	}
 
