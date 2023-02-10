@@ -210,8 +210,6 @@ namespace Gts {
 		if (scale <= 0) {
 			scale = 1.0;
 		}
-		log::info("Scale of {} is {}", actor->GetDisplayFullName(), scale);
-
 		switch (av) {
 			case ActorValue::kHealth: {
 				float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
@@ -323,7 +321,6 @@ namespace Gts {
 					scale = 1.0;
 				}
 				auto transient = Transient::GetSingleton().GetActorData(actor);
-				log::info("Health for {}, scale: {}",actor->GetDisplayFullName(), get_visual_scale(actor));
 				if (scale > 1.0) {
 					bonus = attributes.GetAttributeBonus(actor, av);
 				} else {
