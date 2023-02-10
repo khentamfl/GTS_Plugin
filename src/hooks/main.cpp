@@ -16,8 +16,11 @@ namespace {
 		//if (Attributes) {
 			//a_this->totalDamage *= GetAttributeBonus(a_aggressor, ActorValue::kAttackDamageMult);
 		//}
-		a_this->totalDamage = 0;
-		log::info("totalDamage: {}", a_this->totalDamage);
+		log::info("Before: totalDamage: {}, physical: {}, bonusHealthDamageMult: {}", a_this->totalDamage, a_this->physicalDamage, a_this->bonusHealthDamageMult);
+		a_this->totalDamage *= 0;
+		a_this->physicalDamage *= 0;
+		a_this->bonusHealthDamageMult *= 0;
+		log::info("After: totalDamage: {}, physical: {}, bonusHealthDamageMult: {}", a_this->totalDamage, a_this->physicalDamage, a_this->bonusHealthDamageMult);
 	}
 
 	//bool CheckHealthGate(Actor* receiver, float damage) {
