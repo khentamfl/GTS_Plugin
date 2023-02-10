@@ -14,7 +14,7 @@ namespace {
 	void PopulateHook(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon) {
 		//auto& attributes = AttributeManager::GetSingleton();
 		//if (Attributes) {
-			//a_this->totalDamage *= GetAttributeBonus(a_aggressor, ActorValue::kAttackDamageMult);
+		//a_this->totalDamage *= GetAttributeBonus(a_aggressor, ActorValue::kAttackDamageMult);
 		//}
 		log::info("Before: Att: {}, totalDamage: {}, physical: {}, bonusHealthDamageMult: {}, targetedLimbDamage: {}", a_aggressor->GetDisplayFullName(), a_this->totalDamage, a_this->physicalDamage, a_this->bonusHealthDamageMult, a_this->targetedLimbDamage);
 		a_this->totalDamage *= 0;
@@ -101,22 +101,46 @@ namespace Hooks
 	}
 
 	void Hook_MainUpdate::PopulateHook1(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon) {
+		if (a_target) {
+			log::info("GetPercentageAV1 Before: {}", GetPercentageAV(a_target, ActorValue::kHealth));
+		}
 		_PopulateHook1(a_this, a_aggressor, a_target, a_weapon);
 		PopulateHook(a_this, a_aggressor, a_target, a_weapon);
+		if (a_target) {
+			log::info("GetPercentageAV1 After: {}", GetPercentageAV(a_target, ActorValue::kHealth));
+		}
 	}
 
 	void Hook_MainUpdate::PopulateHook2(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon) {
+		if (a_target) {
+			log::info("GetPercentageAV2 Before: {}", GetPercentageAV(a_target, ActorValue::kHealth));
+		}
 		_PopulateHook2(a_this, a_aggressor, a_target, a_weapon);
 		PopulateHook(a_this, a_aggressor, a_target, a_weapon);
+		if (a_target) {
+			log::info("GetPercentageAV2 After: {}", GetPercentageAV(a_target, ActorValue::kHealth));
+		}
 	}
 
 	void Hook_MainUpdate::PopulateHook3(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon) {
+		if (a_target) {
+			log::info("GetPercentageAV3 Before: {}", GetPercentageAV(a_target, ActorValue::kHealth));
+		}
 		_PopulateHook3(a_this, a_aggressor, a_target, a_weapon);
 		PopulateHook(a_this, a_aggressor, a_target, a_weapon);
+		if (a_target) {
+			log::info("GetPercentageAV3 After: {}", GetPercentageAV(a_target, ActorValue::kHealth));
+		}
 	}
 
 	void Hook_MainUpdate::PopulateHook4(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon) {
+		if (a_target) {
+			log::info("GetPercentageAV4 Before: {}", GetPercentageAV(a_target, ActorValue::kHealth));
+		}
 		_PopulateHook4(a_this, a_aggressor, a_target, a_weapon);
 		PopulateHook(a_this, a_aggressor, a_target, a_weapon);
+		if (a_target) {
+			log::info("GetPercentageAV4 After: {}", GetPercentageAV(a_target, ActorValue::kHealth));
+		}
 	}
 }
