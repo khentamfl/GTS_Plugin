@@ -82,19 +82,6 @@ namespace {
 		return hkpCollidable ? getNodeFromCollidable(hkpCollidable) : nullptr;
 	}
 
-	void inflictSizeDamage(Actor* giant, Actor* tiny) {
-		if (giant == tiny) {
-			return;
-		}
-		float movementFactor = 1.0;
-		if (giant->IsSneaking()) {
-			movementFactor *= 0.5;
-		} if (giant->AsActorState()->IsSprinting()) {
-			movementFactor *= 1.75;
-		} 
-		AccurateDamage::GetSingleton().DoSizeDamage(giant, tiny, movementFactor, 1.0, true);
-	}
-
 	void print_collision_groups(std::uint64_t flags) {
 		std::map<std::string, COL_LAYER> named_layers {
 			{ "kStatic", COL_LAYER::kStatic },

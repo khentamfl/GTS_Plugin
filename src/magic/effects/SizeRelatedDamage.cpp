@@ -39,6 +39,12 @@ namespace Gts {
 		float castersize = get_visual_scale(caster);
 		float targetsize = get_visual_scale(target);
 		float sizedifference = castersize/targetsize;
-		AccurateDamage::GetSingleton().DoSizeDamage(caster, target, 0, 0, false);
+		if (Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
+			sizedifference += 4.0;
+		}
+
+		if (sizedifference >= 1.5) { 
+			AccurateDamage::GetSingleton().DoSizeDamage(caster, target, 0, 0, false);
+		}
 	}
 }

@@ -102,8 +102,8 @@ namespace {
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
 			SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
 		} else {
-			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
-			SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
+			SetINIFloat("fJumpHeightMin", 76.0 * power);
+			SetINIFloat("fJumpFallHeightMin", 600.0 * power);
 		}
 	}
 
@@ -204,14 +204,12 @@ namespace Gts {
 
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
+		log::info("Scale of {} is {}", actor->GetDisplayFullName(), scale);
 
 		switch (av) {
 			case ActorValue::kHealth: {
 				float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
 				float power = (bonusHPMultiplier/BalancedMode);
-				if (actor->formID != 0x14) {
-					return scale;
-				}
 				if (scale > 1.0) {
 					return power*scale + 1.0 - power;
 				} else {
@@ -221,9 +219,6 @@ namespace Gts {
 			case ActorValue::kCarryWeight: {
 				float bonusCarryWeightMultiplier = Runtime::GetFloatOr("bonusCarryWeightMultiplier", 1.0);
 				float power = (bonusCarryWeightMultiplier/BalancedMode);
-				if (actor->formID != 0x14) {
-					return scale;
-				}
 				if (scale > 1.0) {
 					return power*scale + 1.0 - power;
 				} else {
@@ -258,7 +253,7 @@ namespace Gts {
 			case ActorValue::kAttackDamageMult: {
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
 				float damage_storage = 1.0 + ((bonusDamageMultiplier) * scale - 1.0);
-				return 1.0; // Remove later
+				return 1.0;
 				if (scale > 1.0) {
 					return damage_storage;
 				} else {
@@ -316,9 +311,7 @@ namespace Gts {
 			case ActorValue::kHealth: {
 				float scale = get_visual_scale(actor);
 				auto transient = Transient::GetSingleton().GetActorData(actor);
-				if (actor->formID != 0x14) {
-					bonus = scale;
-				}
+				log::info("Health for {}, scale: {}",actor->GetDisplayFullName(), get_visual_scale(actor));
 				if (scale > 1.0) {
 					bonus = attributes.GetAttributeBonus(actor, av);
 				} else {
