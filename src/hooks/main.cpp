@@ -16,12 +16,14 @@ namespace {
 		//if (Attributes) {
 		//a_this->totalDamage *= GetAttributeBonus(a_aggressor, ActorValue::kAttackDamageMult);
 		//}
-		log::info("Before: Att: {}, totalDamage: {}, physical: {}, bonusHealthDamageMult: {}, targetedLimbDamage: {}", a_aggressor->GetDisplayFullName(), a_this->totalDamage, a_this->physicalDamage, a_this->bonusHealthDamageMult, a_this->targetedLimbDamage);
+		//log::info("Actor {} HP before: {}", a_target->GetDisplayFullName(), a_target->GetActorValue(ActorValue::kHealth));
+		//log::info("Before: Att: {}, totalDamage: {}, physical: {}, bonusHealthDamageMult: {}, targetedLimbDamage: {}", a_aggressor->GetDisplayFullName(), a_this->totalDamage, a_this->physicalDamage, a_this->bonusHealthDamageMult, a_this->targetedLimbDamage);
 		a_this->totalDamage *= 0;
 		a_this->physicalDamage *= 0;
 		a_this->bonusHealthDamageMult *= 0;
 		a_this->targetedLimbDamage *= 0;
-		log::info("After: Att: {}, totalDamage: {}, physical: {}, bonusHealthDamageMult: {}, targetedLimbDamage: {}", a_aggressor->GetDisplayFullName(), a_this->totalDamage, a_this->physicalDamage, a_this->bonusHealthDamageMult, a_this->targetedLimbDamage);
+		//log::info("Actor {} HP After: {}", a_target->GetDisplayFullName(), a_target->GetActorValue(ActorValue::kHealth));
+		//log::info("After: Att: {}, totalDamage: {}, physical: {}, bonusHealthDamageMult: {}, targetedLimbDamage: {}", a_aggressor->GetDisplayFullName(), a_this->totalDamage, a_this->physicalDamage, a_this->bonusHealthDamageMult, a_this->targetedLimbDamage);
 	}
 
 	//bool CheckHealthGate(Actor* receiver, float damage) {
@@ -104,6 +106,10 @@ namespace Hooks
 		if (a_target) {
 			log::info("GetPercentageAV1 Before: {}", GetPercentageAV(a_target, ActorValue::kHealth));
 		}
+		a_this->totalDamage *= 0;
+		a_this->physicalDamage *= 0;
+		a_this->bonusHealthDamageMult *= 0;
+		a_this->targetedLimbDamage *= 0;
 		_PopulateHook1(a_this, a_aggressor, a_target, a_weapon);
 		PopulateHook(a_this, a_aggressor, a_target, a_weapon);
 		if (a_target) {
@@ -115,6 +121,10 @@ namespace Hooks
 		if (a_target) {
 			log::info("GetPercentageAV2 Before: {}", GetPercentageAV(a_target, ActorValue::kHealth));
 		}
+		a_this->totalDamage *= 0;
+		a_this->physicalDamage *= 0;
+		a_this->bonusHealthDamageMult *= 0;
+		a_this->targetedLimbDamage *= 0;
 		_PopulateHook2(a_this, a_aggressor, a_target, a_weapon);
 		PopulateHook(a_this, a_aggressor, a_target, a_weapon);
 		if (a_target) {
@@ -126,6 +136,10 @@ namespace Hooks
 		if (a_target) {
 			log::info("GetPercentageAV3 Before: {}", GetPercentageAV(a_target, ActorValue::kHealth));
 		}
+		a_this->totalDamage *= 0;
+		a_this->physicalDamage *= 0;
+		a_this->bonusHealthDamageMult *= 0;
+		a_this->targetedLimbDamage *= 0;
 		_PopulateHook3(a_this, a_aggressor, a_target, a_weapon);
 		PopulateHook(a_this, a_aggressor, a_target, a_weapon);
 		if (a_target) {
@@ -137,6 +151,10 @@ namespace Hooks
 		if (a_target) {
 			log::info("GetPercentageAV4 Before: {}", GetPercentageAV(a_target, ActorValue::kHealth));
 		}
+		a_this->totalDamage *= 0;
+		a_this->physicalDamage *= 0;
+		a_this->bonusHealthDamageMult *= 0;
+		a_this->targetedLimbDamage *= 0;
 		_PopulateHook4(a_this, a_aggressor, a_target, a_weapon);
 		PopulateHook(a_this, a_aggressor, a_target, a_weapon);
 		if (a_target) {
