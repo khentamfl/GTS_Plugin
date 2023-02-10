@@ -16,10 +16,16 @@ namespace Hooks
 			static void Update(RE::Main* a_this, float a2);
 			static inline REL::Relocation<decltype(Update)> _Update;
 
-			class UnknownMaybeScaleObject;
-			static void UnknownMaybeScale(UnknownMaybeScaleObject* unknown_a, float a1);
-			static void UnknownMaybeScale2(Actor* actor, float scale);
-			static inline REL::Relocation<decltype(UnknownMaybeScale)> _UnknownMaybeScale;
-			static inline REL::Relocation<decltype(UnknownMaybeScale2)> _UnknownMaybeScale2;
+			static void PopulateHook1(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon);
+			static inline REL::Relocation<decltype(PopulateHook1)> _PopulateHook1;
+
+			static void PopulateHook2(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon);
+			static inline REL::Relocation<decltype(PopulateHook2)> _PopulateHook2;
+
+			static void PopulateHook3(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon);
+			static inline REL::Relocation<decltype(PopulateHook3)> _PopulateHook3;
+
+			static void PopulateHook4(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon);
+			static inline REL::Relocation<decltype(PopulateHook1)> _PopulateHook4;
 	};
 }
