@@ -34,7 +34,7 @@ namespace Hooks
 			if (damage < 0) {
 				DamageAV(a_this, ActorValue::kHealth, -damage); // Damage hp
 			} if (damage > 0) {
-				DamageAV(a_this, ActorValue::kHealth, damage); // Restore hp
+				a_this->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage); // Restore hp
 			}
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
