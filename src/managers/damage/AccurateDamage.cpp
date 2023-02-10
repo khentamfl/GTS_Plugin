@@ -206,6 +206,8 @@ namespace Gts {
 		const std::string_view leftToeLookup = "NPC L Toe0 [LToe]";
 		const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
 
+		const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
+
 		auto leftFoot = find_node(actor, leftFootLookup);
 		auto rightFoot = find_node(actor, rightFootLookup);
 
@@ -214,6 +216,8 @@ namespace Gts {
 
 		auto leftToe = find_node(actor, leftToeLookup);
 		auto rightToe = find_node(actor, rightToeLookup);
+
+		auto BodyBone = find_node(actor, bodyLookup);
 		if (!leftFoot) {
 			return;
 		} if (!rightFoot) {
@@ -225,6 +229,8 @@ namespace Gts {
 		} if (!leftToe) {
 			return;
 		} if (!rightToe) {
+			return; 
+		} if (!BodyBone) {
 			return; // CTD protection attempts
 		}
 

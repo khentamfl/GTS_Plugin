@@ -98,6 +98,9 @@ namespace {
 		}
 		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) -1.0;
 		float scale = get_visual_scale(actor);
+		if (scale <= 0) {
+			scale = 1.0;
+		}
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
 			SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
@@ -204,6 +207,9 @@ namespace Gts {
 
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
+		if (scale <= 0) {
+			scale = 1.0;
+		}
 		log::info("Scale of {} is {}", actor->GetDisplayFullName(), scale);
 
 		switch (av) {
@@ -294,6 +300,9 @@ namespace Gts {
 			}
 			case ActorValue::kMovementNoiseMult: {
 				float scale = get_visual_scale(actor);
+				if (scale <= 0) {
+					scale = 1.0;
+				}
 				bonus = scale;
 				break;
 			}
@@ -310,6 +319,9 @@ namespace Gts {
 		switch (av) {
 			case ActorValue::kHealth: {
 				float scale = get_visual_scale(actor);
+				if (scale <= 0) {
+					scale = 1.0;
+				}
 				auto transient = Transient::GetSingleton().GetActorData(actor);
 				log::info("Health for {}, scale: {}",actor->GetDisplayFullName(), get_visual_scale(actor));
 				if (scale > 1.0) {
