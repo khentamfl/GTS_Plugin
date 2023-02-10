@@ -82,8 +82,9 @@ namespace Gts {
 			}
 			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 2.0;
+			} if (hitName.find("Bow") == std::string::npos) {
+				shake_camera(attacker, attacker, size_difference * 0.10, 0.35);
 			}
-			GrowthTremorManager::GetSingleton().CallRumble(attacker, attacker, size_difference * 16);
 			PushActorAway(attacker, receiver, size_difference);
 		}
 		if (size_difference >= 22.0 && GetAV(receiver, ActorValue::kHealth) <= 1.0) {
