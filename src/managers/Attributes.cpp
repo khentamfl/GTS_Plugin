@@ -101,6 +101,7 @@ namespace {
 		if (scale <= 0) {
 			scale = 1.0;
 		}
+		log::info("Boost Jump Power: {}", power);
 		if (fabs(power) > 1e-5) { // != 0.0
 			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
 			SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
@@ -267,6 +268,7 @@ namespace Gts {
 			case ActorValue::kJumpingBonus: {
 				float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
 				float defaultjump = 1.0 + (1.0 * (scale - 1) * power);
+				log::info("Default Jump: {}, power: {}, scale: {}", defaultjump, power, scale);
 				if (scale > 1.0) {
 					return defaultjump;
 				} else {
