@@ -83,7 +83,7 @@ namespace Gts {
 			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 2.0;
 			} if (hitName.find("Bow") == std::string::npos) {
-				shake_camera(attacker, attacker, size_difference * 0.10, 0.35);
+				shake_camera(attacker, size_difference * 0.10, 0.35);
 			}
 			PushActorAway(attacker, receiver, size_difference);
 		}
