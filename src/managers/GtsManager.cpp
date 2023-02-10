@@ -439,12 +439,9 @@ std::string GtsManager::DebugName() {
 
 // Poll for updates
 void GtsManager::Update() {
-	auto PC = PlayerCharacter::GetSingleton();
-	auto ai = PC->GetActorRuntimeData().currentProcess;
-	static Timer atttimer = Timer(1.00);
-	if (atttimer.ShouldRunFrame()) {
-		ai->Update3DModel(PC);
-	}
+	//auto PC = PlayerCharacter::GetSingleton();
+	//auto ai = PC->GetActorRuntimeData().currentProcess;
+	//static Timer atttimer = Timer(1.00);
 	//auto charCont = PC->GetCharController();
 
 		/*if (charCont) {

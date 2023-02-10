@@ -31,6 +31,11 @@ namespace Hooks
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
 		if (a_attacker) {
+			float damage = (a_damage * AttributeManager::GetAttributeBonus(a_attacker, ActorValue::kAttackDamageMult)) - a_damage;
+			if (damage > 0) {
+				DamageAV(a_this, ActorValue::kHealth, damage);
+				log::info("Bonus Damage: {}", damage);
+			}
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
 				if (Cache) {
