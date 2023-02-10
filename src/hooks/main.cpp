@@ -11,7 +11,7 @@ using namespace Gts;
 
 namespace {
 	void PopulateHook(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon) {
-		log::info("totalDamage: {}", totalDamage);
+		log::info("totalDamage: {}", a_this->totalDamage);
 	}
 }
 
@@ -31,22 +31,22 @@ namespace Hooks
 			// 	log::info("{}:{:X}:{}", offsetData.id, offsetData.offset, offsetData.offset);
 			// }
 
-			REL::Relocation<uintptr_t*> hook1(REL::ID(37606), REL::Offset(0xb6))
+			REL::Relocation<uintptr_t*> hook1(REL::ID(37606), REL::Offset(0xb6));
 			logger::info("Applying PopulateHook1: {:X}:{:X}", hook1.address(), *hook1.get());
 			_PopulateHook1 = trampoline.write_call<5>(hook1.address(), PopulateHook1);
 			logger::info("  - Applied PopulateHook1");
 
-			REL::Relocation<uintptr_t*> hook2(REL::ID(37673), REL::Offset(0x1b7))
+			REL::Relocation<uintptr_t*> hook2(REL::ID(37673), REL::Offset(0x1b7));
 			logger::info("Applying PopulateHook2: {:X}:{:X}", hook2.address(), *hook2.get());
 			_PopulateHook2 = trampoline.write_call<5>(hook1.address(), PopulateHook2);
 			logger::info("  - Applied PopulateHook2");
 
-			REL::Relocation<uintptr_t*> hook3(REL::ID(37674), REL::Offset(0xeb))
+			REL::Relocation<uintptr_t*> hook3(REL::ID(37674), REL::Offset(0xeb));
 			logger::info("Applying PopulateHook3: {:X}:{:X}", hook3.address(), *hook3.get());
 			_PopulateHook3 = trampoline.write_call<5>(hook1.address(), PopulateHook3);
 			logger::info("  - Applied PopulateHook3");
 
-			REL::Relocation<uintptr_t*> hook4(REL::ID(42830), REL::Offset(0x83))
+			REL::Relocation<uintptr_t*> hook4(REL::ID(42830), REL::Offset(0x83));
 			logger::info("Applying PopulateHook4: {:X}:{:X}", hook4.address(), *hook4.get());
 			_PopulateHook4 = trampoline.write_call<5>(hook1.address(), PopulateHook4);
 			logger::info("  - Applied PopulateHook4");
