@@ -78,13 +78,13 @@ namespace Hooks
 		return value;
 	}
 
-	float Hook_PlayerCharacter::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health and Sneak 
+	float Hook_PlayerCharacter::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health
 		float value = _GetBaseActorValue(a_owner, a_akValue);
 		if (Plugin::Ready()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {
-				value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+				bonus = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
 			}
 		}
 		return value;

@@ -87,7 +87,7 @@ namespace Hooks
 		_RemovePerk(a_this, a_perk);
 	}
 
-	float Hook_Actor::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
+	float Hook_Actor::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Sneak Noise
 		float value = _GetActorValue(a_owner, a_akValue);
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
@@ -104,10 +104,10 @@ namespace Hooks
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {
-				value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+				bonus = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
 			}
 		}
-		return value;
+		return value + bonus;
 	}
 
 	float Hook_Actor::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
