@@ -331,7 +331,7 @@ namespace Gts {
 				break;
 			}
 		}
-		log::info("Original Value:{}, Bonus: {}", originalValue, bonus),
+		log::info("{} Original HP Value:{}, Bonus: {}",actor->GetDisplayFullName(), originalValue, bonus);
 		return originalValue * bonus;// + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
 	}
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
