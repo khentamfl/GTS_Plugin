@@ -304,77 +304,47 @@ namespace Gts {
 
 		return originalValue * bonus;
 	}
+
 	float AttributeManager::AlterGetBaseAv(Actor* actor, ActorValue av, float originalValue) {
-		float bonus = 1.0;
-		return originalValue * bonus;
+		float finalValue = originalValue;
+
+		switch (av) {
+			case ActorValue::kHealth: {
+				float bonus = 1.0;
+				auto& attributes = AttributeManager::GetSingleton();
+				float scale = get_visual_scale(actor);
+				if (scale <= 0) {
+					scale = 1.0;
+				}
+
+				if (scale > 1.0) {
+					bonus = attributes.GetAttributeBonus(actor, av);
+				} else {
+					// Linearly decrease such that:
+					//   at zero scale health=0.0
+					bonus = scale;
+				}
+
+				float tempav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av); // Do temp boosts here too
+				float permav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av); // Do perm boosts here too
+				finalValue = originalValue * bonus + (bonus - 1.0)*(tempav + permav);
+
+				if (actor->formID == 0x14) {
+					auto transient = Transient::GetSingleton().GetActorData(actor);
+					if (transient) {
+						transient->health_boost = finalValue - originalValue;
+					}
+				}
+			}
+		}
+
+		return finalValue;
 	}
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
-		float bonus = 1.0;
-		return originalValue * bonus;
+		return originalValue;
 	}
 
 	float AttributeManager::AlterGetAvMod(float originalValue, Actor* actor, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
-		log::info("Getting modifier: {}", static_cast<uint32_t>(a_modifier));
-		log::info("Getting av: {}", static_cast<uint32_t>(a_value));
-		switch (a_modifier) {
-			case ACTOR_VALUE_MODIFIER::kPermanent: {
-				// Permenant is the one usually modded in game for level up or anything
-				switch (a_value) {
-					case ActorValue::kHealth: {
-						auto& attributes = AttributeManager::GetSingleton();
-						float bonus = 1.0;
-						float scale = get_visual_scale(actor);
-						if (scale <= 0) {
-							scale = 1.0;
-						}
-						if (scale > 1.0) {
-							bonus = attributes.GetAttributeBonus(actor, a_value);
-						} else {
-							// Linearly decrease such that:
-							//   at zero scale health=0.0
-							bonus = scale;
-						}
-						float baseAv = actor->AsActorValueOwner()->GetBaseActorValue(a_value); // Add baseAV here too
-						float finalValue = originalValue*bonus + (bonus - 1.0)*baseAv;
-
-						if (actor->formID == 0x14) {
-							auto transient = Transient::GetSingleton().GetActorData(actor);
-							if (transient) {
-								float change = finalValue - originalValue;
-								transient->health_boost = change;
-							}
-						}
-						log::info("Perm: Original AV: {}, Altered AV: {}", originalValue, finalValue);
-						return finalValue;
-					}
-				}
-				break;
-			}
-			case ACTOR_VALUE_MODIFIER::kTemporary: {
-				// Temp is the one from buffs like potions
-				switch (a_value) {
-					case ActorValue::kHealth: {
-						auto& attributes = AttributeManager::GetSingleton();
-						float bonus = 1.0;
-						float scale = get_visual_scale(actor);
-						if (scale <= 0) {
-							scale = 1.0;
-						}
-						if (scale > 1.0) {
-							bonus = attributes.GetAttributeBonus(actor, a_value);
-						} else {
-							// Linearly decrease such that:
-							//   at zero scale health=0.0
-							bonus = scale;
-						}
-						float finalValue = originalValue*bonus;
-						log::info("Perm: Original AV: {}, Altered AV: {}", originalValue, finalValue);
-						return finalValue;
-					}
-				}
-			}
-			break;
-		}
 		return originalValue;
 	}
 
