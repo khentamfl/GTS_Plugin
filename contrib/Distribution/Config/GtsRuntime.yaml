@@ -22,7 +22,7 @@ sounds:
   ClothTearSound: "GTS.esp|30EE54"
   RumbleWalkSound: "GTS.esp|50423E"
   GiantImpactSound: "Skyrim.esm|0C52F7"
-  
+
 
 spellEffects:
   SmallMassiveThreat: "GTS.esp|1A2568"
@@ -82,6 +82,7 @@ spellEffects:
   EffectSizeAmplifyPotion: "GTS.esp|452F1D"
   # Crushing
   FakeCrushEffect: "GTS.esp|271EF9"
+  HealthBoost: "GTS.esp|518645"
 
 spells:
   GtsVoreFearSpell: "GTS.esp|026D15"
@@ -106,6 +107,7 @@ spells:
   ShrinkBackNPCSpell: "GTS.esp|00536B"
   ShrinkBackSpell: "GTS.esp|005368"
   GtsBleedSpell: "GTS.esp|01CEA2"
+  HealthBoost: "GTS.esp|518643"
 
 perks:
   SmallMassiveThreatSizeSteal: "GTS.esp|2496E8"
