@@ -79,7 +79,7 @@ namespace Hooks
 	}
 
 	float Hook_PlayerCharacter::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health
-		static Timer timer = Timer(3.0);
+		static Timer timer = Timer(300.0);
 		float value = _GetBaseActorValue(a_owner, a_akValue);
 		if (Plugin::Ready() && timer.ShouldRunFrame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);

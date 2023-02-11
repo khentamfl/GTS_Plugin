@@ -192,7 +192,7 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			UpdateActors(actor, this->BlockMessage);
 
-			/*if (healthEff) {
+			if (healthEff) {
 				if (!Runtime::HasSpell(actor, "HealthBoost")) {
 					Runtime::AddSpell(actor, "HealthBoost");
 				}
@@ -207,11 +207,13 @@ namespace Gts {
 							if (scale <= 0) {
 								scale = 1.0;
 							}
+							effect->magnitude = 25 * scale;
+							effect->Update(0.25);
 							actor->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale, true);
 						}
 					}
 				}
-			}*/
+			}
 		}
 	}
 
