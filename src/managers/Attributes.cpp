@@ -188,11 +188,11 @@ namespace Gts {
 	}
 
 	void AttributeManager::Update() {
-		auto healthEff = Runtime::GetMagicEffect("HealthBoost");
+		//auto healthEff = Runtime::GetMagicEffect("HealthBoost");
 		for (auto actor: find_actors()) {
 			UpdateActors(actor, this->BlockMessage);
 
-			if (healthEff) {
+			/*if (healthEff) {
 				if (!Runtime::HasSpell(actor, "HealthBoost")) {
 					Runtime::AddSpell(actor, "HealthBoost");
 				}
@@ -202,16 +202,16 @@ namespace Gts {
 						continue;
 					}
 					for (auto effect: (*effect_list)) {
-						if (activeEffect->GetBaseObject() == healthEff) {
+						if (effect->GetBaseObject() == healthEff) {
 							float scale = get_visual_scale(actor);
 							if (scale <= 0) {
 								scale = 1.0;
 							}
-							actor->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(activeEffect, scale, true);
+							actor->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale, true);
 						}
 					}
 				}
-			}
+			}*/
 		}
 	}
 
@@ -342,8 +342,8 @@ namespace Gts {
 		 		if (scale > 1.0) {
 		 			bonus = attributes.GetAttributeBonus(actor, av);
 		 		} else {
-		 			 Linearly decrease such that:
-		 			   at zero scale health=0.0
+		 			//Linearly decrease such that:
+		 			//at zero scale health=0.0
 		 			bonus = scale;
 		 		}
 		
