@@ -127,46 +127,46 @@ namespace Hooks
 
 	float Hook_Actor::GetActorValueModifier_1(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_1(a_this, a_modifier, a_value);
-		return GetActorValueModifier(original_value, a_modifier, a_value);
+		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_2(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_2(a_this, a_modifier, a_value);
-		return GetActorValueModifier(original_value, a_modifier, a_value);
+		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_3(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_3(a_this, a_modifier, a_value);
-		return GetActorValueModifier(original_value, a_modifier, a_value);
+		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_4(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_4(a_this, a_modifier, a_value);
-		return GetActorValueModifier(original_value, a_modifier, a_value);
+		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_5(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_5(a_this, a_modifier, a_value);
-		return GetActorValueModifier(original_value, a_modifier, a_value);
+		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_6(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_6(a_this, a_modifier, a_value);
-		return GetActorValueModifier(original_value, a_modifier, a_value);
+		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_7(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_7(a_this, a_modifier, a_value);
-		return GetActorValueModifier(original_value, a_modifier, a_value);
+		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_8(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_8(a_this, a_modifier, a_value);
-		return GetActorValueModifier(original_value, a_modifier, a_value);
+		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_9(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_9(a_this, a_modifier, a_value);
-		return GetActorValueModifier(original_value, a_modifier, a_value);
+		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 }
