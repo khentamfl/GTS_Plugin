@@ -148,11 +148,6 @@ namespace {
 			InstaCrushRequirement = (18.0 / HighHeels) * Gigantism;
 		}
 
-		if (size_difference >= InstaCrushRequirement && !tiny->IsPlayerTeammate()) {
-			CrushManager::Crush(giant, tiny);
-			KnockAreaEffect(giant, 2, 16 * giantscale);
-		}
-
 		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != tiny && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
 			ShrinkActor(tiny, 0.0014 * BonusShrink, 0.0);
 			Grow(giant, 0.0, 0.0004 * BonusShrink);
@@ -160,7 +155,7 @@ namespace {
 		}
 
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat") && giant != tiny) {
-			size_difference += 7.2; // Allows to crush same size targets.
+			size_difference += 4.0;
 
 			if (Runtime::HasPerk(giant, "SmallMassiveThreatSizeSteal")) {
 				float HpRegen = GetMaxAV(giant, ActorValue::kHealth) * 0.005 * size_difference;
@@ -168,6 +163,11 @@ namespace {
 				ShrinkActor(tiny, 0.0015 * BonusShrink, 0.0);
 				Grow(giant, 0.00045 * tinyscale * BonusShrink, 0.0);
 			}
+		}
+
+		if (size_difference >= InstaCrushRequirement && !tiny->IsPlayerTeammate()) {
+			CrushManager::Crush(giant, tiny);
+			KnockAreaEffect(giant, 2, 16 * giantscale);
 		}
 	}
 }
@@ -429,6 +429,10 @@ namespace Gts {
 		float result = ((0.25 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * additionaldamage * weightdamage * mult);
 		if (giant->IsSneaking()) {
 			result *= 0.33;
+		}
+
+		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+			multiplier += 7.2;
 		}
 
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
