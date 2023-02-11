@@ -13,17 +13,23 @@ namespace Gts {
 	}
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
+		log::info("Trying to transfer inventory from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
 		for (auto &[a_object, invData]: from->GetInventory()) {
+			log::info("For loop");
 			const auto& [count, entry] = invData;
 			if (!removeQuestItems && entry->IsQuestObject()) {
+				log::info("Remove quest items is false, continuing");
 				continue;
 			}
+			log::info("Adding extra lists");
 			RE::ExtraDataList* a_extraList = new RE::ExtraDataList();
+			log::info("Extra Data Complete");
 			if (keepOwnership) {
 				a_extraList->SetOwner(entry->GetOwner());
 			} else {
 				a_extraList->SetOwner(to);
 			}
+			log::info("Complete, adding items");
 			to->AddObjectToContainer(a_object, a_extraList, count, from);
 		}
 	}
