@@ -207,7 +207,7 @@ namespace Gts {
 							if (scale <= 0) {
 								scale = 1.0;
 							}
-							actor->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(activeEffect, scale, true);
+							actor->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale, true);
 						}
 					}
 				}
