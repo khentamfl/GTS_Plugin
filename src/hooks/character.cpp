@@ -78,14 +78,14 @@ namespace Hooks
 
 	float Hook_Character::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health
 		float value = _GetBaseActorValue(a_owner, a_akValue);
-		float bonus = 0.0;
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
+			float bonus = 1.0;
 			if (a_this) {
-				bonus = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+				value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
 			}
 		}
-		return value + bonus;
+		return value;
 	}
 
 	float Hook_Character::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
