@@ -314,6 +314,8 @@ namespace Gts {
 	}
 
 	float AttributeManager::AlterGetAvMod(float originalValue, Actor* actor, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
+		log::info("Getting modifier: {}", static_cast<uint32_t>(a_modifier));
+		log::info("Getting av: {}", static_cast<uint32_t>(a_value));
 		switch (a_modifier) {
 			case ACTOR_VALUE_MODIFIER::kPermanent: {
 				// Permenant is the one usually modded in game for level up or anything
@@ -342,6 +344,7 @@ namespace Gts {
 								transient->health_boost = change;
 							}
 						}
+						log::info("Perm: Original AV: {}, Altered AV: {}", originalValue, finalValue);
 						return finalValue;
 					}
 				}
@@ -364,7 +367,9 @@ namespace Gts {
 							//   at zero scale health=0.0
 							bonus = scale;
 						}
-						return originalValue*bonus;
+						float finalValue = originalValue*bonus;
+						log::info("Perm: Original AV: {}, Altered AV: {}", originalValue, finalValue);
+						return finalValue;
 					}
 				}
 			}

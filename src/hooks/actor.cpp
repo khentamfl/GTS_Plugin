@@ -12,6 +12,7 @@ namespace {
 	float GetActorValueModifier(float original_value, Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		if (Plugin::InGame()) {
 			if (a_this) {
+				log::info("AttributeManager::AlterGetAvMod");
 				return AttributeManager::AlterGetAvMod(original_value, a_this, a_modifier, a_value);
 			}
 		}
