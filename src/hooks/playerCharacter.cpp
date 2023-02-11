@@ -80,9 +80,9 @@ namespace Hooks
 
 	float Hook_PlayerCharacter::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health and Sneak 
 		float value = _GetBaseActorValue(a_owner, a_akValue);
+		float bonus = 1.0;
 		if (Plugin::Ready()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
-			float bonus = 1.0;
 			if (a_akValue == ActorValue::kHealth) {
 				bonus = AttributeManager::GetSingleton().GetAttributeBonus(a_this, ActorValue::kHealth);
 			}
