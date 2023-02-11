@@ -208,8 +208,8 @@ namespace Gts {
 							if (scale <= 0) {
 								scale = 1.0;
 							}
-							//effect->magnitude = 50 * scale;
-							actor->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale * 10, false);
+							effect->magnitude = 50 * scale;
+							actor->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale * 10, true);
 						}
 					}
 				}
