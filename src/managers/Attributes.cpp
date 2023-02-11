@@ -331,7 +331,9 @@ namespace Gts {
 				break;
 			}
 		}
-		log::info("{} Original HP Value:{}, Bonus: {}",actor->GetDisplayFullName(), originalValue, bonus);
+		if (actor->formID == 0x14) {
+			log::info("{} Original HP Value:{}, Bonus: {}",actor->GetDisplayFullName(), originalValue, bonus);
+		}
 		return originalValue * bonus;// + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
 	}
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {

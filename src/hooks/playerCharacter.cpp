@@ -83,11 +83,14 @@ namespace Hooks
 		if (Plugin::Ready()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			float bonus = 1.0;
-			if (a_this) {
-				value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+			if (a_akValue == ActorValue::kHealth) {
+				bonus = GetAttributeBonus(a_this, ActorValue::kHealth);
 			}
+			//if (a_this) {
+				//value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+			//}
 		}
-		return value;
+		return value * bonus;
 	}
 
 	float Hook_PlayerCharacter::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
