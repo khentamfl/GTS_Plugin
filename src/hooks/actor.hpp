@@ -32,31 +32,31 @@ namespace Hooks
 			static void Move(Actor* a_this, float a_arg2, const NiPoint3& a_position);
 			static inline REL::Relocation<decltype(Move)> _Move;
 
-			static float GetActorValueModifier_1(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value)
+			static float GetActorValueModifier_1(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
 			static inline REL::Relocation<decltype(Move)> _GetActorValueModifier_1;
 
-			static float GetActorValueModifier_2(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value)
+			static float GetActorValueModifier_2(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
 			static inline REL::Relocation<decltype(Move)> _GetActorValueModifier_2;
 
-			static float GetActorValueModifier_3(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value)
+			static float GetActorValueModifier_3(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
 			static inline REL::Relocation<decltype(Move)> _GetActorValueModifier_3;
 
-			static float GetActorValueModifier_4(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value)
+			static float GetActorValueModifier_4(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
 			static inline REL::Relocation<decltype(Move)> _GetActorValueModifier_4;
 
-			static float GetActorValueModifier_5(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value)
+			static float GetActorValueModifier_5(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
 			static inline REL::Relocation<decltype(Move)> _GetActorValueModifier_5;
 
-			static float GetActorValueModifier_6(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value)
+			static float GetActorValueModifier_6(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
 			static inline REL::Relocation<decltype(Move)> _GetActorValueModifier_6;
 
-			static float GetActorValueModifier_7(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value)
+			static float GetActorValueModifier_7(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
 			static inline REL::Relocation<decltype(Move)> _GetActorValueModifier_7;
 
-			static float GetActorValueModifier_8(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value)
+			static float GetActorValueModifier_8(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
 			static inline REL::Relocation<decltype(Move)> _GetActorValueModifier_8;
 
-			static float GetActorValueModifier_9(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value)
+			static float GetActorValueModifier_9(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
 			static inline REL::Relocation<decltype(Move)> _GetActorValueModifier_9;
 	};
 }
