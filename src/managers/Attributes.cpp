@@ -193,8 +193,8 @@ namespace Gts {
 			UpdateActors(actor, this->BlockMessage);
 
 			if (healthEff) {
-				if (!Runtime::HasSpell(actor, "HealthBoost")) {
-					Runtime::AddSpell(actor, "HealthBoost");
+				if (!Runtime::HasMagicEffect(actor, "HealthBoost")) {
+					Runtime::CastSpell(actor, actor, "HealthBoost");
 				}
 				if (Runtime::HasMagicEffect(actor, "HealthBoost")) {
 					auto effect_list = actor->AsMagicTarget()->GetActiveEffectList();
