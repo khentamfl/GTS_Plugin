@@ -9,10 +9,10 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	float GetActorValueModifier(float orginal_value, Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
+	float GetActorValueModifier(float original_value, Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		if (Plugin::InGame()) {
 			if (a_this) {
-				return AttributeManager::AlterGetAvMod(original_value, a_this, a_modifier, a_Value, original_value);
+				return AttributeManager::AlterGetAvMod(original_value, a_this, a_modifier, a_value);
 			}
 		}
 		return original_value;
