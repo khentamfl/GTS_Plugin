@@ -31,7 +31,7 @@ namespace Hooks
 		//Hook_MagicTarget::Hook();
 		Hook_hkbBehaviorGraph::Hook();
 		Hook_PlayerCharacter::Hook();
-		Hook_Actor::Hook();
+		Hook_Actor::Hook(trampoline);
 		Hook_Character::Hook();
 		HookCameraStates();
 

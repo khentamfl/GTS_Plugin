@@ -100,9 +100,10 @@ namespace {
 		float scale = get_visual_scale(actor);
 		if (scale <= 0) {
 			scale = 1.0;
-		}if (power <= 0) { 
+		}
+		if (power <= 0) {
 			power = 0;
-		} 
+		}
 		SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
 		SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
 	}
@@ -162,7 +163,7 @@ namespace {
 
 		if (timer.ShouldRunFrame()) { // Run once per 0.05 sec
 			ManagePerkBonuses(actor);
-			
+
 			if (actor->formID == 0x14) {
 				Augmentation(actor, BlockMessage); // Manages SMT bonuses
 			}
@@ -305,44 +306,68 @@ namespace Gts {
 	}
 	float AttributeManager::AlterGetBaseAv(Actor* actor, ActorValue av, float originalValue) {
 		float bonus = 1.0;
-		float tempav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av); // Do temp boosts here too
-		float permav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av); // Do perm boosts here too
-
-		auto& attributes = AttributeManager::GetSingleton();
-		switch (av) {
-			case ActorValue::kHealth: {
-				float scale = get_visual_scale(actor);
-				if (scale <= 0) {
-					scale = 1.0;
-				}
-				auto transient = Transient::GetSingleton().GetActorData(actor);
-				if (scale > 1.0) {
-					bonus = attributes.GetAttributeBonus(actor, av);
-				} else {
-					// Linearly decrease such that:
-					//   at zero scale health=0.0
-					bonus = scale;
-				}
-				if (actor->formID == 0x14 && transient != nullptr) {
-					float finalValue = originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
-					float change = finalValue - originalValue;
-					transient->health_boost = change;
-				}
-				break;
-			}
-		}
-		
-		return originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
+		return originalValue * bonus;
 	}
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
 		float bonus = 1.0;
-		// switch (av) {
-		// 	case ActorValue::kHealth: {
-		// 		bonus = 100.0;
-		// 		break;
-		// 	}
-		// }
 		return originalValue * bonus;
+	}
+
+	float AttributeManager::AlterGetAvMod(float orginal_value, Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
+		switch (a_modifier) {
+			case ACTOR_VALUE_MODIFIER::kPermanent: {
+				// Permenant is the one usually modded in game for level up or anything
+				switch (a_value) {
+					case ActorValue::kHealth: {
+						auto& attributes = AttributeManager::GetSingleton();
+						float bonus = 1.0;
+						float scale = get_visual_scale(actor);
+						if (scale <= 0) {
+							scale = 1.0;
+						}
+						if (scale > 1.0) {
+							bonus = attributes.GetAttributeBonus(actor, a_value);
+						} else {
+							// Linearly decrease such that:
+							//   at zero scale health=0.0
+							bonus = scale;
+						}
+						if (actor->formID == 0x14) {
+							auto transient = Transient::GetSingleton().GetActorData(actor);
+							if (transient) {
+								float finalValue = originalValue * bonus;
+								float change = finalValue - originalValue;
+								transient->health_boost = change;
+							}
+						}
+						float baseAv = actor->AsActorValueOwner()->GetBaseActorValue(a_value); // Add baseAV here too
+						return originalValue*bonus + (bonus - 1.0)*baseAv;
+					}
+				}
+			},
+			case ACTOR_VALUE_MODIFIER::kTemporary: {
+				// Temp is the one from buffs like potions
+				switch (a_value) {
+					case ActorValue::kHealth: {
+						auto& attributes = AttributeManager::GetSingleton();
+						float bonus = 1.0;
+						float scale = get_visual_scale(actor);
+						if (scale <= 0) {
+							scale = 1.0;
+						}
+						if (scale > 1.0) {
+							bonus = attributes.GetAttributeBonus(actor, av);
+						} else {
+							// Linearly decrease such that:
+							//   at zero scale health=0.0
+							bonus = scale;
+						}
+						return originalValue*bonus;
+					}
+				}
+			}
+		}
+		return originalValue;
 	}
 
 	float AttributeManager::AlterMovementSpeed(Actor* actor, const NiPoint3& direction) {
