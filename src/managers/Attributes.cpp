@@ -313,7 +313,7 @@ namespace Gts {
 		return originalValue * bonus;
 	}
 
-	float AttributeManager::AlterGetAvMod(float orginal_value, Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
+	float AttributeManager::AlterGetAvMod(float originalValue, Actor* actor, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		switch (a_modifier) {
 			case ACTOR_VALUE_MODIFIER::kPermanent: {
 				// Permenant is the one usually modded in game for level up or anything
@@ -332,16 +332,17 @@ namespace Gts {
 							//   at zero scale health=0.0
 							bonus = scale;
 						}
+						float baseAv = actor->AsActorValueOwner()->GetBaseActorValue(a_value); // Add baseAV here too
+						float finalValue = originalValue*bonus + (bonus - 1.0)*baseAv;
+
 						if (actor->formID == 0x14) {
 							auto transient = Transient::GetSingleton().GetActorData(actor);
 							if (transient) {
-								float finalValue = originalValue * bonus;
 								float change = finalValue - originalValue;
 								transient->health_boost = change;
 							}
 						}
-						float baseAv = actor->AsActorValueOwner()->GetBaseActorValue(a_value); // Add baseAV here too
-						return originalValue*bonus + (bonus - 1.0)*baseAv;
+						return finalValue;
 					}
 				}
 			},
