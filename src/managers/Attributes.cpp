@@ -195,6 +195,7 @@ namespace Gts {
 			if (healthEff) {
 				if (!Runtime::HasSpell(actor, "HealthBoost")) {
 					Runtime::AddSpell(actor, "HealthBoost");
+					log::info("Adding spell to: {}", actor->GetDisplayFullName());
 				}
 				if (Runtime::HasMagicEffect(actor, "HealthBoost")) {
 					auto effect_list = actor->AsMagicTarget()->GetActiveEffectList();
