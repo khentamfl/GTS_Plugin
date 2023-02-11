@@ -252,7 +252,7 @@ namespace Gts {
 				}
 			}
 			case ActorValue::kAttackDamageMult: {
-				if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
 					scale += 3.0;
 				}
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
