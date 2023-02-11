@@ -80,14 +80,15 @@ namespace Hooks
 
 	float Hook_PlayerCharacter::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health
 		float value = _GetBaseActorValue(a_owner, a_akValue);
+		auto& attributes = AttributeManager::GetSingleton();
 		if (Plugin::Live()) {
-			this->protectionticks -= 1.0;
+			attributes->protectionticks -= 1.0;
 		} if (!Plugin::Live()) {
-			this->protectionticks = 360.0;
-		} if (this->protectionticks <= 0.0) {
-			this->protectionticks = 0.0;
+			attributes->protectionticks = 360.0;
+		} if (attributes->protectionticks <= 0.0) {
+			attributes->protectionticks = 0.0;
 		}
-		if (Plugin::Ready() && this->protectionticks <= 1.0) {
+		if (Plugin::Ready() && attributes->protectionticks <= 1.0) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {

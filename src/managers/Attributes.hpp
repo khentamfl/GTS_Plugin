@@ -24,6 +24,7 @@ namespace Gts {
 			static float AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue);
 			static float AlterMovementSpeed(Actor* actor, const NiPoint3& direction);
 			static float AlterGetAvMod(float orginal_value, Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
+			float protectionticks = 360.0;
 		private:
 			float MovementSpeedBonus = 0.0;
 			bool BlockMessage = false;
