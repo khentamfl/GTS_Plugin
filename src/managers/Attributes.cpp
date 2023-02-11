@@ -194,10 +194,14 @@ namespace Gts {
 
 			if (healthEff) {
 				if (!Runtime::HasSpell(actor, "HealthBoost")) {
-					Runtime::AddSpell(actor, "HealthBoost")
+					Runtime::AddSpell(actor, "HealthBoost");
 				}
 				if (Runtime::HasMagicEffect(actor, "HealthBoost")) {
-					for (auto activeEffect: actor->AsMagicTarget()->GetActiveEffectList()) {
+					auto effect_list = actor->AsMagicTarget()->GetActiveEffectList();
+					if (!effect_list) {
+						continue;
+					}
+					for (auto effect: (*effect_list)) {
 						if (activeEffect->GetBaseObject() == healthEff) {
 							float scale = get_visual_scale(actor);
 							if (scale <= 0) {
