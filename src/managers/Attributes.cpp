@@ -207,9 +207,9 @@ namespace Gts {
 							if (scale <= 0) {
 								scale = 1.0;
 							}
-							//effect->effect->effectItem->magnitude = 25 * scale;
+							effect->effect->effectItem.magnitude = 25 * scale;
 							effect->magnitude = 25 * scale;
-							//effect->spell->GetSkillUsageData().magnitude = 25 * scale; // Those won't compile, i have no clue what im doing.
+							effect->spell->SkillUsageData.magnitude = 25 * scale; // It won't compile, i have no clue what im doing.
 							effect->Update(0.25);
 							actor->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale, true);
 						}
