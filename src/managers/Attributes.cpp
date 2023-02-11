@@ -347,8 +347,8 @@ namespace Gts {
 		 			bonus = scale;
 		 		}
 		
-		 		float tempav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av);  Do temp boosts here too
-		 		float permav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);  Do perm boosts here too
+		 		float tempav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av); // Do temp boosts here too
+		 		float permav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);  //Do perm boosts here too
 		 		finalValue = originalValue * bonus + (bonus - 1.0)*(tempav + permav);
 		
 		 		if (actor->formID == 0x14) {
