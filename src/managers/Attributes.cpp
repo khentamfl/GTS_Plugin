@@ -345,6 +345,7 @@ namespace Gts {
 						return finalValue;
 					}
 				}
+				break;
 			}
 			case ACTOR_VALUE_MODIFIER::kTemporary: {
 				// Temp is the one from buffs like potions
@@ -357,7 +358,7 @@ namespace Gts {
 							scale = 1.0;
 						}
 						if (scale > 1.0) {
-							bonus = attributes.GetAttributeBonus(actor, ActorValue::kHealth);
+							bonus = attributes.GetAttributeBonus(actor, a_value);
 						} else {
 							// Linearly decrease such that:
 							//   at zero scale health=0.0
@@ -367,6 +368,7 @@ namespace Gts {
 					}
 				}
 			}
+			break;
 		}
 		return originalValue;
 	}
