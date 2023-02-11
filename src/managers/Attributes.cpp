@@ -202,7 +202,7 @@ namespace Gts {
 						continue;
 					}
 					for (auto effect: (*effect_list)) {
-						if (activeEffect->GetBaseObject() == healthEff) {
+						if (effect->activeEffect->GetBaseObject() == healthEff) {
 							float scale = get_visual_scale(actor);
 							if (scale <= 0) {
 								scale = 1.0;
