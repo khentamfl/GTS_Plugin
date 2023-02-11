@@ -354,11 +354,11 @@ namespace Gts {
 		 		finalValue = originalValue * bonus + (bonus - 1.0)*(tempav + permav);
 		
 		 		if (actor->formID == 0x14) {
-		 			log::info("Health originalValue: {}", originalValue);
+		 			/*log::info("Health originalValue: {}", originalValue);
 		 			log::info("Health tempav: {}", tempav);
 		 			log::info("Health permav: {}", permav);
 					log::info("Health bonus: {}", bonus);
-		 			log::info("Health finalValue: {}", finalValue);
+		 			log::info("Health finalValue: {}", finalValue);*/
 		 			auto transient = Transient::GetSingleton().GetActorData(actor);
 		 			if (transient) {
 		 				transient->health_boost = finalValue - originalValue;
