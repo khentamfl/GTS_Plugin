@@ -332,7 +332,7 @@ namespace Gts {
 			}
 		}
 		
-		return originalValue * bonus + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
+		return originalValue * bonus;// + (bonus - 1.0)*tempav + (bonus - 1.0)*permav;
 	}
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
 		float bonus = 1.0;

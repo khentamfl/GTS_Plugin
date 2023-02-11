@@ -433,6 +433,7 @@ namespace Gts {
 
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
 			multiplier += 7.2;
+			result *= 4.0;
 		}
 
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
