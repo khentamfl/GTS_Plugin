@@ -167,7 +167,6 @@ namespace Gts {
 			return nullptr;
 		} 
 		
-
 		bool AllowFpCamera = true;
 		auto playerCamera = PlayerCamera::GetSingleton();
 		if (!playerCamera) {
@@ -177,7 +176,6 @@ namespace Gts {
 			auto ui = RE::UI::GetSingleton();
 			if (ui) {
         		if (ui->IsMenuOpen(DialogueMenu::MENU_NAME)) {
-				log::info("Player is in the dialogue with someone");
 				return nullptr;
             	}
 			}
