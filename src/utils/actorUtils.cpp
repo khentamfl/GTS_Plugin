@@ -56,6 +56,7 @@ namespace Gts {
 			to->AddObjectToContainer(a_object, a_extraList, count, from);
 			log::info("Complete, adding items");
 			delete a_extraList;
+			from->ResetInventory(false);
 			log::info("Dalloced");
 		}
 	}

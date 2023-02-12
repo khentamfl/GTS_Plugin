@@ -188,11 +188,11 @@ namespace Gts {
 	}
 
 	void AttributeManager::Update() {
-		auto healthEff = Runtime::GetMagicEffect("HealthBoost");
+		//auto healthEff = Runtime::GetMagicEffect("HealthBoost");
 		for (auto actor: find_actors()) {
 			UpdateActors(actor, this->BlockMessage);
 
-			if (healthEff) {
+			/*if (healthEff) {
 				if (!Runtime::HasMagicEffect(actor, "HealthBoost")) {
 					Runtime::CastSpell(actor, actor, "HealthBoost");
 				}
@@ -215,7 +215,7 @@ namespace Gts {
 						}
 					}
 				}
-			}
+			}*/
 		}
 	}
 
