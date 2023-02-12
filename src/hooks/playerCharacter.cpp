@@ -81,21 +81,21 @@ namespace Hooks
 
 	float Hook_PlayerCharacter::GetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Health
 		float value = _GetBaseActorValue(a_owner, a_akValue);
-		auto transient = Transient::GetSingleton().GetActorData(a_this);
 		if (Plugin::Ready()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
+			auto transient = Transient::GetSingleton().GetActorData(a_this);
 			float bonus = 1.0;
 			if (a_this) {
 				value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
 			}
-		} if (!Plugin::Live()) {
-			if (persistent) {
-				transient->basehp = _GetBaseActorValue(a_owner, a_akValue);
+			if (!Plugin::Live()) {
+				if (transient) {
+					transient->basehp = _GetBaseActorValue(a_owner, a_akValue);
+					}
+				}
+			if (a_this && transient && transient->basehp != 0.0) {
+				a_this->AsActorValueOwner()->SetBaseActorValue(transient->basehp, ActorValue::kHealth);
 			}
-		} 
-		if (transient && transient->basehp != 0.0) {
-			Actor* a_this = skyrim_cast<Actor*>(a_owner);
-			a_this->AsActorValueOwner()->SetBaseActorValue(transient->basehp, ActorValue::kHealth);
 		}
 		return value;
 	}
