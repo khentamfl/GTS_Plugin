@@ -45,7 +45,7 @@ namespace Hooks
 		REL::Relocation<uintptr_t*> getavmod8(REL::ID(51473), REL::Offset(0x6ad));
 		REL::Relocation<uintptr_t*> getavmod9(REL::ID(52059), REL::Offset(0x59));
 
-		_GetActorValueModifier_1 = trampoline.write_call<5>(getavmod1.address(), GetActorValueModifier_1);
+		/*_GetActorValueModifier_1 = trampoline.write_call<5>(getavmod1.address(), GetActorValueModifier_1);
 		_GetActorValueModifier_2 = trampoline.write_call<5>(getavmod2.address(), GetActorValueModifier_2);
 		_GetActorValueModifier_3 = trampoline.write_call<5>(getavmod3.address(), GetActorValueModifier_3);
 		_GetActorValueModifier_4 = trampoline.write_call<5>(getavmod4.address(), GetActorValueModifier_4);
@@ -53,7 +53,7 @@ namespace Hooks
 		_GetActorValueModifier_6 = trampoline.write_call<5>(getavmod6.address(), GetActorValueModifier_6);
 		_GetActorValueModifier_7 = trampoline.write_call<5>(getavmod7.address(), GetActorValueModifier_7);
 		_GetActorValueModifier_8 = trampoline.write_call<5>(getavmod8.address(), GetActorValueModifier_8);
-		_GetActorValueModifier_9 = trampoline.write_call<5>(getavmod9.address(), GetActorValueModifier_9);
+		_GetActorValueModifier_9 = trampoline.write_call<5>(getavmod9.address(), GetActorValueModifier_9);*/
 	}
 
 	void Hook_Actor::HandleHealthDamage(Actor* a_this, Actor* a_attacker, float a_damage) {

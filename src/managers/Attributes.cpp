@@ -209,10 +209,8 @@ namespace Gts {
 							if (scale <= 0) {
 								scale = 1.0;
 							}
-							//effect->effect->effectItem.magnitude = 25 * scale;
-							effect->magnitude = 50 * scale;//this->AlterGetBaseAv(pc, ActorValue::kHealth, float originalValue);
-							//effect->spell->SkillUsageData.magnitude = 25 * scale; // It won't compile, i have no clue what im doing.
-							//effect->Update(0.25);
+							float healthcalc = pc->GetBaseActorValue(ActorValue::kHealth) + actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, ActorValue::kHealth);
+							effect->magnitude = (healthcalc * scale) - healthcalc;//this->AlterGetBaseAv(pc, ActorValue::kHealth, float originalValue);
 							pc->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale, true);
 					}
 				}
