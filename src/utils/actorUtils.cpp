@@ -7,6 +7,25 @@
 using namespace RE;
 using namespace Gts;
 
+namespace {
+	ExtraDataList* CreateExDataList() {
+		auto a_size = 0x18;
+		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
+			a_size = 0x20;
+		}
+		auto memory = malloc(a_size);
+		std::memset(memory, 0, a_size);
+		BSReadWriteLock* spinLock = &;
+		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
+			// reinterpret_cast<std::uintptr_t*>(memory)[0] = a_vtbl; // Unknown vtable location add once REd
+			REL::RelocateMember<BSReadWriteLock>(memory, 0x18) = BSReadWriteLock();
+		} else {
+			REL::RelocateMember<BSReadWriteLock>(memory, 0x10) = BSReadWriteLock();
+		}
+		return static_cast<ExtraDataList*>(memory);
+	}
+}
+
 namespace Gts {
 	void PlayAnimation(Actor* actor, std::string_view animName) {
 		actor->NotifyAnimationGraph(animName);
@@ -22,15 +41,18 @@ namespace Gts {
 				continue;
 			}
 			log::info("Adding extra lists");
-			RE::ExtraDataList* a_extraList = new RE::ExtraDataList();
+			RE::ExtraDataList* a_extraList = CreateExDataList();
 			log::info("Extra Data Complete");
 			if (keepOwnership) {
 				a_extraList->SetOwner(entry->GetOwner());
 			} else {
 				a_extraList->SetOwner(to);
 			}
-			log::info("Complete, adding items");
+			log::info("Adding to container");
 			to->AddObjectToContainer(a_object, a_extraList, count, from);
+			log::info("Complete, adding items");
+			delete a_extraList;
+			log::info("Dalloced");
 		}
 	}
 
@@ -114,17 +136,17 @@ namespace Gts {
 
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce) {
 		/*NiPoint3 sourceLoc = source->GetPosition();
-		NiPoint3 destinationLoc = receiver->GetPosition();
-		NiPoint3 direction = destinationLoc - sourceLoc;
-		NiPoint3 niImpulse  = direction * afKnockBackForce/direction.Length();
-		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 1.0);
-		
-		auto rbs = GetActorRB(receiver);
-		for (auto rb: rbs) {
-			auto& motion = rb->motion;
-			motion.ApplyLinearImpulse(impulse);
-			log::info("Trying to push actor {} away", receiver);
-		}*/
+		   NiPoint3 destinationLoc = receiver->GetPosition();
+		   NiPoint3 direction = destinationLoc - sourceLoc;
+		   NiPoint3 niImpulse  = direction * afKnockBackForce/direction.Length();
+		   hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 1.0);
+
+		   auto rbs = GetActorRB(receiver);
+		   for (auto rb: rbs) {
+		        auto& motion = rb->motion;
+		        motion.ApplyLinearImpulse(impulse);
+		        log::info("Trying to push actor {} away", receiver);
+		   }*/
 		if (receiver->IsDead()) {
 			return;
 		}
@@ -144,14 +166,14 @@ namespace Gts {
 	}
 	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude) {
 		/*NiPoint3 direction = NiPoint3(afX, afY, afZ);
-		NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
-		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);//hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
+		   NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
+		   hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);//hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
 
-		auto rbs = GetActorRB(target);
-		for (auto rb: rbs) {
-			auto& motion = rb->motion;
-			motion.ApplyLinearImpulse(impulse);
-		}*/
+		   auto rbs = GetActorRB(target);
+		   for (auto rb: rbs) {
+		        auto& motion = rb->motion;
+		        motion.ApplyLinearImpulse(impulse);
+		   }*/
 		CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
 	}
 
