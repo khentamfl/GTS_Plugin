@@ -94,7 +94,7 @@ namespace Hooks
 					}
 				}
 			if (a_this && transient && transient->basehp != 0.0) {
-				a_this->AsActorValueOwner()->SetBaseActorValue(transient->basehp, ActorValue::kHealth);
+				a_this->AsActorValueOwner()->SetBaseActorValue(ActorValue::kHealth, transient->basehp);
 			}
 		}
 		return value;
