@@ -56,7 +56,7 @@ namespace Gts {
 			to->AddObjectToContainer(a_object, a_extraList, count, from);
 			log::info("Complete, adding items");
 			delete a_extraList;
-			from->RemoveItem(a_object, 1, kRemove, nullptr, nullptr, nullptr, nullptr);
+			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, nullptr, nullptr, nullptr);
 			log::info("Dalloced");
 		}
 	}
