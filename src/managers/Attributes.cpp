@@ -188,36 +188,38 @@ namespace Gts {
 	}
 
 	void AttributeManager::Update() {
-		//auto healthEff = Runtime::GetMagicEffect("HealthBoost");
+		auto pc = PlayerCharacter::GetSingleton();
+		auto healthEff = Runtime::GetMagicEffect("HealthBoost");
 		for (auto actor: find_actors()) {
 			UpdateActors(actor, this->BlockMessage);
+		}
 
-			/*if (healthEff) {
-				if (!Runtime::HasMagicEffect(actor, "HealthBoost")) {
-					Runtime::CastSpell(actor, actor, "HealthBoost");
-				}
-				if (Runtime::HasMagicEffect(actor, "HealthBoost")) {
-					auto effect_list = actor->AsMagicTarget()->GetActiveEffectList();
+		if (healthEff) {
+			//if (!Runtime::HasMagicEffect(pc, "HealthBoost")) {
+				Runtime::CastSpell(pc, pc, "HealthBoost");
+			//}
+				if (Runtime::HasMagicEffect(pc, "HealthBoost")) {
+					auto effect_list = pc->AsMagicTarget()->GetActiveEffectList();
 					if (!effect_list) {
 						continue;
 					}
 					for (auto effect: (*effect_list)) {
 						if (effect->GetBaseObject() == healthEff) {
-							float scale = get_visual_scale(actor);
+							float scale = get_visual_scale(pc);
 							if (scale <= 0) {
 								scale = 1.0;
 							}
-							effect->effect->effectItem.magnitude = 25 * scale;
-							effect->magnitude = 25 * scale;
+							//effect->effect->effectItem.magnitude = 25 * scale;
+							effect->magnitude = 50 * scale;//this->AlterGetBaseAv(pc, ActorValue::kHealth, float originalValue);
 							//effect->spell->SkillUsageData.magnitude = 25 * scale; // It won't compile, i have no clue what im doing.
-							effect->Update(0.25);
-							actor->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale, true);
-						}
+							//effect->Update(0.25);
+							pc->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale, true);
 					}
 				}
-			}*/
+			}
 		}
 	}
+	
 
 	void AttributeManager::OverrideSMTBonus(float Value) {
 		auto ActorAttributes = Persistent::GetSingleton().GetActorData(PlayerCharacter::GetSingleton());
