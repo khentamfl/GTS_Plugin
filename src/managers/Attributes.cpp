@@ -201,7 +201,7 @@ namespace Gts {
 				if (Runtime::HasMagicEffect(pc, "HealthBoost")) {
 					auto effect_list = pc->AsMagicTarget()->GetActiveEffectList();
 					if (!effect_list) {
-						continue;
+						return;//continue;
 					}
 					for (auto effect: (*effect_list)) {
 						if (effect->GetBaseObject() == healthEff) {
