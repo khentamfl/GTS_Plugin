@@ -35,7 +35,7 @@ RE::ExtraDataList::~ExtraDataList() {
 		a_size = 0x18;
 	}
 	std::memset(this, 0, a_size);
-	std::free_sized(this, a_size);
+	std::free(this);
 }
 
 namespace Gts {
