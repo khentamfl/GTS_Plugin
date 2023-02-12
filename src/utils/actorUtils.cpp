@@ -9,13 +9,14 @@ using namespace Gts;
 
 namespace {
 	ExtraDataList* CreateExDataList() {
-		auto a_size = 0x18;
+		size_t a_size;
 		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
 			a_size = 0x20;
+		} else {
+			a_size = 0x18;
 		}
-		auto memory = malloc(a_size);
+		auto memory = RE::malloc(a_size);
 		std::memset(memory, 0, a_size);
-		BSReadWriteLock* spinLock = &;
 		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
 			// reinterpret_cast<std::uintptr_t*>(memory)[0] = a_vtbl; // Unknown vtable location add once REd
 			REL::RelocateMember<BSReadWriteLock>(memory, 0x18) = BSReadWriteLock();
