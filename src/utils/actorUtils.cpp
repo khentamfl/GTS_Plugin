@@ -27,6 +27,16 @@ namespace {
 	}
 }
 
+RE::ExtraDataList::~ExtraDataList() {
+	if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
+		a_size = 0x20;
+	} else {
+		a_size = 0x18;
+	}
+	std::memset(this, 0, a_size);
+	std::free_sized(this, a_size);
+}
+
 namespace Gts {
 	void PlayAnimation(Actor* actor, std::string_view animName) {
 		actor->NotifyAnimationGraph(animName);
