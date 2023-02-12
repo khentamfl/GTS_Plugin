@@ -209,7 +209,7 @@ namespace Gts {
 							if (scale <= 0) {
 								scale = 1.0;
 							}
-							float healthcalc = pc->GetBaseActorValue(ActorValue::kHealth) + actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, ActorValue::kHealth);
+							float healthcalc = pc->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth) + pc->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, ActorValue::kHealth);
 							effect->magnitude = (healthcalc * scale) - healthcalc;//this->AlterGetBaseAv(pc, ActorValue::kHealth, float originalValue);
 							pc->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale, true);
 					}
