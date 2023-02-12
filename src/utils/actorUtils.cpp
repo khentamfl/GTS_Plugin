@@ -39,7 +39,8 @@ namespace Gts {
 		log::info("Trying to transfer inventory from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
 		for (auto &[a_object, invData]: from->GetInventory()) {
 			log::info("For loop");
-			const auto& [count, entry] = invData;
+			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, nullptr, to, nullptr);
+			/*const auto& [count, entry] = invData;
 			if (!removeQuestItems && entry->IsQuestObject()) {
 				log::info("Remove quest items is false, continuing");
 				continue;
@@ -51,13 +52,13 @@ namespace Gts {
 				a_extraList->SetOwner(entry->GetOwner());
 			} else {
 				a_extraList->SetOwner(to);
-			}*/
+			}
 			log::info("Adding to container");
 			to->AddObjectToContainer(a_object, a_extraList, count, from);
 			log::info("Complete, adding items");
 			delete a_extraList;
-			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, nullptr, nullptr, nullptr);
-			log::info("Dalloced");
+			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, nullptr, to, nullptr);
+			log::info("Dalloced");*/
 		}
 	}
 

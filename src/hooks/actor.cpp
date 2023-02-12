@@ -153,7 +153,7 @@ namespace Hooks
 	float Hook_Actor::GetActorValueModifier_5(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_5(a_this, a_modifier, a_value);
 		log::info("GetAV5 true");
-		return 0;//GetActorValueModifier(original_value, a_this, a_modifier, a_value);
+		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_6(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
