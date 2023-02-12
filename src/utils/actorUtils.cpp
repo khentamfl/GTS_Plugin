@@ -45,13 +45,13 @@ namespace Gts {
 				continue;
 			}
 			log::info("Adding extra lists");
-			RE::ExtraDataList* a_extraList = CreateExDataList();
+			RE::ExtraDataList* a_extraList = nullptr; //CreateExDataList();
 			log::info("Extra Data Complete");
-			if (keepOwnership) {
+			/*if (keepOwnership) {
 				a_extraList->SetOwner(entry->GetOwner());
 			} else {
 				a_extraList->SetOwner(to);
-			}
+			}*/
 			log::info("Adding to container");
 			to->AddObjectToContainer(a_object, a_extraList, count, from);
 			log::info("Complete, adding items");
