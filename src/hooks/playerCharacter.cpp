@@ -83,18 +83,9 @@ namespace Hooks
 		float value = _GetBaseActorValue(a_owner, a_akValue);
 		if (Plugin::Ready()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
-			auto transient = Transient::GetSingleton().GetActorData(a_this);
 			float bonus = 1.0;
 			if (a_this) {
 				value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
-			}
-			if (Plugin::Ready() && !Plugin::Live()) {
-				if (transient) {
-					transient->basehp = _GetBaseActorValue(a_owner, a_akValue);
-					}
-				}
-			if (a_this && transient && transient->basehp != 0.0) {
-				a_this->AsActorValueOwner()->SetBaseActorValue(ActorValue::kHealth, transient->basehp);
 			}
 		}
 		return value;
