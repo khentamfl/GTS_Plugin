@@ -2,6 +2,7 @@
 #include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "data/plugin.hpp"
 #include "events.hpp"
 #include "scale/scale.hpp"
@@ -93,6 +94,7 @@ namespace Hooks
 			}
 		} 
 		if (transient && transient->basehp != 0.0) {
+			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			a_this->AsActorValueOwner()->SetBaseActorValue(transient->basehp, ActorValue::kHealth);
 		}
 		return value;
