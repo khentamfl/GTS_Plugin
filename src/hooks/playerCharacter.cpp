@@ -88,7 +88,7 @@ namespace Hooks
 			if (a_this) {
 				value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
 			}
-			if (!Plugin::Live()) {
+			if (Plugin::Ready() && !Plugin::Live()) {
 				if (transient) {
 					transient->basehp = _GetBaseActorValue(a_owner, a_akValue);
 					}
