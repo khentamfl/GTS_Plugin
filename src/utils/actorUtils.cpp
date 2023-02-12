@@ -39,7 +39,7 @@ namespace Gts {
 		log::info("Trying to transfer inventory from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
 		for (auto &[a_object, invData]: from->GetInventory()) {
 			log::info("For loop");
-			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, nullptr, to, nullptr);
+			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
 			/*const auto& [count, entry] = invData;
 			if (!removeQuestItems && entry->IsQuestObject()) {
 				log::info("Remove quest items is false, continuing");
