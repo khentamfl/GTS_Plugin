@@ -24,7 +24,7 @@ namespace Hooks
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Character[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
-		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
+		// _GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 	}
 
 	void Hook_Character::HandleHealthDamage(Character* a_this, Character* a_attacker, float a_damage) {
@@ -33,7 +33,8 @@ namespace Hooks
 			float damage = (a_damage * damagemult) - a_damage;
 			if (damage < 0) {
 				DamageAV(a_this, ActorValue::kHealth, -damage); // Damage hp
-			} if (damage > 0) {
+			}
+			if (damage > 0) {
 				a_this->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage); // Restore hp
 			}
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
@@ -107,7 +108,7 @@ namespace Hooks
 	void Hook_Character::ProcessTracking(Character* a_this, float a_delta, NiAVObject* a_obj3D) {
 		float adjust = Runtime::GetFloat("ConversationCameraComp");
 		//if (a_this) {
-			//log::info("{} Is head-tracking the Player", a_this->GetDisplayFullName());
+		//log::info("{} Is head-tracking the Player", a_this->GetDisplayFullName());
 		//}
 		auto player = PlayerCharacter::GetSingleton()->Get3D();
 		_ProcessTracking(a_this, a_delta, player);
