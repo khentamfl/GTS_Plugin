@@ -135,8 +135,8 @@ namespace Hooks
 		float bonus = 0.0;
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
-				float value = (actor->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
-				bonus = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
+				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value , value);
 				log::info("GetAV1 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
 			}
 		}
@@ -148,8 +148,8 @@ namespace Hooks
 		float bonus = 0.0;
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
-				float value = (actor->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
-				bonus = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
+				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value , value);
 				log::info("GetAV2 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
 			}
 		}
@@ -161,8 +161,8 @@ namespace Hooks
 		float bonus = 0.0;
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
-				float value = (actor->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
-				bonus = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
+				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value , value);
 				log::info("GetAV3 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
 			}
 		}
@@ -174,8 +174,8 @@ namespace Hooks
 		float bonus = 0.0;
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
-				float value = (actor->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
-				bonus = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
+				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value , value);
 				log::info("GetAV4 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
 			}
 		}
