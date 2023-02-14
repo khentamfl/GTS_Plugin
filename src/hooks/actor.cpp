@@ -132,25 +132,34 @@ namespace Hooks
 
 	float Hook_Actor::GetActorValueModifier_1(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_1(a_this, a_modifier, a_value);
-		log::info("GetAV1 true");
+		if (actor->formID == 0x14) {
+			log::info("GetAV1 true, modifier {}, value: {}", a_modifier, a_value);
+		}
+
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_2(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_2(a_this, a_modifier, a_value);
-		log::info("GetAV2 true");
+		if (actor->formID == 0x14) {
+			log::info("GetAV2 true, modifier {}, value: {}", a_modifier, a_value);
+		}
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_3(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_3(a_this, a_modifier, a_value);
-		log::info("GetAV3 true");
+		if (actor->formID == 0x14) {
+			log::info("GetAV3 true, modifier {}, value: {}", a_modifier, a_value);
+		}
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_4(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_4(a_this, a_modifier, a_value);
-		log::info("GetAV4 true");
+		if (actor->formID == 0x14) {
+			log::info("GetAV4 true, modifier {}, value: {}", a_modifier, a_value);
+		}
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
