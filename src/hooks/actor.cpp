@@ -134,8 +134,8 @@ namespace Hooks
 		float original_value = _GetActorValueModifier_1(a_this, a_modifier, a_value);
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
-				a_modifier = a_modifier = AttributeManager::GetSingleton().GetAttributeBonus(a_this, ActorValue::kHealth);
-				log::info("GetAV1 true, modifier {}, value: {}", a_modifier, a_value);
+				//a_modifier = AttributeManager::GetSingleton().GetAttributeBonus(a_this, ActorValue::kHealth);
+				log::info("GetAV1 true, modifier {}, value: {}, original_value: {}", a_modifier, a_value, original_value);
 			}
 		}
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
@@ -145,8 +145,8 @@ namespace Hooks
 		float original_value = _GetActorValueModifier_2(a_this, a_modifier, a_value);
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
-				a_modifier = AttributeManager::GetSingleton().GetAttributeBonus(a_this, ActorValue::kHealth);
-				log::info("GetAV2 true, modifier {}, value: {}", a_modifier, a_value);
+				//a_modifier = AttributeManager::GetSingleton().GetAttributeBonus(a_this, ActorValue::kHealth);
+				log::info("GetAV2 true, modifier {}, value: {}, original_value: {}", a_modifier, a_value, original_value);
 			}
 		}
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
@@ -156,8 +156,8 @@ namespace Hooks
 		float original_value = _GetActorValueModifier_3(a_this, a_modifier, a_value);
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
-				a_modifier = AttributeManager::GetSingleton().GetAttributeBonus(a_this, ActorValue::kHealth);
-				log::info("GetAV3 true, modifier {}, value: {}", a_modifier, a_value);
+				//a_modifier = AttributeManager::GetSingleton().GetAttributeBonus(a_this, ActorValue::kHealth);
+				log::info("GetAV3 true, modifier {}, value: {}, original_value: {}", a_modifier, a_value, original_value);
 			}
 		}
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
@@ -167,8 +167,8 @@ namespace Hooks
 		float original_value = _GetActorValueModifier_4(a_this, a_modifier, a_value);
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
-				a_modifier = AttributeManager::GetSingleton().GetAttributeBonus(a_this, ActorValue::kHealth);
-				log::info("GetAV4 true, modifier {}, value: {}", a_modifier, a_value);
+				//a_modifier = AttributeManager::GetSingleton().GetAttributeBonus(a_this, ActorValue::kHealth);
+				log::info("GetAV4 true, modifier {}, value: {}, original_value: {}", a_modifier, a_value, original_value);
 			}
 		}
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
