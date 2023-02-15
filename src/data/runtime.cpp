@@ -182,7 +182,7 @@ namespace Gts {
 		log::info("Getting Data");
 		if (data) {
 			log::info("Data true");
-			caster->AsMagicTarget()->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(data, false, target, 1.00f, false, 0.0f, caster);
+			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(data, false, target, 1.00f, false, 0.0f, caster);
 		}
 	}
 

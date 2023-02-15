@@ -36,42 +36,18 @@ namespace Gts {
 	}
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
-		log::info("Trying to transfer inventory from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
 		for (auto &[a_object, invData]: from->GetInventory()) {
-			log::info("For loop");
 			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
-			/*const auto& [count, entry] = invData;
-			if (!removeQuestItems && entry->IsQuestObject()) {
-				log::info("Remove quest items is false, continuing");
-				continue;
-			}
-			log::info("Adding extra lists");
-			RE::ExtraDataList* a_extraList = nullptr; //CreateExDataList();
-			log::info("Extra Data Complete");
-			/*if (keepOwnership) {
-				a_extraList->SetOwner(entry->GetOwner());
-			} else {
-				a_extraList->SetOwner(to);
-			}
-			log::info("Adding to container");
-			to->AddObjectToContainer(a_object, a_extraList, count, from);
-			log::info("Complete, adding items");
-			delete a_extraList;
-			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, nullptr, to, nullptr);
-			log::info("Dalloced");*/
 		}
 	}
 
 	void Disintegrate(Actor* actor) {
 		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
-		// CallFunctionOn(actor, "actor", "SetCriticalStage", 4);
 		actor->Disable();
 	}
 
 	void UnDisintegrate(Actor* actor) {
 		actor->GetActorRuntimeData().criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
-		// CallFunctionOn(actor, "Actor", "SetCriticalStage", 0);
-		// actor->Enable();
 	}
 
 	void SetRestrained(Actor* actor) {
