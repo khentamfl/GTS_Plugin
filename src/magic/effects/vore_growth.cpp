@@ -3,7 +3,6 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
-#include "data/transient.hpp"
 
 
 namespace Gts {
@@ -46,16 +45,8 @@ namespace Gts {
 	}
 
 	void VoreGrowth::OnFinish() {
-		auto caster = GetCaster();
-		if (!caster) {
-			return;
-		}
-		auto transient = Transient::GetSingleton().GetActorData(caster);
 		this->ScaleOnVore = 1.0;
 		VoreBuffAttributes();
-		if (transient) {
-			transient->is_eating_someone = false;
-		}
 	}
 
 
