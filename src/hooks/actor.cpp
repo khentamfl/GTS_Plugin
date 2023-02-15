@@ -33,7 +33,8 @@ namespace Hooks
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Actor[5] };
 		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
-		// _GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
+		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
+		_SetBaseActorValue = Vtbl5.write_vfunc(0x04, SetBaseActorValue);
 
 		//REL::Relocation<uintptr_t*> getavmod1(REL::ID(36350), REL::Offset(0x22));
 		//REL::Relocation<uintptr_t*> getavmod2(REL::ID(37513), REL::Offset(0x2d));
@@ -44,15 +45,15 @@ namespace Hooks
 		//REL::Relocation<uintptr_t*> getavmod7(REL::ID(51473), REL::Offset(0x543));
 		//REL::Relocation<uintptr_t*> getavmod8(REL::ID(51473), REL::Offset(0x6ad));
 		//REL::Relocation<uintptr_t*> getavmod9(REL::ID(52059), REL::Offset(0x59));
-		REL::Relocation<uintptr_t*> getavmod1(REL::ID(22450), REL::Offset(0x27d));
-		REL::Relocation<uintptr_t*> getavmod2(REL::ID(37537), REL::Offset(0x6b));
-		REL::Relocation<uintptr_t*> getavmod3(REL::ID(37539), REL::Offset(0x4a));
-		REL::Relocation<uintptr_t*> getavmod4(REL::ID(53867), REL::Offset(0x72));
+		//REL::Relocation<uintptr_t*> getavmod1(REL::ID(22450), REL::Offset(0x27d));
+		//REL::Relocation<uintptr_t*> getavmod2(REL::ID(37537), REL::Offset(0x6b));
+		//REL::Relocation<uintptr_t*> getavmod3(REL::ID(37539), REL::Offset(0x4a));
+		//REL::Relocation<uintptr_t*> getavmod4(REL::ID(53867), REL::Offset(0x72));
 
-		_GetActorValueModifier_1 = trampoline.write_call<5>(getavmod1.address(), GetActorValueModifier_1);
-		_GetActorValueModifier_2 = trampoline.write_call<5>(getavmod2.address(), GetActorValueModifier_2);
-		_GetActorValueModifier_3 = trampoline.write_call<5>(getavmod3.address(), GetActorValueModifier_3);
-		_GetActorValueModifier_4 = trampoline.write_call<5>(getavmod4.address(), GetActorValueModifier_4);
+		//_GetActorValueModifier_1 = trampoline.write_call<5>(getavmod1.address(), GetActorValueModifier_1);
+		//_GetActorValueModifier_2 = trampoline.write_call<5>(getavmod2.address(), GetActorValueModifier_2);
+		//_GetActorValueModifier_3 = trampoline.write_call<5>(getavmod3.address(), GetActorValueModifier_3);
+		//_GetActorValueModifier_4 = trampoline.write_call<5>(getavmod4.address(), GetActorValueModifier_4);
 		// _GetActorValueModifier_5 = trampoline.write_call<5>(getavmod5.address(), GetActorValueModifier_5);
 		//_GetActorValueModifier_6 = trampoline.write_call<5>(getavmod6.address(), GetActorValueModifier_6);
 		//_GetActorValueModifier_7 = trampoline.write_call<5>(getavmod7.address(), GetActorValueModifier_7);
@@ -112,6 +113,16 @@ namespace Hooks
 			}
 		}
 		return value + bonus;
+	}
+	
+	void Hook_Actor::SetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue, float value) {
+		if (Plugin::InGame()) {
+			Actor* a_this = skyrim_cast<Actor*>(a_owner);
+			if (a_this) {
+				value = AttributeManager::AlterSetBaseAv(a_this, a_akValue, value);
+			}
+		}
+		_SetBaseActorValue(a_owner, a_akValue, value);
 	}
 
 	float Hook_Actor::GetPermanentActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage

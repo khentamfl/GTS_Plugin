@@ -358,7 +358,7 @@ namespace Gts {
 		 		float permav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);  //Do perm boosts here too
 		 		finalValue = originalValue * bonus + (bonus - 1.0)*(tempav + permav);
 		
-		 		if (actor->formID == 0x14) {
+		 		//if (actor->formID == 0x14) {
 		 			//log::info("Health originalValue: {}", originalValue);
 		 			//log::info("Health tempav: {}", tempav);
 		 			//log::info("Health permav: {}", permav);
@@ -368,12 +368,31 @@ namespace Gts {
 		 			if (transient) {
 		 				transient->health_boost = finalValue - originalValue;
 		 			}
-		 		}
+		 		//}
 		 	}
 		 }
 
 		return finalValue;
 	}
+	
+	float AttributeManager::AlterSetBaseAv(Actor* actor, ActorValue av, float originalValue) {
+		float finalValue = originalValue;
+
+		 switch (av) {
+		 	case ActorValue::kHealth: {
+	 			auto transient = Transient::GetSingleton().GetActorData(actor);
+	 			if (transient) {
+	 				float lastEdit = transient->health_boost;
+					if (finalValue - lastEdit > 0.0) {
+						finalValue -= lastEdit;
+					}
+	 			}
+		 	}
+		 }
+
+		return finalValue;
+	}
+	
 	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
 		return originalValue;
 	}
