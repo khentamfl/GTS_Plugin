@@ -179,9 +179,7 @@ namespace Gts {
 
 	void Runtime::CastSpell(Actor* caster, Actor* target, const std::string_view& tag) {
 		auto data = GetSpell(tag);
-		log::info("Getting Data");
 		if (data) {
-			log::info("Data true");
 			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(data, false, target, 1.00f, false, 0.0f, caster);
 		}
 	}
