@@ -45,8 +45,16 @@ namespace Gts {
 	}
 
 	void VoreGrowth::OnFinish() {
+		auto caster = GetCaster();
+		if (!caster) {
+			return;
+		}
+		auto transient = Transient::GetSingleton().GetActorData(caster);
 		this->ScaleOnVore = 1.0;
 		VoreBuffAttributes();
+		if (transient) {
+			transient->is_eating_someone = false;
+		}
 	}
 
 

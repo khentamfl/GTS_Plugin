@@ -9,7 +9,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	const float MINIMUM_VORE_DISTANCE = 64.0;
+	const float MINIMUM_VORE_DISTANCE = 128.0;
 	const float MINIMUM_VORE_SCALE_RATIO = 4.8;
 	const float VORE_ANGLE = 76;
 	const float PI = 3.14159;
@@ -321,6 +321,13 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
+		auto transient = Transient::GetSingleton().GetActorData(pred);
+		if (transient) { 
+			if (transient->is_eating_someone) {
+				return;
+			}
+		}
+
 		if (Runtime::HasPerk(pred, "MassVorePerk")) {
 			sizedifference *= 1.15; // Less stamina drain
 		}
@@ -367,6 +374,8 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
+		auto transient = Transient::GetSingleton().GetActorData(pred);
+
 		if (Runtime::HasPerk(pred, "MassVorePerk")) {
 			sizedifference *= 1.15; // Less stamina drain
 		}
@@ -379,7 +388,9 @@ namespace Gts {
 		}
 
 
-
+		if (!transient) {
+			return;
+		}
 		if (!CanVore(pred, prey)) {
 			return;
 		}
@@ -406,6 +417,9 @@ namespace Gts {
 		} else if (prey->IsDead()) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
+
+		transient->is_eating_someone = true;
+
 		Runtime::CastSpell(pred, prey, "StartVore");
 	}
 }

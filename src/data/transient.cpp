@@ -59,6 +59,7 @@ namespace Gts {
 			float carryweight_boost = 0.0;
 			float health_boost = 0.0;
 			float basehp = 0.0;
+			bool is_eating_someone = false;
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
@@ -67,6 +68,7 @@ namespace Gts {
 			result.base_height = base_height_meters;
 			result.base_volume = base_volume_meters;
 			result.wearingHh = false;
+			
 			result.base_walkspeedmult = actor->AsActorValueOwner()->GetBaseActorValue(ActorValue::kSpeedMult);
 			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 			float shoe_weight = 1.0;
@@ -80,6 +82,8 @@ namespace Gts {
 			result.carryweight_boost = carryweight_boost;
 			result.health_boost = health_boost;
 			result.basehp = basehp;
+
+			result.is_eating_someone = is_eating_someone;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

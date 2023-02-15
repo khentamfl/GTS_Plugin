@@ -30,6 +30,7 @@ namespace Gts {
 		auto selectedFormula = Runtime::GetInt("SelectedSizeFormula");
 		if (selectedFormula) {
 			if (selectedFormula >= 2.0) {
+				value *= 8.0;
 				auto globalMassSize = Runtime::GetFloat("MassBasedSizeLimit"); // <- Applies it
 				auto sizeLimit = Runtime::GetFloat("sizeLimit");
 				if (globalMassSize < sizeLimit) {

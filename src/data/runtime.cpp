@@ -275,8 +275,8 @@ namespace Gts {
 			}
 			instance->SetPosition(pos);
 			Explosion* explosion = instance->AsExplosion();
-			explosion->radius *= scale;
-			explosion->imodRadius *= scale;
+			explosion->GetExplosionRuntimeData().radius *= scale;
+			explosion->GetExplosionRuntimeData().imodRadius *= scale;
 		}
 	}
 
