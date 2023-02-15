@@ -20,7 +20,6 @@ namespace Gts {
 		float carryweight_boost;
 		float basehp;
 		bool is_teammate;
-		bool is_eating_someone;
 	};
 
 	class Transient : public EventListener {

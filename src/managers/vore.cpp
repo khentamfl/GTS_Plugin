@@ -9,7 +9,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	const float MINIMUM_VORE_DISTANCE = 128.0;
+	const float MINIMUM_VORE_DISTANCE = 64.0;
 	const float MINIMUM_VORE_SCALE_RATIO = 4.8;
 	const float VORE_ANGLE = 76;
 	const float PI = 3.14159;
@@ -398,13 +398,16 @@ namespace Gts {
 		Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
 		int Random = rand() % 2;
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || Random == 0) {
-			ConsoleLog::GetSingleton()->Print("%s Was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 1) {
 			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 2) {
 			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (prey->IsDead()) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		}
+		if (pred->formID == 0x14) {
+			AdjustSizeLimit(0.0260);
 		}
 		Runtime::CastSpell(pred, prey, "StartVore");
 	}
