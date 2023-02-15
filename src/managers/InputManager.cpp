@@ -8,6 +8,7 @@
 #include "magic/effects/common.hpp"
 #include "scale/scale.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "timer.hpp"

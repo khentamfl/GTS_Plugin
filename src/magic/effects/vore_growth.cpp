@@ -3,6 +3,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "data/transient.hpp"
 
 
 namespace Gts {
