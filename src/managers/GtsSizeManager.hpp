@@ -32,9 +32,6 @@ namespace Gts {
 	struct DamageData {
 		double lastDamageTime = -1.0e8; //
 	};
-	struct EatingData {
-		double lastEatingTime = -1.0e8; //
-	};
 
 	class SizeManager : public EventListener {
 		public:
@@ -77,11 +74,9 @@ namespace Gts {
 
 			LaunchData& GetLaunchData(Actor* actor);
 			DamageData& GetDamageData(Actor* actor);
-			EatingData& GetEatingData(Actor* actor);
 
 			static bool IsLaunching(Actor* actor);
 			static bool IsDamaging(Actor* actor);
-			static bool IsEating(Actor* actor);
 
 			bool GetPreciseDamage();
 
@@ -89,6 +84,5 @@ namespace Gts {
 			std::map<Actor*, SizeManagerData> sizeData;
 			std::map<Actor*, LaunchData> launchData;
 			std::map<Actor*, DamageData> DamageData;
-			std::map<Actor*, EatingData> EatingData;
 	};
 }
