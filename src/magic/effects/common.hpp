@@ -35,8 +35,11 @@ namespace Gts {
 					.n = 3,
 					.s = 0.54,
 				};
-				auto globalMassSize = Runtime::GetFloat("MassBasedSizeLimit"); // <- Applies it
-				float modifier = soft_core(globalMassSize, mod); // For all other movement types
+				auto globalMassSize = Runtime::GetFloat("MassBasedSizeLimit"); 
+				float modifier = soft_core(globalMassSize, mod); 
+				if (modifier <= 0.10) {
+					modifier = 0.10;
+				}
 				value *= 10.0 * modifier;
 				//log::info("Modifier: {}", modifier);
 				auto sizeLimit = Runtime::GetFloat("sizeLimit");
