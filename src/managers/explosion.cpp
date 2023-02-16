@@ -48,7 +48,7 @@ namespace {
 			exp.unkB8 = nullptr;             
 			exp.negativeVelocity *= 0.0;
 			exp.unk11C *= 0.0;
-			log::info("Explosion: B4: {}, unk138: {}, unkC0: {}, unkC8: {}, unkF8: {}, padFC: {}, unk118: {}", exp.unkB4, exp.unk138, reinterpret_cast<float>(exp.unkC0), reinterpret_cast<float>(exp.unkC8), reinterpret_cast<float>(exp.unkF8), reinterpret_cast<float>(exp.padFC), reinterpret_cast<float>(exp.unk118));
+			log::info("Explosion: B4: {}, unk138: {}, unkC0: {}, unkC8: {}, unkF8: {}, padFC: {}, unk118: {}", exp.unkB4, exp.unk138, static_cast<float>(exp.unkC0), static_cast<float>(exp.unkC8), static_cast<float>(exp.unkF8), static_cast<float>(exp.padFC), static_cast<float>(exp.unk118));
 		}
 	}
 }
