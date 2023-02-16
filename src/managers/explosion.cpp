@@ -40,11 +40,12 @@ namespace {
 			if (!explosion) {
 				return;
 			}
+			NiPoint3 value = NiPoint3(0.0, 0.0, 1.0 * scale);
 			explosion->SetPosition(position);
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
 			explosion->GetExplosionRuntimeData().unkB8 = nullptr;
-			explosion->GetExplosionRuntimeData().negativeVelocity = (0, 0, 1 * scale);
+			explosion->GetExplosionRuntimeData().negativeVelocity = value;
 		}
 	}
 }
