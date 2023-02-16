@@ -40,13 +40,15 @@ namespace {
 			if (!explosion) {
 				return;
 			}
-			NiPoint3 value = NiPoint3(0.0, 0.0, 100.0 * scale);
+			auto exp = explosion->GetExplosionRuntimeData();
+
 			explosion->SetPosition(position);
-			explosion->GetExplosionRuntimeData().radius *= scale;
-			explosion->GetExplosionRuntimeData().imodRadius *= scale;
-			explosion->GetExplosionRuntimeData().unkB8 = nullptr;
-			explosion->GetExplosionRuntimeData().negativeVelocity = value;
-			explosion->GetExplosionRuntimeData().unk11C = value;
+			exp.radius *= scale;
+			exp.imodRadius *= scale;
+			exp.unkB8 = nullptr;              unkF8
+			exp.negativeVelocity *= 0.0;
+			exp.unk11C *= 0.0;
+			log::info("Explosion: B4: {}, unk138: {}, unkC0: {}, unkC8: {}, unkF8: {}, padFC: {}, unk118: {}", exp.unkB4, exp.unk138, reinterpret_cast<float>(exp.unkC0), reinterpret_cast<float>(exp.unkC8), reinterpret_cast<float>(exp.unkF8), reinterpret_cast<float>(exp.padFC), reinterpret_cast<float>(exp.unk118));
 		}
 	}
 }
