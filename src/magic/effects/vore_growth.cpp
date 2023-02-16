@@ -51,7 +51,7 @@ namespace Gts {
 
 	void VoreGrowth::VoreRegeneration(Actor* Caster) {
 		float HpRegen = GetMaxAV(Caster, ActorValue::kHealth) *  0.00130;
-		float SpRegen = GetMaxAV(Caster, ActorValue::kStamina) * 0.00270;
+		float SpRegen = GetMaxAV(Caster, ActorValue::kStamina) * 0.00130;
 
 		if (Runtime::HasPerkTeam(Caster, "VorePerkRegeneration")) {
 			Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
