@@ -44,7 +44,7 @@ namespace {
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
 			explosion->GetExplosionRuntimeData().unkB8 = nullptr;
-			explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
+			explosion->GetExplosionRuntimeData().negativeVelocity = (0.0, 0.0, 10.0 * scale);
 		}
 	}
 }
