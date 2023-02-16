@@ -39,7 +39,7 @@ namespace Gts {
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion")) {
 			bonus = get_visual_scale(caster) * 0.25 + 0.75;
 		}
-		log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
+		//log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
 		VoreRegeneration(caster);
 		Grow(caster, 0, BASE_POWER * bonus);
 	}
@@ -50,8 +50,8 @@ namespace Gts {
 
 
 	void VoreGrowth::VoreRegeneration(Actor* Caster) {
-		float HpRegen = GetMaxAV(Caster, ActorValue::kHealth) *  0.00045;
-		float SpRegen = GetMaxAV(Caster, ActorValue::kStamina) * 0.00090;
+		float HpRegen = GetMaxAV(Caster, ActorValue::kHealth) *  0.00130;
+		float SpRegen = GetMaxAV(Caster, ActorValue::kStamina) * 0.00270;
 
 		if (Runtime::HasPerkTeam(Caster, "VorePerkRegeneration")) {
 			Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
