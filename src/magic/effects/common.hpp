@@ -31,13 +31,13 @@ namespace Gts {
 		if (selectedFormula) {
 			if (selectedFormula >= 2.0) {
 				SoftPotential mod {
-					.k = 0.05, 
+					.k = 0.070, 
 					.n = 3,
 					.s = 0.54,
 				};
 				auto globalMassSize = Runtime::GetFloat("MassBasedSizeLimit"); // <- Applies it
 				float modifier = soft_core(globalMassSize, mod); // For all other movement types
-				value *= 12.0 * modifier;
+				value *= 10.0 * modifier;
 				log::info("Modifier: {}", modifier);
 				auto sizeLimit = Runtime::GetFloat("sizeLimit");
 				if (globalMassSize < sizeLimit) {

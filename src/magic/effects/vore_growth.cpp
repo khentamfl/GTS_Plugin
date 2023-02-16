@@ -17,7 +17,7 @@ namespace Gts {
 	}
 
 	void VoreGrowth::OnUpdate() {
-		float BASE_POWER = 0.0003200;
+		float BASE_POWER = 0.0003800;
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
@@ -30,29 +30,28 @@ namespace Gts {
 			return;
 		}
 		float bonus = 1.0;
-		float GrowAmount = this->ScaleOnVore;
+		float GrowAmount = 1.0;
 		BASE_POWER *= GrowAmount;
 		if (Runtime::HasPerk(caster, "AdditionalAbsorption")) {
 			BASE_POWER *= 2.0;
 		}
 
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion")) {
-			bonus = get_target_scale(caster) * 0.25 + 0.75;
+			bonus = get_visual_scale(caster) * 0.25 + 0.75;
 		}
-		//log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
+		log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
 		VoreRegeneration(caster);
 		Grow(caster, 0, BASE_POWER * bonus);
 	}
 
 	void VoreGrowth::OnFinish() {
-		this->ScaleOnVore = 1.0;
 		VoreBuffAttributes();
 	}
 
 
 	void VoreGrowth::VoreRegeneration(Actor* Caster) {
-		float HpRegen = GetMaxAV(Caster, ActorValue::kHealth) *  0.00015;
-		float SpRegen = GetMaxAV(Caster, ActorValue::kStamina) * 0.00030;
+		float HpRegen = GetMaxAV(Caster, ActorValue::kHealth) *  0.00045;
+		float SpRegen = GetMaxAV(Caster, ActorValue::kStamina) * 0.00090;
 
 		if (Runtime::HasPerkTeam(Caster, "VorePerkRegeneration")) {
 			Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
