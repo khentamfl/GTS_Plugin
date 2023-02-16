@@ -39,7 +39,7 @@ namespace Gts {
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;
 		}
-		log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
+		//log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
 		VoreRegeneration(caster);
 		Grow(caster, 0, BASE_POWER * bonus);
 	}
@@ -83,8 +83,7 @@ namespace Gts {
 			} else if (Boost == 2) {
 				Caster->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, TotalMod);
 			}
-			log::info("Buffing Attributes {}, Target: {}, Caster: {}", Boost, Target->GetDisplayFullName(), Caster->GetDisplayFullName());
+			//log::info("Buffing Attributes {}, Target: {}, Caster: {}", Boost, Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 		}
-		
 	}
 }
