@@ -1,6 +1,7 @@
 #include "papyrus/plugin.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
+#include "utils/actorUtils.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -148,6 +149,12 @@ namespace {
 		Persistent::GetSingleton().highheel_correction = enabled;
 	}
 
+	void DisintegrateTarget(StaticFunctionTag*, Actor* actor) {
+		if (actor) {
+			Disintegrate(actor);
+		}
+	}
+
 	bool GetPreciseDamage(StaticFunctionTag*) {
 		return SizeManager::GetSingleton().GetPreciseDamage();
 	}
@@ -232,6 +239,7 @@ namespace Gts {
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
 		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
+		vm->RegisterFunction("DisintegrateTarget", PapyrusClass, DisintegrateTarget);
 		vm->RegisterFunction("GetIsSpeedAdjusted", PapyrusClass, GetIsSpeedAdjusted);
 		vm->RegisterFunction("SetIsSpeedAdjusted", PapyrusClass, SetIsSpeedAdjusted);
 		vm->RegisterFunction("SetSpeedParameterK", PapyrusClass, SetSpeedParameterK);

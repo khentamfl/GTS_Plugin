@@ -69,6 +69,9 @@ String function SigFig(Float number, Int sf) global native
 Function SetIsHighHeelEnabled(Bool enabled) global native
 Bool Function GetIsHighHeelEnabled() global native
 
+;CTD-free Set Critical Stage function
+Function DisintegrateTarget(Actor target) global native
+
 ; Allow/Get precise damage toggle
 Bool Function GetPreciseDamage() global native
 

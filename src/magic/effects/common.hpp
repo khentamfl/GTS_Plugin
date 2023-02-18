@@ -57,7 +57,7 @@ namespace Gts {
 		float progression_multiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
-		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
+		float GigantismTarget = clamp(0.05, 1.0, 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)/100));  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel)) * progression_multiplier;
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
