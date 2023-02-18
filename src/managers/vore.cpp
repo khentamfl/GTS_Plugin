@@ -321,19 +321,16 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
-			prey_scale *= 2.5;
+			prey_scale *= 2.0;
 		}
 
 		float sizedifference = pred_scale/prey_scale;
-
-		if (Runtime::HasPerk(pred, "MassVorePerk")) {
-			sizedifference *= 1.15; // Less stamina drain
-		}
 
 		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 		if (Runtime::HasPerk(pred,"MassVorePerk")) {
+			sizedifference *= 1.15; // Less stamina drain
 			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
 		} 
 
