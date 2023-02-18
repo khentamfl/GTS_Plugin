@@ -45,7 +45,24 @@ namespace Gts {
 	}
 
 	void VoreGrowth::OnFinish() {
+		auto giant = GetCaster();
+		if (!giant) {
+			return;
+		} 
+		auto tiny = GetTarget();
+		if (!tiny) {
+			return;
+		}
+		if (giant == tiny) {
+			return;
+		}
 		VoreBuffAttributes();
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		if (giant->formID == 0x14 && IsDragon(tiny)) {
+			if (progressionQuest) {
+				CallFunctionOn(progressionQuest, "Quest", "DevourDragon");
+			}
+		}
 	}
 
 

@@ -68,6 +68,12 @@ namespace Gts {
 						}
 						Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 
+						auto progressionQuest = Runtime::GetQuest("MainQuest");
+						if (giant->formID == 0x14 && IsDragon(tiny)) {
+							if (progressionQuest) {
+								CallFunctionOn(progressionQuest, "Quest", "DevourDragon");
+							}
+						}
 						std::random_device rd;
 						std::mt19937 gen(rd());
 						std::uniform_real_distribution<float> dis(-0.2, 0.2);
