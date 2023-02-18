@@ -321,7 +321,7 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
-			pred_scale *= 2.5;
+			prey_scale *= 2.5;
 		}
 
 		float sizedifference = pred_scale/prey_scale;
