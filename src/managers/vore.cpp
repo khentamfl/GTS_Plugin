@@ -1,6 +1,7 @@
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "utils/actorUtils.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include "timer.hpp"
@@ -331,6 +332,9 @@ namespace Gts {
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 		if (Runtime::HasPerk(pred,"MassVorePerk")) {
 			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
+		} 
+		if (IsDragon(pred)) {
+			MINIMUM_VORE_SCALE *= 1.4;
 		}
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Enables HP requirement on Vore.

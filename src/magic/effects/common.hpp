@@ -1,6 +1,7 @@
 #pragma once
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
@@ -215,10 +216,13 @@ namespace Gts {
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
-		const float SHRINK_TO_NOTHING_SCALE = 0.14;
+		float SHRINK_TO_NOTHING_SCALE = 0.14;
 		float target_scale = get_visual_scale(target);
 		if (!caster) {
 			return false;
+		}
+		if (IsDragon(target)) {
+			SHRINK_TO_NOTHING_SCALE = 0.065;
 		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
