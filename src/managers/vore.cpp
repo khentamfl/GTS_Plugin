@@ -333,7 +333,7 @@ namespace Gts {
 		if (Runtime::HasPerk(pred,"MassVorePerk")) {
 			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
 		} 
-		if (IsDragon(pred)) {
+		if (IsDragon(prey)) {
 			MINIMUM_VORE_SCALE *= 1.4;
 		}
 
