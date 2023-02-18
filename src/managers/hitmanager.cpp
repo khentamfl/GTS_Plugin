@@ -217,8 +217,8 @@ namespace Gts {
 			}
 		} else if (this->Balance_CanShrink) { // Shrink on hit
 			if (get_target_scale(actor) > 1.00) {
-				float SizeHunger = 1.0 - sizemanager.GetSizeHungerBonus(actor)/100;
-				float Gigantism = 1.0 - sizemanager.GetEnchantmentBonus(actor)/100;
+				float SizeHunger = 1.0 / (1.0 + sizemanager.GetSizeHungerBonus(actor)/100);
+				float Gigantism = 1.0 / (1.0 + sizemanager.GetEnchantmentBonus(actor)/100);
 				auto actor_data = Persist.GetData(actor);
 				float HealthPercentage = clamp(0.05, 1.0, GetHealthPercentage(actor));
 				float ShrinkValue = -(0.000085/HealthPercentage) * (get_visual_scale(actor) * 0.08 + 0.92) * SizeHunger * Gigantism * this->AdjustValue * this->BonusPower;

@@ -86,7 +86,7 @@ namespace Gts {
 			if (actor->formID == 0x14 || !actor->Is3DLoaded() || actor->IsDead()) {
 				return;
 			}
-			float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+			float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100);
 			int Requirement = (10 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 
 			int random = rand() % Requirement;
