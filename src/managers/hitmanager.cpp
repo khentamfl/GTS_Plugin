@@ -5,6 +5,7 @@
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -68,6 +69,9 @@ namespace Gts {
 
 		float attackerscale = get_visual_scale(attacker);
 		float receiverscale = get_visual_scale(receiver);
+		if (IsDragon(receiver)) {
+			receiverscale *= 2.0;
+		}
 
 		float size_difference = attackerscale/receiverscale;
 
