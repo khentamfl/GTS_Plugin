@@ -320,6 +320,9 @@ namespace Gts {
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
+		if (IsDragon(prey)) {
+			pred_scale *= 2.5;
+		}
 
 		float sizedifference = pred_scale/prey_scale;
 
@@ -333,9 +336,6 @@ namespace Gts {
 		if (Runtime::HasPerk(pred,"MassVorePerk")) {
 			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
 		} 
-		if (IsDragon(prey)) {
-			MINIMUM_VORE_SCALE *= 2.0;
-		}
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Enables HP requirement on Vore.
 			float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);

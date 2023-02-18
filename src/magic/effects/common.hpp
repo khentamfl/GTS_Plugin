@@ -222,7 +222,7 @@ namespace Gts {
 			return false;
 		}
 		if (IsDragon(target)) {
-			SHRINK_TO_NOTHING_SCALE = 0.04;
+			SHRINK_TO_NOTHING_SCALE = 0.065;
 		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
