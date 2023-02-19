@@ -71,6 +71,8 @@ Bool Function GetIsHighHeelEnabled() global native
 
 ;CTD-free Set Critical Stage function
 Function DisintegrateTarget(Actor target) global native
+    
+Bool function DragonCheck(Actor target) global native    
 
 ; Allow/Get precise damage toggle
 Bool Function GetPreciseDamage() global native

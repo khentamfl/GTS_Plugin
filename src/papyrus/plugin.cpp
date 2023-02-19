@@ -155,6 +155,13 @@ namespace {
 		}
 	}
 
+	bool DragonCheck(StaticFunctionTag*, Actor* actor) {
+		if (!actor) {
+			return false;
+		} 
+		return IsDragon(actor);
+	}
+
 	bool GetPreciseDamage(StaticFunctionTag*) {
 		return SizeManager::GetSingleton().GetPreciseDamage();
 	}
@@ -240,6 +247,7 @@ namespace Gts {
 		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("DisintegrateTarget", PapyrusClass, DisintegrateTarget);
+		vm->RegisterFunction("DragonCheck", PapyrusClass, DragonCheck);
 		vm->RegisterFunction("GetIsSpeedAdjusted", PapyrusClass, GetIsSpeedAdjusted);
 		vm->RegisterFunction("SetIsSpeedAdjusted", PapyrusClass, SetIsSpeedAdjusted);
 		vm->RegisterFunction("SetSpeedParameterK", PapyrusClass, SetSpeedParameterK);
