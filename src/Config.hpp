@@ -165,7 +165,7 @@ namespace Gts {
 			friend class articuno::access;
 	};
 
-	class SpellEffects {
+	/*class SpellEffects {
 		public:
 			[[nodiscard]] inline std::string GetSmallMassiveThreat() const noexcept {
 				return _SmallMassiveThreat;
@@ -179,7 +179,7 @@ namespace Gts {
 			std::string _SmallMassiveThreat;
 
 			friend class articuno::access;
-	};
+	};*/
 
 	class Explosions {
 		public:
