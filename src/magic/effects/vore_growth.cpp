@@ -3,6 +3,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "utils/actorUtils.hpp"
 
 
 namespace Gts {
@@ -14,6 +15,9 @@ namespace Gts {
 		auto target = GetTarget();
 		float Scale = get_target_scale(target);
 		this->ScaleOnVore = Scale;
+		if (IsDragon(target)) {
+			this->ScaleOnVore = 1.0;
+		}
 	}
 
 	void VoreGrowth::OnUpdate() {
@@ -31,6 +35,9 @@ namespace Gts {
 		}
 		float bonus = 1.0;
 		float GrowAmount = 1.0;
+		if (IsDragon(target)) {
+			GrowAmount *= 6.0;
+		}
 		BASE_POWER *= GrowAmount;
 		if (Runtime::HasPerk(caster, "AdditionalAbsorption")) {
 			BASE_POWER *= 2.0;
