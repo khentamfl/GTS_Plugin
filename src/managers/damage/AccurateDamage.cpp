@@ -355,7 +355,7 @@ namespace Gts {
 		auto& crushmanager = CrushManager::GetSingleton();
 		float tinySize = get_visual_scale(tiny);
 		if (IsDragon(tiny)) {
-			tinyscale *= 2.0;
+			tinySize *= 2.0;
 		}
 
 		float movementFactor = 1.0;
@@ -415,7 +415,7 @@ namespace Gts {
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
 		if (IsDragon(tiny)) {
-			tinyscale *= 2.0;
+			tinysize *= 2.0;
 		}
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float multiplier = giantsize/tinysize * highheels;
