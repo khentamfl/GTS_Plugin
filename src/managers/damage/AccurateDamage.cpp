@@ -17,6 +17,7 @@
 #include "data/time.hpp"
 #include "scale/scale.hpp"
 #include "scale/scalespellmanager.hpp"
+#include "utils/actorUtils.hpp"
 #include "node.hpp"
 #include "timer.hpp"
 #include <vector>
@@ -133,6 +134,9 @@ namespace {
 		float InstaCrushRequirement = 24.0;
 		float giantscale = get_visual_scale(giant);
 		float tinyscale = get_visual_scale(tiny);
+		if (IsDragon(tiny)) {
+			tinyscale *= 2.0;
+		}
 		float size_difference = giantscale/tinyscale;
 		float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200);
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
@@ -350,6 +354,9 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 		float tinySize = get_visual_scale(tiny);
+		if (IsDragon(tiny)) {
+			tinyscale *= 2.0;
+		}
 
 		float movementFactor = 1.0;
 
@@ -407,6 +414,9 @@ namespace Gts {
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
+		if (IsDragon(tiny)) {
+			tinyscale *= 2.0;
+		}
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float multiplier = giantsize/tinysize * highheels;
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
