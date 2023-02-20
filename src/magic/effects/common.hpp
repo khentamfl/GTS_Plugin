@@ -270,6 +270,9 @@ namespace Gts {
 	inline void CrushBonuses(Actor* caster, Actor* target) {
 		float target_scale = get_target_scale(target);
 		float caster_scale = get_target_scale(caster);
+		if (IsDragon(target)) {
+			target_scale *= 2.0;
+		}
 		auto player = PlayerCharacter::GetSingleton();
 		float sizedifference = caster_scale/target_scale;
 		float instacrushrequirement = 24.0;
