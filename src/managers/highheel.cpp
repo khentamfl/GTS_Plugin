@@ -49,7 +49,7 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		if (!actor->GetOccupiedFurniture()) {
+		if (actor->GetOccupiedFurniture()) {
 			return;
 		}
 		NiPoint3 new_hh;
