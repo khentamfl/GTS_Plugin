@@ -149,6 +149,7 @@ explosions:
   footstepExplosion: "GTS.esp|035C81"
 
 globals:
+  FurnitureHeels: "GTS.esp|545F46"
   MultiplyGameModePC: "GTS.esp|47B72B"
   MultiplyGameModeNPC: "GTS.esp|47B72C"
   GtsDecideGrowth: "GTS.esp|15661D"
