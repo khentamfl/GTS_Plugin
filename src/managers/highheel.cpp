@@ -49,9 +49,9 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		if (actor->GetOccupiedFurniture()) {
-			return;
-		}
+		//if (actor->GetOccupiedFurniture()) {
+		//	return;
+		//}
 		NiPoint3 new_hh;
 		//log::info("Actor: {}, BaseHeight: {}, BaseVolume: {}", actor->GetDisplayFullName(), transient->base_height, transient->base_volume);
 		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {
