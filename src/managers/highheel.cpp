@@ -51,7 +51,7 @@ namespace Gts {
 		}
 		NiPoint3 new_hh;
 		//log::info("Actor: {}, BaseHeight: {}, BaseVolume: {}", actor->GetDisplayFullName(), transient->base_height, transient->base_volume);
-		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {
+		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction || actor->GetOccupiedFurniture() != nullptr) {
 			new_hh = NiPoint3();
 		} else if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
 			new_hh = this->GetHHOffset(actor);
