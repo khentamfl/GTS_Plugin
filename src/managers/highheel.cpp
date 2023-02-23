@@ -50,7 +50,7 @@ namespace Gts {
 			return;
 		}
 		if (!actor->GetOccupiedFurniture() == nullptr) {
-			return
+			return;
 		}
 		NiPoint3 new_hh;
 		//log::info("Actor: {}, BaseHeight: {}, BaseVolume: {}", actor->GetDisplayFullName(), transient->base_height, transient->base_volume);
