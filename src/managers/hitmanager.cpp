@@ -264,10 +264,11 @@ namespace Gts {
 			std::mt19937 gen(rd());
 			std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSetVoreMedium", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+			Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 2.0);
+
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 		}
 	}
 
