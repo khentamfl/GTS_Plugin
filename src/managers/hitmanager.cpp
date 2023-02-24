@@ -93,10 +93,6 @@ namespace Gts {
 			PushActorAway(attacker, receiver, size_difference);
 		}
 
-		if (size_difference >= 22.0 && GetAV(receiver, ActorValue::kHealth) <= 1.0) {
-			this->Overkill(receiver, attacker);
-		}
-
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {
 			if(!wasHitBlocked && !attacker->IsPlayerTeammate() && attacker != player) {
 				this->BlockEffect = true;

@@ -1,4 +1,5 @@
 #include "hooks/playerCharacter.hpp"
+#include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
@@ -45,6 +46,17 @@ namespace Hooks
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
+				}
+			}
+			if (damage > GetAV(a_this, ActorValue::kHealth) * 1.5) { // Overkill effect
+				float attackerscale = get_visual_scale(a_attacker);
+				float receiverscale = get_visual_scale(a_this);
+				if (IsDragon(a_this)) {
+					receiverscale *= 2.0;
+				}
+				float size_difference = attackerscale/receiverscale;
+				if (size_difference >= 18.0) {
+					HitManager::GetSingleton().Overkill(Actor* receiver, Actor* attacker);
 				}
 			}
 		}
