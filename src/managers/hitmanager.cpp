@@ -248,9 +248,7 @@ namespace Gts {
 		}
 	}
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
-			CrushManager::GetSingleton().Crush(attacker, receiver);
-			return;
-			/*if (!receiver->IsDead()) {
+			if (!receiver->IsDead()) {
 				receiver->KillImmediate();
 			}
 			if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
@@ -273,7 +271,7 @@ namespace Gts {
 
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);*/
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 		}
 	}
 
