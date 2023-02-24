@@ -16,7 +16,7 @@ namespace Gts
 			virtual std::string DebugName() override;
 			void HitEvent(const TESHitEvent* evt) override;
 			void Update() override;
-			void Overkill(Actor* receiver, Actor* attacker)
+			void Overkill(Actor* receiver, Actor* attacker);
 		private:
 			bool CanGrow = false;
 			bool Balance_CanShrink = false;
