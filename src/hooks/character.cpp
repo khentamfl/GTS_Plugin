@@ -53,7 +53,7 @@ namespace Hooks
 				}
 				float size_difference = attackerscale/receiverscale;
 				if (size_difference >= 18.0) {
-					HitManager::GetSingleton().Overkill(Actor* receiver, Actor* attacker);
+					HitManager::GetSingleton().Overkill(a_this, a_attacker);
 				}
 			}
 		}
