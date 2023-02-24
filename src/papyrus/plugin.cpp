@@ -160,9 +160,8 @@ namespace {
 				for (bool person: {false, true}) {
 					auto npc_root_node = find_node(actor, "NPC", person);
 					if (npc_root_node && actor->GetOccupiedFurniture()) {
-						log::info("Applying");
-						npc_root_node->local.translate.z = 0.0;
-						update_node(npc_root_node);
+						//npc_root_node->local.translate.z = 0.0;
+						//update_node(npc_root_node);
 					}
 				}
 			}
