@@ -10,6 +10,7 @@ namespace {
 	inline const auto ActorDataRecord = _byteswap_ulong('ACTD');
 	inline const auto ScaleMethodRecord = _byteswap_ulong('SCMD');
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
+	inline const auto HighHeelFurnitureRecord = _byteswap_ulong('HHFO');
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
 	inline const auto CamCollisions = _byteswap_ulong('CAMC');
@@ -300,6 +301,10 @@ namespace Gts {
 						break;
 				}
 			} else if (type == HighHeelCorrectionRecord) {
+				bool highheel_furniture;
+				serde->ReadRecordData(&highheel_furniture, sizeof(highheel_furniture));
+				GetSingleton().highheel_furniture = highheel_furniture;
+			} else if (type == HighHeelFurnitureRecord) {
 				bool highheel_correction;
 				serde->ReadRecordData(&highheel_correction, sizeof(highheel_correction));
 				GetSingleton().highheel_correction = highheel_correction;
@@ -430,6 +435,14 @@ namespace Gts {
 
 		bool highheel_correction = GetSingleton().highheel_correction;
 		serde->WriteRecordData(&highheel_correction, sizeof(highheel_correction));
+
+		if (!serde->OpenRecord(HighHeelFurnitureRecord, 0)) {
+			log::error("Unable to open high heel furniture record to write cosave data.");
+			return;
+		}
+
+		bool highheel_furniture = GetSingleton().highheel_furniture;
+		serde->WriteRecordData(&highheel_furniture, sizeof(highheel_furniture));
 
 		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 1)) {
 			log::error("Unable to open is speed adjusted record to write cosave data.");

@@ -67,6 +67,7 @@ namespace Gts {
 
 
 			bool highheel_correction = true;
+			bool highheel_furniture = true;
 			bool is_speed_adjusted = true;
 			float tremor_scale = 1.0;
 			float npc_tremor_scale = 1.0;

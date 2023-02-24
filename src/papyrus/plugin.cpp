@@ -149,6 +149,10 @@ namespace {
 		Persistent::GetSingleton().highheel_correction = enabled;
 	}
 
+	void SetIsHHFurnitureEnabled(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().highheel_furniture = enabled;
+	}
+
 	void DisintegrateTarget(StaticFunctionTag*, Actor* actor) {
 		if (actor) {
 			Disintegrate(actor);
@@ -246,6 +250,7 @@ namespace Gts {
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
 		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
+		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("DisintegrateTarget", PapyrusClass, DisintegrateTarget);
 		vm->RegisterFunction("DragonCheck", PapyrusClass, DragonCheck);
 		vm->RegisterFunction("GetIsSpeedAdjusted", PapyrusClass, GetIsSpeedAdjusted);
