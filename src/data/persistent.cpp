@@ -301,13 +301,13 @@ namespace Gts {
 						break;
 				}
 			} else if (type == HighHeelCorrectionRecord) {
-				bool highheel_furniture;
-				serde->ReadRecordData(&highheel_furniture, sizeof(highheel_furniture));
-				GetSingleton().highheel_furniture = highheel_furniture;
-			} else if (type == HighHeelFurnitureRecord) {
 				bool highheel_correction;
 				serde->ReadRecordData(&highheel_correction, sizeof(highheel_correction));
 				GetSingleton().highheel_correction = highheel_correction;
+			} else if (type == HighHeelFurnitureRecord) {
+				bool highheel_furniture;
+				serde->ReadRecordData(&highheel_furniture, sizeof(highheel_furniture));
+				GetSingleton().highheel_furniture = highheel_furniture;
 			} else if (type == IsSpeedAdjustedRecord) {
 				bool is_speed_adjusted;
 				serde->ReadRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
