@@ -49,7 +49,7 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return;
 		} 
-		if (Persistent::GetSingleton().highheel_correction == false && actor->GetOccupiedFurniture()) {
+		if (Persistent::GetSingleton().highheel_furniture == false && actor->GetOccupiedFurniture()) {
 			return;
 		}
 		NiPoint3 new_hh;
