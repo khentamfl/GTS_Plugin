@@ -90,7 +90,7 @@ namespace Gts {
 			} if (hitName.find("Bow") == std::string::npos) {
 				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
-			//PushActorAway(attacker, receiver, size_difference);
+			PushActorAway(attacker, receiver, size_difference);
 		}
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {
@@ -248,6 +248,9 @@ namespace Gts {
 		}
 	}
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
+			if (!receiver->IsDead()) {
+				receiver->KillImmediate();
+			}
 			if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 				TransferInventory(receiver, attacker, false, true);
 			} else if (attacker->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
