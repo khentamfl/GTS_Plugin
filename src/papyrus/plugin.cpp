@@ -151,6 +151,17 @@ namespace {
 
 	void SetIsHHFurnitureEnabled(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().highheel_furniture = enabled;
+		if (!enabled)
+			auto actors = find_actors();
+			for (auto actor: actors) {
+				if (!actor) {
+					return;
+				}
+				auto npc_root_node = find_node(actor, "NPC", person);
+			if (npc_root_node && actor->GetOccupiedFurniture()) {
+				NiPoint3 current_value = npc_root_node->local.translate.z = 0.0;
+			}
+		}
 	}
 
 	void DisintegrateTarget(StaticFunctionTag*, Actor* actor) {
