@@ -50,6 +50,9 @@ namespace Gts {
 			return;
 		} 
 		if (Persistent::GetSingleton().highheel_furniture == false && actor->GetOccupiedFurniture()) {
+			if (actor->formID == 0x14) {
+				log::info("Return: {}", actor->GetDisplayFullName());
+			}
 			return;
 		}
 		NiPoint3 new_hh;
