@@ -92,8 +92,9 @@ namespace Gts {
 			}
 			PushActorAway(attacker, receiver, size_difference);
 		}
+
 		if (size_difference >= 22.0 && GetAV(receiver, ActorValue::kHealth) <= 1.0) {
-			ShrinkToNothingManager::Shrink(attacker, receiver);
+			this->Overkill(receiver, attacker);
 		}
 
 		if (receiver == player && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0 && !this->CanGrow && !this->BlockEffect) {
@@ -250,4 +251,27 @@ namespace Gts {
 			}
 		}
 	}
-}
+	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
+			if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
+				TransferInventory(receiver, attacker, false, true);
+			} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
+				TransferInventory(receiver, attacker, false, true);
+			}
+			if (receiver->formID != 0x14) {
+				Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.
+			} else if (receiver->formID == 0x14) {
+				TriggerScreenBlood(50);
+				receiver->SetAlpha(0.0); // Just make player Invisible
+			}
+			Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_real_distribution<float> dis(-0.2, 0.2);
+
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSetVoreMedium", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+		}
+	}
+
