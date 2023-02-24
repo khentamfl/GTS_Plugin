@@ -151,7 +151,7 @@ namespace {
 
 	void SetIsHHFurnitureEnabled(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().highheel_furniture = enabled;
-		if (!enabled)
+		if (!enabled) {
 			auto actors = find_actors();
 			for (auto actor: actors) {
 				if (!actor) {
@@ -161,6 +161,7 @@ namespace {
 					auto npc_root_node = find_node(actor, "NPC", person);
 					if (npc_root_node && actor->GetOccupiedFurniture()) {
 						npc_root_node->local.translate.z = 0.0;
+					}
 				}
 			}
 		}
