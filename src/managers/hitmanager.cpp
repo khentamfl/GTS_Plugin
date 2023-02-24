@@ -254,7 +254,7 @@ namespace Gts {
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
 			if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 				TransferInventory(receiver, attacker, false, true);
-			} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
+			} else if (attacker->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
 				TransferInventory(receiver, attacker, false, true);
 			}
 			if (receiver->formID != 0x14) {
