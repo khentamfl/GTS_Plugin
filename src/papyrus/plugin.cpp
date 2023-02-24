@@ -151,16 +151,21 @@ namespace {
 
 	void SetIsHHFurnitureEnabled(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().highheel_furniture = enabled;
-		if (!enabled) {
+		log::info("Firing Furniture HH");
+		if (enabled == false) {
+			log::info("False");
 			auto actors = find_actors();
 			for (auto actor: actors) {
 				if (!actor) {
 					return;
 				}
+				log::info("Found actors");
 				for (bool person: {false, true}) {
 					auto npc_root_node = find_node(actor, "NPC", person);
 					if (npc_root_node && actor->GetOccupiedFurniture()) {
+						log::info("Applying");
 						npc_root_node->local.translate.z = 0.0;
+						update_node(npc_root_node);
 					}
 				}
 			}
