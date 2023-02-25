@@ -89,25 +89,6 @@ namespace Gts {
 		return camera->cameraTarget.get().get();
 	}
 
-	#ifdef ENABLED_SHADOW
-	ShadowSceneNode* GetShadowMap() {
-		auto player = GetCameraActor();
-		if (player) {
-			auto searchRoot = player->GetCurrent3D();
-			if (searchRoot) {
-				NiNode* parent = searchRoot->parent;
-				while (parent) {
-					ShadowSceneNode* shadowNode = skyrim_cast<ShadowSceneNode*>(parent);
-					if (shadowNode) {
-						return shadowNode;
-					}
-					parent = parent->parent;
-				}
-			}
-		}
-		return nullptr;
-	}
-	#endif
 
 	void UpdateSceneManager(NiPoint3 camLoc) {
 		auto sceneManager = UI3DSceneManager::GetSingleton();
@@ -115,13 +96,13 @@ namespace Gts {
 			// Cache
 			sceneManager->cachedCameraPos = camLoc;
 
-			#ifdef ENABLED_SHADOW
+			/*#ifdef ENABLED_SHADOW
 			// Shadow Map
 			auto shadowNode = sceneManager->shadowSceneNode;
 			if (shadowNode) {
 				shadowNode->GetRuntimeData().cameraPos = camLoc;
 			}
-			#endif
+			#endif*/
 
 			// Camera
 			auto niCamera = sceneManager->camera;
@@ -135,13 +116,13 @@ namespace Gts {
 	void UpdateRenderManager(NiPoint3 camLoc) {
 		auto renderManager = UIRenderManager::GetSingleton();
 		if (renderManager) {
-			#ifdef ENABLED_SHADOW
+			/*#ifdef ENABLED_SHADOW
 			// Shadow Map
 			auto shadowNode = renderManager->shadowSceneNode;
 			if (shadowNode) {
 				shadowNode->GetRuntimeData().cameraPos = camLoc;
 			}
-			#endif
+			#endif*/
 
 			// Camera
 			auto niCamera = renderManager->camera;
@@ -160,12 +141,12 @@ namespace Gts {
 			update_node(niCamera);
 		}
 
-		#ifdef ENABLED_SHADOW
+		/*#ifdef ENABLED_SHADOW
 		auto shadowNode = GetShadowMap();
 		if (shadowNode) {
 			shadowNode->GetRuntimeData().cameraPos = camLoc;
 		}
-		#endif
+		#endif*/
 	}
 
 	NiTransform GetCameraWorldTransform() {
