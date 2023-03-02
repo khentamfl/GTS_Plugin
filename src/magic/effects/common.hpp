@@ -68,10 +68,6 @@ namespace Gts {
 		}
 
 		efficiency *= (GigantismCaster / GigantismTarget) * SizeHunger;
-		
-		if (target->IsDead()) {
-			efficiency *= 2.0;
-		}
 
 		return efficiency;
 	}
@@ -94,9 +90,6 @@ namespace Gts {
 		}
 
 		efficiency *= (GigantismCaster / GigantismTarget) * SizeHunger;
-		if (target->IsDead()) {
-			efficiency *= 2.0;
-		}
 		//log::info("Total Efficiency: {}", efficiency);
 
 		return efficiency;
