@@ -21,7 +21,7 @@ namespace {
 namespace Gts {
 
 	void SpringBase::UpdateValues(float& value, const float& target, float & velocity, const float& halflife, const float& dt) {
-		float y = halflife_to_damping(halflife) / 2.0f;
+		float y = halflife_to_damping(halflife) / 2.0F;
 		float j0 = value - target;
 		float j1 = velocity + j0*y;
 		float eydt = fast_negexp(y*dt);
@@ -44,6 +44,29 @@ namespace Gts {
 
 	Spring::~Spring() {
 		SpringManager::RemoveSpring(this);
+	}
+	
+	void Spring::Ser(SerializationInterface* serde) {
+		uint32_t version = 0;
+		serde->WriteRecordData(&version, sizeof(version));
+		serde->WriteRecordData(&this->value, sizeof(this->value));
+		serde->WriteRecordData(&this->target, sizeof(this->target));
+		serde->WriteRecordData(&this->velocity, sizeof(this->velocity));
+		serde->WriteRecordData(&this->halflife, sizeof(this->halflife));
+	}
+	void Spring::Des(SerializationInterface* serde) {
+		uint32_t version = 0;
+		serde->ReadRecordData(&version, sizeof(version));
+		switch (version) {
+			case 0: {
+				serde->ReadRecordData(&this->value, sizeof(this->value));
+				serde->ReadRecordData(&this->target, sizeof(this->target));
+				serde->ReadRecordData(&this->velocity, sizeof(this->velocity));
+				serde->ReadRecordData(&this->halflife, sizeof(this->halflife));
+				return;
+			}
+		}
+		throw std::runtime_error("Cannot deserilize spring of this version");
 	}
 
 

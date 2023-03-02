@@ -539,3 +539,5 @@ contrib/Distribution/**/*.dll
 contrib/Distribution/**/*.pdb
 
 vcpkg
+
+.clangd

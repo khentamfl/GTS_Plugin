@@ -2,6 +2,7 @@
 // Critically Damped Springs
 //
 #include "events.hpp"
+#include "models/serde.hpp"
 
 using namespace SKSE;
 
@@ -13,14 +14,17 @@ namespace Gts {
 			void UpdateValues(float& value, const float& target, float & velocity, const float& halflife, const float& dt);
 	};
 
-	class Spring : public SpringBase {
+	class Spring : public SpringBase, public SerdeObject {
 		public:
+			void Ser(SerializationInterface* serde) override;
+			void Des(SerializationInterface* serde) override;
+			
 			float value = 0.0;
 			float target = 0.0;
 			float velocity = 0.0;
 			float halflife = 1.0;
 
-			void Update(float delta) override;
+			void Update(float dt) override;
 
 			Spring();
 			Spring(float initial, float halflife);
