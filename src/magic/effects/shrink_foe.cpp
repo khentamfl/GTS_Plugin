@@ -65,7 +65,7 @@ namespace Gts {
 			SizeDifference = clamp(1.0, 8.0, (get_target_scale(caster)/get_target_scale(target))/2);
 		}
 
-		if (target->isDead()) {
+		if (target->IsDead()) {
 			bonus = 3.0;
 		}
 
