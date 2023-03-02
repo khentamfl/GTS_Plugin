@@ -256,12 +256,6 @@ namespace Gts {
 			} else if (attacker->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
 				TransferInventory(receiver, attacker, false, true);
 			}
-			if (receiver->formID != 0x14) {
-				Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.
-			} else if (receiver->formID == 0x14) {
-				TriggerScreenBlood(50);
-				receiver->SetAlpha(0.0); // Just make player Invisible
-			}
 			Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");
 			std::random_device rd;
 			std::mt19937 gen(rd());
@@ -272,6 +266,13 @@ namespace Gts {
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+
+			if (receiver->formID != 0x14) {
+				Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.
+			} else if (receiver->formID == 0x14) {
+				TriggerScreenBlood(50);
+				receiver->SetAlpha(0.0); // Just make player Invisible
+			}
 		}
 	}
 

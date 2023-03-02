@@ -68,6 +68,10 @@ namespace Gts {
 		}
 
 		efficiency *= (GigantismCaster / GigantismTarget) * SizeHunger;
+		
+		if (target->IsDead()) {
+			efficiency *= 2.0;
+		}
 
 		return efficiency;
 	}
@@ -79,7 +83,7 @@ namespace Gts {
 		float progression_multiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
-		float GigantismTarget = clamp(0.05, 1.0, 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(target)/100);  // May go negative needs fixing with a smooth clamp
+		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)/100;  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel));
 		//log::info("LevelDifference: {}, caster level: {}, target level: {}", efficiency, casterlevel, targetlevel);
 		if (IsDragon(target)) {
@@ -89,7 +93,10 @@ namespace Gts {
 			efficiency *= 0.25;
 		}
 
-		efficiency *= GigantismCaster * GigantismTarget * SizeHunger;
+		efficiency *= (GigantismCaster / GigantismTarget) * SizeHunger;
+		if (target->IsDead()) {
+			efficiency *= 2.0;
+		}
 		//log::info("Total Efficiency: {}", efficiency);
 
 		return efficiency;
