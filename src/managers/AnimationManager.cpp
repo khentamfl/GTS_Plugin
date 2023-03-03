@@ -36,12 +36,13 @@ namespace Gts {
             log::info("Tag: {}, payload: {}", tag, payload);
             if (tag == "GTSstompimpact") {
                 auto kind = FootEvent::JumpLand;
+                const std::string_view left_foot = ".*(L.*Foot|L.*Leg.*Tip).*";
                 Impact impact_data = Impact {
 				    .actor = actor,
 				    .kind = kind,
 				    .scale = get_visual_scale(actor) * 1.6,
 				    .effective_scale = get_effective_scale(actor),
-				    .nodes = get_landing_nodes(actor, kind),
+				    .nodes = find_node_regex_any(actor, left_foot),
 			    };
                 EventDispatcher::DoOnImpact(impact);
             }
