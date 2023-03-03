@@ -14,6 +14,6 @@ namespace Gts
 			[[nodiscard]] static AnimationManager& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-			void ActorAnimEvent(const Actor& actor, const std::string_view& tag, const std::string_view& payload) override;
+			void ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) override;
 	};
 }
