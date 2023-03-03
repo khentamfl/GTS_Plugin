@@ -89,5 +89,7 @@ namespace Gts {
         EventDispatcher::DoActorAnimEvent(*actor, evn->tag, evn->payload);
       }
     }
+
+	return RE::BSEventNotifyControl::kContinue;
   }
 }
