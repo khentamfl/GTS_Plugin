@@ -34,6 +34,9 @@ namespace Gts {
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
         if (actor->formID == 0x14) {
             log::info("Tag: {}, payload: {}", tag, payload);
+            actor->AddAnimationGraphEventSink("GTSstompimpactR");
+            actor->AddAnimationGraphEventSink("GTSStompendR");
+            actor->AddAnimationGraphEventSink("GTSstompstartR");
             if (tag == "GTSstompimpactR" || tag == "GTSstompimpactL") {
                 log::info("Stomp is true");
             }
