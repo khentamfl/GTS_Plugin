@@ -31,8 +31,6 @@ namespace {
 			foot_kind = FootEvent::Back;
 		} else if (matches(tag, ".*Jump.*(Down|Land).*")) {
 			foot_kind = FootEvent::JumpLand;
-		} else if (matches(tag, ".*GTS.*(Right|Left),*")) {
-			foot_kind = FootEvent::Stomp;
 		}
 		return foot_kind;
 	}
@@ -88,16 +86,6 @@ namespace {
 					results.push_back(result);
 				}
 				break;
-			case FootEvent::Stomp:
-				result = find_node_regex_any(actor, left_foot);
-				if (result) {
-					results.push_back(result);
-				}
-				result = find_node_regex_any(actor, right_foot);
-				if (result) {
-					results.push_back(result);
-				}
-				break;	
 		}
 		return results;
 	}

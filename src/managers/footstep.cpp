@@ -95,12 +95,10 @@ namespace {
 		switch (foot_kind) {
 			case FootEvent::Left:
 			case FootEvent::Front:
-			case FootEvent::Stomp:
 				return Runtime::GetSound("xlFootstepL");
 				break;
 			case FootEvent::Right:
 			case FootEvent::Back:
-			case FootEvent::Stomp:
 				return Runtime::GetSound("xlFootstepR");
 				break;
 		}
@@ -111,12 +109,10 @@ namespace {
 		switch (foot_kind) {
 			case FootEvent::Left:
 			case FootEvent::Front:
-			case FootEvent::Stomp:
 				return Runtime::GetSound("xlRumbleL");
 				break;
 			case FootEvent::Right:
 			case FootEvent::Back:
-			case FootEvent::Stomp:
 				return Runtime::GetSound("xlRumbleR");
 				break;
 			case FootEvent::JumpLand:
@@ -130,12 +126,10 @@ namespace {
 		switch (foot_kind) {
 			case FootEvent::Left:
 			case FootEvent::Front:
-			case FootEvent::Stomp:
 				return Runtime::GetSound("xlSprintL");
 				break;
 			case FootEvent::Right:
 			case FootEvent::Back:
-			case FootEvent::Stomp:
 				return Runtime::GetSound("xlSprintR");
 				break;
 			case FootEvent::JumpLand:
@@ -149,12 +143,10 @@ namespace {
 		switch (foot_kind) {
 			case FootEvent::Left:
 			case FootEvent::Front:
-			case FootEvent::Stomp:
 				return Runtime::GetSound("xxlFootstepL");
 				break;
 			case FootEvent::Right:
 			case FootEvent::Back:
-			case FootEvent::Stomp:
 				return Runtime::GetSound("xxlFootstepR");
 				break;
 			case FootEvent::JumpLand:

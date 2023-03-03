@@ -354,7 +354,6 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 		float tinySize = get_visual_scale(tiny);
-		float damagebonus = 1.0;
 		if (IsDragon(tiny)) {
 			tinySize *= 2.0;
 		}
@@ -367,16 +366,13 @@ namespace Gts {
 			movementFactor *= 1.75;
 		} if (evt.footEvent == FootEvent::JumpLand) {
 			movementFactor *= 3.0;
-		} if (evt.footEvent == FootEvent::Stomp) {
-			movementFactor *= 2.0;
-			damagebonus = 4.0;
 		}
 		
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 6 * damagebonus, true);
+			DoSizeDamage(giant, tiny, movementFactor, force * 6, true);
 
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
@@ -440,7 +436,7 @@ namespace Gts {
 			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
-		float result = ((0.20 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * additionaldamage * weightdamage * mult);
+		float result = ((0.25 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * additionaldamage * weightdamage * mult);
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}

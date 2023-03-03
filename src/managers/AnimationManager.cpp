@@ -35,16 +35,7 @@ namespace Gts {
         if (actor->formID == 0x14) {
             log::info("Tag: {}, payload: {}", tag, payload);
             if (tag == "GTSstompimpact") {
-                auto kind = FootEvent::Stomp;
-                const std::string_view left_foot = ".*(L.*Foot|L.*Leg.*Tip).*";
-                Impact impact_data = Impact {
-				    .actor = actor,
-				    .kind = kind,
-				    .scale = get_visual_scale(actor),
-				    .effective_scale = get_effective_scale(actor),
-				    .nodes = find_node_regex_any(actor, left_foot),
-			    };
-                EventDispatcher::DoOnImpact(Impact);
+                log::info("Stomp is true");
             }
         }
     }

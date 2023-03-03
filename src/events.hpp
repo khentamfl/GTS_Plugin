@@ -13,7 +13,6 @@ namespace Gts {
 		Front,
 		Back,
 		JumpLand,
-		Stomp,
 		Unknown,
 	};
 
