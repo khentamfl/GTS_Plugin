@@ -25,6 +25,8 @@ namespace {
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 			case FootEvent::JumpLand:
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
+			case FootEvent::Stomp:
+				base_explosion = Runtime::GetExplosion("footstepExplosion");
 		}
 
 		if (base_explosion) {
