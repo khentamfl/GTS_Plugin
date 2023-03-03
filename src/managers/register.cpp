@@ -1,7 +1,9 @@
 #include "managers/register.hpp"
 #include "events.hpp"
 #include "magic/magic.hpp"
+#include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/AnimationManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
@@ -15,7 +17,6 @@
 #include "managers/hitmanager.hpp"
 #include "managers/vore.hpp"
 #include "managers/CrushManager.hpp"
-#include "managers/ShrinkToNothingManager.hpp"
 #include "managers/tremor.hpp"
 #include "managers/footstep.hpp"
 #include "managers/explosion.hpp"
@@ -42,6 +43,7 @@ namespace Gts {
 		EventDispatcher::AddListener(&RandomGrowth::GetSingleton()); // Manages random growth perk
 		EventDispatcher::AddListener(&QuestManager::GetSingleton()); // Quest is currently empty and not needed
 		EventDispatcher::AddListener(&HitManager::GetSingleton()); // Hit Manager for handleing papyrus hit events
+		EventDispatcher::AddListener(&AnimationManager::GetSingleton()); // Manages Animation Events
 
 		EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
 		EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
