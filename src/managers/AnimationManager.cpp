@@ -30,11 +30,10 @@ namespace Gts {
 	}
 
 	void AnimationManager::ActorAnimEvent(const Actor& actor, const std::string_view& tag, const std::string_view& payload) {
-        if (actor == nullptr) {
-            return;
-        }
-        if (actor->formID == 0x14) {
-            log::info("Tag: {}", tag);
+        if (actor) {
+            if (actor.formID == 0x14) {
+                log::info("Tag: {}", tag);
+            }
         }
     }
 }
