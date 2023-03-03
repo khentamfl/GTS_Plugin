@@ -146,23 +146,21 @@ namespace Gts {
 		}
 
 		Actor* pred = PlayerCharacter::GetSingleton();
-		if (ShiftPressed && V_Pressed && !this->voreBlock) {
-			if (Runtime::HasPerk(pred, "VorePerk")) {
-				if (voretimer.ShouldRunFrame()) {
-					this->voreBlock = true;
+		if (ShiftPressed && V_Pressed && !this->voreBlock && Runtime::HasPerk(pred, "VorePerk")) {
+			if (voretimer.ShouldRunFrame()) {
+				this->voreBlock = true;
 
-					std::size_t numberOfPrey = 1;
-					if (Runtime::HasPerk(pred, "MassVorePerk")) {
-						numberOfPrey = 3;
-					}
-					std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
-					for (auto prey: preys) {
-						VoreManager.StartVore(pred, prey);
-					}
+				std::size_t numberOfPrey = 1;
+				if (Runtime::HasPerk(pred, "MassVorePerk")) {
+					numberOfPrey = 3;
 				}
-			} else if (!ShiftPressed && !V_Pressed) {
-				this->voreBlock = false;
+				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
+				for (auto prey: preys) {
+					VoreManager.StartVore(pred, prey);
+				}
 			}
+		} else if (!ShiftPressed && !V_Pressed) {
+			this->voreBlock = false;
 		}
 
 		auto& Camera = CameraManager::GetSingleton();
