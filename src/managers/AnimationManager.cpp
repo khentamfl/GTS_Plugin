@@ -40,7 +40,7 @@ namespace Gts {
                 Impact impact_data = Impact {
 				    .actor = actor,
 				    .kind = kind,
-				    .scale = get_visual_scale(actor) * 1.6,
+				    .scale = get_visual_scale(actor),
 				    .effective_scale = get_effective_scale(actor),
 				    .nodes = find_node_regex_any(actor, left_foot),
 			    };
