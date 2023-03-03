@@ -318,6 +318,10 @@ namespace Gts {
 			return false;
 		}
 
+		if (!Runtime::HasPerkTeam(pred, "VorePerk")) {
+			return false;
+		}
+
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {

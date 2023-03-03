@@ -146,7 +146,7 @@ namespace Gts {
 		}
 
 		Actor* pred = PlayerCharacter::GetSingleton();
-		if (ShiftPressed && V_Pressed && !this->voreBlock && Runtime::HasPerk(pred, "VorePerk")) {
+		if (ShiftPressed && V_Pressed && !this->voreBlock) {
 			if (voretimer.ShouldRunFrame()) {
 				this->voreBlock = true;
 

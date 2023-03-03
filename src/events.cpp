@@ -347,17 +347,17 @@ namespace Gts {
 		}
 	}
   void EventDispatcher::DoActorAnimEvent(const Actor& actor, const BSFixedString& a_tag, const BSFixedString& a_payload) {
-    std::string tag = a_tag.c_str();
-    std::string payload = a_payload.c_str();
+    	std::string tag = a_tag.c_str();
+    	std::string payload = a_payload.c_str();
     for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
-				listener->profiler.Start();
-			}
-			listener->ActorAnimEvent(actor, tag, payload);
-			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
-				listener->profiler.Stop();
-			}
+		if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+			listener->profiler.Start();
 		}
+		listener->ActorAnimEvent(actor, tag, payload);
+		if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+			listener->profiler.Stop();
+		}
+	}
   }
 	EventDispatcher& EventDispatcher::GetSingleton() {
 		static EventDispatcher instance;
