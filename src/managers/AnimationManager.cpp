@@ -20,8 +20,8 @@ using namespace Gts;
 
 
 namespace Gts {
-	AnimationManager& Animation::GetSingleton() noexcept {
-		static Animation instance;
+	AnimationManager& AnimationManager::GetSingleton() noexcept {
+		static AnimationManager instance;
 		return instance;
 	}
 
@@ -30,11 +30,11 @@ namespace Gts {
 	}
 
 	void AnimationManager::ActorAnimEvent(const Actor& actor, const std::string_view& tag, const std::string_view& payload) {
-        if (!actor) {
+        if (actor == nullptr) {
             return;
         }
         if (actor->formID == 0x14) {
             log::info("Tag: {}", tag);
-             }
         }
-	}
+    }
+}
