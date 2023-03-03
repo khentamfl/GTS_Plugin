@@ -29,7 +29,7 @@ namespace Gts {
 		return "AnimationManager";
 	}
 
-	void AnimationManager::ActorAnimEvent(const Actor& actor, const std::string_view& tag, const std::string_view& payload) {
+	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
         if (actor) {
             if (actor.formID == 0x14) {
                 log::info("Tag: {}", tag);
