@@ -44,7 +44,7 @@ namespace Gts {
 		if (evn) {
 			auto* actor = TESForm::LookupByID<Actor>(evn->formID);
 			if (actor) {
-        actor->AddAnimationGraphEventSink(self); // Listen to their anim events
+        		actor->AddAnimationGraphEventSink(this); // Listen to their anim events
 				EventDispatcher::DoActorLoaded(actor);
 			}
 		}
@@ -86,7 +86,7 @@ namespace Gts {
     if (evn->holder) {
       auto* actor = TESForm::LookupByID<Actor>(evn->holder->formID);
       if (actor) {
-        EventDispatcher::DoActorAnimEvent(*actor, tag, payload);
+        EventDispatcher::DoActorAnimEvent(*actor, evn->tag, evn->payload);
       }
     }
   }
