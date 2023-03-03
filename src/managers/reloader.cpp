@@ -86,7 +86,7 @@ namespace Gts {
     if (evn->holder) {
       auto* actor = TESForm::LookupByID<Actor>(evn->holder->formID);
       if (actor) {
-        EventDispatcher::DoActorAnimEvent(*actor, evn->tag, evn->payload);
+        EventDispatcher::DoActorAnimEvent(actor, evn->tag, evn->payload);
       }
     }
 
