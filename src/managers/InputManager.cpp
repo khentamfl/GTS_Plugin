@@ -134,7 +134,7 @@ namespace Gts {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.025) {
 					player->NotifyAnimationGraph("GiantessModStompNormal");
-					log::info("Attacking Right");
+					log::info("Attacking Right"); 
 					// Attack Right
 				}
 				if (key == 0x2 && buttonEvent->HeldDuration() <= 0.025) {
