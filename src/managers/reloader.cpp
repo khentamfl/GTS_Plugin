@@ -44,6 +44,7 @@ namespace Gts {
 		if (evn) {
 			auto* actor = TESForm::LookupByID<Actor>(evn->formID);
 			if (actor) {
+        actor->AddAnimationGraphEventSink(self); // Listen to their anim events
 				EventDispatcher::DoActorLoaded(actor);
 			}
 		}
@@ -80,4 +81,13 @@ namespace Gts {
 
 		return RE::BSEventNotifyControl::kContinue;
 	}
+
+  BSEventNotifyControl ReloadManager::ProcessEvent(const BSAnimationGraphEvent * evn, BSTEventSource<BSAnimationGraphEvent> * dispatcher) {
+    if (evn->holder) {
+      auto* actor = TESForm::LookupByID<Actor>(evn->holder->formID);
+      if (actor) {
+        EventDispatcher::DoActorAnimEvent(*actor, tag, payload);
+      }
+    }
+  }
 }
