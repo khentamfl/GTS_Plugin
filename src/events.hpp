@@ -155,7 +155,7 @@ namespace Gts {
 			static void DoAddPerk(const AddPerkEvent& evt);
 			static void DoRemovePerk(const RemovePerkEvent& evt);
 			static void DoMenuChange(const MenuOpenCloseEvent* menu_event);
-      static void DoActorAnimEvent(const Actor& actor, std::string_view tag, std::string_view payload);
+      static void DoActorAnimEvent(const Actor& actor, const BSFixedString& a_tag, const BSFixedString& a_payload);
 		private:
 			[[nodiscard]] static EventDispatcher& GetSingleton();
 			std::vector<EventListener*> listeners;
