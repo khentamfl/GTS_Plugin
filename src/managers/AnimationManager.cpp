@@ -1,4 +1,3 @@
-
 #include "managers/AnimationManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GrowthTremorManager.hpp"
@@ -11,8 +10,10 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
+#include "events.hpp"
 #include "timer.hpp"
 #include "node.hpp"
+
 
 using namespace RE;
 using namespace Gts;
@@ -31,7 +32,18 @@ namespace Gts {
 
 	void AnimationManager::ActorAnimEvent(const Actor& actor, const std::string_view& tag, const std::string_view& payload) {
         if (actor.formID == 0x14) {
-            log::info("Tag: {}", tag);
+            log::info("Tag: {}, payload: {}", tag, payload);
+            if (tag == "GTSstompimpact") {
+                auto kind = FootEvent::JumpLand;
+                Impact impact_data = Impact {
+				    .actor = actor,
+				    .kind = kind,
+				    .scale = get_visual_scale(actor) * 1.6,
+				    .effective_scale = get_effective_scale(actor),
+				    .nodes = get_landing_nodes(actor, kind),
+			    };
+                EventDispatcher::DoOnImpact(impact);
+            }
         }
     }
 }
