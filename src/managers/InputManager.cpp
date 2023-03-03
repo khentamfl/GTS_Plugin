@@ -42,7 +42,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		auto caster = player;
 		auto& VoreManager = Vore::GetSingleton();
-		float size = get_target_scale(player);
+		float size = get_visual_scale(player);
 
 		if (!player) {
 			return BSEventNotifyControl::kContinue;
@@ -146,8 +146,8 @@ namespace Gts {
 		}
 
 		Actor* pred = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(pred, "VorePerk")) {
-			if (ShiftPressed && V_Pressed && !this->voreBlock) {
+		if (ShiftPressed && V_Pressed && !this->voreBlock) {
+			if (Runtime::HasPerk(pred, "VorePerk")) {
 				if (voretimer.ShouldRunFrame()) {
 					this->voreBlock = true;
 
