@@ -42,8 +42,8 @@ namespace Gts {
 	};
 
 	struct CameraCollisions {
-		bool enable_trees = false;
-		bool enable_debris = false;
+		bool enable_trees = true;
+		bool enable_debris = true;
 		bool enable_static = true;
 		bool enable_terrain = true;
 		bool enable_actor = false;

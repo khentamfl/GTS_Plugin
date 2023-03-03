@@ -99,7 +99,7 @@ namespace Gts {
 	}
 
   // Fired when a actor animation event occurs
-  void EventListener::ActorAnimEvent(const Actor& actor, const std::string_view7 tag, const std::string_view& payload) {
+  void EventListener::ActorAnimEvent(const Actor& actor, const std::string_view& tag, const std::string_view& payload) {
 
   }
 
