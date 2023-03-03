@@ -133,10 +133,13 @@ namespace Gts {
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x1 && buttonEvent->HeldDuration() <= 0.025) {
-					//player->NotifyAnimationGraph("JumpLand");
+					player->NotifyAnimationGraph("GiantessModStompNormal");
+					log::info("Attacking Right");
 					// Attack Right
 				}
 				if (key == 0x2 && buttonEvent->HeldDuration() <= 0.025) {
+					player->NotifyAnimationGraph("GiantessModStompReverse");
+					log::info("Attacking Left");
 					// Do attack left
 				}
 			}
