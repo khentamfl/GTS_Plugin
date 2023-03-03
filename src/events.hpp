@@ -124,7 +124,7 @@ namespace Gts {
 			virtual void MenuChange(const MenuOpenCloseEvent* menu_event);
 
       // Fired when a actor animation event occurs
-			virtual void ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload);
+			virtual void ActorAnimEvent(const Actor& actor, const std::string_view& tag, const std::string_view& payload);
 	};
 
 	class EventDispatcher {
