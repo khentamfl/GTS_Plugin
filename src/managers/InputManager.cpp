@@ -128,6 +128,9 @@ namespace Gts {
 					player->NotifyAnimationGraph("GiantessModStompNormal");
 				} else if (key == 0x2F) {
 					V_Pressed = true;
+					player->NotifyAnimationGraph("EndAnim");
+					player->NotifyAnimationGraph("end");
+					player->NotifyAnimationGraph("StopEffect");
 				} else if (key == 0x21) {
 					F_Pressed = true;
 				}
