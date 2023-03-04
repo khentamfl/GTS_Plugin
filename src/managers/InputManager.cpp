@@ -99,7 +99,7 @@ namespace Gts {
 							float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
 							float scale = get_target_scale(actor);
 							float maxscale = get_max_scale(actor);
-							ConsoleLog::GetSingleton()->Print("%s Scale is: %g; Size Limit is: %g; High Heels: %g; Aspect Of Giantess: %g", actor->GetDisplayFullName(), scale, maxscale, hh, gigantism);
+							ConsoleLog::GetSingleton()->Print("%s Scale is: %g; Size Limit is: %g; High Heels: %g; Aspect Of Giantess %: %g", actor->GetDisplayFullName(), scale, maxscale, hh, gigantism);
 						}
 					}
 				}
@@ -125,12 +125,8 @@ namespace Gts {
 					ShiftPressed = true;
 				} else if (key == 0x12) {
 					E_Pressed = true;
-					player->NotifyAnimationGraph("GiantessModStompNormal");
 				} else if (key == 0x2F) {
 					V_Pressed = true;
-					player->NotifyAnimationGraph("EndAnim");
-					player->NotifyAnimationGraph("end");
-					player->NotifyAnimationGraph("StopEffect");
 				} else if (key == 0x21) {
 					F_Pressed = true;
 				}
@@ -166,7 +162,9 @@ namespace Gts {
 		} else if (!ShiftPressed && !V_Pressed) {
 			this->voreBlock = false;
 		}
-
+		if (ShiftPressed && E_Pressed) {
+			player->NotifyAnimationGraph("GiantessModStompNormal");
+		}
 		auto& Camera = CameraManager::GetSingleton();
 		if (AltPressed == false && RightArrow == true && LeftArrow == true) {
 			Camera.ResetLeftRight();
