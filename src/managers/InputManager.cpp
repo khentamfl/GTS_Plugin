@@ -36,6 +36,7 @@ namespace Gts {
 		bool E_Pressed = false;
 		bool V_Pressed = false;
 		bool F_Pressed = false;
+		bool Q_Pressed = false;
 
 		bool ArrowUp = false;
 		bool ArrowDown = false;
@@ -129,6 +130,8 @@ namespace Gts {
 					V_Pressed = true;
 				} else if (key == 0x21) {
 					F_Pressed = true;
+				} else if (key == 0x10) {
+					Q_Pressed = true;
 				}
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
@@ -164,6 +167,9 @@ namespace Gts {
 		}
 		if (ShiftPressed && E_Pressed) {
 			player->NotifyAnimationGraph("GtsModStompAnimRight");
+		} 
+		if (ShiftPressed && Q_Pressed) {
+			player->NotifyAnimationGraph("GtsModStompAnimLeft");
 		}
 		auto& Camera = CameraManager::GetSingleton();
 		if (AltPressed == false && RightArrow == true && LeftArrow == true) {
