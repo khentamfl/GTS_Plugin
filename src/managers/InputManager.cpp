@@ -163,7 +163,7 @@ namespace Gts {
 			this->voreBlock = false;
 		}
 		if (ShiftPressed && E_Pressed) {
-			player->NotifyAnimationGraph("GiantessModStompAnimRight");
+			player->NotifyAnimationGraph("GiantessModStompRight");
 		}
 		auto& Camera = CameraManager::GetSingleton();
 		if (AltPressed == false && RightArrow == true && LeftArrow == true) {
