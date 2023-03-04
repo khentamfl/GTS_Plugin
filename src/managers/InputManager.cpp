@@ -125,6 +125,7 @@ namespace Gts {
 					ShiftPressed = true;
 				} else if (key == 0x12) {
 					E_Pressed = true;
+					player->NotifyAnimationGraph("GiantessModStompNormal");
 				} else if (key == 0x2F) {
 					V_Pressed = true;
 				} else if (key == 0x21) {
@@ -133,12 +134,12 @@ namespace Gts {
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x0 && buttonEvent->HeldDuration() <= 0.025) {
-					player->NotifyAnimationGraph("GiantessModStompNormal");
+					//player->NotifyAnimationGraph("GiantessModStompNormal");
 					log::info("Attacking Left"); 
 					// Attack Right
 				}
 				if (key == 0x01 && buttonEvent->HeldDuration() <= 0.025) {
-					player->NotifyAnimationGraph("GiantessModStompNormal");
+					//player->NotifyAnimationGraph("GiantessModStompNormal");
 					log::info("Attacking Right");
 					// Do attack left
 				}
