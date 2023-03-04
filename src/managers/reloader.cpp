@@ -86,9 +86,6 @@ namespace Gts {
     if (evn->holder) {
       auto* actor = TESForm::LookupByID<Actor>(evn->holder->formID);
       if (actor) {
-		if (actor->formID == 0x14) {
-			log::info("projectName: {}", evn->AnimationVariable->name);
-		}
         EventDispatcher::DoActorAnimEvent(actor, evn->tag, evn->payload);
       }
     }
