@@ -19,29 +19,6 @@
 using namespace RE;
 using namespace Gts;
 
-namespace {
-	struct VolumeParams {
-		float a;
-		float k;
-		float n;
-		float s;
-	};
-	
-	float volume_function(float scale, const VolumeParams& params) {
-		float k = params.k;
-		float a = params.a;
-		float n = params.n;
-		float s = params.s;
-		// https://www.desmos.com/calculator/ygoxbe7hjg
-		return k*pow(s*(scale-a), n);
-	}
-
-	float frequency_function(float scale, const VolumeParams& params) {
-		float a = params.a;
-		return soft_core(scale, 0.01, 1.0, 1.0, a, 0.0)*0.5+0.5;
-	}
-}
-
 
 namespace Gts {
 	AnimationManager& AnimationManager::GetSingleton() noexcept {
@@ -57,7 +34,7 @@ namespace Gts {
         if (actor->formID == 0x14) {
             log::info("Tag: {}, payload: {}", tag, payload);
 			auto scale = get_visual_scale(actor);
-			float volume = volume_function(scale, params);
+			float volume = scale * 0.20;
             if (tag == "GTSstompimpactR" || tag == "GTSstompimpactL") {
 				//Call UnderFoot event here somehow with x scale bonus
 				Runtime::PlaySound("lFootstepL", actor, volume, 1.0);
