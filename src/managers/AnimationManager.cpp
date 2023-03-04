@@ -20,6 +20,13 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+	struct VolumeParams {
+		float a;
+		float k;
+		float n;
+		float s;
+	};
+	
 	float volume_function(float scale, const VolumeParams& params) {
 		float k = params.k;
 		float a = params.a;
@@ -29,7 +36,7 @@ namespace {
 		return k*pow(s*(scale-a), n);
 	}
 
-		float frequency_function(float scale, const VolumeParams& params) {
+	float frequency_function(float scale, const VolumeParams& params) {
 		float a = params.a;
 		return soft_core(scale, 0.01, 1.0, 1.0, a, 0.0)*0.5+0.5;
 	}
