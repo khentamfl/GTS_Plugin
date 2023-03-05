@@ -196,7 +196,7 @@ namespace Gts {
 		}
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
-		const float BASE_CHECK_DISTANCE = 40;
+		const float BASE_CHECK_DISTANCE = 80;
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 2.0;
 
@@ -304,7 +304,7 @@ namespace Gts {
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
-						if ((actorLocation-giantLocation * 1.20).Length() < BASE_CHECK_DISTANCE*giantScale) {
+						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
 							// Check the tiny's nodes against the giant's foot points
 							int nodeCollisions = 0;
 							float force = 0.0;
