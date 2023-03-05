@@ -243,7 +243,6 @@ namespace Gts {
 		} if (!BodyBone) {
 			return; // CTD protection attempts
 		}
-		float fingerpos = 
 		NiMatrix3 leftRotMat;
 		{
 			NiAVObject* foot = leftFoot;
@@ -315,7 +314,7 @@ namespace Gts {
 							float force = 0.0;
 
 							auto model = otherActor->GetCurrent3D();
-							
+
 							otherActor->SetPosition(finger.world.translate, false);
 
 							if (model) {
