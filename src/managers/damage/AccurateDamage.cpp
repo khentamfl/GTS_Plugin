@@ -280,7 +280,7 @@ namespace Gts {
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
-			NiPoint3(0.0, hh*0.08, -(hh * 0.25)), // The standard at the foot position
+			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
 			NiPoint3(-1.6, 7.7 + (hh/70), -0.90 + (-hh * 1.15)), // Offset it forward
 			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
 		};
@@ -304,7 +304,7 @@ namespace Gts {
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
-						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+						if ((actorLocation-giantLocation * 1.20).Length() < BASE_CHECK_DISTANCE*giantScale) {
 							// Check the tiny's nodes against the giant's foot points
 							int nodeCollisions = 0;
 							float force = 0.0;

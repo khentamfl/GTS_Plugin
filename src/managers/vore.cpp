@@ -98,6 +98,9 @@ namespace Gts {
 				//log::info("{} is looking for prey", caster->GetDisplayFullName());
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
+					if (prey->formID == 0x14) {
+						return;
+					}
 					VoreManager.StartVore(pred, prey);
 				}
 			}
