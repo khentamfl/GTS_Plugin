@@ -109,6 +109,7 @@ namespace {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto model = tiny->GetCurrent3D();
+		log::info("Trying to do damage to: {}", tiny->GetDisplayFullName());
 
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
@@ -280,8 +281,8 @@ namespace Gts {
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, hh*0.08, -(hh * 0.25)), // The standard at the foot position
-			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + -hh * 1.15), // Offset it forward
-			NiPoint3(0.0, (hh/50), -hh * 1.15), // Offset for HH
+			NiPoint3(-1.6, 7.7 + (hh/70), -0.90 + (-hh * 1.15)), // Offset it forward
+			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
 		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
@@ -409,7 +410,7 @@ namespace Gts {
 		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
 		}
-		//log::info("Doing size damage: {} to {}, Do Damage?: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), DoDamage);
+		log::info("Doing size damage: {} to {}, Do Damage?: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), DoDamage);
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
@@ -455,6 +456,7 @@ namespace Gts {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.30);
 			return; // Stamina protection, emulates Size Damage resistance
 		} if (!DoDamage) {
+			log::info("Damage is false, returning");
 			return;
 		}
 		DamageAV(tiny, ActorValue::kHealth, result);
