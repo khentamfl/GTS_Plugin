@@ -305,6 +305,7 @@ namespace Gts {
 			NiPoint3 giantLocation = actor->GetPosition();
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
+					otherActor->SetPosition(finger->world.translate, false);
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
@@ -314,8 +315,6 @@ namespace Gts {
 							float force = 0.0;
 
 							auto model = otherActor->GetCurrent3D();
-
-							otherActor->SetPosition(finger->world.translate, false);
 
 							if (model) {
 								for (auto point: footPoints) {
