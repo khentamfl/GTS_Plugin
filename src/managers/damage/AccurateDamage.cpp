@@ -34,6 +34,24 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.60;
 
+	void GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
+		if (!tiny) {
+			return;
+		}
+		auto bone = find_node(actor, findbone);
+		if (!bone) {
+			return;
+		}
+		NiAVObject* attach = bone;
+		TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
+		ref->SetPosition(attach->world.translate);
+
+		auto charcont = tiny->GetCharController();
+		if (charcont) {
+			log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
+		}
+	}
+
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		float giantSize = get_visual_scale(giant);
@@ -209,7 +227,6 @@ namespace Gts {
 		const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
 
 		const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
-		const std::string_view fingerlookup = "NPC L Finger02 [LF02]";
 
 		auto leftFoot = find_node(actor, leftFootLookup);
 		auto rightFoot = find_node(actor, rightFootLookup);
@@ -217,14 +234,12 @@ namespace Gts {
 		auto leftCalf = find_node(actor, leftCalfLookup);
 		auto rightCalf = find_node(actor, rightCalfLookup);
 
-		auto fingerbone = find_node(actor, fingerlookup);
 
 		auto leftToe = find_node(actor, leftToeLookup);
 		auto rightToe = find_node(actor, rightToeLookup);
 
 		auto BodyBone = find_node(actor, bodyLookup);
 
-		NiAVObject* finger = fingerbone;
 
 		if (!leftFoot) {
 			return;
@@ -311,12 +326,10 @@ namespace Gts {
 						
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
 							// Check the tiny's nodes against the giant's foot points
-
-							//TESObjectREFR* ref = static_cast<TESObjectREFR*>(otherActor);
-							otherActor->SetPosition(finger->world.translate, false);
-							otherActor->UpdateActor3DPosition();
-							otherActor->Update3DPosition(true);
-							//ref->SetPosition(finger->world.translate);
+							//otherActor->SetPosition(finger->world.translate, false);
+							///otherActor->UpdateActor3DPosition();
+							///otherActor->Update3DPosition(true);
+							GrabActor(actor, otheractor, "NPC L Finger02 [LF02]");
 
 							int nodeCollisions = 0;
 							float force = 0.0;
