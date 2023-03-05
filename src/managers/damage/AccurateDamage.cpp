@@ -198,7 +198,7 @@ namespace Gts {
 
 		NiAVObject* attach = bone;
 
-		NiPoint3 giantLocation = actor->GetPosition();
+		NiPoint3 giantLocation = giant->GetPosition();
 		NiPoint3 tinyLocation = tiny->GetPosition();
 		
 		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
