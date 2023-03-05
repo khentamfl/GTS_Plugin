@@ -312,9 +312,11 @@ namespace Gts {
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
 							// Check the tiny's nodes against the giant's foot points
 
-							TESObjectREFR* ref = static_cast<TESObjectREFR*>(otherActor);
-							otherActor->SetPosition(finger->world.translate, true);
-							ref->SetPosition(finger->world.translate);
+							//TESObjectREFR* ref = static_cast<TESObjectREFR*>(otherActor);
+							//otherActor->SetPosition(finger->world.translate, false);
+							//otherActor->UpdateActor3DPosition();
+							otherActor->Move(10.0 * giantScale, finger->world.translate);
+							//ref->SetPosition(finger->world.translate);
 
 							int nodeCollisions = 0;
 							float force = 0.0;
