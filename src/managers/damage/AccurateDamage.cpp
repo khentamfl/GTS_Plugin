@@ -44,11 +44,14 @@ namespace {
 		}
 		NiAVObject* attach = bone;
 		TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
-		ref->SetPosition(attach->world.translate);
+		otherActor->SetPosition(attach->world.translate, false);
 
 		auto charcont = tiny->GetCharController();
 		if (charcont) {
 			log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
+			if (charcont->gravity > 1.0) {
+				charcont->gravity = 0.0;
+			}
 		}
 	}
 
@@ -324,9 +327,6 @@ namespace Gts {
 						
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
 							// Check the tiny's nodes against the giant's foot points
-							//otherActor->SetPosition(finger->world.translate, false);
-							///otherActor->UpdateActor3DPosition();
-							///otherActor->Update3DPosition(true);
 							GrabActor(actor, otherActor, "NPC L Finger02 [LF02]");
 
 							int nodeCollisions = 0;
