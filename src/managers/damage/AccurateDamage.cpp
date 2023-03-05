@@ -38,7 +38,7 @@ namespace {
 		if (!tiny) {
 			return;
 		}
-		auto bone = find_node(actor, findbone);
+		auto bone = find_node(tiny, findbone);
 		if (!bone) {
 			return;
 		}
@@ -253,8 +253,6 @@ namespace Gts {
 			return;
 		} if (!rightToe) {
 			return; 
-		} if (!finger) {
-			return;
 		} if (!BodyBone) {
 			return; // CTD protection attempts
 		}
@@ -329,7 +327,7 @@ namespace Gts {
 							//otherActor->SetPosition(finger->world.translate, false);
 							///otherActor->UpdateActor3DPosition();
 							///otherActor->Update3DPosition(true);
-							GrabActor(actor, otheractor, "NPC L Finger02 [LF02]");
+							GrabActor(actor, otherActor, "NPC L Finger02 [LF02]");
 
 							int nodeCollisions = 0;
 							float force = 0.0;
