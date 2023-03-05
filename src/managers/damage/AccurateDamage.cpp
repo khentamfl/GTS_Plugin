@@ -40,12 +40,14 @@ namespace {
 			return;
 		}
 		NiAVObject* attach = bone;
-		tiny->SetPosition(attach->world.translate, false);
+		//tiny->SetPosition(attach->world.translate, false);
+		TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
+		ref->SetPosition(attach->world.translate);
 
 		auto charcont = tiny->GetCharController();
 		if (charcont) {
-			log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
-			if (charcont->gravity > 1.0) {
+			if (charcont->gravity > 0.0) {
+				log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
 				charcont->gravity = 0.0;
 			}
 		}
@@ -210,7 +212,7 @@ namespace Gts {
 		}
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
-		const float BASE_CHECK_DISTANCE = 80;
+		const float BASE_CHECK_DISTANCE = 90;
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 2.0;
 
