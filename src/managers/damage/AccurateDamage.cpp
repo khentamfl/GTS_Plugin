@@ -305,12 +305,17 @@ namespace Gts {
 			NiPoint3 giantLocation = actor->GetPosition();
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
-					otherActor->SetPosition(finger->world.translate, false);
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
+						
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
 							// Check the tiny's nodes against the giant's foot points
+
+							TESObjectREFR* ref = static_cast<TESObjectREFR*>(otherActor);
+							otherActor->SetPosition(finger->world.translate, true);
+							ref->SetPosition(finger->world.translate, true);
+
 							int nodeCollisions = 0;
 							float force = 0.0;
 
