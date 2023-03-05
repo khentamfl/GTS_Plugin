@@ -34,25 +34,6 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.60;
 
-	void GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
-		auto bone = find_node(giant, findbone);
-		if (!bone) {
-			return;
-		}
-		NiAVObject* attach = bone;
-		//tiny->SetPosition(attach->world.translate, false);
-		TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
-		ref->SetPosition(attach->world.translate);
-
-		auto charcont = tiny->GetCharController();
-		if (charcont) {
-			if (charcont->gravity > 0.0) {
-				log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
-				charcont->gravity = 0.0;
-			}
-		}
-	}
-
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		float giantSize = get_visual_scale(giant);
@@ -205,6 +186,34 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
+	void AccurateDamage::GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
+		if (giant == tiny) {
+			return;
+		}
+		auto bone = find_node(giant, findbone);
+		if (!bone) {
+			return;
+		}
+		float giantScale = get_visual_scale(giant);
+
+		NiAVObject* attach = bone;
+
+		NiPoint3 giantLocation = actor->GetPosition();
+		NiPoint3 tinyLocation = tiny->GetPosition();
+		
+		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
+			TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
+			ref->SetPosition(attach->world.translate);
+			auto charcont = tiny->GetCharController();
+			if (charcont) {
+				if (charcont->gravity > 0.0) {
+					log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
+					charcont->gravity = 0.0;
+				}
+			}
+		}
+	}
+
 	void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
@@ -325,8 +334,6 @@ namespace Gts {
 						
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
 							// Check the tiny's nodes against the giant's foot points
-							GrabActor(actor, otherActor, "NPC L Finger02 [LF02]");
-
 							int nodeCollisions = 0;
 							float force = 0.0;
 

@@ -22,6 +22,7 @@ namespace Gts {
 
 			virtual void UnderFootEvent(const UnderFoot& evt) override;
 
+			void GrabActor(Actor* giant, Actor* tiny, std::string_view findbone);
 			void DoAccurateCollision(Actor* actor);
 			void DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, bool DoDamage);
 	};
