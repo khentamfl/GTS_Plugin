@@ -313,9 +313,8 @@ namespace Gts {
 							// Check the tiny's nodes against the giant's foot points
 
 							//TESObjectREFR* ref = static_cast<TESObjectREFR*>(otherActor);
-							//otherActor->SetPosition(finger->world.translate, false);
-							//otherActor->UpdateActor3DPosition();
-							otherActor->Move(0, finger->world.translate);
+							otherActor->SetPosition(finger->world.translate, false);
+							otherActor->UpdateActor3DPosition();
 							//ref->SetPosition(finger->world.translate);
 
 							int nodeCollisions = 0;
