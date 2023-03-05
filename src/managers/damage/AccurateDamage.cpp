@@ -44,7 +44,7 @@ namespace {
 		}
 		NiAVObject* attach = bone;
 		TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
-		otherActor->SetPosition(attach->world.translate, false);
+		tiny->SetPosition(attach->world.translate, false);
 
 		auto charcont = tiny->GetCharController();
 		if (charcont) {
