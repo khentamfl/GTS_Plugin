@@ -315,6 +315,7 @@ namespace Gts {
 							//TESObjectREFR* ref = static_cast<TESObjectREFR*>(otherActor);
 							otherActor->SetPosition(finger->world.translate, false);
 							otherActor->UpdateActor3DPosition();
+							otherActor->Update3DPosition(true);
 							//ref->SetPosition(finger->world.translate);
 
 							int nodeCollisions = 0;
