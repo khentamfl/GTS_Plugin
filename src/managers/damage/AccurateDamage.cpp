@@ -35,15 +35,11 @@ namespace {
 	const float UNDERFOOT_POWER = 0.60;
 
 	void GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
-		if (!tiny) {
-			return;
-		}
-		auto bone = find_node(tiny, findbone);
+		auto bone = find_node(giant, findbone);
 		if (!bone) {
 			return;
 		}
 		NiAVObject* attach = bone;
-		TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
 		tiny->SetPosition(attach->world.translate, false);
 
 		auto charcont = tiny->GetCharController();
