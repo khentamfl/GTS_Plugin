@@ -315,7 +315,7 @@ namespace Gts {
 
 							auto model = otherActor->GetCurrent3D();
 
-							otherActor->SetPosition(finger.world.translate, false);
+							otherActor->SetPosition(finger->world.translate, false);
 
 							if (model) {
 								for (auto point: footPoints) {
