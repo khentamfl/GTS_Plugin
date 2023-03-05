@@ -209,6 +209,7 @@ namespace Gts {
 		const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
 
 		const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
+		const std::string_view fingerlookup = "NPC L Finger02 [LF02]";
 
 		auto leftFoot = find_node(actor, leftFootLookup);
 		auto rightFoot = find_node(actor, rightFootLookup);
@@ -216,10 +217,15 @@ namespace Gts {
 		auto leftCalf = find_node(actor, leftCalfLookup);
 		auto rightCalf = find_node(actor, rightCalfLookup);
 
+		auto fingerbone = find_node(actor, fingerlookup);
+
 		auto leftToe = find_node(actor, leftToeLookup);
 		auto rightToe = find_node(actor, rightToeLookup);
 
 		auto BodyBone = find_node(actor, bodyLookup);
+
+		NiAVObject* finger = fingerbone;
+
 		if (!leftFoot) {
 			return;
 		} if (!rightFoot) {
@@ -232,10 +238,12 @@ namespace Gts {
 			return;
 		} if (!rightToe) {
 			return; 
+		} if (!finger) {
+			return;
 		} if (!BodyBone) {
 			return; // CTD protection attempts
 		}
-
+		float fingerpos = 
 		NiMatrix3 leftRotMat;
 		{
 			NiAVObject* foot = leftFoot;
@@ -307,6 +315,9 @@ namespace Gts {
 							float force = 0.0;
 
 							auto model = otherActor->GetCurrent3D();
+							
+							otherActor->SetPosition(finger.world.translate, false);
+
 							if (model) {
 								for (auto point: footPoints) {
 									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
