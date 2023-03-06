@@ -186,35 +186,6 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-	void AccurateDamage::GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
-		if (giant == tiny) {
-			return;
-		}
-		auto bone = find_node(giant, findbone);
-		if (!bone) {
-			return;
-		}
-		float giantScale = get_visual_scale(giant);
-
-		NiAVObject* attach = bone;
-
-		NiPoint3 giantLocation = giant->GetPosition();
-		NiPoint3 tinyLocation = tiny->GetPosition();
-		
-		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
-			TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
-			ref->SetPosition(attach->world.translate);
-			tiny->SetPosition(attach->world.translate, false);
-			auto charcont = tiny->GetCharController();
-			if (charcont) {
-				if (charcont->gravity > 0.0) {
-					log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
-					charcont->gravity = 0.0;
-				}
-			}
-		}
-	}
-
 	void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {

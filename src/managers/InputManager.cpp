@@ -1,7 +1,8 @@
 #include "managers/damage/AccurateDamage.hpp"
-#include "managers/RandomGrowth.hpp"
 #include "managers/GrowthTremorManager.hpp"
+#include "managers/AnimationManager.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/RandomGrowth.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/vore.hpp"
@@ -132,7 +133,7 @@ namespace Gts {
 				} else if (key == 0x21) {
 					F_Pressed = true;
 					for (auto otherActor: find_actors()) {
-						AccurateDamage::GetSingleton().GrabActor(player, otherActor, "NPC L Finger02 [LF02]");
+						AnimationManager::GetSingleton().GrabActor(player, otherActor, "NPC L Finger02 [LF02]");
 					}
 				} else if (key == 0x10) {
 					Q_Pressed = true;
