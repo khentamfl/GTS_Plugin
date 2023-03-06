@@ -80,6 +80,8 @@ namespace Gts {
 			auto charcont = tiny->GetCharController();
 			if (charcont) {
 				log::info("pushDelta of {} = {}", tiny->GetDisplayFullName(), Vector2Str(charcont->pushDelta));
+				charcont->pushDelta[2] = 25.0;
+				charcont->pushDelta[3] = 2.0;
 			}
 		}
 	}
