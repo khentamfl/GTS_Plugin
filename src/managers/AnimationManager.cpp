@@ -79,8 +79,9 @@ namespace Gts {
 		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
 			auto charcont = tiny->GetCharController();
 			if (charcont) {
-				log::info("pushDelta of {} = {}", tiny->GetDisplayFullName(), Vector2Str(charcont->pushDelta));
+				log::info("pushDelta of {} = {}, count: {}", tiny->GetDisplayFullName(), Vector2Str(charcont->pushDelta), static_cast<std::uint16_t>(charcont->pushCount));
 				charcont->pushDelta = (0.0,0.0,50.0,255.0);
+				charcont->pushCount = 1.0;
 			}
 		}
 	}
