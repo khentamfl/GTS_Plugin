@@ -65,7 +65,7 @@ namespace Gts {
 				if (charcont->gravity > 0.0) {
 					//log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
 					//charcont->gravity = 0.0;
-					charCont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0));
+					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0));
 				}
 			}
 		}
