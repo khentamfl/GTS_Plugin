@@ -80,7 +80,7 @@ namespace Gts {
 		auto charCont = tiny->GetCharController();
 		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
 			if (charCont) {
-				charCont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 10.0 * giantScale));
+				charCont->SetLinearVelocityImpl((0.0, 0.0, 500.0 * giantScale, 1.0));
 			}
 			auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
 			if (tinyai) {
