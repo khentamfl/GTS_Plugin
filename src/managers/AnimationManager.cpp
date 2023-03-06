@@ -63,20 +63,24 @@ namespace Gts {
 			auto charcont = tiny->GetCharController();
 			if (charcont) {
 				if (charcont->gravity > 0.0) {
-					log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
-					charcont->gravity = 0.0;
+					//log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
+					//charcont->gravity = 0.0;
+					charCont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0));
 				}
 			}
 		}
 	}
 	void AnimationManager::Test(Actor * giant, Actor* tiny) {
+		if (giant == tiny) {
+			return;
+		}
 		float giantScale = get_visual_scale(giant);
 		NiPoint3 giantLocation = giant->GetPosition();
 		NiPoint3 tinyLocation = tiny->GetPosition();
 		auto charCont = tiny->GetCharController();
 		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
 			if (charCont) {
-				charCont->SetLinearVelocityImpl((0.0, 2.0 * giantScale, 2.0 * giantScale, 25.0 * giantScale));
+				charCont->SetLinearVelocityImpl((0.0, 0.0, 2.0 * giantScale, 1.0));
 			}
 			auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
 			if (tinyai) {
