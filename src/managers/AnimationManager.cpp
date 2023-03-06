@@ -77,7 +77,10 @@ namespace Gts {
 		NiPoint3 giantLocation = giant->GetPosition();
 		NiPoint3 tinyLocation = tiny->GetPosition();
 		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
-			tiny->ApplyCurrent(10.0, (0,0,-500,0));
+			auto charcont = tiny->GetCharController();
+			if (charcont) {
+				log::info("pushDelta of {} = {}", tiny->GetDisplayFullName(), Vector2Str(charcont->pushDelta));
+			}
 		}
 	}
 }
