@@ -77,7 +77,7 @@ namespace Gts {
 		NiPoint3 giantLocation = giant->GetPosition();
 		NiPoint3 tinyLocation = tiny->GetPosition();
 		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
-			tiny->ApplyCurrent(10.0, (0,0,0,5));
+			tiny->ApplyCurrent(10.0, (0,0,500,5));
 		}
 	}
 }
