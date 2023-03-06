@@ -73,16 +73,10 @@ namespace Gts {
 		float giantScale = get_visual_scale(giant);
 		NiPoint3 giantLocation = giant->GetPosition();
 		NiPoint3 tinyLocation = tiny->GetPosition();
-		auto charCont = PC->GetCharController();
+		auto charCont = tiny->GetCharController();
 		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
 			if (charCont) {
-				bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
-				if (charProxyController) {
-					auto proxy = charProxyController->GetCharacterProxy();
-					if (proxy) {
-						proxy->SetLinearVelocityImpl((0.0, 2.0 * giantScale, 2.0 * giantScale, 25.0 * giantScale));
-					}
-				}
+				charCont->SetLinearVelocityImpl((0.0, 2.0 * giantScale, 2.0 * giantScale, 25.0 * giantScale));
 			}
 			auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
 			if (tinyai) {
