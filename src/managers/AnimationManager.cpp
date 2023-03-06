@@ -69,4 +69,11 @@ namespace Gts {
 			}
 		}
 	}
+	void AnimationManager::Test(Actor * giant, Actor* tiny) {
+		NiPoint3 giantLocation = giant->GetPosition();
+		NiPoint3 tinyLocation = tiny->GetPosition();
+		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
+			tiny->ApplyCurrent(100.0, (0,0,0,500));
+		}
+	}
 }

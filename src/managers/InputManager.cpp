@@ -130,6 +130,9 @@ namespace Gts {
 					E_Pressed = true;
 				} else if (key == 0x2F) {
 					V_Pressed = true;
+					for (auto otherActor: find_actors()) {
+						AnimationManager::GetSingleton().Test(player, otherActor);
+					}
 				} else if (key == 0x21) {
 					F_Pressed = true;
 					for (auto otherActor: find_actors()) {
