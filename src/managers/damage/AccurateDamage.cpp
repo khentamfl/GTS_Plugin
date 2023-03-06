@@ -204,6 +204,7 @@ namespace Gts {
 		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
 			TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
 			ref->SetPosition(attach->world.translate);
+			tiny->SetPosition(attach->world.translate, false);
 			auto charcont = tiny->GetCharController();
 			if (charcont) {
 				if (charcont->gravity > 0.0) {
