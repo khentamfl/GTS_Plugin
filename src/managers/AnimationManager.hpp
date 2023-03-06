@@ -16,5 +16,6 @@ namespace Gts
 			virtual std::string DebugName() override;
 			void ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) override;
 			void GrabActor(Actor* giant, Actor* tiny, std::string_view findbone);
+			void Test(Actor * giant, Actor* tiny);
 	};
 }
