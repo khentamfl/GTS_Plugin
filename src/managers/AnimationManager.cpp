@@ -82,7 +82,7 @@ namespace Gts {
 			RE::hkVector4 vel;
 			//auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
 			//if (tinyai) {
-				log::info("Velocity of {} = {}", tiny->GetDisplayFullName(), charCont->GetLinearVelocityImpl(velocity));
+				log::info("Velocity of {} = {}", tiny->GetDisplayFullName(), charCont->GetLinearVelocityImpl(vel));
 			//}
 		}
 	}
