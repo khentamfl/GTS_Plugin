@@ -443,6 +443,7 @@ void GtsManager::Update() {
 	auto charCont = PC->GetCharController();
 	if (charCont) {
 		PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 10)/get_visual_scale(PC));
+		log::info("GiantessVelocity: {}", (charCont->outVelocity.quad.m128_f32[2] * 10)/get_visual_scale(PC));
 	}
 	//auto ai = PC->GetActorRuntimeData().currentProcess;
 	//static Timer atttimer = Timer(1.00);
