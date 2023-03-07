@@ -442,8 +442,10 @@ void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
 	auto charCont = PC->GetCharController();
 	if (charCont) {
+		float velocity;
 		PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 10)/get_visual_scale(PC));
-		log::info("GiantessVelocity: {}", (charCont->outVelocity.quad.m128_f32[2] * 10)/get_visual_scale(PC));
+		PC->GetGraphVariableFloat("GiantessVelocity", velocity);
+		log::info("GiantessVelocity: {}, Modded Velocity: {}", (charCont->outVelocity.quad.m128_f32[2] * 10)/get_visual_scale(PC), velocity);
 	}
 	//auto ai = PC->GetActorRuntimeData().currentProcess;
 	//static Timer atttimer = Timer(1.00);
