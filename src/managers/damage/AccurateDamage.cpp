@@ -46,7 +46,8 @@ namespace {
 		//PlayAnimation(tiny, "StaggerStart");//PlayAnimation(giant, "StaggerStart");
 		if (sizedifference >= 1.33 && sizedifference < 3.0) {
 			if (ragdollchance < 10.0 && sizedifference < 2.0) { 
-				PlayAnimation(tiny, "StaggerStart"); // staggerStart, RagdollInstant
+				tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f);
+				PlayAnimation(tiny, "staggerStart"); // staggerStart, RagdollInstant
 			}
 			else {
 				PushActorAway(giant, tiny, power); // Push instead

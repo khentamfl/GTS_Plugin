@@ -71,7 +71,7 @@ namespace Gts {
 		}
 	}
 	void AnimationManager::Test(Actor * giant, Actor* tiny) {
-		if (giant == tiny) {
+		if (giant != tiny) {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
@@ -79,12 +79,11 @@ namespace Gts {
 		NiPoint3 tinyLocation = tiny->GetPosition();
 		auto charCont = tiny->GetCharController();
 		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
-			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f);
-            tiny->NotifyAnimationGraph("staggerStart");
-			auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
-			if (tinyai) {
-				log::info("Detection mod of {} {},  detection timer {}", tiny->GetDisplayFullName(), tinyai->detectionModifier, tinyai->detectionModifierTimer);
-			}
+			RE::hkVector4 vel;
+			//auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
+			//if (tinyai) {
+				log::info("Velocity of {} = {}", tiny->GetDisplayFullName(), charCont->GetLinearVelocityImpl(velocity));
+			//}
 		}
 	}
 }
