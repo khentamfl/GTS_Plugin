@@ -80,9 +80,10 @@ namespace Gts {
 		auto charCont = tiny->GetCharController();
 		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
 			RE::hkVector4 vel;
+			auto vector = charCont->GetLinearVelocityImpl(vel);
 			//auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
 			//if (tinyai) {
-				log::info("Velocity of {} = x{}, y{}, z{}, w{}", tiny->GetDisplayFullName(), charCont->GetLinearVelocityImpl(vel).x, charCont->GetLinearVelocityImpl(vel).y, charCont->GetLinearVelocityImpl(vel).z, charCont->GetLinearVelocityImpl(vel).w);
+				log::info("Velocity of {} = x{}, y{}, z{}, w{}", tiny->GetDisplayFullName(), vector.quad.m128_f32[0], vector.quad.m128_f32[1], vector.quad.m128_f32[2], vector.quad.m128_f32[3]);
 			//}
 		}
 	}
