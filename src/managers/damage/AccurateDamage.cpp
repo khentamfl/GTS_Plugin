@@ -47,7 +47,7 @@ namespace {
 			PushActorAway(giant, tiny, power); // Always push
 			return;
 		}
-		if (ragdollchance < 30.0 && sizedifference >= 1.33 && sizedifference < 2.2) {
+		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.33 && sizedifference < 3.0) {
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
@@ -197,7 +197,7 @@ namespace Gts {
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90;
 		const float BASE_DISTANCE = 6.0;
-		const float SCALE_RATIO = 2.0;
+		const float SCALE_RATIO = 1.15;
 
 		// Get world HH offset
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
