@@ -131,6 +131,9 @@ namespace Hooks
 	}
 
 	void Hook_PlayerCharacter::Move(PlayerCharacter* a_this, float a_arg2, const NiPoint3& a_position) { // Override Movement Speed
+		if (a_this->IsInKillMove()) {
+			return _Move(a_this, a_arg2, a_position); // Do nothing in Kill moves
+		}
 		float bonus = AttributeManager::AlterMovementSpeed(a_this, a_position);
 		return _Move(a_this, a_arg2, a_position * bonus);
 	}
