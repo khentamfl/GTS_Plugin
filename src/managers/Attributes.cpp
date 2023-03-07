@@ -193,32 +193,6 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			UpdateActors(actor, this->BlockMessage);
 		}
-		/*if (healthEff) {
-			//if (!Runtime::HasMagicEffect(pc, "HealthBoost")) {
-				Runtime::CastSpell(pc, pc, "HealthBoost");
-			//}
-			if (Runtime::HasMagicEffect(pc, "HealthBoost")) {
-				auto effect_list = pc->AsMagicTarget()->GetActiveEffectList();
-				if (!effect_list) {
-					return;//continue;
-				}
-				for (auto effect: (*effect_list)) {
-					if (effect->GetBaseObject() == healthEff) {
-						float scale = get_visual_scale(pc);
-						if (scale <= 0) {
-							scale = 1.0;
-						}
-						float healthcalc = pc->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth) + pc->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, ActorValue::kHealth);
-						effect->magnitude = (healthcalc * scale) - healthcalc;//this->AlterGetBaseAv(pc, ActorValue::kHealth, float originalValue);
-						pc->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->AdjustActiveEffect(effect, scale, true);
-						auto transient = Transient::GetSingleton().GetActorData(actor);
-		 				if (transient) {
-		 					transient->health_boost = finalValue - originalValue;
-		 				}
-					}
-				}
-			}
-		}*/
 	}
 	
 
