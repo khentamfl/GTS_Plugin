@@ -37,26 +37,27 @@ namespace {
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		float giantSize = get_visual_scale(giant);
+		float tinySize = get_visual_scale(tiny);
 		if (hasSMT) {
 			giantSize *= 4.0;
 		}
-		float sizedifference = giantSize/get_visual_scale(tiny);
-		int ragdollchance = rand() % 10 + 1.0;
-		//PlayAnimation(tiny, "staggerStart");//PlayAnimation(giant, "staggerStart");
-		//PlayAnimation(tiny, "StaggerStart");//PlayAnimation(giant, "StaggerStart");
-		if (sizedifference >= 1.33 && sizedifference < 3.0) {
-			if (ragdollchance < 10.0 && sizedifference < 2.0) { 
-				tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f);
-				PlayAnimation(tiny, "staggerStart"); // staggerStart, RagdollInstant
-			}
-			else {
-				PushActorAway(giant, tiny, power); // Push instead
-			}
-		}
-		else if (sizedifference >= 3.0) {
+		float sizedifference = giantSize/tinySize;
+		int ragdollchance = rand() % 30 + 1.0;
+		if (sizedifference >= 3.0) {
 			PushActorAway(giant, tiny, power); // Always push
+			return;
+		}
+		if (ragdollchance < 30.0 && sizedifference >= 1.33 && sizedifference < 2.2) {
+			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
+			tiny->NotifyAnimationGraph("staggerStart");
+			return;
+		}
+		else if (ragdollchance == 31.0) {
+			PushActorAway(giant, tiny, power); // Push instead
+			return;
 		}
 	}
+	
 
 	void SMTCrushCheck(Actor* Caster, Actor* Target) {
 		if (Caster == Target) {
