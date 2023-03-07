@@ -82,8 +82,9 @@ namespace Gts {
 			if (charCont) {
 				hkVector4 vel;
 			//auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
+			float coord = charCont->GetLinearVelocityImpl(vel).z;
 			//if (tinyai) {
-				log::info("Velocity of {} = x{}, y{}, z{}, w{}", tiny->GetDisplayFullName(), charCont->GetLinearVelocityImpl(vel).quad.m128_f32[0], charCont->GetLinearVelocityImpl(vel).quad.m128_f32[1], charCont->GetLinearVelocityImpl(vel).quad.m128_f32[2], charCont->GetLinearVelocityImpl(vel).quad.m128_f32[3]);
+				log::info("Velocity of {} = z{}", tiny->GetDisplayFullName(), coord);
 			//}
 			}
 		}
