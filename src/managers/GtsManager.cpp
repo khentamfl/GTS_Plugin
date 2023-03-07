@@ -439,8 +439,11 @@ std::string GtsManager::DebugName() {
 
 // Poll for updates
 void GtsManager::Update() {
-	//auto PC = PlayerCharacter::GetSingleton();
-	//PC->SetGraphVariableFloat("GiantessVelocity", 0.75f);
+	auto PC = PlayerCharacter::GetSingleton();
+	auto charCont = PC->GetCharController();
+	if (charCont) {
+		PC->SetGraphVariableFloat("GiantessVelocity", charCont->outVelocity[2] * 10);
+	}
 	//auto ai = PC->GetActorRuntimeData().currentProcess;
 	//static Timer atttimer = Timer(1.00);
 	//auto charCont = PC->GetCharController();
