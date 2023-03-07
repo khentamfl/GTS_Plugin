@@ -84,7 +84,7 @@ namespace Gts {
 				charCont->GetLinearVelocityImpl(velocity);
 			//auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
 			//if (tinyai) {
-				log::info("{} OutVelicty = {}, Initial Vel: {}, Vel Z = {}", tiny->GetDisplayFullName(), Vector2Str(charCont->outVelocity), Vector2Str(charCont->initialVelocity), velocity.quad.m128_f32[2]);
+				log::info("{} OutVelicty = {}, Initial Vel: {}, Vel Total = {}", tiny->GetDisplayFullName(), Vector2Str(charCont->outVelocity), Vector2Str(charCont->initialVelocity), Vector2Str(velocity));
 			//}
 			}
 		}
