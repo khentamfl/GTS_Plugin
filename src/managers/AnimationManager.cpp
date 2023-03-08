@@ -20,7 +20,7 @@ using namespace Gts;
 using namespace std;
 
 namespace { 
-	const std::vector<Actor*> Actors = {
+	const std::vector<Actor> Actors = {
 		nullptr,
 		nullptr,
 	};
@@ -71,7 +71,6 @@ namespace Gts {
 		auto charCont = PC->GetCharController();
 		if (charCont) {
 			PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
-			log::info("GTS update is fired");
 		}
 	}
 
@@ -94,8 +93,18 @@ namespace Gts {
 		if (tag == Anim_Compatibility[1]) {
 			Actors[1] = actor; // receiver
 			if (Actors[0]) {
-				CrushManager::GetSingleton().Crush(Actors[0], Actors[2]);
+				float giantscale = get_visual_scale(Actors[0]);
+				float tinyscale = get_visual_scale(Actors[1]);
+				float sizedifference = giantscale/tinyscale;
+				if (sizedifference >= 4.0) { 
+					CrushManager::GetSingleton().Crush(Actors[0], Actors[2]);
+				}
 			}
+		}
+		if (!Actors[0]) {
+			return;
+		} if (!Actors[1]) {
+			return;
 		}
 		log::info("Actor0, Actor1: {}, {}", Actors[0]->GetDisplayFullName(), Actors[1]->GetDisplayFullName());
     }
