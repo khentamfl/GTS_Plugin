@@ -258,9 +258,9 @@ namespace Gts {
 		float receiversize = get_target_scale(receiver);
 		float sizedifference = clamp(0.0, 10.0, sourcesize/receiversize);
 		if (caster == receiver) {
-			sizedifference = clamp(0.0, 10.0, sourcesize);
+			sizedifference = sourcesize;
 		}
-		float falloff = 450 * (sourcesize * 0.25 + 0.75) * (sizedifference * 0.25 + 0.75);
+		float falloff = 450 * sizedifference;
 		float power = (0.425 * ShakeStrength(caster));
 		float duration = 0.25 * (1 + (sizedifference * 0.25));
 		if (distance < falloff) {
