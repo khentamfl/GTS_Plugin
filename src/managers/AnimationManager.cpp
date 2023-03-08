@@ -51,7 +51,7 @@ namespace {
 		"GTScrush_victim",          //[1] The one to crush
 	};
 
-	const std::vector<std::string_view> legrumblenodes = {
+	const std::vector<std::string_view> LegRumbleNodes = {
 		"NPC L Foot [Lft]",
 		"NPC R Foot [Rft]",
 		"NPC L Calf [LClf]",
@@ -60,7 +60,7 @@ namespace {
 		"NPC R FrontThigh",
 		"NPC R RearCalf [RrClf]",
 		"NPC L RearCalf [RrClf]",
-	}
+	};
 }
 
 
@@ -83,11 +83,12 @@ namespace Gts {
 		}
 		if (transient) {
 			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
-				static Timer timer = Timer(0.20);
+				static Timer timer = Timer(0.40);
 				if (timer.ShouldRunFrame()) {
 					float volume = 1.0;//transient->legsspreading + transient->legsclosing;
-					for (auto nodes: legrumblenodes) {
+					for (auto nodes: LegRumbleNodes) {
 						Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, nodes);
+						ApplyShakeAtNode(PC, PC, 1.0, nodes);
 					}
 				//}
 			}
