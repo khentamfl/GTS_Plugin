@@ -4,6 +4,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/re.hpp"
+#include "node.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -240,7 +241,7 @@ namespace Gts {
 	}
 
 	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float modifier, const std::string_view& node) {
-		auto Player = PlayerCharacter::GetSingleton();
+		auto player = PlayerCharacter::GetSingleton();
 		float distance = get_distance_to_camera(caster);
 		auto bone = find_node(caster, node);
 		if (bone) {
