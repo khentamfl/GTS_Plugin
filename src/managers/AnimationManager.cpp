@@ -66,22 +66,24 @@ namespace Gts {
 	void AnimationManager::Update() {
 		auto PC = PlayerCharacter::GetSingleton();
 		auto charCont = PC->GetCharController();
-		auto transient = Transient::GetSingleton().GetActorData(actor);
+		auto transient = Transient::GetSingleton().GetActorData(PC);
 		if (charCont) {
 			PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
 		}
 		if (transient) {
-			static Timer timer = Timer(0.20);
-			if (timer.ShouldRunFrame()) {
-				float volume = 1.0;
-				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L Foot [Lft]");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R Foot [Rft]");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L Calf [LClf]");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R Calf [LClf]");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R FrontThigh");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L FrontThigh");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L RearCalf [LrClf]");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R RearCalf [RrClf]");
+			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
+				static Timer timer = Timer(0.20);
+				if (timer.ShouldRunFrame()) {
+					float volume = 1.0;//transient->legsspreading + transient->legsclosing;
+					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L Foot [Lft]");
+					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R Foot [Rft]");
+					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L Calf [LClf]");
+					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R Calf [LClf]");
+					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R FrontThigh");
+					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L FrontThigh");
+					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L RearCalf [LrClf]");
+					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R RearCalf [RrClf]");
+				//}
 			}
 		}
 	}

@@ -205,16 +205,16 @@ namespace Gts {
 
 	void ApplyShake(Actor* caster, Actor* receiver, float power) {
 		auto Player = PlayerCharacter::GetSingleton();
-		float Distance = get_distance_to_camera(Source);
+		float Distance = get_distance_to_camera(caster);
 		if (caster != player) {
-			Distance = get_distance_to_actor(source);
+			Distance = get_distance_to_actor(caster);
 		}
-		float SourceSize = get_target_scale(Source);
-		float ReceiverSize = get_target_scale(Receiver);
-		float SizeDifference = clamp(0.0, 10.0, SourceSize/ReceiverSize);
-		float falloff = 450 * (SourceSize * 0.25 + 0.75) * (SizeDifference * 0.25 + 0.75);
+		float sourcesize = get_target_scale(caster);
+		float receiversize = get_target_scale(receiver);
+		float sizedifference = clamp(0.0, 10.0, sourcesize/receiversize);
+		float falloff = 450 * (sourcesize * 0.25 + 0.75) * (sizedifference * 0.25 + 0.75);
 		float power = (0.425 * ShakeStrength(Source));
-		float duration = 0.25 * (1 + (SizeDifference * 0.25));
+		float duration = 0.25 * (1 + (sizedifference * 0.25));
 		if (Distance < falloff) {
 			float intensity = ((falloff/Distance) / 8);
 			intensity = intensity*power;
@@ -240,16 +240,20 @@ namespace Gts {
 
 	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float power, const std::string_view& node) {
 		auto Player = PlayerCharacter::GetSingleton();
-		float Distance = get_distance_to_camera(Source);
-		if (caster != player) {
-			Distance = get_distance_to_actor(source);
+		float distance = get_distance_to_camera(caster);
+		auto bone = find_node(caster, node);
+		if (bone) {
+			NiAVObject* attach = bone;
+			if (attach) {
+				distance = get_distance_to_camera(bone);
+			}
 		}
-		float SourceSize = get_target_scale(Source);
-		float ReceiverSize = get_target_scale(Receiver);
-		float SizeDifference = clamp(0.0, 10.0, SourceSize/ReceiverSize);
-		float falloff = 450 * (SourceSize * 0.25 + 0.75) * (SizeDifference * 0.25 + 0.75);
+		float sourcesize = get_target_scale(source);
+		float receiversize = get_target_scale(receiver);
+		float sizedifference = clamp(0.0, 10.0, sourcesize/receiversize);
+		float falloff = 450 * (sourcesize * 0.25 + 0.75) * (sizedifference * 0.25 + 0.75);
 		float power = (0.425 * ShakeStrength(Source));
-		float duration = 0.25 * (1 + (SizeDifference * 0.25));
+		float duration = 0.25 * (1 + (sizedifference * 0.25));
 		if (Distance < falloff) {
 			float intensity = ((falloff/Distance) / 8);
 			intensity = intensity*power;
