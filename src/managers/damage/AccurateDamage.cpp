@@ -111,7 +111,6 @@ namespace {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto model = tiny->GetCurrent3D();
-		log::info("Trying to do damage to: {}", tiny->GetDisplayFullName());
 
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);

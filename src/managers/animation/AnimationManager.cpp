@@ -54,12 +54,12 @@ namespace {
 	const std::vector<std::string_view> LegRumbleNodes = {
 		"NPC L Foot [Lft ]",
 		"NPC R Foot [Rft ]",
-		/*"NPC L Calf [LClf]",
+		"NPC L Calf [LClf]",
 		"NPC R Calf [RClf]",
 		"NPC L FrontThigh",
 		"NPC R FrontThigh",
 		"NPC R RearCalf [RrClf]",
-		"NPC L RearCalf [RrClf]",*/
+		"NPC L RearCalf [RrClf]",
 	};
 
 	void AdjustFallBehavior(Actor* actor) {
@@ -133,7 +133,7 @@ namespace Gts {
 			float giantscale = get_visual_scale(PC);
 			float tinyscale = get_visual_scale(actor);
 			float sizedifference = giantscale/tinyscale;
-			if (sizedifference >= 4.0) { 
+			if (sizedifference >= 0.0) { 
 				CrushManager::GetSingleton().Crush(PC, actor);
 			}
 			

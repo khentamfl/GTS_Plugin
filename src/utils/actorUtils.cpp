@@ -251,7 +251,7 @@ namespace Gts {
 			NiAVObject* attach = bone;
 			if (attach) {
 				distance = get_distance_to_camera(attach->world.translate);
-				log::info("Distance for {} is {}", node, distance);
+				//log::info("Distance for {} is {}", node, distance);
 			}
 		}
 		float sourcesize = get_target_scale(caster);
