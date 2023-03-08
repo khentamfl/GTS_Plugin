@@ -47,7 +47,7 @@ namespace {
 				}
 			}
 		}
-		log::info("hh mult = {}", hhmult);
+		log::info("hh mult = 1.0");
 		return 1.0;
 	}
 }
