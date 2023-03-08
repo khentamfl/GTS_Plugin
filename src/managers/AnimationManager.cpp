@@ -65,7 +65,7 @@ namespace {
 	void AdjustFallBehavior(Actor* actor) {
 		auto charCont = actor->GetCharController();
 		if (charCont) {
-			actor->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
+			actor->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(actor));
 		}
 	}
 
