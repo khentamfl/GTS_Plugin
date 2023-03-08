@@ -254,10 +254,10 @@ namespace Gts {
 				//log::info("Distance for {} is {}", node, distance);
 			}
 		}
-		float sourcesize = get_target_scale(caster);
-		float receiversize = get_target_scale(receiver);
-		float sizedifference = clamp(0.0, 10.0, sourcesize/receiversize);
-		if (caster == receiver) {
+		float sourcesize = get_visual_scale(caster);
+		float receiversize = get_visual_scale(receiver);
+		float sizedifference = sourcesize/receiversize;
+		if (caster->formID == 0x14) {
 			sizedifference = sourcesize;
 		}
 		float falloff = 450 * sizedifference;
@@ -277,8 +277,9 @@ namespace Gts {
 			if (duration > 1.2) {
 				duration = 1.2;
 			}
-			//log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
 
+			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}, Power: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff, power);
+			
 			if (receiver->formID == 0x14) {
 				//log::info("Playing Sound");
 				shake_controller(intensity*modifier, intensity*modifier, duration);
