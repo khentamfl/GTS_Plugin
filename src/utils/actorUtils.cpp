@@ -250,7 +250,7 @@ namespace Gts {
 		if (bone) {
 			NiAVObject* attach = bone;
 			if (attach) {
-				distance = get_distance_to_camera(attach->world.translate);
+				distance = unit_to_meter(get_distance_to_camera(attach->world.translate));
 				log::info("Distance for {} is {}", node, distance);
 			}
 		}

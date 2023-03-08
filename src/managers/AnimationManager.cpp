@@ -52,8 +52,8 @@ namespace {
 	};
 
 	const std::vector<std::string_view> LegRumbleNodes = {
-		"NPC L Foot [Lft]",
-		"NPC R Foot [Rft]",
+		"NPC L Foot [Lft ]",
+		"NPC R Foot [Rft ]",
 		"NPC L Calf [LClf]",
 		"NPC R Calf [RClf]",
 		"NPC L FrontThigh",
