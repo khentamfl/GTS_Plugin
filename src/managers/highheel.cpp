@@ -17,6 +17,9 @@ using namespace Gts;
 
 namespace {
 	float GetHHPower(Actor* actor) {
+		if (actor->formID != 0x14) {
+			return 1.0;
+		}
 		auto charCont = actor->GetCharController();
 		if (charCont) {
 			auto transient = Transient::GetSingleton().GetActorData(actor);
