@@ -18,6 +18,37 @@
 using namespace RE;
 using namespace Gts;
 
+namespace { 
+	const std::vec<std::string_view> Anim_Stomp = {
+		"GTSstompimpactR", 			// [0] stomp impacts, strongest effect
+ 		"GTSstompimpactL",          // [1]
+		"GTSstomplandR", 			// [2] when landing after stomping, decreased power
+ 		"GTSstomplandL",            // [3]
+ 		"GTSstompstartR", 			// [4] For starting loop of camera shake, air rumble sounds
+ 		"GTSstompstartL",           // [5]
+ 		"GTSstompendR", 			// [6] disable loop of camera shake, air rumble sounds
+ 		"GTSstompendL",             // [7]
+	};
+	
+	const std::vec<std::string_view> Anim_ThighCrush = {
+		"GTStosit", 				// [0] start air rumble and camera shake
+		"GTSsitloopenter", 			// [1] Sit down completed
+		"GTSsitloopstart", 			// [2] Start to spread legs, call air rumble and camera shake. Enable feet damage and knockdown.
+ 		"GTSsitloopend", 			// [3] unused
+		"GTSsitcrushstart",			// [4] Start strong air rumble and camera shake. Enable strong feet damage and knockdown
+		"GTSsitcrushend", 			// [5] end it
+		"GTSsitloopexit", 			// [6] stand up, small air rumble and camera shake
+		"GTSstandR", 				// [7] feet collides with ground when standing up
+		"GTSstandL",                // [8]
+		"GTStoexit", 				// [9] Leave animation, disable air rumble and such
+	};
+
+	const std::vec<std::string_view> Anim_Compatibility = {
+		"GTScrush_caster",          //[0] For compatibility with other mods. The gainer.
+		"GTScrush_victim",          //[1] The one to crush
+	};
+}
+
 
 namespace Gts {
 	AnimationManager& AnimationManager::GetSingleton() noexcept {
@@ -43,15 +74,15 @@ namespace Gts {
         if (actor->formID == 0x14) {
 			auto scale = get_visual_scale(actor);
 			float volume = scale * 0.20;
-            if (tag == "GTSstompimpactR" || tag == "GTSstompimpactL") {
+            if (tag == Anim_Stomp[0] || tag == Anim_Stomp[1]) {
 				//Call UnderFoot event here somehow with x scale bonus
 				Runtime::PlaySound("lFootstepL", actor, volume, 1.0);
             } 
-			if (tag == "GTSstomplandL" || tag == "GTSstomplandR") {
+			if (tag == Anim_Stomp[2] || tag == Anim_Stomp[3]) {
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
             }
         }
-		else if (tag == "GTScrush_victim") {
+		else if (tag == Anim_Compatibility[1]) {
 			CrushManager::GetSingleton().Crush(PC, actor);
 		}
     }
