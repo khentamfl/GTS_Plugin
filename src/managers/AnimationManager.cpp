@@ -20,6 +20,11 @@ using namespace Gts;
 using namespace std;
 
 namespace { 
+	const std::vector<Actor*> Actors = {
+		nullptr,
+		nullptr,
+	};
+
 	const std::vector<std::string_view> Anim_Stomp = {
 		"GTSstompimpactR", 			// [0] stomp impacts, strongest effect
  		"GTSstompimpactL",          // [1]
@@ -83,9 +88,16 @@ namespace Gts {
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
             }
         }
-		else if (tag == Anim_Compatibility[1]) {
-			CrushManager::GetSingleton().Crush(PC, actor);
+		if (tag == Anim_Compatibility[0]) {
+			Actors[0] = actor; // caster
 		}
+		if (tag == Anim_Compatibility[1]) {
+			Actors[1] = actor; // receiver
+			if (Actors[0]) {
+				CrushManager::GetSingleton().Crush(Actors[0], Actors[2]);
+			}
+		}
+		log::info("Actor0, Actor1: {}, {}", Actors[0]->GetDisplayFullName(), Actors[1]->GetDisplayFullName());
     }
 
 	void AnimationManager::GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
