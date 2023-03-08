@@ -93,8 +93,10 @@ namespace Gts {
         }
 		if (tag == Anim_Compatibility[0]) {
 			//Actors[0] = actor; // caster
+			log::info("GTScrush_caster");
 		}
 		if (tag == Anim_Compatibility[1]) {
+			log::info("GTScrush_victim, Trying to crush: {}", actor->GetDisplayFullName());
 			float giantscale = get_visual_scale(PC);
 			float tinyscale = get_visual_scale(actor);
 			float sizedifference = giantscale/tinyscale;
