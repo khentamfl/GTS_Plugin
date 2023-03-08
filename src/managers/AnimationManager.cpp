@@ -15,18 +15,6 @@
 #include "timer.hpp"
 #include "node.hpp"
 
-// Current Animation Names:
-// GTSstompimpactR
-// GTSstompimpactL
-// GTSstomplandR
-// GTSstomplandL
-// GTSstompstartR
-// GTSstompstartL
-// GTSstompendR
-// GTSstompendL
-// GTScrush_caster
-// GTScrush_victim
-
 using namespace RE;
 using namespace Gts;
 
@@ -62,6 +50,7 @@ namespace Gts {
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
             }
         }
+		else if (tag == "")
     }
 
 	void AnimationManager::GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
