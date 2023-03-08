@@ -15,6 +15,17 @@
 #include "timer.hpp"
 #include "node.hpp"
 
+// Current Animation Names:
+// GTSstompimpactR
+// GTSstompimpactL
+// GTSstomplandR
+// GTSstomplandL
+// GTSstompstartR
+// GTSstompstartL
+// GTSstompendR
+// GTSstompendL
+// GTScrush_caster
+// GTScrush_victim
 
 using namespace RE;
 using namespace Gts;
@@ -28,6 +39,15 @@ namespace Gts {
 
 	std::string AnimationManager::DebugName() {
 		return "AnimationManager";
+	}
+
+	void AnimationManager::Update() {
+		auto PC = PlayerCharacter::GetSingleton();
+		auto charCont = PC->GetCharController();
+		if (charCont) {
+			PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
+			log::Info("GTS update is fired");
+		}
 	}
 
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
