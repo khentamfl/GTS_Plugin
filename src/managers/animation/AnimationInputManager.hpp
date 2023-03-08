@@ -11,5 +11,7 @@ namespace Gts
 	{
 		public:
 			[[nodiscard]] static AnimationInputManager& GetSingleton() noexcept;
+
+			virtual std::string DebugName() override;
 	};
 }
