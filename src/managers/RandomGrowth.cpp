@@ -84,7 +84,7 @@ namespace Gts {
 			this->growth_time_input += delta_time;
 			actor_data->half_life = 1.0 + this->ShakePower/6;
 
-			GrowthTremorManager::GetSingleton().CallRumble(player, player, this->ShakePower * 15);
+			ApplyShake(player, player, this->ShakePower * 15);
 
 			static Timer timer = Timer(0.33);
 			if (timer.ShouldRunFrame() && this->ShakePower > 6.0) {
@@ -106,7 +106,7 @@ namespace Gts {
 					this->growth_time = 0.0;
 					this->AllowGrowth = true;
 					// Play sound
-					GrowthTremorManager::GetSingleton().CallRumble(player, player, 6.0);
+					ApplyShake(player, player, 6.0);
 					float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
 					Runtime::PlaySound("MoanSound", player, 1.0, 0.0);
 					Runtime::PlaySound("growthSound", player, Volume, 0.0);
@@ -122,7 +122,7 @@ namespace Gts {
 			float base_power = ((0.00185 * TotalPower * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
 			RestoreStats(); // Regens Attributes if PC has perk
 			mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps
-			GrowthTremorManager::GetSingleton().CallRumble(player, player, base_power * 180);
+			ApplyShake(player, player, base_power * 180);
 			this->growth_time += delta_time;
 			if (this->growth_time >= 2.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 				// End growing

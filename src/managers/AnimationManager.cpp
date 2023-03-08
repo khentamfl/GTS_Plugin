@@ -65,8 +65,16 @@ namespace Gts {
 	void AnimationManager::Update() {
 		auto PC = PlayerCharacter::GetSingleton();
 		auto charCont = PC->GetCharController();
+		auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (charCont) {
 			PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
+		}
+		if (transient) {
+			static Timer timer = Timer(0.20);
+			if (timer.ShouldRunFrame()) {
+				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC L Foot [Lft]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC R Foot [Rft]");
+			}
 		}
 	}
 
@@ -95,7 +103,7 @@ namespace Gts {
 			}
 			
 		}
-		log::info("Actor: {}", actor->GetDisplayFullName());
+		//log::info("Actor: {}", actor->GetDisplayFullName());
     }
 
 	void AnimationManager::GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {

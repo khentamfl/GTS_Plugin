@@ -33,7 +33,7 @@ namespace {
 					if (hhbool) { // WHen bool is true, start to decrease value
 						if (hhmult <= 0.0) {
 							transient->hhmult = 0.0;
-							log::info("hh mult = {}", hhmult);
+							//log::info("hh mult = {}", hhmult);
 							return 0.0;
 						}
 						transient->hhmult -= 0.01 * animspeed;
@@ -41,7 +41,7 @@ namespace {
 					} else if (!hhbool) { // When false, increase value, reaching 1.0 eventually
 						if (hhmult >= 1.0) {
 							transient->hhmult = 1.0;
-							log::info("hh mult = {}", hhmult);
+							//log::info("hh mult = {}", hhmult);
 							return 1.0;
 						}
 						transient->hhmult += 0.01 * animspeed;
@@ -50,7 +50,7 @@ namespace {
 				}
 			}
 		}
-		log::info("hh mult = 1.0");
+		//log::info("hh mult = 1.0");
 		return 1.0;
 	}
 }

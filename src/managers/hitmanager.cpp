@@ -205,7 +205,7 @@ namespace Gts {
 				GrowthValue *= 0.50;
 			}
 			if (this->GrowthTick > 0.01 && GrowthValue > 0) {
-				GrowthTremorManager::GetSingleton().CallRumble(actor, actor, (actor_data->half_life * 4) * ShakePower);
+				ApplyShake(actor, actor, (actor_data->half_life * 4) * ShakePower);
 				mod_target_scale(actor, GrowthValue);
 				this->GrowthTick -= 0.0005 * TimeScale();
 			} else if (this->GrowthTick <= 0.01) {
@@ -230,7 +230,7 @@ namespace Gts {
 				}
 
 				if (this->GrowthTick > 0.01 && ShrinkValue < 0) {
-					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, (actor_data->half_life * 2.5) * ShakePower);
+					ApplyShake(actor, actor, (actor_data->half_life * 2.5) * ShakePower);
 					mod_target_scale(actor, ShrinkValue);
 					this->GrowthTick -= 0.0005 * TimeScale();
 				} else if (this->GrowthTick <= 0.01) {

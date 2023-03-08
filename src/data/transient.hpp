@@ -20,6 +20,8 @@ namespace Gts {
 		float carryweight_boost;
 		float basehp;
 		float hhmult;
+		float legsclosing;
+		float legsspreading;
 		bool is_teammate;
 	};
 

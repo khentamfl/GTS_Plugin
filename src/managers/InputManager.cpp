@@ -69,7 +69,7 @@ namespace Gts {
 				}
 
 				if (key == 0x12 && Cache->SizeReserve > 0.0) { // E
-					GrowthTremorManager::GetSingleton().CallRumble(caster, caster, Cache->SizeReserve/15 * buttonEvent->HeldDuration());
+					ApplyShake(caster, caster, Cache->SizeReserve/15 * buttonEvent->HeldDuration());
 
 					if (buttonEvent->HeldDuration() >= 1.2 && Runtime::HasPerk(player, "SizeReserve") && Cache->SizeReserve > 0) {
 						float SizeCalculation = buttonEvent->HeldDuration() - 1.2;
@@ -208,7 +208,7 @@ namespace Gts {
 			DamageAV(player, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			Grow(player, 0.0010 * stamina, 0.0);
 			float Volume = clamp(0.10, 2.0, get_visual_scale(player)/10);
-			GrowthTremorManager::GetSingleton().CallRumble(player, player, scale/10);
+			ApplyShake(player, player, scale/10);
 			if (this->timergrowth.ShouldRun()) {
 				Runtime::PlaySound("growthSound", player, Volume, 0.0);
 			}
@@ -219,7 +219,7 @@ namespace Gts {
 			DamageAV(player, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			ShrinkActor(player, 0.0010 * stamina, 0.0);
 			float Volume = clamp(0.05, 2.0, get_visual_scale(player)/10);
-			GrowthTremorManager::GetSingleton().CallRumble(player, player, scale/14);
+			ApplyShake(player, player, scale/14);
 			if (this->timergrowth.ShouldRun()) {
 				Runtime::PlaySound("shrinkSound", player, Volume, 0.0);
 			}
@@ -234,7 +234,7 @@ namespace Gts {
 					DamageAV(player, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					Grow(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
-					GrowthTremorManager::GetSingleton().CallRumble(actor, player, 0.25);
+					ApplyShake(actor, player, 0.25);
 					if (this->timergrowth.ShouldRun()) {
 						Runtime::PlaySound("growthSound", actor, Volume, 0.0);
 					}
@@ -251,7 +251,7 @@ namespace Gts {
 					DamageAV(player, ActorValue::kMagicka, 0.10 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					ShrinkActor(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
-					GrowthTremorManager::GetSingleton().CallRumble(actor, player, 0.20);
+					ApplyShake(actor, player, 0.20);
 					if (this->timergrowth.ShouldRun()) {
 						Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);
 					}

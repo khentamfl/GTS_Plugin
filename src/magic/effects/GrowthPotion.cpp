@@ -18,7 +18,7 @@ namespace Gts {
 		if (!caster || !player) {
 			return;
 		}
-		GrowthTremorManager::GetSingleton().CallRumble(caster, player, 2.0);
+		ApplyShake(caster, player, 2.0);
 
 		float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/8);
 		Runtime::PlaySound("growthSound", caster, Volume, 1.0);
@@ -35,7 +35,7 @@ namespace Gts {
 
 		float AlchemyLevel = clamp(1.0, 2.0, caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
 		if (caster == PlayerCharacter::GetSingleton()) {
-			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.4);
+			ApplyShake(caster, caster, 0.4);
 		}
 
 		if (this->timer.ShouldRun()) {

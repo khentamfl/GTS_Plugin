@@ -8,6 +8,15 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+	float ShakeStrength(Actor* Source) {
+		float Size = get_visual_scale(Source);
+		float k = 0.065;
+		float n = 1.0;
+		float s = 1.12;
+		float Result = 1.0/(pow(1.0+pow(k*(Size-1.0),n*s),1.0/s));
+		return Result;
+	}
+
 	ExtraDataList* CreateExDataList() {
 		size_t a_size;
 		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
@@ -192,5 +201,75 @@ namespace Gts {
 			return delta.Length();
 		}
 		return 3.4028237E38; // Max float
+	}
+
+	void ApplyShake(Actor* caster, Actor* receiver, float power) {
+		auto Player = PlayerCharacter::GetSingleton();
+		float Distance = get_distance_to_camera(Source);
+		if (caster != player) {
+			Distance = get_distance_to_actor(source);
+		}
+		float SourceSize = get_target_scale(Source);
+		float ReceiverSize = get_target_scale(Receiver);
+		float SizeDifference = clamp(0.0, 10.0, SourceSize/ReceiverSize);
+		float falloff = 450 * (SourceSize * 0.25 + 0.75) * (SizeDifference * 0.25 + 0.75);
+		float power = (0.425 * ShakeStrength(Source));
+		float duration = 0.25 * (1 + (SizeDifference * 0.25));
+		if (Distance < falloff) {
+			float intensity = ((falloff/Distance) / 8);
+			intensity = intensity*power;
+			duration = duration * intensity;
+
+			if (intensity <= 0) {
+				intensity = 0;
+			}
+			if (power >= 12.6) {
+				power = 12.6;
+			}
+			if (duration > 1.2) {
+				duration = 1.2;
+			}
+			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, Distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, Distance, falloff);
+
+			if (Receiver == Player) {
+				shake_controller(intensity*power, intensity*power, duration);
+				shake_camera(Receiver, intensity*power, duration);
+			}
+		}
+	}
+
+	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float power, const std::string_view& node) {
+		auto Player = PlayerCharacter::GetSingleton();
+		float Distance = get_distance_to_camera(Source);
+		if (caster != player) {
+			Distance = get_distance_to_actor(source);
+		}
+		float SourceSize = get_target_scale(Source);
+		float ReceiverSize = get_target_scale(Receiver);
+		float SizeDifference = clamp(0.0, 10.0, SourceSize/ReceiverSize);
+		float falloff = 450 * (SourceSize * 0.25 + 0.75) * (SizeDifference * 0.25 + 0.75);
+		float power = (0.425 * ShakeStrength(Source));
+		float duration = 0.25 * (1 + (SizeDifference * 0.25));
+		if (Distance < falloff) {
+			float intensity = ((falloff/Distance) / 8);
+			intensity = intensity*power;
+			duration = duration * intensity;
+
+			if (intensity <= 0) {
+				intensity = 0;
+			}
+			if (power >= 12.6) {
+				power = 12.6;
+			}
+			if (duration > 1.2) {
+				duration = 1.2;
+			}
+			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, Distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, Distance, falloff);
+
+			if (Receiver == Player) {
+				shake_controller(intensity*power, intensity*power, duration);
+				shake_camera(Receiver, intensity*power, duration);
+			}
+		}
 	}
 }

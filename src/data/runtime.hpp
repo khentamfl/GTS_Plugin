@@ -57,6 +57,7 @@ namespace Gts {
 
 			static BSISoundDescriptor* GetSound(const std::string_view& tag);
 			static void PlaySound(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency);
+			static void PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node);
 			// Spell Effects
 			static EffectSetting* GetMagicEffect(const std::string_view& tag);
 			static bool HasMagicEffect(Actor* actor, const std::string_view& tag);

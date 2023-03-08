@@ -127,7 +127,7 @@ namespace Gts {
 	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
 		mod_target_scale(actor, value); // Grow
 
-		GrowthTremorManager::GetSingleton().CallRumble(actor, actor, get_visual_scale(actor) * 2);
+		ApplyShake(actor, actor, get_visual_scale(actor) * 2);
 		if (this->timerSound.ShouldRunFrame()) {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
 		}
@@ -140,7 +140,7 @@ namespace Gts {
 	void ExplosiveGrowth::DoShrink(Actor* actor, float value) {
 		mod_target_scale(actor, -value); // Grow
 
-		GrowthTremorManager::GetSingleton().CallRumble(actor, actor, 1.0);
+		ApplyShake(actor, actor, 1.0);
 		if (this->timerSound.ShouldRunFrame()) {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
 		}

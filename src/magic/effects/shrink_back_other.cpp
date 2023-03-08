@@ -36,7 +36,7 @@ namespace Gts {
 		if (this->timer.ShouldRun()) {
 			float Volume = clamp(0.15, 2.0, get_target_scale(target)/4);
 			Runtime::PlaySound("shrinkSound", target, Volume, 0.0);
-			GrowthTremorManager::GetSingleton().CallRumble(target, caster, 0.60);
+			ApplyShake(target, caster, 0.60);
 		}
 
 		if (!Revert(target, Power, Power/2.5)) {

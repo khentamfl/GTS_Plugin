@@ -106,6 +106,44 @@ namespace Gts {
 		}
 	}
 
+	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
+		auto soundDescriptor = Runtime::GetSound(tag);
+		if (!soundDescriptor) {
+			log::error("Sound invalid");
+			return;
+		}
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			//soundHandle.SetFrequency(frequency);
+			soundHandle.SetVolume(volume);
+			NiAVObject* follow = nullptr;
+			if (actor) {
+				NiAVObject* current_3d = actor->GetCurrent3D();
+				if (current_3d) {
+					follow = current_3d;
+				}
+			}
+			auto bone = find_node(actor, node);
+			if (bone) {
+				NiAVObject* attach = bone;
+				if (attach) {
+					follow = bone;
+				}
+			}
+			
+			soundHandle.SetObjectToFollow(follow);
+			soundHandle.Play();
+		} else {
+			log::error("Could not build sound");
+		}
+	}
+
 	// Spell Effects
 	EffectSetting* Runtime::GetMagicEffect(const std::string_view& tag) {
 		EffectSetting* data = nullptr;

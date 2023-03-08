@@ -36,7 +36,7 @@ namespace Gts {
 		}
 
 		Grow(caster, 0.0, power * bonus);
-		GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.30);
+		ApplyShake(caster, caster, 0.30);
 		//log::info("Slowly Growing, actor: {}", caster->GetDisplayFullName());
 	}
 

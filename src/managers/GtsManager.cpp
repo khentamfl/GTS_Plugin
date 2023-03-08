@@ -304,7 +304,7 @@ namespace {
 						}
 						if (StrongGrowthChance >= 19.0) {
 							GrowthPower *= 4.0;                                                                       // Stronger growth if procs
-							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 40);
+							ApplyShake(actor, player, GrowthPower * 40);
 						}
 						if (targetScale >= sizelimit) {
 							set_target_scale(actor, sizelimit);
@@ -314,7 +314,7 @@ namespace {
 						}
 						if (targetScale < maxScale) {
 							mod_target_scale(actor, GrowthPower);
-							GrowthTremorManager::GetSingleton().CallRumble(actor, player, GrowthPower * 20);
+							ApplyShake(actor, player, GrowthPower * 20);
 							Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
 						}
 					}

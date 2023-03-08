@@ -103,7 +103,7 @@ namespace Gts {
 
 				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
 				Runtime::PlaySound("MoanSound", player, 1.0, 1.0);
-				GrowthTremorManager::GetSingleton().CallRumble(player, player, 32 * scale);
+				ApplyShake(player, player, 32 * scale);
 				log::info("Cloth Tearing Success. Threshold: {}, count: {}, Unequipped Armor: {}", this->clothtearthreshold, this->clothtearcount, ArmorSlot->GetFullName());
 			}
 		}
