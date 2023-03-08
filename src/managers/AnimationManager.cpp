@@ -39,6 +39,7 @@ namespace Gts {
 	}
 
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
+		auto PC = PlayerCharacter::GetSingleton();
         if (actor->formID == 0x14) {
 			auto scale = get_visual_scale(actor);
 			float volume = scale * 0.20;
@@ -50,7 +51,9 @@ namespace Gts {
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
             }
         }
-		else if (tag == "")
+		else if (tag == "GTScrush_victim") {
+			CrushManager::GetSingleton().Crush(PC, actor);
+		}
     }
 
 	void AnimationManager::GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
