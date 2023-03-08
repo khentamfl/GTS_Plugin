@@ -31,6 +31,6 @@ namespace Gts {
 
 	bool IsJumping(Actor* actor);
 
-	void ApplyShake(Actor* caster, Actor* receiver, float power);
-	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float power, const std::string_view& node);
+	void ApplyShake(Actor* caster, Actor* receiver, float modifier);
+	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float modifier, const std::string_view& node);
 }

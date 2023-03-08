@@ -204,11 +204,11 @@ namespace Gts {
 		return 3.4028237E38; // Max float
 	}
 
-	void ApplyShake(Actor* caster, Actor* receiver, float power) {
+	void ApplyShake(Actor* caster, Actor* receiver, float modifier) {
 		auto player = PlayerCharacter::GetSingleton();
 		float distance = get_distance_to_camera(caster);
 		if (caster != player) {
-			distance = get_distance_to_actor(caster);
+			distance = get_distance_to_actor(caster, receiver);
 		}
 		float sourcesize = get_target_scale(caster);
 		float receiversize = get_target_scale(receiver);
@@ -233,13 +233,13 @@ namespace Gts {
 			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, distance, falloff);
 
 			if (Receiver == Player) {
-				shake_controller(intensity*power, intensity*power, duration);
-				shake_camera(Receiver, intensity*power, duration);
+				shake_controller(intensity*modifier, intensity*modifier, duration);
+				shake_camera(Receiver, intensity*modifier, duration);
 			}
 		}
 	}
 
-	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float power, const std::string_view& node) {
+	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float modifier, const std::string_view& node) {
 		auto Player = PlayerCharacter::GetSingleton();
 		float distance = get_distance_to_camera(caster);
 		auto bone = find_node(caster, node);
@@ -272,8 +272,8 @@ namespace Gts {
 			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, distance, falloff);
 
 			if (Receiver == Player) {
-				shake_controller(intensity*power, intensity*power, duration);
-				shake_camera(Receiver, intensity*power, duration);
+				shake_controller(intensity*modifier, intensity*modifier, duration);
+				shake_camera(Receiver, intensity*modifier, duration);
 			}
 		}
 	}
