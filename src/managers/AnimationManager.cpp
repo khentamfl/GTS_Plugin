@@ -62,34 +62,31 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void AdjustFallBehavior(Actor* target) {
-		auto charCont = PC->GetCharController();
+	void AdjustFallBehavior(Actor* actor) {
+		auto charCont = actor->GetCharController();
 		if (charCont) {
-			PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
+			actor->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
 		}
 	}
 
-	void ApplyRumbleSounds(Actor* caster) {
-		auto transient = Transient::GetSingleton().GetActorData(PC);
+	void ApplyRumbleSounds(Actor* caster, Actor* receiver) {
+		auto transient = Transient::GetSingleton().GetActorData(caster);
 		float volume = 0.0;	
 		static Timer timer = Timer(0.50);
 		if (transient) {
 			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
 			for (auto nodes: LegRumbleNodes) {
-				ApplyShakeAtNode(PC, PC, 1.0, nodes);
-			}
-			if (timer.ShouldRunFrame()) {
-				for (auto nodes: LegRumbleNodes) {
-					auto bone = find_node(PC, nodes);
-				if (bone) {
-					NiAVObject* attach = bone;
-					if (attach) {
-						distance = get_distance_to_camera(attach);
-						volume = (100 * get_visual_scale(PC))/get_distance_to_camera(attach);
-						//volume *= transient->legsspreading + transient->legsclosing;
+				ApplyShakeAtNode(caster, receiver, 1.0, nodes);
+				if (timer.ShouldRunFrame()) {
+					auto bone = find_node(caster, nodes);
+					if (bone) {
+						NiAVObject* attach = bone;
+						if (attach) {
+							volume = (100 * get_visual_scale(caster))/get_distance_to_camera(attach);
+							//volume *= transient->legsspreading + transient->legsclosing;
 						}
 					}
-					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, nodes);
+					Runtime::PlaySoundAtNode("RumbleWalkSound", caster, volume, 1.0, nodes);
 				}	
 			}
 		}
@@ -110,7 +107,7 @@ namespace Gts {
 	void AnimationManager::Update() {
 		auto PC = PlayerCharacter::GetSingleton();
 		AdjustFallBehavior(PC);
-		ApplyRumbleSounds(PC);
+		ApplyRumbleSounds(PC, PC);
 	}
 	
 
