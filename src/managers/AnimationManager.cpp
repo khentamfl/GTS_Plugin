@@ -82,7 +82,7 @@ namespace {
 					if (bone) {
 						NiAVObject* attach = bone;
 						if (attach) {
-							volume = (100 * get_visual_scale(caster))/get_distance_to_camera(attach);
+							volume = (100 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
 							//volume *= transient->legsspreading + transient->legsclosing;
 						}
 					}

@@ -234,7 +234,7 @@ namespace Gts {
 			if (duration > 1.2) {
 				duration = 1.2;
 			}
-			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
+			//log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
 
 			if (receiver == player) {
 				shake_controller(intensity*modifier, intensity*modifier, duration);
@@ -250,7 +250,7 @@ namespace Gts {
 		if (bone) {
 			NiAVObject* attach = bone;
 			if (attach) {
-				distance = get_distance_to_camera(attach);
+				distance = get_distance_to_camera(attach->world.translate);
 				log::info("Distance True");
 			}
 		}
@@ -277,7 +277,7 @@ namespace Gts {
 			if (duration > 1.2) {
 				duration = 1.2;
 			}
-			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
+			//log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
 
 			if (receiver->formID == 0x14) {
 				log::info("Playing Sound");
