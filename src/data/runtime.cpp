@@ -124,12 +124,6 @@ namespace Gts {
 			//soundHandle.SetFrequency(frequency);
 			soundHandle.SetVolume(volume);
 			NiAVObject* follow = nullptr;
-			if (actor) {
-				NiAVObject* current_3d = actor->GetCurrent3D();
-				if (current_3d) {
-					follow = current_3d;
-				}
-			}
 			auto bone = find_node(actor, node);
 			if (bone) {
 				NiAVObject* attach = bone;

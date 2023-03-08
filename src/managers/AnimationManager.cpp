@@ -83,7 +83,7 @@ namespace Gts {
 		}
 		if (transient) {
 			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
-				static Timer timer = Timer(0.40);
+				static Timer timer = Timer(0.50);
 				if (timer.ShouldRunFrame()) {
 					float volume = 1.0;//transient->legsspreading + transient->legsclosing;
 					for (auto nodes: LegRumbleNodes) {

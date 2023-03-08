@@ -248,6 +248,7 @@ namespace Gts {
 			NiAVObject* attach = bone;
 			if (attach) {
 				distance = get_distance_to_camera(attach);
+				log::info("Distance True");
 			}
 		}
 		float sourcesize = get_target_scale(caster);
@@ -272,7 +273,8 @@ namespace Gts {
 			}
 			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
 
-			if (receiver == player) {
+			if (receiver->formID == 0x14) {
+				log::info("Playing Sound");
 				shake_controller(intensity*modifier, intensity*modifier, duration);
 				shake_camera(receiver, intensity*modifier, duration);
 			}
