@@ -1,4 +1,4 @@
-#include "managers/AnimationManager.hpp"
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
@@ -72,17 +72,17 @@ namespace {
 	void ApplyRumbleSounds(Actor* caster, Actor* receiver) {
 		auto transient = Transient::GetSingleton().GetActorData(caster);
 		float volume = 0.0;	
-		static Timer timer = Timer(0.50);
+		static Timer timer = Timer(0.40);
 		if (transient) {
 			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
 			for (auto nodes: LegRumbleNodes) {
-				ApplyShakeAtNode(caster, receiver, 2.0, nodes);
+				ApplyShakeAtNode(caster, receiver, 0.6, nodes);
 				if (timer.ShouldRunFrame()) {
 					auto bone = find_node(caster, nodes);
 					if (bone) {
 						NiAVObject* attach = bone;
 						if (attach) {
-							volume = (100 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
+							volume = (70 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
 							//volume *= transient->legsspreading + transient->legsclosing;
 						}
 					}

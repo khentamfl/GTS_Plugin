@@ -3,7 +3,7 @@
 #include "magic/magic.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
-#include "managers/AnimationManager.hpp"
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
