@@ -20,7 +20,7 @@ using namespace Gts;
 using namespace std;
 
 namespace { 
-	const std::vec<std::string_view> Anim_Stomp = {
+	const std::vector<std::string_view> Anim_Stomp = {
 		"GTSstompimpactR", 			// [0] stomp impacts, strongest effect
  		"GTSstompimpactL",          // [1]
 		"GTSstomplandR", 			// [2] when landing after stomping, decreased power
@@ -31,7 +31,7 @@ namespace {
  		"GTSstompendL",             // [7]
 	};
 	
-	const std::vec<std::string_view> Anim_ThighCrush = {
+	const std::vector<std::string_view> Anim_ThighCrush = {
 		"GTStosit", 				// [0] start air rumble and camera shake
 		"GTSsitloopenter", 			// [1] Sit down completed
 		"GTSsitloopstart", 			// [2] Start to spread legs, call air rumble and camera shake. Enable feet damage and knockdown.
@@ -44,7 +44,7 @@ namespace {
 		"GTStoexit", 				// [9] Leave animation, disable air rumble and such
 	};
 
-	const std::vec<std::string_view> Anim_Compatibility = {
+	const std::vector<std::string_view> Anim_Compatibility = {
 		"GTScrush_caster",          //[0] For compatibility with other mods. The gainer.
 		"GTScrush_victim",          //[1] The one to crush
 	};
