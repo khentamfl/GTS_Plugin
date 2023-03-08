@@ -214,7 +214,7 @@ namespace Gts {
 		float receiversize = get_target_scale(receiver);
 		float sizedifference = clamp(0.0, 10.0, sourcesize/receiversize);
 		float falloff = 450 * (sourcesize * 0.25 + 0.75) * (sizedifference * 0.25 + 0.75);
-		float power = (0.425 * ShakeStrength(Source));
+		float power = (0.425 * ShakeStrength(caster));
 		float duration = 0.25 * (1 + (sizedifference * 0.25));
 		if (distance < falloff) {
 			float intensity = ((falloff/distance) / 8);
@@ -230,7 +230,7 @@ namespace Gts {
 			if (duration > 1.2) {
 				duration = 1.2;
 			}
-			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, distance, falloff);
+			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
 
 			if (Receiver == Player) {
 				shake_controller(intensity*modifier, intensity*modifier, duration);
@@ -249,11 +249,11 @@ namespace Gts {
 				distance = get_distance_to_camera(bone);
 			}
 		}
-		float sourcesize = get_target_scale(source);
+		float sourcesize = get_target_scale(caster);
 		float receiversize = get_target_scale(receiver);
 		float sizedifference = clamp(0.0, 10.0, sourcesize/receiversize);
 		float falloff = 450 * (sourcesize * 0.25 + 0.75) * (sizedifference * 0.25 + 0.75);
-		float power = (0.425 * ShakeStrength(Source));
+		float power = (0.425 * ShakeStrength(caster));
 		float duration = 0.25 * (1 + (sizedifference * 0.25));
 		if (distance < falloff) {
 			float intensity = ((falloff/distance) / 8);
@@ -269,7 +269,7 @@ namespace Gts {
 			if (duration > 1.2) {
 				duration = 1.2;
 			}
-			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, distance, falloff);
+			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
 
 			if (Receiver == Player) {
 				shake_controller(intensity*modifier, intensity*modifier, duration);

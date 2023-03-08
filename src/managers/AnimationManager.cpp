@@ -50,6 +50,17 @@ namespace {
 		"GTScrush_caster",          //[0] For compatibility with other mods. The gainer.
 		"GTScrush_victim",          //[1] The one to crush
 	};
+
+	const std::vector<std::string_view> legrumblenodes = {
+		"NPC L Foot [Lft]",
+		"NPC R Foot [Rft]",
+		"NPC L Calf [LClf]",
+		"NPC R Calf [RClf]",
+		"NPC L FrontThigh",
+		"NPC R FrontThigh",
+		"NPC R RearCalf [RrClf]",
+		"NPC L RearCalf [RrClf]",
+	}
 }
 
 
@@ -75,14 +86,9 @@ namespace Gts {
 				static Timer timer = Timer(0.20);
 				if (timer.ShouldRunFrame()) {
 					float volume = 1.0;//transient->legsspreading + transient->legsclosing;
-					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L Foot [Lft]");
-					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R Foot [Rft]");
-					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L Calf [LClf]");
-					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R Calf [LClf]");
-					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R FrontThigh");
-					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L FrontThigh");
-					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L RearCalf [LrClf]");
-					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R RearCalf [RrClf]");
+					for (auto nodes: legrumblenodes) {
+						Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, nodes);
+					}
 				//}
 			}
 		}
