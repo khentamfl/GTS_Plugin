@@ -2,6 +2,7 @@
 #include "utils/findActor.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "data/runtime.hpp"
+#include "scale/scale.hpp"
 #include "data/re.hpp"
 
 using namespace RE;
@@ -204,10 +205,10 @@ namespace Gts {
 	}
 
 	void ApplyShake(Actor* caster, Actor* receiver, float power) {
-		auto Player = PlayerCharacter::GetSingleton();
-		float Distance = get_distance_to_camera(caster);
+		auto player = PlayerCharacter::GetSingleton();
+		float distance = get_distance_to_camera(caster);
 		if (caster != player) {
-			Distance = get_distance_to_actor(caster);
+			distance = get_distance_to_actor(caster);
 		}
 		float sourcesize = get_target_scale(caster);
 		float receiversize = get_target_scale(receiver);
@@ -215,8 +216,8 @@ namespace Gts {
 		float falloff = 450 * (sourcesize * 0.25 + 0.75) * (sizedifference * 0.25 + 0.75);
 		float power = (0.425 * ShakeStrength(Source));
 		float duration = 0.25 * (1 + (sizedifference * 0.25));
-		if (Distance < falloff) {
-			float intensity = ((falloff/Distance) / 8);
+		if (distance < falloff) {
+			float intensity = ((falloff/distance) / 8);
 			intensity = intensity*power;
 			duration = duration * intensity;
 
@@ -229,7 +230,7 @@ namespace Gts {
 			if (duration > 1.2) {
 				duration = 1.2;
 			}
-			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, Distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, Distance, falloff);
+			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, distance, falloff);
 
 			if (Receiver == Player) {
 				shake_controller(intensity*power, intensity*power, duration);
@@ -254,8 +255,8 @@ namespace Gts {
 		float falloff = 450 * (sourcesize * 0.25 + 0.75) * (sizedifference * 0.25 + 0.75);
 		float power = (0.425 * ShakeStrength(Source));
 		float duration = 0.25 * (1 + (sizedifference * 0.25));
-		if (Distance < falloff) {
-			float intensity = ((falloff/Distance) / 8);
+		if (distance < falloff) {
+			float intensity = ((falloff/distance) / 8);
 			intensity = intensity*power;
 			duration = duration * intensity;
 
@@ -268,7 +269,7 @@ namespace Gts {
 			if (duration > 1.2) {
 				duration = 1.2;
 			}
-			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, Distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, Distance, falloff);
+			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", Source->GetDisplayFullName(), Receiver->GetDisplayFullName(), intensity, distance, falloff);
 
 			if (Receiver == Player) {
 				shake_controller(intensity*power, intensity*power, duration);
