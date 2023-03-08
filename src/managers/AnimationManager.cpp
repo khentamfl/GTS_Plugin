@@ -17,6 +17,7 @@
 
 using namespace RE;
 using namespace Gts;
+using namespace std;
 
 namespace { 
 	const std::vec<std::string_view> Anim_Stomp = {
