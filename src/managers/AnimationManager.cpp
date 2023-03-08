@@ -74,14 +74,14 @@ namespace Gts {
 			static Timer timer = Timer(0.20);
 			if (timer.ShouldRunFrame()) {
 				float volume = 1.0;
-				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC L Foot [Lft]");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC R Foot [Rft]");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC L Calf [LClf]");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC R Calf [LClf]");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC R FrontThigh");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC L FrontThigh");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC L RearCalf [LrClf]");
-				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC R RearCalf [RrClf]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L Foot [Lft]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R Foot [Rft]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L Calf [LClf]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R Calf [LClf]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R FrontThigh");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L FrontThigh");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC L RearCalf [LrClf]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, "NPC R RearCalf [RrClf]");
 			}
 		}
 	}
