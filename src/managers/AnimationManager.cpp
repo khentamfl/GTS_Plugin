@@ -46,7 +46,7 @@ namespace Gts {
 		auto charCont = PC->GetCharController();
 		if (charCont) {
 			PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
-			log::Info("GTS update is fired");
+			log::info("GTS update is fired");
 		}
 	}
 
