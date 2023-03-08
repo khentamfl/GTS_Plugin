@@ -84,11 +84,13 @@ namespace Gts {
 		if (transient) {
 			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
 				static Timer timer = Timer(0.50);
+					for (auto nodes: LegRumbleNodes) {
+						ApplyShakeAtNode(PC, PC, 1.0, nodes);
+					}
 				if (timer.ShouldRunFrame()) {
-					float volume = 1.0;//transient->legsspreading + transient->legsclosing;
+					float volume = (100 * get_visual_scale(PC))/get_distance_to_camera(nodes);//transient->legsspreading + transient->legsclosing;
 					for (auto nodes: LegRumbleNodes) {
 						Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, nodes);
-						ApplyShakeAtNode(PC, PC, 1.0, nodes);
 					}
 				//}
 			}
