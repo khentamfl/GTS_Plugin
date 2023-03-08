@@ -56,7 +56,7 @@ namespace Gts {
 		auto charCont = actor->GetCharController();
 		if (charCont) {
 			bool hhbool;
-			GetGraphVariableBool("GtsDisableHeels", hhbool);
+			actor->GetGraphVariableBool("GtsDisableHeels", hhbool);
 			if (hhbool == true) {
 				new_hh = NiPoint3();
 			}
