@@ -76,7 +76,7 @@ namespace {
 		if (transient) {
 			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
 			for (auto nodes: LegRumbleNodes) {
-				ApplyShakeAtNode(caster, receiver, 0.4, nodes);
+				ApplyShakeAtNode(caster, receiver, 0.8, nodes);
 				if (timer.ShouldRunFrame()) {
 					auto bone = find_node(caster, nodes);
 					if (bone) {

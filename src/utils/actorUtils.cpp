@@ -278,8 +278,8 @@ namespace Gts {
 				duration = 1.2;
 			}
 
-			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}, Power: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff, power);
-			
+			//log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}, Power: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff, power);
+
 			if (receiver->formID == 0x14) {
 				//log::info("Playing Sound");
 				shake_controller(intensity*modifier, intensity*modifier, duration);
