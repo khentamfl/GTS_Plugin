@@ -61,6 +61,39 @@ namespace {
 		"NPC R RearCalf [RrClf]",
 		"NPC L RearCalf [RrClf]",
 	};
+
+	void AdjustFallBehavior(Actor* target) {
+		auto charCont = PC->GetCharController();
+		if (charCont) {
+			PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
+		}
+	}
+
+	void ApplyRumbleSounds(Actor* caster) {
+		auto transient = Transient::GetSingleton().GetActorData(PC);
+		float volume = 0.0;	
+		static Timer timer = Timer(0.50);
+		if (transient) {
+			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
+			for (auto nodes: LegRumbleNodes) {
+				ApplyShakeAtNode(PC, PC, 1.0, nodes);
+			}
+			if (timer.ShouldRunFrame()) {
+				for (auto nodes: LegRumbleNodes) {
+					auto bone = find_node(PC, nodes);
+				if (bone) {
+					NiAVObject* attach = bone;
+					if (attach) {
+						distance = get_distance_to_camera(attach);
+						volume = (100 * get_visual_scale(PC))/get_distance_to_camera(attach);
+						//volume *= transient->legsspreading + transient->legsclosing;
+						}
+					}
+					Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, nodes);
+				}	
+			}
+		}
+	}
 }
 
 
@@ -76,27 +109,10 @@ namespace Gts {
 
 	void AnimationManager::Update() {
 		auto PC = PlayerCharacter::GetSingleton();
-		auto charCont = PC->GetCharController();
-		auto transient = Transient::GetSingleton().GetActorData(PC);
-		if (charCont) {
-			PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
-		}
-		if (transient) {
-			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
-				static Timer timer = Timer(0.50);
-					for (auto nodes: LegRumbleNodes) {
-						ApplyShakeAtNode(PC, PC, 1.0, nodes);
-					}
-				if (timer.ShouldRunFrame()) {
-					//transient->legsspreading + transient->legsclosing;
-					for (auto nodes: LegRumbleNodes) {
-						float volume = (100 * get_visual_scale(PC))/get_distance_to_camera(nodes);
-						Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, nodes);
-					}
-				//}
-			}
-		}
+		AdjustFallBehavior(PC);
+		ApplyRumbleSounds(PC);
 	}
+	
 
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
 		auto PC = PlayerCharacter::GetSingleton();
