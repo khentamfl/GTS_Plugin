@@ -15,6 +15,43 @@ using namespace articuno::ryml;
 using namespace RE;
 using namespace Gts;
 
+namespace {
+	float GetHHPower(Actor* actor) {
+		auto charCont = actor->GetCharController();
+		if (charCont) {
+			auto transient = Transient::GetSingleton().GetActorData(actor);
+			if (transient) {
+				auto persistent = Persistent::GetSingleton().GetData(actor);
+				if (persistent) {
+					bool hhbool;
+					float hhmult = transient->hhmult;
+					float animspeed = persistent->anim_speed;
+					actor->GetGraphVariableBool("GtsDisableHeels", hhbool);
+					if (hhbool) { // WHen bool is true, start to decrease value
+						if (hhmult <= 0.0) {
+							transient->hhmult = 0.0;
+							log::info("hh mult = {}", hhmult);
+							return 0.0;
+						}
+						transient->hhmult -= 0.01 * animspeed;
+						return hhmult;
+					} else if (!hhbool) { // When false, increase value, reaching 1.0 eventually
+						if (hhmult >= 1.0) {
+							transient->hhmult = 1.0;
+							log::info("hh mult = {}", hhmult);
+							return 1.0;
+						}
+						transient->hhmult += 0.01 * animspeed;
+						return hhmult;
+					}
+				}
+			}
+		}
+		log::info("hh mult = {}", hhmult);
+		return 1.0;
+	}
+}
+
 namespace Gts {
 	HighHeelManager& HighHeelManager::GetSingleton() noexcept {
 		static HighHeelManager instance;
@@ -53,22 +90,14 @@ namespace Gts {
 			return;
 		}
 		NiPoint3 new_hh;
-		auto charCont = actor->GetCharController();
-		if (charCont) {
-			bool hhbool;
-			actor->GetGraphVariableBool("GtsDisableHeels", hhbool);
-			if (hhbool == true) {
-				new_hh = NiPoint3();
-			}
-		}
 		//log::info("Actor: {}, BaseHeight: {}, BaseVolume: {}", actor->GetDisplayFullName(), transient->base_height, transient->base_volume);
 		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {
 			new_hh = NiPoint3();
 		} else if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
-			new_hh = this->GetHHOffset(actor);
+			new_hh = this->GetHHOffset(actor) * GetHHPower(actor);
 		} else {
 			// With model scale do it in unscaled coords
-			new_hh = this->GetBaseHHOffset(actor);
+			new_hh = this->GetBaseHHOffset(actor) * GetHHPower(actor);
 		}
 		float hh_length = new_hh.Length();
 
