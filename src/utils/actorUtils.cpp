@@ -232,9 +232,9 @@ namespace Gts {
 			}
 			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
 
-			if (Receiver == Player) {
+			if (receiver == player) {
 				shake_controller(intensity*modifier, intensity*modifier, duration);
-				shake_camera(Receiver, intensity*modifier, duration);
+				shake_camera(receiver, intensity*modifier, duration);
 			}
 		}
 	}
@@ -246,7 +246,7 @@ namespace Gts {
 		if (bone) {
 			NiAVObject* attach = bone;
 			if (attach) {
-				distance = get_distance_to_camera(bone);
+				distance = get_distance_to_camera(attach);
 			}
 		}
 		float sourcesize = get_target_scale(caster);
@@ -271,9 +271,9 @@ namespace Gts {
 			}
 			log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
 
-			if (Receiver == Player) {
+			if (receiver == player) {
 				shake_controller(intensity*modifier, intensity*modifier, duration);
-				shake_camera(Receiver, intensity*modifier, duration);
+				shake_camera(receiver, intensity*modifier, duration);
 			}
 		}
 	}
