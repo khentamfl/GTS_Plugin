@@ -88,8 +88,9 @@ namespace Gts {
 						ApplyShakeAtNode(PC, PC, 1.0, nodes);
 					}
 				if (timer.ShouldRunFrame()) {
-					float volume = (100 * get_visual_scale(PC))/get_distance_to_camera(nodes);//transient->legsspreading + transient->legsclosing;
+					//transient->legsspreading + transient->legsclosing;
 					for (auto nodes: LegRumbleNodes) {
+						float volume = (100 * get_visual_scale(PC))/get_distance_to_camera(nodes);
 						Runtime::PlaySoundAtNode("RumbleWalkSound", PC, volume, 1.0, nodes);
 					}
 				//}
