@@ -27,9 +27,9 @@ namespace {
  		"GTSstompimpactL",          // [1]
 		"GTSstomplandR", 			// [2] when landing after stomping, decreased power
  		"GTSstomplandL",            // [3]
- 		"GTSstompstartR", 			// [4] For starting loop of camera shake, air rumble sounds
+ 		"GTSstompstartR", 			// [4] For starting loop of camera shake and air rumble sounds
  		"GTSstompstartL",           // [5]
- 		"GTSstompendR", 			// [6] disable loop of camera shake, air rumble sounds
+ 		"GTSstompendR", 			// [6] disable loop of camera shake and air rumble sounds
  		"GTSstompendL",             // [7]
 	};
 	
@@ -38,8 +38,8 @@ namespace {
 		"GTSsitloopenter", 			// [1] Sit down completed
 		"GTSsitloopstart", 			// [2] Start to spread legs, call air rumble and camera shake. Enable feet damage and knockdown.
  		"GTSsitloopend", 			// [3] unused
-		"GTSsitcrushstart",			// [4] Start strong air rumble and camera shake. Enable strong feet damage and knockdown
-		"GTSsitcrushend", 			// [5] end it
+		"GTSsitcrushstart",			// [4] Start crush loop: strong air rumble and camera shake. Enable strong feet damage and knockdown
+		"GTSsitcrushend", 			// [5] end crush loop
 		"GTSsitloopexit", 			// [6] stand up, small air rumble and camera shake
 		"GTSstandR", 				// [7] feet collides with ground when standing up
 		"GTSstandL",                // [8]
@@ -54,12 +54,12 @@ namespace {
 	const std::vector<std::string_view> LegRumbleNodes = {
 		"NPC L Foot [Lft ]",
 		"NPC R Foot [Rft ]",
-		"NPC L Calf [LClf]",
+		/*"NPC L Calf [LClf]",
 		"NPC R Calf [RClf]",
 		"NPC L FrontThigh",
 		"NPC R FrontThigh",
 		"NPC R RearCalf [RrClf]",
-		"NPC L RearCalf [RrClf]",
+		"NPC L RearCalf [RrClf]",*/
 	};
 
 	void AdjustFallBehavior(Actor* actor) {
@@ -76,7 +76,7 @@ namespace {
 		if (transient) {
 			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
 			for (auto nodes: LegRumbleNodes) {
-				ApplyShakeAtNode(caster, receiver, 1.0, nodes);
+				ApplyShakeAtNode(caster, receiver, 2.0, nodes);
 				if (timer.ShouldRunFrame()) {
 					auto bone = find_node(caster, nodes);
 					if (bone) {
