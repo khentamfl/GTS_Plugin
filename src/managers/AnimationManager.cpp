@@ -20,10 +20,6 @@ using namespace Gts;
 using namespace std;
 
 namespace { 
-	const std::vector<Actor> Actors = {
-		nullptr,
-		nullptr,
-	};
 
 	const std::vector<std::string_view> Anim_Stomp = {
 		"GTSstompimpactR", 			// [0] stomp impacts, strongest effect
@@ -88,25 +84,18 @@ namespace Gts {
             }
         }
 		if (tag == Anim_Compatibility[0]) {
-			Actors[0] = actor; // caster
+			//Actors[0] = actor; // caster
 		}
 		if (tag == Anim_Compatibility[1]) {
-			Actors[1] = actor; // receiver
-			if (Actors[0]) {
-				float giantscale = get_visual_scale(Actors[0]);
-				float tinyscale = get_visual_scale(Actors[1]);
-				float sizedifference = giantscale/tinyscale;
-				if (sizedifference >= 4.0) { 
-					CrushManager::GetSingleton().Crush(Actors[0], Actors[2]);
-				}
+			float giantscale = get_visual_scale(PC);
+			float tinyscale = get_visual_scale(actor);
+			float sizedifference = giantscale/tinyscale;
+			if (sizedifference >= 4.0) { 
+				CrushManager::GetSingleton().Crush(PC, actor);
 			}
+			
 		}
-		if (!Actors[0]) {
-			return;
-		} if (!Actors[1]) {
-			return;
-		}
-		log::info("Actor0, Actor1: {}, {}", Actors[0]->GetDisplayFullName(), Actors[1]->GetDisplayFullName());
+		log::info("Actor: {}", actor->GetDisplayFullName());
     }
 
 	void AnimationManager::GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
