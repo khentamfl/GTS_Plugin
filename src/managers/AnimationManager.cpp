@@ -8,6 +8,7 @@
 #include "managers/GtsManager.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
@@ -72,8 +73,15 @@ namespace Gts {
 		if (transient) {
 			static Timer timer = Timer(0.20);
 			if (timer.ShouldRunFrame()) {
+				float volume = 1.0;
 				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC L Foot [Lft]");
 				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC R Foot [Rft]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC L Calf [LClf]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC R Calf [LClf]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC R FrontThigh");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC L FrontThigh");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC L RearCalf [LrClf]");
+				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, "NPC R RearCalf [RrClf]");
 			}
 		}
 	}
