@@ -214,7 +214,7 @@ namespace Gts {
 		float sourcesize = get_target_scale(caster);
 		float receiversize = get_target_scale(receiver);
 		float sizedifference = clamp(0.0, 10.0, sourcesize/receiversize);
-		if (caster == reicever) {
+		if (caster == receiver) {
 			sizedifference = clamp(0.0, 10.0, sourcesize);
 		}
 		float falloff = 450 * (sourcesize * 0.25 + 0.75) * (sizedifference * 0.25 + 0.75);
@@ -257,7 +257,7 @@ namespace Gts {
 		float sourcesize = get_target_scale(caster);
 		float receiversize = get_target_scale(receiver);
 		float sizedifference = clamp(0.0, 10.0, sourcesize/receiversize);
-		if (caster == reicever) {
+		if (caster == receiver) {
 			sizedifference = clamp(0.0, 10.0, sourcesize);
 		}
 		float falloff = 450 * (sourcesize * 0.25 + 0.75) * (sizedifference * 0.25 + 0.75);
