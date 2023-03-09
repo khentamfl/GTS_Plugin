@@ -65,7 +65,7 @@ namespace {
 	};
 
 	const std::vector<std::string_view> MCO = {
-		"MCO_SecondDodge",
+		"MCO_SecondDodge",                       // MCO compatibility, actually enables GTS sounds
 		"SoundPlay.MCO_DodgeSound",
 	};
 
@@ -116,7 +116,7 @@ namespace Gts {
 	void AnimationManager::Update() {
 		auto PC = PlayerCharacter::GetSingleton();
 		AdjustFallBehavior(PC);
-		ApplyRumbleSounds(PC, PC);
+		//ApplyRumbleSounds(PC, PC);
 	}
 	
 
