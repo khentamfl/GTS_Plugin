@@ -244,6 +244,7 @@ namespace Gts {
 	}
 
 	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float modifier, const std::string_view& node) {
+		//Sermit To-do: improve logic: currently checks small point inside node only.
 		auto player = PlayerCharacter::GetSingleton();
 		float distance = get_distance_to_camera(caster);
 		auto bone = find_node(caster, node);
@@ -261,18 +262,18 @@ namespace Gts {
 			sizedifference = sourcesize;
 		}
 		float falloff = 450 * sizedifference;
-		float power = (0.425 * sizedifference);//ShakeStrength(caster));
+		float power = (0.425 * ShakeStrength(caster));
 		float duration = 0.25 * (1 + (sizedifference * 0.25));
 		if (distance < falloff) {
-			float intensity = ((falloff/distance) / 8);
+			float intensity = ((falloff/distance));
 			intensity = intensity*power;
 			duration = duration * intensity;
 
 			if (intensity <= 0) {
 				intensity = 0;
 			}
-			if (power >= 212.6) {
-				power = 212.6;
+			if (power >= 12.6) {
+				power = 12.6;
 			}
 			if (duration > 1.2) {
 				duration = 1.2;
