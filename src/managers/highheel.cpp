@@ -17,7 +17,7 @@ using namespace Gts;
 
 namespace {
 	float GetHHPower(Actor* actor) {
-		/*if (actor->formID != 0x14) {
+		if (actor->formID != 0x14) {
 			return 1.0;
 		}
 		auto charCont = actor->GetCharController();
@@ -30,27 +30,29 @@ namespace {
 					float hhmult = transient->hhmult;
 					float animspeed = persistent->anim_speed;
 					actor->GetGraphVariableBool("GtsDisableHeels", hhbool);
-					if (hhbool) { // WHen bool is true, start to decrease value
-						if (hhmult <= 0.0) {
-							transient->hhmult = 0.0;
-							//log::info("hh mult = {}", hhmult);
-							return 0.0;
+					if (hhbool) {
+						if (hhbool == true) { // WHen bool is true, start to decrease value
+							if (hhmult <= 0.0) {
+								transient->hhmult = 0.0;
+								log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
+								return 0.0;
+							}
+							transient->hhmult -= 0.01 * animspeed;
+							return hhmult;
+						} else if (hhbool == false) { // When false, increase value, reaching 1.0 eventually
+							if (hhmult >= 1.0) {
+								transient->hhmult = 1.0;
+								log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
+								return 1.0;
+							}
+							transient->hhmult += 0.01 * animspeed;
+							return hhmult;
 						}
-						transient->hhmult -= 0.01 * animspeed;
-						return hhmult;
-					} else if (!hhbool) { // When false, increase value, reaching 1.0 eventually
-						if (hhmult >= 1.0) {
-							transient->hhmult = 1.0;
-							//log::info("hh mult = {}", hhmult);
-							return 1.0;
-						}
-						transient->hhmult += 0.01 * animspeed;
-						return hhmult;
 					}
 				}
 			}
-		}*/
-		//log::info("hh mult = 1.0");
+		}
+		log::info("hh mult = 1.0");
 		return 1.0;
 	}
 }
