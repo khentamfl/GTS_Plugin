@@ -52,17 +52,24 @@ namespace {
 	};
 
 	const std::vector<std::string_view> LegRumbleNodes = {
+		"NPC L Foot [Lft ]",
+		/*"NPC R Foot [Rft ]",
 		"NPC L Toe0 [LToe]",
 		"NPC R Toe0 [RToe]",
-		"NPC L Foot [Lft ]",
-		"NPC R Foot [Rft ]",
 		"NPC L Calf [LClf]",
 		"NPC R Calf [RClf]",
 		"NPC L FrontThigh",
 		"NPC R FrontThigh",
 		"NPC R RearCalf [RrClf]",
-		"NPC L RearCalf [RrClf]",
+		"NPC L RearCalf [RrClf]",*/
 	};
+
+	const std::vector<std::string_view> MCO = {
+		"MCO_SecondDodge",
+		"SoundPlay.MCO_DodgeSound",
+	};
+
+	
 
 	void AdjustFallBehavior(Actor* actor) {
 		auto charCont = actor->GetCharController();
@@ -118,7 +125,7 @@ namespace Gts {
         if (actor->formID == 0x14) {
 			auto scale = get_visual_scale(actor);
 			float volume = scale * 0.20;
-            if (tag == Anim_Stomp[0] || tag == Anim_Stomp[1]) {
+            if (tag == Anim_Stomp[0] || tag == Anim_Stomp[1] || tag == MCO[0] || tag == MCO[1]) {
 				//Call UnderFoot event here somehow with x scale bonus
 				Runtime::PlaySound("lFootstepL", actor, volume, 1.0);
             } 
