@@ -17,7 +17,7 @@ using namespace Gts;
 
 namespace {
 	float GetHHPower(Actor* actor) {
-		if (actor->formID != 0x14) {
+		/*if (actor->formID != 0x14) {
 			return 1.0;
 		}
 		auto charCont = actor->GetCharController();
@@ -49,7 +49,7 @@ namespace {
 					}
 				}
 			}
-		}
+		}*/
 		//log::info("hh mult = 1.0");
 		return 1.0;
 	}
