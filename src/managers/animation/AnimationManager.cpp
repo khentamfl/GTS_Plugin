@@ -140,7 +140,7 @@ namespace Gts {
 			}
 			
 		}
-		//log::info("Actor: {}", actor->GetDisplayFullName());
+		log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
     }
 
 	void AnimationManager::GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
