@@ -271,8 +271,8 @@ namespace Gts {
 			if (intensity <= 0) {
 				intensity = 0;
 			}
-			if (power >= 12.6) {
-				power = 12.6;
+			if (power >= 212.6) {
+				power = 212.6;
 			}
 			if (duration > 1.2) {
 				duration = 1.2;
