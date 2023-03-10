@@ -53,7 +53,7 @@ namespace {
 
 	const std::vector<std::string_view> LegRumbleNodes = {
 		"NPC L Foot [Lft ]",
-		/*"NPC R Foot [Rft ]",
+		"NPC R Foot [Rft ]",
 		"NPC L Toe0 [LToe]",
 		"NPC R Toe0 [RToe]",
 		"NPC L Calf [LClf]",
@@ -61,7 +61,7 @@ namespace {
 		"NPC L FrontThigh",
 		"NPC R FrontThigh",
 		"NPC R RearCalf [RrClf]",
-		"NPC L RearCalf [RrClf]",*/
+		"NPC L RearCalf [RrClf]",
 	};
 
 	const std::vector<std::string_view> MCO = {
@@ -116,7 +116,7 @@ namespace Gts {
 	void AnimationManager::Update() {
 		auto PC = PlayerCharacter::GetSingleton();
 		AdjustFallBehavior(PC);
-		//ApplyRumbleSounds(PC, PC);
+		ApplyRumbleSounds(PC, PC);
 	}
 	
 
