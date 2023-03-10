@@ -7,7 +7,8 @@ using namespace SKSE;
 namespace Gts {
 
 	void shake_camera(TESObjectREFR* actor, float intensity, float duration) {
-		CallFunction("Game", "ShakeCamera", actor, intensity, duration);
+		//CallFunction("Game", "ShakeCamera", actor, intensity, duration);
+		ShakeCamera(intensity, (0,0,10), duration);
 	}
 
 	void TriggerScreenBlood(int aiValue) {
