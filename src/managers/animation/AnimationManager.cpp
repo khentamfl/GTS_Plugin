@@ -34,7 +34,7 @@ namespace {
 	};
 	
 	const std::vector<std::string_view> Anim_ThighCrush = {
-		"GTStosit", 				// [0] start air rumble and camera shake
+		"GTStosit", 				// [0] Start air rumble and camera shake
 		"GTSsitloopenter", 			// [1] Sit down completed
 		"GTSsitloopstart", 			// [2] Start to spread legs, call air rumble and camera shake. Enable feet damage and knockdown.
  		"GTSsitloopend", 			// [3] unused
@@ -44,6 +44,28 @@ namespace {
 		"GTSstandR", 				// [7] feet collides with ground when standing up
 		"GTSstandL",                // [8]
 		"GTStoexit", 				// [9] Leave animation, disable air rumble and such
+	};
+
+	const std::vector<std::string_view> Anim_Vore = {
+		"GTSvore_sitstart", 		// [0] Start air rumble and camera shake
+		"GTSvore_sitend",           // [1] Sit down completed
+		"GTSvore_handextend", 		// [2] Hand starts to move in space
+		"GTSvore_handgrab",         // [3] Hand reached someone, grab actor
+		"GTSvore_handbringstart",   // [4] Hand brings someone to mouth
+		"GTSvore_handbringend",     // [5] Hand brought someone to mouth, release fingers
+		"GTSvore_handswallow",      // [6] Actor was swallowed by Giantess
+		"GTSvore_hand_wallow_sound",// [7] Play gulp sound, eat actor completely (kill)
+	};
+
+	const std::vector<std::string_view> Anim_ThighSandwich = {
+		"GTSsandwich_crouchstart",  // [0] Start air rumble and camera shake
+		"GTSsandwich_grabactor",    // [1] Grab actor
+		"GTSsandwich_crouchend",    // [2] Return to sit position, put actor on leg
+		"GTSsandwich_enterloop", 	// [3] Start idle loop with someone between legs
+		"GTSsandwich_sandwichstart",// [4] Sandwich someone between legs, dealing damage and playing sound 
+		"GTSsandwich_sandwichhit",  // [5] Apply damage and sound
+		"GTSsandwich_sandwichend",  // [6] Leg returns to idle position
+		"GTSsandwich_exit",         // [7] Exit sandwich loop and leave animation in general
 	};
 
 	const std::vector<std::string_view> Anim_Compatibility = {
@@ -117,7 +139,7 @@ namespace Gts {
 	void AnimationManager::Update() {
 		auto PC = PlayerCharacter::GetSingleton();
 		AdjustFallBehavior(PC);
-		ApplyRumbleSounds(PC, PC);
+		//ApplyRumbleSounds(PC, PC);
 	}
 	
 
