@@ -242,7 +242,7 @@ namespace Gts {
 			}
 		}
 	}
-
+	
 	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float modifier, const std::string_view& node) {
 		//Sermit To-do: improve logic: currently checks small point inside node only.
 		auto player = PlayerCharacter::GetSingleton();
