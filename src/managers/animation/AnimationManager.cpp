@@ -75,6 +75,7 @@ namespace {
 		auto charCont = actor->GetCharController();
 		if (charCont) {
 			actor->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(actor));
+			actor->SetGraphVariableFloat("GiantessScale", get_visual_scale(actor));
 		}
 	}
 
