@@ -34,6 +34,11 @@ namespace Hooks
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
 		if (a_attacker) {
+			auto charCont = a_this->GetCharController();
+			if (charCont) {
+				float sizedifference = get_visual_scale(a_this)/get_visual_scale(a_attacker);
+				a_this->SetGraphVariableFloat("GiantessScale", sizedifference);
+			}
 			float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(a_attacker, ActorValue::kAttackDamageMult);
 			float damage = (a_damage * damagemult) - a_damage;
 			if (damage < 0) {

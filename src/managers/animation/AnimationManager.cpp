@@ -43,7 +43,8 @@ namespace {
 		"GTSsitloopexit", 			// [6] stand up, small air rumble and camera shake
 		"GTSstandR", 				// [7] feet collides with ground when standing up
 		"GTSstandL",                // [8]
-		"GTStoexit", 				// [9] Leave animation, disable air rumble and such
+		"GTSstandRS",               // [9] Silent impact of right feet
+		"GTStoexit", 				// [10] Leave animation, disable air rumble and such
 	};
 
 	const std::vector<std::string_view> Anim_Vore = {
@@ -73,7 +74,7 @@ namespace {
 		"GTScrush_victim",          //[1] The one to crush
 	};
 
-	const std::vector<std::string_view> LegRumbleNodes = {
+	const std::vector<std::string_view> LegRumbleNodes = { // used with Anim_ThighCrush
 		"NPC L Foot [Lft ]",
 		"NPC R Foot [Rft ]",
 		"NPC L Toe0 [LToe]",
@@ -87,7 +88,7 @@ namespace {
 	};
 
 	const std::vector<std::string_view> MCO = {
-		"MCO_SecondDodge",                       // MCO compatibility, actually enables GTS sounds
+		"MCO_SecondDodge",                       // MCO compatibility, enables GTS sounds and footstep effects
 		"SoundPlay.MCO_DodgeSound",
 	};
 
@@ -97,7 +98,6 @@ namespace {
 		auto charCont = actor->GetCharController();
 		if (charCont) {
 			actor->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(actor));
-			actor->SetGraphVariableFloat("GiantessScale", get_visual_scale(actor));
 		}
 	}
 

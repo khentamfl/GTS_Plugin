@@ -1,6 +1,7 @@
 #include "hooks/actor.hpp"
 #include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
+#include "scale/scale.hpp"
 #include "data/persistent.hpp"
 #include "data/plugin.hpp"
 #include "events.hpp"
@@ -63,6 +64,11 @@ namespace Hooks
 
 	void Hook_Actor::HandleHealthDamage(Actor* a_this, Actor* a_attacker, float a_damage) {
 		if (a_attacker) {
+			auto charCont = a_this->GetCharController();
+			if (charCont) {
+				float sizedifference = get_visual_scale(a_this)/get_visual_scale(a_attacker);
+				a_this->SetGraphVariableFloat("GiantessScale", sizedifference);
+			}
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
 				if (Cache) {
