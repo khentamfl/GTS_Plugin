@@ -8,7 +8,7 @@ namespace Gts {
 
 	void shake_camera(TESObjectREFR* actor, float intensity, float duration) {
 		//CallFunction("Game", "ShakeCamera", actor, intensity, duration);
-		NiPoint3 position = NiPoint3(0.0, 0.0, 10.0);
+		NiPoint3 position = NiPoint3(0.0, 0.0, 1000.0);
 		ShakeCamera(intensity, position, duration);
 	}
 
