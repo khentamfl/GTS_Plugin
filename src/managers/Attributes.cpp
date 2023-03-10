@@ -167,11 +167,6 @@ namespace {
 			if (actor->formID == 0x14) {
 				Augmentation(actor, BlockMessage); // Manages SMT bonuses
 			}
-			if (!Runtime::HasPerk(actor, "StaggerImmunity") && size > 1.33) {
-				Runtime::AddPerk(actor, "StaggerImmunity");
-			} else if (size < 1.33 && Runtime::HasPerk(actor, "StaggerImmunity")) {
-				Runtime::RemovePerk(actor, "StaggerImmunity");
-			}
 		}
 	}
 }
