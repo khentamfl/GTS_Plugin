@@ -242,19 +242,11 @@ namespace Gts {
 			}
 		}
 	}
-	
-	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float modifier, const std::string_view& node) {
+
+	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float modifier, NiPoint3 coords) {
 		//Sermit To-do: improve logic: currently checks small point inside node only.
 		auto player = PlayerCharacter::GetSingleton();
-		float distance = get_distance_to_camera(caster);
-		auto bone = find_node(caster, node);
-		if (bone) {
-			NiAVObject* attach = bone;
-			if (attach) {
-				distance = get_distance_to_camera(attach->world.translate);
-				//log::info("Distance for {} is {}", node, distance);
-			}
-		}
+		float distance = get_distance_to_camera(coords);
 		float sourcesize = get_visual_scale(caster);
 		float receiversize = get_visual_scale(receiver);
 		float sizedifference = sourcesize/receiversize;
@@ -284,7 +276,7 @@ namespace Gts {
 			if (receiver->formID == 0x14) {
 				//log::info("Playing Sound");
 				shake_controller(intensity*modifier, intensity*modifier, duration);
-				shake_camera(receiver, intensity*modifier, duration);
+				shake_camera_at_node(coords, intensity*modifier, duration);
 			}
 		}
 	}

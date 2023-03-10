@@ -12,6 +12,10 @@ namespace Gts {
 		ShakeCamera(intensity, position, duration);
 	}
 
+	void shake_camera_at_node(NiPoint3 position, float intensity, float duration) { // TESObjectREFR*
+		ShakeCamera(intensity, position, duration);
+	}
+
 	void TriggerScreenBlood(int aiValue) {
 		CallFunction("Game", "TriggerScreenBlood", aiValue);
 	}
