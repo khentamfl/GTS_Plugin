@@ -130,14 +130,14 @@ namespace Gts {
 					E_Pressed = true;
 				} else if (key == 0x2F) {
 					V_Pressed = true;
-					for (auto otherActor: find_actors()) {
+					/*for (auto otherActor: find_actors()) {
 						AnimationManager::GetSingleton().Test(player, otherActor);
-					}
+					}*/
 				} else if (key == 0x21) {
 					F_Pressed = true;
-					for (auto otherActor: find_actors()) {
+				/*for (auto otherActor: find_actors()) {
 						AnimationManager::GetSingleton().GrabActor(player, otherActor, "NPC L Finger02 [LF02]");
-					}
+					}*/
 				} else if (key == 0x10) {
 					Q_Pressed = true;
 				}
