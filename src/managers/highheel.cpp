@@ -31,20 +31,22 @@ namespace {
 				if (hhbool) { // WHen bool is true, start to decrease value
 					if (hhmult <= 0.15) {
 						transient->hhmult = 0.15;
-						return 0.0;
+						return 0.15;
+					} else {
+						transient->hhmult -= 0.0060 * animspeed;
+						log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
+						return hhmult;
 					}
-					transient->hhmult -= 0.0060 * animspeed;
-					log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
-					return hhmult;
 				} 
 				if (!hhbool) { // When false, increase value, reaching 1.0 eventually
 					if (hhmult >= 1.0) {
 						transient->hhmult = 1.0;
 						return 1.0;
+					} else {
+						transient->hhmult += 0.0100 * animspeed;
+						log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
+						return hhmult;
 					}
-					transient->hhmult += 0.0100 * animspeed;
-					log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
-					return hhmult;
 				}
 			}
 		}

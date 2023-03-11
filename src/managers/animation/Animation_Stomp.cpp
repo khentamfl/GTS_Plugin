@@ -36,8 +36,8 @@ namespace {
  		"GTSstomplandL",            // [3]
  		"GTSstompstartR", 			// [4] For starting loop of camera shake and air rumble sounds
  		"GTSstompstartL",           // [5]
- 		"GTSstompendR", 			// [6] disable loop of camera shake and air rumble sounds
- 		"GTSstompendL",             // [7] 
+ 		"GTSStompendR", 			// [6] disable loop of camera shake and air rumble sounds
+ 		"GTSStompendL",             // [7] 
 		"GTS_Next",                 // [8] 
 	};
 
