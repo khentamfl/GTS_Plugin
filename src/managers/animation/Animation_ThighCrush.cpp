@@ -24,7 +24,7 @@ const std::vector<std::string_view> BehaviorEvents = {
     "ThighLoopEnter",              // [0] Enter the loop
     "ThighLoopAttack",             // [1] Do leg attack
     "ThighLoopExit",               // [2] Exit animation
-    "ThighAnimationFull",          // [3] Full Animation without loops. Optional
+    "ThighAnimationFull",          // [3] Play Full Animation without loops. Optional
 };
 
 const std::vector<std::string_view> Anim_ThighCrush = {
