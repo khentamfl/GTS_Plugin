@@ -22,54 +22,22 @@ using namespace std;
 
 namespace { 
 
-	const std::vector<std::string_view> Behavior_ThighCrush = {
-		"GTSBeh_TriggerSitdown",   // [0]
-		"GTSBeh_StartThighCrush",  // [1]
-		"GTSBeh_LeaveSitdown",     // [2]
-	};
-
-	const std::vector<std::string_view> Anim_Stomp = {
-		"GTSstompimpactR", 			// [0] stomp impacts, strongest effect
- 		"GTSstompimpactL",          // [1]
-		"GTSstomplandR", 			// [2] when landing after stomping, decreased power
- 		"GTSstomplandL",            // [3]
- 		"GTSstompstartR", 			// [4] For starting loop of camera shake and air rumble sounds
- 		"GTSstompstartL",           // [5]
- 		"GTSstompendR", 			// [6] disable loop of camera shake and air rumble sounds
- 		"GTSstompendL",             // [7]
-	};
-	
-	const std::vector<std::string_view> Anim_ThighCrush = {
-		"GTStosit", 				// [0] Start air rumble and camera shake
-		"GTSsitloopenter", 			// [1] Sit down completed
-		"GTSsitloopstart", 			// [2] enter sit crush loop
- 		"GTSsitloopend", 			// [3] unused
-		"GTSsitcrushlight_start",	// [4] Start Spreading legs
-		"GTSsitcrushlight_end", 	// [5] Legs fully spread
-		"GTSsitcrushheavy_start",	// [6] Start Closing legs together
-		"GTSsitcrushheavy_end", 	// [7] Legs fully closed
-		"GTSsitloopexit", 			// [8] stand up, small air rumble and camera shake
-		"GTSstandR", 				// [9] feet collides with ground when standing up
-		"GTSstandL",                // [10]
-		"GTSstandRS",               // [11] Silent impact of right feet
-		"GTStoexit", 				// [12] Leave animation, disable air rumble and such
-	};
-
 	const std::vector<std::string_view> Anim_Vore = {
 		"GTSvore_sitstart", 		// [0] Start air rumble and camera shake
 		"GTSvore_sitend",           // [1] Sit down completed
 		"GTSvore_handextend", 		// [2] Hand starts to move in space
 		"GTSvore_handgrab",         // [3] Hand reached someone, grab actor
-		"GTSvore_handbringstart",   // [4] Hand brings someone to mouth
-		"GTSvore_handbringend",     // [5] Hand brought someone to mouth, release fingers
-		"GTSvore_handswallow",      // [6] Actor was swallowed by Giantess
-		"GTSvore_hand_wallow_sound",// [7] Play gulp sound, eat actor completely (kill)
+		"GTSvore_bringactorstart",  // [4] Hand brings someone to mouth
+		"GTSvore_bringactorend",    // [5] Hand brought someone to mouth, release fingers
+		"GTSvore_swallow",          // [6] Actor was swallowed by Giantess
+		"GTSvore_swallow_sound",    // [7] Play gulp sound, eat actor completely (kill)
 	};
 
 	const std::vector<std::string_view> Anim_ThighSandwich = {
 		"GTSsandwich_crouchstart",  // [0] Start air rumble and camera shake
 		"GTSsandwich_grabactor",    // [1] Grab actor
-		"GTSsandwich_crouchend",    // [2] Return to sit position, put actor on leg
+		"GTSsandwich_crouchend",    // [2] Return to sit position
+		"GTSsandwich_putactor",     // [3] Put actor on leg
 		"GTSsandwich_enterloop", 	// [3] Start idle loop with someone between legs
 		"GTSsandwich_sandwichstart",// [4] Sandwich someone between legs, dealing damage and playing sound 
 		"GTSsandwich_sandwichhit",  // [5] Apply damage and sound
@@ -101,7 +69,6 @@ namespace {
 	};
 
 	
-
 	void AdjustFallBehavior(Actor* actor) {
 		auto charCont = actor->GetCharController();
 		if (charCont) {
@@ -158,14 +125,9 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetActorData(PC);
 		auto scale = get_visual_scale(actor);
 		float volume = scale * 0.20;
-        if (actor->formID == 0x14) {
-            if (tag == Anim_Stomp[0] || tag == Anim_Stomp[1] || tag == MCO[0] || tag == MCO[1]) {
-				//Call UnderFoot event here somehow with x scale bonus
-				Runtime::PlaySound("lFootstepL", actor, volume, 1.0);
-            } 
-			if (tag == Anim_Stomp[2] || tag == Anim_Stomp[3]) {
-				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
-            }
+        if (tag == MCO[0] || tag == MCO[1]) {
+			//Call UnderFoot event here somehow with x scale bonus
+			Runtime::PlaySound("lFootstepL", actor, volume, 1.0);
         }
 		if (tag == Anim_Compatibility[0]) {
 			log::info("GTScrush_caster");
@@ -176,35 +138,6 @@ namespace Gts {
 			float sizedifference = giantscale/tinyscale;
 			if (sizedifference >= 0.0) { 
 				CrushManager::GetSingleton().Crush(PC, actor);
-			}
-		}
-		if (transient) {
-			if (tag == Anim_ThighCrush[0]) {
-				transient->rumblemult = 0.7;
-			} if (tag == Anim_ThighCrush[1]) {
-				transient->rumblemult = 0.3;
-				transient->disablehh = true;
-			} if (tag == Anim_ThighCrush[2]) {
-				transient->rumblemult = 0.4;
-			} if (tag == Anim_ThighCrush[4]) {
-				transient->rumblemult = 0.0;
-				transient->legsspreading = 1.0;
-			} if (tag == Anim_ThighCrush[5]) {
-				transient->legsspreading = 0.6;
-			} if (tag == Anim_ThighCrush[6]) {
-				transient->legsspreading = 0.0;
-				transient->legsclosing = 3.0;
-			} if (tag == Anim_ThighCrush[7]) {
-				transient->legsclosing = 1.5;
-			} if (tag == Anim_ThighCrush[8]) {
-				transient->disablehh = false;
-				transient->legsclosing = 0.0;
-				transient->rumblemult = 0.5;
-			} if (tag == Anim_ThighCrush[9] || tag == Anim_ThighCrush[10] || tag == Anim_ThighCrush[11]) {
-				transient->rumblemult = 0.2;
-				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
-			} if (tag == Anim_ThighCrush[12]) {
-				transient->rumblemult = 0.0;
 			}
 		}
 		//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
@@ -253,35 +186,6 @@ namespace Gts {
 				log::info("{} OutVelicty = {}, Initial Vel: {}, Vel Total = {}", tiny->GetDisplayFullName(), Vector2Str(charCont->outVelocity), Vector2Str(charCont->initialVelocity), Vector2Str(velocity));
 			//}
 			}
-		}
-	}
-
-	void AnimationManager::ManageAnimation(std::string_view condition) {
-		auto player = PlayerCharacter::GetSingleton();
-		if (!player) {
-			return;
-		}
-		auto transient = Transient::GetSingleton().GetActorData(player);
-		if (!transient) {
-			return;
-		}
-		if (condition == "ThighLoopEnter" && transient->ThighAnimStage <= 2.0) {
-			player->NotifyAnimationGraph(Behavior_ThighCrush[0]);
-			log::info("Case: 0");
-			transient->ThighAnimStage = 2.0;
-			return;
-		}
-		if (condition == "ThighLoopAttack" && transient->ThighAnimStage == 2.0) {
-			player->NotifyAnimationGraph(Behavior_ThighCrush[1]);
-			log::info("Case: 1");
-			transient->ThighAnimStage = 2.0;
-			return;
-		}
-		if (condition == "ThighLoopExit" && transient->ThighAnimStage >= 2.0) {
-			player->NotifyAnimationGraph(Behavior_ThighCrush[2]);
-			log::info("Case: 2");
-			transient->ThighAnimStage = 0.0;
-			return;
 		}
 	}
 }

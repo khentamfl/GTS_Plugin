@@ -1,6 +1,7 @@
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/Animation_Stomp.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/RandomGrowth.hpp"
 #include "managers/InputManager.hpp"
@@ -47,6 +48,8 @@ namespace Gts {
 		auto caster = player;
 		auto& VoreManager = Vore::GetSingleton();
 		auto& Animation = AnimationManager::GetSingleton();
+		auto& ThighCrush = ThighCrush::GetSingleton();
+		auto& Stomp = Stomp::GetSingleton();
 		float size = get_visual_scale(player);
 
 		if (!player) {
@@ -96,6 +99,10 @@ namespace Gts {
 					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 					float Value = Cache->SizeReserve * gigantism;
 					Notify("Reserved Size: {:.2f}", Value);
+				}
+
+				if (key == 0x38 && buttonEvent->HeldDuration() >= 2.0) { //Alt
+					ThighCrush.ApplyThighCrush("ThighLoopEnter");
 				}
 
 				if (key == 0x1d && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) { // Left CTRL
@@ -149,10 +156,10 @@ namespace Gts {
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x0 && buttonEvent->HeldDuration() <= 0.025) {
-					Animation.ManageAnimation("ThighLoopAttack");
+					ThighCrush.ManageAnimation("ThighLoopAttack");
 				}
 				if (key == 0x01 && buttonEvent->HeldDuration() <= 0.025) {
-					Animation.ManageAnimation("ThighLoopExit");
+					ThighCrush.ManageAnimation("ThighLoopExit");
 				}
 			}
 		}
@@ -180,9 +187,9 @@ namespace Gts {
 		if (ShiftPressed && Q_Pressed) {
 			player->NotifyAnimationGraph("GtsModStompAnimLeft");
 		}
-		if (AltPressed) {
+		/*if (AltPressed) {
 			Animation.ManageAnimation("ThighLoopEnter");
-		}
+		}*/
 
 		auto& Camera = CameraManager::GetSingleton();
 		if (AltPressed == false && RightArrow == true && LeftArrow == true) {
