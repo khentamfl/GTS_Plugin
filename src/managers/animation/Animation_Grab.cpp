@@ -31,15 +31,15 @@ namespace Gts {
 	void Grab::Update() {
         auto PC = PlayerCharacter::GetSingleton();
         if (PC) {
-            if (!this->data.tiny) {
+            if (!this->GrabData.tiny) {
                 return;
             } else 
             {
-                if (this->data.tiny->formId == 0x14) {
+                if (this->GrabData.tiny->formId == 0x14) {
                     return;
                 }
                 auto giant = PC;
-                auto bone = find_node(giant, findbone);
+                auto bone = GrabData.node;
 		        if (!bone) {
 			        return;
 		        }
