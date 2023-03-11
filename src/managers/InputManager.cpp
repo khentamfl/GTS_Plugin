@@ -90,9 +90,6 @@ namespace Gts {
 						}
 					}
 				}
-				if (key == 0x38 && buttonEvent->HeldDuration() >= 2.0) {
-					Animation.ManageAnimation("ThighLoopEnter");
-				}
 
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && Runtime::HasPerk(caster, "SizeReserve")) { //F
 
@@ -182,6 +179,9 @@ namespace Gts {
 		} 
 		if (ShiftPressed && Q_Pressed) {
 			player->NotifyAnimationGraph("GtsModStompAnimLeft");
+		}
+		if (ShiftPressed && AltPressed) {
+			Animation.ManageAnimation("ThighLoopEnter");
 		}
 
 		auto& Camera = CameraManager::GetSingleton();

@@ -37,7 +37,7 @@ namespace {
 								log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
 								return 0.0;
 							}
-							transient->hhmult -= 0.004 * animspeed;
+							transient->hhmult -= 0.001 * animspeed;
 							return hhmult;
 						} else if (hhbool == false) { // When false, increase value, reaching 1.0 eventually
 							if (hhmult >= 1.0) {
@@ -45,7 +45,7 @@ namespace {
 								log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
 								return 1.0;
 							}
-							transient->hhmult += 0.004 * animspeed;
+							transient->hhmult += 0.001 * animspeed;
 							return hhmult;
 						}
 					}
