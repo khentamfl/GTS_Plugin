@@ -41,6 +41,7 @@ namespace Gts {
 		bool V_Pressed = false;
 		bool F_Pressed = false;
 		bool Q_Pressed = false;
+		bool C_Pressed = false;
 		bool Space_Pressed = false;
 		bool LMB_Pressed = false;
 		bool RMB_Pressed = false;
@@ -124,21 +125,17 @@ namespace Gts {
 
 				if (key == 0x38) {
 					AltPressed = true;
-					// log::info("ALT");
+				} else if (key == 0x2E) {
+					C_Pressed = true;
 				} else if (key == 0x1D) {
 					CtrlPressed = true;
-					
 				} else if (key == 0xCD) {
-					// log::info("RIGHT");
 					RightArrow = true;
 				} else if (key == 0xCB) {
-					// log::info("LEFT");
 					LeftArrow = true;
 				} else if (key == 0xC8) {
-					// log::info("UP");
 					ArrowUp = true;
 				} else if (key == 0xD0) {
-					// log::info("DOWN");
 					ArrowDown = true;
 				} else if (key == 0x2A) {
 					ShiftPressed = true;
@@ -146,20 +143,13 @@ namespace Gts {
 					E_Pressed = true;
 				} else if (key == 0x2F) {
 					V_Pressed = true;
-					/*for (auto otherActor: find_actors()) {
-						AnimationManager::GetSingleton().Test(player, otherActor);
-					}*/
 				} else if (key == 0x21) {
 					F_Pressed = true;
-					/*for (auto otherActor: find_actors()) {
-						AnimationManager::GetSingleton().GrabActor(player, otherActor, "NPC L Finger02 [LF02]");
-					}*/
 				} else if (key == 0x10) {
 					Q_Pressed = true;
 				} else if (key == 0x39) {
 					Space_Pressed = true;
-				} 
-			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
+				} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x0) {
 					LMB_Pressed = true;
@@ -208,17 +198,16 @@ namespace Gts {
 			Camera.AdjustLeftRight(-(0.6 + (size * 0.05 - 0.05)));
 		} // Left or Right end
 		
-		if (CtrlPressed) {
-			ThighCrush.AdjustAnimSpeed(player, -0.005);
+		if (C_Pressed) {
+			ThighCrush.AdjustAnimSpeed(player, -0.0065);
 		}
-
 		if (LMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack");
 		} if (RMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
 		}
 		if (LMB_Pressed && RMB_Pressed) {
-			ThighCrush.AdjustAnimSpeed(player, 0.005);
+			ThighCrush.AdjustAnimSpeed(player, 0.01);
 		}
 		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
 			Camera.ResetUpDown();

@@ -87,6 +87,9 @@ namespace Gts {
 			bool AllowEdit = transient->Allowspeededit;
 			if (AllowEdit) {
 				transient->animspeedbonus += bonus;
+				if (transient->animspeedbonus <= 0.15) {
+					transient->animspeedbonus = 0.15;
+				}
 			} else if (!AllowEdit){
 				transient->animspeedbonus = 1.0;
 			}
@@ -112,9 +115,9 @@ namespace Gts {
 				transient->rumblemult = 0.0;
 				transient->legsspreading = 1.0;
 			} if (tag == Anim_ThighCrush[5]) {
+				transient->Allowspeededit = true;
 				transient->legsspreading = 0.6;
 			} if (tag == Anim_ThighCrush[6]) {
-				transient->Allowspeededit = true;
 				transient->legsspreading = 0.0;
 				transient->legsclosing = 3.0;
 			} if (tag == Anim_ThighCrush[7]) {
