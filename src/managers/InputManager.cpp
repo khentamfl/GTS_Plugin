@@ -104,6 +104,7 @@ namespace Gts {
 
 				if (key == 0x38 && buttonEvent->HeldDuration() >= 2.0) { //Alt
 					ThighCrush.ApplyThighCrush(player, "ThighLoopEnter");
+					log::info("Triggering Stage 0");
 				}
 
 				if (key == 0x1d && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) { // Left CTRL
