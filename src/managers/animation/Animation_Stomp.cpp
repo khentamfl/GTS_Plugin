@@ -66,7 +66,6 @@ namespace Gts {
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
             } if (tag == Anim_Stomp[4] || tag == Anim_Stomp[5]) {
 				transient->rumblemult = 0.0;
-				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
 			} if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7]) {
 				transient->rumblemult = 0.0;
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.3, 1.0);
