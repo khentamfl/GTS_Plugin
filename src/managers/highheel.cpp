@@ -27,7 +27,7 @@ namespace {
 				bool hhbool = transient->disablehh;
 				float hhmult = transient->hhmult;
 				float animspeed = persistent->anim_speed;
-				//actor->GetGraphVariableBool("GtsDisableHeels", hhbool);
+				//actor->GetGraphVariableBool("GTS_isBusy", hhbool);
 				if (hhbool) { // WHen bool is true, start to decrease value
 					if (hhmult <= 0.0) {
 						transient->hhmult = 0.0;
@@ -87,7 +87,8 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return;
 		} 
-		if (Persistent::GetSingleton().highheel_furniture == false && actor->GetOccupiedFurniture()) {
+		bool GTSBusy; 
+		if (Persistent::GetSingleton().highheel_furniture == false && actor->GetGraphVariableBool("GTS_isBusy", GTSBusy) && actor->GetOccupiedFurniture()) {
 			return;
 		}
 		NiPoint3 new_hh;
