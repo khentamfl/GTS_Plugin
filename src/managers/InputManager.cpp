@@ -71,7 +71,6 @@ namespace Gts {
 				continue;
 			}
 			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
-				// log::info("ButtonEvent == Keyboard");
 				auto key = buttonEvent->GetIDCode();
 				auto Cache = Persistent::GetSingleton().GetData(player);
 				if (!Cache) {
@@ -149,7 +148,10 @@ namespace Gts {
 					Q_Pressed = true;
 				} else if (key == 0x39) {
 					Space_Pressed = true;
-				} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
+				} 
+			}
+				
+			else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x0) {
 					LMB_Pressed = true;
@@ -183,9 +185,6 @@ namespace Gts {
 		if (ShiftPressed && Q_Pressed) {
 			Stomp.ApplyStomp(player, "StompLeft");
 		}
-		/*if (AltPressed) {
-			Animation.ManageAnimation("ThighLoopEnter");
-		}*/
 
 		auto& Camera = CameraManager::GetSingleton();
 		if (AltPressed == false && RightArrow == true && LeftArrow == true) {
