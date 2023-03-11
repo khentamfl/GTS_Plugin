@@ -61,7 +61,7 @@ namespace Gts {
 			float basehp = 0.0;
 			float hhmult = 1.0;
 
-			float sittingdown = 0.0;
+			float rumblemult = 0.0;
 			float legsspreading = 0.0;
 			float legsclosing = 0.0;
 
@@ -71,10 +71,11 @@ namespace Gts {
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
 			float base_volume_meters = unit_to_meter(base_volume);
 
+			bool disablehh = false;
+
 			result.base_height = base_height_meters;
 			result.base_volume = base_volume_meters;
 			result.wearingHh = false;
-			result.disablehh = false;
 			
 			result.base_walkspeedmult = actor->AsActorValueOwner()->GetBaseActorValue(ActorValue::kSpeedMult);
 			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
@@ -96,7 +97,7 @@ namespace Gts {
 			result.legsclosing = legsclosing;
 
 			result.ThighAnimStage = ThighAnimStage;
-			
+
 			result.disablehh = disablehh;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
