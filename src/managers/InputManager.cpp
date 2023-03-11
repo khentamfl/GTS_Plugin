@@ -105,7 +105,7 @@ namespace Gts {
 					Notify("Reserved Size: {:.2f}", Value);
 				}
 
-				if (key == 0x38 && buttonEvent->HeldDuration() >= 2.0) { //Alt
+				if (key == 0x38 && buttonEvent->HeldDuration() >= 0.6) { //Alt
 					ThighCrush.ApplyThighCrush(player, "ThighLoopEnter");
 					log::info("Triggering Stage 0");
 				}
@@ -197,16 +197,14 @@ namespace Gts {
 			Camera.AdjustLeftRight(-(0.6 + (size * 0.05 - 0.05)));
 		} // Left or Right end
 		
-		if (C_Pressed) {
-			ThighCrush.AdjustAnimSpeed(player, -0.0065);
-		}
 		if (LMB_Pressed && !RMB_Pressed) {
-			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack");
-		} if (RMB_Pressed && !LMB_Pressed) {
-			ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
-		}
-		if (LMB_Pressed && RMB_Pressed) {
+			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack"); // Increase speed and power
 			ThighCrush.AdjustAnimSpeed(player, 0.01);
+		} if (RMB_Pressed && !LMB_Pressed) {
+			ThighCrush.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
+			ThighCrush.AdjustAnimSpeed(player, -0.0065);
+		} if (RMB_Pressed && LMB_Pressed) {
+			ThighCrush.AdjustAnimSpeed(player, 0.025); // Strongest attack
 		}
 		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
 			Camera.ResetUpDown();
