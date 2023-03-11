@@ -25,7 +25,7 @@ const std::vector<std::string_view> Triggers = { // Triggers
     "ThighLoopAttack",              // [1]
     "ThighLoopExit",                // [2]
     "ThighLoopFull",                // [3] Play full anim
-}
+};
 
 const std::vector<std::string_view> Behavior_ThighCrush = { // Behaviors
     "GTSBeh_TriggerSitdown",        // [0] Enter sit loop
