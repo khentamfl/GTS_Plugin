@@ -121,7 +121,7 @@ namespace {
 					NiAVObject* attach = bone;
 					if (attach) {
 						float modifier = transient->legsspreading + transient->legsclosing + transient->rumblemult;
-						volume = (15 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
+						volume = (10 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
 						ApplyShakeAtNode(caster, receiver, 0.4 * modifier, attach->world.translate);
 						volume *= modifier;
 					}
@@ -193,9 +193,9 @@ namespace Gts {
 				transient->legsspreading = 0.6;
 			} if (tag == Anim_ThighCrush[6]) {
 				transient->legsspreading = 0.0;
-				transient->legsclosing = 2.0;
+				transient->legsclosing = 3.0;
 			} if (tag == Anim_ThighCrush[7]) {
-				transient->legsclosing = 1.0;
+				transient->legsclosing = 1.5;
 			} if (tag == Anim_ThighCrush[8]) {
 				transient->disablehh = false;
 				transient->legsclosing = 0.0;

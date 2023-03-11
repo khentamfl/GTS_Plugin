@@ -90,7 +90,7 @@ namespace Gts {
 						}
 					}
 				}
-				if (key == 0x39 && buttonEvent->HeldDuration() >= 2.0) {
+				if (key == 0x38 && buttonEvent->HeldDuration() >= 2.0) {
 					Animation.ManageAnimation("ThighLoopEnter");
 				}
 
