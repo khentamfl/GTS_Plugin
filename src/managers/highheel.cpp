@@ -29,8 +29,8 @@ namespace {
 				float animspeed = persistent->anim_speed;
 				//actor->GetGraphVariableBool("GTS_isBusy", hhbool);
 				if (hhbool) { // WHen bool is true, start to decrease value
-					if (hhmult <= 0.0) {
-						transient->hhmult = 0.0;
+					if (hhmult <= 0.15) {
+						transient->hhmult = 0.15;
 						return 0.0;
 					}
 					transient->hhmult -= 0.0060 * animspeed;

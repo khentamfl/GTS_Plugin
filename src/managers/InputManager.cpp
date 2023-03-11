@@ -198,10 +198,10 @@ namespace Gts {
 		} // Left or Right end
 		
 		if (LMB_Pressed && !RMB_Pressed) {
-			Animation.ApplyThighCrush(player, "ThighLoopAttack"); // Increase speed and power
+			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack"); // Increase speed and power
 			Animation.AdjustAnimSpeed(player, 0.01);
 		} if (RMB_Pressed && !LMB_Pressed) {
-			Animation.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
+			ThighCrush.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
 			Animation.AdjustAnimSpeed(player, -0.0065);
 		} if (RMB_Pressed && LMB_Pressed) {
 			Animation.AdjustAnimSpeed(player, 0.025); // Strongest attack
