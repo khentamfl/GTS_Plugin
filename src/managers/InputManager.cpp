@@ -3,6 +3,7 @@
 #include "managers/animation/Animation_ThighCrush.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/Animation_Stomp.hpp"
+#include "managers/animation/Animation_Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/RandomGrowth.hpp"
 #include "managers/InputManager.hpp"
@@ -144,7 +145,12 @@ namespace Gts {
 				} else if (key == 0x2F) {
 					V_Pressed = true;
 				} else if (key == 0x21) {
-					F_Pressed = true;
+					F_Pressed = true; 
+					for (auto otherActor: find_actors()) {
+						if (otherActor!=player) {
+							Grab::GetSingleton().GrabActor(otherActor, "NPC L Finger02 [LF02]");
+						}
+					}
 				} else if (key == 0x10) {
 					Q_Pressed = true;
 				} else if (key == 0x11) {
@@ -206,6 +212,7 @@ namespace Gts {
 		} if (RMB_Pressed && !LMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
 			Animation.AdjustAnimSpeed(player, -0.0060);
+			Grab::GetSingleton().CrushActors();
 		} if (W_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
 		}
