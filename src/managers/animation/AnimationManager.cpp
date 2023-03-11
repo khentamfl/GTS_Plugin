@@ -200,7 +200,7 @@ namespace Gts {
 				transient->disablehh = false;
 				transient->legsclosing = 0.0;
 				transient->rumblemult = 0.5;
-			} if (tag == Anim_ThighCrush[9] || Anim_ThighCrush[10] || Anim_ThighCrush[11]) {
+			} if (tag == Anim_ThighCrush[9] || tag == Anim_ThighCrush[10] || tag == Anim_ThighCrush[11]) {
 				transient->rumblemult = 0.2;
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
 			} if (tag == Anim_ThighCrush[12]) {
