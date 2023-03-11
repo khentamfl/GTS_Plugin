@@ -114,7 +114,7 @@ namespace {
 		float volume = 0.0;	
 		static Timer timer = Timer(0.40);
 		if (transient) {
-			if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
+			if (transient->legsspreading >= 1.0 || transient->legsclosing > 1.0 || transient->rumblemult >= 0.05) {
 			for (auto nodes: LegRumbleNodes) {
 				auto bone = find_node(caster, nodes);
 				if (bone) {
@@ -155,6 +155,7 @@ namespace Gts {
 
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
 		auto PC = PlayerCharacter::GetSingleton();
+		auto transient = Transient::GetSingleton().GetActorData(PC);
         if (actor->formID == 0x14) {
 			auto scale = get_visual_scale(actor);
 			float volume = scale * 0.20;
@@ -177,32 +178,34 @@ namespace Gts {
 				CrushManager::GetSingleton().Crush(PC, actor);
 			}
 		}
-		if (tag == Anim_ThighCrush[0]) {
-			transient->rumblemult = 0.7;
-		} if (tag == Anim_ThighCrush[1]) {
-			transient->rumblemult = 0.3;
-			transient->disablehh = true;
-		} if (tag == Anim_ThighCrush[2]) {
-			transient->rumblemult = 0.4;
-		} if (tag == Anim_ThighCrush[4]) {
-			transient->rumblemult = 0.0;
-			transient->legsspreading = 1.0;
-		} if (tag == Anim_ThighCrush[5]) {
-			transient->legsspreading = 0.6;
-		} if (tag == Anim_ThighCrush[6]) {
-			transient->legsspreading = 0.0;
-			transient->legsclosing = 2.0;
-		} if (tag == Anim_ThighCrush[7]) {
-			transient->legsclosing = 1.0;
-		} if (tag == Anim_ThighCrush[8]) {
-			transient->disablehh = false;
-			transient->legsclosing = 0.0;
-			transient->rumblemult = 0.5;
-		} if (tag == Anim_ThighCrush[9] || Anim_ThighCrush[10] || Anim_ThighCrush[11]) {
-			transient->rumblemult = 0.2;
-			Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
-		} if (tag == Anim_ThighCrush[12]) {
-			transient->rumblemult = 0.0;
+		if (transient) {
+			if (tag == Anim_ThighCrush[0]) {
+				transient->rumblemult = 0.7;
+			} if (tag == Anim_ThighCrush[1]) {
+				transient->rumblemult = 0.3;
+				transient->disablehh = true;
+			} if (tag == Anim_ThighCrush[2]) {
+				transient->rumblemult = 0.4;
+			} if (tag == Anim_ThighCrush[4]) {
+				transient->rumblemult = 0.0;
+				transient->legsspreading = 1.0;
+			} if (tag == Anim_ThighCrush[5]) {
+				transient->legsspreading = 0.6;
+			} if (tag == Anim_ThighCrush[6]) {
+				transient->legsspreading = 0.0;
+				transient->legsclosing = 2.0;
+			} if (tag == Anim_ThighCrush[7]) {
+				transient->legsclosing = 1.0;
+			} if (tag == Anim_ThighCrush[8]) {
+				transient->disablehh = false;
+				transient->legsclosing = 0.0;
+				transient->rumblemult = 0.5;
+			} if (tag == Anim_ThighCrush[9] || Anim_ThighCrush[10] || Anim_ThighCrush[11]) {
+				transient->rumblemult = 0.2;
+				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
+			} if (tag == Anim_ThighCrush[12]) {
+				transient->rumblemult = 0.0;
+			}
 		}
 		//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
     }
@@ -272,7 +275,7 @@ namespace Gts {
 			transient->ThighAnimStage = 2.0;
 			return;
 		}
-		if (condition == "ThighLoopExit" && transient->ThighAnimStage == 2.0) {
+		if (condition == "ThighLoopExit" && transient->ThighAnimStage >= 1.0) {
 			PlayAnimation(player, Behavior_ThighCrush[2]);
 			transient->ThighAnimStage = 0.0;
 			return;
