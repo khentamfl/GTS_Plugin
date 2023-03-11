@@ -24,7 +24,7 @@ namespace Gts {
 		return instance;
 	}
 
-	std::string Stomp::DebugName() {
+	std::string Grab::DebugName() {
 		return "Grab";
 	}	
 
@@ -33,8 +33,8 @@ namespace Gts {
         if (PC) {
             if (!this->data.tiny) {
                 return;
-            }
-            else {
+            } else 
+            {
                 if (this->data.tiny->formId == 0x14) {
                     return;
                 }
@@ -58,7 +58,7 @@ namespace Gts {
 					    //charcont->gravity = 0.0;
 					    charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0));
 				        }
-			     }
+			        }
 		        }
             }
         }
@@ -85,5 +85,10 @@ namespace Gts {
             data.clear();
         }
     }
+
+    GrabData::GrabData(Actor* tiny) :
+		std::string_view(node),
+		tiny(tiny) {
+	}
 }
 

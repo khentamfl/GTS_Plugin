@@ -158,33 +158,6 @@ namespace Gts {
 		}
 		//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
     }
-
-	void AnimationManager::GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
-		if (giant == tiny) {
-			return;
-		}
-		auto bone = find_node(giant, findbone);
-		if (!bone) {
-			return;
-		}
-		float giantScale = get_visual_scale(giant);
-		NiAVObject* attach = bone;
-		NiPoint3 giantLocation = giant->GetPosition();
-		NiPoint3 tinyLocation = tiny->GetPosition();
-		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
-			TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
-			ref->SetPosition(attach->world.translate);
-			tiny->SetPosition(attach->world.translate, false);
-			auto charcont = tiny->GetCharController();
-			if (charcont) {
-				if (charcont->gravity > 0.0) {
-					//log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
-					//charcont->gravity = 0.0;
-					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0));
-				}
-			}
-		}
-	}
 	void AnimationManager::Test(Actor * giant, Actor* tiny) {
 		if (giant != tiny) {
 			return;
