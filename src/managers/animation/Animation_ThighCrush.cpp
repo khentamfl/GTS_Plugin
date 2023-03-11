@@ -107,7 +107,7 @@ namespace Gts {
 				transient->legsclosing = 3.0 * speed;
 			} if (tag == Anim_ThighCrush[7]) {
 				transient->legsclosing = 1.5 *speed;
-			} if (tag == "GTSBEH_Next") {
+			} if (tag == "GTSBEH_Next" || tag == "GTSBEH_Exit") {
 				transient->Allowspeededit = false;
 				transient->animspeedbonus = 1.0;
 				transient->legsclosing = 0.0;

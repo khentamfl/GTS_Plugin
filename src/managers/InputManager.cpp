@@ -42,6 +42,7 @@ namespace Gts {
 		bool F_Pressed = false;
 		bool Q_Pressed = false;
 		bool C_Pressed = false;
+		bool W_Pressed = false;
 		bool Space_Pressed = false;
 		bool LMB_Pressed = false;
 		bool RMB_Pressed = false;
@@ -146,6 +147,8 @@ namespace Gts {
 					F_Pressed = true;
 				} else if (key == 0x10) {
 					Q_Pressed = true;
+				} else if (key == 0x11) {
+					W_Pressed = true;
 				} else if (key == 0x39) {
 					Space_Pressed = true;
 				} 
@@ -203,8 +206,11 @@ namespace Gts {
 		} if (RMB_Pressed && !LMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
 			Animation.AdjustAnimSpeed(player, -0.0060);
-		} if (RMB_Pressed && LMB_Pressed) {
-			Animation.AdjustAnimSpeed(player, 0.028); // Strongest attack
+		} if (W_Pressed) {
+			ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
+		}
+		if (RMB_Pressed && LMB_Pressed) {
+			Animation.AdjustAnimSpeed(player, 0.030); // Strongest attack
 		}
 		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
 			Camera.ResetUpDown();
