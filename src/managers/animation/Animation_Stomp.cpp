@@ -18,6 +18,12 @@ using namespace RE;
 using namespace Gts;
 using namespace std;
 
+namespace { 
+	const std::vector<std::string_view> Triggers = {
+		"GtsModStompAnimRight",
+		"GtsModStompAnimLeft",
+	};
+
 	const std::vector<std::string_view> Behaviors = {
 		"GtsModStompAnimRight",     // [0]
 		"GtsModStompAnimLeft",      // [1]
@@ -33,6 +39,7 @@ using namespace std;
  		"GTSstompendR", 			// [6] disable loop of camera shake and air rumble sounds
  		"GTSstompendL",             // [7] 
 	};
+}
 
 
 namespace Gts {
@@ -58,17 +65,21 @@ namespace Gts {
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
             } if (tag == Anim_Stomp[4] || tag == Anim_Stomp[5]) {
 				transient->rumblemult = 0.25;
+				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
 			} if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7]) {
 				transient->rumblemult = 0.0;
+				Runtime::PlaySound("lFootstepL", actor, volume * 0.3, 1.0);
 			}
         }
 	}
 
 	void Stomp::ApplyStomp(Actor* actor, std::string_view condition) {
-		if (condition == Behaviors[0])
+		if (condition == Triggers[0])
 			actor->NotifyAnimationGraph(Behaviors[0]);
-		else if (condition == Behaviors[1]) {
+			return;
+		if (condition == Triggers[1]) {
 			actor->NotifyAnimationGraph(Behaviors[1]);
+			return;
 		}	
 	}
 }

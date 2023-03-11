@@ -20,35 +20,45 @@ using namespace RE;
 using namespace Gts;
 using namespace std;
 
-const std::vector<std::string_view> Triggers = { // Triggers 
-    "ThighLoopEnter",               // [0]
-    "ThighLoopAttack",              // [1]
-    "ThighLoopExit",                // [2]
-    "ThighLoopFull",                // [3] Play full anim
-};
+namespace { 
+    const std::vector<std::string_view> Triggers = { // Triggers 
+        "ThighLoopEnter",               // [0]
+        "ThighLoopAttack",              // [1]
+        "ThighLoopExit",                // [2]
+        "ThighLoopFull",                // [3] Play full anim
+    };
 
-const std::vector<std::string_view> Behavior_ThighCrush = { // Behaviors
-    "GTSBeh_TriggerSitdown",        // [0] Enter sit loop
-	"GTSBeh_StartThighCrush",       // [1] Trigger thigh crush
-	"GTSBeh_LeaveSitdown",          // [2] Exit animation
-    "GTSBeh_ThighAnimationFull",    // [3] Play Full Animation without loops. Optional.
-};
+    const std::vector<std::string_view> Behavior_ThighCrush = { // Behaviors
+        "GTSBeh_TriggerSitdown",        // [0] Enter sit loop
+	    "GTSBeh_StartThighCrush",       // [1] Trigger thigh crush
+	    "GTSBeh_LeaveSitdown",          // [2] Exit animation
+        "GTSBeh_ThighAnimationFull",    // [3] Play Full Animation without loops. Optional.
+    };
 
-const std::vector<std::string_view> Anim_ThighCrush = { // Events
-		"GTStosit", 				// [0] Start air rumble and camera shake
-		"GTSsitloopenter", 			// [1] Sit down completed
-		"GTSsitloopstart", 			// [2] enter sit crush loop
- 		"GTSsitloopend", 			// [3] unused
-		"GTSsitcrushlight_start",	// [4] Start Spreading legs
-		"GTSsitcrushlight_end", 	// [5] Legs fully spread
-		"GTSsitcrushheavy_start",	// [6] Start Closing legs together
-		"GTSsitcrushheavy_end", 	// [7] Legs fully closed
-		"GTSsitloopexit", 			// [8] stand up, small air rumble and camera shake
-		"GTSstandR", 				// [9] feet collides with ground when standing up
-		"GTSstandL",                // [10]
-		"GTSstandRS",               // [11] Silent impact of right feet
-		"GTStoexit", 				// [12] Leave animation, disable air rumble and such
-};
+    const std::vector<std::string_view> Anim_ThighCrush = { // Events
+		"GTStosit", 				    // [0] Start air rumble and camera shake
+		"GTSsitloopenter", 			    // [1] Sit down completed
+		"GTSsitloopstart", 			    // [2] enter sit crush loop
+ 		"GTSsitloopend", 			    // [3] unused
+		"GTSsitcrushlight_start",	    // [4] Start Spreading legs
+		"GTSsitcrushlight_end", 	    // [5] Legs fully spread
+		"GTSsitcrushheavy_start",	    // [6] Start Closing legs together
+		"GTSsitcrushheavy_end", 	    // [7] Legs fully closed
+		"GTSsitloopexit", 			    // [8] stand up, small air rumble and camera shake
+		"GTSstandR", 				    // [9] feet collides with ground when standing up
+		"GTSstandL",                    // [10]
+		"GTSstandRS",                   // [11] Silent impact of right feet
+		"GTStoexit", 				    // [12] Leave animation, disable air rumble and such
+    };
+
+    void SetThighStage(Actor* actor, float number) {
+        auto transient = Transient::GetSingleton().GetActorData(actor);
+		if (!transient) {
+			return;
+		}
+        transient->ThighAnimStage = number;
+    }
+}
 
 namespace Gts {
 	ThighCrush& ThighCrush::GetSingleton() noexcept {
@@ -65,11 +75,13 @@ namespace Gts {
         if (transient) {
 			if (tag == Anim_ThighCrush[0]) {
 				transient->rumblemult = 0.7;
+                SetThighStage(actor, 2.0);
 			} if (tag == Anim_ThighCrush[1]) {
 				transient->rumblemult = 0.3;
 				transient->disablehh = true;
 			} if (tag == Anim_ThighCrush[2]) {
 				transient->rumblemult = 0.4;
+                SetThighStage(actor, 2.0);
 			} if (tag == Anim_ThighCrush[4]) {
 				transient->rumblemult = 0.0;
 				transient->legsspreading = 1.0;
@@ -90,6 +102,7 @@ namespace Gts {
 				Runtime::PlaySound("lFootstepL", actor, scale * 0.20, 1.0);
 			} if (tag == Anim_ThighCrush[12]) {
 				transient->rumblemult = 0.0;
+                SetThighStage(actor, 0.0);
 			}
 		}
     }
@@ -98,23 +111,16 @@ namespace Gts {
 		if (actor) {
 			return;
 		}
-		auto transient = Transient::GetSingleton().GetActorData(actor);
-		if (!transient) {
-			return;
-		}
 		if (condition == Triggers[0] && transient->ThighAnimStage <= 1.0) {
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[0]);
-			transient->ThighAnimStage = 2.0;
 			return;
 		}
 		if (condition == Triggers[1] && transient->ThighAnimStage == 2.0) {
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[1]);
-			transient->ThighAnimStage = 2.0;
 			return;
 		}
 		if (condition == Triggers[2] && transient->ThighAnimStage >= 2.0) {
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[2]);
-			transient->ThighAnimStage = 0.0;
 			return;
 		}
         if (condition == Triggers[3]) {

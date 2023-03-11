@@ -33,7 +33,7 @@ namespace {
 						transient->hhmult = 0.0;
 						return 0.0;
 					}
-					transient->hhmult -= 0.0025 * animspeed;
+					transient->hhmult -= 0.0030 * animspeed;
 					log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
 					return hhmult;
 				} 
@@ -42,7 +42,7 @@ namespace {
 						transient->hhmult = 1.0;
 						return 1.0;
 					}
-					transient->hhmult += 0.0025 * animspeed;
+					transient->hhmult += 0.0050 * animspeed;
 					log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
 					return hhmult;
 				}
