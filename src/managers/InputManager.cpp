@@ -103,7 +103,7 @@ namespace Gts {
 				}
 
 				if (key == 0x38 && buttonEvent->HeldDuration() >= 2.0) { //Alt
-					ThighCrush.ApplyThighCrush("ThighLoopEnter");
+					ThighCrush.ApplyThighCrush(player, "ThighLoopEnter");
 				}
 
 				if (key == 0x1d && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) { // Left CTRL
@@ -157,10 +157,10 @@ namespace Gts {
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x0 && buttonEvent->HeldDuration() <= 0.025) {
-					ThighCrush.ManageAnimation("ThighLoopAttack");
+					ThighCrush.ApplyThighCrush(player, "ThighLoopAttack");
 				}
 				if (key == 0x01 && buttonEvent->HeldDuration() <= 0.025) {
-					ThighCrush.ManageAnimation("ThighLoopExit");
+					ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
 				}
 			}
 		}
