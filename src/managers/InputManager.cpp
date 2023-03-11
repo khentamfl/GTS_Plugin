@@ -200,9 +200,9 @@ namespace Gts {
 		if (C_Pressed) {
 			ThighCrush.AdjustAnimSpeed(player, -0.0065);
 		}
-		if (LMB_Pressed) {
+		if (LMB_Pressed && !RMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack");
-		} if (RMB_Pressed) {
+		} if (RMB_Pressed && !LMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
 		}
 		if (LMB_Pressed && RMB_Pressed) {
