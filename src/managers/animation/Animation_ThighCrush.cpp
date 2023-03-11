@@ -114,11 +114,11 @@ namespace Gts {
 			} if (tag == Anim_ThighCrush[5]) {
 				transient->legsspreading = 0.6;
 			} if (tag == Anim_ThighCrush[6]) {
-				transient->AllowEdit = true;
+				transient->Allowspeededit = true;
 				transient->legsspreading = 0.0;
 				transient->legsclosing = 3.0;
 			} if (tag == Anim_ThighCrush[7]) {
-				transient->AllowEdit = false;
+				transient->Allowspeededit = false;
 				transient->animspeedbonus = 1.0;
 				transient->legsclosing = 1.5;
 			} if (tag == Anim_ThighCrush[8]) {
