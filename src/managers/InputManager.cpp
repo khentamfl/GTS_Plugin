@@ -39,12 +39,14 @@ namespace Gts {
 		bool V_Pressed = false;
 		bool F_Pressed = false;
 		bool Q_Pressed = false;
+		bool Space_Pressed = false;
 
 		bool ArrowUp = false;
 		bool ArrowDown = false;
 		auto player = PlayerCharacter::GetSingleton();
 		auto caster = player;
 		auto& VoreManager = Vore::GetSingleton();
+		auto& Animation = AnimationManager::GetSingleton();
 		float size = get_visual_scale(player);
 
 		if (!player) {
@@ -135,23 +137,21 @@ namespace Gts {
 					}*/
 				} else if (key == 0x21) {
 					F_Pressed = true;
-				/*for (auto otherActor: find_actors()) {
+					/*for (auto otherActor: find_actors()) {
 						AnimationManager::GetSingleton().GrabActor(player, otherActor, "NPC L Finger02 [LF02]");
 					}*/
 				} else if (key == 0x10) {
 					Q_Pressed = true;
+				} else if (key == 0x39) {
+					Space_Pressed = true;
 				}
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x0 && buttonEvent->HeldDuration() <= 0.025) {
-					//player->NotifyAnimationGraph("GiantessModStompNormal");
-					log::info("Attacking Left"); 
-					// Attack Right
+					Animation.ManageAnimation("ThighLoopAttack")
 				}
 				if (key == 0x01 && buttonEvent->HeldDuration() <= 0.025) {
-					//player->NotifyAnimationGraph("GiantessModStompNormal");
-					log::info("Attacking Right");
-					// Do attack left
+					Animation.ManageAnimation("ThighLoopExit")
 				}
 			}
 		}
@@ -179,6 +179,12 @@ namespace Gts {
 		if (ShiftPressed && Q_Pressed) {
 			player->NotifyAnimationGraph("GtsModStompAnimLeft");
 		}
+
+		if (Space_Pressed && buttonEvent->HeldDuration() >= 2.0) {
+			Animation.ManageAnimation("ThighLoopEnter");
+		}
+
+
 		auto& Camera = CameraManager::GetSingleton();
 		if (AltPressed == false && RightArrow == true && LeftArrow == true) {
 			Camera.ResetLeftRight();

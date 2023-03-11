@@ -22,6 +22,12 @@ using namespace std;
 
 namespace { 
 
+	const std::vector<std::string_view> Behavior_ThighCrush = {
+		"GTSBeh_TriggerSitdown",   // [0]
+		"GTSBeh_StartThighCrush",  // [1]
+		"GTSBeh_LeaveSitdown",     // [2]
+	};
+
 	const std::vector<std::string_view> Anim_Stomp = {
 		"GTSstompimpactR", 			// [0] stomp impacts, strongest effect
  		"GTSstompimpactL",          // [1]
@@ -36,15 +42,17 @@ namespace {
 	const std::vector<std::string_view> Anim_ThighCrush = {
 		"GTStosit", 				// [0] Start air rumble and camera shake
 		"GTSsitloopenter", 			// [1] Sit down completed
-		"GTSsitloopstart", 			// [2] Start to spread legs, call air rumble and camera shake. Enable feet damage and knockdown.
+		"GTSsitloopstart", 			// [2] enter sit crush loop
  		"GTSsitloopend", 			// [3] unused
-		"GTSsitcrushstart",			// [4] Start crush loop: strong air rumble and camera shake. Enable strong feet damage and knockdown
-		"GTSsitcrushend", 			// [5] end crush loop
-		"GTSsitloopexit", 			// [6] stand up, small air rumble and camera shake
-		"GTSstandR", 				// [7] feet collides with ground when standing up
-		"GTSstandL",                // [8]
-		"GTSstandRS",               // [9] Silent impact of right feet
-		"GTStoexit", 				// [10] Leave animation, disable air rumble and such
+		"GTSsitcrushlight_start",	// [4] Start Spreading legs
+		"GTSsitcrushlight_end", 	// [5] Legs fully spread
+		"GTSsitcrushheavy_start",	// [6] Start Closing legs together
+		"GTSsitcrushheavy_end", 	// [7] Legs fully closed
+		"GTSsitloopexit", 			// [8] stand up, small air rumble and camera shake
+		"GTSstandR", 				// [9] feet collides with ground when standing up
+		"GTSstandL",                // [10]
+		"GTSstandRS",               // [11] Silent impact of right feet
+		"GTStoexit", 				// [12] Leave animation, disable air rumble and such
 	};
 
 	const std::vector<std::string_view> Anim_Vore = {
@@ -106,20 +114,22 @@ namespace {
 		float volume = 0.0;	
 		static Timer timer = Timer(0.40);
 		if (transient) {
-			//if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
+			if (transient->legsspreading > = 1.0 || transient->legsclosing > 1.0) {
 			for (auto nodes: LegRumbleNodes) {
 				auto bone = find_node(caster, nodes);
 				if (bone) {
 					NiAVObject* attach = bone;
 					if (attach) {
+						float modifier = transient->legsspreading + transient->legsclosing + transient->rumblemult;
 						volume = (15 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
-						ApplyShakeAtNode(caster, receiver, 0.4, attach->world.translate);
-						//volume *= transient->legsspreading + transient->legsclosing;
+						ApplyShakeAtNode(caster, receiver, 0.4 * modifier, attach->world.translate);
+						volume *= modifier;
 					}
 				}
 				if (timer.ShouldRunFrame()) {
 					Runtime::PlaySoundAtNode("RumbleWalkSound", caster, volume, 1.0, nodes);
-				}	
+					}	
+				}
 			}
 		}
 	}
@@ -139,7 +149,7 @@ namespace Gts {
 	void AnimationManager::Update() {
 		auto PC = PlayerCharacter::GetSingleton();
 		AdjustFallBehavior(PC);
-		//ApplyRumbleSounds(PC, PC);
+		ApplyRumbleSounds(PC, PC);
 	}
 	
 
@@ -157,20 +167,44 @@ namespace Gts {
             }
         }
 		if (tag == Anim_Compatibility[0]) {
-			//Actors[0] = actor; // caster
 			log::info("GTScrush_caster");
 		}
 		if (tag == Anim_Compatibility[1]) {
-			log::info("GTScrush_victim, Trying to crush: {}", actor->GetDisplayFullName());
 			float giantscale = get_visual_scale(PC);
 			float tinyscale = get_visual_scale(actor);
 			float sizedifference = giantscale/tinyscale;
 			if (sizedifference >= 0.0) { 
 				CrushManager::GetSingleton().Crush(PC, actor);
 			}
-			
 		}
-		log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
+		if (tag == Anim_ThighCrush[0]) {
+			transient->rumblemult = 0.7;
+		} if (tag == Anim_ThighCrush[1]) {
+			transient->rumblemult = 0.3;
+			transient->disablehh = true;
+		} if (tag == Anim_ThighCrush[2]) {
+			transient->rumblemult = 0.4;
+		} if (tag == Anim_ThighCrush[4]) {
+			transient->rumblemult = 0.0;
+			transient->legsspreading = 1.0;
+		} if (tag == Anim_ThighCrush[5]) {
+			transient->legsspreading = 0.6;
+		} if (tag == Anim_ThighCrush[6]) {
+			transient->legsspreading = 0.0;
+			transient->legsclosing = 2.0;
+		} if (tag == Anim_ThighCrush[7]) {
+			transient->legsclosing = 1.0;
+		} if (tag == Anim_ThighCrush[8]) {
+			transient->disablehh = false;
+			transient->legsclosing = 0.0;
+			transient->rumblemult = 0.5;
+		} if (tag == Anim_ThighCrush[9] || Anim_ThighCrush[10] || Anim_ThighCrush[11]) {
+			transient->rumblemult = 0.2;
+			Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
+		} if (tag == Anim_ThighCrush[12]) {
+			transient->rumblemult = 0.0;
+		}
+		//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
     }
 
 	void AnimationManager::GrabActor(Actor* giant, Actor* tiny, std::string_view findbone) {
@@ -216,6 +250,32 @@ namespace Gts {
 				log::info("{} OutVelicty = {}, Initial Vel: {}, Vel Total = {}", tiny->GetDisplayFullName(), Vector2Str(charCont->outVelocity), Vector2Str(charCont->initialVelocity), Vector2Str(velocity));
 			//}
 			}
+		}
+	}
+
+	void AnimationManager::ManageAnimation(std::string_view condition) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!player) {
+			return;
+		}
+		auto transient = Transient::GetSingleton().GetActorData(player);
+		if (!transient) {
+			return;
+		}
+		if (condition == "ThighLoopEnter" && transient->ThighAnimStage < 1.0) {
+			PlayAnimation(player, Behavior_ThighCrush[0]);
+			transient->ThighAnimStage = 2.0;
+			return;
+		}
+		if (condition == "ThighLoopAttack" && transient->ThighAnimStage == 2.0) {
+			PlayAnimation(player, Behavior_ThighCrush[1]);
+			transient->ThighAnimStage = 2.0;
+			return;
+		}
+		if (condition == "ThighLoopExit" && transient->ThighAnimStage == 2.0) {
+			PlayAnimation(player, Behavior_ThighCrush[2]);
+			transient->ThighAnimStage = 0.0;
+			return;
 		}
 	}
 }

@@ -20,9 +20,14 @@ namespace Gts {
 		float carryweight_boost;
 		float basehp;
 		float hhmult;
+
+		float rumblemult;
 		float legsclosing;
 		float legsspreading;
+
+		float ThighAnimStage;
 		bool is_teammate;
+		bool disablehh;
 	};
 
 	class Transient : public EventListener {

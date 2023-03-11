@@ -26,10 +26,10 @@ namespace {
 			if (transient) {
 				auto persistent = Persistent::GetSingleton().GetData(actor);
 				if (persistent) {
-					bool hhbool;
+					bool hhbool = transient->disablehh;
 					float hhmult = transient->hhmult;
 					float animspeed = persistent->anim_speed;
-					actor->GetGraphVariableBool("GtsDisableHeels", hhbool);
+					//actor->GetGraphVariableBool("GtsDisableHeels", hhbool);
 					if (hhbool) {
 						if (hhbool == true) { // WHen bool is true, start to decrease value
 							if (hhmult <= 0.0) {
