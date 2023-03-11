@@ -35,6 +35,9 @@ namespace {
 	const float UNDERFOOT_POWER = 0.60;
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
+		if (tiny->IsDead()) {
+			return;
+		}
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny);

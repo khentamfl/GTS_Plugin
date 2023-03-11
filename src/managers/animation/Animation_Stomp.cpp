@@ -41,13 +41,13 @@ namespace {
 		"GTS_Next",                 // [8] 
 	};
 
-	void ShakeAndSound(Actor* caster, Actor* receiver, float volume, const std::string_view& node) { // Applies camera shake and sounds
+	void ShakeAndSound(Actor* caster, Actor* receiver, float volume, float shake, const std::string_view& node) { // Applies camera shake and sounds
 		Runtime::PlaySoundAtNode("lFootstepL", caster, volume, 1.0, node);
 		auto bone = find_node(caster, node);
 		if (bone) {
 			NiAVObject* attach = bone;
 			if (attach) {
-				ApplyShakeAtNode(caster, receiver, volume * 4, attach->world.translate);
+				ApplyShakeAtNode(caster, receiver, shake, attach->world.translate);
 			}
 		}
 	}
@@ -71,14 +71,14 @@ namespace Gts {
 		float volume = scale * 0.20;
         if (actor->formID == 0x14) {
             if (tag == Anim_Stomp[0]) {
-				ShakeAndSound(actor, PC, volume, "NPC R Foot [Rft ]");
+				ShakeAndSound(actor, PC, volume, volume * 5, "NPC R Foot [Rft ]");
 			} if (tag == Anim_Stomp[1]) {
-				ShakeAndSound(actor, PC, volume, "NPC L Foot [Lft ]");
+				ShakeAndSound(actor, PC, volume, volume * 5, "NPC L Foot [Lft ]");
             } if (tag == Anim_Stomp[2]) {
 				transient->rumblemult = 0.25;
-				ShakeAndSound(actor, PC, volume * 0.5, "NPC R Foot [Rft ]");
+				ShakeAndSound(actor, PC, volume * 0.5, volume * 2.5, "NPC R Foot [Rft ]");
             } if (tag == Anim_Stomp[3]) {
-				ShakeAndSound(actor, PC, volume * 0.5, "NPC L Foot [Lft ]");
+				ShakeAndSound(actor, PC, volume * 0.5, volume * 2.5, "NPC L Foot [Lft ]");
 			} if (tag == Anim_Stomp[4] || tag == Anim_Stomp[5]) {
 				transient->rumblemult = 0.0;
 			} if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7] || tag == Anim_Stomp[8]) {

@@ -81,6 +81,19 @@ namespace Gts {
 		return "ThighCrush";
 	}
 
+	void ThighCrush::AdjustAnimSpeed(Actor* actor, float bonus) {
+		auto transient = Transient::GetSingleton().GetActorData(actor);
+		if (transient) {
+			bool AllowEdit = transient->Allowspeededit;
+			if (AllowEdit) {
+				transient->animspeedbonus += bonus;
+			} else if (!AllowEdit){
+				transient->animspeedbonus = 1.0;
+			}
+			ConsoleLog::GetSingleton()->Print("Anim Speed of %s is %s", actor->GetDisplayFullName(), transient->animspeedbonus);
+		}
+	}
+
     void ThighCrush::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
         auto PC = PlayerCharacter::GetSingleton();
         auto transient = Transient::GetSingleton().GetActorData(actor);
@@ -101,9 +114,12 @@ namespace Gts {
 			} if (tag == Anim_ThighCrush[5]) {
 				transient->legsspreading = 0.6;
 			} if (tag == Anim_ThighCrush[6]) {
+				transient->AllowEdit = true;
 				transient->legsspreading = 0.0;
 				transient->legsclosing = 3.0;
 			} if (tag == Anim_ThighCrush[7]) {
+				transient->AllowEdit = false;
+				transient->animspeedbonus = 1.0;
 				transient->legsclosing = 1.5;
 			} if (tag == Anim_ThighCrush[8]) {
 				transient->disablehh = false;

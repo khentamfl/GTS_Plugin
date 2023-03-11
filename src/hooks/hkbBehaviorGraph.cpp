@@ -22,10 +22,15 @@ namespace Hooks
 				for (auto& graph : animGraphManager->graphs) {
 					if (graph) {
 						if (a_this == graph->behaviorGraph) {
+							float bonus = 1.0;
 							auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
+							auto transient = Transient::GetSingleton().GetActorData(caster);
+							if (transient) {
+								bonus = transient->animspeedbonus;
+							}
 							if (saved_data) {
 								if (saved_data->anim_speed > 0.0) {
-									anim_speed = saved_data->anim_speed;
+									anim_speed = saved_data->anim_speed * bonus;
 								}
 							}
 						}

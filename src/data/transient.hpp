@@ -26,8 +26,10 @@ namespace Gts {
 		float legsspreading;
 
 		float ThighAnimStage;
+		float animspeedbonus;
 		bool is_teammate;
 		bool disablehh;
+		bool Allowspeededit;
 	};
 
 	class Transient : public EventListener {

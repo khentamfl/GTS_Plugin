@@ -42,11 +42,14 @@ namespace Gts {
 		bool F_Pressed = false;
 		bool Q_Pressed = false;
 		bool Space_Pressed = false;
+		bool LMB_Pressed = false;
+		bool RMB_Pressed = false;
 
 		bool ArrowUp = false;
 		bool ArrowDown = false;
 		auto player = PlayerCharacter::GetSingleton();
 		auto caster = player;
+		auto transient = Transient::GetSingleton().GetActorData(player);
 		auto& VoreManager = Vore::GetSingleton();
 		auto& Animation = AnimationManager::GetSingleton();
 		auto& ThighCrush = ThighCrush::GetSingleton();
@@ -124,6 +127,7 @@ namespace Gts {
 					// log::info("ALT");
 				} else if (key == 0x1D) {
 					CtrlPressed = true;
+					
 				} else if (key == 0xCD) {
 					// log::info("RIGHT");
 					RightArrow = true;
@@ -154,14 +158,17 @@ namespace Gts {
 					Q_Pressed = true;
 				} else if (key == 0x39) {
 					Space_Pressed = true;
-				}
+					ThighCrush::
+				} 
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x0 && buttonEvent->HeldDuration() <= 0.025) {
 					ThighCrush.ApplyThighCrush(player, "ThighLoopAttack");
+					LMB_Pressed = true;
 				}
 				if (key == 0x01 && buttonEvent->HeldDuration() <= 0.025) {
 					ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
+					RMB_Pressed = true;
 				}
 			}
 		}
@@ -203,8 +210,13 @@ namespace Gts {
 		if (AltPressed == true && LeftArrow == true) {
 			Camera.AdjustLeftRight(-(0.6 + (size * 0.05 - 0.05)));
 		} // Left or Right end
-
-
+		
+		if (CtrlPressed) {
+			ThighCrush::AdjustAnimSpeed(player, -0.005);
+		}
+		if (LMB_Pressed && RMB_Pressed) {
+			ThighCrush::AdjustAnimSpeed(player, 0.005);
+		}
 		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
 			Camera.ResetUpDown();
 		}
