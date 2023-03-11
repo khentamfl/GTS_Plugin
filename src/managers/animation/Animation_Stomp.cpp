@@ -31,7 +31,7 @@ using namespace std;
  		"GTSstompstartR", 			// [4] For starting loop of camera shake and air rumble sounds
  		"GTSstompstartL",           // [5]
  		"GTSstompendR", 			// [6] disable loop of camera shake and air rumble sounds
- 		"GTSstompendL",             // [7]
+ 		"GTSstompendL",             // [7] 
 	};
 
 
@@ -54,16 +54,22 @@ namespace Gts {
             if (tag == Anim_Stomp[0] || tag == Anim_Stomp[1]) {
 				//Call UnderFoot event here somehow with x scale bonus
 				Runtime::PlaySound("lFootstepL", actor, volume, 1.0);
-            } 
-			if (tag == Anim_Stomp[2] || tag == Anim_Stomp[3]) {
+            } if (tag == Anim_Stomp[2] || tag == Anim_Stomp[3]) {
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
-            }
+            } if (tag == Anim_Stomp[4] || tag == Anim_Stomp[5]) {
+				transient->rumblemult = 0.25;
+			} if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7]) {
+				transient->rumblemult = 0.0;
+			}
         }
 	}
 
 	void Stomp::ApplyStomp(Actor* actor, std::string_view condition) {
 		if (condition == Behaviors[0])
-			actor->NotifyAnimationGraph
+			actor->NotifyAnimationGraph(Behaviors[0]);
+		else if (condition == Behaviors[1]) {
+			actor->NotifyAnimationGraph(Behaviors[1]);
+		}	
 	}
 }
 
