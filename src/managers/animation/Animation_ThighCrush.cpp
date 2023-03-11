@@ -90,7 +90,7 @@ namespace Gts {
 			} else if (!AllowEdit){
 				transient->animspeedbonus = 1.0;
 			}
-			ConsoleLog::GetSingleton()->Print("Anim Speed of %s is %s", actor->GetDisplayFullName(), transient->animspeedbonus);
+			ConsoleLog::GetSingleton()->Print("Anim Speed of %s is %g", actor->GetDisplayFullName(), transient->animspeedbonus);
 		}
 	}
 
