@@ -180,7 +180,7 @@ namespace Gts {
 		if (ShiftPressed && Q_Pressed) {
 			player->NotifyAnimationGraph("GtsModStompAnimLeft");
 		}
-		if (ShiftPressed && AltPressed) {
+		if (AltPressed) {
 			Animation.ManageAnimation("ThighLoopEnter");
 		}
 
