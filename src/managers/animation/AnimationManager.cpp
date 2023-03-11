@@ -156,9 +156,9 @@ namespace Gts {
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
 		auto PC = PlayerCharacter::GetSingleton();
 		auto transient = Transient::GetSingleton().GetActorData(PC);
+		auto scale = get_visual_scale(actor);
+		float volume = scale * 0.20;
         if (actor->formID == 0x14) {
-			auto scale = get_visual_scale(actor);
-			float volume = scale * 0.20;
             if (tag == Anim_Stomp[0] || tag == Anim_Stomp[1] || tag == MCO[0] || tag == MCO[1]) {
 				//Call UnderFoot event here somehow with x scale bonus
 				Runtime::PlaySound("lFootstepL", actor, volume, 1.0);
