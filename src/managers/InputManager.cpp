@@ -158,16 +158,13 @@ namespace Gts {
 					Q_Pressed = true;
 				} else if (key == 0x39) {
 					Space_Pressed = true;
-					ThighCrush::
 				} 
-			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
+			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
 				auto key = buttonEvent->GetIDCode();
-				if (key == 0x0 && buttonEvent->HeldDuration() <= 0.025) {
-					ThighCrush.ApplyThighCrush(player, "ThighLoopAttack");
+				if (key == 0x0) {
 					LMB_Pressed = true;
 				}
-				if (key == 0x01 && buttonEvent->HeldDuration() <= 0.025) {
-					ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
+				if (key == 0x01) {
 					RMB_Pressed = true;
 				}
 			}
@@ -212,10 +209,16 @@ namespace Gts {
 		} // Left or Right end
 		
 		if (CtrlPressed) {
-			ThighCrush::AdjustAnimSpeed(player, -0.005);
+			ThighCrush.AdjustAnimSpeed(player, -0.005);
+		}
+
+		if (LMB_Pressed) {
+			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack");
+		} if (RMB_Pressed) {
+			ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
 		}
 		if (LMB_Pressed && RMB_Pressed) {
-			ThighCrush::AdjustAnimSpeed(player, 0.005);
+			ThighCrush.AdjustAnimSpeed(player, 0.005);
 		}
 		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
 			Camera.ResetUpDown();
