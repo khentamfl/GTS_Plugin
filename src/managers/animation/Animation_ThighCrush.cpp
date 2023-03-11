@@ -115,6 +115,7 @@ namespace Gts {
 		if (!transient) {
 			return;
 		}
+        log::info("Condition:{}, Thigh Stage: {}", condition, transient->ThighAnimStage);
 		if (condition == Triggers[0] && transient->ThighAnimStage <= 1.0) {
             log::info("Trigger = 0");
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[0]);

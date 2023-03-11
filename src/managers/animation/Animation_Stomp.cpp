@@ -19,12 +19,12 @@ using namespace Gts;
 using namespace std;
 
 namespace { 
-	const std::vector<std::string_view> Triggers = {
-		"GtsModStompAnimRight",
-		"GtsModStompAnimLeft",
+	const std::vector<std::string_view> Stomp_Triggers = {
+		"StompRight",
+		"StompLeft",
 	};
 
-	const std::vector<std::string_view> Behaviors = {
+	const std::vector<std::string_view> Stomp_Behaviors = {
 		"GtsModStompAnimRight",     // [0]
 		"GtsModStompAnimLeft",      // [1]
 	};
@@ -62,9 +62,10 @@ namespace Gts {
 				//Call UnderFoot event here somehow with x scale bonus
 				Runtime::PlaySound("lFootstepL", actor, volume, 1.0);
             } if (tag == Anim_Stomp[2] || tag == Anim_Stomp[3]) {
+				transient->rumblemult = 0.25;
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
             } if (tag == Anim_Stomp[4] || tag == Anim_Stomp[5]) {
-				transient->rumblemult = 0.25;
+				transient->rumblemult = 0.0;
 				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
 			} if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7]) {
 				transient->rumblemult = 0.0;
@@ -74,11 +75,12 @@ namespace Gts {
 	}
 
 	void Stomp::ApplyStomp(Actor* actor, std::string_view condition) {
-		if (condition == Triggers[0])
-			actor->NotifyAnimationGraph(Behaviors[0]);
+		if (condition == Stomp_Triggers[0]) {
+			actor->NotifyAnimationGraph(Stomp_Behaviors[0]);
 			return;
-		if (condition == Triggers[1]) {
-			actor->NotifyAnimationGraph(Behaviors[1]);
+		}
+		if (condition == Stomp_Triggers[1]) {
+			actor->NotifyAnimationGraph(Stomp_Behaviors[1]);
 			return;
 		}	
 	}
