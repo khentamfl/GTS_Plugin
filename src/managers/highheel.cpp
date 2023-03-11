@@ -88,7 +88,7 @@ namespace Gts {
 			return;
 		} 
 		bool GTSBusy; 
-		if (Persistent::GetSingleton().highheel_furniture == false && actor->GetGraphVariableBool("GTS_isBusy", GTSBusy) && actor->GetOccupiedFurniture()) {
+		if (Persistent::GetSingleton().highheel_furniture == false && !actor->GetGraphVariableBool("GTS_isBusy", GTSBusy) && actor->GetOccupiedFurniture()) {
 			return;
 		}
 		NiPoint3 new_hh;
