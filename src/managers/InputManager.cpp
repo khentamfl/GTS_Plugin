@@ -90,6 +90,10 @@ namespace Gts {
 						}
 					}
 				}
+				if (key == 0x39 && buttonEvent->HeldDuration() >= 2.0) {
+					Animation.ManageAnimation("ThighLoopEnter");
+				}
+
 				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && Runtime::HasPerk(caster, "SizeReserve")) { //F
 
 					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
@@ -148,10 +152,10 @@ namespace Gts {
 			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse && this->timer.ShouldRun()) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x0 && buttonEvent->HeldDuration() <= 0.025) {
-					Animation.ManageAnimation("ThighLoopAttack")
+					Animation.ManageAnimation("ThighLoopAttack");
 				}
 				if (key == 0x01 && buttonEvent->HeldDuration() <= 0.025) {
-					Animation.ManageAnimation("ThighLoopExit")
+					Animation.ManageAnimation("ThighLoopExit");
 				}
 			}
 		}
@@ -179,11 +183,6 @@ namespace Gts {
 		if (ShiftPressed && Q_Pressed) {
 			player->NotifyAnimationGraph("GtsModStompAnimLeft");
 		}
-
-		if (Space_Pressed && buttonEvent->HeldDuration() >= 2.0) {
-			Animation.ManageAnimation("ThighLoopEnter");
-		}
-
 
 		auto& Camera = CameraManager::GetSingleton();
 		if (AltPressed == false && RightArrow == true && LeftArrow == true) {
