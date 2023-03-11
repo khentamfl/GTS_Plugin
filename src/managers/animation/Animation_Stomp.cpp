@@ -72,19 +72,20 @@ namespace Gts {
 			float speed = transient->animspeedbonus;
 			float volume = scale * 0.20 * (speed * speed);
        		 if (tag == Anim_Stomp[0]) {
-				ShakeAndSound(actor, PC, volume, volume * 5, "NPC R Foot [Rft ]");
+				ShakeAndSound(actor, PC, volume, volume * 6, "NPC R Foot [Rft ]");
 			} if (tag == Anim_Stomp[1]) {
-				ShakeAndSound(actor, PC, volume, volume * 5, "NPC L Foot [Lft ]");
+				ShakeAndSound(actor, PC, volume, volume * 6, "NPC L Foot [Lft ]");
         	} if (tag == Anim_Stomp[2]) {
 				transient->rumblemult = 0.25;
-				ShakeAndSound(actor, PC, volume * 0.5, volume * 2.5, "NPC R Foot [Rft ]");
+				ShakeAndSound(actor, PC, volume * 0.5, volume * 3, "NPC R Foot [Rft ]");
          	} if (tag == Anim_Stomp[3]) {
-				ShakeAndSound(actor, PC, volume * 0.5, volume * 2.5, "NPC L Foot [Lft ]");
+				ShakeAndSound(actor, PC, volume * 0.5, volume * 3, "NPC L Foot [Lft ]");
 			} if (tag == Anim_Stomp[4] || tag == Anim_Stomp[5]) {
 				transient->rumblemult = 0.35;
 				transient->Allowspeededit = true;
 			} if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7]) {
 				transient->Allowspeededit = false;
+				transient->animspeedbonus = 1.0;
 			} if (tag == Anim_Stomp[8]) {
 				transient->rumblemult = 0.0;
 			}
