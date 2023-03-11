@@ -74,6 +74,9 @@ namespace Gts {
 	}
 
 	void Stomp::ApplyStomp(Actor* actor, std::string_view condition) {
+		if (!actor) {
+			return;
+		}
 		if (condition == Stomp_Triggers[0]) {
 			actor->NotifyAnimationGraph(Stomp_Behaviors[0]);
 			return;

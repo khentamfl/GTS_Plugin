@@ -184,10 +184,10 @@ namespace Gts {
 			this->voreBlock = false;
 		}
 		if (ShiftPressed && E_Pressed) {
-			Stomp.ApplyStomp(player, "GtsModStompAnimRight");
+			Stomp.ApplyStomp(player, "StompRight");
 		} 
 		if (ShiftPressed && Q_Pressed) {
-			Stomp.ApplyStomp(player, "GtsModStompAnimLeft");
+			Stomp.ApplyStomp(player, "StompLeft");
 		}
 		/*if (AltPressed) {
 			Animation.ManageAnimation("ThighLoopEnter");

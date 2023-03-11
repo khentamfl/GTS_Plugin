@@ -108,7 +108,7 @@ namespace Gts {
     }
 
     void ThighCrush::ApplyThighCrush(Actor* actor, std::string_view condition) {
-		if (actor) {
+		if (!actor) {
 			return;
 		} 
         auto transient = Transient::GetSingleton().GetActorData(actor);
