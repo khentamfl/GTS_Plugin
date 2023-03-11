@@ -20,14 +20,21 @@ using namespace RE;
 using namespace Gts;
 using namespace std;
 
-const std::vector<std::string_view> BehaviorEvents = {
-    "ThighLoopEnter",              // [0] Enter the loop
-    "ThighLoopAttack",             // [1] Do leg attack
-    "ThighLoopExit",               // [2] Exit animation
-    "ThighAnimationFull",          // [3] Play Full Animation without loops. Optional
+const std::vector<std::string_view> Triggers = { // Triggers 
+    "ThighLoopEnter",               // [0]
+    "ThighLoopAttack",              // [1]
+    "ThighLoopExit",                // [2]
+    "ThighLoopFull",                // [3] Play full anim
+}
+
+const std::vector<std::string_view> Behavior_ThighCrush = { // Behaviors
+    "GTSBeh_TriggerSitdown",        // [0] Enter sit loop
+	"GTSBeh_StartThighCrush",       // [1] Trigger thigh crush
+	"GTSBeh_LeaveSitdown",          // [2] Exit animation
+    "GTSBeh_ThighAnimationFull",    // [3] Play Full Animation without loops. Optional.
 };
 
-const std::vector<std::string_view> Anim_ThighCrush = {
+const std::vector<std::string_view> Anim_ThighCrush = { // Events
 		"GTStosit", 				// [0] Start air rumble and camera shake
 		"GTSsitloopenter", 			// [1] Sit down completed
 		"GTSsitloopstart", 			// [2] enter sit crush loop
@@ -78,8 +85,9 @@ namespace Gts {
 				transient->legsclosing = 0.0;
 				transient->rumblemult = 0.5;
 			} if (tag == Anim_ThighCrush[9] || tag == Anim_ThighCrush[10] || tag == Anim_ThighCrush[11]) {
+                float scale = get_visual_scale(actor);
 				transient->rumblemult = 0.2;
-				Runtime::PlaySound("lFootstepL", actor, volume * 0.5, 1.0);
+				Runtime::PlaySound("lFootstepL", actor, scale * 0.20, 1.0);
 			} if (tag == Anim_ThighCrush[12]) {
 				transient->rumblemult = 0.0;
 			}
@@ -94,22 +102,22 @@ namespace Gts {
 		if (!transient) {
 			return;
 		}
-		if (condition == BehaviorEvents[0] && transient->ThighAnimStage <= 1.0) {
+		if (condition == Triggers[0] && transient->ThighAnimStage <= 1.0) {
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[0]);
 			transient->ThighAnimStage = 2.0;
 			return;
 		}
-		if (condition == BehaviorEvents[1] && transient->ThighAnimStage == 2.0) {
+		if (condition == Triggers[1] && transient->ThighAnimStage == 2.0) {
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[1]);
 			transient->ThighAnimStage = 2.0;
 			return;
 		}
-		if (condition == BehaviorEvents[2] && transient->ThighAnimStage >= 2.0) {
+		if (condition == Triggers[2] && transient->ThighAnimStage >= 2.0) {
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[2]);
 			transient->ThighAnimStage = 0.0;
 			return;
 		}
-        if (condition == BehaviorEvents[3]) {
+        if (condition == Triggers[3]) {
             actor->NotifyAnimationGraph(Behavior_ThighCrush[3]);
         }
     }
