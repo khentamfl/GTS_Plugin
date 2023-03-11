@@ -110,6 +110,10 @@ namespace Gts {
     void ThighCrush::ApplyThighCrush(Actor* actor, std::string_view condition) {
 		if (actor) {
 			return;
+		} 
+        auto transient = Transient::GetSingleton().GetActorData(actor);
+		if (!transient) {
+			return;
 		}
 		if (condition == Triggers[0] && transient->ThighAnimStage <= 1.0) {
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[0]);
