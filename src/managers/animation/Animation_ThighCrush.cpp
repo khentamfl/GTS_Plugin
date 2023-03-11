@@ -81,22 +81,6 @@ namespace Gts {
 		return "ThighCrush";
 	}
 
-	void ThighCrush::AdjustAnimSpeed(Actor* actor, float bonus) {
-		auto transient = Transient::GetSingleton().GetActorData(actor);
-		if (transient) {
-			bool AllowEdit = transient->Allowspeededit;
-			if (AllowEdit) {
-				transient->animspeedbonus += bonus;
-				if (transient->animspeedbonus <= 0.15) {
-					transient->animspeedbonus = 0.15;
-				}
-			} else if (!AllowEdit){
-				transient->animspeedbonus = 1.0;
-			}
-			ConsoleLog::GetSingleton()->Print("Anim Speed of %s is %g", actor->GetDisplayFullName(), transient->animspeedbonus);
-		}
-	}
-
     void ThighCrush::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
         auto PC = PlayerCharacter::GetSingleton();
         auto transient = Transient::GetSingleton().GetActorData(actor);

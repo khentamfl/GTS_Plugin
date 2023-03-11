@@ -198,13 +198,13 @@ namespace Gts {
 		} // Left or Right end
 		
 		if (LMB_Pressed && !RMB_Pressed) {
-			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack"); // Increase speed and power
-			ThighCrush.AdjustAnimSpeed(player, 0.01);
+			Animation.ApplyThighCrush(player, "ThighLoopAttack"); // Increase speed and power
+			Animation.AdjustAnimSpeed(player, 0.01);
 		} if (RMB_Pressed && !LMB_Pressed) {
-			ThighCrush.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
-			ThighCrush.AdjustAnimSpeed(player, -0.0065);
+			Animation.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
+			Animation.AdjustAnimSpeed(player, -0.0065);
 		} if (RMB_Pressed && LMB_Pressed) {
-			ThighCrush.AdjustAnimSpeed(player, 0.025); // Strongest attack
+			Animation.AdjustAnimSpeed(player, 0.025); // Strongest attack
 		}
 		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
 			Camera.ResetUpDown();

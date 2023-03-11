@@ -67,24 +67,28 @@ namespace Gts {
 	void Stomp::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) { // Manages additional effects such as camera shake
 		auto PC = PlayerCharacter::GetSingleton();
 		auto transient = Transient::GetSingleton().GetActorData(PC);
-		auto scale = get_visual_scale(actor);
-		float volume = scale * 0.20;
-        if (actor->formID == 0x14) {
-            if (tag == Anim_Stomp[0]) {
+		if (transient) {
+			auto scale = get_visual_scale(actor);
+			float speed = transient->animspeedbonus;
+			float volume = scale * 0.20 * (speed * speed);
+       		 if (tag == Anim_Stomp[0]) {
 				ShakeAndSound(actor, PC, volume, volume * 5, "NPC R Foot [Rft ]");
 			} if (tag == Anim_Stomp[1]) {
 				ShakeAndSound(actor, PC, volume, volume * 5, "NPC L Foot [Lft ]");
-            } if (tag == Anim_Stomp[2]) {
+        	} if (tag == Anim_Stomp[2]) {
 				transient->rumblemult = 0.25;
 				ShakeAndSound(actor, PC, volume * 0.5, volume * 2.5, "NPC R Foot [Rft ]");
-            } if (tag == Anim_Stomp[3]) {
+         	} if (tag == Anim_Stomp[3]) {
 				ShakeAndSound(actor, PC, volume * 0.5, volume * 2.5, "NPC L Foot [Lft ]");
 			} if (tag == Anim_Stomp[4] || tag == Anim_Stomp[5]) {
-				transient->rumblemult = 0.0;
-			} if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7] || tag == Anim_Stomp[8]) {
+				transient->rumblemult = 0.35;
+				transient->Allowspeededit = true;
+			} if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7]) {
+				transient->Allowspeededit = false;
+			} if (tag == Anim_Stomp[8]) {
 				transient->rumblemult = 0.0;
 			}
-        }
+		}
 	}
 
 	void Stomp::ApplyStomp(Actor* actor, std::string_view condition) { // Calls Behavior events, triggering animation
