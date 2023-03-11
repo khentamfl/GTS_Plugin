@@ -275,7 +275,7 @@ namespace Gts {
 			transient->ThighAnimStage = 2.0;
 			return;
 		}
-		if (condition == "ThighLoopExit" && transient->ThighAnimStage >= 1.0) {
+		if (condition == "ThighLoopExit" && transient->ThighAnimStage >= 2.0) {
 			PlayAnimation(player, Behavior_ThighCrush[2]);
 			transient->ThighAnimStage = 0.0;
 			return;
