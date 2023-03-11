@@ -21,21 +21,21 @@ using namespace Gts;
 using namespace std;
 
 namespace { 
-    const std::vector<std::string_view> Triggers = { // Triggers 
+    const std::vector<std::string_view> Triggers = { // Triggers Behavior_ThighCrush when matching event is sent
         "ThighLoopEnter",               // [0]
         "ThighLoopAttack",              // [1]
         "ThighLoopExit",                // [2]
         "ThighLoopFull",                // [3] Play full anim
     };
 
-    const std::vector<std::string_view> Behavior_ThighCrush = { // Behaviors
+    const std::vector<std::string_view> Behavior_ThighCrush = { // Behavior triggers
         "GTSBeh_TriggerSitdown",        // [0] Enter sit loop
 	    "GTSBeh_StartThighCrush",       // [1] Trigger thigh crush
 	    "GTSBeh_LeaveSitdown",          // [2] Exit animation
         "GTSBeh_ThighAnimationFull",    // [3] Play Full Animation without loops. Optional.
     };
 
-    const std::vector<std::string_view> Anim_ThighCrush = { // Events
+    const std::vector<std::string_view> Anim_ThighCrush = { // Animation Events
 		"GTStosit", 				    // [0] Start air rumble and camera shake
 		"GTSsitloopenter", 			    // [1] Sit down completed
 		"GTSsitloopstart", 			    // [2] enter sit crush loop
@@ -58,6 +58,17 @@ namespace {
 		}
         transient->ThighAnimStage = number;
     }
+
+    void ShakeAndSound(Actor* caster, Actor* receiver, float volume, const std::string_view& node) { // Applies camera shake and sounds
+		Runtime::PlaySoundAtNode("lFootstepL", actor, volume, 1.0, node);
+		auto bone = find_node(actor, node);
+		if (bone) {
+			NiAVObject* attach = bone;
+			if (attach) {
+				ApplyShakeAtNode(actor, actor, volume * 4, attach->world.translate);
+			}
+		}
+	}
 }
 
 namespace Gts {
@@ -71,8 +82,10 @@ namespace Gts {
 	}
 
     void ThighCrush::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
+        auto PC = PlayerCharacter::GetSingleton();
         auto transient = Transient::GetSingleton().GetActorData(actor);
         if (transient) {
+            float scale = get_visual_scale(actor);
 			if (tag == Anim_ThighCrush[0]) {
 				transient->rumblemult = 0.7;
                 SetThighStage(actor, 2.0);
@@ -96,11 +109,14 @@ namespace Gts {
 				transient->disablehh = false;
 				transient->legsclosing = 0.0;
 				transient->rumblemult = 0.5;
-			} if (tag == Anim_ThighCrush[9] || tag == Anim_ThighCrush[10] || tag == Anim_ThighCrush[11]) {
-                float scale = get_visual_scale(actor);
+			} if (tag == Anim_ThighCrush[9]) {
+                ShakeAndSound(actor, PC, scale * 0.10, "NPC R Foot [Rft ]");
+            } if (tag == Anim_ThighCrush[10]) {
 				transient->rumblemult = 0.2;
-				Runtime::PlaySound("lFootstepL", actor, scale * 0.20, 1.0);
-			} if (tag == Anim_ThighCrush[12]) {
+				ShakeAndSound(actor, PC, scale * 0.10, "NPC L Foot [Lft ]");
+			} if (tag == Anim_ThighCrush[11]) {
+                ShakeAndSound(actor, PC, scale * 0.05, "NPC R Foot [Rft ]");
+            } if (tag == Anim_ThighCrush[12]) {
 				transient->rumblemult = 0.0;
                 SetThighStage(actor, 0.0);
 			}
