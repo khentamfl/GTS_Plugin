@@ -1,3 +1,6 @@
+#include "managers/animation/Animation_ThighCrush.hpp"
+#include "managers/animation/Animation_Stomp.hpp"
+#include "managers/animation/Animation_Grab.hpp"
 #include "hooks/playerCharacter.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
@@ -30,6 +33,9 @@ namespace Hooks
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
 		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 		_SetBaseActorValue = Vtbl5.write_vfunc(0x04, SetBaseActorValue);
+
+		REL::Relocation<std::uintptr_t> AnimVtbl{ RE::VTABLE_PlayerCharacter[2] };
+		_PCAnimEvents = AnimVtbl.write_vfunc(0x1, &PCAnimEvents);
 	}
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
@@ -147,5 +153,14 @@ namespace Hooks
 		float adjust = Runtime::GetFloat("ConversationCameraComp");
 		auto player = PlayerCharacter::GetSingleton()->Get3D();
 		_ProcessTracking(a_this, a_delta, a_obj3D);
+	}
+
+	void Hook_PlayerCharacter::PCAnimEvents(BSTEventSink<BSAnimationGraphEvent>* a_this, BSAnimationGraphEvent& a_event, BSTEventSource<BSAnimationGraphEvent>* a_src) {
+		if (a_event.tag != NULL && a_event.holder != NULL) {
+			AnimationManager::GetSingleton().ActorAnimEvent(a_event.holder, a_event.tag, "None");
+			ThighCrush::GetSingleton().ActorAnimEvent(a_event.holder, a_event.tag, "None");
+			Stomp::GetSingleton().ActorAnimEvent(a_event.holder, a_event.tag, "None");
+		}
+		return _PCAnimEvents(a_this, a_event, a_src);
 	}
 }

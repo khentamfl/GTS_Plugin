@@ -42,6 +42,9 @@ namespace Hooks
 			static void ProcessTracking(PlayerCharacter* a_this, float a_delta, NiAVObject* a_obj3D);
 			static inline REL::Relocation<decltype(ProcessTracking)> _ProcessTracking;
 
+			static void PCAnimEvents(BSTEventSink<BSAnimationGraphEvent>* a_this, BSAnimationGraphEvent& a_event, BSTEventSource<BSAnimationGraphEvent>* a_src);
+			static inline REL::Relocation<decltype(PCAnimEvents)> _PCAnimEvents;
+
 			float protectionticks = 360.0;
 	};
 }
