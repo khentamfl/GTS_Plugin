@@ -5,7 +5,7 @@ using namespace std;
 using namespace SKSE;
 using namespace RE;
 
-namespace Gts {
+/*namespace Gts {
 
     class GrabData {
 		public:
@@ -26,4 +26,4 @@ namespace Gts {
         private:
 			std::unordered_map<Actor*, GrabData> data; 
 	};
-}
+}*/

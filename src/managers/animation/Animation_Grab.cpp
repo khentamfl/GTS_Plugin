@@ -14,12 +14,14 @@
 #include "timer.hpp"
 #include "node.hpp"
 
+#include <random>
+
 using namespace RE;
 using namespace REL;
 using namespace Gts;
 using namespace std; 
 
-namespace Gts {
+/*namespace Gts {
 	Grab& Grab::GetSingleton() noexcept {
 		static Grab instance;
 		return instance;
@@ -83,5 +85,5 @@ namespace Gts {
     GrabData::GrabData(Actor* tiny) :
 		tiny(tiny) {
 	}
-}
+}*/
 
