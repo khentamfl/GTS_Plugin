@@ -64,21 +64,17 @@ namespace Gts {
 
 	void Grab::GrabActor(Actor* tiny) {
         auto& check = Grab::GetSingleton().data;
-        if (!check.tiny[0]) {
-            check.try_emplace(tiny);
-        }
+        check.try_emplace(tiny);
     }
 
     void Grab::CrushActors() {
         auto& check = Grab::GetSingleton().data;
-        if (check.tiny[0]) {
-            auto player = PlayerCharacter::GetSingleton();
-            for (auto victims: check.tiny) {
-                CrushManager::GetSingleton().Crush(player, victims);
-                CrushBonuses(giant, tiny, 0);
-            }
-            check.clear();
+        auto player = PlayerCharacter::GetSingleton();
+        for (auto &[tiny, data]: this->data) {
+            CrushManager::GetSingleton().Crush(player, tiny);
+            CrushBonuses(giant, tiny, 0);
         }
+        check.clear();
     }
 
     void Grab::Clear() {

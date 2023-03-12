@@ -209,6 +209,7 @@ namespace Gts {
 		if (LMB_Pressed && !RMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack"); // Increase speed and power
 			Animation.AdjustAnimSpeed(player, 0.012);
+			Grab::GetSingleton().Clear();
 		} if (RMB_Pressed && !LMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
 			Animation.AdjustAnimSpeed(player, -0.0060);
