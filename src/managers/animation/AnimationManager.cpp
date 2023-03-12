@@ -140,6 +140,9 @@ namespace Gts {
 		auto PC = PlayerCharacter::GetSingleton();
 		auto transient = Transient::GetSingleton().GetActorData(PC);
 		auto scale = get_visual_scale(actor);
+		if (actor->formID == 0x14 || Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
+			log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
+		}
 		float volume = scale * 0.20;
         if (tag == MCO[0] || tag == MCO[1]) {
 			//Call UnderFoot event here somehow with x scale bonus

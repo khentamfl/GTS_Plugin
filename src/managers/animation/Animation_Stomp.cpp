@@ -67,6 +67,9 @@ namespace Gts {
 	void Stomp::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) { // Manages additional effects such as camera shake
 		auto PC = PlayerCharacter::GetSingleton();
 		auto transient = Transient::GetSingleton().GetActorData(PC);
+		if (actor->formID == 0x14 || Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
+			log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
+		}
 		if (transient) {
 			auto scale = get_visual_scale(actor);
 			float speed = transient->animspeedbonus;
