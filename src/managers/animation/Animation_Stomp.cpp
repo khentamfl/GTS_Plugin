@@ -39,6 +39,7 @@ namespace {
  		"GTSStompendR", 			// [6] disable loop of camera shake and air rumble sounds
  		"GTSStompendL",             // [7] 
 		"GTS_Next",                 // [8] 
+		"GTSBEH_Exit",              // [9] Another disable
 	};
 
 	void ShakeAndSound(Actor* caster, Actor* receiver, float volume, float shake, const std::string_view& node) { // Applies camera shake and sounds
@@ -68,7 +69,7 @@ namespace Gts {
 		auto PC = PlayerCharacter::GetSingleton();
 		auto transient = Transient::GetSingleton().GetActorData(PC);
 		if (actor->formID == 0x14 || Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
-			//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
+			log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
 		}
 		if (transient) {
 			auto scale = get_visual_scale(actor);
@@ -89,7 +90,7 @@ namespace Gts {
 			} if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7]) {
 				transient->Allowspeededit = false;
 				transient->animspeedbonus = 1.0;
-			} if (tag == Anim_Stomp[8]) {
+			} if (tag == Anim_Stomp[8] || tag == Anim_Stomp[9]) {
 				transient->rumblemult = 0.0;
 			}
 		}

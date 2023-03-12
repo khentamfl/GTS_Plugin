@@ -87,7 +87,7 @@ namespace Gts {
         auto PC = PlayerCharacter::GetSingleton();
         auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (actor->formID == 0x14 || Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
-			//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
+			log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
 		}
         if (transient) {
 			//log::info("Transient True");

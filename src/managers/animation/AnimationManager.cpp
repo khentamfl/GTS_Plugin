@@ -88,7 +88,7 @@ namespace {
 					NiAVObject* attach = bone;
 					if (attach) {
 						float modifier = transient->legsspreading + transient->legsclosing + transient->rumblemult;
-						volume = (10 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
+						volume = (2 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
 						ApplyShakeAtNode(caster, receiver, 0.4 * modifier, attach->world.translate);
 						volume *= modifier;
 					}
