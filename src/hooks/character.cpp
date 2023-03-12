@@ -56,7 +56,7 @@ namespace Hooks
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
 				}
-			} 
+			}
 			if (damage > GetAV(a_this, ActorValue::kHealth) * 1.5) { // Overkill effect
 				float attackerscale = get_visual_scale(a_attacker);
 				float receiverscale = get_visual_scale(a_this);
@@ -113,7 +113,7 @@ namespace Hooks
 		}
 		return value;
 	}
-	
+
 	void Hook_Character::SetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue, float value) {
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
@@ -154,10 +154,10 @@ namespace Hooks
 
 	void Hook_Character::NPCAnimEvents(BSTEventSink<BSAnimationGraphEvent>* a_this, BSAnimationGraphEvent& a_event, BSTEventSource<BSAnimationGraphEvent>* a_src) {
 		if (a_event.tag != NULL && a_event.holder != NULL) {
-			Actor* const actor = const_cast<Actor*>(a_event.holder->As<Actor>());
-			AnimationManager::GetSingleton().ActorAnimEvent(actor, a_event.tag, "None");
-			ThighCrush::GetSingleton().ActorAnimEvent(actor, a_event.tag, "None");
-			Stomp::GetSingleton().ActorAnimEvent(actor, a_event.tag, "None");
+      Actor* actor = a_event.holder->As<Actor>();
+      if (actor) {
+        EventDispatcher::DoActorAnimEvent(actor, a_event.tag, a_event.payload);
+      }
 		}
 		return _NPCAnimEvents(a_this, a_event, a_src);
 	}
