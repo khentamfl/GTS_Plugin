@@ -57,6 +57,7 @@ namespace {
 			log::info("Transient False, exit");
 			return;
 		}
+		log::info("Setting thigh stage to: {}", number);
         transient->ThighAnimStage = number;
     }
 
@@ -85,10 +86,11 @@ namespace Gts {
     void ThighCrush::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
         auto PC = PlayerCharacter::GetSingleton();
         auto transient = Transient::GetSingleton().GetActorData(actor);
-		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
+		if (Actor->formID == 0x14 || Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 			log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
 		}
         if (transient) {
+			log::info("Transient True");
             float scale = get_visual_scale(actor);
 			float speed = transient->animspeedbonus;
 			if (tag == Anim_ThighCrush[0]) {
