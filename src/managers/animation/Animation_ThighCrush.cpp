@@ -85,6 +85,9 @@ namespace Gts {
     void ThighCrush::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
         auto PC = PlayerCharacter::GetSingleton();
         auto transient = Transient::GetSingleton().GetActorData(actor);
+		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
+			log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
+		}
         if (transient) {
             float scale = get_visual_scale(actor);
 			float speed = transient->animspeedbonus;
