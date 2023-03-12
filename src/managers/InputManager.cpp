@@ -15,6 +15,7 @@
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
+#include "data/plugin.hpp"
 #include "data/time.hpp"
 #include "timer.hpp"
 
@@ -60,6 +61,8 @@ namespace Gts {
 		float size = get_visual_scale(player);
 
 		if (!player) {
+			return BSEventNotifyControl::kContinue;
+		} if (!Plugin::Live()) {
 			return BSEventNotifyControl::kContinue;
 		}
 
