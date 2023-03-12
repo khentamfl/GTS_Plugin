@@ -22,6 +22,7 @@ namespace Gts
 			virtual void Update() override;
 			void GrabActor(Actor* tiny);
             void CrushActors();
+			void Clear();
         private:
 			std::unordered_map<Actor*, GrabData> data; 
 	};

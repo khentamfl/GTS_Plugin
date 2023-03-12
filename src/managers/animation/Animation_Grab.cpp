@@ -72,7 +72,7 @@ namespace Gts {
         auto player = PlayerCharacter::GetSingleton();
         for (auto &[tiny, data]: this->data) {
             CrushManager::GetSingleton().Crush(player, tiny);
-            CrushBonuses(giant, tiny, 0);
+            CrushBonuses(giant, tiny, 2);
         }
         check.clear();
     }
