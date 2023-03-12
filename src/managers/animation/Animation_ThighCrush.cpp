@@ -54,6 +54,7 @@ namespace {
     void SetThighStage(Actor* actor, float number) {
         auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (!transient) {
+			log::info("Transient False, exit");
 			return;
 		}
         transient->ThighAnimStage = number;
