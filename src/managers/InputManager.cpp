@@ -148,7 +148,11 @@ namespace Gts {
 					F_Pressed = true; 
 					for (auto otherActor: find_actors()) {
 						if (otherActor != player) {
-							Grab::GetSingleton().GrabActor(otherActor);
+							NiPoint3 giantLocation = player->GetPosition();
+		        			NiPoint3 tinyLocation = otherActor->GetPosition();
+		        			if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player)) {
+								Grab::GetSingleton().GrabActor(otherActor);
+							}
 						}
 					}
 				} else if (key == 0x10) {

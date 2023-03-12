@@ -5,14 +5,14 @@ using namespace std;
 using namespace SKSE;
 using namespace RE;
 
-namespace Gts
-{
+namespace Gts {
 
     class GrabData {
 		public:
 			GrabData(Actor* tiny);
 			Actor* tiny;
 	    };
+		
 	class Grab : public EventListener
 	{
 		public:

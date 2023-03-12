@@ -48,15 +48,14 @@ namespace Gts {
 		        NiAVObject* attach = bone;
 		        NiPoint3 giantLocation = giant->GetPosition();
 		        NiPoint3 tinyLocation = tiny->GetPosition();
-		        if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
-			        TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
-			        ref->SetPosition(attach->world.translate);
-			        tiny->SetPosition(attach->world.translate, false);
-			        auto charcont = tiny->GetCharController();
-			    if (charcont) {
-					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); 
-			        }
-		        }
+			    TESObjectREFR* ref = static_cast<TESObjectREFR*>(tiny);
+			    ref->SetPosition(attach->world.translate);
+			    tiny->SetPosition(attach->world.translate, false);
+			    auto charcont = tiny->GetCharController();
+			if (charcont) {
+				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); 
+			    }
+		        
             }
         }
     }
@@ -82,8 +81,8 @@ namespace Gts {
         check.clear();
     }
 
-    GrabData::GrabData(Actor* tiny) :
+    /*GrabData::GrabData(Actor* tiny) :
 		tiny(tiny) {
-	}
+	}*/
 }
 
