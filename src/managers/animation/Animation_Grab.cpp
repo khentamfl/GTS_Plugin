@@ -63,26 +63,27 @@ namespace Gts {
 	
 
 	void Grab::GrabActor(Actor* tiny) {
-        if (sizeof(&Grab::GetSingleton().data.tiny) < 1.0) {
-            Grab::GetSingleton().data.try_emplace(tiny);
+        auto& check = ShrinkToNothingManager::GetSingleton().data;
+        if (sizeof(check.tiny) < 1.0) {
+            check.try_emplace(tiny);
         }
     }
 
     void Grab::CrushActors() {
-        if (sizeof(Grab::GetSingleton().data.tiny) > 0.0) {
-            auto player == PlayerCharacter::GetSingleton();
-            for (auto victims: data.tiny) {
+        auto& check = ShrinkToNothingManager::GetSingleton().data;
+        if (sizeof(check.tiny) > 0.0) {
+            auto player = PlayerCharacter::GetSingleton();
+            for (auto victims: check.tiny) {
                 CrushManager::GetSingleton().Crush(player, victims);
                 CrushBonuses(giant, tiny, 0);
             }
-            Grab::GetSingleton().data.clear();
+            check.clear();
         }
     }
 
     void Grab::Clear() {
-        if (Grab::GetSingleton().data.tiny) {
-            Grab::GetSingleton().data.clear();
-        }
+        auto& check = ShrinkToNothingManager::GetSingleton().data;
+        check.clear();
     }
 
     GrabData::GrabData(Actor* tiny) :
