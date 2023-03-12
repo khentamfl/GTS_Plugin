@@ -40,7 +40,7 @@ namespace Gts {
                     return;
                 }
                 auto giant = PC;
-                auto bone = data.node;
+                auto bone = find_node(PC, "NPC L Finger02 [LF02]");
 		        if (!bone) {
 			        return;
 		        }
@@ -76,6 +76,7 @@ namespace Gts {
             auto player == PlayerCharacter::GetSingleton();
             for (auto victims: data.tiny) {
                 CrushManager::GetSingleton().Crush(player, victims);
+                CrushBonuses(giant, tiny, 0);
             }
             data.clear();
         }
@@ -88,7 +89,6 @@ namespace Gts {
     }
 
     GrabData::GrabData(Actor* tiny) :
-		std::string_view(node),
 		tiny(tiny) {
 	}
 }

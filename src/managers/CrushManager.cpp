@@ -188,7 +188,6 @@ namespace Gts {
 					}
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 					AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
-					CrushBonuses(giant, tiny);
 					FearChance(giant);
 				}
 			}

@@ -12,7 +12,6 @@ namespace Gts
 		public:
 			GrabData(Actor* tiny);
 			Actor* tiny;
-            std::string_view node;
 	    };
 	class Grab : public EventListener
 	{

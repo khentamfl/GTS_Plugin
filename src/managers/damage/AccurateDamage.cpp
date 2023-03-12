@@ -76,6 +76,7 @@ namespace {
 				float TargetHp = Target->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
 				if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 					CrushManager::Crush(Caster, Target);
+					CrushBonuses(Caster, Target, 0);
 					shake_camera(Caster, 0.75 * caster_scale, 0.45);
 					ConsoleLog::GetSingleton()->Print("%s was instantly turned into mush by the body of %s", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 					if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
@@ -173,6 +174,7 @@ namespace {
 
 		if (size_difference >= InstaCrushRequirement && !tiny->IsPlayerTeammate()) {
 			CrushManager::Crush(giant, tiny);
+			CrushBonuses(giant, tiny, 0);
 			KnockAreaEffect(giant, 2, 16 * giantscale);
 		}
 	}
@@ -455,6 +457,7 @@ namespace Gts {
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
 			if (CrushManager::CanCrush(giant, tiny)) {
 				crushmanager.Crush(giant, tiny);
+				CrushBonuses(giant, tiny, 0);
 			}
 		}
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {

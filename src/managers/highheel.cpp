@@ -29,11 +29,11 @@ namespace {
 				float animspeed = persistent->anim_speed;
 				//actor->GetGraphVariableBool("GTS_isBusy", hhbool);
 				if (hhbool) { // WHen bool is true, start to decrease value
-					if (hhmult <= 0.15) {
-						transient->hhmult = 0.15;
-						return 0.15;
+					if (hhmult <= 0.01) {
+						transient->hhmult = 0.01;
+						return 0.01;
 					} else {
-						transient->hhmult -= 0.0060 * animspeed;
+						transient->hhmult -= 0.0060 / animspeed;
 						log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
 						return hhmult;
 					}
@@ -43,7 +43,7 @@ namespace {
 						transient->hhmult = 1.0;
 						return 1.0;
 					} else {
-						transient->hhmult += 0.0100 * animspeed;
+						transient->hhmult += 0.0100 / animspeed;
 						log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
 						return hhmult;
 					}

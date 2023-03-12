@@ -113,6 +113,8 @@ namespace Gts {
 				transient->legsclosing = 0.0;
 			} if (tag == Anim_ThighCrush[8]) {
 				transient->disablehh = false;
+				transient->Allowspeededit = false;
+				transient->animspeedbonus = 1.0;
 				transient->legsclosing = 0.0;
 				transient->rumblemult = 0.5 * speed;
 			} if (tag == Anim_ThighCrush[9]) {

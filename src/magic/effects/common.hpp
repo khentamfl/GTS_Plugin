@@ -247,27 +247,54 @@ namespace Gts {
 		return false;
 	}
 
-	inline void PrintCrushMessage(Actor* caster, Actor* target, float sizedifference, int random, float instacrushrequirement) {
-		if (sizedifference < instacrushrequirement && random < 4) {
-			ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-		} else if (sizedifference < instacrushrequirement && random >= 4) {
-			ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-		} else if (sizedifference < instacrushrequirement && random >= 6) {
-			ConsoleLog::GetSingleton()->Print("%s Crushed %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-		} else if (sizedifference < instacrushrequirement && random >= 8) {
-			ConsoleLog::GetSingleton()->Print("%s Was defeated by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-		} else if (sizedifference >= instacrushrequirement && random < 4) {
-			ConsoleLog::GetSingleton()->Print("%s Crushed %s without noticing it", caster->GetDisplayFullName(), target->GetDisplayFullName());
-		} else if (sizedifference >= instacrushrequirement && random >= 4) {
-			ConsoleLog::GetSingleton()->Print("%s Accidentally Crushed %s", caster->GetDisplayFullName(), target->GetDisplayFullName());
-		} else if (sizedifference >= instacrushrequirement && random >= 6) {
-			ConsoleLog::GetSingleton()->Print("%s was defeated by feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-		} else if (sizedifference >= instacrushrequirement && random >= 8) {
-			ConsoleLog::GetSingleton()->Print("%s was turned into mush by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+	inline void PrintCrushMessage(Actor* caster, Actor* target, float sizedifference, int random, float instacrushrequirement, float type) {
+		if (type == 0.0) { // Default crush
+			if (sizedifference < instacrushrequirement && random < 4) {
+				ConsoleLog::GetSingleton()->Print("%s Was crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			} else if (sizedifference < instacrushrequirement && random >= 4) {
+				ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			} else if (sizedifference < instacrushrequirement && random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s Crushed %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			} else if (sizedifference < instacrushrequirement && random >= 8) {
+				ConsoleLog::GetSingleton()->Print("%s Was defeated by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			} else if (sizedifference >= instacrushrequirement && random < 4) {
+				ConsoleLog::GetSingleton()->Print("%s Crushed %s without noticing it", caster->GetDisplayFullName(), target->GetDisplayFullName());
+			} else if (sizedifference >= instacrushrequirement && random >= 4) {
+				ConsoleLog::GetSingleton()->Print("%s Accidentally Crushed %s", caster->GetDisplayFullName(), target->GetDisplayFullName());
+			} else if (sizedifference >= instacrushrequirement && random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s was defeated by feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			} else if (sizedifference >= instacrushrequirement && random >= 8) {
+				ConsoleLog::GetSingleton()->Print("%s was turned into mush by the feet of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			}
+		} else if (type == 1.0) { // Thigh crush
+			if (random < 4) {
+				ConsoleLog::GetSingleton()->Print("Thighs of %s crushed %s", caster->GetDisplayFullName(), target->GetDisplayFullName());
+			} else if (random >= 4) {
+				ConsoleLog::GetSingleton()->Print("%s Got crushed by the thighs of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			} else if (random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s Crossed her legs and accidentally crushed %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+				} 
+			}
+		else if (type == 2.0) { // Crushed in-hands
+			if (random < 4) {
+				ConsoleLog::GetSingleton()->Print("%s violently crushed %s with her fingers", caster->GetDisplayFullName(), target->GetDisplayFullName());
+			} else if (random >= 4) {
+				ConsoleLog::GetSingleton()->Print("%s lost life to the hand of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			} else if (random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s was turned into mush by the hand of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			} 
+		} else if (type == 3.0) { // Sandwiched between thighs
+			if (random < 4) {
+				ConsoleLog::GetSingleton()->Print("%s gently sandwiched %s", caster->GetDisplayFullName(), target->GetDisplayFullName());
+			} else if (random >= 4) {
+				ConsoleLog::GetSingleton()->Print("%s was forever lost betweenthe thighs of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
+			} else if (random >= 6) {
+				ConsoleLog::GetSingleton()->Print("Thighs of %s sandwiched %s into nothing", caster->GetDisplayFullName(), target->GetDisplayFullName());
+			} 
 		}
 	}
 
-	inline void CrushBonuses(Actor* caster, Actor* target) {
+	inline void CrushBonuses(Actor* caster, Actor* target, float type) {
 		float target_scale = get_target_scale(target);
 		float caster_scale = get_target_scale(caster);
 		if (IsDragon(target)) {
@@ -284,7 +311,7 @@ namespace Gts {
 		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthPerk")) {
 			Runtime::PlaySound("MoanSound",caster, 1.0, 1.0);
 		}
-		PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement);
+		PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement, type);
 		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 		if (get_visual_scale(caster) <= 12.0 && !caster->AsActorState()->IsSprinting() && !caster->AsActorState()->IsWalking() && !caster->IsRunning() && !hasSMT || hasSMT && get_visual_scale(caster) <= 12.0) {
 			PlayAnimation(caster, "JumpLand");
