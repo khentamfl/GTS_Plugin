@@ -15,8 +15,9 @@
 #include "node.hpp"
 
 using namespace RE;
+using namespace REL;
 using namespace Gts;
-using namespace std;
+using namespace std; 
 
 namespace Gts {
 	Grab& Grab::GetSingleton() noexcept {
@@ -31,7 +32,7 @@ namespace Gts {
 	void Grab::Update() {
         auto PC = PlayerCharacter::GetSingleton();
         if (PC) {
-            auto tiny = data.tiny;
+            auto tiny = this->data.tiny;
                 if (!tiny) {
                     return;
                 } else 
@@ -67,7 +68,7 @@ namespace Gts {
 
 	void Grab::GrabActor(Actor* tiny, std::string_view findbone) {
         if (!this->data.tiny) {
-            data.try_emplace(tiny, findbone);
+            this->data.try_emplace(tiny, findbone);
         }
     }
 
@@ -78,13 +79,13 @@ namespace Gts {
                 CrushManager::GetSingleton().Crush(player, victims);
                 CrushBonuses(giant, tiny, 0);
             }
-            data.clear();
+            this->data.clear();
         }
     }
 
     void Grab::Clear() {
         if (this->data.tiny) {
-            data.clear();
+            this->data.clear();
         }
     }
 
