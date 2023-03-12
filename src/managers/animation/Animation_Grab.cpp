@@ -32,7 +32,7 @@ namespace Gts {
 	void Grab::Update() {
         auto PC = PlayerCharacter::GetSingleton();
         if (PC) {
-            for (auto &[tiny, data]: this->data)
+            for (auto &[tiny, data]: this->data) {
                 if (!tiny) {
                      return; 
                 } 
@@ -55,14 +55,15 @@ namespace Gts {
 			        auto charcont = tiny->GetCharController();
 			    if (charcont) {
 					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); 
-			    }
-		    }
+			        }
+		        }
+            }
         }
     }
 	
 
 	void Grab::GrabActor(Actor* tiny) {
-        if (sizeof(Grab::GetSingleton().data.tiny) < 1.0) {
+        if (sizeof(&Grab::GetSingleton().data.tiny) < 1.0) {
             Grab::GetSingleton().data.try_emplace(tiny);
         }
     }
