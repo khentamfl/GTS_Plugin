@@ -39,7 +39,7 @@ namespace Gts {
 		return BSEventNotifyControl::kContinue;
 	}
 
-	BSEventNotifyControl ReloadManager::ProcessEvent(const TESObjectLoadedEvent * evn, BSTEventSource<TESObjectLoadedEvent>* dispatcher)
+	/*BSEventNotifyControl ReloadManager::ProcessEvent(const TESObjectLoadedEvent * evn, BSTEventSource<TESObjectLoadedEvent>* dispatcher)
 	{
 		if (evn) {
 			auto* actor = TESForm::LookupByID<Actor>(evn->formID);
@@ -49,7 +49,7 @@ namespace Gts {
 			}
 		}
 		return BSEventNotifyControl::kContinue;
-	}
+	}*/
 
 	BSEventNotifyControl ReloadManager::ProcessEvent(const TESResetEvent* evn, BSTEventSource<TESResetEvent>* dispatcher)
 	{
