@@ -145,12 +145,12 @@ namespace Gts {
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[0]);
 			return;
 		}
-		if (condition == Triggers[1] && transient->ThighAnimStage == 2.0) {
+		if (condition == Triggers[1]) {
             log::info("Trigger = 1");
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[1]);
 			return;
 		}
-		if (condition == Triggers[2] && transient->ThighAnimStage >= 2.0) {
+		if (condition == Triggers[2]) {
             log::info("Trigger = 2");
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[2]);
 			return;
