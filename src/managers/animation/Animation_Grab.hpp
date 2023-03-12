@@ -20,7 +20,7 @@ namespace Gts
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;
-			void GrabActor(Actor* tiny, std::string_view findbone);
+			void GrabActor(Actor* tiny);
             void CrushActors();
         private:
 			std::unordered_map<Actor*, GrabData> data; 

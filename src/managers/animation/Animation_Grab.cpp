@@ -34,10 +34,9 @@ namespace Gts {
         if (PC) {
             for (auto &[tiny, data]: this->data)
                 if (!tiny) {
-                    return; 
-                } else 
-                {
-                if (tiny->formId == 0x14) {
+                     return; 
+                } 
+                if (tiny->formID == 0x14) {
                     return;
                 }
                 auto giant = PC;
@@ -54,26 +53,22 @@ namespace Gts {
 			        ref->SetPosition(attach->world.translate);
 			        tiny->SetPosition(attach->world.translate, false);
 			        auto charcont = tiny->GetCharController();
-			        if (charcont) {
-				        if (charcont->gravity > 0.0) {
-					    //log::info("Gravity of {} = {}", tiny->GetDisplayFullName(), charcont->gravity);
-					    //charcont->gravity = 0.0;
-					    charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0));
-				        }
-			        }
-		        }
-            }
+			    if (charcont) {
+					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); 
+			    }
+		    }
         }
-	}
+    }
+	
 
-	void Grab::GrabActor(Actor* tiny, std::string_view findbone) {
-        if (!Grab::GetSingleton().data.tiny) {
+	void Grab::GrabActor(Actor* tiny) {
+        if (sizeof(Grab::GetSingleton().data.tiny) < 1.0) {
             Grab::GetSingleton().data.try_emplace(tiny);
         }
     }
 
     void Grab::CrushActors() {
-        if (Grab::GetSingleton().data.tiny) {
+        if (sizeof(Grab::GetSingleton().data.tiny) > 0.0) {
             auto player == PlayerCharacter::GetSingleton();
             for (auto victims: data.tiny) {
                 CrushManager::GetSingleton().Crush(player, victims);

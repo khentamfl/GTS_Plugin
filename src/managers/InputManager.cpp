@@ -147,8 +147,8 @@ namespace Gts {
 				} else if (key == 0x21) {
 					F_Pressed = true; 
 					for (auto otherActor: find_actors()) {
-						if (otherActor!=player) {
-							Grab::GetSingleton().GrabActor(otherActor, "NPC L Finger02 [LF02]");
+						if (otherActor != player) {
+							Grab::GetSingleton().GrabActor(otherActor);
 						}
 					}
 				} else if (key == 0x10) {
