@@ -37,7 +37,7 @@ namespace Gts {
                     return; 
                 } else 
                 {
-                if (data.tiny->formId == 0x14) {
+                if (tiny->formId == 0x14) {
                     return;
                 }
                 auto giant = PC;
@@ -67,25 +67,25 @@ namespace Gts {
 	}
 
 	void Grab::GrabActor(Actor* tiny, std::string_view findbone) {
-        if (!this->data.tiny) {
-            this->data.try_emplace(tiny, findbone);
+        if (!Grab::GetSingleton().data.tiny) {
+            Grab::GetSingleton().data.try_emplace(tiny);
         }
     }
 
     void Grab::CrushActors() {
-        if (this->data.tiny) {
+        if (Grab::GetSingleton().data.tiny) {
             auto player == PlayerCharacter::GetSingleton();
             for (auto victims: data.tiny) {
                 CrushManager::GetSingleton().Crush(player, victims);
                 CrushBonuses(giant, tiny, 0);
             }
-            this->data.clear();
+            Grab::GetSingleton().data.clear();
         }
     }
 
     void Grab::Clear() {
-        if (this->data.tiny) {
-            this->data.clear();
+        if (Grab::GetSingleton().data.tiny) {
+            Grab::GetSingleton().data.clear();
         }
     }
 
