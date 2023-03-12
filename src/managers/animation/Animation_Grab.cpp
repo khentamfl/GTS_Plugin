@@ -34,7 +34,7 @@ namespace Gts {
         if (PC) {
             for (auto &[tiny, data]: this->data) {
                 if (!tiny) {
-                     return; 
+                    return; 
                 } 
                 if (tiny->formID == 0x14) {
                     return;
@@ -64,14 +64,14 @@ namespace Gts {
 
 	void Grab::GrabActor(Actor* tiny) {
         auto& check = Grab::GetSingleton().data;
-        if (sizeof(check.tiny) < 1.0) {
+        if (!check.tiny[0]) {
             check.try_emplace(tiny);
         }
     }
 
     void Grab::CrushActors() {
         auto& check = Grab::GetSingleton().data;
-        if (sizeof(check.tiny) > 0.0) {
+        if (check.tiny[0]) {
             auto player = PlayerCharacter::GetSingleton();
             for (auto victims: check.tiny) {
                 CrushManager::GetSingleton().Crush(player, victims);
