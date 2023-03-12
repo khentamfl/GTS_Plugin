@@ -23,9 +23,9 @@ using namespace std;
 namespace {
 
 	const std::vector<std::string_view> Anim_Vore = {
-		"GTSvore_sitstart",             // [0] Start air rumble and camera shake
+		"GTSvore_sitstart",         // [0] Start air rumble and camera shake
 		"GTSvore_sitend",           // [1] Sit down completed
-		"GTSvore_handextend",           // [2] Hand starts to move in space
+		"GTSvore_handextend",       // [2] Hand starts to move in space
 		"GTSvore_handgrab",         // [3] Hand reached someone, grab actor
 		"GTSvore_bringactorstart",  // [4] Hand brings someone to mouth
 		"GTSvore_bringactorend",    // [5] Hand brought someone to mouth, release fingers
@@ -38,11 +38,11 @@ namespace {
 		"GTSsandwich_grabactor",    // [1] Grab actor
 		"GTSsandwich_crouchend",    // [2] Return to sit position
 		"GTSsandwich_putactor",     // [3] Put actor on leg
-		"GTSsandwich_enterloop",        // [3] Start idle loop with someone between legs
-		"GTSsandwich_sandwichstart",// [4] Sandwich someone between legs, dealing damage and playing sound
-		"GTSsandwich_sandwichhit",  // [5] Apply damage and sound
-		"GTSsandwich_sandwichend",  // [6] Leg returns to idle position
-		"GTSsandwich_exit",         // [7] Exit sandwich loop and leave animation in general
+		"GTSsandwich_enterloop",    // [4] Start idle loop with someone between legs
+		"GTSsandwich_sandwichstart",// [5] Sandwich someone between legs, dealing damage and playing sound
+		"GTSsandwich_sandwichhit",  // [6] Apply damage and sound
+		"GTSsandwich_sandwichend",  // [7] Leg returns to idle position
+		"GTSsandwich_exit",         // [8] Exit sandwich loop and leave animation in general
 	};
 
 	const std::vector<std::string_view> Anim_Compatibility = {
