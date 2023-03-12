@@ -82,7 +82,7 @@ namespace Gts {
 		return RE::BSEventNotifyControl::kContinue;
 	}
 
-  /*BSEventNotifyControl ReloadManager::ProcessEvent(const BSAnimationGraphEvent * evn, BSTEventSource<BSAnimationGraphEvent> * dispatcher) {
+  BSEventNotifyControl ReloadManager::ProcessEvent(const BSAnimationGraphEvent * evn, BSTEventSource<BSAnimationGraphEvent> * dispatcher) {
     if (evn->holder) {
       auto* actor = TESForm::LookupByID<Actor>(evn->holder->formID);
       if (actor) {
@@ -91,5 +91,5 @@ namespace Gts {
     }
 
 	return RE::BSEventNotifyControl::kContinue;
-  }*/
+  }
 }

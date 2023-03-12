@@ -1,4 +1,5 @@
 #include "Config.hpp"
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/RipClothManager.hpp"
@@ -481,6 +482,8 @@ void GtsManager::Update() {
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
+
+		AnimationManager::GetSingleton().UpdateActors(actor);
 
 		if (sizemanager.GetPreciseDamage()) {
 			if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {

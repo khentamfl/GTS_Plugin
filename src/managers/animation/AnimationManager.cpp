@@ -113,10 +113,12 @@ namespace Gts {
 		return "AnimationManager";
 	}
 
-	void AnimationManager::Update() {
+	void AnimationManager::UpdateActors(Actor* target) {
 		auto PC = PlayerCharacter::GetSingleton();
-		AdjustFallBehavior(PC);
-		ApplyRumbleSounds(PC, PC);
+		if (target == PC) {
+			AdjustFallBehavior(PC);
+		}
+		ApplyRumbleSounds(target, PC);
 	}
 
 	void AnimationManager::AdjustAnimSpeed(Actor* actor, float bonus) {
