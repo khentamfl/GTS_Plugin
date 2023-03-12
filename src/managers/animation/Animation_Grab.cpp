@@ -63,14 +63,14 @@ namespace Gts {
 	
 
 	void Grab::GrabActor(Actor* tiny) {
-        auto& check = ShrinkToNothingManager::GetSingleton().data;
+        auto& check = Grab::GetSingleton().data;
         if (sizeof(check.tiny) < 1.0) {
             check.try_emplace(tiny);
         }
     }
 
     void Grab::CrushActors() {
-        auto& check = ShrinkToNothingManager::GetSingleton().data;
+        auto& check = Grab::GetSingleton().data;
         if (sizeof(check.tiny) > 0.0) {
             auto player = PlayerCharacter::GetSingleton();
             for (auto victims: check.tiny) {
@@ -82,7 +82,7 @@ namespace Gts {
     }
 
     void Grab::Clear() {
-        auto& check = ShrinkToNothingManager::GetSingleton().data;
+        auto& check = Grab::GetSingleton().data;
         check.clear();
     }
 
