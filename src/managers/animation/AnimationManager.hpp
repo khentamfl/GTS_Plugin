@@ -14,7 +14,7 @@ namespace Gts
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;
-			void ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) override;
+			void ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload);
 			void AdjustAnimSpeed(Actor* actor, float bonus);
 
 			void Test(Actor * giant, Actor* tiny);
