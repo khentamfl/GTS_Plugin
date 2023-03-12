@@ -12,7 +12,7 @@ namespace Gts {
 		public BSTEventSink<TESObjectLoadedEvent>,
 		public BSTEventSink<TESResetEvent>,
 		public BSTEventSink<TESEquipEvent>,
-    	//public BSTEventSink<BSAnimationGraphEvent>,
+    	public BSTEventSink<BSAnimationGraphEvent>,
 		public BSTEventSink<MenuOpenCloseEvent> {
 		public:
 			[[nodiscard]] static ReloadManager& GetSingleton() noexcept;
