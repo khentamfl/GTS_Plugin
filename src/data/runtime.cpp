@@ -131,7 +131,7 @@ namespace Gts {
 					follow = bone;
 				}
 			}
-			
+
 			soundHandle.SetObjectToFollow(follow);
 			soundHandle.Play();
 		} else {

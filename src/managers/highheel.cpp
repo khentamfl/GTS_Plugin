@@ -34,7 +34,7 @@ namespace {
 						log::info("hh mult of {} = {}", actor->GetDisplayFullName(), hhmult);
 						return hhmult;
 					}
-				} 
+				}
 				if (!hhbool) { // When false, increase value, reaching 1.0 eventually
 					if (hhmult >= 1.0) {
 						transient->hhmult = 1.0;
@@ -66,7 +66,7 @@ namespace Gts {
 		//const bool FORCE_APPLY = false;
 		//auto actors = find_actors();
 		//for (auto actor: actors) {
-			//ApplyHH(actor, FORCE_APPLY);
+		//ApplyHH(actor, FORCE_APPLY);
 		//}
 	}
 
@@ -85,8 +85,8 @@ namespace Gts {
 		}
 		if (!actor->Is3DLoaded()) {
 			return;
-		} 
-		bool GTSBusy; 
+		}
+		bool GTSBusy;
 		if (Persistent::GetSingleton().highheel_furniture == false && !actor->GetGraphVariableBool("GTS_isBusy", GTSBusy) && actor->GetOccupiedFurniture()) {
 			return;
 		}

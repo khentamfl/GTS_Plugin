@@ -20,12 +20,12 @@ using namespace RE;
 using namespace Gts;
 using namespace std;
 
-namespace { 
+namespace {
 
 	const std::vector<std::string_view> Anim_Vore = {
-		"GTSvore_sitstart", 		// [0] Start air rumble and camera shake
+		"GTSvore_sitstart",             // [0] Start air rumble and camera shake
 		"GTSvore_sitend",           // [1] Sit down completed
-		"GTSvore_handextend", 		// [2] Hand starts to move in space
+		"GTSvore_handextend",           // [2] Hand starts to move in space
 		"GTSvore_handgrab",         // [3] Hand reached someone, grab actor
 		"GTSvore_bringactorstart",  // [4] Hand brings someone to mouth
 		"GTSvore_bringactorend",    // [5] Hand brought someone to mouth, release fingers
@@ -38,8 +38,8 @@ namespace {
 		"GTSsandwich_grabactor",    // [1] Grab actor
 		"GTSsandwich_crouchend",    // [2] Return to sit position
 		"GTSsandwich_putactor",     // [3] Put actor on leg
-		"GTSsandwich_enterloop", 	// [3] Start idle loop with someone between legs
-		"GTSsandwich_sandwichstart",// [4] Sandwich someone between legs, dealing damage and playing sound 
+		"GTSsandwich_enterloop",        // [3] Start idle loop with someone between legs
+		"GTSsandwich_sandwichstart",// [4] Sandwich someone between legs, dealing damage and playing sound
 		"GTSsandwich_sandwichhit",  // [5] Apply damage and sound
 		"GTSsandwich_sandwichend",  // [6] Leg returns to idle position
 		"GTSsandwich_exit",         // [7] Exit sandwich loop and leave animation in general
@@ -68,7 +68,7 @@ namespace {
 		"SoundPlay.MCO_DodgeSound",
 	};
 
-	
+
 	void AdjustFallBehavior(Actor* actor) {
 		auto charCont = actor->GetCharController();
 		if (charCont) {
@@ -78,24 +78,24 @@ namespace {
 
 	void ApplyRumbleSounds(Actor* caster, Actor* receiver) {
 		auto transient = Transient::GetSingleton().GetActorData(caster);
-		float volume = 0.0;	
+		float volume = 0.0;
 		static Timer timer = Timer(0.40);
 		if (transient) {
 			if (transient->legsspreading >= 1.0 || transient->legsclosing > 1.0 || transient->rumblemult >= 0.05) {
-			for (auto nodes: LegRumbleNodes) {
-				auto bone = find_node(caster, nodes);
-				if (bone) {
-					NiAVObject* attach = bone;
-					if (attach) {
-						float modifier = transient->legsspreading + transient->legsclosing + transient->rumblemult;
-						volume = (4 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
-						ApplyShakeAtNode(caster, receiver, 0.4 * modifier, attach->world.translate);
-						volume *= modifier;
+				for (auto nodes: LegRumbleNodes) {
+					auto bone = find_node(caster, nodes);
+					if (bone) {
+						NiAVObject* attach = bone;
+						if (attach) {
+							float modifier = transient->legsspreading + transient->legsclosing + transient->rumblemult;
+							volume = (4 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
+							ApplyShakeAtNode(caster, receiver, 0.4 * modifier, attach->world.translate);
+							volume *= modifier;
+						}
 					}
-				}
-				if (timer.ShouldRunFrame()) {
-					Runtime::PlaySoundAtNode("RumbleWalkSound", caster, volume, 1.0, nodes);
-					}	
+					if (timer.ShouldRunFrame()) {
+						Runtime::PlaySoundAtNode("RumbleWalkSound", caster, volume, 1.0, nodes);
+					}
 				}
 			}
 		}
@@ -130,13 +130,13 @@ namespace Gts {
 				if (transient->animspeedbonus <= 0.15) {
 					transient->animspeedbonus = 0.15;
 				}
-			} else if (!AllowEdit){
+			} else if (!AllowEdit) {
 				transient->animspeedbonus = 1.0;
 			}
 			ConsoleLog::GetSingleton()->Print("Anim Speed of %s is %g", actor->GetDisplayFullName(), transient->animspeedbonus);
 		}
 	}
-	
+
 
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
 		auto PC = PlayerCharacter::GetSingleton();
@@ -146,10 +146,10 @@ namespace Gts {
 			//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
 		}
 		float volume = scale * 0.20;
-        if (tag == MCO[0] || tag == MCO[1]) {
+		if (tag == MCO[0] || tag == MCO[1]) {
 			//Call UnderFoot event here somehow with x scale bonus
 			Runtime::PlaySound("lFootstepL", actor, volume, 1.0);
-        }
+		}
 		if (tag == Anim_Compatibility[0]) {
 			log::info("GTScrush_caster");
 		}
@@ -157,12 +157,12 @@ namespace Gts {
 			float giantscale = get_visual_scale(PC);
 			float tinyscale = get_visual_scale(actor);
 			float sizedifference = giantscale/tinyscale;
-			if (sizedifference >= 0.0) { 
+			if (sizedifference >= 0.0) {
 				CrushManager::GetSingleton().Crush(PC, actor);
 			}
 		}
 		//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
-    }
+	}
 	void AnimationManager::Test(Actor * giant, Actor* tiny) {
 		if (giant != tiny) {
 			return;
@@ -175,10 +175,10 @@ namespace Gts {
 			if (charCont) {
 				hkVector4 velocity;
 				charCont->GetLinearVelocityImpl(velocity);
-			//auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
-			//if (tinyai) {
+				//auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
+				//if (tinyai) {
 				log::info("{} OutVelicty = {}, Initial Vel: {}, Vel Total = {}", tiny->GetDisplayFullName(), Vector2Str(charCont->outVelocity), Vector2Str(charCont->initialVelocity), Vector2Str(velocity));
-			//}
+				//}
 			}
 		}
 	}

@@ -25,14 +25,16 @@ namespace Gts {
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
-		} 
+		}
 		auto target = GetTarget();
 		if (!target) {
 			return;
-		} if (caster == target) {
+		}
+		if (caster == target) {
 			return;
-		} if (SizeManager::GetSingleton().GetPreciseDamage() && !Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) { // This method damages actors once per 0.10 sec because of Papyrus being 'amazing'.
-			return; 
+		}
+		if (SizeManager::GetSingleton().GetPreciseDamage() && !Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) { // This method damages actors once per 0.10 sec because of Papyrus being 'amazing'.
+			return;
 		}
 		float castersize = get_visual_scale(caster);
 		float targetsize = get_visual_scale(target);
@@ -41,7 +43,7 @@ namespace Gts {
 			sizedifference += 4.0;
 		}
 
-		if (sizedifference >= 1.5) { 
+		if (sizedifference >= 1.5) {
 			AccurateDamage::GetSingleton().DoSizeDamage(caster, target, 0, 0, false);
 		}
 	}

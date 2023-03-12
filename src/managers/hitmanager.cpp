@@ -87,7 +87,8 @@ namespace Gts {
 			}
 			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 2.0;
-			} if (hitName.find("Bow") == std::string::npos) {
+			}
+			if (hitName.find("Bow") == std::string::npos) {
 				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
 			PushActorAway(attacker, receiver, size_difference);
@@ -248,31 +249,31 @@ namespace Gts {
 		}
 	}
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
-			if (!receiver->IsDead()) {
-				receiver->KillImmediate();
-			}
-			if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-				TransferInventory(receiver, attacker, false, true);
-			} else if (attacker->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-				TransferInventory(receiver, attacker, false, true);
-			}
-			Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");
-			std::random_device rd;
-			std::mt19937 gen(rd());
-			std::uniform_real_distribution<float> dis(-0.2, 0.2);
+		if (!receiver->IsDead()) {
+			receiver->KillImmediate();
+		}
+		if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
+			TransferInventory(receiver, attacker, false, true);
+		} else if (attacker->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
+			TransferInventory(receiver, attacker, false, true);
+		}
+		Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-			Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 2.0);
+		Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 2.0);
 
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 
-			if (receiver->formID != 0x14) {
-				Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.
-			} else if (receiver->formID == 0x14) {
-				TriggerScreenBlood(50);
-				receiver->SetAlpha(0.0); // Just make player Invisible
-			}
+		if (receiver->formID != 0x14) {
+			Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.
+		} else if (receiver->formID == 0x14) {
+			TriggerScreenBlood(50);
+			receiver->SetAlpha(0.0); // Just make player Invisible
 		}
 	}
+}
 

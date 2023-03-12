@@ -62,7 +62,8 @@ namespace Gts {
 
 		if (!player) {
 			return BSEventNotifyControl::kContinue;
-		} if (!Plugin::Live()) {
+		}
+		if (!Plugin::Live()) {
 			return BSEventNotifyControl::kContinue;
 		}
 
@@ -148,26 +149,24 @@ namespace Gts {
 				} else if (key == 0x2F) {
 					V_Pressed = true;
 				} else if (key == 0x21) {
-					F_Pressed = true; 
+					F_Pressed = true;
 					/*for (auto otherActor: find_actors()) {
-						if (otherActor != player) {
-							NiPoint3 giantLocation = player->GetPosition();
-		        			NiPoint3 tinyLocation = otherActor->GetPosition();
-		        			if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player)) {
-								Grab::GetSingleton().GrabActor(otherActor);
-							}
-						}
-					}*/
+					        if (otherActor != player) {
+					                NiPoint3 giantLocation = player->GetPosition();
+					        NiPoint3 tinyLocation = otherActor->GetPosition();
+					        if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player)) {
+					                        Grab::GetSingleton().GrabActor(otherActor);
+					                }
+					        }
+					   }*/
 				} else if (key == 0x10) {
 					Q_Pressed = true;
 				} else if (key == 0x11) {
 					W_Pressed = true;
 				} else if (key == 0x39) {
 					Space_Pressed = true;
-				} 
-			}
-				
-			else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
+				}
+			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
 				auto key = buttonEvent->GetIDCode();
 				if (key == 0x0) {
 					LMB_Pressed = true;
@@ -197,7 +196,7 @@ namespace Gts {
 		}
 		if (ShiftPressed && E_Pressed) {
 			Stomp.ApplyStomp(player, "StompRight");
-		} 
+		}
 		if (ShiftPressed && Q_Pressed) {
 			Stomp.ApplyStomp(player, "StompLeft");
 		}
@@ -212,16 +211,18 @@ namespace Gts {
 		if (AltPressed == true && LeftArrow == true) {
 			Camera.AdjustLeftRight(-(0.6 + (size * 0.05 - 0.05)));
 		} // Left or Right end
-		
+
 		if (LMB_Pressed && !RMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack"); // Increase speed and power
 			Animation.AdjustAnimSpeed(player, 0.012);
 			//Grab::GetSingleton().Clear();
-		} if (RMB_Pressed && !LMB_Pressed) {
+		}
+		if (RMB_Pressed && !LMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
 			Animation.AdjustAnimSpeed(player, -0.0060);
 			//Grab::GetSingleton().CrushActors();
-		} if (W_Pressed) {
+		}
+		if (W_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
 		}
 		if (RMB_Pressed && LMB_Pressed) {

@@ -369,9 +369,8 @@ namespace {
 					shrinkRate *= 0.0;
 				} else if (Runtime::HasMagicEffect(actor, "ResistShrinkPotion")) {
 					shrinkRate *= 0.25;
-				} 
-				if (Runtime::HasMagicEffect(actor, "explosiveGrowth1") || Runtime::HasMagicEffect(actor, "explosiveGrowth2") || Runtime::HasMagicEffect(actor, "explosiveGrowth3"))
-				{
+				}
+				if (Runtime::HasMagicEffect(actor, "explosiveGrowth1") || Runtime::HasMagicEffect(actor, "explosiveGrowth2") || Runtime::HasMagicEffect(actor, "explosiveGrowth3")) {
 					shrinkRate *= 0.15;
 				}
 				if (actor->IsInCombat() && BalanceMode == 1.0) {
@@ -443,34 +442,34 @@ void GtsManager::Update() {
 	//auto PC = PlayerCharacter::GetSingleton();
 	//auto charCont = PC->GetCharController();
 	//if (charCont) {
-		//float velocity;
-		//PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
-		//PC->GetGraphVariableFloat("GiantessVelocity", velocity);
-		//log::info("GiantessVelocity: {}", velocity);
+	//float velocity;
+	//PC->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(PC));
+	//PC->GetGraphVariableFloat("GiantessVelocity", velocity);
+	//log::info("GiantessVelocity: {}", velocity);
 	//}
 	//auto ai = PC->GetActorRuntimeData().currentProcess;
 	//static Timer atttimer = Timer(1.00);
 	//auto charCont = PC->GetCharController();
 
-		/*if (charCont) {
-			//log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
-			//log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
-			//log::info("orientationCtrl: {}", charCont->orientationCtrl);		
-			bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
-		if (charProxyController) {
-			auto proxy = charProxyController->GetCharacterProxy();
-				if (proxy) {
-					proxy->characterStrength = Runtime::GetFloat("ConversationCameraComp");
-				}
-			}
-		}
-	   if (ai) {
-	        auto highAi = ai->high;
-	        if (highAi && atttimer.ShouldRunFrame()) {
-	            //log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
-				//log::info("Player Melee Damage: {}, Unarmed Damage: {}", GetAV(PC, ActorValue::kMeleeDamage), GetAV(PC, ActorValue::kUnarmedDamage));
-				//log::info("{}, Sneak Power: {}, Sneak Mod: {}, Noise Mult: {}", PC->GetDisplayFullName(), GetAV(PC, ActorValue::kSneakingPowerModifier), GetAV(PC, ActorValue::kSneakingModifier), GetAV(PC, ActorValue::kMovementNoiseMult));
+	/*if (charCont) {
+	        //log::info("JumpHeight: {}, FallStartHeight: {}, IsJumping: {}, Center: {}", charCont->jumpHeight, charCont->fallStartHeight, IsJumping(actor), charCont->center);
+	        //log::info("Look At Location: {}", Vector2Str(actor->GetLookingAtLocation()));
+	        //log::info("orientationCtrl: {}", charCont->orientationCtrl);
+	        bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
+	   if (charProxyController) {
+	        auto proxy = charProxyController->GetCharacterProxy();
+	                if (proxy) {
+	                        proxy->characterStrength = Runtime::GetFloat("ConversationCameraComp");
+	                }
 	        }
+	   }
+	   if (ai) {
+	   auto highAi = ai->high;
+	   if (highAi && atttimer.ShouldRunFrame()) {
+	    //log::info("Player DetectionMod:{}, DetectionModTimer: {}", highAi->detectionModifier, highAi->detectionModifierTimer);
+	                //log::info("Player Melee Damage: {}, Unarmed Damage: {}", GetAV(PC, ActorValue::kMeleeDamage), GetAV(PC, ActorValue::kUnarmedDamage));
+	                //log::info("{}, Sneak Power: {}, Sneak Mod: {}, Noise Mult: {}", PC->GetDisplayFullName(), GetAV(PC, ActorValue::kSneakingPowerModifier), GetAV(PC, ActorValue::kSneakingModifier), GetAV(PC, ActorValue::kMovementNoiseMult));
+	   }
 	   }*/
 
 	for (auto actor: find_actors()) {

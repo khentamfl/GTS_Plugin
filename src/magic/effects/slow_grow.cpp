@@ -29,7 +29,7 @@ namespace Gts {
 			float MoanVolume = clamp(0.25, 2.0, get_visual_scale(caster)/8);
 			Runtime::PlaySound("MoanSound", caster, MoanVolume, 1.0);
 			//log::info("Attempting to play Moan Sound for: {}", caster->GetDisplayFullName());
-	    }
+		}
 		float bonus = 1.0;
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 			bonus = get_target_scale(caster) * 0.25 + 0.75;

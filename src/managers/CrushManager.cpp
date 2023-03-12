@@ -232,7 +232,7 @@ namespace Gts {
 			return false;
 		}
 		//Check for Essential
-		
+
 		// Check skin
 		auto skin = tiny->GetSkin();
 		if (skin) {

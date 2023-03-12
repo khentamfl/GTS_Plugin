@@ -339,7 +339,7 @@ namespace Gts {
 		if (Runtime::HasPerk(pred,"MassVorePerk")) {
 			sizedifference *= 1.15; // Less stamina drain
 			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
-		} 
+		}
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Enables HP requirement on Vore.
 			float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);

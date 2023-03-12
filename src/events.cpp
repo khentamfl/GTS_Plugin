@@ -98,10 +98,10 @@ namespace Gts {
 
 	}
 
-  // Fired when a actor animation event occurs
-  void EventListener::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
+	// Fired when a actor animation event occurs
+	void EventListener::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
 
-  }
+	}
 
 	void EventDispatcher::ReportProfilers() {
 		std::string report = "Reporting Profilers:";
@@ -346,19 +346,19 @@ namespace Gts {
 			}
 		}
 	}
-  void EventDispatcher::DoActorAnimEvent(Actor* actor, const BSFixedString& a_tag, const BSFixedString& a_payload) {
-    	std::string tag = a_tag.c_str();
-    	std::string payload = a_payload.c_str();
-    for (auto listener: EventDispatcher::GetSingleton().listeners) {
-		if (Config::GetSingleton().GetDebug().ShouldProfile()) {
-			listener->profiler.Start();
-		}
-		listener->ActorAnimEvent(actor, tag, payload);
-		if (Config::GetSingleton().GetDebug().ShouldProfile()) {
-			listener->profiler.Stop();
+	void EventDispatcher::DoActorAnimEvent(Actor* actor, const BSFixedString& a_tag, const BSFixedString& a_payload) {
+		std::string tag = a_tag.c_str();
+		std::string payload = a_payload.c_str();
+		for (auto listener: EventDispatcher::GetSingleton().listeners) {
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Start();
+			}
+			listener->ActorAnimEvent(actor, tag, payload);
+			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+				listener->profiler.Stop();
+			}
 		}
 	}
-  }
 	EventDispatcher& EventDispatcher::GetSingleton() {
 		static EventDispatcher instance;
 		return instance;

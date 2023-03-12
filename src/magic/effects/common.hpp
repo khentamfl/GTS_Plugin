@@ -32,12 +32,12 @@ namespace Gts {
 		if (selectedFormula) {
 			if (selectedFormula >= 2.0) {
 				SoftPotential mod {
-					.k = 0.070, 
+					.k = 0.070,
 					.n = 3,
 					.s = 0.54,
 				};
-				auto globalMassSize = Runtime::GetFloat("MassBasedSizeLimit"); 
-				float modifier = soft_core(globalMassSize, mod); 
+				auto globalMassSize = Runtime::GetFloat("MassBasedSizeLimit");
+				float modifier = soft_core(globalMassSize, mod);
 				if (modifier <= 0.10) {
 					modifier = 0.10;
 				}
@@ -273,16 +273,15 @@ namespace Gts {
 				ConsoleLog::GetSingleton()->Print("%s Got crushed by the thighs of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			} else if (random >= 6) {
 				ConsoleLog::GetSingleton()->Print("%s Crossed her legs and accidentally crushed %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-				} 
 			}
-		else if (type == 2.0) { // Crushed in-hands
+		} else if (type == 2.0) { // Crushed in-hands
 			if (random < 4) {
 				ConsoleLog::GetSingleton()->Print("%s violently crushed %s with her fingers", caster->GetDisplayFullName(), target->GetDisplayFullName());
 			} else if (random >= 4) {
 				ConsoleLog::GetSingleton()->Print("%s lost life to the hand of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			} else if (random >= 6) {
 				ConsoleLog::GetSingleton()->Print("%s was turned into mush by the hand of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
-			} 
+			}
 		} else if (type == 3.0) { // Sandwiched between thighs
 			if (random < 4) {
 				ConsoleLog::GetSingleton()->Print("%s gently sandwiched %s", caster->GetDisplayFullName(), target->GetDisplayFullName());
@@ -290,7 +289,7 @@ namespace Gts {
 				ConsoleLog::GetSingleton()->Print("%s was forever lost betweenthe thighs of %s", target->GetDisplayFullName(), caster->GetDisplayFullName());
 			} else if (random >= 6) {
 				ConsoleLog::GetSingleton()->Print("Thighs of %s sandwiched %s into nothing", caster->GetDisplayFullName(), target->GetDisplayFullName());
-			} 
+			}
 		}
 	}
 
@@ -320,22 +319,22 @@ namespace Gts {
 		if (!Cache) {
 			return;
 		}
-		if (caster == player)  {
-				bool hasExplosiveGrowth1 = Runtime::HasMagicEffect(caster, "explosiveGrowth1");
-				bool hasExplosiveGrowth2 = Runtime::HasMagicEffect(caster, "explosiveGrowth2");
-				bool hasExplosiveGrowth3 = Runtime::HasMagicEffect(caster, "explosiveGrowth3");
+		if (caster == player) {
+			bool hasExplosiveGrowth1 = Runtime::HasMagicEffect(caster, "explosiveGrowth1");
+			bool hasExplosiveGrowth2 = Runtime::HasMagicEffect(caster, "explosiveGrowth2");
+			bool hasExplosiveGrowth3 = Runtime::HasMagicEffect(caster, "explosiveGrowth3");
 			if (Runtime::HasPerk(player, "SizeReserve")) {
 				Cache->SizeReserve += target_scale/25;
 			}
-				AdjustSizeLimit(0.0066 * target_scale);
+			AdjustSizeLimit(0.0066 * target_scale);
 			if (Runtime::HasPerk(caster, "ExtraGrowth") && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
 				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
 				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());
-			} 
+			}
 			// Slowly increase Crush Growth Limit after crushing someone while Growth Spurt is active.
 		}
 	}
-	
+
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
 		Runtime::CastSpell(caster, target, "TrackSizeSpell");

@@ -54,7 +54,7 @@ namespace Gts {
 		}
 		if (actor->formID == 0x14) {
 			tremor_scale = persist.tremor_scale * (0.95 + get_visual_scale(actor) * 0.05);
-		} 
+		}
 
 		if (tremor_scale < 1e-5) {
 			return;
@@ -64,16 +64,18 @@ namespace Gts {
 		if (!actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
 				scale *= 1.25; // Sprinting makes you seem bigger
-			} if (actor->AsActorState()->IsWalking()) {
+			}
+			if (actor->AsActorState()->IsWalking()) {
 				scale *= 0.65; // Walking makes you seem quieter
-			} if (actor->IsSneaking()) {
+			}
+			if (actor->IsSneaking()) {
 				scale *= 0.55; // Sneaking makes you seem quieter
 			}
 			FootEvent foot_kind = impact.kind;
 			if (foot_kind == FootEvent::JumpLand) {
 				scale *= 2.0; // Jumping makes you seem bigger
 			}
-			
+
 			scale *= 1.4;
 
 			if (HighHeelManager::IsWearingHH(actor) && Runtime::HasPerkTeam(actor, "hhBonus")) {
@@ -170,7 +172,7 @@ namespace Gts {
 						break;
 					}
 				}
-				
+
 				float intensity = power * falloff * tremor_scale;
 
 				float duration = power * tremor_scale * 0.5;
@@ -179,7 +181,7 @@ namespace Gts {
 				bool pcEffects = Runtime::GetBoolOr("PCAdditionalEffects", true);
 
 				if (actor->formID == 0x14 && pcEffects) {
-					
+
 					if (intensity > 0.01 && duration > 0.01) {
 						if (IsFirstPerson()) {
 							intensity *= 0.075; // Shake effects are weaker when in first person
@@ -208,7 +210,7 @@ namespace Gts {
 				bool npcEffects = Runtime::GetBoolOr("NPCSizeEffects", true);
 				if (actor->formID != 0x14 && npcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
-						
+
 						shake_camera(actor, intensity, duration);
 
 						float left_shake = intensity;

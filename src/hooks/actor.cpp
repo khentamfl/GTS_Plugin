@@ -120,7 +120,7 @@ namespace Hooks
 		}
 		return value + bonus;
 	}
-	
+
 	void Hook_Actor::SetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue, float value) {
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
@@ -156,7 +156,7 @@ namespace Hooks
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
-				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value , value);
+				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
 				log::info("GetAV1 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
 			}
 		}
@@ -169,7 +169,7 @@ namespace Hooks
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
-				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value , value);
+				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
 				log::info("GetAV2 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
 			}
 		}
@@ -182,7 +182,7 @@ namespace Hooks
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
-				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value , value);
+				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
 				log::info("GetAV3 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
 			}
 		}
@@ -195,7 +195,7 @@ namespace Hooks
 		if (Plugin::InGame() && a_this) {
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
-				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value , value);
+				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
 				log::info("GetAV4 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
 			}
 		}

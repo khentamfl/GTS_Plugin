@@ -55,7 +55,7 @@ namespace Gts {
 		auto giant = GetCaster();
 		if (!giant) {
 			return;
-		} 
+		}
 		auto tiny = GetTarget();
 		if (!tiny) {
 			return;
@@ -87,7 +87,7 @@ namespace Gts {
 		auto Caster = GetCaster();
 		if (!Caster) { // Don't apply bonuses if caster is not player.
 			return;
-		} 
+		}
 		auto Target = GetTarget();
 		if (!Target) { // Don't apply bonuses if caster is not player.
 			return;
@@ -95,7 +95,7 @@ namespace Gts {
 		if (Caster == Target) {
 			return; // Don't apply to self
 		}
-		
+
 		if (Runtime::HasPerk(Caster, "SoulVorePerk")) { // Permamently increases random AV after eating someone
 			float TotalMod = (0.75 * get_visual_scale(Target));
 			int Boost = rand() % 2;

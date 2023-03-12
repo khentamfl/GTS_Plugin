@@ -8,22 +8,22 @@ using namespace RE;
 /*namespace Gts {
 
     class GrabData {
-		public:
-			GrabData(Actor* tiny);
-			Actor* tiny;
-	    };
-		
-	class Grab : public EventListener
-	{
-		public:
-			[[nodiscard]] static Grab& GetSingleton() noexcept;
+                public:
+                        GrabData(Actor* tiny);
+                        Actor* tiny;
+            };
 
-			virtual std::string DebugName() override;
-			virtual void Update() override;
-			void GrabActor(Actor* tiny);
+        class Grab : public EventListener
+        {
+                public:
+                        [[nodiscard]] static Grab& GetSingleton() noexcept;
+
+                        virtual std::string DebugName() override;
+                        virtual void Update() override;
+                        void GrabActor(Actor* tiny);
             void CrushActors();
-			void Clear();
+                        void Clear();
         private:
-			std::unordered_map<Actor*, GrabData> data; 
-	};
-}*/
+                        std::unordered_map<Actor*, GrabData> data;
+        };
+   }*/

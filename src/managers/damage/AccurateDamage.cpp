@@ -54,13 +54,12 @@ namespace {
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
-		}
-		else if (ragdollchance == 31.0) {
+		} else if (ragdollchance == 31.0) {
 			PushActorAway(giant, tiny, power); // Push instead
 			return;
 		}
 	}
-	
+
 
 	void SMTCrushCheck(Actor* Caster, Actor* Target) {
 		if (Caster == Target) {
@@ -107,9 +106,11 @@ namespace {
 	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
-		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+		}
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
 			return;
-		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+		}
+		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
@@ -231,17 +232,23 @@ namespace Gts {
 
 		if (!leftFoot) {
 			return;
-		} if (!rightFoot) {
+		}
+		if (!rightFoot) {
 			return;
-		} if (!leftCalf) {
+		}
+		if (!leftCalf) {
 			return;
-		} if (!rightCalf) {
+		}
+		if (!rightCalf) {
 			return;
-		} if (!leftToe) {
+		}
+		if (!leftToe) {
 			return;
-		} if (!rightToe) {
-			return; 
-		} if (!BodyBone) {
+		}
+		if (!rightToe) {
+			return;
+		}
+		if (!BodyBone) {
 			return; // CTD protection attempts
 		}
 		NiMatrix3 leftRotMat;
@@ -297,7 +304,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))){
+			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
 				}
@@ -306,10 +313,10 @@ namespace Gts {
 			NiPoint3 giantLocation = actor->GetPosition();
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
-					float tinyScale = get_visual_scale(otherActor); 
+					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
-						
+
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
 							// Check the tiny's nodes against the giant's foot points
 							int nodeCollisions = 0;
@@ -348,9 +355,11 @@ namespace Gts {
 		float force = evt.force;
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
-		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+		}
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
 			return;
-		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+		}
+		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
 		}
 
@@ -370,12 +379,14 @@ namespace Gts {
 
 		if (giant->IsSneaking()) {
 			movementFactor *= 0.5;
-		} if (giant->AsActorState()->IsSprinting()) {
+		}
+		if (giant->AsActorState()->IsSprinting()) {
 			movementFactor *= 1.75;
-		} if (evt.footEvent == FootEvent::JumpLand) {
+		}
+		if (evt.footEvent == FootEvent::JumpLand) {
 			movementFactor *= 3.0;
 		}
-		
+
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
@@ -405,16 +416,20 @@ namespace Gts {
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, bool DoDamage) { // Applies damage and crushing
 		if (!giant) {
 			return;
-		} if (!tiny) {
+		}
+		if (!tiny) {
 			return;
-		} if (giant == tiny) {
+		}
+		if (giant == tiny) {
 			return;
 		}
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
-		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+		}
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
 			return;
-		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+		}
+		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
 			return;
 		}
 		//log::info("Doing size damage: {} to {}, Do Damage?: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), DoDamage);
@@ -463,7 +478,8 @@ namespace Gts {
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.30);
 			return; // Stamina protection, emulates Size Damage resistance
-		} if (!DoDamage) {
+		}
+		if (!DoDamage) {
 			//log::info("Damage is false, returning");
 			return;
 		}

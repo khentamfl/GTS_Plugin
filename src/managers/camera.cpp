@@ -165,8 +165,8 @@ namespace Gts {
 	CameraState* CameraManager::GetCameraState() {
 		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera()) {
 			return nullptr;
-		} 
-		
+		}
+
 		bool AllowFpCamera = true;
 		auto playerCamera = PlayerCamera::GetSingleton();
 		if (!playerCamera) {
@@ -175,9 +175,9 @@ namespace Gts {
 		if (Runtime::GetBool("ConversationCameraComp")) {
 			auto ui = RE::UI::GetSingleton();
 			if (ui) {
-        		if (ui->IsMenuOpen(DialogueMenu::MENU_NAME)) {
-				return nullptr;
-            	}
+				if (ui->IsMenuOpen(DialogueMenu::MENU_NAME)) {
+					return nullptr;
+				}
 			}
 		}
 		auto playerCameraState = playerCamera->currentState;

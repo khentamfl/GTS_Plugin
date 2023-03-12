@@ -18,7 +18,7 @@ using namespace RE;
 using namespace Gts;
 using namespace std;
 
-namespace { 
+namespace {
 	const std::vector<std::string_view> Stomp_Triggers = { // Triggers Behavior_Stomp when matching event is sent
 		"StompRight",
 		"StompLeft",
@@ -30,15 +30,15 @@ namespace {
 	};
 
 	const std::vector<std::string_view> Anim_Stomp = { // Animation Events
-		"GTSstompimpactR", 			// [0] stomp impacts, strongest effect
- 		"GTSstompimpactL",          // [1]
-		"GTSstomplandR", 			// [2] when landing after stomping, decreased power
- 		"GTSstomplandL",            // [3]
- 		"GTSstompstartR", 			// [4] For starting loop of camera shake and air rumble sounds
- 		"GTSstompstartL",           // [5]
- 		"GTSStompendR", 			// [6] disable loop of camera shake and air rumble sounds
- 		"GTSStompendL",             // [7] 
-		"GTS_Next",                 // [8] 
+		"GTSstompimpactR",                      // [0] stomp impacts, strongest effect
+		"GTSstompimpactL",          // [1]
+		"GTSstomplandR",                        // [2] when landing after stomping, decreased power
+		"GTSstomplandL",            // [3]
+		"GTSstompstartR",                       // [4] For starting loop of camera shake and air rumble sounds
+		"GTSstompstartL",           // [5]
+		"GTSStompendR",                         // [6] disable loop of camera shake and air rumble sounds
+		"GTSStompendL",             // [7]
+		"GTS_Next",                 // [8]
 		"GTSBEH_Exit",              // [9] Another disable
 	};
 
@@ -63,7 +63,7 @@ namespace Gts {
 
 	std::string Stomp::DebugName() {
 		return "Stomp";
-	}	
+	}
 
 	void Stomp::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) { // Manages additional effects such as camera shake
 		auto PC = PlayerCharacter::GetSingleton();
@@ -75,22 +75,28 @@ namespace Gts {
 			auto scale = get_visual_scale(actor);
 			float speed = transient->animspeedbonus;
 			float volume = scale * 0.20 * (speed * speed);
-       		 if (tag == Anim_Stomp[0]) {
+			if (tag == Anim_Stomp[0]) {
 				ShakeAndSound(actor, PC, volume, volume * 6, "NPC R Foot [Rft ]");
-			} if (tag == Anim_Stomp[1]) {
+			}
+			if (tag == Anim_Stomp[1]) {
 				ShakeAndSound(actor, PC, volume, volume * 6, "NPC L Foot [Lft ]");
-        	} if (tag == Anim_Stomp[2]) {
+			}
+			if (tag == Anim_Stomp[2]) {
 				transient->rumblemult = 0.25;
 				ShakeAndSound(actor, PC, volume * 0.5, volume * 3, "NPC R Foot [Rft ]");
-         	} if (tag == Anim_Stomp[3]) {
+			}
+			if (tag == Anim_Stomp[3]) {
 				ShakeAndSound(actor, PC, volume * 0.5, volume * 3, "NPC L Foot [Lft ]");
-			} if (tag == Anim_Stomp[4] || tag == Anim_Stomp[5]) {
+			}
+			if (tag == Anim_Stomp[4] || tag == Anim_Stomp[5]) {
 				transient->rumblemult = 0.35;
 				transient->Allowspeededit = true;
-			} if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7]) {
+			}
+			if (tag == Anim_Stomp[6] || tag == Anim_Stomp[7]) {
 				transient->Allowspeededit = false;
 				transient->animspeedbonus = 1.0;
-			} if (tag == Anim_Stomp[8] || tag == Anim_Stomp[9]) {
+			}
+			if (tag == Anim_Stomp[8] || tag == Anim_Stomp[9]) {
 				transient->rumblemult = 0.0;
 			}
 		}
@@ -107,7 +113,7 @@ namespace Gts {
 		if (condition == Stomp_Triggers[1]) {
 			actor->NotifyAnimationGraph(Behavior_Stomp[1]);
 			return;
-		}	
+		}
 	}
 }
 

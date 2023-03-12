@@ -20,48 +20,48 @@ using namespace RE;
 using namespace Gts;
 using namespace std;
 
-namespace { 
-    const std::vector<std::string_view> Triggers = { // Triggers Behavior_ThighCrush when matching event is sent
-        "ThighLoopEnter",               // [0]
-        "ThighLoopAttack",              // [1]
-        "ThighLoopExit",                // [2]
-        "ThighLoopFull",                // [3] Play full anim
-    };
+namespace {
+	const std::vector<std::string_view> Triggers = { // Triggers Behavior_ThighCrush when matching event is sent
+		"ThighLoopEnter",               // [0]
+		"ThighLoopAttack",              // [1]
+		"ThighLoopExit",                // [2]
+		"ThighLoopFull",                // [3] Play full anim
+	};
 
-    const std::vector<std::string_view> Behavior_ThighCrush = { // Behavior triggers
-        "GTSBeh_TriggerSitdown",        // [0] Enter sit loop
-	    "GTSBeh_StartThighCrush",       // [1] Trigger thigh crush
-	    "GTSBeh_LeaveSitdown",          // [2] Exit animation
-        "GTSBeh_ThighAnimationFull",    // [3] Play Full Animation without loops. Optional.
-    };
+	const std::vector<std::string_view> Behavior_ThighCrush = { // Behavior triggers
+		"GTSBeh_TriggerSitdown",        // [0] Enter sit loop
+		"GTSBeh_StartThighCrush",       // [1] Trigger thigh crush
+		"GTSBeh_LeaveSitdown",          // [2] Exit animation
+		"GTSBeh_ThighAnimationFull",    // [3] Play Full Animation without loops. Optional.
+	};
 
-    const std::vector<std::string_view> Anim_ThighCrush = { // Animation Events
-		"GTStosit", 				    // [0] Start air rumble and camera shake
-		"GTSsitloopenter", 			    // [1] Sit down completed
-		"GTSsitloopstart", 			    // [2] enter sit crush loop
- 		"GTSsitloopend", 			    // [3] unused
-		"GTSsitcrushlight_start",	    // [4] Start Spreading legs
-		"GTSsitcrushlight_end", 	    // [5] Legs fully spread
-		"GTSsitcrushheavy_start",	    // [6] Start Closing legs together
-		"GTSsitcrushheavy_end", 	    // [7] Legs fully closed
-		"GTSsitloopexit", 			    // [8] stand up, small air rumble and camera shake
-		"GTSstandR", 				    // [9] feet collides with ground when standing up
+	const std::vector<std::string_view> Anim_ThighCrush = { // Animation Events
+		"GTStosit",                                 // [0] Start air rumble and camera shake
+		"GTSsitloopenter",                          // [1] Sit down completed
+		"GTSsitloopstart",                          // [2] enter sit crush loop
+		"GTSsitloopend",                            // [3] unused
+		"GTSsitcrushlight_start",           // [4] Start Spreading legs
+		"GTSsitcrushlight_end",             // [5] Legs fully spread
+		"GTSsitcrushheavy_start",           // [6] Start Closing legs together
+		"GTSsitcrushheavy_end",             // [7] Legs fully closed
+		"GTSsitloopexit",                           // [8] stand up, small air rumble and camera shake
+		"GTSstandR",                                // [9] feet collides with ground when standing up
 		"GTSstandL",                    // [10]
 		"GTSstandRS",                   // [11] Silent impact of right feet
-		"GTStoexit", 				    // [12] Leave animation, disable air rumble and such
-    };
+		"GTStoexit",                                // [12] Leave animation, disable air rumble and such
+	};
 
-    void SetThighStage(Actor* actor, float number) {
-        auto transient = Transient::GetSingleton().GetActorData(actor);
+	void SetThighStage(Actor* actor, float number) {
+		auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (!transient) {
 			log::info("Transient False, exit");
 			return;
 		}
 		log::info("Setting thigh stage to: {}", number);
-        transient->ThighAnimStage = number;
-    }
+		transient->ThighAnimStage = number;
+	}
 
-    void ShakeAndSound(Actor* caster, Actor* receiver, float volume, const std::string_view& node) { // Applies camera shake and sounds
+	void ShakeAndSound(Actor* caster, Actor* receiver, float volume, const std::string_view& node) { // Applies camera shake and sounds
 		Runtime::PlaySoundAtNode("lFootstepL", caster, volume, 1.0, node);
 		auto bone = find_node(caster, node);
 		if (bone) {
@@ -83,87 +83,99 @@ namespace Gts {
 		return "ThighCrush";
 	}
 
-    void ThighCrush::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
-        auto PC = PlayerCharacter::GetSingleton();
-        auto transient = Transient::GetSingleton().GetActorData(actor);
+	void ThighCrush::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
+		auto PC = PlayerCharacter::GetSingleton();
+		auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (actor->formID == 0x14 || Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 			log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
 		}
-        if (transient) {
+		if (transient) {
 			//log::info("Transient True");
-            float scale = get_visual_scale(actor);
+			float scale = get_visual_scale(actor);
 			float speed = transient->animspeedbonus;
 			if (tag == Anim_ThighCrush[0]) {
 				transient->rumblemult = 0.7;
-                SetThighStage(actor, 2.0);
-			} if (tag == Anim_ThighCrush[1]) {
+				SetThighStage(actor, 2.0);
+			}
+			if (tag == Anim_ThighCrush[1]) {
 				transient->rumblemult = 0.3 * speed;
 				transient->disablehh = true;
-			} if (tag == Anim_ThighCrush[2]) {
+			}
+			if (tag == Anim_ThighCrush[2]) {
 				transient->rumblemult = 0.4;
-                SetThighStage(actor, 2.0);
-			} if (tag == Anim_ThighCrush[4]) {
+				SetThighStage(actor, 2.0);
+			}
+			if (tag == Anim_ThighCrush[4]) {
 				transient->rumblemult = 0.0;
 				transient->legsspreading = 1.0 * speed;
-			} if (tag == Anim_ThighCrush[5]) {
+			}
+			if (tag == Anim_ThighCrush[5]) {
 				transient->Allowspeededit = true;
 				transient->legsspreading = 0.6 * speed;
-			} if (tag == Anim_ThighCrush[6]) {
+			}
+			if (tag == Anim_ThighCrush[6]) {
 				transient->legsspreading = 0.0;
 				transient->legsclosing = 3.0 * speed;
-			} if (tag == Anim_ThighCrush[7]) {
+			}
+			if (tag == Anim_ThighCrush[7]) {
 				transient->legsclosing = 1.5 *speed;
-			} if (tag == "GTSBEH_Next" || tag == "GTSBEH_Exit") {
+			}
+			if (tag == "GTSBEH_Next" || tag == "GTSBEH_Exit") {
 				transient->Allowspeededit = false;
 				transient->animspeedbonus = 1.0;
 				transient->legsclosing = 0.0;
-			} if (tag == Anim_ThighCrush[8]) {
+			}
+			if (tag == Anim_ThighCrush[8]) {
 				transient->disablehh = false;
 				transient->Allowspeededit = false;
 				transient->animspeedbonus = 1.0;
 				transient->legsclosing = 0.0;
 				transient->rumblemult = 0.5 * speed;
-			} if (tag == Anim_ThighCrush[9]) {
-                ShakeAndSound(actor, PC, scale * 0.10 * speed, "NPC R Foot [Rft ]");
-            } if (tag == Anim_ThighCrush[10]) {
+			}
+			if (tag == Anim_ThighCrush[9]) {
+				ShakeAndSound(actor, PC, scale * 0.10 * speed, "NPC R Foot [Rft ]");
+			}
+			if (tag == Anim_ThighCrush[10]) {
 				transient->rumblemult = 0.2 * speed;
 				ShakeAndSound(actor, PC, scale * 0.10 * speed, "NPC L Foot [Lft ]");
-			} if (tag == Anim_ThighCrush[11]) {
-                ShakeAndSound(actor, PC, scale * 0.05 * speed, "NPC R Foot [Rft ]");
-            } if (tag == Anim_ThighCrush[12]) {
+			}
+			if (tag == Anim_ThighCrush[11]) {
+				ShakeAndSound(actor, PC, scale * 0.05 * speed, "NPC R Foot [Rft ]");
+			}
+			if (tag == Anim_ThighCrush[12]) {
 				transient->rumblemult = 0.0;
-                SetThighStage(actor, 0.0);
+				SetThighStage(actor, 0.0);
 			}
 		}
-    }
+	}
 
-    void ThighCrush::ApplyThighCrush(Actor* actor, std::string_view condition) {
+	void ThighCrush::ApplyThighCrush(Actor* actor, std::string_view condition) {
 		if (!actor) {
 			return;
-		} 
-        auto transient = Transient::GetSingleton().GetActorData(actor);
+		}
+		auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (!transient) {
 			return;
 		}
-        log::info("Condition:{}, Thigh Stage: {}", condition, transient->ThighAnimStage);
+		log::info("Condition:{}, Thigh Stage: {}", condition, transient->ThighAnimStage);
 		if (condition == Triggers[0] && transient->ThighAnimStage <= 1.0) {
-            log::info("Trigger = 0");
+			log::info("Trigger = 0");
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[0]);
 			return;
 		}
 		if (condition == Triggers[1]) {
-            log::info("Trigger = 1");
+			log::info("Trigger = 1");
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[1]);
 			return;
 		}
 		if (condition == Triggers[2]) {
-            log::info("Trigger = 2");
+			log::info("Trigger = 2");
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[2]);
 			return;
 		}
-        if (condition == Triggers[3] && transient->ThighAnimStage <= 1.0) {
-            log::info("Trigger = 3");
-            actor->NotifyAnimationGraph(Behavior_ThighCrush[3]);
-        }
-    }
+		if (condition == Triggers[3] && transient->ThighAnimStage <= 1.0) {
+			log::info("Trigger = 3");
+			actor->NotifyAnimationGraph(Behavior_ThighCrush[3]);
+		}
+	}
 }
