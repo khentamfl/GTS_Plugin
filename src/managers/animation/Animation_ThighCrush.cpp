@@ -87,10 +87,10 @@ namespace Gts {
         auto PC = PlayerCharacter::GetSingleton();
         auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (actor->formID == 0x14 || Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
-			log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
+			//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
 		}
         if (transient) {
-			log::info("Transient True");
+			//log::info("Transient True");
             float scale = get_visual_scale(actor);
 			float speed = transient->animspeedbonus;
 			if (tag == Anim_ThighCrush[0]) {
@@ -161,7 +161,7 @@ namespace Gts {
 			actor->NotifyAnimationGraph(Behavior_ThighCrush[2]);
 			return;
 		}
-        if (condition == Triggers[3]) {
+        if (condition == Triggers[3] && transient->ThighAnimStage <= 1.0) {
             log::info("Trigger = 3");
             actor->NotifyAnimationGraph(Behavior_ThighCrush[3]);
         }
