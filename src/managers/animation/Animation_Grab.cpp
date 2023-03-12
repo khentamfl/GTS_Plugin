@@ -55,7 +55,6 @@ namespace Gts {
 			if (charcont) {
 				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); 
 			    }
-		        
             }
         }
     }
@@ -81,8 +80,8 @@ namespace Gts {
         check.clear();
     }
 
-    /*GrabData::GrabData(Actor* tiny) :
+    GrabData::GrabData(Actor* tiny) :
 		tiny(tiny) {
-	}*/
+	}
 }
 
