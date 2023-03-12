@@ -23,6 +23,6 @@ namespace Gts
 			void GrabActor(Actor* tiny, std::string_view findbone);
             void CrushActors();
         private:
-			std::unordered_map<Actor*, GrabData> data;
+			std::unordered_map<Actor*, GrabData> data; 
 	};
 }

@@ -85,7 +85,6 @@ namespace Gts {
 
 						data.state = ShrinkState::Shrinked;
 					}
-
 				}
 			}
 		}

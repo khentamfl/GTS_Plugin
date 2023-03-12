@@ -32,12 +32,12 @@ namespace Gts {
 	void Grab::Update() {
         auto PC = PlayerCharacter::GetSingleton();
         if (PC) {
-            auto tiny = this->data.tiny;
+            for (auto &[tiny, data]: this->data)
                 if (!tiny) {
-                    return;
+                    return; 
                 } else 
                 {
-                if (this->data.tiny->formId == 0x14) {
+                if (data.tiny->formId == 0x14) {
                     return;
                 }
                 auto giant = PC;
