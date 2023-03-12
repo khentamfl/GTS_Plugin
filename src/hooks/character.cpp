@@ -1,4 +1,5 @@
 #include "managers/animation/Animation_ThighCrush.hpp"
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/Animation_Stomp.hpp"
 #include "managers/animation/Animation_Grab.hpp"
 #include "hooks/character.hpp"
@@ -154,9 +155,9 @@ namespace Hooks
 	void Hook_Character::NPCAnimEvents(BSTEventSink<BSAnimationGraphEvent>* a_this, BSAnimationGraphEvent& a_event, BSTEventSource<BSAnimationGraphEvent>* a_src) {
 		if (a_event.tag != NULL && a_event.holder != NULL) {
 			Actor* const actor = const_cast<Actor*>(a_event.holder->As<Actor>());
-			AnimationManager::ActorAnimEvent(actor, a_event.tag, "None");
-			ThighCrush::ActorAnimEvent(actor, a_event.tag, "None");
-			Stomp::ActorAnimEvent(actor, a_event.tag, "None");
+			AnimationManager::GetSingleton().ActorAnimEvent(actor, a_event.tag, "None");
+			ThighCrush::GetSingleton().ActorAnimEvent(actor, a_event.tag, "None");
+			Stomp::GetSingleton().ActorAnimEvent(actor, a_event.tag, "None");
 		}
 		return _NPCAnimEvents(a_this, a_event, a_src);
 	}
