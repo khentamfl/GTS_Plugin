@@ -52,6 +52,8 @@ namespace Gts {
 
 			// Use this to start a rumble.
 			static void Start(std::string_view tag, Actor* giant, float intensity, std::string_view node);
+      // Use this to start a rumble. Without Node name will happen at NPC Root Node
+			static void Start(std::string_view tag, Actor* giant, float intensity);
 			// Use this to stop a rumble. The tag must be the same as given in start
 			static void Stop(std::string_view tag, Actor* giant);
 
@@ -61,6 +63,9 @@ namespace Gts {
 			// A quick rumble. This should be a short instance like a single stomp. May not be for one frame but will be short
 			// - To Sermit: This is currently set to 1.0s but can tinker with it
 			static void Once(std::string_view tag, Actor* giant, float intensity, std::string_view node);
+
+      // Without node name will happen at NPC Root Node
+			static void Once(std::string_view tag, Actor* giant, float intensity);
 		private:
 			std::unordered_map<Actor*, ActorRumbleData> data;
 	};

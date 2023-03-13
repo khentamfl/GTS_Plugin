@@ -55,6 +55,9 @@ namespace Gts {
 	void Rumble::Start(std::string_view tag, Actor* giant, float intensity, std::string_view node) {
 		Rumble::For(tag, giant, intensity, node, 0);
 	}
+  void Rumble::Start(std::string_view tag, Actor* giant, float intensity) {
+		Rumble::For(tag, giant, intensity, "NPC Root [Root]", 0);
+	}
 	void Rumble::Stop(std::string_view tag, Actor* giant) {
 		try {
 			this->data.at(giant).tags.at(tag).state = RumpleState::RampingDown;
@@ -71,6 +74,10 @@ namespace Gts {
 
 	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, std::string_view node) {
 		Rumble::For(tag, giant, intensity, node, 1.0);
+	}
+
+  void Rumble::Once(std::string_view tag, Actor* giant, float intensity) {
+	  Rumble::Once(tag, giant, intensity, "NPC Root [Root]");
 	}
 
 
