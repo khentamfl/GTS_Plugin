@@ -107,12 +107,12 @@ namespace Gts
 			static void RegisterTriggerWithStages(std::string_view trigger, std::string_view group, std::vector<std::string_view> behaviors);
 
 			// Start an anuimation with NO object to carry
-			static void StartAnim(std::string_view trigger, const Actor* giant);
+			static void StartAnim(std::string_view trigger, const Actor& giant);
 			// Start the animation WITH an object to carry. We use TESObjectREFR over Actor so that we can pick up anything
-			static void StartAnim(std::string_view trigger, const Actor* giant, const TESObjectREFR* tiny);
+			static void StartAnim(std::string_view trigger, const Actor& giant, const TESObjectREFR* tiny);
 
 			// Advance an animation to the next stage if possible
-			static void NextAnim(std::string_view trigger, const Actor* giant);
+			static void NextAnim(std::string_view trigger, const Actor& giant);
 
 			// Get the current stage of an animation group
 			static std::size_t GetStage(Actor* actor, std::string_view group);
