@@ -13,9 +13,6 @@ namespace Gts
   //   It is destroyed after ActorAnimEvent if stage == 0
   //    Therefore when an anim is finished set stage = 0 to tell
   //    the anim system that we are done
-  //    If stage is not set to 0 when done then a new anim of the same kind
-  //    cannot be started for this actor (as it will think the old anim
-  //    hasn't finished yet)
   struct AnimationEventData {
     // Giant must exists and is the one the animation is happening on
     //   Maybe rename this to caster
@@ -24,13 +21,19 @@ namespace Gts
     //   pick up other objects
     // Set to nullptr for no object
     const TESObjectREFR* tiny;
+    // This is used to keep track of which trigger should be run the next time
+    //   AnimationManager::NextAnim is called
+    std::size_t nextTrigger = 0;
+    // This is used to keep track of what trigger was last used
+    std::size_t currentTrigger = 0;
     // Stage a value of 0 means finished and will be cleaned up
-    std::size_t stage;
+    std::size_t stage = 0;
     // Anim speed, can be adjusted via the animation itself or via AdjustAnimSpeed
-    float animSpeed;
+    float animSpeed = 1.0;
     // Make true during a stage of the anim to allow animSpeed adjust via AdjustAnimSpeed
     bool canEditAnimSpeed = false;
-
+    // If true then hhs are disabled
+    bool disableHH = false;
     AnimationEventData(const Actor& giant, const TESObjectREFR* tiny);
   };
 
@@ -53,11 +56,11 @@ namespace Gts
   // These are just friendly names to start an animation
   struct TriggerData {
     // Name to send to the animation graph
-    std::string behavor;
+    std::vector<std::string> behavors;
     // The name of the data to be created
     std::string group;
 
-    TriggerData(std::string_view behavor, std::string_view group);
+    TriggerData(std::vector<std::string_view> behavors, std::string_view group);
   };
 
 	class AnimationManager : public EventListener
@@ -95,10 +98,27 @@ namespace Gts
       //  while also creating any associated animation data that matches the group name
       static void RegisterTrigger(std::string_view trigger, std::string_view group, std::string_view behavior);
 
+      // Similar to RegisterTrigger but takes a list of stages.
+      //
+      // You can trigger the next stage with
+      // ``cpp
+      // AnimationManager::NextAnim("ThighCrush", giant)
+      // ```
+      static void RegisterTriggerWithStages(std::string_view trigger, std::string_view group, std::vector<std::string_view> behaviors);
+
       // Start an anuimation with NO object to carry
       static void StartAnim(std::string_view trigger, const Actor& giant);
       // Start the animation WITH an object to carry. We use TESObjectREFR over Actor so that we can pick up anything
       static void StartAnim(std::string_view trigger, const Actor& giant, const TESObjectREFR* tiny);
+
+      // Advance an animation to the next stage if possible
+      static void NextAnim(std::string_view trigger, const Actor& giant);
+
+      // Get the current stage of an animation group
+      static std::size_t GetStage(Actor* actor, std::string_view group);
+
+      // Check if any currently playing anim disabled the HHs
+      static bool HHDisabled(Actor* actor);
 
     protected:
       std::unordered_map<Actor*, std::unordered_map<std::string, AnimationEventData>> data;

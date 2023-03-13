@@ -111,7 +111,7 @@ namespace Gts {
 				}
 
 				if (key == 0x38 && buttonEvent->HeldDuration() >= 0.6) { //Alt
-					ThighCrush.ApplyThighCrush(player, "ThighLoopEnter");
+					AnimationManager::StartAnim("ThighCrush", player);
 					log::info("Triggering Stage 0");
 				}
 
@@ -212,17 +212,17 @@ namespace Gts {
 		} // Left or Right end
 
 		if (LMB_Pressed && !RMB_Pressed) {
-			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack"); // Increase speed and power
+			AnimationManager::NextAnim("ThighCrush", player); // Increase speed and power
 			AnimationManager::AdjustAnimSpeed(0.012);
 			//Grab::GetSingleton().Clear();
 		}
 		if (RMB_Pressed && !LMB_Pressed) {
-			ThighCrush.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
+			AnimationManager::NextAnim("ThighCrush", player); // Increase speed and power
 			AnimationManager::AdjustAnimSpeed(-0.0060);
 			//Grab::GetSingleton().CrushActors();
 		}
 		if (W_Pressed) {
-			ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
+			AnimationManager::NextAnim("ThighCrush", player);
 		}
 		if (RMB_Pressed && LMB_Pressed) {
 			AnimationManager::AdjustAnimSpeed(0.030); // Strongest attack

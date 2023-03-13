@@ -21,11 +21,14 @@ namespace Gts {
 	class RumbleData {
 		public:
 			RumbleData(float intensity, float duration, std::string_view node);
+      void ChangeTargetIntensity(float intensity);
+      void ChangeDuration(float duration);
 
 			RumpleState state;
       float duration; // Value of 0 means keep going until stopped
       Spring currentIntensity;
       std::string node;
+      double startTime;
 	};
 
   // Holds all rumble data for an actor

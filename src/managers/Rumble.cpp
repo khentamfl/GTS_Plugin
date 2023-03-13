@@ -3,6 +3,7 @@
 #include "events.hpp"
 #include "timer.hpp"
 #include "spring.hpp"
+#include "data/time.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -16,6 +17,18 @@ namespace Gts {
     this->currentIntensity.target = intensity;
     this->currentIntensity.halflife = 0.5; // How fast rumbles start/stop
     this->node = node;
+    this->startTime = 0.0;
+  }
+
+  void RumbleData::ChangeTargetIntensity(float intensity) {
+    this->currentIntensity.target = intensity;
+    this->state = RumpleState::RampingUp;
+    this->startTime = 0.0;
+  }
+  void RumbleData::ChangeDuration(float duration) {
+    this->duration = duration;
+    this->state = RumpleState::RampingUp;
+    this->startTime = 0.0;
   }
 
   ActorRumbleData::ActorRumbleData() {
@@ -50,7 +63,10 @@ namespace Gts {
 
       void Rumble::For(std::string_view tag, Actor* giant, float intensity, std::string_view node, float duration) {
         this->data.try_emplace(giant);
-        this->data.tags.try_emplace(tag, intensity, duration, node);
+        this->data[giant].tags.try_emplace(tag, intensity, duration, node);
+        // Reset if alreay there (but don't reset the intensity this will let us smooth into it)
+        this->data[giant].tags[tag].ChangeTargetIntensity(intensity);
+        this->data[giant].tags[tag].ChangeDuration(duration);
       }
 
       void Rumble::Once(std::string_view tag, Actor* giant, float intensity, std::string_view node) {
@@ -67,12 +83,19 @@ namespace Gts {
             switch (rumbleData.state) {
               case RumpleState::RampingUp: {
                 // Increasing intensity just let the spring do its thing
-                rumbleData.currentIntensity.Update(dt);
+                if (fabs(rumbleData.currentIntensity.value - rumbleData.currentIntensity.target)) < 1e-3 {
+                  // When spring is done move the state onwards
+                  rumbleData.state = RumpleState::Rumbling;
+                  rumbleData.startTime = Time::WorldTimeElapsed();
+                }
                 break;
               }
               case RumpleState::Rumbling: {
                 // At max intensity
                 rumbleData.currentIntensity.value = rumbleData.currentIntensity.target;
+                if (Time::WorldTimeElapsed() > rumbleData.startTime + rumbleData.duration) {
+                  rumbleData.state = RumpleState::RampingDown;
+                }
                 break;
               }
               case RumpleState::RampingDown: {
