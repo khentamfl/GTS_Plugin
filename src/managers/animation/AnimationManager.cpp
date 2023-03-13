@@ -1,20 +1,4 @@
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/GtsSizeManager.hpp"
-#include "managers/GrowthTremorManager.hpp"
-#include "managers/ShrinkToNothingManager.hpp"
-#include "managers/CrushManager.hpp"
-#include "managers/impact.hpp"
-#include "magic/effects/common.hpp"
-#include "managers/GtsManager.hpp"
-#include "utils/actorUtils.hpp"
-#include "data/persistent.hpp"
-#include "data/transient.hpp"
-#include "data/runtime.hpp"
-#include "scale/scale.hpp"
-#include "data/time.hpp"
-#include "events.hpp"
-#include "timer.hpp"
-#include "node.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -45,11 +29,6 @@ namespace {
 		"GTSsandwich_exit",         // [8] Exit sandwich loop and leave animation in general
 	};
 
-	const std::vector<std::string_view> Anim_Compatibility = {
-		"GTScrush_caster",          //[0] For compatibility with other mods. The gainer.
-		"GTScrush_victim",          //[1] The one to crush
-	};
-
 	const std::vector<std::string_view> LegRumbleNodes = { // used with Anim_ThighCrush
 		"NPC L Foot [Lft ]",
 		"NPC R Foot [Rft ]",
@@ -62,48 +41,14 @@ namespace {
 		"NPC R RearCalf [RrClf]",
 		"NPC L RearCalf [RrClf]",
 	};
-
-	const std::vector<std::string_view> MCO = {
-		"MCO_SecondDodge",                       // MCO compatibility, enables GTS sounds and footstep effects
-		"SoundPlay.MCO_DodgeSound",
-	};
-
-
-	void AdjustFallBehavior(Actor* actor) {
-		auto charCont = actor->GetCharController();
-		if (charCont) {
-			actor->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(actor));
-		}
-	}
-
-	void ApplyRumbleSounds(Actor* caster, Actor* receiver) {
-		auto transient = Transient::GetSingleton().GetActorData(caster);
-		float volume = 0.0;
-		static Timer timer = Timer(0.40);
-		if (transient) {
-			if (transient->legsspreading >= 1.0 || transient->legsclosing > 1.0 || transient->rumblemult >= 0.05) {
-				for (auto nodes: LegRumbleNodes) {
-					auto bone = find_node(caster, nodes);
-					if (bone) {
-						NiAVObject* attach = bone;
-						if (attach) {
-							float modifier = transient->legsspreading + transient->legsclosing + transient->rumblemult;
-							volume = (4 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
-							ApplyShakeAtNode(caster, receiver, 0.4 * modifier, attach->world.translate);
-							volume *= modifier;
-						}
-					}
-					if (timer.ShouldRunFrame()) {
-						Runtime::PlaySoundAtNode("RumbleWalkSound", caster, volume, 1.0, nodes);
-					}
-				}
-			}
-		}
-	}
 }
 
 
 namespace Gts {
+  AnimationEventData::AnimationEventData(const Actor& giant, const TESObjectREFR* tiny) : giant(giant), tiny(tiny) {}
+  AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&) callback, std::string group) : callback(callback), group(group) {}
+  TriggerData::TriggerData(std::string_view behavor, std::string_view group) : behavor(behavor), group(group) {}
+
 	AnimationManager& AnimationManager::GetSingleton() noexcept {
 		static AnimationManager instance;
 		return instance;
@@ -113,73 +58,94 @@ namespace Gts {
 		return "AnimationManager";
 	}
 
-	void AnimationManager::UpdateActors(Actor* target) {
-		auto PC = PlayerCharacter::GetSingleton();
-		if (target == PC) {
-			AdjustFallBehavior(PC);
-		}
-		ApplyRumbleSounds(target, PC);
+  void AnimationManager::DataReady() {
+    AnimationStomp::RegisterEvents();
+    AnimationStomp::RegisterTriggers();
+
+    AnimationCompat::RegisterEvents();
+    AnimationCompat::RegisterTriggers();
+  }
+
+	void AnimationManager::Update() {
+		auto player = PlayerCharacter::GetSingleton();
+    if (player) {
+      // Update fall behavor of player
+      auto charCont = player->GetCharController();
+      if (charCont) {
+        player->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(player));
+      }
+    }
 	}
 
-	void AnimationManager::AdjustAnimSpeed(Actor* actor, float bonus) {
-		auto transient = Transient::GetSingleton().GetActorData(actor);
-		if (transient) {
-			bool AllowEdit = transient->Allowspeededit;
-			if (AllowEdit) {
-				transient->animspeedbonus += bonus;
-				if (transient->animspeedbonus <= 0.15) {
-					transient->animspeedbonus = 0.15;
-				}
-			} else if (!AllowEdit) {
-				transient->animspeedbonus = 1.0;
-			}
-			ConsoleLog::GetSingleton()->Print("Anim Speed of %s is %g", actor->GetDisplayFullName(), transient->animspeedbonus);
-		}
+	void AnimationManager::AdjustAnimSpeed(float bonus) {
+		auto player = PlayerCharacter::GetSingleton();
+    try {
+      for (auto &[tag, data]: AnimationManager::GetSingleton().data.at(player).tags) {
+        if (data.canEditAnimSpeed) {
+          data.animSpeed += bonus;
+          data.animSpeed = std::clamp(data.animSpeed, 0.0, 1.5);
+        }
+      }
+    } catch (std::out_of_bounds e) {}
 	}
 
+  void AnimationManager::RegisterEvent(std::string_view name, std::string_view group, std::function<void(const AnimationEventData&)> func) {
+    this->eventCallbacks.insert_or_assign(name, func, group);
+  }
+
+  void AnimationManager::RegisterTrigger(std::string_view trigger, std::string_view group, std::string_view behavior) {
+    this->triggers.insert_or_assign(trigger, behavior, group);
+  }
+
+
+  void AnimationManager::StartAnim(std::string_view trigger, const Actor& giant) {
+    this->StartAnim(trigger, giant, nullptr);
+  }
+
+  void AnimationManager::StartAnim(std::string_view trigger, const Actor& giant, const TESObjectREFR* tiny) {
+    try {
+      // Find the behavior for this trigger exit on catch if not
+      auto& behavorToPlay = this->triggers.at(tag);
+      auto& group = behavorToPlay.group;
+      // Try to create anim data for actor
+      this->data.try_emplace(giant);
+      auto& actorData this->data[giant]; // Must exists now
+      // Create the anim data for this group if not present
+      try {
+        auto& data = actorData.at(group);
+      } catch (std::out_of_bounds) {
+        log::warn("Animation {} already playing", trigger);
+        return;
+      }
+      actorData.try_emplace(group, giant, tiny);
+      // Run the anim
+      giant->NotifyAnimationGraph(behavorToPlay.behavor);
+    } catch (std::out_of_bounds) {
+      log::error("Requested play of unknown animation named: {}", trigger);
+      return;
+    }
+  }
 
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
-		auto PC = PlayerCharacter::GetSingleton();
-		auto transient = Transient::GetSingleton().GetActorData(PC);
-		auto scale = get_visual_scale(actor);
-		if (actor->formID == 0x14 || Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
-			//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
-		}
-		float volume = scale * 0.20;
-		if (tag == MCO[0] || tag == MCO[1]) {
-			//Call UnderFoot event here somehow with x scale bonus
-			Runtime::PlaySound("lFootstepL", actor, volume, 1.0);
-		}
-		if (tag == Anim_Compatibility[0]) {
-			log::info("GTScrush_caster");
-		}
-		if (tag == Anim_Compatibility[1]) {
-			float giantscale = get_visual_scale(PC);
-			float tinyscale = get_visual_scale(actor);
-			float sizedifference = giantscale/tinyscale;
-			if (sizedifference >= 0.0) {
-				CrushManager::GetSingleton().Crush(PC, actor);
-			}
-		}
-		//log::info("Actor: {}, tag: {}", actor->GetDisplayFullName(), tag);
-	}
-	void AnimationManager::Test(Actor * giant, Actor* tiny) {
-		if (giant != tiny) {
-			return;
-		}
-		float giantScale = get_visual_scale(giant);
-		NiPoint3 giantLocation = giant->GetPosition();
-		NiPoint3 tinyLocation = tiny->GetPosition();
-		auto charCont = tiny->GetCharController();
-		if ((tinyLocation-giantLocation).Length() < 460*giantScale) {
-			if (charCont) {
-				hkVector4 velocity;
-				charCont->GetLinearVelocityImpl(velocity);
-				//auto tinyai = tiny->GetActorRuntimeData().currentProcess->high;
-				//if (tinyai) {
-				log::info("{} OutVelicty = {}, Initial Vel: {}, Vel Total = {}", tiny->GetDisplayFullName(), Vector2Str(charCont->outVelocity), Vector2Str(charCont->initialVelocity), Vector2Str(velocity));
-				//}
-			}
-		}
+    try {
+      // Try to get the registerd anim for this tag
+      auto& animToPlay = this->eventCallbacks.at(tag);
+      // If data dosent exist then insert with default
+      this->data.try_emplace(actor);
+      auto& actorData = this->data[actor];
+      let group animToPlay.group;
+      // If data dosent exist this will insert it with default
+      actorData.try_emplace(group, actor, nullptr);
+      // Get the data or the newly inserted data
+      auto& data = actorData[group];
+      // Call the anims function
+      animToPlay.callback(data);
+      // If the stage is 0 after an anim has been played then
+      //   delete this data so that we can reset for the next anim
+      if (data.stage == 0) {
+        actorData.erase(group);
+      }
+
+    } catch (std::out_of_bounds e) {}
 	}
 }

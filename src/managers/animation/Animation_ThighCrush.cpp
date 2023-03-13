@@ -61,16 +61,7 @@ namespace {
 		transient->ThighAnimStage = number;
 	}
 
-	void ShakeAndSound(Actor* caster, Actor* receiver, float volume, const std::string_view& node) { // Applies camera shake and sounds
-		Runtime::PlaySoundAtNode("lFootstepL", caster, volume, 1.0, node);
-		auto bone = find_node(caster, node);
-		if (bone) {
-			NiAVObject* attach = bone;
-			if (attach) {
-				ApplyShakeAtNode(caster, receiver, volume * 4, attach->world.translate);
-			}
-		}
-	}
+
 }
 
 namespace Gts {

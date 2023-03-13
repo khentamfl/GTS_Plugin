@@ -55,7 +55,6 @@ namespace Gts {
 		auto caster = player;
 		auto transient = Transient::GetSingleton().GetActorData(player);
 		auto& VoreManager = Vore::GetSingleton();
-		auto& Animation = AnimationManager::GetSingleton();
 		auto& ThighCrush = ThighCrush::GetSingleton();
 		auto& Stomp = Stomp::GetSingleton();
 		float size = get_visual_scale(player);
@@ -195,10 +194,10 @@ namespace Gts {
 			this->voreBlock = false;
 		}
 		if (ShiftPressed && E_Pressed) {
-			Stomp.ApplyStomp(player, "StompRight");
+			AnimationManager::StartAnim("StompRight", player);
 		}
 		if (ShiftPressed && Q_Pressed) {
-			Stomp.ApplyStomp(player, "StompLeft");
+      AnimationManager::StartAnim("StompLeft", player);
 		}
 
 		auto& Camera = CameraManager::GetSingleton();
@@ -214,19 +213,19 @@ namespace Gts {
 
 		if (LMB_Pressed && !RMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopAttack"); // Increase speed and power
-			Animation.AdjustAnimSpeed(player, 0.012);
+			AnimationManager::AdjustAnimSpeed(0.012);
 			//Grab::GetSingleton().Clear();
 		}
 		if (RMB_Pressed && !LMB_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopExit"); // Decrease speed and power
-			Animation.AdjustAnimSpeed(player, -0.0060);
+			AnimationManager::AdjustAnimSpeed(-0.0060);
 			//Grab::GetSingleton().CrushActors();
 		}
 		if (W_Pressed) {
 			ThighCrush.ApplyThighCrush(player, "ThighLoopExit");
 		}
 		if (RMB_Pressed && LMB_Pressed) {
-			Animation.AdjustAnimSpeed(player, 0.030); // Strongest attack
+			AnimationManager::AdjustAnimSpeed(0.030); // Strongest attack
 		}
 		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
 			Camera.ResetUpDown();

@@ -205,47 +205,29 @@ namespace Gts {
 		return 3.4028237E38; // Max float
 	}
 
-	void ApplyShake(Actor* caster, Actor* receiver, float modifier) {
-		auto player = PlayerCharacter::GetSingleton();
-		float distance = get_distance_to_camera(caster);
-		if (caster != player) {
-			distance = get_distance_to_actor(caster, receiver);
-		}
-		float sourcesize = get_target_scale(caster);
-		float receiversize = get_target_scale(receiver);
-		float sizedifference = clamp(0.0, 10.0, sourcesize/receiversize);
-		if (caster == receiver) {
-			sizedifference = clamp(0.0, 10.0, sourcesize);
-		}
-		float falloff = 450 * (sourcesize * 0.25 + 0.75) * (sizedifference * 0.25 + 0.75);
-		float power = (0.425 * ShakeStrength(caster));
-		float duration = 0.25 * (1 + (sizedifference * 0.25));
-		if (distance < falloff) {
-			float intensity = ((falloff/distance) / 8);
-			intensity = intensity*power;
-			duration = duration * intensity;
-
-			if (intensity <= 0) {
-				intensity = 0;
-			}
-			if (power >= 12.6) {
-				power = 12.6;
-			}
-			if (duration > 1.2) {
-				duration = 1.2;
-			}
-			//log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff);
-
-			if (receiver == player) {
-				shake_controller(intensity*modifier, intensity*modifier, duration);
-				shake_camera(receiver, intensity*modifier, duration);
-			}
-		}
+	void ApplyShake(Actor* caster, float modifier) {
+    if (caster) {
+      auto position = caster->GetPosition();
+      ApplyShakeAtPoint(caster, modifier, position);
+    }
 	}
 
-	void ApplyShakeAtNode(Actor* caster, Actor* receiver, float modifier, NiPoint3 coords) {
-		//Sermit To-do: improve logic: currently checks small point inside node only.
-		auto player = PlayerCharacter::GetSingleton();
+  void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node) {
+    auto node = find_node(caster, node);
+    if (node) {
+      ApplyShakeAtPoint(caster, modifier, node->world.translate);
+    }
+  }
+	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords) {
+		if (!caster) {
+      return;
+    }
+    // Reciever is always PC if it is not PC we do nothing anyways
+		Actor* receiver = PlayerCharacter::GetSingleton();
+    if (!receiver) {
+      return;
+    }
+
 		float distance = get_distance_to_camera(coords);
 		float sourcesize = get_visual_scale(caster);
 		float receiversize = get_visual_scale(receiver);
@@ -253,31 +235,33 @@ namespace Gts {
 		if (caster->formID == 0x14) {
 			sizedifference = sourcesize;
 		}
-		float falloff = 450 * sizedifference;
-		float power = (0.425 * ShakeStrength(caster));
-		float duration = 0.25 * (1 + (sizedifference * 0.25));
-		if (distance < falloff) {
-			float intensity = ((falloff/distance) / 8);
-			intensity = intensity*power;
-			duration = duration * intensity;
 
-			if (intensity <= 0) {
-				intensity = 0;
-			}
-			if (power >= 12.6) {
-				power = 12.6;
-			}
-			if (duration > 1.2) {
-				duration = 1.2;
-			}
+    // To Sermit: You wrote a cutoff not a falloff
+    //            was this intentional?
+    //
+    // FYI: This is the difference
+    // Falloff:
+    //   |
+    // I |----\
+    //   |     \
+    //   |______\___
+    //        distance
+    // Cuttoff:
+    //   |
+    // I |----|
+    //   |    |
+    //   |____|_____
+    //        distance
+		float cuttoff = 450 * sizedifference;
+    if (distance < cuttoff) {
+      // To Sermit: Same value as before just with the math reduced to minimal steps
+      float intensity = (sizedifference * 23.90625 * ShakeStrength(caster)) / distance;
+		  float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
+      intensity = std::clamp(intensity, 0.0, 1e8);
+      duration = std::clamp(duration, 0.0, 1.2);
 
-			//log::info("Shake, Source: {}, Receiver: {}, Intensity: {}, distance: {}, Falloff: {}, Power: {}", caster->GetDisplayFullName(), receiver->GetDisplayFullName(), intensity, distance, falloff, power);
-
-			if (receiver->formID == 0x14) {
-				//log::info("Playing Sound");
-				shake_controller(intensity*modifier, intensity*modifier, duration);
-				shake_camera_at_node(coords, intensity*modifier, duration);
-			}
+			shake_controller(intensity*modifier, intensity*modifier, duration);
+			shake_camera_at_node(coords, intensity*modifier, duration);
 		}
 	}
 }

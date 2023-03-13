@@ -482,8 +482,6 @@ void GtsManager::Update() {
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
-		AnimationManager::GetSingleton().UpdateActors(actor);
-
 		if (sizemanager.GetPreciseDamage()) {
 			if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
 				accuratedamage.DoAccurateCollision(actor);

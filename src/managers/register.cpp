@@ -23,6 +23,7 @@
 #include "managers/tremor.hpp"
 #include "managers/footstep.hpp"
 #include "managers/explosion.hpp"
+#include "managers/rumble.hpp"
 
 namespace Gts {
 	void RegisterManagers() {
@@ -41,6 +42,7 @@ namespace Gts {
 		EventDispatcher::AddListener(&FootStepManager::GetSingleton()); // Manages footstep sounds
 		EventDispatcher::AddListener(&TremorManager::GetSingleton()); // Manages tremors on footstop
 		EventDispatcher::AddListener(&ExplosionManager::GetSingleton()); // Manages clouds/exposions on footstep
+    EventDispatcher::AddListener(&Rumble::GetSingleton()); // Manages rumbling of contoller/camera for multiple frames
 
 		EventDispatcher::AddListener(&AttributeManager::GetSingleton()); // Adjusts most attributes
 		EventDispatcher::AddListener(&RandomGrowth::GetSingleton()); // Manages random growth perk
