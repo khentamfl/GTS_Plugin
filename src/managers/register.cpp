@@ -4,8 +4,6 @@
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/animation/Animation_ThighCrush.hpp"
-#include "managers/animation/Animation_Stomp.hpp"
 #include "managers/animation/Animation_Grab.hpp"
 #include "managers/highheel.hpp"
 #include "managers/GtsSizeManager.hpp"
