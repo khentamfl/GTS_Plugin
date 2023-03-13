@@ -122,7 +122,7 @@ namespace Gts
 
 		protected:
 			std::unordered_map<Actor*, std::unordered_map<std::string, AnimationEventData> > data;
-			std::unordered_map<std::string, AnimationEvent>> eventCallbacks;
+			std::unordered_map<std::string, AnimationEvent> eventCallbacks;
 			std::unordered_map<std::string, TriggerData> triggers;
 	};
 

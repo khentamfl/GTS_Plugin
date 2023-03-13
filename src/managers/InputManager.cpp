@@ -55,8 +55,7 @@ namespace Gts {
 		auto caster = player;
 		auto transient = Transient::GetSingleton().GetActorData(player);
 		auto& VoreManager = Vore::GetSingleton();
-		auto& ThighCrush = ThighCrush::GetSingleton();
-		auto& Stomp = Stomp::GetSingleton();
+		auto& Animation = AnimationManager::GetSingleton();
 		float size = get_visual_scale(player);
 
 		if (!player) {
@@ -111,7 +110,7 @@ namespace Gts {
 				}
 
 				if (key == 0x38 && buttonEvent->HeldDuration() >= 0.6) { //Alt
-					AnimationManager::StartAnim("ThighCrush", player);
+					Animation.StartAnim("ThighCrush", player);
 					log::info("Triggering Stage 0");
 				}
 
@@ -194,10 +193,10 @@ namespace Gts {
 			this->voreBlock = false;
 		}
 		if (ShiftPressed && E_Pressed) {
-			AnimationManager::StartAnim("StompRight", player);
+			Animation.StartAnim("StompRight", player);
 		}
 		if (ShiftPressed && Q_Pressed) {
-			AnimationManager::StartAnim("StompLeft", player);
+			Animation.StartAnim("StompLeft", player);
 		}
 
 		auto& Camera = CameraManager::GetSingleton();
@@ -212,20 +211,20 @@ namespace Gts {
 		} // Left or Right end
 
 		if (LMB_Pressed && !RMB_Pressed) {
-			AnimationManager::NextAnim("ThighCrush", player); // Increase speed and power
-			AnimationManager::AdjustAnimSpeed(0.012);
+			Animation.NextAnim("ThighCrush", player); // Increase speed and power
+			Animation.AdjustAnimSpeed(0.012);
 			//Grab::GetSingleton().Clear();
 		}
 		if (RMB_Pressed && !LMB_Pressed) {
-			AnimationManager::NextAnim("ThighCrush", player); // Increase speed and power
-			AnimationManager::AdjustAnimSpeed(-0.0060);
+			Animation.NextAnim("ThighCrush", player); // Increase speed and power
+			Animation.AdjustAnimSpeed(-0.0060);
 			//Grab::GetSingleton().CrushActors();
 		}
 		if (W_Pressed) {
-			AnimationManager::NextAnim("ThighCrush", player);
+			Animation.NextAnim("ThighCrush", player);
 		}
 		if (RMB_Pressed && LMB_Pressed) {
-			AnimationManager::AdjustAnimSpeed(0.030); // Strongest attack
+			Animation.AdjustAnimSpeed(0.030); // Strongest attack
 		}
 		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
 			Camera.ResetUpDown();
