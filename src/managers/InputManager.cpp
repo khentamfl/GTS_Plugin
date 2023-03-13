@@ -110,7 +110,7 @@ namespace Gts {
 				}
 
 				if (key == 0x38 && buttonEvent->HeldDuration() >= 0.6) { //Alt
-					Animation.StartAnim("ThighCrush", player);
+					Animation.StartAnim("ThighCrush", player->AsActor());
 					log::info("Triggering Stage 0");
 				}
 
@@ -193,10 +193,10 @@ namespace Gts {
 			this->voreBlock = false;
 		}
 		if (ShiftPressed && E_Pressed) {
-			Animation.StartAnim("StompRight", player);
+			Animation.StartAnim("StompRight", player->AsActor());
 		}
 		if (ShiftPressed && Q_Pressed) {
-			Animation.StartAnim("StompLeft", player);
+			Animation.StartAnim("StompLeft", player->AsActor());
 		}
 
 		auto& Camera = CameraManager::GetSingleton();
@@ -211,17 +211,17 @@ namespace Gts {
 		} // Left or Right end
 
 		if (LMB_Pressed && !RMB_Pressed) {
-			Animation.NextAnim("ThighCrush", player); // Increase speed and power
+			Animation.NextAnim("ThighCrush", player->AsActor()); // Increase speed and power
 			Animation.AdjustAnimSpeed(0.012);
 			//Grab::GetSingleton().Clear();
 		}
 		if (RMB_Pressed && !LMB_Pressed) {
-			Animation.NextAnim("ThighCrush", player); // Increase speed and power
+			Animation.NextAnim("ThighCrush", player->AsActor()); // Increase speed and power
 			Animation.AdjustAnimSpeed(-0.0060);
 			//Grab::GetSingleton().CrushActors();
 		}
 		if (W_Pressed) {
-			Animation.NextAnim("ThighCrush", player);
+			Animation.NextAnim("ThighCrush", player->AsActor());
 		}
 		if (RMB_Pressed && LMB_Pressed) {
 			Animation.AdjustAnimSpeed(0.030); // Strongest attack

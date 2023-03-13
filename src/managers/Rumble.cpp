@@ -1,5 +1,5 @@
-#pragma once
 // Module that handles rumbling
+#include "managers/Rumble.hpp"
 #include "events.hpp"
 #include "timer.hpp"
 #include "spring.hpp"
