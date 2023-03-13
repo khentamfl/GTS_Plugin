@@ -150,7 +150,8 @@ namespace Hooks
 
 	void Hook_Character::NPCAnimEvents(BSTEventSink<BSAnimationGraphEvent>* a_this, BSAnimationGraphEvent& a_event, BSTEventSource<BSAnimationGraphEvent>* a_src) {
 		if (a_event.tag != NULL && a_event.holder != NULL) {
-			Actor* actor = a_event.holder->As<Actor>();
+      TESObjectREFR* obj = const_cast<TESObjectREFR*>(a_event.holder);
+      Actor* actor = skyrim_cast<Actor*>(obj);
 			if (actor) {
 				EventDispatcher::DoActorAnimEvent(actor, a_event.tag, a_event.payload);
 			}
