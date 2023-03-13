@@ -40,7 +40,7 @@ namespace Gts
 	// Holds data that links a animation tag to a callback and group
 	struct AnimationEvent {
 		// The callback to run
-		std::function<void(AnimationEventData&) callback;
+		std::function<void(AnimationEventData&)> callback;
 		// This is a tag used to link animation data from one call to another
 		//   All animations of the same kind i.e Stomp has GTSstompimpactR, GTSstompimpactL etc
 		//   will have the same group name.
@@ -48,7 +48,7 @@ namespace Gts
 		//  At every stage this data will be passed to any animation registered with this groupname
 		std::string group;
 
-		AnimationEvent(std::function<void(AnimationEventData&) callback, std::string group);
+		AnimationEvent(std::function<void(AnimationEventData&)> callback, std::string group);
 	};
 
 	// Holds data that links a trigger to a behaviour and group

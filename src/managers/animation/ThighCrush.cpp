@@ -39,14 +39,14 @@ namespace {
 	void StartLegRumble(std::string_view tag, Actor* actor, float power) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::GetSingleton().Start(rumbleName, actor, power, node_name);
+			Rumble::Start(rumbleName, actor, power, node_name);
 		}
 	}
 
 	void StopLegRumble(std::string_view tag, Actor* actor) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::GetSingleton().Stop(rumbleName, actor);
+			Rumble::Stop(rumbleName, actor);
 		}
 	}
 
