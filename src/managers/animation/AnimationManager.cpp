@@ -100,11 +100,11 @@ namespace Gts {
 	}
 
 
-	void AnimationManager::StartAnim(std::string_view trigger, const Actor& giant) {
+	void AnimationManager::StartAnim(std::string_view trigger, const Actor* giant) {
 		this->StartAnim(trigger, giant, nullptr);
 	}
 
-	void AnimationManager::StartAnim(std::string_view trigger, const Actor& giant, const TESObjectREFR* tiny) {
+	void AnimationManager::StartAnim(std::string_view trigger, const Actor* giant, const TESObjectREFR* tiny) {
 		try {
 			// Find the behavior for this trigger exit on catch if not
 			auto& behavorToPlay = this->triggers.at(tag);
@@ -122,7 +122,7 @@ namespace Gts {
 		}
 	}
 
-	void AnimationManager::NextAnim(std::string_view trigger, const Actor& giant) {
+	void AnimationManager::NextAnim(std::string_view trigger, const Actor* giant) {
 		try {
 			// Find the behavior for this trigger exit on catch if not
 			auto& behavorToPlay = this->triggers.at(tag);
