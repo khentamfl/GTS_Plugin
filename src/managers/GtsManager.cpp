@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include "utils/debug.hpp"
+#include "managers/Rumble.hpp"
 
 using namespace Gts;
 using namespace RE;
@@ -305,7 +306,7 @@ namespace {
 						}
 						if (StrongGrowthChance >= 19.0) {
 							GrowthPower *= 4.0;                                                                       // Stronger growth if procs
-							ApplyShake(actor, player, GrowthPower * 40);
+							Rumble::Once("CurseOfGrowth", actor, GrowthPower * 40);
 						}
 						if (targetScale >= sizelimit) {
 							set_target_scale(actor, sizelimit);
@@ -315,7 +316,7 @@ namespace {
 						}
 						if (targetScale < maxScale) {
 							mod_target_scale(actor, GrowthPower);
-							ApplyShake(actor, player, GrowthPower * 20);
+							Rumble::Once("CurseOfGrowth", actor, GrowthPower * 20);
 							Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
 						}
 					}

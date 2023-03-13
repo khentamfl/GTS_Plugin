@@ -5,6 +5,7 @@
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "timer.hpp"
+#include "managers/Rumble.hpp"
 
 namespace Gts {
 	std::string SlowGrow::GetName() {
@@ -36,7 +37,7 @@ namespace Gts {
 		}
 
 		Grow(caster, 0.0, power * bonus);
-		ApplyShake(caster, caster, 0.30);
+		Rumble::Once("SlowGrow", caster, 0.30);
 		//log::info("Slowly Growing, actor: {}", caster->GetDisplayFullName());
 	}
 
