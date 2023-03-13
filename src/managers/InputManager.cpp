@@ -197,7 +197,7 @@ namespace Gts {
 			AnimationManager::StartAnim("StompRight", player);
 		}
 		if (ShiftPressed && Q_Pressed) {
-      AnimationManager::StartAnim("StompLeft", player);
+			AnimationManager::StartAnim("StompLeft", player);
 		}
 
 		auto& Camera = CameraManager::GetSingleton();

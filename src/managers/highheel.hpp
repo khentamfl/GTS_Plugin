@@ -7,10 +7,10 @@
 using namespace RE;
 
 namespace Gts {
-  struct HHData {
-    Spring multiplier = Spring(1.0, 0.5); // Used to smotthly disable/enabled the highheels
-    bool wasWearingHh = false;
-  };
+	struct HHData {
+		Spring multiplier = Spring(1.0, 0.5); // Used to smotthly disable/enabled the highheels
+		bool wasWearingHh = false;
+	};
 
 	class HighHeelManager : public EventListener {
 		public:
@@ -27,6 +27,6 @@ namespace Gts {
 
 			void ApplyHH(Actor* actor, bool force);
 
-      std::unordered_map<Actor*, HHData> data;
+			std::unordered_map<Actor*, HHData> data;
 	};
 }

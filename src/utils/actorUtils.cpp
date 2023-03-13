@@ -206,27 +206,27 @@ namespace Gts {
 	}
 
 	void ApplyShake(Actor* caster, float modifier) {
-    if (caster) {
-      auto position = caster->GetPosition();
-      ApplyShakeAtPoint(caster, modifier, position);
-    }
+		if (caster) {
+			auto position = caster->GetPosition();
+			ApplyShakeAtPoint(caster, modifier, position);
+		}
 	}
 
-  void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node) {
-    auto node = find_node(caster, node);
-    if (node) {
-      ApplyShakeAtPoint(caster, modifier, node->world.translate);
-    }
-  }
+	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node) {
+		auto node = find_node(caster, node);
+		if (node) {
+			ApplyShakeAtPoint(caster, modifier, node->world.translate);
+		}
+	}
 	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords) {
 		if (!caster) {
-      return;
-    }
-    // Reciever is always PC if it is not PC we do nothing anyways
+			return;
+		}
+		// Reciever is always PC if it is not PC we do nothing anyways
 		Actor* receiver = PlayerCharacter::GetSingleton();
-    if (!receiver) {
-      return;
-    }
+		if (!receiver) {
+			return;
+		}
 
 		float distance = get_distance_to_camera(coords);
 		float sourcesize = get_visual_scale(caster);
@@ -236,29 +236,29 @@ namespace Gts {
 			sizedifference = sourcesize;
 		}
 
-    // To Sermit: You wrote a cutoff not a falloff
-    //            was this intentional?
-    //
-    // FYI: This is the difference
-    // Falloff:
-    //   |
-    // I |----\
-    //   |     \
-    //   |______\___
-    //        distance
-    // Cuttoff:
-    //   |
-    // I |----|
-    //   |    |
-    //   |____|_____
-    //        distance
+		// To Sermit: You wrote a cutoff not a falloff
+		//            was this intentional?
+		//
+		// FYI: This is the difference
+		// Falloff:
+		//   |
+		// I |----\
+		//   |     \
+		//   |______\___
+		//        distance
+		// Cuttoff:
+		//   |
+		// I |----|
+		//   |    |
+		//   |____|_____
+		//        distance
 		float cuttoff = 450 * sizedifference;
-    if (distance < cuttoff) {
-      // To Sermit: Same value as before just with the math reduced to minimal steps
-      float intensity = (sizedifference * 23.90625 * ShakeStrength(caster)) / distance;
-		  float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
-      intensity = std::clamp(intensity, 0.0, 1e8);
-      duration = std::clamp(duration, 0.0, 1.2);
+		if (distance < cuttoff) {
+			// To Sermit: Same value as before just with the math reduced to minimal steps
+			float intensity = (sizedifference * 23.90625 * ShakeStrength(caster)) / distance;
+			float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
+			intensity = std::clamp(intensity, 0.0, 1e8);
+			duration = std::clamp(duration, 0.0, 1.2);
 
 			shake_controller(intensity*modifier, intensity*modifier, duration);
 			shake_camera_at_node(coords, intensity*modifier, duration);

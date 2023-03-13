@@ -13,34 +13,34 @@ namespace Gts {
 	enum class RumpleState {
 		RampingUp, // Just started
 		Rumbling, // At max intensity keep it going
-    RampingDown, // After stop is recieved we are now going to zero
-    Still, // means we are done and should clean up
+		RampingDown, // After stop is recieved we are now going to zero
+		Still, // means we are done and should clean up
 	};
 
-  // Holds rumble data
+	// Holds rumble data
 	class RumbleData {
 		public:
 			RumbleData(float intensity, float duration, std::string_view node);
-      void ChangeTargetIntensity(float intensity);
-      void ChangeDuration(float duration);
+			void ChangeTargetIntensity(float intensity);
+			void ChangeDuration(float duration);
 
 			RumpleState state;
-      float duration; // Value of 0 means keep going until stopped
-      Spring currentIntensity;
-      std::string node;
-      double startTime;
+			float duration; // Value of 0 means keep going until stopped
+			Spring currentIntensity;
+			std::string node;
+			double startTime;
 	};
 
-  // Holds all rumble data for an actor
-  // This is needed because an actor can have many sources of rumble
-  class ActorRumbleData {
-    ActorRumbleData();
-     Timer delay;
-     // Tagged rumble data
-     std::unordered_map<std::string, RumbleData> tags;
-  };
+	// Holds all rumble data for an actor
+	// This is needed because an actor can have many sources of rumble
+	class ActorRumbleData {
+		ActorRumbleData();
+		Timer delay;
+		// Tagged rumble data
+		std::unordered_map<std::string, RumbleData> tags;
+	};
 
-  // Rumble for all actors
+	// Rumble for all actors
 	class Rumble : public EventListener {
 		public:
 			[[nodiscard]] static Rumble& GetSingleton() noexcept;
@@ -48,19 +48,19 @@ namespace Gts {
 			virtual std::string DebugName() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
-      virtual void Update() override;
+			virtual void Update() override;
 
-      // Use this to start a rumble.
+			// Use this to start a rumble.
 			static void Start(std::string_view tag, Actor* giant, float intensity, std::string_view node);
-      // Use this to stop a rumble. The tag must be the same as given in start
-      static void Stop(std::string_view tag, Actor* giant);
+			// Use this to stop a rumble. The tag must be the same as given in start
+			static void Stop(std::string_view tag, Actor* giant);
 
-      // Same as Start except with a duration (can still use Stop to end it early)
-      static void For(std::string_view tag, Actor* giant, float intensity, std::string_view node, float duration);
+			// Same as Start except with a duration (can still use Stop to end it early)
+			static void For(std::string_view tag, Actor* giant, float intensity, std::string_view node, float duration);
 
-      // A quick rumble. This should be a short instance like a single stomp. May not be for one frame but will be short
-      // - To Sermit: This is currently set to 1.0s but can tinker with it
-      static void Once(std::string_view tag, Actor* giant, float intensity, std::string_view node);
+			// A quick rumble. This should be a short instance like a single stomp. May not be for one frame but will be short
+			// - To Sermit: This is currently set to 1.0s but can tinker with it
+			static void Once(std::string_view tag, Actor* giant, float intensity, std::string_view node);
 		private:
 			std::unordered_map<Actor*, ActorRumbleData> data;
 	};

@@ -53,19 +53,19 @@ namespace Gts {
 		if (Persistent::GetSingleton().highheel_furniture == false && !actor->GetGraphVariableBool("GTS_isBusy", GTSBusy) && actor->GetOccupiedFurniture()) {
 			return;
 		}
-    this->data.try_emplace(actor);
-    auto& hhData = this->data[actor];
-    // Should disable HH?
-    bool disableHH = (
-      AnimationManager::HHDisabled(actor) ||
-      IsProne(actor) ||
-      !Persistent::GetSingleton().highheel_correction
-    );
-    if (disableHH) {
-      hhData.multiplier.target = 0.0;
-    } else {
-      hhData.multiplier.target = 1.0;
-    }
+		this->data.try_emplace(actor);
+		auto& hhData = this->data[actor];
+		// Should disable HH?
+		bool disableHH = (
+			AnimationManager::HHDisabled(actor) ||
+			IsProne(actor) ||
+			!Persistent::GetSingleton().highheel_correction
+			);
+		if (disableHH) {
+			hhData.multiplier.target = 0.0;
+		} else {
+			hhData.multiplier.target = 1.0;
+		}
 
 
 		NiPoint3 new_hh;

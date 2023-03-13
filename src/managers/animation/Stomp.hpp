@@ -8,9 +8,9 @@ using namespace RE;
 namespace Gts
 {
 	class AnimationStomp {
-    public:
-      static void RegisterEvents();
+		public:
+			static void RegisterEvents();
 
-      static void RegisterTriggers();
-  };
+			static void RegisterTriggers();
+	};
 }
