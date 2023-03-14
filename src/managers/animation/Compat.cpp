@@ -11,6 +11,9 @@
 #include "managers/animation/Compat.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/Rumble.hpp"
+#include "managers/CrushManager.hpp"
+#include "data/runtime.hpp"
+#include "scale/scale.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -30,8 +33,7 @@ namespace {
 
 	void GTScrush_victim(AnimationEventData& data) {
 		data.stage = 0;
-		auto player = PlayerCharacter::GetSingleton();
-		if (data.giant != player) {
+		if (data.giant.formId != 0x14) {
 			float giantscale = get_visual_scale(player);
 			float tinyscale = get_visual_scale(data.giant);
 			float sizedifference = giantscale/tinyscale;
