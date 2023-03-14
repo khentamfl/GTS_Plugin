@@ -37,7 +37,7 @@ namespace {
 namespace Gts {
 	AnimationEventData::AnimationEventData(const Actor& giant, const TESObjectREFR* tiny) : giant(giant), tiny(tiny) {
 	}
-	AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&) a_callback, std::string a_group) : callback(a_callback), group(a_group) {
+	AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&)> a_callback, std::string a_group) : callback(a_callback), group(a_group) {
 	}
 	TriggerData::TriggerData(std::vector<std::string_view> behavors, std::string_view group) : behavors(behavors), group(group) {
 	}
