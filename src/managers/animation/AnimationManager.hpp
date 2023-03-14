@@ -44,8 +44,8 @@ namespace Gts
 		// This is a tag used to link animation data from one call to another
 		//   All animations of the same kind i.e Stomp has GTSstompimpactR, GTSstompimpactL etc
 		//   will have the same group name.
-		// When an animation is started data with this group name is created
-		//  At every stage this data will be passed to any animation registered with this groupname
+		// When an animation is started data with this group name is created for this actor
+		//  At every stage this data will be passed to any animation registered with this groupname for an actor
 		std::string group;
 
 		AnimationEvent(std::function<void(AnimationEventData&)> callback, std::string group);
