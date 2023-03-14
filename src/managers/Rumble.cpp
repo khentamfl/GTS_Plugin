@@ -55,14 +55,16 @@ namespace Gts {
   void Rumble::Start(std::string_view tag, Actor* giant, float intensity) {
 		Rumble::For(tag, giant, intensity, "NPC Root [Root]", 0);
 	}
-	void Rumble::Stop(std::string_view tag, Actor* giant) {
+	void Rumble::Stop(std::string_view tagsv, Actor* giant) {
+    string tag = std::string(tagsv);
     auto& me = Rumble::GetSingleton();
 		try {
 			me.data.at(giant).tags.at(tag).state = RumpleState::RampingDown;
 		} catch (std::out_of_range e) {}
 	}
 
-	void Rumble::For(std::string_view tag, Actor* giant, float intensity, std::string_view node, float duration) {
+	void Rumble::For(std::string_view tagsv, Actor* giant, float intensity, std::string_view node, float duration) {
+    string tag = std::string(tagsv);
     auto& me = Rumble::GetSingleton();
 		me.data.try_emplace(giant);
 		me.data[giant].tags.try_emplace(tag, intensity, duration, node);
