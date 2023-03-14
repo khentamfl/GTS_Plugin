@@ -1,5 +1,4 @@
 #pragma once
-#include "managers/animation/AnimationManager.hpp"
 
 using namespace std;
 using namespace SKSE;

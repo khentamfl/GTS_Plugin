@@ -15,6 +15,7 @@
 //    - "GTStoexit",                    // [12] Leave animation, disable air rumble and such
 
 #include "managers/animation/ThighCrush.hpp"
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/Rumble.hpp"
 
 using namespace std;

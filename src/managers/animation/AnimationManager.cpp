@@ -1,4 +1,5 @@
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/Compat.hpp"
 #include "managers/animation/Stomp.hpp"
 #include "managers/animation/ThighCrush.hpp"
 
@@ -39,7 +40,10 @@ namespace Gts {
 	}
 	AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&)> a_callback, std::string a_group) : callback(a_callback), group(a_group) {
 	}
-	TriggerData::TriggerData(std::vector<std::string_view> behavors, std::string_view group) : behavors(behavors), group(group) {
+	TriggerData::TriggerData(std::vector<std::string_view> behavors, std::string_view group) : behavors({}), group(group) {
+    for (auto& sv: behavors) {
+      this->behavors.push_back(std::string(sv));
+    }
 	}
 
 	AnimationManager& AnimationManager::GetSingleton() noexcept {

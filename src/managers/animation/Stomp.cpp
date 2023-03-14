@@ -12,6 +12,7 @@
 //    - "GTSBEH_Exit",              // [9] Another disable
 
 #include "managers/animation/Stomp.hpp"
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/Rumble.hpp"
 
 using namespace std;

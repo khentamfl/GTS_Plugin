@@ -9,8 +9,6 @@
 //   - "MCO_SecondDodge",           // enables GTS sounds and footstep effects
 //   - "SoundPlay.MCO_DodgeSound",
 
-#include "managers/animation/AnimationManager.hpp"
-
 using namespace std;
 using namespace SKSE;
 using namespace RE;

@@ -9,6 +9,7 @@
 //   - "SoundPlay.MCO_DodgeSound",
 
 #include "managers/animation/Compat.hpp"
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/Rumble.hpp"
 
 using namespace std;
