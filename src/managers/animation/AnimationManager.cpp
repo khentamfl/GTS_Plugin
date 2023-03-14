@@ -170,7 +170,7 @@ namespace Gts {
   }
 
 	void AnimationManager::ActorAnimEvent(Actor* actor,  std::string_view& tag,  std::string_view& payload) {
-		try {
+		/*try {
 			// Try to get the registerd anim for this tag
 			auto& animToPlay = this->eventCallbacks.at(tag);
 			// If data dosent exist then insert with default
@@ -189,24 +189,24 @@ namespace Gts {
 				actorData.erase(group);
 			}
 
-		} catch (std::out_of_range e) {}
+		} catch (std::out_of_range e) {}*/
 	}
 
 	// Get the current stage of an animation group
 	static std::size_t AnimationManager::GetStage(Actor& actor,  std::string_view group) {
-    try {
+    /*try {
       auto& me = AnimationManager::GetSingleton();
 			return me.data.at(&actor).tags.at(group).stage;
 		} catch (std::out_of_range e) {
 			return 0;
-		}
+		}*/
   }
 	static std::size_t AnimationManager::GetStage(Actor* actor,  std::string_view group) {
-		if (actor) {
+		/*if (actor) {
       return AnimationManager::GetStage(*actor, group);
     } else {
       return 0;
-    }
+    }*/
 	}
 
 	// Check if any currently playing anim disabled the HHs
