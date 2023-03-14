@@ -86,13 +86,12 @@ namespace Gts {
 		for (const auto &[actor, data]: this->data) {
 			if (data.delay.ShouldRun()) {
 				// Update values based on time passed
-				float dt = data.timer.TimeDelta();
-				for (const auto &[tag, rumbleData]: data.tags) {
+				for (auto &[tag, rumbleData]: data.tags) {
 					switch (rumbleData.state) {
 						case RumpleState::RampingUp: {
 							// Increasing intensity just let the spring do its thing
-							if (fabs(rumbleData.currentIntensity.value - rumbleData.currentIntensity.target)) {
-								< 1e-3 {
+							if (fabs(rumbleData.currentIntensity.value - rumbleData.currentIntensity.target) {
+								< 1e-3) {
 									// When spring is done move the state onwards
 									rumbleData.state = RumpleState::Rumbling;
 									rumbleData.startTime = Time::WorldTimeElapsed();
@@ -111,7 +110,6 @@ namespace Gts {
 						case RumpleState::RampingDown: {
 							// Stoping the rumbling
 							rumbleData.currentIntensity.target = 0; // Ensure ramping down is going to zero intensity
-							rumbleData.currentIntensity.Update(dt);
 							if (fabs(rumbleData.currentIntensity.value) <= 1e-3) {
 								// Stopped
 								rumbleData.state = RumpleState::Still;
