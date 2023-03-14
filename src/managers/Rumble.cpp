@@ -36,7 +36,7 @@ namespace Gts {
 		this->startTime = 0.0;
 	}
 
-	ActorRumbleData::ActorRumbleData()  : delay(Timer(0.40)), tags({}) {}
+	ActorRumbleData::ActorRumbleData()  : delay(Timer(0.40)) {}
 
 	Rumble& Rumble::GetSingleton() noexcept {
 		static Rumble instance;
