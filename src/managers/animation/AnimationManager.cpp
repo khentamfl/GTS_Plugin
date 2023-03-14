@@ -81,17 +81,17 @@ namespace Gts {
 	void AnimationManager::AdjustAnimSpeed(float bonus) {
 		auto player = PlayerCharacter::GetSingleton();
 		try {
-			for (auto &[tag, data]: AnimationManager::GetSingleton().data.at(player).tags) {
+			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(player)) {
 				if (data.canEditAnimSpeed) {
 					data.animSpeed += bonus;
-					data.animSpeed = std::clamp(data.animSpeed, 0.0, 100.5);
+					data.animSpeed = std::clamp(data.animSpeed, 0.0, 1.5);
 				}
 			}
-		} catch (std::out_of_bounds e) {}
+		} catch (std::out_of_range e) {}
 	}
 
 	void AnimationManager::RegisterEvent(std::string_view name, std::string_view group, std::function<void(const AnimationEventData&)> func) {
-		this->eventCallbacks.insert_or_assign(name, func, group);
+		AnimationManager::GetSingleton().eventCallbacks.insert_or_assign(name, func, group);
 	}
 
 	void AnimationManager::RegisterTrigger(std::string_view trigger, std::string_view group, std::string_view behavior) {
@@ -100,7 +100,7 @@ namespace Gts {
 
 	void AnimationManager::RegisterTriggerWithStages(std::string_view trigger, std::string_view group, std::vector<std::string_view> behaviors) {
 		if (behaviors.size() > 0) {
-			this->triggers.insert_or_assign(trigger, behaviors, group);
+			AnimationManager::GetSingleton().triggers.insert_or_assign(trigger, behaviors, group);
 		}
 	}
 
@@ -127,7 +127,7 @@ namespace Gts {
 			actorData.try_emplace(group, giant, tiny);
 			// Run the anim
 			giant.NotifyAnimationGraph(behavorToPlay.behavors[0]);
-		} catch (std::out_of_bounds) {
+		} catch (std::out_of_range) {
 			log::error("Requested play of unknown animation named: {}", trigger);
 			return;
 		}
@@ -157,7 +157,7 @@ namespace Gts {
           eventData.currentTrigger = eventData.nextTrigger;
         }
 			}
-		} catch (std::out_of_bounds) {
+		} catch (std::out_of_range) {
 			return;
 		}
 	}
@@ -187,7 +187,7 @@ namespace Gts {
 				actorData.erase(group);
 			}
 
-		} catch (std::out_of_bounds e) {}
+		} catch (std::out_of_range e) {}
 	}
 
 	// Get the current stage of an animation group
@@ -195,7 +195,7 @@ namespace Gts {
     try {
       auto& me = AnimationManager::GetSingleton();
 			return me.data.at(&actor).tags.at(group).stage;
-		} catch (std::out_of_bounds e) {
+		} catch (std::out_of_range e) {
 			return 0;
 		}
   }
@@ -217,7 +217,7 @@ namespace Gts {
         }
       }
       return false;
-    } catch (std::out_of_bounds e) {
+    } catch (std::out_of_range e) {
       return false;
     }
   }
