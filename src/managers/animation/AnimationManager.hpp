@@ -71,7 +71,7 @@ namespace Gts
 			virtual std::string DebugName() override;
 			virtual void DataReady() override;
 			virtual void Update() override;
-			virtual void ActorAnimEvent(Actor* actor,  std::string_view& tag,  std::string_view& payload) override;
+			virtual void ActorAnimEvent(Actor* actor,  std::string_view& tag,  std::string_view& payload);
 
 
 			// Change speed of all animations that are currently playing on the PLAYER
