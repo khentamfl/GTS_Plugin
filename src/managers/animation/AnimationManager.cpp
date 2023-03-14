@@ -91,7 +91,7 @@ namespace Gts {
 	}
 
 	void AnimationManager::RegisterEvent( std::string_view name,  std::string_view group, std::function<void(AnimationEventData&)> func) {
-		AnimationManager::GetSingleton().eventCallbacks.insert_or_assign(name, func, group);
+		//AnimationManager::GetSingleton().eventCallbacks.insert_or_assign(name, func, group); //< ---- Disabled
 	}
 
 	void AnimationManager::RegisterTrigger( std::string_view trigger,  std::string_view group,  std::string_view behavior) {
@@ -100,7 +100,7 @@ namespace Gts {
 
 	void AnimationManager::RegisterTriggerWithStages( std::string_view trigger,  std::string_view group,  std::vector< std::string_view> behaviors) {
 		if (behaviors.size() > 0) {
-			AnimationManager::GetSingleton().triggers.insert_or_assign(trigger, behaviors, group);
+			//AnimationManager::GetSingleton().triggers.insert_or_assign(trigger, behaviors, group); //< ---- Disabled
 		}
 	}
 
@@ -118,7 +118,9 @@ namespace Gts {
 		try {
       auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
-			auto& behavorToPlay = me.triggers.at(tag);
+
+			//auto& behavorToPlay = me.triggers.at(tag); //< ---- Disabled
+
 			auto& group = behavorToPlay.group;
 			// Try to create anim data for actor
 			me.data.try_emplace(&giant);
