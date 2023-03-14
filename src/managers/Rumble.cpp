@@ -68,14 +68,15 @@ namespace Gts {
 		} catch (std::out_of_range e) {}
 	}
 
-	void Rumble::For(std::string_view tagsv, Actor* giant, float intensity, std::string_view node, float duration) {
-    string tag = std::string(tagsv);
+	void Rumble::For(std::string_view tagsv, Actor* giant, float intensity, std::string_view nodesv, float duration) {
+    std::string tag = std::string(tagsv);
+    std::string node = std::string(nodesv);
     auto& me = Rumble::GetSingleton();
 		me.data.try_emplace(giant);
 		// me.data[giant].tags.try_emplace(tag, intensity, duration, node);
 		// Reset if alreay there (but don't reset the intensity this will let us smooth into it)
-		me.data[giant].tags[tag].ChangeTargetIntensity(intensity);
-		me.data[giant].tags[tag].ChangeDuration(duration);
+		// me.data[giant].tags[tag].ChangeTargetIntensity(intensity);
+		// me.data[giant].tags[tag].ChangeDuration(duration);
 	}
 
 	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, std::string_view node) {
