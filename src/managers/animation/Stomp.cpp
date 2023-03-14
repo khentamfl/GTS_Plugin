@@ -34,8 +34,8 @@ namespace {
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
-		Runtime::PlaySoundAtNode(RSound, data.giant, volume, 1.0, RNode);
-		Rumble::Once("StompR", data.giant, volume * 6, RNode);
+		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
+		Rumble::Once("StompR", &data.giant, volume * 6, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
@@ -43,8 +43,8 @@ namespace {
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
-		Runtime::PlaySoundAtNode(LSound, data.giant, volume, 1.0, LNode);
-		Rumble::Once("StompL", data.giant, volume * 6, LNode);
+		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
+		Rumble::Once("StompL", &data.giant, volume * 6, LNode);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
@@ -52,8 +52,8 @@ namespace {
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
-		Runtime::PlaySoundAtNode(RSound, data.giant, volume, 1.0, RNode);
-		Rumble::Start("StompR", data.giant, 0.25, RNode);
+		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
+		Rumble::Start("StompR", &data.giant, 0.25, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
@@ -61,21 +61,21 @@ namespace {
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
-		Runtime::PlaySoundAtNode(LSound, data.giant, volume, 1.0, LNode);
-		Rumble::Start("StompL", data.giant, 0.25, RNode);
+		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
+		Rumble::Start("StompL", &data.giant, 0.25, RNode);
 	}
 
 
 	void GTSstompstartR(AnimationEventData& data) {
 		data.stage = 3;
 		data.canEditAnimSpeed = true;
-		Rumble::Start("StompR", data.giant, 0.35, RNode);
+		Rumble::Start("StompR", &data.giant, 0.35, RNode);
 	}
 
 	void GTSstompstartL(AnimationEventData& data) {
 		data.stage = 3;
 		data.canEditAnimSpeed = true;
-		Rumble::Start("StompL", data.giant, 0.35, LNode); // Start stonger effect
+		Rumble::Start("StompL", &data.giant, 0.35, LNode); // Start stonger effect
 	}
 
 	void GTSStompendR(AnimationEventData& data) {
@@ -92,14 +92,14 @@ namespace {
 
 	void GTS_Next(AnimationEventData& data) {
 		data.stage = 0;
-		Rumble::Stop("StompR", data.giant);
-		Rumble::Stop("StompL", data.giant);
+		Rumble::Stop("StompR", &data.giant);
+		Rumble::Stop("StompL", &data.giant);
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
 		data.stage = 0;
-		Rumble::Stop("StompR", data.giant);
-		Rumble::Stop("StompL", data.giant);
+		Rumble::Stop("StompR", &data.giant);
+		Rumble::Stop("StompL", &data.giant);
 	}
 
 }
