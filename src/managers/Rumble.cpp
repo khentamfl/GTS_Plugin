@@ -89,64 +89,64 @@ namespace Gts {
 
 
 	void Rumble::Update() {
-		// for (auto& [actor, data]: this->data) {
-		// 	if (data.delay.ShouldRun()) {
-		// 		// Update values based on time passed
-		// 		for (auto &[tag, rumbleData]: data.tags) {
-		// 			switch (rumbleData.state) {
-		// 				case RumpleState::RampingUp: {
-		// 					// Increasing intensity just let the spring do its thing
-		// 					if (fabs(rumbleData.currentIntensity.value - rumbleData.currentIntensity.target) < 1e-3) {
-		// 						// When spring is done move the state onwards
-		// 						rumbleData.state = RumpleState::Rumbling;
-		// 						rumbleData.startTime = Time::WorldTimeElapsed();
-		// 					}
-		// 					break;
-		// 				}
-		// 				case RumpleState::Rumbling: {
-		// 					// At max intensity
-		// 					rumbleData.currentIntensity.value = rumbleData.currentIntensity.target;
-		// 					if (Time::WorldTimeElapsed() > rumbleData.startTime + rumbleData.duration) {
-		// 						rumbleData.state = RumpleState::RampingDown;
-		// 					}
-		// 					break;
-		// 				}
-		// 				case RumpleState::RampingDown: {
-		// 					// Stoping the rumbling
-		// 					rumbleData.currentIntensity.target = 0; // Ensure ramping down is going to zero intensity
-		// 					if (fabs(rumbleData.currentIntensity.value) <= 1e-3) {
-		// 						// Stopped
-		// 						rumbleData.state = RumpleState::Still;
-		// 					}
-		// 					break;
-		// 				}
-		// 				case RumpleState::Still: {
-		// 					// All finished cleanup
-		// 					data.tags.erase(tag);
-		// 				}
-		// 			}
-		// 		}
-		// 		// Now collect the data
-		// 		//    - Multiple effects can add rumble to the same node
-		// 		//    - We sum those effects up into cummulativeIntensity
-		// 		std::unordered_map<NiAVObject*, float> cummulativeIntensity;
-		// 		for (const auto &[tag, rumbleData]: data.tags) {
-		// 			auto node = find_node(actor, rumbleData.node);
-		// 			if (node) {
-		// 				cummulativeIntensity.try_emplace(node);
-		// 				cummulativeIntensity[node] += rumbleData.currentIntensity.value;
-		// 			}
-		// 		}
-		// 		// Now do the rumble
-		// 		//   - Also add up the volume for the rumble
-		// 		for (const auto &[node, intensity]: cummulativeIntensity) {
-    //       auto& point = node->world.translate;
-		// 			ApplyShakeAtPoint(actor, 0.4 * intensity, point);
-		// 			float volume = 4 * get_visual_scale(actor) * intensity/get_distance_to_camera(point);
-    //       // Lastly play the sound at each node
-    //       Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, node);
-		// 		}
-		// 	}
-		// }
+		for (auto& [actor, data]: this->data) {
+			if (data.delay.ShouldRun()) {
+				// Update values based on time passed
+				for (auto& [tag, rumbleData]: data.tags) {
+					switch (rumbleData.state) {
+						case RumpleState::RampingUp: {
+							// Increasing intensity just let the spring do its thing
+							if (fabs(rumbleData.currentIntensity.value - rumbleData.currentIntensity.target) < 1e-3) {
+								// When spring is done move the state onwards
+								rumbleData.state = RumpleState::Rumbling;
+								rumbleData.startTime = Time::WorldTimeElapsed();
+							}
+							break;
+						}
+						case RumpleState::Rumbling: {
+							// At max intensity
+							rumbleData.currentIntensity.value = rumbleData.currentIntensity.target;
+							if (Time::WorldTimeElapsed() > rumbleData.startTime + rumbleData.duration) {
+								rumbleData.state = RumpleState::RampingDown;
+							}
+							break;
+						}
+						case RumpleState::RampingDown: {
+							// Stoping the rumbling
+							rumbleData.currentIntensity.target = 0; // Ensure ramping down is going to zero intensity
+							if (fabs(rumbleData.currentIntensity.value) <= 1e-3) {
+								// Stopped
+								rumbleData.state = RumpleState::Still;
+							}
+							break;
+						}
+						case RumpleState::Still: {
+							// All finished cleanup
+							data.tags.erase(tag);
+						}
+					}
+				}
+				// Now collect the data
+				//    - Multiple effects can add rumble to the same node
+				//    - We sum those effects up into cummulativeIntensity
+				std::unordered_map<NiAVObject*, float> cummulativeIntensity;
+				for (const auto &[tag, rumbleData]: data.tags) {
+					auto node = find_node(actor, rumbleData.node);
+					if (node) {
+						cummulativeIntensity.try_emplace(node);
+						cummulativeIntensity.at(node) += rumbleData.currentIntensity.value;
+					}
+				}
+				// Now do the rumble
+				//   - Also add up the volume for the rumble
+				for (const auto &[node, intensity]: cummulativeIntensity) {
+          auto& point = node->world.translate;
+					ApplyShakeAtPoint(actor, 0.4 * intensity, point);
+					float volume = 4 * get_visual_scale(actor) * intensity/get_distance_to_camera(point);
+          // Lastly play the sound at each node
+          Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, node);
+				}
+			}
+		}
 	}
 }

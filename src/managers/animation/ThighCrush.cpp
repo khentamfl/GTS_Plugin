@@ -21,6 +21,7 @@
 using namespace std;
 using namespace SKSE;
 using namespace RE;
+using namespace Gts;
 
 namespace {
 

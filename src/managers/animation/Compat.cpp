@@ -15,6 +15,7 @@
 using namespace std;
 using namespace SKSE;
 using namespace RE;
+using namespace Gts;
 
 namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
