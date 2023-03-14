@@ -31,10 +31,7 @@ namespace Gts {
 		this->startTime = 0.0;
 	}
 
-	ActorRumbleData::ActorRumbleData() {
-		this->delay = Timer(0.40);
-		this->tags = {};
-	}
+	ActorRumbleData::ActorRumbleData()  : delay(Timer(0.40)), tags({}) {}
 
 	Rumble& Rumble::GetSingleton() noexcept {
 		static Rumble instance;
@@ -59,17 +56,19 @@ namespace Gts {
 		Rumble::For(tag, giant, intensity, "NPC Root [Root]", 0);
 	}
 	void Rumble::Stop(std::string_view tag, Actor* giant) {
+    auto& me = Rumble::GetSingleton();
 		try {
 			this->data.at(giant).tags.at(tag).state = RumpleState::RampingDown;
 		} catch (std::out_of_range e) {}
 	}
 
 	void Rumble::For(std::string_view tag, Actor* giant, float intensity, std::string_view node, float duration) {
-		this->data.try_emplace(giant);
-		this->data[giant].tags.try_emplace(tag, intensity, duration, node);
+    auto& me = Rumble::GetSingleton();
+		me->data.try_emplace(giant);
+		me->data[giant].tags.try_emplace(tag, intensity, duration, node);
 		// Reset if alreay there (but don't reset the intensity this will let us smooth into it)
-		this->data[giant].tags[tag].ChangeTargetIntensity(intensity);
-		this->data[giant].tags[tag].ChangeDuration(duration);
+		me->data[giant].tags[tag].ChangeTargetIntensity(intensity);
+		me->data[giant].tags[tag].ChangeDuration(duration);
 	}
 
 	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, std::string_view node) {
