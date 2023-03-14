@@ -55,7 +55,6 @@ namespace Gts {
 		auto caster = player;
 		auto transient = Transient::GetSingleton().GetActorData(player);
 		auto& VoreManager = Vore::GetSingleton();
-		auto& Animation = AnimationManager::GetSingleton();
 		float size = get_visual_scale(player);
 
 		if (!player) {
@@ -110,7 +109,7 @@ namespace Gts {
 				}
 
 				if (key == 0x38 && buttonEvent->HeldDuration() >= 0.6) { //Alt
-					Animation.StartAnim("ThighCrush", player->AsActor());
+					AnimationManager::StartAnim("ThighCrush", player);
 					log::info("Triggering Stage 0");
 				}
 
@@ -193,10 +192,10 @@ namespace Gts {
 			this->voreBlock = false;
 		}
 		if (ShiftPressed && E_Pressed) {
-			Animation.StartAnim("StompRight", player->AsActor());
+			AnimationManager::StartAnim("StompRight", player);
 		}
 		if (ShiftPressed && Q_Pressed) {
-			Animation.StartAnim("StompLeft", player->AsActor());
+			AnimationManager::StartAnim("StompLeft", player);
 		}
 
 		auto& Camera = CameraManager::GetSingleton();
@@ -211,20 +210,20 @@ namespace Gts {
 		} // Left or Right end
 
 		if (LMB_Pressed && !RMB_Pressed) {
-			Animation.NextAnim("ThighCrush", player->AsActor()); // Increase speed and power
-			Animation.AdjustAnimSpeed(0.012);
+			AnimationManager::NextAnim("ThighCrush", player); // Increase speed and power
+			AnimationManager::AdjustAnimSpeed(0.012);
 			//Grab::GetSingleton().Clear();
 		}
 		if (RMB_Pressed && !LMB_Pressed) {
-			Animation.NextAnim("ThighCrush", player->AsActor()); // Increase speed and power
-			Animation.AdjustAnimSpeed(-0.0060);
+			AnimationManager::NextAnim("ThighCrush", player); // Increase speed and power
+			AnimationManager::AdjustAnimSpeed(-0.0060);
 			//Grab::GetSingleton().CrushActors();
 		}
 		if (W_Pressed) {
-			Animation.NextAnim("ThighCrush", player->AsActor());
+			AnimationManager::NextAnim("ThighCrush", player);
 		}
 		if (RMB_Pressed && LMB_Pressed) {
-			Animation.AdjustAnimSpeed(0.030); // Strongest attack
+			AnimationManager::AdjustAnimSpeed(0.030); // Strongest attack
 		}
 		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
 			Camera.ResetUpDown();
