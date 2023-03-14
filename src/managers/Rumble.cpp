@@ -136,14 +136,16 @@ namespace Gts {
 				}
 				// Now do the rumble
 				//   - Also add up the volume for the rumble
-				float cummulativeVolume = 4 * get_visual_scale(actor);
+				float cummulativeVolume = ;
 				for (const auto &[node, intensity]: cummulativeIntensity) {
           auto& point = node->world.translate;
 					ApplyShakeAtPoint(actor, 0.4 * intensity, point);
-					cummulativeVolume *= intensity/get_distance_to_camera(point);
+					float volume = 4 * get_visual_scale(actor) * intensity/get_distance_to_camera(point);
+          // Lastly play the sound at each node
+          Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, node);
 				}
-				// Lastly play the sound
-				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, cummulativeVolume, 1.0, node);
+
+
 			}
 		}
 	}
