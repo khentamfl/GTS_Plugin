@@ -4,6 +4,9 @@
 #include "timer.hpp"
 #include "spring.hpp"
 #include "data/time.hpp"
+#include "data/runtime.hpp"
+#include "node.hpp"
+#include "scale/scale.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -116,7 +119,7 @@ namespace Gts {
 						}
 						case RumpleState::Still: {
 							// All finished cleanup
-							data.erase(tag);
+							data.tags.erase(tag);
 						}
 					}
 				}
@@ -133,10 +136,11 @@ namespace Gts {
 				}
 				// Now do the rumble
 				//   - Also add up the volume for the rumble
-				float cummulativeVolume = (4 * get_visual_scale(caster))/get_distance_to_camera(attach->world.translate);
+				float cummulativeVolume = 4 * get_visual_scale(actor);
 				for (const auto &[node, intensity]: cummulativeIntensity) {
-					ApplyShakeAtPoint(actor, 0.4 * intensity, node->world.translate);
-					cummulativeVolume *= modifier;
+          auto& point = node->world.translate;
+					ApplyShakeAtPoint(actor, 0.4 * intensity, point);
+					cummulativeVolume *= intensity/get_distance_to_camera(point);
 				}
 				// Lastly play the sound
 				Runtime::PlaySoundAtNode("RumbleWalkSound", actor, cummulativeVolume, 1.0, node);
