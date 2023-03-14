@@ -141,10 +141,10 @@ namespace Gts {
   }
 
 	void AnimationManager::NextAnim(std::string_view trigger, Actor& giant) {
-		try {
+		/*try {
       auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
-			auto& behavorToPlay = me.triggers.at(tag);
+			auto& behavorToPlay = me.triggers.at(tag); 
 			auto& group = behavorToPlay.group;
 			// Get the actor data OR exit on catch
 			auto& actorData = me.data.at(&giant);
@@ -161,11 +161,11 @@ namespace Gts {
 			}
 		} catch (std::out_of_range) {
 			return;
-		}
+		}*/
 	}
   void AnimationManager::NextAnim(std::string_view trigger, Actor* giant) {
     if (giant) {
-      AnimationManager::NextAnim(trigger, *giant)
+      AnimationManager::NextAnim(trigger, *giant);
     }
   }
 
@@ -230,5 +230,4 @@ namespace Gts {
       return false;
     }
   }
-
 }
