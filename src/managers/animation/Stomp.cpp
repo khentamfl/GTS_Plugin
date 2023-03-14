@@ -15,6 +15,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/Rumble.hpp"
+#include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 
@@ -120,7 +121,7 @@ namespace Gts
 	}
 
 	void AnimationStomp::RegisterTriggers() {
-		AnimationManager::RegisterTrigger("StompRight", "Stomp" "GtsModStompAnimRight");
+		AnimationManager::RegisterTrigger("StompRight", "Stomp", "GtsModStompAnimRight");
 		AnimationManager::RegisterTrigger("StompLeft", "Stomp", "GtsModStompAnimLeft");
 	}
 }
