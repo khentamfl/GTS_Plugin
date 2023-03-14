@@ -101,46 +101,66 @@ namespace Gts {
 
 
 	void AnimationManager::StartAnim(std::string_view trigger, const Actor& giant) {
-		this->StartAnim(trigger, giant, nullptr);
+		AnimationManager::StartAnim(trigger, giant, nullptr);
 	}
+  void AnimationManager::StartAnim(std::string_view trigger, const Actor* giant) {
+    if (giant) {
+      AnimationManager::StartAnim(trigger, *giant);
+    }
+  }
 
 	void AnimationManager::StartAnim(std::string_view trigger, const Actor& giant, const TESObjectREFR* tiny) {
 		try {
+      auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
-			auto& behavorToPlay = this->triggers.at(tag);
+			auto& behavorToPlay = me.triggers.at(tag);
 			auto& group = behavorToPlay.group;
 			// Try to create anim data for actor
-			this->data.try_emplace(giant);
-			auto& actorData this->data[giant]; // Must exists now
+			me.data.try_emplace(&giant);
+			auto& actorData = me.data[&giant]; // Must exists now
 			// Create the anim data for this group if not present
 			actorData.try_emplace(group, giant, tiny);
 			// Run the anim
-			giant->NotifyAnimationGraph(behavorToPlay.behavors[0]);
+			giant.NotifyAnimationGraph(behavorToPlay.behavors[0]);
 		} catch (std::out_of_bounds) {
 			log::error("Requested play of unknown animation named: {}", trigger);
 			return;
 		}
 	}
+  void AnimationManager::StartAnim(std::string_view trigger, const Actor* giant, const TESObjectREFR* tiny) {
+    if (giant) {
+      AnimationManager::StartAnim(trigger, *giant, tiny);
+    }
+  }
 
 	void AnimationManager::NextAnim(std::string_view trigger, const Actor& giant) {
 		try {
+      auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
-			auto& behavorToPlay = this->triggers.at(tag);
+			auto& behavorToPlay = me.triggers.at(tag);
 			auto& group = behavorToPlay.group;
 			// Get the actor data OR exit on catch
-			auto& actorData = this->data.at(giant);
+			auto& actorData = me.data.at(&giant);
 			// Get the event data of exit on catch
 			auto& eventData = actorData.at(group);
 			std::size_t currentTrigger = eventData.currentTrigger;
 			std::size_t nextTrigger = eventData.nextTrigger;
 			if (currentTrigger != nextTrigger) {
 				// Run the anim
-				giant->NotifyAnimationGraph(behavorToPlay.behavors[nextTrigger]);
+				if (behavorToPlay.behavors.size() < nextTrigger) {
+  				giant.NotifyAnimationGraph(behavorToPlay.behavors[nextTrigger]);
+          eventData.currentTrigger = eventData.nextTrigger;
+        }
 			}
 		} catch (std::out_of_bounds) {
 			return;
 		}
 	}
+  void AnimationManager::NextAnim(std::string_view trigger, const Actor* giant) {
+    if (giant) {
+      AnimationManager::NextAnim(trigger, *giant)
+    }
+  }
 
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
 		try {
@@ -166,26 +186,42 @@ namespace Gts {
 	}
 
 	// Get the current stage of an animation group
-	static std::size_t GetStage(Actor* actor, std::string_view group) {
-		try {
-			return this->data.at(actor).tags.at(group).stage;
+	static std::size_t AnimationManager::GetStage(const Actor& actor, std::string_view group) {
+    try {
+      auto& me = AnimationManager::GetSingleton();
+			return me.data.at(&actor).tags.at(group).stage;
 		} catch (std::out_of_bounds e) {
 			return 0;
 		}
+  }
+	static std::size_t AnimationManager::GetStage(const Actor* actor, std::string_view group) {
+		if (actor) {
+      return AnimationManager::GetStage(*actor, group);
+    } else {
+      return 0;
+    }
 	}
 
 	// Check if any currently playing anim disabled the HHs
-	static bool HHDisabled(Actor* actor) {
-		try {
-			auto& actorData = this->data.at(actor);
-			for (const auto &[group, data]: actorData) {
-				if (data.disableHH) {
-					return true;
-				}
-			}
-			return false;
-		} catch (std::out_of_bounds e) {
-			return false;
-		}
-	}
+	static bool AnimationManager::HHDisabled(const Actor& actor) {
+    try {
+      auto& actorData = this->data.at(&actor);
+      for (const auto &[group, data]: actorData) {
+        if (data.disableHH) {
+          return true;
+        }
+      }
+      return false;
+    } catch (std::out_of_bounds e) {
+      return false;
+    }
+  }
+	static bool AnimationManager::HHDisabled(const Actor* actor) {
+    if (actor) {
+      return AnimationManager::HHDisabled(*actor);
+    } else {
+      return false;
+    }
+  }
+
 }
