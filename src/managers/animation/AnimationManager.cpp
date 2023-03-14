@@ -115,11 +115,11 @@ namespace Gts {
   }
 
 	void AnimationManager::StartAnim( std::string_view trigger, Actor& giant, TESObjectREFR* tiny) {
-		try {
+		/*try {
       auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
 
-			//auto& behavorToPlay = me.triggers.at(tag); //< ---- Disabled
+			auto& behavorToPlay = me.triggers.at(tag); //< ---- Disabled
 
 			auto& group = behavorToPlay.group;
 			// Try to create anim data for actor
@@ -132,7 +132,7 @@ namespace Gts {
 		} catch (std::out_of_range) {
 			log::error("Requested play of unknown animation named: {}", trigger);
 			return;
-		}
+		}*/
 	}
   void AnimationManager::StartAnim(std::string_view trigger, Actor* giant, TESObjectREFR* tiny) {
     if (giant) {

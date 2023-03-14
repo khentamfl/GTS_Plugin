@@ -81,14 +81,14 @@ namespace {
 
 	void GTSStompendR(AnimationEventData& data) {
 		data.stage = 4;
-		transient->canEditAnimSpeed = false;
-		transient->animSpeed = 1.0;
+		data.canEditAnimSpeed = false;
+		data.animSpeed = 1.0;
 	}
 
 	void GTSStompendL(AnimationEventData& data) {
 		data.stage = 4;
-		transient->canEditAnimSpeed = false;
-		transient->animSpeed = 1.0;
+		data.canEditAnimSpeed = false;
+		data.animSpeed = 1.0;
 	}
 
 	void GTS_Next(AnimationEventData& data) {
