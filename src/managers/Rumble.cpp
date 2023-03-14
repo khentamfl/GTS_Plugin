@@ -14,13 +14,15 @@ using namespace RE;
 
 namespace Gts {
 
-	RumbleData::RumbleData(float intensity, float duration, std::string_view node) {
-		this->state = RumpleState::RampingUp;
-		this->duration = duration;
-		this->currentIntensity.target = intensity;
-		this->currentIntensity.halflife = 0.5; // How fast rumbles start/stop
-		this->node = std::string(node);
-		this->startTime = 0.0;
+  RumbleData::RumbleData(float intensity, float duration, std::string node):
+  state(RumpleState::RampingUp),
+  duration(dutation),
+  currentIntensity(Spring(0.0, 0.5)),
+  node(node),
+  startTime(0.0) {
+	}
+
+	RumbleData::RumbleData(float intensity, float duration, std::string_view node): RumbleData(intensity, duration, std::string(node)) {
 	}
 
 	void RumbleData::ChangeTargetIntensity(float intensity) {
@@ -70,7 +72,7 @@ namespace Gts {
     string tag = std::string(tagsv);
     auto& me = Rumble::GetSingleton();
 		me.data.try_emplace(giant);
-		// me.data[giant].tags.try_emplace(tag, intensity, duration, node);
+		me.data[giant].tags.try_emplace(tag, intensity, duration, node);
 		// Reset if alreay there (but don't reset the intensity this will let us smooth into it)
 		me.data[giant].tags[tag].ChangeTargetIntensity(intensity);
 		me.data[giant].tags[tag].ChangeDuration(duration);
