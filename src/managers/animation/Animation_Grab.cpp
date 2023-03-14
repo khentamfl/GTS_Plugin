@@ -55,8 +55,8 @@ using namespace std;
                             tiny->SetPosition(attach->world.translate, false);
                             auto charcont = tiny->GetCharController();
                         if (charcont) {
-                                charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0));
-                            }
+                                charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down. 
+                    }
             }
         }
     }

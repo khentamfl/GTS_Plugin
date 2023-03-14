@@ -16,7 +16,10 @@
 
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/CrushManager.hpp"
 #include "managers/Rumble.hpp"
+#include "data/runtime.hpp"
+#include "scale/scale.hpp"
 
 using namespace std;
 using namespace SKSE;
