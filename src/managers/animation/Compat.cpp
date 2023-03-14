@@ -33,9 +33,10 @@ namespace {
 
 	void GTScrush_victim(AnimationEventData& data) {
 		data.stage = 0;
-		if (data.giant.formId != 0x14) {
+		if (data.giant.formID != 0x14) {
+      auto player = PlayerCharacter::GetSingleton();
 			float giantscale = get_visual_scale(player);
-			float tinyscale = get_visual_scale(data.giant);
+			float tinyscale = get_visual_scale(&data.giant);
 			float sizedifference = giantscale/tinyscale;
 			if (sizedifference >= 0.0) {
 				CrushManager::Crush(player, data.giant);
@@ -47,13 +48,13 @@ namespace {
 		data.stage = 0;
 		auto scale = get_visual_scale(data.giant);
 		float volume = scale * 0.20;
-		Runtime::PlaySound("lFootstepL", data.giant, volume, 1.0);
+		Runtime::PlaySound("lFootstepL", &data.giant, volume, 1.0);
 	}
 	void MCO_DodgeSound(AnimationEventData& data) {
 		data.stage = 0;
 		auto scale = get_visual_scale(data.giant);
 		float volume = scale * 0.20;
-		Runtime::PlaySound("lFootstepL", data.giant, volume, 1.0);
+		Runtime::PlaySound("lFootstepL", &data.giant, volume, 1.0);
 	}
 
 }
