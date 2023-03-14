@@ -19,7 +19,7 @@ namespace Gts {
 		this->duration = duration;
 		this->currentIntensity.target = intensity;
 		this->currentIntensity.halflife = 0.5; // How fast rumbles start/stop
-		this->node = node;
+		this->node = std::string(node);
 		this->startTime = 0.0;
 	}
 
