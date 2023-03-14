@@ -16,11 +16,11 @@ namespace Gts
 	struct AnimationEventData {
 		// Giant must exists and is the one the animation is happening on
 		//   Maybe rename this to caster
-		const Actor& giant;
+		Actor& giant;
 		// This is the thing being grabbed. It is an TESObjectREFR so we could also
 		//   pick up other objects
 		// Set to nullptr for no object
-		const TESObjectREFR* tiny;
+		TESObjectREFR* tiny;
 		// This is used to keep track of which trigger should be run the next time
 		//   AnimationManager::NextAnim is called
 		std::size_t nextTrigger = 0;
@@ -34,7 +34,7 @@ namespace Gts
 		bool canEditAnimSpeed = false;
 		// If true then hhs are disabled
 		bool disableHH = false;
-		AnimationEventData(const Actor& giant, const TESObjectREFR* tiny);
+		AnimationEventData(Actor& giant, TESObjectREFR* tiny);
 	};
 
 	// Holds data that links a animation tag to a callback and group
@@ -71,7 +71,7 @@ namespace Gts
 			virtual std::string DebugName() override;
 			virtual void DataReady() override;
 			virtual void Update() override;
-			virtual void ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) override;
+			virtual void ActorAnimEvent(Actor* actor,  std::string_view& tag,  std::string_view& payload) override;
 
 
 			// Change speed of all animations that are currently playing on the PLAYER
@@ -89,14 +89,14 @@ namespace Gts
 			// ```
 			//
 			// Where group is name of the collection to share data for
-			static void RegisterEvent(std::string_view name, std::string_view group, std::function<void(const AnimationEventData&)> func);
+			static void RegisterEvent( std::string_view name,  std::string_view group, std::function<void(AnimationEventData&)> func);
 
 
 			// Register a trigger to a behavior to start
 			//
 			// This is used to link the friendly anim name to the complex behaviour name
 			//  while also creating any associated animation data that matches the group name
-			static void RegisterTrigger(std::string_view trigger, std::string_view group, std::string_view behavior);
+			static void RegisterTrigger( std::string_view trigger,  std::string_view group,  std::string_view behavior);
 
 			// Similar to RegisterTrigger but takes a list of stages.
 			//
@@ -104,32 +104,32 @@ namespace Gts
 			// ``cpp
 			// AnimationManager::NextAnim("ThighCrush", giant)
 			// ```
-			static void RegisterTriggerWithStages(std::string_view trigger, std::string_view group, std::vector<std::string_view> behaviors);
+			static void RegisterTriggerWithStages( std::string_view trigger,  std::string_view group,  std::vector< std::string_view> behaviors);
 
 			// Start an anuimation with NO object to carry
-			static void StartAnim(std::string_view trigger, const Actor& giant);
-      static void StartAnim(std::string_view trigger, const Actor* giant);
+			static void StartAnim(std::string_view trigger, Actor& giant);
+      static void StartAnim(std::string_view trigger, Actor* giant);
 			// Start the animation WITH an object to carry. We use TESObjectREFR over Actor so that we can pick up anything
-			static void StartAnim(std::string_view trigger, const Actor& giant, const TESObjectREFR* tiny);
-      static void StartAnim(std::string_view trigger, const Actor* giant, const TESObjectREFR* tiny);
+			static void StartAnim(std::string_view trigger, Actor& giant, TESObjectREFR* tiny);
+      static void StartAnim(std::string_view trigger, Actor* giant, TESObjectREFR* tiny);
 
 			// Advance an animation to the next stage if possible
-			static void NextAnim(std::string_view trigger, const Actor& giant);
-      static void NextAnim(std::string_view trigger, const Actor* giant);
+			static void NextAnim(std::string_view trigger, Actor& giant);
+      static void NextAnim(std::string_view trigger, Actor* giant);
 
 			// Get the current stage of an animation group
-			static std::size_t GetStage(const Actor& actor, std::string_view group);
-			static std::size_t GetStage(const Actor* actor, std::string_view group);
+			static std::size_t GetStage(Actor& actor,  std::string_view group);
+			static std::size_t GetStage(Actor* actor,  std::string_view group);
 
 			// Check if any currently playing anim disabled the HHs
-			static bool HHDisabled(const Actor& actor);
-			static bool HHDisabled(const Actor* actor);
+			static bool HHDisabled(Actor& actor);
+			static bool HHDisabled(Actor* actor);
 
 		protected:
-			std::unordered_map<const Actor*, std::unordered_map<std::string, AnimationEventData> > data;
+			std::unordered_map<Actor*, std::unordered_map<std::string, AnimationEventData> > data;
 			std::unordered_map<std::string, AnimationEvent> eventCallbacks;
 			std::unordered_map<std::string, TriggerData> triggers;
 	};
 
-	void ShakeAndSound(Actor* caster, float volume, const std::string_view& node);
+	void ShakeAndSound(Actor* caster, float volume,  std::string_view& node);
 }

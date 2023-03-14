@@ -10,7 +10,7 @@ using namespace std;
 
 namespace {
 
-	const std::vector<std::string_view> Anim_Vore = {
+	 const std::vector<std::string_view> Anim_Vore = {
 		"GTSvore_sitstart",         // [0] Start air rumble and camera shake
 		"GTSvore_sitend",           // [1] Sit down completed
 		"GTSvore_handextend",       // [2] Hand starts to move in space
@@ -21,7 +21,7 @@ namespace {
 		"GTSvore_swallow_sound",    // [7] Play gulp sound, eat actor completely (kill)
 	};
 
-	const std::vector<std::string_view> Anim_ThighSandwich = {
+	 const std::vector<std::string_view> Anim_ThighSandwich = {
 		"GTSsandwich_crouchstart",  // [0] Start air rumble and camera shake
 		"GTSsandwich_grabactor",    // [1] Grab actor
 		"GTSsandwich_crouchend",    // [2] Return to sit position
@@ -37,11 +37,11 @@ namespace {
 
 
 namespace Gts {
-	AnimationEventData::AnimationEventData(const Actor& giant, const TESObjectREFR* tiny) : giant(giant), tiny(tiny) {
+	AnimationEventData::AnimationEventData(Actor& giant, TESObjectREFR* tiny) : giant(giant), tiny(tiny) {
 	}
-	AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&)> a_callback, std::string a_group) : callback(a_callback), group(a_group) {
+	AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&)> a_callback,  std::string a_group) : callback(a_callback), group(a_group) {
 	}
-	TriggerData::TriggerData(std::vector<std::string_view> behavors, std::string_view group) : behavors({}), group(group) {
+	TriggerData::TriggerData( std::vector< std::string_view> behavors,  std::string_view group) : behavors({}), group(group) {
     for (auto& sv: behavors) {
       this->behavors.push_back(std::string(sv));
     }
@@ -90,31 +90,31 @@ namespace Gts {
 		} catch (std::out_of_range e) {}
 	}
 
-	void AnimationManager::RegisterEvent(std::string_view name, std::string_view group, std::function<void(const AnimationEventData&)> func) {
+	void AnimationManager::RegisterEvent( std::string_view name,  std::string_view group, std::function<void(AnimationEventData&)> func) {
 		AnimationManager::GetSingleton().eventCallbacks.insert_or_assign(name, func, group);
 	}
 
-	void AnimationManager::RegisterTrigger(std::string_view trigger, std::string_view group, std::string_view behavior) {
+	void AnimationManager::RegisterTrigger( std::string_view trigger,  std::string_view group,  std::string_view behavior) {
 		AnimationManager::RegisterTrigger(trigger, group, {behavior});
 	}
 
-	void AnimationManager::RegisterTriggerWithStages(std::string_view trigger, std::string_view group, std::vector<std::string_view> behaviors) {
+	void AnimationManager::RegisterTriggerWithStages( std::string_view trigger,  std::string_view group,  std::vector< std::string_view> behaviors) {
 		if (behaviors.size() > 0) {
 			AnimationManager::GetSingleton().triggers.insert_or_assign(trigger, behaviors, group);
 		}
 	}
 
 
-	void AnimationManager::StartAnim(std::string_view trigger, const Actor& giant) {
+	void AnimationManager::StartAnim( std::string_view trigger, Actor& giant) {
 		AnimationManager::StartAnim(trigger, giant, nullptr);
 	}
-  void AnimationManager::StartAnim(std::string_view trigger, const Actor* giant) {
+  void AnimationManager::StartAnim( std::string_view trigger, Actor* giant) {
     if (giant) {
       AnimationManager::StartAnim(trigger, *giant);
     }
   }
 
-	void AnimationManager::StartAnim(std::string_view trigger, const Actor& giant, const TESObjectREFR* tiny) {
+	void AnimationManager::StartAnim( std::string_view trigger, Actor& giant, TESObjectREFR* tiny) {
 		try {
       auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
@@ -132,13 +132,13 @@ namespace Gts {
 			return;
 		}
 	}
-  void AnimationManager::StartAnim(std::string_view trigger, const Actor* giant, const TESObjectREFR* tiny) {
+  void AnimationManager::StartAnim(std::string_view trigger, Actor* giant, TESObjectREFR* tiny) {
     if (giant) {
       AnimationManager::StartAnim(trigger, *giant, tiny);
     }
   }
 
-	void AnimationManager::NextAnim(std::string_view trigger, const Actor& giant) {
+	void AnimationManager::NextAnim(std::string_view trigger, Actor& giant) {
 		try {
       auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
@@ -161,13 +161,13 @@ namespace Gts {
 			return;
 		}
 	}
-  void AnimationManager::NextAnim(std::string_view trigger, const Actor* giant) {
+  void AnimationManager::NextAnim(std::string_view trigger, Actor* giant) {
     if (giant) {
       AnimationManager::NextAnim(trigger, *giant)
     }
   }
 
-	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
+	void AnimationManager::ActorAnimEvent(Actor* actor,  std::string_view& tag,  std::string_view& payload) {
 		try {
 			// Try to get the registerd anim for this tag
 			auto& animToPlay = this->eventCallbacks.at(tag);
@@ -191,7 +191,7 @@ namespace Gts {
 	}
 
 	// Get the current stage of an animation group
-	static std::size_t AnimationManager::GetStage(const Actor& actor, std::string_view group) {
+	static std::size_t AnimationManager::GetStage(Actor& actor,  std::string_view group) {
     try {
       auto& me = AnimationManager::GetSingleton();
 			return me.data.at(&actor).tags.at(group).stage;
@@ -199,7 +199,7 @@ namespace Gts {
 			return 0;
 		}
   }
-	static std::size_t AnimationManager::GetStage(const Actor* actor, std::string_view group) {
+	static std::size_t AnimationManager::GetStage(Actor* actor,  std::string_view group) {
 		if (actor) {
       return AnimationManager::GetStage(*actor, group);
     } else {
@@ -208,10 +208,10 @@ namespace Gts {
 	}
 
 	// Check if any currently playing anim disabled the HHs
-	static bool AnimationManager::HHDisabled(const Actor& actor) {
+	static bool AnimationManager::HHDisabled(Actor& actor) {
     try {
       auto& actorData = this->data.at(&actor);
-      for (const auto &[group, data]: actorData) {
+      for ( auto &[group, data]: actorData) {
         if (data.disableHH) {
           return true;
         }
@@ -221,7 +221,7 @@ namespace Gts {
       return false;
     }
   }
-	static bool AnimationManager::HHDisabled(const Actor* actor) {
+	static bool AnimationManager::HHDisabled(Actor* actor) {
     if (actor) {
       return AnimationManager::HHDisabled(*actor);
     } else {
