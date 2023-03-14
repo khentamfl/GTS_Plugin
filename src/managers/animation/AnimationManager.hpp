@@ -126,7 +126,7 @@ namespace Gts
 			static bool HHDisabled(const Actor* actor);
 
 		protected:
-			std::unordered_map<Actor*, std::unordered_map<std::string, AnimationEventData> > data;
+			std::unordered_map<const Actor*, std::unordered_map<std::string, AnimationEventData> > data;
 			std::unordered_map<std::string, AnimationEvent> eventCallbacks;
 			std::unordered_map<std::string, TriggerData> triggers;
 	};
