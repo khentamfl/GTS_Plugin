@@ -34,10 +34,11 @@ namespace Gts {
 	// Holds all rumble data for an actor
 	// This is needed because an actor can have many sources of rumble
 	class ActorRumbleData {
-		ActorRumbleData();
-		Timer delay;
-		// Tagged rumble data
-		std::unordered_map<std::string, RumbleData> tags;
+    public:
+  		ActorRumbleData();
+  		Timer delay;
+  		// Tagged rumble data
+  		std::unordered_map<std::string, RumbleData> tags;
 	};
 
 	// Rumble for all actors
