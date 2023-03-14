@@ -72,10 +72,10 @@ namespace Gts {
     string tag = std::string(tagsv);
     auto& me = Rumble::GetSingleton();
 		me.data.try_emplace(giant);
-		// me.data[giant].tags.try_emplace(tag, intensity, duration, node);
+		me.data[giant].tags.try_emplace(tag, intensity, duration, node);
 		// Reset if alreay there (but don't reset the intensity this will let us smooth into it)
-		// me.data[giant].tags[tag].ChangeTargetIntensity(intensity);
-		// me.data[giant].tags[tag].ChangeDuration(duration);
+		me.data[giant].tags[tag].ChangeTargetIntensity(intensity);
+		me.data[giant].tags[tag].ChangeDuration(duration);
 	}
 
 	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, std::string_view node) {
