@@ -20,5 +20,5 @@ namespace Gts
 			static void RegisterEvents();
 
 			static void RegisterTriggers();
-	}
+	};
 }

@@ -2,6 +2,7 @@
 #include "managers/animation/Compat.hpp"
 #include "managers/animation/Stomp.hpp"
 #include "managers/animation/ThighCrush.hpp"
+#include "scale/scale.hpp"
 
 using namespace RE;
 using namespace Gts;
