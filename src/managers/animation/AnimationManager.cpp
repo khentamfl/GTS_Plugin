@@ -194,7 +194,7 @@ namespace Gts {
 	std::size_t AnimationManager::GetStage(Actor& actor,  std::string_view group) {
     try {
       auto& me = AnimationManager::GetSingleton();
-			return me.data.at(&actor).at(group).stage;
+			return me.data.at(&actor).at(std::string(group)).stage;
 		} catch (std::out_of_range e) {
 			return 0;
 		}
@@ -222,7 +222,7 @@ namespace Gts {
       return false;
     }
   }
-	static bool AnimationManager::HHDisabled(Actor* actor) {
+	bool AnimationManager::HHDisabled(Actor* actor) {
     if (actor) {
       return AnimationManager::HHDisabled(*actor);
     } else {
