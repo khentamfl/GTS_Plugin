@@ -103,7 +103,7 @@ namespace Gts {
 	void AnimationManager::RegisterTriggerWithStages( std::string_view trigger,  std::string_view group,  std::vector< std::string_view> behaviors) {
 		if (behaviors.size() > 0) {
 			AnimationManager::GetSingleton().triggers.try_emplace(std::string(trigger), behaviors, group);
-			log::info("Registering Trigger: {}, Group {}, Behavior {}", trigger, group, behaviors);
+			log::info("Registering Trigger: {}, Group {}", trigger, group);
 		}
 	}
 
