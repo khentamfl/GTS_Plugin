@@ -13,7 +13,8 @@ namespace {
 namespace Gts {
   void set_target_scale(Actor* actor, float scale) {
     if (actor) {
-      set_target_scale(*actor, scale);
+      Actor& a = *actor;
+      set_target_scale(a, scale);
     }
   }
 	void set_target_scale(Actor& actor, float scale) {
@@ -33,7 +34,8 @@ namespace Gts {
 
   float get_target_scale(Actor* actor) {
     if (actor) {
-      return get_target_scale(*actor);
+      Actor& a = *actor;
+      return get_target_scale(a);
     } else {
       return -1.0;
     }
@@ -55,14 +57,14 @@ namespace Gts {
 	void mod_target_scale(Actor& actor, float amt) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		// TODO: Fix this
-		if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+		if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && (actor.formID == 0x14 || actor.IsPlayerTeammate() || Runtime::InFaction(&actor, "FollowerFaction"))) {
 			float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 			if (scale >= 1.0) {
 				amt /= (1.5 + (scale/1.5));
 			}
 		}
-		if (Runtime::HasPerkTeam(actor, "OnTheEdge")) {
-			float GetHP = clamp(0.5, 1.0, GetHealthPercentage(actor) + 0.4); // Bonus Size Gain if Actor has perk
+		if (Runtime::HasPerkTeam(&actor, "OnTheEdge")) {
+			float GetHP = clamp(0.5, 1.0, GetHealthPercentage(&actor) + 0.4); // Bonus Size Gain if Actor has perk
 			if (amt > 0) {
 				amt /= GetHP;
 			} else if (amt < 0) {
