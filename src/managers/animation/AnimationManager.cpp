@@ -96,7 +96,7 @@ namespace Gts {
 	}
 
 	void AnimationManager::RegisterTrigger( std::string_view trigger,  std::string_view group,  std::string_view behavior) {
-		AnimationManager::RegisterTrigger(trigger, group, behavior);
+		//AnimationManager::RegisterTrigger(trigger, group, behavior);
 		log::info("Registering Trigger: {}, Group {}, Behavior {}", trigger, group, behavior);
 	}
 
