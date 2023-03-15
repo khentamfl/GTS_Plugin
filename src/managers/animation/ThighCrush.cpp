@@ -182,7 +182,7 @@ namespace {
 
 namespace Gts
 {
-	void AnimationStomp::RegisterEvents() {
+	void AnimationThighCrush::RegisterEvents() {
 		AnimationManager::RegisterEvent("GTStosit", "ThighCrush", GTStosit);
 		AnimationManager::RegisterEvent("GTSsitloopenter", "ThighCrush", GTSsitloopenter);
 		AnimationManager::RegisterEvent("GTSsitloopstart", "ThighCrush", GTSsitloopstart);
@@ -200,7 +200,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSBEH_Exit", "ThighCrush", GTStoexit);
   }
 
-	void AnimationStomp::RegisterTriggers() {
+	void AnimationThighCrush::RegisterTriggers() {
 		AnimationManager::RegisterTriggerWithStages("ThighCrush", "ThighCrush", {"GTSBeh_TriggerSitdown", "GTSBeh_StartThighCrush", "GTSBeh_LeaveSitdown"});
 		AnimationManager::RegisterTrigger("ThighLoopEnter", "ThighCrush", "GTSBeh_TriggerSitdown");
 		AnimationManager::RegisterTrigger("ThighLoopAttack", "ThighCrush", "GTSBeh_StartThighCrush");

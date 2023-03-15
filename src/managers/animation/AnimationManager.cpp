@@ -84,14 +84,14 @@ namespace Gts {
 			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(player)) {
 				if (data.canEditAnimSpeed) {
 					data.animSpeed += bonus;
-					data.animSpeed = std::clamp(data.animSpeed, 0.0, 1.5);
+					data.animSpeed = std::clamp(data.animSpeed, 0.0f, 1.5f);
 				}
 			}
 		} catch (std::out_of_range e) {}
 	}
 
 	void AnimationManager::RegisterEvent( std::string_view name,  std::string_view group, std::function<void(AnimationEventData&)> func) {
-		AnimationManager::GetSingleton().eventCallbacks.insert_or_assign(name, func, group);
+		AnimationManager::GetSingleton().eventCallbacks.try_emplace(std::string(name), func, group);
 	}
 
 	void AnimationManager::RegisterTrigger( std::string_view trigger,  std::string_view group,  std::string_view behavior) {
@@ -100,7 +100,7 @@ namespace Gts {
 
 	void AnimationManager::RegisterTriggerWithStages( std::string_view trigger,  std::string_view group,  std::vector< std::string_view> behaviors) {
 		if (behaviors.size() > 0) {
-			AnimationManager::GetSingleton().triggers.insert_or_assign(trigger, behaviors, group);
+			AnimationManager::GetSingleton().triggers.try_emplace(std::string(trigger), behaviors, group);
 		}
 	}
 
