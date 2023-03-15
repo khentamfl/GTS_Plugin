@@ -61,8 +61,10 @@ namespace Gts {
 			static void OnGameSaved(SKSE::SerializationInterface* serde);
 			static void OnGameLoaded(SKSE::SerializationInterface* serde);
 
+      ActorData* GetActorData(Actor& actor);
 			ActorData* GetActorData(Actor* actor);
 			ActorData* GetData(TESObjectREFR* refr);
+      ActorData* GetData(TESObjectREFR& refr);
 
 
 

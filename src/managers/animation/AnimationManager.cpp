@@ -84,7 +84,7 @@ namespace Gts {
 			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(player)) {
 				if (data.canEditAnimSpeed) {
 					data.animSpeed += bonus;
-					//data.animSpeed = std::clamp(data.animSpeed, 0.0, 1.5);
+					data.animSpeed = std::clamp(data.animSpeed, 0.0, 1.5);
 				}
 			}
 		} catch (std::out_of_range e) {}
@@ -167,7 +167,7 @@ namespace Gts {
     }
   }
 
-	void AnimationManager::ActorAnimEvent(Actor* actor,  std::string_view& tag,  std::string_view& payload) {
+	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
 		try {
 			// Try to get the registerd anim for this tag
 			auto& animToPlay = this->eventCallbacks.at(tag);

@@ -34,7 +34,7 @@ namespace {
 	void GTScrush_victim(AnimationEventData& data) {
 		data.stage = 0;
 		if (data.giant.formID != 0x14) {
-      		Actor* player = PlayerCharacter::GetSingleton();
+      auto player = PlayerCharacter::GetSingleton();
 			float giantscale = get_visual_scale(player);
 			float tinyscale = get_visual_scale(&data.giant);
 			float sizedifference = giantscale/tinyscale;
