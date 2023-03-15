@@ -2,6 +2,13 @@
 #include <chrono>
 
 namespace Gts {
+  Profiler::Profiler() {
+
+  }
+  Profiler::Profiler(std::string_view name): name(std::string(name)) {
+
+  }
+
 	void Profiler::Start()
 	{
 		m_beg = Clock::now();
@@ -20,4 +27,8 @@ namespace Gts {
 	double Profiler::Elapsed() {
 		return this->elapsed;
 	}
+
+  std::string Profiler::GetName() {
+    return this->name;
+  }
 }

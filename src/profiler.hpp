@@ -11,7 +11,12 @@ namespace Gts {
 
 			double elapsed = 0.0;
 
+      std::string name = "";
+
 		public:
+      Profiler();
+      Profiler(std::string_view name);
+
 			void Start();
 
 			void Stop();
@@ -19,5 +24,7 @@ namespace Gts {
 			void Reset();
 
 			double Elapsed();
+
+      std::string GetName();
 	};
 }

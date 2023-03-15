@@ -45,10 +45,6 @@ namespace Gts {
 	Magic::Magic(ActiveEffect* effect) : activeEffect(effect) {
 		if (this->activeEffect) {
 			auto spell = this->activeEffect->spell;
-			if (spell) {
-				//log::info("      = {}", spell->GetFullName());
-			}
-
 			this->effectSetting = this->activeEffect->GetBaseObject();
 			MagicTarget* m_target = this->activeEffect->target;
 			if (m_target) {
@@ -330,7 +326,7 @@ namespace Gts {
 			elapsed = profiler.Elapsed();
 			spf = elapsed / (current_report_frame - last_report_frame);
 			time_percent = elapsed/total_time*100;
-			report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", baseSpell->GetFullName(), elapsed, elapsed*100.0/total, spf, time_percent);
+			report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", profiler.GetName(), elapsed, elapsed*100.0/total, spf, time_percent);
 			profiler.Reset();
 		}
 		log::info("{}", report);
