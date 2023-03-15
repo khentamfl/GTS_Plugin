@@ -33,5 +33,5 @@ namespace Gts {
 
 	void ApplyShake(Actor* caster, float modifier);
 	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node);
-	void ApplyShakeAtPoint(Actor* caster,float modifier, NiPoint3 coords);
+	void ApplyShakeAtPoint(Actor* caster,float modifier, const NiPoint3& coords);
 }
