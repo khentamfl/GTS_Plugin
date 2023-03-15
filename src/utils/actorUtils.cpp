@@ -212,8 +212,8 @@ namespace Gts {
 		}
 	}
 
-	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node) {
-		auto node = find_node(caster, node);
+	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view nodesv) {
+		auto node = find_node(caster, nodesv);
 		if (node) {
 			ApplyShakeAtPoint(caster, modifier, node->world.translate);
 		}
@@ -257,8 +257,8 @@ namespace Gts {
 			// To Sermit: Same value as before just with the math reduced to minimal steps
 			float intensity = (sizedifference * 23.90625 * ShakeStrength(caster)) / distance;
 			float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
-			intensity = std::clamp(intensity, 0.0, 1e8);
-			duration = std::clamp(duration, 0.0, 1.2);
+			intensity = std::clamp(intensity, 0.0f, 1e8f);
+			duration = std::clamp(duration, 0.0f, 1.2f);
 
 			shake_controller(intensity*modifier, intensity*modifier, duration);
 			shake_camera_at_node(coords, intensity*modifier, duration);
