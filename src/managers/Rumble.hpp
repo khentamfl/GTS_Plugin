@@ -20,7 +20,7 @@ namespace Gts {
 	// Holds rumble data
 	class RumbleData {
 		public:
-      RumbleData(float intensity, float duration, std::string node);
+			RumbleData(float intensity, float duration, std::string node);
 			RumbleData(float intensity, float duration, std::string_view node);
 			void ChangeTargetIntensity(float intensity);
 			void ChangeDuration(float duration);
@@ -35,11 +35,11 @@ namespace Gts {
 	// Holds all rumble data for an actor
 	// This is needed because an actor can have many sources of rumble
 	class ActorRumbleData {
-    public:
-  		ActorRumbleData();
-  		Timer delay;
-  		// Tagged rumble data
-  		std::unordered_map<std::string, RumbleData> tags;
+		public:
+			ActorRumbleData();
+			Timer delay;
+			// Tagged rumble data
+			std::unordered_map<std::string, RumbleData> tags;
 	};
 
 	// Rumble for all actors
@@ -54,7 +54,7 @@ namespace Gts {
 
 			// Use this to start a rumble.
 			static void Start(std::string_view tag, Actor* giant, float intensity, std::string_view node);
-      // Use this to start a rumble. Without Node name will happen at NPC Root Node
+			// Use this to start a rumble. Without Node name will happen at NPC Root Node
 			static void Start(std::string_view tag, Actor* giant, float intensity);
 			// Use this to stop a rumble. The tag must be the same as given in start
 			static void Stop(std::string_view tag, Actor* giant);
@@ -66,7 +66,7 @@ namespace Gts {
 			// - To Sermit: This is currently set to 1.0s but can tinker with it
 			static void Once(std::string_view tag, Actor* giant, float intensity, std::string_view node);
 
-      // Without node name will happen at NPC Root Node
+			// Without node name will happen at NPC Root Node
 			static void Once(std::string_view tag, Actor* giant, float intensity);
 		private:
 			std::unordered_map<Actor*, ActorRumbleData> data;

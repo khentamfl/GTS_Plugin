@@ -515,12 +515,12 @@ namespace Gts {
 		this->scaleOverride = -1.0;
 	}
 
-  ActorData* Persistent::GetActorData(Actor* actor) {
-    if (!actor) {
+	ActorData* Persistent::GetActorData(Actor* actor) {
+		if (!actor) {
 			return nullptr;
 		}
-    return this->GetActorData(*actor);
-  }
+		return this->GetActorData(*actor);
+	}
 	ActorData* Persistent::GetActorData(Actor& actor) {
 		std::unique_lock lock(this->_lock);
 		auto key = actor.formID;
@@ -542,12 +542,12 @@ namespace Gts {
 		return result;
 	}
 
-  ActorData* Persistent::GetData(TESObjectREFR* refr) {
-    if (!refr) {
+	ActorData* Persistent::GetData(TESObjectREFR* refr) {
+		if (!refr) {
 			return nullptr;
 		}
-    return this->GetData(*refr);
-  }
+		return this->GetData(*refr);
+	}
 	ActorData* Persistent::GetData(TESObjectREFR& refr) {
 		auto key = refr.formID;
 		ActorData* result = nullptr;

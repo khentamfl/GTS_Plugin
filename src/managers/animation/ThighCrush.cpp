@@ -198,7 +198,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTStoexit", "ThighCrush", GTStoexit);
 		AnimationManager::RegisterEvent("GTSBEH_Next", "ThighCrush", GTStoexit);
 		AnimationManager::RegisterEvent("GTSBEH_Exit", "ThighCrush", GTStoexit);
-  }
+	}
 
 	void AnimationThighCrush::RegisterTriggers() {
 		AnimationManager::RegisterTriggerWithStages("ThighCrush", "ThighCrush", {"GTSBeh_TriggerSitdown", "GTSBeh_StartThighCrush", "GTSBeh_LeaveSitdown"});

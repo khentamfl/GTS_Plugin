@@ -10,7 +10,7 @@ using namespace std;
 
 namespace {
 
-	 const std::vector<std::string_view> Anim_Vore = {
+	const std::vector<std::string_view> Anim_Vore = {
 		"GTSvore_sitstart",         // [0] Start air rumble and camera shake
 		"GTSvore_sitend",           // [1] Sit down completed
 		"GTSvore_handextend",       // [2] Hand starts to move in space
@@ -21,7 +21,7 @@ namespace {
 		"GTSvore_swallow_sound",    // [7] Play gulp sound, eat actor completely (kill)
 	};
 
-	 const std::vector<std::string_view> Anim_ThighSandwich = {
+	const std::vector<std::string_view> Anim_ThighSandwich = {
 		"GTSsandwich_crouchstart",  // [0] Start air rumble and camera shake
 		"GTSsandwich_grabactor",    // [1] Grab actor
 		"GTSsandwich_crouchend",    // [2] Return to sit position
@@ -42,9 +42,9 @@ namespace Gts {
 	AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&)> a_callback,  std::string a_group) : callback(a_callback), group(a_group) {
 	}
 	TriggerData::TriggerData( std::vector< std::string_view> behavors,  std::string_view group) : behavors({}), group(group) {
-    for (auto& sv: behavors) {
-      this->behavors.push_back(std::string(sv));
-    }
+		for (auto& sv: behavors) {
+			this->behavors.push_back(std::string(sv));
+		}
 	}
 
 	AnimationManager& AnimationManager::GetSingleton() noexcept {
@@ -108,15 +108,15 @@ namespace Gts {
 	void AnimationManager::StartAnim( std::string_view trigger, Actor& giant) {
 		AnimationManager::StartAnim(trigger, giant, nullptr);
 	}
-  void AnimationManager::StartAnim( std::string_view trigger, Actor* giant) {
-    if (giant) {
-      AnimationManager::StartAnim(trigger, *giant);
-    }
-  }
+	void AnimationManager::StartAnim( std::string_view trigger, Actor* giant) {
+		if (giant) {
+			AnimationManager::StartAnim(trigger, *giant);
+		}
+	}
 
 	void AnimationManager::StartAnim( std::string_view trigger, Actor& giant, TESObjectREFR* tiny) {
 		try {
-      auto& me = AnimationManager::GetSingleton();
+			auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
 			auto& behavorToPlay = me.triggers.at(std::string(trigger));
 			auto& group = behavorToPlay.group;
@@ -132,15 +132,15 @@ namespace Gts {
 			return;
 		}
 	}
-  void AnimationManager::StartAnim(std::string_view trigger, Actor* giant, TESObjectREFR* tiny) {
-    if (giant) {
-      AnimationManager::StartAnim(trigger, *giant, tiny);
-    }
-  }
+	void AnimationManager::StartAnim(std::string_view trigger, Actor* giant, TESObjectREFR* tiny) {
+		if (giant) {
+			AnimationManager::StartAnim(trigger, *giant, tiny);
+		}
+	}
 
 	void AnimationManager::NextAnim(std::string_view trigger, Actor& giant) {
 		try {
-      auto& me = AnimationManager::GetSingleton();
+			auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
 			auto& behavorToPlay = me.triggers.at(std::string(trigger));
 			auto& group = behavorToPlay.group;
@@ -153,81 +153,81 @@ namespace Gts {
 			if (currentTrigger != nextTrigger) {
 				// Run the anim
 				if (behavorToPlay.behavors.size() < nextTrigger) {
-  				giant.NotifyAnimationGraph(behavorToPlay.behavors[nextTrigger]);
-          eventData.currentTrigger = eventData.nextTrigger;
-        }
+					giant.NotifyAnimationGraph(behavorToPlay.behavors[nextTrigger]);
+					eventData.currentTrigger = eventData.nextTrigger;
+				}
 			}
 		} catch (std::out_of_range) {
 			return;
 		}
 	}
-  void AnimationManager::NextAnim(std::string_view trigger, Actor* giant) {
-    if (giant) {
-      AnimationManager::NextAnim(trigger, *giant);
-    }
-  }
+	void AnimationManager::NextAnim(std::string_view trigger, Actor* giant) {
+		if (giant) {
+			AnimationManager::NextAnim(trigger, *giant);
+		}
+	}
 
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
 		try {
-      if (actor) {
-  			// Try to get the registerd anim for this tag
-  			auto& animToPlay = this->eventCallbacks.at(std::string(tag));
-  			// If data dosent exist then insert with default
-  			this->data.try_emplace(actor);
-  			auto& actorData = this->data.at(actor);
-  			auto group = animToPlay.group;
-  			// If data dosent exist this will insert it with default
-  			actorData.try_emplace(group, *actor, nullptr);
-  			// Get the data or the newly inserted data
-  			auto& data = actorData.at(group);
-  			// Call the anims function
-  			animToPlay.callback(data);
-  			// If the stage is 0 after an anim has been played then
-  			//   delete this data so that we can reset for the next anim
-  			if (data.stage == 0) {
-  				actorData.erase(group);
-  			}
-      }
+			if (actor) {
+				// Try to get the registerd anim for this tag
+				auto& animToPlay = this->eventCallbacks.at(std::string(tag));
+				// If data dosent exist then insert with default
+				this->data.try_emplace(actor);
+				auto& actorData = this->data.at(actor);
+				auto group = animToPlay.group;
+				// If data dosent exist this will insert it with default
+				actorData.try_emplace(group, *actor, nullptr);
+				// Get the data or the newly inserted data
+				auto& data = actorData.at(group);
+				// Call the anims function
+				animToPlay.callback(data);
+				// If the stage is 0 after an anim has been played then
+				//   delete this data so that we can reset for the next anim
+				if (data.stage == 0) {
+					actorData.erase(group);
+				}
+			}
 		} catch (std::out_of_range e) {}
 	}
 
 	// Get the current stage of an animation group
 	std::size_t AnimationManager::GetStage(Actor& actor,  std::string_view group) {
-    try {
-      auto& me = AnimationManager::GetSingleton();
+		try {
+			auto& me = AnimationManager::GetSingleton();
 			return me.data.at(&actor).at(std::string(group)).stage;
 		} catch (std::out_of_range e) {
 			return 0;
 		}
-  }
+	}
 	std::size_t AnimationManager::GetStage(Actor* actor,  std::string_view group) {
 		if (actor) {
-      return AnimationManager::GetStage(*actor, group);
-    } else {
-      return 0;
-    }
+			return AnimationManager::GetStage(*actor, group);
+		} else {
+			return 0;
+		}
 	}
 
 	// Check if any currently playing anim disabled the HHs
 	bool AnimationManager::HHDisabled(Actor& actor) {
-    try {
-      auto& me = AnimationManager::GetSingleton();
-      auto& actorData = me.data.at(&actor);
-      for ( auto &[group, data]: actorData) {
-        if (data.disableHH) {
-          return true;
-        }
-      }
-      return false;
-    } catch (std::out_of_range e) {
-      return false;
-    }
-  }
+		try {
+			auto& me = AnimationManager::GetSingleton();
+			auto& actorData = me.data.at(&actor);
+			for ( auto &[group, data]: actorData) {
+				if (data.disableHH) {
+					return true;
+				}
+			}
+			return false;
+		} catch (std::out_of_range e) {
+			return false;
+		}
+	}
 	bool AnimationManager::HHDisabled(Actor* actor) {
-    if (actor) {
-      return AnimationManager::HHDisabled(*actor);
-    } else {
-      return false;
-    }
-  }
+		if (actor) {
+			return AnimationManager::HHDisabled(*actor);
+		} else {
+			return false;
+		}
+	}
 }

@@ -106,15 +106,15 @@ namespace Gts {
 			log::error("Could not build sound");
 		}
 	}
-  void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
-    Runtime::PlaySoundAtNode(tag, actor, volume, frequency, find_node(actor, node));
-  }
-  void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject* node) {
-    if (node) {
-      Runtime::PlaySoundAtNode(tag, actor, volume, frequency, *node);
-    }
-  }
-  void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject& node) {
+	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
+		Runtime::PlaySoundAtNode(tag, actor, volume, frequency, find_node(actor, node));
+	}
+	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject* node) {
+		if (node) {
+			Runtime::PlaySoundAtNode(tag, actor, volume, frequency, *node);
+		}
+	}
+	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject& node) {
 		auto soundDescriptor = Runtime::GetSound(tag);
 		if (!soundDescriptor) {
 			log::error("Sound invalid");

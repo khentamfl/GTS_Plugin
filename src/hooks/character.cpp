@@ -150,7 +150,7 @@ namespace Hooks
 
 	void Hook_Character::NPCAnimEvents(BSTEventSink<BSAnimationGraphEvent>* a_this, BSAnimationGraphEvent& a_event, BSTEventSource<BSAnimationGraphEvent>* a_src) {
 		if (a_event.tag != NULL && a_event.holder != NULL) {
-      Actor* actor = static_cast<Actor*>(a_this);
+			Actor* actor = static_cast<Actor*>(a_this);
 			if (actor) {
 				EventDispatcher::DoActorAnimEvent(actor, a_event.tag, a_event.payload);
 			}

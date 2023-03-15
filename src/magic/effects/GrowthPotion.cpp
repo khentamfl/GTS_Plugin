@@ -20,7 +20,7 @@ namespace Gts {
 			return;
 		}
 
-    Rumble::Once("GrowthPotion", caster, 2.0);
+		Rumble::Once("GrowthPotion", caster, 2.0);
 
 		float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/8);
 		Runtime::PlaySound("growthSound", caster, Volume, 1.0);

@@ -108,14 +108,14 @@ namespace Gts
 
 			// Start an anuimation with NO object to carry
 			static void StartAnim(std::string_view trigger, Actor& giant);
-      static void StartAnim(std::string_view trigger, Actor* giant);
+			static void StartAnim(std::string_view trigger, Actor* giant);
 			// Start the animation WITH an object to carry. We use TESObjectREFR over Actor so that we can pick up anything
 			static void StartAnim(std::string_view trigger, Actor& giant, TESObjectREFR* tiny);
-      static void StartAnim(std::string_view trigger, Actor* giant, TESObjectREFR* tiny);
+			static void StartAnim(std::string_view trigger, Actor* giant, TESObjectREFR* tiny);
 
 			// Advance an animation to the next stage if possible
 			static void NextAnim(std::string_view trigger, Actor& giant);
-      static void NextAnim(std::string_view trigger, Actor* giant);
+			static void NextAnim(std::string_view trigger, Actor* giant);
 
 			// Get the current stage of an animation group
 			static std::size_t GetStage(Actor& actor,  std::string_view group);
