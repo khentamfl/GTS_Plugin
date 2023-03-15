@@ -163,18 +163,18 @@ namespace Gts {
 	}
   void AnimationManager::NextAnim(std::string_view trigger, Actor* giant) {
     if (giant) {
-      AnimationManager::NextAnim(trigger, *giant)
+      AnimationManager::NextAnim(trigger, *giant);
     }
   }
 
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
 		try {
 			// Try to get the registerd anim for this tag
-			auto& animToPlay = this->eventCallbacks.at(tag);
+			auto& animToPlay = this->eventCallbacks.at(std::string(tag));
 			// If data dosent exist then insert with default
 			this->data.try_emplace(actor);
 			auto& actorData = this->data[actor];
-			let group animToPlay.group;
+			auto group = animToPlay.group;
 			// If data dosent exist this will insert it with default
 			actorData.try_emplace(group, actor, nullptr);
 			// Get the data or the newly inserted data
