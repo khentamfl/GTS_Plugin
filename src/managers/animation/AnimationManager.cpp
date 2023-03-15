@@ -122,7 +122,7 @@ namespace Gts {
 			auto& group = behavorToPlay.group;
 			// Try to create anim data for actor
 			me.data.try_emplace(&giant);
-			auto& actorData = me.data[&giant]; // Must exists now
+			auto& actorData = me.data.at(&giant); // Must exists now
 			// Create the anim data for this group if not present
 			actorData.try_emplace(group, giant, tiny);
 			// Run the anim
@@ -173,12 +173,12 @@ namespace Gts {
 			auto& animToPlay = this->eventCallbacks.at(std::string(tag));
 			// If data dosent exist then insert with default
 			this->data.try_emplace(actor);
-			auto& actorData = this->data[actor];
+			auto& actorData = this->data.at(actor);
 			auto group = animToPlay.group;
 			// If data dosent exist this will insert it with default
 			actorData.try_emplace(group, actor, nullptr);
 			// Get the data or the newly inserted data
-			auto& data = actorData[group];
+			auto& data = actorData.at(group);
 			// Call the anims function
 			animToPlay.callback(data);
 			// If the stage is 0 after an anim has been played then
