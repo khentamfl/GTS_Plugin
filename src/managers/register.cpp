@@ -47,10 +47,10 @@ namespace Gts {
 		EventDispatcher::AddListener(&QuestManager::GetSingleton()); // Quest is currently empty and not needed
 		EventDispatcher::AddListener(&HitManager::GetSingleton()); // Hit Manager for handleing papyrus hit events
 
-		/*EventDispatcher::AddListener(&AnimationManager::GetSingleton()); // Manages Animation Events
-		   EventDispatcher::AddListener(&Stomp::GetSingleton()); // Manages Stomp Anim events
-		   EventDispatcher::AddListener(&ThighCrush::GetSingleton()); // Manages Thigh Crushing
-		   EventDispatcher::AddListener(&Grab::GetSingleton()); // Manages grabbing*/
+		EventDispatcher::AddListener(&AnimationManager::GetSingleton()); // Manages Animation Events
+		/* EventDispatcher::AddListener(&Stomp::GetSingleton()); // Manages Stomp Anim events
+		EventDispatcher::AddListener(&ThighCrush::GetSingleton()); // Manages Thigh Crushing
+		EventDispatcher::AddListener(&Grab::GetSingleton()); // Manages grabbing*/
 
 		EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
 		EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
