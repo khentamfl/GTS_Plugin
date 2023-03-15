@@ -139,8 +139,8 @@ namespace {
 		float volume = scale * 0.10 * speed;
 		StopLegRumble("ThighCrush", data.giant);
 
-		Runtime::PlaySoundAtNode(RSound, data.giant, volume, 1.0, RNode);
-		Rumble::Once("ThighCrushStompR", data.giant, volume * 4, RNode);
+		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
+		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, RNode);
 		data.stage = 9;
 	}
 
@@ -151,8 +151,8 @@ namespace {
 
 		float volume = scale * 0.10 * speed;
 
-		Runtime::PlaySoundAtNode(RSound, data.giant, volume, 1.0, LNode);
-		Rumble::Once("ThighCrushStompL", data.giant, volume * 4, LNode);
+		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, LNode);
+		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, LNode);
 		data.stage = 9;
 	}
 
@@ -163,8 +163,8 @@ namespace {
 
 		float volume = scale * 0.05 * speed;
 
-		Runtime::PlaySoundAtNode(RSound, data.giant, volume, 1.0, RNode);
-		Rumble::Once("ThighCrushStompR", data.giant, volume * 4, RNode);
+		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
+		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, RNode);
 		data.stage = 9;
 	}
 
