@@ -92,15 +92,18 @@ namespace Gts {
 
 	void AnimationManager::RegisterEvent( std::string_view name,  std::string_view group, std::function<void(AnimationEventData&)> func) {
 		AnimationManager::GetSingleton().eventCallbacks.try_emplace(std::string(name), func, std::string(group));
+		log::info("Registering Event: Name {}, Group {}", name, group);
 	}
 
 	void AnimationManager::RegisterTrigger( std::string_view trigger,  std::string_view group,  std::string_view behavior) {
 		AnimationManager::RegisterTrigger(trigger, group, {behavior});
+		log::info("Registering Trigger: {}, Group {}, Behavior {}", trigger, group, behavior);
 	}
 
 	void AnimationManager::RegisterTriggerWithStages( std::string_view trigger,  std::string_view group,  std::vector< std::string_view> behaviors) {
 		if (behaviors.size() > 0) {
 			AnimationManager::GetSingleton().triggers.try_emplace(std::string(trigger), behaviors, group);
+			log::info("Registering Trigger: {}, Group {}, Behavior {}", trigger, group, behaviors);
 		}
 	}
 
@@ -128,7 +131,7 @@ namespace Gts {
 			// Create the anim data for this group if not present
 			actorData.try_emplace(group, giant, tiny);
 			// Run the anim
-			log::info("Playing Trigger {} for {}", trigger, giant->GetDisplayFullName());
+			log::info("Playing Trigger {} for {}", trigger, giant.GetDisplayFullName());
 			giant.NotifyAnimationGraph(behavorToPlay.behavors[0]);
 		} catch (std::out_of_range) {
 			log::error("Requested play of unknown animation named: {}", trigger);
