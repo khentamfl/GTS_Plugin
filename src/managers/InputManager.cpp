@@ -193,9 +193,11 @@ namespace Gts {
 		}
 		if (ShiftPressed && E_Pressed) {
 			AnimationManager::StartAnim("StompRight", player);
+			log::info("Stomp Right");
 		}
 		if (ShiftPressed && Q_Pressed) {
 			AnimationManager::StartAnim("StompLeft", player);
+			log::info("Stomp Left");
 		}
 
 		auto& Camera = CameraManager::GetSingleton();
@@ -210,17 +212,17 @@ namespace Gts {
 		} // Left or Right end
 
 		if (LMB_Pressed && !RMB_Pressed) {
-			AnimationManager::NextAnim("ThighCrush", player); // Increase speed and power
+			AnimationManager::StartAnim("ThighCrush", player); // Increase speed and power
 			AnimationManager::AdjustAnimSpeed(0.012);
 			//Grab::GetSingleton().Clear();
 		}
 		if (RMB_Pressed && !LMB_Pressed) {
-			AnimationManager::NextAnim("ThighCrush", player); // Increase speed and power
+			AnimationManager::StartAnim("ThighCrush", player); // Increase speed and power
 			AnimationManager::AdjustAnimSpeed(-0.0060);
 			//Grab::GetSingleton().CrushActors();
 		}
 		if (W_Pressed) {
-			AnimationManager::NextAnim("ThighCrush", player);
+			AnimationManager::StartAnim("ThighCrush", player);
 		}
 		if (RMB_Pressed && LMB_Pressed) {
 			AnimationManager::AdjustAnimSpeed(0.030); // Strongest attack
