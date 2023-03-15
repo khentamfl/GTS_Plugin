@@ -39,7 +39,7 @@ namespace {
 namespace Gts {
 	AnimationEventData::AnimationEventData(Actor& giant, TESObjectREFR* tiny) : giant(giant), tiny(tiny) {
 	}
-	AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&)> a_callback,  std::string a_group) : callback(a_callback), group(std::string(a_group)) {
+	AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&)> a_callback,  std::string a_group) : callback(a_callback), group(a_group) {
 	}
 	TriggerData::TriggerData( std::vector< std::string_view> behavors,  std::string_view group) : behavors({}), group(group) {
     for (auto& sv: behavors) {
@@ -91,7 +91,7 @@ namespace Gts {
 	}
 
 	void AnimationManager::RegisterEvent( std::string_view name,  std::string_view group, std::function<void(AnimationEventData&)> func) {
-		AnimationManager::GetSingleton().eventCallbacks.try_emplace(std::string(name), func, group);
+		AnimationManager::GetSingleton().eventCallbacks.try_emplace(std::string(name), func, std::string(group));
 	}
 
 	void AnimationManager::RegisterTrigger( std::string_view trigger,  std::string_view group,  std::string_view behavior) {
