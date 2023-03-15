@@ -118,7 +118,7 @@ namespace Gts {
 		try {
       auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
-			auto& behavorToPlay = me.triggers.at(tag);
+			auto& behavorToPlay = me.triggers.at(std::string(trigger));
 			auto& group = behavorToPlay.group;
 			// Try to create anim data for actor
 			me.data.try_emplace(&giant);
@@ -142,7 +142,7 @@ namespace Gts {
 		try {
       auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
-			auto& behavorToPlay = me.triggers.at(tag);
+			auto& behavorToPlay = me.triggers.at(std::string(trigger));
 			auto& group = behavorToPlay.group;
 			// Get the actor data OR exit on catch
 			auto& actorData = me.data.at(&giant);
