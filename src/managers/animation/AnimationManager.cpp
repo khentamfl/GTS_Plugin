@@ -191,15 +191,15 @@ namespace Gts {
 	}
 
 	// Get the current stage of an animation group
-	static std::size_t AnimationManager::GetStage(Actor& actor,  std::string_view group) {
+	std::size_t AnimationManager::GetStage(Actor& actor,  std::string_view group) {
     try {
       auto& me = AnimationManager::GetSingleton();
-			return me.data.at(&actor).tags.at(group).stage;
+			return me.data.at(&actor).at(group).stage;
 		} catch (std::out_of_range e) {
 			return 0;
 		}
   }
-	static std::size_t AnimationManager::GetStage(Actor* actor,  std::string_view group) {
+	std::size_t AnimationManager::GetStage(Actor* actor,  std::string_view group) {
 		if (actor) {
       return AnimationManager::GetStage(*actor, group);
     } else {
@@ -208,9 +208,10 @@ namespace Gts {
 	}
 
 	// Check if any currently playing anim disabled the HHs
-	static bool AnimationManager::HHDisabled(Actor& actor) {
+	bool AnimationManager::HHDisabled(Actor& actor) {
     try {
-      auto& actorData = this->data.at(&actor);
+      auto& me = AnimationManager::GetSingleton();
+      auto& actorData = me.data.at(&actor);
       for ( auto &[group, data]: actorData) {
         if (data.disableHH) {
           return true;
