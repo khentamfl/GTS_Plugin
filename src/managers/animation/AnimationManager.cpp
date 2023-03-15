@@ -39,7 +39,7 @@ namespace {
 namespace Gts {
 	AnimationEventData::AnimationEventData(Actor& giant, TESObjectREFR* tiny) : giant(giant), tiny(tiny) {
 	}
-	AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&)> a_callback,  std::string a_group) : callback(a_callback), group(a_group) {
+	AnimationEvent::AnimationEvent(std::function<void(AnimationEventData&)> a_callback,  std::string a_group) : callback(a_callback), group(std::string(a_group)) {
 	}
 	TriggerData::TriggerData( std::vector< std::string_view> behavors,  std::string_view group) : behavors({}), group(group) {
     for (auto& sv: behavors) {
@@ -169,24 +169,25 @@ namespace Gts {
 
 	void AnimationManager::ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload) {
 		try {
-			// Try to get the registerd anim for this tag
-			auto& animToPlay = this->eventCallbacks.at(std::string(tag));
-			// If data dosent exist then insert with default
-			this->data.try_emplace(actor);
-			auto& actorData = this->data.at(actor);
-			auto group = animToPlay.group;
-			// If data dosent exist this will insert it with default
-			actorData.try_emplace(group, actor, nullptr);
-			// Get the data or the newly inserted data
-			auto& data = actorData.at(group);
-			// Call the anims function
-			animToPlay.callback(data);
-			// If the stage is 0 after an anim has been played then
-			//   delete this data so that we can reset for the next anim
-			if (data.stage == 0) {
-				actorData.erase(group);
-			}
-
+      if (actor) {
+  			// Try to get the registerd anim for this tag
+  			auto& animToPlay = this->eventCallbacks.at(std::string(tag));
+  			// If data dosent exist then insert with default
+  			this->data.try_emplace(actor);
+  			auto& actorData = this->data.at(actor);
+  			auto group = animToPlay.group;
+  			// If data dosent exist this will insert it with default
+  			actorData.try_emplace(group, *actor, nullptr);
+  			// Get the data or the newly inserted data
+  			auto& data = actorData.at(group);
+  			// Call the anims function
+  			animToPlay.callback(data);
+  			// If the stage is 0 after an anim has been played then
+  			//   delete this data so that we can reset for the next anim
+  			if (data.stage == 0) {
+  				actorData.erase(group);
+  			}
+      }
 		} catch (std::out_of_range e) {}
 	}
 
