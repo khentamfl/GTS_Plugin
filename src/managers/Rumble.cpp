@@ -91,7 +91,7 @@ namespace Gts {
 
 	void Rumble::Update() {
 		for (auto& [actor, data]: this->data) {
-			if (data.delay.ShouldRun()) {
+			//if (data.delay.ShouldRun()) {
 				// Update values based on time passed
 				for (auto& [tag, rumbleData]: data.tags) {
 					switch (rumbleData.state) {
@@ -149,5 +149,5 @@ namespace Gts {
 				}
 			}
 		}
-	}
+	//}
 }
