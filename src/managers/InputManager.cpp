@@ -110,7 +110,7 @@ namespace Gts {
 				}
 
 				if (key == 0x38 && buttonEvent->HeldDuration() >= 0.6) { //Alt
-					AnimationManager::StartAnim("ThighCrush", player);
+					AnimationManager::StartAnim("ThighLoopEnter", player);
 					log::info("Triggering Stage 0");
 				}
 
@@ -214,20 +214,20 @@ namespace Gts {
 		} // Left or Right end
 
 		if (LMB_Pressed && !RMB_Pressed) {
-			AnimationManager::StartAnim("ThighCrush", player); // Increase speed and power
+			AnimationManager::StartAnim("ThighLoopAttack", player); // Increase speed and power
 			AnimationManager::AdjustAnimSpeed(0.012);
-			Grab::Release(player);
-		}
-		if (RMB_Pressed && !LMB_Pressed) {
-			AnimationManager::StartAnim("ThighCrush", player); // Increase speed and power
-			AnimationManager::AdjustAnimSpeed(-0.0060);
 			auto grabbedActor = Grab::GetHeldActor(player);
 			if (grabbedActor) {
 				CrushManager::Crush(player, grabbedActor);
 			}
 		}
+		if (RMB_Pressed && !LMB_Pressed) {
+			AnimationManager::StartAnim("ThighLoopExit", player); // Increase speed and power
+			AnimationManager::AdjustAnimSpeed(-0.0060);
+			Grab::Release(player);
+		}
 		if (W_Pressed) {
-			AnimationManager::StartAnim("ThighCrush", player);
+			AnimationManager::StartAnim("ThighLoopExit", player);
 		}
 		if (RMB_Pressed && LMB_Pressed) {
 			AnimationManager::AdjustAnimSpeed(0.030); // Strongest attack

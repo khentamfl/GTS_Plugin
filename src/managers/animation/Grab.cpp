@@ -71,6 +71,9 @@ namespace Gts {
 			}
 
 			// TODO: Add escape
+
+			////////////////////// Sermit: please add it to Grab only, not Vore. And even then im not sure if we really need it or not really.
+
 			// if Escaped(giant, tiny, data.strength) {
 			//   this->data.erase(giant);
 			// }
@@ -91,22 +94,23 @@ namespace Gts {
 		Grab::GetSingleton().data.erase(giant);
 	}
 
-  TESObjectREFR* Grab::GetHeldObj(Actor* giant) {
+  	TESObjectREFR* Grab::GetHeldObj(Actor* giant) {
     try {
 			auto& me = Grab::GetSingleton();
 			return me.data.at(giant).tiny;
 		} catch (std::out_of_range e) {
 			return nullptr;
 		}
-  }
+  	
+	}
 	Actor* Grab::GetHeldActor(Actor* giant) {
 		auto obj = Grab::GetHeldObj(giant);
-    Actor* actor = skyrim_cast<Actor*>(obj);
-    if (actor) {
-      return actor;
-    } else {
-      return nullptr;
-    }
+    	Actor* actor = skyrim_cast<Actor*>(obj);
+    	if (actor) {
+      		return actor;
+    	} else {
+      		return nullptr;
+    	}
 	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
