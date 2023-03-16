@@ -60,6 +60,7 @@ namespace {
 		float speed = data.animSpeed;
 		StartLegRumble("ThighCrush", data.giant, 0.7);
 		data.stage = 1;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTStosit");
 	}
 
 	void GTSsitloopenter(AnimationEventData& data) {
@@ -68,6 +69,7 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.3 * speed);
 		data.disableHH = true;
 		data.stage = 2;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopenter");
 	}
 
 	void GTSsitloopstart(AnimationEventData& data) {
@@ -76,6 +78,7 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.4);
 		data.nextTrigger = 1;
 		data.stage = 3;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopenter");
 	}
 
 	void GTSsitloopend(AnimationEventData& data) {
@@ -88,6 +91,7 @@ namespace {
 		float speed = data.animSpeed;
 		StartLegRumble("ThighCrush", data.giant, 1.0 * speed);
 		data.stage = 5;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_start");
 	}
 
 	void GTSsitcrushlight_end(AnimationEventData& data) {
@@ -98,6 +102,7 @@ namespace {
 		data.canEditAnimSpeed = true;
 		StartLegRumble("ThighCrush", data.giant, 0.6 * speed);
 		data.stage = 6;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
@@ -106,6 +111,7 @@ namespace {
 
 		StartLegRumble("ThighCrush", data.giant, 3.0 * speed);
 		data.stage = 5;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushheavy_start");
 	}
 
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
@@ -115,6 +121,7 @@ namespace {
 
 		StartLegRumble("ThighCrush", data.giant, 1.5 *speed);
 		data.stage = 6;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}
 
 	void GTSsitloopexit(AnimationEventData& data) {
@@ -126,6 +133,7 @@ namespace {
 		data.animSpeed = 1.0;
 		StartLegRumble("ThighCrush", data.giant, 0.5 * speed);
 		data.stage = 8;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopexit");
 	}
 
 	const std::string_view RNode = "NPC R Foot [Rft ]";
@@ -142,6 +150,7 @@ namespace {
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, RNode);
 		data.stage = 9;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandR");
 	}
 
 	void GTSstandL(AnimationEventData& data) {
@@ -154,6 +163,7 @@ namespace {
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, LNode);
 		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, LNode);
 		data.stage = 9;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandL");
 	}
 
 	void GTSstandRS(AnimationEventData& data) {
@@ -166,6 +176,7 @@ namespace {
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, RNode);
 		data.stage = 9;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandRS");
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
 		data.canEditAnimSpeed = false;
@@ -174,6 +185,16 @@ namespace {
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
 		data.stage = 0;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Next");
+	}
+	void GTSBEH_Exit(AnimationEventData& data) {
+		data.canEditAnimSpeed = false;
+		data.animSpeed = 1.0;
+		StopLegRumble("ThighCrush", data.giant);
+		StopLegRumble("ThighCrushStompR", data.giant);
+		StopLegRumble("ThighCrushStompL", data.giant);
+		data.stage = 0;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Exit");
 	}
 	void GTStoexit(AnimationEventData& data) {
 		data.animSpeed = 1.0;
@@ -181,6 +202,7 @@ namespace {
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
 		data.stage = 0;
+		ConsoleLog::GetSingleton()->Print("ThighCrush: GTStoexit");
 	}
 }
 
@@ -201,7 +223,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSstandRS", "ThighCrush", GTSstandRS);
 		AnimationManager::RegisterEvent("GTStoexit", "ThighCrush", GTStoexit);
 		AnimationManager::RegisterEvent("GTSBEH_Next", "ThighCrush", GTSBEH_Next);
-		AnimationManager::RegisterEvent("GTSBEH_Exit", "ThighCrush", GTSBEH_Next);
+		AnimationManager::RegisterEvent("GTSBEH_Exit", "ThighCrush", GTSBEH_Exit);
 	}
 
 	void AnimationThighCrush::RegisterTriggers() {
