@@ -219,6 +219,7 @@ namespace Gts {
 			auto grabbedActor = Grab::GetHeldActor(player);
 			if (grabbedActor) {
 				CrushManager::Crush(player, grabbedActor);
+				Grab::Release(player);
 			}
 		}
 		if (RMB_Pressed && !LMB_Pressed) {
