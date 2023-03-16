@@ -91,6 +91,16 @@ namespace Gts {
 		Grab::GetSingleton().data.erase(giant);
 	}
 
+  Actor* Grab::GetHeldActor(Actor* giant) {
+    try {
+      auto& me = Grab::GetSingleton();
+      return me.data.at(giant).tiny;
+    } catch (std::out_of_range e) {
+      return nullptr;
+    }
+  }
+
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
 	}
+
 }

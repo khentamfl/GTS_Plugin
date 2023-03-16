@@ -2,6 +2,7 @@
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/Grab.hpp"
+#include "managers/animation/CrushManager.hpp"
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/RandomGrowth.hpp"
@@ -215,12 +216,15 @@ namespace Gts {
 		if (LMB_Pressed && !RMB_Pressed) {
 			AnimationManager::StartAnim("ThighCrush", player); // Increase speed and power
 			AnimationManager::AdjustAnimSpeed(0.012);
-			// Grab::Release(player);
+			Grab::Release(player);
 		}
 		if (RMB_Pressed && !LMB_Pressed) {
 			AnimationManager::StartAnim("ThighCrush", player); // Increase speed and power
 			AnimationManager::AdjustAnimSpeed(-0.0060);
-			// Grab::GetSingleton().CrushActors();
+      auto grabbedActor = Grab::GetHeldActor(player);
+      if (grabbedActor) {
+        CrushManager::Crush(player, grabbedActor);
+      }
 		}
 		if (W_Pressed) {
 			AnimationManager::StartAnim("ThighCrush", player);

@@ -24,7 +24,8 @@ namespace Gts {
 			static void GrabActor(Actor* giant, TESObjectREFR* tiny, float strength);
 			static void GrabActor(Actor* giant, TESObjectREFR* tiny);
 			static void Release(Actor* giant);
-		private:
-			std::unordered_map<Actor*, GrabData> data;
+      static Actor* GetHeldActor(Actor* giant);
+
+      std::unordered_map<Actor*, GrabData> data;
 	};
 }
