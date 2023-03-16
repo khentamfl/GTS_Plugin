@@ -67,7 +67,7 @@ namespace Hooks
 			auto charCont = a_this->GetCharController();
 			if (charCont) {
 				float sizedifference = get_visual_scale(a_this)/get_visual_scale(a_attacker);
-				a_this->SetGraphVariableFloat("GiantessScale", sizedifference);
+				a_this->SetGraphVariableFloat("GiantessScale", sizedifference); // Manages Stagger Resistance inside Behaviors.
 			}
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);

@@ -40,7 +40,7 @@ namespace Hooks
 			auto charCont = a_this->GetCharController();
 			if (charCont) {
 				float sizedifference = get_visual_scale(a_this)/get_visual_scale(a_attacker);
-				a_this->SetGraphVariableFloat("GiantessScale", sizedifference);
+				a_this->SetGraphVariableFloat("GiantessScale", sizedifference); // Manages Stagger Resistance inside Behaviors.
 			}
 			float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(a_attacker, ActorValue::kAttackDamageMult);
 			float damage = (a_damage * damagemult) - a_damage;

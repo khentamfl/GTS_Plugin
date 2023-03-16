@@ -39,7 +39,7 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		Rumble::Once("StompR", &data.giant, volume * 8, RNode);
+		Rumble::Once("StompR", &data.giant, volume * 80, RNode);
 		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstompimpactR, volume: %g", volume);
 	}
 
@@ -49,7 +49,7 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		Rumble::Once("StompL", &data.giant, volume * 8, LNode);
+		Rumble::Once("StompL", &data.giant, volume * 80, LNode);
 
 		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstompimpactL");
 	}
