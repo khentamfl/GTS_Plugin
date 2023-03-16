@@ -63,7 +63,7 @@ namespace Gts {
 			);
 		if (disableHH) {
 			hhData.multiplier.target = 0.0;
-			log::info("")
+			log::info("HH is false");
 		} else {
 			hhData.multiplier.target = 1.0;
 		}
