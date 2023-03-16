@@ -92,7 +92,7 @@ namespace Gts {
 			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(player)) {
 				if (data.canEditAnimSpeed) {
 					data.animSpeed += bonus;
-					auto transient = Transient::GetSingleton().GetActorData(actor);
+					auto transient = Transient::GetSingleton().GetActorData(player);
 					ConsoleLog::GetSingleton()->Print("Data: Anim Speed of %s is %g", player->GetDisplayFullName(), data.animSpeed);
 					if (transient) { 
 						transient->animspeedbonus = data.animSpeed;
