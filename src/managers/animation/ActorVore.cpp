@@ -66,6 +66,7 @@ namespace Gts {
     Actor* ActorVore::GetHeldVoreActors(Actor* giant) {
         //Return all Actors that we are currently Voring, to do things to them
         //Or maybe this function won't be needed since we send Actors from Vore.cpp?
+        return nullptr;
 	}
 }
 
