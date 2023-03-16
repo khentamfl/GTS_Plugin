@@ -135,7 +135,7 @@ namespace {
 		data.disableHH = false;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		ResetAnimationSpeed(data.giant);
+		ResetAnimationSpeed(&data.giant);
 
 		StartLegRumble("ThighCrush", data.giant, 0.85 * speed);
 		data.stage = 8;
@@ -187,7 +187,7 @@ namespace {
 	void GTSBEH_Next(AnimationEventData& data) {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		ResetAnimationSpeed(data.giant);
+		ResetAnimationSpeed(&data.giant);
 		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
@@ -197,7 +197,7 @@ namespace {
 	void GTSBEH_Exit(AnimationEventData& data) {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		ResetAnimationSpeed(data.giant);
+		ResetAnimationSpeed(&data.giant);
 		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
@@ -206,7 +206,7 @@ namespace {
 	}
 	void GTStoexit(AnimationEventData& data) {
 		data.animSpeed = 1.0;
-		ResetAnimationSpeed(data.giant);
+		ResetAnimationSpeed(&data.giant);
 		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
