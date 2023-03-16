@@ -24,6 +24,9 @@ namespace Gts {
 			static void GrabActor(Actor* giant, TESObjectREFR* tiny, float strength);
 			static void GrabActor(Actor* giant, TESObjectREFR* tiny);
 			static void Release(Actor* giant);
+      // Get object being held
+      static TESObjectREFR* GetHeldObj(Actor* giant);
+      // Same as `GetHeldObj` but with a conversion to actor if possible
 			static Actor* GetHeldActor(Actor* giant);
 
 			std::unordered_map<Actor*, GrabData> data;

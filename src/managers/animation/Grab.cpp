@@ -60,7 +60,7 @@ namespace Gts {
 			NiPoint3 tinyLocation = tiny->GetPosition();
 
 			tiny->SetPosition(bone->world.translate);
-			Actor* tiny_is_actor = TESForm::LookupByID<Actor>(tiny->formID);
+			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
 				auto charcont = tiny_is_actor->GetCharController();
 				if (charcont) {
@@ -91,13 +91,22 @@ namespace Gts {
 		Grab::GetSingleton().data.erase(giant);
 	}
 
-	Actor* Grab::GetHeldActor(Actor* giant) {
-		try {
+  TESObjectREFR* Grab::GetHeldObj(Actor* giant) {
+    try {
 			auto& me = Grab::GetSingleton();
 			return me.data.at(giant).tiny;
 		} catch (std::out_of_range e) {
 			return nullptr;
 		}
+  }
+	Actor* Grab::GetHeldActor(Actor* giant) {
+		auto obj = Grab::GetHeldObj(giant);
+    Actor* actor = skyrim_cast<Actor*>(obj);
+    if (actor) {
+      return actor;
+    } else {
+      return nullptr;
+    }
 	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
