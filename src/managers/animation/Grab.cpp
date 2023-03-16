@@ -23,7 +23,7 @@ using namespace std;
 
 namespace {
 	bool Escaped(Actor* giant, Actor* tiny, float strength) {
-		float tiny_chance = ((rand() % 100000) / 100000.0f) * get_visual_scale(tiny) ;
+		float tiny_chance = ((rand() % 100000) / 100000.0f) * get_visual_scale(tiny);
 		float giant_chance = ((rand() % 100000) / 100000.0f) * strength * get_visual_scale(giant);
 		return (tiny_chance > giant_chance);
 	}
@@ -60,15 +60,15 @@ namespace Gts {
 			NiPoint3 tinyLocation = tiny->GetPosition();
 
 			tiny->SetPosition(bone->world.translate);
-      Actor* tiny_is_actor = TESForm::LookupByID<Actor>(tiny->formID);
-      if (tiny_is_actor) {
-  			auto charcont = tiny_is_actor->GetCharController();
-  			if (charcont) {
-  				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
-  			}
-      } else {
-        // TODO: Work out method for generic objects
-      }
+			Actor* tiny_is_actor = TESForm::LookupByID<Actor>(tiny->formID);
+			if (tiny_is_actor) {
+				auto charcont = tiny_is_actor->GetCharController();
+				if (charcont) {
+					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+				}
+			} else {
+				// TODO: Work out method for generic objects
+			}
 
 			// TODO: Add escape
 			// if Escaped(giant, tiny, data.strength) {
@@ -91,14 +91,14 @@ namespace Gts {
 		Grab::GetSingleton().data.erase(giant);
 	}
 
-  Actor* Grab::GetHeldActor(Actor* giant) {
-    try {
-      auto& me = Grab::GetSingleton();
-      return me.data.at(giant).tiny;
-    } catch (std::out_of_range e) {
-      return nullptr;
-    }
-  }
+	Actor* Grab::GetHeldActor(Actor* giant) {
+		try {
+			auto& me = Grab::GetSingleton();
+			return me.data.at(giant).tiny;
+		} catch (std::out_of_range e) {
+			return nullptr;
+		}
+	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
 	}

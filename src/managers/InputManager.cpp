@@ -2,8 +2,8 @@
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/Grab.hpp"
-#include "managers/animation/CrushManager.hpp"
 #include "managers/animation/ThighCrush.hpp"
+#include "managers/CrushManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/RandomGrowth.hpp"
 #include "managers/InputManager.hpp"
@@ -221,10 +221,10 @@ namespace Gts {
 		if (RMB_Pressed && !LMB_Pressed) {
 			AnimationManager::StartAnim("ThighCrush", player); // Increase speed and power
 			AnimationManager::AdjustAnimSpeed(-0.0060);
-      auto grabbedActor = Grab::GetHeldActor(player);
-      if (grabbedActor) {
-        CrushManager::Crush(player, grabbedActor);
-      }
+			auto grabbedActor = Grab::GetHeldActor(player);
+			if (grabbedActor) {
+				CrushManager::Crush(player, grabbedActor);
+			}
 		}
 		if (W_Pressed) {
 			AnimationManager::StartAnim("ThighCrush", player);
