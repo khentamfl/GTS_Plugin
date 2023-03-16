@@ -29,6 +29,10 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
+	void ResetAnimationSpeed(Actor* actor) {
+		AnimationManager::GetSingleton().ResetAnimSpeed(actor);
+	}
+
 	void GTSstompimpactR(AnimationEventData& data) {
 		data.stage = 1;
 		float scale = get_visual_scale(&data.giant);
@@ -89,6 +93,7 @@ namespace {
 		data.stage = 4;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		ResetAnimationSpeed(data.giant);
 		ConsoleLog::GetSingleton()->Print("Stomp: GTSstompendR");
 	}
 
@@ -96,6 +101,7 @@ namespace {
 		data.stage = 4;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		ResetAnimationSpeed(data.giant);
 		ConsoleLog::GetSingleton()->Print("Stomp: GTSstompendL");
 	}
 

@@ -94,9 +94,8 @@ namespace Gts {
 					data.animSpeed += bonus;
 					auto transient = Transient::GetSingleton().GetActorData(player);
 					//ConsoleLog::GetSingleton()->Print("Data: Anim Speed of %s is %g", player->GetDisplayFullName(), data.animSpeed);
-					}
-					//data.animSpeed = std::clamp(data.animSpeed, 0.0f, 1.5f);
 				}
+				//data.animSpeed = std::clamp(data.animSpeed, 0.0f, 1.5f);
 			}
 		} catch (std::out_of_range e) {}
 	}
