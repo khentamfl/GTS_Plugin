@@ -177,7 +177,6 @@ namespace {
 		StopLegRumble("ThighCrushStompL", data.giant);
 		data.stage = 0;
 	}
-
 }
 
 namespace Gts

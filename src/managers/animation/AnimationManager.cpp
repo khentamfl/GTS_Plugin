@@ -2,6 +2,7 @@
 #include "managers/animation/Compat.hpp"
 #include "managers/animation/Stomp.hpp"
 #include "managers/animation/ThighCrush.hpp"
+#include "data/transient.hpp"
 #include "scale/scale.hpp"
 
 using namespace RE;
@@ -91,6 +92,12 @@ namespace Gts {
 			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(player)) {
 				if (data.canEditAnimSpeed) {
 					data.animSpeed += bonus;
+					auto transient = Transient::GetSingleton().GetActorData(actor);
+					ConsoleLog::GetSingleton()->Print("Data: Anim Speed of %s is %g", player->GetDisplayFullName(), data.animSpeed);
+					if (transient) { 
+						transient->animspeedbonus = data.animSpeed;
+						ConsoleLog::GetSingleton()->Print("Transient: Anim Speed of %s is %g", player->GetDisplayFullName(), transient->animspeedbonus);
+					}
 					//data.animSpeed = std::clamp(data.animSpeed, 0.0f, 1.5f);
 				}
 			}
