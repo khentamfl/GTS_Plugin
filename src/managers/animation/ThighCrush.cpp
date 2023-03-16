@@ -167,11 +167,16 @@ namespace {
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, RNode);
 		data.stage = 9;
 	}
-
-	void GTStoexit(AnimationEventData& data) {
+	void GTSBEH_Next(AnimationEventData& data) {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		data.disableHH = false;
+		StopLegRumble("ThighCrush", data.giant);
+		StopLegRumble("ThighCrushStompR", data.giant);
+		StopLegRumble("ThighCrushStompL", data.giant);
+		data.stage = 0;
+	}
+	void GTStoexit(AnimationEventData& data) {
+		data.animSpeed = 1.0;
 		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
@@ -195,8 +200,8 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSstandL", "ThighCrush", GTSstandL);
 		AnimationManager::RegisterEvent("GTSstandRS", "ThighCrush", GTSstandRS);
 		AnimationManager::RegisterEvent("GTStoexit", "ThighCrush", GTStoexit);
-		AnimationManager::RegisterEvent("GTSBEH_Next", "ThighCrush", GTStoexit);
-		AnimationManager::RegisterEvent("GTSBEH_Exit", "ThighCrush", GTStoexit);
+		AnimationManager::RegisterEvent("GTSBEH_Next", "ThighCrush", GTSBEH_Next);
+		AnimationManager::RegisterEvent("GTSBEH_Exit", "ThighCrush", GTSBEH_Next);
 	}
 
 	void AnimationThighCrush::RegisterTriggers() {

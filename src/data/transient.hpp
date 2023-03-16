@@ -28,7 +28,6 @@ namespace Gts {
 		float ThighAnimStage;
 		float animspeedbonus;
 		bool is_teammate;
-		bool disablehh;
 		bool Allowspeededit;
 	};
 

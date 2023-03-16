@@ -72,7 +72,6 @@ namespace Gts {
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
 			float base_volume_meters = unit_to_meter(base_volume);
 
-			bool disablehh = false;
 			bool Allowspeededit = false;
 
 			result.base_height = base_height_meters;
@@ -100,7 +99,6 @@ namespace Gts {
 
 			result.ThighAnimStage = ThighAnimStage;
 
-			result.disablehh = disablehh;
 			result.Allowspeededit = Allowspeededit;
 
 			result.animspeedbonus = animspeedbonus;
