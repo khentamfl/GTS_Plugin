@@ -78,12 +78,12 @@ namespace Gts {
 		}
 	}
 
-  void AnimationManager::Reset() {
-    this->data.clear();
-  }
-  void AnimationManager::ResetActor(Actor* actor) {
-    this->data.erase(actor);
-  }
+	void AnimationManager::Reset() {
+		this->data.clear();
+	}
+	void AnimationManager::ResetActor(Actor* actor) {
+		this->data.erase(actor);
+	}
 
 	void AnimationManager::AdjustAnimSpeed(float bonus) {
 		auto player = PlayerCharacter::GetSingleton();
@@ -110,7 +110,7 @@ namespace Gts {
 	void AnimationManager::RegisterTriggerWithStages( std::string_view trigger,  std::string_view group,  std::vector< std::string_view> behaviors) {
 		if (behaviors.size() > 0) {
 			AnimationManager::GetSingleton().triggers.try_emplace(std::string(trigger), behaviors, group);
-			log::info("Registering Trigger: {}, Group {}", trigger, group);
+			log::info("Registering Trigger With Stages: {}, Group {}", trigger, group);
 		}
 	}
 

@@ -72,7 +72,7 @@ namespace Gts
 			virtual void DataReady() override;
 			virtual void Update() override;
 			virtual void ActorAnimEvent(Actor* actor,  const std::string_view& tag, const std::string_view& payload) override;
-      virtual void Reset() override;
+			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 
 

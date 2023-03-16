@@ -1,7 +1,7 @@
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/animation/Animation_Grab.hpp"
+#include "managers/animation/Grab.hpp"
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/RandomGrowth.hpp"
@@ -147,15 +147,16 @@ namespace Gts {
 					V_Pressed = true;
 				} else if (key == 0x21) {
 					F_Pressed = true;
-					/*for (auto otherActor: find_actors()) {
-					        if (otherActor != player) {
-					                NiPoint3 giantLocation = player->GetPosition();
-					        NiPoint3 tinyLocation = otherActor->GetPosition();
-					        if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player)) {
-					                        Grab::GetSingleton().GrabActor(otherActor);
-					                }
-					        }
-					   }*/
+					for (auto otherActor: find_actors()) {
+						if (otherActor != player) {
+							NiPoint3 giantLocation = player->GetPosition();
+							NiPoint3 tinyLocation = otherActor->GetPosition();
+							if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player)) {
+								Grab::GrabActor(player, otherActor);
+								break;
+							}
+						}
+					}
 				} else if (key == 0x10) {
 					Q_Pressed = true;
 				} else if (key == 0x11) {
@@ -214,12 +215,12 @@ namespace Gts {
 		if (LMB_Pressed && !RMB_Pressed) {
 			AnimationManager::StartAnim("ThighCrush", player); // Increase speed and power
 			AnimationManager::AdjustAnimSpeed(0.012);
-			//Grab::GetSingleton().Clear();
+			// Grab::Release(player);
 		}
 		if (RMB_Pressed && !LMB_Pressed) {
 			AnimationManager::StartAnim("ThighCrush", player); // Increase speed and power
 			AnimationManager::AdjustAnimSpeed(-0.0060);
-			//Grab::GetSingleton().CrushActors();
+			// Grab::GetSingleton().CrushActors();
 		}
 		if (W_Pressed) {
 			AnimationManager::StartAnim("ThighCrush", player);
