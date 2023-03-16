@@ -145,7 +145,9 @@ namespace Gts {
 					ApplyShakeAtPoint(actor, 0.4 * intensity, point);
 					float volume = 4 * get_visual_scale(actor) * intensity/get_distance_to_camera(point);
 					// Lastly play the sound at each node
+					if (data.delay.ShouldRun()) {
 					Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, node);
+					}
 				}
 			}
 		}
