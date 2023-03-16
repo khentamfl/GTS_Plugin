@@ -41,6 +41,10 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
+	void ResetAnimationSpeed(Actor* actor) {
+		AnimationManager::GetSingleton().ResetAnimSpeed(actor);
+	}
+
 	void StartLegRumble(std::string_view tag, Actor& actor, float power) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
@@ -131,6 +135,8 @@ namespace {
 		data.disableHH = false;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		ResetAnimationSpeed(data.giant);
+
 		StartLegRumble("ThighCrush", data.giant, 0.85 * speed);
 		data.stage = 8;
 		ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopexit");
@@ -181,6 +187,7 @@ namespace {
 	void GTSBEH_Next(AnimationEventData& data) {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		ResetAnimationSpeed(data.giant);
 		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
@@ -190,6 +197,7 @@ namespace {
 	void GTSBEH_Exit(AnimationEventData& data) {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		ResetAnimationSpeed(data.giant);
 		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
@@ -198,6 +206,7 @@ namespace {
 	}
 	void GTStoexit(AnimationEventData& data) {
 		data.animSpeed = 1.0;
+		ResetAnimationSpeed(data.giant);
 		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);

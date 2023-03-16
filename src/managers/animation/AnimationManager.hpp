@@ -82,6 +82,8 @@ namespace Gts
 			// Each anim gets it's own adjustable speed
 			static void AdjustAnimSpeed(float bonus);
 
+			static void ResetAnimSpeed(Actor* actor);
+
 			// Register an animation event to a function callback
 			//
 			// Should be of the form:

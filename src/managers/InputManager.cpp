@@ -150,9 +150,12 @@ namespace Gts {
 					F_Pressed = true;
 					for (auto otherActor: find_actors()) {
 						if (otherActor != player) {
+							float playerscale = get_visual_scale(player);
+							float victimscale = get_visual_scale(otherActor);
+							float sizedifference = playerscale/victimscale;
 							NiPoint3 giantLocation = player->GetPosition();
 							NiPoint3 tinyLocation = otherActor->GetPosition();
-							if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player)) {
+							if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player) && sizedifference >= 4.2) {
 								Grab::GrabActor(player, otherActor);
 								break;
 							}

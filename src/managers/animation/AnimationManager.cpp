@@ -73,10 +73,6 @@ namespace Gts {
 		if (player) {
 			// Update fall behavor of player
 			auto charCont = player->GetCharController();
-			auto transient = Transient::GetSingleton().GetActorData(player);
-			if (transient) { 
-				transient->animspeedbonus = data.animSpeed;
-			}
 			if (charCont) {
 				player->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(player));
 			}
@@ -97,12 +93,19 @@ namespace Gts {
 				if (data.canEditAnimSpeed) {
 					data.animSpeed += bonus;
 					auto transient = Transient::GetSingleton().GetActorData(player);
-					ConsoleLog::GetSingleton()->Print("Data: Anim Speed of %s is %g", player->GetDisplayFullName(), data.animSpeed);
+					//ConsoleLog::GetSingleton()->Print("Data: Anim Speed of %s is %g", player->GetDisplayFullName(), data.animSpeed);
 					}
 					//data.animSpeed = std::clamp(data.animSpeed, 0.0f, 1.5f);
 				}
 			}
 		} catch (std::out_of_range e) {}
+	}
+
+	void AnimationManager::ResetAnimSpeed(Actor* actor) {
+		auto transient = Transient::GetSingleton().GetActorData(actor);
+		if (transient) { 
+			transient->animspeedbonus = 1.0;
+		}
 	}
 
 	void AnimationManager::RegisterEvent( std::string_view name,  std::string_view group, std::function<void(AnimationEventData&)> func) {
