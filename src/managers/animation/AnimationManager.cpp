@@ -78,6 +78,13 @@ namespace Gts {
 		}
 	}
 
+  void AnimationManager::Reset() {
+    this->data.clear();
+  }
+  void AnimationManager::ResetActor(Actor* actor) {
+    this->data.erase(actor);
+  }
+
 	void AnimationManager::AdjustAnimSpeed(float bonus) {
 		auto player = PlayerCharacter::GetSingleton();
 		try {
