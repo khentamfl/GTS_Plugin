@@ -10,18 +10,6 @@ using namespace Gts;
 using namespace std;
 
 namespace {
-
-	const std::vector<std::string_view> Anim_Vore = {
-		"GTSvore_sitstart",         // [0] Start air rumble and camera shake
-		"GTSvore_sitend",           // [1] Sit down completed
-		"GTSvore_handextend",       // [2] Hand starts to move in space
-		"GTSvore_handgrab",         // [3] Hand reached someone, grab actor
-		"GTSvore_bringactorstart",  // [4] Hand brings someone to mouth
-		"GTSvore_bringactorend",    // [5] Hand brought someone to mouth, release fingers
-		"GTSvore_swallow",          // [6] Actor was swallowed by Giantess
-		"GTSvore_swallow_sound",    // [7] Play gulp sound, eat actor completely (kill)
-	};
-
 	const std::vector<std::string_view> Anim_ThighSandwich = {
 		"GTSsandwich_crouchstart",  // [0] Start air rumble and camera shake
 		"GTSsandwich_grabactor",    // [1] Grab actor

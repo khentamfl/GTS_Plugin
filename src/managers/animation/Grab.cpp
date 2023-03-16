@@ -29,6 +29,10 @@ namespace {
 	}
 }
 
+///Plans:
+///-Commission Grab animation with various events and actions, such as:
+/// _ Damage Tiny with fingers (leading to crush), Release (put down), Throw Tiny, Eat Tiny, Escape from Grab
+
 namespace Gts {
 	Grab& Grab::GetSingleton() noexcept {
 		static Grab instance;
@@ -72,7 +76,7 @@ namespace Gts {
 
 			// TODO: Add escape
 
-			////////////////////// Sermit: please add it to Grab only, not Vore. And even then im not sure if we really need it or not really.
+			////////////////////// Sermit's Note: please add it to Grab only, not Vore. And even then im not sure if we really need it or not really.
 
 			// if Escaped(giant, tiny, data.strength) {
 			//   this->data.erase(giant);
