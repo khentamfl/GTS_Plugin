@@ -25,7 +25,7 @@ namespace Hooks
 						if (a_this == graph->behaviorGraph) {
 							float bonus = 1.0;
 							auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
-							auto data = AnimationManager::GetSingleton().data.at(actor);
+							auto& data = AnimationManager::GetSingleton().data.at(actor);
 							if (data) {
 								bonus = data.animSpeed;
 							}
