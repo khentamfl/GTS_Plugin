@@ -73,6 +73,10 @@ namespace Gts {
 		if (player) {
 			// Update fall behavor of player
 			auto charCont = player->GetCharController();
+			auto transient = Transient::GetSingleton().GetActorData(player);
+			if (transient) { 
+				transient->animspeedbonus = data.animSpeed;
+			}
 			if (charCont) {
 				player->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(player));
 			}
@@ -94,9 +98,6 @@ namespace Gts {
 					data.animSpeed += bonus;
 					auto transient = Transient::GetSingleton().GetActorData(player);
 					ConsoleLog::GetSingleton()->Print("Data: Anim Speed of %s is %g", player->GetDisplayFullName(), data.animSpeed);
-					if (transient) { 
-						transient->animspeedbonus = data.animSpeed;
-						ConsoleLog::GetSingleton()->Print("Transient: Anim Speed of %s is %g", player->GetDisplayFullName(), transient->animspeedbonus);
 					}
 					//data.animSpeed = std::clamp(data.animSpeed, 0.0f, 1.5f);
 				}

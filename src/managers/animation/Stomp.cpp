@@ -26,7 +26,7 @@ using namespace Gts;
 namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
-	const std::string_view RSound = "rFootstepR";
+	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
 	void GTSstompimpactR(AnimationEventData& data) {
@@ -35,7 +35,7 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		Rumble::Once("StompR", &data.giant, volume * 6, RNode);
+		Rumble::Once("StompR", &data.giant, volume * 8, RNode);
 		ConsoleLog::GetSingleton()->Print("Stomp: GTSstompimpactR, volume: %g", volume);
 	}
 

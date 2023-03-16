@@ -23,7 +23,7 @@ using namespace Gts;
 namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
-	const std::string_view RSound = "rFootstepR";
+	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
 	void GTScrush_caster(AnimationEventData& data) {
