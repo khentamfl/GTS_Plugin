@@ -31,7 +31,7 @@ namespace {
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
-	
+
 	const std::vector<std::string_view> LEG_RUMBLE_NODES = { // used with Anim_ThighCrush
 		"NPC L Foot [Lft ]",
 		"NPC R Foot [Rft ]",
@@ -84,7 +84,7 @@ namespace {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		StartLegRumble("ThighCrush", data.giant, 0.7);
-		data.nextTrigger = 1;
+		data.currentTrigger = 1;
 		data.stage = 3;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopenter");
 	}
@@ -105,7 +105,7 @@ namespace {
 	void GTSsitcrushlight_end(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-		data.nextTrigger = 2;
+		data.currentTrigger = 2;
 
 		data.canEditAnimSpeed = true;
 		StartLegRumble("ThighCrush", data.giant, 0.9 * speed);
@@ -125,7 +125,7 @@ namespace {
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-		data.nextTrigger = 2;
+		data.currentTrigger = 2;
 
 		StartLegRumble("ThighCrush", data.giant, 1.6 *speed);
 		data.stage = 6;

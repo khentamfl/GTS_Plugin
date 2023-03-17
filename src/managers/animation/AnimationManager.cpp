@@ -91,12 +91,20 @@ namespace Gts {
 		} catch (std::out_of_range e) {}
 	}
 
-	void AnimationManager::ResetAnimSpeed(Actor* actor) {
-		auto transient = Transient::GetSingleton().GetActorData(actor);
-		if (transient) { 
-			transient->animspeedbonus = 1.0;
-		}
-	}
+  float AnimationManager::GetAnimSpeed(Actor* actor) {
+    if (!actor) {
+      return 1.0;
+    }
+    try {
+      float totalSpeed = 1.0;
+			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
+					totalSpeed *= data.animSpeed;
+			}
+      return totalSpeed;
+		} catch (std::out_of_range e) {
+      return 1.0;
+    }
+  }
 
 	void AnimationManager::RegisterEvent( std::string_view name,  std::string_view group, std::function<void(AnimationEventData&)> func) {
 		AnimationManager::GetSingleton().eventCallbacks.try_emplace(std::string(name), func, std::string(group));
@@ -163,13 +171,9 @@ namespace Gts {
 			// Get the event data of exit on catch
 			auto& eventData = actorData.at(group);
 			std::size_t currentTrigger = eventData.currentTrigger;
-			std::size_t nextTrigger = eventData.nextTrigger;
-			if (currentTrigger != nextTrigger) {
-				// Run the anim
-				if (behavorToPlay.behavors.size() < nextTrigger) {
-					giant.NotifyAnimationGraph(behavorToPlay.behavors[nextTrigger]);
-					eventData.currentTrigger = eventData.nextTrigger;
-				}
+			// Run the anim
+			if (behavorToPlay.behavors.size() < currentTrigger) {
+				giant.NotifyAnimationGraph(behavorToPlay.behavors[currentTrigger]);
 			}
 		} catch (std::out_of_range) {
 			return;

@@ -1,7 +1,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "hooks/hkbBehaviorGraph.hpp"
 #include "data/persistent.hpp"
-#include "data/transient.hpp"
+#include "managers/animation/AnimationManager.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -26,15 +26,13 @@ namespace Hooks
 						if (a_this == graph->behaviorGraph) {
 							float bonus = 1.0;
 							auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
-							auto transient = Transient::GetSingleton().GetActorData(actor);
-							if (transient) {
-								bonus = transient->animspeedbonus;
-							}
 							if (saved_data) {
 								if (saved_data->anim_speed > 0.0) {
 									anim_speed = saved_data->anim_speed * bonus;
 								}
 							}
+              float multi = AnimationManager::GetAnimSpeed(actor);
+              animSpeed *= multi;
 						}
 					}
 				}

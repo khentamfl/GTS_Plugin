@@ -59,24 +59,13 @@ namespace Gts {
 			float carryweight_boost = 0.0;
 			float health_boost = 0.0;
 			float basehp = 0.0;
-			float hhmult = 1.0;
-
-			float rumblemult = 0.0;
-			float legsspreading = 0.0;
-			float legsclosing = 0.0;
-
-			float ThighAnimStage = 0.0;
-			float animspeedbonus = 1.0;
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
 			float base_volume_meters = unit_to_meter(base_volume);
 
-			bool Allowspeededit = false;
-
 			result.base_height = base_height_meters;
 			result.base_volume = base_volume_meters;
-			result.wearingHh = false;
 
 			result.base_walkspeedmult = actor->AsActorValueOwner()->GetBaseActorValue(ActorValue::kSpeedMult);
 			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
@@ -91,17 +80,6 @@ namespace Gts {
 			result.carryweight_boost = carryweight_boost;
 			result.health_boost = health_boost;
 			result.basehp = basehp;
-			result.hhmult = hhmult;
-
-			result.rumblemult = rumblemult;
-			result.legsspreading = legsspreading;
-			result.legsclosing = legsclosing;
-
-			result.ThighAnimStage = ThighAnimStage;
-
-			result.Allowspeededit = Allowspeededit;
-
-			result.animspeedbonus = animspeedbonus;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

@@ -10,7 +10,6 @@ namespace Gts {
 	struct TempActorData {
 		float base_height;
 		float base_volume;
-		bool wearingHh;
 		float base_walkspeedmult;
 		float char_weight;
 		float shoe_weight;
@@ -19,16 +18,8 @@ namespace Gts {
 		float health_boost;
 		float carryweight_boost;
 		float basehp;
-		float hhmult;
 
-		float rumblemult;
-		float legsclosing;
-		float legsspreading;
-
-		float ThighAnimStage;
-		float animspeedbonus;
 		bool is_teammate;
-		bool Allowspeededit;
 	};
 
 	class Transient : public EventListener {

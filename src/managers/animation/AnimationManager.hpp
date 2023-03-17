@@ -22,9 +22,7 @@ namespace Gts
 		// Set to nullptr for no object
 		TESObjectREFR* tiny;
 		// This is used to keep track of which trigger should be run the next time
-		//   AnimationManager::NextAnim is called
-		std::size_t nextTrigger = 0;
-		// This is used to keep track of what trigger was last used
+		// Next is called
 		std::size_t currentTrigger = 0;
 		// Stage a value of 0 means finished and will be cleaned up
 		std::size_t stage = 0;
@@ -82,7 +80,8 @@ namespace Gts
 			// Each anim gets it's own adjustable speed
 			static void AdjustAnimSpeed(float bonus);
 
-			static void ResetAnimSpeed(Actor* actor);
+      // Get total animation speed of an actor
+			static float GetAnimSpeed(Actor* actor);
 
 			// Register an animation event to a function callback
 			//
