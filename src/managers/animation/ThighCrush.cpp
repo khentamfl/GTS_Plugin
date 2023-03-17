@@ -45,10 +45,6 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void ResetAnimationSpeed(Actor* actor) {
-		AnimationManager::GetSingleton().ResetAnimSpeed(actor);
-	}
-
 	void StartLegRumble(std::string_view tag, Actor& actor, float power) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);

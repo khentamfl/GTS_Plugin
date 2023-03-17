@@ -29,10 +29,6 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
-	void ResetAnimationSpeed(Actor* actor) {
-		AnimationManager::GetSingleton().ResetAnimSpeed(actor);
-	}
-
 	void GTSstompimpactR(AnimationEventData& data) {
 		//data.stage = 1;
 		float scale = get_visual_scale(&data.giant);
