@@ -97,11 +97,11 @@ namespace Gts {
 					switch (rumbleData.state) {
 						case RumpleState::RampingUp: {
 							// Increasing intensity just let the spring do its thing
-							if (fabs(rumbleData.currentIntensity.value - rumbleData.currentIntensity.target) < 1e-3) {
+							// if (fabs(rumbleData.currentIntensity.value - rumbleData.currentIntensity.target) < 1e-3) {
 								// When spring is done move the state onwards
 								rumbleData.state = RumpleState::Rumbling;
 								rumbleData.startTime = Time::WorldTimeElapsed();
-							}
+							// }
 							break;
 						}
 						case RumpleState::Rumbling: {
@@ -115,10 +115,10 @@ namespace Gts {
 						case RumpleState::RampingDown: {
 							// Stoping the rumbling
 							rumbleData.currentIntensity.target = 0; // Ensure ramping down is going to zero intensity
-							if (fabs(rumbleData.currentIntensity.value) <= 1e-3) {
+							// if (fabs(rumbleData.currentIntensity.value) <= 1e-3) {
 								// Stopped
 								rumbleData.state = RumpleState::Still;
-							}
+							// }
 							break;
 						}
 						case RumpleState::Still: {
