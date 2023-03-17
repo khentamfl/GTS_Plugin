@@ -97,11 +97,11 @@ namespace Gts {
 					switch (rumbleData.state) {
 						case RumpleState::RampingUp: {
 							// Increasing intensity just let the spring do its thing
-							// if (fabs(rumbleData.currentIntensity.value - rumbleData.currentIntensity.target) < 1e-3) {
+							if (fabs(rumbleData.currentIntensity.value - rumbleData.currentIntensity.target) < 1e-3) {
 								// When spring is done move the state onwards
 								rumbleData.state = RumpleState::Rumbling;
 								rumbleData.startTime = Time::WorldTimeElapsed();
-							// }
+							}
 							break;
 						}
 						case RumpleState::Rumbling: {
@@ -115,10 +115,10 @@ namespace Gts {
 						case RumpleState::RampingDown: {
 							// Stoping the rumbling
 							rumbleData.currentIntensity.target = 0; // Ensure ramping down is going to zero intensity
-							// if (fabs(rumbleData.currentIntensity.value) <= 1e-3) {
+							if (fabs(rumbleData.currentIntensity.value) <= 1e-3) {
 								// Stopped
 								rumbleData.state = RumpleState::Still;
-							// }
+							}
 							break;
 						}
 						case RumpleState::Still: {
@@ -140,15 +140,23 @@ namespace Gts {
 				}
 				// Now do the rumble
 				//   - Also add up the volume for the rumble
+				//   - Since we can only have one rumble (skyrim limitation)
+				//     we do a weighted average to find the location to rumble from
+				//     and sum the intensities
+				NiPoint3 averagePos = NiPoint3(0.0, 0.0, 0.0);
+        float totalWeight = 0.0;
 				for (const auto &[node, intensity]: cummulativeIntensity) {
 					auto& point = node->world.translate;
-					ApplyShakeAtPoint(actor, 0.4 * intensity, point);
+          averagePos = averagePos + point*intensity;
+          totalWeight += intensity;
+
 					float volume = 4 * get_visual_scale(actor) * intensity/get_distance_to_camera(point);
 					// Lastly play the sound at each node
 					if (data.delay.ShouldRun()) {
 						Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, node);
 					}
 				}
+        ApplyShakeAtPoint(actor, 0.4 * totalWeight, averagePos);
 			}
 		}
 	//}
