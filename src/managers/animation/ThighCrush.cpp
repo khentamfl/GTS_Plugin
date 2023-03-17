@@ -93,7 +93,7 @@ namespace {
 	void GTSsitcrushlight_start(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-		StartLegRumble("ThighCrush", data.giant, 1.25 * speed);
+		StartLegRumble("ThighCrush", data.giant, 2.50 * speed);
 		data.stage = 5;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_start");
 	}
@@ -104,7 +104,7 @@ namespace {
 		data.currentTrigger = 2;
 
 		data.canEditAnimSpeed = true;
-		StartLegRumble("ThighCrush", data.giant, 0.9 * speed);
+		StartLegRumble("ThighCrush", data.giant, 2.0 * speed);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}
@@ -113,7 +113,7 @@ namespace {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 
-		StartLegRumble("ThighCrush", data.giant, 3.2 * speed);
+		StartLegRumble("ThighCrush", data.giant, 4.2 * speed);
 		data.stage = 5;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushheavy_start");
 	}
@@ -123,7 +123,7 @@ namespace {
 		float speed = data.animSpeed;
 		data.currentTrigger = 2;
 
-		StartLegRumble("ThighCrush", data.giant, 1.6 *speed);
+		StartLegRumble("ThighCrush", data.giant, 2.4 *speed);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}
@@ -180,7 +180,7 @@ namespace {
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
     // Inbetween stages
-    data.animSpeed = 1.0;
+    	data.animSpeed = 1.0;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Next");
 	}
 	void GTStoexit(AnimationEventData& data) {
@@ -191,7 +191,7 @@ namespace {
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTStoexit");
 	}
   void GTSBEH_Exit(AnimationEventData& data) {
-    // Final exit
+    	// Final exit
 		data.stage = 0;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Exit");
 	}
