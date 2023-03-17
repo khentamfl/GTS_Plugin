@@ -23,15 +23,6 @@ using namespace Gts;
 using namespace std;
 
 namespace {
-    void EatActor(Actor* giant, Actor* tiny) {
-        for (auto &[giant, data]: this->data) {
-            auto tiny = data.tiny;
-            ActorVore::GetSingleton().data.erase(giant);
-        }
-        ///Will do same stuff that the Scripts do here, mainly heal gainer and increase size, as well as other stuff i think.
-        ///Would be nice to do stuff based on time passed, but that's probably too tedious to do (Since Script uses Utilit.wait(time) to do something based on delay)
-    }
-
     const std::vector<std::string_view> Anim_Vore = {
 		"GTSvore_sit_start",         // [0] Start air rumble and camera shake
 		"GTSvore_sit_end",           // [1] Sit down completed
@@ -90,6 +81,15 @@ namespace Gts {
         }
     }
     
+    void ActorVore::EatActor(Actor* giant, Actor* tiny) {
+        for (auto &[giant, data]: this->data) {
+            auto tiny = data.tiny;
+            ActorVore::GetSingleton().data.erase(giant);
+        }
+        ///Will do same stuff that the Scripts do here, mainly heal gainer and increase size, as well as other stuff i think.
+        ///Would be nice to do stuff based on time passed, but that's probably too tedious to do (Since Script uses Utilit.wait(time) to do something based on delay)
+    }
+
     void ActorVore::GrabVoreActor(Actor* giant, Actor* tiny) {
         //Add Actor(s) to data so Update will manage it
         ActorVore::GetSingleton().data.try_emplace(giant, tiny);
@@ -99,15 +99,26 @@ namespace Gts {
 		ActorVore::GetSingleton().data.erase(giant);
 	}
 
-    Actor* ActorVore::GetHeldVoreActors(Actor* giant) {
-        //Return all Actors that we are currently Voring, to do things to them
-        //Or maybe this function won't be needed since we send Actors from Vore.cpp?
-       try {
-			auto& me = ActorVore::GetSingleton();
+    TESObjectREFR* ActorVore::GetHeldVoreObj(Actor* giant) {
+        try {
+			auto& me = Grab::GetSingleton();
 			return me.data.at(giant).tiny;
 		} catch (std::out_of_range e) {
 			return nullptr;
-        }
+		}
+  	
+	}
+
+    Actor* ActorVore::GetHeldVoreActors(Actor* giant) {
+        //Return all Actors that we are currently Voring, to do things to them
+        //Or maybe this function won't be needed since we send Actors from Vore.cpp?
+       auto obj = Grab::GetHeldVoreObj(giant);
+    	Actor* actor = skyrim_cast<Actor*>(obj);
+    	if (actor) {
+      		return actor;
+    	} else {
+      		return nullptr;
+    	}
 	}
 
     VoreData::VoreData(TESObjectREFR* tiny) : tiny(tiny) {
