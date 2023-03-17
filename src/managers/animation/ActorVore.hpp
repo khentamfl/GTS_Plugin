@@ -23,7 +23,7 @@ namespace Gts {
 
 			static void GrabVoreActor(Actor* giant, Actor* tiny);
 
-			static void Release(Actor* giant);
+			static void ClearData(Actor* giant);
 
       		// Get Vore Actors (Since we can Vore more than one)
 			static TESObjectREFR* GetHeldVoreObj(Actor* giant);

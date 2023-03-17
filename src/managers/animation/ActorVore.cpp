@@ -95,7 +95,7 @@ namespace Gts {
         ActorVore::GetSingleton().data.try_emplace(giant, tiny);
     }
 
-    void ActorVore::Release(Actor* giant) {
+    void ActorVore::ClearData(Actor* giant) {
 		ActorVore::GetSingleton().data.erase(giant);
 	}
 
@@ -112,7 +112,7 @@ namespace Gts {
     Actor* ActorVore::GetHeldVoreActors(Actor* giant) {
         //Return all Actors that we are currently Voring, to do things to them
         //Or maybe this function won't be needed since we send Actors from Vore.cpp?
-       auto obj = Grab::GetHeldVoreObj(giant);
+       auto obj = ActorVore::GetHeldVoreObj(giant);
     	Actor* actor = skyrim_cast<Actor*>(obj);
     	if (actor) {
       		return actor;
