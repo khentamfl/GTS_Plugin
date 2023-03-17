@@ -24,6 +24,10 @@ using namespace std;
 
 namespace {
     void EatActor(Actor* giant, Actor* tiny) {
+        for (auto &[giant, data]: this->data) {
+            auto tiny = data.tiny;
+            ActorVore::GetSingleton().data.erase(giant);
+        }
         ///Will do same stuff that the Scripts do here, mainly heal gainer and increase size, as well as other stuff i think.
         ///Would be nice to do stuff based on time passed, but that's probably too tedious to do (Since Script uses Utilit.wait(time) to do something based on delay)
     }
@@ -56,17 +60,57 @@ namespace Gts {
 
 	void ActorVore::Update() {
         //Attach actor to "AnimObjectA" node on Giant
-        //And do stuff to actors based on events?
-    }
+        for (auto &[giant, data]: this->data) {
+			if (!giant) {
+				continue;
+			}
+			auto tiny = data.tiny;
+			if (!tiny) {
+				continue;
+			}
 
+			auto bone = find_node(giant, "AnimObjectA");
+			if (!bone) {
+				return;
+			}
+
+			float giantScale = get_visual_scale(giant);
+
+			NiPoint3 giantLocation = giant->GetPosition();
+			NiPoint3 tinyLocation = tiny->GetPosition();
+
+			tiny->SetPosition(bone->world.translate);
+			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
+			if (tiny_is_actor) {
+				auto charcont = tiny_is_actor->GetCharController();
+				if (charcont) {
+					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+				}
+			}
+        }
+    }
+    
     void ActorVore::GrabVoreActor(Actor* giant, Actor* tiny) {
         //Add Actor(s) to data so Update will manage it
+        ActorVore::GetSingleton().data.try_emplace(giant, tiny);
     }
+
+    void ActorVore::Release(Actor* giant) {
+		ActorVore::GetSingleton().data.erase(giant);
+	}
 
     Actor* ActorVore::GetHeldVoreActors(Actor* giant) {
         //Return all Actors that we are currently Voring, to do things to them
         //Or maybe this function won't be needed since we send Actors from Vore.cpp?
-        return nullptr;
+       try {
+			auto& me = ActorVore::GetSingleton();
+			return me.data.at(giant).tiny;
+		} catch (std::out_of_range e) {
+			return nullptr;
+        }
+	}
+
+    VoreData::VoreData(TESObjectREFR* tiny) : tiny(tiny) {
 	}
 }
 

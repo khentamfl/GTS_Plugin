@@ -6,11 +6,10 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	/*struct GrabData {
-		GrabData(TESObjectREFR* tiny, float strength);
+	struct VoreData {
+		GrabData(TESObjectREFR* tiny);
 		TESObjectREFR* tiny;
-		float strength;
-	};*/
+	};
 
 	class ActorVore : public EventListener
 	{
@@ -22,9 +21,11 @@ namespace Gts {
             // Grab actor(s) for Vore
 			static void GrabVoreActor(Actor* giant, Actor* tiny);
 
+			static void Release(Actor* giant);
+
       		// Get Vore Actors (Since we can Vore more than one)
 			static Actor* GetHeldVoreActors(Actor* giant);
 
-			//std::unordered_map<Actor*, GrabData> data; <-- Should be same principle as Grab.hpp/cpp i think
+			std::unordered_map<Actor*, VoreData> data;
 	};
 }
