@@ -89,7 +89,6 @@ namespace {
 		//data.stage = 4;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		ResetAnimationSpeed(&data.giant);
 		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstompendR");
 	}
 
@@ -97,7 +96,6 @@ namespace {
 		//data.stage = 4;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		ResetAnimationSpeed(&data.giant);
 		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstompendL");
 	}
 

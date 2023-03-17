@@ -135,7 +135,6 @@ namespace {
 		data.disableHH = false;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		ResetAnimationSpeed(&data.giant);
 
 		StartLegRumble("ThighCrush", data.giant, 0.35 * speed);
 		data.stage = 8;
