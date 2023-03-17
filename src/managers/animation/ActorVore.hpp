@@ -7,7 +7,7 @@ using namespace RE;
 
 namespace Gts {
 	struct VoreData {
-		GrabData(TESObjectREFR* tiny);
+		VoreData(TESObjectREFR* tiny);
 		TESObjectREFR* tiny;
 	};
 
