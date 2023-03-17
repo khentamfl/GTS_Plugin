@@ -184,33 +184,20 @@ namespace {
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandRS");
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
-		data.canEditAnimSpeed = false;
-		data.animSpeed = 1.0;
-		ResetAnimationSpeed(&data.giant);
-		StopLegRumble("ThighCrush", data.giant);
-		StopLegRumble("ThighCrushStompR", data.giant);
-		StopLegRumble("ThighCrushStompL", data.giant);
-		data.stage = 0;
+    // Inbetween stages
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Next");
 	}
-	void GTSBEH_Exit(AnimationEventData& data) {
-		data.canEditAnimSpeed = false;
-		data.animSpeed = 1.0;
-		ResetAnimationSpeed(&data.giant);
+	void GTStoexit(AnimationEventData& data) {
+    // Going to exit
 		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
+		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTStoexit");
+	}
+  void GTSBEH_Exit(AnimationEventData& data) {
+    // Final exit
 		data.stage = 0;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Exit");
-	}
-	void GTStoexit(AnimationEventData& data) {
-		data.animSpeed = 1.0;
-		ResetAnimationSpeed(&data.giant);
-		StopLegRumble("ThighCrush", data.giant);
-		StopLegRumble("ThighCrushStompR", data.giant);
-		StopLegRumble("ThighCrushStompL", data.giant);
-		data.stage = 0;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTStoexit");
 	}
 }
 

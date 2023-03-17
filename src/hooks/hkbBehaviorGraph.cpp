@@ -32,7 +32,7 @@ namespace Hooks
 								}
 							}
               float multi = AnimationManager::GetAnimSpeed(actor);
-              animSpeed *= multi;
+              anim_speed *= multi;
 						}
 					}
 				}
