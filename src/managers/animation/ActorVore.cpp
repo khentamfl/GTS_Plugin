@@ -82,7 +82,7 @@ namespace Gts {
     }
     
     void ActorVore::EatActor(Actor* giant, Actor* tiny) {
-        for (auto &[giant, data]: this->data) {
+        for (auto &[giant, data]: ActorVore::GetSingleton().data) {
             auto tiny = data.tiny;
             ActorVore::GetSingleton().data.erase(giant);
         }
@@ -101,7 +101,7 @@ namespace Gts {
 
     TESObjectREFR* ActorVore::GetHeldVoreObj(Actor* giant) {
         try {
-			auto& me = Grab::GetSingleton();
+			auto& me = ActorVore::GetSingleton();
 			return me.data.at(giant).tiny;
 		} catch (std::out_of_range e) {
 			return nullptr;
