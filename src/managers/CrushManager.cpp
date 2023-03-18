@@ -178,7 +178,9 @@ namespace Gts {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
 					}
+					
 					ScareChance(giant);
+					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
@@ -186,7 +188,7 @@ namespace Gts {
 						TriggerScreenBlood(50);
 						tiny->SetAlpha(0.0); // Fake crush effect, just make player invisible
 					}
-					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
+					
 					AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 					FearChance(giant);
 				}
