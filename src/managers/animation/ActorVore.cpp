@@ -1,4 +1,3 @@
-
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/CrushManager.hpp"
