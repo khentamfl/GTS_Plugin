@@ -10,6 +10,31 @@ using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
+
+//                Sorted by order and timings
+//GTSvore_sit_start                         //Start sit down and shake
+//GTSvore_impactLS                          //Silent left feet impact
+//GTSvore_sit_end                           //Sit end, stop shake
+//GTSvore_hand_extend                       //Hand starts to move in space
+//GTSvore_hand_grab                         //Hand grabs someoone
+//GTSvore_attachactor_AnimObject_A          //Same as above
+//GTSvore_bringactor_start                  //Hand starts to move victim in space
+//GTSvore_open_mouth                        //Open mouth
+//GTSvore_bringactor_end                    //Drop actor into mouth
+//GTSvore_swallow                           //Swallow actor
+//GTSvore_swallow_sound                     //Pretty much the same
+//GTSvore_close_mouth                       //Close mouth
+//GTSvore_handR_reposition_S                //Right hand starts to return to normal position
+//GTSvore_handL_reposition_S                //Same but for left hand
+//GTSvore_handR_reposition_E                //Right hand returned to normal position
+//GTSvore_handL_reposition_E                //Same but for left hand
+//GTSvore_eat_actor                         //Kill and eat actor completely
+//GTSvore_detachactor_AnimObject_A          //Actor is no longer attached to AnimObjectA
+//GTSvore_standup_start                     //Return to normal stance
+//GTSvore_impactRS                          //Right feet collides with the ground
+//GTSvore_standup_end                       //Exit animation
+
+
 namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
@@ -113,26 +138,4 @@ namespace Gts
     }
 }
 
-/*                Sorted by order and timings
-GTSvore_sit_start                         //Start sit down and shake
-GTSvore_impactLS                          //Silent left feet impact
-GTSvore_sit_end                           //Sit end, stop shake
-GTSvore_hand_extend                       //Hand starts to move in space
-GTSvore_hand_grab                         //Hand grabs someoone
-GTSvore_attachactor_AnimObject_A          //Same as above
-GTSvore_bringactor_start                  //Hand starts to move victim in space
-GTSvore_open_mouth                        //Open mouth
-GTSvore_bringactor_end                    //Drop actor into mouth
-GTSvore_swallow                           //Swallow actor
-GTSvore_swallow_sound                     //Pretty much the same
-GTSvore_close_mouth                       //Close mouth
-GTSvore_handR_reposition_S                //Right hand starts to return to normal position
-GTSvore_handL_reposition_S                //Same but for left hand
-GTSvore_handR_reposition_E                //Right hand returned to normal position
-GTSvore_handL_reposition_E                //Same but for left hand
-GTSvore_eat_actor                         //Kill and eat actor completely
-GTSvore_detachactor_AnimObject_A          //Actor is no longer attached to AnimObjectA
-GTSvore_standup_start                     //Return to normal stance
-GTSvore_impactRS                          //Right feet collides with the ground
-GTSvore_standup_end                       //Exit animation
-/*
+
