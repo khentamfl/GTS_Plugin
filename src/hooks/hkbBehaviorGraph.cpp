@@ -1,6 +1,5 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "hooks/hkbBehaviorGraph.hpp"
-#include "data/persistent.hpp"
 #include "managers/animation/AnimationManager.hpp"
 
 using namespace RE;
@@ -24,13 +23,6 @@ namespace Hooks
 				for (auto& graph : animGraphManager->graphs) {
 					if (graph) {
 						if (a_this == graph->behaviorGraph) {
-							float bonus = 1.0;
-							auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
-							if (saved_data) {
-								if (saved_data->anim_speed > 0.0) {
-									anim_speed = saved_data->anim_speed * bonus;
-								}
-							}
               float multi = AnimationManager::GetAnimSpeed(actor);
               anim_speed *= multi;
 						}

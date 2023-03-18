@@ -3,6 +3,7 @@
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/Compat.hpp"
 #include "managers/animation/Stomp.hpp"
+#include "data/persistent.hpp"
 #include "scale/scale.hpp"
 
 using namespace RE;
@@ -91,18 +92,25 @@ namespace Gts {
 	}
 
   float AnimationManager::GetAnimSpeed(Actor* actor) {
-    if (!actor) {
-      return 1.0;
+    float speed = 1.0;
+    if (actor) {
+      auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
+      if (saved_data) {
+        if (saved_data->anim_speed > 0.0) {
+          speed *= saved_data->anim_speed;
+        }
+      }
+
+      try {
+        float totalSpeed = 1.0;
+  			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
+  					totalSpeed *= data.animSpeed;
+  			}
+        speed *= totalSpeed;
+  		} catch (std::out_of_range e) {
+      }
     }
-    try {
-      float totalSpeed = 1.0;
-			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
-					totalSpeed *= data.animSpeed;
-			}
-      return totalSpeed;
-		} catch (std::out_of_range e) {
-      return 1.0;
-    }
+    return speed;
   }
 
 	void AnimationManager::RegisterEvent( std::string_view name,  std::string_view group, std::function<void(AnimationEventData&)> func) {
