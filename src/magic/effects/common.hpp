@@ -19,6 +19,45 @@ namespace Gts {
 		return Time::WorldTimeDelta() * BASE_FPS;
 	}
 
+	inline void AdjustGtsSkill(float value, Actor* Caster) { // Adjust Matter Of Size skill
+		if (Caster->formID != 0x14) {
+			return; //Bye
+		}
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		if (!GtsSkillLevel) {
+			return;
+		}
+		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
+		if (!GtsSkillRatio) {
+			return;
+		}
+		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
+		if (!GtsSkillProgress) {
+			return;
+		}
+
+		int random = (100 + (rand()% 65 + 1)) / 100;
+
+		if (GtsSkillLevel->value >= 100) {
+			GtsSkillLevel->value = 100.0;
+			GtsSkillRatio->value = 0.0;
+			return;
+		}
+
+		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
+
+		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
+		float Total = ((value * random) * ValueEffectiveness);
+		GtsSkillRatio->value += Total;
+
+		if (GtsSkillRatio->value >= 1.0) {
+			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
+			GtsSkillLevel->value += 1.0;
+			GtsSkillProgress->value = GtsSkillLevel->value;
+			GtsSkillRatio->value = 0.0 + transfer;
+		}
+	}
+
 	inline void AdjustSizeLimit(float value, Actor* caster)  // A function that adjusts Size Limit (Globals)
 	{
 		if (caster->formID != 0x14) {
@@ -343,44 +382,5 @@ namespace Gts {
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
 		Runtime::CastSpell(caster, target, "TrackSizeSpell");
-	}
-
-	void AdjustGtsSkill(float value, Actor* Caster) { // Adjust Matter Of Size skill
-		if (Caster->formID != 0x14) {
-			return; //Bye
-		}
-		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
-		if (!GtsSkillLevel) {
-			return;
-		}
-		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
-		if (!GtsSkillRatio) {
-			return;
-		}
-		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
-		if (!GtsSkillProgress) {
-			return;
-		}
-
-		int random = (100 + (rand()% 65 + 1)) / 100;
-
-		if (GtsSkillLevel->value >= 100) {
-			GtsSkillLevel->value = 100.0;
-			GtsSkillRatio->value = 0.0;
-			return;
-		}
-
-		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
-
-		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = ((value * random) * ValueEffectiveness);
-		GtsSkillRatio->value += Total;
-
-		if (GtsSkillRatio->value >= 1.0) {
-			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
-			GtsSkillLevel->value += 1.0;
-			GtsSkillProgress->value = GtsSkillLevel->value;
-			GtsSkillRatio->value = 0.0 + transfer;
-		}
 	}
 }
