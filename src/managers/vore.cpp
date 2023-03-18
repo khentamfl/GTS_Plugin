@@ -416,7 +416,7 @@ namespace Gts {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 		if (pred->formID == 0x14) {
-			AdjustSizeLimit(0.0260);
+			AdjustSizeLimit(0.0260, pred);
 		}
 		Runtime::CastSpell(pred, prey, "StartVore");
 	}
