@@ -10,6 +10,78 @@ using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
+namespace {
+	const std::string_view RNode = "NPC R Foot [Rft ]";
+	const std::string_view LNode = "NPC L Foot [Lft ]";
+	const std::string_view RSound = "lFootstepR";
+	const std::string_view LSound = "lFootstepL";
+
+	void GTSvore_sit_start(AnimationEventData& data) {
+	}
+
+    void GTSvore_impactLS(AnimationEventData& data) {
+    }
+
+    void GTSvore_sit_end(AnimationEventData& data) {
+    }
+
+    void GTSvore_hand_extend(AnimationEventData& data) {
+    }
+
+    void GTSvore_hand_grab(AnimationEventData& data) {
+    }
+
+    void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {
+    }
+
+    void GTSvore_bringactor_start(AnimationEventData& data) {
+    }
+
+    void GTSvore_open_mouth(AnimationEventData& data) {
+    }
+
+    void GTSvore_bringactor_end(AnimationEventData& data) {
+    }
+
+    void GTSvore_swallow(AnimationEventData& data) {
+    }
+
+    void GTSvore_swallow_sound(AnimationEventData& data) {
+    }
+
+    void GTSvore_close_mouth(AnimationEventData& data) {
+    }
+
+    void GTSvore_handR_reposition_S(AnimationEventData& data) {
+    }
+
+    void GTSvore_handL_reposition_S(AnimationEventData& data) {
+    }
+
+    void GTSvore_handR_reposition_E(AnimationEventData& data) {
+    }
+
+    void GTSvore_handL_reposition_E(AnimationEventData& data) {
+    }
+
+    void GTSvore_eat_actor(AnimationEventData& data) {
+    }
+
+    void GTSvore_detachactor_AnimObject_A(AnimationEventData& data) {
+    }
+
+    void GTSvore_standup_start(AnimationEventData& data) {
+    }
+
+    void GTSvore_impactRS(AnimationEventData& data) {
+    }
+
+    void GTSvore_standup_end(AnimationEventData& data) {
+    }
+
+}
+
+
 namespace Gts
 {
     void AnimationActorVore::RegisterEvents() {
