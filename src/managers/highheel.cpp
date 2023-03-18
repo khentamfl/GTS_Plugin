@@ -50,7 +50,8 @@ namespace Gts {
 			return;
 		}
 		bool GTSBusy;
-		if (Persistent::GetSingleton().highheel_furniture == false && !actor->GetGraphVariableBool("GTS_isBusy", GTSBusy) && actor->GetOccupiedFurniture()) {
+    actor->GetGraphVariableBool("GTS_isBusy", GTSBusy);
+		if (Persistent::GetSingleton().highheel_furniture == false && ! GTSBusy && actor->GetOccupiedFurniture()) {
 			return;
 		}
 		this->data.try_emplace(actor);
@@ -63,9 +64,11 @@ namespace Gts {
 			);
 		if (disableHH) {
 			hhData.multiplier.target = 0.0;
+      hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(Actor);
 			log::info("HH is false");
 		} else {
 			hhData.multiplier.target = 1.0;
+      hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(Actor);
 		}
 
 
