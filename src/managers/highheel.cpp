@@ -51,6 +51,9 @@ namespace Gts {
 		}
 		bool GTSBusy;
     	actor->GetGraphVariableBool("GTS_isBusy", GTSBusy);
+		if (actor->formID == 0x14) {
+			log::info("Player Furniture: {}", actor->GetOccupiedFurniture());
+		}
 		if (Persistent::GetSingleton().highheel_furniture == false && !GTSBusy && actor->GetOccupiedFurniture()) {
 			return;
 		}
