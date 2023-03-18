@@ -1,127 +1,67 @@
-	
+
 #include "managers/animation/ActorVore.hpp"
-#include "managers/GtsSizeManager.hpp"
-#include "managers/GrowthTremorManager.hpp"
-#include "managers/ShrinkToNothingManager.hpp"
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/CrushManager.hpp"
-#include "magic/effects/common.hpp"
-#include "utils/actorUtils.hpp"
-#include "data/persistent.hpp"
-#include "data/transient.hpp"
+#include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
-#include "data/time.hpp"
-#include "events.hpp"
-#include "timer.hpp"
-#include "node.hpp"
 
-#include <random>
-
-using namespace RE;
-using namespace REL;
-using namespace Gts;
 using namespace std;
+using namespace SKSE;
+using namespace RE;
+using namespace Gts;
 
-namespace {
-    const std::vector<std::string_view> Anim_Vore = {
-		"GTSvore_sit_start",         // [0] Start air rumble and camera shake
-		"GTSvore_sit_end",           // [1] Sit down completed
-		"GTSvore_hand_extend",       // [2] Hand starts to move in space
-		"GTSvore_hand_grab",         // [3] Hand reached someone, grab actor
-		"GTSvore_bringactor_start",  // [4] Hand brings someone to mouth
-		"GTSvore_bringactor_end",    // [5] Hand brought someone to mouth, release fingers (may not be needed since we do stuff to actor based on AnimObjectA position?)
-        "GTSvore_swallow",           // [6] Actor was swallowed by Giantess
-		"GTSvore_swallow_sound",     // [7] Play gulp sound (May not be needed, probably just use GTSvore_Swallow instead)
-        "GTSvore_hand_reposition"    // [8] Hand returns to original position (?)
-        "GTSvore_standup_start"      // [9] Actor begins to stand up, eventually returning to original position      
-        "GTSvore_eat_actor",         // [10] Actor reached specific depth inside Giantess, gain bonuses and eat(kill) actor completely.
-        "GTSvore_standup_end",       // [11] Actor completely returned to original position: end animation, stop rumble and camera shake.
-	};
+namespace Gts
+{
+    void AnimationActorVore::RegisterEvents() {
+		AnimationManager::RegisterEvent("GTSvore_attachactor_AnimObject_A", "ActorVore", GTSvore_attachactor_AnimObject_A);
+		AnimationManager::RegisterEvent("GTSvore_detachactor_AnimObject_A", "ActorVore", GTSvore_detachactor_AnimObject_A);
+		AnimationManager::RegisterEvent("GTSvore_handR_reposition_S", "ActorVore", GTSvore_handR_reposition_S);
+		AnimationManager::RegisterEvent("GTSvore_handL_reposition_S", "ActorVore", GTSvore_handL_reposition_S);
+		AnimationManager::RegisterEvent("GTSvore_handR_reposition_E", "ActorVore", GTSvore_handR_reposition_E);
+		AnimationManager::RegisterEvent("GTSvore_handL_reposition_E", "ActorVore", GTSvore_handL_reposition_E);
+		AnimationManager::RegisterEvent("GTSvore_bringactor_start", "ActorVore", GTSvore_bringactor_start);
+		AnimationManager::RegisterEvent("GTSvore_bringactor_end", "ActorVore", GTSvore_bringactor_end);
+		AnimationManager::RegisterEvent("GTSvore_swallow_sound", "ActorVore", GTSvore_swallow_sound);
+		AnimationManager::RegisterEvent("GTSvore_standup_start", "ActorVore", GTSvore_standup_start);
+		AnimationManager::RegisterEvent("GTSvore_hand_extend", "ActorVore", GTSvore_hand_extend);
+		AnimationManager::RegisterEvent("GTSvore_close_mouth", "ActorVore", GTSvore_close_mouth);
+		AnimationManager::RegisterEvent("GTSvore_standup_end", "ActorVore", GTSvore_standup_end);
+		AnimationManager::RegisterEvent("GTSvore_open_mouth", "ActorVore", GTSvore_open_mouth);
+		AnimationManager::RegisterEvent("GTSvore_hand_grab", "ActorVore", GTSvore_hand_grab);
+		AnimationManager::RegisterEvent("GTSvore_sit_start", "ActorVore", GTSvore_sit_start);
+		AnimationManager::RegisterEvent("GTSvore_eat_actor", "ActorVore", GTSvore_eat_actor);
+		AnimationManager::RegisterEvent("GTSvore_impactRS", "ActorVore", GTSvore_impactRS);
+		AnimationManager::RegisterEvent("GTSvore_impactLS", "ActorVore", GTSvore_impactLS);
+		AnimationManager::RegisterEvent("GTSvore_sit_end", "ActorVore", GTSvore_sit_end);
+		AnimationManager::RegisterEvent("GTSvore_swallow", "ActorVore", GTSvore_swallow);
+	}
+
+    void AnimationActorVore::RegisterTriggers() {
+	    AnimationManager::RegisterTrigger("StartVore", "ActorVore", "GTSBEH_StartVore");
+    }
 }
 
-namespace Gts {
-	ActorVore& ActorVore::GetSingleton() noexcept {
-		static ActorVore instance;
-		return instance;
-	}
-
-	std::string ActorVore::DebugName() {
-		return "ActorVore";
-	}
-
-	void ActorVore::Update() {
-        //Attach actor to "AnimObjectA" node on Giant
-        for (auto &[giant, data]: this->data) {
-			if (!giant) {
-				continue;
-			}
-			auto tiny = data.tiny;
-			if (!tiny) {
-				continue;
-			}
-
-			auto bone = find_node(giant, "AnimObjectA");
-			if (!bone) {
-				return;
-			}
-
-			float giantScale = get_visual_scale(giant);
-
-			NiPoint3 giantLocation = giant->GetPosition();
-			NiPoint3 tinyLocation = tiny->GetPosition();
-
-			tiny->SetPosition(bone->world.translate);
-			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
-			if (tiny_is_actor) {
-				auto charcont = tiny_is_actor->GetCharController();
-				if (charcont) {
-					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
-				}
-			}
-        }
-    }
-    
-    void ActorVore::EatActor(Actor* giant, Actor* tiny) {
-        for (auto &[giant, data]: ActorVore::GetSingleton().data) {
-            auto tiny = data.tiny;
-            ActorVore::GetSingleton().data.erase(giant);
-        }
-        ///Will do same stuff that the Scripts do here, mainly heal gainer and increase size, as well as other stuff i think.
-        ///Would be nice to do stuff based on time passed, but that's probably too tedious to do (Since Script uses Utilit.wait(time) to do something based on delay)
-    }
-
-    void ActorVore::GrabVoreActor(Actor* giant, Actor* tiny) {
-        //Add Actor(s) to data so Update will manage it
-        ActorVore::GetSingleton().data.try_emplace(giant, tiny);
-    }
-
-    void ActorVore::ClearData(Actor* giant) {
-		ActorVore::GetSingleton().data.erase(giant);
-	}
-
-    TESObjectREFR* ActorVore::GetHeldVoreObj(Actor* giant) {
-        try {
-			auto& me = ActorVore::GetSingleton();
-			return me.data.at(giant).tiny;
-		} catch (std::out_of_range e) {
-			return nullptr;
-		}
-  	
-	}
-
-    Actor* ActorVore::GetHeldVoreActors(Actor* giant) {
-        //Return all Actors that we are currently Voring, to do things to them
-        //Or maybe this function won't be needed since we send Actors from Vore.cpp?
-       auto obj = ActorVore::GetHeldVoreObj(giant);
-    	Actor* actor = skyrim_cast<Actor*>(obj);
-    	if (actor) {
-      		return actor;
-    	} else {
-      		return nullptr;
-    	}
-	}
-
-    VoreData::VoreData(TESObjectREFR* tiny) : tiny(tiny) {
-	}
-}
-
+/*                Sorted by order and timings
+GTSvore_sit_start                         //Start sit down and shake
+GTSvore_impactLS                          //Silent left feet impact
+GTSvore_sit_end                           //Sit end, stop shake
+GTSvore_hand_extend                       //Hand starts to move in space
+GTSvore_hand_grab                         //Hand grabs someoone
+GTSvore_attachactor_AnimObject_A          //Same as above
+GTSvore_bringactor_start                  //Hand starts to move victim in space
+GTSvore_open_mouth                        //Open mouth
+GTSvore_bringactor_end                    //Drop actor into mouth
+GTSvore_swallow                           //Swallow actor
+GTSvore_swallow_sound                     //Pretty much the same
+GTSvore_close_mouth                       //Close mouth
+GTSvore_handR_reposition_S                //Right hand starts to return to normal position
+GTSvore_handL_reposition_S                //Same but for left hand
+GTSvore_handR_reposition_E                //Right hand returned to normal position
+GTSvore_handL_reposition_E                //Same but for left hand
+GTSvore_eat_actor                         //Kill and eat actor completely
+GTSvore_detachactor_AnimObject_A          //Actor is no longer attached to AnimObjectA
+GTSvore_standup_start                     //Return to normal stance
+GTSvore_impactRS                          //Right feet collides with the ground
+GTSvore_standup_end                       //Exit animation
+/*

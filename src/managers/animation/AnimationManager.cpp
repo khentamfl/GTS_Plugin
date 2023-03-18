@@ -53,6 +53,9 @@ namespace Gts {
 
 		AnimationCompat::RegisterEvents();
 		AnimationCompat::RegisterTriggers();
+
+		AnimationActorVore::RegisterEvents();
+		AnimationActorVore::RegisterTriggers();
 	}
 
 	void AnimationManager::Update() {
