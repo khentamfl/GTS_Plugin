@@ -19,8 +19,11 @@ namespace Gts {
 		return Time::WorldTimeDelta() * BASE_FPS;
 	}
 
-	inline void AdjustSizeLimit(float value)  // A function that adjusts Size Limit (Globals)
+	inline void AdjustSizeLimit(float value, Actor* caster)  // A function that adjusts Size Limit (Globals)
 	{
+		if (caster->formID != 0x14) {
+			return;
+		}
 		float progressionMultiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 
 		auto globalMaxSizeCalc = Runtime::GetFloat("GlobalMaxSizeCalc");
@@ -150,7 +153,7 @@ namespace Gts {
 		float amount = CalcPower(from, scale_factor, bonus);
 		float amountnomult = CalcPower_NoMult(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
-		AdjustSizeLimit(0.0003 * scale_factor * target_scale);
+		AdjustSizeLimit(0.0003 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amountnomult * 0.55 * effeciency_noscale);
 		mod_target_scale(to, amount*effeciency);
 	}
@@ -159,7 +162,7 @@ namespace Gts {
 		effeciency = clamp(0.0, 1.0, effeciency);
 		float amount = CalcPower(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
-		AdjustSizeLimit(0.0016 * scale_factor * target_scale);
+		AdjustSizeLimit(0.0016 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amount);
 		mod_target_scale(to, amount*effeciency/10); // < 10 times weaker size steal towards caster. Absorb exclusive.
 	}
@@ -210,7 +213,7 @@ namespace Gts {
 		if (Runtime::HasPerk(caster, "PerkPart2")) {
 			power *= PERK2_BONUS;
 		}
-		AdjustSizeLimit(0.0030 * target_scale * power);
+		AdjustSizeLimit(0.030 * target_scale * power, caster);
 		float alteration_level_bonus = 0.0332 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
@@ -230,7 +233,7 @@ namespace Gts {
 				return false;
 			}
 			ShrinkToNothingManager::Shrink(caster, target);
-			AdjustSizeLimit(0.0117);
+			AdjustSizeLimit(0.0117, caster);
 
 			auto Cache = Persistent::GetSingleton().GetData(caster);
 
@@ -326,7 +329,7 @@ namespace Gts {
 			if (Runtime::HasPerk(player, "SizeReserve")) {
 				Cache->SizeReserve += target_scale/25;
 			}
-			AdjustSizeLimit(0.0066 * target_scale);
+			AdjustSizeLimit(0.0066 * target_scale, caster);
 			if (Runtime::HasPerk(caster, "ExtraGrowth") && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
 				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
 				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());

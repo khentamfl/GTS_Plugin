@@ -62,7 +62,7 @@ namespace {
 	void GTStosit(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-		StartLegRumble("ThighCrush", data.giant, 0.85);
+		StartLegRumble("ThighCrush", data.giant, 2.50);
 		data.stage = 1;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTStosit");
 	}
