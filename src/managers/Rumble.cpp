@@ -156,6 +156,7 @@ namespace Gts {
 						Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, node);
 					}
 				}
+        averagePos = averagePos * (1.0 / totalWeight);
         ApplyShakeAtPoint(actor, 0.4 * totalWeight, averagePos);
 			}
 		}
