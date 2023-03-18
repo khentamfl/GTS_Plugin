@@ -193,7 +193,7 @@ namespace Gts {
 		float amountnomult = CalcPower_NoMult(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0003 * scale_factor * target_scale, to);
-		AdjustGtsSkill(0.0016 * scale_factor * target_scale, to);
+		AdjustGtsSkill(0.0816 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amountnomult * 0.55 * effeciency_noscale);
 		mod_target_scale(to, amount*effeciency);
 	}
@@ -203,7 +203,7 @@ namespace Gts {
 		float amount = CalcPower(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0016 * scale_factor * target_scale, to);
-		AdjustGtsSkill(0.0016 * scale_factor * target_scale, to);
+		AdjustGtsSkill(0.0816 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amount);
 		mod_target_scale(to, amount*effeciency/10); // < 10 times weaker size steal towards caster. Absorb exclusive.
 	}
