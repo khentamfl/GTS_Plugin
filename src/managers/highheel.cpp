@@ -51,7 +51,7 @@ namespace Gts {
 		}
 		bool GTSBusy;
     actor->GetGraphVariableBool("GTS_isBusy", GTSBusy);
-		if (Persistent::GetSingleton().highheel_furniture == false && ! GTSBusy && actor->GetOccupiedFurniture()) {
+		if (Persistent::GetSingleton().highheel_furniture == false && GTSBusy && actor->GetOccupiedFurniture()) {
 			return;
 		}
 		this->data.try_emplace(actor);
