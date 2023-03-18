@@ -24,11 +24,6 @@ namespace Gts {
 		if (caster->formID != 0x14) {
 			return;
 		}
-
-		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
-		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
-		value *= ValueEffectiveness;
-
 		float progressionMultiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 
 		auto globalMaxSizeCalc = Runtime::GetFloat("GlobalMaxSizeCalc");
@@ -158,10 +153,8 @@ namespace Gts {
 		float amount = CalcPower(from, scale_factor, bonus);
 		float amountnomult = CalcPower_NoMult(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
-		AdjustSizeLimit(0.0300 * scale_factor * target_scale, to);
-
-		ConsoleLog::GetSingleton()->Print("Steal: %g, To: %s", 0.0300 * scale_factor * target_scale, to->GetDisplayFullName());
-
+		AdjustSizeLimit(0.0003 * scale_factor * target_scale, to);
+		AdjustGtsSkill(0.0016 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amountnomult * 0.55 * effeciency_noscale);
 		mod_target_scale(to, amount*effeciency);
 	}
@@ -170,7 +163,8 @@ namespace Gts {
 		effeciency = clamp(0.0, 1.0, effeciency);
 		float amount = CalcPower(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
-		AdjustSizeLimit(0.030 * scale_factor * target_scale, to);
+		AdjustSizeLimit(0.0016 * scale_factor * target_scale, to);
+		AdjustGtsSkill(0.0016 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amount);
 		mod_target_scale(to, amount*effeciency/10); // < 10 times weaker size steal towards caster. Absorb exclusive.
 	}
@@ -221,7 +215,7 @@ namespace Gts {
 		if (Runtime::HasPerk(caster, "PerkPart2")) {
 			power *= PERK2_BONUS;
 		}
-		AdjustSizeLimit(0.300 * target_scale * power, caster);
+		AdjustSizeLimit(0.0030 * target_scale * power, caster);
 		float alteration_level_bonus = 0.0332 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
@@ -349,5 +343,44 @@ namespace Gts {
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
 		Runtime::CastSpell(caster, target, "TrackSizeSpell");
+	}
+
+	void AdjustGtsSkill(float value, Actor* Caster) { // Adjust Matter Of Size skill
+		if (Caster->formID != 0x14) {
+			return; //Bye
+		}
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		if (!GtsSkillLevel) {
+			return;
+		}
+		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
+		if (!GtsSkillRatio) {
+			return;
+		}
+		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
+		if (!GtsSkillProgress) {
+			return;
+		}
+
+		int random = (100 + (rand()% 65 + 1)) / 100;
+
+		if (GtsSkillLevel->value >= 100) {
+			GtsSkillLevel->value = 100.0;
+			GtsSkillRatio->value = 0.0;
+			return;
+		}
+
+		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
+
+		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
+		float Total = ((value * random) * ValueEffectiveness);
+		GtsSkillRatio->value += Total;
+
+		if (GtsSkillRatio->value >= 1.0) {
+			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
+			GtsSkillLevel->value += 1.0;
+			GtsSkillProgress->value = GtsSkillLevel->value;
+			GtsSkillRatio->value = 0.0 + transfer;
+		}
 	}
 }

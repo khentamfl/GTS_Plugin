@@ -345,7 +345,7 @@ namespace Gts {
 			float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);
 			float gethp = GetAV(prey, ActorValue::kHealth);
 			float healthrequirement = getmaxhp/pred_scale;
-			if (gethp > healthrequirement) {
+			if (pred->formID == 0x14, gethp > healthrequirement) {
 				DamageAV(prey, ActorValue::kHealth, 6 * sizedifference);
 				DamageAV(pred, ActorValue::kStamina, 26/sizedifference);
 				Notify("{} is too healthy to be eaten", prey->GetDisplayFullName());
@@ -356,7 +356,7 @@ namespace Gts {
 
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
+		if (pred->formID == 0x14, prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
 		}
 		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
@@ -405,16 +405,7 @@ namespace Gts {
 
 		DamageAV(pred, ActorValue::kStamina, wastestamina);
 		Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
-		int Random = rand() % 2;
-		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || Random == 0) {
-			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 1) {
-			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 2) {
-			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (prey->IsDead()) {
-			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		}
+		
 		if (pred->formID == 0x14) {
 			AdjustSizeLimit(0.0260, pred);
 		}
