@@ -143,21 +143,22 @@ namespace Gts {
 				//   - Since we can only have one rumble (skyrim limitation)
 				//     we do a weighted average to find the location to rumble from
 				//     and sum the intensities
-				NiPoint3 averagePos = NiPoint3(0.0, 0.0, 0.0);
-        float totalWeight = 0.0;
+					NiPoint3 averagePos = NiPoint3(0.0, 0.0, 0.0);
+       				float totalWeight = 0.0;
 				for (const auto &[node, intensity]: cummulativeIntensity) {
 					auto& point = node->world.translate;
-          averagePos = averagePos + point*intensity;
-          totalWeight += intensity;
+          			averagePos = averagePos + point*intensity;
+          			totalWeight += intensity;
 
-					float volume = 4 * get_visual_scale(actor) * intensity/get_distance_to_camera(point);
+					float volume = 4 * get_visual_scale(actor)/get_distance_to_camera(point);
 					// Lastly play the sound at each node
 					if (data.delay.ShouldRun()) {
+						log::info("Playing sound at: {}", actor->GetDisplayFullName());
 						Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, node);
 					}
 				}
-        averagePos = averagePos * (1.0 / totalWeight);
-        ApplyShakeAtPoint(actor, 0.4 * totalWeight, averagePos);
+        		averagePos = averagePos * (1.0 / totalWeight);
+        		ApplyShakeAtPoint(actor, 0.4 * totalWeight, averagePos);
 			}
 		}
 	//}

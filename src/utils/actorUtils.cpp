@@ -235,6 +235,7 @@ namespace Gts {
 		if (caster->formID == 0x14) {
 			sizedifference = sourcesize;
 		}
+		
 
 		// To Sermit: You wrote a cutoff not a falloff
 		//            was this intentional?
@@ -253,6 +254,7 @@ namespace Gts {
 		//   |____|_____
 		//        distance
 		float cuttoff = 450 * sizedifference;
+		log::info("Shake Actor:{}, Distance:{}, sourcesize: {}, recsize: {}, cutoff: {}", caster->GetDisplayFullName(), distance, sourcesize, receiversize, cuttoff);
 		if (distance < cuttoff) {
 			// To Sermit: Same value as before just with the math reduced to minimal steps
 			float intensity = (sizedifference * 23.90625 * ShakeStrength(caster)) / distance;
