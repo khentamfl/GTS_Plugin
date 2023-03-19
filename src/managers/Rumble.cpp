@@ -150,7 +150,7 @@ namespace Gts {
           			averagePos = averagePos + point*intensity;
           			totalWeight += intensity;
 
-					float volume = 4 * get_visual_scale(actor)/get_distance_to_camera(point);
+					float volume = 4 * get_visual_scale(actor) * intensity;//get_distance_to_camera(point);
 					// Lastly play the sound at each node
 					if (data.delay.ShouldRun()) {
 						log::info("Playing sound at: {}", actor->GetDisplayFullName());
