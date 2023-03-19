@@ -154,7 +154,7 @@ namespace Gts {
 			// Create the anim data for this group if not present
 			actorData.try_emplace(group, giant, tiny);
 			// Run the anim
-			log::info("Playing Trigger {} for {}", trigger, giant.GetDisplayFullName());
+			//log::info("Playing Trigger {} for {}", trigger, giant.GetDisplayFullName());
 			giant.NotifyAnimationGraph(behavorToPlay.behavors[0]);
 		} catch (std::out_of_range) {
 			log::error("Requested play of unknown animation named: {}", trigger);
