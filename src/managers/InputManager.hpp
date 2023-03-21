@@ -19,10 +19,10 @@ namespace Gts
     Continuous,
   };
 
-  class InputEvent {
+  class InputEventData {
   public:
     // Construct from toml::table (toml11)
-    InputEvent(const toml::table& data);
+    InputEventData(const toml::table& data);
 
     // Return time since it was first pressed
     float Duration() const;
@@ -52,9 +52,9 @@ namespace Gts
   };
 
   struct RegisteredInputEvent {
-    std::function<void(const InputEvent&)> callback;
+    std::function<void(const InputEventData&)> callback;
 
-    RegisteredInputEvent(std::function<void(const InputEvent&)> callback);
+    RegisteredInputEvent(std::function<void(const InputEventData&)> callback);
   };
 
 	using EventResult = RE::BSEventNotifyControl;
@@ -70,9 +70,9 @@ namespace Gts
       virtual void DataReady() override;
 			void Start() override;
 
-      static void RegisterInputEvent(std::string_view name, std::function<void(InputEvent&)> callback);
+      static void RegisterInputEvent(std::string_view name, std::function<void(InputEventData&)> callback);
 
       std::unordered_map<std::string, RegisteredInputEvent> registedInputEvents;
-      std::vector<InputEvent> keyTriggers;
+      std::vector<InputEventData> keyTriggers;
 	};
 }

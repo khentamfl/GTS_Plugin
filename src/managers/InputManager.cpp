@@ -29,7 +29,7 @@ namespace {
       s.replace(pos, toReplace.length(), replaceWith);
   }
 
-  std::vector<InputEvent> LoadInputEvents() {
+  std::vector<InputEventData> LoadInputEvents() {
     const auto data = toml::parse(R"(Data\SKSE\Plugins\GtsInput.toml)");
     // Toml Example
     // ```toml
@@ -39,19 +39,19 @@ namespace {
     // duration = 0.0
     // ```
     const auto aot = toml::find<std::vector<toml::table>>(data, "InputEvent");
-    std::vector<InputEvent> results;
+    std::vector<InputEventData> results;
     for (const auto& table: aot) {
       std::string name = toml::find_or<std::string>(data, "name", "");
       const auto keys = toml::find_or<vector<std::string>>(data, "keys", {});
       if (name != "" && ! keys.empty()) {
-        InputEvent newData = InputEvent(data);
+        InputEventData newData = InputEventData(data);
         results.push_back(newData);
       }
     }
     return results;
   }
 
-  void SizeReserveEvent(const InputEvent& data) {
+  void SizeReserveEvent(const InputEventData& data) {
     auto player = PlayerCharacter::GetSingleton();
     auto Cache = Persistent::GetSingleton().GetData(player);
     if (!Cache) {
@@ -80,7 +80,7 @@ namespace {
     }
   }
 
-  void DisplaySizeReserveEvent(const InputEvent& data) {
+  void DisplaySizeReserveEvent(const InputEventData& data) {
     auto player = PlayerCharacter::GetSingleton();
     auto Cache = Persistent::GetSingleton().GetData(player);
     if (Cache) {
@@ -93,7 +93,7 @@ namespace {
     }
   }
 
-  void PartyReportEvent(const InputEvent& data) {
+  void PartyReportEvent(const InputEventData& data) {
     for (auto actor: find_actors()) {
       if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
         float hh = HighHeelManager::GetBaseHHOffset(actor)[2]/100;
@@ -105,19 +105,19 @@ namespace {
     }
   }
 
-  void AnimSpeedUpEvent(const InputEvent& data) {
+  void AnimSpeedUpEvent(const InputEventData& data) {
     AnimationManager::AdjustAnimSpeed(0.012); // Increase speed and power
   }
-  void AnimSpeedDownEvent(const InputEvent& data) {
+  void AnimSpeedDownEvent(const InputEventData& data) {
     AnimationManager::AdjustAnimSpeed(-0.0060); // Decrease speed and power
   }
-  void AnimMaxSpeedEvent(const InputEvent& data) {
+  void AnimMaxSpeedEvent(const InputEventData& data) {
     AnimationManager::AdjustAnimSpeed(0.030); // Strongest attack
   }
 }
 
 namespace Gts {
-  InputEvent::InputEvent(const toml::table& data) {
+  InputEventData::InputEventData(const toml::table& data) {
     this->name = toml::find_or<float>(data, "name", "");
     float duration = toml::find_or<float>(data, "duration", 0.0f);
     this->exclusive = toml::find_or<bool>(data, "exclusive", false);
@@ -167,11 +167,11 @@ namespace Gts {
     this->startTime = 0.0;
   }
 
-  float InputEvent::Duration() {
+  float InputEventData::Duration() {
     return Time::WorldTimeElapsed() - this->startTime;
   }
 
-  bool InputEvent::AllKeysPressed(const std::unordered_set<std::uint32_t>& keys) {
+  bool InputEventData::AllKeysPressed(const std::unordered_set<std::uint32_t>& keys) {
     for (const auto& key: this->keys) {
       if (keys.find(upper_key) == keys.end()) {
         // Key not found
@@ -181,7 +181,7 @@ namespace Gts {
     return true;
   }
 
-  bool InputEvent::OnlyKeysPressed(const std::unordered_set<std::uint32_t>& keys_in) {
+  bool InputEventData::OnlyKeysPressed(const std::unordered_set<std::uint32_t>& keys_in) {
     std::unordered_set<std::uint32_t> keys = keys_in; // Copy
     for (const auto& key: this->keys) {
       keys.erase(key);
@@ -189,7 +189,7 @@ namespace Gts {
     return keys.size() == 0;
   }
 
-  bool InputEvent::ShouldFire(const std::unordered_set<std::uint32_t>& keys) {
+  bool InputEventData::ShouldFire(const std::unordered_set<std::uint32_t>& keys) {
     bool shouldFire = false;
     // Check based on keys and duration
     if (this->AllKeysPressed(keys) && (!this->exclusive || this->OnlyKeysPressed(keys))) {
@@ -238,11 +238,11 @@ namespace Gts {
     }
   }
 
-  std::string InputEvent::GetName() {
+  std::string InputEventData::GetName() {
     return this->name;
   }
 
-  RegisteredInputEvent::RegisteredInputEvent(std::function<void(InputEvent&)> callback) : callback(callback) {
+  RegisteredInputEvent::RegisteredInputEvent(std::function<void(InputEventData&)> callback) : callback(callback) {
 
   }
 
@@ -251,7 +251,7 @@ namespace Gts {
 		return instance;
 	}
 
-  void InputManager::RegisterInputEvent(std::string_view name, std::function<void(const InputEvent&)> callback) {
+  void InputManager::RegisterInputEvent(std::string_view name, std::function<void(const InputEventData&)> callback) {
     auto& me = InputManager::GetSingleton();
     me.registedInputEvents.try_emplace(name, callback);
   }

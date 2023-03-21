@@ -48,7 +48,7 @@ namespace {
 		playerCamera->ToggleFreeCameraMode(false);
 	}
 
-  void VoreInputEvent(const InputEvent& data) {
+  void VoreInputEvent(const InputEventData& data) {
     static voreTimer = Timer(5.0);
     auto pred = PlayerCharacter::GetSingleton();
 

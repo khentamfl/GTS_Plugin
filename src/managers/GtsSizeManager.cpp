@@ -28,7 +28,7 @@ namespace {
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
 
-  void TotalControlGrowEvent(const InputEvent& data) {
+  void TotalControlGrowEvent(const InputEventData& data) {
     auto player = PlayerCharacter::GetSingleton();
     if (Runtime::HasPerk(player, "TotalControl")) {
       float scale = get_visual_scale(player);
@@ -43,7 +43,7 @@ namespace {
       }
     }
   }
-  void TotalControlShrinkEvent(const InputEvent& data) {
+  void TotalControlShrinkEvent(const InputEventData& data) {
     auto player = PlayerCharacter::GetSingleton();
     if (Runtime::HasPerk(player, "TotalControl")) {
       float scale = get_visual_scale(player);
@@ -58,7 +58,7 @@ namespace {
 			}
     }
   }
-  void TotalControlGrowOtherEvent(const InputEvent& data) {
+  void TotalControlGrowOtherEvent(const InputEventData& data) {
     auto player = PlayerCharacter::GetSingleton();
     if (Runtime::HasPerk(player, "TotalControl")) {
       for (auto actor: find_actors()) {
@@ -80,7 +80,7 @@ namespace {
 			}
     }
   }
-  void TotalControlShrinkOtherEvent(const InputEvent& data) {
+  void TotalControlShrinkOtherEvent(const InputEventData& data) {
     auto player = PlayerCharacter::GetSingleton();
     if (Runtime::HasPerk(player, "TotalControl")) {
       for (auto actor: find_actors()) {

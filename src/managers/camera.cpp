@@ -16,30 +16,30 @@ using namespace Gts;
 
 
 namespace {
-  void HorizontalResetEvent(const InputEvent& data) {
+  void HorizontalResetEvent(const InputEventData& data) {
     auto& camera = CameraManager::GetSingleton();
     camera.ResetLeftRight();
   }
-  void VerticalResetEvent(const InputEvent& data) {
+  void VerticalResetEvent(const InputEventData& data) {
     auto& camera = CameraManager::GetSingleton();
     camera.ResetUpDown();
   }
-  void CamUpEvent(const InputEvent& data) {
+  void CamUpEvent(const InputEventData& data) {
     auto& camera = CameraManager::GetSingleton();
     float size = get_visual_scale(PlayerCharacter::GetSingleton());
     camera.AdjustUpDown(0.6 + (size * 0.05 - 0.05));
   }
-  void CamDownEvent(const InputEvent& data) {
+  void CamDownEvent(const InputEventData& data) {
     auto& camera = CameraManager::GetSingleton();
     float size = get_visual_scale(PlayerCharacter::GetSingleton());
     camera.AdjustUpDown(-(0.6 + (size * 0.05 - 0.05)));
   }
-  void CamLeftEvent(const InputEvent& data) {
+  void CamLeftEvent(const InputEventData& data) {
     auto& camera = CameraManager::GetSingleton();
     float size = get_visual_scale(PlayerCharacter::GetSingleton());
     camera.AdjustLeftRight(-(0.6 + (size * 0.05 - 0.05)));
   }
-  void CamRightEvent(const InputEvent& data) {
+  void CamRightEvent(const InputEventData& data) {
     auto& camera = CameraManager::GetSingleton();
     float size = get_visual_scale(PlayerCharacter::GetSingleton());
     camera.AdjustLeftRight(0.6 + (size * 0.05 - 0.05));

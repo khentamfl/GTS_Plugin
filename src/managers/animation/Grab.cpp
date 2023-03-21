@@ -29,7 +29,7 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
-  void GrabEvent(const InputEvent& data) {
+  void GrabEvent(const InputEventData& data) {
     auto player = PlayerCharacter::GetSingleton();
 
     for (auto otherActor: find_actors()) {
@@ -47,7 +47,7 @@ namespace {
     }
   }
 
-  void GrabKillEvent(const InputEvent& data) {
+  void GrabKillEvent(const InputEventData& data) {
     auto player = PlayerCharacter::GetSingleton();
     auto grabbedActor = Grab::GetHeldActor(player);
     if (grabbedActor) {
@@ -56,7 +56,7 @@ namespace {
     }
   }
 
-  void GrabSpareEvent(const InputEvent& data) {
+  void GrabSpareEvent(const InputEventData& data) {
     auto player = PlayerCharacter::GetSingleton();
     Grab::Release(player);
   }

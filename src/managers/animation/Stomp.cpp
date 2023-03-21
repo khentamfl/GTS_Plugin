@@ -114,12 +114,12 @@ namespace {
 		//ConsoleLog::GetSingleton()->Print("Stomp: GTSBEH_Exit");
 	}
 
-  void RightStompEvent(const InputEvent& data) {
+  void RightStompEvent(const InputEventData& data) {
     AnimationManager::StartAnim("StompRight", player);
     log::info("Stomp Right");
   }
 
-  void LeftStompEvent(const InputEvent& data) {
+  void LeftStompEvent(const InputEventData& data) {
     AnimationManager::StartAnim("StompLeft", player);
     log::info("Stomp Left");
   }
