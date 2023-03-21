@@ -14,6 +14,36 @@ using namespace REL;
 using namespace Gts;
 
 
+namespace {
+  void HorizontalResetEvent(const InputEvent& data) {
+    auto& camera = CameraManager::GetSingleton();
+    camera.ResetLeftRight();
+  }
+  void VerticalResetEvent(const InputEvent& data) {
+    auto& camera = CameraManager::GetSingleton();
+    camera.ResetUpDown();
+  }
+  void CamUpEvent(const InputEvent& data) {
+    auto& camera = CameraManager::GetSingleton();
+    float size = get_visual_scale(PlayerCharacter::GetSingleton());
+    camera.AdjustUpDown(0.6 + (size * 0.05 - 0.05));
+  }
+  void CamDownEvent(const InputEvent& data) {
+    auto& camera = CameraManager::GetSingleton();
+    float size = get_visual_scale(PlayerCharacter::GetSingleton());
+    camera.AdjustUpDown(-(0.6 + (size * 0.05 - 0.05)));
+  }
+  void CamLeftEvent(const InputEvent& data) {
+    auto& camera = CameraManager::GetSingleton();
+    float size = get_visual_scale(PlayerCharacter::GetSingleton());
+    camera.AdjustLeftRight(-(0.6 + (size * 0.05 - 0.05)));
+  }
+  void CamRightEvent(const InputEvent& data) {
+    auto& camera = CameraManager::GetSingleton();
+    float size = get_visual_scale(PlayerCharacter::GetSingleton());
+    camera.AdjustLeftRight(0.6 + (size * 0.05 - 0.05));
+  }
+}
 
 namespace Gts {
 	CameraManager& CameraManager::GetSingleton() noexcept {
@@ -24,6 +54,16 @@ namespace Gts {
 	std::string CameraManager::DebugName() {
 		return "CameraManager";
 	}
+
+  void CameraManager::DataReady() {
+    InputManager::RegisterInputEvent("HorizontalCameraReset", HorizontalResetEvent);
+    InputManager::RegisterInputEvent("VerticalCameraReset", VerticalResetEvent);
+
+    InputManager::RegisterInputEvent("CameraUp", CamUpEvent);
+    InputManager::RegisterInputEvent("CameraDown", CamDownEvent);
+    InputManager::RegisterInputEvent("CameraLeft", CamLeftEvent);
+    InputManager::RegisterInputEvent("CameraRight", CamRightEvent);
+  }
 
 	void CameraManager::Start() {
 		//ResetIniSettings();

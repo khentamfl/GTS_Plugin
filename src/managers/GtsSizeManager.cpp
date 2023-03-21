@@ -25,6 +25,80 @@ namespace {
 	const double DAMAGE_COOLDOWN = 0.50;
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
+
+  void TotalControlGrowEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    if (Runtime::HasPerk(player, "TotalControl")) {
+      float scale = get_visual_scale(player);
+      float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
+      DamageAV(player, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
+      Grow(player, 0.0010 * stamina, 0.0);
+      float Volume = clamp(0.10, 2.0, get_visual_scale(player)/10);
+      Rumble::Once("TotalControl", player, scale/10);
+      static timergrowth = Timer(2.00);
+      if (timergrowth.ShouldRun()) {
+        Runtime::PlaySound("growthSound", player, Volume, 0.0);
+      }
+    }
+  }
+  void TotalControlShrinkEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    if (Runtime::HasPerk(player, "TotalControl")) {
+      float scale = get_visual_scale(player);
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
+			DamageAV(player, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
+			ShrinkActor(player, 0.0010 * stamina, 0.0);
+			float Volume = clamp(0.05, 2.0, get_visual_scale(player)/10);
+			Rumble::Once("TotalControl", player, scale/14);
+      static timergrowth = Timer(2.00);
+			if (timergrowth.ShouldRun()) {
+				Runtime::PlaySound("shrinkSound", player, Volume, 0.0);
+			}
+    }
+  }
+  void TotalControlGrowOtherEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    if (Runtime::HasPerk(player, "TotalControl")) {
+      for (auto actor: find_actors()) {
+				if (!actor) {
+					continue;
+				}
+				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+					float npcscale = get_visual_scale(actor);
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
+					DamageAV(player, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
+					Grow(actor, 0.0010 * magicka, 0.0);
+					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
+					Rumble::Once("TotalControlOther", actor, 0.25);
+          static timergrowth = Timer(2.00);
+					if (timergrowth.ShouldRun()) {
+						Runtime::PlaySound("growthSound", actor, Volume, 0.0);
+					}
+				}
+			}
+    }
+  }
+  void TotalControlShrinkOtherEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    if (Runtime::HasPerk(player, "TotalControl")) {
+      for (auto actor: find_actors()) {
+				if (!actor) {
+					continue;
+				}
+				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+					float npcscale = get_visual_scale(actor);
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
+					DamageAV(player, ActorValue::kMagicka, 0.10 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
+					ShrinkActor(actor, 0.0010 * magicka, 0.0);
+					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
+					Rumble::Once("TotalControlOther", actor, 0.20);
+					if (this->timergrowth.ShouldRun()) {
+						Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);
+					}
+				}
+			}
+    }
+  }
 }
 
 namespace Gts {
@@ -42,6 +116,13 @@ namespace Gts {
 	std::string SizeManager::DebugName() {
 		return "SizeManager";
 	}
+
+  void SizeManager::DataReady() {
+    InputManager::RegisterEvent("TotalControlGrow", TotalControlGrowEvent);
+    InputManager::RegisterEvent("TotalControlShrink", TotalControlShrinkEvent);
+    InputManager::RegisterEvent("TotalControlGrowOther", TotalControlGrowOtherEvent);
+    InputManager::RegisterEvent("TotalControlShrinkOther", TotalControlShrinkOtherEvent);
+  }
 
 	void SizeManager::Update() {
 		for (auto actor: find_actors()) {

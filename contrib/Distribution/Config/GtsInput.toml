@@ -1,0 +1,155 @@
+# Keyboard event map
+#
+# Key names are from directinput
+# https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ee418641(v=vs.85)
+# without the DIK_ prefix
+#
+# Mouse is LMB or RMB
+#
+# Events are specicified like this:
+# ```toml
+# [[InputEvent]]
+# name = "SomeKeyEvent"
+# keys = [ "A", "B", "LMB" ]
+# exclusive = false
+# duration = 0.0
+# trigger = "once"
+# ```
+#
+# - name: Is the event name. This determines what is done when these keys are
+#         pressed. More that one `[[InputEvent]]` can trigger the same event name
+#         which means you can have multiple keys combinations do that same thing
+#         if you repeat the name
+# - keys: Is a comma seperated list [] of keys names that will trigger the event
+# - exclsive: When true means ONLY these keys must be pressed for the entire duration
+#             when false other keys may be pressed and the event will still fire
+# - duration: The length of time the keys must be pressed for before they fire
+# - trigger: Either "once or "continuous". If "once" the keys must be released
+#            before the event will fire again. If "continuous" the event will
+#            fire every frame until the keys are released
+[[InputEvent]]
+name = "SizeReserve"
+keys = ["E"]
+trigger = "continuous"
+
+[[InputEvent]]
+name = "DisplaySizeReserve"
+keys = ["F"]
+duration = 1.2
+
+[[InputEvent]]
+name = "ThighCrush"
+keys = ["LALT"]
+duration = 0.6
+
+[[InputEvent]]
+name = "ThighCrushKill"
+keys = [ "LMB" ]
+exclusive = true
+
+[[InputEvent]]
+name = "ThighCrushSpare"
+keys = [ "RMB" ]
+exclusive = true
+
+[[InputEvent]]
+name = "PartyReport"
+keys = "LCONTROL"
+duration = 1.2
+
+[[InputEvent]]
+name = "Grab"
+keys = ["F"]
+
+[[InputEvent]]
+name = "GrabKill"
+keys = [ "LMB" ]
+exclusive = true
+
+[[InputEvent]]
+name = "GrabSpare"
+keys = [ "RMB" ]
+exclusive = true
+
+[[InputEvent]]
+name = "Vore"
+keys = [ "LSHIFT", "V" ]
+
+[[InputEvent]]
+name = "StompRight"
+keys = ["LSHIFT", "E"]
+
+[[InputEvent]]
+name = "StompLeft"
+keys = ["LSHIFT", "Q"]
+
+[[InputEvent]]
+name = "HorizontalCameraReset"
+keys = [ "LALT", "RIGHT", "LEFT" ]
+exclusive = true
+
+[[InputEvent]]
+name = "VerticalCameraReset"
+keys = [ "LALT", "UP", "DOWN" ]
+exclusive = true
+
+[[InputEvent]]
+name = "CameraLeft"
+keys = [ "LALT", "LEFT" ]
+exclusive = true
+
+[[InputEvent]]
+name = "CameraRight"
+keys = [ "LALT", "RIGHT" ]
+exclusive = true
+
+[[InputEvent]]
+name = "CameraUp"
+keys = [ "LALT", "UP" ]
+exclusive = true
+
+[[InputEvent]]
+name = "CameraDown"
+keys = [ "LALT", "DOWN" ]
+exclusive = true
+
+[[InputEvent]]
+name = "AnimSpeedUp"
+keys = [ "LMB" ]
+exclusive = true
+
+[[InputEvent]]
+name = "AnimSpeedDown"
+keys = [ "RMB" ]
+exclusive = true
+
+[[InputEvent]]
+name = "AnimSpeedUp"
+keys = [ "LMB" ]
+exclusive = true
+
+[[InputEvent]]
+name = "AnimMaxSpeed"
+keys = [ "RMB", "LMB" ]
+exclusive = true
+
+[[InputEvent]]
+name = "TotalControlGrow"
+keys = [ "UP", "LEFT"]
+exclusive = true
+
+[[InputEvent]]
+name = "TotalControlShrink"
+keys = [ "DOWN", "LEFT"]
+exclusive = true
+
+[[InputEvent]]
+name = "TotalControlGrowOther"
+keys = [ "LSHIFT",  "UP", "LEFT"]
+exclusive = true
+
+
+[[InputEvent]]
+name = "TotalControlShrinkOther"
+keys = [ "SHIFT", "DOWN", "LEFT"]
+exclusive = true

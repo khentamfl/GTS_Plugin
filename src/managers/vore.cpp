@@ -46,6 +46,23 @@ namespace {
 		auto playerCamera = PlayerCamera::GetSingleton();
 		playerCamera->ToggleFreeCameraMode(false);
 	}
+
+  void VoreInputEvent(const InputEvent& data) {
+    static voreTimer = Timer(5.0);
+    auto pred = PlayerCharacter::GetSingleton();
+
+    if (voretimer.ShouldRunFrame()) {
+      auto& VoreManager = Vore::GetSingleton();
+      std::size_t numberOfPrey = 1;
+      if (Runtime::HasPerk(pred, "MassVorePerk")) {
+        numberOfPrey = 3;
+      }
+      std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
+      for (auto prey: preys) {
+        VoreManager.StartVore(pred, prey);
+      }
+    }
+  }
 }
 
 namespace Gts {
@@ -57,6 +74,10 @@ namespace Gts {
 	std::string Vore::DebugName() {
 		return "Vore";
 	}
+
+  void Vore::DataReady() {
+    InputManager::RegisterInputEvent("Vore", VoreInputEvent);
+  }
 
 	void Vore::Update() {
 		auto player = PlayerCharacter::GetSingleton();
@@ -405,7 +426,7 @@ namespace Gts {
 
 		DamageAV(pred, ActorValue::kStamina, wastestamina);
 		Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
-		
+
 		if (pred->formID == 0x14) {
 			AdjustSizeLimit(0.0260, pred);
 		}

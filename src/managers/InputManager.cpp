@@ -19,45 +19,262 @@
 #include "data/time.hpp"
 #include "timer.hpp"
 #include "managers/Rumble.hpp"
+#include "toml.hpp"
 
+using namespace articuno;
 using namespace RE;
 using namespace Gts;
 
+namespace {
+  // courtesy of https://stackoverflow.com/questions/5878775/how-to-find-and-replace-string
+  void replace_first(
+    std::string& s,
+    std::string const& toReplace,
+    std::string const& replaceWith
+  ) {
+      std::size_t pos = s.find(toReplace);
+      if (pos == std::string::npos) return;
+      s.replace(pos, toReplace.length(), replaceWith);
+  }
+
+  std::vector<InputEvent> LoadInputEvents() {
+    const auto data = toml::parse(R"(Data\SKSE\Plugins\GtsInput.toml)");
+    // Toml Example
+    // ```toml
+    // [[InputEvent]]
+    // name = “Stomp”
+    // keys = [“E”, “LeftShift”]
+    // duration = 0.0
+    // ```
+    const auto aot = toml::find<std::vector<toml::table>>(data, "InputEvent");
+    std::vector<InputEvent> results;
+    for (const auto& table: aot) {
+      std::string name = toml::find_or<std::string>(data, "name", "");
+      const auto keys = toml::find_or<vector<std::string>>(data, "keys", {});
+      if (name != "" && ! keys.empty()) {
+        InputEvent newData = InputEvent(data);
+        results.push_back(newData);
+      }
+    }
+    return results;
+  }
+
+  void SizeReserveEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    auto Cache = Persistent::GetSingleton().GetData(player);
+    if (!Cache) {
+      return BSEventNotifyControl::kContinue;
+    }
+    if (Cache->SizeReserve > 0.0) {
+      float duration = data.Duration();
+      Rumble::Once("SizeReserve", player, Cache->SizeReserve/15 * duration);
+
+      if (duration >= 1.2 && Runtime::HasPerk(player, "SizeReserve") && Cache->SizeReserve > 0) {
+        float SizeCalculation = duration - 1.2;
+        float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
+        float Volume = clamp(0.10, 2.0, get_visual_scale(player) * Cache->SizeReserve/10);
+        static timergrowth = Timer(2.00);
+        if (timergrowth.ShouldRunFrame()) {
+          Runtime::PlaySound("growthSound", player, Cache->SizeReserve/50 * duration, 0.0);
+          Runtime::PlaySound("MoanSound", player, Volume, 0.0);
+        }
+
+        mod_target_scale(player, SizeCalculation/80 * gigantism);
+        Cache->SizeReserve -= SizeCalculation/80;
+        if (Cache->SizeReserve <= 0) {
+          Cache->SizeReserve = 0.0; // Protect against negative values.
+        }
+      }
+    }
+  }
+
+  void DisplaySizeReserveEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    auto Cache = Persistent::GetSingleton().GetData(player);
+    if (Cache) {
+      if (Runtime::HasPerk(player, "SizeReserve")) { //F
+
+        float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
+        float Value = Cache->SizeReserve * gigantism;
+        Notify("Reserved Size: {:.2f}", Value);
+      }
+    }
+  }
+
+  void PartyReportEvent(const InputEvent& data) {
+    for (auto actor: find_actors()) {
+      if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
+        float hh = HighHeelManager::GetBaseHHOffset(actor)[2]/100;
+        float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
+        float scale = get_target_scale(actor);
+        float maxscale = get_max_scale(actor);
+        ConsoleLog::GetSingleton()->Print("%s Scale is: %g; Size Limit is: %g; High Heels: %g; Aspect Of Giantess %: %g", actor->GetDisplayFullName(), scale, maxscale, hh, gigantism);
+      }
+    }
+  }
+
+  void AnimSpeedUpEvent(const InputEvent& data) {
+    AnimationManager::AdjustAnimSpeed(0.012); // Increase speed and power
+  }
+  void AnimSpeedDownEvent(const InputEvent& data) {
+    AnimationManager::AdjustAnimSpeed(-0.0060); // Decrease speed and power
+  }
+  void AnimMaxSpeedEvent(const InputEvent& data) {
+    AnimationManager::AdjustAnimSpeed(0.030); // Strongest attack
+  }
+}
 
 namespace Gts {
+  InputEvent::InputEvent(const toml::table& data) {
+    this->name = toml::find_or<float>(data, "name", "");
+    float duration = toml::find_or<float>(data, "duration", 0.0f);
+    this->exclusive = toml::find_or<bool>(data, "exclusive", false);
+    std::string trigger = toml::find_or<bool>(data, "trigger", "once");
+    std::string lower_trigger = std::transform(trigger.begin(), trigger.end(), trigger.begin(), [](unsigned char c){ return std::tolower(c); }); // Lowercase
+    switch (lower_trigger) {
+      case "once": {
+        this->trigger = TriggerMode::Once;
+        break;
+      },
+      case "continuous": {
+        this->trigger = TriggerMode::Continuous;
+        break;
+      }
+      case "cont": {
+        this->trigger = TriggerMode::Continuous;
+        break;
+      }
+      case "continue": {
+        this->trigger = TriggerMode::Continuous;
+        break;
+      }
+      default: {
+        this->trigger = TriggerMode::Once;
+        break;
+      }
+    }
+    this->keys = {};
+    const auto keys = toml::find_or<vector<std::string>>(data, "keys", {});
+    for (const auto& key: keys) {
+      std::string upper_key = std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c){ return std::toupper(c); }); // Uppercase
+      upper_key.erase(remove(upper_key.begin(),upper_key.end(),' '),str.end()); // Remove spaces
+      if (upper_key != "LEFT" && upper_key != "DIK_LEFT") {
+        // This changes LEFTALT to LALT
+        // But NOT LEFT into L
+        replace_first(upper_key, "LEFT", "L");
+      }
+      if (upper_key != "RIGHT" && upper_key != "DIK_RIGHT") {
+        replace_first(upper_key, "RIGHT", "R");
+      }
+      this->keys.push_back(upper_key);
+    }
+    if (this->keys.empty()) {
+      continue;
+    }
+    this->minDuration = duration;
+    this->startTime = 0.0;
+  }
+
+  float InputEvent::Duration() {
+    return Time::WorldTimeElapsed() - this->startTime;
+  }
+
+  bool InputEvent::AllKeysPressed(const std::unordered_set<std::uint32_t>& keys) {
+    for (const auto& key: this->keys) {
+      if (keys.find(upper_key) == keys.end()) {
+        // Key not found
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool InputEvent::OnlyKeysPressed(const std::unordered_set<std::uint32_t>& keys_in) {
+    std::unordered_set<std::uint32_t> keys = keys_in; // Copy
+    for (const auto& key: this->keys) {
+      keys.erase(key);
+    }
+    return keys.size() == 0;
+  }
+
+  bool InputEvent::ShouldFire(const std::unordered_set<std::uint32_t>& keys) {
+    bool shouldFire = false;
+    // Check based on keys and duration
+    if (this->AllKeysPressed(keys) && (!this->exclusive || this->OnlyKeysPressed(keys))) {
+      shouldFire = true;
+    } else {
+      // Keys aren't held reset the start time of the button hold
+      this->startTime = Time::WorldTimeElapsed();
+      // and reset the state to idle
+      this->state = InputEventState::Idle;
+    }
+    // Check based on duration
+    if (shouldFire) {
+      if (this->minDuration > 0.0) {
+        // Turn it off if duration is not met
+        shouldFire = this->Duration() > this->minDuration;
+      }
+    }
+    // Check based on held and trigger state
+    if (shouldFire) {
+      switch (this->state) {
+        case InputEventState::Idle: {
+          this->state = InputEventState::Held;
+          return true;
+        }
+        case InputEventState::Held: {
+          switch (this->trigger) {
+            case TriggerMode::Once: {
+              return false;
+            }
+            case TriggerMode::Continuous: {
+              return true;
+            }
+            default: {
+              log::error("Unexpected TriggerMode.");
+              return false; // Catch if something goes weird
+            }
+          }
+        }
+        default: {
+          log::error("Unexpected InputEventState.");
+          return false; // Catch if something goes weird
+        }
+      }
+    } else {
+      return false;
+    }
+  }
+
+  RegisteredInputEvent::RegisteredInputEvent(std::function<void(InputEvent&)> callback) : callback(callback) {
+
+  }
+
 	InputManager& InputManager::GetSingleton() noexcept {
 		static InputManager instance;
 		return instance;
 	}
+
+  void InputManager::RegisterInputEvent(std::string_view name, std::function<void(const InputEvent&)> callback) {
+    auto& me = InputManager::GetSingleton();
+    me.registedInputEvents.try_emplace(name, callback);
+  }
+
+  void InputManager::DataReady() {
+    InputManager::RegisterInputEvent("SizeReserve", SizeReserveEvent);
+    InputManager::RegisterInputEvent("DisplaySizeReserve", DisplaySizeReserveEvent);
+    InputManager::RegisterInputEvent("PartyReport", PartyReportEvent);
+    InputManager::RegisterInputEvent("AnimSpeedUp", AnimSpeedUpEvent);
+    InputManager::RegisterInputEvent("AnimSpeedDown", AnimSpeedDownEvent);
+    InputManager::RegisterInputEvent("AnimMaxSpeed", AnimMaxSpeedEvent);
+  }
 
 	BSEventNotifyControl InputManager::ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) {
 
 		if (!a_event) {
 			return BSEventNotifyControl::kContinue;
 		}
-		bool CtrlPressed = false;
-		bool AltPressed = false;
-		bool ShiftPressed = false;
-		bool LeftArrow = false;
-		bool RightArrow = false;
-		bool E_Pressed = false;
-		bool V_Pressed = false;
-		bool F_Pressed = false;
-		bool Q_Pressed = false;
-		bool C_Pressed = false;
-		bool W_Pressed = false;
-		bool Space_Pressed = false;
-		bool LMB_Pressed = false;
-		bool RMB_Pressed = false;
-
-		bool ArrowUp = false;
-		bool ArrowDown = false;
 		auto player = PlayerCharacter::GetSingleton();
-		auto caster = player;
-		auto transient = Transient::GetSingleton().GetActorData(player);
-		auto& VoreManager = Vore::GetSingleton();
-		float size = get_visual_scale(player);
-
 		if (!player) {
 			return BSEventNotifyControl::kContinue;
 		}
@@ -65,7 +282,7 @@ namespace Gts {
 			return BSEventNotifyControl::kContinue;
 		}
 
-
+    std::unordered_set<std::uint32_t> keys;
 		for (auto event = *a_event; event; event = event->next) {
 			if (event->GetEventType() != INPUT_EVENT_TYPE::kButton) {
 				continue;
@@ -74,237 +291,15 @@ namespace Gts {
 			if (!buttonEvent || (!buttonEvent->IsPressed() && !buttonEvent->IsUp())) {
 				continue;
 			}
+
 			if (buttonEvent->device.get() == INPUT_DEVICE::kKeyboard) {
 				auto key = buttonEvent->GetIDCode();
-				auto Cache = Persistent::GetSingleton().GetData(player);
-				if (!Cache) {
-					return BSEventNotifyControl::kContinue;
-				}
-
-				if (key == 0x12 && Cache->SizeReserve > 0.0) { // E
-					Rumble::Once("SizeReserve", caster, Cache->SizeReserve/15 * buttonEvent->HeldDuration());
-
-					if (buttonEvent->HeldDuration() >= 1.2 && Runtime::HasPerk(player, "SizeReserve") && Cache->SizeReserve > 0) {
-						float SizeCalculation = buttonEvent->HeldDuration() - 1.2;
-						float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-						float Volume = clamp(0.10, 2.0, get_visual_scale(caster) * Cache->SizeReserve/10);
-
-						if (this->timergrowth.ShouldRunFrame()) {
-							Runtime::PlaySound("growthSound", caster, Cache->SizeReserve/50 * buttonEvent->HeldDuration(), 0.0);
-							Runtime::PlaySound("MoanSound", caster, Volume, 0.0);
-						}
-
-						mod_target_scale(caster, SizeCalculation/80 * gigantism);
-						Cache->SizeReserve -= SizeCalculation/80;
-						if (Cache->SizeReserve <= 0) {
-							Cache->SizeReserve = 0.0; // Protect against negative values.
-						}
-					}
-				}
-
-				if (key == 0x21 && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun() && Runtime::HasPerk(caster, "SizeReserve")) { //F
-
-					float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-					float Value = Cache->SizeReserve * gigantism;
-					Notify("Reserved Size: {:.2f}", Value);
-				}
-
-				if (key == 0x38 && buttonEvent->HeldDuration() >= 0.6) { //Alt
-					AnimationManager::StartAnim("ThighLoopEnter", player);
-					log::info("Triggering Stage 0");
-				}
-
-				if (key == 0x1d && buttonEvent->HeldDuration() >= 1.2 && this->timer.ShouldRun()) { // Left CTRL
-					for (auto actor: find_actors()) {
-						if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
-							float hh = HighHeelManager::GetBaseHHOffset(actor)[2]/100;
-							float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
-							float scale = get_target_scale(actor);
-							float maxscale = get_max_scale(actor);
-							ConsoleLog::GetSingleton()->Print("%s Scale is: %g; Size Limit is: %g; High Heels: %g; Aspect Of Giantess %: %g", actor->GetDisplayFullName(), scale, maxscale, hh, gigantism);
-						}
-					}
-				}
-
-				if (key == 0x38) {
-					AltPressed = true;
-				} else if (key == 0x2E) {
-					C_Pressed = true;
-				} else if (key == 0x1D) {
-					CtrlPressed = true;
-				} else if (key == 0xCD) {
-					RightArrow = true;
-				} else if (key == 0xCB) {
-					LeftArrow = true;
-				} else if (key == 0xC8) {
-					ArrowUp = true;
-				} else if (key == 0xD0) {
-					ArrowDown = true;
-				} else if (key == 0x2A) {
-					ShiftPressed = true;
-				} else if (key == 0x12) {
-					E_Pressed = true;
-				} else if (key == 0x2F) {
-					V_Pressed = true;
-				} else if (key == 0x21) {
-					F_Pressed = true;
-					for (auto otherActor: find_actors()) {
-						if (otherActor != player) {
-							float playerscale = get_visual_scale(player);
-							float victimscale = get_visual_scale(otherActor);
-							float sizedifference = playerscale/victimscale;
-							NiPoint3 giantLocation = player->GetPosition();
-							NiPoint3 tinyLocation = otherActor->GetPosition();
-							if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player) && sizedifference >= 4.2) {
-								Grab::GrabActor(player, otherActor);
-								break;
-							}
-						}
-					}
-				} else if (key == 0x10) {
-					Q_Pressed = true;
-				} else if (key == 0x11) {
-					W_Pressed = true;
-				} else if (key == 0x39) {
-					Space_Pressed = true;
-				}
-			} else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
-				auto key = buttonEvent->GetIDCode();
-				if (key == 0x0) {
-					LMB_Pressed = true;
-				}
-				if (key == 0x01) {
-					RMB_Pressed = true;
-				}
-			}
-		}
-
-		Actor* pred = PlayerCharacter::GetSingleton();
-		if (ShiftPressed && V_Pressed && !this->voreBlock) {
-			if (voretimer.ShouldRunFrame()) {
-				this->voreBlock = true;
-
-				std::size_t numberOfPrey = 1;
-				if (Runtime::HasPerk(pred, "MassVorePerk")) {
-					numberOfPrey = 3;
-				}
-				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
-				for (auto prey: preys) {
-					VoreManager.StartVore(pred, prey);
-				}
-			}
-		} else if (!ShiftPressed && !V_Pressed) {
-			this->voreBlock = false;
-		}
-		if (ShiftPressed && E_Pressed) {
-			AnimationManager::StartAnim("StompRight", player);
-			log::info("Stomp Right");
-		}
-		if (ShiftPressed && Q_Pressed) {
-			AnimationManager::StartAnim("StompLeft", player);
-			log::info("Stomp Left");
-		}
-
-		auto& Camera = CameraManager::GetSingleton();
-		if (AltPressed == false && RightArrow == true && LeftArrow == true) {
-			Camera.ResetLeftRight();
-		}
-		if (AltPressed == true && RightArrow == true) {
-			Camera.AdjustLeftRight(0.6 + (size * 0.05 - 0.05));
-		}
-		if (AltPressed == true && LeftArrow == true) {
-			Camera.AdjustLeftRight(-(0.6 + (size * 0.05 - 0.05)));
-		} // Left or Right end
-
-		if (LMB_Pressed && !RMB_Pressed) {
-			AnimationManager::StartAnim("ThighLoopAttack", player); // Increase speed and power
-			AnimationManager::AdjustAnimSpeed(0.012);
-			auto grabbedActor = Grab::GetHeldActor(player);
-			if (grabbedActor) {
-				CrushManager::Crush(player, grabbedActor);
-				Grab::Release(player);
-			}
-		}
-		if (RMB_Pressed && !LMB_Pressed) {
-			AnimationManager::StartAnim("ThighLoopExit", player); // Increase speed and power
-			AnimationManager::AdjustAnimSpeed(-0.0060);
-			Grab::Release(player);
-		}
-		if (W_Pressed) {
-			AnimationManager::StartAnim("ThighLoopExit", player);
-		}
-		if (RMB_Pressed && LMB_Pressed) {
-			AnimationManager::AdjustAnimSpeed(0.030); // Strongest attack
-		}
-		if (AltPressed == false && ArrowDown == true && ArrowUp == true) {
-			Camera.ResetUpDown();
-		}
-		if (AltPressed == true && ArrowUp == true) {
-			Camera.AdjustUpDown(0.6 + (size * 0.05 - 0.05));
-		}
-		if (AltPressed == true && ArrowDown == true) {
-			Camera.AdjustUpDown(-(0.6 + (size * 0.05 - 0.05)));
-			//log::info("Alt + Down");
-		} // Up or Down end
-
-		if (Runtime::HasPerk(player, "TotalControl") && !ShiftPressed && !AltPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow self
-			float scale = get_visual_scale(player);
-			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
-			DamageAV(player, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			Grow(player, 0.0010 * stamina, 0.0);
-			float Volume = clamp(0.10, 2.0, get_visual_scale(player)/10);
-			Rumble::Once("TotalControl", player, scale/10);
-			if (this->timergrowth.ShouldRun()) {
-				Runtime::PlaySound("growthSound", player, Volume, 0.0);
-			}
-		}
-		if (Runtime::HasPerk(player, "TotalControl") && !ShiftPressed && !AltPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Self
-			float scale = get_visual_scale(player);
-			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
-			DamageAV(player, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			ShrinkActor(player, 0.0010 * stamina, 0.0);
-			float Volume = clamp(0.05, 2.0, get_visual_scale(player)/10);
-			Rumble::Once("TotalControl", player, scale/14);
-			if (this->timergrowth.ShouldRun()) {
-				Runtime::PlaySound("shrinkSound", player, Volume, 0.0);
-			}
-		} else if (Runtime::HasPerk(player, "TotalControl") && ShiftPressed && !AltPressed && ArrowUp && LeftArrow && !ArrowDown) { // Grow Ally
-			for (auto actor: find_actors()) {
-				if (!actor) {
-					continue;
-				}
-				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-					float npcscale = get_visual_scale(actor);
-					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
-					DamageAV(player, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
-					Grow(actor, 0.0010 * magicka, 0.0);
-					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
-					Rumble::Once("TotalControlOther", actor, 0.25);
-					if (this->timergrowth.ShouldRun()) {
-						Runtime::PlaySound("growthSound", actor, Volume, 0.0);
-					}
-				}
-			}
-		} else if (Runtime::HasPerk(player, "TotalControl") && ShiftPressed && !AltPressed && ArrowDown && LeftArrow && !ArrowUp) { // Shrink Ally
-			for (auto actor: find_actors()) {
-				if (!actor) {
-					continue;
-				}
-				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-					float npcscale = get_visual_scale(actor);
-					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
-					DamageAV(player, ActorValue::kMagicka, 0.10 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
-					ShrinkActor(actor, 0.0010 * magicka, 0.0);
-					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
-					Rumble::Once("TotalControlOther", actor, 0.20);
-					if (this->timergrowth.ShouldRun()) {
-						Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);
-					}
-				}
-			}
-		}
-
-
+        keys.emplace(key);
+      } else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
+        auto key = buttonEvent->GetIDCode();
+        keys.emplace(key + MOUSE_OFFSET);
+      }
+    }
 		return BSEventNotifyControl::kContinue;
 	}
 

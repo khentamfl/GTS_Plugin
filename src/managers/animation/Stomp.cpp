@@ -112,6 +112,16 @@ namespace {
 		Rumble::Stop("StompL", &data.giant);
 		//ConsoleLog::GetSingleton()->Print("Stomp: GTSBEH_Exit");
 	}
+
+  void RightStompEvent(const InputEvent& data) {
+    AnimationManager::StartAnim("StompRight", player);
+    log::info("Stomp Right");
+  }
+
+  void LeftStompEvent(const InputEvent& data) {
+    AnimationManager::StartAnim("StompLeft", player);
+    log::info("Stomp Left");
+  }
 }
 
 namespace Gts
@@ -127,6 +137,9 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSStompendL", "Stomp", GTSStompendL);
 		AnimationManager::RegisterEvent("GTS_Next", "Stomp", GTS_Next);
 		AnimationManager::RegisterEvent("GTSBEH_Exit", "Stomp", GTSBEH_Exit);
+
+    InputManager::RegisterInputEvent("RightStomp", RightStompEvent);
+    InputManager::RegisterInputEvent("LeftStomp", LeftStompEvent);
 	}
 
 	void AnimationStomp::RegisterTriggers() {

@@ -27,6 +27,38 @@ namespace {
 		float giant_chance = ((rand() % 100000) / 100000.0f) * strength * get_visual_scale(giant);
 		return (tiny_chance > giant_chance);
 	}
+
+  void GrabEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+
+    for (auto otherActor: find_actors()) {
+      if (otherActor != player) {
+        float playerscale = get_visual_scale(player);
+        float victimscale = get_visual_scale(otherActor);
+        float sizedifference = playerscale/victimscale;
+        NiPoint3 giantLocation = player->GetPosition();
+        NiPoint3 tinyLocation = otherActor->GetPosition();
+        if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player) && sizedifference >= 4.2) {
+          Grab::GrabActor(player, otherActor);
+          break;
+        }
+      }
+    }
+  }
+
+  void GrabKillEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    auto grabbedActor = Grab::GetHeldActor(player);
+    if (grabbedActor) {
+      CrushManager::Crush(player, grabbedActor);
+      Grab::Release(player);
+    }
+  }
+
+  void GrabSpareEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    Grab::Release(player);
+  }
 }
 
 ///Plans:
@@ -105,7 +137,7 @@ namespace Gts {
 		} catch (std::out_of_range e) {
 			return nullptr;
 		}
-  	
+
 	}
 	Actor* Grab::GetHeldActor(Actor* giant) {
 		auto obj = Grab::GetHeldObj(giant);
@@ -116,6 +148,12 @@ namespace Gts {
       		return nullptr;
     	}
 	}
+
+  void Grab::DataReady()  {
+    InputManager::RegisterInputEvent("Grab", GrabEvent);
+    InputManager::RegisterInputEvent("GrabKill", GrabKillEvent);
+    InputManager::RegisterInputEvent("GrabSpare", GrabSpareEvent);
+  }
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
 	}

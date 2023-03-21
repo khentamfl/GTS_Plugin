@@ -18,6 +18,7 @@ namespace Gts {
 			[[nodiscard]] static Grab& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
+      virtual void DataReady() override;
 			virtual void Update() override;
 			// Streangth is meant to be for a calculation of
 			// escape chance currently unused

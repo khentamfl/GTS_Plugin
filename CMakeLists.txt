@@ -46,6 +46,7 @@ find_package(CommonLibSSE CONFIG REQUIRED)
 find_package(ryml CONFIG REQUIRED)
 find_path(ARTICUNO_INCLUDE_DIRS "articuno/access.h")
 find_package(glm CONFIG REQUIRED)
+find_package(toml11 CONFIG REQUIRED)
 
 add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
@@ -65,7 +66,9 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        ryml::ryml)
+        ryml::ryml
+        toml11::toml11
+        )
 
 target_precompile_headers(${PROJECT_NAME}
         PRIVATE

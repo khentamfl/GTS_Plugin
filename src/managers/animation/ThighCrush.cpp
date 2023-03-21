@@ -196,6 +196,29 @@ namespace {
 		data.stage = 0;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Exit");
 	}
+
+  void ThighCrushEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    AnimationManager::StartAnim("ThighLoopEnter", player);
+    log::info("Triggering Stage 0");
+  }
+
+  void ThighCrushKillEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    AnimationManager::StartAnim("ThighLoopAttack", player);
+  }
+
+  void ThighCrushSpareEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    AnimationManager::StartAnim("ThighLoopExit", player);
+  }
+
+  // To Sermit: This seems to be the same as ThighCrushSpareEvent
+  //  except it is on the `w` key instead Can we just use the RMB?
+  void ThighCrushExitEvent(const InputEvent& data) {
+    auto player = PlayerCharacter::GetSingleton();
+    AnimationManager::StartAnim("ThighLoopExit", player);
+  }
 }
 
 namespace Gts
@@ -216,6 +239,11 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTStoexit", "ThighCrush", GTStoexit);
 		AnimationManager::RegisterEvent("GTSBEH_Next", "ThighCrush", GTSBEH_Next);
 		AnimationManager::RegisterEvent("GTSBEH_Exit", "ThighCrush", GTSBEH_Exit);
+
+    InputManager::RegisterInputEvent("ThighCrush", ThighCrushEvent);
+    InputManager::RegisterInputEvent("ThighCrushKill", ThighCrushKillEvent);
+    InputManager::RegisterInputEvent("ThighCrushSpare", ThighCrushSpareEvent);
+    InputManager::RegisterInputEvent("ThighCrushExit", ThighCrushExitEvent);
 	}
 
 	void AnimationThighCrush::RegisterTriggers() {
