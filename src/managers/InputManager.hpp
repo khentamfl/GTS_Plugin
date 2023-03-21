@@ -22,7 +22,7 @@ namespace Gts
   class InputEventData {
   public:
     // Construct from toml::table (toml11)
-    InputEventData(const toml::table& data);
+    InputEventData(const toml::value& data);
 
     // Return time since it was first pressed
     float Duration() const;

@@ -38,15 +38,16 @@ namespace {
     // keys = [“E”, “LeftShift”]
     // duration = 0.0
     // ```
-    // const auto aot = toml::find_or<std::vector<toml::table>>(data, "InputEvent", {});
-    const auto aot = toml::find(data, "InputEvent");
+    const auto aov = toml::find_or<std::vector<toml::value>>(data, "InputEvent", {});
     std::vector<InputEventData> results;
-    for (const auto& table: aot) {
+    for (const auto& table: aov) {
       std::string name = toml::find_or<std::string>(table, "name", "");
       const auto keys = toml::find_or<vector<std::string>>(table, "keys", {});
       if (name != "" && ! keys.empty()) {
         InputEventData newData(table);
         results.push_back(newData);
+      } else {
+        log::warn!("Missing name or key for [[InputEvent]]");
       }
     }
     return results;
@@ -118,7 +119,7 @@ namespace {
 }
 
 namespace Gts {
-  InputEventData::InputEventData(const toml::table& data) {
+  InputEventData::InputEventData(const toml::value& data) {
     this->name = toml::find_or<std::string>(data, "name", "");
     float duration = toml::find_or<float>(data, "duration", 0.0f);
     this->exclusive = toml::find_or<bool>(data, "exclusive", false);
