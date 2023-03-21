@@ -37,6 +37,8 @@ namespace Gts
     // Returns true if ONLY the specicified keys are pressed this frame
     //   Not taking into account things like duration
     bool OnlyKeysPressed(const std::unordered_set<std::uint32_t>& keys);
+
+    std::string GetName();
   private:
     std::string name = "";
     vector<std::string> keys = {};
@@ -49,7 +51,7 @@ namespace Gts
   };
 
   struct RegisteredInputEvent {
-    std::function<void(InputEvent&)> callback;
+    std::function<void(const InputEvent&)> callback;
 
     RegisteredInputEvent(std::function<void(const InputEvent&)> callback);
   };
@@ -70,5 +72,6 @@ namespace Gts
       static void RegisterInputEvent(std::string_view name, std::function<void(InputEvent&)> callback);
 
       std::unordered_map<std::string, RegisteredInputEvent> registedInputEvents;
+      std::vector<InputEvent> keyTriggers;
 	};
 }

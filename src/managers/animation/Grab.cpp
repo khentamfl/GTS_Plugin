@@ -3,6 +3,7 @@
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"

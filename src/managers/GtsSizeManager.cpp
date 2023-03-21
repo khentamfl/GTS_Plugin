@@ -4,6 +4,8 @@
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/highheel.hpp"
+#include "managers/InputManager.hpp"
+#include "managers/Rumble.hpp"
 #include "magic/effects/common.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"

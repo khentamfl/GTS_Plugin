@@ -1,15 +1,8 @@
+#include "managers/InputManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/animation/Grab.hpp"
-#include "managers/animation/ThighCrush.hpp"
 #include "managers/CrushManager.hpp"
-#include "managers/GtsSizeManager.hpp"
-#include "managers/RandomGrowth.hpp"
-#include "managers/InputManager.hpp"
-#include "managers/highheel.hpp"
-#include "managers/vore.hpp"
-#include "managers/camera.hpp"
 #include "magic/effects/common.hpp"
 #include "scale/scale.hpp"
 #include "data/persistent.hpp"
@@ -246,6 +239,10 @@ namespace Gts {
     }
   }
 
+  std::string InputEvent::GetName() {
+    return this->name;
+  }
+
   RegisteredInputEvent::RegisteredInputEvent(std::function<void(InputEvent&)> callback) : callback(callback) {
 
   }
@@ -261,6 +258,7 @@ namespace Gts {
   }
 
   void InputManager::DataReady() {
+    InputManager::GetSingleton().keyTriggers = LoadInputEvents();
     InputManager::RegisterInputEvent("SizeReserve", SizeReserveEvent);
     InputManager::RegisterInputEvent("DisplaySizeReserve", DisplaySizeReserveEvent);
     InputManager::RegisterInputEvent("PartyReport", PartyReportEvent);
@@ -298,6 +296,18 @@ namespace Gts {
       } else if (buttonEvent->device.get() == INPUT_DEVICE::kMouse) {
         auto key = buttonEvent->GetIDCode();
         keys.emplace(key + MOUSE_OFFSET);
+      }
+    }
+
+    for (auto& trigger: this->keyTriggers) {
+      if (trigger.ShouldFire(keys)) {
+        try {
+          auto& eventData = this->registedInputEvents.at(trigger.GetName());
+          eventData.callback(trigger);
+        } catch (std::out_of_range e) {
+          log::warn("Event {} was triggered but there is no event of that name", trigger.GetName());
+          continue;
+        }
       }
     }
 		return BSEventNotifyControl::kContinue;

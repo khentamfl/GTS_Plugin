@@ -13,6 +13,7 @@
 
 #include "managers/animation/Stomp.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"

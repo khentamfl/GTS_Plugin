@@ -21,7 +21,7 @@
 #         which means you can have multiple keys combinations do that same thing
 #         if you repeat the name
 # - keys: Is a comma seperated list [] of keys names that will trigger the event
-# - exclsive: When true means ONLY these keys must be pressed for the entire duration
+# - exclusive: When true means ONLY these keys must be pressed for the entire duration
 #             when false other keys may be pressed and the event will still fire
 # - duration: The length of time the keys must be pressed for before they fire
 # - trigger: Either "once or "continuous". If "once" the keys must be released

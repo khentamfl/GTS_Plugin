@@ -3,6 +3,7 @@
 #include "scale/scale.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"
 #include "timer.hpp"
 #include <cmath>
