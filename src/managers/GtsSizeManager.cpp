@@ -37,7 +37,7 @@ namespace {
       Grow(player, 0.0010 * stamina, 0.0);
       float Volume = clamp(0.10, 2.0, get_visual_scale(player)/10);
       Rumble::Once("TotalControl", player, scale/10);
-      static timergrowth = Timer(2.00);
+      static Timer timergrowth = Timer(2.00);
       if (timergrowth.ShouldRun()) {
         Runtime::PlaySound("growthSound", player, Volume, 0.0);
       }
@@ -52,7 +52,7 @@ namespace {
 			ShrinkActor(player, 0.0010 * stamina, 0.0);
 			float Volume = clamp(0.05, 2.0, get_visual_scale(player)/10);
 			Rumble::Once("TotalControl", player, scale/14);
-      static timergrowth = Timer(2.00);
+      static Timer timergrowth = Timer(2.00);
 			if (timergrowth.ShouldRun()) {
 				Runtime::PlaySound("shrinkSound", player, Volume, 0.0);
 			}
@@ -72,7 +72,7 @@ namespace {
 					Grow(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
 					Rumble::Once("TotalControlOther", actor, 0.25);
-          static timergrowth = Timer(2.00);
+          static Timer timergrowth = Timer(2.00);
 					if (timergrowth.ShouldRun()) {
 						Runtime::PlaySound("growthSound", actor, Volume, 0.0);
 					}
@@ -94,7 +94,8 @@ namespace {
 					ShrinkActor(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
 					Rumble::Once("TotalControlOther", actor, 0.20);
-					if (this->timergrowth.ShouldRun()) {
+          static Timer timergrowth = Timer(2.00);
+					if (timergrowth.ShouldRun()) {
 						Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);
 					}
 				}
@@ -120,10 +121,10 @@ namespace Gts {
 	}
 
   void SizeManager::DataReady() {
-    InputManager::RegisterEvent("TotalControlGrow", TotalControlGrowEvent);
-    InputManager::RegisterEvent("TotalControlShrink", TotalControlShrinkEvent);
-    InputManager::RegisterEvent("TotalControlGrowOther", TotalControlGrowOtherEvent);
-    InputManager::RegisterEvent("TotalControlShrinkOther", TotalControlShrinkOtherEvent);
+    InputManager::RegisterInputEvent("TotalControlGrow", TotalControlGrowEvent);
+    InputManager::RegisterInputEvent("TotalControlShrink", TotalControlShrinkEvent);
+    InputManager::RegisterInputEvent("TotalControlGrowOther", TotalControlGrowOtherEvent);
+    InputManager::RegisterInputEvent("TotalControlShrinkOther", TotalControlShrinkOtherEvent);
   }
 
 	void SizeManager::Update() {
