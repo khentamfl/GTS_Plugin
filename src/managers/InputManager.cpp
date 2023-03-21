@@ -18,17 +18,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-  // courtesy of https://stackoverflow.com/questions/5878775/how-to-find-and-replace-string
-  void replace_first(
-    std::string& s,
-    std::string const& toReplace,
-    std::string const& replaceWith
-  ) {
-      std::size_t pos = s.find(toReplace);
-      if (pos == std::string::npos) return;
-      s.replace(pos, toReplace.length(), replaceWith);
-  }
-
   std::vector<InputEventData> LoadInputEvents() {
     const auto data = toml::parse(R"(Data\SKSE\Plugins\GtsInput.toml)");
     // Toml Example
@@ -47,7 +36,7 @@ namespace {
         InputEventData newData(table);
         results.push_back(newData);
       } else {
-        log::warn!("Missing name or key for [[InputEvent]]");
+        log::warn("Missing name or key for [[InputEvent]]");
       }
     }
     return results;
@@ -124,33 +113,23 @@ namespace Gts {
     float duration = toml::find_or<float>(data, "duration", 0.0f);
     this->exclusive = toml::find_or<bool>(data, "exclusive", false);
     std::string trigger = toml::find_or<std::string>(data, "trigger", "once");
-    std::string lower_trigger = std::transform(trigger.begin(), trigger.end(), trigger.begin(), [](unsigned char c){ return std::tolower(c); }); // Lowercase
-    switch (lower_trigger) {
-      case "once": {
+    std::string lower_trigger = str_tolower(trigger);
+    if (lower_trigger == "once") {
         this->trigger = TriggerMode::Once;
-        break;
-      },
-      case "continuous": {
+    } else if (
+      lower_trigger ==  "continuous"
+      || lower_trigger ==  "cont"
+      || lower_trigger ==  "continue"
+    ) {
         this->trigger = TriggerMode::Continuous;
-        break;
-      }
-      case "cont": {
-        this->trigger = TriggerMode::Continuous;
-        break;
-      }
-      case "continue": {
-        this->trigger = TriggerMode::Continuous;
-        break;
-      }
-      default: {
+    } else {
+        log::warn("Unknown trigger value: {}", lower_trigger);
         this->trigger = TriggerMode::Once;
-        break;
-      }
     }
     this->keys = {};
     const auto keys = toml::find_or<vector<std::string>>(data, "keys", {});
     for (const auto& key: keys) {
-      std::string upper_key = std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c){ return std::toupper(c); }); // Uppercase
+      std::string upper_key = str_toupper(key);
       upper_key.erase(remove(upper_key.begin(),upper_key.end(),' '),str.end()); // Remove spaces
       if (upper_key != "LEFT" && upper_key != "DIK_LEFT") {
         // This changes LEFTALT to LALT
