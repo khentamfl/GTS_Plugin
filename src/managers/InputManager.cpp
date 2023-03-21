@@ -38,7 +38,8 @@ namespace {
     // keys = [“E”, “LeftShift”]
     // duration = 0.0
     // ```
-    const auto aot = toml::find_or<std::vector<toml::table>>(data, "InputEvent", {});
+    // const auto aot = toml::find_or<std::vector<toml::table>>(data, "InputEvent", {});
+    const auto aot = toml::find(data, "InputEvent");
     std::vector<InputEventData> results;
     for (const auto& table: aot) {
       std::string name = toml::find_or<std::string>(table, "name", "");
@@ -55,7 +56,7 @@ namespace {
     auto player = PlayerCharacter::GetSingleton();
     auto Cache = Persistent::GetSingleton().GetData(player);
     if (!Cache) {
-      return BSEventNotifyControl::kContinue;
+      return;
     }
     if (Cache->SizeReserve > 0.0) {
       float duration = data.Duration();
