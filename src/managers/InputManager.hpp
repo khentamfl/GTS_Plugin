@@ -2,6 +2,7 @@
 #include "data/transient.hpp"
 #include "events.hpp"
 #include "timer.hpp"
+#include "toml.hpp"
 
 using namespace std;
 using namespace SKSE;
