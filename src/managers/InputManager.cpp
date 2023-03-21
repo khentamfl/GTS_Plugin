@@ -3,6 +3,7 @@
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "managers/highheel.hpp"
 #include "magic/effects/common.hpp"
 #include "scale/scale.hpp"
 #include "data/persistent.hpp"
@@ -13,7 +14,6 @@
 #include "timer.hpp"
 #include "managers/Rumble.hpp"
 
-using namespace articuno;
 using namespace RE;
 using namespace Gts;
 
@@ -44,7 +44,7 @@ namespace {
       std::string name = toml::find_or<std::string>(data, "name", "");
       const auto keys = toml::find_or<vector<std::string>>(data, "keys", {});
       if (name != "" && ! keys.empty()) {
-        InputEventData newData = InputEventData(data);
+        InputEventData newData(data);
         results.push_back(newData);
       }
     }
@@ -118,10 +118,10 @@ namespace {
 
 namespace Gts {
   InputEventData::InputEventData(const toml::table& data) {
-    this->name = toml::find_or<float>(data, "name", "");
+    this->name = toml::find_or<std::string>(data, "name", "");
     float duration = toml::find_or<float>(data, "duration", 0.0f);
     this->exclusive = toml::find_or<bool>(data, "exclusive", false);
-    std::string trigger = toml::find_or<bool>(data, "trigger", "once");
+    std::string trigger = toml::find_or<std::string>(data, "trigger", "once");
     std::string lower_trigger = std::transform(trigger.begin(), trigger.end(), trigger.begin(), [](unsigned char c){ return std::tolower(c); }); // Lowercase
     switch (lower_trigger) {
       case "once": {
