@@ -38,7 +38,7 @@ namespace {
     // keys = [“E”, “LeftShift”]
     // duration = 0.0
     // ```
-    const auto aot = toml::find<std::vector<toml::table>>(data, "InputEvent");
+    const auto aot = toml::find_or<std::vector<toml::table>>(data, "InputEvent", {});
     std::vector<InputEventData> results;
     for (const auto& table: aot) {
       std::string name = toml::find_or<std::string>(data, "name", "");
