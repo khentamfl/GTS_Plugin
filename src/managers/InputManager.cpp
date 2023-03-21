@@ -41,10 +41,10 @@ namespace {
     const auto aot = toml::find_or<std::vector<toml::table>>(data, "InputEvent", {});
     std::vector<InputEventData> results;
     for (const auto& table: aot) {
-      std::string name = toml::find_or<std::string>(data, "name", "");
-      const auto keys = toml::find_or<vector<std::string>>(data, "keys", {});
+      std::string name = toml::find_or<std::string>(table, "name", "");
+      const auto keys = toml::find_or<vector<std::string>>(table, "keys", {});
       if (name != "" && ! keys.empty()) {
-        InputEventData newData(data);
+        InputEventData newData(table);
         results.push_back(newData);
       }
     }
