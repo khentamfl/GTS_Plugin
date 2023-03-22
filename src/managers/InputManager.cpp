@@ -306,9 +306,9 @@ namespace Gts {
       }
     }
 
-    log::debug("Currently {} keys are pressed", keys.size());
+    // log::trace("Currently {} keys are pressed", keys.size());
     for (auto& trigger: this->keyTriggers) {
-      log::debug("Checking the {} event", trigger.GetName());
+      // log::trace("Checking the {} event", trigger.GetName());
       if (trigger.ShouldFire(keys)) {
         log::debug(" - Running event {}", trigger.GetName());
         try {
