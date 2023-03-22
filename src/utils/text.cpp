@@ -43,4 +43,9 @@ namespace Gts {
       s.replace(pos, toReplace.length(), replaceWith);
   }
 
+  std::string remove_whitespace(std::string s) {
+    upper_key.erase(remove(s.begin(),s.end(),' '), s.end());
+    return s;
+  }
+
 }

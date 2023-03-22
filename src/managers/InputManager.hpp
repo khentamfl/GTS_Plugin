@@ -70,7 +70,7 @@ namespace Gts
       virtual void DataReady() override;
 			void Start() override;
 
-      static void RegisterInputEvent(std::string_view name, std::function<void(InputEventData&)> callback);
+      static void RegisterInputEvent(std::string_view name, std::function<void(const InputEventData&)> callback);
 
       std::unordered_map<std::string, RegisteredInputEvent> registedInputEvents;
       std::vector<InputEventData> keyTriggers;

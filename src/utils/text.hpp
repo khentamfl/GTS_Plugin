@@ -27,4 +27,6 @@ namespace Gts {
     std::string const& toReplace,
     std::string const& replaceWith
   );
+
+  std::string remove_whitespace(std::string s);
 }

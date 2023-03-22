@@ -129,8 +129,7 @@ namespace Gts {
     this->keys = {};
     const auto keys = toml::find_or<vector<std::string>>(data, "keys", {});
     for (const auto& key: keys) {
-      std::string upper_key = str_toupper(key);
-      upper_key.erase(remove(upper_key.begin(),upper_key.end(),' '),str.end()); // Remove spaces
+      std::string upper_key = str_toupper(remove_whitespace(key));
       if (upper_key != "LEFT" && upper_key != "DIK_LEFT") {
         // This changes LEFTALT to LALT
         // But NOT LEFT into L
@@ -141,20 +140,20 @@ namespace Gts {
       }
       this->keys.push_back(upper_key);
     }
-    if (this->keys.empty()) {
-      continue;
-    }
     this->minDuration = duration;
     this->startTime = 0.0;
   }
 
-  float InputEventData::Duration() {
+  float InputEventData::Duration() const {
     return Time::WorldTimeElapsed() - this->startTime;
   }
 
   bool InputEventData::AllKeysPressed(const std::unordered_set<std::uint32_t>& keys) {
+    if (this->keys.empty()) {
+      return false;
+    }
     for (const auto& key: this->keys) {
-      if (keys.find(upper_key) == keys.end()) {
+      if (keys.find(key) == keys.end()) {
         // Key not found
         return false;
       }
@@ -163,7 +162,7 @@ namespace Gts {
   }
 
   bool InputEventData::OnlyKeysPressed(const std::unordered_set<std::uint32_t>& keys_in) {
-    std::unordered_set<std::uint32_t> keys = keys_in; // Copy
+    std::unordered_set<std::uint32_t> keys(keys_in); // Copy
     for (const auto& key: this->keys) {
       keys.erase(key);
     }
@@ -223,7 +222,7 @@ namespace Gts {
     return this->name;
   }
 
-  RegisteredInputEvent::RegisteredInputEvent(std::function<void(InputEventData&)> callback) : callback(callback) {
+  RegisteredInputEvent::RegisteredInputEvent(std::function<void(const InputEventData&)> callback) : callback(callback) {
 
   }
 
