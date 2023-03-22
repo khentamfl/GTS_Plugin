@@ -42,7 +42,7 @@ namespace {
       } else if (!keys.empty())  {
         log::warn("Missing name or keys for {}", name);
       }else {
-        log::warn("Missing name or key for [[InputEvent]] at line {}", aov.location().line());
+        log::warn("Missing name or key for [[InputEvent]] at line {}", table.location().line());
       }
     }
     return results;
