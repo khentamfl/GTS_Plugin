@@ -27,129 +27,185 @@
 # - trigger: Either "once or "continuous". If "once" the keys must be released
 #            before the event will fire again. If "continuous" the event will
 #            fire every frame until the keys are released
+
+[[InputEvent]]
+name = "Vore"
+keys = [ "LSHIFT", "V" ]
+trigger = "once"
+
+# Start Vore Attempt.
+
+[[InputEvent]]
+name = "RightStomp"
+keys = ["LSHIFT", "E"]
+
+# Trigger Stomp Right animation.
+
+[[InputEvent]]
+name = "LeftStomp"
+keys = ["LSHIFT", "Q"]
+
+# Trigger Stomp Left animation.
+
 [[InputEvent]]
 name = "SizeReserve"
 keys = ["E"]
 trigger = "continuous"
+
+# Use size reserve and grow yourself. Requires Perk.
 
 [[InputEvent]]
 name = "DisplaySizeReserve"
 keys = ["F"]
 duration = 1.2
 
+# Hold to print size reserve value. Requires Perk.
+
 [[InputEvent]]
 name = "ThighCrush"
 keys = ["LALT"]
 duration = 0.6
 
+# Enter Thigh Crush Animation.
+
 [[InputEvent]]
 name = "ThighCrushKill"
 keys = [ "LMB" ]
-exclusive = true
+exclusive = false
+
+# Start Leg Spread, Leg Close animation.
 
 [[InputEvent]]
 name = "ThighCrushSpare"
 keys = [ "RMB" ]
-exclusive = true
+exclusive = false
+
+# Exit Thigh Crush animation.
+
+[[InputEvent]]
+name = "ThighCrushSpare"
+keys = [ "W" ]
+exclusive = false
+
+# Second way to Exit Thigh Crush animation.
 
 [[InputEvent]]
 name = "PartyReport"
 keys = [ "LCONTROL" ]
 duration = 1.2
 
+# Reports Follower's size info into the console
+
 [[InputEvent]]
 name = "Grab"
 keys = ["F"]
 
+# Grabs nearby actor.
+
 [[InputEvent]]
 name = "GrabKill"
 keys = [ "LMB" ]
-exclusive = true
+exclusive = false
+
+# Crush actor that is in hand.
 
 [[InputEvent]]
 name = "GrabSpare"
 keys = [ "RMB" ]
-exclusive = true
+exclusive = false
 
-[[InputEvent]]
-name = "Vore"
-keys = [ "LSHIFT", "V" ]
-
-[[InputEvent]]
-name = "StompRight"
-keys = ["LSHIFT", "E"]
-
-[[InputEvent]]
-name = "StompLeft"
-keys = ["LSHIFT", "Q"]
+# Release actor from hand.
 
 [[InputEvent]]
 name = "HorizontalCameraReset"
 keys = [ "LALT", "RIGHT", "LEFT" ]
-exclusive = true
+exclusive = false
+trigger = "once"
 
 [[InputEvent]]
 name = "VerticalCameraReset"
 keys = [ "LALT", "UP", "DOWN" ]
-exclusive = true
+exclusive = false
+trigger = "once"
+
+# Camera stuff below.
 
 [[InputEvent]]
 name = "CameraLeft"
 keys = [ "LALT", "LEFT" ]
-exclusive = true
+exclusive = false
+trigger = "continuous"
 
 [[InputEvent]]
 name = "CameraRight"
 keys = [ "LALT", "RIGHT" ]
-exclusive = true
+exclusive = false
+trigger = "continuous"
 
 [[InputEvent]]
 name = "CameraUp"
 keys = [ "LALT", "UP" ]
 exclusive = true
+trigger = "continuous"
 
 [[InputEvent]]
 name = "CameraDown"
 keys = [ "LALT", "DOWN" ]
-exclusive = true
+exclusive = false
+trigger = "continuous"
 
 [[InputEvent]]
 name = "AnimSpeedUp"
 keys = [ "LMB" ]
-exclusive = true
+exclusive = false
+trigger = "continuous"
+
+# Boost animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
 
 [[InputEvent]]
 name = "AnimSpeedDown"
 keys = [ "RMB" ]
-exclusive = true
+exclusive = false
+trigger = "continuous"
 
-[[InputEvent]]
-name = "AnimSpeedUp"
-keys = [ "LMB" ]
-exclusive = true
+# Slow down animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
 
 [[InputEvent]]
 name = "AnimMaxSpeed"
 keys = [ "RMB", "LMB" ]
-exclusive = true
+exclusive = false
+trigger = "continuous"
+
+# Massively Boost animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
 
 [[InputEvent]]
 name = "TotalControlGrow"
 keys = [ "UP", "LEFT"]
-exclusive = true
+exclusive = false
+trigger = "continuous"
+
+# Grow self. Requires Matching Perk.
 
 [[InputEvent]]
 name = "TotalControlShrink"
 keys = [ "DOWN", "LEFT"]
-exclusive = true
+exclusive = false
+trigger = "continuous" 
+
+# Shrink self. Requires Matching Perk.
 
 [[InputEvent]]
 name = "TotalControlGrowOther"
 keys = [ "LSHIFT",  "UP", "LEFT"]
-exclusive = true
+exclusive = false
+trigger = "continuous"
 
+# Grow followers. Requires Matching Perk.
 
 [[InputEvent]]
 name = "TotalControlShrinkOther"
 keys = [ "LSHIFT", "DOWN", "LEFT"]
-exclusive = true
+exclusive = false
+trigger = "continuous"
+
+# Shrink followers. Requires Matching Perk.
