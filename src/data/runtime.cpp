@@ -80,7 +80,7 @@ namespace Gts {
 	void Runtime::PlaySound(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency) {
 		auto soundDescriptor = Runtime::GetSound(tag);
 		if (!soundDescriptor) {
-			log::error("Sound invalid");
+			log::error("Sound invalid: {}", tag);
 			return;
 		}
 		auto audioManager = BSAudioManager::GetSingleton();
@@ -117,7 +117,7 @@ namespace Gts {
 	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject& node) {
 		auto soundDescriptor = Runtime::GetSound(tag);
 		if (!soundDescriptor) {
-			log::error("Sound invalid");
+			log::error("Sound invalid: {}", tag);
 			return;
 		}
 		auto audioManager = BSAudioManager::GetSingleton();
