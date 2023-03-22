@@ -8,6 +8,7 @@
 #include "Config.hpp"
 #include "node.hpp"
 #include "data/time.hpp"
+#include "scale/scale.hpp"
 
 using namespace SKSE;
 using namespace RE;
