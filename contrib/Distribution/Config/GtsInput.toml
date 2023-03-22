@@ -54,7 +54,7 @@ exclusive = true
 
 [[InputEvent]]
 name = "PartyReport"
-keys = "LCONTROL"
+keys = [ "LCONTROL" ]
 duration = 1.2
 
 [[InputEvent]]

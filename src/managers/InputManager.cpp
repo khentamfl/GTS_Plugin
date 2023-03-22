@@ -37,12 +37,12 @@ namespace {
         if (newData.HasKeys()) {
           results.push_back(newData);
         } else {
-          log::error("No valid keys found for event {}", newData.GetName());
+          log::error("No valid keys found for event {} at line {}", name, table.location().line());
         }
-      } else if (!keys.empty())  {
-        log::warn("Missing name or keys for {}", name);
+      } else if (keys.empty())  {
+        log::warn("Missing keys for {} at line {}", name, table.location().line());
       }else {
-        log::warn("Missing name or key for [[InputEvent]] at line {}", table.location().line());
+        log::warn("Missing name for [[InputEvent]] at line {}", table.location().line());
       }
     }
     return results;
