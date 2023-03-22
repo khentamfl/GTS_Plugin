@@ -151,5 +151,5 @@ exclusive = true
 
 [[InputEvent]]
 name = "TotalControlShrinkOther"
-keys = [ "SHIFT", "DOWN", "LEFT"]
+keys = [ "LSHIFT", "DOWN", "LEFT"]
 exclusive = true

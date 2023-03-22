@@ -32,15 +32,17 @@ namespace {
     for (const auto& table: aov) {
       std::string name = toml::find_or<std::string>(table, "name", "");
       const auto keys = toml::find_or<vector<std::string>>(table, "keys", {});
-      if (name != "" && ! keys.empty()) {
+      if (name != "" && !keys.empty()) {
         InputEventData newData(table);
         if (newData.HasKeys()) {
           results.push_back(newData);
         } else {
           log::error("No valid keys found for event {}", newData.GetName());
         }
-      } else {
-        log::warn("Missing name or key for [[InputEvent]]");
+      } else if (!keys.empty())  {
+        log::warn("Missing name or keys for {}", name);
+      }else {
+        log::warn("Missing name or key for [[InputEvent]] at line {}", aov.location().line());
       }
     }
     return results;
@@ -130,6 +132,8 @@ namespace Gts {
         log::warn("Unknown trigger value: {}", lower_trigger);
         this->trigger = TriggerMode::Once;
     }
+    this->minDuration = duration;
+    this->startTime = 0.0;
     this->keys = {};
     const auto keys = toml::find_or<vector<std::string>>(data, "keys", {});
     for (const auto& key: keys) {
@@ -147,10 +151,10 @@ namespace Gts {
         this->keys.emplace(key_code);
       } catch (std::out_of_range e) {
         log::warn("Key named {}=>{} in {} was unrecongized.", key, upper_key, this->name);
+        this->keys.clear();
+        return; // Remove all keys and return so that this becomes an INVALID key entry and won't fire
       }
     }
-    this->minDuration = duration;
-    this->startTime = 0.0;
   }
 
   float InputEventData::Duration() const {
@@ -248,18 +252,20 @@ namespace Gts {
     auto& me = InputManager::GetSingleton();
     std::string name(namesv);
     me.registedInputEvents.try_emplace(name, callback);
+    log::debug("Registered input event: {}", namesv);
   }
 
   void InputManager::DataReady() {
     try {
       InputManager::GetSingleton().keyTriggers = LoadInputEvents();
     } catch (toml::exception e) {
-      log::error("Error in opening parsing GtsInput.toml: {}", e.what());
+      log::error("Error in parsing GtsInput.toml: {}", e.what());
     } catch (std::runtime_error e) {
       log::error("Error in opening GtsInput.toml: {}", e.what());
     } catch (std::exception e) {
-      log::error("Error in opening GtsInput.toml: {}", e.what());
+      log::error("Error in GtsInput.toml: {}", e.what());
     }
+    log::info("Loaded {} key bindings", InputManager::GetSingleton().keyTriggers.size());
     InputManager::RegisterInputEvent("SizeReserve", SizeReserveEvent);
     InputManager::RegisterInputEvent("DisplaySizeReserve", DisplaySizeReserveEvent);
     InputManager::RegisterInputEvent("PartyReport", PartyReportEvent);
@@ -300,8 +306,11 @@ namespace Gts {
       }
     }
 
+    log::debug("Currently {} keys are pressed", keys.size());
     for (auto& trigger: this->keyTriggers) {
+      log::debug("Checking the {} event", trigger.GetName());
       if (trigger.ShouldFire(keys)) {
+        log::debug(" - Running event {}", trigger.GetName());
         try {
           auto& eventData = this->registedInputEvents.at(trigger.GetName());
           eventData.callback(trigger);
