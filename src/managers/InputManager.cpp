@@ -251,7 +251,15 @@ namespace Gts {
   }
 
   void InputManager::DataReady() {
-    InputManager::GetSingleton().keyTriggers = LoadInputEvents();
+    try {
+      InputManager::GetSingleton().keyTriggers = LoadInputEvents();
+    } catch (toml::exception e) {
+      log::error("Error in opening parsing GtsInput.toml: {}", e.what());
+    } catch (std::runtime_error e) {
+      log::error("Error in opening GtsInput.toml: {}", e.what());
+    } catch (std::exception e) {
+      log::error("Error in opening GtsInput.toml: {}", e.what());
+    }
     InputManager::RegisterInputEvent("SizeReserve", SizeReserveEvent);
     InputManager::RegisterInputEvent("DisplaySizeReserve", DisplaySizeReserveEvent);
     InputManager::RegisterInputEvent("PartyReport", PartyReportEvent);
