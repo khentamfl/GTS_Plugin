@@ -34,7 +34,11 @@ namespace {
       const auto keys = toml::find_or<vector<std::string>>(table, "keys", {});
       if (name != "" && ! keys.empty()) {
         InputEventData newData(table);
-        results.push_back(newData);
+        if (newData.HasKeys()) {
+          results.push_back(newData);
+        } else {
+          log::error("No valid keys found for event {}", newData.GetName());
+        }
       } else {
         log::warn("Missing name or key for [[InputEvent]]");
       }
@@ -138,7 +142,12 @@ namespace Gts {
       if (upper_key != "RIGHT" && upper_key != "DIK_RIGHT") {
         replace_first(upper_key, "RIGHT", "R");
       }
-      this->keys.push_back(upper_key);
+      try {
+        std::uint32_t key_code = NAMED_KEYS.at(upper_key);
+        this->keys.emplace(key_code);
+      } catch (std::out_of_range e) {
+        log::warn("Key named {}=>{} in {} was unrecongized.", key, upper_key, this->name);
+      }
     }
     this->minDuration = duration;
     this->startTime = 0.0;
@@ -222,6 +231,10 @@ namespace Gts {
     return this->name;
   }
 
+  bool InputEventData::HasKeys() {
+    return !this->keys.empty();
+  }
+
   RegisteredInputEvent::RegisteredInputEvent(std::function<void(const InputEventData&)> callback) : callback(callback) {
 
   }
@@ -231,8 +244,9 @@ namespace Gts {
 		return instance;
 	}
 
-  void InputManager::RegisterInputEvent(std::string_view name, std::function<void(const InputEventData&)> callback) {
+  void InputManager::RegisterInputEvent(std::string_view namesv, std::function<void(const InputEventData&)> callback) {
     auto& me = InputManager::GetSingleton();
+    std::string name(namesv);
     me.registedInputEvents.try_emplace(name, callback);
   }
 

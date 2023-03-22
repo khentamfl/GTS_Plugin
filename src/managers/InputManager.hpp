@@ -39,10 +39,17 @@ namespace Gts
     //   Not taking into account things like duration
     bool OnlyKeysPressed(const std::unordered_set<std::uint32_t>& keys);
 
+
     std::string GetName();
+
+    // Checks if it has keys associaed with it
+    //   This is to check to ensure that it was loaded correctly
+    //   since the user can specify ANY key name and not all will
+    //   produce valid results
+    bool HasKeys();
   private:
     std::string name = "";
-    vector<std::string> keys = {};
+    unordered_set<std::uint32_t> keys = {};
     float minDuration = 0.0;
     double startTime = 0.0;
     // If true this event won't fire unles ONLY the keys are pressed for the entire duration
