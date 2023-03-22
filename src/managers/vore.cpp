@@ -52,7 +52,7 @@ namespace {
     static Timer voreTimer = Timer(5.0);
     auto pred = PlayerCharacter::GetSingleton();
 
-    if (voretimer.ShouldRunFrame()) {
+    if (voreTimer.ShouldRunFrame()) {
       auto& VoreManager = Vore::GetSingleton();
       std::size_t numberOfPrey = 1;
       if (Runtime::HasPerk(pred, "MassVorePerk")) {
