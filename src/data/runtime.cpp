@@ -2,6 +2,7 @@
 #include "Config.hpp"
 #include <articuno/archives/ryml/ryml.h>
 #include <articuno/types/auto.h>
+#include "node.hpp"
 
 using namespace articuno;
 using namespace articuno::ryml;
@@ -79,7 +80,7 @@ namespace Gts {
 	void Runtime::PlaySound(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency) {
 		auto soundDescriptor = Runtime::GetSound(tag);
 		if (!soundDescriptor) {
-			log::error("Sound invalid");
+			log::error("Sound invalid: {}", tag);
 			return;
 		}
 		auto audioManager = BSAudioManager::GetSingleton();
@@ -100,6 +101,36 @@ namespace Gts {
 				}
 			}
 			soundHandle.SetObjectToFollow(follow);
+			soundHandle.Play();
+		} else {
+			log::error("Could not build sound");
+		}
+	}
+	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
+		Runtime::PlaySoundAtNode(tag, actor, volume, frequency, find_node(actor, node));
+	}
+	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject* node) {
+		if (node) {
+			Runtime::PlaySoundAtNode(tag, actor, volume, frequency, *node);
+		}
+	}
+	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject& node) {
+		auto soundDescriptor = Runtime::GetSound(tag);
+		if (!soundDescriptor) {
+			log::error("Sound invalid: {}", tag);
+			return;
+		}
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			//soundHandle.SetFrequency(frequency);
+			soundHandle.SetVolume(volume);
+			soundHandle.SetObjectToFollow(&node);
 			soundHandle.Play();
 		} else {
 			log::error("Could not build sound");

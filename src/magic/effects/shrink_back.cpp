@@ -6,6 +6,7 @@
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "timer.hpp"
+#include "managers/Rumble.hpp"
 
 namespace Gts {
 	std::string ShrinkBack::GetName() {
@@ -35,7 +36,7 @@ namespace Gts {
 		if (this->timer.ShouldRun()) {
 			float Volume = clamp(0.15, 2.0, get_target_scale(caster)/4);
 			Runtime::PlaySound("shrinkSound", caster, Volume, 0.0);
-			GrowthTremorManager::GetSingleton().CallRumble(caster, caster, 0.60);
+			Rumble::Once("ShrinkBack", caster, 0.60);
 		}
 
 		if (!Revert(caster, Power, Power/2.5)) {

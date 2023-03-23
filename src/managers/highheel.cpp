@@ -4,11 +4,11 @@
 #include "scale/modscale.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
-#include "data/transient.hpp"
 #include "scale/scale.hpp"
 #include <articuno/articuno.h>
 #include <articuno/archives/ryml/ryml.h>
 #include <articuno/types/auto.h>
+#include "managers/animation/AnimationManager.hpp"
 
 using namespace articuno;
 using namespace articuno::ryml;
@@ -26,11 +26,11 @@ namespace Gts {
 	}
 
 	void HighHeelManager::PapyrusUpdate() {
-		const bool FORCE_APPLY = false;
-		auto actors = find_actors();
-		for (auto actor: actors) {
-			//ApplyHH(actor, FORCE_APPLY);
-		}
+		//const bool FORCE_APPLY = false;
+		//auto actors = find_actors();
+		//for (auto actor: actors) {
+		//ApplyHH(actor, FORCE_APPLY);
+		//}
 	}
 
 	void HighHeelManager::ActorEquip(Actor* actor) {
@@ -48,19 +48,36 @@ namespace Gts {
 		}
 		if (!actor->Is3DLoaded()) {
 			return;
-		} 
-		if (Persistent::GetSingleton().highheel_furniture == false && actor->GetOccupiedFurniture()) {
+		}
+		bool GTSBusy;
+    	actor->GetGraphVariableBool("GTS_isBusy", GTSBusy);
+		if (Persistent::GetSingleton().highheel_furniture == false && !GTSBusy && actor->GetOccupiedFurniture()) {
 			return;
 		}
+		this->data.try_emplace(actor);
+		auto& hhData = this->data[actor];
+		// Should disable HH?
+		bool disableHH = (
+			AnimationManager::HHDisabled(actor) ||
+			IsProne(actor) ||
+			!Persistent::GetSingleton().highheel_correction
+			);
+		if (disableHH) {
+			hhData.multiplier.target = 0.0;
+      hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(actor);
+			log::info("HH is false");
+		} else {
+			hhData.multiplier.target = 1.0;
+      hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(actor);
+		}
+
+
 		NiPoint3 new_hh;
-		//log::info("Actor: {}, BaseHeight: {}, BaseVolume: {}", actor->GetDisplayFullName(), transient->base_height, transient->base_volume);
-		if (IsProne(actor) || !Persistent::GetSingleton().highheel_correction) {
-			new_hh = NiPoint3();
-		} else if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
-			new_hh = this->GetHHOffset(actor);
+		if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
+			new_hh = this->GetHHOffset(actor) * hhData.multiplier.value;
 		} else {
 			// With model scale do it in unscaled coords
-			new_hh = this->GetBaseHHOffset(actor);
+			new_hh = this->GetBaseHHOffset(actor) * hhData.multiplier.value;
 		}
 		float hh_length = new_hh.Length();
 
@@ -75,22 +92,19 @@ namespace Gts {
 					npc_root_node->local.translate = new_hh;
 					update_node(npc_root_node);
 				}
-				auto transient = Transient::GetSingleton().GetActorData(actor);
-				if (transient) {
-					bool wasWearingHh = transient->wearingHh;
-					bool isWearingHH = fabs(new_hh.Length()) > 1e-4;
-					if (isWearingHH != wasWearingHh) {
-						// Just changed hh
-						HighheelEquip hhEvent = HighheelEquip {
-							.actor = actor,
-							.equipping = isWearingHH,
-							.hhLength = new_hh.Length(),
-							.hhOffset = new_hh,
-							.shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet),
-						};
-						EventDispatcher::DoHighheelEquip(hhEvent);
-						transient->wearingHh = isWearingHH;
-					}
+				bool wasWearingHh = hhData.wasWearingHh;
+				bool isWearingHH = fabs(new_hh.Length()) > 1e-4;
+				if (isWearingHH != wasWearingHh) {
+					// Just changed hh
+					HighheelEquip hhEvent = HighheelEquip {
+						.actor = actor,
+						.equipping = isWearingHH,
+						.hhLength = new_hh.Length(),
+						.hhOffset = new_hh,
+						.shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet),
+					};
+					EventDispatcher::DoHighheelEquip(hhEvent);
+					hhData.wasWearingHh = isWearingHH;
 				}
 			}
 		}

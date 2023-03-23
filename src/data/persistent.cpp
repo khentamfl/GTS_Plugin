@@ -516,27 +516,27 @@ namespace Gts {
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
-		std::unique_lock lock(this->_lock);
 		if (!actor) {
 			return nullptr;
 		}
-		auto key = actor->formID;
+		return this->GetActorData(*actor);
+	}
+	ActorData* Persistent::GetActorData(Actor& actor) {
+		std::unique_lock lock(this->_lock);
+		auto key = actor.formID;
 		ActorData* result = nullptr;
 		try {
 			result = &this->_actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
 			// Add new
-			if (!actor) {
+			if (!actor.Is3DLoaded()) {
 				return nullptr;
 			}
-			if (!actor->Is3DLoaded()) {
-				return nullptr;
-			}
-			auto scale = get_scale(actor);
+			auto scale = get_scale(&actor);
 			if (scale < 0.0) {
 				return nullptr;
 			}
-			this->_actor_data.try_emplace(key, actor);
+			this->_actor_data.try_emplace(key, &actor);
 			result = &this->_actor_data.at(key);
 		}
 		return result;
@@ -546,7 +546,10 @@ namespace Gts {
 		if (!refr) {
 			return nullptr;
 		}
-		auto key = refr->formID;
+		return this->GetData(*refr);
+	}
+	ActorData* Persistent::GetData(TESObjectREFR& refr) {
+		auto key = refr.formID;
 		ActorData* result = nullptr;
 		try {
 			result = &this->_actor_data.at(key);

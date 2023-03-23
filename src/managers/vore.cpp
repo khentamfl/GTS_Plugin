@@ -3,6 +3,7 @@
 #include "scale/scale.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"
 #include "timer.hpp"
 #include <cmath>
@@ -46,6 +47,23 @@ namespace {
 		auto playerCamera = PlayerCamera::GetSingleton();
 		playerCamera->ToggleFreeCameraMode(false);
 	}
+
+  void VoreInputEvent(const InputEventData& data) {
+    static Timer voreTimer = Timer(5.0);
+    auto pred = PlayerCharacter::GetSingleton();
+
+    if (voreTimer.ShouldRunFrame()) {
+      auto& VoreManager = Vore::GetSingleton();
+      std::size_t numberOfPrey = 1;
+      if (Runtime::HasPerk(pred, "MassVorePerk")) {
+        numberOfPrey = 3;
+      }
+      std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
+      for (auto prey: preys) {
+        VoreManager.StartVore(pred, prey);
+      }
+    }
+  }
 }
 
 namespace Gts {
@@ -58,6 +76,10 @@ namespace Gts {
 		return "Vore";
 	}
 
+  void Vore::DataReady() {
+    InputManager::RegisterInputEvent("Vore", VoreInputEvent);
+  }
+
 	void Vore::Update() {
 		auto player = PlayerCharacter::GetSingleton();
 
@@ -67,7 +89,7 @@ namespace Gts {
 		static Timer timer = Timer(3.00); // Random Vore once per 3 sec
 		if (timer.ShouldRunFrame()) { //Try to not overload
 			for (auto actor: find_actors()) {
-				if ((Runtime::InFaction(actor,"FollowerFaction") || actor->IsPlayerTeammate()) && player->IsInCombat()) {
+				if ((Runtime::InFaction(actor,"FollowerFaction") || actor->IsPlayerTeammate()) && actor->IsInCombat()) {
 					RandomVoreAttempt(actor);
 					//log::info("Found Vore Caster");
 				}
@@ -98,6 +120,9 @@ namespace Gts {
 				//log::info("{} is looking for prey", caster->GetDisplayFullName());
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
+					if (prey->formID == 0x14) {
+						return;
+					}
 					VoreManager.StartVore(pred, prey);
 				}
 			}
@@ -318,6 +343,10 @@ namespace Gts {
 			return false;
 		}
 
+		if (!Runtime::HasPerkTeam(pred, "VorePerk")) {
+			return false;
+		}
+
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
@@ -332,13 +361,13 @@ namespace Gts {
 		if (Runtime::HasPerk(pred,"MassVorePerk")) {
 			sizedifference *= 1.15; // Less stamina drain
 			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
-		} 
+		}
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Enables HP requirement on Vore.
 			float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);
 			float gethp = GetAV(prey, ActorValue::kHealth);
 			float healthrequirement = getmaxhp/pred_scale;
-			if (gethp > healthrequirement) {
+			if (pred->formID == 0x14, gethp > healthrequirement) {
 				DamageAV(prey, ActorValue::kHealth, 6 * sizedifference);
 				DamageAV(pred, ActorValue::kStamina, 26/sizedifference);
 				Notify("{} is too healthy to be eaten", prey->GetDisplayFullName());
@@ -349,7 +378,7 @@ namespace Gts {
 
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
+		if (pred->formID == 0x14, prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
 		}
 		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
@@ -398,18 +427,9 @@ namespace Gts {
 
 		DamageAV(pred, ActorValue::kStamina, wastestamina);
 		Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
-		int Random = rand() % 2;
-		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || Random == 0) {
-			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 1) {
-			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && Random == 2) {
-			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (prey->IsDead()) {
-			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		}
+
 		if (pred->formID == 0x14) {
-			AdjustSizeLimit(0.0260);
+			AdjustSizeLimit(0.0260, pred);
 		}
 		Runtime::CastSpell(pred, prey, "StartVore");
 	}

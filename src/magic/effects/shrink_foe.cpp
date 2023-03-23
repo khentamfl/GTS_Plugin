@@ -48,8 +48,6 @@ namespace Gts {
 
 	void ShrinkFoe::OnUpdate() {
 		auto caster = GetCaster();
-
-
 		if (!caster) {
 			return;
 		}
@@ -58,6 +56,7 @@ namespace Gts {
 			return;
 		}
 		float SizeDifference = 1.0;
+		float bonus = 1.0;
 
 		if (this->power >= 18.00) {
 			auto& Persist = Persistent::GetSingleton();
@@ -66,11 +65,15 @@ namespace Gts {
 			SizeDifference = clamp(1.0, 8.0, (get_target_scale(caster)/get_target_scale(target))/2);
 		}
 
+		if (target->IsDead()) {
+			bonus = 3.0;
+		}
+
 		bool has_smt = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
 			return; // Disallow shrinking Essentials
 		}
-		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference, this->efficiency, has_smt);
+		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference * bonus, this->efficiency, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();
 		}

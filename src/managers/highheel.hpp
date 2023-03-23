@@ -1,11 +1,17 @@
 #pragma once
 #include "data/transient.hpp"
 #include "events.hpp"
+#include "spring.hpp"
 // Module that handles high heel
 
 using namespace RE;
 
 namespace Gts {
+	struct HHData {
+		Spring multiplier = Spring(1.0, 0.5); // Used to smotthly disable/enabled the highheels
+		bool wasWearingHh = false;
+	};
+
 	class HighHeelManager : public EventListener {
 		public:
 			[[nodiscard]] static HighHeelManager& GetSingleton() noexcept;
@@ -20,5 +26,7 @@ namespace Gts {
 			static NiPoint3 GetHHOffset(Actor* actor); // Scaled HH
 
 			void ApplyHH(Actor* actor, bool force);
+
+			std::unordered_map<Actor*, HHData> data;
 	};
 }

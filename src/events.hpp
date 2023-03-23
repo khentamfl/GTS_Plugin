@@ -122,6 +122,9 @@ namespace Gts {
 
 			// Fired when a skyrim menu event occurs
 			virtual void MenuChange(const MenuOpenCloseEvent* menu_event);
+
+			// Fired when a actor animation event occurs
+			virtual void ActorAnimEvent(Actor* actor, const std::string_view& tag, const std::string_view& payload);
 	};
 
 	class EventDispatcher {
@@ -152,6 +155,7 @@ namespace Gts {
 			static void DoAddPerk(const AddPerkEvent& evt);
 			static void DoRemovePerk(const RemovePerkEvent& evt);
 			static void DoMenuChange(const MenuOpenCloseEvent* menu_event);
+			static void DoActorAnimEvent(Actor* actor, const BSFixedString& a_tag, const BSFixedString& a_payload);
 		private:
 			[[nodiscard]] static EventDispatcher& GetSingleton();
 			std::vector<EventListener*> listeners;

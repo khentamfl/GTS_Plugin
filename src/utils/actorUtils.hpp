@@ -30,4 +30,8 @@ namespace Gts {
 	float get_distance_to_actor(Actor* receiver, Actor* target);
 
 	bool IsJumping(Actor* actor);
+
+	void ApplyShake(Actor* caster, float modifier);
+	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node);
+	void ApplyShakeAtPoint(Actor* caster,float modifier, const NiPoint3& coords);
 }

@@ -107,7 +107,7 @@ namespace Gts {
 				auto magic = Runtime::GetMagicEffect(tag);
 				if (magic) {
 					this->factories.try_emplace(magic,new MagicFactory<MagicCls>());
-					this->profilers.try_emplace(magic);
+					this->profilers.try_emplace(magic, tag);
 					return;
 				}
 			}

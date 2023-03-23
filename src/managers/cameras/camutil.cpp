@@ -97,12 +97,12 @@ namespace Gts {
 			sceneManager->cachedCameraPos = camLoc;
 
 			/*#ifdef ENABLED_SHADOW
-			// Shadow Map
-			auto shadowNode = sceneManager->shadowSceneNode;
-			if (shadowNode) {
-				shadowNode->GetRuntimeData().cameraPos = camLoc;
-			}
-			#endif*/
+			   // Shadow Map
+			   auto shadowNode = sceneManager->shadowSceneNode;
+			   if (shadowNode) {
+			        shadowNode->GetRuntimeData().cameraPos = camLoc;
+			   }
+			 #endif*/
 
 			// Camera
 			auto niCamera = sceneManager->camera;
@@ -117,12 +117,12 @@ namespace Gts {
 		auto renderManager = UIRenderManager::GetSingleton();
 		if (renderManager) {
 			/*#ifdef ENABLED_SHADOW
-			// Shadow Map
-			auto shadowNode = renderManager->shadowSceneNode;
-			if (shadowNode) {
-				shadowNode->GetRuntimeData().cameraPos = camLoc;
-			}
-			#endif*/
+			   // Shadow Map
+			   auto shadowNode = renderManager->shadowSceneNode;
+			   if (shadowNode) {
+			        shadowNode->GetRuntimeData().cameraPos = camLoc;
+			   }
+			 #endif*/
 
 			// Camera
 			auto niCamera = renderManager->camera;
@@ -142,11 +142,11 @@ namespace Gts {
 		}
 
 		/*#ifdef ENABLED_SHADOW
-		auto shadowNode = GetShadowMap();
-		if (shadowNode) {
-			shadowNode->GetRuntimeData().cameraPos = camLoc;
-		}
-		#endif*/
+		   auto shadowNode = GetShadowMap();
+		   if (shadowNode) {
+		        shadowNode->GetRuntimeData().cameraPos = camLoc;
+		   }
+		 #endif*/
 	}
 
 	NiTransform GetCameraWorldTransform() {

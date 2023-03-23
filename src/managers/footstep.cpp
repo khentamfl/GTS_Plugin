@@ -176,8 +176,8 @@ namespace Gts {
 			auto actor = impact.actor;
 			float scale = impact.effective_scale;
 			if (actor->formID != 0x14) {
-					float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)));
-					scale = sizedifference;
+				float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)));
+				scale = sizedifference;
 			}
 
 			float minimal_size = 1.2;
@@ -191,16 +191,18 @@ namespace Gts {
 					scale *= sprint_factor; // Sprinting makes you sound bigger
 					start_xl = 7.99 * sprint_factor;
 					start_xxl = 15.99 * sprint_factor;
-				} if (actor->AsActorState()->IsWalking()) {
+				}
+				if (actor->AsActorState()->IsWalking()) {
 					scale *= 0.65; // Walking makes you sound quieter
-				} if (actor->IsSneaking()) {
+				}
+				if (actor->IsSneaking()) {
 					scale *= 0.55; // Sneaking makes you sound quieter
-				} 
+				}
 
 				if (actor->formID == 0x14 && IsFirstPerson()) { // Footsteps are quieter when in first person
 					scale *= 0.50;
 				}
-				
+
 
 				FootEvent foot_kind = impact.kind;
 				if (foot_kind == FootEvent::JumpLand) {

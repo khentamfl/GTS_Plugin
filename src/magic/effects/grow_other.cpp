@@ -33,7 +33,7 @@ namespace Gts {
 			power *= 1.32;
 		} else if (base_spell == Runtime::GetMagicEffect("GrowAllyExpert")) {
 			power *= 1.75;
-		} 
+		}
 
 		float caster_scale = get_target_scale(caster);
 		float target_scale = get_target_scale(target);

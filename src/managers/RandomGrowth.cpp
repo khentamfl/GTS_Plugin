@@ -8,6 +8,7 @@
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "timer.hpp"
+#include "managers/Rumble.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -40,7 +41,7 @@ namespace {
 		auto Player = PlayerCharacter::GetSingleton();
 		if (Runtime::HasPerk(Player, "GrowthAugmentation")) {
 			float HP = GetMaxAV(Player, ActorValue::kHealth) * 0.00085;
-			float MP = GetMaxAV(Player, ActorValue::kMagicka) * 0.00085; 
+			float MP = GetMaxAV(Player, ActorValue::kMagicka) * 0.00085;
 			float SP = GetMaxAV(Player, ActorValue::kStamina) * 0.00085;
 			Player->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
 			Player->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
@@ -84,7 +85,7 @@ namespace Gts {
 			this->growth_time_input += delta_time;
 			actor_data->half_life = 1.0 + this->ShakePower/6;
 
-			GrowthTremorManager::GetSingleton().CallRumble(player, player, this->ShakePower * 15);
+			Rumble::Once("RandomGrowth", player, this->ShakePower * 15);
 
 			static Timer timer = Timer(0.33);
 			if (timer.ShouldRunFrame() && this->ShakePower > 6.0) {
@@ -106,7 +107,7 @@ namespace Gts {
 					this->growth_time = 0.0;
 					this->AllowGrowth = true;
 					// Play sound
-					GrowthTremorManager::GetSingleton().CallRumble(player, player, 6.0);
+					Rumble::Once("RandomGrowth", player, 6.0);
 					float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
 					Runtime::PlaySound("MoanSound", player, 1.0, 0.0);
 					Runtime::PlaySound("growthSound", player, Volume, 0.0);
@@ -122,7 +123,7 @@ namespace Gts {
 			float base_power = ((0.00185 * TotalPower * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
 			RestoreStats(); // Regens Attributes if PC has perk
 			mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps
-			GrowthTremorManager::GetSingleton().CallRumble(player, player, base_power * 180);
+			Rumble::Once("RandomGrowth", player, base_power * 180);
 			this->growth_time += delta_time;
 			if (this->growth_time >= 2.0) { // Time in seconds" 160tick / 60 ticks per secong ~= 2.6s
 				// End growing

@@ -1,12 +1,14 @@
 #include "managers/camera.hpp"
 #include "managers/cameras/camutil.hpp"
 #include "managers/highheel.hpp"
+#include "managers/InputManager.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "data/persistent.hpp"
 #include "Config.hpp"
 #include "node.hpp"
 #include "data/time.hpp"
+#include "scale/scale.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -14,6 +16,36 @@ using namespace REL;
 using namespace Gts;
 
 
+namespace {
+  void HorizontalResetEvent(const InputEventData& data) {
+    auto& camera = CameraManager::GetSingleton();
+    camera.ResetLeftRight();
+  }
+  void VerticalResetEvent(const InputEventData& data) {
+    auto& camera = CameraManager::GetSingleton();
+    camera.ResetUpDown();
+  }
+  void CamUpEvent(const InputEventData& data) {
+    auto& camera = CameraManager::GetSingleton();
+    float size = get_visual_scale(PlayerCharacter::GetSingleton());
+    camera.AdjustUpDown(0.6 + (size * 0.05 - 0.05));
+  }
+  void CamDownEvent(const InputEventData& data) {
+    auto& camera = CameraManager::GetSingleton();
+    float size = get_visual_scale(PlayerCharacter::GetSingleton());
+    camera.AdjustUpDown(-(0.6 + (size * 0.05 - 0.05)));
+  }
+  void CamLeftEvent(const InputEventData& data) {
+    auto& camera = CameraManager::GetSingleton();
+    float size = get_visual_scale(PlayerCharacter::GetSingleton());
+    camera.AdjustLeftRight(-(0.6 + (size * 0.05 - 0.05)));
+  }
+  void CamRightEvent(const InputEventData& data) {
+    auto& camera = CameraManager::GetSingleton();
+    float size = get_visual_scale(PlayerCharacter::GetSingleton());
+    camera.AdjustLeftRight(0.6 + (size * 0.05 - 0.05));
+  }
+}
 
 namespace Gts {
 	CameraManager& CameraManager::GetSingleton() noexcept {
@@ -24,6 +56,16 @@ namespace Gts {
 	std::string CameraManager::DebugName() {
 		return "CameraManager";
 	}
+
+  void CameraManager::DataReady() {
+    InputManager::RegisterInputEvent("HorizontalCameraReset", HorizontalResetEvent);
+    InputManager::RegisterInputEvent("VerticalCameraReset", VerticalResetEvent);
+
+    InputManager::RegisterInputEvent("CameraUp", CamUpEvent);
+    InputManager::RegisterInputEvent("CameraDown", CamDownEvent);
+    InputManager::RegisterInputEvent("CameraLeft", CamLeftEvent);
+    InputManager::RegisterInputEvent("CameraRight", CamRightEvent);
+  }
 
 	void CameraManager::Start() {
 		//ResetIniSettings();
@@ -165,8 +207,8 @@ namespace Gts {
 	CameraState* CameraManager::GetCameraState() {
 		if (!Runtime::GetBool("EnableCamera") || IsFreeCamera()) {
 			return nullptr;
-		} 
-		
+		}
+
 		bool AllowFpCamera = true;
 		auto playerCamera = PlayerCamera::GetSingleton();
 		if (!playerCamera) {
@@ -175,9 +217,9 @@ namespace Gts {
 		if (Runtime::GetBool("ConversationCameraComp")) {
 			auto ui = RE::UI::GetSingleton();
 			if (ui) {
-        		if (ui->IsMenuOpen(DialogueMenu::MENU_NAME)) {
-				return nullptr;
-            	}
+				if (ui->IsMenuOpen(DialogueMenu::MENU_NAME)) {
+					return nullptr;
+				}
 			}
 		}
 		auto playerCameraState = playerCamera->currentState;

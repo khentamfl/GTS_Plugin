@@ -28,10 +28,10 @@ namespace Hooks
 
 			static float GetPermanentActorValue(ActorValueOwner* a_this, ActorValue a_akValue);
 			static inline REL::Relocation<decltype(GetPermanentActorValue)> _GetPermanentActorValue;
-			
+
 			static void SetBaseActorValue(ActorValueOwner* a_this, ActorValue a_akValue, float a_value);
 			static inline REL::Relocation<decltype(SetBaseActorValue)> _SetBaseActorValue;
-			
+
 
 			static void SetSize(PlayerCharacter* a_this, float a_size);
 			static inline REL::Relocation<decltype(SetSize)> _SetSize;
@@ -41,6 +41,9 @@ namespace Hooks
 
 			static void ProcessTracking(PlayerCharacter* a_this, float a_delta, NiAVObject* a_obj3D);
 			static inline REL::Relocation<decltype(ProcessTracking)> _ProcessTracking;
+
+			static void PCAnimEvents(BSTEventSink<BSAnimationGraphEvent>* a_this, BSAnimationGraphEvent& a_event, BSTEventSource<BSAnimationGraphEvent>* a_src);
+			static inline REL::Relocation<decltype(PCAnimEvents)> _PCAnimEvents;
 
 			float protectionticks = 360.0;
 	};

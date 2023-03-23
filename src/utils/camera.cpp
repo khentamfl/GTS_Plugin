@@ -6,8 +6,14 @@ using namespace SKSE;
 
 namespace Gts {
 
-	void shake_camera(TESObjectREFR* actor, float intensity, float duration) {
-		CallFunction("Game", "ShakeCamera", actor, intensity, duration);
+	void shake_camera(TESObjectREFR* actor, float intensity, float duration) { // TESObjectREFR*
+		//CallFunction("Game", "ShakeCamera", actor, intensity, duration);
+		NiPoint3 position = actor->GetPosition();
+		ShakeCamera(intensity, position, duration);
+	}
+
+	void shake_camera_at_node(NiPoint3 position, float intensity, float duration) { // TESObjectREFR*
+		ShakeCamera(intensity, position, duration);
 	}
 
 	void TriggerScreenBlood(int aiValue) {

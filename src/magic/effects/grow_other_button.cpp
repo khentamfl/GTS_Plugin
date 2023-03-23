@@ -4,6 +4,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "managers/Rumble.hpp"
 
 namespace Gts {
 	std::string GrowOtherButton::GetName() {
@@ -44,6 +45,6 @@ namespace Gts {
 
 		DamageAV(caster, ActorValue::kMagicka, 0.45 * (scale * 0.25 + 0.75) * magicka * bonus * TimeScale());
 		Grow(target, 0.0030 * magicka * bonus, 0.0);
-		GrowthTremorManager::GetSingleton().CallRumble(target, caster, 1.0);
+		Rumble::Once("GrowButton", target, 1.0);
 	}
 }

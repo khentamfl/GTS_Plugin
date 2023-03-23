@@ -6,7 +6,7 @@
 #include "data/runtime.hpp"
 #include "managers/GtsSizeManager.hpp"
 
-		// A potion that amplifies size gain
+// A potion that amplifies size gain
 
 namespace Gts {
 	std::string SizeHunger::GetName() {

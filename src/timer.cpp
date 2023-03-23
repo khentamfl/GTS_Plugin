@@ -21,12 +21,12 @@ namespace Gts {
 		double currentTime = GetGameTime();
 		if (this->last_time + this->delta <= currentTime) {
 			this->elaped_time = currentTime - this->last_time;
-			this->last_time = currentTime;
 
 			std::uint64_t currentFrame = GetGameFrame();
 
 			this->elaped_frame = currentFrame - this->last_frame;
-			this->last_frame = currentFrame;
+
+      this->Reset();
 			return true;
 		}
 		return false;
@@ -46,6 +46,11 @@ namespace Gts {
 			return false;
 		}
 	}
+
+  void Timer::Reset() {
+    this->last_time = GetGameTime();
+    this->last_frame = GetGameFrame();
+  }
 
 	std::uint64_t Timer::FrameDelta() {
 		return this->elaped_frame;

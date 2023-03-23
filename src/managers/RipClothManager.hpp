@@ -16,8 +16,8 @@ namespace Gts {
 			void CheckRip();
 
 		private:
-            float clothtearthreshold = 2.5;
-            float clothtearcount = 0.0;
+			float clothtearthreshold = 2.5;
+			float clothtearcount = 0.0;
 
 	};
 }

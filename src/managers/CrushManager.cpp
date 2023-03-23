@@ -169,8 +169,8 @@ namespace Gts {
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
@@ -178,7 +178,9 @@ namespace Gts {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
 					}
+					
 					ScareChance(giant);
+					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
@@ -186,9 +188,8 @@ namespace Gts {
 						TriggerScreenBlood(50);
 						tiny->SetAlpha(0.0); // Fake crush effect, just make player invisible
 					}
-					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
+					
 					AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
-					CrushBonuses(giant, tiny);
 					FearChance(giant);
 				}
 			}
@@ -233,7 +234,7 @@ namespace Gts {
 			return false;
 		}
 		//Check for Essential
-		
+
 		// Check skin
 		auto skin = tiny->GetSkin();
 		if (skin) {

@@ -29,11 +29,12 @@ namespace Gts {
 		public:
 			[[nodiscard]] static CameraManager& GetSingleton() noexcept;
 
-			virtual std::string DebugName() override; 
+			virtual std::string DebugName() override;
+      virtual void DataReady() override;
 			virtual void Start() override;
 
 			virtual void CameraUpdate() override;
- 
+
 			CameraState* GetCameraState();
 
 			void AdjustUpDown(float amt);

@@ -2,12 +2,23 @@
 #include "utils/findActor.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "data/runtime.hpp"
+#include "scale/scale.hpp"
 #include "data/re.hpp"
+#include "node.hpp"
 
 using namespace RE;
 using namespace Gts;
 
 namespace {
+	float ShakeStrength(Actor* Source) {
+		float Size = get_visual_scale(Source);
+		float k = 0.065;
+		float n = 1.0;
+		float s = 1.12;
+		float Result = 1.0/(pow(1.0+pow(k*(Size-1.0),n*s),1.0/s));
+		return Result;
+	}
+
 	ExtraDataList* CreateExDataList() {
 		size_t a_size;
 		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
@@ -192,5 +203,67 @@ namespace Gts {
 			return delta.Length();
 		}
 		return 3.4028237E38; // Max float
+	}
+
+	void ApplyShake(Actor* caster, float modifier) {
+		if (caster) {
+			auto position = caster->GetPosition();
+			ApplyShakeAtPoint(caster, modifier, position);
+		}
+	}
+
+	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view nodesv) {
+		auto node = find_node(caster, nodesv);
+		if (node) {
+			ApplyShakeAtPoint(caster, modifier, node->world.translate);
+		}
+	}
+	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords) {
+		if (!caster) {
+			return;
+		}
+		// Reciever is always PC if it is not PC we do nothing anyways
+		Actor* receiver = PlayerCharacter::GetSingleton();
+		if (!receiver) {
+			return;
+		}
+
+		float distance = get_distance_to_camera(coords);
+		float sourcesize = get_visual_scale(caster);
+		float receiversize = get_visual_scale(receiver);
+		float sizedifference = sourcesize/receiversize;
+		if (caster->formID == 0x14) {
+			sizedifference = sourcesize;
+		}
+		
+
+		// To Sermit: You wrote a cutoff not a falloff
+		//            was this intentional?
+		//
+		// FYI: This is the difference
+		// Falloff:
+		//   |
+		// I |----\
+		//   |     \
+		//   |______\___
+		//        distance
+		// Cuttoff:
+		//   |
+		// I |----|
+		//   |    |
+		//   |____|_____
+		//        distance
+		float cuttoff = 450 * sizedifference;
+		log::info("Shake Actor:{}, Distance:{}, sourcesize: {}, recsize: {}, cutoff: {}", caster->GetDisplayFullName(), distance, sourcesize, receiversize, cuttoff);
+		if (distance < cuttoff) {
+			// To Sermit: Same value as before just with the math reduced to minimal steps
+			float intensity = (sizedifference * 23.90625 * ShakeStrength(caster)) / distance;
+			float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
+			intensity = std::clamp(intensity, 0.0f, 1e8f);
+			duration = std::clamp(duration, 0.0f, 1.2f);
+
+			shake_controller(intensity*modifier, intensity*modifier, duration);
+			shake_camera_at_node(coords, intensity*modifier, duration);
+		}
 	}
 }

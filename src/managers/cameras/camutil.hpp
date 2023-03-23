@@ -21,8 +21,8 @@ namespace Gts {
 	Actor* GetCameraActor();
 
 	/*#ifdef ENABLED_SHADOW
-	ShadowSceneNode* GetShadowMap();
-	#endif*/
+	   ShadowSceneNode* GetShadowMap();
+	 #endif*/
 
 	void UpdateSceneManager(NiPoint3 camLoc);
 

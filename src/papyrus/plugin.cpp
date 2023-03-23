@@ -66,7 +66,7 @@ namespace {
 			return transient->health_boost;
 		}
 		if (value == 2.0) { // get carry weight
-			return transient->carryweight_boost; 
+			return transient->carryweight_boost;
 		}
 		return 0.0;
 	}
@@ -177,7 +177,7 @@ namespace {
 	bool DragonCheck(StaticFunctionTag*, Actor* actor) {
 		if (!actor) {
 			return false;
-		} 
+		}
 		return IsDragon(actor);
 	}
 

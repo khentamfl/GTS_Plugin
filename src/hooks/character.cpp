@@ -27,10 +27,18 @@ namespace Hooks
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
 		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
 		_SetBaseActorValue = Vtbl5.write_vfunc(0x04, SetBaseActorValue);
+
+		REL::Relocation<std::uintptr_t> AnimVtbl{ RE::VTABLE_Character[2] };
+		_NPCAnimEvents = AnimVtbl.write_vfunc(0x1, &NPCAnimEvents);
 	}
 
 	void Hook_Character::HandleHealthDamage(Character* a_this, Character* a_attacker, float a_damage) {
 		if (a_attacker) {
+			auto charCont = a_this->GetCharController();
+			if (charCont) {
+				float sizedifference = get_visual_scale(a_this)/get_visual_scale(a_attacker);
+				a_this->SetGraphVariableFloat("GiantessScale", sizedifference); // Manages Stagger Resistance inside Behaviors.
+			}
 			float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(a_attacker, ActorValue::kAttackDamageMult);
 			float damage = (a_damage * damagemult) - a_damage;
 			if (damage < 0) {
@@ -44,7 +52,7 @@ namespace Hooks
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
 				}
-			} 
+			}
 			if (damage > GetAV(a_this, ActorValue::kHealth) * 1.5) { // Overkill effect
 				float attackerscale = get_visual_scale(a_attacker);
 				float receiverscale = get_visual_scale(a_this);
@@ -101,7 +109,7 @@ namespace Hooks
 		}
 		return value;
 	}
-	
+
 	void Hook_Character::SetBaseActorValue(ActorValueOwner* a_owner, ActorValue a_akValue, float value) {
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
@@ -124,6 +132,9 @@ namespace Hooks
 	}
 
 	void Hook_Character::Move(Character* a_this, float a_arg2, const NiPoint3& a_position) { // Override Movement Speed
+		if (a_this->IsInKillMove()) {
+			return _Move(a_this, a_arg2, a_position); // Do nothing in Kill moves
+		}
 		float bonus = AttributeManager::AlterMovementSpeed(a_this, a_position);
 		return _Move(a_this, a_arg2, a_position * bonus);
 	}
@@ -135,5 +146,15 @@ namespace Hooks
 		//}
 		auto player = PlayerCharacter::GetSingleton()->Get3D();
 		_ProcessTracking(a_this, a_delta, player);
+	}
+
+	void Hook_Character::NPCAnimEvents(BSTEventSink<BSAnimationGraphEvent>* a_this, BSAnimationGraphEvent& a_event, BSTEventSource<BSAnimationGraphEvent>* a_src) {
+		if (a_event.tag != NULL && a_event.holder != NULL) {
+			Actor* actor = static_cast<Actor*>(a_this);
+			if (actor) {
+				EventDispatcher::DoActorAnimEvent(actor, a_event.tag, a_event.payload);
+			}
+		}
+		return _NPCAnimEvents(a_this, a_event, a_src);
 	}
 }

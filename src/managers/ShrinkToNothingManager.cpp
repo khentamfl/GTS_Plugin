@@ -60,12 +60,7 @@ namespace Gts {
 							TransferInventory(tiny, into, false, true);
 						}
 						ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
-						if (tiny->formID != 0x14) {
-							Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
-						} else if (tiny->formID == 0x14) {
-							TriggerScreenBlood(50);
-							tiny->SetAlpha(0.0); // Just make player Invisible
-						}
+						
 						Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 
 						auto progressionQuest = Runtime::GetQuest("MainQuest");
@@ -79,13 +74,19 @@ namespace Gts {
 						std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+
+						if (tiny->formID != 0x14) {
+							Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
+						} else if (tiny->formID == 0x14) {
+							TriggerScreenBlood(50);
+							tiny->SetAlpha(0.0); // Just make player Invisible
+						}
 
 						data.state = ShrinkState::Shrinked;
 					}
-
 				}
 			}
 		}
@@ -140,7 +141,7 @@ namespace Gts {
 
 		int random = (100 + (rand()% 85 + 1)) / 100;
 
-		if (GtsSkillLevel->value >= 100) { 
+		if (GtsSkillLevel->value >= 100) {
 			GtsSkillLevel->value = 100.0;
 			GtsSkillRatio->value = 0.0;
 			return;
@@ -150,7 +151,7 @@ namespace Gts {
 
 		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.48 * random) + absorbedSize/50) * ValueEffectiveness);
+		float Total = (((0.42 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {

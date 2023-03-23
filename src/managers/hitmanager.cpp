@@ -12,6 +12,7 @@
 #include "data/time.hpp"
 #include "timer.hpp"
 #include "node.hpp"
+#include "managers/Rumble.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -87,7 +88,8 @@ namespace Gts {
 			}
 			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 2.0;
-			} if (hitName.find("Bow") == std::string::npos) {
+			}
+			if (hitName.find("Bow") == std::string::npos) {
 				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
 			PushActorAway(attacker, receiver, size_difference);
@@ -205,7 +207,7 @@ namespace Gts {
 				GrowthValue *= 0.50;
 			}
 			if (this->GrowthTick > 0.01 && GrowthValue > 0) {
-				GrowthTremorManager::GetSingleton().CallRumble(actor, actor, (actor_data->half_life * 4) * ShakePower);
+				Rumble::Once("HitManager", actor, (actor_data->half_life * 4) * ShakePower);
 				mod_target_scale(actor, GrowthValue);
 				this->GrowthTick -= 0.0005 * TimeScale();
 			} else if (this->GrowthTick <= 0.01) {
@@ -230,7 +232,7 @@ namespace Gts {
 				}
 
 				if (this->GrowthTick > 0.01 && ShrinkValue < 0) {
-					GrowthTremorManager::GetSingleton().CallRumble(actor, actor, (actor_data->half_life * 2.5) * ShakePower);
+					Rumble::Once("HitManager", actor, (actor_data->half_life * 2.5) * ShakePower);
 					mod_target_scale(actor, ShrinkValue);
 					this->GrowthTick -= 0.0005 * TimeScale();
 				} else if (this->GrowthTick <= 0.01) {
@@ -248,30 +250,30 @@ namespace Gts {
 		}
 	}
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
-			if (!receiver->IsDead()) {
-				receiver->KillImmediate();
-			}
-			if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-				TransferInventory(receiver, attacker, false, true);
-			} else if (attacker->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-				TransferInventory(receiver, attacker, false, true);
-			}
-			if (receiver->formID != 0x14) {
-				Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.
-			} else if (receiver->formID == 0x14) {
-				TriggerScreenBlood(50);
-				receiver->SetAlpha(0.0); // Just make player Invisible
-			}
-			Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");
-			std::random_device rd;
-			std::mt19937 gen(rd());
-			std::uniform_real_distribution<float> dis(-0.2, 0.2);
+		if (!receiver->IsDead()) {
+			receiver->KillImmediate();
+		}
+		if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
+			TransferInventory(receiver, attacker, false, true);
+		} else if (attacker->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
+			TransferInventory(receiver, attacker, false, true);
+		}
+		Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-			Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 2.0);
+		Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 2.0);
 
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+
+		if (receiver->formID != 0x14) {
+			Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.
+		} else if (receiver->formID == 0x14) {
+			TriggerScreenBlood(50);
+			receiver->SetAlpha(0.0); // Just make player Invisible
 		}
 	}
-
+}

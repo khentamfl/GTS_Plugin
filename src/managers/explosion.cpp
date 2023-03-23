@@ -43,7 +43,7 @@ namespace {
 			explosion->SetPosition(position);
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
-			explosion->GetExplosionRuntimeData().unkB8 = nullptr;             
+			explosion->GetExplosionRuntimeData().unkB8 = nullptr;
 			explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
 			explosion->GetExplosionRuntimeData().unk11C *= 0.0;
 		}
@@ -71,11 +71,13 @@ namespace Gts {
 		if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
 				scale *= 1.2; // Sprinting makes you seem bigger
-			} if (actor->AsActorState()->IsWalking()) {
+			}
+			if (actor->AsActorState()->IsWalking()) {
 				scale *= 0.65; // Walking makes you seem quieter
-			} if (actor->IsSneaking()) {
+			}
+			if (actor->IsSneaking()) {
 				scale *= 0.55; // Sneaking makes you seem quieter
-			} 
+			}
 			FootEvent foot_kind = impact.kind;
 			if (foot_kind == FootEvent::JumpLand) {
 				scale *= 2.0; // Jumping makes you sound bigger

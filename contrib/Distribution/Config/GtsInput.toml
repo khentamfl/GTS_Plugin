@@ -1,0 +1,211 @@
+# Keyboard event map
+#
+# Key names are from directinput
+# https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ee418641(v=vs.85)
+# without the DIK_ prefix
+#
+# Mouse is LMB or RMB
+#
+# Events are specicified like this:
+# ```toml
+# [[InputEvent]]
+# name = "SomeKeyEvent"
+# keys = [ "A", "B", "LMB" ]
+# exclusive = false
+# duration = 0.0
+# trigger = "once"
+# ```
+#
+# - name: Is the event name. This determines what is done when these keys are
+#         pressed. More that one `[[InputEvent]]` can trigger the same event name
+#         which means you can have multiple keys combinations do that same thing
+#         if you repeat the name
+# - keys: Is a comma seperated list [] of keys names that will trigger the event
+# - exclusive: When true means ONLY these keys must be pressed for the entire duration
+#             when false other keys may be pressed and the event will still fire
+# - duration: The length of time the keys must be pressed for before they fire
+# - trigger: Either "once or "continuous". If "once" the keys must be released
+#            before the event will fire again. If "continuous" the event will
+#            fire every frame until the keys are released
+
+[[InputEvent]]
+name = "Vore"
+keys = [ "LSHIFT", "V" ]
+trigger = "once"
+
+# Start Vore Attempt.
+
+[[InputEvent]]
+name = "RightStomp"
+keys = ["LSHIFT", "E"]
+
+# Trigger Stomp Right animation.
+
+[[InputEvent]]
+name = "LeftStomp"
+keys = ["LSHIFT", "Q"]
+
+# Trigger Stomp Left animation.
+
+[[InputEvent]]
+name = "SizeReserve"
+keys = ["E"]
+trigger = "continuous"
+
+# Use size reserve and grow yourself. Requires Perk.
+
+[[InputEvent]]
+name = "DisplaySizeReserve"
+keys = ["F"]
+duration = 1.2
+
+# Hold to print size reserve value. Requires Perk.
+
+[[InputEvent]]
+name = "ThighCrush"
+keys = ["LALT"]
+duration = 0.6
+
+# Enter Thigh Crush Animation.
+
+[[InputEvent]]
+name = "ThighCrushKill"
+keys = [ "LMB" ]
+exclusive = false
+
+# Start Leg Spread, Leg Close animation.
+
+[[InputEvent]]
+name = "ThighCrushSpare"
+keys = [ "RMB" ]
+exclusive = false
+
+# Exit Thigh Crush animation.
+
+[[InputEvent]]
+name = "ThighCrushSpare"
+keys = [ "W" ]
+exclusive = false
+
+# Second way to Exit Thigh Crush animation.
+
+[[InputEvent]]
+name = "PartyReport"
+keys = [ "LCONTROL" ]
+duration = 1.2
+
+# Reports Follower's size info into the console
+
+[[InputEvent]]
+name = "Grab"
+keys = ["F"]
+
+# Grabs nearby actor.
+
+[[InputEvent]]
+name = "GrabKill"
+keys = [ "LMB" ]
+exclusive = false
+
+# Crush actor that is in hand.
+
+[[InputEvent]]
+name = "GrabSpare"
+keys = [ "RMB" ]
+exclusive = false
+
+# Release actor from hand.
+
+[[InputEvent]]
+name = "HorizontalCameraReset"
+keys = [ "LALT", "RIGHT", "LEFT" ]
+exclusive = false
+trigger = "once"
+
+[[InputEvent]]
+name = "VerticalCameraReset"
+keys = [ "LALT", "UP", "DOWN" ]
+exclusive = false
+trigger = "once"
+
+# Camera stuff below.
+
+[[InputEvent]]
+name = "CameraLeft"
+keys = [ "LALT", "LEFT" ]
+exclusive = false
+trigger = "continuous"
+
+[[InputEvent]]
+name = "CameraRight"
+keys = [ "LALT", "RIGHT" ]
+exclusive = false
+trigger = "continuous"
+
+[[InputEvent]]
+name = "CameraUp"
+keys = [ "LALT", "UP" ]
+exclusive = true
+trigger = "continuous"
+
+[[InputEvent]]
+name = "CameraDown"
+keys = [ "LALT", "DOWN" ]
+exclusive = false
+trigger = "continuous"
+
+[[InputEvent]]
+name = "AnimSpeedUp"
+keys = [ "LMB" ]
+exclusive = false
+trigger = "continuous"
+
+# Boost animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
+
+[[InputEvent]]
+name = "AnimSpeedDown"
+keys = [ "RMB" ]
+exclusive = false
+trigger = "continuous"
+
+# Slow down animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
+
+[[InputEvent]]
+name = "AnimMaxSpeed"
+keys = [ "RMB", "LMB" ]
+exclusive = false
+trigger = "continuous"
+
+# Massively Boost animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
+
+[[InputEvent]]
+name = "TotalControlGrow"
+keys = [ "UP", "LEFT"]
+exclusive = false
+trigger = "continuous"
+
+# Grow self. Requires Matching Perk.
+
+[[InputEvent]]
+name = "TotalControlShrink"
+keys = [ "DOWN", "LEFT"]
+exclusive = false
+trigger = "continuous" 
+
+# Shrink self. Requires Matching Perk.
+
+[[InputEvent]]
+name = "TotalControlGrowOther"
+keys = [ "LSHIFT",  "UP", "LEFT"]
+exclusive = false
+trigger = "continuous"
+
+# Grow followers. Requires Matching Perk.
+
+[[InputEvent]]
+name = "TotalControlShrinkOther"
+keys = [ "LSHIFT", "DOWN", "LEFT"]
+exclusive = false
+trigger = "continuous"
+
+# Shrink followers. Requires Matching Perk.
