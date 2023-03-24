@@ -503,10 +503,6 @@ namespace Gts {
 		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
-		if (Runtime::HasPerk(pred,"MassVorePerk")) {
-			sizedifference *= 1.15; // Less stamina drain
-			MINIMUM_VORE_SCALE *= 0.85; // Decrease Size Requirement
-		}
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Enables HP requirement on Vore.
 			float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);
@@ -542,10 +538,6 @@ namespace Gts {
 		float prey_scale = get_visual_scale(prey);
 
 		float sizedifference = pred_scale/prey_scale;
-
-		if (Runtime::HasPerk(pred, "MassVorePerk")) {
-			sizedifference *= 1.15; // Less stamina drain
-		}
 
 		float wastestamina = 140/sizedifference; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->AsActorValueOwner()->GetActorValue(ActorValue::kStamina);

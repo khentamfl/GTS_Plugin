@@ -118,15 +118,15 @@ exclusive = false
 
 [[InputEvent]]
 name = "HorizontalCameraReset"
-keys = [ "LALT", "RIGHT", "LEFT" ]
+keys = [ "RIGHT", "LEFT" ]
 exclusive = false
-trigger = "once"
+trigger = "continuous"
 
 [[InputEvent]]
 name = "VerticalCameraReset"
-keys = [ "LALT", "UP", "DOWN" ]
+keys = [ "UP", "DOWN" ]
 exclusive = false
-trigger = "once"
+trigger = "continuous"
 
 # Camera stuff below.
 
