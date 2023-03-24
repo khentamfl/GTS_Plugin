@@ -93,7 +93,7 @@ namespace Gts {
 			if (!giant) {
 				continue;
 			}
-			auto tiny = VoreHandler::GetSingleton().GetHeldVoreActors(giant);
+			auto tiny = data.tiny;
 			if (!tiny) {
 				continue;
 			}
@@ -150,16 +150,29 @@ namespace Gts {
 		VoreHandler::GetSingleton().data.erase(giant);
 	}
 
-    Actor* VoreHandler::GetHeldVoreActors(Actor* giant) {
+     TESObjectREFR* VoreHandler::GetHeldVoreObj(Actor* giant) {
         try {
 			auto& me = VoreHandler::GetSingleton();
 			return me.data.at(giant).tiny;
 		} catch (std::out_of_range e) {
 			return nullptr;
 		}
+  	
 	}
 
-    VoreData::VoreData(Actor* tiny) : giant(giant) {
+    Actor* VoreHandler::GetHeldVoreActors(Actor* giant) {
+        //Return all Actors that we are currently Voring, to do things to them
+        //Or maybe this function won't be needed since we send Actors from Vore.cpp?
+       auto obj = VoreHandler::GetHeldVoreObj(giant);
+    	Actor* actor = skyrim_cast<Actor*>(obj);
+    	if (actor) {
+      		return actor;
+    	} else {
+      		return nullptr;
+    	}
+	}
+
+    VoreData::VoreData(TESObjectREFR* tiny) : tiny(tiny) {
 	}
 }
 
