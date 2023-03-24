@@ -167,7 +167,6 @@ namespace Gts {
 			if (cameraRoot) {
 				cameraRoot->local.translate = camLoc;
 				cameraRoot->world.translate = camLoc;
-				camera->rigidBody->SetPosition((camLoc[0], camLoc[1], camLoc[2], 1.0));
 				update_node(cameraRoot.get());
 			}
 		}
