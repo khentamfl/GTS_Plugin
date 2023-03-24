@@ -151,7 +151,14 @@ namespace Gts {
   			}
       }
       this->tinies.clear();
+    }
 
+    std::vector<Actor*> VoreData::GetVories() {
+      std::vector<Actor*> result;
+      for (auto& [key, actor]: this->tinies) {
+        result.push_back(actor);
+      }
+      return result;
     }
 
     void VoreData::Update() {
@@ -184,8 +191,18 @@ namespace Gts {
 
       // Shrink nodes
       if (this->killZoneEnabled) {
+        auto headNodeName = "NPC HEAD";
+        auto headNode = find_node_any(giant, headNodeName);
+        if (headNode) {
+          NiPoint3 headCenter = headNode->world.translate;
+          for (auto& [key, tiny]: this->tinies) {
+            std::vector<NiAVObject&> nodes_inrange = {};
+            auto root = tiny->GetCurrent3D();
+            VisitNodes(root, [&nodes](NiAVObject& node) {
 
-        for (auto& [key, tiny]: this->tinies) {
+              return true;
+            });
+          }
         }
       }
     }

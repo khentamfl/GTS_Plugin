@@ -20,6 +20,9 @@ namespace Gts
       // kill/shrinks all actors and gains buffs
       void KillAll();
 
+      // Get a list of all actors currently being vored
+      std::vector<Actor*> GetVories();
+
       // Update all things that are happening like
       // keeping them on the AnimObjectA and shrinking nodes
       void Update();
