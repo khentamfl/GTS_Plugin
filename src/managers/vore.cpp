@@ -575,7 +575,7 @@ namespace Gts {
 			AdjustSizeLimit(0.0260, pred);
 		}
 		//Runtime::CastSpell(pred, prey, "StartVore");
-		auto* voreData = this->GetVoreData(pred);
+		auto& voreData = this->GetVoreData(pred);
     	voreData.AddTiny(prey);
 
 		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
