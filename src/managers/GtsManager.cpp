@@ -440,13 +440,7 @@ std::string GtsManager::DebugName() {
 
 // Poll for updates
 void GtsManager::Update() {
-	auto PC = PlayerCharacter::GetSingleton();
-	auto bone = find_node(PC, "CME Camera3rd [Cam3]");
-  	if (bone) {
-		NiPoint3 Location = bone->world.translate;
-  		log::info("PC Camera Pos = {}", Vector2Str(Location));
-  	}
-	
+	//auto PC = PlayerCharacter::GetSingleton();
 	//auto charCont = PC->GetCharController();
 	//if (charCont) {
 	//float velocity;
