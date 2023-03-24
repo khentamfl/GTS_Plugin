@@ -178,20 +178,21 @@ namespace Gts {
 
   			NiPoint3 giantLocation = giant->GetPosition();
   			NiPoint3 tinyLocation = tiny->GetPosition();
+			NiPoint3 targetLocation = bone->world.translate;
 
-  			tiny->SetPosition(bone->world.translate);
+  			tiny->SetPosition(targetLocation);
   			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
   			if (tiny_is_actor) {
   				auto charcont = tiny_is_actor->GetCharController();
   				if (charcont) {
-  					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+  					charcont->SetLinearVelocityImpl((0.0, 0.0, -10.0, 0.0)); // Needed so Actors won't fall down.
   				}
   			}
-      }
+      	}
 
       // Shrink nodes
       if (this->killZoneEnabled) {
-        auto headNodeName = "NPC HEAD";
+        auto headNodeName = "NPC Head";
         auto headNode = find_node_any(giant, headNodeName);
         if (headNode) {
           NiPoint3 headCenter = headNode->world.translate;
@@ -574,7 +575,7 @@ namespace Gts {
 		}
 		//Runtime::CastSpell(pred, prey, "StartVore");
 		auto* voreData = this->GetVoreData(pred);
-    voreData.AddTiny(prey);
+    	voreData.AddTiny(prey);
 
 		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
 	}

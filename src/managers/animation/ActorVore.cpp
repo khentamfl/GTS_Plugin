@@ -47,10 +47,9 @@ namespace {
 
     void GTSvore_impactLS(AnimationEventData& data) {
         float scale = get_visual_scale(&data.giant);
-		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-
-		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		//Rumble::Start("StompL", &data.giant, 0.25, RNode);
+		    float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
+        Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
+		  //Rumble::Start("StompL", &data.giant, 0.25, RNode);
     }
 
     void GTSvore_sit_end(AnimationEventData& data) {
@@ -61,10 +60,10 @@ namespace {
 
     void GTSvore_hand_grab(AnimationEventData& data) {
         //PlayerCamera::GetSingleton()->cameraTarget = data.tiny->CreateRefHandle();
-        auto& VoreData = VoreHandler::GetSingleton().GetVoreData(&data.giant);
-        for (auto& tiny: VoreData.GetVories()) {
-          PushActorAway(&data.giant, tiny, 1.0);
-        }
+        auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+        //for (auto& tiny: VoreData.GetVories()) {
+          //PushActorAway(&data.giant, tiny, 1.0);
+        //}
     }
 
     void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {
