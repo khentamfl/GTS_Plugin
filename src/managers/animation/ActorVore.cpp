@@ -82,7 +82,7 @@ namespace {
 
     void GTSvore_swallow(AnimationEventData& data) {
       auto giant = &data.giant;
-      Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 0.5, "NPC Head");
+      Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 0.5, "NPC Head [Head]");
     }
 
     void GTSvore_swallow_sound(AnimationEventData& data) {

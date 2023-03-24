@@ -265,7 +265,7 @@ namespace Gts {
 
 		Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 2.0);
 
-		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 

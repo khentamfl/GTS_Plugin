@@ -186,14 +186,14 @@ namespace Gts {
   			if (tiny_is_actor) {
   				auto charcont = tiny_is_actor->GetCharController();
   				if (charcont) {
-  					charcont->SetLinearVelocityImpl((0.0, 0.0, -10.0, 0.0)); // Needed so Actors won't fall down.
+  					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
   				}
   			}
       	}
 
       // Shrink nodes
       /*if (this->killZoneEnabled) {
-        auto headNodeName = "NPC Head";
+        auto headNodeName = "NPC Head [Head]";
         auto headNode = find_node_any(giant, headNodeName);
         if (headNode) {
           NiPoint3 headCenter = headNode->world.translate;
