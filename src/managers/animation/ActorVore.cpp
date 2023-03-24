@@ -59,7 +59,7 @@ namespace {
     }
 
     void GTSvore_hand_grab(AnimationEventData& data) {
-        PlayerCamera::GetSingleton()->cameraTarget = data.tiny->CreateRefHandle();
+        //PlayerCamera::GetSingleton()->cameraTarget = data.tiny->CreateRefHandle();
     }
 
     void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {
@@ -96,7 +96,7 @@ namespace {
     }
 
     void GTSvore_eat_actor(AnimationEventData& data) {
-        Vore = VoreHandler::GetSingleton();
+        auto Vore = VoreHandler::GetSingleton();
         Vore.EatActors(data.giant);
     }
 
@@ -104,7 +104,7 @@ namespace {
     }
 
     void GTSvore_standup_start(AnimationEventData& data) {
-        PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
+        //PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
     }
 
     void GTSvore_impactRS(AnimationEventData& data) {

@@ -121,7 +121,7 @@ namespace Gts {
     
     void VoreHandler::EatActors(Actor* giant) {
         for (auto &[giant, data]: VoreHandler::GetSingleton().data) {
-            auto tiny = data.tiny;
+            auto tiny = VoreHandler::GetSingleton().GetHeldVoreObj(giant);
 			float rate = 1.0;
 			if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
 				rate = 2.0;
@@ -172,7 +172,7 @@ namespace Gts {
     	}
 	}
 
-    VoreData::VoreData(TESObjectREFR* tiny) : tiny(tiny) {
+    VoreData::VoreData(TESObjectREFR* tiny) : giant(giant), tiny(tiny) {
 	}
 }
 

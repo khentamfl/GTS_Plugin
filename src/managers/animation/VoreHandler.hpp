@@ -7,8 +7,9 @@ using namespace RE;
 
 namespace Gts {
 	struct VoreData {
-		VoreData(TESObjectREFR* tiny);
+		VoreData(Actor& giant, TESObjectREFR* tiny);
 		TESObjectREFR* tiny;
+		Actor& giant;
 	};
 
 	class VoreHandler : public EventListener
