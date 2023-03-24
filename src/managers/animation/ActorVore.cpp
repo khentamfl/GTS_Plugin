@@ -98,7 +98,7 @@ namespace {
 
     void GTSvore_eat_actor(AnimationEventData& data) {
         auto Vore = VoreHandler::GetSingleton();
-        Vore.EatActors(data.giant);
+        Vore.EatActors(&data.giant);
     }
 
     void GTSvore_detachactor_AnimObject_A(AnimationEventData& data) {
