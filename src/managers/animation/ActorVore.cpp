@@ -1,5 +1,4 @@
 #include "managers/animation/ActorVore.hpp"
-#include "managers/animation/VoreHandler.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/Rumble.hpp"
