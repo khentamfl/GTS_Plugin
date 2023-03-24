@@ -93,7 +93,7 @@ namespace Gts {
 			if (!giant) {
 				continue;
 			}
-			auto tiny = data.tiny;
+			auto tiny = &data.tiny;
 			if (!tiny) {
 				continue;
 			}
