@@ -8,7 +8,6 @@ using namespace RE;
 namespace Gts {
 	struct VoreData {
 		VoreData(Actor& giant, Actor& tiny);
-		Actor& tiny;
 		Actor& giant;
 	};
 
