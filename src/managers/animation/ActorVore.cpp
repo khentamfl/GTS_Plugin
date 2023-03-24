@@ -2,6 +2,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/Rumble.hpp"
+#include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 
