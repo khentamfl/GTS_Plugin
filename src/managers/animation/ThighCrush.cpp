@@ -183,6 +183,7 @@ namespace {
 	void GTSBEH_Next(AnimationEventData& data) {
     // Inbetween stages
     	data.animSpeed = 1.0;
+		data.canEditAnimSpeed = false;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Next");
 	}
 	void GTStoexit(AnimationEventData& data) {
