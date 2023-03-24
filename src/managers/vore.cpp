@@ -192,7 +192,7 @@ namespace Gts {
       	}
 
       // Shrink nodes
-      /*if (this->killZoneEnabled) {
+      if (this->killZoneEnabled) {
         auto headNodeName = "NPC Head";
         auto headNode = find_node_any(giant, headNodeName);
         if (headNode) {
@@ -206,7 +206,7 @@ namespace Gts {
             });
           }
         }
-      }*/
+      }
     }
 
 
