@@ -227,7 +227,7 @@ namespace Gts {
 
 	void Vore::Update() {
 		auto player = PlayerCharacter::GetSingleton();
-
+		VoreData::Update();
 		if (!Runtime::HasPerk(player, "VorePerk")) {
 			return;
 		}
