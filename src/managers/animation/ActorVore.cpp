@@ -45,6 +45,11 @@ namespace {
 	}
 
     void GTSvore_impactLS(AnimationEventData& data) {
+        float scale = get_visual_scale(&data.giant);
+		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
+
+		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
+		Rumble::Start("StompL", &data.giant, 0.25, RNode);
     }
 
     void GTSvore_sit_end(AnimationEventData& data) {
@@ -54,6 +59,7 @@ namespace {
     }
 
     void GTSvore_hand_grab(AnimationEventData& data) {
+        PlayerCamera::GetSingleton()->cameraTarget = data.tiny->CreateRefHandle();
     }
 
     void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {
@@ -90,12 +96,15 @@ namespace {
     }
 
     void GTSvore_eat_actor(AnimationEventData& data) {
+        Vore = VoreHandler::GetSingleton();
+        Vore.EatActors(data.giant);
     }
 
     void GTSvore_detachactor_AnimObject_A(AnimationEventData& data) {
     }
 
     void GTSvore_standup_start(AnimationEventData& data) {
+        PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
     }
 
     void GTSvore_impactRS(AnimationEventData& data) {
@@ -104,18 +113,6 @@ namespace {
     void GTSvore_standup_end(AnimationEventData& data) {
     }
 
-    void VoreMessage(Actor* pred, Actor* prey) {
-        int random = rand() % 2;
-		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
-			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
-			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
-			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (prey->IsDead()) {
-			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		}
-    }
 }
 
 

@@ -1,10 +1,12 @@
-#include "managers/vore.hpp"
-#include "data/runtime.hpp"
-#include "scale/scale.hpp"
-#include "utils/actorUtils.hpp"
+#include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/VoreHandler.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"
+#include "utils/actorUtils.hpp"
+#include "managers/vore.hpp"
+#include "data/runtime.hpp"
+#include "scale/scale.hpp"
 #include "timer.hpp"
 #include <cmath>
 
@@ -378,7 +380,7 @@ namespace Gts {
 
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14, prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
+		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
 		}
 		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
@@ -431,6 +433,8 @@ namespace Gts {
 		if (pred->formID == 0x14) {
 			AdjustSizeLimit(0.0260, pred);
 		}
-		Runtime::CastSpell(pred, prey, "StartVore");
+		//Runtime::CastSpell(pred, prey, "StartVore");
+		VoreHandler::GetSingleton().GrabVoreActor(pred, prey);
+		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
 	}
 }

@@ -21,6 +21,61 @@ using namespace RE;
 using namespace REL;
 using namespace Gts;
 using namespace std;
+namespace {
+
+	void AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill
+		if (Caster->formID !=0x14) {
+			return; //Bye
+		}
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		if (!GtsSkillLevel) {
+			return;
+		}
+		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
+		if (!GtsSkillRatio) {
+			return;
+		}
+		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
+		if (!GtsSkillProgress) {
+			return;
+		}
+
+		int random = (100 + (rand()% 85 + 1)) / 100;
+
+		if (GtsSkillLevel->value >= 100) {
+			GtsSkillLevel->value = 100.0;
+			GtsSkillRatio->value = 0.0;
+			return;
+		}
+
+		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.20, 1.0);
+
+		float absorbedSize = (get_visual_scale(Target));
+		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
+		float Total = (((0.68 * random) + absorbedSize/50) * ValueEffectiveness);
+		GtsSkillRatio->value += Total;
+
+		if (GtsSkillRatio->value >= 1.0) {
+			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
+			GtsSkillLevel->value += 1.0;
+			GtsSkillProgress->value = GtsSkillLevel->value;
+			GtsSkillRatio->value = 0.0 + transfer;
+		}
+	}
+
+	void VoreMessage(Actor* pred, Actor* prey) {
+        int random = rand() % 2;
+		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
+			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
+			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
+			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (prey->IsDead()) {
+			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		}
+    }
+}
 
 namespace Gts {
 	VoreHandler& VoreHandler::GetSingleton() noexcept {
@@ -64,9 +119,22 @@ namespace Gts {
         }
     }
     
-    void VoreHandler::EatActor(Actor* giant, Actor* tiny) {
+    void VoreHandler::EatActors(Actor* giant) {
         for (auto &[giant, data]: VoreHandler::GetSingleton().data) {
             auto tiny = data.tiny;
+			float rate = 1.0;
+			if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
+				rate = 2.0;
+			}
+			AdjustGiantessSkill(data.giant, tiny);
+			VoreMessage(giant, tiny);
+			mod_target_scale(giant, 0.30 * get_visual_scale(tiny));
+			if (tiny->formID != 0x14) {
+				Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
+			} else if (tiny->formID == 0x14) {
+				TriggerScreenBlood(50);
+				tiny->SetAlpha(0.0); // Just make player Invisible
+			}
             VoreHandler::GetSingleton().data.erase(giant);
         }
         ///Will do same stuff that the Scripts do here, mainly heal gainer and increase size, as well as other stuff i think.
@@ -106,6 +174,5 @@ namespace Gts {
 
     VoreData::VoreData(TESObjectREFR* tiny) : tiny(tiny) {
 	}
-
 }
 
