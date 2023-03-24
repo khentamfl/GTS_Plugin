@@ -15,7 +15,7 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 82.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 4.8;
+	const float MINIMUM_VORE_SCALE_RATIO = 5.6;
 	const float VORE_ANGLE = 76;
 	const float PI = 3.14159;
 
@@ -524,7 +524,7 @@ namespace Gts {
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
-			Notify("{} is too big to be eaten: {}/{}.", prey->GetDisplayFullName(), prey_scale, MINIMUM_VORE_SCALE);
+			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
 		}
 		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
