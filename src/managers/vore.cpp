@@ -51,7 +51,7 @@ namespace {
 	}
 
   void VoreInputEvent(const InputEventData& data) {
-    static Timer voreTimer = Timer(5.0);
+    static Timer voreTimer = Timer(0.25);
     auto pred = PlayerCharacter::GetSingleton();
 
     if (voreTimer.ShouldRunFrame()) {
