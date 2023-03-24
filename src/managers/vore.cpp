@@ -165,6 +165,7 @@ namespace Gts {
     void VoreData::Update() {
       auto giant = this->giant;
       // Stick them to the AnimObjectA
+	  log::info("Firing VoreUpdate");
       for (auto& [key, tiny]: this->tinies) {
   			if (!tiny) {
   				continue;
@@ -227,7 +228,6 @@ namespace Gts {
 
 	void Vore::Update() {
 		auto player = PlayerCharacter::GetSingleton();
-		VoreData::Update();
 		if (!Runtime::HasPerk(player, "VorePerk")) {
 			return;
 		}
