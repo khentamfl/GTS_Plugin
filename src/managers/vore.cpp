@@ -7,6 +7,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "timer.hpp"
+#include "node.hpp"
 #include <cmath>
 
 using namespace RE;
