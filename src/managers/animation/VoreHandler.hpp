@@ -21,7 +21,7 @@ namespace Gts {
 			virtual std::string DebugName() override;
 			virtual void Update() override;
             // Grab actor(s) for Vore
-			static void EatActor(Actor* giant, Actor* tiny);
+			static void EatActors(Actor* giant);
 
 			static void GrabVoreActor(Actor* giant, Actor* tiny);
 
