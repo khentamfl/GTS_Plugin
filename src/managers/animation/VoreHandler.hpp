@@ -7,8 +7,8 @@ using namespace RE;
 
 namespace Gts {
 	struct VoreData {
-		VoreData(Actor& giant, TESObjectREFR* tiny);
-		TESObjectREFR* tiny;
+		VoreData(Actor& giant, Actor& tiny);
+		Actor& tiny;
 		Actor& giant;
 	};
 
@@ -27,7 +27,6 @@ namespace Gts {
 			static void ClearData(Actor* giant);
 
       		// Get Vore Actors (Since we can Vore more than one)
-			static TESObjectREFR* GetHeldVoreObj(Actor* giant);
 			static Actor* GetHeldVoreActors(Actor* giant);
 
 			static void RegisterEvents();

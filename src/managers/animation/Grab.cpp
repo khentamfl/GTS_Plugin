@@ -109,7 +109,7 @@ namespace Gts {
 
 			// TODO: Add escape
 
-			////////////////////// Sermit's Note: please add it to Grab only, not Vore. And even then im not sure if we really need it or not really.
+			////////////////////// Sermit's Note: please add it to Grab only, not Vore. And even then im not sure if we really need it.
 
 			// if Escaped(giant, tiny, data.strength) {
 			//   this->data.erase(giant);

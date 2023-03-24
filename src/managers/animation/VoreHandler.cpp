@@ -121,12 +121,12 @@ namespace Gts {
     
     void VoreHandler::EatActors(Actor* giant) {
         for (auto &[giant, data]: VoreHandler::GetSingleton().data) {
-            auto tiny = VoreHandler::GetSingleton().GetHeldVoreObj(giant);
+            auto tiny = &data.tiny;
 			float rate = 1.0;
-			if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
+			if (Runtime::HasPerkTeam(caster, "AdditionalAbsorption")) {
 				rate = 2.0;
 			}
-			AdjustGiantessSkill(data.giant, tiny);
+			AdjustGiantessSkill(giant, tiny);
 			VoreMessage(giant, tiny);
 			mod_target_scale(giant, 0.30 * get_visual_scale(tiny));
 			if (tiny->formID != 0x14) {
@@ -135,7 +135,7 @@ namespace Gts {
 				TriggerScreenBlood(50);
 				tiny->SetAlpha(0.0); // Just make player Invisible
 			}
-            VoreHandler::GetSingleton().data.erase(giant);
+            VoreHandler::GetSingleton().ClearData(giant);
         }
         ///Will do same stuff that the Scripts do here, mainly heal gainer and increase size, as well as other stuff i think.
         ///Would be nice to do stuff based on time passed, but that's probably too tedious to do (Since Script uses Utilit.wait(time) to do something based on delay)
@@ -150,26 +150,13 @@ namespace Gts {
 		VoreHandler::GetSingleton().data.erase(giant);
 	}
 
-    TESObjectREFR* VoreHandler::GetHeldVoreObj(Actor* giant) {
+    Actor* VoreHandler::GetHeldVoreActors(Actor* giant) {
         try {
 			auto& me = VoreHandler::GetSingleton();
 			return me.data.at(giant).tiny;
 		} catch (std::out_of_range e) {
 			return nullptr;
 		}
-  	
-	}
-
-    Actor* VoreHandler::GetHeldVoreActors(Actor* giant) {
-        //Return all Actors that we are currently Voring, to do things to them
-        //Or maybe this function won't be needed since we send Actors from Vore.cpp?
-       auto obj = VoreHandler::GetHeldVoreObj(giant);
-    	Actor* actor = skyrim_cast<Actor*>(obj);
-    	if (actor) {
-      		return actor;
-    	} else {
-      		return nullptr;
-    	}
 	}
 
     VoreData::VoreData(TESObjectREFR* tiny) : giant(giant), tiny(tiny) {
