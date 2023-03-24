@@ -96,7 +96,7 @@ namespace {
     void GTSvore_handL_reposition_E(AnimationEventData& data) {
     }
 
-    void GTSvore_eat_actor(AnimationEventData& data) {
+    void GTSvore_eat_actor(AnimationEventData& data) { 
         auto& Vore = VoreHandler::GetSingleton();
         Vore.EatActors(&data.giant);
     }
