@@ -181,7 +181,7 @@ namespace Gts {
   			NiPoint3 tinyLocation = tiny->GetPosition();
 			NiPoint3 targetLocation = bone->world.translate;
 
-  			tiny->SetPosition(targetLocation);
+  			tiny->SetPosition(targetLocation, true);
   			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
   			if (tiny_is_actor) {
   				auto charcont = tiny_is_actor->GetCharController();
