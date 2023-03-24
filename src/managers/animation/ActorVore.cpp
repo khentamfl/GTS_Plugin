@@ -81,16 +81,17 @@ namespace {
     }
 
     void GTSvore_swallow(AnimationEventData& data) {
-      auto giant = &data.giant;
-      Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 0.5, "NPC Head [Head]");
     }
 
     void GTSvore_swallow_sound(AnimationEventData& data) {
     }
 
     void GTSvore_close_mouth(AnimationEventData& data) {
+      auto giant = &data.giant;
       auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+      
       VoreData.EnableMouthShrinkZone(false);
+      Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]");
     }
 
     void GTSvore_handR_reposition_S(AnimationEventData& data) {
