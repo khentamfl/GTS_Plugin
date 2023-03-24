@@ -61,6 +61,9 @@ namespace {
 
     void GTSvore_hand_grab(AnimationEventData& data) {
         //PlayerCamera::GetSingleton()->cameraTarget = data.tiny->CreateRefHandle();
+        auto& Vore = VoreHandler::GetSingleton();
+        auto tiny = Vore.GetHeldVoreActors(&data.giant);
+        PushActorAway(&data.giant, tiny, 1.0);
     }
 
     void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {

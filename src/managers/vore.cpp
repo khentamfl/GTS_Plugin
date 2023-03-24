@@ -503,7 +503,7 @@ namespace Gts {
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
-			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
+			Notify("{} is too big to be eaten: {}/{}.", prey->GetDisplayFullName(), prey_scale, MINIMUM_VORE_SCALE);
 		}
 		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
 		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
