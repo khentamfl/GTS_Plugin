@@ -49,7 +49,7 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		Rumble::Start("StompL", &data.giant, 0.25, RNode);
+		//Rumble::Start("StompL", &data.giant, 0.25, RNode);
     }
 
     void GTSvore_sit_end(AnimationEventData& data) {
@@ -60,9 +60,6 @@ namespace {
 
     void GTSvore_hand_grab(AnimationEventData& data) {
         //PlayerCamera::GetSingleton()->cameraTarget = data.tiny->CreateRefHandle();
-        auto& Vore = VoreHandler::GetSingleton();
-        auto tiny = Vore.GetHeldVoreActors(&data.giant);
-        PushActorAway(&data.giant, tiny, 1.0);
     }
 
     void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {
@@ -72,7 +69,7 @@ namespace {
     }
 
     void GTSvore_open_mouth(AnimationEventData& data) {
-      auto& VoreData = VoreHandler::GetSingleton().GetVoreData(&data.giant);
+      auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
       VoreData.EnableMouthShrinkZone(true);
     }
 
@@ -86,7 +83,7 @@ namespace {
     }
 
     void GTSvore_close_mouth(AnimationEventData& data) {
-      auto& VoreData = VoreHandler::GetSingleton().GetVoreData(&data.giant);
+      auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
       VoreData.EnableMouthShrinkZone(false);
     }
 
@@ -103,7 +100,7 @@ namespace {
     }
 
     void GTSvore_eat_actor(AnimationEventData& data) {
-        auto& VoreData = VoreHandler::GetSingleton().GetVoreData(&data.giant);
+        auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
         VoreData.KillAll();
     }
 
