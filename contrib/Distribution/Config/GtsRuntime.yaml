@@ -22,6 +22,7 @@ sounds:
   ClothTearSound: "GTS.esp|30EE54"
   RumbleWalkSound: "GTS.esp|50423E"
   GiantImpactSound: "Skyrim.esm|0C52F7"
+  VoreSwallow: "GTS.esp|56E747"
 
 
 spellEffects:
