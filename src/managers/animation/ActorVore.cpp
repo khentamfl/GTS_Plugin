@@ -70,6 +70,8 @@ namespace {
     }
 
     void GTSvore_open_mouth(AnimationEventData& data) {
+      auto& VoreData = VoreHandler::GetSingleton().GetVoreData(&data.giant);
+      VoreData.EnableMouthShrinkZone(true);
     }
 
     void GTSvore_bringactor_end(AnimationEventData& data) {
@@ -82,6 +84,8 @@ namespace {
     }
 
     void GTSvore_close_mouth(AnimationEventData& data) {
+      auto& VoreData = VoreHandler::GetSingleton().GetVoreData(&data.giant);
+      VoreData.EnableMouthShrinkZone(false);
     }
 
     void GTSvore_handR_reposition_S(AnimationEventData& data) {
@@ -96,9 +100,9 @@ namespace {
     void GTSvore_handL_reposition_E(AnimationEventData& data) {
     }
 
-    void GTSvore_eat_actor(AnimationEventData& data) { 
-        auto& Vore = VoreHandler::GetSingleton();
-        Vore.EatActors(&data.giant);
+    void GTSvore_eat_actor(AnimationEventData& data) {
+        auto& VoreData = VoreHandler::GetSingleton().GetVoreData(&data.giant);
+        VoreData.KillAll();
     }
 
     void GTSvore_detachactor_AnimObject_A(AnimationEventData& data) {
@@ -147,5 +151,3 @@ namespace Gts
 	    AnimationManager::RegisterTrigger("StartVore", "ActorVore", "GTSBEH_StartVore");
     }
 }
-
-

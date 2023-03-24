@@ -1,5 +1,4 @@
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/animation/VoreHandler.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"
@@ -66,9 +65,132 @@ namespace {
       }
     }
   }
-}
+
+  	void AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill
+  		if (Caster->formID !=0x14) {
+  			return; //Bye
+  		}
+  		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+  		if (!GtsSkillLevel) {
+  			return;
+  		}
+  		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
+  		if (!GtsSkillRatio) {
+  			return;
+  		}
+  		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
+  		if (!GtsSkillProgress) {
+  			return;
+  		}
+
+  		int random = (100 + (rand()% 85 + 1)) / 100;
+
+  		if (GtsSkillLevel->value >= 100) {
+  			GtsSkillLevel->value = 100.0;
+  			GtsSkillRatio->value = 0.0;
+  			return;
+  		}
+
+  		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.20, 1.0);
+
+  		float absorbedSize = (get_visual_scale(Target));
+  		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
+  		float Total = (((0.68 * random) + absorbedSize/50) * ValueEffectiveness);
+  		GtsSkillRatio->value += Total;
+
+  		if (GtsSkillRatio->value >= 1.0) {
+  			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
+  			GtsSkillLevel->value += 1.0;
+  			GtsSkillProgress->value = GtsSkillLevel->value;
+  			GtsSkillRatio->value = 0.0 + transfer;
+  		}
+  	}
+
+  	void VoreMessage(Actor* pred, Actor* prey) {
+          int random = rand() % 2;
+  		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
+  			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+  		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
+  			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+  		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
+  			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+  		} else if (prey->IsDead()) {
+  			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+  		}
+      }
+  }
 
 namespace Gts {
+  VoreData::VoreData(Actor* giant) : giant(giant) {
+
+  }
+
+    void VoreData::AddTiny(Actor* tiny) {
+      this->tinies.try_emplace(tiny, tiny);
+    }
+
+    void VoreData::EnableMouthShrinkZone(bool enabled) {
+      this->killZoneEnabled = enabled;
+    }
+
+    void VoreData::KillAll() {
+      for (auto& [key, tiny]: this->tinies) {
+        float rate = 1.0;
+  			if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
+  				rate = 2.0;
+  			}
+  			AdjustGiantessSkill(giant, tiny);
+  			VoreMessage(giant, tiny);
+  			mod_target_scale(giant, 0.30 * get_visual_scale(tiny));
+
+        if (tiny->formID != 0x14) {
+  				Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
+  			} else if (tiny->formID == 0x14) {
+  				TriggerScreenBlood(50);
+  				tiny->SetAlpha(0.0); // Just make player Invisible
+  			}
+      }
+      this->tinies.clear();
+
+    }
+
+    void VoreData::Update() {
+      auto giant = this->giant;
+      // Stick them to the AnimObjectA
+      for (auto& [key, tiny]: this->tinies) {
+  			if (!tiny) {
+  				continue;
+  			}
+
+  			auto bone = find_node(giant, "AnimObjectA");
+  			if (!bone) {
+  				return;
+  			}
+
+  			float giantScale = get_visual_scale(giant);
+
+  			NiPoint3 giantLocation = giant->GetPosition();
+  			NiPoint3 tinyLocation = tiny->GetPosition();
+
+  			tiny->SetPosition(bone->world.translate);
+  			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
+  			if (tiny_is_actor) {
+  				auto charcont = tiny_is_actor->GetCharController();
+  				if (charcont) {
+  					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+  				}
+  			}
+      }
+
+      // Shrink nodes
+      if (this->killZoneEnabled) {
+
+        for (auto& [key, tiny]: this->tinies) {
+        }
+      }
+    }
+
+
 	Vore& Vore::GetSingleton() noexcept {
 		static Vore instance;
 		return instance;
@@ -434,7 +556,17 @@ namespace Gts {
 			AdjustSizeLimit(0.0260, pred);
 		}
 		//Runtime::CastSpell(pred, prey, "StartVore");
-		VoreHandler::GetSingleton().GrabVoreActor(pred, prey);
+		auto* voreData = this->GetVoreData(pred);
+    voreData.AddTiny(prey);
+
 		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
 	}
+
+  // Gets the current vore data of a giant
+  VoreData& Vore::GetVoreData(Actor* giant) {
+    // Create it now if not there yet
+    this->data.try_emplace(giant, giant);
+
+    return this->data.at(giant);
+  }
 }

@@ -7,6 +7,32 @@ using namespace RE;
 
 namespace Gts
 {
+  // Represents current vore data for an actor
+  class VoreData {
+    public:
+      VoreData(Actor* giant);
+      // Adds a tiny to the list of actors
+      // being eaten
+      void AddTiny(Actor* tiny);
+      // Enables/diables the shrink zone
+      void EnableMouthShrinkZone(bool enabled);
+      // Finishes the process
+      // kill/shrinks all actors and gains buffs
+      void KillAll();
+
+      // Update all things that are happening like
+      // keeping them on the AnimObjectA and shrinking nodes
+      void Update();
+
+    private:
+      Actor* giant;
+      // Vore is done is sets with multiple actors if the giant is big
+      // enough
+      std::unordered_map<Actor*, Actor*> tinies = {};
+
+      // If true the mouth kill zone is on and we shrink nodes entering the mouth
+      bool killZoneEnabled = false;
+  };
 
 	class Vore : public EventListener
 	{
@@ -50,5 +76,11 @@ namespace Gts
 
 			// Do the vore (this has no checks make sure they can vore with CanVore first)
 			void StartVore(Actor* pred, Actor* prey);
+
+      // Gets the current vore data of a giant
+      VoreData& GetVoreData(Actor* giant);
+
+    private:
+      std::unordered_map<Actor*, VoreData> data;
 	};
 }
