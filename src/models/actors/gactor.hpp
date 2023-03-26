@@ -12,6 +12,12 @@
 
 using namespace RE;
 
+namespace {
+  const float DEFAULT_MAX_SCALE = 65535.0;
+	const float DEFAULT_HALF_LIFE = 1.0;
+  const float DEFAULT_SCALE_MULTI = 1.0;
+}
+
 namespace Gts {
   class GActor {
   public:
@@ -19,6 +25,16 @@ namespace Gts {
     //  Needs to be included so that we can convert from toml
     virtual GActor(): actor(nullptr) {
 
+    }
+
+    virtual GActor(Actor* actor): actor(actor ? actor->CreateRefHandle() : nullptr) {
+      if (!actor) {
+        return; // Just give up with the handle pointing to nullptr
+      }
+      // Scale Actor Value
+      //
+      // Default is 1.0
+      this->gactorValues.try_emplace("scale", GActorValue("scale", 1.0, DEFAULT_MAX_SCALE, DEFAULT_SCALE_MULTI, DEFAULT_HALF_LIFE));
     }
 
     // The Form ID
@@ -52,6 +68,7 @@ namespace Gts {
           Actor* actor = skyrim_cast<Actor*>(actor_form);
           if (actor) {
             this->actor = actor.CreateRefHandle();
+            this->gactorValues = toml::find<std::unordered_map<std::string, GActorValue>>(v, "avs");
           } else {
             log::warn("Actor ID {:X} could not be found after loading the toml.", formID);
           }
@@ -64,7 +81,8 @@ namespace Gts {
     {
         return toml::value(
           {
-            {"formid", this->actor->formId}.
+            {"formid", this->actor->formId},
+            {"avs", this->gactorValues},
           }
         );
     }
@@ -76,7 +94,6 @@ namespace Gts {
     ActorHandle actor;
 
   private:
-    Spring visualScale = Spring(1.0, DEFAULT_HALF_LIFE);
-    Spring maxScale = Spring(DEFAULT_MAX_SCALE, DEFAULT_HALF_LIFE)
+    std::unordered_map<std::string, GActorValue> gactorValues;
   };
 }

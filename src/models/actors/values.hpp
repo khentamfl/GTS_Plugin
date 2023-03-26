@@ -81,6 +81,17 @@ struct ActorValueModSet {
 
 class GActorValue {
   public:
+    std::string name = "";
+    // Value
+    ActorValueModSet value = ActorValueModSet(0.0, 1.0);
+    ActorValueModSet max = ActorValueModSet(1.0, 1.0);
+    ActorValueModSet multi = ActorValueModSet(1.0, 1.0);
+
+    GActorValue(std::string_view name, float value, float max, float multi, float halflife) : name(std::string(name)), value(ActorValueModSet(value, halflife)), max(ActorValueModSet(max, halflife)), multi(ActorValueModSet(multi, halflife)) {}
+    GActorValue(std::string_view name, float value, float max, float multi) : GActorValue(name, value, max, multi, 1.0) {}
+    GActorValue(std::string_view name, float value, float max) : GActorValue(name, value, max, 1.0, 1.0) {}
+    GActorValue(std::string_view name, float value) : GActorValue(name, value, 1e8, 1.0, 1.0) {}
+
     // Get total value as
     // (base + perm + temp) with smoothing
     // not exceeding maximum
@@ -212,11 +223,84 @@ class GActorValue {
       this->max.Update();
       this->multi.Update();
     }
-  private:
-
-    std::string name;
-    // Value
-    ActorValueModSet value;
-    ActorValueModSet max;
-    ActorValueModSet multi;
 };
+
+namespace toml {
+    template<>
+    struct into<Gts::ActorValueMod> {
+        static toml::value into_toml(const Gts::ActorValueMod& f) {
+            return toml::value{
+              {"version", 1u32}
+              {"name", f.name},
+              {"amount", f.amount},
+              {"duration", f.duration},
+              {"elapsed", Time::WorldTimeElapsed() - f.startTime},
+            };
+        }
+      };
+
+    template<>
+    struct from<Gts::ActorValueMod> {
+      static Gts::ActorValueMod from_toml(const toml::value& v) {
+          Gts::ActorValueMod f = ActorValueMod(
+            find<std::string>(v, "name"),
+            find<float>(v, "amount"),
+            find<float>(v, "duration")
+          );
+          f.startTime = Time::WorldTimeElapsed() - find<std::std::string>(v, "elapsed");
+          return f;
+      }
+    };
+
+
+    template<>
+    struct into<Gts::ActorValueModSet> {
+        static toml::value into_toml(const Gts::ActorValueModSet& f) {
+            return toml::value{
+              {"version", 1u32}
+              {"base", f.base},
+              {"value", f.value},
+              {"unique_ident", f.unique_ident.load(std::memory_order_relaxed)},
+              {"modifiers", f.modifiers},
+            };
+        }
+      };
+
+    template<>
+    struct from<Gts::ActorValueModSet> {
+      static Gts::ActorValueModSet from_toml(const toml::value& v) {
+          Gts::ActorValueModSet f = ActorValueModSet(0.0,0.0);
+          f.base = toml::find<float>(v, "base");
+          f.value = toml::find<float>(v, "value");
+          f.unique_ident.store(toml::find<float>(v, "unique_ident"), std::memory_order_relaxed);
+          f.modifiers = toml::find<std::unordered_map<std::string, Gts::ActorValueMod>>(v, "modifiers");
+          return f;
+      }
+    };
+
+    template<>
+    struct into<Gts::GActorValue> {
+        static toml::value into_toml(const Gts::GActorValue& f) {
+            return toml::value{
+              {"version", 1u32}
+              {"base", f.base},
+              {"value", f.value},
+              {"unique_ident", f.unique_ident.load(std::memory_order_relaxed)},
+              {"modifiers", f.modifiers},
+            };
+        }
+      };
+
+    template<>
+    struct from<Gts::GActorValue> {
+      static Gts::GActorValue from_toml(const toml::value& v) {
+          Gts::GActorValue f = GActorValue("", 0.0, 0.0, 0.0);
+          f.name = toml::find<std::string>(v, "name");
+          f.value = toml::find<Gts::ActorValueModSet>(v, "value");
+          f.max = toml::find<Gts::ActorValueModSet>(v, "max");
+          f.multi = toml::find<Gts::ActorValueModSet>(v, "multi");
+          return f;
+      }
+    };
+
+} // toml

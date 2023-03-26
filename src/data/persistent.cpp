@@ -14,9 +14,6 @@ namespace {
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
 	inline const auto CamCollisions = _byteswap_ulong('CAMC');
-
-	const float DEFAULT_MAX_SCALE = 65535.0;
-	const float DEFAULT_HALF_LIFE = 1.0;
 }
 
 namespace Gts {
