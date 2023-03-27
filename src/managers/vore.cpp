@@ -15,7 +15,7 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 94.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 5.2;
+	const float MINIMUM_VORE_SCALE_RATIO = 6.0;
 	const float VORE_ANGLE = 76;
 	const float PI = 3.14159;
 
@@ -107,6 +107,21 @@ namespace {
 		}
 	}
 
+	void BuffAttributes(Actor* giant) {
+		if (Runtime::HasPerk(giant, "SoulVorePerk")) { // Permamently increases random AV after eating someone
+			float TotalMod = (0.75 * get_visual_scale(Target));
+			int Boost = rand() % 2;
+			if (Boost == 0) {
+				Caster->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, TotalMod);
+			} else if (Boost == 1) {
+				Caster->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, TotalMod);
+			} else if (Boost == 2) {
+				Caster->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, TotalMod);
+			}
+			//log::info("Buffing Attributes {}, Target: {}, Caster: {}", Boost, Target->GetDisplayFullName(), Caster->GetDisplayFullName());
+		}
+	}
+
 	void VoreMessage_Swallowed(Actor* pred, Actor* prey) {
 		int random = rand() % 2;
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
@@ -120,6 +135,12 @@ namespace {
 
 	void VoreMessage_Absorbed(Actor* pred, Actor* prey) {
 		int random = rand() % 2;
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		if (pred->formID == 0x14 && IsDragon(prey)) {
+			if (progressionQuest) {
+				CallFunctionOn(progressionQuest, "Quest", "DevourDragon");
+			}
+		}
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
 			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
@@ -275,7 +296,7 @@ namespace Gts {
 		}
 		this->factor.halflife = duration * 0.45;
 		this->factor.target = 1.0;
-		this->factor.value = 0.0;
+		this->factor.value = duration;
 		this->appliedFactor = 0.0;
 
 		if (tiny) {
@@ -284,7 +305,10 @@ namespace Gts {
 
 			// Amount of health we apply depends on their vitality
 			// and their size
-			this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
+			this->restorePower = 0.0;
+			if (Runtime::HasPerkTeam(Caster, "VorePerkRegeneration")) {
+				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
+			} 
 			this->sizePower = tiny_scale * mealEffiency;
 		}
 	}
@@ -300,7 +324,7 @@ namespace Gts {
 
 				float healthToApply = amountToApplyThisUpdate * this->restorePower;
 				float sizeToApply = amountToApplyThisUpdate * this->sizePower;
-
+				
 				DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
 				mod_target_scale(this->giant, sizeToApply);
 				log::info("VoreBuff firing, Giant: {}, Tiny:{}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName());
@@ -312,6 +336,7 @@ namespace Gts {
 			case VoreBuffState::Finishing: {
 					AdjustGiantessSkill(this->giant, this->tiny);
 					VoreMessage_Absorbed(this->giant, this->tiny);
+					BuffAttributes(this->giant);
 					this->state = VoreBuffState::Done;
 			}
 			case VoreBuffState::Done: {
@@ -642,14 +667,16 @@ namespace Gts {
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
+			return false;
 		}
-		if ((prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale))
-		    && (pred_scale/prey_scale > MINIMUM_VORE_SCALE)
-		    && (!prey->IsEssential())
-		    && (!Runtime::HasSpell(prey, "StartVore"))) {
-			return true;
-		} else {
-
+		if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
+				if ((prey->IsEssential() && Runtime::GetBool("ProtectEssentials")) || Runtime::HasSpell(prey, "StartVore")) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		else {
 			return false;
 		}
 	}

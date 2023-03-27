@@ -46,8 +46,10 @@ namespace {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
 				if (type == "phenome") {
+					Expressions.try_emplace(tiny, tiny);
 					fgen->phenomeKeyFrame.SetValue(ph, power);
 				} if (type == "expression") {
+					fgen->SetExpressionOverride(ph, power);
 					fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
 				} if (type == "modifier") {
 					fgen->modifierKeyFrame.SetValue(ph, power);
@@ -94,8 +96,8 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		AdjustFacialExpression(giant, 0, 1.0, "phenome"); // Start opening mouth
 		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
-		AdjustFacialExpression(giant, 0, 1.0, "modifier"); // blink L
-		AdjustFacialExpression(giant, 1, 1.0, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 0.80, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.80, "modifier"); // blink R
 		VoreData.EnableMouthShrinkZone(true);
 	}
 
@@ -120,13 +122,12 @@ namespace {
 		VoreData.EnableMouthShrinkZone(false);
 		AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Close mouth
 		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Close mouth
-		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
-		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
-		
 	}
 
 	void GTSvore_handR_reposition_S(AnimationEventData& data) {
 		auto giant = &data.giant;
+		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
 		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 	}
 
