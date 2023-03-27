@@ -48,8 +48,10 @@ namespace {
 				if (type == "phenome") {
 					fgen->phenomeKeyFrame.SetValue(ph, power);
 				} if (type == "expression") {
+					fgen->exprOverride = false;
 					fgen->SetExpressionOverride(ph, power);
 					fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
+					fgen->exprOverride = true;
 				} if (type == "modifier") {
 					fgen->modifierKeyFrame.SetValue(ph, power);
 				}
@@ -106,8 +108,6 @@ namespace {
 	}
 
 	void GTSvore_swallow(AnimationEventData& data) {
-		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-		VoreData.Swallow();
 	}
 
 	void GTSvore_swallow_sound(AnimationEventData& data) {
@@ -124,6 +124,8 @@ namespace {
 	}
 
 	void GTSvore_handR_reposition_S(AnimationEventData& data) {
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		VoreData.Swallow();
 		auto giant = &data.giant;
 		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
