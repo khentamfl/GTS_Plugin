@@ -285,6 +285,7 @@ namespace Gts {
 
 			// Amount of health we apply depends on their vitaliyy
 			// and their size
+			log::info("VoreBuff firing, Giant: {}, Tiny:{}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
 			this->sizePower = tiny_scale * mealEffiency;
 		}

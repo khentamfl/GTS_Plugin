@@ -88,7 +88,6 @@ namespace {
 
 	void GTSvore_bringactor_end(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-		VoreData.ReleaseAll();
 	}
 
 	void GTSvore_swallow(AnimationEventData& data) {
@@ -123,6 +122,7 @@ namespace {
 	void GTSvore_eat_actor(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		VoreData.KillAll();
+		VoreData.ReleaseAll();
 	}
 
 	void GTSvore_detachactor_AnimObject_A(AnimationEventData& data) {
