@@ -48,6 +48,9 @@ namespace {
 			fgen->phenomeKeyFrame.SetValue(ph, power);
 			fgen->modifierKeyFrame.SetValue(ph, power);
 			fgen->SetExpressionOverride(ph, power);
+			fgen->expressionKeyFrame(ph, power);
+			fgen->transitionTargetKeyFrame(ph, power);
+			log::info("Modifying Facial Expression");
 		}
 	}
 
@@ -106,7 +109,7 @@ namespace {
 
 		VoreData.EnableMouthShrinkZone(false);
 		ModifyExpression(&data.giant, 1, 0.0);
-		Runtime::PlaySoundAtNode("VoreSwallow", giant, 3.0, 1.0, "NPC Head [Head]");
+		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]");
 	}
 
 	void GTSvore_handR_reposition_S(AnimationEventData& data) {
