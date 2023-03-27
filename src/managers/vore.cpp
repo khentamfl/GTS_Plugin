@@ -195,21 +195,47 @@ namespace Gts {
       	}
 
       // Shrink nodes
-      /*if (this->killZoneEnabled) {
+      if (this->killZoneEnabled) {
         auto headNodeName = "NPC Head [Head]";
         auto headNode = find_node_any(giant, headNodeName);
         if (headNode) {
           NiPoint3 headCenter = headNode->world.translate;
+          float headKillRadius = 0.15 * giantScale;
           for (auto& [key, tiny]: this->tinies) {
+            // Get all nodes in range
             std::vector<NiAVObject&> nodes_inrange = {};
             auto root = tiny->GetCurrent3D();
-            VisitNodes(root, [&nodes](NiAVObject& node) {
-
+            VisitNodes(root, [&nodes, &headCenter, &headKillRadius](NiAVObject& node) {
+              float distance = (node.world.translate - headCenter).Length();
+              if (distance < headKillRadius) {
+                nodes_inrange.push_back(node);
+              }
               return true;
             });
+            // Check all children of the nodes
+            //
+            // Not sure if this check is required.
+            // It is meant to ensure that if
+            // the upper leg is in the shrink zone
+            // it won't shrink it until the lower
+            // leg and foot are shrunk first
+            for (auto& node: nodes_inrange) {
+              bool anyInvalid = false;
+              VisitNodes(&node, [&anyInvalid](NiAVObject& node_child) {
+                if (node_child.local.scale > 1e-3) {
+                  anyInvalid = true;
+                  return false;
+                } else {
+                  return true;
+                }
+              });
+              if (!anyInvalid) {
+                node.local.scale = 0.0;
+              }
+            }
           }
         }
-      }*/
+      }
     }
 
 
