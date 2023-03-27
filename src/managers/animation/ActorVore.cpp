@@ -45,7 +45,8 @@ namespace {
 	void ModifyExpression(Actor* giant, int ph, float power) {
 		if (giant) {
 			auto fgen = giant->GetFaceGenAnimationData();
-			fgen->phenomeKeyFrame.SetValue(ph, power);
+			fgen->phenomeKeyFrame.SetValue(ph);
+			fgen->modifierKeyFrame.SetValue(power);
 			fgen->SetExpressionOverride(ph, power);
 		}
 	}
