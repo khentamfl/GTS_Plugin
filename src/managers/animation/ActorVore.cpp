@@ -46,7 +46,6 @@ namespace {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
 				if (type == "phenome") {
-					Expressions.try_emplace(tiny, tiny);
 					fgen->phenomeKeyFrame.SetValue(ph, power);
 				} if (type == "expression") {
 					fgen->SetExpressionOverride(ph, power);
