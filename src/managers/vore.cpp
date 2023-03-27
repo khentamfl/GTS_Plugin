@@ -179,9 +179,8 @@ namespace Gts {
 	}
 
 	void VoreData::Update() {
-    log::info("Firing VoreUpdate");
 		auto giant = this->giant;
-    float giantScale = get_visual_scale(giant);
+    	float giantScale = get_visual_scale(giant);
 
 		// Stick them to the AnimObjectA
 		for (auto& [key, tiny]: this->tinies) {
@@ -201,7 +200,7 @@ namespace Gts {
 
 				tiny->SetPosition(targetLocation, true);
 				tiny->SetPosition(targetLocation, false);
-				log::info("Setting Position");
+				//log::info("Setting Position");
 				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 				if (tiny_is_actor) {
 					auto charcont = tiny_is_actor->GetCharController();
@@ -283,9 +282,8 @@ namespace Gts {
 			float tiny_scale = get_visual_scale(tiny);
 			float giant_scale = get_visual_scale(giant);
 
-			// Amount of health we apply depends on their vitaliyy
+			// Amount of health we apply depends on their vitality
 			// and their size
-			log::info("VoreBuff firing, Giant: {}, Tiny:{}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
 			this->sizePower = tiny_scale * mealEffiency;
 		}
@@ -305,6 +303,7 @@ namespace Gts {
 
 				DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
 				mod_target_scale(this->giant, sizeToApply);
+				log::info("VoreBuff firing, Giant: {}, Tiny:{}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName());
 
 				if (fabs(this->factor.value - 1.0) < 1e-3) {
 					this->state = VoreBuffState::Finishing;

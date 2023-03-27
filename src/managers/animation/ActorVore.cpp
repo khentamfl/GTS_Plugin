@@ -46,6 +46,7 @@ namespace {
 		if (giant) {
 			auto fgen = giant->GetFaceGenAnimationData();
 			fgen->phenomeKeyFrame.SetValue(ph, power);
+			fgen->SetExpressionOverride(ph, power);
 		}
 	}
 
@@ -69,9 +70,9 @@ namespace {
 		//PlayerCamera::GetSingleton()->cameraTarget = data.tiny->CreateRefHandle();
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		VoreData.GrabAll();
-		//for (auto& tiny: VoreData.GetVories()) {
-		//PushActorAway(&data.giant, tiny, 1.0);
-		//}
+		for (auto& tiny: VoreData.GetVories()) {
+			PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
+		}
 	}
 
 	void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {
@@ -129,7 +130,7 @@ namespace {
 	}
 
 	void GTSvore_standup_start(AnimationEventData& data) {
-		//PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
+		PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
 	}
 
 	void GTSvore_impactRS(AnimationEventData& data) {
