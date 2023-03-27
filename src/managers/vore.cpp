@@ -205,7 +205,7 @@ namespace Gts {
 				if (tiny_is_actor) {
 					auto charcont = tiny_is_actor->GetCharController();
 					if (charcont) {
-						charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+						charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.
 					}
 				}
 			}
