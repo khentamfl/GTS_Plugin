@@ -84,6 +84,8 @@ namespace {
     }
 
     void GTSvore_swallow(AnimationEventData& data) {
+      auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+      VoreData.Swallow();
     }
 
     void GTSvore_swallow_sound(AnimationEventData& data) {

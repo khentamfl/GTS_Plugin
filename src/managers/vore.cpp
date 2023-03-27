@@ -133,16 +133,14 @@ namespace Gts {
     void VoreData::EnableMouthShrinkZone(bool enabled) {
       this->killZoneEnabled = enabled;
     }
-
+    void VoreData::Swallow() {
+      for (auto& [key, tiny]: this->tinies) {
+        VoreManager::GetSingleton().AddVoreBuff(giant, tiny);
+      }
+    }
     void VoreData::KillAll() {
       for (auto& [key, tiny]: this->tinies) {
-        float rate = 1.0;
-  			if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
-  				rate = 2.0;
-  			}
-  			AdjustGiantessSkill(giant, tiny);
   			VoreMessage(giant, tiny);
-  			mod_target_scale(giant, 0.30 * get_visual_scale(tiny));
 
         if (tiny->formID != 0x14) {
   				Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
@@ -248,6 +246,63 @@ namespace Gts {
       }
     }
 
+  VoreBuff::VoreBuff(Actor* giant, Actor* tiny): factor(Spring(0.0, 0.0)) {
+    this->giant = giant;
+    this->tiny = tiny;
+    float duration = 30.0;
+    float mealEffiency = 0.1; // Normal pray has 10% efficent stomach
+    if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
+      duration = 45.0;
+      mealEffiency = 0.2;
+    }
+    this->factor.halflife = duration * 0.45;
+    this->factor.target = 1.0;
+    this->factor.value = 0.0;
+    this->appliedFactor = 0.0;
+
+    if (tiny) {
+      float tiny_scale = get_visual_scale(tiny);
+      float giant_scale = get_visual_scale(giant);
+
+      // Amount of health we apply depends on their vitaliyy
+      // and their size
+      this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
+      this->sizePower = tiny_scale * mealEffiency;
+    }
+  }
+  void VoreBuff::Update() {
+    if (!this->giant) {
+      return;
+    }
+    switch (this->state) {
+      case VoreBuffState::Running: {
+        // Get amount to apply
+        float amountToApplyThisUpdate = this->factor.value - this->appliedFactor;
+        this->appliedFactor += amountToApplyThisUpdate;
+
+        float healthToApply = amountToApplyThisUpdate * this->restorePower;
+        float sizeToApply = amountToApplyThisUpdate * this->sizePower;
+
+        DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
+        mod_target_scale(this->giant, sizeToApply);
+
+        if (fabs(this->factor.value - 1.0) < 1e-3) {
+          this->state = VoreBuffState::Finishing;
+        }
+      }
+      case VoreBuffState::Finishing {
+        AdjustGiantessSkill(this->giant, this->tiny);
+        this->state = VoreBuffState::Done;
+      }
+      case VoreBuffState::Done: {
+
+      }
+    }
+  }
+
+  bool VoreBuff::Done() {
+    return this->state == VoreBuffState::Done;
+  }
 
 	Vore& Vore::GetSingleton() noexcept {
 		static Vore instance;
@@ -276,6 +331,13 @@ namespace Gts {
 				}
 			}
 		}
+
+    for (auto& [key, voreData]: this->data) {
+      voreData.Update();
+    }
+    for (auto& [key, voreBuff]: this->buffs) {
+      voreBuff.Update();
+    }
 	}
 
 	void Vore::RandomVoreAttempt(Actor* caster) {
@@ -617,5 +679,9 @@ namespace Gts {
     this->data.try_emplace(giant, giant);
 
     return this->data.at(giant);
+  }
+
+  void Vore::AddVoreBuff(Actor* giant, Actor* tiny) {
+    this->buffs.try_emplace(tiny, giant, tiny);
   }
 }

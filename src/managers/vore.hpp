@@ -16,6 +16,8 @@ namespace Gts
       void AddTiny(Actor* tiny);
       // Enables/diables the shrink zone
       void EnableMouthShrinkZone(bool enabled);
+      // Swallow and start the digestion (buffs)
+      void Swallow();
       // Finishes the process
       // kill/shrinks all actors and gains buffs
       void KillAll();
@@ -44,6 +46,30 @@ namespace Gts
 
       // True if in grabbed state
       bool allGrabbed = false;
+  };
+
+  enum VoreBuffState {
+    Running,
+    Finishing,
+    Done,
+  };
+  struct VoreBuff {
+    VoreBuffState state = VoreBuffState::Running;
+    Actor* giant = nullptr;
+    Actor* tiny = nullptr;
+    float restorePower = 0.0; // Amount of health to restore TOTAL
+    float sizePower = 0.0; // Amount of size to gain TOTAL
+
+    // Used to track how much time has passed (abusing Spring code)
+    // The half life will tell the half the duration
+    Spring factor = Spring(0.0, 15.0);
+    float appliedFactor = 0.0;
+
+    VoreBuff(Actor* giant, Actor* tiny);
+
+    void Update();
+
+    bool Done();
   };
 
 	class Vore : public EventListener
@@ -92,7 +118,10 @@ namespace Gts
       // Gets the current vore data of a giant
       VoreData& GetVoreData(Actor* giant);
 
+      void AddVoreBuff(Actor* giant, Actor* tiny);
+
     private:
       std::unordered_map<Actor*, VoreData> data;
+      std::unordered_map<Actor*, VoreBuff> buffs;
 	};
 }
