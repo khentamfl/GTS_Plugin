@@ -54,12 +54,16 @@ namespace {
 					fgen->exprOverride = true;
 				} if (type == "modifier") {
 					fgen->modifierKeyFrame.SetValue(ph, power);
+					fgen->customKeyFrame.SetValue(ph, power);
 				}
 			}
 		}
 	}
 
 	void GTSvore_sit_start(AnimationEventData& data) {
+		if (Runtime::GetBool("FreeLookOnVore") && &data.giant->formID == 0x14) {
+			ToggleFreeCamera();
+		}
 	}
 
 	void GTSvore_impactLS(AnimationEventData& data) {
@@ -80,8 +84,10 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		VoreData.GrabAll();
 		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
-		for (auto& tiny: VoreData.GetVories()) {
-			PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
+		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
+			for (auto& tiny: VoreData.GetVories()) {
+				PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
+			}
 		}
 	}
 
@@ -152,13 +158,19 @@ namespace {
 	}
 
 	void GTSvore_standup_start(AnimationEventData& data) {
-		PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
+		if (!Runtime::GetBool("FreeLookOnVore") && &data.giant->formID == 0x14) {
+			PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
+		}
+		
 	}
 
 	void GTSvore_impactRS(AnimationEventData& data) {
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {
+		if (Runtime::GetBool("FreeLookOnVore") && &data.giant->formID == 0x14) {
+			ToggleFreeCamera();
+		}
 	}
 
 }

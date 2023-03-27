@@ -150,6 +150,7 @@ explosions:
   footstepExplosion: "GTS.esp|035C81"
 
 globals:
+  FreeLookOnVore: "GTS.esp|281206"
   FurnitureHeels: "GTS.esp|545F46"
   MultiplyGameModePC: "GTS.esp|47B72B"
   MultiplyGameModeNPC: "GTS.esp|47B72C"

@@ -266,4 +266,9 @@ namespace Gts {
 			shake_camera_at_node(coords, intensity*modifier, duration);
 		}
 	}
+
+	void ToggleFreeCamera() {
+		auto playerCamera = PlayerCamera::GetSingleton();
+		playerCamera->ToggleFreeCameraMode(false);
+	}
 }
