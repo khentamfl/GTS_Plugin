@@ -45,10 +45,12 @@ namespace {
 	void ModifyExpression(Actor* giant, std::uint32_t ph, float power, bool override) {
 		if (giant) {
 			auto fgen = giant->GetFaceGenAnimationData();
-			fgen->exprOverride = override;
-			fgen->phenomeKeyFrame.SetValue(ph, power);
-			fgen->modifierKeyFrame.SetValue(ph, power);
-			log::info("Modifying Facial Expression");
+			if (fgen) {
+				fgen->exprOverride = override;
+				fgen->phenomeKeyFrame.SetValue(ph, power);
+				fgen->modifierKeyFrame.SetValue(ph, power);
+				log::info("Modifying Facial Expression");
+			}
 		}
 	}
 
