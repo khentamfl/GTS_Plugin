@@ -41,8 +41,7 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
-	void AdjustFacialExpression(std::uint32_t ph, float power, std::string_view type) {
-		auto giant = &data.giant;
+	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) {
 		if (giant) {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
@@ -77,7 +76,7 @@ namespace {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		VoreData.GrabAll();
-		AdjustFacialExpression(2, 1.0, "expression"); // smile (expression)
+		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
 		for (auto& tiny: VoreData.GetVories()) {
 			PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
 		}
@@ -87,20 +86,21 @@ namespace {
 	}
 
 	void GTSvore_bringactor_start(AnimationEventData& data) {
-		AdjustFacialExpression(5, 0.8, "phenome"); // Smile a bit (Mouth)
+		AdjustFacialExpression(&data.giant, 5, 0.8, "phenome"); // Smile a bit (Mouth)
 	}
 
 	void GTSvore_open_mouth(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
-		AdjustFacialExpression(0, 1.0, "phenome"); // Start opening mouth
-		AdjustFacialExpression(1, 0.5, "phenome"); // Open it wider
-		AdjustFacialExpression(0, 1.0, "modifier"); // blink L
-		AdjustFacialExpression(1, 1.0, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 1.0, "phenome"); // Start opening mouth
+		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
+		AdjustFacialExpression(giant, 0, 1.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 1.0, "modifier"); // blink R
 		VoreData.EnableMouthShrinkZone(true);
 	}
 
 	void GTSvore_bringactor_end(AnimationEventData& data) {
+		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 	}
 
@@ -110,7 +110,7 @@ namespace {
 	}
 
 	void GTSvore_swallow_sound(AnimationEventData& data) {
-		AdjustFacialExpression(5, 0.0, "phenome"); // Remove smile (Mouth)
+		AdjustFacialExpression(&data.giant, 5, 0.0, "phenome"); // Remove smile (Mouth)
 	}
 
 	void GTSvore_close_mouth(AnimationEventData& data) {
@@ -118,10 +118,10 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 
 		VoreData.EnableMouthShrinkZone(false);
-		AdjustFacialExpression(0, 0.0, "phenome"); // Close mouth
-		AdjustFacialExpression(1, 0.0, "phenome"); // Close mouth
-		AdjustFacialExpression(0, 0.0, "modifier"); // blink L
-		AdjustFacialExpression(1, 0.0, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Close mouth
+		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Close mouth
+		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
 		
 	}
 
@@ -141,7 +141,7 @@ namespace {
 
 	void GTSvore_eat_actor(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-		AdjustFacialExpression(2, 0.0, "expression"); // Remove smile
+		AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); // Remove smile
 		VoreData.KillAll();
 		VoreData.ReleaseAll();
 	}
