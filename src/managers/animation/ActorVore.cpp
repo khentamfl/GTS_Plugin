@@ -106,7 +106,7 @@ namespace {
 
 		VoreData.EnableMouthShrinkZone(false);
 		ModifyExpression(&data.giant, 1, 0.0);
-		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]");
+		Runtime::PlaySoundAtNode("VoreSwallow", giant, 3.0, 1.0, "NPC Head [Head]");
 	}
 
 	void GTSvore_handR_reposition_S(AnimationEventData& data) {
