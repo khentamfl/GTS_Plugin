@@ -44,7 +44,7 @@ namespace {
 
 	void ModifyExpression(Actor* giant, std::uint32_t ph, float power, bool override) {
 		if (giant) {
-			auto fgen = giant->GetFaceGenAnimationData();
+			auto fgen = reinterpret_cast<BSFaceGenAnimationData*>(giant->GetFaceGenAnimationData());
 			if (fgen) {
 				fgen->exprOverride = override;
 				fgen->phenomeKeyFrame.SetValue(ph, power);
