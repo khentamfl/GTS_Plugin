@@ -289,9 +289,9 @@ namespace Gts {
 			duration = 45.0;
 			mealEffiency = 0.2;
 		}
-		this->factor.halflife = duration/120;
+		this->factor.halflife = duration * 0.45;
 		this->factor.target = 1.0;
-		this->factor.value = 0.35;
+		this->factor.value = 0.0;
 		this->appliedFactor = 0.0;
 
 		if (tiny) {

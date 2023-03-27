@@ -55,7 +55,6 @@ namespace {
 					fgen->exprOverride = true;
 				} if (type == "modifier") {
 					fgen->modifierKeyFrame.SetValue(ph, power);
-					fgen->customKeyFrame.SetValue(ph, power);
 				}
 			}
 		}
