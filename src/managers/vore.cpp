@@ -227,11 +227,21 @@ namespace Gts {
 					// the upper leg is in the shrink zone
 					// it won't shrink it until the lower
 					// leg and foot are shrunk first
+					string rootNodeName = "NPC Root [Root]";
+          auto tinyRootA = find_node(tiny, rootNodeName, true);
+          auto tinyRootB = find_node(tiny, rootNodeName, false);
+          if ()
 					for (auto& node: nodes_inrange) {
 						bool anyInvalid = false;
-						VisitNodes(node, [&anyInvalid](NiAVObject& node_child) {
+						VisitNodes(node, [&anyInvalid, tinyRootA, tinyRootB](NiAVObject& node_child) {
 							if (node_child.local.scale > 1e-3) {
 								anyInvalid = true;
+								return false;
+              } else if (tinyRootA == &node_child) {
+                anyInvalid = true;
+								return false;
+              } else if (tinyRootB == &node_child) {
+                anyInvalid = true;
 								return false;
 							} else {
 								return true;
