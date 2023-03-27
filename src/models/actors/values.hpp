@@ -225,6 +225,38 @@ class GActorValue {
     }
 };
 
+class AvHolder {
+  public:
+    GActorValue& Av(std::string_view namesv) {
+      std::string name = std::string(namesv);
+      if (this->avs.count(name) == 0) {
+        log::error("AV named {} was not found", name);
+      }
+      return this->avs.at(name);
+    }
+
+    void CreateAv(std::string_view namesv, GActorValue value) {
+      std::string name = std::string(namesv);
+      this->gactorValues.try_emplace(name, value);
+    }
+
+    // Used for the toml coversions
+    virtual void from_toml(const toml::value& v)
+    {
+      this->avs =  toml::find<std::unordered_map<std::string, GActorValue>(v, "avs"));
+    }
+    virtual toml::value into_toml() const {
+      return toml::value(
+        {
+          {"avs", this->avs},
+        }
+      );
+    }
+
+  protected:
+    std::unordered_map<std::string, GActorValue> avs;
+};
+
 namespace toml {
     template<>
     struct into<Gts::ActorValueMod> {
