@@ -42,11 +42,10 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
-	void ModifyExpression(Actor* giant, std::uint32_t ph, float power, bool override) {
+	void ModifyExpression(Actor* giant, std::uint32_t ph, float power) {
 		if (giant) {
 			auto fgen = reinterpret_cast<BSFaceGenAnimationData*>(giant->GetFaceGenAnimationData());
 			if (fgen) {
-				fgen->exprOverride = override;
 				fgen->phenomeKeyFrame.SetValue(ph, power);
 				fgen->modifierKeyFrame.SetValue(ph, power);
 				log::info("Modifying Facial Expression");
@@ -87,7 +86,7 @@ namespace {
 
 	void GTSvore_open_mouth(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-		ModifyExpression(&data.giant, 1, 100.0, true);
+		ModifyExpression(&data.giant, 1, 1.0);
 		VoreData.EnableMouthShrinkZone(true);
 	}
 
@@ -108,7 +107,7 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 
 		VoreData.EnableMouthShrinkZone(false);
-		ModifyExpression(&data.giant, 1, 0.0, false);
+		ModifyExpression(&data.giant, 1, 0.0);
 		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]");
 	}
 
