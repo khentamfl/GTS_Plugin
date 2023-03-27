@@ -82,7 +82,7 @@ namespace {
 
 	void GTSvore_open_mouth(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-		ModifyExpression(&data.giant, 1.0, 100);
+		ModifyExpression(&data.giant, 1, 100.0);
 		VoreData.EnableMouthShrinkZone(true);
 	}
 
@@ -104,7 +104,7 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 
 		VoreData.EnableMouthShrinkZone(false);
-		ModifyExpression(&data.giant, 1.0, 0);
+		ModifyExpression(&data.giant, 1, 0.0);
 		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]");
 	}
 
