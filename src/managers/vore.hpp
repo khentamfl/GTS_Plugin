@@ -66,10 +66,15 @@ namespace Gts
 		Spring factor = Spring(0.0, 15.0);
 		float appliedFactor = 0.0;
 
+    // Create the buff
+    //
+    // This also calculates the restorePower etc and the duration
 		VoreBuff(Actor* giant, Actor* tiny);
 
+    // Called every frame until we are done
 		void Update();
 
+    // Reports true when done so that it can be removed
 		bool Done();
 	};
 
