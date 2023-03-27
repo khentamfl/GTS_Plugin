@@ -1,6 +1,7 @@
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
@@ -61,7 +62,8 @@ namespace {
 	}
 
 	void GTSvore_sit_start(AnimationEventData& data) {
-		if (Runtime::GetBool("FreeLookOnVore") && &data.giant->formID == 0x14) {
+		auto giant = &data.giant;
+		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			ToggleFreeCamera();
 		}
 	}
@@ -158,7 +160,8 @@ namespace {
 	}
 
 	void GTSvore_standup_start(AnimationEventData& data) {
-		if (!Runtime::GetBool("FreeLookOnVore") && &data.giant->formID == 0x14) {
+		auto giant = &data.giant;
+		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
 		}
 		
@@ -168,7 +171,8 @@ namespace {
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {
-		if (Runtime::GetBool("FreeLookOnVore") && &data.giant->formID == 0x14) {
+		auto giant = &data.giant;
+		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			ToggleFreeCamera();
 		}
 	}
