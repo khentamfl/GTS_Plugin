@@ -213,7 +213,7 @@ namespace Gts {
 					// Get all nodes in range
 					std::vector<NiAVObject*> nodes_inrange = {};
 					auto root = tiny->GetCurrent3D();
-					VisitNodes(root, [&nodes, &headCenter, &headKillRadius](NiAVObject& node) {
+					VisitNodes(root, [&nodes_inrange, &headCenter, &headKillRadius](NiAVObject& node) {
 						float distance = (node.world.translate - headCenter).Length();
 						if (distance < headKillRadius) {
 							nodes_inrange.push_back(&node);
@@ -290,7 +290,7 @@ namespace Gts {
 					this->state = VoreBuffState::Finishing;
 				}
 			}
-			case VoreBuffState::Finishing {
+			case VoreBuffState::Finishing: {
 					AdjustGiantessSkill(this->giant, this->tiny);
 					this->state = VoreBuffState::Done;
 			}
