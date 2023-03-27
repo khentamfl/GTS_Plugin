@@ -211,12 +211,12 @@ namespace Gts {
 				float headKillRadius = 0.15 * giantScale;
 				for (auto& [key, tiny]: this->tinies) {
 					// Get all nodes in range
-					std::vector<NiAVObject&> nodes_inrange = {};
+					std::vector<NiAVObject*> nodes_inrange = {};
 					auto root = tiny->GetCurrent3D();
 					VisitNodes(root, [&nodes, &headCenter, &headKillRadius](NiAVObject& node) {
 						float distance = (node.world.translate - headCenter).Length();
 						if (distance < headKillRadius) {
-							nodes_inrange.push_back(node);
+							nodes_inrange.push_back(&node);
 						}
 						return true;
 					});
@@ -229,7 +229,7 @@ namespace Gts {
 					// leg and foot are shrunk first
 					for (auto& node: nodes_inrange) {
 						bool anyInvalid = false;
-						VisitNodes(&node, [&anyInvalid](NiAVObject& node_child) {
+						VisitNodes(node, [&anyInvalid](NiAVObject& node_child) {
 							if (node_child.local.scale > 1e-3) {
 								anyInvalid = true;
 								return false;
