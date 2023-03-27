@@ -238,7 +238,7 @@ namespace Gts {
 							}
 						});
 						if (!anyInvalid) {
-							node.local.scale = 0.0;
+							node->local.scale = 0.0;
 						}
 					}
 				}
