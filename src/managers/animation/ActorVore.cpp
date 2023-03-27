@@ -64,7 +64,7 @@ namespace {
 	void GTSvore_sit_start(AnimationEventData& data) {
 		auto giant = &data.giant;
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			ToggleFreeCamera();
+			EnableFreeCamera();
 		}
 	}
 
@@ -173,7 +173,7 @@ namespace {
 	void GTSvore_standup_end(AnimationEventData& data) {
 		auto giant = &data.giant;
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			ToggleFreeCamera();
+			EnableFreeCamera();
 		}
 	}
 

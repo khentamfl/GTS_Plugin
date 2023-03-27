@@ -267,7 +267,7 @@ namespace Gts {
 		}
 	}
 
-	void ToggleFreeCamera() {
+	void EnableFreeCamera() {
 		auto playerCamera = PlayerCamera::GetSingleton();
 		playerCamera->ToggleFreeCameraMode(false);
 	}
