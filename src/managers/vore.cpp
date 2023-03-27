@@ -107,16 +107,16 @@ namespace {
 		}
 	}
 
-	void BuffAttributes(Actor* giant) {
+	void BuffAttributes(Actor* giant, Actor* tiny) {
 		if (Runtime::HasPerk(giant, "SoulVorePerk")) { // Permamently increases random AV after eating someone
-			float TotalMod = (0.75 * get_visual_scale(Target));
+			float TotalMod = (0.75 * get_visual_scale(tiny));
 			int Boost = rand() % 2;
 			if (Boost == 0) {
-				Caster->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, TotalMod);
+				giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, TotalMod);
 			} else if (Boost == 1) {
-				Caster->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, TotalMod);
+				giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, TotalMod);
 			} else if (Boost == 2) {
-				Caster->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, TotalMod);
+				giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, TotalMod);
 			}
 			//log::info("Buffing Attributes {}, Target: {}, Caster: {}", Boost, Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 		}
@@ -306,7 +306,7 @@ namespace Gts {
 			// Amount of health we apply depends on their vitality
 			// and their size
 			this->restorePower = 0.0;
-			if (Runtime::HasPerkTeam(Caster, "VorePerkRegeneration")) {
+			if (Runtime::HasPerkTeam(giant, "VorePerkRegeneration")) {
 				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
 			} 
 			this->sizePower = tiny_scale * mealEffiency;
@@ -336,7 +336,7 @@ namespace Gts {
 			case VoreBuffState::Finishing: {
 					AdjustGiantessSkill(this->giant, this->tiny);
 					VoreMessage_Absorbed(this->giant, this->tiny);
-					BuffAttributes(this->giant);
+					BuffAttributes(this->giant, this->tiny);
 					this->state = VoreBuffState::Done;
 			}
 			case VoreBuffState::Done: {
