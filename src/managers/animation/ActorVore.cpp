@@ -42,14 +42,11 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
-	void ModifyExpression(Actor* giant, int ph, float power) {
+	void ModifyExpression(Actor* giant, std::uint32_t ph, float power) {
 		if (giant) {
 			auto fgen = giant->GetFaceGenAnimationData();
 			fgen->phenomeKeyFrame.SetValue(ph, power);
 			fgen->modifierKeyFrame.SetValue(ph, power);
-			fgen->SetExpressionOverride(ph, power);
-			fgen->expressionKeyFrame(ph, power);
-			fgen->transitionTargetKeyFrame(ph, power);
 			log::info("Modifying Facial Expression");
 		}
 	}
