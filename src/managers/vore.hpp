@@ -20,6 +20,12 @@ namespace Gts
       // kill/shrinks all actors and gains buffs
       void KillAll();
 
+      // Grab all vories
+      void GrabAll();
+
+      // Release all vories (shall fall into mouth with animation)
+      void ReleaseAll();
+
       // Get a list of all actors currently being vored
       std::vector<Actor*> GetVories();
 
@@ -35,6 +41,9 @@ namespace Gts
 
       // If true the mouth kill zone is on and we shrink nodes entering the mouth
       bool killZoneEnabled = false;
+
+      // True if in grabbed state
+      bool allGrabbed = false;
   };
 
 	class Vore : public EventListener

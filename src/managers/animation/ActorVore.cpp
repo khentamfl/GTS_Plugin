@@ -60,7 +60,8 @@ namespace {
 
     void GTSvore_hand_grab(AnimationEventData& data) {
         //PlayerCamera::GetSingleton()->cameraTarget = data.tiny->CreateRefHandle();
-        //auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+        auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+        VoreData.GrabAll();
         //for (auto& tiny: VoreData.GetVories()) {
           //PushActorAway(&data.giant, tiny, 1.0);
         //}
@@ -78,6 +79,8 @@ namespace {
     }
 
     void GTSvore_bringactor_end(AnimationEventData& data) {
+      auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+      VoreData.ReleaseAll();
     }
 
     void GTSvore_swallow(AnimationEventData& data) {
@@ -89,7 +92,7 @@ namespace {
     void GTSvore_close_mouth(AnimationEventData& data) {
       auto giant = &data.giant;
       auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-      
+
       VoreData.EnableMouthShrinkZone(false);
       Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]");
     }

@@ -154,6 +154,14 @@ namespace Gts {
       this->tinies.clear();
     }
 
+    void VoreData::GrabAll() {
+      this->allGrabbed = true;
+    }
+
+    void VoreData::ReleaseAll() {
+      this->allGrabbed = false;
+    }
+
     std::vector<Actor*> VoreData::GetVories() {
       std::vector<Actor*> result;
       for (auto& [key, actor]: this->tinies) {
@@ -178,21 +186,23 @@ namespace Gts {
 
   			float giantScale = get_visual_scale(giant);
 
-  			NiPoint3 giantLocation = giant->GetPosition();
-  			NiPoint3 tinyLocation = tiny->GetPosition();
-			NiPoint3 targetLocation = bone->world.translate;
+        if (this->allGrabbed) {
+    			NiPoint3 giantLocation = giant->GetPosition();
+    			NiPoint3 tinyLocation = tiny->GetPosition();
+  			NiPoint3 targetLocation = bone->world.translate;
 
-  			tiny->SetPosition(targetLocation, true);
-			tiny->SetPosition(targetLocation, false);
-			log::info("Setting Position");
-  			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
-  			if (tiny_is_actor) {
-  				auto charcont = tiny_is_actor->GetCharController();
-  				if (charcont) {
-  					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
-  				}
-  			}
-      	}
+    			tiny->SetPosition(targetLocation, true);
+  			tiny->SetPosition(targetLocation, false);
+  			log::info("Setting Position");
+    			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
+    			if (tiny_is_actor) {
+    				auto charcont = tiny_is_actor->GetCharController();
+    				if (charcont) {
+    					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+    				}
+    			}
+        	}
+        }
 
       // Shrink nodes
       if (this->killZoneEnabled) {
