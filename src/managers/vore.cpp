@@ -230,7 +230,6 @@ namespace Gts {
 					string rootNodeName = "NPC Root [Root]";
           auto tinyRootA = find_node(tiny, rootNodeName, true);
           auto tinyRootB = find_node(tiny, rootNodeName, false);
-          if ()
 					for (auto& node: nodes_inrange) {
 						bool anyInvalid = false;
 						VisitNodes(node, [&anyInvalid, tinyRootA, tinyRootB](NiAVObject& node_child) {
