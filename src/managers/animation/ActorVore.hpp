@@ -6,6 +6,7 @@ using namespace RE;
 
 namespace Gts
 {
+
 	class AnimationActorVore {
 		public:
 			static void RegisterEvents();

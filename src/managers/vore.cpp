@@ -107,14 +107,25 @@ namespace {
 		}
 	}
 
-	void VoreMessage(Actor* pred, Actor* prey) {
+	void VoreMessage_Swallowed(Actor* pred, Actor* prey) {
+		int random = rand() % 2;
+		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
+			ConsoleLog::GetSingleton()->Print("%s was Swallowed Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
+			ConsoleLog::GetSingleton()->Print("%s greedily swallowed %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+		} else if (prey->IsDead()) {
+			ConsoleLog::GetSingleton()->Print("%s was Swallowed whole by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		}
+	}
+
+	void VoreMessage_Absorbed(Actor* pred, Actor* prey) {
 		int random = rand() % 2;
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
 			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
 			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
-			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s both body and soul were greedily devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (prey->IsDead()) {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
@@ -136,12 +147,11 @@ namespace Gts {
 	void VoreData::Swallow() {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
+			VoreMessage_Swallowed(giant, tiny);
 		}
 	}
 	void VoreData::KillAll() {
 		for (auto& [key, tiny]: this->tinies) {
-			VoreMessage(giant, tiny);
-
 			if (tiny->formID != 0x14) {
 				Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
 			} else if (tiny->formID == 0x14) {
@@ -301,6 +311,7 @@ namespace Gts {
 			}
 			case VoreBuffState::Finishing: {
 					AdjustGiantessSkill(this->giant, this->tiny);
+					VoreMessage_Absorbed(this->giant, this->tiny);
 					this->state = VoreBuffState::Done;
 			}
 			case VoreBuffState::Done: {

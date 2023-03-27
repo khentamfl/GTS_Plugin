@@ -8,6 +8,7 @@ using namespace RE;
 
 namespace Gts
 {
+
 	// Represents current vore data for an actor
 	class VoreData {
 		public:
