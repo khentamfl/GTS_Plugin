@@ -45,96 +45,96 @@ namespace {
 	void GTSvore_sit_start(AnimationEventData& data) {
 	}
 
-    void GTSvore_impactLS(AnimationEventData& data) {
-        float scale = get_visual_scale(&data.giant);
-		    float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-        Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		  //Rumble::Start("StompL", &data.giant, 0.25, RNode);
-    }
+	void GTSvore_impactLS(AnimationEventData& data) {
+		float scale = get_visual_scale(&data.giant);
+		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
+		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
+		//Rumble::Start("StompL", &data.giant, 0.25, RNode);
+	}
 
-    void GTSvore_sit_end(AnimationEventData& data) {
-    }
+	void GTSvore_sit_end(AnimationEventData& data) {
+	}
 
-    void GTSvore_hand_extend(AnimationEventData& data) {
-    }
+	void GTSvore_hand_extend(AnimationEventData& data) {
+	}
 
-    void GTSvore_hand_grab(AnimationEventData& data) {
-        //PlayerCamera::GetSingleton()->cameraTarget = data.tiny->CreateRefHandle();
-        auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-        VoreData.GrabAll();
-        //for (auto& tiny: VoreData.GetVories()) {
-          //PushActorAway(&data.giant, tiny, 1.0);
-        //}
-    }
+	void GTSvore_hand_grab(AnimationEventData& data) {
+		//PlayerCamera::GetSingleton()->cameraTarget = data.tiny->CreateRefHandle();
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		VoreData.GrabAll();
+		//for (auto& tiny: VoreData.GetVories()) {
+		//PushActorAway(&data.giant, tiny, 1.0);
+		//}
+	}
 
-    void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {
-    }
+	void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {
+	}
 
-    void GTSvore_bringactor_start(AnimationEventData& data) {
-    }
+	void GTSvore_bringactor_start(AnimationEventData& data) {
+	}
 
-    void GTSvore_open_mouth(AnimationEventData& data) {
-      auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-      VoreData.EnableMouthShrinkZone(true);
-    }
+	void GTSvore_open_mouth(AnimationEventData& data) {
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		VoreData.EnableMouthShrinkZone(true);
+	}
 
-    void GTSvore_bringactor_end(AnimationEventData& data) {
-      auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-      VoreData.ReleaseAll();
-    }
+	void GTSvore_bringactor_end(AnimationEventData& data) {
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		VoreData.ReleaseAll();
+	}
 
-    void GTSvore_swallow(AnimationEventData& data) {
-      auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-      VoreData.Swallow();
-    }
+	void GTSvore_swallow(AnimationEventData& data) {
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		VoreData.Swallow();
+	}
 
-    void GTSvore_swallow_sound(AnimationEventData& data) {
-    }
+	void GTSvore_swallow_sound(AnimationEventData& data) {
+	}
 
-    void GTSvore_close_mouth(AnimationEventData& data) {
-      auto giant = &data.giant;
-      auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+	void GTSvore_close_mouth(AnimationEventData& data) {
+		auto giant = &data.giant;
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 
-      VoreData.EnableMouthShrinkZone(false);
-      Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]");
-    }
+		VoreData.EnableMouthShrinkZone(false);
+		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]");
+	}
 
-    void GTSvore_handR_reposition_S(AnimationEventData& data) {
-    }
+	void GTSvore_handR_reposition_S(AnimationEventData& data) {
+	}
 
-    void GTSvore_handL_reposition_S(AnimationEventData& data) {
-    }
+	void GTSvore_handL_reposition_S(AnimationEventData& data) {
+	}
 
-    void GTSvore_handR_reposition_E(AnimationEventData& data) {
-    }
+	void GTSvore_handR_reposition_E(AnimationEventData& data) {
+	}
 
-    void GTSvore_handL_reposition_E(AnimationEventData& data) {
-    }
+	void GTSvore_handL_reposition_E(AnimationEventData& data) {
+	}
 
-    void GTSvore_eat_actor(AnimationEventData& data) {
-        auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-        VoreData.KillAll();
-    }
+	void GTSvore_eat_actor(AnimationEventData& data) {
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		VoreData.KillAll();
+	}
 
-    void GTSvore_detachactor_AnimObject_A(AnimationEventData& data) {
-    }
+	void GTSvore_detachactor_AnimObject_A(AnimationEventData& data) {
+	}
 
-    void GTSvore_standup_start(AnimationEventData& data) {
-        //PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
-    }
+	void GTSvore_standup_start(AnimationEventData& data) {
+		//PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
+	}
 
-    void GTSvore_impactRS(AnimationEventData& data) {
-    }
+	void GTSvore_impactRS(AnimationEventData& data) {
+	}
 
-    void GTSvore_standup_end(AnimationEventData& data) {
-    }
+	void GTSvore_standup_end(AnimationEventData& data) {
+	}
 
 }
 
 
 namespace Gts
 {
-    void AnimationActorVore::RegisterEvents() {
+	void AnimationActorVore::RegisterEvents() {
 		AnimationManager::RegisterEvent("GTSvore_attachactor_AnimObject_A", "ActorVore", GTSvore_attachactor_AnimObject_A);
 		AnimationManager::RegisterEvent("GTSvore_detachactor_AnimObject_A", "ActorVore", GTSvore_detachactor_AnimObject_A);
 		AnimationManager::RegisterEvent("GTSvore_handR_reposition_S", "ActorVore", GTSvore_handR_reposition_S);
@@ -158,7 +158,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSvore_swallow", "ActorVore", GTSvore_swallow);
 	}
 
-    void AnimationActorVore::RegisterTriggers() {
-	    AnimationManager::RegisterTrigger("StartVore", "ActorVore", "GTSBEH_StartVore");
-    }
+	void AnimationActorVore::RegisterTriggers() {
+		AnimationManager::RegisterTrigger("StartVore", "ActorVore", "GTSBEH_StartVore");
+	}
 }

@@ -114,17 +114,17 @@ namespace {
 		//ConsoleLog::GetSingleton()->Print("Stomp: GTSBEH_Exit");
 	}
 
-  void RightStompEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    AnimationManager::StartAnim("StompRight", player);
-    log::info("Stomp Right");
-  }
+	void RightStompEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("StompRight", player);
+		log::info("Stomp Right");
+	}
 
-  void LeftStompEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    AnimationManager::StartAnim("StompLeft", player);
-    log::info("Stomp Left");
-  }
+	void LeftStompEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("StompLeft", player);
+		log::info("Stomp Left");
+	}
 }
 
 namespace Gts
@@ -141,8 +141,8 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTS_Next", "Stomp", GTS_Next);
 		AnimationManager::RegisterEvent("GTSBEH_Exit", "Stomp", GTSBEH_Exit);
 
-    InputManager::RegisterInputEvent("RightStomp", RightStompEvent);
-    InputManager::RegisterInputEvent("LeftStomp", LeftStompEvent);
+		InputManager::RegisterInputEvent("RightStomp", RightStompEvent);
+		InputManager::RegisterInputEvent("LeftStomp", LeftStompEvent);
 	}
 
 	void AnimationStomp::RegisterTriggers() {

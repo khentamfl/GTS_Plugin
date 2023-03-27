@@ -23,8 +23,8 @@ namespace Hooks
 				for (auto& graph : animGraphManager->graphs) {
 					if (graph) {
 						if (a_this == graph->behaviorGraph) {
-              float multi = AnimationManager::GetAnimSpeed(actor);
-              anim_speed *= multi;
+							float multi = AnimationManager::GetAnimSpeed(actor);
+							anim_speed *= multi;
 						}
 					}
 				}

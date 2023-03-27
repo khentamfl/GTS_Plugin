@@ -40,7 +40,7 @@ namespace Gts {
 			float GetRaceScale(Actor* actor);
 
 			virtual std::string DebugName() override;
-      virtual void DataReady() override;
+			virtual void DataReady() override;
 			virtual void Update() override;
 			virtual void OnHighheelEquip(const HighheelEquip& evt) override;
 

@@ -29,37 +29,37 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
-  void GrabEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
+	void GrabEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
 
-    for (auto otherActor: find_actors()) {
-      if (otherActor != player) {
-        float playerscale = get_visual_scale(player);
-        float victimscale = get_visual_scale(otherActor);
-        float sizedifference = playerscale/victimscale;
-        NiPoint3 giantLocation = player->GetPosition();
-        NiPoint3 tinyLocation = otherActor->GetPosition();
-        if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player) && sizedifference >= 4.2) {
-          Grab::GrabActor(player, otherActor);
-          break;
-        }
-      }
-    }
-  }
+		for (auto otherActor: find_actors()) {
+			if (otherActor != player) {
+				float playerscale = get_visual_scale(player);
+				float victimscale = get_visual_scale(otherActor);
+				float sizedifference = playerscale/victimscale;
+				NiPoint3 giantLocation = player->GetPosition();
+				NiPoint3 tinyLocation = otherActor->GetPosition();
+				if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player) && sizedifference >= 4.2) {
+					Grab::GrabActor(player, otherActor);
+					break;
+				}
+			}
+		}
+	}
 
-  void GrabKillEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    auto grabbedActor = Grab::GetHeldActor(player);
-    if (grabbedActor) {
-      CrushManager::Crush(player, grabbedActor);
-      Grab::Release(player);
-    }
-  }
+	void GrabKillEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player);
+		if (grabbedActor) {
+			CrushManager::Crush(player, grabbedActor);
+			Grab::Release(player);
+		}
+	}
 
-  void GrabSpareEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    Grab::Release(player);
-  }
+	void GrabSpareEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		Grab::Release(player);
+	}
 }
 
 ///Plans:
@@ -131,8 +131,8 @@ namespace Gts {
 		Grab::GetSingleton().data.erase(giant);
 	}
 
-  	TESObjectREFR* Grab::GetHeldObj(Actor* giant) {
-    try {
+	TESObjectREFR* Grab::GetHeldObj(Actor* giant) {
+		try {
 			auto& me = Grab::GetSingleton();
 			return me.data.at(giant).tiny;
 		} catch (std::out_of_range e) {
@@ -142,19 +142,19 @@ namespace Gts {
 	}
 	Actor* Grab::GetHeldActor(Actor* giant) {
 		auto obj = Grab::GetHeldObj(giant);
-    	Actor* actor = skyrim_cast<Actor*>(obj);
-    	if (actor) {
-      		return actor;
-    	} else {
-      		return nullptr;
-    	}
+		Actor* actor = skyrim_cast<Actor*>(obj);
+		if (actor) {
+			return actor;
+		} else {
+			return nullptr;
+		}
 	}
 
-  void Grab::DataReady()  {
-    InputManager::RegisterInputEvent("Grab", GrabEvent);
-    InputManager::RegisterInputEvent("GrabKill", GrabKillEvent);
-    InputManager::RegisterInputEvent("GrabSpare", GrabSpareEvent);
-  }
+	void Grab::DataReady()  {
+		InputManager::RegisterInputEvent("Grab", GrabEvent);
+		InputManager::RegisterInputEvent("GrabKill", GrabKillEvent);
+		InputManager::RegisterInputEvent("GrabSpare", GrabSpareEvent);
+	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
 	}

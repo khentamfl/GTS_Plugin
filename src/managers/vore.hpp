@@ -1,5 +1,6 @@
 #pragma once
 #include "events.hpp"
+#include "spring.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -7,70 +8,70 @@ using namespace RE;
 
 namespace Gts
 {
-  // Represents current vore data for an actor
-  class VoreData {
-    public:
-      VoreData(Actor* giant);
-      // Adds a tiny to the list of actors
-      // being eaten
-      void AddTiny(Actor* tiny);
-      // Enables/diables the shrink zone
-      void EnableMouthShrinkZone(bool enabled);
-      // Swallow and start the digestion (buffs)
-      void Swallow();
-      // Finishes the process
-      // kill/shrinks all actors and gains buffs
-      void KillAll();
+	// Represents current vore data for an actor
+	class VoreData {
+		public:
+			VoreData(Actor* giant);
+			// Adds a tiny to the list of actors
+			// being eaten
+			void AddTiny(Actor* tiny);
+			// Enables/diables the shrink zone
+			void EnableMouthShrinkZone(bool enabled);
+			// Swallow and start the digestion (buffs)
+			void Swallow();
+			// Finishes the process
+			// kill/shrinks all actors and gains buffs
+			void KillAll();
 
-      // Grab all vories
-      void GrabAll();
+			// Grab all vories
+			void GrabAll();
 
-      // Release all vories (shall fall into mouth with animation)
-      void ReleaseAll();
+			// Release all vories (shall fall into mouth with animation)
+			void ReleaseAll();
 
-      // Get a list of all actors currently being vored
-      std::vector<Actor*> GetVories();
+			// Get a list of all actors currently being vored
+			std::vector<Actor*> GetVories();
 
-      // Update all things that are happening like
-      // keeping them on the AnimObjectA and shrinking nodes
-      void Update();
+			// Update all things that are happening like
+			// keeping them on the AnimObjectA and shrinking nodes
+			void Update();
 
-    private:
-      Actor* giant;
-      // Vore is done is sets with multiple actors if the giant is big
-      // enough
-      std::unordered_map<Actor*, Actor*> tinies = {};
+		private:
+			Actor* giant;
+			// Vore is done is sets with multiple actors if the giant is big
+			// enough
+			std::unordered_map<Actor*, Actor*> tinies = {};
 
-      // If true the mouth kill zone is on and we shrink nodes entering the mouth
-      bool killZoneEnabled = false;
+			// If true the mouth kill zone is on and we shrink nodes entering the mouth
+			bool killZoneEnabled = false;
 
-      // True if in grabbed state
-      bool allGrabbed = false;
-  };
+			// True if in grabbed state
+			bool allGrabbed = false;
+	};
 
-  enum VoreBuffState {
-    Running,
-    Finishing,
-    Done,
-  };
-  struct VoreBuff {
-    VoreBuffState state = VoreBuffState::Running;
-    Actor* giant = nullptr;
-    Actor* tiny = nullptr;
-    float restorePower = 0.0; // Amount of health to restore TOTAL
-    float sizePower = 0.0; // Amount of size to gain TOTAL
+	enum VoreBuffState {
+		Running,
+		Finishing,
+		Done,
+	};
+	struct VoreBuff {
+		VoreBuffState state = VoreBuffState::Running;
+		Actor* giant = nullptr;
+		Actor* tiny = nullptr;
+		float restorePower = 0.0; // Amount of health to restore TOTAL
+		float sizePower = 0.0; // Amount of size to gain TOTAL
 
-    // Used to track how much time has passed (abusing Spring code)
-    // The half life will tell the half the duration
-    Spring factor = Spring(0.0, 15.0);
-    float appliedFactor = 0.0;
+		// Used to track how much time has passed (abusing Spring code)
+		// The half life will tell the half the duration
+		Spring factor = Spring(0.0, 15.0);
+		float appliedFactor = 0.0;
 
-    VoreBuff(Actor* giant, Actor* tiny);
+		VoreBuff(Actor* giant, Actor* tiny);
 
-    void Update();
+		void Update();
 
-    bool Done();
-  };
+		bool Done();
+	};
 
 	class Vore : public EventListener
 	{
@@ -78,7 +79,7 @@ namespace Gts
 			[[nodiscard]] static Vore& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-      		virtual void DataReady() override;
+			virtual void DataReady() override;
 			virtual void Update() override;
 
 			void RandomVoreAttempt(Actor* pred);
@@ -115,13 +116,13 @@ namespace Gts
 			// Do the vore (this has no checks make sure they can vore with CanVore first)
 			void StartVore(Actor* pred, Actor* prey);
 
-      // Gets the current vore data of a giant
-      VoreData& GetVoreData(Actor* giant);
+			// Gets the current vore data of a giant
+			VoreData& GetVoreData(Actor* giant);
 
-      void AddVoreBuff(Actor* giant, Actor* tiny);
+			void AddVoreBuff(Actor* giant, Actor* tiny);
 
-    private:
-      std::unordered_map<Actor*, VoreData> data;
-      std::unordered_map<Actor*, VoreBuff> buffs;
+		private:
+			std::unordered_map<Actor*, VoreData> data;
+			std::unordered_map<Actor*, VoreBuff> buffs;
 	};
 }

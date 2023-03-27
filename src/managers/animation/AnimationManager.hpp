@@ -80,7 +80,7 @@ namespace Gts
 			// Each anim gets it's own adjustable speed
 			static void AdjustAnimSpeed(float bonus);
 
-      // Get total animation speed of an actor
+			// Get total animation speed of an actor
 			static float GetAnimSpeed(Actor* actor);
 
 			// Register an animation event to a function callback

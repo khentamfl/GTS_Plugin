@@ -28,40 +28,40 @@ namespace {
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
 
-  void TotalControlGrowEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    if (Runtime::HasPerk(player, "TotalControl")) {
-      float scale = get_visual_scale(player);
-      float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
-      DamageAV(player, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-      Grow(player, 0.0010 * stamina, 0.0);
-      float Volume = clamp(0.10, 2.0, get_visual_scale(player)/10);
-      Rumble::Once("TotalControl", player, scale/10);
-      static Timer timergrowth = Timer(2.00);
-      if (timergrowth.ShouldRun()) {
-        Runtime::PlaySound("growthSound", player, Volume, 0.0);
-      }
-    }
-  }
-  void TotalControlShrinkEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    if (Runtime::HasPerk(player, "TotalControl")) {
-      float scale = get_visual_scale(player);
+	void TotalControlGrowEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (Runtime::HasPerk(player, "TotalControl")) {
+			float scale = get_visual_scale(player);
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
+			DamageAV(player, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
+			Grow(player, 0.0010 * stamina, 0.0);
+			float Volume = clamp(0.10, 2.0, get_visual_scale(player)/10);
+			Rumble::Once("TotalControl", player, scale/10);
+			static Timer timergrowth = Timer(2.00);
+			if (timergrowth.ShouldRun()) {
+				Runtime::PlaySound("growthSound", player, Volume, 0.0);
+			}
+		}
+	}
+	void TotalControlShrinkEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (Runtime::HasPerk(player, "TotalControl")) {
+			float scale = get_visual_scale(player);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
 			DamageAV(player, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			ShrinkActor(player, 0.0010 * stamina, 0.0);
 			float Volume = clamp(0.05, 2.0, get_visual_scale(player)/10);
 			Rumble::Once("TotalControl", player, scale/14);
-      static Timer timergrowth = Timer(2.00);
+			static Timer timergrowth = Timer(2.00);
 			if (timergrowth.ShouldRun()) {
 				Runtime::PlaySound("shrinkSound", player, Volume, 0.0);
 			}
-    }
-  }
-  void TotalControlGrowOtherEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    if (Runtime::HasPerk(player, "TotalControl")) {
-      for (auto actor: find_actors()) {
+		}
+	}
+	void TotalControlGrowOtherEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (Runtime::HasPerk(player, "TotalControl")) {
+			for (auto actor: find_actors()) {
 				if (!actor) {
 					continue;
 				}
@@ -72,18 +72,18 @@ namespace {
 					Grow(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
 					Rumble::Once("TotalControlOther", actor, 0.25);
-          static Timer timergrowth = Timer(2.00);
+					static Timer timergrowth = Timer(2.00);
 					if (timergrowth.ShouldRun()) {
 						Runtime::PlaySound("growthSound", actor, Volume, 0.0);
 					}
 				}
 			}
-    }
-  }
-  void TotalControlShrinkOtherEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    if (Runtime::HasPerk(player, "TotalControl")) {
-      for (auto actor: find_actors()) {
+		}
+	}
+	void TotalControlShrinkOtherEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (Runtime::HasPerk(player, "TotalControl")) {
+			for (auto actor: find_actors()) {
 				if (!actor) {
 					continue;
 				}
@@ -94,14 +94,14 @@ namespace {
 					ShrinkActor(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
 					Rumble::Once("TotalControlOther", actor, 0.20);
-          static Timer timergrowth = Timer(2.00);
+					static Timer timergrowth = Timer(2.00);
 					if (timergrowth.ShouldRun()) {
 						Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);
 					}
 				}
 			}
-    }
-  }
+		}
+	}
 }
 
 namespace Gts {
@@ -120,12 +120,12 @@ namespace Gts {
 		return "SizeManager";
 	}
 
-  void SizeManager::DataReady() {
-    InputManager::RegisterInputEvent("TotalControlGrow", TotalControlGrowEvent);
-    InputManager::RegisterInputEvent("TotalControlShrink", TotalControlShrinkEvent);
-    InputManager::RegisterInputEvent("TotalControlGrowOther", TotalControlGrowOtherEvent);
-    InputManager::RegisterInputEvent("TotalControlShrinkOther", TotalControlShrinkOtherEvent);
-  }
+	void SizeManager::DataReady() {
+		InputManager::RegisterInputEvent("TotalControlGrow", TotalControlGrowEvent);
+		InputManager::RegisterInputEvent("TotalControlShrink", TotalControlShrinkEvent);
+		InputManager::RegisterInputEvent("TotalControlGrowOther", TotalControlGrowOtherEvent);
+		InputManager::RegisterInputEvent("TotalControlShrinkOther", TotalControlShrinkOtherEvent);
+	}
 
 	void SizeManager::Update() {
 		for (auto actor: find_actors()) {

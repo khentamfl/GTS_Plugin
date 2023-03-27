@@ -235,7 +235,7 @@ namespace Gts {
 		if (caster->formID == 0x14) {
 			sizedifference = sourcesize;
 		}
-		
+
 
 		// To Sermit: You wrote a cutoff not a falloff
 		//            was this intentional?

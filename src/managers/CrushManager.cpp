@@ -178,7 +178,7 @@ namespace Gts {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
 					}
-					
+
 					ScareChance(giant);
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 
@@ -188,7 +188,7 @@ namespace Gts {
 						TriggerScreenBlood(50);
 						tiny->SetAlpha(0.0); // Fake crush effect, just make player invisible
 					}
-					
+
 					AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 					FearChance(giant);
 				}

@@ -50,259 +50,259 @@ namespace {
 		playerCamera->ToggleFreeCameraMode(false);
 	}
 
-  void VoreInputEvent(const InputEventData& data) {
-    static Timer voreTimer = Timer(0.25);
-    auto pred = PlayerCharacter::GetSingleton();
+	void VoreInputEvent(const InputEventData& data) {
+		static Timer voreTimer = Timer(0.25);
+		auto pred = PlayerCharacter::GetSingleton();
 
-    if (voreTimer.ShouldRunFrame()) {
-      auto& VoreManager = Vore::GetSingleton();
-      std::size_t numberOfPrey = 1;
-      if (Runtime::HasPerk(pred, "MassVorePerk")) {
-        numberOfPrey = 3;
-      }
-      std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
-      for (auto prey: preys) {
-        VoreManager.StartVore(pred, prey);
-      }
-    }
-  }
+		if (voreTimer.ShouldRunFrame()) {
+			auto& VoreManager = Vore::GetSingleton();
+			std::size_t numberOfPrey = 1;
+			if (Runtime::HasPerk(pred, "MassVorePerk")) {
+				numberOfPrey = 3;
+			}
+			std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
+			for (auto prey: preys) {
+				VoreManager.StartVore(pred, prey);
+			}
+		}
+	}
 
-  	void AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill
-  		if (Caster->formID !=0x14) {
-  			return; //Bye
-  		}
-  		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
-  		if (!GtsSkillLevel) {
-  			return;
-  		}
-  		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
-  		if (!GtsSkillRatio) {
-  			return;
-  		}
-  		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
-  		if (!GtsSkillProgress) {
-  			return;
-  		}
+	void AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill
+		if (Caster->formID !=0x14) {
+			return; //Bye
+		}
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		if (!GtsSkillLevel) {
+			return;
+		}
+		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
+		if (!GtsSkillRatio) {
+			return;
+		}
+		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
+		if (!GtsSkillProgress) {
+			return;
+		}
 
-  		int random = (100 + (rand()% 85 + 1)) / 100;
+		int random = (100 + (rand()% 85 + 1)) / 100;
 
-  		if (GtsSkillLevel->value >= 100) {
-  			GtsSkillLevel->value = 100.0;
-  			GtsSkillRatio->value = 0.0;
-  			return;
-  		}
+		if (GtsSkillLevel->value >= 100) {
+			GtsSkillLevel->value = 100.0;
+			GtsSkillRatio->value = 0.0;
+			return;
+		}
 
-  		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.20, 1.0);
+		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.20, 1.0);
 
-  		float absorbedSize = (get_visual_scale(Target));
-  		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-  		float Total = (((0.68 * random) + absorbedSize/50) * ValueEffectiveness);
-  		GtsSkillRatio->value += Total;
+		float absorbedSize = (get_visual_scale(Target));
+		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
+		float Total = (((0.68 * random) + absorbedSize/50) * ValueEffectiveness);
+		GtsSkillRatio->value += Total;
 
-  		if (GtsSkillRatio->value >= 1.0) {
-  			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
-  			GtsSkillLevel->value += 1.0;
-  			GtsSkillProgress->value = GtsSkillLevel->value;
-  			GtsSkillRatio->value = 0.0 + transfer;
-  		}
-  	}
+		if (GtsSkillRatio->value >= 1.0) {
+			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
+			GtsSkillLevel->value += 1.0;
+			GtsSkillProgress->value = GtsSkillLevel->value;
+			GtsSkillRatio->value = 0.0 + transfer;
+		}
+	}
 
-  	void VoreMessage(Actor* pred, Actor* prey) {
-          int random = rand() % 2;
-  		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
-  			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-  		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
-  			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-  		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
-  			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-  		} else if (prey->IsDead()) {
-  			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-  		}
-      }
-  }
+	void VoreMessage(Actor* pred, Actor* prey) {
+		int random = rand() % 2;
+		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
+			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
+			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
+			ConsoleLog::GetSingleton()->Print("%s both body and soul were devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (prey->IsDead()) {
+			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		}
+	}
+}
 
 namespace Gts {
-  VoreData::VoreData(Actor* giant) : giant(giant) {
+	VoreData::VoreData(Actor* giant) : giant(giant) {
 
-  }
+	}
 
-    void VoreData::AddTiny(Actor* tiny) {
-      this->tinies.try_emplace(tiny, tiny);
-    }
+	void VoreData::AddTiny(Actor* tiny) {
+		this->tinies.try_emplace(tiny, tiny);
+	}
 
-    void VoreData::EnableMouthShrinkZone(bool enabled) {
-      this->killZoneEnabled = enabled;
-    }
-    void VoreData::Swallow() {
-      for (auto& [key, tiny]: this->tinies) {
-        VoreManager::GetSingleton().AddVoreBuff(giant, tiny);
-      }
-    }
-    void VoreData::KillAll() {
-      for (auto& [key, tiny]: this->tinies) {
-  			VoreMessage(giant, tiny);
+	void VoreData::EnableMouthShrinkZone(bool enabled) {
+		this->killZoneEnabled = enabled;
+	}
+	void VoreData::Swallow() {
+		for (auto& [key, tiny]: this->tinies) {
+			Vore::GetSingleton().AddVoreBuff(giant, tiny);
+		}
+	}
+	void VoreData::KillAll() {
+		for (auto& [key, tiny]: this->tinies) {
+			VoreMessage(giant, tiny);
 
-        if (tiny->formID != 0x14) {
-  				Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
-  			} else if (tiny->formID == 0x14) {
-  				TriggerScreenBlood(50);
-  				tiny->SetAlpha(0.0); // Just make player Invisible
-  			}
-      }
-      this->tinies.clear();
-    }
+			if (tiny->formID != 0x14) {
+				Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
+			} else if (tiny->formID == 0x14) {
+				TriggerScreenBlood(50);
+				tiny->SetAlpha(0.0); // Just make player Invisible
+			}
+		}
+		this->tinies.clear();
+	}
 
-    void VoreData::GrabAll() {
-      this->allGrabbed = true;
-    }
+	void VoreData::GrabAll() {
+		this->allGrabbed = true;
+	}
 
-    void VoreData::ReleaseAll() {
-      this->allGrabbed = false;
-    }
+	void VoreData::ReleaseAll() {
+		this->allGrabbed = false;
+	}
 
-    std::vector<Actor*> VoreData::GetVories() {
-      std::vector<Actor*> result;
-      for (auto& [key, actor]: this->tinies) {
-        result.push_back(actor);
-      }
-      return result;
-    }
+	std::vector<Actor*> VoreData::GetVories() {
+		std::vector<Actor*> result;
+		for (auto& [key, actor]: this->tinies) {
+			result.push_back(actor);
+		}
+		return result;
+	}
 
-    void VoreData::Update() {
-      auto giant = this->giant;
-      // Stick them to the AnimObjectA
-	  log::info("Firing VoreUpdate");
-      for (auto& [key, tiny]: this->tinies) {
-  			if (!tiny) {
-  				continue;
-  			}
+	void VoreData::Update() {
+    log::info("Firing VoreUpdate");
+		auto giant = this->giant;
+    float giantScale = get_visual_scale(giant);
 
-  			auto bone = find_node(giant, "AnimObjectA");
-  			if (!bone) {
-  				return;
-  			}
+		// Stick them to the AnimObjectA
+		for (auto& [key, tiny]: this->tinies) {
+			if (!tiny) {
+				continue;
+			}
 
-  			float giantScale = get_visual_scale(giant);
+			auto bone = find_node(giant, "AnimObjectA");
+			if (!bone) {
+				return;
+			}
 
-        if (this->allGrabbed) {
-    			NiPoint3 giantLocation = giant->GetPosition();
-    			NiPoint3 tinyLocation = tiny->GetPosition();
-  			NiPoint3 targetLocation = bone->world.translate;
+			if (this->allGrabbed) {
+				NiPoint3 giantLocation = giant->GetPosition();
+				NiPoint3 tinyLocation = tiny->GetPosition();
+				NiPoint3 targetLocation = bone->world.translate;
 
-    			tiny->SetPosition(targetLocation, true);
-  			tiny->SetPosition(targetLocation, false);
-  			log::info("Setting Position");
-    			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
-    			if (tiny_is_actor) {
-    				auto charcont = tiny_is_actor->GetCharController();
-    				if (charcont) {
-    					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
-    				}
-    			}
-        	}
-        }
+				tiny->SetPosition(targetLocation, true);
+				tiny->SetPosition(targetLocation, false);
+				log::info("Setting Position");
+				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
+				if (tiny_is_actor) {
+					auto charcont = tiny_is_actor->GetCharController();
+					if (charcont) {
+						charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+					}
+				}
+			}
+		}
 
-      // Shrink nodes
-      if (this->killZoneEnabled) {
-        auto headNodeName = "NPC Head [Head]";
-        auto headNode = find_node_any(giant, headNodeName);
-        if (headNode) {
-          NiPoint3 headCenter = headNode->world.translate;
-          float headKillRadius = 0.15 * giantScale;
-          for (auto& [key, tiny]: this->tinies) {
-            // Get all nodes in range
-            std::vector<NiAVObject&> nodes_inrange = {};
-            auto root = tiny->GetCurrent3D();
-            VisitNodes(root, [&nodes, &headCenter, &headKillRadius](NiAVObject& node) {
-              float distance = (node.world.translate - headCenter).Length();
-              if (distance < headKillRadius) {
-                nodes_inrange.push_back(node);
-              }
-              return true;
-            });
-            // Check all children of the nodes
-            //
-            // Not sure if this check is required.
-            // It is meant to ensure that if
-            // the upper leg is in the shrink zone
-            // it won't shrink it until the lower
-            // leg and foot are shrunk first
-            for (auto& node: nodes_inrange) {
-              bool anyInvalid = false;
-              VisitNodes(&node, [&anyInvalid](NiAVObject& node_child) {
-                if (node_child.local.scale > 1e-3) {
-                  anyInvalid = true;
-                  return false;
-                } else {
-                  return true;
-                }
-              });
-              if (!anyInvalid) {
-                node.local.scale = 0.0;
-              }
-            }
-          }
-        }
-      }
-    }
+		// Shrink nodes
+		if (this->killZoneEnabled) {
+			auto headNodeName = "NPC Head [Head]";
+			auto headNode = find_node_any(giant, headNodeName);
+			if (headNode) {
+				NiPoint3 headCenter = headNode->world.translate;
+				float headKillRadius = 0.15 * giantScale;
+				for (auto& [key, tiny]: this->tinies) {
+					// Get all nodes in range
+					std::vector<NiAVObject&> nodes_inrange = {};
+					auto root = tiny->GetCurrent3D();
+					VisitNodes(root, [&nodes, &headCenter, &headKillRadius](NiAVObject& node) {
+						float distance = (node.world.translate - headCenter).Length();
+						if (distance < headKillRadius) {
+							nodes_inrange.push_back(node);
+						}
+						return true;
+					});
+					// Check all children of the nodes
+					//
+					// Not sure if this check is required.
+					// It is meant to ensure that if
+					// the upper leg is in the shrink zone
+					// it won't shrink it until the lower
+					// leg and foot are shrunk first
+					for (auto& node: nodes_inrange) {
+						bool anyInvalid = false;
+						VisitNodes(&node, [&anyInvalid](NiAVObject& node_child) {
+							if (node_child.local.scale > 1e-3) {
+								anyInvalid = true;
+								return false;
+							} else {
+								return true;
+							}
+						});
+						if (!anyInvalid) {
+							node.local.scale = 0.0;
+						}
+					}
+				}
+			}
+		}
+	}
 
-  VoreBuff::VoreBuff(Actor* giant, Actor* tiny): factor(Spring(0.0, 0.0)) {
-    this->giant = giant;
-    this->tiny = tiny;
-    float duration = 30.0;
-    float mealEffiency = 0.1; // Normal pray has 10% efficent stomach
-    if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
-      duration = 45.0;
-      mealEffiency = 0.2;
-    }
-    this->factor.halflife = duration * 0.45;
-    this->factor.target = 1.0;
-    this->factor.value = 0.0;
-    this->appliedFactor = 0.0;
+	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 0.0)) {
+		this->giant = giant;
+		this->tiny = tiny;
+		float duration = 30.0;
+		float mealEffiency = 0.1; // Normal pray has 10% efficent stomach
+		if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
+			duration = 45.0;
+			mealEffiency = 0.2;
+		}
+		this->factor.halflife = duration * 0.45;
+		this->factor.target = 1.0;
+		this->factor.value = 0.0;
+		this->appliedFactor = 0.0;
 
-    if (tiny) {
-      float tiny_scale = get_visual_scale(tiny);
-      float giant_scale = get_visual_scale(giant);
+		if (tiny) {
+			float tiny_scale = get_visual_scale(tiny);
+			float giant_scale = get_visual_scale(giant);
 
-      // Amount of health we apply depends on their vitaliyy
-      // and their size
-      this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
-      this->sizePower = tiny_scale * mealEffiency;
-    }
-  }
-  void VoreBuff::Update() {
-    if (!this->giant) {
-      return;
-    }
-    switch (this->state) {
-      case VoreBuffState::Running: {
-        // Get amount to apply
-        float amountToApplyThisUpdate = this->factor.value - this->appliedFactor;
-        this->appliedFactor += amountToApplyThisUpdate;
+			// Amount of health we apply depends on their vitaliyy
+			// and their size
+			this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
+			this->sizePower = tiny_scale * mealEffiency;
+		}
+	}
+	void VoreBuff::Update() {
+		if (!this->giant) {
+			return;
+		}
+		switch (this->state) {
+			case VoreBuffState::Running: {
+				// Get amount to apply
+				float amountToApplyThisUpdate = this->factor.value - this->appliedFactor;
+				this->appliedFactor += amountToApplyThisUpdate;
 
-        float healthToApply = amountToApplyThisUpdate * this->restorePower;
-        float sizeToApply = amountToApplyThisUpdate * this->sizePower;
+				float healthToApply = amountToApplyThisUpdate * this->restorePower;
+				float sizeToApply = amountToApplyThisUpdate * this->sizePower;
 
-        DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
-        mod_target_scale(this->giant, sizeToApply);
+				DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
+				mod_target_scale(this->giant, sizeToApply);
 
-        if (fabs(this->factor.value - 1.0) < 1e-3) {
-          this->state = VoreBuffState::Finishing;
-        }
-      }
-      case VoreBuffState::Finishing {
-        AdjustGiantessSkill(this->giant, this->tiny);
-        this->state = VoreBuffState::Done;
-      }
-      case VoreBuffState::Done: {
+				if (fabs(this->factor.value - 1.0) < 1e-3) {
+					this->state = VoreBuffState::Finishing;
+				}
+			}
+			case VoreBuffState::Finishing {
+					AdjustGiantessSkill(this->giant, this->tiny);
+					this->state = VoreBuffState::Done;
+			}
+			case VoreBuffState::Done: {
 
-      }
-    }
-  }
+			}
+		}
+	}
 
-  bool VoreBuff::Done() {
-    return this->state == VoreBuffState::Done;
-  }
+	bool VoreBuff::Done() {
+		return this->state == VoreBuffState::Done;
+	}
 
 	Vore& Vore::GetSingleton() noexcept {
 		static Vore instance;
@@ -313,9 +313,9 @@ namespace Gts {
 		return "Vore";
 	}
 
-  void Vore::DataReady() {
-    InputManager::RegisterInputEvent("Vore", VoreInputEvent);
-  }
+	void Vore::DataReady() {
+		InputManager::RegisterInputEvent("Vore", VoreInputEvent);
+	}
 
 	void Vore::Update() {
 		auto player = PlayerCharacter::GetSingleton();
@@ -332,12 +332,15 @@ namespace Gts {
 			}
 		}
 
-    for (auto& [key, voreData]: this->data) {
-      voreData.Update();
-    }
-    for (auto& [key, voreBuff]: this->buffs) {
-      voreBuff.Update();
-    }
+		for (auto& [key, voreData]: this->data) {
+			voreData.Update();
+		}
+		for (auto& [key, voreBuff]: this->buffs) {
+			voreBuff.Update();
+			if (voreBuff.Done()) {
+				this->buffs.erase(key);
+			}
+		}
 	}
 
 	void Vore::RandomVoreAttempt(Actor* caster) {
@@ -668,20 +671,20 @@ namespace Gts {
 		}
 		//Runtime::CastSpell(pred, prey, "StartVore");
 		auto& voreData = this->GetVoreData(pred);
-    	voreData.AddTiny(prey);
+		voreData.AddTiny(prey);
 
 		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
 	}
 
-  // Gets the current vore data of a giant
-  VoreData& Vore::GetVoreData(Actor* giant) {
-    // Create it now if not there yet
-    this->data.try_emplace(giant, giant);
+	// Gets the current vore data of a giant
+	VoreData& Vore::GetVoreData(Actor* giant) {
+		// Create it now if not there yet
+		this->data.try_emplace(giant, giant);
 
-    return this->data.at(giant);
-  }
+		return this->data.at(giant);
+	}
 
-  void Vore::AddVoreBuff(Actor* giant, Actor* tiny) {
-    this->buffs.try_emplace(tiny, giant, tiny);
-  }
+	void Vore::AddVoreBuff(Actor* giant, Actor* tiny) {
+		this->buffs.try_emplace(tiny, giant, tiny);
+	}
 }

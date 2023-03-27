@@ -26,7 +26,7 @@ namespace Gts {
 
 			this->elaped_frame = currentFrame - this->last_frame;
 
-      this->Reset();
+			this->Reset();
 			return true;
 		}
 		return false;
@@ -47,10 +47,10 @@ namespace Gts {
 		}
 	}
 
-  void Timer::Reset() {
-    this->last_time = GetGameTime();
-    this->last_frame = GetGameFrame();
-  }
+	void Timer::Reset() {
+		this->last_time = GetGameTime();
+		this->last_frame = GetGameFrame();
+	}
 
 	std::uint64_t Timer::FrameDelta() {
 		return this->elaped_frame;

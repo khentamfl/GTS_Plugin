@@ -181,46 +181,46 @@ namespace {
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandRS");
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
-    // Inbetween stages
-    	data.animSpeed = 1.0;
+		// Inbetween stages
+		data.animSpeed = 1.0;
 		data.canEditAnimSpeed = false;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Next");
 	}
 	void GTStoexit(AnimationEventData& data) {
-    // Going to exit
+		// Going to exit
 		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTStoexit");
 	}
-  void GTSBEH_Exit(AnimationEventData& data) {
-    	// Final exit
+	void GTSBEH_Exit(AnimationEventData& data) {
+		// Final exit
 		data.stage = 0;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Exit");
 	}
 
-  void ThighCrushEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    AnimationManager::StartAnim("ThighLoopEnter", player);
-    log::info("Triggering Stage 0");
-  }
+	void ThighCrushEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("ThighLoopEnter", player);
+		log::info("Triggering Stage 0");
+	}
 
-  void ThighCrushKillEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    AnimationManager::StartAnim("ThighLoopAttack", player);
-  }
+	void ThighCrushKillEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("ThighLoopAttack", player);
+	}
 
-  void ThighCrushSpareEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    AnimationManager::StartAnim("ThighLoopExit", player);
-  }
+	void ThighCrushSpareEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("ThighLoopExit", player);
+	}
 
-  // To Sermit: This seems to be the same as ThighCrushSpareEvent
-  //  except it is on the `w` key instead Can we just use the RMB?
-  void ThighCrushExitEvent(const InputEventData& data) {
-    auto player = PlayerCharacter::GetSingleton();
-    AnimationManager::StartAnim("ThighLoopExit", player);
-  }
+	// To Sermit: This seems to be the same as ThighCrushSpareEvent
+	//  except it is on the `w` key instead Can we just use the RMB?
+	void ThighCrushExitEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("ThighLoopExit", player);
+	}
 }
 
 namespace Gts
@@ -242,10 +242,10 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSBEH_Next", "ThighCrush", GTSBEH_Next);
 		AnimationManager::RegisterEvent("GTSBEH_Exit", "ThighCrush", GTSBEH_Exit);
 
-    InputManager::RegisterInputEvent("ThighCrush", ThighCrushEvent);
-    InputManager::RegisterInputEvent("ThighCrushKill", ThighCrushKillEvent);
-    InputManager::RegisterInputEvent("ThighCrushSpare", ThighCrushSpareEvent);
-    InputManager::RegisterInputEvent("ThighCrushExit", ThighCrushExitEvent);
+		InputManager::RegisterInputEvent("ThighCrush", ThighCrushEvent);
+		InputManager::RegisterInputEvent("ThighCrushKill", ThighCrushKillEvent);
+		InputManager::RegisterInputEvent("ThighCrushSpare", ThighCrushSpareEvent);
+		InputManager::RegisterInputEvent("ThighCrushExit", ThighCrushExitEvent);
 	}
 
 	void AnimationThighCrush::RegisterTriggers() {

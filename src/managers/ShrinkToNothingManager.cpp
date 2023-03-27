@@ -60,7 +60,7 @@ namespace Gts {
 							TransferInventory(tiny, into, false, true);
 						}
 						ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
-						
+
 						Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 
 						auto progressionQuest = Runtime::GetQuest("MainQuest");

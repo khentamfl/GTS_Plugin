@@ -91,27 +91,27 @@ namespace Gts {
 		} catch (std::out_of_range e) {}
 	}
 
-  float AnimationManager::GetAnimSpeed(Actor* actor) {
-    float speed = 1.0;
-    if (actor) {
-      auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
-      if (saved_data) {
-        if (saved_data->anim_speed > 0.0) {
-          speed *= saved_data->anim_speed;
-        }
-      }
+	float AnimationManager::GetAnimSpeed(Actor* actor) {
+		float speed = 1.0;
+		if (actor) {
+			auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
+			if (saved_data) {
+				if (saved_data->anim_speed > 0.0) {
+					speed *= saved_data->anim_speed;
+				}
+			}
 
-      try {
-        float totalSpeed = 1.0;
-  			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
-  					totalSpeed *= data.animSpeed;
-  			}
-        speed *= totalSpeed;
-  		} catch (std::out_of_range e) {
-      }
-    }
-    return speed;
-  }
+			try {
+				float totalSpeed = 1.0;
+				for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
+					totalSpeed *= data.animSpeed;
+				}
+				speed *= totalSpeed;
+			} catch (std::out_of_range e) {
+			}
+		}
+		return speed;
+	}
 
 	void AnimationManager::RegisterEvent( std::string_view name,  std::string_view group, std::function<void(AnimationEventData&)> func) {
 		AnimationManager::GetSingleton().eventCallbacks.try_emplace(std::string(name), func, std::string(group));
