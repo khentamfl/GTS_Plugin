@@ -121,7 +121,6 @@ namespace {
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			float movementFactor = 1.0;
-			SizeHitEffects::GetSingleton().BreakBones(giant, tiny);
 			if (giant->AsActorState()->IsSprinting()) {
 				movementFactor *= 1.5;
 			}
@@ -470,6 +469,8 @@ namespace Gts {
 			multiplier += 7.2;
 			result *= 4.0;
 		}
+
+		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result);
 
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
 			if (CrushManager::CanCrush(giant, tiny)) {

@@ -71,10 +71,10 @@ namespace Gts {
         StaggerImmunity(attacker, receiver);
     }
 
-	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny) { // Used as a debuff 
-	if (!Runtime::HasPerkTeam(giant, "BoneCrusher")) {
-		return;
-	}
+	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny, float damage) { // Used as a debuff 
+		if (!Runtime::HasPerkTeam(giant, "BoneCrusher")) {
+			return;
+		}
 		int random = (rand()% 150 + 1);
 		if (random <= 2) {
 			float gs = get_visual_scale(giant);
@@ -93,6 +93,7 @@ namespace Gts {
 
 			Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
         	SizeManager::GetSingleton().ModSizeVulnerability(Target, 0.15);
+			DamageAV(tiny, ActorValue::kHealth, damage * 6);
 		}
 	}
 }
