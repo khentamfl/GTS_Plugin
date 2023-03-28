@@ -280,7 +280,7 @@ namespace Gts {
 		}
 	}
 
-	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 0.0)) {
+	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 1.0)) {
 		this->giant = giant;
 		this->tiny = tiny;
 		float duration = 30.0;
@@ -292,6 +292,7 @@ namespace Gts {
 		this->factor.halflife = duration * 0.45;
 		this->factor.target = 1.0;
 		this->factor.value = 0.0;
+    this->factor.velocity = 0.0;
 		this->appliedFactor = 0.0;
 
 		if (tiny) {
@@ -300,10 +301,11 @@ namespace Gts {
 
 			// Amount of health we apply depends on their vitality
 			// and their size
-			this->restorePower = 0.0;
 			if (Runtime::HasPerkTeam(giant, "VorePerkRegeneration")) {
 				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
-			} 
+			} else {
+        this->restorePower = 0.0;
+      }
 			this->sizePower = tiny_scale * mealEffiency;
 		}
 	}
@@ -314,17 +316,18 @@ namespace Gts {
 		switch (this->state) {
 			case VoreBuffState::Running: {
 				// Get amount to apply
-				float amountToApplyThisUpdate = this->factor.value - this->appliedFactor;
-				this->appliedFactor += amountToApplyThisUpdate;
+				float factor = std::clamp(this->factor.value, 0.0f, 1.0f);
+				float amountToApplyThisUpdate = factor - this->appliedFactor;
+				this->appliedFactor = factor;
 
 				float healthToApply = amountToApplyThisUpdate * this->restorePower;
 				float sizeToApply = amountToApplyThisUpdate * this->sizePower;
-				
+
 				DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
 				mod_target_scale(this->giant, sizeToApply);
-				log::info("VoreBuff firing, Giant: {}, Tiny:{}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName());
+				log::info("VoreBuff firing, Giant: {}, Tiny:{}: Health+: {}, Size+: {}, Spring: {}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName(), healthToApply, sizeToApply, this->factor.value);
 
-				if (fabs(this->factor.value - 1.0) < 1e-3) {
+				if (fabs(this->appliedFactor - 1.0) < 1e-3) {
 					this->state = VoreBuffState::Finishing;
 				}
 			}
