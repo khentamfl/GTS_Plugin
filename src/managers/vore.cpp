@@ -146,6 +146,25 @@ namespace {
 			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 	}
+
+  hkaRagdollInstance* GetRagdoll(Actor* actor) {
+		BSAnimationGraphManagerPtr animGraphManager;
+		if (actor->GetAnimationGraphManager(animGraphManager)) {
+			for (auto& graph : animGraphManager->graphs) {
+				if (graph) {
+					auto& character = graph->characterInstance;
+					auto ragdollDriver = character.ragdollDriver.get();
+					if (ragdollDriver) {
+						auto ragdoll = ragdollDriver->ragdoll;
+						if (ragdoll) {
+							return ragdoll;
+						}
+					}
+				}
+			}
+		}
+		return nullptr;
+	}
 }
 
 namespace Gts {
@@ -213,6 +232,8 @@ namespace Gts {
 				NiPoint3 giantLocation = giant->GetPosition();
 				NiPoint3 tinyLocation = tiny->GetPosition();
 				NiPoint3 targetLocation = bone->world.translate;
+        NiPoint3 deltaLocation = targetLocation - tinyLocation;
+        float deltaLength = deltaLocation.Length();
 
 				tiny->SetPosition(targetLocation, true);
 				tiny->SetPosition(targetLocation, false);
@@ -223,6 +244,36 @@ namespace Gts {
 					if (charcont) {
 						charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.
 					}
+
+          if (deltaLength > 70.0) {
+            // WARP if > 1m
+            auto ragDoll = GetRagdoll(tiny_is_actor);
+            hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
+            for (auto rb: ragDoll->rigidBodies) {
+              if (rb) {
+                auto ms = rb->GetMotionState();
+                if (ms) {
+                  ms->transform.translation = ms->transform.translation + delta;
+                }
+              }
+            }
+          } else {
+            // Just move the hand if <1m
+            std::string_view handNodeName = "NPC HAND L [L Hand]"
+            auto handBone = find_node(tiny, handNodeName);
+            if (handBone) {
+              auto collisionHand = handBone->GetCollisionObject();
+              if (collisionHand) {
+                auto handRb = collisionHand->GetRigidBody();
+                if (handRb) {
+                  auto ms = handRb->GetMotionState();
+                  if (ms) {
+                    ms->transform.translation = ms->transform.translation + delta;
+                  }
+                }
+              }
+            }
+          }
 				}
 			}
 		}
