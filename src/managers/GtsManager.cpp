@@ -44,28 +44,23 @@ namespace {
 			NiAVObject* NPC = node2;
 			NiAVObject* Skel = node3;
 			NiAVObject* Scene = node4;
-			if (Root) {
-				log::info("AV Fade of Root {} is {}", actor->GetDisplayFullName(), Root->fadeAmount);
-			} if (NPC) {
-				log::info("AV Fade of NPC {} is {}", actor->GetDisplayFullName(), NPC->fadeAmount);
-			} if (Skel) {
-				log::info("AV Fade of Skel {} is {}", actor->GetDisplayFullName(), Skel->fadeAmount);
-			} if (Scene) {
-				log::info("AV SCENE of Skel {} is {}", actor->GetDisplayFullName(), Scene->fadeAmount);
-			}
 			
 			if (node) {
 				BSFadeNode* fn = static_cast<BSFadeNode*>(node);
 				if (fn) {
 					float fl = fn->GetRuntimeData().currentFade;
-					//log::info("Fade Level NPC Root of {} is {}", actor->GetDisplayFullName(), fl);
+					if (timer.ShouldRunFrame()) {
+						log::info("Fade Level NPC Root of {} is {}", actor->GetDisplayFullName(), fl);
+					}
 				}
 			} 
 			if (node2) {
 				BSFadeNode* fn2 = static_cast<BSFadeNode*>(node2);
 				if (fn2) {
 					float fl = fn2->GetRuntimeData().currentFade;
-					//log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
+					if (timer.ShouldRunFrame()) {
+						log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
+					}
 				}
 			}
 			if (node2) {
