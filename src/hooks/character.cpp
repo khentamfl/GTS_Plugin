@@ -1,3 +1,4 @@
+#include "managers/damage/SizeHitEffects.hpp"
 #include "hooks/character.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
@@ -34,35 +35,11 @@ namespace Hooks
 
 	void Hook_Character::HandleHealthDamage(Character* a_this, Character* a_attacker, float a_damage) {
 		if (a_attacker) {
-			auto charCont = a_this->GetCharController();
-			float sizedifference = get_visual_scale(a_attacker)/get_visual_scale(a_this);
-			log::info("Receiver: {}, Attacker: {}, difference: {}", a_this->GetDisplayFullName(), a_attacker->GetDisplayFullName(), sizedifference);
-			if (charCont) {
-				a_this->SetGraphVariableFloat("GiantessScale", sizedifference); // Manages Stagger Resistance inside Behaviors.
-			}
-			float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(a_attacker, ActorValue::kAttackDamageMult);
-			float damage = (a_damage * damagemult) - a_damage;
-			if (damage < 0) {
-				DamageAV(a_this, ActorValue::kHealth, -damage * sizedifference); // Damage hp
-			}
-			if (damage > 0) {
-				a_this->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * sizedifference); // Restore hp
-			}
+			SizeHitEffects::GetSingleton().ApplyEverything(a_attacker, a_this, a_damage); // Apply bonus damage, overkill, stagger resistance
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
 				if (Cache) {
 					Cache->SizeReserve += -a_damage/3000;
-				}
-			}
-			if (damage > GetAV(a_this, ActorValue::kHealth) * 1.5) { // Overkill effect
-				float attackerscale = get_visual_scale(a_attacker);
-				float receiverscale = get_visual_scale(a_this);
-				if (IsDragon(a_this)) {
-					receiverscale *= 2.0;
-				}
-				float size_difference = attackerscale/receiverscale;
-				if (size_difference >= 18.0) {
-					HitManager::GetSingleton().Overkill(a_this, a_attacker);
 				}
 			}
 		}
