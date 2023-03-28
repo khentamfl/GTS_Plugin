@@ -152,6 +152,7 @@ namespace Gts {
 					}
 					Runtime::PlaySound("GtsCrushSound", tiny, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", tiny, 1.0, 1.0);
+					Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
 
 					GrowAfterTheKill(giant, tiny);

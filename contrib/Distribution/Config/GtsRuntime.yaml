@@ -254,6 +254,7 @@ impacts:
   GtsBloodSprayImpactSet: "GTS.esp|01CEA7"
   GtsBloodSprayImpactSetVore: "GTS.esp|024578"
   GtsBloodSprayImpactSetVoreMedium: "GTS.esp|024579"
+  GtsBloodSprayImpactSetVoreSmallest: "GTS.esp|02457A"
 
 races:
   dragonRace: "Skyrim.esm|012E82"

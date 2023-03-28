@@ -120,6 +120,7 @@ namespace {
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			float movementFactor = 1.0;
+			SizeHitEffects::GetSingleton().BreakBones(giant, tiny);
 			if (giant->AsActorState()->IsSprinting()) {
 				movementFactor *= 1.5;
 			}

@@ -68,4 +68,23 @@ namespace Gts {
         DoDamage(attacker, receiver, damage);
         StaggerImmunity(attacker, receiver);
     }
+
+	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny) { // Used as a debuff 
+		int random = (rand()% 150 + 1);
+		if (random <= 2) {
+		float gs = get_visual_scale(giant);
+    	float ts = get_visual_scale(tiny);
+    	float sizediff = gs/ts;
+    	if (sizediff < 3.0) {
+        	return;
+		}
+
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<float> dis(-0.2, 0.2);
+
+		Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+        SizeManager::GetSingleton().ModSizeVulnerability(Target, 0.15);
+		}
+	}
 }
