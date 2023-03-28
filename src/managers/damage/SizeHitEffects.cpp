@@ -32,7 +32,7 @@ namespace {
 	void StaggerImmunity(Actor* attacker, Actor* receiver) {
 		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		auto charCont = receiver->GetCharController();
-		log::info("Stagger: Receiver: {}, Attacker: {}, difference: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), sizedifference);
+		//log::info("Stagger: Receiver: {}, Attacker: {}, difference: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), sizedifference);
 		if (charCont) {
 			receiver->SetGraphVariableFloat("GiantessScale", sizedifference); // Manages Stagger Resistance inside Behaviors.
 		}
@@ -42,10 +42,10 @@ namespace {
 		float sizedifference = get_visual_scale(attacker)/get_visual_scale(receiver);
 		float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
 		float damage = (a_damage * damagemult) - a_damage;
-		log::info("Damage: Receiver: {}, Attacker: {}, difference: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), sizedifference, a_damage);
+		log::info("Damage: Receiver: {}, Attacker: {}, difference: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), sizedifference, a_damage, damage);
 		if (damage < 0) {
 			Overkill(attacker, receiver, damage * sizedifference);
-			DamageAV(receiver, ActorValue::kHealth, -damage * sizedifference); // Damage hp
+			DamageAV(receiver, ActorValue::kHealth, -(damage * sizedifference)); // Damage hp
 			return;
 		}
 		if (damage > 0) {
