@@ -29,6 +29,41 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+	void Experiment(Actor* actor) {
+		static Timer timer = Timer(5.0);
+		if (timer.ShouldRunFrame() && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			auto ai = actor->GetActorRuntimeData().currentProcess->high;
+			if (ai) {
+				float fade = static_cast<float>(ai->fadeState);
+				log::info("Fade of {} is {}", actor->GetDisplayFullName(), fade);
+			}
+			auto node = find_node(actor, "NPC Root [Root]");
+			auto node2 = find_node(actor, "NPC");
+			NiAvObject* Root = node;
+			NiAvObject* NPC = node2;
+			if (Root) {
+				log::info("AV Fade of Root {} is {}", actor->GetDisplayFullName(), Root->fadeAmount);
+			} if (NPC) {
+				log::info("AV Fade of NPC {} is {}", actor->GetDisplayFullName(), NPC->fadeAmount);
+			}
+			
+			if (node) {
+				BSFadeNode* fn = static_cast<BSFadeNode*>(node);
+				if (fn) {
+					float fl = fn->GetRuntimeData().currentFade;
+					log::info("Fade Level NPC Root of {} is {}", actor->GetDisplayFullName(), fl);
+				}
+			} 
+			if (node2) {
+				BSFadeNode* fn2 = static_cast<BSFadeNode*>(node2);
+				if (fn2) {
+					float fl = fn2->GetRuntimeData().currentFade;
+					log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
+				}
+			}
+		}
+	}
+
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
 			return;
@@ -479,30 +514,8 @@ void GtsManager::Update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		static Timer timer = Timer(5.0);
-		if (timer.ShouldRunFrame() && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-			auto ai = actor->GetActorRuntimeData().currentProcess->high;
-			if (ai) {
-				float fade = static_cast<float>(ai->fadeState);
-				log::info("Fade of {} is {}", actor->GetDisplayFullName(), fade);
-			}
-			auto node = find_node(actor, "NPC Root [Root]");
-			auto node2 = find_node(actor, "NPC");
-			if (node) {
-				BSFadeNode* fn = static_cast<BSFadeNode*>(node);
-				if (fn) {
-					float fl = fn->GetRuntimeData().currentFade;
-					log::info("Fade Level NPC Root of {} is {}", actor->GetDisplayFullName(), fl);
-				}
-			} 
-			if (node2) {
-				BSFadeNode* fn2 = static_cast<BSFadeNode*>(node2);
-				if (fn2) {
-					float fl = fn2->GetRuntimeData().currentFade;
-					log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
-				}
-			}
-		}
+		
+		Experiment(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
