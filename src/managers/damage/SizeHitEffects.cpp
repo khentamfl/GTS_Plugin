@@ -1,7 +1,9 @@
 #include "Config.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
+#include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "utils/actorUtils.hpp"
 #include "node.hpp"
@@ -70,21 +72,27 @@ namespace Gts {
     }
 
 	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny) { // Used as a debuff 
+	if (!Runtime::HasPerkTeam(giant, "BoneCrusher")) {
+		return;
+	}
 		int random = (rand()% 150 + 1);
 		if (random <= 2) {
-		float gs = get_visual_scale(giant);
-    	float ts = get_visual_scale(tiny);
-    	float sizediff = gs/ts;
-    	if (sizediff < 3.0) {
-        	return;
-		}
+			float gs = get_visual_scale(giant);
+    		float ts = get_visual_scale(tiny);
+			if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+				gs += 3.0; // Allow to break bones with SMT
+			}
+    		float sizediff = gs/ts;
+    		if (sizediff < 3.0) {
+        		return;
+			}
 
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_real_distribution<float> dis(-0.2, 0.2);
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-		Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-        SizeManager::GetSingleton().ModSizeVulnerability(Target, 0.15);
+			Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+        	SizeManager::GetSingleton().ModSizeVulnerability(Target, 0.15);
 		}
 	}
 }

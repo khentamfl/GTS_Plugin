@@ -143,6 +143,7 @@ perks:
   SprintDamageMult2: "GTS.esp|123BEB"
   Cruelty: "GTS.esp|128CF8"
   RealCruelty: "GTS.esp|142205"
+  BoneCrusher: "GTS.esp|128CF5"
 
 explosions:
   BloodExplosion: "GTS.esp|01CE9D"
