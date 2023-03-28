@@ -259,7 +259,7 @@ namespace Gts {
             }
           } else {
             // Just move the hand if <1m
-            std::string_view handNodeName = "NPC HAND L [L Hand]"
+            std::string_view handNodeName = "NPC HAND L [L Hand]";
             auto handBone = find_node(tiny, handNodeName);
             if (handBone) {
               auto collisionHand = handBone->GetCollisionObject();
