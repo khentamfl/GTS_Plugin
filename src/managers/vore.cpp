@@ -245,7 +245,7 @@ namespace Gts {
 						charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.
 					}
 
-          if (deltaLength > 70.0) {
+          if (deltaLength >= 0.0) {
             // WARP if > 1m
             auto ragDoll = GetRagdoll(tiny_is_actor);
             hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
