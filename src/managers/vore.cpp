@@ -266,10 +266,12 @@ namespace Gts {
               if (collisionHand) {
                 auto handRb = collisionHand->GetRigidBody();
                 if (handRb) {
-                  auto ms = handRb->GetMotionState();
-                  if (ms) {
-                    ms->transform.translation = ms->transform.translation + delta;
-                  }
+					hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
+					handRb->SetPosition(delta);
+                  //auto ms = handRb->GetMotionState();
+                  //if (ms) {
+                    //ms->transform.translation = ms->transform.translation + delta;
+                 // }
                 }
               }
             }
