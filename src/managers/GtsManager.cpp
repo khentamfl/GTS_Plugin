@@ -485,7 +485,7 @@ void GtsManager::Update() {
 			if (node) {
 				BSFadeNode* fn = static_cast<BSFadeNode*>(node);
 					if (fn) {
-						float fl = fn->GetRuntimeData()->currentFade;
+						float fl = fn.GetRuntimeData()->currentFade;
 						log::info("Fade Level of {} is {}", actor->GetDisplayFullName(), fl);
 						}
 					}
