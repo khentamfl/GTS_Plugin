@@ -41,9 +41,9 @@ namespace {
 	void DoDamage(Actor* attacker, Actor* receiver, float a_damage) {
 		float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
 		float damage = (a_damage * damagemult) - a_damage;
-		log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
+		//log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
 		if (damage < 0) {
-			Overkill(attacker, receiver, a_damage + damage);
+			Overkill(attacker, receiver, -(a_damage + damage));
 			DamageAV(receiver, ActorValue::kHealth, -damage); // Damage hp
 			return;
 		}
