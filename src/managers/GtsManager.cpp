@@ -484,14 +484,13 @@ void GtsManager::Update() {
 			auto node = find_node(actor, "NPC Root [Root]");
 			if (node) {
 				BSFadeNode* fn = static_cast<BSFadeNode*>(node);
-					if (fn) {
-						float fl = fn.GetRuntimeData().currentFade;
-						log::info("Fade Level of {} is {}", actor->GetDisplayFullName(), fl);
-						}
-					}
+				if (fn) {
+					float fl = fn->GetRuntimeData().currentFade;
+					log::info("Fade Level of {} is {}", actor->GetDisplayFullName(), fl);
 				}
 			}
 		}
+
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
