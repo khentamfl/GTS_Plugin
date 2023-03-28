@@ -38,6 +38,7 @@ namespace {
 			}
 			auto node = find_node(actor, "NPC Root [Root]");
 			auto node2 = find_node(actor, "NPC");
+			auto node3 = find_Node(actor, "skeleton_female.nif");
 			NiAVObject* Root = node;
 			NiAVObject* NPC = node2;
 			if (Root) {
@@ -58,6 +59,13 @@ namespace {
 				if (fn2) {
 					float fl = fn2->GetRuntimeData().currentFade;
 					log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
+				}
+			}
+			if (node2) {
+				BSFadeNode* fn3 = static_cast<BSFadeNode*>(node3);
+				if (fn3) {
+					float fl = fn3->GetRuntimeData().currentFade;
+					log::info("Fade Level of Nif {} is {}", actor->GetDisplayFullName(), fl);
 				}
 			}
 		}
