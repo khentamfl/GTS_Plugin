@@ -3,6 +3,7 @@
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/SizeHitEffects.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "managers/Attributes.hpp"
