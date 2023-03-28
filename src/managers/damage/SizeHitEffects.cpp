@@ -93,7 +93,7 @@ namespace Gts {
 
 			Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
         	SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
-			DamageAV(tiny, ActorValue::kHealth, damage * 6);
+			DamageAV(tiny, ActorValue::kHealth, damage * 10);
 		}
 	}
 }

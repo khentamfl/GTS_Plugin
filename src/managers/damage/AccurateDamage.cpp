@@ -460,7 +460,7 @@ namespace Gts {
 			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
-		float result = ((0.25 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * additionaldamage * weightdamage * mult);
+		float result = ((0.25 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
@@ -469,6 +469,8 @@ namespace Gts {
 			multiplier += 7.2;
 			result *= 4.0;
 		}
+
+		log::info("Additional Damage: {}", additionaldamage);
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result);
 
