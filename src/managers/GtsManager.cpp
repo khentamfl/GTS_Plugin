@@ -481,6 +481,11 @@ void GtsManager::Update() {
 		}
 		static Timer timer = Timer(5.0);
 		if (timer.ShouldRunFrame() && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			auto ai = actor->GetActorRuntimeData().currentProcess->high;
+			if (ai) {
+				float fade = static_cast<float>(ai->fadeState);
+				log::info("Fade of {} is {}", actor->GetDisplayFullName(), fade);
+			}
 			auto node = find_node(actor, "NPC Root [Root]");
 			auto node2 = find_node(actor, "NPC");
 			if (node) {
@@ -493,7 +498,7 @@ void GtsManager::Update() {
 			if (node2) {
 				BSFadeNode* fn2 = static_cast<BSFadeNode*>(node2);
 				if (fn2) {
-					float fl = fn->GetRuntimeData().currentFade;
+					float fl = fn2->GetRuntimeData().currentFade;
 					log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
 				}
 			}
