@@ -38,8 +38,8 @@ namespace {
 			}
 			auto node = find_node(actor, "NPC Root [Root]");
 			auto node2 = find_node(actor, "NPC");
-			NiAvObject* Root = node;
-			NiAvObject* NPC = node2;
+			NiAVObject* Root = node;
+			NiAVObject* NPC = node2;
 			if (Root) {
 				log::info("AV Fade of Root {} is {}", actor->GetDisplayFullName(), Root->fadeAmount);
 			} if (NPC) {
