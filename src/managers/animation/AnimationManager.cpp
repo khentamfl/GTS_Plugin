@@ -138,7 +138,7 @@ namespace Gts {
 	void AnimationManager::StartAnim( std::string_view trigger, Actor* giant) {
 		if (giant) {
 			AnimationManager::StartAnim(trigger, *giant);
-			log::info("Starting Trigger {} for {}", trigger, giant->GetDisplayFullName());
+			//log::info("Starting Trigger {} for {}", trigger, giant->GetDisplayFullName());
 		}
 	}
 

@@ -37,8 +37,9 @@ namespace Hooks
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
 		if (a_attacker) {
-			float sizedifference = get_visual_scale(a_this)/get_visual_scale(a_attacker);
 			auto charCont = a_this->GetCharController();
+			float sizedifference = get_visual_scale(a_attacker)/get_visual_scale(a_this);
+			log::info("Receiver: {}, Attacker: {}, difference: {}", a_this->GetDisplayFullName(), a_attacker->GetDisplayFullName(), sizedifference);
 			if (charCont) {
 				a_this->SetGraphVariableFloat("GiantessScale", sizedifference); // Manages Stagger Resistance inside Behaviors.
 			}
@@ -48,7 +49,7 @@ namespace Hooks
 				DamageAV(a_this, ActorValue::kHealth, -damage * sizedifference); // Damage hp
 			}
 			if (damage > 0) {
-				a_this->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage); // Restore hp
+				a_this->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * sizedifference); // Restore hp
 			}
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
