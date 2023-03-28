@@ -481,7 +481,7 @@ void GtsManager::Update() {
 		}
 
 		if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-			auto node = find_node(actor, "NPC Root [Root]") 
+			auto node = find_node(actor, "NPC Root [Root]");
 			if (node) {
 				BSFadeNode* fn = static_cast<BSFadeNode*>(node);
 					if (fn) {
