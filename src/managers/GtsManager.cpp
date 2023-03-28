@@ -480,10 +480,16 @@ void GtsManager::Update() {
 			continue;
 		}
 
-		for (auto node: find_node(actor, "NPC Root [Root]")) {
-			if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-				float fl = node->AsFadeNode()->GetRuntimeData()->currentFade;
-				log::info("Fade Level of {} is {}", actor->GetDisplayFullName(), fl);
+		if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+			auto node = find_node(actor, "NPC Root [Root]") 
+			if (node) {
+				BSFadeNode* fn = static_cast<BSFadeNode*>(node);
+					if (fn) {
+						float fl = fn->GetRuntimeData()->currentFade;
+						log::info("Fade Level of {} is {}", actor->GetDisplayFullName(), fl);
+						}
+					}
+				}
 			}
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
