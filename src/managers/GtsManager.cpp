@@ -34,7 +34,7 @@ namespace {
 		if (timer.ShouldRunFrame() && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto ai = actor->GetActorRuntimeData().currentProcess->high;
 			if (ai) {
-				log::info("Fade of {} is {}", actor->GetDisplayFullName(), ai->fadeState);
+				//log::info("Fade of {} is {}", actor->GetDisplayFullName(), ai->fadeState);
 			}
 			auto node = find_node(actor, "NPC Root [Root]");
 			auto node2 = find_node(actor, "NPC");
