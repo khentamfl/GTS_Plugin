@@ -13,7 +13,7 @@ using namespace Gts;
 using namespace RE;
 using namespace SKSE;
 using namespace std;
-
+ 
 namespace {
     void Overkill(Actor* attacker, Actor* receiver, float damage) {
 		if (damage > GetAV(receiver, ActorValue::kHealth) * 1.5) { // Overkill effect
