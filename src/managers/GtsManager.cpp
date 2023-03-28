@@ -31,7 +31,7 @@ using namespace std;
 namespace {
 	void Experiment(Actor* actor) {
 		static Timer timer = Timer(5.0);
-		if (timer.ShouldRunFrame() && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+		if ((actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto ai = actor->GetActorRuntimeData().currentProcess->high;
 			if (ai) {
 				//log::info("Fade of {} is {}", actor->GetDisplayFullName(), ai->fadeState);
@@ -54,21 +54,24 @@ namespace {
 				BSFadeNode* fn = static_cast<BSFadeNode*>(node);
 				if (fn) {
 					float fl = fn->GetRuntimeData().currentFade;
-					log::info("Fade Level NPC Root of {} is {}", actor->GetDisplayFullName(), fl);
+					//log::info("Fade Level NPC Root of {} is {}", actor->GetDisplayFullName(), fl);
 				}
 			} 
 			if (node2) {
 				BSFadeNode* fn2 = static_cast<BSFadeNode*>(node2);
 				if (fn2) {
 					float fl = fn2->GetRuntimeData().currentFade;
-					log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
+					//log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
 				}
 			}
 			if (node2) {
 				BSFadeNode* fn3 = static_cast<BSFadeNode*>(node3);
 				if (fn3) {
 					float fl = fn3->GetRuntimeData().currentFade;
-					log::info("Fade Level of Nif {} is {}", actor->GetDisplayFullName(), fl);
+					if (timer.ShouldRunFrame()) {
+						log::info("Fade Level of Nif {} is {}", actor->GetDisplayFullName(), fl);
+					}
+					fn3->GetRuntimeData().currentFade = 1.0;
 				}
 			}
 		}

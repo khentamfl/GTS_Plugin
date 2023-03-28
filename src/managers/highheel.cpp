@@ -65,7 +65,7 @@ namespace Gts {
 		if (disableHH) {
 			hhData.multiplier.target = 0.0;
 			hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(actor);
-			log::info("HH is false");
+			//log::info("HH is false");
 		} else {
 			hhData.multiplier.target = 1.0;
 			hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(actor);

@@ -72,6 +72,9 @@ namespace Gts {
     }
 
 	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny, float damage) { // Used as a debuff 
+		if (tiny->IsDead()) {
+			return;
+		}
 		if (!Runtime::HasPerkTeam(giant, "BoneCrusher")) {
 			return;
 		}
