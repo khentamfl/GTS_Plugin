@@ -38,7 +38,7 @@ namespace {
 			}
 			auto node = find_node(actor, "NPC Root [Root]");
 			auto node2 = find_node(actor, "NPC");
-			auto node3 = find_Node(actor, "skeleton_female.nif");
+			auto node3 = find_node(actor, "skeleton_female.nif");
 			NiAVObject* Root = node;
 			NiAVObject* NPC = node2;
 			NiAVObject* Skel = node3;
