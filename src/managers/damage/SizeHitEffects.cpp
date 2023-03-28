@@ -1,6 +1,6 @@
 #include "Config.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
-
+#include "managers/hitmanager.hpp"
 #include "scale/scale.hpp"
 #include "utils/actorUtils.hpp"
 #include "node.hpp"
@@ -29,7 +29,7 @@ namespace {
 	}
 
 	void StaggerImmunity(Actor* attacker, Actor* receiver) {
-		float sizedifference = get_visual_scale(receiver)/get_visual_scale(a_attacker);
+		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		auto charCont = receiver->GetCharController();
 		log::info("Stagger: Receiver: {}, Attacker: {}, difference: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), sizedifference);
 		if (charCont) {
@@ -67,6 +67,5 @@ namespace Gts {
     void SizeHitEffects::ApplyEverything(Actor* attacker, Actor* receiver, float damage) {
         DoDamage(attacker, receiver, damage);
         StaggerImmunity(attacker, receiver);
-        Overkill(attacker, receiver, damage);
     }
 }
