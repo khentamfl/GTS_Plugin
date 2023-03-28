@@ -41,10 +41,13 @@ namespace {
 			auto node3 = find_Node(actor, "skeleton_female.nif");
 			NiAVObject* Root = node;
 			NiAVObject* NPC = node2;
+			NiAVObject* Skel = node3;
 			if (Root) {
 				log::info("AV Fade of Root {} is {}", actor->GetDisplayFullName(), Root->fadeAmount);
 			} if (NPC) {
 				log::info("AV Fade of NPC {} is {}", actor->GetDisplayFullName(), NPC->fadeAmount);
+			} if (Skel) {
+				log::info("AV Fade of Skel {} is {}", actor->GetDisplayFullName(), Skel->fadeAmount);
 			}
 			
 			if (node) {
