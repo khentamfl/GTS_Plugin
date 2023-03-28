@@ -479,14 +479,22 @@ void GtsManager::Update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-
-		if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+		static Timer timer = Timer(5.0);
+		if (timer.ShouldRunFrame() && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto node = find_node(actor, "NPC Root [Root]");
+			auto node2 = find_node(actor, "NPC");
 			if (node) {
 				BSFadeNode* fn = static_cast<BSFadeNode*>(node);
 				if (fn) {
 					float fl = fn->GetRuntimeData().currentFade;
-					log::info("Fade Level of {} is {}", actor->GetDisplayFullName(), fl);
+					log::info("Fade Level NPC Root of {} is {}", actor->GetDisplayFullName(), fl);
+				}
+			} 
+			if (node2) {
+				BSFadeNode* fn2 = static_cast<BSFadeNode*>(node2);
+				if (fn2) {
+					float fl = fn->GetRuntimeData().currentFade;
+					log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
 				}
 			}
 		}
