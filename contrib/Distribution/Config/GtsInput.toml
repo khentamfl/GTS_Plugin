@@ -50,6 +50,7 @@ keys = ["LSHIFT", "Q"]
 [[InputEvent]]
 name = "SizeReserve"
 keys = ["E"]
+duration = 1.2
 trigger = "continuous"
 
 # Use size reserve and grow yourself. Requires Perk.
@@ -64,7 +65,8 @@ duration = 1.2
 [[InputEvent]]
 name = "ThighCrush"
 keys = ["LALT"]
-duration = 0.6
+exclusive = true
+duration = 2.0
 
 # Enter Thigh Crush Animation.
 
@@ -84,8 +86,8 @@ exclusive = false
 
 [[InputEvent]]
 name = "ThighCrushSpare"
-keys = [ "W" ]
-exclusive = false
+keys = [ "LSHIFT, W" ]
+exclusive = true
 
 # Second way to Exit Thigh Crush animation.
 
@@ -107,7 +109,7 @@ name = "GrabKill"
 keys = [ "LMB" ]
 exclusive = false
 
-# Crush actor that is in hand.
+# Crush actor that is currently hand.
 
 [[InputEvent]]
 name = "GrabSpare"

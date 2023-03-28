@@ -92,7 +92,7 @@ namespace Gts {
 			std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 			Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-        	SizeManager::GetSingleton().ModSizeVulnerability(Target, 0.15);
+        	SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
 			DamageAV(tiny, ActorValue::kHealth, damage * 6);
 		}
 	}
