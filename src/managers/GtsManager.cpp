@@ -479,6 +479,13 @@ void GtsManager::Update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
+
+		for (auto node: find_node(actor, "NPC Root [Root]")) {
+			if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+				float fl = node->AsFadeNode()->GetRuntimeData()->currentFade;
+				log::info("Fade Level of {} is {}", actor->GetDisplayFullName(), fl);
+			}
+		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
