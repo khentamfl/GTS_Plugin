@@ -1,6 +1,7 @@
 #include "Config.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/hitmanager.hpp"
+#include "managers/Attributes.hpp"
 #include "scale/scale.hpp"
 #include "utils/actorUtils.hpp"
 #include "node.hpp"
