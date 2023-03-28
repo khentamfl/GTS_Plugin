@@ -32,7 +32,7 @@ namespace Hooks
 		_SetBaseActorValue = Vtbl5.write_vfunc(0x04, SetBaseActorValue);
 
 		REL::Relocation<std::uintptr_t> AnimVtbl{ RE::VTABLE_PlayerCharacter[2] };
-		_PCAnimEvents = AnimVtbl.write_vfunc(0x1, &PCAnimEvents);
+		_PCAnimEvents = AnimVtbl.write_vfunc(0x1, &PCAnimEvents); 
 	}
 
 	void Hook_PlayerCharacter::HandleHealthDamage(PlayerCharacter* a_this, Actor* a_attacker, float a_damage) {
