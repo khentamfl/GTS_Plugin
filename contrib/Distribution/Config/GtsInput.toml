@@ -86,7 +86,7 @@ exclusive = false
 
 [[InputEvent]]
 name = "ThighCrushSpare"
-keys = [ "LSHIFT, W" ]
+keys = [ "LSHIFT, "W" ]
 exclusive = true
 
 # Second way to Exit Thigh Crush animation.
