@@ -354,7 +354,7 @@ namespace Gts {
 		this->giant = giant;
 		this->tiny = tiny;
 		float duration = 30.0;
-		float mealEffiency = 0.1; // Normal pray has 10% efficent stomach
+		float mealEffiency = 0.1; // Normal pred has 10% efficent stomach
 		if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
 			duration = 45.0;
 			mealEffiency = 0.2;
