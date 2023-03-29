@@ -259,17 +259,17 @@ namespace Gts {
             }
           } else {
             // Just move the hand if <1m
-            std::string_view handNodeName = "NPC HAND L [L Hand]";
+            std::string_view handNodeName = "NPC HAND L [L Hand]"
             auto handBone = find_node(tiny, handNodeName);
             if (handBone) {
               auto collisionHand = handBone->GetCollisionObject();
               if (collisionHand) {
                 auto handRb = collisionHand->GetRigidBody();
                 if (handRb) {
-                  //auto ms = handRb->GetMotionState();
-                  //if (ms) {
-                    //ms->transform.translation = ms->transform.translation + delta;
-                 // }
+                  auto ms = handRb->GetMotionState();
+                  if (ms) {
+                    ms->transform.translation = ms->transform.translation + delta;
+                  }
                 }
               }
             }
@@ -345,6 +345,7 @@ namespace Gts {
 		this->factor.value = 0.0;
     this->factor.velocity = 0.0;
 		this->appliedFactor = 0.0;
+    this->state = VoreBuffState::Running;
 
 		if (tiny) {
 			float tiny_scale = get_visual_scale(tiny);
@@ -362,6 +363,7 @@ namespace Gts {
 	}
 	void VoreBuff::Update() {
 		if (!this->giant) {
+      this->state = VoreBuffState::Done;
 			return;
 		}
 		switch (this->state) {
@@ -379,6 +381,7 @@ namespace Gts {
 				log::info("VoreBuff firing, Giant: {}, Tiny:{}: Health+: {}, Size+: {}, Spring: {}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName(), healthToApply, sizeToApply, this->factor.value);
 
 				if (fabs(this->appliedFactor - 1.0) < 1e-3) {
+          log::info("Going to finish state");
 					this->state = VoreBuffState::Finishing;
 				}
 			}
@@ -386,6 +389,7 @@ namespace Gts {
 					AdjustGiantessSkill(this->giant, this->tiny);
 					VoreMessage_Absorbed(this->giant, this->tiny);
 					BuffAttributes(this->giant, this->tiny);
+          log::info("Going to done state");
 					this->state = VoreBuffState::Done;
 			}
 			case VoreBuffState::Done: {
@@ -432,6 +436,7 @@ namespace Gts {
 		for (auto& [key, voreBuff]: this->buffs) {
 			voreBuff.Update();
 			if (voreBuff.Done()) {
+        log::info("Erasing buff");
 				this->buffs.erase(key);
 			}
 		}
