@@ -252,7 +252,7 @@ namespace Gts {
             hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
             for (auto rb: ragDoll->rigidBodies) {
               if (rb) {
-                auto ms = handRb->GetMotionState();
+                auto ms = rb->GetMotionState();
                 if (ms) {
                   hkVector4 currentPos = ms->transform.translation;
                   hkVector4 newPos = currentPos + delta;
@@ -276,8 +276,8 @@ namespace Gts {
                     auto ms = handRb->GetMotionState();
                     if (ms) {
                       hkVector4 targetLocationHavok = hkVector4(targetLocation.x/70.0, targetLocation.y/70.0, targetLocation.z/70, 1.0);
-                      rb->motion.SetPosition(targetLocationHavok);
-                      rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
+                      handRb->motion.SetPosition(targetLocationHavok);
+                      handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
                     }
                   }
                 }
