@@ -91,7 +91,7 @@ namespace {
 
 		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.68 * random) + absorbedSize/50) * ValueEffectiveness);
+		float Total = (((0.56 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
@@ -355,7 +355,7 @@ namespace Gts {
 		this->giant = giant;
 		this->tiny = tiny;
 		float duration = 40.0;
-		float mealEffiency = 0.2; // Normal pred has 10% efficent stomach
+		float mealEffiency = 0.2; // Normal pred has 20% efficent stomach
 		if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
 			duration = 60.0;
 			mealEffiency = 0.3;
@@ -363,7 +363,7 @@ namespace Gts {
 		if (IsDragon(tiny)) {
 			mealEffiency *= 6.0;
 		}
-		this->factor.halflife = duration * 0.45;
+		this->factor.halflife = duration;
 		this->factor.target = 1.0;
 		this->factor.value = 0.0;
     	this->factor.velocity = 0.0;
