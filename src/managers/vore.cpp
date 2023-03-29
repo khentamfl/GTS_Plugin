@@ -284,18 +284,25 @@ namespace Gts {
 			auto headNode = find_node_any(giant, headNodeName);
 			if (headNode) {
 				NiPoint3 headCenter = headNode->world.translate;
-				float headKillRadius = 0.15 * giantScale;
+				float headKillRadius = 20.0 * giantScale;
 				for (auto& [key, tiny]: this->tinies) {
 					// Get all nodes in range
 					std::vector<NiAVObject*> nodes_inrange = {};
+          std::vector<std::string> names_inrange = {};
 					auto root = tiny->GetCurrent3D();
 					VisitNodes(root, [&nodes_inrange, &headCenter, &headKillRadius](NiAVObject& node) {
 						float distance = (node.world.translate - headCenter).Length();
 						if (distance < headKillRadius) {
 							nodes_inrange.push_back(&node);
+              names_inrange.push_back(node.name.c_str());
 						}
 						return true;
 					});
+          log::info("Trying to shink {} nodes", nodes_inrange.size());
+          for (auto& name: names_inrange) {
+            log::info("  - {}", name);
+          }
+
 					// Check all children of the nodes
 					//
 					// Not sure if this check is required.
@@ -323,8 +330,11 @@ namespace Gts {
 							}
 						});
 						if (!anyInvalid) {
+              log::info("  - Shrinking Node");
 							node->local.scale = 0.0;
-						}
+						} else {
+              log::info("  - NOT Shrinking Node");
+            }
 					}
 				}
 			}
