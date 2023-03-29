@@ -14,6 +14,7 @@ namespace Gts
 			[[nodiscard]] static HitManager& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
+			void DoHitGrowth(Actor* receiver, Actor* attacker, float damage);
 			void HitEvent(const TESHitEvent* evt) override;
 			void Update() override;
 			void Overkill(Actor* receiver, Actor* attacker);

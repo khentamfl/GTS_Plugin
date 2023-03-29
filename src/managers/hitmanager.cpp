@@ -28,6 +28,22 @@ namespace Gts {
 		return "HitManager";
 	}
 
+	void HitManager::DoHitGrowth(Actor* receiver, Actor* attacker, float damage) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
+		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
+
+		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
+			float GrowthValue = damage/1000;
+			mod_target_scale(receiver, GrowthValue * SizeHunger * Gigantism);
+			Rumble::Once("HitManager", receiver, GrowthValue * SizeHunger * Gigantism);
+		} 
+		else if (sizemanager.BalancedMode() >= 2.0 && receiver->formId == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
+			float ShrinkValue = damage/500;
+			mod_target_scale(receiver, ShrinkValue/SizeHunger/Gigantism);
+		}
+	}
+
 	void HitManager::HitEvent(const TESHitEvent* a_event) {
 		if (!a_event) {
 			return;
