@@ -29,71 +29,23 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	void Experiment(Actor* actor) {
+	void AdjustFadeNode(Actor* actor) {
 		static Timer timer = Timer(5.0);
+		if (get_visual_scale < 1.5) {
+			//return;
+		}
 		if ((actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto ai = actor->GetActorRuntimeData().currentProcess->high;
 			if (ai) {
-				ai->fadeState = <FADE_STATE::kNormal, 0>;
-				log::info("Setting fade state to Normal")
+				ai->fadeState.set(0.0);
+				log::info("Setting fade state to Normal");
 			}
-      auto model = actor->Get3D(false);
-      if (model) {
-  			VisitNodes(model, [](NiAVObject& node){
-    				auto asFade = node.AsFadeNode();
-    			if (asFade) {
-            log::info("Fading: {} from {}", asFade->name.c_str(), asFade->GetRuntimeData().currentFade);
-     				 asFade->GetRuntimeData().currentFade = 1.0;
-    			}
-    				return true;
-  			});
-        auto parent = model->parent;
-        while (parent != nullptr) {
-          auto asFade = parent->AsFadeNode();
-          if (asFade) {
-            log::info("Parent is fade node: {} with value {}", asFade->name.c_str(), asFade->GetRuntimeData().currentFade);
-    			}
-          parent = parent->parent;
-        }
-      }
-			auto node = find_node(actor, "NPC Root [Root]");
-			auto node2 = find_node(actor, "NPC");
-			auto node3 = find_node(actor, "skeleton_female.nif");
-			auto node4 = find_node(actor, "Scene Root");
-			NiAVObject* Root = node;
-			NiAVObject* NPC = node2;
-			NiAVObject* Skel = node3;
-			NiAVObject* Scene = node4;
-			actor->SetAlpha(1.0); 
-
+			auto node = find_node(actor, "skeleton_female.nif");
+			NiAVObject* skeleton = node;
 			if (node) {
-				BSFadeNode* fn = node->AsFadeNode();
-				if (fn) {
-					float fl = fn->GetRuntimeData().currentFade;
-					if (timer.ShouldRunFrame()) {
-						log::info("Fade Level NPC Root of {} is {}", actor->GetDisplayFullName(), fl);
-					}
-					//fn->GetRuntimeData().currentFade = -90000.0;
-				}
-			}
-			if (node2) {
-				BSFadeNode* fn2 = node2->AsFadeNode();
-				if (fn2) {
-					float fl = fn2->GetRuntimeData().currentFade;
-					if (timer.ShouldRunFrame()) {
-						log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
-					}
-					//fn2->GetRuntimeData().currentFade = 1.0;
-				}
-			}
-			if (node2) {
-				BSFadeNode* fn3 = node3->AsFadeNode();
-				if (fn3) {
-					float fl = fn3->GetRuntimeData().currentFade;
-					if (timer.ShouldRunFrame()) {
-						log::info("Fade Level of Nif {} is {}", actor->GetDisplayFullName(), fl);
-					}
-					fn3->GetRuntimeData().currentFade = 1.0;
+				BSFadeNode* fadenode = node->AsFadeNode();
+				if (fadenode) {
+					fadenode->GetRuntimeData().currentFade = 1.0;
 				}
 			}
 		}
@@ -550,7 +502,7 @@ void GtsManager::Update() {
 			continue;
 		}
 
-		Experiment(actor);
+		AdjustFadeNode(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
