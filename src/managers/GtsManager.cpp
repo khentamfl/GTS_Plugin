@@ -39,7 +39,7 @@ namespace {
 			VisitNodes(actor->Get3D(false), [](NiAVObject& node){
   			auto asFade = node.AsFadeNode();
   			if (asFade) {
-    			asFade->GetRuntimeData().currentfade = 1.0;
+    			asFade->GetRuntimeData().currentFade = 1.0;
   				}
 			});
 			auto node = find_node(actor, "NPC Root [Root]");
