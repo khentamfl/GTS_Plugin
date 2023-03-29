@@ -91,7 +91,7 @@ namespace {
 
 		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.56 * random) + absorbedSize/50) * ValueEffectiveness);
+		float Total = (((0.50 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
@@ -363,7 +363,7 @@ namespace Gts {
 		if (IsDragon(tiny)) {
 			mealEffiency *= 6.0;
 		}
-		this->factor.halflife = duration;
+		this->factor.halflife = duration * 0.45;
 		this->factor.target = 1.0;
 		this->factor.value = 0.0;
     	this->factor.velocity = 0.0;
@@ -396,15 +396,15 @@ namespace Gts {
 				float amountToApplyThisUpdate = factor - this->appliedFactor;
 				this->appliedFactor = factor;
 
-				float healthToApply = amountToApplyThisUpdate * this->restorePower;
-				float sizeToApply = amountToApplyThisUpdate * this->sizePower;
+				float healthToApply = this->restorePower;// amountToApplyThisUpdate * this->restorePower;
+				float sizeToApply = this->sizePower;//amountToApplyThisUpdate * this->sizePower;
 
 				DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
 				mod_target_scale(this->giant, sizeToApply);
 				log::info("VoreBuff firing, Giant: {}, Tiny:{}: Health+: {}, Size+: {}, Spring: {}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName(), healthToApply, sizeToApply, this->factor.value);
 
 				if (fabs(this->appliedFactor - 1.0) < 1e-3) {
-          log::info("Going to finish state");
+          			log::info("Going to finish state");
 					this->state = VoreBuffState::Finishing;
 				}
         break;
@@ -413,7 +413,10 @@ namespace Gts {
 					AdjustGiantessSkill(this->giant, this->tiny);
 					VoreMessage_Absorbed(this->giant, this->tiny);
 					BuffAttributes(this->giant, this->tiny);
-          log::info("Going to done state");
+					mod_target_scale(this->giant, this->restorePower * 60);
+					Rumble::Once("VoreShake", this->giant, this->restorePower * 240);
+
+          			log::info("Going to done state");
 					this->state = VoreBuffState::Done;
           break;
 			}

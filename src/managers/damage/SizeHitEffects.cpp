@@ -53,7 +53,7 @@ namespace {
 		float damage = (a_damage * damagemult) - a_damage;
 		//log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
 
-		HealthGate(attacker, receiver, (a_damage + damage));
+		HealthGate(attacker, receiver, -(a_damage + damage));
 
 		if (damage < 0) {
 			Overkill(attacker, receiver, -(a_damage + damage));

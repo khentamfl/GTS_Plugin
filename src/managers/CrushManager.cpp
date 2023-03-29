@@ -72,7 +72,7 @@ namespace {
 	void RandomMoan(Actor* caster, Actor* target) {
 		auto randomInt = rand() % 10;
 		if (randomInt < 1 ) {
-			Runtime::PlaySound("MoanSound", caster, 1.0, 1.0);
+			Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
 			GrowAfterTheKill(caster, target);
 		}
 	}

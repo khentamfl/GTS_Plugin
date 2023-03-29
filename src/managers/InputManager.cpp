@@ -65,7 +65,7 @@ namespace {
 				static Timer timergrowth = Timer(2.00);
 				if (timergrowth.ShouldRunFrame()) {
 					Runtime::PlaySound("growthSound", player, Cache->SizeReserve/50 * duration, 0.0);
-					Runtime::PlaySound("MoanSound", player, Volume, 0.0);
+					Runtime::PlaySoundAtNode("MoanSound", player, Volume, 0.0, "NPC Head [Head]");
 				}
 
 				mod_target_scale(player, SizeCalculation/80 * gigantism);

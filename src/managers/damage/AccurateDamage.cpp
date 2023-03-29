@@ -470,7 +470,7 @@ namespace Gts {
 			result *= 4.0;
 		}
 
-		log::info("Additional Damage: {}", additionaldamage);
+		//log::info("Additional Damage: {}", additionaldamage);
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result);
 

@@ -352,7 +352,7 @@ namespace Gts {
 		}
 		int Random = rand() % 8;
 		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthPerk")) {
-			Runtime::PlaySound("MoanSound",caster, 1.0, 1.0);
+			Runtime::PlaySoundAtNode("MoanSound",caster, 1.0, 1.0, "NPC Head [Head]");
 		}
 		PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement, type);
 		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");

@@ -28,7 +28,7 @@ namespace Gts {
 		}
 		if (this->MoanTimer.ShouldRun() && Runtime::GetFloat("AllowMoanSounds") == 1.0) {
 			float MoanVolume = clamp(0.25, 2.0, get_visual_scale(caster)/8);
-			Runtime::PlaySound("MoanSound", caster, MoanVolume, 1.0);
+			Runtime::PlaySoundAtNode("MoanSound", caster, MoanVolume, 1.0, "NPC Head [Head]");
 			//log::info("Attempting to play Moan Sound for: {}", caster->GetDisplayFullName());
 		}
 		float bonus = 1.0;
