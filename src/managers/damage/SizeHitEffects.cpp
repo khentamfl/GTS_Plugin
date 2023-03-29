@@ -3,6 +3,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
+#include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "utils/actorUtils.hpp"
