@@ -308,7 +308,7 @@ namespace Gts {
 						}
 						return true;
 					});
-          //log::info("Trying to shink {} nodes", nodes_inrange.size());
+          log::info("Trying to shink {} nodes", nodes_inrange.size());
 
 					// Check all children of the nodes
 					//
@@ -338,11 +338,11 @@ namespace Gts {
 							return true;
 						});
 						if (!anyInvalid) {
-              //log::info("  - Shrinking Node: {}", node->name.c_str());
-							//node->local.scale = 0.1;
+              log::info("  - Shrinking Node: {}", node->name.c_str());
+							node->local.scale = 0.1;
               update_node(node);
 						} else {
-              //log::info("  - NOT Shrinking Node: {}", node->name.c_str());
+              log::info("  - NOT Shrinking Node: {}", node->name.c_str());
             }
 					}
 				}
@@ -403,6 +403,7 @@ namespace Gts {
           log::info("Going to finish state");
 					this->state = VoreBuffState::Finishing;
 				}
+        break;
 			}
 			case VoreBuffState::Finishing: {
 					AdjustGiantessSkill(this->giant, this->tiny);
@@ -410,6 +411,7 @@ namespace Gts {
 					BuffAttributes(this->giant, this->tiny);
           log::info("Going to done state");
 					this->state = VoreBuffState::Done;
+          break;
 			}
 			case VoreBuffState::Done: {
 
