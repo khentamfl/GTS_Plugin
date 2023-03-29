@@ -23,6 +23,7 @@ sounds:
   RumbleWalkSound: "GTS.esp|50423E"
   GiantImpactSound: "Skyrim.esm|0C52F7"
   VoreSwallow: "GTS.esp|56E747"
+  TriggerHG: "GTS.esp|578948"
 
 
 spellEffects:
@@ -144,6 +145,7 @@ perks:
   Cruelty: "GTS.esp|128CF8"
   RealCruelty: "GTS.esp|142205"
   BoneCrusher: "GTS.esp|128CF5"
+  HealthGate: "GTS.esp|4E0B39"
 
 explosions:
   BloodExplosion: "GTS.esp|01CE9D"
