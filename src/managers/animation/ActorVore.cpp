@@ -42,6 +42,10 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
+	void VoreMessage_Absorbing(Actor* pred, Actor* prey) {
+		ConsoleLog::GetSingleton()->Print("%s is now absorbing %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+	}
+
 	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) {
 		if (giant) {
 			auto fgen = giant->GetFaceGenAnimationData();
@@ -128,6 +132,9 @@ namespace {
 		VoreData.EnableMouthShrinkZone(false);
 		AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Close mouth
 		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Close mouth
+		for (auto& tiny: VoreData.GetVories()) {
+			VoreMessage_Absorbing(giant, tiny);
+		}
 	}
 
 	void GTSvore_handR_reposition_S(AnimationEventData& data) {

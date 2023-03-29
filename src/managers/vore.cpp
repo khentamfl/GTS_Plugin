@@ -120,7 +120,7 @@ namespace {
 	void VoreMessage_Swallowed(Actor* pred, Actor* prey) {
 		int random = rand() % 2;
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
-			ConsoleLog::GetSingleton()->Print("%s was Swallowed Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s was Swallowed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
 			ConsoleLog::GetSingleton()->Print("%s greedily swallowed %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 		} else if (prey->IsDead()) {
@@ -137,13 +137,13 @@ namespace {
 			}
 		}
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
-			ConsoleLog::GetSingleton()->Print("%s was Eaten Alive by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s was completely absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
 			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
 			ConsoleLog::GetSingleton()->Print("%s both body and soul were greedily devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (prey->IsDead()) {
-			ConsoleLog::GetSingleton()->Print("%s Was Eaten by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s was absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 	}
 
@@ -339,7 +339,7 @@ namespace Gts {
 						});
 						if (!anyInvalid) {
               log::info("  - Shrinking Node: {}", node->name.c_str());
-							node->local.scale = 0.1;
+							node->local.scale = 0.50;
               update_node(node);
 						} else {
               log::info("  - NOT Shrinking Node: {}", node->name.c_str());
@@ -353,18 +353,21 @@ namespace Gts {
 	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 1.0)) {
 		this->giant = giant;
 		this->tiny = tiny;
-		float duration = 30.0;
-		float mealEffiency = 0.1; // Normal pred has 10% efficent stomach
+		float duration = 40.0;
+		float mealEffiency = 0.2; // Normal pred has 10% efficent stomach
 		if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
-			duration = 45.0;
-			mealEffiency = 0.2;
+			duration = 60.0;
+			mealEffiency = 0.3;
+		}
+		if (IsDragon(tiny)) {
+			mealEffiency *= 6.0;
 		}
 		this->factor.halflife = duration * 0.45;
 		this->factor.target = 1.0;
 		this->factor.value = 0.0;
-    this->factor.velocity = 0.0;
+    	this->factor.velocity = 0.0;
 		this->appliedFactor = 0.0;
-    this->state = VoreBuffState::Running;
+    	this->state = VoreBuffState::Running;
 
 		if (tiny) {
 			float tiny_scale = get_visual_scale(tiny);
@@ -373,10 +376,10 @@ namespace Gts {
 			// Amount of health we apply depends on their vitality
 			// and their size
 			if (Runtime::HasPerkTeam(giant, "VorePerkRegeneration")) {
-				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
+				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 5 * mealEffiency;
 			} else {
-        this->restorePower = 0.0;
-      }
+        	this->restorePower = 0.0;
+      		}
 			this->sizePower = tiny_scale * mealEffiency;
 		}
 	}

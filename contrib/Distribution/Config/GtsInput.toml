@@ -108,6 +108,7 @@ keys = ["F"]
 name = "GrabKill"
 keys = ["LMB"]
 exclusive = false
+trigger = "continuous"
 
 # Crush actor that is currently hand.
 
