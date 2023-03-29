@@ -52,6 +52,7 @@ namespace {
           if (asFade) {
             log::info("Parent is fade node: {} with value {}", asFade->name.c_str(), asFade->GetRuntimeData().currentFade);
     			}
+          parent = parent->parent;
         }
       }
 			auto node = find_node(actor, "NPC Root [Root]");
