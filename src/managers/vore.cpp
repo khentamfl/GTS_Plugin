@@ -117,14 +117,15 @@ namespace {
 		}
 	}
 
-	void VoreMessage_Swallowed(Actor* pred, Actor* prey) {
+
+	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {
 		int random = rand() % 2;
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
-			ConsoleLog::GetSingleton()->Print("%s was Swallowed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s was Swallowed and is now being slowly absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
-			ConsoleLog::GetSingleton()->Print("%s greedily swallowed %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s is now absorbing %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 		} else if (prey->IsDead()) {
-			ConsoleLog::GetSingleton()->Print("%s was Swallowed whole by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s will soon be completely absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 	}
 
@@ -182,7 +183,7 @@ namespace Gts {
 	void VoreData::Swallow() {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
-			VoreMessage_Swallowed(giant, tiny);
+			VoreMessage_SwallowedAbsorbing(giant, tiny);
 		}
 	}
 	void VoreData::KillAll() {
@@ -339,7 +340,7 @@ namespace Gts {
 						});
 						if (!anyInvalid) {
               log::info("  - Shrinking Node: {}", node->name.c_str());
-							node->local.scale = 0.50;
+							tiny->SetAlpha(0.0);//node->local.scale = 0.50;
               update_node(node);
 						} else {
               log::info("  - NOT Shrinking Node: {}", node->name.c_str());
@@ -376,7 +377,7 @@ namespace Gts {
 			// Amount of health we apply depends on their vitality
 			// and their size
 			if (Runtime::HasPerkTeam(giant, "VorePerkRegeneration")) {
-				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 5 * mealEffiency;
+				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 8 * mealEffiency;
 			} else {
         	this->restorePower = 0.0;
       		}
