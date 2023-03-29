@@ -31,14 +31,17 @@ using namespace std;
 namespace {
 	void AdjustFadeNode(Actor* actor) {
 		static Timer timer = Timer(5.0);
-		if (get_visual_scale < 1.5) {
+		if (get_visual_scale(actor) < 1.5) {
 			//return;
 		}
 		if ((actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-			auto ai = actor->GetActorRuntimeData().currentProcess->high;
+			auto ai = actor->GetActorRuntimeData().currentProcess;
 			if (ai) {
-				ai->fadeState.set(HighProcessData::FADE_STATE::kNormal);
-				log::info("Setting fade state to Normal");
+  				auto aiHigh = ai->high;
+  				if (aiHigh) {
+    				aiHigh->fadeState.set(HighProcessData::FADE_STATE::kNormal);
+					log::info("Setting FadeState of {} to Normal", actor->GetDisplayFullName());
+  				}
 			}
 			auto node = find_node(actor, "skeleton_female.nif");
 			NiAVObject* skeleton = node;
