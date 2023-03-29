@@ -325,7 +325,7 @@ namespace Gts {
           excludedChildren.push_back(find_node(tiny, "NPC COM [COM]", false));
           excludedChildren.push_back(find_node(tiny, "NPC Pelvis [Pelv]", false));
           excludedChildren.push_back(find_node(tiny, "NPC Spine [Spn0]", false));
-          excludedChildren.push_back(find_node(tiny, "Camera Control", false));
+          excludedChildren.push_back(find_node(tiny, "Camera Control", false)); 
           excludedChildren.push_back(find_node(tiny, "NPC Translate", false));
 					for (auto& node: nodes_inrange) {
 						bool anyInvalid = false;
