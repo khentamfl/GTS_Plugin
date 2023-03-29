@@ -37,10 +37,11 @@ namespace {
 				//log::info("Fade of {} is {}", actor->GetDisplayFullName(), ai->fadeState);
 			}
 			VisitNodes(actor->Get3D(false), [](NiAVObject& node){
-  			auto asFade = node.AsFadeNode();
+  				auto asFade = node.AsFadeNode();
   			if (asFade) {
-    			asFade->GetRuntimeData().currentFade = 1.0;
-  				}
+   				 asFade->GetRuntimeData().currentFade = 1.0;
+  			}
+  				return true;
 			});
 			auto node = find_node(actor, "NPC Root [Root]");
 			auto node2 = find_node(actor, "NPC");
