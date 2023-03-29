@@ -46,22 +46,22 @@ namespace {
 			if (Runtime::HasPerk(receiver, "HealthGate")) {
 				static Timer protect = Timer(30.00);
 				if (protect.ShouldRunFrame()) {
-				float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
+					float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
 
-				attacker->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-				attacker->NotifyAnimationGraph("staggerStart");
+					attacker->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
+					attacker->NotifyAnimationGraph("staggerStart");
 
-				if (get_visual_scale(receiver) > 1.0) {
-					mod_target_scale(receiver, -0.35);
-					shake_camera(receiver, 0.85, 0.5); 
-					Runtime::PlaySound("TriggerHG", receiver, 1.0, 0.0);
-					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-					receiver->NotifyAnimationGraph("staggerStart");
-				}
+					if (get_visual_scale(receiver) > 1.0) {
+						mod_target_scale(receiver, -0.25);
+						shake_camera(receiver, 4.85, 1.25); 
+						Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.0);
+						receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
+						receiver->NotifyAnimationGraph("staggerStart");
+					}
 
-				receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 9999999); // Restore to full
-				DamageAV(receiver, ActorValue::kHealth, maxhp * 0.90); // Damage 90% hp
-				log::info("Applying Health Gate");
+					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 9999999); // Restore to full
+					DamageAV(receiver, ActorValue::kHealth, -maxhp * 0.90); // Damage 90% hp
+					log::info("Applying Health Gate");
 				}
 			}
 		}
