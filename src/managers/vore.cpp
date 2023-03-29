@@ -294,7 +294,7 @@ namespace Gts {
 			auto headNode = find_node_any(giant, headNodeName);
 			if (headNode) {
 				NiPoint3 headCenter = headNode->world.translate;
-				float headKillRadius = 20.0 * giantScale;
+				float headKillRadius = 10.0 * giantScale;
 				for (auto& [key, tiny]: this->tinies) {
 					// Get all nodes in range
 					std::vector<NiAVObject*> nodes_inrange = {};
@@ -317,25 +317,27 @@ namespace Gts {
 					// the upper leg is in the shrink zone
 					// it won't shrink it until the lower
 					// leg and foot are shrunk first
-					string rootNodeName = "NPC Root [Root]";
-          auto tinyRootA = find_node(tiny, rootNodeName, true);
-          auto tinyRootB = find_node(tiny, rootNodeName, false);
+          std::vector<NiAVObject*> excludedChildren = {};
+          excludedChildren.push_back(find_node(tiny, "NPC ROOT [ROOT]", false));
+          excludedChildren.push_back(find_node(tiny, "NPC COM [COM]", false));
+          excludedChildren.push_back(find_node(tiny, "NPC Pelvis [Pelv]", false));
+          excludedChildren.push_back(find_node(tiny, "NPC Spine [Spn0]", false));
+          excludedChildren.push_back(find_node(tiny, "Camera Control", false));
+          excludedChildren.push_back(find_node(tiny, "NPC Translate", false));
 					for (auto& node: nodes_inrange) {
 						bool anyInvalid = false;
 						VisitNodes(node, [&anyInvalid, tinyRootA, tinyRootB](NiAVObject& node_child) {
-							if (tinyRootA == &node_child) {
-                anyInvalid = true;
-								return false;
-              } else if (tinyRootB == &node_child) {
-                anyInvalid = true;
-								return false;
-							} else {
-								return true;
-							}
+              for (auto excludedNode: this->excludedChildren) {
+                if (excludedNode == &node_child) {
+                  anyInvalid = true;
+  								return false;
+                }
+              }
+							return true;
 						});
 						if (!anyInvalid) {
               log::info("  - Shrinking Node: {}", node->name.c_str());
-							node->local.scale = 0.0;
+							node->local.scale = 0.1;
               update_node(node);
 						} else {
               log::info("  - NOT Shrinking Node: {}", node->name.c_str());
