@@ -245,10 +245,10 @@ namespace Gts {
 						charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.
 					}
 
+          hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
           if (deltaLength > 70.0) {
             // WARP if > 1m
             auto ragDoll = GetRagdoll(tiny_is_actor);
-            hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
             for (auto rb: ragDoll->rigidBodies) {
               if (rb) {
                 auto ms = rb->GetMotionState();
@@ -266,7 +266,7 @@ namespace Gts {
               if (collisionHand) {
                 auto handRbBhk = collisionHand->GetRigidBody();
                 if (handRbBhk) {
-                  auto handRb = static_cast<hkpRigidBody*>(handRbBhk.referencedObject.get());
+                  auto handRb = static_cast<hkpRigidBody*>(handRbBhk->referencedObject.get());
                   if (handRb) {
                     auto ms = handRb->GetMotionState();
                     if (ms) {
@@ -293,7 +293,7 @@ namespace Gts {
 					std::vector<NiAVObject*> nodes_inrange = {};
           std::vector<std::string> names_inrange = {};
 					auto root = tiny->GetCurrent3D();
-					VisitNodes(root, [&nodes_inrange, &headCenter, &headKillRadius](NiAVObject& node) {
+					VisitNodes(root, [&nodes_inrange, &headCenter, &headKillRadius, &names_inrange](NiAVObject& node) {
 						float distance = (node.world.translate - headCenter).Length();
 						if (distance < headKillRadius) {
 							nodes_inrange.push_back(&node);
