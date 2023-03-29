@@ -42,7 +42,7 @@ namespace {
 
 	void HealthGate(Actor* attacker, Actor* receiver, float a_damage) {
 		if (a_damage > GetAV(receiver, ActorValue::kHealth) * 0.5) {
-			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * 10);
+			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 10);
 			log::info("Applying Health Gate");
 		}
 	}
@@ -51,7 +51,7 @@ namespace {
 		float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
 		float damage = (a_damage * damagemult) - a_damage;
 		//log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
-		
+
 		HealthGate(attacker, receiver, (a_damage + damage));
 
 		if (damage < 0) {
