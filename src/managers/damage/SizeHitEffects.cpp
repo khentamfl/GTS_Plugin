@@ -56,7 +56,7 @@ namespace {
 						mod_target_scale(receiver, -0.25);
 					}
 
-					Rumble::Once("CheatDeath", receiver, 2.50); 
+					Rumble::Once("CheatDeath", receiver, 25.50); 
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.0);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 					receiver->NotifyAnimationGraph("staggerStart");
@@ -64,6 +64,7 @@ namespace {
 					float overkill = a_damage + maxhp/5;
 		
 					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, overkill); // Restore to full
+					SetAV(receiver, ActorValue::kHealth, maxhp/6);
 					//DamageAV(receiver, ActorValue::kHealth, -maxhp * 0.90); // Damage 90% hp
 					log::info("Applying Health Gate, overkill: {}, damage: {}", overkill, a_damage);
 				}
