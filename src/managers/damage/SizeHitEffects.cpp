@@ -59,7 +59,7 @@ namespace {
 						receiver->NotifyAnimationGraph("staggerStart");
 					}
 
-					float Overkill = GetAV(receiver, ActoorValue::kHealth) - a_damage;
+					float Overkill = GetAV(receiver, ActorValue::kHealth) - a_damage;
 					float restore = a_damage + overkill;
 		
 					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 9999999); // Restore to full
