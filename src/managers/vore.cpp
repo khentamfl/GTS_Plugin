@@ -414,8 +414,8 @@ namespace Gts {
 					AdjustGiantessSkill(this->giant, this->tiny);
 					VoreMessage_Absorbed(this->giant, this->tiny);
 					BuffAttributes(this->giant, this->tiny);
-					mod_target_scale(this->giant, this->restorePower * 60);
-					Rumble::Once("VoreShake", this->giant, this->restorePower * 240);
+					mod_target_scale(this->giant, this->restorePower);
+					Rumble::Once("VoreShake", this->giant, this->restorePower * 3);
 
           			log::info("Going to done state");
 					this->state = VoreBuffState::Done;
