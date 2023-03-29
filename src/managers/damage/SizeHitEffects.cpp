@@ -63,7 +63,7 @@ namespace {
 
 					float overkill = GetAV(receiver, ActorValue::kHealth) + -a_damage;
 		
-					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, overkill); // Restore to full
+					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -overkill); // Restore to full
 					//DamageAV(receiver, ActorValue::kHealth, -maxhp * 0.90); // Damage 90% hp
 					log::info("Applying Health Gate, overkill: {}, damage: {}", overkill, a_damage);
 				}

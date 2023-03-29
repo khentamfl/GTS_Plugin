@@ -401,6 +401,8 @@ namespace Gts {
 				float sizeToApply = amountToApplyThisUpdate * this->sizePower;
 
 				DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
+				DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
+
 				mod_target_scale(this->giant, sizeToApply);
 				log::info("VoreBuff firing, Giant: {}, Tiny:{}: Health+: {}, Size+: {}, Spring: {}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName(), healthToApply, sizeToApply, this->factor.value);
 
