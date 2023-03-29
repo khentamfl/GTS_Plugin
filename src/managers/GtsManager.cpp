@@ -34,7 +34,7 @@ namespace {
 		if ((actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto ai = actor->GetActorRuntimeData().currentProcess->high;
 			if (ai) {
-				ai->fadeState.set(FADE_STATE::kNormal);
+				ai->fadeState = <FADE_STATE::kNormal, 0>;
 				log::info("Setting fade state to Normal")
 			}
       auto model = actor->Get3D(false);
