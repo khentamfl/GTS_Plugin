@@ -302,9 +302,6 @@ namespace Gts {
 						return true;
 					});
           log::info("Trying to shink {} nodes", nodes_inrange.size());
-          for (auto& name: names_inrange) {
-            log::info("  - {}", name);
-          }
 
 					// Check all children of the nodes
 					//
@@ -319,10 +316,7 @@ namespace Gts {
 					for (auto& node: nodes_inrange) {
 						bool anyInvalid = false;
 						VisitNodes(node, [&anyInvalid, tinyRootA, tinyRootB](NiAVObject& node_child) {
-							if (node_child.local.scale > 1e-3) {
-								anyInvalid = true;
-								return false;
-              } else if (tinyRootA == &node_child) {
+							if (tinyRootA == &node_child) {
                 anyInvalid = true;
 								return false;
               } else if (tinyRootB == &node_child) {
@@ -333,10 +327,11 @@ namespace Gts {
 							}
 						});
 						if (!anyInvalid) {
-              log::info("  - Shrinking Node");
+              log::info("  - Shrinking Node: {}", node->name.c_str());
 							node->local.scale = 0.0;
+              update_node(node);
 						} else {
-              log::info("  - NOT Shrinking Node");
+              log::info("  - NOT Shrinking Node: {}", node->name.c_str());
             }
 					}
 				}
