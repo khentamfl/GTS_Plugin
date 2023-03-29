@@ -51,7 +51,7 @@ namespace {
 	void GrabKillEvent(const InputEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
-		auto grabbedActor = Grab::GetHeldActor(player);
+		auto grabbedActor = Grab::GetHeldActor(player); 
 		if (grabbedActor) {
 			float sd = get_visual_scale(player)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
