@@ -36,7 +36,7 @@ namespace {
 			if (ai) {
 				//log::info("Fade of {} is {}", actor->GetDisplayFullName(), ai->fadeState);
 			}
-			VistNodes(actor->Get3D(false), [](NiAVObject& node){
+			VisitNodes(actor->Get3D(false), [](NiAVObject& node){
   			auto asFade = node.AsFadeNode();
   			if (asFade) {
     			asFade->GetRuntimeData().currentfade = 1.0;
