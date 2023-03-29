@@ -49,6 +49,7 @@ namespace {
 	}
 
 	void GrabKillEvent(const InputEventData& data) {
+		auto& sizemanager = SizeManager::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
 		if (grabbedActor) {
