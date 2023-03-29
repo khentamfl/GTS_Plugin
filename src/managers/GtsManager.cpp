@@ -63,6 +63,7 @@ namespace {
 			NiAVObject* NPC = node2;
 			NiAVObject* Skel = node3;
 			NiAVObject* Scene = node4;
+			actor->SetAlpha(1.0); 
 
 			if (node) {
 				BSFadeNode* fn = node->AsFadeNode();
