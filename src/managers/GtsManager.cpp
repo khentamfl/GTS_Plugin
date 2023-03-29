@@ -62,7 +62,7 @@ namespace {
 					if (timer.ShouldRunFrame()) {
 						log::info("Fade Level of NPC {} is {}", actor->GetDisplayFullName(), fl);
 					}
-					fn2->GetRuntimeData().currentFade = 1.0;
+					//fn2->GetRuntimeData().currentFade = 1.0;
 				}
 			}
 			if (node2) {
