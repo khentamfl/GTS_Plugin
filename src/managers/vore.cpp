@@ -3,6 +3,7 @@
 #include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"
 #include "utils/actorUtils.hpp"
+#include "managers/Rumble.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
