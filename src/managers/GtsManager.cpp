@@ -46,17 +46,17 @@ namespace {
 			NiAVObject* Scene = node4;
 			
 			if (node) {
-				BSFadeNode* fn = static_cast<BSFadeNode*>(node);
+				BSFadeNode* fn = node->AsFadeNode();
 				if (fn) {
 					float fl = fn->GetRuntimeData().currentFade;
 					if (timer.ShouldRunFrame()) {
 						log::info("Fade Level NPC Root of {} is {}", actor->GetDisplayFullName(), fl);
 					}
-					fn->GetRuntimeData().currentFade = -90000.0;
+					//fn->GetRuntimeData().currentFade = -90000.0;
 				}
 			} 
 			if (node2) {
-				BSFadeNode* fn2 = static_cast<BSFadeNode*>(node2);
+				BSFadeNode* fn2 = node2->AsFadeNode();
 				if (fn2) {
 					float fl = fn2->GetRuntimeData().currentFade;
 					if (timer.ShouldRunFrame()) {
@@ -66,7 +66,7 @@ namespace {
 				}
 			}
 			if (node2) {
-				BSFadeNode* fn3 = static_cast<BSFadeNode*>(node3);
+				BSFadeNode* fn3 = node3->AsFadeNode();
 				if (fn3) {
 					float fl = fn3->GetRuntimeData().currentFade;
 					if (timer.ShouldRunFrame()) {
