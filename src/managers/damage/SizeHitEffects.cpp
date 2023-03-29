@@ -53,18 +53,18 @@ namespace {
 
 					if (get_visual_scale(receiver) > 1.0) {
 						mod_target_scale(receiver, -0.25);
-						shake_camera(receiver, 4.85, 1.25); 
-						Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.0);
-						receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-						receiver->NotifyAnimationGraph("staggerStart");
 					}
 
+					Rumble::Once("CheatDeath", receiver, 2.50); 
+					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.0);
+					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
+					receiver->NotifyAnimationGraph("staggerStart");
+
 					float overkill = GetAV(receiver, ActorValue::kHealth) + -a_damage;
-					float restore = overkill - a_damage;
 		
-					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 9999999); // Restore to full
+					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, overkill); // Restore to full
 					//DamageAV(receiver, ActorValue::kHealth, -maxhp * 0.90); // Damage 90% hp
-					log::info("Applying Health Gate, restore: {}, damage: {}", restore, a_damage);
+					log::info("Applying Health Gate, overkill: {}, damage: {}", overkill, a_damage);
 				}
 			}
 		}
