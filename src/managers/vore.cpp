@@ -331,7 +331,7 @@ namespace Gts {
 						bool anyInvalid = false;
 						VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
               for (auto excludedNode: excludedChildren) {
-                if (excludedNode == &node_child) {
+                if (excludedNode == &node_child) { 
                   anyInvalid = true;
   								return false;
                 }
