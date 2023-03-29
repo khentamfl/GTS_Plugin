@@ -2,6 +2,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
+#include "managers/damage/SizeHitEffects.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"
@@ -51,8 +52,16 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
 		if (grabbedActor) {
-			CrushManager::Crush(player, grabbedActor);
-			Grab::Release(player);
+			float sd = get_visual_scale(player)/get_visual_scale(grabbedActor);
+			float Health = GetAV(grabbedActor, ActorValue::kHealth);
+			float power = std::clamp(sizemanager.GetSizeAttribute(player, 0), 1.0, 999999.0);
+			float damage = (0.4 * sd) * power;
+			DamageAV(grabbedActor, ActorValue::kHealth, damage);
+			SizeHitEffects::GetSingleton().BreakBones(player, grabbedActor, damage);
+			if (damage > Health * 1.5) {
+				CrushManager::Crush(player, grabbedActor);
+				Grab::Release(player);
+			}
 		}
 	}
 

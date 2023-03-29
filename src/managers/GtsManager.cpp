@@ -37,7 +37,7 @@ namespace {
 		if ((actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto ai = actor->GetActorRuntimeData().currentProcess->high;
 			if (ai) {
-				ai->fadeState.set(0.0);
+				ai->fadeState.set(HighProcessData::FADE_STATE::kNormal);
 				log::info("Setting fade state to Normal");
 			}
 			auto node = find_node(actor, "skeleton_female.nif");
