@@ -30,7 +30,7 @@
 
 [[InputEvent]]
 name = "Vore"
-keys = [ "LSHIFT", "V" ]
+keys = [ "LSHIFT", "V"]
 trigger = "once"
 
 # Start Vore Attempt.
@@ -72,28 +72,28 @@ duration = 2.0
 
 [[InputEvent]]
 name = "ThighCrushKill"
-keys = [ "LMB" ]
+keys = ["LMB"]
 exclusive = false
 
 # Start Leg Spread, Leg Close animation.
 
 [[InputEvent]]
 name = "ThighCrushSpare"
-keys = [ "RMB" ]
+keys = ["RMB"]
 exclusive = false
 
 # Exit Thigh Crush animation.
 
 [[InputEvent]]
 name = "ThighCrushSpare"
-keys = [ "LSHIFT, "W" ]
+keys = ["LSHIFT", "W"]
 exclusive = true
 
 # Second way to Exit Thigh Crush animation.
 
 [[InputEvent]]
 name = "PartyReport"
-keys = [ "LCONTROL" ]
+keys = ["LCONTROL"]
 duration = 1.2
 
 # Reports Follower's size info into the console
@@ -106,27 +106,27 @@ keys = ["F"]
 
 [[InputEvent]]
 name = "GrabKill"
-keys = [ "LMB" ]
+keys = ["LMB"]
 exclusive = false
 
 # Crush actor that is currently hand.
 
 [[InputEvent]]
 name = "GrabSpare"
-keys = [ "RMB" ]
+keys = ["RMB"]
 exclusive = false
 
 # Release actor from hand.
 
 [[InputEvent]]
 name = "HorizontalCameraReset"
-keys = [ "RIGHT", "LEFT" ]
+keys = ["RIGHT", "LEFT"]
 exclusive = false
 trigger = "continuous"
 
 [[InputEvent]]
 name = "VerticalCameraReset"
-keys = [ "UP", "DOWN" ]
+keys = ["UP", "DOWN"]
 exclusive = false
 trigger = "continuous"
 
@@ -134,31 +134,31 @@ trigger = "continuous"
 
 [[InputEvent]]
 name = "CameraLeft"
-keys = [ "LALT", "LEFT" ]
+keys = ["LALT", "LEFT"]
 exclusive = false
 trigger = "continuous"
 
 [[InputEvent]]
 name = "CameraRight"
-keys = [ "LALT", "RIGHT" ]
+keys = ["LALT", "RIGHT"]
 exclusive = false
 trigger = "continuous"
 
 [[InputEvent]]
 name = "CameraUp"
-keys = [ "LALT", "UP" ]
+keys = ["LALT", "UP"]
 exclusive = true
 trigger = "continuous"
 
 [[InputEvent]]
 name = "CameraDown"
-keys = [ "LALT", "DOWN" ]
+keys = ["LALT", "DOWN"]
 exclusive = false
 trigger = "continuous"
 
 [[InputEvent]]
 name = "AnimSpeedUp"
-keys = [ "LMB" ]
+keys = ["LMB"]
 exclusive = false
 trigger = "continuous"
 
@@ -166,7 +166,7 @@ trigger = "continuous"
 
 [[InputEvent]]
 name = "AnimSpeedDown"
-keys = [ "RMB" ]
+keys = ["RMB"]
 exclusive = false
 trigger = "continuous"
 
@@ -174,7 +174,7 @@ trigger = "continuous"
 
 [[InputEvent]]
 name = "AnimMaxSpeed"
-keys = [ "RMB", "LMB" ]
+keys = ["RMB", "LMB"]
 exclusive = false
 trigger = "continuous"
 
@@ -182,7 +182,7 @@ trigger = "continuous"
 
 [[InputEvent]]
 name = "TotalControlGrow"
-keys = [ "UP", "LEFT"]
+keys = ["UP", "LEFT"]
 exclusive = false
 trigger = "continuous"
 
@@ -190,7 +190,7 @@ trigger = "continuous"
 
 [[InputEvent]]
 name = "TotalControlShrink"
-keys = [ "DOWN", "LEFT"]
+keys = ["DOWN", "LEFT"]
 exclusive = false
 trigger = "continuous" 
 
@@ -198,7 +198,7 @@ trigger = "continuous"
 
 [[InputEvent]]
 name = "TotalControlGrowOther"
-keys = [ "LSHIFT",  "UP", "LEFT"]
+keys = ["LSHIFT", "UP", "LEFT"]
 exclusive = false
 trigger = "continuous"
 
@@ -206,7 +206,7 @@ trigger = "continuous"
 
 [[InputEvent]]
 name = "TotalControlShrinkOther"
-keys = [ "LSHIFT", "DOWN", "LEFT"]
+keys = ["LSHIFT", "DOWN", "LEFT"]
 exclusive = false
 trigger = "continuous"
 
