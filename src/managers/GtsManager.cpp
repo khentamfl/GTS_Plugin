@@ -36,13 +36,24 @@ namespace {
 			if (ai) {
 				//log::info("Fade of {} is {}", actor->GetDisplayFullName(), ai->fadeState);
 			}
-			VisitNodes(actor->Get3D(false), [](NiAVObject& node){
-  				auto asFade = node.AsFadeNode();
-  			if (asFade) {
-   				 asFade->GetRuntimeData().currentFade = 1.0;
-  			}
-  				return true;
-			});
+      auto model = actor->Get3D(false);
+      if (model) {
+  			VisitNodes(model, [](NiAVObject& node){
+    				auto asFade = node.AsFadeNode();
+    			if (asFade) {
+            log::info("Fading: {} from {}", asFade->name.c_str(), asFade->GetRuntimeData().currentFade);
+     				 asFade->GetRuntimeData().currentFade = 1.0;
+    			}
+    				return true;
+  			});
+        auto parent = model->parent;
+        while (parent != nullptr) {
+          auto asFade = node->AsFadeNode();
+          if (asFade) {
+            log::info("Parent is fade node: {} with value {}", asFade->name.c_str(), asFade->GetRuntimeData().currentFade);
+    			}
+        }
+      }
 			auto node = find_node(actor, "NPC Root [Root]");
 			auto node2 = find_node(actor, "NPC");
 			auto node3 = find_node(actor, "skeleton_female.nif");
@@ -51,7 +62,7 @@ namespace {
 			NiAVObject* NPC = node2;
 			NiAVObject* Skel = node3;
 			NiAVObject* Scene = node4;
-			
+
 			if (node) {
 				BSFadeNode* fn = node->AsFadeNode();
 				if (fn) {
@@ -61,7 +72,7 @@ namespace {
 					}
 					//fn->GetRuntimeData().currentFade = -90000.0;
 				}
-			} 
+			}
 			if (node2) {
 				BSFadeNode* fn2 = node2->AsFadeNode();
 				if (fn2) {
