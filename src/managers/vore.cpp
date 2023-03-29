@@ -414,7 +414,7 @@ namespace Gts {
 					AdjustGiantessSkill(this->giant, this->tiny);
 					VoreMessage_Absorbed(this->giant, this->tiny);
 					BuffAttributes(this->giant, this->tiny);
-					mod_target_scale(this->giant, this->sizePower/3);
+					mod_target_scale(this->giant, this->sizePower/1.5);
 					Rumble::Once("VoreShake", this->giant, this->sizePower * 2);
 
           			log::info("Going to done state");
