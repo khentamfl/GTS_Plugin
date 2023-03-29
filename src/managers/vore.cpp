@@ -312,11 +312,13 @@ namespace Gts {
 
 					// Check all children of the nodes
 					//
-					// Not sure if this check is required.
-					// It is meant to ensure that if
-					// the upper leg is in the shrink zone
-					// it won't shrink it until the lower
-					// leg and foot are shrunk first
+					// This ensure that we are not going to shink
+					// the wrong nodes like the NPC Root which would mess
+					// with our scales
+					//
+					// Or the camera nodes that mess with the rendering
+					//
+					// Or the root of the upper and lower bodies
           std::vector<NiAVObject*> excludedChildren = {};
           excludedChildren.push_back(find_node(tiny, "NPC ROOT [ROOT]", false));
           excludedChildren.push_back(find_node(tiny, "NPC COM [COM]", false));
