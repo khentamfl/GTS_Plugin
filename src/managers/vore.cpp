@@ -259,16 +259,19 @@ namespace Gts {
             }
           } else {
             // Just move the hand if <1m
-            std::string_view handNodeName = "NPC HAND L [L Hand]"
+            std::string_view handNodeName = "NPC HAND L [L Hand]";
             auto handBone = find_node(tiny, handNodeName);
             if (handBone) {
               auto collisionHand = handBone->GetCollisionObject();
               if (collisionHand) {
-                auto handRb = collisionHand->GetRigidBody();
-                if (handRb) {
-                  auto ms = handRb->GetMotionState();
-                  if (ms) {
-                    ms->transform.translation = ms->transform.translation + delta;
+                auto handRbBhk = collisionHand->GetRigidBody();
+                if (handRbBhk) {
+                  auto handRb = static_cast<hkpRigidBody*>(handRbBhk.referencedObject.get());
+                  if (handRb) {
+                    auto ms = handRb->GetMotionState();
+                    if (ms) {
+                      ms->transform.translation = ms->transform.translation + delta;
+                    }
                   }
                 }
               }
