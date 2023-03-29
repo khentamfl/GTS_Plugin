@@ -55,7 +55,7 @@ namespace {
 		if (grabbedActor) {
 			float sd = get_visual_scale(player)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
-			float power = std::clamp(sizemanager.GetSizeAttribute(player, 0), 1.0, 999999.0);
+			float power = std::clamp(sizemanager.GetSizeAttribute(player, 0), 1.0f, 999999.0f);
 			float damage = (0.4 * sd) * power;
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
 			SizeHitEffects::GetSingleton().BreakBones(player, grabbedActor, damage);
