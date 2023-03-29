@@ -326,8 +326,8 @@ namespace Gts {
           excludedChildren.push_back(find_node(tiny, "NPC Translate", false));
 					for (auto& node: nodes_inrange) {
 						bool anyInvalid = false;
-						VisitNodes(node, [&anyInvalid, tinyRootA, tinyRootB](NiAVObject& node_child) {
-              for (auto excludedNode: this->excludedChildren) {
+						VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
+              for (auto excludedNode: excludedChildren) {
                 if (excludedNode == &node_child) {
                   anyInvalid = true;
   								return false;
