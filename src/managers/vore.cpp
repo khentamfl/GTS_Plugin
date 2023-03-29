@@ -245,16 +245,21 @@ namespace Gts {
 						charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.
 					}
 
-          hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
-          if (deltaLength > 70.0) {
+
+          if (deltaLength >= 0.0) {
             // WARP if > 1m
             auto ragDoll = GetRagdoll(tiny_is_actor);
+            hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
             for (auto rb: ragDoll->rigidBodies) {
               if (rb) {
-                auto ms = rb->GetMotionState();
+                auto ms = handRb->GetMotionState();
                 if (ms) {
-                  ms->transform.translation = ms->transform.translation + delta;
+                  hkVector4 currentPos = ms->transform.translation;
+                  hkVector4 newPos = currentPos + delta;
+                  rb->motion.SetPosition(newPos);
+                  rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
                 }
+
               }
             }
           } else {
@@ -270,7 +275,9 @@ namespace Gts {
                   if (handRb) {
                     auto ms = handRb->GetMotionState();
                     if (ms) {
-                      ms->transform.translation = ms->transform.translation + delta;
+                      hkVector4 targetLocationHavok = hkVector4(targetLocation.x/70.0, targetLocation.y/70.0, targetLocation.z/70, 1.0);
+                      rb->motion.SetPosition(targetLocationHavok);
+                      rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
                     }
                   }
                 }
