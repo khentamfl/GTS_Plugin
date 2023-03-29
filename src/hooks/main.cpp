@@ -42,6 +42,16 @@ namespace Hooks
 		logger::info("Gts applying Main Update Hook at {:X}", hook.address());
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
 
+    if (REL::Module::IsAE()) {
+      auto offsetHelper = REL::IDDatabase::Offset2ID();
+      log::info("Dumping OFFSETS AE");
+      std::ostringstream dumpTxt;
+      dumpTxt << "Dumping OFFSETS AE";
+      for (auto& offsetData: offsetHelper) {
+      	dumpTxt << '\n' << "DUMP:" << std::format("{}:{:X}:{}", offsetData.id, offsetData.offset, offsetData.offset);
+      }
+      log::info("{}", dumpTxt.str());
+    }
 		/*if (REL::Module::IsSE()) {
 		        // auto offsetHelper = REL::IDDatabase::Offset2ID();
 		        // log::info("Dumping OFFSETS");
