@@ -38,7 +38,7 @@ namespace Gts {
 			mod_target_scale(receiver, GrowthValue * SizeHunger * Gigantism);
 			Rumble::Once("HitManager", receiver, GrowthValue * SizeHunger * Gigantism);
 		} 
-		else if (sizemanager.BalancedMode() >= 2.0 && receiver->formId == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
+		else if (sizemanager.BalancedMode() >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			float ShrinkValue = damage/500;
 			mod_target_scale(receiver, ShrinkValue/SizeHunger/Gigantism);
 		}
