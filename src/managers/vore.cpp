@@ -397,8 +397,8 @@ namespace Gts {
 				float amountToApplyThisUpdate = factor - this->appliedFactor;
 				this->appliedFactor = factor;
 
-				float healthToApply = this->restorePower;// amountToApplyThisUpdate * this->restorePower;
-				float sizeToApply = this->sizePower;//amountToApplyThisUpdate * this->sizePower;
+				float healthToApply = factor * this->restorePower;// amountToApplyThisUpdate * this->restorePower;
+				float sizeToApply = factor * this->sizePower;//amountToApplyThisUpdate * this->sizePower;
 
 				DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
 				mod_target_scale(this->giant, sizeToApply);
