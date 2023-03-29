@@ -116,14 +116,12 @@ namespace {
 
 	void RightStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		data.canEditAnimSpeed = true;
 		AnimationManager::StartAnim("StompRight", player);
 		log::info("Stomp Right");
 	}
 
 	void LeftStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		data.canEditAnimSpeed = true;
 		AnimationManager::StartAnim("StompLeft", player);
 		log::info("Stomp Left");
 	}
