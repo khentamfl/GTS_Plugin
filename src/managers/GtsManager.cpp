@@ -48,7 +48,7 @@ namespace {
   			});
         auto parent = model->parent;
         while (parent != nullptr) {
-          auto asFade = node->AsFadeNode();
+          auto asFade = parent->AsFadeNode();
           if (asFade) {
             log::info("Parent is fade node: {} with value {}", asFade->name.c_str(), asFade->GetRuntimeData().currentFade);
     			}
