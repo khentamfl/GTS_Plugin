@@ -36,6 +36,12 @@ namespace {
 			if (ai) {
 				//log::info("Fade of {} is {}", actor->GetDisplayFullName(), ai->fadeState);
 			}
+			VistNodes(actor->Get3D(false), [](NiAVObject& node){
+  			auto asFade = node.AsFadeNode();
+  			if (asFade) {
+    			asFade->GetRuntimeData().currentfade = 1.0;
+  				}
+			});
 			auto node = find_node(actor, "NPC Root [Root]");
 			auto node2 = find_node(actor, "NPC");
 			auto node3 = find_node(actor, "skeleton_female.nif");
