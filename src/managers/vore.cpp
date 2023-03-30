@@ -391,14 +391,14 @@ namespace Gts {
         this->factor.value = 0.0;
         this->factor.velocity = 0.0;
         this->factor.target = 0.25;
-        this->factor.halflife = this->duration * 0.4;
+        this->factor.halflife = this->duration * 0.02;
         this->state = VoreBuffState::RampUp;
         break;
       }
       case VoreBuffState::RampUp: {
         if (fabs(this->factor.value - this->factor.value) < 1e-2) {
           this->factor.target = 0.75;
-          this->factor.halflife = this->duration * 0.5;
+          this->factor.halflife = this->duration * 0.1;
           this->state = VoreBuffState::Running;
         }
         break;
@@ -406,7 +406,7 @@ namespace Gts {
 			case VoreBuffState::Running: {
         if (fabs(this->factor.value - this->factor.value) < 1e-2) {
           this->factor.target = 1.0;
-          this->factor.halflife = this->duration * 0.4;
+          this->factor.halflife = this->duration * 0.02;
           this->state = VoreBuffState::RampDown;
         }
         break;
@@ -418,7 +418,7 @@ namespace Gts {
         break;
 			}
 			case VoreBuffState::Finishing: {
-					AdjustGiantessSkill(this->giant, this->tiny); // Buff Matter Of Size skill
+					AdjustGiantessSkill(this->giant, this->tiny); // Buff Matter OF
 					VoreMessage_Absorbed(this->giant, this->tiny);
 					BuffAttributes(this->giant, this->tiny);
 					mod_target_scale(this->giant, this->sizePower * 1.2);

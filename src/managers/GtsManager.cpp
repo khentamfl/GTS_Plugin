@@ -456,7 +456,7 @@ std::string GtsManager::DebugName() {
 
 // Poll for updates
 void GtsManager::Update() {
-	//auto PC = PlayerCharacter::GetSingleton();
+	auto PC = PlayerCharacter::GetSingleton();
 	//auto charCont = PC->GetCharController();
 	//if (charCont) {
 	//float velocity;
@@ -488,6 +488,9 @@ void GtsManager::Update() {
 	                //log::info("{}, Sneak Power: {}, Sneak Mod: {}, Noise Mult: {}", PC->GetDisplayFullName(), GetAV(PC, ActorValue::kSneakingPowerModifier), GetAV(PC, ActorValue::kSneakingModifier), GetAV(PC, ActorValue::kMovementNoiseMult));
 	   }
 	   }*/
+	bool GTSBusy;
+	PC->GetGraphVariableBool("GTS_isBusy", GTSBusy);   
+	log::info("Player is Busy? : {}", GTSBusy);
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
