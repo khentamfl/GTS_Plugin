@@ -35,6 +35,14 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.60;
 
+	void ModVulnerability(Actor* giant, Actor* tiny) {
+		if (!Runtime::HasPerkTeam(giant, "GrowingPressure")) {
+			return;
+		}
+		auto& sizemanager = SizeManager::GetSingleton();
+		sizemanager.ModSizeVulnerability(victim, 0.0005);
+	}
+
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		if (tiny->IsDead()) {
 			return;
@@ -452,6 +460,7 @@ namespace Gts {
 
 		SizeModifications(giant, tiny, highheels);
 		SMTCrushCheck(giant, tiny);
+		ModVulnerability(giant, tiny);
 
 		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
