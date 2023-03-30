@@ -89,7 +89,7 @@ namespace {
 		auto giant = &data.giant;
 		auto& sizemanager = SizeManager::GetSingleton();
 		float damage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 40.0 * damage, 1.75);
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 40.0 * damage, 2.0);
 		log::info("Firing Jump Compatibility");
 	}
 }

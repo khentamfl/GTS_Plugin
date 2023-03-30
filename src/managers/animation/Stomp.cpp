@@ -13,9 +13,13 @@
 
 #include "managers/animation/Stomp.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/damage/AccurateDamage.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "managers/explosion.hpp"
 #include "managers/Rumble.hpp"
+#include "managers/tremor.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 
@@ -30,14 +34,27 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
+	void DoEffects(Actor* giant, float modifier, std::string_view node) {
+		auto tremor = TremorManager::GetSingleton();
+		auto explosion = ExplosionManager::GetSingleton();
+		tremor.OnImpact_Manual(giant, modifier, node);
+		explosion.OnImpact_Manual(giant, modifier, node);
+	}
+
+	void DoDamage(Actor* giant, float damage, float radius) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		float damage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 12.0 * damage, 1.0);
+	}
+
 	void GTSstompimpactR(AnimationEventData& data) {
-		//data.stage = 1;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		Rumble::Once("StompR", &data.giant, volume * 8, RNode);
-		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstompimpactR, volume: %g", volume);
+		//Rumble::Once("StompR", &data.giant, volume * 8, RNode);
+		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
+		DoEffects(&data.giant, 1.75 * data.animSpeed, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
@@ -46,9 +63,10 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		Rumble::Once("StompL", &data.giant, volume * 8, LNode);
+		//Rumble::Once("StompL", &data.giant, volume * 8, LNode);
+		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
+		DoEffects(&data.giant, 1.75 * data.animSpeed, LNode);
 
-		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstompimpactL");
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
@@ -57,8 +75,9 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		Rumble::Start("StompR", &data.giant, 0.25, RNode);
-		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstomplandR");
+		//Rumble::Start("StompR", &data.giant, 0.25, RNode);
+		DoDamage(&data.giant, 0.6, 1.0);
+		DoEffects(&data.giant, 0.85 * data.animSpeed, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
@@ -67,51 +86,40 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		Rumble::Start("StompL", &data.giant, 0.25, RNode);
-		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstomplandL");
+		//Rumble::Start("StompL", &data.giant, 0.25, RNode);
+		DoDamage(&data.giant, 0.6, 1.0);
+		DoEffects(&data.giant, 0.85 * data.animSpeed, LNode);
 	}
 
 
 	void GTSstompstartR(AnimationEventData& data) {
-		//data.stage = 3;
 		data.canEditAnimSpeed = true;
 		Rumble::Start("StompR", &data.giant, 0.35, RNode);
-		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstompstartR");
 	}
 
 	void GTSstompstartL(AnimationEventData& data) {
-		//data.stage = 3;
 		data.canEditAnimSpeed = true;
 		Rumble::Start("StompL", &data.giant, 0.35, LNode); // Start stonger effect
-		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstompstartL");
 	}
 
 	void GTSStompendR(AnimationEventData& data) {
-		//data.stage = 4;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstompendR");
 	}
 
 	void GTSStompendL(AnimationEventData& data) {
-		//data.stage = 4;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		//ConsoleLog::GetSingleton()->Print("Stomp: GTSstompendL");
 	}
 
 	void GTS_Next(AnimationEventData& data) {
-		//data.stage = 0;
 		Rumble::Stop("StompR", &data.giant);
 		Rumble::Stop("StompL", &data.giant);
-		//ConsoleLog::GetSingleton()->Print("Stomp: GTS_next");
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
-		//data.stage = 0;
 		Rumble::Stop("StompR", &data.giant);
 		Rumble::Stop("StompL", &data.giant);
-		//ConsoleLog::GetSingleton()->Print("Stomp: GTSBEH_Exit");
 	}
 
 	void RightStompEvent(const InputEventData& data) {

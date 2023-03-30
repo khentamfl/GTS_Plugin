@@ -362,6 +362,7 @@ namespace Gts {
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
 		float force = evt.force;
+		float damage = 1.0;
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
 		}
@@ -394,13 +395,14 @@ namespace Gts {
 		}
 		if (evt.footEvent == FootEvent::JumpLand) {
 			movementFactor *= 3.0;
+			damage = 0.0;
 		}
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 6, true);
+			DoSizeDamage(giant, tiny, movementFactor, force * 32 * damage, true);
 
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
