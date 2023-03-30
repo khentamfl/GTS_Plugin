@@ -10,6 +10,7 @@
 using namespace SKSE;
 using namespace RE;
 using namespace Gts;
+using namespace std;
 
 namespace {
 	void make_explosion_at(FootEvent kind, Actor* actor, NiPoint3 position, float scale) {

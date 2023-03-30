@@ -12,6 +12,7 @@
 using namespace SKSE;
 using namespace RE;
 using namespace Gts;
+using namespace std;
 
 namespace {
 	enum Formula {
