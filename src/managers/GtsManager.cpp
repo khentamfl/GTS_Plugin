@@ -488,9 +488,6 @@ void GtsManager::Update() {
 	                //log::info("{}, Sneak Power: {}, Sneak Mod: {}, Noise Mult: {}", PC->GetDisplayFullName(), GetAV(PC, ActorValue::kSneakingPowerModifier), GetAV(PC, ActorValue::kSneakingModifier), GetAV(PC, ActorValue::kMovementNoiseMult));
 	   }
 	   }*/
-	bool GTSBusy;
-	PC->GetGraphVariableBool("GTS_Busy", GTSBusy);   
-	log::info("Player is Busy? : {}", GTSBusy);
 
 	for (auto actor: find_actors()) {
 		if (!actor) {

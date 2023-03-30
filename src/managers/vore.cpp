@@ -340,11 +340,11 @@ namespace Gts {
 							return true;
 						});
 						if (!anyInvalid) {
-              log::info("  - Shrinking Node: {}", node->name.c_str());
+              //log::info("  - Shrinking Node: {}", node->name.c_str());
 							tiny->SetAlpha(0.0);//node->local.scale = 0.50;
               update_node(node);
 						} else {
-              log::info("  - NOT Shrinking Node: {}", node->name.c_str());
+              //log::info("  - NOT Shrinking Node: {}", node->name.c_str());
             }
 					}
 				}
