@@ -34,11 +34,18 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
-	void DoEffects(Actor* giant, float modifier, std::string_view node) {
+	void DoEffects(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
 		auto& tremor = TremorManager::GetSingleton();
 		auto& explosion = ExplosionManager::GetSingleton();
-		tremor.OnImpact_Manual(giant, modifier, node);
-		explosion.OnImpact_Manual(giant, modifier, node);
+		Impact impact_data = FakeImpact {
+			.actor = giant,
+			.kind = kind,
+			.scale = get_visual_scale(actor) * modifier,
+			.effective_scale = get_effective_scale(actor),
+			.nodes = find_node(actor, node),
+		};
+		tremor.OnImpact(FakeImpact);
+		explosion.OnImpact(FakeImpact);
 	}
 
 	void DoDamage(Actor* giant, float damage, float radius) {
@@ -53,7 +60,7 @@ namespace {
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		//Rumble::Once("StompR", &data.giant, volume * 8, RNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
-		DoEffects(&data.giant, 1.75 * data.animSpeed, RNode);
+		DoEffects(&data.giant, 1.75 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
@@ -64,7 +71,7 @@ namespace {
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
 		//Rumble::Once("StompL", &data.giant, volume * 8, LNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
-		DoEffects(&data.giant, 1.0 * data.animSpeed, LNode);
+		DoEffects(&data.giant, 1.0 * data.animSpeed, FootEvent::Left, LNode);
 
 	}
 
@@ -76,7 +83,7 @@ namespace {
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		//Rumble::Start("StompR", &data.giant, 0.25, RNode);
 		DoDamage(&data.giant, 0.6, 1.0);
-		DoEffects(&data.giant, 0.85 * data.animSpeed, RNode);
+		DoEffects(&data.giant, 0.85 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
@@ -87,7 +94,7 @@ namespace {
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
 		//Rumble::Start("StompL", &data.giant, 0.25, RNode);
 		DoDamage(&data.giant, 0.6, 1.0);
-		DoEffects(&data.giant, 0.85 * data.animSpeed, LNode);
+		DoEffects(&data.giant, 0.85 * data.animSpeed, FootEvent::Left, LNode);
 	}
 
 
