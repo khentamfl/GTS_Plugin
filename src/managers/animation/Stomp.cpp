@@ -56,11 +56,13 @@ namespace {
 	void GTSstompstartR(AnimationEventData& data) {
 		data.canEditAnimSpeed = true;
 		Rumble::Start("StompR", &data.giant, 0.35, RNode);
+		log::info("StompStartR true");
 	}
 
 	void GTSstompstartL(AnimationEventData& data) {
 		data.canEditAnimSpeed = true;
 		Rumble::Start("StompL", &data.giant, 0.35, LNode); // Start stonger effect
+		log::info("StompStartL true");
 	}
 
 	void GTSstompimpactR(AnimationEventData& data) {
@@ -70,7 +72,7 @@ namespace {
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		//Rumble::Once("StompR", &data.giant, volume * 8, RNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
-		DoEffects(&data.giant, 1.75 * data.animSpeed, FootEvent::Right, RNode);
+		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
@@ -81,7 +83,7 @@ namespace {
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
 		//Rumble::Once("StompL", &data.giant, volume * 8, LNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
-		DoEffects(&data.giant, 1.0 * data.animSpeed, FootEvent::Left, LNode);
+		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
 
 	}
 
@@ -93,7 +95,7 @@ namespace {
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		//Rumble::Start("StompR", &data.giant, 0.25, RNode);
 		DoDamage(&data.giant, 0.6, 1.0);
-		DoEffects(&data.giant, 0.85 * data.animSpeed, FootEvent::Right, RNode);
+		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
@@ -104,7 +106,7 @@ namespace {
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
 		//Rumble::Start("StompL", &data.giant, 0.25, RNode);
 		DoDamage(&data.giant, 0.6, 1.0);
-		DoEffects(&data.giant, 0.85 * data.animSpeed, FootEvent::Left, LNode);
+		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
 	}
 
 	void GTSStompendR(AnimationEventData& data) {

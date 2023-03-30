@@ -14,6 +14,5 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 			virtual void OnImpact(const Impact& impact) override;
-			virtual void OnImpact_Manual(Actor* actor, float power, std::string_view nodes);
 	};
 }

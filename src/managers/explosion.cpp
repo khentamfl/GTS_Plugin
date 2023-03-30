@@ -139,46 +139,4 @@ namespace Gts {
 			}
 		}
 	}
-
-	void ExplosionManager::OnImpact_Manual(Actor* actor, float power, std::string_view nodes) {
-		if (actor) {
-			return;
-		}
-		float scale = get_effective_scale(actor) * power;
-		float minimal_size = 3.0;
-		bool fp = false;
-		if (actor->formID == 0x14 && IsFirstPerson()) {
-			fp = true;
-		}
-		if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
-			if (HighHeelManager::IsWearingHH(actor)) {
-				scale *= 1.25;
-			}
-			
-			auto node = find_node(actor, nodes, fp);
-			if (node)
-			 {
-				// First try casting a ray
-				NiPoint3 foot_location = node->world.translate;
-
-				float hh_offset = HighHeelManager::GetHHOffset(actor).Length();
-				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05*scale - hh_offset)); // Shift up a little then subtract the hh offset
-				NiPoint3 ray_direction(0.0, 0.0, -1.0);
-				bool success = false;
-				float ray_length = meter_to_unit(std::max(1.05*scale, 1.05));
-				NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, ray_length, success);
-
-				if (!success) {
-					explosion_pos = foot_location;
-					explosion_pos.z = actor->GetPosition().z;
-				}
-				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
-					make_explosion_at_manual(actor, explosion_pos, scale);
-				}
-				if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
-					make_explosion_at_manual(actor, explosion_pos, scale);
-				}
-			}
-		}
-	}
 }
