@@ -17,7 +17,7 @@ namespace Gts {
 	RumbleData::RumbleData(float intensity, float duration, std::string node) :
 		state(RumpleState::RampingUp),
 		duration(duration),
-		currentIntensity(Spring(0.0, 0.15)),
+		currentIntensity(Spring(0.0, 0.5)),
 		node(node),
 		startTime(0.0) {
 	}

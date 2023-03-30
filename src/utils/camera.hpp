@@ -5,6 +5,7 @@ using namespace SKSE;
 
 namespace Gts {
 
+	void shake_camera_script(TESObjectREFR* actor, float intensity, float duration);
 	void shake_camera(TESObjectREFR* actor, float intensity, float duration);
 	void shake_camera_at_node(NiPoint3 position, float intensity, float duration);
 

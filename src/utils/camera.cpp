@@ -6,6 +6,10 @@ using namespace SKSE;
 
 namespace Gts {
 
+	void shake_camera_script(TESObjectREFR* actor, float intensity, float duration) { // TESObjectREFR*
+		CallFunction("Game", "ShakeCamera", actor, intensity, duration);
+	}
+
 	void shake_camera(TESObjectREFR* actor, float intensity, float duration) { // TESObjectREFR*
 		//CallFunction("Game", "ShakeCamera", actor, intensity, duration);
 		NiPoint3 position = actor->GetPosition();
