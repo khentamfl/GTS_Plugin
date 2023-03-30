@@ -37,20 +37,30 @@ namespace {
 	void DoEffects(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
 		auto& tremor = TremorManager::GetSingleton();
 		auto& explosion = ExplosionManager::GetSingleton();
-		Impact impact_data = FakeImpact {
+		Impact impact_data = Impact {
 			.actor = giant,
 			.kind = kind,
 			.scale = get_visual_scale(giant) * modifier,
 			.effective_scale = get_effective_scale(giant),
 			.nodes = find_node(giant, node),
 		};
-		tremor.OnImpact(FakeImpact);
-		explosion.OnImpact(FakeImpact);
+		tremor.OnImpact(Impact);
+		explosion.OnImpact(Impact);
 	}
 
 	void DoDamage(Actor* giant, float damage, float radius) {
 		auto& sizemanager = SizeManager::GetSingleton();
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 36.0 * damage, 1.35);
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 60.0 * damage, 1.35);
+	}
+
+	void GTSstompstartR(AnimationEventData& data) {
+		data.canEditAnimSpeed = true;
+		Rumble::Start("StompR", &data.giant, 0.35, RNode);
+	}
+
+	void GTSstompstartL(AnimationEventData& data) {
+		data.canEditAnimSpeed = true;
+		Rumble::Start("StompL", &data.giant, 0.35, LNode); // Start stonger effect
 	}
 
 	void GTSstompimpactR(AnimationEventData& data) {
@@ -95,17 +105,6 @@ namespace {
 		//Rumble::Start("StompL", &data.giant, 0.25, RNode);
 		DoDamage(&data.giant, 0.6, 1.0);
 		DoEffects(&data.giant, 0.85 * data.animSpeed, FootEvent::Left, LNode);
-	}
-
-
-	void GTSstompstartR(AnimationEventData& data) {
-		data.canEditAnimSpeed = true;
-		Rumble::Start("StompR", &data.giant, 0.35, RNode);
-	}
-
-	void GTSstompstartL(AnimationEventData& data) {
-		data.canEditAnimSpeed = true;
-		Rumble::Start("StompL", &data.giant, 0.35, LNode); // Start stonger effect
 	}
 
 	void GTSStompendR(AnimationEventData& data) {
