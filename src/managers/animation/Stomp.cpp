@@ -64,7 +64,7 @@ namespace {
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
 		//Rumble::Once("StompL", &data.giant, volume * 8, LNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
-		DoEffects(&data.giant, 1.75 * data.animSpeed, LNode);
+		DoEffects(&data.giant, 1.0 * data.animSpeed, LNode);
 
 	}
 

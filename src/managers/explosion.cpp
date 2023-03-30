@@ -54,8 +54,7 @@ namespace {
 		if (!actor) {
 			return;
 		}
-		BGSExplosion* base_explosion = nullptr;
-		base_explosion = Runtime::GetExplosion("footstepExplosion");
+		BGSExplosion* base_explosion = Runtime::GetExplosion("footstepExplosion");;
 
 		if (base_explosion) {
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
@@ -148,7 +147,7 @@ namespace Gts {
 		float scale = get_visual_scale(actor) * power;
 		float minimal_size = 3.0;
 		bool fp = false;
-		if (actor == player && IsFirstPerson()) {
+		if (actor->formID == 0x14 && IsFirstPerson()) {
 			fp = true;
 		}
 		if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
