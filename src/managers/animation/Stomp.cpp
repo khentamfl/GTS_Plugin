@@ -35,15 +35,14 @@ namespace {
 	const std::string_view LSound = "lFootstepL";
 
 	void DoEffects(Actor* giant, float modifier, std::string_view node) {
-		auto tremor = TremorManager::GetSingleton();
-		auto explosion = ExplosionManager::GetSingleton();
+		auto& tremor = TremorManager::GetSingleton();
+		auto& explosion = ExplosionManager::GetSingleton();
 		tremor.OnImpact_Manual(giant, modifier, node);
 		explosion.OnImpact_Manual(giant, modifier, node);
 	}
 
 	void DoDamage(Actor* giant, float damage, float radius) {
 		auto& sizemanager = SizeManager::GetSingleton();
-		float damage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 12.0 * damage, 1.0);
 	}
 
