@@ -10,6 +10,8 @@
 
 #include "managers/animation/Compat.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/damage/AccurateDamage.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/CrushManager.hpp"
 #include "data/runtime.hpp"
@@ -83,6 +85,13 @@ namespace {
 		Runtime::PlaySound("lFootstepL", &data.giant, volume, 1.0);
 	}
 
+	void JumpDown(AnimationEventData& data) {
+		auto giant = &data.giant;
+		auto& sizemanager = SizeManager::GetSingleton();
+		float damage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 40.0 * damage, 1.75);
+		log::info("Firing Jump Compatibility");
+	}
 }
 
 namespace Gts
@@ -92,6 +101,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTScrush_victim", "Compat2", GTScrush_victim);
 		AnimationManager::RegisterEvent("MCO_SecondDodge", "MCOCompat1", MCO_SecondDodge);
 		AnimationManager::RegisterEvent("SoundPlay.MCO_DodgeSound", "MCOCompat2", MCO_DodgeSound);
+		AnimationManager::RegisterEvent("JumpDown", "JumpCompat1", JumpDown);
 	}
 
 	void AnimationCompat::RegisterTriggers() {

@@ -40,8 +40,7 @@ namespace {
 			return;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.ModSizeVulnerability(tiny, 0.001);
-		log::info("Tiny Weakness: {}, {}", tiny->GetDisplayFullName(), sizemanager.GetSizeVulnerability(tiny));
+		sizemanager.ModSizeVulnerability(tiny, 0.0015);
 	}
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
@@ -203,7 +202,7 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-	void AccurateDamage::DoAccurateCollision(Actor* actor) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void AccurateDamage::DoAccurateCollision(Actor* actor, float damage, float radius) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
 			return;
@@ -298,7 +297,7 @@ namespace Gts {
 			rightRotMat = NiMatrix3(right, forward, up);
 		}
 
-		float maxFootDistance = BASE_DISTANCE * giantScale;
+		float maxFootDistance = BASE_DISTANCE * radius * giantScale;
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
@@ -347,7 +346,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = force/50;///nodeCollisions;
+								float aveForce = (force * damage)/50;///nodeCollisions;
 								ApplySizeEffect(actor, otherActor, aveForce);
 								//break;
 							}
@@ -465,9 +464,6 @@ namespace Gts {
 
 		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
-		}
-		if (IsJumping(giant)) {
-			falldamage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		}
 
 		float result = ((0.25 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;

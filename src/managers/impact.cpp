@@ -141,9 +141,12 @@ namespace Gts {
 				}
 
 				NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+				NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
+				float hh = hhOffsetbase[2];
 				std::vector<NiPoint3> points = {
-					NiPoint3(0.0, 0.0, 0.0), // The standard at the foot position
-					NiPoint3(0.5, 2.0, 7.5),
+					NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
+					NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
+					NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
 				};
 				float maxFootDistance = BASE_FOOT_DISTANCE * giantScale;
 
