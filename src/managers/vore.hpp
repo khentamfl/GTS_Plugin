@@ -51,14 +51,18 @@ namespace Gts
 	};
 
 	enum VoreBuffState {
+    Starting,
+    RampUp,
 		Running,
+    RampDown,
 		Finishing,
 		Done,
 	};
 	struct VoreBuff {
-		VoreBuffState state = VoreBuffState::Running;
+		VoreBuffState state = VoreBuffState::Starting;
 		Actor* giant = nullptr;
 		Actor* tiny = nullptr;
+    float duration;
 		float restorePower = 0.0; // Amount of health to restore TOTAL
 		float sizePower = 0.0; // Amount of size to gain TOTAL
 

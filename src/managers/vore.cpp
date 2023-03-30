@@ -326,13 +326,13 @@ namespace Gts {
           excludedChildren.push_back(find_node(tiny, "NPC COM [COM]", false));
           excludedChildren.push_back(find_node(tiny, "NPC Pelvis [Pelv]", false));
           excludedChildren.push_back(find_node(tiny, "NPC Spine [Spn0]", false));
-          excludedChildren.push_back(find_node(tiny, "Camera Control", false)); 
+          excludedChildren.push_back(find_node(tiny, "Camera Control", false));
           excludedChildren.push_back(find_node(tiny, "NPC Translate", false));
 					for (auto& node: nodes_inrange) {
 						bool anyInvalid = false;
 						VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
-              for (auto excludedNode: excludedChildren) { 
-                if (excludedNode == &node_child) { 
+              for (auto excludedNode: excludedChildren) {
+                if (excludedNode == &node_child) {
                   anyInvalid = true;
   								return false;
                 }
@@ -355,21 +355,17 @@ namespace Gts {
 	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 1.0)) {
 		this->giant = giant;
 		this->tiny = tiny;
-		float duration = 40.0;
+		this->duration = 40.0;
 		float mealEffiency = 0.2; // Normal pred has 20% efficent stomach
 		if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
-			duration = 60.0;
+			this->duration = 60.0;
 			mealEffiency = 0.3;
 		}
 		if (IsDragon(tiny)) {
 			mealEffiency *= 6.0;
 		}
-		this->factor.halflife = duration * 0.45;
-		this->factor.target = 1.0;
-		this->factor.value = 0.0;
-    	this->factor.velocity = 0.0;
 		this->appliedFactor = 0.0;
-    	this->state = VoreBuffState::Running;
+    this->state = VoreBuffState::Starting;
 
 		if (tiny) {
 			float tiny_scale = get_visual_scale(tiny);
@@ -391,25 +387,34 @@ namespace Gts {
 			return;
 		}
 		switch (this->state) {
+      case VoreBuffState::Starting: {
+        this->factor.value = 0.0;
+        this->factor.velocity = 0.0;
+        this->factor.target = 0.25;
+        this->factor.halflife = this->duration * 0.1;
+        this->state = VoreBuffState::RampUp;
+        break;
+      }
+      case VoreBuffState::RampUp: {
+        if (fabs(this->factor.value - this->factor.value) < 1e-2) {
+          this->factor.target = 0.75;
+          this->factor.halflife = this->duration * 0.3;
+          this->state = VoreBuffState::Running;
+        }
+        break;
+      }
 			case VoreBuffState::Running: {
-				// Get amount to apply
-				float factor = std::clamp(this->factor.value, 0.0f, 1.0f);
-				float amountToApplyThisUpdate = factor - this->appliedFactor;
-				this->appliedFactor = factor;
-
-				float healthToApply = amountToApplyThisUpdate * this->restorePower;
-				float sizeToApply = amountToApplyThisUpdate * this->sizePower;
-
-				DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
-				DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
-
-				mod_target_scale(this->giant, sizeToApply);
-				log::info("VoreBuff firing, Giant: {}, Tiny:{}: Health+: {}, Size+: {}, Spring: {}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName(), healthToApply, sizeToApply, this->factor.value);
-
-				if (fabs(this->appliedFactor - 1.0) < 1e-3) {
-          			log::info("Going to finish state");
-					this->state = VoreBuffState::Finishing;
-				}
+        if (fabs(this->factor.value - this->factor.value) < 1e-2) {
+          this->factor.target = 1.0;
+          this->factor.halflife = this->duration * 0.1;
+          this->state = VoreBuffState::RampDown;
+        }
+        break;
+			}
+      case VoreBuffState::RampDown: {
+        if (fabs(this->factor.value - this->factor.value) < 1e-2) {
+          this->state = VoreBuffState::Finishing;
+        }
         break;
 			}
 			case VoreBuffState::Finishing: {
@@ -427,6 +432,19 @@ namespace Gts {
 
 			}
 		}
+
+    float factor = std::clamp(this->factor.value, 0.0f, 1.0f);
+    float amountToApplyThisUpdate = factor - this->appliedFactor;
+    this->appliedFactor = factor;
+
+    float healthToApply = amountToApplyThisUpdate * this->restorePower;
+    float sizeToApply = amountToApplyThisUpdate * this->sizePower;
+
+    DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
+    DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
+
+    mod_target_scale(this->giant, sizeToApply);
+    log::info("VoreBuff firing, Giant: {}, Tiny:{}: Health+: {}, Size+: {}, Spring: {}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName(), healthToApply, sizeToApply, this->factor.value);
 	}
 
 	bool VoreBuff::Done() {
