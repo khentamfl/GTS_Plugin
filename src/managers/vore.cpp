@@ -365,7 +365,7 @@ namespace Gts {
 			mealEffiency *= 6.0;
 		}
 		this->appliedFactor = 0.0;
-    this->state = VoreBuffState::Starting;
+    	this->state = VoreBuffState::Starting;
 
 		if (tiny) {
 			float tiny_scale = get_visual_scale(tiny);
@@ -374,9 +374,9 @@ namespace Gts {
 			// Amount of health we apply depends on their vitality
 			// and their size
 			if (Runtime::HasPerkTeam(giant, "VorePerkRegeneration")) {
-				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 8 * mealEffiency;
+				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 16 * mealEffiency;
 			} else {
-        	this->restorePower = 0.0;
+        		this->restorePower = 0.0;
       		}
 			this->sizePower = tiny_scale * mealEffiency;
 		}
@@ -391,14 +391,14 @@ namespace Gts {
         this->factor.value = 0.0;
         this->factor.velocity = 0.0;
         this->factor.target = 0.25;
-        this->factor.halflife = this->duration * 0.1;
+        this->factor.halflife = this->duration * 0.4;
         this->state = VoreBuffState::RampUp;
         break;
       }
       case VoreBuffState::RampUp: {
         if (fabs(this->factor.value - this->factor.value) < 1e-2) {
           this->factor.target = 0.75;
-          this->factor.halflife = this->duration * 0.3;
+          this->factor.halflife = this->duration * 0.5;
           this->state = VoreBuffState::Running;
         }
         break;
@@ -406,7 +406,7 @@ namespace Gts {
 			case VoreBuffState::Running: {
         if (fabs(this->factor.value - this->factor.value) < 1e-2) {
           this->factor.target = 1.0;
-          this->factor.halflife = this->duration * 0.1;
+          this->factor.halflife = this->duration * 0.4;
           this->state = VoreBuffState::RampDown;
         }
         break;
@@ -418,10 +418,11 @@ namespace Gts {
         break;
 			}
 			case VoreBuffState::Finishing: {
-					AdjustGiantessSkill(this->giant, this->tiny);
+					AdjustGiantessSkill(this->giant, this->tiny); // Buff Matter Of Size skill
 					VoreMessage_Absorbed(this->giant, this->tiny);
 					BuffAttributes(this->giant, this->tiny);
 					mod_target_scale(this->giant, this->sizePower * 1.2);
+					AdjustSizeReserve(this->giant, this->sizePower); // Add size reserve
 					Rumble::Once("VoreShake", this->giant, this->sizePower * 4);
 
           			log::info("Going to done state");
