@@ -147,12 +147,16 @@ namespace Gts {
 		}
 		float scale = get_visual_scale(actor) * power;
 		float minimal_size = 3.0;
+		bool fp = false;
+		if (actor == player && IsFirstPerson()) {
+			fp = true;
+		}
 		if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
 			if (HighHeelManager::IsWearingHH(actor)) {
 				scale *= 1.25;
 			}
 			
-			auto node = find_node(actor, nodes);
+			auto node = find_node(actor, nodes, fp);
 			if (node)
 			 {
 				// First try casting a ray

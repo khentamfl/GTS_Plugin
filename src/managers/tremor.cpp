@@ -241,6 +241,10 @@ namespace Gts {
 		}
 		auto player = PlayerCharacter::GetSingleton();
 		auto& persist = Persistent::GetSingleton();
+		bool fp = false;
+		if (actor == player && IsFirstPerson()) {
+			fp = true;
+		}
 
 		float tremor_scale;
 
@@ -263,8 +267,7 @@ namespace Gts {
 			if (HighHeelManager::IsWearingHH(actor) && Runtime::HasPerkTeam(actor, "hhBonus")) {
 				scale *= 1.1;
 			}
-
-			auto node = find_node(actor, nodes);
+			auto node = find_nodes(actor, nodes, fp);
 			if (node) {
 				float distance = 0.0;
 				if (actor->formID == 0x14) {
