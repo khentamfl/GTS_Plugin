@@ -144,7 +144,7 @@ namespace Gts {
 		if (actor) {
 			return;
 		}
-		float scale = get_visual_scale(actor) * power;
+		float scale = get_effective_scale(actor) * power;
 		float minimal_size = 3.0;
 		bool fp = false;
 		if (actor->formID == 0x14 && IsFirstPerson()) {

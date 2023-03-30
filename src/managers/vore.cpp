@@ -234,8 +234,8 @@ namespace Gts {
 				NiPoint3 giantLocation = giant->GetPosition();
 				NiPoint3 tinyLocation = tiny->GetPosition();
 				NiPoint3 targetLocation = bone->world.translate;
-        NiPoint3 deltaLocation = targetLocation - tinyLocation;
-        float deltaLength = deltaLocation.Length();
+        		NiPoint3 deltaLocation = targetLocation - tinyLocation;
+        		float deltaLength = deltaLocation.Length();
 
 				tiny->SetPosition(targetLocation, true);
 				tiny->SetPosition(targetLocation, false);

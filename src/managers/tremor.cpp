@@ -260,14 +260,14 @@ namespace Gts {
 			return;
 		}
 
-		float scale = get_visual_scale(actor) * power;
+		float scale = get_effective_scale(actor) * power;
 		if (!actor->AsActorState()->IsSwimming()) {
 			scale *= 1.4;
 
 			if (HighHeelManager::IsWearingHH(actor) && Runtime::HasPerkTeam(actor, "hhBonus")) {
 				scale *= 1.1;
 			}
-			auto node = find_nodes(actor, nodes, fp);
+			auto node = find_node(actor, nodes, fp);
 			if (node) {
 				float distance = 0.0;
 				if (actor->formID == 0x14) {
