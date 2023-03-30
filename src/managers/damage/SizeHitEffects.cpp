@@ -55,8 +55,8 @@ namespace {
 						mod_target_scale(receiver, -0.25);
 					}
 
-					shake_camera(receiver, 250, 1.2); 
-					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.0);
+					shake_camera(PlayerCharacter::GetSingleton(), 250.0, 1.2); 
+					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 					receiver->NotifyAnimationGraph("staggerStart");
 
