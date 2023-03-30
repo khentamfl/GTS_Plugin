@@ -40,7 +40,7 @@ namespace {
 				log::info("{} is in killmove", otherActor->GetDisplayFullName());
 			}
 		if (otherActor != giant) {
-			float tinyScale = get_visual_scale(otherActor);
+			float tinyScale = get_visual_scale(otherActor); 
 			if (giantScale / tinyScale > SCALE_RATIO) {
 				NiPoint3 actorLocation = otherActor->GetPosition();
 				if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
