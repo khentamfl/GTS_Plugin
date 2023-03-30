@@ -346,8 +346,8 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = (force * damage)/50;///nodeCollisions;
-								ApplySizeEffect(actor, otherActor, aveForce);
+								float aveForce = force/50;///nodeCollisions;
+								ApplySizeEffect(actor, otherActor, aveForce * damage);
 								//break;
 							}
 						}

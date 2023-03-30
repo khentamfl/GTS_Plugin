@@ -44,8 +44,8 @@ namespace {
 			.effective_scale = get_effective_scale(giant),
 			.nodes = find_node(giant, node),
 		};
-		tremor.OnImpact(Impact);
-		explosion.OnImpact(Impact);
+		tremor.OnImpact(impact_data);
+		explosion.OnImpact(impact_data);
 	}
 
 	void DoDamage(Actor* giant, float damage, float radius) {
