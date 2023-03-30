@@ -59,7 +59,7 @@ namespace Gts {
 		Rumble::For(tag, giant, intensity, node, 0);
 	}
 	void Rumble::Start(std::string_view tag, Actor* giant, float intensity) {
-		Rumble::For(tag, giant, intensity, "NPC Root [Root]", 0);
+		Rumble::For(tag, giant, intensity, "NPC COM [COM ]", 0);
 	}
 	void Rumble::Stop(std::string_view tagsv, Actor* giant) {
 		string tag = std::string(tagsv);
