@@ -35,7 +35,6 @@ namespace {
 	void StaggerImmunity(Actor* attacker, Actor* receiver) {
 		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		auto charCont = receiver->GetCharController();
-		//log::info("Stagger: Receiver: {}, Attacker: {}, difference: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), sizedifference);
 		if (charCont) {
 			receiver->SetGraphVariableFloat("GiantessScale", sizedifference); // Manages Stagger Resistance inside Behaviors.
 		}
@@ -56,7 +55,7 @@ namespace {
 						mod_target_scale(receiver, -0.25);
 					}
 
-					Rumble::Once("CheatDeath", receiver, 25.50); 
+					shake_camera(receiver, 250, 1.2); 
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.0);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 					receiver->NotifyAnimationGraph("staggerStart");

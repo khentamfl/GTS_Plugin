@@ -40,9 +40,9 @@ namespace {
 	void RestoreStats() { // Regenerate attributes
 		auto Player = PlayerCharacter::GetSingleton();
 		if (Runtime::HasPerk(Player, "GrowthAugmentation")) {
-			float HP = GetMaxAV(Player, ActorValue::kHealth) * 0.00085;
-			float MP = GetMaxAV(Player, ActorValue::kMagicka) * 0.00085;
-			float SP = GetMaxAV(Player, ActorValue::kStamina) * 0.00085;
+			float HP = GetMaxAV(Player, ActorValue::kHealth) * 0.00185;
+			float MP = GetMaxAV(Player, ActorValue::kMagicka) * 0.00095;
+			float SP = GetMaxAV(Player, ActorValue::kStamina) * 0.00125;
 			Player->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
 			Player->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
 			Player->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, MP * TimeScale());

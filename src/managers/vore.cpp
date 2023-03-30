@@ -310,7 +310,7 @@ namespace Gts {
 						}
 						return true;
 					});
-          log::info("Trying to shink {} nodes", nodes_inrange.size());
+          //log::info("Trying to shink {} nodes", nodes_inrange.size());
 
 					// Check all children of the nodes
 					//
