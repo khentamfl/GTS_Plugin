@@ -40,7 +40,8 @@ namespace {
 			return;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.ModSizeVulnerability(tiny, 0.0005);
+		sizemanager.ModSizeVulnerability(tiny, 0.001);
+		log::info("Tiny Weakness: {}, {}", tiny->GetDisplayFullName(), sizemanager.GetSizeVulnerability(tiny));
 	}
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
