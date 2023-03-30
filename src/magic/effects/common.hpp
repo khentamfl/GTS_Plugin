@@ -366,7 +366,7 @@ namespace Gts {
 		PrintCrushMessage(caster, target, sizedifference, Random, instacrushrequirement, type);
 		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 		bool GTSBusy;
-		caster->GetGraphVariableBool("GTS_isBusy", GTSBusy);
+		caster->GetGraphVariableBool("GTS_Busy", GTSBusy);
 		log::info("Busy: {}", GTSBusy);
 		if (!GTSBusy && get_visual_scale(caster) <= 12.0 && !caster->AsActorState()->IsSprinting() && !caster->AsActorState()->IsWalking() && !caster->IsRunning() && !hasSMT || !GTSBusy && hasSMT && get_visual_scale(caster) <= 12.0) {
 			PlayAnimation(caster, "JumpLand"); // Simulate Crush anim

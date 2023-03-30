@@ -489,7 +489,7 @@ void GtsManager::Update() {
 	   }
 	   }*/
 	bool GTSBusy;
-	PC->GetGraphVariableBool("GTS_isBusy", GTSBusy);   
+	PC->GetGraphVariableBool("GTS_Busy", GTSBusy);   
 	log::info("Player is Busy? : {}", GTSBusy);
 
 	for (auto actor: find_actors()) {

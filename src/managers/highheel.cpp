@@ -49,9 +49,9 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		bool GTSBusy;
-		actor->GetGraphVariableBool("GTS_isBusy", GTSBusy);
-		if (Persistent::GetSingleton().highheel_furniture == false && !GTSBusy && actor->GetOccupiedFurniture()) {
+		//bool GTSBusy;
+		//actor->GetGraphVariableBool("GTS_isBusy", GTSBusy);
+		if (Persistent::GetSingleton().highheel_furniture == false && actor->GetOccupiedFurniture()) {
 			return;
 		}
 		this->data.try_emplace(actor);
