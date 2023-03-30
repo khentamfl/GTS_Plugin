@@ -151,8 +151,10 @@ namespace Gts {
 			if (HighHeelManager::IsWearingHH(actor)) {
 				scale *= 1.25;
 			}
-
-			for (NiAVObject* node: nodes) {
+			
+			auto node = find_node(actor, nodes);
+			if (node)
+			 {
 				// First try casting a ray
 				NiPoint3 foot_location = node->world.translate;
 
@@ -176,5 +178,4 @@ namespace Gts {
 			}
 		}
 	}
-
 }

@@ -264,7 +264,8 @@ namespace Gts {
 				scale *= 1.1;
 			}
 
-			for (NiAVObject* node: nodes) {
+			auto node = find_node(actor, nodes);
+			if (node) {
 				float distance = 0.0;
 				if (actor->formID == 0x14) {
 					distance = unit_to_meter(get_distance_to_camera(node));
