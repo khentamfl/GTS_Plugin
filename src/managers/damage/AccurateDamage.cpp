@@ -40,7 +40,7 @@ namespace {
 			return;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.ModSizeVulnerability(victim, 0.0005);
+		sizemanager.ModSizeVulnerability(tiny, 0.0005);
 	}
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
