@@ -40,9 +40,9 @@ namespace {
 		Impact impact_data = FakeImpact {
 			.actor = giant,
 			.kind = kind,
-			.scale = get_visual_scale(actor) * modifier,
-			.effective_scale = get_effective_scale(actor),
-			.nodes = find_node(actor, node),
+			.scale = get_visual_scale(giant) * modifier,
+			.effective_scale = get_effective_scale(giant),
+			.nodes = find_node(giant, node),
 		};
 		tremor.OnImpact(FakeImpact);
 		explosion.OnImpact(FakeImpact);
