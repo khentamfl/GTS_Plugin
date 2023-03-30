@@ -35,14 +35,6 @@ namespace {
 			//return;
 		}
 		if ((actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-			auto ai = actor->GetActorRuntimeData().currentProcess;
-			if (ai) {
-  				auto aiHigh = ai->high;
-  				if (aiHigh) {
-    				aiHigh->fadeState.set(HighProcessData::FADE_STATE::kNormal);
-					log::info("Setting FadeState of {} to Normal", actor->GetDisplayFullName());
-  				}
-			}
 			auto node = find_node(actor, "skeleton_female.nif");
 			NiAVObject* skeleton = node;
 			if (node) {

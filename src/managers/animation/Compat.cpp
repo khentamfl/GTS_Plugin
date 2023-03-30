@@ -25,14 +25,41 @@ namespace {
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
+	const std::string_view pelv = "NPC Pelvis [Pelv]";
+
+	void TriggerKillZone(Actor* giant) {
+		if (!giant) {
+			return;
+		}
+		float BASE_CHECK_DISTANCE = 256.0;
+		float SCALE_RATIO = 0.0;
+		float giantScale = get_visual_scale(giant);
+		NiPoint3 giantLocation = giant->GetPosition();
+		for (auto otherActor: find_actors()) {
+			if (otherActor->IsInKillMove()) {
+				log::info("{} is in killmove", otherActor->GetDisplayFullName());
+			}
+		if (otherActor != giant) {
+			float tinyScale = get_visual_scale(otherActor);
+			if (giantScale / tinyScale > SCALE_RATIO) {
+				NiPoint3 actorLocation = otherActor->GetPosition();
+				if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+						CrushManager::Crush(giant, otherActor);
+					}
+				}
+			}
+		}
+	}
+
 
 	void GTScrush_caster(AnimationEventData& data) {
-		data.stage = 0;
+		//data.stage = 0;
 		log::info("GTScrush_caster");
+		TriggerKillZone(&data.giant);
 	}
 
 	void GTScrush_victim(AnimationEventData& data) {
-		data.stage = 0;
+		//data.stage = 0;
 		if (data.giant.formID != 0x14) {
 			auto player = PlayerCharacter::GetSingleton();
 			float giantscale = get_visual_scale(player);
