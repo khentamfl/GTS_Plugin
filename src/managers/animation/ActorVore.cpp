@@ -10,6 +10,7 @@
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "node.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -177,7 +178,7 @@ namespace {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
 		}
 		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
-		DoEffects(data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
+		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
 	}
 
 	void GTSvore_sit_end(AnimationEventData& data) {
@@ -293,7 +294,7 @@ namespace {
 
 	void GTSvore_impactRS(AnimationEventData& data) {
 		Rumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
-		DoEffects(data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
+		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {

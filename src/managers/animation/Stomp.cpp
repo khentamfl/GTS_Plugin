@@ -23,6 +23,7 @@
 #include "managers/tremor.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "node.hpp"
 
 using namespace std;
 using namespace SKSE;
