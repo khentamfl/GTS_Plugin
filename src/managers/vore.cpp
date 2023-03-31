@@ -499,9 +499,8 @@ namespace Gts {
 		if (Runtime::HasPerk(player, "MassVorePerk")) {
 			numberOfPrey = 3;
 		}
-		//log::info("Attempting Random Vore");
 		for (auto actor: find_actors()) {
-			if ((actor->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) || !actor->Is3DLoaded() || actor->IsDead()) {
+			if (!actor->Is3DLoaded() || actor->IsDead()) {
 				return;
 			}
 			float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100);
@@ -515,7 +514,7 @@ namespace Gts {
 				//log::info("{} is looking for prey", caster->GetDisplayFullName());
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
-					if (prey->formID == 0x14) {
+					if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 						return;
 					}
 					VoreManager.StartVore(pred, prey);
