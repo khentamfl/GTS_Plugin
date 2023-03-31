@@ -78,7 +78,7 @@ namespace Gts {
 		this->data.erase(actor);
 	}
 
-	void AnimationManager::GetBonusAnimationSpeed(Actor* actor) {
+	float AnimationManager::GetBonusAnimationSpeed(Actor* actor) {
 		try {
 			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
 				if (data) {

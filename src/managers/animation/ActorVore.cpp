@@ -61,7 +61,7 @@ namespace {
 		"NPC L Hand [LHnd]",
 	};
 
-	const std::vector<std::string_view> BODY_RUMBLE_NODES = { // used for hand rumble
+	const std::vector<std::string_view> BODY_RUMBLE_NODES = { // used for body rumble
 		"NPC COM [COM ]",
 		"NPC L Foot [Lft ]",
 		"NPC R Foot [Rft ]",
