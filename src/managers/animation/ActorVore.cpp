@@ -139,7 +139,7 @@ namespace {
 
 	void GTSvore_hand_extend(AnimationEventData& data) {
 		StartRHandRumble("HandR", data.giant, 0.75, 0.15);
-		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("GTS_ExitFear");
 		}
