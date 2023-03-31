@@ -110,8 +110,8 @@ namespace Gts {
 		if (!Runtime::HasPerkTeam(giant, "BoneCrusher")) {
 			return;
 		}
-		int random = (rand()% random + 1);
-		if (random <= 2) {
+		int rng = (rand()% random + 1);
+		if (rng <= 2) {
 			float gs = get_visual_scale(giant);
     		float ts = get_visual_scale(tiny);
 			if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
