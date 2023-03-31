@@ -48,9 +48,9 @@ namespace {
 		explosion.OnImpact(impact_data);
 	}
 
-	void DoDamage(Actor* giant, float damage, float radius) {
+	void DoDamage(Actor* giant, float damage, float radius, int random) {
 		auto& sizemanager = SizeManager::GetSingleton();
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 60.0 * damage, 1.35);
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 60.0 * damage, 1.35, random, 1.0);
 	}
 
 	void GTSstompstartR(AnimationEventData& data) {
@@ -70,8 +70,8 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		Rumble::Once("StompR", &data.giant, 0.20, 0.05, RNode);
-		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
+		Rumble::Once("StompR", &data.giant, 0.30, 0.10, RNode);
+		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0, 10);
 		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
@@ -81,8 +81,8 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		Rumble::Once("StompL", &data.giant, 0.20, 0.05, LNode);
-		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
+		Rumble::Once("StompL", &data.giant, 0.30, 0.10, LNode);
+		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0, 10);
 		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
 
 	}
@@ -93,8 +93,8 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		Rumble::Start("StompRL", &data.giant, 0.12, 0.05, RNode);
-		DoDamage(&data.giant, 0.6, 1.0);
+		Rumble::Start("StompRL", &data.giant, 0.20, 0.10, RNode);
+		DoDamage(&data.giant, 0.6, 1.0, 25);
 		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
@@ -104,8 +104,8 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		Rumble::Start("StompLL", &data.giant, 0.12, 0.05, LNode);
-		DoDamage(&data.giant, 0.6, 1.0);
+		Rumble::Start("StompLL", &data.giant, 0.20, 0.10, LNode);
+		DoDamage(&data.giant, 0.6, 1.0, 25);
 		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
 	}
 

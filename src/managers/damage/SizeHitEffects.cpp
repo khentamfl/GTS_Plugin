@@ -103,14 +103,14 @@ namespace Gts {
         StaggerImmunity(attacker, receiver);
     }
 
-	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny, float damage) { // Used as a debuff 
+	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny, float damage, int random) { // Used as a debuff 
 		if (tiny->IsDead()) {
 			return;
 		}
 		if (!Runtime::HasPerkTeam(giant, "BoneCrusher")) {
 			return;
 		}
-		int random = (rand()% 150 + 1);
+		int random = (rand()% random + 1);
 		if (random <= 2) {
 			float gs = get_visual_scale(giant);
     		float ts = get_visual_scale(tiny);

@@ -112,7 +112,7 @@ namespace {
 		}
 	}
 
-	void ApplySizeEffect(Actor* giant, Actor* tiny, float force) {
+	void ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult) {
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
 		}
@@ -135,13 +135,13 @@ namespace {
 			if (!isdamaging && !giant->AsActorState()->IsSprinting() && !giant->AsActorState()->IsWalking() && !giant->IsRunning()) {
 				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, true);
+				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
 			}
 			if (!isdamaging && (force >= 0.55 || giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
 				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
-			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, true);
+			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
 		}
 	}
 
@@ -202,7 +202,7 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-	void AccurateDamage::DoAccurateCollision(Actor* actor, float damage, float radius) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void AccurateDamage::DoAccurateCollision(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
 			return;
@@ -347,7 +347,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = force/50;///nodeCollisions;
-								ApplySizeEffect(actor, otherActor, aveForce * damage);
+								ApplySizeEffect(actor, otherActor, aveForce * damage, bbmult);
 								//break;
 							}
 						}
@@ -402,7 +402,7 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force > UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 32 * damage, true);
+			DoSizeDamage(giant, tiny, movementFactor, force * 32 * damage, 50, 0.50, true);
 
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
@@ -424,7 +424,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, bool DoDamage) { // Applies damage and crushing
+	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage) { // Applies damage and crushing
 		if (!giant) {
 			return;
 		}
@@ -480,7 +480,7 @@ namespace Gts {
 
 		//log::info("Additional Damage: {}", additionaldamage);
 
-		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result);
+		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
 
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
 			if (CrushManager::CanCrush(giant, tiny)) {

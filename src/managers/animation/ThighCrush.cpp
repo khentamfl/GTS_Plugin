@@ -46,10 +46,10 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void StartLegRumble(std::string_view tag, Actor& actor, float power) {
+	void StartLegRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  0.15, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
@@ -63,7 +63,7 @@ namespace {
 	void GTStosit(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-		StartLegRumble("ThighCrush", data.giant, 0.10);
+		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
 		data.stage = 1;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTStosit");
 	}
@@ -71,7 +71,7 @@ namespace {
 	void GTSsitloopenter(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-		StartLegRumble("ThighCrush", data.giant, 0.12 * speed);
+		StartLegRumble("ThighCrush", data.giant, 0.12 * speed, 0.10);
 		data.disableHH = true;
 		data.stage = 2;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopenter");
@@ -94,7 +94,7 @@ namespace {
 	void GTSsitcrushlight_start(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-		StartLegRumble("ThighCrush", data.giant, 0.12 * speed);
+		StartLegRumble("ThighCrush", data.giant, 0.12 * speed, 0.12);
 		data.stage = 5;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_start");
 	}
@@ -105,7 +105,7 @@ namespace {
 		data.currentTrigger = 2;
 
 		data.canEditAnimSpeed = true;
-		StartLegRumble("ThighCrush", data.giant, 0.15 * speed);
+		StartLegRumble("ThighCrush", data.giant, 0.15 * speed, 0.20);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}
@@ -114,7 +114,7 @@ namespace {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 
-		StartLegRumble("ThighCrush", data.giant, 0.15 * speed);
+		StartLegRumble("ThighCrush", data.giant, 0.15 * speed, 0.20);
 		data.stage = 5;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushheavy_start");
 	}
@@ -124,7 +124,7 @@ namespace {
 		float speed = data.animSpeed;
 		data.currentTrigger = 2;
 
-		StartLegRumble("ThighCrush", data.giant, 0.20 *speed);
+		StartLegRumble("ThighCrush", data.giant, 0.20 *speed, 0.25);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}
@@ -138,7 +138,7 @@ namespace {
 		data.animSpeed = 1.0;
 
 		StopLegRumble("ThighCrush", data.giant);
-		StartLegRumble("ThighCrush", data.giant, 0.10 * speed);
+		StartLegRumble("ThighCrush", data.giant, 0.10 * speed, 0.12);
 		data.stage = 8;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopexit");
 	}
@@ -178,25 +178,21 @@ namespace {
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		data.stage = 9;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandRS");
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
 		// Inbetween stages
 		data.animSpeed = 1.0;
 		data.canEditAnimSpeed = false;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Next");
 	}
 	void GTStoexit(AnimationEventData& data) {
 		// Going to exit
 		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTStoexit");
 	}
 	void GTSBEH_Exit(AnimationEventData& data) {
 		// Final exit
 		data.stage = 0;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSBEH_Exit");
 	}
 
 	void ThighCrushEvent(const InputEventData& data) {

@@ -504,13 +504,13 @@ void GtsManager::Update() {
 
 		if (sizemanager.GetPreciseDamage()) {
 			if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
-				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0);
+				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 150);
 				ClothManager::GetSingleton().CheckRip();
 			}
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
 			if (actor->formID != 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
-				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0);
+				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 150);
 			}
 		}
 

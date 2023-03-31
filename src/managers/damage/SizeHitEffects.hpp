@@ -20,6 +20,6 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 			void ApplyEverything(Actor* attacker, Actor* receiver, float damage);
-			void BreakBones(Actor* giant, Actor* tiny, float damage);
+			void BreakBones(Actor* giant, Actor* tiny, float damage, int random);
 	};
 }
