@@ -192,7 +192,7 @@ namespace Gts {
 		for (auto& [key, tiny]: this->tinies) {
 			if (tiny->formID != 0x14) {
 				Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
-				this->tinies.delete(tiny);
+				this->tinies.remove(tiny);
 			} else if (tiny->formID == 0x14) {
 				tiny->KillImmediate();
 				TriggerScreenBlood(50);
