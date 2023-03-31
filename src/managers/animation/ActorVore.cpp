@@ -61,6 +61,13 @@ namespace {
 		"NPC L Hand [LHnd]",
 	};
 	
+	void ToggleVore(Actor* actor, bool toggle) {
+		auto transient = Transient::GetSingleton().GetActorData(actor);
+		if (transient) {
+			transient->can_do_vore = toggle;
+		}
+	}
+
 	void StartRHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: RHAND_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
@@ -108,6 +115,7 @@ namespace {
 
 	void GTSvore_sit_start(AnimationEventData& data) {
 		auto giant = &data.giant;
+		ToggleVore(giant, false); // Disallow repeating Vore for NPC's
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
 		}
@@ -237,18 +245,14 @@ namespace {
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {
-		auto transient = Transient::GetSingleton().GetActorData(&data.giant);
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		VoreData.ReleaseAll();
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
 		}
-		if (transient) {
-			transient.can_do_vore = true;
-		}
+		ToggleVore(giant, true); // Allow to do Vore again
 	}
-
 }
 
 

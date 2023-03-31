@@ -533,7 +533,6 @@ namespace Gts {
 					log::info("Actor {} found Prey: {}, starting Vore", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 					VoreManager.StartVore(pred, prey);
 				}
-				transient.can_do_vore = false;
 			}
 		}
 	}
