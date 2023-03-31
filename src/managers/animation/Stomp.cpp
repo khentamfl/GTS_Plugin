@@ -74,7 +74,7 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		Rumble::Once("StompR", &data.giant, 2.20, 0.10, RNode);
+		Rumble::Once("StompR", &data.giant, 2.20 * data.animSpeed, 0.0, RNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0, 10);
 		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
 	}
@@ -85,7 +85,7 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		Rumble::Once("StompL", &data.giant, 2.20, 0.10, LNode);
+		Rumble::Once("StompL", &data.giant, 2.20 * data.animSpeed, 0.0, LNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0, 10);
 		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
 
