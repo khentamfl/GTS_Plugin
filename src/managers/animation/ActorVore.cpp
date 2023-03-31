@@ -3,6 +3,7 @@
 #include "managers/CrushManager.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
+#include "data/transient.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -236,11 +237,15 @@ namespace {
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {
+		auto transient = Transient::GetSingleton().GetActorData(&data.giant);
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		VoreData.ReleaseAll();
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
+		}
+		if (transient) {
+			transient.can_do_vore = true;
 		}
 	}
 

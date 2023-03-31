@@ -20,6 +20,7 @@ namespace Gts {
 		float basehp;
 
 		bool is_teammate;
+		bool can_do_vore;
 	};
 
 	class Transient : public EventListener {

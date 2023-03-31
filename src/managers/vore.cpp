@@ -5,6 +5,7 @@
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -192,14 +193,14 @@ namespace Gts {
 		for (auto& [key, tiny]: this->tinies) {
 			if (tiny->formID != 0x14) {
 				Disintegrate(tiny);
-				this->tinies.erase(tiny);
+				///this->tinies.erase(tiny);
 			} else if (tiny->formID == 0x14) {
 				tiny->KillImmediate();
 				TriggerScreenBlood(50);
 				tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
 			}
 		}
-		//this->tinies.clear();
+		this->tinies.clear();
 	}
 
 	void VoreData::GrabAll() {
@@ -474,7 +475,7 @@ namespace Gts {
 			return;
 		}
 		static Timer timer = Timer(3.00); // Random Vore once per 3 sec
-		if (timer.ShouldRunFrame()) { //Try to not overload
+		if (timer.ShouldRunFrame()) { //Try to not call it too often
 			for (auto actor: find_actors()) {
 				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
 					RandomVoreAttempt(actor);
@@ -497,7 +498,15 @@ namespace Gts {
 
 	void Vore::RandomVoreAttempt(Actor* caster) {
 		Actor* player = PlayerCharacter::GetSingleton();
+		auto transient = Transient::GetSingleton().GetActorData(caster);
 		auto& VoreManager = Vore::GetSingleton();
+		if (!transient) {
+			return;
+		}
+		if (!transient.can_do_vore) {
+			return;
+		}
+		
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerk(player, "MassVorePerk")) {
 			numberOfPrey = 3;
@@ -524,6 +533,7 @@ namespace Gts {
 					log::info("Actor {} found Prey: {}, starting Vore", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 					VoreManager.StartVore(pred, prey);
 				}
+				transient.can_do_vore = false;
 			}
 		}
 	}
