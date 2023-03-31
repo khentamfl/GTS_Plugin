@@ -480,7 +480,7 @@ namespace Gts {
 
 		//log::info("Additional Damage: {}", additionaldamage);
 
-		SizeHitEffects::GetSingleton().SizeWeakness(giant, tiny, result * bbmult, random);
+		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
 
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
 			if (CrushManager::CanCrush(giant, tiny)) {

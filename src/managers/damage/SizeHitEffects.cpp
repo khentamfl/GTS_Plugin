@@ -103,7 +103,7 @@ namespace Gts {
         StaggerImmunity(attacker, receiver);
     }
 
-	void SizeHitEffects::SizeWeakness(Actor* giant, Actor* tiny, float damage, int random) { // Used as a debuff 
+	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny, float damage, int random) { // Used as a debuff 
 		if (tiny->IsDead()) {
 			return;
 		}
