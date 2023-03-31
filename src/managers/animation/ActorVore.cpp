@@ -130,7 +130,7 @@ namespace {
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
 		}
-		Rumble::Once("StompL", &data.giant, 0.25, 0.10, LNode);
+		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
 	}
 
 	void GTSvore_sit_end(AnimationEventData& data) {
@@ -138,7 +138,11 @@ namespace {
 	}
 
 	void GTSvore_hand_extend(AnimationEventData& data) {
-		StartRHandRumble("HandR", data.giant, 0.5, 0.15);
+		StartRHandRumble("HandR", data.giant, 0.75, 0.15);
+		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
+		for (auto& tiny: VoreData.GetVories()) {
+			tiny->NotifyAnimationGraph("GTS_ExitFear");
+		}
 	}
 
 	void GTSvore_hand_grab(AnimationEventData& data) {
@@ -147,7 +151,6 @@ namespace {
 		VoreData.GrabAll();
 		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
 		for (auto& tiny: VoreData.GetVories()) {
-			tiny->NotifyAnimationGraph("GTS_ExitFear");
 			if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 				PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
 			}
@@ -209,11 +212,11 @@ namespace {
 		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
 		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
-		StartRHandRumble("HandR", data.giant, 0.5, 0.15);
+		StartRHandRumble("HandR", data.giant, 0.75, 0.15);
 	}
 
 	void GTSvore_handL_reposition_S(AnimationEventData& data) {
-		StartLHandRumble("HandL", data.giant, 0.5, 0.15);
+		StartLHandRumble("HandL", data.giant, 0.75, 0.15);
 	}
 
 	void GTSvore_handR_reposition_E(AnimationEventData& data) {
@@ -241,7 +244,7 @@ namespace {
 	}
 
 	void GTSvore_impactRS(AnimationEventData& data) {
-		Rumble::Once("StompR", &data.giant, 0.25, 0.10, RNode);
+		Rumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {
