@@ -121,7 +121,7 @@ namespace {
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
 		}
-		Rumble::Once("StompL", data.giant, 0.25, 0.10, LNode);
+		Rumble::Once("StompL", &data.giant, 0.25, 0.10, LNode);
 	}
 
 	void GTSvore_sit_end(AnimationEventData& data) {
@@ -200,7 +200,7 @@ namespace {
 		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
 		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
-		StartRHandRumble("HandR", &ata.giant, 0.5, 0.15);
+		StartRHandRumble("HandR", data.giant, 0.5, 0.15);
 	}
 
 	void GTSvore_handL_reposition_S(AnimationEventData& data) {
@@ -232,7 +232,7 @@ namespace {
 	}
 
 	void GTSvore_impactRS(AnimationEventData& data) {
-		Rumble::Once("StompR", data.giant, 0.25, 0.10, RNode);
+		Rumble::Once("StompR", &data.giant, 0.25, 0.10, RNode);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {
