@@ -503,7 +503,7 @@ namespace Gts {
 		if (!transient) {
 			return;
 		}
-		if (!transient.can_do_vore) {
+		if (!transient->can_do_vore) {
 			return;
 		}
 		
