@@ -472,7 +472,7 @@ namespace Gts {
 		static Timer timer = Timer(3.00); // Random Vore once per 3 sec
 		if (timer.ShouldRunFrame()) { //Try to not overload
 			for (auto actor: find_actors()) {
-				if ((Runtime::InFaction(actor,"FollowerFaction") || actor->IsPlayerTeammate()) && actor->IsInCombat()) {
+				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && actor->IsInCombat()) {
 					RandomVoreAttempt(actor);
 					//log::info("Found Vore Caster");
 				}

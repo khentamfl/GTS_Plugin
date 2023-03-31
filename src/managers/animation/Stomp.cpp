@@ -44,7 +44,7 @@ namespace {
 			.effective_scale = get_effective_scale(giant),
 			.nodes = find_node(giant, node),
 		};
-		tremor.OnImpact(impact_data);
+		//tremor.OnImpact(impact_data);
 		explosion.OnImpact(impact_data);
 	}
 
@@ -70,7 +70,7 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		//Rumble::Once("StompR", &data.giant, volume * 8, RNode);
+		Rumble::Once("StompR", &data.giant, 0.20, 0.05, RNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
 		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
 	}
@@ -81,7 +81,7 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		//Rumble::Once("StompL", &data.giant, volume * 8, LNode);
+		Rumble::Once("StompL", &data.giant, 0.20, 0.05, LNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0);
 		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
 
@@ -93,7 +93,7 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		//Rumble::Start("StompR", &data.giant, 0.25, RNode);
+		Rumble::Start("StompRL", &data.giant, 0.12, 0.05, RNode);
 		DoDamage(&data.giant, 0.6, 1.0);
 		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
 	}
@@ -104,7 +104,7 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		//Rumble::Start("StompL", &data.giant, 0.25, RNode);
+		Rumble::Start("StompLL", &data.giant, 0.12, 0.05, LNode);
 		DoDamage(&data.giant, 0.6, 1.0);
 		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
 	}
@@ -122,6 +122,8 @@ namespace {
 	void GTS_Next(AnimationEventData& data) {
 		Rumble::Stop("StompR", &data.giant);
 		Rumble::Stop("StompL", &data.giant);
+		Rumble::Stop("StompRL", &data.giant);
+		Rumble::Stop("StompLL", &data.giant);
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
