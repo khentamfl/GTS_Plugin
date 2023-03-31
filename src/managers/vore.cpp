@@ -193,6 +193,7 @@ namespace Gts {
 			if (tiny->formID != 0x14) {
 				Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
 			} else if (tiny->formID == 0x14) {
+				tiny->Killimmediate();
 				TriggerScreenBlood(50);
 				tiny->SetAlpha(0.0); // Just make player Invisible
 			}
@@ -231,7 +232,7 @@ namespace Gts {
 				return;
 			}
 
-			if (this->allGrabbed) {
+			if (this->allGrabbed || tiny->formID == 0x14) {
 				NiPoint3 giantLocation = giant->GetPosition();
 				NiPoint3 tinyLocation = tiny->GetPosition();
 				NiPoint3 targetLocation = bone->world.translate;
@@ -475,7 +476,7 @@ namespace Gts {
 			for (auto actor: find_actors()) {
 				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && actor->IsInCombat()) {
 					RandomVoreAttempt(actor);
-					//log::info("Found Vore Caster");
+					log::info("Actor {} trying to do vore", actor->GetDisplayFullName());
 				}
 			}
 		}
@@ -510,13 +511,15 @@ namespace Gts {
 			int decide_chance = 2;
 			if (random <= decide_chance) {
 				Actor* pred = caster;
-				//log::info("random Vore for {} is true", caster->GetDisplayFullName());
-				//log::info("{} is looking for prey", caster->GetDisplayFullName());
+				log::info("random Vore for {} is true", caster->GetDisplayFullName());
+				log::info("{} is looking for prey", caster->GetDisplayFullName());
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+						log::info("Player Vore is False");
 						return;
 					}
+					log::info("Actor {} found Prey: {}, starting Vore", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 					VoreManager.StartVore(pred, prey);
 				}
 			}

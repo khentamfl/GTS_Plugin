@@ -128,6 +128,11 @@ namespace {
 		VoreData.EnableMouthShrinkZone(false);
 		AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Close mouth
 		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Close mouth
+		for (auto& tiny: VoreData.GetVories()) {
+			if (tiny->formID == 0x14) {
+				PlayerCamera::GetSingleton()->cameraTarget = giant->CreateRefHandle();
+			}
+		}
 	}
 
 	void GTSvore_handR_reposition_S(AnimationEventData& data) {
@@ -163,7 +168,6 @@ namespace {
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
 		}
-		
 	}
 
 	void GTSvore_impactRS(AnimationEventData& data) {
