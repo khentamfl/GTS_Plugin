@@ -103,13 +103,13 @@ namespace {
 	}
 
 	void AnimSpeedUpEvent(const InputEventData& data) {
-		AnimationManager::AdjustAnimSpeed(0.012); // Increase speed and power
+		AnimationManager::AdjustAnimSpeed(0.018); // Increase speed and power
 	}
 	void AnimSpeedDownEvent(const InputEventData& data) {
-		AnimationManager::AdjustAnimSpeed(-0.0060); // Decrease speed and power
+		AnimationManager::AdjustAnimSpeed(-0.0050); // Decrease speed and power
 	}
 	void AnimMaxSpeedEvent(const InputEventData& data) {
-		AnimationManager::AdjustAnimSpeed(0.030); // Strongest attack
+		AnimationManager::AdjustAnimSpeed(0.040); // Strongest attack
 	}
 }
 

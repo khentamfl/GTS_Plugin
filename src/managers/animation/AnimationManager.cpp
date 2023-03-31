@@ -86,7 +86,7 @@ namespace Gts {
 					data.animSpeed += bonus/get_visual_scale(player);
 					ConsoleLog::GetSingleton()->Print("Data: Anim Speed of %s is %g", player->GetDisplayFullName(), data.animSpeed);
 				}
-				data.animSpeed = std::clamp(data.animSpeed, 0.0f, 3.0f);
+				data.animSpeed = std::clamp(data.animSpeed, 0.33f, 3.0f);
 			}
 		} catch (std::out_of_range e) {}
 	}
