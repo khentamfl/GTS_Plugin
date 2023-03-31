@@ -61,6 +61,7 @@ namespace Gts {
 			float basehp = 0.0;
 
 			bool can_do_vore = true;
+			bool can_be_crushed = true;
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
@@ -83,6 +84,7 @@ namespace Gts {
 			result.health_boost = health_boost;
 			result.basehp = basehp;
 			result.can_do_vore = can_do_vore;
+			result.can_be_crushed = can_be_crushed;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

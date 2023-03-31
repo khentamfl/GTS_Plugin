@@ -21,6 +21,7 @@ namespace Gts {
 
 		bool is_teammate;
 		bool can_do_vore;
+		bool can_be_crushed;
 	};
 
 	class Transient : public EventListener {

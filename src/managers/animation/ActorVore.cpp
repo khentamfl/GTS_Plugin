@@ -65,6 +65,7 @@ namespace {
 		auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (transient) {
 			transient->can_do_vore = toggle;
+			transient->can_be_crushed = false;
 		}
 	}
 
