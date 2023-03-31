@@ -2,7 +2,10 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "utils/actorUtils.hpp"
+#include "managers/explosion.hpp"
+#include "managers/footstep.hpp"
 #include "managers/Rumble.hpp"
+#include "managers/tremor.hpp"
 #include "data/transient.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
@@ -86,6 +89,21 @@ namespace {
 			transient->can_be_crushed = false;
 		}
 	}
+
+	void DoEffects(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
+		auto& footstep = FootStepManager::GetSingleton();
+		auto& explosion = ExplosionManager::GetSingleton();
+		Impact impact_data = Impact {
+			.actor = giant,
+			.kind = kind,
+			.scale = get_visual_scale(giant) * modifier,
+			.effective_scale = get_effective_scale(giant),
+			.nodes = find_node(giant, node),
+		};
+		explosion.OnImpact(impact_data);
+		footstep.OnImpact(impact_data);
+	}
+
 	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife, bool once) {
 		for (auto& node_name: BODY_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
@@ -155,11 +173,11 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
 		}
 		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
+		DoEffects(data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
 	}
 
 	void GTSvore_sit_end(AnimationEventData& data) {
@@ -275,6 +293,7 @@ namespace {
 
 	void GTSvore_impactRS(AnimationEventData& data) {
 		Rumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
+		DoEffects(data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {

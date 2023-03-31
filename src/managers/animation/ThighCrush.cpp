@@ -18,6 +18,9 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "managers/explosion.hpp"
+#include "managers/footstep.hpp"
+#include "managers/tremor.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -47,6 +50,20 @@ namespace {
 		"NPC R RearCalf [RrClf]",
 		"NPC L RearCalf [RrClf]",
 	};
+
+	void DoEffects(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
+		auto& footstep = FootStepManager::GetSingleton();
+		auto& explosion = ExplosionManager::GetSingleton();
+		Impact impact_data = Impact {
+			.actor = giant,
+			.kind = kind,
+			.scale = get_visual_scale(giant) * modifier,
+			.effective_scale = get_effective_scale(giant),
+			.nodes = find_node(giant, node),
+		};
+		explosion.OnImpact(impact_data);
+		footstep.OnImpact(impact_data);
+	}
 
 	void StartLegRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
@@ -151,8 +168,8 @@ namespace {
 		float volume = scale * 0.10 * speed;
 		StopLegRumble("ThighCrush", data.giant);
 
-		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
+		DoEffects(data.giant, 0.75, FootEvent::Right, RNode);
 		data.stage = 9;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandR");
 	}
@@ -164,8 +181,8 @@ namespace {
 
 		float volume = scale * 0.10 * speed;
 
-		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, LNode);
 		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
+		DoEffects(data.giant, 0.75, FootEvent::Left, LNode);
 		data.stage = 9;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandL");
 	}
@@ -177,8 +194,8 @@ namespace {
 
 		float volume = scale * 0.05 * speed;
 
-		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
+		DoEffects(data.giant, 0.40, FootEvent::Right, RNode);
 		data.stage = 9;
 	}
 	void GTSBEH_Next(AnimationEventData& data) {

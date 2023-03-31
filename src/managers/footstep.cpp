@@ -240,6 +240,7 @@ namespace Gts {
 						if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
 							xxlFootstepL.Play();
 						}
+						///To-do: make them play at matching node?
 					}
 				}
 			}

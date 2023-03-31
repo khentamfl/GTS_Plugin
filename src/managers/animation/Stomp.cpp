@@ -18,6 +18,7 @@
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"
+#include "managers/footstep.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
 #include "data/runtime.hpp"
@@ -35,7 +36,7 @@ namespace {
 	const std::string_view LSound = "lFootstepL";
 
 	void DoEffects(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
-		auto& tremor = TremorManager::GetSingleton();
+		auto& footstep = FootStepManager::GetSingleton();
 		auto& explosion = ExplosionManager::GetSingleton();
 		Impact impact_data = Impact {
 			.actor = giant,
@@ -44,13 +45,13 @@ namespace {
 			.effective_scale = get_effective_scale(giant),
 			.nodes = find_node(giant, node),
 		};
-		//tremor.OnImpact(impact_data);
 		explosion.OnImpact(impact_data);
+		footstep.OnImpact(impact_data);
 	}
 
 	void DoDamage(Actor* giant, float damage, float radius, int random) {
 		auto& sizemanager = SizeManager::GetSingleton();
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 50.0 * damage, 1.35, random, 0.05);
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 35.0 * damage, 1.35, random, 0.05);
 	}
 
 	void GTSstompstartR(AnimationEventData& data) {
@@ -73,21 +74,18 @@ namespace {
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
-		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		Rumble::Once("StompR", &data.giant, 2.20 * data.animSpeed, 0.0, RNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0, 10);
-		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
+		DoEffects(data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
 		//data.stage = 1;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-
-		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
 		Rumble::Once("StompL", &data.giant, 2.20 * data.animSpeed, 0.0, LNode);
 		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0, 10);
-		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
+		DoEffects(data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
 
 	}
 
@@ -95,11 +93,9 @@ namespace {
 		//data.stage = 2;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-
-		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamage(&data.giant, 0.6, 1.0, 25);
-		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
+		DoEffects(data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
@@ -107,10 +103,9 @@ namespace {
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 
-		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
 		DoDamage(&data.giant, 0.6, 1.0, 25);
-		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
+		DoEffects(data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
 	}
 
 	void GTSStompendR(AnimationEventData& data) {
