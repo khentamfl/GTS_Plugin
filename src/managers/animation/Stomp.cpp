@@ -54,6 +54,7 @@ namespace {
 	}
 
 	void GTSstompstartR(AnimationEventData& data) {
+		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.33;
 		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
@@ -61,6 +62,7 @@ namespace {
 	}
 
 	void GTSstompstartL(AnimationEventData& data) {
+		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.33;
 		Rumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
@@ -70,7 +72,6 @@ namespace {
 	void GTSstompimpactR(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-		data.animSpeed = 1.0;
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
 		Rumble::Once("StompR", &data.giant, 0.80, 0.10, RNode);
@@ -82,7 +83,6 @@ namespace {
 		//data.stage = 1;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-		data.animSpeed = 1.0;
 
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
 		Rumble::Once("StompL", &data.giant, 0.80, 0.10, LNode);
@@ -114,11 +114,13 @@ namespace {
 	}
 
 	void GTSStompendR(AnimationEventData& data) {
+		data.stage = 0;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
 
 	void GTSStompendL(AnimationEventData& data) {
+		data.stage = 0;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
