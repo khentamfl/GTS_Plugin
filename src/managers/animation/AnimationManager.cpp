@@ -83,9 +83,7 @@ namespace Gts {
 			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
 				return data.animSpeed;
 			}
-		} catch (std::out_of_range e) {
-			return 1.0;
-		}
+		} catch (std::out_of_range e) {}
 		return 1.0;
 	}
 
