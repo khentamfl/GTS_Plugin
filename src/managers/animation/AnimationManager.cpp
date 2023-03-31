@@ -93,6 +93,9 @@ namespace Gts {
 
 	float AnimationManager::GetAnimSpeed(Actor* actor) {
 		float speed = 1.0;
+		if (!Persistent::GetSingleton().is_speed_adjusted) {
+			return 1.0;
+		}
 		if (actor) {
 			auto saved_data = Gts::Persistent::GetSingleton().GetData(actor);
 			if (saved_data) {

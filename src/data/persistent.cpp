@@ -308,7 +308,13 @@ namespace Gts {
 				bool highheel_furniture;
 				serde->ReadRecordData(&highheel_furniture, sizeof(highheel_furniture));
 				GetSingleton().highheel_furniture = highheel_furniture;
-			} else if (type == IsSpeedAdjustedRecord) {
+			} else if (type == vore_allowplayervore) {
+				bool vore_allowplayervore;
+				serde->ReadRecordData(&vore_allowplayervore, sizeof(vore_allowplayervore));
+				GetSingleton().vore_allowplayervore = vore_allowplayervore;
+			}
+			
+			 else if (type == IsSpeedAdjustedRecord) {
 				bool is_speed_adjusted;
 				serde->ReadRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
 				GetSingleton().is_speed_adjusted = is_speed_adjusted;
@@ -443,6 +449,15 @@ namespace Gts {
 
 		bool highheel_furniture = GetSingleton().highheel_furniture;
 		serde->WriteRecordData(&highheel_furniture, sizeof(highheel_furniture));
+
+
+		if (!serde->OpenRecord(vore_allowplayervore, 0)) {
+			log::error("Unable to open Allow Player Vore record to write cosave data.");
+			return;
+		}
+
+		bool vore_allowplayervore = GetSingleton().vore_allowplayervore;
+		serde->WriteRecordData(&vore_allowplayervore, sizeof(vore_allowplayervore));
 
 		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 1)) {
 			log::error("Unable to open is speed adjusted record to write cosave data.");

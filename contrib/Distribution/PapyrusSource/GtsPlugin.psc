@@ -69,6 +69,9 @@ String function SigFig(Float number, Int sf) global native
 Function SetIsHighHeelEnabled(Bool enabled) global native
 Bool Function GetIsHighHeelEnabled() global native
 
+;Allows/Disallows Player to be eaten, default: false
+Function SetAllowPlayerVore(Bool enabled) global native
+    
 ; Self-explanatory
 Function SetIsHHFurnitureEnabled(Bool enabled) global native
 

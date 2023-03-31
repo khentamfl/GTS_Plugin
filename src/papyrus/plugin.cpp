@@ -149,6 +149,10 @@ namespace {
 		Persistent::GetSingleton().highheel_correction = enabled;
 	}
 
+	void SetAllowPlayerVore(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().vore_allowplayervore = enabled;
+	}
+
 	void SetIsHHFurnitureEnabled(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().highheel_furniture = enabled;
 		if (enabled == false) {
@@ -266,6 +270,7 @@ namespace Gts {
 		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
+		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
 		vm->RegisterFunction("DisintegrateTarget", PapyrusClass, DisintegrateTarget);
 		vm->RegisterFunction("DragonCheck", PapyrusClass, DragonCheck);
 		vm->RegisterFunction("GetIsSpeedAdjusted", PapyrusClass, GetIsSpeedAdjusted);

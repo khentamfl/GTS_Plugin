@@ -40,6 +40,8 @@ namespace {
 		"NPC R Toe0 [RToe]",
 		"NPC L Calf [LClf]",
 		"NPC R Calf [RClf]",
+		"NPC L PreRearCalf",
+		"NPC R PreRearCalf",
 		"NPC L FrontThigh",
 		"NPC R FrontThigh",
 		"NPC R RearCalf [RrClf]",
