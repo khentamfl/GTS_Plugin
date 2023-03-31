@@ -347,7 +347,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = force/50;///nodeCollisions;
-								ApplySizeEffect(actor, otherActor, aveForce * damage, bbmult);
+								ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 								//break;
 							}
 						}
@@ -480,7 +480,7 @@ namespace Gts {
 
 		//log::info("Additional Damage: {}", additionaldamage);
 
-		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
+		SizeHitEffects::GetSingleton().SizeWeakness(giant, tiny, result * bbmult, random);
 
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
 			if (CrushManager::CanCrush(giant, tiny)) {
