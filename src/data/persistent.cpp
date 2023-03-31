@@ -11,6 +11,7 @@ namespace {
 	inline const auto ScaleMethodRecord = _byteswap_ulong('SCMD');
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
 	inline const auto HighHeelFurnitureRecord = _byteswap_ulong('HHFO');
+	inline const auto AllowPlayerVoreRecord = _byteswap_ulong('APVR');
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
 	inline const auto CamCollisions = _byteswap_ulong('CAMC');
@@ -308,7 +309,7 @@ namespace Gts {
 				bool highheel_furniture;
 				serde->ReadRecordData(&highheel_furniture, sizeof(highheel_furniture));
 				GetSingleton().highheel_furniture = highheel_furniture;
-			} else if (type == vore_allowplayervore) {
+			} else if (type == AllowPlayerVoreRecord) {
 				bool vore_allowplayervore;
 				serde->ReadRecordData(&vore_allowplayervore, sizeof(vore_allowplayervore));
 				GetSingleton().vore_allowplayervore = vore_allowplayervore;
@@ -451,7 +452,7 @@ namespace Gts {
 		serde->WriteRecordData(&highheel_furniture, sizeof(highheel_furniture));
 
 
-		if (!serde->OpenRecord(vore_allowplayervore, 0)) {
+		if (!serde->OpenRecord(AllowPlayerVoreRecord, 0)) {
 			log::error("Unable to open Allow Player Vore record to write cosave data.");
 			return;
 		}

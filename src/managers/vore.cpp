@@ -88,7 +88,7 @@ namespace {
 			return;
 		}
 
-		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.20, 1.0);
+		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.05, 1.0);
 
 		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
@@ -485,7 +485,7 @@ namespace Gts {
 		for (auto& [key, voreBuff]: this->buffs) {
 			voreBuff.Update();
 			if (voreBuff.Done()) {
-        log::info("Erasing buff");
+        		log::info("Erasing buff");
 				this->buffs.erase(key);
 			}
 		}
@@ -500,7 +500,7 @@ namespace Gts {
 		}
 		//log::info("Attempting Random Vore");
 		for (auto actor: find_actors()) {
-			if (actor->formID == 0x14 || !actor->Is3DLoaded() || actor->IsDead()) {
+			if ((actor->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) || !actor->Is3DLoaded() || actor->IsDead()) {
 				return;
 			}
 			float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100);
