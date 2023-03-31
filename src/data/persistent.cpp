@@ -12,6 +12,7 @@ namespace {
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
 	inline const auto HighHeelFurnitureRecord = _byteswap_ulong('HHFO');
 	inline const auto AllowPlayerVoreRecord = _byteswap_ulong('APVR');
+	inline const auto VoreCombatOnlyRecord = _byteswap_ulong("VRCO");
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
 	inline const auto CamCollisions = _byteswap_ulong('CAMC');
@@ -313,6 +314,10 @@ namespace Gts {
 				bool vore_allowplayervore;
 				serde->ReadRecordData(&vore_allowplayervore, sizeof(vore_allowplayervore));
 				GetSingleton().vore_allowplayervore = vore_allowplayervore;
+			} else if (type == VoreCombatOnlyRecord) {
+				bool vore_combatonly;
+				serde->ReadRecordData(&vore_combatonly, sizeof(vore_combatonly));
+				GetSingleton().vore_combatonly = vore_combatonly;
 			}
 			
 			 else if (type == IsSpeedAdjustedRecord) {
@@ -459,6 +464,14 @@ namespace Gts {
 
 		bool vore_allowplayervore = GetSingleton().vore_allowplayervore;
 		serde->WriteRecordData(&vore_allowplayervore, sizeof(vore_allowplayervore));
+
+		if (!serde->OpenRecord(VoreCombatOnlyRecord, 0)) {
+			log::error("Unable to open Vore Combat Only record to write cosave data");
+			return;
+		}
+
+		bool vore_combatonly = GetSingleton().vore_combatonly;
+		serdge->WriteRecordData(&vore_combatonly, sizeof(vore_combatonly));
 
 		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 1)) {
 			log::error("Unable to open is speed adjusted record to write cosave data.");

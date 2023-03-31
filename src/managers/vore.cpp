@@ -192,13 +192,14 @@ namespace Gts {
 		for (auto& [key, tiny]: this->tinies) {
 			if (tiny->formID != 0x14) {
 				Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
+				this->tinies.delete(tiny);
 			} else if (tiny->formID == 0x14) {
 				tiny->KillImmediate();
 				TriggerScreenBlood(50);
 				tiny->SetAlpha(0.0); // Just make player Invisible
 			}
 		}
-		this->tinies.clear();
+		//this->tinies.clear();
 	}
 
 	void VoreData::GrabAll() {
@@ -468,13 +469,14 @@ namespace Gts {
 
 	void Vore::Update() {
 		auto player = PlayerCharacter::GetSingleton();
+		auto& persist = Persistent::GetSingleton();
 		if (!Runtime::HasPerk(player, "VorePerk")) {
 			return;
 		}
 		static Timer timer = Timer(3.00); // Random Vore once per 3 sec
 		if (timer.ShouldRunFrame()) { //Try to not overload
 			for (auto actor: find_actors()) {
-				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && actor->IsInCombat()) {
+				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && actor->IsInCombat() || actor->IsPlayerTeammate() && !persist.vore_combatonly) {
 					RandomVoreAttempt(actor);
 					log::info("Actor {} trying to do vore", actor->GetDisplayFullName());
 				}
@@ -827,6 +829,7 @@ namespace Gts {
 		voreData.AddTiny(prey);
 
 		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
+		prey->NotifyAnimationGraph("GTS_EnterFear");
 	}
 
 	// Gets the current vore data of a giant

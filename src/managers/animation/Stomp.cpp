@@ -50,7 +50,7 @@ namespace {
 
 	void DoDamage(Actor* giant, float damage, float radius, int random) {
 		auto& sizemanager = SizeManager::GetSingleton();
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 72.0 * damage, 1.35, random, 0.05);
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 50.0 * damage, 1.35, random, 0.05);
 	}
 
 	void GTSstompstartR(AnimationEventData& data) {

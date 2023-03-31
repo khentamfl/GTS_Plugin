@@ -71,6 +71,9 @@ Bool Function GetIsHighHeelEnabled() global native
 
 ;Allows/Disallows Player to be eaten, default: false
 Function SetAllowPlayerVore(Bool enabled) global native
+
+;Disallow/Allow non-combat random vore for followers
+Function SetOnlyCombatVore(Bool enabled) global native
     
 ; Self-explanatory
 Function SetIsHHFurnitureEnabled(Bool enabled) global native

@@ -72,6 +72,7 @@ namespace Gts {
 			bool highheel_furniture = true;
 			bool is_speed_adjusted = true;
 			bool vore_allowplayervore = false;
+			bool vore_combatonly = true;
 			float tremor_scale = 1.0;
 			float npc_tremor_scale = 1.0;
 			SoftPotential speed_adjustment {

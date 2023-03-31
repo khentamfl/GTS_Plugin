@@ -106,7 +106,6 @@ namespace {
 		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
 		AdjustFacialExpression(giant, 0, 0.80, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.80, "modifier"); // blink R
-		VoreData.EnableMouthShrinkZone(true);
 	}
 
 	void GTSvore_bringactor_end(AnimationEventData& data) {
@@ -115,6 +114,9 @@ namespace {
 	}
 
 	void GTSvore_swallow(AnimationEventData& data) {
+		auto giant = &data.giant;
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		VoreData.EnableMouthShrinkZone(true);
 	}
 
 	void GTSvore_swallow_sound(AnimationEventData& data) {
@@ -157,7 +159,6 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); // Remove smile
 		VoreData.KillAll();
-		VoreData.ReleaseAll();
 	}
 
 	void GTSvore_detachactor_AnimObject_A(AnimationEventData& data) {
@@ -175,6 +176,8 @@ namespace {
 
 	void GTSvore_standup_end(AnimationEventData& data) {
 		auto giant = &data.giant;
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		VoreData.ReleaseAll();
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
 		}
