@@ -37,7 +37,7 @@ namespace Gts {
 		}
 
 		Grow(caster, 0.0, power * bonus);
-		Rumble::Once("SlowGrow", caster, 0.30);
+		Rumble::Once("SlowGrow", caster, 0.30, 0.05);
 		//log::info("Slowly Growing, actor: {}", caster->GetDisplayFullName());
 	}
 

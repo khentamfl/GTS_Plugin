@@ -56,7 +56,7 @@ namespace {
 		}
 		if (Cache->SizeReserve > 0.0) {
 			float duration = data.Duration();
-			Rumble::Once("SizeReserve", player, Cache->SizeReserve/15 * duration);
+			Rumble::Once("SizeReserve", player, Cache->SizeReserve/15 * duration, 0.05);
 
 			if (duration >= 1.2 && Runtime::HasPerk(player, "SizeReserve") && Cache->SizeReserve > 0) {
 				float SizeCalculation = duration - 1.2;

@@ -55,13 +55,13 @@ namespace {
 
 	void GTSstompstartR(AnimationEventData& data) {
 		data.canEditAnimSpeed = true;
-		Rumble::Start("StompR", &data.giant, 0.35, RNode);
+		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 		log::info("StompStartR true");
 	}
 
 	void GTSstompstartL(AnimationEventData& data) {
 		data.canEditAnimSpeed = true;
-		Rumble::Start("StompL", &data.giant, 0.35, LNode); // Start stonger effect
+		Rumble::Start("StompL", &data.giant, 0.35, 0.15, LNode); // Start stonger effect
 		log::info("StompStartL true");
 	}
 

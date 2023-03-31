@@ -36,7 +36,7 @@ namespace Gts {
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
 			float GrowthValue = damage/1000;
 			mod_target_scale(receiver, GrowthValue * SizeHunger * Gigantism);
-			Rumble::Once("HitManager", receiver, GrowthValue * SizeHunger * Gigantism);
+			Rumble::Once("HitManager", receiver, GrowthValue * SizeHunger * Gigantism, 0.05);
 		} 
 		else if (sizemanager.BalancedMode() >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			float ShrinkValue = damage/500;
@@ -223,7 +223,7 @@ namespace Gts {
 				GrowthValue *= 0.50;
 			}
 			if (this->GrowthTick > 0.01 && GrowthValue > 0) {
-				Rumble::Once("HitManager", actor, (actor_data->half_life * 4) * ShakePower);
+				Rumble::Once("HitManager", actor, (actor_data->half_life * 4) * ShakePower, 0.05);
 				mod_target_scale(actor, GrowthValue);
 				this->GrowthTick -= 0.0005 * TimeScale();
 			} else if (this->GrowthTick <= 0.01) {
@@ -248,7 +248,7 @@ namespace Gts {
 				}
 
 				if (this->GrowthTick > 0.01 && ShrinkValue < 0) {
-					Rumble::Once("HitManager", actor, (actor_data->half_life * 2.5) * ShakePower);
+					Rumble::Once("HitManager", actor, (actor_data->half_life * 2.5) * ShakePower, 0.05);
 					mod_target_scale(actor, ShrinkValue);
 					this->GrowthTick -= 0.0005 * TimeScale();
 				} else if (this->GrowthTick <= 0.01) {

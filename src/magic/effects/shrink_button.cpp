@@ -37,7 +37,7 @@ namespace Gts {
 		if (caster_scale > 0.10) {
 			DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
 			ShrinkActor(caster, 0.0030* stamina, 0.0);
-			Rumble::Once("ShrinkButton", caster, 0.60);
+			Rumble::Once("ShrinkButton", caster, 0.60, 0.05);
 		}
 	}
 }

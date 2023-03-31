@@ -20,7 +20,7 @@ namespace Gts {
 			return;
 		}
 
-		Rumble::Once("GrowthPotion", caster, 2.0);
+		Rumble::Once("GrowthPotion", caster, 2.0, 0.05);
 
 		float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/8);
 		Runtime::PlaySound("growthSound", caster, Volume, 1.0);
@@ -37,7 +37,7 @@ namespace Gts {
 
 		float AlchemyLevel = clamp(1.0, 2.0, caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
 		if (caster == PlayerCharacter::GetSingleton()) {
-			Rumble::Once("GrowthPotion", caster, 0.4);
+			Rumble::Once("GrowthPotion", caster, 0.4, 0.05);
 		}
 
 		if (this->timer.ShouldRun()) {

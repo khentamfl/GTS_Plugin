@@ -14,15 +14,15 @@ using namespace RE;
 
 namespace Gts {
 
-	RumbleData::RumbleData(float intensity, float duration, std::string node) :
+	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string node) :
 		state(RumpleState::RampingUp),
 		duration(duration),
-		currentIntensity(Spring(0.0, 0.5)),
+		currentIntensity(Spring(0.0, halflife)),
 		node(node),
 		startTime(0.0) {
 	}
 
-	RumbleData::RumbleData(float intensity, float duration, std::string_view node) : RumbleData(intensity, duration, std::string(node)) {
+	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string_view node) : RumbleData(intensity, duration, halflife, std::string(node)) {
 	}
 
 	void RumbleData::ChangeTargetIntensity(float intensity) {
@@ -55,11 +55,11 @@ namespace Gts {
 		this->data.erase(actor);
 	}
 
-	void Rumble::Start(std::string_view tag, Actor* giant, float intensity, std::string_view node) {
-		Rumble::For(tag, giant, intensity, node, 0);
+	void Rumble::Start(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node) {
+		Rumble::For(tag, giant, intensity, halflife, node, 0);
 	}
-	void Rumble::Start(std::string_view tag, Actor* giant, float intensity) {
-		Rumble::For(tag, giant, intensity, "NPC COM [COM ]", 0);
+	void Rumble::Start(std::string_view tag, Actor* giant, float intensity, float halflife) {
+		Rumble::For(tag, giant, intensity, halflife, "NPC COM [COM ]", 0);
 	}
 	void Rumble::Stop(std::string_view tagsv, Actor* giant) {
 		string tag = std::string(tagsv);
@@ -69,23 +69,23 @@ namespace Gts {
 		} catch (std::out_of_range e) {}
 	}
 
-	void Rumble::For(std::string_view tagsv, Actor* giant, float intensity, std::string_view nodesv, float duration) {
+	void Rumble::For(std::string_view tagsv, Actor* giant, float intensity, float halflife, std::string_view nodesv, float duration) {
 		std::string tag = std::string(tagsv);
 		std::string node = std::string(nodesv);
 		auto& me = Rumble::GetSingleton();
 		me.data.try_emplace(giant);
-		me.data.at(giant).tags.try_emplace(tag, intensity, duration, node);
+		me.data.at(giant).tags.try_emplace(tag, intensity, duration, halflife, node);
 		// Reset if alreay there (but don't reset the intensity this will let us smooth into it)
 		me.data.at(giant).tags.at(tag).ChangeTargetIntensity(intensity);
 		me.data.at(giant).tags.at(tag).ChangeDuration(duration);
 	}
 
-	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, std::string_view node) {
-		Rumble::For(tag, giant, intensity, node, 1.0);
+	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node) {
+		Rumble::For(tag, giant, intensity, halflife, node, 1.0);
 	}
 
-	void Rumble::Once(std::string_view tag, Actor* giant, float intensity) {
-		Rumble::Once(tag, giant, intensity, "NPC Root [Root]");
+	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife) {
+		Rumble::Once(tag, giant, intensity, halflife, "NPC Root [Root]");
 	}
 
 
