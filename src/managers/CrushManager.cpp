@@ -1,5 +1,6 @@
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
+#include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "scale/scale.hpp"
@@ -136,6 +137,12 @@ namespace Gts {
 			}
 			if (!giant) {
 				continue;
+			}
+			auto transient = Transient::GetSingleton().GetActorData(tiny);
+			if (transient) {
+				if (!transient->can_be_crushed) {
+					return;
+				}
 			}
 			auto progressionQuest = Runtime::GetQuest("MainQuest");
 
