@@ -87,6 +87,7 @@ namespace {
 		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			for (auto& tiny: VoreData.GetVories()) {
+				tiny->NotifyAnimationGraph("GTS_ExitFear");
 				PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
 			}
 		}
