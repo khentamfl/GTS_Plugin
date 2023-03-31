@@ -476,7 +476,7 @@ namespace Gts {
 		static Timer timer = Timer(3.00); // Random Vore once per 3 sec
 		if (timer.ShouldRunFrame()) { //Try to not overload
 			for (auto actor: find_actors()) {
-				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && actor->IsInCombat() || actor->IsPlayerTeammate() && !persist.vore_combatonly) {
+				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
 					RandomVoreAttempt(actor);
 					log::info("Actor {} trying to do vore", actor->GetDisplayFullName());
 				}
@@ -829,7 +829,6 @@ namespace Gts {
 		voreData.AddTiny(prey);
 
 		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
-		prey->NotifyAnimationGraph("GTS_EnterFear");
 	}
 
 	// Gets the current vore data of a giant

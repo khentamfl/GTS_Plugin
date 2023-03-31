@@ -42,6 +42,29 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
+	const std::vector<std::string_view> LHAND_RUMBLE_NODES = { // used for hand rumble
+		"NPC R UpperarmTwist1 [RUt1]",
+		"NPC R UpperarmTwist2 [RUt2]",
+		"NPC R Forearm [RLar]",
+		"NPC R ForearmTwist2 [RLt2]",
+		"NPC R ForearmTwist1 [RLt1]",
+		"NPC R Hand [RHnd]",
+	};
+
+	void StartHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
+		for (auto& node_name: LHAND_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+		}
+	}
+
+	void StopHandRumble(std::string_view tag, Actor& actor) {
+		for (auto& node_name: LHAND_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Stop(rumbleName, &actor);
+		}
+	}
+
 	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) {
 		if (giant) {
 			auto fgen = giant->GetFaceGenAnimationData();
@@ -68,16 +91,21 @@ namespace {
 	}
 
 	void GTSvore_impactLS(AnimationEventData& data) {
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 		Runtime::PlaySoundAtNode(LSound, &data.giant, volume, 1.0, LNode);
-		//Rumble::Start("StompL", &data.giant, 0.25, RNode);
+		for (auto& tiny: VoreData.GetVories()) {
+			tiny->NotifyAnimationGraph("GTS_EnterFear");
+		}
+		Rumble::Once("StompL", &data.giant, 0.25, 0.10, LNode);
 	}
 
 	void GTSvore_sit_end(AnimationEventData& data) {
 	}
 
 	void GTSvore_hand_extend(AnimationEventData& data) {
+		StartHandRumble("HandL", &data.giant, 0.5, 0.15);
 	}
 
 	void GTSvore_hand_grab(AnimationEventData& data) {
@@ -85,12 +113,13 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		VoreData.GrabAll();
 		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
-		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			for (auto& tiny: VoreData.GetVories()) {
-				tiny->NotifyAnimationGraph("GTS_ExitFear");
+		for (auto& tiny: VoreData.GetVories()) {
+			tiny->NotifyAnimationGraph("GTS_ExitFear");
+			if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 				PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
 			}
 		}
+		StopHandRumble("HandL", &data.giant);
 	}
 
 	void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {
@@ -98,6 +127,7 @@ namespace {
 
 	void GTSvore_bringactor_start(AnimationEventData& data) {
 		AdjustFacialExpression(&data.giant, 5, 0.8, "phenome"); // Smile a bit (Mouth)
+		StartHandRumble("HandL", &data.giant, 0.6, 0.175);
 	}
 
 	void GTSvore_open_mouth(AnimationEventData& data) {
@@ -112,6 +142,7 @@ namespace {
 	void GTSvore_bringactor_end(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		StopHandRumble("HandL", &data.giant);
 	}
 
 	void GTSvore_swallow(AnimationEventData& data) {
@@ -145,15 +176,19 @@ namespace {
 		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
 		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
+		StartHandRumble("HandR", &data.giant, 0.5, 0.15);
 	}
 
 	void GTSvore_handL_reposition_S(AnimationEventData& data) {
+		StartHandRumble("HandL", &data.giant, 0.5, 0.15);
 	}
 
 	void GTSvore_handR_reposition_E(AnimationEventData& data) {
+		StopHandRumble("HandR", &data.giant);
 	}
 
 	void GTSvore_handL_reposition_E(AnimationEventData& data) {
+		StopHandRumble("HandL", &data.giant);
 	}
 
 	void GTSvore_eat_actor(AnimationEventData& data) {
@@ -173,6 +208,7 @@ namespace {
 	}
 
 	void GTSvore_impactRS(AnimationEventData& data) {
+		Rumble::Once("StompR", &data.giant, 0.25, 0.10, RNode);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {
