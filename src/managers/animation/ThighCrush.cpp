@@ -150,7 +150,7 @@ namespace {
 		StopLegRumble("ThighCrush", data.giant);
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, RNode, 0.10);
+		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		data.stage = 9;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandR");
 	}
@@ -163,7 +163,7 @@ namespace {
 		float volume = scale * 0.10 * speed;
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, LNode);
-		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, LNode, 0.10);
+		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
 		data.stage = 9;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandL");
 	}
@@ -176,7 +176,7 @@ namespace {
 		float volume = scale * 0.05 * speed;
 
 		Runtime::PlaySoundAtNode(RSound, &data.giant, volume, 1.0, RNode);
-		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, RNode, 0.10);
+		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		data.stage = 9;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandRS");
 	}

@@ -1,4 +1,5 @@
 // Module that handles rumbling
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/Rumble.hpp"
 #include "events.hpp"
 #include "timer.hpp"
@@ -145,6 +146,7 @@ namespace Gts {
 			//     and sum the intensities
 			NiPoint3 averagePos = NiPoint3(0.0, 0.0, 0.0);
 			float totalWeight = 0.0;
+			float animspeed = AnimationManager::GetSingleton().GetAnimSpeed(actor);
 			for (const auto &[node, intensity]: cummulativeIntensity) {
 				auto& point = node->world.translate;
 				averagePos = averagePos + point*intensity;
@@ -158,7 +160,7 @@ namespace Gts {
 				}
 			}
 			averagePos = averagePos * (1.0 / totalWeight);
-			ApplyShakeAtPoint(actor, 0.4 * totalWeight, averagePos);
+			ApplyShakeAtPoint(actor, 0.4 * totalWeight * animspeed, averagePos);
 		}
 	}
 	//}
