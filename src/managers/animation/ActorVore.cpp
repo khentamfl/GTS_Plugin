@@ -42,7 +42,7 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
-	const std::vector<std::string_view> LHAND_RUMBLE_NODES = { // used for hand rumble
+	const std::vector<std::string_view> RHAND_RUMBLE_NODES = { // used for hand rumble
 		"NPC R UpperarmTwist1 [RUt1]",
 		"NPC R UpperarmTwist2 [RUt2]",
 		"NPC R Forearm [RLar]",
@@ -51,15 +51,37 @@ namespace {
 		"NPC R Hand [RHnd]",
 	};
 
-	void StartHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
+	const std::vector<std::string_view> LHAND_RUMBLE_NODES = { // used for hand rumble
+		"NPC L UpperarmTwist1 [LUt1]",
+		"NPC L UpperarmTwist2 [LUt2]",
+		"NPC L Forearm [LLar]",
+		"NPC L ForearmTwist2 [LLt2]",
+		"NPC L ForearmTwist1 [LLt1]",
+		"NPC L Hand [LHnd]",
+	};
+	
+	void StartRHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
+		for (auto& node_name: RHAND_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+		}
+	}
+
+	void StartLHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LHAND_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
 			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
-	void StopHandRumble(std::string_view tag, Actor& actor) {
-		for (auto& node_name: LHAND_RUMBLE_NODES) {
+	void StopRHandRumble(std::string_view tag, Actor& actor) {
+		for (auto& node_name: RHAND_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Stop(rumbleName, &actor);
+		}
+	}
+	void StopLHandRumble(std::string_view tag, Actor& actor) {
+		for (auto& node_name: RHAND_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
 			Rumble::Stop(rumbleName, &actor);
 		}
@@ -105,7 +127,7 @@ namespace {
 	}
 
 	void GTSvore_hand_extend(AnimationEventData& data) {
-		StartHandRumble("HandL", &data.giant, 0.5, 0.15);
+		StartRHandRumble("HandR", &data.giant, 0.5, 0.15);
 	}
 
 	void GTSvore_hand_grab(AnimationEventData& data) {
@@ -119,7 +141,7 @@ namespace {
 				PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
 			}
 		}
-		StopHandRumble("HandL", &data.giant);
+		StopRHandRumble("HandR", giant);
 	}
 
 	void GTSvore_attachactor_AnimObject_A(AnimationEventData& data) {
@@ -127,7 +149,7 @@ namespace {
 
 	void GTSvore_bringactor_start(AnimationEventData& data) {
 		AdjustFacialExpression(&data.giant, 5, 0.8, "phenome"); // Smile a bit (Mouth)
-		StartHandRumble("HandL", &data.giant, 0.6, 0.175);
+		StartRHandRumble("HandR", &data.giant, 0.6, 0.175);
 	}
 
 	void GTSvore_open_mouth(AnimationEventData& data) {
@@ -142,7 +164,7 @@ namespace {
 	void GTSvore_bringactor_end(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-		StopHandRumble("HandL", &data.giant);
+		StopRHandRumble("HandR", &data.giant);
 	}
 
 	void GTSvore_swallow(AnimationEventData& data) {
@@ -176,19 +198,19 @@ namespace {
 		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
 		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
-		StartHandRumble("HandR", &data.giant, 0.5, 0.15);
+		StartRHandRumble("HandR", &data.giant, 0.5, 0.15);
 	}
 
 	void GTSvore_handL_reposition_S(AnimationEventData& data) {
-		StartHandRumble("HandL", &data.giant, 0.5, 0.15);
+		StartLHandRumble("HandL", &data.giant, 0.5, 0.15);
 	}
 
 	void GTSvore_handR_reposition_E(AnimationEventData& data) {
-		StopHandRumble("HandR", &data.giant);
+		StopRHandRumble("HandR", &data.giant);
 	}
 
 	void GTSvore_handL_reposition_E(AnimationEventData& data) {
-		StopHandRumble("HandL", &data.giant);
+		StopLHandRumble("HandL", &data.giant);
 	}
 
 	void GTSvore_eat_actor(AnimationEventData& data) {
