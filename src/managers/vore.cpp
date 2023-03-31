@@ -509,7 +509,7 @@ namespace Gts {
 		
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerk(player, "MassVorePerk")) {
-			numberOfPrey = 1 * (get_visual_scale(caster)/3);
+			numberOfPrey = 1 + (get_visual_scale(caster)/3);
 		}
 		for (auto actor: find_actors()) {
 			if (!actor->Is3DLoaded() || actor->IsDead()) {
