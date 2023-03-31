@@ -193,7 +193,7 @@ namespace Gts {
 			if (tiny->formID != 0x14) {
 				Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
 			} else if (tiny->formID == 0x14) {
-				tiny->Killimmediate();
+				tiny->KillImmediate();
 				TriggerScreenBlood(50);
 				tiny->SetAlpha(0.0); // Just make player Invisible
 			}
