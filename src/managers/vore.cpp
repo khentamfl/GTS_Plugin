@@ -290,9 +290,9 @@ namespace Gts {
               }
             }
           }
-				}
+				}*/
 			}
-		}*/
+		}
 
 		// Shrink nodes
 		if (this->killZoneEnabled) {
