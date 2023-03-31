@@ -252,7 +252,7 @@ namespace Gts {
 					}
 
 
-          if (deltaLength >= 70.0) {
+          /*if (deltaLength >= 70.0) {
             // WARP if > 1m
             auto ragDoll = GetRagdoll(tiny_is_actor);
             hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
@@ -292,7 +292,7 @@ namespace Gts {
           }
 				}
 			}
-		}
+		}*/
 
 		// Shrink nodes
 		if (this->killZoneEnabled) {
@@ -304,7 +304,7 @@ namespace Gts {
 				for (auto& [key, tiny]: this->tinies) {
 					// Get all nodes in range
 					std::vector<NiAVObject*> nodes_inrange = {};
-          std::vector<std::string> names_inrange = {};
+          			std::vector<std::string> names_inrange = {};
 					auto root = tiny->GetCurrent3D();
 					VisitNodes(root, [&nodes_inrange, &headCenter, &headKillRadius, &names_inrange](NiAVObject& node) {
 						float distance = (node.world.translate - headCenter).Length();
