@@ -106,7 +106,7 @@ namespace {
 		AnimationManager::AdjustAnimSpeed(0.025); // Increase speed and power
 	}
 	void AnimSpeedDownEvent(const InputEventData& data) {
-		AnimationManager::AdjustAnimSpeed(-0.035); // Decrease speed and power
+		AnimationManager::AdjustAnimSpeed(-0.060); // Decrease speed and power
 	}
 	void AnimMaxSpeedEvent(const InputEventData& data) {
 		AnimationManager::AdjustAnimSpeed(0.060); // Strongest attack

@@ -146,7 +146,7 @@ namespace Gts {
 			//     and sum the intensities
 			NiPoint3 averagePos = NiPoint3(0.0, 0.0, 0.0);
 			float totalWeight = 0.0;
-			float animspeed = AnimationManager::GetSingleton().GetBonusAnimationSpeed(actor);
+			float animspeed = 1.0; //AnimationManager::GetSingleton().GetBonusAnimationSpeed(actor); <- for some reason often reports 1.0.
 			for (const auto &[node, intensity]: cummulativeIntensity) {
 				auto& point = node->world.translate;
 				averagePos = averagePos + point*intensity;
@@ -159,7 +159,7 @@ namespace Gts {
 					Runtime::PlaySoundAtNode("RumbleWalkSound", actor, volume, 1.0, node);
 				}
 			}
-			log::info("Anim speed for {} is {}", actor->GetDisplayFullName(), animspeed);
+			//log::info("Anim speed for {} is {}", actor->GetDisplayFullName(), animspeed);
 			averagePos = averagePos * (1.0 / totalWeight);
 			ApplyShakeAtPoint(actor, 0.4 * totalWeight * animspeed, averagePos);
 		}

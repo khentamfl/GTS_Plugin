@@ -199,10 +199,12 @@ namespace {
 		VoreData.GrabAll();
 		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
 		for (auto& tiny: VoreData.GetVories()) {
+			tiny->NotifyAnimationGraph("JumpFall");
 			if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 				PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
 			}
 		}
+
 		StopRHandRumble("HandR", data.giant);
 	}
 

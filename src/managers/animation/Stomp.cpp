@@ -72,41 +72,30 @@ namespace {
 	}
 
 	void GTSstompimpactR(AnimationEventData& data) {
-		float scale = get_visual_scale(&data.giant);
-		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-
-		Rumble::Once("StompR", &data.giant, 2.20 * data.animSpeed, 0.0, RNode);
-		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0, 10);
-		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
+		Rumble::Once("StompR", &data.giant, 2.20, 0.0, RNode);
+		DoDamage(&data.giant, 1.0, 1.0, 10);
+		DoEffects(&data.giant, 1.10, FootEvent::Right, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
 		//data.stage = 1;
-		float scale = get_visual_scale(&data.giant);
-		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-		Rumble::Once("StompL", &data.giant, 2.20 * data.animSpeed, 0.0, LNode);
-		DoDamage(&data.giant, 1.0 * data.animSpeed, 1.0, 10);
-		DoEffects(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
-
+		Rumble::Once("StompL", &data.giant, 2.20, 0.0, LNode);
+		DoDamage(&data.giant, 1.0, 1.0, 10);
+		DoEffects(&data.giant, 1.10, FootEvent::Left, LNode);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
 		//data.stage = 2;
-		float scale = get_visual_scale(&data.giant);
-		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamage(&data.giant, 0.6, 1.0, 25);
-		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
+		DoEffects(&data.giant, 0.85, FootEvent::Right, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
 		//data.stage = 2;
-		float scale = get_visual_scale(&data.giant);
-		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
 		DoDamage(&data.giant, 0.6, 1.0, 25);
-		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
+		DoEffects(&data.giant, 0.85, FootEvent::Left, LNode);
 	}
 
 	void GTSStompendR(AnimationEventData& data) {
