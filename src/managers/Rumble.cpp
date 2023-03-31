@@ -146,7 +146,7 @@ namespace Gts {
 			//     and sum the intensities
 			NiPoint3 averagePos = NiPoint3(0.0, 0.0, 0.0);
 			float totalWeight = 0.0;
-			float animspeed = AnimationManager::GetSingleton().GetAnimSpeed(actor);
+			float animspeed = AnimationManager::GetSingleton().GetBonusAnimationSpeed(actor);
 			for (const auto &[node, intensity]: cummulativeIntensity) {
 				auto& point = node->world.translate;
 				averagePos = averagePos + point*intensity;

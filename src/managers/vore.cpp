@@ -226,7 +226,7 @@ namespace Gts {
 		// Stick them to the AnimObjectA
 		for (auto& [key, tiny]: this->tinies) {
 			if (!tiny) {
-				continue;
+				return;
 			}
 
 			auto bone = find_node(giant, "AnimObjectA");
@@ -234,7 +234,7 @@ namespace Gts {
 				return;
 			}
 
-			if (this->allGrabbed || tiny->formID == 0x14) {
+			if (this->allGrabbed) {
 				NiPoint3 giantLocation = giant->GetPosition();
 				NiPoint3 tinyLocation = tiny->GetPosition();
 				NiPoint3 targetLocation = bone->world.translate;

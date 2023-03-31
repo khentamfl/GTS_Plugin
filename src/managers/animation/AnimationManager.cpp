@@ -78,6 +78,19 @@ namespace Gts {
 		this->data.erase(actor);
 	}
 
+	void AnimationManager::GetBonusAnimationSpeed(Actor* actor) {
+		try {
+			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
+				if (data) {
+					return data.animSpeed;
+				}
+			}
+		} catch (std::out_of_range e) {
+			return 1.0;
+		}
+		return 1.0;
+	}
+
 	void AnimationManager::AdjustAnimSpeed(float bonus) {
 		auto player = PlayerCharacter::GetSingleton();
 		try {

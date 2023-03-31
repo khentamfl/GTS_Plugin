@@ -60,12 +60,40 @@ namespace {
 		"NPC L ForearmTwist1 [LLt1]",
 		"NPC L Hand [LHnd]",
 	};
+
+	const std::vector<std::string_view> BODY_RUMBLE_NODES = { // used for hand rumble
+		"NPC COM [COM ]",
+		"NPC L Foot [Lft ]",
+		"NPC R Foot [Rft ]",
+		"NPC L Toe0 [LToe]",
+		"NPC R Toe0 [RToe]",
+		"NPC L Calf [LClf]",
+		"NPC R Calf [RClf]",
+		"NPC L PreRearCalf",
+		"NPC R PreRearCalf",
+		"NPC L FrontThigh",
+		"NPC R FrontThigh",
+		"NPC R RearCalf [RrClf]",
+		"NPC L RearCalf [RrClf]",
+	};
+
+
 	
 	void ToggleVore(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (transient) {
 			transient->can_do_vore = toggle;
 			transient->can_be_crushed = false;
+		}
+	}
+	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife, bool once) {
+		for (auto& node_name: BODY_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			if (!once) {
+				Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			} else {
+				Rumble::Once(rumbleName, &actor, power, halflife, node_name);
+			}
 		}
 	}
 
@@ -120,7 +148,7 @@ namespace {
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
 		}
-		Rumble::Start("BodyRumble", &data.giant, 0.35, 0.10);
+		StartBodyRumble("BodyRumble", &data.giant, 0.35, 0.10, false);
 	}
 
 	void GTSvore_impactLS(AnimationEventData& data) {
@@ -239,6 +267,7 @@ namespace {
 
 	void GTSvore_standup_start(AnimationEventData& data) {
 		auto giant = &data.giant;
+		StartBodyRumble("BodyRumble", &data.giant, 0.35, 0.10, false);
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			PlayerCamera::GetSingleton()->cameraTarget = PlayerCharacter::GetSingleton()->CreateRefHandle();
 		}
@@ -255,6 +284,7 @@ namespace {
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
 		}
+		Rumble::Stop("BodyRumble", &data.giant);
 		ToggleVore(giant, true); // Allow to do Vore again
 	}
 }
