@@ -44,7 +44,7 @@ namespace Gts {
 		}
 
 		if (sizedifference >= 1.5) {
-			AccurateDamage::GetSingleton().DoSizeDamage(caster, target, 0, 0, 50, false);
+			AccurateDamage::GetSingleton().DoSizeDamage(caster, target, 0.0, 0.0, 50, 1.0, false);
 		}
 	}
 }

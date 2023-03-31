@@ -59,7 +59,7 @@ namespace {
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
 			float damage = (0.025 * sd) * power * additionaldamage;
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
-			SizeHitEffects::GetSingleton().BreakBones(player, grabbedActor, damage, 25, 0.65);
+			SizeHitEffects::GetSingleton().BreakBones(player, grabbedActor, damage, 25, 0.5);
 			if (damage > Health * 1.5) {
 				CrushManager::Crush(player, grabbedActor);
 				Grab::Release(player);
