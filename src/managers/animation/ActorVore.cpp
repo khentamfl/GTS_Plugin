@@ -237,9 +237,9 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		VoreData.EnableMouthShrinkZone(true);
 		for (auto& tiny: VoreData.GetVories()) {
-			CallFunctionOn("gtsVoreStart", "SatisfyVampire");
-			CallFunctionOn("gtsVoreStart", "GainWeight", giant, 10);
-			CallFunctionOn("gtsVoreStart", "Devourment", giant, tiny);
+			CallFunction("gtsVoreStart", "SatisfyVampire");
+			CallFunction("gtsVoreStart", "GainWeight", giant, 10);
+			CallFunction("gtsVoreStart", "Devourment", giant, tiny);
 		}
 	}
 
