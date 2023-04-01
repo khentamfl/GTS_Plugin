@@ -361,7 +361,7 @@ namespace Gts {
 	void AccurateDamage::UnderFootEvent(const UnderFoot& evt) { // On underfoot event
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
-		float force = evt.force;
+		float force = std::clamp(evt.force, 0.00f, 0.80f);
 		float damage = 1.0;
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
 			return;
@@ -401,14 +401,14 @@ namespace Gts {
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
-		if (force > UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
+		if (force >= UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
 			DoSizeDamage(giant, tiny, movementFactor, force * 32 * damage, 50, 0.50, true);
 
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				StaggerOr(giant, tiny, knockBack);
 			}
-		} else if (!sizemanager.IsLaunching(tiny) && force <= UNDERFOOT_POWER) {
+		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				if (sizeRatio >= 6.0) {
 					// Launch
@@ -468,7 +468,7 @@ namespace Gts {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
 		}
 
-		float result = ((0.25 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;
+		float result = ((0.20 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}

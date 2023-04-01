@@ -235,6 +235,11 @@ namespace {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		VoreData.EnableMouthShrinkZone(true);
+		for (auto& tiny: VoreData.GetVories()) {
+			CallFunctionOn(source, "gtsVoreStart", "SatisfyVampire");
+			CallFunctionOn(source, "gtsVoreStart", "GainWeight", giant, 10);
+			CallFunctionOn(source, "gtsVoreStart", "Devourment", giant, tiny);
+		}
 	}
 
 	void GTSvore_swallow_sound(AnimationEventData& data) {

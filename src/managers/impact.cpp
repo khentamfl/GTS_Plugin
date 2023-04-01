@@ -133,7 +133,7 @@ namespace Gts {
 					giantScale *= 1.5;
 				}
 				if (impact_data.kind == FootEvent::JumpLand) {
-					giantScale *= 2.0;
+					giantScale *= 4.0;
 				}
 
 				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
