@@ -1,6 +1,7 @@
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "utils/papyrusUtils.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
