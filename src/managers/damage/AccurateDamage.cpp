@@ -31,9 +31,27 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	const float LAUNCH_DAMAGE = 0.4f;
+	const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
+	const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
+	const std::string_view leftCalfLookup = "NPC L Calf [LClf]";
+	const std::string_view rightCalfLookup = "NPC R Calf [RClf]";
+	const std::string_view leftToeLookup = "NPC L Toe0 [LToe]";
+	const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
+	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
+
+	const float LAUNCH_DAMAGE = 1.2f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.60;
+
+	bool CanDoDamage(Actor* giant, Actor* tiny) {
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
+			return false;
+		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+			return false;
+		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+			return false;
+		} return true;
+	}
 
 	void ModVulnerability(Actor* giant, Actor* tiny) {
 		if (!Runtime::HasPerkTeam(giant, "GrowingPressure")) {
@@ -63,7 +81,7 @@ namespace {
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
-		} else if (ragdollchance == 31.0) {
+		} else if (ragdollchance == 30.0) {
 			PushActorAway(giant, tiny, power); // Push instead
 			return;
 		}
@@ -112,41 +130,10 @@ namespace {
 		}
 	}
 
-	void ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult) {
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
-			return;
-		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
-			return;
-		}
-		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
-			return;
-		}
-		auto& sizemanager = SizeManager::GetSingleton();
-		auto& accuratedamage = AccurateDamage::GetSingleton();
-		auto model = tiny->GetCurrent3D();
-
-		if (model) {
-			bool isdamaging = sizemanager.IsDamaging(tiny);
-			float movementFactor = 1.0;
-			if (giant->AsActorState()->IsSprinting()) {
-				movementFactor *= 1.5;
-			}
-			if (!isdamaging && !giant->AsActorState()->IsSprinting() && !giant->AsActorState()->IsWalking() && !giant->IsRunning()) {
-				StaggerOr(giant, tiny, 1 * force);
-				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
-			}
-			if (!isdamaging && (force >= 0.55 || giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
-				StaggerOr(giant, tiny, 1 * force);
-				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-			}
-			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
-		}
-	}
-
-
 	void SizeModifications(Actor* giant, Actor* tiny, float HighHeels) {
+		if (tiny == giant) {
+			return;
+		}
 		float InstaCrushRequirement = 24.0;
 		float giantscale = get_visual_scale(giant);
 		float tinyscale = get_visual_scale(tiny);
@@ -156,10 +143,6 @@ namespace {
 		float size_difference = giantscale/tinyscale;
 		float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200);
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
-
-		if (tiny == giant) {
-			return;
-		}
 
 		if (Runtime::HasPerk(giant, "LethalSprint") && giant->AsActorState()->IsSprinting()) {
 			InstaCrushRequirement = (18.0 / HighHeels) * Gigantism;
@@ -217,15 +200,6 @@ namespace Gts {
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
 
-		const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
-		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
-		const std::string_view leftCalfLookup = "NPC L Calf [LClf]";
-		const std::string_view rightCalfLookup = "NPC R Calf [RClf]";
-		const std::string_view leftToeLookup = "NPC L Toe0 [LToe]";
-		const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
-
-		const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
-
 		auto leftFoot = find_node(actor, leftFootLookup);
 		auto rightFoot = find_node(actor, rightFootLookup);
 
@@ -241,23 +215,17 @@ namespace Gts {
 
 		if (!leftFoot) {
 			return;
-		}
-		if (!rightFoot) {
+		} if (!rightFoot) {
 			return;
-		}
-		if (!leftCalf) {
+		} if (!leftCalf) {
 			return;
-		}
-		if (!rightCalf) {
+		} if (!rightCalf) {
 			return;
-		}
-		if (!leftToe) {
+		} if (!leftToe) {
 			return;
-		}
-		if (!rightToe) {
+		} if (!rightToe) {
 			return;
-		}
-		if (!BodyBone) {
+		} if (!BodyBone) {
 			return; // CTD protection attempts
 		}
 		NiMatrix3 leftRotMat;
@@ -347,8 +315,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = force/50;///nodeCollisions;
-								ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
-								//break;
+								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}
 						}
 					}
@@ -357,19 +324,40 @@ namespace Gts {
 		}
 	}
 
+	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult) {
+		if (!CanDoDamage(giant, tiny)) {
+			return;
+		}
+		auto& sizemanager = SizeManager::GetSingleton();
+		auto& accuratedamage = AccurateDamage::GetSingleton();
+		auto model = tiny->GetCurrent3D();
+
+		if (model) {
+			bool isdamaging = sizemanager.IsDamaging(tiny);
+			float movementFactor = 1.0;
+			if (giant->AsActorState()->IsSprinting()) {
+				movementFactor *= 1.5;
+			}
+			if (!isdamaging && !giant->AsActorState()->IsSprinting() && !giant->AsActorState()->IsWalking() && !giant->IsRunning()) {
+				StaggerOr(giant, tiny, 1 * force);
+				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
+			}
+			if (!isdamaging && (force >= 0.55 || giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
+				StaggerOr(giant, tiny, 1 * force);
+				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+			}
+			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
+		}
+	}
+
 
 	void AccurateDamage::UnderFootEvent(const UnderFoot& evt) { // On underfoot event
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
-		float force = std::clamp(evt.force, 0.00f, 0.80f);
+		float force = std::clamp(evt.force, 0.00f, 0.90f);
 		float damage = 1.0;
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
-			return;
-		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
-			return;
-		}
-		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+		if (!CanDoDamage(giant, tiny)) {
 			return;
 		}
 
@@ -394,7 +382,7 @@ namespace Gts {
 			movementFactor *= 1.75;
 		}
 		if (evt.footEvent == FootEvent::JumpLand) {
-			movementFactor *= 3.0;
+			movementFactor *= 4.0;
 			damage = 0.0;
 		}
 
@@ -410,8 +398,7 @@ namespace Gts {
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-				if (sizeRatio >= 6.0) {
-					// Launch
+				if (sizeRatio >= 6.0) { // Launch
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
@@ -427,23 +414,13 @@ namespace Gts {
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage) { // Applies damage and crushing
 		if (!giant) {
 			return;
-		}
-		if (!tiny) {
+		} if (!tiny) {
+			return;
+		} if (giant == tiny) {
+			return;
+		} if (!CanDoDamage(giant, tiny)) {
 			return;
 		}
-		if (giant == tiny) {
-			return;
-		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
-			return;
-		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
-			return;
-		}
-		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
-			return;
-		}
-		//log::info("Doing size damage: {} to {}, Do Damage?: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), DoDamage);
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
@@ -477,8 +454,6 @@ namespace Gts {
 			multiplier += 7.2;
 			result *= 4.0;
 		}
-
-		//log::info("Additional Damage: {}", additionaldamage);
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
 

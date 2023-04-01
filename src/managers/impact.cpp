@@ -130,10 +130,10 @@ namespace Gts {
 					giantScale *= 0.5;
 				}
 				if (actor->AsActorState()->IsSprinting()) {
-					giantScale *= 1.5;
+					giantScale *= 1.75;
 				}
 				if (impact_data.kind == FootEvent::JumpLand) {
-					giantScale *= 4.0;
+					giantScale *= 2.0;
 				}
 
 				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {

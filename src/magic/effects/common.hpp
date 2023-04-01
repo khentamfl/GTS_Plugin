@@ -263,7 +263,7 @@ namespace Gts {
 		if (Runtime::HasPerk(caster, "PerkPart2")) {
 			power *= PERK2_BONUS;
 		}
-		AdjustSizeLimit(0.0300 * target_scale * power, caster);
+		AdjustSizeLimit(0.0240 * target_scale * power, caster);
 		float alteration_level_bonus = 0.0332 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
@@ -283,7 +283,7 @@ namespace Gts {
 				return false;
 			}
 			ShrinkToNothingManager::Shrink(caster, target);
-			AdjustSizeLimit(0.0117, caster);
+			AdjustSizeLimit(0.0060, caster);
 
 			auto Cache = Persistent::GetSingleton().GetData(caster);
 
