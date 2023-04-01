@@ -81,7 +81,10 @@ namespace {
 		"NPC R RearCalf [RrClf]",
 		"NPC L RearCalf [RrClf]",
 	};
-
+	void TestCall(Actor* giant, Actor* tiny) {
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		CallFunctionOn(progressionQuest, "gtsProgressionQuest", "DevourDragon");
+	}
 	
 	void ToggleVore(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetActorData(actor);
@@ -236,6 +239,9 @@ namespace {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		VoreData.EnableMouthShrinkZone(true);
+		for (auto& tiny: VoreData.GetVories()) {
+			TestCall(giant, tiny);
+		}
 	}
 
 	void GTSvore_swallow_sound(AnimationEventData& data) {
