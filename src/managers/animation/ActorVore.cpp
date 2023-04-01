@@ -238,7 +238,7 @@ namespace {
 		VoreData.EnableMouthShrinkZone(true);
 		for (auto& tiny: VoreData.GetVories()) {
 			//CallFunction("gtsManagerQuest", "SatisfyVampire", 1.0);
-			CallFunction("gtsManagerQuest", "GainWeight", giant, 10.0f);
+			//CallFunction("gtsManagerQuest", "GainWeight", giant, 10.0f);
 			CallFunction("gtsManagerQuest", "Devourment", giant, tiny);
 		}
 	}
