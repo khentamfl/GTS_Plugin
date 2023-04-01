@@ -22,7 +22,7 @@ namespace Gts {
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius);
 	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude);
 
-
+	void CompleteDragonQuest();
 	bool IsDragon(Actor* actor);
 
 	bool IsProne(Actor* actor);

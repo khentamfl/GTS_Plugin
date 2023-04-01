@@ -1,6 +1,7 @@
 #include "utils/actorUtils.hpp"
 #include "utils/findActor.hpp"
 #include "utils/papyrusUtils.hpp"
+#include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/re.hpp"
@@ -170,6 +171,21 @@ namespace Gts {
 		CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
 	}
 
+	void CompleteDragonQuest() {
+		auto pc = PlayerCharacter::GetSingleton();
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		if (progressionQuest) {
+			auto stage = progressionQuest->GetCurrentStageID();
+			if (stage == 90) {
+				auto transient = Transient::GetSingleton().GetActorData(pc);
+				if (transient) {
+					ConsoleLog::GetSingleton()->Print("Quest is Completed");
+					transient->dragon_was_eaten = true;
+				}
+			}
+		}
+	}
+
 	bool IsDragon(Actor* actor) {
 		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
 			|| std::string(actor->GetDisplayFullName()).find("Dragon") != std::string::npos
@@ -177,11 +193,9 @@ namespace Gts {
 			|| Runtime::IsRace(actor, "dragonRace")
 			)
 			{
-				ConsoleLog::GetSingleton()->Print("Actor is a Dragon");
 				return true;
 			}
 			else {
-				ConsoleLog::GetSingleton()->Print("Actor is NOT a Dragon");
 				return false;
 			}
 	}

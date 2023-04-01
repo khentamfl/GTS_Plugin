@@ -182,9 +182,17 @@ namespace {
 		}
 	}
 
+	bool WasDragonEaten(StaticFunctionTag*) {
+		auto pc = PlayerCharacter::GetSingleton();
+		auto transient = Transient::GetSingleton().GetActorData(pc);
+		if (transient) {
+			return transient->dragon_was_eaten;
+		}
+		return false;
+	}
+
 	bool DragonCheck(StaticFunctionTag*, Actor* actor) {
 		if (!actor) {
-			ConsoleLog::GetSingleton()->Print("Actor is False, DragonCheck = False.");
 			return false;
 		}
 		return IsDragon(actor);
@@ -278,6 +286,7 @@ namespace Gts {
 		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
 		vm->RegisterFunction("SetOnlyCombatVore", PapyrusClass, SetOnlyCombatVore);
 		vm->RegisterFunction("DisintegrateTarget", PapyrusClass, DisintegrateTarget);
+		vm->RegisterFunction("WasDragonEaten", PapyrusClass, WasDragonEaten);
 		vm->RegisterFunction("DragonCheck", PapyrusClass, DragonCheck);
 		vm->RegisterFunction("GetIsSpeedAdjusted", PapyrusClass, GetIsSpeedAdjusted);
 		vm->RegisterFunction("SetIsSpeedAdjusted", PapyrusClass, SetIsSpeedAdjusted);

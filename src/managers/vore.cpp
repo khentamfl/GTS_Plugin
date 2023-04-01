@@ -134,11 +134,8 @@ namespace {
 
 	void VoreMessage_Absorbed(Actor* pred, Actor* prey) {
 		int random = rand() % 2;
-		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		if (pred->formID == 0x14 && IsDragon(prey)) {
-			if (progressionQuest) {
-				CallFunctionOn(progressionQuest, "Quest", "DevourDragon");
-			}
+			CompleteDragonQuest();
 		}
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
 			ConsoleLog::GetSingleton()->Print("%s was completely absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());

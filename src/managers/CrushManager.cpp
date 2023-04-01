@@ -144,7 +144,6 @@ namespace Gts {
 					return;
 				}
 			}
-			auto progressionQuest = Runtime::GetQuest("MainQuest");
 
 			if (data.state == CrushState::Healthy) {
 				RandomMoan(data.giant, tiny);
@@ -164,9 +163,7 @@ namespace Gts {
 
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
-						if (progressionQuest) {
-							CallFunctionOn(progressionQuest, "Quest", "DevourDragon");
-						}
+						CompleteDragonQuest();
 					}
 					shake_camera(giant, 1.8, 1);
 					if (giant->formID == 0x14) {
