@@ -82,7 +82,9 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-
+	void CallDevourment(Actor* giant, Actor* tiny) {
+		CallFunction("gtsManagerQuest", "Devourment", giant, tiny);
+	}
 	
 	void ToggleVore(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetActorData(actor);
@@ -232,6 +234,7 @@ namespace {
 		StopRHandRumble("HandR", data.giant);
 	}
 
+
 	void GTSvore_swallow(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
@@ -241,10 +244,6 @@ namespace {
 			//CallFunction("gtsManagerQuest", "GainWeight", giant, 10.0f);
 			CallDevourment(giant, tiny);
 		}
-	}
-
-	void CallDevourment(Actor* giant, Actor* tiny) {
-		CallFunction("gtsManagerQuest", "Devourment", giant, tiny);
 	}
 
 	void GTSvore_swallow_sound(AnimationEventData& data) {
