@@ -171,12 +171,11 @@ namespace Gts {
 	}
 
 	bool IsDragon(Actor* actor) {
-		if (
-			std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
+		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
 			|| std::string(actor->GetDisplayFullName()).find("Dragon") != std::string::npos
 			|| std::string(actor->GetDisplayFullName()).find("dragon") != std::string::npos
 			|| Runtime::IsRace(actor, "dragonRace")
-			);
+			)
 			{
 				ConsoleLog::GetSingleton()->Print("Actor is a Dragon");
 				return true;

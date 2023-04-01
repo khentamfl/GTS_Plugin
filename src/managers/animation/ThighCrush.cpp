@@ -172,7 +172,7 @@ namespace {
 		data.animSpeed = 1.0;
 
 		StopLegRumble("ThighCrush", data.giant);
-		StartBodyRumble("BodyRumble", data.giant, 0.15, 0.12,);
+		StartBodyRumble("BodyRumble", data.giant, 0.15, 0.12);
 		data.stage = 8;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopexit");
 	}
@@ -221,6 +221,7 @@ namespace {
 	void GTStoexit(AnimationEventData& data) {
 		// Going to exit
 		StopLegRumble("ThighCrush", data.giant);
+		StopLegRumble("BodyRumble", data.giant);
 		StopLegRumble("ThighCrushStompR", data.giant);
 		StopLegRumble("ThighCrushStompL", data.giant);
 	}
