@@ -37,6 +37,22 @@ namespace {
 	const std::string_view RSound = "lFootstepR";
 	const std::string_view LSound = "lFootstepL";
 
+	const std::vector<std::string_view> BODY_RUMBLE_NODES = { // used for body rumble
+		"NPC COM [COM ]",
+		"NPC L Foot [Lft ]",
+		"NPC R Foot [Rft ]",
+		"NPC L Toe0 [LToe]",
+		"NPC R Toe0 [RToe]",
+		"NPC L Calf [LClf]",
+		"NPC R Calf [RClf]",
+		"NPC L PreRearCalf",
+		"NPC R PreRearCalf",
+		"NPC L FrontThigh",
+		"NPC R FrontThigh",
+		"NPC R RearCalf [RrClf]",
+		"NPC L RearCalf [RrClf]",
+	};
+
 	const std::vector<std::string_view> LEG_RUMBLE_NODES = { // used with Anim_ThighCrush
 		"NPC L Foot [Lft ]",
 		"NPC R Foot [Rft ]",
@@ -68,6 +84,13 @@ namespace {
 
 	void StartLegRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+		}
+	}
+
+	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife) {
+		for (auto& node_name: BODY_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
 			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
@@ -112,39 +135,30 @@ namespace {
 	}
 
 	void GTSsitcrushlight_start(AnimationEventData& data) {
-		float scale = get_visual_scale(data.giant);
-		float speed = data.animSpeed;
-		StartLegRumble("ThighCrush", data.giant, 0.12 * speed, 0.12);
+		StartLegRumble("ThighCrush", data.giant, 0.18, 0.12);
 		data.stage = 5;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_start");
 	}
 
 	void GTSsitcrushlight_end(AnimationEventData& data) {
-		float scale = get_visual_scale(data.giant);
-		float speed = data.animSpeed;
 		data.currentTrigger = 2;
 
 		data.canEditAnimSpeed = true;
-		StartLegRumble("ThighCrush", data.giant, 0.15 * speed, 0.20);
+		StartLegRumble("ThighCrush", data.giant, 0.22, 0.20);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
-		float scale = get_visual_scale(data.giant);
-		float speed = data.animSpeed;
-
-		StartLegRumble("ThighCrush", data.giant, 0.15 * speed, 0.20);
+		StartLegRumble("ThighCrush", data.giant, 0.25, 0.20);
 		data.stage = 5;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushheavy_start");
 	}
 
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
-		float scale = get_visual_scale(data.giant);
-		float speed = data.animSpeed;
 		data.currentTrigger = 2;
 
-		StartLegRumble("ThighCrush", data.giant, 0.20 *speed, 0.25);
+		StartLegRumble("ThighCrush", data.giant, 0.35, 0.25);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}
@@ -158,7 +172,7 @@ namespace {
 		data.animSpeed = 1.0;
 
 		StopLegRumble("ThighCrush", data.giant);
-		StartLegRumble("ThighCrush", data.giant, 0.10 * speed, 0.12);
+		StartBodyRumble("BodyRumble", data.giant, 0.15, 0.12,);
 		data.stage = 8;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopexit");
 	}

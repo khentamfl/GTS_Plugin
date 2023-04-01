@@ -30,9 +30,8 @@ using namespace std;
 
 namespace {
 	void AdjustFadeNode(Actor* actor) {
-		static Timer timer = Timer(5.0);
 		if (get_visual_scale(actor) < 1.5) {
-			//return;
+			return;
 		}
 		if ((actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto node = find_node(actor, "skeleton_female.nif");

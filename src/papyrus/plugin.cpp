@@ -184,6 +184,7 @@ namespace {
 
 	bool DragonCheck(StaticFunctionTag*, Actor* actor) {
 		if (!actor) {
+			ConsoleLog::GetSingleton()->Print("Actor is False, DragonCheck = False.");
 			return false;
 		}
 		return IsDragon(actor);
