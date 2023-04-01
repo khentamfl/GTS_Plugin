@@ -83,7 +83,9 @@ namespace {
 	};
 	void TestCall(Actor* giant, Actor* tiny) {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
-		CallFunctionOn(progressionQuest, "gtsProgressionQuest", "DevourDragon");
+		if (progressionQuest) {
+			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "Devourment", giant, tiny);
+		}
 	}
 	
 	void ToggleVore(Actor* actor, bool toggle) {

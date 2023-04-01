@@ -77,7 +77,7 @@ namespace {
 			PushActorAway(giant, tiny, power); // Always push
 			return;
 		}
-		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.33 && sizedifference < 3.0) {
+		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.25 && sizedifference < 3.0) {
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
@@ -342,8 +342,10 @@ namespace Gts {
 				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
-			}
-			if (!isdamaging && (force >= 0.55 || giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
+			} else if (!isdamaging && (force >= 0.55 || giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
+				StaggerOr(giant, tiny, 1 * force);
+				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+			} else if (!isdamaging && (force >= 0.65)) {
 				StaggerOr(giant, tiny, 1 * force);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
@@ -389,7 +391,7 @@ namespace Gts {
 		float sizeRatio = giantSize/tinySize * movementFactor;
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
-		if (force >= UNDERFOOT_POWER && sizeRatio >= 2.0) { // If under the foot
+		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
 			DoSizeDamage(giant, tiny, movementFactor, force * 32 * damage, 50, 0.50, true);
 
 			if (!sizemanager.IsLaunching(tiny)) {
