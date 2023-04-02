@@ -48,7 +48,9 @@ using namespace Gts;
 namespace {
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
 		auto giant = &data.giant;
-		for (auto prey: AnimationThighSandwich::GetVictims(giant)) {
+		auto& me = AnimationThighSandwich::GetSingleton();
+		
+		for (auto prey: me.data.at(giant).tiny) {
 			DamageAV(prey, 25);
 		}
 	}
@@ -104,12 +106,6 @@ namespace Gts
 
 	void AnimationThighSandwich::Update() {
 
-	}
-
-	Actor* AnimationThighSandwich::GetVictims(Actor* giant) {
-		Actor* result;
-		result.push_back(giant.tiny);
-		return result;
 	}
 
 	ThighData::ThighData(TESObjectREFR* tiny, float target) : 
