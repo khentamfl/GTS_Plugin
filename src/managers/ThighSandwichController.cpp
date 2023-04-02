@@ -82,7 +82,7 @@
                 log::info("Tiny is None");
 				return;
 			}
-			auto bone = find_node(giant, "AnimObjectB");
+			auto bone = find_node(giant, "AnimObjectA");
 			if (!bone) {
 				return;
 			}

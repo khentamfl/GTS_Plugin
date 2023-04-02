@@ -47,11 +47,14 @@ using namespace Gts;
 
 namespace {
 	void GTSSandwich_MoveLL_start(AnimationEventData& data) {
+		data.stage = 1.0;
+		data.animSpeed = 1.33;
 		auto giant = &data.giant;
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		sandwichdata.EnableSuffocate(false);
 	}
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
+		data.animSpeed = 1.0;
 		auto giant = &data.giant;
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", giant, 1.0, 1.0, "AnimObjectB");
