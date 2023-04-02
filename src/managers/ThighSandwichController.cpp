@@ -19,6 +19,17 @@
 	const float MINIMUM_SANDWICH_SCALE_RATIO = 6.0;
 	const float SANDWICH_ANGLE = 60;
 	const float PI = 3.14159;
+
+    void PrintSuffocate(Actor* giant, Actor* tiny) {
+        int random = rand() % 3;
+        if (random <= 1) {
+			ConsoleLog::GetSingleton()->Print("%s was suffocated by the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (random == 2) {
+			ConsoleLog::GetSingleton()->Print("Thighs of %s easily defeated %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+		} else if (random == 3) {
+			ConsoleLog::GetSingleton()->Print("%s got suffocated between the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		}
+    }
     
     [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
 	{
@@ -79,7 +90,6 @@
 
         for (auto& [key, tiny]: this->tinies) {
 			if (!tiny) {
-                log::info("Tiny is None");
 				return;
 			}
 			auto bone = find_node(giant, "AnimObjectA");
@@ -95,13 +105,15 @@
 			tiny->SetPosition(targetLocation, false);
             if (this->Suffocate) {
                 float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-			    float damage = 0.1 * sizedifference;
+			    float damage = 0.02 * sizedifference;
+                float hp = GetAV(tiny, ActorValue::kHealth);
 			    DamageAV(tiny, ActorValue::kHealth, damage);
+                if (damage > hp && !tiny->IsDead()) {
+                    PrintSuffocate(giant, tiny);
+                }
             }
-		    log::info("Setting Tiny Position");
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
-                log::info("Tiny is Actor");
 				auto charcont = tiny_is_actor->GetCharController();
 				if (charcont) {
 					charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.

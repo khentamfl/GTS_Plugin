@@ -46,30 +46,72 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	void GTSSandwich_MoveLL_start(AnimationEventData& data) {
+	const std::vector<std::string_view> L_LEG_NODES = {
+		"NPC L Foot [Lft ]",
+		"NPC L Toe0 [LToe]",
+		"NPC L Calf [LClf]",
+		"NPC L PreRearCalf",
+		"NPC L FrontThigh",
+		"NPC L RearCalf [RrClf]",
+	};
+
+	void StartLeftLegRumble(std::string_view tag, Actor& actor, float power, float halflife) {
+		for (auto& node_name: L_LEG_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+		}
+	}
+
+	void StopLeftLegRumble(std::string_view tag, Actor& actor) {
+		for (auto& node_name: L_LEG_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Stop(rumbleName, &actor);
+		}
+	}
+
+	void PrintThighKill(Actor* giant, Actor* tiny) {
+        int random = rand() % 3;
+        if (random <= 1) {
+			ConsoleLog::GetSingleton()->Print("%s was crushed by the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (random == 2) {
+			ConsoleLog::GetSingleton()->Print("Thighs of %s gently crushed %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+		} else if (random == 3) {
+			ConsoleLog::GetSingleton()->Print("%s was killed between the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		}
+    }
+
+	void GTSSandwich_MoveLL_start(AnimationEventData& data) { 
 		data.stage = 1.0;
 		data.animSpeed = 1.33;
-		auto giant = &data.giant;
-		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
+		StartLeftLegRumble("LLSandwich", data.giant, 0.5, 0.12);
 	}
+
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
-		data.animSpeed = 1.0;
+		
 		auto giant = &data.giant;
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", giant, 1.0, 1.0, "AnimObjectB");
 		sandwichdata.EnableSuffocate(true);
+		Rumble::Once("ThighImpact", &data.giant, 0.8, 0.15, "AnimObjectA");
 		for (auto prey: sandwichdata.GetActors()) {
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(prey);
 			float damage = 3.0 * sizedifference;
 			DamageAV(prey, ActorValue::kHealth, damage);
 			float hp = GetAV(prey, ActorValue::kHealth);
 			
-			if (damage > hp) {
+			if (damage > hp && CrushManager::GetSingleton().CanCrush(giant, prey)) {
 				CrushManager::GetSingleton().Crush(giant, prey);
+				PrintThighKill(giant, tiny);
 				sandwichdata.Remove(prey);
 			}
 		}
+	}
+
+	void GTSSandwich_MoveLL_end(AnimationEventData& data) {
+		data.animSpeed = 1.0;
+		StopLeftLegRumble("LLSandwich", data.giant);
 	}
 
 	void GTSSandwich_DropDown(AnimationEventData& data) {
@@ -110,6 +152,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSSandwich_ThighImpact", "ThighSandwich", GTSSandwich_ThighImpact);
 		AnimationManager::RegisterEvent("GTSSandwich_DropDown", "ThighSandwich", GTSSandwich_DropDown);
 		AnimationManager::RegisterEvent("GTSSandwich_MoveLL_start", "ThighSandwich", GTSSandwich_MoveLL_start);
+		AnimationManager::RegisterEvent("GTSSandwich_MoveLL_end", "ThighSandwich", GTSSandwich_MoveLL_end);
 	}
 
 	void AnimationThighSandwich::RegisterTriggers() {
