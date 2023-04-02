@@ -496,15 +496,6 @@ void GtsManager::Update() {
 			continue;
 		}
 
-		
-		 
-		TESNPC* NPC = skyrim_cast<TESNPC*>(actor);
-		if (NPC) {
-			float weight = NPC->weight;
-			log::info("Weight of PC is {}", weight);
-		}
-		
-
 		AdjustFadeNode(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();

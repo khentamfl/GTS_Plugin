@@ -309,6 +309,7 @@ namespace Gts {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		if (progressionQuest) {
 			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "GainWeight", giant, value);
+			giant->DoReset3D(true);
 		}
 	}
 
