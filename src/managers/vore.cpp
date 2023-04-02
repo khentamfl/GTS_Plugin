@@ -191,15 +191,15 @@ namespace Gts {
 		}
 	}
 	void VoreData::KillAll() {
+		if (!AllowDevourment()) {
 		for (auto& [key, tiny]: this->tinies) {
-			if (!AllowDevourment) {
-				if (tiny->formID != 0x14) {
-					Disintegrate(tiny);
+			if (tiny->formID != 0x14) {
+				Disintegrate(tiny);
 				///this->tinies.erase(tiny);
-				} else if (tiny->formID == 0x14) {
-					tiny->KillImmediate();
-					TriggerScreenBlood(50);
-					tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
+			} else if (tiny->formID == 0x14) {
+				tiny->KillImmediate();
+				TriggerScreenBlood(50);
+				tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
 				}
 			}
 		}

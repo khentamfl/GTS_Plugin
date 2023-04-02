@@ -240,7 +240,7 @@ namespace {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		VoreData.EnableMouthShrinkZone(true);
-		if (AllowDevourment) {
+		if (AllowDevourment()) {
 			for (auto& tiny: VoreData.GetVories()) {
 				CallDevourment(giant, tiny);
 			}
