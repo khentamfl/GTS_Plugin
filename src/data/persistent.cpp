@@ -478,7 +478,7 @@ namespace Gts {
 		bool vore_combatonly = GetSingleton().vore_combatonly;
 		serde->WriteRecordData(&vore_combatonly, sizeof(vore_combatonly));
 
-		if (!serde->OpenRecord(DevourmentCompatRecord), 0) {
+		if (!serde->OpenRecord(DevourmentCompatRecord, 0)) {
 			log::error("Unable to open Devourment Compatibility record to write cosave data");
 			return;
 		}
