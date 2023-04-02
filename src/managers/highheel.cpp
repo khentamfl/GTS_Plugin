@@ -26,11 +26,11 @@ namespace Gts {
 	}
 
 	void HighHeelManager::PapyrusUpdate() {
-		//const bool FORCE_APPLY = false;
-		//auto actors = find_actors();
-		//for (auto actor: actors) {
-		//ApplyHH(actor, FORCE_APPLY);
-		//}
+		const bool FORCE_APPLY = false;
+		auto actors = find_actors();
+		for (auto actor: actors) {
+			ApplyHH(actor, FORCE_APPLY);
+		}
 	}
 
 	void HighHeelManager::ActorEquip(Actor* actor) {
