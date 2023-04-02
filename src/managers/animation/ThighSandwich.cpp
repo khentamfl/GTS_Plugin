@@ -47,11 +47,11 @@ using namespace Gts;
 
 namespace {
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
-		auto giant = &data.giant;
+		auto giant = data.giant;
 		auto& me = AnimationThighSandwich::GetSingleton();
 		
 		for (auto prey: me.data.at(giant).tiny) {
-			DamageAV(prey, 25);
+			DamageAV(prey,ActorValue::kHealth, 25);
 		}
 	}
 
