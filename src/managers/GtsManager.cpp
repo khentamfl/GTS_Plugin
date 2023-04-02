@@ -456,6 +456,8 @@ std::string GtsManager::DebugName() {
 // Poll for updates
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
+	float weight = PC->weight;
+	log::info("Weight of PC is {}", weight);
 	//auto charCont = PC->GetCharController();
 	//if (charCont) {
 	//float velocity;
