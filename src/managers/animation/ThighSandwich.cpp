@@ -47,12 +47,16 @@ using namespace Gts;
 
 namespace {
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
-		auto giant = data.giant;
-		auto& me = AnimationThighSandwich::GetSingleton();
-		
-		for (auto prey: me.data.at(giant).tiny) {
-			DamageAV(prey,ActorValue::kHealth, 25);
+		auto giant = &data.giant;
+		auto& data = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
+
+		for (auto& prey: data.GetActors()) {
+			DamageAV(prey, ActorValue::kHealth, 25);
 		}
+	}
+
+	void GTSSandwich_DropDown(AnimationEventData& data) {
+
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {
@@ -62,7 +66,7 @@ namespace {
 		if (Runtime::HasPerk(pred, "MassVorePerk")) {
 			numberOfPrey = 1 + (get_visual_scale(pred)/3);
 		}
-		std::vector<Actor*> preys = Sandwiching.GetVoreTargetsInFront(pred, numberOfPrey);
+		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
 		for (auto prey: preys) {
 			Sandwiching.StartSandwiching(pred, prey);
 		}

@@ -50,6 +50,14 @@
 
  namespace Gts {   
 
+    std::vector<Actor*> SandwichingData::GetActors() {
+		std::vector<Actor*> result;
+		for (auto& [key, actor]: this->tinies) {
+			result.push_back(actor);
+		}
+		return result;
+	}
+
     ThighSandwichController& ThighSandwichController::GetSingleton() noexcept {
 		static ThighSandwichController instance;
 		return instance;
@@ -196,7 +204,15 @@
 		if (!ThighSandwichController::GetSingleton().CanSandwich(pred, prey)) {
 			return;
 		}
-		ThighSandwichController::GrabActor(pred, prey);
+		auto& data = this->GetSandwichingData(pred);
+		data.AddTiny(prey);
 		AnimationManager::StartAnim("ThighEnter", pred);
+	}
+
+    SandwichingData& ThighSandwichController::GetSandwichingData(Actor* giant) {
+		// Create it now if not there yet
+		this->data.try_emplace(giant, giant);
+
+		return this->data.at(giant);
 	}
  }
