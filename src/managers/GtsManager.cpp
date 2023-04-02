@@ -500,7 +500,7 @@ void GtsManager::Update() {
 		if (actor->formID == 0x14) {
 			TESNPC* NPC = skyrim_cast<TESNPC*>(actor);
 			if (NPC) {
-				float weight = actor->weight;
+				float weight = NPC->weight;
 				log::info("Weight of PC is {}", weight);
 			}
 		}
