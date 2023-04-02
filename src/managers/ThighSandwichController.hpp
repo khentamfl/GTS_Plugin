@@ -8,7 +8,7 @@ using namespace std;
 using namespace SKSE;
 using namespace RE;
 
-namespace gts {
+namespace Gts {
     class ThighSandwichController : public EventListener  {
 		public:
 			[[nodiscard]] static ThighSandwichController& GetSingleton() noexcept;
