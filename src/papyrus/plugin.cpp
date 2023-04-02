@@ -191,7 +191,7 @@ namespace {
 		return false;
 	}
 
-	void GetDevourmentCompatibility(StaticFunctionTag*) {
+	bool GetDevourmentCompatibility(StaticFunctionTag*) {
 		return Persistent::GetSingleton().devourment_compatibility;
 	}
 
