@@ -48,9 +48,9 @@ using namespace Gts;
 namespace {
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
 		auto giant = &data.giant;
-		auto& data = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 
-		for (auto& prey: data.GetActors()) {
+		for (auto prey: sandwichdata.GetActors()) {
 			DamageAV(prey, ActorValue::kHealth, 25);
 		}
 	}
