@@ -51,12 +51,19 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 
 		for (auto prey: sandwichdata.GetActors()) {
-			DamageAV(prey, ActorValue::kHealth, 25);
+			float damage = 15.0;
+			DamageAV(prey, ActorValue::kHealth, damage);
+			float hp = GetAV(prey, ActorValue::kHealth);
+			if (damage > hp) {
+				CrushManager::GetSingleton().Crush(giant, prey);
+				sandwichdata.Remove(prey);
+			}
 		}
 	}
 
 	void GTSSandwich_DropDown(AnimationEventData& data) {
-
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		sandwichdata.ReleaseAll();
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {

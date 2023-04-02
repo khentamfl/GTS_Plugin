@@ -67,13 +67,38 @@
 		return "ThighSandwichController";
 	}
 
-    void ThighSandwichController::GrabActor(Actor* giant, TESObjectREFR* tiny) {
-		AnimationThighSandwich::GetSingleton().data.try_emplace(giant, tiny, 1.0);
-	}
+    void ThighSandwichController::Update() {
+        auto giant = this->giant;
+        if (!giant) {
+            return;
+        }
+    	float giantScale = get_visual_scale(giant);
 
-	void ThighSandwichController::Release(Actor* giant) {
-		AnimationThighSandwich::GetSingleton().data.erase(giant);
-	}
+        for (auto& [key, tiny]: this->tinies) {
+			if (!tiny) {
+				return;
+			}
+			auto bone = find_node(giant, "AnimObjectB");
+			if (!bone) {
+				return;
+			}
+			NiPoint3 tinyLocation = tiny->GetPosition();
+			NiPoint3 targetLocation = bone->world.translate;
+        	NiPoint3 deltaLocation = targetLocation - tinyLocation;
+        	float deltaLength = deltaLocation.Length();
+
+			tiny->SetPosition(targetLocation, true);
+			tiny->SetPosition(targetLocation, false);
+				//log::info("Setting Position");
+			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
+			if (tiny_is_actor) {
+				auto charcont = tiny_is_actor->GetCharController();
+				if (charcont) {
+					charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.
+				}
+            }
+        }
+    }
 
 	std::vector<Actor*> ThighSandwichController::GetSandwichTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
@@ -213,6 +238,14 @@
     void SandwichingData::AddTiny(Actor* tiny) {
 		this->tinies.try_emplace(tiny, tiny);
 	}
+
+    void SandwichingData::ReleaseAll() {
+		this->tinies.clear;
+	}
+
+    void SandwichingData::Remove(Actor* tiny) {
+        this->tinies.erase(tiny);
+    }
 
     SandwichingData& ThighSandwichController::GetSandwichingData(Actor* giant) {
 		// Create it now if not there yet

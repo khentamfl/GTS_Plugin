@@ -4,6 +4,7 @@
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/ThighSandwichController.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/highheel.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -52,6 +53,8 @@ namespace Gts {
 		// EventDispatcher::AddListener(&Stomp::GetSingleton()); // Manages Stomp Anim events
 		// EventDispatcher::AddListener(&ThighCrush::GetSingleton()); // Manages Thigh Crushing
 		EventDispatcher::AddListener(&Grab::GetSingleton()); // Manages grabbing
+		EventDispatcher::AddListener(&ThighSandwichController::GetSingleton()); // Manages Thigh Sandwiching
+
 
 		EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
 		EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
