@@ -201,10 +201,11 @@
 	}
 
 	void ThighSandwichController::StartSandwiching(Actor* pred, Actor* prey) {
-		if (!ThighSandwichController::GetSingleton().CanSandwich(pred, prey)) {
+        auto& sandwiching = ThighSandwichController::GetSingleton();
+		if (!sandwiching.CanSandwich(pred, prey)) {
 			return;
 		}
-		auto& data = this->GetSandwichingData(pred);
+		auto& data = sandwiching.GetSandwichingData(pred);
 		data.AddTiny(prey);
 		AnimationManager::StartAnim("ThighEnter", pred);
 	}
