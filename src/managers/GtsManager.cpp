@@ -498,7 +498,7 @@ void GtsManager::Update() {
 		auto NPC = actor->GetActorBase(); 
 		if (NPC) {
 			float weight = NPC->weight;
-			log::info("{} weight is {}", actor->GetDisplayFullName(), weight);
+			//log::info("{} weight is {}", actor->GetDisplayFullName(), weight);
 		}
 		AdjustFadeNode(actor);
 
