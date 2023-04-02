@@ -33,5 +33,7 @@ namespace Gts {
 			static void RegisterEvents();
 
 			static void RegisterTriggers();
+
+			std::unordered_map<Actor*, ThighData> data;
 	};
 }
