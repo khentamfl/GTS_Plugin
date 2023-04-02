@@ -28,12 +28,20 @@
 #            before the event will fire again. If "continuous" the event will
 #            fire every frame until the keys are released
 
+#========================================================
+#================ V O R E
+#========================================================
+
 [[InputEvent]]
 name = "Vore"
 keys = [ "LSHIFT", "V"]
 trigger = "once"
 
 # Start Vore Attempt.
+
+#========================================================
+#================ S T O M P S
+#========================================================
 
 [[InputEvent]]
 name = "RightStomp"
@@ -47,20 +55,9 @@ keys = ["LSHIFT", "Q"]
 
 # Trigger Stomp Left animation.
 
-[[InputEvent]]
-name = "SizeReserve"
-keys = ["E"]
-duration = 1.2
-trigger = "continuous"
-
-# Use size reserve and grow yourself. Requires Perk.
-
-[[InputEvent]]
-name = "DisplaySizeReserve"
-keys = ["F"]
-duration = 1.2
-
-# Hold to print size reserve value. Requires Perk.
+#========================================================
+#================ T H I G H  C R U S H
+#========================================================
 
 [[InputEvent]]
 name = "ThighCrush"
@@ -82,21 +79,46 @@ name = "ThighCrushSpare"
 keys = ["RMB"]
 exclusive = false
 
-# Exit Thigh Crush animation.
-
 [[InputEvent]]
 name = "ThighCrushSpare"
 keys = ["LSHIFT", "W"]
 exclusive = true
 
-# Second way to Exit Thigh Crush animation.
+# ^ Ways to Exit Thigh Crush animation.
+
+#========================================================
+#============ T H I G H  S A N D W I C H
+#========================================================
 
 [[InputEvent]]
-name = "PartyReport"
-keys = ["LCONTROL"]
-duration = 1.2
+name = "ThighSandwichEnter"
+keys = ["LSHIFT", "S"]
+exclusive = true
 
-# Reports Follower's size info into the console
+# Start Thigh Sandwich
+
+[[InputEvent]]
+name = "ThighSandwichAttack"
+keys = ["LMB"]
+exclusive = false
+
+# Do Thigh Sandwich attack
+
+[[InputEvent]]
+name = "ThighSandwichExit"
+keys = ["RMB"]
+exclusive = true
+
+[[InputEvent]]
+name = "ThighSandwichExit"
+keys = ["LSHIFT", "W"]
+exclusive = true
+
+# ^ Ways to exit Thigh Sandwich
+
+#========================================================
+#========================= G R A B
+#========================================================
 
 [[InputEvent]]
 name = "Grab"
@@ -119,6 +141,10 @@ exclusive = false
 
 # Release actor from hand.
 
+#========================================================
+#========================= C A M E R A
+#========================================================
+
 [[InputEvent]]
 name = "HorizontalCameraReset"
 keys = ["RIGHT", "LEFT"]
@@ -130,8 +156,6 @@ name = "VerticalCameraReset"
 keys = ["UP", "DOWN"]
 exclusive = false
 trigger = "continuous"
-
-# Camera stuff below.
 
 [[InputEvent]]
 name = "CameraLeft"
@@ -157,6 +181,10 @@ keys = ["LALT", "DOWN"]
 exclusive = false
 trigger = "continuous"
 
+#========================================================
+#========================= A N I M  S P E E D
+#========================================================
+
 [[InputEvent]]
 name = "AnimSpeedUp"
 keys = ["LMB"]
@@ -180,6 +208,29 @@ exclusive = false
 trigger = "continuous"
 
 # Massively Boost animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
+
+#========================================================
+#========================= P E R K S
+#========================================================
+
+#=========================Size Reserve
+
+[[InputEvent]]
+name = "SizeReserve"
+keys = ["E"]
+duration = 1.2
+trigger = "continuous"
+
+# Use size reserve and grow yourself. Requires Perk.
+
+[[InputEvent]]
+name = "DisplaySizeReserve"
+keys = ["F"]
+duration = 1.2
+
+# Hold to print size reserve value. Requires Perk.
+
+#=========================Total Control
 
 [[InputEvent]]
 name = "TotalControlGrow"
@@ -212,3 +263,14 @@ exclusive = false
 trigger = "continuous"
 
 # Shrink followers. Requires Matching Perk.
+
+#========================================================
+#========================= M I S C
+#========================================================
+
+[[InputEvent]]
+name = "PartyReport"
+keys = ["LCONTROL"]
+duration = 1.2
+
+# Reports Follower's size info into the console

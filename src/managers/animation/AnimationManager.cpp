@@ -1,4 +1,5 @@
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/ThighSandwich.hpp"
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/Compat.hpp"
@@ -52,6 +53,9 @@ namespace Gts {
 
 		AnimationThighCrush::RegisterEvents();
 		AnimationThighCrush::RegisterTriggers();
+
+		AnimationThighSandwich::RegisterEvents();
+		AnimationThighSandwich::RegisterTriggers();
 
 		AnimationCompat::RegisterEvents();
 		AnimationCompat::RegisterTriggers();

@@ -45,6 +45,19 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+	void ThighSandwichEnterEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("ThighEnter", player);
+	}
+	void ThighSandwichAttackEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("ThighAttack", player);
+	}
+
+	void ThighSandwichExitEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("ThighExit", player);
+	}
 }
 
 namespace Gts
@@ -59,14 +72,16 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSStompendR", "Stomp", GTSStompendR);
 		AnimationManager::RegisterEvent("GTSStompendL", "Stomp", GTSStompendL);
 		AnimationManager::RegisterEvent("GTS_Next", "Stomp", GTS_Next);
-		AnimationManager::RegisterEvent("GTSBEH_Exit", "Stomp", GTSBEH_Exit);
+		AnimationManager::RegisterEvent("GTSBEH_Exit", "Stomp", GTSBEH_Exit);*/
 
-		InputManager::RegisterInputEvent("RightStomp", RightStompEvent);
-		InputManager::RegisterInputEvent("LeftStomp", LeftStompEvent);*/
+		InputManager::RegisterInputEvent("ThighSandwichEnter", ThighSandwichEnterEvent);
+		InputManager::RegisterInputEvent("ThighSandwichAttack", ThighSandwichAttackEvent);
+		InputManager::RegisterInputEvent("ThighSandwichExit", ThighSandwichExitEvent);
 	}
 
 	void AnimationThighSandwich::RegisterTriggers() {
-		//AnimationManager::RegisterTrigger("StompRight", "Stomp", "GtsModStompAnimRight");
-		//AnimationManager::RegisterTrigger("StompLeft", "Stomp", "GtsModStompAnimLeft");
+		AnimationManager::RegisterTrigger("ThighEnter", "ThighSandwich", "GTSBEH_ThighSandwich_Start");
+		AnimationManager::RegisterTrigger("ThighAttack", "ThighSandwich", "GTSBEH_ThighSandwich_Attack");
+		AnimationManager::RegisterTrigger("ThighExit", "ThighSandwich", "GTSBEH_ThighSandwich_ExitLoop");
 	}
 }

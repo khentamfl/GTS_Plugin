@@ -455,7 +455,7 @@ std::string GtsManager::DebugName() {
 
 // Poll for updates
 void GtsManager::Update() {
-	auto PC = PlayerCharacter::GetSingleton();
+	//auto PC = PlayerCharacter::GetSingleton();
 	//log::info("Camera tracks {}", PlayerCamera::GetSingleton()->cameraTarget.Get().Get()->GetDisplayFullName());
 	
 	
