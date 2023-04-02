@@ -307,14 +307,8 @@ namespace Gts {
 
 	void CallGainWeight(Actor* giant, float value) {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
-		auto NPC = giant->GetActorBase(); 
-		if (NPC) {
-			float weight = NPC->weight += value * 65;
-			log::info("{} weight is {}", giant->GetDisplayFullName(), weight);
-		}
 		if (progressionQuest) {
 			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "GainWeight", giant, value);
-			//giant->DoReset3D(true);
 		}
 	}
 

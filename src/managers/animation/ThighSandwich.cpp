@@ -19,6 +19,9 @@ GTSSandwich_DropDown            // When actor starts to 'jump off' from Rune
 GTSSandwich_FootImpact          // When both feet collide with the ground
 GTSSandwich_ExitAnim            // Animation is over
 
+GTSBEH_ThighSandwich_Start
+GTSBEH_ThighSandwich_Attack
+GTSBEH_ThighSandwich_ExitLoop
 
 //AnimObjectA = Tiny
 //AnimObjectB = rune

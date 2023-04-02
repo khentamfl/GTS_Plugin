@@ -267,7 +267,9 @@ namespace {
 		auto giant = &data.giant;
 		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
-		Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
+		if (!AllowDevourment()) {
+			Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
+		}
 		StartRHandRumble("HandR", data.giant, 0.75, 0.15);
 	}
 

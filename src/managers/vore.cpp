@@ -425,11 +425,13 @@ namespace Gts {
     break;
 	}
 	case VoreBuffState::Finishing: {
-		AdjustGiantessSkill(this->giant, this->tiny);
-		VoreMessage_Absorbed(this->giant, this->tiny);
-		BuffAttributes(this->giant, this->tiny);
-		mod_target_scale(this->giant, this->sizePower * 1.2);
-		AdjustSizeReserve(this->giant, this->sizePower);
+		if (!AllowDevourment()) {
+			AdjustGiantessSkill(this->giant, this->tiny);
+			VoreMessage_Absorbed(this->giant, this->tiny);
+			BuffAttributes(this->giant, this->tiny);
+			mod_target_scale(this->giant, this->sizePower * 1.2);
+			AdjustSizeReserve(this->giant, this->sizePower);
+		}
 		Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
 
         log::info("Going to done state");
