@@ -184,6 +184,10 @@ namespace Gts {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
+			CallGainWeight(giant, 10.0);
+			if (giant->formID == 0x14) {
+				CallVampire();
+			}
 		}
 	}
 	void VoreData::KillAll() {

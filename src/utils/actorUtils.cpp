@@ -292,4 +292,25 @@ namespace Gts {
 		auto playerCamera = PlayerCamera::GetSingleton();
 		playerCamera->ToggleFreeCameraMode(false);
 	}
+
+	void CallDevourment(Actor* giant, Actor* tiny) {
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		if (progressionQuest) {
+			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "Devourment", giant, tiny);
+		}
+	}
+
+	void CallVampire() {
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		if (progressionQuest) {
+			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "Devourment");
+		}
+	}
+
+	void CallGainWeight(Actor* giant, float value) {
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		if (progressionQuest) {
+			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "GainWeight", giant, value);
+		}
+	}
 }

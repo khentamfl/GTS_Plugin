@@ -80,6 +80,12 @@ Function SetIsHHFurnitureEnabled(Bool enabled) global native
 
 ;CTD-free Set Critical Stage function
 Function DisintegrateTarget(Actor target) global native
+
+; returns the value of Devourment compatibility
+Bool function GetDevourmentCompatibility() global native   
+    
+; enables/disables Devourment compatibility
+Function SetDevourmentCompatibility(Bool enabled) global native
     
 ; returns temp data for Actor - used for 'was dragon absorbed' detection    
 Bool function WasDragonEaten() global native    

@@ -12,6 +12,7 @@ namespace {
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
 	inline const auto HighHeelFurnitureRecord = _byteswap_ulong('HHFO');
 	inline const auto AllowPlayerVoreRecord = _byteswap_ulong('APVR');
+	inline const auto DevourmentCompatRecord = _byteswap_ulong('DVCR');
 	inline const auto VoreCombatOnlyRecord = _byteswap_ulong('VRCO');
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
@@ -318,6 +319,10 @@ namespace Gts {
 				bool vore_combatonly;
 				serde->ReadRecordData(&vore_combatonly, sizeof(vore_combatonly));
 				GetSingleton().vore_combatonly = vore_combatonly;
+			} else if (type == DevourmentCompatRecord) {
+				bool devourment_compatibility;
+				serde->ReadRecordData(&devourment_compatibility, sizeof(devourment_compatibility));
+				GetSingleton().devourment_compatibility = devourment_compatibility;
 			}
 			
 			 else if (type == IsSpeedAdjustedRecord) {
@@ -472,6 +477,14 @@ namespace Gts {
 
 		bool vore_combatonly = GetSingleton().vore_combatonly;
 		serde->WriteRecordData(&vore_combatonly, sizeof(vore_combatonly));
+
+		if (!serde->OpenRecord(DevourmentCompatRecord), 0) {
+			log::error("Unable to open Devourment Compatibility record to write cosave data");
+			return;
+		}
+
+		bool devourment_compatibility = GetSingleton().devourment_compatibility;
+		serde->WriteRecordData(&devourment_compatibility, sizeof(devourment_compatibility));
 
 		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 1)) {
 			log::error("Unable to open is speed adjusted record to write cosave data.");

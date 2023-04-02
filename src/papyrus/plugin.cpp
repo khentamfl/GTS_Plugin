@@ -191,6 +191,14 @@ namespace {
 		return false;
 	}
 
+	void GetDevourmentCompatibility(StaticFunctionTag*) {
+		return Persistent::GetSingleton().devourment_compatibility;
+	}
+
+	void SetDevourmentCompatibility(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().devourment_compatibility = enabled;
+	}
+
 	bool DragonCheck(StaticFunctionTag*, Actor* actor) {
 		if (!actor) {
 			return false;
@@ -287,6 +295,8 @@ namespace Gts {
 		vm->RegisterFunction("SetOnlyCombatVore", PapyrusClass, SetOnlyCombatVore);
 		vm->RegisterFunction("DisintegrateTarget", PapyrusClass, DisintegrateTarget);
 		vm->RegisterFunction("WasDragonEaten", PapyrusClass, WasDragonEaten);
+		vm->RegisterFunction("GetDevourmentCompatibility", PapyrusClass, GetDevourmentCompatibility);
+		vm->RegisterFunction("SetDevourmentCompatibility", PapyrusClass, SetDevourmentCompatibility);
 		vm->RegisterFunction("DragonCheck", PapyrusClass, DragonCheck);
 		vm->RegisterFunction("GetIsSpeedAdjusted", PapyrusClass, GetIsSpeedAdjusted);
 		vm->RegisterFunction("SetIsSpeedAdjusted", PapyrusClass, SetIsSpeedAdjusted);

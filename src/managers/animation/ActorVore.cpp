@@ -81,13 +81,11 @@ namespace {
 		"NPC R RearCalf [RrClf]",
 		"NPC L RearCalf [RrClf]",
 	};
-	void TestCall(Actor* giant, Actor* tiny) {
-		auto progressionQuest = Runtime::GetQuest("MainQuest");
-		if (progressionQuest) {
-			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "Devourment", giant, tiny);
-		}
+
+	bool AllowDevourment() {
+		return Persistent::GetSingleton().devourment_compatibility;
 	}
-	
+
 	void ToggleVore(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (transient) {
@@ -242,7 +240,7 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		VoreData.EnableMouthShrinkZone(true);
 		for (auto& tiny: VoreData.GetVories()) {
-			TestCall(giant, tiny);
+			CallDevourment(giant, tiny);
 		}
 	}
 
@@ -289,7 +287,9 @@ namespace {
 	void GTSvore_eat_actor(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); // Remove smile
-		VoreData.KillAll();
+		if (!AllowDevourment) {
+			VoreData.KillAll();
+		}
 	}
 
 	void GTSvore_detachactor_AnimObject_A(AnimationEventData& data) {
