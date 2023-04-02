@@ -115,7 +115,7 @@ namespace Gts
 	ThighData::ThighData(TESObjectREFR* tiny, float target) : 
 		tiny(tiny), 
 		target(target),
-		RuneController(Spring(1.0, 0.5))
+		RuneController(Spring(1.0f, 0.5f))
 		{
 	}
 }

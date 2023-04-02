@@ -210,6 +210,10 @@
 		AnimationManager::StartAnim("ThighEnter", pred);
 	}
 
+    void SandwichingData::AddTiny(Actor* tiny) {
+		this->tinies.try_emplace(tiny, tiny);
+	}
+
     SandwichingData& ThighSandwichController::GetSandwichingData(Actor* giant) {
 		// Create it now if not there yet
 		this->data.try_emplace(giant, giant);
