@@ -495,7 +495,11 @@ void GtsManager::Update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-
+		auto NPC = actor->GetActorBase(); 
+		if (NPC) {
+			float weight = NPC->weight;
+			log::info("{} weight is {}", actor->GetDisplayFullName(), weight);
+		}
 		AdjustFadeNode(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
