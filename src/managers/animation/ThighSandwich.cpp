@@ -48,7 +48,9 @@ using namespace Gts;
 namespace {
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
 		auto giant = &data.giant;
-		for (auto prey: preys)
+		for (auto prey: AnimationThighSandwich::GetVictims(giant)) {
+			DamageAV(prey, 25);
+		}
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {
