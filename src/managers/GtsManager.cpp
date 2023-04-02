@@ -497,13 +497,13 @@ void GtsManager::Update() {
 		}
 
 		
-		if (actor->formID == 0x14) {
-			TESNPC* NPC = skyrim_cast<TESNPC*>(actor);
-			if (NPC) {
-				float weight = NPC->weight;
-				log::info("Weight of PC is {}", weight);
-			}
+		 
+		TESNPC* NPC = skyrim_cast<TESNPC*>(actor);
+		if (NPC) {
+			float weight = NPC->weight;
+			log::info("Weight of PC is {}", weight);
 		}
+		
 
 		AdjustFadeNode(actor);
 
