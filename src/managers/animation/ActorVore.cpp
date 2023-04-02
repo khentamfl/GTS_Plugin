@@ -201,7 +201,7 @@ namespace {
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
 			if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-				PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
+				//PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
 			}
 		}
 
