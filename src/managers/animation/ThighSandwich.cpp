@@ -111,11 +111,4 @@ namespace Gts
 	void AnimationThighSandwich::Update() {
 
 	}
-
-	ThighData::ThighData(TESObjectREFR* tiny, float target) : 
-		tiny(tiny), 
-		target(target),
-		RuneController(Spring(1.0f, 0.5f))
-		{
-	}
 }

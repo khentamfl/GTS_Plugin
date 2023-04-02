@@ -9,13 +9,6 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	struct ThighData {
-		ThighData(TESObjectREFR* tiny, float target);
-		Spring RuneController;
-		TESObjectREFR* tiny;
-		float target;
-	};
-
 	class AnimationThighSandwich : public EventListener {
 		public:
 			[[nodiscard]] static AnimationThighSandwich& GetSingleton() noexcept;
@@ -36,7 +29,5 @@ namespace Gts {
 			static void RegisterEvents();
 
 			static void RegisterTriggers();
-
-			std::unordered_map<Actor*, ThighData> data;
 	};
 }
