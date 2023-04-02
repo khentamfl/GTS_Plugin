@@ -93,7 +93,7 @@
 
 			tiny->SetPosition(targetLocation, true);
 			tiny->SetPosition(targetLocation, false);
-            if (this->suffocate) {
+            if (this->Suffocate) {
                 float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 			    float damage = 0.1 * sizedifference;
 			    DamageAV(tiny, ActorValue::kHealth, damage);
