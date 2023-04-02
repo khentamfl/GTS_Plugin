@@ -28,6 +28,7 @@ namespace Gts {
 			static void Release(Actor* giant);
 			// Get object being held
 			static TESObjectREFR* GetHeldObj(Actor* giant);
+			static Actor* GetHeldActor(Actor* giant);
 
 			static void RegisterEvents();
 
