@@ -46,6 +46,17 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+	void PrintThighKill(Actor* pred, Actor* prey) {
+        int random = rand() % 3;
+        if (random <= 1) {
+			ConsoleLog::GetSingleton()->Print("%s was crushed by the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (random == 2) {
+			ConsoleLog::GetSingleton()->Print("Thighs of %s gently crushed %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+		} else if (random == 3) {
+			ConsoleLog::GetSingleton()->Print("%s was killed between the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		}
+    }
+
 	const std::vector<std::string_view> L_LEG_NODES = {
 		"NPC L Foot [Lft ]",
 		"NPC L Toe0 [LToe]",
@@ -68,17 +79,6 @@ namespace {
 			Rumble::Stop(rumbleName, &actor);
 		}
 	}
-
-	void PrintThighKill(Actor* giant, Actor* tiny) {
-        int random = rand() % 3;
-        if (random <= 1) {
-			ConsoleLog::GetSingleton()->Print("%s was crushed by the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (random == 2) {
-			ConsoleLog::GetSingleton()->Print("Thighs of %s gently crushed %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
-		} else if (random == 3) {
-			ConsoleLog::GetSingleton()->Print("%s was killed between the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		}
-    }
 
 	void GTSSandwich_MoveLL_start(AnimationEventData& data) { 
 		data.stage = 1.0;

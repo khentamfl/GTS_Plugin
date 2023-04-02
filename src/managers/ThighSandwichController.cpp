@@ -20,7 +20,7 @@
 	const float SANDWICH_ANGLE = 60;
 	const float PI = 3.14159;
 
-    void PrintSuffocate(Actor* giant, Actor* tiny) {
+    void PrintSuffocate(Actor* pred, Actor* prey) {
         int random = rand() % 3;
         if (random <= 1) {
 			ConsoleLog::GetSingleton()->Print("%s was suffocated by the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
