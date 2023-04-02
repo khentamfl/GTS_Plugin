@@ -84,4 +84,25 @@ namespace Gts
 		AnimationManager::RegisterTrigger("ThighAttack", "ThighSandwich", "GTSBEH_ThighSandwich_Attack");
 		AnimationManager::RegisterTrigger("ThighExit", "ThighSandwich", "GTSBEH_ThighSandwich_ExitLoop");
 	}
+
+	AnimationThighSandwich& AnimationThighSandwich::GetSingleton() noexcept {
+		static AnimationThighSandwich instance;
+		return instance;
+	}
+
+	std::string AnimationThighSandwich::DebugName() {
+		return "AnimationThighSandwich";
+	}
+
+	void AnimationThighSandwich::Update() {
+
+	}
+
+	ThighData::ThighData(TESObjectRERF* tiny, bool RuneSpawn, bool RuneDespawn) : 
+		tiny(tiny), 
+		RuneSpawn(RuneSpawn),
+		RuneDespawn(RuneDespawn),
+		RuneController(Spring(1.0, 0.5)),
+		{
+	}
 }
