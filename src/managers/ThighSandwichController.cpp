@@ -1,3 +1,4 @@
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/ThighSandwichController.hpp"
 #include "managers/GtsSizeManager.hpp"
