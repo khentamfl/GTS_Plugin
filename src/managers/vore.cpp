@@ -184,7 +184,7 @@ namespace Gts {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
-			CallGainWeight(giant, 10.0);
+			CallGainWeight(giant, 3.0 * get_visual_scale(tiny));
 			if (giant->formID == 0x14) {
 				CallVampire();
 			}
@@ -192,13 +192,15 @@ namespace Gts {
 	}
 	void VoreData::KillAll() {
 		for (auto& [key, tiny]: this->tinies) {
-			if (tiny->formID != 0x14) {
-				Disintegrate(tiny);
+			if (!AllowDevourment) {
+				if (tiny->formID != 0x14) {
+					Disintegrate(tiny);
 				///this->tinies.erase(tiny);
-			} else if (tiny->formID == 0x14) {
-				tiny->KillImmediate();
-				TriggerScreenBlood(50);
-				tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
+				} else if (tiny->formID == 0x14) {
+					tiny->KillImmediate();
+					TriggerScreenBlood(50);
+					tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
+				}
 			}
 		}
 		this->tinies.clear();

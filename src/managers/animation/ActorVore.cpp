@@ -240,8 +240,10 @@ namespace {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		VoreData.EnableMouthShrinkZone(true);
-		for (auto& tiny: VoreData.GetVories()) {
-			CallDevourment(giant, tiny);
+		if (AllowDevourment) {
+			for (auto& tiny: VoreData.GetVories()) {
+				CallDevourment(giant, tiny);
+			}
 		}
 	}
 
@@ -288,9 +290,7 @@ namespace {
 	void GTSvore_eat_actor(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); // Remove smile
-		if (!AllowDevourment()) {
-			VoreData.KillAll();
-		}
+		VoreData.KillAll();
 	}
 
 	void GTSvore_detachactor_AnimObject_A(AnimationEventData& data) {
