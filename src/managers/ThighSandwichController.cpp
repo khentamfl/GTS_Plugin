@@ -193,7 +193,7 @@
 	}
 
 	void ThighSandwichController::StartSandwiching(Actor* pred, Actor* prey) {
-		if (!this->CanSandwich(pred, prey)) {
+		if (!ThighSandwichController::GetSingleton().CanSandwich(pred, prey)) {
 			return;
 		}
 		ThighSandwichController::GrabActor(pred, prey);
