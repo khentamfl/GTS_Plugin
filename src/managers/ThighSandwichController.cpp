@@ -93,7 +93,7 @@
 		// Filter out invalid targets
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
-			return !this->CanVore(pred, prey);
+			return !this->CanSandwich(pred, prey);
 		}), preys.end());;
 
 		// Filter out actors not in front
@@ -193,7 +193,7 @@
 	}
 
 	void ThighSandwichController::StartSandwiching(Actor* pred, Actor* prey) {
-		if (!ThighSandwichController::GetSingleton().CanSandwich(pred, prey)) {
+		if (!this->CanSandwich(pred, prey)) {
 			return;
 		}
 		ThighSandwichController::GrabActor(pred, prey);
