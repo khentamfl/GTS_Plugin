@@ -101,7 +101,7 @@ namespace Gts
 
 
 	void AnimationThighSandwich::GrabActor(Actor* giant, TESObjectREFR* tiny) {
-		AnimationThighSandwich::GetSingleton().data.try_emplace(giant, tiny, true, false);
+		AnimationThighSandwich::GetSingleton().data.try_emplace(giant, tiny, 1.0);
 	}
 
 	void AnimationThighSandwich::Release(Actor* giant) {
