@@ -51,7 +51,7 @@ namespace Gts {
 		}
 		bool GTSBusy;
 		actor->GetGraphVariableBool("GTS_isBusy", GTSBusy);
-		//log::info("GTSBusy: {}", GTSBusy);
+		log::info("GTSBusy: {}", GTSBusy);
 		if (Persistent::GetSingleton().highheel_furniture == false && GTSBusy && actor->GetOccupiedFurniture()) {
 			return;
 		}
@@ -63,11 +63,11 @@ namespace Gts {
 			IsProne(actor) ||
 			!Persistent::GetSingleton().highheel_correction
 			);
-			//log::info("HH Disable: {}", disableHH);
+			log::info("HH Disable: {}", disableHH);
 		if (disableHH) {
 			hhData.multiplier.target = 0.0;
 			hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(actor);
-			//log::info("HH is false");
+			log::info("HH is false");
 		} else {
 			hhData.multiplier.target = 1.0;
 			hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(actor);

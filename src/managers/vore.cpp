@@ -134,7 +134,7 @@ namespace {
 
 	void VoreMessage_Absorbed(Actor* pred, Actor* prey) {
 		int random = rand() % 2;
-		if (pred->formID == 0x14 && IsDragon(prey)) {
+		if (!AllowDevourment() && pred->formID == 0x14 && IsDragon(prey)) {
 			CompleteDragonQuest();
 		}
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
