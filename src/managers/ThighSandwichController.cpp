@@ -49,6 +49,9 @@
 
 
  namespace Gts {   
+    SandwichingData::SandwichingData(Actor* giant) : giant(giant) {
+
+	}
 
     std::vector<Actor*> SandwichingData::GetActors() {
 		std::vector<Actor*> result;
