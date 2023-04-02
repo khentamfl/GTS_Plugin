@@ -455,9 +455,7 @@ std::string GtsManager::DebugName() {
 
 // Poll for updates
 void GtsManager::Update() {
-	auto PC = PlayerCharacter::GetSingleton();
-	float weight = PC->weight;
-	log::info("Weight of PC is {}", weight);
+	//auto PC = PlayerCharacter::GetSingleton();
 	//auto charCont = PC->GetCharController();
 	//if (charCont) {
 	//float velocity;
@@ -496,6 +494,11 @@ void GtsManager::Update() {
 		}
 		if (!actor->Is3DLoaded()) {
 			continue;
+		}
+
+		float weight = actor->weight;
+		if (actor->formID == 0x14) {
+			log::info("Weight of PC is {}", weight);
 		}
 
 		AdjustFadeNode(actor);
