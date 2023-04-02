@@ -1,6 +1,7 @@
 #include "utils/actorUtils.hpp"
 #include "utils/findActor.hpp"
 #include "utils/papyrusUtils.hpp"
+#include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -291,6 +292,10 @@ namespace Gts {
 	void EnableFreeCamera() {
 		auto playerCamera = PlayerCamera::GetSingleton();
 		playerCamera->ToggleFreeCameraMode(false);
+	}
+
+	bool AllowDevourment() {
+		return Persistent::GetSingleton().devourment_compatibility;
 	}
 
 	void CallDevourment(Actor* giant, Actor* tiny) {

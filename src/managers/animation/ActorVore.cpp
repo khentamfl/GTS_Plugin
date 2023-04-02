@@ -83,10 +83,6 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	bool AllowDevourment() {
-		return Persistent::GetSingleton().devourment_compatibility;
-	}
-
 	void ToggleVore(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetActorData(actor);
 		if (transient) {

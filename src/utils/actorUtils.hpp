@@ -36,6 +36,7 @@ namespace Gts {
 	void ApplyShakeAtPoint(Actor* caster,float modifier, const NiPoint3& coords);
 	void EnableFreeCamera();
 
+	bool AllowDevourment();
 	void CallDevourment(Actor* giant, Actor* tiny);
 	void CallGainWeight(Actor* giant, float value);
 	void CallVampire();
