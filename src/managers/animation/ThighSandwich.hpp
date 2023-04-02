@@ -10,11 +10,10 @@ using namespace RE;
 
 namespace Gts {
 	struct ThighData {
-		ThighData(TESObjectREFR* tiny, bool RuneSpawn, bool RuneDespawn);
+		ThighData(TESObjectREFR* tiny, float target);
 		Spring RuneController;
 		TESObjectREFR* tiny;
-		bool RuneSpawn;
-		bool RuneDespawn;
+		float target;
 	};
 
 	class AnimationThighSandwich : public EventListener {

@@ -127,10 +127,9 @@ namespace Gts
 		}
 	}
 
-	ThighData::ThighData(TESObjectRERF* tiny, bool RuneSpawn, bool RuneDespawn) : 
+	ThighData::ThighData(TESObjectREFR* tiny, float target) : 
 		tiny(tiny), 
-		RuneSpawn(RuneSpawn),
-		RuneDespawn(RuneDespawn),
+		target(target),
 		RuneController(Spring(1.0, 0.5)),
 		{
 	}
