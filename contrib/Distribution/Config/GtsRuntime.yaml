@@ -24,6 +24,7 @@ sounds:
   GiantImpactSound: "Skyrim.esm|0C52F7"
   VoreSwallow: "GTS.esp|56E747"
   TriggerHG: "GTS.esp|578948"
+  ThighSandwichImpact: "GTS.esp|582B49"
 
 
 spellEffects:

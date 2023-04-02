@@ -49,11 +49,13 @@ namespace {
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
-
+		Runtime::PlaySoundAtNode("ThighSandwichImpact", giant, 1.0, 1.0, "AnimObjectB");
 		for (auto prey: sandwichdata.GetActors()) {
-			float damage = 15.0;
+			float sizedifference = get_visual_scale(giant)/get_visual_scale(prey);
+			float damage = 3.0 * sizedifference;
 			DamageAV(prey, ActorValue::kHealth, damage);
 			float hp = GetAV(prey, ActorValue::kHealth);
+			
 			if (damage > hp) {
 				CrushManager::GetSingleton().Crush(giant, prey);
 				sandwichdata.Remove(prey);

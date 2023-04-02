@@ -77,8 +77,9 @@
         }
     	float giantScale = get_visual_scale(giant);
 
-        for (auto& [key, tiny]: this->tinies) {
+        for (auto& [key, tiny]: this->GetActors()) {
 			if (!tiny) {
+                log::info("Tiny is None");
 				return;
 			}
 			auto bone = find_node(giant, "AnimObjectB");
@@ -92,9 +93,13 @@
 
 			tiny->SetPosition(targetLocation, true);
 			tiny->SetPosition(targetLocation, false);
-				//log::info("Setting Position");
+            float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+			float damage = 0.1 * sizedifference;
+			DamageAV(tiny, ActorValue::kHealth, damage);
+		    log::info("Setting Tiny Position");
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
+                log::info("Tiny is Actor");
 				auto charcont = tiny_is_actor->GetCharController();
 				if (charcont) {
 					charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.
