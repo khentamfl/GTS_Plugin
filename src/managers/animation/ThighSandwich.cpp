@@ -46,10 +46,16 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+	void GTSSandwich_MoveLL_start(AnimationEventData& data) {
+		auto giant = &data.giant;
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
+		sandwichdata.EnableSuffocate(true);
+	}
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", giant, 1.0, 1.0, "AnimObjectB");
+		sandwichdata.EnableSuffocate(false);
 		for (auto prey: sandwichdata.GetActors()) {
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(prey);
 			float damage = 3.0 * sizedifference;
@@ -100,6 +106,7 @@ namespace Gts
 		InputManager::RegisterInputEvent("ThighSandwichExit", ThighSandwichExitEvent);
 		AnimationManager::RegisterEvent("GTSSandwich_ThighImpact", "ThighSandwich", GTSSandwich_ThighImpact);
 		AnimationManager::RegisterEvent("GTSSandwich_DropDown", "ThighSandwich", GTSSandwich_DropDown);
+		AnimationManager::RegisterEvent("GTSSandwich_MoveLL_start", "ThighSandwich", GTSSandwich_MoveLL_start);
 	}
 
 	void AnimationThighSandwich::RegisterTriggers() {

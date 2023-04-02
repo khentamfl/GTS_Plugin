@@ -93,9 +93,11 @@
 
 			tiny->SetPosition(targetLocation, true);
 			tiny->SetPosition(targetLocation, false);
-            float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-			float damage = 0.1 * sizedifference;
-			DamageAV(tiny, ActorValue::kHealth, damage);
+            if (this->suffocate) {
+                float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+			    float damage = 0.1 * sizedifference;
+			    DamageAV(tiny, ActorValue::kHealth, damage);
+            }
 		    log::info("Setting Tiny Position");
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
@@ -106,6 +108,12 @@
 				}
             }
         }
+    }
+
+    void ThighSandwichController::Update() {
+        for (auto& [key, SandwichData]: this->data) {
+			SandwichData.Update();
+		}
     }
 
 	std::vector<Actor*> ThighSandwichController::GetSandwichTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
@@ -254,6 +262,10 @@
     void SandwichingData::Remove(Actor* tiny) {
         this->tinies.erase(tiny);
     }
+
+    void SandwichingData::EnableSuffocate(bool enable) {
+		this->Suffocate = enable;
+	}
 
     SandwichingData& ThighSandwichController::GetSandwichingData(Actor* giant) {
 		// Create it now if not there yet
