@@ -28,6 +28,10 @@ namespace Gts {
 			// Get object being held
 			static TESObjectREFR* GetHeldObj(Actor* giant);
 			static Actor* GetHeldActor(Actor* giant);
+			
+			std::vector<Actor*> GetSandwichTargetsInFront(Actor* pred, std::size_t numberOfPrey);
+			static void StartSandwiching(Actor* pred, Actor* prey);
+			static void CanSandwich(Actor* pred, Actor* prey);
 
 			static void RegisterEvents();
 

@@ -56,7 +56,7 @@ namespace {
 			auto& VoreManager = Vore::GetSingleton();
 			std::size_t numberOfPrey = 1;
 			if (Runtime::HasPerk(pred, "MassVorePerk")) {
-				numberOfPrey = 3;
+				numberOfPrey = 1 + (get_visual_scale(pred)/3);
 			}
 			std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 			for (auto prey: preys) {

@@ -26,9 +26,9 @@ GTSBEH_ThighSandwich_ExitLoop
 //AnimObjectA = Tiny
 //AnimObjectB = rune
 */
-
-#include "managers/animation/ThighSandwich.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/ThighSandwichController.hpp"
+#include "managers/animation/ThighSandwich.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"
@@ -46,10 +46,24 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	void ThighSandwichEnterEvent(const InputEventData& data) {
-		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("ThighEnter", player);
+	void GTSSandwich_ThighImpact(AnimationEventData& data) {
+		auto giant = &data.giant;
+		for (auto prey: preys)
 	}
+
+	void ThighSandwichEnterEvent(const InputEventData& data) {
+		auto pred = PlayerCharacter::GetSingleton();
+		auto& Sandwiching = ThighSandwichController::GetSingleton();
+		std::size_t numberOfPrey = 1;
+		if (Runtime::HasPerk(pred, "MassVorePerk")) {
+			numberOfPrey = 1 + (get_visual_scale(pred)/3);
+		}
+		std::vector<Actor*> preys = Sandwiching.GetVoreTargetsInFront(pred, numberOfPrey);
+		for (auto prey: preys) {
+			Sandwiching.StartSandwiching(pred, prey);
+		}
+	}
+	
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		AnimationManager::StartAnim("ThighAttack", player);
@@ -64,20 +78,11 @@ namespace {
 namespace Gts
 {
 	void AnimationThighSandwich::RegisterEvents() {
-		/*AnimationManager::RegisterEvent("GTSstompimpactR", "Stomp", GTSstompimpactR);
-		AnimationManager::RegisterEvent("GTSstompimpactL", "Stomp", GTSstompimpactL);
-		AnimationManager::RegisterEvent("GTSstomplandR", "Stomp", GTSstomplandR);
-		AnimationManager::RegisterEvent("GTSstomplandL", "Stomp", GTSstomplandL);
-		AnimationManager::RegisterEvent("GTSstompstartR", "Stomp", GTSstompstartR);
-		AnimationManager::RegisterEvent("GTSstompstartL", "Stomp", GTSstompstartL);
-		AnimationManager::RegisterEvent("GTSStompendR", "Stomp", GTSStompendR);
-		AnimationManager::RegisterEvent("GTSStompendL", "Stomp", GTSStompendL);
-		AnimationManager::RegisterEvent("GTS_Next", "Stomp", GTS_Next);
-		AnimationManager::RegisterEvent("GTSBEH_Exit", "Stomp", GTSBEH_Exit);*/
-
 		InputManager::RegisterInputEvent("ThighSandwichEnter", ThighSandwichEnterEvent);
 		InputManager::RegisterInputEvent("ThighSandwichAttack", ThighSandwichAttackEvent);
 		InputManager::RegisterInputEvent("ThighSandwichExit", ThighSandwichExitEvent);
+		AnimationManager::RegisterEvent("GTSSandwich_ThighImpact", "ThighSandwich", GTSSandwich_ThighImpact);
+		AnimationManager::RegisterEvent("GTSSandwich_DropDown", "ThighSandwich", GTSSandwich_DropDown);
 	}
 
 	void AnimationThighSandwich::RegisterTriggers() {
@@ -99,32 +104,10 @@ namespace Gts
 
 	}
 
-
-	void AnimationThighSandwich::GrabActor(Actor* giant, TESObjectREFR* tiny) {
-		AnimationThighSandwich::GetSingleton().data.try_emplace(giant, tiny, 1.0);
-	}
-
-	void AnimationThighSandwich::Release(Actor* giant) {
-		AnimationThighSandwich::GetSingleton().data.erase(giant);
-	}
-
-	TESObjectREFR* AnimationThighSandwich::GetHeldObj(Actor* giant) {
-		try {
-			auto& me = AnimationThighSandwich::GetSingleton();
-			return me.data.at(giant).tiny;
-		} catch (std::out_of_range e) {
-			return nullptr;
-		}
-
-	}
-	Actor* AnimationThighSandwich::GetHeldActor(Actor* giant) {
-		auto obj = AnimationThighSandwich::GetHeldObj(giant);
-		Actor* actor = skyrim_cast<Actor*>(obj);
-		if (actor) {
-			return actor;
-		} else {
-			return nullptr;
-		}
+	Actor* AnimationThighSandwich::GetVictims(Actor* giant) {
+		Actor* result;
+		result.push_back(giant.tiny);
+		return result;
 	}
 
 	ThighData::ThighData(TESObjectREFR* tiny, float target) : 
