@@ -49,5 +49,7 @@ namespace Gts {
 			bool CanSandwich(Actor* pred, Actor* prey);
 
             SandwichingData& GetSandwichingData(Actor* giant);
+
+            std::unordered_map<Actor*, SandwichingData> data;
 	};
 }
