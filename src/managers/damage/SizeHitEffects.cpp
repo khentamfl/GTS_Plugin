@@ -63,8 +63,8 @@ namespace {
 					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, overkill); // Restore to full
 					log::info("Applying Health Gate, overkill: {}, damage: {}", overkill, a_damage);
 					
-					ConsoleLog::GetSingleton()->Print("Health Gate triggered");
-					ConsoleLog::GetSingleton()->Print("Overkill: %g, Lost Size: %g", overkill, -0.35 * scale);
+					ConsoleLog::GetSingleton()->Print("Health Gate triggered, death avoided");
+					ConsoleLog::GetSingleton()->Print("Damage: %g, Lost Size: %g", a_damage, -0.35 * scale);
 				}
 			}
 		}

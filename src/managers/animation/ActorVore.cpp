@@ -288,7 +288,7 @@ namespace {
 	void GTSvore_eat_actor(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); // Remove smile
-		if (!AllowDevourment) {
+		if (!AllowDevourment()) {
 			VoreData.KillAll();
 		}
 	}
