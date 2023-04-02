@@ -1,5 +1,5 @@
 #pragma once
-// Module that handles footsteps
+// Module that handles Rumble
 #include "events.hpp"
 #include "timer.hpp"
 #include "spring.hpp"

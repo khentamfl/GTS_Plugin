@@ -37,6 +37,7 @@ GTSBEH_ThighSandwich_ExitLoop
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "spring.hpp"
 #include "node.hpp"
 
 using namespace std;
