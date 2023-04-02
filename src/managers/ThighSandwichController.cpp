@@ -1,5 +1,6 @@
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/ThighSandwichController.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"
@@ -12,6 +13,12 @@
 #include "node.hpp"
 
  namespace {
+
+    const float MINIMUM_SANDWICH_DISTANCE = 70.0;
+	const float MINIMUM_SANDWICH_SCALE_RATIO = 6.0;
+	const float SANDWICH_ANGLE = 60;
+	const float PI = 3.14159;
+    
     [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
 	{
 		float S = sin(angle);
@@ -113,7 +120,7 @@
 		//   | pred |  <- Based on width of pred
 		//   |______|
 		float predWidth = 70 * get_visual_scale(pred);
-		float shiftAmount = fabs((predWidth / 2.0) / tan(VORE_ANGLE/2.0));
+		float shiftAmount = fabs((predWidth / 2.0) / tan(SANDWICH_ANGLE/2.0));
 
 		NiPoint3 coneStart = predPos - predDir * shiftAmount;
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[coneStart, predWidth, predDir](auto prey)
@@ -124,7 +131,7 @@
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			return cosTheta <= cos(VORE_ANGLE*PI/180.0);
+			return cosTheta <= cos(SANDWICH_ANGLE*PI/180.0);
 		}), preys.end());
 
 		// Reduce vector size
@@ -152,7 +159,7 @@
 
 		float sizedifference = pred_scale/prey_scale;
 
-		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
+		float MINIMUM_VORE_SCALE = MINIMUM_SANDWICH_SCALE_RATIO;
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 
@@ -169,10 +176,10 @@
 		}
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
+		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_SANDWICH_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
+		if (prey_distance <= (MINIMUM_SANDWICH_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
 				if ((prey->IsEssential() && Runtime::GetBool("ProtectEssentials")) || Runtime::HasSpell(prey, "StartVore")) {
 					return false;
 				} else {
@@ -185,7 +192,7 @@
 	}
 
 	void ThighSandwichController::StartSandwiching(Actor* pred, Actor* prey) {
-		if (!CanSandwich(pred, prey)) {
+		if (!ThighSandwichController::GetSingleton().CanSandwich(pred, prey)) {
 			return;
 		}
 		ThighSandwichController::GrabActor(pred, prey);
