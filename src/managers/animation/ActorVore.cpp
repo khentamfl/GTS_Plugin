@@ -198,11 +198,12 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		VoreData.GrabAll();
 		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
+		auto firstTiny = VoreData.GetVories()[0];
+		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
+			PlayerCamera::GetSingleton()->cameraTarget = firstTiny->CreateRefHandle();
+		}
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
-			if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-				PlayerCamera::GetSingleton()->cameraTarget = tiny->CreateRefHandle();
-			}
 		}
 
 		StopRHandRumble("HandR", data.giant);
@@ -298,7 +299,7 @@ namespace {
 		auto giant = &data.giant;
 		StartBodyRumble("BodyRumble", data.giant, 0.35, 0.10, false);
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			//PlayerCamera::GetSingleton()->cameraTarget = None;
+			PlayerCamera::GetSingleton()->cameraTarget = giant->CreateRefHandle();
 		}
 	}
 
