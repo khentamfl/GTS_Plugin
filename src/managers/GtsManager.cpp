@@ -456,7 +456,7 @@ std::string GtsManager::DebugName() {
 // Poll for updates
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
-	log::info("Camera tracks {}", PlayerCamera::GetSingleton()->cameraTarget.Get()->GetDisplayFullName());
+	log::info("Camera tracks {}", PlayerCamera::GetSingleton()->cameraTarget.Get().Get()->GetDisplayFullName());
 	
 	
 	//auto charCont = PC->GetCharController();
@@ -521,15 +521,11 @@ void GtsManager::Update() {
 		}
 
 		float current_health_percentage = GetHealthPercentage(actor);
-		//log::info("Health% before scale: {}", current_health_percentage);
-		//log::info("MaxHP Before: {}", GetMaxAV(actor, ActorValue::kHealth));
 
 		update_actor(actor);
 		apply_actor(actor);
 
 		SetHealthPercentage(actor, current_health_percentage);
-		//log::info("Health% after scale: {}", GetHealthPercentage(actor));
-		//log::info("MaxHP After: {}", GetMaxAV(actor, ActorValue::kHealth));
 
 		GameMode(actor);
 

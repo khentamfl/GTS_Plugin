@@ -15,10 +15,10 @@ namespace Gts {
 	}
 
 	void ScaleSpellManager::CheckSize(Actor* actor) {
-		if (!actor || !actor->Is3DLoaded() || actor->IsDead()) {
+		if (SizeManager::GetSingleton().GetPreciseDamage()) {
 			return;
 		}
-		if (SizeManager::GetSingleton().GetPreciseDamage()) {
+		if (!actor || !actor->Is3DLoaded() || actor->IsDead()) {
 			return;
 		}
 		if (actor->formID != 0x14) {
