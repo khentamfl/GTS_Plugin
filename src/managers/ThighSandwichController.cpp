@@ -67,7 +67,7 @@
 		return "ThighSandwichController";
 	}
 
-    void ThighSandwichController::Update() {
+    void SandwichingData::Update() {
         auto giant = this->giant;
         if (!giant) {
             return;
