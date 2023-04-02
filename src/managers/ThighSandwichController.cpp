@@ -240,7 +240,7 @@
 	}
 
     void SandwichingData::ReleaseAll() {
-		this->tinies.clear;
+		this->tinies.clear();
 	}
 
     void SandwichingData::Remove(Actor* tiny) {

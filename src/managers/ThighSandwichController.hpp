@@ -41,6 +41,7 @@ namespace Gts {
 			[[nodiscard]] static ThighSandwichController& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
+            virtual void Update() override;
 			
 			std::vector<Actor*> GetSandwichTargetsInFront(Actor* pred, std::size_t numberOfPrey);
 			static void StartSandwiching(Actor* pred, Actor* prey);
