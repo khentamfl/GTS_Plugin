@@ -98,6 +98,34 @@ namespace Gts
 
 	}
 
+
+	void AnimationThighSandwich::GrabActor(Actor* giant, TESObjectREFR* tiny) {
+		AnimationThighSandwich::GetSingleton().data.try_emplace(giant, tiny);
+	}
+
+	void AnimationThighSandwich::Release(Actor* giant) {
+		AnimationThighSandwich::GetSingleton().data.erase(giant);
+	}
+
+	TESObjectREFR* AnimationThighSandwich::GetHeldObj(Actor* giant) {
+		try {
+			auto& me = AnimationThighSandwich::GetSingleton();
+			return me.data.at(giant).tiny;
+		} catch (std::out_of_range e) {
+			return nullptr;
+		}
+
+	}
+	Actor* AnimationThighSandwich::GetHeldActor(Actor* giant) {
+		auto obj = AnimationThighSandwich::GetHeldObj(giant);
+		Actor* actor = skyrim_cast<Actor*>(obj);
+		if (actor) {
+			return actor;
+		} else {
+			return nullptr;
+		}
+	}
+
 	ThighData::ThighData(TESObjectRERF* tiny, bool RuneSpawn, bool RuneDespawn) : 
 		tiny(tiny), 
 		RuneSpawn(RuneSpawn),
