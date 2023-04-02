@@ -455,7 +455,9 @@ std::string GtsManager::DebugName() {
 
 // Poll for updates
 void GtsManager::Update() {
-	//auto PC = PlayerCharacter::GetSingleton();
+	auto PC = PlayerCharacter::GetSingleton();
+	log::info("Camera Target: {}", PlayerCamera::GetSingleton()->cameraTarget);
+	
 	//auto charCont = PC->GetCharController();
 	//if (charCont) {
 	//float velocity;
