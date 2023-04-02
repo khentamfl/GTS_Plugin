@@ -26,11 +26,11 @@ namespace Gts {
 	}
 
 	void HighHeelManager::PapyrusUpdate() {
-		const bool FORCE_APPLY = false;
+		/*const bool FORCE_APPLY = false;
 		auto actors = find_actors();
 		for (auto actor: actors) {
 			ApplyHH(actor, FORCE_APPLY);
-		}
+		}*/
 	}
 
 	void HighHeelManager::ActorEquip(Actor* actor) {
@@ -82,9 +82,9 @@ namespace Gts {
 			new_hh = this->GetBaseHHOffset(actor) * hhData.multiplier.value;
 		}
 		float hh_length = new_hh.Length();
-		if (actor->formID == 0x14) {
-			log::info("HH Length of {} is {}", actor->GetDisplayFullName(), hh_length);
-		}
+		//if (actor->formID == 0x14) {
+			//log::info("HH Length of {} is {}", actor->GetDisplayFullName(), hh_length);
+		//}
 
 		for (bool person: {false, true}) {
 			auto npc_root_node = find_node(actor, "NPC", person);
