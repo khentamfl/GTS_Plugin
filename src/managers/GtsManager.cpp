@@ -456,11 +456,7 @@ std::string GtsManager::DebugName() {
 // Poll for updates
 void GtsManager::Update() {
 	auto PC = PlayerCharacter::GetSingleton();
-	if (PlayerCamera::GetSingleton()->cameraTarget) {
-		log::info("Camera tracks someone");
-	} else if (!PlayerCamera::GetSingleton()->cameraTarget) {
-		log::info("Camera is tracking nothing");
-	}
+	log::info("Camera tracks {}", PlayerCamera::GetSingleton()->cameraTarget.Get()->GetDisplayFullName());
 	
 	
 	//auto charCont = PC->GetCharController();
