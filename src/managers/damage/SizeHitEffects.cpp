@@ -47,13 +47,11 @@ namespace {
 				static Timer protect = Timer(30.00);
 				if (protect.ShouldRunFrame()) {
 					float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
-
+					float scale = get_visual_scale(receiver);
 					attacker->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 					attacker->NotifyAnimationGraph("staggerStart");
 
-					if (get_visual_scale(receiver) > 1.0) {
-						mod_target_scale(receiver, -0.25);
-					}
+					mod_target_scale(receiver, -0.35 * scale);
 
 					Rumble::For("CheatDeath", receiver, 120.0, 0.10, "NPC COM [COM ]", 0.75);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
@@ -64,6 +62,9 @@ namespace {
 		
 					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, overkill); // Restore to full
 					log::info("Applying Health Gate, overkill: {}, damage: {}", overkill, a_damage);
+					
+					ConsoleLog::GetSingleton()->Print("Health Gate triggered");
+					ConsoleLog::GetSingleton()->Print("Overkill: %g, Lost Size: %g", overkill, -0.35 * scale);
 				}
 			}
 		}

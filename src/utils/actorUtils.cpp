@@ -300,17 +300,17 @@ namespace Gts {
 		}
 	}
 
-	void CallVampire() {
-		auto progressionQuest = Runtime::GetQuest("MainQuest");
-		if (progressionQuest) {
-			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "Devourment");
-		}
-	}
-
 	void CallGainWeight(Actor* giant, float value) {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		if (progressionQuest) {
 			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "GainWeight", giant, value);
+		}
+	}
+
+	void CallVampire() {
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		if (progressionQuest) {
+			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "SatisfyVampire");
 		}
 	}
 }

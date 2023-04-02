@@ -3,6 +3,7 @@
 #include "managers/CrushManager.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "utils/actorUtils.hpp"
+#include "data/persistent.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
 #include "managers/Rumble.hpp"

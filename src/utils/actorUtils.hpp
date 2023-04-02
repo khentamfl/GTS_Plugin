@@ -35,4 +35,9 @@ namespace Gts {
 	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node);
 	void ApplyShakeAtPoint(Actor* caster,float modifier, const NiPoint3& coords);
 	void EnableFreeCamera();
+
+	void CallDevourment(Actor* giant, Actor* tiny);
+	void CallGainWeight(Actor* giant, float value);
+	void CallVampire();
+	
 }
