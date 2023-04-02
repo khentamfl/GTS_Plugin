@@ -39,7 +39,7 @@ namespace {
 
 namespace Gts
 {
-	void AnimationStomp::RegisterEvents() {
+	void AnimationThighSandwich::RegisterEvents() {
 		/*AnimationManager::RegisterEvent("GTSstompimpactR", "Stomp", GTSstompimpactR);
 		AnimationManager::RegisterEvent("GTSstompimpactL", "Stomp", GTSstompimpactL);
 		AnimationManager::RegisterEvent("GTSstomplandR", "Stomp", GTSstomplandR);
@@ -55,7 +55,7 @@ namespace Gts
 		InputManager::RegisterInputEvent("LeftStomp", LeftStompEvent);*/
 	}
 
-	void AnimationStomp::RegisterTriggers() {
+	void AnimationThighSandwich::RegisterTriggers() {
 		//AnimationManager::RegisterTrigger("StompRight", "Stomp", "GtsModStompAnimRight");
 		//AnimationManager::RegisterTrigger("StompLeft", "Stomp", "GtsModStompAnimLeft");
 	}
