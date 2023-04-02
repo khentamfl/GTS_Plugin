@@ -310,7 +310,7 @@ namespace Gts {
 		auto NPC = giant->GetActorBase(); 
 		if (NPC) {
 			float weight = NPC->weight += value * 65;
-			log::info("{} weight is {}", actor->GetDisplayFullName(), weight);
+			log::info("{} weight is {}", giant->GetDisplayFullName(), weight);
 		}
 		if (progressionQuest) {
 			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "GainWeight", giant, value);
