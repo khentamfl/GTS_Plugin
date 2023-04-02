@@ -77,7 +77,7 @@
         }
     	float giantScale = get_visual_scale(giant);
 
-        for (auto& [key, tiny]: this->GetActors()) {
+        for (auto& [key, tiny]: this->tinies) {
 			if (!tiny) {
                 log::info("Tiny is None");
 				return;
