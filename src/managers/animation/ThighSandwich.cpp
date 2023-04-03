@@ -95,7 +95,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", giant, 1.0, 1.0, "AnimObjectB");
 		sandwichdata.EnableSuffocate(true);
-		Rumble::Once("ThighImpact", &data.giant, 0.8, 0.15, "AnimObjectA");
+		Rumble::Once("ThighImpact", &data.giant, 1.8, 0.15, "AnimObjectA");
 		for (auto prey: sandwichdata.GetActors()) {
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(prey);
 			float damage = 3.0 * sizedifference * data.animSpeed;
