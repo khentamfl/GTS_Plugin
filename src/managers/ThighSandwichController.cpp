@@ -89,9 +89,11 @@
 				node->local.scale = this->ScaleRune;
 				update_node(node);
 				if (node->local.scale >= 1.0) {
-					this->ScaleRune = false;
+					this->RuneScale = false;
+					node->local.scale = 1.0;
+					update_node(node);
 					return;
-				}
+				} 
 			} 
 		} else if (this->RuneShrink) {
 			auto node = find_node(actor, node_name, false);
@@ -99,7 +101,9 @@
 				node->local.scale = this->ShrinkRune;
 				update_node(node);
 				if (node->local.scale <= 0.05) {
-					this->ScaleRune = false;
+					node->local.scale = 0.05;
+					update_node(node);
+					this->RuneShrink = false;
 					return;
 				}
 			} 
