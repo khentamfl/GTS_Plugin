@@ -45,6 +45,6 @@ namespace Gts {
 	void CallGainWeight(Actor* giant, float value);
 	void CallVampire();
 
-	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node);
+	//void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random);
 }
