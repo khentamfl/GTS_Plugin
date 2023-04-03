@@ -134,7 +134,7 @@ namespace {
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
-		StartLegRumble("ThighCrush", data.giant, 0.25, 0.20);
+		StartLegRumble("ThighCrushHeavy", data.giant, 0.35, 0.10);
 		data.stage = 5;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushheavy_start");
 	}
@@ -142,7 +142,7 @@ namespace {
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
 
-		StartLegRumble("ThighCrush", data.giant, 0.35, 0.25);
+		StartLegRumble("ThighCrushHeavy", data.giant, 0.50, 0.15);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}

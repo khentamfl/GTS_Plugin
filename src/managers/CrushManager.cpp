@@ -129,14 +129,14 @@ namespace Gts {
 		return "CrushManager";
 	}
 
-	void CrushManager::PapyrusUpdate() {
+	void CrushManager::Update() {
 		for (auto &[tiny, data]: this->data) {
 			auto giant = data.giant;
 			if (!tiny) {
-				continue;
+				return;
 			}
 			if (!giant) {
-				continue;
+				return;
 			}
 			auto transient = Transient::GetSingleton().GetActorData(tiny);
 			if (transient) {

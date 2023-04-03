@@ -89,7 +89,7 @@ namespace {
 					target_scale,
 					persi_actor_data->half_life,
 					Time::WorldTimeDelta()
-					);
+				);
 			}
 		}
 	}
@@ -164,15 +164,7 @@ namespace {
 		float speedmultcalc = soft_core(scale, getspeed); // For all other movement types
 		float bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float perkspeed = 1.0;
-
-		if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
-			//perkspeed = clamp(0.80, 1.0, speedmultcalc); // Used as a bonus 20% MS if PC has perk.
-		}
-
 		persi_actor_data->anim_speed = speedmultcalc*perkspeed;//MS_mult;
-		if (actor->formID == 0x14) {
-			//log::info("AnimSpeed: {}", persi_actor_data->anim_speed);
-		}
 	}
 
 	void update_effective_multi(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
@@ -508,11 +500,13 @@ void GtsManager::Update() {
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
-		if (sizemanager.GetPreciseDamage()) {
-			if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+		
+		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+			if (sizemanager.GetPreciseDamage()) {
 				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 150, 1.0);
 				ClothManager::GetSingleton().CheckRip();
 			}
+			GameMode(actor);
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
 			if (actor->formID != 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
@@ -526,13 +520,11 @@ void GtsManager::Update() {
 		apply_actor(actor);
 
 		SetHealthPercentage(actor, current_health_percentage);
-
-		GameMode(actor);
-
-		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
-		if (timer.ShouldRunFrame()) {
-			ScaleSpellManager::GetSingleton().CheckSize(actor);
-		}
+		
+		//static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
+		//if (timer.ShouldRunFrame()) {
+			//ScaleSpellManager::GetSingleton().CheckSize(actor);
+		//}
 	}
 }
 void GtsManager::reapply(bool force) {

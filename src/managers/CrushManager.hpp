@@ -29,7 +29,7 @@ namespace Gts {
 			[[nodiscard]] static CrushManager& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-			virtual void PapyrusUpdate() override;
+			virtual void Update() override; // PapyrusUpdate
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 

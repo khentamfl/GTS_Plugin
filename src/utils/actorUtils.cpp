@@ -322,7 +322,7 @@ namespace Gts {
 		}
 	} 
 
-	/*void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
+	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
 		auto& footstep = FootStepManager::GetSingleton();
 		auto& explosion = ExplosionManager::GetSingleton();
 		Impact impact_data = Impact {
@@ -334,7 +334,7 @@ namespace Gts {
 		};
 		explosion.OnImpact(impact_data);
 		footstep.OnImpact(impact_data);
-	}*/
+	}
 
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random) {
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 35.0 * damage, 1.35, random, 0.05);
