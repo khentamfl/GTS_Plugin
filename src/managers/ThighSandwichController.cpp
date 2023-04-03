@@ -81,12 +81,38 @@
 		return "ThighSandwichController";
 	}
 
+	void SandwichData::UpdateRune(Actor* giant) {
+		string node_name = "AnimObjectB";
+		if (this->RuneScale) {
+			auto node = find_node(actor, node_name, false);
+			if (node) {
+				node->local.scale = this->ScaleRune;
+				update_node(node);
+				if (node->local.scale >= 1.0) {
+					this->ScaleRune = false;
+					return;
+				}
+			} 
+		} else if (this->RuneShrink) {
+			auto node = find_node(actor, node_name, false);
+			if (node) {
+				node->local.scale = this->ShrinkRune;
+				update_node(node);
+				if (node->local.scale <= 0.05) {
+					this->ScaleRune = false;
+					return;
+				}
+			} 
+		}
+	}
+
     void SandwichingData::Update() {
         auto giant = this->giant;
         if (!giant) {
             return;
         }
     	float giantScale = get_visual_scale(giant);
+		this->UpdateRune(giant);
 
         for (auto& [key, tiny]: this->tinies) {
 			if (!tiny) {

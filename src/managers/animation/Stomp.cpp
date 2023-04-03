@@ -19,6 +19,7 @@
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
+#include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
 #include "data/runtime.hpp"
@@ -33,27 +34,6 @@ using namespace Gts;
 namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
-	const std::string_view RSound = "lFootstepR";
-	const std::string_view LSound = "lFootstepL";
-
-	void DoEffects(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
-		auto& footstep = FootStepManager::GetSingleton();
-		auto& explosion = ExplosionManager::GetSingleton();
-		Impact impact_data = Impact {
-			.actor = giant,
-			.kind = kind,
-			.scale = get_visual_scale(giant) * modifier,
-			.effective_scale = get_effective_scale(giant),
-			.nodes = find_node(giant, node),
-		};
-		explosion.OnImpact(impact_data);
-		footstep.OnImpact(impact_data);
-	}
-
-	void DoDamage(Actor* giant, float damage, float radius, int random) {
-		auto& sizemanager = SizeManager::GetSingleton();
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 35.0 * damage, 1.35, random, 0.05);
-	}
 
 	void GTSstompstartR(AnimationEventData& data) {
 		data.stage = 1;
@@ -73,29 +53,29 @@ namespace {
 
 	void GTSstompimpactR(AnimationEventData& data) {
 		Rumble::Once("StompR", &data.giant, 2.20, 0.0, RNode);
-		DoDamage(&data.giant, 1.0, 1.0, 10);
-		DoEffects(&data.giant, 1.10, FootEvent::Right, RNode);
+		DoDamageEffect(&data.giant, 1.0, 1.0, 10);
+		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
 		//data.stage = 1;
 		Rumble::Once("StompL", &data.giant, 2.20, 0.0, LNode);
-		DoDamage(&data.giant, 1.0, 1.0, 10);
-		DoEffects(&data.giant, 1.10, FootEvent::Left, LNode);
+		DoDamageEffect(&data.giant, 1.0, 1.0, 10);
+		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
 		//data.stage = 2;
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
-		DoDamage(&data.giant, 0.6, 1.0, 25);
-		DoEffects(&data.giant, 0.85, FootEvent::Right, RNode);
+		DoDamageEffect(&data.giant, 0.6, 1.0, 25);
+		DoSizeEffects(&data.giant, 0.85, FootEvent::Right, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
 		//data.stage = 2;
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
-		DoDamage(&data.giant, 0.6, 1.0, 25);
-		DoEffects(&data.giant, 0.85, FootEvent::Left, LNode);
+		DoDamageEffect(&data.giant, 0.6, 1.0, 25);
+		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode);
 	}
 
 	void GTSStompendR(AnimationEventData& data) {

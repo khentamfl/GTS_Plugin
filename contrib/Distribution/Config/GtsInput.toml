@@ -95,14 +95,23 @@ name = "ThighSandwichEnter"
 keys = ["LSHIFT", "S"]
 exclusive = true
 
-# Start Thigh Sandwich
+# Attempt to Start Thigh Sandwich animation with someone
 
 [[InputEvent]]
 name = "ThighSandwichAttack"
 keys = ["LMB"]
 exclusive = false
+trigger = "continuous"
 
-# Do Thigh Sandwich attack
+# Do Thigh Sandwich attack, Can be Looped.
+
+[[InputEvent]]
+name = "ThighSandwichAttackHeavy"
+keys = ["LMB", "RMB"]
+exclusive = false
+trigger = "continuous"
+
+# Do Heavy Thigh Sandwich attack, Can be Looped.
 
 [[InputEvent]]
 name = "ThighSandwichExit"
@@ -132,7 +141,8 @@ keys = ["LMB"]
 exclusive = false
 trigger = "continuous"
 
-# Crush actor that is currently hand.
+# Damage actor that is currently held in hand
+# Crushes actor if there's no health left.
 
 [[InputEvent]]
 name = "GrabSpare"

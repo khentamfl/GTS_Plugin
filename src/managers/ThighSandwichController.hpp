@@ -27,6 +27,7 @@ namespace Gts {
 			// Update all things that are happening like
 			// keeping them on the AnimObjectA and shrinking nodes
 			void Update();
+			void UpdateRune(Actor* giant);
 
 		private:
 			Actor* giant;
@@ -34,6 +35,12 @@ namespace Gts {
 			// enough
 			std::unordered_map<Actor*, Actor*> tinies = {};
             bool Suffocate = false;
+			bool RuneScale = false;
+			bool RuneShrink = false;
+
+			Spring ScaleRune = Spring(1.0, 0.5);
+			Spring ShrinkRune = Spring(0.05, 0.5);
+
 			// True if in grabbed state
 			bool allGrabbed = false;
 	};

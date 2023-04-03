@@ -1,6 +1,9 @@
+#include "managers/damage/AccurateDamage.hpp"
+#include "utils/papyrusUtils.hpp"
+#include "managers/explosion.hpp"
+#include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
 #include "utils/findActor.hpp"
-#include "utils/papyrusUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
@@ -317,5 +320,23 @@ namespace Gts {
 		if (progressionQuest) {
 			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "SatisfyVampire");
 		}
+	} 
+
+	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
+		auto& footstep = FootStepManager::GetSingleton();
+		auto& explosion = ExplosionManager::GetSingleton();
+		Impact impact_data = Impact {
+			.actor = giant,
+			.kind = kind,
+			.scale = get_visual_scale(giant) * modifier,
+			.effective_scale = get_effective_scale(giant),
+			.nodes = find_node(giant, node),
+		};
+		explosion.OnImpact(impact_data);
+		footstep.OnImpact(impact_data);
+	}
+
+	void DoDamageEffect(Actor* giant, float damage, float radius, int random) {
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 35.0 * damage, 1.35, random, 0.05);
 	}
 }

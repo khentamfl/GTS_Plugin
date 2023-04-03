@@ -91,20 +91,6 @@ namespace {
 		}
 	}
 
-	void DoEffects(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
-		auto& footstep = FootStepManager::GetSingleton();
-		auto& explosion = ExplosionManager::GetSingleton();
-		Impact impact_data = Impact {
-			.actor = giant,
-			.kind = kind,
-			.scale = get_visual_scale(giant) * modifier,
-			.effective_scale = get_effective_scale(giant),
-			.nodes = find_node(giant, node),
-		};
-		explosion.OnImpact(impact_data);
-		footstep.OnImpact(impact_data);
-	}
-
 	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife, bool once) {
 		for (auto& node_name: BODY_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
@@ -178,7 +164,8 @@ namespace {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
 		}
 		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
-		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
+		DoDamageEffect(&data.giant, 0.5, 1.0, 30);
 	}
 
 	void GTSvore_sit_end(AnimationEventData& data) {
@@ -305,7 +292,8 @@ namespace {
 
 	void GTSvore_impactRS(AnimationEventData& data) {
 		Rumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
-		DoEffects(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
+		DoDamageEffect(&data.giant, 0.5, 1.0, 30);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {
