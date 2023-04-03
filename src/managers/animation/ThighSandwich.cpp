@@ -103,7 +103,7 @@ namespace {
 			
 			if (damage > hp && CrushManager::GetSingleton().CanCrush(giant, prey)) {
 				CrushManager::GetSingleton().Crush(giant, prey);
-				PrintThighKill(giant, tiny);
+				PrintThighKill(giant, prey);
 				sandwichdata.Remove(prey);
 			}
 		}
