@@ -82,7 +82,8 @@ namespace {
 
 	void GTSSandwich_MoveLL_start(AnimationEventData& data) { 
 		data.stage = 1.0;
-		data.animSpeed = 1.33;
+		data.canEditAnimSpeed = true;
+		data.animSpeed = 1.66;
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
 		StartLeftLegRumble("LLSandwich", data.giant, 0.5, 0.12);
@@ -97,7 +98,7 @@ namespace {
 		Rumble::Once("ThighImpact", &data.giant, 0.8, 0.15, "AnimObjectA");
 		for (auto prey: sandwichdata.GetActors()) {
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(prey);
-			float damage = 3.0 * sizedifference;
+			float damage = 3.0 * sizedifference * data.animSpeed;
 			DamageAV(prey, ActorValue::kHealth, damage);
 			float hp = GetAV(prey, ActorValue::kHealth);
 			
@@ -110,6 +111,7 @@ namespace {
 	}
 
 	void GTSSandwich_MoveLL_end(AnimationEventData& data) {
+		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 		StopLeftLegRumble("LLSandwich", data.giant);
 	}

@@ -25,9 +25,9 @@
         if (random <= 1) {
 			ConsoleLog::GetSingleton()->Print("%s was suffocated by the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (random == 2) {
-			ConsoleLog::GetSingleton()->Print("Thighs of %s easily defeated %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("Thighs of %s suffocated %s to death", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 		} else if (random == 3) {
-			ConsoleLog::GetSingleton()->Print("%s got suffocated between the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s got smothered between the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
     }
     
@@ -109,6 +109,7 @@
                 float hp = GetAV(tiny, ActorValue::kHealth);
 			    DamageAV(tiny, ActorValue::kHealth, damage);
                 if (damage > hp && !tiny->IsDead()) {
+                    this->Remove(tiny);
                     PrintSuffocate(giant, tiny);
                 }
             }
