@@ -1,5 +1,7 @@
 #pragma once
 
+#include "events.hpp"
+
 using namespace RE;
 using namespace SKSE;
 
@@ -43,5 +45,4 @@ namespace Gts {
 
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random);
-	
 }
