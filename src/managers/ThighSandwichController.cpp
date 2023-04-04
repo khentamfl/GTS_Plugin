@@ -106,8 +106,8 @@
 				node->local.scale = 1.0 - this->ShrinkRune.value;
 				log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
 				update_node(node);
-				if (this->ScaleRune.value < 0.05) {
-					node->local.scale = 0.05;
+				if (this->ScaleRune.value < 0.01) {
+					node->local.scale = 0.01;
 					update_node(node);
 					this->RuneShrink = false;
 					return;
