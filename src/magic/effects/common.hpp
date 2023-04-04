@@ -293,7 +293,7 @@ namespace Gts {
 
 			AdjustSizeReserve(caster, target_scale/25);
 
-			PrintDeathSource(caster, target, DeathSource::Shrinked);
+			PrintDeathSource(caster, target, "Shrinked");
 			return true;
 		}
 		return false;
@@ -316,7 +316,7 @@ namespace Gts {
 		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthPerk")) {
 			Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
 		}
-		PrintDeathSource(caster, target, DeathSource::Crushed);
+		PrintDeathSource(caster, target, "Crushed");
 		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 
 		bool GTSBusy;

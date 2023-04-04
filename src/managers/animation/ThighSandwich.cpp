@@ -87,7 +87,7 @@ namespace {
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp && sizedifference >= 6.0) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
-			PrintDeathSource(giant, tiny, DeathSource::ThighSandwiched);
+			PrintDeathSource(giant, tiny, "ThighSandwiched");
 			sandwichdata.Remove(tiny);
 		}
 	}

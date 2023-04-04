@@ -340,11 +340,10 @@ namespace Gts {
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 35.0 * damage, 1.35, random, 0.05);
 	}
 
-	inline void PrintDeathSource(Actor* giant, Actor* tiny, const DeathSource& cause) {
+	inline void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-		switch (cause) {
-			case DeathSource::Crushed: { // Default crush
+			if (cause == "Crushed") { // Default crush
 				if (random <= 2) {
 					ConsoleLog::GetSingleton()->Print("%s was crushed by the feet %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 				} else if (random == 4) {
@@ -354,9 +353,9 @@ namespace Gts {
 				} else if (random >= 7) {
 					ConsoleLog::GetSingleton()->Print("%s relentlessly crushed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 				} 
-				break;
+				return;
 			} 
-			case DeathSource::HandCrushed: {
+			else if (cause == "HandCrushed") {
 				if (random <= 2) {
 					ConsoleLog::GetSingleton()->Print("%s was crushed between the fingers of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 				} else if (random == 4) {
@@ -366,9 +365,9 @@ namespace Gts {
 				} else if (random >= 7) {
 					ConsoleLog::GetSingleton()->Print("%s was turned into nothing inside the hand of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 				} 
-				break;
+				return;
 			}
-			case DeathSource::Shrinked: {
+			else if (cause == "Shrinked") {
 				if (random <= 2) {
 					ConsoleLog::GetSingleton()->Print("%s greedily absorbed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 				} else if (random >= 4) {
@@ -378,24 +377,24 @@ namespace Gts {
 				} else if (random >= 7) {
 					ConsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 				} 
-				break;
+				return;
 			}
-			case DeathSource::Vored: {
-				break;
+			else if (cause == "Vored") {
+				return;
 			}
-			case DeathSource::ThighCrushed: {
+			else if (cause == "ThighCrushed") {
 				if (random <= 2) {
-				ConsoleLog::GetSingleton()->Print("%s crushed %s during leg stretch", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+					ConsoleLog::GetSingleton()->Print("%s crushed %s during leg stretch", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 				} else if (random >= 4) {
 					ConsoleLog::GetSingleton()->Print("%s ended life of %s between legs", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 				} else if (random >= 6) {
 					ConsoleLog::GetSingleton()->Print("%s applied too much leg pressure to %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 				} else if (random >= 7) {
-					ConsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				C	onsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 				} 
-				break;
+				return;
 			}
-			case DeathSource::ThighSandwiched: {
+			else if (cause == "ThighSandwiched") {
 				if (random <= 2) {
 					ConsoleLog::GetSingleton()->Print("%s was crushed by the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 				} else if (random >= 4) {
@@ -407,9 +406,9 @@ namespace Gts {
 				} else if (random >= 7) {
 					ConsoleLog::GetSingleton()->Print("Thighs of %s sandwiched %s to nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 				}
-			break;
-			}
+			return;
 		}
 	}
 }
+
 		
