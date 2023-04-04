@@ -76,7 +76,7 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void DoThighDamage(Actor* giant, Actor* tiny, float animSpeed, float mult) {
+	void DoThighDamage(Actor* giant, Actor* tiny, float animSpeed, float mult, float sizemult) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		auto& sizemanager = SizeManager::GetSingleton();
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
@@ -85,7 +85,7 @@ namespace {
 		float damage = 1.0 * sizedifference * animSpeed * mult * normaldamage;
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
-		if (damage > hp && sizedifference >= 6.0) {
+		if (damage > hp && sizedifference >= (8.0 * sizemult)) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			PrintDeathSource(giant, tiny, "ThighSandwiched");
 			sandwichdata.Remove(tiny);
@@ -162,7 +162,7 @@ namespace {
 		sandwichdata.EnableSuffocate(true);
 		Rumble::Once("ThighImpact", &data.giant, 0.4, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
-			DoThighDamage(&data.giant, tiny, data.animSpeed, 1.0);
+			DoThighDamage(&data.giant, tiny, data.animSpeed, 1.0, 1.0);
 			tiny->NotifyAnimationGraph("ragdoll");
 		}
 	}
@@ -173,7 +173,7 @@ namespace {
 		sandwichdata.EnableSuffocate(true);
 		Rumble::Once("ThighImpact", &data.giant, 0.75, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
-			DoThighDamage(&data.giant, tiny, data.animSpeed, 2.2);
+			DoThighDamage(&data.giant, tiny, data.animSpeed, 2.2, 0.75);
 			tiny->NotifyAnimationGraph("ragdoll");
 		}
 	}
