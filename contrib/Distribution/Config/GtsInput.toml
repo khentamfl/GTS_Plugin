@@ -120,6 +120,7 @@ trigger = "continuous"
 name = "ThighSandwichExit"
 keys = ["RMB"]
 exclusive = true
+duration = 0.8
 
 [[InputEvent]]
 name = "ThighSandwichExit"

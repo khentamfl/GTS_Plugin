@@ -21,13 +21,15 @@
 	const float PI = 3.14159;
 
     void PrintSuffocate(Actor* pred, Actor* prey) {
-        int random = rand() % 3;
+        int random = rand() % 5;
         if (random <= 1) {
 			ConsoleLog::GetSingleton()->Print("%s was suffocated by the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (random == 2) {
+		} else if (random >= 4) {
 			ConsoleLog::GetSingleton()->Print("Thighs of %s suffocated %s to death", pred->GetDisplayFullName(), prey->GetDisplayFullName());
-		} else if (random == 3) {
+		} else if (random >= 3) {
 			ConsoleLog::GetSingleton()->Print("%s got smothered between the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (random > 2) {
+			ConsoleLog::GetSingleton()->Print("%s lost life to the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
     }
     
@@ -93,6 +95,7 @@
 				update_node(node);
 				if (this->ScaleRune.value >= 1.0) {
 					this->RuneScale = false;
+					this->ScaleRune.value = 0.0;
 					node->local.scale = 1.0;
 					update_node(node);
 					return;
@@ -106,9 +109,10 @@
 				node->local.scale = 1.0 - this->ShrinkRune.value;
 				log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
 				update_node(node);
-				if (this->ScaleRune.value < 0.01) {
-					node->local.scale = 0.01;
+				if (this->ShrinkRune.value <= 0.1) {
+					node->local.scale = 0.0;
 					update_node(node);
+					this->ShrinkRune.value = 0.0
 					this->RuneShrink = false;
 					return;
 				}

@@ -50,18 +50,7 @@ using namespace Gts;
 namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
-
-	void PrintThighKill(Actor* pred, Actor* prey) {
-        int random = rand() % 3;
-        if (random <= 1) {
-			ConsoleLog::GetSingleton()->Print("%s was crushed by the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (random == 2) {
-			ConsoleLog::GetSingleton()->Print("Thighs of %s gently crushed %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
-		} else if (random == 3) {
-			ConsoleLog::GetSingleton()->Print("%s was killed between the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		}
-    }
-
+	
 	const std::vector<std::string_view> BODY_NODES = { // used for body rumble
 		"NPC COM [COM ]",
 		"NPC L Foot [Lft ]",
@@ -96,9 +85,9 @@ namespace {
 		float damage = 2.0 * sizedifference * animSpeed * mult;
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
-		if (damage > hp && sizedifference >= 8.0) {
+		if (damage > hp && sizedifference >= 6.0) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
-			PrintThighKill(giant, tiny);
+			PrintDeathCause(giant, tiny, DeathCause::ThighSandwiched);
 			sandwichdata.Remove(tiny);
 		}
 	}
@@ -167,7 +156,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", &data.giant, 1.0, 1.0, "AnimObjectB");
 		sandwichdata.EnableSuffocate(true);
-		Rumble::Once("ThighImpact", &data.giant, 0.6, 0.15, "AnimObjectA");
+		Rumble::Once("ThighImpact", &data.giant, 0.4, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 1.0);
 			tiny->NotifyAnimationGraph("ragdoll");
@@ -178,7 +167,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", &data.giant, 1.2, 1.0, "AnimObjectA");
 		sandwichdata.EnableSuffocate(true);
-		Rumble::Once("ThighImpact", &data.giant, 1.75, 0.15, "AnimObjectA");
+		Rumble::Once("ThighImpact", &data.giant, 0.75, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 2.2);
 			tiny->NotifyAnimationGraph("ragdoll");
@@ -222,8 +211,6 @@ namespace {
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 4.0, 1.6, 20);
-		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		sandwichdata.ManageShrinkRune(false);
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {

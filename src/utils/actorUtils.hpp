@@ -8,6 +8,15 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
+	enum class DeathCause {
+		Crushed = 0,
+		HandCrushed = 1,
+		Shrinked = 2,
+		Vored = 3,
+		ThighCrushed = 4,
+		ThighSandwiched = 5,
+	};
+
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems);
@@ -47,4 +56,6 @@ namespace Gts {
 
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random);
+
+	void PrintDeathCause(Actor* giant, Actor* tiny, const DeathCause& source);
 }
