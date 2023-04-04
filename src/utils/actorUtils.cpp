@@ -350,7 +350,7 @@ namespace Gts {
 				} else if (random == 4) {
 					ConsoleLog::GetSingleton()->Print("Feet of %s crushed %s into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 				} else if (random >= 6) {
-					ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", tiny>GetDisplayFullName(), tiny->GetDisplayFullName());
+					ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", tiny->GetDisplayFullName(), tiny->GetDisplayFullName());
 				} else if (random >= 7) {
 					ConsoleLog::GetSingleton()->Print("%s relentlessly crushed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 				} 
@@ -408,6 +408,7 @@ namespace Gts {
 					ConsoleLog::GetSingleton()->Print("Thighs of %s sandwiched %s to nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 				}
 			break;
+			}
 		}
 	}
 }
