@@ -23,6 +23,8 @@ namespace Gts {
 		float HHDamage = 1.0; // 3
 		float SizeVulnerability = 0.0;
 
+		bool IsInAnimation = false;
+
 	};
 
 	struct LaunchData {

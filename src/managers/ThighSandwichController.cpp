@@ -85,7 +85,7 @@
 
 	void SandwichingData::UpdateRune(Actor* giant) {
 		string node_name = "GiantessRune";
-		if (this->RuneScale) {
+		if (this->RuneScale == true) {
 			auto node = find_node(giant, node_name, false);
 			if (node) {
 				this->ScaleRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giant);
@@ -101,7 +101,7 @@
 					return;
 				} 
 			} 
-		} else if (this->RuneShrink) {
+		} else if (this->RuneShrink == true) {
 			auto node = find_node(giant, node_name, false);
 			if (node) {
 				this->ShrinkRune.halflife = 0.4/AnimationManager::GetAnimSpeed(giant);

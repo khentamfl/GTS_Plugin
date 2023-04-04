@@ -81,8 +81,8 @@ namespace {
 		auto& sizemanager = SizeManager::GetSingleton();
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
-		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25f, 0.25f, 999.0f);
-		float damage = 2.0 * sizedifference * animSpeed * mult * normaldamage;
+		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999.0f);
+		float damage = 1.0 * sizedifference * animSpeed * mult * normaldamage;
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp && sizedifference >= 6.0) {

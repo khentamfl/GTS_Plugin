@@ -211,10 +211,7 @@ std::string GtsManager::DebugName() {
 void GtsManager::Update() {
 	for (auto actor: find_actors()) {
 		if (!actor) {
-			continue;
-		}
-		if (!actor->Is3DLoaded()) {
-			continue;
+			return;
 		}
 
 		FixActorFade(actor);
