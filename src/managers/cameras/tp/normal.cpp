@@ -119,8 +119,7 @@ namespace Gts {
 			case 8: {
 				return BoneTarget { // Thigh Sandwich
 				        .boneNames = {
-						"NPC R Calf [RClf]",
-						"NPC R RearThigh",
+						"AnimObjectA",
 					},
 				        .zoomScale = 1.75,
 				};
@@ -129,14 +128,6 @@ namespace Gts {
 				return BoneTarget { // Vore
 				        .boneNames = {
 						"AnimObjectA",
-					},
-				        .zoomScale = 1.50,
-				};
-			}
-			case 10: {
-				return BoneTarget { // Vore L
-				        .boneNames = {
-						"NPC L Hand [LHnd]",
 					},
 				        .zoomScale = 1.50,
 				};

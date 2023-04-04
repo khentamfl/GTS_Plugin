@@ -391,10 +391,8 @@ namespace Gts {
 		}else if (type == 1.0) {
 			this->GetData(actor).IsThighSandwiching = enable;
 		} else if (type == 2.0) {
-			this->GetData(actor).IsVoringRH = enable;
-		} else if (type == 2.0) {
-			this->GetData(actor).IsVoringLH = enable;
-		}
+			this->GetData(actor).IsVoring = enable;
+		} 
 	}
 	bool SizeManager::GetActionBool(Actor* actor, float type) {
 		if (type == 0.0) {
@@ -402,10 +400,8 @@ namespace Gts {
 		} else if (type == 1.0) {
 			return this->GetData(actor).IsThighSandwiching;
 		} else if (type == 2.0) {
-			return this->GetData(actor).IsVoringRH;
-		} else if (type == 2.0) {
-			return this->GetData(actor).IsVoringLH;
-		}
+			return this->GetData(actor).IsVoring;
+		} 
 		return false;
 	}
 	//

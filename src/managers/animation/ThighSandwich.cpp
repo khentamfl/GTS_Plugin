@@ -197,6 +197,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.ManageScaleRune(false);
 		sandwichdata.ManageShrinkRune(true);
+		sandwichdata.OverideShrinkRune(0.0);
 	}
 
 	void GTSSandwich_ThighAttack_start(AnimationEventData& data) {
@@ -221,9 +222,9 @@ namespace {
 	}
 
 	void GTSSandwich_FootImpact(AnimationEventData& data) {
-		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode);
-		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 4.0, 1.6, 20);
+		DoSizeEffect(&data.giant, 1.35, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 1.35, FootEvent::Left, LNode);
+		DoDamageEffect(&data.giant, 6.0, 1.9, 10, 0.75);
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {

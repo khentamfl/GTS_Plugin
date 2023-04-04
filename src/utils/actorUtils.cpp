@@ -337,8 +337,8 @@ namespace Gts {
 		footstep.OnImpact(impact_data);
 	}
 
-	void DoDamageEffect(Actor* giant, float damage, float radius, int random) {
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 35.0 * damage, 1.35, random, 0.05);
+	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage) {
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 35.0 * damage, radius, random, bonedamage);
 	}
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {

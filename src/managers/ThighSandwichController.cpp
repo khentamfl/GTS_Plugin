@@ -98,7 +98,7 @@
 		} else if (this->RuneShrink == true) {
 			auto node = find_node(giant, node_name, false);
 			if (node) {
-				this->ShrinkRune.halflife = 0.4/AnimationManager::GetAnimSpeed(giant);
+				this->ShrinkRune.halflife = 0.7/AnimationManager::GetAnimSpeed(giant);
 				this->ShrinkRune.target = 1.0;
 				this->ScaleRune.value = 0.0;
 				node->local.scale = 1.0 - this->ShrinkRune.value;
@@ -317,6 +317,9 @@
 	} 
 	void SandwichingData::ManageShrinkRune(bool enable) {
 		this->RuneShrink = enable;
+	}
+	void SandwichingData::OverideShrinkRune(float value) {
+		this->ScaleRune.value = 0.0;
 	}
 
     SandwichingData& ThighSandwichController::GetSandwichingData(Actor* giant) {

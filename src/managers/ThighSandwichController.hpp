@@ -19,6 +19,7 @@ namespace Gts {
             void EnableSuffocate(bool enable);
 			void ManageScaleRune(bool enable);
 			void ManageShrinkRune(bool enable);
+			void OverideShrinkRune(float value);
 			
 			
 
