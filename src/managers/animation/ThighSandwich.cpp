@@ -148,7 +148,7 @@ namespace {
 
 	void GTSSandwich_DisableRune(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		sandwichdata.ManageDisableRune(true);
+		sandwichdata.ManageShrinkRune(true);
 		log::info("DisableRune called");
 	}
 
