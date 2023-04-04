@@ -68,7 +68,7 @@ namespace {
 		//data.stage = 2;
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamageEffect(&data.giant, 0.6, 1.0, 25);
-		DoSizeEffects(&data.giant, 0.85, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
