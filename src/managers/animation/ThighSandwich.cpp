@@ -128,6 +128,7 @@ namespace {
 	void GTSSandwich_EnableRune(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.ManageScaleRune(true);
+		sandwichdata.ManageShrinkRune(false);
 	}
 	void GTSSandwich_SitStart(AnimationEventData& data) {
 	}
@@ -191,6 +192,7 @@ namespace {
 
 	void GTSSandwich_ThighLoop_Exit(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		sandwichdata.ManageScaleRune(false);
 		sandwichdata.ManageShrinkRune(true);
 	}
 
@@ -205,6 +207,12 @@ namespace {
 	void GTSSandwich_DropDown(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.ReleaseAll();
+	}
+
+	void GTSSandwich_ExitAnim(AnimationEventData& data) {
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		sandwichdata.ManageScaleRune(false);
+		sandwichdata.ManageShrinkRune(false);
 	}
 
 	void GTSSandwich_FootImpact(AnimationEventData& data) {
@@ -270,6 +278,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSSandwich_FootImpact", "ThighSandwich", GTSSandwich_FootImpact);
 		AnimationManager::RegisterEvent("GTSSandwich_DisableRune", "ThighSandwich", GTSSandwich_DisableRune);
 		AnimationManager::RegisterEvent("GTSSandwich_ThighLoop_Exit", "ThighSandwich", GTSSandwich_ThighLoop_Exit);
+		AnimationManager::RegisterEvent("GTSSandwich_ExitAnim", "ThighSandwich", GTSSandwich_ExitAnim);
 	}
 
 	void AnimationThighSandwich::RegisterTriggers() {

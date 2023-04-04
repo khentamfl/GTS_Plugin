@@ -94,12 +94,6 @@
 				node->local.scale = this->ScaleRune.value;
 				log::info("Scale Rune Value: {}", this->ScaleRune.value);
 				update_node(node);
-				if (this->ScaleRune.value >= 1.0) {
-					this->RuneScale = false;
-					node->local.scale = 1.0;
-					update_node(node);
-					return;
-				} 
 			} 
 		} else if (this->RuneShrink == true) {
 			auto node = find_node(giant, node_name, false);
@@ -110,14 +104,6 @@
 				node->local.scale = 1.0 - this->ShrinkRune.value;
 				log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
 				update_node(node);
-				if (this->ShrinkRune.value >= 1.0) {
-					node->local.scale = 0.0;
-					this->ShrinkRune.value = 0.0;
-					this->ScaleRune.value = 0.0;
-					this->RuneShrink = false;
-					update_node(node);
-					return;
-				}
 			} 
 		}
 	}
