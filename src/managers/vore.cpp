@@ -771,22 +771,23 @@ namespace Gts {
 		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
+		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Enables HP requirement on Vore.
-			float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);
-			float gethp = GetAV(prey, ActorValue::kHealth);
-			float healthrequirement = getmaxhp/pred_scale;
-			if (pred->formID == 0x14, gethp > healthrequirement) {
-				DamageAV(prey, ActorValue::kHealth, 6 * sizedifference);
-				DamageAV(pred, ActorValue::kStamina, 26/sizedifference);
-				Notify("{} is too healthy to be eaten", prey->GetDisplayFullName());
-				return false;
+			if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) { 
+				float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);
+				float gethp = GetAV(prey, ActorValue::kHealth);
+				float healthrequirement = getmaxhp/pred_scale;
+				if (gethp > healthrequirement) {
+					DamageAV(prey, ActorValue::kHealth, 6 * sizedifference);
+					DamageAV(pred, ActorValue::kStamina, 26/sizedifference);
+					if (pred->formID == 0x14) {
+						Notify("{} is too healthy to be eaten", prey->GetDisplayFullName());
+					}
+					return false;
+				}
 			}
 		}
-
-
-
-		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
 			return false;

@@ -62,7 +62,7 @@ namespace {
 			SizeHitEffects::GetSingleton().BreakBones(player, grabbedActor, damage * 0.5, 25);
 			if (damage > Health * 1.5) {
 				CrushManager::Crush(player, grabbedActor);
-				PrintDeathSource(player, grabbedActor, DeathCause::HandCrushed);
+				PrintDeathSource(player, grabbedActor, DeathSource::HandCrushed);
 				Grab::Release(player);
 			}
 		}
