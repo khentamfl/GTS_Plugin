@@ -29,6 +29,7 @@ GTSBEH_ThighSandwich_ExitLoop
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/ThighSandwichController.hpp"
 #include "managers/animation/ThighSandwich.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"
@@ -70,12 +71,12 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void DoThighDamage(Actor* giant, actor* tiny, float animSpeed) {
+	void DoThighDamage(Actor* giant, Actor* tiny, float animSpeed) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		auto& sizemanager = SizeManager::GetSingleton();
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
-		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25, 0.25, 999.0);
+		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25f, 0.25f, 999.0f);
 		float damage = 2.0 * sizedifference * animSpeed;
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);

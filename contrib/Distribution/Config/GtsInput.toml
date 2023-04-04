@@ -28,6 +28,9 @@
 #            before the event will fire again. If "continuous" the event will
 #            fire every frame until the keys are released
 
+# !!! If you will forget to put , between "key" "key" - controls will break and input won't work:             !!!
+# !!! Correct: keys = ["Key","Key"]. INCORRECT: keys = ["Key""Key"]                                           !!!
+
 #========================================================
 #================ V O R E
 #========================================================
@@ -206,7 +209,7 @@ trigger = "continuous"
 [[InputEvent]]
 name = "AnimSpeedDown"
 keys = ["RMB"]
-exclusive = false
+exclusive = true
 trigger = "continuous"
 
 # Slow down animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
