@@ -17,8 +17,9 @@ namespace Gts {
 			void AddTiny(Actor* tiny);
             void Remove(Actor* tiny);
             void EnableSuffocate(bool enable);
-			void DisableRune();
-			void EnableRune();
+			void ManageScaleRune(bool enable);
+			void ManageShrinkRune(bool enable);
+			
 			
 
 			// Release all vories (shall fall into mouth with animation)
@@ -41,8 +42,8 @@ namespace Gts {
 			bool RuneScale = false;
 			bool RuneShrink = false;
 
-			Spring ScaleRune = Spring(1.0, 2.5);
-			Spring ShrinkRune = Spring(0.05, 2.5);
+			Spring ScaleRune = Spring(0.0, 1.5);
+			Spring ShrinkRune = Spring(1.0, 1.5);
 
 			// True if in grabbed state
 			bool allGrabbed = false;

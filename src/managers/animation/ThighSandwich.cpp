@@ -109,7 +109,7 @@ namespace {
 	}
 	void GTSSandwich_EnableRune(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		sandwichdata.EnableRune();
+		sandwichdata.ManageScaleRune(true);
 	}
 	void GTSSandwich_SitStart(AnimationEventData& data) {
 	}
@@ -148,7 +148,8 @@ namespace {
 
 	void GTSSandwich_DisableRune(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		sandwichdata.DisableRune();
+		sandwichdata.ManageDisableRune(true);
+		log::info("DisableRune called");
 	}
 
 
