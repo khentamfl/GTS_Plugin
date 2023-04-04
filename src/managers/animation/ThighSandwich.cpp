@@ -132,11 +132,6 @@ namespace {
 	}
 
 	void GTSSandwich_EnterAnim(AnimationEventData& data) {
-		auto node = find_node(&data.giant, "AnimObjectB", false);
-		if (node) {
-			node->local.scale = 0.01;
-			update_node(node);
-		}
 	}
 	void GTSSandwich_MoveBody_start(AnimationEventData& data) {
 		StartBodyRumble("BodyRumble", data.giant, 1.4, 0.25);
@@ -156,16 +151,16 @@ namespace {
 		data.animSpeed = 1.66;
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
-		StartLeftLegRumble("LLSandwich", data.giant, 0.5, 0.12);
+		StartLeftLegRumble("LLSandwich", data.giant, 0.20, 0.12);
 	}
 
 	void GTSSandwich_MoveLL_start_H(AnimationEventData& data) { 
 		data.stage = 1.0;
 		data.canEditAnimSpeed = true;
-		data.animSpeed = 1.50;
+		data.animSpeed = 1.66;
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
-		StartLeftLegRumble("LLSandwichHeavy", data.giant, 0.9, 0.15);
+		StartLeftLegRumble("LLSandwichHeavy", data.giant, 0.4, 0.15);
 	}
 
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
@@ -204,13 +199,17 @@ namespace {
 
 	void GTSSandwich_ThighLoop_Enter(AnimationEventData& data) {
 	}
+
+	void GTSSandwich_ThighLoop_Exit(AnimationEventData& data) {
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		sandwichdata.ManageShrinkRune(true);
+	}
+
 	void GTSSandwich_ThighAttack_start(AnimationEventData& data) {
 	}
 
 	void GTSSandwich_DisableRune(AnimationEventData& data) {
-		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		sandwichdata.ManageShrinkRune(true);
-		log::info("DisableRune called");
+
 	}
 
 
@@ -235,6 +234,11 @@ namespace {
 		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
 		for (auto prey: preys) {
 			Sandwiching.StartSandwiching(pred, prey);
+			auto node = find_node(&data.giant, "AnimObjectB", false);
+				if (node) {
+				node->local.scale = 0.01;
+				update_node(node);
+			}
 		}
 	}
 	
@@ -276,6 +280,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSSandwich_ThighLoop_Enter", "ThighSandwich", GTSSandwich_ThighLoop_Enter);
 		AnimationManager::RegisterEvent("GTSSandwich_FootImpact", "ThighSandwich", GTSSandwich_FootImpact);
 		AnimationManager::RegisterEvent("GTSSandwich_DisableRune", "ThighSandwich", GTSSandwich_DisableRune);
+		AnimationManager::RegisterEvent("GTSSandwich_ThighLoop_Exit", "ThighSandwich", GTSSandwich_ThighLoop_Exit);
 	}
 
 	void AnimationThighSandwich::RegisterTriggers() {

@@ -101,18 +101,18 @@ exclusive = true
 # Attempt to Start Thigh Sandwich animation with someone
 
 [[InputEvent]]
-name = "ThighSandwichAttack"
+name = "ThighSandwichAttackHeavy"
+keys = ["LMB", "RMB"]
+exclusive = false
+trigger = "continuous"
+
+[[InputEvent]]
+name = "ThighSandwichAttack" 
 keys = ["LMB"]
 exclusive = false
 trigger = "continuous"
 
 # Do Thigh Sandwich attack, Can be Looped.
-
-[[InputEvent]]
-name = "ThighSandwichAttackHeavy"
-keys = ["LMB", "RMB"]
-exclusive = false
-trigger = "continuous"
 
 # Do Heavy Thigh Sandwich attack, Can be Looped.
 

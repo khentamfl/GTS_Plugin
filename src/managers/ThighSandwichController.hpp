@@ -43,7 +43,7 @@ namespace Gts {
 			bool RuneShrink = false;
 
 			Spring ScaleRune = Spring(0.0, 1.5);
-			Spring ShrinkRune = Spring(1.0, 1.5);
+			Spring ShrinkRune = Spring(0.0, 1.5);
 
 			// True if in grabbed state
 			bool allGrabbed = false;
