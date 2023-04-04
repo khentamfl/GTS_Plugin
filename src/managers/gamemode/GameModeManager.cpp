@@ -19,24 +19,10 @@
 #include <vector>
 #include <string>
 
-
-
 using namespace Gts;
 using namespace RE;
 using namespace SKSE;
 using namespace std;
-
-namespace {
-    enum class ChosenGameMode {
-		None = 0,
-		Grow = 1,
-		Shrink = 2,
-		Standard = 3,
-		StandardNoShrink = 4,
-		CurseOfGrowth = 5,
-		Quest = 6,
-	};
-}
 
 namespace Gts {
 

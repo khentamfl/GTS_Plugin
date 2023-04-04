@@ -13,9 +13,16 @@ using namespace std;
 using namespace RE;
 
 namespace Gts {
-	/**
-	 * The class which tracks gts size effects.
-	 */
+    enum class ChosenGameMode {
+		None = 0,
+		Grow = 1,
+		Shrink = 2,
+		Standard = 3,
+		StandardNoShrink = 4,
+		CurseOfGrowth = 5,
+		Quest = 6,
+	};
+    
 	class GameModeManager : public EventListener  {
 		public:
 			[[nodiscard]] static GameModeManager& GetSingleton() noexcept;
