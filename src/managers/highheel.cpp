@@ -28,7 +28,7 @@ namespace Gts {
 	void HighHeelManager::HavokUpdate() {
 		auto actors = find_actors();
 		for (auto actor: actors) {
-			HighHeel.ApplyHH(actor, false);
+			ApplyHH(actor, false);
 		}
 	}
 

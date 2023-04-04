@@ -1,32 +1,35 @@
-#include "managers/register.hpp"
-#include "events.hpp"
-#include "magic/magic.hpp"
+
+#include "managers/animation/AnimationManager.hpp"
+#include "managers/gamemode/GameModeManager.hpp"
+#include "managers/ThighSandwichController.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
-#include "managers/animation/AnimationManager.hpp"
-#include "managers/ThighSandwichController.hpp"
 #include "managers/animation/Grab.hpp"
-#include "managers/highheel.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
-#include "managers/Attributes.hpp"
-#include "managers/contact.hpp"
-#include "managers/RandomGrowth.hpp"
-#include "managers/GtsQuest.hpp"
-#include "managers/GtsManager.hpp"
-#include "managers/reloader.hpp"
-#include "managers/camera.hpp"
-#include "managers/hitmanager.hpp"
-#include "managers/vore.hpp"
 #include "managers/CrushManager.hpp"
-#include "managers/tremor.hpp"
-#include "managers/footstep.hpp"
+#include "managers/RandomGrowth.hpp"
+#include "managers/Attributes.hpp"
+#include "managers/GtsManager.hpp"
+#include "managers/hitmanager.hpp"
 #include "managers/explosion.hpp"
+#include "managers/register.hpp"
+#include "managers/reloader.hpp"
+#include "managers/highheel.hpp"
+#include "managers/GtsQuest.hpp"
+#include "managers/footstep.hpp"
+#include "managers/contact.hpp"
+#include "managers/camera.hpp"
+#include "managers/tremor.hpp"
 #include "managers/rumble.hpp"
+#include "managers/vore.hpp"
+#include "magic/magic.hpp"
+#include "events.hpp"
 
 namespace Gts {
 	void RegisterManagers() {
-		EventDispatcher::AddListener(&GtsManager::GetSingleton()); // Manages Game Mode, smooth size increase and animation & movement speed
+		EventDispatcher::AddListener(&GameModeManager::GetSingleton()); // Manages Game Modes
+		EventDispatcher::AddListener(&GtsManager::GetSingleton()); // Manages smooth size increase and animation & movement speed
 		EventDispatcher::AddListener(&SizeManager::GetSingleton()); // Manages Max Scale of everyone
 		EventDispatcher::AddListener(&HighHeelManager::GetSingleton()); // Applies high heels
 		EventDispatcher::AddListener(&CameraManager::GetSingleton()); // Edits the camera
@@ -50,8 +53,6 @@ namespace Gts {
 
 		EventDispatcher::AddListener(&AnimationManager::GetSingleton()); // Manages Animation Events
 
-		// EventDispatcher::AddListener(&Stomp::GetSingleton()); // Manages Stomp Anim events
-		// EventDispatcher::AddListener(&ThighCrush::GetSingleton()); // Manages Thigh Crushing
 		EventDispatcher::AddListener(&Grab::GetSingleton()); // Manages grabbing
 		EventDispatcher::AddListener(&ThighSandwichController::GetSingleton()); // Manages Thigh Sandwiching
 
