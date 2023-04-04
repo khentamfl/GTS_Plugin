@@ -40,9 +40,9 @@ namespace Gts {
 	BoneTarget Alt::GetBoneTarget() {
 		int altMode = Runtime::GetInt("AltCameraTarget");
 		auto player = PlayerCharacter::GetSingleton();
-		float bonus = 1.0f;
+		float bonus = 1;
 		if (SizeManager::GetSingleton().GetActionBool(player, 0.0)) {
-			bonus = 2.0f;
+			bonus = 2;
 		}
 		switch (altMode) {
 			case 0: {
