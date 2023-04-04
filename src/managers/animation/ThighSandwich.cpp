@@ -82,10 +82,9 @@ namespace {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25f, 0.25f, 999.0f);
-		float damage = 2.0 * sizedifference * animSpeed * mult;
+		float damage = 2.0 * sizedifference * animSpeed * mult * normaldamage;
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
-		log::info("NormalDamage: {}, Attribute:{}", normaldamage, sizemanager.GetSizeAttribute(giant, 0));
 		if (damage > hp && sizedifference >= 6.0) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			PrintDeathSource(giant, tiny, "ThighSandwiched");

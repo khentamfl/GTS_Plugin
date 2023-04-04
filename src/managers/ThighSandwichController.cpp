@@ -96,7 +96,6 @@
 				update_node(node);
 				if (this->ScaleRune.value >= 1.0) {
 					this->RuneScale = false;
-					this->ScaleRune.value = 0.0;
 					node->local.scale = 1.0;
 					update_node(node);
 					return;
@@ -105,7 +104,7 @@
 		} else if (this->RuneShrink) {
 			auto node = find_node(giant, node_name, false);
 			if (node) {
-				this->ShrinkRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giant);
+				this->ShrinkRune.halflife = 0.4/AnimationManager::GetAnimSpeed(giant);
 				this->ShrinkRune.target = 1.0;
 				this->ScaleRune.value = 0.0;
 				node->local.scale = 1.0 - this->ShrinkRune.value;
@@ -114,6 +113,7 @@
 				if (this->ShrinkRune.value >= 1.0) {
 					node->local.scale = 0.0;
 					this->ShrinkRune.value = 0.0;
+					this->ScaleRune.value = 0.0;
 					this->RuneShrink = false;
 					update_node(node);
 					return;

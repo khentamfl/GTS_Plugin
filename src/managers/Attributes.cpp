@@ -79,11 +79,6 @@ namespace {
 		ExpectedGlobalDamage *= gigantism;
 		ExpectedSprintDamage *= gigantism;
 		ExpectedFallDamage *= gigantism;
-		if (actor->formID == 0x14) {
-			log::info("Normal Damage: {}", ExpectedGlobalDamage);
-			log::info("Sprint Damage: {}", ExpectedSprintDamage);
-			log::info("Fall Damage: {}", ExpectedFallDamage);
-		}
 
 		if (BaseGlobalDamage != ExpectedGlobalDamage) {
 			SizeManager.SetSizeAttribute(actor, ExpectedGlobalDamage, 0);
@@ -153,7 +148,7 @@ namespace {
 		if (!actor) {
 			return;
 		}
-		static Timer timer = Timer(0.05);
+		static Timer timer = Timer(0.20);
 		static Timer jumptimer = Timer (0.20);
 		float size = get_visual_scale(actor);
 
