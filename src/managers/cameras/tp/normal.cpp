@@ -47,6 +47,8 @@ namespace Gts {
 			altMode = 8; // Thigh Sandwich
 		} else if (sizemanager.GetActionBool(player, 2)) {
 			altMode = 9; // Vore
+		} else if (sizemanager.GetActionBool(player, 3)) {
+			altMode = 10; // Vore
 		}
 		switch (altMode) {
 			case 0: {
@@ -120,13 +122,21 @@ namespace Gts {
 						"NPC R Calf [RClf]",
 						"NPC R RearThigh",
 					},
-				        .zoomScale = 0.75,
+				        .zoomScale = 1.75,
 				};
 			}
 			case 9: {
 				return BoneTarget { // Vore
 				        .boneNames = {
-						"NPC R Hand [RHnd]",
+						"AnimObjectA",
+					},
+				        .zoomScale = 1.50,
+				};
+			}
+			case 10: {
+				return BoneTarget { // Vore L
+				        .boneNames = {
+						"NPC L Hand [LHnd]",
 					},
 				        .zoomScale = 1.50,
 				};

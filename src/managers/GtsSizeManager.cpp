@@ -388,23 +388,23 @@ namespace Gts {
 	void SizeManager::SetActionBool(Actor* actor, bool enable, float type) {
 		if (type == 0.0) {
 			this->GetData(actor).OffsetCamera = enable;
-		}
-		else if (type == 1.0) {
+		}else if (type == 1.0) {
 			this->GetData(actor).IsThighSandwiching = enable;
-		} 
-		else if (type == 2.0) {
-			this->GetData(actor).IsVoring = enable;
+		} else if (type == 2.0) {
+			this->GetData(actor).IsVoringRH = enable;
+		} else if (type == 2.0) {
+			this->GetData(actor).IsVoringLH = enable;
 		}
 	}
 	bool SizeManager::GetActionBool(Actor* actor, float type) {
 		if (type == 0.0) {
 			return this->GetData(actor).OffsetCamera;
-		}
-		else if (type == 1.0) {
+		} else if (type == 1.0) {
 			return this->GetData(actor).IsThighSandwiching;
-		}
-		else if (type == 2.0) {
-			return this->GetData(actor).IsVoring;
+		} else if (type == 2.0) {
+			return this->GetData(actor).IsVoringRH;
+		} else if (type == 2.0) {
+			return this->GetData(actor).IsVoringLH;
 		}
 		return false;
 	}
