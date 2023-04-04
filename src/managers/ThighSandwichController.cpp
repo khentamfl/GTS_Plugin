@@ -90,6 +90,7 @@
 			if (node) {
 				this->ScaleRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giant);
 				this->ScaleRune.target = 1.0;
+				this->ShrinkRune.value = 0.0;
 				node->local.scale = this->ScaleRune.value;
 				log::info("Scale Rune Value: {}", this->ScaleRune.value);
 				update_node(node);
@@ -106,14 +107,15 @@
 			if (node) {
 				this->ShrinkRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giant);
 				this->ShrinkRune.target = 1.0;
+				this->ScaleRune.value = 0.0;
 				node->local.scale = 1.0 - this->ShrinkRune.value;
 				log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
 				update_node(node);
-				if (this->ShrinkRune.value <= 0.0) {
+				if (this->ShrinkRune.value >= 1.0) {
 					node->local.scale = 0.0;
-					update_node(node);
 					this->ShrinkRune.value = 0.0;
 					this->RuneShrink = false;
+					update_node(node);
 					return;
 				}
 			} 
