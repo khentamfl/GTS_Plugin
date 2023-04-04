@@ -82,7 +82,7 @@
 	}
 
 	void SandwichingData::UpdateRune(Actor* giant) {
-		string node_name = "AnimObjectB";
+		string node_name = "GiantessRune";
 		if (this->RuneScale) {
 			auto node = find_node(giant, node_name, false);
 			if (node) {
