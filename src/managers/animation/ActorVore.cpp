@@ -169,7 +169,7 @@ namespace {
 	}
 
 	void GTSvore_sit_end(AnimationEventData& data) {
-		Rumble::Stop("BodyRumble", &data.giant);
+		Rumble::Stop("BodyRumble", &data.giant); 
 	}
 
 	void GTSvore_hand_extend(AnimationEventData& data) {
