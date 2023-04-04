@@ -398,7 +398,7 @@ namespace Gts {
 			return this->GetData(actor).OffsetCamera;
 		}
 		else if (type == 1.0) {
-			return his->GetData(actor).IsThighSandwiching;
+			return this->GetData(actor).IsThighSandwiching;
 		}
 	}
 	//
