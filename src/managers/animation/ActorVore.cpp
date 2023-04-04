@@ -1,5 +1,6 @@
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "utils/actorUtils.hpp"
@@ -93,7 +94,7 @@ namespace {
 
 	void ManageCamera(Actor* giant, float type, bool enable) {
 		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.SetActionBool(player, enable, type);
+		sizemanager.SetActionBool(giant, enable, type);
 	}
 
 	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife, bool once) {
@@ -192,7 +193,7 @@ namespace {
 		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
 		auto firstTiny = VoreData.GetVories()[0];
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			ManageCamera(giant, enable, 2.0); //PlayerCamera::GetSingleton()->cameraTarget = firstTiny->CreateRefHandle();
+			ManageCamera(giant, true, 2.0); //PlayerCamera::GetSingleton()->cameraTarget = firstTiny->CreateRefHandle();
 		}
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
