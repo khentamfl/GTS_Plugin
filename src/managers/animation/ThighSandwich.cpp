@@ -87,13 +87,13 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void DoThighDamage(Actor* giant, Actor* tiny, float animSpeed, float damage) {
+	void DoThighDamage(Actor* giant, Actor* tiny, float animSpeed, float mult) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		auto& sizemanager = SizeManager::GetSingleton();
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25f, 0.25f, 999.0f);
-		float damage = 2.0 * sizedifference * animSpeed * damage;
+		float damage = 2.0 * sizedifference * animSpeed * mult;
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp && sizedifference >= 8.0) {
@@ -132,7 +132,7 @@ namespace {
 	}
 
 	void GTSSandwich_EnterAnim(AnimationEventData& data) {
-		auto node = find_node(giant, "AnimObjectB", false);
+		auto node = find_node(&data.giant, "AnimObjectB", false);
 		if (node) {
 			node->local.scale = 0.01;
 			update_node(node);
@@ -148,7 +148,7 @@ namespace {
 	void GTSSandwich_SitStart(AnimationEventData& data) {
 	}
 	void GTSSandwich_MoveBody_end(AnimationEventData& data) {
-		StartBodyRumble("BodyRumble", data.giant);
+		StopBodyRumble("BodyRumble", data.giant);
 	}
 	void GTSSandwich_MoveLL_start(AnimationEventData& data) { 
 		data.stage = 1.0;
@@ -199,7 +199,7 @@ namespace {
 	void GTSSandwich_MoveLL_end_H(AnimationEventData& data) {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		StopLeftLegRumble("LLSandwich", data.giant);
+		StopLeftLegRumble("LLSandwichHeavy", data.giant);
 	}
 
 	void GTSSandwich_ThighLoop_Enter(AnimationEventData& data) {
