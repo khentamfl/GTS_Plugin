@@ -41,13 +41,13 @@ namespace Gts {
 
 	BoneTarget Normal::GetBoneTarget() {
 		int altMode = Runtime::GetInt("NormalCameraTarget");
-		float bonus = 1.0;
+		float bonus = 1.0f;
 		if (SizeManager::GetSingleton().GetActionBool(player, 0.0)) {
-			bonus = 2.0;
+			bonus = 2.0f;
 		}
 		switch (altMode) {
 			case 0: {
-				return BoneTarget() * bonus;
+				return BoneTarget();
 			}
 			case 1: {
 				return BoneTarget {
