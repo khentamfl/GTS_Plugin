@@ -41,7 +41,7 @@ namespace Gts {
 		int altMode = Runtime::GetInt("AltCameraTarget");
 		auto player = PlayerCharacter::GetSingleton();
 		float bonus = 1.0;
-		if (SizeManager::GetSingleton().GetActionBool(player, float 0.0)) {
+		if (SizeManager::GetSingleton().GetActionBool(player, 0.0)) {
 			bonus = 2.0;
 		}
 		switch (altMode) {

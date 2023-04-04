@@ -128,6 +128,7 @@ namespace {
 	void GTSSandwich_EnableRune(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		auto& sizemanager = SizeManager::GetSingleton();
+		sizemanager.SetActionBool(&data.giant, true, 0.0); // +100% camera distance
 		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat
 		sandwichdata.ManageScaleRune(true);
 		sandwichdata.ManageShrinkRune(false);
@@ -215,7 +216,8 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.ManageScaleRune(false);
 		sandwichdata.ManageShrinkRune(false);
-		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat
+		sizemanager.SetActionBool(&data.giant, false, 0.0);
+		sizemanager.SetActionBool(&data.giant, false, 1.0); // Allow sandwich repeat
 	}
 
 	void GTSSandwich_FootImpact(AnimationEventData& data) {
@@ -225,7 +227,6 @@ namespace {
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {
-		auto& sizemanager = SizeManager::GetSingleton();
 		auto& Sandwiching = ThighSandwichController::GetSingleton();
 		auto pred = PlayerCharacter::GetSingleton();
 		std::size_t numberOfPrey = 1;
@@ -233,14 +234,12 @@ namespace {
 			numberOfPrey = 1 + (get_visual_scale(pred)/3);
 		}
 		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
-		if (sizemanager.GetActionBool(pred, 1.0)) {
-			for (auto prey: preys) {
-				Sandwiching.StartSandwiching(pred, prey);
-				auto node = find_node(pred, "GiantessRune", false);
-				if (node) {
-					node->local.scale = 0.01;
-					update_node(node);
-				}
+		for (auto prey: preys) {
+			Sandwiching.StartSandwiching(pred, prey);
+			auto node = find_node(pred, "GiantessRune", false);
+			if (node) {
+				node->local.scale = 0.01;
+				update_node(node);
 			}
 		}
 	}
