@@ -343,69 +343,69 @@ namespace Gts {
 	inline void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-			if (cause == "Crushed") { // Default crush
-				if (random <= 2) {
-					ConsoleLog::GetSingleton()->Print("%s was crushed by the feet %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-				} else if (random == 4) {
-					ConsoleLog::GetSingleton()->Print("Feet of %s crushed %s into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-				} else if (random >= 6) {
-					ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", tiny->GetDisplayFullName(), tiny->GetDisplayFullName());
-				} else if (random >= 7) {
-					ConsoleLog::GetSingleton()->Print("%s relentlessly crushed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-				} 
-				return;
+		if (cause == "Crushed") { // Default crush
+			if (random <= 2) {
+				ConsoleLog::GetSingleton()->Print("%s was crushed by the feet %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 4) {
+				ConsoleLog::GetSingleton()->Print("Feet of %s crushed %s into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", tiny->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 7) {
+				ConsoleLog::GetSingleton()->Print("%s relentlessly crushed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} 
-			else if (cause == "HandCrushed") {
-				if (random <= 2) {
-					ConsoleLog::GetSingleton()->Print("%s was crushed between the fingers of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-				} else if (random == 4) {
+			return;
+		} 
+		else if (cause == "HandCrushed") {
+			if (random <= 2) {
+				ConsoleLog::GetSingleton()->Print("%s was crushed between the fingers of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 4) {
 				ConsoleLog::GetSingleton()->Print("%s has been crushed in the hand of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-				} else if (random >= 6) {
-					ConsoleLog::GetSingleton()->Print("%s applied too much pressure to her hand, crushing %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-				} else if (random >= 7) {
-					ConsoleLog::GetSingleton()->Print("%s was turned into nothing inside the hand of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-				} 
-				return;
+			} else if (random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s applied too much pressure to her hand, crushing %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 7) {
+				ConsoleLog::GetSingleton()->Print("%s was turned into nothing inside the hand of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} 
+			return;
+		}
+		else if (cause == "Shrinked") {
+			if (random <= 2) {
+				ConsoleLog::GetSingleton()->Print("%s greedily absorbed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 4) {
+				ConsoleLog::GetSingleton()->Print("%s completely absorbed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s was absorbed by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random >= 7) {
+				ConsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} 
+			return;
+		}
+		else if (cause == "Vored") {
+			return;
+		}
+		else if (cause == "ThighCrushed") {
+			if (random <= 2) {
+				ConsoleLog::GetSingleton()->Print("%s crushed %s during leg stretch", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 4) {
+				ConsoleLog::GetSingleton()->Print("%s ended life of %s between legs", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s applied too much leg pressure to %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 7) {
+				ConsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} 
+			return;
 			}
-			else if (cause == "Shrinked") {
-				if (random <= 2) {
-					ConsoleLog::GetSingleton()->Print("%s greedily absorbed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-				} else if (random >= 4) {
-					ConsoleLog::GetSingleton()->Print("%s completely absorbed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-				} else if (random >= 6) {
-					ConsoleLog::GetSingleton()->Print("%s was absorbed by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-				} else if (random >= 7) {
-					ConsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-				} 
-				return;
+		else if (cause == "ThighSandwiched") {
+			if (random <= 2) {
+				ConsoleLog::GetSingleton()->Print("%s was crushed by the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random >= 4) {
+				ConsoleLog::GetSingleton()->Print("Thighs of %s gently crushed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 6) {
+				ConsoleLog::GetSingleton()->Print("%s has disappeared between the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random >= 7) {
+				ConsoleLog::GetSingleton()->Print("%s was smothered to nothing between the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random >= 7) {
+				ConsoleLog::GetSingleton()->Print("Thighs of %s sandwiched %s to nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
-			else if (cause == "Vored") {
-				return;
-			}
-			else if (cause == "ThighCrushed") {
-				if (random <= 2) {
-					ConsoleLog::GetSingleton()->Print("%s crushed %s during leg stretch", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-				} else if (random >= 4) {
-					ConsoleLog::GetSingleton()->Print("%s ended life of %s between legs", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-				} else if (random >= 6) {
-					ConsoleLog::GetSingleton()->Print("%s applied too much leg pressure to %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-				} else if (random >= 7) {
-				C	onsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-				} 
-				return;
-			}
-			else if (cause == "ThighSandwiched") {
-				if (random <= 2) {
-					ConsoleLog::GetSingleton()->Print("%s was crushed by the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-				} else if (random >= 4) {
-					ConsoleLog::GetSingleton()->Print("Thighs of %s gently crushed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-				} else if (random >= 6) {
-					ConsoleLog::GetSingleton()->Print("%s has disappeared between the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-				} else if (random >= 7) {
-					ConsoleLog::GetSingleton()->Print("%s was smothered to nothing between the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-				} else if (random >= 7) {
-					ConsoleLog::GetSingleton()->Print("Thighs of %s sandwiched %s to nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-				}
 			return;
 		}
 	}
