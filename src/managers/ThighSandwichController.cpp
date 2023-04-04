@@ -308,6 +308,12 @@
 
     void SandwichingData::EnableSuffocate(bool enable) {
 		this->Suffocate = enable;
+	} 
+	void SandwichingData::EnableRune() {
+		this->RuneScale = true;
+	} 
+	void SandwichingData::DisableRune() {
+		this->RuneShrink = true;
 	}
 
     SandwichingData& ThighSandwichController::GetSandwichingData(Actor* giant) {

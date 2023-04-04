@@ -109,7 +109,7 @@ namespace {
 	}
 	void GTSSandwich_EnableRune(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		sandwichdata.RuneScale = true;
+		sandwichdata.EnableRune();
 	}
 	void GTSSandwich_SitStart(AnimationEventData& data) {
 	}
@@ -146,6 +146,10 @@ namespace {
 	void GTSSandwich_ThighAttack_start(AnimationEventData& data) {
 	}
 
+	void GTSSandwich_DisableRune(AnimationEventData& data) {
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		sandwichdata.DisableRune();
+	}
 
 
 	void GTSSandwich_DropDown(AnimationEventData& data) {
@@ -206,6 +210,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSSandwich_MoveBody_end", "ThighSandwich", GTSSandwich_MoveBody_end);
 		AnimationManager::RegisterEvent("GTSSandwich_ThighLoop_Enter", "ThighSandwich", GTSSandwich_ThighLoop_Enter);
 		AnimationManager::RegisterEvent("GTSSandwich_FootImpact", "ThighSandwich", GTSSandwich_FootImpact);
+		AnimationManager::RegisterEvent("GTSSandwich_DisableRune", "ThighSandwich", GTSSandwich_DisableRune);
 	}
 
 	void AnimationThighSandwich::RegisterTriggers() {

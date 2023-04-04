@@ -17,6 +17,9 @@ namespace Gts {
 			void AddTiny(Actor* tiny);
             void Remove(Actor* tiny);
             void EnableSuffocate(bool enable);
+			void DisableRune();
+			void EnableRune();
+			
 
 			// Release all vories (shall fall into mouth with animation)
 			void ReleaseAll();
