@@ -23,7 +23,8 @@ namespace Gts {
 		float HHDamage = 1.0; // 3
 		float SizeVulnerability = 0.0;
 
-		bool IsInAnimation = false;
+		bool OffsetCamera = false;
+		bool IsThighSandwiching = false;
 
 	};
 
@@ -72,6 +73,9 @@ namespace Gts {
 
 			float GetHitGrowth(Actor* actor);
 			void SetHitGrowth(Actor* actor, float allow);
+
+			void SetActionBool(Actor* actor, bool enable, float type);
+			bool GetActionBool(Actor* actor, float type);
 
 			float BalancedMode();
 

@@ -1,4 +1,5 @@
 #include "managers/cameras/tp/normal.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "data/runtime.hpp"
 
 using namespace RE;
@@ -40,9 +41,13 @@ namespace Gts {
 
 	BoneTarget Normal::GetBoneTarget() {
 		int altMode = Runtime::GetInt("NormalCameraTarget");
+		float bonus = 1.0;
+		if (SizeManager::GetSingleton().GetActionBool(player, float 0.0)) {
+			bonus = 2.0;
+		}
 		switch (altMode) {
 			case 0: {
-				return BoneTarget();
+				return BoneTarget() * bonus;
 			}
 			case 1: {
 				return BoneTarget {
@@ -50,7 +55,7 @@ namespace Gts {
 						"NPC Spine2 [Spn2]",
 						"NPC Neck [Neck]",
 					},
-				        .zoomScale = 0.75,
+				        .zoomScale = 0.75 * bonus,
 				};
 			}
 			case 2: {
@@ -59,7 +64,7 @@ namespace Gts {
 						"NPC R Clavicle [RClv]",
 						"NPC L Clavicle [LClv]",
 					},
-				        .zoomScale = 0.75,
+				        .zoomScale = 0.75 * bonus,
 				};
 			}
 			case 3: {
@@ -68,7 +73,7 @@ namespace Gts {
 						"NPC L Breast",
 						"NPC R Breast",
 					},
-				        .zoomScale = 0.75,
+				        .zoomScale = 0.75 * bonus,
 				};
 			}
 			case 4: {
@@ -77,7 +82,7 @@ namespace Gts {
 						"L Breast02",
 						"R Breast02",
 					},
-				        .zoomScale = 0.75,
+				        .zoomScale = 0.75 * bonus,
 				};
 			}
 			case 5: {
@@ -86,7 +91,7 @@ namespace Gts {
 						"L Breast03",
 						"R Breast03",
 					},
-				        .zoomScale = 0.75,
+				        .zoomScale = 0.75 * bonus,
 				};
 			}
 			case 6: {
@@ -94,7 +99,7 @@ namespace Gts {
 				        .boneNames = {
 						"NPC Neck [Neck]",
 					},
-				        .zoomScale = 0.75,
+				        .zoomScale = 0.75 * bonus,
 				};
 			}
 			case 7: {
@@ -103,7 +108,7 @@ namespace Gts {
 						"NPC L Butt",
 						"NPC R Butt",
 					},
-				        .zoomScale = 0.75,
+				        .zoomScale = 0.75 * bonus,
 				};
 			}
 		}

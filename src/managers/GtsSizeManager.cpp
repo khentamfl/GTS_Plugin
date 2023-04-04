@@ -384,6 +384,25 @@ namespace Gts {
 
 	//===============Size-Vulnerability
 
+	//===============Bools
+	void SizeManager::SetActionBool(Actor* actor, bool enable, float type) {
+		if (type == 0.0) {
+			this->GetData(actor).OffsetCamera = enable;
+		}
+		else if (type == 1.0) {
+			this->GetData(actor).IsThighSandwiching = enable;
+		}
+	}
+	bool SizeManager::GetActionBool(Actor* actor, float type) {
+		if (type == 0.0) {
+			return this->GetData(actor).OffsetCamera;
+		}
+		else if (type == 1.0) {
+			return his->GetData(actor).IsThighSandwiching;
+		}
+	}
+	//
+
 	//===============Balance Mode
 	float SizeManager::BalancedMode()
 	{

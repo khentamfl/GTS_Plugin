@@ -346,7 +346,7 @@ namespace Gts {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		if (cause == "Crushed") { // Default crush
 			if (random <= 2) {
-				ConsoleLog::GetSingleton()->Print("%s was crushed by the feet %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				ConsoleLog::GetSingleton()->Print("%s was crushed by the feet of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
 				ConsoleLog::GetSingleton()->Print("Feet of %s crushed %s into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 6) {
