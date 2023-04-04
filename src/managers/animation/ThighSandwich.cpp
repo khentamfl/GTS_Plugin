@@ -62,6 +62,22 @@ namespace {
 		}
     }
 
+	const std::vector<std::string_view> BODY_NODES = { // used for body rumble
+		"NPC COM [COM ]",
+		"NPC L Foot [Lft ]",
+		"NPC R Foot [Rft ]",
+		"NPC L Toe0 [LToe]",
+		"NPC R Toe0 [RToe]",
+		"NPC L Calf [LClf]",
+		"NPC R Calf [RClf]",
+		"NPC L PreRearCalf",
+		"NPC R PreRearCalf",
+		"NPC L FrontThigh",
+		"NPC R FrontThigh",
+		"NPC R RearCalf [RrClf]",
+		"NPC L RearCalf [RrClf]",
+	};
+
 	const std::vector<std::string_view> L_LEG_NODES = {
 		"NPC L Foot [Lft ]",
 		"NPC L Toe0 [LToe]",
@@ -71,13 +87,13 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void DoThighDamage(Actor* giant, Actor* tiny, float animSpeed) {
+	void DoThighDamage(Actor* giant, Actor* tiny, float animSpeed, float damage) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		auto& sizemanager = SizeManager::GetSingleton();
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25f, 0.25f, 999.0f);
-		float damage = 2.0 * sizedifference * animSpeed;
+		float damage = 2.0 * sizedifference * animSpeed * damage;
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp && sizedifference >= 8.0) {
@@ -87,7 +103,19 @@ namespace {
 		}
 	}
 
-	
+	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife) {
+		for (auto& node_name: L_LEG_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+		}
+	}
+
+	void StopBodyRumble(std::string_view tag, Actor& actor) {
+		for (auto& node_name: L_LEG_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Stop(rumbleName, &actor);
+		}
+	}
 
 	void StartLeftLegRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: L_LEG_NODES) {
@@ -104,8 +132,14 @@ namespace {
 	}
 
 	void GTSSandwich_EnterAnim(AnimationEventData& data) {
+		auto node = find_node(giant, "AnimObjectB", false);
+		if (node) {
+			node->local.scale = 0.01;
+			update_node(node);
+		}
 	}
 	void GTSSandwich_MoveBody_start(AnimationEventData& data) {
+		StartBodyRumble("BodyRumble", data.giant, 1.4, 0.25);
 	}
 	void GTSSandwich_EnableRune(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
@@ -114,6 +148,7 @@ namespace {
 	void GTSSandwich_SitStart(AnimationEventData& data) {
 	}
 	void GTSSandwich_MoveBody_end(AnimationEventData& data) {
+		StartBodyRumble("BodyRumble", data.giant);
 	}
 	void GTSSandwich_MoveLL_start(AnimationEventData& data) { 
 		data.stage = 1.0;
@@ -124,18 +159,44 @@ namespace {
 		StartLeftLegRumble("LLSandwich", data.giant, 0.5, 0.12);
 	}
 
+	void GTSSandwich_MoveLL_start_H(AnimationEventData& data) { 
+		data.stage = 1.0;
+		data.canEditAnimSpeed = true;
+		data.animSpeed = 1.50;
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		sandwichdata.EnableSuffocate(false);
+		StartLeftLegRumble("LLSandwichHeavy", data.giant, 0.9, 0.15);
+	}
+
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", &data.giant, 1.0, 1.0, "AnimObjectB");
 		sandwichdata.EnableSuffocate(true);
 		Rumble::Once("ThighImpact", &data.giant, 1.8, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
-			DoThighDamage(&data.giant, tiny, data.animSpeed);
+			DoThighDamage(&data.giant, tiny, data.animSpeed, 1.0);
+			tiny->NotifyAnimationGraph("ragdoll");
+		}
+	}
+
+	void GTSSandwich_ThighImpact_H(AnimationEventData& data) {
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		Runtime::PlaySoundAtNode("ThighSandwichImpact", &data.giant, 1.4, 1.0, "AnimObjectB");
+		sandwichdata.EnableSuffocate(true);
+		Rumble::Once("ThighImpact", &data.giant, 2.9, 0.15, "AnimObjectA");
+		for (auto tiny: sandwichdata.GetActors()) {
+			DoThighDamage(&data.giant, tiny, data.animSpeed, 2.0);
 			tiny->NotifyAnimationGraph("ragdoll");
 		}
 	}
 
 	void GTSSandwich_MoveLL_end(AnimationEventData& data) {
+		data.canEditAnimSpeed = false;
+		data.animSpeed = 1.0;
+		StopLeftLegRumble("LLSandwich", data.giant);
+	}
+
+	void GTSSandwich_MoveLL_end_H(AnimationEventData& data) {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 		StopLeftLegRumble("LLSandwich", data.giant);
@@ -201,9 +262,12 @@ namespace Gts
 		InputManager::RegisterInputEvent("ThighSandwichAttackHeavy", ThighSandwichHeavyAttackEvent);
 		InputManager::RegisterInputEvent("ThighSandwichExit", ThighSandwichExitEvent);
 		AnimationManager::RegisterEvent("GTSSandwich_ThighImpact", "ThighSandwich", GTSSandwich_ThighImpact);
+		AnimationManager::RegisterEvent("GTSSandwich_ThighImpact_H", "ThighSandwich", GTSSandwich_ThighImpact_H);
 		AnimationManager::RegisterEvent("GTSSandwich_DropDown", "ThighSandwich", GTSSandwich_DropDown);
 		AnimationManager::RegisterEvent("GTSSandwich_MoveLL_start", "ThighSandwich", GTSSandwich_MoveLL_start);
+		AnimationManager::RegisterEvent("GTSSandwich_MoveLL_start_H", "ThighSandwich", GTSSandwich_MoveLL_start_H);
 		AnimationManager::RegisterEvent("GTSSandwich_MoveLL_end", "ThighSandwich", GTSSandwich_MoveLL_end);
+		AnimationManager::RegisterEvent("GTSSandwich_MoveLL_end_H", "ThighSandwich", GTSSandwich_MoveLL_end_H);
 		AnimationManager::RegisterEvent("GTSSandwich_EnterAnim", "ThighSandwich", GTSSandwich_EnterAnim);
 		AnimationManager::RegisterEvent("GTSSandwich_MoveBody_start", "ThighSandwich", GTSSandwich_MoveBody_start);
 		AnimationManager::RegisterEvent("GTSSandwich_EnableRune", "ThighSandwich", GTSSandwich_EnableRune);
@@ -217,7 +281,7 @@ namespace Gts
 	void AnimationThighSandwich::RegisterTriggers() {
 		AnimationManager::RegisterTrigger("ThighEnter", "ThighSandwich", "GTSBEH_ThighSandwich_Start");
 		AnimationManager::RegisterTrigger("ThighAttack", "ThighSandwich", "GTSBEH_ThighSandwich_Attack");
-		AnimationManager::RegisterTrigger("ThighAttack_Heavy", "ThighSandwich", "GTSBEH_ThighSandwich_Attack_Heavy");
+		AnimationManager::RegisterTrigger("ThighAttack_Heavy", "ThighSandwich", "GTSBEH_ThighSandwich_Attack_H");
 		AnimationManager::RegisterTrigger("ThighExit", "ThighSandwich", "GTSBEH_ThighSandwich_ExitLoop");
 	}
 
