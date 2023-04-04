@@ -85,6 +85,7 @@ namespace {
 		float damage = 2.0 * sizedifference * animSpeed * mult;
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
+		log::info("NormalDamage: {}, Attribute:{}", normaldamage, sizemanager.GetSizeAttribute(giant, 0));
 		if (damage > hp && sizedifference >= 6.0) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			PrintDeathSource(giant, tiny, "ThighSandwiched");
