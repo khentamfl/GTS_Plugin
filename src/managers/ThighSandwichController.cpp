@@ -161,7 +161,7 @@
 	std::vector<Actor*> ThighSandwichController::GetSandwichTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
-		if (!sizemanager.GetActionBool(pred, 1.0)) {
+		if (sizemanager.GetActionBool(pred, 1.0)) {
 			return {};
 		}
 		if (!pred) {
