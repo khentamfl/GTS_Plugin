@@ -1,27 +1,30 @@
-#include "Config.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/gamemode/GameModeManager.hpp"
+#include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/GrowthTremorManager.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
-#include "managers/GtsManager.hpp"
-#include "managers/highheel.hpp"
-#include "managers/Attributes.hpp"
+#include "scale/scalespellmanager.hpp"
 #include "managers/InputManager.hpp"
+#include "managers/GtsManager.hpp"
+#include "managers/Attributes.hpp"
 #include "managers/hitmanager.hpp"
-#include "magic/effects/smallmassivethreat.hpp"
+#include "managers/highheel.hpp"
 #include "data/persistent.hpp"
+#include "managers/Rumble.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
-#include "data/time.hpp"
+#include "utils/debug.hpp"
 #include "scale/scale.hpp"
-#include "scale/scalespellmanager.hpp"
-#include "node.hpp"
+#include "data/time.hpp"
+#include "Config.hpp"
 #include "timer.hpp"
+#include "node.hpp"
 #include <vector>
 #include <string>
-#include "utils/debug.hpp"
-#include "managers/Rumble.hpp"
+
+
 
 using namespace Gts;
 using namespace RE;
