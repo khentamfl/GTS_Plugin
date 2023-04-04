@@ -81,7 +81,7 @@
 		return "ThighSandwichController";
 	}
 
-	void SandwichData::UpdateRune(Actor* giant) {
+	void SandwichingData::UpdateRune(Actor* giant) {
 		string node_name = "AnimObjectB";
 		if (this->RuneScale) {
 			auto node = find_node(actor, node_name, false);
