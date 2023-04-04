@@ -95,7 +95,7 @@ exclusive = true
 
 [[InputEvent]]
 name = "ThighSandwichEnter"
-keys = ["LSHIFT", "S"]
+keys = ["LCONTROL", "S"]
 exclusive = true
 
 # Attempt to Start Thigh Sandwich animation with someone
