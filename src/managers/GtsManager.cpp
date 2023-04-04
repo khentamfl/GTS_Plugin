@@ -51,11 +51,9 @@ namespace {
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		if (!actor) {
 			return;
-		}
-		if (!trans_actor_data) {
+		} if (!trans_actor_data) {
 			return;
-		}
-		if (!persi_actor_data) {
+		} if (!persi_actor_data) {
 			return;
 		}
 		float target_scale = persi_actor_data->target_scale;
@@ -99,14 +97,11 @@ namespace {
 	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
 		if (!actor) {
 			return;
-		}
-		if (!actor->Is3DLoaded()) {
+		} if (!actor->Is3DLoaded()) {
 			return;
-		}
-		if (!trans_actor_data) {
+		} if (!trans_actor_data) {
 			return;
-		}
-		if (!persi_actor_data) {
+		} if (!persi_actor_data) {
 			return;
 		}
 		float scale = get_scale(actor);
@@ -124,17 +119,12 @@ namespace {
 		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
 			return;
 		}
-
 		// Is scale too small
 		if (visual_scale <= 1e-5) {
 			return;
 		}
-
-		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
 	}
-
-
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
 		if (!Persistent::GetSingleton().is_speed_adjusted) {
@@ -226,11 +216,7 @@ void GtsManager::Update() {
 		if (!actor->Is3DLoaded()) {
 			continue;
 		}
-		auto NPC = actor->GetActorBase(); 
-		if (NPC) {
-			float weight = NPC->weight;
-			//log::info("{} weight is {}", actor->GetDisplayFullName(), weight);
-		}
+
 		FixActorFade(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();

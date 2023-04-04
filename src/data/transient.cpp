@@ -40,9 +40,6 @@ namespace Gts {
 			if (!actor) {
 				return nullptr;
 			}
-			if (!actor->Is3DLoaded()) {
-				return nullptr;
-			}
 			TempActorData result;
 			auto bound = get_bound(actor);
 			if (!bound) {
