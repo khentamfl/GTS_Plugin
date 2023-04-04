@@ -25,12 +25,11 @@ namespace Gts {
 		return "HighHeelManager";
 	}
 
-	void HighHeelManager::PapyrusUpdate() {
-		/*const bool FORCE_APPLY = false;
+	void HighHeelManager::HavokUpdate() {
 		auto actors = find_actors();
 		for (auto actor: actors) {
-			ApplyHH(actor, FORCE_APPLY);
-		}*/
+			HighHeel.ApplyHH(actor, false);
+		}
 	}
 
 	void HighHeelManager::ActorEquip(Actor* actor) {
