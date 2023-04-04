@@ -40,7 +40,14 @@ namespace Gts {
 	}
 
 	BoneTarget Normal::GetBoneTarget() {
+		auto player = PlayerCharacter::GetSingleton();
+		auto& sizemanager = SizeManager::GetSingleton();
 		int altMode = Runtime::GetInt("NormalCameraTarget");
+		if (sizemanager.GetActionBool(player, 1)) {
+			altmode = 8; // Thigh Sandwich
+		} else if (sizemanager.GetActionBool(player, 2)) {
+			altmode = 9; // Vore
+		}
 		switch (altMode) {
 			case 0: {
 				return BoneTarget();
@@ -105,6 +112,23 @@ namespace Gts {
 						"NPC R Butt",
 					},
 				        .zoomScale = 0.75,
+				};
+			}
+			case 8: {
+				return BoneTarget { // Thigh Sandwich
+				        .boneNames = {
+						"NPC R Calf [RClf]",
+						"NPC R RearThigh",
+					},
+				        .zoomScale = 0.75,
+				};
+			}
+			case 9: {
+				return BoneTarget { // Vore
+				        .boneNames = {
+						"NPC R Hand [RHnd]",
+					},
+				        .zoomScale = 1.50,
 				};
 			}
 		}

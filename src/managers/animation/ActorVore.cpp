@@ -91,6 +91,11 @@ namespace {
 		}
 	}
 
+	void ManageCamera(Actor* giant, float type, bool enable) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		sizemanager.SetActionBool(player, enable, type);
+	}
+
 	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife, bool once) {
 		for (auto& node_name: BODY_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
@@ -187,7 +192,7 @@ namespace {
 		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
 		auto firstTiny = VoreData.GetVories()[0];
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			PlayerCamera::GetSingleton()->cameraTarget = firstTiny->CreateRefHandle();
+			ManageCamera(giant, enable, 2.0); //PlayerCamera::GetSingleton()->cameraTarget = firstTiny->CreateRefHandle();
 		}
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
@@ -286,7 +291,7 @@ namespace {
 		auto giant = &data.giant;
 		StartBodyRumble("BodyRumble", data.giant, 0.35, 0.10, false);
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			PlayerCamera::GetSingleton()->cameraTarget = giant->CreateRefHandle();
+			ManageCamera(giant, false, 2.0);//PlayerCamera::GetSingleton()->cameraTarget = giant->CreateRefHandle();
 		}
 	}
 
