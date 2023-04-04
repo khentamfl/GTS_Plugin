@@ -343,7 +343,7 @@ namespace Gts {
 	inline void PrintDeathSource(Actor* giant, Actor* tiny, const DeathSource& cause) {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-		case DeathSource::Crushed { // Default crush
+		case DeathSource::Crushed: { // Default crush
 			if (random <= 2) {
 				ConsoleLog::GetSingleton()->Print("%s was crushed by the feet %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
@@ -355,7 +355,7 @@ namespace Gts {
 			} 
 			break;
 		} 
-		case DeathSource::HandCrushed {
+		case DeathSource::HandCrushed: {
 			if (random <= 2) {
 				ConsoleLog::GetSingleton()->Print("%s was crushed between the fingers of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
@@ -367,7 +367,7 @@ namespace Gts {
 			} 
 			break;
 		}
-		case DeathSource::Shrinked {
+		case DeathSource::Shrinked: {
 			if (random <= 2) {
 				ConsoleLog::GetSingleton()->Print("%s greedily absorbed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 4) {
@@ -379,10 +379,10 @@ namespace Gts {
 			} 
 			break;
 		}
-		case DeathSource::Vored {
+		case DeathSource::Vored: {
 			break;
 		}
-		case DeathSource::ThighCrushed {
+		case DeathSource::ThighCrushed: {
 			if (random <= 2) {
 				ConsoleLog::GetSingleton()->Print("%s crushed %s during leg stretch", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 4) {
@@ -394,7 +394,7 @@ namespace Gts {
 			} 
 			break;
 		}
-		case DeathSource::ThighSandwiched {
+		case DeathSource::ThighSandwiched: {
 			if (random <= 2) {
 				ConsoleLog::GetSingleton()->Print("%s was crushed by the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 4) {
