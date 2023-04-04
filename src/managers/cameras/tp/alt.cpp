@@ -42,9 +42,9 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		int altMode = Runtime::GetInt("AltCameraTarget");
 		if (sizemanager.GetActionBool(player, 1)) {
-			altmode = 8; // Thigh Sandwich
+			altMode = 8; // Thigh Sandwich
 		} else if (sizemanager.GetActionBool(player, 2)) {
-			altmode = 9; // Vore
+			altMode = 9; // Vore
 		}
 		switch (altMode) {
 			case 0: {

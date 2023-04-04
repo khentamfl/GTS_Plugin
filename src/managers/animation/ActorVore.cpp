@@ -92,7 +92,7 @@ namespace {
 		}
 	}
 
-	void ManageCamera(Actor* giant, float type, bool enable) {
+	void ManageCamera(Actor* giant, bool enable, float type) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		sizemanager.SetActionBool(giant, enable, type);
 	}
