@@ -400,6 +400,7 @@ namespace Gts {
 		else if (type == 1.0) {
 			return this->GetData(actor).IsThighSandwiching;
 		}
+		return false;
 	}
 	//
 
