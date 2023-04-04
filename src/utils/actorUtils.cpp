@@ -340,7 +340,7 @@ namespace Gts {
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 35.0 * damage, 1.35, random, 0.05);
 	}
 
-	inline void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {
+	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		if (cause == "Crushed") { // Default crush
