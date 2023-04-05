@@ -1,6 +1,7 @@
 #pragma once
 // Module that handles AttributeAdjustment
 #include "events.hpp"
+#include "spring.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -18,11 +19,11 @@ namespace Gts {
                 Spring phenome1 = Spring(0.0, 0.0); //0 - 0.5
                 Spring Phenome2 = Spring(0.0, 0.0); //0 - 1.0
                 Spring Phenome5 = Spring(0.0, 0.0); //0 - 0.8
-            }
+            };
             std::vector<Spring> Modifiers = {
                 Spring Modifier0 = Spring(0.0, 0.0); // 0 - 0.8
                 Spring Modifier1 = Spring(0.0, 0.0); // 0 - 0.8
-            }
+            };
 	};
 	class EmotionManager : public EventListener {
 		public:
