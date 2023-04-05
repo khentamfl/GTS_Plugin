@@ -133,7 +133,7 @@ namespace Gts {
 					giantScale *= 1.75;
 				}
 				if (impact_data.kind == FootEvent::JumpLand) {
-					giantScale *= 2.0;
+					giantScale *= 3.0;
 				}
 
 				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
@@ -170,6 +170,7 @@ namespace Gts {
 									if (distance < maxFootDistance) {
 										// Under Foot
 										float aveForce = 1.0 - distance / maxFootDistance;
+										aveForce = std::clamp(aveForce, 0.0f, 0.62f);
 										UnderFoot underfoot = UnderFoot {
 											.giant = impact_data.actor,
 											.tiny = otherActor,

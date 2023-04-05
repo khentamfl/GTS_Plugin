@@ -139,7 +139,7 @@ namespace {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 		Emotions.AllowEmotionEdit = allow;
 	}
-	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) {
+	void AdjustFacialExpression(Actor* giant, float ph, float power, std::string_view type) {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 
 		if (type == "phenome") {
@@ -214,7 +214,7 @@ namespace {
 	}
 
 	void GTSvore_bringactor_start(AnimationEventData& data) {
-		AdjustFacialExpression(&data.giant, 5, 0.8, "phenome"); // Smile a bit (Mouth)
+		AdjustFacialExpression(&data.giant, 3, 0.8, "phenome"); // Smile a bit (Mouth)
 		StartRHandRumble("HandR", data.giant, 0.6, 0.175);
 	}
 
@@ -246,7 +246,7 @@ namespace {
 	}
 
 	void GTSvore_swallow_sound(AnimationEventData& data) {
-		AdjustFacialExpression(&data.giant, 5, 0.0, "phenome"); // Remove smile (Mouth)
+		AdjustFacialExpression(&data.giant, 3, 0.0, "phenome"); // Remove smile (Mouth)
 	}
 
 	void GTSvore_close_mouth(AnimationEventData& data) {

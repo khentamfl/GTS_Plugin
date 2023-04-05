@@ -29,15 +29,20 @@
 	void EmotionData::UpdateEmotions(Actor* giant) {
         if (this->AllowEmotionEdit) {
             auto fgen = giant->GetFaceGenAnimationData();
-            log::info("Emotions True");
+            std::uint32_t Zero = 0;
+            std::uint32_t One = 1;
+            std::uint32_t Two = 2;
+            std::uint32_t Five = 5;
+            log::info("Emotions True, giant: {}", giant->GetDisplayFullName());
 			if (fgen) { 
-                fgen->phenomeKeyFrame.SetValue(0, this->Phenomes[0].value);
-                fgen->phenomeKeyFrame.SetValue(1, this->Phenomes[1].value);
-                fgen->phenomeKeyFrame.SetValue(2, this->Phenomes[2].value);
-                fgen->phenomeKeyFrame.SetValue(5, this->Phenomes[3].value);
+                log::info("Fgen True");
+                fgen->phenomeKeyFrame.SetValue(Zero, this->Phenomes[0].value);
+                fgen->phenomeKeyFrame.SetValue(One, this->Phenomes[1].value);
+                fgen->phenomeKeyFrame.SetValue(Two, this->Phenomes[2].value);
+                fgen->phenomeKeyFrame.SetValue(Five, this->Phenomes[3].value);
 
-                fgen->modifierKeyFrame.SetValue(0, this->Modifiers[0].value);
-                fgen->modifierKeyFrame.SetValue(1, this->Modifiers[1].value);
+                fgen->modifierKeyFrame.SetValue(Zero, this->Modifiers[0].value);
+                fgen->modifierKeyFrame.SetValue(One, this->Modifiers[1].value);
             }
         }
 	}

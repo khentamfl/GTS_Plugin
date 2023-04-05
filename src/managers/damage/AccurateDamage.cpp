@@ -314,7 +314,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = force/50;///nodeCollisions;
+								float aveForce = std::clamp(force/50, 0.00f, 0.70f);///nodeCollisions;
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}
 						}
@@ -357,7 +357,7 @@ namespace Gts {
 	void AccurateDamage::UnderFootEvent(const UnderFoot& evt) { // On underfoot event
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
-		float force = std::clamp(evt.force, 0.00f, 0.90f);
+		float force = evt.force;
 		float damage = 1.0;
 		if (!CanDoDamage(giant, tiny)) {
 			return;
@@ -378,13 +378,9 @@ namespace Gts {
 		float movementFactor = 1.0;
 
 		if (giant->IsSneaking()) {
-			movementFactor *= 0.5;
-		}
-		if (giant->AsActorState()->IsSprinting()) {
-			movementFactor *= 1.75;
+			movementFactor *= 0.6;
 		}
 		if (evt.footEvent == FootEvent::JumpLand) {
-			movementFactor *= 4.0;
 			damage = 0.0;
 		}
 
@@ -392,7 +388,7 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 32 * damage, 50, 0.50, true);
+			DoSizeDamage(giant, tiny, movementFactor, force * 46 * damage, 50, 0.50, true);
 
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();

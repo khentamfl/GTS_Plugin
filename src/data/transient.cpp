@@ -41,7 +41,7 @@ namespace Gts {
 				return nullptr;
 			}
 			TempActorData result;
-			auto bound = (1.0, 1.0, 1.0);//get_bound(actor);
+			auto bound = get_bound(actor);
 			if (!bound) {
 				return nullptr;
 			}
@@ -49,8 +49,8 @@ namespace Gts {
 			if (scale < 0.0) {
 				return nullptr;
 			}
-			float base_height_unit = 1.0;//bound->extents[2] * scale;
-			float base_height_meters = 1.0;//unit_to_meter(base_height_unit);
+			float base_height_unit = bound->extents[2] * scale;
+			float base_height_meters = unit_to_meter(base_height_unit);
 			float fall_start = actor->GetPosition()[2];
 			float last_set_fall_start = fall_start;
 			float carryweight_boost = 0.0;
@@ -62,8 +62,8 @@ namespace Gts {
 			bool dragon_was_eaten = false;
 
 			// Volume scales cubically
-			float base_volume = 1.0;//bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
-			float base_volume_meters = 1.0;//unit_to_meter(base_volume);
+			float base_volume = /bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
+			float base_volume_meters = unit_to_meter(base_volume);
 
 			result.base_height = base_height_meters;
 			result.base_volume = base_volume_meters;
