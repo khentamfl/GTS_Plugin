@@ -10,7 +10,7 @@ using namespace RE;
 namespace Gts {
     class EmotionData {
 		public:
-            UpdateEmotions(Actor* giant);
+            void UpdateEmotions(Actor* giant);
 			EmotionData(Actor* giant);
 			void Update();
 			Actor* giant;
