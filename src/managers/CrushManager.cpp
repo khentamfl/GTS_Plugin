@@ -186,6 +186,7 @@ namespace Gts {
 
 					ScareChance(giant);
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
+					EventDispatcher::DoResetActor(tiny);
 
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.

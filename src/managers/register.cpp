@@ -2,6 +2,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/gamemode/GameModeManager.hpp"
 #include "managers/ThighSandwichController.hpp"
+#include "managers/emotions/EmotionManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/animation/Grab.hpp"
@@ -55,6 +56,7 @@ namespace Gts {
 
 		EventDispatcher::AddListener(&Grab::GetSingleton()); // Manages grabbing
 		EventDispatcher::AddListener(&ThighSandwichController::GetSingleton()); // Manages Thigh Sandwiching
+		EventDispatcher::AddListener(&EmotionManager::GetSingleton()); // Manages Emotions
 
 
 		//EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
