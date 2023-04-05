@@ -138,15 +138,19 @@ namespace {
 
 	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) { 
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
+
 		if (type == "phenome") {
 			Emotions.Phenomes[ph].value = 0.0;
 			Emotions.Phenomes[ph].target = power;
 			Emotions.Phenomes[ph].halflife = 0.20;
 		} if (type == "expression") {
-			fgen->exprOverride = false;
-			fgen->SetExpressionOverride(ph, power);
-			fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
-			fgen->exprOverride = true;
+			auto fgen = giant->GetFaceGenAnimationData();
+			if (fgen) {
+				fgen->exprOverride = false;
+				fgen->SetExpressionOverride(ph, power);
+				fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
+				fgen->exprOverride = true;
+			}
 		} if (type == "modifier") {
 			Emotions.Modifiers[ph].target = power;
 			Emotions.Modifiers[ph].halflife = 0.25;
