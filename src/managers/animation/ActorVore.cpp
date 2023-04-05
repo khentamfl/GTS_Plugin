@@ -135,7 +135,10 @@ namespace {
 			Rumble::Stop(rumbleName, &actor);
 		}
 	}
-
+	void ToggleEmotionEdit(Actor* giant, bool allow) {
+		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
+		Emotions.AllowEmotionEdit = allow;
+	}
 	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) { 
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 
@@ -194,6 +197,7 @@ namespace {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		VoreData.GrabAll();
+		ToggleEmotionEdit(giant, true);
 		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
 		auto firstTiny = VoreData.GetVories()[0];
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
@@ -314,6 +318,7 @@ namespace {
 			EnableFreeCamera();
 		}
 		Rumble::Stop("BodyRumble", &data.giant);
+		ToggleEmotionEdit(giant, false);
 		ToggleVore(giant, true); // Allow to do Vore again
 	}
 }

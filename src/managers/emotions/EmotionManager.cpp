@@ -29,11 +29,12 @@
 	void EmotionData::UpdateEmotions(Actor* giant) {
         if (this->AllowEmotionEdit) {
             auto fgen = giant->GetFaceGenAnimationData();
+            log::info("Emotions True");
 			if (fgen) { 
                 fgen->phenomeKeyFrame.SetValue(0, this->Phenomes[0].value);
                 fgen->phenomeKeyFrame.SetValue(1, this->Phenomes[1].value);
                 fgen->phenomeKeyFrame.SetValue(2, this->Phenomes[2].value);
-                fgen->phenomeKeyFrame.SetValue(5, this->Phenomes[5].value);
+                fgen->phenomeKeyFrame.SetValue(5, this->Phenomes[3].value);
 
                 fgen->modifierKeyFrame.SetValue(0, this->Modifiers[0].value);
                 fgen->modifierKeyFrame.SetValue(1, this->Modifiers[1].value);
