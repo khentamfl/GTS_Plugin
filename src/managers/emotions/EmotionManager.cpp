@@ -39,6 +39,11 @@
                 log::info("PHenome 2 value: {}", this->Phenomes[2].value);
                 log::info("PHenome 3 value: {}", this->Phenomes[3].value);
 
+                log::info("PHenome 0 Target: {}", this->Phenomes[0].target);
+                log::info("PHenome 1 Target: {}", this->Phenomes[1].target);
+                log::info("PHenome 2 Target: {}", this->Phenomes[2].target);
+                log::info("PHenome 3 Target: {}", this->Phenomes[3].target);
+
                 fgen->phenomeKeyFrame.SetValue(Zero, this->Phenomes[0].value);
                 fgen->phenomeKeyFrame.SetValue(One, this->Phenomes[1].value);
                 fgen->phenomeKeyFrame.SetValue(Two, this->Phenomes[2].value);
