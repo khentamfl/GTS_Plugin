@@ -93,7 +93,7 @@
 				this->ScaleRune.value = 0.0;
 				this->ScaleRune.target = 0.0;
 				node->local.scale = 1.0 - this->ShrinkRune.value;
-				log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
+				//log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
 				update_node(node);
 			} 
 		}
@@ -104,7 +104,7 @@
 				this->ScaleRune.target = 1.0;
 				this->ShrinkRune.value = 0.0;
 				node->local.scale = this->ScaleRune.value;
-				log::info("Scale Rune Value: {}", this->ScaleRune.value);
+				//log::info("Scale Rune Value: {}", this->ScaleRune.value);
 				update_node(node);
 			} 
 		} 
