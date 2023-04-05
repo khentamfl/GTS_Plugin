@@ -50,13 +50,13 @@
         }
 	}
     void EmotionData::OverridePhenome(int number, float power, float hl, float tg) {
-        this->Phenomes[number].value = power;
+       // this->Phenomes[number].value = power;
         this->Phenomes[number].halflife = hl;
         this->Phenomes[number].target = tg;
     }
 
     void EmotionData::OverrideModifier(int number, float power, float hl, float tg) {
-        this->Modifiers[number].value = power;
+        //this->Modifiers[number].value = power;
         this->Modifiers[number].halflife = hl;
         this->Modifiers[number].target = tg;
     }
