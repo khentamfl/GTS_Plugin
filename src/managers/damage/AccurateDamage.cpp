@@ -390,7 +390,7 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
 
 		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 46 * damage, 50, 0.50, true);
+			DoSizeDamage(giant, tiny, movementFactor, force * 22 * damage, 50, 0.50, true);
 
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
