@@ -180,7 +180,7 @@ namespace {
 
 	void GTSvore_sit_end(AnimationEventData& data) {
 		Rumble::Stop("BodyRumble", &data.giant);
-		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
+		AdjustFacialExpression(&data.giant, 2, 1.0, "expression"); // smile (expression)
 	}
 
 	void GTSvore_hand_extend(AnimationEventData& data) {
