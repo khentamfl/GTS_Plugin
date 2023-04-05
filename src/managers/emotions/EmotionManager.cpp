@@ -34,31 +34,48 @@
             std::uint32_t Two = 2;
             std::uint32_t Five = 5;
 			if (fgen) { 
-                log::info("PHenome 0 value: {}, target: {}, halflife: {}", this->Phenomes[0].value, this->Phenomes[0].target, this->Phenomes[0].halflife);
-                log::info("PHenome 1 value: {}, target: {}, halflife: {}", this->Phenomes[1].value, this->Phenomes[1].target, this->Phenomes[1].halflife);
+                log::info("PHenome 0 value: {}, target: {}, halflife: {}", this->Phenome0.value, this->Phenome0.target, this->Phenome0.halflife);
+                log::info("PHenome 1 value: {}, target: {}, halflife: {}", this->Phenome1.value, this->Phenome1.target, this->Phenome1.halflife);
                // log::info("PHenome 2 value: {}, target: {}, halflife: {}", this->Phenomes[2].value, this->Phenomes[2].target, this->Phenomes[2].halflife);
-                log::info("PHenome 5 value: {}, target: {}, halflife: {}", this->Phenomes[3].value, this->Phenomes[3].target, this->Phenomes[3].halflife);
+                log::info("PHenome 5 value: {}, target: {}, halflife: {}", this->Phenome5.value, this->Phenome5.target, this->Phenome5.halflife);
 
-                fgen->phenomeKeyFrame.SetValue(Zero, this->Phenomes[0].value);
-                fgen->phenomeKeyFrame.SetValue(One, this->Phenomes[1].value);
+                fgen->phenomeKeyFrame.SetValue(Zero, this->Phenome0.value);
+                fgen->phenomeKeyFrame.SetValue(One, this->Phenome1.value);
                 //fgen->phenomeKeyFrame.SetValue(Two, this->Phenomes[2].value);
-                fgen->phenomeKeyFrame.SetValue(Five, this->Phenomes[3].value);
+                fgen->phenomeKeyFrame.SetValue(Five, this->Phenome5.value);
 
-                fgen->modifierKeyFrame.SetValue(Zero, this->Modifiers[0].value);
-                fgen->modifierKeyFrame.SetValue(One, this->Modifiers[1].value);
+                fgen->modifierKeyFrame.SetValue(Zero, this->Modifier0.value);
+                fgen->modifierKeyFrame.SetValue(One, this->Modifier1.value);
             }
         }
 	}
     void EmotionData::OverridePhenome(int number, float power, float hl, float tg) {
        // this->Phenomes[number].value = power;
-        this->Phenomes[number].halflife = hl;
-        this->Phenomes[number].target = tg;
+       if (number == 0) {
+            this->Phenome0.target = tg;
+            this->Phenome0.halflife = hl;
+       } else if (number == 1) {
+            this->Phenome1.target = tg;
+            this->Phenome1.halflife = hl;
+       } else if (number == 5) {
+            this->Phenome5.target = tg;
+            this->Phenome5.halflife = hl;
+       }
+        //this->Phenomes[number].halflife = hl;
+        //this->Phenomes[number].target = tg;
     }
 
     void EmotionData::OverrideModifier(int number, float power, float hl, float tg) {
+        if (number == 0) {
+            this->Modifier0.target = tg;
+            this->Modifier0.halflife = hl;
+        } else if (number == 1) {
+            this->Modifier1.target = tg;
+            this->Modifier1.halflife = hl;
+        }
         //this->Modifiers[number].value = power;
-        this->Modifiers[number].halflife = hl;
-        this->Modifiers[number].target = tg;
+        //this->Modifiers[number].halflife = hl;
+        //this->Modifiers[number].target = tg;
     }
 
     void EmotionData::Update() {
