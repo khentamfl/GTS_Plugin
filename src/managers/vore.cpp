@@ -372,7 +372,7 @@ namespace Gts {
 			mealEffiency *= 6.0;
 		}
 		this->appliedFactor = 0.0;
-    this->state = VoreBuffState::Starting;
+    	this->state = VoreBuffState::Starting;
 
 		if (tiny) {
 			float tiny_scale = get_visual_scale(tiny);
@@ -397,63 +397,60 @@ namespace Gts {
       		case VoreBuffState::Starting: {
         	this->factor.value = 0.0;
         	this->factor.velocity = 0.0;
-        	this->factor.target = 0.25;
-        	this->factor.halflife = this->duration * 0.1;
-        	this->state = VoreBuffState::RampUp;
-        break;
-    }
-    case VoreBuffState::RampUp: {
-        if (fabs(this->factor.value - this->factor.value) < 1e-2) {
+        	this->factor.target = 1.0;
+        	this->factor.halflife = this->duration * 0.5;
+        	this->state = VoreBuffState::Running;
+        	break;
+    		}
+    	/*case VoreBuffState::RampUp: {
+        	if (fabs(this->factor.value - this->factor.value) < 1e-2) {
           	this->factor.target = 0.75;
           	this->factor.halflife = this->duration * 0.3;
           	this->state = VoreBuffState::Running;
-        }
-        break;
-    }
-	case VoreBuffState::Running: {
-        if (fabs(this->factor.value - this->factor.value) < 1e-2) {
-          	this->factor.target = 1.0;
-          	this->factor.halflife = this->duration * 0.1;
-          	this->state = VoreBuffState::RampDown;
-        }
-        break;
-	}
-    case VoreBuffState::RampDown: {
-        if (fabs(this->factor.value - this->factor.value) < 1e-2) {
-          	this->state = VoreBuffState::Finishing;
-        }
-    break;
-	}
-	case VoreBuffState::Finishing: {
-		if (!AllowDevourment()) {
-			AdjustGiantessSkill(this->giant, this->tiny);
-			VoreMessage_Absorbed(this->giant, this->tiny);
-			BuffAttributes(this->giant, this->tiny);
-			mod_target_scale(this->giant, this->sizePower * 1.2);
-			AdjustSizeReserve(this->giant, this->sizePower);
-		}
-		Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
+        	}
+        	break;
+    	}*/
+		case VoreBuffState::Running: {
+          		this->factor.target = 1.0;
+          		this->factor.halflife = this->duration * 0.1;
 
-        log::info("Going to done state");
-		this->state = VoreBuffState::Done;
-    break;
+    			float healthToApply = this->factor.value * this->restorePower/200;
+    			float sizeToApply = this->factor.value * this->sizePower/200;
+
+				if (Runtime::HasPerk(this->giant, "VorePerkRegeneration")) {
+    				DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
+    				DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
+				}
+
+    			mod_target_scale(this->giant, sizeToApply);
+    			log::info("VoreBuff firing, Giant: {}, Tiny:{}: Health+: {}, Size+: {}, Spring: {}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName(), healthToApply, sizeToApply, this->factor.value);
+				if (this->factor.value >= 1.0) {
+          			this->state = VoreBuffState::Finishing;//this->state = VoreBuffState::RampDown;
+				}
+        	break;
+		}
+    	/*case VoreBuffState::RampDown: {
+        	if (fabs(this->factor.value - this->factor.value) < 1e-2) {
+          	this->state = VoreBuffState::Finishing;
+        	}
+    	break;
+		}*/
+		case VoreBuffState::Finishing: {
+			if (!AllowDevourment()) {
+				AdjustGiantessSkill(this->giant, this->tiny);
+				VoreMessage_Absorbed(this->giant, this->tiny);
+				BuffAttributes(this->giant, this->tiny);
+				mod_target_scale(this->giant, this->sizePower * 1.2);
+				AdjustSizeReserve(this->giant, this->sizePower);
+			}
+			Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
+        	log::info("Going to done state");
+			this->state = VoreBuffState::Done;
+    	break;
 	}
 	case VoreBuffState::Done: {
+			}
 		}
-	}
-
-    float factor = std::clamp(this->factor.value, 0.0f, 1.0f);
-    float amountToApplyThisUpdate = factor - this->appliedFactor;
-    this->appliedFactor = factor;
-
-    float healthToApply = amountToApplyThisUpdate * this->restorePower;
-    float sizeToApply = amountToApplyThisUpdate * this->sizePower;
-
-    DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
-    DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
-
-    mod_target_scale(this->giant, sizeToApply);
-    log::info("VoreBuff firing, Giant: {}, Tiny:{}: Health+: {}, Size+: {}, Spring: {}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName(), healthToApply, sizeToApply, this->factor.value);
 	}
 
 	bool VoreBuff::Done() {

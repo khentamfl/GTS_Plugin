@@ -51,10 +51,10 @@ namespace Gts
 	};
 
 	enum VoreBuffState {
-    Starting,
-    RampUp,
+    	Starting,
+    	RampUp,
 		Running,
-    RampDown,
+    	RampDown,
 		Finishing,
 		Done,
 	};
