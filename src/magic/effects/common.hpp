@@ -323,7 +323,7 @@ namespace Gts {
 		caster->GetGraphVariableBool("GTS_Busy", GTSBusy);
 		
 		if (!GTSBusy && get_visual_scale(caster) <= 12.0 && !caster->AsActorState()->IsSprinting() && !caster->AsActorState()->IsWalking() && !caster->IsRunning() && !hasSMT || !GTSBusy && hasSMT && get_visual_scale(caster) <= 12.0) {
-			PlayAnimation(caster, "JumpLand"); // Simulate Crush anim
+			//PlayAnimation(caster, "JumpLand"); // Simulate Crush anim
 		}
 		auto Cache = Persistent::GetSingleton().GetData(caster); // TODO: Fix this properly
 		if (!Cache) {

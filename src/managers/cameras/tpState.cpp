@@ -1,6 +1,7 @@
 #include "managers/cameras/tpState.hpp"
 #include "managers/cameras/camutil.hpp"
 #include "managers/cameras/camutil.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
