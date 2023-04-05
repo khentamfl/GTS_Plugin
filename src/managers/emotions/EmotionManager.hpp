@@ -9,17 +9,17 @@ using namespace RE;
 namespace Gts {
     class EmotionData {
 		public:
-			EmotionManagerData(Actor* giant);
+			EmotionData(Actor* giant);
 			void Update();
 			Actor* giant;
 			bool AllowEmotionEdit = false;
-            std::unordered_map Phenomes = {
+            std::vector<Spring> Phenomes = {
                 Spring phenome0 = Spring(0.0, 0.0); //0 - 0.0
                 Spring phenome1 = Spring(0.0, 0.0); //0 - 0.5
                 Spring Phenome2 = Spring(0.0, 0.0); //0 - 1.0
                 Spring Phenome5 = Spring(0.0, 0.0); //0 - 0.8
             }
-            std::unoreder_map Modifiers = {
+            std::vector<Spring> Modifiers = {
                 Spring Modifier0 = Spring(0.0, 0.0); // 0 - 0.8
                 Spring Modifier1 = Spring(0.0, 0.0); // 0 - 0.8
             }

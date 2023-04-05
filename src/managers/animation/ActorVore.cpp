@@ -139,6 +139,7 @@ namespace {
 	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) { 
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 		if (type == "phenome") {
+			Emotions.Phenomes[ph].value = 0.0;
 			Emotions.Phenomes[ph].target = power;
 			Emotions.Phenomes[ph].halflife = 0.20;
 		} if (type == "expression") {

@@ -30,13 +30,13 @@
         if (this->AllowEmotionEdit) {
             auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) { 
-                fgen->phenomeKeyFrame.SetValue(0, this->phenome0.value);
-                fgen->phenomeKeyFrame.SetValue(1, this->phenome1.value);
-                fgen->phenomeKeyFrame.SetValue(2, this->phenome2.value);
-                fgen->phenomeKeyFrame.SetValue(5, this->phenome5.value);
+                fgen->phenomeKeyFrame.SetValue(0, this->Phenomes[0].value);
+                fgen->phenomeKeyFrame.SetValue(1, this->Phenomes[1].value);
+                fgen->phenomeKeyFrame.SetValue(2, this->Phenomes[2].value);
+                fgen->phenomeKeyFrame.SetValue(5, this->Phenomes[5].value);
 
-                fgen->modifierKeyFrame.SetValue(0, this->Modifier0.value);
-                fgen->modifierKeyFrame.SetValue(1, this->Modifier1.value);
+                fgen->modifierKeyFrame.SetValue(0, this->Modifiers[0].value);
+                fgen->modifierKeyFrame.SetValue(1, this->Modifiers[1].value);
             }
         }
 	}
