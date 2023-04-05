@@ -46,7 +46,7 @@ namespace Gts {
 	void CallVampire();
 
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node);
-	void DoDamageEffect(Actor* giant, float damage, float radius, int random);
+	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage);
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause);
 }
