@@ -144,8 +144,8 @@ namespace {
 
 		if (type == "phenome") {
 			//Emotions.Phenomes[ph].value = 0.0;
-			Emotions.Phenomes[ph].target = power;
-			Emotions.Phenomes[ph].halflife = 0.20;
+			Emotions.EmotionData(giant).Phenomes[ph].target = power;
+			Emotions.EmotionData(giant).Phenomes[ph].halflife = 0.20;
 		} if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
@@ -155,8 +155,8 @@ namespace {
 				fgen->exprOverride = true;
 			}
 		} if (type == "modifier") {
-			Emotions.Modifiers[ph].target = power;
-			Emotions.Modifiers[ph].halflife = 0.25;
+			Emotions.EmotionData(giant).Modifiers[ph].target = power;
+			Emotions.EmotionData(giant).Modifiers[ph].halflife = 0.25;
 		}
 	}
 
