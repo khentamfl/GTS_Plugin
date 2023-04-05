@@ -10,8 +10,11 @@ using namespace RE;
 namespace Gts {
     class EmotionData {
 		public:
-            void UpdateEmotions(Actor* giant);
 			EmotionData(Actor* giant);
+            void UpdateEmotions(Actor* giant);
+			void OverridePhenome(int number, float power, float hl, float tg);
+			void OverrideModifier(int number, float power, float hl, float tg);
+			
 			void Update();
 			Actor* giant;
 			bool AllowEmotionEdit = false;
