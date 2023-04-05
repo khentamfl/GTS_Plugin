@@ -60,8 +60,4 @@
 		this->data.try_emplace(giant, giant);
         return this->data.at(giant);
 	}
-
-    EmotionData& EmotionManager::Clear(Actor* giant) {
-        this->data.erase(giant);
-    }
  }

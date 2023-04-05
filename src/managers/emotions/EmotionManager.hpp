@@ -34,7 +34,6 @@ namespace Gts {
 			virtual void Update() override;
 
 			EmotionData& GetGiant(Actor* giant);
-            EmotionData& Clear(Actor* giant);
 
 		private:
 			std::map<Actor*, EmotionData> data;
