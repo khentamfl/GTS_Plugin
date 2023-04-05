@@ -1,5 +1,6 @@
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/emotions/EmotionManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "utils/papyrusUtils.hpp"
@@ -135,21 +136,19 @@ namespace {
 		}
 	}
 
-	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) {
-		if (giant) {
-			auto fgen = giant->GetFaceGenAnimationData();
-			if (fgen) {
-				if (type == "phenome") {
-					fgen->phenomeKeyFrame.SetValue(ph, power);
-				} if (type == "expression") {
-					fgen->exprOverride = false;
-					fgen->SetExpressionOverride(ph, power);
-					fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
-					fgen->exprOverride = true;
-				} if (type == "modifier") {
-					fgen->modifierKeyFrame.SetValue(ph, power);
-				}
-			}
+	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) { 
+		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
+		if (type == "phenome") {
+			Emotions.Phenomes[ph].target = power;
+			Emotions.Phenomes[ph].halflife = 0.20;
+		} if (type == "expression") {
+			fgen->exprOverride = false;
+			fgen->SetExpressionOverride(ph, power);
+			fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
+			fgen->exprOverride = true;
+		} if (type == "modifier") {
+			Emotions.Modifiers[ph].target = power;
+			Emotions.Modifiers[ph].halflife = 0.25;
 		}
 	}
 

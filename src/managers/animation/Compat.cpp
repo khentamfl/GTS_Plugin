@@ -25,9 +25,6 @@ using namespace Gts;
 namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
-	const std::string_view RSound = "lFootstepR";
-	const std::string_view LSound = "lFootstepL";
-	const std::string_view pelv = "NPC Pelvis [Pelv]";
 
 	void TriggerKillZone(Actor* giant) {
 		if (!giant) {
@@ -76,20 +73,24 @@ namespace {
 		data.stage = 0;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20;
-		Runtime::PlaySound("lFootstepL", &data.giant, volume, 1.0);
+		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.25);
+		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 1.10, FootEvent::Light, LNode);
 	}
 	void MCO_DodgeSound(AnimationEventData& data) {
 		data.stage = 0;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20;
-		Runtime::PlaySound("lFootstepL", &data.giant, volume, 1.0);
+		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.25);
+		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 1.10, FootEvent::Light, LNode);
 	}
 
 	void JumpDown(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& sizemanager = SizeManager::GetSingleton();
 		float damage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 30.0 * damage, 4.5, 25, 0.10);
+		DoDamageEffect(&data.giant, damage, 4.0, 20, 0.45);
 		log::info("Firing Jump Compatibility");
 	}
 }

@@ -20,9 +20,6 @@ namespace Gts {
 			void ManageScaleRune(bool enable);
 			void ManageShrinkRune(bool enable);
 			void OverideShrinkRune(float value);
-			
-			
-
 			// Release all vories (shall fall into mouth with animation)
 			void ReleaseAll();
 

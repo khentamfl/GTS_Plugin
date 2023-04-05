@@ -117,7 +117,7 @@ namespace Gts {
 				        .boneNames = {
 						"AnimObjectA",
 					},
-				        .zoomScale = 1.75,
+				        .zoomScale = 1.00,
 				};
 			}
 			case 9: {
