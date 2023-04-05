@@ -140,12 +140,12 @@ namespace {
 		Emotions.AllowEmotionEdit = allow;
 	}
 	void AdjustFacialExpression(Actor* giant, float ph, float power, std::string_view type) {
-		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
+		auto& Emotions = EmotionManager::GetSingleton().EmotionData(giant);
 
 		if (type == "phenome") {
 			//Emotions.Phenomes[ph].value = 0.0;
-			Emotions.EmotionData(giant).Phenomes[ph].target = power;
-			Emotions.EmotionData(giant).Phenomes[ph].halflife = 0.20;
+			Emotions.Phenomes[ph].target = power;
+			Emotions.Phenomes[ph].halflife = 0.20;
 		} if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
@@ -155,8 +155,8 @@ namespace {
 				fgen->exprOverride = true;
 			}
 		} if (type == "modifier") {
-			Emotions.EmotionData(giant).Modifiers[ph].target = power;
-			Emotions.EmotionData(giant).Modifiers[ph].halflife = 0.25;
+			Emotions.Modifiers[ph].target = power;
+			Emotions.Modifiers[ph].halflife = 0.25;
 		}
 	}
 
