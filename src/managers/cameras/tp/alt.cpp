@@ -41,7 +41,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 		int altMode = Runtime::GetInt("AltCameraTarget");
-		if (sizemanager.GetActionBool(player, 1)) {
+		if (sizemanager.GetActionBool(player, 3)) {
 			altMode = 8; // Thigh Sandwich
 		} else if (sizemanager.GetActionBool(player, 2)) {
 			altMode = 9; // Vore
@@ -121,7 +121,7 @@ namespace Gts {
 				};
 			}
 			case 9: {
-				return BoneTarget { // Vore R
+				return BoneTarget { // Vore
 				        .boneNames = {
 						"AnimObjectA",
 					},

@@ -392,7 +392,9 @@ namespace Gts {
 			this->GetData(actor).IsThighSandwiching = enable;
 		} else if (type == 2.0) {
 			this->GetData(actor).IsVoring = enable;
-		} 
+		} else if (type == 3.0) {
+			this->GetData(actor).AlterSandwichCamera = enable;
+		}
 	}
 	bool SizeManager::GetActionBool(Actor* actor, float type) {
 		if (type == 0.0) {
@@ -401,7 +403,9 @@ namespace Gts {
 			return this->GetData(actor).IsThighSandwiching;
 		} else if (type == 2.0) {
 			return this->GetData(actor).IsVoring;
-		} 
+		} else if (type == 3.0) {
+			return this->GetData(actor).AlterSandwichCamera;
+		}
 		return false;
 	}
 	//

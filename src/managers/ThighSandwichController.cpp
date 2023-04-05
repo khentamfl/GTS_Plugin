@@ -85,7 +85,19 @@
 
 	void SandwichingData::UpdateRune(Actor* giant) {
 		string node_name = "GiantessRune";
-		if (this->RuneScale == true) {
+		if (this->RuneShrink == true) {
+			auto node = find_node(giant, node_name, false);
+			if (node) {
+				this->ShrinkRune.halflife = 0.7/AnimationManager::GetAnimSpeed(giant);
+				this->ShrinkRune.target = 1.0;
+				this->ScaleRune.value = 0.0;
+				this->ScaleRune.target = 0.0;
+				node->local.scale = 1.0 - this->ShrinkRune.value;
+				log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
+				update_node(node);
+			} 
+		}
+		else if (this->RuneScale == true) {
 			auto node = find_node(giant, node_name, false);
 			if (node) {
 				this->ScaleRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giant);
@@ -95,17 +107,7 @@
 				log::info("Scale Rune Value: {}", this->ScaleRune.value);
 				update_node(node);
 			} 
-		} else if (this->RuneShrink == true) {
-			auto node = find_node(giant, node_name, false);
-			if (node) {
-				this->ShrinkRune.halflife = 0.7/AnimationManager::GetAnimSpeed(giant);
-				this->ShrinkRune.target = 1.0;
-				this->ScaleRune.value = 0.0;
-				node->local.scale = 1.0 - this->ShrinkRune.value;
-				log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
-				update_node(node);
-			} 
-		}
+		} 
 	}
 
     void SandwichingData::Update() {
@@ -319,7 +321,7 @@
 		this->RuneShrink = enable;
 	}
 	void SandwichingData::OverideShrinkRune(float value) {
-		this->ScaleRune.value = 0.0;
+		this->ScaleRune.value = value;
 	}
 
     SandwichingData& ThighSandwichController::GetSandwichingData(Actor* giant) {

@@ -128,8 +128,8 @@ namespace {
 	void GTSSandwich_EnableRune(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.SetActionBool(&data.giant, true, 0.0); // +100% camera distance
-		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat
+		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat 
+		sizemanager.SetActionBool(&data.giant, true, 3.0); // Focus camera on AnimObjectA
 		sandwichdata.ManageScaleRune(true);
 		sandwichdata.ManageShrinkRune(false);
 	}
@@ -194,7 +194,9 @@ namespace {
 	}
 
 	void GTSSandwich_ThighLoop_Exit(AnimationEventData& data) {
+		auto& sizemanager = SizeManager::GetSingleton();
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		sizemanager.SetActionBool(&data.giant, false, 3.0);
 		sandwichdata.ManageScaleRune(false);
 		sandwichdata.ManageShrinkRune(true);
 		sandwichdata.OverideShrinkRune(0.0);
@@ -217,7 +219,6 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.ManageScaleRune(false);
 		sandwichdata.ManageShrinkRune(false);
-		sizemanager.SetActionBool(&data.giant, false, 0.0);
 		sizemanager.SetActionBool(&data.giant, false, 1.0); // Allow sandwich repeat
 	}
 
