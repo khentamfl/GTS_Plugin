@@ -33,9 +33,12 @@
             std::uint32_t One = 1;
             std::uint32_t Two = 2;
             std::uint32_t Five = 5;
-            log::info("Emotions True, giant: {}", giant->GetDisplayFullName());
 			if (fgen) { 
-                log::info("Fgen True");
+                log::info("PHenome 0 value: {}", this->Phenomes[0].value);
+                log::info("PHenome 1 value: {}", this->Phenomes[1].value);
+                log::info("PHenome 2 value: {}", this->Phenomes[2].value);
+                log::info("PHenome 3 value: {}", this->Phenomes[3].value);
+
                 fgen->phenomeKeyFrame.SetValue(Zero, this->Phenomes[0].value);
                 fgen->phenomeKeyFrame.SetValue(One, this->Phenomes[1].value);
                 fgen->phenomeKeyFrame.SetValue(Two, this->Phenomes[2].value);
