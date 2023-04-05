@@ -20,22 +20,12 @@ namespace Gts {
 			bool AllowEmotionEdit = false;
 
 			private:
-				Spring Phenome0 = Spring(0.0, 0.25);
-				Spring Phenome1 = Spring(0.0, 0.25);
-				Spring Phenome5 = Spring(0.0, 0.25);
+				Spring Phenome0 = Spring(0.0, 0.16);
+				Spring Phenome1 = Spring(0.0, 0.16);
+				Spring Phenome5 = Spring(0.0, 0.16);
 
 				Spring Modifier0 = Spring(0.0, 0.25);
 				Spring Modifier1 = Spring(0.0, 0.25);
-            std::vector<Spring> Phenomes = {
-                Spring(0.0, 0.25), //0 - 0.0
-                Spring(0.0, 0.25), //0 - 0.5
-                Spring(0.0, 0.25), //0 - 1.0
-                Spring(0.0, 0.25), //0 - 0.8
-            };
-            std::vector<Spring> Modifiers = {
-                Spring(0.0, 0.25), // 0 - 0.8
-                Spring(0.0, 0.25), // 0 - 0.8
-            };
 	};
 	class EmotionManager : public EventListener {
 		public:

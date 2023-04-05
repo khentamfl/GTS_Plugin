@@ -143,7 +143,7 @@ namespace {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 
 		if (type == "phenome") {
-			Emotions.OverridePhenome(ph, 0.0, 0.25, power);
+			Emotions.OverridePhenome(ph, 0.0, 0.16, power);
 		} if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
@@ -180,6 +180,7 @@ namespace {
 
 	void GTSvore_sit_end(AnimationEventData& data) {
 		Rumble::Stop("BodyRumble", &data.giant);
+		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
 	}
 
 	void GTSvore_hand_extend(AnimationEventData& data) {
@@ -195,7 +196,6 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		VoreData.GrabAll();
 		ToggleEmotionEdit(giant, true);
-		AdjustFacialExpression(giant, 2, 1.0, "expression"); // smile (expression)
 		auto firstTiny = VoreData.GetVories()[0];
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			ManageCamera(giant, true, 2.0); //PlayerCamera::GetSingleton()->cameraTarget = firstTiny->CreateRefHandle();

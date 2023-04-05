@@ -148,6 +148,10 @@ perks:
   BoneCrusher: "GTS.esp|128CF5"
   HealthGate: "GTS.esp|4E0B39"
   GrowingPressure: "GTS.esp|1E93A9"
+  DestructionBasics: "GTS.esp|587C4A"
+  KillerThighs: "GTS.esp|587C4B"
+  
+  
 
 explosions:
   BloodExplosion: "GTS.esp|01CE9D"

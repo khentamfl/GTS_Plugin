@@ -219,8 +219,9 @@ namespace {
 
 	void ThighCrushEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("ThighLoopEnter", player);
-		log::info("Triggering Stage 0");
+		if (Runtime::HasPerk(player, "KillerThighs")) {
+			AnimationManager::StartAnim("ThighLoopEnter", player);
+		}
 	}
 
 	void ThighCrushKillEvent(const InputEventData& data) {

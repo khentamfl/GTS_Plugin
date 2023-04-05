@@ -345,7 +345,9 @@ namespace Gts {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		if (cause == "Crushed") { // Default crush
-			if (random <= 2) {
+			if (random == 1) {
+				ConsoleLog::GetSingleton()->Print("%s became a bloody stain under %s foot.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random <= 2) {
 				ConsoleLog::GetSingleton()->Print("%s was crushed by the feet of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
 				ConsoleLog::GetSingleton()->Print("Feet of %s crushed %s into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
@@ -357,7 +359,9 @@ namespace Gts {
 			return;
 		}
 		else if (cause == "HandCrushed") {
-			if (random <= 2) {
+			if (random == 1) {
+				ConsoleLog::GetSingleton()->Print("%s life was squeezed out in %s grip", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random <= 2) {
 				ConsoleLog::GetSingleton()->Print("%s was crushed between the fingers of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
 				ConsoleLog::GetSingleton()->Print("%s has been crushed in the hand of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
@@ -384,7 +388,9 @@ namespace Gts {
 			return;
 		}
 		else if (cause == "ThighCrushed") {
-			if (random <= 2) {
+			if (random == 1) {
+				ConsoleLog::GetSingleton()->Print("%s was crushed to death between %s thighs.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} if (random <= 2) {
 				ConsoleLog::GetSingleton()->Print("%s crushed %s during leg stretch", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 4) {
 				ConsoleLog::GetSingleton()->Print("%s ended life of %s between legs", giant->GetDisplayFullName(), tiny->GetDisplayFullName());

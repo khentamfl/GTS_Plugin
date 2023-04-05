@@ -104,14 +104,18 @@ namespace {
 
 	void RightStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("StompRight", player);
-		log::info("Stomp Right");
+		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			AnimationManager::StartAnim("StompRight", player);
+			log::info("Stomp Right");
+		}
 	}
 
 	void LeftStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("StompLeft", player);
-		log::info("Stomp Left");
+		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			AnimationManager::StartAnim("StompLeft", player);
+			log::info("Stomp Left");
+		}
 	}
 }
 

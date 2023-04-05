@@ -231,17 +231,19 @@ namespace {
 	void ThighSandwichEnterEvent(const InputEventData& data) {
 		auto& Sandwiching = ThighSandwichController::GetSingleton();
 		auto pred = PlayerCharacter::GetSingleton();
-		std::size_t numberOfPrey = 1;
-		if (Runtime::HasPerk(pred, "MassVorePerk")) {
-			numberOfPrey = 1 + (get_visual_scale(pred)/3);
-		}
-		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
-		for (auto prey: preys) {
-			Sandwiching.StartSandwiching(pred, prey);
-			auto node = find_node(pred, "GiantessRune", false);
-			if (node) {
-				node->local.scale = 0.01;
-				update_node(node);
+		if (Runtime::HasPerk(pred, "KillerThighs")) {
+			std::size_t numberOfPrey = 1;
+			if (Runtime::HasPerk(pred, "MassVorePerk")) {
+				numberOfPrey = 1 + (get_visual_scale(pred)/3);
+			}
+			std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
+			for (auto prey: preys) {
+				Sandwiching.StartSandwiching(pred, prey);
+				auto node = find_node(pred, "GiantessRune", false);
+				if (node) {
+					node->local.scale = 0.01;
+					update_node(node);
+				}
 			}
 		}
 	}

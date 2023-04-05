@@ -22,13 +22,15 @@
 
     void PrintSuffocate(Actor* pred, Actor* prey) {
         int random = rand() % 5;
-        if (random <= 1) {
+		if (random <= 1) {
+			ConsoleLog::GetSingleton()->Print("%s was slowly smothered between %s thighs", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+		} else if (random == 2) {
 			ConsoleLog::GetSingleton()->Print("%s was suffocated by the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (random >= 4) {
+		} else if (random == 3) {
 			ConsoleLog::GetSingleton()->Print("Thighs of %s suffocated %s to death", pred->GetDisplayFullName(), prey->GetDisplayFullName());
-		} else if (random >= 3) {
+		} else if (random == 4) {
 			ConsoleLog::GetSingleton()->Print("%s got smothered between the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (random > 2) {
+		} else if (random == 5) {
 			ConsoleLog::GetSingleton()->Print("%s lost life to the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
     }

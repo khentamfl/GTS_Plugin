@@ -32,17 +32,18 @@ namespace {
 
 	void GrabEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-
-		for (auto otherActor: find_actors()) {
-			if (otherActor != player) {
-				float playerscale = get_visual_scale(player);
-				float victimscale = get_visual_scale(otherActor);
-				float sizedifference = playerscale/victimscale;
-				NiPoint3 giantLocation = player->GetPosition();
-				NiPoint3 tinyLocation = otherActor->GetPosition();
-				if ((tinyLocation-giantLocation).Length() < 460*get_visual_scale(player) && sizedifference >= 4.2) {
-					Grab::GrabActor(player, otherActor);
-					break;
+		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			for (auto otherActor: find_actors()) {
+				if (otherActor != player) {
+					float playerscale = get_visual_scale(player);
+					float victimscale = get_visual_scale(otherActor);
+					float sizedifference = playerscale/victimscale;
+					NiPoint3 giantLocation = player->GetPosition();
+					NiPoint3 tinyLocation = otherActor->GetPosition();
+					if ((tinyLocation-giantLocation).Length() < 160*get_visual_scale(player) && sizedifference >= 6.2) {
+						Grab::GrabActor(player, otherActor);
+						break;
+					}
 				}
 			}
 		}
@@ -52,6 +53,7 @@ namespace {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player); 
+		if (Runtime::HasPerk(player, "DestructionBasics")) {
 		if (grabbedActor) {
 			float sd = get_visual_scale(player)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
@@ -64,13 +66,16 @@ namespace {
 				CrushManager::Crush(player, grabbedActor);
 				PrintDeathSource(player, grabbedActor, "HandCrushed");
 				Grab::Release(player);
+				}
 			}
 		}
 	}
 
 	void GrabSpareEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		Grab::Release(player);
+		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			Grab::Release(player);
+		}
 	}
 }
 
