@@ -411,8 +411,8 @@ namespace Gts {
         	break;
     	}*/
 		case VoreBuffState::Running: {
-    			float healthToApply = this->restorePower/200;
-    			float sizeToApply = this->sizePower/200;
+    			float healthToApply = this->restorePower/4000;
+    			float sizeToApply = this->sizePower/4000;
 
     			DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
     			DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
@@ -437,6 +437,7 @@ namespace Gts {
 				BuffAttributes(this->giant, this->tiny);
 				mod_target_scale(this->giant, this->sizePower * 1.2);
 				AdjustSizeReserve(this->giant, this->sizePower);
+				Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
 			}
 			Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
         	log::info("Going to done state");

@@ -128,7 +128,8 @@ namespace {
 		data.currentTrigger = 2;
 
 		data.canEditAnimSpeed = true;
-		StartLegRumble("ThighCrush", data.giant, 0.22, 0.20);
+		Rumble::Once("ThighCrush_End", data.giant, 0.22, 0.20);
+		StopLegRumble("ThighCrush", data.giant);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}
@@ -142,7 +143,8 @@ namespace {
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
 
-		StartLegRumble("ThighCrushHeavy", data.giant, 0.50, 0.15);
+		Rumble::Once("ThighCrushHeavy_End", data.giant, 0.50, 0.15);
+		StopLegRumble("ThighCrushHeavy", data.giant);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
 	}
@@ -155,8 +157,7 @@ namespace {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 
-		StopLegRumble("ThighCrush", data.giant);
-		StartBodyRumble("BodyRumble", data.giant, 0.15, 0.12);
+		StartBodyRumble("BodyRumble", data.giant, 0.25, 0.12);
 		data.stage = 8;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopexit");
 	}
@@ -165,7 +166,6 @@ namespace {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		float volume = scale * 0.10 * speed;
-		StopLegRumble("ThighCrush", data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode);
@@ -177,7 +177,6 @@ namespace {
 	void GTSstandL(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-		StopLegRumble("ThighCrush", data.giant);
 
 		float volume = scale * 0.10 * speed;
 
@@ -191,7 +190,6 @@ namespace {
 	void GTSstandRS(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-		StopLegRumble("ThighCrush", data.giant);
 
 		float volume = scale * 0.05 * speed;
 
@@ -207,10 +205,7 @@ namespace {
 	}
 	void GTStoexit(AnimationEventData& data) {
 		// Going to exit
-		StopLegRumble("ThighCrush", data.giant);
 		StopLegRumble("BodyRumble", data.giant);
-		StopLegRumble("ThighCrushStompR", data.giant);
-		StopLegRumble("ThighCrushStompL", data.giant);
 	}
 	void GTSBEH_Exit(AnimationEventData& data) {
 		// Final exit
