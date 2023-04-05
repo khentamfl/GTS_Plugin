@@ -62,7 +62,7 @@ namespace Gts {
 			bool dragon_was_eaten = false;
 
 			// Volume scales cubically
-			float base_volume = /bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
+			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
 			float base_volume_meters = unit_to_meter(base_volume);
 
 			result.base_height = base_height_meters;

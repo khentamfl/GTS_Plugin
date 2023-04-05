@@ -376,7 +376,9 @@ namespace Gts {
 		}
 
 		float movementFactor = 1.0;
-
+		if (giant->AsActorState()->IsSprinting()) {
+			movementFactor *= 1.75;
+		}
 		if (giant->IsSneaking()) {
 			movementFactor *= 0.6;
 		}
