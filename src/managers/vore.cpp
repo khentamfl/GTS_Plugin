@@ -503,7 +503,7 @@ namespace Gts {
 
 	void Vore::RandomVoreAttempt(Actor* caster) {
 		Actor* player = PlayerCharacter::GetSingleton();
-		auto transient = Transient::GetSingleton().GetActorData(caster);
+		auto transient = Transient::GetSingleton().GetData(caster);
 		auto& VoreManager = Vore::GetSingleton();
 		if (!transient) {
 			return;
@@ -511,7 +511,7 @@ namespace Gts {
 		if (!transient->can_do_vore) {
 			return;
 		}
-		
+
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerk(player, "MassVorePerk")) {
 			numberOfPrey = 1 + (get_visual_scale(caster)/3);
@@ -774,7 +774,7 @@ namespace Gts {
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Enables HP requirement on Vore.
-			if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) { 
+			if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 				float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);
 				float gethp = GetAV(prey, ActorValue::kHealth);
 				float healthrequirement = getmaxhp/pred_scale;

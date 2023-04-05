@@ -29,7 +29,7 @@ namespace {
 	}
 
 	float GetAttributeBonus(StaticFunctionTag*, Actor* actor, float value) {
-		auto transient = Transient::GetSingleton().GetActorData(actor);
+		auto transient = Transient::GetSingleton().GetData(actor);
 		if (!actor) {
 			return 1.0;
 		}
@@ -55,7 +55,7 @@ namespace {
 	}
 
 	float GetFlatAttributeBonus(StaticFunctionTag*, Actor* actor, float value) {
-		auto transient = Transient::GetSingleton().GetActorData(actor);
+		auto transient = Transient::GetSingleton().GetData(actor);
 		if (!actor) {
 			return 0.0;
 		}
@@ -184,7 +184,7 @@ namespace {
 
 	bool WasDragonEaten(StaticFunctionTag*) {
 		auto pc = PlayerCharacter::GetSingleton();
-		auto transient = Transient::GetSingleton().GetActorData(pc);
+		auto transient = Transient::GetSingleton().GetData(pc);
 		if (transient) {
 			return transient->dragon_was_eaten;
 		}

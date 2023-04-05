@@ -188,8 +188,10 @@ namespace Gts {
 
 
 	void AttributeManager::OverrideSMTBonus(float Value) {
-		auto ActorAttributes = Persistent::GetSingleton().GetActorData(PlayerCharacter::GetSingleton());
-		ActorAttributes->smt_run_speed = Value;
+		auto ActorAttributes = Persistent::GetSingleton().GetData(PlayerCharacter::GetSingleton());
+    if (ActorAttributes) {
+		    ActorAttributes->smt_run_speed = Value;
+    }
 	}
 
 	float AttributeManager::GetAttributeBonus(Actor* actor, ActorValue av) {
@@ -230,7 +232,7 @@ namespace Gts {
 				float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk);
 				float bonusspeed = clamp(0.90, 1.0, speed_mult_walk);
 				float PerkSpeed = 1.0;
-				auto actorData = Persistent::GetSingleton().GetActorData(actor);
+				auto actorData = Persistent::GetSingleton().GetData(actor);
 				float Bonus = 1.0;
 				if (actorData) {
 					Bonus = actorData->smt_run_speed;
@@ -280,7 +282,7 @@ namespace Gts {
 		switch (av) {
 			case ActorValue::kCarryWeight: {
 				bonus = attributes.GetAttributeBonus(actor, av);
-				auto transient = Transient::GetSingleton().GetActorData(actor);
+				auto transient = Transient::GetSingleton().GetData(actor);
 				if (transient != nullptr) {
 					transient->carryweight_boost = (originalValue * bonus) - originalValue;
 				}
@@ -329,7 +331,7 @@ namespace Gts {
 				//log::info("Health permav: {}", permav);
 				//log::info("Health bonus: {}", bonus);
 				//log::info("Health finalValue: {}", finalValue);
-				auto transient = Transient::GetSingleton().GetActorData(actor);
+				auto transient = Transient::GetSingleton().GetData(actor);
 				if (transient) {
 					transient->health_boost = finalValue - originalValue;
 				}
@@ -345,7 +347,7 @@ namespace Gts {
 
 		switch (av) {
 			case ActorValue::kHealth: {
-				auto transient = Transient::GetSingleton().GetActorData(actor);
+				auto transient = Transient::GetSingleton().GetData(actor);
 				if (transient) {
 					float lastEdit = transient->health_boost;
 					if (finalValue - lastEdit > 0.0) {

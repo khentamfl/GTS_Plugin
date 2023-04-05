@@ -86,7 +86,7 @@ namespace {
 	};
 
 	void ToggleVore(Actor* actor, bool toggle) {
-		auto transient = Transient::GetSingleton().GetActorData(actor);
+		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			transient->can_do_vore = toggle;
 			transient->can_be_crushed = false;
@@ -139,7 +139,7 @@ namespace {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 		Emotions.AllowEmotionEdit = allow;
 	}
-	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) { 
+	void AdjustFacialExpression(Actor* giant, std::uint32_t ph, float power, std::string_view type) {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 
 		if (type == "phenome") {
@@ -182,7 +182,7 @@ namespace {
 	}
 
 	void GTSvore_sit_end(AnimationEventData& data) {
-		Rumble::Stop("BodyRumble", &data.giant); 
+		Rumble::Stop("BodyRumble", &data.giant);
 	}
 
 	void GTSvore_hand_extend(AnimationEventData& data) {

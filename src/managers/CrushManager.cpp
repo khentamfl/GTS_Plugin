@@ -138,7 +138,7 @@ namespace Gts {
 			if (!giant) {
 				return;
 			}
-			auto transient = Transient::GetSingleton().GetActorData(tiny);
+			auto transient = Transient::GetSingleton().GetData(tiny);
 			if (transient) {
 				if (!transient->can_be_crushed) {
 					return;

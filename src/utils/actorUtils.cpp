@@ -182,7 +182,7 @@ namespace Gts {
 		if (progressionQuest) {
 			auto stage = progressionQuest->GetCurrentStageID();
 			if (stage == 90) {
-				auto transient = Transient::GetSingleton().GetActorData(pc);
+				auto transient = Transient::GetSingleton().GetData(pc);
 				if (transient) {
 					ConsoleLog::GetSingleton()->Print("Quest is Completed");
 					transient->dragon_was_eaten = true;
@@ -321,7 +321,7 @@ namespace Gts {
 		if (progressionQuest) {
 			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "SatisfyVampire");
 		}
-	} 
+	}
 
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
 		auto& footstep = FootStepManager::GetSingleton();
@@ -353,9 +353,9 @@ namespace Gts {
 				ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", tiny->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 7) {
 				ConsoleLog::GetSingleton()->Print("%s relentlessly crushed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-			} 
+			}
 			return;
-		} 
+		}
 		else if (cause == "HandCrushed") {
 			if (random <= 2) {
 				ConsoleLog::GetSingleton()->Print("%s was crushed between the fingers of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
@@ -365,7 +365,7 @@ namespace Gts {
 				ConsoleLog::GetSingleton()->Print("%s applied too much pressure to her hand, crushing %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 7) {
 				ConsoleLog::GetSingleton()->Print("%s was turned into nothing inside the hand of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} 
+			}
 			return;
 		}
 		else if (cause == "Shrinked") {
@@ -377,7 +377,7 @@ namespace Gts {
 				ConsoleLog::GetSingleton()->Print("%s was absorbed by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 7) {
 				ConsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} 
+			}
 			return;
 		}
 		else if (cause == "Vored") {
@@ -392,7 +392,7 @@ namespace Gts {
 				ConsoleLog::GetSingleton()->Print("%s applied too much leg pressure to %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 7) {
 				ConsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} 
+			}
 			return;
 			}
 		else if (cause == "ThighSandwiched") {
@@ -411,5 +411,3 @@ namespace Gts {
 		}
 	}
 }
-
-		
