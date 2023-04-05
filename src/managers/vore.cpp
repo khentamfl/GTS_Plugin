@@ -383,7 +383,7 @@ namespace Gts {
 			if (Runtime::HasPerkTeam(giant, "VorePerkRegeneration")) {
 				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 8 * mealEffiency;
 			} else {
-        	this->restorePower = 0.0;
+        		this->restorePower = 0.0;
       		}
 			this->sizePower = tiny_scale * mealEffiency;
 		}
@@ -411,20 +411,15 @@ namespace Gts {
         	break;
     	}*/
 		case VoreBuffState::Running: {
-          		this->factor.target = 1.0;
-          		this->factor.halflife = this->duration * 0.1;
+    			float healthToApply = this->restorePower/200;
+    			float sizeToApply = this->sizePower/200;
 
-    			float healthToApply = this->factor.value * this->restorePower/200;
-    			float sizeToApply = this->factor.value * this->sizePower/200;
-
-				if (Runtime::HasPerk(this->giant, "VorePerkRegeneration")) {
-    				DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
-    				DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
-				}
+    			DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
+    			DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
 
     			mod_target_scale(this->giant, sizeToApply);
-    			log::info("VoreBuff firing, Giant: {}, Tiny:{}: Health+: {}, Size+: {}, Spring: {}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName(), healthToApply, sizeToApply, this->factor.value);
-				if (this->factor.value >= 1.0) {
+    			log::info("VoreBuff firing, Giant: {}, Tiny:{}: Health+: {}, Size+: {}, Value: {}", this->giant->GetDisplayFullName(), this->tiny->GetDisplayFullName(), healthToApply, sizeToApply, this->factor.value);
+				if (this->factor.value >= 0.99) {
           			this->state = VoreBuffState::Finishing;//this->state = VoreBuffState::RampDown;
 				}
         	break;
