@@ -143,7 +143,7 @@ namespace {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 
 		if (type == "phenome") {
-			Emotions.Phenomes[ph].value = 0.0;
+			//Emotions.Phenomes[ph].value = 0.0;
 			Emotions.Phenomes[ph].target = power;
 			Emotions.Phenomes[ph].halflife = 0.20;
 		} if (type == "expression") {
