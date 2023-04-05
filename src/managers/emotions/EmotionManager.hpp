@@ -16,14 +16,14 @@ namespace Gts {
 			Actor* giant;
 			bool AllowEmotionEdit = false;
             std::vector<Spring> Phenomes = {
-                Spring(0.0, 0.0), //0 - 0.0
-                Spring(0.0, 0.0), //0 - 0.5
-                Spring(0.0, 0.0), //0 - 1.0
-                Spring(0.0, 0.0), //0 - 0.8
+                Spring(0.0, 0.2), //0 - 0.0
+                Spring(0.0, 0.2), //0 - 0.5
+                Spring(0.0, 0.2), //0 - 1.0
+                Spring(0.0, 0.2), //0 - 0.8
             };
             std::vector<Spring> Modifiers = {
-                Spring(0.0, 0.0), // 0 - 0.8
-                Spring(0.0, 0.0), // 0 - 0.8
+                Spring(0.0, 0.2), // 0 - 0.8
+                Spring(0.0, 0.2), // 0 - 0.8
             };
 	};
 	class EmotionManager : public EventListener {

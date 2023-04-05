@@ -34,15 +34,10 @@
             std::uint32_t Two = 2;
             std::uint32_t Five = 5;
 			if (fgen) { 
-                log::info("PHenome 0 value: {}", this->Phenomes[0].value);
-                log::info("PHenome 1 value: {}", this->Phenomes[1].value);
-                log::info("PHenome 2 value: {}", this->Phenomes[2].value);
-                log::info("PHenome 3 value: {}", this->Phenomes[3].value);
-
-                log::info("PHenome 0 Target: {}", this->Phenomes[0].target);
-                log::info("PHenome 1 Target: {}", this->Phenomes[1].target);
-                log::info("PHenome 2 Target: {}", this->Phenomes[2].target);
-                log::info("PHenome 3 Target: {}", this->Phenomes[3].target);
+                log::info("PHenome 0 value: {}, target: {}, halflife: {}", this->Phenomes[0].value, this->Phenomes[0].target, this->Phenomes[0].halflife);
+                log::info("PHenome 1 value: {}, target: {}, halflife: {}", this->Phenomes[1].value, this->Phenomes[1].target, this->Phenomes[1].halflife);
+                log::info("PHenome 2 value: {}, target: {}, halflife: {}", this->Phenomes[2].value, this->Phenomes[2].target, this->Phenomes[2].halflife);
+                log::info("PHenome 3 value: {}, target: {}, halflife: {}", this->Phenomes[3].value, this->Phenomes[3].target, this->Phenomes[3].halflife);
 
                 fgen->phenomeKeyFrame.SetValue(Zero, this->Phenomes[0].value);
                 fgen->phenomeKeyFrame.SetValue(One, this->Phenomes[1].value);
