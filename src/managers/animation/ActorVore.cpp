@@ -141,10 +141,12 @@ namespace {
 	}
 	void AdjustFacialExpression(Actor* giant, int ph, float power, std::string_view type) {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
+		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
 
 		if (type == "phenome") {
-			Emotions.OverridePhenome(ph, 0.0, 0.16, power);
-		} if (type == "expression") {
+			Emotions.OverridePhenome(ph, 0.0, 0.15/AnimSpeed, power);
+		} 
+		if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
 				fgen->exprOverride = false;
@@ -153,7 +155,7 @@ namespace {
 				fgen->exprOverride = true;
 			}
 		} if (type == "modifier") {
-			Emotions.OverrideModifier(ph, 0.0, 0.25, power);
+			Emotions.OverrideModifier(ph, 0.0, 0.25/AnimSpeed, power);
 		}
 	}
 
