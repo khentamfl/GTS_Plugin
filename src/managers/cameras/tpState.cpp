@@ -9,6 +9,18 @@
 using namespace RE;
 using namespace Gts;
 
+namespace {
+	float CheckForVoreAction() {
+		auto player = PlayerCharacter::GetSingleton();
+		auto& sizemanager = SizeManager::GetSingleton();
+		if (sizemanager.GetActionBool(player, 2.0)) {
+			return 0.10;
+		} else {
+			return 0.5;
+		}
+	}
+}
+
 namespace Gts {
 	NiPoint3 ThirdPersonCameraState::GetPlayerLocalOffset(const NiPoint3& cameraPos) {
 		NiPoint3 pos = NiPoint3();
@@ -26,6 +38,8 @@ namespace Gts {
 						auto transform = playerTrans.Invert();
 						NiPoint3 lookAt = CompuleLookAt(boneTarget.zoomScale);
 						NiPoint3 localLookAt = transform*lookAt;
+						this->smoothScale.halflife = CheckForVoreAction();
+						this->smoothedBonePos.halflife = CheckForVoreAction();
 						this->smoothScale.target = scale;
 						pos += localLookAt * -1 * this->smoothScale.value;
 

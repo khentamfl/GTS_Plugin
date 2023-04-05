@@ -53,15 +53,15 @@ namespace {
 
 	void GTSstompimpactR(AnimationEventData& data) {
 		Rumble::Once("StompR", &data.giant, 2.20, 0.0, RNode);
-		DoDamageEffect(&data.giant, 1.0, 1.4, 10, 0.25);
-		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
+		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.4, 10, 0.25);
+		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
 		//data.stage = 1;
 		Rumble::Once("StompL", &data.giant, 2.20, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.0, 1.4, 10, 0.25);
-		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
+		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.4, 10, 0.25);
+		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {

@@ -169,6 +169,7 @@ namespace {
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode);
+		DoDamageEffect(&data.giant, 0.6, 0.8, 25, 0.5);
 		data.stage = 9;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandR");
 	}
@@ -182,6 +183,7 @@ namespace {
 
 		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode);
+		DoDamageEffect(&data.giant, 0.6, 0.8, 25, 0.5);
 		data.stage = 9;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandL");
 	}
@@ -195,6 +197,7 @@ namespace {
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoSizeEffect(&data.giant, 0.40, FootEvent::Right, RNode);
+		DoDamageEffect(&data.giant, 0.6, 0.8, 25, 0.5);
 		data.stage = 9;
 	}
 	void GTSBEH_Next(AnimationEventData& data) {

@@ -225,7 +225,7 @@ namespace {
 	void GTSSandwich_FootImpact(AnimationEventData& data) {
 		DoSizeEffect(&data.giant, 1.35, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.35, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 6.0, 1.9, 10, 0.75);
+		DoDamageEffect(&data.giant, 7.0, 2.6, 10, 0.75);
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {
