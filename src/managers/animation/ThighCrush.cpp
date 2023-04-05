@@ -66,6 +66,13 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
+	void LegRumbleOnce(std::string_view tag, Actor& actor, float power, float halflife) {
+		for (auto& node_name: LEG_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Once(rumbleName, &actor, power,  halflife, node_name);
+		}
+	}
+
 	void StartLegRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
@@ -128,7 +135,7 @@ namespace {
 		data.currentTrigger = 2;
 
 		data.canEditAnimSpeed = true;
-		Rumble::Once("ThighCrush_End", data.giant, 0.22, 0.20);
+		LegRumbleOnce("ThighCrush_End", &data.giant, 0.22, 0.20);
 		StopLegRumble("ThighCrush", data.giant);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
@@ -143,7 +150,7 @@ namespace {
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
 
-		Rumble::Once("ThighCrushHeavy_End", data.giant, 0.50, 0.15);
+		LegRumbleOnce("ThighCrushHeavy_End", &data.giant, 0.50, 0.15);
 		StopLegRumble("ThighCrushHeavy", data.giant);
 		data.stage = 6;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
