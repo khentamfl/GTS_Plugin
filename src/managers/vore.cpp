@@ -439,7 +439,7 @@ namespace Gts {
 				AdjustSizeReserve(this->giant, this->sizePower);
 				Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
 			}
-			if (this->MoanTimer.ShouldRunFrame()) {
+			if (this->moantime.ShouldRunFrame()) {
 				Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
 			}
 			Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
