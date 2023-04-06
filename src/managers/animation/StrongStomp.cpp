@@ -74,6 +74,11 @@ namespace {
         }
 	}
 
+	void TrackFeet(float number, bool enable) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		sizemanager.SetActionBool(&data.giant, enable, number);
+	}
+
 	void StopLegRumble(std::string_view tag, Actor& actor, std::string_view type) {
         if (type == "Left") {
 		    for (auto& node_name: L_LEG_RUMBLE_NODES) {
@@ -99,14 +104,22 @@ namespace {
 	}
 
 	void GTS_StrongStomp_LR_Start(AnimationEventData& data) {
+		auto giant = &data.giant;
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
+		if (giant->formId == 0x14) {
+			TrackFeet(6.0, true);
+		}
 		StartLegRumble("StrongStompR", data.giant, 0.6, 0.10, "Right");
 	}
 
     void GTS_StrongStomp_LL_Start(AnimationEventData& data) {
+		auto giant = &data.giant;
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
+		if (giant->formId == 0x14) {
+			TrackFeet(5.0, true);
+		}
 		StartLegRumble("StrongStompL", data.giant, 0.6, 0.10, "Left");
 	}
 
@@ -149,9 +162,17 @@ namespace {
         data.animSpeed = 1.0;
     }
     void GTS_StrongStomp_ReturnRL_Start(AnimationEventData& data) {
+		auto giant = &data.giant;
+		if (giant->formId == 0x14) {
+			TrackFeet(6.0, false);
+		}
         StartLegRumble("StrongStompR", data.giant, 0.4, 0.10, "Right");
     }
     void GTS_StrongStomp_ReturnLL_Start(AnimationEventData& data) {
+		auto giant = &data.giant;
+		if (giant->formId == 0x14) {
+			TrackFeet(6.0, false);
+		}
         StartLegRumble("StrongStompL", data.giant, 0.4, 0.10, "Left");
     }
     void GTS_StrongStomp_ReturnRL_End(AnimationEventData& data) {

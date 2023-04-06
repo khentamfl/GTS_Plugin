@@ -49,6 +49,10 @@ namespace Gts {
 			altMode = 9; // Vore
 		} else if (sizemanager.GetActionBool(player, 4)) {
 			altMode = 10; // Vore: Track Hand
+		} else if (sizemanager.GetActionBool(player, 5)) {
+			altMode = 11; // L feet
+		} else if (sizemanager.GetActionBool(player, 6)) {
+			altMode = 12; // R Feet
 		}
 		switch (altMode) {
 			case 0: {
@@ -136,6 +140,22 @@ namespace Gts {
 				return BoneTarget { // Vore Hand
 				        .boneNames = {
 						"NPC R Hand [RHnd]",
+					},
+				        .zoomScale = 1.00,
+				};
+			}
+			case 11: {
+				return BoneTarget { // L Feet
+				        .boneNames = {
+						"NPC L Foot [Lft ]",
+					},
+				        .zoomScale = 1.00,
+				};
+			}
+			case 12: {
+				return BoneTarget { // R Feet
+				        .boneNames = {
+						"NPC R Foot [Rft ]",
 					},
 				        .zoomScale = 1.00,
 				};

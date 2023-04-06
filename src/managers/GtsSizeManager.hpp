@@ -29,6 +29,9 @@ namespace Gts {
 		bool ShouldTrackHand = false;
 		bool IsVoring = false;
 
+		bool TrackLeftFeet = false;
+		bool TrackRightFeet = false;
+
 	};
 
 	struct LaunchData {

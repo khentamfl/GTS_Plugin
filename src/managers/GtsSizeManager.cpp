@@ -396,6 +396,10 @@ namespace Gts {
 			this->GetData(actor).AlterSandwichCamera = enable;
 		} else if (type == 4.0) {
 			this->GetData(actor).ShouldTrackHand = enable;
+		} else if (type == 5.0) {
+			this->GetData(actor).TrackLeftFeet = enable;
+		} else if (type == 6.0) {
+			this->GetData(actor).TrackRightFeet = enable;
 		}
 	}
 	bool SizeManager::GetActionBool(Actor* actor, float type) {
@@ -409,6 +413,10 @@ namespace Gts {
 			return this->GetData(actor).AlterSandwichCamera;
 		} else if (type == 4.0) {
 			return this->GetData(actor).ShouldTrackHand;
+		} else if (type == 5.0) {
+			return this->GetData(actor).TrackLeftFeet;
+		} else if (type == 6.0) {
+			return this->GetData(actor).TrackRightFeet;
 		}
 		return false;
 	}

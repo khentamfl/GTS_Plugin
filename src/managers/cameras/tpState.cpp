@@ -18,6 +18,10 @@ namespace {
 			return 0.10;
 		} else if (sizemanager.GetActionBool(player, 4.0)) {
 			return 0.10;
+		} else if (sizemanager.GetActionBool(player, 5.0)) {
+			return 0.06;
+		} else if (sizemanager.GetActionBool(player, 6.0)) {
+			return 0.06;
 		} else {
 			return 0.5;
 		}
