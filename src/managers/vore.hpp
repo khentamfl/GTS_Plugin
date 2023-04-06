@@ -48,8 +48,6 @@ namespace Gts
 
 			// True if in grabbed state
 			bool allGrabbed = false;
-
-			Timer moantime = Timer(6.0);
 	};
 
 	enum VoreBuffState {
@@ -64,9 +62,10 @@ namespace Gts
 		VoreBuffState state = VoreBuffState::Starting;
 		Actor* giant = nullptr;
 		Actor* tiny = nullptr;
-    float duration;
+    	float duration;
 		float restorePower = 0.0; // Amount of health to restore TOTAL
 		float sizePower = 0.0; // Amount of size to gain TOTAL
+		Timer moantime = Timer(6.0);
 
 		// Used to track how much time has passed (abusing Spring code)
 		// The half life will tell the half the duration
