@@ -25,6 +25,7 @@ sounds:
   VoreSwallow: "GTS.esp|56E747"
   TriggerHG: "GTS.esp|578948"
   ThighSandwichImpact: "GTS.esp|582B49"
+  HeavyStompSound: "GTS.esp|596F4E"
 
 
 spellEffects:
