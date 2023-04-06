@@ -108,7 +108,7 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		if (giant->formID == 0x14) {
-			TrackFeet(6.0, true);
+			TrackFeet(giant, 6.0, true);
 		}
 		StartLegRumble("StrongStompR", data.giant, 0.6, 0.10, "Right");
 	}
