@@ -125,7 +125,7 @@ namespace Gts {
 							float distance = (point - actorLocation).Length();
 							if (distance < maxFootDistance) {
 								float aveForce = 1.0 - distance / maxFootDistance;
-								LaunchDecide(giant, otherActor, aveForce);
+								LaunchDecide(giant, otherActor, aveForce, damagebonus);
 							    break;
 						    }
 					    }
