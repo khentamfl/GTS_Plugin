@@ -14,6 +14,7 @@
 #include "managers/animation/Stomp.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/LaunchActor.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -35,6 +36,10 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
+	}
+
 	void GTSstompstartR(AnimationEventData& data) {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
@@ -55,6 +60,7 @@ namespace {
 		Rumble::Once("StompR", &data.giant, 2.20, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
+		DoLaunch(&data.giant, 1.0, 1.25, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
@@ -62,6 +68,7 @@ namespace {
 		Rumble::Once("StompL", &data.giant, 2.20, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 1.0, 1.25, LNode);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
@@ -69,6 +76,7 @@ namespace {
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode);
+		DoLaunch(&data.giant, 0.6, 0.75, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
@@ -76,6 +84,7 @@ namespace {
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
 		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 0.6, 0.75, LNode);
 	}
 
 	void GTSStompendR(AnimationEventData& data) {

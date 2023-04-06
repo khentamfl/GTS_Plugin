@@ -330,7 +330,7 @@ namespace Gts {
 			.actor = giant,
 			.kind = kind,
 			.scale = get_visual_scale(giant) * modifier,
-			.effective_scale = get_effective_scale(giant) * modifier,
+			.effective_scale = get_effective_scale(giant),
 			.nodes = find_node(giant, node),
 		};
 		explosion.OnImpact(impact_data); // Play explosion

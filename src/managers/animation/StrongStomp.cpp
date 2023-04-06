@@ -20,6 +20,7 @@ GTS_StrongStomp_End
 #include "managers/animation/StrongStomp.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/LaunchActor.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -87,9 +88,13 @@ namespace {
         }
 	}
 
+	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
+	}
+
 	void GTS_StrongStomp_Start(AnimationEventData& data) {
 		data.stage = 1;
-		data.animSpeed = 1.15;
+		data.animSpeed = 1.35;
 		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 	}
 
@@ -121,17 +126,19 @@ namespace {
 
     void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
         Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 1.0, 1.0, RNode);
-        Rumble::Once("HeavyStompR", &data.giant, 16.45 * data.animSpeed, 0.10, RNode);
-        DoDamageEffect(&data.giant, 3.0 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
+        Rumble::Once("HeavyStompR", &data.giant, 20.0 * data.animSpeed, 0.05, RNode);
+        DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
+		DoLaunch(&data.giant, 1.5, 2.5, RNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
     void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
         Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 1.0, 1.0, LNode);
-        Rumble::Once("HeavyStompL", &data.giant, 16.45 * data.animSpeed, 0.10, LNode);
-        DoDamageEffect(&data.giant, 3.0 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
+        Rumble::Once("HeavyStompL", &data.giant, 20.0 * data.animSpeed, 0.05, LNode);
+        DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 1.5, 2.5, LNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }

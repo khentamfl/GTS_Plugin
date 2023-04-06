@@ -29,6 +29,7 @@ GTSBEH_ThighSandwich_ExitLoop
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/ThighSandwichController.hpp"
 #include "managers/animation/ThighSandwich.hpp"
+#include "managers/damage/LaunchActor.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -76,13 +77,17 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
+	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
+	}
+
 	void DoThighDamage(Actor* giant, Actor* tiny, float animSpeed, float mult, float sizemult) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		auto& sizemanager = SizeManager::GetSingleton();
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999.0f);
-		float damage = 1.0 * sizedifference * animSpeed * mult * normaldamage;
+		float damage = 0.4 * sizedifference * animSpeed * mult * normaldamage;
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp && sizedifference >= (8.0 * sizemult)) {
@@ -225,7 +230,9 @@ namespace {
 	void GTSSandwich_FootImpact(AnimationEventData& data) {
 		DoSizeEffect(&data.giant, 1.35, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.35, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 7.0, 2.6, 10, 0.75);
+		DoDamageEffect(&data.giant, 4.0, 2.6, 10, 0.75);
+		DoLaunch(&data.giant, 1.25, 2.0, RNode);
+		DoLaunch(&data.giant, 1.25, 2.0, LNode);
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {

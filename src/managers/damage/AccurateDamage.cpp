@@ -398,7 +398,7 @@ namespace Gts {
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-				if (sizeRatio >= 6.0) { // Launch
+				if (sizeRatio >= 4.0) { // Launch
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
@@ -445,7 +445,7 @@ namespace Gts {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
 		}
 
-		float result = ((0.20 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;
+		float result = ((0.15 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
