@@ -106,15 +106,16 @@ namespace {
 	}
 
     void GTS_StrongStomp_LR_Middle(AnimationEventData& data) {
+        data.animSpeed = 1.55;
 	}
     void GTS_StrongStomp_LL_Middle(AnimationEventData& data) {
+        data.animSpeed = 1.55;
 	}
     void GTS_StrongStomp_LR_End(AnimationEventData& data) {
-        data.canEditAnimSpeed = false;
         StopLegRumble("StrongStompR", data.giant, "Right");
     }
     void GTS_StrongStomp_LL_End(AnimationEventData& data) {
-        data.canEditAnimSpeed = false;
+        
         StopLegRumble("StrongStompL", data.giant, "Left");
     }
 
@@ -123,6 +124,7 @@ namespace {
         Rumble::Once("HeavyStompR", &data.giant, 3.45 * data.animSpeed, 0.10, RNode);
         DoDamageEffect(&data.giant, 6.0 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
+        data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
     void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
@@ -130,6 +132,7 @@ namespace {
         Rumble::Once("HeavyStompL", &data.giant, 3.45 * data.animSpeed, 0.10, LNode);
         DoDamageEffect(&data.giant, 6.0 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, LNode);
+        data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
     void GTS_StrongStomp_ReturnRL_Start(AnimationEventData& data) {
@@ -199,6 +202,6 @@ namespace Gts
 
 	void AnimationStrongStomp::RegisterTriggers() {
 		AnimationManager::RegisterTrigger("StrongStompRight", "Stomp", "GTSBeh_StrongStomp_StartRight");
-		AnimationManager::RegisterTrigger("StrongStompLeft", "Stomp", "GtsModStompAnimLeft");
+		AnimationManager::RegisterTrigger("StrongStompLeft", "Stomp", "GTSBeh_StrongStomp_StartLeft");
 	}
 }
