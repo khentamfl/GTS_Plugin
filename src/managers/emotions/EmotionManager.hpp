@@ -20,9 +20,9 @@ namespace Gts {
 			bool AllowEmotionEdit = false;
 
 			private:
-				Spring Phenome0 = Spring(0.0, 0.12);
-				Spring Phenome1 = Spring(0.0, 0.12);
-				Spring Phenome5 = Spring(0.0, 0.12);
+				Spring Phenome0 = Spring(0.0, 0.10);
+				Spring Phenome1 = Spring(0.0, 0.10);
+				Spring Phenome5 = Spring(0.0, 0.10);
 
 				Spring Modifier0 = Spring(0.0, 0.25);
 				Spring Modifier1 = Spring(0.0, 0.25);

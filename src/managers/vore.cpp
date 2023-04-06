@@ -411,8 +411,8 @@ namespace Gts {
         	break;
     	}*/
 		case VoreBuffState::Running: {
-    			float healthToApply = this->restorePower/4000;
-    			float sizeToApply = this->sizePower/4000;
+    			float healthToApply = this->restorePower/6000;
+    			float sizeToApply = this->sizePower/6000;
 
     			DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
     			DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
@@ -435,9 +435,13 @@ namespace Gts {
 				AdjustGiantessSkill(this->giant, this->tiny);
 				VoreMessage_Absorbed(this->giant, this->tiny);
 				BuffAttributes(this->giant, this->tiny);
-				mod_target_scale(this->giant, this->sizePower * 1.2);
+				mod_target_scale(this->giant, this->sizePower * 1.0);
 				AdjustSizeReserve(this->giant, this->sizePower);
 				Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
+				this->VoreData(this->giant).erase(this->tiny);
+			}
+			if (this->MoanTimer.ShouldRunFrame()) {
+				Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
 			}
 			Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
         	log::info("Going to done state");
@@ -756,7 +760,7 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
-			prey_scale *= 2.0;
+			prey_scale *= 2.6;
 		}
 
 		float sizedifference = pred_scale/prey_scale;

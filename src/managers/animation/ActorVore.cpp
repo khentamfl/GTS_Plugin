@@ -144,7 +144,7 @@ namespace {
 		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
 
 		if (type == "phenome") {
-			Emotions.OverridePhenome(ph, 0.0, 0.12/AnimSpeed, power);
+			Emotions.OverridePhenome(ph, 0.0, 0.10/AnimSpeed, power);
 		} 
 		if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
