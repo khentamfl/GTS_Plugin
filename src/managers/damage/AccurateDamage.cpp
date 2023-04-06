@@ -307,7 +307,7 @@ namespace Gts {
 										float distance = (point - a_obj.world.translate).Length();
 										if (distance < maxFootDistance) {
 											nodeCollisions += 1;
-											force = 1.0 - distance / maxFootDistance; // force += 1.0 - distance / maxFootDistance;
+											force += 1.0 - distance / maxFootDistance;
 										}
 										return true;
 									});
@@ -315,6 +315,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force/50, 0.00f, 0.70f);///nodeCollisions;
+								log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}
 						}

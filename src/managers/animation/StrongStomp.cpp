@@ -74,9 +74,9 @@ namespace {
         }
 	}
 
-	void TrackFeet(float number, bool enable) {
+	void TrackFeet(Actor* giant, float number, bool enable) {
 		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.SetActionBool(&data.giant, enable, number);
+		sizemanager.SetActionBool(giant, enable, number);
 	}
 
 	void StopLegRumble(std::string_view tag, Actor& actor, std::string_view type) {
@@ -107,7 +107,7 @@ namespace {
 		auto giant = &data.giant;
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
-		if (giant->formId == 0x14) {
+		if (giant->formID == 0x14) {
 			TrackFeet(6.0, true);
 		}
 		StartLegRumble("StrongStompR", data.giant, 0.6, 0.10, "Right");
@@ -117,8 +117,8 @@ namespace {
 		auto giant = &data.giant;
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
-		if (giant->formId == 0x14) {
-			TrackFeet(5.0, true);
+		if (giant->formID == 0x14) {
+			TrackFeet(giant ,5.0, true);
 		}
 		StartLegRumble("StrongStompL", data.giant, 0.6, 0.10, "Left");
 	}
@@ -139,39 +139,39 @@ namespace {
 
     void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
 		float scale = std::clamp(get_visual_scale(&data.giant), 0.10f, 10.0f);
-        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.10 * scale, 1.0, RNode);
-		Runtime::PlaySoundAtNode("xlFootstepR", &data.giant, 0.10 * scale, 1.0, RNode);
-		Runtime::PlaySoundAtNode("xlRumbleR", &data.giant, 0.10 * scale, 1.0, RNode);
+        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.14 * scale, 1.0, RNode);
+		Runtime::PlaySoundAtNode("xlFootstepR", &data.giant, 0.14 * scale, 1.0, RNode);
+		Runtime::PlaySoundAtNode("xlRumbleR", &data.giant, 0.14 * scale, 1.0, RNode);
         Rumble::Once("HeavyStompR", &data.giant, 14.0 * data.animSpeed, 0.05, RNode);
         DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 1.5, 2.5, RNode);
+		DoLaunch(&data.giant, 2.5, 6.0, RNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
     void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
 		float scale = std::clamp(get_visual_scale(&data.giant), 0.10f, 10.0f);
-        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.10 * scale, 1.0, LNode);
-		Runtime::PlaySoundAtNode("xlFootstepL", &data.giant, 0.10 * scale, 1.0, RNode);
-		Runtime::PlaySoundAtNode("xlRumbleL", &data.giant, 0.10 * scale, 1.0, RNode);
+        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.14 * scale, 1.0, LNode);
+		Runtime::PlaySoundAtNode("xlFootstepL", &data.giant, 0.14 * scale, 1.0, RNode);
+		Runtime::PlaySoundAtNode("xlRumbleL", &data.giant, 0.14 * scale, 1.0, RNode);
         Rumble::Once("HeavyStompL", &data.giant, 14.0 * data.animSpeed, 0.05, LNode);
         DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 1.5, 2.5, LNode);
+		DoLaunch(&data.giant, 2.5, 6.0, LNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
     void GTS_StrongStomp_ReturnRL_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
-		if (giant->formId == 0x14) {
-			TrackFeet(6.0, false);
+		if (giant->formID == 0x14) {
+			TrackFeet(giant, 6.0, false);
 		}
         StartLegRumble("StrongStompR", data.giant, 0.4, 0.10, "Right");
     }
     void GTS_StrongStomp_ReturnLL_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
-		if (giant->formId == 0x14) {
-			TrackFeet(6.0, false);
+		if (giant->formID== 0x14) {
+			TrackFeet(giant, 5.0, false);
 		}
         StartLegRumble("StrongStompL", data.giant, 0.4, 0.10, "Left");
     }
