@@ -259,7 +259,7 @@ namespace Gts {
 					}
 
 
-          if (deltaLength >= 70.0) {
+          /*if (deltaLength >= 70.0) {
             // WARP if > 1m
             auto ragDoll = GetRagdoll(tiny_is_actor);
             hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
@@ -270,7 +270,7 @@ namespace Gts {
                   hkVector4 currentPos = ms->transform.translation;
                   hkVector4 newPos = currentPos + delta;
                   rb->motion.SetPosition(newPos);
-                  //rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 50.0, 1.0));
+                  rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
                 }
 
               }
@@ -290,13 +290,13 @@ namespace Gts {
                     if (ms) {
                       hkVector4 targetLocationHavok = hkVector4(targetLocation.x/70.0, targetLocation.y/70.0, targetLocation.z/70, 1.0);
                       handRb->motion.SetPosition(targetLocationHavok);
-                      //handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 50.0, 1.0));
+                      handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
                     }
                   }
                 }
               }
             }
-          }
+          }*/
 				}
 			}
 		}
@@ -427,7 +427,7 @@ namespace Gts {
 				Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
 				Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
 
-				if (VoreData(this->giant).GetTimer()) {
+				if (VoreData(this->giant).GetTimer() == true) {
 					Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
 				}
 			}
