@@ -20,7 +20,7 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 
-			void ApplyLaunch(Actor* giant, float bonus, float damagebonus, std::string_view node);
+			void ApplyLaunch(Actor* giant, float radius, float damagebonus, std::string_view node);
 
 	};
 }

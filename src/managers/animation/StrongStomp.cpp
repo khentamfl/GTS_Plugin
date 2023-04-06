@@ -126,7 +126,7 @@ namespace {
 
     void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
         Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 1.0, 1.0, RNode);
-        Rumble::Once("HeavyStompR", &data.giant, 20.0 * data.animSpeed, 0.05, RNode);
+        Rumble::Once("HeavyStompR", &data.giant, 14.0 * data.animSpeed, 0.05, RNode);
         DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.5, 2.5, RNode);
@@ -135,7 +135,7 @@ namespace {
     }
     void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
         Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 1.0, 1.0, LNode);
-        Rumble::Once("HeavyStompL", &data.giant, 20.0 * data.animSpeed, 0.05, LNode);
+        Rumble::Once("HeavyStompL", &data.giant, 14.0 * data.animSpeed, 0.05, LNode);
         DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.5, 2.5, LNode);
