@@ -314,7 +314,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = force * 10;//std::clamp(force/50, 0.00f, 0.70f);///nodeCollisions;
+								float aveForce = force;//std::clamp(force/50, 0.00f, 0.70f);///nodeCollisions;
 								log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}
@@ -446,7 +446,7 @@ namespace Gts {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
 		}
 
-		float result = ((0.15 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;
+		float result = ((0.15 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * (mult/100)) * additionaldamage;
 		if (giant->IsSneaking()) {
 			result *= 0.33;
 		}
