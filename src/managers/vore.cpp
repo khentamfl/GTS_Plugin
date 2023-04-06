@@ -252,9 +252,9 @@ namespace Gts {
 				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 				if (tiny_is_actor) {
 					auto charcont = tiny_is_actor->GetCharController();
-					//ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
+					this->ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
 					if (charcont) {
-						charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.
+						charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
 					}
 				}
 			}
@@ -324,7 +324,7 @@ namespace Gts {
                   hkVector4 currentPos = ms->transform.translation;
                   hkVector4 newPos = currentPos + delta;
                   rb->motion.SetPosition(newPos);
-                  rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
+                  rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, -10.0, 0.0));
                 }
               }
             }
@@ -343,7 +343,7 @@ namespace Gts {
                     		if (ms) {
                      			hkVector4 targetLocationHavok = hkVector4(targetLocation.x/70.0, targetLocation.y/70.0, targetLocation.z/70, 1.0);
                       			handRb->motion.SetPosition(targetLocationHavok);
-                      			handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
+                      			handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, -10.0, 0.0));
                     		}
                   		}
                 	}
