@@ -121,17 +121,17 @@ namespace {
 
     void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
         Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 1.0, 1.0, RNode);
-        Rumble::Once("HeavyStompR", &data.giant, 3.45 * data.animSpeed, 0.10, RNode);
-        DoDamageEffect(&data.giant, 6.0 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
+        Rumble::Once("HeavyStompR", &data.giant, 16.45 * data.animSpeed, 0.10, RNode);
+        DoDamageEffect(&data.giant, 3.0 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
     void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
         Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 1.0, 1.0, LNode);
-        Rumble::Once("HeavyStompL", &data.giant, 3.45 * data.animSpeed, 0.10, LNode);
-        DoDamageEffect(&data.giant, 6.0 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
-		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, LNode);
+        Rumble::Once("HeavyStompL", &data.giant, 16.45 * data.animSpeed, 0.10, LNode);
+        DoDamageEffect(&data.giant, 3.0 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
+		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }

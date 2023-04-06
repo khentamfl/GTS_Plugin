@@ -330,11 +330,11 @@ namespace Gts {
 			.actor = giant,
 			.kind = kind,
 			.scale = get_visual_scale(giant) * modifier,
-			.effective_scale = get_effective_scale(giant),
+			.effective_scale = get_effective_scale(giant) * modifier,
 			.nodes = find_node(giant, node),
 		};
-		explosion.OnImpact(impact_data);
-		footstep.OnImpact(impact_data);
+		explosion.OnImpact(impact_data); // Play explosion
+		footstep.OnImpact(impact_data); // Play sound
 	}
 
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage) {
