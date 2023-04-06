@@ -217,7 +217,7 @@ keys = ["LMB"]
 exclusive = false
 trigger = "continuous"
 
-# Boost animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
+# Boost animation speed of Stomp/Thigh Crush/Thigh Sandwich. Can be applied only during specific events that allow it.
 
 [[InputEvent]]
 name = "AnimSpeedDown"
@@ -225,7 +225,7 @@ keys = ["RMB"]
 exclusive = true
 trigger = "continuous"
 
-# Slow down animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
+# Slow down animation speed of Stomp/Thigh Crush/Thigh Sandwich. Can be applied only during specific events that allow it.
 
 [[InputEvent]]
 name = "AnimMaxSpeed"
@@ -233,7 +233,7 @@ keys = ["RMB", "LMB"]
 exclusive = false
 trigger = "continuous"
 
-# Massively Boost animation speed of Stomp/Thigh Crush. Can be applied only when closing legs.
+# Massively Boost animation speed of Stomp/Thigh Crush/Thigh Sandwich. Can be applied only during specific events that allow it.
 
 #========================================================
 #========================= P E R K S
