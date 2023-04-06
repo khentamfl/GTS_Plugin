@@ -45,6 +45,16 @@ trigger = "once"
 #========================================================
 #================ S T O M P S
 #========================================================
+[[InputEvent]]
+name = "RightStomp_Strong"
+keys = ["LALT", "E"]
+
+[[InputEvent]]
+name = "LeftStomp_Strong"
+keys = ["LALT", "Q"]
+
+# ^ Trigger powerful stomps
+
 
 [[InputEvent]]
 name = "RightStomp"
@@ -106,6 +116,8 @@ keys = ["LMB", "RMB"]
 exclusive = false
 trigger = "continuous"
 
+# Do Heavy Thigh Sandwich attack, Can be Looped.
+
 [[InputEvent]]
 name = "ThighSandwichAttack" 
 keys = ["LMB"]
@@ -114,7 +126,7 @@ trigger = "continuous"
 
 # Do Thigh Sandwich attack, Can be Looped.
 
-# Do Heavy Thigh Sandwich attack, Can be Looped.
+
 
 [[InputEvent]]
 name = "ThighSandwichExit"
