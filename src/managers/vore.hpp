@@ -30,7 +30,7 @@ namespace Gts
 			// Release all vories (shall fall into mouth with animation)
 			void ReleaseAll();
 
-			bool GetTimer(Actor* giant);
+			bool GetTimer();
 
 			// Get a list of all actors currently being vored
 			std::vector<Actor*> GetVories();
