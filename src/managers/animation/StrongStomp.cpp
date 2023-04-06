@@ -125,7 +125,10 @@ namespace {
     }
 
     void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
-        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 1.0, 1.0, RNode);
+		float scale = std::clamp(get_visual_scale(&data.giant), 0.10f, 10.0f);
+        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.10 * scale, 1.0, RNode);
+		Runtime::PlaySoundAtNode("xlFootstepR", &data.giant, 0.10 * scale, 1.0, RNode);
+		Runtime::PlaySoundAtNode("xlRumbleR", &data.giant, 0.10 * scale, 1.0, RNode);
         Rumble::Once("HeavyStompR", &data.giant, 14.0 * data.animSpeed, 0.05, RNode);
         DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
@@ -134,7 +137,10 @@ namespace {
         data.animSpeed = 1.0;
     }
     void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
-        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 1.0, 1.0, LNode);
+		float scale = std::clamp(get_visual_scale(&data.giant), 0.10f, 10.0f);
+        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.10 * scale, 1.0, LNode);
+		Runtime::PlaySoundAtNode("xlFootstepL", &data.giant, 0.10 * scale, 1.0, RNode);
+		Runtime::PlaySoundAtNode("xlRumbleL", &data.giant, 0.10 * scale, 1.0, RNode);
         Rumble::Once("HeavyStompL", &data.giant, 14.0 * data.animSpeed, 0.05, LNode);
         DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
