@@ -89,14 +89,14 @@ namespace Gts {
 		const float BASE_FOOT_DISTANCE = 40.0; // Checks the distance of foot squishing
 		const float SCALE_RATIO = 2.0;
 		float bonusscale = 1.0;
-		float actualGiantScale = get_visual_scale(actor);
+		float actualGiantScale = get_visual_scale(giant);
 		float giantScale = actualGiantScale;
 
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
 			giantScale *= 2.0;
 		}
-		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
-		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
+		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(giant);
+		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);
 		float hh = hhOffsetbase[2];
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
@@ -116,7 +116,7 @@ namespace Gts {
 				}
 			}
 			for (auto otherActor: find_actors()) {
-				if (otherActor != actor) {
+				if (otherActor != giant) {
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
@@ -125,7 +125,7 @@ namespace Gts {
 							float distance = (point - actorLocation).Length();
 							if (distance < maxFootDistance) {
 								float aveForce = 1.0 - distance / maxFootDistance;
-								LaunchDecide(actor, otherActor, aveForce);
+								LaunchDecide(giant, otherActor, aveForce);
 							    break;
 						    }
 					    }
