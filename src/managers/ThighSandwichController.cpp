@@ -301,6 +301,14 @@
 		AnimationManager::StartAnim("ThighEnter", pred);
 	}
 
+	void ThighSandwichController::Reset() {
+		this->data.clear();
+	}
+
+	void ThighSandwichController::ResetActor(Actor* actor) {
+		this->data.clear();
+	}
+
     void SandwichingData::AddTiny(Actor* tiny) {
 		this->tinies.try_emplace(tiny, tiny);
 	}

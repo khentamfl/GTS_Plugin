@@ -20,6 +20,8 @@ namespace Gts {
 			virtual std::string DebugName() override;
 			virtual void DataReady() override;
 			virtual void Update() override;
+			virtual void Reset() override;
+			virtual void ResetActor(Actor* actor) override;
 			// Streangth is meant to be for a calculation of
 			// escape chance currently unused
 			static void GrabActor(Actor* giant, TESObjectREFR* tiny, float strength);

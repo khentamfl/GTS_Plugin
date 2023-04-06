@@ -800,6 +800,16 @@ namespace Gts {
 		}
 	}
 
+	void Vore::Reset() {
+		this->data.clear();
+		this->buffs.clear();
+	}
+
+	void Vore::ResetActor(Actor* actor) {
+		this->data.erase(actor);
+		this->buffs.erase(actor);
+	}
+
 	void Vore::StartVore(Actor* pred, Actor* prey) {
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);

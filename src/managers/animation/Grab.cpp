@@ -144,6 +144,14 @@ namespace Gts {
 		Grab::GrabActor(giant, tiny, 1.0);
 	}
 
+	void Grab::Reset() {
+		this->data.clear();
+	}
+
+	void Grab::ResetActor(Actor* actor) {
+		this->data.clear();
+	}
+
 	void Grab::Release(Actor* giant) {
 		Grab::GetSingleton().data.erase(giant);
 	}

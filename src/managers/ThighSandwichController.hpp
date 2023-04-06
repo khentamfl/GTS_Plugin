@@ -52,6 +52,8 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
             virtual void Update() override;
+			virtual void Reset() override;
+			virtual void ResetActor(Actor* actor) override;
 			
 			std::vector<Actor*> GetSandwichTargetsInFront(Actor* pred, std::size_t numberOfPrey);
 			static void StartSandwiching(Actor* pred, Actor* prey);
