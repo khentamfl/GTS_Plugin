@@ -441,7 +441,7 @@ namespace Gts {
 				this->VoreData(this->giant).erase(this->tiny);
 			}
 			if (this->MoanTimer.ShouldRunFrame()) {
-				Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
+				Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
 			}
 			Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
         	log::info("Going to done state");
