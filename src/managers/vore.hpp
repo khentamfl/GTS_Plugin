@@ -49,7 +49,7 @@ namespace Gts
 			// True if in grabbed state
 			bool allGrabbed = false;
 
-			static Timer moantime = Timer(6.0);
+			Timer moantime = Timer(6.0);
 	};
 
 	enum VoreBuffState {
