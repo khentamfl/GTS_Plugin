@@ -427,7 +427,7 @@ namespace Gts {
 				Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
 				Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
 
-				if (VoreData(this->giant).GetTimer() {
+				if (VoreData(this->giant).GetTimer()) {
 					Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
 				}
 			}
