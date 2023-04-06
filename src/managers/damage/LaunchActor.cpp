@@ -2,11 +2,10 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/highheel.hpp"
 #include "data/runtime.hpp"
-#include "events.hpp"
 #include "UI/DebugAPI.hpp"
-
-
 #include "scale/scale.hpp"
+#include "data/time.hpp"
+#include "events.hpp"
 #include "node.hpp"
 
 using namespace SKSE;
@@ -93,7 +92,7 @@ namespace Gts {
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = actualGiantScale;
 
-		if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
+		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
 			giantScale *= 2.0;
 		}
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
@@ -106,9 +105,9 @@ namespace Gts {
 		};
 		float maxFootDistance = BASE_FOOT_DISTANCE * giantScale * bonus;
 
-        auto bone = find_node(giant, node);
-
-		for (auto foot: bone) {
+        auto bone_TP = find_node(giant, node, false);
+        auto bone_FP = find_node(giant, node, true);
+		for (auto foot: {bone_TP, bone_FP}) {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point:  points) {
 				footPoints.push_back(foot->world*point);
