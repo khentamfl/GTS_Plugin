@@ -215,13 +215,13 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
-		
+
 		auto player = PlayerCharacter::GetSingleton();
 		auto node = find_node(player, "NPC R Foot [Rft ]", false);
 			if (node) {
 				if (actor != player) {
 					float playerscale = get_visual_scale(player);
-					float victimscale = get_visual_scale(otherActor);
+					float victimscale = get_visual_scale(actor);
 					float sizedifference = playerscale/victimscale;
 					NiPoint3 giantLocation = player->GetPosition();
 					NiPoint3 tinyLocation = actor->GetPosition();
