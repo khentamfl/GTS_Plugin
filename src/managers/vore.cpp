@@ -206,6 +206,10 @@ namespace Gts {
 		this->tinies.clear();
 	}
 
+	bool VoreData::GetTimer(Actor* giant) {
+		return this->moantimer.ShouldRunFrame();
+	}
+
 	void VoreData::GrabAll() {
 		this->allGrabbed = true;
 	}
@@ -402,14 +406,6 @@ namespace Gts {
         	this->state = VoreBuffState::Running;
         	break;
     		}
-    	/*case VoreBuffState::RampUp: {
-        	if (fabs(this->factor.value - this->factor.value) < 1e-2) {
-          	this->factor.target = 0.75;
-          	this->factor.halflife = this->duration * 0.3;
-          	this->state = VoreBuffState::Running;
-        	}
-        	break;
-    	}*/
 		case VoreBuffState::Running: {
     			float healthToApply = this->restorePower/4500;
     			float sizeToApply = this->sizePower/5000;
@@ -424,12 +420,6 @@ namespace Gts {
 				}
         	break;
 		}
-    	/*case VoreBuffState::RampDown: {
-        	if (fabs(this->factor.value - this->factor.value) < 1e-2) {
-          	this->state = VoreBuffState::Finishing;
-        	}
-    	break;
-		}*/
 		case VoreBuffState::Finishing: {
 			if (!AllowDevourment()) {
 				AdjustGiantessSkill(this->giant, this->tiny);
@@ -438,7 +428,7 @@ namespace Gts {
 				mod_target_scale(this->giant, this->sizePower * 1.0);
 				AdjustSizeReserve(this->giant, this->sizePower);
 				Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
-				if (VoreData(giant).moantime.ShouldRunFrame()) {
+				if (VoreData(this->giant).GetTimer(this->giant)) {
 					Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
 				}
 			}

@@ -30,6 +30,8 @@ namespace Gts
 			// Release all vories (shall fall into mouth with animation)
 			void ReleaseAll();
 
+			bool GetTimer(Actor* giant);
+
 			// Get a list of all actors currently being vored
 			std::vector<Actor*> GetVories();
 
@@ -46,7 +48,7 @@ namespace Gts
 			// If true the mouth kill zone is on and we shrink nodes entering the mouth
 			bool killZoneEnabled = false;
 
-			Timer moantime = Timer(6.0);
+			Timer moantimer = Timer(6.0);
 
 			// True if in grabbed state
 			bool allGrabbed = false;

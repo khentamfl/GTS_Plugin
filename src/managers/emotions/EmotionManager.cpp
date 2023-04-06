@@ -34,11 +34,6 @@
             std::uint32_t Two = 2;
             std::uint32_t Five = 5;
 			if (fgen) { 
-                log::info("PHenome 0 value: {}, target: {}, halflife: {}", this->Phenome0.value, this->Phenome0.target, this->Phenome0.halflife);
-                log::info("PHenome 1 value: {}, target: {}, halflife: {}", this->Phenome1.value, this->Phenome1.target, this->Phenome1.halflife);
-               // log::info("PHenome 2 value: {}, target: {}, halflife: {}", this->Phenomes[2].value, this->Phenomes[2].target, this->Phenomes[2].halflife);
-                log::info("PHenome 5 value: {}, target: {}, halflife: {}", this->Phenome5.value, this->Phenome5.target, this->Phenome5.halflife);
-
                 fgen->phenomeKeyFrame.SetValue(Zero, this->Phenome0.value);
                 fgen->phenomeKeyFrame.SetValue(One, this->Phenome1.value);
                 //fgen->phenomeKeyFrame.SetValue(Two, this->Phenomes[2].value);
