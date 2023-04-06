@@ -122,12 +122,12 @@ namespace {
 
 
 	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {
-		int random = rand() % 2;
-		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
+		int random = rand() % 4;
+		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random <= 1) {
 			ConsoleLog::GetSingleton()->Print("%s was Swallowed and is now being slowly absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
+		} else if (random == 2) {
 			ConsoleLog::GetSingleton()->Print("%s is now absorbing %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
-		} else if (prey->IsDead()) {
+		} else if (random >= 3) {
 			ConsoleLog::GetSingleton()->Print("%s will soon be completely absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 	}
@@ -380,8 +380,6 @@ namespace Gts {
 
 		if (tiny) {
 			float tiny_scale = get_visual_scale(tiny);
-			float giant_scale = get_visual_scale(giant);
-
 			// Amount of health we apply depends on their vitality
 			// and their size
 			if (Runtime::HasPerkTeam(giant, "VorePerkRegeneration")) {
@@ -399,16 +397,16 @@ namespace Gts {
 		}
 		switch (this->state) {
       		case VoreBuffState::Starting: {
-        	this->factor.value = 0.0;
-        	this->factor.velocity = 0.0;
-        	this->factor.target = 1.0;
-        	this->factor.halflife = this->duration * 0.5;
-        	this->state = VoreBuffState::Running;
+        		this->factor.value = 0.0;
+        		this->factor.velocity = 0.0;
+        		this->factor.target = 1.0;
+        		this->factor.halflife = this->duration * 0.5;
+        		this->state = VoreBuffState::Running;
         	break;
     		}
 		case VoreBuffState::Running: {
-    			float healthToApply = this->restorePower/4500;
-    			float sizeToApply = this->sizePower/5000;
+    			float healthToApply = this->restorePower/3800;
+    			float sizeToApply = this->sizePower/3800;
 
     			DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
     			DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
@@ -428,12 +426,12 @@ namespace Gts {
 				mod_target_scale(this->giant, this->sizePower * 1.0);
 				AdjustSizeReserve(this->giant, this->sizePower);
 				Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
-				if (VoreData(this->giant).GetTimer(this->giant)) {
+				Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
+				/*if (VoreData(this->giant).GetTimer(this->giant)) {
 					Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
-				}
+				}*/
 			}
 			
-			Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
         	log::info("Going to done state");
 			this->state = VoreBuffState::Done;
     	break;
