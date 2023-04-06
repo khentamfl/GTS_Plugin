@@ -270,7 +270,7 @@ namespace Gts {
                   hkVector4 currentPos = ms->transform.translation;
                   hkVector4 newPos = currentPos + delta;
                   rb->motion.SetPosition(newPos);
-                  rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 50.0, 0.0));
+                  rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 50.0, 1.0));
                 }
 
               }
@@ -290,7 +290,7 @@ namespace Gts {
                     if (ms) {
                       hkVector4 targetLocationHavok = hkVector4(targetLocation.x/70.0, targetLocation.y/70.0, targetLocation.z/70, 1.0);
                       handRb->motion.SetPosition(targetLocationHavok);
-                      handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 50.0, 0.0));
+                      handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 50.0, 1.0));
                     }
                   }
                 }
