@@ -11,7 +11,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	float CheckForVoreAction() {
+	float CheckForAction() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (sizemanager.GetActionBool(player, 2.0)) {
@@ -45,8 +45,8 @@ namespace Gts {
 						auto transform = playerTrans.Invert();
 						NiPoint3 lookAt = CompuleLookAt(boneTarget.zoomScale);
 						NiPoint3 localLookAt = transform*lookAt;
-						this->smoothScale.halflife = CheckForVoreAction();
-						this->smoothedBonePos.halflife = CheckForVoreAction();
+						this->smoothScale.halflife = CheckForAction();
+						this->smoothedBonePos.halflife = CheckForAction();
 						this->smoothScale.target = scale;
 						pos += localLookAt * -1 * this->smoothScale.value;
 
