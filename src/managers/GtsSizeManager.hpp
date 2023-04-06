@@ -26,6 +26,7 @@ namespace Gts {
 		bool OffsetCamera = false;
 		bool IsThighSandwiching = false;
 		bool AlterSandwichCamera = false;
+		bool ShouldTrackHand = false;
 		bool IsVoring = false;
 
 	};

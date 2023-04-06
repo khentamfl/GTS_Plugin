@@ -394,6 +394,8 @@ namespace Gts {
 			this->GetData(actor).IsVoring = enable;
 		} else if (type == 3.0) {
 			this->GetData(actor).AlterSandwichCamera = enable;
+		} else if (type == 4.0) {
+			this->GetData(actor).ShouldTrackHand = enable;
 		}
 	}
 	bool SizeManager::GetActionBool(Actor* actor, float type) {
@@ -405,6 +407,8 @@ namespace Gts {
 			return this->GetData(actor).IsVoring;
 		} else if (type == 3.0) {
 			return this->GetData(actor).AlterSandwichCamera;
+		} else if (type == 4.0) {
+			return this->GetData(actor).ShouldTrackHand;
 		}
 		return false;
 	}

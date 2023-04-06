@@ -411,8 +411,8 @@ namespace Gts {
         	break;
     	}*/
 		case VoreBuffState::Running: {
-    			float healthToApply = this->restorePower/6000;
-    			float sizeToApply = this->sizePower/6000;
+    			float healthToApply = this->restorePower/4500;
+    			float sizeToApply = this->sizePower/5000;
 
     			DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
     			DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
@@ -438,10 +438,11 @@ namespace Gts {
 				mod_target_scale(this->giant, this->sizePower * 1.0);
 				AdjustSizeReserve(this->giant, this->sizePower);
 				Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
+				if (GetVoreData(giant).moantime.ShouldRunFrame()) {
+					Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
+				}
 			}
-			if (this->moantime.ShouldRunFrame()) {
-				Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
-			}
+			
 			Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
         	log::info("Going to done state");
 			this->state = VoreBuffState::Done;

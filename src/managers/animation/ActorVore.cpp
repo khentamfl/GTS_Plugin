@@ -165,6 +165,9 @@ namespace {
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
 		}
+		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
+			ManageCamera(giant, true, 4.0); //PlayerCamera::GetSingleton()->cameraTarget = firstTiny->CreateRefHandle();
+		}
 		StartBodyRumble("BodyRumble", data.giant, 0.35, 0.10, false);
 	}
 
@@ -199,13 +202,14 @@ namespace {
 		VoreData.GrabAll();
 		ToggleEmotionEdit(giant, true);
 		auto firstTiny = VoreData.GetVories()[0];
-		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			ManageCamera(giant, true, 2.0); //PlayerCamera::GetSingleton()->cameraTarget = firstTiny->CreateRefHandle();
-		}
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
 		}
-
+		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
+			ManageCamera(giant, false, 4.0); 
+			ManageCamera(giant, true, 2.0);
+		}
+		
 		StopRHandRumble("HandR", data.giant);
 	}
 

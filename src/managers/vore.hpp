@@ -46,6 +46,8 @@ namespace Gts
 			// If true the mouth kill zone is on and we shrink nodes entering the mouth
 			bool killZoneEnabled = false;
 
+			Timer moantime = Timer(6.0);
+
 			// True if in grabbed state
 			bool allGrabbed = false;
 	};
@@ -65,7 +67,7 @@ namespace Gts
     	float duration;
 		float restorePower = 0.0; // Amount of health to restore TOTAL
 		float sizePower = 0.0; // Amount of size to gain TOTAL
-		Timer moantime = Timer(6.0);
+		
 
 		// Used to track how much time has passed (abusing Spring code)
 		// The half life will tell the half the duration

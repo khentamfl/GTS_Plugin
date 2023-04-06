@@ -149,7 +149,7 @@ namespace Gts {
 	}
 
 	void Grab::ResetActor(Actor* actor) {
-		this->data.clear();
+		this->data.erase(actor);
 	}
 
 	void Grab::Release(Actor* giant) {

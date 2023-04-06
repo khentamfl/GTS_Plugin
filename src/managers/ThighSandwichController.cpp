@@ -306,7 +306,7 @@
 	}
 
 	void ThighSandwichController::ResetActor(Actor* actor) {
-		this->data.clear();
+		this->data.erase(actor);
 	}
 
     void SandwichingData::AddTiny(Actor* tiny) {
