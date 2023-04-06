@@ -229,13 +229,11 @@ namespace Gts {
 	void VoreData::Update() {
 		auto giant = this->giant;
     	float giantScale = get_visual_scale(giant);
-
 		// Stick them to the AnimObjectA
 		for (auto& [key, tiny]: this->tinies) {
 			if (!tiny) {
 				return;
 			}
-
 			auto bone = find_node(giant, "AnimObjectA");
 			if (!bone) {
 				return;
@@ -257,51 +255,10 @@ namespace Gts {
 					if (charcont) {
 						charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.
 					}
-
-
-          /*if (deltaLength >= 70.0) {
-            // WARP if > 1m
-            auto ragDoll = GetRagdoll(tiny_is_actor);
-            hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
-            for (auto rb: ragDoll->rigidBodies) {
-              if (rb) {
-                auto ms = rb->GetMotionState();
-                if (ms) {
-                  hkVector4 currentPos = ms->transform.translation;
-                  hkVector4 newPos = currentPos + delta;
-                  rb->motion.SetPosition(newPos);
-                  rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
-                }
-
-              }
-            }
-          } else {
-            // Just move the hand if <1m
-            std::string_view handNodeName = "NPC HAND L [L Hand]";
-            auto handBone = find_node(tiny, handNodeName);
-            if (handBone) {
-              auto collisionHand = handBone->GetCollisionObject();
-              if (collisionHand) {
-                auto handRbBhk = collisionHand->GetRigidBody();
-                if (handRbBhk) {
-                  auto handRb = static_cast<hkpRigidBody*>(handRbBhk->referencedObject.get());
-                  if (handRb) {
-                    auto ms = handRb->GetMotionState();
-                    if (ms) {
-                      hkVector4 targetLocationHavok = hkVector4(targetLocation.x/70.0, targetLocation.y/70.0, targetLocation.z/70, 1.0);
-                      handRb->motion.SetPosition(targetLocationHavok);
-                      handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
-                    }
-                  }
-                }
-              }
-            }
-          }*/
 				}
 			}
 		}
-
-		// Shrink nodes
+		// Hide Actor
 		if (this->killZoneEnabled) {
 			auto headNodeName = "NPC Head [Head]";
 			auto headNode = find_node_any(giant, headNodeName);
@@ -317,50 +274,81 @@ namespace Gts {
 						float distance = (node.world.translate - headCenter).Length();
 						if (distance < headKillRadius) {
 							nodes_inrange.push_back(&node);
-              names_inrange.push_back(node.name.c_str());
+              				names_inrange.push_back(node.name.c_str());
 						}
 						return true;
 					});
-          //log::info("Trying to shink {} nodes", nodes_inrange.size());
+          			//log::info("Trying to shink {} nodes", nodes_inrange.size());
 
 					// Check all children of the nodes
-					//
-					// This ensure that we are not going to shink
-					// the wrong nodes like the NPC Root which would mess
-					// with our scales
-					//
-					// Or the camera nodes that mess with the rendering
-					//
-					// Or the root of the upper and lower bodies
-          std::vector<NiAVObject*> excludedChildren = {};
-          excludedChildren.push_back(find_node(tiny, "NPC ROOT [ROOT]", false));
-          excludedChildren.push_back(find_node(tiny, "NPC COM [COM]", false));
-          excludedChildren.push_back(find_node(tiny, "NPC Pelvis [Pelv]", false));
-          excludedChildren.push_back(find_node(tiny, "NPC Spine [Spn0]", false));
-          excludedChildren.push_back(find_node(tiny, "Camera Control", false));
-          excludedChildren.push_back(find_node(tiny, "NPC Translate", false));
-					for (auto& node: nodes_inrange) {
-						bool anyInvalid = false;
-						VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
-              for (auto excludedNode: excludedChildren) {
-                if (excludedNode == &node_child) {
-                  anyInvalid = true;
-  								return false;
-                }
-              }
-							return true;
-						});
-						if (!anyInvalid) {
-              //log::info("  - Shrinking Node: {}", node->name.c_str());
-							tiny->SetAlpha(0.0);//node->local.scale = 0.50;
-              update_node(node);
-						} else {
-              //log::info("  - NOT Shrinking Node: {}", node->name.c_str());
-            }
+          				std::vector<NiAVObject*> excludedChildren = {};
+          	 			excludedChildren.push_back(find_node(tiny, "NPC ROOT [ROOT]", false));
+         	 			excludedChildren.push_back(find_node(tiny, "NPC COM [COM]", false));
+         	 			excludedChildren.push_back(find_node(tiny, "NPC Pelvis [Pelv]", false));
+         	 			excludedChildren.push_back(find_node(tiny, "NPC Spine [Spn0]", false));
+         	 			excludedChildren.push_back(find_node(tiny, "Camera Control", false));
+         	 			excludedChildren.push_back(find_node(tiny, "NPC Translate", false));
+						for (auto& node: nodes_inrange) {
+							bool anyInvalid = false;
+							VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
+              				for (auto excludedNode: excludedChildren) {
+                				if (excludedNode == &node_child) {
+                  					anyInvalid = true;
+  									return false;
+                					}
+            				  	}
+								return true;
+							});
+							if (!anyInvalid) {
+             					 //log::info("  - Shrinking Node: {}", node->name.c_str());
+								tiny->SetAlpha(0.0);//node->local.scale = 0.50;
+              					update_node(node);
+							} else {
+            			}
 					}
 				}
 			}
 		}
+	}
+
+	void VoreData::ManageRagdoll(Actor* tiny, float deltaLength, NiPoint3 deltaLocation) {
+		if (deltaLength >= 70.0) {
+            // WARP if > 1m
+            auto ragDoll = GetRagdoll(tiny);
+            hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
+            for (auto rb: ragDoll->rigidBodies) {
+              if (rb) {
+                auto ms = rb->GetMotionState();
+                if (ms) {
+                  hkVector4 currentPos = ms->transform.translation;
+                  hkVector4 newPos = currentPos + delta;
+                  rb->motion.SetPosition(newPos);
+                  rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
+                }
+              }
+            }
+          } else {
+            // Just move the hand if <1m
+            std::string_view handNodeName = "NPC HAND L [L Hand]";
+            auto handBone = find_node(tiny, handNodeName);
+            if (handBone) {
+              	auto collisionHand = handBone->GetCollisionObject();
+              	if (collisionHand) {
+                	auto handRbBhk = collisionHand->GetRigidBody();
+               		if (handRbBhk) {
+                  		auto handRb = static_cast<hkpRigidBody*>(handRbBhk->referencedObject.get());
+                  		if (handRb) {
+                    		auto ms = handRb->GetMotionState();
+                    		if (ms) {
+                     			hkVector4 targetLocationHavok = hkVector4(targetLocation.x/70.0, targetLocation.y/70.0, targetLocation.z/70, 1.0);
+                      			handRb->motion.SetPosition(targetLocationHavok);
+                      			handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, 0.0, 0.0));
+                    		}
+                  		}
+                	}
+              	}
+            }
+        }
 	}
 
 	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 1.0)) {

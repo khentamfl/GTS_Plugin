@@ -18,6 +18,8 @@ namespace Gts
 			void AddTiny(Actor* tiny);
 			// Enables/diables the shrink zone
 			void EnableMouthShrinkZone(bool enabled);
+			//Manages ragdoll
+			void ManageRagdoll(Actor* tiny, float deltaLength, NiPoint3 deltaLocation);
 			// Swallow and start the digestion (buffs)
 			void Swallow();
 			// Finishes the process
@@ -48,7 +50,7 @@ namespace Gts
 			// If true the mouth kill zone is on and we shrink nodes entering the mouth
 			bool killZoneEnabled = false;
 
-			static Timer moantimer = Timer(6.0);
+			inline static Timer moantimer = Timer(6.0);
 
 			// True if in grabbed state
 			bool allGrabbed = false;
