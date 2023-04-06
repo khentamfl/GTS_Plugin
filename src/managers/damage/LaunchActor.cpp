@@ -103,7 +103,7 @@ namespace Gts {
 			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
 			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
 		};
-		float maxFootDistance = BASE_FOOT_DISTANCE * giantScale * radis;
+		float maxFootDistance = BASE_FOOT_DISTANCE * giantScale * radius;
 
         auto bone_TP = find_node(giant, node, false);
         auto bone_FP = find_node(giant, node, true);
