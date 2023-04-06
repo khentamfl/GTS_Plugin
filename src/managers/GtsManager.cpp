@@ -226,8 +226,8 @@ void GtsManager::Update() {
 					NiPoint3 giantLocation = player->GetPosition();
 					NiPoint3 tinyLocation = actor->GetPosition();
 					if ((tinyLocation-giantLocation).Length() < 60*get_visual_scale(player)) {
-						node->world.translate.x = actor->GetPosition[0];
-						node->world.translate.y = actor->GetPosition[1];
+						node->world.translate.x = tinyLocation.x;
+						node->world.translate.y = tinyLocation.y;
 					}
 				}
 				update_node(node);
