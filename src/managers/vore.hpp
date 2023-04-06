@@ -19,7 +19,7 @@ namespace Gts
 			// Enables/diables the shrink zone
 			void EnableMouthShrinkZone(bool enabled);
 			//Manages ragdoll
-			void ManageRagdoll(Actor* tiny, float deltaLength, NiPoint3 deltaLocation);
+			void ManageRagdoll(Actor* tiny, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation);
 			// Swallow and start the digestion (buffs)
 			void Swallow();
 			// Finishes the process
