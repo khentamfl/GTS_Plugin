@@ -156,15 +156,17 @@ namespace {
 
 	void RightStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
+		if (Runtime::HasPerk(player, "DestructionBasics") && GetAV(player, ActorValue::kStamina) > 75) {
 			AnimationManager::StartAnim("StrongStompRight", player);
+            DamageAV(player, ActorValue::kStamina, 75);
 		}
 	}
 
 	void LeftStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
+		if (Runtime::HasPerk(player, "DestructionBasics") && GetAV(player, ActorValue::kStamina) > 75) {
 			AnimationManager::StartAnim("StrongStompLeft", player);
+            DamageAV(player, ActorValue::kStamina, 75);
 		}
 	}
 }

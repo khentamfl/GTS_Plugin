@@ -1,5 +1,6 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
+#include "managers/animation/StrongStomp.hpp"
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/Compat.hpp"
@@ -50,6 +51,9 @@ namespace Gts {
 	void AnimationManager::DataReady() {
 		AnimationStomp::RegisterEvents();
 		AnimationStomp::RegisterTriggers();
+
+		AnimationStrongStomp::RegisterEvents();
+		AnimationStrongStomp::RegisterTriggers();
 
 		AnimationThighCrush::RegisterEvents();
 		AnimationThighCrush::RegisterTriggers();
