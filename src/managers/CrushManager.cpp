@@ -200,7 +200,7 @@ namespace Gts {
 						tiny->SetAlpha(0.0); // Fake crush effect, just make player invisible
 					}
 
-					AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
+					//AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 					FearChance(giant);
 				}
 			}
