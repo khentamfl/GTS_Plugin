@@ -117,6 +117,7 @@ namespace Gts {
 		int LaughChance = rand() % 12;
 		int ShrinkChance = rand() % 12;
 		auto& sizemanager = SizeManager::GetSingleton();
+		float BalanceMode = sizemanager.BalancedMode();
 		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
@@ -127,7 +128,7 @@ namespace Gts {
 			
 			Runtime::PlaySound("growthSound", receiver, GrowthValue * 600, 1.0);
 			if (ShrinkChance >= 11) {
-				mod_target_scale(attacker, (-0.025 * SizeHunger * Gigantism) * SizeDifference / BalanceMode); // Shrink Attacker
+				mod_target_scale(attacker, ((-0.025 * SizeHunger * Gigantism) * SizeDifference) / BalanceMode); // Shrink Attacker
 				mod_target_scale(receiver, (0.025 * SizeHunger * Gigantism) / BalanceMode); // Grow Attacker
 				log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
 			}
@@ -136,7 +137,7 @@ namespace Gts {
 			}
 		} 
 
-		else if (sizemanager.BalancedMode() >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
+		else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if (get_visual_scale(receiver) > 1.0) {
 				float ShrinkValue = -(damage/500)/SizeHunger/Gigantism;
 				mod_target_scale(receiver, ShrinkValue);
