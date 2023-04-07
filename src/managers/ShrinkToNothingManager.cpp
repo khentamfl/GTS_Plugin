@@ -156,10 +156,10 @@ namespace Gts {
 
 		if (GtsSkillRatio->value >= 1.0) {
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
+			GtsSkillRatio->value = 0.0;
 			GtsSkillLevel->value += 1.0;
 			PerkPointCheck(GtsSkillLevel->value += 1.0);
 			GtsSkillProgress->value = GtsSkillLevel->value;
-			GtsSkillRatio->value = 0.0;
 		}
 	}
 
