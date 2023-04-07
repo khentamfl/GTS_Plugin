@@ -101,9 +101,7 @@ namespace {
 		auto giant = &data.giant;
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
-		if (giant->formID == 0x14) {
-			TrackFeet(giant, 6.0, true);
-		}
+		TrackFeet(giant, 6.0, true);
 		StartLegRumble("StrongStompR", data.giant, 0.3, 0.10, "Right");
 	}
 
@@ -111,9 +109,7 @@ namespace {
 		auto giant = &data.giant;
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
-		if (giant->formID == 0x14) {
-			TrackFeet(giant ,5.0, true);
-		}
+		TrackFeet(giant ,5.0, true);
 		StartLegRumble("StrongStompL", data.giant, 0.3, 0.10, "Left");
 	}
 
@@ -166,11 +162,11 @@ namespace {
     }
     void GTS_StrongStomp_ReturnRL_End(AnimationEventData& data) {
         StopLegRumble("StrongStompR", data.giant, "Right");
-		TrackFeet(&data.giant, 5.0, false);
+		TrackFeet(&data.giant, 6.0, false);
     }
     void GTS_StrongStomp_ReturnLL_End(AnimationEventData& data) {
         StopLegRumble("StrongStompL", data.giant, "Left");
-		TrackFeet(&data.giant, 6.0, false);
+		TrackFeet(&data.giant, 5.0, false);
     }
     void GTS_StrongStomp_End(AnimationEventData& data) {
     }

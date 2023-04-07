@@ -79,7 +79,6 @@ namespace {
 		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.7, 1.2, RNode);
-		TrackFeet(&data.giant, 6, false);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
@@ -88,7 +87,7 @@ namespace {
 		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.7, 1.2, LNode);
-		TrackFeet(&data.giant, 5, false);
+		
 	}
 
 	void GTSStompendR(AnimationEventData& data) {
@@ -113,6 +112,8 @@ namespace {
 	void GTSBEH_Exit(AnimationEventData& data) {
 		Rumble::Stop("StompR", &data.giant);
 		Rumble::Stop("StompL", &data.giant);
+		TrackFeet(&data.giant, 6, false);
+		TrackFeet(&data.giant, 5, false);
 	}
 
 	void RightStompEvent(const InputEventData& data) {

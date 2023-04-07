@@ -70,7 +70,7 @@ namespace {
 						DamageAV(tiny, ActorValue::kHealth, damage);
 					}
 					StaggerOr(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 240 * giantSize * force, 240 * giantSize * force);
+					ApplyHavokImpulse(tiny, 0, 0, 120 * giantSize * force, 120 * giantSize * force);
 				}
 			}
 		}
