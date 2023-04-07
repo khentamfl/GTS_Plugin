@@ -166,11 +166,11 @@ namespace {
     }
     void GTS_StrongStomp_ReturnRL_End(AnimationEventData& data) {
         StopLegRumble("StrongStompR", data.giant, "Right");
-		TrackFeet(giant, 5.0, false);
+		TrackFeet(&data.giant, 5.0, false);
     }
     void GTS_StrongStomp_ReturnLL_End(AnimationEventData& data) {
         StopLegRumble("StrongStompL", data.giant, "Left");
-		TrackFeet(giant, 6.0, false);
+		TrackFeet(&data.giant, 6.0, false);
     }
     void GTS_StrongStomp_End(AnimationEventData& data) {
     }
