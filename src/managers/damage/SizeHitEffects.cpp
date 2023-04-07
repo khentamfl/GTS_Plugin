@@ -86,6 +86,13 @@ namespace {
 			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage); // Restore hp
 		}
 	}
+
+	void DoHitShake(Actor* receiver, float value) {
+		if (IsFirstPerson()) {
+			value *= 0.05;
+		}
+		Rumble::Once("HitGrowth", receiver, value, 0.15);
+	}
 }
 
 namespace Gts {
@@ -102,7 +109,40 @@ namespace Gts {
     void SizeHitEffects::ApplyEverything(Actor* attacker, Actor* receiver, float damage) {
         InflictDamage(attacker, receiver, damage);
         StaggerImmunity(attacker, receiver);
-    }
+		SizeHitEffects::GetSingleton().DoHitGrowth(receiver, attacker, damage);
+    }	
+
+
+	void SizeHitEffects::DoHitGrowth(Actor* receiver, Actor* attacker, float damage) {
+		int LaughChance = rand() % 12;
+		int ShrinkChance = rand() % 12;
+		auto& sizemanager = SizeManager::GetSingleton();
+		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
+		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
+		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
+
+		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
+			float GrowthValue = (damage/1500) * SizeHunger * Gigantism;
+			mod_target_scale(receiver, GrowthValue);
+			
+			Runtime::PlaySound("growthSound", receiver, GrowthValue * 600, 1.0);
+			if (ShrinkChance >= 11) {
+				mod_target_scale(attacker, (-0.025 * SizeHunger * Gigantism) * SizeDifference / BalanceMode); // Shrink Attacker
+				mod_target_scale(receiver, (0.025 * SizeHunger * Gigantism) / BalanceMode); // Grow Attacker
+				log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
+			}
+			if (SizeDifference >= 4.0 && LaughChance >= 11) {
+				Runtime::PlaySound("LaughSound", receiver, 1.0, 0.0);
+			}
+		} 
+
+		else if (sizemanager.BalancedMode() >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
+			if (get_visual_scale(receiver) > 1.0) {
+				float ShrinkValue = -(damage/500)/SizeHunger/Gigantism;
+				mod_target_scale(receiver, ShrinkValue);
+			}
+		}
+	}
 
 	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny, float damage, int random) { // Used as a debuff 
 		if (tiny->IsDead()) {

@@ -206,6 +206,15 @@ namespace Gts {
 		this->tinies.clear();
 	}
 
+	void VoreData::ProtectFromVore() {
+		for (auto& [key, tiny]: this->tinies) {
+			auto transient = Transient::GetSingleton().GetData(tiny);
+			if (transient) {
+				transient->can_be_vored = false;
+			}
+		}
+	}
+
 	bool VoreData::GetTimer() {
 		return this->moantimer.ShouldRun();
 	}
@@ -728,7 +737,12 @@ namespace Gts {
 		if (pred == prey) {
 			return false;
 		}
-
+		auto transient = Transient::GetSingleton().GetData(prey);
+		if (transient) {
+			if (transient->can_be_vored == false) {
+				return false;
+			}
+		}
 		if (!Runtime::HasPerkTeam(pred, "VorePerk")) {
 			return false;
 		}

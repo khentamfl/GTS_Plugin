@@ -382,9 +382,9 @@ namespace Gts {
 			} else {
 				volume = bonus * origSpeed / 250;
 			}
-			/*if (soundtimer.ShouldRunFrame()) {
+			if (soundtimer.ShouldRunFrame()) {
 				Runtime::PlaySound("RumbleWalkSound", actor, volume, 1.0);
-			}*/
+			}
 		}
 		return bonus;
 	}
