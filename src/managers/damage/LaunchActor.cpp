@@ -14,9 +14,9 @@ using namespace Gts;
 
 namespace {
 
-    const float LAUNCH_DAMAGE = 1.2f;
-	const float LAUNCH_KNOCKBACK = 0.10f;
-	const float UNDERFOOT_POWER = 0.60;
+    const float LAUNCH_DAMAGE = 2.4f;
+	const float LAUNCH_KNOCKBACK = 0.02f;
+	const float UNDERFOOT_POWER = 0.50;
 
     void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		if (tiny->IsDead()) {
@@ -55,6 +55,10 @@ namespace {
         if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
+					float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
+					DamageAV(tiny, ActorValue::kHealth, damage * 0.25);
+				}
 				StaggerOr(giant, tiny, knockBack);
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER) {
@@ -66,7 +70,7 @@ namespace {
 						DamageAV(tiny, ActorValue::kHealth, damage);
 					}
 					StaggerOr(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 50 * giantSize * force, 35 * giantSize * force);
+					ApplyHavokImpulse(tiny, 0, 0, 240 * giantSize * force, 240 * giantSize * force);
 				}
 			}
 		}

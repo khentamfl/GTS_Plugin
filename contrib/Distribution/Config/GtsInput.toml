@@ -47,11 +47,13 @@ trigger = "once"
 #========================================================
 [[InputEvent]]
 name = "RightStomp_Strong"
-keys = ["LSHIFT", "E", "Q"]
+keys = ["LSHIFT", "E"]
+duration = 0.33
 
 [[InputEvent]]
 name = "LeftStomp_Strong"
-keys = ["LSHIFT", "Q", "E"]
+keys = ["LSHIFT", "Q"]
+duration = 0.33
 
 # ^ Trigger powerful stomps
 
@@ -59,14 +61,12 @@ keys = ["LSHIFT", "Q", "E"]
 [[InputEvent]]
 name = "RightStomp"
 keys = ["LSHIFT", "E"]
-duration = 0.33
 
 # Trigger Stomp Right animation.
 
 [[InputEvent]]
 name = "LeftStomp"
 keys = ["LSHIFT", "Q"]
-duration = 0.33
 
 # Trigger Stomp Left animation.
 

@@ -118,6 +118,7 @@
             return;
         }
     	float giantScale = get_visual_scale(giant);
+		
 
 		SandwichingData::UpdateRune(giant);
 
@@ -129,16 +130,21 @@
 			if (!bone) {
 				return;
 			}
+			float tinyScale = get_visual_scale(tiny);
 			NiPoint3 tinyLocation = tiny->GetPosition();
 			NiPoint3 targetLocation = bone->world.translate;
         	NiPoint3 deltaLocation = targetLocation - tinyLocation;
         	float deltaLength = deltaLocation.Length();
 
+			if (giantScale/tinyScale < 6.0) {
+				this->tinies.erase(tiny); // Disallow button abuses to keep tiny when on low scale
+			}
+
 			tiny->SetPosition(targetLocation, true);
 			tiny->SetPosition(targetLocation, false);
             if (this->Suffocate) {
                 float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-			    float damage = 0.02 * sizedifference;
+			    float damage = 0.005 * sizedifference;
                 float hp = GetAV(tiny, ActorValue::kHealth);
 			    DamageAV(tiny, ActorValue::kHealth, damage);
                 if (damage > hp && !tiny->IsDead()) {
@@ -150,7 +156,7 @@
 			if (tiny_is_actor) {
 				auto charcont = tiny_is_actor->GetCharController();
 				if (charcont) {
-					charcont->SetLinearVelocityImpl((0.0, 0.0, -5.0, 0.0)); // Needed so Actors won't fall down.
+					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
 				}
             }
         }

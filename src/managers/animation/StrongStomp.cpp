@@ -95,7 +95,6 @@ namespace {
 	void GTS_StrongStomp_Start(AnimationEventData& data) {
 		data.stage = 1;
 		data.animSpeed = 1.35;
-		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 	}
 
 	void GTS_StrongStomp_LR_Start(AnimationEventData& data) {
@@ -105,7 +104,7 @@ namespace {
 		if (giant->formID == 0x14) {
 			TrackFeet(giant, 6.0, true);
 		}
-		StartLegRumble("StrongStompR", data.giant, 0.6, 0.10, "Right");
+		StartLegRumble("StrongStompR", data.giant, 0.3, 0.10, "Right");
 	}
 
     void GTS_StrongStomp_LL_Start(AnimationEventData& data) {
@@ -115,7 +114,7 @@ namespace {
 		if (giant->formID == 0x14) {
 			TrackFeet(giant ,5.0, true);
 		}
-		StartLegRumble("StrongStompL", data.giant, 0.6, 0.10, "Left");
+		StartLegRumble("StrongStompL", data.giant, 0.3, 0.10, "Left");
 	}
 
     void GTS_StrongStomp_LR_Middle(AnimationEventData& data) {
@@ -140,7 +139,7 @@ namespace {
         Rumble::Once("HeavyStompR", &data.giant, 14.0 * data.animSpeed, 0.05, RNode);
         DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 2.5, 6.0, RNode);
+		DoLaunch(&data.giant, 1.2, 6.0, RNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
@@ -152,29 +151,26 @@ namespace {
         Rumble::Once("HeavyStompL", &data.giant, 14.0 * data.animSpeed, 0.05, LNode);
         DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 2.5, 6.0, LNode);
+		DoLaunch(&data.giant, 1.2, 6.0, LNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
     void GTS_StrongStomp_ReturnRL_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
-		if (giant->formID == 0x14) {
-			TrackFeet(giant, 6.0, false);
-		}
-        StartLegRumble("StrongStompR", data.giant, 0.4, 0.10, "Right");
+        StartLegRumble("StrongStompR", data.giant, 0.25, 0.10, "Right");
     }
     void GTS_StrongStomp_ReturnLL_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
-		if (giant->formID== 0x14) {
-			TrackFeet(giant, 5.0, false);
-		}
-        StartLegRumble("StrongStompL", data.giant, 0.4, 0.10, "Left");
+		
+        StartLegRumble("StrongStompL", data.giant, 0.25, 0.10, "Left");
     }
     void GTS_StrongStomp_ReturnRL_End(AnimationEventData& data) {
         StopLegRumble("StrongStompR", data.giant, "Right");
+		TrackFeet(giant, 5.0, false);
     }
     void GTS_StrongStomp_ReturnLL_End(AnimationEventData& data) {
         StopLegRumble("StrongStompL", data.giant, "Left");
+		TrackFeet(giant, 6.0, false);
     }
     void GTS_StrongStomp_End(AnimationEventData& data) {
     }

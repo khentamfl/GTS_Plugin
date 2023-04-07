@@ -62,7 +62,7 @@ namespace {
 		Rumble::Once("StompR", &data.giant, 2.20, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 1.0, 1.25, RNode);
+		DoLaunch(&data.giant, 1.0, 2.25, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
@@ -70,7 +70,7 @@ namespace {
 		Rumble::Once("StompL", &data.giant, 2.20, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 1.0, 1.25, LNode);
+		DoLaunch(&data.giant, 1.0, 2.25, LNode);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
@@ -78,7 +78,8 @@ namespace {
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.6, 0.75, RNode);
+		DoLaunch(&data.giant, 0.7, 1.2, RNode);
+		TrackFeet(&data.giant, 6, false);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
@@ -86,21 +87,20 @@ namespace {
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
 		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.6, 0.75, LNode);
+		DoLaunch(&data.giant, 0.7, 1.2, LNode);
+		TrackFeet(&data.giant, 5, false);
 	}
 
 	void GTSStompendR(AnimationEventData& data) {
 		data.stage = 0;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		TrackFeet(&data.giant, 6, false);
 	}
 
 	void GTSStompendL(AnimationEventData& data) {
 		data.stage = 0;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		TrackFeet(&data.giant, 5, false);
 	}
 
 	void GTS_Next(AnimationEventData& data) {
