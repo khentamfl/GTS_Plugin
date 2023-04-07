@@ -361,26 +361,30 @@ namespace Gts {
 		this->tiny = tiny;
 		this->duration = 40.0;
 		float mealEffiency = 0.2; // Normal pred has 20% efficent stomach
-		if (Runtime::HasPerkTeam(giant, "AdditionalAbsorption")) {
+		float perkbonus = 1.0;
+		if (Runtime::HasPerkTeam(giant, "Gluttony")) {
 			this->duration = 60.0;
 			mealEffiency = 0.3;
+		}
+		if (Runtime::HasPerkTeam(giant, "AdditionalGrowth")) {
+			perkbonus = 2.0;
 		}
 		if (IsDragon(tiny)) {
 			mealEffiency *= 6.0;
 		}
 		this->appliedFactor = 0.0;
-    	this->state = VoreBuffState::Starting;
+    	this->state = VoreBuffState::Starting; 
 
 		if (tiny) {
 			float tiny_scale = get_visual_scale(tiny);
 			// Amount of health we apply depends on their vitality
 			// and their size
-			if (Runtime::HasPerkTeam(giant, "VorePerkRegeneration")) {
+			if (Runtime::HasPerkTeam(giant, "Gluttony")) {
 				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 8 * mealEffiency;
 			} else {
         		this->restorePower = 0.0;
       		}
-			this->sizePower = tiny_scale * mealEffiency;
+			this->sizePower = tiny_scale * mealEffiency * perkbonus;
 		}
 	}
 	void VoreBuff::Update() {
@@ -398,8 +402,8 @@ namespace Gts {
         	break;
     		}
 		case VoreBuffState::Running: {
-    			float healthToApply = this->restorePower/3800;
-    			float sizeToApply = this->sizePower/4000;
+    			float healthToApply = this->restorePower/4000;
+    			float sizeToApply = this->sizePower/4200;
 
     			DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
     			DamageAV(this->giant, ActorValue::kStamina, -healthToApply);

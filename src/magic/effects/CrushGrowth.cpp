@@ -34,7 +34,7 @@ namespace Gts {
 
 		float GrowAmount = this->ScaleOnCrush;
 		float Rate = 0.00050 * GrowAmount * CrushGrowthActivationCount;
-		if (Runtime::HasPerk(caster, "AdditionalAbsorption")) {
+		if (Runtime::HasPerk(caster, "AdditionalGrowth")) {
 			Rate *= 2.0;
 		}
 

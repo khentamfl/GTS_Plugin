@@ -39,7 +39,7 @@ namespace Gts {
 			GrowAmount *= 6.0;
 		}
 		BASE_POWER *= GrowAmount;
-		if (Runtime::HasPerk(caster, "AdditionalAbsorption")) {
+		if (Runtime::HasPerk(caster, "AdditionalGrowth")) {
 			BASE_POWER *= 2.0;
 		}
 

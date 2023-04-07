@@ -62,7 +62,7 @@ namespace {
 			return;
 		} else if (Runtime::HasPerkTeam(caster, "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1) {
 			float Rate = (0.00016 * get_visual_scale(target)) * 120;
-			if (Runtime::HasPerkTeam(caster, "AdditionalAbsorption")) {
+			if (Runtime::HasPerkTeam(caster, "AdditionalGrowth")) {
 				Rate *= 2.0;
 			}
 			CrushGrow(caster, 0, Rate);
@@ -82,7 +82,6 @@ namespace {
 		if (Caster->formID != 0x14) {
 			return; //Bye
 		}
-		ConsoleLog::GetSingleton()->Print("Calling Crush Skill Gain");
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
 		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");

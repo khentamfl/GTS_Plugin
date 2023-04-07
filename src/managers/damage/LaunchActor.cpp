@@ -63,7 +63,7 @@ namespace {
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-				if (sizeRatio >= 4.0) { // Launch
+				if (sizeRatio >= 6.0) { // Launch
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
