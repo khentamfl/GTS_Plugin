@@ -82,18 +82,11 @@ namespace {
 		if (Caster->formID != 0x14) {
 			return; //Bye
 		}
+		ConsoleLog::GetSingleton()->Print("Calling Crush Skill Gain");
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
-		if (!GtsSkillLevel) {
-			return;
-		}
 		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
-		if (!GtsSkillRatio) {
-			return;
-		}
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
-		if (!GtsSkillProgress) {
-			return;
-		}
+
 
 		int random = (100 + (rand()% 65 + 1)) / 100;
 
@@ -117,9 +110,9 @@ namespace {
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
 			GtsSkillRatio->value = 0.0;
 			GtsSkillLevel->value = skill_level + 1.0;
-			PerkPointCheck(GtsSkillLevel->value += 1.0);
 			GtsSkillProgress->value = GtsSkillLevel->value;
-			ConsoleLog::GetSingleton()->Print("%s crushed %s, Latest Level: %g", Caster->GetDisplayFullName(), Target->GetDisplayFullName(), GtsSkillLevel->value);
+			PerkPointCheck(GtsSkillLevel->value);
+			ConsoleLog::GetSingleton()->Print("%s crushed %s, Latest Level: %g, Progress: %g", Caster->GetDisplayFullName(), Target->GetDisplayFullName(), GtsSkillLevel->value, GtsSkillProgress->value);
 		}
 	}
 }
@@ -200,7 +193,7 @@ namespace Gts {
 						tiny->SetAlpha(0.0); // Fake crush effect, just make player invisible
 					}
 
-					//AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
+					AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 					FearChance(giant);
 				}
 			}
