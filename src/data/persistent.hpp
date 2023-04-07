@@ -74,6 +74,7 @@ namespace Gts {
 			bool vore_allowplayervore = false;
 			bool vore_combatonly = true;
 			bool devourment_compatibility = false;
+			bool allow_feetracking = false;
 			float tremor_scale = 1.0;
 			float npc_tremor_scale = 1.0;
 			SoftPotential speed_adjustment {

@@ -44,6 +44,7 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.33;
+		TrackFeet(&data.giant, 6, true);
 		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 		log::info("StompStartR true");
 	}
@@ -52,6 +53,7 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.33;
+		TrackFeet(&data.giant, 5, true);
 		Rumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
 		log::info("StompStartL true");
 	}
@@ -91,12 +93,14 @@ namespace {
 		data.stage = 0;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		TrackFeet(&data.giant, 6, false);
 	}
 
 	void GTSStompendL(AnimationEventData& data) {
 		data.stage = 0;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		TrackFeet(&data.giant, 5, false);
 	}
 
 	void GTS_Next(AnimationEventData& data) {

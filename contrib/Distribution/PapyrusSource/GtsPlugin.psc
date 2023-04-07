@@ -3,7 +3,21 @@ scriptName GtsPlugin hidden
 ; Get Distance To Camera
 ;
 ; This will get the distance to the camera
+
+;==========================================
+;===================C A M E R A           |
+;==========================================
+
 Float function GetDistanceToCamera(Actor target) global native
+Function SetFeetTracking(Bool enabled) global native
+
+;==================================================================================
+;==================================================================================
+;==================================================================================
+
+;==========================================
+;===================D A M A G E           |
+;==========================================
 
 ; Get size related damage modifier.
 ; This functions reports damage modifiers for: Normal, Fall, Sprint and High Heel damage bonuses.
@@ -21,6 +35,14 @@ Float function GetSizeVulnerability(Actor target) global native
 ; apply increased size-related damage debuff 
 Bool function ModSizeVulnerability(Actor target, Float amt) global native
 
+
+;==================================================================================
+;==================================================================================
+;==================================================================================
+
+;==========================================
+;===================A T T R I B U T E S   |
+;==========================================
 ;Reports bonus attributes in %
 ; 1 = health
 ; 2 = carry weight
@@ -32,8 +54,8 @@ Float function GetAttributeBonus(Actor target, float value) global native
 ; 1 = health
 ; 2 = carry weight
 Float function GetFlatAttributeBonus(Actor target, float value) global native
-; Check if Hit Growth is allowed
 
+; Check if Hit Growth is allowed
 Float function GetHitGrowth(Actor target) global native
 
 ; Set hit growth
@@ -46,13 +68,30 @@ Bool function SetHitGrowth(Actor target, float allow) global native
 ;
 ; Value is saved into the cosave
 Bool function SetGrowthHalfLife(Actor target, Float halflife) global native
+
+;Get half life of the target
 Float function GetGrowthHalfLife(Actor target) global native
+
+
+;======================================================================================
+;======================================================================================
+;======================================================================================
+
+
+
+;==========================================
+;===================A N I M A T I O N     |
+;==========================================
 
 ; This sets the speed at which anims are played
 ; 1.0 is normal speed while 2.0 is twice as fast
 ;
 ; Value is saved into the cosave
 Bool function SetAnimSpeed(Actor target, Float animspeed) global native
+
+;======================================================================================
+;======================================================================================
+;======================================================================================
 
 ; Format a number to a string with specified significant figures
 ;
@@ -63,11 +102,26 @@ Bool function SetAnimSpeed(Actor target, Float animspeed) global native
 ; ; formatted_number should now be 10.2
 String function SigFig(Float number, Int sf) global native
 
+
+;==========================================
+;===================H I G H H E E L S     |
+;==========================================
+
 ; Controls if the HH correction method is enabled or not
 ;
 ; Value is saved into the cosave
 Function SetIsHighHeelEnabled(Bool enabled) global native
 Bool Function GetIsHighHeelEnabled() global native
+; Self-explanatory
+Function SetIsHHFurnitureEnabled(Bool enabled) global native
+
+;======================================================================================
+;======================================================================================
+;======================================================================================
+
+;==========================================
+;===================V O R E               |
+;==========================================
 
 ;Allows/Disallows Player to be eaten, default: false
 Function SetAllowPlayerVore(Bool enabled) global native
@@ -75,8 +129,6 @@ Function SetAllowPlayerVore(Bool enabled) global native
 ;Disallow/Allow non-combat random vore for followers
 Function SetOnlyCombatVore(Bool enabled) global native
     
-; Self-explanatory
-Function SetIsHHFurnitureEnabled(Bool enabled) global native
 
 ;CTD-free Set Critical Stage function
 Function DisintegrateTarget(Actor target) global native
@@ -87,9 +139,14 @@ Bool function GetDevourmentCompatibility() global native
 ; enables/disables Devourment compatibility
 Function SetDevourmentCompatibility(Bool enabled) global native
     
-; returns temp data for Actor - used for 'was dragon absorbed' detection    
-Bool function WasDragonEaten() global native    
+; returns temp data for Actor - used for 'was dragon absorbed' detection       
     
+;==================================================
+;===================M I S C F U N C T I O N S     |
+;==================================================
+
+Bool function WasDragonEaten() global native 
+
 Bool function DragonCheck(Actor target) global native    
 
 ; Allow/Get precise damage toggle
@@ -134,3 +191,6 @@ Function SetTremorScaleNPC(Float value) global native
 ; Debug functions
 Float Function GetExperimentFloat() global native
 Function SetExperimentFloat(Float value) global native
+;======================================================================================
+;======================================================================================
+;===================================================

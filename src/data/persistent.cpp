@@ -13,6 +13,7 @@ namespace {
 	inline const auto HighHeelFurnitureRecord = _byteswap_ulong('HHFO');
 	inline const auto AllowPlayerVoreRecord = _byteswap_ulong('APVR');
 	inline const auto DevourmentCompatRecord = _byteswap_ulong('DVCR');
+	inline const auto FeetTrackingRecord = _byteswap_ulong('FTRD');
 	inline const auto VoreCombatOnlyRecord = _byteswap_ulong('VRCO');
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
@@ -323,6 +324,10 @@ namespace Gts {
 				bool devourment_compatibility;
 				serde->ReadRecordData(&devourment_compatibility, sizeof(devourment_compatibility));
 				GetSingleton().devourment_compatibility = devourment_compatibility;
+			} else if (type == FeetTrackingRecord) {
+				bool allow_feetracking;
+				serde->ReadRecordData(&allow_feetracking, sizeof(allow_feetracking));
+				GetSingleton().allow_feetracking = allow_feetracking;
 			}
 			
 			 else if (type == IsSpeedAdjustedRecord) {
@@ -485,6 +490,13 @@ namespace Gts {
 
 		bool devourment_compatibility = GetSingleton().devourment_compatibility;
 		serde->WriteRecordData(&devourment_compatibility, sizeof(devourment_compatibility));
+		
+		if (!serde->OpenRecord(FeetTrackingRecord, 1)) {
+			log::error("Unable to open Feet Tracking record to write cosave data.");
+			return;
+		}
+		bool allow_feetracking = GetSingleton().allow_feetracking;
+		serde->WriteRecordData(&allow_feetracking, sizeof(allow_feetracking));
 
 		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 1)) {
 			log::error("Unable to open is speed adjusted record to write cosave data.");

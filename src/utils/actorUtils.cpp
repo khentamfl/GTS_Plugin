@@ -1,4 +1,5 @@
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
@@ -300,6 +301,19 @@ namespace Gts {
 
 	bool AllowDevourment() {
 		return Persistent::GetSingleton().devourment_compatibility;
+	}
+
+	bool AllowFeetTracking() {
+		return Persistent::GetSingleton().allow_feetracking;
+	}
+
+	void TrackFeet(Actor* giant, float number, bool enable) {
+		if (giant->formID == 0x14) {
+			if (AllowFeetTracking()) {
+				auto& sizemanager = SizeManager::GetSingleton();
+				sizemanager.SetActionBool(giant, enable, number);
+			}
+		}
 	}
 
 	void CallDevourment(Actor* giant, Actor* tiny) {

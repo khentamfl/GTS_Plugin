@@ -140,6 +140,10 @@ namespace {
 	std::string SigFig(StaticFunctionTag*, float number, int sf) {
 		return format(number, sf);
 	}
+	
+	void SetFeetTracking(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().allow_feetracking = enabled;
+	}
 
 	bool GetIsHighHeelEnabled(StaticFunctionTag*) {
 		return Persistent::GetSingleton().highheel_correction;
@@ -289,6 +293,7 @@ namespace Gts {
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
 		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
+		vm->RegisterFunction("SetFeetTracking", PapyruClass, SetFeetTracking);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);

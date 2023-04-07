@@ -47,11 +47,11 @@ trigger = "once"
 #========================================================
 [[InputEvent]]
 name = "RightStomp_Strong"
-keys = ["LSHIFT", "E", "LMB"]
+keys = ["LSHIFT", "E", "Q"]
 
 [[InputEvent]]
 name = "LeftStomp_Strong"
-keys = ["LSHIFT", "Q", "LMB"]
+keys = ["LSHIFT", "Q", "E"]
 
 # ^ Trigger powerful stomps
 

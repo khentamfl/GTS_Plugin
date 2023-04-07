@@ -41,6 +41,8 @@ namespace Gts {
 	void EnableFreeCamera();
 
 	bool AllowDevourment();
+	bool AllowFeetTracking();
+	void TrackFeet(Actor* giant, float number, bool enable);
 	void CallDevourment(Actor* giant, Actor* tiny);
 	void CallGainWeight(Actor* giant, float value);
 	void CallVampire();

@@ -74,11 +74,6 @@ namespace {
         }
 	}
 
-	void TrackFeet(Actor* giant, float number, bool enable) {
-		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.SetActionBool(giant, enable, number);
-	}
-
 	void StopLegRumble(std::string_view tag, Actor& actor, std::string_view type) {
         if (type == "Left") {
 		    for (auto& node_name: L_LEG_RUMBLE_NODES) {
