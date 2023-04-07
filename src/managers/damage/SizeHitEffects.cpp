@@ -123,23 +123,23 @@ namespace Gts {
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
-			float GrowthValue = (damage/1500) * SizeHunger * Gigantism;
-			mod_target_scale(receiver, GrowthValue);
+			float GrowthValue = std::clamp((damage/1500) * SizeHunger * Gigantism, 0.0f, 1.15f);
+			mod_target_scale(receiver, -GrowthValue);
 			
-			Runtime::PlaySound("growthSound", receiver, GrowthValue * 600, 1.0);
+			Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue * 600, 1.0, "NPC COM [COM ]");
 			if (ShrinkChance >= 11) {
-				mod_target_scale(attacker, ((-0.025 * SizeHunger * Gigantism) * SizeDifference) / BalanceMode); // Shrink Attacker
-				mod_target_scale(receiver, (0.025 * SizeHunger * Gigantism) / BalanceMode); // Grow Attacker
+				mod_target_scale(attacker, ((-0.065 * SizeHunger * Gigantism) * SizeDifference) / BalanceMode); // Shrink Attacker
+				mod_target_scale(receiver, (0.045 * SizeHunger * Gigantism) / BalanceMode); // Grow Attacker
 				log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
 			}
 			if (SizeDifference >= 4.0 && LaughChance >= 11) {
-				Runtime::PlaySound("LaughSound", receiver, 1.0, 0.0);
+				Runtime::PlaySoundAtNode("LaughSound", receiver, 1.0, 0.5, "NPC Head [Head]");
 			}
 		} 
 
 		else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if (get_visual_scale(receiver) > 1.0) {
-				float ShrinkValue = -(damage/500)/SizeHunger/Gigantism;
+				float ShrinkValue = std::clamp((damage/500)/SizeHunger/Gigantism, 0.0f, -0.35f);
 				mod_target_scale(receiver, ShrinkValue);
 			}
 		}
