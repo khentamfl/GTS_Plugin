@@ -123,43 +123,37 @@ namespace Gts {
 	}
 
 	void ShrinkToNothingManager::AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill on Shrink To Nothing
-		if (Caster->formID !=0x14) {
+		if (Caster->formID != 0x14) {
 			return; //Bye
 		}
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
-		if (!GtsSkillLevel) {
-			return;
-		}
 		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
-		if (!GtsSkillRatio) {
-			return;
-		}
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
-		if (!GtsSkillProgress) {
-			return;
-		}
+
 
 		int random = (100 + (rand()% 85 + 1)) / 100;
 
-		if (GtsSkillLevel->value >= 100) {
+		if (GtsSkillLevel->value >= 100.0) {
 			GtsSkillLevel->value = 100.0;
 			GtsSkillRatio->value = 0.0;
 			return;
 		}
 
+		float skill_level = GtsSkillLevel->value;
+
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
 		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.42 * random) + absorbedSize/50) * ValueEffectiveness);
+		float Total = (((0.25 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
 			GtsSkillRatio->value = 0.0;
-			GtsSkillLevel->value += 1.0;
-			PerkPointCheck(GtsSkillLevel->value += 1.0);
+			GtsSkillLevel->value = skill_level + 1.0;
 			GtsSkillProgress->value = GtsSkillLevel->value;
+			PerkPointCheck(GtsSkillLevel->value);
 		}
 	}
 

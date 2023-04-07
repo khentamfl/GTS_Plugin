@@ -90,7 +90,7 @@ namespace {
 
 		int random = (100 + (rand()% 65 + 1)) / 100;
 
-		if (GtsSkillLevel->value >= 100) {
+		if (GtsSkillLevel->value >= 100.0) {
 			GtsSkillLevel->value = 100.0;
 			GtsSkillRatio->value = 0.0;
 			return;
@@ -106,13 +106,11 @@ namespace {
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
-			ConsoleLog::GetSingleton()->Print("%s crushed %s, original Level: %g, new Level: %g", Caster->GetDisplayFullName(), Target->GetDisplayFullName(), GtsSkillLevel->value, GtsSkillLevel->value + 1.0);
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
 			GtsSkillRatio->value = 0.0;
 			GtsSkillLevel->value = skill_level + 1.0;
 			GtsSkillProgress->value = GtsSkillLevel->value;
 			PerkPointCheck(GtsSkillLevel->value);
-			ConsoleLog::GetSingleton()->Print("%s crushed %s, Latest Level: %g, Progress: %g", Caster->GetDisplayFullName(), Target->GetDisplayFullName(), GtsSkillLevel->value, GtsSkillProgress->value);
 		}
 	}
 }

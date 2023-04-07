@@ -34,37 +34,33 @@ namespace Gts {
 			return; //Bye
 		}
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
-		if (!GtsSkillLevel) {
-			return;
-		}
 		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
-		if (!GtsSkillRatio) {
-			return;
-		}
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
-		if (!GtsSkillProgress) {
-			return;
-		}
+
 
 		int random = (100 + (rand()% 65 + 1)) / 100;
 
-		if (GtsSkillLevel->value >= 100) {
+		if (GtsSkillLevel->value >= 100.0) {
 			GtsSkillLevel->value = 100.0;
 			GtsSkillRatio->value = 0.0;
 			return;
 		}
 
+		float skill_level = GtsSkillLevel->value;
+
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
+		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = ((value * random) * ValueEffectiveness);
+		float Total = (value * random) * ValueEffectiveness;
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
-			GtsSkillLevel->value += 1.0;
-			GtsSkillProgress->value = GtsSkillLevel->value;
 			GtsSkillRatio->value = 0.0;
+			GtsSkillLevel->value = skill_level + 1.0;
+			GtsSkillProgress->value = GtsSkillLevel->value;
+			PerkPointCheck(GtsSkillLevel->value);
 		}
 	}
 
