@@ -103,6 +103,8 @@ namespace {
 			return;
 		}
 
+		float skill_level = GtsSkillLevel->value;
+
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
 		float absorbedSize = (get_visual_scale(Target));
@@ -114,7 +116,7 @@ namespace {
 			ConsoleLog::GetSingleton()->Print("%s crushed %s, original Level: %g, new Level: %g", Caster->GetDisplayFullName(), Target->GetDisplayFullName(), GtsSkillLevel->value, GtsSkillLevel->value + 1.0);
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
 			GtsSkillRatio->value = 0.0;
-			GtsSkillLevel->value += 1.0;
+			GtsSkillLevel->value = skill_level + 1.0;
 			PerkPointCheck(GtsSkillLevel->value += 1.0);
 			GtsSkillProgress->value = GtsSkillLevel->value;
 			ConsoleLog::GetSingleton()->Print("%s crushed %s, Latest Level: %g", Caster->GetDisplayFullName(), Target->GetDisplayFullName(), GtsSkillLevel->value);
