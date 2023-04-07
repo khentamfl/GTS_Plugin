@@ -102,12 +102,12 @@ namespace {
 
 		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.25 * random) + absorbedSize/50) * ValueEffectiveness);
+		float Total = (((0.24 * random) + absorbedSize/40) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
-			GtsSkillRatio->value = 0.0;
+			GtsSkillRatio->value = transfer;
 			GtsSkillLevel->value = skill_level + 1.0;
 			GtsSkillProgress->value = GtsSkillLevel->value;
 			PerkPointCheck(GtsSkillLevel->value);

@@ -50,14 +50,13 @@ namespace Gts {
 
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
-		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
 		float Total = (value * random) * ValueEffectiveness;
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
-			GtsSkillRatio->value = 0.0;
+			GtsSkillRatio->value = transfer;
 			GtsSkillLevel->value = skill_level + 1.0;
 			GtsSkillProgress->value = GtsSkillLevel->value;
 			PerkPointCheck(GtsSkillLevel->value);
