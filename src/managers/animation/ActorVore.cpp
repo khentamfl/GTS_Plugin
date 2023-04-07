@@ -178,6 +178,7 @@ namespace {
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
 		}
+		VoreData.ProtectFromVore();
 		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
 		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.35);

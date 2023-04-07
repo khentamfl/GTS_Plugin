@@ -64,7 +64,7 @@ namespace Gts {
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
 			GtsSkillLevel->value += 1.0;
 			GtsSkillProgress->value = GtsSkillLevel->value;
-			GtsSkillRatio->value = 0.0 + transfer;
+			GtsSkillRatio->value = 0.0;
 		}
 	}
 

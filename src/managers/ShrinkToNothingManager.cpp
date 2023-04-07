@@ -159,7 +159,7 @@ namespace Gts {
 			GtsSkillLevel->value += 1.0;
 			PerkPointCheck(GtsSkillLevel->value += 1.0);
 			GtsSkillProgress->value = GtsSkillLevel->value;
-			GtsSkillRatio->value = 0.0 + transfer;
+			GtsSkillRatio->value = 0.0;
 		}
 	}
 
