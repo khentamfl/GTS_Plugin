@@ -293,7 +293,7 @@ namespace Gts {
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
 		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
-		vm->RegisterFunction("SetFeetTracking", PapyruClass, SetFeetTracking);
+		vm->RegisterFunction("SetFeetTracking", PapyrusClass, SetFeetTracking);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
