@@ -344,7 +344,7 @@ namespace Gts {
 		    level == 25  || level == 30 || level == 35 || level == 40  ||
 			level == 45  || level == 50 || level == 55 || level == 60  ||
 			level == 65  || level == 70 || level == 75 || level == 80  ||
-			level == 85  || level == 90 || level == 95 || level == 100 ||
+			level == 85  || level == 90 || level == 95 || level == 100 
  		) {
 			if (progressionQuest) {
 				CallFunctionOn(progressionQuest, "gtsProgressionQuest", "GainPerkPoint", bonus);
