@@ -61,5 +61,6 @@ namespace Gts {
 
 		//EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
 		EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
+		log::info("Managers Reigstered");
 	}
 }

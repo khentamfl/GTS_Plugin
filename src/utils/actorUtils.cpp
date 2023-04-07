@@ -337,6 +337,21 @@ namespace Gts {
 		}
 	}
 
+	void PerkPointCheck(float level) {
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		int bonus = 1.0;
+		if (level == 5   || level == 10 || level == 15 || level == 20  ||
+		    level == 25  || level == 30 || level == 35 || level == 40  ||
+			level == 45  || level == 50 || level == 55 || level == 60  ||
+			level == 65  || level == 70 || level == 75 || level == 80  ||
+			level == 85  || level == 90 || level == 95 || level == 100 ||
+ 		) {
+			if (progressionQuest) {
+				CallFunctionOn(progressionQuest, "gtsProgressionQuest", "GainPerkPoint", bonus);
+			}
+		}
+	}
+
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
 		auto& footstep = FootStepManager::GetSingleton();
 		auto& explosion = ExplosionManager::GetSingleton();
