@@ -111,11 +111,13 @@ namespace {
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
+			ConsoleLog::GetSingleton()->Print("%s crushed %s, original Level: %g, new Level: %g", Caster->GetDisplayFullName(), Target->GetDisplayFullName(), GtsSkillLevel->value, GtsSkillLevel->value + 1.0);
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
 			GtsSkillRatio->value = 0.0;
 			GtsSkillLevel->value += 1.0;
 			PerkPointCheck(GtsSkillLevel->value += 1.0);
 			GtsSkillProgress->value = GtsSkillLevel->value;
+			ConsoleLog::GetSingleton()->Print("%s crushed %s, Latest Level: %g", Caster->GetDisplayFullName(), Target->GetDisplayFullName(), GtsSkillLevel->value);
 		}
 	}
 }

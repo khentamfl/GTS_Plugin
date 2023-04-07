@@ -82,7 +82,6 @@ namespace {
 		auto Cache = Persistent::GetSingleton().GetData(player);
 		if (Cache) {
 			if (Runtime::HasPerk(player, "SizeReserve")) { //F
-
 				float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
 				float Value = Cache->SizeReserve * gigantism;
 				Notify("Reserved Size: {:.2f}", Value);
