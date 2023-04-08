@@ -30,7 +30,7 @@ namespace {
 		if (!giant) {
 			return;
 		}
-		float BASE_CHECK_DISTANCE = 256.0;
+		float BASE_CHECK_DISTANCE = 90.0;
 		float SCALE_RATIO = 0.0;
 		float giantScale = get_visual_scale(giant);
 		NiPoint3 giantLocation = giant->GetPosition();

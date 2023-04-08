@@ -460,7 +460,7 @@ namespace Gts {
 		if (!Runtime::HasPerk(player, "VorePerk")) {
 			return;
 		}
-		static Timer timer = Timer(3.00); // Random Vore once per 3 sec
+		static Timer timer = Timer(4.00); // Random Vore once per 4.5 sec
 		if (timer.ShouldRunFrame()) { //Try to not call it too often
 			for (auto actor: find_actors()) {
 				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
@@ -739,6 +739,7 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetData(prey);
 		if (transient) {
 			if (transient->can_be_vored == false) {
+				Notify("{} is already being eaten by someone else", prey->GetDisplayFullName());
 				return false;
 			}
 		}

@@ -7,9 +7,11 @@ using namespace Gts;
 
 namespace {
 	inline double GetGameTime() {
+		log::info("WorldTimeElapsed: {}", Time::WorldTimeElapsed());
 		return Time::WorldTimeElapsed();
 	}
 	inline std::uint64_t GetGameFrame() {
+		log::info("GetGameFrame: {}", Time::FramesElapsed());
 		return Time::FramesElapsed();
 	}
 }
