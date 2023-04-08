@@ -162,8 +162,10 @@ namespace Gts {
 			}
 			case 13: {
 				return BoneTarget { // R feet + L Feet
-				        .boneNames = {
+				        .boneNames = {,
+						"NPC R PreRearCalf"
 						"NPC R Foot [Rft ]",
+						"NPC L PreRearCalf",
 						"NPC L Foot [Lft ]",
 					},
 				        .zoomScale = 1.00,
