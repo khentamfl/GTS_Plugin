@@ -25,6 +25,7 @@ namespace Gts {
 	}
 
 	void Time::Update() {
+		log::info("FramesElapsed: {}, WorldTimeElapsed: {}", this->framesElapsed, Time::WorldTimeDelta());
 		this->framesElapsed += 1;
 		this->worldTimeElapsed += Time::WorldTimeDelta();
 	}
