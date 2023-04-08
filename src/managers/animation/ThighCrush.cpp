@@ -205,7 +205,6 @@ namespace {
 		DoSizeEffect(&data.giant, 0.40, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 0.6, 0.8, 25, 0.5);
 		data.stage = 9;
-		TrackFeet(&data.giant, 0.0, false); // Un-track feet
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
 		// Inbetween stages
@@ -215,6 +214,7 @@ namespace {
 	void GTStoexit(AnimationEventData& data) {
 		// Going to exit
 		StopLegRumble("BodyRumble", data.giant);
+		TrackFeet(&data.giant, 0.0, false); // Un-track feet
 	}
 	void GTSBEH_Exit(AnimationEventData& data) {
 		// Final exit

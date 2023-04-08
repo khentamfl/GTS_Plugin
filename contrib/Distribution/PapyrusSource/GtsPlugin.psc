@@ -19,6 +19,9 @@ Function SetFeetTracking(Bool enabled) global native
 ;===================D A M A G E           |
 ;==========================================
 
+; Sets global damage mult for Stomps
+function SetSizeDamageMultiplier(Float bonus) global native
+
 ; Get size related damage modifier.
 ; This functions reports damage modifiers for: Normal, Fall, Sprint and High Heel damage bonuses.
 ; The damage is calculated through the .dll.
@@ -26,7 +29,6 @@ Function SetFeetTracking(Bool enabled) global native
 ; 1 = Get Sprint    Size-Related Damage
 ; 2 = Get Fall      Size-Related Damage
 ; 3 = Get High Heel Size-Related Damage
-
 Float function GetSizeRelatedDamage(Actor caster, Float attribute) global native
 
 ; Gets increased size damage debuff
@@ -193,4 +195,4 @@ Float Function GetExperimentFloat() global native
 Function SetExperimentFloat(Float value) global native
 ;======================================================================================
 ;======================================================================================
-;===================================================
+;======================================================================================
