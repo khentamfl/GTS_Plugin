@@ -23,7 +23,7 @@ namespace Gts {
 		float HHDamage = 1.0; // 3
 		float SizeVulnerability = 0.0;
 
-		bool OffsetCamera = false;
+		bool IsThighCrushing = false;
 		bool IsThighSandwiching = false;
 		bool AlterSandwichCamera = false;
 		bool ShouldTrackHand = false;

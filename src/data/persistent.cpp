@@ -18,6 +18,7 @@ namespace {
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
 	inline const auto CamCollisions = _byteswap_ulong('CAMC');
+	inline const auto SizeDamageMult = _byteswap_ulong('SZDM');
 
 	const float DEFAULT_MAX_SCALE = 65535.0;
 	const float DEFAULT_HALF_LIFE = 1.0;
@@ -347,6 +348,11 @@ namespace Gts {
 					float o = 1.0;
 					GetSingleton().speed_adjustment.o = o;
 				}
+			}
+			else if (type == SizeDamageMult) {
+				float size_related_damage_mult;
+				serde->ReadRecordData(&size_related_damage_mult, sizeof(size_related_damage_mult));
+				GetSingleton().size_related_damage_mult = size_related_damage_mult;
 			} else if (type == TremorScales) {
 				float tremor_scale;
 				serde->ReadRecordData(&tremor_scale, sizeof(tremor_scale));
@@ -511,6 +517,13 @@ namespace Gts {
 		serde->WriteRecordData(&n, sizeof(n));
 		float s = GetSingleton().speed_adjustment.s;
 		serde->WriteRecordData(&s, sizeof(s));
+
+		if (!serde->OpenRecord(SizeDamageMult, 0)) {
+			log::error("Unable to open Damage mult record to write cosave data");
+			return;
+		}
+		float size_related_damage_mult = GetSingleton().size_related_damage_mult;
+		serde->WriteRecordData(&size_related_damage_mult, sizeof(size_related_damage_mult));
 
 		if (!serde->OpenRecord(TremorScales, 0)) {
 			log::error("Unable to open tremor scale record to write cosave data.");

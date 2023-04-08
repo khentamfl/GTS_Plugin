@@ -14,7 +14,9 @@ namespace {
 	float CheckForAction() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
-		if (sizemanager.GetActionBool(player, 2.0)) {
+		if (sizemanager.GetActionBool(player, 0.0)) {
+			return 0.15;
+		} else if (sizemanager.GetActionBool(player, 2.0)) {
 			return 0.10;
 		} else if (sizemanager.GetActionBool(player, 4.0)) {
 			return 0.10;

@@ -98,6 +98,7 @@ namespace {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
+		TrackFeet(&data.giant, 0.0, true); // Track feet
 		data.stage = 1;
 		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTStosit");
 	}
@@ -204,6 +205,7 @@ namespace {
 		DoSizeEffect(&data.giant, 0.40, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 0.6, 0.8, 25, 0.5);
 		data.stage = 9;
+		TrackFeet(&data.giant, 0.0, false); // Un-track feet
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
 		// Inbetween stages

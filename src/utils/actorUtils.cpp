@@ -367,7 +367,8 @@ namespace Gts {
 	}
 
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage) {
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, 35.0 * damage, radius, random, bonedamage);
+		float damage_mult = Persistent::GetSingleton().size_related_damage_mult;
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (35.0 * damage * damage_mult), radius, random, bonedamage);
 	}
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {

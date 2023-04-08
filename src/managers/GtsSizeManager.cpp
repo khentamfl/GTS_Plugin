@@ -387,7 +387,7 @@ namespace Gts {
 	//===============Bools
 	void SizeManager::SetActionBool(Actor* actor, bool enable, float type) {
 		if (type == 0.0) {
-			this->GetData(actor).OffsetCamera = enable;
+			this->GetData(actor).IsThighCrushing = enable;
 		}else if (type == 1.0) {
 			this->GetData(actor).IsThighSandwiching = enable;
 		} else if (type == 2.0) {
@@ -404,7 +404,7 @@ namespace Gts {
 	}
 	bool SizeManager::GetActionBool(Actor* actor, float type) {
 		if (type == 0.0) {
-			return this->GetData(actor).OffsetCamera;
+			return this->GetData(actor).IsThighCrushing;
 		} else if (type == 1.0) {
 			return this->GetData(actor).IsThighSandwiching;
 		} else if (type == 2.0) {
