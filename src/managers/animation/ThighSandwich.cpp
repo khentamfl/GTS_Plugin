@@ -38,6 +38,7 @@ GTSBEH_ThighSandwich_ExitLoop
 #include "utils/actorUtils.hpp"
 #include "managers/tremor.hpp"
 #include "managers/Rumble.hpp"
+#include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "spring.hpp"
