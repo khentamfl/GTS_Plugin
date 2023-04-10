@@ -698,6 +698,7 @@ namespace Gts {
 		if (transient) {
 			if (transient->can_be_vored == false) {
 				Notify("{} is already being eaten by someone else", prey->GetDisplayFullName());
+				Notify("{} Reserved Size: {:.2f}", Value);
 				return false;
 			}
 		}

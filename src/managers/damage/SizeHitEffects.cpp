@@ -53,7 +53,7 @@ namespace {
 
 					mod_target_scale(receiver, -0.35 * scale);
 
-					Rumble::For("CheatDeath", receiver, 120.0, 0.10, "NPC COM [COM ]", 0.75);
+					Rumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 0.75);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 					receiver->NotifyAnimationGraph("staggerStart");
@@ -65,6 +65,8 @@ namespace {
 					
 					ConsoleLog::GetSingleton()->Print("Health Gate triggered, death avoided");
 					ConsoleLog::GetSingleton()->Print("Damage: %g, Lost Size: %g", a_damage, -0.35 * scale);
+					Notify("Health Gate triggered, death avoided");
+					Notify("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
 				}
 			}
 		}
@@ -123,7 +125,7 @@ namespace Gts {
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
-			float GrowthValue = std::clamp((-damage/1500) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
+			float GrowthValue = std::clamp((-damage/3000) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
 			log::info("GrowthValue of : {} is {} {}, OG damage: {}", receiver->GetDisplayFullName(), GrowthValue, -GrowthValue, damage);
 			mod_target_scale(receiver, GrowthValue);
 			DoHitShake(receiver, GrowthValue * 10);
@@ -141,7 +143,7 @@ namespace Gts {
 		} 
 		else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if (get_visual_scale(receiver) > 1.0) {
-				float ShrinkValue = std::clamp((damage/500)/SizeHunger/Gigantism, 0.0f, 0.25f);
+				float ShrinkValue = std::clamp((damage/1000)/SizeHunger/Gigantism, 0.0f, 0.25f);
 				log::info("ShrinkValue of : {} is {} {}", receiver->GetDisplayFullName(), ShrinkValue, -ShrinkValue);
 				mod_target_scale(receiver, -ShrinkValue);
 			}
