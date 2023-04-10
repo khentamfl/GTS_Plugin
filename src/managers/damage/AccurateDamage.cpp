@@ -74,7 +74,7 @@ namespace {
 		float sizedifference = giantSize/tinySize;
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
-			PushActorAway(giant, tiny, power); // Always push
+			PushActorAway(giant, tiny, power/12); // Always push
 			return;
 		}
 		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.25 && sizedifference < 3.0) {
@@ -82,7 +82,7 @@ namespace {
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
 		} else if (ragdollchance == 30.0) {
-			PushActorAway(giant, tiny, power); // Push instead
+			PushActorAway(giant, tiny, power/12); // Push instead
 			return;
 		}
 	}
@@ -362,7 +362,7 @@ namespace Gts {
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
 		float force = evt.force;
-		float damage = 1.0;
+		float damage = Persistent::GetSingleton().size_related_damage_mult;
 		if (!CanDoDamage(giant, tiny)) {
 			return;
 		}
@@ -406,7 +406,7 @@ namespace Gts {
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
-						DamageAV(tiny,ActorValue::kHealth, damage);
+						DamageAV(tiny, ActorValue::kHealth, damage);
 					}
 					StaggerOr(giant, tiny, knockBack);
 					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 35 * movementFactor * giantSize * force);
@@ -456,7 +456,7 @@ namespace Gts {
 
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
 			multiplier += 7.2;
-			result *= 4.0;
+			result *= 2.0;
 		}
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
@@ -468,8 +468,7 @@ namespace Gts {
 			}
 		}
 
-		float damagecap = (25.0f * multiplier) * Persistent::GetSingleton().size_related_damage_mult;
-		float CappedDamage = std::clamp(result, 0.0f, damagecap);
+		float CappedDamage = std::clamp(result, 0.0f, 25.0f * multiplier);
 
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, CappedDamage * 0.70);

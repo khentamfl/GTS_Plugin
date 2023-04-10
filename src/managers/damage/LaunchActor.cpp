@@ -31,7 +31,7 @@ namespace {
 		float sizedifference = giantSize/tinySize;
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
-			PushActorAway(giant, tiny, power); // Always push
+			PushActorAway(giant, tiny, power/100); // Always push
 			return;
 		}
 		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.25 && sizedifference < 3.0) {
@@ -39,7 +39,7 @@ namespace {
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
 		} else if (ragdollchance == 30.0) {
-			PushActorAway(giant, tiny, power); // Push instead
+			PushActorAway(giant, tiny, power/100); // Push instead
 			return;
 		}
 	}
@@ -60,6 +60,7 @@ namespace {
 					DamageAV(tiny, ActorValue::kHealth, damage * 0.25);
 				}
 				StaggerOr(giant, tiny, knockBack);
+				ApplyHavokImpulse(tiny, 0, 0, 50 * giantSize * force, 50 * giantSize * force);
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
@@ -70,7 +71,7 @@ namespace {
 						DamageAV(tiny, ActorValue::kHealth, damage);
 					}
 					StaggerOr(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 120 * giantSize * force, 120 * giantSize * force);
+					ApplyHavokImpulse(tiny, 0, 0, 50 * giantSize * force, 50 * giantSize * force);
 				}
 			}
 		}

@@ -360,7 +360,8 @@ namespace Gts {
 	}
 
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage) {
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (35.0 * damage), radius, random, bonedamage);
+		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (35.0 * damage * damagebonus), radius, random, bonedamage);
 	}
 
 	hkaRagdollInstance* GetRagdoll(Actor* actor) {
