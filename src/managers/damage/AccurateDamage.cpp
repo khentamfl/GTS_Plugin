@@ -192,9 +192,12 @@ namespace Gts {
 		}
 		float actualGiantScale = get_visual_scale(actor);
 		float giantScale = get_visual_scale(actor);
-		const float BASE_CHECK_DISTANCE = 90;
+		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 1.15;
+		if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
+			giantScale *= 1.65;
+		}
 
 		// Get world HH offset
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
@@ -359,7 +362,7 @@ namespace Gts {
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
 		float force = evt.force;
-		float damage = Persistent::GetSingleton().size_related_damage_mult;
+		float damage = 1.0;
 		if (!CanDoDamage(giant, tiny)) {
 			return;
 		}
@@ -367,7 +370,7 @@ namespace Gts {
 		float giantSize = get_visual_scale(giant);
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		if (hasSMT) {
-			giantSize *= 8.0;
+			giantSize += 7.2;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
@@ -388,7 +391,7 @@ namespace Gts {
 		}
 
 		float sizeRatio = giantSize/tinySize * movementFactor;
-		float knockBack = LAUNCH_KNOCKBACK  * giantSize * movementFactor * force;
+		float knockBack = LAUNCH_KNOCKBACK * giantSize * movementFactor * force;
 
 		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
 			DoSizeDamage(giant, tiny, movementFactor, force * 22 * damage, 50, 0.50, true);
@@ -464,12 +467,15 @@ namespace Gts {
 				CrushBonuses(giant, tiny, 0);
 			}
 		}
+
+		float damagecap = (25.0 * multiplier) * Persistent::GetSingleton().size_related_damage_mult;
+		result = std::clamp(result, 0.0, damagecap);
+
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.30);
 			return; // Stamina protection, emulates Size Damage resistance
 		}
 		if (!DoDamage) {
-			//log::info("Damage is false, returning");
 			return;
 		}
 		DamageAV(tiny, ActorValue::kHealth, result);

@@ -89,10 +89,6 @@ namespace {
 	}
 
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
-		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
-			radius *= 8.0;
-			damage *= 4.0;
-		}
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
 	}
 
@@ -132,26 +128,34 @@ namespace {
     }
 
     void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
+		float bonus = 1.0;
+		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
+			bonus = 4.0;
+		}
 		float scale = std::clamp(get_visual_scale(&data.giant), 0.10f, 10.0f);
-        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.14 * scale, 1.0, RNode);
-		Runtime::PlaySoundAtNode("xlFootstepR", &data.giant, 0.14 * scale, 1.0, RNode);
-		Runtime::PlaySoundAtNode("xlRumbleR", &data.giant, 0.14 * scale, 1.0, RNode);
-        Rumble::Once("HeavyStompR", &data.giant, 14.0 * data.animSpeed, 0.05, RNode);
+        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.14 * bonus * scale, 1.0, RNode);
+		Runtime::PlaySoundAtNode("xlFootstepR", &data.giant, 0.14 * bonus * scale, 1.0, RNode);
+		Runtime::PlaySoundAtNode("xlRumbleR", &data.giant, 0.14 * bonus * scale, 1.0, RNode);
+        Rumble::Once("HeavyStompR", &data.giant, 14.0 * bonus * data.animSpeed, 0.05, RNode);
         DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 1.2, 6.0, RNode);
+		DoLaunch(&data.giant, 1.2 * bonus, 6.0, RNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
     void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
+		float bonus = 1.0;
+		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
+			bonus = 4.0;
+		}
 		float scale = std::clamp(get_visual_scale(&data.giant), 0.10f, 10.0f);
-        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.14 * scale, 1.0, LNode);
-		Runtime::PlaySoundAtNode("xlFootstepL", &data.giant, 0.14 * scale, 1.0, RNode);
-		Runtime::PlaySoundAtNode("xlRumbleL", &data.giant, 0.14 * scale, 1.0, RNode);
-        Rumble::Once("HeavyStompL", &data.giant, 14.0 * data.animSpeed, 0.05, LNode);
+        Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.14 * bonus * scale, 1.0, LNode);
+		Runtime::PlaySoundAtNode("xlFootstepL", &data.giant, 0.14 * bonus * scale, 1.0, RNode);
+		Runtime::PlaySoundAtNode("xlRumbleL", &data.giant, 0.14 * bonus * scale, 1.0, RNode);
+        Rumble::Once("HeavyStompL", &data.giant, 14.0 * bonus * data.animSpeed, 0.05, LNode);
         DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 1.2, 6.0, LNode);
+		DoLaunch(&data.giant, 1.2 * bonus, 6.0, LNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }

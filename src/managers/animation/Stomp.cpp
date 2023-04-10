@@ -59,34 +59,46 @@ namespace {
 	}
 
 	void GTSstompimpactR(AnimationEventData& data) {
-		Rumble::Once("StompR", &data.giant, 2.20, 0.0, RNode);
+		float bonus = 1.0;
+		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
+			bonus = 4.0;
+		}
+		Rumble::Once("StompR", &data.giant, 2.20 * bonus, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 1.0, 2.25, RNode);
+		DoLaunch(&data.giant, 1.0 * bonus, 2.25, RNode);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
 		//data.stage = 1;
-		Rumble::Once("StompL", &data.giant, 2.20, 0.0, LNode);
+		Rumble::Once("StompL", &data.giant, 2.20 * bonus, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 1.0, 2.25, LNode);
+		DoLaunch(&data.giant, 1.0 * bonus, 2.25, LNode);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
 		//data.stage = 2;
+		float bonus = 1.0;
+		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
+			bonus = 4.0;
+		}
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.7, 1.2, RNode);
+		DoLaunch(&data.giant, 0.7 * bonus, 1.2, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
 		//data.stage = 2;
+		float bonus = 1.0;
+		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
+			bonus = 4.0;
+		}
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
 		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.7, 1.2, LNode);
+		DoLaunch(&data.giant, 0.7 * bonus, 1.2, LNode);
 		
 	}
 
@@ -120,7 +132,6 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			AnimationManager::StartAnim("StompRight", player);
-			log::info("Stomp Right");
 		}
 	}
 
@@ -128,7 +139,6 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			AnimationManager::StartAnim("StompLeft", player);
-			log::info("Stomp Left");
 		}
 	}
 }

@@ -121,16 +121,18 @@ namespace Gts {
 			}
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
-					float tinyScale = get_visual_scale(otherActor);
-					if (giantScale / tinyScale > SCALE_RATIO) {
-						NiPoint3 actorLocation = otherActor->GetPosition();
+					if (otherActor) {
+						float tinyScale = get_visual_scale(otherActor);
+						if (giantScale / tinyScale > SCALE_RATIO) {
+							NiPoint3 actorLocation = otherActor->GetPosition();
 								// Check the tiny's nodes against the giant's foot points
-						for (auto point: footPoints) {
-							float distance = (point - actorLocation).Length();
-							if (distance < maxFootDistance) {
-								float aveForce = 1.0 - distance / maxFootDistance;
-								LaunchDecide(giant, otherActor, aveForce, damagebonus);
-							    break;
+							for (auto point: footPoints) {
+								float distance = (point - actorLocation).Length();
+								if (distance < maxFootDistance) {
+									float aveForce = 1.0 - distance / maxFootDistance;
+									LaunchDecide(giant, otherActor, aveForce, damagebonus);
+							    	break;
+								}
 						    }
 					    }
 				    }
