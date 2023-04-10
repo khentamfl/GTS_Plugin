@@ -137,6 +137,7 @@
         	float deltaLength = deltaLocation.Length();
 
 			if (giantScale/tinyScale < 6.0) {
+				PushActorAway(giant, tiny, 0.5);
 				this->tinies.erase(tiny); // Disallow button abuses to keep tiny when on low scale
 			}
 
@@ -154,6 +155,7 @@
             }
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
+				ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
 				auto charcont = tiny_is_actor->GetCharController();
 				if (charcont) {
 					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
@@ -253,7 +255,7 @@
 			return false;
 		}
 
-		if (!Runtime::HasPerkTeam(pred, "VorePerk")) {
+		if (!Runtime::HasPerkTeam(pred, "KillerThighs")) {
 			return false;
 		}
 

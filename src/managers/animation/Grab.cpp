@@ -73,8 +73,10 @@ namespace {
 
 	void GrabSpareEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player); 
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			Grab::Release(player);
+			PushActorAway(player, grabbedActor, 1.0);
 		}
 	}
 }

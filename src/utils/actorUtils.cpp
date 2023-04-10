@@ -371,6 +371,65 @@ namespace Gts {
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (35.0 * damage * damage_mult), radius, random, bonedamage);
 	}
 
+	hkaRagdollInstance* GetRagdoll(Actor* actor) {
+		BSAnimationGraphManagerPtr animGraphManager;
+		if (actor->GetAnimationGraphManager(animGraphManager)) {
+			for (auto& graph : animGraphManager->graphs) {
+				if (graph) {
+					auto& character = graph->characterInstance;
+					auto ragdollDriver = character.ragdollDriver.get();
+					if (ragdollDriver) {
+						auto ragdoll = ragdollDriver->ragdoll;
+						if (ragdoll) {
+							return ragdoll;
+						}
+					}
+				}
+			}
+		}
+		return nullptr;
+	}
+
+	void ManageRagdoll(Actor* tiny, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation) {
+		if (deltaLength >= 70.0) {
+            // WARP if > 1m
+            auto ragDoll = GetRagdoll(tiny);
+            hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
+            for (auto rb: ragDoll->rigidBodies) {
+              if (rb) {
+                auto ms = rb->GetMotionState();
+                if (ms) {
+                  hkVector4 currentPos = ms->transform.translation;
+                  hkVector4 newPos = currentPos + delta;
+                  rb->motion.SetPosition(newPos);
+                  rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, -10.0, 0.0));
+                }
+              }
+            }
+          } else {
+            // Just move the hand if <1m
+            std::string_view handNodeName = "NPC HAND L [L Hand]";
+            auto handBone = find_node(tiny, handNodeName);
+            if (handBone) {
+              	auto collisionHand = handBone->GetCollisionObject();
+              	if (collisionHand) {
+                	auto handRbBhk = collisionHand->GetRigidBody();
+               		if (handRbBhk) {
+                  		auto handRb = static_cast<hkpRigidBody*>(handRbBhk->referencedObject.get());
+                  		if (handRb) {
+                    		auto ms = handRb->GetMotionState();
+                    		if (ms) {
+                     			hkVector4 targetLocationHavok = hkVector4(targetLocation.x/70.0, targetLocation.y/70.0, targetLocation.z/70, 1.0);
+                      			handRb->motion.SetPosition(targetLocationHavok);
+                      			handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, -10.0, 0.0));
+                    		}
+                  		}
+                	}
+              	}
+            }
+        }
+	}
+
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);

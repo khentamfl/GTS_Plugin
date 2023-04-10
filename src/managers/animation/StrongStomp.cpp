@@ -89,6 +89,10 @@ namespace {
 	}
 
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
+		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+			radius *= 8.0;
+			damage *= 4.0;
+		}
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
 	}
 
