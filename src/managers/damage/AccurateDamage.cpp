@@ -469,16 +469,16 @@ namespace Gts {
 		}
 
 		float damagecap = (25.0 * multiplier) * Persistent::GetSingleton().size_related_damage_mult;
-		result = std::clamp(result, 0.0, damagecap);
+		float CappedDamage = std::clamp(result, 0.0, damagecap);
 
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
-			DamageAV(tiny, ActorValue::kStamina, result * 0.30);
+			DamageAV(tiny, ActorValue::kStamina, CappedDamage * 0.70);
 			return; // Stamina protection, emulates Size Damage resistance
 		}
 		if (!DoDamage) {
 			return;
 		}
-		DamageAV(tiny, ActorValue::kHealth, result);
+		DamageAV(tiny, ActorValue::kHealth, CappedDamage);
 	}
 }
 
