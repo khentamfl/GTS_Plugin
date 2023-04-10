@@ -406,7 +406,7 @@ namespace Gts {
 			for (auto actor: find_actors()) {
 				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
 					RandomVoreAttempt(actor);
-					log::info("Actor {} trying to do vore", actor->GetDisplayFullName());
+					//log::info("Actor {} trying to do vore", actor->GetDisplayFullName());
 				}
 			}
 		}
@@ -417,7 +417,6 @@ namespace Gts {
 		for (auto& [key, voreBuff]: this->buffs) {
 			voreBuff.Update();
 			if (voreBuff.Done()) {
-        		log::info("Erasing buff");
 				this->buffs.erase(key);
 			}
 		}
@@ -449,15 +448,15 @@ namespace Gts {
 			int decide_chance = 2;
 			if (random <= decide_chance) {
 				Actor* pred = caster;
-				log::info("random Vore for {} is true", caster->GetDisplayFullName());
-				log::info("{} is looking for prey", caster->GetDisplayFullName());
+				//log::info("random Vore for {} is true", caster->GetDisplayFullName());
+				//log::info("{} is looking for prey", caster->GetDisplayFullName());
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 						log::info("Player Vore is False");
 						return;
 					}
-					log::info("Actor {} found Prey: {}, starting Vore", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+					//log::info("Actor {} found Prey: {}, starting Vore", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 					VoreManager.StartVore(pred, prey);
 				}
 			}
@@ -701,20 +700,8 @@ namespace Gts {
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
-		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Enables HP requirement on Vore.
-			if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
-				float getmaxhp = GetMaxAV(prey, ActorValue::kHealth);
-				float gethp = GetAV(prey, ActorValue::kHealth);
-				float healthrequirement = getmaxhp/pred_scale;
-				if (gethp > healthrequirement) {
-					DamageAV(prey, ActorValue::kHealth, 6 * sizedifference);
-					DamageAV(pred, ActorValue::kStamina, 26/sizedifference);
-					if (pred->formID == 0x14) {
-						Notify("{} is too healthy to be eaten", prey->GetDisplayFullName());
-					}
-					return false;
-				}
-			}
+		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
+			MINIMUM_VORE_SCALE = 8.0;
 		}
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
