@@ -101,6 +101,11 @@ namespace {
 	}
 
 	void BuffAttributes(Actor* giant, Actor* tiny) {
+		if (!giant) {
+			return;
+		} if (!tiny) {
+			return;
+		}
 		if (Runtime::HasPerk(giant, "SoulVorePerk")) { // Permamently increases random AV after eating someone
 			float TotalMod = (0.75 * get_visual_scale(tiny));
 			int Boost = rand() % 2;
@@ -117,6 +122,11 @@ namespace {
 
 
 	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {
+		if (!prey) {
+			return;
+		} if (!pred) {
+			return;
+		}
 		int random = rand() % 4;
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random <= 1) {
 			ConsoleLog::GetSingleton()->Print("%s was Swallowed and is now being slowly absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
@@ -128,6 +138,11 @@ namespace {
 	}
 
 	void VoreMessage_Absorbed(Actor* pred, Actor* prey) {
+		if (!prey) {
+			return;
+		} if (!pred) {
+			return;
+		}
 		int random = rand() % 2;
 		if (!AllowDevourment() && pred->formID == 0x14 && IsDragon(prey)) {
 			CompleteDragonQuest();
@@ -217,6 +232,9 @@ namespace Gts {
 		// Stick them to the AnimObjectA
 		for (auto& [key, tiny]: this->tinies) {
 			if (!tiny) {
+				return;
+			} 
+			if (!giant) {
 				return;
 			}
 			auto bone = find_node(giant, "AnimObjectA");
