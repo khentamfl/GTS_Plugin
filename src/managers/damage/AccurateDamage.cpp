@@ -317,7 +317,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = force;//std::clamp(force/50, 0.00f, 0.70f);///nodeCollisions;
+								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}
@@ -467,9 +467,9 @@ namespace Gts {
 				CrushBonuses(giant, tiny, 0);
 			}
 		}
-		log::info("Damage  of {} Result: {}", giant->GetDisplayFullName(), result);
+		log::info("Damage of {} Result: {}", giant->GetDisplayFullName(), result);
 		float CappedDamage = std::clamp(result, 0.0f, 25.0f * multiplier);
-		log::info("Capped Damage  of {} Result: {}", giant->GetDisplayFullName(), CappedDamage);
+		log::info("Capped Damage of {} Result: {}", giant->GetDisplayFullName(), CappedDamage);
 
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, CappedDamage * 0.70);
