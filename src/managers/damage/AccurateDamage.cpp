@@ -467,18 +467,15 @@ namespace Gts {
 				CrushBonuses(giant, tiny, 0);
 			}
 		}
-		log::info("Damage of {} Result: {}", giant->GetDisplayFullName(), result);
-		float CappedDamage = std::clamp(result, 0.0f, 25.0f * multiplier);
-		log::info("Capped Damage of {} Result: {}", giant->GetDisplayFullName(), CappedDamage);
 
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
-			DamageAV(tiny, ActorValue::kStamina, CappedDamage * 0.70);
+			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
 			return; // Stamina protection, emulates Size Damage resistance
 		}
 		if (!DoDamage) {
 			return;
 		}
-		DamageAV(tiny, ActorValue::kHealth, CappedDamage);
+		DamageAV(tiny, ActorValue::kHealth, result);
 	}
 }
 

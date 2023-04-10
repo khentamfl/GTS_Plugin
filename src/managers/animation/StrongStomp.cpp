@@ -136,8 +136,8 @@ namespace {
         Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.14 * bonus * scale, 1.0, RNode);
 		Runtime::PlaySoundAtNode("xlFootstepR", &data.giant, 0.14 * bonus * scale, 1.0, RNode);
 		Runtime::PlaySoundAtNode("xlRumbleR", &data.giant, 0.14 * bonus * scale, 1.0, RNode);
-        Rumble::Once("HeavyStompR", &data.giant, 14.0 * bonus * data.animSpeed, 0.05, RNode);
-        DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
+        Rumble::Once("HeavyStompR", &data.giant, 14.0 * bonus * bonus * data.animSpeed, 0.05, RNode);
+        DoDamageEffect(&data.giant, 2.5 * (data.animSpeed - 0.5), 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.2 * bonus, 6.0, RNode);
         data.canEditAnimSpeed = false;
@@ -152,8 +152,8 @@ namespace {
         Runtime::PlaySoundAtNode("HeavyStompSound", &data.giant, 0.14 * bonus * scale, 1.0, LNode);
 		Runtime::PlaySoundAtNode("xlFootstepL", &data.giant, 0.14 * bonus * scale, 1.0, RNode);
 		Runtime::PlaySoundAtNode("xlRumbleL", &data.giant, 0.14 * bonus * scale, 1.0, RNode);
-        Rumble::Once("HeavyStompL", &data.giant, 14.0 * bonus * data.animSpeed, 0.05, LNode);
-        DoDamageEffect(&data.giant, 2.5 * data.animSpeed, 2.0 * data.animSpeed, 5, 0.60);
+        Rumble::Once("HeavyStompL", &data.giant, 14.0 * bonus * bonus * data.animSpeed, 0.05, LNode);
+        DoDamageEffect(&data.giant, 2.5 * (data.animSpeed - 0.5), 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.2 * bonus, 6.0, LNode);
         data.canEditAnimSpeed = false;
