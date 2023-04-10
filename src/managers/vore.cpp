@@ -375,7 +375,7 @@ namespace Gts {
 			if (!AllowDevourment()) {
 				if (this->giant) {
 					AdjustGiantessSkill(this->giant, this->tinySize); 
-					VoreMessage_Absorbed(this->giant, this->tiny_name);
+					VoreMessage_Absorbed(this->giant, this->tiny_name, this->WasDragon);
 					BuffAttributes(this->giant, this->tinySize);
 					mod_target_scale(this->giant, this->sizePower * 1.0);
 					AdjustSizeReserve(this->giant, this->sizePower);
