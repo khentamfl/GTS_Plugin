@@ -71,6 +71,10 @@ namespace {
 
 	void GTSstompimpactL(AnimationEventData& data) {
 		//data.stage = 1;
+		float bonus = 1.0;
+		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
+			bonus = 4.0;
+		}
 		Rumble::Once("StompL", &data.giant, 2.20 * bonus, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
