@@ -338,7 +338,7 @@ namespace Gts {
 	void PerkPointCheck(float level) {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		int bonus = 1.0;
-		if (level % 5 == 0) {
+		if (int(level) % 5 == 0) {
 			if (progressionQuest) {
 				CallFunctionOn(progressionQuest, "gtsProgressionQuest", "GainPerkPoint", bonus);
 			}
