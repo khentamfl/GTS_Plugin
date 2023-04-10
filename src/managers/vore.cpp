@@ -133,12 +133,13 @@ namespace {
 		}
 	}
 
-	void VoreMessage_Absorbed(Actor* pred, std::string_view prey) {
+	void VoreMessage_Absorbed(Actor* pred, std::string_view prey, bool WasDragon) {
 		if (!pred) {
 			return;
 		}
 		int random = rand() % 2;
-		if (!AllowDevourment() && pred->formID == 0x14 && IsDragon(prey)) {
+		if (!AllowDevourment() && pred->formID == 0x14 && WasDragon) {
+			log::info("{} was dragon", prey);
 			CompleteDragonQuest();
 		}
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
@@ -337,6 +338,7 @@ namespace Gts {
 			} else {
         		this->restorePower = 0.0;
       		}
+			this->WasDragon = IsDragon(tiny);
 			this->sizePower = tiny_scale * mealEffiency * perkbonus;
 			this->tinySize = tiny_scale;
 			this->tiny_name = tiny->GetDisplayFullName();
