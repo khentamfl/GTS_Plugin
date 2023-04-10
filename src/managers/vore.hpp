@@ -71,6 +71,8 @@ namespace Gts
     	float duration;
 		float restorePower = 0.0; // Amount of health to restore TOTAL
 		float sizePower = 0.0; // Amount of size to gain TOTAL
+		float tinySize = 0.0;
+		std::string_view tiny_name;
 		
 
 		// Used to track how much time has passed (abusing Spring code)

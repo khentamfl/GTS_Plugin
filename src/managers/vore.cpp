@@ -65,7 +65,7 @@ namespace {
 		}
 	}
 
-	void AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill
+	void AdjustGiantessSkill(Actor* Caster, float tinysize) { // Adjust Matter Of Size skill
 		if (Caster->formID != 0x14) {
 			return; //Bye
 		}
@@ -86,7 +86,7 @@ namespace {
 
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
-		float absorbedSize = (get_visual_scale(Target));
+		float absorbedSize = (tinysize);
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
 		float Total = (((0.50 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
@@ -100,14 +100,12 @@ namespace {
 		}
 	}
 
-	void BuffAttributes(Actor* giant, Actor* tiny) {
+	void BuffAttributes(Actor* giant, float tinyscale) {
 		if (!giant) {
 			return;
-		} if (!tiny) {
-			return;
-		}
+		} 
 		if (Runtime::HasPerk(giant, "SoulVorePerk")) { // Permamently increases random AV after eating someone
-			float TotalMod = (0.75 * get_visual_scale(tiny));
+			float TotalMod = (0.75 * tinyscale);
 			int Boost = rand() % 2;
 			if (Boost == 0) {
 				giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, TotalMod);
@@ -122,9 +120,7 @@ namespace {
 
 
 	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {
-		if (!prey) {
-			return;
-		} if (!pred) {
+		if (!pred) {
 			return;
 		}
 		int random = rand() % 4;
@@ -137,10 +133,8 @@ namespace {
 		}
 	}
 
-	void VoreMessage_Absorbed(Actor* pred, Actor* prey) {
-		if (!prey) {
-			return;
-		} if (!pred) {
+	void VoreMessage_Absorbed(Actor* pred, std::string_view prey) {
+		if (!pred) {
 			return;
 		}
 		int random = rand() % 2;
@@ -148,13 +142,13 @@ namespace {
 			CompleteDragonQuest();
 		}
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
-			ConsoleLog::GetSingleton()->Print("%s was completely absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s was completely absorbed by %s", prey, pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
-			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey, pred->GetDisplayFullName());
 		} else if (!prey->IsDead() && Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
-			ConsoleLog::GetSingleton()->Print("%s both body and soul were greedily devoured by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s both body and soul were greedily devoured by %s", prey, pred->GetDisplayFullName());
 		} else if (prey->IsDead()) {
-			ConsoleLog::GetSingleton()->Print("%s was absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s was absorbed by %s", prey, pred->GetDisplayFullName());
 		}
 	}
 }
@@ -344,6 +338,8 @@ namespace Gts {
         		this->restorePower = 0.0;
       		}
 			this->sizePower = tiny_scale * mealEffiency * perkbonus;
+			this->tinySize = tiny_scale;
+			this->tiny_name = tiny->GetDisplayFullName();
 		}
 	}
 	void VoreBuff::Update() {
@@ -375,16 +371,18 @@ namespace Gts {
 		}
 		case VoreBuffState::Finishing: {
 			if (!AllowDevourment()) {
-				AdjustGiantessSkill(this->giant, this->tiny);
-				VoreMessage_Absorbed(this->giant, this->tiny);
-				BuffAttributes(this->giant, this->tiny);
-				mod_target_scale(this->giant, this->sizePower * 1.0);
-				AdjustSizeReserve(this->giant, this->sizePower);
-				Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
-				Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
+				if (this->giant) {
+					AdjustGiantessSkill(this->giant, this->tinySize); 
+					VoreMessage_Absorbed(this->giant, this->tiny_name);
+					BuffAttributes(this->giant, this->tinySize);
+					mod_target_scale(this->giant, this->sizePower * 1.0);
+					AdjustSizeReserve(this->giant, this->sizePower);
+					Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
+					Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
 
-				if (VoreData(this->giant).GetTimer() == true) {
-					Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
+					if (VoreData(this->giant).GetTimer() == true) {
+						Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
+					}
 				}
 			}
 			
