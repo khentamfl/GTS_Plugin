@@ -85,7 +85,7 @@ namespace Hooks
 	{
 		_Update(a_this, a2);
 		Time::GetSingleton().Update();
-		log::info("Plugin Ready:{}, Plugin Live: {}", Plugin::Ready(), Plugin::Live());
+		//log::info("Plugin Ready:{}, Plugin Live: {}", Plugin::Ready(), Plugin::Live());
 		static std::atomic_bool started = std::atomic_bool(false);
 		Plugin::SetOnMainThread(true);
 		if (Plugin::Live()) {

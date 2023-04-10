@@ -140,7 +140,6 @@ namespace Gts {
 		   NiPoint3 direction = destinationLoc - sourceLoc;
 		   NiPoint3 niImpulse  = direction * afKnockBackForce/direction.Length();
 		   hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 1.0);
-
 		   auto rbs = GetActorRB(receiver);
 		   for (auto rb: rbs) {
 		        auto& motion = rb->motion;
@@ -168,7 +167,6 @@ namespace Gts {
 		/*NiPoint3 direction = NiPoint3(afX, afY, afZ);
 		   NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
 		   hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);//hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
-
 		   auto rbs = GetActorRB(target);
 		   for (auto rb: rbs) {
 		        auto& motion = rb->motion;

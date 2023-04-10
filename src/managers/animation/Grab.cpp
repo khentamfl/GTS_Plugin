@@ -54,18 +54,18 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player); 
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
-		if (grabbedActor) {
-			float sd = get_visual_scale(player)/get_visual_scale(grabbedActor);
-			float Health = GetAV(grabbedActor, ActorValue::kHealth);
-			float power = std::clamp(sizemanager.GetSizeAttribute(player, 0), 1.0f, 999999.0f);
-			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (0.025 * sd) * power * additionaldamage;
-			DamageAV(grabbedActor, ActorValue::kHealth, damage);
-			SizeHitEffects::GetSingleton().BreakBones(player, grabbedActor, damage * 0.5, 25);
-			if (damage > Health * 1.5) {
-				CrushManager::Crush(player, grabbedActor);
-				PrintDeathSource(player, grabbedActor, "HandCrushed");
-				Grab::Release(player);
+			if (grabbedActor) {
+				float sd = get_visual_scale(player)/get_visual_scale(grabbedActor);
+				float Health = GetAV(grabbedActor, ActorValue::kHealth);
+				float power = std::clamp(sizemanager.GetSizeAttribute(player, 0), 1.0f, 999999.0f);
+				float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
+				float damage = (0.025 * sd) * power * additionaldamage;
+				DamageAV(grabbedActor, ActorValue::kHealth, damage);
+				SizeHitEffects::GetSingleton().BreakBones(player, grabbedActor, damage * 0.5, 25);
+				if (damage > Health * 1.5) {
+					CrushManager::Crush(player, grabbedActor);
+					PrintDeathSource(player, grabbedActor, "HandCrushed");
+					Grab::Release(player);
 				}
 			}
 		}
@@ -75,8 +75,10 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player); 
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			Grab::Release(player);
-			PushActorAway(player, grabbedActor, 1.0);
+			if (grabbedActor) {
+				Grab::Release(player);
+				PushActorAway(player, grabbedActor, 1.0);
+			}
 		}
 	}
 }
