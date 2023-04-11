@@ -432,7 +432,7 @@ namespace Gts {
 			} else if (random == 2) {
 				Cprint("{} was crushed by the feet of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 3 || random == 4) {
-				Cprint("Feet of {} crushed %s into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("Feet of {} crushed {} into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 5 || random == 6) {
 				Cprint("{} Got crushed by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 7) {
