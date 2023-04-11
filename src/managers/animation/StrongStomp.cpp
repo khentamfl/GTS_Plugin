@@ -89,7 +89,11 @@ namespace {
 	}
 
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
+		float bonus = 1.0;
+		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+			bonus = 4.0;
+		}
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}
 
 	void DoSounds(std::string_view tag, Actor* giant, float animspeed, std::string_view feet) {
@@ -143,7 +147,7 @@ namespace {
 		DoSounds("HeavyStompR", &data.giant, data.animSpeed - 0.5, RNode);
         DoDamageEffect(&data.giant, 2.5 * (data.animSpeed - 0.5), 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 1.2 * bonus, 6.0, RNode);
+		DoLaunch(&data.giant, 1.2, 6.0, RNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
@@ -151,7 +155,7 @@ namespace {
 		DoSounds("HeavyStompL", &data.giant, data.animSpeed - 0.5, LNode);
         DoDamageEffect(&data.giant, 2.5 * (data.animSpeed - 0.5), 2.0 * data.animSpeed, 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 1.2 * bonus, 6.0, LNode);
+		DoLaunch(&data.giant, 1.2, 6.0, LNode);
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
     }
