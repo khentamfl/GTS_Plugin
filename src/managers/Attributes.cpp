@@ -148,11 +148,9 @@ namespace {
 		if (!actor) {
 			return;
 		}
-		static Timer timer = Timer(0.20);
+		static Timer timer = Timer(0.05);
 		static Timer jumptimer = Timer (0.20);
 		float size = get_visual_scale(actor);
-
-		ManagePerkBonuses(actor);
 
 		if (jumptimer.ShouldRunFrame()) {
 			BoostJump(actor);
