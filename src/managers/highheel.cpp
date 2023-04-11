@@ -49,9 +49,7 @@ namespace Gts {
 					log::info("HH perk was added");
 					this->data.try_emplace(evt.actor);
 					auto& hhData = this->data[evt.actor];
-					if (hhData) {
-						hhData.wasWearingHh = false;
-					}
+					hhData.wasWearingHh = false;
 				}
 			}
 		}
