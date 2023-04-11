@@ -1,6 +1,7 @@
 #pragma once
 #include "events.hpp"
 #include "spring.hpp"
+#include <string>
 
 using namespace std;
 using namespace SKSE;
@@ -73,7 +74,7 @@ namespace Gts
 		float sizePower = 0.0; // Amount of size to gain TOTAL
 		float tinySize = 0.0;
 		bool WasDragon = false;
-		string tiny_name;
+		std::string tiny_name;
 		
 
 		// Used to track how much time has passed (abusing Spring code)

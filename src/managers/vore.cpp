@@ -341,7 +341,7 @@ namespace Gts {
 			this->WasDragon = IsDragon(tiny);
 			this->sizePower = tiny_scale * mealEffiency * perkbonus;
 			this->tinySize = tiny_scale;
-			this->tiny_name = std::string_view(tiny->GetDisplayFullName());
+			this->tiny_name = tiny->GetDisplayFullName();
 		}
 	}
 	void VoreBuff::Update() {
