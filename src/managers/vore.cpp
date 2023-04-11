@@ -145,11 +145,11 @@ namespace {
 		if (!Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
 			ConsoleLog::GetSingleton()->Print("%s", std::format("{} was absorbed by {}", prey, pred->GetDisplayFullName()).c_str());
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
-			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey, pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s", std::format("{} became one with {}", prey, pred->GetDisplayFullName()).c_str());
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
-			ConsoleLog::GetSingleton()->Print("%s both body and soul were greedily devoured by %s", prey, pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s", std::format("{} both body and soul were greedily devoured by {}", prey, pred->GetDisplayFullName()).c_str());
 		} else {
-			ConsoleLog::GetSingleton()->Print("%s was absorbed by %s", prey, pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s", std::format("{} was absorbed by {}", prey, pred->GetDisplayFullName()).c_str());
 		}
 	}
 }
