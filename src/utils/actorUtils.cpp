@@ -427,13 +427,13 @@ namespace Gts {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		if (cause == "Crushed") { // Default crush
-			if (random == 1) {
+			if (random < 2) {
 				ConsoleLog::GetSingleton()->Print("%s became a bloody stain under %s foot.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} else if (random <= 2) {
+			} else if (random == 2) {
 				ConsoleLog::GetSingleton()->Print("%s was crushed by the feet of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} else if (random == 4) {
+			} else if (random == 3 || random == 4) {
 				ConsoleLog::GetSingleton()->Print("Feet of %s crushed %s into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-			} else if (random >= 6) {
+			} else if (random == 5 || random == 6) {
 				ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 7) {
 				ConsoleLog::GetSingleton()->Print("%s relentlessly crushed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
