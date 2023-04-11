@@ -73,7 +73,7 @@ namespace Gts
 		float sizePower = 0.0; // Amount of size to gain TOTAL
 		float tinySize = 0.0;
 		bool WasDragon = false;
-		std::string_view tiny_name;
+		string tiny_name;
 		
 
 		// Used to track how much time has passed (abusing Spring code)
