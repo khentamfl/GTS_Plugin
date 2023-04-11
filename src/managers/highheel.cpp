@@ -47,8 +47,8 @@ namespace Gts {
 			for (auto actor: find_actors()) {
 				if (actor) {
 					log::info("HH perk was added");
-					this->data.try_emplace(evt.actor);
-					auto& hhData = this->data[evt.actor];
+					this->data.try_emplace(actor);
+					auto& hhData = this->data[actor];
 					hhData.wasWearingHh = false;
 				}
 			}
