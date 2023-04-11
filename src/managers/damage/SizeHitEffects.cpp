@@ -125,7 +125,7 @@ namespace Gts {
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
-			float GrowthValue = std::clamp((-damage/3000) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
+			float GrowthValue = std::clamp((-damage/2800) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
 			log::info("GrowthValue of : {} is {} {}, OG damage: {}", receiver->GetDisplayFullName(), GrowthValue, -GrowthValue, damage);
 			mod_target_scale(receiver, GrowthValue);
 			DoHitShake(receiver, GrowthValue * 10);
@@ -143,7 +143,7 @@ namespace Gts {
 		}
 		else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if (get_visual_scale(receiver) > 1.0) {
-				float ShrinkValue = std::clamp((damage/1500)/SizeHunger/Gigantism, 0.0f, -0.25f);
+				float ShrinkValue = std::clamp((damage/4000)/SizeHunger/Gigantism, 0.0f, -0.25f);
 				log::info("ShrinkValue of : {} is {} {}", receiver->GetDisplayFullName(), ShrinkValue, ShrinkValue);
 				mod_target_scale(receiver, ShrinkValue);
 			}
