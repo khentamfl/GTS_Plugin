@@ -101,7 +101,7 @@ namespace Gts {
 	}
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
 		if (!receiver->IsDead()) {
-			receiver->KillImmediate();
+			receiver->KillImmediate(); 
 		}
 		if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 			TransferInventory(receiver, attacker, false, true);
@@ -118,6 +118,8 @@ namespace Gts {
 		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+
+		PrintDeathSource(attacker, receiver, "Overkill");
 
 		if (receiver->formID != 0x14) {
 			Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.

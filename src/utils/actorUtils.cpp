@@ -497,5 +497,12 @@ namespace Gts {
 			}
 			return;
 		}
+		else if (cause == "Overkill") {
+			if (random <= 3) {
+				ConsoleLog::GetSingleton()->Print("%s body exploded because of massive size difference with {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else {
+				ConsoleLog::GetSingleton()->Print("%s hit %s with so much force that %s exploded into bloody mist", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			}
+		}
 	}
 }
