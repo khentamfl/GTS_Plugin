@@ -143,7 +143,7 @@ namespace {
 			CompleteDragonQuest();
 		}
 		if (!Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
-			ConsoleLog::GetSingleton()->Print("%s was completely absorbed by %s", prey, pred->GetDisplayFullName());
+			ConsoleLog::GetSingleton()->Print("%s", std::format("{} was absorbed by {}", prey, predator->GetDisplayNameFull()));
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
 			ConsoleLog::GetSingleton()->Print("%s became one with %s", prey, pred->GetDisplayFullName());
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
