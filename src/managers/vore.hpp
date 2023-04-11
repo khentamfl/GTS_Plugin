@@ -25,7 +25,7 @@ namespace Gts
 			// kill/shrinks all actors and gains buffs
 			void KillAll();
 			// Protects from being vored. Used to disallow same-target vore by 2 actors
-			void ProtectFromVore();
+			void AllowToBeVored(bool allow);
 
 			// Grab all vories
 			void GrabAll();

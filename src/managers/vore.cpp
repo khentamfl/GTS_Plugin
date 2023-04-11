@@ -192,11 +192,11 @@ namespace Gts {
 		this->tinies.clear();
 	}
 
-	void VoreData::ProtectFromVore() {
+	void VoreData::AllowToBeVored(bool allow) {
 		for (auto& [key, tiny]: this->tinies) {
 			auto transient = Transient::GetSingleton().GetData(tiny);
 			if (transient) {
-				transient->can_be_vored = false;
+				transient->can_be_vored = allow;
 			}
 		}
 	}

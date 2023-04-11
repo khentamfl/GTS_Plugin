@@ -85,11 +85,17 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void ToggleVore(Actor* actor, bool toggle) {
+	void AllowToDoVore(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			transient->can_do_vore = toggle;
-			transient->can_be_crushed = false;
+		}
+	}
+
+	void AllowToBeCrushed(Actor* actor, bool toggle) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			transient->can_be_crushed = toggle;
 		}
 	}
 
@@ -161,7 +167,7 @@ namespace {
 
 	void GTSvore_sit_start(AnimationEventData& data) {
 		auto giant = &data.giant;
-		ToggleVore(giant, false); // Disallow repeating Vore for NPC's
+		AllowToDoVore(giant, false); // Disallow repeating Vore for NPC's
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
 		}
@@ -177,8 +183,9 @@ namespace {
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
+			AllowToBeCrushed(tiny, false);
 		}
-		VoreData.ProtectFromVore();
+		VoreData.AllowToBeVored(false);
 		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
 		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.35);
@@ -235,6 +242,10 @@ namespace {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		StopRHandRumble("HandR", data.giant);
+		VoreData.AllowToBeVored(true);
+		for (auto& tiny: VoreData.GetVories()) {
+			AllowToBeCrushed(tiny, true);
+		}
 	}
 
 
@@ -323,7 +334,7 @@ namespace {
 		}
 		Rumble::Stop("BodyRumble", &data.giant);
 		ToggleEmotionEdit(giant, false);
-		ToggleVore(giant, true); // Allow to do Vore again
+		AllowToDoVore(giant, true); // Allow to do Vore again
 	}
 }
 
