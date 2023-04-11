@@ -74,7 +74,9 @@ namespace Gts {
 		if (globalMaxSizeCalc < 10.0) {
 			Runtime::SetFloat("GlobalMaxSizeCalc", globalMaxSizeCalc + (value * 50 * progressionMultiplier * TimeScale())); // Always apply it
 		}
+	}
 
+	inline void AdjustMassLimit(float value, Actor* caster) {
 		auto selectedFormula = Runtime::GetInt("SelectedSizeFormula");
 		if (selectedFormula) {
 			if (selectedFormula >= 2.0) {
@@ -207,6 +209,7 @@ namespace Gts {
 		float amount = CalcPower(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0012 * scale_factor * target_scale, to);
+		AdjustMassLimit(0.0012 * scale_factor* target_scale, to);
 		AdjustGtsSkill(0.60 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amount);
 		mod_target_scale(to, amount*effeciency/10); // < 10 times weaker size steal towards caster. Absorb exclusive.
@@ -259,6 +262,7 @@ namespace Gts {
 			power *= PERK2_BONUS;
 		}
 		AdjustSizeLimit(0.0240 * target_scale * power, caster);
+		AdjustMassLimit(0.0024 * target_scale * power, caster);
 		float alteration_level_bonus = 0.0332 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
@@ -279,6 +283,7 @@ namespace Gts {
 			}
 			ShrinkToNothingManager::Shrink(caster, target);
 			AdjustSizeLimit(0.0060, caster);
+			AdjustMassLimit(0.0060, caster);
 
 			auto Cache = Persistent::GetSingleton().GetData(caster);
 
@@ -330,6 +335,7 @@ namespace Gts {
 			bool hasExplosiveGrowth3 = Runtime::HasMagicEffect(caster, "explosiveGrowth3");
 			AdjustSizeReserve(caster, target_scale/25);
 			AdjustSizeLimit(0.0066 * target_scale, caster);
+			AdjustMassLimit(0.0066 * target_scale, caster);
 			if (Runtime::HasPerk(caster, "ExtraGrowth") && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
 				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
 				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());

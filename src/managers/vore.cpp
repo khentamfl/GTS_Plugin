@@ -250,7 +250,7 @@ namespace Gts {
 				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 				if (tiny_is_actor) {
 					auto charcont = tiny_is_actor->GetCharController();
-					ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
+					//ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
 					if (charcont) {
 						charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
 					}
@@ -379,6 +379,10 @@ namespace Gts {
 					BuffAttributes(this->giant, this->tinySize);
 					mod_target_scale(this->giant, this->sizePower * 0.5);
 					AdjustSizeReserve(this->giant, this->sizePower);
+					if (this->giant->formID == 0x14) {
+						AdjustSizeLimit(0.0260, this->giant);
+						AdjustMassLimit(0.0028, this->giant);
+					}
 					Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
 					Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
 
@@ -777,10 +781,6 @@ namespace Gts {
 
 		DamageAV(pred, ActorValue::kStamina, wastestamina);
 		Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
-
-		if (pred->formID == 0x14) {
-			AdjustSizeLimit(0.0260, pred);
-		}
 		//Runtime::CastSpell(pred, prey, "StartVore");
 		auto& voreData = this->GetVoreData(pred);
 		voreData.AddTiny(prey);

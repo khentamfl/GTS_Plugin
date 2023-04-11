@@ -155,7 +155,7 @@
             }
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
-				ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
+				//ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
 				auto charcont = tiny_is_actor->GetCharController();
 				if (charcont) {
 					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
@@ -273,7 +273,7 @@
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_SANDWICH_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
-			Notify("{} is to be smothered between thighs.", prey->GetDisplayFullName());
+			Notify("{} is too big to be smothered between thighs.", prey->GetDisplayFullName());
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_SANDWICH_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
