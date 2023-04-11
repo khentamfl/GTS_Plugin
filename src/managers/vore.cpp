@@ -360,7 +360,7 @@ namespace Gts {
     		}
 		case VoreBuffState::Running: {
     			float healthToApply = this->restorePower/4000;
-    			float sizeToApply = this->sizePower/4200;
+    			float sizeToApply = this->sizePower/5500;
 
     			DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
     			DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
@@ -377,7 +377,7 @@ namespace Gts {
 					AdjustGiantessSkill(this->giant, this->tinySize);
 					VoreMessage_Absorbed(this->giant, this->tiny_name, this->WasDragon);
 					BuffAttributes(this->giant, this->tinySize);
-					mod_target_scale(this->giant, this->sizePower * 1.0);
+					mod_target_scale(this->giant, this->sizePower * 0.5);
 					AdjustSizeReserve(this->giant, this->sizePower);
 					Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
 					Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
@@ -447,7 +447,7 @@ namespace Gts {
 		if (!transient) {
 			return;
 		}
-		if (!transient->can_do_vore) {
+		if (!transient->can_do_vore && caster->formID != 0x14) {
 			return;
 		}
 
@@ -471,7 +471,6 @@ namespace Gts {
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
-						log::info("Player Vore is False");
 						return;
 					}
 					//log::info("Actor {} found Prey: {}, starting Vore", pred->GetDisplayFullName(), prey->GetDisplayFullName());

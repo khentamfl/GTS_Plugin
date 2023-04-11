@@ -167,12 +167,15 @@ namespace {
 
 	void GTSvore_sit_start(AnimationEventData& data) {
 		auto giant = &data.giant;
-		AllowToDoVore(giant, false); // Disallow repeating Vore for NPC's
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		for (auto& tiny: VoreData.GetVories()) {
+			AllowToBeCrushed(tiny, false);
+		}
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
 		}
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			ManageCamera(giant, true, 4.0); //PlayerCamera::GetSingleton()->cameraTarget = firstTiny->CreateRefHandle();
+			ManageCamera(giant, true, 4.0);
 		}
 		StartBodyRumble("BodyRumble", data.giant, 0.35, 0.10, false);
 	}
@@ -181,9 +184,9 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
+		AllowToDoVore(giant, false); // Disallow repeating Vore for NPC's
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
-			AllowToBeCrushed(tiny, false);
 		}
 		VoreData.AllowToBeVored(false);
 		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
