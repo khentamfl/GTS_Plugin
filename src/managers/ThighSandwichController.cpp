@@ -23,18 +23,18 @@
     void PrintSuffocate(Actor* pred, Actor* prey) {
         int random = rand() % 5;
 		if (random <= 1) {
-			ConsoleLog::GetSingleton()->Print("%s was slowly smothered between %s thighs", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			Cprint("{} was slowly smothered between {} thighs", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (random == 2) {
-			ConsoleLog::GetSingleton()->Print("%s was suffocated by the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			Cprint("{} was suffocated by the thighs of {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (random == 3) {
-			ConsoleLog::GetSingleton()->Print("Thighs of %s suffocated %s to death", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+			Cprint("Thighs of {} suffocated {} to death", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 		} else if (random == 4) {
-			ConsoleLog::GetSingleton()->Print("%s got smothered between the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			Cprint("{} got smothered between the thighs of {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (random == 5) {
-			ConsoleLog::GetSingleton()->Print("%s lost life to the thighs of %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			Cprint("{} lost life to the thighs of {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
     }
-    
+
     [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
 	{
 		float S = sin(angle);
@@ -60,10 +60,10 @@
 			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
 		);
 	}
- }   
+ }
 
 
- namespace Gts {   
+ namespace Gts {
     SandwichingData::SandwichingData(Actor* giant) : giant(giant) {
 
 	}
@@ -97,7 +97,7 @@
 				node->local.scale = 1.0 - this->ShrinkRune.value;
 				//log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
 				update_node(node);
-			} 
+			}
 		}
 		else if (this->RuneScale == true) {
 			auto node = find_node(giant, node_name, false);
@@ -108,8 +108,8 @@
 				node->local.scale = this->ScaleRune.value;
 				//log::info("Scale Rune Value: {}", this->ScaleRune.value);
 				update_node(node);
-			} 
-		} 
+			}
+		}
 	}
 
     void SandwichingData::Update() {
@@ -118,7 +118,7 @@
             return;
         }
     	float giantScale = get_visual_scale(giant);
-		
+
 
 		SandwichingData::UpdateRune(giant);
 
@@ -320,10 +320,10 @@
 
     void SandwichingData::EnableSuffocate(bool enable) {
 		this->Suffocate = enable;
-	} 
+	}
 	void SandwichingData::ManageScaleRune(bool enable) {
 		this->RuneScale = enable;
-	} 
+	}
 	void SandwichingData::ManageShrinkRune(bool enable) {
 		this->RuneShrink = enable;
 	}

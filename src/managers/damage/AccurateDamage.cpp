@@ -104,7 +104,7 @@ namespace {
 					CrushManager::Crush(Caster, Target);
 					CrushBonuses(Caster, Target, 0);
 					shake_camera(Caster, 0.75 * caster_scale, 0.45);
-					ConsoleLog::GetSingleton()->Print("%s was instantly turned into mush by the body of %s", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
+					Cprint("{} was instantly turned into mush by the body of {}", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 					if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
 						AttributeManager::GetSingleton().OverrideSMTBonus(0.65); // Reduce speed after crush
 					} else if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
@@ -478,4 +478,3 @@ namespace Gts {
 		DamageAV(tiny, ActorValue::kHealth, result);
 	}
 }
-

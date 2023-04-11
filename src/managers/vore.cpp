@@ -103,7 +103,7 @@ namespace {
 	void BuffAttributes(Actor* giant, float tinyscale) {
 		if (!giant) {
 			return;
-		} 
+		}
 		if (Runtime::HasPerk(giant, "SoulVorePerk")) { // Permamently increases random AV after eating someone
 			float TotalMod = (0.75 * tinyscale);
 			int Boost = rand() % 2;
@@ -125,11 +125,11 @@ namespace {
 		}
 		int random = rand() % 4;
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random <= 1) {
-			ConsoleLog::GetSingleton()->Print("%s was Swallowed and is now being slowly absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			Cprint("{} was Swallowed and is now being slowly absorbed by {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (random == 2) {
-			ConsoleLog::GetSingleton()->Print("%s is now absorbing %s", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+			Cprint("{} is now absorbing {}", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 		} else if (random >= 3) {
-			ConsoleLog::GetSingleton()->Print("%s will soon be completely absorbed by %s", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			Cprint("{} will soon be completely absorbed by {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 	}
 
@@ -143,13 +143,13 @@ namespace {
 			CompleteDragonQuest();
 		}
 		if (!Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
-			ConsoleLog::GetSingleton()->Print("%s", std::format("{} was absorbed by {}", prey, pred->GetDisplayFullName()).c_str());
+			Cprint("{} was absorbed by {}", prey, pred->GetDisplayFullName());
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
-			ConsoleLog::GetSingleton()->Print("%s", std::format("{} became one with {}", prey, pred->GetDisplayFullName()).c_str());
+			Cprint("{} became one with {}", prey, pred->GetDisplayFullName());
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
-			ConsoleLog::GetSingleton()->Print("%s", std::format("{} both body and soul were greedily devoured by {}", prey, pred->GetDisplayFullName()).c_str());
+			Cprint("{} both body and soul were greedily devoured by {}", prey, pred->GetDisplayFullName());
 		} else {
-			ConsoleLog::GetSingleton()->Print("%s", std::format("{} was absorbed by {}", prey, pred->GetDisplayFullName()).c_str());
+			Cprint("{} was absorbed by {}", prey, pred->GetDisplayFullName());
 		}
 	}
 }
@@ -228,7 +228,7 @@ namespace Gts {
 		for (auto& [key, tiny]: this->tinies) {
 			if (!tiny) {
 				return;
-			} 
+			}
 			if (!giant) {
 				return;
 			}
@@ -327,7 +327,7 @@ namespace Gts {
 			mealEffiency *= 6.0;
 		}
 		this->appliedFactor = 0.0;
-    	this->state = VoreBuffState::Starting; 
+    	this->state = VoreBuffState::Starting;
 
 		if (tiny) {
 			float tiny_scale = get_visual_scale(tiny);
@@ -374,7 +374,7 @@ namespace Gts {
 		case VoreBuffState::Finishing: {
 			if (!AllowDevourment()) {
 				if (this->giant) {
-					AdjustGiantessSkill(this->giant, this->tinySize); 
+					AdjustGiantessSkill(this->giant, this->tinySize);
 					VoreMessage_Absorbed(this->giant, this->tiny_name, this->WasDragon);
 					BuffAttributes(this->giant, this->tinySize);
 					mod_target_scale(this->giant, this->sizePower * 1.0);
@@ -387,7 +387,7 @@ namespace Gts {
 					}
 				}
 			}
-			
+
 			this->state = VoreBuffState::Done;
     	break;
 	}

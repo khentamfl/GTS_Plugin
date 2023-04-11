@@ -100,7 +100,7 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
 		TrackFeet(&data.giant, 0.0, true); // Track feet
 		data.stage = 1;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTStosit");
+		//Cprint("ThighCrush: GTStosit");
 	}
 
 	void GTSsitloopenter(AnimationEventData& data) {
@@ -109,7 +109,7 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.12 * speed, 0.10);
 		data.disableHH = true;
 		data.stage = 2;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopenter");
+		//Cprint("ThighCrush: GTSsitloopenter");
 	}
 
 	void GTSsitloopstart(AnimationEventData& data) {
@@ -118,7 +118,7 @@ namespace {
 		StopLegRumble("ThighCrush", data.giant);
 		data.currentTrigger = 1;
 		data.stage = 3;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopenter");
+		//Cprint("ThighCrush: GTSsitloopenter");
 	}
 
 	void GTSsitloopend(AnimationEventData& data) {
@@ -129,7 +129,7 @@ namespace {
 	void GTSsitcrushlight_start(AnimationEventData& data) {
 		StartLegRumble("ThighCrush", data.giant, 0.18, 0.12);
 		data.stage = 5;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_start");
+		//Cprint("ThighCrush: GTSsitcrushlight_start");
 	}
 
 	void GTSsitcrushlight_end(AnimationEventData& data) {
@@ -139,13 +139,13 @@ namespace {
 		LegRumbleOnce("ThighCrush_End", data.giant, 0.22, 0.20);
 		StopLegRumble("ThighCrush", data.giant);
 		data.stage = 6;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
+		//Cprint("ThighCrush: GTSsitcrushlight_end");
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
 		StartLegRumble("ThighCrushHeavy", data.giant, 0.35, 0.10);
 		data.stage = 5;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushheavy_start");
+		//Cprint("ThighCrush: GTSsitcrushheavy_start");
 	}
 
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
@@ -154,7 +154,7 @@ namespace {
 		LegRumbleOnce("ThighCrushHeavy_End", data.giant, 0.50, 0.15);
 		StopLegRumble("ThighCrushHeavy", data.giant);
 		data.stage = 6;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitcrushlight_end");
+		//Cprint("ThighCrush: GTSsitcrushlight_end");
 	}
 
 	void GTSsitloopexit(AnimationEventData& data) {
@@ -167,7 +167,7 @@ namespace {
 
 		StartBodyRumble("BodyRumble", data.giant, 0.25, 0.12);
 		data.stage = 8;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSsitloopexit");
+		//Cprint("ThighCrush: GTSsitloopexit");
 	}
 
 	void GTSstandR(AnimationEventData& data) {
@@ -179,7 +179,7 @@ namespace {
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 0.6, 0.8, 25, 0.5);
 		data.stage = 9;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandR");
+		//Cprint("ThighCrush: GTSstandR");
 	}
 
 	void GTSstandL(AnimationEventData& data) {
@@ -192,7 +192,7 @@ namespace {
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 0.6, 0.8, 25, 0.5);
 		data.stage = 9;
-		//ConsoleLog::GetSingleton()->Print("ThighCrush: GTSstandL");
+		//Cprint("ThighCrush: GTSstandL");
 	}
 
 	void GTSstandRS(AnimationEventData& data) {

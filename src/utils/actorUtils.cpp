@@ -183,7 +183,7 @@ namespace Gts {
 			if (stage == 90) {
 				auto transient = Transient::GetSingleton().GetData(pc);
 				if (transient) {
-					ConsoleLog::GetSingleton()->Print("Quest is Completed");
+					Cprint("Quest is Completed");
 					transient->dragon_was_eaten = true;
 				}
 			}
@@ -428,41 +428,41 @@ namespace Gts {
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 		if (cause == "Crushed") { // Default crush
 			if (random < 2) {
-				ConsoleLog::GetSingleton()->Print("%s became a bloody stain under %s foot.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} became a bloody stain under {} foot.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
-				ConsoleLog::GetSingleton()->Print("%s was crushed by the feet of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was crushed by the feet of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 3 || random == 4) {
-				ConsoleLog::GetSingleton()->Print("Feet of %s crushed %s into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("Feet of {} crushed %s into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 5 || random == 6) {
-				ConsoleLog::GetSingleton()->Print("%s Got crushed by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} Got crushed by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 7) {
-				ConsoleLog::GetSingleton()->Print("%s relentlessly crushed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} relentlessly crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
 		}
 		else if (cause == "HandCrushed") {
 			if (random == 1) {
-				ConsoleLog::GetSingleton()->Print("%s life was squeezed out in %s grip", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} life was squeezed out in {} grip", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random <= 2) {
-				ConsoleLog::GetSingleton()->Print("%s was crushed between the fingers of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was crushed between the fingers of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
-				ConsoleLog::GetSingleton()->Print("%s has been crushed in the hand of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} has been crushed in the hand of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 6) {
-				ConsoleLog::GetSingleton()->Print("%s applied too much pressure to her hand, crushing %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} applied too much pressure to her hand, crushing {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 7) {
-				ConsoleLog::GetSingleton()->Print("%s was turned into nothing inside the hand of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was turned into nothing inside the hand of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
 		}
 		else if (cause == "Shrinked") {
 			if (random <= 2) {
-				ConsoleLog::GetSingleton()->Print("%s greedily absorbed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} greedily absorbed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 4) {
-				ConsoleLog::GetSingleton()->Print("%s completely absorbed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} completely absorbed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 6) {
-				ConsoleLog::GetSingleton()->Print("%s was absorbed by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was absorbed by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 7) {
-				ConsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was shrinkned to nothing by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
 		}
@@ -471,37 +471,37 @@ namespace Gts {
 		}
 		else if (cause == "ThighCrushed") {
 			if (random == 1) {
-				ConsoleLog::GetSingleton()->Print("%s was crushed to death between %s thighs.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was crushed to death between {} thighs.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} if (random <= 3) {
-				ConsoleLog::GetSingleton()->Print("%s crushed %s during leg stretch", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} crushed {} during leg stretch", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 4) {
-				ConsoleLog::GetSingleton()->Print("%s ended life of %s between legs", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} ended life of {} between legs", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 5) {
-				ConsoleLog::GetSingleton()->Print("%s applied too much leg pressure to %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} applied too much leg pressure to {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 6) {
-				ConsoleLog::GetSingleton()->Print("%s was shrinkned to nothing by %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was shrinkned to nothing by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
 			}
 		else if (cause == "ThighSandwiched") {
 			if (random <= 3) {
-				ConsoleLog::GetSingleton()->Print("%s was crushed by the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was crushed by the thighs of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
-				ConsoleLog::GetSingleton()->Print("Thighs of %s gently crushed %s", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("Thighs of {} gently crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 5) {
-				ConsoleLog::GetSingleton()->Print("%s has disappeared between the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} has disappeared between the thighs of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 6) {
-				ConsoleLog::GetSingleton()->Print("%s was smothered to nothing between the thighs of %s", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was smothered to nothing between the thighs of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 7) {
-				ConsoleLog::GetSingleton()->Print("Thighs of %s sandwiched %s to nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("Thighs of {} sandwiched {} to nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
 		}
 		else if (cause == "Overkill") {
 			if (random <= 3) {
-				ConsoleLog::GetSingleton()->Print("%s body exploded because of massive size difference with {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} body exploded because of massive size difference with {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else {
-				ConsoleLog::GetSingleton()->Print("%s hit %s with so much force that %s exploded into bloody mist", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} hit {} with so much force that {} exploded into bloody mist", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), , tiny->GetDisplayFullName());
 			}
 		}
 	}

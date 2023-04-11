@@ -16,7 +16,7 @@ using namespace Gts;
 using namespace RE;
 using namespace SKSE;
 using namespace std;
- 
+
 namespace {
     void Overkill(Actor* attacker, Actor* receiver, float damage) {
 		if (damage > GetAV(receiver, ActorValue::kHealth) * 1.5) { // Overkill effect
@@ -59,12 +59,12 @@ namespace {
 					receiver->NotifyAnimationGraph("staggerStart");
 
 					float overkill = a_damage + maxhp/5;
-		
+
 					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, overkill); // Restore to full
 					log::info("Applying Health Gate, overkill: {}, damage: {}", overkill, a_damage);
-					
-					ConsoleLog::GetSingleton()->Print("Health Gate triggered, death avoided");
-					ConsoleLog::GetSingleton()->Print("Damage: %g, Lost Size: %g", a_damage, -0.35 * scale);
+
+					Cprint("Health Gate triggered, death avoided");
+					Cprint("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
 					Notify("Health Gate triggered, death avoided");
 					Notify("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
 				}
@@ -112,7 +112,7 @@ namespace Gts {
         InflictDamage(attacker, receiver, damage);
         StaggerImmunity(attacker, receiver);
 		SizeHitEffects::GetSingleton().DoHitGrowth(receiver, attacker, damage);
-    }	
+    }
 
 
 	void SizeHitEffects::DoHitGrowth(Actor* receiver, Actor* attacker, float damage) {
@@ -129,7 +129,7 @@ namespace Gts {
 			log::info("GrowthValue of : {} is {} {}, OG damage: {}", receiver->GetDisplayFullName(), GrowthValue, -GrowthValue, damage);
 			mod_target_scale(receiver, GrowthValue);
 			DoHitShake(receiver, GrowthValue * 10);
-			
+
 			Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue / 300, 1.0, "NPC COM [COM ]");
 			if (ShrinkChance >= 11) {
 				mod_target_scale(attacker, ((-0.065 * SizeHunger * Gigantism) * SizeDifference) / BalanceMode); // Shrink Attacker
@@ -140,7 +140,7 @@ namespace Gts {
 				Runtime::PlaySoundAtNode("LaughSound", receiver, 1.0, 0.5, "NPC Head [Head]");
 			}
 			return;
-		} 
+		}
 		else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if (get_visual_scale(receiver) > 1.0) {
 				float ShrinkValue = std::clamp((damage/1000)/SizeHunger/Gigantism, 0.0f, 0.25f);
@@ -150,7 +150,7 @@ namespace Gts {
 		}
 	}
 
-	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny, float damage, int random) { // Used as a debuff 
+	void SizeHitEffects::BreakBones(Actor* giant, Actor* tiny, float damage, int random) { // Used as a debuff
 		if (tiny->IsDead()) {
 			return;
 		}
