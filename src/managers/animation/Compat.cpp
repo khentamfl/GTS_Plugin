@@ -90,7 +90,7 @@ namespace {
 		auto giant = &data.giant;
 		auto& sizemanager = SizeManager::GetSingleton(); 
 		float damage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
-		DoDamageEffect(&data.giant, 2.0 * damage, 4.5, 20, 0.45);
+		DoDamageEffect(&data.giant, 2.2 * damage, 8.0, 20, 0.45);
 	}
 }
 
