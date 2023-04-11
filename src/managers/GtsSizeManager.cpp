@@ -158,7 +158,18 @@ namespace Gts {
 			}
 			if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
 				set_max_scale(actor, TotalLimit);
-				//log::info("Current Size Limit of: {} is {}", actor->GetDisplayFullName(), get_max_scale(actor));
+			}
+		}
+	}
+
+	void SizeManager::OnAddPerk(const AddPerkEvent& evt) {
+		log::info("Add Perk fired");
+		if (evt.perk == Runtime::GetPerk("hhBonus")) {
+			for (auto actor: find_actors()) {
+				if (actor) {
+					log::info("HH perk was added");
+					HighHeelManager::GetSingleton().data(evt.actor).wasWearingHh = false;
+				}
 			}
 		}
 	}

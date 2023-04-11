@@ -321,7 +321,7 @@ namespace Gts {
 			mealEffiency = 0.3;
 		}
 		if (Runtime::HasPerkTeam(giant, "AdditionalGrowth")) {
-			perkbonus = 2.0;
+			perkbonus = 1.25;
 		}
 		if (IsDragon(tiny)) {
 			mealEffiency *= 6.0;
@@ -708,7 +708,7 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
-			prey_scale *= 2.6;
+			prey_scale *= 3.0;
 		}
 
 		float sizedifference = pred_scale/prey_scale;

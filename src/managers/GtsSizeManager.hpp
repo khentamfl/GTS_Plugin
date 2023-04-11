@@ -14,8 +14,6 @@ namespace Gts {
 		float HitGrowth = 0.0;
 		float GrowthTimer = 0.0;
 		float GrowthSpurt = 0.0;
-		float CrushGrowthStacks = 0.0;
-		float VoreStacks = 0.0;
 
 		float NormalDamage = 1.0; // 0
 		float SprintDamage = 1.0; // 1
@@ -52,6 +50,7 @@ namespace Gts {
 			virtual void DataReady() override;
 			virtual void Update() override;
 			virtual void OnHighheelEquip(const HighheelEquip& evt) override;
+			virtual void OnAddPerk(const AddPerkEvent& evt) override;
 
 			void Reset();
 
