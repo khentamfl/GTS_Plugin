@@ -78,6 +78,7 @@ namespace Gts {
 
 	inline void AdjustMassLimit(float value, Actor* caster) {
 		auto selectedFormula = Runtime::GetInt("SelectedSizeFormula");
+		float progression_multiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 		if (selectedFormula) {
 			if (selectedFormula >= 2.0) {
 				SoftPotential mod {
