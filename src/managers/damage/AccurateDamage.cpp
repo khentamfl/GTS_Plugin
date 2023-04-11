@@ -370,13 +370,13 @@ namespace Gts {
 		float giantSize = get_visual_scale(giant);
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		if (hasSMT) {
-			giantSize += 7.2;
+			giantSize += 2.5;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 		float tinySize = get_visual_scale(tiny);
 		if (IsDragon(tiny)) {
-			tinySize *= 2.0;
+			tinySize *= 2.6;
 		}
 
 		float movementFactor = 1.0;
@@ -456,7 +456,6 @@ namespace Gts {
 
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
 			multiplier += 7.2;
-			result *= 2.0;
 		}
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
