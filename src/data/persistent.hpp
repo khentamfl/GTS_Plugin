@@ -69,7 +69,7 @@ namespace Gts {
 
 
 			bool highheel_correction = true;
-			bool highheel_furniture = true;
+			bool highheel_furniture = false;
 			bool is_speed_adjusted = true;
 			bool vore_allowplayervore = false;
 			bool vore_combatonly = true;
