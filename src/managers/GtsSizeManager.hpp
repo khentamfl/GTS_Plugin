@@ -50,7 +50,6 @@ namespace Gts {
 			virtual void DataReady() override;
 			virtual void Update() override;
 			virtual void OnHighheelEquip(const HighheelEquip& evt) override;
-			virtual void OnAddPerk(const AddPerkEvent& evt) override;
 
 			void Reset();
 

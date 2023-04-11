@@ -20,6 +20,7 @@ namespace Gts {
 			virtual void HavokUpdate() override;
 			virtual void ActorEquip(Actor* actor) override;
 			virtual void ActorLoaded(Actor* actor) override;
+			virtual void OnAddPerk(const AddPerkEvent& evt) override;
 
 			static bool IsWearingHH(Actor* actor); // Checks if GetBaseHHOffset().Length() > 1e-4
 			static NiPoint3 GetBaseHHOffset(Actor* actor); // Unscaled HH as read from the shoe data

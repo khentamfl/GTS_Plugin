@@ -162,17 +162,7 @@ namespace Gts {
 		}
 	}
 
-	void SizeManager::OnAddPerk(const AddPerkEvent& evt) {
-		log::info("Add Perk fired");
-		if (evt.perk == Runtime::GetPerk("hhBonus")) {
-			for (auto actor: find_actors()) {
-				if (actor) {
-					log::info("HH perk was added");
-					HighHeelManager::GetSingleton().data(evt.actor).wasWearingHh = false;
-				}
-			}
-		}
-	}
+	
 
 	void SizeManager::OnHighheelEquip(const HighheelEquip& evt) {
 		float hh_length = evt.hhLength;

@@ -41,6 +41,22 @@ namespace Gts {
 		ApplyHH(actor, FORCE_APPLY);
 	}
 
+	void HighHeelManager::OnAddPerk(const AddPerkEvent& evt) {
+		log::info("Add Perk fired");
+		if (evt.perk == Runtime::GetPerk("hhBonus")) {
+			for (auto actor: find_actors()) {
+				if (actor) {
+					log::info("HH perk was added");
+					this->data.try_emplace(actor);
+					auto& hhData = this->data[evt.actor];
+					if (hhData) {
+						hhData.wasWearingHh = false;
+					}
+				}
+			}
+		}
+	}
+
 	void HighHeelManager::ApplyHH(Actor* actor, bool force) {
 		if (!actor) {
 			return;
