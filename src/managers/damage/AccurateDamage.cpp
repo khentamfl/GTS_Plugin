@@ -400,7 +400,7 @@ namespace Gts {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				StaggerOr(giant, tiny, knockBack);
 			}
-		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER) {
+		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER && sizeRatio >= 1.49) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				if (sizeRatio >= 6.0) { // Launch
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
