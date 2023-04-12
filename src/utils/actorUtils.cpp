@@ -54,7 +54,9 @@ namespace Gts {
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
 		for (auto &[a_object, invData]: from->GetInventory()) {
-			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
+      if (a_object->GetPlayable()) {
+			     from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
+       }
 		}
 	}
 
