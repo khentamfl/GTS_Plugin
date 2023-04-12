@@ -63,8 +63,7 @@ namespace Gts {
 		}
 	}
 
-	inline void AdjustSizeLimit(float value, Actor* caster)  // A function that adjusts Size Limit (Globals)
-	{
+	inline void AdjustSizeLimit(float value, Actor* caster) {  // A function that adjusts Size Limit (Globals)
 		if (caster->formID != 0x14) {
 			return;
 		}
@@ -77,6 +76,9 @@ namespace Gts {
 	}
 
 	inline void AdjustMassLimit(float value, Actor* caster) {
+		if (caster->formID != 0x14) {
+			return;
+		}
 		auto selectedFormula = Runtime::GetInt("SelectedSizeFormula");
 		float progressionMultiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 		if (selectedFormula) {
