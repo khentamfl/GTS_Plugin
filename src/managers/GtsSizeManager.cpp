@@ -130,10 +130,11 @@ namespace Gts {
 	void SizeManager::Update() {
 		for (auto actor: find_actors()) {
 			// TODO move away from polling
-			bool Balance = false; // Toggles Balance Mode for the mod. False = off, true = on.
-
+			float Endless = 1.0;
+			if (actor->formID == 0x14 && Runtime::HasPerk(actor, "TrueGiantess")) {
+				endless = 999999.0;
+			}
 			float QuestStage = Runtime::GetStage("MainQuest");
-
 			float Gigantism = this->GetEnchantmentBonus(actor)/100;
 			float GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("sizeLimit")); // Default size limit
 			float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
@@ -143,11 +144,11 @@ namespace Gts {
 			float NPCLimit = Runtime::GetFloat("NPCSizeLimit");
 
 			if (SelectedFormula >= 2.0 && actor->formID == 0x14) { // Apply Player Mass-Based max size
-				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("MassBasedSizeLimit") + 1.0);
+				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("MassBasedSizeLimit") + Endless);
 			} else if (QuestStage > 100 && FollowerLimit > 1 && actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate())) { // Apply Follower Max Size
 				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("FollowersSizeLimit")); // Apply only if Quest is done.
 			} else if (QuestStage > 100 && NPCLimit > 1 &&  actor->formID != 0x14 && (!Runtime::InFaction(actor, "FollowerFaction") && !actor->IsPlayerTeammate())) { // Apply Other NPC's max size
-				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("NPCSizeLimit"));           // Apply only if Quest is done.
+				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("NPCSizeLimit"));       // Apply only if Quest is done.
 			}
 
 			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);

@@ -146,6 +146,9 @@ Function SetDevourmentCompatibility(Bool enabled) global native
 ;==================================================
 ;===================M I S C F U N C T I O N S     |
 ;==================================================
+
+function IncreaseSizeLimit(float value, Actor caster) global native
+function IncreaseMassLimit(float value, Actor caster) global native
     
 Bool function WasDragonEaten() global native 
 
