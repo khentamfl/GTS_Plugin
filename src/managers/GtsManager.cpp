@@ -36,7 +36,7 @@ namespace {
 		if (get_visual_scale(actor) < 1.5) {
 			return;
 		}
-		if ((actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+		if ((actor->formID == 0x14 ||actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto node = find_node(actor, "skeleton_female.nif");
 			NiAVObject* skeleton = node;
 			if (node) {

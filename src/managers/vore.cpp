@@ -381,7 +381,7 @@ namespace Gts {
 					AdjustSizeReserve(this->giant, this->sizePower);
 					if (this->giant->formID == 0x14) {
 						AdjustSizeLimit(0.0260, this->giant);
-						AdjustMassLimit(0.0096, this->giant);
+						AdjustMassLimit(0.0106, this->giant);
 					}
 					Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
 					Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
@@ -449,9 +449,6 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetData(caster);
 		auto& VoreManager = Vore::GetSingleton();
 		if (!transient) {
-			return;
-		}
-		if (!transient->can_do_vore && caster->formID != 0x14) {
 			return;
 		}
 
