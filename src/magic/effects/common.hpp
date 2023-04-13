@@ -96,7 +96,9 @@ namespace Gts {
 				value *= 10.0 * modifier;
 				//log::info("Modifier: {}", modifier);
 				auto sizeLimit = Runtime::GetFloat("sizeLimit");
-				if (globalMassSize < sizeLimit) {
+				if (Runtime::HasPerk(caster, "TrueGiantess")) {
+					sizeLimit = 999999.0;
+				} if (globalMassSize < sizeLimit) {
 					Runtime::SetFloat("MassBasedSizeLimit", globalMassSize + value * progressionMultiplier * TimeScale());
 				}
 			}

@@ -130,7 +130,7 @@ namespace Gts {
 	void SizeManager::Update() {
 		for (auto actor: find_actors()) {
 			// TODO move away from polling
-			float Endless = 1.0;
+			float Endless = 0.0;
 			if (actor->formID == 0x14 && Runtime::HasPerk(actor, "TrueGiantess")) {
 				Endless = 999999.0;
 			}
@@ -144,7 +144,7 @@ namespace Gts {
 			float NPCLimit = Runtime::GetFloat("NPCSizeLimit");
 
 			if (SelectedFormula >= 2.0 && actor->formID == 0x14) { // Apply Player Mass-Based max size
-				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("MassBasedSizeLimit") + Endless);
+				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("MassBasedSizeLimit") + 1.0);
 			} else if (QuestStage > 100 && FollowerLimit > 1 && actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate())) { // Apply Follower Max Size
 				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("FollowersSizeLimit")); // Apply only if Quest is done.
 			} else if (QuestStage > 100 && NPCLimit > 1 &&  actor->formID != 0x14 && (!Runtime::InFaction(actor, "FollowerFaction") && !actor->IsPlayerTeammate())) { // Apply Other NPC's max size
@@ -157,7 +157,7 @@ namespace Gts {
 			if (TotalLimit < 1.0) {
 				TotalLimit = 1.0;
 			}
-			if (get_max_scale(actor) < TotalLimit || get_max_scale(actor) > TotalLimit) {
+			if (get_max_scale(actor) < TotalLimit + Endless || get_max_scale(actor) > TotalLimit + Endless) {
 				set_max_scale(actor, TotalLimit);
 			}
 		}
