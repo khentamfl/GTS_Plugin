@@ -309,6 +309,12 @@ namespace Gts {
 		return Persistent::GetSingleton().allow_feetracking;
 	}
 
+	bool IsGtsBusy(Actor* actor) {
+		bool GTSBusy;
+		actor->GetGraphVariableBool("GTS_Busy", GTSBusy);
+		return GTSBusy;
+	}
+
 	void TrackFeet(Actor* giant, float number, bool enable) {
 		if (giant->formID == 0x14) {
 			if (AllowFeetTracking()) {

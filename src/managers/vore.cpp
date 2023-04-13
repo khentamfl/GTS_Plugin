@@ -51,6 +51,9 @@ namespace {
 	void VoreInputEvent(const InputEventData& data) {
 		static Timer voreTimer = Timer(0.25);
 		auto pred = PlayerCharacter::GetSingleton();
+		if (IsGtsBusy(pred)) {
+			return;
+		}
 
 		if (voreTimer.ShouldRunFrame()) {
 			auto& VoreManager = Vore::GetSingleton();
@@ -446,10 +449,8 @@ namespace Gts {
 
 	void Vore::RandomVoreAttempt(Actor* caster) {
 		Actor* player = PlayerCharacter::GetSingleton();
-		bool GTSBusy;
-		caster->GetGraphVariableBool("GTS_Busy", GTSBusy);
 		auto& VoreManager = Vore::GetSingleton();
-		if (GTSBusy) {
+		if (IsGtsBusy(caster)) {
 			return; // No Vore attempts if in GTS_Busy
 		}
 
