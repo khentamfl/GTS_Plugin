@@ -446,10 +446,11 @@ namespace Gts {
 
 	void Vore::RandomVoreAttempt(Actor* caster) {
 		Actor* player = PlayerCharacter::GetSingleton();
-		auto transient = Transient::GetSingleton().GetData(caster);
+		bool GTSBusy;
+		caster->GetGraphVariableBool("GTS_Busy", GTSBusy);
 		auto& VoreManager = Vore::GetSingleton();
-		if (!transient) {
-			return;
+		if (GTSBusy) {
+			return; // No Vore attempts if in GTS_Busy
 		}
 
 		std::size_t numberOfPrey = 1;
@@ -693,6 +694,11 @@ namespace Gts {
 	bool Vore::CanVore(Actor* pred, Actor* prey) {
 		if (pred == prey) {
 			return false;
+		}
+		bool GTSBusy;
+		pred->GetGraphVariableBool("GTS_Busy", GTSBusy);
+		if (GTSBusy) {
+			return; // Can't Vore if in Any GTS Action
 		}
 		auto transient = Transient::GetSingleton().GetData(prey);
 		if (transient) {
