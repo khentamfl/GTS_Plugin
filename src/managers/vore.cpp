@@ -381,7 +381,7 @@ namespace Gts {
 					AdjustSizeReserve(this->giant, this->sizePower);
 					if (this->giant->formID == 0x14) {
 						AdjustSizeLimit(0.0260, this->giant);
-						AdjustMassLimit(0.0028, this->giant);
+						AdjustMassLimit(0.0130, this->giant);
 					}
 					Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
 					Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);

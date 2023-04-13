@@ -35,12 +35,12 @@ namespace {
 		float giantScale = get_visual_scale(giant);
 		NiPoint3 giantLocation = giant->GetPosition();
 		for (auto otherActor: find_actors()) {
-		if (otherActor != giant) {
-			if (otherActor->IsInKillMove()) {
-				float tinyScale = get_visual_scale(otherActor); 
-				if (giantScale / tinyScale > SCALE_RATIO) {
-					NiPoint3 actorLocation = otherActor->GetPosition();
-					if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+			if (otherActor != giant) {
+				if (otherActor->IsInKillMove()) {
+					float tinyScale = get_visual_scale(otherActor); 
+					if (giantScale / tinyScale > SCALE_RATIO) {
+						NiPoint3 actorLocation = otherActor->GetPosition();
+						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
 							CrushManager::Crush(giant, otherActor);
 						}
 					}
