@@ -698,7 +698,7 @@ namespace Gts {
 		bool GTSBusy;
 		pred->GetGraphVariableBool("GTS_Busy", GTSBusy);
 		if (GTSBusy) {
-			return; // Can't Vore if in Any GTS Action
+			return false; // Can't Vore if in Any GTS Action
 		}
 		auto transient = Transient::GetSingleton().GetData(prey);
 		if (transient) {
