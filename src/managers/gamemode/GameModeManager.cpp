@@ -40,7 +40,7 @@ namespace Gts {
 		if (game_mode != ChosenGameMode::None) {
 			auto player = PlayerCharacter::GetSingleton();
 			float natural_scale = get_natural_scale(actor);
-			float Scale = get_target_scale(actor);
+			float Scale = std::clamp(get_visual_scale(actor) * 0.25f, 1.0f, 10.0f);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
 
@@ -234,17 +234,6 @@ namespace Gts {
 		if (game_mode_int >=0 && game_mode_int <= 6) {
 			gameMode = static_cast<ChosenGameMode>(game_mode_int);
 		}
-
-		if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor->formID == 0x14) {
-			scale = 1.0;
-		}
-		if (Runtime::GetFloat("MultiplyGameModeNPC") == 0 && actor->formID != 0x14) {
-			scale = 1.0;
-		}
-		float ScaleCheck = scale * 0.15;
-		float ScaleLimit = std::clamp(ScaleCheck, 1.0f, 10.0f);
-		log::info("Growth Scale Limit is: {}", ScaleLimit);
-
-		GameModeManager::GetSingleton().ApplyGameMode(actor, gameMode, (growthRate/2) * ScaleLimit, shrinkRate);
+		GameModeManager::GetSingleton().ApplyGameMode(actor, gameMode, growthRate/2, shrinkRate);
 	}
 }
