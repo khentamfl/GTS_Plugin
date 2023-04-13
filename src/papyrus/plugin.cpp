@@ -161,6 +161,14 @@ namespace {
 		Persistent::GetSingleton().vore_combatonly = enabled;
 	}
 
+	void IncreaseSizeLimit(float value, Actor* caster) {
+		AdjustSizeLimit(value, caster);
+	}
+
+	void IncreaseMassLimit(float value, Actor* caster) {
+		AdjustMassLimit(value, caster);
+	}
+
 	void SetIsHHFurnitureEnabled(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().highheel_furniture = enabled;
 		if (enabled == false) {
@@ -299,6 +307,8 @@ namespace Gts {
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
 		vm->RegisterFunction("SetOnlyCombatVore", PapyrusClass, SetOnlyCombatVore);
+		vm->RegisterFunction("IncreaseSizeLimit", PapyrusClass, IncreaseSizeLimit);
+		vm->RegisterFunction("IncreaseMassLimit", PapyrusClass, IncreaseMassLimit);
 		vm->RegisterFunction("DisintegrateTarget", PapyrusClass, DisintegrateTarget);
 		vm->RegisterFunction("WasDragonEaten", PapyrusClass, WasDragonEaten);
 		vm->RegisterFunction("GetDevourmentCompatibility", PapyrusClass, GetDevourmentCompatibility);
