@@ -242,7 +242,7 @@ namespace Gts {
 			scale = 1.0;
 		}
 		float ScaleCheck = scale * 0.15;
-		float ScaleLimit = Gts::clamp(1.0, 10.0, ScaleCheck);
+		float ScaleLimit = std::clamp(ScaleCheck, 1.0f, 10.0f);
 		//log::info("Growth Scale Limit is: {}", ScaleLimit);
 
 		GameModeManager::GetSingleton().ApplyGameMode(actor, gameMode, growthRate/2 * ScaleLimit, shrinkRate);
