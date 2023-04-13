@@ -162,11 +162,11 @@ namespace {
 		Persistent::GetSingleton().vore_combatonly = enabled;
 	}
 
-	void IncreaseSizeLimit(float value, Actor* caster) {
+	void IncreaseSizeLimit(StaticFunctionTag*, float value, Actor* caster) {
 		AdjustSizeLimit(value, caster);
 	}
 
-	void IncreaseMassLimit(float value, Actor* caster) {
+	void IncreaseMassLimit(StaticFunctionTag*, float value, Actor* caster) {
 		AdjustMassLimit(value, caster);
 	}
 
