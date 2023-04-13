@@ -132,7 +132,7 @@ namespace Gts {
 			// TODO move away from polling
 			float Endless = 1.0;
 			if (actor->formID == 0x14 && Runtime::HasPerk(actor, "TrueGiantess")) {
-				endless = 999999.0;
+				Endless = 999999.0;
 			}
 			float QuestStage = Runtime::GetStage("MainQuest");
 			float Gigantism = this->GetEnchantmentBonus(actor)/100;
