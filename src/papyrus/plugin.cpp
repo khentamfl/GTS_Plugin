@@ -5,6 +5,7 @@
 #include "managers/Attributes.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "magic/effects/common.hpp"
 #include <math.h>
 #include <sstream>
 #include <iomanip>
