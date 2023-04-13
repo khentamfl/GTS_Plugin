@@ -695,11 +695,6 @@ namespace Gts {
 		if (pred == prey) {
 			return false;
 		}
-		bool GTSBusy;
-		pred->GetGraphVariableBool("GTS_Busy", GTSBusy);
-		if (GTSBusy) {
-			return false; // Can't Vore if in Any GTS Action
-		}
 		auto transient = Transient::GetSingleton().GetData(prey);
 		if (transient) {
 			if (transient->can_be_vored == false) {
