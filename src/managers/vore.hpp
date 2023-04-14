@@ -142,7 +142,7 @@ namespace Gts
 			// Gets the current vore data of a giant
 			VoreData& GetVoreData(Actor* giant);
 
-			void AddVoreBuff(ActorHandle giant, ActorHandle tiny);
+			void AddVoreBuff(Actor* giant, Actor* tiny);
 
 		private:
 			std::unordered_map<FormID, VoreData> data;

@@ -172,9 +172,9 @@ namespace Gts {
 	}
 	void VoreData::Swallow() {
 		for (auto& [key, tinyref]: this->tinies) {
-      auto tiny = tinyref.get().get();
-      auto giant = this->giant.get().get();
-			Vore::GetSingleton().AddVoreBuff(giant, tiny);
+      		auto tiny = tinyref.get().get();
+      		auto giant = this->giant.get().get();
+			Vore::GetSingleton().AddVoreBuff(this->giant, tinyref);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
 			CallGainWeight(giant, 3.0 * get_visual_scale(tiny));
 			if (giant->formID == 0x14) {
@@ -776,7 +776,7 @@ namespace Gts {
 			return;
 		}
 		if (prey->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
-			Notify("{} is important, i shouldn't eat {}.", prey->GetDisplayFullName(), prey->GetDisplayFullName());
+			Notify("{} is important, and shouldn't be eaten.", prey->GetDisplayFullName());
 		}
 		if (staminacheck < wastestamina) {
 			Notify("{} is too tired for vore.", pred->GetDisplayFullName());
