@@ -176,7 +176,7 @@ namespace Gts {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
-			CallGainWeight(giant, 3.0 * get_visual_scale(tiny.get().get()));
+			CallGainWeight(giant.get().get(), 3.0 * get_visual_scale(tiny.get().get()));
 			if (giant.get()->formID == 0x14) {
 				CallVampire();
 			}
@@ -222,13 +222,14 @@ namespace Gts {
 	std::vector<Actor*> VoreData::GetVories() {
 		std::vector<Actor*> result;
 		for (auto& [key, actor]: this->tinies) {
-			result.push_back(actor);
+			result.push_back(actor->CreateRefHandle());
 		}
 		return result;
 	}
 
 	void VoreData::Update() {
 		auto giant = this->giant.get().get();
+		auto tiny = this->tiny.get().get();
     	float giantScale = get_visual_scale(giant);
 		// Stick them to the AnimObjectA
 		for (auto& [key, tiny]: this->tinies) {
