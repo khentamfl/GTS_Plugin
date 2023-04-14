@@ -67,8 +67,8 @@ namespace Gts
 	};
 	struct VoreBuff {
 		VoreBuffState state = VoreBuffState::Starting;
-		ActorHandle giant = nullptr;
-		ActorHandle tiny = nullptr;
+		ActorHandle giant;
+		ActorHandle tiny;
     	float duration;
 		float restorePower = 0.0; // Amount of health to restore TOTAL
 		float sizePower = 0.0; // Amount of size to gain TOTAL
