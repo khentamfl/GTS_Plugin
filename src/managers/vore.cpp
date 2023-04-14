@@ -176,7 +176,7 @@ namespace Gts {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
-			CallGainWeight(giant.get().get(), 3.0 * get_visual_scale(tiny.get().get()));
+			CallGainWeight(giant.get(), 3.0 * get_visual_scale(tiny.get()));
 			if (giant.get()->formID == 0x14) {
 				CallVampire();
 			}
@@ -185,10 +185,10 @@ namespace Gts {
 	void VoreData::KillAll() {
 		if (!AllowDevourment()) {
 		for (auto& [key, tiny]: this->tinies) {
-			if (tiny.native_handle()->formID != 0x14) {
-				Disintegrate(tiny.get().get());
+			if (tiny.get()->formID != 0x14) {
+				Disintegrate(tiny.get());
 				///this->tinies.erase(tiny);
-			} else if (tiny.native_handle()->formID == 0x14) {
+			} else if (tiny.get()->formID == 0x14) {
 				tiny.get()->KillImmediate();
 				TriggerScreenBlood(50);
 				tiny.get()->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
@@ -200,7 +200,7 @@ namespace Gts {
 
 	void VoreData::AllowToBeVored(bool allow) {
 		for (auto& [key, tiny]: this->tinies) {
-			auto transient = Transient::GetSingleton().GetData(tiny.get().get());
+			auto transient = Transient::GetSingleton().GetData(tiny.get());
 			if (transient) {
 				transient->can_be_vored = allow;
 			}
@@ -222,13 +222,13 @@ namespace Gts {
 	std::vector<Actor*> VoreData::GetVories() {
 		std::vector<Actor*> result;
 		for (auto& [key, actor]: this->tinies) {
-			result.push_back(actor.get().get());
+			result.push_back(actor.get());
 		}
 		return result;
 	}
 
 	void VoreData::Update() {
-		auto giant = this->giant.get().get();
+		auto giant = this->giant.get();
     	float giantScale = get_visual_scale(giant);
 		// Stick them to the AnimObjectA
 		for (auto& [key, tiny]: this->tinies) {
@@ -245,15 +245,15 @@ namespace Gts {
 
 			if (this->allGrabbed) {
 				NiPoint3 giantLocation = giant->GetPosition();
-				NiPoint3 tinyLocation = tiny.get().get()->GetPosition();
+				NiPoint3 tinyLocation = tiny.get()->GetPosition();
 				NiPoint3 targetLocation = bone->world.translate;
         		NiPoint3 deltaLocation = targetLocation - tinyLocation;
         		float deltaLength = deltaLocation.Length();
 
-				tiny.get().get()->SetPosition(targetLocation, true);
-				tiny.get().get()->SetPosition(targetLocation, false);
+				tiny.get()->SetPosition(targetLocation, true);
+				tiny.get()->SetPosition(targetLocation, false);
 				//log::info("Setting Position");
-				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny.get().get());
+				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny.get());
 				if (tiny_is_actor) {
 					auto charcont = tiny_is_actor->GetCharController();
 					//ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
@@ -274,7 +274,7 @@ namespace Gts {
 					// Get all nodes in range
 					std::vector<NiAVObject*> nodes_inrange = {};
           			std::vector<std::string> names_inrange = {};
-					auto root = tiny.get().get()->GetCurrent3D();
+					auto root = tiny.get()->GetCurrent3D();
 					VisitNodes(root, [&nodes_inrange, &headCenter, &headKillRadius, &names_inrange](NiAVObject& node) {
 						float distance = (node.world.translate - headCenter).Length();
 						if (distance < headKillRadius) {
@@ -287,12 +287,12 @@ namespace Gts {
 
 					// Check all children of the nodes
           				std::vector<NiAVObject*> excludedChildren = {};
-          	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC ROOT [ROOT]", false));
-         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC COM [COM]", false));
-         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC Pelvis [Pelv]", false));
-         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC Spine [Spn0]", false));
-         	 			excludedChildren.push_back(find_node(tiny.get().get(), "Camera Control", false));
-         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC Translate", false));
+          	 			excludedChildren.push_back(find_node(tiny.get(), "NPC ROOT [ROOT]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get(), "NPC COM [COM]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get(), "NPC Pelvis [Pelv]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get(), "NPC Spine [Spn0]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get(), "Camera Control", false));
+         	 			excludedChildren.push_back(find_node(tiny.get(), "NPC Translate", false));
 						for (auto& node: nodes_inrange) {
 							bool anyInvalid = false;
 							VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
@@ -322,32 +322,32 @@ namespace Gts {
 		this->duration = 40.0;
 		float mealEffiency = 0.2; // Normal pred has 20% efficent stomach
 		float perkbonus = 1.0;
-		if (Runtime::HasPerkTeam(giant, "Gluttony")) {
+		if (Runtime::HasPerkTeam(giant.get(), "Gluttony")) {
 			this->duration = 60.0;
 			mealEffiency = 0.3;
 		}
-		if (Runtime::HasPerkTeam(giant, "AdditionalGrowth")) {
+		if (Runtime::HasPerkTeam(giant.get(), "AdditionalGrowth")) {
 			perkbonus = 1.25;
 		}
-		if (IsDragon(tiny)) {
+		if (IsDragon(tiny.get())) {
 			mealEffiency *= 6.0;
 		}
 		this->appliedFactor = 0.0;
     	this->state = VoreBuffState::Starting;
 
 		if (tiny) {
-			float tiny_scale = get_visual_scale(tiny);
+			float tiny_scale = get_visual_scale(tiny.get());
 			// Amount of health we apply depends on their vitality
 			// and their size
-			if (Runtime::HasPerkTeam(giant, "Gluttony")) {
-				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 8 * mealEffiency;
+			if (Runtime::HasPerkTeam(giant.get(), "Gluttony")) {
+				this->restorePower = GetMaxAV(tiny.get(), ActorValue::kHealth) * 8 * mealEffiency;
 			} else {
         		this->restorePower = 0.0;
       		}
-			this->WasDragon = IsDragon(tiny);
+			this->WasDragon = IsDragon(tiny,get());
 			this->sizePower = tiny_scale * mealEffiency * perkbonus;
 			this->tinySize = tiny_scale;
-			this->tiny_name = tiny->GetDisplayFullName();
+			this->tiny_name = tiny.get()->GetDisplayFullName();
 		}
 	}
 	void VoreBuff::Update() {
