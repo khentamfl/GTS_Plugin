@@ -123,7 +123,9 @@ namespace {
 	}
 
 
-	void VoreMessage_SwallowedAbsorbing(ActorHandle pred, ActorHandle prey) {
+	void VoreMessage_SwallowedAbsorbing(ActorHandle predref, ActorHandle preyref) {
+    auto pred = predref.native_handle();
+    auto prey = preyref.native_handle();
 		if (!pred) {
 			return;
 		}
