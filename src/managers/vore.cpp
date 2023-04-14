@@ -130,7 +130,7 @@ namespace {
 			return;
 		}
 		int random = rand() % 4;
-		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random <= 1) {
+		if (!prey->IsDead() && !Runtime::HasPerk(pred.get(), "SoulVorePerk") || random <= 1) {
 			Cprint("{} was Swallowed and is now being slowly absorbed by {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (random == 2) {
 			Cprint("{} is now absorbing {}", pred->GetDisplayFullName(), prey->GetDisplayFullName());
@@ -175,9 +175,9 @@ namespace Gts {
 	void VoreData::Swallow() {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
-			VoreMessage_SwallowedAbsorbing(giant.native_handle(), tiny.native_handle());
-			CallGainWeight(giant, 3.0 * get_visual_scale(tiny->get()));
-			if (giant.native_handle()->formID == 0x14) {
+			VoreMessage_SwallowedAbsorbing(giant.get().get(), tiny.get().get());
+			CallGainWeight(giant, 3.0 * get_visual_scale(tiny.get().get()));
+			if (giant.get()->formID == 0x14) {
 				CallVampire();
 			}
 		}
@@ -186,12 +186,12 @@ namespace Gts {
 		if (!AllowDevourment()) {
 		for (auto& [key, tiny]: this->tinies) {
 			if (tiny.native_handle()->formID != 0x14) {
-				Disintegrate(tiny.native_handle());
+				Disintegrate(tiny.get().get());
 				///this->tinies.erase(tiny);
 			} else if (tiny.native_handle()->formID == 0x14) {
-				tiny->KillImmediate();
+				tiny.get()->KillImmediate();
 				TriggerScreenBlood(50);
-				tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
+				tiny.get()->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
 				}
 			}
 		}
