@@ -222,7 +222,7 @@ namespace Gts {
 	std::vector<Actor*> VoreData::GetVories() {
 		std::vector<Actor*> result;
 		for (auto& [key, actor]: this->tinies) {
-			result.push_back(actor->CreateRefHandle());
+			result.push_back(actor.get().get());
 		}
 		return result;
 	}
@@ -245,15 +245,15 @@ namespace Gts {
 
 			if (this->allGrabbed) {
 				NiPoint3 giantLocation = giant->GetPosition();
-				NiPoint3 tinyLocation = tiny.get()->GetPosition();
+				NiPoint3 tinyLocation = tiny.get().get()->GetPosition();
 				NiPoint3 targetLocation = bone->world.translate;
         		NiPoint3 deltaLocation = targetLocation - tinyLocation;
         		float deltaLength = deltaLocation.Length();
 
-				tiny.get()->SetPosition(targetLocation, true);
-				tiny.get()->SetPosition(targetLocation, false);
+				tiny.get().get()->SetPosition(targetLocation, true);
+				tiny.get().get()->SetPosition(targetLocation, false);
 				//log::info("Setting Position");
-				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
+				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny.get().get());
 				if (tiny_is_actor) {
 					auto charcont = tiny_is_actor->GetCharController();
 					//ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
@@ -274,7 +274,7 @@ namespace Gts {
 					// Get all nodes in range
 					std::vector<NiAVObject*> nodes_inrange = {};
           			std::vector<std::string> names_inrange = {};
-					auto root = tiny->GetCurrent3D();
+					auto root = tiny.get().get()->GetCurrent3D();
 					VisitNodes(root, [&nodes_inrange, &headCenter, &headKillRadius, &names_inrange](NiAVObject& node) {
 						float distance = (node.world.translate - headCenter).Length();
 						if (distance < headKillRadius) {
@@ -287,12 +287,12 @@ namespace Gts {
 
 					// Check all children of the nodes
           				std::vector<NiAVObject*> excludedChildren = {};
-          	 			excludedChildren.push_back(find_node(tiny, "NPC ROOT [ROOT]", false));
-         	 			excludedChildren.push_back(find_node(tiny, "NPC COM [COM]", false));
-         	 			excludedChildren.push_back(find_node(tiny, "NPC Pelvis [Pelv]", false));
-         	 			excludedChildren.push_back(find_node(tiny, "NPC Spine [Spn0]", false));
-         	 			excludedChildren.push_back(find_node(tiny, "Camera Control", false));
-         	 			excludedChildren.push_back(find_node(tiny, "NPC Translate", false));
+          	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC ROOT [ROOT]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC COM [COM]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC Pelvis [Pelv]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC Spine [Spn0]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get().get(), "Camera Control", false));
+         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC Translate", false));
 						for (auto& node: nodes_inrange) {
 							bool anyInvalid = false;
 							VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
@@ -306,7 +306,7 @@ namespace Gts {
 							});
 							if (!anyInvalid) {
              					 //log::info("  - Shrinking Node: {}", node->name.c_str());
-								tiny->SetAlpha(0.0);//node->local.scale = 0.50;
+								tiny.get().get()->SetAlpha(0.0);//node->local.scale = 0.50;
               					update_node(node);
 							} else {
             			}
