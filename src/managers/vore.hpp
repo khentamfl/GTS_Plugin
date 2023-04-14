@@ -43,10 +43,10 @@ namespace Gts
 			void Update();
 
 		private:
-			Actor* giant;
+			ActorHandle giant;
 			// Vore is done is sets with multiple actors if the giant is big
 			// enough
-			std::unordered_map<Actor*, Actor*> tinies = {};
+			std::unordered_map<FormID, ActorHandle> tinies = {};
 
 			// If true the mouth kill zone is on and we shrink nodes entering the mouth
 			bool killZoneEnabled = false;
@@ -67,15 +67,15 @@ namespace Gts
 	};
 	struct VoreBuff {
 		VoreBuffState state = VoreBuffState::Starting;
-		Actor* giant = nullptr;
-		Actor* tiny = nullptr;
+		ActorHandle giant = nullptr;
+		ActorHandle tiny = nullptr;
     	float duration;
 		float restorePower = 0.0; // Amount of health to restore TOTAL
 		float sizePower = 0.0; // Amount of size to gain TOTAL
 		float tinySize = 0.0;
 		bool WasDragon = false;
 		std::string tiny_name;
-		
+
 
 		// Used to track how much time has passed (abusing Spring code)
 		// The half life will tell the half the duration
@@ -85,7 +85,7 @@ namespace Gts
     // Create the buff
     //
     // This also calculates the restorePower etc and the duration
-		VoreBuff(Actor* giant, Actor* tiny);
+		VoreBuff(ActorHandle giant, ActorHandle tiny);
 
     // Called every frame until we are done
 		void Update();
@@ -142,10 +142,10 @@ namespace Gts
 			// Gets the current vore data of a giant
 			VoreData& GetVoreData(Actor* giant);
 
-			void AddVoreBuff(Actor* giant, Actor* tiny);
+			void AddVoreBuff(ActorHandle giant, ActorHandle tiny);
 
 		private:
-			std::unordered_map<Actor*, VoreData> data;
-			std::unordered_map<Actor*, VoreBuff> buffs;
+			std::unordered_map<FormID, VoreData> data;
+			std::unordered_map<FormID, VoreBuff> buffs;
 	};
 }

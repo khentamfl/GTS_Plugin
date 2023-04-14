@@ -159,12 +159,12 @@ namespace {
 }
 
 namespace Gts {
-	VoreData::VoreData(Actor* giant) : giant(giant) {
+	VoreData::VoreData(Actor* giant) : giant(giant? giant->CreateRefHandle() : nullptr) {
 
 	}
 
 	void VoreData::AddTiny(Actor* tiny) {
-		this->tinies.try_emplace(tiny, tiny);
+		this->tinies.try_emplace(tiny->formID, tiny->CreateRefHandle());
 	}
 
 	void VoreData::EnableMouthShrinkZone(bool enabled) {
@@ -314,7 +314,7 @@ namespace Gts {
 		}
 	}
 
-	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 1.0)) {
+	VoreBuff::VoreBuff(ActorHandle giant, ActorHandle tiny) : factor(Spring(0.0, 1.0)) {
 		this->giant = giant;
 		this->tiny = tiny;
 		this->duration = 40.0;
@@ -792,12 +792,12 @@ namespace Gts {
 	// Gets the current vore data of a giant
 	VoreData& Vore::GetVoreData(Actor* giant) {
 		// Create it now if not there yet
-		this->data.try_emplace(giant, giant);
+		this->data.try_emplace(giant->formID, giant);
 
 		return this->data.at(giant);
 	}
 
-	void Vore::AddVoreBuff(Actor* giant, Actor* tiny) {
-		this->buffs.try_emplace(tiny, giant, tiny);
+	void Vore::AddVoreBuff(ActorHandle giant, ActorHandle tiny) {
+		this->buffs.try_emplace(tiny->formID, giant, tiny);
 	}
 }
