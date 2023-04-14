@@ -426,13 +426,18 @@ namespace Gts {
 		if (!Runtime::HasPerk(player, "VorePerk")) {
 			return;
 		}
-		static Timer timer = Timer(4.00); // Random Vore once per 4.5 sec
+		static Timer timer = Timer(3.00); // Random Vore once per 4 sec
 		if (timer.ShouldRunFrame()) { //Try to not call it too often
+			std::vector AbleToVore = {};
 			for (auto actor: find_actors()) {
 				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
-					RandomVoreAttempt(actor);
-					//log::info("Actor {} trying to do vore", actor->GetDisplayFullName());
+					AbleToVore.push(actor);
 				}
+			}
+			int idx = random(0, AbleToVore.size());
+    		Actor* voreActor = AbleToVore[idx];
+			if (voreActor) {
+				RandomVoreAttempt(voreActor);
 			}
 		}
 
@@ -447,36 +452,32 @@ namespace Gts {
 		}
 	}
 
-	void Vore::RandomVoreAttempt(Actor* caster) {
+	void Vore::RandomVoreAttempt(Actor* pred) {
 		Actor* player = PlayerCharacter::GetSingleton();
 		auto& VoreManager = Vore::GetSingleton();
-		if (IsGtsBusy(caster)) {
+		if (IsGtsBusy(pred)) {
 			return; // No Vore attempts if in GTS_Busy
 		}
 
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerk(player, "MassVorePerk")) {
-			numberOfPrey = 1 + (get_visual_scale(caster)/3);
+			numberOfPrey = 1 + (get_visual_scale(pred)/3);
 		}
 		for (auto actor: find_actors()) {
 			if (!actor->Is3DLoaded() || actor->IsDead()) {
 				return;
 			}
-			float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100);
+			float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(pred)/100);
 			int Requirement = (10 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 
 			int random = rand() % Requirement;
 			int decide_chance = 2;
 			if (random <= decide_chance) {
-				Actor* pred = caster;
-				//log::info("random Vore for {} is true", caster->GetDisplayFullName());
-				//log::info("{} is looking for prey", caster->GetDisplayFullName());
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 						return;
 					}
-					//log::info("Actor {} found Prey: {}, starting Vore", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 					VoreManager.StartVore(pred, prey);
 				}
 			}
