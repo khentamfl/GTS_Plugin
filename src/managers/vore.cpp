@@ -176,7 +176,7 @@ namespace Gts {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
-			CallGainWeight(giant.get(), 3.0 * get_visual_scale(tiny.get().get()));
+			CallGainWeight(giant.get().get(), 3.0 * get_visual_scale(tiny.get().get()));
 			if (giant.get()->formID == 0x14) {
 				CallVampire();
 			}
@@ -253,7 +253,7 @@ namespace Gts {
 				tiny.get()->SetPosition(targetLocation, true);
 				tiny.get()->SetPosition(targetLocation, false);
 				//log::info("Setting Position");
-				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny.get());
+				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny.get().get());
 				if (tiny_is_actor) {
 					auto charcont = tiny_is_actor->GetCharController();
 					//ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
@@ -287,12 +287,12 @@ namespace Gts {
 
 					// Check all children of the nodes
           				std::vector<NiAVObject*> excludedChildren = {};
-          	 			excludedChildren.push_back(find_node(tiny.get(), "NPC ROOT [ROOT]", false));
-         	 			excludedChildren.push_back(find_node(tiny.get(), "NPC COM [COM]", false));
-         	 			excludedChildren.push_back(find_node(tiny.get(), "NPC Pelvis [Pelv]", false));
-         	 			excludedChildren.push_back(find_node(tiny.get(), "NPC Spine [Spn0]", false));
-         	 			excludedChildren.push_back(find_node(tiny.get(), "Camera Control", false));
-         	 			excludedChildren.push_back(find_node(tiny.get(), "NPC Translate", false));
+          	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC ROOT [ROOT]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC COM [COM]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC Pelvis [Pelv]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC Spine [Spn0]", false));
+         	 			excludedChildren.push_back(find_node(tiny.get().get(), "Camera Control", false));
+         	 			excludedChildren.push_back(find_node(tiny.get().get(), "NPC Translate", false));
 						for (auto& node: nodes_inrange) {
 							bool anyInvalid = false;
 							VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
@@ -322,11 +322,11 @@ namespace Gts {
 		this->duration = 40.0;
 		float mealEffiency = 0.2; // Normal pred has 20% efficent stomach
 		float perkbonus = 1.0;
-		if (Runtime::HasPerkTeam(giant.get(), "Gluttony")) {
+		if (Runtime::HasPerkTeam(giant.get().get(), "Gluttony")) {
 			this->duration = 60.0;
 			mealEffiency = 0.3;
 		}
-		if (Runtime::HasPerkTeam(giant.get(), "AdditionalGrowth")) {
+		if (Runtime::HasPerkTeam(giant.get().get(), "AdditionalGrowth")) {
 			perkbonus = 1.25;
 		}
 		if (IsDragon(tiny.get())) {
@@ -336,18 +336,18 @@ namespace Gts {
     	this->state = VoreBuffState::Starting;
 
 		if (tiny) {
-			float tiny_scale = get_visual_scale(tiny.get());
+			float tiny_scale = get_visual_scale(tiny.get().get());
 			// Amount of health we apply depends on their vitality
 			// and their size
-			if (Runtime::HasPerkTeam(giant.get(), "Gluttony")) {
-				this->restorePower = GetMaxAV(tiny.get(), ActorValue::kHealth) * 8 * mealEffiency;
+			if (Runtime::HasPerkTeam(giant.get().get(), "Gluttony")) {
+				this->restorePower = GetMaxAV(tiny.get().get(), ActorValue::kHealth) * 8 * mealEffiency;
 			} else {
         		this->restorePower = 0.0;
       		}
-			this->WasDragon = IsDragon(tiny,get());
+			this->WasDragon = IsDragon(tiny.get().get());
 			this->sizePower = tiny_scale * mealEffiency * perkbonus;
 			this->tinySize = tiny_scale;
-			this->tiny_name = tiny.get()->GetDisplayFullName();
+			this->tiny_name = tiny.get().get()->GetDisplayFullName();
 		}
 	}
 	void VoreBuff::Update() {
