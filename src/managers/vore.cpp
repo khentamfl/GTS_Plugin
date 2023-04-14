@@ -329,7 +329,7 @@ namespace Gts {
 		if (Runtime::HasPerkTeam(giant.get().get(), "AdditionalGrowth")) {
 			perkbonus = 1.25;
 		}
-		if (IsDragon(tiny.get())) {
+		if (IsDragon(tiny.get().get())) {
 			mealEffiency *= 6.0;
 		}
 		this->appliedFactor = 0.0;
@@ -368,10 +368,10 @@ namespace Gts {
     			float healthToApply = this->restorePower/4000;
     			float sizeToApply = this->sizePower/5500;
 
-    			DamageAV(this->giant, ActorValue::kHealth, -healthToApply);
-    			DamageAV(this->giant, ActorValue::kStamina, -healthToApply);
+    			DamageAV(this->giant.get().get(), ActorValue::kHealth, -healthToApply);
+    			DamageAV(this->giant.get().get(), ActorValue::kStamina, -healthToApply);
 
-    			mod_target_scale(this->giant, sizeToApply);
+    			mod_target_scale(this->giant.get().get(), sizeToApply);
 				if (this->factor.value >= 0.99) {
           			this->state = VoreBuffState::Finishing;
 				}
@@ -380,20 +380,20 @@ namespace Gts {
 		case VoreBuffState::Finishing: {
 			if (!AllowDevourment()) {
 				if (this->giant) {
-					AdjustGiantessSkill(this->giant, this->tinySize);
-					VoreMessage_Absorbed(this->giant, this->tiny_name, this->WasDragon);
-					BuffAttributes(this->giant, this->tinySize);
-					mod_target_scale(this->giant, this->sizePower * 0.5);
-					AdjustSizeReserve(this->giant, this->sizePower);
+					AdjustGiantessSkill(this->giant.get().get(), this->tinySize);
+					VoreMessage_Absorbed(this->giant.get().get(), this->tiny_name, this->WasDragon);
+					BuffAttributes(this->giant.get().get(), this->tinySize);
+					mod_target_scale(this->giant.get().get(), this->sizePower * 0.5);
+					AdjustSizeReserve(this->giant.get().get(), this->sizePower);
 					if (this->giant->formID == 0x14) {
-						AdjustSizeLimit(0.0260, this->giant);
-						AdjustMassLimit(0.0106, this->giant);
+						AdjustSizeLimit(0.0260, this->giant.get().get());
+						AdjustMassLimit(0.0106, this->giant.get().get());
 					}
-					Rumble::Once("GrowthRumble", this->giant, 2.45, 0.30);
-					Rumble::Once("VoreShake", this->giant, this->sizePower * 4, 0.05);
+					Rumble::Once("GrowthRumble", this->giant.get().get(), 2.45, 0.30);
+					Rumble::Once("VoreShake", this->giant.get().get(), this->sizePower * 4, 0.05);
 
 					if (VoreData(this->giant).GetTimer() == true) {
-						Runtime::PlaySoundAtNode("MoanSound", this->giant, 1.0, 1.0, "NPC Head [Head]");
+						Runtime::PlaySoundAtNode("MoanSound", this->giant.get().get(), 1.0, 1.0, "NPC Head [Head]");
 					}
 				}
 			}
