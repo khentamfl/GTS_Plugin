@@ -123,7 +123,7 @@ namespace {
 	}
 
 
-	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {
+	void VoreMessage_SwallowedAbsorbing(ActorHandle pred, ActorHandle prey) {
 		if (!pred) {
 			return;
 		}
@@ -159,7 +159,7 @@ namespace {
 }
 
 namespace Gts {
-	VoreData::VoreData(Actor* giant) : giant(giant? giant->CreateRefHandle() : nullptr) {
+	VoreData::VoreData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
 
 	}
 
@@ -173,9 +173,9 @@ namespace Gts {
 	void VoreData::Swallow() {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
-			VoreMessage_SwallowedAbsorbing(giant, tiny);
-			CallGainWeight(giant, 3.0 * get_visual_scale(tiny));
-			if (giant->formID == 0x14) {
+			VoreMessage_SwallowedAbsorbing(giant.native_handle(), tiny.native_handle());
+			CallGainWeight(giant, 3.0 * get_visual_scale(tiny->get()));
+			if (giant.native_handle()->formID == 0x14) {
 				CallVampire();
 			}
 		}
@@ -183,10 +183,10 @@ namespace Gts {
 	void VoreData::KillAll() {
 		if (!AllowDevourment()) {
 		for (auto& [key, tiny]: this->tinies) {
-			if (tiny->formID != 0x14) {
-				Disintegrate(tiny);
+			if (tiny.native_handle()->formID != 0x14) {
+				Disintegrate(tiny.native_handle());
 				///this->tinies.erase(tiny);
-			} else if (tiny->formID == 0x14) {
+			} else if (tiny.native_handle()->formID == 0x14) {
 				tiny->KillImmediate();
 				TriggerScreenBlood(50);
 				tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
