@@ -229,7 +229,6 @@ namespace Gts {
 
 	void VoreData::Update() {
 		auto giant = this->giant.get().get();
-		auto tiny = this->tiny.get().get();
     	float giantScale = get_visual_scale(giant);
 		// Stick them to the AnimObjectA
 		for (auto& [key, tiny]: this->tinies) {
@@ -246,13 +245,13 @@ namespace Gts {
 
 			if (this->allGrabbed) {
 				NiPoint3 giantLocation = giant->GetPosition();
-				NiPoint3 tinyLocation = tiny->GetPosition();
+				NiPoint3 tinyLocation = tiny.get()->GetPosition();
 				NiPoint3 targetLocation = bone->world.translate;
         		NiPoint3 deltaLocation = targetLocation - tinyLocation;
         		float deltaLength = deltaLocation.Length();
 
-				tiny->SetPosition(targetLocation, true);
-				tiny->SetPosition(targetLocation, false);
+				tiny.get()->SetPosition(targetLocation, true);
+				tiny.get()->SetPosition(targetLocation, false);
 				//log::info("Setting Position");
 				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 				if (tiny_is_actor) {
