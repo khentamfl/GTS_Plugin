@@ -124,8 +124,8 @@ namespace {
 
 
 	void VoreMessage_SwallowedAbsorbing(ActorHandle predref, ActorHandle preyref) {
-    auto pred = predref.get();
-    auto prey = preyref.get();
+    	auto pred = predref.get();
+    	auto prey = preyref.get();
 		if (!pred) {
 			return;
 		}
@@ -175,7 +175,7 @@ namespace Gts {
 	void VoreData::Swallow() {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
-			VoreMessage_SwallowedAbsorbing(giant.get().get(), tiny.get().get());
+			VoreMessage_SwallowedAbsorbing(giant, tiny);
 			CallGainWeight(giant, 3.0 * get_visual_scale(tiny.get().get()));
 			if (giant.get()->formID == 0x14) {
 				CallVampire();
@@ -200,7 +200,7 @@ namespace Gts {
 
 	void VoreData::AllowToBeVored(bool allow) {
 		for (auto& [key, tiny]: this->tinies) {
-			auto transient = Transient::GetSingleton().GetData(tiny);
+			auto transient = Transient::GetSingleton().GetData(tiny.get().get());
 			if (transient) {
 				transient->can_be_vored = allow;
 			}
@@ -228,7 +228,7 @@ namespace Gts {
 	}
 
 	void VoreData::Update() {
-		auto giant = this->giant;
+		auto giant = this->giant.get().get();
     	float giantScale = get_visual_scale(giant);
 		// Stick them to the AnimObjectA
 		for (auto& [key, tiny]: this->tinies) {

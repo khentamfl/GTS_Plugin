@@ -48,7 +48,7 @@ namespace {
 			return false;
 		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
 			return false;
-		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && tiny->formID == 0x14) {
+		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->formID == 0x14) {
 			return false;
 		} return true;
 	}
