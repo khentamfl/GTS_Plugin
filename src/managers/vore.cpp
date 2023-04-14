@@ -185,7 +185,7 @@ namespace Gts {
 	void VoreData::KillAll() {
 		if (!AllowDevourment()) {
 		for (auto& [key, tinyref]: this->tinies) {
-      auto tiny = tinyref.get().get();
+      		auto tiny = tinyref.get().get();
 			if (tiny->formID != 0x14) {
 				Disintegrate(tiny);
 				///this->tinies.erase(tiny);
@@ -235,7 +235,7 @@ namespace Gts {
     	float giantScale = get_visual_scale(giant);
 		// Stick them to the AnimObjectA
 		for (auto& [key, tinyref]: this->tinies) {
-      auto tiny = tinyref.get().get();
+      		auto tiny = tinyref.get().get();
 			if (!tiny) {
 				return;
 			}
@@ -310,7 +310,6 @@ namespace Gts {
 								return true;
 							});
 							if (!anyInvalid) {
-             					 //log::info("  - Shrinking Node: {}", node->name.c_str());
 								tiny->SetAlpha(0.0);//node->local.scale = 0.50;
               					update_node(node);
 							} else {

@@ -85,7 +85,7 @@ namespace Gts
     // Create the buff
     //
     // This also calculates the restorePower etc and the duration
-		VoreBuff(ActorHandle giant, ActorHandle tiny);
+		VoreBuff(Actor* giant, Actor* tiny);
 
     // Called every frame until we are done
 		void Update();
@@ -142,7 +142,7 @@ namespace Gts
 			// Gets the current vore data of a giant
 			VoreData& GetVoreData(Actor* giant);
 
-			void AddVoreBuff(Actor* giant, Actor* tiny);
+			void AddVoreBuff(ActorHandle giant, ActorHandle tiny);
 
 		private:
 			std::unordered_map<FormID, VoreData> data;
