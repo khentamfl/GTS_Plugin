@@ -12,6 +12,7 @@
 #include "timer.hpp"
 #include "node.hpp"
 #include <cmath>
+#include <random>
 
 using namespace RE;
 using namespace Gts;
@@ -431,11 +432,11 @@ namespace Gts {
 			std::vector<Actor*> AbleToVore = {};
 			for (auto actor: find_actors()) {
 				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
-					AbleToVore.push(actor);
+					AbleToVore.push_back(actor);
 				}
 			}
-			int idx = random(0, AbleToVore.size());
-    		Actor* voreActor = AbleToVore[idx];
+			int idx = rand() % AbleToVore.size();
+    	Actor* voreActor = AbleToVore[idx];
 			if (voreActor) {
 				RandomVoreAttempt(voreActor);
 			}
