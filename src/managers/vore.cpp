@@ -428,7 +428,7 @@ namespace Gts {
 		}
 		static Timer timer = Timer(3.00); // Random Vore once per 4 sec
 		if (timer.ShouldRunFrame()) { //Try to not call it too often
-			std::vector AbleToVore = {};
+			std::vector<Actor*> AbleToVore = {};
 			for (auto actor: find_actors()) {
 				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
 					AbleToVore.push(actor);
