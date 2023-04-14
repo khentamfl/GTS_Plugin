@@ -176,7 +176,7 @@ namespace Gts {
 		for (auto& [key, tiny]: this->tinies) {
 			Vore::GetSingleton().AddVoreBuff(giant, tiny);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
-			CallGainWeight(giant.get(), 3.0 * get_visual_scale(tiny.get()));
+			CallGainWeight(giant.get(), 3.0 * get_visual_scale(tiny.get().get()));
 			if (giant.get()->formID == 0x14) {
 				CallVampire();
 			}
@@ -186,7 +186,7 @@ namespace Gts {
 		if (!AllowDevourment()) {
 		for (auto& [key, tiny]: this->tinies) {
 			if (tiny.get()->formID != 0x14) {
-				Disintegrate(tiny.get());
+				Disintegrate(tiny.get().get());
 				///this->tinies.erase(tiny);
 			} else if (tiny.get()->formID == 0x14) {
 				tiny.get()->KillImmediate();
@@ -200,7 +200,7 @@ namespace Gts {
 
 	void VoreData::AllowToBeVored(bool allow) {
 		for (auto& [key, tiny]: this->tinies) {
-			auto transient = Transient::GetSingleton().GetData(tiny.get());
+			auto transient = Transient::GetSingleton().GetData(tiny.get().get());
 			if (transient) {
 				transient->can_be_vored = allow;
 			}
@@ -222,13 +222,13 @@ namespace Gts {
 	std::vector<Actor*> VoreData::GetVories() {
 		std::vector<Actor*> result;
 		for (auto& [key, actor]: this->tinies) {
-			result.push_back(actor.get());
+			result.push_back(actor.get().get());
 		}
 		return result;
 	}
 
 	void VoreData::Update() {
-		auto giant = this->giant.get();
+		auto giant = this->giant.get().get();
     	float giantScale = get_visual_scale(giant);
 		// Stick them to the AnimObjectA
 		for (auto& [key, tiny]: this->tinies) {
@@ -438,7 +438,7 @@ namespace Gts {
 				}
 			}
 			int idx = rand() % AbleToVore.size();
-    	Actor* voreActor = AbleToVore[idx];
+    		Actor* voreActor = AbleToVore[idx];
 			if (voreActor) {
 				RandomVoreAttempt(voreActor);
 			}
