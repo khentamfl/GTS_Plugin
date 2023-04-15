@@ -433,7 +433,7 @@ namespace Gts {
 		if (!Runtime::HasPerk(player, "VorePerk")) {
 			return;
 		}
-		static Timer timer = Timer(3.00); // Random Vore once per 4 sec
+		static Timer timer = Timer(2.50); // Random Vore once per 4 sec
 		if (timer.ShouldRunFrame()) { //Try to not call it too often
 			std::vector<Actor*> AbleToVore = {};
 			for (auto actor: find_actors()) {
@@ -477,7 +477,7 @@ namespace Gts {
 				return;
 			}
 			float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(pred)/100);
-			int Requirement = (10 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
+			int Requirement = (8 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 
 			int random = rand() % Requirement;
 			int decide_chance = 2;

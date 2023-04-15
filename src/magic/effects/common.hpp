@@ -90,8 +90,8 @@ namespace Gts {
 				};
 				auto globalMassSize = Runtime::GetFloat("MassBasedSizeLimit");
 				float modifier = soft_core(globalMassSize, mod);
-				if (modifier <= 0.15) {
-					modifier = 0.15;
+				if (modifier <= 0.10) {
+					modifier = 0.10;
 				}
 				value *= 10.0 * modifier;
 				//log::info("Modifier: {}", modifier);

@@ -128,6 +128,8 @@ namespace {
 	}
 
 	void GTSSandwich_EnterAnim(AnimationEventData& data) {
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		sandwichdata.EnableSuffocate(false);
 	}
 	void GTSSandwich_MoveBody_start(AnimationEventData& data) {
 		StartBodyRumble("BodyRumble", data.giant, 0.5, 0.25);
@@ -204,6 +206,7 @@ namespace {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sizemanager.SetActionBool(&data.giant, false, 3.0);
+		sandwichdata.EnableSuffocate(false);
 		sandwichdata.ManageScaleRune(false);
 		sandwichdata.ManageShrinkRune(true);
 		sandwichdata.OverideShrinkRune(0.0);
