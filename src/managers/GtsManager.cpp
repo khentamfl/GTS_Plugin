@@ -2,7 +2,6 @@
 #include "managers/gamemode/GameModeManager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
-#include "managers/GrowthTremorManager.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "scale/scalespellmanager.hpp"

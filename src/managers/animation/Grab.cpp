@@ -1,6 +1,6 @@
 #include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
-#include "managers/GrowthTremorManager.hpp"
+
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/CrushManager.hpp"

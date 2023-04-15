@@ -1,5 +1,5 @@
 #include "magic/effects/shrink_other_button.hpp"
-#include "managers/GrowthTremorManager.hpp"
+
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"

@@ -1,6 +1,6 @@
 #include "managers/hitmanager.hpp"
 #include "managers/GtsSizeManager.hpp"
-#include "managers/GrowthTremorManager.hpp"
+
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"

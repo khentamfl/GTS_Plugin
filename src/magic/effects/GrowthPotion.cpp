@@ -1,4 +1,4 @@
-#include "managers/GrowthTremorManager.hpp"
+
 #include "managers/GtsManager.hpp"
 #include "magic/effects/GrowthPotion.hpp"
 #include "magic/effects/common.hpp"

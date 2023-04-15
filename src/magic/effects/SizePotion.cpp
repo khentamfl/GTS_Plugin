@@ -1,4 +1,4 @@
-#include "managers/GrowthTremorManager.hpp"
+
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "magic/effects/SizePotion.hpp"

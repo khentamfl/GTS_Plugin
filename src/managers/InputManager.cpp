@@ -1,6 +1,6 @@
 #include "managers/InputManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
-#include "managers/GrowthTremorManager.hpp"
+
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/highheel.hpp"

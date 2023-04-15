@@ -17,7 +17,6 @@
 #include "managers/register.hpp"
 #include "managers/reloader.hpp"
 #include "managers/highheel.hpp"
-#include "managers/GtsQuest.hpp"
 #include "managers/footstep.hpp"
 #include "managers/contact.hpp"
 #include "managers/camera.hpp"

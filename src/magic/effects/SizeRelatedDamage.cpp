@@ -1,7 +1,7 @@
 #include "magic/effects/SizeRelatedDamage.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
-#include "managers/GrowthTremorManager.hpp"
+
 #include "managers/GtsSizeManager.hpp"
 #include "managers/highheel.hpp"
 #include "magic/effects/common.hpp"

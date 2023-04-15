@@ -1,6 +1,6 @@
 #include "magic/effects/shrink_button.hpp"
 #include "magic/effects/common.hpp"
-#include "managers/GrowthTremorManager.hpp"
+
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"

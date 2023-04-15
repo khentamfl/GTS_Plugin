@@ -1,4 +1,4 @@
-#include "managers/GrowthTremorManager.hpp"
+
 #include "managers/GtsManager.hpp"
 #include "magic/effects/shrink_back_other.hpp"
 #include "magic/effects/common.hpp"

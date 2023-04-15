@@ -1,5 +1,5 @@
 #include "magic/effects/slow_grow.hpp"
-#include "managers/GrowthTremorManager.hpp"
+
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"

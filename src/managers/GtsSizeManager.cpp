@@ -1,4 +1,4 @@
-#include "managers/GrowthTremorManager.hpp"
+
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/GtsManager.hpp"
