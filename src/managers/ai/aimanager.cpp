@@ -89,7 +89,7 @@
         for (auto actor: find_actors()) {
             auto& persist = Persistent::GetSingleton();
             if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly) {
-                auto& ai = GetAiData(actor);
+                auto ai = GetAiData(actor);
                 if (ai) {
                     if (ai->ActionTimer.ShouldRun()) {
                         if (!CanStomp(actor)) {
