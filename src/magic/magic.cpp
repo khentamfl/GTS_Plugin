@@ -198,9 +198,9 @@ namespace Gts {
 			auto& magic = (*i);
 
 
-			Profilers::Start(magic.second.GetName());
+			Profilers::Start(magic.second->GetName());
 			magic.second->poll();
-			Profilers::Stop(magic.second.GetName());
+			Profilers::Stop(magic.second->GetName());
 			if (magic.second->IsFinished()) {
 				i = this->active_effects.erase(i);
 			} else {
