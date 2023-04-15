@@ -77,15 +77,15 @@ namespace Gts {
 		double total_time = current_report_time - last_report_time;
 
 		double total = 0.0;
-		for (auto listener: Profilers::GetSingleton().listeners) {
-			total += listener->profiler.Elapsed();
+		for (auto& profiler: Profilers::GetSingleton().profilers) {
+			total += profiler.Elapsed();
 		}
-		for (auto listener: Profilers::GetSingleton().listeners) {
-			double elapsed = listener->profiler.Elapsed();
+		for (auto& profiler: Profilers::GetSingleton().profilers) {
+			double elapsed = profiler.Elapsed();
 			double spf = elapsed / (current_report_frame - last_report_frame);
 			double time_percent = elapsed/total_time*100;
-			report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", listener->DebugName(), elapsed, elapsed*100.0/total, spf, time_percent);
-			listener->profiler.Reset();
+			report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", profiler.GetName(), elapsed, elapsed*100.0/total, spf, time_percent);
+			profiler.Reset();
 		}
 		log::info("{}", report);
 
