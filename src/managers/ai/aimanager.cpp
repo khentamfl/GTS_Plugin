@@ -19,7 +19,7 @@
 
     const float MINIMUM_STOMP_DISTANCE = 60.0;
 	const float MINIMUM_STOMP_SCALE_RATIO = 2.5;
-	const float STOMP_ANGLE = 40;
+	const float STOMP_ANGLE = 80;
 	const float PI = 3.14159;
 
     [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
