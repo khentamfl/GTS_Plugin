@@ -441,11 +441,13 @@ namespace Gts {
 					AbleToVore.push_back(actor);
 				}
 			}
-			int idx = rand() % AbleToVore.size();
-    		Actor* voreActor = AbleToVore[idx];
-			if (voreActor) {
-				RandomVoreAttempt(voreActor);
-			}
+      if (!AbleToVore.empty()) {
+  			int idx = rand() % AbleToVore.size();
+      		Actor* voreActor = AbleToVore[idx];
+  			if (voreActor) {
+  				RandomVoreAttempt(voreActor);
+  			}
+      }
 		}
 
 		for (auto& [key, voreData]: this->data) {
