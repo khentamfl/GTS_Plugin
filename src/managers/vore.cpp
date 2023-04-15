@@ -161,7 +161,7 @@ namespace {
 namespace Gts {
 	VoreData::VoreData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
 
-	}
+	} 
 
 	void VoreData::AddTiny(Actor* tiny) {
 		this->tinies.try_emplace(tiny->formID, tiny->CreateRefHandle());
@@ -224,7 +224,7 @@ namespace Gts {
 	std::vector<Actor*> VoreData::GetVories() {
 		std::vector<Actor*> result;
 		for (auto& [key, actorref]: this->tinies) {
-      auto actor = actorref.get().get();
+      		auto actor = actorref.get().get();
 			result.push_back(actor);
 		}
 		return result;
@@ -275,7 +275,7 @@ namespace Gts {
 				NiPoint3 headCenter = headNode->world.translate;
 				float headKillRadius = 10.0 * giantScale;
 				for (auto& [key, tinyref]: this->tinies) {
-          auto tiny = tinyref.get().get();
+          			auto tiny = tinyref.get().get();
 					// Get all nodes in range
 					std::vector<NiAVObject*> nodes_inrange = {};
           			std::vector<std::string> names_inrange = {};
@@ -354,7 +354,7 @@ namespace Gts {
 		}
 	}
 	void VoreBuff::Update() {
-    auto giant = this->giant.get().get();
+    	auto giant = this->giant.get().get();
 		if (!this->giant) {
       		this->state = VoreBuffState::Done;
 			return;
@@ -765,7 +765,7 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
-		float wastestamina = 140/sizedifference; // Drain stamina, should be 300 once tests are over
+		float wastestamina = 120/sizedifference; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->AsActorValueOwner()->GetActorValue(ActorValue::kStamina);
 
 		if (pred->formID != 0x14) {
@@ -806,8 +806,8 @@ namespace Gts {
 	}
 
 	void Vore::AddVoreBuff(ActorHandle giantref, ActorHandle tinyref) {
-    auto giant = giantref.get().get();
-    auto tiny = tinyref.get().get();
+    	auto giant = giantref.get().get();
+    	auto tiny = tinyref.get().get();
 		this->buffs.try_emplace(tiny->formID, giant, tiny);
 	}
 }

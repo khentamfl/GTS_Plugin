@@ -8,9 +8,9 @@ using namespace RE;
 
 namespace Gts {
 	struct HHData {
-		Spring multiplier = Spring(1.0, 0.5); // Used to smotthly disable/enabled the highheels
+		Spring multiplier = Spring(1.0, 0.5); // Used to smotthly disable/enable the highheels
 		bool wasWearingHh = false;
-    NiPoint3 lastBaseHHOffset;
+   		NiPoint3 lastBaseHHOffset;
 	};
 
 	class HighHeelManager : public EventListener {

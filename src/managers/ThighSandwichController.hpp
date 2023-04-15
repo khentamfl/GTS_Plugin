@@ -32,10 +32,10 @@ namespace Gts {
 			void UpdateRune(Actor* giant);
 
 		private:
-			Actor* giant;
-			// Sandwiching is done is sets with multiple actors if the giant is big
+			ActorHandle giant;
+			// Vore is done is sets with multiple actors if the giant is big
 			// enough
-			std::unordered_map<Actor*, Actor*> tinies = {};
+			std::unordered_map<FormID, ActorHandle> tinies = {};
             bool Suffocate = false;
 			bool RuneScale = false;
 			bool RuneShrink = false;
@@ -61,6 +61,6 @@ namespace Gts {
 
             SandwichingData& GetSandwichingData(Actor* giant);
 
-            std::unordered_map<Actor*, SandwichingData> data;
+            std::unordered_map<FormID, SandwichingData> data;
 	};
 }

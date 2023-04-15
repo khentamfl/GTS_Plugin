@@ -64,13 +64,17 @@
 
 
  namespace Gts {
-    SandwichingData::SandwichingData(Actor* giant) : giant(giant) {
+    SandwichingData::SandwichingData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
+	}
 
+	void SandwichingData::AddTiny(Actor* tiny) {
+		this->tinies.try_emplace(tiny->formID, tiny->CreateRefHandle());
 	}
 
     std::vector<Actor*> SandwichingData::GetActors() {
 		std::vector<Actor*> result;
-		for (auto& [key, actor]: this->tinies) {
+		for (auto& [key, actorref]: this->tinies) {
+			auto actor = actorref.get().get();
 			result.push_back(actor);
 		}
 		return result;
@@ -113,7 +117,7 @@
 	}
 
     void SandwichingData::Update() {
-        auto giant = this->giant;
+        auto giant = this->giant.get().get();
         if (!giant) {
             return;
         }
@@ -122,7 +126,8 @@
 
 		SandwichingData::UpdateRune(giant);
 
-        for (auto& [key, tiny]: this->tinies) {
+        for (auto& [key, tinyref]: this->tinies) {
+			auto tiny = tinyref.get().get();
 			if (!tiny) {
 				return;
 			}
@@ -201,7 +206,7 @@
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
 			return !this->CanSandwich(pred, prey);
-		}), preys.end());;
+		}), preys.end());
 
 		// Filter out actors not in front
 		auto actorAngle = pred->data.angle.z;
@@ -301,21 +306,16 @@
 	void ThighSandwichController::Reset() {
 		this->data.clear();
 	}
-
-	void ThighSandwichController::ResetActor(Actor* actor) {
-		this->data.erase(actor);
-	}
-
-    void SandwichingData::AddTiny(Actor* tiny) {
-		this->tinies.try_emplace(tiny, tiny);
-	}
-
-    void SandwichingData::ReleaseAll() {
+	void SandwichingData::ReleaseAll() {
 		this->tinies.clear();
 	}
 
+	void ThighSandwichController::ResetActor(Actor* actor) {
+		this->data.erase(actor->formID);
+	}
+
     void SandwichingData::Remove(Actor* tiny) {
-        this->tinies.erase(tiny);
+        this->tinies.erase(tiny->formID);
     }
 
     void SandwichingData::EnableSuffocate(bool enable) {
@@ -333,8 +333,8 @@
 
     SandwichingData& ThighSandwichController::GetSandwichingData(Actor* giant) {
 		// Create it now if not there yet
-		this->data.try_emplace(giant, giant);
+		this->data.try_emplace(giant->formID, giant);
 
-		return this->data.at(giant);
+		return this->data.at(giant->formID);
 	}
  }

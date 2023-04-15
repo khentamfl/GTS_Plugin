@@ -86,9 +86,8 @@ namespace Gts {
 			hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(actor);
 		}
 
-
 		NiPoint3 new_hh;
-    this->UpdateHHOffset(actor);
+    	this->UpdateHHOffset(actor);
 		if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
 			new_hh = this->GetHHOffset(actor) * hhData.multiplier.value;
 		} else {
@@ -166,22 +165,22 @@ namespace Gts {
 		//log::info("Base HHOffset: {}", Vector2Str(result));
 		auto npcNodeScale = get_npcparentnode_scale(actor);
 
-    auto& me = HighHeelManager::GetSingleton();
-    me.data.try_emplace(actor);
+    	auto& me = HighHeelManager::GetSingleton();
+    	me.data.try_emplace(actor);
 		auto& hhData = me.data[actor];
-    hhData.lastBaseHHOffset = result * npcNodeScale;;
+    	hhData.lastBaseHHOffset = result * npcNodeScale;;
 	}
 
   NiPoint3 HighHeelManager::GetBaseHHOffset(Actor* actor) {
-    auto& me = HighHeelManager::GetSingleton();
-    me.data.try_emplace(actor);
+    	auto& me = HighHeelManager::GetSingleton();
+    	me.data.try_emplace(actor);
 		auto& hhData = me.data[actor];
     return hhData.lastBaseHHOffset;
   }
 
   NiPoint3 HighHeelManager::GetHHOffset(Actor* actor) {
-    auto npcRootNodeScale = get_npcnode_scale(actor);
-    return HighHeelManager::GetBaseHHOffset(actor) * npcRootNodeScale;
+    	auto npcRootNodeScale = get_npcnode_scale(actor);
+   		return HighHeelManager::GetBaseHHOffset(actor) * npcRootNodeScale;
   }
 
 	bool HighHeelManager::IsWearingHH(Actor* actor) {
