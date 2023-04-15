@@ -169,9 +169,7 @@ namespace Gts {
     auto& me = HighHeelManager::GetSingleton();
     me.data.try_emplace(actor);
 		auto& hhData = me.data[actor];
-    hhData.lastBaseHHOffset = result * npcNodeScale;
-    auto npcRootNodeScale = get_npcnode_scale(actor);
-    hhData.lastHHOffset = hhData.lastBaseHHOffset * npcRootNodeScale;
+    hhData.lastBaseHHOffset = result * npcNodeScale;;
 	}
 
   NiPoint3 HighHeelManager::GetBaseHHOffset(Actor* actor) {
@@ -182,10 +180,8 @@ namespace Gts {
   }
 
   NiPoint3 HighHeelManager::GetHHOffset(Actor* actor) {
-    auto& me = HighHeelManager::GetSingleton();
-    me.data.try_emplace(actor);
-		auto& hhData = me.data[actor];
-    return hhData.lastHHOffset;
+    auto npcRootNodeScale = get_npcnode_scale(actor);
+    return HighHeelManager::GetBaseHHOffset(actor) * npcRootNodeScale;
   }
 
 	bool HighHeelManager::IsWearingHH(Actor* actor) {

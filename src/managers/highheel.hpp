@@ -11,7 +11,6 @@ namespace Gts {
 		Spring multiplier = Spring(1.0, 0.5); // Used to smotthly disable/enabled the highheels
 		bool wasWearingHh = false;
     NiPoint3 lastBaseHHOffset;
-    NiPoint3 lastHHOffset;
 	};
 
 	class HighHeelManager : public EventListener {
