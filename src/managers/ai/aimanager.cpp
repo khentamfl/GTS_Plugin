@@ -51,7 +51,8 @@
     void DoStomp(Actor* pred) {
         int random = rand() % 7;
         int actionrng = rand() % 2;
-        std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, 3.0);
+        std::size_t amount = 6;
+        std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
         for (auto prey: preys) {
             log::info("Doing Stomp as {}, random:{}, action rng: {}", pred->GetDisplayFullName(), random, actionrng);
             if (AiManager::GetSingleton().CanStomp(pred, prey)) {
