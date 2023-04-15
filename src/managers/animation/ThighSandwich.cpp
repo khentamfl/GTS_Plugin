@@ -166,7 +166,7 @@ namespace {
 		data.stage = 1.0;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.66;
-		if (data.giant->formID != 0x14) {
+		if (&data.giant->formID != 0x14) {
 			data.animSpeed += GetRandomBoost()/100;
 		}
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
@@ -178,7 +178,7 @@ namespace {
 		data.stage = 1.0;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.66;
-		if (data.giant->formID != 0x14) {
+		if (&data.giant->formID != 0x14) {
 			data.animSpeed += GetRandomBoost()/100;
 		}
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);

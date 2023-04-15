@@ -123,7 +123,7 @@
                 if (ai.GetTimer(1) == true) {
                     int rng = rand() % 30;
                     log::info("RNG: {}", rng);
-                    if (rng < 18) {
+                    if (rng > 2 && rng < 18) {
                         log::info("RNG < 3, doing stomp");
                         DoStomp(actor);
                     } else if (rng < 2) {
