@@ -203,6 +203,7 @@
             return false;
         }
 		if (!Runtime::HasPerkTeam(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
+            log::info("No matching perk");
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
@@ -224,6 +225,7 @@
             log::info("Stomp True, distance is matched");
 			return true;
 		} else {
+            log::info("Stomp false");
 			return false;
 		}
 	}
