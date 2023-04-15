@@ -55,8 +55,6 @@ namespace Gts {
 
 	class EventListener {
 		public:
-			Profiler profiler;
-
 			EventListener() = default;
 			~EventListener() = default;
 			EventListener(EventListener const&) = delete;
@@ -134,7 +132,6 @@ namespace Gts {
 			// EventDispatcher(EventDispatcher const&) = delete;
 			// EventDispatcher& operator=(EventDispatcher const&) = delete;
 
-			static void ReportProfilers();
 			static void AddListener(EventListener* listener);
 			static void DoUpdate();
 			static void DoPapyrusUpdate();

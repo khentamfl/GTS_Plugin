@@ -3,6 +3,7 @@
 #include "events.hpp"
 #include "data/time.hpp"
 #include "data/plugin.hpp"
+#include "profiler.hpp"
 #include "timer.hpp"
 #include "Config.hpp"
 
@@ -107,7 +108,7 @@ namespace Hooks
 		if (Config::GetSingleton().GetDebug().ShouldProfile()) {
 			static Timer timer = Timer(5.0);
 			if (timer.ShouldRun()) {
-				EventDispatcher::ReportProfilers();
+				Profilers::Report();
 			}
 		}
 	}

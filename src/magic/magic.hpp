@@ -107,7 +107,6 @@ namespace Gts {
 				auto magic = Runtime::GetMagicEffect(tag);
 				if (magic) {
 					this->factories.try_emplace(magic,new MagicFactory<MagicCls>());
-					this->profilers.try_emplace(magic, tag);
 					return;
 				}
 			}
@@ -117,11 +116,8 @@ namespace Gts {
 			std::map<ActiveEffect*, std::unique_ptr<Magic> > active_effects;
 			std::unordered_map<EffectSetting*, std::unique_ptr<MagicFactoryBase> > factories;
 
-			Profiler lookupProfiler;
-			Profiler runtimeProfiler;
 			std::uint64_t numberOfEffects = 0;
 			std::uint64_t numberOfOurEffects = 0;
-			std::unordered_map<EffectSetting*, Profiler> profilers;
 	};
 
 	template<class MagicCls>

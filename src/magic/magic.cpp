@@ -168,9 +168,9 @@ namespace Gts {
 			this->numberOfEffects += 1;
 			if (this->active_effects.find(effect) == this->active_effects.end()) {
 				EffectSetting* base_spell = effect->GetBaseObject();
-				this->runtimeProfiler.Start();
+        Profilers::Start("MagicRuntime");
 				auto factorySearch = this->factories.find(base_spell);
-				this->runtimeProfiler.Stop();
+				Profilers::Stop("MagicRuntime");
 				if (factorySearch != this->factories.end()) {
 					auto &[key, factory] = (*factorySearch);
 					auto magic_effect = factory->MakeNew(effect);
@@ -187,50 +187,24 @@ namespace Gts {
 	}
 
 	void MagicManager::Update() {
-		this->lookupProfiler.Start();
+		Profilers::Start("MagicLookup");
 		for (auto actor: find_actors()) {
 			this->ProcessActiveEffects(actor);
 		}
-		this->lookupProfiler.Stop();
+		Profilers::Stop("MagicLookup");
 
 		for (auto i = this->active_effects.begin(); i != this->active_effects.end();) {
 			this->numberOfOurEffects += 1;
 			auto& magic = (*i);
 
 
-			Profiler* profiler = nullptr;
-			if (Config::GetSingleton().GetDebug().ShouldProfile()) {
-				// This can CTD
-				// We should cache the base spell form ID and look up that way instead
-				// But this way is faster
-				auto base_spell = magic.first->GetBaseObject();
-
-				if (base_spell) {
-					try {
-						profiler = &this->profilers.at(base_spell);
-					}  catch (const std::out_of_range& oor) {
-						profiler = nullptr;
-					}
-				}
-			}
-
-			if (profiler) {
-				profiler->Start();
-			}
+			Profilers::Start(magic.second.GetName());
 			magic.second->poll();
-			if (profiler) {
-				profiler->Stop();
-			}
+			Profilers::Stop(magic.second.GetName());
 			if (magic.second->IsFinished()) {
 				i = this->active_effects.erase(i);
 			} else {
 				++i;
-			}
-		}
-		if (Config::GetSingleton().GetDebug().ShouldProfile()) {
-			static Timer timer = Timer(5.0);
-			if (timer.ShouldRun()) {
-				this->PrintReport();
 			}
 		}
 	}
@@ -285,57 +259,5 @@ namespace Gts {
 		RegisterMagic<ExplosiveGrowth>("explosiveGrowth1");
 		RegisterMagic<ExplosiveGrowth>("explosiveGrowth2");
 		RegisterMagic<ExplosiveGrowth>("explosiveGrowth3");
-	}
-
-	void MagicManager::PrintReport() {
-		static std::uint64_t last_report_frame = 0;
-		static double last_report_time = 0.0;
-		std::uint64_t current_report_frame = Time::WorldTimeElapsed();
-		double current_report_time = Time::WorldTimeElapsed();
-		double total_time = current_report_time - last_report_time;
-		float averageNumberOfEffects = float(this->numberOfEffects) / (float(current_report_frame) - float(last_report_frame));
-		float averageNumberOfOurEffects = float(this->numberOfOurEffects) / (float(current_report_frame) - float(last_report_frame));
-		std::string report = "Reporting Spell Profilers:";
-		report += std::format("\nAverage Number of Spells Per Frame: {:.3f}", averageNumberOfEffects);
-		report += std::format("\nAverage Number of Our Spells Per Frame: {:.3f}", averageNumberOfOurEffects);
-		report += std::format("\n|{:20}|", "Name");
-		report += std::format("{:15s}|", "Seconds");
-		report += std::format("{:15s}|", "% OurCode");
-		report += std::format("{:15s}|", "s per frame");
-		report += std::format("{:15s}|", "% of frame");
-		report += "\n------------------------------------------------------------------------------------------------";
-
-		double total = 0.0;
-		for (auto &[key, profiler]: this->profilers) {
-			total += profiler.Elapsed();
-		}
-		total += this->lookupProfiler.Elapsed();
-		total += this->runtimeProfiler.Elapsed();
-
-		double elapsed = this->lookupProfiler.Elapsed();
-		double spf = elapsed / (current_report_frame - last_report_frame);
-		double time_percent = elapsed/total_time*100;
-		report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", "Lookup", elapsed, elapsed*100.0/total, spf, time_percent);
-
-		elapsed = this->runtimeProfiler.Elapsed();
-		spf = elapsed / (current_report_frame - last_report_frame);
-		time_percent = elapsed/total_time*100;
-		report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", "Runtime", elapsed, elapsed*100.0/total, spf, time_percent);
-
-		for (auto &[baseSpell, profiler]: this->profilers) {
-			elapsed = profiler.Elapsed();
-			spf = elapsed / (current_report_frame - last_report_frame);
-			time_percent = elapsed/total_time*100;
-			report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", profiler.GetName(), elapsed, elapsed*100.0/total, spf, time_percent);
-			profiler.Reset();
-		}
-		log::info("{}", report);
-
-		this->numberOfEffects = 0;
-		this->numberOfOurEffects = 0;
-		this->lookupProfiler.Reset();
-		this->runtimeProfiler.Reset();
-		last_report_frame = current_report_frame;
-		last_report_time = current_report_time;
 	}
 }
