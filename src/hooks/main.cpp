@@ -100,7 +100,7 @@ namespace Hooks
 				EventDispatcher::DoStart();
 			}
 		} else if (!Plugin::InGame()) {
-			// Loading or in main menu
+			// Loading or in main menu 
 			started.store(false);
 		}
 		Plugin::SetOnMainThread(false);
