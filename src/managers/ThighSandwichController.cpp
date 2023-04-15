@@ -77,9 +77,9 @@
 	void SandwichingData::ManageAi(Actor* giant) {
 		if (this->tinies.size() > 0) {
 			int random = rand() % 20;
-			if (this->random < 9) {
+			if (random < 9) {
 				AnimationManager::StartAnim("ThighAttack", giant);
-			} else if (this->random < 12) {
+			} else if (random < 12) {
 				AnimationManager::StartAnim("ThighAttack_Heavy", giant);
 			}
 		} else {

@@ -104,9 +104,6 @@
         }
         return false;
 	}
-    int AiData::GetRandom() {
-        return this->random;
-    }
 
     AiManager& AiManager::GetSingleton() noexcept {
 		static AiManager instance;

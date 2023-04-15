@@ -13,7 +13,6 @@ namespace Gts {
 		public:
 			AiData(Actor* giant);
 			bool GetTimer(int type);
-			int GetRandom();
 		private:
 			ActorHandle giant;
 			// Vore is done is sets with multiple actors if the giant is big
