@@ -1,4 +1,5 @@
 #pragma once
+#include "events.hpp"
 // Module that handles footsteps
 
 
