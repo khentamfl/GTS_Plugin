@@ -78,15 +78,6 @@
 		this->tinies.try_emplace(tiny->formID, tiny->CreateRefHandle());
 	}
 
-    std::vector<Actor*> AiData::GetActors() {
-		std::vector<Actor*> result;
-		for (auto& [key, actorref]: this->tinies) {
-			auto actor = actorref.get().get();
-			result.push_back(actor);
-		}
-		return result;
-	}
-
     AiManager& AiManager::GetSingleton() noexcept {
 		static AiManager instance;
 		return instance;
@@ -104,7 +95,7 @@
                 auto& ai = GetAiData(actor);
                 if (ai) {
                     if (ai->ActionTimer.ShouldRun()) {
-                        if (IsGtsBusy(pred)) {
+                        if (!CanStomp(actor)) {
                             return;
                         }
                         auto rng = ai->random;
@@ -194,7 +185,9 @@
     bool AiManager::CanStomp(Actor* pred, Actor* prey) {
 		if (pred == prey) {
 			return false;
-		}
+		} if (IsGtsBusy(pred)) {
+            return false;
+        }
 		if (!Runtime::HasPerkTeam(pred, "DestructionBasics")) {
 			return false;
 		}
