@@ -239,6 +239,6 @@ namespace Gts {
 			gameMode = static_cast<ChosenGameMode>(game_mode_int);
 		}
 		GameModeManager::GetSingleton().ApplyGameMode(actor, gameMode, growthRate/2, shrinkRate);
+		Profilers::Stop("Manager: GameMode");
 	}
-	Profilers::Stop("Manager: GameMode");
 }
