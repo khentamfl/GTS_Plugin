@@ -310,6 +310,7 @@ namespace Gts {
 								return true;
 							});
 							if (!anyInvalid) {
+
 								tiny->SetAlpha(0.0);//node->local.scale = 0.50;
               					update_node(node);
 							} else {
@@ -395,7 +396,7 @@ namespace Gts {
 					Rumble::Once("GrowthRumble", giant, 2.45, 0.30);
 					Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
 
-					if (Vore::GetVoreData(giant).GetTimer() == true) {
+					if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
 						Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 					}
 				}
