@@ -1,4 +1,6 @@
 #include "profiler.hpp"
+#include "Config.hpp"
+#include "data/time.hpp"
 #include <chrono>
 
 namespace Gts {
@@ -43,17 +45,19 @@ namespace Gts {
 
 	void Profilers::Start(std::string_view name) {
     if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+      auto& me = Profilers::GetSingleton();
       auto key = std::string(name);
-      this->profilers.try_emplace(key, name);
-      this->profilers.at(key).Start();
+      me.profilers.try_emplace(key, name);
+      me.profilers.at(key).Start();
     }
   }
 
   void Profilers::Stop(std::string_view name) {
     if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+      auto& me = Profilers::GetSingleton();
       auto key = std::string(name);
-      this->profilers.try_emplace(key, name);
-      this->profilers.at(key).Stop();
+      me.profilers.try_emplace(key, name);
+      me.profilers.at(key).Stop();
     }
   }
 
