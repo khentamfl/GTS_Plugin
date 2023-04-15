@@ -29,6 +29,7 @@ namespace Gts {
 			// Update all things that are happening like
 			// keeping them on the AnimObjectA and shrinking nodes
 			void Update();
+			void ManageAi(Actor* giant);
 			void UpdateRune(Actor* giant);
 
 		private:
@@ -42,6 +43,9 @@ namespace Gts {
 
 			Spring ScaleRune = Spring(0.0, 1.5);
 			Spring ShrinkRune = Spring(0.0, 1.5);
+			inline static Timer SandwichTimer = Timer(0.45);
+			inline static int random = rand() % 20;
+
 
 			// True if in grabbed state
 			bool allGrabbed = false;

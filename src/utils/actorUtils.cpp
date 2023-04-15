@@ -393,7 +393,8 @@ namespace Gts {
 		return nullptr;
 	}
 
-	void ManageRagdoll(Actor* tiny, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation) {
+	void ManageRagdoll(ActorHandle* tinyref, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation) {
+		auto tiny = tinyref.get().get();
 		if (deltaLength >= 70.0) {
             // WARP if > 1m
             auto ragDoll = GetRagdoll(tiny);

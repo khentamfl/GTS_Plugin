@@ -1,5 +1,6 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
+#include "managers/ThighSandwichController.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -47,9 +48,30 @@
 			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
 		);
 	}
+    void DoSandwich(Actor* pred) {
+        if ((Runtime::HasPerk(pred, "KillerThighs"))) {
+            auto& Sandwiching = ThighSandwichController::GetSingleton();
+            std::size_t numberOfPrey = 1;
+			if (Runtime::HasPerkTeam(pred, "MassVorePerk")) {
+				numberOfPrey = 1 + (get_visual_scale(pred)/3);
+			}
+            std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(ai, numberOfPrey);
+			for (auto prey: preys) {
+                if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+                    return;
+                }
+				Sandwiching.StartSandwiching(ai, prey);
+				auto node = find_node(ai, "GiantessRune", false);
+				if (node) {
+					node->local.scale = 0.01;
+					update_node(node);
+				}
+			}
+        }
+    }
 
     void DoStomp(Actor* pred) {
-        int random = rand() % 7;
+        int random = rand() % 3;
         int actionrng = rand() % 3;
         std::size_t amount = 3;
         std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
@@ -108,9 +130,12 @@
                 auto ai = GetAiData(actor);
                 if (ai.GetTimer(1) == true) {
                     auto rng = ai.GetRandom();
-                    if (rng < 3) {
+                    if (rng < 3 && !IsGtsBusy(ai)) {
                         log::info("RNG < 3, doing stomp");
                         DoStomp(actor);
+                    }
+                    else if (rng < 5 && !IsGtsBusy(ai)) {
+                        DoSandwich(actor);
                     }
                 }
             }

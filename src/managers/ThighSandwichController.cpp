@@ -73,7 +73,17 @@
 	std::string ThighSandwichController::DebugName() {
 		return "ThighSandwichController";
 	}
-
+	void SandwichingData::ManageAi(Actor* giant) {
+		if (this->tinies.size() > 0) {
+			if (this->random < 5) {
+				AnimationManager::StartAnim("ThighAttack", giant);
+			} else if (this->random < 12) {
+				AnimationManager::StartAnim("ThighAttack_Heavy", giant);
+			}
+		} else {
+			AnimationManager::StartAnim("ThighExit", giant);
+		}
+	}
 	void SandwichingData::UpdateRune(Actor* giant) {
 		string node_name = "GiantessRune";
 		if (this->RuneShrink == true) {
@@ -107,9 +117,13 @@
             return;
         }
     	float giantScale = get_visual_scale(giant);
+		if (giant->formID != 0x14) {
+			if (this->SandwichTimer.ShouldRun()) {
+				this->ManageAi(giant);
+			}
+		}
 
-
-		SandwichingData::UpdateRune(giant);
+		this->UpdateRune(giant);
 
         for (auto& [key, tinyref]: this->tinies) {
 			auto tiny = tinyref.get().get();
@@ -146,7 +160,7 @@
             }
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
-				//ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
+				ManageRagdoll(tinyref, deltaLength, deltaLocation, targetLocation);
 				auto charcont = tiny_is_actor->GetCharController();
 				if (charcont) {
 					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.

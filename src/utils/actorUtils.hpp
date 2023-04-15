@@ -53,7 +53,7 @@ namespace Gts {
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage);
 
 	hkaRagdollInstance* GetRagdoll(Actor* actor);
-	void ManageRagdoll(Actor* tiny, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation);
+	void ManageRagdoll(ActorHandle* tinyref, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation);
 	void StaggerActor(Actor* receiver);
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause);
