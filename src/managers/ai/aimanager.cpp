@@ -124,7 +124,7 @@
             if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
                 if (ai.GetTimer(1) == true) {
-                    auto rng = ai.GetRandom();
+                    int rng = rand() % 30;
                     log::info("RNG: {}", rng);
                     if (rng < 3) {
                         log::info("RNG < 3, doing stomp");

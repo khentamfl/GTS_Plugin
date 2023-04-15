@@ -44,7 +44,6 @@ namespace Gts {
 			Spring ScaleRune = Spring(0.0, 1.5);
 			Spring ShrinkRune = Spring(0.0, 1.5);
 			inline static Timer SandwichTimer = Timer(0.45);
-			inline static int random = rand() % 20;
 
 
 			// True if in grabbed state
