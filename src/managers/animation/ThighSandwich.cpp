@@ -78,6 +78,13 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
+	void AllowToBeCrushed(Actor* actor, bool toggle) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			transient->can_be_crushed = toggle;
+		}
+	}
+
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
 	}
@@ -129,6 +136,9 @@ namespace {
 
 	void GTSSandwich_EnterAnim(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		for (auto tiny: sandwichdata.GetActors()) {
+			AllowToBeCrushed(tiny, false);
+		}
 		sandwichdata.EnableSuffocate(false);
 	}
 	void GTSSandwich_MoveBody_start(AnimationEventData& data) {
@@ -173,6 +183,7 @@ namespace {
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 1.0, 1.0);
 			tiny->NotifyAnimationGraph("ragdoll");
+			AllowToBeCrushed(tiny, true);
 		}
 	}
 
@@ -184,6 +195,7 @@ namespace {
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 2.2, 0.75);
 			tiny->NotifyAnimationGraph("ragdoll");
+			AllowToBeCrushed(tiny, true);
 		}
 	}
 

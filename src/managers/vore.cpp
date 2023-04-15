@@ -784,7 +784,7 @@ namespace Gts {
 			Notify("{} is too tired for vore.", pred->GetDisplayFullName());
 			DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
 			Runtime::PlaySound("VoreSound_Fail", pred, 1.8, 0.0);
-			Runtime::CastSpell(pred, prey, "gtsStaggerSpell");
+			StaggerActor(prey);
 			return;
 		}
 

@@ -433,6 +433,11 @@ namespace Gts {
         }
 	}
 
+	void StaggerActor(Actor* receiver) {
+		receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); 
+		receiver->NotifyAnimationGraph("staggerStart");
+	}
+
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);

@@ -105,7 +105,6 @@ spells:
   gtsSizeCloakSpellMassive: "GTS.esp|08BD90"
   gtsSizeCloakSpellGigantic: "GTS.esp|08BD92"
   gtsSizeCloakSpellImpossible: "GTS.esp|08BD94"
-  gtsStaggerSpell: "GTS.esp|00A9AB"
   ShrinkToNothingSpell: "GTS.esp|00997A"
   FakeCrushSpell: "GTS.esp|271EF7"
   ShrinkBackNPCSpell: "GTS.esp|00536B"
