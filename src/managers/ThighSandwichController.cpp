@@ -143,7 +143,7 @@
 
 			if (giantScale/tinyScale < 6.0) {
 				PushActorAway(giant, tiny, 0.5);
-				this->tinies.erase(tiny); // Disallow button abuses to keep tiny when on low scale
+				this->tinies.erase(tiny->formID); // Disallow button abuses to keep tiny when on low scale
 			}
 
 			tiny->SetPosition(targetLocation, true);
