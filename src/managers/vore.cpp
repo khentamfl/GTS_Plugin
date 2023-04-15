@@ -388,14 +388,14 @@ namespace Gts {
 					BuffAttributes(giant, this->tinySize);
 					mod_target_scale(giant, this->sizePower * 0.5);
 					AdjustSizeReserve(giant, this->sizePower);
-					if (this->giant->formID == 0x14) {
+					if (giant->formID == 0x14) {
 						AdjustSizeLimit(0.0260, giant);
 						AdjustMassLimit(0.0106, giant);
 					}
 					Rumble::Once("GrowthRumble", giant, 2.45, 0.30);
 					Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
 
-					if (VoreData(this->giant).GetTimer() == true) {
+					if (Vore::GetVoreData(giant).GetTimer() == true) {
 						Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 					}
 				}
@@ -752,8 +752,8 @@ namespace Gts {
 	}
 
 	void Vore::ResetActor(Actor* actor) {
-		this->data.erase(actor);
-		this->buffs.erase(actor);
+		this->data.erase(actor->formID);
+		this->buffs.erase(actor->formID);
 	}
 
 	void Vore::StartVore(Actor* pred, Actor* prey) {
@@ -799,10 +799,12 @@ namespace Gts {
 		// Create it now if not there yet
 		this->data.try_emplace(giant->formID, giant);
 
-		return this->data.at(giant);
+		return this->data.at(giant->formID);
 	}
 
-	void Vore::AddVoreBuff(ActorHandle giant, ActorHandle tiny) {
+	void Vore::AddVoreBuff(ActorHandle giantref, ActorHandle tinyref) {
+    auto giant = giantref.get().get();
+    auto tiny = tinyref.get().get();
 		this->buffs.try_emplace(tiny->formID, giant, tiny);
 	}
 }
