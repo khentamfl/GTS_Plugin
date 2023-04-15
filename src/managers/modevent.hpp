@@ -7,7 +7,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ModEventManager {
+	class ModEventManager : public EventListener {
 		public:
 			using OnFootstep = RegistrationSet<Actor*, std::string>;
 

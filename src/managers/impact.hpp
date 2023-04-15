@@ -7,7 +7,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ImpactManager {
+	class ImpactManager : public EventListener {
 		public:
 			[[nodiscard]] static ImpactManager& GetSingleton() noexcept;
 
