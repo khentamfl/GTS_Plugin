@@ -40,10 +40,18 @@ namespace {
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
 	}
 
+	int GetRandomBoost() {
+		int random = rand()% 124 + 1;
+		return random;
+	}
+
 	void GTSstompstartR(AnimationEventData& data) {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.33;
+		if (data.giant->formID != 0x14) {
+			data.animSpeed += GetRandomBoost()/200;
+		}
 		TrackFeet(&data.giant, 6, true);
 		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 		log::info("StompStartR true");
@@ -53,6 +61,9 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.33;
+		if (data.giant->formID != 0x14) {
+			data.animSpeed += GetRandomBoost()/200;
+		}
 		TrackFeet(&data.giant, 5, true);
 		Rumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
 		log::info("StompStartL true");

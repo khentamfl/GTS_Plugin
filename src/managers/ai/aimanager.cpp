@@ -123,10 +123,10 @@
                 if (ai.GetTimer(1) == true) {
                     int rng = rand() % 30;
                     log::info("RNG: {}", rng);
-                    if (rng < 3) {
+                    if (rng < 18) {
                         log::info("RNG < 3, doing stomp");
                         DoStomp(actor);
-                    } else if (rng < 5) {
+                    } else if (rng < 2) {
                         DoSandwich(actor);
                     }
                 }
