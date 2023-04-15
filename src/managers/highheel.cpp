@@ -88,6 +88,7 @@ namespace Gts {
 
 
 		NiPoint3 new_hh;
+    this->UpdateHHOffset(actor);
 		if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
 			new_hh = this->GetHHOffset(actor) * hhData.multiplier.value;
 		} else {
@@ -135,7 +136,7 @@ namespace Gts {
 		}
 	};
 
-	NiPoint3 HighHeelManager::GetBaseHHOffset(Actor* actor) {
+	void HighHeelManager::UpdateHHOffset(Actor* actor) {
 		auto models = GetModelsForSlot(actor, BGSBipedObjectForm::BipedObjectSlot::kFeet);
 		NiPoint3 result = NiPoint3();
 		for (auto model: models) {
@@ -164,16 +165,25 @@ namespace Gts {
 		}
 		//log::info("Base HHOffset: {}", Vector2Str(result));
 		auto npcNodeScale = get_npcparentnode_scale(actor);
-		return result * npcNodeScale;
+
+    this->data.try_emplace(actor);
+		auto& hhData = this->data[actor];
+    hhData.lastBaseHHOffset = result * npcNodeScale;
+    auto npcRootNodeScale = get_npcnode_scale(actor);
+    hhData.lastHHOffset = hhData.lastBaseHHOffset * npcRootNodeScale;
 	}
 
-	NiPoint3 HighHeelManager::GetHHOffset(Actor* actor) {
-		if (actor) {
-			auto npcRootNodeScale = get_npcnode_scale(actor);
-			return HighHeelManager::GetBaseHHOffset(actor) * npcRootNodeScale;
-		}
-		return NiPoint3();
-	}
+  NiPoint3 HighHeelManager::GetBaseHHOffset(Actor* actor) {
+    this->data.try_emplace(actor);
+		auto& hhData = this->data[actor];
+    return hhData.lastBaseHHOffset;
+  }
+
+  NiPoint3 HighHeelManager::GetHHOffset(Actor* actor) {
+    this->data.try_emplace(actor);
+		auto& hhData = this->data[actor];
+    return hhData.lastHHOffset;
+  }
 
 	bool HighHeelManager::IsWearingHH(Actor* actor) {
 		return HighHeelManager::GetBaseHHOffset(actor).Length() > 1e-3;
