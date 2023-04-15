@@ -49,7 +49,7 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.33;
-		if (&data.giant->formID != 0x14) {
+		if (data.giant.formID != 0x14) {
 			data.animSpeed += GetRandomBoost()/200;
 		}
 		TrackFeet(&data.giant, 6, true);
@@ -61,7 +61,7 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.33;
-		if (&data.giant->formID != 0x14) {
+		if (data.giant.formID != 0x14) {
 			data.animSpeed += GetRandomBoost()/200;
 		}
 		TrackFeet(&data.giant, 5, true);
