@@ -41,7 +41,7 @@ namespace {
 	}
 
 	int GetRandomBoost() {
-		int random = rand()% 124 + 1;
+		int random = rand()% 150 + 1;
 		return random;
 	}
 

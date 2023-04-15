@@ -96,12 +96,11 @@
     AiData::AiData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
 	}
 
-    bool AiData::GetTimer(int type) {
+    bool AiData::GetTimer(int type, float scale) {
         if (type == 1) {
+            this->ActionTimer.delta = 2.5 / scale;
 		    return this->ActionTimer.ShouldRun();
-        } else if (type == 2) {
-            return this->RepeatTimer.ShouldRun();
-        }
+        } 
         return false;
 	}
 
@@ -120,10 +119,11 @@
             auto& persist = Persistent::GetSingleton();
             if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
-                if (ai.GetTimer(1) == true) {
+                float scale = std::clamp(get_visual_scale(actor)/3, 1.0f, 6.0f);
+                if (ai.GetTimer(1, scale) == true) {
                     int rng = rand() % 30;
                     log::info("RNG: {}", rng);
-                    if (rng > 2 && rng < 18) {
+                    if (rng > 2 && rng < 26) {
                         log::info("RNG < 3, doing stomp");
                         DoStomp(actor);
                     } else if (rng < 2) {
