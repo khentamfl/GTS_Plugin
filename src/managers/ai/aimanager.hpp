@@ -22,7 +22,7 @@ namespace Gts {
             bool IsThighSandwiching = false;
             inline static Timer ActionTimer = Timer(2.5);
 			inline static Timer RepeatTimer = Timer(0.5);
-            int random = rand() % 20;
+            inline static int random = rand() % 20;
 	};
     class AiManager : public EventListener  {
 		public:

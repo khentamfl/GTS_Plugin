@@ -54,7 +54,6 @@
         std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, 3.0);
         for (auto prey: preys) {
             log::info("Doing Stomp as {}, random:{}, action rng: {}", pred->GetDisplayFullName(), random, actionrng);
-
             if (AiManager::GetSingleton().CanStomp(pred, prey)) {
                 if (random <= 2) {
                     if (actionrng <= 1) {
@@ -104,11 +103,13 @@
         Profilers::Start("Ai: Update");
         for (auto actor: find_actors()) {
             auto& persist = Persistent::GetSingleton();
-            if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate() && (actor->IsInCombat() || !persist.vore_combatonly)) {
+            if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
+                log::info("Ai found: {}", actor->GetDisplayFullName());
                 if (ai.GetTimer(1) == true) {
                     auto rng = ai.GetRandom();
                     if (rng < 10) {
+                        log::info("RNG < 10, doing stomp");
                         DoStomp(actor);
                     }
                 }
@@ -122,9 +123,11 @@
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (IsGtsBusy(pred)) {
+            log::info("{} is Buy", pred->GetDisplayFullName());
 			return {};
 		}
 		if (!pred) {
+            log::info("Pred is none");
 			return {};
 		}
 		auto charController = pred->GetCharController();
@@ -192,9 +195,11 @@
 	}
 
     bool AiManager::CanStomp(Actor* pred, Actor* prey) {
+        log::info("Checking Can Stomp");
 		if (pred == prey) {
 			return false;
 		} if (IsGtsBusy(pred)) {
+            log::info("Stomper is Busy");
             return false;
         }
 		if (!Runtime::HasPerkTeam(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
