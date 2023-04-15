@@ -111,115 +111,115 @@ namespace Gts {
 
 	void EventDispatcher::DoUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->Update();
 		}
 	}
 	void EventDispatcher::DoPapyrusUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->PapyrusUpdate();
 		}
 	}
 	void EventDispatcher::DoHavokUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->HavokUpdate();
 		}
 	}
 	void EventDispatcher::DoCameraUpdate() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->CameraUpdate();
 		}
 	}
 	void EventDispatcher::DoReset() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->Reset();
 		}
 	}
 	void EventDispatcher::DoEnabled() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->Enabled();
 		}
 	}
 	void EventDispatcher::DoDisabled() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->Disabled();
 		}
 	}
 	void EventDispatcher::DoStart() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->Start();
 		}
 	}
 	void EventDispatcher::DoDataReady() {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->DataReady();
 		}
 	}
 	void EventDispatcher::DoResetActor(Actor* actor) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->ResetActor(actor);
 		}
 	}
 	void EventDispatcher::DoActorEquip(Actor* actor) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->ActorEquip(actor);
 		}
 	}
 	void EventDispatcher::DoActorLoaded(Actor* actor) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->ActorLoaded(actor);
 		}
 	}
 	void EventDispatcher::DoHitEvent(const TESHitEvent* evt) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->HitEvent(evt);
 		}
 	}
 	void EventDispatcher::DoUnderFootEvent(const UnderFoot& evt) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->UnderFootEvent(evt);
 		}
 	}
 	void EventDispatcher::DoOnImpact(const Impact& impact) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->OnImpact(impact);
 		}
 	}
 	void EventDispatcher::DoHighheelEquip(const HighheelEquip& evt) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->OnHighheelEquip(evt);
 		}
 	}
 	void EventDispatcher::DoAddPerk(const AddPerkEvent& evt)  {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->OnAddPerk(evt);
 		}
 	}
 	void EventDispatcher::DoRemovePerk(const RemovePerkEvent& evt)  {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->OnRemovePerk(evt);
 		}
 	}
 	void EventDispatcher::DoMenuChange(const MenuOpenCloseEvent* menu_event) {
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->MenuChange(menu_event);
 		}
 	}
@@ -227,7 +227,7 @@ namespace Gts {
 		std::string tag = a_tag.c_str();
 		std::string payload = a_payload.c_str();
 		for (auto listener: EventDispatcher::GetSingleton().listeners) {
-			auto profiler = Profilers::Profile(listener->GetDebugName());
+			auto profiler = Profilers::Profile(listener->DebugName());
 			listener->ActorAnimEvent(actor, tag, payload);
 		}
 	}
