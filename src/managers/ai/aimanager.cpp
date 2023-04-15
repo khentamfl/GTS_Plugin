@@ -125,11 +125,12 @@
                 auto ai = GetAiData(actor);
                 if (ai.GetTimer(1) == true) {
                     auto rng = ai.GetRandom();
-                    if (rng < 3 && !IsGtsBusy(actor)) {
+                    log::info("RNG: {}", rng);
+                    if (rng < 3) {
                         log::info("RNG < 3, doing stomp");
                         DoStomp(actor);
                     }
-                    else if (rng < 5 && !IsGtsBusy(actor)) {
+                    else if (rng < 5) {
                         DoSandwich(actor);
                     }
                 }
