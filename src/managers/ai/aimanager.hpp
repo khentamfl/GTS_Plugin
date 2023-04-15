@@ -34,6 +34,7 @@ namespace Gts {
 			virtual void ResetActor(Actor* actor) override;
 			
 			std::vector<Actor*> RandomStomp(Actor* pred, std::size_t numberOfPrey);
+			bool CanStomp(Actor* pred, Actor* prey);
 
             AiData& GetAiData(Actor* giant);
             std::unordered_map<FormID, AiData> data_ai;

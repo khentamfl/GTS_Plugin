@@ -52,18 +52,20 @@
         int random = rand() % 7;
         int actionrng = rand() % 2;
         std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, 1.0);
-        if (!preys.empty()) {
-            if (random <= 2) {
-                if (actionrng <= 1) {
-                 AnimationManager::StartAnim("StompRight", pred);
-                } else {
-                AnimationManager::StartAnim("StompLeft", pred);
-                }
-            } else if (random > 2) {
-                if (actionrng <= 1) {
-                    AnimationManager::StartAnim("StrongStompRight", pred);
-                } else {
-                    AnimationManager::StartAnim("StrongStompLeft", pred);
+        for (auto prey: preys) {
+            if (AiManager::GetSingleton().CanStomp(actor, prey)) {
+                if (random <= 2) {
+                    if (actionrng <= 1) {
+                     AnimationManager::StartAnim("StompRight", pred);
+                    } else {
+                        AnimationManager::StartAnim("StompLeft", pred);
+                    }
+                } else if (random > 2) {
+                    if (actionrng <= 1) {
+                        AnimationManager::StartAnim("StrongStompRight", pred);
+                    } else {
+                        AnimationManager::StartAnim("StrongStompLeft", pred);
+                    }
                 }
             }
         }
@@ -102,11 +104,8 @@
             auto& persist = Persistent::GetSingleton();
             if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate() && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
-                if (ai->GetTimer(1) == true) {
-                    if (!CanStomp(actor)) {
-                         return;
-                    }
-                    auto rng = ai->GetRandom()
+                if (ai.GetTimer(1) == true) {
+                    auto rng = ai.GetRandom();
                     if (rng < 10) {
                         DoStomp(actor);
                     }
