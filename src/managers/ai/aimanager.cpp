@@ -129,8 +129,7 @@
                     if (rng < 3) {
                         log::info("RNG < 3, doing stomp");
                         DoStomp(actor);
-                    }
-                    else if (rng < 5) {
+                    } else if (rng < 5) {
                         DoSandwich(actor);
                     }
                 }

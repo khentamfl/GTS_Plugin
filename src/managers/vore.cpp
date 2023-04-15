@@ -434,7 +434,7 @@ namespace Gts {
 		if (!Runtime::HasPerk(player, "VorePerk")) {
 			return;
 		}
-		static Timer timer = Timer(2.50); // Random Vore once per 4 sec
+		static Timer timer = Timer(2.50); // Random Vore once per 2.5 sec
 		if (timer.ShouldRunFrame()) { //Try to not call it too often
 			std::vector<Actor*> AbleToVore = {};
 			for (auto actor: find_actors()) {
@@ -442,13 +442,13 @@ namespace Gts {
 					AbleToVore.push_back(actor);
 				}
 			}
-      if (!AbleToVore.empty()) {
-  			int idx = rand() % AbleToVore.size();
-      		Actor* voreActor = AbleToVore[idx];
-  			if (voreActor) {
-  				RandomVoreAttempt(voreActor);
-  			}
-      }
+      		if (!AbleToVore.empty()) {
+  				int idx = rand() % AbleToVore.size();
+      			Actor* voreActor = AbleToVore[idx];
+  				if (voreActor) {
+  					RandomVoreAttempt(voreActor);
+  				}
+      		}
 		}
 
 		for (auto& [key, voreData]: this->data) {
@@ -741,6 +741,7 @@ namespace Gts {
 		}
 		if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
 				if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
+					Notify("{} is important and shouldn't be eaten.", prey->GetDisplayFullName());
 					return false;
 				} else {
 					return true;
@@ -778,9 +779,6 @@ namespace Gts {
 
 		if (!CanVore(pred, prey)) {
 			return;
-		}
-		if (prey->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
-			Notify("{} is important, and shouldn't be eaten.", prey->GetDisplayFullName());
 		}
 		if (staminacheck < wastestamina) {
 			Notify("{} is too tired for vore.", pred->GetDisplayFullName());
