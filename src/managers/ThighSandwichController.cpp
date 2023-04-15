@@ -160,7 +160,7 @@
             }
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
-				ManageRagdoll(tinyref, deltaLength, deltaLocation, targetLocation);
+				//ManageRagdoll(tiny, deltaLength, deltaLocation, targetLocation);
 				auto charcont = tiny_is_actor->GetCharController();
 				if (charcont) {
 					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
@@ -258,9 +258,9 @@
 	bool ThighSandwichController::CanSandwich(Actor* pred, Actor* prey) {
 		if (pred == prey) {
 			return false;
-		}
-
-		if (!Runtime::HasPerkTeam(pred, "KillerThighs")) {
+		} if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+            return false;
+        } if (!Runtime::HasPerkTeam(pred, "KillerThighs")) {
 			return false;
 		}
 
