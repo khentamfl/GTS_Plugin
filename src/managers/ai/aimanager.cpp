@@ -17,9 +17,9 @@
 
  namespace {
 
-    const float MINIMUM_STOMP_DISTANCE = 60.0;
+    const float MINIMUM_STOMP_DISTANCE = 50.0;
 	const float MINIMUM_STOMP_SCALE_RATIO = 2.5;
-	const float STOMP_ANGLE = 80;
+	const float STOMP_ANGLE = 72;
 	const float PI = 3.14159;
 
     [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
@@ -50,8 +50,8 @@
 
     void DoStomp(Actor* pred) {
         int random = rand() % 7;
-        int actionrng = rand() % 2;
-        std::size_t amount = 6;
+        int actionrng = rand() % 3;
+        std::size_t amount = 3;
         std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
         for (auto prey: preys) {
             log::info("Doing Stomp as {}, random:{}, action rng: {}", pred->GetDisplayFullName(), random, actionrng);
@@ -108,8 +108,8 @@
                 auto ai = GetAiData(actor);
                 if (ai.GetTimer(1) == true) {
                     auto rng = ai.GetRandom();
-                    if (rng < 10) {
-                        log::info("RNG < 10, doing stomp");
+                    if (rng < 3) {
+                        log::info("RNG < 3, doing stomp");
                         DoStomp(actor);
                     }
                 }
@@ -195,15 +195,14 @@
 	}
 
     bool AiManager::CanStomp(Actor* pred, Actor* prey) {
-        log::info("Checking Can Stomp");
 		if (pred == prey) {
 			return false;
 		} if (IsGtsBusy(pred)) {
-            log::info("Stomper is Busy");
             return false;
-        }
+        } if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+			return false;
+		}
 		if (!Runtime::HasPerkTeam(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
-            log::info("No matching perk");
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
@@ -216,16 +215,13 @@
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_STOMP_SCALE_RATIO) {
-            log::info("Stomp false");
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale) 
             && pred_scale/prey_scale > MINIMUM_STOMP_SCALE_RATIO 
-            && prey_distance > 15.0) { // We don't want the Stomp to be too close
-            log::info("Stomp True, distance is matched");
+            && prey_distance > 25.0) { // We don't want the Stomp to be too close
 			return true;
 		} else {
-            log::info("Stomp false");
 			return false;
 		}
 	}
