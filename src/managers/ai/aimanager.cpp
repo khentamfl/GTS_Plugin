@@ -105,7 +105,6 @@
             auto& persist = Persistent::GetSingleton();
             if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
-                log::info("Ai found: {}", actor->GetDisplayFullName());
                 if (ai.GetTimer(1) == true) {
                     auto rng = ai.GetRandom();
                     if (rng < 10) {
@@ -202,7 +201,7 @@
             log::info("Stomper is Busy");
             return false;
         }
-		if (!Runtime::HasPerkTeam(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
+		if (!Runtime::HasPerkTeamOr(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
@@ -215,11 +214,13 @@
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_STOMP_SCALE_RATIO) {
+            log::info("Stomp false");
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale) 
             && pred_scale/prey_scale > MINIMUM_STOMP_SCALE_RATIO 
             && prey_distance > 15.0) { // We don't want the Stomp to be too close
+            log::info("Stomp True, distance is matched");
 			return true;
 		} else {
 			return false;
