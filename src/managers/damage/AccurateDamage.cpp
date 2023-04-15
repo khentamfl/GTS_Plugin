@@ -177,8 +177,8 @@ namespace {
 			CrushBonuses(giant, tiny, 0);
 			KnockAreaEffect(giant, 2, 16 * giantscale);
 		}
+		Profilers::Stop("AccurateDamage: SizeModifications");
 	}
-	Profilers::Stop("AccurateDamage: SizeModifications");
 }
 
 
@@ -490,6 +490,6 @@ namespace Gts {
 			return;
 		}
 		DamageAV(tiny, ActorValue::kHealth, result);
+		Profilers::Stop("AccurateDamage: DoSizeDamage");
 	}
-	Profilers::Stop("AccurateDamage: DoSizeDamage");
 }
