@@ -75,6 +75,18 @@
     AiData::AiData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
 	}
 
+    bool AiData::GetTimer(int type) {
+        if (type == 1) {
+		    return this->ActionTimer.ShouldRun();
+        } else if (type == 2) {
+            return this->RepeatTimer.ShouldRun();
+        }
+        return false;
+	}
+    int AiData::GetRandom() {
+        return this->random;
+    }
+
     AiManager& AiManager::GetSingleton() noexcept {
 		static AiManager instance;
 		return instance;
@@ -90,11 +102,11 @@
             auto& persist = Persistent::GetSingleton();
             if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate() && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
-                 if (ai->ActionTimer.ShouldRun()) {
+                if (ai->GetTimer(1) == true) {
                     if (!CanStomp(actor)) {
                          return;
                     }
-                    auto rng = ai->random;
+                    auto rng = ai->GetRandom()
                     if (rng < 10) {
                         DoStomp(actor);
                     }
