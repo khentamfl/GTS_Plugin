@@ -8,7 +8,7 @@ using namespace RE;
 
 namespace Gts {
 
-	class ScaleSpellManager : public EventListener {
+	class ScaleSpellManager {
 		public:
 			[[nodiscard]] static ScaleSpellManager& GetSingleton() noexcept;
 			void CheckSize(Actor* actor);

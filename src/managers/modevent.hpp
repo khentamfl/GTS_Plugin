@@ -1,5 +1,4 @@
 #pragma once
-#include "events.hpp"
 // Module that handles footsteps
 
 
@@ -8,7 +7,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ModEventManager : public EventListener {
+	class ModEventManager {
 		public:
 			using OnFootstep = RegistrationSet<Actor*, std::string>;
 

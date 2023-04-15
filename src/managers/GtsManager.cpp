@@ -241,8 +241,10 @@ void GtsManager::Update() {
 		SetHealthPercentage(actor, current_health_percentage);
 		
 		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
-		if (timer.ShouldRunFrame()) {
-			ScaleSpellManager::GetSingleton().CheckSize(actor);
+		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
+			if (timer.ShouldRunFrame()) {
+				ScaleSpellManager::GetSingleton().CheckSize(actor);
+			}
 		}
 	}
 }

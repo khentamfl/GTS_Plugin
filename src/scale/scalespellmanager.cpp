@@ -15,9 +15,6 @@ namespace Gts {
 	}
 
 	void ScaleSpellManager::CheckSize(Actor* actor) {
-		if (SizeManager::GetSingleton().GetPreciseDamage()) {
-			return;
-		}
 		if (!actor || !actor->Is3DLoaded() || actor->IsDead()) {
 			return;
 		}
