@@ -50,7 +50,7 @@
     void DoStomp(Actor* pred) {
         int random = rand() % 7;
         int actionrng = rand() % 2;
-        std::vector<Actor*> preys = AiManager::GetSingleton()RandomStomp(pred, 1.0);
+        std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, 1.0);
         if (preys) {
             if (random <= 2) {
                 if (actionrng <= 1) {
@@ -72,10 +72,6 @@
 
  namespace Gts {
     AiData::AiData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
-	}
-
-	void AiData::AddTiny(Actor* tiny) {
-		this->tinies.try_emplace(tiny->formID, tiny->CreateRefHandle());
 	}
 
     AiManager& AiManager::GetSingleton() noexcept {

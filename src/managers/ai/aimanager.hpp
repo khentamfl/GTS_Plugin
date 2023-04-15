@@ -34,8 +34,6 @@ namespace Gts {
 			std::vector<Actor*> RandomStomp(Actor* pred, std::size_t numberOfPrey);
 
             AiData& GetAiData(Actor* giant);
-			AiData_Sandwich& GetAiData_Sandwich(Actor* giant);
-
             std::unordered_map<FormID, AiData> data_ai;
 	};
 }
