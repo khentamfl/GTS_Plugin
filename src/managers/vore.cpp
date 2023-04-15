@@ -190,6 +190,7 @@ namespace Gts {
 				Disintegrate(tiny);
 				///this->tinies.erase(tiny);
 			} else if (tiny->formID == 0x14) {
+				DamageAV(tiny, ActorValue::kHealth, 900000.0);
 				tiny->KillImmediate();
 				TriggerScreenBlood(50);
 				tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
@@ -201,7 +202,7 @@ namespace Gts {
 
 	void VoreData::AllowToBeVored(bool allow) {
 		for (auto& [key, tinyref]: this->tinies) {
-      auto tiny = tinyref.get().get();
+      		auto tiny = tinyref.get().get();
 			auto transient = Transient::GetSingleton().GetData(tiny);
 			if (transient) {
 				transient->can_be_vored = allow;
@@ -710,6 +711,7 @@ namespace Gts {
 		if (transient) {
 			if (transient->can_be_vored == false) {
 				Notify("{} is already being eaten by someone else", prey->GetDisplayFullName());
+				Cprint("{} is already being eaten by someone else", prey->GetDisplayFullName());
 				return false;
 			}
 		}
@@ -738,7 +740,7 @@ namespace Gts {
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
-				if ((prey->IsEssential() && Runtime::GetBool("ProtectEssentials")) || Runtime::HasSpell(prey, "StartVore")) {
+				if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 					return false;
 				} else {
 					return true;
