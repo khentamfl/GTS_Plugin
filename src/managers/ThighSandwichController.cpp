@@ -143,6 +143,7 @@
 
 			if (giantScale/tinyScale < 6.0) {
 				PushActorAway(giant, tiny, 0.5);
+				Cprint("{} slipped out of {} thighs", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 				this->tinies.erase(tiny->formID); // Disallow button abuses to keep tiny when on low scale
 			}
 
@@ -178,7 +179,7 @@
 	std::vector<Actor*> ThighSandwichController::GetSandwichTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
-		if (sizemanager.GetActionBool(pred, 1.0)) {
+		if (IsGtsBusy(pred)) {
 			return {};
 		}
 		if (!pred) {
@@ -267,7 +268,7 @@
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
-			prey_scale *= 2.0;
+			prey_scale *= 3.0;
 		}
 
 		float sizedifference = pred_scale/prey_scale;
