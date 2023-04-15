@@ -84,7 +84,7 @@ namespace Gts {
 			double elapsed = profiler.Elapsed();
 			double spf = elapsed / (current_report_frame - last_report_frame);
 			double time_percent = elapsed/total_time*100;
-			report += std::format("\n {:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", name, elapsed, elapsed*100.0/total, spf, time_percent);
+			report += std::format("\n 				{:20}:{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", name, elapsed, elapsed*100.0/total, spf, time_percent);
 			profiler.Reset();
 		}
 		log::info("{}", report);

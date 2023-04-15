@@ -261,7 +261,7 @@ namespace Gts {
 				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 				if (tiny_is_actor) {
 					auto charcont = tiny_is_actor->GetCharController();
-					//ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
+					ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
 					if (charcont) {
 						charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
 					}

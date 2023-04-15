@@ -57,4 +57,5 @@ namespace Gts {
 	void StaggerActor(Actor* receiver);
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause);
+	void PrintSuffocate(Actor* pred, Actor* prey);
 }

@@ -20,21 +20,6 @@
 	const float SANDWICH_ANGLE = 60;
 	const float PI = 3.14159;
 
-    void PrintSuffocate(Actor* pred, Actor* prey) {
-        int random = rand() % 5;
-		if (random <= 1) {
-			Cprint("{} was slowly smothered between {} thighs", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (random == 2) {
-			Cprint("{} was suffocated by the thighs of {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (random == 3) {
-			Cprint("Thighs of {} suffocated {} to death", pred->GetDisplayFullName(), prey->GetDisplayFullName());
-		} else if (random == 4) {
-			Cprint("{} got smothered between the thighs of {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (random == 5) {
-			Cprint("{} lost life to the thighs of {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		}
-    }
-
     [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
 	{
 		float S = sin(angle);
@@ -161,7 +146,7 @@
             }
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
-				//ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
+				ManageRagdoll(tiny_is_actor, deltaLength, deltaLocation, targetLocation);
 				auto charcont = tiny_is_actor->GetCharController();
 				if (charcont) {
 					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
@@ -283,7 +268,7 @@
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_SANDWICH_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
-			if ((prey->IsEssential() && Runtime::GetBool("ProtectEssentials")) || Runtime::HasSpell(prey, "StartVore")) {
+			if ((prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 					return false;
 				} else {
 					return true;
