@@ -1,29 +1,31 @@
-#include "Config.hpp"
-#include "managers/GrowthTremorManager.hpp"
-#include "managers/RipClothManager.hpp"
-#include "managers/GtsSizeManager.hpp"
+#include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
-#include "managers/GtsManager.hpp"
-#include "managers/highheel.hpp"
-#include "managers/Attributes.hpp"
+#include "managers/GrowthTremorManager.hpp"
+#include "managers/RipClothManager.hpp"
+#include "scale/scalespellmanager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/InputManager.hpp"
-#include "managers/hitmanager.hpp"
-#include "magic/effects/smallmassivethreat.hpp"
 #include "magic/effects/common.hpp"
+#include "managers/GtsManager.hpp"
+#include "managers/Attributes.hpp"
+#include "managers/hitmanager.hpp"
+#include "managers/highheel.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
-#include "data/time.hpp"
 #include "scale/scale.hpp"
-#include "scale/scalespellmanager.hpp"
-#include "utils/actorUtils.hpp"
-#include "node.hpp"
+#include "UI/DebugAPI.hpp"
+#include "data/time.hpp"
+#include "profiler.hpp"
+#include "Config.hpp"
 #include "timer.hpp"
+#include "node.hpp"
 #include <vector>
 #include <string>
-#include "UI/DebugAPI.hpp"
+
 
 using namespace Gts;
 using namespace RE;
@@ -62,6 +64,7 @@ namespace {
 	}
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
+		Profilers::Start("AccurateDamage: StaggerOr");
 		if (tiny->IsDead()) {
 			return;
 		}
@@ -85,10 +88,12 @@ namespace {
 			PushActorAway(giant, tiny, power/12); // Push instead
 			return;
 		}
+		Profilers::Stop("AccurateDamage: StaggerOr");
 	}
 
 
 	void SMTCrushCheck(Actor* Caster, Actor* Target) {
+		Profilers::Start("AccurateDamage: SMTCrushCheck");
 		if (Caster == Target) {
 			return;
 		}
@@ -128,9 +133,11 @@ namespace {
 				}
 			}
 		}
+		Profilers::Stop("AccurateDamage: SMTCrushCheck");
 	}
 
 	void SizeModifications(Actor* giant, Actor* tiny, float HighHeels) {
+		Profilers::Start("AccurateDamage: SizeModifications");
 		if (tiny == giant) {
 			return;
 		}
@@ -171,6 +178,7 @@ namespace {
 			KnockAreaEffect(giant, 2, 16 * giantscale);
 		}
 	}
+	Profilers::Stop("AccurateDamage: SizeModifications");
 }
 
 
@@ -186,6 +194,7 @@ namespace Gts {
 	}
 
 	void AccurateDamage::DoAccurateCollision(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+		Profilers::Start("AccurateDamage: DoAccurateCollision");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
 			return;
@@ -326,9 +335,11 @@ namespace Gts {
 				}
 			}
 		}
+		Profilers::Stop("AccurateDamage: DoAccurateCollision");
 	}
 
 	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult) {
+		Profilers::Start("AccurateDamage: ApplySizeEffect");
 		if (!CanDoDamage(giant, tiny)) {
 			return;
 		}
@@ -355,10 +366,12 @@ namespace Gts {
 			}
 			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
 		}
+		Profilers::Stop("AccurateDamage: ApplySizeEffect");
 	}
 
 
 	void AccurateDamage::UnderFootEvent(const UnderFoot& evt) { // On underfoot event
+		Profilers::Start("AccurateDamage: UnderFootEvent");
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
 		float force = evt.force;
@@ -413,9 +426,11 @@ namespace Gts {
 				}
 			}
 		}
+		Profilers::Stop("AccurateDamage: UnderFootEvent");
 	}
 
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage) { // Applies damage and crushing
+		Profilers::Start("AccurateDamage: DoSizeDamage");
 		if (!giant) {
 			return;
 		} if (!tiny) {
@@ -476,4 +491,5 @@ namespace Gts {
 		}
 		DamageAV(tiny, ActorValue::kHealth, result);
 	}
+	Profilers::Stop("AccurateDamage: DoSizeDamage");
 }

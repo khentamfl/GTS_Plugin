@@ -13,6 +13,7 @@
 #include "scale/scale.hpp"
 #include "utils/debug.hpp"
 #include "data/time.hpp"
+#include "profiler.hpp"
 #include "Config.hpp"
 #include "timer.hpp"
 #include "node.hpp"
@@ -36,6 +37,7 @@ namespace Gts {
 	}
 
 	void GameModeManager::ApplyGameMode(Actor* actor, const ChosenGameMode& game_mode, const float& GrowthRate, const float& ShrinkRate)  {
+		Profilers::Start("Manager: ApplyGameMode");
 		const float EPS = 1e-7;
 		if (game_mode != ChosenGameMode::None) {
 			auto player = PlayerCharacter::GetSingleton();
@@ -164,9 +166,11 @@ namespace Gts {
 				break;
 			}
 		}
+		Profilers::Stop("Manager: ApplyGameMode");
 	}
 
 	void GameModeManager::GameMode(Actor* actor)  {
+		Profilers::Start("Manager: GameMode");
 		if (!actor) {
 			return;
 		}
@@ -236,4 +240,5 @@ namespace Gts {
 		}
 		GameModeManager::GetSingleton().ApplyGameMode(actor, gameMode, growthRate/2, shrinkRate);
 	}
+	Profilers::Stop("Manager: GameMode");
 }

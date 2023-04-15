@@ -1,4 +1,5 @@
 #include "utils/av.hpp"
+#include "profiler.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -76,7 +77,9 @@ namespace Gts {
 	}
 
 	void SetHealthPercentage(Actor* actor, float target) {
+		Profilers::Start("Av: SetHp%");
 		SetPercentageAV(actor, ActorValue::kHealth, target);
+		Profilers::Stop("Av: SetHp%");
 	}
 
 	float GetMagikaPercentage(Actor* actor) {
