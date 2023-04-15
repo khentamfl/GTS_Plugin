@@ -6,6 +6,7 @@
 #include "managers/ai/AiManager.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
+#include "data/persistent.hpp"
 #include "managers/tremor.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
@@ -51,7 +52,7 @@
         int random = rand() % 7;
         int actionrng = rand() % 2;
         std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, 1.0);
-        if (preys) {
+        if (!preys.empty()) {
             if (random <= 2) {
                 if (actionrng <= 1) {
                  AnimationManager::StartAnim("StompRight", pred);
