@@ -53,10 +53,12 @@
         int actionrng = rand() % 2;
         std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, 3.0);
         for (auto prey: preys) {
+            log::info("Doing Stomp as {}, random:{}, action rng: {}", pred->GetDisplayFullName(), random, actionrng);
+
             if (AiManager::GetSingleton().CanStomp(pred, prey)) {
                 if (random <= 2) {
                     if (actionrng <= 1) {
-                     AnimationManager::StartAnim("StompRight", pred);
+                        AnimationManager::StartAnim("StompRight", pred);
                     } else {
                         AnimationManager::StartAnim("StompLeft", pred);
                     }
@@ -195,7 +197,7 @@
 		} if (IsGtsBusy(pred)) {
             return false;
         }
-		if (!Runtime::HasPerkTeam(pred, "DestructionBasics")) {
+		if (!Runtime::HasPerkTeam(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
