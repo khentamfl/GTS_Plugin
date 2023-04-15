@@ -40,7 +40,7 @@ namespace Gts {
       [[nodiscard]] static ProfilerHandle Profile(std::string_view name);
 			static void Start(std::string_view name);
       static void Stop(std::string_view name);
-      static void Report(std::string_view name);
+      static void Report();
 		private:
 			[[nodiscard]] static Profilers& GetSingleton();
       std::unordered_map<std::string,Profiler> profilers;

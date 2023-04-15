@@ -57,7 +57,7 @@ namespace Gts {
     }
   }
 
-  void Profilers::Report(std::string_view name) {
+  void Profilers::Report() {
     std::string report = "Reporting Profilers:";
 		report += std::format("\n|{:20}|", "Name");
 		report += std::format("{:15s}|", "Seconds");
