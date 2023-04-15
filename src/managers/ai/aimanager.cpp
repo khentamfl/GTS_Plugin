@@ -51,7 +51,7 @@
     void DoStomp(Actor* pred) {
         int random = rand() % 7;
         int actionrng = rand() % 2;
-        std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, 1.0);
+        std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, 3.0);
         for (auto prey: preys) {
             if (AiManager::GetSingleton().CanStomp(pred, prey)) {
                 if (random <= 2) {
@@ -143,7 +143,7 @@
 		// Filter out invalid targets
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
-			return !this->CanSandwich(pred, prey);
+			return !this->CanStomp(pred, prey);
 		}), preys.end());
 
 		// Filter out actors not in front
