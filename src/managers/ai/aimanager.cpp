@@ -53,7 +53,7 @@
         int actionrng = rand() % 2;
         std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, 1.0);
         for (auto prey: preys) {
-            if (AiManager::GetSingleton().CanStomp(actor, prey)) {
+            if (AiManager::GetSingleton().CanStomp(pred, prey)) {
                 if (random <= 2) {
                     if (actionrng <= 1) {
                      AnimationManager::StartAnim("StompRight", pred);
