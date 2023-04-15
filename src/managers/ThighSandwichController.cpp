@@ -6,6 +6,7 @@
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
+#include "data/persistent.hpp"
 #include "managers/tremor.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"

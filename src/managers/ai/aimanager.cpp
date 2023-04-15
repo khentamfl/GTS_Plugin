@@ -19,7 +19,7 @@
  namespace {
 
     const float MINIMUM_STOMP_DISTANCE = 50.0;
-	const float MINIMUM_STOMP_SCALE_RATIO = 2.5;
+	const float MINIMUM_STOMP_SCALE_RATIO = 1.75;
 	const float STOMP_ANGLE = 72;
 	const float PI = 3.14159;
 
