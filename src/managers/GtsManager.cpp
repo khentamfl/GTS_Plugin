@@ -34,10 +34,10 @@ using namespace std;
 
 namespace {
 	void FixActorFade(Actor* actor) {
+		Profilers::Start("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
 			return;
 		}
-		Profilers::Start("Manager: Fade Fix");
 		if ((actor->formID == 0x14 ||actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto node = find_node(actor, "skeleton_female.nif");
 			NiAVObject* skeleton = node;
