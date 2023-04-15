@@ -88,23 +88,22 @@
         Profilers::Start("Ai: Update");
         for (auto actor: find_actors()) {
             auto& persist = Persistent::GetSingleton();
-            if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly) {
+            if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate() && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
-                if (ai) {
-                    if (ai->ActionTimer.ShouldRun()) {
-                        if (!CanStomp(actor)) {
-                            return;
-                        }
-                        auto rng = ai->random;
-                        if (rng < 10) {
-                            DoStomp(actor);
-                        }
+                 if (ai->ActionTimer.ShouldRun()) {
+                    if (!CanStomp(actor)) {
+                         return;
+                    }
+                    auto rng = ai->random;
+                    if (rng < 10) {
+                        DoStomp(actor);
                     }
                 }
             }
         }
         Profilers::Stop("Ai: Update");
     }
+
 
     std::vector<Actor*> AiManager::RandomStomp(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
