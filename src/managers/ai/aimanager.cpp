@@ -201,7 +201,7 @@
             log::info("Stomper is Busy");
             return false;
         }
-		if (!Runtime::HasPerkTeamOr(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
+		if (!Runtime::HasPerkTeam(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
