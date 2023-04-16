@@ -46,11 +46,11 @@ namespace {
 	const float UNDERFOOT_POWER = 0.60;
 
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && tiny->IsPlayerTeammate()) {
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (tiny->IsPlayerTeammate() || Runtime::InFaction(tiny, "FollowerFaction"))) {
 			return false;
-		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->IsPlayerTeammate()) {
+		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && (giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction")) && (tiny->IsPlayerTeammate() || Runtime::InFaction(tiny, "FollowerFaction"))) {
 			return false;
-		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && giant->IsPlayerTeammate() && tiny->formID == 0x14) {
+		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && (giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction")) && tiny->formID == 0x14) {
 			return false;
 		} return true;
 	}
