@@ -49,6 +49,9 @@
 		);
 	}
     void DoSandwich(Actor* pred) {
+		if (!Runtime::HasPerk(PlayerCharacter::GetSingleton(), "KillerThighs")) {
+			return false;
+		}
 		if (!Persistent::GetSingleton().Sandwich_Ai) {
 			log::info("Sandwich AI is false");
 			return;
@@ -70,6 +73,10 @@
     }
 
     void DoStomp(Actor* pred) {
+		if (!Runtime::HasPerk(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
+			log::info("No matching perk");
+			return;
+		}
 		if (!Persistent::GetSingleton().Stomp_Ai) {
 			log::info("Stomp AI is false");
 			return;
@@ -130,10 +137,6 @@
 		static Timer ActionTimer = Timer(0.80);
 		if (ActionTimer.ShouldRun()) {
 			auto& persist = Persistent::GetSingleton();
-			if (!Runtime::HasPerk(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
-				log::info("No matching perk");
-				return;
-			}
        	 	for (auto actor: find_actors()) {
 				std::vector<Actor*> AbleToAct = {};
 				for (auto actor: find_actors()) {
