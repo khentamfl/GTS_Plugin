@@ -74,11 +74,9 @@
 
     void DoStomp(Actor* pred) {
 		if (!Runtime::HasPerk(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
-			log::info("No matching perk");
 			return;
 		}
 		if (!Persistent::GetSingleton().Stomp_Ai) {
-			log::info("Stomp AI is false");
 			return;
 		}
         int random = rand() % 4;
@@ -86,7 +84,6 @@
         std::size_t amount = 6;
         std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
         for (auto prey: preys) {
-            log::info("Doing Stomp as {}, random:{}, action rng: {}", pred->GetDisplayFullName(), random, actionrng);
             if (AiManager::GetSingleton().CanStomp(pred, prey)) {
                 if (random <= 2) {
                     if (actionrng <= 2) {
@@ -108,9 +105,7 @@
 	void AnimationAttempt(Actor* actor) {
         float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
         int rng = rand() % 40;
-        log::info("RNG: {}, scale: {}", rng, scale);
         if (rng > 2 && rng < 6 * scale) {
-            log::info("RNG < {}, doing stomp", 6 * scale);
             DoStomp(actor);
         } else if (rng < 2) {
             DoSandwich(actor);   

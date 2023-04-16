@@ -96,11 +96,6 @@ namespace {
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}
 
-	int GetRandomBoost() {
-		int random = rand()% 150 + 1;
-		return random;
-	}
-
 	void DoSounds(std::string_view tag, Actor* giant, float animspeed, std::string_view feet) {
 		float bonus = 1.0;
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
@@ -123,7 +118,7 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		if (data.giant.formID != 0x14) {
-			data.animSpeed += GetRandomBoost()/300;
+			data.animSpeed += GetRandomBoost()/3;
 			log::info("Anim Speed: {}", data.animSpeed);
 		}
 		TrackFeet(giant, 6.0, true);
@@ -135,7 +130,7 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		if (data.giant.formID != 0x14) {
-			data.animSpeed += GetRandomBoost()/300;
+			data.animSpeed += GetRandomBoost()/3;
 			log::info("Anim Speed: {}", data.animSpeed);
 		}
 		TrackFeet(giant, 5.0, true);
@@ -145,14 +140,14 @@ namespace {
     void GTS_StrongStomp_LR_Middle(AnimationEventData& data) {
         data.animSpeed = 1.55;
 		if (data.giant.formID != 0x14) {
-			data.animSpeed = 1.55 + GetRandomBoost()/100;
+			data.animSpeed = 1.55 + GetRandomBoost();
 			log::info("Anim Speed: {}", data.animSpeed);
 		}
 	}
     void GTS_StrongStomp_LL_Middle(AnimationEventData& data) {
         data.animSpeed = 1.55;
 		if (data.giant.formID != 0x14) {
-			data.animSpeed = 1.55 + GetRandomBoost()/100;
+			data.animSpeed = 1.55 + GetRandomBoost();
 			log::info("Anim Speed: {}", data.animSpeed);
 		}
 	}

@@ -102,7 +102,7 @@ namespace {
 						break;
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 						// It is now safe to access form data.
-						Cprint("[GTSPlugin.dll]: [ Giantess Mod v 1.75 was succesfully initialized. Waiting for New Game/Save Load. ]");
+						Cprint("[GTSPlugin.dll]: [ Giantess Mod v 1.78 was succesfully initialized. Waiting for New Game/Save Load. ]");
 						EventDispatcher::DoDataReady();
 						break;
 					// Skyrim game events.
@@ -110,14 +110,14 @@ namespace {
 						// Data will be a boolean indicating whether the load was successful.
 						{
 							Plugin::SetInGame(true);
-							Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized, loaded and is working properly. ]");
+							Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
 						}
 						break;
 					case MessagingInterface::kNewGame: // Player starts a new game from main menu.
 						{
 							Plugin::SetInGame(true);
 							EventDispatcher::DoReset();
-							Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized, loaded and is working properly. ]");
+							Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
 						}
 						break;
 					case MessagingInterface::kPreLoadGame: // Player selected a game to load, but it hasn't loaded yet.

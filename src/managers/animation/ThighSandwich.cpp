@@ -85,11 +85,6 @@ namespace {
 		}
 	}
 
-	int GetRandomBoost() {
-		int random = rand()% 150 + 1;
-		return random;
-	}
-
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
 	}
@@ -167,7 +162,7 @@ namespace {
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.66;
 		if (data.giant.formID != 0x14) {
-			data.animSpeed = 1.66 + GetRandomBoost()/100;
+			data.animSpeed = 1.66 + GetRandomBoost();
 			log::info("Anim Speed: {}", data.animSpeed);
 		}
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
@@ -180,7 +175,7 @@ namespace {
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.66;
 		if (data.giant.formID != 0x14) {
-			data.animSpeed = 1.66 + GetRandomBoost()/100;
+			data.animSpeed = 1.66 + GetRandomBoost();
 			log::info("Anim Speed: {}", data.animSpeed);
 		}
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
