@@ -27,6 +27,8 @@ namespace Gts {
 			float experiment = 1.0;
 			inline static bool balancemode = false;
 
+			virtual void OnAddPerk(const AddPerkEvent& evt) override;
+
 			virtual std::string DebugName() override;
 			virtual void Update() override;
 

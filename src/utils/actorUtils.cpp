@@ -345,6 +345,13 @@ namespace Gts {
 		}
 	}
 
+	void CallHelpMessage() {
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		if (progressionQuest) {
+			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "TrueGiantessMessage");
+		}
+	}
+
 	void PerkPointCheck(float level) {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		int bonus = 1.0;

@@ -264,6 +264,15 @@ void GtsManager::Update() {
 	}
 	Profilers::Stop("Manager: Update()");
 }
+
+void GtsManager::OnAddPerk(const AddPerkEvent& evt) {
+		if (evt.perk == Runtime::GetPerk("TrueGiantess")) {
+			if (evt.actor->formID == 0x14) {
+				CallHelpMessage();
+			}
+		}
+	}
+
 void GtsManager::reapply(bool force) {
 	// Get everyone in loaded AI data and reapply
 	Profilers::Start("Manager: reapply");

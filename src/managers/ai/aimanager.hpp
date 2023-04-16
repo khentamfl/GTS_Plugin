@@ -19,7 +19,7 @@ namespace Gts {
 			// enough
             bool ActorsAreDead = false;
             bool IsThighSandwiching = false;
-            inline static Timer ActionTimer = Timer(2.5);
+            inline static Timer ActionTimer = Timer(1.0);
 	};
     class AiManager : public EventListener  {
 		public:

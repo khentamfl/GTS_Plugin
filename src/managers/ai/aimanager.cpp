@@ -98,7 +98,6 @@
 
     bool AiData::GetTimer(int type, float scale) {
         if (type == 1) {
-            this->ActionTimer.delta = 2.5 / scale;
 		    return this->ActionTimer.ShouldRun();
         } 
         return false;
@@ -119,11 +118,11 @@
             auto& persist = Persistent::GetSingleton();
             if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
-                float scale = std::clamp(get_visual_scale(actor)/3, 1.0f, 6.0f);
+                float scale = std::clamp(get_visual_scale(actor)/2, 1.0f, 6.0f);
                 if (ai.GetTimer(1, scale) == true) {
-                    int rng = rand() % 30;
+                    int rng = rand() % 40;
                     log::info("RNG: {}", rng);
-                    if (rng > 2 && rng < 26) {
+                    if (rng > 2 && rng < 6 * scale) {
                         log::info("RNG < 3, doing stomp");
                         DoStomp(actor);
                     } else if (rng < 2) {
