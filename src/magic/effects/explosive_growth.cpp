@@ -73,19 +73,21 @@ namespace Gts {
 
 		float bonus = 1.0;
 		float limit = this->grow_limit * Gigantism * AdjustLimit;
-		float sizelimit = get_max_scale(caster);
+		float MaxSize = get_max_scale(caster);
 
 		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00020;
+		
 
 		if (Runtime::HasPerk(caster, "HealthRegenPerk")) {
 			caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 
-		if (scale < limit && scale < sizelimit) {
+		if (scale < limit && scale < MaxSize) {
 			if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 				bonus = get_visual_scale(caster) * 0.25 + 0.75;
 			}
 			DoGrowth(caster, this->power * bonus);
+			log::info("Limit: {}, MaxSize: {}, Scale: {}", limit, MaxSize, scale);
 		}
 	}
 
