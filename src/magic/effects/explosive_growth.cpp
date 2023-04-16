@@ -87,7 +87,6 @@ namespace Gts {
 				bonus = get_target_scale(caster) * 0.25 + 0.75;
 			}
 			DoGrowth(caster, this->power * bonus);
-			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 		}
 	}
 
@@ -117,6 +116,7 @@ namespace Gts {
 	void ExplosiveGrowth::DoShrink(Actor* actor) {
 		float value = SizeManager::GetSingleton().GetGrowthSpurt(actor);
 		mod_target_scale(actor, -value); // Do Shrink
+		log::info("Doing Shrink: {}", value);
 		SizeManager::GetSingleton().SetGrowthSpurt(actor, 0.0);
 
 		Rumble::Once("ExplosiveGrowth", actor, 7.0, 0.05);
@@ -124,7 +124,7 @@ namespace Gts {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
 		}
 		if (this->timer.ShouldRun()) {
-			float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/2);
+			float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/4);
 			Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);
 		}
 	}
