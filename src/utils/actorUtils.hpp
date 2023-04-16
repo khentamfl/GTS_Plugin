@@ -49,7 +49,6 @@ namespace Gts {
 	void CallVampire();
 	void CallHelpMessage();
 	void PerkPointCheck(float level);
-	float GetRandomBoost();
 
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage);

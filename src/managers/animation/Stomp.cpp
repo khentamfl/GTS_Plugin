@@ -45,7 +45,9 @@ namespace {
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.33;
 		if (data.giant.formID != 0x14) {
-			data.animSpeed = 1.33 + GetRandomBoost()/2;
+			int rng = (rand()% 150 + 1);
+			float random = rng/100;
+			data.animSpeed = 1.33 + random/2;
 		}
 		TrackFeet(&data.giant, 6, true);
 		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
@@ -57,7 +59,9 @@ namespace {
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.33;
 		if (data.giant.formID != 0x14) {
-			data.animSpeed = 1.33 + GetRandomBoost()/2;
+			int rng = (rand()% 150 + 1);
+			float random = rng/100;
+			data.animSpeed = 1.33 + random/2;
 		}
 		TrackFeet(&data.giant, 5, true);
 		Rumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
