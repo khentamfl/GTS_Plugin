@@ -102,7 +102,7 @@ namespace Gts {
 	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
 		mod_target_scale(actor, value); // Grow
 
-		SizeManager::GetSingleton().ModGrowthSpurt(caster, value);
+		SizeManager::GetSingleton().ModGrowthSpurt(actor, value);
 
 		Rumble::Once("ExplosiveGrowth", actor, get_visual_scale(actor) * 2, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
@@ -115,9 +115,9 @@ namespace Gts {
 	}
 
 	void ExplosiveGrowth::DoShrink(Actor* actor) {
-		float value = SizeManager::GetSingleton().GetGrowthSpurt(caster);
+		float value = SizeManager::GetSingleton().GetGrowthSpurt(actor);
 		mod_target_scale(actor, -value); // Do Shrink
-		SizeManager::GetSingleton().SetGrowthSpurt(caster, 0.0);
+		SizeManager::GetSingleton().SetGrowthSpurt(actor, 0.0);
 
 		Rumble::Once("ExplosiveGrowth", actor, 7.0, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
