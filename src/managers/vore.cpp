@@ -463,6 +463,9 @@ namespace Gts {
 	}
 
 	void Vore::RandomVoreAttempt(Actor* pred) {
+		if (!Persistent::GetSingleton().Vore_Ai) {
+			return;
+		}
 		Actor* player = PlayerCharacter::GetSingleton();
 		auto& VoreManager = Vore::GetSingleton();
 		if (IsGtsBusy(pred)) {

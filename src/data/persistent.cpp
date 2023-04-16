@@ -21,6 +21,7 @@ namespace {
 	inline const auto SizeDamageMult = _byteswap_ulong('SZDM');
 	inline const auto StompAiRecord = _byteswap_ulong('STAI');
 	inline const auto SandwichAiRecord = _byteswap_ulong('SWAI');
+	inline const auto VoreAiRecord = _byteswap_ulong('VRAI');
 
 	const float DEFAULT_MAX_SCALE = 65535.0;
 	const float DEFAULT_HALF_LIFE = 1.0;
@@ -339,6 +340,10 @@ namespace Gts {
 				bool Sandwich_Ai;
 				serde->ReadRecordData(&Sandwich_Ai, sizeof(Sandwich_Ai));
 				GetSingleton().Sandwich_Ai = Sandwich_Ai;
+			} else if (type == VoreAiRecord) {
+				bool Vore_Ai;
+				serde->ReadRecordData(&Vore_Ai, sizeof(Vore_Ai));
+				GetSingleton().Vore_Ai = Vore_Ai;
 			}
 			
 			 else if (type == IsSpeedAdjustedRecord) {
@@ -527,6 +532,14 @@ namespace Gts {
 		}
 		bool Sandwich_Ai = GetSingleton().Sandwich_Ai;
 		serde->WriteRecordData(&Sandwich_Ai, sizeof(Sandwich_Ai));
+
+		if (!serde->OpenRecord(VoreAiRecord, 1)) {
+			log::error("Unable to open Vore ai record to write cosave data.");
+			return;
+		}
+
+		bool Vore_Ai = GetSingleton().Vore_Ai;
+		serde->WriteRecordData(&Vore_Ai, sizeof(Vore_Ai));
 
 		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 1)) {
 			log::error("Unable to open is speed adjusted record to write cosave data.");

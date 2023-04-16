@@ -125,7 +125,7 @@ Function SetIsHHFurnitureEnabled(Bool enabled) global native
 ;===================A I                   |
 ;==========================================
 
-;allow/disallow followers to do stomp/sandwich animations
+Function SetVoreAi(bool enabled) global native
 Function SetStompAi(bool enabled) global native
 Function SetSandwichAi(bool enabled) global native    
 
