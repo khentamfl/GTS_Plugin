@@ -162,7 +162,7 @@ namespace {
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.66;
 		if (data.giant.formID != 0x14) {
-			int rng = (rand()% 150 + 1);
+			float rng = (rand()% 150 + 1);
 			float random = rng/100;
 			data.animSpeed = 1.66 + random;
 			log::info("Anim Speed: {}, random: {}, rng: {}", data.animSpeed, random, rng);
@@ -177,7 +177,7 @@ namespace {
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.66;
 		if (data.giant.formID != 0x14) {
-			int rng = (rand()% 150 + 1);
+			float rng = (rand()% 150 + 1);
 			float random = rng/100;
 			data.animSpeed = 1.66 + random;
 			log::info("Anim Speed: {}, random: {}, rng: {}", data.animSpeed, random, rng);
