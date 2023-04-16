@@ -66,7 +66,7 @@ namespace Gts {
 				this->grow_limit = 2.01; // NOLINT
 			}
 		}
-
+		this->totalgainedsize = (this->grow_limit - get_natural_scale(caster));
 		auto& sizemanager = SizeManager::GetSingleton();
 		float AdjustLimit = clamp(1.0, 12.0, Runtime::GetFloatOr("CrushGrowthStorage", 0.0) + 1.0);
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(caster)/100;
@@ -84,46 +84,22 @@ namespace Gts {
 		}
 
 		if (scale <= limit || limit > GetGrowthSpurt) {
-
 			if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 				bonus = get_target_scale(caster) * 0.25 + 0.75;
 			}
 			DoGrowth(caster, this->power * bonus);
-			//this->RequiredSizeChange = 0;
 			SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
 		}
-
-		//else if (limit <= GetGrowthSpurt || GetGrowthSpurt > limit) {
-		//float difference = GetGrowthSpurt - limit;
-		//log::info("RequiredSizeChange: {}", RequiredSizeChange);
-		//if (this->RequiredSizeChange <= 0 && difference > 0.10) {
-		//SizeManager::GetSingleton().SetGrowthSpurt(caster, limit);
-		//this->RequiredSizeChange = difference;
-		//}
-
-		//if (this->RequiredSizeChange > 0) {
-		//this->RequiredSizeChange -= difference/100;
-		//DoShrink(caster, difference/100);
-		//if (this->RequiredSizeChange <= 0)
-		//{
-		//this->RequiredSizeChange = 0;
-		//return;
-		//}
-		//}
-		//log::info("Difference is: {}", difference);
-		//log::info("RequiredSizeChange: {}, Difference: {}", RequiredSizeChange, difference);
 	}
-	//log::info("Growth Spurt: {}, Total Limit is: {}, Gigantism: {}, CrushGrowthStorage: {}, Target Scale: {}", GetGrowthSpurt, limit, Gigantism, AdjustLimit, scale);
 
 	void ExplosiveGrowth::OnFinish() {
 		Actor* caster = GetCaster();
 		if (!caster) {
 			return;
 		}
+		ExplosiveGrowth::DoShrink(caster, this->totalgainedsize);
 		SizeManager::GetSingleton().SetGrowthSpurt(caster, 0.0);
 	}
-
-
 
 	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
 		mod_target_scale(actor, value); // Grow
@@ -141,7 +117,7 @@ namespace Gts {
 	void ExplosiveGrowth::DoShrink(Actor* actor, float value) {
 		mod_target_scale(actor, -value); // Grow
 
-		Rumble::Once("ExplosiveGrowth", actor, 1.0, 0.05);
+		Rumble::Once("ExplosiveGrowth", actor, 7.0, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
 		}
