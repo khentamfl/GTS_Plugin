@@ -81,7 +81,7 @@ namespace Gts {
 		}
 
 		// Apply it
-		if (attacker->formdID == 0x14 && size_difference >= 4.0) {
+		if (attacker->formID == 0x14 && size_difference >= 4.0) {
 			FormType formType = HitId->GetFormType();
 			if (formType != FormType::Weapon) {
 				return;
