@@ -12,14 +12,12 @@ namespace Gts {
     class AiData {
 		public:
 			AiData(Actor* giant);
-			bool GetTimer(int type);
 		private:
 			ActorHandle giant;
 			// Vore is done is sets with multiple actors if the giant is big
 			// enough
             bool ActorsAreDead = false;
             bool IsThighSandwiching = false;
-            inline static Timer ActionTimer = Timer(1.0);
 	};
     class AiManager : public EventListener  {
 		public:

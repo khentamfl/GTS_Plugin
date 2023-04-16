@@ -18,9 +18,9 @@
 
  namespace {
 
-    const float MINIMUM_STOMP_DISTANCE = 52.0;
+    const float MINIMUM_STOMP_DISTANCE = 50.0;
 	const float MINIMUM_STOMP_SCALE_RATIO = 1.75;
-	const float STOMP_ANGLE = 70;
+	const float STOMP_ANGLE = 66;
 	const float PI = 3.14159;
 
     [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
@@ -97,18 +97,23 @@
             }
         }
     }
+
+	void AnimationAttempt(Actor* actor) {
+        float scale = std::clamp(1.0f * get_visual_scale(actor), 1.0f, 6.0f);
+        int rng = rand() % 40;
+        log::info("RNG: {}, scale: {}", rng, scale);
+        if (rng > 2 && rng < 6 * scale) {
+            log::info("RNG < {}, doing stomp", 6 * scale);
+            DoStomp(actor);
+        } else if (rng < 2) {
+            DoSandwich(actor);   
+    	}
+	}
  }
 
 
  namespace Gts {
     AiData::AiData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
-	}
-
-    bool AiData::GetTimer(int type) {
-        if (type == 1) {
-		    return this->ActionTimer.ShouldRun();
-        } 
-        return false;
 	}
 
     AiManager& AiManager::GetSingleton() noexcept {
@@ -122,25 +127,26 @@
 
     void AiManager::Update() {
         Profilers::Start("Ai: Update");
-        for (auto actor: find_actors()) {
-            auto& persist = Persistent::GetSingleton();
-            if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
-                auto ai = GetAiData(actor);
-                float scale = std::clamp(1.0f * get_visual_scale(actor), 1.0f, 6.0f);
-                if (ai.GetTimer(1) == true) {
-                    int rng = rand() % 40;
-                    log::info("RNG: {}, scale: {}", rng, scale);
-                    if (rng > 2 && rng < 6 * scale) {
-                        log::info("RNG < {}, doing stomp", 6 * scale);
-                        DoStomp(actor);
-                    } else if (rng < 2) {
-                        DoSandwich(actor);
-                    }
-                }
-            }
-        }
-        Profilers::Stop("Ai: Update");
-    }
+		static Timer ActionTimer = Timer(0.80);
+		if (ActionTimer.ShouldRun()) {
+       	 	for (auto actor: find_actors()) {
+				std::vector<Actor*> AbleToAct = {};
+				for (auto actor: find_actors()) {
+					if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
+						AbleToAct.push_back(actor);
+					}
+				}
+      			if (!AbleToAct.empty()) {
+  					int idx = rand() % AbleToAct.size();
+      				Actor* Performer = AbleToAct[idx];
+  					if (Performer) {
+  						AnimationAttempt(Performer);
+  					}   
+            	}
+        	}
+        	Profilers::Stop("Ai: Update");
+    	}
+	}
 
 
     std::vector<Actor*> AiManager::RandomStomp(Actor* pred, std::size_t numberOfPrey) {
