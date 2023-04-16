@@ -126,7 +126,7 @@
             auto& persist = Persistent::GetSingleton();
             if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
-                float scale = std::clamp(1.0 * get_visual_scale(actor), 1.0f, 6.0f);
+                float scale = std::clamp(1.0f * get_visual_scale(actor), 1.0f, 6.0f);
                 if (ai.GetTimer(1) == true) {
                     int rng = rand() % 40;
                     log::info("RNG: {}, scale: {}", rng, scale);
