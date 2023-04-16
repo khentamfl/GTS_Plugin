@@ -284,7 +284,7 @@
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_SANDWICH_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
-			if ((prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
+			if ((pred->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 					return false;
 				} else {
 					return true;

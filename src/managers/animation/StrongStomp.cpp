@@ -124,6 +124,7 @@ namespace {
 		data.canEditAnimSpeed = true;
 		if (data.giant.formID != 0x14) {
 			data.animSpeed += GetRandomBoost()/300;
+			log::info("Anim Speed: {}", data.animSpeed);
 		}
 		TrackFeet(giant, 6.0, true);
 		StartLegRumble("StrongStompR", data.giant, 0.3, 0.10, "Right");
@@ -135,6 +136,7 @@ namespace {
 		data.canEditAnimSpeed = true;
 		if (data.giant.formID != 0x14) {
 			data.animSpeed += GetRandomBoost()/300;
+			log::info("Anim Speed: {}", data.animSpeed);
 		}
 		TrackFeet(giant, 5.0, true);
 		StartLegRumble("StrongStompL", data.giant, 0.3, 0.10, "Left");
@@ -143,13 +145,15 @@ namespace {
     void GTS_StrongStomp_LR_Middle(AnimationEventData& data) {
         data.animSpeed = 1.55;
 		if (data.giant.formID != 0x14) {
-			data.animSpeed += GetRandomBoost()/100;
+			data.animSpeed = 1.55 + GetRandomBoost()/100;
+			log::info("Anim Speed: {}", data.animSpeed);
 		}
 	}
     void GTS_StrongStomp_LL_Middle(AnimationEventData& data) {
         data.animSpeed = 1.55;
 		if (data.giant.formID != 0x14) {
-			data.animSpeed += GetRandomBoost()/100;
+			data.animSpeed = 1.55 + GetRandomBoost()/100;
+			log::info("Anim Speed: {}", data.animSpeed);
 		}
 	}
     void GTS_StrongStomp_LR_End(AnimationEventData& data) {
