@@ -47,6 +47,7 @@ namespace Gts {
 	void CallDevourment(Actor* giant, Actor* tiny);
 	void CallGainWeight(Actor* giant, float value);
 	void CallVampire();
+	void CallHelpMessage();
 	void PerkPointCheck(float level);
 
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node);
