@@ -162,10 +162,8 @@ namespace {
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.66;
 		if (data.giant.formID != 0x14) {
-			float rng = (rand()% 150 + 1);
-			float random = rng/100;
-			data.animSpeed = 1.66 + random;
-			log::info("Anim Speed: {}, random: {}, rng: {}", data.animSpeed, random, rng);
+			data.animSpeed = 1.66 + GetRandomBoost();
+			log::info("Anim Speed: {}, random: {}", data.animSpeed, GetRandomBoost());
 		}
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
@@ -177,10 +175,8 @@ namespace {
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.66;
 		if (data.giant.formID != 0x14) {
-			float rng = (rand()% 150 + 1);
-			float random = rng/100;
-			data.animSpeed = 1.66 + random;
-			log::info("Anim Speed: {}, random: {}, rng: {}", data.animSpeed, random, rng);
+			data.animSpeed = 1.66 + GetRandomBoost();
+			log::info("Anim Speed: {}, random: {}", data.animSpeed, GetRandomBoost());
 		}
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
