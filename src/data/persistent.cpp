@@ -19,6 +19,8 @@ namespace {
 	inline const auto TremorScales = _byteswap_ulong('TREM');
 	inline const auto CamCollisions = _byteswap_ulong('CAMC');
 	inline const auto SizeDamageMult = _byteswap_ulong('SZDM');
+	inline const auto StompAiRecord = _byteswap_ulong('STAI');
+	inline const auto SandwichAiRecord = _byteswap_ulong('SWAI');
 
 	const float DEFAULT_MAX_SCALE = 65535.0;
 	const float DEFAULT_HALF_LIFE = 1.0;
@@ -329,6 +331,14 @@ namespace Gts {
 				bool allow_feetracking;
 				serde->ReadRecordData(&allow_feetracking, sizeof(allow_feetracking));
 				GetSingleton().allow_feetracking = allow_feetracking;
+			} else if (type == StompAiRecord) {
+				bool Stomp_Ai;
+				serde->ReadRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
+				GetSingleton().Stomp_Ai = Stomp_Ai;
+			} else if (type == SandwichAiRecord) {
+				bool Sandwich_Ai;
+				serde->ReadRecordData(&Sandwich_Ai, sizeof(Sandwich_Ai));
+				GetSingleton().Sandwich_Ai = Sandwich_Ai;
 			}
 			
 			 else if (type == IsSpeedAdjustedRecord) {
@@ -503,6 +513,20 @@ namespace Gts {
 		}
 		bool allow_feetracking = GetSingleton().allow_feetracking;
 		serde->WriteRecordData(&allow_feetracking, sizeof(allow_feetracking));
+
+		if (!serde->OpenRecord(StompAiRecord, 1)) {
+			log::error("Unable to open Stomp Ai record to write cosave data.");
+			return;
+		}
+		bool Stomp_Ai = GetSingleton().Stomp_Ai;
+		serde->WriteRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
+
+		if (!serde->OpenRecord(SandwichAiRecord, 1)) {
+			log::error("Unable to open Sandwich Ai record to write cosave data.");
+			return;
+		}
+		bool Sandwich_Ai = GetSingleton().Sandwich_Ai;
+		serde->WriteRecordData(&Sandwich_Ai, sizeof(Sandwich_Ai));
 
 		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 1)) {
 			log::error("Unable to open is speed adjusted record to write cosave data.");

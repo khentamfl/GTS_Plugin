@@ -189,6 +189,14 @@ namespace {
 		}
 	}
 
+	void SetStompAi(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().Stomp_Ai = enabled;
+	}
+
+	void SetSandwichAi(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().Sandwich_Ai = enabled;
+	}
+
 	void DisintegrateTarget(StaticFunctionTag*, Actor* actor) {
 		if (actor) {
 			Disintegrate(actor);
@@ -306,6 +314,8 @@ namespace Gts {
 		vm->RegisterFunction("SetFeetTracking", PapyrusClass, SetFeetTracking);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
+		vm->RegisterFunction("SetStompAi", PapyrusClass, SetStompAi);
+		vm->RegisterFunction("SetSandwichAi", PapyrusClass, SetSandwichAi);
 		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
 		vm->RegisterFunction("SetOnlyCombatVore", PapyrusClass, SetOnlyCombatVore);
 		vm->RegisterFunction("IncreaseSizeLimit", PapyrusClass, IncreaseSizeLimit);

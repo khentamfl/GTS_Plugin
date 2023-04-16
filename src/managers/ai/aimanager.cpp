@@ -20,7 +20,7 @@
 
     const float MINIMUM_STOMP_DISTANCE = 52.0;
 	const float MINIMUM_STOMP_SCALE_RATIO = 1.75;
-	const float STOMP_ANGLE = 80;
+	const float STOMP_ANGLE = 70;
 	const float PI = 3.14159;
 
     [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
@@ -49,6 +49,10 @@
 		);
 	}
     void DoSandwich(Actor* pred) {
+		if (!Persistent::GetSingleton().Sandwich_Ai) {
+			log::info("Sandwich AI is false");
+			return;
+		}
         auto& Sandwiching = ThighSandwichController::GetSingleton();
         std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerkTeam(pred, "MassVorePerk")) {
@@ -66,6 +70,10 @@
     }
 
     void DoStomp(Actor* pred) {
+		if (!Persistent::GetSingleton().Stomp_Ai) {
+			log::info("Stomp AI is false");
+			return;
+		}
         int random = rand() % 4;
         int actionrng = rand() % 4;
         std::size_t amount = 6;
@@ -118,7 +126,7 @@
             auto& persist = Persistent::GetSingleton();
             if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
-                float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
+                float scale = std::clamp(1.0 * get_visual_scale(actor), 1.0f, 6.0f);
                 if (ai.GetTimer(1) == true) {
                     int rng = rand() % 40;
                     log::info("RNG: {}, scale: {}", rng, scale);
@@ -221,13 +229,16 @@
 			return false;
 		}
 		if (!Runtime::HasPerkTeam(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
-			log::info("Noo matching perk");
+			log::info("No matching perk");
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
 			prey_scale *= 3.0;
+		} if (prey->IsDead() && pred_scale/prey_scale < 8.0) {
+			log::info("prey is dead and size difference is not met");
+			return false;
 		}
 
 		float sizedifference = pred_scale/prey_scale;
