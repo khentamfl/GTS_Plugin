@@ -99,7 +99,7 @@
     }
 
 	void AnimationAttempt(Actor* actor) {
-        float scale = std::clamp(1.0f * get_visual_scale(actor), 1.0f, 6.0f);
+        float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
         int rng = rand() % 40;
         log::info("RNG: {}, scale: {}", rng, scale);
         if (rng > 2 && rng < 6 * scale) {
@@ -130,6 +130,10 @@
 		static Timer ActionTimer = Timer(0.80);
 		if (ActionTimer.ShouldRun()) {
 			auto& persist = Persistent::GetSingleton();
+			if (!Runtime::HasPerk(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
+				log::info("No matching perk");
+				return;
+			}
        	 	for (auto actor: find_actors()) {
 				std::vector<Actor*> AbleToAct = {};
 				for (auto actor: find_actors()) {
@@ -233,10 +237,6 @@
             return false;
         } if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 			log::info("Prey is protected");
-			return false;
-		}
-		if (!Runtime::HasPerkTeam(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
-			log::info("No matching perk");
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
