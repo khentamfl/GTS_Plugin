@@ -1,5 +1,6 @@
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
+#include "managers/Rumble.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
@@ -160,7 +161,7 @@ namespace Gts {
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest();
 					}
-					shake_camera(giant, 1.8, 1);
+					Rumble::Once("CrushRumble", tiny, 1.4, 0.15);
 					if (giant->formID == 0x14) {
 						TriggerScreenBlood(1);
 					}

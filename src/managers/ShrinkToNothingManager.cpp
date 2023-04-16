@@ -1,4 +1,5 @@
 #include "managers/ShrinkToNothingManager.hpp"
+#include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "scale/scale.hpp"
@@ -62,7 +63,7 @@ namespace Gts {
 						ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 
 						Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
-
+						Rumble::Once("ShrinkToNothingRumble", tiny, 0.6, 0.15);
 						if (giant->formID == 0x14 && IsDragon(tiny)) {
 							CompleteDragonQuest();
 						}
