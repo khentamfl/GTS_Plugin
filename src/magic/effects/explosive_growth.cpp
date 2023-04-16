@@ -67,13 +67,11 @@ namespace Gts {
 			}
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
-		float AdjustLimit = clamp(1.0, 12.0, Runtime::GetFloatOr("CrushGrowthStorage", 0.0) + 1.0);
+		float AdjustLimit = std::clamp(Runtime::GetFloatOr("CrushGrowthStorage", 0.0) + 1.0f, 1.0f, 12.0f);
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(caster)/100;
-		float GetGrowthSpurt = SizeManager::GetSingleton().GetGrowthSpurt(caster);
-		float scale = get_target_scale(caster);
+		float scale = get_visual_scale(caster);
 
 		float bonus = 1.0;
-
 		float limit = this->grow_limit * Gigantism * AdjustLimit;
 
 		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00020;
@@ -82,9 +80,9 @@ namespace Gts {
 			caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 		}
 
-		if (scale <= limit || limit > GetGrowthSpurt) {
+		if (scale < limit) {
 			if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
-				bonus = get_target_scale(caster) * 0.25 + 0.75;
+				bonus = get_visual_scale(caster) * 0.25 + 0.75;
 			}
 			DoGrowth(caster, this->power * bonus);
 		}
