@@ -66,7 +66,6 @@ namespace Gts {
 				this->grow_limit = 2.01; // NOLINT
 			}
 		}
-		this->totalgainedsize = (this->grow_limit - get_natural_scale(caster));
 		auto& sizemanager = SizeManager::GetSingleton();
 		float AdjustLimit = clamp(1.0, 12.0, Runtime::GetFloatOr("CrushGrowthStorage", 0.0) + 1.0);
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(caster)/100;
@@ -97,12 +96,13 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		ExplosiveGrowth::DoShrink(caster, this->totalgainedsize);
-		SizeManager::GetSingleton().SetGrowthSpurt(caster, 0.0);
+		ExplosiveGrowth::DoShrink(caster);
 	}
 
 	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
 		mod_target_scale(actor, value); // Grow
+
+		SizeManager::GetSingleton().ModGrowthSpurt(caster, value);
 
 		Rumble::Once("ExplosiveGrowth", actor, get_visual_scale(actor) * 2, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
@@ -114,8 +114,10 @@ namespace Gts {
 		}
 	}
 
-	void ExplosiveGrowth::DoShrink(Actor* actor, float value) {
-		mod_target_scale(actor, -value); // Grow
+	void ExplosiveGrowth::DoShrink(Actor* actor) {
+		float value = SizeManager::GetSingleton().GetGrowthSpurt(caster);
+		mod_target_scale(actor, -value); // Do Shrink
+		SizeManager::GetSingleton().SetGrowthSpurt(caster, 0.0);
 
 		Rumble::Once("ExplosiveGrowth", actor, 7.0, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {

@@ -241,14 +241,14 @@ namespace Gts {
 		if (!actor) {
 			return;
 		}
-		this->GetData(actor).GrowthSpurt = amt;
+		this->GetData(actor).GrowthSpurtSize = amt;
 	}
 
 	float SizeManager::GetGrowthSpurt(Actor* actor) {
 		if (!actor) {
 			return 0.0;
 		}
-		float GS = clamp (0.0, 999999.0, this->GetData(actor).GrowthSpurt);
+		float GS = clamp (0.0, 999999.0, this->GetData(actor).GrowthSpurtSize);
 		return GS;
 	}
 
@@ -256,7 +256,7 @@ namespace Gts {
 		if (!actor) {
 			return;
 		}
-		this->GetData(actor).GrowthSpurt += amt;
+		this->GetData(actor).GrowthSpurtSize += amt;
 	}
 
 	//================Size-Related Damage

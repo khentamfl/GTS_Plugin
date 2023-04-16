@@ -13,7 +13,7 @@ namespace Gts {
 		float SizeHungerBonus = 0.0;
 		float HitGrowth = 0.0;
 		float GrowthTimer = 0.0;
-		float GrowthSpurt = 0.0;
+		float GrowthSpurtSize = 0.0;
 
 		float NormalDamage = 1.0; // 0
 		float SprintDamage = 1.0; // 1

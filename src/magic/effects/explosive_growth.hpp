@@ -21,13 +21,12 @@ namespace Gts {
 			ExplosiveGrowth(ActiveEffect* effect);
 
 			virtual void DoGrowth(Actor* actor, float value);
-			virtual void DoShrink(Actor* actor, float value);
+			virtual void DoShrink(Actor* actor);
 		private:
 			float power = 0.0;
 			float grow_limit = 1.0;
 			float growth_time = 0.0;
 			float RequiredSizeChange = 0.0;
-			float totalgainedsize = 0.0;
 			Timer timer = Timer(2.33);
 			Timer timerSound = Timer(0.33);
 	};
