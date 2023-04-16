@@ -165,7 +165,7 @@ namespace {
 			int rng = (rand()% 150 + 1);
 			float random = rng/100;
 			data.animSpeed = 1.66 + random;
-			log::info("Anim Speed: {}", data.animSpeed);
+			log::info("Anim Speed: {}, random: {}, rng: {}", data.animSpeed, random, rng);
 		}
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
@@ -180,7 +180,7 @@ namespace {
 			int rng = (rand()% 150 + 1);
 			float random = rng/100;
 			data.animSpeed = 1.66 + random;
-			log::info("Anim Speed: {}", data.animSpeed);
+			log::info("Anim Speed: {}, random: {}, rng: {}", data.animSpeed, random, rng);
 		}
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
