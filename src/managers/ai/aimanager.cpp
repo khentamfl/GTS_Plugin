@@ -50,7 +50,7 @@
 	}
     void DoSandwich(Actor* pred) {
 		if (!Runtime::HasPerk(PlayerCharacter::GetSingleton(), "KillerThighs")) {
-			return false;
+			return;
 		}
 		if (!Persistent::GetSingleton().Sandwich_Ai) {
 			log::info("Sandwich AI is false");
