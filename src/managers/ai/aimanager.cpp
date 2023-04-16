@@ -129,7 +129,7 @@
         Profilers::Start("Ai: Update");
 		static Timer ActionTimer = Timer(0.80);
 		if (ActionTimer.ShouldRun()) {
-			auto& Persist = Persistent::GetSingleton();
+			auto& persist = Persistent::GetSingleton();
        	 	for (auto actor: find_actors()) {
 				std::vector<Actor*> AbleToAct = {};
 				for (auto actor: find_actors()) {
