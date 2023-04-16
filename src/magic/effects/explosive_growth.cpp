@@ -73,7 +73,7 @@ namespace Gts {
 
 		float bonus = 1.0;
 		float limit = this->grow_limit * Gigantism * AdjustLimit;
-		float MaxSize = get_max_scale(caster) - 0.001;
+		float MaxSize = get_max_scale(caster) - 0.004;
 
 		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00020;
 		
