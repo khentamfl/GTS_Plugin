@@ -63,6 +63,16 @@ namespace {
 		sizemanager.ModSizeVulnerability(tiny, 0.0015);
 	}
 
+	void MiniStagger(Actor* giant, Actor* tiny) {
+		float giantSize = get_visual_scale(giant);
+		float tinySize = get_visual_scale(tiny);
+		float sizedifference = giantSize/tinySize;
+		if (sizedifference >= 1.33) {
+			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
+			tiny->NotifyAnimationGraph("staggerStart");
+		}
+	}
+
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		Profilers::Start("AccurateDamage: StaggerOr");
 		if (tiny->IsDead()) {
@@ -340,9 +350,6 @@ namespace Gts {
 
 	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult) {
 		Profilers::Start("AccurateDamage: ApplySizeEffect");
-		if (!CanDoDamage(giant, tiny)) {
-			return;
-		}
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto model = tiny->GetCurrent3D();
@@ -350,6 +357,14 @@ namespace Gts {
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			float movementFactor = 1.0;
+			if (!CanDoDamage(giant, tiny)) {
+				if (!isdamaging) {
+					MiniStagger(giant, tiny);
+					sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+					return;
+				}
+				return;
+			}
 			if (giant->AsActorState()->IsSprinting()) {
 				movementFactor *= 1.5;
 			}
