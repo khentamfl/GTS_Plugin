@@ -358,7 +358,7 @@ namespace Gts {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			float movementFactor = 1.0;
 			if (!CanDoDamage(giant, tiny)) {
-				if (!isdamaging) {
+				if (!isdamaging && force >= 0.33) {
 					MiniStagger(giant, tiny);
 					sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 					return;
