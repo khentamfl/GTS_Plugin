@@ -68,7 +68,7 @@
     void DoStomp(Actor* pred) {
         int random = rand() % 4;
         int actionrng = rand() % 4;
-        std::size_t amount = 3;
+        std::size_t amount = 6;
         std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
         for (auto prey: preys) {
             log::info("Doing Stomp as {}, random:{}, action rng: {}", pred->GetDisplayFullName(), random, actionrng);
@@ -96,7 +96,7 @@
     AiData::AiData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
 	}
 
-    bool AiData::GetTimer(int type, float scale) {
+    bool AiData::GetTimer(int type) {
         if (type == 1) {
 		    return this->ActionTimer.ShouldRun();
         } 
@@ -118,8 +118,8 @@
             auto& persist = Persistent::GetSingleton();
             if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
                 auto ai = GetAiData(actor);
-                float scale = std::clamp(get_visual_scale(actor)/2, 1.0f, 6.0f);
-                if (ai.GetTimer(1, scale) == true) {
+                float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
+                if (ai.GetTimer(1) == true) {
                     int rng = rand() % 40;
                     log::info("RNG: {}, scale: {}", rng, scale);
                     if (rng > 2 && rng < 6 * scale) {
@@ -139,7 +139,7 @@
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (IsGtsBusy(pred)) {
-            log::info("{} is Buy", pred->GetDisplayFullName());
+            log::info("{} is Busy", pred->GetDisplayFullName());
 			return {};
 		}
 		if (!pred) {
@@ -214,11 +214,14 @@
 		if (pred == prey) {
 			return false;
 		} if (IsGtsBusy(pred)) {
+			log::info("Pred is busy");
             return false;
         } if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+			log::info("Prey is protected");
 			return false;
 		}
 		if (!Runtime::HasPerkTeam(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
+			log::info("Noo matching perk");
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
@@ -231,11 +234,13 @@
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_STOMP_SCALE_RATIO) {
+			log::info("Can't stomp");
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale) 
             && pred_scale/prey_scale > MINIMUM_STOMP_SCALE_RATIO 
             && prey_distance > 25.0) { // We don't want the Stomp to be too close
+			log::info("Stomp true");
 			return true;
 		} else {
 			return false;
