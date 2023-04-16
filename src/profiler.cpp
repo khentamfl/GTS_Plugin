@@ -64,10 +64,10 @@ namespace Gts {
   void Profilers::Report() {
     std::string report = "Reporting Profilers:";
 		report += std::format("\n|{:20}|", "Name");
-		report += std::format("{:15s}|", "Seconds");
-		report += std::format("{:15s}|", "% OurCode");
-		report += std::format("{:15s}|", "s per frame");
-		report += std::format("{:15s}|", "% of frame");
+		report += std::format("{:15s}|", 			"Seconds");
+		report += std::format("{:15s}|", 			"% OurCode");
+		report += std::format("{:15s}|", 			"s per frame");
+		report += std::format("{:15s}|", 			"% of frame");
 		report += "\n------------------------------------------------------------------------------------------------";
 
 		static std::uint64_t last_report_frame = 0;
@@ -84,7 +84,7 @@ namespace Gts {
 			double elapsed = profiler.Elapsed();
 			double spf = elapsed / (current_report_frame - last_report_frame);
 			double time_percent = elapsed/total_time*100;
-			report += std::format("\n {:20}:			{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", name, elapsed, elapsed*100.0/total, spf, time_percent);
+			report += std::format("\n {:20}:					{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", name, elapsed, elapsed*100.0/total, spf, time_percent);
 			profiler.Reset();
 		}
 		log::info("{}", report);

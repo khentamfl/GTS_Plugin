@@ -481,6 +481,9 @@ namespace Gts {
 				CrushBonuses(giant, tiny, 0);
 			}
 		}
+		if (multiplier < 1.4) {
+			return; // Do not do damage is Size Difference is < than x1.4
+		}
 
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
