@@ -18,9 +18,9 @@
 
  namespace {
 
-    const float MINIMUM_STOMP_DISTANCE = 50.0;
+    const float MINIMUM_STOMP_DISTANCE = 52.0;
 	const float MINIMUM_STOMP_SCALE_RATIO = 1.75;
-	const float STOMP_ANGLE = 72;
+	const float STOMP_ANGLE = 80;
 	const float PI = 3.14159;
 
     [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
@@ -66,21 +66,21 @@
     }
 
     void DoStomp(Actor* pred) {
-        int random = rand() % 3;
-        int actionrng = rand() % 3;
+        int random = rand() % 4;
+        int actionrng = rand() % 4;
         std::size_t amount = 3;
         std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
         for (auto prey: preys) {
             log::info("Doing Stomp as {}, random:{}, action rng: {}", pred->GetDisplayFullName(), random, actionrng);
             if (AiManager::GetSingleton().CanStomp(pred, prey)) {
                 if (random <= 2) {
-                    if (actionrng <= 1) {
+                    if (actionrng <= 2) {
                         AnimationManager::StartAnim("StompRight", pred);
                     } else {
                         AnimationManager::StartAnim("StompLeft", pred);
                     }
                 } else if (random > 2) {
-                    if (actionrng <= 1) {
+                    if (actionrng <= 2) {
                         AnimationManager::StartAnim("StrongStompRight", pred);
                     } else {
                         AnimationManager::StartAnim("StrongStompLeft", pred);
@@ -121,9 +121,9 @@
                 float scale = std::clamp(get_visual_scale(actor)/2, 1.0f, 6.0f);
                 if (ai.GetTimer(1, scale) == true) {
                     int rng = rand() % 40;
-                    log::info("RNG: {}", rng);
+                    log::info("RNG: {}, scale: {}", rng, scale);
                     if (rng > 2 && rng < 6 * scale) {
-                        log::info("RNG < 3, doing stomp");
+                        log::info("RNG < {}, doing stomp", 6 * scale);
                         DoStomp(actor);
                     } else if (rng < 2) {
                         DoSandwich(actor);
