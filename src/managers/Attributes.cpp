@@ -27,7 +27,7 @@ namespace {
 	}
 
 	bool HasGrowthPerk(Actor* actor) {
-		if (!Runtime::HasPerk(actor, "GrowthOfStrength")) {
+		if (!Runtime::HasPerkTeam(actor, "GrowthOfStrength")) {
 			return false;
 		}
 		if (Runtime::HasMagicEffect(actor, "explosiveGrowth1")||Runtime::HasMagicEffect(actor, "explosiveGrowth2")||Runtime::HasMagicEffect(actor, "explosiveGrowth3")) {
@@ -52,10 +52,10 @@ namespace {
 
 		//log::info("High Heels Length: {}", HighHeels);
 		///Normal Damage
-		if (Runtime::HasPerk(actor, "Cruelty")) {
+		if (Runtime::HasPerkTeam(actor, "Cruelty")) {
 			ExpectedGlobalDamage += 0.35/BalancedMode;
 		}
-		if (Runtime::HasPerk(actor, "RealCruelty")) {
+		if (Runtime::HasPerkTeam(actor, "RealCruelty")) {
 			ExpectedGlobalDamage += 0.65/BalancedMode;
 		}
 		if (HasGrowthPerk(actor)) {
@@ -65,14 +65,14 @@ namespace {
 		ExpectedGlobalDamage *= HighHeels; // Apply Base HH damage.
 
 		///Sprint Damage
-		if (Runtime::HasPerk(actor, "SprintDamageMult1")) {
+		if (Runtime::HasPerkTeam(actor, "SprintDamageMult1")) {
 			ExpectedSprintDamage += 0.25/BalancedMode;
 		}
-		if (Runtime::HasPerk(actor, "SprintDamageMult2")) {
+		if (Runtime::HasPerkTeam(actor, "SprintDamageMult2")) {
 			ExpectedSprintDamage += 1.0/BalancedMode;
 		}
 		///Fall Damage
-		if (Runtime::HasPerk(actor, "MightyLegs")) {
+		if (Runtime::HasPerkTeam(actor, "MightyLegs")) {
 			ExpectedFallDamage += 0.5/BalancedMode;
 		}
 		///Buff by enchantment
