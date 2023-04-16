@@ -160,7 +160,7 @@ namespace {
 
     void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
 		DoSounds("HeavyStompR", &data.giant, data.animSpeed - 0.5, RNode);
-        DoDamageEffect(&data.giant, 2.5 * (data.animSpeed - 0.5), 2.0 * data.animSpeed, 5, 0.60);
+        DoDamageEffect(&data.giant, 2.5 * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.2, 6.0, RNode);
         data.canEditAnimSpeed = false;
@@ -168,7 +168,7 @@ namespace {
     }
     void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
 		DoSounds("HeavyStompL", &data.giant, data.animSpeed - 0.5, LNode);
-        DoDamageEffect(&data.giant, 2.5 * (data.animSpeed - 0.5), 2.0 * data.animSpeed, 5, 0.60);
+        DoDamageEffect(&data.giant, 2.5 * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.2, 6.0, LNode);
         data.canEditAnimSpeed = false;
