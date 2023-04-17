@@ -110,12 +110,6 @@ namespace Gts {
 		return instance;
 	}
 
-	float SizeManager::GetRaceScale(Actor* actor) {
-		auto GetNode = find_node(actor, "NPC", false);
-		float NodeScale = GetNode->world.scale;
-		return GetNode ? NodeScale : 1; // <- not used, causes troubles with quest progression. (Can't reach 1.44 for example when 1.50 is needed.)
-	}
-
 	std::string SizeManager::DebugName() {
 		return "SizeManager";
 	}
@@ -151,15 +145,7 @@ namespace Gts {
 				GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + (Runtime::GetFloat("NPCSizeLimit") - 1.0));       // Apply only if Quest is done.
 			}
 
-			TESObjectREFR* object = skyrim_cast<TESObjectREFR*>(actor);
-			if (object) {
-				float GetScale = object->GetScale();
-				log::info("Object Scale of {} is {}", actor->GetDisplayFullName(), GetScale);
-			}
-
-			static Timer timer = Timer(5.0);
-			float RaceScale = actor->GetHeight();
-			log::info("Race Scale of {} is {}", actor->GetDisplayFullName(), RaceScale);
+			log::info("Natural Scale of {} is {}", actor->GetDisplayFullName(), get_natural_scale(actor));
 			float TotalLimit = ((GetLimit + Persistent_Size) * (1.0 + Gigantism));
 
 			if (TotalLimit < get_natural_scale(actor)) {

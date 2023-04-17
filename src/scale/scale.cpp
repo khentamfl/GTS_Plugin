@@ -11,6 +11,15 @@ namespace {
 }
 
 namespace Gts {
+	float get_real_scale(Actor& actor) {
+		TESObjectREFR* object = skyrim_cast<TESObjectREFR*>(&actor);
+		if (object) {
+			float GetScale = object->GetScale();
+			return GetScale;
+		}
+		return 1.0;
+	}
+
 	void set_target_scale(Actor& actor, float scale) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		if (actor_data) {
@@ -141,8 +150,9 @@ namespace Gts {
 
 	float get_natural_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
+		float objectscale = get_real_scale(&actor);
 		if (actor_data) {
-			return actor_data->native_scale;
+			return actor_data->native_scale * objectscale;
 		}
 		return -1.0;
 	}

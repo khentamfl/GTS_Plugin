@@ -15,7 +15,7 @@ namespace Gts {
 
 	float CameraState::GetScale() {
 		auto player = GetCameraActor();
-		float racescale = SizeManager::GetSingleton().GetRaceScale(player);
+		float racescale = get_natural_scale(player);
 		float result = get_visual_scale(player) * racescale;
 		if (!player) {
 			return 1.0;
