@@ -64,9 +64,10 @@ namespace {
 				//^ Doesn't work, i don't know how to print it.
 			}
 		}*/
-		auto CharController = actor->GetCharController();
+		bhkCharacterController* CharController = actor->GetCharController();
 		if (CharController) {
-			actor->UpdateCharacterControllerSimulationSettings(&CharController);
+			actor->UpdateCharacterControllerSimulationSettings(CharController);
+			actor->UpdateFadeSettings(actor->GetCharController());
 			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
 			CharController->scale = get_visual_scale(actor);
 			CharController->actorHeight = 130 * get_visual_scale(actor);
