@@ -65,7 +65,7 @@ namespace Gts {
 			auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetData(target);
 			actor_data->half_life = 0.25; // Faster shrink, less smooth.
-			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2f, 1.0f, 6.0f);
+			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2, 1.0f, 6.0f);
 		}
 
 		if (target->IsDead()) {
@@ -81,7 +81,7 @@ namespace Gts {
 		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
 			return; // Disallow shrinking Essentials
 		}
-		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference * bonus, this->efficiency * balancemodebonus, has_smt);
+		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference * bonus, gainpower * balancemodebonus, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();
 		}
