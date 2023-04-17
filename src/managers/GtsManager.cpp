@@ -59,7 +59,8 @@ namespace {
 			aiProc->SetCachedHeight(130 * get_visual_scale(actor));
 		} if (Combat) {
 			auto CombatTarget = Combat->targetHandle.get().get();
-			Actor* Target = aiProc->GetHeadtrackTarget().get().get(); 
+			auto getobject = aiProc->GetHeadtrackTarget().get().get(); 
+			Actor* Target = skyrim_cast<Actor*>(getobject);
 			if (Target) {
 				log::info("ObjectRefHandle of {} is {}", actor->GetDisplayFullName(), Target->GetDisplayFullName());
 			}
