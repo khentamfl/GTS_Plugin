@@ -142,10 +142,10 @@ namespace Gts {
 		log::info("Node Scale of {} is {}", actor->GetDisplayFullName(), get_npcnode_scale(actor));
 		switch (size_method) {
 			case SizeMethod::ModelScale:
-				return set_model_scale(actor, scale * (get_racemenu_scale(actor)));
+				return set_model_scale(actor, scale * (get_npcnode_scale(actor)));
 				break;
 			case SizeMethod::RootScale:
-				return set_npcnode_scale(actor, scale * (get_model_scale(actor)));
+				return set_npcnode_scale(actor, scale);//set_npcnode_scale(actor, scale * (get_model_scale(actor)));
 				break;
 			case SizeMethod::RefScale:
 				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
