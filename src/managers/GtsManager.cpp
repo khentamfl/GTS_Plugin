@@ -59,7 +59,7 @@ namespace {
 		for (auto& node: SpineNodes) {
 			auto spine = find_node(actor, node);
 			if (spine) {
-				log::info("Node {} of {} rotation is {}", node, actor->GetDisplayFullName(), Vector2Str(spine->local.rotation));
+				log::info("Node {} of {} rotation is {}", node, actor->GetDisplayFullName(), Vector2Str(spine->local.rotate));
 			}
 		}
 		auto Combat = actor->GetActorRuntimeData().combatController;
