@@ -55,11 +55,12 @@ namespace {
 			"NPC Spine [Spn0]",
 			"NPC Spine [Spn1]",
 			"NPC Spine [Spn2]",
+			"CME UBody [UBody]",
 		};
 		for (auto& node: SpineNodes) {
 			auto spine = find_node(actor, node);
 			if (spine) {
-				log::info("Node {} of {} rotation is {}", node, actor->GetDisplayFullName(), Vector2Str(spine->local.rotate));
+				log::info("Node {} of {} rotation is x{} y{} z{}", node, actor->GetDisplayFullName(), spine->local.rotate[0], spine->local.rotate[1], spine->local.rotate[2]);
 			}
 		}
 		auto Combat = actor->GetActorRuntimeData().combatController;
