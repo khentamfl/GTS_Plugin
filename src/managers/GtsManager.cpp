@@ -55,11 +55,16 @@ namespace {
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
 		if (aiProc) { 
 			float height = aiProc->GetCachedHeight();
-			log::info("Actor {} height is: {}", actor->GetDisplayFullName(), height);
+			//log::info("Actor {} height is: {}", actor->GetDisplayFullName(), height);
 			aiProc->SetCachedHeight(130 * get_visual_scale(actor));
 		} if (Combat) {
 			auto CombatTarget = Combat->targetHandle.get().get();
 			if (CombatTarget) {
+				NiPoint3 Location = CombatTarget->GetPosition();
+				log::info("Original Location of {} is: {}", CombatTarget->GetDisplayFullName(), Vector2Str(Location));
+				Location.x -= 70 * get_visual_scale(actor);
+				log::info("Altered Location of {} is: {}", CombatTarget->GetDisplayFullName(), Vector2Str(Location));
+				aiProc->SetHeadtrackTarget(actor, Location);
 				log::info("Combat target of {} is {}", actor->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
 			}
 		}
