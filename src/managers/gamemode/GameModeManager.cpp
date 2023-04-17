@@ -208,7 +208,7 @@ namespace Gts {
 				if (actor->IsInCombat() && BalanceMode == 1.0) {
 					shrinkRate *= 0.0;
 				} else if (actor->IsInCombat() && BalanceMode >= 2.0) {
-					shrinkRate *= 0.002;
+					shrinkRate *= 0.025;
 				}
 
 				if (fabs(shrinkRate) <= 1e-6) {

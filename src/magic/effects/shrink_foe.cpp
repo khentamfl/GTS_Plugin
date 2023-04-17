@@ -13,9 +13,9 @@ namespace Gts {
 
 	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) : Magic(effect) {
 		const float SHRINK_POWER = 1.20; // Power = Shrink Power
-		const float SHRINK_EFFIC = 0.26; // Efficiency = size steal efficiency.
+		const float SHRINK_EFFIC = 0.28; // Efficiency = size steal efficiency.
 		const float SHRINK_AOE_POWER = 1.45;
-		const float SHRINK_AOE_EFFIC = 0.30;
+		const float SHRINK_AOE_EFFIC = 0.32;
 		const float SHRINK_AOE_MASTER_POWER = 1.75;
 		const float SHRINK_AOE_MASTER_EFFIC = 0.36;
 		const float SHRINK_BOLT_POWER = 12.00;
@@ -72,7 +72,7 @@ namespace Gts {
 		}
 
 		if (caster->formID == 0x14 && SizeManager::GetSingleton().BalancedMode() == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
-			balancemodebonus = 3.0;
+			balancemodebonus = 2.0;
 		}
 
 		bool has_smt = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
