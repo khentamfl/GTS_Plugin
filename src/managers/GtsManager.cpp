@@ -62,7 +62,7 @@ namespace {
 			if (CombatTarget) {
 				NiPoint3 Location = CombatTarget->GetPosition();
 				log::info("Original Location of {} is: {}", CombatTarget->GetDisplayFullName(), Vector2Str(Location));
-				Location.z -= 70 * get_visual_scale(actor);
+				Location.z -= 240 * get_visual_scale(actor);
 				log::info("Altered Location of {} is: {}", CombatTarget->GetDisplayFullName(), Vector2Str(Location));
 				aiProc->SetHeadtrackTarget(actor, Location);
 				log::info("Combat target of {} is {}", actor->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
