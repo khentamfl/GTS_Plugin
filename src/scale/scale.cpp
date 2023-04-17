@@ -150,8 +150,9 @@ namespace Gts {
 
 	float get_visual_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
+		float racemenuscale = get_racemenu_scale(actor);
 		if (actor_data) {
-			return actor_data->visual_scale;
+			return actor_data->visual_scale * racemenuscale;
 		}
 		return -1.0;
 	}
