@@ -146,7 +146,7 @@ namespace Gts {
 			} else if (QuestStage > 100 && NPCLimit > 1 &&  actor->formID != 0x14 && (!Runtime::InFaction(actor, "FollowerFaction") && !actor->IsPlayerTeammate())) { // Apply Other NPC's max size
 				GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + (Runtime::GetFloat("NPCSizeLimit") - 1.0));       // Apply only if Quest is done.
 			}
-			log::info("Natural Scale of {} is {}", actor->GetDisplayFullName(), get_natural_scale(actor));
+			//log::info("Natural Scale of {} is {}", actor->GetDisplayFullName(), get_natural_scale(actor));
 			float TotalLimit = ((GetLimit + Persistent_Size) * (1.0 + Gigantism));
 
 			if (TotalLimit < get_natural_scale(actor)) {
