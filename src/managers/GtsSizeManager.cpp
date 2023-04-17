@@ -136,7 +136,7 @@ namespace Gts {
 			}
 			float QuestStage = Runtime::GetStage("MainQuest");
 			float Gigantism = this->GetEnchantmentBonus(actor)/100;
-			float GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("sizeLimit")); // Default size limit
+			float GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + (Runtime::GetFloat("sizeLimit") - 1.0)); // Default size limit
 			float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
 			float SelectedFormula = Runtime::GetInt("SelectedSizeFormula");
 
@@ -144,18 +144,18 @@ namespace Gts {
 			float NPCLimit = Runtime::GetFloat("NPCSizeLimit");
 
 			if (SelectedFormula >= 2.0 && actor->formID == 0x14) { // Apply Player Mass-Based max size
-				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("GtsMassBasedSize") + 1.0);
+				GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + Runtime::GetFloat("GtsMassBasedSize"));
 			} else if (QuestStage > 100 && FollowerLimit > 1 && actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate())) { // Apply Follower Max Size
-				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("FollowersSizeLimit")); // Apply only if Quest is done.
+				GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + (Runtime::GetFloat("FollowersSizeLimit") - 1.0)); // Apply only if Quest is done.
 			} else if (QuestStage > 100 && NPCLimit > 1 &&  actor->formID != 0x14 && (!Runtime::InFaction(actor, "FollowerFaction") && !actor->IsPlayerTeammate())) { // Apply Other NPC's max size
-				GetLimit = clamp(1.0, 99999999.0, Runtime::GetFloat("NPCSizeLimit"));       // Apply only if Quest is done.
+				GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + (Runtime::GetFloat("NPCSizeLimit") - 1.0));       // Apply only if Quest is done.
 			}
 
 			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
 			float TotalLimit = ((GetLimit + Persistent_Size) * (1.0 + Gigantism));
 
-			if (TotalLimit < 1.0) {
-				TotalLimit = 1.0;
+			if (TotalLimit < get_natural_scale(actor)) {
+				TotalLimit = get_natural_scale(actor);
 			}
 			if (get_max_scale(actor) < TotalLimit + Endless || get_max_scale(actor) > TotalLimit + Endless) {
 				set_max_scale(actor, TotalLimit);
