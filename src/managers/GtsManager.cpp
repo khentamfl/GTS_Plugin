@@ -59,9 +59,9 @@ namespace {
 			aiProc->SetCachedHeight(130 * get_visual_scale(actor));
 		} if (Combat) {
 			auto CombatTarget = Combat->targetHandle.get().get();
-			auto Target = skyrim_cast<Actor*>(aiProc->GetHeadtrackTarget());
+			Actor* Target = aiProc->ObjectRefHandle.get().get(); 
 			if (Target) {
-				log::info("Headtracking Target of {} is {}", actor->GetDisplayFullName(), Target->GetDisplayFullName());
+				log::info("ObjectRefHandle of {} is {}", actor->GetDisplayFullName(), Target->GetDisplayFullName());
 			}
 			if (CombatTarget) {
 				NiPoint3 Location = CombatTarget->GetPosition();

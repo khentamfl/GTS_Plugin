@@ -396,7 +396,13 @@ namespace Gts {
 					}
 					Rumble::Once("GrowthRumble", giant, 2.45, 0.30);
 					Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
-
+					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
+						Actor* into = giant;
+						TransferInventory(tiny, into, false, true);
+					} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
+						Actor* into = giant;
+						TransferInventory(tiny, into, false, true);
+					}
 					if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
 						Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 					}
