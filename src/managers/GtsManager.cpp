@@ -60,7 +60,7 @@ namespace {
 		for (auto& node: SpineNodes) {
 			auto spine = find_node(actor, node);
 			if (spine) {
-				log::info("Node {} of {} rotation is x{} y{} z{}", node, actor->GetDisplayFullName(), spine->local.rotate(0), spine->local.rotate(1), spine->local.rotate(2));
+				log::info("Node {} of {} rotation is x{} y{} z{}", node, actor->GetDisplayFullName(), spine->local.rotateS{0}, spine->local.rotate{1}, spine->local.rotate{2});
 			}
 		}
 		auto Combat = actor->GetActorRuntimeData().combatController;
