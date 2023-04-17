@@ -11,6 +11,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
+#include "profiler.hpp"
 #include "timer.hpp"
 #include "node.hpp"
 
@@ -122,6 +123,7 @@ namespace Gts {
 	}
 
 	void SizeManager::Update() {
+		Profilers::Start("SizeManager: Update");
 		for (auto actor: find_actors()) {
 			// TODO move away from polling
 			float Endless = 0.0;
@@ -154,6 +156,7 @@ namespace Gts {
 				set_max_scale(actor, TotalLimit);
 			}
 		}
+		Profilers::Stop("SizeManager: Update");
 	}
 
 	
