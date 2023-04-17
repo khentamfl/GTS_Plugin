@@ -143,7 +143,7 @@ namespace Gts {
 			if (SizeDifference >= 4.0 && LaughChance >= 11) {
 				Runtime::PlaySoundAtNode("LaughSound", receiver, 1.0, 0.5, "NPC Head [Head]");
 			}
-			return;
+			return; 
 		}
 		else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if (get_visual_scale(receiver) > 1.0) {
