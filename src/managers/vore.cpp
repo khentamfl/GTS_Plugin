@@ -127,6 +127,11 @@ namespace {
 		if (!pred) {
 			return;
 		}
+		if (!AllowDevourment() && pred->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
+			TransferInventory(prey, pred, false, true);
+		} else if (!AllowDevourment() && pred->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
+			TransferInventory(prey, pred, false, true);
+		}
 		int random = rand() % 4;
 		if (!prey->IsDead() && !Runtime::HasPerk(pred, "SoulVorePerk") || random <= 1) {
 			Cprint("{} was Swallowed and is now being slowly absorbed by {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());

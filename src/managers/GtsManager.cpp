@@ -59,7 +59,7 @@ namespace {
 			aiProc->SetCachedHeight(130 * get_visual_scale(actor));
 		} if (Combat) {
 			auto CombatTarget = Combat->targetHandle.get().get();
-			Actor* Target = aiProc->ObjectRefHandle.get().get(); 
+			Actor* Target = aiProc->GetHeadtrackTarget().get().get(); 
 			if (Target) {
 				log::info("ObjectRefHandle of {} is {}", actor->GetDisplayFullName(), Target->GetDisplayFullName());
 			}
