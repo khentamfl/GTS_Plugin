@@ -64,9 +64,10 @@ namespace {
 				//^ Doesn't work, i don't know how to print it.
 			}
 		}*/
-		bhkCharacterController& CharController = actor->GetCharController();
+		bhkCharacterController* CharController = actor->GetCharController();
 		if (CharController) {
-			actor->UpdateCharacterControllerSimulationSettings(CharController);
+			bhkCharacterController& Controller = skyrim_cast<bhkCharacterController&>(CharController);
+			actor->UpdateCharacterControllerSimulationSettings(Controller);
 			actor->UpdateFadeSettings(actor->GetCharController());
 			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
 			CharController->scale = get_visual_scale(actor);
