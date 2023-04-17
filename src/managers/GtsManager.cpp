@@ -51,10 +51,23 @@ namespace {
 	}
 
 	void ProcessExperiment(Actor* actor) {
+		const std::vector<std::string_view> SpineNodes = {
+			"NPC Spine [Spn0]",
+			"NPC Spine [Spn1]",
+			"NPC Spine [Spn2]",
+		};
+		for (auto& node: SpineNodes) {
+			auto spine = find_node(actor, node);
+			if (spine) {
+				log::info("Node {} of {} rotation is {}", node, actor->GetDisplayFullName(), Vector2Str(spine->local.rotation));
+			}
+		}
 		auto Combat = actor->GetActorRuntimeData().combatController;
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
 		auto high = aiProc->high;
 		log::info("Water offset of {} is: {}", actor->GetDisplayFullName(), Vector2Str(high->locationOffsetByWaterPoint));
+		log::info("Animation Angle of {} is {}", actor->GetDisplayFullName(), Vector2Str(high->animationAngleMod));
+		high->locationOffsetByWaterPoint.z = 5 * get_visual_scale(actor);
 		if (Combat) {
 			auto CombatTarget = Combat->targetHandle.get().get();
 			if (CombatTarget) {
