@@ -53,6 +53,8 @@ namespace {
 	void ProcessExperiment(Actor* actor) {
 		auto Combat = actor->GetActorRuntimeData().combatController;
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
+		auto high = aiProc->high;
+		log::info("Water offset of {} is: {}", actor->GetDisplayFullName(), Vector2Str(high->locationOffsetByWaterPoint));
 		if (Combat) {
 			auto CombatTarget = Combat->targetHandle.get().get();
 			if (CombatTarget) {
