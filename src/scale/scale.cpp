@@ -14,11 +14,11 @@ namespace Gts {
 	float get_racemenu_scale(Actor& actor) {
 		// This will set the scale of the root npc node
 		string node_name = "NPC";
-		auto node = find_node(actor, node_name, false);
+		auto node = find_node(&actor, node_name, false);
 		if (node) {
 			return node->local.scale;
 		}
-		auto first_node = find_node(actor, node_name, true);
+		auto first_node = find_node(&actor, node_name, true);
 		if (first_node) {
 			return first_node->local.scale;
 		}
