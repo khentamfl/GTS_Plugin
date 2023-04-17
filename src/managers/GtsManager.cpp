@@ -66,7 +66,7 @@ namespace {
 		}*/
 		bhkCharacterController* CharController = actor->GetCharController();
 		if (CharController) {
-			bhkCharacterController& Controller = skyrim_cast<bhkCharacterController&>(CharController);
+			bhkCharacterController& Controller = dynamic_cast<bhkCharacterController&>(CharController);
 			actor->UpdateCharacterControllerSimulationSettings(Controller);
 			actor->UpdateFadeSettings(actor->GetCharController());
 			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
