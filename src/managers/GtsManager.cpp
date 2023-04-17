@@ -64,7 +64,7 @@ namespace {
 				//^ Doesn't work, i don't know how to print it.
 			}
 		}*/
-		bhkCharacterController* CharController = actor->GetCharController();
+		bhkCharacterController& CharController = actor->GetCharController();
 		if (CharController) {
 			actor->UpdateCharacterControllerSimulationSettings(CharController);
 			actor->UpdateFadeSettings(actor->GetCharController());
