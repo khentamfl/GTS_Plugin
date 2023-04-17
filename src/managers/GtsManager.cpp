@@ -61,6 +61,11 @@ namespace {
 			auto CombatTarget = Combat->targetHandle.get().get();
 			auto getobject = aiProc->GetHeadtrackTarget().get().get(); 
 			Actor* Target = skyrim_cast<Actor*>(getobject);
+			if (getobject) {
+				NiPoint3 Location = getobject->GetPosition();
+				Location.z -= 240 * get_visual_scale(actor);
+				aiProc->SetHeadtrackTarget(actor, Location);
+			}
 			if (Target) {
 				log::info("Headtracking target of {} is {}", actor->GetDisplayFullName(), Target->GetDisplayFullName());
 			}
