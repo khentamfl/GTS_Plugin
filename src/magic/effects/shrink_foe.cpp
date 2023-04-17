@@ -1,4 +1,5 @@
 #include "magic/effects/shrink_foe.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
@@ -11,12 +12,12 @@ namespace Gts {
 	}
 
 	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) : Magic(effect) {
-		const float SHRINK_POWER = 1.15; // Power = Shrink Power
-		const float SHRINK_EFFIC = 0.18; // Efficiency = size steal efficiency.
-		const float SHRINK_AOE_POWER = 1.40;
-		const float SHRINK_AOE_EFFIC = 0.22;
+		const float SHRINK_POWER = 1.20; // Power = Shrink Power
+		const float SHRINK_EFFIC = 0.22; // Efficiency = size steal efficiency.
+		const float SHRINK_AOE_POWER = 1.45;
+		const float SHRINK_AOE_EFFIC = 0.24;
 		const float SHRINK_AOE_MASTER_POWER = 1.75;
-		const float SHRINK_AOE_MASTER_EFFIC = 0.26;
+		const float SHRINK_AOE_MASTER_EFFIC = 0.28;
 		const float SHRINK_BOLT_POWER = 12.00;
 		const float SHRINK_BOLT_EFFIC = 0.05;
 		const float SHRINK_STORM_POWER = 24.00;
@@ -57,6 +58,7 @@ namespace Gts {
 		}
 		float SizeDifference = 1.0;
 		float bonus = 1.0;
+		float balancemodebonus = 1.0;
 
 		if (this->power >= 18.00) {
 			auto& Persist = Persistent::GetSingleton();
@@ -69,11 +71,15 @@ namespace Gts {
 			bonus = 3.0;
 		}
 
+		if (caster->formID == 0x14 && SizeManager::GetSingleton().BalancedMode() == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
+			balancemodebonus = 3.0;
+		}
+
 		bool has_smt = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
 			return; // Disallow shrinking Essentials
 		}
-		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference * bonus, this->efficiency, has_smt);
+		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference * bonus, this->efficiency * balancemodebonus, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();
 		}
