@@ -111,6 +111,8 @@ spells:
   ShrinkBackSpell: "GTS.esp|005368"
   GtsBleedSpell: "GTS.esp|01CEA2"
   HealthBoost: "GTS.esp|518643"
+  ShrinkStorm: "GTS.esp|3C527A"
+  ShrinkBolt: "GTS.esp|3C5276"
 
 perks:
   SmallMassiveThreatSizeSteal: "GTS.esp|2496E8"
@@ -119,8 +121,8 @@ perks:
   GrowthOnHitPerk: "GTS.esp|30EE52"
   AdditionalGrowth: "GTS.esp|151518"
   StaggerImmunity: "GTS.esp|0AA3B2"
-  PerkPart1: "GTS.esp|16081F"
-  PerkPart2: "GTS.esp|160820"
+  FastShrink: "GTS.esp|16081F"
+  LethalShrink: "GTS.esp|160820"
   ExtraGrowth: "GTS.esp|332563"
   ExtraGrowthMax: "GTS.esp|397972"
   HealthRegenPerk: "GTS.esp|18E160"

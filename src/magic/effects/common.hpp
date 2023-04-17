@@ -260,10 +260,10 @@ namespace Gts {
 			power *= SMT_BONUS;
 		}
 
-		if (Runtime::HasPerk(caster, "PerkPart1")) {
+		if (Runtime::HasPerk(caster, "FastShrink")) {
 			power *= PERK1_BONUS;
 		}
-		if (Runtime::HasPerk(caster, "PerkPart2")) {
+		if (Runtime::HasPerk(caster, "LethalShrink")) {
 			power *= PERK2_BONUS;
 		}
 		AdjustSizeLimit(0.0300 * target_scale * power, caster);

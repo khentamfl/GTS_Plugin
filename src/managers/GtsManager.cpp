@@ -266,12 +266,16 @@ void GtsManager::Update() {
 }
 
 void GtsManager::OnAddPerk(const AddPerkEvent& evt) {
+	if (evt.actor->formID == 0x14) {
 		if (evt.perk == Runtime::GetPerk("TrueGiantess")) {
-			if (evt.actor->formID == 0x14) {
-				CallHelpMessage();
-			}
+			CallHelpMessage();
+		} if (evt.perk == Runtime::GetPerk("FastShrink") && !Runtime::HasSpell(evt.actor, "ShrinkBolt")) {
+			Runtime::AddSpell(evt.actor, "ShrinkBolt");
+		} if (evt.perk == Runtime::GetPerk("LethalShrink") && !Runtime::HasSpell(evt.actor, "ShrinkStorm")) {
+			Runtime::AddSpell(evt.actor, "ShrinkStorm");
 		}
 	}
+}
 
 void GtsManager::reapply(bool force) {
 	// Get everyone in loaded AI data and reapply
