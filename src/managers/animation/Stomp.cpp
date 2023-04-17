@@ -142,6 +142,9 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			AnimationManager::StartAnim("StompRight", player);
+			return;
+		} else {
+			Notify("You don't have matching perk to perform the stomp");
 		}
 	}
 
@@ -149,6 +152,9 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			AnimationManager::StartAnim("StompLeft", player);
+			return;
+		} else {
+			Notify("You don't have matching perk to perform the stomp");
 		}
 	}
 }

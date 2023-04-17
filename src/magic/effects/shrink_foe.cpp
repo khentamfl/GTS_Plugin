@@ -59,7 +59,12 @@ namespace Gts {
 		float SizeDifference = 1.0;
 		float bonus = 1.0;
 		float balancemodebonus = 1.0;
+		float shrink = this->power;
 		float gainpower = this->efficiency;
+		if (caster->formID != 0x14) {
+			gainpower *= 2.0;
+			shrink *= 2.5;
+		}
 
 		if (this->power >= 18.00) {
 			auto& Persist = Persistent::GetSingleton();
@@ -81,7 +86,7 @@ namespace Gts {
 		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
 			return; // Disallow shrinking Essentials
 		}
-		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference * bonus, gainpower * balancemodebonus, has_smt);
+		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus, gainpower * balancemodebonus, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();
 		}

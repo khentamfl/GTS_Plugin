@@ -208,6 +208,8 @@ namespace {
 		if (Runtime::HasPerk(player, "DestructionBasics") && GetAV(player, ActorValue::kStamina) > 75) {
 			AnimationManager::StartAnim("StrongStompRight", player);
             DamageAV(player, ActorValue::kStamina, 75);
+		} else {
+			Notify("You don't have matching perk to perform the stomp");
 		}
 	}
 
@@ -216,6 +218,8 @@ namespace {
 		if (Runtime::HasPerk(player, "DestructionBasics") && GetAV(player, ActorValue::kStamina) > 75) {
 			AnimationManager::StartAnim("StrongStompLeft", player);
             DamageAV(player, ActorValue::kStamina, 75);
+		} else {
+			Notify("You don't have matching perk to perform the stomp");
 		}
 	}
 }

@@ -39,6 +39,8 @@ namespace {
 		}
 		if ((actor->formID == 0x14 ||actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto node = find_node(actor, "skeleton_female.nif");
+			actor->SetAlpha(1.0);
+			actor->UpdateAlpha();
 			NiAVObject* skeleton = node;
 			if (node) {
 				BSFadeNode* fadenode = node->AsFadeNode();
