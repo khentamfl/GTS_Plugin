@@ -52,6 +52,14 @@ namespace {
 		Profilers::Stop("Manager: Fade Fix");
 	}
 
+	void ProcessExperiment(Actor* actor) {
+		auto aiProc = actor->currentProcess;
+		if (aiProc) { 
+			float height = GetCachedHeight();
+			log::info("Actor {} height is: {}", actor->GetDisplayFullName(), height);
+		}
+	}
+
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		Profilers::Start("Manager: update_height");
 		if (!actor) {
@@ -242,6 +250,7 @@ void GtsManager::Update() {
 				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 1000, 1.0);
 				ClothManager::GetSingleton().CheckRip();
 			}
+			ProcessExperiment(actor);
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
