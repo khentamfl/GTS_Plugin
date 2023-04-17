@@ -191,10 +191,10 @@ namespace Gts {
 				game_mode_int = 6; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 2.0);
-				} else if (QuestStage >= 60 && QuestStage < 70) {
+				} else if (QuestStage >= 60 && QuestStage < 80) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.6);
-				} else if (BalanceMode >= 2.0 && QuestStage > 70) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.50);
+				} else if (BalanceMode >= 2.0 && QuestStage > 80) {
+					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.40);
 				}
 
 				if (Runtime::HasMagicEffect(actor, "EffectGrowthPotion")) {

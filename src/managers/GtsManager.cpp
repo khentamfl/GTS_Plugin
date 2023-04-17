@@ -61,6 +61,7 @@ namespace {
 			auto CombatTarget = Combat->targetHandle.get().get();
 			auto getobject = aiProc->GetHeadtrackTarget().get().get(); 
 			Actor* Target = skyrim_cast<Actor*>(getobject);
+			log::info("HT offset of {} is {}", actor->GetDisplayFullName(), Vector2Str(aiProc->high->headTrackTargetOffset()));
 			if (getobject) {
 				NiPoint3 Location = getobject->GetPosition();
 				Location.z -= 240 * get_visual_scale(actor);
@@ -69,14 +70,14 @@ namespace {
 			if (Target) {
 				log::info("Headtracking target of {} is {}", actor->GetDisplayFullName(), Target->GetDisplayFullName());
 			}
-			if (CombatTarget) {
+			/*if (CombatTarget) {
 				NiPoint3 Location = CombatTarget->GetPosition();
 				log::info("Original Location of {} is: {}", CombatTarget->GetDisplayFullName(), Vector2Str(Location));
-				Location.z += 240 * get_visual_scale(actor);
+				Location.z -= 240 * get_visual_scale(actor);
 				log::info("Altered Location of {} is: {}", CombatTarget->GetDisplayFullName(), Vector2Str(Location));
 				aiProc->SetHeadtrackTarget(actor, Location);
 				log::info("Combat target of {} is {}", actor->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
-			}
+			}*/
 		}
 	}
 
