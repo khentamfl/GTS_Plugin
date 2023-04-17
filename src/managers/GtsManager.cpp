@@ -65,7 +65,7 @@ namespace {
 			}
 		}*/
 		bhkCharacterController* CharController = actor->GetCharController();
-		const auto Controller = &CharController; 
+		const auto bhkCharacterController& = CharController; 
 		if (CharController) {
 			actor->UpdateCharacterControllerSimulationSettings(Controller);
 			actor->UpdateFadeSettings(CharController);
