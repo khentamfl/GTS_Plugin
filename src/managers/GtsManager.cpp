@@ -66,7 +66,7 @@ namespace {
 		}*/
 		auto CharController = actor->GetCharController();
 		if (CharController) {
-			actor->UpdateCharacterControllerSimulationSettings(CharController);
+			actor->UpdateCharacterControllerSimulationSettings(&CharController);
 			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
 			CharController->scale = get_visual_scale(actor);
 			CharController->actorHeight = 130 * get_visual_scale(actor);
