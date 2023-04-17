@@ -11,6 +11,20 @@ namespace {
 }
 
 namespace Gts {
+	float get_racemenu_scale(Actor& actor) {
+		// This will set the scale of the root npc node
+		string node_name = "NPC";
+		auto node = find_node(actor, node_name, false);
+		if (node) {
+			return node->local.scale;
+		}
+		auto first_node = find_node(actor, node_name, true);
+		if (first_node) {
+			return first_node->local.scale;
+		}
+		return 1.0;
+	}
+
 	float get_real_scale(Actor& actor) {
 		TESObjectREFR* object = skyrim_cast<TESObjectREFR*>(&actor);
 		if (object) {
@@ -150,9 +164,10 @@ namespace Gts {
 
 	float get_natural_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
+		float racemenuscale = get_racemenu_scale(actor);
 		float objectscale = get_real_scale(actor);
 		if (actor_data) {
-			return actor_data->native_scale * objectscale;
+			return actor_data->native_scale * racemenuscale * objectscale;
 		}
 		return -1.0;
 	}
