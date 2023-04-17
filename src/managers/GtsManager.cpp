@@ -54,6 +54,7 @@ namespace {
 		auto Combat = actor->GetActorRuntimeData().combatController;
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
 		auto high = aiProc->high;
+		high->headTrackTargetOffset.z -= 3.0;
 		log::info("HT offset of {} is {}", actor->GetDisplayFullName(), Vector2Str(high->headTrackTargetOffset));
 		if (aiProc) { 
 			float height = aiProc->GetCachedHeight();
