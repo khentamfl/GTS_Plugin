@@ -52,6 +52,7 @@ namespace {
 
 	void ProcessExperiment(Actor* actor) {
 		auto Combat = actor->GetActorRuntimeData().combatController;
+		auto aiProc = actor->GetActorRuntimeData().currentProcess;
 		if (Combat) {
 			auto CombatTarget = Combat->targetHandle.get().get();
 			if (CombatTarget) {
