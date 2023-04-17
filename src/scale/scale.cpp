@@ -167,7 +167,7 @@ namespace Gts {
 		float racemenuscale = get_racemenu_scale(actor);
 		float objectscale = get_real_scale(actor);
 		if (actor_data) {
-			return actor_data->native_scale * racemenuscale * objectscale;
+			return racemenuscale * objectscale;//actor_data->native_scale * racemenuscale * objectscale;
 		}
 		return -1.0;
 	}
