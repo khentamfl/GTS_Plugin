@@ -191,7 +191,7 @@ namespace Gts {
 			if ((actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 				game_mode_int = 6; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 2.2);
+					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 2.0);
 				} else if (QuestStage >= 60 && QuestStage < 70) {
 					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.6);
 				} else if (BalanceMode >= 2.0 && QuestStage > 70) {
@@ -209,7 +209,7 @@ namespace Gts {
 				if (actor->IsInCombat() && BalanceMode == 1.0) {
 					shrinkRate *= 0.0;
 				} else if (actor->IsInCombat() && BalanceMode >= 2.0) {
-					shrinkRate *= 0.15;
+					shrinkRate *= 0.025;
 				}
 
 				if (fabs(shrinkRate) <= 1e-6) {

@@ -98,7 +98,7 @@ namespace Gts {
 				auto sizeLimit = Runtime::GetFloat("sizeLimit");
 				if (Runtime::HasPerk(caster, "TrueGiantess")) {
 					sizeLimit = 999999.0;
-				} if (globalMassSize < sizeLimit) {
+				} if (globalMassSize + 1.0 < sizeLimit) {
 					Runtime::SetFloat("MassBasedSizeLimit", globalMassSize + value * progressionMultiplier * TimeScale());
 				}
 			}
@@ -266,7 +266,7 @@ namespace Gts {
 		if (Runtime::HasPerk(caster, "PerkPart2")) {
 			power *= PERK2_BONUS;
 		}
-		AdjustSizeLimit(0.0240 * target_scale * power, caster);
+		AdjustSizeLimit(0.0300 * target_scale * power, caster);
 		AdjustMassLimit(0.0160 * target_scale * power, caster);
 		float alteration_level_bonus = 0.0332 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
