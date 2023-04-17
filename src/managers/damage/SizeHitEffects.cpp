@@ -123,6 +123,10 @@ namespace Gts {
 		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
+		float resistance = 1.0;
+		if (Runtime::HasMagicEffect(receiver, "ResistShrinkPotion")) {
+			resistance = 0.25;
+		}
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
 			float GrowthValue = std::clamp((-damage/2800) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
@@ -143,7 +147,7 @@ namespace Gts {
 		}
 		else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if (get_visual_scale(receiver) > 1.0) {
-				float ShrinkValue = std::clamp(((-damage/600)/SizeHunger/Gigantism), 0.0f, 0.25f / Gigantism);
+				float ShrinkValue = std::clamp(((-damage/600)/SizeHunger/Gigantism) * resistance, 0.0f, 0.25f / Gigantism);
 				log::info("ShrinkValue of : {} is {} {}", receiver->GetDisplayFullName(), ShrinkValue, ShrinkValue);
 				mod_target_scale(receiver, -ShrinkValue);
 			}

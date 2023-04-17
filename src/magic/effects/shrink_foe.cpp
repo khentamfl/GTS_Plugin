@@ -19,7 +19,7 @@ namespace Gts {
 		const float SHRINK_AOE_MASTER_POWER = 1.75;
 		const float SHRINK_AOE_MASTER_EFFIC = 0.36;
 		const float SHRINK_BOLT_POWER = 12.00;
-		const float SHRINK_BOLT_EFFIC = 0.05;
+		const float SHRINK_BOLT_EFFIC = 0.06;
 		const float SHRINK_STORM_POWER = 24.00;
 		const float SHRINK_STORM_EFFIC = 0.12;
 
@@ -59,16 +59,18 @@ namespace Gts {
 		float SizeDifference = 1.0;
 		float bonus = 1.0;
 		float balancemodebonus = 1.0;
+		float gainpower = this->efficiency;
 
 		if (this->power >= 18.00) {
 			auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetData(target);
 			actor_data->half_life = 0.25; // Faster shrink, less smooth.
-			SizeDifference = clamp(1.0, 8.0, (get_visual_scale(caster)/get_visual_scale(target))/2);
+			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2f, 1.0f, 6.0f);
 		}
 
 		if (target->IsDead()) {
 			bonus = 3.0;
+			gainpower *= 0.05;
 		}
 
 		if (caster->formID == 0x14 && SizeManager::GetSingleton().BalancedMode() == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
