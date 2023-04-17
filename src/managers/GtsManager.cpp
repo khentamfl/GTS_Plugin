@@ -51,10 +51,17 @@ namespace {
 	}
 
 	void ProcessExperiment(Actor* actor) {
+		auto Combat = actor->GetActorRuntimeData().combatController;
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
 		if (aiProc) { 
 			float height = aiProc->GetCachedHeight();
 			log::info("Actor {} height is: {}", actor->GetDisplayFullName(), height);
+			aiProc->SetCachedHeight(130 * get_visual_scale(actor));
+		} if (Combat) {
+			auto CombatTarget = Combat->targetHandle.get().get();
+			if (CombatTarget) {
+				log::info("Combat target of {} is {}", actor->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
+			}
 		}
 	}
 
