@@ -117,7 +117,7 @@ namespace Gts {
 	}
 
 	float get_scale(Actor* actor) {
-		float ref_scale = 1.0;//get_ref_scale(actor);
+		float ref_scale = get_ref_scale(actor);
 		if (ref_scale < 0.0) {
 			return -1.0;
 		}
@@ -142,20 +142,19 @@ namespace Gts {
 		log::info("Node Scale of {} is {}", actor->GetDisplayFullName(), get_npcnode_scale(actor));
 		switch (size_method) {
 			case SizeMethod::ModelScale:
-				return set_model_scale(actor, scale * (get_npcnode_scale(actor)));
-				break;
+				return set_model_scale(actor, scale);//set_model_scale(actor, scale * (get_npcnode_scale(actor)));
+			break;
 			case SizeMethod::RootScale:
 				return set_npcnode_scale(actor, scale);//set_npcnode_scale(actor, scale * (get_model_scale(actor)));
-				break;
+			break;
 			case SizeMethod::RefScale:
-				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
 				if (actor->formID == 0x14) {
-					return set_npcnode_scale(actor, scale * (get_model_scale(actor)));
+					return set_npcnode_scale(actor, scale);//set_npcnode_scale(actor, scale * (get_model_scale(actor)));
 				} else {
-					return set_model_scale(actor, scale * (get_npcnode_scale(actor)));
+					return set_model_scale(actor, scale);//set_model_scale(actor, scale * (get_npcnode_scale(actor)));
 				}
 				return true;
-				break;
+			break;
 		}
 		return false;
 	}
