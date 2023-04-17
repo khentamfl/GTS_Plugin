@@ -13,11 +13,11 @@ namespace Gts {
 
 	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) : Magic(effect) {
 		const float SHRINK_POWER = 1.20; // Power = Shrink Power
-		const float SHRINK_EFFIC = 0.22; // Efficiency = size steal efficiency.
+		const float SHRINK_EFFIC = 0.26; // Efficiency = size steal efficiency.
 		const float SHRINK_AOE_POWER = 1.45;
-		const float SHRINK_AOE_EFFIC = 0.24;
+		const float SHRINK_AOE_EFFIC = 0.30;
 		const float SHRINK_AOE_MASTER_POWER = 1.75;
-		const float SHRINK_AOE_MASTER_EFFIC = 0.28;
+		const float SHRINK_AOE_MASTER_EFFIC = 0.36;
 		const float SHRINK_BOLT_POWER = 12.00;
 		const float SHRINK_BOLT_EFFIC = 0.05;
 		const float SHRINK_STORM_POWER = 24.00;
