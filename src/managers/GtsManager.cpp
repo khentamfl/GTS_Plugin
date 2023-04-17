@@ -109,7 +109,7 @@ namespace {
 		} if (!persi_actor_data) {
 			return;
 		}
-		float scale = get_scale(actor);
+		float scale = get_natural_scale(actor);//get_scale(actor);
 		if (scale < 0.0) {
 			return;
 		}
