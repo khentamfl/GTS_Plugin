@@ -139,6 +139,7 @@ namespace Gts {
 
 	bool set_scale(Actor* actor, float scale) {
 		auto& size_method = Persistent::GetSingleton().size_method;
+		log::info("Node Scale of {} is {}", actor->GetDisplayFullName(), get_npcnode_scale(actor));
 		switch (size_method) {
 			case SizeMethod::ModelScale:
 				return set_model_scale(actor, scale * (get_npcnode_scale(actor)));
