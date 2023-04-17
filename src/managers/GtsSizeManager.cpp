@@ -151,7 +151,8 @@ namespace Gts {
 				GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + (Runtime::GetFloat("NPCSizeLimit") - 1.0));       // Apply only if Quest is done.
 			}
 
-			float RaceScale = (GetRaceScale(actor) * (GetLimit + Persistent_Size)) * (1.0 + Gigantism);
+			float RaceScale = GetRaceScale(actor);
+			log::info("Race Scale of {} is {}", actor->GetDisplayFullName(), RaceScale);
 			float TotalLimit = ((GetLimit + Persistent_Size) * (1.0 + Gigantism));
 
 			if (TotalLimit < get_natural_scale(actor)) {
