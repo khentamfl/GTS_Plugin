@@ -66,9 +66,8 @@ namespace {
 		}*/
 		bhkCharacterController* CharController = actor->GetCharController();
 		if (CharController) {
-			bhkCharacterController& Controller = static_cast<bhkCharacterController&>(CharController);
-			actor->UpdateCharacterControllerSimulationSettings(Controller);
-			actor->UpdateFadeSettings(actor->GetCharController());
+			actor->UpdateCharacterControllerSimulationSettings(CharController&);
+			actor->UpdateFadeSettings(CharController);
 			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
 			CharController->scale = get_visual_scale(actor);
 			CharController->actorHeight = 130 * get_visual_scale(actor);
