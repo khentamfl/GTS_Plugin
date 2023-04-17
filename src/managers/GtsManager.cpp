@@ -57,12 +57,13 @@ namespace {
 			"NPC Spine [Spn2]",
 			"CME UBody [UBody]",
 		};
-		for (auto& node: SpineNodes) {
+		/*for (auto& node: SpineNodes) {
 			auto spine = find_node(actor, node);
 			if (spine) {
-				log::info("Node {} of {} rotation is x{} y{} z{}", node, actor->GetDisplayFullName(), spine->local.rotate{0}, spine->local.rotate{1}, spine->local.rotate{2});
+				log::info("Node {} of {} rotation is x{} y{} z{}", node, actor->GetDisplayFullName(), Vector2Str(spine->local.rotate));
+				//^ Doesn't work, i don't know how to print it.
 			}
-		}
+		}*/
 		auto Combat = actor->GetActorRuntimeData().combatController;
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
 		auto high = aiProc->high;
