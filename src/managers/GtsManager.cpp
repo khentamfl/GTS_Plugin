@@ -52,35 +52,16 @@ namespace {
 
 	void ProcessExperiment(Actor* actor) {
 		auto Combat = actor->GetActorRuntimeData().combatController;
-		auto aiProc = actor->GetActorRuntimeData().currentProcess;
-		auto high = aiProc->high;
-		high->headTrackTargetOffset.z -= 3.0;
-		log::info("HT offset of {} is {}", actor->GetDisplayFullName(), Vector2Str(high->headTrackTargetOffset));
-		if (aiProc) { 
-			float height = aiProc->GetCachedHeight();
-			//log::info("Actor {} height is: {}", actor->GetDisplayFullName(), height);
-			aiProc->SetCachedHeight(130 * get_visual_scale(actor));
-		} if (Combat) {
+		if (Combat) {
 			auto CombatTarget = Combat->targetHandle.get().get();
-			auto getobject = aiProc->GetHeadtrackTarget().get().get(); 
-			Actor* Target = skyrim_cast<Actor*>(getobject);
-			
-			if (getobject) {
-				NiPoint3 Location = getobject->GetPosition();
-				Location.z -= 240 * get_visual_scale(actor);
-				aiProc->SetHeadtrackTarget(actor, Location);
-			}
-			if (Target) {
-				log::info("Headtracking target of {} is {}", actor->GetDisplayFullName(), Target->GetDisplayFullName());
-			}
-			/*if (CombatTarget) {
+			if (CombatTarget) {
 				NiPoint3 Location = CombatTarget->GetPosition();
 				log::info("Original Location of {} is: {}", CombatTarget->GetDisplayFullName(), Vector2Str(Location));
-				Location.z -= 240 * get_visual_scale(actor);
+				Location.z -= 2400 * get_visual_scale(actor);
 				log::info("Altered Location of {} is: {}", CombatTarget->GetDisplayFullName(), Vector2Str(Location));
 				aiProc->SetHeadtrackTarget(actor, Location);
 				log::info("Combat target of {} is {}", actor->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
-			}*/
+			}
 		}
 	}
 
