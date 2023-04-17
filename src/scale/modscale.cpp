@@ -117,7 +117,7 @@ namespace Gts {
 	}
 
 	float get_scale(Actor* actor) {
-		float ref_scale = get_ref_scale(actor);
+		float ref_scale = 1.0;//get_ref_scale(actor);
 		if (ref_scale < 0.0) {
 			return -1.0;
 		}
