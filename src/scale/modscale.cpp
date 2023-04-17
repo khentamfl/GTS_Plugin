@@ -126,6 +126,7 @@ namespace Gts {
 			return -1.0;
 		}
 		float node_scale = get_npcnode_scale(actor);
+		log::info("Node Scale of {} is {}", actor->GetDisplayFullName(), node_scale);
 		if (node_scale < 0.0) {
 			return -1.0;
 		}
