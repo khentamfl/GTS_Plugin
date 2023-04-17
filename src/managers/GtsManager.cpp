@@ -53,7 +53,7 @@ namespace {
 	void ProcessExperiment(Actor* actor) {
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
 		if (aiProc) { 
-			float height = GetCachedHeight();
+			float height = aiProc->GetCachedHeight();
 			log::info("Actor {} height is: {}", actor->GetDisplayFullName(), height);
 		}
 	}
