@@ -23,7 +23,7 @@ namespace {
 
 		if (voreFearRoll <= 0) {
 			Runtime::CastSpell(actor, actor, "GtsVoreFearSpell");
-			KnockAreaEffect(actor, 6, 60 * get_target_scale(actor));
+			KnockAreaEffect(actor, 6, 60 * get_visual_scale(actor));
 		}
 	}
 

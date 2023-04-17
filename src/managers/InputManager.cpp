@@ -94,7 +94,7 @@ namespace {
 			if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 				float hh = HighHeelManager::GetBaseHHOffset(actor)[2]/100;
 				float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
-				float scale = get_target_scale(actor);
+				float scale = get_visual_scale(actor);
 				float maxscale = get_max_scale(actor);
 				Cprint("{} Scale is: {:.2f}; Size Limit is: {:.2f}; High Heels: {:.2f}; Aspect Of Giantess: {:.2f}", actor->GetDisplayFullName(), scale, maxscale, hh, gigantism);
 			}

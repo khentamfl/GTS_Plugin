@@ -44,7 +44,7 @@ namespace Gts {
 			float natural_scale = get_natural_scale(actor);
 			float Scale = std::clamp(get_visual_scale(actor) * 0.25f, 1.0f, 10.0f);
 			float maxScale = get_max_scale(actor);
-			float targetScale = get_target_scale(actor);
+			float targetScale = get_visual_scale(actor);
 
 			if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor == player) {
 				Scale = 1.0;

@@ -48,7 +48,7 @@ namespace Gts {
 					}
 
 					// Do shrink
-					float currentSize = get_target_scale(tiny);
+					float currentSize = get_visual_scale(tiny);
 					if (currentSize > 0.14) {
 						set_target_scale(tiny, 0.14);
 					} else {

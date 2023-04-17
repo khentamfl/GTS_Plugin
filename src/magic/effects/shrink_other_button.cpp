@@ -16,7 +16,7 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-		float Volume = clamp(0.50, 1.0, get_target_scale(target));
+		float Volume = clamp(0.50, 1.0, get_visual_scale(target));
 		Runtime::PlaySound("shrinkSound", target, Volume, 0.0);
 		//log::info("Shrink Other Button, actor: {}", target->GetDisplayFullName());
 	}
@@ -32,7 +32,7 @@ namespace Gts {
 			return;
 		}
 
-		float target_scale = get_target_scale(target);
+		float target_scale = get_visual_scale(target);
 		float vscale = get_visual_scale(target);
 		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
 

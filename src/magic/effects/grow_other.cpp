@@ -35,8 +35,8 @@ namespace Gts {
 			power *= 1.75;
 		}
 
-		float caster_scale = get_target_scale(caster);
-		float target_scale = get_target_scale(target);
+		float caster_scale = get_visual_scale(caster);
+		float target_scale = get_visual_scale(target);
 
 		if (Runtime::GetFloat("CrushGrowthRate") >= CRUSH_GROWTH_CHECK) {
 			power += BONUS;

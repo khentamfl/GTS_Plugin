@@ -23,7 +23,7 @@ namespace Gts {
 
 		float bonus = 1.0;
 		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
-			bonus = get_target_scale(caster) * 0.25 + 0.75;
+			bonus = get_visual_scale(caster) * 0.25 + 0.75;
 		}
 
 		if (IsDualCasting()) {

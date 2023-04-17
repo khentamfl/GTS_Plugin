@@ -18,7 +18,7 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-		float Volume = clamp(0.50, 1.0, get_target_scale(target));
+		float Volume = clamp(0.50, 1.0, get_visual_scale(target));
 		Runtime::PlaySound("shrinkSound", target, Volume, 0.0);
 	}
 
@@ -35,7 +35,7 @@ namespace Gts {
 		}
 
 		if (this->timer.ShouldRun()) {
-			float Volume = clamp(0.15, 2.0, get_target_scale(target)/4);
+			float Volume = clamp(0.15, 2.0, get_visual_scale(target)/4);
 			Runtime::PlaySound("shrinkSound", target, Volume, 0.0);
 			Rumble::Once("ShrinkBackOther", target, 0.6, 0.05);
 		}

@@ -13,7 +13,7 @@ namespace Gts {
 
 	void VoreGrowth::OnStart() {
 		auto target = GetTarget();
-		float Scale = get_target_scale(target);
+		float Scale = get_visual_scale(target);
 		this->ScaleOnVore = Scale;
 		if (IsDragon(target)) {
 			this->ScaleOnVore = 1.0;

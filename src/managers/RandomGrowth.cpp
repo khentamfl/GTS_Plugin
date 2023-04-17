@@ -118,7 +118,7 @@ namespace Gts {
 			// Do the growing
 			float delta_time = Time::WorldTimeDelta();
 			int TotalPower = (100 + this->Randomize)/100;
-			float Scale = get_target_scale(player);
+			float Scale = get_visual_scale(player);
 			float ProgressionMultiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 			float base_power = ((0.00185 * TotalPower * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
 			RestoreStats(); // Regens Attributes if PC has perk

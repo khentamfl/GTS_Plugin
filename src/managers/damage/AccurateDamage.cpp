@@ -110,8 +110,8 @@ namespace {
 		auto& persistent = Persistent::GetSingleton();
 		if (persistent.GetData(Caster)) {
 			if (persistent.GetData(Caster)->smt_run_speed >= 1.0) {
-				float caster_scale = get_target_scale(Caster);
-				float target_scale = get_target_scale(Target);
+				float caster_scale = get_visual_scale(Caster);
+				float target_scale = get_visual_scale(Target);
 				float Multiplier = (caster_scale/target_scale);
 				float CasterHp = Caster->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
 				float TargetHp = Target->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
