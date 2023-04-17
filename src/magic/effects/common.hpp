@@ -88,7 +88,7 @@ namespace Gts {
 					.n = 3,
 					.s = 0.54,
 				};
-				auto globalMassSize = Runtime::GetFloat("MassBasedSizeLimit");
+				auto globalMassSize = Runtime::GetFloat("GtsMassBasedSize");
 				float modifier = soft_core(globalMassSize, mod);
 				if (modifier <= 0.10) {
 					modifier = 0.10;
@@ -99,7 +99,7 @@ namespace Gts {
 				if (Runtime::HasPerk(caster, "TrueGiantess")) {
 					sizeLimit = 999999.0;
 				} if (globalMassSize + 1.0 < sizeLimit) {
-					Runtime::SetFloat("MassBasedSizeLimit", globalMassSize + value * progressionMultiplier * TimeScale());
+					Runtime::SetFloat("GtsMassBasedSize", globalMassSize + value * progressionMultiplier * TimeScale());
 				}
 			}
 		}

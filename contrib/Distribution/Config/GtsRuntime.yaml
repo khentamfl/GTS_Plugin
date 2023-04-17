@@ -184,7 +184,7 @@ globals:
   GrowthModeRateNPC: "GTS.esp|2EB74B"
   ShrinkModeRateNPC: "GTS.esp|2EB74A"
   GlobalMaxSizeCalc: "GTS.esp|20CAC5"
-  MassBasedSizeLimit: "GTS.esp|277005"
+  GtsMassBasedSize: "GTS.esp|277005"
   FollowersSizeLimit: "GTS.esp|48082D"
   NPCSizeLimit: "GTS.esp|48082E"
   SelectedSizeFormula: "GTS.esp|277004"
