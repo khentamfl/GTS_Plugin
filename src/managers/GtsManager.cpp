@@ -54,6 +54,7 @@ namespace {
 		auto Combat = actor->GetActorRuntimeData().combatController;
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
 		auto high = aiProc->high;
+		log::info("HT offset of {} is {}", actor->GetDisplayFullName(), Vector2Str(high->headTrackTargetOffset));
 		if (aiProc) { 
 			float height = aiProc->GetCachedHeight();
 			//log::info("Actor {} height is: {}", actor->GetDisplayFullName(), height);
@@ -62,7 +63,7 @@ namespace {
 			auto CombatTarget = Combat->targetHandle.get().get();
 			auto getobject = aiProc->GetHeadtrackTarget().get().get(); 
 			Actor* Target = skyrim_cast<Actor*>(getobject);
-			log::info("HT offset of {} is {}", actor->GetDisplayFullName(), Vector2Str(high->headTrackTargetOffset));
+			
 			if (getobject) {
 				NiPoint3 Location = getobject->GetPosition();
 				Location.z -= 240 * get_visual_scale(actor);
