@@ -86,7 +86,7 @@ namespace Gts {
 
 	void Headtracking::FixHeadtracking(Actor* me) {
         Profilers::Start("Headtracking: Headtracking Fix");
-        SpellTest(me);
+       // SpellTest(me);
         float height = 127.0;
         DialogueCheck(me); // Check for Dialogue
         float scale = get_visual_scale(me);
