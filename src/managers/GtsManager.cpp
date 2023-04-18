@@ -91,17 +91,18 @@ namespace {
 		Profilers::Start("Manager: Headtracking Fix");
 
 		//std::string_view head = "NPC Head [Head]";
+
 		float height = 127.0;
-		
+		float scale = get_visual_scale(me);
+
 		auto ai = me->GetActorRuntimeData().currentProcess;
 		bhkCharacterController* CharController = ai->GetCharController();
-		float scale = get_visual_scale(me);
 		if (CharController) {
 			height = CharController->actorHeight * 70;
 		}
 		auto lookAt = me->GetLookingAtLocation();
 		log::info("Look at of {} is {}", me->GetDisplayFullName(), Vector2Str(lookAt));
-		auto head = me->GetLocation();
+		auto head = me->GetPosition();
 		log::info("Head of {} is {}", me->GetDisplayFullName(), Vector2Str(head));
 		head.z += height * scale;
 		log::info("Head + Scale + Height of {} is {}, bonus: {}", me->GetDisplayFullName(), Vector2Str(head), height * scale);
@@ -109,7 +110,7 @@ namespace {
 		NiPoint3 directionToLook = (lookAt - head);
 		log::info("DirectionToLook of {} is {}", me->GetDisplayFullName(), Vector2Str(directionToLook));
 
-		NiPoint3 myOneTimeHead = me->GetLocation();
+		NiPoint3 myOneTimeHead = me->GetPosition();
 		log::info("MyOneTimeHead of {} is {}", me->GetDisplayFullName(), Vector2Str(myOneTimeHead));
 		myOneTimeHead.z += height;
 		log::info("MyOneTimeHead + height of {} is {}", me->GetDisplayFullName(), Vector2Str(myOneTimeHead));
