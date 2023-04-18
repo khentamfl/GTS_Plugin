@@ -38,7 +38,7 @@ namespace {
         giant->GetGraphVariableBool("Collision_Installed", Collision_Installed);
         if (Collision_Installed == true) {
             giant->GetGraphVariableFloat("Collision_PitchMult", Collision_PitchMult); // If true, obtain value to apply it
-            giant->SetGraphVariableFloat("Collision_PitchMult", 0.0); 
+            //giant->SetGraphVariableFloat("Collision_PitchMult", 0.0); 
             //log::info("Callision Pitch Mult: {}", Collision_PitchMult);
         }
         float sizedifference = (get_visual_scale(giant)/get_visual_scale(tiny) - 1.0);
@@ -50,7 +50,7 @@ namespace {
         } else {
             modifier = std::clamp(sizedifference*10, 0.0f, 60.0f); // look up
             giant->SetGraphVariableFloat("GTSPitchOverride", modifier);
-            log::info("Pitch Override of {} is {}", modifier);
+            log::info("Pitch Override of {} is {}", modifier - Collision_PitchMult);
         }
         
 	}
@@ -117,7 +117,7 @@ namespace Gts {
         return;
         } else {
             float PitchOverride;
-            giant->GetGraphVariableFloat("GTSPitchOverride", PitchOverride);
+            me->GetGraphVariableFloat("GTSPitchOverride", PitchOverride);
             if (PitchOverride != 0) {
                 me->SetGraphVariableFloat("GTSPitchOverride", 0);
             }
