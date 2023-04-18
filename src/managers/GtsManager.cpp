@@ -50,18 +50,7 @@ namespace {
 		Profilers::Stop("Manager: Fade Fix");
 	}
 
-	void FixHeadtracking(Actor* actor) {
-		Profilers::Start("Manager: Headtracking Fix");
-		float height = 145.0;
-		float size_difference = 1.0;
-		auto player = PlayerCharacter::GetSingleton();
-		NiPoint3 lookat = actor->GetLookingAtLocation();
-		auto ai = actor->GetActorRuntimeData().currentProcess;
-		bhkCharacterController* CharController = ai->GetCharController();
-		if (CharController) {
-			height = CharController->actorHeight * 80.0;
-		}
-		//log::info("height of {} is {}", actor->GetDisplayFullName(), height);
+	void Experimental(Actor* actor) {
 		float aimpitch;
 		float aimheading;
 		float htoffset;
@@ -96,7 +85,19 @@ namespace {
 			log::info("AimPitchCurrent and AimHeadingCurrent of {} is {} {}", actor->GetDisplayFullName(), aimpitch, aimheading);
 			log::info("Beh data of of {} is: PitchDefault {}, PitchOverride: {}, PitchManualOverride: {}", actor->GetDisplayFullName(), PitchDefault, PitchOverride, PitchManualOverride);
 		}
-		/*if (actor->formID == 0x14) {
+	}
+
+	void FixHeadtracking(Actor* actor) {
+		std::string_view head = "NPC Head [Head]";
+		Profilers::Start("Manager: Headtracking Fix");
+		float height = 145.0;
+		float size_difference = 1.0;
+		auto player = PlayerCharacter::GetSingleton();
+		NiPoint3 lookat = actor->GetLookingAtLocation();
+		auto ai = actor->GetActorRuntimeData().currentProcess;
+		bhkCharacterController* CharController = ai->GetCharController();
+		//log::info("height of {} is {}", actor->GetDisplayFullName(), height);
+		if (actor->formID == 0x14) {
 			auto camera = PlayerCamera::GetSingleton();
 			ai->high->SetHeadtrackTarget(HighProcessData::HEAD_TRACK_TYPE::kDefault, nullptr);
 			if (camera->currentState == camera->cameraStates[RE::CameraStates::kThirdPerson]) {
@@ -116,15 +117,17 @@ namespace {
 			if (combat) {
 				auto CombatTarget = combat->targetHandle.get().get();
 				if (CombatTarget) {
-					float size_difference = get_visual_scale(actor)/get_visual_scale(CombatTarget);
+					auto headnode = find_node(CombatTarget, headnode);
+					auto headlocation = headnode->world.translate;
+					actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, headlocation);
 				}
 			} else if (cast) {
 				float size_difference = get_visual_scale(actor)/get_visual_scale(cast);
+				auto headnode = find_node(cast, headnode);
+				auto headlocation = headnode->world.translate;
+				actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, headlocation);
 			}
-			float decrease = height * (size_difference - 1.0);
-			lookat.z -= decrease;
-			actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
-		}*/
+		}
 		Profilers::Stop("Manager: Headtracking Fix");
 	}
 
