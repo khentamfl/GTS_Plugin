@@ -38,9 +38,9 @@ namespace {
         float modifier = 0.0;
         if (sizedifference > 1) {
             modifier = std::clamp(sizedifference*10, -0.0f, -240.0f);
-        } else (
+        } else {
             modifier = std::clamp(sizedifference*5, 0.0f, 60.0f);
-        )
+        }
 		giant->GetGraphVariableFloat("GTSPitchOverride", GTSPitchOverride);
 		giant->SetGraphVariableFloat("GTSPitchOverride", modifier);
 	}
