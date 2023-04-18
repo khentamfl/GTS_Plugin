@@ -33,12 +33,16 @@ using namespace std;
 
 namespace {
     void SpellTest(Actor* caster) {
-        auto Projectile = caster->GetActorRuntimeData().currentProcess->high->muzzleFlash->projectile3D.get();
-        if (Projectile) {
+        //auto Projectile = caster->GetActorRuntimeData().currentProcess->high->muzzleFlash->projectile3D.get();
+        auto node = find_node("AbsorbBeam01");
+        if (node) {
+            node->local.scale = get_visual_scale(caster);
+        }
+        /*if (Projectile) {
             Projectile->world.scale = get_visual_scale(caster);
             Projectile->local.scale = get_visual_scale(caster);
             update_node(Projectile);
-        }
+        }*/
     }
 
     void RotateSpine(Actor* giant, Actor* tiny) { // Manages Spine rotation and helps the spells to land properly
@@ -53,7 +57,7 @@ namespace {
         float sizedifference = (get_visual_scale(giant)/get_visual_scale(tiny) - 1.0);
         float modifier = 0.0;
         if (sizedifference > 1) {
-            modifier = std::clamp(sizedifference*4, 0.0f, 240.0f); // look down
+            modifier = std::clamp(sizedifference*2, 0.0f, 240.0f); // look down
             giant->SetGraphVariableFloat("GTSPitchOverride", -modifier -Collision_PitchMult);
         } else if (sizedifference < 1){
             modifier = std::clamp(sizedifference*6, 0.0f, 60.0f); // look up
@@ -86,7 +90,7 @@ namespace Gts {
 
 	void Headtracking::FixHeadtracking(Actor* me) {
         Profilers::Start("Headtracking: Headtracking Fix");
-       // SpellTest(me);
+        SpellTest(me);
         float height = 127.0;
         DialogueCheck(me); // Check for Dialogue
         float scale = get_visual_scale(me);
