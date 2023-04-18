@@ -33,6 +33,12 @@ using namespace std;
 
 namespace {
     void RotateSpine(Actor* giant, Actor* tiny) {
+        bool Collision_Installed = false;
+        float Collision_PitchMult = 0.0;
+        giant->GetGraphVariableBool("Collision_Installed", Collision_Installed);
+        if (Collision_Installed == true) {
+            giant->GetGraphVariableFloat("Collision_PitchMult", Collision_PitchMult);
+        }
         float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
         float modifier = 0.0;
         if (sizedifference > 1) {
@@ -40,8 +46,18 @@ namespace {
         } else {
             modifier = std::clamp(sizedifference*5, 0.0f, 60.0f);
         }
-		giant->SetGraphVariableFloat("GTSPitchOverride", modifier);
+		giant->SetGraphVariableFloat("GTSPitchOverride", modifier - Collision_PitchMult);
 	}
+
+    void DialogueCheck(Actor* giant) {
+        bool GTSIsInDialogue;
+        auto dialoguetarget = giant->GetActorRuntimeData().dialogueItemTarget.get().get();
+        if (dialoguetarget) {
+            giant->SetGraphVariableBool("GTSIsInDialogue", true);
+        } else {
+            giant->SetGraphVariableBool("GTSIsInDialogue", false);
+        }
+    }
 }
 
 namespace Gts {
@@ -59,7 +75,7 @@ namespace Gts {
         Profilers::Start("Headtracking: Headtracking Fix");
         float height = 127.0;
         float scale = get_visual_scale(me);
-
+        DialogueCheck(me);
         auto ai = me->GetActorRuntimeData().currentProcess;
         bhkCharacterController* CharController = ai->GetCharController();
         if (CharController) {
