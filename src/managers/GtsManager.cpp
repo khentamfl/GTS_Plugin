@@ -62,7 +62,7 @@ namespace {
 		for (auto& node: SpineNodes) {
 			auto spine = find_node(actor, node);
 			if (spine) {
-				log::info("Node {} of {} rotation is {}", node, actor->GetDisplayFullName(), Vector2Str(spine->local.rotate->rotation));
+				log::info("Node {} of {} rotation is 01 {}, 02 {}, 03 {}", node, actor->GetDisplayFullName(), spine->local.rotate.entry[0][0], spine->local.rotate.entry[0][1], spine->local.rotate.entry[0][2]);
 				//^ Doesn't work, i don't know how to print it.
 			}
 		}
