@@ -64,7 +64,7 @@ namespace {
 		lookat.z -= decrease;
 		actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
 		log::info("Actor {} is Looking At {} After", actor->GetDisplayFullName(), Vector2Str(lookat));
-		actor->SetRotationZ(15.0);
+		//actor->SetRotationZ(15.0);
 	}
 
 	void ProcessExperiment(Actor* actor) {
