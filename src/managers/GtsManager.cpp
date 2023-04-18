@@ -54,17 +54,13 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		NiPoint3 lookat = actor->GetLookingAtLocation();
 		float decrease = 130 * (get_visual_scale(actor) - 1.0);
-		if (actor->formID == 0x14) {
-			float axisZ = player->data.angle.z;
-			log::info("Z of player Before is: {}", axisZ);
-			//player->data.angle.z *= get_visual_scale(actor);
-			log::info("Z of player After is: {}", axisZ);
-		}
-		log::info("Actor {} is Looking At {} Before", actor->GetDisplayFullName(), Vector2Str(lookat));
 		lookat.z -= decrease;
-		actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
-		log::info("Actor {} is Looking At {} After", actor->GetDisplayFullName(), Vector2Str(lookat));
-		//actor->SetRotationZ(15.0);
+		if (actor->formID == 0x14) {
+			player->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
+		} else {
+			actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
+			log::info("Actor {} is Looking At {} After", actor->GetDisplayFullName(), Vector2Str(lookat));
+		}
 	}
 
 	void ProcessExperiment(Actor* actor) {
