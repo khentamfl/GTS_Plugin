@@ -60,8 +60,10 @@ namespace {
 			player->data.angle.z *= get_visual_scale(actor);
 			log::info("Z of player After is: {}", axisZ);
 		}
-		actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat - decrease);
-		log::info("Actor {} is Looking At {}", actor->GetDisplayFullName(), Vector2Str(lookat));
+		log::info("Actor {} is Looking At {} Before", actor->GetDisplayFullName(), Vector2Str(lookat));
+		lookat.z -= decrease;
+		actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
+		log::info("Actor {} is Looking At {} After", actor->GetDisplayFullName(), Vector2Str(lookat));
 		//SetRotationZ();
 	}
 
@@ -72,12 +74,11 @@ namespace {
 		//const auto bhkCharacterController = CharController&; 
 		if (CharController) {
 			bhkCharacterController& Controller = *CharController;
-			GtsManager::GetSingleton().ControllerExperiment(actor, Controller);
 			actor->UpdateFadeSettings(CharController);
 			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
 			CharController->scale = get_visual_scale(actor);
 			CharController->actorHeight = 1.82 * get_visual_scale(actor);
-			actor->UpdateCharacterControllerSimulationSettings(CharController);
+			actor->UpdateCharacterControllerSimulationSettings(Controller);
 		}
 
 		auto high = aiProc->high;
