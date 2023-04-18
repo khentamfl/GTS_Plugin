@@ -77,7 +77,7 @@ namespace Gts {
                     targetHeight = targetChar->actorHeight * 70.0 * targetScale;
                 }
             }
-            auto lookAt = targetObj.GetPosition();
+            auto lookAt = targetObj->GetPosition();
             lookAt.z += targetHeight;
             auto head = me->GetPosition();
             head.z += height * scale;
