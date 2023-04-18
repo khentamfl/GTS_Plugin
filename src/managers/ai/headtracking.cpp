@@ -32,30 +32,33 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-    void RotateSpine(Actor* giant, Actor* tiny) {
+    void RotateSpine(Actor* giant, Actor* tiny) { // Manages Spine rotation and helps the spells to land properly
         bool Collision_Installed = false;
         float Collision_PitchMult = 0.0;
         giant->GetGraphVariableBool("Collision_Installed", Collision_Installed);
         if (Collision_Installed == true) {
-            giant->GetGraphVariableFloat("Collision_PitchMult", Collision_PitchMult);
+            giant->GetGraphVariableFloat("Collision_PitchMult", Collision_PitchMult); // If true, obtain value to apply it
+            giant->SetGraphVariableFloat("Collision_PitchMult", 0.0); 
+            log::info("Callision Pitch Mult: {}", Collision_PitchMult);
         }
-        float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+        float sizedifference = (get_visual_scale(giant)/get_visual_scale(tiny) - 1.0);
         float modifier = 0.0;
         if (sizedifference > 1) {
-            modifier = std::clamp(sizedifference*10, -0.0f, -240.0f);
+            modifier = std::clamp(sizedifference*10, -0.0f, -240.0f); // look down
         } else {
-            modifier = std::clamp(sizedifference*5, 0.0f, 60.0f);
+            modifier = std::clamp(sizedifference*5, 0.0f, 60.0f); // look up
         }
-		giant->SetGraphVariableFloat("GTSPitchOverride", modifier - Collision_PitchMult);
+		giant->SetGraphVariableFloat("GTSPitchOverride", modifier);
+        log::info("Pitch Override of {} is {}", modifier);
 	}
 
     void DialogueCheck(Actor* giant) {
-        bool GTSIsInDialogue;
+        bool GTSIsInDialogue; // Toggles Dialogue Spine edits
         auto dialoguetarget = giant->GetActorRuntimeData().dialogueItemTarget.get().get();
         if (dialoguetarget) {
-            giant->SetGraphVariableBool("GTSIsInDialogue", true);
+            giant->SetGraphVariableBool("GTSIsInDialogue", true); // Allow spine edits
         } else {
-            giant->SetGraphVariableBool("GTSIsInDialogue", false);
+            giant->SetGraphVariableBool("GTSIsInDialogue", false); // Disallow
         }
     }
 }
@@ -74,8 +77,8 @@ namespace Gts {
 	void Headtracking::FixHeadtracking(Actor* me) {
         Profilers::Start("Headtracking: Headtracking Fix");
         float height = 127.0;
+        DialogueCheck(me); // Check for Dialogue
         float scale = get_visual_scale(me);
-        DialogueCheck(me);
         auto ai = me->GetActorRuntimeData().currentProcess;
         bhkCharacterController* CharController = ai->GetCharController();
         if (CharController) {
@@ -103,7 +106,6 @@ namespace Gts {
             NiPoint3 myOneTimeHead = me->GetPosition();
             myOneTimeHead.z += height;
                     
-
             NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
             fakeLookAt.z -= height * (scale - 1.0);
 
