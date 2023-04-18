@@ -118,14 +118,22 @@ namespace {
 				auto CombatTarget = combat->targetHandle.get().get();
 				if (CombatTarget) {
 					auto headnode = find_node(CombatTarget, head);
+					auto casternode = find_node(CombatTarget, head);
 					auto headlocation = headnode->world.translate;
-					actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, headlocation);
+					auto casterlocation = casternode->world.translate;
+					NiPoint3 result = casterlocation;
+					result.z -= (casterlocation.z - headlocation.z);
+					actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, result);
 				}
 			} else if (cast) {
 				float size_difference = get_visual_scale(actor)/get_visual_scale(cast);
-				auto headnode = find_node(cast, head);
+				auto headnode = find_node(CombatTarget, head);
+				auto casternode = find_node(CombatTarget, head);
 				auto headlocation = headnode->world.translate;
-				actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, headlocation);
+				auto casterlocation = casternode->world.translate;
+				NiPoint3 result = casterlocation;
+				result.z -= (casterlocation.z - headlocation.z);
+				actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, result);
 			}
 		}
 		Profilers::Stop("Manager: Headtracking Fix");
