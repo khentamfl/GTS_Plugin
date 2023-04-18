@@ -69,8 +69,8 @@ namespace {
 		bhkCharacterController* CharController = actor->GetCharController();
 		//const auto bhkCharacterController = CharController&; 
 		if (CharController) {
-			//actor->UpdateCharacterControllerSimulationSettings(Controller);
-			GtsManager::GetSingleton().ControllerExperiment(actor, CharController);
+			bhkCharacterController& Controller = *CharController;
+			GtsManager::GetSingleton().ControllerExperiment(actor, Controller);
 			actor->UpdateFadeSettings(CharController);
 			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
 			CharController->scale = get_visual_scale(actor);
