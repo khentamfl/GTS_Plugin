@@ -80,12 +80,12 @@ namespace {
 		actor->GetGraphVariableFloat("PitchOverride", PitchOverride);
 		actor->GetGraphVariableFloat("PitchManualOverride", PitchManualOverride);
 		actor->GetGraphVariableFloat("BSDirectAtModifier", BSDirectAtModifier);
-
-		actor->SetGraphVariableFloat("BSLookAtModifier", htoffset * get_visual_scale(actor));
-		actor->SetGraphVariableFloat("Pitch", Pitch * get_visual_scale(actor));
-		actor->SetGraphVariableFloat("AimPitchCurrent", aimpitch * get_visual_scale(actor));
-		actor->SetGraphVariableFloat("AimHeadingCurrent", aimheading * get_visual_scale(actor));
-		actor->SetGraphVariableFloat("BSDirectAtModifier", BSDirectAtModifier * get_visual_scale(actor));
+		float modifier = get_visual_scale(actor) * 100;
+		actor->SetGraphVariableFloat("BSLookAtModifier", htoffset * modifier);
+		actor->SetGraphVariableFloat("Pitch", Pitch * modifier);
+		actor->SetGraphVariableFloat("AimPitchCurrent", aimpitch * modifier);
+		actor->SetGraphVariableFloat("AimHeadingCurrent", aimheading * modifier);
+		actor->SetGraphVariableFloat("BSDirectAtModifier", BSDirectAtModifier * modifier);
 		static Timer printtimer = Timer(3.0); 
 		if (printtimer.ShouldRunFrame()) {
 			log::info("AimPitch of {} is {}", actor->GetDisplayFullName(), aimpitch);
