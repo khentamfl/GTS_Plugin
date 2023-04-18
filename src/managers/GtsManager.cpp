@@ -64,10 +64,23 @@ namespace {
 		log::info("height of {} is {}", actor->GetDisplayFullName(), height);
 		float aimpitch;
 		float htoffset;
-		GetGraphVariableFloat("AimPitchCurrent", aimpitch);
-		GetGraphVariableFloat("BSLookAtModifier", htoffset);
+		float Pitch;
+		float PitchLook;
+		float PitchDefault;
+		float PitchOverride;
+		float PitchManualOverride;
+		actor->GetGraphVariableFloat("AimPitchCurrent", aimpitch);
+		actor->GetGraphVariableFloat("BSLookAtModifier", htoffset);
+		actor->GetGraphVariableFloat("Pitch", Pitch);
+		actor->GetGraphVariableFloat("PitchLook", PitchLook);
+		actor->GetGraphVariableFloat("PitchDefault", PitchDefault);
+		actor->GetGraphVariableFloat("PitchOverride", PitchOverride);
+		actor->GetGraphVariableFloat("PitchManualOverride", PitchManualOverride);
 		log::info("AimPitch of {} is {}", actor->GetDisplayFullName(), aimpitch);
 		log::info("Headtrackoffset of {} is {}", actor->GetDisplayFullName(), htoffset);
+		log::info("Pitch of {} is {}", actor->GetDisplayFullName(), Pitch);
+		log::info("PitchLook of {} is {}", actor->GetDisplayFullName(), PitchLook);
+		log::info("Beh data of of {} is: PitchDefault {}, PitchOverride: {}, PitchManualOverride: {}", actor->GetDisplayFullName(), PitchDefault, PitchOverride, PitchManualOverride);
 		if (actor->formID == 0x14) {
 			auto camera = PlayerCamera::GetSingleton();
 			ai->high->SetHeadtrackTarget(HighProcessData::HEAD_TRACK_TYPE::kDefault, nullptr);
