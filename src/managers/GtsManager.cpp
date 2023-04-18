@@ -54,7 +54,7 @@ namespace {
 		Profilers::Start("Manager: Headtracking Fix");
 		auto player = PlayerCharacter::GetSingleton();
 		NiPoint3 lookat = actor->GetLookingAtLocation();
-		float decrease = 130 * (get_visual_scale(actor));
+		float decrease = 70 * (get_visual_scale(actor));
 		lookat.z -= decrease;
 		if (actor->formID == 0x14) {
 			player->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(player, lookat);
