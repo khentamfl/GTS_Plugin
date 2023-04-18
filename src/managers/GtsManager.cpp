@@ -119,7 +119,7 @@ namespace {
 		NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
 		log::info("{} is Looking at {}", me->GetDisplayFullName(), Vector2Str(fakeLookAt));
 
-		actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(me, fakeLookAt);
+		ai->SetHeadtrackTarget(me, fakeLookAt);
 		log::info("Set look of {} at {}", me->GetDisplayFullName(), Vector2Str(fakeLookAt));
 		Profilers::Stop("Manager: Headtracking Fix");
 	}
