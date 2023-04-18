@@ -64,8 +64,8 @@ namespace {
 		lookat.z -= decrease;
 		if (actor->formID == 0x14) {
 			auto camera = PlayerCamera::GetSingleton();
-			if (playerCamera->currentState == playerCamera->cameraStates[RE::CameraStates::kThirdPerson]) {
-				NiNode* root = playerCamera->cameraRoot.get();
+			if (camera->currentState == camera->cameraStates[RE::CameraStates::kThirdPerson]) {
+				NiNode* root = camera->cameraRoot.get();
 				if (root) {
 					NiPoint3 CameraPos = root->world.translate;
 					CameraPos.z -= decrease;
