@@ -59,14 +59,15 @@ namespace {
 			"NPC Spine [Spn2]",
 			"CME UBody [UBody]",
 		};
-		/*for (auto& node: SpineNodes) {
+		for (auto& node: SpineNodes) {
 			auto spine = find_node(actor, node);
 			if (spine) {
-				log::info("Node {} of {} rotation is x{} y{} z{}", node, actor->GetDisplayFullName(), Vector2Str(spine->local.rotate));
+				log::info("Node {} of {} rotation is {}", node, actor->GetDisplayFullName(), Vector2Str(spine->local.rotate->rotation));
 				//^ Doesn't work, i don't know how to print it.
 			}
-		}*/
+		}
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
+		auto Combat = actor->GetActorRuntimeData().combatController;
 		bhkCharacterController* CharController = aiProc->GetCharController();
 		//const auto bhkCharacterController = CharController&; 
 		if (CharController) {
@@ -76,24 +77,19 @@ namespace {
 			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
 			CharController->scale = get_visual_scale(actor);
 			CharController->actorHeight = 1.82 * get_visual_scale(actor);
+			actor->UpdateCharacterControllerSimulationSettings(CharController);
 		}
-		/*auto Combat = actor->GetActorRuntimeData().combatController;
-		
+
 		auto high = aiProc->high;
-		//log::info("Water offset of {} is: {}", actor->GetDisplayFullName(), Vector2Str(high->locationOffsetByWaterPoint));
-		//log::info("Animation Angle of {} is {}", actor->GetDisplayFullName(), Vector2Str(high->animationAngleMod));
 		high->locationOffsetByWaterPoint.z = 95 * get_visual_scale(actor);
 		if (Combat) {
 			auto CombatTarget = Combat->targetHandle.get().get();
 			if (CombatTarget) {
 				NiPoint3 Location = CombatTarget->GetPosition();
-				//log::info("Original Location of {} is: {}", CombatTarget->GetDisplayFullName(), Vector2Str(Location));
 				Location.z -= 2400 * get_visual_scale(actor);
-				//log::info("Altered Location of {} is: {}", CombatTarget->GetDisplayFullName(), Vector2Str(Location));
 				aiProc->SetHeadtrackTarget(actor, Location);
-				//log::info("Combat target of {} is {}", actor->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
 			}
-		}*/
+		}
 	}
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
@@ -265,10 +261,6 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 
 std::string GtsManager::DebugName() {
 	return "GtsManager";
-}
-
-void GtsManager::ControllerExperiment(Actor* actor, bhkCharacterController& a_controller) {
-	actor->UpdateCharacterControllerSimulationSettings(a_controller);
 }
 
 // Poll for updates
