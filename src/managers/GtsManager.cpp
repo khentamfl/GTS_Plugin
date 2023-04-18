@@ -50,22 +50,22 @@ namespace {
 		Profilers::Stop("Manager: Fade Fix");
 	}
 
-	
+	void FixHeadtracking(Actor* actor) {
+		auto player = PlayerCharacter::GetSingleton();
+		NiPoint3 lookat = actor->GetLookingAtLocation();
+		float decrease = 130 * get_visual_scale(actor) - 1.0;
+		if (actor->formID == 0x14) {
+			float axisZ = player->data.angle.z;
+			log::info("Z of player Before is: {}", axisZ);
+			player->data.angle.z *= get_visual_scale(actor);
+			log::info("Z of player After is: {}", axisZ);
+		}
+		actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat - decrease);
+		log::info("Actor {} is Looking At {}", actor->GetDisplayFullName(), Vector2Str(lookat));
+		//SetRotationZ();
+	}
 
 	void ProcessExperiment(Actor* actor) {
-		const std::vector<std::string_view> SpineNodes = {
-			"NPC Spine [Spn0]",
-			"NPC Spine [Spn1]",
-			"NPC Spine [Spn2]",
-			"CME UBody [UBody]",
-		};
-		for (auto& node: SpineNodes) {
-			auto spine = find_node(actor, node);
-			if (spine) {
-				log::info("Node {} of {} rotation is 01 {}, 02 {}, 03 {}", node, actor->GetDisplayFullName(), spine->local.rotate.entry[0][0], spine->local.rotate.entry[0][1], spine->local.rotate.entry[0][2]);
-				//^ Doesn't work, i don't know how to print it.
-			}
-		}
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
 		auto Combat = actor->GetActorRuntimeData().combatController;
 		bhkCharacterController* CharController = aiProc->GetCharController();
@@ -282,7 +282,8 @@ void GtsManager::Update() {
 				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 1000, 1.0);
 				ClothManager::GetSingleton().CheckRip();
 			}
-			ProcessExperiment(actor);
+			//ProcessExperiment(actor);
+			FixHeadtracking(actor);
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
