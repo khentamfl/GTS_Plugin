@@ -127,7 +127,7 @@ namespace {
 				}
 			} else if (cast) {
 				float size_difference = get_visual_scale(actor)/get_visual_scale(cast);
-				auto headnode = find_node(CombatTarget, head);
+				auto headnode = find_node(cast, head);
 				auto casternode = find_node(actor, head);
 				auto headlocation = headnode->world.translate;
 				auto casterlocation = casternode->world.translate;
