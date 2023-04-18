@@ -52,18 +52,19 @@ namespace {
 
 	void FixHeadtracking(Actor* actor) {
 		Profilers::Start("Manager: Headtracking Fix");
-		float height = 182.0;
+		float height = 127.4;
 		auto player = PlayerCharacter::GetSingleton();
 		NiPoint3 lookat = actor->GetLookingAtLocation();
 		auto ai = actor->GetActorRuntimeData().currentProcess;
 		bhkCharacterController* CharController = ai->GetCharController();
 		if (CharController) {
-			height = CharController->actorHeight * 100;
+			height = CharController->actorHeight * 70.0;
 		}
 		float decrease = height * (get_visual_scale(actor) - 1.0);
 		lookat.z -= decrease;
 		if (actor->formID == 0x14) {
 			auto camera = PlayerCamera::GetSingleton();
+			ai->high->SetHeadtrackTarget(HighProcessData::HEAD_TRACK_TYPE::kDefault, nullptr);
 			if (camera->currentState == camera->cameraStates[RE::CameraStates::kThirdPerson]) {
 				NiNode* root = camera->cameraRoot.get();
 				if (root) {
