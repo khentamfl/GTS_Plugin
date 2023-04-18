@@ -53,7 +53,7 @@ namespace {
 	void FixHeadtracking(Actor* actor) {
 		auto player = PlayerCharacter::GetSingleton();
 		NiPoint3 lookat = actor->GetLookingAtLocation();
-		float decrease = 130 * get_visual_scale(actor) - 1.0;
+		float decrease = 70 * (get_visual_scale(actor) - 1.0);
 		if (actor->formID == 0x14) {
 			float axisZ = player->data.angle.z;
 			log::info("Z of player Before is: {}", axisZ);
