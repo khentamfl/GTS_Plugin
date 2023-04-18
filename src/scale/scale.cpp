@@ -10,7 +10,7 @@ namespace {
 	const float EPS = 1e-4;
 }
 
-namespace Gts {
+namespace Gts { 
 	float get_racemenu_scale(Actor& actor) {
 		// This will set the scale of the root npc node
 		string node_name = "NPC";

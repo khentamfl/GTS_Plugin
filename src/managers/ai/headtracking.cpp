@@ -36,6 +36,7 @@ namespace {
         auto Projectile = caster->GetActorRuntimeData().currentProcess->high->muzzleFlash->projectile3D.get();
         if (Projectile) {
             Projectile->world.scale = get_visual_scale(caster);
+            Projectile->local.scale = get_visual_scale(caster);
             update_node(Projectile);
         }
     }
