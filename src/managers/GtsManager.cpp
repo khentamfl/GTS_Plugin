@@ -50,6 +50,10 @@ namespace {
 		Profilers::Stop("Manager: Fade Fix");
 	}
 
+	void CCExperiment(Actor* actor, bhkCharacterController& a_controller) {
+		actor->UpdateCharacterControllerSimulationSettings(a_controller);
+	}
+
 	void ProcessExperiment(Actor* actor) {
 		const std::vector<std::string_view> SpineNodes = {
 			"NPC Spine [Spn0]",
@@ -91,10 +95,6 @@ namespace {
 				//log::info("Combat target of {} is {}", actor->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
 			}
 		}*/
-	}
-
-	void CCExperiment(Actor* actor, bhkCharacterController& a_controller) {
-		actor->UpdateCharacterControllerSimulationSettings(a_controller);
 	}
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
