@@ -266,7 +266,7 @@ std::string GtsManager::DebugName() {
 	return "GtsManager";
 }
 
-void GtsManager::ControllerExperiment(Actor* actor, const bhkCharacterController& a_controller) {
+void GtsManager::ControllerExperiment(Actor* actor, bhkCharacterController& a_controller) {
 	actor->UpdateCharacterControllerSimulationSettings(a_controller);
 }
 
