@@ -33,7 +33,6 @@ using namespace std;
 
 namespace {
     void RotateSpine(Actor* giant, Actor* tiny) {
-		float GTSPitchOverride;
         float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
         float modifier = 0.0;
         if (sizedifference > 1) {
@@ -41,7 +40,6 @@ namespace {
         } else {
             modifier = std::clamp(sizedifference*5, 0.0f, 60.0f);
         }
-		giant->GetGraphVariableFloat("GTSPitchOverride", GTSPitchOverride);
 		giant->SetGraphVariableFloat("GTSPitchOverride", modifier);
 	}
 
@@ -63,7 +61,7 @@ namespace Gts {
     std::string Headtracking::DebugName() {
 	    return "Headtracking";
     }
-    
+
 	void Headtracking::FixHeadtracking(Actor* me) {
         Profilers::Start("Headtracking: Headtracking Fix");
         float height = 127.0;
@@ -75,31 +73,34 @@ namespace Gts {
             height = CharController->actorHeight * 70;
         }
         auto targetObj = ai->GetHeadtrackTarget().get().get();
-        auto targetHeight = 0.0f;
-        auto target = skyrim_cast<Actor*>(targetObj);
-        if (target) {
-            auto targetScale = get_visual_scale(target);
-            auto targetChar = target->GetCharController();
-            if (targetChar) {
-                targetHeight = targetChar->actorHeight * 70.0 * targetScale;
+        if (targetObj) {
+            auto targetHeight = 0.0f;
+            auto target = skyrim_cast<Actor*>(targetObj);
+            if (target) {
+                auto targetScale = get_visual_scale(target);
+                auto targetChar = target->GetCharController();
+                RotateSpine(me, target);
+                if (targetChar) {
+                    targetHeight = targetChar->actorHeight * 70.0 * targetScale;
+                }
             }
-        }
-        auto lookAt = targetObj.GetPosition();
-        lookAt.z += targetHeight;
-        auto head = me->GetPosition();
-        head.z += height * scale;
+            auto lookAt = targetObj.GetPosition();
+            lookAt.z += targetHeight;
+            auto head = me->GetPosition();
+            head.z += height * scale;
 
-        NiPoint3 directionToLook = (lookAt - head);
+            NiPoint3 directionToLook = (lookAt - head);
 
-        NiPoint3 myOneTimeHead = me->GetPosition();
-        myOneTimeHead.z += height;
-                
+            NiPoint3 myOneTimeHead = me->GetPosition();
+            myOneTimeHead.z += height;
+                    
 
-        NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
-        fakeLookAt.z -= height * (scale - 1.0);
+            NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
+            fakeLookAt.z -= height * (scale - 1.0);
 
-        ai->SetHeadtrackTarget(me, fakeLookAt);
-        Profilers::Stop("Headtracking: Headtracking Fix");
+            ai->SetHeadtrackTarget(me, fakeLookAt);
+            Profilers::Stop("Headtracking: Headtracking Fix");
+            }
         }
     }
 }
