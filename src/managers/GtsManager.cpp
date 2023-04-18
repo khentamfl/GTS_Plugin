@@ -66,7 +66,8 @@ namespace {
 				//^ Doesn't work, i don't know how to print it.
 			}
 		}*/
-		bhkCharacterController* CharController = actor->GetCharController();
+		auto aiProc = actor->GetActorRuntimeData().currentProcess;
+		bhkCharacterController* CharController = aiProc->GetCharController();
 		//const auto bhkCharacterController = CharController&; 
 		if (CharController) {
 			bhkCharacterController& Controller = *CharController;
@@ -74,10 +75,10 @@ namespace {
 			actor->UpdateFadeSettings(CharController);
 			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
 			CharController->scale = get_visual_scale(actor);
-			CharController->actorHeight = 130 * get_visual_scale(actor);
+			CharController->actorHeight = 1.82 * get_visual_scale(actor);
 		}
 		/*auto Combat = actor->GetActorRuntimeData().combatController;
-		auto aiProc = actor->GetActorRuntimeData().currentProcess;
+		
 		auto high = aiProc->high;
 		//log::info("Water offset of {} is: {}", actor->GetDisplayFullName(), Vector2Str(high->locationOffsetByWaterPoint));
 		//log::info("Animation Angle of {} is {}", actor->GetDisplayFullName(), Vector2Str(high->animationAngleMod));

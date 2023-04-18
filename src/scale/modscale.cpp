@@ -126,7 +126,6 @@ namespace Gts {
 			return -1.0;
 		}
 		float node_scale = get_npcnode_scale(actor);
-		log::info("Node Scale of {} is {}", actor->GetDisplayFullName(), node_scale);
 		if (node_scale < 0.0) {
 			return -1.0;
 		}
@@ -139,22 +138,22 @@ namespace Gts {
 
 	bool set_scale(Actor* actor, float scale) {
 		auto& size_method = Persistent::GetSingleton().size_method;
-		log::info("Node Scale of {} is {}", actor->GetDisplayFullName(), get_npcnode_scale(actor));
 		switch (size_method) {
 			case SizeMethod::ModelScale:
-				return set_model_scale(actor, scale);//set_model_scale(actor, scale * (get_npcnode_scale(actor)));
-			break;
+				return set_model_scale(actor, scale/(get_ref_scale(actor)*get_npcnode_scale(actor)));
+				break;
 			case SizeMethod::RootScale:
-				return set_npcnode_scale(actor, scale);//set_npcnode_scale(actor, scale * (get_model_scale(actor)));
-			break;
+				return set_npcnode_scale(actor, scale/(get_ref_scale(actor)*get_model_scale(actor)));
+				break;
 			case SizeMethod::RefScale:
+				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
 				if (actor->formID == 0x14) {
-					return set_npcnode_scale(actor, scale);//set_npcnode_scale(actor, scale * (get_model_scale(actor)));
+					return set_npcnode_scale(actor, scale/(get_ref_scale(actor)*get_model_scale(actor)));
 				} else {
-					return set_model_scale(actor, scale);//set_model_scale(actor, scale * (get_npcnode_scale(actor)));
+					return set_model_scale(actor, scale/(get_ref_scale(actor)*get_npcnode_scale(actor)));
 				}
 				return true;
-			break;
+				break;
 		}
 		return false;
 	}
