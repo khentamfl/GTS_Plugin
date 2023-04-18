@@ -25,6 +25,6 @@ namespace Gts {
 			[[nodiscard]] static Headtracking& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-            void FixHeadtracking(Actor* actor);
+            void FixHeadtracking(Actor* me);
 	};
 }
