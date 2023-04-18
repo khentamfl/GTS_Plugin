@@ -33,7 +33,7 @@ using namespace std;
 namespace {
 	void FixActorFade(Actor* actor) {
 		Profilers::Start("Manager: Fade Fix");
-		if (get_visual_scale(actor) < 1.5) {
+		if (get_visual_scale(actor) < 1.5) { 
 			return;
 		}
 		if ((actor->formID == 0x14 ||actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
