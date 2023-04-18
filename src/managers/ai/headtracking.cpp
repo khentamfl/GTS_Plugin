@@ -32,8 +32,16 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+    void SpellTest(Actor* caster) {
+        auto Projectile = caster->GetActorRuntimeData().currentProcess->high->muzzleFlash->projectile3D.get().get();
+        if (Projectile) {
+            Projectile->world.scale = get_visual_scale(caster);
+            update_node(Projectile);
+        }
+    }
+
     void RotateSpine(Actor* giant, Actor* tiny) { // Manages Spine rotation and helps the spells to land properly
-        bool Collision_Installed = false;
+        bool Collision_Installed = false; //Used to detect 'Precision' mod
         float Collision_PitchMult = 0.0;
         giant->GetGraphVariableBool("Collision_Installed", Collision_Installed);
         if (Collision_Installed == true) {
@@ -44,15 +52,13 @@ namespace {
         float sizedifference = (get_visual_scale(giant)/get_visual_scale(tiny) - 1.0);
         float modifier = 0.0;
         if (sizedifference > 1) {
-            modifier = std::clamp(sizedifference*8, 0.0f, 240.0f); // look down
-            giant->SetGraphVariableFloat("GTSPitchOverride", -modifier);
-            log::info("Pitch Override of {} is {}", modifier);
-        } else {
-            modifier = std::clamp(sizedifference*10, 0.0f, 60.0f); // look up
-            giant->SetGraphVariableFloat("GTSPitchOverride", modifier);
-            log::info("Pitch Override of {} is {}", modifier - Collision_PitchMult);
+            modifier = std::clamp(sizedifference*4, 0.0f, 240.0f); // look down
+            giant->SetGraphVariableFloat("GTSPitchOverride", -modifier -Collision_PitchMult);
+        } else if (sizedifference < 1){
+            modifier = std::clamp(sizedifference*6, 0.0f, 60.0f); // look up
+            giant->SetGraphVariableFloat("GTSPitchOverride", modifier -Collision_PitchMult);
         }
-        
+        log::info("Pitch Override of {} is {}", giant->GetDisplayFullName(), modifier);
 	}
 
     void DialogueCheck(Actor* giant) {
@@ -79,6 +85,7 @@ namespace Gts {
 
 	void Headtracking::FixHeadtracking(Actor* me) {
         Profilers::Start("Headtracking: Headtracking Fix");
+        SpellTest(me);
         float height = 127.0;
         DialogueCheck(me); // Check for Dialogue
         float scale = get_visual_scale(me);
