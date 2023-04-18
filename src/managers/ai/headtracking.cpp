@@ -42,25 +42,18 @@ namespace {
         }
 		giant->SetGraphVariableFloat("GTSPitchOverride", modifier);
 	}
+}
 
 namespace Gts {
 
     Headtracking& Headtracking::GetSingleton() noexcept {
-	    static Headtracking instance;
+		    static Headtracking instance;
+		return instance;
+	}
 
-	    static std::atomic_bool initialized;
-	    static std::latch latch(1);
-	    if (!initialized.exchange(true)) {
-		    latch.count_down();
-	    }
-	    latch.wait();
-
-	    return instance;
-    }
-
-    std::string Headtracking::DebugName() {
-	    return "Headtracking";
-    }
+	std::string Headtracking::DebugName() {
+		return "Headtracking";
+	}
 
 	void Headtracking::FixHeadtracking(Actor* me) {
         Profilers::Start("Headtracking: Headtracking Fix");
@@ -99,9 +92,9 @@ namespace Gts {
             fakeLookAt.z -= height * (scale - 1.0);
 
             ai->SetHeadtrackTarget(me, fakeLookAt);
-            Profilers::Stop("Headtracking: Headtracking Fix");
-            }
+        Profilers::Stop("Headtracking: Headtracking Fix");
         }
     }
 }
+
        
