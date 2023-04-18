@@ -57,7 +57,7 @@ namespace {
 		if (actor->formID == 0x14) {
 			float axisZ = player->data.angle.z;
 			log::info("Z of player Before is: {}", axisZ);
-			player->data.angle.z *= get_visual_scale(actor);
+			//player->data.angle.z *= get_visual_scale(actor);
 			log::info("Z of player After is: {}", axisZ);
 		}
 		log::info("Actor {} is Looking At {} Before", actor->GetDisplayFullName(), Vector2Str(lookat));
