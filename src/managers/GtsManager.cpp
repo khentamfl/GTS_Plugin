@@ -76,12 +76,18 @@ namespace {
 		actor->GetGraphVariableFloat("PitchDefault", PitchDefault);
 		actor->GetGraphVariableFloat("PitchOverride", PitchOverride);
 		actor->GetGraphVariableFloat("PitchManualOverride", PitchManualOverride);
-		log::info("AimPitch of {} is {}", actor->GetDisplayFullName(), aimpitch);
-		log::info("Headtrackoffset of {} is {}", actor->GetDisplayFullName(), htoffset);
-		log::info("Pitch of {} is {}", actor->GetDisplayFullName(), Pitch);
-		log::info("PitchLook of {} is {}", actor->GetDisplayFullName(), PitchLook);
-		log::info("Beh data of of {} is: PitchDefault {}, PitchOverride: {}, PitchManualOverride: {}", actor->GetDisplayFullName(), PitchDefault, PitchOverride, PitchManualOverride);
-		if (actor->formID == 0x14) {
+
+		actor->SetGraphVariableFloat("BSLookAtModifier", htoffset * get_visual_scale(actor));
+		actor->SetGraphVariableFloat("Pitch", Pitch * get_visual_scale(actor));
+		static Timer printtimer = Timer(3.0); 
+		if (printtimer.ShouldRunFrame()) {
+			log::info("AimPitch of {} is {}", actor->GetDisplayFullName(), aimpitch);
+			log::info("Headtrackoffset of {} is {}", actor->GetDisplayFullName(), htoffset);
+			log::info("Pitch of {} is {}", actor->GetDisplayFullName(), Pitch);
+			log::info("PitchLook of {} is {}", actor->GetDisplayFullName(), PitchLook);
+			log::info("Beh data of of {} is: PitchDefault {}, PitchOverride: {}, PitchManualOverride: {}", actor->GetDisplayFullName(), PitchDefault, PitchOverride, PitchManualOverride);
+		}
+		/*if (actor->formID == 0x14) {
 			auto camera = PlayerCamera::GetSingleton();
 			ai->high->SetHeadtrackTarget(HighProcessData::HEAD_TRACK_TYPE::kDefault, nullptr);
 			if (camera->currentState == camera->cameraStates[RE::CameraStates::kThirdPerson]) {
@@ -109,7 +115,7 @@ namespace {
 			float decrease = height * (size_difference - 1.0);
 			lookat.z -= decrease;
 			actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
-		}
+		}*/
 		Profilers::Stop("Manager: Headtracking Fix");
 	}
 
