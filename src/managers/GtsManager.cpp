@@ -118,7 +118,7 @@ namespace {
 				auto CombatTarget = combat->targetHandle.get().get();
 				if (CombatTarget) {
 					auto headnode = find_node(CombatTarget, head);
-					auto casternode = find_node(CombatTarget, head);
+					auto casternode = find_node(actor, head);
 					auto headlocation = headnode->world.translate;
 					auto casterlocation = casternode->world.translate;
 					NiPoint3 result = casterlocation;
@@ -128,7 +128,7 @@ namespace {
 			} else if (cast) {
 				float size_difference = get_visual_scale(actor)/get_visual_scale(cast);
 				auto headnode = find_node(CombatTarget, head);
-				auto casternode = find_node(CombatTarget, head);
+				auto casternode = find_node(actor, head);
 				auto headlocation = headnode->world.translate;
 				auto casterlocation = casternode->world.translate;
 				NiPoint3 result = casterlocation;
