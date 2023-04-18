@@ -70,6 +70,7 @@ namespace {
 		float PitchDefault;
 		float PitchOverride;
 		float PitchManualOverride;
+		float BSDirectAtModifier;
 		actor->GetGraphVariableFloat("AimPitchCurrent", aimpitch);
 		actor->GetGraphVariableFloat("AimHeadingCurrent", aimheading);
 		actor->GetGraphVariableFloat("BSLookAtModifier", htoffset);
@@ -78,17 +79,20 @@ namespace {
 		actor->GetGraphVariableFloat("PitchDefault", PitchDefault);
 		actor->GetGraphVariableFloat("PitchOverride", PitchOverride);
 		actor->GetGraphVariableFloat("PitchManualOverride", PitchManualOverride);
+		actor->GetGraphVariableFloat("BSDirectAtModifier", BSDirectAtModifier);
 
-		actor->SetGraphVariableFloat("BSLookAtModifier", htoffset * -get_visual_scale(actor));
-		actor->SetGraphVariableFloat("Pitch", Pitch * -get_visual_scale(actor));
-		actor->SetGraphVariableFloat("AimPitchCurrent", aimpitch * -get_visual_scale(actor));
-		actor->SetGraphVariableFloat("AimHeadingCurrent", aimheading * -get_visual_scale(actor));
+		actor->SetGraphVariableFloat("BSLookAtModifier", htoffset * get_visual_scale(actor));
+		actor->SetGraphVariableFloat("Pitch", Pitch * get_visual_scale(actor));
+		actor->SetGraphVariableFloat("AimPitchCurrent", aimpitch * get_visual_scale(actor));
+		actor->SetGraphVariableFloat("AimHeadingCurrent", aimheading * get_visual_scale(actor));
+		actor->SetGraphVariableFloat("BSDirectAtModifier", BSDirectAtModifier * get_visual_scale(actor));
 		static Timer printtimer = Timer(3.0); 
 		if (printtimer.ShouldRunFrame()) {
 			log::info("AimPitch of {} is {}", actor->GetDisplayFullName(), aimpitch);
 			log::info("Headtrackoffset of {} is {}", actor->GetDisplayFullName(), htoffset);
 			log::info("Pitch of {} is {}", actor->GetDisplayFullName(), Pitch);
 			log::info("PitchLook of {} is {}", actor->GetDisplayFullName(), PitchLook);
+			log::info("BSDirectAtModifier of {} is {}", actor->GetDisplayFullName(), BSDirectAtModifier);
 			log::info("AimPitchCurrent and AimHeadingCurrent of {} is {} {}", actor->GetDisplayFullName(), aimpitch, aimheading);
 			log::info("Beh data of of {} is: PitchDefault {}, PitchOverride: {}, PitchManualOverride: {}", actor->GetDisplayFullName(), PitchDefault, PitchOverride, PitchManualOverride);
 		}
