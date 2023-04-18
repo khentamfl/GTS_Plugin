@@ -52,14 +52,29 @@ namespace {
 
 	void FixHeadtracking(Actor* actor) {
 		Profilers::Start("Manager: Headtracking Fix");
+		float height = 182.0;
 		auto player = PlayerCharacter::GetSingleton();
 		NiPoint3 lookat = actor->GetLookingAtLocation();
-		float decrease = 70 * (get_visual_scale(actor));
+		auto ai = actor->GetActorRuntimeData().currentProcess;
+		bhkCharacterController* CharController = ai->GetCharController();
+		if (CharController) {
+			height = CharController->actorHeight * 100;
+		}
+		float decrease = height * (get_visual_scale(actor) - 1.0);
 		lookat.z -= decrease;
 		if (actor->formID == 0x14) {
+			auto camera = PlayerCamera::GetSingleton();
+			if (playerCamera->currentState == playerCamera->cameraStates[RE::CameraStates::kThirdPerson]) {
+				NiNode* root = playerCamera->cameraRoot.get();
+				if (root) {
+					NiPoint3 CameraPos = root->world.translate;
+					CameraPos.z -= decrease;
+					player->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(player, CameraPos);
+					return;
+				}
+			}
 			player->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(player, lookat);
 		} else {
-			auto ai = actor->GetActorRuntimeData().currentProcess;
 			auto combat = actor->GetActorRuntimeData().combatController;
 			auto target = ai->GetHeadtrackTarget().get().get();
 			auto cast = skyrim_cast<Actor*>(target);
@@ -67,15 +82,12 @@ namespace {
 				auto CombatTarget = combat->targetHandle.get().get();
 				if (CombatTarget) {
 					actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
-					log::info("Actor {} is Looking At {} After", actor->GetDisplayFullName(), Vector2Str(lookat));
 					return;
 				}
 			} else if (cast) {
 				actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
-				log::info("Actor {} is Looking At {} After", actor->GetDisplayFullName(), Vector2Str(lookat));
 				return;
 			}
-			//actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
 		}
 		Profilers::Stop("Manager: Headtracking Fix");
 	}
