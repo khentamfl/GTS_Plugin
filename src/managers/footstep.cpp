@@ -200,7 +200,7 @@ namespace Gts {
 				}
 
 				if (actor->formID == 0x14 && IsFirstPerson()) { // Footsteps are quieter when in first person
-					scale *= 0.50;
+					scale *= 0.70;
 				}
 
 
