@@ -108,6 +108,7 @@ namespace {
 		log::info("Head + Scale + Height of {} is {}, bonus: {}", me->GetDisplayFullName(), Vector2Str(head), height * scale);
 
 		NiPoint3 directionToLook = (lookAt - head);
+		directionToLook.z -= head.z;
 		log::info("DirectionToLook of {} is {}", me->GetDisplayFullName(), Vector2Str(directionToLook));
 
 		NiPoint3 myOneTimeHead = me->GetPosition();
