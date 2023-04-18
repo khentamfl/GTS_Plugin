@@ -87,57 +87,43 @@ namespace {
 		}
 	}
 
-	void FixHeadtracking(Actor* actor) {
-		std::string_view head = "NPC Head [Head]";
+	void FixHeadtracking(Actor* me) {
 		Profilers::Start("Manager: Headtracking Fix");
-		float height = 145.0;
-		float size_difference = 1.0;
-		auto player = PlayerCharacter::GetSingleton();
-		NiPoint3 lookat = actor->GetLookingAtLocation();
-		auto ai = actor->GetActorRuntimeData().currentProcess;
+
+		//std::string_view head = "NPC Head [Head]";
+		float height = 127.0;
+		
+		auto ai = me->GetActorRuntimeData().currentProcess;
 		bhkCharacterController* CharController = ai->GetCharController();
-		//log::info("height of {} is {}", actor->GetDisplayFullName(), height);
-		if (actor->formID == 0x14) {
-			auto camera = PlayerCamera::GetSingleton();
-			ai->high->SetHeadtrackTarget(HighProcessData::HEAD_TRACK_TYPE::kDefault, nullptr);
-			if (camera->currentState == camera->cameraStates[RE::CameraStates::kThirdPerson]) {
-				NiNode* root = camera->cameraRoot.get();
-				float decrease = height * get_visual_scale(actor);
-				if (root) {
-					NiPoint3 CameraPos = root->world.translate;
-					CameraPos.z -= decrease;
-					player->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(player, CameraPos);
-				}
-			}
-			player->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(player, lookat);
-		} else {
-			auto combat = actor->GetActorRuntimeData().combatController;
-			auto target = ai->GetHeadtrackTarget().get().get();
-			auto cast = skyrim_cast<Actor*>(target);
-			if (combat) {
-				auto CombatTarget = combat->targetHandle.get().get();
-				if (CombatTarget) {
-					auto headnode = find_node(CombatTarget, head);
-					auto casternode = find_node(actor, head);
-					auto headlocation = headnode->world.translate;
-					auto casterlocation = casternode->world.translate;
-					NiPoint3 result = headlocation;
-					result.z -= (casterlocation.z - headlocation.z);
-					actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, result);
-				}
-			} else if (cast) {
-				float size_difference = get_visual_scale(actor)/get_visual_scale(cast);
-				auto headnode = find_node(cast, head);
-				auto casternode = find_node(actor, head);
-				auto headlocation = headnode->world.translate;
-				auto casterlocation = casternode->world.translate;
-				NiPoint3 result = headlocation;
-				result.z -= (casterlocation.z - headlocation.z);
-				actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, result);
-			}
+		float scale = get_visual_scale(me);
+		if (CharController) {
+			height = CharController->actorHeight * 70;
+		}
+		auto lookAt = me->GetLookingAtLocation();
+		log::info("Look at of {} is {}", me->GetDisplayFullName(), Vector2Str(lookAt));
+		auto head = me->GetLocation();
+		log::info("Head of {} is {}", me->GetDisplayFullName(), Vector2Str(head));
+		head.z += height * scale;
+		log::info("Head + Scale + Height of {} is {}, bonus: {}", me->GetDisplayFullName(), Vector2Str(head), height * scale);
+
+		NiPoint3 directionToLook = (lookAt - head);
+		log::info("DirectionToLook of {} is {}", me->GetDisplayFullName(), Vector2Str(directionToLook));
+
+		NiPoint3 myOneTimeHead = me->GetLocation();
+		log::info("MyOneTimeHead of {} is {}", me->GetDisplayFullName(), Vector2Str(myOneTimeHead));
+		myOneTimeHead.z += height;
+		log::info("MyOneTimeHead + height of {} is {}", me->GetDisplayFullName(), Vector2Str(myOneTimeHead));
+		
+
+		fakeLookAt = myOneTimeHead + directionToLook;
+		log::info("{} is Looking at {}", me->GetDisplayFullName(), Vector2Str(fakeLookAt));
+
+		actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(me, fakeLookAt);
+		log::info("Set look of {} at {}", me->GetDisplayFullName(), Vector2Str(fakeLookAt));
 		}
 		Profilers::Stop("Manager: Headtracking Fix");
 	}
+		
 
 	void ProcessExperiment(Actor* actor) {
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
