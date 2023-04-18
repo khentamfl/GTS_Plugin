@@ -33,7 +33,7 @@ using namespace std;
 
 namespace {
     void SpellTest(Actor* caster) {
-        auto Projectile = caster->GetActorRuntimeData().currentProcess->high->muzzleFlash->projectile3D.get().get();
+        auto Projectile = caster->GetActorRuntimeData().currentProcess->high->muzzleFlash->projectile3D.get();
         if (Projectile) {
             Projectile->world.scale = get_visual_scale(caster);
             update_node(Projectile);
