@@ -44,11 +44,11 @@ namespace {
         float sizedifference = (get_visual_scale(giant)/get_visual_scale(tiny) - 1.0);
         float modifier = 0.0;
         if (sizedifference > 1) {
-            modifier = std::clamp(sizedifference*10, 0.0f, 240.0f); // look down
-            giant->SetGraphVariableFloat("GTSPitchOverride", modifier);
-        } else {
-            modifier = std::clamp(sizedifference*5, 0.0f, 60.0f); // look up
+            modifier = std::clamp(sizedifference*4, 0.0f, 240.0f); // look down
             giant->SetGraphVariableFloat("GTSPitchOverride", -modifier);
+        } else {
+            modifier = std::clamp(sizedifference*6, 0.0f, 60.0f); // look up
+            giant->SetGraphVariableFloat("GTSPitchOverride", modifier);
         }
         log::info("Pitch Override of {} is {}", modifier);
 	}
