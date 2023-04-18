@@ -121,7 +121,7 @@ namespace {
 					auto casternode = find_node(actor, head);
 					auto headlocation = headnode->world.translate;
 					auto casterlocation = casternode->world.translate;
-					NiPoint3 result = casterlocation;
+					NiPoint3 result = headlocation;
 					result.z -= (casterlocation.z - headlocation.z);
 					actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, result);
 				}
@@ -131,7 +131,7 @@ namespace {
 				auto casternode = find_node(actor, head);
 				auto headlocation = headnode->world.translate;
 				auto casterlocation = casternode->world.translate;
-				NiPoint3 result = casterlocation;
+				NiPoint3 result = headlocation;
 				result.z -= (casterlocation.z - headlocation.z);
 				actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, result);
 			}
