@@ -50,9 +50,7 @@ namespace {
 		Profilers::Stop("Manager: Fade Fix");
 	}
 
-	void CCExperiment(Actor* actor, bhkCharacterController& a_controller) {
-		actor->UpdateCharacterControllerSimulationSettings(a_controller);
-	}
+	
 
 	void ProcessExperiment(Actor* actor) {
 		const std::vector<std::string_view> SpineNodes = {
@@ -72,7 +70,7 @@ namespace {
 		//const auto bhkCharacterController = CharController&; 
 		if (CharController) {
 			//actor->UpdateCharacterControllerSimulationSettings(Controller);
-			CCExperiment(actor, CharController);
+			GtsManager::GetSingleton().ControllerExperiment(actor, CharController);
 			actor->UpdateFadeSettings(CharController);
 			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
 			CharController->scale = get_visual_scale(actor);
@@ -266,6 +264,10 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 
 std::string GtsManager::DebugName() {
 	return "GtsManager";
+}
+
+void GtsManager::ControllerExperiment(Actor* actor, const bhkCharacterController& a_controller) {
+	actor->UpdateCharacterControllerSimulationSettings(a_controller);
 }
 
 // Poll for updates
