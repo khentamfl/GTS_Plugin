@@ -51,15 +51,17 @@ namespace {
 	}
 
 	void FixHeadtracking(Actor* actor) {
+		Profilers::Start("Manager: Headtracking Fix");
 		auto player = PlayerCharacter::GetSingleton();
 		NiPoint3 lookat = actor->GetLookingAtLocation();
 		float decrease = 130 * (get_visual_scale(actor));
 		lookat.z -= decrease;
 		if (actor->formID == 0x14) {
-			player->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
+			player->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(player, lookat);
 		} else {
+			auto ai = actor->GetActorRuntimeData().currentProcess;
 			auto combat = actor->GetActorRuntimeData().combatController;
-			auto target = actor->GetHeadtrackTarget().get().get();
+			auto target = ai->GetHeadtrackTarget().get().get();
 			auto cast = skyrim_cast<Actor*>(target);
 			if (combat) {
 				auto CombatTarget = combat->targetHandle.get().get();
@@ -75,6 +77,7 @@ namespace {
 			}
 			//actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
 		}
+		Profilers::Stop("Manager: Headtracking Fix");
 	}
 
 	void ProcessExperiment(Actor* actor) {
