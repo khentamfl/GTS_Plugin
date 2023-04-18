@@ -53,13 +53,27 @@ namespace {
 	void FixHeadtracking(Actor* actor) {
 		auto player = PlayerCharacter::GetSingleton();
 		NiPoint3 lookat = actor->GetLookingAtLocation();
-		float decrease = 130 * (get_visual_scale(actor) - 1.0);
+		float decrease = 130 * (get_visual_scale(actor));
 		lookat.z -= decrease;
 		if (actor->formID == 0x14) {
 			player->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
 		} else {
-			actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
-			log::info("Actor {} is Looking At {} After", actor->GetDisplayFullName(), Vector2Str(lookat));
+			auto combat = actor->GetActorRuntimeData().combatController;
+			auto target = actor->GetHeadtrackTarget().get().get();
+			auto cast = skyrim_cast<Actor*>(target);
+			if (combat) {
+				auto CombatTarget = combat->targetHandle.get().get();
+				if (CombatTarget) {
+					actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
+					log::info("Actor {} is Looking At {} After", actor->GetDisplayFullName(), Vector2Str(lookat));
+					return;
+				}
+			} else if (cast) {
+				actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
+				log::info("Actor {} is Looking At {} After", actor->GetDisplayFullName(), Vector2Str(lookat));
+				return;
+			}
+			//actor->GetActorRuntimeData().currentProcess->SetHeadtrackTarget(actor, lookat);
 		}
 	}
 
