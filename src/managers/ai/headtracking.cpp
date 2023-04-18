@@ -34,7 +34,7 @@ using namespace std;
 namespace {
     void SpellTest(Actor* caster) {
         //auto Projectile = caster->GetActorRuntimeData().currentProcess->high->muzzleFlash->projectile3D.get();
-        auto node = find_node("AbsorbBeam01");
+        auto node = find_node(caster, "AbsorbBeam01");
         if (node) {
             node->local.scale = get_visual_scale(caster);
         }
