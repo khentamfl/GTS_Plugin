@@ -62,11 +62,18 @@ namespace {
 			height = CharController->actorHeight * 80.0;
 		}
 		log::info("height of {} is {}", actor->GetDisplayFullName(), height);
+		float aimpitch;
+		float htoffset;
+		GetGraphVariableFloat("AimPitchCurrent", aimpitch);
+		GetGraphVariableFloat("BSLookAtModifier", htoffset);
+		log::info("AimPitch of {} is {}", actor->GetDisplayFullName(), aimpitch);
+		log::info("Headtrackoffset of {} is {}", actor->GetDisplayFullName(), htoffset);
 		if (actor->formID == 0x14) {
 			auto camera = PlayerCamera::GetSingleton();
 			ai->high->SetHeadtrackTarget(HighProcessData::HEAD_TRACK_TYPE::kDefault, nullptr);
 			if (camera->currentState == camera->cameraStates[RE::CameraStates::kThirdPerson]) {
 				NiNode* root = camera->cameraRoot.get();
+				float decrease = height * get_visual_scale(actor);
 				if (root) {
 					NiPoint3 CameraPos = root->world.translate;
 					CameraPos.z -= decrease;
