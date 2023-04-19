@@ -126,7 +126,7 @@ namespace Gts {
 				NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
 				fakeLookAt.z -= height * (scale - 1.0);
 
-				ai->SetHeadtrackTarget(me, directionToLook);
+				ai->SetHeadtrackTarget(me, fakeLookAt/70.0);
 				Profilers::Stop("Headtracking: Headtracking Fix");
 				return;
 			}
