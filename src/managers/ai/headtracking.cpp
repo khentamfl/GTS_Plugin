@@ -137,33 +137,35 @@ namespace {
 		}
     float finalAngle = 0.0;
 
-    if (tiny) {
-      auto meHead = HeadLocation(giant);
-      auto targetHead = HeadLocation(tiny);
-      auto directionToLook = targetHead - meHead;
-      directionToLook = directionToLook * (1/directionToLook.Length());
-      NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
-      auto sinAngle = directionToLook.Dot(upDirection);
-      auto angleFromUp = asin(sinAngle);
-      float angleFromForward = (angleFromUp - 90.0) * REDUCTION_FACTOR;
+		auto dialoguetarget = giant->GetActorRuntimeData().dialogueItemTarget.get().get();
+    if (dialoguetarget) {
+      // In dialogue
+      if (tiny) {
+        // With valid look at target
+        giant->SetGraphVariableBool("GTSIsInDialogue", true); // Allow spine edits
+        auto meHead = HeadLocation(giant);
+        auto targetHead = HeadLocation(tiny);
+        auto directionToLook = targetHead - meHead;
+        directionToLook = directionToLook * (1/directionToLook.Length());
+        NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
+        auto sinAngle = directionToLook.Dot(upDirection);
+        auto angleFromUp = asin(sinAngle);
+        float angleFromForward = (angleFromUp - 90.0) * REDUCTION_FACTOR;
 
-  		finalAngle = std::clamp(angleFromForward, -45.f, 45.f);
+    		finalAngle = std::clamp(angleFromForward, -45.f, 45.f);
+      }
+    } else {
+      // Not in dialog
+      if (fabs(data.spineSmooth.value) < 1e-3) {
+        // Finihed smoothing back to zero
+        giant->SetGraphVariableBool("GTSIsInDialogue", false); // Disallow
+      }
     }
     data.spineSmooth.target = finalAngle;
 
     giant->SetGraphVariableFloat("GTSPitchOverride", data.spineSmooth.value);
 
 		log::info("Pitch Override of {} is {}", giant->GetDisplayFullName(), data.spineSmooth.value);
-	}
-
-	void DialogueCheck(Actor* giant) {
-		bool GTSIsInDialogue; // Toggles Dialogue Spine edits
-		auto dialoguetarget = giant->GetActorRuntimeData().dialogueItemTarget.get().get();
-		if (dialoguetarget) {
-			giant->SetGraphVariableBool("GTSIsInDialogue", true); // Allow spine edits
-		} else {
-			giant->SetGraphVariableBool("GTSIsInDialogue", false); // Disallow
-		}
 	}
 }
 
@@ -190,7 +192,6 @@ namespace Gts {
   void Headtracking::SpineUpdate(Actor* me) {
     auto profiler = Profilers::Profile("Headtracking: SpineUpdate");
     SpellTest(me);
-		DialogueCheck(me); // Check for Dialogue
     auto ai = me->GetActorRuntimeData().currentProcess;
     Actor* tiny = nullptr;
     if (ai) {
