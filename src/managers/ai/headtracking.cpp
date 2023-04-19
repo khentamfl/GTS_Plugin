@@ -38,8 +38,8 @@ namespace {
     auto asActor = skyrim_cast<Actor*>(&obj);
     if (asActor) {
       auto charCont = asActor->GetCharController();
-      if (targetChar) {
-        headOffset.z = targetChar->actorHeight * 70.0 * scale;
+      if (charCont) {
+        headOffset.z = charCont->actorHeight * 70.0 * scale;
       }
     }
     return location + headOffset;
@@ -48,7 +48,7 @@ namespace {
     float scale = 1.0;
     auto asActor = skyrim_cast<Actor*>(&obj);
     if (asActor) {
-      scale = get_visual_scale(asActor)
+      scale = get_visual_scale(asActor);
     }
     HeadLocation(obj, scale);
   }
@@ -172,26 +172,28 @@ namespace Gts {
 		SpellTest(me);
 		DialogueCheck(me); // Check for Dialogue
 		float scale = get_visual_scale(me);
-		auto targetObjHandle = ai->GetHeadtrackTarget();
-		if (targetObjHandle) {
-			auto lookAt = HeadLocation(targetObjHandle);
-			auto head = HeadLocation(me);
+    auto ai = me->GetActorRuntimeData().currentProcess;
+    if (ai) {
+  		auto targetObjHandle = ai->GetHeadtrackTarget();
+  		if (targetObjHandle) {
+  			auto lookAt = HeadLocation(targetObjHandle);
+  			auto head = HeadLocation(me);
 
-			NiPoint3 directionToLook = (lookAt - head);
+  			NiPoint3 directionToLook = (lookAt - head);
 
-			NiPoint3 myOneTimeHead = HeadLocation(me, 1.0);
+  			NiPoint3 myOneTimeHead = HeadLocation(me, 1.0);
 
-			NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
+  			NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
 
-			ai->SetHeadtrackTarget(me, fakeLookAt);
-			Profilers::Stop("Headtracking: Headtracking Fix");
-		} else {
-			float PitchOverride;
-			me->GetGraphVariableFloat("GTSPitchOverride", PitchOverride);
-			if (PitchOverride != 0) {
-				me->SetGraphVariableFloat("GTSPitchOverride", 0);
-			}
-		}
-
+  			ai->SetHeadtrackTarget(me, fakeLookAt);
+  			Profilers::Stop("Headtracking: Headtracking Fix");
+  		} else {
+  			float PitchOverride;
+  			me->GetGraphVariableFloat("GTSPitchOverride", PitchOverride);
+  			if (PitchOverride != 0) {
+  				me->SetGraphVariableFloat("GTSPitchOverride", 0);
+  			}
+  		}
+    }
 	}
 }
