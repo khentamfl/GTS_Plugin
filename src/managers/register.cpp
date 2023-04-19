@@ -8,6 +8,7 @@
 #include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
+#include "managers/ai/headtracking.hpp"
 #include "managers/ai/AiManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/RandomGrowth.hpp"
@@ -59,6 +60,7 @@ namespace Gts {
 		EventDispatcher::AddListener(&EmotionManager::GetSingleton()); // Manages Emotions
 
 		EventDispatcher::AddListener(&AiManager::GetSingleton()); // Rough AI controller for GTS-actions
+    EventDispatcher::AddListener(&Headtracking::GetSingleton()); // Headtracking fixes
 
 
 		//EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions

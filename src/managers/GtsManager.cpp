@@ -270,7 +270,6 @@ void GtsManager::Update() {
 				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 1000, 1.0);
 				ClothManager::GetSingleton().CheckRip();
 			}
-			Headtracking::GetSingleton().FixHeadtracking(actor);
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {

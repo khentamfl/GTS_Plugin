@@ -124,7 +124,8 @@ namespace {
 		   }*/
 	}
 
-	void RotateSpine(Actor* giant, Actor* tiny) { // Manages Spine rotation and helps the spells to land properly
+  // Rotate spine to look at an actor either leaning back or looking down
+	void RotateSpine(Actor* giant, Actor* tiny) {
 		bool Collision_Installed = false; //Used to detect 'Precision' mod
 		float Collision_PitchMult = 0.0;
 		giant->GetGraphVariableBool("Collision_Installed", Collision_Installed);
@@ -133,16 +134,18 @@ namespace {
 			//giant->SetGraphVariableFloat("Collision_PitchMult", 0.0);
 			//log::info("Callision Pitch Mult: {}", Collision_PitchMult);
 		}
-		float sizedifference = (get_visual_scale(giant)/get_visual_scale(tiny) - 1.0);
-		float modifier = 0.0;
-		if (sizedifference > 1) {
-			modifier = std::clamp(sizedifference*2, 0.0f, 240.0f); // look down
-			giant->SetGraphVariableFloat("GTSPitchOverride", -modifier -Collision_PitchMult);
-		} else if (sizedifference < 1) {
-			modifier = std::clamp(sizedifference*6, 0.0f, 60.0f); // look up
-			giant->SetGraphVariableFloat("GTSPitchOverride", modifier -Collision_PitchMult);
-		}
-		log::info("Pitch Override of {} is {}", giant->GetDisplayFullName(), modifier);
+    auto meHead = HeadLocation(giant);
+    auto targetHead = HeadLocation(tiny);
+    auto directionToLook = targetHead - meHead;
+    directionToLook = directionToLook * (1/directionToLook.Length());
+    NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
+    auto sinAngle = directionToLook.Dot(upDirection);
+    auto angleFromUp = asin(sinAngle);
+    auto angleFromForward = angleFromUp - 90.0;
+
+		float angleFromForward = std::clamp(angleFromForward, -60.f, 60.f);
+    giant->SetGraphVariableFloat("GTSPitchOverride", angleFromForward);
+		log::info("Pitch Override of {} is {}", giant->GetDisplayFullName(), angleFromForward);
 	}
 
 	void DialogueCheck(Actor* giant) {
@@ -167,10 +170,37 @@ namespace Gts {
 		return "Headtracking";
 	}
 
+  void Headtracking::Update() {
+    for (auto actor: find_actors()) {
+      if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+        SpineUpdate(actor);
+        FixHeadtracking(actor);
+  		}
+    }
+  }
+
+  void Headtracking::SpineUpdate(Actor* me) {
+    auto profiler = Profilers::Profile("Headtracking: SpineUpdate");
+    SpellTest(me);
+		DialogueCheck(me); // Check for Dialogue
+    auto ai = me->GetActorRuntimeData().currentProcess;
+    if (ai) {
+      auto targetObjHandle = ai->GetHeadtrackTarget();
+      if (targetObjHandle) {
+        auto target = targetObjHandle.get().get();
+        if (target) {
+          auto asActor = skyrim_cast<Actor*>(target);
+          if (asActor) {
+            RotateSpine(me, asActor);
+          }
+        }
+      }
+    }
+
+  }
+
 	void Headtracking::FixHeadtracking(Actor* me) {
 		Profilers::Start("Headtracking: Headtracking Fix");
-		SpellTest(me);
-		DialogueCheck(me); // Check for Dialogue
 		float scale = get_visual_scale(me);
     auto ai = me->GetActorRuntimeData().currentProcess;
     if (ai) {
