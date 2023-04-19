@@ -134,18 +134,25 @@ namespace {
 			//giant->SetGraphVariableFloat("Collision_PitchMult", 0.0);
 			//log::info("Callision Pitch Mult: {}", Collision_PitchMult);
 		}
-    auto meHead = HeadLocation(giant);
-    auto targetHead = HeadLocation(tiny);
-    auto directionToLook = targetHead - meHead;
-    directionToLook = directionToLook * (1/directionToLook.Length());
-    NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
-    auto sinAngle = directionToLook.Dot(upDirection);
-    auto angleFromUp = asin(sinAngle);
-    auto angleFromForward = angleFromUp - 90.0;
+    float finalAngle = 0.0;
 
-		angleFromForward = std::clamp(angleFromForward, -60.f, 60.f);
-    giant->SetGraphVariableFloat("GTSPitchOverride", angleFromForward);
-		log::info("Pitch Override of {} is {}", giant->GetDisplayFullName(), angleFromForward);
+    if (tiny) {
+      auto meHead = HeadLocation(giant);
+      auto targetHead = HeadLocation(tiny);
+      auto directionToLook = targetHead - meHead;
+      directionToLook = directionToLook * (1/directionToLook.Length());
+      NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
+      auto sinAngle = directionToLook.Dot(upDirection);
+      auto angleFromUp = asin(sinAngle);
+      float angleFromForward = angleFromUp - 90.0;
+
+  		finalAngle = std::clamp(angleFromForward, -60.f, 60.f);
+    }
+    data.spineSmooth.target = finalAngle;
+
+    giant->SetGraphVariableFloat("GTSPitchOverride", data.spineSmooth.value);
+
+		log::info("Pitch Override of {} is {}", giant->GetDisplayFullName(), data.spineSmooth.value);
 	}
 
 	void DialogueCheck(Actor* giant) {
@@ -184,6 +191,7 @@ namespace Gts {
     SpellTest(me);
 		DialogueCheck(me); // Check for Dialogue
     auto ai = me->GetActorRuntimeData().currentProcess;
+    Actor* tiny = nullptr;
     if (ai) {
       auto targetObjHandle = ai->GetHeadtrackTarget();
       if (targetObjHandle) {
@@ -191,12 +199,13 @@ namespace Gts {
         if (target) {
           auto asActor = skyrim_cast<Actor*>(target);
           if (asActor) {
-            this->data.try_emplace(me->formID);
-            RotateSpine(me, asActor, this->data.at(me->formID));
+            tiny = asActor;
           }
         }
       }
     }
+    this->data.try_emplace(me->formID);
+    RotateSpine(me, tiny, this->data.at(me->formID));
   }
 
 	void Headtracking::FixHeadtracking(Actor* me) {
