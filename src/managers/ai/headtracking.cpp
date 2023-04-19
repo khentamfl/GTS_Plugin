@@ -142,15 +142,23 @@ namespace {
         // With valid look at target
         giant->SetGraphVariableBool("GTSIsInDialogue", true); // Allow spine edits
         auto meHead = HeadLocation(giant);
+        log::info("  - meHead: {}", Vector2String(meHead));
         auto targetHead = HeadLocation(tiny);
+        log::info("  - targetHead: {}", Vector2String(targetHead));
         auto directionToLook = targetHead - meHead;
+        log::info("  - directionToLook: {}", Vector2String(directionToLook));
         directionToLook = directionToLook * (1/directionToLook.Length());
+        log::info("  - Norm(directionToLook): {}", Vector2String(directionToLook));
         NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
         auto sinAngle = directionToLook.Dot(upDirection);
+        log::info("  - sinAngle: {}", sinAngle);
         auto angleFromUp = asin(sinAngle) * 180.0 / PI;
+        log::info("  - angleFromUp: {}", angleFromUp);
         float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
+        log::info("  - angleFromForward: {}", angleFromForward);
 
-    		finalAngle = std::clamp(angleFromForward, -33.f, 33.f);
+    		finalAngle = std::clamp(angleFromForward, -60.f, 60.f);
+        log::info("  - finalAngle: {}", finalAngle);
       }
     } else {
       // Not in dialog
