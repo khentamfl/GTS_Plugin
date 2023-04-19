@@ -90,7 +90,6 @@ namespace Gts {
 
 	void Headtracking::FixHeadtracking(Actor* me) {
 		Profilers::Start("Headtracking: Headtracking Fix");
-    log::info("HT me: {}", me->GetDisplayFullName());
 		SpellTest(me);
     NiPoint3 headOffset(0.0, 0.0, 127.0);
 		DialogueCheck(me); // Check for Dialogue
@@ -100,8 +99,6 @@ namespace Gts {
 		if (CharController) {
 			headOffset.z = CharController->actorHeight * 70;
 		}
-    log::info("  - headOffset: {}", Vector2Str(headOffset));
-    log::info("  - scale: {}", scale);
 		auto targetObjHandle = ai->GetHeadtrackTarget();
 		if (targetObjHandle) {
 			auto targetObj = targetObjHandle.get().get();
@@ -117,25 +114,15 @@ namespace Gts {
 						targetHeadOffset.z = targetChar->actorHeight * 70.0;
 					}
 				}
-        log::info("  - target: {}", targetObj->GetDisplayFullName());
-        log::info("  - targetHeadOffset: {}", Vector2Str(headOffset));
-        log::info("  - targetScale: {}", targetScale);
 
 				auto lookAt = targetObj->GetPosition() + targetHeadOffset * targetScale;
-        log::info("  - targetObj->GetPosition(): {}", Vector2Str(targetObj->GetPosition()));
-        log::info("  - lookAt: {}", Vector2Str(lookAt));
 				auto head = me->GetPosition() + headOffset * scale;
-        log::info("  - me->GetPosition(): {}", Vector2Str(me->GetPosition()));
-        log::info("  - head: {}", Vector2Str(head));
 
 				NiPoint3 directionToLook = (lookAt - head);
-        log::info("  - directionToLook: {}", Vector2Str(directionToLook));
 
 				NiPoint3 myOneTimeHead = me->GetPosition() + headOffset;
-        log::info("  - myOneTimeHead: {}", Vector2Str(myOneTimeHead));
 
 				NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
-        log::info("  - fakeLookAt: {}", Vector2Str(fakeLookAt));
 
 				ai->SetHeadtrackTarget(me, fakeLookAt);
 				Profilers::Stop("Headtracking: Headtracking Fix");
