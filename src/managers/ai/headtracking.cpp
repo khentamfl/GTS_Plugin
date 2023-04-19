@@ -50,7 +50,7 @@ namespace {
     if (asActor) {
       scale = get_visual_scale(asActor);
     }
-    HeadLocation(obj, scale);
+    return HeadLocation(obj, scale);
   }
   NiPoint3 HeadLocation(TESObjectREFR* obj, const float& scale) {
     if (!obj) {
