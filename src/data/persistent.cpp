@@ -557,13 +557,13 @@ namespace Gts {
 		serde->WriteRecordData(&n, sizeof(n));
 		float s = GetSingleton().speed_adjustment.s;
 		serde->WriteRecordData(&s, sizeof(s));
-		
+
 		if (!serde->OpenRecord(ProgressionMult, 0)) {
 			log::error("Unable to open Progression mult record to write cosave data");
 			return;
 		}
 		float progression_multiplier = GetSingleton().progression_multiplier;
-		sedge->WriteRecordData(&progression_multiplier, sizeof(progression_multiplier));
+		serde->WriteRecordData(&progression_multiplier, sizeof(progression_multiplier));
 
 		if (!serde->OpenRecord(SizeDamageMult, 0)) {
 			log::error("Unable to open Damage mult record to write cosave data");
