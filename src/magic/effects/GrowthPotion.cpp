@@ -51,6 +51,7 @@ namespace Gts {
 		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 
 		Grow(caster, Power, 0.0);
+		Rumble::Once("GrowButton", caster, 0.6, 0.05);
 	}
 
 	void GrowthPotion::OnFinish() {

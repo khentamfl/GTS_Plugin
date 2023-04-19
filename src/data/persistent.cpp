@@ -22,6 +22,7 @@ namespace {
 	inline const auto StompAiRecord = _byteswap_ulong('STAI');
 	inline const auto SandwichAiRecord = _byteswap_ulong('SWAI');
 	inline const auto VoreAiRecord = _byteswap_ulong('VRAI');
+	inline const auto ProgressionMult = _byteswap_ulong('PRMT');
 
 	const float DEFAULT_MAX_SCALE = 65535.0;
 	const float DEFAULT_HALF_LIFE = 1.0;
@@ -361,6 +362,11 @@ namespace Gts {
 					float o = 1.0;
 					GetSingleton().speed_adjustment.o = o;
 				}
+			}else if (type == ProgressionMult) {
+				float progression_multiplier;
+				serde->ReadRecordData(&progression_multiplier, sizeof(progression_multiplier));
+				GetSingleton().progression_multiplier = progression_multiplier;
+
 			} else if (type == SizeDamageMult) {
 				float size_related_damage_mult;
 				serde->ReadRecordData(&size_related_damage_mult, sizeof(size_related_damage_mult));
@@ -551,6 +557,13 @@ namespace Gts {
 		serde->WriteRecordData(&n, sizeof(n));
 		float s = GetSingleton().speed_adjustment.s;
 		serde->WriteRecordData(&s, sizeof(s));
+		
+		if (!serde->OpenRecord(ProgressionMult, 0)) {
+			log::error("Unable to open Progression mult record to write cosave data");
+			return;
+		}
+		float progression_multiplier = GetSingleton().progression_multiplier;
+		sedge->WriteRecordData(&progression_multiplier, sizeof(progression_multiplier));
 
 		if (!serde->OpenRecord(SizeDamageMult, 0)) {
 			log::error("Unable to open Damage mult record to write cosave data");

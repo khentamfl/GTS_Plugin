@@ -67,7 +67,7 @@ namespace Gts {
 		if (caster->formID != 0x14) {
 			return;
 		}
-		float progressionMultiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
+		float progressionMultiplier = Persistent::GetSingleton().progression_multiplier;
 
 		auto globalMaxSizeCalc = Runtime::GetFloat("GlobalMaxSizeCalc");
 		if (globalMaxSizeCalc < 10.0) {
@@ -80,7 +80,7 @@ namespace Gts {
 			return;
 		}
 		auto selectedFormula = Runtime::GetInt("SelectedSizeFormula");
-		float progressionMultiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
+		float progressionMultiplier = Persistent::GetSingleton().progression_multiplier;
 		if (selectedFormula) {
 			if (selectedFormula >= 2.0) {
 				SoftPotential mod {
@@ -110,7 +110,7 @@ namespace Gts {
 		const float DRAGON_PEANLTY = 0.20;
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float progression_multiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
+		float progression_multiplier = Persistent::GetSingleton().progression_multiplier;
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)/100;  // May go negative needs fixing with a smooth clamp
@@ -131,7 +131,6 @@ namespace Gts {
 		const float DRAGON_PEANLTY = 0.14;
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float progression_multiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)/100;  // May go negative needs fixing with a smooth clamp
@@ -151,7 +150,7 @@ namespace Gts {
 	}
 
 	inline float CalcPower(Actor* actor, float scale_factor, float bonus) {
-		float progression_multiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
+		float progression_multiplier = Persistent::GetSingleton().progression_multiplier;
 		// y = mx +c
 		// power = scale_factor * scale + bonus
 		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();

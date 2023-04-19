@@ -119,7 +119,7 @@ namespace Gts {
 			float delta_time = Time::WorldTimeDelta();
 			int TotalPower = (100 + this->Randomize)/100;
 			float Scale = get_visual_scale(player);
-			float ProgressionMultiplier = Runtime::GetFloatOr("ProgressionMultiplier", 1.0);
+			float ProgressionMultiplier = Persistent::GetSingleton().progression_multiplier;
 			float base_power = ((0.00185 * TotalPower * 60.0 * Scale) * ProgressionMultiplier);  // Put in actual power please
 			RestoreStats(); // Regens Attributes if PC has perk
 			mod_target_scale(player, base_power * delta_time); // Use delta_time so that the growth will be the same regardless of fps

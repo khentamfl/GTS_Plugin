@@ -189,6 +189,10 @@ namespace {
 		}
 	}
 
+	void SetProgressionMultiplier(StaticFunctionTag*, float value) {
+		Persistent::GetSingleton().progression_multiplier = value;
+	}
+
 	void SetStompAi(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().Stomp_Ai = enabled;
 	}
@@ -318,6 +322,7 @@ namespace Gts {
 		vm->RegisterFunction("SetFeetTracking", PapyrusClass, SetFeetTracking);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
+		vm->RegisterFunction("SetProgressionMultiplier", PapyrusClass, SetProgressionMultiplier);
 		vm->RegisterFunction("SetStompAi", PapyrusClass, SetStompAi);
 		vm->RegisterFunction("SetSandwichAi", PapyrusClass, SetSandwichAi);
 		vm->RegisterFunction("SetVoreAi", PapyrusClass, SetVoreAi);
