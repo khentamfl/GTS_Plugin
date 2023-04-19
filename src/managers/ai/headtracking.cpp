@@ -126,6 +126,7 @@ namespace {
 
   // Rotate spine to look at an actor either leaning back or looking down
 	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
+    const float REDUCTION_FACTOR = 0.666;
 		bool Collision_Installed = false; //Used to detect 'Precision' mod
 		float Collision_PitchMult = 0.0;
 		giant->GetGraphVariableBool("Collision_Installed", Collision_Installed);
@@ -144,9 +145,9 @@ namespace {
       NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
       auto sinAngle = directionToLook.Dot(upDirection);
       auto angleFromUp = asin(sinAngle);
-      float angleFromForward = angleFromUp - 90.0;
+      float angleFromForward = (angleFromUp - 90.0) * REDUCTION_FACTOR;
 
-  		finalAngle = std::clamp(angleFromForward, -60.f, 60.f);
+  		finalAngle = std::clamp(angleFromForward, -45.f, 45.f);
     }
     data.spineSmooth.target = finalAngle;
 
@@ -226,12 +227,6 @@ namespace Gts {
 
   			ai->SetHeadtrackTarget(me, fakeLookAt);
   			Profilers::Stop("Headtracking: Headtracking Fix");
-  		} else {
-  			float PitchOverride;
-  			me->GetGraphVariableFloat("GTSPitchOverride", PitchOverride);
-  			if (PitchOverride != 0) {
-  				me->SetGraphVariableFloat("GTSPitchOverride", 0);
-  			}
   		}
     }
 	}
