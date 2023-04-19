@@ -75,7 +75,7 @@ Bool function SetGrowthHalfLife(Actor target, Float halflife) global native
 Float function GetGrowthHalfLife(Actor target) global native
 
 ;Sets progression mult
-Float function SetProgressionMultiplier(float value) global native
+function SetProgressionMultiplier(float value) global native
 
 
 ;======================================================================================
