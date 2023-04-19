@@ -151,7 +151,7 @@ namespace {
         NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
         auto sinAngle = directionToLook.Dot(upDirection);
         auto angleFromUp = asin(sinAngle) * 180.0 / PI;
-        float angleFromForward = (angleFromUp - 90.0) * REDUCTION_FACTOR;
+        float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
 
     		finalAngle = std::clamp(angleFromForward, -45.f, 45.f);
       }
