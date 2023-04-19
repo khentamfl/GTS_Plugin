@@ -99,7 +99,7 @@ namespace Gts {
 		if (CharController) {
 			height = CharController->actorHeight * 70;
 		}
-		auto& targetObjHandle = ai->GetHeadtrackTarget();
+		auto targetObjHandle = ai->GetHeadtrackTarget();
 		if (targetObjHandle) {
 			auto targetObj = targetObjHandle.get().get();
 			if (targetObj) {
