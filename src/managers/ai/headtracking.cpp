@@ -127,6 +127,7 @@ namespace {
   // Rotate spine to look at an actor either leaning back or looking down
 	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
     const float REDUCTION_FACTOR = 0.666;
+    const float PI = 3.14159;
 		bool Collision_Installed = false; //Used to detect 'Precision' mod
 		float Collision_PitchMult = 0.0;
 		giant->GetGraphVariableBool("Collision_Installed", Collision_Installed);
@@ -149,12 +150,12 @@ namespace {
         directionToLook = directionToLook * (1/directionToLook.Length());
         NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
         auto sinAngle = directionToLook.Dot(upDirection);
-        auto angleFromUp = asin(sinAngle);
+        auto angleFromUp = asin(sinAngle) * 180.0 / PI;
         float angleFromForward = (angleFromUp - 90.0) * REDUCTION_FACTOR;
 
     		finalAngle = std::clamp(angleFromForward, -45.f, 45.f);
       }
-    } else { 
+    } else {
       // Not in dialog
       if (fabs(data.spineSmooth.value) < 1e-3) {
         // Finihed smoothing back to zero
