@@ -191,6 +191,7 @@ namespace {
 
 	void SetProgressionMultiplier(StaticFunctionTag*, float value) {
 		Persistent::GetSingleton().progression_multiplier = value;
+		log::info("Setting Progression Multiplier to {}", value);
 	}
 
 	void SetStompAi(StaticFunctionTag*, bool enabled) {

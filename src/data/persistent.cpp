@@ -362,11 +362,10 @@ namespace Gts {
 					float o = 1.0;
 					GetSingleton().speed_adjustment.o = o;
 				}
-			}else if (type == ProgressionMult) {
+			} else if (type == ProgressionMult) {
 				float progression_multiplier;
 				serde->ReadRecordData(&progression_multiplier, sizeof(progression_multiplier));
 				GetSingleton().progression_multiplier = progression_multiplier;
-
 			} else if (type == SizeDamageMult) {
 				float size_related_damage_mult;
 				serde->ReadRecordData(&size_related_damage_mult, sizeof(size_related_damage_mult));
