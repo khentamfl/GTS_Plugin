@@ -52,7 +52,7 @@ namespace {
 	void GrabKillEvent(const InputEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
-		auto grabbedActor = Grab::GetHeldActor(player); 
+		auto grabbedActor = Grab::GetHeldActor(player);
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			if (grabbedActor) {
 				float sd = get_visual_scale(player)/get_visual_scale(grabbedActor);
@@ -73,7 +73,7 @@ namespace {
 
 	void GrabSpareEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		auto grabbedActor = Grab::GetHeldActor(player); 
+		auto grabbedActor = Grab::GetHeldActor(player);
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			if (grabbedActor) {
 				Grab::Release(player);

@@ -14,10 +14,10 @@ namespace Gts {
 		}
 	}
 
-  template< typename ... Args >
+	template< typename ... Args >
 	void Cprint(std::string_view rt_fmt_str, Args&&... args) {
 		try {
-      ConsoleLog::GetSingleton()->Print("%s", std::vformat(rt_fmt_str, std::make_format_args(args ...)).c_str());
+			ConsoleLog::GetSingleton()->Print("%s", std::vformat(rt_fmt_str, std::make_format_args(args ...)).c_str());
 		} catch (const std::format_error &e) {
 			log::info("Could not format console log, check valid format string: {}", e.what());
 		}

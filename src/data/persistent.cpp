@@ -344,9 +344,7 @@ namespace Gts {
 				bool Vore_Ai;
 				serde->ReadRecordData(&Vore_Ai, sizeof(Vore_Ai));
 				GetSingleton().Vore_Ai = Vore_Ai;
-			}
-			
-			 else if (type == IsSpeedAdjustedRecord) {
+			} else if (type == IsSpeedAdjustedRecord) {
 				bool is_speed_adjusted;
 				serde->ReadRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
 				GetSingleton().is_speed_adjusted = is_speed_adjusted;
@@ -363,8 +361,7 @@ namespace Gts {
 					float o = 1.0;
 					GetSingleton().speed_adjustment.o = o;
 				}
-			}
-			else if (type == SizeDamageMult) {
+			} else if (type == SizeDamageMult) {
 				float size_related_damage_mult;
 				serde->ReadRecordData(&size_related_damage_mult, sizeof(size_related_damage_mult));
 				GetSingleton().size_related_damage_mult = size_related_damage_mult;
@@ -511,7 +508,7 @@ namespace Gts {
 
 		bool devourment_compatibility = GetSingleton().devourment_compatibility;
 		serde->WriteRecordData(&devourment_compatibility, sizeof(devourment_compatibility));
-		
+
 		if (!serde->OpenRecord(FeetTrackingRecord, 1)) {
 			log::error("Unable to open Feet Tracking record to write cosave data.");
 			return;

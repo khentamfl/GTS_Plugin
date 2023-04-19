@@ -48,11 +48,14 @@ namespace {
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (tiny->IsPlayerTeammate() || Runtime::InFaction(tiny, "FollowerFaction"))) {
 			return false;
-		} if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && (giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction")) && (tiny->IsPlayerTeammate() || Runtime::InFaction(tiny, "FollowerFaction"))) {
+		}
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && (giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction")) && (tiny->IsPlayerTeammate() || Runtime::InFaction(tiny, "FollowerFaction"))) {
 			return false;
-		} if (Runtime::GetBool("GtsPCEffectImmunityToggle") && (giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction")) && tiny->formID == 0x14) {
+		}
+		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && (giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction")) && tiny->formID == 0x14) {
 			return false;
-		} return true;
+		}
+		return true;
 	}
 
 	void ModVulnerability(Actor* giant, Actor* tiny) {
@@ -237,17 +240,23 @@ namespace Gts {
 
 		if (!leftFoot) {
 			return;
-		} if (!rightFoot) {
+		}
+		if (!rightFoot) {
 			return;
-		} if (!leftCalf) {
+		}
+		if (!leftCalf) {
 			return;
-		} if (!rightCalf) {
+		}
+		if (!rightCalf) {
 			return;
-		} if (!leftToe) {
+		}
+		if (!leftToe) {
 			return;
-		} if (!rightToe) {
+		}
+		if (!rightToe) {
 			return;
-		} if (!BodyBone) {
+		}
+		if (!BodyBone) {
 			return; // CTD protection attempts
 		}
 		NiMatrix3 leftRotMat;
@@ -448,11 +457,14 @@ namespace Gts {
 		Profilers::Start("AccurateDamage: DoSizeDamage");
 		if (!giant) {
 			return;
-		} if (!tiny) {
+		}
+		if (!tiny) {
 			return;
-		} if (giant == tiny) {
+		}
+		if (giant == tiny) {
 			return;
-		} if (!CanDoDamage(giant, tiny)) {
+		}
+		if (!CanDoDamage(giant, tiny)) {
 			return;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();

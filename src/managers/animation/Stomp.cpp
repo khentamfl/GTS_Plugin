@@ -109,7 +109,7 @@ namespace {
 		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.7 * bonus, 1.2, LNode);
-		
+
 	}
 
 	void GTSStompendR(AnimationEventData& data) {

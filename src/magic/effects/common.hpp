@@ -98,7 +98,8 @@ namespace Gts {
 				auto sizeLimit = Runtime::GetFloat("sizeLimit");
 				if (Runtime::HasPerk(caster, "TrueGiantess")) {
 					sizeLimit = 999999.0;
-				} if (globalMassSize + 1.0 < sizeLimit) {
+				}
+				if (globalMassSize + 1.0 < sizeLimit) {
 					Runtime::SetFloat("GtsMassBasedSize", globalMassSize + value * progressionMultiplier * TimeScale());
 				}
 			}
@@ -326,7 +327,7 @@ namespace Gts {
 
 		bool GTSBusy;
 		caster->GetGraphVariableBool("GTS_Busy", GTSBusy);
-		
+
 		if (!GTSBusy && get_visual_scale(caster) <= 12.0 && !caster->AsActorState()->IsSprinting() && !caster->AsActorState()->IsWalking() && !caster->IsRunning() && !hasSMT || !GTSBusy && hasSMT && get_visual_scale(caster) <= 12.0) {
 			//PlayAnimation(caster, "JumpLand"); // Simulate Crush anim
 		}
@@ -353,5 +354,5 @@ namespace Gts {
 	inline void CastTrackSize(Actor* caster, Actor* target) {
 		Runtime::CastSpell(caster, target, "TrackSizeSpell");
 	}
-	
+
 }

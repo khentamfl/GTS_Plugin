@@ -58,10 +58,10 @@ namespace Gts
 	};
 
 	enum VoreBuffState {
-    	Starting,
-    	RampUp,
+		Starting,
+		RampUp,
 		Running,
-    	RampDown,
+		RampDown,
 		Finishing,
 		Done,
 	};
@@ -69,7 +69,7 @@ namespace Gts
 		VoreBuffState state = VoreBuffState::Starting;
 		ActorHandle giant;
 		ActorHandle tiny;
-    	float duration;
+		float duration;
 		float restorePower = 0.0; // Amount of health to restore TOTAL
 		float sizePower = 0.0; // Amount of size to gain TOTAL
 		float tinySize = 0.0;
@@ -82,15 +82,15 @@ namespace Gts
 		Spring factor = Spring(0.0, 15.0);
 		float appliedFactor = 0.0;
 
-    // Create the buff
-    //
-    // This also calculates the restorePower etc and the duration
+		// Create the buff
+		//
+		// This also calculates the restorePower etc and the duration
 		VoreBuff(Actor* giant, Actor* tiny);
 
-    // Called every frame until we are done
+		// Called every frame until we are done
 		void Update();
 
-    // Reports true when done so that it can be removed
+		// Reports true when done so that it can be removed
 		bool Done();
 	};
 

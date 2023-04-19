@@ -37,7 +37,7 @@ namespace {
 		for (auto otherActor: find_actors()) {
 			if (otherActor != giant) {
 				if (otherActor->IsInKillMove()) {
-					float tinyScale = get_visual_scale(otherActor); 
+					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
@@ -88,7 +88,7 @@ namespace {
 
 	void JumpDown(AnimationEventData& data) {
 		auto giant = &data.giant;
-		auto& sizemanager = SizeManager::GetSingleton(); 
+		auto& sizemanager = SizeManager::GetSingleton();
 		float damage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
 		DoDamageEffect(&data.giant, 2.2 * damage, 8.0, 20, 0.45);
 	}

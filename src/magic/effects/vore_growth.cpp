@@ -64,7 +64,7 @@ namespace Gts {
 			return;
 		}
 		VoreBuffAttributes();
-		
+
 	}
 
 

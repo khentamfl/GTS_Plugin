@@ -166,7 +166,7 @@ namespace {
 namespace Gts {
 	VoreData::VoreData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
 
-	} 
+	}
 
 	void VoreData::AddTiny(Actor* tiny) {
 		this->tinies.try_emplace(tiny->formID, tiny->CreateRefHandle());
@@ -177,8 +177,8 @@ namespace Gts {
 	}
 	void VoreData::Swallow() {
 		for (auto& [key, tinyref]: this->tinies) {
-      		auto tiny = tinyref.get().get();
-      		auto giant = this->giant.get().get();
+			auto tiny = tinyref.get().get();
+			auto giant = this->giant.get().get();
 			Vore::GetSingleton().AddVoreBuff(this->giant, tinyref);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
 			CallGainWeight(giant, 3.0 * get_visual_scale(tiny));
@@ -189,16 +189,16 @@ namespace Gts {
 	}
 	void VoreData::KillAll() {
 		if (!AllowDevourment()) {
-		for (auto& [key, tinyref]: this->tinies) {
-      		auto tiny = tinyref.get().get();
-			if (tiny->formID != 0x14) {
-				Disintegrate(tiny);
-				///this->tinies.erase(tiny);
-			} else if (tiny->formID == 0x14) {
-				DamageAV(tiny, ActorValue::kHealth, 900000.0);
-				tiny->KillImmediate();
-				TriggerScreenBlood(50);
-				tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
+			for (auto& [key, tinyref]: this->tinies) {
+				auto tiny = tinyref.get().get();
+				if (tiny->formID != 0x14) {
+					Disintegrate(tiny);
+					///this->tinies.erase(tiny);
+				} else if (tiny->formID == 0x14) {
+					DamageAV(tiny, ActorValue::kHealth, 900000.0);
+					tiny->KillImmediate();
+					TriggerScreenBlood(50);
+					tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
 				}
 			}
 		}
@@ -207,7 +207,7 @@ namespace Gts {
 
 	void VoreData::AllowToBeVored(bool allow) {
 		for (auto& [key, tinyref]: this->tinies) {
-      		auto tiny = tinyref.get().get();
+			auto tiny = tinyref.get().get();
 			auto transient = Transient::GetSingleton().GetData(tiny);
 			if (transient) {
 				transient->can_be_vored = allow;
@@ -230,7 +230,7 @@ namespace Gts {
 	std::vector<Actor*> VoreData::GetVories() {
 		std::vector<Actor*> result;
 		for (auto& [key, actorref]: this->tinies) {
-      		auto actor = actorref.get().get();
+			auto actor = actorref.get().get();
 			result.push_back(actor);
 		}
 		return result;
@@ -238,10 +238,10 @@ namespace Gts {
 
 	void VoreData::Update() {
 		auto giant = this->giant.get().get();
-    	float giantScale = get_visual_scale(giant);
+		float giantScale = get_visual_scale(giant);
 		// Stick them to the AnimObjectA
 		for (auto& [key, tinyref]: this->tinies) {
-      		auto tiny = tinyref.get().get();
+			auto tiny = tinyref.get().get();
 			if (!tiny) {
 				return;
 			}
@@ -257,8 +257,8 @@ namespace Gts {
 				NiPoint3 giantLocation = giant->GetPosition();
 				NiPoint3 tinyLocation = tiny->GetPosition();
 				NiPoint3 targetLocation = bone->world.translate;
-        		NiPoint3 deltaLocation = targetLocation - tinyLocation;
-        		float deltaLength = deltaLocation.Length();
+				NiPoint3 deltaLocation = targetLocation - tinyLocation;
+				float deltaLength = deltaLocation.Length();
 
 				tiny->SetPosition(targetLocation, true);
 				tiny->SetPosition(targetLocation, false);
@@ -281,46 +281,46 @@ namespace Gts {
 				NiPoint3 headCenter = headNode->world.translate;
 				float headKillRadius = 10.0 * giantScale;
 				for (auto& [key, tinyref]: this->tinies) {
-          			auto tiny = tinyref.get().get();
+					auto tiny = tinyref.get().get();
 					// Get all nodes in range
 					std::vector<NiAVObject*> nodes_inrange = {};
-          			std::vector<std::string> names_inrange = {};
+					std::vector<std::string> names_inrange = {};
 					auto root = tiny->GetCurrent3D();
 					VisitNodes(root, [&nodes_inrange, &headCenter, &headKillRadius, &names_inrange](NiAVObject& node) {
 						float distance = (node.world.translate - headCenter).Length();
 						if (distance < headKillRadius) {
 							nodes_inrange.push_back(&node);
-              				names_inrange.push_back(node.name.c_str());
+							names_inrange.push_back(node.name.c_str());
 						}
 						return true;
 					});
-          			//log::info("Trying to shink {} nodes", nodes_inrange.size());
+					//log::info("Trying to shink {} nodes", nodes_inrange.size());
 
 					// Check all children of the nodes
-          				std::vector<NiAVObject*> excludedChildren = {};
-          	 			excludedChildren.push_back(find_node(tiny, "NPC ROOT [ROOT]", false));
-         	 			excludedChildren.push_back(find_node(tiny, "NPC COM [COM]", false));
-         	 			excludedChildren.push_back(find_node(tiny, "NPC Pelvis [Pelv]", false));
-         	 			excludedChildren.push_back(find_node(tiny, "NPC Spine [Spn0]", false));
-         	 			excludedChildren.push_back(find_node(tiny, "Camera Control", false));
-         	 			excludedChildren.push_back(find_node(tiny, "NPC Translate", false));
-						for (auto& node: nodes_inrange) {
-							bool anyInvalid = false;
-							VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
-              				for (auto excludedNode: excludedChildren) {
-                				if (excludedNode == &node_child) {
-                  					anyInvalid = true;
-  									return false;
-                					}
-            				  	}
-								return true;
-							});
-							if (!anyInvalid) {
+					std::vector<NiAVObject*> excludedChildren = {};
+					excludedChildren.push_back(find_node(tiny, "NPC ROOT [ROOT]", false));
+					excludedChildren.push_back(find_node(tiny, "NPC COM [COM]", false));
+					excludedChildren.push_back(find_node(tiny, "NPC Pelvis [Pelv]", false));
+					excludedChildren.push_back(find_node(tiny, "NPC Spine [Spn0]", false));
+					excludedChildren.push_back(find_node(tiny, "Camera Control", false));
+					excludedChildren.push_back(find_node(tiny, "NPC Translate", false));
+					for (auto& node: nodes_inrange) {
+						bool anyInvalid = false;
+						VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
+							for (auto excludedNode: excludedChildren) {
+								if (excludedNode == &node_child) {
+									anyInvalid = true;
+									return false;
+								}
+							}
+							return true;
+						});
+						if (!anyInvalid) {
 
-								tiny->SetAlpha(0.0);//node->local.scale = 0.50;
-              					update_node(node);
-							} else {
-            			}
+							tiny->SetAlpha(0.0);//node->local.scale = 0.50;
+							update_node(node);
+						} else {
+						}
 					}
 				}
 			}
@@ -342,7 +342,7 @@ namespace Gts {
 			mealEffiency *= 6.0;
 		}
 		this->appliedFactor = 0.0;
-    	this->state = VoreBuffState::Starting;
+		this->state = VoreBuffState::Starting;
 
 		if (tiny) {
 			float tiny_scale = get_visual_scale(tiny);
@@ -351,8 +351,8 @@ namespace Gts {
 			if (Runtime::HasPerkTeam(giant, "Gluttony")) {
 				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 8 * mealEffiency;
 			} else {
-        		this->restorePower = 0.0;
-      		}
+				this->restorePower = 0.0;
+			}
 			this->WasDragon = IsDragon(tiny);
 			this->sizePower = tiny_scale * mealEffiency * perkbonus;
 			this->tinySize = tiny_scale;
@@ -360,57 +360,57 @@ namespace Gts {
 		}
 	}
 	void VoreBuff::Update() {
-    	auto giant = this->giant.get().get();
+		auto giant = this->giant.get().get();
 		if (!this->giant) {
-      		this->state = VoreBuffState::Done;
+			this->state = VoreBuffState::Done;
 			return;
 		}
 		switch (this->state) {
-      		case VoreBuffState::Starting: {
-        		this->factor.value = 0.0;
-        		this->factor.velocity = 0.0;
-        		this->factor.target = 1.0;
-        		this->factor.halflife = this->duration * 0.5;
-        		this->state = VoreBuffState::Running;
-        	break;
-    		}
-		case VoreBuffState::Running: {
-    			float healthToApply = this->restorePower/4000;
-    			float sizeToApply = this->sizePower/5500;
-
-    			DamageAV(giant, ActorValue::kHealth, -healthToApply);
-    			DamageAV(giant, ActorValue::kStamina, -healthToApply);
-
-    			mod_target_scale(giant, sizeToApply);
-				if (this->factor.value >= 0.99) {
-          			this->state = VoreBuffState::Finishing;
-				}
-        	break;
-		}
-		case VoreBuffState::Finishing: {
-			if (!AllowDevourment()) {
-				if (this->giant) {
-					AdjustGiantessSkill(giant, this->tinySize);
-					VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon);
-					BuffAttributes(giant, this->tinySize);
-					mod_target_scale(giant, this->sizePower * 0.5);
-					AdjustSizeReserve(giant, this->sizePower);
-					if (giant->formID == 0x14) {
-						AdjustSizeLimit(0.0260, giant);
-						AdjustMassLimit(0.0106, giant);
-					}
-					Rumble::Once("GrowthRumble", giant, 2.45, 0.30);
-					Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
-					if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
-						Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
-					}
-				}
+			case VoreBuffState::Starting: {
+				this->factor.value = 0.0;
+				this->factor.velocity = 0.0;
+				this->factor.target = 1.0;
+				this->factor.halflife = this->duration * 0.5;
+				this->state = VoreBuffState::Running;
+				break;
 			}
+			case VoreBuffState::Running: {
+				float healthToApply = this->restorePower/4000;
+				float sizeToApply = this->sizePower/5500;
 
-			this->state = VoreBuffState::Done;
-    	break;
-	}
-	case VoreBuffState::Done: {
+				DamageAV(giant, ActorValue::kHealth, -healthToApply);
+				DamageAV(giant, ActorValue::kStamina, -healthToApply);
+
+				mod_target_scale(giant, sizeToApply);
+				if (this->factor.value >= 0.99) {
+					this->state = VoreBuffState::Finishing;
+				}
+				break;
+			}
+			case VoreBuffState::Finishing: {
+				if (!AllowDevourment()) {
+					if (this->giant) {
+						AdjustGiantessSkill(giant, this->tinySize);
+						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon);
+						BuffAttributes(giant, this->tinySize);
+						mod_target_scale(giant, this->sizePower * 0.5);
+						AdjustSizeReserve(giant, this->sizePower);
+						if (giant->formID == 0x14) {
+							AdjustSizeLimit(0.0260, giant);
+							AdjustMassLimit(0.0106, giant);
+						}
+						Rumble::Once("GrowthRumble", giant, 2.45, 0.30);
+						Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
+						if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
+							Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
+						}
+					}
+				}
+
+				this->state = VoreBuffState::Done;
+				break;
+			}
+			case VoreBuffState::Done: {
 			}
 		}
 	}
@@ -446,13 +446,13 @@ namespace Gts {
 					AbleToVore.push_back(actor);
 				}
 			}
-      		if (!AbleToVore.empty()) {
-  				int idx = rand() % AbleToVore.size();
-      			Actor* voreActor = AbleToVore[idx];
-  				if (voreActor) {
-  					RandomVoreAttempt(voreActor);
-  				}
-      		}
+			if (!AbleToVore.empty()) {
+				int idx = rand() % AbleToVore.size();
+				Actor* voreActor = AbleToVore[idx];
+				if (voreActor) {
+					RandomVoreAttempt(voreActor);
+				}
+			}
 		}
 
 		for (auto& [key, voreData]: this->data) {
@@ -747,14 +747,13 @@ namespace Gts {
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
-				if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
-					Notify("{} is important and shouldn't be eaten.", prey->GetDisplayFullName());
-					return false;
-				} else {
-					return true;
-				}
+			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
+				Notify("{} is important and shouldn't be eaten.", prey->GetDisplayFullName());
+				return false;
+			} else {
+				return true;
 			}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -813,8 +812,8 @@ namespace Gts {
 	}
 
 	void Vore::AddVoreBuff(ActorHandle giantref, ActorHandle tinyref) {
-    	auto giant = giantref.get().get();
-    	auto tiny = tinyref.get().get();
+		auto giant = giantref.get().get();
+		auto tiny = tinyref.get().get();
 		this->buffs.try_emplace(tiny->formID, giant, tiny);
 	}
 }

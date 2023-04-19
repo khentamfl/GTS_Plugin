@@ -31,43 +31,43 @@ namespace Gts {
 		return this->name;
 	}
 
-  ProfilerHandle::ProfilerHandle(std::string_view name) : name(std::string(name)) {
-    Profilers::Start(name);
-  }
+	ProfilerHandle::ProfilerHandle(std::string_view name) : name(std::string(name)) {
+		Profilers::Start(name);
+	}
 
-  ProfilerHandle::~ProfilerHandle() {
-    Profilers::Stop(this->name);
-  }
+	ProfilerHandle::~ProfilerHandle() {
+		Profilers::Stop(this->name);
+	}
 
-  ProfilerHandle Profilers::Profile(std::string_view name) {
-    return ProfilerHandle(name);
-  }
+	ProfilerHandle Profilers::Profile(std::string_view name) {
+		return ProfilerHandle(name);
+	}
 
 	void Profilers::Start(std::string_view name) {
-    if (Config::GetSingleton().GetDebug().ShouldProfile()) {
-      auto& me = Profilers::GetSingleton();
-      auto key = std::string(name);
-      me.profilers.try_emplace(key, name);
-      me.profilers.at(key).Start();
-    }
-  }
+		if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+			auto& me = Profilers::GetSingleton();
+			auto key = std::string(name);
+			me.profilers.try_emplace(key, name);
+			me.profilers.at(key).Start();
+		}
+	}
 
-  void Profilers::Stop(std::string_view name) {
-    if (Config::GetSingleton().GetDebug().ShouldProfile()) {
-      auto& me = Profilers::GetSingleton();
-      auto key = std::string(name);
-      me.profilers.try_emplace(key, name);
-      me.profilers.at(key).Stop();
-    }
-  }
+	void Profilers::Stop(std::string_view name) {
+		if (Config::GetSingleton().GetDebug().ShouldProfile()) {
+			auto& me = Profilers::GetSingleton();
+			auto key = std::string(name);
+			me.profilers.try_emplace(key, name);
+			me.profilers.at(key).Stop();
+		}
+	}
 
-  void Profilers::Report() {
-    std::string report = "Reporting Profilers:";
+	void Profilers::Report() {
+		std::string report = "Reporting Profilers:";
 		report += std::format("\n|{:20}|", "Name");
-		report += std::format("{:15s}|", 			"Seconds");
-		report += std::format("{:15s}|", 			"% OurCode");
-		report += std::format("{:15s}|", 			"s per frame");
-		report += std::format("{:15s}|", 			"% of frame");
+		report += std::format("{:15s}|",                        "Seconds");
+		report += std::format("{:15s}|",                        "% OurCode");
+		report += std::format("{:15s}|",                        "s per frame");
+		report += std::format("{:15s}|",                        "% of frame");
 		report += "\n------------------------------------------------------------------------------------------------";
 
 		static std::uint64_t last_report_frame = 0;
@@ -91,10 +91,10 @@ namespace Gts {
 
 		last_report_frame = current_report_frame;
 		last_report_time = current_report_time;
-  }
+	}
 
 	Profilers& Profilers::GetSingleton() {
-    static Profilers instance;
-    return instance;
-  }
+		static Profilers instance;
+		return instance;
+	}
 }

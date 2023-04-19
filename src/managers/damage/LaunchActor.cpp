@@ -14,11 +14,11 @@ using namespace Gts;
 
 namespace {
 
-    const float LAUNCH_DAMAGE = 2.4f;
+	const float LAUNCH_DAMAGE = 2.4f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.50;
 
-    void StaggerOr(Actor* giant, Actor* tiny, float power) {
+	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		if (tiny->IsDead()) {
 			return;
 		}
@@ -44,15 +44,15 @@ namespace {
 		}
 	}
 
-    void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
-        float giantSize = get_visual_scale(giant);
-        float tinySize = get_visual_scale(tiny);
-        float sizeRatio = giantSize/tinySize;
-        
-        float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
+	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
+		float giantSize = get_visual_scale(giant);
+		float tinySize = get_visual_scale(tiny);
+		float sizeRatio = giantSize/tinySize;
 
-        auto& sizemanager = SizeManager::GetSingleton();
-        if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
+		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
+
+		auto& sizemanager = SizeManager::GetSingleton();
+		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
@@ -75,12 +75,12 @@ namespace {
 				}
 			}
 		}
-    }
+	}
 }
 
 namespace Gts {
 
-    LaunchActor& LaunchActor::GetSingleton() noexcept {
+	LaunchActor& LaunchActor::GetSingleton() noexcept {
 		static LaunchActor instance;
 		return instance;
 	}
@@ -89,7 +89,7 @@ namespace Gts {
 		return "LaunchActor";
 	}
 
-    void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, std::string_view node) {
+	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, std::string_view node) {
 		const float BASE_DISTANCE = 70.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
 		const float BASE_FOOT_DISTANCE = 40.0; // Checks the distance of foot squishing
 		const float SCALE_RATIO = 2.0;
@@ -110,8 +110,8 @@ namespace Gts {
 		};
 		float maxFootDistance = BASE_FOOT_DISTANCE * giantScale * radius;
 
-        auto bone_TP = find_node(giant, node, false);
-        auto bone_FP = find_node(giant, node, true);
+		auto bone_TP = find_node(giant, node, false);
+		auto bone_FP = find_node(giant, node, true);
 		for (auto foot: {bone_TP, bone_FP}) {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point:  points) {
@@ -126,19 +126,19 @@ namespace Gts {
 						float tinyScale = get_visual_scale(otherActor);
 						if (giantScale / tinyScale > SCALE_RATIO) {
 							NiPoint3 actorLocation = otherActor->GetPosition();
-								// Check the tiny's nodes against the giant's foot points
+							// Check the tiny's nodes against the giant's foot points
 							for (auto point: footPoints) {
 								float distance = (point - actorLocation).Length();
 								if (distance < maxFootDistance) {
 									float aveForce = 1.0 - distance / maxFootDistance;
 									LaunchDecide(giant, otherActor, aveForce, damagebonus);
-							    	break;
+									break;
 								}
-						    }
-					    }
-				    }
-			    }
-		    }
-	    }
-    }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

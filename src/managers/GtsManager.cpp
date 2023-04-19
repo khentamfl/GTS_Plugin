@@ -33,7 +33,7 @@ using namespace std;
 namespace {
 	void FixActorFade(Actor* actor) {
 		Profilers::Start("Manager: Fade Fix");
-		if (get_visual_scale(actor) < 1.5) { 
+		if (get_visual_scale(actor) < 1.5) {
 			return;
 		}
 		if ((actor->formID == 0x14 ||actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
@@ -53,7 +53,7 @@ namespace {
 		auto aiProc = actor->GetActorRuntimeData().currentProcess;
 		auto Combat = actor->GetActorRuntimeData().combatController;
 		bhkCharacterController* CharController = aiProc->GetCharController();
-		//const auto bhkCharacterController = CharController&; 
+		//const auto bhkCharacterController = CharController&;
 		if (CharController) {
 			bhkCharacterController& Controller = *CharController;
 			actor->UpdateFadeSettings(CharController);
@@ -79,9 +79,11 @@ namespace {
 		Profilers::Start("Manager: update_height");
 		if (!actor) {
 			return;
-		} if (!trans_actor_data) {
+		}
+		if (!trans_actor_data) {
 			return;
-		} if (!persi_actor_data) {
+		}
+		if (!persi_actor_data) {
 			return;
 		}
 		float target_scale = persi_actor_data->target_scale;
@@ -118,7 +120,7 @@ namespace {
 					target_scale,
 					persi_actor_data->half_life,
 					Time::WorldTimeDelta()
-				);
+					);
 			}
 		}
 		Profilers::Stop("Manager: update_height");
@@ -127,11 +129,14 @@ namespace {
 		Profilers::Start("Manager: apply_height");
 		if (!actor) {
 			return;
-		} if (!actor->Is3DLoaded()) {
+		}
+		if (!actor->Is3DLoaded()) {
 			return;
-		} if (!trans_actor_data) {
+		}
+		if (!trans_actor_data) {
 			return;
-		} if (!persi_actor_data) {
+		}
+		if (!persi_actor_data) {
 			return;
 		}
 		float scale = get_natural_scale(actor);//get_scale(actor);
@@ -254,12 +259,12 @@ void GtsManager::Update() {
 			return;
 		}
 
-		FixActorFade(actor); 
+		FixActorFade(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
-		
+
 		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
 			if (sizemanager.GetPreciseDamage()) {
 				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 1000, 1.0);
@@ -280,7 +285,7 @@ void GtsManager::Update() {
 		apply_actor(actor);
 
 		SetHealthPercentage(actor, current_health_percentage);
-		
+
 		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
 		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
 			if (timer.ShouldRunFrame()) {
@@ -295,9 +300,11 @@ void GtsManager::OnAddPerk(const AddPerkEvent& evt) {
 	if (evt.actor->formID == 0x14) {
 		if (evt.perk == Runtime::GetPerk("TrueGiantess")) {
 			CallHelpMessage();
-		} if (evt.perk == Runtime::GetPerk("FastShrink") && !Runtime::HasSpell(evt.actor, "ShrinkBolt")) {
+		}
+		if (evt.perk == Runtime::GetPerk("FastShrink") && !Runtime::HasSpell(evt.actor, "ShrinkBolt")) {
 			Runtime::AddSpell(evt.actor, "ShrinkBolt");
-		} if (evt.perk == Runtime::GetPerk("LethalShrink") && !Runtime::HasSpell(evt.actor, "ShrinkStorm")) {
+		}
+		if (evt.perk == Runtime::GetPerk("LethalShrink") && !Runtime::HasSpell(evt.actor, "ShrinkStorm")) {
 			Runtime::AddSpell(evt.actor, "ShrinkStorm");
 		}
 	}

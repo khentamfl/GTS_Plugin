@@ -76,7 +76,7 @@ namespace Gts {
 		float MaxSize = get_max_scale(caster) - 0.004;
 
 		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00020;
-		
+
 
 		if (Runtime::HasPerk(caster, "HealthRegenPerk")) {
 			caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());

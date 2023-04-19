@@ -26,7 +26,7 @@ using namespace std;
 
 namespace Gts {
 
-    GameModeManager& GameModeManager::GetSingleton() noexcept {
+	GameModeManager& GameModeManager::GetSingleton() noexcept {
 		static GameModeManager instance;
 		return instance;
 	}

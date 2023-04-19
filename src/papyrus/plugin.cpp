@@ -141,7 +141,7 @@ namespace {
 	std::string SigFig(StaticFunctionTag*, float number, int sf) {
 		return format(number, sf);
 	}
-	
+
 	void SetFeetTracking(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().allow_feetracking = enabled;
 	}

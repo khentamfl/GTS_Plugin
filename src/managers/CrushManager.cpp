@@ -204,10 +204,10 @@ namespace Gts {
 
 	void CrushManager::ResetActor(Actor* actor) {
 		/*if (actor) {
-			UnDisintegrate(actor);
-			SetUnRestrained(actor);
-			SetMove(actor);
-		}*/
+		        UnDisintegrate(actor);
+		        SetUnRestrained(actor);
+		        SetMove(actor);
+		   }*/
 		this->data.erase(actor);
 	}
 

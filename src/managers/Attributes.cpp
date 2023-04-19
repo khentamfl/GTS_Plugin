@@ -187,9 +187,9 @@ namespace Gts {
 
 	void AttributeManager::OverrideSMTBonus(float Value) {
 		auto ActorAttributes = Persistent::GetSingleton().GetData(PlayerCharacter::GetSingleton());
-    if (ActorAttributes) {
-		    ActorAttributes->smt_run_speed = Value;
-    }
+		if (ActorAttributes) {
+			ActorAttributes->smt_run_speed = Value;
+		}
 	}
 
 	float AttributeManager::GetAttributeBonus(Actor* actor, ActorValue av) {
@@ -381,8 +381,8 @@ namespace Gts {
 				volume = bonus * origSpeed / 250;
 			}
 			/*if (soundtimer.ShouldRunFrame()) {
-				Runtime::PlaySound("RumbleWalkSound", actor, volume, 1.0);
-			}*/
+			        Runtime::PlaySound("RumbleWalkSound", actor, volume, 1.0);
+			   }*/
 		}
 		return bonus;
 	}

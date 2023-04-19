@@ -151,7 +151,7 @@ namespace {
 
 		if (type == "phenome") {
 			Emotions.OverridePhenome(ph, 0.0, 0.08/AnimSpeed, power);
-		} 
+		}
 		if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
@@ -160,7 +160,8 @@ namespace {
 				fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
 				fgen->exprOverride = true;
 			}
-		} if (type == "modifier") {
+		}
+		if (type == "modifier") {
 			Emotions.OverrideModifier(ph, 0.0, 0.25/AnimSpeed, power);
 		}
 	}
@@ -217,10 +218,10 @@ namespace {
 			tiny->NotifyAnimationGraph("JumpFall");
 		}
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			ManageCamera(giant, false, 4.0); 
+			ManageCamera(giant, false, 4.0);
 			ManageCamera(giant, true, 2.0);
 		}
-		
+
 		StopRHandRumble("HandR", data.giant);
 	}
 

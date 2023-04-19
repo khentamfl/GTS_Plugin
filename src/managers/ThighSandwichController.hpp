@@ -9,14 +9,14 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-    class SandwichingData {
+	class SandwichingData {
 		public:
 			SandwichingData(Actor* giant);
 			// Adds a tiny to the list of actors
 			// being eaten
 			void AddTiny(Actor* tiny);
-            void Remove(Actor* tiny);
-            void EnableSuffocate(bool enable);
+			void Remove(Actor* tiny);
+			void EnableSuffocate(bool enable);
 			void ManageScaleRune(bool enable);
 			void ManageShrinkRune(bool enable);
 			void OverideShrinkRune(float value);
@@ -37,7 +37,7 @@ namespace Gts {
 			// Vore is done is sets with multiple actors if the giant is big
 			// enough
 			std::unordered_map<FormID, ActorHandle> tinies = {};
-            bool Suffocate = false;
+			bool Suffocate = false;
 			bool RuneScale = false;
 			bool RuneShrink = false;
 
@@ -49,21 +49,21 @@ namespace Gts {
 			// True if in grabbed state
 			bool allGrabbed = false;
 	};
-    class ThighSandwichController : public EventListener  {
+	class ThighSandwichController : public EventListener  {
 		public:
 			[[nodiscard]] static ThighSandwichController& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-            virtual void Update() override;
+			virtual void Update() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
-			
+
 			std::vector<Actor*> GetSandwichTargetsInFront(Actor* pred, std::size_t numberOfPrey);
 			static void StartSandwiching(Actor* pred, Actor* prey);
 			bool CanSandwich(Actor* pred, Actor* prey);
 
-            SandwichingData& GetSandwichingData(Actor* giant);
+			SandwichingData& GetSandwichingData(Actor* giant);
 
-            std::unordered_map<FormID, SandwichingData> data;
+			std::unordered_map<FormID, SandwichingData> data;
 	};
 }

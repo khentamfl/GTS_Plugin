@@ -14,14 +14,14 @@
 #include "spring.hpp"
 #include "node.hpp"
 
- namespace {
+namespace {
 
-    const float MINIMUM_SANDWICH_DISTANCE = 70.0;
+	const float MINIMUM_SANDWICH_DISTANCE = 70.0;
 	const float MINIMUM_SANDWICH_SCALE_RATIO = 6.0;
 	const float SANDWICH_ANGLE = 60;
 	const float PI = 3.14159;
 
-    [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
+	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
 	{
 		float S = sin(angle);
 		float C = cos(angle);
@@ -44,20 +44,20 @@
 			(OMC * XX + C) * vec.x + (OMC * XY - ZS) * vec.y + (OMC * ZX + YS) * vec.z,
 			(OMC * XY + ZS) * vec.x + (OMC * YY + C) * vec.y + (OMC * YZ - XS) * vec.z,
 			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
-		);
+			);
 	}
- }
+}
 
 
- namespace Gts {
-    SandwichingData::SandwichingData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
+namespace Gts {
+	SandwichingData::SandwichingData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
 	}
 
 	void SandwichingData::AddTiny(Actor* tiny) {
 		this->tinies.try_emplace(tiny->formID, tiny->CreateRefHandle());
 	}
 
-    std::vector<Actor*> SandwichingData::GetActors() {
+	std::vector<Actor*> SandwichingData::GetActors() {
 		std::vector<Actor*> result;
 		for (auto& [key, actorref]: this->tinies) {
 			auto actor = actorref.get().get();
@@ -66,7 +66,7 @@
 		return result;
 	}
 
-    ThighSandwichController& ThighSandwichController::GetSingleton() noexcept {
+	ThighSandwichController& ThighSandwichController::GetSingleton() noexcept {
 		static ThighSandwichController instance;
 		return instance;
 	}
@@ -99,8 +99,7 @@
 				//log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
 				update_node(node);
 			}
-		}
-		else if (this->RuneScale == true) {
+		} else if (this->RuneScale == true) {
 			auto node = find_node(giant, node_name, false);
 			if (node) {
 				this->ScaleRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giant);
@@ -113,12 +112,12 @@
 		}
 	}
 
-    void SandwichingData::Update() {
-        auto giant = this->giant.get().get();
-        if (!giant) {
-            return;
-        }
-    	float giantScale = get_visual_scale(giant);
+	void SandwichingData::Update() {
+		auto giant = this->giant.get().get();
+		if (!giant) {
+			return;
+		}
+		float giantScale = get_visual_scale(giant);
 		if (giant->formID != 0x14) {
 			if (this->SandwichTimer.ShouldRun()) {
 				this->ManageAi(giant);
@@ -127,7 +126,7 @@
 
 		this->UpdateRune(giant);
 
-        for (auto& [key, tinyref]: this->tinies) {
+		for (auto& [key, tinyref]: this->tinies) {
 			auto tiny = tinyref.get().get();
 			if (!tiny) {
 				return;
@@ -139,8 +138,8 @@
 			float tinyScale = get_visual_scale(tiny);
 			NiPoint3 tinyLocation = tiny->GetPosition();
 			NiPoint3 targetLocation = bone->world.translate;
-        	NiPoint3 deltaLocation = targetLocation - tinyLocation;
-        	float deltaLength = deltaLocation.Length();
+			NiPoint3 deltaLocation = targetLocation - tinyLocation;
+			float deltaLength = deltaLocation.Length();
 
 			if (giantScale/tinyScale < 6.0) {
 				PushActorAway(giant, tiny, 0.5);
@@ -150,16 +149,16 @@
 
 			tiny->SetPosition(targetLocation, true);
 			tiny->SetPosition(targetLocation, false);
-            if (this->Suffocate) {
-                float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-			    float damage = 0.005 * sizedifference;
-                float hp = GetAV(tiny, ActorValue::kHealth);
-			    DamageAV(tiny, ActorValue::kHealth, damage);
-                if (damage > hp && !tiny->IsDead()) {
-                    this->Remove(tiny);
-                    PrintSuffocate(giant, tiny);
-                }
-            }
+			if (this->Suffocate) {
+				float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+				float damage = 0.005 * sizedifference;
+				float hp = GetAV(tiny, ActorValue::kHealth);
+				DamageAV(tiny, ActorValue::kHealth, damage);
+				if (damage > hp && !tiny->IsDead()) {
+					this->Remove(tiny);
+					PrintSuffocate(giant, tiny);
+				}
+			}
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
 				//ManageRagdoll(tiny, deltaLength, deltaLocation, targetLocation);
@@ -167,15 +166,15 @@
 				if (charcont) {
 					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
 				}
-            }
-        }
-    }
+			}
+		}
+	}
 
-    void ThighSandwichController::Update() {
-        for (auto& [key, SandwichData]: this->data) {
+	void ThighSandwichController::Update() {
+		for (auto& [key, SandwichData]: this->data) {
 			SandwichData.Update();
 		}
-    }
+	}
 
 	std::vector<Actor*> ThighSandwichController::GetSandwichTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
@@ -260,9 +259,11 @@
 	bool ThighSandwichController::CanSandwich(Actor* pred, Actor* prey) {
 		if (pred == prey) {
 			return false;
-		} if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
-            return false;
-        } if (!Runtime::HasPerkTeam(pred, "KillerThighs")) {
+		}
+		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+			return false;
+		}
+		if (!Runtime::HasPerkTeam(pred, "KillerThighs")) {
 			return false;
 		}
 
@@ -285,18 +286,17 @@
 		}
 		if (prey_distance <= (MINIMUM_SANDWICH_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
-					return false;
-				} else {
-					return true;
-				}
+				return false;
+			} else {
+				return true;
 			}
-		else {
+		} else {
 			return false;
 		}
 	}
 
 	void ThighSandwichController::StartSandwiching(Actor* pred, Actor* prey) {
-        auto& sandwiching = ThighSandwichController::GetSingleton();
+		auto& sandwiching = ThighSandwichController::GetSingleton();
 		if (!sandwiching.CanSandwich(pred, prey)) {
 			return;
 		}
@@ -316,11 +316,11 @@
 		this->data.erase(actor->formID);
 	}
 
-    void SandwichingData::Remove(Actor* tiny) {
-        this->tinies.erase(tiny->formID);
-    }
+	void SandwichingData::Remove(Actor* tiny) {
+		this->tinies.erase(tiny->formID);
+	}
 
-    void SandwichingData::EnableSuffocate(bool enable) {
+	void SandwichingData::EnableSuffocate(bool enable) {
 		this->Suffocate = enable;
 	}
 	void SandwichingData::ManageScaleRune(bool enable) {
@@ -333,10 +333,10 @@
 		this->ScaleRune.value = value;
 	}
 
-    SandwichingData& ThighSandwichController::GetSandwichingData(Actor* giant) {
+	SandwichingData& ThighSandwichController::GetSandwichingData(Actor* giant) {
 		// Create it now if not there yet
 		this->data.try_emplace(giant->formID, giant);
 
 		return this->data.at(giant->formID);
 	}
- }
+}

@@ -18,7 +18,7 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-    void Overkill(Actor* attacker, Actor* receiver, float damage) {
+	void Overkill(Actor* attacker, Actor* receiver, float damage) {
 		if (damage > GetAV(receiver, ActorValue::kHealth) * 1.5) { // Overkill effect
 			float attackerscale = get_visual_scale(attacker);
 			float receiverscale = get_visual_scale(receiver);
@@ -108,11 +108,11 @@ namespace Gts {
 		return "SizeHitEffects";
 	}
 
-    void SizeHitEffects::ApplyEverything(Actor* attacker, Actor* receiver, float damage) {
-        InflictDamage(attacker, receiver, damage);
-        StaggerImmunity(attacker, receiver);
+	void SizeHitEffects::ApplyEverything(Actor* attacker, Actor* receiver, float damage) {
+		InflictDamage(attacker, receiver, damage);
+		StaggerImmunity(attacker, receiver);
 		SizeHitEffects::GetSingleton().DoHitGrowth(receiver, attacker, damage);
-    }
+	}
 
 
 	void SizeHitEffects::DoHitGrowth(Actor* receiver, Actor* attacker, float damage) {
@@ -143,9 +143,8 @@ namespace Gts {
 			if (SizeDifference >= 4.0 && LaughChance >= 11) {
 				Runtime::PlaySoundAtNode("LaughSound", receiver, 1.0, 0.5, "NPC Head [Head]");
 			}
-			return; 
-		}
-		else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
+			return;
+		} else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if (get_visual_scale(receiver) > 1.0) {
 				float ShrinkValue = std::clamp(((-damage/600)/SizeHunger/Gigantism) * resistance, 0.0f, 0.25f / Gigantism);
 				log::info("ShrinkValue of : {} is {} {}", receiver->GetDisplayFullName(), ShrinkValue, ShrinkValue);
@@ -164,13 +163,13 @@ namespace Gts {
 		int rng = (rand()% random + 1);
 		if (rng <= 2) {
 			float gs = get_visual_scale(giant);
-    		float ts = get_visual_scale(tiny);
+			float ts = get_visual_scale(tiny);
 			if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
 				gs += 3.0; // Allow to break bones with SMT
 			}
-    		float sizediff = gs/ts;
-    		if (sizediff < 3.0) {
-        		return;
+			float sizediff = gs/ts;
+			if (sizediff < 3.0) {
+				return;
 			}
 
 			std::random_device rd;
@@ -178,7 +177,7 @@ namespace Gts {
 			std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 			Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-        	SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
+			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
 			DamageAV(tiny, ActorValue::kHealth, damage * 10);
 		}
 	}

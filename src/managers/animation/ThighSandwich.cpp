@@ -1,31 +1,31 @@
 // Animation: Stomp
 //  - Stages
 /*
-GTSSandwich_EnterAnim           // Animation was just fired
-GTSSandwich_MoveBody_start      // Rumble for entire body
-GTSSandwich_EnableRune          // Trigger the rune
-GTSSandwich_SitStart            // When sit start happens
-GTSSandwich_MoveBody_end        // Stop them (When body pretty much enters 'idle' state)
-GTSSandwich_MoveLL_start        // Left leg starts to move in space (When starting to crush)
-GTSSandwich_ThighImpact         // When Both thighs are supposed to deal damage to an actor (When 'Sandwiching') happens
-GTSSandwich_MoveLL_end          // Left leg isn't moving anymore (These 2 should be repeated)
-GTSSandwich_ThighLoop_Enter     // Enter Thigh Idle Loop
+   GTSSandwich_EnterAnim           // Animation was just fired
+   GTSSandwich_MoveBody_start      // Rumble for entire body
+   GTSSandwich_EnableRune          // Trigger the rune
+   GTSSandwich_SitStart            // When sit start happens
+   GTSSandwich_MoveBody_end        // Stop them (When body pretty much enters 'idle' state)
+   GTSSandwich_MoveLL_start        // Left leg starts to move in space (When starting to crush)
+   GTSSandwich_ThighImpact         // When Both thighs are supposed to deal damage to an actor (When 'Sandwiching') happens
+   GTSSandwich_MoveLL_end          // Left leg isn't moving anymore (These 2 should be repeated)
+   GTSSandwich_ThighLoop_Enter     // Enter Thigh Idle Loop
 
-GTSSandwich_ThighAttack_start   // When we trigger Thigh Attack
+   GTSSandwich_ThighAttack_start   // When we trigger Thigh Attack
 
-GTSSandwich_ThighLoop_Exit      // Exit thigh idle loop
-GTSSandwich_DisableRune         // Remove Rune
-GTSSandwich_DropDown            // When actor starts to 'jump off' from Rune
-GTSSandwich_FootImpact          // When both feet collide with the ground
-GTSSandwich_ExitAnim            // Animation is over
+   GTSSandwich_ThighLoop_Exit      // Exit thigh idle loop
+   GTSSandwich_DisableRune         // Remove Rune
+   GTSSandwich_DropDown            // When actor starts to 'jump off' from Rune
+   GTSSandwich_FootImpact          // When both feet collide with the ground
+   GTSSandwich_ExitAnim            // Animation is over
 
-GTSBEH_ThighSandwich_Start
-GTSBEH_ThighSandwich_Attack
-GTSBEH_ThighSandwich_ExitLoop
+   GTSBEH_ThighSandwich_Start
+   GTSBEH_ThighSandwich_Attack
+   GTSBEH_ThighSandwich_ExitLoop
 
-//AnimObjectA = Tiny
-//AnimObjectB = rune
-*/
+   //AnimObjectA = Tiny
+   //AnimObjectB = rune
+ */
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/ThighSandwichController.hpp"
 #include "managers/animation/ThighSandwich.hpp"
@@ -52,7 +52,7 @@ using namespace Gts;
 namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
-	
+
 	const std::vector<std::string_view> BODY_NODES = { // used for body rumble
 		"NPC COM [COM ]",
 		"NPC L Foot [Lft ]",
@@ -147,7 +147,7 @@ namespace {
 	void GTSSandwich_EnableRune(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat 
+		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat
 		sizemanager.SetActionBool(&data.giant, true, 3.0); // Focus camera on AnimObjectA
 		sandwichdata.ManageScaleRune(true);
 		sandwichdata.ManageShrinkRune(false);
@@ -157,7 +157,7 @@ namespace {
 	void GTSSandwich_MoveBody_end(AnimationEventData& data) {
 		StopBodyRumble("BodyRumble", data.giant);
 	}
-	void GTSSandwich_MoveLL_start(AnimationEventData& data) { 
+	void GTSSandwich_MoveLL_start(AnimationEventData& data) {
 		data.stage = 1.0;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.66;
@@ -170,7 +170,7 @@ namespace {
 		StartLeftLegRumble("LLSandwich", data.giant, 0.10, 0.12);
 	}
 
-	void GTSSandwich_MoveLL_start_H(AnimationEventData& data) { 
+	void GTSSandwich_MoveLL_start_H(AnimationEventData& data) {
 		data.stage = 1.0;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.66;
@@ -279,7 +279,7 @@ namespace {
 			}
 		}
 	}
-	
+
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		AnimationManager::StartAnim("ThighAttack", player);

@@ -8,24 +8,24 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-    class EmotionData {
+	class EmotionData {
 		public:
 			EmotionData(Actor* giant);
-            void UpdateEmotions(Actor* giant);
+			void UpdateEmotions(Actor* giant);
 			void OverridePhenome(int number, float power, float hl, float tg);
 			void OverrideModifier(int number, float power, float hl, float tg);
-			
+
 			void Update();
 			Actor* giant;
 			bool AllowEmotionEdit = false;
 
-			private:
-				Spring Phenome0 = Spring(0.0, 0.08);
-				Spring Phenome1 = Spring(0.0, 0.08);
-				Spring Phenome5 = Spring(0.0, 0.08);
+		private:
+			Spring Phenome0 = Spring(0.0, 0.08);
+			Spring Phenome1 = Spring(0.0, 0.08);
+			Spring Phenome5 = Spring(0.0, 0.08);
 
-				Spring Modifier0 = Spring(0.0, 0.25);
-				Spring Modifier1 = Spring(0.0, 0.25);
+			Spring Modifier0 = Spring(0.0, 0.25);
+			Spring Modifier1 = Spring(0.0, 0.25);
 	};
 	class EmotionManager : public EventListener {
 		public:

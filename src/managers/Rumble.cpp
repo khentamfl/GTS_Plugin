@@ -20,7 +20,7 @@ namespace Gts {
 		duration(duration),
 		currentIntensity(Spring(0.0, halflife)),
 		node(node),
-		startTime(0.0) { 
+		startTime(0.0) {
 	}
 
 	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string_view node) : RumbleData(intensity, duration, halflife, std::string(node)) {

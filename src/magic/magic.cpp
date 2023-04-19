@@ -168,7 +168,7 @@ namespace Gts {
 			this->numberOfEffects += 1;
 			if (this->active_effects.find(effect) == this->active_effects.end()) {
 				EffectSetting* base_spell = effect->GetBaseObject();
-        Profilers::Start("MagicRuntime");
+				Profilers::Start("MagicRuntime");
 				auto factorySearch = this->factories.find(base_spell);
 				Profilers::Stop("MagicRuntime");
 				if (factorySearch != this->factories.end()) {

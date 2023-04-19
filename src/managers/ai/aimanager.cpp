@@ -16,14 +16,14 @@
 #include "spring.hpp"
 #include "node.hpp"
 
- namespace {
+namespace {
 
-    const float MINIMUM_STOMP_DISTANCE = 50.0;
+	const float MINIMUM_STOMP_DISTANCE = 50.0;
 	const float MINIMUM_STOMP_SCALE_RATIO = 1.75;
 	const float STOMP_ANGLE = 50;
 	const float PI = 3.14159;
 
-    [[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
+	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
 	{
 		float S = sin(angle);
 		float C = cos(angle);
@@ -46,9 +46,9 @@
 			(OMC * XX + C) * vec.x + (OMC * XY - ZS) * vec.y + (OMC * ZX + YS) * vec.z,
 			(OMC * XY + ZS) * vec.x + (OMC * YY + C) * vec.y + (OMC * YZ - XS) * vec.z,
 			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
-		);
+			);
 	}
-    void DoSandwich(Actor* pred) {
+	void DoSandwich(Actor* pred) {
 		if (!Runtime::HasPerk(PlayerCharacter::GetSingleton(), "KillerThighs")) {
 			return;
 		}
@@ -56,12 +56,12 @@
 			log::info("Sandwich AI is false");
 			return;
 		}
-        auto& Sandwiching = ThighSandwichController::GetSingleton();
-        std::size_t numberOfPrey = 1;
+		auto& Sandwiching = ThighSandwichController::GetSingleton();
+		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerkTeam(pred, "MassVorePerk")) {
 			numberOfPrey = 1 + (get_visual_scale(pred)/3);
 		}
-        std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
+		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
 		for (auto prey: preys) {
 			Sandwiching.StartSandwiching(pred, prey);
 			auto node = find_node(pred, "GiantessRune", false);
@@ -70,55 +70,55 @@
 				update_node(node);
 			}
 		}
-    }
+	}
 
-    void DoStomp(Actor* pred) {
+	void DoStomp(Actor* pred) {
 		if (!Runtime::HasPerk(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
 			return;
 		}
 		if (!Persistent::GetSingleton().Stomp_Ai) {
 			return;
 		}
-        int random = rand() % 4;
-        int actionrng = rand() % 4;
-        std::size_t amount = 6;
-        std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
-        for (auto prey: preys) {
-            if (AiManager::GetSingleton().CanStomp(pred, prey)) {
-                if (random <= 2) {
-                    if (actionrng <= 2) {
-                        AnimationManager::StartAnim("StompRight", pred);
-                    } else {
-                        AnimationManager::StartAnim("StompLeft", pred);
-                    }
-                } else if (random > 2) {
-                    if (actionrng <= 2) {
-                        AnimationManager::StartAnim("StrongStompRight", pred);
-                    } else {
-                        AnimationManager::StartAnim("StrongStompLeft", pred);
-                    }
-                }
-            }
-        }
-    }
+		int random = rand() % 4;
+		int actionrng = rand() % 4;
+		std::size_t amount = 6;
+		std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
+		for (auto prey: preys) {
+			if (AiManager::GetSingleton().CanStomp(pred, prey)) {
+				if (random <= 2) {
+					if (actionrng <= 2) {
+						AnimationManager::StartAnim("StompRight", pred);
+					} else {
+						AnimationManager::StartAnim("StompLeft", pred);
+					}
+				} else if (random > 2) {
+					if (actionrng <= 2) {
+						AnimationManager::StartAnim("StrongStompRight", pred);
+					} else {
+						AnimationManager::StartAnim("StrongStompLeft", pred);
+					}
+				}
+			}
+		}
+	}
 
 	void AnimationAttempt(Actor* actor) {
-        float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
-        int rng = rand() % 40;
-        if (rng > 2 && rng < 6 * scale) {
-            DoStomp(actor);
-        } else if (rng < 2) {
-            DoSandwich(actor);   
-    	}
+		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
+		int rng = rand() % 40;
+		if (rng > 2 && rng < 6 * scale) {
+			DoStomp(actor);
+		} else if (rng < 2) {
+			DoSandwich(actor);
+		}
 	}
- }
+}
 
 
- namespace Gts {
-    AiData::AiData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
+namespace Gts {
+	AiData::AiData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
 	}
 
-    AiManager& AiManager::GetSingleton() noexcept {
+	AiManager& AiManager::GetSingleton() noexcept {
 		static AiManager instance;
 		return instance;
 	}
@@ -127,40 +127,40 @@
 		return "AiManager";
 	}
 
-    void AiManager::Update() {
-        Profilers::Start("Ai: Update");
+	void AiManager::Update() {
+		Profilers::Start("Ai: Update");
 		static Timer ActionTimer = Timer(0.80);
 		if (ActionTimer.ShouldRun()) {
 			auto& persist = Persistent::GetSingleton();
-       	 	for (auto actor: find_actors()) {
+			for (auto actor: find_actors()) {
 				std::vector<Actor*> AbleToAct = {};
 				for (auto actor: find_actors()) {
 					if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
 						AbleToAct.push_back(actor);
 					}
 				}
-      			if (!AbleToAct.empty()) {
-  					int idx = rand() % AbleToAct.size();
-      				Actor* Performer = AbleToAct[idx];
-  					if (Performer) {
-  						AnimationAttempt(Performer);
-  					}   
-            	}
-        	}
-        	Profilers::Stop("Ai: Update");
-    	}
+				if (!AbleToAct.empty()) {
+					int idx = rand() % AbleToAct.size();
+					Actor* Performer = AbleToAct[idx];
+					if (Performer) {
+						AnimationAttempt(Performer);
+					}
+				}
+			}
+			Profilers::Stop("Ai: Update");
+		}
 	}
 
 
-    std::vector<Actor*> AiManager::RandomStomp(Actor* pred, std::size_t numberOfPrey) {
+	std::vector<Actor*> AiManager::RandomStomp(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (IsGtsBusy(pred)) {
-            log::info("{} is Busy", pred->GetDisplayFullName());
+			log::info("{} is Busy", pred->GetDisplayFullName());
 			return {};
 		}
 		if (!pred) {
-            log::info("Pred is none");
+			log::info("Pred is none");
 			return {};
 		}
 		auto charController = pred->GetCharController();
@@ -227,13 +227,15 @@
 		return preys;
 	}
 
-    bool AiManager::CanStomp(Actor* pred, Actor* prey) {
+	bool AiManager::CanStomp(Actor* pred, Actor* prey) {
 		if (pred == prey) {
 			return false;
-		} if (IsGtsBusy(pred)) {
+		}
+		if (IsGtsBusy(pred)) {
 			log::info("Pred is busy");
-            return false;
-        } if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+			return false;
+		}
+		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 			log::info("Prey is protected");
 			return false;
 		}
@@ -241,7 +243,8 @@
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
 			prey_scale *= 3.0;
-		} if (prey->IsDead() && pred_scale/prey_scale < 8.0) {
+		}
+		if (prey->IsDead() && pred_scale/prey_scale < 8.0) {
 			log::info("prey is dead and size difference is not met");
 			return false;
 		}
@@ -253,9 +256,9 @@
 			log::info("Can't stomp");
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale) 
-            && pred_scale/prey_scale > MINIMUM_STOMP_SCALE_RATIO 
-            && prey_distance > 25.0) { // We don't want the Stomp to be too close
+		if (prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale)
+		    && pred_scale/prey_scale > MINIMUM_STOMP_SCALE_RATIO
+		    && prey_distance > 25.0) { // We don't want the Stomp to be too close
 			log::info("Stomp true");
 			return true;
 		} else {
@@ -271,10 +274,10 @@
 		this->data_ai.erase(actor->formID);
 	}
 
-    AiData& AiManager::GetAiData(Actor* giant) {
+	AiData& AiManager::GetAiData(Actor* giant) {
 		// Create it now if not there yet
 		this->data_ai.try_emplace(giant->formID, giant);
 
 		return this->data_ai.at(giant->formID);
 	}
- }
+}

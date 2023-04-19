@@ -27,22 +27,22 @@ namespace Gts {
 			std::string GetName();
 	};
 
-  class ProfilerHandle {
-    public:
-      ProfilerHandle(std::string_view name);
-      ~ProfilerHandle();
-    private:
-      std::string name;
-  };
-
-  class Profilers {
+	class ProfilerHandle {
 		public:
-      [[nodiscard]] static ProfilerHandle Profile(std::string_view name);
+			ProfilerHandle(std::string_view name);
+			~ProfilerHandle();
+		private:
+			std::string name;
+	};
+
+	class Profilers {
+		public:
+			[[nodiscard]] static ProfilerHandle Profile(std::string_view name);
 			static void Start(std::string_view name);
-      static void Stop(std::string_view name);
-      static void Report();
+			static void Stop(std::string_view name);
+			static void Report();
 		private:
 			[[nodiscard]] static Profilers& GetSingleton();
-      std::unordered_map<std::string,Profiler> profilers;
-  };
+			std::unordered_map<std::string,Profiler> profilers;
+	};
 }

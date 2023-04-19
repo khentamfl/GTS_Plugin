@@ -159,7 +159,7 @@ namespace Gts {
 		Profilers::Stop("SizeManager: Update");
 	}
 
-	
+
 
 	void SizeManager::OnHighheelEquip(const HighheelEquip& evt) {
 		float hh_length = evt.hhLength;
@@ -386,7 +386,7 @@ namespace Gts {
 	void SizeManager::SetActionBool(Actor* actor, bool enable, float type) {
 		if (type == 0.0) {
 			this->GetData(actor).IsThighCrushing = enable;
-		}else if (type == 1.0) {
+		} else if (type == 1.0) {
 			this->GetData(actor).IsThighSandwiching = enable;
 		} else if (type == 2.0) {
 			this->GetData(actor).IsVoring = enable;

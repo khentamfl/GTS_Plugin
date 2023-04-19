@@ -54,11 +54,11 @@ namespace Gts {
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
 		for (auto &[a_object, invData]: from->GetInventory()) {
-      if (a_object->GetPlayable()) {
-        if (! invData.second->IsQuestObject() || removeQuestItems ) {
-			     from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
-         }
-       }
+			if (a_object->GetPlayable()) {
+				if (!invData.second->IsQuestObject() || removeQuestItems ) {
+					from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
+				}
+			}
 		}
 	}
 
@@ -196,16 +196,13 @@ namespace Gts {
 
 	bool IsDragon(Actor* actor) {
 		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
-			|| std::string(actor->GetDisplayFullName()).find("Dragon") != std::string::npos
-			|| std::string(actor->GetDisplayFullName()).find("dragon") != std::string::npos
-			|| Runtime::IsRace(actor, "dragonRace")
-			)
-			{
-				return true;
-			}
-			else {
-				return false;
-			}
+		     || std::string(actor->GetDisplayFullName()).find("Dragon") != std::string::npos
+		     || std::string(actor->GetDisplayFullName()).find("dragon") != std::string::npos
+		     || Runtime::IsRace(actor, "dragonRace")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	bool IsProne(Actor* actor) {
@@ -408,46 +405,46 @@ namespace Gts {
 
 	void ManageRagdoll(Actor* tiny, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation) {
 		if (deltaLength >= 70.0) {
-            // WARP if > 1m
-            auto ragDoll = GetRagdoll(tiny);
-            hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
-            for (auto rb: ragDoll->rigidBodies) {
-              if (rb) {
-                auto ms = rb->GetMotionState();
-                if (ms) {
-                  hkVector4 currentPos = ms->transform.translation;
-                  hkVector4 newPos = currentPos + delta;
-                  rb->motion.SetPosition(newPos);
-                  rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, -10.0, 0.0));
-                }
-              }
-            }
-          } else {
-            // Just move the hand if <1m
-            std::string_view handNodeName = "NPC HAND L [L Hand]";
-            auto handBone = find_node(tiny, handNodeName);
-            if (handBone) {
-              	auto collisionHand = handBone->GetCollisionObject();
-              	if (collisionHand) {
-                	auto handRbBhk = collisionHand->GetRigidBody();
-               		if (handRbBhk) {
-                  		auto handRb = static_cast<hkpRigidBody*>(handRbBhk->referencedObject.get());
-                  		if (handRb) {
-                    		auto ms = handRb->GetMotionState();
-                    		if (ms) {
-                     			hkVector4 targetLocationHavok = hkVector4(targetLocation.x/70.0, targetLocation.y/70.0, targetLocation.z/70, 1.0);
-                      			handRb->motion.SetPosition(targetLocationHavok);
-                      			handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, -10.0, 0.0));
-                    		}
-                  		}
-                	}
-              	}
-            }
-        }
+			// WARP if > 1m
+			auto ragDoll = GetRagdoll(tiny);
+			hkVector4 delta = hkVector4(deltaLocation.x/70.0, deltaLocation.y/70.0, deltaLocation.z/70, 1.0);
+			for (auto rb: ragDoll->rigidBodies) {
+				if (rb) {
+					auto ms = rb->GetMotionState();
+					if (ms) {
+						hkVector4 currentPos = ms->transform.translation;
+						hkVector4 newPos = currentPos + delta;
+						rb->motion.SetPosition(newPos);
+						rb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, -10.0, 0.0));
+					}
+				}
+			}
+		} else {
+			// Just move the hand if <1m
+			std::string_view handNodeName = "NPC HAND L [L Hand]";
+			auto handBone = find_node(tiny, handNodeName);
+			if (handBone) {
+				auto collisionHand = handBone->GetCollisionObject();
+				if (collisionHand) {
+					auto handRbBhk = collisionHand->GetRigidBody();
+					if (handRbBhk) {
+						auto handRb = static_cast<hkpRigidBody*>(handRbBhk->referencedObject.get());
+						if (handRb) {
+							auto ms = handRb->GetMotionState();
+							if (ms) {
+								hkVector4 targetLocationHavok = hkVector4(targetLocation.x/70.0, targetLocation.y/70.0, targetLocation.z/70, 1.0);
+								handRb->motion.SetPosition(targetLocationHavok);
+								handRb->motion.SetLinearVelocity(hkVector4(0.0, 0.0, -10.0, 0.0));
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	void StaggerActor(Actor* receiver) {
-		receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); 
+		receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f);
 		receiver->NotifyAnimationGraph("staggerStart");
 	}
 
@@ -467,8 +464,7 @@ namespace Gts {
 				Cprint("{} relentlessly crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
-		}
-		else if (cause == "HandCrushed") {
+		} else if (cause == "HandCrushed") {
 			if (random == 1) {
 				Cprint("{} life was squeezed out in {} grip", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random <= 2) {
@@ -481,8 +477,7 @@ namespace Gts {
 				Cprint("{} was turned into nothing inside the hand of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
-		}
-		else if (cause == "Shrinked") {
+		} else if (cause == "Shrinked") {
 			if (random <= 2) {
 				Cprint("{} greedily absorbed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 4) {
@@ -493,14 +488,13 @@ namespace Gts {
 				Cprint("{} was shrinkned to nothing by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
-		}
-		else if (cause == "Vored") {
+		} else if (cause == "Vored") {
 			return;
-		}
-		else if (cause == "ThighCrushed") {
+		} else if (cause == "ThighCrushed") {
 			if (random == 1) {
 				Cprint("{} was crushed to death between {} thighs.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} if (random <= 3) {
+			}
+			if (random <= 3) {
 				Cprint("{} crushed {} during leg stretch", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 4) {
 				Cprint("{} ended life of {} between legs", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
@@ -510,8 +504,7 @@ namespace Gts {
 				Cprint("{} was shrinkned to nothing by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
-			}
-		else if (cause == "ThighSandwiched") {
+		} else if (cause == "ThighSandwiched") {
 			if (random <= 3) {
 				Cprint("{} was crushed by the thighs of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
@@ -524,8 +517,7 @@ namespace Gts {
 				Cprint("Thighs of {} sandwiched {} to nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
-		}
-		else if (cause == "Overkill") {
+		} else if (cause == "Overkill") {
 			if (random <= 3) {
 				Cprint("{} body exploded because of massive size difference with {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else {
@@ -535,7 +527,7 @@ namespace Gts {
 	}
 
 	void PrintSuffocate(Actor* pred, Actor* prey) {
-        int random = rand() % 5;
+		int random = rand() % 5;
 		if (random <= 1) {
 			Cprint("{} was slowly smothered between {} thighs", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (random == 2) {
@@ -547,5 +539,5 @@ namespace Gts {
 		} else if (random == 5) {
 			Cprint("{} lost life to the thighs of {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
-    }
+	}
 }
