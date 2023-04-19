@@ -140,13 +140,13 @@ namespace Gts {
 		if (actor_data) {
 			return actor_data->visual_scale;
 		}
-		return -1.0;
+		return 1.0;
 	}
 	float get_visual_scale(Actor* actor) {
 		if (actor) {
 			return get_visual_scale(*actor);
 		}
-		return -1.0;
+		return 1.0;
 	}
 
 	float get_natural_scale(Actor& actor) {
@@ -156,13 +156,13 @@ namespace Gts {
 		if (actor_data) {
 			return racemenuscale * objectscale;//actor_data->native_scale * racemenuscale * objectscale;
 		}
-		return -1.0;
+		return 1.0;
 	}
 	float get_natural_scale(Actor* actor) {
 		if (actor) {
 			return get_natural_scale(*actor);
 		}
-		return -1.0;
+		return 1.0;
 	}
 
 	float get_effective_scale(Actor& actor) {

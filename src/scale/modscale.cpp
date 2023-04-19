@@ -75,7 +75,7 @@ namespace Gts {
 		if (first_node) {
 			return first_node->local.scale;
 		}
-		return -1.0;
+		return 1.0;
 	}
 
 	float get_npcparentnode_scale(Actor* actor) {
@@ -85,14 +85,14 @@ namespace Gts {
 		if (!childNode) {
 			childNode = find_node(actor, node_name, true);
 			if (!childNode) {
-				return -1.0;
+				return 1.0;
 			}
 		}
 		auto parent = childNode->parent;
 		if (parent) {
 			return parent->local.scale;
 		}
-		return -1.0; //
+		return 1.0; //
 	}
 
 	float get_model_scale(Actor* actor) {
