@@ -153,7 +153,7 @@ namespace {
         auto angleFromUp = asin(sinAngle) * 180.0 / PI;
         float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
 
-    		finalAngle = std::clamp(angleFromForward, -45.f, 45.f);
+    		finalAngle = std::clamp(angleFromForward, -33.f, 33.f);
       }
     } else {
       // Not in dialog

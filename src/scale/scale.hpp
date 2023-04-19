@@ -7,7 +7,6 @@ using namespace RE;
 using namespace SKSE;
 
 namespace Gts {
-	float get_racemenu_scale(Actor& actor);
 	float get_real_scale(Actor& actor);
 	void set_target_scale(Actor& actor, float height);
 	void set_target_scale(Actor* actor, float height);
