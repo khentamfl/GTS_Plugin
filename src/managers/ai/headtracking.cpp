@@ -48,7 +48,7 @@ namespace {
     float scale = 1.0;
     auto asActor = skyrim_cast<Actor*>(&obj);
     if (asActor) {
-      scale = get_visual_scale(asActor);
+      scale = get_visual_scale(asActor) * get_npcparentnode_scale(actor); // Added it to affect NPC scale
     }
     return HeadLocation(obj, scale);
   }
