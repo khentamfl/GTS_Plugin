@@ -32,6 +32,85 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+  NiPoint3 HeadLocation(TESObjectREFR& obj, const float& scale) {
+    NiPoint3 headOffset(0.0, 0.0, 0.0);
+    auto location = obj.GetPosition();
+    auto asActor = skyrim_cast<Actor*>(&obj);
+    if (asActor) {
+      auto charCont = asActor->GetCharController();
+      if (targetChar) {
+        headOffset.z = targetChar->actorHeight * 70.0 * scale;
+      }
+    }
+    return location + headOffset;
+  }
+  NiPoint3 HeadLocation(TESObjectREFR& obj) {
+    float scale = 1.0;
+    auto asActor = skyrim_cast<Actor*>(&obj);
+    if (asActor) {
+      scale = get_visual_scale(asActor)
+    }
+    HeadLocation(obj, scale);
+  }
+  NiPoint3 HeadLocation(TESObjectREFR* obj, const float& scale) {
+    if (!obj) {
+      return NiPoint3();
+    } else {
+      return HeadLocation(*obj, scale);
+    }
+  }
+  NiPoint3 HeadLocation(TESObjectREFR* obj) {
+    if (!obj) {
+      return NiPoint3();
+    } else {
+      return HeadLocation(*obj);
+    }
+  }
+  NiPoint3 HeadLocation(ActorHandle objRefr, const float& scale) {
+    if (!objRefr) {
+      return NiPoint3();
+    } else {
+      auto obj = objRefr.get().get();
+      if (!obj) {
+        return NiPoint3();
+      }
+      return HeadLocation(*obj, scale);
+    }
+  }
+  NiPoint3 HeadLocation(ActorHandle objRefr) {
+    if (!objRefr) {
+      return NiPoint3();
+    } else {
+      auto obj = objRefr.get().get();
+      if (!obj) {
+        return NiPoint3();
+      }
+      return HeadLocation(*obj);
+    }
+  }
+
+  NiPoint3 HeadLocation(ObjectRefHandle objRefr, const float& scale) {
+    if (!objRefr) {
+      return NiPoint3();
+    } else {
+      auto obj = objRefr.get().get();
+      if (!obj) {
+        return NiPoint3();
+      }
+      return HeadLocation(*obj, scale);
+    }
+  }
+  NiPoint3 HeadLocation(ObjectRefHandle objRefr) {
+    if (!objRefr) {
+      return NiPoint3();
+    } else {
+      auto obj = objRefr.get().get();
+      if (!obj) {
+        return NiPoint3();
+      }
+      return HeadLocation(*obj);
+    }
+  }
 	void SpellTest(Actor* caster) {
 		//auto Projectile = caster->GetActorRuntimeData().currentProcess->high->muzzleFlash->projectile3D.get();
 		auto node = find_node(caster, "AbsorbBeam01");
@@ -91,43 +170,21 @@ namespace Gts {
 	void Headtracking::FixHeadtracking(Actor* me) {
 		Profilers::Start("Headtracking: Headtracking Fix");
 		SpellTest(me);
-    NiPoint3 headOffset(0.0, 0.0, 127.0);
 		DialogueCheck(me); // Check for Dialogue
 		float scale = get_visual_scale(me);
-		auto ai = me->GetActorRuntimeData().currentProcess;
-		bhkCharacterController* CharController = ai->GetCharController();
-		if (CharController) {
-			headOffset.z = CharController->actorHeight * 70;
-		}
 		auto targetObjHandle = ai->GetHeadtrackTarget();
 		if (targetObjHandle) {
-			auto targetObj = targetObjHandle.get().get();
-			if (targetObj) {
-				NiPoint3 targetHeadOffset(0.0, 0.0, 0.0);
-        float targetScale = 1.0;
-				auto target = skyrim_cast<Actor*>(targetObj);
-				if (target) {
-					targetScale = get_visual_scale(target);
-					auto targetChar = target->GetCharController();
-					RotateSpine(me, target);
-					if (targetChar) {
-						targetHeadOffset.z = targetChar->actorHeight * 70.0;
-					}
-				}
+			auto lookAt = HeadLocation(targetObjHandle);
+			auto head = HeadLocation(me);
 
-				auto lookAt = targetObj->GetPosition() + targetHeadOffset * targetScale;
-				auto head = me->GetPosition() + headOffset * scale;
+			NiPoint3 directionToLook = (lookAt - head);
 
-				NiPoint3 directionToLook = (lookAt - head);
+			NiPoint3 myOneTimeHead = HeadLocation(me, 1.0);
 
-				NiPoint3 myOneTimeHead = me->GetPosition() + headOffset;
+			NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
 
-				NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
-
-				ai->SetHeadtrackTarget(me, fakeLookAt);
-				Profilers::Stop("Headtracking: Headtracking Fix");
-				return;
-			}
+			ai->SetHeadtrackTarget(me, fakeLookAt);
+			Profilers::Stop("Headtracking: Headtracking Fix");
 		} else {
 			float PitchOverride;
 			me->GetGraphVariableFloat("GTSPitchOverride", PitchOverride);
