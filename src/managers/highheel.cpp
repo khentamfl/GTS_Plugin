@@ -67,7 +67,7 @@ namespace Gts {
 			return;
 		}
 
-		//To-do: try this: attempt to emulate blood on the feet and stuff [BSTempEffectParticle.h]
+		//Sermit's To-do: try this: attempt to emulate blood on the feet and stuff [BSTempEffectParticle.h]
 		//static BSTempEffectParticle* Spawn(TESObjectCELL* a_cell, float a_lifetime, const char* a_modelName, const NiPoint3& a_rotation, const NiPoint3& a_position, float a_scale, std::uint32_t a_flags, NiAVObject* a_target)
 
 		if (Persistent::GetSingleton().highheel_furniture == false && actor->AsActorState()->GetSitSleepState() == 3) {
