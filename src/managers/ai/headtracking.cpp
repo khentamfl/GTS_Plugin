@@ -112,16 +112,13 @@ namespace {
     }
   }
 	void SpellTest(Actor* caster) {
-		//auto Projectile = caster->GetActorRuntimeData().currentProcess->high->muzzleFlash->projectile3D.get();
-		auto node = find_node(caster, "AbsorbBeam01");
-		if (node) {
-			node->local.scale = get_visual_scale(caster);
-		}
-		/*if (Projectile) {
-		    Projectile->world.scale = get_visual_scale(caster);
-		    Projectile->local.scale = get_visual_scale(caster);
-		    update_node(Projectile);
-		   }*/
+    /*auto righthand = caster->GetMagicCaster(RE::MagicSystem::CastingSource::kRightHand)->GetMagicNode()->GetChildren().get();
+    auto lefthand = caster->GetMagicCaster(RE::MagicSystem::CastingSource::kLeftHand)->GetMagicNode()->GetChildren().get();
+    if (righthand) {
+      righthand->local.translate.z;
+    } if (lefthand) {
+      lefthand->local.translate.z;
+    }*/
 	}
 
   // Rotate spine to look at an actor either leaning back or looking down

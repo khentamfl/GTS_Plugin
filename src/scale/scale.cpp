@@ -151,7 +151,7 @@ namespace Gts {
 
 	float get_natural_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
-		float racemenuscale = get_npcparentnode_scale(actor);
+		float racemenuscale = get_npcparentnode_scale(&actor);
 		float objectscale = get_real_scale(actor);
 		if (actor_data) {
 			return racemenuscale * objectscale;//actor_data->native_scale * racemenuscale * objectscale;
