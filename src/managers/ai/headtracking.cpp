@@ -154,7 +154,7 @@ namespace {
 
     		finalAngle = std::clamp(angleFromForward, -45.f, 45.f);
       }
-    } else {
+    } else { 
       // Not in dialog
       if (fabs(data.spineSmooth.value) < 1e-3) {
         // Finihed smoothing back to zero
