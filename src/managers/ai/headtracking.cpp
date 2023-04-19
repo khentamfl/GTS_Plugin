@@ -125,7 +125,7 @@ namespace {
 	}
 
   // Rotate spine to look at an actor either leaning back or looking down
-	void RotateSpine(Actor* giant, Actor* tiny) {
+	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
 		bool Collision_Installed = false; //Used to detect 'Precision' mod
 		float Collision_PitchMult = 0.0;
 		giant->GetGraphVariableBool("Collision_Installed", Collision_Installed);
@@ -143,7 +143,7 @@ namespace {
     auto angleFromUp = asin(sinAngle);
     auto angleFromForward = angleFromUp - 90.0;
 
-		float angleFromForward = std::clamp(angleFromForward, -60.f, 60.f);
+		angleFromForward = std::clamp(angleFromForward, -60.f, 60.f);
     giant->SetGraphVariableFloat("GTSPitchOverride", angleFromForward);
 		log::info("Pitch Override of {} is {}", giant->GetDisplayFullName(), angleFromForward);
 	}
@@ -191,12 +191,12 @@ namespace Gts {
         if (target) {
           auto asActor = skyrim_cast<Actor*>(target);
           if (asActor) {
-            RotateSpine(me, asActor);
+            this->data.try_emplace(me->formID);
+            RotateSpine(me, asActor, this->data.at(me->formID));
           }
         }
       }
     }
-
   }
 
 	void Headtracking::FixHeadtracking(Actor* me) {

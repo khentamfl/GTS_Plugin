@@ -6,6 +6,7 @@
 
 #include <RE/Skyrim.h>
 
+#include "spring.hpp"
 #include "events.hpp"
 #include "node.hpp"
 
@@ -13,6 +14,11 @@ using namespace std;
 using namespace RE;
 
 namespace Gts {
+
+  struct HeadtrackingData {
+    Spring spineSmooth = Spring(0.0, 1.0);
+  };
+
 	class Headtracking : public EventListener  {
 		public:
 			[[nodiscard]] static Headtracking& GetSingleton() noexcept;
@@ -22,5 +28,7 @@ namespace Gts {
 
       void SpineUpdate(Actor* me);
 			void FixHeadtracking(Actor* me);
+    protected:
+      std::unordered_map<FormID, HeadtrackingData> data;
 	};
 }
