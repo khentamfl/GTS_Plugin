@@ -90,40 +90,52 @@ namespace Gts {
 
 	void Headtracking::FixHeadtracking(Actor* me) {
 		Profilers::Start("Headtracking: Headtracking Fix");
+    log::info("HT me: {}", me->GetDisplayFullName());
 		SpellTest(me);
-		float height = 127.0;
+    NiPoint3 headOffset(0.0, 0.0, 127.0);
 		DialogueCheck(me); // Check for Dialogue
 		float scale = get_visual_scale(me);
 		auto ai = me->GetActorRuntimeData().currentProcess;
 		bhkCharacterController* CharController = ai->GetCharController();
 		if (CharController) {
-			height = CharController->actorHeight * 70;
+			headOffset.z = CharController->actorHeight * 70;
 		}
+    log::info("  - headOffset: {}", Vector2Str(headOffset));
+    log::info("  - scale: {}", scale);
 		auto targetObjHandle = ai->GetHeadtrackTarget();
 		if (targetObjHandle) {
 			auto targetObj = targetObjHandle.get().get();
 			if (targetObj) {
-				auto targetHeight = 0.0f;
+				NiPoint3 targetHeadOffset(0.0, 0.0, 0.0);
+        float targetScale = 1.0;
 				auto target = skyrim_cast<Actor*>(targetObj);
 				if (target) {
-					auto targetScale = get_visual_scale(target);
+					targetScale = get_visual_scale(target);
 					auto targetChar = target->GetCharController();
 					RotateSpine(me, target);
 					if (targetChar) {
-						targetHeight = targetChar->actorHeight * 70.0 * targetScale;
+						targetHeadOffset.z = targetChar->actorHeight * 70.0;
 					}
 				}
-				auto lookAt = targetObj->GetPosition();
-				lookAt.z += targetHeight;
-				auto head = me->GetPosition();
-				head.z += height * scale;
+        log::info("  - target: {}", targetObj->GetDisplayFullName());
+        log::info("  - targetHeadOffset: {}", Vector2Str(headOffset));
+        log::info("  - targetScale: {}", targetScale);
+
+				auto lookAt = targetObj->GetPosition() + targetHeadOffset * targetScale;
+        log::info("  - targetObj->GetPosition(): {}", Vector2Str(targetObj->GetPosition()));
+        log::info("  - lookAt: {}", Vector2Str(lookAt));
+				auto head = me->GetPosition() + headOffset * scale;
+        log::info("  - me->GetPosition(): {}", Vector2Str(me->GetPosition()));
+        log::info("  - head: {}", Vector2Str(head));
 
 				NiPoint3 directionToLook = (lookAt - head);
+        log::info("  - directionToLook: {}", Vector2Str(directionToLook));
 
-				NiPoint3 myOneTimeHead = me->GetPosition();
-				myOneTimeHead.z += height;
+				NiPoint3 myOneTimeHead = me->GetPosition() + headOffset;
+        log::info("  - myOneTimeHead: {}", Vector2Str(myOneTimeHead));
 
 				NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
+        log::info("  - fakeLookAt: {}", Vector2Str(fakeLookAt));
 
 				ai->SetHeadtrackTarget(me, fakeLookAt);
 				Profilers::Stop("Headtracking: Headtracking Fix");
