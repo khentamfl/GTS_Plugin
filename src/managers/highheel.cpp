@@ -66,7 +66,7 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		if (Persistent::GetSingleton().highheel_furniture == false && actor->GetOccupiedFurniture()) {
+		if (Persistent::GetSingleton().highheel_furniture == false && actor->AsActorState()->sitSleepState->SIT_SLEEP_STATE::kIsSitting) {
 			return;
 		}
 		this->data.try_emplace(actor);
