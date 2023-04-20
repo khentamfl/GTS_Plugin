@@ -130,7 +130,7 @@ namespace {
         reduce = charCont->actorHeight * 70.0 * get_natural_scale(me);
     }
     NiPoint3 lookat = me->GetLookingAtLocation();
-    lookat.z -= reducel
+    lookat.z -= reduce;
     ai->SetHeadtrackTarget(me, lookat);
   }
 
