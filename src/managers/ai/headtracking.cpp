@@ -41,8 +41,9 @@ namespace {
       auto charCont = asActor->GetCharController();
       if (charCont) {
         if (head) {
-          headOffset.z = (head->world.translate.z - asActor->GetPosition().z) * get_natural_scale(asActor);//charCont->actorHeight * 70.0 * scale * get_natural_scale(asActor);
+          headOffset.z = (head->local.translate.z) * get_natural_scale(asActor);//charCont->actorHeight * 70.0 * scale * get_natural_scale(asActor);
           log::info("offset Z of {} is {}", asActor->GetDisplayFullName(), headOffset.z);
+          log::info("Local Z offset of {} is {}", asActor->GetDisplayFullName(), head->local.translate.z);
         }
       }
     }
