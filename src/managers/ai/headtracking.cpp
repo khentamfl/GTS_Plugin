@@ -41,7 +41,7 @@ namespace {
       auto charCont = asActor->GetCharController();
       if (charCont) {
         if (head) {
-          headOffset.z = (head->world.translate.z - asActor->GetPosition().z) * scale * get_natural_scale(asActor);//charCont->actorHeight * 70.0 * scale * get_natural_scale(asActor);
+          headOffset.z = (head->world.translate.z - asActor->GetPosition().z) * get_natural_scale(asActor);//charCont->actorHeight * 70.0 * scale * get_natural_scale(asActor);
           log::info("offset Z of {} is {}", asActor->GetDisplayFullName(), headOffset.z);
         }
       }
@@ -257,7 +257,7 @@ namespace Gts {
         FixNPCHeadtracking(actor);
         RotateCaster(actor, this->data.at(actor->formID));
   		} else if (actor->formID == 0x14) {
-        FixPlayerHeadtracking(actor);
+        //FixPlayerHeadtracking(actor);
       }
     }
   }
