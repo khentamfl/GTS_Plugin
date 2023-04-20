@@ -211,7 +211,8 @@ namespace {
         }
       }
     }
-    data.casterSmooth.target = finalAngle;
+    // data.casterSmooth.target = finalAngle;
+    data.casterSmooth.target = PI*1.5;
 
     for (auto casterSourceType: {MagicSystem::CastingSource::kLeftHand, MagicSystem::CastingSource::kRightHand}) {
       auto casterSource = giant->GetMagicCaster(casterSourceType);
