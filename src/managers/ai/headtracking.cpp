@@ -48,7 +48,7 @@ namespace {
     float scale = 1.0;
     auto asActor = skyrim_cast<Actor*>(&obj);
     if (asActor) {
-      scale = get_visual_scale(asActor) * get_npcparentnode_scale(asActor); // Added it to affect NPC scale
+      scale = get_visual_scale(asActor);
     }
     return HeadLocation(obj, scale);
   }
@@ -121,20 +121,6 @@ namespace {
     }*/
 	}
 
-  void PlayerHeadtracking(Actor* me, AIProcess* ai) {
-    log::info("Player HT true");
-    me->AsActorState()->actorState2.headTracking = true;
-    me->SetGraphVariableBool("bHeadTrackSpine", true);
-    float reduce = 0.0;
-    auto charCont = me->GetCharController();
-    if (charCont) {
-        reduce = charCont->actorHeight * 70.0 * get_natural_scale(me);
-    }
-    NiPoint3 lookat = me->GetLookingAtLocation();
-    lookat.z -= reduce;
-    ai->SetHeadtrackTarget(me, lookat);
-  }
-
   // Rotate spine to look at an actor either leaning back or looking down
 	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
     const float REDUCTION_FACTOR = 1.0;
@@ -165,8 +151,8 @@ namespace {
         log::info("  - Norm(directionToLook): {}", Vector2Str(directionToLook));
         NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
         auto sinAngle = directionToLook.Dot(upDirection);
-        log::info("  - sinAngle: {}", sinAngle);
-        auto angleFromUp = asin(sinAngle) * 180.0 / PI;
+        log::info("  - cosAngle: {}", sinAngle);
+        auto angleFromUp = fabs(acos(sinAngle) * 180.0 / PI);
         log::info("  - angleFromUp: {}", angleFromUp);
         float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
         log::info("  - angleFromForward: {}", angleFromForward);
@@ -235,10 +221,6 @@ namespace Gts {
 		float scale = get_visual_scale(me);
     auto ai = me->GetActorRuntimeData().currentProcess;
     if (ai) {
-      if (me->formID == 0x14) {
-        PlayerHeadtracking(me, ai);
-        return;
-      }
   		auto targetObjHandle = ai->GetHeadtrackTarget();
   		if (targetObjHandle) {
   			auto lookAt = HeadLocation(targetObjHandle);
@@ -252,7 +234,7 @@ namespace Gts {
 
   			ai->SetHeadtrackTarget(me, fakeLookAt);
   			Profilers::Stop("Headtracking: Headtracking Fix");
-  		} 
+  		}
     }
 	}
 }
