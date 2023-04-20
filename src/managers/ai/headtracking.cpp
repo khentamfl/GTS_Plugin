@@ -199,7 +199,7 @@ namespace {
               NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
               auto sinAngle = directionToLook.Dot(upDirection);
               auto angleFromUp = fabs(acos(sinAngle));
-              float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
+              float angleFromForward = -(angleFromUp - 90.0);
 
           		finalAngle = std::clamp(angleFromForward, -60.0f * PI /180.0f, 60.f * PI /180.0f);
               log::info("CasterNode finalAngle: {}", finalAngle);
@@ -213,7 +213,7 @@ namespace {
     for (auto casterSourceType: {MagicSystem::CastingSource::kLeftHand, MagicSystem::CastingSource::kRightHand}) {
       auto casterSource = giant->GetMagicCaster(casterSourceType);
       if (casterSource) {
-        casterNode = casterSource->GetMagicNode();
+        auto casterNode = casterSource->GetMagicNode();
         if (casterNode) {
           auto targetRotation = NiMatrix3();
           if (data.casterSmooth.value > 1e-3) {
