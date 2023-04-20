@@ -274,7 +274,7 @@ namespace Gts {
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
-		float SHRINK_TO_NOTHING_SCALE = 0.10;
+		float SHRINK_TO_NOTHING_SCALE = 0.12;
 		float target_scale = get_visual_scale(target);
 		if (!caster) {
 			return false;
