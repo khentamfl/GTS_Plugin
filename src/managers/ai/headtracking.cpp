@@ -119,11 +119,20 @@ namespace {
     } if (lefthand) {
       lefthand->local.translate.z;
     }*/
-      if (caster->formID == 0x14) {
-        caster->AsActorState()->actorState2.headTracking = true;
-        caster->SetGraphVariableBool("bHeadTrackSpine", true);
-      }
 	}
+
+  void PlayerHeadtracking(Actor* me, AIProcess* ai) {
+    me->AsActorState()->actorState2.headTracking = true;
+    me->SetGraphVariableBool("bHeadTrackSpine", true);
+    float reduce = 0.0;
+    auto charCont = me->GetCharController();
+    if (charCont) {
+        reduce = charCont->actorHeight * 70.0 * get_natural_scale(me);
+    }
+    NiPoint3 lookat = me->GetLookingAtLocation();
+    lookat.z -= reducel
+    ai->SetHeadtrackTarget(me, lookat);
+  }
 
   // Rotate spine to look at an actor either leaning back or looking down
 	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
@@ -238,7 +247,9 @@ namespace Gts {
 
   			ai->SetHeadtrackTarget(me, fakeLookAt);
   			Profilers::Stop("Headtracking: Headtracking Fix");
-  		}
+  		} else if (me->formID == 0x14) {
+        PlayerHeadtracking(me, ai);
+      }
     }
 	}
 }
