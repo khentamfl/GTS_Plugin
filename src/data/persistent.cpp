@@ -23,6 +23,7 @@ namespace {
 	inline const auto SandwichAiRecord = _byteswap_ulong('SWAI');
 	inline const auto VoreAiRecord = _byteswap_ulong('VRAI');
 	inline const auto ProgressionMult = _byteswap_ulong('PRMT');
+	inline const auto DeleteActors = _byteswap_ulong('DTAS');
 
 	const float DEFAULT_MAX_SCALE = 65535.0;
 	const float DEFAULT_HALF_LIFE = 1.0;
@@ -337,6 +338,10 @@ namespace Gts {
 				bool Stomp_Ai;
 				serde->ReadRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
 				GetSingleton().Stomp_Ai = Stomp_Ai;
+			} else if (type == DeleteActors) {
+				bool delete_actors;
+				serde->ReadRecordData(&delete_actors, sizeof(delete_actors));
+				GetSingleton().delete_actors = delete_actors;
 			} else if (type == SandwichAiRecord) {
 				bool Sandwich_Ai;
 				serde->ReadRecordData(&Sandwich_Ai, sizeof(Sandwich_Ai));
@@ -527,6 +532,13 @@ namespace Gts {
 		}
 		bool Stomp_Ai = GetSingleton().Stomp_Ai;
 		serde->WriteRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
+
+		if (!serde->OpenRecord(DeleteActors, 1)) {
+			log::error("Unable to open Delete Actors record to write cosave data");
+			return;
+		}
+		bool delete_actors = GetSingleton().delete_actors;
+		serde->WriteRecordData(&delete_actors, sizeof(delete_actors));
 
 		if (!serde->OpenRecord(SandwichAiRecord, 1)) {
 			log::error("Unable to open Sandwich Ai record to write cosave data.");
