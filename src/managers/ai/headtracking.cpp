@@ -122,6 +122,7 @@ namespace {
 	}
 
   void PlayerHeadtracking(Actor* me, AIProcess* ai) {
+    log::info("Player HT true");
     me->AsActorState()->actorState2.headTracking = true;
     me->SetGraphVariableBool("bHeadTrackSpine", true);
     float reduce = 0.0;
@@ -234,6 +235,9 @@ namespace Gts {
 		float scale = get_visual_scale(me);
     auto ai = me->GetActorRuntimeData().currentProcess;
     if (ai) {
+      if (me->formID == 0x14) {
+        PlayerHeadtracking(me, ai);
+      }
   		auto targetObjHandle = ai->GetHeadtrackTarget();
   		if (targetObjHandle) {
   			auto lookAt = HeadLocation(targetObjHandle);
@@ -247,9 +251,7 @@ namespace Gts {
 
   			ai->SetHeadtrackTarget(me, fakeLookAt);
   			Profilers::Stop("Headtracking: Headtracking Fix");
-  		} else if (me->formID == 0x14) {
-        PlayerHeadtracking(me, ai);
-      }
+  		} 
     }
 	}
 }
