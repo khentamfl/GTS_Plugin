@@ -12,6 +12,8 @@ namespace Gts {
 		public:
 			Absorb(ActiveEffect* effect);
 
+			virtual void OnStart() override;
+
 			virtual void OnUpdate() override;
 
 			virtual void OnFinish() override;

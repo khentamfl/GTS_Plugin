@@ -61,10 +61,6 @@ namespace Gts {
 		float balancemodebonus = 1.0;
 		float shrink = this->power;
 		float gainpower = this->efficiency;
-		if (caster->formID != 0x14) {
-			gainpower *= 2.0;
-			shrink *= 2.5;
-		}
 
 		if (this->power >= 18.00) {
 			auto& Persist = Persistent::GetSingleton();

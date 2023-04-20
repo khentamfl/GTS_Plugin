@@ -39,7 +39,7 @@ namespace {
     if (asActor) {
       auto charCont = asActor->GetCharController();
       if (charCont) {
-        headOffset.z = charCont->actorHeight * 70.0 * scale;
+        headOffset.z = charCont->actorHeight * 70.0 * scale * get_natural_scale(asActor);
       }
     }
     return location + headOffset;
@@ -224,11 +224,11 @@ namespace {
             targetRotation.SetEulerAnglesXYZ(data.casterSmooth.value, 0.0, 0.0);
           }
           casterNode->local.rotate = targetRotation;
+          log::info("Adjusting Node Rotation of {}", giant->GetDisplayFullName());
           update_node(casterNode);
         }
       }
     }
-
   }
 }
 

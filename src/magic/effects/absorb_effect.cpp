@@ -1,6 +1,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "magic/effects/absorb_effect.hpp"
 #include "magic/effects/common.hpp"
+#include "utils/actorUtils.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
@@ -14,6 +15,14 @@ namespace Gts {
 
 	std::string Absorb::GetName() {
 		return "Absorb";
+	}
+
+	void Absorb::OnStart() {
+		auto target = GetTarget();
+		if (!target) {
+			return;
+		}
+		StaggerActor(target);
 	}
 
 	void Absorb::OnUpdate() {
@@ -46,12 +55,12 @@ namespace Gts {
 		} // Cap Size Difference
 
 		if (this->true_absorb) {
-			AbsorbSteal(target, caster, (0.00070 * size_difference) * gigantism, 0.0, 0.276);
+			AbsorbSteal(target, caster, (0.00210 * size_difference) * gigantism, 0.0, 0.276);
 			if (ShrinkToNothing(caster, target)) {
 				//Dispel(); <- maybe no need to dispel since it will allow to absorb again?
 			}
 		} else {
-			AbsorbSteal(target, caster, (0.0010 * size_difference) * gigantism, 0.0, 0.2);
+			AbsorbSteal(target, caster, (0.0020 * size_difference) * gigantism, 0.0, 0.2);
 		}
 	}
 
