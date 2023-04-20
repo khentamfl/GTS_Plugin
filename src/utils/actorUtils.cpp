@@ -67,6 +67,7 @@ namespace Gts {
 		actor->Disable();
 		if (Persistent::GetSingleton().delete_actors) {
 			actor->SetDelete(true);
+			log::info("Calling Delete Actors");
 		}
 	}
 
@@ -141,32 +142,12 @@ namespace Gts {
 	}
 
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce) {
-		/*NiPoint3 sourceLoc = source->GetPosition();
-		   NiPoint3 destinationLoc = receiver->GetPosition();
-		   NiPoint3 direction = destinationLoc - sourceLoc;
-		   NiPoint3 niImpulse  = direction * afKnockBackForce/direction.Length();
-		   hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 1.0);
-		   auto rbs = GetActorRB(receiver);
-		   for (auto rb: rbs) {
-		        auto& motion = rb->motion;
-		        motion.ApplyLinearImpulse(impulse);
-		        log::info("Trying to push actor {} away", receiver);
-		   }*/
 		if (receiver->IsDead()) {
 			return;
 		}
 		CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
-		// NiPoint3 sourceLoc = source->GetPosition();
-		// for (auto actor: find_actors()) {
-		// 	if ((actor->GetPosition() - sourceLoc).Length() < afRadius) {
-		// 		auto aiProc = actor->currentProcess;
-		// 		if (aiProc) {
-		// 			aiProc->KnockExplosion(actor, sourceLoc, afMagnitude);
-		// 		}
-		// 	}
-		// }
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
 	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude) {
