@@ -118,7 +118,7 @@ namespace Gts {
 
 	void SizeHitEffects::DoHitGrowth(Actor* receiver, Actor* attacker, float damage) {
 		int LaughChance = rand() % 12;
-		int ShrinkChance = rand() % 12;
+		int ShrinkChance = rand() % 5;
 		auto& sizemanager = SizeManager::GetSingleton();
 		float BalanceMode = sizemanager.BalancedMode();
 		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
@@ -143,9 +143,9 @@ namespace Gts {
 			if (soundtimer.ShouldRunFrame()) {
 				Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue / 300, 1.0, "NPC COM [COM ]");
 			}
-			if (ShrinkChance >= 11) {
-				mod_target_scale(attacker, -GrowthValue/(3 * Dragon* BalanceMode)); // Shrink Attacker
-				mod_target_scale(receiver, GrowthValue/(2 * BalanceMode)); // Grow Attacker
+			if (ShrinkChance >= 2) {
+				mod_target_scale(attacker, -GrowthValue/(1.75 * Dragon* BalanceMode)); // Shrink Attacker
+				mod_target_scale(receiver, GrowthValue/(1.75 * BalanceMode)); // Grow Attacker
 				if (get_visual_scale(attacker) <= 0.10/Dragon) {
 					if (ShrinkToNothingManager::CanShrink(receiver, attacker)) {
 						ShrinkToNothingManager::Shrink(receiver, attacker);
