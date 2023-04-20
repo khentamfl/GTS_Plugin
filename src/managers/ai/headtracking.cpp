@@ -119,6 +119,10 @@ namespace {
     } if (lefthand) {
       lefthand->local.translate.z;
     }*/
+      if (caster->formID == 0x14) {
+        caster->AsActorState()->actorState2.headTracking = true;
+        caster->SetGraphVariableBool("bHeadTrackSpine", true);
+      }
 	}
 
   // Rotate spine to look at an actor either leaning back or looking down

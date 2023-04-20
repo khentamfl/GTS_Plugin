@@ -144,8 +144,8 @@ namespace Gts {
 				Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue / 300, 1.0, "NPC COM [COM ]");
 			}
 			if (ShrinkChance >= 2) {
-				mod_target_scale(attacker, -GrowthValue/(1.75 * Dragon* BalanceMode)); // Shrink Attacker
-				mod_target_scale(receiver, GrowthValue/(1.75 * BalanceMode)); // Grow Attacker
+				mod_target_scale(attacker, -GrowthValue/(2.0 * Dragon* BalanceMode)); // Shrink Attacker
+				mod_target_scale(receiver, GrowthValue/(3.0 * BalanceMode)); // Grow Attacker
 				if (get_visual_scale(attacker) <= 0.10/Dragon) {
 					if (ShrinkToNothingManager::CanShrink(receiver, attacker)) {
 						ShrinkToNothingManager::Shrink(receiver, attacker);
