@@ -224,8 +224,9 @@ namespace {
             targetRotation.SetEulerAnglesXYZ(data.casterSmooth.value, 0.0, 0.0);
           }
           casterNode->local.rotate = targetRotation;
-          log::info("Adjusting Node Rotation of {}", giant->GetDisplayFullName());
+          log::info("Adjusting Node Rotation of {}, target: {}, value: {}", giant->GetDisplayFullName(), targetRotation, casterNode->local.rotate);
           update_node(casterNode);
+          log::info("Value after: {}", casterNode->local.rotate);
         }
       }
     }
