@@ -41,16 +41,13 @@ namespace Gts {
 				data.state = ShrinkState::Shrinking;
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
-					if (!tiny->IsDead()) {
-						// They cannot be shrunked to nothing if they aint dead
-						this->ResetActor(tiny);
-						return;
-					}
-
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
-					if (currentSize > 0.14) {
-						set_target_scale(tiny, 0.14);
+					if (!tiny->IsDead()) {
+						tiny->KillImmediate();
+					}
+					if (currentSize > 0.09) {
+						set_target_scale(tiny, 0.09);
 					} else {
 						// Fully shrunk
 						if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
