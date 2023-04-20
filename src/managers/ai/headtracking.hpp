@@ -16,7 +16,7 @@ using namespace RE;
 namespace Gts {
 
   struct HeadtrackingData {
-    Spring spineSmooth = Spring(0.0, 1.0);
+    Spring spineSmooth = Spring(0.0, 0.70);
   };
 
 	class Headtracking : public EventListener  {
@@ -27,7 +27,8 @@ namespace Gts {
       virtual void Update() override;
 
       void SpineUpdate(Actor* me);
-			void FixHeadtracking(Actor* me);
+			void FixNPCHeadtracking(Actor* me);
+      void FixPlayerHeadtracking(Actor* me);
     protected:
       std::unordered_map<FormID, HeadtrackingData> data;
 	};

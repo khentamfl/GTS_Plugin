@@ -123,7 +123,7 @@ namespace {
 
   // Rotate spine to look at an actor either leaning back or looking down
 	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
-    const float REDUCTION_FACTOR = 1.0;
+    const float REDUCTION_FACTOR = 0.50;
     const float PI = 3.14159;
 		bool Collision_Installed = false; //Used to detect 'Precision' mod
 		float Collision_PitchMult = 0.0;
@@ -188,10 +188,12 @@ namespace Gts {
 
   void Headtracking::Update() {
     for (auto actor: find_actors()) {
-      if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+      if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
         SpineUpdate(actor);
-        FixHeadtracking(actor);
-  		}
+        FixNPCHeadtracking(actor);
+  		} else if (actor->formID == 0x14) {
+        FixPlayerHeadtracking(actor);
+      }
     }
   }
 
@@ -216,9 +218,8 @@ namespace Gts {
     RotateSpine(me, tiny, this->data.at(me->formID));
   }
 
-	void Headtracking::FixHeadtracking(Actor* me) {
+	void Headtracking::FixNPCHeadtracking(Actor* me) {
 		Profilers::Start("Headtracking: Headtracking Fix");
-		float scale = get_visual_scale(me);
     auto ai = me->GetActorRuntimeData().currentProcess;
     if (ai) {
   		auto targetObjHandle = ai->GetHeadtrackTarget();
@@ -237,4 +238,21 @@ namespace Gts {
   		}
     }
 	}
+
+  void Headtracking::FixPlayerHeadtracking(Actor* me) {
+    log::info("Player HT true");
+    float reduce = 0.0;
+    auto ai = me->GetActorRuntimeData().currentProcess;
+    me->AsActorState()->actorState2.headTracking = true;
+    me->SetGraphVariableBool("bHeadTrackSpine", true);
+    me->SetGraphVariableBool("bHeadTracking", true);
+    auto charCont = me->GetCharController();
+    if (charCont) {
+        reduce = charCont->actorHeight * 70.0 * get_natural_scale(me);
+    }
+    NiPoint3 lookat = me->GetLookingAtLocation();
+    log::info("Player look at: {}", Vector2Str(lookat));
+    lookat.z -= reduce;
+    ai->SetHeadtrackTarget(me, lookat);
+  }
 }
