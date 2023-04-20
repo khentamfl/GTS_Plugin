@@ -37,9 +37,11 @@ namespace {
     auto location = obj.GetPosition();
     auto asActor = skyrim_cast<Actor*>(&obj);
     if (asActor) {
+      auto head = find_node(asActor, "NPC Head [Head]");
       auto charCont = asActor->GetCharController();
       if (charCont) {
-        headOffset.z = charCont->actorHeight * 70.0 * scale * get_natural_scale(asActor);
+        headOffset.z = (head->local.translate.z - asActor->GetLocation().z) * scale * get_natural_scale(asActor);//charCont->actorHeight * 70.0 * scale * get_natural_scale(asActor);
+        log::info("offset Z of {} is {}", asActor->GetDisplayFullName(), headoffset.z);
       }
     }
     return location + headOffset;
