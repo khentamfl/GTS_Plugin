@@ -173,6 +173,58 @@ namespace {
 
 		log::info("Pitch Override of {} is {}", giant->GetDisplayFullName(), data.spineSmooth.value);
 	}
+
+  void RotateCaster(Actor* giant, HeadtrackingData& data) {
+    const float PI = 3.14159;
+    if (!giant) {
+      return;
+    }
+    float finalAngle = 0.0;
+    auto combatController = giant->GetActorRuntimeData().combatController;
+    if (combatController) {
+      auto& targetHandle = combatController->targetHandle;
+      if (targetHandle) {
+        auto tiny = targetHandle.get().get();
+        if (tiny) {
+          auto casterSource = giant->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
+          if (casterSource) {
+            casterNode = casterSource->GetMagicNode();
+            if (casterNode) {
+              auto sourceLoc = casterNode->world.translate;
+              auto scaleTiny = get_visual_scale(tiny);
+              auto targetLoc = HeadLocation(tiny, scaleTiny*0.5); // 50% up tiny body
+
+              auto directionToLook = targetLoc - sourceLoc;
+              directionToLook = directionToLook * (1/directionToLook.Length());
+              NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
+              auto sinAngle = directionToLook.Dot(upDirection);
+              auto angleFromUp = fabs(acos(sinAngle));
+              // float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
+
+          		finalAngle = std::clamp(angleFromUp, -60.0f * PI /18.0f, 60.f * PI /18.0f);
+              log::info("CasterNode finalAngle: {}", finalAngle);
+            }
+          }
+        }
+      }
+    }
+    data.casterSmooth.target = finalAngle;
+
+    for (auto casterSourceType: {MagicSystem::CastingSource::kLeftHand, MagicSystem::CastingSource::kRightHand}) {
+      auto casterSource = giant->GetMagicCaster(casterSourceType);
+      if (casterSource) {
+        casterNode = casterSource->GetMagicNode();
+        if (casterNode) {
+          auto targetRotation = NiMatrix3();
+          if (data.casterSmooth.value > 1e-3) {
+            targetRotation.SetEulerAnglesXYZ(data.casterSmooth.value, 0.0, 0.0);
+          }
+          casterNode->local.rotate = targetRotation;
+        }
+      }
+    }
+
+  }
 }
 
 namespace Gts {
@@ -188,9 +240,11 @@ namespace Gts {
 
   void Headtracking::Update() {
     for (auto actor: find_actors()) {
+      this->data.try_emplace(actor->formID);
       if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
         SpineUpdate(actor);
         FixNPCHeadtracking(actor);
+        RotateCaster(actor, this->data.at(actor->formID));
   		} else if (actor->formID == 0x14) {
         FixPlayerHeadtracking(actor);
       }
