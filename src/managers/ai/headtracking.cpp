@@ -186,6 +186,7 @@ namespace {
       if (targetHandle) {
         auto tiny = targetHandle.get().get();
         if (tiny) {
+          log::info("Combat Target: {}", tiny->GetDisplayFullName());
           auto casterSource = giant->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
           if (casterSource) {
             auto casterNode = casterSource->GetMagicNode();
@@ -195,6 +196,7 @@ namespace {
               auto targetLoc = HeadLocation(tiny, scaleTiny*0.5); // 50% up tiny body
 
               auto directionToLook = targetLoc - sourceLoc;
+              log::info("Combat: Direction: {}", Vector2Str(directionToLook));
               directionToLook = directionToLook * (1/directionToLook.Length());
               NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
               auto sinAngle = directionToLook.Dot(upDirection);
@@ -220,6 +222,7 @@ namespace {
             targetRotation.SetEulerAnglesXYZ(data.casterSmooth.value, 0.0, 0.0);
           }
           casterNode->local.rotate = targetRotation;
+          update_node(casterNode);
         }
       }
     }
