@@ -237,6 +237,7 @@ namespace Gts {
     if (ai) {
       if (me->formID == 0x14) {
         PlayerHeadtracking(me, ai);
+        return;
       }
   		auto targetObjHandle = ai->GetHeadtrackTarget();
   		if (targetObjHandle) {
