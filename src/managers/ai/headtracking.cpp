@@ -188,7 +188,7 @@ namespace {
         if (tiny) {
           auto casterSource = giant->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
           if (casterSource) {
-            casterNode = casterSource->GetMagicNode();
+            auto casterNode = casterSource->GetMagicNode();
             if (casterNode) {
               auto sourceLoc = casterNode->world.translate;
               auto scaleTiny = get_visual_scale(tiny);
@@ -199,9 +199,9 @@ namespace {
               NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
               auto sinAngle = directionToLook.Dot(upDirection);
               auto angleFromUp = fabs(acos(sinAngle));
-              // float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
+              float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
 
-          		finalAngle = std::clamp(angleFromUp, -60.0f * PI /18.0f, 60.f * PI /18.0f);
+          		finalAngle = std::clamp(angleFromForward, -60.0f * PI /180.0f, 60.f * PI /180.0f);
               log::info("CasterNode finalAngle: {}", finalAngle);
             }
           }
