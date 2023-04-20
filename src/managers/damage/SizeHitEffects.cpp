@@ -123,7 +123,13 @@ namespace Gts {
 		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
+		float Dragon = 1.0;
+		if (IsDragon(attacker)) {
+			Dragon = 2.5;
+		}
 		float resistance = 1.0;
+		static Timer soundtimer = Timer (1.5);
+		static Timer moantimer = Timer(6.0);
 		if (Runtime::HasMagicEffect(receiver, "ResistShrinkPotion")) {
 			resistance = 0.25;
 		}
@@ -133,14 +139,20 @@ namespace Gts {
 			log::info("GrowthValue of : {} is {} {}, OG damage: {}", receiver->GetDisplayFullName(), GrowthValue, -GrowthValue, damage);
 			mod_target_scale(receiver, GrowthValue);
 			DoHitShake(receiver, GrowthValue * 10);
-
-			Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue / 300, 1.0, "NPC COM [COM ]");
+			if (soundtimer.ShouldRunFrame()) {
+				Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue / 300, 1.0, "NPC COM [COM ]");
+			}
 			if (ShrinkChance >= 11) {
-				mod_target_scale(attacker, ((-0.025 * SizeHunger * Gigantism) * SizeDifference) / BalanceMode); // Shrink Attacker
-				mod_target_scale(receiver, (0.025 * SizeHunger * Gigantism) / BalanceMode); // Grow Attacker
+				mod_target_scale(attacker, -GrowthValue/(3 * Dragon* BalanceMode)); // Shrink Attacker
+				mod_target_scale(receiver, GrowthValue/(2 * BalanceMode)); // Grow Attacker
+				if (get_visual_scale(attacker) <= 0.10/Dragon) {
+					if (ShrinkToNothingManager::CanShrink(receiver, attacker)) {
+						ShrinkToNothingManager::Shrink(receiver, attacker);
+					}
+				}
 				log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
 			}
-			if (SizeDifference >= 4.0 && LaughChance >= 11) {
+			if (moantimer.ShouldRunFrame() && SizeDifference >= 4.0 && LaughChance >= 11) {
 				Runtime::PlaySoundAtNode("LaughSound", receiver, 1.0, 0.5, "NPC Head [Head]");
 			}
 			return;
