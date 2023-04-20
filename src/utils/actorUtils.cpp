@@ -65,7 +65,7 @@ namespace Gts {
 	void Disintegrate(Actor* actor) {
 		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 		actor->Disable();
-		if (Persistent::Getsingleton().delete_actors) {
+		if (Persistent::GetSingleton().delete_actors) {
 			actor->SetDelete(true);
 		}
 	}
