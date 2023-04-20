@@ -37,14 +37,9 @@ namespace {
     auto location = obj.GetPosition();
     auto asActor = skyrim_cast<Actor*>(&obj);
     if (asActor) {
-      auto head = find_node(asActor, "NPC Head [Head]");
       auto charCont = asActor->GetCharController();
       if (charCont) {
-        if (head) {
-          headOffset.z = (head->local.translate.z) * get_natural_scale(asActor);//charCont->actorHeight * 70.0 * scale * get_natural_scale(asActor);
-          log::info("offset Z of {} is {}", asActor->GetDisplayFullName(), headOffset.z);
-          log::info("Local Z offset of {} is {}", asActor->GetDisplayFullName(), head->local.translate.z);
-        }
+        headOffset.z = charCont->actorHeight * 70.0 * scale * get_natural_scale(asActor);
       }
     }
     return location + headOffset;
@@ -232,7 +227,6 @@ namespace {
           casterNode->world.rotate = targetRotation;
           //log::info("Adjusting Node Rotation of {}, target: {}, value: {}", giant->GetDisplayFullName(), targetRotation, casterNode->local.rotate);
           update_node(casterNode);
-          //log::info("Value after: {}", casterNode->local.rotate);
         }
       }
     }
@@ -256,7 +250,7 @@ namespace Gts {
       if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
         SpineUpdate(actor);
         FixNPCHeadtracking(actor);
-        RotateCaster(actor, this->data.at(actor->formID));
+        //RotateCaster(actor, this->data.at(actor->formID));
   		} else if (actor->formID == 0x14) {
         //FixPlayerHeadtracking(actor);
       }

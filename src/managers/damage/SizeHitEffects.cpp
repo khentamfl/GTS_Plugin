@@ -129,8 +129,9 @@ namespace Gts {
 			Dragon = 2.5;
 		}
 		float resistance = 1.0;
-		static Timer soundtimer = Timer (1.5);
+		static Timer soundtimer = Timer(1.5);
 		static Timer moantimer = Timer(6.0);
+
 		if (Runtime::HasMagicEffect(receiver, "ResistShrinkPotion")) {
 			resistance = 0.25;
 		}
@@ -141,7 +142,7 @@ namespace Gts {
 			mod_target_scale(receiver, GrowthValue);
 			DoHitShake(receiver, GrowthValue * 10);
 			if (soundtimer.ShouldRunFrame()) {
-				Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue / 300, 1.0, "NPC COM [COM ]");
+				Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue * 2, 1.0, "NPC COM [COM ]");
 			}
 			if (ShrinkChance >= 2) {
 				mod_target_scale(attacker, -GrowthValue/(2.0 * Dragon* BalanceMode)); // Shrink Attacker
@@ -149,6 +150,7 @@ namespace Gts {
 				if (get_visual_scale(attacker) <= 0.10/Dragon) {
 					if (ShrinkToNothingManager::CanShrink(receiver, attacker)) {
 						ShrinkToNothingManager::Shrink(receiver, attacker);
+						PrintDeathSource(receiver, attacker, "HitSteal");
 					}
 				}
 				log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());

@@ -56,6 +56,7 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
+		auto& Persist = Persistent::GetSingleton();
 		float SizeDifference = 1.0;
 		float bonus = 1.0;
 		float balancemodebonus = 1.0;
@@ -63,15 +64,18 @@ namespace Gts {
 		float gainpower = this->efficiency;
 
 		if (this->power >= 18.00) {
-			auto& Persist = Persistent::GetSingleton();
 			auto actor_data = Persist.GetData(target);
 			actor_data->half_life = 0.25; // Faster shrink, less smooth.
-			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2, 1.0f, 6.0f);
+			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.5, 1.0f, 6.0f);
+		} else if (this->power >= 10.0) {
+			auto actor_data = Persist.GetData(target);
+			actor_data->half_life = 0.50; // Faster shrink, less smooth.
+			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/3.0, 1.0f, 3.0f);
 		}
 
 		if (target->IsDead()) {
-			bonus = 3.0;
-			gainpower *= 0.05;
+			bonus = 2.5;
+			gainpower *= 0.20;
 		}
 
 		if (caster->formID == 0x14 && SizeManager::GetSingleton().BalancedMode() == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.

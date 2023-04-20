@@ -525,6 +525,14 @@ namespace Gts {
 			} else {
 				Cprint("{} hit {} with so much force that {} exploded into bloody mist", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
+		} else if (cause == "HitSteal") {
+			if (random <= 2) {
+				Cprint("{} body exploded after trying to hit {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 3) {
+				Cprint("Protective magic of {} made {} absorb {}", giant->GetDisplayFullName(), giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random > 3) {
+				Cprint("{} Tried to kill {}, but ended up being absorbed by the size magic of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName(), giant->GetDisplayFullName());
+			}
 		}
 	}
 
