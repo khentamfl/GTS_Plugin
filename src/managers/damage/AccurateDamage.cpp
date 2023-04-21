@@ -90,7 +90,7 @@ namespace {
 		}
 		float sizedifference = giantSize/tinySize;
 		int ragdollchance = rand() % 30 + 1.0;
-		if (sizedifference >= 3.0) {
+		if (sizedifference >= 1.49) {
 			PushActorAway(giant, tiny, power/12); // Always push
 			return;
 		}
@@ -484,7 +484,6 @@ namespace Gts {
 		float falldamage = 1.0; // default Fall damage of 1.0
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 
-		TestHostileToggle(giant, tiny);
 		SizeModifications(giant, tiny, highheels);
 		SMTCrushCheck(giant, tiny);
 		ModVulnerability(giant, tiny);
