@@ -58,15 +58,19 @@ namespace {
 		return true;
 	}
 
-	void SetAggression(Actor* tiny) {
+	void SetAggression(Actor* giant, Actor* tiny) {
 		if (tiny->formID == 0x14) {
 			return;
 		}
 		auto cell = tiny->GetParentCell();
 		auto Package = skyrim_cast<TESObjectREFR*>(tiny);
+		auto PackageGiant = skyrim_cast<TESObjectREFR*>(giant);
 		
 		if (Package) {
-			tiny->InitiateFlee(Package, true, true, false, cell, Package, 35.0, 625.0);
+			if (PackageGiant) {
+				tiny->InitiateFlee(PackageGiant, false, true, true, cell, Package, 435.0, 1625.0);
+				tiny->InitiateFlee(Package, false, true, true, cell, Package, 435.0, 1625.0);
+			}
 			//auto ActorBase = Package->GetTemplateActorBase();
 			//ActorBase->SetAggressionLevel(ACTOR_AGGRESSION::kAggressive);
 			log::info("Making {} hostile", tiny->GetDisplayFullName());
@@ -498,7 +502,7 @@ namespace Gts {
 		float falldamage = 1.0; // default Fall damage of 1.0
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 
-		SetAggression(tiny);
+		SetAggression(giant, tiny);
 		SizeModifications(giant, tiny, highheels);
 		SMTCrushCheck(giant, tiny);
 		ModVulnerability(giant, tiny);
