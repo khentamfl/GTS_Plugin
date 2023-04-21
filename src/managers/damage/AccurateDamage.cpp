@@ -64,8 +64,8 @@ namespace {
 		if (tiny->formID == 0x14) {
 			return;
 		}
-		auto Ai_High = tiny->GetActorRuntimeData().currentprocess->high;
-		auto Ai_MiddleHigh = tiny->GetActorRuntimeData().currentprocess->middleHigh;
+		auto Ai_High = tiny->GetActorRuntimeData().currentProcess->high;
+		auto Ai_MiddleHigh = tiny->GetActorRuntimeData().currentProcess->middleHigh;
 		if (Ai_MiddleHigh) {
 			Ai_MiddleHigh->beenAttacked = true;
 			Ai_MiddleHigh->hostileGuard = true;
