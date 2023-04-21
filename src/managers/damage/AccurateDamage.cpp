@@ -59,21 +59,15 @@ namespace {
 	}
 
 	void SetAggression(Actor* giant, Actor* tiny) {
+
+		//RE::BSTempEffectParticle::Spawn(cell, 1.0, "file path in data (nif)", NiMatrix3(), NiPoint3, 0.75f, 7, 0);
 		if (tiny->formID == 0x14) {
 			return;
 		}
-		auto cell = tiny->GetParentCell();
-		auto Package = skyrim_cast<TESObjectREFR*>(tiny);
-		auto PackageGiant = skyrim_cast<TESObjectREFR*>(giant);
-		giant->Update3DModel();
-		if (Package) {
-			if (PackageGiant) {
-				//tiny->InitiateFlee(PackageGiant, false, true, true, cell, Package, 435.0, 1625.0);
-				//tiny->InitiateFlee(Package, false, true, true, cell, Package, 435.0, 1625.0);
-			}
-			//auto ActorBase = Package->GetTemplateActorBase();
-			//ActorBase->SetAggressionLevel(ACTOR_AGGRESSION::kAggressive);
-			log::info("Making {} hostile", tiny->GetDisplayFullName());
+		auto cell = giant->GetParentCell();
+		auto hand = find_node(giant, "NPC R Hand [RHnd]");
+		BSTempEffectParticle::Spawn(cell, 15.0, "Effects/impacteffects/bloodspraylargeimpact01.nif", NiMatrix3(), hand->world.translate, get_visual_scale(giant), 7, hand);
+		log::info("Making {} hostile", tiny->GetDisplayFullName());
 		}
 	}
 
