@@ -1,6 +1,5 @@
-
 #include "managers/GtsManager.hpp"
-#include "magic/effects/GrowthPotion.hpp"
+#include "magic/effects/Potions/GrowthPotion.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"

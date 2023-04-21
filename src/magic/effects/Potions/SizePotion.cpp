@@ -1,7 +1,7 @@
 
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
-#include "magic/effects/SizePotion.hpp"
+#include "magic/effects/Potions/SizePotion.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
