@@ -156,7 +156,7 @@ namespace Gts {
 					Runtime::PlaySound("GtsCrushSound", tiny, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", tiny, 1.0, 1.0);
 					Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
-					float currentsize = get_visual_scale(tiny);
+					float currentSize = get_visual_scale(tiny);
 
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
