@@ -362,10 +362,10 @@ namespace Gts {
 		footstep.OnImpact(impact_data); // Play sound
 	}
 
-	void SpawnParticle(Actor* actor, float lifetime, const char* modelName, const NiPoint3& position, float scale, std::uint32_t flags, NiAVObject* target) {
+	void SpawnParticle(Actor* actor, float lifetime, const char* modelName, const NiMatrix3& rotation, const NiPoint3& position, float scale, std::uint32_t flags, NiAVObject* target) {
 		auto cell = actor->GetParentCell();
 		if (cell) {
-			BSTempEffectParticle::Spawn(cell, lifetime, modelName, NiMatrix3(), position, scale, flags, target);
+			BSTempEffectParticle::Spawn(cell, lifetime, modelName, rotation, position, scale, flags, target);
 		}
 	}
 

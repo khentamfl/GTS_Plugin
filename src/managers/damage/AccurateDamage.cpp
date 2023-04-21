@@ -65,7 +65,7 @@ namespace {
 			return;
 		}
 		auto cell = giant->GetParentCell();
-		auto hand = find_node(giant, "NPC R Hand [RHnd]");
+		auto rhand = find_node(giant, "NPC R Hand [RHnd]");
 		auto lhand = find_node(giant, "NPC L Hand [LHnd]");
 		auto giantref = skyrim_cast<TESObjectREFR*>(giant);
 		//auto DS = me->GetActorRuntimeData().currentProcess->high.ActorKnowledge.DetectionState;
