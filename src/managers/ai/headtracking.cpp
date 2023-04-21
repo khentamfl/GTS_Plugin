@@ -33,14 +33,13 @@ using namespace std;
 
 namespace {
 
-  void SetAggression(Actor* giant, Actor* tiny) {
+  void SetAggression(Actor* tiny) {
 		auto Ai = tiny->GetActorRuntimeData().currentProcess->high;
     auto DetectionLevel = Ai->actorsGeneratedDetectionEvent;
     auto timestamp = DetectionLevel->timeStamp;
     auto CombatTarget = tiny->GetActorRuntimeData().currentCombatTarget.get().get();
     if (CombatTarget) {
-      auto DL = timestamp->detectLevel;
-      log::info("DetectLevel of {} is {}", tiny->GetDisplayFullName(), DL);
+      log::info("Combat target of {} is {}", tiny->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
     }
 		if (Ai) {
 			log::info("Detection level of {} is {}, timeStamp: {}", tiny->GetDisplayFullName(), DetectionLevel->actionValue, timestamp);
