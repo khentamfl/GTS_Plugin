@@ -46,12 +46,17 @@ namespace {
 	const float UNDERFOOT_POWER = 0.60;
 
 	void AttackTest(Actor* giant, Actor* tiny) {
-		tiny->SetBeenAttacked(true);
-		CombatController* Combat = tiny->GetActorRuntimeData().combatController;
-		if (Combat) {
-			Combat->attackerHandle = giant->CreateRefHandle();
-			Combat->cachedAttacker = giant->CreateRefHandle();
-			log::info("Forcing Combat");
+		if (tiny->formID != 0x14) {
+			tiny->SetBeenAttacked(true);
+			CombatController* Combat = tiny->GetActorRuntimeData().combatController;
+			tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
+			tiny->UpdateCombat();
+			tiny->UpdateCombatControllerSettings();
+			/*if (Combat) {
+				Combat->attackerHandle = giant->CreateRefHandle();
+				Combat->cachedAttacker = giant->CreateRefHandle();
+				log::info("Forcing Combat");
+			}*/
 		}
 	}
 
