@@ -53,12 +53,12 @@ namespace Gts {
 			// Upgrade to true absorb
 			this->true_absorb = true;
 		}
-		if (size_difference >= 4.1) {
-			size_difference = 4.1;
+		if (size_difference >= 6.0) {
+			size_difference = 6.0;
 		} // Cap Size Difference
 
 		if (this->true_absorb) {
-			AbsorbSteal(target, caster, (0.00375 * size_difference) * gigantism, 0.0, 0.276);
+			AbsorbSteal(target, caster, (0.00440 * size_difference) * gigantism, 0.0, 0.276);
 			if (ShrinkToNothing(caster, target)) {
 				//Dispel(); <- maybe no need to dispel since it will allow to absorb again?
 			}

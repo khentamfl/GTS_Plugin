@@ -130,9 +130,10 @@ namespace Gts {
 			if (actor->formID == 0x14 && Runtime::HasPerk(actor, "TrueGiantess")) {
 				Endless = 999999.0;
 			}
+			float NaturalsSale = get_natural_scale(actor);
 			float QuestStage = Runtime::GetStage("MainQuest");
 			float Gigantism = this->GetEnchantmentBonus(actor)/100;
-			float GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + (Runtime::GetFloat("sizeLimit") - 1.0)); // Default size limit
+			float GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + ((Runtime::GetFloat("sizeLimit") - 1.0) * NaturalScale)); // Default size limit
 			float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
 			float SelectedFormula = Runtime::GetInt("SelectedSizeFormula");
 
@@ -140,11 +141,11 @@ namespace Gts {
 			float NPCLimit = Runtime::GetFloat("NPCSizeLimit");
 
 			if (SelectedFormula >= 2.0 && actor->formID == 0x14) { // Apply Player Mass-Based max size
-				GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + Runtime::GetFloat("GtsMassBasedSize"));
+				GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + (Runtime::GetFloat("GtsMassBasedSize") * NaturalScale));
 			} else if (QuestStage > 100 && FollowerLimit > 1 && actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate())) { // Apply Follower Max Size
-				GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + (Runtime::GetFloat("FollowersSizeLimit") - 1.0)); // Apply only if Quest is done.
+				GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + ((Runtime::GetFloat("FollowersSizeLimit") - 1.0) * NaturalScale)); // Apply only if Quest is done.
 			} else if (QuestStage > 100 && NPCLimit > 1 &&  actor->formID != 0x14 && (!Runtime::InFaction(actor, "FollowerFaction") && !actor->IsPlayerTeammate())) { // Apply Other NPC's max size
-				GetLimit = clamp(get_natural_scale(actor), 99999999.0, get_natural_scale(actor) + (Runtime::GetFloat("NPCSizeLimit") - 1.0));       // Apply only if Quest is done.
+				GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + ((Runtime::GetFloat("NPCSizeLimit") - 1.0) * NaturalScale));       // Apply only if Quest is done.
 			}
 			//log::info("Natural Scale of {} is {}", actor->GetDisplayFullName(), get_natural_scale(actor));
 			float TotalLimit = ((GetLimit + Persistent_Size) * (1.0 + Gigantism));
