@@ -161,7 +161,7 @@ namespace Gts {
 			}
 			//log::info("Anim speed for {} is {}", actor->GetDisplayFullName(), animspeed);
 			averagePos = averagePos * (1.0 / totalWeight);
-			ApplyShakeAtPoint(actor, 0.4 * totalWeight * animspeed, averagePos);
+			ApplyShakeAtPoint(actor, 0.4 * totalWeight * animspeed, averagePos, 1.0);
 		}
 	}
 	//}
