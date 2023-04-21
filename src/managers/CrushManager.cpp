@@ -155,7 +155,7 @@ namespace Gts {
 					Runtime::PlaySound("GtsCrushSound", tiny, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", tiny, 1.0, 1.0);
 					Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
-					Runtime::CastSpell(tiny, tiny, "GtsBleedSpell");
+					float currentsize = get_visual_scale(tiny);
 
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
@@ -182,7 +182,7 @@ namespace Gts {
 
 					ScareChance(giant);
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
-					auto root = get_node("NPC Root [Root]");
+					auto root = find_node(tiny, "NPC Root [Root]");
 					if (root) {
 						SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, currentSize/2.5, 7, root);
 						SpawnParticle(tiny, 0.20, "GTS/Damage/Crush.nif", NiMatrix3(), root->world.translate, currentSize, 7, root);

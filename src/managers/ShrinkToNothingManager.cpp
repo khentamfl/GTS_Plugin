@@ -59,7 +59,7 @@ namespace Gts {
 						}
 						ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 
-						auto root = get_node("NPC Root [Root]");
+						auto root = find_node(tiny, "NPC Root [Root]");
 						if (root) {
 							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, currentSize, 7, root);
 						}

@@ -69,7 +69,7 @@ namespace {
 		auto lhand = find_node(giant, "NPC L Hand [LHnd]");
 		auto giantref = skyrim_cast<TESObjectREFR*>(giant);
 		//auto DS = me->GetActorRuntimeData().currentProcess->high.ActorKnowledge.DetectionState;
-		giantref->InstantiateHitArt(Runtime::GetArtObject("BloodSpray"), 25.0f, giant, true, false, rhand, false);
+		giantref->InstantiateHitArt(Runtime::GetArtObject("BloodSpray"), 25.0f, giantref, true, false, rhand, false);
 		//giantref->InstantiateHitShader(TESEffectShader* a_shader, 25.0f, giantref, false, false, hand, false);
 		//log::info("Unk 18 {}, unk 28 {}, unk 38 {}", DS->unk18, DS->unk28, DS->unk38);
 	}
