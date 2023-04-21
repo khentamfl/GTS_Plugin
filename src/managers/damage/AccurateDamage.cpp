@@ -58,29 +58,11 @@ namespace {
 		return true;
 	}
 
-	void SetAggression(Actor* giant, Actor* tiny) {
-
-		//RE::BSTempEffectParticle::Spawn(cell, 1.0, "file path in data (nif)", NiMatrix3(), NiPoint3, 0.75f, 7, 0);
-		if (tiny->formID == 0x14) {
-			return;
-		}
-		auto Ai_High = tiny->GetActorRuntimeData().currentProcess->high;
-		auto Ai_MiddleHigh = tiny->GetActorRuntimeData().currentProcess->middleHigh;
-		if (Ai_MiddleHigh) {
-			Ai_MiddleHigh->beenAttacked = true;
-			Ai_MiddleHigh->hostileGuard = true;
-			log::info("MiddleHigh true");
-		}
-		if (Ai_High) {
-			Ai_High->aggroRadiusStarted = true;
-			log::info("High true");
-		}
-		/*
-		BGSDecalNode* node = skyrim_cast<BGSDecalNode*>(rhand->AsNode());
-		if (node) {
-			node->AttachDecal(nullptr, false);
-			log::info("Node true");
-		}*/
+	void TestHostileToggle(Actor* giant, Actor* tiny) {
+		auto Ai = tiny->GetActorRuntimeData().currentProcess->high;
+    	auto DetectionLevel = Ai->actorsGeneratedDetectionEvent;
+    	auto timestamp = DetectionLevel->timeStamp;
+    	tiny->currentCombatTarget = giant->CreateRefHandle();
 	}
 	
 
@@ -509,7 +491,7 @@ namespace Gts {
 		float falldamage = 1.0; // default Fall damage of 1.0
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 
-		SetAggression(giant, tiny);
+		TestHostileToggle(giant, tiny);
 		SizeModifications(giant, tiny, highheels);
 		SMTCrushCheck(giant, tiny);
 		ModVulnerability(giant, tiny);

@@ -32,6 +32,27 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+
+  void SetAggression(Actor* giant, Actor* tiny) {
+		auto Ai = tiny->GetActorRuntimeData().currentProcess->high;
+    auto DetectionLevel = Ai->actorsGeneratedDetectionEvent;
+    auto timestamp = DetectionLevel->timeStamp;
+    auto CombatTarget = tiny->currentCombatTarget.get().get();
+    if (CombatTarget) {
+      auto DL = CombatTarget->detectLevel;
+    }
+		if (Ai) {
+			log::info("Detection level of {} is {}, timeStamp: {}", tiny->GetDisplayFullName(), DetectionLevel->actionValue, timestamp);
+      log::info("DetectLevel of {} is {}", tiny->GetDisplayFullName(), DL);
+		}
+		/*
+		BGSDecalNode* node = skyrim_cast<BGSDecalNode*>(rhand->AsNode());
+		if (node) {
+			node->AttachDecal(nullptr, false);
+			log::info("Node true");
+		}*/
+	}
+  
   NiPoint3 HeadLocation(TESObjectREFR& obj, const float& scale) {
     NiPoint3 headOffset(0.0, 0.0, 0.0);
     auto location = obj.GetPosition();
@@ -111,15 +132,6 @@ namespace {
       return HeadLocation(*obj);
     }
   }
-	void SpellTest(Actor* caster) {
-    /*auto righthand = caster->GetMagicCaster(RE::MagicSystem::CastingSource::kRightHand)->GetMagicNode()->GetChildren().get();
-    auto lefthand = caster->GetMagicCaster(RE::MagicSystem::CastingSource::kLeftHand)->GetMagicNode()->GetChildren().get();
-    if (righthand) {
-      righthand->local.translate.z;
-    } if (lefthand) {
-      lefthand->local.translate.z;
-    }*/
-	}
 
   // Rotate spine to look at an actor either leaning back or looking down
 	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
@@ -171,7 +183,7 @@ namespace {
 
     giant->SetGraphVariableFloat("GTSPitchOverride", data.spineSmooth.value);
 
-		log::info("Pitch Override of {} is {}", giant->GetDisplayFullName(), data.spineSmooth.value);
+		//log::info("Pitch Override of {} is {}", giant->GetDisplayFullName(), data.spineSmooth.value);
 	}
 
   void RotateCaster(Actor* giant, HeadtrackingData& data) {
@@ -247,6 +259,7 @@ namespace Gts {
   void Headtracking::Update() {
     for (auto actor: find_actors()) {
       this->data.try_emplace(actor->formID);
+        SetAggression(actor);
       if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
         SpineUpdate(actor);
         FixNPCHeadtracking(actor);
