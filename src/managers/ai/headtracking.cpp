@@ -32,27 +32,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-
-  void SetAggression(Actor* tiny) {
-		auto Ai = tiny->GetActorRuntimeData().currentProcess->high;
-    auto DetectionLevel = Ai->actorsGeneratedDetectionEvent;
-    auto timestamp = DetectionLevel->actionValue;
-    auto CombatTarget = tiny->GetActorRuntimeData().currentCombatTarget.get().get();
-    DetectionLevel->actionValue *= get_visual_scale(PlayerCharacter::GetSingleton());
-    /*if (CombatTarget) {
-      log::info("Combat target of {} is {}", tiny->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
-    }
-		if (Ai) {
-			log::info("Detection level of {} is {}", tiny->GetDisplayFullName(), DetectionLevel->actionValue);
-		}*/
-		/*
-		BGSDecalNode* node = skyrim_cast<BGSDecalNode*>(rhand->AsNode());
-		if (node) {
-			node->AttachDecal(nullptr, false);
-			log::info("Node true");
-		}*/
-	}
-  
   NiPoint3 HeadLocation(TESObjectREFR& obj, const float& scale) {
     NiPoint3 headOffset(0.0, 0.0, 0.0);
     auto location = obj.GetPosition();
@@ -259,7 +238,6 @@ namespace Gts {
   void Headtracking::Update() {
     for (auto actor: find_actors()) {
       this->data.try_emplace(actor->formID);
-        SetAggression(actor);
       if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
         SpineUpdate(actor);
         FixNPCHeadtracking(actor);
