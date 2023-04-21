@@ -45,6 +45,15 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.60;
 
+	void AttackTest(Actor* giant, Actor* tiny) {
+		tiny->SetBeenAttacked(true);
+		auto Combat = tiny->GetActorRuntimeData().combatController;
+		if (Combat) {
+			Combat->attackerHandle = giant->CreateRefHandle();
+			log::info("Forcing Combat");
+		}
+	}
+
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (tiny->IsPlayerTeammate() || Runtime::InFaction(tiny, "FollowerFaction"))) {
 			return false;
@@ -473,6 +482,7 @@ namespace Gts {
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
+		AttackTest(giant, tiny);
 		if (IsDragon(tiny)) {
 			tinysize *= 2.0;
 		}
