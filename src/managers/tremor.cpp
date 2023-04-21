@@ -54,7 +54,7 @@ namespace Gts {
 			tremor_scale = sizedifference * persist.npc_tremor_scale;
 		}
 		if (actor->formID == 0x14) {
-			tremor_scale = persist.tremor_scale * (0.95 + get_visual_scale(actor) * 0.15);
+			tremor_scale = persist.tremor_scale;// * (0.95 + get_visual_scale(actor) * 0.025);
 		}
 
 		if (tremor_scale < 1e-5) {

@@ -65,7 +65,7 @@ namespace {
 		auto cell = tiny->GetParentCell();
 		auto Package = skyrim_cast<TESObjectREFR*>(tiny);
 		auto PackageGiant = skyrim_cast<TESObjectREFR*>(giant);
-		tiny->HandleHealthDamage(giant, -1.0); 
+		giant->GetMagicCaster()->CastSpellImmediate(nullptr, true, tiny, 1.0, true, 1.0, giant);
 		if (Package) {
 			if (PackageGiant) {
 				//tiny->InitiateFlee(PackageGiant, false, true, true, cell, Package, 435.0, 1625.0);
