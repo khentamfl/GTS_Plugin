@@ -58,6 +58,16 @@ namespace {
 		return true;
 	}
 
+	void SetAggression(Actor* tiny) {
+		if (tiny->formID == 0x14) {
+			return;
+		}
+		auto Package = tiny->GetCurrentPackage();
+		if (Package) {
+			Package->SetAggressionLevel(ACTOR_AGGRESSION::kAggressive);
+		}
+	}
+
 	void ModVulnerability(Actor* giant, Actor* tiny) {
 		if (!Runtime::HasPerkTeam(giant, "GrowingPressure")) {
 			return;
@@ -483,6 +493,7 @@ namespace Gts {
 		float falldamage = 1.0; // default Fall damage of 1.0
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 
+		SetAggression(tiny);
 		SizeModifications(giant, tiny, highheels);
 		SMTCrushCheck(giant, tiny);
 		ModVulnerability(giant, tiny);
