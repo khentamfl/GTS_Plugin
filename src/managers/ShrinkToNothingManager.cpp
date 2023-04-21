@@ -59,10 +59,10 @@ namespace Gts {
 						SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
 						SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
 					}
-					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
+					Runtime::CreateExplosion(tiny, get_visual_scale(tiny), "BloodExplosion");
 					
 
-					Rumble::Once("ShrinkToNothingRumble", tiny, 86.0, 0.15);
+					Rumble::Once("ShrinkToNothingRumble", tiny, 86, 0.15);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest();
 					}
@@ -70,8 +70,7 @@ namespace Gts {
 					std::mt19937 gen(rd());
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-					//Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
-					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.5, 0.5);
+					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.0, 0.5);
 					EventDispatcher::DoResetActor(tiny);
 
 					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
@@ -87,11 +86,11 @@ namespace Gts {
 					}
 
 					data.state = ShrinkState::Shrinked;
-					}
 				}
 			}
 		}
 	}
+	
 
 	void ShrinkToNothingManager::Reset() {
 		this->data.clear();
