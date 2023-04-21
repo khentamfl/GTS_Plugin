@@ -64,16 +64,23 @@ namespace {
 		if (tiny->formID == 0x14) {
 			return;
 		}
-		auto cell = giant->GetParentCell();
-		auto rhand = find_node(giant, "NPC R Hand [RHnd]");
-		auto lhand = find_node(giant, "NPC L Hand [LHnd]");
-		auto giantref = skyrim_cast<TESObjectREFR*>(giant);
-		//auto Particle = SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", rhand->world.rotate, rhand->world.translate, get_visual_scale(giant), 4, rhand);
+		auto Ai_High = tiny->GetActorRuntimeData().currentprocess->high;
+		auto Ai_MiddleHigh = tiny->GetActorRuntimeData().currentprocess->middleHigh;
+		if (Ai_MiddleHigh) {
+			Ai_MiddleHigh->beenAttacked = true;
+			Ai_MiddleHigh->hostileGuard = true;
+			log::info("MiddleHigh true");
+		}
+		if (Ai_High) {
+			Ai_High->aggroRadiusStarted = true;
+			log::info("High true");
+		}
+		/*
 		BGSDecalNode* node = skyrim_cast<BGSDecalNode*>(rhand->AsNode());
 		if (node) {
 			node->AttachDecal(nullptr, false);
 			log::info("Node true");
-		}
+		}*/
 	}
 	
 
@@ -502,7 +509,7 @@ namespace Gts {
 		float falldamage = 1.0; // default Fall damage of 1.0
 		float weightdamage = giant->GetWeight()/100 + 1.0;
 
-		//SetAggression(giant, tiny);
+		SetAggression(giant, tiny);
 		SizeModifications(giant, tiny, highheels);
 		SMTCrushCheck(giant, tiny);
 		ModVulnerability(giant, tiny);
