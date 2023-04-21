@@ -58,10 +58,6 @@ namespace {
 		return true;
 	}
 
-	void TestHostileToggle(Actor* giant, Actor* tiny) {
-    	tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
-	}
-	
 
 	void ModVulnerability(Actor* giant, Actor* tiny) {
 		if (!Runtime::HasPerkTeam(giant, "GrowingPressure")) {

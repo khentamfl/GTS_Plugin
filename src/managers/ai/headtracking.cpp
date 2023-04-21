@@ -36,9 +36,9 @@ namespace {
   void SetAggression(Actor* tiny) {
 		auto Ai = tiny->GetActorRuntimeData().currentProcess->high;
     auto DetectionLevel = Ai->actorsGeneratedDetectionEvent;
-    auto timestamp = DetectionLevel->timeStamp;
+    auto timestamp = DetectionLevel->actionValue;
     auto CombatTarget = tiny->GetActorRuntimeData().currentCombatTarget.get().get();
-    //DetectionLevel *= get_visual_scale(PlayerCharacter::GetSingleton());
+    DetectionLevel->actionValue *= get_visual_scale(PlayerCharacter::GetSingleton());
     /*if (CombatTarget) {
       log::info("Combat target of {} is {}", tiny->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
     }
