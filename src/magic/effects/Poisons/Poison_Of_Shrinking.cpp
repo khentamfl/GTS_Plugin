@@ -30,7 +30,7 @@ namespace Gts {
 	}
 
 	void Shrink_Poison::OnUpdate() {
-		const float BASE_POWER = 0.000480;
+		const float BASE_POWER = 0.002480;
 
 		auto caster = GetCaster();
 		if (!caster) {

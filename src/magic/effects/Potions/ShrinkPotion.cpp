@@ -28,7 +28,7 @@ namespace Gts {
 	}
 
 	void ShrinkPotion::OnUpdate() {
-		const float BASE_POWER = 0.000180;
+		const float BASE_POWER = 0.000480;
 
 		auto caster = GetCaster();
 		if (!caster) {
