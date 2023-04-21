@@ -68,9 +68,9 @@ namespace {
 		auto rhand = find_node(giant, "NPC R Hand [RHnd]");
 		auto lhand = find_node(giant, "NPC L Hand [LHnd]");
 		auto giantref = skyrim_cast<TESObjectREFR*>(giant);
-		SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", rhand->world.rotate, root->world.translate, get_visual_scale(giant), 2, rhand);
-		SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", rhand->world.rotate, root->world.translate, get_visual_scale(giant), 1, rhand);
-		SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", rhand->world.rotate, root->world.translate, get_visual_scale(giant), 4, rhand);
+		SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", rhand->world.rotate, rhand->world.translate, get_visual_scale(giant), 2, rhand);
+		SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", rhand->world.rotate, rhand->world.translate, get_visual_scale(giant), 1, rhand);
+		SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", rhand->world.rotate, rhand->world.translate, get_visual_scale(giant), 4, rhand);
 	}
 	
 
