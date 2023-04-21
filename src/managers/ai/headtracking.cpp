@@ -42,7 +42,7 @@ namespace {
       log::info("Combat target of {} is {}", tiny->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
     }
 		if (Ai) {
-			log::info("Detection level of {} is {}, timeStamp: {}", tiny->GetDisplayFullName(), DetectionLevel->actionValue, timestamp);
+			log::info("Detection level of {} is {}", tiny->GetDisplayFullName(), std::bit_cast<float>(DetectionLevel->actionValue));
 		}
 		/*
 		BGSDecalNode* node = skyrim_cast<BGSDecalNode*>(rhand->AsNode());
