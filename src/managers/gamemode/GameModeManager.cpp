@@ -73,7 +73,7 @@ namespace Gts {
 					}
 					if ((targetScale + modAmount) > natural_scale) {
 						mod_target_scale(actor, modAmount);
-					} else if (targetScale > natural_scale || target_scale < natural_scale) {
+					} else if (targetScale > natural_scale || targetScale < natural_scale) {
 						set_target_scale(actor, natural_scale);
 					} // Need to have size restored by someone
 					break;
