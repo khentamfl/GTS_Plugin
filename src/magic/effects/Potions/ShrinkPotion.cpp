@@ -36,17 +36,13 @@ namespace Gts {
 		}
 
 		float AlchemyLevel = clamp(1.0, 2.0, caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
-		Rumble::For("ShrinkPotion", caster, 0.4, 0.05);
-
-		float HP = GetMaxAV(caster, ActorValue::kHealth) * 0.00035;
-		caster->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
+		Rumble::Once("ShrinkPotion", caster, 0.4, 0.05);
 
 		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 
-		Grow(caster, Power, 0.0);
+		ShrinkActor(caster, Power, 0.0);
 	}
 
 	void ShrinkPotion::OnFinish() {
-		Rumble::Stop("ShrinkPotion", caster);
 	}
 }

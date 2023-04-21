@@ -216,13 +216,17 @@ namespace Gts {
 	}
 
 	void MagicManager::DataReady() {
-		RegisterMagic<Gigantism>("EnchGigantism");
-		RegisterMagic<GrowthPotion>("EffectGrowthPotion");
+
+		// Potions
+		RegisterMagic<SizePotion>("EffectSizePotionExtreme");
+		RegisterMagic<SizeHunger>("EffectSizeHungerPotion");
 		RegisterMagic<SizePotion>("EffectSizePotionStrong");
 		RegisterMagic<SizePotion>("EffectSizePotionNormal");
 		RegisterMagic<SizePotion>("EffectSizePotionWeak");
-		RegisterMagic<SizePotion>("EffectSizePotionExtreme");
-		RegisterMagic<SizeHunger>("EffectSizeHungerPotion");
+		RegisterMagic<GrowthPotion>("EffectGrowthPotion");
+		RegisterMagic<ShrinkPotion>("SizeDrainPotion");
+		RegisterMagic<Shrink_Poison>("ShrinkPoison");
+		// 
 		RegisterMagic<CrushGrowth>("CrushGrowthMGEF");
 		RegisterMagic<TrackSize>("TrackSize");
 		RegisterMagic<ShrinkFoe>("ShrinkEnemy");
@@ -230,6 +234,9 @@ namespace Gts {
 		RegisterMagic<ShrinkFoe>("ShrinkEnemyAOEMast");
 		RegisterMagic<ShrinkFoe>("ShrinkBolt");
 		RegisterMagic<ShrinkFoe>("ShrinkStorm");
+		
+
+		RegisterMagic<Gigantism>("EnchGigantism");
 
 
 		RegisterMagic<SwordOfSize>("SwordEnchant");
