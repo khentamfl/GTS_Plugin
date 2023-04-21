@@ -1,3 +1,6 @@
+artobjects:
+  BloodSpray: "Skyrim.esm|0A6EF5"
+
 sounds:
   lFootstepL: "GTS.esp|1E93AB"
   lFootstepR: "GTS.esp|1E93AD"

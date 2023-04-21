@@ -8,6 +8,10 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
+	struct ArtObjectData {
+		BGSArtObject* data;
+	};
+
 	struct SoundData {
 		BGSSoundDescriptorForm* data;
 	};
@@ -54,7 +58,7 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 			virtual void DataReady() override;
-
+			static BGSArtObject* GetArtObject(const std::string_view& tag);
 			static BSISoundDescriptor* GetSound(const std::string_view& tag);
 			static void PlaySound(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency);
 			static void PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node);
@@ -119,7 +123,7 @@ namespace Gts {
 			// Log function
 			static bool Logged(const std::string_view& catagory, const std::string_view& key);
 
-
+			std::unordered_map<std::string, ArtObjectData> artobjects;
 			std::unordered_map<std::string, SoundData> sounds;
 			std::unordered_map<std::string, SpellEffectData> spellEffects;
 			std::unordered_map<std::string, SpellData> spells;

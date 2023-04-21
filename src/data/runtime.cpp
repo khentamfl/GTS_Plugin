@@ -39,6 +39,7 @@ namespace {
 		std::unordered_map<std::string, std::string> races;
 
 		articuno_serde(ar) {
+			ar <=> kv(artobjects, "artobjects");
 			ar <=> kv(sounds, "sounds");
 			ar <=> kv(spellEffects, "spellEffects");
 			ar <=> kv(spells, "spells");
@@ -64,6 +65,19 @@ namespace Gts {
 	}
 
 
+	// Art Object
+	BGSArtObject* Runtime::GetArtObject(const std::string_view& tag) {
+		BGSArtObject* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().artobjects.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("ArtObject", tag)) {
+				log::warn("ArtObject: {} not found", tag);
+			}
+		}
+		return data;
+	}
 	// Sound
 	BSISoundDescriptor* Runtime::GetSound(const std::string_view& tag) {
 		BSISoundDescriptor* data = nullptr;

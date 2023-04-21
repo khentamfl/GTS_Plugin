@@ -182,6 +182,11 @@ namespace Gts {
 
 					ScareChance(giant);
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
+					auto root = get_node("NPC Root [Root]");
+					if (root) {
+						SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, currentSize/2.5, 7, root);
+						SpawnParticle(tiny, 0.20, "GTS/Damage/Crush.nif", NiMatrix3(), root->world.translate, currentSize, 7, root);
+					}
 					EventDispatcher::DoResetActor(tiny);
 
 					if (tiny->formID != 0x14) {

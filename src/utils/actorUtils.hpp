@@ -52,6 +52,7 @@ namespace Gts {
 	float GetRandomBoost();
 
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node);
+	void SpawnParticle(Actor* actor, float lifetime, const char* modelName, const NiPoint3& rotation, const NiPoint3& position, float scale, std::uint32_t flags, NiAVObject* target);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage);
 
 	hkaRagdollInstance* GetRagdoll(Actor* actor);
