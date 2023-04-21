@@ -65,11 +65,11 @@ namespace {
 		auto cell = tiny->GetParentCell();
 		auto Package = skyrim_cast<TESObjectREFR*>(tiny);
 		auto PackageGiant = skyrim_cast<TESObjectREFR*>(giant);
-		tiny->HandleHealthDamage(giant, 1.0); 
+		tiny->HandleHealthDamage(giant, -1.0); 
 		if (Package) {
 			if (PackageGiant) {
-				tiny->InitiateFlee(PackageGiant, false, true, true, cell, Package, 435.0, 1625.0);
-				tiny->InitiateFlee(Package, false, true, true, cell, Package, 435.0, 1625.0);
+				//tiny->InitiateFlee(PackageGiant, false, true, true, cell, Package, 435.0, 1625.0);
+				//tiny->InitiateFlee(Package, false, true, true, cell, Package, 435.0, 1625.0);
 			}
 			//auto ActorBase = Package->GetTemplateActorBase();
 			//ActorBase->SetAggressionLevel(ACTOR_AGGRESSION::kAggressive);
