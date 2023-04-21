@@ -39,7 +39,7 @@ namespace {
     auto timestamp = DetectionLevel->timeStamp;
     auto CombatTarget = tiny->GetActorRuntimeData().currentCombatTarget.get().get();
     if (CombatTarget) {
-      auto DL = CombatTarget->detectLevel;
+      auto DL = timestamp->detectLevel;
       log::info("DetectLevel of {} is {}", tiny->GetDisplayFullName(), DL);
     }
 		if (Ai) {
@@ -272,7 +272,6 @@ namespace Gts {
 
   void Headtracking::SpineUpdate(Actor* me) {
     auto profiler = Profilers::Profile("Headtracking: SpineUpdate");
-    SpellTest(me);
     auto ai = me->GetActorRuntimeData().currentProcess;
     Actor* tiny = nullptr;
     if (ai) {

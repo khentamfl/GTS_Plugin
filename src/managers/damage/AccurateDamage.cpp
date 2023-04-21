@@ -59,10 +59,7 @@ namespace {
 	}
 
 	void TestHostileToggle(Actor* giant, Actor* tiny) {
-		auto Ai = tiny->GetActorRuntimeData().currentProcess->high;
-    	auto DetectionLevel = Ai->actorsGeneratedDetectionEvent;
-    	auto timestamp = DetectionLevel->timeStamp;
-    	tiny->currentCombatTarget = giant->CreateRefHandle();
+    	tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 	}
 	
 
