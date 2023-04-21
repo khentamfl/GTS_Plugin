@@ -27,6 +27,7 @@ namespace {
 	}
 
 	struct RuntimeConfig {
+		std::unordered_map<std::string, std::string> artobjects;
 		std::unordered_map<std::string, std::string> sounds;
 		std::unordered_map<std::string, std::string> spellEffects;
 		std::unordered_map<std::string, std::string> spells;
