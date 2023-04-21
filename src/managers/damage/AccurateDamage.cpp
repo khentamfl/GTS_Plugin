@@ -68,10 +68,9 @@ namespace {
 		auto rhand = find_node(giant, "NPC R Hand [RHnd]");
 		auto lhand = find_node(giant, "NPC L Hand [LHnd]");
 		auto giantref = skyrim_cast<TESObjectREFR*>(giant);
-		//auto DS = me->GetActorRuntimeData().currentProcess->high.ActorKnowledge.DetectionState;
-		giantref->InstantiateHitArt(Runtime::GetArtObject("BloodSpray"), 25.0f, giantref, true, false, rhand, false);
-		//giantref->InstantiateHitShader(TESEffectShader* a_shader, 25.0f, giantref, false, false, hand, false);
-		//log::info("Unk 18 {}, unk 28 {}, unk 38 {}", DS->unk18, DS->unk28, DS->unk38);
+		SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", rhand->world.rotate, root->world.translate, get_visual_scale(giant), 2, rhand);
+		SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", rhand->world.rotate, root->world.translate, get_visual_scale(giant), 1, rhand);
+		SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", rhand->world.rotate, root->world.translate, get_visual_scale(giant), 4, rhand);
 	}
 	
 
