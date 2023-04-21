@@ -3,8 +3,9 @@
 #include "managers/Rumble.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
-#include "data/time.hpp"
 #include "scale/scale.hpp"
+#include "data/time.hpp"
+#include "node.hpp"
 
 #include <random>
 

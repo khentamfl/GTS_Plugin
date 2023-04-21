@@ -1,8 +1,9 @@
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
-#include "data/time.hpp"
 #include "scale/scale.hpp"
+#include "data/time.hpp"
+#include "node.hpp"
 
 #include <random>
 
