@@ -68,8 +68,8 @@ namespace {
 		auto hand = find_node(giant, "NPC R Hand [RHnd]");
 		BSTempEffectParticle::Spawn(cell, 15.0, "Effects/impacteffects/bloodspraylargeimpact01.nif", NiMatrix3(), hand->world.translate, get_visual_scale(giant), 7, hand);
 		log::info("Making {} hostile", tiny->GetDisplayFullName());
-		}
 	}
+	
 
 	void ModVulnerability(Actor* giant, Actor* tiny) {
 		if (!Runtime::HasPerkTeam(giant, "GrowingPressure")) {
