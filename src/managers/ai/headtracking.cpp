@@ -38,12 +38,13 @@ namespace {
     auto DetectionLevel = Ai->actorsGeneratedDetectionEvent;
     auto timestamp = DetectionLevel->timeStamp;
     auto CombatTarget = tiny->GetActorRuntimeData().currentCombatTarget.get().get();
-    if (CombatTarget) {
+    //DetectionLevel *= get_visual_scale(PlayerCharacter::GetSingleton());
+    /*if (CombatTarget) {
       log::info("Combat target of {} is {}", tiny->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
     }
 		if (Ai) {
 			log::info("Detection level of {} is {}", tiny->GetDisplayFullName(), DetectionLevel->actionValue);
-		}
+		}*/
 		/*
 		BGSDecalNode* node = skyrim_cast<BGSDecalNode*>(rhand->AsNode());
 		if (node) {
