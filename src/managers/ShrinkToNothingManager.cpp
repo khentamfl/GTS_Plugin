@@ -62,7 +62,7 @@ namespace Gts {
 
 						auto root = find_node(tiny, "NPC Root [Root]");
 						if (root) {
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 1.0, 7, root);
+							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 6.0, 7, root);
 						}
 						Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 						
