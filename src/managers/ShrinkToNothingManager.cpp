@@ -42,53 +42,51 @@ namespace Gts {
 					if (!tiny->IsDead()) {
 						tiny->KillImmediate();
 					}
-					if (currentSize > 0.09) {
-						set_target_scale(tiny, 0.09);
-					} else {
-						// Fully shrunk
-						if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-							Actor* into = giant;
-							TransferInventory(tiny, into, false, true);
-						} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-							Actor* into = giant;
-							TransferInventory(tiny, into, false, true);
-						}
-						ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
+					
+					// Fully shrunk
+					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
+						Actor* into = giant;
+						TransferInventory(tiny, into, false, true);
+					} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
+						Actor* into = giant;
+						TransferInventory(tiny, into, false, true);
+					}
+					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 
-						auto root = find_node(tiny, "NPC Root [Root]");
-						if (root) {
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
-						}
-						Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
-						
+					auto root = find_node(tiny, "NPC Root [Root]");
+					if (root) {
+						SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
+						SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
+						SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
+					}
+					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
+					
 
-						Rumble::Once("ShrinkToNothingRumble", tiny, 24.8, 0.15);
-						if (giant->formID == 0x14 && IsDragon(tiny)) {
-							CompleteDragonQuest();
-						}
-						std::random_device rd;
-						std::mt19937 gen(rd());
-						std::uniform_real_distribution<float> dis(-0.2, 0.2);
+					Rumble::Once("ShrinkToNothingRumble", tiny, 86.0, 0.15);
+					if (giant->formID == 0x14 && IsDragon(tiny)) {
+						CompleteDragonQuest();
+					}
+					std::random_device rd;
+					std::mt19937 gen(rd());
+					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-						Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
-						Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.0, 0.5);
-						EventDispatcher::DoResetActor(tiny);
+					//Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
+					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.5, 0.5);
+					EventDispatcher::DoResetActor(tiny);
 
-						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 
-						if (tiny->formID != 0x14) {
-							Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
-						} else if (tiny->formID == 0x14) {
-							TriggerScreenBlood(50);
-							tiny->SetAlpha(0.0); // Just make player Invisible
-						}
+					if (tiny->formID != 0x14) {
+						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
+					} else if (tiny->formID == 0x14) {
+						TriggerScreenBlood(50);
+						tiny->SetAlpha(0.0); // Just make player Invisible
+					}
 
-						data.state = ShrinkState::Shrinked;
+					data.state = ShrinkState::Shrinked;
 					}
 				}
 			}
