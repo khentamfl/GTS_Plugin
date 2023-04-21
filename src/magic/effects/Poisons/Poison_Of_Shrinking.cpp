@@ -1,4 +1,5 @@
 #include "magic/effects/Poisons/Poison_Of_Shrinking.hpp"
+#include "managers/ShrinkToNothingManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/Rumble.hpp"
@@ -30,7 +31,7 @@ namespace Gts {
 	}
 
 	void Shrink_Poison::OnUpdate() {
-		const float BASE_POWER = 0.003800;
+		const float BASE_POWER = 0.004000;
 
 		auto caster = GetCaster();
 		if (!caster) {
@@ -46,8 +47,8 @@ namespace Gts {
 		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 
 		ShrinkActor(target, Power, 0.0);
-        if (ShrinkToNothing(caster, target)) {
-            //empty
+        if (get_visual_scale(target) < 0.25) {
+            ShrinkToNothingManager::Shrink(caster, target);
         }
 	}
 

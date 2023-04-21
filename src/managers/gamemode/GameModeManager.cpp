@@ -43,7 +43,7 @@ namespace Gts {
 			float natural_scale = get_natural_scale(actor);
 			float Scale = std::clamp(get_visual_scale(actor) * 0.25f, 1.0f, 10.0f);
 			float maxScale = get_max_scale(actor);
-			float targetScale = get_visual_scale(actor);
+			float targetScale = get_target_scale(actor);
 
 			if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor == player) {
 				Scale = 1.0;
@@ -67,13 +67,13 @@ namespace Gts {
 					break;
 				}
 				case ChosenGameMode::Shrink: {
-					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * 60 * Time::WorldTimeDelta();
+					float modAmount = -(0.00025 + (ShrinkRate * 0.25) * Scale) * 60 * Time::WorldTimeDelta();
 					if (fabs(ShrinkRate) < EPS) {
 						return;
 					}
 					if ((targetScale + modAmount) > natural_scale) {
 						mod_target_scale(actor, modAmount);
-					} else if (targetScale > natural_scale) {
+					} else if (targetScale > natural_scale || target_scale < natural_scale) {
 						set_target_scale(actor, natural_scale);
 					} // Need to have size restored by someone
 					break;

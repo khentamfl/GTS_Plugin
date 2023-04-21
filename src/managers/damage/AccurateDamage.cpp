@@ -90,15 +90,16 @@ namespace {
 		}
 		float sizedifference = giantSize/tinySize;
 		int ragdollchance = rand() % 30 + 1.0;
-		if (sizedifference >= 1.49) {
-			PushActorAway(giant, tiny, power/12); // Always push
-			return;
-		}
 		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.25 && sizedifference < 3.0) {
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
-		} else if (ragdollchance == 30.0) {
+		}
+		if (sizedifference >= 1.49) {
+			PushActorAway(giant, tiny, power/12); // Always push
+			return;
+		}
+		else if (ragdollchance == 30.0) {
 			PushActorAway(giant, tiny, power/12); // Push instead
 			return;
 		}
