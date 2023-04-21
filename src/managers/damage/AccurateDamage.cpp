@@ -62,10 +62,13 @@ namespace {
 		if (tiny->formID == 0x14) {
 			return;
 		}
+		auto cell = tiny->GetParentCell();
 		auto Package = skyrim_cast<TESObjectREFR*>(tiny);
+		
 		if (Package) {
-			auto ActorBase = Package->GetTemplateActorBase();
-			ActorBase->SetAggressionLevel(ACTOR_AGGRESSION::kAggressive);
+			tiny->InitiateFlee(Package, true, true, false, cell, Package, 35.0, 625.0);
+			//auto ActorBase = Package->GetTemplateActorBase();
+			//ActorBase->SetAggressionLevel(ACTOR_AGGRESSION::kAggressive);
 			log::info("Making {} hostile", tiny->GetDisplayFullName());
 		}
 	}
