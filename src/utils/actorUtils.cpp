@@ -224,10 +224,18 @@ namespace Gts {
 	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view nodesv) {
 		auto node = find_node(caster, nodesv);
 		if (node) {
-			ApplyShakeAtPoint(caster, modifier, node->world.translate);
+			ApplyShakeAtPoint(caster, modifier, node->world.translate, 1.0);
+		}
+	} 
+
+	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view nodesv, float radius) {
+		auto node = find_node(caster, nodesv);
+		if (node) {
+			ApplyShakeAtPoint(caster, modifier, node->world.translate, radius);
 		}
 	}
-	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords) {
+
+	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords, float radius) {
 		if (!caster) {
 			return;
 		}
@@ -262,7 +270,7 @@ namespace Gts {
 		//   |    |
 		//   |____|_____
 		//        distance
-		float cuttoff = 450 * sizedifference;
+		float cuttoff = 450 * sizedifference * radius;
 		//log::info("Shake Actor:{}, Distance:{}, sourcesize: {}, recsize: {}, cutoff: {}", caster->GetDisplayFullName(), distance, sourcesize, receiversize, cuttoff);
 		if (distance < cuttoff) {
 			// To Sermit: Same value as before just with the math reduced to minimal steps

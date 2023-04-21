@@ -46,18 +46,22 @@ namespace {
 	const float UNDERFOOT_POWER = 0.60;
 
 	void AttackTest(Actor* giant, Actor* tiny) {
-		if (tiny->formID != 0x14) {
-			tiny->SetBeenAttacked(true);
-			CombatController* Combat = tiny->GetActorRuntimeData().combatController;
-			tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
-			tiny->UpdateCombat();
-			tiny->UpdateCombatControllerSettings();
-			/*if (Combat) {
-				Combat->attackerHandle = giant->CreateRefHandle();
-				Combat->cachedAttacker = giant->CreateRefHandle();
-				log::info("Forcing Combat");
-			}*/
+		Profilers::Start("AccurateDamage: AttackTest");
+		static Timer tick = Timer(0.5);
+		if (tick.ShouldRunFrame()) {
+			for (auto otherActor: find_actors()) {
+				auto Ref = skyrim_cast<TESObjectREFR*>(otherActor);
+				if (Ref) {
+					if (otherActor->HasLineOfSight(TESObjectREFR* a_ref, bool& a_arg2)) {
+						if (otherActor != tiny && tiny->formID != 0x14) {
+							auto Faction = tiny->GetCrimeFaction();
+							ModCrimeGoldValue(Faction, true, 5);
+						}
+					}
+				}
+			}
 		}
+		Profilers::Stop("AccurateDamage: AttackTest");
 	}
 
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
