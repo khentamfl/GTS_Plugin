@@ -47,9 +47,10 @@ namespace {
 
 	void AttackTest(Actor* giant, Actor* tiny) {
 		tiny->SetBeenAttacked(true);
-		auto Combat = tiny->GetActorRuntimeData().combatController;
+		CombatController* Combat = tiny->GetActorRuntimeData().combatController;
 		if (Combat) {
 			Combat->attackerHandle = giant->CreateRefHandle();
+			Combat->cachedAttacker = giant->CreateRefHandle();
 			log::info("Forcing Combat");
 		}
 	}
