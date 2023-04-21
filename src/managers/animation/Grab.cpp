@@ -62,7 +62,7 @@ namespace {
 				DamageAV(grabbedActor, ActorValue::kHealth, damage);
 				auto root = find_node(grabbedActor, "NPC Root [Root]");
 				if (root) {
-					SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, get_visual_scale(grabbedActor), 4, root);
+					SpawnParticle(player, 25.0, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, get_visual_scale(grabbedActor), 4, root);
 				}
 				SizeHitEffects::GetSingleton().BreakBones(player, grabbedActor, damage * 0.5, 25);
 				if (damage > Health * 1.5) {
