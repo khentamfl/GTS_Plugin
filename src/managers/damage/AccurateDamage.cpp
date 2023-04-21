@@ -52,7 +52,7 @@ namespace {
 			for (auto otherActor: find_actors()) {
 				auto Ref = skyrim_cast<TESObjectREFR*>(otherActor);
 				if (Ref) {
-					if (otherActor->HasLineOfSight(Ref, *true)) {
+					if (otherActor->HasLineOfSight(Ref, &true)) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							auto Faction = tiny->GetCrimeFaction();
 							tiny->ModCrimeGoldValue(Faction, true, 5);
