@@ -15,7 +15,7 @@ namespace Gts {
 	void Disintegrate(Actor* actor);
 	void UnDisintegrate(Actor* actor);
 
-	void StartCombat(Actor* giant, Actor* tiny);
+	void StartCombat(Actor* giant, Actor* tiny, bool Forced);
 	void SetRestrained(Actor* actor);
 	void SetUnRestrained(Actor* actor);
 

@@ -76,13 +76,13 @@ namespace Gts {
 		actor->GetActorRuntimeData().criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 	}
 
-	void StartCombat(Actor* giant, Actor* tiny) {
+	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
 		static Timer tick = Timer(0.25);
-		if (tick.ShouldRunFrame()) {
+		if (tick.ShouldRunFrame() || Forced) {
 			if (tiny->IsInCombat()) {
 				return;
 			}
-			if (GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
+			if (Forced || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
 				CallFunctionOn(tiny, "Actor", "StartCombat", giant);
 			}
 		}
@@ -472,7 +472,7 @@ namespace Gts {
 					bool IsTrue = otherActor->HasLineOfSight(Ref, SeeingOther);
 					if (IsTrue) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
-							StartCombat(giant, otherActor);
+							StartCombat(giant, otherActor, true);
 							auto Faction = tiny->GetCrimeFaction();
 							auto CombatValue = giant->GetCrimeGoldValue(Faction);
 							if (CombatValue < 1000) {
