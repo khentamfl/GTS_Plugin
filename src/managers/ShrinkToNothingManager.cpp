@@ -62,7 +62,7 @@ namespace Gts {
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny), "BloodExplosion");
 					
 
-					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 6.0);
+					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 38.0);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest();
 					}
