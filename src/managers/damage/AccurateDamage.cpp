@@ -51,14 +51,16 @@ namespace {
 		bool SeeingOther;
 		if (tick.ShouldRunFrame()) {
 			for (auto otherActor: find_actors()) {
-				auto Ref = skyrim_cast<TESObjectREFR*>(otherActor);
+				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
 				if (Ref) {
+					log::info("Ref is true");
 					bool IsTrue = otherActor->HasLineOfSight(Ref, SeeingOther);
 					if (IsTrue) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							auto Faction = tiny->GetCrimeFaction();
 							tiny->ModCrimeGoldValue(Faction, true, 500);
-							tiny->ModCrimeGoldValue(Faction, true, 500);
+							giant->ModCrimeGoldValue(Faction, true, 500);
+							tiny->ModCrimeGoldValue(Faction, false, 500);
 							log::info("Mod Crime Value True");
 						}
 					}
