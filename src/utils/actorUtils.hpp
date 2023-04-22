@@ -60,6 +60,7 @@ namespace Gts {
 	hkaRagdollInstance* GetRagdoll(Actor* actor);
 	void ManageRagdoll(Actor* tinyref, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation);
 	void StaggerActor(Actor* receiver);
+	void ReportCrime(Actor* giant, Actor* tiny);
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause);
 	void PrintSuffocate(Actor* pred, Actor* prey);

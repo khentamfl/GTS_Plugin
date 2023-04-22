@@ -33,14 +33,14 @@ namespace Gts {
 			}
 
 			if (data.state == ShrinkState::Healthy) {
-				tiny->KillImpl(giant, 0, true, true);
+				tiny->KillImpl(giant, 0, true, false);
 				data.state = ShrinkState::Shrinking;
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
 					if (!tiny->IsDead()) {
-						tiny->KillImpl(giant, 0, true, true);
+						tiny->KillImpl(giant, 0, true, false);
 					}
 					
 					// Fully shrunk
@@ -61,8 +61,10 @@ namespace Gts {
 					}
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny), "BloodExplosion");
 					
+					ReportCrime(giant, tiny);
+					
 
-					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 38.0);
+					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 80.0);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest();
 					}

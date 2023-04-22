@@ -459,6 +459,30 @@ namespace Gts {
 		receiver->NotifyAnimationGraph("staggerStart");
 	}
 
+	void ReportCrime(Actor* giant, Actor* tiny) {
+		Profilers::Start("AccurateDamage: AttackTest");
+		static Timer tick = Timer(0.10);
+		bool SeeingOther;
+		tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
+		if (tick.ShouldRunFrame()) {
+			for (auto otherActor: find_actors()) {
+				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
+				if (Ref) {
+					log::info("Ref is true");
+					bool IsTrue = otherActor->HasLineOfSight(Ref, SeeingOther);
+					if (IsTrue) {
+						if (otherActor != tiny && tiny->formID != 0x14) {
+							auto Faction = tiny->GetCrimeFaction();
+							giant->ModCrimeGoldValue(Faction, true, 1000);
+							log::info("Mod Crime Value True");
+						}
+					}
+				}
+			}
+		}
+		Profilers::Stop("AccurateDamage: AttackTest");
+	}
+
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
@@ -541,6 +565,14 @@ namespace Gts {
 				Cprint("Protective magic of {} made {} absorb {}", giant->GetDisplayFullName(), giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random > 3) {
 				Cprint("{} Tried to kill {}, but ended up being absorbed by the size magic of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName(), giant->GetDisplayFullName());
+			}
+		} else if (cause == "Explode") {
+			if (random <= 2) {
+				Cprint("{} exploded into bloody dust", tiny->GetDisplayFullName());
+			} else if (random == 3) {
+				Cprint("{} suddenly exploded", tiny->GetDisplayFullName());
+			} else if (random > 3) {
+				Cprint("{} was turned into nothing", tiny->GetDisplayFullName());
 			}
 		}
 	}

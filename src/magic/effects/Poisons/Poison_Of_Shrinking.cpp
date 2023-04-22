@@ -44,10 +44,11 @@ namespace Gts {
 
 		float AlchemyLevel = clamp(1.0, 2.0, caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
 		Rumble::Once("Shrink_Poison", target, 0.4, 0.05);
-		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
+		float Power = BASE_POWER * get_visual_scale(target) * AlchemyLevel;
 
 		ShrinkActor(target, Power, 0.0);
-        if (get_visual_scale(target) < 0.25) {
+        if (get_visual_scale(target) < 0.25 && ShrinkToNothingManager::CanShrink(caster, target)) {
+			PrintDeathSource(caster, target, "Explode");
             ShrinkToNothingManager::Shrink(caster, target);
         }
 	}

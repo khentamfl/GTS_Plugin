@@ -151,7 +151,7 @@ namespace Gts {
 
 					// Do crush
 					if (!tiny->IsDead()) {
-						tiny->KillImpl(giant, 0, true, true);
+						tiny->KillImpl(giant, 0, true, false);
 					}
 					Runtime::PlaySound("GtsCrushSound", tiny, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", tiny, 1.0, 1.0);
@@ -180,6 +180,8 @@ namespace Gts {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
 					}
+
+					ReportCrime(giant, tiny);
 
 					ScareChance(giant);
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
