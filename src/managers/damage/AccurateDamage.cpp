@@ -59,7 +59,7 @@ namespace {
 							auto Faction = tiny->GetCrimeFaction();
 							tiny->ModCrimeGoldValue(Faction, true, 500);
 							tiny->ModCrimeGoldValue(Faction, true, 500);
-							loog::info("Mod Crime Value True");
+							log::info("Mod Crime Value True");
 						}
 					}
 				}
