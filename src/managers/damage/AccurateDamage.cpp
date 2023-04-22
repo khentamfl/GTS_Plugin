@@ -48,12 +48,13 @@ namespace {
 	void AttackTest(Actor* giant, Actor* tiny) {
 		Profilers::Start("AccurateDamage: AttackTest");
 		static Timer tick = Timer(0.5);
-		bool& decider = true;
+		bool SeeingOther;
 		if (tick.ShouldRunFrame()) {
 			for (auto otherActor: find_actors()) {
 				auto Ref = skyrim_cast<TESObjectREFR*>(otherActor);
 				if (Ref) {
-					if (otherActor->HasLineOfSight(Ref, decider)) {
+					otherActor->HasLineOfSight(Ref, SeeingOther)
+					if (SeeingOther) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							auto Faction = tiny->GetCrimeFaction();
 							tiny->ModCrimeGoldValue(Faction, true, 5);
