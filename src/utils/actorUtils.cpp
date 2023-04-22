@@ -75,6 +75,10 @@ namespace Gts {
 		actor->GetActorRuntimeData().criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 	}
 
+	void StartCombat(Actor* giant, Actor* tiny) {
+		CallFunctionOn(tiny, "Actor", "StartCombat", giant);
+	}
+
 	void SetRestrained(Actor* actor) {
 		CallFunctionOn(actor, "Actor", "SetRestrained", true);
 	}

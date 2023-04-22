@@ -50,12 +50,9 @@ namespace {
 		static Timer tick = Timer(0.5);
 		bool SeeingOther;
 
-		tiny->HandleHealthDamage(giant, -1.0);
-		tiny->SetBeenAttacked(true);
-		log::info("Has been attacked");
-
 		return;
 		if (tick.ShouldRunFrame()) {
+			StartCombat(giant, tiny);
 			for (auto otherActor: find_actors()) {
 				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
 				if (Ref) {
