@@ -49,6 +49,12 @@ namespace {
 		Profilers::Start("AccurateDamage: AttackTest");
 		static Timer tick = Timer(0.5);
 		bool SeeingOther;
+
+		tiny->HandleHealthDamage(giant, -1.0);
+		tiny->SetBeenAttacked(true);
+		log::info("Has been attacked");
+
+		return;
 		if (tick.ShouldRunFrame()) {
 			for (auto otherActor: find_actors()) {
 				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
@@ -498,10 +504,11 @@ namespace Gts {
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
+		AttackTest(giant, tiny);
 		if (IsDragon(tiny)) {
 			tinysize *= 2.0;
 		}
-		HitData::Populate(giant, tiny, nullptr);
+
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float multiplier = giantsize/tinysize * highheels;
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
