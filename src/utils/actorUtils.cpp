@@ -77,12 +77,12 @@ namespace Gts {
 	}
 
 	void StartCombat(Actor* giant, Actor* tiny) {
-		static Timer tick = Timer(0.5);
+		static Timer tick = Timer(0.25);
 		if (tick.ShouldRunFrame()) {
 			if (tiny->IsInCombat()) {
 				return;
 			}
-			if (GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.75) {
+			if (GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
 				CallFunctionOn(tiny, "Actor", "StartCombat", giant);
 			}
 		}
