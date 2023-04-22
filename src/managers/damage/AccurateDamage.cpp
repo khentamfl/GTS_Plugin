@@ -505,9 +505,9 @@ namespace Gts {
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
 		
-		if (GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.75) {
-			StartCombat(giant, tiny);
-		}
+		
+		StartCombat(giant, tiny);
+
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
 			if (CrushManager::CanCrush(giant, tiny)) {
 				crushmanager.Crush(giant, tiny);

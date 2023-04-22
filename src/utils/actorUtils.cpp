@@ -10,6 +10,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/re.hpp"
+#include "timer.hpp"
 #include "node.hpp"
 
 using namespace RE;
@@ -81,7 +82,9 @@ namespace Gts {
 			if (tiny->IsInCombat()) {
 				return;
 			}
-			CallFunctionOn(tiny, "Actor", "StartCombat", giant);
+			if (GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.75) {
+				CallFunctionOn(tiny, "Actor", "StartCombat", giant);
+			}
 		}
 	}
 
