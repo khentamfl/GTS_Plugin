@@ -472,7 +472,7 @@ namespace Gts {
 					bool IsTrue = otherActor->HasLineOfSight(Ref, SeeingOther);
 					if (IsTrue) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
-							StartCombat(giant, tiny);
+							StartCombat(giant, otherActor);
 							auto Faction = tiny->GetCrimeFaction();
 							auto CombatValue = giant->GetCrimeGoldValue(Faction);
 							if (CombatValue < 1000) {
