@@ -49,8 +49,6 @@ namespace {
 		Profilers::Start("AccurateDamage: AttackTest");
 		static Timer tick = Timer(0.5);
 		bool SeeingOther;
-
-		return;
 		if (tick.ShouldRunFrame()) {
 			StartCombat(giant, tiny);
 			for (auto otherActor: find_actors()) {
