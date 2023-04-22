@@ -101,7 +101,7 @@ namespace Gts {
 	}
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
 		if (!receiver->IsDead()) {
-			receiver->KillImmediate();
+			receiver->KillImpl(attacker, 0, true, true);
 		}
 		if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 			TransferInventory(receiver, attacker, false, true);

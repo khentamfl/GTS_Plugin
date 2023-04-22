@@ -45,32 +45,6 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.60;
 
-	void AttackTest(Actor* giant, Actor* tiny) {
-		Profilers::Start("AccurateDamage: AttackTest");
-		static Timer tick = Timer(0.5);
-		bool SeeingOther;
-		if (tick.ShouldRunFrame()) {
-			StartCombat(giant, tiny);
-			for (auto otherActor: find_actors()) {
-				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
-				if (Ref) {
-					log::info("Ref is true");
-					bool IsTrue = otherActor->HasLineOfSight(Ref, SeeingOther);
-					if (IsTrue) {
-						if (otherActor != tiny && tiny->formID != 0x14) {
-							auto Faction = tiny->GetCrimeFaction();
-							tiny->ModCrimeGoldValue(Faction, true, 500);
-							giant->ModCrimeGoldValue(Faction, true, 500);
-							tiny->ModCrimeGoldValue(Faction, false, 500);
-							log::info("Mod Crime Value True");
-						}
-					}
-				}
-			}
-		}
-		Profilers::Stop("AccurateDamage: AttackTest");
-	}
-
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (tiny->IsPlayerTeammate() || Runtime::InFaction(tiny, "FollowerFaction"))) {
 			return false;
@@ -499,7 +473,6 @@ namespace Gts {
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
-		AttackTest(giant, tiny);
 		if (IsDragon(tiny)) {
 			tinysize *= 2.0;
 		}
@@ -531,7 +504,10 @@ namespace Gts {
 		}
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
-
+		
+		if (GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.75) {
+			StartCombat(giant, tiny);
+		}
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
 			if (CrushManager::CanCrush(giant, tiny)) {
 				crushmanager.Crush(giant, tiny);

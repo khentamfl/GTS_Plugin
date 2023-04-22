@@ -192,6 +192,7 @@ namespace Gts {
 			for (auto& [key, tinyref]: this->tinies) {
 				auto tiny = tinyref.get().get();
 				if (tiny->formID != 0x14) {
+					tiny->KillImpl(giant, 0, true, true);
 					Disintegrate(tiny);
 					///this->tinies.erase(tiny);
 				} else if (tiny->formID == 0x14) {

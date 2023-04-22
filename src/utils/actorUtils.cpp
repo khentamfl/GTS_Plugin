@@ -76,7 +76,10 @@ namespace Gts {
 	}
 
 	void StartCombat(Actor* giant, Actor* tiny) {
-		CallFunctionOn(tiny, "Actor", "StartCombat", giant);
+		static Timer tick = Timer(0.5);
+		if (tick.ShouldRunFrame()) {
+			CallFunctionOn(tiny, "Actor", "StartCombat", giant);
+		}
 	}
 
 	void SetRestrained(Actor* actor) {
