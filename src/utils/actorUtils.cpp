@@ -217,7 +217,7 @@ namespace Gts {
 	void ApplyShake(Actor* caster, float modifier) {
 		if (caster) {
 			auto position = caster->GetPosition();
-			ApplyShakeAtPoint(caster, modifier, position);
+			ApplyShakeAtPoint(caster, modifier, position, 1.0);
 		}
 	}
 
