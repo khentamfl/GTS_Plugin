@@ -57,7 +57,9 @@ namespace {
 					if (IsTrue) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							auto Faction = tiny->GetCrimeFaction();
-							tiny->ModCrimeGoldValue(Faction, true, 5);
+							tiny->ModCrimeGoldValue(Faction, true, 500);
+							tiny->ModCrimeGoldValue(Faction, true, 500);
+							loog::info("Mod Crime Value True");
 						}
 					}
 				}
