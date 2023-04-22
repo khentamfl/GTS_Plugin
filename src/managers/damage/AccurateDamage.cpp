@@ -53,7 +53,7 @@ namespace {
 			for (auto otherActor: find_actors()) {
 				auto Ref = skyrim_cast<TESObjectREFR*>(otherActor);
 				if (Ref) {
-					otherActor->HasLineOfSight(Ref, SeeingOther)
+					otherActor->HasLineOfSight(Ref, SeeingOther);
 					if (SeeingOther) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							auto Faction = tiny->GetCrimeFaction();
