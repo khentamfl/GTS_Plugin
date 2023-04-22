@@ -78,6 +78,9 @@ namespace Gts {
 	void StartCombat(Actor* giant, Actor* tiny) {
 		static Timer tick = Timer(0.5);
 		if (tick.ShouldRunFrame()) {
+			if (tiny->IsInCombat()) {
+				return;
+			}
 			CallFunctionOn(tiny, "Actor", "StartCombat", giant);
 		}
 	}
