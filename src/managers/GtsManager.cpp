@@ -42,7 +42,9 @@ namespace {
 			if (node) {
 				BSFadeNode* fadenode = node->AsFadeNode();
 				if (fadenode) {
-					fadenode->GetRuntimeData().currentFade = 1.0;
+					if (fadenode->GetRuntimeData().currentFade < 1.0f) {
+						fadenode->GetRuntimeData().currentFade = 1.0f;
+					}
 				}
 			}
 		}

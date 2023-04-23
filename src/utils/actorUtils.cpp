@@ -466,6 +466,16 @@ namespace Gts {
 		receiver->NotifyAnimationGraph("staggerStart");
 	}
 
+	float GetMovementModifier(Actor* giant) {
+		if (giant->AsActorState()->IsSprinting()) {
+			return 2.0;
+		} else if (giant->AsActorState()->IsSneaking()) {
+			return 0.6;
+		} else {
+			return 1.0;
+		}
+	}
+
 	void ScareActors(Actor* giant) {
 		Profilers::Start("ActorUtils: ScareActors");
 		for (auto tiny: find_actors()) {
@@ -477,12 +487,12 @@ namespace Gts {
 				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 10.0f);
-				if (sizedifference >= 2.5 && !tiny->IsInCombat()) {
+				float distancecheck = 226.0 * GetMovementModifier(giant);
+				if (sizedifference >= 2.5) {
 					NiPoint3 GiantDist = giant->GetPosition();
 					NiPoint3 ObserverDist = tiny->GetPosition();
 					float distance = (GiantDist - ObserverDist).Length();
-					log::info("Distance between {} and {} is {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance);
-					if (distance <= 226.0 * sizedifference) {
+					if (distance <= distancecheck * sizedifference) {
 						auto combat = tiny->GetActorRuntimeData().combatController;
 						tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
@@ -491,7 +501,7 @@ namespace Gts {
 							if (GiantRef) {
 								bool SeeingOther;
 								bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
-								if (IsTrue || distance < 128 * sizedifference) {
+								if (IsTrue || distance < (distancecheck/2) * sizedifference) {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
 										if (runtimer.ShouldRunFrame()) {

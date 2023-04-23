@@ -60,9 +60,11 @@ namespace Gts {
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage);
 
 	hkaRagdollInstance* GetRagdoll(Actor* actor);
+
 	void ManageRagdoll(Actor* tinyref, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation);
 	void StaggerActor(Actor* receiver);
 
+	float GetMovementModifier(Actor* giant)
 	void ScareActors(Actor* giant);
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat);
 

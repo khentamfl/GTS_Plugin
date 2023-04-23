@@ -507,10 +507,13 @@ namespace Gts {
 
 		StartCombat(giant, tiny, false);
 
-		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {
-			if (CrushManager::CanCrush(giant, tiny)) {
-				crushmanager.Crush(giant, tiny);
-				CrushBonuses(giant, tiny, 0);
+		if (GetAV(tiny, ActorValue::kHealth) <= (result)) {
+			ReportCrime(giant, tiny, 1000, true);
+			if (multiplier >= 8.0) {
+				if (CrushManager::CanCrush(giant, tiny)) {
+					crushmanager.Crush(giant, tiny);
+					CrushBonuses(giant, tiny, 0);
+				}
 			}
 		}
 		if (multiplier < 1.4) {
