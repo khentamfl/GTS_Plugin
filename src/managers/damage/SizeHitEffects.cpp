@@ -161,7 +161,7 @@ namespace Gts {
 			return;
 		} else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) {
 			if (get_visual_scale(receiver) > 1.0) {
-				float sizebonus = std::clamp(get_visual_scale(attacker), 0.10, 1.0);
+				float sizebonus = std::clamp(get_visual_scale(attacker), 0.10f, 1.0f);
 				float ShrinkValue = std::clamp(((-damage/850)/SizeHunger/Gigantism * sizebonus) * resistance, 0.0f, 0.25f / Gigantism);
 				log::info("ShrinkValue of : {} is {} {}", receiver->GetDisplayFullName(), ShrinkValue, ShrinkValue);
 				mod_target_scale(receiver, -ShrinkValue);
