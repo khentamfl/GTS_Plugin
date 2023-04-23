@@ -66,7 +66,6 @@ namespace Gts {
 
 	float GetMovementModifier(Actor* giant);
 	void ScareActors(Actor* giant);
-	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat);
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause);
 	void PrintSuffocate(Actor* pred, Actor* prey);

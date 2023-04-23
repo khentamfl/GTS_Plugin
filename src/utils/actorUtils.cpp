@@ -77,13 +77,14 @@ namespace Gts {
 	}
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
-		static Timer tick = Timer(0.25);
-		if (tick.ShouldRunFrame() || Forced == true) {
+		static Timer tick = Timer(0.50);
+		if (tick.ShouldRun()) {
 			if (tiny->IsInCombat() || tiny->IsDead()) {
 				return;
 			}
 			if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
-				CallFunctionOn(tiny, "Actor", "StartCombat", giant);
+				//CallFunctionOn(tiny, "Actor", "StartCombat", giant);
+				Runtime::CastSpell(giant, tiny, "ForceCombatSpell")
 			}
 		}
 	}
@@ -530,8 +531,8 @@ namespace Gts {
 														auto ReceiverRef = skyrim_cast<TESObjectREFR*>(FearReceiver);
 														if (ReceiverRef) {
 															FearReceiver->InitiateFlee(ReceiverRef, true, true, true, cell, ReceiverRef, 100.0, 465.0);
-															combat->startedCombat = true;
-															combat->state->isFleeing = true;
+															//combat->startedCombat = true;
+															//combat->state->isFleeing = true;
 															FearList = {};
 														}
 													}
@@ -547,41 +548,6 @@ namespace Gts {
 			}
 			Profilers::Stop("ActorUtils: ScareActors");
 		}
-	}
-		
-
-	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat) {
-		Profilers::Start("ActorUtils: ReportCrime");
-		static Timer tick = Timer(0.10);
-		bool SeeingOther;
-		if (tick.ShouldRunFrame()) {
-			for (auto otherActor: find_actors()) {
-				float scale = std::clamp(get_visual_scale(giant), 0.10f, 16.0f);
-				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
-				if (Ref) {
-					bool IsTrue = otherActor->HasLineOfSight(Ref, SeeingOther);
-					NiPoint3 ObserverDist = otherActor->GetPosition();
-					NiPoint3 VictimDist = tiny->GetPosition();
-					float distance = (ObserverDist - VictimDist).Length();
-					if (IsTrue || distance < 724 * scale) {
-						if (otherActor != tiny && tiny->formID != 0x14) {
-							auto Faction = tiny->GetCrimeFaction();
-							auto CombatValue = giant->GetCrimeGoldValue(Faction);
-							if (combat && otherActor->GetCrimeFaction() == Faction && otherActor->IsFactionInCrimeGroup(Faction)) {
-								StartCombat(giant, otherActor, true);
-								tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
-								tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
-								tiny->UpdateCombatControllerSettings();
-								if (giant->formID == 0x14 && CombatValue < 1000) {
-									giant->ModCrimeGoldValue(Faction, true, value);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		Profilers::Stop("ActorUtils: ReportCrime");
 	}
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {

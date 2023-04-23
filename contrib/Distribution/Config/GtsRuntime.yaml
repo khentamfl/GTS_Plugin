@@ -96,6 +96,9 @@ spellEffects:
   FakeCrushEffect: "GTS.esp|271EF9"
   HealthBoost: "GTS.esp|518645"
 
+  # Trigger Hostile DAmage
+  ForceCombatSpell: "GTS.esp:1D4F9B"
+
 spells:
   GtsVoreFearSpell: "GTS.esp|026D15"
   SmallMassiveThreatSpell: "GTS.esp|1A2566"
