@@ -483,6 +483,7 @@ namespace Gts {
 				if (IsTeammate(tiny) || tiny->formID == 0x14 || tiny->IsDead()) {
 					return;
 				}
+				log::info("Giant is {}", giant->GetDisplayFullName());
 				float random = GetRandomBoost();
 				static Timer runtimer = Timer(1.0);
 				float GiantScale = get_visual_scale(giant);
@@ -556,12 +557,10 @@ namespace Gts {
 				float scale = std::clamp(get_visual_scale(giant), 0.10f, 8.0f);
 				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
 				if (Ref) {
-					log::info("Ref is true");
 					bool IsTrue = otherActor->HasLineOfSight(Ref, SeeingOther);
 					NiPoint3 ObserverDist = otherActor->GetPosition();
 					NiPoint3 VictimDist = tiny->GetPosition();
 					float distance = (ObserverDist - VictimDist).Length();
-					log::info("Crime Distance between {} and {} is {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance);
 					if (IsTrue || distance < 512 * scale) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							auto Faction = tiny->GetCrimeFaction();
@@ -574,7 +573,6 @@ namespace Gts {
 							if (giant->formID == 0x14 && CombatValue < 1000) {
 								giant->ModCrimeGoldValue(Faction, true, value);
 							}
-							log::info("Mod Crime Value True");
 						}
 					}
 				}

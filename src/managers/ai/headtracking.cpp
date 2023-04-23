@@ -114,7 +114,7 @@ namespace {
 
 	// Rotate spine to look at an actor either leaning back or looking down
 	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
-		const float REDUCTION_FACTOR = 0.33;
+		const float REDUCTION_FACTOR = 0.50;
 		const float PI = 3.14159;
 		bool Collision_Installed = false; //Used to detect 'Precision' mod
 		float Collision_PitchMult = 0.0;
@@ -133,22 +133,22 @@ namespace {
 				// With valid look at target
 				giant->SetGraphVariableBool("GTSIsInDialogue", true); // Allow spine edits
 				auto meHead = HeadLocation(giant);
-				log::info("  - meHead: {}", Vector2Str(meHead));
+				//log::info("  - meHead: {}", Vector2Str(meHead));
 				auto targetHead = HeadLocation(tiny);
-				log::info("  - targetHead: {}", Vector2Str(targetHead));
+				//log::info("  - targetHead: {}", Vector2Str(targetHead));
 				auto directionToLook = targetHead - meHead;
-				log::info("  - directionToLook: {}", Vector2Str(directionToLook));
+				//log::info("  - directionToLook: {}", Vector2Str(directionToLook));
 				directionToLook = directionToLook * (1/directionToLook.Length());
-				log::info("  - Norm(directionToLook): {}", Vector2Str(directionToLook));
+				//log::info("  - Norm(directionToLook): {}", Vector2Str(directionToLook));
 				NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
-				auto sinAngle = directionToLook.Dot(upDirection);
+				//auto sinAngle = directionToLook.Dot(upDirection);
 				log::info("  - cosAngle: {}", sinAngle);
-				auto angleFromUp = fabs(acos(sinAngle) * 180.0 / PI);
+				//auto angleFromUp = fabs(acos(sinAngle) * 180.0 / PI);
 				log::info("  - angleFromUp: {}", angleFromUp);
-				float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
+				//float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
 				log::info("  - angleFromForward: {}", angleFromForward);
 
-				finalAngle = std::clamp(angleFromForward, -60.f, 60.f);
+				finalAngle = std::clamp(angleFromForward * REDUCTION_FACTOR, -60.f, 60.f);
 				log::info("  - finalAngle: {}", finalAngle);
 			}
 		} else {
@@ -177,7 +177,7 @@ namespace {
 			if (targetHandle) {
 				auto tiny = targetHandle.get().get();
 				if (tiny) {
-					log::info("Combat Target: {}", tiny->GetDisplayFullName());
+					//log::info("Combat Target: {}", tiny->GetDisplayFullName());
 					auto casterSource = giant->GetMagicCaster(MagicSystem::CastingSource::kLeftHand);
 					if (casterSource) {
 						auto casterNode = casterSource->GetMagicNode();
@@ -187,16 +187,16 @@ namespace {
 							auto targetLoc = HeadLocation(tiny, scaleTiny*0.5); // 50% up tiny body
 
 							auto directionToLook = targetLoc - sourceLoc;
-							log::info("Combat: Direction: {}", Vector2Str(directionToLook));
+							//log::info("Combat: Direction: {}", Vector2Str(directionToLook));
 							directionToLook = directionToLook * (1/directionToLook.Length());
 							NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
 							auto sinAngle = directionToLook.Dot(upDirection);
 							auto angleFromUp = fabs(acos(sinAngle));
 							float angleFromForward = -(angleFromUp - PI/2.0);
 
-							log::info("angleFromForward: {}", angleFromForward);
+							//log::info("angleFromForward: {}", angleFromForward);
 							finalAngle = std::clamp(angleFromForward, -60.0f * PI /180.0f, 60.f * PI /180.0f);
-							log::info("CasterNode finalAngle: {}", finalAngle);
+							//log::info("CasterNode finalAngle: {}", finalAngle);
 						}
 					}
 				}

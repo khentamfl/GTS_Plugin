@@ -232,11 +232,9 @@ namespace Gts {
 			return false;
 		}
 		if (IsGtsBusy(pred)) {
-			log::info("Pred is busy");
 			return false;
 		}
 		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
-			log::info("Prey is protected");
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
@@ -245,7 +243,6 @@ namespace Gts {
 			prey_scale *= 3.0;
 		}
 		if (prey->IsDead() && pred_scale/prey_scale < 8.0) {
-			log::info("prey is dead and size difference is not met");
 			return false;
 		}
 
@@ -253,13 +250,11 @@ namespace Gts {
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_STOMP_SCALE_RATIO) {
-			log::info("Can't stomp");
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale)
 		    && pred_scale/prey_scale > MINIMUM_STOMP_SCALE_RATIO
 		    && prey_distance > 25.0) { // We don't want the Stomp to be too close
-			log::info("Stomp true");
 			return true;
 		} else {
 			return false;
