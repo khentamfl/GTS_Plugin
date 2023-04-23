@@ -470,12 +470,12 @@ namespace Gts {
 		Profilers::Start("ActorUtils: ScareActors");
 		for (auto tiny: find_actors()) {
 			if (tiny != giant) {
-				if (IsTeammate(tiny)) {
+				if (IsTeammate(tiny) || tiny->formID == 0x14) {
 					return;
 				}
 				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
-				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10, 10.0);
+				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 10.0f);
 				NiPoint3 GiantDist = tiny->GetPosition();
 				NiPoint3 ObserverDist = tiny->GetPosition();
 				float distance = (GiantDist - ObserverDist).Length();
