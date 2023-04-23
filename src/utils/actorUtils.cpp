@@ -473,6 +473,7 @@ namespace Gts {
 				if (IsTeammate(tiny) || tiny->formID == 0x14) {
 					return;
 				}
+				static Timer runtimer = Timer(2.0);
 				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 10.0f);
@@ -483,6 +484,7 @@ namespace Gts {
 					log::info("Distance between {} and {} is {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance);
 					if (distance <= 226.0 * sizedifference) {
 						auto combat = tiny->GetActorRuntimeData().combatController;
+						tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
 						if (TinyRef) {
 							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
@@ -492,10 +494,13 @@ namespace Gts {
 								if (IsTrue || distance < 128 * sizedifference) {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
-										tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 100.0, 465.0);
+										if (runtimer.ShouldRunFrame()) {
+											tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 100.0, 465.0);
+										}
 										if (combat) {
 											combat->startedCombat = true;
 											combat->state->isFleeing = true;
+											log::info("Combat of {} is true", tiny->GetDisplayFullName());
 										}
 									} 
 								}
