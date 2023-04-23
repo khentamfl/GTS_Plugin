@@ -466,6 +466,7 @@ namespace Gts {
 		tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
 		if (tick.ShouldRunFrame()) {
 			for (auto otherActor: find_actors()) {
+				float scale = std::clamp(get_visual_scale(giant), 0.10, 6.0);
 				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
 				if (Ref) {
 					log::info("Ref is true");
@@ -473,12 +474,12 @@ namespace Gts {
 					NiPoint3 ObserverDist = otherActor->GetPosition();
 					NiPoint3 VictimDist = tiny->GetPosition();
 					float distance = (ObserverDist - VictimDist).Length();
-					if (IsTrue || distance < 1512) {
+					if (IsTrue || distance < 1024 * scale) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							StartCombat(giant, otherActor, true);
 							auto Faction = tiny->GetCrimeFaction();
 							auto CombatValue = giant->GetCrimeGoldValue(Faction);
-							if (CombatValue < 1000) {
+							if (giant->formID == 0x14 && CombatValue < 1000) {
 								giant->ModCrimeGoldValue(Faction, true, 1000);
 							}
 							log::info("Mod Crime Value True");

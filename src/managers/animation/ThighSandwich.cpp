@@ -138,6 +138,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		for (auto tiny: sandwichdata.GetActors()) {
 			AllowToBeCrushed(tiny, false);
+			ReportCrime(&data.giant, tiny);
 		}
 		sandwichdata.EnableSuffocate(false);
 	}
