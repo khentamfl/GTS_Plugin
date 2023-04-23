@@ -75,7 +75,7 @@ namespace Gts {
 		return "ThighSandwichController";
 	}
 
-	void SandwichData::MoveActors(bool move) {
+	void SandwichingData::MoveActors(bool move) {
 		this->MoveTinies = move;
 	}
 
@@ -119,6 +119,7 @@ namespace Gts {
 
 	void SandwichingData::Update() {
 		auto giant = this->giant.get().get();
+		bool move = this->MoveTinies;
 		if (!giant) {
 			return;
 		}
@@ -132,7 +133,7 @@ namespace Gts {
 		this->UpdateRune(giant);
 
 		for (auto& [key, tinyref]: this->tinies) {
-			if (!this->MoveActors) {
+			if (!move) {
 				return;
 			}
 			auto tiny = tinyref.get().get();
