@@ -477,18 +477,18 @@ namespace Gts {
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 10.0f);
 				if (sizedifference >= 2.5 && !tiny->IsInCombat()) {
-					NiPoint3 GiantDist = tiny->GetPosition();
+					NiPoint3 GiantDist = giant->GetPosition();
 					NiPoint3 ObserverDist = tiny->GetPosition();
-					float distance = (ObserverDist - GiantDist).Length();
+					float distance = (GiantDist - ObserverDist).Length();
 					log::info("Distance between {} and {} is {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance);
-					if (distance <= 128.0 * sizedifference) {
+					if (distance <= 224.0 * sizedifference) {
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
 						if (TinyRef) {
 							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
 							if (GiantRef) {
 								bool SeeingOther;
 								bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
-								if (IsTrue || distance < 64 * sizedifference) {
+								if (IsTrue || distance < 128 * sizedifference) {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
 										tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 0.0, 265.0);
