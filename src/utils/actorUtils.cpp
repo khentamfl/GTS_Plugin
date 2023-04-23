@@ -478,14 +478,14 @@ namespace Gts {
 
 	void ScareActors(Actor* giant) {
 		Profilers::Start("ActorUtils: ScareActors");
-		log::info("Original Giant is {}", giant->GetDisplayFullName());
+		//log::info("Original Giant is {}", giant->GetDisplayFullName());
 		for (auto tiny: find_actors()) {
 			if (tiny != giant && tiny->formID != 0x14 && !IsTeammate(tiny)) {
 				 if (tiny->IsDead()) {
-					log::info("{} is dead", tiny->GetDisplayFullName());
+					//log::info("{} is dead", tiny->GetDisplayFullName());
 					return;
 				}
-				log::info("Giant is {}", giant->GetDisplayFullName());
+				//log::info("Giant is {}", giant->GetDisplayFullName());
 				float random = GetRandomBoost();
 				static Timer runtimer = Timer(1.0);
 				float GiantScale = get_visual_scale(giant);
@@ -493,14 +493,14 @@ namespace Gts {
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 12.0f);
 				float distancecheck = 226.0 * GetMovementModifier(giant);
 				if (sizedifference >= 2.5) {
-					log::info("Size Difference of {} is > than x2.5", giant->GetDisplayFullName());
+					//log::info("Size Difference of {} is > than x2.5", giant->GetDisplayFullName());
 					NiPoint3 GiantDist = giant->GetPosition();
 					NiPoint3 ObserverDist = tiny->GetPosition();
 					float distance = (GiantDist - ObserverDist).Length();
-					log::info("Distance between {} and {}, distance: {}, check: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance, distancecheck);
+					//log::info("Distance between {} and {}, distance: {}, check: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance, distancecheck);
 
 					if (distance <= distancecheck * sizedifference) {
-						log::info("Distance of {} < Check, applying Flee", giant->GetDisplayFullName());
+						//log::info("Distance of {} < Check, applying Flee", giant->GetDisplayFullName());
 						auto combat = tiny->GetActorRuntimeData().combatController;
 						tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
@@ -508,20 +508,20 @@ namespace Gts {
 						if (TinyRef) {
 							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
 							if (GiantRef) {
-								log::info("GiantRef {} true", giant->GetDisplayFullName());
+								//log::info("GiantRef {} true", giant->GetDisplayFullName());
 								bool SeeingOther;
 								bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
 								if (IsTrue || distance < (distancecheck/1.5) * sizedifference) {
-									log::info("Distance True");
+									//log::info("Distance True");
 									auto cell = tiny->GetParentCell();
 									if (cell) {
 										if (runtimer.ShouldRunFrame()) {
 											if (!combat) {
-												log::info("Combat false, applying Flee");
+												//log::info("Combat false, applying Flee");
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0);
 											} else if (combat && GetRandomBoost() <= 0.025 * (sizedifference - 2.0)) {
 												std::vector<Actor*> FearList = {};
-												log::info("Combat True, applying Flee");
+												//log::info("Combat True, applying Flee");
 												FearList.push_back(tiny);
 												if (!FearList.empty()) {
 													int idx = rand() % FearList.size();
