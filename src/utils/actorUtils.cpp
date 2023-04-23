@@ -480,11 +480,8 @@ namespace Gts {
 		Profilers::Start("ActorUtils: ScareActors");
 		log::info("Original Giant is {}", giant->GetDisplayFullName());
 		for (auto tiny: find_actors()) {
-			if (tiny != giant && tiny->formID != 0x14) {
-				if (IsTeammate(tiny)) {
-					log::info("{} is Teammate", tiny->GetDisplayFullName());
-					return;
-				} if (tiny->IsDead()) {
+			if (tiny != giant && tiny->formID != 0x14 && !IsTeammate(tiny)) {
+				 if (tiny->IsDead()) {
 					log::info("{} is dead", tiny->GetDisplayFullName());
 					return;
 				}
@@ -500,6 +497,7 @@ namespace Gts {
 					NiPoint3 GiantDist = giant->GetPosition();
 					NiPoint3 ObserverDist = tiny->GetPosition();
 					float distance = (GiantDist - ObserverDist).Length();
+					log::info("Distance between {} and {}, distance: {}, check: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance, distancecheck);
 
 					if (distance <= distancecheck * sizedifference) {
 						log::info("Distance of {} < Check, applying Flee", giant->GetDisplayFullName());
