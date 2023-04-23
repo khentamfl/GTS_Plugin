@@ -519,7 +519,7 @@ namespace Gts {
 											if (!combat) {
 												//log::info("Combat false, applying Flee");
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0);
-											} else if (combat && GetRandomBoost() <= 0.025 * (sizedifference - 2.0)) {
+											} else if (combat && GetRandomBoost() <= 0.040 * (sizedifference)) {
 												std::vector<Actor*> FearList = {};
 												//log::info("Combat True, applying Flee");
 												FearList.push_back(tiny);
