@@ -114,7 +114,7 @@ namespace {
 
 	// Rotate spine to look at an actor either leaning back or looking down
 	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
-		const float REDUCTION_FACTOR = 0.50;
+		const float REDUCTION_FACTOR = 0.66;
 		const float PI = 3.14159;
 		bool Collision_Installed = false; //Used to detect 'Precision' mod
 		float Collision_PitchMult = 0.0;
@@ -141,15 +141,15 @@ namespace {
 				directionToLook = directionToLook * (1/directionToLook.Length());
 				//log::info("  - Norm(directionToLook): {}", Vector2Str(directionToLook));
 				NiPoint3 upDirection = NiPoint3(0.0, 0.0, 1.0);
-				//auto sinAngle = directionToLook.Dot(upDirection);
-				log::info("  - cosAngle: {}", sinAngle);
-				//auto angleFromUp = fabs(acos(sinAngle) * 180.0 / PI);
-				log::info("  - angleFromUp: {}", angleFromUp);
-				//float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
-				log::info("  - angleFromForward: {}", angleFromForward);
+				auto sinAngle = directionToLook.Dot(upDirection);
+				//log::info("  - cosAngle: {}", sinAngle);
+				auto angleFromUp = fabs(acos(sinAngle) * 180.0 / PI);
+				//log::info("  - angleFromUp: {}", angleFromUp);
+				float angleFromForward = -(angleFromUp - 90.0) * REDUCTION_FACTOR;
+				//log::info("  - angleFromForward: {}", angleFromForward);
 
 				finalAngle = std::clamp(angleFromForward * REDUCTION_FACTOR, -60.f, 60.f);
-				log::info("  - finalAngle: {}", finalAngle);
+				//log::info("  - finalAngle: {}", finalAngle);
 			}
 		} else {
 			// Not in dialog
