@@ -48,7 +48,7 @@ find_path(ARTICUNO_INCLUDE_DIRS "articuno/access.h")
 find_package(glm CONFIG REQUIRED)
 find_package(toml11 CONFIG REQUIRED)
 
-add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
+add_commonlibsse_plugin(${PROJECT_NAME} DECLARATIVE SOURCES ${headers} ${sources})
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
 
 target_include_directories(${PROJECT_NAME}

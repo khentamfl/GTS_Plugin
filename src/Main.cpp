@@ -88,113 +88,87 @@ namespace {
 	 * message, and some messages have no data (<code>dataLen</code> will be zero).
 	 * </p>
 	 */
-	void InitializeMessaging()
-	{
-		if (!GetMessagingInterface()->RegisterListener([](MessagingInterface::Message *message) {
-			switch (message->type)
-			{
-					// Skyrim lifecycle events.
-					case MessagingInterface::kPostLoad: // Called after all plugins have finished running SKSEPlugin_Load.
-					// It is now safe to do multithreaded operations, or operations against other plugins.
-					case MessagingInterface::kPostPostLoad: // Called after all kPostLoad message handlers have run.
-						break;
-					case MessagingInterface::kInputLoaded: // Called when all game data has been found.
-						break;
-					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
-						// It is now safe to access form data.
-						Cprint("[GTSPlugin.dll]: [ Giantess Mod v 1.78 was succesfully initialized. Waiting for New Game/Save Load. ]");
-						EventDispatcher::DoDataReady();
-						break;
-					// Skyrim game events.
-					case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
-						// Data will be a boolean indicating whether the load was successful.
-						{
-							Plugin::SetInGame(true);
-							Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
-						}
-						break;
-					case MessagingInterface::kNewGame: // Player starts a new game from main menu.
-						{
-							Plugin::SetInGame(true);
-							EventDispatcher::DoReset();
-							Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
-						}
-						break;
-					case MessagingInterface::kPreLoadGame: // Player selected a game to load, but it hasn't loaded yet.
-						// Data will be the name of the loaded save.
-						{
-							Plugin::SetInGame(false);
-							EventDispatcher::DoReset();
-						}
-						break;
-					case MessagingInterface::kSaveGame: // The player has saved a game.
-					// Data will be the save name.
-					case MessagingInterface::kDeleteGame: // The player deleted a saved game from within the load menu.
-						break;
-			}
-		})) {
-			stl::report_and_fail("Unable to register message listener.");
+	OnPluginMessage("SKSE", MessagingInterface::kDataLoaded, 15, msg) {
+		// It is now safe to access form data.
+		Cprint("[GTSPlugin.dll]: [ Giantess Mod v 1.78 was succesfully initialized. Waiting for New Game/Save Load. ]");
+		EventDispatcher::DoDataReady();
+	}
+
+	OnPluginMessage("SKSE", MessagingInterface::kPostLoadGame, 15, msg) {
+		// Player's selected save game has finished loading.
+		// Data will be a boolean indicating whether the load was successful.
+		Plugin::SetInGame(true);
+		Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
+	}
+	OnPluginMessage("SKSE", MessagingInterface::kNewGame, 15, msg) {
+		// Player starts a new game from main menu.
+		Plugin::SetInGame(true);
+		EventDispatcher::DoReset();
+		Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
+	}
+	OnPluginMessage("SKSE", MessagingInterface::kPreLoadGame, 15, msg) {
+		// Player selected a game to load, but it hasn't loaded yet.
+		// Data will be the name of the loaded save.
+		Plugin::SetInGame(false);
+		EventDispatcher::DoReset();
+	}
+
+	void InitializeSerialization() {
+		log::trace("Initializing cosave serialization...");
+		auto* serde = GetSerializationInterface();
+		serde->SetUniqueID(_byteswap_ulong('GTSP'));
+		serde->SetSaveCallback(Persistent::OnGameSaved);
+		serde->SetRevertCallback(Persistent::OnRevert);
+		serde->SetLoadCallback(Persistent::OnGameLoaded);
+		log::info("Cosave serialization initialized.");
+	}
+
+	void InitializePapyrus() {
+		log::trace("Initializing Papyrus binding...");
+		if (GetPapyrusInterface()->Register(Gts::register_papyrus)) {
+			log::info("Papyrus functions bound.");
+		} else {
+			stl::report_and_fail("Failure to register Papyrus bindings.");
 		}
 	}
-}
 
-void InitializeSerialization() {
-	log::trace("Initializing cosave serialization...");
-	auto* serde = GetSerializationInterface();
-	serde->SetUniqueID(_byteswap_ulong('GTSP'));
-	serde->SetSaveCallback(Persistent::OnGameSaved);
-	serde->SetRevertCallback(Persistent::OnRevert);
-	serde->SetLoadCallback(Persistent::OnGameLoaded);
-	log::info("Cosave serialization initialized.");
-}
+	void InitializeEventSystem() {
+		EventDispatcher::AddListener(&DebugOverlayMenu::GetSingleton());
+		EventDispatcher::AddListener(&Runtime::GetSingleton()); // Stores spells, globals and other important data
+		EventDispatcher::AddListener(&Persistent::GetSingleton());
+		EventDispatcher::AddListener(&Transient::GetSingleton());
 
-void InitializePapyrus() {
-	log::trace("Initializing Papyrus binding...");
-	if (GetPapyrusInterface()->Register(Gts::register_papyrus)) {
-		log::info("Papyrus functions bound.");
-	} else {
-		stl::report_and_fail("Failure to register Papyrus bindings.");
+		EventDispatcher::AddListener(&SpringManager::GetSingleton());
+		log::info("Adding Default Listeners");
+		RegisterManagers();
 	}
-}
 
-void InitializeEventSystem() {
-	EventDispatcher::AddListener(&DebugOverlayMenu::GetSingleton());
-	EventDispatcher::AddListener(&Runtime::GetSingleton()); // Stores spells, globals and other important data
-	EventDispatcher::AddListener(&Persistent::GetSingleton());
-	EventDispatcher::AddListener(&Transient::GetSingleton());
+	/**
+	 * This if the main callback for initializing your SKSE plugin, called just before Skyrim runs its main function.
+	 *
+	 * <p>
+	 * This is your main entry point to your plugin, where you should initialize everything you need. Many things can't be
+	 * done yet here, since Skyrim has not initialized and the Windows loader lock is not released (so don't do any
+	 * multithreading). But you can register to listen for messages for later stages of Skyrim startup to perform such
+	 * tasks.
+	 * </p>
+	 */
+	OnSKSEPluginLoad(-10)
+	{
+		InitializeLogging();
+		auto *plugin  = PluginDeclaration::GetSingleton();
+		auto version = plugin->GetVersion();
 
-	EventDispatcher::AddListener(&SpringManager::GetSingleton());
-	log::info("Adding Default Listeners");
-	RegisterManagers();
-}
-
-/**
- * This if the main callback for initializing your SKSE plugin, called just before Skyrim runs its main function.
- *
- * <p>
- * This is your main entry point to your plugin, where you should initialize everything you need. Many things can't be
- * done yet here, since Skyrim has not initialized and the Windows loader lock is not released (so don't do any
- * multithreading). But you can register to listen for messages for later stages of Skyrim startup to perform such
- * tasks.
- * </p>
- */
-SKSEPluginLoad(const LoadInterface * skse)
-{
-	InitializeLogging();
-
-	auto *plugin  = PluginDeclaration::GetSingleton();
-	auto version = plugin->GetVersion();
-
-	log::info("{} {} is loading...", plugin->GetName(), version);
+		log::info("{} {} is loading...", plugin->GetName(), version);
+	}
 
 
-	Init(skse);
-	InitializeMessaging();
-	Hooks::Install();
-	InitializePapyrus();
-	InitializeSerialization();
-	InitializeEventSystem();
+	OnSKSEPluginLoad(10) {
+		Hooks::Install();
+		InitializePapyrus();
+		InitializeSerialization();
+		InitializeEventSystem();
 
-	log::info("{} has finished loading.", plugin->GetName());
-	return(true);
+		log::info("{} has finished loading.", plugin->GetName());
+	}
 }
