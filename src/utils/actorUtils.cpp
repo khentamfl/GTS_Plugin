@@ -487,7 +487,7 @@ namespace Gts {
 							if (GiantRef) {
 								bool SeeingOther;
 								bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
-								if (IsTrue || Distance < 128 * sizedifference) {
+								if (IsTrue || distance < 128 * sizedifference) {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
 										tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 265.0, 765.0);
