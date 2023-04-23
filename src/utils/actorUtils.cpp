@@ -476,22 +476,23 @@ namespace Gts {
 				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 10.0f);
-				NiPoint3 GiantDist = tiny->GetPosition();
-				NiPoint3 ObserverDist = tiny->GetPosition();
-				float distance = (GiantDist - ObserverDist).Length();
-				if (distance <= 256.0 * sizedifference) {
-					if (sizedifference >= 2.5 && !tiny->IsInCombat()) {
-						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
-						if (TinyRef) {
-							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
-							if (GiantRef) {
-								bool SeeingOther;
-								bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
-								if (IsTrue || distance < 128 * sizedifference) {
-									auto cell = tiny->GetParentCell();
-									if (cell) {
-										tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 265.0, 765.0);
-									} 
+				if (sizedifference >= 2.5 && !tiny->IsInCombat()) {
+					NiPoint3 GiantDist = tiny->GetPosition();
+					NiPoint3 ObserverDist = tiny->GetPosition();
+					float distance = (GiantDist - ObserverDist).Length();
+					if (distance <= 128.0 * sizedifference) {
+							auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
+							if (TinyRef) {
+								auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
+								if (GiantRef) {
+									bool SeeingOther;
+									bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
+									if (IsTrue || distance < 64 * sizedifference) {
+										auto cell = tiny->GetParentCell();
+										if (cell) {
+											tiny->InitiateFlee(GiantRef, false, false, false, cell, TinyRef, 265.0, 765.0);
+										} 
+									}
 								}
 							}
 						}
