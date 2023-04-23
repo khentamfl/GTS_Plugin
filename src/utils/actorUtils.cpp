@@ -84,7 +84,7 @@ namespace Gts {
 			}
 			if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
 				//CallFunctionOn(tiny, "Actor", "StartCombat", giant);
-				Runtime::CastSpell(giant, tiny, "ForceCombatSpell")
+				Runtime::CastSpell(giant, tiny, "ForceCombatSpell");
 			}
 		}
 	}
