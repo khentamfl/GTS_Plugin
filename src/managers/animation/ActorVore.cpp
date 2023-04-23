@@ -216,7 +216,7 @@ namespace {
 		auto firstTiny = VoreData.GetVories()[0];
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
-			ReportCrime(&data.giant, tiny, 1000.0);
+			ReportCrime(&data.giant, tiny, 1000.0, true);
 		}
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			ManageCamera(giant, false, 4.0);

@@ -243,6 +243,7 @@ namespace Gts {
 				FixNPCHeadtracking(actor);
 				//RotateCaster(actor, this->data.at(actor->formID));
 			} else if (actor->formID == 0x14) {
+				ScareActors(actor);
 				//FixPlayerHeadtracking(actor);
 			}
 		}

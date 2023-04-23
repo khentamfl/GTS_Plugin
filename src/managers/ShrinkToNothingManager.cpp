@@ -61,7 +61,7 @@ namespace Gts {
 					}
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny), "BloodExplosion");
 
-					ReportCrime(giant, tiny, 1000.0);
+					ReportCrime(giant, tiny, 1000.0, true);
 
 					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 80.0);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {

@@ -194,7 +194,7 @@ namespace {
 		Rumble::Once("ThighImpact", &data.giant, 0.4, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 1.0, 1.0);
-			ReportCrime(&data.giant, tiny, 20.0);
+			ReportCrime(&data.giant, tiny, 20.0, false);
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
@@ -207,7 +207,7 @@ namespace {
 		Rumble::Once("ThighImpact", &data.giant, 0.75, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 2.2, 0.75);
-			ReportCrime(&data.giant, tiny, 75.0);
+			ReportCrime(&data.giant, tiny, 75.0, false);
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}

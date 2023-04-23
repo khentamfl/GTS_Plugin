@@ -459,8 +459,38 @@ namespace Gts {
 		receiver->NotifyAnimationGraph("staggerStart");
 	}
 
-	void ReportCrime(Actor* giant, Actor* tiny, float value) {
-		Profilers::Start("AccurateDamage: AttackTest");
+	void ScareActors(Actor* giant) {
+		Profilers::Start("ActorUtils: ScareActors");
+		for (auto tiny: find_actors()) {
+			if (tiny != giant) {
+				float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+				NiPoint3 GiantDist = tiny->GetPosition();
+				NiPoint3 ObserverDist = tiny->GetPosition();
+				float distance = (ObserverDist - VictimDist).Length();
+				if (distance >= 1024.0) {
+					if (sizedifference >= 2.0 && !tiny->IsInCombat()) {
+						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
+						if (TinyRef) {
+							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
+							if (GiantRef) {
+								bool IsTrue = tiny->HasLineOfSight(Ref, SeeingOther);
+								if (IsTrue) {
+									auto cell = tiny->GetParentCell();
+									if (cell) {
+										tiny->InitiateFlee(TinyRef, true, true, false, cell, GiantRef, 0.0, 765.0);
+									} 
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		Profilers::Stop("ActorUtils: ScareActors");
+	}
+
+	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat) {
+		Profilers::Start("ActorUtils: ReportCrime");
 		static Timer tick = Timer(0.10);
 		bool SeeingOther;
 		tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
@@ -476,7 +506,9 @@ namespace Gts {
 					float distance = (ObserverDist - VictimDist).Length();
 					if (IsTrue || distance < 512 * scale) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
-							StartCombat(giant, otherActor, true);
+							if (combat) {
+								StartCombat(giant, otherActor, true);
+							}
 							auto Faction = tiny->GetCrimeFaction();
 							auto CombatValue = giant->GetCrimeGoldValue(Faction);
 							if (giant->formID == 0x14 && CombatValue < 1000) {
@@ -488,7 +520,7 @@ namespace Gts {
 				}
 			}
 		}
-		Profilers::Stop("AccurateDamage: AttackTest");
+		Profilers::Stop("ActorUtils: ReportCrime");
 	}
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {
