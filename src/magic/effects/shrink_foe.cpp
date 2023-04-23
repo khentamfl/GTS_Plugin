@@ -66,7 +66,7 @@ namespace Gts {
 		if (this->power >= 18.00) {
 			auto actor_data = Persist.GetData(target);
 			actor_data->half_life = 0.25; // Faster shrink, less smooth.
-			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 6.0f);
+			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 3.0f);
 		} else if (this->power >= 10.0) {
 			auto actor_data = Persist.GetData(target);
 			actor_data->half_life = 0.50; // Faster shrink, less smooth.
