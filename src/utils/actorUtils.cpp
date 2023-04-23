@@ -482,7 +482,7 @@ namespace Gts {
 					float distance = (GiantDist - ObserverDist).Length();
 					log::info("Distance between {} and {} is {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance);
 					if (distance <= 224.0 * sizedifference) {
-						auto combat = tiny->GetActorRuntimeData().combatController->state;
+						auto combat = tiny->GetActorRuntimeData().combatController;
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
 						if (TinyRef) {
 							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
@@ -493,7 +493,10 @@ namespace Gts {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
 										tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 0.0, 265.0);
-										combat->isFleeing = true;
+										if (combat) {
+											combat->startedCombat = true;
+											combat->state->isFleeing = true;
+										}
 										tiny->DetachCharController();
 									} 
 								}
