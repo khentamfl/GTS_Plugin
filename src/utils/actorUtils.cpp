@@ -480,6 +480,7 @@ namespace Gts {
 					NiPoint3 GiantDist = tiny->GetPosition();
 					NiPoint3 ObserverDist = tiny->GetPosition();
 					float distance = (GiantDist - ObserverDist).Length();
+					log::info("Distance between {} and {} is {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance);
 					if (distance <= 128.0 * sizedifference) {
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
 						if (TinyRef) {
@@ -490,7 +491,7 @@ namespace Gts {
 								if (IsTrue || distance < 64 * sizedifference) {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
-										tiny->InitiateFlee(GiantRef, false, false, false, cell, TinyRef, 265.0, 765.0);
+										tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 0.0, 265.0);
 									} 
 								}
 							}
