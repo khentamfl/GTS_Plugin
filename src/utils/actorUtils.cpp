@@ -544,7 +544,7 @@ namespace Gts {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							auto Faction = tiny->GetCrimeFaction();
 							auto CombatValue = giant->GetCrimeGoldValue(Faction);
-							tiny->currentCombatTarget = giant->CreateRefHandle();
+							tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 							tiny->UpdateCombatControllerSettings();
 							if (combat && otherActor->GetCrimeFaction() == Faction) {
 								StartCombat(giant, otherActor, true);
