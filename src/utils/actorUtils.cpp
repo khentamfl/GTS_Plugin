@@ -480,7 +480,7 @@ namespace Gts {
 		Profilers::Start("ActorUtils: ScareActors");
 		for (auto tiny: find_actors()) {
 			if (tiny != giant) {
-				if (IsTeammate(tiny) || tiny->formID == 0x14) {
+				if (IsTeammate(tiny) || tiny->formID == 0x14 || tiny->IsDead()) {
 					return;
 				}
 				float random = GetRandomBoost();

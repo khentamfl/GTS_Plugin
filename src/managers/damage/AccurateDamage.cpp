@@ -509,6 +509,8 @@ namespace Gts {
 
 		if (GetAV(tiny, ActorValue::kHealth) <= (result)) {
 			tiny->KillImpl(giant, 0, true, true);
+			tiny->RemoveCharController();
+			tiny->DetachCharController();
 			ReportCrime(giant, tiny, 1000, true);
 			if (multiplier >= 8.0) {
 				if (CrushManager::CanCrush(giant, tiny)) {
