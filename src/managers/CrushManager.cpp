@@ -182,7 +182,7 @@ namespace Gts {
 					}
 
 					//ReportCrime(giant, tiny, 1000.0, true);
-					StartCombat(giant, tiny);
+					StartCombat(giant, tiny, false);
 
 					ScareChance(giant);
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
