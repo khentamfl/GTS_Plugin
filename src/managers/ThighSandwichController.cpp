@@ -76,7 +76,7 @@ namespace Gts {
 	}
 
 	void SandwichData::MoveActors(bool move) {
-		this->MoveActors = move;
+		this->MoveTinies = move;
 	}
 
 	void SandwichingData::ManageAi(Actor* giant) {
