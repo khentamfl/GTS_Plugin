@@ -78,6 +78,9 @@ namespace Gts {
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
 		static Timer tick = Timer(0.25);
+		if (tick.ShouldRun() {
+			Runtime::CastSpell(giant, tiny, "ForceCombatSpell");
+		})
 		if (tick.ShouldRunFrame() || Forced == true) {
 			if (tiny->IsInCombat() || tiny->IsDead()) {
 				return;
