@@ -60,7 +60,7 @@ namespace Gts {
 		EventDispatcher::AddListener(&EmotionManager::GetSingleton()); // Manages Emotions
 
 		EventDispatcher::AddListener(&AiManager::GetSingleton()); // Rough AI controller for GTS-actions
-    EventDispatcher::AddListener(&Headtracking::GetSingleton()); // Headtracking fixes
+		EventDispatcher::AddListener(&Headtracking::GetSingleton()); // Headtracking fixes
 
 
 		//EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions

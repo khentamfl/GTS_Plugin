@@ -98,8 +98,7 @@ namespace {
 		if (sizedifference >= 1.49) {
 			PushActorAway(giant, tiny, power/12); // Always push
 			return;
-		}
-		else if (ragdollchance == 30.0) {
+		} else if (ragdollchance == 30.0) {
 			PushActorAway(giant, tiny, power/12); // Push instead
 			return;
 		}
@@ -504,8 +503,8 @@ namespace Gts {
 		}
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
-		
-		
+
+
 		StartCombat(giant, tiny, false);
 
 		if (multiplier >= 8.0 && (GetAV(tiny, ActorValue::kHealth) <= (result))) {

@@ -15,22 +15,22 @@ using namespace RE;
 
 namespace Gts {
 
-  struct HeadtrackingData {
-    Spring spineSmooth = Spring(0.0, 0.70);
-    Spring casterSmooth = Spring(0.0, 1.0);
-  };
+	struct HeadtrackingData {
+		Spring spineSmooth = Spring(0.0, 0.70);
+		Spring casterSmooth = Spring(0.0, 1.0);
+	};
 
 	class Headtracking : public EventListener  {
 		public:
 			[[nodiscard]] static Headtracking& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-      virtual void Update() override;
+			virtual void Update() override;
 
-      void SpineUpdate(Actor* me);
+			void SpineUpdate(Actor* me);
 			void FixNPCHeadtracking(Actor* me);
-      void FixPlayerHeadtracking(Actor* me);
-    protected:
-      std::unordered_map<FormID, HeadtrackingData> data;
+			void FixPlayerHeadtracking(Actor* me);
+		protected:
+			std::unordered_map<FormID, HeadtrackingData> data;
 	};
 }

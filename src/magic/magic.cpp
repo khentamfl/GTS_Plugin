@@ -226,7 +226,7 @@ namespace Gts {
 		RegisterMagic<GrowthPotion>("EffectGrowthPotion");
 		RegisterMagic<ShrinkPotion>("SizeDrainPotion");
 		RegisterMagic<Shrink_Poison>("ShrinkPoison");
-		// 
+		//
 		RegisterMagic<CrushGrowth>("CrushGrowthMGEF");
 		RegisterMagic<TrackSize>("TrackSize");
 		RegisterMagic<ShrinkFoe>("ShrinkEnemy");
@@ -234,7 +234,7 @@ namespace Gts {
 		RegisterMagic<ShrinkFoe>("ShrinkEnemyAOEMast");
 		RegisterMagic<ShrinkFoe>("ShrinkBolt");
 		RegisterMagic<ShrinkFoe>("ShrinkStorm");
-		
+
 
 		RegisterMagic<Gigantism>("EnchGigantism");
 

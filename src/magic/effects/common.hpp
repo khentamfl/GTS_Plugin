@@ -295,7 +295,7 @@ namespace Gts {
 
 			if (!Cache) {
 				return false;
-			} 
+			}
 
 			AdjustSizeReserve(caster, target_scale/25);
 

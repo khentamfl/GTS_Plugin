@@ -239,7 +239,7 @@ namespace Gts {
 		if (node) {
 			ApplyShakeAtPoint(caster, modifier, node->world.translate, 1.0);
 		}
-	} 
+	}
 
 	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view nodesv, float radius) {
 		auto node = find_node(caster, nodesv);

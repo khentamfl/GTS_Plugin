@@ -15,7 +15,7 @@ namespace Gts {
 	}
 
 	void Shrink_Poison::OnStart() {
-        auto caster = GetCaster();
+		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		}
@@ -36,21 +36,21 @@ namespace Gts {
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
-		} 
-        auto target = GetTarget();
-        if (!target) {
-            return;
-        }
+		}
+		auto target = GetTarget();
+		if (!target) {
+			return;
+		}
 
 		float AlchemyLevel = clamp(1.0, 2.0, caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
 		Rumble::Once("Shrink_Poison", target, 0.4, 0.05);
 		float Power = BASE_POWER * get_visual_scale(target) * AlchemyLevel;
 
 		ShrinkActor(target, Power, 0.0);
-        if (get_visual_scale(target) < 0.25 && ShrinkToNothingManager::CanShrink(caster, target)) {
+		if (get_visual_scale(target) < 0.25 && ShrinkToNothingManager::CanShrink(caster, target)) {
 			PrintDeathSource(caster, target, "Explode");
-            ShrinkToNothingManager::Shrink(caster, target);
-        }
+			ShrinkToNothingManager::Shrink(caster, target);
+		}
 	}
 
 	void Shrink_Poison::OnFinish() {

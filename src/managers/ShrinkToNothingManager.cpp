@@ -42,7 +42,7 @@ namespace Gts {
 					if (!tiny->IsDead()) {
 						tiny->KillImpl(giant, 0, true, false);
 					}
-					
+
 					// Fully shrunk
 					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 						Actor* into = giant;
@@ -60,7 +60,7 @@ namespace Gts {
 						SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
 					}
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny), "BloodExplosion");
-					
+
 					ReportCrime(giant, tiny);
 
 					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 80.0);
@@ -91,7 +91,7 @@ namespace Gts {
 			}
 		}
 	}
-	
+
 
 	void ShrinkToNothingManager::Reset() {
 		this->data.clear();
