@@ -485,12 +485,12 @@ namespace Gts {
 				}
 				float random = GetRandomBoost();
 				static Timer runtimer = Timer(1.0);
-				float TinyScale = get_visual_scale(tiny);
 				float GiantScale = get_visual_scale(giant);
+				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 12.0f);
 				float distancecheck = 226.0 * GetMovementModifier(giant);
 				if (sizedifference >= 2.5) {
-
+					log::info("Size Difference of {} is > than x2.5", giant->GetDisplayFullName());
 					NiPoint3 GiantDist = giant->GetPosition();
 					NiPoint3 ObserverDist = tiny->GetPosition();
 					float distance = (GiantDist - ObserverDist).Length();
@@ -525,7 +525,7 @@ namespace Gts {
 													if (FearReceiver) {
 														auto ReceiverRef = skyrim_cast<TESObjectREFR*>(FearReceiver);
 														if (ReceiverRef) {
-															tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0);
+															FearReceiver->InitiateFlee(ReceiverRef, true, true, true, cell, ReceiverRef, 100.0, 465.0);
 															combat->startedCombat = true;
 															combat->state->isFleeing = true;
 															FearList = {};

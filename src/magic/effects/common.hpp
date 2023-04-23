@@ -151,7 +151,6 @@ namespace Gts {
 
 	inline float CalcPower(Actor* actor, float scale_factor, float bonus) {
 		float progression_multiplier = Persistent::GetSingleton().progression_multiplier;
-		log::info("Progression Multiplier: {}", progression_multiplier);
 		// y = mx +c
 		// power = scale_factor * scale + bonus
 		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();

@@ -114,7 +114,7 @@ namespace {
 
 	// Rotate spine to look at an actor either leaning back or looking down
 	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
-		const float REDUCTION_FACTOR = 0.50;
+		const float REDUCTION_FACTOR = 0.33;
 		const float PI = 3.14159;
 		bool Collision_Installed = false; //Used to detect 'Precision' mod
 		float Collision_PitchMult = 0.0;
