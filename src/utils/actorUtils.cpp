@@ -554,27 +554,27 @@ namespace Gts {
 		Profilers::Start("ActorUtils: ReportCrime");
 		static Timer tick = Timer(0.10);
 		bool SeeingOther;
-		tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
 		if (tick.ShouldRunFrame()) {
 			for (auto otherActor: find_actors()) {
-				float scale = std::clamp(get_visual_scale(giant), 0.10f, 8.0f);
+				float scale = std::clamp(get_visual_scale(giant), 0.10f, 16.0f);
 				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
 				if (Ref) {
 					bool IsTrue = otherActor->HasLineOfSight(Ref, SeeingOther);
 					NiPoint3 ObserverDist = otherActor->GetPosition();
 					NiPoint3 VictimDist = tiny->GetPosition();
 					float distance = (ObserverDist - VictimDist).Length();
-					if (IsTrue || distance < 512 * scale) {
+					if (IsTrue || distance < 724 * scale) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							auto Faction = tiny->GetCrimeFaction();
 							auto CombatValue = giant->GetCrimeGoldValue(Faction);
-							tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
-							tiny->UpdateCombatControllerSettings();
-							if (combat && otherActor->GetCrimeFaction() == Faction) {
+							if (combat && otherActor->GetCrimeFaction() == Faction && otherActor->IsFactionInCrimeGroup(Faction)) {
 								StartCombat(giant, otherActor, true);
-							}
-							if (giant->formID == 0x14 && CombatValue < 1000) {
-								giant->ModCrimeGoldValue(Faction, true, value);
+								tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
+								tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
+								tiny->UpdateCombatControllerSettings();
+								if (giant->formID == 0x14 && CombatValue < 1000) {
+									giant->ModCrimeGoldValue(Faction, true, value);
+								}
 							}
 						}
 					}
