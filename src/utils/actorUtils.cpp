@@ -478,6 +478,7 @@ namespace Gts {
 
 	void ScareActors(Actor* giant) {
 		Profilers::Start("ActorUtils: ScareActors");
+		log::info("Original Giant is {}", giant->GetDisplayFullName());
 		for (auto tiny: find_actors()) {
 			if (tiny != giant) {
 				if (IsTeammate(tiny) || tiny->formID == 0x14 || tiny->IsDead()) {
