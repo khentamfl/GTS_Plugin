@@ -44,7 +44,8 @@ namespace Gts {
 
 		float AlchemyLevel = clamp(1.0, 2.0, caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
 		Rumble::Once("Shrink_Poison", target, 0.4, 0.05);
-		float Power = BASE_POWER * get_visual_scale(target) * AlchemyLevel;
+		float powercap = std::clamp(get_visual_scale(target), 0.50f, 1.10f);
+		float Power = BASE_POWER * powercap * AlchemyLevel;
 
 		ShrinkActor(target, Power, 0.0);
 		if (get_visual_scale(target) < 0.25 && ShrinkToNothingManager::CanShrink(caster, target)) {

@@ -79,7 +79,7 @@ namespace Gts {
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
 		static Timer tick = Timer(0.25);
 		if (tick.ShouldRunFrame() || Forced == true) {
-			if (tiny->IsInCombat()) {
+			if (tiny->IsInCombat() || tiny->IsDead()) {
 				return;
 			}
 			if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
@@ -542,11 +542,13 @@ namespace Gts {
 					log::info("Crime Distance between {} and {} is {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance);
 					if (IsTrue || distance < 512 * scale) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
-							if (combat) {
-								StartCombat(giant, otherActor, true);
-							}
 							auto Faction = tiny->GetCrimeFaction();
 							auto CombatValue = giant->GetCrimeGoldValue(Faction);
+							tiny->currentCombatTarget = giant->CreateRefHandle();
+							tiny->UpdateCombatControllerSettings();
+							if (combat && otherActor->GetCrimeFaction() == Faction) {
+								StartCombat(giant, otherActor, true);
+							}
 							if (giant->formID == 0x14 && CombatValue < 1000) {
 								giant->ModCrimeGoldValue(Faction, true, value);
 							}
