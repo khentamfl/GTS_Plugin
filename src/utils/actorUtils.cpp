@@ -466,7 +466,7 @@ namespace Gts {
 		tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
 		if (tick.ShouldRunFrame()) {
 			for (auto otherActor: find_actors()) {
-				float scale = std::clamp(get_visual_scale(giant), 0.10, 6.0);
+				float scale = std::clamp(get_visual_scale(giant), 0.10f, 6.0f);
 				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
 				if (Ref) {
 					log::info("Ref is true");
