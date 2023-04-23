@@ -239,6 +239,7 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			this->data.try_emplace(actor->formID);
 			if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+				ScareActors(actor);
 				SpineUpdate(actor);
 				FixNPCHeadtracking(actor);
 				//RotateCaster(actor, this->data.at(actor->formID));

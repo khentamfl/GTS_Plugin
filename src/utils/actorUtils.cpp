@@ -316,6 +316,13 @@ namespace Gts {
 		return GTSBusy;
 	}
 
+	bool IsTeammate(Actor* actor) {
+		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
+			return true;
+		}
+		return false;
+	}
+
 	void TrackFeet(Actor* giant, float number, bool enable) {
 		if (giant->formID == 0x14) {
 			if (AllowFeetTracking()) {
@@ -463,22 +470,27 @@ namespace Gts {
 		Profilers::Start("ActorUtils: ScareActors");
 		for (auto tiny: find_actors()) {
 			if (tiny != giant) {
-				float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+				if (IsTeammate(tiny)) {
+					return;
+				}
+				float GiantScale = get_visual_scale(giant);
+				float TinyScale = get_visual_scale(tiny);
+				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10, 10.0);
 				NiPoint3 GiantDist = tiny->GetPosition();
 				NiPoint3 ObserverDist = tiny->GetPosition();
 				float distance = (GiantDist - ObserverDist).Length();
-				if (distance <= 1024.0) {
-					if (sizedifference >= 2.0 && !tiny->IsInCombat()) {
+				if (distance <= 256.0 * sizedifference) {
+					if (sizedifference >= 2.5 && !tiny->IsInCombat()) {
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
 						if (TinyRef) {
 							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
 							if (GiantRef) {
 								bool SeeingOther;
 								bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
-								if (IsTrue) {
+								if (IsTrue || Distance < 128 * sizedifference) {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
-										tiny->InitiateFlee(TinyRef, true, true, false, cell, GiantRef, 0.0, 765.0);
+										tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 265.0, 765.0);
 									} 
 								}
 							}

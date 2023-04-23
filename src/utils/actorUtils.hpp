@@ -45,6 +45,8 @@ namespace Gts {
 	bool AllowDevourment();
 	bool AllowFeetTracking();
 	bool IsGtsBusy(Actor* actor);
+	bool IsTeammate(Actor* actor);
+	
 	void TrackFeet(Actor* giant, float number, bool enable);
 	void CallDevourment(Actor* giant, Actor* tiny);
 	void CallGainWeight(Actor* giant, float value);
