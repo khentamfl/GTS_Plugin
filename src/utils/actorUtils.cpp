@@ -483,34 +483,57 @@ namespace Gts {
 				if (IsTeammate(tiny) || tiny->formID == 0x14) {
 					return;
 				}
+				float random = GetRandomBoost();
 				static Timer runtimer = Timer(2.0);
-				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
+				float GiantScale = get_visual_scale(giant);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 10.0f);
 				float distancecheck = 226.0 * GetMovementModifier(giant);
 				if (sizedifference >= 2.5) {
+
 					NiPoint3 GiantDist = giant->GetPosition();
 					NiPoint3 ObserverDist = tiny->GetPosition();
 					float distance = (GiantDist - ObserverDist).Length();
+
 					if (distance <= distancecheck * sizedifference) {
+
 						auto combat = tiny->GetActorRuntimeData().combatController;
 						tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
+
 						if (TinyRef) {
 							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
 							if (GiantRef) {
 								bool SeeingOther;
 								bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
-								if (IsTrue || distance < (distancecheck/2) * sizedifference) {
+								if (IsTrue || distance < (distancecheck/1.5) * sizedifference) {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
 										if (runtimer.ShouldRunFrame()) {
-											tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 100.0, 465.0);
-										}
-										if (combat) {
-											combat->startedCombat = true;
-											combat->state->isFleeing = true;
-											log::info("Combat of {} is true", tiny->GetDisplayFullName());
+											if (!combat) {
+												tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 100.0, 465.0);
+												auto Group = tiny->GetCombatGroup();
+												if (Group) {
+													log::info("Combat group of {} is: {}", tiny->GetDisplayFullName(), tiny->GetCombatGroup());
+												}
+											} else if (combat && GetRandomBoost() <= 0.025 * (sizedifference - 2.0)) {
+												std::vector<Actor*> FearList = {};
+												FearList.push_back(tiny);
+												if (!AbleToVore.empty()) {
+													int idx = rand() % FearList.size();
+													Actor* FearReceiver = FearList[idx];
+													if (FearReceiver) {
+														auto ReceiverRef = skyrim_cast<TESObjectREFR*>(FearReceiver);
+														if (ReceiverRef) {
+															tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 100.0, 465.0);
+															combat->startedCombat = true;
+															combat->state->isFleeing = true;
+															log::info("Combat of {} is true, combat group: {}", FearReceiver->GetDisplayFullName(), FearReceiver->GetCombatGroup());
+															FearList = {};
+														}
+													}
+												}
+											}
 										}
 									} 
 								}
@@ -519,8 +542,8 @@ namespace Gts {
 					}
 				}
 			}
+			Profilers::Stop("ActorUtils: ScareActors");
 		}
-		Profilers::Stop("ActorUtils: ScareActors");
 	}
 		
 
