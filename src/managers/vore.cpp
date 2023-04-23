@@ -716,6 +716,9 @@ namespace Gts {
 			return false;
 		}
 		auto transient = Transient::GetSingleton().GetData(prey);
+		if (prey->IsDead()) {
+			return false;
+		}
 		if (transient) {
 			if (transient->can_be_vored == false) {
 				Notify("{} is already being eaten by someone else", prey->GetDisplayFullName());

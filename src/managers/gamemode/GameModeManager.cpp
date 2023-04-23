@@ -183,7 +183,7 @@ namespace Gts {
 		float BonusShrink = 2.5;
 		float bonus = 1.0;
 		if (BalanceMode >= 2.0) {
-			BonusShrink = (3.5 * (scale * 1.33));
+			BonusShrink = (3.5 * (scale * 1.25));
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {

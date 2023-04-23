@@ -78,11 +78,11 @@ namespace Gts {
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
 		static Timer tick = Timer(0.25);
-		if (tick.ShouldRunFrame() || Forced) {
+		if (tick.ShouldRunFrame() || Forced == true) {
 			if (tiny->IsInCombat()) {
 				return;
 			}
-			if (Forced || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
+			if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
 				CallFunctionOn(tiny, "Actor", "StartCombat", giant);
 			}
 		}
@@ -470,7 +470,10 @@ namespace Gts {
 				if (Ref) {
 					log::info("Ref is true");
 					bool IsTrue = otherActor->HasLineOfSight(Ref, SeeingOther);
-					if (IsTrue) {
+					NiPoint3 ObserverDist = otherActor->GetPosition();
+					NiPoint3 VictimDist = tiny->GetPosition();
+					float distance = (ObserverDist - VictimDist).Length();
+					if (IsTrue || distance < 1512) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							StartCombat(giant, otherActor, true);
 							auto Faction = tiny->GetCrimeFaction();
