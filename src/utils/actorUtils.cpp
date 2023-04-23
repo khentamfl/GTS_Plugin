@@ -481,18 +481,17 @@ namespace Gts {
 					NiPoint3 ObserverDist = tiny->GetPosition();
 					float distance = (GiantDist - ObserverDist).Length();
 					if (distance <= 128.0 * sizedifference) {
-							auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
-							if (TinyRef) {
-								auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
-								if (GiantRef) {
-									bool SeeingOther;
-									bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
-									if (IsTrue || distance < 64 * sizedifference) {
-										auto cell = tiny->GetParentCell();
-										if (cell) {
-											tiny->InitiateFlee(GiantRef, false, false, false, cell, TinyRef, 265.0, 765.0);
-										} 
-									}
+						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
+						if (TinyRef) {
+							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
+							if (GiantRef) {
+								bool SeeingOther;
+								bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
+								if (IsTrue || distance < 64 * sizedifference) {
+									auto cell = tiny->GetParentCell();
+									if (cell) {
+										tiny->InitiateFlee(GiantRef, false, false, false, cell, TinyRef, 265.0, 765.0);
+									} 
 								}
 							}
 						}
@@ -502,6 +501,7 @@ namespace Gts {
 		}
 		Profilers::Stop("ActorUtils: ScareActors");
 	}
+		
 
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat) {
 		Profilers::Start("ActorUtils: ReportCrime");
