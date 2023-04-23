@@ -480,12 +480,9 @@ namespace Gts {
 		Profilers::Start("ActorUtils: ScareActors");
 		log::info("Original Giant is {}", giant->GetDisplayFullName());
 		for (auto tiny: find_actors()) {
-			if (tiny != giant) {
+			if (tiny != giant && tiny->formID != 0x14) {
 				if (IsTeammate(tiny)) {
 					log::info("{} is Teammate", tiny->GetDisplayFullName());
-					return;
-				} if (tiny->formID == 0x14) {
-					log::info("{} form id is == 0x14", tiny->GetDisplayFullName());
 					return;
 				} if (tiny->IsDead()) {
 					log::info("{} is dead", tiny->GetDisplayFullName());
