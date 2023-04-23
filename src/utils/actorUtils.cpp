@@ -479,7 +479,7 @@ namespace Gts {
 				if (sizedifference >= 2.5 && !tiny->IsInCombat()) {
 					NiPoint3 GiantDist = tiny->GetPosition();
 					NiPoint3 ObserverDist = tiny->GetPosition();
-					float distance = (GiantDist - ObserverDist).Length();
+					float distance = (ObserverDist - GiantDist).Length();
 					log::info("Distance between {} and {} is {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance);
 					if (distance <= 128.0 * sizedifference) {
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
@@ -519,6 +519,7 @@ namespace Gts {
 					NiPoint3 ObserverDist = otherActor->GetPosition();
 					NiPoint3 VictimDist = tiny->GetPosition();
 					float distance = (ObserverDist - VictimDist).Length();
+					log::info("Crime Distance between {} and {} is {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), distance);
 					if (IsTrue || distance < 512 * scale) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							if (combat) {
