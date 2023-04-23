@@ -519,7 +519,7 @@ namespace Gts {
 											} else if (combat && GetRandomBoost() <= 0.025 * (sizedifference - 2.0)) {
 												std::vector<Actor*> FearList = {};
 												FearList.push_back(tiny);
-												if (!AbleToVore.empty()) {
+												if (!FearList.empty()) {
 													int idx = rand() % FearList.size();
 													Actor* FearReceiver = FearList[idx];
 													if (FearReceiver) {
