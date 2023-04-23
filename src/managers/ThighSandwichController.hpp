@@ -29,6 +29,7 @@ namespace Gts {
 			// Update all things that are happening like
 			// keeping them on the AnimObjectA and shrinking nodes
 			void Update();
+			void MoveActors(bool move);
 			void ManageAi(Actor* giant);
 			void UpdateRune(Actor* giant);
 
@@ -37,6 +38,7 @@ namespace Gts {
 			// Vore is done is sets with multiple actors if the giant is big
 			// enough
 			std::unordered_map<FormID, ActorHandle> tinies = {};
+			bool MoveTinies = false;
 			bool Suffocate = false;
 			bool RuneScale = false;
 			bool RuneShrink = false;

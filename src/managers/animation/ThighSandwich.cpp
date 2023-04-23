@@ -138,11 +138,14 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		for (auto tiny: sandwichdata.GetActors()) {
 			AllowToBeCrushed(tiny, false);
-			ReportCrime(&data.giant, tiny);
 		}
 		sandwichdata.EnableSuffocate(false);
 	}
 	void GTSSandwich_MoveBody_start(AnimationEventData& data) {
+		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		for (auto tiny: sandwichdata.GetActors()) { 
+			sandwichdata.MoveActors(true);
+		}
 		StartBodyRumble("BodyRumble", data.giant, 0.5, 0.25);
 	}
 	void GTSSandwich_EnableRune(AnimationEventData& data) {
@@ -191,6 +194,7 @@ namespace {
 		Rumble::Once("ThighImpact", &data.giant, 0.4, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 1.0, 1.0);
+			ReportCrime(&data.giant, tiny, 20.0);
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
@@ -203,6 +207,7 @@ namespace {
 		Rumble::Once("ThighImpact", &data.giant, 0.75, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 2.2, 0.75);
+			ReportCrime(&data.giant, tiny, 75.0);
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
@@ -242,6 +247,7 @@ namespace {
 
 	void GTSSandwich_DropDown(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		sandwichdata.MoveActors(false);
 		sandwichdata.ReleaseAll();
 	}
 

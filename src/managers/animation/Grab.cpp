@@ -40,7 +40,7 @@ namespace {
 					NiPoint3 giantLocation = player->GetPosition();
 					NiPoint3 tinyLocation = otherActor->GetPosition();
 					if ((tinyLocation-giantLocation).Length() < 60*get_visual_scale(player) && sizedifference >= 6.2) {
-						ReportCrime(player, otherActor);
+						ReportCrime(player, otherActor, 50);
 						Grab::GrabActor(player, otherActor);
 						break;
 					}

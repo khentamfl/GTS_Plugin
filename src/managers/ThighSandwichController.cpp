@@ -74,6 +74,11 @@ namespace Gts {
 	std::string ThighSandwichController::DebugName() {
 		return "ThighSandwichController";
 	}
+
+	void SandwichData::MoveActors(bool move) {
+		this->MoveActors = move;
+	}
+
 	void SandwichingData::ManageAi(Actor* giant) {
 		if (this->tinies.size() > 0) {
 			int random = rand() % 20;
@@ -127,6 +132,9 @@ namespace Gts {
 		this->UpdateRune(giant);
 
 		for (auto& [key, tinyref]: this->tinies) {
+			if (!this->MoveActors) {
+				return;
+			}
 			auto tiny = tinyref.get().get();
 			if (!tiny) {
 				return;
@@ -313,6 +321,9 @@ namespace Gts {
 	}
 	void SandwichingData::ReleaseAll() {
 		this->tinies.clear();
+		this->MoveTinies = false;
+		this->RuneScale = false;
+		this->RuneShrink = false;
 	}
 
 	void ThighSandwichController::ResetActor(Actor* actor) {
