@@ -78,9 +78,6 @@ namespace Gts {
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
 		static Timer tick = Timer(0.25);
-		if (tick.ShouldRun() && !tiny->IsInCombat() && !tiny->IsDead()) {
-			Runtime::CastSpell(giant, tiny, "ForceCombatSpell");
-		}
 		if (tick.ShouldRunFrame() || Forced == true) {
 			if (tiny->IsInCombat() || tiny->IsDead()) {
 				return;
@@ -555,7 +552,7 @@ namespace Gts {
 
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat) {
 		Profilers::Start("ActorUtils: ReportCrime");
-		/*static Timer tick = Timer(0.10);
+		static Timer tick = Timer(0.10);
 		bool SeeingOther;
 		if (tick.ShouldRunFrame()) {
 			for (auto otherActor: find_actors()) {
@@ -569,14 +566,16 @@ namespace Gts {
 					if (IsTrue || distance < 724 * scale) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							auto Faction = tiny->GetCrimeFaction();
+							auto OtherFaction = otherActor->GetCrimeFaction();
 							auto CombatValue = giant->GetCrimeGoldValue(Faction);
-							if (combat) {
+							if (combat && OtherFaction == Faction) {
 								StartCombat(giant, otherActor, true);
 								tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
 								tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 								tiny->UpdateCombatControllerSettings();
+								return;
 							} 
-							if (!combat) {
+							else if (!combat) {
 								if (giant->formID == 0x14 && CombatValue < 1000) {
 									giant->ModCrimeGoldValue(Faction, true, value);
 								}
@@ -585,7 +584,7 @@ namespace Gts {
 					}
 				}
 			}
-		}*/
+		}
 		Profilers::Stop("ActorUtils: ReportCrime");
 	}
 

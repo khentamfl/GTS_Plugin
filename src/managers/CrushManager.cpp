@@ -181,8 +181,8 @@ namespace Gts {
 						TransferInventory(tiny, into, false, true);
 					}
 
-					//ReportCrime(giant, tiny, 1000.0, true);
-					StartCombat(giant, tiny, false);
+					ReportCrime(giant, tiny, 1000.0, true);
+					//StartCombat(giant, tiny, false);
 
 					ScareChance(giant);
 					Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
