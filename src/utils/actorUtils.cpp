@@ -466,14 +466,15 @@ namespace Gts {
 				float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 				NiPoint3 GiantDist = tiny->GetPosition();
 				NiPoint3 ObserverDist = tiny->GetPosition();
-				float distance = (ObserverDist - VictimDist).Length();
-				if (distance >= 1024.0) {
+				float distance = (GiantDist - ObserverDist).Length();
+				if (distance <= 1024.0) {
 					if (sizedifference >= 2.0 && !tiny->IsInCombat()) {
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
 						if (TinyRef) {
 							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
 							if (GiantRef) {
-								bool IsTrue = tiny->HasLineOfSight(Ref, SeeingOther);
+								bool SeeingOther;
+								bool IsTrue = tiny->HasLineOfSight(GiantRef, SeeingOther);
 								if (IsTrue) {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
