@@ -494,6 +494,7 @@ namespace Gts {
 									if (cell) {
 										tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 0.0, 265.0);
 										combat->isFleeing = true;
+										tiny->DetachCharController();
 									} 
 								}
 							}
