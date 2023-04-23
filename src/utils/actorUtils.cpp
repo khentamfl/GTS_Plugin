@@ -512,10 +512,6 @@ namespace Gts {
 										if (runtimer.ShouldRunFrame()) {
 											if (!combat) {
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 100.0, 465.0);
-												auto Group = tiny->GetCombatGroup();
-												if (Group) {
-													log::info("Combat group of {} is: {}", tiny->GetDisplayFullName(), tiny->GetCombatGroup());
-												}
 											} else if (combat && GetRandomBoost() <= 0.025 * (sizedifference - 2.0)) {
 												std::vector<Actor*> FearList = {};
 												FearList.push_back(tiny);
@@ -528,7 +524,6 @@ namespace Gts {
 															tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 100.0, 465.0);
 															combat->startedCombat = true;
 															combat->state->isFleeing = true;
-															log::info("Combat of {} is true, combat group: {}", FearReceiver->GetDisplayFullName(), FearReceiver->GetCombatGroup());
 															FearList = {};
 														}
 													}
