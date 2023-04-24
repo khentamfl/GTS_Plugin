@@ -206,7 +206,9 @@ namespace Gts {
 					shrinkRate *= 0.15;
 				}
 				if (actor->IsInCombat() && BalanceMode == 1.0) {
-					shrinkRate *= 0.0;
+					shrinkRate = 0.0;
+				} else if (SizeManager::GetSingleton().GetGrowthSpurt(actor) > 0.01) {
+					shrinkRate = 0.0;
 				} else if (actor->IsInCombat() && BalanceMode >= 2.0) {
 					shrinkRate *= 0.025;
 				}
