@@ -522,8 +522,8 @@ namespace Gts {
 										auto process = tiny->GetActorRuntimeData().currentProcess;
 										if (process) {
 											process->trackedDamage = 50;
-											process->target = giant->CreateRefHandle();
-											process->followTarget = giant->CreateRefHandle();
+											process->target = giant->CreateRefHandle().get();
+											process->followTarget = giant->CreateRefHandle().get();
 											log::info("Process of {} is true", tiny->GetDisplayFullName());
 										}
 										if (process->middleHigh) {
