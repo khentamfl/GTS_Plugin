@@ -519,8 +519,13 @@ namespace Gts {
 									//log::info("Distance True");
 									auto cell = tiny->GetParentCell();
 									if (cell) {
-										auto process = tiny->GetActorRuntimeData().currentProcess->middleHigh;
+										auto process = tiny->GetActorRuntimeData().currentProcess;
 										if (process) {
+											process->trackedDamage = 50;
+											process->target = giant->CreateRefHandle();
+											process->followTarget = giant->CreateRefHandle();
+										}
+										if (process->middleHigh) {
 											process->beenAttacked = true;
 											process->preventCombat = false;
 											process->isFleeing = true;
