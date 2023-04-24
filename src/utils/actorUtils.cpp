@@ -161,7 +161,8 @@ namespace Gts {
 		if (receiver->IsDead()) {
 			return;
 		}
-		CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
+		receiver->RemoveCharController();
+		//CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
@@ -522,8 +523,6 @@ namespace Gts {
 										auto process = tiny->GetActorRuntimeData().currentProcess;
 										if (process) {
 											process->trackedDamage = 50;
-											process->target = giant->CreateRefHandle().get();
-											process->followTarget = giant->CreateRefHandle().get();
 											log::info("Process of {} is true", tiny->GetDisplayFullName());
 										}
 										if (process->middleHigh) {
