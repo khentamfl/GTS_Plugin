@@ -180,10 +180,10 @@ namespace Gts {
 		float QuestStage = Runtime::GetStage("MainQuest");
 		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
-		float BonusShrink = 2.5;
+		float BonusShrink = 7.0;
 		float bonus = 1.0;
 		if (BalanceMode >= 2.0) {
-			BonusShrink = (3.5 * (scale * 1.25));
+			BonusShrink = (3.5 * (scale * 1.35));
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {

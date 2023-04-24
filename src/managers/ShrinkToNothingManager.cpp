@@ -147,7 +147,7 @@ namespace Gts {
 
 		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.38 * random) + absorbedSize/50) * ValueEffectiveness);
+		float Total = (((0.28 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {
