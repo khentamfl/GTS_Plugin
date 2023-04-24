@@ -20,7 +20,11 @@ namespace Gts {
 	}
 
 	void ExplosiveGrowth::OnStart() {
-
+		Actor* caster = GetCaster();
+		if (!caster) {
+			return;
+		}
+		this->AllowStacking = true;
 	}
 
 	void ExplosiveGrowth::OnUpdate() {
@@ -105,9 +109,14 @@ namespace Gts {
 			if (scale >= 1.0) {
 				value /= (1.5 + (scale/1.5));
 			}
-
 		}
-		SizeManager::GetSingleton().ModGrowthSpurt(actor, value);
+		if (SizeManager::GetSingleton().GetGrowthSpurt(actor) < (this->grow_limit - get_natural_scale(actor))) {
+			if (this->AllowStacking) {
+				SizeManager::GetSingleton().ModGrowthSpurt(actor, value);
+			}
+		} else {
+			this->AllowStacking = false;
+		}
 
 		Rumble::Once("ExplosiveGrowth", actor, get_visual_scale(actor) * 2, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
@@ -124,6 +133,8 @@ namespace Gts {
 		mod_target_scale(actor, -value); // Do Shrink
 		log::info("Doing Shrink: {}", value);
 		SizeManager::GetSingleton().SetGrowthSpurt(actor, 0.0);
+		
+		this->AllowStacking = true;
 
 		Rumble::Once("ExplosiveGrowth", actor, 7.0, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {

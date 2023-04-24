@@ -24,6 +24,7 @@ namespace Gts {
 			virtual void DoShrink(Actor* actor);
 		private:
 			float power = 0.0;
+			bool AllowStacking = true;
 			float grow_limit = 1.0;
 			float growth_time = 0.0;
 			float RequiredSizeChange = 0.0;
