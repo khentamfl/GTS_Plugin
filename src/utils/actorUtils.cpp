@@ -523,6 +523,8 @@ namespace Gts {
 											if (!combat) {
 												//log::info("Combat false, applying Flee");
 												StartCombat(giant, tiny, true);
+												StartCombat(tiny, giant, true);
+												giant->StopCombat(); 
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);
 											} 
 										} if (combat && combattimer.ShouldRunFrame() && GetRandomBoost() <= 0.040 * (sizedifference)) {
