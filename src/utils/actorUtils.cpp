@@ -491,7 +491,7 @@ namespace Gts {
 				//log::info("Giant is {}", giant->GetDisplayFullName());
 				float random = GetRandomBoost();
 				static Timer runtimer = Timer(1.0);
-				static Timer combattimer = timer(2.0);
+				static Timer combattimer = Timer(2.0);
 				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 12.0f);
@@ -522,7 +522,7 @@ namespace Gts {
 										if (runtimer.ShouldRunFrame()) {
 											if (!combat) {
 												//log::info("Combat false, applying Flee");
-												StartCombat(tiny, tiny);
+												StartCombat(tiny, tiny, true);
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);
 											} 
 										} if (combattimer.ShouldRunFrame() && combat && GetRandomBoost() <= 0.040 * (sizedifference)) {
