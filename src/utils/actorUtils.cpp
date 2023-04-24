@@ -518,6 +518,7 @@ namespace Gts {
 										if (runtimer.ShouldRunFrame()) {
 											if (!combat) {
 												//log::info("Combat false, applying Flee");
+												StartCombat(giant, tiny);
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0);
 											} else if (combat && GetRandomBoost() <= 0.040 * (sizedifference)) {
 												std::vector<Actor*> FearList = {};
@@ -531,6 +532,7 @@ namespace Gts {
 														if (ReceiverRef) {
 															FearReceiver->InitiateFlee(ReceiverRef, true, true, true, cell, ReceiverRef, 100.0, 465.0);
 															combat->startedCombat = true;
+															combat->ignoringCombat = true;
 															combat->state->isFleeing = true;
 															FearList = {};
 														}
