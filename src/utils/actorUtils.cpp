@@ -521,11 +521,17 @@ namespace Gts {
 									if (cell) {
 										if (runtimer.ShouldRunFrame()) {
 											if (!combat) {
+												auto process = tiny->GetActorRuntimeData().currentProcess->middleHigh;
+												if (process) {
+													process->beenAttacked = true;
+													process->preventCombat = false;
+													process->isFleeing = true;
+												}
 												//log::info("Combat false, applying Flee");
 												StartCombat(tiny, tiny, true);
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);
 											} 
-										} if (combattimer.ShouldRunFrame() && combat && GetRandomBoost() <= 0.040 * (sizedifference)) {
+										} if (combat && combattimer.ShouldRunFrame() && GetRandomBoost() <= 0.040 * (sizedifference)) {
 											std::vector<Actor*> FearList = {};
 											//log::info("Combat True, applying Flee");
 											FearList.push_back(tiny);
