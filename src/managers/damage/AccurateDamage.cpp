@@ -82,6 +82,9 @@ namespace {
 		if (tiny->IsDead()) {
 			return;
 		}
+		if (tiny->IsInRagdollState()) {
+			return;
+		}
 		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny);
@@ -509,7 +512,6 @@ namespace Gts {
 
 		if (GetAV(tiny, ActorValue::kHealth) <= (result)) {
 			tiny->KillImpl(giant, 0, true, true);
-			tiny->PotentiallyFixRagdollState();
 			ReportCrime(giant, tiny, 1000, true);
 			//StartCombat(giant, tiny, false);
 			if (multiplier >= 8.0) {
