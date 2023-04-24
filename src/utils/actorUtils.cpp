@@ -519,14 +519,15 @@ namespace Gts {
 									//log::info("Distance True");
 									auto cell = tiny->GetParentCell();
 									if (cell) {
+										auto process = tiny->GetActorRuntimeData().currentProcess->middleHigh;
+										if (process) {
+											process->beenAttacked = true;
+											process->preventCombat = false;
+											process->isFleeing = true;
+											log::info("Process of {} is true", tiny->GetDisplayFullName());
+										}
 										if (runtimer.ShouldRunFrame()) {
 											if (!combat) {
-												auto process = tiny->GetActorRuntimeData().currentProcess->middleHigh;
-												if (process) {
-													process->beenAttacked = true;
-													process->preventCombat = false;
-													process->isFleeing = true;
-												}
 												//log::info("Combat false, applying Flee");
 												StartCombat(tiny, tiny, true);
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);

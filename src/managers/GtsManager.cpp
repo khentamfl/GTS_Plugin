@@ -37,10 +37,6 @@ namespace {
 			return;
 		}
 		if ((actor->formID == 0x14 ||actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-			auto ai = actor->GetActorRuntimeData().currentProcess->middleHigh;
-			if (ai) {
-				ai->alphaMult = 1.0;
-			}
 			auto node = find_node(actor, "skeleton_female.nif");
 			NiAVObject* skeleton = node;
 			if (node) {
