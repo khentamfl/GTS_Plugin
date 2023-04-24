@@ -491,6 +491,7 @@ namespace Gts {
 				//log::info("Giant is {}", giant->GetDisplayFullName());
 				float random = GetRandomBoost();
 				static Timer runtimer = Timer(1.0);
+				static Timer combattimer = timer(2.0);
 				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 12.0f);
@@ -521,23 +522,24 @@ namespace Gts {
 										if (runtimer.ShouldRunFrame()) {
 											if (!combat) {
 												//log::info("Combat false, applying Flee");
-												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0);
-											} else if (combat && GetRandomBoost() <= 0.040 * (sizedifference)) {
-												std::vector<Actor*> FearList = {};
-												//log::info("Combat True, applying Flee");
-												FearList.push_back(tiny);
-												if (!FearList.empty()) {
-													int idx = rand() % FearList.size();
-													Actor* FearReceiver = FearList[idx];
-													if (FearReceiver) {
-														auto ReceiverRef = skyrim_cast<TESObjectREFR*>(FearReceiver);
-														if (ReceiverRef) {
-															FearReceiver->InitiateFlee(ReceiverRef, true, true, true, cell, ReceiverRef, 100.0, 265.0 * sizedifference);
-															combat->startedCombat = true;
-															combat->ignoringCombat = false;
-															combat->state->isFleeing = true;
-															FearList = {};
-														}
+												StartCombat(tiny, tiny);
+												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);
+											} 
+										} if (combattimer.ShouldRunFrame() && combat && GetRandomBoost() <= 0.040 * (sizedifference)) {
+											std::vector<Actor*> FearList = {};
+											//log::info("Combat True, applying Flee");
+											FearList.push_back(tiny);
+											if (!FearList.empty()) {
+												int idx = rand() % FearList.size();
+												Actor* FearReceiver = FearList[idx];
+												if (FearReceiver) {
+													auto ReceiverRef = skyrim_cast<TESObjectREFR*>(FearReceiver);
+													if (ReceiverRef) {
+														FearReceiver->InitiateFlee(ReceiverRef, true, true, true, cell, ReceiverRef, 100.0, 265.0 * sizedifference);
+														combat->startedCombat = true;
+														combat->ignoringCombat = false;
+														combat->state->isFleeing = true;
+														FearList = {};
 													}
 												}
 											}
