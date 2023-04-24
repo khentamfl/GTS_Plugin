@@ -100,7 +100,6 @@ namespace Gts {
 
 	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
 		mod_target_scale(actor, value); // Grow
-
 		SizeManager::GetSingleton().ModGrowthSpurt(actor, value);
 
 		Rumble::Once("ExplosiveGrowth", actor, get_visual_scale(actor) * 2, 0.05);
@@ -115,6 +114,9 @@ namespace Gts {
 
 	void ExplosiveGrowth::DoShrink(Actor* actor) {
 		float value = SizeManager::GetSingleton().GetGrowthSpurt(actor);
+		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
+			value /= (1.5 + (get_visual_scale(actor)/1.5));
+		}
 		mod_target_scale(actor, -value); // Do Shrink
 		log::info("Doing Shrink: {}", value);
 		SizeManager::GetSingleton().SetGrowthSpurt(actor, 0.0);

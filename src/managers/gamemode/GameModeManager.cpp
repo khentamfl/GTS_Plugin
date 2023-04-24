@@ -210,7 +210,7 @@ namespace Gts {
 				} else if (SizeManager::GetSingleton().GetGrowthSpurt(actor) > 0.01) {
 					shrinkRate = 0.0;
 				} else if (actor->IsInCombat() && BalanceMode >= 2.0) {
-					shrinkRate *= 0.025;
+					shrinkRate *= 0.030;
 				}
 
 				if (fabs(shrinkRate) <= 1e-6) {
