@@ -563,14 +563,14 @@ namespace Gts {
 		bool SeeingOther;
 		if (tick.ShouldRunFrame()) {
 			for (auto otherActor: find_actors()) {
-				float scale = std::clamp(get_visual_scale(giant), 0.10f, 16.0f);
+				float scale = std::clamp(get_visual_scale(giant), 0.10f, 12.0f);
 				auto Ref = skyrim_cast<TESObjectREFR*>(tiny);
 				if (Ref) {
 					bool IsTrue = otherActor->HasLineOfSight(Ref, SeeingOther);
 					NiPoint3 ObserverDist = otherActor->GetPosition();
 					NiPoint3 VictimDist = tiny->GetPosition();
 					float distance = (ObserverDist - VictimDist).Length();
-					if (IsTrue || distance < 724 * scale) {
+					if (IsTrue || distance < 524 * scale) {
 						if (otherActor != tiny && tiny->formID != 0x14) {
 							auto Faction = tiny->GetCrimeFaction();
 							auto OtherFaction = otherActor->GetCrimeFaction();
