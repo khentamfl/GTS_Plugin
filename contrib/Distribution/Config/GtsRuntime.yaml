@@ -265,6 +265,8 @@ globals:
   PreciseDamage: "GTS.esp|4F4F3A"
   PreciseDamageOthers: "GTS.esp|513540"
 
+  HostileDamage: "GTS.esp|271EF2"
+
 quests:
   MainQuest: "GTS.esp|005E3A"
   ManagerQuest: "GTS.esp|000D62"

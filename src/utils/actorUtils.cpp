@@ -77,6 +77,9 @@ namespace Gts {
 	}
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
+		if (!Runtime::GetBool("HostileDamage")) {
+			return;
+		}
 		static Timer tick = Timer(0.25);
 		if (tick.ShouldRunFrame() || Forced == true) {
 			if (tiny->IsInCombat() || tiny->IsDead()) {
@@ -518,7 +521,6 @@ namespace Gts {
 										if (runtimer.ShouldRunFrame()) {
 											if (!combat) {
 												//log::info("Combat false, applying Flee");
-												StartCombat(giant, tiny, true);
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0);
 											} else if (combat && GetRandomBoost() <= 0.040 * (sizedifference)) {
 												std::vector<Actor*> FearList = {};
@@ -530,9 +532,9 @@ namespace Gts {
 													if (FearReceiver) {
 														auto ReceiverRef = skyrim_cast<TESObjectREFR*>(FearReceiver);
 														if (ReceiverRef) {
-															FearReceiver->InitiateFlee(ReceiverRef, true, true, true, cell, ReceiverRef, 100.0, 465.0);
+															FearReceiver->InitiateFlee(ReceiverRef, true, true, true, cell, ReceiverRef, 100.0, 265.0 * sizedifference);
 															combat->startedCombat = true;
-															combat->ignoringCombat = true;
+															combat->ignoringCombat = false;
 															combat->state->isFleeing = true;
 															FearList = {};
 														}
@@ -554,6 +556,9 @@ namespace Gts {
 
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat) {
 		Profilers::Start("ActorUtils: ReportCrime");
+		if (!Runtime::GetBool("HostileDamage")) {
+			return;
+		}
 		static Timer tick = Timer(0.10);
 		bool SeeingOther;
 		if (tick.ShouldRunFrame()) {
@@ -575,7 +580,6 @@ namespace Gts {
 								tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
 								tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 								tiny->UpdateCombatControllerSettings();
-								return;
 							} 
 							else if (!combat) {
 								if (giant->formID == 0x14 && CombatValue < 1000) {
