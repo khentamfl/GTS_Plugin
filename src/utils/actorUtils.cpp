@@ -524,12 +524,13 @@ namespace Gts {
 											process->trackedDamage = 50;
 											process->target = giant->CreateRefHandle();
 											process->followTarget = giant->CreateRefHandle();
+											log::info("Process of {} is true", tiny->GetDisplayFullName());
 										}
 										if (process->middleHigh) {
-											process->beenAttacked = true;
-											process->preventCombat = false;
-											process->isFleeing = true;
-											log::info("Process of {} is true", tiny->GetDisplayFullName());
+											process->middleHigh->beenAttacked = true;
+											process->middleHigh->preventCombat = false;
+											process->middleHigh->isFleeing = true;
+											log::info("Middle High Process of {} is true", tiny->GetDisplayFullName());
 										}
 										if (runtimer.ShouldRunFrame()) {
 											if (!combat) {
