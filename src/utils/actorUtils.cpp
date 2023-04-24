@@ -161,8 +161,7 @@ namespace Gts {
 		if (receiver->IsDead()) {
 			return;
 		}
-		receiver->RemoveCharController();
-		//CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
+		CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
@@ -520,21 +519,10 @@ namespace Gts {
 									//log::info("Distance True");
 									auto cell = tiny->GetParentCell();
 									if (cell) {
-										auto process = tiny->GetActorRuntimeData().currentProcess;
-										if (process) {
-											process->trackedDamage = 50;
-											log::info("Process of {} is true", tiny->GetDisplayFullName());
-										}
-										if (process->middleHigh) {
-											process->middleHigh->beenAttacked = true;
-											process->middleHigh->preventCombat = false;
-											process->middleHigh->isFleeing = true;
-											log::info("Middle High Process of {} is true", tiny->GetDisplayFullName());
-										}
 										if (runtimer.ShouldRunFrame()) {
 											if (!combat) {
 												//log::info("Combat false, applying Flee");
-												StartCombat(tiny, tiny, true);
+												StartCombat(giant, tiny, true);
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);
 											} 
 										} if (combat && combattimer.ShouldRunFrame() && GetRandomBoost() <= 0.040 * (sizedifference)) {
