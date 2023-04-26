@@ -88,7 +88,7 @@ namespace {
 	 * message, and some messages have no data (<code>dataLen</code> will be zero).
 	 * </p>
 	 */
-	void InitializeMessaging()
+	void InitializeMessaging() 
 	{
 		if (!GetMessagingInterface()->RegisterListener([](MessagingInterface::Message *message) {
 			switch (message->type)
