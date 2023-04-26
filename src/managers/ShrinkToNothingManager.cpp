@@ -1,4 +1,5 @@
 #include "managers/ShrinkToNothingManager.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
