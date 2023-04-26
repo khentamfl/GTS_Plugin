@@ -88,7 +88,7 @@ namespace Gts {
 		}
 		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus, gainpower * balancemodebonus, has_smt);
 		if (ShrinkToNothing(caster, target)) {
-			//Dispel();
+			Dispel();
 		}
 	}
 
