@@ -34,14 +34,14 @@ namespace Gts {
 			}
 
 			if (data.state == ShrinkState::Healthy) {
-				tiny->KillImmediate();
+				KillActor(giant, tiny);
 				data.state = ShrinkState::Shrinking;
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
 					if (!tiny->IsDead()) {
-						tiny->KillImmediate();
+						KillActor(giant, tiny);
 					}
 
 					// Fully shrunk

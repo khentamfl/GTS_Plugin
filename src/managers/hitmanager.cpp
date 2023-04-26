@@ -1,7 +1,7 @@
 #include "managers/hitmanager.hpp"
 #include "managers/GtsSizeManager.hpp"
-
 #include "managers/ShrinkToNothingManager.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
@@ -101,7 +101,7 @@ namespace Gts {
 	}
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
 		if (!receiver->IsDead()) {
-			receiver->KillImmediate();
+			KillActor(attacker, receiver);
 		}
 		if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 			TransferInventory(receiver, attacker, false, true);

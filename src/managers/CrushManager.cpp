@@ -152,7 +152,7 @@ namespace Gts {
 
 					// Do crush
 					if (!tiny->IsDead()) {
-						tiny->KillImmediate();
+						KillActor(giant, tiny);
 					}
 					Runtime::PlaySound("GtsCrushSound", tiny, 1.0, 1.0);
 					Runtime::PlaySound("GtsFallSound", tiny, 1.0, 1.0);

@@ -1,4 +1,5 @@
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"
@@ -192,12 +193,12 @@ namespace Gts {
 			for (auto& [key, tinyref]: this->tinies) {
 				auto tiny = tinyref.get().get();
 				if (tiny->formID != 0x14) {
-					tiny->KillImmediate();
+					KillActor(this->giant.get().get(), tiny);
 					Disintegrate(tiny);
 					///this->tinies.erase(tiny);
 				} else if (tiny->formID == 0x14) {
 					DamageAV(tiny, ActorValue::kHealth, 900000.0);
-					tiny->KillImmediate();
+					KillActor(this->giant.get().get(), tiny);
 					TriggerScreenBlood(50);
 					tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
 				}

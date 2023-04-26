@@ -17,6 +17,14 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
+	void KillActor(Actor* giant, Actor* tiny) {
+		if (!Runtime::GetBool("HostileDamage")) {
+			tiny->KillImmediate();
+		} else {
+			tiny->KillImpl(giant, 0, true, true);
+		}
+	}
+
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
 		if (!Runtime::GetBool("HostileDamage")) {
 			return;
@@ -97,7 +105,6 @@ namespace Gts {
 		}
 	}
 		
-
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat) {
 		Profilers::Start("ActorUtils: ReportCrime");
 		if (!Runtime::GetBool("HostileDamage")) {
