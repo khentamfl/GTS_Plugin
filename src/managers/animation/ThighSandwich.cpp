@@ -31,6 +31,7 @@
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"

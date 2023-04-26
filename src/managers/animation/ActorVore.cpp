@@ -2,6 +2,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "utils/actorUtils.hpp"

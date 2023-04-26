@@ -2,6 +2,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"

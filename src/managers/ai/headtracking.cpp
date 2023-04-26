@@ -5,6 +5,7 @@
 #include "managers/RipClothManager.hpp"
 #include "managers/ai/headtracking.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "scale/scalespellmanager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/Attributes.hpp"
