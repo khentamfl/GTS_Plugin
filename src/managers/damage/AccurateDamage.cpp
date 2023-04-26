@@ -212,7 +212,6 @@ namespace Gts {
 
 	void AccurateDamage::DoAccurateCollision(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		Profilers::Start("AccurateDamage: DoAccurateCollision");
-		log::info("Hostile damage: {}", Persistent::GetSingleton().hostile_toggle);
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
 			return;

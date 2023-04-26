@@ -19,7 +19,6 @@ using namespace Gts;
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		if (!Persistent::GetSingleton().hostile_toggle) {
-			log::info("Hostile Toggle false");
 			tiny->KillImmediate();
 			log::info("KillImmediate called");
 		} else {
@@ -30,7 +29,6 @@ namespace Gts {
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
 		if (!Persistent::GetSingleton().hostile_toggle) {
-			log::info("Hostile Toggle false");
 			return;
 		}
 		static Timer tick = Timer(0.25);

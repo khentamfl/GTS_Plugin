@@ -47,11 +47,11 @@ trigger = "once"
 #========================================================
 [[InputEvent]]
 name = "RightStomp_Strong"
-keys = ["LSHIFT", "E", "LMB"]
+keys = ["LALT", "E"]
 
 [[InputEvent]]
 name = "LeftStomp_Strong"
-keys = ["LSHIFT", "Q", "LMB"]
+keys = ["LALT", "Q"]
 
 # ^ Trigger powerful stomps. All stomps REQUIRE 'Destruction Basics' perk!
 
