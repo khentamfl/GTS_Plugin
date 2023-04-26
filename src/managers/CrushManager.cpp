@@ -1,3 +1,4 @@
+#include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/Rumble.hpp"
