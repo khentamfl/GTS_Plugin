@@ -15,7 +15,6 @@ namespace Gts {
 	void Disintegrate(Actor* actor);
 	void UnDisintegrate(Actor* actor);
 
-	void StartCombat(Actor* giant, Actor* tiny, bool Forced);
 	void SetRestrained(Actor* actor);
 	void SetUnRestrained(Actor* actor);
 
@@ -65,8 +64,6 @@ namespace Gts {
 	void StaggerActor(Actor* receiver);
 
 	float GetMovementModifier(Actor* giant);
-	void ScareActors(Actor* giant);
-	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat);
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause);
 	void PrintSuffocate(Actor* pred, Actor* prey);
