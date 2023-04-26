@@ -29,7 +29,7 @@ namespace Gts {
 			[[nodiscard]] static ShrinkToNothingManager& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-			virtual void Update() override;
+			virtual void PapyrusUpdate() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 

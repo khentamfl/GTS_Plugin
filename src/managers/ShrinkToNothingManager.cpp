@@ -23,7 +23,7 @@ namespace Gts {
 		return "ShrinkToNothingManager";
 	}
 
-	void ShrinkToNothingManager::Update() {
+	void ShrinkToNothingManager::PapyrusUpdate() {
 		for (auto &[tiny, data]: this->data) {
 			auto giant = data.giant;
 			if (!tiny) {
