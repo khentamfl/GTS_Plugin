@@ -18,7 +18,7 @@ using namespace Gts;
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
-		if (!Runtime::GetBool("HostileDamage")) {
+		if (Runtime::GetFloat("HostileDamage") == 0) {
 			tiny->KillImmediate();
 			log::info("KillImmediate called");
 		} else {
@@ -28,7 +28,7 @@ namespace Gts {
 	}
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
-		if (!Runtime::GetBool("HostileDamage")) {
+		if (Runtime::GetFloat("HostileDamage") == 0) {
 			return;
 		}
 		static Timer tick = Timer(0.25);
@@ -109,7 +109,7 @@ namespace Gts {
 		
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat) {
 		Profilers::Start("ActorUtils: ReportCrime");
-		if (!Runtime::GetBool("HostileDamage")) {
+		if (Runtime::GetFloat("HostileDamage") == 0) {
 			return;
 		}
 		static Timer tick = Timer(0.10);
