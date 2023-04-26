@@ -498,7 +498,7 @@ namespace Gts {
 
 		float result = ((0.125 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;
 		if (giant->IsSneaking()) {
-			result *= 0.33;
+			result *= 0.33; 
 		}
 
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
