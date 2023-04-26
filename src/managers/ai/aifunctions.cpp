@@ -18,7 +18,8 @@ using namespace Gts;
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
-		if (Runtime::GetFloat("HostileDamage") == 0) {
+		if (!Persistent::GetSingleton().hostile_toggle) {
+			log::info("Hostile Toggle false");
 			tiny->KillImmediate();
 			log::info("KillImmediate called");
 		} else {
@@ -28,7 +29,8 @@ namespace Gts {
 	}
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
-		if (Runtime::GetFloat("HostileDamage") == 0) {
+		if (!Persistent::GetSingleton().hostile_toggle) {
+			log::info("Hostile Toggle false");
 			return;
 		}
 		static Timer tick = Timer(0.25);
@@ -79,6 +81,7 @@ namespace Gts {
 												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);
 											} 
 										} if (combat && combattimer.ShouldRunFrame() && GetRandomBoost() <= 0.050 * (sizedifference)) {
+											return; // Currently disabled
 											std::vector<Actor*> FearList = {};
 											FearList.push_back(tiny);
 											if (!FearList.empty()) {
@@ -109,7 +112,7 @@ namespace Gts {
 		
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat) {
 		Profilers::Start("ActorUtils: ReportCrime");
-		if (Runtime::GetFloat("HostileDamage") == 0) {
+		if (!Persistent::GetSingleton().hostile_toggle) {
 			return;
 		}
 		static Timer tick = Timer(0.10);

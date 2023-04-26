@@ -76,6 +76,8 @@ Float function GetGrowthHalfLife(Actor target) global native
 
 ;Sets progression mult
 function SetProgressionMultiplier(float value) global native
+    
+function ToggleHostileDamage(bool enabled) global native    
 
 
 ;======================================================================================

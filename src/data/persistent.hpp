@@ -79,6 +79,7 @@ namespace Gts {
 			bool Stomp_Ai = true;
 			bool Sandwich_Ai = true;
 			bool delete_actors = true;
+			bool hostile_toggle = true;
 			float tremor_scale = 1.0;
 			float npc_tremor_scale = 1.0;
 			float size_related_damage_mult = 1.0;

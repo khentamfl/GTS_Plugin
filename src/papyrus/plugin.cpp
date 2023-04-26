@@ -206,6 +206,10 @@ namespace {
 		Persistent::GetSingleton().Vore_Ai = enabled;
 	}
 
+	void ToggleHostileDamage(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().hostile_toggle = enabled;
+	}
+
 	void DisintegrateTarget(StaticFunctionTag*, Actor* actor) {
 		if (actor) {
 			Disintegrate(actor);
@@ -331,6 +335,7 @@ namespace Gts {
 		vm->RegisterFunction("SetStompAi", PapyrusClass, SetStompAi);
 		vm->RegisterFunction("SetSandwichAi", PapyrusClass, SetSandwichAi);
 		vm->RegisterFunction("SetVoreAi", PapyrusClass, SetVoreAi);
+		vm->RegisterFunction("ToggleHostileDamage", PapyrusClass, ToggleHostileDamage);
 		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
 		vm->RegisterFunction("SetOnlyCombatVore", PapyrusClass, SetOnlyCombatVore);
 		vm->RegisterFunction("IncreaseSizeLimit", PapyrusClass, IncreaseSizeLimit);
