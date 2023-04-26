@@ -511,7 +511,7 @@ namespace Gts {
 		StartCombat(giant, tiny, false);
 
 		if (GetAV(tiny, ActorValue::kHealth) <= (result)) {
-			tiny->KillImpl(giant, 0, true, true);
+			tiny->KillImmediate();
 			ReportCrime(giant, tiny, 1000, true);
 			//StartCombat(giant, tiny, false);
 			if (multiplier >= 8.0) {

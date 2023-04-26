@@ -192,12 +192,12 @@ namespace Gts {
 			for (auto& [key, tinyref]: this->tinies) {
 				auto tiny = tinyref.get().get();
 				if (tiny->formID != 0x14) {
-					tiny->KillImpl(giant.get().get(), 0, true, true);
+					tiny->KillImmediate();
 					Disintegrate(tiny);
 					///this->tinies.erase(tiny);
 				} else if (tiny->formID == 0x14) {
 					DamageAV(tiny, ActorValue::kHealth, 900000.0);
-					tiny->KillImpl(giant.get().get(), 0, true, true);
+					tiny->KillImmediate();
 					TriggerScreenBlood(50);
 					tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
 				}
