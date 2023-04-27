@@ -148,10 +148,8 @@ namespace Gts {
 				mod_target_scale(attacker, -GrowthValue/(2.0 * Dragon* BalanceMode)); // Shrink Attacker
 				mod_target_scale(receiver, GrowthValue/(2.0 * Dragon * BalanceMode)); // Grow Attacker
 				if (get_visual_scale(attacker) <= 0.15/Dragon) {
-					auto giant = receiver->CreateRefHandle();
-					auto tiny = attacker->CreateRefHandle();
-					if (ShrinkToNothingManager::CanShrink(giant, tiny)) {
-						ShrinkToNothingManager::Shrink(giant, tiny);
+					if (ShrinkToNothingManager::CanShrink(receiver, attacker)) {
+						ShrinkToNothingManager::Shrink(receiver, attacker);
 						PrintDeathSource(receiver, attacker, "HitSteal");
 					}
 				}

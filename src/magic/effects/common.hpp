@@ -283,10 +283,10 @@ namespace Gts {
 		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
-			if (!ShrinkToNothingManager::CanShrink(caster->CreateRefHandle(), target->CreateRefHandle())) {
+			if (!ShrinkToNothingManager::CanShrink(caster, target)) {
 				return false;
 			}
-			ShrinkToNothingManager::Shrink(caster->CreateRefHandle(), target->CreateRefHandle());
+			ShrinkToNothingManager::Shrink(caster, target);
 			AdjustSizeLimit(0.0060, caster);
 			AdjustMassLimit(0.0060, caster);
 
