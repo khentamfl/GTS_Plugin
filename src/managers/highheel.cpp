@@ -28,7 +28,7 @@ namespace Gts {
 
 	void HighHeelManager::HavokUpdate() {
 		Profilers::Start("HH: HavokUpdate");
-		auto actors = find_actors();
+		auto actors = FindSomeActors("HHHavokUpdate", 5);
 		for (auto actor: actors) {
 			ApplyHH(actor, false);
 		}
