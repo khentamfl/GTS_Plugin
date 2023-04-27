@@ -48,9 +48,9 @@ namespace Gts {
 		float Power = BASE_POWER * powercap * AlchemyLevel;
 
 		ShrinkActor(target, Power, 0.0);
-		if (get_visual_scale(target) < 0.25 && ShrinkToNothingManager::CanShrink(caster, target)) {
+		if (get_visual_scale(target) < 0.25 && ShrinkToNothingManager::CanShrink(caster->CreateRefHandle(), target->CreateRefHandle())) {
 			PrintDeathSource(caster, target, "Explode");
-			ShrinkToNothingManager::Shrink(caster, target);
+			ShrinkToNothingManager::Shrink(caster->CreateRefHandle(), target->CreateRefHandle());
 		}
 	}
 
