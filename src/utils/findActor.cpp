@@ -147,12 +147,12 @@ namespace Gts {
 	        if (actor->formID == 0x14 || IsTeammate(actor)) {
 	            finalActors.push(actor);
 	            log::info(". Adding: {}", actor->GetDisplayFullName());
-	        } else if (data.previousActors.count(actor->formId) == 0) {
+	        } else if (data.previousActors.count(actor->formID) == 0) {
 	        // Other actors are only added if they are not in the previous actor list
 	            if (addedCount < howMany) {
 	                log::info(". Adding: {}", actor->GetDisplayFullName());
             	    finalActors.push(actor);
-            	    data.previousActors.insert(actor->formId);
+            	    data.previousActors.insert(actor->formID);
             	    addedCount += 1;
             	}
         	} else {
@@ -167,7 +167,7 @@ namespace Gts {
     	    for (auto actor: notAddedAcrors) {
         	    if (addedCount < howMany) {
         	        finalActors.push(actor);
-            	    data.previousActors.insert(actor->formId);
+            	    data.previousActors.insert(actor->formID);
             	    addedCount += 1;
         	    } else {
         	        break;
