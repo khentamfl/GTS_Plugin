@@ -260,8 +260,8 @@ void GtsManager::Update() {
 		if (!someactor) {
 			return;
 		}
-		float current_health_percentage = GetHealthPercentage(actor);
-		SetHealthPercentage(actor, current_health_percentage);
+		float current_health_percentage = GetHealthPercentage(someactor);
+		SetHealthPercentage(someactor, current_health_percentage);
 	}
 	for (auto actor: find_actors()) {
 		if (!actor) {
