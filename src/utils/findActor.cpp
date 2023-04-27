@@ -142,15 +142,15 @@ namespace Gts {
 	    unordered_set<Actor*> finalActors;
 	    unordered_set<Actor*> notAddedAcrors;
 	    auto prevCount = data.previousActors.size();
-	    for (auto actor: find_actor()) {
+	    for (auto actor: find_actors()) {
 	        // Player or teammate are always updated
-	        if (actor->formId == 0x14 || IsTeammate(actor)) {
+	        if (actor->formID == 0x14 || IsTeammate(actor)) {
 	            finalActors.push(actor);
-	            log::info(". Adding: {}", actor->GetDisplayNameFull());
+	            log::info(". Adding: {}", actor->GetDisplayFullName());
 	        } else if (data.previousActors.count(actor->formId) == 0) {
 	        // Other actors are only added if they are not in the previous actor list
 	            if (addedCount < howMany) {
-	                log::info(". Adding: {}", actor->GetDisplayNameFull());
+	                log::info(". Adding: {}", actor->GetDisplayFullName());
             	    finalActors.push(actor);
             	    data.previousActors.insert(actor->formId);
             	    addedCount += 1;
