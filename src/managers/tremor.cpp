@@ -50,11 +50,8 @@ namespace Gts {
 		float tremor_scale;
 
 		if (actor->formID != 0x14) {
-			float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)) * 0.30);
-			tremor_scale = persist.npc_tremor_scale * (sizedifference + 0.70);
-			if (IsTeammate(actor)) {
-				log::info("{} Is Walking, SizeDifference {}, TremorScale: {}", actor->GetDisplayFullName(), sizedifference, tremor_scale);
-			}
+			float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)) * 0.20);
+			tremor_scale = persist.npc_tremor_scale * (sizedifference + 0.50);
 		}
 		if (actor->formID == 0x14) {
 			tremor_scale = persist.tremor_scale;// * (0.95 + get_visual_scale(actor) * 0.025);
