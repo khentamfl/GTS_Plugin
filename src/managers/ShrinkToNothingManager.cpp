@@ -24,9 +24,8 @@ namespace Gts {
 	}
 
 	void ShrinkToNothingManager::Update() {
-		for (auto &[tinies, data]: this->data) {
-			auto giant = data.giant.get().get();
-			auto tiny = tinies.get().get();
+		for (auto &[tiny, data]: this->data) {
+			auto giant = data.giant;
 			if (!tiny) {
 				continue;
 			}
@@ -104,30 +103,30 @@ namespace Gts {
 		this->data.erase(actor);
 	}
 
-	void ShrinkToNothingManager::Shrink(ActorHandle giant, ActorHandle tiny) {
+	void ShrinkToNothingManager::Shrink(Actor* giant, Actor* tiny) {
 		if (ShrinkToNothingManager::CanShrink(giant, tiny)) {
 			ShrinkToNothingManager::GetSingleton().data.try_emplace(tiny, giant, tiny);
 		}
 	}
 
-	bool ShrinkToNothingManager::AlreadyShrinked(ActorHandle actor) {
+	bool ShrinkToNothingManager::AlreadyShrinked(Actor* actor) {
 		auto& m = ShrinkToNothingManager::GetSingleton().data;
-		return !(m.find(actor.get().get()) == m.end());
+		return !(m.find(actor) == m.end());
 	}
 
-	bool ShrinkToNothingManager::CanShrink(ActorHandle giant, ActorHandle tiny) {
+	bool ShrinkToNothingManager::CanShrink(Actor* giant, Actor* tiny) {
 		if (ShrinkToNothingManager::AlreadyShrinked(tiny)) {
 			return false;
 		}
-		if (tiny->get().get()->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
+		if (tiny->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
 			return false;
 		}
 
 		return true;
 	}
 
-	void ShrinkToNothingManager::AdjustGiantessSkill(ActorHandle Caster, ActorHandle Target) { // Adjust Matter Of Size skill on Shrink To Nothing
-		if (Caster->get().get()->formID != 0x14) {
+	void ShrinkToNothingManager::AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill on Shrink To Nothing
+		if (Caster->formID != 0x14) {
 			return; //Bye
 		}
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
@@ -147,7 +146,7 @@ namespace Gts {
 
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
-		float absorbedSize = (get_visual_scale(Target.get().get()));
+		float absorbedSize = (get_visual_scale(Target));
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
 		float Total = (((0.28 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
@@ -161,7 +160,7 @@ namespace Gts {
 		}
 	}
 
-	ShrinkData::ShrinkData(ActorHandle giant, ActorHandle tiny) :
+	ShrinkData::ShrinkData(Actor* giant, Actor* tiny) :
 		delay(Timer(0.01)),
 		state(ShrinkState::Healthy),
 		giant(giant) {
