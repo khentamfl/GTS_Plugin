@@ -156,7 +156,7 @@ namespace Gts {
             	    addedCount += 1;
             
         	} else {
-        	    notAddedAcrors.push(actor);
+        	    notAddedAcrors.push_back(actor);
         	}
 	    }
 	    // Reached the end of all actor
