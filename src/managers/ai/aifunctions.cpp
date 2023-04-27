@@ -44,7 +44,7 @@ namespace Gts {
 
 	void ScareActors(Actor* giant) {
 		Profilers::Start("ActorUtils: ScareActors");
-		for (auto tiny: find_actors()) {
+		for (auto tiny: FindSomeActors("AiActors", 2)) {
 			if (tiny != giant && tiny->formID != 0x14 && !IsTeammate(tiny)) {
 				if (tiny->IsDead()) {
 					return;
@@ -52,7 +52,7 @@ namespace Gts {
 				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 12.0f);
-				float distancecheck = 226.0 * GetMovementModifier(giant);
+				float distancecheck = 256.0 * GetMovementModifier(giant);
 				if (sizedifference >= 2.5) {
 					NiPoint3 GiantDist = giant->GetPosition();
 					NiPoint3 ObserverDist = tiny->GetPosition();
