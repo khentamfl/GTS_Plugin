@@ -139,22 +139,22 @@ namespace Gts {
 	    auto& data = allData.at(string(tag));
 	    
 	    log::info("Looking for actor for {} up to a count of {}", tag, howMany);
-	    unordered_set<Actor*> finalActors;
-	    unordered_set<Actor*> notAddedAcrors;
-	    auto prevCount = data.previousActors.size();
+	    vector<Actor*> finalActors;
+	    vector<Actor*> notAddedAcrors;
+	    uint32_t addedCount = 0;
 	    for (auto actor: find_actors()) {
 	        // Player or teammate are always updated
 	        if (actor->formID == 0x14 || IsTeammate(actor)) {
 	            finalActors.push(actor);
-	            log::info(". Adding: {}", actor->GetDisplayFullName());
-	        } else if (data.previousActors.count(actor->formID) == 0) {
+	            log::info(" - Adding: {}", actor->GetDisplayFullName());
+	        } else if ((data.previousActors.count(actor->formID) == 0) && (addedCount < howMany)) {
 	        // Other actors are only added if they are not in the previous actor list
-	            if (addedCount < howMany) {
-	                log::info(". Adding: {}", actor->GetDisplayFullName());
+	            
+	                log::info(" - Adding: {}", actor->GetDisplayFullName());
             	    finalActors.push(actor);
             	    data.previousActors.insert(actor->formID);
             	    addedCount += 1;
-            	}
+            
         	} else {
         	    notAddedAcrors.push(actor);
         	}
