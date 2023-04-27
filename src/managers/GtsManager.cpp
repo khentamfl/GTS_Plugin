@@ -256,6 +256,13 @@ std::string GtsManager::DebugName() {
 // Poll for updates
 void GtsManager::Update() {
 	Profilers::Start("Manager: Update()");
+	for (auto someactor: FindSomeActors("ManagerActors", 2)) {
+		if (!someactor) {
+			return;
+		}
+		float current_health_percentage = GetHealthPercentage(actor);
+		SetHealthPercentage(actor, current_health_percentage);
+	}
 	for (auto actor: find_actors()) {
 		if (!actor) {
 			return;
@@ -279,20 +286,14 @@ void GtsManager::Update() {
 				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 1000, 1.0);
 			}
 		}
-
-		float current_health_percentage = GetHealthPercentage(actor);
-
-		update_actor(actor);
-		apply_actor(actor);
-
-		SetHealthPercentage(actor, current_health_percentage);
-
 		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
 		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
 			if (timer.ShouldRunFrame()) {
 				ScaleSpellManager::GetSingleton().CheckSize(actor);
 			}
 		}
+		update_actor(actor);
+		apply_actor(actor);
 	}
 	Profilers::Stop("Manager: Update()");
 }
