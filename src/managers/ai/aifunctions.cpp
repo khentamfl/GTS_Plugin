@@ -46,12 +46,9 @@ namespace Gts {
 		Profilers::Start("ActorUtils: ScareActors");
 		for (auto tiny: FindSomeActors("AiActors", 1)) {
 			if (tiny != giant && tiny->formID != 0x14 && !IsTeammate(tiny)) {
-				 if (tiny->IsDead()) {
+				if (tiny->IsDead()) {
 					return;
 				}
-				float random = GetRandomBoost();
-				static Timer runtimer = Timer(1.0);
-				static Timer combattimer = Timer(2.0);
 				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 12.0f);
@@ -74,39 +71,20 @@ namespace Gts {
 								if (IsTrue || distance < (distancecheck/1.5) * sizedifference) {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
-										if (runtimer.ShouldRunFrame()) {
-											if (!combat) {
-												tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);
-											} 
-										} if (combat && combattimer.ShouldRunFrame() && GetRandomBoost() <= 0.050 * (sizedifference)) {
-											return; // Currently disabled
-											std::vector<Actor*> FearList = {};
-											FearList.push_back(tiny);
-											if (!FearList.empty()) {
-												int idx = rand() % FearList.size();
-												Actor* FearReceiver = FearList[idx];
-												if (FearReceiver) {
-													auto ReceiverRef = skyrim_cast<TESObjectREFR*>(FearReceiver);
-													if (ReceiverRef) {
-														FearReceiver->InitiateFlee(ReceiverRef, true, true, true, cell, ReceiverRef, 100.0, 265.0 * sizedifference);
-														combat->startedCombat = true;
-														combat->ignoringCombat = false;
-														combat->state->isFleeing = true;
-														FearList = {};
-													}
-												}
-											}
-										}
+										if (!combat) {
+											tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);
+										} 
 									} 
-								}
+								} 
 							}
 						}
 					}
 				}
 			}
-			Profilers::Stop("ActorUtils: ScareActors");
 		}
+		Profilers::Stop("ActorUtils: ScareActors");
 	}
+	
 		
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat) {
 		Profilers::Start("ActorUtils: ReportCrime");
