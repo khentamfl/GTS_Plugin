@@ -17,7 +17,7 @@ namespace Gts {
 
 	class ShrinkData {
 		public:
-			ShrinkData(ActorHandle* giant, ActorHandle* tiny);
+			ShrinkData(ActorHandle giant, ActorHandle tiny);
 
 			ShrinkState state;
 			Timer delay;
@@ -33,10 +33,10 @@ namespace Gts {
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 
-			static bool CanShrink(ActorHandle* giant, ActorHandle* tiny);
-			static bool AlreadyShrinked(ActorHandle* actor);
-			static void Shrink(ActorHandle* giant, ActorHandle* tiny);
-			static void AdjustGiantessSkill(ActorHandle* Caster, ActorHandle* Target);
+			static bool CanShrink(ActorHandle giant, ActorHandle tiny);
+			static bool AlreadyShrinked(ActorHandle actor);
+			static void Shrink(ActorHandle giant, ActorHandle tiny);
+			static void AdjustGiantessSkill(ActorHandle Caster, ActorHandle Target);
 		private:
 			std::unordered_map<Actor*, ShrinkData> data;
 	};

@@ -267,7 +267,7 @@ void GtsManager::Update() {
 		auto& sizemanager = SizeManager::GetSingleton();
 
 
-		if (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+		if (actor->formID == 0x14 || IsTeammate(actor)) {
 			if (sizemanager.GetPreciseDamage()) {
 				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 1000, 1.0);
 				ClothManager::GetSingleton().CheckRip();

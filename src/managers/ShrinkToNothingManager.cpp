@@ -104,19 +104,19 @@ namespace Gts {
 		this->data.erase(actor);
 	}
 
-	void ShrinkToNothingManager::Shrink(ActorHandle* giant, ActorHandle* tiny) {
+	void ShrinkToNothingManager::Shrink(ActorHandle giant, ActorHandle tiny) {
 		if (ShrinkToNothingManager::CanShrink(giant, tiny)) {
 			ShrinkToNothingManager::GetSingleton().data.try_emplace(tiny, giant, tiny);
 		}
 	}
 
-	bool ShrinkToNothingManager::AlreadyShrinked(ActorHandle* actor) {
+	bool ShrinkToNothingManager::AlreadyShrinked(ActorHandle actor) {
 		auto& m = ShrinkToNothingManager::GetSingleton().data;
 		return !(m.find(actor.get().get()) == m.end());
 	}
 
-	bool ShrinkToNothingManager::CanShrink(ActorHandle* giant, ActorHandle* tiny) {
-		if (ShrinkToNothingManager::AlreadyShrinked(tiny->get().get())) {
+	bool ShrinkToNothingManager::CanShrink(ActorHandle giant, ActorHandle tiny) {
+		if (ShrinkToNothingManager::AlreadyShrinked(tiny)) {
 			return false;
 		}
 		if (tiny->get().get()->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
@@ -126,7 +126,7 @@ namespace Gts {
 		return true;
 	}
 
-	void ShrinkToNothingManager::AdjustGiantessSkill(ActorHandle* Caster, ActorHandle* Target) { // Adjust Matter Of Size skill on Shrink To Nothing
+	void ShrinkToNothingManager::AdjustGiantessSkill(ActorHandle Caster, ActorHandle Target) { // Adjust Matter Of Size skill on Shrink To Nothing
 		if (Caster->get().get()->formID != 0x14) {
 			return; //Bye
 		}
@@ -161,7 +161,7 @@ namespace Gts {
 		}
 	}
 
-	ShrinkData::ShrinkData(ActorHandle* giant, ActorHandle* tiny) :
+	ShrinkData::ShrinkData(ActorHandle giant, ActorHandle tiny) :
 		delay(Timer(0.01)),
 		state(ShrinkState::Healthy),
 		giant(giant) {
