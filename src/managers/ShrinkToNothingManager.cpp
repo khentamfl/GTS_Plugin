@@ -25,8 +25,8 @@ namespace Gts {
 
 	void ShrinkToNothingManager::Update() {
 		for (auto &[tinies, data]: this->data) {
-			auto giant = data.giant.get().get();
-			auto tiny = data.tiny.get().get();
+			auto giant = data.giant.get();
+			auto tiny = tinies.get();
 			if (!tiny) {
 				continue;
 			}
