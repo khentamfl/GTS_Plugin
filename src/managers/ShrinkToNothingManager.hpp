@@ -21,7 +21,7 @@ namespace Gts {
 
 			ShrinkState state;
 			Timer delay;
-			Actor* giant;
+			ActorHandle* giant;
 	};
 
 	class ShrinkToNothingManager : public EventListener {
