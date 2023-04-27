@@ -145,13 +145,13 @@ namespace Gts {
 	    for (auto actor: find_actors()) {
 	        // Player or teammate are always updated
 	        if (actor->formID == 0x14 || IsTeammate(actor)) {
-	            finalActors.push(actor);
+	            finalActors.push_back(actor);
 	            log::info(" - Adding: {}", actor->GetDisplayFullName());
 	        } else if ((data.previousActors.count(actor->formID) == 0) && (addedCount < howMany)) {
 	        // Other actors are only added if they are not in the previous actor list
 	            
 	                log::info(" - Adding: {}", actor->GetDisplayFullName());
-            	    finalActors.push(actor);
+            	    finalActors.push_back(actor);
             	    data.previousActors.insert(actor->formID);
             	    addedCount += 1;
             
@@ -166,7 +166,7 @@ namespace Gts {
     	    data.previousActors.clear();
     	    for (auto actor: notAddedAcrors) {
         	    if (addedCount < howMany) {
-        	        finalActors.push(actor);
+        	        finalActors.push_back(actor);
             	    data.previousActors.insert(actor->formID);
             	    addedCount += 1;
         	    } else {
