@@ -115,6 +115,9 @@ namespace {
 
 	// Rotate spine to look at an actor either leaning back or looking down
 	void RotateSpine(Actor* giant, Actor* tiny, HeadtrackingData& data) {
+		if (giant->formID == 0x14) {
+			return;
+		}
 		const float REDUCTION_FACTOR = 0.44;
 		const float PI = 3.14159;
 		bool Collision_Installed = false; //Used to detect 'Precision' mod
@@ -239,19 +242,19 @@ namespace Gts {
 	void Headtracking::Update() {
 		for (auto actor: find_actors()) {
 			this->data.try_emplace(actor->formID);
-			if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
+			if (actor->formID == 0x14 || IsTeammate(actor)) {
 				ScareActors(actor);
 				SpineUpdate(actor);
 				FixNPCHeadtracking(actor);
 				//RotateCaster(actor, this->data.at(actor->formID));
-			} else if (actor->formID == 0x14) {
-				ScareActors(actor);
-				//FixPlayerHeadtracking(actor);
 			}
 		}
 	}
 
 	void Headtracking::SpineUpdate(Actor* me) {
+		if (me->formID == 0x14) {
+			return;
+		}
 		auto profiler = Profilers::Profile("Headtracking: SpineUpdate");
 		auto ai = me->GetActorRuntimeData().currentProcess;
 		Actor* tiny = nullptr;
@@ -272,6 +275,9 @@ namespace Gts {
 	}
 
 	void Headtracking::FixNPCHeadtracking(Actor* me) {
+		if (me->formID == 0x14) {
+			return;
+		}
 		Profilers::Start("Headtracking: Headtracking Fix");
 		auto ai = me->GetActorRuntimeData().currentProcess;
 		if (ai) {

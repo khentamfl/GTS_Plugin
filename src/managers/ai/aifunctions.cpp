@@ -44,7 +44,7 @@ namespace Gts {
 
 	void ScareActors(Actor* giant) {
 		Profilers::Start("ActorUtils: ScareActors");
-		for (auto tiny: FindSomeActors("AiActors", 2)) {
+		for (auto tiny: FindSomeActors("AiActors", 1)) {
 			if (tiny != giant && tiny->formID != 0x14 && !IsTeammate(tiny)) {
 				 if (tiny->IsDead()) {
 					return;
