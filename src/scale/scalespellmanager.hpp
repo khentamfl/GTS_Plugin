@@ -1,4 +1,5 @@
 #pragma once
+#include "events.hpp"
 // Module that handles Spell Distribution to everyone
 
 using namespace std;

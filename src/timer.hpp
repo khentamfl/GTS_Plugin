@@ -8,6 +8,8 @@ namespace Gts {
 			double TimeDelta();
 			bool ShouldRunFrame();
 			std::uint64_t FrameDelta();
+
+			void Reset();
 		private:
 			double delta = 0.01666;
 

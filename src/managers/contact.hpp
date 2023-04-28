@@ -32,6 +32,7 @@ namespace Gts {
 		public:
 			[[nodiscard]] static ContactManager& GetSingleton() noexcept;
 
+			virtual std::string DebugName() override;
 			virtual void HavokUpdate() override;
 			void UpdateCameraContacts();
 

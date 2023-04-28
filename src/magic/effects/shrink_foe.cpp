@@ -1,4 +1,5 @@
 #include "magic/effects/shrink_foe.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
@@ -11,52 +12,43 @@ namespace Gts {
 	}
 
 	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) : Magic(effect) {
-		const float SHRINK_POWER = 1.15;
-		const float SHRINK_EFFIC = 0.38;
-		const float SHRINK_AOE_POWER = 1.40;
-		const float SHRINK_AOE_EFFIC = 0.42;
+		const float SHRINK_POWER = 1.20; // Power = Shrink Power
+		const float SHRINK_EFFIC = 0.28; // Efficiency = size steal efficiency.
+		const float SHRINK_AOE_POWER = 1.45;
+		const float SHRINK_AOE_EFFIC = 0.32;
 		const float SHRINK_AOE_MASTER_POWER = 1.75;
-		const float SHRINK_AOE_MASTER_EFFIC = 0.46;
-		const float SHRINK_BOLT_POWER = 28.40;
-		const float SHRINK_BOLT_EFFIC = 0.18;
-		const float SHRINK_STORM_POWER = 50.80;
-		const float SHRINK_STORM_EFFIC = 0.20;
+		const float SHRINK_AOE_MASTER_EFFIC = 0.36;
+		const float SHRINK_BOLT_POWER = 12.00;
+		const float SHRINK_BOLT_EFFIC = 0.06;
+		const float SHRINK_STORM_POWER = 24.00;
+		const float SHRINK_STORM_EFFIC = 0.12;
+
 
 		auto base_spell = GetBaseEffect();
-		auto& runtime = Runtime::GetSingleton();
 
-		if (base_spell == runtime.ShrinkEnemy) {
+		if (base_spell == Runtime::GetMagicEffect("ShrinkEnemy")) {
 			this->power = SHRINK_POWER;
 			this->efficiency = SHRINK_EFFIC;
-		} else if (base_spell == runtime.ShrinkEnemyAOE) {
+		} else if (base_spell == Runtime::GetMagicEffect("ShrinkEnemyAOE")) {
 			this->power = SHRINK_AOE_POWER;
 			this->efficiency = SHRINK_AOE_EFFIC;
-		} else if (base_spell == runtime.ShrinkEnemyAOEMast) {
+		} else if (base_spell == Runtime::GetMagicEffect("ShrinkEnemyAOEMast")) {
 			// ShrinkEnemyAOEMast
 			this->power = SHRINK_AOE_MASTER_POWER;
 			this->efficiency = SHRINK_AOE_MASTER_EFFIC;
-		}
-		else if (base_spell == runtime.ShrinkBolt) {
+		} else if (base_spell == Runtime::GetMagicEffect("ShrinkBolt")) {
 			// ShrinkBolt
 			this->power = SHRINK_BOLT_POWER;
 			this->efficiency = SHRINK_BOLT_EFFIC;
-		}
-		else if (base_spell == runtime.ShrinkStorm) {
+		} else if (base_spell == Runtime::GetMagicEffect("ShrinkStorm")) {
 			// ShrinkBolt
 			this->power = SHRINK_STORM_POWER;
 			this->efficiency = SHRINK_STORM_EFFIC;
 		}
 	}
 
-	bool ShrinkFoe::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.ShrinkEnemy || effect == runtime.ShrinkEnemyAOE || effect == runtime.ShrinkEnemyAOEMast || effect == runtime.ShrinkBolt || effect == runtime.ShrinkStorm);
-	}
-
 	void ShrinkFoe::OnUpdate() {
 		auto caster = GetCaster();
-		
-
 		if (!caster) {
 			return;
 		}
@@ -64,17 +56,37 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
+		auto& Persist = Persistent::GetSingleton();
 		float SizeDifference = 1.0;
+		float bonus = 1.0;
+		float balancemodebonus = 1.0;
+		float shrink = this->power;
+		float gainpower = this->efficiency;
 
-		if (this->power >= 18.00)
-		{	auto& Persist = Persistent::GetSingleton();
+		if (this->power >= 18.00) {
 			auto actor_data = Persist.GetData(target);
 			actor_data->half_life = 0.25; // Faster shrink, less smooth.
-			SizeDifference = clamp(1.0, 8.0, (get_visual_scale(caster)/get_visual_scale(target))/2);
+			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 3.0f);
+		} else if (this->power >= 10.0) {
+			auto actor_data = Persist.GetData(target);
+			actor_data->half_life = 0.50; // Faster shrink, less smooth.
+			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 3.0f);
 		}
-		
-		bool has_smt = caster->HasMagicEffect(Runtime::GetSingleton().SmallMassiveThreat);
-		TransferSize(caster, target, IsDualCasting(), this->power * SizeDifference, this->efficiency, has_smt);
+
+		if (target->IsDead()) {
+			bonus = 2.5;
+			gainpower *= 0.20;
+		}
+
+		if (caster->formID == 0x14 && SizeManager::GetSingleton().BalancedMode() == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
+			balancemodebonus = 2.0;
+		}
+
+		bool has_smt = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
+		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
+			return; // Disallow shrinking Essentials
+		}
+		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus, gainpower * balancemodebonus, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			Dispel();
 		}

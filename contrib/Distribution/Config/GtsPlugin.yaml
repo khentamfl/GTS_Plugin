@@ -1,6 +1,7 @@
 debug:
   logLevel: info
   flushLevel: trace
+  profile: false
 
 frame:
   initDelay: 0
@@ -17,30 +18,3 @@ tremor:
   # Min/max scale points, this is just used for the powerAt dosen't min actual min/max
   maxScale: 30.0
   minScale: 0.0
-
-sound:
-  # This is the sound descriptor for the footsteps/jumps
-  lFootstepL: "GTS.esp|1E93AB"
-  lFootstepR: "GTS.esp|1E93AD"
-  lJumpLand: "GTS.esp|183F43"
-  # XL sounds
-  xlFootstepL: "GTS.esp|271EF4"
-  xlFootstepR: "GTS.esp|271EF4"
-  xlRumbleL: "GTS.esp|36A06D"
-  xlRumbleR: "GTS.esp|36A06D"
-  xlSprintL: "GTS.esp|319060"
-  xlSprintR: "GTS.esp|319060"
-  # XXL Sounds
-  xxlFootstepL: "GTS.esp|16FB25"
-  xxlFootstepR: "GTS.esp|16FB25"
-
-spellEffects:
-  # IDs for spell effects
-  SmallMassiveThreat: "GTS.esp|1A2568"
-
-explosions:
-  # IDs for explosion effects
-  footstepExplosion: "GTS.esp|035C81"
-
-perks:
-  hhBonus: "GTS.esp|271EF1"

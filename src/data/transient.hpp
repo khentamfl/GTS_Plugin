@@ -10,24 +10,20 @@ namespace Gts {
 	struct TempActorData {
 		float base_height;
 		float base_volume;
-		float last_hh_adjustment;
-		float total_hh_adjustment;
 		float base_walkspeedmult;
 		float char_weight;
 		float shoe_weight;
-		bool has_hhBonus_perk;
-		bool is_teammate;
+		float fall_start;
+		float last_set_fall_start;
+		float health_boost;
+		float carryweight_boost;
+		float basehp;
 
-		inline bool wearing_hh() {
-			return fabs(last_hh_adjustment) > 1e-5;
-		}
-		inline float get_hh_bonus_factor() {
-			if (wearing_hh() && has_hhBonus_perk) {
-				return 1.5;// + shoe_weight/10.0 + char_weight/260;
-			} else {
-				return 1.0;
-			}
-		}
+		bool is_teammate;
+		bool can_do_vore;
+		bool can_be_crushed;
+		bool dragon_was_eaten;
+		bool can_be_vored;
 	};
 
 	class Transient : public EventListener {
@@ -37,6 +33,7 @@ namespace Gts {
 			TempActorData* GetData(TESObjectREFR* object);
 			TempActorData* GetActorData(Actor* actor);
 
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;

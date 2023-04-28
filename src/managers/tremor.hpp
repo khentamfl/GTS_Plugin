@@ -1,18 +1,18 @@
 #pragma once
 // Module that handles footsteps
 
-#include "managers/impact.hpp"
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class TremorManager {
+	class TremorManager : public EventListener {
 		public:
 			[[nodiscard]] static TremorManager& GetSingleton() noexcept;
 
-			void OnImpact(const Impact& impact);
-			inline bool GetFP();
+			virtual std::string DebugName() override;
+			virtual void OnImpact(const Impact& impact) override;
 	};
 }

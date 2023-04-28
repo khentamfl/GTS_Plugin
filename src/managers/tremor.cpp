@@ -1,17 +1,18 @@
 #include "managers/tremor.hpp"
 #include "managers/impact.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
-#include "data/transient.hpp"
+#include "managers/highheel.hpp"
 #include "scale/scale.hpp"
 #include "Config.hpp"
 #include "node.hpp"
-#include "util.hpp"
 
 
 using namespace SKSE;
 using namespace RE;
 using namespace Gts;
+using namespace std;
 
 namespace {
 	enum Formula {
@@ -34,15 +35,8 @@ namespace Gts {
 		return instance;
 	}
 
-	inline bool TremorManager::GetFP() {
-		auto playercamera = PlayerCamera::GetSingleton();
-		if (!playercamera) {
-			return false;
-		}
-		if (playercamera->currentState == playercamera->cameraStates[CameraState::kFirstPerson]) {
-    		return true;
-		} 
-		return false;
+	std::string TremorManager::DebugName() {
+		return "TremorManager";
 	}
 
 	void TremorManager::OnImpact(const Impact& impact) {
@@ -50,12 +44,17 @@ namespace Gts {
 			return;
 		}
 		auto actor = impact.actor;
+		auto player = PlayerCharacter::GetSingleton();
+		auto& persist = Persistent::GetSingleton();
 
 		float tremor_scale;
+
+		if (actor->formID != 0x14) {
+			float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)) * 0.20);
+			tremor_scale = persist.npc_tremor_scale * (sizedifference + 0.50);
+		}
 		if (actor->formID == 0x14) {
-			tremor_scale = Persistent::GetSingleton().tremor_scale * (0.965 + get_visual_scale(actor) * 0.035);
-		} else {
-			tremor_scale = Persistent::GetSingleton().npc_tremor_scale * (0.95 + get_visual_scale(actor) * 0.05);
+			tremor_scale = persist.tremor_scale;// * (0.95 + get_visual_scale(actor) * 0.025);
 		}
 
 		if (tremor_scale < 1e-5) {
@@ -63,21 +62,25 @@ namespace Gts {
 		}
 
 		float scale = impact.effective_scale;
-		if (!actor->IsSwimming()) {
-			if (actor->IsSprinting()) {
+		if (!actor->AsActorState()->IsSwimming()) {
+			if (actor->AsActorState()->IsSprinting()) {
 				scale *= 1.25; // Sprinting makes you seem bigger
-			} else if (actor->IsSneaking()) {
-				scale *= 0.55; // Sneaking makes you seem quieter
-			} else if (actor->IsWalking()) {
-				scale *= 0.85; // Walking makes you seem quieter
 			}
-			Foot foot_kind = impact.kind;
-			if (foot_kind == Foot::JumpLand) {
+			if (actor->AsActorState()->IsWalking()) {
+				scale *= 0.65; // Walking makes you seem quieter
+			}
+			if (actor->IsSneaking()) {
+				scale *= 0.55; // Sneaking makes you seem quieter
+			}
+			FootEvent foot_kind = impact.kind;
+			if (foot_kind == FootEvent::JumpLand) {
 				scale *= 2.0; // Jumping makes you seem bigger
 			}
-			auto actor_data = Transient::GetSingleton().GetData(actor);
-			if (actor_data) {
-				scale *= actor_data->get_hh_bonus_factor();
+
+			scale *= 1.4;
+
+			if (HighHeelManager::IsWearingHH(actor) && Runtime::HasPerkTeam(actor, "hhBonus")) {
+				scale *= 1.1;
 			}
 
 			for (NiAVObject* node: impact.nodes) {
@@ -176,28 +179,27 @@ namespace Gts {
 				float duration = power * tremor_scale * 0.5;
 				duration = smootherstep(0.2, 1.2, duration);
 
-				auto& runtime = Runtime::GetSingleton();
-				bool pcEffects = runtime.PCAdditionalEffects ? runtime.NPCSizeEffects->value >= 1.0 : true;
+				bool pcEffects = Runtime::GetBoolOr("PCAdditionalEffects", true);
 
 				if (actor->formID == 0x14 && pcEffects) {
+
 					if (intensity > 0.01 && duration > 0.01) {
-						if (GetFP())
-						{
+						if (IsFirstPerson()) {
 							intensity *= 0.075; // Shake effects are weaker when in first person
 						}
-						//log::info("Intensity is: {}", intensity);
+						//log::info("Shaking camera for: {}, Intensity: {}, Duration: {}, scale: {}, tremor_scale: {}", actor->GetDisplayFullName(), intensity, duration, scale, tremor_scale);
 						shake_camera(actor, intensity, duration);
 
 						float left_shake = intensity;
 						float right_shake = intensity;
 						if (actor->formID == 0x14) {
 							switch (foot_kind) {
-								case Foot::Left:
-								case Foot::Front:
+								case FootEvent::Left:
+								case FootEvent::Front:
 									right_shake = 0.0;
 									break;
-								case Foot::Right:
-								case Foot::Back:
+								case FootEvent::Right:
+								case FootEvent::Back:
 									left_shake = 0.0;
 									break;
 							}
@@ -206,21 +208,22 @@ namespace Gts {
 					}
 				}
 
-				bool npcEffects = runtime.NPCSizeEffects ? runtime.NPCSizeEffects->value >= 1.0 : true;
+				bool npcEffects = Runtime::GetBoolOr("NPCSizeEffects", true);
 				if (actor->formID != 0x14 && npcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
+
 						shake_camera(actor, intensity, duration);
 
 						float left_shake = intensity;
 						float right_shake = intensity;
 						if (actor->formID == 0x14) {
 							switch (foot_kind) {
-								case Foot::Left:
-								case Foot::Front:
+								case FootEvent::Left:
+								case FootEvent::Front:
 									right_shake = 0.0;
 									break;
-								case Foot::Right:
-								case Foot::Back:
+								case FootEvent::Right:
+								case FootEvent::Back:
 									left_shake = 0.0;
 									break;
 							}

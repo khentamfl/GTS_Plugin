@@ -18,14 +18,13 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-			static bool StartEffect(EffectSetting* effect);
-
 			ExplosiveGrowth(ActiveEffect* effect);
 
 			virtual void DoGrowth(Actor* actor, float value);
-			virtual void DoShrink(Actor* actor, float value);
+			virtual void DoShrink(Actor* actor);
 		private:
 			float power = 0.0;
+			bool AllowStacking = true;
 			float grow_limit = 1.0;
 			float growth_time = 0.0;
 			float RequiredSizeChange = 0.0;

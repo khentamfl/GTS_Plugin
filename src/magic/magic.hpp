@@ -1,6 +1,8 @@
 #pragma once
 // Module that handles footsteps
 #include "events.hpp"
+#include "data/runtime.hpp"
+#include "profiler.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -68,15 +70,58 @@ namespace Gts {
 			bool hasDuration = false;
 	};
 
+	class MagicFactoryBase {
+		public:
+			virtual Magic* MakeNew(ActiveEffect* effect) const = 0;
+	};
+
+	template<class MagicCls>
+	class MagicFactory : public MagicFactoryBase {
+		public:
+			virtual Magic* MakeNew(ActiveEffect* effect)  const override;
+	};
+	template<class MagicCls>
+	Magic* MagicFactory<MagicCls>::MakeNew(ActiveEffect* effect) const {
+		if (effect) {
+			return new MagicCls(effect);
+		} else {
+			return nullptr;
+		}
+	}
+
 	class MagicManager : public EventListener {
 		public:
+
+
 			[[nodiscard]] static MagicManager& GetSingleton() noexcept;
 
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 			virtual void Reset() override;
+			virtual void DataReady() override;
 
 			void ProcessActiveEffects(Actor* actor);
+
+			template<class MagicCls>
+			void RegisterMagic(std::string_view tag) {
+				auto magic = Runtime::GetMagicEffect(tag);
+				if (magic) {
+					this->factories.try_emplace(magic,new MagicFactory<MagicCls>());
+					return;
+				}
+			}
+
+			void PrintReport();
 		private:
 			std::map<ActiveEffect*, std::unique_ptr<Magic> > active_effects;
+			std::unordered_map<EffectSetting*, std::unique_ptr<MagicFactoryBase> > factories;
+
+			std::uint64_t numberOfEffects = 0;
+			std::uint64_t numberOfOurEffects = 0;
 	};
+
+	template<class MagicCls>
+	void RegisterMagic(std::string_view tag) {
+		MagicManager::GetSingleton().RegisterMagic(tag);
+	}
 }

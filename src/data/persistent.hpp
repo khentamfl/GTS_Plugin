@@ -3,7 +3,6 @@
 
 #include "events.hpp"
 #include "scale/modscale.hpp"
-#include "util.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -26,13 +25,25 @@ namespace Gts {
 		float bonus_max_size;
 		float smt_run_speed;
 
+		float NormalDamage; // 0
+		float SprintDamage; // 1
+		float FallDamage; // 2
+		float HHDamage; // 3
+		float SizeVulnerability;
+
+		float SizeReserve;
+
+		float AllowHitGrowth;
+
+		float scaleOverride;
+
 		ActorData();
 		ActorData(Actor* actor);
 	};
 
 	struct CameraCollisions {
-		bool enable_trees = false;
-		bool enable_debris = false;
+		bool enable_trees = true;
+		bool enable_debris = true;
 		bool enable_static = true;
 		bool enable_terrain = true;
 		bool enable_actor = false;
@@ -41,6 +52,7 @@ namespace Gts {
 
 	class Persistent : public Gts::EventListener {
 		public:
+			virtual std::string DebugName() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 
@@ -49,15 +61,29 @@ namespace Gts {
 			static void OnGameSaved(SKSE::SerializationInterface* serde);
 			static void OnGameLoaded(SKSE::SerializationInterface* serde);
 
+			ActorData* GetActorData(Actor& actor);
 			ActorData* GetActorData(Actor* actor);
 			ActorData* GetData(TESObjectREFR* refr);
+			ActorData* GetData(TESObjectREFR& refr);
 
 
 
 			bool highheel_correction = true;
+			bool highheel_furniture = false;
 			bool is_speed_adjusted = true;
+			bool vore_allowplayervore = false;
+			bool vore_combatonly = true;
+			bool devourment_compatibility = false;
+			bool allow_feetracking = true;
+			bool Vore_Ai = true;
+			bool Stomp_Ai = true;
+			bool Sandwich_Ai = true;
+			bool delete_actors = true;
+			bool hostile_toggle = true;
 			float tremor_scale = 1.0;
 			float npc_tremor_scale = 1.0;
+			float size_related_damage_mult = 1.0;
+			float progression_multiplier = 0.55;
 			SoftPotential speed_adjustment {
 				.k = 0.125, // 0.125
 				.n = 0.86, // 0.86

@@ -4,7 +4,6 @@
 #include "scale/scale.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
-#include "util.hpp"
 #include "managers/GtsSizeManager.hpp"
 
 namespace Gts {
@@ -12,14 +11,7 @@ namespace Gts {
 		return "Gigantism";
 	}
 
-	bool Gigantism::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		//log::info("Starting Gigantism Effect");
-		return effect == runtime.EnchGigantism;
-	}
-
 	void Gigantism::OnStart() {
-		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
 
 		if (!caster) {
@@ -34,20 +26,10 @@ namespace Gts {
 	}
 
 	void Gigantism::OnUpdate() {
-		//auto caster = GetCaster();
-		//auto& runtime = Runtime::GetSingleton();
-		//if (!caster) {
-		//	return;
-		//}
-		//float GigantismPower = GetActiveEffect()->magnitude;
-		//SizeManager::GetSingleton().SetEnchantmentBonus(caster, GigantismPower);
-		//float GetCount = runtime.EnchGigantism->effectLoadedCount;
-		//log::info("GigantismPower is: {}", GetActiveEffect()->magnitude);
 	}
 
 
 	void Gigantism::OnFinish() {
-		auto& runtime = Runtime::GetSingleton();
 		auto caster = GetCaster();
 
 		if (!caster) {

@@ -1,21 +1,27 @@
-#include "Config.hpp"
-#include "managers/GrowthTremorManager.hpp"
-#include "managers/GtsSizeManager.hpp"
-#include "managers/GtsManager.hpp"
-#include "managers/highheel.hpp"
-#include "managers/Attributes.hpp"
-#include "managers/InputManager.hpp"
-#include "managers/hitmanager.hpp"
+#include "managers/animation/AnimationManager.hpp"
+#include "managers/gamemode/GameModeManager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
+#include "managers/damage/AccurateDamage.hpp"
+#include "managers/ai/headtracking.hpp"
+#include "managers/RipClothManager.hpp"
+#include "managers/GtsSizeManager.hpp"
+#include "scale/scalespellmanager.hpp"
+#include "managers/InputManager.hpp"
+#include "managers/GtsManager.hpp"
+#include "managers/Attributes.hpp"
+#include "managers/hitmanager.hpp"
+#include "managers/highheel.hpp"
 #include "data/persistent.hpp"
+#include "managers/Rumble.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
-#include "data/time.hpp"
+#include "utils/debug.hpp"
 #include "scale/scale.hpp"
-#include "scale/scalespellmanager.hpp"
-#include "util.hpp"
-#include "node.hpp"
+#include "data/time.hpp"
+#include "profiler.hpp"
+#include "Config.hpp"
 #include "timer.hpp"
+#include "node.hpp"
 #include <vector>
 #include <string>
 
@@ -25,14 +31,55 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
-		if (!actor) {
+	void FixActorFade(Actor* actor) {
+		Profilers::Start("Manager: Fade Fix");
+		if (get_visual_scale(actor) < 1.5) {
 			return;
 		}
-		//if (actor->formID==0x14) {
-		//log::info("Player's VS:{}, VS_V: {}", persi_actor_data->visual_scale, persi_actor_data->visual_scale_v);
-		//}
-		if (!actor->Is3DLoaded()) {
+		if ((actor->formID == 0x14 ||actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			auto node = find_node(actor, "skeleton_female.nif");
+			NiAVObject* skeleton = node;
+			if (node) {
+				BSFadeNode* fadenode = node->AsFadeNode();
+				if (fadenode) {
+					if (fadenode->GetRuntimeData().currentFade < 1.0f) {
+						fadenode->GetRuntimeData().currentFade = 1.0f;
+					}
+				}
+			}
+		}
+		Profilers::Stop("Manager: Fade Fix");
+	}
+
+	void ProcessExperiment(Actor* actor) {
+		auto aiProc = actor->GetActorRuntimeData().currentProcess;
+		auto Combat = actor->GetActorRuntimeData().combatController;
+		bhkCharacterController* CharController = aiProc->GetCharController();
+		//const auto bhkCharacterController = CharController&;
+		if (CharController) {
+			bhkCharacterController& Controller = *CharController;
+			actor->UpdateFadeSettings(CharController);
+			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
+			CharController->scale = get_visual_scale(actor);
+			CharController->actorHeight = 1.82 * get_visual_scale(actor);
+			actor->UpdateCharacterControllerSimulationSettings(Controller);
+		}
+
+		auto high = aiProc->high;
+		high->locationOffsetByWaterPoint.z = 95 * get_visual_scale(actor);
+		if (Combat) {
+			auto CombatTarget = Combat->targetHandle.get().get();
+			if (CombatTarget) {
+				NiPoint3 Location = CombatTarget->GetPosition();
+				Location.z -= 2400 * get_visual_scale(actor);
+				aiProc->SetHeadtrackTarget(actor, Location);
+			}
+		}
+	}
+
+	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+		Profilers::Start("Manager: update_height");
+		if (!actor) {
 			return;
 		}
 		if (!trans_actor_data) {
@@ -78,8 +125,10 @@ namespace {
 					);
 			}
 		}
+		Profilers::Stop("Manager: update_height");
 	}
 	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
+		Profilers::Start("Manager: apply_height");
 		if (!actor) {
 			return;
 		}
@@ -92,30 +141,31 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		float scale = get_scale(actor);
+		float scale = get_natural_scale(actor);//get_scale(actor);
 		if (scale < 0.0) {
 			return;
 		}
 		float visual_scale = persi_actor_data->visual_scale;
-		float change_requirement = Runtime::GetSingleton().sizeLimit->value + persi_actor_data->bonus_max_size;
+
+		float scaleOverride = persi_actor_data->scaleOverride;
+		if (scaleOverride >= 1e-4) {
+			visual_scale = scaleOverride;
+		}
 
 		// Is scale correct already?
 		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
 			return;
 		}
-
 		// Is scale too small
 		if (visual_scale <= 1e-5) {
 			return;
 		}
-
-		// log::trace("Scale changed from {} to {}. Updating",scale, visual_scale);
 		set_scale(actor, visual_scale);
+		Profilers::Stop("Manager: apply_height");
 	}
 
-
-
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
+		Profilers::Start("Manager: apply_speed");
 		if (!Persistent::GetSingleton().is_speed_adjusted) {
 			return;
 		}
@@ -131,280 +181,58 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-
-		float scale = persi_actor_data->visual_scale;
+		float scale = get_visual_scale(actor);
 		if (scale < 1e-5) {
-			//log::info("!SCALE IS < 1e-5! {}", actor->GetDisplayFullName());
 			return;
 		}
-		SoftPotential& speed_adjustment = Persistent::GetSingleton().speed_adjustment;
-		SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
-		
-		SoftPotential speed_adjustment_others { // Even though it is named 'sprint', it is used for all other movement states
-				.k = 0.142, // 0.125
-				.n = 0.82, // 0.86
-				.s = 1.90, // 1.12
-				.o = 1.0,
-				.a = 0.0,  //Default is 0
+		SoftPotential getspeed {
+			.k = 0.142, // 0.125
+			.n = 0.82, // 0.86
+			.s = 1.90, // 1.12
+			.o = 1.0,
+			.a = 0.0,  //Default is 0
 		};
 
-		SoftPotential speed_adjustment_walk { // Used for normal walk, it has faster animation speed for some reason, so it needs a custom one
-				.k = 0.265, // 0.125
-				.n = 1.11, // 0.86
-				.s = 2.0, // 1.12
-				.o = 1.0,
-				.a = 0.0,  //Default is 0
-		};
-
-		float speed_mult_others = soft_core(scale, speed_adjustment_others); // For all other movement types
-		float speed_mult_walk = soft_core(scale, speed_adjustment_walk); // For Walking
-
-		float speed_mult = soft_core(scale, speed_adjustment);
-		float MS_mult = soft_core(scale, MS_adjustment);
-		float Bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
-		float MS_mult_sprint_limit = clamp(0.65, 1.0, MS_mult); // For sprint
-		float MS_mult_limit = clamp(0.750, 1.0, MS_mult); // For Walk speed
-		float Multy = clamp(0.70, 1.0, MS_mult); // Additional 30% ms
-			//float WalkSpeedLimit = clamp(0.33, 1.0, MS_mult);
-		float WalkSpeedLimit = clamp(0.02, 1.0, MS_mult);
-		float PerkSpeed = 1.0;
-
-		static Timer timer = Timer(0.10); // Run every 0.10s or as soon as we can
-		float IsFalling = Runtime::GetSingleton().IsFalling->value;
-
-		if (actor->formID == 0x14 && IsJumping(actor) && IsFalling == 0.0) {
-				Runtime::GetSingleton().IsFalling->value = 1.0;
-		}
-		else if (actor->formID == 0x14 && !IsJumping(actor) && IsFalling >= 1.0) {
-				Runtime::GetSingleton().IsFalling->value = 0.0;
-		}
-		if (actor->HasPerk(Runtime::GetSingleton().BonusSpeedPerk))
-			{
-				PerkSpeed = clamp(0.80, 1.0, speed_mult_walk); // Used as a bonus 20% MS if PC has perk.
-			}
-			
-		if (!actor->IsRunning()) {
-			persi_actor_data->anim_speed = speed_mult_others;//MS_mult;	
-		}
-		else if (actor->IsRunning() && !actor->IsSprinting()) {
-			persi_actor_data->anim_speed = speed_mult_walk * PerkSpeed;
-		} 
-		
-		
-		if (timer.ShouldRunFrame()) {
-				if (scale < 1.0) {
-					actor->SetActorValue(ActorValue::kSpeedMult, trans_actor_data->base_walkspeedmult * scale);
-				} else
-				{
-					actor->SetActorValue(ActorValue::kSpeedMult, ((trans_actor_data->base_walkspeedmult * (Bonus/3 + 1.0)))/ (MS_mult)/MS_mult_limit/Multy/PerkSpeed);
-				}
-		}
-		// Experiement
-		if (false) {
-			auto& rot_speed = actor->currentProcess->middleHigh->rotationSpeed;
-			if (fabs(rot_speed.x) > 1e-5 || fabs(rot_speed.y) > 1e-5 || fabs(rot_speed.z) > 1e-5) {
-				log::info("{} rotationSpeed: {},{},{}", actor_name(actor), rot_speed.x,rot_speed.y,rot_speed.z);
-				actor->currentProcess->middleHigh->rotationSpeed.x *= speed_mult;
-				actor->currentProcess->middleHigh->rotationSpeed.y *= speed_mult;
-				actor->currentProcess->middleHigh->rotationSpeed.z *= speed_mult;
-			}
-			auto& animationDelta = actor->currentProcess->high->animationDelta;
-			if (fabs(animationDelta.x) > 1e-5 || fabs(animationDelta.y) > 1e-5 || fabs(animationDelta.z) > 1e-5) {
-				log::info("{} animationDelta: {},{},{}", actor_name(actor), animationDelta.x,animationDelta.y,animationDelta.z);
-			}
-			auto& animationAngleMod = actor->currentProcess->high->animationAngleMod;
-			if (fabs(animationAngleMod.x) > 1e-5 || fabs(animationAngleMod.y) > 1e-5 || fabs(animationAngleMod.z) > 1e-5) {
-				log::info("{} animationAngleMod: {},{},{}", actor_name(actor), animationAngleMod.x,animationAngleMod.y,animationAngleMod.z);
-			}
-			auto& pathingCurrentRotationSpeed = actor->currentProcess->high->pathingCurrentRotationSpeed;
-			if (fabs(pathingCurrentRotationSpeed.x) > 1e-5 || fabs(pathingCurrentRotationSpeed.y) > 1e-5 || fabs(pathingCurrentRotationSpeed.z) > 1e-5) {
-				log::info("{} pathingCurrentRotationSpeed: {},{},{}", actor_name(actor), pathingCurrentRotationSpeed.x,pathingCurrentRotationSpeed.y,pathingCurrentRotationSpeed.z);
-			}
-			auto& pathingDesiredRotationSpeed = actor->currentProcess->high->pathingDesiredRotationSpeed;
-			if (fabs(pathingDesiredRotationSpeed.x) > 1e-5 || fabs(pathingDesiredRotationSpeed.y) > 1e-5 || fabs(pathingDesiredRotationSpeed.z) > 1e-5) {
-				log::info("{} pathingDesiredRotationSpeed: {},{},{}", actor_name(actor), pathingDesiredRotationSpeed.x,pathingDesiredRotationSpeed.y,pathingDesiredRotationSpeed.z);
-			}
-		}
+		float speedmultcalc = soft_core(scale, getspeed); // For all other movement types
+		float bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
+		float perkspeed = 1.0;
+		persi_actor_data->anim_speed = speedmultcalc*perkspeed;//MS_mult;
+		Profilers::Stop("Manager: apply_speed");
 	}
 
 	void update_effective_multi(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
+		Profilers::Start("Manager: update_effective_multi");
 		if (!actor) {
 			return;
 		}
 		if (!persi_actor_data) {
 			return;
 		}
-		auto small_massive_threat = Runtime::GetSingleton().SmallMassiveThreat;
-		if (!small_massive_threat) {
-			return;
-		}
-		if (actor->HasMagicEffect(small_massive_threat)) {
+		if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
 			persi_actor_data->effective_multi = 2.0;
 		} else {
 			persi_actor_data->effective_multi = 1.0;
 		}
+		Profilers::Stop("Manager: update_effective_multi");
 	}
 
 	void update_actor(Actor* actor) {
+		Profilers::Start("Manager: update_actor");
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 		update_effective_multi(actor, saved_data, temp_data);
 		update_height(actor, saved_data, temp_data);
+		Profilers::Stop("Manager: update_actor");
 	}
 
 	void apply_actor(Actor* actor, bool force = false) {
+		Profilers::Start("Manager: apply_actor");
 		//log::info("Apply_Actor name is {}", actor->GetDisplayFullName());
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
 		apply_speed(actor, saved_data, temp_data, force);
-	}
-
-	enum ChosenGameMode {
-		None,
-		Grow,
-		Shrink,
-		Standard,
-		Quest,
-	};
-
-
-	void ApplyGameMode(Actor* actor, const ChosenGameMode& game_mode, const float& GrowthRate, const float& ShrinkRate )  {
-		const float EPS = 1e-7;
-		if (game_mode != ChosenGameMode::None) {
-			float natural_scale = get_natural_scale(actor);
-			float Scale = get_visual_scale(actor);
-			float maxScale = get_max_scale(actor);
-			float targetScale = get_target_scale(actor);
-			switch (game_mode) {
-				case ChosenGameMode::Grow: {
-					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
-					if (fabs(GrowthRate) < EPS) {
-						return;
-					}
-					if ((targetScale + modAmount) < maxScale) {
-						mod_target_scale(actor, modAmount);
-					} else if (targetScale < maxScale) {
-						set_target_scale(actor, maxScale);
-					} // else let spring handle it
-					break;
-				}
-				case ChosenGameMode::Shrink: {
-					float modAmount = Scale * -(0.00025 + (ShrinkRate * 0.25)) * 60 * Time::WorldTimeDelta();
-					if (fabs(ShrinkRate) < EPS) {
-						return;
-					}
-					if ((targetScale + modAmount) > natural_scale) {
-						mod_target_scale(actor, modAmount);
-					} else if (targetScale > natural_scale) {
-						set_target_scale(actor, natural_scale);
-					} // Need to have size restored by someone
-					break;
-				}
-				case ChosenGameMode::Standard: {
-					if (actor->IsInCombat()) {
-						float modAmount = Scale * (0.00008 + (GrowthRate * 0.17)) * 60 * Time::WorldTimeDelta();
-						if (fabs(GrowthRate) < EPS) {
-							return;
-						}
-						if ((targetScale + modAmount) < maxScale) {
-							mod_target_scale(actor, modAmount);
-						} else if (targetScale < maxScale) {
-							set_target_scale(actor, maxScale);
-						} // else let spring handle it
-					} else {
-						float modAmount = Scale * -(0.00029 + (ShrinkRate * 0.34)) * 60 * Time::WorldTimeDelta();
-						if (fabs(ShrinkRate) < EPS) {
-							return;
-						}
-						if ((targetScale + modAmount) > natural_scale) {
-							mod_target_scale(actor, modAmount);
-						} else if (targetScale > natural_scale) {
-							set_target_scale(actor, natural_scale);
-						} // Need to have size restored by someone
-					}
-				}
-				case ChosenGameMode::Quest: {
-					float modAmount = -ShrinkRate * Time::WorldTimeDelta();
-					if (fabs(ShrinkRate) < EPS) {
-						return;
-					}
-					if ((targetScale + modAmount) > natural_scale) {
-						mod_target_scale(actor, modAmount);
-					} else if (targetScale > natural_scale) {
-						set_target_scale(actor, natural_scale);
-					} // Need to have size restored by somethig
-				}
-			}
-		}
-	}
-
-	void GameMode(Actor* actor)  {
-		auto& runtime = Runtime::GetSingleton();
-
-		ChosenGameMode gameMode = ChosenGameMode::None;
-		float growthRate = 0.0;
-		float shrinkRate = 0.0;
-		int game_mode_int = 0;
-		float QuestStage = runtime.MainQuest->GetCurrentStageID();
-		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
-		float scale = get_visual_scale(actor);
-		float BonusShrink = 1.0;
-		float bonus = 1.0;
-		if (BalanceMode >= 2.0)
-		{
-			BonusShrink = (2.0 * (scale * 2));
-		}
-
-		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
-			if (actor->formID == 0x14 && !actor->IsInCombat()) {
-				game_mode_int = 4; // QuestMode
-				if (QuestStage >= 40 && QuestStage < 60) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.5);
-				} else if (QuestStage >= 60 && QuestStage < 70) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.0);
-				} else if (BalanceMode >= 2.0 && QuestStage > 70)
-				{
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.0);
-				}
-
-
-				if (actor->HasMagicEffect(runtime.EffectGrowthPotion)) {
-					shrinkRate *= 0.0;
-				} else if (actor->HasMagicEffect(runtime.ResistShrinkPotion)) {
-					shrinkRate *= 0.25;
-				}
-
-				if (fabs(shrinkRate) <= 1e-6) {
-					game_mode_int = 0; // Nothing to do
-				}
-			}
-		}
-		
-		else if (QuestStage > 100.0 && BalanceMode <= 1.0) {
-			if (actor->formID == 0x14) {
-				if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion)) {
-					bonus = scale * 0.25 + 0.75;
-				}
-				game_mode_int = runtime.ChosenGameMode->value;
-				growthRate = runtime.GrowthModeRate->value * bonus;
-				shrinkRate = runtime.ShrinkModeRate->value;
-
-			} else if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || actor->IsInFaction(runtime.FollowerFaction))) {
-				if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion)) {
-					bonus = scale * 0.25 + 0.75;
-				}
-				game_mode_int = runtime.ChosenGameModeNPC->value;
-				growthRate = runtime.GrowthModeRateNPC->value * bonus;
-				shrinkRate = runtime.ShrinkModeRateNPC->value;
-			}
-		} 
-
-		if (game_mode_int >=0 && game_mode_int <= 4) {
-			gameMode = static_cast<ChosenGameMode>(game_mode_int);
-		}
-
-		ApplyGameMode(actor, gameMode, growthRate, shrinkRate);
+		Profilers::Stop("Manager: apply_actor");
 	}
 }
 
@@ -421,33 +249,71 @@ GtsManager& GtsManager::GetSingleton() noexcept {
 	return instance;
 }
 
+std::string GtsManager::DebugName() {
+	return "GtsManager";
+}
+
 // Poll for updates
 void GtsManager::Update() {
-	auto& runtime = Runtime::GetSingleton();
+	Profilers::Start("Manager: Update()");
 	for (auto actor: find_actors()) {
 		if (!actor) {
-			continue;
+			return;
 		}
-		if (!actor->Is3DLoaded()) {
-			continue;
+
+		FixActorFade(actor);
+
+		auto& accuratedamage = AccurateDamage::GetSingleton();
+		auto& sizemanager = SizeManager::GetSingleton();
+
+
+		if (actor->formID == 0x14 || IsTeammate(actor)) {
+			if (sizemanager.GetPreciseDamage()) {
+				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 1000, 1.0);
+				ClothManager::GetSingleton().CheckRip();
+			}
+			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes
 		}
-		//log::info("Found Actor {}", actor->GetDisplayFullName());
-		update_actor(actor);
-		apply_actor(actor);
-		GameMode(actor);
-		HitManager::GetSingleton().Update();
-		static Timer timer = Timer(3.00);
-		if (timer.ShouldRunFrame()) { //Try to not overload for size checks
-			ScaleSpellManager::GetSingleton().CheckSize(actor);
-			//if (actor->IsInFaction(runtime.FollowerFaction) || actor->IsPlayerTeammate()) {
-				//RandomVoreAttempt(actor); 
-			//}
+		if (Runtime::GetBool("PreciseDamageOthers")) {
+			if (actor->formID != 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
+				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 1000, 1.0);
 			}
 		}
+
+		float current_health_percentage = GetHealthPercentage(actor);
+
+		update_actor(actor);
+		apply_actor(actor);
+
+		SetHealthPercentage(actor, current_health_percentage);
+
+		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
+		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
+			if (timer.ShouldRunFrame()) {
+				ScaleSpellManager::GetSingleton().CheckSize(actor);
+			}
+		}
+	}
+	Profilers::Stop("Manager: Update()");
+}
+
+void GtsManager::OnAddPerk(const AddPerkEvent& evt) {
+	if (evt.actor->formID == 0x14) {
+		if (evt.perk == Runtime::GetPerk("TrueGiantess")) {
+			CallHelpMessage();
+		}
+		if (evt.perk == Runtime::GetPerk("FastShrink") && !Runtime::HasSpell(evt.actor, "ShrinkBolt")) {
+			Runtime::AddSpell(evt.actor, "ShrinkBolt");
+		}
+		if (evt.perk == Runtime::GetPerk("LethalShrink") && !Runtime::HasSpell(evt.actor, "ShrinkStorm")) {
+			Runtime::AddSpell(evt.actor, "ShrinkStorm");
+		}
+	}
 }
 
 void GtsManager::reapply(bool force) {
 	// Get everyone in loaded AI data and reapply
+	Profilers::Start("Manager: reapply");
 	auto actors = find_actors();
 	for (auto actor: actors) {
 		if (!actor) {
@@ -458,8 +324,10 @@ void GtsManager::reapply(bool force) {
 		}
 		reapply_actor(actor, force);
 	}
+	Profilers::Stop("Manager: reapply");
 }
 void GtsManager::reapply_actor(Actor* actor, bool force) {
+	Profilers::Start("Manager: reapply_actor");
 	// Reapply just this actor
 	if (!actor) {
 		return;
@@ -468,33 +336,5 @@ void GtsManager::reapply_actor(Actor* actor, bool force) {
 		return;
 	}
 	apply_actor(actor, force);
+	Profilers::Stop("Manager: reapply_actor");
 }
-
-void GtsManager::RandomVoreAttempt(Actor* caster) {
-	for (auto actor: find_actors()) {
-	if (actor->formID == 0x14 || !actor->Is3DLoaded() || actor->IsDead())
-	{
-		return;
-	}
-		auto& runtime = Runtime::GetSingleton();
-		float Gigantism = 1.0 - SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-		int Requirement = (25 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
-		int random = rand() % Requirement;
-		int decide_chance = 1;
-		float castersize = get_visual_scale(caster);
-		float targetsize = get_visual_scale(actor);
-		float sizedifference = castersize / targetsize;
-		if (random <= decide_chance) {
-			if (actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference >= 4.0)
-					{
-						caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(runtime.StartVore, false, actor, 1.00f, false, 0.0f, caster);
-						log::info("{} was eaten by {}", actor->GetDisplayFullName(), caster->GetDisplayFullName());
-					}
-				else if (actor != caster && get_distance_to_actor(actor, caster) <= 128 * get_visual_scale(caster) && sizedifference < 4.0) {
-						caster->NotifyAnimationGraph("IdleActivatePickupLow");
-					}
-				}
-			}
-		}
-
-

@@ -82,8 +82,13 @@ namespace {
 		bool result = false;
 		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
-			set_ref_scale(actor, scale);
-			result = true; // Ref scale cannot fail
+			//set_ref_scale(actor, scale);
+			if (actor->formID == 0x14) {
+				result = set_npcnode_scale(actor, scale);
+			} else if (actor->formID != 0x14) {
+				result = set_model_scale(actor, scale);
+			}
+			//result = true; // Ref scale cannot fail
 			actor_data->visual_scale = scale;
 			actor_data->visual_scale_v = 0.0;
 			actor_data->target_scale = scale;
@@ -94,16 +99,28 @@ namespace {
 		if (!actor) {
 			return 0.0;
 		}
-		auto result = get_ref_scale(actor);
+		auto result = get_model_scale(actor); // If not player, get Model
+		if (actor->formID == 0x14) {
+			result = get_npcnode_scale(actor); // else get node
+		}
+		//auto result = get_ref_scale(actor);
 		return result;
 	}
 	bool ModRefScale(StaticFunctionTag*, Actor* actor, float amt) {
 		bool result = false;
 		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
-			auto scale = get_ref_scale(actor) + amt;
-			set_ref_scale(actor, scale);
-			result = true;
+			auto scale = get_model_scale(actor) + amt;
+			if (actor->formID == 0x14) { // If player, mod Node
+				scale = get_npcnode_scale(actor);
+				result = set_npcnode_scale(actor, scale);
+			} else if (actor->formID != 0x14) { // Else mod Model
+				scale = get_model_scale(actor);
+				result = set_model_scale(actor, scale);
+			}
+
+			//set_ref_scale(actor, scale);
+			//result = true;
 			actor_data->visual_scale = scale;
 			actor_data->visual_scale_v = 0.0;
 			actor_data->target_scale = scale;

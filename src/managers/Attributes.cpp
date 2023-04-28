@@ -1,12 +1,10 @@
-#include "managers/camera.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
+#include "managers/highheel.hpp"
 #include "scale/scale.hpp"
-#include "util.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
-#include "data/transient.hpp"
 #include "magic/effects/common.hpp"
 #include "timer.hpp"
 
@@ -14,6 +12,8 @@ using namespace SKSE;
 using namespace RE;
 using namespace REL;
 using namespace Gts;
+
+// TODO move away from polling
 
 namespace {
 	void SetINIFloat(std::string_view name, float value) {
@@ -26,209 +26,99 @@ namespace {
 		}
 	}
 
-	void UpdatePlayer(Actor* Player, bool& BlockMessage) {
-		// Reapply Player Only
-
-		if (!Player) {
-			return;
+	bool HasGrowthPerk(Actor* actor) {
+		if (!Runtime::HasPerkTeam(actor, "GrowthOfStrength")) {
+			return false;
 		}
-		if (!Player->Is3DLoaded()) {
-			return;
+		if (Runtime::HasMagicEffect(actor, "explosiveGrowth1")||Runtime::HasMagicEffect(actor, "explosiveGrowth2")||Runtime::HasMagicEffect(actor, "explosiveGrowth3")) {
+			return true;
 		}
-		auto& runtime = Runtime::GetSingleton();
-		auto sizemanager = SizeManager::GetSingleton();
-		static Timer timer = Timer(0.33);
-		
+		return false;
+	}
 
-		auto SmallMassiveThreat = runtime.SmallMassiveThreat;
+	void ManagePerkBonuses(Actor* actor) {
+		auto& SizeManager = SizeManager::GetSingleton();
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
+		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
 
-		float AllowTimeChange = runtime.AllowTimeChange->value;
-		float bonusHPMultiplier = runtime.bonusHPMultiplier->value;
+		float BaseGlobalDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 0);
+		float BaseSprintDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 1);
+		float BaseFallDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 2);
 
-		float bonusCarryWeightMultiplier = runtime.bonusCarryWeightMultiplier->value;
-		float bonusJumpHeightMultiplier = runtime.bonusJumpHeightMultiplier->value;
-		float bonusDamageMultiplier = runtime.bonusDamageMultiplier->value;
-		float bonusSpeedMultiplier = runtime.bonusSpeedMultiplier->value;
+		float ExpectedGlobalDamage = 1.0;
+		float ExpectedSprintDamage = 1.0;
+		float ExpectedFallDamage = 1.0;
+		float HighHeels = 1.0 + (HighHeelManager::GetSingleton().GetBaseHHOffset(actor).Length()/100);
 
-		auto ExplGrowthP1 = runtime.explosiveGrowth1;
-		auto ExplGrowthP2 = runtime.explosiveGrowth2;
-		auto ExplGrowthP3 = runtime.explosiveGrowth3;
+		//log::info("High Heels Length: {}", HighHeels);
+		///Normal Damage
+		if (Runtime::HasPerkTeam(actor, "Cruelty")) {
+			ExpectedGlobalDamage += 0.35/BalancedMode;
+		}
+		if (Runtime::HasPerkTeam(actor, "RealCruelty")) {
+			ExpectedGlobalDamage += 0.65/BalancedMode;
+		}
+		if (HasGrowthPerk(actor)) {
+			ExpectedGlobalDamage *= (1.0 + (0.35/BalancedMode));
+		}
 
-		float size = get_target_scale(Player);
+		ExpectedGlobalDamage *= HighHeels; // Apply Base HH damage.
 
-		if (size > 0) {
+		///Sprint Damage
+		if (Runtime::HasPerkTeam(actor, "SprintDamageMult1")) {
+			ExpectedSprintDamage += 0.25/BalancedMode;
+		}
+		if (Runtime::HasPerkTeam(actor, "SprintDamageMult2")) {
+			ExpectedSprintDamage += 1.0/BalancedMode;
+		}
+		///Fall Damage
+		if (Runtime::HasPerkTeam(actor, "MightyLegs")) {
+			ExpectedFallDamage += 0.5/BalancedMode;
+		}
+		///Buff by enchantment
+		ExpectedGlobalDamage *= gigantism;
+		ExpectedSprintDamage *= gigantism;
+		ExpectedFallDamage *= gigantism;
 
-			if (AllowTimeChange == 0.00) {
-				BoostSpeedMulti(Player, bonusSpeedMultiplier);
-			}
-			if (timer.ShouldRunFrame()) {
-			BoostHP(Player, bonusHPMultiplier/BalancedMode);
-
-			Augmentation(Player, BlockMessage);
-
-			BoostCarry(Player, bonusCarryWeightMultiplier/BalancedMode);
-
-			BoostJump(Player, bonusJumpHeightMultiplier);
-
-			BoostAttackDmg(Player, bonusDamageMultiplier);
-
-			if (!Player->HasPerk(runtime.StaggerImmunity) && size > 1.33)
-			{
-				Player->AddPerk(runtime.StaggerImmunity);
-				return; 
-			}
-			else if (size < 1.33 && Player->HasPerk(runtime.StaggerImmunity))
-				{
-				Player->RemovePerk(runtime.StaggerImmunity);
-				}
-			}
+		if (BaseGlobalDamage != ExpectedGlobalDamage) {
+			SizeManager.SetSizeAttribute(actor, ExpectedGlobalDamage, 0);
+		}
+		if (BaseSprintDamage != ExpectedSprintDamage) {
+			SizeManager.SetSizeAttribute(actor, ExpectedSprintDamage, 1);
+		}
+		if (BaseFallDamage != ExpectedFallDamage) {
+			SizeManager.SetSizeAttribute(actor, ExpectedFallDamage, 2);
 		}
 	}
 
-	void UpdateNPC(Actor* npc) {
-		if (!npc) {
+	void BoostJump(Actor* actor) {
+		// TODO: Write a real hook inside skyrims GETINI FLOAT
+		if (actor->formID != 0x14) {
 			return;
 		}
-		if (npc->formID == 0x14) {
-			return;
+		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) -1.0;
+		float scale = get_visual_scale(actor);
+		if (scale <= 0) {
+			scale = 1.0;
 		}
-		if (!npc->Is3DLoaded()) {
-			return;
+		if (power <= 0) {
+			power = 0;
 		}
-		static Timer timer = Timer(0.33);
-		auto& runtime = Runtime::GetSingleton();
-		float size = get_target_scale(npc);
-		if (timer.ShouldRunFrame()) {
-			if (npc->IsPlayerTeammate() || npc->IsInFaction(runtime.FollowerFaction)) {
-				BoostHP(npc, 1.0);
-				BoostCarry(npc, 1.0);
-			}
-			if (!npc->HasPerk(runtime.StaggerImmunity) && size > 1.33) {
-				npc->AddPerk(runtime.StaggerImmunity);
-			}
-			else if (size < 1.33 && npc->HasPerk(runtime.StaggerImmunity)) {
-				npc->RemovePerk(runtime.StaggerImmunity);
-			}
-			BoostAttackDmg(npc, 1.0);
-		}
+		SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
+		SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
 	}
 
-	void BoostCarry(Actor* actor, float power) {
-		auto actor_data = Persistent::GetSingleton().GetData(actor);
-		if (!actor_data) {
-			return;
-		}
-		float last_carry_boost = actor_data->bonus_carry;
-		const ActorValue av = ActorValue::kCarryWeight;
-		float max_stamina = actor->GetPermanentActorValue(ActorValue::kStamina);
-		float visual_scale = get_target_scale(actor);
-		float native_scale = get_natural_scale(actor);
-		float scale = visual_scale;//native_scale;
-		float base_av = actor->GetBaseActorValue(av);
-
-		float boost = 0.0;
-		if (scale > 1.0) {
-			boost = (base_av + max_stamina * 0.5 -50.0) * ((scale-1.0) * power);
-		} else {
-			// Linearly decrease carry weight
-			//   at scale=0.0 we adjust by -base_av
-			boost = base_av * (scale-1.0);
-		};
-		actor->RestoreActorValue(ACTOR_VALUE_MODIFIER::kTemporary, av, boost - last_carry_boost);
-		actor_data->bonus_carry = boost;
-	}
-
-	void BoostJump(Actor* actor, float power) {
-		float scale = get_target_scale(actor);
-
-		if (fabs(power) > 1e-5) { // != 0.0
-			SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * (scale - 1) * power));
-			SetINIFloat("fJumpFallHeightMin", 600.0 + ( 600.0 * (scale - 1) * power));
-		} else {
-			SetINIFloat("fJumpHeightMin", 76.0);
-			SetINIFloat("fJumpFallHeightMin", 600.0 + ((-scale + 1.0) * 300 * power));
-		}
-	}
-
-	void BoostAttackDmg(Actor* actor, float power) {
-		float scale = get_target_scale(actor);
-		float bonus = scale * power;
-		actor->SetBaseActorValue(ActorValue::kAttackDamageMult, bonus);
-	}
-
-	void BoostSpeedMulti(Actor* actor, float power) {
-		auto runtime = Runtime::GetSingleton();
-		float scale = get_target_scale(actor);
-		auto actor_data = Transient::GetSingleton().GetData(actor);
-		float SMTBonus = Persistent::GetSingleton().GetData(actor)->smt_run_speed/3.0;
-		float base_speed = actor_data->base_walkspeedmult;
-		float bonusSpeedMax = runtime.bonusSpeedMax->value;
-		float speedEffectiveSize = (bonusSpeedMax / (100 * power)) + 1.0;
-		if (speedEffectiveSize > scale)	{
-			speedEffectiveSize = scale;
-		}
-
-		static Timer timer = Timer(0.15); // Run every 0.5s or as soon as we can
-		if (timer.ShouldRunFrame()) {
-			if (scale > 1) {
-				actor->SetActorValue(ActorValue::kSpeedMult, 100 + ((speedEffectiveSize - 1) * (100 * power)));
-			} else if (scale < 1) {
-				actor->SetActorValue(ActorValue::kSpeedMult, 100 * (scale * 0.90 +0.10));
-			} else {
-				actor->SetActorValue(ActorValue::kSpeedMult, 100);
-			}
-		}
-	}
-
-	void BoostHP(Actor* actor, float power) {
-		auto actor_data = Persistent::GetSingleton().GetData(actor);
-		if (!actor_data) {
-			return;
-		}
-		float last_hp_boost = actor_data->bonus_hp;
-		const ActorValue av = ActorValue::kHealth;
-		float visual_scale = get_target_scale(actor);
-		float native_scale = get_natural_scale(actor);
-		float scale = visual_scale;///native_scale;
-
-		float base_av = actor->GetBaseActorValue(av);
-		float current_tempav = actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary];
-
-		float boost;
-		if (scale > 1.0) {
-			boost = base_av * (scale - 1.0) * power;
-		} else {
-			// Linearly decrease such that:
-			//   boost = -base_av when scale==0.0
-			//   This way we shouldn't kill them by scaling them
-			//   to zero
-			boost = base_av * (scale - 1.0);
-		}
-
-		float current_health_percentage = GetHealthPercentage(actor);
-
-		actor->healthModifiers.modifiers[ACTOR_VALUE_MODIFIERS::kTemporary] = current_tempav - last_hp_boost + boost;
-
-		actor_data->bonus_hp = boost;
-
-		SetHealthPercentage(actor, current_health_percentage);
-		// Fill up the new healthbar
-
-	}
-
-	void Augmentation(Actor* Player, bool& BlockMessage) {
-		auto& runtime = Runtime::GetSingleton();
-		auto AugmentationPerk = runtime.NoSpeedLoss;
+	void Augmentation(Actor* Player, bool& BlockMessage) { // Manages SMT bonus speed
+		// TODO: Calc on demand rather than poll
 		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
 		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		if (Player->IsSprinting() && Player->HasPerk(AugmentationPerk) && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			ActorAttributes->smt_run_speed += 0.001480 * Gigantism;
+		if (Player->AsActorState()->IsSprinting() && Runtime::HasPerk(Player, "NoSpeedLoss") && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
+			ActorAttributes->smt_run_speed += 0.005400 * Gigantism;
 			if (ActorAttributes->smt_run_speed < 1.0) {
 				BlockMessage = false;
 			}
-		} else if (Player->IsSprinting() && Player->HasMagicEffect(runtime.SmallMassiveThreat)) {
-			ActorAttributes->smt_run_speed += 0.000960 * Gigantism;
+		} else if (Player->AsActorState()->IsSprinting() && Runtime::HasMagicEffect(Player, "SmallMassiveThreat")) {
+			ActorAttributes->smt_run_speed += 0.003600 * Gigantism;
 			if (ActorAttributes->smt_run_speed < 1.0) {
 				BlockMessage = false;
 			}
@@ -253,6 +143,26 @@ namespace {
 		}
 		//log::info("SMT Bonus: {}", ActorAttributes->smt_run_speed);
 	}
+	// Todo unify the functions
+	void UpdateActors(Actor* actor, bool& BlockMessage) {
+		if (!actor) {
+			return;
+		}
+		static Timer timer = Timer(0.05);
+		static Timer jumptimer = Timer (0.20);
+		float size = get_visual_scale(actor);
+
+		if (jumptimer.ShouldRunFrame()) {
+			BoostJump(actor);
+		}
+		if (timer.ShouldRunFrame()) { // Run once per 0.05 sec
+			ManagePerkBonuses(actor);
+
+			if (actor->formID == 0x14) {
+				Augmentation(actor, BlockMessage); // Manages SMT bonuses
+			}
+		}
+	}
 }
 
 
@@ -262,19 +172,218 @@ namespace Gts {
 		return instance;
 	}
 
+	std::string AttributeManager::DebugName() {
+		return "AttributeManager";
+	}
+
 	void AttributeManager::Update() {
+		auto pc = PlayerCharacter::GetSingleton();
+		auto healthEff = Runtime::GetMagicEffect("HealthBoost");
 		for (auto actor: find_actors()) {
-			if (actor->formID == 0x14) {
-				UpdatePlayer(actor, this->BlockMessage);
-			} else {
-				UpdateNPC(actor);
+			UpdateActors(actor, this->BlockMessage);
+		}
+	}
+
+
+	void AttributeManager::OverrideSMTBonus(float Value) {
+		auto ActorAttributes = Persistent::GetSingleton().GetData(PlayerCharacter::GetSingleton());
+		if (ActorAttributes) {
+			ActorAttributes->smt_run_speed = Value;
+		}
+	}
+
+	float AttributeManager::GetAttributeBonus(Actor* actor, ActorValue av) {
+		if (!actor) {
+			return 1.0;
+		}
+
+		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
+		float scale = get_visual_scale(actor);
+		if (scale <= 0) {
+			scale = 1.0;
+		}
+		switch (av) {
+			case ActorValue::kHealth: {
+				float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
+				float power = (bonusHPMultiplier/BalancedMode);
+				if (scale > 1.0) {
+					return power*scale + 1.0 - power;
+				} else {
+					return scale;
+				}
+			}
+			case ActorValue::kCarryWeight: {
+				float bonusCarryWeightMultiplier = Runtime::GetFloatOr("bonusCarryWeightMultiplier", 1.0);
+				float power = (bonusCarryWeightMultiplier/BalancedMode);
+				if (scale > 1.0) {
+					return power*scale + 1.0 - power;
+				} else {
+					return scale;
+				}
+			}
+			case ActorValue::kSpeedMult: {
+				// TODO: Rework to something more succient that garuentees 1xspeed@1xscale
+				SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
+				float MS_mult = soft_core(scale, MS_adjustment);
+				float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
+				float Multy = clamp(0.70, 1.0, MS_mult);
+				float speed_mult_walk = soft_core(scale, this->speed_adjustment_walk);
+				float bonusspeed = clamp(0.90, 1.0, speed_mult_walk);
+				float PerkSpeed = 1.0;
+				auto actorData = Persistent::GetSingleton().GetData(actor);
+				float Bonus = 1.0;
+				if (actorData) {
+					Bonus = actorData->smt_run_speed;
+				}
+				if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
+					PerkSpeed = clamp(0.80, 1.0, speed_mult_walk);
+				}
+
+				float power = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
+				if (scale > 1.0) {
+					return power;
+				} else {
+					return scale;
+				}
+			}
+			case ActorValue::kAttackDamageMult: {
+				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
+					scale += 3.0;
+				}
+				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
+				float damage_storage = 1.0 + ((bonusDamageMultiplier) * scale - 1.0);
+				if (scale > 1.0) {
+					return damage_storage;
+				} else {
+					return scale;
+				}
+			}
+			case ActorValue::kJumpingBonus: {
+				float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
+				float defaultjump = 1.0 + (1.0 * (scale - 1) * power);
+				if (scale > 1.0) {
+					return defaultjump;
+				} else {
+					return scale;
+				}
+			}
+			default: {
+				return 1.0;
 			}
 		}
 	}
 
-	void AttributeManager::OverrideBonus(float Value) {
-		auto ActorAttributes = Persistent::GetSingleton().GetActorData(PlayerCharacter::GetSingleton());
-		ActorAttributes->smt_run_speed = Value;
+	float AttributeManager::AlterGetAv(Actor* actor, ActorValue av, float originalValue) {
+		float bonus = 1.0;
+
+		auto& attributes = AttributeManager::GetSingleton();
+		switch (av) {
+			case ActorValue::kCarryWeight: {
+				bonus = attributes.GetAttributeBonus(actor, av);
+				auto transient = Transient::GetSingleton().GetData(actor);
+				if (transient != nullptr) {
+					transient->carryweight_boost = (originalValue * bonus) - originalValue;
+				}
+				break;
+			}
+			case ActorValue::kMovementNoiseMult: {
+				float scale = get_visual_scale(actor);
+				if (scale <= 0) {
+					scale = 1.0;
+				}
+				bonus = scale;
+				break;
+			}
+		}
+
+		return originalValue * bonus;
 	}
 
+	float AttributeManager::AlterGetBaseAv(Actor* actor, ActorValue av, float originalValue) {
+		float finalValue = originalValue;
+
+		switch (av) {
+			case ActorValue::kHealth: {
+				float bonus = 1.0;
+				auto& attributes = AttributeManager::GetSingleton();
+				float scale = get_visual_scale(actor);
+				if (scale <= 0) {
+					scale = 1.0;
+				}
+
+				if (scale > 1.0) {
+					bonus = attributes.GetAttributeBonus(actor, av);
+				} else {
+					//Linearly decrease such that:
+					//at zero scale health=0.0
+					bonus = scale;
+				}
+
+				float tempav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av); // Do temp boosts here too
+				float permav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);  //Do perm boosts here too
+				finalValue = originalValue * bonus + (bonus - 1.0)*(tempav + permav);
+
+				//if (actor->formID == 0x14) {
+				//log::info("Health originalValue: {}", originalValue);
+				//log::info("Health tempav: {}", tempav);
+				//log::info("Health permav: {}", permav);
+				//log::info("Health bonus: {}", bonus);
+				//log::info("Health finalValue: {}", finalValue);
+				auto transient = Transient::GetSingleton().GetData(actor);
+				if (transient) {
+					transient->health_boost = finalValue - originalValue;
+				}
+				//}
+			}
+		}
+
+		return finalValue;
+	}
+
+	float AttributeManager::AlterSetBaseAv(Actor* actor, ActorValue av, float originalValue) {
+		float finalValue = originalValue;
+
+		switch (av) {
+			case ActorValue::kHealth: {
+				auto transient = Transient::GetSingleton().GetData(actor);
+				if (transient) {
+					float lastEdit = transient->health_boost;
+					if (finalValue - lastEdit > 0.0) {
+						finalValue -= lastEdit;
+					}
+				}
+			}
+		}
+
+		return finalValue;
+	}
+
+	float AttributeManager::AlterGetPermenantAv(Actor* actor, ActorValue av, float originalValue) {
+		return originalValue;
+	}
+
+	float AttributeManager::AlterGetAvMod(float originalValue, Actor* actor, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
+		return originalValue;
+	}
+
+	float AttributeManager::AlterMovementSpeed(Actor* actor, const NiPoint3& direction) {
+		float bonus = 1.0;
+		static Timer soundtimer = Timer(0.80);
+		if (actor) {
+			auto& attributes = AttributeManager::GetSingleton();
+			bonus = attributes.GetAttributeBonus(actor, ActorValue::kSpeedMult);
+			float volume = 0.0;
+			float origSpeed = direction.Length();
+			if (actor->formID != 0x14) {
+				float sizedifference = get_visual_scale(actor)/get_visual_scale(PlayerCharacter::GetSingleton());
+				volume = bonus * origSpeed * sizedifference / 250;
+			} else {
+				volume = bonus * origSpeed / 250;
+			}
+			/*if (soundtimer.ShouldRunFrame()) {
+			        Runtime::PlaySound("RumbleWalkSound", actor, volume, 1.0);
+			   }*/
+		}
+		return bonus;
+	}
 }

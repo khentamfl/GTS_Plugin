@@ -9,28 +9,21 @@ namespace Gts {
 		return "Shrink";
 	}
 
-	bool Shrink::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.ShrinkSpell;
-	}
-
 	void Shrink::OnUpdate() {
 		const float BASE_POWER = 0.00360;
 		const float DUAL_CAST_BONUS = 2.0;
+		auto base_spell = GetBaseEffect();
 		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		}
-		float SkillMult = 1.0 + caster->GetActorValue(ActorValue::kAlteration) / 100;
+		float SkillMult = 1.0 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) / 100;
 
 		float power = BASE_POWER * SkillMult;
 
-		auto& runtime = Runtime::GetSingleton();
-
 		float bonus = 1.0;
-		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
-		{
-			bonus = get_target_scale(caster) * 0.25 + 0.75;
+		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
+			bonus = get_visual_scale(caster) * 0.25 + 0.75;
 		}
 
 		if (IsDualCasting()) {

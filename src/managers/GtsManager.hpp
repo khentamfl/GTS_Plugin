@@ -8,7 +8,6 @@
 
 #include "events.hpp"
 #include "node.hpp"
-#include "util.hpp"
 
 using namespace std;
 using namespace RE;
@@ -26,13 +25,14 @@ namespace Gts {
 			[[nodiscard]] static GtsManager& GetSingleton() noexcept;
 
 			float experiment = 1.0;
-			inline static bool balancemode = false;
 
+			virtual void OnAddPerk(const AddPerkEvent& evt) override;
+
+			virtual std::string DebugName() override;
 			virtual void Update() override;
 
 			// Reapply changes (used after reload events)
 			void reapply(bool force = true);
 			void reapply_actor(Actor* actor, bool force = true);
-			void RandomVoreAttempt(Actor* caster);
 	};
 }

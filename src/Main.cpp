@@ -4,22 +4,12 @@
 #include "data/plugin.hpp"
 
 #include "events.hpp"
-#include "magic/magic.hpp"
-#include "managers/highheel.hpp"
-#include "managers/GtsSizeManager.hpp"
-#include "managers/InputManager.hpp"
-#include "managers/Attributes.hpp"
-#include "managers/contact.hpp"
-#include "managers/RandomGrowth.hpp"
-#include "managers/GtsQuest.hpp"
-#include "managers/GtsManager.hpp"
-#include "managers/reloader.hpp"
-#include "managers/camera.hpp"
-#include "managers/hitmanager.hpp"
-#include "managers/vore.hpp"
+#include "managers/register.hpp"
+#include "UI/DebugAPI.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
+#include "spring.hpp"
 
 #include <stddef.h>
 #include <thread>
@@ -112,7 +102,7 @@ namespace {
 						break;
 					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 						// It is now safe to access form data.
-						ConsoleLog::GetSingleton()->Print("[GTSPlugin.dll]: [ Giantess Mod v 1.00_Test Version was succesfully initialized. Waiting for New Game/Save Load. ]");
+						Cprint("[GTSPlugin.dll]: [ Giantess Mod v 1.80_Test was succesfully initialized. Waiting for New Game/Save Load. ]");
 						EventDispatcher::DoDataReady();
 						break;
 					// Skyrim game events.
@@ -120,14 +110,14 @@ namespace {
 						// Data will be a boolean indicating whether the load was successful.
 						{
 							Plugin::SetInGame(true);
-							ConsoleLog::GetSingleton()->Print(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized, loaded and is working properly. ]");
+							Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
 						}
 						break;
 					case MessagingInterface::kNewGame: // Player starts a new game from main menu.
 						{
 							Plugin::SetInGame(true);
 							EventDispatcher::DoReset();
-							ConsoleLog::GetSingleton()->Print(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized, loaded and is working properly. ]");
+							Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
 						}
 						break;
 					case MessagingInterface::kPreLoadGame: // Player selected a game to load, but it hasn't loaded yet.
@@ -168,26 +158,14 @@ void InitializePapyrus() {
 }
 
 void InitializeEventSystem() {
+	EventDispatcher::AddListener(&DebugOverlayMenu::GetSingleton());
 	EventDispatcher::AddListener(&Runtime::GetSingleton()); // Stores spells, globals and other important data
 	EventDispatcher::AddListener(&Persistent::GetSingleton());
 	EventDispatcher::AddListener(&Transient::GetSingleton());
 
-	EventDispatcher::AddListener(&GtsManager::GetSingleton()); // Manages Game Mode, smooth size increase and animation & movement speed
-	EventDispatcher::AddListener(&SizeManager::GetSingleton()); // Manages Max Scale of everyone
-	EventDispatcher::AddListener(&HighHeelManager::GetSingleton()); // Applies high heels
-	EventDispatcher::AddListener(&CameraManager::GetSingleton()); // Edits the camera
-	EventDispatcher::AddListener(&ReloadManager::GetSingleton()); // Handles Skyrim Events
-
-	EventDispatcher::AddListener(&MagicManager::GetSingleton()); // Manages spells and size changes in general
-	EventDispatcher::AddListener(&Vore::GetSingleton()); // Manages vore
-
-	EventDispatcher::AddListener(&AttributeManager::GetSingleton()); // Adjusts most attributes
-	EventDispatcher::AddListener(&RandomGrowth::GetSingleton()); // Manages random growth perk
-	EventDispatcher::AddListener(&QuestManager::GetSingleton()); // Quest is currently empty and not needed
-	EventDispatcher::AddListener(&HitManager::GetSingleton()); // Hit Manager for handleing papyrus hit events
-
-	EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
-	EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
+	EventDispatcher::AddListener(&SpringManager::GetSingleton());
+	log::info("Adding Default Listeners");
+	RegisterManagers();
 }
 
 /**

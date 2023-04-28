@@ -10,9 +10,21 @@ namespace {
 	inline const auto ActorDataRecord = _byteswap_ulong('ACTD');
 	inline const auto ScaleMethodRecord = _byteswap_ulong('SCMD');
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
+	inline const auto HighHeelFurnitureRecord = _byteswap_ulong('HHFO');
+	inline const auto AllowPlayerVoreRecord = _byteswap_ulong('APVR');
+	inline const auto DevourmentCompatRecord = _byteswap_ulong('DVCR');
+	inline const auto FeetTrackingRecord = _byteswap_ulong('FTRD');
+	inline const auto VoreCombatOnlyRecord = _byteswap_ulong('VRCO');
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
 	inline const auto CamCollisions = _byteswap_ulong('CAMC');
+	inline const auto SizeDamageMult = _byteswap_ulong('SZDM');
+	inline const auto StompAiRecord = _byteswap_ulong('STAI');
+	inline const auto SandwichAiRecord = _byteswap_ulong('SWAI');
+	inline const auto VoreAiRecord = _byteswap_ulong('VRAI');
+	inline const auto ProgressionMult = _byteswap_ulong('PRMT');
+	inline const auto DeleteActors = _byteswap_ulong('DTAS');
+	inline const auto HostileToggle = _byteswap_ulong('HTTL');
 
 	const float DEFAULT_MAX_SCALE = 65535.0;
 	const float DEFAULT_HALF_LIFE = 1.0;
@@ -22,6 +34,10 @@ namespace Gts {
 	Persistent& Persistent::GetSingleton() noexcept {
 		static Persistent instance;
 		return instance;
+	}
+
+	std::string Persistent::DebugName() {
+		return "Persistent";
 	}
 
 	void Persistent::Reset() {
@@ -152,6 +168,77 @@ namespace Gts {
 							smt_run_speed = 0.0;
 						}
 
+						float NormalDamage; //0
+						if (version >= 6) {
+							serde->ReadRecordData(&NormalDamage, sizeof(NormalDamage));
+						} else {
+							NormalDamage = 0.0;
+						}
+						if (std::isnan(NormalDamage)) {
+							NormalDamage = 0.0;
+						}
+
+						float SprintDamage; //1
+						if (version >= 6) {
+							serde->ReadRecordData(&SprintDamage, sizeof(SprintDamage));
+						} else {
+							SprintDamage = 0.0;
+						}
+						if (std::isnan(SprintDamage)) {
+							SprintDamage = 0.0;
+						}
+
+						float FallDamage; //2
+						if (version >= 6) {
+							serde->ReadRecordData(&FallDamage, sizeof(FallDamage));
+						} else {
+							FallDamage = 0.0;
+						}
+						if (std::isnan(FallDamage)) {
+							FallDamage = 0.0;
+						}
+
+						float HHDamage; //3
+						if (version >= 6) {
+							serde->ReadRecordData(&HHDamage, sizeof(HHDamage));
+						} else {
+							HHDamage = 0.0;
+						}
+						if (std::isnan(HHDamage)) {
+							HHDamage = 0.0;
+						}
+
+						float SizeVulnerability;
+						if (version >= 6) {
+							serde->ReadRecordData(&SizeVulnerability, sizeof(SizeVulnerability));
+						} else {
+							SizeVulnerability = 0.0;
+						}
+						if (std::isnan(SizeVulnerability)) {
+							SizeVulnerability = 0.0;
+						}
+
+						float AllowHitGrowth;
+						if (version >= 6) {
+							serde->ReadRecordData(&AllowHitGrowth, sizeof(AllowHitGrowth));
+						} else {
+							AllowHitGrowth = 1.0;
+						}
+						if (std::isnan(AllowHitGrowth)) {
+							AllowHitGrowth = 0.0;
+						}
+
+						float SizeReserve;
+						if (version >= 6) {
+							serde->ReadRecordData(&SizeReserve, sizeof(SizeReserve));
+						} else {
+							SizeReserve = 0.0;
+						}
+						if (std::isnan(SizeReserve)) {
+							SizeReserve = 0.0;
+						}
+
+
 						float target_scale_v;
 						if (version >= 7) {
 							serde->ReadRecordData(&target_scale_v, sizeof(target_scale_v));
@@ -160,6 +247,16 @@ namespace Gts {
 						}
 						if (std::isnan(target_scale_v)) {
 							target_scale_v = 0.0;
+						}
+
+						float scaleOverride;
+						if (version >= 8) {
+							serde->ReadRecordData(&scaleOverride, sizeof(scaleOverride));
+						} else {
+							scaleOverride = -1.0;
+						}
+						if (std::isnan(scaleOverride)) {
+							scaleOverride = -1.0;
 						}
 
 						ActorData data = ActorData();
@@ -176,7 +273,15 @@ namespace Gts {
 						data.bonus_carry = bonus_carry;
 						data.bonus_max_size = bonus_max_size;
 						data.smt_run_speed = smt_run_speed;
+						data.NormalDamage = NormalDamage;
+						data.SprintDamage = SprintDamage;
+						data.FallDamage = FallDamage;
+						data.HHDamage = HHDamage;
+						data.SizeVulnerability = SizeVulnerability;
+						data.AllowHitGrowth = AllowHitGrowth;
+						data.SizeReserve = SizeReserve;
 						data.target_scale_v = target_scale_v;
+						data.scaleOverride = scaleOverride;
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
@@ -210,6 +315,46 @@ namespace Gts {
 				bool highheel_correction;
 				serde->ReadRecordData(&highheel_correction, sizeof(highheel_correction));
 				GetSingleton().highheel_correction = highheel_correction;
+			} else if (type == HighHeelFurnitureRecord) {
+				bool highheel_furniture;
+				serde->ReadRecordData(&highheel_furniture, sizeof(highheel_furniture));
+				GetSingleton().highheel_furniture = highheel_furniture;
+			} else if (type == AllowPlayerVoreRecord) {
+				bool vore_allowplayervore;
+				serde->ReadRecordData(&vore_allowplayervore, sizeof(vore_allowplayervore));
+				GetSingleton().vore_allowplayervore = vore_allowplayervore;
+			} else if (type == VoreCombatOnlyRecord) {
+				bool vore_combatonly;
+				serde->ReadRecordData(&vore_combatonly, sizeof(vore_combatonly));
+				GetSingleton().vore_combatonly = vore_combatonly;
+			} else if (type == DevourmentCompatRecord) {
+				bool devourment_compatibility;
+				serde->ReadRecordData(&devourment_compatibility, sizeof(devourment_compatibility));
+				GetSingleton().devourment_compatibility = devourment_compatibility;
+			} else if (type == FeetTrackingRecord) {
+				bool allow_feetracking;
+				serde->ReadRecordData(&allow_feetracking, sizeof(allow_feetracking));
+				GetSingleton().allow_feetracking = allow_feetracking;
+			} else if (type == StompAiRecord) {
+				bool Stomp_Ai;
+				serde->ReadRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
+				GetSingleton().Stomp_Ai = Stomp_Ai;
+			} else if (type == DeleteActors) {
+				bool delete_actors;
+				serde->ReadRecordData(&delete_actors, sizeof(delete_actors));
+				GetSingleton().delete_actors = delete_actors;
+			} else if (type == HostileToggle) {
+				bool hostile_toggle;
+				serde->ReadRecordData(&hostile_toggle, sizeof(hostile_toggle));
+				GetSingleton().hostile_toggle = hostile_toggle;
+			} else if (type == SandwichAiRecord) {
+				bool Sandwich_Ai;
+				serde->ReadRecordData(&Sandwich_Ai, sizeof(Sandwich_Ai));
+				GetSingleton().Sandwich_Ai = Sandwich_Ai;
+			} else if (type == VoreAiRecord) {
+				bool Vore_Ai;
+				serde->ReadRecordData(&Vore_Ai, sizeof(Vore_Ai));
+				GetSingleton().Vore_Ai = Vore_Ai;
 			} else if (type == IsSpeedAdjustedRecord) {
 				bool is_speed_adjusted;
 				serde->ReadRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
@@ -227,6 +372,14 @@ namespace Gts {
 					float o = 1.0;
 					GetSingleton().speed_adjustment.o = o;
 				}
+			} else if (type == ProgressionMult) {
+				float progression_multiplier;
+				serde->ReadRecordData(&progression_multiplier, sizeof(progression_multiplier));
+				GetSingleton().progression_multiplier = progression_multiplier;
+			} else if (type == SizeDamageMult) {
+				float size_related_damage_mult;
+				serde->ReadRecordData(&size_related_damage_mult, sizeof(size_related_damage_mult));
+				GetSingleton().size_related_damage_mult = size_related_damage_mult;
 			} else if (type == TremorScales) {
 				float tremor_scale;
 				serde->ReadRecordData(&tremor_scale, sizeof(tremor_scale));
@@ -265,7 +418,7 @@ namespace Gts {
 	void Persistent::OnGameSaved(SerializationInterface* serde) {
 		std::unique_lock lock(GetSingleton()._lock);
 
-		if (!serde->OpenRecord(ActorDataRecord, 7)) {
+		if (!serde->OpenRecord(ActorDataRecord, 8)) {
 			log::error("Unable to open actor data record to write cosave data.");
 			return;
 		}
@@ -286,7 +439,15 @@ namespace Gts {
 			float bonus_carry = data.bonus_carry;
 			float bonus_max_size = data.bonus_max_size;
 			float smt_run_speed = data.smt_run_speed;
+			float NormalDamage = data.NormalDamage;
+			float SprintDamage = data.SprintDamage;
+			float FallDamage = data.FallDamage;
+			float HHDamage = data.HHDamage;
+			float SizeVulnerability = data.SizeVulnerability;
+			float AllowHitGrowth = data.AllowHitGrowth;
+			float SizeReserve = data.SizeReserve;
 			float target_scale_v = data.target_scale_v;
+			float scaleOverride = data.scaleOverride;
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
@@ -301,7 +462,17 @@ namespace Gts {
 			serde->WriteRecordData(&bonus_carry, sizeof(bonus_carry));
 			serde->WriteRecordData(&bonus_max_size, sizeof(bonus_max_size));
 			serde->WriteRecordData(&smt_run_speed, sizeof(smt_run_speed));
+
+			serde->WriteRecordData(&NormalDamage, sizeof(NormalDamage));
+			serde->WriteRecordData(&SprintDamage, sizeof(SprintDamage));
+			serde->WriteRecordData(&FallDamage, sizeof(FallDamage));
+			serde->WriteRecordData(&HHDamage, sizeof(HHDamage));
+			serde->WriteRecordData(&SizeVulnerability, sizeof(SizeVulnerability));
+			serde->WriteRecordData(&AllowHitGrowth, sizeof(AllowHitGrowth));
+			serde->WriteRecordData(&SizeReserve, sizeof(SizeReserve));
+
 			serde->WriteRecordData(&target_scale_v, sizeof(target_scale_v));
+			serde->WriteRecordData(&scaleOverride, sizeof(scaleOverride));
 		}
 
 		if (!serde->OpenRecord(ScaleMethodRecord, 0)) {
@@ -320,6 +491,82 @@ namespace Gts {
 		bool highheel_correction = GetSingleton().highheel_correction;
 		serde->WriteRecordData(&highheel_correction, sizeof(highheel_correction));
 
+		if (!serde->OpenRecord(HighHeelFurnitureRecord, 0)) {
+			log::error("Unable to open high heel furniture record to write cosave data.");
+			return;
+		}
+
+		bool highheel_furniture = GetSingleton().highheel_furniture;
+		serde->WriteRecordData(&highheel_furniture, sizeof(highheel_furniture));
+
+
+		if (!serde->OpenRecord(AllowPlayerVoreRecord, 0)) {
+			log::error("Unable to open Allow Player Vore record to write cosave data.");
+			return;
+		}
+
+		bool vore_allowplayervore = GetSingleton().vore_allowplayervore;
+		serde->WriteRecordData(&vore_allowplayervore, sizeof(vore_allowplayervore));
+
+		if (!serde->OpenRecord(VoreCombatOnlyRecord, 0)) {
+			log::error("Unable to open Vore Combat Only record to write cosave data");
+			return;
+		}
+
+		bool vore_combatonly = GetSingleton().vore_combatonly;
+		serde->WriteRecordData(&vore_combatonly, sizeof(vore_combatonly));
+
+		if (!serde->OpenRecord(DevourmentCompatRecord, 0)) {
+			log::error("Unable to open Devourment Compatibility record to write cosave data");
+			return;
+		}
+
+		bool devourment_compatibility = GetSingleton().devourment_compatibility;
+		serde->WriteRecordData(&devourment_compatibility, sizeof(devourment_compatibility));
+
+		if (!serde->OpenRecord(FeetTrackingRecord, 1)) {
+			log::error("Unable to open Feet Tracking record to write cosave data.");
+			return;
+		}
+		bool allow_feetracking = GetSingleton().allow_feetracking;
+		serde->WriteRecordData(&allow_feetracking, sizeof(allow_feetracking));
+
+		if (!serde->OpenRecord(StompAiRecord, 1)) {
+			log::error("Unable to open Stomp Ai record to write cosave data.");
+			return;
+		}
+		bool Stomp_Ai = GetSingleton().Stomp_Ai;
+		serde->WriteRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
+
+		if (!serde->OpenRecord(HostileToggle, 1)) {
+			log::error("Unable to open Hostile Toggle Actors record to write cosave data");
+			return;
+		}
+		bool hostile_toggle = GetSingleton().hostile_toggle;
+		serde->WriteRecordData(&hostile_toggle, sizeof(hostile_toggle));
+
+		if (!serde->OpenRecord(DeleteActors, 1)) {
+			log::error("Unable to open Delete Actors record to write cosave data");
+			return;
+		}
+		bool delete_actors = GetSingleton().delete_actors;
+		serde->WriteRecordData(&delete_actors, sizeof(delete_actors));
+
+		if (!serde->OpenRecord(SandwichAiRecord, 1)) {
+			log::error("Unable to open Sandwich Ai record to write cosave data.");
+			return;
+		}
+		bool Sandwich_Ai = GetSingleton().Sandwich_Ai;
+		serde->WriteRecordData(&Sandwich_Ai, sizeof(Sandwich_Ai));
+
+		if (!serde->OpenRecord(VoreAiRecord, 1)) {
+			log::error("Unable to open Vore ai record to write cosave data.");
+			return;
+		}
+
+		bool Vore_Ai = GetSingleton().Vore_Ai;
+		serde->WriteRecordData(&Vore_Ai, sizeof(Vore_Ai));
+
 		if (!serde->OpenRecord(IsSpeedAdjustedRecord, 1)) {
 			log::error("Unable to open is speed adjusted record to write cosave data.");
 			return;
@@ -333,6 +580,20 @@ namespace Gts {
 		serde->WriteRecordData(&n, sizeof(n));
 		float s = GetSingleton().speed_adjustment.s;
 		serde->WriteRecordData(&s, sizeof(s));
+
+		if (!serde->OpenRecord(ProgressionMult, 0)) {
+			log::error("Unable to open Progression mult record to write cosave data");
+			return;
+		}
+		float progression_multiplier = GetSingleton().progression_multiplier;
+		serde->WriteRecordData(&progression_multiplier, sizeof(progression_multiplier));
+
+		if (!serde->OpenRecord(SizeDamageMult, 0)) {
+			log::error("Unable to open Damage mult record to write cosave data");
+			return;
+		}
+		float size_related_damage_mult = GetSingleton().size_related_damage_mult;
+		serde->WriteRecordData(&size_related_damage_mult, sizeof(size_related_damage_mult));
 
 		if (!serde->OpenRecord(TremorScales, 0)) {
 			log::error("Unable to open tremor scale record to write cosave data.");
@@ -365,7 +626,7 @@ namespace Gts {
 
 	ActorData::ActorData() {
 		// Uninit data
-		// Make sure it is set
+		// Make sure it is set elsewhere
 	}
 	ActorData::ActorData(Actor* actor) {
 		// DEFAULT VALUES FOR NEW ACTORS
@@ -381,30 +642,38 @@ namespace Gts {
 		this->bonus_carry = 0.0;
 		this->bonus_max_size = 0.0;
 		this->smt_run_speed = 0.0;
+		this->NormalDamage = 1.0;
+		this->SprintDamage = 1.0;
+		this->FallDamage = 1.0;
+		this->HHDamage = 1.0;
+		this->SizeVulnerability = 0.0;
+		this->AllowHitGrowth = 1.0;
+		this->SizeReserve = 0.0;
+		this->scaleOverride = -1.0;
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
-		std::unique_lock lock(this->_lock);
 		if (!actor) {
 			return nullptr;
 		}
-		auto key = actor->formID;
+		return this->GetActorData(*actor);
+	}
+	ActorData* Persistent::GetActorData(Actor& actor) {
+		std::unique_lock lock(this->_lock);
+		auto key = actor.formID;
 		ActorData* result = nullptr;
 		try {
 			result = &this->_actor_data.at(key);
 		} catch (const std::out_of_range& oor) {
 			// Add new
-			if (!actor) {
+			if (!actor.Is3DLoaded()) {
 				return nullptr;
 			}
-			if (!actor->Is3DLoaded()) {
-				return nullptr;
-			}
-			auto scale = get_scale(actor);
+			auto scale = get_scale(&actor);
 			if (scale < 0.0) {
 				return nullptr;
 			}
-			this->_actor_data.try_emplace(key, actor);
+			this->_actor_data.try_emplace(key, &actor);
 			result = &this->_actor_data.at(key);
 		}
 		return result;
@@ -414,7 +683,10 @@ namespace Gts {
 		if (!refr) {
 			return nullptr;
 		}
-		auto key = refr->formID;
+		return this->GetData(*refr);
+	}
+	ActorData* Persistent::GetData(TESObjectREFR& refr) {
+		auto key = refr.formID;
 		ActorData* result = nullptr;
 		try {
 			result = &this->_actor_data.at(key);
@@ -440,6 +712,14 @@ namespace Gts {
 			data->bonus_carry = 0.0;
 			data->bonus_max_size = 0.0;
 			data->smt_run_speed = 0.0;
+			data->NormalDamage = 1.0;
+			data->SprintDamage = 1.0;
+			data->FallDamage = 1.0;
+			data->HHDamage = 1.0;
+			data->SizeVulnerability = 0.0;
+			data->AllowHitGrowth = 1.0;
+			data->SizeReserve = 0.0;
+			data->scaleOverride = -1.0;
 		}
 	}
 }

@@ -8,7 +8,7 @@ jobs:
     runs-on: windows-2019
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Get cmake
         uses: lukka/get-cmake@latest
       - name: Add msbuild to PATH
@@ -18,33 +18,39 @@ jobs:
         uses: lukka/run-vcpkg@v10
         with:
           vcpkgGitCommitId: 3d8f78171a2a37d461077bf8d063256b63e25a4f
-      - name: Cache Build
-        id: cache-build
-        uses: actions/cache@v3
-        with:
-          path: build
-          key: ${{ runner.os }}-${{ hashFiles('README.md', 'CMakeList.txt', 'vcpkg.json', 'vcpkg-configuration.json') }}
       - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
         uses: lukka/run-cmake@v10
         with:
+          # configurePreset: build-release-msvc
+          # buildPreset: release-msvc
           configurePreset: build-release-withdebuginfo-msvc
           buildPreset: release-withdebuginfo-msvc
       - name: Copy Plugin
         shell: bash
         run: |
           mkdir contrib/Distribution/Plugin || exit 1
-          if [ -d contrib/Distribution/PluginDebug ]; then
-            if [ ! -d contrib/Distribution/PluginRelease ]; then
-              cp contrib/Distribution/PluginDebug/*.dll contrib/Distribution/Plugin/
-              cp contrib/Distribution/PluginDebug/*.pdb contrib/
-              rm -rf contrib/Distribution/PluginDebug
+          shopt -s nullglob
+          root_folder=""
+          if [ -d contrib/Distribution/PluginRelease ]; then
+            root_folder=contrib/Distribution/PluginRelease
+          elif [ -d contrib/Distribution/PluginDebug ]; then
+            root_folder=contrib/Distribution/PluginDebug
+          fi
+          if [ -n "${root_folder}" ]; then
+            cp "${root_folder}"/*.dll contrib/Distribution/Plugin/
+            ls -la "${root_folder}"/
+            ls -la "${root_folder}"/*.pdb
+            pdbs=( "${root_folder}"/*.pdb )
+            if [ "${#pdbs[@]}" -gt 0 ]; then
+              cp "${pdbs[@]}" contrib/
             fi
           fi
           if [ -d contrib/Distribution/PluginRelease ]; then
-            cp contrib/Distribution/PluginRelease/*.dll contrib/Distribution/Plugin/
-            cp contrib/Distribution/PluginRelease/*.pdb contrib/
-            rm -rf contrib/Distribution/PluginRelease
+            rm -rf "contrib/Distribution/PluginRelease"
+          elif [ -d contrib/Distribution/PluginDebug ]; then
+            rm -rf "contrib/Distribution/PluginDebug"
           fi
+          shopt -u nullglob
       - uses: actions/upload-artifact@v2
         name: Upload package
         with:

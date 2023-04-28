@@ -1,7 +1,6 @@
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "node.hpp"
-#include "util.hpp"
 #include "scale/modscale.hpp"
 
 using namespace SKSE;
@@ -41,9 +40,6 @@ namespace Gts {
 			if (!actor) {
 				return nullptr;
 			}
-			if (!actor->Is3DLoaded()) {
-				return nullptr;
-			}
 			TempActorData result;
 			auto bound = get_bound(actor);
 			if (!bound) {
@@ -55,6 +51,16 @@ namespace Gts {
 			}
 			float base_height_unit = bound->extents[2] * scale;
 			float base_height_meters = unit_to_meter(base_height_unit);
+			float fall_start = actor->GetPosition()[2];
+			float last_set_fall_start = fall_start;
+			float carryweight_boost = 0.0;
+			float health_boost = 0.0;
+			float basehp = 0.0;
+
+			bool can_do_vore = true;
+			bool can_be_crushed = true;
+			bool dragon_was_eaten = false;
+			bool can_be_vored = true;
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
@@ -62,9 +68,8 @@ namespace Gts {
 
 			result.base_height = base_height_meters;
 			result.base_volume = base_volume_meters;
-			result.last_hh_adjustment = 0.0;
-			result.total_hh_adjustment = 0.0;
-			result.base_walkspeedmult = actor->GetActorValue(ActorValue::kSpeedMult);
+
+			result.base_walkspeedmult = actor->AsActorValueOwner()->GetBaseActorValue(ActorValue::kSpeedMult);
 			auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
 			float shoe_weight = 1.0;
 			if (shoe) {
@@ -72,27 +77,27 @@ namespace Gts {
 			}
 			result.shoe_weight = shoe_weight;
 			result.char_weight = actor->GetWeight();
+			result.fall_start = fall_start;
+			result.last_set_fall_start = last_set_fall_start;
+			result.carryweight_boost = carryweight_boost;
+			result.health_boost = health_boost;
+			result.basehp = basehp;
+			result.can_do_vore = can_do_vore;
+			result.can_be_crushed = can_be_crushed;
+			result.dragon_was_eaten = dragon_was_eaten;
+			result.can_be_vored = can_be_vored;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
-
-			auto hhBonusPerk = Runtime::GetSingleton().hhBonus;
-			if (hhBonusPerk) {
-				result.has_hhBonus_perk = actor->HasPerk(hhBonusPerk);
-				if (!result.has_hhBonus_perk && result.is_teammate) {
-					auto player_data = this->GetData(PlayerCharacter::GetSingleton());
-					if (player_data) {
-						result.has_hhBonus_perk = player_data->has_hhBonus_perk;
-					}
-				}
-			} else {
-				result.has_hhBonus_perk = false;
-			}
 
 			this->_actor_data.try_emplace(key, result);
 		}
 		return &this->_actor_data[key];
 	}
 
+
+	std::string Transient::DebugName() {
+		return "Transient";
+	}
 
 	void Transient::Update() {
 		for (auto actor: find_actors()) {
@@ -117,19 +122,6 @@ namespace Gts {
 				data.char_weight = actor->GetWeight();
 
 				data.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
-
-				auto hhBonusPerk = Runtime::GetSingleton().hhBonus;
-				if (hhBonusPerk) {
-					data.has_hhBonus_perk = actor->HasPerk(hhBonusPerk);
-					if (!data.has_hhBonus_perk && data.is_teammate) {
-						auto player_data = this->GetData(PlayerCharacter::GetSingleton());
-						if (player_data) {
-							data.has_hhBonus_perk = player_data->has_hhBonus_perk;
-						}
-					}
-				} else {
-					data.has_hhBonus_perk = false;
-				}
 
 
 			} catch (const std::out_of_range& oor) {

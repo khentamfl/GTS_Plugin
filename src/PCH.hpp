@@ -116,5 +116,7 @@ using namespace REL::literals;
 namespace logger = SKSE::log;
 
 namespace util {
-    using SKSE::stl::report_and_fail;
+	using SKSE::stl::report_and_fail;
 }
+
+#include "util.hpp"

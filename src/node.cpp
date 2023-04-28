@@ -1,5 +1,4 @@
 #include "node.hpp"
-#include "util.hpp"
 #include <regex>
 #include "data/plugin.hpp"
 
@@ -338,6 +337,58 @@ namespace Gts {
 						node->DecRefCount();
 					}
 				});
+			}
+		}
+	}
+
+	std::vector<NiAVObject*> GetModelsForSlot(Actor* actor, BGSBipedObjectForm::BipedObjectSlot slot) {
+		enum
+		{
+			k3rd,
+			k1st,
+			kTotal
+		};
+
+		std::vector<NiAVObject*> result = {};
+		if (actor) {
+			auto armo = actor->GetWornArmor(slot);
+			if (armo) {
+				auto arma = armo->GetArmorAddonByMask(actor->GetRace(), slot);
+				if (arma) {
+					char addonString[MAX_PATH]{ '\0' };
+					arma->GetNodeName(addonString, actor, armo, -1);
+					for (auto first: {true, false}) {
+						auto node = find_node(actor, addonString, first);
+						if (node) {
+							result.push_back(node);
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	void VisitNodes(NiAVObject* root, std::function<bool(NiAVObject& a_obj)> a_visitor) {
+		std::deque<NiAVObject*> queue;
+		queue.push_back(root);
+
+		while (!queue.empty()) {
+			auto currentnode = queue.front();
+			queue.pop_front();
+			if (currentnode) {
+				auto ninode = currentnode->AsNode();
+				if (ninode) {
+					for (auto child: ninode->GetChildren()) {
+						// Bredth first search
+						queue.push_back(child.get());
+						// Depth first search
+						//queue.push_front(child.get());
+					}
+				}
+				if (!a_visitor(*currentnode)) {
+					return;
+				}
 			}
 		}
 	}

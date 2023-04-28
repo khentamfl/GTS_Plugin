@@ -1,8 +1,14 @@
 #include "data/runtime.hpp"
 #include "Config.hpp"
+#include <articuno/archives/ryml/ryml.h>
+#include <articuno/types/auto.h>
+#include "node.hpp"
 
+using namespace articuno;
+using namespace articuno::ryml;
 using namespace SKSE;
 using namespace RE;
+
 
 namespace {
 	template <class T>
@@ -19,6 +25,34 @@ namespace {
 		const auto dataHandler = RE::TESDataHandler::GetSingleton();
 		return dataHandler ? dataHandler->LookupForm<T>(relativeID, plugin) : nullptr;
 	}
+
+	struct RuntimeConfig {
+		std::unordered_map<std::string, std::string> artobjects;
+		std::unordered_map<std::string, std::string> sounds;
+		std::unordered_map<std::string, std::string> spellEffects;
+		std::unordered_map<std::string, std::string> spells;
+		std::unordered_map<std::string, std::string> perks;
+		std::unordered_map<std::string, std::string> explosions;
+		std::unordered_map<std::string, std::string> globals;
+		std::unordered_map<std::string, std::string> quests;
+		std::unordered_map<std::string, std::string> factions;
+		std::unordered_map<std::string, std::string> impacts;
+		std::unordered_map<std::string, std::string> races;
+
+		articuno_serde(ar) {
+			ar <=> kv(artobjects, "artobjects");
+			ar <=> kv(sounds, "sounds");
+			ar <=> kv(spellEffects, "spellEffects");
+			ar <=> kv(spells, "spells");
+			ar <=> kv(perks, "perks");
+			ar <=> kv(explosions, "explosions");
+			ar <=> kv(globals, "globals");
+			ar <=> kv(quests, "quests");
+			ar <=> kv(factions, "factions");
+			ar <=> kv(impacts, "impacts");
+			ar <=> kv(races, "races");
+		}
+	};
 }
 
 namespace Gts {
@@ -27,240 +61,597 @@ namespace Gts {
 		return instance;
 	}
 
+	std::string Runtime::DebugName() {
+		return "Runtime";
+	}
+
+
+	// Art Object
+	BGSArtObject* Runtime::GetArtObject(const std::string_view& tag) {
+		BGSArtObject* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().artobjects.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("ArtObject", tag)) {
+				log::warn("ArtObject: {} not found", tag);
+			}
+		}
+		return data;
+	}
+	// Sound
+	BSISoundDescriptor* Runtime::GetSound(const std::string_view& tag) {
+		BSISoundDescriptor* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().sounds.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("sond", tag)) {
+				log::warn("Sound: {} not found", tag);
+			}
+		}
+		return data;
+	}
+	void Runtime::PlaySound(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency) {
+		auto soundDescriptor = Runtime::GetSound(tag);
+		if (!soundDescriptor) {
+			log::error("Sound invalid: {}", tag);
+			return;
+		}
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			//soundHandle.SetFrequency(frequency);
+			soundHandle.SetVolume(volume);
+			NiAVObject* follow = nullptr;
+			if (actor) {
+				NiAVObject* current_3d = actor->GetCurrent3D();
+				if (current_3d) {
+					follow = current_3d;
+				}
+			}
+			soundHandle.SetObjectToFollow(follow);
+			soundHandle.Play();
+		} else {
+			log::error("Could not build sound");
+		}
+	}
+	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
+		Runtime::PlaySoundAtNode(tag, actor, volume, frequency, find_node(actor, node));
+	}
+	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject* node) {
+		if (node) {
+			Runtime::PlaySoundAtNode(tag, actor, volume, frequency, *node);
+		}
+	}
+	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject& node) {
+		auto soundDescriptor = Runtime::GetSound(tag);
+		if (!soundDescriptor) {
+			log::error("Sound invalid: {}", tag);
+			return;
+		}
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			//soundHandle.SetFrequency(frequency);
+			soundHandle.SetVolume(volume);
+			soundHandle.SetObjectToFollow(&node);
+			soundHandle.Play();
+		} else {
+			log::error("Could not build sound");
+		}
+	}
+
+	// Spell Effects
+	EffectSetting* Runtime::GetMagicEffect(const std::string_view& tag) {
+		EffectSetting* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().spellEffects.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			if (!Runtime::Logged("mgef", tag)) {
+				log::warn("MagicEffect: {} not found", tag);
+			}
+			data = nullptr;
+		}
+		return data;
+	}
+
+	bool Runtime::HasMagicEffect(Actor* actor, const std::string_view& tag) {
+		return Runtime::HasMagicEffectOr(actor, tag, false);
+	}
+
+	bool Runtime::HasMagicEffectOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
+		auto data = Runtime::GetMagicEffect(tag);
+		if (data) {
+			return actor->AsMagicTarget()->HasMagicEffect(data);
+		} else {
+			return default_value;
+		}
+	}
+
+	// Spells
+	SpellItem* Runtime::GetSpell(const std::string_view& tag) {
+		SpellItem* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().spells.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			if (!Runtime::Logged("spel", tag)) {
+				log::warn("Spell: {} not found", tag);
+			}
+			data = nullptr;
+		}
+		return data;
+	}
+
+	void Runtime::AddSpell(Actor* actor, const std::string_view& tag) {
+		auto data = Runtime::GetSpell(tag);
+		if (data) {
+			if (!Runtime::HasSpell(actor, tag)) {
+				actor->AddSpell(data);
+			}
+		}
+	}
+	void Runtime::RemoveSpell(Actor* actor, const std::string_view& tag) {
+		auto data = Runtime::GetSpell(tag);
+		if (data) {
+			if (Runtime::HasSpell(actor, tag)) {
+				actor->RemoveSpell(data);
+			}
+		}
+	}
+
+	bool Runtime::HasSpell(Actor* actor, const std::string_view& tag) {
+		return Runtime::HasSpellOr(actor, tag, false);
+	}
+
+	bool Runtime::HasSpellOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
+		auto data = Runtime::GetSpell(tag);
+		if (data) {
+			return actor->HasSpell(data);
+		} else {
+			return default_value;
+		}
+	}
+
+	void Runtime::CastSpell(Actor* caster, Actor* target, const std::string_view& tag) {
+		auto data = GetSpell(tag);
+		if (data) {
+			caster->GetMagicCaster(RE::MagicSystem::CastingSource::kInstant)->CastSpellImmediate(data, false, target, 1.00f, false, 0.0f, caster);
+		}
+	}
+
+	// Perks
+	BGSPerk* Runtime::GetPerk(const std::string_view& tag) {
+		BGSPerk* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().perks.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("perk", tag)) {
+				log::warn("Perk: {} not found", tag);
+			}
+		}
+		return data;
+	}
+
+	void Runtime::AddPerk(Actor* actor, const std::string_view& tag) {
+		auto data = Runtime::GetPerk(tag);
+		if (data) {
+			if (!Runtime::HasPerk(actor, tag)) {
+				actor->AddPerk(data);
+			}
+		}
+	}
+	void Runtime::RemovePerk(Actor* actor, const std::string_view& tag) {
+		auto data = Runtime::GetPerk(tag);
+		if (data) {
+			if (Runtime::HasPerk(actor, tag)) {
+				actor->RemovePerk(data);
+			}
+		}
+	}
+
+	bool Runtime::HasPerk(Actor* actor, const std::string_view& tag) {
+		return Runtime::HasPerkOr(actor, tag, false);
+	}
+
+	bool Runtime::HasPerkOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
+		auto data = Runtime::GetPerk(tag);
+		if (data) {
+			return actor->HasPerk(data);
+		} else {
+			return default_value;
+		}
+	}
+
+	// Explosion
+	BGSExplosion* Runtime::GetExplosion(const std::string_view& tag) {
+		BGSExplosion* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().explosions.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("expl", tag)) {
+				log::warn("Explosion: {} not found", tag);
+			}
+		}
+		return data;
+	}
+
+	void Runtime::CreateExplosion(Actor* actor, const float& scale, const std::string_view& tag) {
+		if (actor) {
+			CreateExplosionAtPos(actor, actor->GetPosition(), scale, tag);
+		}
+	}
+
+	void Runtime::CreateExplosionAtNode(Actor* actor, const std::string_view& node_name, const float& scale, const std::string_view& tag) {
+		if (actor) {
+			if (actor->Is3DLoaded()) {
+				auto model = actor->GetCurrent3D();
+				if (model) {
+					auto node = model->GetObjectByName(std::string(node_name));
+					if (node) {
+						CreateExplosionAtPos(actor, node->world.translate, scale, tag);
+					}
+				}
+			}
+		}
+	}
+
+	void Runtime::CreateExplosionAtPos(Actor* actor, NiPoint3 pos, const float& scale, const std::string_view& tag) {
+		auto data = GetExplosion(tag);
+		if (data) {
+			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(data, false);
+			if (!instance_ptr) {
+				return;
+			}
+			TESObjectREFR* instance = instance_ptr.get();
+			if (!instance) {
+				return;
+			}
+			instance->SetPosition(pos);
+			Explosion* explosion = instance->AsExplosion();
+			explosion->GetExplosionRuntimeData().radius *= scale;
+			explosion->GetExplosionRuntimeData().imodRadius *= scale;
+		}
+	}
+
+	// Globals
+	TESGlobal* Runtime::GetGlobal(const std::string_view& tag) {
+		TESGlobal* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().globals.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("glob", tag)) {
+				log::warn("Global: {} not found", tag);
+			}
+		}
+		return data;
+	}
+
+	bool Runtime::GetBool(const std::string_view& tag) {
+		return Runtime::GetBoolOr(tag, false);
+	}
+
+	bool Runtime::GetBoolOr(const std::string_view& tag, const bool& default_value) {
+		auto data = GetGlobal(tag);
+		if (data) {
+			return fabs(data->value - 0.0) > 1e-4;
+		} else {
+			return default_value;
+		}
+	}
+
+	void Runtime::SetBool(const std::string_view& tag, const bool& value) {
+		auto data = GetGlobal(tag);
+		if (data) {
+			if (value) {
+				data->value = 1.0;
+			} else {
+				data->value = 0.0;
+			}
+		}
+	}
+
+	int Runtime::GetInt(const std::string_view& tag) {
+		return Runtime::GetIntOr(tag, false);
+	}
+
+	int Runtime::GetIntOr(const std::string_view& tag, const int& default_value) {
+		auto data = GetGlobal(tag);
+		if (data) {
+			return data->value;
+		} else {
+			return default_value;
+		}
+	}
+
+	void Runtime::SetInt(const std::string_view& tag, const int& value) {
+		auto data = GetGlobal(tag);
+		if (data) {
+			data->value = value;
+		}
+	}
+
+	float Runtime::GetFloat(const std::string_view& tag) {
+		return Runtime::GetFloatOr(tag, false);
+	}
+
+	float Runtime::GetFloatOr(const std::string_view& tag, const float& default_value) {
+		auto data = GetGlobal(tag);
+		if (data) {
+			return data->value;
+		} else {
+			return default_value;
+		}
+	}
+
+	void Runtime::SetFloat(const std::string_view& tag, const float& value) {
+		auto data = GetGlobal(tag);
+		if (data) {
+			data->value = value;
+		}
+	}
+
+	// Quests
+	TESQuest* Runtime::GetQuest(const std::string_view& tag) {
+		TESQuest* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().quests.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("qust", tag)) {
+				log::warn("Quest: {} not found", tag);
+			}
+		}
+		return data;
+	}
+
+	std::uint16_t Runtime::GetStage(const std::string_view& tag) {
+		return Runtime::GetStageOr(tag, 0);
+	}
+
+	std::uint16_t Runtime::GetStageOr(const std::string_view& tag, const std::uint16_t& default_value) {
+		auto data = GetQuest(tag);
+		if (data) {
+			return data->GetCurrentStageID();
+		} else {
+			return default_value;
+		}
+	}
+
+	// Factions
+	TESFaction* Runtime::GetFaction(const std::string_view& tag) {
+		TESFaction* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().factions.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+		}
+		return data;
+	}
+
+
+	bool Runtime::InFaction(Actor* actor, const std::string_view& tag) {
+		return Runtime::InFactionOr(actor, tag, false);
+	}
+
+	bool Runtime::InFactionOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
+		auto data = GetFaction(tag);
+		if (data) {
+			return actor->IsInFaction(data);
+		} else {
+			return default_value;
+		}
+	}
+
+	// Impacts
+	BGSImpactDataSet* Runtime::GetImpactEffect(const std::string_view& tag) {
+		BGSImpactDataSet* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().impacts.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("impc", tag)) {
+				log::warn("ImpactEffect: {} not found", tag);
+			}
+		}
+		return data;
+	}
+	void Runtime::PlayImpactEffect(Actor* actor, const std::string_view& tag, const std::string_view& node, NiPoint3 direction, const float& length, const bool& applyRotation, const bool& useLocalRotation) {
+		auto data = GetImpactEffect(tag);
+		if (data) {
+			auto impact = BGSImpactManager::GetSingleton();
+			impact->PlayImpactEffect(actor, data, node, direction, length, applyRotation, useLocalRotation);
+		}
+	}
+
+	// Races
+	TESRace* Runtime::GetRace(const std::string_view& tag) {
+		TESRace* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().races.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("impc", tag)) {
+				log::warn("ImpactEffect: {} not found", tag);
+			}
+		}
+		return data;
+	}
+	bool Runtime::IsRace(Actor* actor, const std::string_view& tag) {
+		auto data = GetRace(tag);
+		if (data) {
+			return actor->GetRace() == data;
+		} else {
+			return false;
+		}
+	}
+
+	// Team Functions
+	bool Runtime::HasMagicEffectTeam(Actor* actor, const std::string_view& tag) {
+		return Runtime::HasMagicEffectTeamOr(actor, tag, false);
+	}
+
+	bool Runtime::HasMagicEffectTeamOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
+		if (Runtime::HasMagicEffectOr(actor, tag, default_value)) {
+			return true;
+		}
+		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
+			auto player = PlayerCharacter::GetSingleton();
+			return Runtime::HasMagicEffectOr(player, tag, default_value);
+		} else {
+			return false;
+		}
+	}
+
+	bool Runtime::HasSpellTeam(Actor* actor, const std::string_view& tag) {
+		return Runtime::HasMagicEffectTeamOr(actor, tag, false);
+	}
+
+	bool Runtime::HasSpellTeamOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
+		if (Runtime::HasSpellTeam(actor, tag)) {
+			return true;
+		}
+		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
+			auto player = PlayerCharacter::GetSingleton();
+			return Runtime::HasSpellTeamOr(player, tag, default_value);
+		} else {
+			return default_value;
+		}
+	}
+
+	bool Runtime::HasPerkTeam(Actor* actor, const std::string_view& tag) {
+		return Runtime::HasPerkTeamOr(actor, tag, false);
+	}
+
+	bool Runtime::HasPerkTeamOr(Actor* actor, const std::string_view& tag, const bool& default_value) {
+		if (Runtime::HasPerk(actor, tag)) {
+			return true;
+		}
+		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
+			auto player = PlayerCharacter::GetSingleton();
+			return Runtime::HasPerkOr(player, tag, default_value);
+		} else {
+			return default_value;
+		}
+	}
+
+	bool Runtime::Logged(const std::string_view& catagory, const std::string_view& key) {
+		auto& m = Runtime::GetSingleton().logged;
+		std::string logKey = std::format("{}::{}", catagory, key);
+		bool shouldLog = !(m.find(logKey) == m.end());
+		m.emplace(logKey);
+		return shouldLog;
+	}
+
 	void Runtime::DataReady() {
-		this->lFootstepL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLFootstepL());
-		this->lFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLFootstepR());
+		RuntimeConfig config;
 
-		this->lJumpLand = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetLJumpLand());
+		std::ifstream in(R"(Data\SKSE\Plugins\GtsRuntime.yaml)");
+		yaml_source src(in);
+		src >> config;
 
-		this->xlFootstepL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLFootstepL());
-		this->xlFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLFootstepR());
+		for (auto &[key, value]: config.sounds) {
+			auto form = find_form<BGSSoundDescriptorForm>(value);
+			if (form) {
+				this->sounds.try_emplace(key, form);
+			} else if (!Runtime::Logged("sond", key)) {
+				log::warn("SoundDescriptorform not found for {}", key);
+			}
+		}
 
-		this->xlRumbleL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLRumbleL());
-		this->xlRumbleR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLRumbleR());
+		for (auto &[key, value]: config.spellEffects) {
+			auto form = find_form<EffectSetting>(value);
+			if (form) {
+				this->spellEffects.try_emplace(key, form);
+			} else if (!Runtime::Logged("mgef", key)) {
+				log::warn("EffectSetting form not found for {}", key);
+			}
+		}
 
-		this->xlSprintL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLSprintL());
-		this->xlSprintR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXLSprintR());
+		for (auto &[key, value]: config.spells) {
+			auto form = find_form<SpellItem>(value);
+			if (form) {
+				this->spells.try_emplace(key, form);
+			} else if (!Runtime::Logged("spel", key)) {
+				log::warn("SpellItem form not found for {}", key);
+			}
+		}
 
-		this->xxlFootstepL = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXXLFootstepL());
-		this->xxlFootstepR = find_form<BGSSoundDescriptorForm>(Config::GetSingleton().GetSound().GetXXLFootstepR());
+		for (auto &[key, value]: config.perks) {
+			auto form = find_form<BGSPerk>(value);
+			if (form) {
+				this->perks.try_emplace(key, form);
+			} else if (!Runtime::Logged("perk", key)) {
+				log::warn("Perk form not found for {}", key);
+			}
+		}
 
-		this->growthSound = find_form<BGSSoundDescriptorForm>("GTS.esp|271EF6");
-		this->shrinkSound = find_form<BGSSoundDescriptorForm>("GTS.esp|364F6A");
+		for (auto &[key, value]: config.explosions) {
+			auto form = find_form<BGSExplosion>(value);
+			if (form) {
+				this->explosions.try_emplace(key, form);
+			} else if (!Runtime::Logged("expl", key)) {
+				log::warn("Explosion form not found for {}", key);
+			}
+		}
 
-		this->MoanSound = find_form<BGSSoundDescriptorForm>("GTS.esp|09B0AC");
-		this->LaughSound = find_form<BGSSoundDescriptorForm>("GTS.esp|09B0A9");
+		for (auto &[key, value]: config.globals) {
+			auto form = find_form<TESGlobal>(value);
+			if (form) {
+				this->globals.try_emplace(key, form);
+			} else if (!Runtime::Logged("glob", key)) {
+				log::warn("Global form not found for {}", key);
+			}
+		}
 
-		this->BloodGushSound = find_form<BGSSoundDescriptorForm>("Skyrim.esm|10F78C");
+		for (auto &[key, value]: config.quests) {
+			auto form = find_form<TESQuest>(value);
+			if (form) {
+				this->quests.try_emplace(key, form);
+			} else if (!Runtime::Logged("qust", key)) {
+				log::warn("Quest form not found for {}", key);
+			}
+		}
 
-		this->SmallMassiveThreat = find_form<EffectSetting>(Config::GetSingleton().GetSpellEffects().GetSmallMassiveThreat());
-		this->SmallMassiveThreatSizeSteal = find_form<BGSPerk>("GTS.esp|2496E8");
-		this->SmallMassiveThreatSpell = find_form<SpellItem>("GTS.esp|1A2566");
+		for (auto &[key, value]: config.factions) {
+			auto form = find_form<TESFaction>(value);
+			if (form) {
+				this->factions.try_emplace(key, form);
+			} else if (!Runtime::Logged("facn", key)) {
+				log::warn("FactionData form not found for {}", key);
+			}
+		}
 
-		this->explosiveGrowth1 = find_form<EffectSetting>("GTS.esp|007928"); // < Growth Spurt shouts
+		for (auto &[key, value]: config.impacts) {
+			auto form = find_form<BGSImpactDataSet>(value);
+			if (form) {
+				this->impacts.try_emplace(key, form);
+			} else if (!Runtime::Logged("impc", key)) {
+				log::warn("ImpactData form not found for {}", key);
+			}
+		}
 
-		this->explosiveGrowth2 = find_form<EffectSetting>("GTS.esp|1E42A5");
+		for (auto &[key, value]: config.races) {
+			auto form = find_form<TESRace>(value);
+			if (form) {
+				this->races.try_emplace(key, form);
+			} else if (!Runtime::Logged("race", key)) {
+				log::warn("RaceData form not found for {}", key);
+			}
+		}
 
-		this->explosiveGrowth3 = find_form<EffectSetting>("GTS.esp|1E42A6");
-		///Shrink Spells
-		this->ShrinkPCButton = find_form<EffectSetting>("GTS.esp|10A6CF"); // <- Shrink PC in size on button press.
-		this->ShrinkBack = find_form<EffectSetting>("GTS.esp|005369"); // < - Spell that restores size back to normal.
-		this->ShrinkBackNPC = find_form<EffectSetting>("GTS.esp|00536C"); // < - Spell that restores size back to normal, for NPC.
-		this->ShrinkSpell = find_form<EffectSetting>("GTS.esp|002850"); // <- Shrink Self over time [Hands]
-		this->ShrinkAlly = find_form<EffectSetting>("GTS.esp|0058D1"); // <- Shrink ally without hostile damage and no aggro.
-		this->ShrinkAllyAdept = find_form<EffectSetting>("GTS.esp|452F17");
-		this->ShrinkAllyExpert = find_form<EffectSetting>("GTS.esp|452F18");
-
-		this->ShrinkEnemy = find_form<EffectSetting>("GTS.esp|00387B");
-		this->ShrinkEnemyAOE = find_form<EffectSetting>("GTS.esp|0DCDC5");
-		this->ShrinkEnemyAOEMast = find_form<EffectSetting>("GTS.esp|0DCDCA");
-		this->ShrinkBolt = find_form<EffectSetting>("GTS.esp|3C5278");
-		this->ShrinkStorm = find_form<EffectSetting>("GTS.esp|3C527C");
-		this->SwordEnchant = find_form<EffectSetting>("GTS.esp|00FA9E");
-		this->EnchGigantism = find_form<EffectSetting>("GTS.esp|3EDAC5");
-
-		this->ShrinkToNothing = find_form<EffectSetting>("GTS.esp|009979"); // <- Absorbs someone
-		///End
-
-		///Ally/Grow Spells
-		this->SlowGrowth = find_form<EffectSetting>("GTS.esp|019C3D"); // <- slow growth spell [Hands]. Release and grow over time.
-		this->SlowGrowth2H = find_form<EffectSetting>("GTS.esp|086C8D");
-		this->GrowthSpell = find_form<EffectSetting>("GTS.esp|0022EB"); // <- Grow Spell [Hands]
-		this->GrowthSpellAdept = find_form<EffectSetting>("GTS.esp|45D124"); 
-		this->GrowthSpellExpert = find_form<EffectSetting>("GTS.esp|45D125"); 
-		this->GrowPcButton = find_form<EffectSetting>("GTS.esp|002DB5"); // <- Grow PC in size on button press
-
-		this->GrowAlly = find_form<EffectSetting>("GTS.esp|0058D5");  // <- Increase Ally Size [Hands]
-		this->GrowAllyAdept = find_form<EffectSetting>("GTS.esp|452F15");
-		this->GrowAllyExpert = find_form<EffectSetting>("GTS.esp|452F16");
-
-		this->GrowAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE3");  // <- Makes ally grow for 2 sec on button press.
-		this->ShrinkAllySizeButton = find_form<EffectSetting>("GTS.esp|123BE4"); // <- Makes ally shrink for 2 sec on button press.
-
-		this->CrushGrowthMGEF = find_form<EffectSetting>("GTS.esp|2028B6"); // < Grow on Crush. NPC only. Player triggers CrushGrowth on crushing someone via Crush() function in SP.
-		this->GtsMarkAlly = find_form<EffectSetting>("GTS.esp|29F82C"); // < Marks ally when changing game mode
-		this->TrackSize = find_form<EffectSetting>("GTS.esp|3B0E75");
-		this->CrushGrowthSpell = find_form<SpellItem>("GTS.esp|2028B7");
-		this->TrackSizeSpell = find_form<SpellItem>("GTS.esp|3B0E73");
-		///End
-
-		///Others
-		this->GlobalVoreGrowth = find_form<EffectSetting>("GTS.esp|216CCC"); // < Vore Growth, used for both PC and Followers
-
-		this->SizeRelatedDamage0 = find_form<EffectSetting>("GTS.esp|00A441"); // gtsSizeCloakEffect
-		this->SizeRelatedDamage1 = find_form<EffectSetting>("GTS.esp|00A9A8"); // gtsApplySizeEffect
-		this->SizeRelatedDamage2 = find_form<EffectSetting>("GTS.esp|00B474"); // gtsApplySprintingSizeEffect
-
-		this->AbsorbMGEF = find_form<EffectSetting>("GTS.esp|00B470");
-		this->TrueAbsorb = find_form<EffectSetting>("GTS.esp|22B0D5");
-		this->TrueAbsorbSpell = find_form<SpellItem>("GTS.esp|22B0D6");
-
-		this->VorePerk = find_form<BGSPerk>("GTS.esp|355C68");
-
-		this->StartVoreFake = find_form<SpellItem>("GTS.esp|319056");
-		this->StartVore = find_form<SpellItem>("GTS.esp|31905C");
-		
-		///End
-
-		this->footstepExplosion = find_form<BGSExplosion>(Config::GetSingleton().GetExplosions().GetFootstepExplosion());
-		this->BloodExplosion = find_form<BGSExplosion>("GTS.esp|01CE9D");
-		this->BloodFX = find_form<BGSExplosion>("Dawnguard.esm|00E7B4");
-
-		this->GrowthOnHitPerk = find_form<BGSPerk>("GTS.esp|30EE52");
-		this->AdditionalAbsorption = find_form<BGSPerk>("GTS.esp|151518");
-
-		this->hhBonus = find_form<BGSPerk>(Config::GetSingleton().GetPerks().GetHHBonus());
-		this->StaggerImmunity = find_form<BGSPerk>("GTS.esp|0AA3B2");
-		this->PerkPart1 = find_form<BGSPerk>("GTS.esp|16081F");
-		this->PerkPart2 = find_form<BGSPerk>("GTS.esp|160820");
-		this->ExtraGrowth = find_form<BGSPerk>("GTS.esp|332563");
-		this->ExtraGrowthMax = find_form<BGSPerk>("GTS.esp|397972");
-		this->HealthRegenPerk = find_form<BGSPerk>("GTS.esp|18E160");
-		this->GrowthAugmentation = find_form<BGSPerk>("GTS.esp|35AD69");
-		this->VorePerkRegeneration = find_form<BGSPerk>("GTS.esp|33C764");
-		this->VorePerkGreed = find_form<BGSPerk>("GTS.esp|33C765");
-		this->GrowthPerk = find_form<BGSPerk>("GTS.esp|128CF6");
-		this->TotalControl = find_form<BGSPerk>("GTS.esp|128CF7");
-		this->NoSpeedLoss = find_form<BGSPerk>("GTS.esp|2E663B");
-		this->SizeReserve = find_form<BGSPerk>("GTS.esp|4204CE");
-		this->BonusSpeedPerk = find_form<BGSPerk>("GTS.esp|4255D0");
-		this->OnTheEdge = find_form<BGSPerk>("GTS.esp|4399E3");
-
-
-		this->sizeLimit = find_form<TESGlobal>("GTS.esp|2028B4");
-
-		this->GtsNPCEffectImmunityToggle = find_form<TESGlobal>("GTS.esp|271EFA");
-
-		this->ProgressionMultiplier = find_form<TESGlobal>("GTS.esp|37E46E");
-		this->CrushGrowthRate = find_form<TESGlobal>("GTS.esp|2028B9");
-		this->IsFalling = find_form<TESGlobal>("GTS.esp|1CAD98");
-
-		this->ChosenGameMode = find_form<TESGlobal>("GTS.esp|2EB74C");
-		this->GrowthModeRate = find_form<TESGlobal>("GTS.esp|2028C3");
-		this->ShrinkModeRate = find_form<TESGlobal>("GTS.esp|2028C4");
-
-		this->ChosenGameModeNPC = find_form<TESGlobal>("GTS.esp|2EB747");
-		this->GrowthModeRateNPC = find_form<TESGlobal>("GTS.esp|2EB74B");
-		this->ShrinkModeRateNPC = find_form<TESGlobal>("GTS.esp|2EB74A");
-
-		this->GlobalMaxSizeCalc = find_form<TESGlobal>("GTS.esp|20CAC5");
-		this->MassBasedSizeLimit = find_form<TESGlobal>("GTS.esp|277005");
-		this->SelectedSizeFormula = find_form<TESGlobal>("GTS.esp|277004");
-
-		this->ProtectEssentials = find_form<TESGlobal>("GTS.esp|23A3E2");
-		this->EnableGiantSounds = find_form<TESGlobal>("GTS.esp|26CDF0");
-		this->PCAdditionalEffects = find_form<TESGlobal>("GTS.esp|3D4586");
-		this->NPCSizeEffects = find_form<TESGlobal>("GTS.esp|3D4587");
-		this->CrushGrowthStorage = find_form<TESGlobal>("GTS.esp|3D4588");
-
-		this->ManualGrowthStorage = find_form<TESGlobal>("GTS.esp|4162CB");
-
-		this->BalanceMode = find_form<TESGlobal>("GTS.esp|42F7D3");
-		this->HighHeelDamage = find_form<TESGlobal>("GTS.esp|271EFF");
-
-		///Camera
-
-		///FP Camera
-		this->FirstPersonMode = find_form<TESGlobal>("GTS.esp|2B8D35");
-		this->ProneOffsetFP = find_form<TESGlobal>("GTS.esp|2C2F38");
-		///FP Camera END
-
-		this->EnableCamera = find_form<TESGlobal>("GTS.esp|290512");
-		this->EnableAltCamera = find_form<TESGlobal>("GTS.esp|290513");
-		this->FeetCamera = find_form<TESGlobal>("GTS.esp|290525");
-		this->usingAutoDistance = find_form<TESGlobal>("GTS.esp|290524");
-		this->ImCrouching = find_form<TESGlobal>("GTS.esp|2C8039");
-
-		this->MinDistance = find_form<TESGlobal>("GTS.esp|29051E");
-		this->MaxDistance = find_form<TESGlobal>("GTS.esp|29051F");
-		this->CameraZoomSpeed = find_form<TESGlobal>("GTS.esp|290526");
-		this->CameraZoomPrecision = find_form<TESGlobal>("GTS.esp|290527");
-
-		this->proneCameraX = find_form<TESGlobal>("GTS.esp|290510");
-		this->proneCameraY = find_form<TESGlobal>("GTS.esp|290511");
-		this->proneCombatCameraX = find_form<TESGlobal>("GTS.esp|290514");
-		this->proneCombatCameraY = find_form<TESGlobal>("GTS.esp|290515");
-
-		this->cameraX = find_form<TESGlobal>("GTS.esp|29051A");
-		this->cameraY = find_form<TESGlobal>("GTS.esp|29051B");
-		this->combatCameraX = find_form<TESGlobal>("GTS.esp|29051D");
-		this->combatCameraY = find_form<TESGlobal>("GTS.esp|29051C");
-
-		this->proneCameraAlternateX = find_form<TESGlobal>("GTS.esp|290516");
-		this->proneCameraAlternateY = find_form<TESGlobal>("GTS.esp|290517");
-		this->proneCombatCameraAlternateX = find_form<TESGlobal>("GTS.esp|290518");
-		this->proneCombatCameraAlternateY = find_form<TESGlobal>("GTS.esp|290519");
-
-		this->cameraAlternateX = find_form<TESGlobal>("GTS.esp|290520");
-		this->cameraAlternateY = find_form<TESGlobal>("GTS.esp|290521");
-		this->combatCameraAlternateX = find_form<TESGlobal>("GTS.esp|290522");
-		this->combatCameraAlternateY = find_form<TESGlobal>("GTS.esp|290523");
-
-		this->CalcProne = find_form<TESGlobal>("GTS.esp|2D733A");
-		////////////
-		/////Attributes//////
-		this->AllowTimeChange = find_form<TESGlobal>("GTS.esp|277001"); // <- Speed AV modification toggler
-		this->bonusHPMultiplier = find_form<TESGlobal>("GTS.esp|28B408");
-		this->bonusCarryWeightMultiplier = find_form<TESGlobal>("GTS.esp|28B407");
-		this->bonusJumpHeightMultiplier = find_form<TESGlobal>("GTS.esp|28B40A");
-		this->bonusDamageMultiplier = find_form<TESGlobal>("GTS.esp|28B409");
-		this->bonusSpeedMultiplier = find_form<TESGlobal>("GTS.esp|28B40B");
-		this->bonusSpeedMax = find_form<TESGlobal>("GTS.esp|28B40C");
-
-		///EndAttributes///
-
-		///Potions///
-		this->EffectGrowthPotion = find_form<EffectSetting>("GTS.esp|3D4582");
-		this->ResistShrinkPotion = find_form<EffectSetting>("GTS.esp|3D4583");
-		this->EffectSizePotionWeak = find_form<EffectSetting>("GTS.esp|3E38BB");
-		this->EffectSizePotionNormal = find_form<EffectSetting>("GTS.esp|3E38BC");
-		this->EffectSizePotionStrong = find_form<EffectSetting>("GTS.esp|3E38BD");
-		this->EffectSizePotionExtreme = find_form<EffectSetting>("GTS.esp|3E38C0");
-		this->EffectSizeHungerPotion = find_form<EffectSetting>("GTS.esp|42F7D6");
-		this->EffectSizeAmplifyPotion = find_form<EffectSetting>("GTS.esp|452F1D");
-		///End Potions///
-
-		///Size-Damage spells
-		this->gtsSizeCloakSpellTiny = find_form<SpellItem>("GTS.esp|00CA0A");
- 		this->gtsSizeCloakSpellSmall = find_form<SpellItem>("GTS.esp|00A9A5");
- 		this->gtsSizeCloakSpellMedium = find_form<SpellItem>("GTS.esp|00CA07");
- 		this->gtsSizeCloakSpellLarge = find_form<SpellItem>("GTS.esp|00CA08");
- 		this->gtsSizeCloakSpellHuge = find_form<SpellItem>("GTS.esp|00CA0C");
-		this->gtsSizeCloakSpellMega = find_form<SpellItem>("GTS.esp|00CA0E");
- 		this->gtsSizeCloakSpellMassive = find_form<SpellItem>("GTS.esp|08BD90");
- 		this->gtsSizeCloakSpellGigantic = find_form<SpellItem>("GTS.esp|08BD92");
- 		this->gtsSizeCloakSpellImpossible = find_form<SpellItem>("GTS.esp|08BD94");
-		///End Size-Damage spells
-
-		this->ShrinkToNothingSpell = find_form<SpellItem>("GTS.esp|00997A");
-		this->FakeCrushSpell = find_form<SpellItem>("GTS.esp|271EF7");
-		this->FakeCrushEffect = find_form<EffectSetting>("GTS.esp|271EF9");
-
-		this->ShrinkBackNPCSpell = find_form<SpellItem>("GTS.esp|00536B");
-		this->ShrinkBackSpell = find_form<SpellItem>("GTS.esp|005368");
-
-		this->MainQuest = find_form<TESQuest>("GTS.esp|005E3A");
-
-		this->FollowerFaction = find_form<TESFaction>("Skyrim.esm|084D1B");
 	}
 }

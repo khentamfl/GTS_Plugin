@@ -1,17 +1,18 @@
 #pragma once
 // Module that handles footsteps
 
-#include "managers/impact.hpp"
+#include "events.hpp"
 
 using namespace std;
 using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ExplosionManager {
+	class ExplosionManager : public EventListener {
 		public:
 			[[nodiscard]] static ExplosionManager& GetSingleton() noexcept;
 
-			void OnImpact(const Impact& impact);
+			virtual std::string DebugName() override;
+			virtual void OnImpact(const Impact& impact) override;
 	};
 }

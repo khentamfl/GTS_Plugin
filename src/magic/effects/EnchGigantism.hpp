@@ -20,7 +20,6 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-			static bool StartEffect(EffectSetting* effect);
 		private:
 			float magnitude = 0.0;
 	};

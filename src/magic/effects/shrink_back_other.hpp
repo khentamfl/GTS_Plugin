@@ -18,7 +18,6 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-			static bool StartEffect(EffectSetting* effect);
 			Timer timer = Timer(2.33); // Run every 2.33s or as soon as we can
 	};
 }

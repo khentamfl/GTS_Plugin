@@ -1,11 +1,18 @@
 #include "managers/highheel.hpp"
 #include "data/runtime.hpp"
 #include "node.hpp"
+#include "scale/modscale.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
-#include "data/transient.hpp"
-#include "util.hpp"
+#include "scale/scale.hpp"
+#include <articuno/articuno.h>
+#include <articuno/archives/ryml/ryml.h>
+#include <articuno/types/auto.h>
+#include "managers/animation/AnimationManager.hpp"
+#include "profiler.hpp"
 
+using namespace articuno;
+using namespace articuno::ryml;
 using namespace RE;
 using namespace Gts;
 
@@ -15,12 +22,17 @@ namespace Gts {
 		return instance;
 	}
 
-	void HighHeelManager::PapyrusUpdate() {
-		const bool FORCE_APPLY = false;
-		auto actors = find_actors();
+	std::string HighHeelManager::DebugName() {
+		return "HighHeelManager";
+	}
+
+	void HighHeelManager::HavokUpdate() {
+		Profilers::Start("HH: HavokUpdate");
+		auto actors = FindSomeActors("HHHavokUpdate", 1);
 		for (auto actor: actors) {
-			//ApplyHH(actor, FORCE_APPLY);
+			ApplyHH(actor, false);
 		}
+		Profilers::Stop("HH: HavokUpdate");
 	}
 
 	void HighHeelManager::ActorEquip(Actor* actor) {
@@ -32,82 +44,158 @@ namespace Gts {
 		ApplyHH(actor, FORCE_APPLY);
 	}
 
+	void HighHeelManager::OnAddPerk(const AddPerkEvent& evt) {
+		log::info("Add Perk fired");
+		if (evt.perk == Runtime::GetPerk("hhBonus")) {
+			for (auto actor: find_actors()) {
+				if (actor) {
+					log::info("HH perk was added");
+					this->data.try_emplace(actor);
+					auto& hhData = this->data[actor];
+					hhData.wasWearingHh = false;
+				}
+			}
+		}
+	}
+
 	void HighHeelManager::ApplyHH(Actor* actor, bool force) {
+		Profilers::Start("HH: ApplyHH");
 		if (!actor) {
 			return;
 		}
 		if (!actor->Is3DLoaded()) {
 			return;
 		}
-		auto temp_data = Transient::GetSingleton().GetData(actor);
-		if (!temp_data) {
+
+		//Sermit's To-do: try this: attempt to emulate blood on the feet and stuff [BSTempEffectParticle.h]
+		//static BSTempEffectParticle* Spawn(TESObjectCELL* a_cell, float a_lifetime, const char* a_modelName, const NiPoint3& a_rotation, const NiPoint3& a_position, float a_scale, std::uint32_t a_flags, NiAVObject* a_target)
+
+		if (Persistent::GetSingleton().highheel_furniture == false && actor->AsActorState()->GetSitSleepState() == SIT_SLEEP_STATE::kIsSitting) {
 			return;
 		}
-
-		float new_hh = 0.0;
-		float base_hh;
-		float last_hh_adjustment = temp_data->last_hh_adjustment;
-		if (!Persistent::GetSingleton().highheel_correction) {
-			if (fabs(last_hh_adjustment) > 1e-5) {
-				log::trace("Last hh adjustment to turn it off");
-			} else {
-				return;
-			}
+		this->data.try_emplace(actor);
+		auto& hhData = this->data[actor];
+		// Should disable HH?
+		bool disableHH = (
+			AnimationManager::HHDisabled(actor) ||
+			IsProne(actor) ||
+			!Persistent::GetSingleton().highheel_correction
+			);
+		//log::info("HH Disable: {}", disableHH);
+		if (disableHH) {
+			hhData.multiplier.target = 0.0;
+			hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(actor);
+			//log::info("HH is false");
 		} else {
-			NiAVObject* npc_node = find_node_any(actor, "NPC");
-			if (!npc_node) {
-				return;
-			}
-
-			NiAVObject* root_node = find_node_any(actor, "NPC Root [Root]");
-			if (!root_node) {
-				return;
-			}
-
-			NiAVObject* com_node = find_node_any(actor, "NPC COM [COM ]");
-			if (!com_node) {
-				return;
-			}
-
-			NiAVObject* body_node = find_node_any(actor, "CME Body [Body]");
-			if (!body_node) {
-				return;
-			}
-
-			base_hh = npc_node->local.translate.z;
-			float scale = root_node->local.scale;
-			new_hh = (scale * base_hh - base_hh) / (com_node->local.scale * root_node->local.scale * npc_node->local.scale);
+			hhData.multiplier.target = 1.0;
+			hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(actor);
 		}
 
-		bool adjusted = false;
+		NiPoint3 new_hh;
+		this->UpdateHHOffset(actor);
+		if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
+			new_hh = this->GetHHOffset(actor) * hhData.multiplier.value;
+		} else {
+			// With model scale do it in unscaled coords
+			new_hh = this->GetBaseHHOffset(actor) * hhData.multiplier.value;
+		}
+		float hh_length = new_hh.Length();
+
 		for (bool person: {false, true}) {
-			auto npc_root_node = find_node(actor, "CME Body [Body]", person);
-			if (npc_root_node) {
-				float current_value = npc_root_node->local.translate.z;
-				if ((fabs(last_hh_adjustment - new_hh) > 1e-5) || (fabs(current_value - new_hh) > 1e-5) || force) {
-					npc_root_node->local.translate.z = new_hh;
-					update_node(npc_root_node);
-					adjusted = true;
-				}
-			}
-		}
-		if (adjusted) {
-			temp_data->last_hh_adjustment = new_hh;
-			temp_data->total_hh_adjustment = new_hh + base_hh;
+			auto npc_root_node = find_node(actor, "NPC", person);
 
-			if (actor->formID == 0x14 && base_hh > 0) { // HH damage bonus start
-				auto shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet);
-				float shoe_weight = 1.0;
-				auto char_weight = actor->GetWeight()/260;
-				if (shoe) {
-					shoe_weight = shoe->weight/10;
+			if (npc_root_node) {
+				NiPoint3 current_value = npc_root_node->local.translate;
+				NiPoint3 delta = current_value - new_hh;
+
+				if (delta.Length() > 1e-5 || force) {
+					npc_root_node->local.translate = new_hh;
+					update_node(npc_root_node);
 				}
-				Runtime::GetSingleton().HighHeelDamage->value = 1.5 + shoe_weight + char_weight; // This Global modification is needed to apply damage boost to scripts.
-				// Feel free to remove it once we move it to DLL completely ^ 
-			}
-			else if (actor->formID == 0x14 && base_hh <= 0) {
-				Runtime::GetSingleton().HighHeelDamage->value = 1.0;
+				bool wasWearingHh = hhData.wasWearingHh;
+				bool isWearingHH = fabs(new_hh.Length()) > 1e-4;
+				if (isWearingHH != wasWearingHh) {
+					// Just changed hh
+					HighheelEquip hhEvent = HighheelEquip {
+						.actor = actor,
+						.equipping = isWearingHH,
+						.hhLength = new_hh.Length(),
+						.hhOffset = new_hh,
+						.shoe = actor->GetWornArmor(BGSBipedObjectForm::BipedObjectSlot::kFeet),
+					};
+					EventDispatcher::DoHighheelEquip(hhEvent);
+					hhData.wasWearingHh = isWearingHH;
+				}
 			}
 		}
+		Profilers::Stop("HH: ApplyHH");
+	}
+
+
+	struct RaceMenuSDTA {
+		std::string name;
+		std::vector<float> pos;
+		articuno_serde(ar) {
+			ar <=> kv(name, "name");
+			ar <=> kv(pos, "pos");
+		}
+	};
+
+	void HighHeelManager::UpdateHHOffset(Actor* actor) {
+		Profilers::Start("HH: UpdateHHOffset");
+		auto models = GetModelsForSlot(actor, BGSBipedObjectForm::BipedObjectSlot::kFeet);
+		NiPoint3 result = NiPoint3();
+		for (auto model: models) {
+			if (model) {
+				VisitExtraData<NiFloatExtraData>(model, "HH_OFFSET", [&result](NiAVObject& currentnode, NiFloatExtraData& data) {
+					result.z = fabs(data.value);
+					return false;
+				});
+				VisitExtraData<NiStringExtraData>(model, "SDTA", [&result](NiAVObject& currentnode, NiStringExtraData& data) {
+					std::string stringDataStr = data.value;
+					std::stringstream jsonData(stringDataStr);
+					yaml_source ar(jsonData);
+					vector<RaceMenuSDTA> alterations;
+					ar >> alterations;
+					for (auto alteration: alterations) {
+						if (alteration.name == "NPC") {
+							if (alteration.pos.size() > 2) {
+								result = NiPoint3(alteration.pos[0], alteration.pos[1], alteration.pos[2]);
+								return false;
+							}
+						}
+					}
+					return true;
+				});
+			}
+		}
+		//log::info("Base HHOffset: {}", Vector2Str(result));
+		auto npcNodeScale = get_npcparentnode_scale(actor);
+
+		auto& me = HighHeelManager::GetSingleton();
+		me.data.try_emplace(actor);
+		auto& hhData = me.data[actor];
+		hhData.lastBaseHHOffset = result * npcNodeScale;
+		Profilers::Stop("HH: UpdateHHOffset");
+	}
+
+	NiPoint3 HighHeelManager::GetBaseHHOffset(Actor* actor) {
+		Profilers::Start("HH: GetBaseHHOffset");
+		auto& me = HighHeelManager::GetSingleton();
+		me.data.try_emplace(actor);
+		auto& hhData = me.data[actor];
+		Profilers::Stop("HH: GetBaseHHOffset");
+		return hhData.lastBaseHHOffset;
+	}
+
+	NiPoint3 HighHeelManager::GetHHOffset(Actor* actor) {
+		Profilers::Start("HH: GetHHOffset");
+		auto npcRootNodeScale = get_npcnode_scale(actor);
+		Profilers::Stop("HH: GetHHOffset");
+		return HighHeelManager::GetBaseHHOffset(actor) * npcRootNodeScale;
+	}
+
+	bool HighHeelManager::IsWearingHH(Actor* actor) {
+		return HighHeelManager::GetBaseHHOffset(actor).Length() > 1e-3;
 	}
 }

@@ -4,7 +4,6 @@
 
 #include "scale/scale.hpp"
 #include "managers/modevent.hpp"
-#include "util.hpp"
 #include "node.hpp"
 #include "data/runtime.hpp"
 
@@ -69,92 +68,96 @@ namespace {
 		return result;
 	}
 
-	BSISoundDescriptor* get_lFootstep_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_lFootstep_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
-				return Runtime::GetSingleton().lFootstepL;
+			case FootEvent::Left:
+			case FootEvent::Front:
+				return Runtime::GetSound("lFootstepL");
 				break;
-			case Foot::Right:
-			case Foot::Back:
-				return Runtime::GetSingleton().lFootstepR;
+			case FootEvent::Right:
+			case FootEvent::Back:
+				return Runtime::GetSound("lFootstepR");
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_lJumpLand_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_lJumpLand_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::JumpLand:
-				return Runtime::GetSingleton().lJumpLand;
+			case FootEvent::JumpLand:
+				return Runtime::GetSound("lJumpLand");
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_xlFootstep_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_xlFootstep_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
-				return Runtime::GetSingleton().xlFootstepL;
+			case FootEvent::Left:
+			case FootEvent::Front:
+				return Runtime::GetSound("xlFootstepL");
 				break;
-			case Foot::Right:
-			case Foot::Back:
-				return Runtime::GetSingleton().xlFootstepR;
+			case FootEvent::Right:
+			case FootEvent::Back:
+				return Runtime::GetSound("xlFootstepR");
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_xlRumble_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_xlRumble_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
-				return Runtime::GetSingleton().xlRumbleL;
+			case FootEvent::Left:
+			case FootEvent::Front:
+				return Runtime::GetSound("xlRumbleL");
 				break;
-			case Foot::Right:
-			case Foot::Back:
-				return Runtime::GetSingleton().xlRumbleR;
+			case FootEvent::Right:
+			case FootEvent::Back:
+				return Runtime::GetSound("xlRumbleR");
 				break;
-			case Foot::JumpLand:
-				return Runtime::GetSingleton().xlRumbleR;
+			case FootEvent::JumpLand:
+				return Runtime::GetSound("xlRumbleR");
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_xlSprint_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_xlSprint_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
-				return Runtime::GetSingleton().xlSprintL;
+			case FootEvent::Left:
+			case FootEvent::Front:
+				return Runtime::GetSound("xlSprintL");
 				break;
-			case Foot::Right:
-			case Foot::Back:
-				return Runtime::GetSingleton().xlSprintR;
+			case FootEvent::Right:
+			case FootEvent::Back:
+				return Runtime::GetSound("xlSprintR");
 				break;
-			case Foot::JumpLand:
-				return Runtime::GetSingleton().xlSprintR;
+			case FootEvent::JumpLand:
+				return Runtime::GetSound("xlSprintR");
 				break;
 		}
 		return nullptr;
 	}
 
-	BSISoundDescriptor* get_xxlFootstep_sounddesc(const Foot& foot_kind) {
+	BSISoundDescriptor* get_xxlFootstep_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
-			case Foot::Left:
-			case Foot::Front:
-				return Runtime::GetSingleton().xxlFootstepL;
+			case FootEvent::Left:
+			case FootEvent::Front:
+				return Runtime::GetSound("xxlFootstepL");
 				break;
-			case Foot::Right:
-			case Foot::Back:
-				return Runtime::GetSingleton().xxlFootstepR;
+			case FootEvent::Right:
+			case FootEvent::Back:
+				return Runtime::GetSound("xxlFootstepR");
 				break;
-			case Foot::JumpLand:
-				return Runtime::GetSingleton().xxlFootstepR;
+			case FootEvent::JumpLand:
+				return Runtime::GetSound("xxlFootstepR");
 				break;
 		}
 		return nullptr;
+	}
+
+	void HandleUnderFoot(Actor* giant) {
+
 	}
 }
 namespace Gts {
@@ -163,34 +166,46 @@ namespace Gts {
 		return instance;
 	}
 
+	std::string FootStepManager::DebugName() {
+		return "FootStepManager";
+	}
+
 	void FootStepManager::OnImpact(const Impact& impact) {
 		if (impact.actor) {
+			auto player = PlayerCharacter::GetSingleton();
 			auto actor = impact.actor;
 			float scale = impact.effective_scale;
+			if (actor->formID != 0x14) {
+				float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)));
+				scale = sizedifference;
+			}
 
 			float minimal_size = 1.2;
-			if (scale > minimal_size && !actor->IsSwimming()) {
+			if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
 				float start_l = 1.2;
 				float start_xl = 11.99;
 				float start_xlJumpLand= 1.99;
 				float start_xxl = 20.0;
-				if (actor->IsSprinting()) {
+				if (actor->AsActorState()->IsSprinting()) {
 					float sprint_factor = 1.2;
 					scale *= sprint_factor; // Sprinting makes you sound bigger
 					start_xl = 7.99 * sprint_factor;
 					start_xxl = 15.99 * sprint_factor;
-				} else if (actor->IsSneaking()) {
+				}
+				if (actor->AsActorState()->IsWalking()) {
+					scale *= 0.65; // Walking makes you sound quieter
+				}
+				if (actor->IsSneaking()) {
 					scale *= 0.55; // Sneaking makes you sound quieter
-				} else if (actor->IsWalking()) {
-					scale *= 0.85; // Walking makes you sound quieter
 				}
 
-				if (actor->formID == 0x14 && TremorManager::GetSingleton().GetFP()) { // Footsteps are quieter when in first person
-					scale *= 0.25;
+				if (actor->formID == 0x14 && IsFirstPerson()) { // Footsteps are quieter when in first person
+					scale *= 0.70;
 				}
 
-				Foot foot_kind = impact.kind;
-				if (foot_kind == Foot::JumpLand) {
+
+				FootEvent foot_kind = impact.kind;
+				if (foot_kind == FootEvent::JumpLand) {
 					float jump_factor = 1.2;
 					scale *= jump_factor; // Jumping makes you sound bigger
 					start_xl = 6.99 * jump_factor;
@@ -206,25 +221,26 @@ namespace Gts {
 
 					BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
 
-				if (Runtime::GetSingleton().EnableGiantSounds->value >= 1.0) { // Global check
-					if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
-						lFootstep.Play();
-					}
-					if (lJumpLand.soundID != BSSoundHandle::kInvalidID) {
-						lJumpLand.Play();
-					}
-					if (xlFootstep.soundID != BSSoundHandle::kInvalidID) {
-						xlFootstep.Play();
-					}
-					if (xlRumble.soundID != BSSoundHandle::kInvalidID) {
-						xlRumble.Play();
-					}
-					if (xlSprint.soundID != BSSoundHandle::kInvalidID) {
-						xlSprint.Play();
-					}
-					if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
-						xxlFootstepL.Play();
-					}
+					if (Runtime::GetBool("EnableGiantSounds")) { // Global check
+						if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
+							lFootstep.Play();
+						}
+						if (lJumpLand.soundID != BSSoundHandle::kInvalidID) {
+							lJumpLand.Play();
+						}
+						if (xlFootstep.soundID != BSSoundHandle::kInvalidID) {
+							xlFootstep.Play();
+						}
+						if (xlRumble.soundID != BSSoundHandle::kInvalidID) {
+							xlRumble.Play();
+						}
+						if (xlSprint.soundID != BSSoundHandle::kInvalidID) {
+							xlSprint.Play();
+						}
+						if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
+							xxlFootstepL.Play();
+						}
+						///To-do: make them play at matching node?
 					}
 				}
 			}

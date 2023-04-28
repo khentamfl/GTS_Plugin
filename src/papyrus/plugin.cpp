@@ -1,7 +1,11 @@
 #include "papyrus/plugin.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
+#include "utils/actorUtils.hpp"
+#include "managers/Attributes.hpp"
 #include "managers/GtsManager.hpp"
-#include "util.hpp"
+#include "managers/GtsSizeManager.hpp"
+#include "magic/effects/common.hpp"
 #include <math.h>
 #include <sstream>
 #include <iomanip>
@@ -16,6 +20,77 @@ namespace {
 	constexpr std::string_view PapyrusClass = "GtsPlugin";
 	float GetDistanceToCamera(StaticFunctionTag*, Actor* actor) {
 		return get_distance_to_camera(actor);
+	}
+	void SetSizeDamageMultiplier(StaticFunctionTag*, float bonus) {
+		Persistent::GetSingleton().size_related_damage_mult = bonus;
+	}
+	float GetSizeRelatedDamage(StaticFunctionTag*, Actor* actor, float attribute) {
+		return SizeManager::GetSingleton().GetSizeAttribute(actor, attribute);
+	}
+	float GetSizeVulnerability(StaticFunctionTag*, Actor* actor) {
+		return SizeManager::GetSingleton().GetSizeVulnerability(actor);
+	}
+
+	float GetAttributeBonus(StaticFunctionTag*, Actor* actor, float value) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (!actor) {
+			return 1.0;
+		}
+		if (!transient) {
+			return 1.0;
+		}
+		if (value == 1.0) {
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kHealth); // Health
+		}
+		if (value == 2.0) {
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kCarryWeight); // Carry Weight
+		}
+		if (value == 3.0) {
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kSpeedMult) - 1.0; // Speed Multi
+		}
+		if (value == 4.0) {
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kAttackDamageMult) - 1.0;
+		}
+		if (value == 5.0) {
+			return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) - 1.0;
+		}
+		return 1.0;
+	}
+
+	float GetFlatAttributeBonus(StaticFunctionTag*, Actor* actor, float value) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (!actor) {
+			return 0.0;
+		}
+		if (!transient) {
+			return 0.0;
+		}
+		if (value == 1.0) { //get hp
+			return transient->health_boost;
+		}
+		if (value == 2.0) { // get carry weight
+			return transient->carryweight_boost;
+		}
+		return 0.0;
+	}
+
+	bool ModSizeVulnerability(StaticFunctionTag*, Actor* actor, float amt) {
+		if (actor) {
+			SizeManager::GetSingleton().ModSizeVulnerability(actor, amt);
+			return true;
+		}
+		return false;
+	}
+
+	float GetHitGrowth(StaticFunctionTag*, Actor* actor) {
+		return SizeManager::GetSingleton().GetHitGrowth(actor);
+	}
+	bool SetHitGrowth(StaticFunctionTag*, Actor* actor, float allow) {
+		if (actor) {
+			SizeManager::GetSingleton().SetHitGrowth(actor, allow);
+			return true;
+		}
+		return false;
 	}
 
 	bool SetGrowthHalfLife(StaticFunctionTag*, Actor* actor, float halflife) {
@@ -67,12 +142,110 @@ namespace {
 		return format(number, sf);
 	}
 
+	void SetFeetTracking(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().allow_feetracking = enabled;
+	}
+
 	bool GetIsHighHeelEnabled(StaticFunctionTag*) {
 		return Persistent::GetSingleton().highheel_correction;
 	}
 
 	void SetIsHighHeelEnabled(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().highheel_correction = enabled;
+	}
+
+	void SetAllowPlayerVore(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().vore_allowplayervore = enabled;
+	}
+
+	void SetOnlyCombatVore(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().vore_combatonly = enabled;
+	}
+
+	void IncreaseSizeLimit(StaticFunctionTag*, float value, Actor* caster) {
+		AdjustSizeLimit(value, caster);
+	}
+
+	void IncreaseMassLimit(StaticFunctionTag*, float value, Actor* caster) {
+		AdjustMassLimit(value, caster);
+	}
+
+	void SetIsHHFurnitureEnabled(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().highheel_furniture = enabled;
+		if (enabled == false) {
+			auto actors = find_actors();
+			for (auto actor: actors) {
+				if (!actor) {
+					return;
+				}
+				for (bool person: {false, true}) {
+					auto npc_root_node = find_node(actor, "NPC", person);
+					if (npc_root_node && actor->GetOccupiedFurniture()) {
+						npc_root_node->local.translate.z = 0.0;
+						update_node(npc_root_node);
+					}
+				}
+			}
+		}
+	}
+
+	void SetProgressionMultiplier(StaticFunctionTag*, float value) {
+		Persistent::GetSingleton().progression_multiplier = value;
+		log::info("Setting Progression Multiplier to {}", value);
+	}
+
+	void SetStompAi(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().Stomp_Ai = enabled;
+	}
+
+	void SetSandwichAi(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().Sandwich_Ai = enabled;
+	}
+
+	void SetVoreAi(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().Vore_Ai = enabled;
+	}
+
+	void ToggleHostileDamage(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().hostile_toggle = enabled;
+	}
+
+	void DisintegrateTarget(StaticFunctionTag*, Actor* actor) {
+		if (actor) {
+			Disintegrate(actor);
+		}
+	}
+
+	void AllowActorDeletion(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().delete_actors = enabled;
+	}
+
+	bool WasDragonEaten(StaticFunctionTag*) {
+		auto pc = PlayerCharacter::GetSingleton();
+		auto transient = Transient::GetSingleton().GetData(pc);
+		if (transient) {
+			return transient->dragon_was_eaten;
+		}
+		return false;
+	}
+
+	bool GetDevourmentCompatibility(StaticFunctionTag*) {
+		return Persistent::GetSingleton().devourment_compatibility;
+	}
+
+	void SetDevourmentCompatibility(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().devourment_compatibility = enabled;
+	}
+
+	bool DragonCheck(StaticFunctionTag*, Actor* actor) {
+		if (!actor) {
+			return false;
+		}
+		return IsDragon(actor);
+	}
+
+	bool GetPreciseDamage(StaticFunctionTag*) {
+		return SizeManager::GetSingleton().GetPreciseDamage();
 	}
 
 	bool GetIsSpeedAdjusted(StaticFunctionTag*) {
@@ -107,7 +280,9 @@ namespace {
 	}
 
 	bool IsInAir(StaticFunctionTag*, Actor* actor) {
-		if (!actor) return false;
+		if (!actor) {
+			return false;
+		}
 		return actor->IsInMidair();
 	}
 
@@ -139,12 +314,38 @@ namespace {
 namespace Gts {
 	bool register_papyrus_plugin(IVirtualMachine* vm) {
 		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
+		vm->RegisterFunction("SetSizeDamageMultiplier", PapyrusClass, SetSizeDamageMultiplier);
+		vm->RegisterFunction("GetSizeRelatedDamage", PapyrusClass, GetSizeRelatedDamage);
+		vm->RegisterFunction("ModSizeVulnerability", PapyrusClass, ModSizeVulnerability);
+		vm->RegisterFunction("GetSizeVulnerability", PapyrusClass, GetSizeVulnerability);
+		vm->RegisterFunction("GetAttributeBonus", PapyrusClass, GetAttributeBonus);
+		vm->RegisterFunction("GetFlatAttributeBonus", PapyrusClass, GetFlatAttributeBonus);
+		vm->RegisterFunction("GetHitGrowth", PapyrusClass, GetHitGrowth);
+		vm->RegisterFunction("GetPreciseDamage", PapyrusClass, GetPreciseDamage);
+		vm->RegisterFunction("SetHitGrowth", PapyrusClass, SetHitGrowth);
 		vm->RegisterFunction("SetGrowthHalfLife", PapyrusClass, SetGrowthHalfLife);
 		vm->RegisterFunction("GetGrowthHalfLife", PapyrusClass, GetGrowthHalfLife);
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
 		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
+		vm->RegisterFunction("SetFeetTracking", PapyrusClass, SetFeetTracking);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
+		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
+		vm->RegisterFunction("SetProgressionMultiplier", PapyrusClass, SetProgressionMultiplier);
+		vm->RegisterFunction("SetStompAi", PapyrusClass, SetStompAi);
+		vm->RegisterFunction("SetSandwichAi", PapyrusClass, SetSandwichAi);
+		vm->RegisterFunction("SetVoreAi", PapyrusClass, SetVoreAi);
+		vm->RegisterFunction("ToggleHostileDamage", PapyrusClass, ToggleHostileDamage);
+		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
+		vm->RegisterFunction("SetOnlyCombatVore", PapyrusClass, SetOnlyCombatVore);
+		vm->RegisterFunction("IncreaseSizeLimit", PapyrusClass, IncreaseSizeLimit);
+		vm->RegisterFunction("IncreaseMassLimit", PapyrusClass, IncreaseMassLimit);
+		vm->RegisterFunction("DisintegrateTarget", PapyrusClass, DisintegrateTarget);
+		vm->RegisterFunction("AllowActorDeletion", PapyrusClass, AllowActorDeletion);
+		vm->RegisterFunction("WasDragonEaten", PapyrusClass, WasDragonEaten);
+		vm->RegisterFunction("GetDevourmentCompatibility", PapyrusClass, GetDevourmentCompatibility);
+		vm->RegisterFunction("SetDevourmentCompatibility", PapyrusClass, SetDevourmentCompatibility);
+		vm->RegisterFunction("DragonCheck", PapyrusClass, DragonCheck);
 		vm->RegisterFunction("GetIsSpeedAdjusted", PapyrusClass, GetIsSpeedAdjusted);
 		vm->RegisterFunction("SetIsSpeedAdjusted", PapyrusClass, SetIsSpeedAdjusted);
 		vm->RegisterFunction("SetSpeedParameterK", PapyrusClass, SetSpeedParameterK);

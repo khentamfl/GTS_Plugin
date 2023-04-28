@@ -20,11 +20,10 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-			static bool StartEffect(EffectSetting* effect);
+			void VoreRegeneration(Actor* Caster);
+			void VoreBuffAttributes();
 
-			void VoreAugmentations();
-
-			private:
+		private:
 
 			float ScaleOnVore = 1.0;
 			bool BlockVoreMods = false;

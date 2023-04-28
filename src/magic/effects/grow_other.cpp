@@ -9,13 +9,7 @@ namespace Gts {
 		return "GrowOther";
 	}
 
-	bool GrowOther::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return (effect == runtime.GrowAlly || effect == runtime.GrowAllyAdept || effect == runtime.GrowAllyExpert);
-	}
-
 	void GrowOther::OnUpdate() {
-		auto& runtime = Runtime::GetSingleton();
 		const float BASE_POWER = 0.00045;
 		const float BONUS = 0.00045;
 		const float SMT_BONUS = 2.0;
@@ -35,26 +29,23 @@ namespace Gts {
 
 		auto base_spell = GetBaseEffect();
 
-		if (base_spell == runtime.GrowAllyAdept) 
-		{
+		if (base_spell == Runtime::GetMagicEffect("GrowAllyAdept")) {
 			power *= 1.32;
-		}
-		else if (base_spell == runtime.GrowAllyExpert)
-		{
+		} else if (base_spell == Runtime::GetMagicEffect("GrowAllyExpert")) {
 			power *= 1.75;
 		}
 
 		float caster_scale = get_visual_scale(caster);
 		float target_scale = get_visual_scale(target);
-		
-		if (runtime.CrushGrowthRate->value >= CRUSH_GROWTH_CHECK) {
+
+		if (Runtime::GetFloat("CrushGrowthRate") >= CRUSH_GROWTH_CHECK) {
 			power += BONUS;
 		}
 
 		if (IsDualCasting()) {
 			power *= DUAL_CAST_BONUS;
 		}
-		if (caster->HasMagicEffect(runtime.SmallMassiveThreat)) {
+		if (Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
 			power *= SMT_BONUS;
 		}
 		float Gain = power * ((caster_scale * 0.50 + 0.50) * target_scale);

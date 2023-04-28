@@ -1,6 +1,6 @@
-#include "scale/scale.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "scale/scalespellmanager.hpp"
-#include "util.hpp"
+#include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "timer.hpp"
 
@@ -14,124 +14,103 @@ namespace Gts {
 		return instance;
 	}
 
-    void ScaleSpellManager::CheckSize(Actor* actor) {
-        if (!actor || !actor->Is3DLoaded() || actor->IsDead()) {
+	void ScaleSpellManager::CheckSize(Actor* actor) {
+		if (!actor || !actor->Is3DLoaded() || actor->IsDead()) {
 			return;
 		}
-        float actorscale = get_target_scale(actor);
-        if (actorscale >= 1.25) {//((actor->formID == 0x14 || actor->IsPlayerTeammate() || actor->IsInFaction(Runtime::GetSingleton().FollowerFaction)) && actorscale >= 1.25) {
-            ApplySpellBonus(actor, actorscale);
-        }
+		if (actor->formID != 0x14) {
+			float actorscale = get_visual_scale(actor);
+			ApplySpellBonus(actor, actorscale);
+		}
 	}
 
-    void ScaleSpellManager::ApplySpellBonus(Actor* actor, float scale) {
+	void ScaleSpellManager::ApplySpellBonus(Actor* actor, float scale) {
 		if (!actor) {
 			return;
 		}
-        auto runtime = Runtime::GetSingleton();
-        //log::info("Receiver Name: {}, Scale: {}", actor->GetDisplayFullName(), scale);
+		//log::info("Receiver Name: {}, Scale: {}", actor->GetDisplayFullName(), scale);
 
-        //if (scale >= 40.0) {
-            //actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
-            //actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
-            //actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
-            //actor->RemoveSpell(runtime.gtsSizeCloakSpellTiny);
-            //actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
-            //actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
-           // actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-           // actor->AddSpell(runtime.gtsSizeCloakSpellImpossible);
-        //}
-        if (scale >= 32.0) { //scale <= 40.0) {       
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellTiny);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellImpossible);
-            actor->AddSpell(runtime.gtsSizeCloakSpellGigantic);
-        }
+		// TODO: Improve this
+		if (scale >= 32.0) { //scale <= 40.0) {
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMedium");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellSmall");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellLarge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellTiny");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellHuge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMassive");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellImpossible");
+			Runtime::AddSpell(actor, "gtsSizeCloakSpellGigantic");
+		} else if (scale >= 24.0 && scale <= 32.0) {
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMedium");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellSmall");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellLarge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellTiny");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellHuge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellGigantic");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellImpossible");
+			Runtime::AddSpell(actor, "gtsSizeCloakSpellMassive");
+		} else if (scale >= 18.0 && scale <= 24.0) {
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMedium");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellSmall");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellLarge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellTiny");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellHuge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMassive");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellGigantic");
+			Runtime::AddSpell(actor, "gtsSizeCloakSpellMega");
+		} else if (scale >= 12.0 && scale <= 18.0) {
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMedium");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellSmall");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellLarge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellTiny");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMassive");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellGigantic");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMega");
+			Runtime::AddSpell(actor, "gtsSizeCloakSpellHuge");
+		} else if (scale >= 8.0 && scale <= 12.0) {
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMedium");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellSmall");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellTiny");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellHuge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMassive");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMega");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellGigantic");
+			Runtime::AddSpell(actor, "gtsSizeCloakSpellLarge");
+		} else if (scale >= 2.5 && scale <= 8.0) {
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellSmall");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellLarge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellTiny");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellHuge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMassive");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellGigantic");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMega");
+			Runtime::AddSpell(actor, "gtsSizeCloakSpellMedium");
 
-        else if (scale >= 24.0 && scale <= 32.0) {       
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellTiny);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellImpossible);
-            actor->AddSpell(runtime.gtsSizeCloakSpellMassive);
-        }
-        else if (scale >= 18.0 && scale <= 24.0) {       
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellTiny);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->AddSpell(runtime.gtsSizeCloakSpellMega);
-        }
-        else if (scale >= 12.0 && scale <= 18.0) {       
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellTiny);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
-            actor->AddSpell(runtime.gtsSizeCloakSpellHuge);
-        }
+			if (scale >=3.25 && scale <= 8.0) {
+				Runtime::AddSpell(actor, "gtsSizeCloakSpellMedium");
+			}
+			if (scale >=5.0 && scale <= 8.0) {
+				Runtime::AddSpell(actor, "gtsSizeCloakSpellMedium");
+			}
 
-        else if (scale >= 8.0 && scale <= 12.0) {
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellTiny);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->AddSpell(runtime.gtsSizeCloakSpellLarge);   
-        }
-  else if (scale >= 2.5 && scale <= 8.0) {
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellTiny);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
-            actor->AddSpell(runtime.gtsSizeCloakSpellMedium);
-    
-    if (scale >=3.25 && scale <= 8.0) {
-        actor->AddSpell(runtime.gtsSizeCloakSpellMedium); 
-    }
-    if (scale >=5.0 && scale <= 8.0) {
-        actor->AddSpell(runtime.gtsSizeCloakSpellMedium); 
-    }
-
-  }
-  else if (scale >= 1.1 && scale <= 2.5) {
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellTiny);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
-            actor->AddSpell(runtime.gtsSizeCloakSpellSmall);
-  }
-
-  else if (scale <= 1.1) {
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMedium);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellLarge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellHuge);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMassive);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellGigantic);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellMega);
-            actor->RemoveSpell(runtime.gtsSizeCloakSpellSmall);
-            actor->AddSpell(runtime.gtsSizeCloakSpellTiny);
-      }
-    }
+		} else if (scale >= 1.1 && scale <= 2.5) {
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMedium");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellLarge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellTiny");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellHuge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMassive");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellGigantic");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMega");
+			Runtime::AddSpell(actor, "gtsSizeCloakSpellSmall");
+		} else if (scale <= 1.1) {
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMedium");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellLarge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellHuge");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMassive");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellGigantic");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellMega");
+			Runtime::RemoveSpell(actor, "gtsSizeCloakSpellSmall");
+			Runtime::AddSpell(actor, "gtsSizeCloakSpellTiny");
+		}
+	}
 }
-

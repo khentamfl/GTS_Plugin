@@ -13,12 +13,17 @@ namespace Gts {
 				return _flushLevel;
 			}
 
+			[[nodiscard]] inline bool ShouldProfile() const noexcept {
+				return _shouldProfile;
+			}
+
 		private:
 			articuno_serialize(ar) {
 				auto logLevel = spdlog::level::to_string_view(_logLevel);
 				auto flushLevel = spdlog::level::to_string_view(_flushLevel);
 				ar <=> articuno::kv(logLevel, "logLevel");
 				ar <=> articuno::kv(flushLevel, "flushLevel");
+				ar <=> articuno::kv(_shouldProfile, "profile");
 			}
 
 			articuno_deserialize(ar) {
@@ -31,10 +36,12 @@ namespace Gts {
 				if (ar <=> articuno::kv(flushLevel, "flushLevel")) {
 					_flushLevel = spdlog::level::from_str(flushLevel);
 				}
+				ar <=> articuno::kv(_shouldProfile, "profile");
 			}
 
 			spdlog::level::level_enum _logLevel{spdlog::level::level_enum::info};
 			spdlog::level::level_enum _flushLevel{spdlog::level::level_enum::trace};
+			bool _shouldProfile = false;
 
 			friend class articuno::access;
 	};

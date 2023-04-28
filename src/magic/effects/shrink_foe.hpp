@@ -16,9 +16,8 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-			static bool StartEffect(EffectSetting* effect);
-
 			ShrinkFoe(ActiveEffect* effect);
+
 		private:
 			float power = 0.0;
 			float efficiency = 0.0;

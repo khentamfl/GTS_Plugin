@@ -1,6 +1,6 @@
 #include "papyrus/height.hpp"
+#include "data/runtime.hpp"
 #include "scale/height.hpp"
-#include "util.hpp"
 
 
 using namespace SKSE;
@@ -48,7 +48,7 @@ namespace {
 			if (!actor->Is3DLoaded()) {
 				continue;
 			}
-			if (actor->IsPlayerTeammate()) {
+			if (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction")) {
 				mod_target_height(actor, amt);
 			}
 		}

@@ -1,5 +1,4 @@
 #include "hooks/havok.hpp"
-#include "util.hpp"
 #include "events.hpp"
 
 #include "managers/contact.hpp"

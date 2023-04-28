@@ -3,6 +3,7 @@
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
+#include "utils/actorUtils.hpp"
 
 
 namespace Gts {
@@ -10,79 +11,68 @@ namespace Gts {
 		return "VoreGrowth";
 	}
 
-	bool VoreGrowth::StartEffect(EffectSetting* effect) { // NOLINT
-		auto& runtime = Runtime::GetSingleton();
-		return effect == runtime.GlobalVoreGrowth;
-	}
-
 	void VoreGrowth::OnStart() {
 		auto target = GetTarget();
 		float Scale = get_visual_scale(target);
-		this->ScaleOnVore = Scale; 
-		this->BlockVoreMods = false;
+		this->ScaleOnVore = Scale;
+		if (IsDragon(target)) {
+			this->ScaleOnVore = 1.0;
+		}
 	}
 
 	void VoreGrowth::OnUpdate() {
-		float BASE_POWER = 0.0005200;
-		auto& runtime = Runtime::GetSingleton();
+		float BASE_POWER = 0.0003800;
 		auto caster = GetCaster();
+		if (!caster) {
+			return;
+		}
 		auto target = GetTarget();
-		if (!caster || !target) {
+		if (!target) {
+			return;
+		}
+		if (caster == target) {
 			return;
 		}
 		float bonus = 1.0;
-		float GrowAmount = this->ScaleOnVore;
+		float GrowAmount = 1.0;
+		if (IsDragon(target)) {
+			GrowAmount *= 6.0;
+		}
 		BASE_POWER *= GrowAmount;
-		if (caster->HasPerk(runtime.AdditionalAbsorption)) {
+		if (Runtime::HasPerk(caster, "AdditionalGrowth")) {
 			BASE_POWER *= 2.0;
 		}
 
-		if (PlayerCharacter::GetSingleton()->HasMagicEffect(runtime.EffectSizeAmplifyPotion))
-		{
-			bonus = get_target_scale(caster) * 0.25 + 0.75;
+		if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(),"EffectSizeAmplifyPotion")) {
+			bonus = get_visual_scale(caster) * 0.25 + 0.75;
 		}
-		
-		VoreAugmentations();
-		Grow(caster, 0.0, BASE_POWER * bonus);
+		//log::info("Vore Growth Actor: {}, Target: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
+		VoreRegeneration(caster);
+		Grow(caster, 0, BASE_POWER * bonus);
 	}
 
 	void VoreGrowth::OnFinish() {
-		this->ScaleOnVore = 1.0;
-		this->BlockVoreMods = false;
+		auto giant = GetCaster();
+		if (!giant) {
+			return;
+		}
+		auto tiny = GetTarget();
+		if (!tiny) {
+			return;
+		}
+		if (giant == tiny) {
+			return;
+		}
+		VoreBuffAttributes();
+
 	}
 
 
-	void VoreGrowth::VoreAugmentations() {
-		
-		auto Caster = GetCaster();
-		if (!Caster) // Don't apply bonuses if caster is not player.
-		{return;}
-		auto& runtime = Runtime::GetSingleton();
-		
-		float HpRegen = Caster->GetPermanentActorValue(ActorValue::kHealth) * 0.00145;
-		float SpRegen = Caster->GetPermanentActorValue(ActorValue::kStamina) * 0.007;
+	void VoreGrowth::VoreRegeneration(Actor* Caster) {
+		return;
+	}
 
-		if(Caster->HasPerk(runtime.VorePerkRegeneration))
-		{
-			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
-			Caster->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
-		}
-		if (Caster->HasPerk(runtime.VorePerkGreed) && this->BlockVoreMods == false)  // Permamently increases random AV after eating someone
-		{
-			this->BlockVoreMods = true;
-			int Boost = rand() % 2;
-			if (Boost == 0)
-			{
-				Caster->ModActorValue(ActorValue::kHealth, 0.50);
-			}
-			else if (Boost == 1)
-			{
-				Caster->ModActorValue(ActorValue::kMagicka, 0.50);
-			}
-			else if (Boost == 2)
-			{
-				Caster->ModActorValue(ActorValue::kStamina, 0.50);
-			}
-		}
+	void VoreGrowth::VoreBuffAttributes() {
+		return;
 	}
 }

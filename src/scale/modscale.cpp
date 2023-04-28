@@ -1,5 +1,4 @@
 #include "scale/modscale.hpp"
-#include "util.hpp"
 #include "node.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
@@ -12,9 +11,10 @@ namespace Gts {
 		// This is how the game sets scale with the `SetScale` command
 		// It is limited to x10 and messes up all sorts of things like actor damage
 		// and anim speeds
-		float refScale = static_cast<float>(actor->refScale) / 100.0F;
+		// Calling too fast also kills frames
+		float refScale = static_cast<float>(actor->GetReferenceRuntimeData().refScale) / 100.0F;
 		if (fabs(refScale - target_scale) > 1e-5) {
-			actor->refScale = static_cast<std::uint16_t>(target_scale * 100.0F);
+			actor->GetReferenceRuntimeData().refScale = static_cast<std::uint16_t>(target_scale * 100.0F);
 			actor->DoReset3D(false);
 		}
 	}
@@ -63,50 +63,6 @@ namespace Gts {
 		return result;
 	}
 
-	bool set_fp_scale(Actor* actor, float target_scale, float prone) {
-		// This will set the First Person  scale of the model root and npc root
-		if (!actor->Is3DLoaded()) {
-			return false;
-		}
-		bool result = false;
-		string node_name = "NPC Root [Root]";
-		auto& size_method = Persistent::GetSingleton().size_method;
-		auto first_node = find_node(actor, node_name, true);
-		auto first_model = actor->Get3D(true);
-		auto& runtime = Runtime::GetSingleton();
-		float FirstPersonMode = runtime.FirstPersonMode->value;
-
-		if (size_method == RootScale && first_node) {
-			result = true;
-			if (FirstPersonMode == 0.0) {
-				first_node->local.scale = target_scale * prone;
-			}
-			else if (FirstPersonMode == 1.0) {
-				first_node->local.scale = 1.0 * prone;
-			}
-			else if (FirstPersonMode == 2.0) {
-				first_node->local.scale = 0.7 * prone;
-			}
-			update_node(first_node);
-		}
-
-		else if (size_method == ModelScale && first_model) {
-			result = true;
-			if (FirstPersonMode == 0.0) {
-				first_model->local.scale = target_scale * prone;
-			}
-			else if (FirstPersonMode == 1.0) {
-				first_model->local.scale = 1.0 * prone;
-			}
-			else if (FirstPersonMode == 2.0) {
-				first_model->local.scale = 0.7 * prone;
-			}
-			update_node(first_model);
-		} 
-		return result;
-	}
-
-	
 
 	float get_npcnode_scale(Actor* actor) {
 		// This will set the scale of the root npc node
@@ -157,7 +113,7 @@ namespace Gts {
 
 	float get_ref_scale(Actor* actor) {
 		// This will set the scale of the root npc node
-		return static_cast<float>(actor->refScale) / 100.0F;
+		return static_cast<float>(actor->GetReferenceRuntimeData().refScale) / 100.0F;
 	}
 
 	float get_scale(Actor* actor) {
@@ -190,7 +146,12 @@ namespace Gts {
 				return set_npcnode_scale(actor, scale/(get_ref_scale(actor)*get_model_scale(actor)));
 				break;
 			case SizeMethod::RefScale:
-				set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
+				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
+				if (actor->formID == 0x14) {
+					return set_npcnode_scale(actor, scale/(get_ref_scale(actor)*get_model_scale(actor)));
+				} else {
+					return set_model_scale(actor, scale/(get_ref_scale(actor)*get_npcnode_scale(actor)));
+				}
 				return true;
 				break;
 		}

@@ -1,5 +1,5 @@
 #include "magic/magic.hpp"
-#include "util.hpp"
+#include "Config.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/effects/absorb_effect.hpp"
 #include "magic/effects/explosive_growth.hpp"
@@ -22,9 +22,11 @@
 #include "magic/effects/vore_growth.hpp"
 #include "magic/effects/SizeRelatedDamage.hpp"
 #include "magic/effects/SmallMassiveThreat.hpp"
-#include "magic/effects/GrowthPotion.hpp"
-#include "magic/effects/SizePotion.hpp"
-#include "magic/effects/sizestealpotion.hpp"
+#include "magic/effects/Potions/GrowthPotion.hpp"
+#include "magic/effects/Potions/SizePotion.hpp"
+#include "magic/effects/Potions/SizeStealPotion.hpp"
+#include "magic/effects/Poisons/Poison_Of_Shrinking.hpp"
+#include "magic/effects/Potions/ShrinkPotion.hpp"
 #include "managers/Attributes.hpp"
 #include "data/runtime.hpp"
 
@@ -44,6 +46,7 @@ namespace Gts {
 
 	Magic::Magic(ActiveEffect* effect) : activeEffect(effect) {
 		if (this->activeEffect) {
+			auto spell = this->activeEffect->spell;
 			this->effectSetting = this->activeEffect->GetBaseObject();
 			MagicTarget* m_target = this->activeEffect->target;
 			if (m_target) {
@@ -159,113 +162,47 @@ namespace Gts {
 	}
 
 	void MagicManager::ProcessActiveEffects(Actor* actor) {
-		auto& runtime = Runtime::GetSingleton();
-
-		auto effect_list =actor->GetActiveEffectList();
+		auto effect_list = actor->AsMagicTarget()->GetActiveEffectList();
 		if (!effect_list) {
 			return;
 		}
 		for (auto effect: (*effect_list)) {
-			EffectSetting* base_spell = effect->GetBaseObject();
-			if (ExplosiveGrowth::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ExplosiveGrowth(effect));
-			}
-
-			if (Gigantism::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new Gigantism(effect));
-			}
-
-			if (GrowthPotion::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new GrowthPotion(effect));
-			}
-
-			if (SizePotion::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SizePotion(effect));
-			}
-
-			if (SizeHunger::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SizeHunger(effect));
-			}
-
-			if (CrushGrowth::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new CrushGrowth(effect));
-			}
-
-			if (TrackSize::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new TrackSize(effect));
-			}
-
-			if (ShrinkFoe::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkFoe(effect));
-			}
-
-			if (SwordOfSize::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SwordOfSize(effect));
-			}
-
-			if (ShrinkButton::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkButton(effect));
-			}
-			if (GrowButton::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new GrowButton(effect));
-			}
-
-			if (SlowGrow::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SlowGrow(effect));
-			}
-
-			if (SmallMassiveThreat::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SmallMassiveThreat(effect));
-			}
-
-			if (Growth::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new Growth(effect));
-			}
-			if (Shrink::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new Shrink(effect));
-			}
-
-			if (GrowOther::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new GrowOther(effect));
-			}
-			if (ShrinkOther::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkOther(effect));
-			}
-
-			if (GrowOtherButton::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new GrowOtherButton(effect));
-			}
-			if (ShrinkOtherButton::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkOtherButton(effect));
-			}
-
-			if (ShrinkBack::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkBack(effect));
-			}
-			if (ShrinkBackOther::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new ShrinkBackOther(effect));
-			}
-
-			if (VoreGrowth::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new VoreGrowth(effect));
-			}
-			if (SizeDamage::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new SizeDamage(effect));
-			}
-			if (Absorb::StartEffect(base_spell)) {
-				this->active_effects.try_emplace(effect, new Absorb(effect));
+			this->numberOfEffects += 1;
+			if (this->active_effects.find(effect) == this->active_effects.end()) {
+				EffectSetting* base_spell = effect->GetBaseObject();
+				Profilers::Start("MagicRuntime");
+				auto factorySearch = this->factories.find(base_spell);
+				Profilers::Stop("MagicRuntime");
+				if (factorySearch != this->factories.end()) {
+					auto &[key, factory] = (*factorySearch);
+					auto magic_effect = factory->MakeNew(effect);
+					if (magic_effect) {
+						this->active_effects.try_emplace(effect, std::move(magic_effect));
+					}
+				}
 			}
 		}
 	}
 
+	std::string MagicManager::DebugName() {
+		return "MagicManager";
+	}
+
 	void MagicManager::Update() {
+		Profilers::Start("MagicLookup");
 		for (auto actor: find_actors()) {
 			this->ProcessActiveEffects(actor);
 		}
+		Profilers::Stop("MagicLookup");
 
 		for (auto i = this->active_effects.begin(); i != this->active_effects.end();) {
+			this->numberOfOurEffects += 1;
 			auto& magic = (*i);
+
+
+			Profilers::Start(magic.second->GetName());
 			magic.second->poll();
+			Profilers::Stop(magic.second->GetName());
 			if (magic.second->IsFinished()) {
 				i = this->active_effects.erase(i);
 			} else {
@@ -276,5 +213,60 @@ namespace Gts {
 
 	void MagicManager::Reset() {
 		this->active_effects.clear();
+	}
+
+	void MagicManager::DataReady() {
+
+		// Potions
+		RegisterMagic<SizePotion>("EffectSizePotionExtreme");
+		RegisterMagic<SizeHunger>("EffectSizeHungerPotion");
+		RegisterMagic<SizePotion>("EffectSizePotionStrong");
+		RegisterMagic<SizePotion>("EffectSizePotionNormal");
+		RegisterMagic<SizePotion>("EffectSizePotionWeak");
+		RegisterMagic<GrowthPotion>("EffectGrowthPotion");
+		RegisterMagic<ShrinkPotion>("SizeDrainPotion");
+		RegisterMagic<Shrink_Poison>("ShrinkPoison");
+		//
+		RegisterMagic<CrushGrowth>("CrushGrowthMGEF");
+		RegisterMagic<TrackSize>("TrackSize");
+		RegisterMagic<ShrinkFoe>("ShrinkEnemy");
+		RegisterMagic<ShrinkFoe>("ShrinkEnemyAOE");
+		RegisterMagic<ShrinkFoe>("ShrinkEnemyAOEMast");
+		RegisterMagic<ShrinkFoe>("ShrinkBolt");
+		RegisterMagic<ShrinkFoe>("ShrinkStorm");
+
+
+		RegisterMagic<Gigantism>("EnchGigantism");
+
+
+		RegisterMagic<SwordOfSize>("SwordEnchant");
+		RegisterMagic<ShrinkButton>("ShrinkPCButton");
+		RegisterMagic<GrowButton>("GrowPcButton");
+		RegisterMagic<SlowGrow>("SlowGrowth");
+		RegisterMagic<SmallMassiveThreat>("SmallMassiveThreat");
+		RegisterMagic<Growth>("GrowthSpell");
+		RegisterMagic<Growth>("GrowthSpellAdept");
+		RegisterMagic<Growth>("GrowthSpellExpert");
+		RegisterMagic<Shrink>("ShrinkSpell");
+		RegisterMagic<GrowOther>("GrowAlly");
+		RegisterMagic<GrowOther>("GrowAllyAdept");
+		RegisterMagic<GrowOther>("GrowAllyExpert");
+
+		RegisterMagic<ShrinkOther>("ShrinkAlly");
+		RegisterMagic<ShrinkOther>("ShrinkAllyAdept");
+		RegisterMagic<ShrinkOther>("ShrinkAllyExpert");
+		RegisterMagic<GrowOtherButton>("GrowAllySizeButton");
+		RegisterMagic<ShrinkOtherButton>("ShrinkAllySizeButton");
+		RegisterMagic<ShrinkBack>("ShrinkBack");
+		RegisterMagic<ShrinkBackOther>("ShrinkBackNPC");
+		RegisterMagic<VoreGrowth>("GlobalVoreGrowth");
+		RegisterMagic<SizeDamage>("SizeRelatedDamage0");
+		RegisterMagic<SizeDamage>("SizeRelatedDamage1");
+		RegisterMagic<SizeDamage>("SizeRelatedDamage2");
+		RegisterMagic<Absorb>("AbsorbMGEF");
+		RegisterMagic<Absorb>("TrueAbsorb");
+		RegisterMagic<ExplosiveGrowth>("explosiveGrowth1");
+		RegisterMagic<ExplosiveGrowth>("explosiveGrowth2");
+		RegisterMagic<ExplosiveGrowth>("explosiveGrowth3");
 	}
 }

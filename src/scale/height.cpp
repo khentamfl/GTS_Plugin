@@ -1,6 +1,5 @@
 #include "scale/height.hpp"
 #include "scale/scale.hpp"
-#include "util.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/transient.hpp"
 
@@ -77,5 +76,13 @@ namespace Gts {
 	float get_effective_height(Actor* actor) {
 		float scale = get_effective_scale(actor);
 		return scale_to_height(actor, scale);
+	}
+
+	float get_base_height(Actor* actor) {
+		auto temp_actor_data = Transient::GetSingleton().GetData(actor);
+		if (!temp_actor_data) {
+			return -1.0;
+		}
+		return temp_actor_data->base_height;
 	}
 }
