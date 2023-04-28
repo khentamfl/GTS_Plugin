@@ -49,6 +49,6 @@ namespace Gts {
 		    bool AnyRunning();
 			[[nodiscard]] static Profilers& GetSingleton();
 			std::unordered_map<std::string,Profiler> profilers;
-			Profiler totalTime("TotalTime");
+			Profiler totalTime = Profiler("TotalTime"sv);
 	};
 }
