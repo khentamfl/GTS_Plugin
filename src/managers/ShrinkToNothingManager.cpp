@@ -106,7 +106,7 @@ namespace Gts {
 
 	void ShrinkToNothingManager::ResetActor(Actor* actor) {
 	    if (actor) {
-    		this->data.erase(actor->formId);
+    		this->data.erase(actor->formID);
     	}
 	}
 
@@ -118,7 +118,7 @@ namespace Gts {
 	        return;
 	    }
 		if (ShrinkToNothingManager::CanShrink(giant, tiny)) {
-			ShrinkToNothingManager::GetSingleton().data.try_emplace(tiny->formId, giant);
+			ShrinkToNothingManager::GetSingleton().data.try_emplace(tiny->formID, giant);
 		}
 	}
 
@@ -127,7 +127,7 @@ namespace Gts {
 	        return false;
 	    }
 		auto& m = ShrinkToNothingManager::GetSingleton().data;
-		return !(m.find(actor->formId) == m.end());
+		return !(m.find(actor->formID) == m.end());
 	}
 
 	bool ShrinkToNothingManager::CanShrink(Actor* giant, Actor* tiny) {

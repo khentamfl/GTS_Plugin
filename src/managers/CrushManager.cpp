@@ -150,7 +150,7 @@ namespace Gts {
 			}
 
 			if (data.state == CrushState::Healthy) {
-				RandomMoan(data.giant, tiny);
+				RandomMoan(giant, tiny);
 				data.state = CrushState::Crushing;
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {
@@ -227,7 +227,7 @@ namespace Gts {
 		        SetMove(actor);
 		   }*/
 		if (actor) {
-		    this->data.erase(actor->formId);
+		    this->data.erase(actor->formID);
 		}
 	}
 
@@ -239,7 +239,7 @@ namespace Gts {
 	        return;
 	    }
 		if (CrushManager::CanCrush(giant, tiny)) {
-			CrushManager::GetSingleton().data.try_emplace(tiny->formId, giant);
+			CrushManager::GetSingleton().data.try_emplace(tiny->formID, giant);
 		}
 	}
 
@@ -248,7 +248,7 @@ namespace Gts {
             return false;
         }
 		auto& m = CrushManager::GetSingleton().data;
-		return (m.find(actor->formId) != m.end());
+		return (m.find(actor->formID) != m.end());
 	}
 
 	bool CrushManager::CanCrush(Actor* giant, Actor* tiny) {
