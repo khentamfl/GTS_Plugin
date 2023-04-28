@@ -37,6 +37,6 @@ namespace Gts {
 			static bool AlreadyCrushed(Actor* actor);
 			static void Crush(Actor* giant, Actor* tiny);
 		private:
-			std::unordered_map<FormId, CrushData> data;
+			std::unordered_map<FormID, CrushData> data;
 	};
 }

@@ -38,6 +38,6 @@ namespace Gts {
 			static void Shrink(Actor* giant, Actor* tiny);
 			static void AdjustGiantessSkill(Actor* Caster, Actor* Target);
 		private:
-			std::unordered_map<FormId, ShrinkData> data;
+			std::unordered_map<FormID, ShrinkData> data;
 	};
 }
