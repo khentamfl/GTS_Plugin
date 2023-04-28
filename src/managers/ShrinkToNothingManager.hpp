@@ -17,11 +17,11 @@ namespace Gts {
 
 	class ShrinkData {
 		public:
-			ShrinkData(Actor* giant, Actor* tiny);
+			ShrinkData(Actor* giant);
 
 			ShrinkState state;
 			Timer delay;
-			Actor* giant;
+			ActorHandle giant;
 	};
 
 	class ShrinkToNothingManager : public EventListener {
@@ -38,6 +38,6 @@ namespace Gts {
 			static void Shrink(Actor* giant, Actor* tiny);
 			static void AdjustGiantessSkill(Actor* Caster, Actor* Target);
 		private:
-			std::unordered_map<Actor*, ShrinkData> data;
+			std::unordered_map<FormId, ShrinkData> data;
 	};
 }

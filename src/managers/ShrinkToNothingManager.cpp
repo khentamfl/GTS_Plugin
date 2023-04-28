@@ -24,13 +24,18 @@ namespace Gts {
 	}
 
 	void ShrinkToNothingManager::Update() {
-		for (auto &[tiny, data]: this->data) {
-			auto giant = data.giant;
+		for (auto &[tinyId, data]: this->data) {
+		    auto tiny = TESForm::LookupByID<Actor>(tinyId);
+			auto giantHandle = data.giant;
 			if (!tiny) {
 				continue;
 			}
-			if (!giant) {
+			if (!giantHandle) {
 				continue;
+			}
+			auto giant = giantHandle.get().get();
+			if (!giant) {
+			    continue;
 			}
 
 			if (data.state == ShrinkState::Healthy) {
@@ -100,18 +105,29 @@ namespace Gts {
 	}
 
 	void ShrinkToNothingManager::ResetActor(Actor* actor) {
-		this->data.erase(actor);
+	    if (actor) {
+    		this->data.erase(actor->formId);
+    	}
 	}
 
 	void ShrinkToNothingManager::Shrink(Actor* giant, Actor* tiny) {
+	    if (!tiny) {
+	        return;
+	    }
+	    if (!giant) {
+	        return;
+	    }
 		if (ShrinkToNothingManager::CanShrink(giant, tiny)) {
-			ShrinkToNothingManager::GetSingleton().data.try_emplace(tiny, giant, tiny);
+			ShrinkToNothingManager::GetSingleton().data.try_emplace(tiny->formId, giant);
 		}
 	}
 
 	bool ShrinkToNothingManager::AlreadyShrinked(Actor* actor) {
+	    if (!actor) {
+	        return false;
+	    }
 		auto& m = ShrinkToNothingManager::GetSingleton().data;
-		return !(m.find(actor) == m.end());
+		return !(m.find(actor->formId) == m.end());
 	}
 
 	bool ShrinkToNothingManager::CanShrink(Actor* giant, Actor* tiny) {
@@ -160,9 +176,9 @@ namespace Gts {
 		}
 	}
 
-	ShrinkData::ShrinkData(Actor* giant, Actor* tiny) :
+	ShrinkData::ShrinkData(Actor* giant) :
 		delay(Timer(0.01)),
 		state(ShrinkState::Healthy),
-		giant(giant) {
+		giant(giant ? giant->CreateRefHanfle() : ActorHandle()) {
 	}
 }
