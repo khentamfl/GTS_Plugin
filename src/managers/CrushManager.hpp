@@ -17,11 +17,11 @@ namespace Gts {
 
 	class CrushData {
 		public:
-			CrushData(Actor* giant, Actor* tiny);
+			CrushData(Actor* giant);
 
 			CrushState state;
 			Timer delay;
-			Actor* giant;
+			ActorHandle giant;
 	};
 
 	class CrushManager : public EventListener {
@@ -37,6 +37,6 @@ namespace Gts {
 			static bool AlreadyCrushed(Actor* actor);
 			static void Crush(Actor* giant, Actor* tiny);
 		private:
-			std::unordered_map<Actor*, CrushData> data;
+			std::unordered_map<FormId, CrushData> data;
 	};
 }
