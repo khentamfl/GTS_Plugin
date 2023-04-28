@@ -10,12 +10,18 @@ namespace Gts {
 
 	void Profiler::Start()
 	{
-		m_beg = Clock::now();
+	    if (!this->running) {
+    		m_beg = Clock::now();
+    		this->running = true;
+    	}
 	}
 
 	void Profiler::Stop()
 	{
-		this->elapsed += std::chrono::duration_cast<Second>(Clock::now() - m_beg).count();
+	    if (this->running) {
+    		this->elapsed += std::chrono::duration_cast<Second>(Clock::now() - m_beg).count();
+    		this->running = false;
+    	}
 	}
 
 	void Profiler::Reset()
@@ -25,6 +31,10 @@ namespace Gts {
 
 	double Profiler::Elapsed() {
 		return this->elapsed;
+	}
+	
+	bool Profiler::IsRunning() {
+		return this->running;
 	}
 
 	std::string Profiler::GetName() {
@@ -49,6 +59,9 @@ namespace Gts {
 			auto key = std::string(name);
 			me.profilers.try_emplace(key, name);
 			me.profilers.at(key).Start();
+			if (me.AnyRunning()) {
+    			me.totalTime.Start();
+    		}
 		}
 	}
 
@@ -58,7 +71,19 @@ namespace Gts {
 			auto key = std::string(name);
 			me.profilers.try_emplace(key, name);
 			me.profilers.at(key).Stop();
+			if (!me.AnyRunning()) {
+			    me.totalTime.Stop();
+			}
 		}
+	}
+	
+	bool Profilers::AnyRunning() {
+	    for (auto& [key, profiler]: this->profilers) {
+	        if (profiler.IsRunning()) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 
 	void Profilers::Report() {
@@ -76,18 +101,21 @@ namespace Gts {
 		double current_report_time = Time::WorldTimeElapsed();
 		double total_time = current_report_time - last_report_time;
 
-		double total = 0.0;
-		for (auto& [name, profiler]: Profilers::GetSingleton().profilers) {
-			total += profiler.Elapsed();
-		}
+		double total = Profilers::GetSingleton().totalTime.Elapsed();
 		for (auto& [name, profiler]: Profilers::GetSingleton().profilers) {
 			double elapsed = profiler.Elapsed();
 			double spf = elapsed / (current_report_frame - last_report_frame);
 			double time_percent = elapsed/total_time*100;
-			report += std::format("\n {:20}:					{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", name, elapsed, elapsed*100.0/total, spf, time_percent);
+			std::string shortenedName = name;
+			if (shortenedName.length() > 19) {
+			    shortenedName = shortenedName.substr(0, 18) + "…";
+			}
+			report += std::format("\n {:20}:					{:15.3f}|{:14.1f}%|{:15.3f}|{:14.3f}%", shortenedName, elapsed, elapsed*100.0/total, spf, time_percent);
 			profiler.Reset();
 		}
 		log::info("{}", report);
+		
+		Profilers::GetSingleton().totalTime.Reset();
 
 		last_report_frame = current_report_frame;
 		last_report_time = current_report_time;
