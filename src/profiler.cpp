@@ -32,7 +32,7 @@ namespace Gts {
 	double Profiler::Elapsed() {
 		return this->elapsed;
 	}
-	
+
 	bool Profiler::IsRunning() {
 		return this->running;
 	}
@@ -61,7 +61,7 @@ namespace Gts {
 			me.profilers.at(key).Start();
 			if (me.AnyRunning()) {
     			me.totalTime.Start();
-    		}
+    	}
 		}
 	}
 
@@ -76,7 +76,7 @@ namespace Gts {
 			}
 		}
 	}
-	
+
 	bool Profilers::AnyRunning() {
 	    for (auto& [key, profiler]: this->profilers) {
 	        if (profiler.IsRunning()) {
@@ -87,6 +87,11 @@ namespace Gts {
 	}
 
 	void Profilers::Report() {
+    for (auto& [name, profiler]: Profilers::GetSingleton().profilers) {
+      if (profiler->IsRunning()) {
+        log::warn("The profiler {} is still running", name);
+      }
+    }
 		std::string report = "Reporting Profilers:";
 		report += std::format("\n|{:20}|", "Name");
 		report += std::format("{:15s}|",                        "Seconds");
@@ -114,7 +119,7 @@ namespace Gts {
 			profiler.Reset();
 		}
 		log::info("{}", report);
-		
+
 		Profilers::GetSingleton().totalTime.Reset();
 
 		last_report_frame = current_report_frame;
