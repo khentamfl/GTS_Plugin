@@ -12,7 +12,7 @@ namespace Gts {
 			double elapsed = 0.0;
 
 			std::string name = "";
-			
+
 			bool running = false;
 
 		public:
@@ -25,8 +25,10 @@ namespace Gts {
 			void Reset();
 
 			double Elapsed();
-			
+
 			bool IsRunning();
+
+      double RunningTime();
 
 			std::string GetName();
 	};

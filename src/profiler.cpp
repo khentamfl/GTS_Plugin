@@ -19,7 +19,7 @@ namespace Gts {
 	void Profiler::Stop()
 	{
 	    if (this->running) {
-    		this->elapsed += std::chrono::duration_cast<Second>(Clock::now() - m_beg).count();
+    		this->elapsed += RunningTime();
     		this->running = false;
     	}
 	}
@@ -30,12 +30,24 @@ namespace Gts {
 	}
 
 	double Profiler::Elapsed() {
-		return this->elapsed;
+    if (this->IsRunning) {
+		    return this->elapsed + this->RunningTime();
+    } else {
+      return this->elapsed;
+    }
 	}
 
 	bool Profiler::IsRunning() {
 		return this->running;
 	}
+
+  double Profiler::RunningTime() {
+    if (this->running) {
+      return std::chrono::duration_cast<Second>(Clock::now() - m_beg).count();
+    } else {
+      return 0;
+    }
+  }
 
 	std::string Profiler::GetName() {
 		return this->name;
