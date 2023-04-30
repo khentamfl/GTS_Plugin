@@ -30,7 +30,7 @@ namespace Gts {
 	}
 
 	double Profiler::Elapsed() {
-    if (this->IsRunning) {
+    if (this->IsRunning()) {
 		    return this->elapsed + this->RunningTime();
     } else {
       return this->elapsed;
@@ -100,7 +100,7 @@ namespace Gts {
 
 	void Profilers::Report() {
     for (auto& [name, profiler]: Profilers::GetSingleton().profilers) {
-      if (profiler->IsRunning()) {
+      if (profiler.IsRunning()) {
         log::warn("The profiler {} is still running", name);
       }
     }
