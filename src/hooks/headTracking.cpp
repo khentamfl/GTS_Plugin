@@ -5,7 +5,7 @@ using namespace RE;
 using namespace SKSE;
 
 namespace {
-  NiPoint3 void SetHeadtrackTargetImpl(Actor* actor, const NiPoint3& target) {
+  NiPoint3 SetHeadtrackTargetImpl(Actor* actor, const NiPoint3& target) {
     if (!actor) {
       return;
     }
