@@ -77,9 +77,8 @@ namespace Gts {
 	}
 
 	void SetHealthPercentage(Actor* actor, float target) {
-		Profilers::Start("Av: SetHp%");
+		auto profiler = Profilers::Profile("Av: SetHp%");
 		SetPercentageAV(actor, ActorValue::kHealth, target);
-		Profilers::Stop("Av: SetHp%");
 	}
 
 	float GetMagikaPercentage(Actor* actor) {

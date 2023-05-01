@@ -128,7 +128,7 @@ namespace Gts {
 	}
 
 	void AiManager::Update() {
-		Profilers::Start("Ai: Update");
+		auto profiler = Profilers::Profile("Ai: Update");
 		static Timer ActionTimer = Timer(0.80);
 		if (ActionTimer.ShouldRun()) {
 			auto& persist = Persistent::GetSingleton();
@@ -147,7 +147,6 @@ namespace Gts {
 					}
 				}
 			}
-			Profilers::Stop("Ai: Update");
 		}
 	}
 
