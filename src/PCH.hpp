@@ -120,5 +120,3 @@ namespace util {
 }
 
 #include "util.hpp"
-
-#include "hooks/Detours/detours.h"

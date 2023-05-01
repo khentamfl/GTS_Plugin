@@ -9,7 +9,7 @@
 
 // #define DETOUR_DEBUG 1
 #define DETOURS_INTERNAL
-#include "detours.h"
+#include "hooks/Detours/detours.h"
 #include <stddef.h>
 
 #if DETOURS_VERSION != 0x4c0c1   // 0xMAJORcMINORcPATCH
@@ -466,7 +466,7 @@ static BOOL RecordExeRestore(HANDLE hProcess, HMODULE hModule, DETOUR_EXE_RESTOR
 #define IMAGE_THUNK_DATAXX              IMAGE_THUNK_DATA32
 #define UPDATE_IMPORTS_XX               UpdateImports32
 #define DETOURS_BITS_XX                 32
-#include "uimports.cpp"
+#include "hooks/Detours/uimports.cpp"
 #undef DETOUR_EXE_RESTORE_FIELD_XX
 #undef DWORD_XX
 #undef IMAGE_NT_HEADERS_XX
@@ -483,7 +483,7 @@ static BOOL RecordExeRestore(HANDLE hProcess, HMODULE hModule, DETOUR_EXE_RESTOR
 #define IMAGE_THUNK_DATAXX              IMAGE_THUNK_DATA64
 #define UPDATE_IMPORTS_XX               UpdateImports64
 #define DETOURS_BITS_XX                 64
-#include "uimports.cpp"
+#include "hooks/Detours/uimports.cpp"
 #undef DETOUR_EXE_RESTORE_FIELD_XX
 #undef DWORD_XX
 #undef IMAGE_NT_HEADERS_XX
@@ -1120,7 +1120,7 @@ PVOID WINAPI DetourCopyPayloadToProcessEx(_In_ HANDLE hProcess,
 
     DETOUR_TRACE(("Copied %lu byte payload into target process at %p\n",
                   cbData, pbTarget));
-    
+
     SetLastError(NO_ERROR);
     return pbTarget;
 }
@@ -1481,7 +1481,7 @@ BOOL WINAPI DetourProcessViaHelperDllsW(_In_ DWORD dwTargetPid,
 
     //for East Asia languages and so on, like Chinese, print format with "%hs" can not work fine before user call _tsetlocale(LC_ALL,_T(".ACP"));
     //so we can't use "%hs" in format string, because the dll that contain this code would inject to any process, even not call _tsetlocale(LC_ALL,_T(".ACP")) before
-    
+
     cchWrittenWideChar = MultiByteToWideChar(CP_ACP, 0, &helper->rDlls[0], -1, szDllName, ARRAYSIZE(szDllName));
     if (cchWrittenWideChar >= ARRAYSIZE(szDllName) || cchWrittenWideChar <= 0) {
         goto Cleanup;
