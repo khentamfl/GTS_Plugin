@@ -15,6 +15,7 @@ namespace Hooks {
           auto result = DetourTransactionBegin();
           if (result != NO_ERROR) {
               log::error("Failed to start transaction for unknown reason (error code {}).", result);
+              throw std::runtime_error("");
           }
           log::trace("Initiated transaction for function hook...");
           result = DetourUpdateThread(GetCurrentThread());
@@ -27,10 +28,12 @@ namespace Hooks {
                   log::error(
                       "Not enough memory to obtain thread information for function hook transaction, "
                       "aborting operation.");
+                  throw std::runtime_error("");
               default:
                   DetourTransactionAbort();
                   log::error("Failed to obtain transaction thread information for unknown reason (error code {}).",
                                 result);
+                  throw std::runtime_error("");
           }
           result = DetourAttach(target, hook);
           switch (result) {
@@ -41,15 +44,19 @@ namespace Hooks {
                   DetourTransactionAbort();
                   log::error(
                       "The target function is too small to attach a function hook, aborting operation.");
+                  throw std::runtime_error("");
               case ERROR_INVALID_HANDLE:
                   DetourTransactionAbort();
                   log::error("The target function does refer to a valid address, aborting operation.");
+                  throw std::runtime_error("");
               case ERROR_NOT_ENOUGH_MEMORY:
                   DetourTransactionAbort();
                   log::error("Not enough memory to attach function hook; aborting operation.");
+                  throw std::runtime_error("");
               default:
                   DetourTransactionAbort();
                   log::error("Failed to attach function hook for unknown reason (error code {}).", result);
+                  throw std::runtime_error("");
           }
           result = DetourTransactionCommit();
           switch (result) {
@@ -65,21 +72,24 @@ namespace Hooks {
               default:
                   DetourTransactionAbort();
                   log::error("Failed to commit function hook for unknown reason (error code {}).", result);
+                  throw std::runtime_error("");
           }
       }
       log::error("Unable to commit function hook after {} retries without "
                "another thread modifying the target function. Operation aborted.",
           MAX_RETRY);
+      throw std::runtime_error("");
   }
 
   void FunctionHook<void>::Detach(void** target, void* hook) {
       uintptr_t base = REL::Module::get().base();
-      log::error("Detaching function hook from address 0x{:X} (offset from image base of 0x{:X} by 0x{:X}...",
+      log::debug("Detaching function hook from address 0x{:X} (offset from image base of 0x{:X} by 0x{:X}...",
                     reinterpret_cast<uintptr_t>(*target), base, reinterpret_cast<uintptr_t>(*target) - base);
       for (std::size_t i = 0; i < MAX_RETRY; ++i) {
           auto result = DetourTransactionBegin();
           if (result != NO_ERROR) {
               log::error("Failed to start transaction for unknown reason (error code {}).", result);
+              throw std::runtime_error("");
           }
           log::trace("Initiated transaction for function hook...");
           result = DetourUpdateThread(GetCurrentThread());
@@ -92,15 +102,18 @@ namespace Hooks {
                   log::error(
                       "Not enough memory to obtain thread information for function hook transaction, "
                       "aborting operation.");
+                  throw std::runtime_error("");
               default:
                   DetourTransactionAbort();
                   log::error("Failed to obtain transaction thread information for unknown reason (error code {}).",
                                 result);
+                  throw std::runtime_error("");
           }
           result = DetourDetach(target, hook);
           if (result != NO_ERROR) {
               DetourTransactionAbort();
               log::error("Failed to detach function hook for unknown reason (error code {}).", result);
+              throw std::runtime_error("");
           }
           log::trace("Function hook detached successfully in transaction, committing transaction...");
           result = DetourTransactionCommit();
@@ -117,10 +130,12 @@ namespace Hooks {
               default:
                   DetourTransactionAbort();
                   log::error("Failed to commit function hook detachment for unknown reason (error code {}).", result);
+                  throw std::runtime_error("");
           }
       }
       log::error("Unable to commit function hook detachment after {} retries "
                "without another thread modifying the target function. Operation aborted.",MAX_RETRY);
+       throw std::runtime_error("");
   }
 
 }

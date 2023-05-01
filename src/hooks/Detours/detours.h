@@ -1001,15 +1001,15 @@ int Detour_AssertExprWithFunctionName(int reportType, const char* filename, int 
 #endif// _DEBUG
 
 #ifndef DETOUR_TRACE
-#if DETOUR_DEBUG
-#define DETOUR_TRACE(x) printf x
-#define DETOUR_BREAK()  __debugbreak()
-#include <stdio.h>
-#include <limits.h>
-#else
-#define DETOUR_TRACE(x)
-#define DETOUR_BREAK()
-#endif
+  #if DETOUR_DEBUG
+    #define DETOUR_TRACE(x) printf x
+    #define DETOUR_BREAK()  __debugbreak()
+    #include <stdio.h>
+    #include <limits.h>
+  #else
+    #define DETOUR_TRACE(x)
+    #define DETOUR_BREAK()
+  #endif
 #endif
 
 #if 1 || defined(DETOURS_IA64)
