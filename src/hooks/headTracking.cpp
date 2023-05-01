@@ -7,7 +7,7 @@ using namespace SKSE;
 namespace {
   NiPoint3 SetHeadtrackTargetImpl(Actor* actor, const NiPoint3& target) {
     if (!actor) {
-      return;
+      return NiPoint3();
     }
     auto unscaledHeadPos = actor->GetLookingAtLocation();
     log::info("unscaledHeadPos: {}", Vector2Str(unscaledHeadPos));
