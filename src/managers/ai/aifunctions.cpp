@@ -43,7 +43,7 @@ namespace Gts {
 	}
 
 	void ScareActors(Actor* giant) {
-		Profilers::Start("ActorUtils: ScareActors");
+		auto profiler = Profilers::Profile("ActorUtils: ScareActors");
 		for (auto tiny: FindSomeActors("AiActors", 2)) {
 			if (tiny != giant && tiny->formID != 0x14 && !IsTeammate(tiny)) {
 				if (tiny->IsDead()) {
@@ -73,21 +73,20 @@ namespace Gts {
 									if (cell) {
 										if (!combat) {
 											tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);
-										} 
-									} 
-								} 
+										}
+									}
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-		Profilers::Stop("ActorUtils: ScareActors");
 	}
-	
-		
+
+
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat) {
-		Profilers::Start("ActorUtils: ReportCrime");
+		auto profiler = Profilers::Profile("ActorUtils: ReportCrime");
 		if (!Persistent::GetSingleton().hostile_toggle) {
 			return;
 		}
@@ -112,7 +111,7 @@ namespace Gts {
 								tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
 								tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 								tiny->UpdateCombatControllerSettings();
-							} 
+							}
 							else if (!combat) {
 								if (giant->formID == 0x14 && CombatValue < 1000) {
 									giant->ModCrimeGoldValue(Faction, true, value);
@@ -123,6 +122,5 @@ namespace Gts {
 				}
 			}
 		}
-		Profilers::Stop("ActorUtils: ReportCrime");
 	}
 }

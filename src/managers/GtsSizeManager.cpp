@@ -123,7 +123,7 @@ namespace Gts {
 	}
 
 	void SizeManager::Update() {
-		Profilers::Start("SizeManager: Update");
+		auto profiler = Profilers::Profile("SizeManager: Update");
 		for (auto actor: find_actors()) {
 			// TODO move away from polling
 			float Endless = 0.0;
@@ -157,7 +157,6 @@ namespace Gts {
 				set_max_scale(actor, TotalLimit);
 			}
 		}
-		Profilers::Stop("SizeManager: Update");
 	}
 
 

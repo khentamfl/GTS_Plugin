@@ -27,12 +27,11 @@ namespace Gts {
 	}
 
 	void HighHeelManager::HavokUpdate() {
-		Profilers::Start("HH: HavokUpdate");
+		auto profiler = Profilers::Profile("HH: HavokUpdate");
 		auto actors = FindSomeActors("HHHavokUpdate", 1);
 		for (auto actor: actors) {
 			ApplyHH(actor, false);
 		}
-		Profilers::Stop("HH: HavokUpdate");
 	}
 
 	void HighHeelManager::ActorEquip(Actor* actor) {
@@ -59,7 +58,7 @@ namespace Gts {
 	}
 
 	void HighHeelManager::ApplyHH(Actor* actor, bool force) {
-		Profilers::Start("HH: ApplyHH");
+		auto profiler = Profilers::Profile("HH: ApplyHH");
 		if (!actor) {
 			return;
 		}
@@ -128,7 +127,6 @@ namespace Gts {
 				}
 			}
 		}
-		Profilers::Stop("HH: ApplyHH");
 	}
 
 
@@ -142,7 +140,7 @@ namespace Gts {
 	};
 
 	void HighHeelManager::UpdateHHOffset(Actor* actor) {
-		Profilers::Start("HH: UpdateHHOffset");
+		auto profiler = Profilers::Profile("HH: UpdateHHOffset");
 		auto models = GetModelsForSlot(actor, BGSBipedObjectForm::BipedObjectSlot::kFeet);
 		NiPoint3 result = NiPoint3();
 		for (auto model: models) {
@@ -176,22 +174,19 @@ namespace Gts {
 		me.data.try_emplace(actor);
 		auto& hhData = me.data[actor];
 		hhData.lastBaseHHOffset = result * npcNodeScale;
-		Profilers::Stop("HH: UpdateHHOffset");
 	}
 
 	NiPoint3 HighHeelManager::GetBaseHHOffset(Actor* actor) {
-		Profilers::Start("HH: GetBaseHHOffset");
+		auto profiler = Profilers::Profile("HH: GetBaseHHOffset");
 		auto& me = HighHeelManager::GetSingleton();
 		me.data.try_emplace(actor);
 		auto& hhData = me.data[actor];
-		Profilers::Stop("HH: GetBaseHHOffset");
 		return hhData.lastBaseHHOffset;
 	}
 
 	NiPoint3 HighHeelManager::GetHHOffset(Actor* actor) {
-		Profilers::Start("HH: GetHHOffset");
+		auto profiler = Profilers::Profile("HH: GetHHOffset");
 		auto npcRootNodeScale = get_npcnode_scale(actor);
-		Profilers::Stop("HH: GetHHOffset");
 		return HighHeelManager::GetBaseHHOffset(actor) * npcRootNodeScale;
 	}
 
