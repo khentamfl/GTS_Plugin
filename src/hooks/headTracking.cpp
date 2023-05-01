@@ -1,4 +1,5 @@
 #include "hooks/headTracking.hpp"
+#include "scale/scale.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -24,7 +25,7 @@ namespace Hooks
     static FunctionHook<void(AIProcess* a_this, Actor* a_owner, NiPoint3& a_targetPosition)> SetHeadtrackTarget(RELOCATION_ID(38850, 39887),
       [](auto* a_this, auto* a_owner, auto& a_targetPosition) {
         NiPoint3 newPoint = a_targetPosition;
-        SetHeadtrackTargetImpl(a_outWorldOrCell, newPoint);
+        SetHeadtrackTargetImpl(a_owner, newPoint);
         SetHeadtrackTarget(a_this, a_owner, newPoint);
         return;
       }
