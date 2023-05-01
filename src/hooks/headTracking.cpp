@@ -17,9 +17,9 @@ namespace {
     auto headPos = (unscaledHeadPos - location) * (scale) + location;
     log::info("headPos: {}", Vector2Str(headPos));
     log::info("headPos - location: {}", Vector2Str(headPos - location));
-    auto direction = target - unscaledHeadPos;
+    auto direction = target - headPos;
     log::info("direction: {}", Vector2Str(direction));
-    return headPos + direction;
+    return unscaledHeadPos + direction;
   }
 }
 
