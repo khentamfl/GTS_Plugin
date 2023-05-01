@@ -10,6 +10,8 @@
 //  (once for each supported module format).
 //
 
+#include "hooks/Detours/detours.h"
+
 // UpdateImports32 aka UpdateImports64
 static BOOL UPDATE_IMPORTS_XX(HANDLE hProcess,
                               HMODULE hModule,
