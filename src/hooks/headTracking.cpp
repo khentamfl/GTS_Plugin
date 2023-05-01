@@ -13,8 +13,10 @@ namespace {
     log::info("unscaledHeadPos: {}", Vector2Str(unscaledHeadPos));
     auto scale = get_visual_scale(actor);
     auto location = actor->GetPosition();
+    log::info("unscaledHeadPos - location: {}", Vector2Str(unscaledHeadPos - location));
     auto headPos = (unscaledHeadPos - location) * (scale) + location;
     log::info("headPos: {}", Vector2Str(headPos));
+    log::info("headPos - location: {}", Vector2Str(headPos - location));
     auto direction = target - unscaledHeadPos;
     log::info("direction: {}", Vector2Str(direction));
     return headPos + direction;
