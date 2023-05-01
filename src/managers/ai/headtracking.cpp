@@ -278,7 +278,7 @@ namespace Gts {
 		if (me->formID == 0x14) {
 			return;
 		}
-		Profilers::Start("Headtracking: Headtracking Fix");
+		auto profiler = Profilers::Profile("Headtracking: Headtracking Fix");
 		auto ai = me->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			auto targetObjHandle = ai->GetHeadtrackTarget();
@@ -293,7 +293,6 @@ namespace Gts {
 				NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
 
 				ai->SetHeadtrackTarget(me, fakeLookAt);
-				Profilers::Stop("Headtracking: Headtracking Fix");
 			}
 		}
 	}

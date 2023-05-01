@@ -32,7 +32,7 @@ using namespace std;
 
 namespace {
 	void FixActorFade(Actor* actor) {
-		Profilers::Start("Manager: Fade Fix");
+		auto profiler = Profilers::Profile("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
 			return;
 		}
@@ -48,7 +48,6 @@ namespace {
 				}
 			}
 		}
-		Profilers::Stop("Manager: Fade Fix");
 	}
 
 	void ProcessExperiment(Actor* actor) {
@@ -78,7 +77,7 @@ namespace {
 	}
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
-		Profilers::Start("Manager: update_height");
+		auto profiler = Profilers::Profile("Manager: update_height");
 		if (!actor) {
 			return;
 		}
@@ -125,10 +124,9 @@ namespace {
 					);
 			}
 		}
-		Profilers::Stop("Manager: update_height");
 	}
 	void apply_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
-		Profilers::Start("Manager: apply_height");
+		auto profiler = Profilers::Profile("Manager: apply_height");
 		if (!actor) {
 			return;
 		}
@@ -161,11 +159,10 @@ namespace {
 			return;
 		}
 		set_scale(actor, visual_scale);
-		Profilers::Stop("Manager: apply_height");
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
-		Profilers::Start("Manager: apply_speed");
+		auto profiler = Profilers::Profile("Manager: apply_speed");
 		if (!Persistent::GetSingleton().is_speed_adjusted) {
 			return;
 		}
@@ -197,11 +194,10 @@ namespace {
 		float bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float perkspeed = 1.0;
 		persi_actor_data->anim_speed = speedmultcalc*perkspeed;//MS_mult;
-		Profilers::Stop("Manager: apply_speed");
 	}
 
 	void update_effective_multi(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
-		Profilers::Start("Manager: update_effective_multi");
+		auto profiler = Profilers::Profile("Manager: update_effective_multi");
 		if (!actor) {
 			return;
 		}
@@ -213,26 +209,23 @@ namespace {
 		} else {
 			persi_actor_data->effective_multi = 1.0;
 		}
-		Profilers::Stop("Manager: update_effective_multi");
 	}
 
 	void update_actor(Actor* actor) {
-		Profilers::Start("Manager: update_actor");
+		auto profiler = Profilers::Profile("Manager: update_actor");
 		auto temp_data = Transient::GetSingleton().GetActorData(actor);
 		auto saved_data = Persistent::GetSingleton().GetActorData(actor);
 		update_effective_multi(actor, saved_data, temp_data);
 		update_height(actor, saved_data, temp_data);
-		Profilers::Stop("Manager: update_actor");
 	}
 
 	void apply_actor(Actor* actor, bool force = false) {
-		Profilers::Start("Manager: apply_actor");
+		auto profiler = Profilers::Profile("Manager: apply_actor");
 		//log::info("Apply_Actor name is {}", actor->GetDisplayFullName());
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
 		apply_speed(actor, saved_data, temp_data, force);
-		Profilers::Stop("Manager: apply_actor");
 	}
 }
 
@@ -255,7 +248,7 @@ std::string GtsManager::DebugName() {
 
 // Poll for updates
 void GtsManager::Update() {
-	Profilers::Start("Manager: Update()");
+	auto profiler = Profilers::Profile("Manager: Update()");
 	for (auto actor: find_actors()) {
 		if (!actor) {
 			return;
@@ -294,7 +287,6 @@ void GtsManager::Update() {
 			}
 		}
 	}
-	Profilers::Stop("Manager: Update()");
 }
 
 void GtsManager::OnAddPerk(const AddPerkEvent& evt) {
@@ -313,7 +305,7 @@ void GtsManager::OnAddPerk(const AddPerkEvent& evt) {
 
 void GtsManager::reapply(bool force) {
 	// Get everyone in loaded AI data and reapply
-	Profilers::Start("Manager: reapply");
+	auto profiler = Profilers::Profile("Manager: reapply");
 	auto actors = find_actors();
 	for (auto actor: actors) {
 		if (!actor) {
@@ -324,10 +316,9 @@ void GtsManager::reapply(bool force) {
 		}
 		reapply_actor(actor, force);
 	}
-	Profilers::Stop("Manager: reapply");
 }
 void GtsManager::reapply_actor(Actor* actor, bool force) {
-	Profilers::Start("Manager: reapply_actor");
+	auto profiler = Profilers::Profile("Manager: reapply_actor");
 	// Reapply just this actor
 	if (!actor) {
 		return;
@@ -336,5 +327,4 @@ void GtsManager::reapply_actor(Actor* actor, bool force) {
 		return;
 	}
 	apply_actor(actor, force);
-	Profilers::Stop("Manager: reapply_actor");
 }

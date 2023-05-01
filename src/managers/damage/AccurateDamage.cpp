@@ -78,7 +78,7 @@ namespace {
 	}
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
-		Profilers::Start("AccurateDamage: StaggerOr");
+		auto profiler = Profilers::Profile("AccurateDamage: StaggerOr");
 		if (tiny->IsDead()) {
 			return;
 		}
@@ -105,12 +105,11 @@ namespace {
 			PushActorAway(giant, tiny, power/12); // Push instead
 			return;
 		}
-		Profilers::Stop("AccurateDamage: StaggerOr");
 	}
 
 
 	void SMTCrushCheck(Actor* Caster, Actor* Target) {
-		Profilers::Start("AccurateDamage: SMTCrushCheck");
+		auto profiler = Profilers::Profile("AccurateDamage: SMTCrushCheck");
 		if (Caster == Target) {
 			return;
 		}
@@ -150,11 +149,10 @@ namespace {
 				}
 			}
 		}
-		Profilers::Stop("AccurateDamage: SMTCrushCheck");
 	}
 
 	void SizeModifications(Actor* giant, Actor* tiny, float HighHeels) {
-		Profilers::Start("AccurateDamage: SizeModifications");
+		auto profiler = Profilers::Profile("AccurateDamage: SizeModifications");
 		if (tiny == giant) {
 			return;
 		}
@@ -194,7 +192,6 @@ namespace {
 			CrushBonuses(giant, tiny, 0);
 			KnockAreaEffect(giant, 2, 16 * giantscale);
 		}
-		Profilers::Stop("AccurateDamage: SizeModifications");
 	}
 }
 
@@ -211,7 +208,7 @@ namespace Gts {
 	}
 
 	void AccurateDamage::DoAccurateCollision(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
-		Profilers::Start("AccurateDamage: DoAccurateCollision");
+		auto profiler = Profilers::Profile("AccurateDamage: DoAccurateCollision");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
 			return;
@@ -358,11 +355,10 @@ namespace Gts {
 				}
 			}
 		}
-		Profilers::Stop("AccurateDamage: DoAccurateCollision");
 	}
 
 	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult) {
-		Profilers::Start("AccurateDamage: ApplySizeEffect");
+		auto profiler = Profilers::Profile("AccurateDamage: ApplySizeEffect");
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto model = tiny->GetCurrent3D();
@@ -394,12 +390,11 @@ namespace Gts {
 			}
 			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
 		}
-		Profilers::Stop("AccurateDamage: ApplySizeEffect");
 	}
 
 
 	void AccurateDamage::UnderFootEvent(const UnderFoot& evt) { // On underfoot event
-		Profilers::Start("AccurateDamage: UnderFootEvent");
+		auto profiler = Profilers::Profile("AccurateDamage: UnderFootEvent");
 		auto giant = evt.giant;
 		auto tiny = evt.tiny;
 		float force = evt.force;
@@ -454,11 +449,10 @@ namespace Gts {
 				}
 			}
 		}
-		Profilers::Stop("AccurateDamage: UnderFootEvent");
 	}
 
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage) { // Applies damage and crushing
-		Profilers::Start("AccurateDamage: DoSizeDamage");
+		auto profiler = Profilers::Profile("AccurateDamage: DoSizeDamage");
 		if (!giant) {
 			return;
 		}
@@ -498,7 +492,7 @@ namespace Gts {
 
 		float result = ((0.125 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;
 		if (giant->IsSneaking()) {
-			result *= 0.33; 
+			result *= 0.33;
 		}
 
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
@@ -533,6 +527,5 @@ namespace Gts {
 			return;
 		}
 		DamageAV(tiny, ActorValue::kHealth, result);
-		Profilers::Stop("AccurateDamage: DoSizeDamage");
 	}
 }

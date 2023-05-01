@@ -36,7 +36,7 @@ namespace Gts {
 	}
 
 	void GameModeManager::ApplyGameMode(Actor* actor, const ChosenGameMode& game_mode, const float& GrowthRate, const float& ShrinkRate)  {
-		Profilers::Start("Manager: ApplyGameMode");
+		auto profiler = Profilers::Profile("Manager: ApplyGameMode");
 		const float EPS = 1e-7;
 		if (game_mode != ChosenGameMode::None) {
 			auto player = PlayerCharacter::GetSingleton();
@@ -165,11 +165,10 @@ namespace Gts {
 				break;
 			}
 		}
-		Profilers::Stop("Manager: ApplyGameMode");
 	}
 
 	void GameModeManager::GameMode(Actor* actor)  {
-		Profilers::Start("Manager: GameMode");
+		auto profiler = Profilers::Profile("Manager: GameMode");
 		if (!actor) {
 			return;
 		}
@@ -240,6 +239,5 @@ namespace Gts {
 			gameMode = static_cast<ChosenGameMode>(game_mode_int);
 		}
 		GameModeManager::GetSingleton().ApplyGameMode(actor, gameMode, growthRate/2, shrinkRate);
-		Profilers::Stop("Manager: GameMode");
 	}
 }
