@@ -9,10 +9,10 @@ namespace {
     if (!actor) {
       return;
     }
-    auto headPos = actor->GetLookingAtLocation();
+    auto unscaledHeadPos = actor->GetLookingAtLocation();
     auto scale = get_visual_scale(actor);
     auto location = actor->GetPosition();
-    auto unscaledHeadPos = (headPos - location) * (1.0/scale) + location;
+    auto headPos = (unscaledHeadPos - location) * (scale) + location;
     auto direction = target - unscaledHeadPos;
     target = headPos + direction;
   }
