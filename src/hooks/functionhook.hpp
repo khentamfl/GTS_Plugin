@@ -1,4 +1,4 @@
-#progma once
+#pragma once
 
 #include <gluino/type_traits.h>
 
