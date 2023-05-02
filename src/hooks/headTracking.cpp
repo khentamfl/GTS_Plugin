@@ -9,9 +9,9 @@ namespace {
     if (!actor) {
       return;
     }
-    log::info("Actor: {}", actor->GetDisplayFullName());
+    // log::info("Actor: {}", actor->GetDisplayFullName());
     auto headPos = actor->GetLookingAtLocation();
-    log::info("headPos: {}", Vector2Str(headPos));
+    // log::info("headPos: {}", Vector2Str(headPos));
     auto model = actor->Get3D();
     if (!model) {
       return;
@@ -20,12 +20,12 @@ namespace {
     auto transInv = trans.Invert();
     auto scale = get_visual_scale(actor);
 
-    log::info("headPos (local): {}", Vector2Str(transInv*headPos));
+    // log::info("headPos (local): {}", Vector2Str(transInv*headPos));
     auto unscaledHeadPos = trans * (transInv*headPos * (1.0/scale));
-    log::info("unscaledHeadPos: {}", Vector2Str(unscaledHeadPos));
-    log::info("unscaledHeadPos (local): {}", Vector2Str(transInv*headPos));
+    // log::info("unscaledHeadPos: {}", Vector2Str(unscaledHeadPos));
+    // log::info("unscaledHeadPos (local): {}", Vector2Str(transInv*headPos));
     auto direction = target - headPos;
-    log::info("direction: {}", Vector2Str(direction));
+    // log::info("direction: {}", Vector2Str(direction));
     target = unscaledHeadPos + direction;
   }
 }
