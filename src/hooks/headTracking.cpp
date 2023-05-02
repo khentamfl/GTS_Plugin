@@ -9,6 +9,7 @@ namespace {
     if (!actor) {
       return NiPoint3();
     }
+    log::info("Actor: {}", actor->GetDisplayFullName());
     auto unscaledHeadPos = actor->GetLookingAtLocation();
     log::info("unscaledHeadPos: {}", Vector2Str(unscaledHeadPos));
     auto scale = get_visual_scale(actor);
@@ -34,5 +35,7 @@ namespace Hooks
         return;
       }
     );
+
+    // static REL::Relocation<NiPoint3(TESObjectREFR*)> GetLookingAtLocationPlayer = ;
   }
 }
