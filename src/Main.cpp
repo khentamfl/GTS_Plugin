@@ -163,6 +163,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&Persistent::GetSingleton());
 	EventDispatcher::AddListener(&Transient::GetSingleton());
 
+  EventDispatcher::AddListener(&TaskManager::GetSingleton());
 	EventDispatcher::AddListener(&SpringManager::GetSingleton());
 	log::info("Adding Default Listeners");
 	RegisterManagers();
