@@ -22,7 +22,7 @@ namespace Gts {
 
   class Task: public BaseTask {
   public:
-    Task(std::function<bool(const TaskUpdate&)> tasking) : tasking(tasking), lastRunTime(Time::WorldTimeElapsed()) startTime(Time::WorldTimeElapsed()) {
+    Task(std::function<bool(const TaskUpdate&)> tasking) : tasking(tasking), lastRunTime(Time::WorldTimeElapsed()), startTime(Time::WorldTimeElapsed()) {
 
       auto update = TaskUpdate {
         .runtime = 0.0,
@@ -42,7 +42,7 @@ namespace Gts {
     }
 
   private:
-    double startTime = 0.0
+    double startTime = 0.0;
     double lastRunTime = 0.0;
     std::function<bool(const TaskUpdate&)> tasking;
   };
