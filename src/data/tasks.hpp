@@ -116,14 +116,15 @@ namespace Gts {
     }
 
     static void Run(std::function<bool(const TaskUpdate&)> tasking) {
-      this->taskings.insert(
+      auto& me = TaskManager::GetSingleton();
+      me.taskings.insert(
         new Task(tasking)
       );
     }
 
-    static void RunFor(float duration, std::function<bool(const TaskUpdateFor&)> tasking) {
+    static void RunFor(float duration, std::function<bool(const TaskForUpdate&)> tasking) {
       auto& me = TaskManager::GetSingleton();
-      me->taskings.insert(
+      me.taskings.insert(
         new TaskFor(duration, tasking)
       );
     }
