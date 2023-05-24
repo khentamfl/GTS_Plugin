@@ -15,9 +15,9 @@ namespace Gts {
   // A `Task` runs until it returns false
   struct TaskUpdate {
     // Total runtime in seconds`
-    float runtime;
+    double runtime;
     // Time delta since last runtime
-    float delta;
+    double delta;
   };
 
   class Task: public BaseTask {
@@ -28,7 +28,7 @@ namespace Gts {
         .runtime = 0.0,
         .delta = 0.0,
       };
-      this->tasking(update);
+      tasking(update);
     }
 
     virtual bool Update() override {
@@ -49,30 +49,30 @@ namespace Gts {
 
   struct TaskForUpdate {
     // Total runtime in seconds`
-    float runtime;
+    double runtime;
     // Time delta since last runtime
-    float delta;
+    double delta;
     // How close to completion on a scale of 0.0...1.0
-    float progress;
+    double progress;
     // How much progress has been gained since last time
-    float progressDelta;
+    double progressDelta;
   };
   // A `TaskFor` runs until it returns false OR the duration has elapsed
   class TaskFor: public BaseTask {
   public:
-    TaskFor(float duration, std::function<bool(const TaskForUpdate&)> tasking) : Task(taskings), duration(duration) {
+    TaskFor(double duration, std::function<bool(const TaskForUpdate&)> tasking) : tasking(tasking), duration(duration), lastRunTime(Time::WorldTimeElapsed()), startTime(Time::WorldTimeElapsed()) {
       auto update = TaskForUpdate {
         .runtime = 0.0,
         .delta = 0.0,
         .progress = 0.0,
-        .progressDelta - 0.0,
+        .progressDelta = 0.0,
       };
-      this->tasking(update);
+      tasking(update);
     }
 
     virtual bool Update() override {
       double currentRuntime = Time::WorldTimeElapsed() - this->startTime;
-      float currentProgress = std::clamp(currentRuntime / this->duration, 0.0, 1.0);
+      double currentProgress = std::clamp(currentRuntime / this->duration, 0.0, 1.0);
       auto update = TaskUpdate {
         .runtime = currentRuntime,
         .delta = currentRuntime - this->lastRunTime,
@@ -88,16 +88,20 @@ namespace Gts {
       }
     }
   private:
-    double startTime = 0.0
+    double startTime = 0.0;
     double lastRunTime = 0.0;
     double lastProgress = 0.0;
     std::function<bool(const TaskForUpdate&)> tasking;
-    float duration;
+    double duration;
   };
 
 
   class TaskManager : public EventListener {
     public:
+      virtual std::string DebugName() {
+        return "TaskManager";
+      }
+
       static TaskManager& GetSingleton() {
         static TaskManager instance;
         return instance;
@@ -118,7 +122,8 @@ namespace Gts {
     }
 
     static void RunFor(float duration, std::function<bool(const TaskUpdateFor&)> tasking) {
-      this->taskings.insert(
+      auto& me = TaskManager::GetSingleton();
+      me->taskings.insert(
         new TaskFor(duration, tasking)
       );
     }
