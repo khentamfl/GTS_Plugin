@@ -3,6 +3,7 @@
 #include "scale/modscale.hpp"
 #include "data/persistent.hpp"
 #include "managers/GtsManager.hpp"
+#include "data/runtime.hpp"
 
 
 using namespace SKSE;
@@ -40,8 +41,8 @@ namespace {
         }
         float timeDelta = progressData.delta;
 
-        auto target = targetHandle->get()->get();
-        auto caster = casterHandle->get()->get();
+        auto target = targetHandle.get().get();
+        auto caster = casterHandle.get().get();
 
         float target_scale = get_visual_scale(target);
         float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
@@ -88,8 +89,8 @@ namespace {
         }
         float timeDelta = progressData.delta;
 
-        auto target = targetHandle->get()->get();
-        auto caster = casterHandle->get()->get();
+        auto target = targetHandle.get().get();
+        auto caster = casterHandle.get().get();
 
         float target_scale = get_visual_scale(target);
     		float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
