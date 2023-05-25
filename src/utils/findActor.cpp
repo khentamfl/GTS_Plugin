@@ -132,12 +132,12 @@ namespace Gts {
 		}
 		return result;
 	}
-	
+
 	vector<Actor*> FindSomeActors(std::string_view tag, uint32_t howMany) {
 	    static unordered_map<string, FindActorData> allData;
 	    allData.try_emplace(string(tag));
 	    auto& data = allData.at(string(tag));
-	    
+
 	    //log::info("Looking for actor for {} up to a count of {}", tag, howMany);
 	    vector<Actor*> finalActors;
 	    vector<Actor*> notAddedAcrors;
@@ -149,12 +149,12 @@ namespace Gts {
 	            //log::info(" - Adding: {}", actor->GetDisplayFullName());
 	        } else if ((data.previousActors.count(actor->formID) == 0) && (addedCount < howMany)) {
 	        // Other actors are only added if they are not in the previous actor list
-	            
+
 	                //log::info(" - Adding: {}", actor->GetDisplayFullName());
             	    finalActors.push_back(actor);
             	    data.previousActors.insert(actor->formID);
             	    addedCount += 1;
-            
+
         	} else {
         	    notAddedAcrors.push_back(actor);
         	}
@@ -176,5 +176,14 @@ namespace Gts {
 	    }
     	return finalActors;
 	}
-	    
+
+  vector<Actor*> FindTeammates() {
+    vector<Actor*> finalActors;
+    for (auto actor: find_actors()) {
+      if (IsTeammate(actor)) {
+        finalActors.push(actor);
+      }
+    }
+    return finalActors;
+  }
 }
