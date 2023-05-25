@@ -116,7 +116,7 @@ namespace {
 }
 
 namespace Gts {
-	bool register_papyrus_scale(IVirtualMachine* vm) {
+	bool register_total_control(IVirtualMachine* vm) {
 		vm->RegisterFunction("GrowTeammate", PapyrusClass, GrowTeammate);
     vm->RegisterFunction("ShrinkTeammate", PapyrusClass, ShrinkTeammate);
 
