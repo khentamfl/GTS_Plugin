@@ -3,6 +3,7 @@
 #include "scale/modscale.hpp"
 #include "data/persistent.hpp"
 #include "managers/GtsManager.hpp"
+#include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 
 
@@ -34,10 +35,10 @@ namespace {
 
       TaskManager::RunFor(DURATION, [=](auto& progressData){
         if (!casterHandle) {
-          return;
+          return false;
         }
         if (!targetHandle) {
-          return;
+          return false;
         }
         float timeDelta = progressData.delta;
 
@@ -57,6 +58,8 @@ namespace {
           mod_target_scale(target, 0.0030 * magicka * bonus * timeDelta * power);
           Rumble::Once("GrowOtherButton", target, 1.0, 0.05);
         }
+
+        return true;
       });
 
     }
@@ -72,7 +75,7 @@ namespace {
         continue;
       }
       float Volume = clamp(0.50, 1.0, get_visual_scale(targetRef));
-  		Runtime::PlaySound("shrinkSound", target, Volume, 0.0);
+  		Runtime::PlaySound("shrinkSound", targetRef, Volume, 0.0);
 
       // Thread safe handles
       ActorHandle casterHandle = casterRef->CreateRefHandle();
@@ -82,10 +85,10 @@ namespace {
 
       TaskManager::RunFor(DURATION, [&](auto& progressData){
         if (!casterHandle) {
-          return;
+          return false;
         }
         if (!targetHandle) {
-          return;
+          return false;
         }
         float timeDelta = progressData.delta;
 
@@ -102,9 +105,10 @@ namespace {
 
     		if (target_scale > get_natural_scale(target)) {
     			DamageAV(caster, ActorValue::kMagicka, 0.25 * (target_scale * 0.25 + 0.75) * magicka * bonus * timeDelta * power);
-    			Shrinkmod_target_scaleActor(target, -0.0030 * magicka * bonus * timeDelta * power);
+    			mod_target_scale(target, -0.0030 * magicka * bonus * timeDelta * power);
     			Rumble::Once("ShrinkOtherButton", target, 1.0, 0.05);
     		}
+        return true;
       });
 
     }
