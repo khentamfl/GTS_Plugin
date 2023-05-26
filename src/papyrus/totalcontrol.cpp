@@ -3,8 +3,10 @@
 #include "scale/modscale.hpp"
 #include "data/persistent.hpp"
 #include "managers/GtsManager.hpp"
+#include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
+
 
 
 using namespace SKSE;
@@ -29,6 +31,8 @@ namespace {
       log::info("  - Found: {}", targetRef->GetDisplayFullName());
       float Volume = clamp(0.50, 1.0, get_visual_scale(targetRef));
       Runtime::PlaySound("growthSound", targetRef, Volume, 0.0);
+      Runtime::PlaySound("GreybeardRumble" targetRef, Volume, 0.0);
+      KnockAreaEffect(targetRef, 6, 60 * get_visual_scale(targetRef));
 
       // Thread safe handles
       ActorHandle casterHandle = casterRef->CreateRefHandle();
@@ -80,6 +84,8 @@ namespace {
       }
       float Volume = clamp(0.50, 1.0, get_visual_scale(targetRef));
   		Runtime::PlaySound("shrinkSound", targetRef, Volume, 0.0);
+      Runtime::PlaySound("GreybeardRumble" targetRef, Volume, 0.0);
+      KnockAreaEffect(targetRef, 3, 30 * get_visual_scale(targetRef));
 
       // Thread safe handles
       ActorHandle casterHandle = casterRef->CreateRefHandle();
