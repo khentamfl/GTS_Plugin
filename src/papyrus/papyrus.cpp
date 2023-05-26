@@ -4,7 +4,7 @@
 #include "papyrus/height.hpp"
 #include "papyrus/modevents.hpp"
 #include "papyrus/camera.hpp"
-##include "papyrus/totalcontrol.hpp"
+#include "papyrus/totalcontrol.hpp"
 
 
 using namespace SKSE;
