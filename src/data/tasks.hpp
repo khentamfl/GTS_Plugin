@@ -108,7 +108,7 @@ namespace Gts {
       }
 
     virtual void Update() override {
-      for (auto task: this->taskings) {
+      for (auto& task: this->taskings) {
         if (!task->Update()) {
           this->taskings.erase(task);
         }
