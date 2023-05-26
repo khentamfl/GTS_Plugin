@@ -58,12 +58,10 @@ namespace {
           bonus = target_scale * 0.25 + 0.75;
         }
 
-        if (target_scale > get_natural_scale(target)) {
-          log::info("  - Growing Teammate")
-          DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * bonus * timeDelta * power);
-          mod_target_scale(target, 0.0030 * magicka * bonus * timeDelta * power);
-          Rumble::Once("GrowOtherButton", target, 1.0, 0.05);
-        }
+        log::info("  - Growing Teammate")
+        DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * bonus * timeDelta * power);
+        mod_target_scale(target, 0.0030 * magicka * bonus * timeDelta * power);
+        Rumble::Once("GrowOtherButton", target, 1.0, 0.05);
 
         return true;
       });
