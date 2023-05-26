@@ -28,9 +28,11 @@ EndFunction
 
 
 Function GrowFollowers()
-  GtsScale.ModTeammateScale(0.1)
+  ; GtsScale.ModTeammateScale(0.1)
+  GtsControl.GrowTeammate(1.0)
 EndFunction
 
 Function ShrinkFollowers()
-  GtsScale.ModTeammateScale(-0.1)
+  ;GtsScale.ModTeammateScale(-0.1)
+  GtsControl.ShrinkTeammate(1.0)
 EndFunction
