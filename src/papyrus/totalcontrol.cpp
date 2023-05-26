@@ -16,14 +16,17 @@ namespace {
 	constexpr std::string_view PapyrusClass = "GtsControl";
 
 	void GrowTeammate(StaticFunctionTag*, float power) {
+    log::info("Called GrowTeammate");
     auto casterRef = PlayerCharacter::GetSingleton();
     if (!casterRef) {
       return;
     }
+    log::info("  - Finding teammates");
     for (auto targetRef: FindTeammates()) {
       if (!targetRef) {
         continue;
       }
+      log::info("  - Found: {}", targetRef->GetDisplayFullName());
       float Volume = clamp(0.50, 1.0, get_visual_scale(targetRef));
       Runtime::PlaySound("growthSound", targetRef, Volume, 0.0);
 
@@ -34,16 +37,18 @@ namespace {
       const float DURATION = 2.0;
 
       TaskManager::RunFor(DURATION, [=](auto& progressData){
+        log::info("Task GrowTeammate");
         if (!casterHandle) {
           return false;
         }
         if (!targetHandle) {
           return false;
         }
-        float timeDelta = progressData.delta;
+        float timeDelta = progressData.delta * 60; // Was optimised as 60fps
 
         auto target = targetHandle.get().get();
         auto caster = casterHandle.get().get();
+        log::info("  - Giant: {}, Tiny: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
 
         float target_scale = get_visual_scale(target);
         float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));
@@ -54,6 +59,7 @@ namespace {
         }
 
         if (target_scale > get_natural_scale(target)) {
+          log::info("  - Growing Teammate")
           DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * bonus * timeDelta * power);
           mod_target_scale(target, 0.0030 * magicka * bonus * timeDelta * power);
           Rumble::Once("GrowOtherButton", target, 1.0, 0.05);
