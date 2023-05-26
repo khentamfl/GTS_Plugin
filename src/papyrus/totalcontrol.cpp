@@ -93,7 +93,7 @@ namespace {
 
       const float DURATION = 2.0;
 
-      TaskManager::RunFor(DURATION, [&](auto& progressData){
+      TaskManager::RunFor(DURATION, [=](auto& progressData){
         if (!casterHandle) {
           return false;
         }
