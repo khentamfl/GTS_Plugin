@@ -117,6 +117,7 @@ namespace Gts {
       }
 
       for (auto task: toRemove) {
+        delete task;
         this->taskings.erase(task);
       }
 
@@ -124,14 +125,14 @@ namespace Gts {
 
     static void Run(std::function<bool(const TaskUpdate&)> tasking) {
       auto& me = TaskManager::GetSingleton();
-      me.taskings.insert(
+      me.taskings.emplace(
         new Task(tasking)
       );
     }
 
     static void RunFor(float duration, std::function<bool(const TaskForUpdate&)> tasking) {
       auto& me = TaskManager::GetSingleton();
-      me.taskings.insert(
+      me.taskings.emplace(
         new TaskFor(duration, tasking)
       );
     }
