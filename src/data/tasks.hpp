@@ -109,11 +109,18 @@ namespace Gts {
       }
 
     virtual void Update() override {
-      for (auto& task: this->taskings) {
+      std::vector<BaseTask*> toRemove = {};
+      for (auto task: this->taskings) {
         if (!task->Update()) {
-          this->taskings.erase(task);
+          toRemove.push_back(task);
         }
       }
+
+      for (auto task: toRemove) {
+        delete task;
+        this->taskings.erase(task);
+      }
+
     }
 
     static void Run(std::function<bool(const TaskUpdate&)> tasking) {
