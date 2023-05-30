@@ -117,7 +117,6 @@ namespace Gts {
       }
 
       for (auto task: toRemove) {
-        delete task;
         this->taskings.erase(task);
       }
 
