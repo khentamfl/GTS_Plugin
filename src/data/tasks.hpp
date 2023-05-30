@@ -71,15 +71,16 @@ namespace Gts {
     }
 
     virtual bool Update() override {
-      double currentRuntime = Time::WorldTimeElapsed() - this->startTime;
+      double currentTime = Time::WorldTimeElapsed();
+      double currentRuntime = currentTime - this->startTime;
       double currentProgress = std::clamp(currentRuntime / this->duration, 0.0, 1.0);
       auto update = TaskForUpdate {
         .runtime = currentRuntime,
-        .delta = currentRuntime - this->lastRunTime,
+        .delta = currentTime - this->lastRunTime,
         .progress = currentProgress,
         .progressDelta = currentProgress - this->lastProgress,
       };
-      this->lastRunTime = currentRuntime;
+      this->lastRunTime = currentTime;
       this->lastProgress = currentProgress;
       if (! this->tasking(update))  {
         return false;
