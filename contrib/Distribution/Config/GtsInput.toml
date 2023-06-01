@@ -53,7 +53,7 @@ keys = ["LALT", "E"]
 name = "LeftStomp_Strong"
 keys = ["LALT", "Q"]
 
-# ^ Trigger powerful stomps.
+# ^ Trigger powerful stomps. 
 
 
 [[InputEvent]]
