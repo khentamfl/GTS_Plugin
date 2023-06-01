@@ -68,7 +68,7 @@ namespace {
 
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
-			return 1.25;
+			return 1.15;
 		} else {
 			return 1.0;
 		}

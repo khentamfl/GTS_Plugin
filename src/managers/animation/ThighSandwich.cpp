@@ -81,7 +81,7 @@ namespace {
 
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
-			return 1.25;
+			return 1.15;
 		} else {
 			return 1.0;
 		}
@@ -304,7 +304,7 @@ namespace {
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack", player);
 		} else {
-			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+			TiredSound(player);
 			Notify("You're too tired to perform thigh attack");
 		}
 	}
@@ -318,7 +318,7 @@ namespace {
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack_Heavy", player);
 		} else {
-			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+			TiredSound(player);
 			Notify("You're too tired to perform thigh attack");
 		}
 	}

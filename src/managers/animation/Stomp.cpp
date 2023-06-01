@@ -160,7 +160,7 @@ namespace {
 			AnimationManager::StartAnim("StompRight", player);
 			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
-			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+			TiredSound(player);
 			Notify("You're too tired to perform stomp");
 		}
 	}
@@ -175,7 +175,7 @@ namespace {
 			AnimationManager::StartAnim("StompLeft", player);
 			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
-			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+			TiredSound(player);
 			Notify("You're too tired to perform stomp");
 		}
 	}

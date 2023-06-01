@@ -390,6 +390,13 @@ namespace Gts {
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (30.0 * damage * damagebonus), radius, random, bonedamage);
 	}
 
+	void TiredSound(Actor* player) {
+		inline static Timer Cooldown = Timer(1.2);
+		if (Cooldown.ShouldRunFrame()) {
+			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+		}
+	}
+
 	hkaRagdollInstance* GetRagdoll(Actor* actor) {
 		BSAnimationGraphManagerPtr animGraphManager;
 		if (actor->GetAnimationGraphManager(animGraphManager)) {
