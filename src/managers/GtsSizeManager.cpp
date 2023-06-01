@@ -398,6 +398,8 @@ namespace Gts {
 			this->GetData(actor).TrackLeftFeet = enable;
 		} else if (type == 6.0) {
 			this->GetData(actor).TrackRightFeet = enable;
+		} else if (type == 7.0) {
+			this->GetData(actor).ThighsStaminaDrain = enable;
 		}
 	}
 	bool SizeManager::GetActionBool(Actor* actor, float type) {
@@ -415,10 +417,21 @@ namespace Gts {
 			return this->GetData(actor).TrackLeftFeet;
 		} else if (type == 6.0) {
 			return this->GetData(actor).TrackRightFeet;
+		} else if (type == 7.0) {
+			return this->GetData(actor).ThighsStaminaDrain;
 		}
 		return false;
 	}
 	//
+
+	//===============Thigh Drain Modifier
+	void SizeManager::SetThighsDrain(Actor* actor, float force) {
+		this->GetData(actor).ThighCrushDrainForce = force;
+	}
+
+	float SizeManager::GetThighsDrain(Actor* actor) {
+		return this->GetData(actor).ThighCrushDrainForce;
+	}
 
 	//===============Balance Mode
 	float SizeManager::BalancedMode()

@@ -66,6 +66,12 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
+	void DrainStamina(Actor* giant, bool decide, float number, float power) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		sizemanager.SetActionBool(giant, decide, number);
+		sizemanager.SetThighsDrain(giant, power);
+	}
+
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
 			return 1.15;
@@ -108,7 +114,6 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
 		TrackFeet(&data.giant, 0.0, true); // Track feet
 		data.stage = 1;
-		//Cprint("ThighCrush: GTStosit");
 	}
 
 	void GTSsitloopenter(AnimationEventData& data) {
@@ -117,7 +122,6 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.12 * speed, 0.10);
 		data.disableHH = true;
 		data.stage = 2;
-		//Cprint("ThighCrush: GTSsitloopenter");
 	}
 
 	void GTSsitloopstart(AnimationEventData& data) {
@@ -126,43 +130,39 @@ namespace {
 		StopLegRumble("ThighCrush", data.giant);
 		data.currentTrigger = 1;
 		data.stage = 3;
-		//Cprint("ThighCrush: GTSsitloopenter");
 	}
 
 	void GTSsitloopend(AnimationEventData& data) {
-		// Nothing
 		data.stage = 4;
 	}
 
 	void GTSsitcrushlight_start(AnimationEventData& data) {
 		StartLegRumble("ThighCrush", data.giant, 0.18, 0.12);
+		DrainStamina(&data.giant, true, 7.0, 1.0);
 		data.stage = 5;
-		//Cprint("ThighCrush: GTSsitcrushlight_start");
 	}
 
 	void GTSsitcrushlight_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
-
 		data.canEditAnimSpeed = true;
 		LegRumbleOnce("ThighCrush_End", data.giant, 0.22, 0.20);
 		StopLegRumble("ThighCrush", data.giant);
+		DrainStamina(&data.giant, false, 7.0, 1.0);
 		data.stage = 6;
-		//Cprint("ThighCrush: GTSsitcrushlight_end");
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
+		DrainStamina(&data.giant, true, 7.0, 2.0);
 		StartLegRumble("ThighCrushHeavy", data.giant, 0.35, 0.10);
 		data.stage = 5;
-		//Cprint("ThighCrush: GTSsitcrushheavy_start");
 	}
 
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
-
+		DrainStamina(&data.giant, false, 7.0, 2.0);
 		LegRumbleOnce("ThighCrushHeavy_End", data.giant, 0.50, 0.15);
 		StopLegRumble("ThighCrushHeavy", data.giant);
 		data.stage = 6;
-		//Cprint("ThighCrush: GTSsitcrushlight_end");
 	}
 
 	void GTSsitloopexit(AnimationEventData& data) {
@@ -175,7 +175,6 @@ namespace {
 
 		StartBodyRumble("BodyRumble", data.giant, 0.25, 0.12);
 		data.stage = 8;
-		//Cprint("ThighCrush: GTSsitloopexit");
 	}
 
 	void GTSstandR(AnimationEventData& data) {

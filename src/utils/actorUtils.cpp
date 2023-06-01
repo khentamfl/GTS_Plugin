@@ -1,3 +1,4 @@
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "utils/papyrusUtils.hpp"
@@ -362,6 +363,15 @@ namespace Gts {
 		float rng = (rand()% 150 + 1);
 		float random = rng/100;
 		return random;
+	}
+
+	void ThighsDrainStamina(Actor* giant) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		bool ShouldDrain = sizemanager.GetActionBool(giant, 7.0);
+		if (ShouldDrain) {
+			float power = sizemanager.GetThighsDrain(giant);
+			float multiplier = AnimationManager::GetAnimSpeed(actor);
+		}
 	}
 
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {

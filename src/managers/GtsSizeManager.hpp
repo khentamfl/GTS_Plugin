@@ -20,6 +20,7 @@ namespace Gts {
 		float FallDamage = 1.0; // 2
 		float HHDamage = 1.0; // 3
 		float SizeVulnerability = 0.0;
+		float ThighCrushDrainForce = 1.0;
 
 		bool IsThighCrushing = false;
 		bool IsThighSandwiching = false;
@@ -29,6 +30,8 @@ namespace Gts {
 
 		bool TrackLeftFeet = false;
 		bool TrackRightFeet = false;
+
+		bool ThighsStaminaDrain = false;
 
 	};
 
@@ -78,6 +81,9 @@ namespace Gts {
 
 			void SetActionBool(Actor* actor, bool enable, float type);
 			bool GetActionBool(Actor* actor, float type);
+
+			void SetThighsDrain(Actor* actor, float force);
+			float GetThighsDrain(Actor* actor);
 
 			float BalancedMode();
 
