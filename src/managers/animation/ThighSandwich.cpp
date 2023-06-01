@@ -303,10 +303,10 @@ namespace {
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack", player);
-		} else (
+		} else {
 			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
 			Notify("You're too tired to perform thigh attack");
-		)
+		}
 	}
 
 	void ThighSandwichHeavyAttackEvent(const InputEventData& data) {
@@ -317,10 +317,10 @@ namespace {
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack_Heavy", player);
-		} else (
+		} else {
 			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
 			Notify("You're too tired to perform thigh attack");
-		)
+		}
 	}
 
 	void ThighSandwichExitEvent(const InputEventData& data) {
