@@ -237,17 +237,20 @@ namespace {
 
 	void ThighCrushKillEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("ThighLoopAttack", player);
+		float WasteStamina = 40.0;
+		if (Runtime::HasPerk(player, "KillerThighs")) {
+			WasteStamina *= 0.65;
+		}
+		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+			AnimationManager::StartAnim("ThighLoopAttack", player);
+			DamageAV(player, ActorValue::kStamina, WasteStamina);
+		} else {
+			TiredSound(player);
+			Notify("You're too tired to perform thighs attack");
+		}
 	}
 
 	void ThighCrushSpareEvent(const InputEventData& data) {
-		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("ThighLoopExit", player);
-	}
-
-	// To Sermit: This seems to be the same as ThighCrushSpareEvent
-	//  except it is on the `w` key instead Can we just use the RMB?
-	void ThighCrushExitEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		AnimationManager::StartAnim("ThighLoopExit", player);
 	}
@@ -275,7 +278,6 @@ namespace Gts
 		InputManager::RegisterInputEvent("ThighCrush", ThighCrushEvent);
 		InputManager::RegisterInputEvent("ThighCrushKill", ThighCrushKillEvent);
 		InputManager::RegisterInputEvent("ThighCrushSpare", ThighCrushSpareEvent);
-		InputManager::RegisterInputEvent("ThighCrushExit", ThighCrushExitEvent);
 	}
 
 	void AnimationThighCrush::RegisterTriggers() {
