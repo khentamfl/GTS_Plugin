@@ -32,19 +32,17 @@ namespace {
 
 	void GrabEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			for (auto otherActor: find_actors()) {
-				if (otherActor != player) {
-					float playerscale = get_visual_scale(player);
-					float victimscale = get_visual_scale(otherActor);
-					float sizedifference = playerscale/victimscale;
-					NiPoint3 giantLocation = player->GetPosition();
-					NiPoint3 tinyLocation = otherActor->GetPosition();
-					if ((tinyLocation-giantLocation).Length() < 60*get_visual_scale(player) && sizedifference >= 6.2) {
-						ReportCrime(player, otherActor, 10, false);
-						Grab::GrabActor(player, otherActor);
-						break;
-					}
+		for (auto otherActor: find_actors()) {
+			if (otherActor != player) {
+				float playerscale = get_visual_scale(player);
+				float victimscale = get_visual_scale(otherActor);
+				float sizedifference = playerscale/victimscale;
+				NiPoint3 giantLocation = player->GetPosition();
+				NiPoint3 tinyLocation = otherActor->GetPosition();
+				if ((tinyLocation-giantLocation).Length() < 60*get_visual_scale(player) && sizedifference >= 6.2) {
+					ReportCrime(player, otherActor, 10, false);
+					Grab::GrabActor(player, otherActor);
+					break;
 				}
 			}
 		}
@@ -54,24 +52,22 @@ namespace {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			if (grabbedActor) {
-				float sd = get_visual_scale(player)/get_visual_scale(grabbedActor);
-				float Health = GetAV(grabbedActor, ActorValue::kHealth);
-				float power = std::clamp(sizemanager.GetSizeAttribute(player, 0), 1.0f, 999999.0f);
-				float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-				float damage = (0.025 * sd) * power * additionaldamage;
-				DamageAV(grabbedActor, ActorValue::kHealth, damage);
-				auto root = find_node(grabbedActor, "NPC Root [Root]");
-				if (root) {
-					SpawnParticle(player, 25.0, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, get_visual_scale(grabbedActor), 4, root);
-				}
-				SizeHitEffects::GetSingleton().BreakBones(player, grabbedActor, damage * 0.5, 25);
-				if (damage > Health * 1.5) {
-					CrushManager::Crush(player, grabbedActor);
-					PrintDeathSource(player, grabbedActor, "HandCrushed");
-					Grab::Release(player);
-				}
+		if (grabbedActor) {
+			float sd = get_visual_scale(player)/get_visual_scale(grabbedActor);
+			float Health = GetAV(grabbedActor, ActorValue::kHealth);
+			float power = std::clamp(sizemanager.GetSizeAttribute(player, 0), 1.0f, 999999.0f);
+			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
+			float damage = (0.025 * sd) * power * additionaldamage;
+			DamageAV(grabbedActor, ActorValue::kHealth, damage);
+			auto root = find_node(grabbedActor, "NPC Root [Root]");
+			if (root) {
+				SpawnParticle(player, 25.0, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, get_visual_scale(grabbedActor), 4, root);
+			}
+			SizeHitEffects::GetSingleton().BreakBones(player, grabbedActor, damage * 0.5, 25);
+			if (damage > Health * 1.5) {
+				CrushManager::Crush(player, grabbedActor);
+				PrintDeathSource(player, grabbedActor, "HandCrushed");
+				Grab::Release(player);
 			}
 		}
 	}
@@ -79,11 +75,9 @@ namespace {
 	void GrabSpareEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			if (grabbedActor) {
-				Grab::Release(player);
-				PushActorAway(player, grabbedActor, 1.0);
-			}
+		if (grabbedActor) {
+			Grab::Release(player);
+			PushActorAway(player, grabbedActor, 1.0);
 		}
 	}
 }

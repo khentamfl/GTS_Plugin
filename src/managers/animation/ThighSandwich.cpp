@@ -79,6 +79,14 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
+	float GetPerkBonus(Actor* Giant) {
+		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
+			return 1.25;
+		} else {
+			return 1.0;
+		}
+	}
+
 	void AllowToBeCrushed(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
@@ -97,7 +105,7 @@ namespace {
 		float damagemult = Persistent::GetSingleton().size_related_damage_mult;
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999.0f);
-		float damage = 0.6 * damagemult * sizedifference * animSpeed * mult * normaldamage;
+		float damage = 0.6 * damagemult * sizedifference * animSpeed * mult * normaldamage * GetPerkBonus(giant);
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp && sizedifference >= (8.0 * sizemult)) {
@@ -260,41 +268,59 @@ namespace {
 	}
 
 	void GTSSandwich_FootImpact(AnimationEventData& data) {
+		float perk = GetPerkBonus(&data.giant);
 		DoSizeEffect(&data.giant, 1.35, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.35, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 4.0, 2.6, 10, 0.75);
-		DoLaunch(&data.giant, 1.25, 2.0, RNode);
+		DoDamageEffect(&data.giant, 4.0 * perk, 2.6, 10, 0.75);
+		DoLaunch(&data.giant, 1.25 * perk, 2.0, RNode);
 		DoLaunch(&data.giant, 1.25, 2.0, LNode);
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {
 		auto& Sandwiching = ThighSandwichController::GetSingleton();
 		auto pred = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(pred, "KillerThighs")) {
-			std::size_t numberOfPrey = 1;
-			if (Runtime::HasPerk(pred, "MassVorePerk")) {
-				numberOfPrey = 1 + (get_visual_scale(pred)/3);
-			}
-			std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
-			for (auto prey: preys) {
-				Sandwiching.StartSandwiching(pred, prey);
-				auto node = find_node(pred, "GiantessRune", false);
-				if (node) {
-					node->local.scale = 0.01;
-					update_node(node);
-				}
+		std::size_t numberOfPrey = 1;
+		if (Runtime::HasPerk(pred, "MassVorePerk")) {
+			numberOfPrey = 1 + (get_visual_scale(pred)/3);
+		}
+		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
+		for (auto prey: preys) {
+			Sandwiching.StartSandwiching(pred, prey);
+			auto node = find_node(pred, "GiantessRune", false);
+			if (node) {
+				node->local.scale = 0.01;
+				update_node(node);
 			}
 		}
 	}
+	
 
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("ThighAttack", player);
+		float WasteStamina = 25.0;
+		if (Runtime::HasPerk(player, "KillerThighs")) {
+			WasteStamina *= 0.65;
+		}
+		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+			AnimationManager::StartAnim("ThighAttack", player);
+		} else {
+			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+			Notify("You're too tired to perform thigh attack");
+		}
 	}
 
 	void ThighSandwichHeavyAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("ThighAttack_Heavy", player);
+		float WasteStamina = 25.0;
+		if (Runtime::HasPerk(player, "KillerThighs")) {
+			WasteStamina *= 0.65;
+		}
+		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+			AnimationManager::StartAnim("ThighAttack_Heavy", player);
+		} else {
+			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+			Notify("You're too tired to perform thigh attack");
+		}
 	}
 
 	void ThighSandwichExitEvent(const InputEventData& data) {

@@ -60,6 +60,14 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	float GetPerkBonus(Actor* Giant) {
+		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
+			return 1.25;
+		} else {
+			return 1.0;
+		}
+	}
+
 	void StartLegRumble(std::string_view tag, Actor& actor, float power, float halflife, std::string_view type) {
 		if (type == "Left") {
 			for (auto& node_name: L_LEG_RUMBLE_NODES) {
@@ -159,18 +167,20 @@ namespace {
 	}
 
 	void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
+		float perk = GetPerkBonus(&data.giant);
 		DoSounds("HeavyStompR", &data.giant, data.animSpeed - 0.5, RNode);
-		DoDamageEffect(&data.giant, 2.5 * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
+		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 1.2, 6.0, RNode);
+		DoLaunch(&data.giant, 1.2 * perk, 6.0, RNode);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
+		float perk = GetPerkBonus(&data.giant);
 		DoSounds("HeavyStompL", &data.giant, data.animSpeed - 0.5, LNode);
-		DoDamageEffect(&data.giant, 2.5 * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
+		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 1.2, 6.0, LNode);
+		DoLaunch(&data.giant, 1.2 * perk, 6.0, LNode);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
@@ -205,21 +215,31 @@ namespace {
 
 	void RightStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "DestructionBasics") && GetAV(player, ActorValue::kStamina) > 75) {
+		float WasteStamina = 90.0;
+		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			WasteStamina *= 0.65;
+		}
+		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StrongStompRight", player);
-			DamageAV(player, ActorValue::kStamina, 75);
+			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
-			Notify("You don't have matching perk to perform the stomp");
+			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+			Notify("You're too tired to perform strong stomp");
 		}
 	}
 
 	void LeftStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "DestructionBasics") && GetAV(player, ActorValue::kStamina) > 75) {
+		float WasteStamina = 90.0;
+		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			WasteStamina *= 0.65;
+		}
+		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StrongStompLeft", player);
-			DamageAV(player, ActorValue::kStamina, 75);
+			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
-			Notify("You don't have matching perk to perform the stomp");
+			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+			Notify("You're too tired to perform strong stomp");
 		}
 	}
 }

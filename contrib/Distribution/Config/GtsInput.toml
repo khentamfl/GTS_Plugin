@@ -40,7 +40,7 @@ name = "Vore"
 keys = [ "LSHIFT", "V"]
 trigger = "once"
 
-# Start Vore Attempt. Requires 'Vore' perk!
+# Start Vore Attempt.
 
 #========================================================
 #================ S T O M P S
@@ -53,7 +53,7 @@ keys = ["LALT", "E"]
 name = "LeftStomp_Strong"
 keys = ["LALT", "Q"]
 
-# ^ Trigger powerful stomps. All stomps REQUIRE 'Destruction Basics' perk!
+# ^ Trigger powerful stomps.
 
 
 [[InputEvent]]
@@ -61,14 +61,14 @@ name = "RightStomp"
 keys = ["LSHIFT", "E"]
 duration = 0.33
 
-# Trigger Stomp Right animation. All stomps REQUIRE 'Destruction Basics' perk!
+# Trigger Stomp Right animation.
 
 [[InputEvent]]
 name = "LeftStomp"
 keys = ["LSHIFT", "Q"]
 duration = 0.33
 
-# Trigger Stomp Left animation. All stomps REQUIRE 'Destruction Basics' perk!
+# Trigger Stomp Left animation.
 
 #========================================================
 #================ T H I G H  C R U S H
@@ -80,14 +80,14 @@ keys = ["LALT"]
 exclusive = true
 duration = 2.0
 
-# Enter Thigh Crush Animation. Requires 'Killer Thighs' perk!
+# Enter Thigh Crush Animation.
 
 [[InputEvent]]
 name = "ThighCrushKill"
 keys = ["LMB"]
 exclusive = false
 
-# Start Leg Spread, Leg Close animation. Requires 'Killer Thighs' perk!
+# Start Leg Spread, Leg Close animation.
 
 [[InputEvent]]
 name = "ThighCrushSpare"
@@ -99,7 +99,7 @@ name = "ThighCrushSpare"
 keys = ["LSHIFT", "W"]
 exclusive = true
 
-# ^ Ways to Exit Thigh Crush animation. Requires 'Killer Thighs' perk!
+# ^ Ways to Exit Thigh Crush animation.
 
 #========================================================
 #============ T H I G H  S A N D W I C H
@@ -110,7 +110,7 @@ name = "ThighSandwichEnter"
 keys = ["LSHIFT", "C"]
 exclusive = true
 
-# Attempt to Start Thigh Sandwich animation with someone. Requires 'Killer Thighs' perk!
+# Attempt to Start Thigh Sandwich animation with someone.
 
 [[InputEvent]]
 name = "ThighSandwichAttackHeavy"
@@ -118,7 +118,7 @@ keys = ["LMB", "RMB"]
 exclusive = false
 trigger = "continuous"
 
-# Do Heavy Thigh Sandwich attack, Can be Looped. Requires 'Killer Thighs' perk!
+# Do Heavy Thigh Sandwich attack, Can be Looped.
 
 [[InputEvent]]
 name = "ThighSandwichAttack" 
@@ -126,7 +126,7 @@ keys = ["LMB"]
 exclusive = false
 trigger = "continuous"
 
-# Do Thigh Sandwich attack, Can be Looped. Requires 'Killer Thighs' perk!
+# Do Thigh Sandwich attack, Can be Looped.
 
 
 [[InputEvent]]
@@ -140,7 +140,7 @@ name = "ThighSandwichExit"
 keys = ["LSHIFT", "W"]
 exclusive = true
 
-# ^ Ways to exit Thigh Sandwich.  Requires 'Killer Thighs' perk!
+# ^ Ways to exit Thigh Sandwich. 
 
 #========================================================
 #========================= G R A B
@@ -149,9 +149,8 @@ exclusive = true
 [[InputEvent]]
 name = "Grab"
 keys = ["F"]
-duration = 10.0 
+duration = 1.0 
 # Grabs nearby actor. It is currently a bit buggy, has no Animations and is pretty much WIP, so use it at your own risk. 
-# Requires 'Destruction Basics' perk!
 
 [[InputEvent]]
 name = "GrabKill"

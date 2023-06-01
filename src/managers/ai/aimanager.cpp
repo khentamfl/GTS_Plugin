@@ -49,9 +49,6 @@ namespace {
 			);
 	}
 	void DoSandwich(Actor* pred) {
-		if (!Runtime::HasPerk(PlayerCharacter::GetSingleton(), "KillerThighs")) {
-			return;
-		}
 		if (!Persistent::GetSingleton().Sandwich_Ai) {
 			log::info("Sandwich AI is false");
 			return;
@@ -73,9 +70,6 @@ namespace {
 	}
 
 	void DoStomp(Actor* pred) {
-		if (!Runtime::HasPerk(PlayerCharacter::GetSingleton(), "DestructionBasics")) {
-			return;
-		}
 		if (!Persistent::GetSingleton().Stomp_Ai) {
 			return;
 		}

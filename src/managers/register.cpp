@@ -63,8 +63,8 @@ namespace Gts {
 		EventDispatcher::AddListener(&Headtracking::GetSingleton()); // Headtracking fixes
 
 
-		//EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
+		EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
 		EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
-		log::info("Managers Reigstered");
+		log::info("Managers Registered");
 	}
 }
