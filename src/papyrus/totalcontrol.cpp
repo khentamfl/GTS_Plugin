@@ -62,7 +62,7 @@ namespace {
           bonus = target_scale * 0.25 + 0.75;
         }
 
-        DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * totalMod);
+        DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * magicka * bonus * timeDelta * power);
         Grow(target, 0.0030 * magicka * bonus, 0.0);
         Rumble::Once("GrowOtherButton", target, 1.0, 0.05);
 
