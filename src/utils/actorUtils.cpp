@@ -370,7 +370,7 @@ namespace Gts {
 		bool ShouldDrain = sizemanager.GetActionBool(giant, 7.0);
 		if (ShouldDrain) {
 			float power = sizemanager.GetThighsDrain(giant);
-			float multiplier = AnimationManager::GetAnimSpeed(actor);
+			float multiplier = AnimationManager::GetAnimSpeed(giant);
 		}
 	}
 
