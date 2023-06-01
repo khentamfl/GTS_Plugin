@@ -59,14 +59,12 @@ keys = ["LALT", "Q"]
 [[InputEvent]]
 name = "RightStomp"
 keys = ["LSHIFT", "E"]
-duration = 0.33
 
 # Trigger Stomp Right animation.
 
 [[InputEvent]]
 name = "LeftStomp"
 keys = ["LSHIFT", "Q"]
-duration = 0.33
 
 # Trigger Stomp Left animation.
 
