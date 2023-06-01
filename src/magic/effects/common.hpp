@@ -1,11 +1,8 @@
 #pragma once
-#include "managers/GtsSizeManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
-#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
-#include "magic/magic.hpp"
 #include "scale/scale.hpp"
 // Module that handles various magic effects
 
