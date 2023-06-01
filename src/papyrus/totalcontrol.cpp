@@ -6,7 +6,7 @@
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
-
+#include "magic/effects/common.hpp"
 
 
 using namespace SKSE;
@@ -62,10 +62,8 @@ namespace {
           bonus = target_scale * 0.25 + 0.75;
         }
 
-        double totalMod = magicka * bonus * timeDelta * power;
-        log::info("  - Growing Teammate: {} (magicka) * {} (bonus) * {} (timeDelta) * {} (power) = {}", magicka, bonus, timeDelta, power, totalMod);
         DamageAV(caster, ActorValue::kMagicka, 0.45 * (target_scale * 0.25 + 0.75) * totalMod);
-        mod_target_scale(target, 0.0030 * totalMod);
+        Grow(target, 0.0030 * magicka * bonus, 0.0);
         Rumble::Once("GrowOtherButton", target, 1.0, 0.05);
 
         return true;
@@ -116,7 +114,7 @@ namespace {
 
     		if (target_scale > get_natural_scale(target)) {
     			DamageAV(caster, ActorValue::kMagicka, 0.25 * (target_scale * 0.25 + 0.75) * magicka * bonus * timeDelta * power);
-    			mod_target_scale(target, -0.0030 * magicka * bonus * timeDelta * power);
+    			ShrinkActor(target, 0.0030 * magicka * bonus, 0.0);
     			Rumble::Once("ShrinkOtherButton", target, 1.0, 0.05);
     		}
         return true;
