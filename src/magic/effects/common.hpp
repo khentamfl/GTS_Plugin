@@ -1,4 +1,5 @@
 #pragma once
+#include "managers/GtsSizeManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
