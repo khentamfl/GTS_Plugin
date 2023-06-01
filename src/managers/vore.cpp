@@ -20,7 +20,7 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 94.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 6.0;
+	const float MINIMUM_VORE_SCALE_RATIO = 7.2;
 	const float VORE_ANGLE = 76;
 	const float PI = 3.14159;
 
@@ -437,9 +437,7 @@ namespace Gts {
 	void Vore::Update() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& persist = Persistent::GetSingleton();
-		if (!Runtime::HasPerk(player, "VorePerk")) {
-			return;
-		}
+		
 		static Timer timer = Timer(2.50); // Random Vore once per 2.5 sec
 		if (timer.ShouldRunFrame()) { //Try to not call it too often
 			std::vector<Actor*> AbleToVore = {};
@@ -727,8 +725,9 @@ namespace Gts {
 				return false;
 			}
 		}
-		if (!Runtime::HasPerkTeam(pred, "VorePerk")) {
-			return false;
+		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
+		if (Runtime::HasPerkTeam(pred, "VorePerk")) {
+			MINIMUM_VORE_SCALE = 6.0;
 		}
 
 		float pred_scale = get_visual_scale(pred);
@@ -739,7 +738,7 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
-		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
+		
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();

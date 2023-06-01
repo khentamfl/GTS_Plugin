@@ -36,6 +36,14 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	float GetPerkBonus(Actor* Giant) {
+		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
+			return 1.25;
+		} else {
+			return 1.0;
+		}
+	}
+
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
 	}
@@ -66,11 +74,12 @@ namespace {
 
 	void GTSstompimpactR(AnimationEventData& data) {
 		float bonus = 1.0;
+		float perk = GetPerkBonus(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			bonus = 4.0;
 		}
 		Rumble::Once("StompR", &data.giant, 2.20 * bonus, 0.0, RNode);
-		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.2 * data.animSpeed, 10, 0.25);
+		DoDamageEffect(&data.giant, 1.5 * data.animSpeed * perk, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.0 * bonus, 2.25, RNode);
 	}
@@ -78,37 +87,40 @@ namespace {
 	void GTSstompimpactL(AnimationEventData& data) {
 		//data.stage = 1;
 		float bonus = 1.0;
+		float perk = GetPerkBonus(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			bonus = 4.0;
 		}
 		Rumble::Once("StompL", &data.giant, 2.20 * bonus, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.5 * data.animSpeed, 1.2 * data.animSpeed, 10, 0.25);
+		DoDamageEffect(&data.giant, 1.5 * data.animSpeed * perk, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 1.0 * bonus, 2.25, LNode);
+		DoLaunch(&data.giant, 1.0 * bonus * perk, 2.25, LNode);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
 		//data.stage = 2;
 		float bonus = 1.0;
+		float perk = GetPerkBonus(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			bonus = 4.0;
 		}
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
-		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
+		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.7 * bonus, 1.2, RNode);
+		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
 		//data.stage = 2;
 		float bonus = 1.0;
+		float perk = GetPerkBonus(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			bonus = 4.0;
 		}
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
-		DoDamageEffect(&data.giant, 0.7, 1.10, 25, 0.25);
+		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.7 * bonus, 1.2, LNode);
+		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, LNode);
 
 	}
 
@@ -140,21 +152,31 @@ namespace {
 
 	void RightStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		float WasteStamina = 25.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			WasteStamina *= 0.65;
+		}
+		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StompRight", player);
-			return;
+			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
-			Notify("You don't have matching perk to perform the stomp");
+			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+			Notify("You're too tired to perform stomp");
 		}
 	}
 
 	void LeftStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		float WasteStamina = 25.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			WasteStamina *= 0.65;
+		}
+		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StompLeft", player);
-			return;
+			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
-			Notify("You don't have matching perk to perform the stomp");
+			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+			Notify("You're too tired to perform stomp");
 		}
 	}
 }
