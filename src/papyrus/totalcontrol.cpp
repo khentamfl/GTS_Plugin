@@ -99,7 +99,7 @@ namespace {
         if (!targetHandle) {
           return false;
         }
-        float timeDelta = progressData.delta;
+        float timeDelta = progressData.delta * 60; // Was optimised as 60fps
 
         auto target = targetHandle.get().get();
         auto caster = casterHandle.get().get();
