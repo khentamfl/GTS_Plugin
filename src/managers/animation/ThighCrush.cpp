@@ -153,14 +153,14 @@ namespace {
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
-		DrainStamina(&data.giant, true, 7.0, 2.0);
+		DrainStamina(&data.giant, true, 7.0, 4.0);
 		StartLegRumble("ThighCrushHeavy", data.giant, 0.35, 0.10);
 		data.stage = 5;
 	}
 
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
-		DrainStamina(&data.giant, false, 7.0, 2.0);
+		DrainStamina(&data.giant, false, 7.0, 4.0);
 		LegRumbleOnce("ThighCrushHeavy_End", data.giant, 0.50, 0.15);
 		StopLegRumble("ThighCrushHeavy", data.giant);
 		data.stage = 6;

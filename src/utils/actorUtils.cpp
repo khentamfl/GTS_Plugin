@@ -371,7 +371,7 @@ namespace Gts {
 		if (ShouldDrain) {
 			float power = sizemanager.GetThighsDrain(giant);
 			float multiplier = AnimationManager::GetAnimSpeed(giant);
-			float WasteStamina = 0.25 * power * multiplier;
+			float WasteStamina = 0.75 * power * multiplier;
 			DamageAV(giant, ActorValue::kStamina, WasteStamina);
 		}
 	}
