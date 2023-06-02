@@ -133,7 +133,7 @@ namespace Gts {
 		mod_target_scale(actor, -value); // Do Shrink
 		log::info("Doing Shrink: {}", value);
 		SizeManager::GetSingleton().SetGrowthSpurt(actor, 0.0);
-		
+
 		this->AllowStacking = true;
 
 		Rumble::Once("ExplosiveGrowth", actor, 7.0, 0.05);

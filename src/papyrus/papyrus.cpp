@@ -23,7 +23,7 @@ namespace Gts {
 		register_papyrus_height(vm);
 		register_papyrus_events(vm);
 		register_papyrus_camera(vm);
-    register_total_control(vm);
+		register_total_control(vm);
 		return true;
 	}
 }
