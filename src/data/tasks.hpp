@@ -130,15 +130,16 @@ namespace Gts {
     static void Run(std::function<bool(const TaskUpdate&)> tasking) {
       auto& me = TaskManager::GetSingleton();
       auto task = new Task(tasking);
-      me.taskings.emplace(
-        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t*>(task)),
+      std::string name = std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t*>(task));
+      me.taskings.try_emplace(
+        name,
         task,
       );
     }
 
     static void Run(std::string_view name, std::function<bool(const TaskUpdate&)> tasking) {
       auto& me = TaskManager::GetSingleton();
-      me.taskings.emplace(
+      me.taskings.try_emplace(
         std::string(name),
         new Task(tasking)
       );
@@ -147,15 +148,16 @@ namespace Gts {
     static void RunFor(float duration, std::function<bool(const TaskForUpdate&)> tasking) {
       auto& me = TaskManager::GetSingleton();
       auto task = new TaskFor(duration, tasking);
-      me.taskings.emplace(
-        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t*>(task)),
+      std::string name = std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t*>(task));
+      me.taskings.try_emplace(
+        name,
         task,
       );
     }
 
     static void RunFor(std::string_view name, float duration, std::function<bool(const TaskForUpdate&)> tasking) {
       auto& me = TaskManager::GetSingleton();
-      me.taskings.emplace(
+      me.taskings.try_emplace(
         std::string(name),
         new TaskFor(duration, tasking)
       );
