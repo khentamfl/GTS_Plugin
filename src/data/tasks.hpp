@@ -123,14 +123,15 @@ namespace Gts {
     }
 
     static void Cancel(std::string_view name) {
-      this->taskings.erase(std::string(name));
+      auto& me = TaskManager::GetSingleton();
+      me.taskings.erase(std::string(name));
     }
 
     static void Run(std::function<bool(const TaskUpdate&)> tasking) {
       auto& me = TaskManager::GetSingleton();
-      auto task = new TaskFor(duration, tasking);
+      auto task = new Task(tasking);
       me.taskings.emplace(
-        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t *>(task)),
+        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t*>(task)),
         task,
       );
     }
@@ -147,7 +148,7 @@ namespace Gts {
       auto& me = TaskManager::GetSingleton();
       auto task = new TaskFor(duration, tasking);
       me.taskings.emplace(
-        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t *>(task)),
+        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t*>(task)),
         task,
       );
     }
