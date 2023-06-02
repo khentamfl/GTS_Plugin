@@ -130,7 +130,7 @@ namespace Gts {
       auto& me = TaskManager::GetSingleton();
       auto task = new TaskFor(duration, tasking);
       me.taskings.emplace(
-        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t *>(task),
+        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t *>(task)),
         task,
       );
     }
@@ -147,9 +147,9 @@ namespace Gts {
       auto& me = TaskManager::GetSingleton();
       auto task = new TaskFor(duration, tasking);
       me.taskings.emplace(
-        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t *>(task),
+        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t *>(task)),
         task,
-      ));
+      );
     }
 
     static void RunFor(std::string_view name, float duration, std::function<bool(const TaskForUpdate&)> tasking) {
