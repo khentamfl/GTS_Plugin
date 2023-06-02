@@ -149,7 +149,7 @@ namespace Gts {
       me.taskings.emplace(
         std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t *>(task),
         task,
-      );
+      ));
     }
 
     static void RunFor(std::string_view name, float duration, std::function<bool(const TaskForUpdate&)> tasking) {
