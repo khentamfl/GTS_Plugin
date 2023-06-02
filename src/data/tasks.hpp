@@ -109,10 +109,10 @@ namespace Gts {
       }
 
     virtual void Update() override {
-      std::vector<BaseTask*> toRemove = {};
-      for (auto task: this->taskings) {
+      std::vector<std::string> toRemove = {};
+      for (auto& [name, task]: this->taskings) {
         if (!task->Update()) {
-          toRemove.push_back(task);
+          toRemove.push_back(name);
         }
       }
 
@@ -122,20 +122,44 @@ namespace Gts {
 
     }
 
+    static void Cancel(std::string_view name) {
+      this->taskings.erase(std::string(name));
+    }
+
     static void Run(std::function<bool(const TaskUpdate&)> tasking) {
       auto& me = TaskManager::GetSingleton();
+      auto task = new TaskFor(duration, tasking);
       me.taskings.emplace(
+        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t *>(task),
+        task,
+      );
+    }
+
+    static void Run(std::string_view name, std::function<bool(const TaskUpdate&)> tasking) {
+      auto& me = TaskManager::GetSingleton();
+      me.taskings.emplace(
+        std::string(name),
         new Task(tasking)
       );
     }
 
     static void RunFor(float duration, std::function<bool(const TaskForUpdate&)> tasking) {
       auto& me = TaskManager::GetSingleton();
+      auto task = new TaskFor(duration, tasking);
       me.taskings.emplace(
+        std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t *>(task),
+        task,
+      );
+    }
+
+    static void RunFor(std::string_view name, float duration, std::function<bool(const TaskForUpdate&)> tasking) {
+      auto& me = TaskManager::GetSingleton();
+      me.taskings.emplace(
+        std::string(name),
         new TaskFor(duration, tasking)
       );
     }
 
-    std::unordered_set<BaseTask*> taskings;
+    std::unordered_map<std::string, BaseTask*> taskings;
   };
 }
