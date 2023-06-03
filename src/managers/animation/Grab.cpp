@@ -429,8 +429,8 @@ namespace Gts {
 
 	GrabData& Grab::GetGrabData(Actor* giant) {
 		// Create it now if not there yet
-		this->data.try_emplace(giant->formID, giant);
-		return this->data.at(giant->formID);
+		Grab::GetSingleton().data.try_emplace(giant->formID, giant);
+		return Grab::GetSingleton().data.at(giant->formID);
 	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
