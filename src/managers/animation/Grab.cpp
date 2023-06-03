@@ -344,7 +344,7 @@ namespace Gts {
 	}
 
 	void Grab::HoldActor(Actor* giant, bool decide) {
-		Grab::GetSingleton().data.OverrideDecide(decide);
+		Grab::GetSingleton().data.SetGrabbed(decide);
 	}
 
 	void Grab::GrabActor(Actor* giant, TESObjectREFR* tiny, float strength) {
@@ -419,7 +419,7 @@ namespace Gts {
 		AnimationManager::RegisterTrigger("GrabAbort", "Grabbing", "GTSBEH_AbortGrab");
 	}
 
-	GrabData::SetGrabbed(bool decide) {
+	void GrabData::SetGrabbed(bool decide) {
 		this->grab = decide;
 	}
 
