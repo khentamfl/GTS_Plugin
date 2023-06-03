@@ -31,6 +31,17 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+	void FixActorState(Actor* giant) { // Fixes Animations for GTS Grab Actions
+		int StateID;
+		int GTSStateID;
+
+		int State = giant->GetGraphVariableInt("currentDefaultState", StateID);
+		int ExpectedState = giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
+		if (ExpectedState != State) {
+			giant->SetGraphVariableInt("GTS_Def_State", State);
+		}
+	}
+
 	void FixActorFade(Actor* actor) {
 		auto profiler = Profilers::Profile("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
@@ -255,6 +266,7 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
+		FixActorState(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();

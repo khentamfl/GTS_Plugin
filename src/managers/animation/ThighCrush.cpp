@@ -66,6 +66,14 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
+	float GetPerkBonus(Actor* Giant) {
+		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
+			return 1.25;
+		} else {
+			return 1.0;
+		}
+	}
+
 	void LegRumbleOnce(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
@@ -174,10 +182,11 @@ namespace {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		float volume = scale * 0.10 * speed;
+		float perk = GetPerkBonus(&data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode);
-		DoDamageEffect(&data.giant, 0.6, 0.8, 25, 0.5);
+		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandR");
 	}
@@ -185,12 +194,12 @@ namespace {
 	void GTSstandL(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-
 		float volume = scale * 0.10 * speed;
+		float perk = GetPerkBonus(&data.giant);
 
 		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 0.6, 0.8, 25, 0.5);
+		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandL");
 	}
@@ -198,12 +207,12 @@ namespace {
 	void GTSstandRS(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
-
 		float volume = scale * 0.05 * speed;
+		float perk = GetPerkBonus(&data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoSizeEffect(&data.giant, 0.40, FootEvent::Right, RNode);
-		DoDamageEffect(&data.giant, 0.6, 0.8, 25, 0.5);
+		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
@@ -223,9 +232,7 @@ namespace {
 
 	void ThighCrushEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "KillerThighs")) {
-			AnimationManager::StartAnim("ThighLoopEnter", player);
-		}
+		AnimationManager::StartAnim("ThighLoopEnter", player);
 	}
 
 	void ThighCrushKillEvent(const InputEventData& data) {

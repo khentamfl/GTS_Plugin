@@ -28,7 +28,7 @@ namespace Gts {
 
 			bool IsRunning();
 
-      double RunningTime();
+			double RunningTime();
 
 			std::string GetName();
 	};
@@ -48,7 +48,7 @@ namespace Gts {
 			static void Stop(std::string_view name);
 			static void Report();
 		private:
-		    bool AnyRunning();
+			bool AnyRunning();
 			[[nodiscard]] static Profilers& GetSingleton();
 			std::unordered_map<std::string,Profiler> profilers;
 			Profiler totalTime = Profiler("TotalTime"sv);

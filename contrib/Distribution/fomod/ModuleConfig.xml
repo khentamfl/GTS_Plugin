@@ -14,6 +14,8 @@
     <file source="PapyrusSource\GtsEvent.psc" destination="Source\Scripts\GtsEvent.psc" priority="0"/>
 	<file source="Papyrus\GtsHeight.pex" destination="Scripts\GtsHeight.pex" priority="0"/>
     <file source="PapyrusSource\GtsHeight.psc" destination="Source\Scripts\GtsHeight.psc" priority="0"/>
+    <file source="Papyrus\GtsControl.pex" destination="Scripts\GtsControl.pex" priority="0"/>
+      <file source="PapyrusSource\GtsControl.psc" destination="Source\Scripts\GtsControl.psc" priority="0"/>
   </requiredInstallFiles>
   <installSteps order="Explicit">
     <installStep name="Test ESP">

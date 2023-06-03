@@ -4,6 +4,7 @@
 #include "papyrus/height.hpp"
 #include "papyrus/modevents.hpp"
 #include "papyrus/camera.hpp"
+#include "papyrus/totalcontrol.hpp"
 
 
 using namespace SKSE;
@@ -22,6 +23,7 @@ namespace Gts {
 		register_papyrus_height(vm);
 		register_papyrus_events(vm);
 		register_papyrus_camera(vm);
+		register_total_control(vm);
 		return true;
 	}
 }

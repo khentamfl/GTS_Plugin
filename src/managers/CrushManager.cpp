@@ -129,7 +129,7 @@ namespace Gts {
 
 	void CrushManager::Update() {
 		for (auto &[tinyId, data]: this->data) {
-            auto tiny = TESForm::LookupByID<Actor>(tinyId);
+			auto tiny = TESForm::LookupByID<Actor>(tinyId);
 			auto giantHandle = data.giant;
 			if (!tiny) {
 				continue;
@@ -139,9 +139,9 @@ namespace Gts {
 			}
 			auto giant = giantHandle.get().get();
 			if (!giant) {
-			    continue;
+				continue;
 			}
-			
+
 			auto transient = Transient::GetSingleton().GetData(tiny);
 			if (transient) {
 				if (!transient->can_be_crushed) {
@@ -227,26 +227,26 @@ namespace Gts {
 		        SetMove(actor);
 		   }*/
 		if (actor) {
-		    this->data.erase(actor->formID);
+			this->data.erase(actor->formID);
 		}
 	}
 
 	void CrushManager::Crush(Actor* giant, Actor* tiny) {
-	    if (!giant) {
-	        return;
-	    }
-	    if (!tiny) {
-	        return;
-	    }
+		if (!giant) {
+			return;
+		}
+		if (!tiny) {
+			return;
+		}
 		if (CrushManager::CanCrush(giant, tiny)) {
 			CrushManager::GetSingleton().data.try_emplace(tiny->formID, giant);
 		}
 	}
 
 	bool CrushManager::AlreadyCrushed(Actor* actor) {
-        if (!actor) {
-            return false;
-        }
+		if (!actor) {
+			return false;
+		}
 		auto& m = CrushManager::GetSingleton().data;
 		return (m.find(actor->formID) != m.end());
 	}

@@ -111,8 +111,7 @@ namespace Gts {
 								tiny->GetActorRuntimeData().myKiller = giant->CreateRefHandle();
 								tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 								tiny->UpdateCombatControllerSettings();
-							}
-							else if (!combat) {
+							} else if (!combat) {
 								if (giant->formID == 0x14 && CombatValue < 1000) {
 									giant->ModCrimeGoldValue(Faction, true, value);
 								}
