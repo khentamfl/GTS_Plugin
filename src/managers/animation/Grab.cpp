@@ -10,6 +10,8 @@
 #include "magic/effects/common.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
+#include "managers/tremor.hpp"
+#include "managers/Rumble.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -165,8 +167,8 @@ namespace {
 	}
 
 	void GTSGrab_Eat_OpenMouth(AnimationEventData& data) {
-		AdjustFacialExpression(giant, 0, 1.0, "phenome"); // Start opening mouth
-		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
+		AdjustFacialExpression(&data.giant, 0, 1.0, "phenome"); // Start opening mouth
+		AdjustFacialExpression(&data.giant, 1, 0.5, "phenome"); // Open it wider
 	}
 
 	void GTSGrab_Eat_Eat(AnimationEventData& data) {
@@ -180,8 +182,8 @@ namespace {
 	}
 
 	void GTSGrab_Eat_CloseMouth(AnimationEventData& data) {
-		AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Close it
-		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // And close it
+		AdjustFacialExpression(&data.giant, 0, 0.0, "phenome"); // Close it
+		AdjustFacialExpression(&data.giant, 1, 0.0, "phenome"); // And close it
 	}
 
 	void GTSGrab_Eat_Swallow(AnimationEventData& data) {
