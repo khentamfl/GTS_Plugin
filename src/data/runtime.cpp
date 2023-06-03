@@ -27,7 +27,6 @@ namespace {
 	}
 
 	struct RuntimeConfig {
-		std::unordered_map<std::string, std::string> keywords;
 		std::unordered_map<std::string, std::string> sounds;
 		std::unordered_map<std::string, std::string> spellEffects;
 		std::unordered_map<std::string, std::string> spells;
@@ -41,7 +40,6 @@ namespace {
     std::unordered_map<std::string, std::string> keywords;
 
 		articuno_serde(ar) {
-			ar <=> kv(keywords, "keywords");
 			ar <=> kv(sounds, "sounds");
 			ar <=> kv(spellEffects, "spellEffects");
 			ar <=> kv(spells, "spells");
@@ -67,20 +65,6 @@ namespace Gts {
 		return "Runtime";
 	}
 
-
-	// Keywords
-	BGSKeyword* Runtime::GetKeyword(const std::string_view& tag) {
-		BGSKeyword* data = nullptr;
-		try {
-			data = Runtime::GetSingleton().keywords.at(std::string(tag)).data;
-		}  catch (const std::out_of_range& oor) {
-			data = nullptr;
-			if (!Runtime::Logged("Keyword", tag)) {
-				log::warn("Keyword: {} not found", tag);
-			}
-		}
-		return data;
-	}
 	// Sound
 	BSISoundDescriptor* Runtime::GetSound(const std::string_view& tag) {
 		BSISoundDescriptor* data = nullptr;
