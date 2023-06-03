@@ -313,7 +313,7 @@ namespace Gts {
 			if (!bone) {
 				return;
 			}
-			if (!data.grab) {
+			if (!data.GetGrabbed()) {
 				return;
 			}
 
@@ -344,11 +344,11 @@ namespace Gts {
 	}
 
 	void Grab::HoldActor(Actor* giant, bool decide) {
-		Grab::GetSingleton().data.grab = decide;
+		Grab::GetSingleton().data.OverrideDecide(decide);
 	}
 
 	void Grab::GrabActor(Actor* giant, TESObjectREFR* tiny, float strength) {
-		Grab::GetSingleton().data.try_emplace(giant, tiny, strength, false);
+		Grab::GetSingleton().data.try_emplace(giant, tiny, strength);
 	}
 	void Grab::GrabActor(Actor* giant, TESObjectREFR* tiny) {
 		// Default strength 1.0: normal grab for actor of their size
@@ -417,6 +417,14 @@ namespace Gts {
 		AnimationManager::RegisterTrigger("GrabReleasePunies", "Grabbing", "GTSBEH_GrabRelease");
 		AnimationManager::RegisterTrigger("GrabExit", "Grabbing", "GTSBEH_GrabExit");
 		AnimationManager::RegisterTrigger("GrabAbort", "Grabbing", "GTSBEH_AbortGrab");
+	}
+
+	GrabData::SetGrabbed(bool decide) {
+		this->grab = decide;
+	}
+
+	bool GrabData::GetGrabbed() {
+		return this->grab;
 	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
