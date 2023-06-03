@@ -195,7 +195,7 @@ namespace Gts {
 
 	bool IsLiving(Actor* actor) {
 		bool IsDraugr = Runtime::HasKeyword(actor, "UndeadKeyword");
-		bool IsDwemer = Runtime::GetKeyword(actor, "DwemerKeyword");
+		bool IsDwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
 		if (IsDraugr || IsDwemer) {
 			log::info("{} is not living", actor->GetDisplayFullName());
 			return false;
