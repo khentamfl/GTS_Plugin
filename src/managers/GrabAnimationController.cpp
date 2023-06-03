@@ -89,7 +89,7 @@ namespace Gts {
 		// Filter out invalid targets
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
-			return !this->CanSandwich(pred, prey);
+			return !this->CanGrab(pred, prey);
 		}), preys.end());
 
 		// Filter out actors not in front
