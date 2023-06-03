@@ -100,7 +100,7 @@ namespace Gts {
 		if (actor->formID == 0x14) {
 				if (HasSMT(actor)) {
 					minimal_size = 1.0;
-					scale += 1.33;
+					scale += 0.33;
 				}
 			}
 		if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {

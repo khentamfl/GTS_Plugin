@@ -19,8 +19,7 @@ namespace Gts {
 		}
 		float CasterScale = get_visual_scale(caster);
 		if (CasterScale >= 2.0) {
-			Dispel();
+			set_target_scale(caster, 2.0);
 		} // <- Disallow having it when scale is > 2.0
 	}
-
 }

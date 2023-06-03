@@ -137,26 +137,30 @@ namespace {
 	void GTSstomplandR(AnimationEventData& data) {
 		//data.stage = 2;
 		float bonus = 1.0;
+		float dust = 1.0;
 		float perk = GetPerkBonus(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
-			bonus = 4.0;
+			bonus = 2.0;
+			dust = 1.25;
 		}
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
-		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode, bonus);
+		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode, dust);
 		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, RNode);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
 		//data.stage = 2;
 		float bonus = 1.0;
+		float dust = 1.0;
 		float perk = GetPerkBonus(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
-			bonus = 4.0;
+			bonus = 2.0;
+			dust = 1.25;
 		}
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
 		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
-		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode, bonus);
+		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode, dust);
 		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, LNode);
 
 	}
