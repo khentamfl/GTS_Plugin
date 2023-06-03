@@ -365,17 +365,6 @@ namespace Gts {
 		return random;
 	}
 
-	void ThighsDrainStamina(Actor* giant) {
-		auto& sizemanager = SizeManager::GetSingleton();
-		bool ShouldDrain = sizemanager.GetActionBool(giant, 7.0);
-		if (ShouldDrain) {
-			float power = sizemanager.GetThighsDrain(giant);
-			float multiplier = AnimationManager::GetAnimSpeed(giant);
-			float WasteStamina = 0.75 * power * multiplier;
-			DamageAV(giant, ActorValue::kStamina, WasteStamina);
-		}
-	}
-
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
 		auto& footstep = FootStepManager::GetSingleton();
 		auto& explosion = ExplosionManager::GetSingleton();

@@ -67,10 +67,21 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void DrainStamina(Actor* giant, bool decide, float number, float power) {
-		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.SetActionBool(giant, decide, number);
-		sizemanager.SetThighsDrain(giant, power);
+	void DrainStamina(Actor* giant, bool decide, float power) {
+		if (decide) {
+			TaskManager::Run("StaminaDrain", (auto& progressData) {
+				ActorHandle casterHandle = giant->CreateRefHandle();
+				if (!casterhandle) {
+					return false;
+				}
+				float multiplier = AnimationManager::GetAnimSpeed(giant);
+				float WasteStamina = 0.75 * power * multiplier;
+				DamageAV(giant, ActorValue::kStamina, WasteStamina);
+				return true;
+			});
+		} else {
+			TaskManager::Cancel("StaminaDrain");
+		}
 	}
 
 	float GetPerkBonus(Actor* Giant) {
@@ -139,7 +150,7 @@ namespace {
 
 	void GTSsitcrushlight_start(AnimationEventData& data) {
 		StartLegRumble("ThighCrush", data.giant, 0.18, 0.12);
-		DrainStamina(&data.giant, true, 7.0, 1.0);
+		DrainStamina(&data.giant, true, 1.0); // < Start Light Stamina Drain
 		data.stage = 5;
 	}
 
@@ -148,19 +159,19 @@ namespace {
 		data.canEditAnimSpeed = true;
 		LegRumbleOnce("ThighCrush_End", data.giant, 0.22, 0.20);
 		StopLegRumble("ThighCrush", data.giant);
-		DrainStamina(&data.giant, false, 7.0, 1.0);
+		DrainStamina(&data.giant, false, 1.0); // < Stop Light Stamina Drain
 		data.stage = 6;
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
-		DrainStamina(&data.giant, true, 7.0, 4.0);
+		DrainStamina(&data.giant, true, 4.0); // < - Start HEAVY Stamina Drain
 		StartLegRumble("ThighCrushHeavy", data.giant, 0.35, 0.10);
 		data.stage = 5;
 	}
 
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
-		DrainStamina(&data.giant, false, 7.0, 4.0);
+		DrainStamina(&data.giant, false, 4.0); // < Stop Heavy Stamina Drain
 		LegRumbleOnce("ThighCrushHeavy_End", data.giant, 0.50, 0.15);
 		StopLegRumble("ThighCrushHeavy", data.giant);
 		data.stage = 6;
