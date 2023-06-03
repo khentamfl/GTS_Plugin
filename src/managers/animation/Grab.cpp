@@ -138,6 +138,7 @@ namespace {
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, damage * 0.5, 25);
 			if (damage > Health * 1.5) {
 				CrushManager::Crush(giant, grabbedActor);
+				Rumble::Once("GrabAttackKill", &data.giant, 8.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (laughtimer.ShouldRun()) {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
 				}
@@ -178,8 +179,10 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(&data.giant);			
 		if (otherActor) {
 			if (!AllowDevourment()) {
-				Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
-			} 
+				VoreData.KillAll();
+			} else {
+				CallDevourment(&data.giant, otherActor);
+			}
 		}
 	}
 
@@ -191,17 +194,10 @@ namespace {
 	void GTSGrab_Eat_Swallow(AnimationEventData& data) {
 		auto otherActor = Grab::GetHeldActor(&data.giant);	
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);		
-		if (otherActor) {
-			if (!AllowDevourment()) {
-				VoreData.KillAll();
-			} else {
-				CallDevourment(&data.giant, otherActor);
-			}
-		}
+		ManageCamera(&data.giant, false, 2.0);
 		if (!otherActor) {
 			AnimationManager::StartAnim("GTSBEH_GrabExit", &data.giant);
 		}
-		ManageCamera(&data.giant, false, 2.0);
 	}
 	
 
@@ -225,6 +221,7 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		Grab::SetHolding(giant, false);
+		ManageCamera(&data.giant, false, 2.0);
 		if (grabbedActor) {
 			Grab::Release(giant);
 			PushActorAway(giant, grabbedActor, 1.0);
@@ -234,12 +231,14 @@ namespace {
 	void GTSBEH_GrabExit(AnimationEventData& data) {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		ManageCamera(&data.giant, false, 2.0);
 		Grab::SetHolding(giant, false);
 	}
 
 	void GTSBEH_AbortGrab(AnimationEventData& data) {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		ManageCamera(&data.giant, false, 2.0);
 		Grab::SetHolding(giant, false);
 	}
 
@@ -262,7 +261,7 @@ namespace {
 		if (!grabbedActor) { 
 			return;
 		}
-		AnimationManager::StartAnim("GrabEatSomeone", player);
+		AnimationManager::StartAnim("GrabDamageAttack", player);
 	}
 
 	void GrabVoreEvent(const InputEventData& data) {
@@ -275,7 +274,7 @@ namespace {
 		if (sizedifference < 6.0) {
 			return;
 		}
-		AnimationManager::StartAnim("GrabDamageAttack", player);
+		AnimationManager::StartAnim("GrabEatSomeone", player);
 	}
 
 	void GrabThrowEvent(const InputEventData& data) {
