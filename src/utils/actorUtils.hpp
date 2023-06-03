@@ -28,6 +28,7 @@ namespace Gts {
 
 	void CompleteDragonQuest();
 	bool IsDragon(Actor* actor);
+	bool IsLiving(Actor* actor);
 
 	bool IsProne(Actor* actor);
 

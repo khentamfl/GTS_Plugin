@@ -191,8 +191,11 @@ namespace Gts {
 			std::random_device rd;
 			std::mt19937 gen(rd());
 			std::uniform_real_distribution<float> dis(-0.2, 0.2);
-			if (Runtime::InFaction(tiny, "DwarwenAutomatonFaction") || Runtime::InFaction(tiny, "DraugrFaction")) {
-			//Empty
+			if (!IsLiving(tiny)) {
+				auto root = find_node(tiny, "NPC Root [Root]");
+				if (root) {
+					SpawnParticle(tiny, 0.20, "GTS/Damage/FootExplosion.nif", NiMatrix3(), root->world.translate, ts * 0.5, 7, root);
+				}
 			} else {
 				Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			}

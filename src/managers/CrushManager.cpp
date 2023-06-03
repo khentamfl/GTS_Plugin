@@ -176,7 +176,7 @@ namespace Gts {
 					std::random_device rd;
 					std::mt19937 gen(rd());
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
-					if (Runtime::InFaction(tiny, "DwarwenAutomatonFaction") || Runtime::InFaction(tiny, "DraugrFaction")) {
+					if (!IsLiving(tiny)) {
 						auto root = find_node(tiny, "NPC Root [Root]");
 						if (root) {
 							SpawnParticle(tiny, 0.20, "GTS/Damage/FootExplosion.nif", NiMatrix3(), root->world.translate, currentSize * 2.5, 7, root);

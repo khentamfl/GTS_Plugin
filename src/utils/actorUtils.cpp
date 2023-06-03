@@ -180,6 +180,9 @@ namespace Gts {
 	}
 
 	bool IsDragon(Actor* actor) {
+		if (actor->HasKeywordHelper(Runtime::GetKeyword("DragonKeyword"))) {
+			return true;
+		}
 		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
 		     || std::string(actor->GetDisplayFullName()).find("Dragon") != std::string::npos
 		     || std::string(actor->GetDisplayFullName()).find("dragon") != std::string::npos
@@ -188,6 +191,17 @@ namespace Gts {
 		} else {
 			return false;
 		}
+	}
+
+	bool IsLiving(Actor* actor) {
+		auto Draugr = Runtime::GetKeyword("UndeadKeyword");
+		auto Dwemer = Runtime::GetKeyword("DwemerKeyword");
+		if (actor->HasKeywordHelper(Draugr) || actor->HasKeywordHelper(Dwemer)) {
+			return false
+		} else {
+			return true;
+		}
+		return true;
 	}
 
 	bool IsProne(Actor* actor) {

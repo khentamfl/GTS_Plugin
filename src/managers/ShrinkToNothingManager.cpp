@@ -80,7 +80,7 @@ namespace Gts {
 
 					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.0, 0.5);
 					EventDispatcher::DoResetActor(tiny);
-					if (Runtime::InFaction(tiny, "DwarwenAutomatonFaction") || Runtime::InFaction(tiny, "DraugrFaction")) {
+					if (!IsLiving(tiny)) {
 						auto root = find_node(tiny, "NPC Root [Root]");
 						if (root) {
 							SpawnParticle(tiny, 0.20, "GTS/Damage/FootExplosion.nif", NiMatrix3(), root->world.translate, get_visual_scale(tiny) * 2.5, 7, root);

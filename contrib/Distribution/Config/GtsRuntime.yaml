@@ -1,5 +1,7 @@
-artobjects:
-  BloodSpray: "Skyrim.esm|0A6EF5"
+keywords:
+  UndeadKeyword: "Skyrim.esm|013796"
+  DwemerKeyword: "Skyrim.esm|01397A"
+  DragonKeyword: "Skyrim.esm|035D59"
 
 sounds:
   lFootstepL: "GTS.esp|1E93AB"

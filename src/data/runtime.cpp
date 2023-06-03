@@ -27,7 +27,7 @@ namespace {
 	}
 
 	struct RuntimeConfig {
-		std::unordered_map<std::string, std::string> artobjects;
+		std::unordered_map<std::string, std::string> keywords;
 		std::unordered_map<std::string, std::string> sounds;
 		std::unordered_map<std::string, std::string> spellEffects;
 		std::unordered_map<std::string, std::string> spells;
@@ -40,7 +40,7 @@ namespace {
 		std::unordered_map<std::string, std::string> races;
 
 		articuno_serde(ar) {
-			ar <=> kv(artobjects, "artobjects");
+			ar <=> kv(keywords, "keywords");
 			ar <=> kv(sounds, "sounds");
 			ar <=> kv(spellEffects, "spellEffects");
 			ar <=> kv(spells, "spells");
@@ -66,15 +66,15 @@ namespace Gts {
 	}
 
 
-	// Art Object
-	BGSArtObject* Runtime::GetArtObject(const std::string_view& tag) {
-		BGSArtObject* data = nullptr;
+	// Keywords
+	BGSKeyword* Runtime::GetKeyword(const std::string_view& tag) {
+		BGSKeyword* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().artobjects.at(std::string(tag)).data;
+			data = Runtime::GetSingleton().keywords.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
-			if (!Runtime::Logged("ArtObject", tag)) {
-				log::warn("ArtObject: {} not found", tag);
+			if (!Runtime::Logged("Keyword", tag)) {
+				log::warn("Keyword: {} not found", tag);
 			}
 		}
 		return data;
