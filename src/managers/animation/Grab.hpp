@@ -7,7 +7,7 @@ using namespace RE;
 
 namespace Gts {
 	struct GrabData {
-		GrabData(TESObjectREFR* tiny, float strength, bool grab);
+		GrabData(TESObjectREFR* tiny, float strength);
 		TESObjectREFR* tiny;
 		bool grab;
 		float strength;

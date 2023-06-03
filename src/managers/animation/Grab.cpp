@@ -240,7 +240,7 @@ namespace {
 		auto& Grabbing = GrabAnimationController::GetSingleton();
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerkTeam(player, "MassVorePerk")) {
-			numberOfPrey = 1 + (get_visual_scale(pred)/3);
+			numberOfPrey = 1 + (get_visual_scale(player)/3);
 		}
 		std::vector<Actor*> preys = Grabbing.GetGrabTargetsInFront(player, numberOfPrey);
 		for (auto prey: preys) {
@@ -419,7 +419,7 @@ namespace Gts {
 		AnimationManager::RegisterTrigger("GrabAbort", "Grabbing", "GTSBEH_AbortGrab");
 	}
 
-	GrabData::GrabData(TESObjectREFR* tiny, float strength, bool grab) : tiny(tiny), strength(strength), grab(grab) {
+	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
 	}
 }
 
