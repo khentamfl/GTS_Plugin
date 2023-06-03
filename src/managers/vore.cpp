@@ -437,7 +437,7 @@ namespace Gts {
 	void Vore::Update() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& persist = Persistent::GetSingleton();
-		
+
 		static Timer timer = Timer(2.50); // Random Vore once per 2.5 sec
 		if (timer.ShouldRunFrame()) { //Try to not call it too often
 			std::vector<Actor*> AbleToVore = {};
@@ -738,7 +738,7 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
-		
+
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();

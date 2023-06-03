@@ -285,18 +285,18 @@ namespace Gts {
 	// 		if (targetObjHandle) {
 	// 			auto lookAt = HeadLocation(targetObjHandle);
 	// 			auto head = HeadLocation(me);
-  //
+	//
 	// 			NiPoint3 directionToLook = (lookAt - head);
-  //
+	//
 	// 			NiPoint3 myOneTimeHead = HeadLocation(me, 1.0);
-  //
+	//
 	// 			NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
-  //
+	//
 	// 			ai->SetHeadtrackTarget(me, fakeLookAt);
 	// 		}
 	// 	}
 	// }
-  //
+	//
 	// void Headtracking::FixPlayerHeadtracking(Actor* me) {
 	// 	log::info("Player HT true");
 	// 	float reduce = 0.0;

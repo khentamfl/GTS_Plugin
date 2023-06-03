@@ -10,7 +10,7 @@ namespace Gts {
 	vector<Actor*> find_actors_middle_high();
 	vector<Actor*> find_actors_middle_low();
 	vector<Actor*> find_actors_low();
-	
+
 	// This will find up to howMany actors in the scene
 	// (not including player and teammate which are ALWAYS returned
 	// regardless of howMany are asked for)
@@ -21,8 +21,8 @@ namespace Gts {
 	// Until all actors have been returned after which you will get previous actors again
 	vector<Actor*> FindSomeActors(std::string_view tag, uint32_t howMany);
 
-  // Find player teammates
-  //
-  // But not the player themselves
-  vector<Actor*> FindTeammates();
+	// Find player teammates
+	//
+	// But not the player themselves
+	vector<Actor*> FindTeammates();
 }

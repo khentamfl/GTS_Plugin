@@ -93,44 +93,44 @@ namespace {
 		if (!GetMessagingInterface()->RegisterListener([](MessagingInterface::Message *message) {
 			switch (message->type)
 			{
-					// Skyrim lifecycle events.
-					case MessagingInterface::kPostLoad: // Called after all plugins have finished running SKSEPlugin_Load.
-					// It is now safe to do multithreaded operations, or operations against other plugins.
-					case MessagingInterface::kPostPostLoad: // Called after all kPostLoad message handlers have run.
-						break;
-					case MessagingInterface::kInputLoaded: // Called when all game data has been found.
-						break;
-					case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
-						// It is now safe to access form data.
-						Cprint("[GTSPlugin.dll]: [ Giantess Mod v 1.80_Test was succesfully initialized. Waiting for New Game/Save Load. ]");
-						EventDispatcher::DoDataReady();
-						break;
-					// Skyrim game events.
-					case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
-						// Data will be a boolean indicating whether the load was successful.
-						{
-							Plugin::SetInGame(true);
-							Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
-						}
-						break;
-					case MessagingInterface::kNewGame: // Player starts a new game from main menu.
-						{
-							Plugin::SetInGame(true);
-							EventDispatcher::DoReset();
-							Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
-						}
-						break;
-					case MessagingInterface::kPreLoadGame: // Player selected a game to load, but it hasn't loaded yet.
-						// Data will be the name of the loaded save.
-						{
-							Plugin::SetInGame(false);
-							EventDispatcher::DoReset();
-						}
-						break;
-					case MessagingInterface::kSaveGame: // The player has saved a game.
-					// Data will be the save name.
-					case MessagingInterface::kDeleteGame: // The player deleted a saved game from within the load menu.
-						break;
+				// Skyrim lifecycle events.
+				case MessagingInterface::kPostLoad: // Called after all plugins have finished running SKSEPlugin_Load.
+				// It is now safe to do multithreaded operations, or operations against other plugins.
+				case MessagingInterface::kPostPostLoad: // Called after all kPostLoad message handlers have run.
+					break;
+				case MessagingInterface::kInputLoaded: // Called when all game data has been found.
+					break;
+				case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
+					// It is now safe to access form data.
+					Cprint("[GTSPlugin.dll]: [ Giantess Mod v 1.80_Test was succesfully initialized. Waiting for New Game/Save Load. ]");
+					EventDispatcher::DoDataReady();
+					break;
+				// Skyrim game events.
+				case MessagingInterface::kPostLoadGame: // Player's selected save game has finished loading.
+					// Data will be a boolean indicating whether the load was successful.
+				{
+					Plugin::SetInGame(true);
+					Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
+				}
+				break;
+				case MessagingInterface::kNewGame: // Player starts a new game from main menu.
+				{
+					Plugin::SetInGame(true);
+					EventDispatcher::DoReset();
+					Cprint(" [GTSPlugin.dll]: [ Giantess Mod was succesfully initialized and loaded. ]");
+				}
+				break;
+				case MessagingInterface::kPreLoadGame: // Player selected a game to load, but it hasn't loaded yet.
+					// Data will be the name of the loaded save.
+				{
+					Plugin::SetInGame(false);
+					EventDispatcher::DoReset();
+				}
+				break;
+				case MessagingInterface::kSaveGame: // The player has saved a game.
+				// Data will be the save name.
+				case MessagingInterface::kDeleteGame: // The player deleted a saved game from within the load menu.
+					break;
 			}
 		})) {
 			stl::report_and_fail("Unable to register message listener.");
@@ -163,7 +163,7 @@ void InitializeEventSystem() {
 	EventDispatcher::AddListener(&Persistent::GetSingleton());
 	EventDispatcher::AddListener(&Transient::GetSingleton());
 
-  EventDispatcher::AddListener(&TaskManager::GetSingleton());
+	EventDispatcher::AddListener(&TaskManager::GetSingleton());
 	EventDispatcher::AddListener(&SpringManager::GetSingleton());
 	log::info("Adding Default Listeners");
 	RegisterManagers();

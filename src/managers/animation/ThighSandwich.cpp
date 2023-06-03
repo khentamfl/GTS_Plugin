@@ -152,7 +152,7 @@ namespace {
 	}
 	void GTSSandwich_MoveBody_start(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		for (auto tiny: sandwichdata.GetActors()) { 
+		for (auto tiny: sandwichdata.GetActors()) {
 			sandwichdata.MoveActors(true);
 		}
 		StartBodyRumble("BodyRumble", data.giant, 0.5, 0.25);
@@ -293,7 +293,7 @@ namespace {
 			}
 		}
 	}
-	
+
 
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
