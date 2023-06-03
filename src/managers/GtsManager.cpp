@@ -267,7 +267,6 @@ void GtsManager::Update() {
 
 		FixActorFade(actor);
 		FixActorState(actor);
-		ThighsDrainStamina(PlayerCharacter::GetSingleton());
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();

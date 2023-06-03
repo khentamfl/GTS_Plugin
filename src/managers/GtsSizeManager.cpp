@@ -398,9 +398,7 @@ namespace Gts {
 			this->GetData(actor).TrackLeftFeet = enable;
 		} else if (type == 6.0) {
 			this->GetData(actor).TrackRightFeet = enable;
-		} else if (type == 7.0) {
-			this->GetData(actor).ThighsStaminaDrain = enable;
-		}
+		} 
 	}
 	bool SizeManager::GetActionBool(Actor* actor, float type) {
 		if (type == 0.0) {
