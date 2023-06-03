@@ -238,7 +238,11 @@ namespace {
 	void GrabOtherEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& Grabbing = GrabAnimationController::GetSingleton();
-		std::vector<Actor*> preys = Grabbing.GetGrabTargetsInFront(pred, numberOfPrey);
+		std::size_t numberOfPrey = 1;
+		if (Runtime::HasPerkTeam(player, "MassVorePerk")) {
+			numberOfPrey = 1 + (get_visual_scale(pred)/3);
+		}
+		std::vector<Actor*> preys = Grabbing.GetGrabTargetsInFront(player, numberOfPrey);
 		for (auto prey: preys) {
 			Grabbing.StartGrab(player, prey);
 		}
