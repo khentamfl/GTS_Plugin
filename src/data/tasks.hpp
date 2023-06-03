@@ -130,7 +130,7 @@ namespace Gts {
 			static void Run(std::function<bool(const TaskUpdate&)> tasking) {
 				auto& me = TaskManager::GetSingleton();
 				auto task = new Task(tasking);
-				std::string name = std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t*>(task));
+				std::string name = std::format("UNNAMED_{}", *reinterpret_cast<std::uintptr_t*>(task));
 				me.taskings.try_emplace(
 					name,
 					task
@@ -148,7 +148,7 @@ namespace Gts {
 			static void RunFor(float duration, std::function<bool(const TaskForUpdate&)> tasking) {
 				auto& me = TaskManager::GetSingleton();
 				auto task = new TaskFor(duration, tasking);
-				std::string name = std::format("UNNAMED_{}", reinterpret_cast<std::uintptr_t*>(task));
+				std::string name = std::format("UNNAMED_{}", *reinterpret_cast<std::uintptr_t*>(task));
 				me.taskings.try_emplace(
 					name,
 					task
