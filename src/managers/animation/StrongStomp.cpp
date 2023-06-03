@@ -82,6 +82,13 @@ namespace {
 		}
 	}
 
+	void ImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
+		if (HasSMT(giant)) {
+			force *= 8.0;
+		}
+		Rumble::Once(name, giant, force, 0.1, node);
+	}
+
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
 			return 1.25;
@@ -121,7 +128,7 @@ namespace {
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
 		float bonus = 1.0;
 		if (HasSMT(giant)) {
-			bonus = 3.0;
+			bonus = 9.0;
 		}
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}
@@ -193,20 +200,28 @@ namespace {
 	void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
 		float perk = GetPerkBonus(&data.giant);
 		float SMT = 1.0;
+		if (HasSMT(&data.giant)) {
+			SMT = 8.0; // Larger Dust
+		}
+		ImpactRumble(&data.giant, data.animSpeed, RNode, "HeavyStompRight");
 		DoSounds("HeavyStompR", &data.giant, data.animSpeed - 0.5, RNode);
 		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
-		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 1.2 * perk, 6.0, RNode);
+		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode, SMT);
+		DoLaunch(&data.giant, 1.4 * perk, 6.0, RNode);
 		DrainStamina(&data.giant, false, 1.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
 		float perk = GetPerkBonus(&data.giant);
+		if (HasSMT(&data.giant)) {
+			SMT = 8.0; // Larger Dust
+		}
+		ImpactRumble(&data.giant, data.animSpeed, LNode, "HeavyStompLeft");
 		DoSounds("HeavyStompL", &data.giant, data.animSpeed - 0.5, LNode);
 		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
-		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 1.2 * perk, 6.0, LNode);
+		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode, SMT);
+		DoLaunch(&data.giant, 1.4 * perk, 6.0, LNode);
 		DrainStamina(&data.giant, false, 1.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;

@@ -66,9 +66,9 @@ namespace Gts {
 
 	void Disintegrate(Actor* actor) {
 		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
-		actor->Disable();
+		//actor->Disable();
 		if (Persistent::GetSingleton().delete_actors) {
-			actor->SetDelete(true);
+			//actor->SetDelete(true);
 			log::info("Calling Delete Actors");
 		}
 	}
@@ -180,7 +180,7 @@ namespace Gts {
 	}
 
 	bool IsDragon(Actor* actor) {
-		if (actor->HasKeywordHelper(Runtime::GetKeyword("DragonKeyword"))) {
+		if (Runtime::HasKeyword(actor, "DragonKeyword")) {
 			return true;
 		}
 		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
@@ -194,9 +194,9 @@ namespace Gts {
 	}
 
 	bool IsLiving(Actor* actor) {
-		auto Draugr = Runtime::GetKeyword("UndeadKeyword");
-		auto Dwemer = Runtime::GetKeyword("DwemerKeyword");
-		if (actor->HasKeywordHelper(Draugr) || actor->HasKeywordHelper(Dwemer)) {
+		bool IsDraugr = Runtime::HasKeyword(actor, "UndeadKeyword");
+		bool IsDwemer = Runtime::GetKeyword(actor, "DwemerKeyword");
+		if (IsDraugr || IsDwemer) {
 			log::info("{} is not living", actor->GetDisplayFullName());
 			return false;
 		} else {
@@ -376,18 +376,18 @@ namespace Gts {
 
 	float GetRandomBoost() {
 		float rng = (rand()% 150 + 1);
-		float random = rng/100;
+		float random = rng/100; 
 		return random;
 	}
 
-	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
+	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node, float scale_override) {
 		auto& footstep = FootStepManager::GetSingleton();
 		auto& explosion = ExplosionManager::GetSingleton();
 		Impact impact_data = Impact {
 			.actor = giant,
 			.kind = kind,
 			.scale = get_visual_scale(giant) * modifier,
-			.effective_scale = get_effective_scale(giant),
+			.effective_scale = get_effective_scale(giant) * scale_override,
 			.nodes = find_node(giant, node),
 		};
 		explosion.OnImpact(impact_data); // Play explosion

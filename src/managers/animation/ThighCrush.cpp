@@ -201,7 +201,7 @@ namespace {
 		float perk = GetPerkBonus(&data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
-		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode, 1.0);
 		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandR");
@@ -214,7 +214,7 @@ namespace {
 		float perk = GetPerkBonus(&data.giant);
 
 		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
-		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode, 1.0);
 		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandL");
@@ -227,7 +227,7 @@ namespace {
 		float perk = GetPerkBonus(&data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
-		DoSizeEffect(&data.giant, 0.40, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 0.40, FootEvent::Right, RNode, 1.0);
 		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
 	}

@@ -295,11 +295,11 @@ namespace {
 
 	void GTSSandwich_FootImpact(AnimationEventData& data) {
 		float perk = GetPerkBonus(&data.giant);
-		DoSizeEffect(&data.giant, 1.35, FootEvent::Right, RNode);
-		DoSizeEffect(&data.giant, 1.35, FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, 1.35, FootEvent::Right, RNode, 2.0);
+		DoSizeEffect(&data.giant, 1.35, FootEvent::Left, LNode, 2.0);
 		DoDamageEffect(&data.giant, 4.0 * perk, 2.6, 10, 0.75);
 		DoLaunch(&data.giant, 1.25 * perk, 2.0, RNode);
-		DoLaunch(&data.giant, 1.25, 2.0, LNode);
+		DoLaunch(&data.giant, 1.25 * perk, 2.0, LNode);
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {

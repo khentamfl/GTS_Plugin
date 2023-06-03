@@ -74,16 +74,16 @@ namespace {
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20;
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.25);
-		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
-		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode, 1.0);
+		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode, 1.0);
 	}
 	void MCO_DodgeSound(AnimationEventData& data) {
 		data.stage = 0;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20;
 		DoDamageEffect(&data.giant, 1.25, 1.4, 10, 0.25);
-		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
-		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode, 1.0);
+		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode, 1.0);
 	}
 
 	void JumpDown(AnimationEventData& data) {

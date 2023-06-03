@@ -46,9 +46,10 @@ namespace {
 
 	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
 		float giantSize = get_visual_scale(giant);
+		float SMT = 1.0;
 		if (HasSMT(giant)) {
 			giantSize *= 4.0;
-			force *= 4.0;
+			force *= 2.0;
 		}
 		float tinySize = get_visual_scale(tiny);
 		float sizeRatio = giantSize/tinySize;

@@ -69,7 +69,7 @@ namespace {
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
 		float bonus = 1.0;
 		if (HasSMT(giant)) {
-			bonus = 2.0;
+			bonus = 4.0; // Needed to boost only Launch
 		}
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}
@@ -108,7 +108,7 @@ namespace {
 		}
 		Rumble::Once("StompR", &data.giant, 2.20 * bonus, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed * perk, 1.2 * data.animSpeed, 10, 0.25);
-		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode, bonus);
 		DoLaunch(&data.giant, 1.0 * bonus, 2.25, RNode);
 		DrainStamina(&data.giant, false, 1.0);
 	}
@@ -122,7 +122,7 @@ namespace {
 		}
 		Rumble::Once("StompL", &data.giant, 2.20 * bonus, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed * perk, 1.2 * data.animSpeed, 10, 0.25);
-		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode, bonus);
 		DoLaunch(&data.giant, 1.0 * bonus * perk, 2.25, LNode);
 		DrainStamina(&data.giant, false, 1.0);
 	}
@@ -136,7 +136,7 @@ namespace {
 		}
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
-		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode, bonus);
 		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, RNode);
 	}
 
@@ -149,7 +149,7 @@ namespace {
 		}
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
 		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
-		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode, bonus);
 		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, LNode);
 
 	}
