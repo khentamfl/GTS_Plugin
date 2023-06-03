@@ -89,6 +89,7 @@ namespace {
 	void GTSGrab_Catch_Actor(AnimationEventData& data) {
 		auto giant = &data.giant;
 		Grab::HoldActor(giant, true);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 1);
 	}
 	
 
@@ -216,6 +217,7 @@ namespace {
 	void GTSGrab_Release_FreeActor(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		if (grabbedActor) {
 			Grab::Release(giant);
 			Grab::HoldActor(giant, false);
@@ -223,6 +225,15 @@ namespace {
 		}
 	}
 	
+	void GTSBEH_GrabExit(AnimationEventData& data) {
+		auto giant = &data.giant;
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+	}
+
+	void GTSBEH_AbortGrab(AnimationEventData& data) {
+		auto giant = &data.giant;
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+	}
 
 	void GrabOtherEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
@@ -390,6 +401,8 @@ namespace Gts {
 		AnimationManager::RegisterEvent("GTSGrab_Eat_Swallow", "Grabbing", GTSGrab_Eat_Swallow);
 		AnimationManager::RegisterEvent("GTSGrab_Throw_ThrowActor", "Grabbing", GTSGrab_Throw_ThrowActor);
 		AnimationManager::RegisterEvent("GTSGrab_Release_FreeActor", "Grabbing", GTSGrab_Release_FreeActor);
+		AnimationManager::RegisterEvent("GTSBEH_GrabExit", "Grabbing", GTSBEH_GrabExit);
+		AnimationManager::RegisterEvent("GTSBEH_AbortGrab", "Grabbing", GTSBEH_AbortGrab);
 	}
 
 	void Grab::RegisterTriggers() {
