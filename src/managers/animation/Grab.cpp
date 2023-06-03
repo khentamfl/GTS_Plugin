@@ -88,7 +88,6 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Catch_Actor(AnimationEventData& data) {
 		auto giant = &data.giant;
-		Grab::HoldActor(giant, true);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 1);
 	}
 	
@@ -114,7 +113,6 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		if (!grabbedActor) {
 			AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
-			Grab::HoldActor(giant, false);
 			return;
 		}
 		if (grabbedActor) {
@@ -220,7 +218,6 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		if (grabbedActor) {
 			Grab::Release(giant);
-			Grab::HoldActor(giant, false);
 			PushActorAway(giant, grabbedActor, 1.0);
 		}
 	}
@@ -308,12 +305,12 @@ namespace Gts {
 			if (!tiny) {
 				continue;
 			}
+			if (!this->GetHolding(giant)) {
+				return;
+			}
 
 			auto bone = find_node(giant, "NPC L Finger02 [LF02]");
 			if (!bone) {
-				return;
-			}
-			if (!this->GetGrabData(giant, tiny).GetGrabbed()) {
 				return;
 			}
 
@@ -343,10 +340,6 @@ namespace Gts {
 		}
 	}
 
-	void Grab::HoldActor(Actor* giant, bool decide) {
-		Grab::GetSingleton().GetGrabData(giant).SetGrabbed(decide);
-	}
-
 	void Grab::GrabActor(Actor* giant, TESObjectREFR* tiny, float strength) {
 		Grab::GetSingleton().data.try_emplace(giant, tiny, strength);
 	}
@@ -366,6 +359,22 @@ namespace Gts {
 
 	void Grab::Release(Actor* giant) {
 		Grab::GetSingleton().data.erase(giant);
+	}
+
+	void Grab::SetHolding(Actor* giant, bool decide) {
+		try {
+			auto& me = Grab::GetSingleton();
+			me.data.at(giant).Holding = decide;
+		}
+	}
+
+	bool Grab::GetHolding(Actor* giant) {
+		try {
+			auto& me = Grab::GetSingleton();
+			return me.data.at(giant).Holding;
+		} catch (std::out_of_range e) {
+			return false;
+		}
 	}
 
 	TESObjectREFR* Grab::GetHeldObj(Actor* giant) {
@@ -417,20 +426,6 @@ namespace Gts {
 		AnimationManager::RegisterTrigger("GrabReleasePunies", "Grabbing", "GTSBEH_GrabRelease");
 		AnimationManager::RegisterTrigger("GrabExit", "Grabbing", "GTSBEH_GrabExit");
 		AnimationManager::RegisterTrigger("GrabAbort", "Grabbing", "GTSBEH_AbortGrab");
-	}
-
-	void GrabData::SetGrabbed(bool decide) {
-		this->grab = decide;
-	}
-
-	bool GrabData::GetGrabbed() {
-		return this->grab;
-	}
-
-	GrabData& Grab::GetGrabData(Actor* giant, Actor* tiny) {
-		// Create it now if not there yet
-		Grab::GetSingleton().data.try_emplace(giant, tiny, 1.0);
-		return Grab::GetSingleton().data.at(giant->formID);
 	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
