@@ -60,7 +60,9 @@ namespace {
 
 	void ManageCamera(Actor* giant, bool enable, float type) {
 		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.SetActionBool(giant, enable, type);
+		if (giant->formID == 0x14) {
+			sizemanager.SetActionBool(giant, enable, type);
+		}
 	}
 
 	void AdjustFacialExpression(Actor* giant, int ph, float power, std::string_view type) {
@@ -100,11 +102,8 @@ namespace {
 /////////////////////////A T T A C K
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Attack_MoveStart(AnimationEventData& data) {
-		auto& sizemanager = SizeManager::GetSingleton();
 		auto giant = &data.giant;
-		if (giant->formID == 0x14) {
-			sizemanager.SetActionBool(giant, true, 7.0);
-		}
+		ManageCamera(giant, true, 7.0);
 	}
 
 	void GTSGrab_Attack_Damage(AnimationEventData& data) {
@@ -112,6 +111,7 @@ namespace {
 		float bonus = 1.0;
 		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
+		
 		static Timer laughtimer = Timer(6.0);
 		if (!grabbedActor) {
 			AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
@@ -151,9 +151,7 @@ namespace {
 	void GTSGrab_Attack_MoveStop(AnimationEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto giant = &data.giant;
-		if (giant->formID == 0x14) {
-			sizemanager.SetActionBool(giant, false, 7.0);
-		}
+		ManageCamera(giant, false, 7.0);
 	}
 
 ////////////////////////////////////////////////////////////////
@@ -176,7 +174,8 @@ namespace {
 	}
 
 	void GTSGrab_Eat_Eat(AnimationEventData& data) {
-		auto otherActor = Grab::GetHeldActor(&data.giant);			
+		auto otherActor = Grab::GetHeldActor(&data.giant);		
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
 		if (otherActor) {
 			if (!AllowDevourment()) {
 				VoreData.KillAll();
@@ -193,8 +192,8 @@ namespace {
 
 	void GTSGrab_Eat_Swallow(AnimationEventData& data) {
 		auto otherActor = Grab::GetHeldActor(&data.giant);	
-		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);		
 		ManageCamera(&data.giant, false, 2.0);
+		ManageCamera(&data.giant, false, 7.0);
 		if (!otherActor) {
 			AnimationManager::StartAnim("GTSBEH_GrabExit", &data.giant);
 		}
@@ -222,6 +221,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		Grab::SetHolding(giant, false);
 		ManageCamera(&data.giant, false, 2.0);
+		ManageCamera(&data.giant, false, 7.0);
 		if (grabbedActor) {
 			Grab::Release(giant);
 			PushActorAway(giant, grabbedActor, 1.0);
@@ -232,6 +232,7 @@ namespace {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		ManageCamera(&data.giant, false, 2.0);
+		ManageCamera(&data.giant, false, 7.0);
 		Grab::SetHolding(giant, false);
 	}
 
@@ -239,6 +240,7 @@ namespace {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		ManageCamera(&data.giant, false, 2.0);
+		ManageCamera(&data.giant, false, 7.0);
 		Grab::SetHolding(giant, false);
 	}
 
