@@ -68,7 +68,10 @@ namespace Gts {
 		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 		//actor->Disable();
 		if (Persistent::GetSingleton().delete_actors) {
-			actor->SetDelete(true);
+			auto ActorRef = skyrim_cast<TESObjectREFR*>(actor);
+			if (ActorRef) {
+				ActorRef->SetDelete(true);
+			}
 			log::info("Calling Delete Actors");
 		}
 	}

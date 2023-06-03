@@ -84,9 +84,9 @@ namespace {
 
 	void ImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
 		if (HasSMT(giant)) {
-			force *= 8.0;
+			force *= 12.0;
 		}
-		Rumble::Once(name, giant, force, 0.1, node);
+		Rumble::Once(name, giant, force, 0.05, node);
 	}
 
 	float GetPerkBonus(Actor* Giant) {
@@ -201,13 +201,13 @@ namespace {
 		float perk = GetPerkBonus(&data.giant);
 		float SMT = 1.0;
 		if (HasSMT(&data.giant)) {
-			SMT = 2.0; // Larger Dust
+			SMT = 1.6; // Larger Dust
 		}
-		ImpactRumble(&data.giant, data.animSpeed, RNode, "HeavyStompRight");
+		ImpactRumble(&data.giant, data.animSpeed * 2, RNode, "HeavyStompRight");
 		DoSounds("HeavyStompR", &data.giant, data.animSpeed - 0.5, RNode);
 		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode, SMT);
-		DoLaunch(&data.giant, 1.4 * perk, 6.0, RNode);
+		DoLaunch(&data.giant, 1.4 * perk, 5.0, RNode);
 		DrainStamina(&data.giant, false, 1.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
@@ -216,13 +216,13 @@ namespace {
 		float perk = GetPerkBonus(&data.giant);
 		float SMT = 1.0;
 		if (HasSMT(&data.giant)) {
-			SMT = 2.0; // Larger Dust
+			SMT = 1.6; // Larger Dust
 		}
-		ImpactRumble(&data.giant, data.animSpeed, LNode, "HeavyStompLeft");
+		ImpactRumble(&data.giant, data.animSpeed * 2, LNode, "HeavyStompLeft");
 		DoSounds("HeavyStompL", &data.giant, data.animSpeed - 0.5, LNode);
 		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode, SMT);
-		DoLaunch(&data.giant, 1.4 * perk, 6.0, LNode);
+		DoLaunch(&data.giant, 1.4 * perk, 5.0, LNode);
 		DrainStamina(&data.giant, false, 1.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
