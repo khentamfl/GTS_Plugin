@@ -313,7 +313,7 @@ namespace Gts {
 			if (!bone) {
 				return;
 			}
-			if (!data.GetGrabbed()) {
+			if (!this->GetGrabData(giant).GetGrabbed()) {
 				return;
 			}
 
@@ -344,7 +344,7 @@ namespace Gts {
 	}
 
 	void Grab::HoldActor(Actor* giant, bool decide) {
-		Grab::GetSingleton().data.SetGrabbed(decide);
+		Grab::GetSingleton().GetGrabData(giant).SetGrabbed(decide);
 	}
 
 	void Grab::GrabActor(Actor* giant, TESObjectREFR* tiny, float strength) {
@@ -425,6 +425,12 @@ namespace Gts {
 
 	bool GrabData::GetGrabbed() {
 		return this->grab;
+	}
+
+	GrabData& Grab::GetGrabData(Actor* giant) {
+		// Create it now if not there yet
+		this->data.try_emplace(giant->formID, giant);
+		return this->data.at(giant->formID);
 	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
