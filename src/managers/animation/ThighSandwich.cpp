@@ -79,6 +79,28 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
+	void DrainStamina(Actor* giant, bool decide, float power) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerkTeam(giant, "KillerThighs")) {
+			WasteMult *= 0.65;
+		}
+		std::string name = std::format("StaminaDrain_Thighs_{}", giant->formID);
+		if (decide) {
+			TaskManager::Run(name, [=](auto& progressData) {
+				ActorHandle casterhandle = giant->CreateRefHandle();
+				if (!casterhandle) {
+					return false;
+				}
+				float multiplier = AnimationManager::GetAnimSpeed(giant);
+				float WasteStamina = 0.125 * power * multiplier;
+				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
+				return true;
+			});
+		} else {
+			TaskManager::Cancel(name);
+		}
+	}
+
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
 			return 1.15;
@@ -181,6 +203,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
 		StartLeftLegRumble("LLSandwich", data.giant, 0.10, 0.12);
+		DrainStamina(&data.giant, true, 1.0);
 	}
 
 	void GTSSandwich_MoveLL_start_H(AnimationEventData& data) {
@@ -194,6 +217,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
 		StartLeftLegRumble("LLSandwichHeavy", data.giant, 0.15, 0.15);
+		DrainStamina(&data.giant, true, 2.5);
 	}
 
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
@@ -206,6 +230,7 @@ namespace {
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
+		DrainStamina(&data.giant, false, 1.0);
 	}
 
 	void GTSSandwich_ThighImpact_H(AnimationEventData& data) {
@@ -219,6 +244,7 @@ namespace {
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
+		DrainStamina(&data.giant, false, 1.0);
 	}
 
 	void GTSSandwich_MoveLL_end(AnimationEventData& data) {
@@ -297,29 +323,27 @@ namespace {
 
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 25.0;
+		float WasteStamina = 20.0;
 		if (Runtime::HasPerk(player, "KillerThighs")) {
 			WasteStamina *= 0.65;
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack", player);
 		} else {
-			TiredSound(player);
-			Notify("You're too tired to perform thigh attack");
+			TiredSound(player, "You're too tired to perform thigh sandwich");
 		}
 	}
 
 	void ThighSandwichHeavyAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 25.0;
+		float WasteStamina = 35.0;
 		if (Runtime::HasPerk(player, "KillerThighs")) {
 			WasteStamina *= 0.65;
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack_Heavy", player);
 		} else {
-			TiredSound(player);
-			Notify("You're too tired to perform thigh attack");
+			TiredSound(player, "You're too tired to perform strong thigh sandwich");
 		}
 	}
 

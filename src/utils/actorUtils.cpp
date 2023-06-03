@@ -391,10 +391,11 @@ namespace Gts {
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (30.0 * damage * damagebonus), radius, random, bonedamage);
 	}
 
-	void TiredSound(Actor* player) {
+	void TiredSound(Actor* player, std::string_view message) {
 		static Timer Cooldown = Timer(1.2);
 		if (Cooldown.ShouldRun()) {
 			Runtime::PlaySound("VoreSound_Fail", player, 0.7, 0.0);
+			Notify(message);
 		}
 	}
 
