@@ -1,4 +1,5 @@
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/GrabAnimationController.hpp"
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
@@ -87,21 +88,9 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Catch_Actor(AnimationEventData& data) {
 		auto giant = &data.giant;
-		for (auto otherActor: find_actors()) {
-			if (otherActor != giant) {
-				float giantscale = get_visual_scale(giant);
-				float victimscale = get_visual_scale(otherActor);
-				float sizedifference = giantscale/victimscale;
-				NiPoint3 giantLocation = giant->GetPosition();
-				NiPoint3 tinyLocation = otherActor->GetPosition();
-				if ((tinyLocation-giantLocation).Length() < 60*get_visual_scale(giant) && sizedifference >= 6.2) {
-					ReportCrime(giant, otherActor, 10, false);
-					Grab::GrabActor(giant, otherActor);
-					break;
-				}
-			}
-		}
+		Grab::HoldActor(giant, true);
 	}
+	
 
 ////////////////////////////////////////////////////////////////
 
@@ -119,24 +108,32 @@ namespace {
 
 	void GTSGrab_Attack_Damage(AnimationEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
+		float bonus = 1.0;
 		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		if (!grabbedActor) {
 			AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
+			Grab::HoldActor(giant, false);
 			return;
 		}
 		if (grabbedActor) {
-			Rumble::Once("GrabAttack", &data.giant, 4.0, 0.15, "NPC L Hand [LHnd]");
 			float sd = get_visual_scale(giant)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
 			float damage = (0.025 * sd) * power * additionaldamage;
-			DamageAV(grabbedActor, ActorValue::kHealth, damage);
-			auto root = find_node(grabbedActor, "NPC Root [Root]");
-			if (root) {
-				SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, get_visual_scale(grabbedActor), 4, root);
+			if (HasSMT(giant)) {
+				damage *= 3.0;
+				bonus = 2.5;
 			}
+			DamageAV(grabbedActor, ActorValue::kHealth, damage);
+			if (IsLiving(grabbedActor)) {
+				auto root = find_node(grabbedActor, "NPC Root [Root]");
+				if (root) {
+					SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, get_visual_scale(grabbedActor), 4, root);
+				}
+			}
+			Rumble::Once("GrabAttack", &data.giant, 4.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, damage * 0.5, 25);
 			if (damage > Health * 1.5) {
 				CrushManager::Crush(giant, grabbedActor);
@@ -221,6 +218,7 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		if (grabbedActor) {
 			Grab::Release(giant);
+			Grab::HoldActor(giant, false);
 			PushActorAway(giant, grabbedActor, 1.0);
 		}
 	}
@@ -228,7 +226,11 @@ namespace {
 
 	void GrabOtherEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("GrabSomeone", player);
+		auto& Grabbing = GrabAnimationController::GetSingleton();
+		std::vector<Actor*> preys = Grabbing.GetGrabTargetsInFront(pred, numberOfPrey);
+		for (auto prey: preys) {
+			Grabbing.StartGrab(player, prey);
+		}
 	}
 
 	void GrabAttackEvent(const InputEventData& data) {
@@ -296,6 +298,9 @@ namespace Gts {
 			if (!bone) {
 				return;
 			}
+			if (!data.grab) {
+				return;
+			}
 
 			float giantScale = get_visual_scale(giant);
 
@@ -323,9 +328,12 @@ namespace Gts {
 		}
 	}
 
+	void Grab::HoldActor(Actor* giant, bool decide) {
+		Grab::GetSingleton().data.grab = decide;
+	}
 
 	void Grab::GrabActor(Actor* giant, TESObjectREFR* tiny, float strength) {
-		Grab::GetSingleton().data.try_emplace(giant, tiny, strength);
+		Grab::GetSingleton().data.try_emplace(giant, tiny, strength, false);
 	}
 	void Grab::GrabActor(Actor* giant, TESObjectREFR* tiny) {
 		// Default strength 1.0: normal grab for actor of their size
@@ -382,7 +390,6 @@ namespace Gts {
 		AnimationManager::RegisterEvent("GTSGrab_Eat_Swallow", "Grabbing", GTSGrab_Eat_Swallow);
 		AnimationManager::RegisterEvent("GTSGrab_Throw_ThrowActor", "Grabbing", GTSGrab_Throw_ThrowActor);
 		AnimationManager::RegisterEvent("GTSGrab_Release_FreeActor", "Grabbing", GTSGrab_Release_FreeActor);
-		AnimationManager::RegisterEvent("GTSGrab_Catch_Actor", "Grabbing", GTSGrab_Catch_Actor);
 	}
 
 	void Grab::RegisterTriggers() {
@@ -395,7 +402,7 @@ namespace Gts {
 		AnimationManager::RegisterTrigger("GrabAbort", "Grabbing", "GTSBEH_AbortGrab");
 	}
 
-	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
+	GrabData::GrabData(TESObjectREFR* tiny, float strength, bool grab) : tiny(tiny), strength(strength), grab(grab) {
 	}
 }
 

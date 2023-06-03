@@ -152,7 +152,7 @@ duration = 1.0
 
 [[InputEvent]]
 name = "GrabAttack"
-keys = ["LMB"]
+keys = ["E"]
 exclusive = false
 trigger = "continuous"
 
