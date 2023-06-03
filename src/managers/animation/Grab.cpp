@@ -82,7 +82,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 /////////////////////////G R A B
 ////////////////////////////////////////////////////////////////
-	void GTSGrab_Catch_Actor(const InputEventData& data) {
+	void GTSGrab_Catch_Actor(AnimationEventData& data) {
 		auto giant = &data.giant
 		for (auto otherActor: find_actors()) {
 			if (otherActor != giant) {
@@ -106,7 +106,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 /////////////////////////A T T A C K
 ////////////////////////////////////////////////////////////////
-	void GTSGrab_Attack_MoveStart(const InputEventData& data) {
+	void GTSGrab_Attack_MoveStart(AnimationEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto giant = &data.giant;
 		if (giant->formID == 0x14) {
@@ -114,7 +114,7 @@ namespace {
 		}
 	}
 
-	void GTSGrab_Attack_Damage(const InputEventData& data) {
+	void GTSGrab_Attack_Damage(AnimationEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
@@ -143,7 +143,7 @@ namespace {
 		}
 	}
 
-	void GTSGrab_Attack_MoveStop(const InputEventData& data) {
+	void GTSGrab_Attack_MoveStop(AnimationEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto giant = &data.giant;
 		if (giant->formID == 0x14) {
@@ -156,7 +156,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 /////////////////////////V O R E
 ////////////////////////////////////////////////////////////////
-	void GTSGrab_Eat_Start(const InputEventData& data) {
+	void GTSGrab_Eat_Start(AnimationEventData& data) {
 		auto otherActor = Grab::GetHeldActor(&data.giant);	
 		ManageCamera(&data.giant, true, 2.0);
 		if (otherActor) {
@@ -164,12 +164,12 @@ namespace {
 		}
 	}
 
-	void GTSGrab_Eat_OpenMouth(const InputEventData& data) {
+	void GTSGrab_Eat_OpenMouth(AnimationEventData& data) {
 		AdjustFacialExpression(giant, 0, 1.0, "phenome"); // Start opening mouth
 		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
 	}
 
-	void GTSGrab_Eat_Eat(const InputEventData& data) {
+	void GTSGrab_Eat_Eat(AnimationEventData& data) {
 		auto otherActor = Grab::GetHeldActor(&data.giant);			
 		if (otherActor) {
 			if (!AllowDevourment()) {
@@ -179,12 +179,12 @@ namespace {
 		}
 	}
 
-	void GTSGrab_Eat_CloseMouth(const InputEventData& data) {
+	void GTSGrab_Eat_CloseMouth(AnimationEventData& data) {
 		AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Close it
 		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // And close it
 	}
 
-	void GTSGrab_Eat_Swallow(const InputEventData& data) {
+	void GTSGrab_Eat_Swallow(AnimationEventData& data) {
 		auto otherActor = Grab::GetHeldActor(&data.giant);			
 		if (otherActor) {
 			if (!AllowDevourment()) {
@@ -204,7 +204,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 /////////////////////////T H R O W
 ////////////////////////////////////////////////////////////////
-	void GTSGrab_Throw_ThrowActor(const InputEventData& data) {
+	void GTSGrab_Throw_ThrowActor(AnimationEventData& data) {
 
 	}
 
@@ -213,7 +213,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 /////////////////////////R E L E A S E 
 ////////////////////////////////////////////////////////////////
-	void GTSGrab_Release_FreeActor(const InputEventData& data) {
+	void GTSGrab_Release_FreeActor(AnimationEventData& data) {
 		auto giant = &data.giant
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		if (grabbedActor) {
@@ -230,21 +230,41 @@ namespace {
 
 	void GrabAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player);
+		if (!grabbedActor) { 
+			return;
+		}
 		AnimationManager::StartAnim("GrabEatSomeone", player);
 	}
 
 	void GrabVoreEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player);
+		if (!grabbedActor) { 
+			return;
+		}
+		float sizedifference = get_visual_scale(player)/get_visual_scale(grabbedActor);
+		if (sizedifference < 6.0) {
+			return;
+		}
 		AnimationManager::StartAnim("GrabDamageAttack", player);
 	}
 
 	void GrabThrowEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player);
+		if (!grabbedActor) { 
+			return;
+		}
 		AnimationManager::StartAnim("GrabThrowSomeone", player);
 	}
 
 	void GrabReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player);
+		if (!grabbedActor) { 
+			return;
+		}
 		AnimationManager::StartAnim("GrabReleasePunies", player);
 	}
 }
