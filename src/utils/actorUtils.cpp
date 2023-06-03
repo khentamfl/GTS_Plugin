@@ -295,7 +295,7 @@ namespace Gts {
 		//log::info("Shake Actor:{}, Distance:{}, sourcesize: {}, recsize: {}, cutoff: {}", caster->GetDisplayFullName(), distance, sourcesize, receiversize, cuttoff);
 		if (distance < cuttoff) {
 			// To Sermit: Same value as before just with the math reduced to minimal steps
-			float intensity = (sizedifference * 17.9 * ShakeStrength(caster)) / distance;
+			float intensity = (sizedifference * 9.0 * (ShakeStrength(caster) + 1.0)) / distance;
 			float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
 			intensity = std::clamp(intensity, 0.0f, 1e8f);
 			duration = std::clamp(duration, 0.0f, 1.2f);
