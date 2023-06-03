@@ -18,7 +18,10 @@ namespace Gts {
 			[[nodiscard]] static Grab& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-			virtual void DataReady() override;
+
+			static void RegisterEvents();
+			static void RegisterTriggers();
+			
 			virtual void Update() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;

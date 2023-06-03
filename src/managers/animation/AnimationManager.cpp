@@ -5,6 +5,7 @@
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/Compat.hpp"
 #include "managers/animation/Stomp.hpp"
+#include "managers/animation/Grab.hpp"
 #include "data/persistent.hpp"
 #include "scale/scale.hpp"
 
@@ -66,6 +67,11 @@ namespace Gts {
 
 		AnimationActorVore::RegisterEvents();
 		AnimationActorVore::RegisterTriggers();
+
+		Grab::RegisterEvents();
+		Grab::RegisterTriggers();
+
+
 	}
 
 	void AnimationManager::Update() {

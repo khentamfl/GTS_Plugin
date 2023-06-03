@@ -24,6 +24,8 @@ namespace {
 			return 0.08;
 		} else if (sizemanager.GetActionBool(player, 6.0)) {
 			return 0.08;
+		} else if (sizemanager.GetActionBool(player, 7.0)) {
+			return 0.08;
 		} else {
 			return 0.5;
 		}

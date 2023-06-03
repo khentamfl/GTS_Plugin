@@ -55,6 +55,8 @@ namespace Gts {
 			altMode = 12; // R Feet
 		} else if (sizemanager.GetActionBool(player, 0)) {
 			altMode = 13; // Thigh Crushing
+		} else if (sizemanager.GetActionBool(player, 7)) {
+			altMode = 14; // Grab Attack
 		}
 		switch (altMode) {
 			case 0: {
@@ -171,6 +173,14 @@ namespace Gts {
 						"NPC L Foot [Lft ]",
 					},
 				        .zoomScale = 1.00,
+				};
+			} 
+			case 14: {
+				return BoneTarget { // L Hand
+				        .boneNames = {
+						"NPC L Hand [LHnd]",
+					},
+				        .zoomScale = 0.60,
 				};
 			}
 		}

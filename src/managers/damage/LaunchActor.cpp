@@ -48,8 +48,8 @@ namespace {
 		float giantSize = get_visual_scale(giant);
 		float SMT = 1.0;
 		if (HasSMT(giant)) {
-			giantSize *= 4.0;
-			force *= 2.0;
+			giantSize += 1.0;
+			force += 0.20;
 		}
 		float tinySize = get_visual_scale(tiny);
 		float sizeRatio = giantSize/tinySize;
