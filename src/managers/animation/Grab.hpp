@@ -42,7 +42,7 @@ namespace Gts {
 			static Actor* GetHeldActor(Actor* giant);
 			static void HoldActor(Actor* giant, bool decide);
 
-			GrabData& GetGrabData(Actor* giant);
+			GrabData& GetGrabData(Actor* giant, Actor* tiny);
 
 			std::unordered_map<Actor*, GrabData> data;
 	};

@@ -313,7 +313,7 @@ namespace Gts {
 			if (!bone) {
 				return;
 			}
-			if (!this->GetGrabData(giant).GetGrabbed()) {
+			if (!this->GetGrabData(giant, tiny).GetGrabbed()) {
 				return;
 			}
 
@@ -427,9 +427,9 @@ namespace Gts {
 		return this->grab;
 	}
 
-	GrabData& Grab::GetGrabData(Actor* giant) {
+	GrabData& Grab::GetGrabData(Actor* giant, Actor* tiny) {
 		// Create it now if not there yet
-		Grab::GetSingleton().data.try_emplace(giant->formID, giant);
+		Grab::GetSingleton().data.try_emplace(giant, tiny, 1.0);
 		return Grab::GetSingleton().data.at(giant->formID);
 	}
 
