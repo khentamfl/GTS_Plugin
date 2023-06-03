@@ -115,7 +115,7 @@ namespace Gts {
 
 		Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 2.0);
 		if (Runtime::InFaction(receiver, "DwarwenAutomatonFaction") || Runtime::InFaction(receiver, "DraugrFaction")) {
-			auto root = find_node(tiny, "NPC Root [Root]");
+			auto root = find_node(receiver, "NPC Root [Root]");
 			if (root) {
 				SpawnParticle(receiver, 0.20, "GTS/Damage/FootExplosion.nif", NiMatrix3(), root->world.translate, get_visual_scale(receiver) * 2.5, 7, root);
 			}
