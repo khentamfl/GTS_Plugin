@@ -176,10 +176,16 @@ namespace Gts {
 					std::random_device rd;
 					std::mt19937 gen(rd());
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
-
-					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-					Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+					if (Runtime::InFaction(tiny, "DwarwenAutomatonFaction") || Runtime::InFaction(tiny, "DraugrFaction")) {
+						auto root = find_node(tiny, "NPC Root [Root]");
+						if (root) {
+							SpawnParticle(tiny, 0.20, "GTS/Damage/FootExplosion.nif", NiMatrix3(), root->world.translate, currentSize * 2.5, 7, root);
+						}
+					} else {
+						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+					}
 					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);

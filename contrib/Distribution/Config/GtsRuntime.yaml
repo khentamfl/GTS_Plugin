@@ -272,6 +272,8 @@ quests:
 
 factions:
   FollowerFaction: "Skyrim.esm|084D1B"
+  DwarwenAutomatonFaction: "Skyrim.esm|043598"
+  DraugrFaction: "Skyrim.esm|02430D"
 
 impacts:
   GtsBloodSprayImpactSet: "GTS.esp|01CEA7"

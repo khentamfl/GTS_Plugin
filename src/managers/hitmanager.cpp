@@ -114,10 +114,17 @@ namespace Gts {
 		std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 		Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 2.0);
-
-		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-		Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+		if (Runtime::InFaction(receiver, "DwarwenAutomatonFaction") || Runtime::InFaction(receiver, "DraugrFaction")) {
+			auto root = find_node(tiny, "NPC Root [Root]");
+			if (root) {
+				SpawnParticle(receiver, 0.20, "GTS/Damage/FootExplosion.nif", NiMatrix3(), root->world.translate, get_visual_scale(receiver) * 2.5, 7, root);
+			}
+		}
+		else {
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+		}
 
 		PrintDeathSource(attacker, receiver, "Overkill");
 

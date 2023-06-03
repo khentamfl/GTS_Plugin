@@ -71,7 +71,7 @@ namespace {
 		if (HasSMT(giant)) {
 			bonus = 2.0;
 		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}
 
 	void GTSstompstartR(AnimationEventData& data) {

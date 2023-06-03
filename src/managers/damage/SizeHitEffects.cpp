@@ -191,8 +191,11 @@ namespace Gts {
 			std::random_device rd;
 			std::mt19937 gen(rd());
 			std::uniform_real_distribution<float> dis(-0.2, 0.2);
-
-			Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+			if (Runtime::InFaction(tiny, "DwarwenAutomatonFaction") || Runtime::InFaction(tiny, "DraugrFaction")) {
+			//Empty
+			} else {
+				Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+			}
 			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
 			DamageAV(tiny, ActorValue::kHealth, damage * 10);
 		}
