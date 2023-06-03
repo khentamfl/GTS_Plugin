@@ -201,7 +201,7 @@ namespace {
 		float perk = GetPerkBonus(&data.giant);
 		float SMT = 1.0;
 		if (HasSMT(&data.giant)) {
-			SMT = 8.0; // Larger Dust
+			SMT = 2.0; // Larger Dust
 		}
 		ImpactRumble(&data.giant, data.animSpeed, RNode, "HeavyStompRight");
 		DoSounds("HeavyStompR", &data.giant, data.animSpeed - 0.5, RNode);
@@ -216,7 +216,7 @@ namespace {
 		float perk = GetPerkBonus(&data.giant);
 		float SMT = 1.0;
 		if (HasSMT(&data.giant)) {
-			SMT = 8.0; // Larger Dust
+			SMT = 2.0; // Larger Dust
 		}
 		ImpactRumble(&data.giant, data.animSpeed, LNode, "HeavyStompLeft");
 		DoSounds("HeavyStompL", &data.giant, data.animSpeed - 0.5, LNode);
