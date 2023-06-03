@@ -393,8 +393,8 @@ namespace Gts {
 
 	void TiredSound(Actor* player) {
 		static Timer Cooldown = Timer(1.2);
-		if (Cooldown.ShouldRunFrame()) {
-			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
+		if (Cooldown.ShouldRun()) {
+			Runtime::PlaySound("VoreSound_Fail", player, 0.7, 0.0);
 		}
 	}
 

@@ -68,6 +68,10 @@ namespace {
 	};
 
 	void DrainStamina(Actor* giant, bool decide, float power) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerkTeam(giant, "KillerThighs")) {
+			WasteMult *= 0.65;
+		}
 		std::string name = std::format("StaminaDrain_{}", giant->formID);
 		if (decide) {
 			TaskManager::Run(name, [=](auto& progressData) {
@@ -76,8 +80,8 @@ namespace {
 					return false;
 				}
 				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 0.75 * power * multiplier;
-				DamageAV(giant, ActorValue::kStamina, WasteStamina);
+				float WasteStamina = 0.25 * power * multiplier;
+				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
 				return true;
 			});
 		} else {
