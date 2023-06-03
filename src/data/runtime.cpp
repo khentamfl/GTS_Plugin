@@ -471,7 +471,7 @@ namespace Gts {
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
 			if (!Runtime::Logged("impc", tag)) {
-				log::warn("ImpactEffect: {} not found", tag);
+				log::warn("Race: {} not found", tag);
 			}
 		}
 		return data;
@@ -486,7 +486,7 @@ namespace Gts {
 	}
 
   // Keywords
-  static BGSKeyword* Runtime::GetKeyword(const std::string_view& tag) {
+  BGSKeyword* Runtime::GetKeyword(const std::string_view& tag) {
     BGSKeyword* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().keywords.at(std::string(tag)).data;
@@ -498,8 +498,8 @@ namespace Gts {
 		}
 		return data;
   }
-  static bool Runtime::HasKeyword(Actor* actor, const std::string_view& tag) {
-    auto data = GetRace(tag);
+  bool Runtime::HasKeyword(Actor* actor, const std::string_view& tag) {
+    auto data = GetKeyword(tag);
 		if (data) {
 			return actor->HasKeyword(data);
 		} else {

@@ -1,8 +1,3 @@
-keywords:
-  UndeadKeyword: "Skyrim.esm|013796"
-  DwemerKeyword: "Skyrim.esm|01397A"
-  DragonKeyword: "Skyrim.esm|035D59"
-
 sounds:
   lFootstepL: "GTS.esp|1E93AB"
   lFootstepR: "GTS.esp|1E93AD"
@@ -287,6 +282,6 @@ races:
   dragonRace: "Skyrim.esm|012E82"
 
 keywords:
-  DragonKeyword: "Skyrim.esm|000000"
-  UndeadKeyword: "Skyrim.esm|000000"
-  DweamerKeyword: "Skyrim.esm|000000"
+  UndeadKeyword: "Skyrim.esm|013796"
+  DwemerKeyword: "Skyrim.esm|01397A"
+  DragonKeyword: "Skyrim.esm|035D59"
