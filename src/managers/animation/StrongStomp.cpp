@@ -73,7 +73,7 @@ namespace {
 					return false;
 				}
 				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 1.0 * power * multiplier;
+				float WasteStamina = 3.6 * power * multiplier;
 				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
 				return true;
 			});
@@ -247,7 +247,6 @@ namespace {
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StrongStompRight", player);
-			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
 			TiredSound(player, "You're too tired to perform heavy stomp");
 		}
@@ -261,7 +260,6 @@ namespace {
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StrongStompLeft", player);
-			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
 			TiredSound(player, "You're too tired to perform heavy stomp");
 		}
