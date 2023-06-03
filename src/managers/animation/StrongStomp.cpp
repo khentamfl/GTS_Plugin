@@ -60,6 +60,28 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	void DrainStamina(Actor* giant, bool decide, float power) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
+			WasteMult *= 0.65;
+		}
+		std::string name = std::format("StaminaDrain_StrongStomp_{}", giant->formID);
+		if (decide) {
+			TaskManager::Run(name, [=](auto& progressData) {
+				ActorHandle casterhandle = giant->CreateRefHandle();
+				if (!casterhandle) {
+					return false;
+				}
+				float multiplier = AnimationManager::GetAnimSpeed(giant);
+				float WasteStamina = 1.0 * power * multiplier;
+				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
+				return true;
+			});
+		} else {
+			TaskManager::Cancel(name);
+		}
+	}
+
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
 			return 1.25;
@@ -131,6 +153,7 @@ namespace {
 		}
 		TrackFeet(giant, 6.0, true);
 		StartLegRumble("StrongStompR", data.giant, 0.3, 0.10, "Right");
+		DrainStamina(&data.giant, true, 1.0);
 	}
 
 	void GTS_StrongStomp_LL_Start(AnimationEventData& data) {
@@ -143,6 +166,7 @@ namespace {
 		}
 		TrackFeet(giant, 5.0, true);
 		StartLegRumble("StrongStompL", data.giant, 0.3, 0.10, "Left");
+		DrainStamina(&data.giant, true, 1.0);
 	}
 
 	void GTS_StrongStomp_LR_Middle(AnimationEventData& data) {
@@ -172,6 +196,7 @@ namespace {
 		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.2 * perk, 6.0, RNode);
+		DrainStamina(&data.giant, false, 1.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
@@ -181,6 +206,7 @@ namespace {
 		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.2 * perk, 6.0, LNode);
+		DrainStamina(&data.giant, false, 1.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}

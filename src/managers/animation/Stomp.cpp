@@ -44,6 +44,28 @@ namespace {
 		}
 	}
 
+	void DrainStamina(Actor* giant, bool decide, float power) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
+			WasteMult *= 0.65;
+		}
+		std::string name = std::format("StaminaDrain_Stomp_{}", giant->formID);
+		if (decide) {
+			TaskManager::Run(name, [=](auto& progressData) {
+				ActorHandle casterhandle = giant->CreateRefHandle();
+				if (!casterhandle) {
+					return false;
+				}
+				float multiplier = AnimationManager::GetAnimSpeed(giant);
+				float WasteStamina = 0.35 * power * multiplier;
+				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
+				return true;
+			});
+		} else {
+			TaskManager::Cancel(name);
+		}
+	}
+
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
 	}
@@ -55,6 +77,7 @@ namespace {
 		if (data.giant.formID != 0x14) {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
+		DrainStamina(&data.giant, true, 1.0);
 		TrackFeet(&data.giant, 6, true);
 		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 		log::info("StompStartR true");
@@ -67,6 +90,7 @@ namespace {
 		if (data.giant.formID != 0x14) {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
+		DrainStamina(&data.giant, true, 1.0);
 		TrackFeet(&data.giant, 5, true);
 		Rumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
 		log::info("StompStartL true");
@@ -82,6 +106,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed * perk, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.0 * bonus, 2.25, RNode);
+		DrainStamina(&data.giant, false, 1.0);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
@@ -95,6 +120,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.5 * data.animSpeed * perk, 1.2 * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.0 * bonus * perk, 2.25, LNode);
+		DrainStamina(&data.giant, false, 1.0);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
@@ -158,7 +184,6 @@ namespace {
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StompRight", player);
-			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
 			TiredSound(player, "You're too tired to perform stomp");
 		}
@@ -172,7 +197,6 @@ namespace {
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StompLeft", player);
-			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
 			TiredSound(player, "You're too tired to perform stomp");
 		}
