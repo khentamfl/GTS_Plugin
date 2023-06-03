@@ -214,6 +214,7 @@ namespace {
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
 		float perk = GetPerkBonus(&data.giant);
+		float SMT = 1.0;
 		if (HasSMT(&data.giant)) {
 			SMT = 8.0; // Larger Dust
 		}
