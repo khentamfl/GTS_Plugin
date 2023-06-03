@@ -161,6 +161,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Eat_Start(AnimationEventData& data) {
 		auto otherActor = Grab::GetHeldActor(&data.giant);	
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		ManageCamera(&data.giant, true, 2.0);
 		if (otherActor) {
 			voreData.AddTiny(otherActor);
@@ -188,10 +189,10 @@ namespace {
 	}
 
 	void GTSGrab_Eat_Swallow(AnimationEventData& data) {
-		auto otherActor = Grab::GetHeldActor(&data.giant);			
+		auto otherActor = Grab::GetHeldActor(&data.giant);	
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);		
 		if (otherActor) {
 			if (!AllowDevourment()) {
-				auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 				VoreData.KillAll();
 			} else {
 				CallDevourment(&data.giant, otherActor);
@@ -217,7 +218,7 @@ namespace {
 /////////////////////////R E L E A S E 
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Release_FreeActor(AnimationEventData& data) {
-		auto giant = &data.giant
+		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		if (grabbedActor) {
 			Grab::Release(giant);
