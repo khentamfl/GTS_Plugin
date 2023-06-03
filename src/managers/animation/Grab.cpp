@@ -89,6 +89,7 @@ namespace {
 	void GTSGrab_Catch_Actor(AnimationEventData& data) {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 1);
+		Grab::SetGrabbed(giant, true);
 	}
 	
 
@@ -197,6 +198,9 @@ namespace {
 				CallDevourment(&data.giant, otherActor);
 			}
 		}
+		if (!otherActor) {
+			AnimationManager::StartAnim("GTSBEH_GrabExit", &data.giant);
+		}
 		ManageCamera(&data.giant, false, 2.0);
 	}
 	
@@ -208,7 +212,7 @@ namespace {
 /////////////////////////T H R O W
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Throw_ThrowActor(AnimationEventData& data) {
-
+		Grab::SetHolding(&data.giant, false);
 	}
 
 ////////////////////////////////////////////////////////////////
@@ -220,6 +224,7 @@ namespace {
 		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		Grab::SetHolding(giant, false);
 		if (grabbedActor) {
 			Grab::Release(giant);
 			PushActorAway(giant, grabbedActor, 1.0);
@@ -229,11 +234,13 @@ namespace {
 	void GTSBEH_GrabExit(AnimationEventData& data) {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		Grab::SetGrabbed(giant, false);
 	}
 
 	void GTSBEH_AbortGrab(AnimationEventData& data) {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		Grab::SetGrabbed(giant, false);
 	}
 
 	void GrabOtherEvent(const InputEventData& data) {
