@@ -89,7 +89,7 @@ namespace {
 	void GTSGrab_Catch_Actor(AnimationEventData& data) {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 1);
-		Grab::SetGrabbed(giant, true);
+		Grab::SetHolding(giant, true);
 	}
 	
 
@@ -234,13 +234,13 @@ namespace {
 	void GTSBEH_GrabExit(AnimationEventData& data) {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-		Grab::SetGrabbed(giant, false);
+		Grab::SetHolding(giant, false);
 	}
 
 	void GTSBEH_AbortGrab(AnimationEventData& data) {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-		Grab::SetGrabbed(giant, false);
+		Grab::SetHolding(giant, false);
 	}
 
 	void GrabOtherEvent(const InputEventData& data) {
