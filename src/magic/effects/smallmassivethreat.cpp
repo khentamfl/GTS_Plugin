@@ -17,7 +17,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		inline static Timer warningtimer = Timer(3.0);
+		static Timer warningtimer = Timer(3.0);
 		float CasterScale = get_target_scale(caster);
 		if (CasterScale >= 1.50) {
 			mod_target_scale(caster, -0.035);
