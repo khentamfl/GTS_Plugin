@@ -83,7 +83,7 @@ namespace {
 /////////////////////////G R A B
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Catch_Actor(AnimationEventData& data) {
-		auto giant = &data.giant
+		auto giant = &data.giant;
 		for (auto otherActor: find_actors()) {
 			if (otherActor != giant) {
 				float giantscale = get_visual_scale(giant);
