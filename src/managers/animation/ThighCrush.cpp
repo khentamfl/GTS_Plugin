@@ -69,7 +69,7 @@ namespace {
 
 	void DrainStamina(Actor* giant, bool decide, float power) {
 		if (decide) {
-			TaskManager::Run("StaminaDrain", (auto& progressData) {
+			TaskManager::Run("StaminaDrain", [=](auto& progressData) {
 				ActorHandle casterHandle = giant->CreateRefHandle();
 				if (!casterhandle) {
 					return false;
