@@ -67,6 +67,10 @@ namespace {
 	}
 
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
+		float bonus = 1.0;
+		if (HasSMT(giant)) {
+			bonus = 2.0;
+		}
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
 	}
 

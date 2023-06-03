@@ -73,7 +73,7 @@ namespace {
 					return false;
 				}
 				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 2.5 * power * multiplier;
+				float WasteStamina = 1.75 * power * multiplier;
 				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
 				return true;
 			});
@@ -120,15 +120,15 @@ namespace {
 
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
 		float bonus = 1.0;
-		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
-			bonus = 4.0;
+		if (HasSMT(giant)) {
+			bonus = 3.0;
 		}
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}
 
 	void DoSounds(std::string_view tag, Actor* giant, float animspeed, std::string_view feet) {
 		float bonus = 1.0;
-		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+		if (HasSMT(giant)) {
 			bonus = 4.0;
 		}
 		float scale = get_visual_scale(giant);
@@ -192,6 +192,7 @@ namespace {
 
 	void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
 		float perk = GetPerkBonus(&data.giant);
+		float SMT = 1.0;
 		DoSounds("HeavyStompR", &data.giant, data.animSpeed - 0.5, RNode);
 		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);

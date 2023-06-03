@@ -1,6 +1,7 @@
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/highheel.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/runtime.hpp"
 #include "UI/DebugAPI.hpp"
 #include "scale/scale.hpp"
@@ -22,10 +23,9 @@ namespace {
 		if (tiny->IsDead()) {
 			return;
 		}
-		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny);
-		if (hasSMT) {
+		if (HasSMT(giant)) {
 			giantSize *= 4.0;
 		}
 		float sizedifference = giantSize/tinySize;
@@ -46,10 +46,15 @@ namespace {
 
 	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
 		float giantSize = get_visual_scale(giant);
+		if (HasSMT(giant)) {
+			giantSize *= 4.0;
+		}
 		float tinySize = get_visual_scale(tiny);
 		float sizeRatio = giantSize/tinySize;
 
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
+
+		
 
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
@@ -97,7 +102,7 @@ namespace Gts {
 		float actualGiantScale = get_visual_scale(giant);
 		float giantScale = actualGiantScale;
 
-		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+		if (HasSMT(giant)) {
 			giantScale *= 2.0;
 		}
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(giant);

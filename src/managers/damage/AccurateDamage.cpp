@@ -85,10 +85,9 @@ namespace {
 		if (tiny->IsInRagdollState()) {
 			return;
 		}
-		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny);
-		if (hasSMT) {
+		if (HasSMT(giant)) {
 			giantSize *= 4.0;
 		}
 		float sizedifference = giantSize/tinySize;
@@ -218,8 +217,8 @@ namespace Gts {
 		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 1.15;
-		if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
-			giantScale *= 1.65;
+		if (HasSMT(actor)) {
+			giantScale *= 1.85;
 		}
 
 		// Get world HH offset
@@ -404,8 +403,7 @@ namespace Gts {
 		}
 
 		float giantSize = get_visual_scale(giant);
-		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
-		if (hasSMT) {
+		if (HasSMT(giant)) {
 			giantSize += 2.5;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();

@@ -391,6 +391,13 @@ namespace Gts {
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (30.0 * damage * damagebonus), radius, random, bonedamage);
 	}
 
+    bool HasSMT(Actor* giant) {
+		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+			return true;
+		}
+		return false;
+	}
+
 	void TiredSound(Actor* player, std::string_view message) {
 		static Timer Cooldown = Timer(1.2);
 		if (Cooldown.ShouldRun()) {
