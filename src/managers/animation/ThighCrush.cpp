@@ -259,7 +259,6 @@ namespace {
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighLoopAttack", player);
-			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
 			TiredSound(player, "You're too tired to perform thighs attack");
 		}
