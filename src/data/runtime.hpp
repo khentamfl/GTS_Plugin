@@ -9,7 +9,7 @@ using namespace RE;
 
 namespace Gts {
 	struct KeywordData {
-		KeywordData* data;
+		BGSKeyword* data;
 	};
 
 	struct SoundData {
