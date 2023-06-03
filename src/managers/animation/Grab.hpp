@@ -7,12 +7,15 @@ using namespace RE;
 
 namespace Gts {
 	struct GrabData {
-		GrabData(TESObjectREFR* tiny, float strength);
-		void SetGrabbed(bool decide);
-		bool GetGrabbed();
-		TESObjectREFR* tiny;
-		bool grab;
-		float strength;
+		public:
+			GrabData(TESObjectREFR* tiny, float strength);
+			void SetGrabbed(bool decide);
+			bool GetGrabbed();
+			TESObjectREFR* tiny;
+			float strength;
+
+		private:
+			bool grab;
 	};
 
 	class Grab : public EventListener
