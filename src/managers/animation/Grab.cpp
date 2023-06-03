@@ -366,8 +366,8 @@ namespace Gts {
 	}
 
 	void Grab::SetHolding(Actor* giant, bool decide) {
-			auto& me = Grab::GetSingleton();
-			return me.data.at(giant).holding = decide;
+		auto& me = Grab::GetSingleton();
+		me.data.at(giant).holding = decide;
 	}
 
 	bool Grab::GetHolding(Actor* giant) {
