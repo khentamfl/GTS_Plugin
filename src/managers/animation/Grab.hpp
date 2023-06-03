@@ -12,10 +12,8 @@ namespace Gts {
 			void SetGrabbed(bool decide);
 			bool GetGrabbed();
 			TESObjectREFR* tiny;
+			bool holding;
 			float strength;
-
-		private:
-			bool grab;
 	};
 
 	class Grab : public EventListener

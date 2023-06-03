@@ -15,6 +15,7 @@ sounds:
   GreybeardRumble: "GTS.esp|1CAD96"
   MoanSound: "GTS.esp|09B0AC"
   LaughSound: "GTS.esp|09B0A9"
+  LaughSound_Part2: "GTS.esp|5D3B5B"
   BloodGushSound: "Skyrim.esm|10F78C"
   VoreSound_Success: "Skyrim.esm|10FAE5"
   VoreSound_Fail: "Skyrim.esm|000F8B"

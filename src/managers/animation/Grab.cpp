@@ -111,6 +111,7 @@ namespace {
 		float bonus = 1.0;
 		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
+		static Timer laughtimer = Timer(6.0);
 		if (!grabbedActor) {
 			AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
 			return;
@@ -136,6 +137,9 @@ namespace {
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, damage * 0.5, 25);
 			if (damage > Health * 1.5) {
 				CrushManager::Crush(giant, grabbedActor);
+				if (laughtimer.ShouldRun()) {
+					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
+				}
 				PrintDeathSource(giant, grabbedActor, "HandCrushed");
 				Grab::Release(giant);
 			}
@@ -362,16 +366,14 @@ namespace Gts {
 	}
 
 	void Grab::SetHolding(Actor* giant, bool decide) {
-		try {
 			auto& me = Grab::GetSingleton();
-			me.data.at(giant).Holding = decide;
-		}
+			return me.data.at(giant).holding = decide;
 	}
 
 	bool Grab::GetHolding(Actor* giant) {
 		try {
 			auto& me = Grab::GetSingleton();
-			return me.data.at(giant).Holding;
+			return me.data.at(giant).holding;
 		} catch (std::out_of_range e) {
 			return false;
 		}
