@@ -190,7 +190,7 @@ namespace Gts {
             float sizedifference = get_target_scale(prey)/get_target_scale(pred);
             mod_target_scale(prey, - sizedifference * 0.86);
         }
-		Grab::GrabActor(giant, otherActor);
+		Grab::GetSingleton().GrabActor(pred, prey);
 		AnimationManager::StartAnim("GrabSomeone", pred);
 	}
 }
