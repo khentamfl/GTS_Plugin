@@ -197,7 +197,8 @@ namespace Gts {
 		auto Draugr = Runtime::GetKeyword("UndeadKeyword");
 		auto Dwemer = Runtime::GetKeyword("DwemerKeyword");
 		if (actor->HasKeywordHelper(Draugr) || actor->HasKeywordHelper(Dwemer)) {
-			return false
+			log::info("{} is not living", actor->GetDisplayFullName());
+			return false;
 		} else {
 			return true;
 		}
