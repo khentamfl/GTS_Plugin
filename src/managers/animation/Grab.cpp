@@ -13,6 +13,7 @@
 #include "managers/tremor.hpp"
 #include "managers/Rumble.hpp"
 #include "data/transient.hpp"
+#include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
@@ -176,7 +177,7 @@ namespace {
 		if (otherActor) {
 			if (!AllowDevourment()) {
 				auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-				Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
+				Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			} 
 		}
 	}
