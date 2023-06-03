@@ -164,7 +164,7 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		ManageCamera(&data.giant, true, 2.0);
 		if (otherActor) {
-			voreData.AddTiny(otherActor);
+			VoreData.AddTiny(otherActor);
 		}
 	}
 
@@ -177,7 +177,6 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(&data.giant);			
 		if (otherActor) {
 			if (!AllowDevourment()) {
-				auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 				Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			} 
 		}
