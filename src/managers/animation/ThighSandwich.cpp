@@ -92,7 +92,7 @@ namespace {
 					return false;
 				}
 				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 0.125 * power * multiplier;
+				float WasteStamina = 0.150 * power * multiplier;
 				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
 				return true;
 			});

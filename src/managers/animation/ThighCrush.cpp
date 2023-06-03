@@ -169,14 +169,14 @@ namespace {
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
-		DrainStamina(&data.giant, true, 4.0); // < - Start HEAVY Stamina Drain
+		DrainStamina(&data.giant, true, 2.5); // < - Start HEAVY Stamina Drain
 		StartLegRumble("ThighCrushHeavy", data.giant, 0.35, 0.10);
 		data.stage = 5;
 	}
 
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
-		DrainStamina(&data.giant, false, 4.0); // < Stop Heavy Stamina Drain
+		DrainStamina(&data.giant, false, 2.5); // < Stop Heavy Stamina Drain
 		LegRumbleOnce("ThighCrushHeavy_End", data.giant, 0.50, 0.15);
 		StopLegRumble("ThighCrushHeavy", data.giant);
 		data.stage = 6;
