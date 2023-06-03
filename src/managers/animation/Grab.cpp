@@ -23,6 +23,8 @@ using namespace REL;
 using namespace Gts;
 using namespace std;
 
+///GTS_GrabbedTiny MUST BE 1 when we have someone in hands
+
 namespace {
 	bool Escaped(Actor* giant, Actor* tiny, float strength) {
 		float tiny_chance = ((rand() % 100000) / 100000.0f) * get_visual_scale(tiny);
