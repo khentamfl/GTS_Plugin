@@ -37,8 +37,8 @@ namespace Gts {
 			static void GrabActor(Actor* giant, TESObjectREFR* tiny);
 			static void Release(Actor* giant);
 
-			bool Grab::GetHolding(Actor* giant);
-			static void Grab::SetHolding(Actor* giant, bool decide);
+			bool GetHolding(Actor* giant);
+			static void SetHolding(Actor* giant, bool decide);
 			// Get object being held
 			static TESObjectREFR* GetHeldObj(Actor* giant);
 			// Same as `GetHeldObj` but with a conversion to actor if possible
