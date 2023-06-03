@@ -24,6 +24,7 @@ namespace {
 		float n = 1.0;
 		float s = 1.12;
 		float Result = 1.0/(pow(1.0+pow(k*(Size-1.0),n*s),1.0/s));
+		log::info("Result is {}", Result);
 		return Result;
 	}
 
@@ -66,12 +67,12 @@ namespace Gts {
 
 	void Disintegrate(Actor* actor) {
 		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
-		//actor->Disable();
+		actor->Disable();
 		if (Persistent::GetSingleton().delete_actors) {
-			auto ActorRef = skyrim_cast<TESObjectREFR*>(actor);
+			/*auto ActorRef = skyrim_cast<TESObjectREFR*>(actor);
 			if (ActorRef) {
 				ActorRef->SetDelete(true);
-			}
+			}*/
 			log::info("Calling Delete Actors");
 		}
 	}
@@ -298,6 +299,7 @@ namespace Gts {
 			float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
 			intensity = std::clamp(intensity, 0.0f, 1e8f);
 			duration = std::clamp(duration, 0.0f, 1.2f);
+			log::info("Shake Int: {}, dur: {}, SizeDiff: {}, Distance: {}", intensity, duration, sizedifference, distance);
 
 			shake_controller(intensity*modifier, intensity*modifier, duration);
 			shake_camera_at_node(coords, intensity*modifier, duration);

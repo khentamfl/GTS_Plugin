@@ -69,7 +69,7 @@ namespace {
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
 		float bonus = 1.0;
 		if (HasSMT(giant)) {
-			bonus = 4.0; // Needed to boost only Launch
+			bonus = 2.0; // Needed to boost only Launch
 		}
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}
@@ -101,29 +101,36 @@ namespace {
 	}
 
 	void GTSstompimpactR(AnimationEventData& data) {
-		float bonus = 1.0;
+		float shake = 1.0;
+		float launch = 1.0;
+		float dust = 1.0;
 		float perk = GetPerkBonus(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
-			bonus = 4.0;
+			shake = 4.0;
+			launch = 1.5;
+			dust = 1.25;
 		}
-		Rumble::Once("StompR", &data.giant, 2.20 * bonus, 0.0, RNode);
-		DoDamageEffect(&data.giant, 1.5 * data.animSpeed * perk, 1.2 * data.animSpeed, 10, 0.25);
-		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode, bonus);
-		DoLaunch(&data.giant, 1.0 * bonus, 2.25, RNode);
+		Rumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
+		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.25);
+		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode, dust);
+		DoLaunch(&data.giant, 1.0 * launch, 2.25, RNode);
 		DrainStamina(&data.giant, false, 1.0);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
-		//data.stage = 1;
-		float bonus = 1.0;
+		float shake = 1.0;
+		float launch = 1.0;
+		float dust = 1.0;
 		float perk = GetPerkBonus(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
-			bonus = 4.0;
+			shake = 4.0;
+			launch = 1.5;
+			dust = 1.25;
 		}
-		Rumble::Once("StompL", &data.giant, 2.20 * bonus, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.5 * data.animSpeed * perk, 1.2 * data.animSpeed, 10, 0.25);
-		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode, bonus);
-		DoLaunch(&data.giant, 1.0 * bonus * perk, 2.25, LNode);
+		Rumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
+		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.25);
+		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode, dust);
+		DoLaunch(&data.giant, 1.0 * launch * perk, 2.25, LNode);
 		DrainStamina(&data.giant, false, 1.0);
 	}
 

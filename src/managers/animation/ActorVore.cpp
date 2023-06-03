@@ -322,7 +322,7 @@ namespace {
 		auto giant = &data.giant;
 		StartBodyRumble("BodyRumble", data.giant, 0.35, 0.10, false);
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			ManageCamera(giant, false, 2.0);//PlayerCamera::GetSingleton()->cameraTarget = giant->CreateRefHandle();
+			ManageCamera(giant, false, 2.0);
 		}
 	}
 

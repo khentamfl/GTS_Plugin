@@ -97,6 +97,12 @@ namespace Gts {
 
 		float scale = impact.effective_scale;
 		float minimal_size = 3.0;
+		if (actor->formID == 0x14) {
+				if (HasSMT(actor)) {
+					minimal_size = 1.0;
+					scale += 1.33;
+				}
+			}
 		if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
 				scale *= 1.2; // Sprinting makes you seem bigger
@@ -114,7 +120,7 @@ namespace Gts {
 			if (HighHeelManager::IsWearingHH(actor)) {
 				scale *= 1.25;
 			}
-
+			
 			for (NiAVObject* node: impact.nodes) {
 				// First try casting a ray
 				NiPoint3 foot_location = node->world.translate;
