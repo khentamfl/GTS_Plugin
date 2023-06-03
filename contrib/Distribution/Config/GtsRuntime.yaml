@@ -93,7 +93,7 @@ spellEffects:
   EffectSizeAmplifyPotion: "GTS.esp|452F1D"
   SizeDrainPotion: "GTS.esp|5B5557"
   ShrinkPoison: "GTS.esp|5B5552"
-  
+
 
   # Crushing
   FakeCrushEffect: "GTS.esp|271EF9"
@@ -165,8 +165,8 @@ perks:
   GrowingPressure: "GTS.esp|1E93A9"
   DestructionBasics: "GTS.esp|587C4A"
   KillerThighs: "GTS.esp|587C4B"
-  
-  
+
+
 
 explosions:
   BloodExplosion: "GTS.esp|01CE9D"
@@ -285,3 +285,8 @@ impacts:
 
 races:
   dragonRace: "Skyrim.esm|012E82"
+
+keywords:
+  DragonKeyword: "Skyrim.esm|000000"
+  UndeadKeyword: "Skyrim.esm|000000"
+  DweamerKeyword: "Skyrim.esm|000000"

@@ -52,6 +52,10 @@ namespace Gts {
 		TESRace* data;
 	};
 
+  struct KeywordData {
+		BGSKeyword* data;
+	};
+
 	class Runtime : public EventListener {
 		public:
 			[[nodiscard]] static Runtime& GetSingleton() noexcept;
@@ -111,6 +115,9 @@ namespace Gts {
 			// Races
 			static TESRace* GetRace(const std::string_view& tag);
 			static bool IsRace(Actor* actor, const std::string_view& tag);
+      // Keywords
+			static BGSKeyword* GetKeyword(const std::string_view& tag);
+			static bool HasKeyword(Actor* actor, const std::string_view& tag);
 
 			// Team Functions
 			static bool HasMagicEffectTeam(Actor* actor, const std::string_view& tag);
@@ -134,6 +141,7 @@ namespace Gts {
 			std::unordered_map<std::string, FactionData> factions;
 			std::unordered_map<std::string, ImpactData> impacts;
 			std::unordered_map<std::string, RaceData> races;
+      std::unordered_map<std::string, KeywordData> keywords;
 
 			std::unordered_set<std::string> logged;
 	};

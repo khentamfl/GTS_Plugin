@@ -38,6 +38,7 @@ namespace {
 		std::unordered_map<std::string, std::string> factions;
 		std::unordered_map<std::string, std::string> impacts;
 		std::unordered_map<std::string, std::string> races;
+    std::unordered_map<std::string, std::string> keywords;
 
 		articuno_serde(ar) {
 			ar <=> kv(keywords, "keywords");
@@ -51,6 +52,7 @@ namespace {
 			ar <=> kv(factions, "factions");
 			ar <=> kv(impacts, "impacts");
 			ar <=> kv(races, "races");
+      ar <=> kv(keywords, "keywords");
 		}
 	};
 }
@@ -499,6 +501,28 @@ namespace Gts {
 		}
 	}
 
+  // Keywords
+  static BGSKeyword* Runtime::GetKeyword(const std::string_view& tag) {
+    BGSKeyword* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().keywords.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("kywd", tag)) {
+				log::warn("Keyword: {} not found", tag);
+			}
+		}
+		return data;
+  }
+  static bool Runtime::HasKeyword(Actor* actor, const std::string_view& tag) {
+    auto data = GetRace(tag);
+		if (data) {
+			return actor->HasKeyword(data);
+		} else {
+			return false;
+		}
+  }
+
 	// Team Functions
 	bool Runtime::HasMagicEffectTeam(Actor* actor, const std::string_view& tag) {
 		return Runtime::HasMagicEffectTeamOr(actor, tag, false);
@@ -650,6 +674,15 @@ namespace Gts {
 				this->races.try_emplace(key, form);
 			} else if (!Runtime::Logged("race", key)) {
 				log::warn("RaceData form not found for {}", key);
+			}
+		}
+
+    for (auto &[key, value]: config.keywords) {
+			auto form = find_form<BGSKeyword>(value);
+			if (form) {
+				this->keywords.try_emplace(key, form);
+			} else if (!Runtime::Logged("kywd", key)) {
+				log::warn("Keyword form not found for {}", key);
 			}
 		}
 
