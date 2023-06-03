@@ -68,9 +68,10 @@ namespace {
 	};
 
 	void DrainStamina(Actor* giant, bool decide, float power) {
+		std::string name = std::format("StaminaDrain_{}", giant->formID);
 		if (decide) {
-			TaskManager::Run("StaminaDrain", [=](auto& progressData) {
-				ActorHandle casterHandle = giant->CreateRefHandle();
+			TaskManager::Run(name, [=](auto& progressData) {
+				ActorHandle casterhandle = giant->CreateRefHandle();
 				if (!casterhandle) {
 					return false;
 				}
@@ -80,7 +81,7 @@ namespace {
 				return true;
 			});
 		} else {
-			TaskManager::Cancel("StaminaDrain");
+			TaskManager::Cancel(name);
 		}
 	}
 
