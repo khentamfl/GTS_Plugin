@@ -144,6 +144,7 @@ namespace {
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, damage * 0.5, 25);
 			if (damage > Health * 1.5) {
 				CrushManager::Crush(giant, grabbedActor);
+				AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
 				Rumble::Once("GrabAttackKill", &data.giant, 8.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (laughtimer.ShouldRun()) {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
@@ -197,8 +198,13 @@ namespace {
 	}
 
 	void GTSGrab_Eat_Swallow(AnimationEventData& data) {
-		auto otherActor = Grab::GetHeldActor(&data.giant);	
+		
+		auto otherActor = Grab::GetHeldActor(&data.giant);
+		auto giant = &data.giant;
+        giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);	
 		ManageCamera(&data.giant, false, 7.0);
+		Grab::SetHolding(&data.giant, false);
+		Grab::Release(giant);
 	}
 	
 
@@ -210,6 +216,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Throw_ThrowActor(AnimationEventData& data) {
 		auto giant = &data.giant;
+        giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		Grab::SetHolding(&data.giant, false);
 		Grab::Release(&data.giant);
 	}
@@ -221,11 +228,12 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Release_FreeActor(AnimationEventData& data) {
 		auto giant = &data.giant;
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		auto grabbedActor = Grab::GetHeldActor(giant);
-		Grab::SetHolding(giant, false);
 		ManageCamera(&data.giant, false, 7.0);
+		Grab::SetHolding(giant, false);
+		Grab::Release(giant);
 		if (grabbedActor) {
-			Grab::Release(giant);
 			PushActorAway(giant, grabbedActor, 1.0);
 		}
 	}
@@ -235,6 +243,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::SetHolding(giant, false);
+		Grab::Release(giant);
 	}
 
 	void GTSBEH_AbortGrab(AnimationEventData& data) {
@@ -242,6 +251,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::SetHolding(giant, false);
+		Grab::Release(giant);
 	}
 
 	void GrabOtherEvent(const InputEventData& data) {

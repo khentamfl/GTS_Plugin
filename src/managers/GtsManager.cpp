@@ -32,13 +32,18 @@ using namespace std;
 
 namespace {
 	void FixActorState(Actor* giant) { // Fixes Animations for GTS Grab Actions
+	if (giant->formID != 0x14) {
+		return;
+	}
 		int StateID;
 		int GTSStateID;
 
 		int State = giant->GetGraphVariableInt("currentDefaultState", StateID);
 		int ExpectedState = giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
-		if (ExpectedState != State) {
-			giant->SetGraphVariableInt("GTS_Def_State", State);
+		log::info("StateID: {}, GTSStateID:{}, State: {}, ExpectedState: {}", StateID, GTSStateID, State, ExpectedState);
+		if (GTSStateID; != StateID) {
+			log::info("Setting Grap Int to {}", StateID);
+			giant->SetGraphVariableInt("GTS_Def_State", StateID);
 		}
 	}
 
