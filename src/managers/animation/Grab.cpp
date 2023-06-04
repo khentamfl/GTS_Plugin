@@ -118,9 +118,9 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Catch_Start(AnimationEventData& data) {
 		ManageCamera(&data.giant, true, 7.0);
-		auto grabbedActor = Grab::GetHeldActor(giant);
+		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
-			SetHeld(otherActor, true);
+			SetHeld(grabbedActor, true);
 		}
 	}
 
