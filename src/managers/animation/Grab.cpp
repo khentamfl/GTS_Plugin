@@ -422,6 +422,16 @@ namespace Gts {
 			if (!bone) {
 				return;
 			}
+			float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+			if (HasSMT(giant)) {
+				sizedifference *= 6.8;
+			}
+			if (tiny->IsDead() || sizedifference < 6.0) {
+				Grab::Release();
+				giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+				AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
+				return;
+			}
 
 			float giantScale = get_visual_scale(giant);
 
