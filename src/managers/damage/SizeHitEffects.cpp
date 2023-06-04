@@ -198,7 +198,7 @@ namespace Gts {
 		if (rng <= 2) {
 			float gs = get_visual_scale(giant);
 			float ts = get_visual_scale(tiny);
-			if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+			if (HasSMT(giant)) {
 				gs += 3.0; // Allow to break bones with SMT
 			}
 			float sizediff = gs/ts;

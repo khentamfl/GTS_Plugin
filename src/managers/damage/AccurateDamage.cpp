@@ -68,6 +68,9 @@ namespace {
 	}
 
 	void MiniStagger(Actor* giant, Actor* tiny) {
+		if (IsBeingHeld(tiny)) {
+			return;
+		}
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny);
 		float sizedifference = giantSize/tinySize;
@@ -83,6 +86,9 @@ namespace {
 			return;
 		}
 		if (tiny->IsInRagdollState()) {
+			return;
+		}
+		if (IsBeingHeld(tiny)) {
 			return;
 		}
 		float giantSize = get_visual_scale(giant);

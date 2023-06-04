@@ -22,6 +22,8 @@ namespace {
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		if (tiny->IsDead()) {
 			return;
+		} if (IsBeingHeld(tiny)) {
+			return;
 		}
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny);

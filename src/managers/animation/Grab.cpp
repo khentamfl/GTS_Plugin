@@ -53,14 +53,20 @@ Grab Event to go back to vanilla
 
 
 namespace {
+
+	const std::string_view RNode = "NPC R Foot [Rft ]";
+	const std::string_view LNode = "NPC L Foot [Lft ]";
+
 	bool Escaped(Actor* giant, Actor* tiny, float strength) {
 		float tiny_chance = ((rand() % 100000) / 100000.0f) * get_visual_scale(tiny);
 		float giant_chance = ((rand() % 100000) / 100000.0f) * strength * get_visual_scale(giant);
 		return (tiny_chance > giant_chance);
 	}
 
-	const std::string_view RNode = "NPC R Foot [Rft ]";
-	const std::string_view LNode = "NPC L Foot [Lft ]";
+	void ToggleEmotionEdit(Actor* giant, bool allow) {
+		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
+		Emotions.AllowEmotionEdit = allow;
+	}
 
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
 		float bonus = 1.0;
@@ -112,6 +118,10 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Catch_Start(AnimationEventData& data) {
 		ManageCamera(&data.giant, true, 7.0);
+		auto grabbedActor = Grab::GetHeldActor(giant);
+		if (grabbedActor) {
+			SetHeld(otherActor, true);
+		}
 	}
 
 	void GTSGrab_Catch_Actor(AnimationEventData& data) {
@@ -170,6 +180,7 @@ namespace {
 				}
 				PrintDeathSource(giant, grabbedActor, "HandCrushed");
 				Grab::Release(giant);
+				SetHeld(grabbedActor, false);
 			}
 		}
 	}
@@ -193,6 +204,7 @@ namespace {
 /////////////////////////V O R E
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Eat_Start(AnimationEventData& data) {
+		ToggleEmotionEdit(&data.giant, true);
 		auto otherActor = Grab::GetHeldActor(&data.giant);	
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		ManageCamera(&data.giant, true, 7.0);
@@ -237,13 +249,18 @@ namespace {
 
 	void GTSGrab_Eat_Swallow(AnimationEventData& data) {
 		auto giant = &data.giant;
-		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
-		VoreData.KillAll();
-        giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);	
-		Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
-		ManageCamera(&data.giant, false, 7.0);
-		Grab::SetHolding(&data.giant, false);
-		Grab::Release(giant);
+		auto otherActor = Grab::GetHeldActor(&data.giant);	
+		if (otherActor) {
+			auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
+			VoreData.KillAll();
+			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);	
+			Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
+			ManageCamera(&data.giant, false, 7.0);
+			Grab::SetHolding(&data.giant, false);
+			SetHeld(otherActor, false);
+			Grab::Release(giant);
+		}
+		ToggleEmotionEdit(giant, false);
 	}
 	
 
@@ -295,10 +312,15 @@ namespace {
 
 	void GTSGrab_Throw_ThrowActor(AnimationEventData& data) { // Throw frame 1
 		auto giant = &data.giant;
+		auto otherActor = Grab::GetHeldActor(&data.giant);	
+		if (otherActor) {
+			SetHeld(otherActor, false);
+		}
         giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		ManageCamera(giant, false, 7.0);
 		Grab::SetHolding(&data.giant, false);
 		Grab::Release(&data.giant);
+		
 	}
 
 	void GTSGrab_Throw_Throw_Post(AnimationEventData& data) { // Throw frame 2
