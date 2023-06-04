@@ -126,9 +126,9 @@ namespace {
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (0.225 * sd) * power * additionaldamage;
+			float damage = (0.825 * sd) * power * additionaldamage;
 			if (HasSMT(giant)) {
-				damage *= 2.0;
+				damage *= 3.0;
 				bonus = 2.5;
 			}
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
@@ -166,7 +166,7 @@ namespace {
 	void GTSGrab_Eat_Start(AnimationEventData& data) {
 		auto otherActor = Grab::GetHeldActor(&data.giant);	
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-		ManageCamera(&data.giant, false, 7.0);
+		ManageCamera(&data.giant, true, 7.0);
 		if (otherActor) {
 			VoreData.AddTiny(otherActor);
 		}
@@ -210,7 +210,6 @@ namespace {
 		auto giant = &data.giant;
 		Grab::SetHolding(&data.giant, false);
 		Grab::Release(&data.giant);
-		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 	}
 
 ////////////////////////////////////////////////////////////////
@@ -221,7 +220,6 @@ namespace {
 	void GTSGrab_Release_FreeActor(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
-		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		Grab::SetHolding(giant, false);
 		ManageCamera(&data.giant, false, 7.0);
 		if (grabbedActor) {
