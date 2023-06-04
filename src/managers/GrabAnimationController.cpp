@@ -18,9 +18,9 @@
 
 namespace {
 
-	const float MINIMUM_GRAB_DISTANCE = 70.0;
+	const float MINIMUM_GRAB_DISTANCE = 85.0;
 	const float MINIMUM_GRAB_SCALE_RATIO = 6.0;
-	const float SANDWICH_ANGLE = 60;
+	const float GRAB_ANGLE = 70;
 	const float PI = 3.14159;
 
 	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
@@ -117,7 +117,7 @@ namespace Gts {
 		//   | pred |  <- Based on width of pred
 		//   |______|
 		float predWidth = 70 * get_visual_scale(pred);
-		float shiftAmount = fabs((predWidth / 2.0) / tan(SANDWICH_ANGLE/2.0));
+		float shiftAmount = fabs((predWidth / 2.0) / tan(GRAB_ANGLE/2.0));
 
 		NiPoint3 coneStart = predPos - predDir * shiftAmount;
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[coneStart, predWidth, predDir](auto prey)
@@ -128,7 +128,7 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			return cosTheta <= cos(SANDWICH_ANGLE*PI/180.0);
+			return cosTheta <= cos(GRAB_ANGLE*PI/180.0);
 		}), preys.end());
 
 		// Reduce vector size

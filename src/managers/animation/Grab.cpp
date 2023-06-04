@@ -148,7 +148,7 @@ namespace {
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (0.825 * sd) * power * additionaldamage;
+			float damage = (1.600 * sd) * power * additionaldamage;
 			if (HasSMT(giant)) {
 				damage *= 3.0;
 				bonus = 2.5;
@@ -182,22 +182,6 @@ namespace {
 		if (!grabbedActor) {
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 			AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
-			std::string name = std::format("CancelGTSAnim_{}", giant->formID);
-			TaskManager::Run(name, [=](auto& progressData) {
-				float ticks = 0.0;
-				ticks += 0.1;
-				log::info("Grab task running, ticks: {}", ticks);
-				ActorHandle casterhandle = giant->CreateRefHandle();
-				if (!casterhandle) {
-					return false;
-				}
-				if (ticks >= 20.0) {
-					log::info("Calcelling task, ticks > 20");
-					TaskManager::Cancel(name);
-					return false;
-				}
-				return true;
-			});
 		}
 	}
 

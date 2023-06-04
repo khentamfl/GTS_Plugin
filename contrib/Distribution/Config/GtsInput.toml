@@ -147,8 +147,8 @@ exclusive = true
 [[InputEvent]]
 name = "GrabOther"
 keys = ["F"]
-duration = 1.0 
-# Grabs nearby actor. It is currently a bit buggy, has no Animations and is pretty much WIP, so use it at your own risk. 
+duration = 0.25 
+# Grabs closest actor.
 
 [[InputEvent]]
 name = "GrabAttack"
