@@ -58,6 +58,17 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
+	const std::string_view RNode = "NPC R Foot [Rft ]";
+	const std::string_view LNode = "NPC L Foot [Lft ]";
+
+	float GetPerkBonus(Actor* Giant) {
+		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
+			return 1.25;
+		} else {
+			return 1.0;
+		}
+	}
+
 	void ManageCamera(Actor* giant, bool enable, float type) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (giant->formID == 0x14) {
@@ -215,12 +226,60 @@ namespace {
 ////////////////////////////////////////////////////////////////
 /////////////////////////T H R O W
 ////////////////////////////////////////////////////////////////
-	void GTSGrab_Throw_ThrowActor(AnimationEventData& data) {
+	void GTSGrab_Throw_MoveStart(AnimationEventData& data) {
+		auto giant = &data.giant;
+		ManageCamera(giant, true, 7.0);
+	}
+
+	void GTSGrab_Throw_FS_R(AnimationEventData& data) {
+		float shake = 1.0;
+		float launch = 1.0;
+		float dust = 1.0;
+		float perk = GetPerkBonus(&data.giant);
+		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
+			shake = 4.0;
+			launch = 1.5;
+			dust = 1.25;
+		}
+		Rumble::Once("StompR", &data.giant, 1.50 * shake, 0.0, RNode);
+		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.25);
+		DoSizeEffect(&data.giant, 0.9 * data.animSpeed, FootEvent::Right, RNode, dust);
+		DoLaunch(&data.giant, 0.8 * launch, 1.75, RNode);
+	}
+
+	void GTSGrab_Throw_FS_L(AnimationEventData& data) {
+		float shake = 1.0;
+		float launch = 1.0;
+		float dust = 1.0;
+		float perk = GetPerkBonus(&data.giant);
+		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
+			shake = 4.0;
+			launch = 1.5;
+			dust = 1.25;
+		}
+		Rumble::Once("StompL", &data.giant, 1.50 * shake, 0.0, LNode);
+		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.25);
+		DoSizeEffect(&data.giant, 0.9 * data.animSpeed, FootEvent::Left, LNode, dust);
+		DoLaunch(&data.giant, 0.8 * launch * perk, 1.75, LNode);
+	}
+
+	void GTSGrab_Throw_Throw_Pre(AnimationEventData& data) {// Throw frame 0
+	}
+
+	void GTSGrab_Throw_ThrowActor(AnimationEventData& data) { // Throw frame 1
 		auto giant = &data.giant;
         giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		ManageCamera(giant, false, 7.0);
 		Grab::SetHolding(&data.giant, false);
 		Grab::Release(&data.giant);
 	}
+
+	void GTSGrab_Throw_Throw_Post(AnimationEventData& data) { // Throw frame 2
+	}
+
+	void GTSGrab_Throw_MoveStop(AnimationEventData& data) {
+	}
+
 
 ////////////////////////////////////////////////////////////////
 
@@ -427,16 +486,27 @@ namespace Gts {
 		AnimationManager::RegisterEvent("GTSGrab_Catch_Start", "Grabbing", GTSGrab_Catch_Start);
 		AnimationManager::RegisterEvent("GTSGrab_Catch_Actor", "Grabbing", GTSGrab_Catch_Actor);
 		AnimationManager::RegisterEvent("GTSGrab_Catch_End", "Grabbing", GTSGrab_Catch_End);
+
 		AnimationManager::RegisterEvent("GTSGrab_Attack_MoveStart", "Grabbing", GTSGrab_Attack_MoveStart);
 		AnimationManager::RegisterEvent("GTSGrab_Attack_Damage", "Grabbing", GTSGrab_Attack_Damage);
 		AnimationManager::RegisterEvent("GTSGrab_Attack_MoveStop", "Grabbing", GTSGrab_Attack_MoveStop);
+
 		AnimationManager::RegisterEvent("GTSGrab_Eat_Start", "Grabbing", GTSGrab_Eat_Start);
 		AnimationManager::RegisterEvent("GTSGrab_Eat_OpenMouth", "Grabbing", GTSGrab_Eat_OpenMouth);
 		AnimationManager::RegisterEvent("GTSGrab_Eat_Eat", "Grabbing", GTSGrab_Eat_Eat);
 		AnimationManager::RegisterEvent("GTSGrab_Eat_CloseMouth", "Grabbing", GTSGrab_Eat_CloseMouth);
 		AnimationManager::RegisterEvent("GTSGrab_Eat_Swallow", "Grabbing", GTSGrab_Eat_Swallow);
+
+		AnimationManager::RegisterEvent("GTSGrab_Throw_MoveStart", "Grabbing", GTSGrab_Throw_MoveStart);
+		AnimationManager::RegisterEvent("GTSGrab_Throw_FS_R", "Grabbing", GTSGrab_Throw_FS_R);
+		AnimationManager::RegisterEvent("GTSGrab_Throw_FS_L", "Grabbing", GTSGrab_Throw_FS_L);
+		AnimationManager::RegistetEvent("GTSGrab_Throw_Throw_Pre", "Grabbing", GTSGrab_Throw_Throw_Pre);
 		AnimationManager::RegisterEvent("GTSGrab_Throw_ThrowActor", "Grabbing", GTSGrab_Throw_ThrowActor);
+		AnimationManager::RegistetEvent("GTSGrab_Throw_Throw_Post", "Grabbing", GTSGrab_Throw_Throw_Post);
+		AnimationManager::RegistetEvent("GTSGrab_Throw_MoveStop", "Grabbing", GTSGrab_Throw_MoveStop);
+
 		AnimationManager::RegisterEvent("GTSGrab_Release_FreeActor", "Grabbing", GTSGrab_Release_FreeActor);
+		
 		AnimationManager::RegisterEvent("GTSBEH_GrabExit", "Grabbing", GTSBEH_GrabExit);
 		AnimationManager::RegisterEvent("GTSBEH_AbortGrab", "Grabbing", GTSBEH_AbortGrab);
 	}
