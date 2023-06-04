@@ -15,15 +15,16 @@ using namespace RE;
 
 namespace Gts {
 
-	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string node) :
+	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string node, float radius) :
 		state(RumpleState::RampingUp),
 		duration(duration),
 		currentIntensity(Spring(0.0, halflife)),
 		node(node),
+		radius(radius),
 		startTime(0.0) {
 	}
 
-	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string_view node) : RumbleData(intensity, duration, halflife, std::string(node)) {
+	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string_view node, float radius) : RumbleData(intensity, duration, halflife, std::string(node), radius) {
 	}
 
 	void RumbleData::ChangeTargetIntensity(float intensity) {
