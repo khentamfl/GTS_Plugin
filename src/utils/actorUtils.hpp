@@ -39,7 +39,7 @@ namespace Gts {
 	void ApplyShake(Actor* caster, float modifier);
 	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node);
 	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node, float radius);
-	void ApplyShakeAtPoint(Actor* caster,float modifier, const NiPoint3& coords, float radius);
+	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords, float radius);
 	void EnableFreeCamera();
 
 	bool AllowDevourment();
