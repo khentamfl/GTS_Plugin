@@ -144,6 +144,7 @@ namespace {
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, damage * 0.5, 25);
 			if (damage > Health * 1.5) {
 				CrushManager::Crush(giant, grabbedActor);
+				giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 				AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
 				Rumble::Once("GrabAttackKill", &data.giant, 8.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (laughtimer.ShouldRun()) {
