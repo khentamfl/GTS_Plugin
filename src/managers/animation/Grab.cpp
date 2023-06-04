@@ -61,6 +61,14 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
+		float bonus = 1.0;
+		if (HasSMT(giant)) {
+			bonus = 2.0; // Needed to boost only Launch
+		}
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
+	}
+
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
 			return 1.25;
@@ -188,8 +196,13 @@ namespace {
 	}
 
 	void GTSGrab_Eat_OpenMouth(AnimationEventData& data) {
-		AdjustFacialExpression(&data.giant, 0, 1.0, "phenome"); // Start opening mouth
-		AdjustFacialExpression(&data.giant, 1, 0.5, "phenome"); // Open it wider
+		AdjustFacialExpression(giant, 0, 1.0, "phenome"); // Start opening mouth
+		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
+
+		AdjustFacialExpression(giant, 0, 0.80, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.80, "modifier"); // blink R
+
+		AdjustFacialExpression(&data.giant, 3, 0.8, "phenome"); // Smile a bit (Mouth)
 	}
 
 	void GTSGrab_Eat_Eat(AnimationEventData& data) {
@@ -198,6 +211,7 @@ namespace {
 		if (otherActor) {
 			if (!AllowDevourment()) {
 				VoreData.KillAll();
+				Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			} else {
 				CallDevourment(&data.giant, otherActor);
 			}
@@ -205,8 +219,13 @@ namespace {
 	}
 
 	void GTSGrab_Eat_CloseMouth(AnimationEventData& data) {
-		AdjustFacialExpression(&data.giant, 0, 0.0, "phenome"); // Close it
-		AdjustFacialExpression(&data.giant, 1, 0.0, "phenome"); // And close it
+		AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Close mouth
+		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Close it
+		
+		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
+
+		AdjustFacialExpression(&data.giant, 3, 0.0, "phenome"); // Smile a bit (Mouth)
 	}
 
 	void GTSGrab_Eat_Swallow(AnimationEventData& data) {
@@ -500,13 +519,13 @@ namespace Gts {
 		AnimationManager::RegisterEvent("GTSGrab_Throw_MoveStart", "Grabbing", GTSGrab_Throw_MoveStart);
 		AnimationManager::RegisterEvent("GTSGrab_Throw_FS_R", "Grabbing", GTSGrab_Throw_FS_R);
 		AnimationManager::RegisterEvent("GTSGrab_Throw_FS_L", "Grabbing", GTSGrab_Throw_FS_L);
-		AnimationManager::RegistetEvent("GTSGrab_Throw_Throw_Pre", "Grabbing", GTSGrab_Throw_Throw_Pre);
+		AnimationManager::RegisterEvent("GTSGrab_Throw_Throw_Pre", "Grabbing", GTSGrab_Throw_Throw_Pre);
 		AnimationManager::RegisterEvent("GTSGrab_Throw_ThrowActor", "Grabbing", GTSGrab_Throw_ThrowActor);
-		AnimationManager::RegistetEvent("GTSGrab_Throw_Throw_Post", "Grabbing", GTSGrab_Throw_Throw_Post);
-		AnimationManager::RegistetEvent("GTSGrab_Throw_MoveStop", "Grabbing", GTSGrab_Throw_MoveStop);
+		AnimationManager::RegisterEvent("GTSGrab_Throw_Throw_Post", "Grabbing", GTSGrab_Throw_Throw_Post);
+		AnimationManager::RegisterEvent("GTSGrab_Throw_MoveStop", "Grabbing", GTSGrab_Throw_MoveStop);
 
 		AnimationManager::RegisterEvent("GTSGrab_Release_FreeActor", "Grabbing", GTSGrab_Release_FreeActor);
-		
+
 		AnimationManager::RegisterEvent("GTSBEH_GrabExit", "Grabbing", GTSBEH_GrabExit);
 		AnimationManager::RegisterEvent("GTSBEH_AbortGrab", "Grabbing", GTSBEH_AbortGrab);
 	}
