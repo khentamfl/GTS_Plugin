@@ -83,7 +83,7 @@ namespace Gts {
 	}
 
 	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node, float radius) {
-		Rumble::For(tag, giant, intensity, halflife, node, 1.0);
+		Rumble::For(tag, giant, intensity, halflife, node, 1.0, radius);
 	}
 
 	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife, float radius) {
@@ -152,6 +152,7 @@ namespace Gts {
 				auto& point = node->world.translate;
 				averagePos = averagePos + point*intensity;
 				totalWeight += intensity;
+				float radius = rumbleData.radius;
 
 				float volume = 8 * get_visual_scale(actor)/get_distance_to_camera(point);
 				// Lastly play the sound at each node
