@@ -3,6 +3,7 @@
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
+#include "managers/damage/LaunchActor.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ai/aifunctions.hpp"
@@ -196,6 +197,7 @@ namespace {
 	}
 
 	void GTSGrab_Eat_OpenMouth(AnimationEventData& data) {
+		auto giant = &data.giant;
 		AdjustFacialExpression(giant, 0, 1.0, "phenome"); // Start opening mouth
 		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
 
@@ -219,6 +221,7 @@ namespace {
 	}
 
 	void GTSGrab_Eat_CloseMouth(AnimationEventData& data) {
+		auto giant = &data.giant;
 		AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Close mouth
 		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Close it
 		
