@@ -44,7 +44,7 @@ namespace {
 	}
 
 	void TinyGuard(Actor* attacker, Actor* receiver, float a_damage) {
-		auto grabbedActor = Grab::GetHeldActor(giant);
+		auto grabbedActor = Grab::GetHeldActor(receiver);
 		if (!grabbedActor) {
 			return;
 		}
@@ -52,7 +52,7 @@ namespace {
 		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.5);
 		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.10);
 		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.10) {
-			CrushManager::Crush(giant, grabbedActor);
+			CrushManager::Crush(receiver, grabbedActor);
 			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
 			PrintDeathSource(receiver, grabbedActor, "BlockDamage");
 			Grab::Release(receiver);
