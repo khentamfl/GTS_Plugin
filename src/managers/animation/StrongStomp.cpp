@@ -83,10 +83,12 @@ namespace {
 	}
 
 	void ImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
+		float radius = 1.5;
 		if (HasSMT(giant)) {
 			force *= 24.0;
+			radius = 4.0;
 		}
-		Rumble::Once(name, giant, force, 0.05, node, 4.0);
+		Rumble::Once(name, giant, force, 0.05, node, radius);
 	}
 
 	float GetPerkBonus(Actor* Giant) {

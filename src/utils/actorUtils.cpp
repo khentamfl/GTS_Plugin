@@ -234,10 +234,10 @@ namespace Gts {
 		return 3.4028237E38; // Max float
 	}
 
-	void ApplyShake(Actor* caster, float modifier) {
+	void ApplyShake(Actor* caster, float modifier, float radius) {
 		if (caster) {
 			auto position = caster->GetPosition();
-			ApplyShakeAtPoint(caster, modifier, position, 1.0);
+			ApplyShakeAtPoint(caster, modifier, position, 1.0, radius);
 		}
 	}
 
