@@ -1,6 +1,8 @@
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/animation/Grab.hpp"
+#include "managers/CrushManager.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
 #include "utils/actorUtils.hpp"
@@ -41,6 +43,20 @@ namespace {
 		}
 	}
 
+	void TinyGuard(Actor* attacker, Actor* receiver, float a_damage) {
+		auto grabbedActor = Grab::GetHeldActor(giant);
+		if (!grabbedActor) {
+			return;
+		}
+		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.5);
+		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.10);
+		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.10) {
+			CrushManager::Crush(giant, grabbedActor);
+			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
+			PrintDeathSource(giant, grabbedActor, "BlockDamage");
+			Grab::Release(receiver);
+		}
+	}
 
 	void HealthGate(Actor* attacker, Actor* receiver, float a_damage) {
 		if (a_damage > GetAV(receiver, ActorValue::kHealth)) {
@@ -79,6 +95,7 @@ namespace {
 		//log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
 
 		HealthGate(attacker, receiver, -(a_damage + damage));
+		TinyGuard(attacker, receiver, -(a_damage + damage));
 
 		if (damage < 0) {
 			Overkill(attacker, receiver, -(a_damage + damage));

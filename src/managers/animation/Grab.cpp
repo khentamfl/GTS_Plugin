@@ -180,6 +180,7 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(giant, false, 7.0);
 		if (!grabbedActor) {
+			log::info("GrabberActor is null");
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 			AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
 		}
@@ -214,7 +215,6 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(&data.giant);		
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
 		if (otherActor) {
-			otherActor->SetAlpha(0.0);
 			if (!AllowDevourment()) {
 				VoreData.Swallow();
 			} else {
@@ -238,7 +238,6 @@ namespace {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
 		VoreData.KillAll();
-		auto otherActor = Grab::GetHeldActor(&data.giant);
         giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);	
 		Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 		ManageCamera(&data.giant, false, 7.0);
@@ -426,10 +425,11 @@ namespace Gts {
 			if (tiny_is_actor) {
 				float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny_is_actor);
 				if (HasSMT(giant)) {
-					sizedifference *= 6.8;
+					sizedifference += 6.0;
 				}
 				if (tiny_is_actor->IsDead() || sizedifference < 6.0) {
 					Grab::Release(giant);
+					log::info("{} is small/dead", tiny_is_actor->GetDisplayFullName());
 					giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 					AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
 					return;
@@ -479,6 +479,7 @@ namespace Gts {
 
 	void Grab::Release(Actor* giant) {
 		Grab::GetSingleton().data.erase(giant);
+		this->data.erase(giant);
 	}
 
 	void Grab::SetHolding(Actor* giant, bool decide) {

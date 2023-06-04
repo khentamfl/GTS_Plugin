@@ -517,8 +517,10 @@ namespace Gts {
 		} else if (cause == "HandCrushed") {
 			if (random == 1) {
 				Cprint("{} life was squeezed out in {} grip", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} else if (random <= 2) {
+			} else if (random == 2) {
 				Cprint("{} was crushed between the fingers of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 3) {
+				Cprint("{} was transformed into bloody mist between the fingers of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
 				Cprint("{} has been crushed in the hand of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 6) {
@@ -589,6 +591,21 @@ namespace Gts {
 			} else if (random > 3) {
 				Cprint("{} was turned into nothing", tiny->GetDisplayFullName());
 			}
+		} else if (cause == "BlockDamage") {
+			if (random == 1) {
+				Cprint("{} received too much damage and was automatically crushed in the hands of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 2) {
+				Cprint("{} was crushed from receiving too much damage {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 3) {
+				Cprint("{} stopped to be useful, so he was turned into bloody mist in the hands of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 4) {
+				Cprint("{} took extreme amounts of damage and exploded inside the hands of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random >= 6) {
+				Cprint("{} took a little more damage than intended, so her fingers ended up squeezing {} into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 7) {
+				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			}
+			return;
 		}
 	}
 
