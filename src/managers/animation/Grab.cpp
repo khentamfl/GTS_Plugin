@@ -422,30 +422,31 @@ namespace Gts {
 			if (!bone) {
 				return;
 			}
-			float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-			if (HasSMT(giant)) {
-				sizedifference *= 6.8;
-			}
-			if (tiny->IsDead() || sizedifference < 6.0) {
-				Grab::Release();
-				giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-				AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
-				return;
-			}
-
-			float giantScale = get_visual_scale(giant);
-
-			NiPoint3 giantLocation = giant->GetPosition();
-			NiPoint3 tinyLocation = tiny->GetPosition();
-
-			tiny->SetPosition(bone->world.translate);
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
-				auto charcont = tiny_is_actor->GetCharController();
-				if (charcont) {
-					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+				float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny_is_actor);
+				if (HasSMT(giant)) {
+					sizedifference *= 6.8;
 				}
-			} else {
+				if (tiny_is_actor->IsDead() || sizedifference < 6.0) {
+					Grab::Release(giant);
+					giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+					AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
+					return;
+				}
+
+				float giantScale = get_visual_scale(giant);
+
+				NiPoint3 giantLocation = giant->GetPosition();
+				NiPoint3 tinyLocation = tiny->GetPosition();
+
+				tiny->SetPosition(bone->world.translate);
+				
+					auto charcont = tiny_is_actor->GetCharController();
+					if (charcont) {
+						charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+					}
+				} else {
 				// TODO: Work out method for generic objects
 			}
 
