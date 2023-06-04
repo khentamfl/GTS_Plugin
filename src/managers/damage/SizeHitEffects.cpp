@@ -71,7 +71,7 @@ namespace {
 
 					mod_target_scale(receiver, -0.35 * scale);
 
-					Rumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 0.75, 1.0);
+					Rumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 0.75, 4.0);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 					receiver->NotifyAnimationGraph("staggerStart");

@@ -224,7 +224,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", &data.giant, 1.0, 1.0, "AnimObjectB");
 		sandwichdata.EnableSuffocate(true);
-		Rumble::Once("ThighImpact", &data.giant, 0.4, 0.15, "AnimObjectA");
+		Rumble::Once("ThighImpact", &data.giant, 0.4, 0.15, "AnimObjectA", 1.0);
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 1.0, 1.0);
 			tiny->NotifyAnimationGraph("ragdoll");
@@ -237,7 +237,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", &data.giant, 1.2, 1.0, "AnimObjectA");
 		sandwichdata.EnableSuffocate(true);
-		Rumble::Once("ThighImpact", &data.giant, 0.75, 0.15, "AnimObjectA");
+		Rumble::Once("ThighImpact", &data.giant, 0.75, 0.15, "AnimObjectA", 1.0);
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 2.2, 0.75);
 			ReportCrime(&data.giant, tiny, 25.0, false);
