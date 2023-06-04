@@ -50,8 +50,8 @@ namespace {
 		}
 		log::info("a_damage: {}", a_damage);
 		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.5);
-		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.10);
-		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.10) {
+		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.25);
+		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.25) {
 			CrushManager::Crush(receiver, grabbedActor);
 			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
 			PrintDeathSource(receiver, grabbedActor, "BlockDamage");

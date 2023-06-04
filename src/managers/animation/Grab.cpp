@@ -180,9 +180,10 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(giant, false, 7.0);
 		if (!grabbedActor) {
-			log::info("GrabberActor is null");
+			log::info("GrabbedActor is null");
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-			AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
+			AnimationManager::StartAnim("GrabAbort", giant);
+			Grab::Release(giant);
 		}
 	}
 
