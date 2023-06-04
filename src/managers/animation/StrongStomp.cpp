@@ -86,7 +86,7 @@ namespace {
 		float radius = 1.5;
 		if (HasSMT(giant)) {
 			force *= 24.0;
-			radius = 4.0;
+			radius = 12.0;
 		}
 		Rumble::Once(name, giant, force, 0.05, node, radius);
 	}

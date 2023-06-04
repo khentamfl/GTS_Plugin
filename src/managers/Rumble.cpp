@@ -78,7 +78,7 @@ namespace Gts {
 		std::string node = std::string(nodesv);
 		auto& me = Rumble::GetSingleton();
 		me.data.try_emplace(giant);
-		me.data.at(giant).tags.try_emplace(tag, intensity, duration, halflife, node);
+		me.data.at(giant).tags.try_emplace(tag, intensity, duration, halflife, node, radius);
 		// Reset if alreay there (but don't reset the intensity this will let us smooth into it)
 		me.data.at(giant).tags.at(tag).ChangeTargetIntensity(intensity);
 		me.data.at(giant).tags.at(tag).ChangeDuration(duration);
