@@ -213,7 +213,7 @@ namespace {
 		if (otherActor) {
 			if (!AllowDevourment()) {
 				VoreData.KillAll();
-				Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
+				Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			} else {
 				CallDevourment(&data.giant, otherActor);
 			}
