@@ -162,10 +162,8 @@ namespace {
 			}
 			Rumble::Once("GrabAttack", &data.giant, 4.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, damage * 0.5, 25);
-			if (damage > Health * 1.5) {
+			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
-				giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-				AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
 				Rumble::Once("GrabAttackKill", &data.giant, 8.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (laughtimer.ShouldRun()) {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
@@ -177,9 +175,31 @@ namespace {
 	}
 
 	void GTSGrab_Attack_MoveStop(AnimationEventData& data) {
-		auto& sizemanager = SizeManager::GetSingleton();
 		auto giant = &data.giant;
+		auto& sizemanager = SizeManager::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(giant, false, 7.0);
+		if (!grabbedActor) {
+			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+			AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
+			std::string name = std::format("CancelGTSAnim_{}", giant->formID);
+			TaskManager::Run(name, [=](auto& progressData) {
+				float ticks = 0.0;
+				ticks += 0.1;
+				log::info("Grab task running, ticks: {}", ticks);
+				ActorHandle casterhandle = giant->CreateRefHandle();
+				if (!casterhandle) {
+					return false;
+				}
+				if (ticks >= 20.0) {
+					log::info("Calcelling task, ticks > 20");
+					TaskManager::Cancel(name);
+					return false;
+				}
+				return true;
+			});
+			}
+		}
 	}
 
 ////////////////////////////////////////////////////////////////
@@ -211,9 +231,9 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(&data.giant);		
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
 		if (otherActor) {
+			otherActor->SetAlpha(0.0);
 			if (!AllowDevourment()) {
-				VoreData.KillAll();
-				Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
+				VoreData.Swallow();
 			} else {
 				CallDevourment(&data.giant, otherActor);
 			}
@@ -232,10 +252,12 @@ namespace {
 	}
 
 	void GTSGrab_Eat_Swallow(AnimationEventData& data) {
-		
-		auto otherActor = Grab::GetHeldActor(&data.giant);
 		auto giant = &data.giant;
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
+		VoreData.KillAll();
+		auto otherActor = Grab::GetHeldActor(&data.giant);
         giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);	
+		Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::SetHolding(&data.giant, false);
 		Grab::Release(giant);
