@@ -133,10 +133,12 @@ namespace Gts {
 			//    - Multiple effects can add rumble to the same node
 			//    - We sum those effects up into cummulativeIntensity
 			std::unordered_map<NiAVObject*, float> cummulativeIntensity;
+			float radius = 1.0;
 			for (const auto &[tag, rumbleData]: data.tags) {
 				auto node = find_node(actor, rumbleData.node);
 				if (node) {
 					cummulativeIntensity.try_emplace(node);
+					radius = rumbleData.radius;
 					cummulativeIntensity.at(node) += rumbleData.currentIntensity.value;
 				}
 			}
@@ -152,7 +154,6 @@ namespace Gts {
 				auto& point = node->world.translate;
 				averagePos = averagePos + point*intensity;
 				totalWeight += intensity;
-				float radius = rumbleData.radius;
 
 				float volume = 8 * get_visual_scale(actor)/get_distance_to_camera(point);
 				// Lastly play the sound at each node
