@@ -61,7 +61,9 @@ namespace {
 	void ManageCamera(Actor* giant, bool enable, float type) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (giant->formID == 0x14) {
-			sizemanager.SetActionBool(giant, enable, type);
+			if (AllowFeetTracking()) {
+				sizemanager.SetActionBool(giant, enable, type);
+			}
 		}
 	}
 
