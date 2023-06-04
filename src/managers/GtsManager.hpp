@@ -30,6 +30,7 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;
+			virtual void Start() override;
 
 			// Reapply changes (used after reload events)
 			void reapply(bool force = true);
