@@ -15,16 +15,15 @@ using namespace RE;
 
 namespace Gts {
 
-	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string node, float radius) :
+	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string node) :
 		state(RumpleState::RampingUp),
 		duration(duration),
 		currentIntensity(Spring(0.0, halflife)),
-		radius(radius),
 		node(node),
 		startTime(0.0) {
 	}
 
-	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string_view node, float radius) : RumbleData(intensity, duration, halflife, std::string(node), radius) {
+	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string_view node) : RumbleData(intensity, duration, halflife, std::string(node)) {
 	}
 
 	void RumbleData::ChangeTargetIntensity(float intensity) {
@@ -38,6 +37,9 @@ namespace Gts {
 		this->startTime = 0.0;
 	}
 
+	void RumbleData::ChangeRadius(float radius) {
+		this->radius = radius;
+ }
 	ActorRumbleData::ActorRumbleData()  : delay(Timer(0.40)) {
 	}
 
@@ -80,6 +82,7 @@ namespace Gts {
 		// Reset if alreay there (but don't reset the intensity this will let us smooth into it)
 		me.data.at(giant).tags.at(tag).ChangeTargetIntensity(intensity);
 		me.data.at(giant).tags.at(tag).ChangeDuration(duration);
+		me.data.at(giant).tags.at(tag).ChangeRadius(radius);
 	}
 
 	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node, float radius) {
