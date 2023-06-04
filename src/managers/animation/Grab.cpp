@@ -122,9 +122,9 @@ namespace {
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (0.025 * sd) * power * additionaldamage;
+			float damage = (0.225 * sd) * power * additionaldamage;
 			if (HasSMT(giant)) {
-				damage *= 3.0;
+				damage *= 2.0;
 				bonus = 2.5;
 			}
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
