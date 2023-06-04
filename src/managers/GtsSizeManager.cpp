@@ -37,7 +37,7 @@ namespace {
 			DamageAV(player, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			Grow(player, 0.0010 * stamina, 0.0);
 			float Volume = clamp(0.10, 2.0, get_visual_scale(player)/10);
-			Rumble::Once("TotalControl", player, scale/10, 0.05);
+			Rumble::Once("TotalControl", player, scale/10, 0.05, 1.0);
 			static Timer timergrowth = Timer(2.00);
 			if (timergrowth.ShouldRun()) {
 				Runtime::PlaySound("growthSound", player, Volume, 0.0);
@@ -52,7 +52,7 @@ namespace {
 			DamageAV(player, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			ShrinkActor(player, 0.0010 * stamina, 0.0);
 			float Volume = clamp(0.05, 2.0, get_visual_scale(player)/10);
-			Rumble::Once("TotalControl", player, scale/14, 0.05);
+			Rumble::Once("TotalControl", player, scale/14, 0.05, 1.0);
 			static Timer timergrowth = Timer(2.00);
 			if (timergrowth.ShouldRun()) {
 				Runtime::PlaySound("shrinkSound", player, Volume, 0.0);
@@ -72,7 +72,7 @@ namespace {
 					DamageAV(player, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					Grow(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
-					Rumble::Once("TotalControlOther", actor, 0.25, 0.05);
+					Rumble::Once("TotalControlOther", actor, 0.25, 0.05, 1.0);
 					static Timer timergrowth = Timer(2.00);
 					if (timergrowth.ShouldRun()) {
 						Runtime::PlaySound("growthSound", actor, Volume, 0.0);
@@ -94,7 +94,7 @@ namespace {
 					DamageAV(player, ActorValue::kMagicka, 0.10 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					ShrinkActor(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/10);
-					Rumble::Once("TotalControlOther", actor, 0.20, 0.05);
+					Rumble::Once("TotalControlOther", actor, 0.20, 0.05, 1.0);
 					static Timer timergrowth = Timer(2.00);
 					if (timergrowth.ShouldRun()) {
 						Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);

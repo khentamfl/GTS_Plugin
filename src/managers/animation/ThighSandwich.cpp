@@ -140,7 +140,7 @@ namespace {
 	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: L_LEG_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name, 1.0);
 		}
 	}
 
@@ -154,7 +154,7 @@ namespace {
 	void StartLeftLegRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: L_LEG_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name, 1.0);
 		}
 	}
 

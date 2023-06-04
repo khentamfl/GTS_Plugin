@@ -169,7 +169,7 @@ namespace Gts {
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest();
 					}
-					Rumble::Once("CrushRumble", tiny, 1.4, 0.15);
+					Rumble::Once("CrushRumble", tiny, 1.4, 0.15, 1.0);
 					if (giant->formID == 0x14) {
 						TriggerScreenBlood(1);
 					}

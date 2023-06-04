@@ -104,7 +104,7 @@ namespace Gts {
 
 				Runtime::PlaySound("ClothTearSound", player, 1.0, 1.0);
 				Runtime::PlaySoundAtNode("MoanSound", player, 1.0, 1.0, "NPC Head [Head]");
-				Rumble::Once("ClothManager", player, 32 * scale, 0.05);
+				Rumble::Once("ClothManager", player, 32 * scale, 0.05, 1.0);
 				log::info("Cloth Tearing Success. Threshold: {}, count: {}, Unequipped Armor: {}", this->clothtearthreshold, this->clothtearcount, ArmorSlot->GetFullName());
 			}
 		}

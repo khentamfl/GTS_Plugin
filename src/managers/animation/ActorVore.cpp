@@ -109,9 +109,9 @@ namespace {
 		for (auto& node_name: BODY_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
 			if (!once) {
-				Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+				Rumble::Start(rumbleName, &actor, power,  halflife, node_name, 1.0);
 			} else {
-				Rumble::Once(rumbleName, &actor, power, halflife, node_name);
+				Rumble::Once(rumbleName, &actor, power, halflife, node_name, 1.0);
 			}
 		}
 	}
@@ -119,26 +119,26 @@ namespace {
 	void StartRHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: RHAND_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name, 1.0);
 		}
 	}
 
 	void StartLHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LHAND_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name, 1.0);
 		}
 	}
 
 	void StopRHandRumble(std::string_view tag, Actor& actor) {
 		for (auto& node_name: RHAND_RUMBLE_NODES) {
-			std::string rumbleName = std::format("{}{}", tag, node_name);
+			std::string rumbleName = std::format("{}{}", tag, node_name, 1.0);
 			Rumble::Stop(rumbleName, &actor);
 		}
 	}
 	void StopLHandRumble(std::string_view tag, Actor& actor) {
 		for (auto& node_name: RHAND_RUMBLE_NODES) {
-			std::string rumbleName = std::format("{}{}", tag, node_name);
+			std::string rumbleName = std::format("{}{}", tag, node_name, 1.0);
 			Rumble::Stop(rumbleName, &actor);
 		}
 	}
@@ -191,7 +191,7 @@ namespace {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
 		}
 		VoreData.AllowToBeVored(false);
-		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
+		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode, 1.0);
 		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode, 1.0);
 		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.35);
 	}
@@ -327,7 +327,7 @@ namespace {
 	}
 
 	void GTSvore_impactRS(AnimationEventData& data) {
-		Rumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
+		Rumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode, 1.0);
 		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode, 1.0);
 		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.35);
 	}

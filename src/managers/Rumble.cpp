@@ -15,15 +15,16 @@ using namespace RE;
 
 namespace Gts {
 
-	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string node) :
+	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string node, float radius) :
 		state(RumpleState::RampingUp),
 		duration(duration),
 		currentIntensity(Spring(0.0, halflife)),
+		radius(radius),
 		node(node),
 		startTime(0.0) {
 	}
 
-	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string_view node) : RumbleData(intensity, duration, halflife, std::string(node)) {
+	RumbleData::RumbleData(float intensity, float duration, float halflife, std::string_view node, float radius) : RumbleData(intensity, duration, halflife, std::string(node), radius) {
 	}
 
 	void RumbleData::ChangeTargetIntensity(float intensity) {
@@ -56,11 +57,11 @@ namespace Gts {
 		this->data.erase(actor);
 	}
 
-	void Rumble::Start(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node) {
-		Rumble::For(tag, giant, intensity, halflife, node, 0);
+	void Rumble::Start(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node, float radius) {
+		Rumble::For(tag, giant, intensity, halflife, node, 0, radius);
 	}
-	void Rumble::Start(std::string_view tag, Actor* giant, float intensity, float halflife) {
-		Rumble::For(tag, giant, intensity, halflife, "NPC COM [COM ]", 0);
+	void Rumble::Start(std::string_view tag, Actor* giant, float intensity, float halflife, float radius) {
+		Rumble::For(tag, giant, intensity, halflife, "NPC COM [COM ]", 0, radius);
 	}
 	void Rumble::Stop(std::string_view tagsv, Actor* giant) {
 		string tag = std::string(tagsv);
@@ -70,7 +71,7 @@ namespace Gts {
 		} catch (std::out_of_range e) {}
 	}
 
-	void Rumble::For(std::string_view tagsv, Actor* giant, float intensity, float halflife, std::string_view nodesv, float duration) {
+	void Rumble::For(std::string_view tagsv, Actor* giant, float intensity, float halflife, std::string_view nodesv, float duration, float radius) {
 		std::string tag = std::string(tagsv);
 		std::string node = std::string(nodesv);
 		auto& me = Rumble::GetSingleton();
@@ -81,12 +82,12 @@ namespace Gts {
 		me.data.at(giant).tags.at(tag).ChangeDuration(duration);
 	}
 
-	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node) {
+	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node, float radius) {
 		Rumble::For(tag, giant, intensity, halflife, node, 1.0);
 	}
 
-	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife) {
-		Rumble::Once(tag, giant, intensity, halflife, "NPC Root [Root]");
+	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife, float radius) {
+		Rumble::Once(tag, giant, intensity, halflife, "NPC Root [Root]", radius);
 	}
 
 
@@ -161,7 +162,7 @@ namespace Gts {
 			}
 			//log::info("Anim speed for {} is {}", actor->GetDisplayFullName(), animspeed);
 			averagePos = averagePos * (1.0 / totalWeight);
-			ApplyShakeAtPoint(actor, 0.4 * totalWeight * animspeed, averagePos, 1.0);
+			ApplyShakeAtPoint(actor, 0.4 * totalWeight * animspeed, averagePos, 1.0, radius);
 		}
 	}
 	//}

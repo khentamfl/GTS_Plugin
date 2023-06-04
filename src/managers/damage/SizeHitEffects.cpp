@@ -53,7 +53,7 @@ namespace {
 		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.25);
 		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.25) {
 			CrushManager::Crush(receiver, grabbedActor);
-			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
+			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]", 1.0);
 			PrintDeathSource(receiver, grabbedActor, "BlockDamage");
 			Grab::Release(receiver);
 		}
@@ -71,7 +71,7 @@ namespace {
 
 					mod_target_scale(receiver, -0.35 * scale);
 
-					Rumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 0.75);
+					Rumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 0.75, 1.0);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 					receiver->NotifyAnimationGraph("staggerStart");
@@ -112,7 +112,7 @@ namespace {
 		if (IsFirstPerson()) {
 			value *= 0.05;
 		}
-		Rumble::Once("HitGrowth", receiver, value, 0.15);
+		Rumble::Once("HitGrowth", receiver, value, 0.15, 1.0);
 	}
 }
 

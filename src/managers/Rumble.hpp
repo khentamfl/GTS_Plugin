@@ -20,13 +20,14 @@ namespace Gts {
 	// Holds rumble data
 	class RumbleData {
 		public:
-			RumbleData(float intensity, float duration, float halflife, std::string node);
-			RumbleData(float intensity, float duration, float halflife, std::string_view node);
+			RumbleData(float intensity, float duration, float halflife, std::string node, float radius);
+			RumbleData(float intensity, float duration, float halflife, std::string_view node, float radius);
 			void ChangeTargetIntensity(float intensity);
 			void ChangeDuration(float duration);
 
 			RumpleState state;
 			float duration; // Value of 0 means keep going until stopped
+			float radius;
 			Spring currentIntensity;
 			std::string node;
 			double startTime;
@@ -53,21 +54,21 @@ namespace Gts {
 			virtual void Update() override;
 
 			// Use this to start a rumble.
-			static void Start(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node);
+			static void Start(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node, float radius);
 			// Use this to start a rumble. Without Node name will happen at NPC Root Node
-			static void Start(std::string_view tag, Actor* giant, float intensity, float halflife);
+			static void Start(std::string_view tag, Actor* giant, float intensity, float halflife, float radius);
 			// Use this to stop a rumble. The tag must be the same as given in start
 			static void Stop(std::string_view tag, Actor* giant);
 
 			// Same as Start except with a duration (can still use Stop to end it early)
-			static void For(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node, float duration);
+			static void For(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node, float duration, float radius);
 
 			// A quick rumble. This should be a short instance like a single stomp. May not be for one frame but will be short
 			// - To Sermit: This is currently set to 1.0s but can tinker with it
-			static void Once(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node);
+			static void Once(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node, float radius);
 
 			// Without node name will happen at NPC Root Node
-			static void Once(std::string_view tag, Actor* giant, float intensity, float halflife);
+			static void Once(std::string_view tag, Actor* giant, float intensity, float halflife, float radius);
 		private:
 			std::unordered_map<Actor*, ActorRumbleData> data;
 	};
