@@ -479,7 +479,6 @@ namespace Gts {
 
 	void Grab::Release(Actor* giant) {
 		Grab::GetSingleton().data.erase(giant);
-		this->data.erase(giant);
 	}
 
 	void Grab::SetHolding(Actor* giant, bool decide) {
