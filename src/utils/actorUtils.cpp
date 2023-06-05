@@ -209,8 +209,8 @@ namespace Gts {
 	}
 
 	bool IsEquipBusy(Actor* actor) {
-		int StateID;
-		int State = actor->GetGraphVariableInt("currentDefaultState", StateID);
+		int State;
+		actor->GetGraphVariableInt("currentDefaultState", State);
 		if (State == 10 || State == 11 || State == 12 || State == 13) {
 			return true;
 		}

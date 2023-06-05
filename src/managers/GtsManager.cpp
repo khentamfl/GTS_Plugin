@@ -35,9 +35,9 @@ namespace {
 		int StateID;
 		int GTSStateID;
 
-		int State = giant->GetGraphVariableInt("currentDefaultState", StateID);
-		int ExpectedState = giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
-		log::info("StateID: {}, GTSStateID:{}, State: {}, ExpectedState: {}", StateID, GTSStateID, State, ExpectedState);
+		giant->GetGraphVariableInt("currentDefaultState", StateID);
+		giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
+		log::info("StateID: {}, GTSStateID:{}", StateID, GTSStateID);
 		if (GTSStateID != StateID) {
 			log::info("Setting Grab Int to {}", StateID);
 			giant->SetGraphVariableInt("GTS_Def_State", StateID);
