@@ -70,7 +70,8 @@ namespace {
 					attacker->NotifyAnimationGraph("staggerStart");
 
 					mod_target_scale(receiver, -0.35 * scale);
-					Task_ApplyShakeAtNode("CheatDeath", receiver, 16.0, "NPC COM [COM ]", 24.0, 0.75);
+					std::string name = std::format("CheatDeath_{}", receiver->formID);
+					Task_ApplyShakeAtNode(name, receiver, 16.0, "NPC COM [COM ]", 24.0, 0.75);
 					//Rumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 0.75);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor

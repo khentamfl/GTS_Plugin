@@ -132,7 +132,7 @@ namespace {
 			force *= 12.0;
 			radius = 12.0;
 		}
-		Rumble::Once(name, giant, force, 0.05, node);
+		//Rumble::Once(name, giant, force, 0.05, node);
 		Task_ApplyShakeAtNode(name, giant, force, node, radius, 0.10);
 	}
 
@@ -207,7 +207,8 @@ namespace {
 			SMT = 1.6; // Larger Dust
 			damage = 2.0;
 		}
-		DoImpactRumble(&data.giant, data.animSpeed * 2, RNode, "HeavyStompR");
+		std::string name = std::format("HeavyStompR_{}", &data.giant->formID);
+		DoImpactRumble(&data.giant, data.animSpeed * 2, RNode, name);
 		DoSounds(&data.giant, data.animSpeed - 0.5, RNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode, SMT);
@@ -224,7 +225,8 @@ namespace {
 			SMT = 1.6; // Larger Dust
 			damage = 2.0;
 		}
-		DoImpactRumble(&data.giant, data.animSpeed * 2, LNode, "HeavyStompL");
+		std::string name = std::format("HeavyStompL_{}", &data.giant->formID);
+		DoImpactRumble(&data.giant, data.animSpeed * 2, LNode, name);
 		DoSounds(&data.giant, data.animSpeed - 0.5, LNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode, SMT);
