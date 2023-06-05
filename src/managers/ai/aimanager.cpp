@@ -129,8 +129,10 @@ namespace Gts {
 			for (auto actor: find_actors()) {
 				std::vector<Actor*> AbleToAct = {};
 				for (auto actor: find_actors()) {
-					if (actor->formID != 0x14 && (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
-						AbleToAct.push_back(actor);
+					if (IsTeammate(actor) && actor->formID != 0x14) {
+						if (actor->IsInCombat() || !persist.vore_combatonly) {
+							AbleToAct.push_back(actor);
+						}
 					}
 				}
 				if (!AbleToAct.empty()) {
