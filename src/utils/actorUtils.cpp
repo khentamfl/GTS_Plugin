@@ -257,14 +257,14 @@ namespace Gts {
 
 	void Task_ApplyShakeAtNode(std::string_view name, Actor* caster, float modifier, std::string_view nodesv, float radius, float duration) {
 			TaskManager::RunFor(duration, [=](auto& progressData){
-				ActorHandle casterhandle = giant->CreateRefHandle();
+				ActorHandle casterhandle = caster->CreateRefHandle();
 				if (!casterHandle) {
 					return false;
 				}
-				auto caster = casterHandle.get().get();
-				auto node = find_node(caster, nodesv);
+				auto giant = casterHandle.get().get();
+				auto node = find_node(giant, nodesv);
 				if (node) { 
-					ApplyShakeAtPoint(caster, modifier, node->world.translate, radius);
+					ApplyShakeAtPoint(giant, modifier, node->world.translate, radius);
 				}
 				return true;
 			});
