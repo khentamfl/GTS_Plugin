@@ -188,7 +188,7 @@ namespace Gts {
 			return;
 		}
         if (HasSMT(pred)) {
-			float expected = 6.0f;
+			float expected = 7.0f;
 			float predscale = get_target_scale(pred);
 			float preyscale = get_target_scale(prey);
             float sizedifference = predscale/preyscale;

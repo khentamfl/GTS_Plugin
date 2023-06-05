@@ -62,6 +62,7 @@ namespace Gts {
 			bool dragon_was_eaten = false;
 			bool can_be_vored = true;
 			bool being_held = false;
+			bool about_to_be_eaten = false;
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
@@ -86,6 +87,7 @@ namespace Gts {
 			result.can_do_vore = can_do_vore;
 			result.can_be_crushed = can_be_crushed;
 			result.being_held = being_held;
+			result.about_to_be_eaten = about_to_be_eaten;
 			result.dragon_was_eaten = dragon_was_eaten;
 			result.can_be_vored = can_be_vored;
 

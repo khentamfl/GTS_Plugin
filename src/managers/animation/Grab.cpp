@@ -215,6 +215,10 @@ namespace {
 
 	void GTSGrab_Eat_OpenMouth(AnimationEventData& data) {
 		auto giant = &data.giant;
+		auto otherActor = Grab::GetHeldActor(&data.giant);
+		if (otherActor) {
+			SetBeingEaten(otherActor, true);
+		}
 		AdjustFacialExpression(giant, 0, 1.0, "phenome"); // Start opening mouth
 		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
 
@@ -251,6 +255,7 @@ namespace {
 		auto giant = &data.giant;
 		auto otherActor = Grab::GetHeldActor(&data.giant);	
 		if (otherActor) {
+			SetBeingEaten(otherActor, false);
 			auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
 			VoreData.KillAll();
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);	
@@ -438,13 +443,15 @@ namespace Gts {
 			if (!this->GetHolding(giant)) {
 				return;
 			}
-
-			auto bone = find_node(giant, "AnimObjectA");
-			if (!bone) {
-				return;
-			}
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
+				auto bone = find_node(giant, "NPC L Finger02 [LF02]");
+				if (IsBeingEaten(tiny_is_actor)) {
+					bone = find_node(giant, "AnimObjectA");
+				}
+				if (!bone) {
+					return;
+				}
 				float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny_is_actor);
 				if (HasSMT(giant)) {
 					sizedifference += 6.0;

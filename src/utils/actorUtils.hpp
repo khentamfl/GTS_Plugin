@@ -47,6 +47,11 @@ namespace Gts {
 	bool AllowDevourment();
 	bool AllowFeetTracking();
 	bool IsBeingHeld(Actor* tiny);
+	void SetHeld(Actor* tiny, bool decide);
+
+	void SetBeingEaten(Actor* tiny, bool decide);
+	bool IsBeingEaten(Actor* tiny);
+
 	bool IsGtsBusy(Actor* actor);
 	bool IsTeammate(Actor* actor);
 
@@ -61,7 +66,6 @@ namespace Gts {
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node, float scale_override);
 	void SpawnParticle(Actor* actor, float lifetime, const char* modelName, const NiMatrix3& rotation, const NiPoint3& position, float scale, std::uint32_t flags, NiAVObject* target);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage);
-	void SetHeld(Actor* tiny, bool decide);
 	bool HasSMT(Actor* giant);
 	void TiredSound(Actor* player, std::string_view message);
 
