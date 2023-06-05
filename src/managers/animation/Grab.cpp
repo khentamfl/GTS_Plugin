@@ -436,7 +436,7 @@ namespace Gts {
 				return;
 			}
 
-			auto bone = find_node(giant, "AnimObjectB");
+			auto bone = find_node(giant, "AnimObjectA");
 			if (!bone) {
 				return;
 			}
@@ -447,10 +447,11 @@ namespace Gts {
 					sizedifference += 6.0;
 				}
 				if (tiny_is_actor->IsDead() || sizedifference < 6.0) {
-					Grab::Release(giant);
+					Grab::Release(giant); // Clear data.
 					log::info("{} is small/dead", tiny_is_actor->GetDisplayFullName());
-					giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-					AnimationManager::StartAnim("GrabAbort", giant);
+					giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
+					AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
+					ManageCamera(giant, false, 7.0); // Disable any camera edits
 					return;
 				}
 
