@@ -189,9 +189,13 @@ namespace Gts {
 		}
         if (HasSMT(pred)) {
 			float expected = 6.0;
-            float sizedifference = get_target_scale(prey)/get_target_scale(pred);
+			float predscale = get_target_scale(pred);
+			float preyscale = get_target_scale(prey);
+            float sizedifference = predscale/preyscale;
+			float shrink = std::clamp(predscale/expected, preyscale/expected, 0.96);
 			if (sizedifference < expected) {
-            	mod_target_scale(prey, -(sizedifference/expected));
+            	mod_target_scale(prey, -shrink);
+				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);
 			}
         }
 		Grab::GetSingleton().GrabActor(pred, prey);

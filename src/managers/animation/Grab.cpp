@@ -436,7 +436,7 @@ namespace Gts {
 				return;
 			}
 
-			auto bone = find_node(giant, "NPC L Finger02 [LF02]");
+			auto bone = find_node(giant, "AnimObjectA");
 			if (!bone) {
 				return;
 			}
