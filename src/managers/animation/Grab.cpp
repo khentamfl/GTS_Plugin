@@ -445,10 +445,11 @@ namespace Gts {
 			}
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
-				auto bone = find_node(giant, "NPC L Finger02 [LF02]");
+				std::string_view bonename = "NPC L Finger02 [LF02]";
 				if (IsBeingEaten(tiny_is_actor)) {
-					bone = find_node(giant, "AnimObjectA");
+					bonename = "AnimObjectA";
 				}
+				auto bone = find_node(giant, bonename);
 				if (!bone) {
 					return;
 				}

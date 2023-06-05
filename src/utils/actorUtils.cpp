@@ -350,7 +350,7 @@ namespace Gts {
 	}
 
 	bool IsBeingEaten(Actor* tiny) {
-		auto transient = Transiet::GetSingleton().GetData(tiny);
+		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient){
 			return transient->about_to_be_eaten;
 		}	
