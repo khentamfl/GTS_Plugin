@@ -130,7 +130,7 @@ namespace {
 		float radius = 1.25;
 		if (HasSMT(giant)) {
 			force *= 12.0;
-			radius = 4.0;
+			radius = 12.0;
 		}
 		Rumble::Once(name, giant, force, 0.05, node);
 		Task_ApplyShakeAtNode(name, giant, force, node, radius, 0.10);
