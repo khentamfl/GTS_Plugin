@@ -154,6 +154,7 @@ namespace {
 		
 		static Timer laughtimer = Timer(6.0);
 		if (grabbedActor) {
+			StartCombat(giant, grabbedActor, true); // force combat
 			float sd = get_visual_scale(giant)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
@@ -178,6 +179,7 @@ namespace {
 			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
 				Rumble::Once("GrabAttackKill", &data.giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
+				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				if (laughtimer.ShouldRun()) {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
 				}
