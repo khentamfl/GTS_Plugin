@@ -327,14 +327,14 @@ namespace Gts {
 		return Persistent::GetSingleton().allow_feetracking;
 	}
 
-	void SetHeld(Actor* tiny, bool decide) {
+	void SetBeingHeld(Actor* tiny, bool decide) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {
 			transient->being_held = decide;
 		}
 	}
 
-	bool SetBeingHeld(Actor* tiny) {
+	bool IsBeingHeld(Actor* tiny) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {
 			return transient->being_held;

@@ -120,7 +120,7 @@ namespace {
 		ManageCamera(&data.giant, true, 7.0);
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
-			SetHeld(grabbedActor, true);
+			SetBeingHeld(grabbedActor, true);
 		}
 	}
 
@@ -180,7 +180,7 @@ namespace {
 				}
 				PrintDeathSource(giant, grabbedActor, "HandCrushed");
 				Grab::Release(giant);
-				SetHeld(grabbedActor, false);
+				SetBeingHeld(grabbedActor, false);
 			}
 		}
 	}
@@ -262,7 +262,7 @@ namespace {
 			Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			ManageCamera(&data.giant, false, 7.0);
 			Grab::SetHolding(&data.giant, false);
-			SetHeld(otherActor, false);
+			SetBeingHeld(otherActor, false);
 			Grab::Release(giant);
 		}
 		ToggleEmotionEdit(giant, false);
@@ -319,7 +319,7 @@ namespace {
 		auto giant = &data.giant;
 		auto otherActor = Grab::GetHeldActor(&data.giant);	
 		if (otherActor) {
-			SetHeld(otherActor, false);
+			SetBeingHeld(otherActor, false);
 		}
         giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		ManageCamera(giant, false, 7.0);
