@@ -255,6 +255,22 @@ namespace Gts {
 		}
 	}
 
+	void Task_ApplyShakeAtNode(std::string_view name, Actor* caster, float modifier, std::string_view nodesv, float radius, float duration) {
+			TaskManager::RunFor(duration, [=](auto& progressData){
+				ActorHandle casterhandle = giant->CreateRefHandle();
+				if (!casterHandle) {
+					return false;
+				}
+				auto caster = casterHandle.get().get();
+				auto node = find_node(caster, nodesv);
+				if (node) { 
+					ApplyShakeAtPoint(caster, modifier, node->world.translate, radius);
+				}
+				return true;
+			});
+		}
+	}
+
 	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords, float radius) {
 		if (!caster) {
 			return;
@@ -265,7 +281,7 @@ namespace Gts {
 			return;
 		}
 
-		float distance = get_distance_to_camera(coords);
+		float distance = get_distance_to_camera(coords)/radius;
 		float sourcesize = get_visual_scale(caster);
 		float receiversize = get_visual_scale(receiver);
 		float sizedifference = sourcesize/receiversize;

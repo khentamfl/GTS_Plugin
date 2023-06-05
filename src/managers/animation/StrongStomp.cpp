@@ -127,10 +127,13 @@ namespace {
 	}
 
 	void DoImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
+		float radius = 1.25;
 		if (HasSMT(giant)) {
 			force *= 12.0;
+			radius = 4.0;
 		}
 		Rumble::Once(name, giant, force, 0.05, node);
+		Task_ApplyShakeAtNode(name, giant, force, node, radius, 0.10);
 	}
 
 	void DoSounds(Actor* giant, float animspeed, std::string_view feet) {
@@ -248,6 +251,8 @@ namespace {
 		TrackFeet(&data.giant, 5.0, false);
 	}
 	void GTS_StrongStomp_End(AnimationEventData& data) {
+		StopLegRumble("StrongStompR", data.giant, "Right");
+		StopLegRumble("StrongStompL", data.giant, "Left");
 	}
 
 
