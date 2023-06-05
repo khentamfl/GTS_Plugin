@@ -188,11 +188,11 @@ namespace Gts {
 			return;
 		}
         if (HasSMT(pred)) {
-			float expected = 6.0;
+			float expected = 6.0f;
 			float predscale = get_target_scale(pred);
 			float preyscale = get_target_scale(prey);
             float sizedifference = predscale/preyscale;
-			float shrink = std::clamp(predscale/expected, preyscale/expected, 0.96);
+			float shrink = std::clamp(predscale/expected, preyscale/expected, 0.96f);
 			if (sizedifference < expected) {
             	mod_target_scale(prey, -shrink);
 				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);
