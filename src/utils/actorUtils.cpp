@@ -281,12 +281,13 @@ namespace Gts {
 			return;
 		}
 
-		float distance = get_distance_to_camera(coords)/radius;
+		float distance = get_distance_to_camera(coords);
 		float sourcesize = get_visual_scale(caster);
 		float receiversize = get_visual_scale(receiver);
 		float sizedifference = sourcesize/receiversize;
 		if (caster->formID == 0x14) {
 			sizedifference = sourcesize;
+			log::info("Radius: {}, distance {}, distance/radius: {}", radius, distance, distance/radius);
 		}
 
 
@@ -314,6 +315,7 @@ namespace Gts {
 			float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
 			intensity = std::clamp(intensity, 0.0f, 1e8f);
 			duration = std::clamp(duration, 0.0f, 1.2f);
+			
 
 			shake_controller(intensity*modifier, intensity*modifier, duration);
 			shake_camera_at_node(coords, intensity*modifier, duration);
