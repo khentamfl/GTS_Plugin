@@ -401,8 +401,8 @@ namespace Gts {
 							AdjustSizeLimit(0.0260, giant);
 							AdjustMassLimit(0.0106, giant);
 						}
-						Rumble::Once("GrowthRumble", giant, 2.45, 0.30, 1.0);
-						Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05, 1.0);
+						Rumble::Once("GrowthRumble", giant, 2.45, 0.30);
+						Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
 						if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
 							Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 						}

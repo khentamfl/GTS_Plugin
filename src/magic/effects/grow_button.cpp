@@ -33,6 +33,6 @@ namespace Gts {
 		float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 		DamageAV(caster, ActorValue::kStamina, 0.45 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
 		Grow(caster, 0.0030 * stamina, 0.0);
-		Rumble::Once("GrowButton", caster, 1.0, 0.05, 1.0);
+		Rumble::Once("GrowButton", caster, 1.0, 0.05);
 	}
 }

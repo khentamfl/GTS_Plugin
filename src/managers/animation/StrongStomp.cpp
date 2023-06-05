@@ -83,12 +83,10 @@ namespace {
 	}
 
 	void ImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
-		float radius = 1.5;
 		if (HasSMT(giant)) {
-			force *= 24.0;
-			radius = 12.0;
+			force *= 12.0;
 		}
-		Rumble::Once(name, giant, force, 0.05, node, radius);
+		Rumble::Once(name, giant, force, 0.05, node);
 	}
 
 	float GetPerkBonus(Actor* Giant) {
@@ -103,12 +101,12 @@ namespace {
 		if (type == "Left") {
 			for (auto& node_name: L_LEG_RUMBLE_NODES) {
 				std::string rumbleName = std::format("{}{}", tag, node_name);
-				Rumble::Start(rumbleName, &actor, power,  halflife, node_name, 1.0);
+				Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
 			}
 		} else if (type == "Right") {
 			for (auto& node_name: R_LEG_RUMBLE_NODES) {
 				std::string rumbleName = std::format("{}{}", tag, node_name);
-				Rumble::Start(rumbleName, &actor, power,  halflife, node_name, 1.0);
+				Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
 			}
 		}
 	}
@@ -144,7 +142,7 @@ namespace {
 		Runtime::PlaySoundAtNode("HeavyStompSound", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
 		Runtime::PlaySoundAtNode("xlFootstepR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
 		Runtime::PlaySoundAtNode("xlRumbleR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
-		Rumble::Once(tag, giant, 14.0 * (bonus * bonus * bonus) * animspeed, 0.05, feet, 1.0);
+		Rumble::Once(tag, giant, 14.0 * (bonus * bonus * bonus) * animspeed, 0.05, feet);
 	}
 
 	void GTS_StrongStomp_Start(AnimationEventData& data) {

@@ -20,8 +20,8 @@ namespace Gts {
 	// Holds rumble data
 	class RumbleData {
 		public:
-			RumbleData(float intensity, float duration, float halflife, std::string node, float radius);
-			RumbleData(float intensity, float duration, float halflife, std::string_view node, float radius);
+			RumbleData(float intensity, float duration, float halflife, std::string node);
+			RumbleData(float intensity, float duration, float halflife, std::string_view node);
 			void ChangeTargetIntensity(float intensity);
 			void ChangeDuration(float duration);
 			void ChangeRadius(float radius);

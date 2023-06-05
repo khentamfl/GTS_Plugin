@@ -100,21 +100,21 @@ namespace {
 	void LegRumbleOnce(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Once(rumbleName, &actor, power,  halflife, node_name, 1.0);
+			Rumble::Once(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
 	void StartLegRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name, 1.0);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
 	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: BODY_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name, 1.0);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
@@ -200,7 +200,7 @@ namespace {
 		float volume = scale * 0.10 * speed;
 		float perk = GetPerkBonus(&data.giant);
 
-		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode, 1.0);
+		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode, 1.0);
 		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
@@ -213,7 +213,7 @@ namespace {
 		float volume = scale * 0.10 * speed;
 		float perk = GetPerkBonus(&data.giant);
 
-		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode, 1.0);
+		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode, 1.0);
 		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
@@ -226,7 +226,7 @@ namespace {
 		float volume = scale * 0.05 * speed;
 		float perk = GetPerkBonus(&data.giant);
 
-		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode, 1.0);
+		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoSizeEffect(&data.giant, 0.40, FootEvent::Right, RNode, 1.0);
 		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;

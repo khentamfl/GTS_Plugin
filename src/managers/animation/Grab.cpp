@@ -170,11 +170,11 @@ namespace {
 					SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, get_visual_scale(grabbedActor), 4, root);
 				}
 			}
-			Rumble::Once("GrabAttack", &data.giant, 4.0 * bonus, 0.15, "NPC L Hand [LHnd]", 1.0);
+			Rumble::Once("GrabAttack", &data.giant, 4.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, damage * 0.5, 25);
 			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
-				Rumble::Once("GrabAttackKill", &data.giant, 8.0 * bonus, 0.15, "NPC L Hand [LHnd]", 1.0);
+				Rumble::Once("GrabAttackKill", &data.giant, 8.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (laughtimer.ShouldRun()) {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
 				}
@@ -285,7 +285,7 @@ namespace {
 			launch = 1.5;
 			dust = 1.25;
 		}
-		Rumble::Once("StompR", &data.giant, 1.50 * shake, 0.0, RNode, 1.0);
+		Rumble::Once("StompR", &data.giant, 1.50 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 0.9 * data.animSpeed, FootEvent::Right, RNode, dust);
 		DoLaunch(&data.giant, 0.8 * launch, 1.75, RNode);
@@ -301,7 +301,7 @@ namespace {
 			launch = 1.5;
 			dust = 1.25;
 		}
-		Rumble::Once("StompL", &data.giant, 1.50 * shake, 0.0, LNode, 1.0);
+		Rumble::Once("StompL", &data.giant, 1.50 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 0.9 * data.animSpeed, FootEvent::Left, LNode, dust);
 		DoLaunch(&data.giant, 0.8 * launch * perk, 1.75, LNode);

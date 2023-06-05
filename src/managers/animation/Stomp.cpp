@@ -83,7 +83,7 @@ namespace {
 		}
 		DrainStamina(&data.giant, true, 1.0);
 		TrackFeet(&data.giant, 6, true);
-		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode, 1.0);
+		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 		log::info("StompStartR true");
 	}
 
@@ -96,7 +96,7 @@ namespace {
 		}
 		DrainStamina(&data.giant, true, 1.0);
 		TrackFeet(&data.giant, 5, true);
-		Rumble::Start("StompL", &data.giant, 0.45, 0.15, LNode, 1.0); // Start stonger effect
+		Rumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
 		log::info("StompStartL true");
 	}
 
@@ -110,7 +110,7 @@ namespace {
 			launch = 1.5;
 			dust = 1.25;
 		}
-		Rumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode, 1.0);
+		Rumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode, dust);
 		DoLaunch(&data.giant, 1.0 * launch, 2.25, RNode);
@@ -127,7 +127,7 @@ namespace {
 			launch = 1.5;
 			dust = 1.25;
 		}
-		Rumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode, 1.0);
+		Rumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode, dust);
 		DoLaunch(&data.giant, 1.0 * launch * perk, 2.25, LNode);
@@ -143,7 +143,7 @@ namespace {
 			bonus = 2.0;
 			dust = 1.25;
 		}
-		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode, 1.0);
+		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode, dust);
 		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, RNode);
@@ -158,7 +158,7 @@ namespace {
 			bonus = 2.0;
 			dust = 1.25;
 		}
-		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode, 1.0);
+		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
 		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode, dust);
 		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, LNode);
