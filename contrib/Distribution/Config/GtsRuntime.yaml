@@ -29,6 +29,8 @@ sounds:
   ThighSandwichImpact: "GTS.esp|582B49"
   HeavyStompSound: "GTS.esp|596F4E"
   ShrinkToNothingSound: "GTS.esp|5BA659"
+  CrunchImpactSound: "GTS.esp|5D8C5C"
+  CrunchKillSound: "GTS.esp|5D8C5D"
 
 
 spellEffects:

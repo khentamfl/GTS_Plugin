@@ -172,9 +172,13 @@ namespace {
 			}
 			Rumble::Once("GrabAttack", &data.giant, 4.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, damage * 0.5, 25);
+			if (damage < health) {
+				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 0.1 * damage/20, 0.0, "NPC L Hand [LHnd]");
+			}
 			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
 				Rumble::Once("GrabAttackKill", &data.giant, 8.0 * bonus, 0.15, "NPC L Hand [LHnd]");
+				Runtime::PlaySoundAtNode("CrunchKillSound", giant, 2, 0.0, "NPC L Hand [LHnd]");
 				if (laughtimer.ShouldRun()) {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
 				}
