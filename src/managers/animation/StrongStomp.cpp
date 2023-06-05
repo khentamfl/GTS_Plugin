@@ -82,13 +82,6 @@ namespace {
 		}
 	}
 
-	void ImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
-		if (HasSMT(giant)) {
-			force *= 12.0;
-		}
-		Rumble::Once(name, giant, force, 0.05, node);
-	}
-
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
 			return 1.25;
@@ -133,7 +126,14 @@ namespace {
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}
 
-	void DoSounds(std::string_view tag, Actor* giant, float animspeed, std::string_view feet) {
+	void DoImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
+		if (HasSMT(giant)) {
+			force *= 12.0;
+		}
+		Rumble::Once(name, giant, force, 0.05, node);
+	}
+
+	void DoSounds(Actor* giant, float animspeed, std::string_view feet) {
 		float bonus = 1.0;
 		if (HasSMT(giant)) {
 			bonus = 8.0;
@@ -142,7 +142,6 @@ namespace {
 		Runtime::PlaySoundAtNode("HeavyStompSound", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
 		Runtime::PlaySoundAtNode("xlFootstepR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
 		Runtime::PlaySoundAtNode("xlRumbleR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
-		Rumble::Once(tag, giant, 14.0 * (bonus * bonus * bonus) * animspeed, 0.05, feet);
 	}
 
 	void GTS_StrongStomp_Start(AnimationEventData& data) {
@@ -205,8 +204,8 @@ namespace {
 			SMT = 1.6; // Larger Dust
 			damage = 2.0;
 		}
-		ImpactRumble(&data.giant, data.animSpeed * 2, RNode, "HeavyStompRight");
-		DoSounds("HeavyStompR", &data.giant, data.animSpeed - 0.5, RNode);
+		DoImpactRumble(&data.giant, data.animSpeed * 2, RNode, "HeavyStompR");
+		DoSounds(&data.giant, data.animSpeed - 0.5, RNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode, SMT);
 		DoLaunch(&data.giant, 1.4 * perk, 5.0, RNode);
@@ -222,8 +221,8 @@ namespace {
 			SMT = 1.6; // Larger Dust
 			damage = 2.0;
 		}
-		ImpactRumble(&data.giant, data.animSpeed * 2, LNode, "HeavyStompLeft");
-		DoSounds("HeavyStompL", &data.giant, data.animSpeed - 0.5, LNode);
+		DoImpactRumble(&data.giant, data.animSpeed * 2, LNode, "HeavyStompL");
+		DoSounds(&data.giant, data.animSpeed - 0.5, LNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode, SMT);
 		DoLaunch(&data.giant, 1.4 * perk, 5.0, LNode);
