@@ -253,23 +253,7 @@ namespace Gts {
 		if (node) {
 			ApplyShakeAtPoint(caster, modifier, node->world.translate, radius);
 		}
-	}
-
-	void Task_ApplyShakeAtNode(std::string_view name, Actor* caster, float modifier, std::string_view nodesv, float radius, float duration) {
-		TaskManager::RunFor(duration, [=](auto& progressData){
-			ActorHandle casterhandle = caster->CreateRefHandle();
-			if (!casterhandle) {
-				return false;
-			}
-			auto giant = casterhandle.get().get();
-			auto node = find_node(giant, nodesv);
-			if (node) { 
-				ApplyShakeAtPoint(giant, modifier, node->world.translate, radius);
-			}
-			return true;
-		});
-	}
-	
+	}	
 
 	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords, float radius) {
 		if (!caster) {
@@ -286,6 +270,9 @@ namespace Gts {
 		float receiversize = get_visual_scale(receiver);
 		float sizedifference = sourcesize/receiversize;
 		if (caster->formID == 0x14) {
+			if (HasSMT(caster)) {
+				radius *= 4.0;
+			}
 			sizedifference = sourcesize;
 			log::info("Radius: {}, distance {}, distance/radius: {}", radius, distance, distance/radius);
 		}
