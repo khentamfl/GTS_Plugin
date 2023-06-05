@@ -436,7 +436,7 @@ namespace Gts {
 				return;
 			}
 
-			auto bone = find_node(giant, "AnimObjectA");
+			auto bone = find_node(giant, "AnimObjectB");
 			if (!bone) {
 				return;
 			}
@@ -450,7 +450,7 @@ namespace Gts {
 					Grab::Release(giant);
 					log::info("{} is small/dead", tiny_is_actor->GetDisplayFullName());
 					giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-					AnimationManager::StartAnim("GTSBEH_AbortGrab", giant);
+					AnimationManager::StartAnim("GrabAbort", giant);
 					return;
 				}
 
