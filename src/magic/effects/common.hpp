@@ -182,7 +182,7 @@ namespace Gts {
 		// amount = scale * a + b
 		float amount = CalcPower(actor, scale_factor, bonus);
 		float target_scale = get_target_scale(actor);
-		float natural_scale = get_natural_scale(actor);  //get_natural_scale(actor); It behaved weirdly: used to revert my character to x0.87 instead of x1.0.
+		float natural_scale = get_natural_scale(actor);
 
 		if (fabs(target_scale - natural_scale) < amount) {
 			set_target_scale(actor, natural_scale);

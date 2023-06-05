@@ -188,8 +188,11 @@ namespace Gts {
 			return;
 		}
         if (HasSMT(pred)) {
+			float expected = 6.0;
             float sizedifference = get_target_scale(prey)/get_target_scale(pred);
-            mod_target_scale(prey, - sizedifference * 0.86);
+			if (sizedifference < expected) {
+            	mod_target_scale(prey, -(sizedifference/expected));
+			}
         }
 		Grab::GetSingleton().GrabActor(pred, prey);
 		AnimationManager::StartAnim("GrabSomeone", pred);

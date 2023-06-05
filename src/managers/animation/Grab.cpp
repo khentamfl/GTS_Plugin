@@ -391,10 +391,6 @@ namespace {
 		if (!grabbedActor) { 
 			return;
 		}
-		float sizedifference = get_visual_scale(player)/get_visual_scale(grabbedActor);
-		if (sizedifference < 6.0) {
-			return;
-		}
 		AnimationManager::StartAnim("GrabEatSomeone", player);
 	}
 
