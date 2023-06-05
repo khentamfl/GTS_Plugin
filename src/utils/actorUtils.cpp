@@ -270,6 +270,7 @@ namespace Gts {
 		float receiversize = get_visual_scale(receiver);
 		float sizedifference = sourcesize/receiversize;
 		if (caster->formID == 0x14) {
+			log::info("Radius: {}", radius);
 			sizedifference = sourcesize;
 		}
 
