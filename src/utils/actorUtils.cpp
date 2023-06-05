@@ -208,6 +208,15 @@ namespace Gts {
 		return true;
 	}
 
+	bool IsEquipBusy(Actor* actor) {
+		int StateID;
+		int State = actor->GetGraphVariableInt("currentDefaultState", StateID);
+		if (State == 10 || State == 11 || State == 12 || State == 13) {
+			return true;
+		}
+		return false;
+	}
+
 	bool IsProne(Actor* actor) {
 		return actor!= nullptr && actor->formID == 0x14 && Runtime::GetBool("ProneEnabled") && actor->AsActorState()->IsSneaking();
 	}

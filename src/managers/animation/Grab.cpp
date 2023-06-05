@@ -365,6 +365,9 @@ namespace {
 
 	void GrabOtherEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (IsEquipBusy(player)) {
+			return; // Disallow Grabbing if Behavior is busy doing other stuff.
+		}
 		auto& Grabbing = GrabAnimationController::GetSingleton();
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerkTeam(player, "MassVorePerk")) {
