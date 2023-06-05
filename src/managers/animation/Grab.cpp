@@ -422,6 +422,9 @@ namespace {
 		if (!grabbedActor) { 
 			return;
 		}
+		if (IsGtsBusy(player)) {
+			return;
+		}
 		AnimationManager::StartAnim("GrabReleasePunies", player);
 	}
 }
@@ -450,7 +453,7 @@ namespace Gts {
 			}
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
-				std::string_view bonename = "NPC L Finger02 [LF02]";
+				std::string_view bonename = "NPC L Finger20 [LF20]";
 				if (IsBeingEaten(tiny_is_actor)) {
 					bonename = "AnimObjectA";
 				}
