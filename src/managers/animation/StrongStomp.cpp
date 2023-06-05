@@ -200,6 +200,7 @@ namespace {
 	}
 
 	void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
+		auto giant = &data.giant;
 		float perk = GetPerkBonus(&data.giant);
 		float SMT = 1.0;
 		float damage = 1.0;
@@ -207,7 +208,7 @@ namespace {
 			SMT = 1.6; // Larger Dust
 			damage = 2.0;
 		}
-		std::string name = std::format("HeavyStompR_{}", &data.giant->formID);
+		std::string name = std::format("HeavyStompR_{}", giant->formID);
 		DoImpactRumble(&data.giant, data.animSpeed * 2, RNode, name);
 		DoSounds(&data.giant, data.animSpeed - 0.5, RNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
@@ -218,6 +219,7 @@ namespace {
 		data.animSpeed = 1.0;
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
+		auto giant = &data.giant;
 		float perk = GetPerkBonus(&data.giant);
 		float SMT = 1.0;
 		float damage = 1.0;
@@ -225,7 +227,7 @@ namespace {
 			SMT = 1.6; // Larger Dust
 			damage = 2.0;
 		}
-		std::string name = std::format("HeavyStompL_{}", &data.giant->formID);
+		std::string name = std::format("HeavyStompL_{}", giant->formID);
 		DoImpactRumble(&data.giant, data.animSpeed * 2, LNode, name);
 		DoSounds(&data.giant, data.animSpeed - 0.5, LNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
