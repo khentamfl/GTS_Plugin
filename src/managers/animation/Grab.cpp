@@ -172,7 +172,7 @@ namespace {
 			}
 			Rumble::Once("GrabAttack", &data.giant, 4.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, damage * 0.5, 25);
-			if (damage < health) {
+			if (damage < Health) {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 0.1 * damage/20, 0.0, "NPC L Hand [LHnd]");
 			}
 			if (damage > Health) {
