@@ -271,10 +271,9 @@ namespace Gts {
 		float sizedifference = sourcesize/receiversize;
 		if (caster->formID == 0x14) {
 			if (HasSMT(caster)) {
-				radius *= 4.0;
+				radius *= 6.0;
 			}
 			sizedifference = sourcesize;
-			log::info("Radius: {}, distance {}, distance/radius: {}", radius, distance, distance/radius);
 		}
 
 
@@ -298,7 +297,7 @@ namespace Gts {
 		//log::info("Shake Actor:{}, Distance:{}, sourcesize: {}, recsize: {}, cutoff: {}", caster->GetDisplayFullName(), distance, sourcesize, receiversize, cuttoff);
 		if (distance < cuttoff) {
 			// To Sermit: Same value as before just with the math reduced to minimal steps
-			float intensity = (sizedifference * 18.8 * (ShakeStrength(caster))) / distance;
+			float intensity = radius * (sizedifference * 18.8 * (ShakeStrength(caster))) / distance;
 			float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
 			intensity = std::clamp(intensity, 0.0f, 1e8f);
 			duration = std::clamp(duration, 0.0f, 1.2f);
