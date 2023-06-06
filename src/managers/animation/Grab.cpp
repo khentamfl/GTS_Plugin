@@ -63,12 +63,12 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
-	void DrainStamina(Actor* giant, std:string_view name, bool decide, float power) {
+	void DrainStamina(Actor* giant, std::string_view TaskName, bool decide, float power) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
 			WasteMult *= 0.65;
 		}
-		std::string name = std::format("StaminaDrain_{}_{}", name, giant->formID);
+		std::string name = std::format("StaminaDrain_{}_{}", TaskName, giant->formID);
 		if (decide) {
 			TaskManager::Run(name, [=](auto& progressData) {
 				ActorHandle casterhandle = giant->CreateRefHandle();
