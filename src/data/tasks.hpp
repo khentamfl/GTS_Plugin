@@ -188,7 +188,7 @@ namespace Gts {
 					);
 			}
 
-      static void RunOnce(std::function<bool(const OneshotUpdate&)> tasking) {
+      static void RunOnce(std::function<void(const OneshotUpdate&)> tasking) {
         auto& me = TaskManager::GetSingleton();
 				auto task = new Oneshot(tasking);
 				std::string name = std::format("UNNAMED_{}", *reinterpret_cast<std::uintptr_t*>(task));
@@ -198,7 +198,7 @@ namespace Gts {
 				);
 			}
 
-      static void RunOnce(std::string_view name, std::function<bool(const OneshotUpdate&)> tasking) {
+      static void RunOnce(std::string_view name, std::function<void(const OneshotUpdate&)> tasking) {
 				auto& me = TaskManager::GetSingleton();
 				me.taskings.try_emplace(
 					std::string(name),
