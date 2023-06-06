@@ -176,7 +176,7 @@ namespace Gts {
 					std::random_device rd;
 					std::mt19937 gen(rd());
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
-					
+
 					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
@@ -208,8 +208,10 @@ namespace Gts {
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 					}
-					
-					EventDispatcher::DoResetActor(tiny);
+
+          TaskManager::RunOnce([](auto& update){
+					       EventDispatcher::DoResetActor(tiny);
+          });
 
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
