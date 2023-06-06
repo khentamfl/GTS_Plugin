@@ -34,7 +34,7 @@ namespace Gts {
 
 		private:
 			double creationTime = 0.0;
-			std::function<bool(const OneshotUpdate&)> tasking;
+			std::function<void(const OneshotUpdate&)> tasking;
 	};
 
 	// A `Task` runs until it returns false
