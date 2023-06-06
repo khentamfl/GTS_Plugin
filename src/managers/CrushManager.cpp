@@ -209,8 +209,11 @@ namespace Gts {
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 					}
 
-          TaskManager::RunOnce([](auto& update){
-					       EventDispatcher::DoResetActor(tiny);
+          ActorHandle tinyHandle = tiny->CreateRefHandle();
+          TaskManager::RunOnce([=](auto& update){
+              if (tinyHandle) {
+					       EventDispatcher::DoResetActor(tinyHandle.get().get());
+               }
           });
 
 					if (tiny->formID != 0x14) {

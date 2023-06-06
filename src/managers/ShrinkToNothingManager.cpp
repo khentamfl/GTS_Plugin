@@ -79,8 +79,11 @@ namespace Gts {
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.0, 0.5);
-          TaskManager::RunOnce([](auto& update){
-					       EventDispatcher::DoResetActor(tiny);
+          ActorHandle tinyHandle = tiny->CreateRefHandle();
+          TaskManager::RunOnce([=](auto& update){
+              if (tinyHandle) {
+					       EventDispatcher::DoResetActor(tinyHandle.get().get());
+               }
           });
 					if (!IsLiving(tiny)) {
 						auto root = find_node(tiny, "NPC Root [Root]");
