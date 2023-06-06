@@ -63,6 +63,28 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
+	void DrainStamina(Actor* giant, std:string_view name, bool decide, float power) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
+			WasteMult *= 0.65;
+		}
+		std::string name = std::format("StaminaDrain_{}_{}", name, giant->formID);
+		if (decide) {
+			TaskManager::Run(name, [=](auto& progressData) {
+				ActorHandle casterhandle = giant->CreateRefHandle();
+				if (!casterhandle) {
+					return false;
+				}
+				float multiplier = AnimationManager::GetAnimSpeed(giant);
+				float WasteStamina = 0.75 * power * multiplier;
+				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
+				return true;
+			});
+		} else {
+			TaskManager::Cancel(name);
+		}
+	}
+
 	void ToggleEmotionEdit(Actor* giant, bool allow) {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 		Emotions.AllowEmotionEdit = allow;
@@ -143,6 +165,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Attack_MoveStart(AnimationEventData& data) {
 		auto giant = &data.giant;
+		DrainStamina(giant, "GrabAttack", true, 1.0);
 		ManageCamera(giant, true, 7.0);
 	}
 
@@ -159,7 +182,7 @@ namespace {
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (1.600 * sd) * power * additionaldamage;
+			float damage = (1.000 * sd) * power * additionaldamage;
 			if (HasSMT(giant)) {
 				damage *= 3.0;
 				bonus = 2.5;
@@ -172,7 +195,7 @@ namespace {
 				}
 			}
 			Rumble::Once("GrabAttack", &data.giant, 6.0 * bonus, 0.15, "NPC L Hand [LHnd]");
-			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, damage * 0.5, 25);
+			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 			if (damage < Health) {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 			}
@@ -195,6 +218,7 @@ namespace {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(giant, false, 7.0);
+		DrainStamina(giant, "GrabAttack", false, 1.0);
 		if (!grabbedActor) {
 			log::info("GrabbedActor is null");
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
@@ -282,6 +306,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Throw_MoveStart(AnimationEventData& data) {
 		auto giant = &data.giant;
+		DrainStamina(giant, "GrabThrow", true, 1.8);
 		ManageCamera(giant, true, 7.0);
 	}
 
@@ -337,6 +362,8 @@ namespace {
 	}
 
 	void GTSGrab_Throw_MoveStop(AnimationEventData& data) {
+		auto giant = &data.giant;
+		DrainStamina(giant, "GrabThrow", false, 1.8);
 	}
 
 
@@ -395,7 +422,14 @@ namespace {
 		if (!grabbedActor) { 
 			return;
 		}
-		AnimationManager::StartAnim("GrabDamageAttack", player);
+		float WasteStamina = 30.0;
+		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			WasteStamina *= 0.65;
+		} if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+			AnimationManager::StartAnim("GrabDamageAttack", player);
+		} else {
+			TiredSound(player, "You're too tired to perform hand attack");
+		}
 	}
 
 	void GrabVoreEvent(const InputEventData& data) {
@@ -413,7 +447,14 @@ namespace {
 		if (!grabbedActor) { 
 			return;
 		}
-		AnimationManager::StartAnim("GrabThrowSomeone", player);
+		float WasteStamina = 50.0;
+		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			WasteStamina *= 0.65;
+		} if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+			AnimationManager::StartAnim("GrabThrowSomeone", player);
+		} else {
+			TiredSound(player, "You're too tired to throw that actor");
+		}
 	}
 
 	void GrabReleaseEvent(const InputEventData& data) {
