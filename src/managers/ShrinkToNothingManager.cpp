@@ -79,16 +79,16 @@ namespace Gts {
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.0, 0.5);
-          ActorHandle tinyHandle = tiny->CreateRefHandle();
-          TaskManager::RunOnce([=](auto& update){
-              if (tinyHandle) {
-					       EventDispatcher::DoResetActor(tinyHandle.get().get());
-               }
-          });
+					ActorHandle tinyHandle = tiny->CreateRefHandle();
+					TaskManager::RunOnce([=](auto& update){
+					if (tinyHandle) {
+						EventDispatcher::DoResetActor(tinyHandle.get().get());
+					}
+				});
 					if (!IsLiving(tiny)) {
 						auto root = find_node(tiny, "NPC Root [Root]");
 						if (root) {
-							SpawnParticle(tiny, 0.20, "GTS/Damage/FootExplosion.nif", NiMatrix3(), root->world.translate, get_visual_scale(tiny) * 12, 7, root);
+							SpawnParticle(tiny, 0.20, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, get_visual_scale(tiny) * 2.5, 7, root);
 						}
 					} else {
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);

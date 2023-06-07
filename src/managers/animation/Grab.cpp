@@ -73,7 +73,7 @@ namespace {
 		} else {
 			auto hand = find_node(giant, "NPC L Hand [LHnd]");
 			if (hand) {
-				SpawnParticle(giant, 25.0, "GTS/Damage/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 12 * mult, 4, hand);
+				SpawnParticle(giant, 25.0, "GTS/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 2 * mult, 4, hand);
 			}
 		}
 	}
@@ -221,7 +221,7 @@ namespace {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				if (laughtimer.ShouldRun()) {
-					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
+					//Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
 				}
 				SpawnHurtParticles(giant, grabbedActor, 3.0);
 				SpawnHurtParticles(giant, grabbedActor, 3.0);

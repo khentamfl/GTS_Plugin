@@ -558,9 +558,9 @@ namespace Gts {
 			if (random == 1) {
 				Cprint("{} life was squeezed out in {} grip", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
-				Cprint("{} was crushed between the fingers of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was crushed inside  of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 3) {
-				Cprint("{} was transformed into bloody mist between the fingers of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was transformed into bloody mist by the tight grip of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
 				Cprint("{} has been crushed in the hand of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 6) {
