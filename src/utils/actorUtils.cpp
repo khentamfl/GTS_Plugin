@@ -445,7 +445,7 @@ namespace Gts {
 	}
 
 	void SpawnDustParticle(Actor* giant, std::string_view node, float size) {
-		result = find_node(giant, node);
+		auto result = find_node(giant, node);
 		if (result) {
 			BGSExplosion* base_explosion = Runtime::GetExplosion("draugrexplosion");
 			if (base_explosion) {
