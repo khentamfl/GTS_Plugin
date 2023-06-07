@@ -56,7 +56,7 @@ namespace {
 			Grab::DetachActorTask(receiver);
 			CrushManager::Crush(receiver, grabbedActor);
 			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
-			AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
+			AnimationManager::StartAnim("GrabAbort", receiver); // Abort Grab animation
 			PrintDeathSource(receiver, grabbedActor, "BlockDamage");
 			Grab::Release(receiver);
 		}
