@@ -206,7 +206,6 @@ namespace {
 				bonus = 3.0;
 			}
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
-			SpawnHurtParticles();
 			Rumble::Once("GrabAttack", &data.giant, 6.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 			if (damage < Health) {
