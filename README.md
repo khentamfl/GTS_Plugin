@@ -15,7 +15,7 @@ WIP
 - [ ] [3] Talk to actor when crouching
 - [x] [4] Accurate Body Collision that inflicts size effects on contact instead of using cloak magiceffects
 - [x] [5] Fixed NPC headtracking
-- [ ] [6] Fixed Player headtracking
+- [X] [6] Fixed Player and NPC headtracking
 - [ ] [7] Ability to edit HitBoxes so it'll be possible to have Giant Enemies/Have more accurate hitbox
   - AABB was shared between all actors of the same skeleton
   - Found a way to clone the AABB and make them unique to each actor

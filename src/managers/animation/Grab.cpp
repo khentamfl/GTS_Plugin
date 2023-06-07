@@ -244,7 +244,8 @@ namespace {
 
 	void GTSGrab_Eat_OpenMouth(AnimationEventData& data) {
 		auto giant = &data.giant;
-		auto otherActor = Grab::GetHeldActor(&data.giant);
+		auto otherActor = Grab::GetHeldActor(giant);
+		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		if (otherActor) {
 			for (auto& tiny: VoreData.GetVories()) {
 				SetBeingEaten(otherActor, true);
@@ -264,10 +265,10 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
 		if (otherActor) {
 			for (auto& tiny: VoreData.GetVories()) {
-			if (!AllowDevourment()) {
-				VoreData.Swallow();
-			} else {
-				CallDevourment(&data.giant, otherActor);
+				if (!AllowDevourment()) {
+					VoreData.Swallow();
+				} else {
+					CallDevourment(&data.giant, otherActor);
 				}
 			}
 		}
@@ -386,7 +387,7 @@ namespace {
 		Grab::SetHolding(giant, false);
 		Grab::Release(giant);
 		if (grabbedActor) {
-			PushActorAway(giant, grabbedActor, 1.0);
+			PushActorAway(giant, grabbedActor, 0.1);
 		}
 	}
 	
@@ -406,7 +407,7 @@ namespace {
 		Grab::Release(giant);
 	}
 
-	void GrabOtherEvent(const InputEventData& data) {
+	void GrabOtherEvent(const InputEventData& data) { // Grab other actor
 		auto player = PlayerCharacter::GetSingleton();
 		if (IsEquipBusy(player)) {
 			return; // Disallow Grabbing if Behavior is busy doing other stuff.
@@ -422,7 +423,7 @@ namespace {
 		}
 	}
 
-	void GrabAttackEvent(const InputEventData& data) {
+	void GrabAttackEvent(const InputEventData& data) { // Attack everyone in your hand
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
 		if (!grabbedActor) { 
@@ -438,7 +439,7 @@ namespace {
 		}
 	}
 
-	void GrabVoreEvent(const InputEventData& data) {
+	void GrabVoreEvent(const InputEventData& data) { // Eat everyone in hand
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
 		if (!grabbedActor) { 
@@ -447,7 +448,7 @@ namespace {
 		AnimationManager::StartAnim("GrabEatSomeone", player);
 	}
 
-	void GrabThrowEvent(const InputEventData& data) {
+	void GrabThrowEvent(const InputEventData& data) { // Throw everyone away
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
 		if (!grabbedActor) { 
