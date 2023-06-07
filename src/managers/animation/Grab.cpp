@@ -67,13 +67,13 @@ namespace {
 		if (IsLiving(grabbedActor)) {
 			auto hand = find_node(giant, "NPC L Hand [LHnd]");
 			if (hand) {
-				SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * mult, 4, hand);
-				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * mult, 4, hand);
+				SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
+				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
 			}
 		} else {
 			auto hand = find_node(giant, "NPC L Hand [LHnd]");
 			if (hand) {
-				SpawnParticle(giant, 25.0, "GTS/Damage/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 1.5 * mult, 4, hand);
+				SpawnParticle(giant, 25.0, "GTS/Damage/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 12 * mult, 4, hand);
 			}
 		}
 	}

@@ -57,10 +57,10 @@ namespace {
 			auto hand = find_node(receiver, "NPC L Hand [LHnd]");
 			if (hand) {
 				if (IsLiving(grabbedActor)) {
-					SpawnParticle(receiver, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor), 4, hand);
-					SpawnParticle(receiver, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor), 4, hand);
+					SpawnParticle(receiver, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3, 4, hand);
+					SpawnParticle(receiver, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3, 4, hand);
 				} else {
-					SpawnParticle(receiver, 25.0, "GTS/Damage/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3, 4, hand);
+					SpawnParticle(receiver, 25.0, "GTS/Damage/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 12, 4, hand);
 				}
 			}
 			CrushManager::Crush(receiver, grabbedActor);
@@ -226,12 +226,12 @@ namespace Gts {
 			if (!IsLiving(tiny)) {
 				auto root = find_node(tiny, "NPC Root [Root]");
 				if (root) {
-					SpawnParticle(tiny, 0.20, "GTS/Damage/FootExplosion.nif", NiMatrix3(), root->world.translate, ts * 0.5, 7, root);
+					SpawnParticle(tiny, 0.20, "GTS/Damage/FootExplosion.nif", NiMatrix3(), root->world.translate, ts * 12, 7, root);
 				}
 			} else {
 				auto root = find_node(tiny, "NPC Root [Root]");
 				if (root) {
-					SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, ts * 0.5, 7, root);
+					SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, ts * 1, 7, root);
 				}
 				//Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			}
