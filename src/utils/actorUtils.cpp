@@ -444,7 +444,7 @@ namespace Gts {
 		}
 	}
 
-	void SpawnDustParticle(Actor* giant, std::string_view node, float size) {
+	void SpawnDustParticle(Actor* giant, Actor* tiny, std::string_view node, float size) {
 		auto result = find_node(giant, node);
 		if (result) {
 			BGSExplosion* base_explosion = Runtime::GetExplosion("draugrexplosion");
@@ -461,9 +461,9 @@ namespace Gts {
 				if (!explosion) {
 					return;
 				}
-				explosion->SetPosition(hand->world.translate);
-				explosion->GetExplosionRuntimeData().radius *= 3 * get_visual_scale(grabbedActor) * dustmult;
-				explosion->GetExplosionRuntimeData().imodRadius *= 3 * get_visual_scale(grabbedActor) * dustmult;
+				explosion->SetPosition(result->world.translate);
+				explosion->GetExplosionRuntimeData().radius *= 3 * get_visual_scale(tiny) * dustmult;
+				explosion->GetExplosionRuntimeData().imodRadius *= 3 * get_visual_scale(tiny) * dustmult;
 				explosion->GetExplosionRuntimeData().unkB8 = nullptr;
 				explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
 				explosion->GetExplosionRuntimeData().unk11C *= 0.0;

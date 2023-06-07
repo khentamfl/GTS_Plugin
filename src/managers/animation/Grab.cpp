@@ -70,7 +70,7 @@ namespace {
 				SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
 				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
 			} else {
-				SpawnDustParticle(giant, "NPC L Hand [LHnd]", dustmult);
+				SpawnDustParticle(giant, grabbedActor, "NPC L Hand [LHnd]", dustmult);
 			}
 		}
 	}
