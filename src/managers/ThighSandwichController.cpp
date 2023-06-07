@@ -111,7 +111,7 @@ namespace Gts {
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
 				if (node) {
-					this->ShrinkRune.halflife = 0.7/AnimationManager::GetAnimSpeed(giant);
+					this->ShrinkRune.halflife = 0.7/AnimationManager::GetAnimSpeed(giantref);
 					this->ShrinkRune.target = 1.0;
 					this->ScaleRune.value = 0.0;
 					this->ScaleRune.target = 0.0;
@@ -128,7 +128,7 @@ namespace Gts {
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
 				if (node) {
-					this->ScaleRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giant);
+					this->ScaleRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giantref);
 					this->ScaleRune.target = 1.0;
 					this->ShrinkRune.value = 0.0;
 					node->local.scale = this->ScaleRune.value;
