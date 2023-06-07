@@ -608,7 +608,7 @@ namespace Gts {
 			NiPoint3 tinyLocation = tinyref->GetPosition();
 			TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyref);
 			if (tiny_is_object) {
-				tinyref->SetPosition(bone->world.translate);
+				tiny_is_object->SetPosition(bone->world.translate);
 			}
 			
 			auto charcont = tinyref->GetCharController();
