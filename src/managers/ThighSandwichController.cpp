@@ -92,7 +92,7 @@ namespace Gts {
 		}
 	}
 
-	void SandwichData::DisableRuneTask(Actor* giant, bool shrink) {
+	void SandwichingData::DisableRuneTask(Actor* giant, bool shrink) {
 		if (shrink == true) {
 			std::string name = std::format("ShrinkRune_{}", giant->formID);
 			TaskManager::Cancel(name);
