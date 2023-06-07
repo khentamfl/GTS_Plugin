@@ -462,8 +462,8 @@ namespace Gts {
 					return;
 				}
 				explosion->SetPosition(result->world.translate);
-				explosion->GetExplosionRuntimeData().radius *= 3 * get_visual_scale(tiny) * dustmult;
-				explosion->GetExplosionRuntimeData().imodRadius *= 3 * get_visual_scale(tiny) * dustmult;
+				explosion->GetExplosionRuntimeData().radius *= 3 * get_visual_scale(tiny) * size;
+				explosion->GetExplosionRuntimeData().imodRadius *= 3 * get_visual_scale(tiny) * size;
 				explosion->GetExplosionRuntimeData().unkB8 = nullptr;
 				explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
 				explosion->GetExplosionRuntimeData().unk11C *= 0.0;
