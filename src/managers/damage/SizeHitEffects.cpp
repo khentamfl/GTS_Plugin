@@ -224,7 +224,7 @@ namespace Gts {
 			std::mt19937 gen(rd());
 			std::uniform_real_distribution<float> dis(-0.2, 0.2);
 			if (!IsLiving(tiny)) {
-				SpawnDustParticle(receiver, "NPC Root [Root]", 1.0);
+				SpawnDustParticle(giant, "NPC Root [Root]", 1.0);
 			} else {
 				auto root = find_node(tiny, "NPC Root [Root]");
 				if (root) {
