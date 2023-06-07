@@ -43,7 +43,7 @@ namespace {
 		}
 	}
 
-	void TinyGuard(Actor* attacker, Actor* receiver, float a_damage) {
+	void TinyAsShield(Actor* attacker, Actor* receiver, float a_damage) {
 		auto grabbedActor = Grab::GetHeldActor(receiver);
 		if (!grabbedActor) {
 			return;
@@ -54,6 +54,7 @@ namespace {
 		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.25) {
 			CrushManager::Crush(receiver, grabbedActor);
 			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
+			AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
 			PrintDeathSource(receiver, grabbedActor, "BlockDamage");
 			Grab::Release(receiver);
 		}
@@ -95,7 +96,7 @@ namespace {
 		//log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
 
 		HealthGate(attacker, receiver, -(a_damage + damage));
-		TinyGuard(attacker, receiver, -(a_damage + damage));
+		TinyAsShield(attacker, receiver, -(a_damage + damage));
 
 		if (damage < 0) {
 			Overkill(attacker, receiver, -(a_damage + damage));
