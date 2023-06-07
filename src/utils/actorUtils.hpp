@@ -65,7 +65,7 @@ namespace Gts {
 
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node, float scale_override);
 	void SpawnParticle(Actor* actor, float lifetime, const char* modelName, const NiMatrix3& rotation, const NiPoint3& position, float scale, std::uint32_t flags, NiAVObject* target);
-	void SpawnDustParticle(Actor* giant, std::string_view node, float size);
+	void SpawnDustParticle(Actor* giant, Actor* tiny, std::string_view node, float size);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage);
 	bool HasSMT(Actor* giant);
 	void TiredSound(Actor* player, std::string_view message);
