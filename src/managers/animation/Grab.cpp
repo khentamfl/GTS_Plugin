@@ -202,6 +202,9 @@ namespace {
 			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
 				Rumble::Once("GrabAttackKill", &data.giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
+				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				if (laughtimer.ShouldRun()) {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
@@ -247,9 +250,7 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(giant);
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		if (otherActor) {
-			for (auto& tiny: VoreData.GetVories()) {
-				SetBeingEaten(otherActor, true);
-			}
+			SetBeingEaten(otherActor, true);
 		}
 		AdjustFacialExpression(giant, 0, 1.0, "phenome"); // Start opening mouth
 		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
@@ -429,7 +430,7 @@ namespace {
 		if (!grabbedActor) { 
 			return;
 		}
-		float WasteStamina = 30.0;
+		float WasteStamina = 20.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteStamina *= 0.65;
 		} if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
@@ -454,7 +455,7 @@ namespace {
 		if (!grabbedActor) { 
 			return;
 		}
-		float WasteStamina = 50.0;
+		float WasteStamina = 40.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteStamina *= 0.65;
 		} if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
@@ -501,7 +502,7 @@ namespace Gts {
 			}
 			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
-				std::string_view bonename = "NPC L Finger20 [LF20]";
+				std::string_view bonename = "NPC L Finger02 [LF02]";
 				if (IsBeingEaten(tiny_is_actor)) {
 					bonename = "AnimObjectA";
 				}
