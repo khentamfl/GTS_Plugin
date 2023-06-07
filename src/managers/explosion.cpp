@@ -49,34 +49,6 @@ namespace {
 			explosion->GetExplosionRuntimeData().unk11C *= 0.0;
 		}
 	}
-
-	void make_explosion_at_manual(Actor* actor, NiPoint3 position, float scale) {
-		if (!actor) {
-			return;
-		}
-		BGSExplosion* base_explosion = Runtime::GetExplosion("footstepExplosion");;
-
-		if (base_explosion) {
-			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
-			if (!instance_ptr) {
-				return;
-			}
-			TESObjectREFR* instance = instance_ptr.get();
-			if (!instance) {
-				return;
-			}
-			Explosion* explosion = instance->AsExplosion();
-			if (!explosion) {
-				return;
-			}
-			explosion->SetPosition(position);
-			explosion->GetExplosionRuntimeData().radius *= scale;
-			explosion->GetExplosionRuntimeData().imodRadius *= scale;
-			explosion->GetExplosionRuntimeData().unkB8 = nullptr;
-			explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
-			explosion->GetExplosionRuntimeData().unk11C *= 0.0;
-		}
-	}
 }
 
 namespace Gts {

@@ -71,7 +71,27 @@ namespace {
 				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
 			} else {
 				log::info("Trying to spawn dust particle");
-				SpawnParticle(giant, 25.0, "GTS/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 30 * mult, 4, hand);
+				base_explosion = Runtime::GetExplosion("footstepExplosion");
+				if (base_explosion) {
+					NiPointer<TESObjectREFR> instance_ptr = giant->PlaceObjectAtMe(base_explosion, false);
+					if (!instance_ptr) {
+						return;
+					}
+					TESObjectREFR* instance = instance_ptr.get();
+					if (!instance) {
+						return;
+					}
+					Explosion* explosion = instance->AsExplosion();
+					if (!explosion) {
+						return;
+					}
+					explosion->SetPosition(hand->world.translate);
+					explosion->GetExplosionRuntimeData().radius *= get_visual_scale(grabbedActor) * mult;
+					explosion->GetExplosionRuntimeData().imodRadius *= get_visual_scale(grabbedActor) * mult;
+					explosion->GetExplosionRuntimeData().unkB8 = nullptr;
+					explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
+					explosion->GetExplosionRuntimeData().unk11C *= 0.0;
+				}
 			}
 		}
 	}
@@ -540,7 +560,7 @@ namespace Gts {
 			}
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
 			if (HasSMT(giantref)) {
-				sizedifference += 6.0;
+				sizedifference += 7.0;
 			}
 			if (tinyref->IsDead() || sizedifference < 6.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
