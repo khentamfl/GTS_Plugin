@@ -86,10 +86,7 @@ namespace Gts {
 					}
 				});
 					if (!IsLiving(tiny)) {
-						auto root = find_node(tiny, "NPC Root [Root]");
-						if (root) {
-							SpawnParticle(tiny, 0.20, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, get_visual_scale(tiny) * 2.5, 7, root);
-						}
+						SpawnDustParticle(receiver, "NPC Root [Root]", 3.0);
 					} else {
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);

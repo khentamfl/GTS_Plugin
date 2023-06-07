@@ -191,10 +191,7 @@ namespace Gts {
 					ScareChance(giant);
 
 					if (!IsLiving(tiny)) {
-						auto root = find_node(tiny, "NPC Root [Root]");
-						if (root) {
-							SpawnParticle(tiny, 20.0, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, currentSize * 12, 7, root);
-						}
+						SpawnDustParticle(receiver, "NPC L Hand [LHnd]", 3.0);
 					} else {
 						auto root = find_node(tiny, "NPC Root [Root]");
 						if (root) {

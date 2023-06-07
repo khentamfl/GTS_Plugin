@@ -60,7 +60,7 @@ namespace {
 					SpawnParticle(receiver, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 5, 4, hand);
 					SpawnParticle(receiver, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 5, 4, hand);
 				} else {
-					SpawnParticle(receiver, 25.0, "GTS/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 4, 4, hand);
+					SpawnDustParticle(receiver, "NPC L Hand [LHnd]", 3.0);
 				}
 			}
 			CrushManager::Crush(receiver, grabbedActor);
@@ -224,10 +224,7 @@ namespace Gts {
 			std::mt19937 gen(rd());
 			std::uniform_real_distribution<float> dis(-0.2, 0.2);
 			if (!IsLiving(tiny)) {
-				auto root = find_node(tiny, "NPC Root [Root]");
-				if (root) {
-					SpawnParticle(tiny, 12, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, ts * 12, 7, root);
-				}
+				SpawnDustParticle(receiver, "NPC Root [Root]", 1.0);
 			} else {
 				auto root = find_node(tiny, "NPC Root [Root]");
 				if (root) {

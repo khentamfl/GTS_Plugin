@@ -178,7 +178,7 @@ namespace Gts {
 			case 14: {
 				return BoneTarget { // L Hand
 				        .boneNames = {
-						"NPC L Hand [LHnd]",
+						"NPC L Finger02 [LF02]",
 					},
 				        .zoomScale = 0.60,
 				};

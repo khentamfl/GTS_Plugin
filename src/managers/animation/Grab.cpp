@@ -63,35 +63,14 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
-	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult) {
+	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult, float dustmult) {
 		auto hand = find_node(giant, "NPC L Hand [LHnd]");
 		if (hand) {
 			if (IsLiving(grabbedActor)) {
 				SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
 				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
 			} else {
-				log::info("Trying to spawn dust particle");
-				BGSExplosion* base_explosion = Runtime::GetExplosion("draugrexplosion");
-				if (base_explosion) {
-					NiPointer<TESObjectREFR> instance_ptr = giant->PlaceObjectAtMe(base_explosion, false);
-					if (!instance_ptr) {
-						return;
-					}
-					TESObjectREFR* instance = instance_ptr.get();
-					if (!instance) {
-						return;
-					}
-					Explosion* explosion = instance->AsExplosion();
-					if (!explosion) {
-						return;
-					}
-					explosion->SetPosition(hand->world.translate);
-					explosion->GetExplosionRuntimeData().radius *= 3 * get_visual_scale(grabbedActor) * mult;
-					explosion->GetExplosionRuntimeData().imodRadius *= 3 * get_visual_scale(grabbedActor) * mult;
-					explosion->GetExplosionRuntimeData().unkB8 = nullptr;
-					explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
-					explosion->GetExplosionRuntimeData().unk11C *= 0.0;
-				}
+				SpawnDustParticle(giant, "NPC L Hand [LHnd]", dustmult);
 			}
 		}
 	}
@@ -218,9 +197,9 @@ namespace {
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (0.900 * sd) * power * additionaldamage;
+			float damage = (1.600 * sd) * power * additionaldamage;
 			if (HasSMT(giant)) {
-				damage *= 4.0;
+				damage *= 2.25;
 				bonus = 3.0;
 			}
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
@@ -228,7 +207,7 @@ namespace {
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 			if (damage < Health) {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
-				SpawnHurtParticles(giant, grabbedActor, 1.0);
+				SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);
 			}
 			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
@@ -238,8 +217,8 @@ namespace {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
-				SpawnHurtParticles(giant, grabbedActor, 3.0);
-				SpawnHurtParticles(giant, grabbedActor, 3.0);
+				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
+				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				giant->SetGraphVariableInt("GTS_Grab_State", 0);
 				PrintDeathSource(giant, grabbedActor, "HandCrushed");
 				AnimationManager::StartAnim("TinyDied", giant);

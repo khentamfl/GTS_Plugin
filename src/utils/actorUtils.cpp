@@ -444,6 +444,33 @@ namespace Gts {
 		}
 	}
 
+	void SpawnDustParticle(Actor* giant, float size, std::string_view node) {
+		result = find_node(giant, node);
+		if (result) {
+			BGSExplosion* base_explosion = Runtime::GetExplosion("draugrexplosion");
+			if (base_explosion) {
+				NiPointer<TESObjectREFR> instance_ptr = giant->PlaceObjectAtMe(base_explosion, false);
+				if (!instance_ptr) {
+					return;
+				}
+				TESObjectREFR* instance = instance_ptr.get();
+				if (!instance) {
+					return;
+				}
+				Explosion* explosion = instance->AsExplosion();
+				if (!explosion) {
+					return;
+				}
+				explosion->SetPosition(hand->world.translate);
+				explosion->GetExplosionRuntimeData().radius *= 3 * get_visual_scale(grabbedActor) * dustmult;
+				explosion->GetExplosionRuntimeData().imodRadius *= 3 * get_visual_scale(grabbedActor) * dustmult;
+				explosion->GetExplosionRuntimeData().unkB8 = nullptr;
+				explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
+				explosion->GetExplosionRuntimeData().unk11C *= 0.0;
+			}
+		}
+	}
+
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage) {
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (30.0 * damage * damagebonus), radius, random, bonedamage);

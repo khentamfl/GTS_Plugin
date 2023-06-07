@@ -115,10 +115,7 @@ namespace Gts {
 
 		Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 2.0);
 		if (!IsLiving(receiver)) {
-			auto root = find_node(receiver, "NPC Root [Root]");
-			if (root) {
-				SpawnParticle(receiver, 6.00, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, get_visual_scale(receiver) * 2.5, 7, root);
-			}
+			SpawnDustParticle(receiver, "NPC Root [Root]", 3.0);
 		}
 		else {
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
