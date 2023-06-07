@@ -586,7 +586,7 @@ namespace Gts {
 			}
 			auto bone = find_node(giantref, bonename);
 			if (!bone) {
-				return;
+				return false;
 			}
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
 			if (HasSMT(giantref)) {
@@ -594,7 +594,7 @@ namespace Gts {
 			}
 			if (tinyref->IsDead() || sizedifference < 6.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
-				Grab::Release();
+				Grab::Release(giantref);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits
@@ -606,8 +606,10 @@ namespace Gts {
 
 			NiPoint3 giantLocation = giantref->GetPosition();
 			NiPoint3 tinyLocation = tinyref->GetPosition();
-
-			tinyref->SetPosition(bone->world.translate);
+			TESObjectREFR* tiny_is_object = skyrim_cast<Actor*>(tinyref);
+			if (tiny_is_object) {
+				tinyref->SetPosition(bone->world.translate);
+			}
 			
 			auto charcont = tinyref->GetCharController();
 			if (charcont) {
