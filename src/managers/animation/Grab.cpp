@@ -71,7 +71,7 @@ namespace {
 				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
 			} else {
 				log::info("Trying to spawn dust particle");
-				BGSExplosion* base_explosion = Runtime::GetExplosion("footstepExplosion");
+				BGSExplosion* base_explosion = Runtime::GetExplosion("draugrexplosion");
 				if (base_explosion) {
 					NiPointer<TESObjectREFR> instance_ptr = giant->PlaceObjectAtMe(base_explosion, false);
 					if (!instance_ptr) {
@@ -86,8 +86,8 @@ namespace {
 						return;
 					}
 					explosion->SetPosition(hand->world.translate);
-					explosion->GetExplosionRuntimeData().radius *= get_visual_scale(grabbedActor) * mult;
-					explosion->GetExplosionRuntimeData().imodRadius *= get_visual_scale(grabbedActor) * mult;
+					explosion->GetExplosionRuntimeData().radius *= 3 * get_visual_scale(grabbedActor) * mult;
+					explosion->GetExplosionRuntimeData().imodRadius *= 3 * get_visual_scale(grabbedActor) * mult;
 					explosion->GetExplosionRuntimeData().unkB8 = nullptr;
 					explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
 					explosion->GetExplosionRuntimeData().unk11C *= 0.0;
@@ -243,6 +243,7 @@ namespace {
 				}
 				SpawnHurtParticles(giant, grabbedActor, 3.0);
 				SpawnHurtParticles(giant, grabbedActor, 3.0);
+				giant->SetGraphVariableInt("GTS_Grab_State", 0);
 				PrintDeathSource(giant, grabbedActor, "HandCrushed");
 				Grab::DetachActorTask(giant);
 				Grab::Release(giant);
@@ -332,6 +333,7 @@ namespace {
 			}
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);	
 			Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
+			giant->SetGraphVariableInt("GTS_Grab_State", 0);
 			ManageCamera(&data.giant, false, 7.0);
 			SetBeingHeld(otherActor, false);
 			Grab::DetachActorTask(giant);
@@ -395,6 +397,7 @@ namespace {
 			SetBeingHeld(otherActor, false);
 		}
         giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		ManageCamera(giant, false, 7.0);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
@@ -525,6 +528,8 @@ namespace Gts {
 
 	void Grab::DetachActorTask(Actor* giant) {
 		std::string name = std::format("GrabAttach_{}", giant->formID);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
+		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		TaskManager::Cancel(name);
 	}
 	
@@ -566,6 +571,7 @@ namespace Gts {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				Grab::Release(giantref);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
+				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits
 				TaskManager::Cancel(name);

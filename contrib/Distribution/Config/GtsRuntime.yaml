@@ -170,6 +170,7 @@ explosions:
   BloodExplosion: "GTS.esp|01CE9D"
   BloodFX: "Dawnguard.esm|00E7B4"
   footstepExplosion: "GTS.esp|035C81"
+  draugrexplosion: "GTS.esp|035C80"
 
 globals:
   FreeLookOnVore: "GTS.esp|281206"
