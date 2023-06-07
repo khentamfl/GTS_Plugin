@@ -390,7 +390,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(&data.giant, false, 7.0);
-		Grab::DetachActorTask();
+		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 		if (grabbedActor) {
 			PushActorAway(giant, grabbedActor, 0.1);
@@ -593,23 +593,23 @@ namespace Gts {
 				sizedifference += 6.0;
 			}
 			if (tinyref->IsDead() || sizedifference < 6.0) {
-				log::info("{} is small/dead", tiny_is_actor->GetDisplayFullName());
-				Grab::Release()
-				giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
-				AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
-				ManageCamera(giant, false, 7.0); // Disable any camera edits
+				log::info("{} is small/dead", tinyref->GetDisplayFullName());
+				Grab::Release();
+				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
+				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
+				ManageCamera(giantref, false, 7.0); // Disable any camera edits
 				TaskManager::Cancel(name);
 				return false;
 			}
 
-			float giantScale = get_visual_scale(giant);
+			float giantScale = get_visual_scale(giantref);
 
-			NiPoint3 giantLocation = giant->GetPosition();
-			NiPoint3 tinyLocation = tiny->GetPosition();
+			NiPoint3 giantLocation = giantref->GetPosition();
+			NiPoint3 tinyLocation = tinyref->GetPosition();
 
-			tiny->SetPosition(bone->world.translate);
+			tinyref->SetPosition(bone->world.translate);
 			
-			auto charcont = tiny_is_actor->GetCharController();
+			auto charcont = tinyref->GetCharController();
 			if (charcont) {
 				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
 			}
