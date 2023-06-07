@@ -54,6 +54,15 @@ namespace {
 		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.25);
 		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.25) {
 			Grab::DetachActorTask(receiver);
+			auto hand = find_node(giant, "NPC L Hand [LHnd]");
+			if (hand) {
+				if (IsLiving(grabbedActor)) {
+					SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, get_visual_scale(grabbedActor), 4, root);
+					SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, get_visual_scale(grabbedActor), 4, root);
+				} else {
+					SpawnParticle(giant, 25.0, "GTS/Damage/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3, 4, hand);
+				}
+			}
 			CrushManager::Crush(receiver, grabbedActor);
 			Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
 			Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");

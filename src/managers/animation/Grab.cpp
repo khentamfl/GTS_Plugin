@@ -63,6 +63,21 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
+	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult) {
+		if (IsLiving(grabbedActor)) {
+			auto hand = find_node(giant, "NPC L Hand [LHnd]");
+			if (hand) {
+				SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * mult, 4, hand);
+				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * mult, 4, hand);
+			}
+		} else {
+			auto hand = find_node(giant, "NPC L Hand [LHnd]");
+			if (hand) {
+				SpawnParticle(giant, 25.0, "GTS/Damage/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 1.5 * mult, 4, hand);
+			}
+		}
+	}
+
 	void DrainStamina(Actor* giant, std::string_view TaskName, bool decide, float power) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
@@ -191,16 +206,12 @@ namespace {
 				bonus = 3.0;
 			}
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
-			if (IsLiving(grabbedActor)) {
-				auto root = find_node(grabbedActor, "NPC Root [Root]");
-				if (root) {
-					SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, get_visual_scale(grabbedActor), 4, root);
-				}
-			}
+			SpawnHurtParticles();
 			Rumble::Once("GrabAttack", &data.giant, 6.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 			if (damage < Health) {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+				SpawnHurtParticles(giant, grabbedActor, 1.0);
 			}
 			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
@@ -213,6 +224,8 @@ namespace {
 				if (laughtimer.ShouldRun()) {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
 				}
+				SpawnHurtParticles(giant, grabbedActor, 3.0);
+				SpawnHurtParticles(giant, grabbedActor, 3.0);
 				PrintDeathSource(giant, grabbedActor, "HandCrushed");
 				Grab::DetachActorTask(giant);
 				Grab::Release(giant);
