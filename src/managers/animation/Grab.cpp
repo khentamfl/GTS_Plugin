@@ -64,16 +64,14 @@ namespace {
 	}
 
 	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult) {
-		if (IsLiving(grabbedActor)) {
-			auto hand = find_node(giant, "NPC L Hand [LHnd]");
-			if (hand) {
+		auto hand = find_node(giant, "NPC L Hand [LHnd]");
+		if (hand) {
+			if (IsLiving(grabbedActor)) {
 				SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
 				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
-			}
-		} else {
-			auto hand = find_node(giant, "NPC L Hand [LHnd]");
-			if (hand) {
-				SpawnParticle(giant, 25.0, "GTS/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 2 * mult, 4, hand);
+			} else {
+				log::info("Trying to spawn dust particle");
+				SpawnParticle(giant, 25.0, "GTS/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 30 * mult, 4, hand);
 			}
 		}
 	}
@@ -91,7 +89,7 @@ namespace {
 					return false;
 				}
 				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 0.35 * power * multiplier;
+				float WasteStamina = 0.50 * power * multiplier;
 				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
 				return true;
 			});

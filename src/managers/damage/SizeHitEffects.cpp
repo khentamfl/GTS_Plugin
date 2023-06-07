@@ -226,7 +226,7 @@ namespace Gts {
 			if (!IsLiving(tiny)) {
 				auto root = find_node(tiny, "NPC Root [Root]");
 				if (root) {
-					SpawnParticle(tiny, 0.20, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, ts * 12, 7, root);
+					SpawnParticle(tiny, 12, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, ts * 12, 7, root);
 				}
 			} else {
 				auto root = find_node(tiny, "NPC Root [Root]");

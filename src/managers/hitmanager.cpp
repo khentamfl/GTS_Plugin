@@ -117,7 +117,7 @@ namespace Gts {
 		if (!IsLiving(receiver)) {
 			auto root = find_node(receiver, "NPC Root [Root]");
 			if (root) {
-				SpawnParticle(receiver, 0.20, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, get_visual_scale(receiver) * 2.5, 7, root);
+				SpawnParticle(receiver, 6.00, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, get_visual_scale(receiver) * 2.5, 7, root);
 			}
 		}
 		else {

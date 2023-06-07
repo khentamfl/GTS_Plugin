@@ -193,15 +193,15 @@ namespace Gts {
 					if (!IsLiving(tiny)) {
 						auto root = find_node(tiny, "NPC Root [Root]");
 						if (root) {
-							SpawnParticle(tiny, 0.20, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, currentSize * 12, 7, root);
+							SpawnParticle(tiny, 20.0, "GTS/FootExplosion.nif", root->world.rotate, root->world.translate, currentSize * 12, 7, root);
 						}
 					} else {
 						auto root = find_node(tiny, "NPC Root [Root]");
 						if (root) {
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
+							SpawnParticle(tiny, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
+							SpawnParticle(tiny, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
+							SpawnParticle(tiny, 0.60, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
+							SpawnParticle(tiny, 0.60, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
 						}
 						Runtime::CreateExplosion(tiny, get_visual_scale(tiny),"BloodExplosion");
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
