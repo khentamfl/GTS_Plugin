@@ -61,6 +61,9 @@ namespace Gts {
 					if (!IsLiving(tiny)) {
 						SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);
 					} else {
+						std::random_device rd;
+						std::mt19937 gen(rd());
+						std::uniform_real_distribution<float> dis(-0.2, 0.2);
 						auto root = find_node(tiny, "NPC Root [Root]");
 						if (root) {
 							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
@@ -81,9 +84,6 @@ namespace Gts {
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest();
 					}
-					std::random_device rd;
-					std::mt19937 gen(rd());
-					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.0, 0.5);
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
