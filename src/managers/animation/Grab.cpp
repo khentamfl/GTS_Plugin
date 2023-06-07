@@ -197,14 +197,15 @@ namespace {
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (1.600 * sd) * power * additionaldamage;
+			float damage = (1.600 * sd) * power * additionaldamage * additionaldamage;
 			if (HasSMT(giant)) {
 				damage *= 2.25;
 				bonus = 3.0;
 			}
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
-			Rumble::Once("GrabAttack", &data.giant, 6.0 * bonus, 0.15, "NPC L Hand [LHnd]");
+			Rumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
+			AdjustGtsSkill(damage/1500, giant);
 			if (damage < Health) {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);
@@ -212,7 +213,7 @@ namespace {
 			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
 				SetBeingHeld(grabbedActor, false);
-				Rumble::Once("GrabAttackKill", &data.giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
+				Rumble::Once("GrabAttackKill", giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");

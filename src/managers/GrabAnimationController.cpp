@@ -160,19 +160,21 @@ namespace Gts {
 		float sizedifference = pred_scale/prey_scale;
 
 		float MINIMUM_GRAB_SCALE = MINIMUM_GRAB_SCALE_RATIO;
+		float MINIMUM_DISTANCE = MINIMUM_GRAB_DISTANCE;
 
         if (HasSMT(pred)) {
             MINIMUM_GRAB_SCALE = 0.8; 
+			MINIMUM_DISTANCE * = 2.5;
         }
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_GRAB_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_GRAB_SCALE) {
+		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_GRAB_SCALE) {
 			Notify("{} is too big to be grabbed.", prey->GetDisplayFullName());
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_GRAB_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_GRAB_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_GRAB_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 				return false;
 			} else {
