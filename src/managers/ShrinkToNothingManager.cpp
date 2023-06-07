@@ -70,7 +70,7 @@ namespace Gts {
 					ReportCrime(giant, tiny, 1000.0, true);
 					//StartCombat(giant, tiny, false);
 
-					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 80.0);
+					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 20.0);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest();
 					}
@@ -86,7 +86,7 @@ namespace Gts {
 					}
 				});
 					if (!IsLiving(tiny)) {
-						SpawnDustParticle(receiver, "NPC Root [Root]", 3.0);
+						SpawnDustParticle(tiny, "NPC Root [Root]", 3.0);
 					} else {
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);

@@ -546,10 +546,7 @@ namespace Gts {
 			if (!bone) {
 				return false;
 			}
-			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
-			if (HasSMT(giantref)) {
-				sizedifference += 7.0;
-			}
+			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 			if (tinyref->IsDead() || sizedifference < 6.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				Grab::Release(giantref);
@@ -561,8 +558,6 @@ namespace Gts {
 				TaskManager::Cancel(name);
 				return false;
 			}
-
-			float giantScale = get_visual_scale(giantref);
 
 			NiPoint3 giantLocation = giantref->GetPosition();
 			NiPoint3 tinyLocation = tinyref->GetPosition();
