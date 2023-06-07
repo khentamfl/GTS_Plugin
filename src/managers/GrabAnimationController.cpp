@@ -164,7 +164,7 @@ namespace Gts {
 
         if (HasSMT(pred)) {
             MINIMUM_GRAB_SCALE = 0.8; 
-			MINIMUM_DISTANCE * = 2.5;
+			MINIMUM_DISTANCE *= 2.5;
         }
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
