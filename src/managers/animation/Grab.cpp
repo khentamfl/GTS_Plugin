@@ -76,7 +76,7 @@ namespace {
 					return false;
 				}
 				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 0.75 * power * multiplier;
+				float WasteStamina = 0.35 * power * multiplier;
 				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
 				return true;
 			});
@@ -182,10 +182,10 @@ namespace {
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (1.000 * sd) * power * additionaldamage;
+			float damage = (0.900 * sd) * power * additionaldamage;
 			if (HasSMT(giant)) {
-				damage *= 3.0;
-				bonus = 2.5;
+				damage *= 4.0;
+				bonus = 3.0;
 			}
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
 			if (IsLiving(grabbedActor)) {
@@ -246,7 +246,9 @@ namespace {
 		auto giant = &data.giant;
 		auto otherActor = Grab::GetHeldActor(&data.giant);
 		if (otherActor) {
-			SetBeingEaten(otherActor, true);
+			for (auto& tiny: VoreData.GetVories()) {
+				SetBeingEaten(otherActor, true);
+			}
 		}
 		AdjustFacialExpression(giant, 0, 1.0, "phenome"); // Start opening mouth
 		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
@@ -261,10 +263,12 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(&data.giant);		
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
 		if (otherActor) {
+			for (auto& tiny: VoreData.GetVories()) {
 			if (!AllowDevourment()) {
 				VoreData.Swallow();
 			} else {
 				CallDevourment(&data.giant, otherActor);
+				}
 			}
 		}
 	}
@@ -286,7 +290,9 @@ namespace {
 		if (otherActor) {
 			SetBeingEaten(otherActor, false);
 			auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
-			VoreData.KillAll();
+			for (auto& tiny: VoreData.GetVories()) {
+				VoreData.KillAll();
+			}
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);	
 			Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			ManageCamera(&data.giant, false, 7.0);

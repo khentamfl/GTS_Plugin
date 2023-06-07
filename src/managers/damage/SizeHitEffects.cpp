@@ -214,7 +214,11 @@ namespace Gts {
 					SpawnParticle(tiny, 0.20, "GTS/Damage/FootExplosion.nif", NiMatrix3(), root->world.translate, ts * 0.5, 7, root);
 				}
 			} else {
-				Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+				auto root = find_node(tiny, "NPC Root [Root]");
+				if (root) {
+					SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, ts * 0.5, 7, root);
+				}
+				//Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			}
 			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
 			DamageAV(tiny, ActorValue::kHealth, damage * 10);
