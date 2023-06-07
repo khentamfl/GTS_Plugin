@@ -26,6 +26,8 @@ namespace Gts {
 			static void RegisterEvents();
 			static void RegisterTriggers();
 			
+			void DetachActorTask(Actor* giant);
+			void AttachActorTask(Actor* giant, Actor* tiny);
 			virtual void Update() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;

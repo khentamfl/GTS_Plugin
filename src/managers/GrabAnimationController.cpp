@@ -59,6 +59,7 @@ namespace Gts {
 	std::string GrabAnimationController::DebugName() {
 		return "GrabAnimationController";
 	}
+
     std::vector<Actor*> GrabAnimationController::GetGrabTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();

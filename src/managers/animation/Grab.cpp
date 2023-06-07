@@ -149,7 +149,10 @@ namespace {
 	void GTSGrab_Catch_Actor(AnimationEventData& data) {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 1);
-		Grab::SetHolding(giant, true);
+		auto grabbedActor = Grab::GetHeldActor(&data.giant);
+		if (grabbedActor) {
+			Grab::AttachActorTask(giant, grabbedActor);
+		}
 	}
 
 	void GTSGrab_Catch_End(AnimationEventData& data) {
@@ -201,6 +204,7 @@ namespace {
 			}
 			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
+				SetBeingHeld(grabbedActor, false);
 				Rumble::Once("GrabAttackKill", &data.giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
@@ -210,8 +214,8 @@ namespace {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 0.0, "NPC Head [Head]");
 				}
 				PrintDeathSource(giant, grabbedActor, "HandCrushed");
+				Grab::DetachActorTask(giant);
 				Grab::Release(giant);
-				SetBeingHeld(grabbedActor, false);
 			}
 		}
 	}
@@ -226,6 +230,7 @@ namespace {
 			log::info("GrabbedActor is null");
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 			AnimationManager::StartAnim("GrabAbort", giant);
+			Grab::DetachActorTask(giant);
 			Grab::Release(giant);
 		}
 	}
@@ -298,8 +303,8 @@ namespace {
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);	
 			Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			ManageCamera(&data.giant, false, 7.0);
-			Grab::SetHolding(&data.giant, false);
 			SetBeingHeld(otherActor, false);
+			Grab::DetachActorTask(giant);
 			Grab::Release(giant);
 		}
 		ToggleEmotionEdit(giant, false);
@@ -361,8 +366,8 @@ namespace {
 		}
         giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		ManageCamera(giant, false, 7.0);
-		Grab::SetHolding(&data.giant, false);
-		Grab::Release(&data.giant);
+		Grab::DetachActorTask(giant);
+		Grab::Release(giant);
 		
 	}
 
@@ -385,7 +390,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(&data.giant, false, 7.0);
-		Grab::SetHolding(giant, false);
+		Grab::DetachActorTask();
 		Grab::Release(giant);
 		if (grabbedActor) {
 			PushActorAway(giant, grabbedActor, 0.1);
@@ -396,7 +401,7 @@ namespace {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		ManageCamera(&data.giant, false, 7.0);
-		Grab::SetHolding(giant, false);
+		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 	}
 
@@ -404,7 +409,7 @@ namespace {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		ManageCamera(&data.giant, false, 7.0);
-		Grab::SetHolding(giant, false);
+		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 	}
 
@@ -489,7 +494,7 @@ namespace Gts {
 	}
 
 	void Grab::Update() {
-		for (auto &[giant, data]: this->data) {
+		/*for (auto &[giant, data]: this->data) {
 			if (!giant) {
 				continue;
 			}
@@ -545,8 +550,74 @@ namespace Gts {
 			// if Escaped(giant, tiny, data.strength) {
 			//   this->data.erase(giant);
 			// }
-		}
+		}*/
 	}
+
+	void Grab::DetachActorTask(Actor* giant) {
+		std::string name = std::format("GrabAttach_{}", giant->formID);
+		TaskManager::Cancel(name);
+	}
+	
+
+	void Grab::AttachActorTask(Actor* giant, Actor* tiny) {
+		if (!giant) {
+			return;
+		}
+		if (!tiny) {
+			return;
+		}
+		std::string name = std::format("GrabAttach_{}", giant->formID);
+		TaskManager::Run(name, [=](auto& progressData) {
+			ActorHandle gianthandle = giant->CreateRefHandle();
+			ActorHandle tinyhandle = tiny->CreateRefHandle();
+			if (!gianthandle) {
+				TaskManager::Cancel(name);
+				return false;
+			} 
+			if (tinyhandle) {
+				TaskManager::Cancel(name);
+				return false;
+			}
+			auto tinyref = tinyhandle.get().get();
+			auto giantref = gianthandle.get().get();
+			std::string_view bonename = "NPC L Finger02 [LF02]";
+			if (IsBeingEaten(tinyref)) {
+				bonename = "AnimObjectA";
+			}
+			auto bone = find_node(giantref, bonename);
+			if (!bone) {
+				return;
+			}
+			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
+			if (HasSMT(giantref)) {
+				sizedifference += 6.0;
+			}
+			if (tinyref->IsDead() || sizedifference < 6.0) {
+				log::info("{} is small/dead", tiny_is_actor->GetDisplayFullName());
+				Grab::Release()
+				giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
+				AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
+				ManageCamera(giant, false, 7.0); // Disable any camera edits
+				TaskManager::Cancel(name);
+				return false;
+			}
+
+			float giantScale = get_visual_scale(giant);
+
+			NiPoint3 giantLocation = giant->GetPosition();
+			NiPoint3 tinyLocation = tiny->GetPosition();
+
+			tiny->SetPosition(bone->world.translate);
+			
+			auto charcont = tiny_is_actor->GetCharController();
+			if (charcont) {
+				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+			}
+			
+			return true;
+		});
+	}
+	
 
 	void Grab::GrabActor(Actor* giant, TESObjectREFR* tiny, float strength) {
 		Grab::GetSingleton().data.try_emplace(giant, tiny, strength);
@@ -567,20 +638,6 @@ namespace Gts {
 
 	void Grab::Release(Actor* giant) {
 		Grab::GetSingleton().data.erase(giant);
-	}
-
-	void Grab::SetHolding(Actor* giant, bool decide) {
-		auto& me = Grab::GetSingleton();
-		me.data.at(giant).holding = decide;
-	}
-
-	bool Grab::GetHolding(Actor* giant) {
-		try {
-			auto& me = Grab::GetSingleton();
-			return me.data.at(giant).holding;
-		} catch (std::out_of_range e) {
-			return false;
-		}
 	}
 
 	TESObjectREFR* Grab::GetHeldObj(Actor* giant) {

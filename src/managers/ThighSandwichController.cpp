@@ -91,29 +91,52 @@ namespace Gts {
 			AnimationManager::StartAnim("ThighExit", giant);
 		}
 	}
-	void SandwichingData::UpdateRune(Actor* giant) {
+
+	void SandwichData::DisableRuneTask(Actor* giant, bool shrink) {
+		if (shrink == true) {
+			std::string name = std::format("ShrinkRune_{}", giant->formID);
+			TaskManager::Cancel(name);
+		} else if (shrink == false) {
+			std::string name = std::format("ScaleRune_{}", giant->formID);
+			TaskManager::Cancel(name);
+		}
+	}
+
+	void SandwichingData::EnableRuneTask(Actor* giant, bool shrink) {
 		string node_name = "GiantessRune";
-		if (this->RuneShrink == true) {
-			auto node = find_node(giant, node_name, false);
-			if (node) {
-				this->ShrinkRune.halflife = 0.7/AnimationManager::GetAnimSpeed(giant);
-				this->ShrinkRune.target = 1.0;
-				this->ScaleRune.value = 0.0;
-				this->ScaleRune.target = 0.0;
-				node->local.scale = 1.0 - this->ShrinkRune.value;
-				//log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
-				update_node(node);
-			}
-		} else if (this->RuneScale == true) {
-			auto node = find_node(giant, node_name, false);
-			if (node) {
-				this->ScaleRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giant);
-				this->ScaleRune.target = 1.0;
-				this->ShrinkRune.value = 0.0;
-				node->local.scale = this->ScaleRune.value;
-				//log::info("Scale Rune Value: {}", this->ScaleRune.value);
-				update_node(node);
-			}
+		if (shrink == true) {
+			std::string name = std::format("ShrinkRune_{}", giant->formID);
+			TaskManager::Run(name, [=](auto& progressData) {
+				ActorHandle gianthandle = giant->CreateRefHandle();
+				auto giantref = gianthandle.get().get();
+				auto node = find_node(giantref, node_name, false);
+				if (node) {
+					this->ShrinkRune.halflife = 0.7/AnimationManager::GetAnimSpeed(giant);
+					this->ShrinkRune.target = 1.0;
+					this->ScaleRune.value = 0.0;
+					this->ScaleRune.target = 0.0;
+					node->local.scale = 1.0 - this->ShrinkRune.value;
+					//log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
+					update_node(node);
+				}
+				return true;
+			}); 
+		} else if (shrink == false) {
+			std::string name = std::format("ScaleRune_{}", giant->formID);
+			TaskManager::Run(name, [=](auto& progressData) {
+				ActorHandle gianthandle = giant->CreateRefHandle();
+				auto giantref = gianthandle.get().get();
+				auto node = find_node(giantref, node_name, false);
+				if (node) {
+					this->ScaleRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giant);
+					this->ScaleRune.target = 1.0;
+					this->ShrinkRune.value = 0.0;
+					node->local.scale = this->ScaleRune.value;
+					//log::info("Scale Rune Value: {}", this->ScaleRune.value);
+					update_node(node);
+				}
+				return true;
+			}); 
 		}
 	}
 
@@ -129,9 +152,6 @@ namespace Gts {
 				this->ManageAi(giant);
 			}
 		}
-
-		this->UpdateRune(giant);
-
 		for (auto& [key, tinyref]: this->tinies) {
 			if (!move) {
 				return;
