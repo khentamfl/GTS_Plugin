@@ -57,7 +57,7 @@ namespace {
 			auto hand = find_node(receiver, "NPC L Hand [LHnd]");
 			if (hand) {
 				if (IsLiving(grabbedActor)) {
-					SpawnParticle(receiver, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor), 4, );
+					SpawnParticle(receiver, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor), 4, hand);
 					SpawnParticle(receiver, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor), 4, hand);
 				} else {
 					SpawnParticle(receiver, 25.0, "GTS/Damage/FootExplosion.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3, 4, hand);
