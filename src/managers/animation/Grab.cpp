@@ -71,7 +71,7 @@ namespace {
 				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
 			} else {
 				log::info("Trying to spawn dust particle");
-				base_explosion = Runtime::GetExplosion("footstepExplosion");
+				BGSExplosion* base_explosion = Runtime::GetExplosion("footstepExplosion");
 				if (base_explosion) {
 					NiPointer<TESObjectREFR> instance_ptr = giant->PlaceObjectAtMe(base_explosion, false);
 					if (!instance_ptr) {
