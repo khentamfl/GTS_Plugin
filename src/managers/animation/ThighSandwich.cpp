@@ -92,7 +92,7 @@ namespace {
 					return false;
 				}
 				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 0.150 * power * multiplier;
+				float WasteStamina = 0.225 * power * multiplier;
 				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
 				return true;
 			});
@@ -130,7 +130,7 @@ namespace {
 		float damage = 0.6 * damagemult * sizedifference * animSpeed * mult * normaldamage * GetPerkBonus(giant);
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
-		if (damage > hp && sizedifference >= (8.0 * sizemult)) {
+		if (damage > hp) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			PrintDeathSource(giant, tiny, "ThighSandwiched");
 			sandwichdata.Remove(tiny);

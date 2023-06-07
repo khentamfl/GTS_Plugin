@@ -493,66 +493,6 @@ namespace Gts {
 		return "Grab";
 	}
 
-	void Grab::Update() {
-		/*for (auto &[giant, data]: this->data) {
-			if (!giant) {
-				continue;
-			}
-			auto tiny = data.tiny;
-			if (!tiny) {
-				continue;
-			}
-			if (!this->GetHolding(giant)) {
-				return;
-			}
-			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
-			if (tiny_is_actor) {
-				std::string_view bonename = "NPC L Finger02 [LF02]";
-				if (IsBeingEaten(tiny_is_actor)) {
-					bonename = "AnimObjectA";
-				}
-				auto bone = find_node(giant, bonename);
-				if (!bone) {
-					return;
-				}
-				float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny_is_actor);
-				if (HasSMT(giant)) {
-					sizedifference += 6.0;
-				}
-				if (tiny_is_actor->IsDead() || sizedifference < 6.0) {
-					Grab::Release(giant); // Clear data.
-					log::info("{} is small/dead", tiny_is_actor->GetDisplayFullName());
-					giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
-					AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
-					ManageCamera(giant, false, 7.0); // Disable any camera edits
-					return;
-				}
-
-				float giantScale = get_visual_scale(giant);
-
-				NiPoint3 giantLocation = giant->GetPosition();
-				NiPoint3 tinyLocation = tiny->GetPosition();
-
-				tiny->SetPosition(bone->world.translate);
-				
-					auto charcont = tiny_is_actor->GetCharController();
-					if (charcont) {
-						charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
-					}
-				} else {
-				// TODO: Work out method for generic objects
-			}
-
-			// TODO: Add escape
-
-			////////////////////// Sermit's Note: please add it to Grab only, not Vore. And even then im not sure if we really need it.
-
-			// if Escaped(giant, tiny, data.strength) {
-			//   this->data.erase(giant);
-			// }
-		}*/
-	}
-
 	void Grab::DetachActorTask(Actor* giant) {
 		std::string name = std::format("GrabAttach_{}", giant->formID);
 		TaskManager::Cancel(name);

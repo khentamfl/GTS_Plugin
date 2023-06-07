@@ -28,7 +28,6 @@ namespace Gts {
 			
 			static void DetachActorTask(Actor* giant);
 			static void AttachActorTask(Actor* giant, Actor* tiny);
-			virtual void Update() override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 			// Streangth is meant to be for a calculation of
