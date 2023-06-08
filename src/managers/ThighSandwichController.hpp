@@ -28,6 +28,8 @@ namespace Gts {
 
 			// Update all things that are happening like
 			// keeping them on the AnimObjectA and shrinking nodes
+			void EnableRuneTask(Actor* giant, bool shrink);
+			void DisableRuneTask(Actor* giant, bool shrink);
 			void Update();
 			void MoveActors(bool move);
 			void ManageAi(Actor* giant);

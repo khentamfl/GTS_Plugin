@@ -75,6 +75,7 @@ namespace Gts {
 			bool vore_combatonly = true;
 			bool devourment_compatibility = false;
 			bool allow_feetracking = true;
+			bool less_gore = false;
 			bool Vore_Ai = true;
 			bool Stomp_Ai = true;
 			bool Sandwich_Ai = true;

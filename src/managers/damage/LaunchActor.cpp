@@ -1,6 +1,7 @@
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/highheel.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/runtime.hpp"
 #include "UI/DebugAPI.hpp"
 #include "scale/scale.hpp"
@@ -21,11 +22,12 @@ namespace {
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		if (tiny->IsDead()) {
 			return;
+		} if (IsBeingHeld(tiny)) {
+			return;
 		}
-		bool hasSMT = Runtime::HasMagicEffect(giant, "SmallMassiveThreat");
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny);
-		if (hasSMT) {
+		if (HasSMT(giant)) {
 			giantSize *= 4.0;
 		}
 		float sizedifference = giantSize/tinySize;
@@ -46,10 +48,17 @@ namespace {
 
 	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
 		float giantSize = get_visual_scale(giant);
+		float SMT = 1.0;
+		if (HasSMT(giant)) {
+			giantSize += 1.0;
+			force += 0.20;
+		}
 		float tinySize = get_visual_scale(tiny);
 		float sizeRatio = giantSize/tinySize;
 
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
+
+		
 
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
@@ -92,13 +101,11 @@ namespace Gts {
 	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, std::string_view node) {
 		const float BASE_DISTANCE = 70.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
 		const float BASE_FOOT_DISTANCE = 40.0; // Checks the distance of foot squishing
-		const float SCALE_RATIO = 2.0;
-		float bonusscale = 1.0;
-		float actualGiantScale = get_visual_scale(giant);
-		float giantScale = actualGiantScale;
+		float SCALE_RATIO = 2.0;
+		float giantScale = get_visual_scale(giant);
 
-		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
-			giantScale *= 2.0;
+		if (HasSMT(giant)) {
+			SCALE_RATIO = 0.75;
 		}
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(giant);
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);

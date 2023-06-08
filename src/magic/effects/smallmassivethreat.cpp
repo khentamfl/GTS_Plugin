@@ -17,10 +17,13 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float CasterScale = get_visual_scale(caster);
-		if (CasterScale >= 2.0) {
-			Dispel();
+		static Timer warningtimer = Timer(3.0);
+		float CasterScale = get_target_scale(caster);
+		if (CasterScale >= 1.50) {
+			mod_target_scale(caster, -0.035);
+			if (warningtimer.ShouldRun()) {
+				Notify("Im getting too big, it becomes hard to handle such power.");
+			}
 		} // <- Disallow having it when scale is > 2.0
 	}
-
 }

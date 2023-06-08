@@ -35,10 +35,12 @@ namespace {
 		int StateID;
 		int GTSStateID;
 
-		int State = giant->GetGraphVariableInt("currentDefaultState", StateID);
-		int ExpectedState = giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
-		if (ExpectedState != State) {
-			giant->SetGraphVariableInt("GTS_Def_State", State);
+		giant->GetGraphVariableInt("currentDefaultState", StateID);
+		giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
+		log::info("StateID: {}, GTSStateID:{}", StateID, GTSStateID);
+		if (GTSStateID != StateID) {
+			log::info("Setting Grab Int to {}", StateID);
+			giant->SetGraphVariableInt("GTS_Def_State", StateID);
 		}
 	}
 
@@ -57,32 +59,6 @@ namespace {
 						fadenode->GetRuntimeData().currentFade = 1.0f;
 					}
 				}
-			}
-		}
-	}
-
-	void ProcessExperiment(Actor* actor) {
-		auto aiProc = actor->GetActorRuntimeData().currentProcess;
-		auto Combat = actor->GetActorRuntimeData().combatController;
-		bhkCharacterController* CharController = aiProc->GetCharController();
-		//const auto bhkCharacterController = CharController&;
-		if (CharController) {
-			bhkCharacterController& Controller = *CharController;
-			actor->UpdateFadeSettings(CharController);
-			log::info("Normal Height of {} : {}", actor->GetDisplayFullName(), CharController->actorHeight);
-			CharController->scale = get_visual_scale(actor);
-			CharController->actorHeight = 1.82 * get_visual_scale(actor);
-			actor->UpdateCharacterControllerSimulationSettings(Controller);
-		}
-
-		auto high = aiProc->high;
-		high->locationOffsetByWaterPoint.z = 95 * get_visual_scale(actor);
-		if (Combat) {
-			auto CombatTarget = Combat->targetHandle.get().get();
-			if (CombatTarget) {
-				NiPoint3 Location = CombatTarget->GetPosition();
-				Location.z -= 2400 * get_visual_scale(actor);
-				aiProc->SetHeadtrackTarget(actor, Location);
 			}
 		}
 	}
@@ -257,6 +233,15 @@ std::string GtsManager::DebugName() {
 	return "GtsManager";
 }
 
+void GtsManager::Start() {
+	for (auto actor: find_actors()) {
+		if (!actor) {
+			return;
+		}
+	FixActorState(actor);
+	}
+}
+
 // Poll for updates
 void GtsManager::Update() {
 	auto profiler = Profilers::Profile("Manager: Update()");
@@ -266,7 +251,7 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
-		FixActorState(actor);
+		
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();

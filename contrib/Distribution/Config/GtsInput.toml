@@ -53,20 +53,18 @@ keys = ["LALT", "E"]
 name = "LeftStomp_Strong"
 keys = ["LALT", "Q"]
 
-# ^ Trigger powerful stomps.
+# ^ Trigger powerful stomps. 
 
 
 [[InputEvent]]
 name = "RightStomp"
 keys = ["LSHIFT", "E"]
-duration = 0.33
 
 # Trigger Stomp Right animation.
 
 [[InputEvent]]
 name = "LeftStomp"
 keys = ["LSHIFT", "Q"]
-duration = 0.33
 
 # Trigger Stomp Left animation.
 
@@ -147,14 +145,14 @@ exclusive = true
 #========================================================
 
 [[InputEvent]]
-name = "Grab"
+name = "GrabOther"
 keys = ["F"]
-duration = 1.0 
-# Grabs nearby actor. It is currently a bit buggy, has no Animations and is pretty much WIP, so use it at your own risk. 
+duration = 0.25 
+# Grabs closest actor.
 
 [[InputEvent]]
-name = "GrabKill"
-keys = ["LMB"]
+name = "GrabAttack"
+keys = ["E"]
 exclusive = false
 trigger = "continuous"
 
@@ -162,7 +160,24 @@ trigger = "continuous"
 # Crushes actor if there's no health left.
 
 [[InputEvent]]
-name = "GrabSpare"
+name = "GrabVore"
+keys = ["V"]
+exclusive = false
+trigger = "continuous"
+
+# Vore Everyone in your hands
+
+[[InputEvent]]
+name = "GrabThrow"
+keys = ["X"]
+exclusive = false
+trigger = "continuous"
+
+# Throw Everyone in your hands
+
+
+[[InputEvent]]
+name = "GrabRelease"
 keys = ["RMB"]
 exclusive = false
 

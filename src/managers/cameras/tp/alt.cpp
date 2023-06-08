@@ -53,6 +53,8 @@ namespace Gts {
 			altMode = 12; // R feet
 		} else if (sizemanager.GetActionBool(player, 0)) {
 			altMode = 13; // Thigh Crushing
+		} else if (sizemanager.GetActionBool(player, 7)) {
+			altMode = 14; // Grab Attack
 		}
 		switch (altMode) {
 			case 0: {
@@ -141,7 +143,7 @@ namespace Gts {
 				        .boneNames = {
 						"NPC R Hand [RHnd]",
 					},
-				        .zoomScale = 1.00,
+				        .zoomScale = 0.75,
 				};
 			}
 			case 11: {
@@ -149,7 +151,7 @@ namespace Gts {
 				        .boneNames = {
 						"NPC L Foot [Lft ]",
 					},
-				        .zoomScale = 1.00,
+				        .zoomScale = 0.75,
 				};
 			}
 			case 12: {
@@ -157,7 +159,7 @@ namespace Gts {
 				        .boneNames = {
 						"NPC R Foot [Rft ]",
 					},
-				        .zoomScale = 1.00,
+				        .zoomScale = 0.75,
 				};
 			}
 			case 13: {
@@ -169,6 +171,14 @@ namespace Gts {
 						"NPC L Foot [Lft ]",
 					},
 				        .zoomScale = 1.00,
+				};
+			} 
+			case 14: {
+				return BoneTarget { // L Hand
+				        .boneNames = {
+						"NPC L Finger02 [LF02]",
+					},
+				        .zoomScale = 0.60,
 				};
 			}
 		}

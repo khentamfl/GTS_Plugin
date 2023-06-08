@@ -27,7 +27,6 @@ namespace {
 	}
 
 	struct RuntimeConfig {
-		std::unordered_map<std::string, std::string> artobjects;
 		std::unordered_map<std::string, std::string> sounds;
 		std::unordered_map<std::string, std::string> spellEffects;
 		std::unordered_map<std::string, std::string> spells;
@@ -41,7 +40,6 @@ namespace {
     std::unordered_map<std::string, std::string> keywords;
 
 		articuno_serde(ar) {
-			ar <=> kv(artobjects, "artobjects");
 			ar <=> kv(sounds, "sounds");
 			ar <=> kv(spellEffects, "spellEffects");
 			ar <=> kv(spells, "spells");
@@ -67,20 +65,6 @@ namespace Gts {
 		return "Runtime";
 	}
 
-
-	// Art Object
-	BGSArtObject* Runtime::GetArtObject(const std::string_view& tag) {
-		BGSArtObject* data = nullptr;
-		try {
-			data = Runtime::GetSingleton().artobjects.at(std::string(tag)).data;
-		}  catch (const std::out_of_range& oor) {
-			data = nullptr;
-			if (!Runtime::Logged("ArtObject", tag)) {
-				log::warn("ArtObject: {} not found", tag);
-			}
-		}
-		return data;
-	}
 	// Sound
 	BSISoundDescriptor* Runtime::GetSound(const std::string_view& tag) {
 		BSISoundDescriptor* data = nullptr;
@@ -487,7 +471,7 @@ namespace Gts {
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
 			if (!Runtime::Logged("impc", tag)) {
-				log::warn("ImpactEffect: {} not found", tag);
+				log::warn("Race: {} not found", tag);
 			}
 		}
 		return data;
@@ -502,7 +486,7 @@ namespace Gts {
 	}
 
   // Keywords
-  static BGSKeyword* Runtime::GetKeyword(const std::string_view& tag) {
+  BGSKeyword* Runtime::GetKeyword(const std::string_view& tag) {
     BGSKeyword* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().keywords.at(std::string(tag)).data;
@@ -514,8 +498,8 @@ namespace Gts {
 		}
 		return data;
   }
-  static bool Runtime::HasKeyword(Actor* actor, const std::string_view& tag) {
-    auto data = GetRace(tag);
+  bool Runtime::HasKeyword(Actor* actor, const std::string_view& tag) {
+    auto data = GetKeyword(tag);
 		if (data) {
 			return actor->HasKeyword(data);
 		} else {

@@ -29,8 +29,9 @@ namespace Gts {
 			virtual void OnAddPerk(const AddPerkEvent& evt) override;
 
 			virtual std::string DebugName() override;
+			virtual void Start() override;
 			virtual void Update() override;
-
+			
 			// Reapply changes (used after reload events)
 			void reapply(bool force = true);
 			void reapply_actor(Actor* actor, bool force = true);

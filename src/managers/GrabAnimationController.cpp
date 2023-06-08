@@ -1,10 +1,10 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
-#include "managers/ThighSandwichController.hpp"
+#include "managers/GrabAnimationController.hpp"
+#include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
-#include "managers/ai/AiManager.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
 #include "data/persistent.hpp"
@@ -12,15 +12,15 @@
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
-#include "profiler.hpp"
 #include "spring.hpp"
 #include "node.hpp"
 
+
 namespace {
 
-	const float MINIMUM_STOMP_DISTANCE = 50.0;
-	const float MINIMUM_STOMP_SCALE_RATIO = 1.75;
-	const float STOMP_ANGLE = 50;
+	const float MINIMUM_GRAB_DISTANCE = 85.0;
+	const float MINIMUM_GRAB_SCALE_RATIO = 6.0;
+	const float GRAB_ANGLE = 70;
 	const float PI = 3.14159;
 
 	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
@@ -48,122 +48,36 @@ namespace {
 			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
 			);
 	}
-	void DoSandwich(Actor* pred) {
-		if (!Persistent::GetSingleton().Sandwich_Ai) {
-			log::info("Sandwich AI is false");
-			return;
-		}
-		auto& Sandwiching = ThighSandwichController::GetSingleton();
-		std::size_t numberOfPrey = 1;
-		if (Runtime::HasPerkTeam(pred, "MassVorePerk")) {
-			numberOfPrey = 1 + (get_visual_scale(pred)/3);
-		}
-		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
-		for (auto prey: preys) {
-			Sandwiching.StartSandwiching(pred, prey);
-			auto node = find_node(pred, "GiantessRune", false);
-			if (node) {
-				node->local.scale = 0.01;
-				update_node(node);
-			}
-		}
-	}
-
-	void DoStomp(Actor* pred) {
-		if (!Persistent::GetSingleton().Stomp_Ai) {
-			return;
-		}
-		int random = rand() % 4;
-		int actionrng = rand() % 4;
-		std::size_t amount = 6;
-		std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
-		for (auto prey: preys) {
-			if (AiManager::GetSingleton().CanStomp(pred, prey)) {
-				if (random <= 2) {
-					if (actionrng <= 2) {
-						AnimationManager::StartAnim("StompRight", pred);
-					} else {
-						AnimationManager::StartAnim("StompLeft", pred);
-					}
-				} else if (random > 2) {
-					if (actionrng <= 2) {
-						AnimationManager::StartAnim("StrongStompRight", pred);
-					} else {
-						AnimationManager::StartAnim("StrongStompLeft", pred);
-					}
-				}
-			}
-		}
-	}
-
-	void AnimationAttempt(Actor* actor) {
-		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
-		int rng = rand() % 40;
-		if (rng > 2 && rng < 6 * scale) {
-			DoStomp(actor);
-		} else if (rng < 2) {
-			DoSandwich(actor);
-		}
-	}
 }
 
-
 namespace Gts {
-	AiData::AiData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
-	}
-
-	AiManager& AiManager::GetSingleton() noexcept {
-		static AiManager instance;
+    GrabAnimationController& GrabAnimationController::GetSingleton() noexcept {
+		static GrabAnimationController instance;
 		return instance;
 	}
 
-	std::string AiManager::DebugName() {
-		return "AiManager";
+	std::string GrabAnimationController::DebugName() {
+		return "GrabAnimationController";
 	}
 
-	void AiManager::Update() {
-		auto profiler = Profilers::Profile("Ai: Update");
-		static Timer ActionTimer = Timer(0.80);
-		if (ActionTimer.ShouldRun()) {
-			auto& persist = Persistent::GetSingleton();
-			for (auto actor: find_actors()) {
-				std::vector<Actor*> AbleToAct = {};
-				for (auto actor: find_actors()) {
-					if (IsTeammate(actor) && actor->formID != 0x14) {
-						if (actor->IsInCombat() || !persist.vore_combatonly) {
-							AbleToAct.push_back(actor);
-						}
-					}
-				}
-				if (!AbleToAct.empty()) {
-					int idx = rand() % AbleToAct.size();
-					Actor* Performer = AbleToAct[idx];
-					if (Performer) {
-						AnimationAttempt(Performer);
-					}
-				}
-			}
-		}
-	}
-
-
-	std::vector<Actor*> AiManager::RandomStomp(Actor* pred, std::size_t numberOfPrey) {
+    std::vector<Actor*> GrabAnimationController::GetGrabTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (IsGtsBusy(pred)) {
-			log::info("{} is Busy", pred->GetDisplayFullName());
 			return {};
 		}
 		if (!pred) {
-			log::info("Pred is none");
 			return {};
 		}
 		auto charController = pred->GetCharController();
 		if (!charController) {
 			return {};
 		}
+
 		NiPoint3 predPos = pred->GetPosition();
+
 		auto preys = find_actors();
+
 		// Sort prey by distance
 		sort(preys.begin(), preys.end(),
 		     [predPos](const Actor* preyA, const Actor* preyB) -> bool
@@ -176,7 +90,7 @@ namespace Gts {
 		// Filter out invalid targets
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
-			return !this->CanStomp(pred, prey);
+			return !this->CanGrab(pred, prey);
 		}), preys.end());
 
 		// Filter out actors not in front
@@ -196,6 +110,7 @@ namespace Gts {
 			float cosTheta = predDir.Dot(preyDir);
 			return cosTheta <= 0; // 180 degress
 		}), preys.end());
+
 		// Filter out actors not in a truncated cone
 		// \      x   /
 		//  \  x     /
@@ -203,7 +118,8 @@ namespace Gts {
 		//   | pred |  <- Based on width of pred
 		//   |______|
 		float predWidth = 70 * get_visual_scale(pred);
-		float shiftAmount = fabs((predWidth / 2.0) / tan(STOMP_ANGLE/2.0));
+		float shiftAmount = fabs((predWidth / 2.0) / tan(GRAB_ANGLE/2.0));
+
 		NiPoint3 coneStart = predPos - predDir * shiftAmount;
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[coneStart, predWidth, predDir](auto prey)
 		{
@@ -213,61 +129,80 @@ namespace Gts {
 			}
 			preyDir = preyDir / preyDir.Length();
 			float cosTheta = predDir.Dot(preyDir);
-			return cosTheta <= cos(STOMP_ANGLE*PI/180.0);
+			return cosTheta <= cos(GRAB_ANGLE*PI/180.0);
 		}), preys.end());
+
 		// Reduce vector size
 		if (preys.size() > numberOfPrey) {
 			preys.resize(numberOfPrey);
 		}
+
 		return preys;
 	}
 
-	bool AiManager::CanStomp(Actor* pred, Actor* prey) {
+	bool GrabAnimationController::CanGrab(Actor* pred, Actor* prey) {
 		if (pred == prey) {
 			return false;
 		}
-		if (IsGtsBusy(pred)) {
+		if (prey->IsDead()) {
 			return false;
 		}
 		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 			return false;
 		}
+
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
 			prey_scale *= 3.0;
 		}
-		if (prey->IsDead() && pred_scale/prey_scale < 8.0) {
-			return false;
-		}
 
 		float sizedifference = pred_scale/prey_scale;
 
+		float MINIMUM_GRAB_SCALE = MINIMUM_GRAB_SCALE_RATIO;
+		float MINIMUM_DISTANCE = MINIMUM_GRAB_DISTANCE;
+
+        if (HasSMT(pred)) {
+            MINIMUM_GRAB_SCALE = 0.8; 
+			MINIMUM_DISTANCE *= 2.5;
+        }
+
+		float balancemode = SizeManager::GetSingleton().BalancedMode();
+
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_STOMP_SCALE_RATIO) {
+		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_GRAB_SCALE) {
+			Notify("{} is too big to be grabbed.", prey->GetDisplayFullName());
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale)
-		    && pred_scale/prey_scale > MINIMUM_STOMP_SCALE_RATIO
-		    && prey_distance > 25.0) { // We don't want the Stomp to be too close
-			return true;
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_GRAB_SCALE) {
+			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
+				return false;
+			} else {
+				return true;
+			}
 		} else {
 			return false;
 		}
 	}
 
-	void AiManager::Reset() {
-		this->data_ai.clear();
-	}
-
-	void AiManager::ResetActor(Actor* actor) {
-		this->data_ai.erase(actor->formID);
-	}
-
-	AiData& AiManager::GetAiData(Actor* giant) {
-		// Create it now if not there yet
-		this->data_ai.try_emplace(giant->formID, giant);
-
-		return this->data_ai.at(giant->formID);
+	void GrabAnimationController::StartGrab(Actor* pred, Actor* prey) {
+		auto& grabbing = GrabAnimationController::GetSingleton();
+		if (!grabbing.CanGrab(pred, prey)) {
+			return;
+		}
+        if (HasSMT(pred)) {
+			float expected = 8.0f;
+			float predscale = get_target_scale(pred);
+			float preyscale = get_target_scale(prey);
+            float sizedifference = predscale/preyscale;
+			float difference = std::clamp(predscale/expected, preyscale/expected, 0.96f);
+			float shrink = preyscale - difference;
+			if (sizedifference < expected) {
+            	mod_target_scale(prey, -shrink);
+				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);
+			}
+        }
+		Grab::GetSingleton().GrabActor(pred, prey);
+		AnimationManager::StartAnim("GrabSomeone", pred);
 	}
 }

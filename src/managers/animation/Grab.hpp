@@ -7,9 +7,13 @@ using namespace RE;
 
 namespace Gts {
 	struct GrabData {
-		GrabData(TESObjectREFR* tiny, float strength);
-		TESObjectREFR* tiny;
-		float strength;
+		public:
+			GrabData(TESObjectREFR* tiny, float strength);
+			void SetGrabbed(bool decide);
+			bool GetGrabbed();
+			TESObjectREFR* tiny;
+			bool holding;
+			float strength;
 	};
 
 	class Grab : public EventListener
@@ -18,8 +22,12 @@ namespace Gts {
 			[[nodiscard]] static Grab& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-			virtual void DataReady() override;
-			virtual void Update() override;
+
+			static void RegisterEvents();
+			static void RegisterTriggers();
+			
+			static void DetachActorTask(Actor* giant);
+			static void AttachActorTask(Actor* giant, Actor* tiny);
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 			// Streangth is meant to be for a calculation of
@@ -27,6 +35,9 @@ namespace Gts {
 			static void GrabActor(Actor* giant, TESObjectREFR* tiny, float strength);
 			static void GrabActor(Actor* giant, TESObjectREFR* tiny);
 			static void Release(Actor* giant);
+
+			bool GetHolding(Actor* giant);
+			static void SetHolding(Actor* giant, bool decide);
 			// Get object being held
 			static TESObjectREFR* GetHeldObj(Actor* giant);
 			// Same as `GetHeldObj` but with a conversion to actor if possible

@@ -60,6 +60,28 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	void DrainStamina(Actor* giant, bool decide, float power) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
+			WasteMult *= 0.65;
+		}
+		std::string name = std::format("StaminaDrain_StrongStomp_{}", giant->formID);
+		if (decide) {
+			TaskManager::Run(name, [=](auto& progressData) {
+				ActorHandle casterhandle = giant->CreateRefHandle();
+				if (!casterhandle) {
+					return false;
+				}
+				float multiplier = AnimationManager::GetAnimSpeed(giant);
+				float WasteStamina = 1.75 * power * multiplier;
+				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
+				return true;
+			});
+		} else {
+			TaskManager::Cancel(name);
+		}
+	}
+
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
 			return 1.25;
@@ -98,22 +120,28 @@ namespace {
 
 	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
 		float bonus = 1.0;
-		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+		if (HasSMT(giant)) {
 			bonus = 4.0;
 		}
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}
 
-	void DoSounds(std::string_view tag, Actor* giant, float animspeed, std::string_view feet) {
+	void DoImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
+		if (HasSMT(giant)) {
+			force *= 12.0;
+		}
+		Rumble::Once(name, giant, force, 0.05, node);
+	}
+
+	void DoSounds(Actor* giant, float animspeed, std::string_view feet) {
 		float bonus = 1.0;
-		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
-			bonus = 4.0;
+		if (HasSMT(giant)) {
+			bonus = 8.0;
 		}
 		float scale = get_visual_scale(giant);
 		Runtime::PlaySoundAtNode("HeavyStompSound", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
 		Runtime::PlaySoundAtNode("xlFootstepR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
 		Runtime::PlaySoundAtNode("xlRumbleR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
-		Rumble::Once(tag, giant, 14.0 * (bonus * bonus * bonus) * animspeed, 0.05, feet);
 	}
 
 	void GTS_StrongStomp_Start(AnimationEventData& data) {
@@ -131,6 +159,7 @@ namespace {
 		}
 		TrackFeet(giant, 6.0, true);
 		StartLegRumble("StrongStompR", data.giant, 0.3, 0.10, "Right");
+		DrainStamina(&data.giant, true, 1.0);
 	}
 
 	void GTS_StrongStomp_LL_Start(AnimationEventData& data) {
@@ -143,6 +172,7 @@ namespace {
 		}
 		TrackFeet(giant, 5.0, true);
 		StartLegRumble("StrongStompL", data.giant, 0.3, 0.10, "Left");
+		DrainStamina(&data.giant, true, 1.0);
 	}
 
 	void GTS_StrongStomp_LR_Middle(AnimationEventData& data) {
@@ -168,19 +198,35 @@ namespace {
 
 	void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
 		float perk = GetPerkBonus(&data.giant);
-		DoSounds("HeavyStompR", &data.giant, data.animSpeed - 0.5, RNode);
-		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
-		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 1.2 * perk, 6.0, RNode);
+		float SMT = 1.0;
+		float damage = 1.0;
+		if (HasSMT(&data.giant)) {
+			SMT = 1.6; // Larger Dust
+			damage = 2.0;
+		}
+		DoImpactRumble(&data.giant, data.animSpeed * 2, RNode, "HeavyStompR");
+		DoSounds(&data.giant, data.animSpeed - 0.5, RNode);
+		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
+		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode, SMT);
+		DoLaunch(&data.giant, 1.4 * perk, 5.0, RNode);
+		DrainStamina(&data.giant, false, 1.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
 		float perk = GetPerkBonus(&data.giant);
-		DoSounds("HeavyStompL", &data.giant, data.animSpeed - 0.5, LNode);
-		DoDamageEffect(&data.giant, 2.5 * perk * (data.animSpeed - 0.5), 1.75 * (data.animSpeed - 0.5), 5, 0.60);
-		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 1.2 * perk, 6.0, LNode);
+		float SMT = 1.0;
+		float damage = 1.0;
+		if (HasSMT(&data.giant)) {
+			SMT = 1.6; // Larger Dust
+			damage = 2.0;
+		}
+		DoImpactRumble(&data.giant, data.animSpeed * 2, LNode, "HeavyStompL");
+		DoSounds(&data.giant, data.animSpeed - 0.5, LNode);
+		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
+		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode, SMT);
+		DoLaunch(&data.giant, 1.4 * perk, 5.0, LNode);
+		DrainStamina(&data.giant, false, 1.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
@@ -202,6 +248,8 @@ namespace {
 		TrackFeet(&data.giant, 5.0, false);
 	}
 	void GTS_StrongStomp_End(AnimationEventData& data) {
+		StopLegRumble("StrongStompR", data.giant, "Right");
+		StopLegRumble("StrongStompL", data.giant, "Left");
 	}
 
 
@@ -221,10 +269,8 @@ namespace {
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StrongStompRight", player);
-			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
-			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
-			Notify("You're too tired to perform strong stomp");
+			TiredSound(player, "You're too tired to perform heavy stomp");
 		}
 	}
 
@@ -236,10 +282,8 @@ namespace {
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StrongStompLeft", player);
-			DamageAV(player, ActorValue::kStamina, WasteStamina);
 		} else {
-			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
-			Notify("You're too tired to perform strong stomp");
+			TiredSound(player, "You're too tired to perform heavy stomp");
 		}
 	}
 }

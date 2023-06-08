@@ -1,3 +1,4 @@
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "utils/papyrusUtils.hpp"
@@ -22,7 +23,7 @@ namespace {
 		float k = 0.065;
 		float n = 1.0;
 		float s = 1.12;
-		float Result = 1.0/(pow(1.0+pow(k*(Size-1.0),n*s),1.0/s));
+		float Result = 1.0/(pow(1.0+pow(k*(Size),n*s),1.0/s));
 		return Result;
 	}
 
@@ -66,10 +67,13 @@ namespace Gts {
 	void Disintegrate(Actor* actor) {
 		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 		actor->Disable();
-		if (Persistent::GetSingleton().delete_actors) {
-			actor->SetDelete(true);
+		/*if (Persistent::GetSingleton().delete_actors) {
+			auto ActorRef = skyrim_cast<TESObjectREFR*>(actor);
+			if (ActorRef) {
+				ActorRef->SetDelete(true);
+			}
 			log::info("Calling Delete Actors");
-		}
+		}*/
 	}
 
 	void UnDisintegrate(Actor* actor) {
@@ -179,6 +183,9 @@ namespace Gts {
 	}
 
 	bool IsDragon(Actor* actor) {
+		if (Runtime::HasKeyword(actor, "DragonKeyword")) {
+			return true;
+		}
 		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
 		     || std::string(actor->GetDisplayFullName()).find("Dragon") != std::string::npos
 		     || std::string(actor->GetDisplayFullName()).find("dragon") != std::string::npos
@@ -187,6 +194,27 @@ namespace Gts {
 		} else {
 			return false;
 		}
+	}
+
+	bool IsLiving(Actor* actor) {
+		bool IsDraugr = Runtime::HasKeyword(actor, "UndeadKeyword");
+		bool IsDwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
+		if (IsDraugr || IsDwemer) {
+			log::info("{} is not living", actor->GetDisplayFullName());
+			return false;
+		} else {
+			return true;
+		}
+		return true;
+	}
+
+	bool IsEquipBusy(Actor* actor) {
+		int State;
+		actor->GetGraphVariableInt("currentDefaultState", State);
+		if (State == 10 || State == 11 || State == 12 || State == 13) {
+			return true;
+		}
+		return false;
 	}
 
 	bool IsProne(Actor* actor) {
@@ -215,10 +243,10 @@ namespace Gts {
 		return 3.4028237E38; // Max float
 	}
 
-	void ApplyShake(Actor* caster, float modifier) {
+	void ApplyShake(Actor* caster, float modifier, float radius) {
 		if (caster) {
 			auto position = caster->GetPosition();
-			ApplyShakeAtPoint(caster, modifier, position, 1.0);
+			ApplyShakeAtPoint(caster, modifier, position, radius);
 		}
 	}
 
@@ -234,7 +262,7 @@ namespace Gts {
 		if (node) {
 			ApplyShakeAtPoint(caster, modifier, node->world.translate, radius);
 		}
-	}
+	}	
 
 	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords, float radius) {
 		if (!caster) {
@@ -275,10 +303,11 @@ namespace Gts {
 		//log::info("Shake Actor:{}, Distance:{}, sourcesize: {}, recsize: {}, cutoff: {}", caster->GetDisplayFullName(), distance, sourcesize, receiversize, cuttoff);
 		if (distance < cuttoff) {
 			// To Sermit: Same value as before just with the math reduced to minimal steps
-			float intensity = (sizedifference * 17.9 * ShakeStrength(caster)) / distance;
+			float intensity = (sizedifference * 18.8 * (ShakeStrength(caster))) / distance;
 			float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
 			intensity = std::clamp(intensity, 0.0f, 1e8f);
 			duration = std::clamp(duration, 0.0f, 1.2f);
+			
 
 			shake_controller(intensity*modifier, intensity*modifier, duration);
 			shake_camera_at_node(coords, intensity*modifier, duration);
@@ -296,6 +325,40 @@ namespace Gts {
 
 	bool AllowFeetTracking() {
 		return Persistent::GetSingleton().allow_feetracking;
+	}
+	bool LessGore() {
+		log::info("Less gore is {}", Persistent::GetSingleton().less_gore);
+		return Persistent::GetSingleton().less_gore;
+	}
+
+	void SetBeingHeld(Actor* tiny, bool decide) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			transient->being_held = decide;
+		}
+	}
+
+	bool IsBeingHeld(Actor* tiny) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			return transient->being_held;
+		}
+		return false;
+	}
+
+	void SetBeingEaten(Actor* tiny, bool decide) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			transient->about_to_be_eaten = decide;
+		}
+	}
+
+	bool IsBeingEaten(Actor* tiny) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient){
+			return transient->about_to_be_eaten;
+		}	
+		return false;
 	}
 
 	bool IsGtsBusy(Actor* actor) {
@@ -360,18 +423,18 @@ namespace Gts {
 
 	float GetRandomBoost() {
 		float rng = (rand()% 150 + 1);
-		float random = rng/100;
+		float random = rng/100; 
 		return random;
 	}
 
-	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
+	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node, float scale_override) {
 		auto& footstep = FootStepManager::GetSingleton();
 		auto& explosion = ExplosionManager::GetSingleton();
 		Impact impact_data = Impact {
 			.actor = giant,
 			.kind = kind,
 			.scale = get_visual_scale(giant) * modifier,
-			.effective_scale = get_effective_scale(giant),
+			.effective_scale = get_effective_scale(giant) * scale_override,
 			.nodes = find_node(giant, node),
 		};
 		explosion.OnImpact(impact_data); // Play explosion
@@ -385,9 +448,51 @@ namespace Gts {
 		}
 	}
 
+	void SpawnDustParticle(Actor* giant, Actor* tiny, std::string_view node, float size) {
+		auto result = find_node(giant, node);
+		if (result) {
+			BGSExplosion* base_explosion = Runtime::GetExplosion("draugrexplosion");
+			if (base_explosion) {
+				NiPointer<TESObjectREFR> instance_ptr = giant->PlaceObjectAtMe(base_explosion, false);
+				if (!instance_ptr) {
+					return;
+				}
+				TESObjectREFR* instance = instance_ptr.get();
+				if (!instance) {
+					return;
+				}
+				Explosion* explosion = instance->AsExplosion();
+				if (!explosion) {
+					return;
+				}
+				explosion->SetPosition(result->world.translate);
+				explosion->GetExplosionRuntimeData().radius *= 3 * get_visual_scale(tiny) * size;
+				explosion->GetExplosionRuntimeData().imodRadius *= 3 * get_visual_scale(tiny) * size;
+				explosion->GetExplosionRuntimeData().unkB8 = nullptr;
+				explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
+				explosion->GetExplosionRuntimeData().unk11C *= 0.0;
+			}
+		}
+	}
+
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage) {
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (30.0 * damage * damagebonus), radius, random, bonedamage);
+	}
+
+    bool HasSMT(Actor* giant) {
+		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+			return true;
+		}
+		return false;
+	}
+
+	void TiredSound(Actor* player, std::string_view message) {
+		static Timer Cooldown = Timer(1.2);
+		if (Cooldown.ShouldRun()) {
+			Runtime::PlaySound("VoreSound_Fail", player, 0.7, 0.0);
+			Notify(message);
+		}
 	}
 
 	hkaRagdollInstance* GetRagdoll(Actor* actor) {
@@ -483,8 +588,10 @@ namespace Gts {
 		} else if (cause == "HandCrushed") {
 			if (random == 1) {
 				Cprint("{} life was squeezed out in {} grip", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} else if (random <= 2) {
-				Cprint("{} was crushed between the fingers of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 2) {
+				Cprint("{} was crushed inside  of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 3) {
+				Cprint("{} was transformed into bloody mist by the tight grip of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
 				Cprint("{} has been crushed in the hand of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 6) {
@@ -555,6 +662,21 @@ namespace Gts {
 			} else if (random > 3) {
 				Cprint("{} was turned into nothing", tiny->GetDisplayFullName());
 			}
+		} else if (cause == "BlockDamage") {
+			if (random == 1) {
+				Cprint("{} received too much damage and was automatically crushed in the hands of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 2) {
+				Cprint("{} was crushed from receiving too much damage {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 3) {
+				Cprint("{} stopped to be useful, so he was turned into bloody mist in the hands of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 4) {
+				Cprint("{} took extreme amounts of damage and exploded inside the hands of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random >= 6) {
+				Cprint("{} took a little more damage than intended, so her fingers ended up squeezing {} into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 7) {
+				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			}
+			return;
 		}
 	}
 

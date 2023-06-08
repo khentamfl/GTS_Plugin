@@ -28,6 +28,9 @@ namespace Gts {
 
 	void CompleteDragonQuest();
 	bool IsDragon(Actor* actor);
+	bool IsLiving(Actor* actor);
+
+	bool IsEquipBusy(Actor* actor);
 
 	bool IsProne(Actor* actor);
 
@@ -38,11 +41,18 @@ namespace Gts {
 	void ApplyShake(Actor* caster, float modifier);
 	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node);
 	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node, float radius);
-	void ApplyShakeAtPoint(Actor* caster,float modifier, const NiPoint3& coords, float radius);
+	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords, float radius);
 	void EnableFreeCamera();
 
 	bool AllowDevourment();
 	bool AllowFeetTracking();
+	bool LessGore();
+	bool IsBeingHeld(Actor* tiny);
+	void SetBeingHeld(Actor* tiny, bool decide);
+
+	void SetBeingEaten(Actor* tiny, bool decide);
+	bool IsBeingEaten(Actor* tiny);
+
 	bool IsGtsBusy(Actor* actor);
 	bool IsTeammate(Actor* actor);
 
@@ -54,9 +64,12 @@ namespace Gts {
 	void PerkPointCheck(float level);
 	float GetRandomBoost();
 
-	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node);
+	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node, float scale_override);
 	void SpawnParticle(Actor* actor, float lifetime, const char* modelName, const NiMatrix3& rotation, const NiPoint3& position, float scale, std::uint32_t flags, NiAVObject* target);
+	void SpawnDustParticle(Actor* giant, Actor* tiny, std::string_view node, float size);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage);
+	bool HasSMT(Actor* giant);
+	void TiredSound(Actor* player, std::string_view message);
 
 	hkaRagdollInstance* GetRagdoll(Actor* actor);
 

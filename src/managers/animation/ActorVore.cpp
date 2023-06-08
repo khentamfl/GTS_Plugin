@@ -192,7 +192,7 @@ namespace {
 		}
 		VoreData.AllowToBeVored(false);
 		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
-		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode, 1.0);
 		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.35);
 	}
 
@@ -322,13 +322,13 @@ namespace {
 		auto giant = &data.giant;
 		StartBodyRumble("BodyRumble", data.giant, 0.35, 0.10, false);
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			ManageCamera(giant, false, 2.0);//PlayerCamera::GetSingleton()->cameraTarget = giant->CreateRefHandle();
+			ManageCamera(giant, false, 2.0);
 		}
 	}
 
 	void GTSvore_impactRS(AnimationEventData& data) {
 		Rumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
-		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode, 1.0);
 		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.35);
 	}
 

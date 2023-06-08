@@ -16,6 +16,7 @@
 
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"
@@ -66,9 +67,31 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
+	void DrainStamina(Actor* giant, bool decide, float power) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerkTeam(giant, "KillerThighs")) {
+			WasteMult *= 0.65;
+		}
+		std::string name = std::format("StaminaDrain_{}", giant->formID);
+		if (decide) {
+			TaskManager::Run(name, [=](auto& progressData) {
+				ActorHandle casterhandle = giant->CreateRefHandle();
+				if (!casterhandle) {
+					return false;
+				}
+				float multiplier = AnimationManager::GetAnimSpeed(giant);
+				float WasteStamina = 0.25 * power * multiplier;
+				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
+				return true;
+			});
+		} else {
+			TaskManager::Cancel(name);
+		}
+	}
+
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
-			return 1.25;
+			return 1.15;
 		} else {
 			return 1.0;
 		}
@@ -108,7 +131,6 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
 		TrackFeet(&data.giant, 0.0, true); // Track feet
 		data.stage = 1;
-		//Cprint("ThighCrush: GTStosit");
 	}
 
 	void GTSsitloopenter(AnimationEventData& data) {
@@ -117,7 +139,6 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.12 * speed, 0.10);
 		data.disableHH = true;
 		data.stage = 2;
-		//Cprint("ThighCrush: GTSsitloopenter");
 	}
 
 	void GTSsitloopstart(AnimationEventData& data) {
@@ -126,43 +147,39 @@ namespace {
 		StopLegRumble("ThighCrush", data.giant);
 		data.currentTrigger = 1;
 		data.stage = 3;
-		//Cprint("ThighCrush: GTSsitloopenter");
 	}
 
 	void GTSsitloopend(AnimationEventData& data) {
-		// Nothing
 		data.stage = 4;
 	}
 
 	void GTSsitcrushlight_start(AnimationEventData& data) {
 		StartLegRumble("ThighCrush", data.giant, 0.18, 0.12);
+		DrainStamina(&data.giant, true, 1.0); // < Start Light Stamina Drain
 		data.stage = 5;
-		//Cprint("ThighCrush: GTSsitcrushlight_start");
 	}
 
 	void GTSsitcrushlight_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
-
 		data.canEditAnimSpeed = true;
 		LegRumbleOnce("ThighCrush_End", data.giant, 0.22, 0.20);
 		StopLegRumble("ThighCrush", data.giant);
+		DrainStamina(&data.giant, false, 1.0); // < Stop Light Stamina Drain
 		data.stage = 6;
-		//Cprint("ThighCrush: GTSsitcrushlight_end");
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
+		DrainStamina(&data.giant, true, 2.5); // < - Start HEAVY Stamina Drain
 		StartLegRumble("ThighCrushHeavy", data.giant, 0.35, 0.10);
 		data.stage = 5;
-		//Cprint("ThighCrush: GTSsitcrushheavy_start");
 	}
 
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
-
+		DrainStamina(&data.giant, false, 2.5); // < Stop Heavy Stamina Drain
 		LegRumbleOnce("ThighCrushHeavy_End", data.giant, 0.50, 0.15);
 		StopLegRumble("ThighCrushHeavy", data.giant);
 		data.stage = 6;
-		//Cprint("ThighCrush: GTSsitcrushlight_end");
 	}
 
 	void GTSsitloopexit(AnimationEventData& data) {
@@ -175,7 +192,6 @@ namespace {
 
 		StartBodyRumble("BodyRumble", data.giant, 0.25, 0.12);
 		data.stage = 8;
-		//Cprint("ThighCrush: GTSsitloopexit");
 	}
 
 	void GTSstandR(AnimationEventData& data) {
@@ -185,7 +201,7 @@ namespace {
 		float perk = GetPerkBonus(&data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
-		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode, 1.0);
 		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandR");
@@ -198,7 +214,7 @@ namespace {
 		float perk = GetPerkBonus(&data.giant);
 
 		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
-		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode, 1.0);
 		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandL");
@@ -211,7 +227,7 @@ namespace {
 		float perk = GetPerkBonus(&data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
-		DoSizeEffect(&data.giant, 0.40, FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, 0.40, FootEvent::Right, RNode, 1.0);
 		DoDamageEffect(&data.giant, 0.6 * perk, 0.8, 25, 0.5);
 		data.stage = 9;
 	}
@@ -237,17 +253,18 @@ namespace {
 
 	void ThighCrushKillEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("ThighLoopAttack", player);
+		float WasteStamina = 40.0;
+		if (Runtime::HasPerk(player, "KillerThighs")) {
+			WasteStamina *= 0.65;
+		}
+		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+			AnimationManager::StartAnim("ThighLoopAttack", player);
+		} else {
+			TiredSound(player, "You're too tired to perform thighs attack");
+		}
 	}
 
 	void ThighCrushSpareEvent(const InputEventData& data) {
-		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("ThighLoopExit", player);
-	}
-
-	// To Sermit: This seems to be the same as ThighCrushSpareEvent
-	//  except it is on the `w` key instead Can we just use the RMB?
-	void ThighCrushExitEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		AnimationManager::StartAnim("ThighLoopExit", player);
 	}
@@ -275,7 +292,6 @@ namespace Gts
 		InputManager::RegisterInputEvent("ThighCrush", ThighCrushEvent);
 		InputManager::RegisterInputEvent("ThighCrushKill", ThighCrushKillEvent);
 		InputManager::RegisterInputEvent("ThighCrushSpare", ThighCrushSpareEvent);
-		InputManager::RegisterInputEvent("ThighCrushExit", ThighCrushExitEvent);
 	}
 
 	void AnimationThighCrush::RegisterTriggers() {

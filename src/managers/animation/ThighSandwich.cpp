@@ -79,9 +79,31 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
+	void DrainStamina(Actor* giant, bool decide, float power) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerkTeam(giant, "KillerThighs")) {
+			WasteMult *= 0.65;
+		}
+		std::string name = std::format("StaminaDrain_Thighs_{}", giant->formID);
+		if (decide) {
+			TaskManager::Run(name, [=](auto& progressData) {
+				ActorHandle casterhandle = giant->CreateRefHandle();
+				if (!casterhandle) {
+					return false;
+				}
+				float multiplier = AnimationManager::GetAnimSpeed(giant);
+				float WasteStamina = 0.225 * power * multiplier;
+				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
+				return true;
+			});
+		} else {
+			TaskManager::Cancel(name);
+		}
+	}
+
 	float GetPerkBonus(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
-			return 1.25;
+			return 1.15;
 		} else {
 			return 1.0;
 		}
@@ -108,7 +130,7 @@ namespace {
 		float damage = 0.6 * damagemult * sizedifference * animSpeed * mult * normaldamage * GetPerkBonus(giant);
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
-		if (damage > hp && sizedifference >= (8.0 * sizemult)) {
+		if (damage > hp) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			PrintDeathSource(giant, tiny, "ThighSandwiched");
 			sandwichdata.Remove(tiny);
@@ -162,8 +184,8 @@ namespace {
 		auto& sizemanager = SizeManager::GetSingleton();
 		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat
 		sizemanager.SetActionBool(&data.giant, true, 3.0); // Focus camera on AnimObjectA
-		sandwichdata.ManageScaleRune(true);
-		sandwichdata.ManageShrinkRune(false);
+		sandwichdata.EnableRuneTask(&data.giant, false); // Start Growing the Rune
+		sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrinking
 	}
 	void GTSSandwich_SitStart(AnimationEventData& data) {
 	}
@@ -181,6 +203,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
 		StartLeftLegRumble("LLSandwich", data.giant, 0.10, 0.12);
+		DrainStamina(&data.giant, true, 1.0);
 	}
 
 	void GTSSandwich_MoveLL_start_H(AnimationEventData& data) {
@@ -194,6 +217,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
 		StartLeftLegRumble("LLSandwichHeavy", data.giant, 0.15, 0.15);
+		DrainStamina(&data.giant, true, 2.5);
 	}
 
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
@@ -206,6 +230,7 @@ namespace {
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
+		DrainStamina(&data.giant, false, 1.0);
 	}
 
 	void GTSSandwich_ThighImpact_H(AnimationEventData& data) {
@@ -219,6 +244,7 @@ namespace {
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
+		DrainStamina(&data.giant, false, 1.0);
 	}
 
 	void GTSSandwich_MoveLL_end(AnimationEventData& data) {
@@ -241,8 +267,8 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sizemanager.SetActionBool(&data.giant, false, 3.0);
 		sandwichdata.EnableSuffocate(false);
-		sandwichdata.ManageScaleRune(false);
-		sandwichdata.ManageShrinkRune(true);
+		sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growing
+		sandwichdata.EnableRuneTask(&data.giant, true); // Launch Rune Shrinking
 		sandwichdata.OverideShrinkRune(0.0);
 	}
 
@@ -262,18 +288,18 @@ namespace {
 	void GTSSandwich_ExitAnim(AnimationEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		sandwichdata.ManageScaleRune(false);
-		sandwichdata.ManageShrinkRune(false);
+		sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growth
+		sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrink
 		sizemanager.SetActionBool(&data.giant, false, 1.0); // Allow sandwich repeat
 	}
 
 	void GTSSandwich_FootImpact(AnimationEventData& data) {
 		float perk = GetPerkBonus(&data.giant);
-		DoSizeEffect(&data.giant, 1.35, FootEvent::Right, RNode);
-		DoSizeEffect(&data.giant, 1.35, FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, 1.35, FootEvent::Right, RNode, 2.0);
+		DoSizeEffect(&data.giant, 1.35, FootEvent::Left, LNode, 2.0);
 		DoDamageEffect(&data.giant, 4.0 * perk, 2.6, 10, 0.75);
 		DoLaunch(&data.giant, 1.25 * perk, 2.0, RNode);
-		DoLaunch(&data.giant, 1.25, 2.0, LNode);
+		DoLaunch(&data.giant, 1.25 * perk, 2.0, LNode);
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {
@@ -297,29 +323,27 @@ namespace {
 
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 25.0;
+		float WasteStamina = 20.0;
 		if (Runtime::HasPerk(player, "KillerThighs")) {
 			WasteStamina *= 0.65;
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack", player);
 		} else {
-			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
-			Notify("You're too tired to perform thigh attack");
+			TiredSound(player, "You're too tired to perform thigh sandwich");
 		}
 	}
 
 	void ThighSandwichHeavyAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 25.0;
+		float WasteStamina = 35.0;
 		if (Runtime::HasPerk(player, "KillerThighs")) {
 			WasteStamina *= 0.65;
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack_Heavy", player);
 		} else {
-			Runtime::PlaySound("VoreSound_Fail", player, 1.0, 0.0);
-			Notify("You're too tired to perform thigh attack");
+			TiredSound(player, "You're too tired to perform strong thigh sandwich");
 		}
 	}
 

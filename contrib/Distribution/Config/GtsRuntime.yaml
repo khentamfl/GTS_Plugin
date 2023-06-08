@@ -1,6 +1,3 @@
-artobjects:
-  BloodSpray: "Skyrim.esm|0A6EF5"
-
 sounds:
   lFootstepL: "GTS.esp|1E93AB"
   lFootstepR: "GTS.esp|1E93AD"
@@ -18,6 +15,7 @@ sounds:
   GreybeardRumble: "GTS.esp|1CAD96"
   MoanSound: "GTS.esp|09B0AC"
   LaughSound: "GTS.esp|09B0A9"
+  LaughSound_Part2: "GTS.esp|5D3B5B"
   BloodGushSound: "Skyrim.esm|10F78C"
   VoreSound_Success: "Skyrim.esm|10FAE5"
   VoreSound_Fail: "Skyrim.esm|000F8B"
@@ -31,6 +29,8 @@ sounds:
   ThighSandwichImpact: "GTS.esp|582B49"
   HeavyStompSound: "GTS.esp|596F4E"
   ShrinkToNothingSound: "GTS.esp|5BA659"
+  CrunchImpactSound: "GTS.esp|5D8C5C"
+  CrunchKillSound: "GTS.esp|5D8C5D"
 
 
 spellEffects:
@@ -170,6 +170,7 @@ explosions:
   BloodExplosion: "GTS.esp|01CE9D"
   BloodFX: "Dawnguard.esm|00E7B4"
   footstepExplosion: "GTS.esp|035C81"
+  draugrexplosion: "GTS.esp|035C80"
 
 globals:
   FreeLookOnVore: "GTS.esp|281206"
@@ -272,6 +273,8 @@ quests:
 
 factions:
   FollowerFaction: "Skyrim.esm|084D1B"
+  DwarwenAutomatonFaction: "Skyrim.esm|043598"
+  DraugrFaction: "Skyrim.esm|02430D"
 
 impacts:
   GtsBloodSprayImpactSet: "GTS.esp|01CEA7"
@@ -283,6 +286,6 @@ races:
   dragonRace: "Skyrim.esm|012E82"
 
 keywords:
-  DragonKeyword: "Skyrim.esm|000000"
-  UndeadKeyword: "Skyrim.esm|000000"
-  DweamerKeyword: "Skyrim.esm|000000"
+  UndeadKeyword: "Skyrim.esm|013796"
+  DwemerKeyword: "Skyrim.esm|01397A"
+  DragonKeyword: "Skyrim.esm|035D59"

@@ -49,34 +49,6 @@ namespace {
 			explosion->GetExplosionRuntimeData().unk11C *= 0.0;
 		}
 	}
-
-	void make_explosion_at_manual(Actor* actor, NiPoint3 position, float scale) {
-		if (!actor) {
-			return;
-		}
-		BGSExplosion* base_explosion = Runtime::GetExplosion("footstepExplosion");;
-
-		if (base_explosion) {
-			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
-			if (!instance_ptr) {
-				return;
-			}
-			TESObjectREFR* instance = instance_ptr.get();
-			if (!instance) {
-				return;
-			}
-			Explosion* explosion = instance->AsExplosion();
-			if (!explosion) {
-				return;
-			}
-			explosion->SetPosition(position);
-			explosion->GetExplosionRuntimeData().radius *= scale;
-			explosion->GetExplosionRuntimeData().imodRadius *= scale;
-			explosion->GetExplosionRuntimeData().unkB8 = nullptr;
-			explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
-			explosion->GetExplosionRuntimeData().unk11C *= 0.0;
-		}
-	}
 }
 
 namespace Gts {
@@ -97,6 +69,12 @@ namespace Gts {
 
 		float scale = impact.effective_scale;
 		float minimal_size = 3.0;
+		if (actor->formID == 0x14) {
+				if (HasSMT(actor)) {
+					minimal_size = 1.0;
+					scale += 0.33;
+				}
+			}
 		if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
 				scale *= 1.2; // Sprinting makes you seem bigger
@@ -114,7 +92,7 @@ namespace Gts {
 			if (HighHeelManager::IsWearingHH(actor)) {
 				scale *= 1.25;
 			}
-
+			
 			for (NiAVObject* node: impact.nodes) {
 				// First try casting a ray
 				NiPoint3 foot_location = node->world.translate;

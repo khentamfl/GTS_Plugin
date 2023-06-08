@@ -12,6 +12,31 @@ namespace Gts {
 			virtual bool Update() = 0;
 	};
 
+  // A `Task` runs once in the next frame
+	struct OneshotUpdate {
+		// Total time since creation before run
+		double timeToLive;
+	};
+
+  class Oneshot : public BaseTask {
+		public:
+			Oneshot(std::function<void(const OneshotUpdate&)> tasking) : tasking(tasking), creationTime(Time::WorldTimeElapsed()) {
+			}
+
+			virtual bool Update() override {
+				double currentTime = Time::WorldTimeElapsed();
+				auto update = OneshotUpdate {
+					.timeToLive = currentTime - this->creationTime,
+				};
+				this->tasking(update);
+        return false;
+			}
+
+		private:
+			double creationTime = 0.0;
+			std::function<void(const OneshotUpdate&)> tasking;
+	};
+
 	// A `Task` runs until it returns false
 	struct TaskUpdate {
 		// Total runtime in seconds`
@@ -161,6 +186,24 @@ namespace Gts {
 					std::string(name),
 					new TaskFor(duration, tasking)
 					);
+			}
+
+      static void RunOnce(std::function<void(const OneshotUpdate&)> tasking) {
+        auto& me = TaskManager::GetSingleton();
+				auto task = new Oneshot(tasking);
+				std::string name = std::format("UNNAMED_{}", *reinterpret_cast<std::uintptr_t*>(task));
+				me.taskings.try_emplace(
+					name,
+					task
+				);
+			}
+
+      static void RunOnce(std::string_view name, std::function<void(const OneshotUpdate&)> tasking) {
+				auto& me = TaskManager::GetSingleton();
+				me.taskings.try_emplace(
+					std::string(name),
+					new Oneshot(tasking)
+				);
 			}
 
 			std::unordered_map<std::string, BaseTask*> taskings;

@@ -1,11 +1,14 @@
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/animation/Grab.hpp"
+#include "managers/CrushManager.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
-#include "data/runtime.hpp"
+#include "data/runtime.hpp" 
 #include "scale/scale.hpp"
 #include "Config.hpp"
 #include "timer.hpp"
@@ -41,6 +44,35 @@ namespace {
 		}
 	}
 
+	void TinyAsShield(Actor* attacker, Actor* receiver, float a_damage) {
+		auto grabbedActor = Grab::GetHeldActor(receiver);
+		if (!grabbedActor) {
+			return;
+		}
+		log::info("a_damage: {}", a_damage);
+		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.5);
+		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.25);
+		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.25) {
+			Grab::DetachActorTask(receiver);
+			auto hand = find_node(receiver, "NPC L Hand [LHnd]");
+			if (hand) {
+				if (IsLiving(grabbedActor)) {
+					SpawnParticle(receiver, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 5, 4, hand);
+					SpawnParticle(receiver, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 5, 4, hand);
+				} else {
+					SpawnDustParticle(receiver, attacker, "NPC L Hand [LHnd]", 3.0);
+				}
+			}
+			CrushManager::Crush(receiver, grabbedActor);
+			Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
+			Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
+			Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
+			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
+			AnimationManager::StartAnim("GrabAbort", receiver); // Abort Grab animation
+			PrintDeathSource(receiver, grabbedActor, "BlockDamage");
+			Grab::Release(receiver);
+		}
+	}
 
 	void HealthGate(Actor* attacker, Actor* receiver, float a_damage) {
 		if (a_damage > GetAV(receiver, ActorValue::kHealth)) {
@@ -53,7 +85,6 @@ namespace {
 					attacker->NotifyAnimationGraph("staggerStart");
 
 					mod_target_scale(receiver, -0.35 * scale);
-
 					Rumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 0.75);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
@@ -79,6 +110,7 @@ namespace {
 		//log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
 
 		HealthGate(attacker, receiver, -(a_damage + damage));
+		TinyAsShield(attacker, receiver, -(a_damage + damage));
 
 		if (damage < 0) {
 			Overkill(attacker, receiver, -(a_damage + damage));
@@ -180,7 +212,7 @@ namespace Gts {
 		if (rng <= 2) {
 			float gs = get_visual_scale(giant);
 			float ts = get_visual_scale(tiny);
-			if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+			if (HasSMT(giant)) {
 				gs += 3.0; // Allow to break bones with SMT
 			}
 			float sizediff = gs/ts;
@@ -191,8 +223,15 @@ namespace Gts {
 			std::random_device rd;
 			std::mt19937 gen(rd());
 			std::uniform_real_distribution<float> dis(-0.2, 0.2);
-
-			Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+			if (!IsLiving(tiny)) {
+				SpawnDustParticle(giant, tiny, "NPC Root [Root]", 1.0);
+			} else {
+				auto root = find_node(tiny, "NPC Root [Root]");
+				if (root) {
+					SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, ts * 1, 7, root);
+				} 
+				//Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+			}
 			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
 			DamageAV(tiny, ActorValue::kHealth, damage * 10);
 		}

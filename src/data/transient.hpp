@@ -22,6 +22,8 @@ namespace Gts {
 		bool is_teammate;
 		bool can_do_vore;
 		bool can_be_crushed;
+		bool being_held;
+		bool about_to_be_eaten;
 		bool dragon_was_eaten;
 		bool can_be_vored;
 	};
