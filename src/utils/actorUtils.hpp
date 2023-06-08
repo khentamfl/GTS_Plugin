@@ -50,6 +50,9 @@ namespace Gts {
 	bool IsBeingHeld(Actor* tiny);
 	void SetBeingHeld(Actor* tiny, bool decide);
 
+	bool IsBetweenBreasts(Actor* actor);
+	void SetBetweenBreasts(Actor* actor, bool decide);
+
 	void SetBeingEaten(Actor* tiny, bool decide);
 	bool IsBeingEaten(Actor* tiny);
 

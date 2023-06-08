@@ -31,6 +31,8 @@ sounds:
   ShrinkToNothingSound: "GTS.esp|5BA659"
   CrunchImpactSound: "GTS.esp|5D8C5C"
   CrunchKillSound: "GTS.esp|5D8C5D"
+  BreastImpact: "GTS.esp|5E2E5F"
+  SoftHandAttack: "GTS.esp|5E2E60"
 
 
 spellEffects:

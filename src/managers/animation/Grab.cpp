@@ -223,6 +223,8 @@ namespace {
 				if (!LessGore()) {
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 					SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);
+				} else {
+					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				}
 			}
 			if (damage > Health) {
@@ -233,6 +235,8 @@ namespace {
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+				} else {
+					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				}
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
@@ -449,6 +453,33 @@ namespace {
 		Grab::Release(giant);
 	}
 
+	/////////////////////////////////////////////////////////////////
+	////////////////////////////B R E A S T S
+	/////////////////////////////////////////////////////////////////
+
+	void GTSGrab_Breast_MoveStart(AnimationEventData& data) {
+
+	}
+
+	void GTSGrab_Breast_PutActor(AnimationEventData& data) { // Places actor between breasts
+		auto giant = &data.giant;
+		SetBetweenBreasts(giant, true);
+		Runtime::PlaySoundAtNode("BreastImpact", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+	}
+
+	void GTSGrab_Breast_TakeActor(AnimationEventData& data) { // Removes Actor
+		auto giant = &data.giant;
+		SetBetweenBreasts(giant, false);
+	}
+
+	void GTSGrab_Breast_MoveEnd(AnimationEventData& data) {
+
+	}
+
+	///////////////////////////////////////////////////////////////////
+	/////////////////////////////E V E N T S 
+	///////////////////////////////////////////////////////////////////
+
 	void GrabOtherEvent(const InputEventData& data) { // Grab other actor
 		auto player = PlayerCharacter::GetSingleton();
 		if (IsEquipBusy(player)) {
@@ -517,6 +548,23 @@ namespace {
 		}
 		AnimationManager::StartAnim("GrabReleasePunies", player);
 	}
+
+	void BreastsPutEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player);
+		if (!grabbedActor) { 
+			return;
+		}
+		AnimationManager::StartAnim("Breasts_Put", player);
+	}
+    void BreastsRemoveEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player);
+		if (!grabbedActor) { 
+			return;
+		}
+		AnimationManager::StartAnim("Breasts_Pull", player);
+	}
 }
 
 namespace Gts {
@@ -536,7 +584,6 @@ namespace Gts {
 		TaskManager::Cancel(name);
 	}
 	
-
 	void Grab::AttachActorTask(Actor* giant, Actor* tiny) {
 		if (!giant) {
 			return;
@@ -597,7 +644,9 @@ namespace Gts {
 			TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyref);
 			if (tiny_is_object) {
 				if (find_node(giantref, "L Breast03")) {
-					tiny_is_object->SetPosition(breastForward);
+					if (IsBetweenBreasts(giantref) == true) {
+						tiny_is_object->SetPosition(breastForward);
+					}
 				} else {
 					tiny_is_object->SetPosition(middlePoint);
 				}
@@ -653,12 +702,14 @@ namespace Gts {
 		}
 	}
 
-	void Grab::RegisterEvents()  {
+	void Grab::RegisterEvents() {
 		InputManager::RegisterInputEvent("GrabOther", GrabOtherEvent);
 		InputManager::RegisterInputEvent("GrabAttack", GrabAttackEvent);
 		InputManager::RegisterInputEvent("GrabVore", GrabVoreEvent);
 		InputManager::RegisterInputEvent("GrabThrow", GrabThrowEvent);
 		InputManager::RegisterInputEvent("GrabRelease", GrabReleaseEvent);
+		InputManager::RegisterInputEvent("BreastsPut", BreastsPutEvent);
+		InputManager::RegisterInputEvent("BreastsRemove", BreastsRemoveEvent);
 
 		AnimationManager::RegisterEvent("GTSGrab_Catch_Start", "Grabbing", GTSGrab_Catch_Start);
 		AnimationManager::RegisterEvent("GTSGrab_Catch_Actor", "Grabbing", GTSGrab_Catch_Actor);
@@ -682,6 +733,11 @@ namespace Gts {
 		AnimationManager::RegisterEvent("GTSGrab_Throw_Throw_Post", "Grabbing", GTSGrab_Throw_Throw_Post);
 		AnimationManager::RegisterEvent("GTSGrab_Throw_MoveStop", "Grabbing", GTSGrab_Throw_MoveStop);
 
+		AnimationManager::RegisterEvent("GTSGrab_Breast_MoveStart", "Grabbing", GTSGrab_Breast_MoveStart);
+		AnimationManager::RegisterEvent("GTSGrab_Breast_PutActor", "Grabbing", GTSGrab_Breast_PutActor);
+		AnimationManager::RegisterEvent("GTSGrab_Breast_TakeActor", "Grabbing", GTSGrab_Breast_TakeActor);
+		AnimationManager::RegisterEvent("GTSGrab_Breast_MoveEnd", "Grabbing", GTSGrab_Breast_MoveEnd);
+
 		AnimationManager::RegisterEvent("GTSGrab_Release_FreeActor", "Grabbing", GTSGrab_Release_FreeActor);
 
 		AnimationManager::RegisterEvent("GTSBEH_GrabExit", "Grabbing", GTSBEH_GrabExit);
@@ -697,6 +753,8 @@ namespace Gts {
 		AnimationManager::RegisterTrigger("GrabExit", "Grabbing", "GTSBEH_GrabExit");
 		AnimationManager::RegisterTrigger("GrabAbort", "Grabbing", "GTSBEH_AbortGrab");
 		AnimationManager::RegisterTrigger("TinyDied", "Grabbing", "GTSBEH_TinyDied");
+		AnimationManager::RegisterTrigger("Breasts_Put", "Grabbing", "GTSBEH_BreastsAdd");
+		AnimationManager::RegisterTrigger("Breasts_Pull", "Grabbing", "GTSBEH_BreastsRemove")
 	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {

@@ -346,6 +346,21 @@ namespace Gts {
 		return false;
 	}
 
+	bool IsBetweenBreasts(Actor* actor) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			return transient->between_breasts;
+		}
+		return false;
+	}
+
+	void SetBetweenBreasts(Actor* actor, bool decide) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			transient->between_breasts = decide;
+		}
+	}
+
 	void SetBeingEaten(Actor* tiny, bool decide) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {
