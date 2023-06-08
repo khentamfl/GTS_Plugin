@@ -465,11 +465,13 @@ namespace {
 		auto giant = &data.giant;
 		SetBetweenBreasts(giant, true);
 		Runtime::PlaySoundAtNode("BreastImpact", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+		giant->SetGraphVariableInt("GTS_Storing_Tiny", 1);
 	}
 
 	void GTSGrab_Breast_TakeActor(AnimationEventData& data) { // Removes Actor
 		auto giant = &data.giant;
 		SetBetweenBreasts(giant, false);
+		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 	}
 
 	void GTSGrab_Breast_MoveEnd(AnimationEventData& data) {
@@ -618,7 +620,7 @@ namespace Gts {
 			auto breastR = find_node(giantref, "R Breast03")->world.translate;
 			auto spine2 = find_node(giantref, "NPC Spine2 [Spn2]")->world.translate;
 
-			float forwardAmount = 1.8;
+			float forwardAmount = 1.2;
 
 			auto breastForward = ((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
 
