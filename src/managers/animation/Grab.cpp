@@ -567,9 +567,9 @@ namespace Gts {
 				return false;
 			}
 
-			auto breastL = find_node(giantref, "L Breast03")->world.position;
-			auto breastR = find_node(giantref, "R Breast03")->world.position;
-			auto spine2 = find_node(giantref, "NPC Spine2 [Spn2]")->world.position;
+			auto breastL = find_node(giantref, "L Breast03")->world.transform;
+			auto breastR = find_node(giantref, "R Breast03")->world.transform;
+			auto spine2 = find_node(giantref, "NPC Spine2 [Spn2]")->world.transform;
 
 			float forwardAmount = 1.8;
 
