@@ -79,6 +79,15 @@ namespace {
 		}
 	}
 
+	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerkTeam(giantref, "DestructionBasics")) {
+			WasteMult *= 0.65;
+		}
+		float WasteStamina = (1.00 * WasteMult)/sizedifference;
+		DamageAV(giant, ActorValue::kStamina, WasteStamina);
+	}
+
 	void DrainStamina(Actor* giant, std::string_view TaskName, bool decide, float power) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
@@ -561,9 +570,12 @@ namespace Gts {
 			/*if (breastL) {
 				middlePoint = (breastL->world.translate + breastR->world.translate) / 2;
 			}*/
-			
+
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
-			if (tinyref->IsDead() || sizedifference < 6.0) {
+
+			GrabStaminaDrain(giantref, tinyref, sizedifference);
+			
+			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0)) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				Grab::Release(giantref);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.

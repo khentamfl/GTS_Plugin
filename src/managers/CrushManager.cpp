@@ -173,7 +173,9 @@ namespace Gts {
 					}
 					Rumble::Once("CrushRumble", tiny, 1.4, 0.15);
 					if (giant->formID == 0x14) {
-						TriggerScreenBlood(1);
+						if (IsLiving(tiny)) {
+							TriggerScreenBlood(50);
+						}
 					}
 					std::random_device rd;
 					std::mt19937 gen(rd());
@@ -220,7 +222,9 @@ namespace Gts {
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
 					} else if (tiny->formID == 0x14) {
-						TriggerScreenBlood(50);
+						if (IsLiving(tiny)) {
+							reenBlood(50);
+						}
 						tiny->SetAlpha(0.0); // Fake crush effect, just make player invisible
 					}
 
