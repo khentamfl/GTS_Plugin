@@ -20,7 +20,7 @@ namespace {
 		BGSExplosion* base_explosion = nullptr;
 		auto LF = find_node(actor, "NPC L Foot [Lft ]");
 		auto RF = find_node(actor, "NPC R Foot [Rft ]");
-		Scale *= 10.0;
+		scale *= 10.0;
 		switch (kind) {
 			case FootEvent::Left:
 				if (LF) {
