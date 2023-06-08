@@ -558,9 +558,9 @@ namespace Gts {
 			auto breastL = find_node(giantref, "L Breast03");
 			auto breastR = find_node(giantref, "R Breast03");
 			auto middlePoint = bone->world.translate;
-			if (breastL) {
+			/*if (breastL) {
 				middlePoint = (breastL->world.translate + breastR->world.translate) / 2;
-			}
+			}*/
 			
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 			if (tinyref->IsDead() || sizedifference < 6.0) {
