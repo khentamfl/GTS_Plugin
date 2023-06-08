@@ -466,12 +466,14 @@ namespace {
 		SetBetweenBreasts(giant, true);
 		Runtime::PlaySoundAtNode("BreastImpact", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 1);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 	}
 
 	void GTSGrab_Breast_TakeActor(AnimationEventData& data) { // Removes Actor
 		auto giant = &data.giant;
 		SetBetweenBreasts(giant, false);
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 1);
 	}
 
 	void GTSGrab_Breast_MoveEnd(AnimationEventData& data) {
