@@ -355,7 +355,7 @@ namespace Gts {
 	}
 
 	void SetBetweenBreasts(Actor* actor, bool decide) {
-		auto transient = Transient::GetSingleton().GetData(tiny);
+		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			transient->between_breasts = decide;
 		}
