@@ -66,9 +66,13 @@ namespace {
 	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult, float dustmult) {
 		auto hand = find_node(giant, "NPC L Hand [LHnd]");
 		if (hand) {
-			if (IsLiving(grabbedActor) && !LessGore()) {
-				SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
-				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
+			if (IsLiving(grabbedActor)) {
+				if (!LessGore()) {
+					SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
+					SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
+				} if (LessGore) {
+					Runtime::PlaySound("BloodGushSound", grabbedActor, 1.0, 0.5);
+				}
 			} else {
 				SpawnDustParticle(giant, grabbedActor, "NPC L Hand [LHnd]", dustmult);
 			}
@@ -541,6 +545,8 @@ namespace Gts {
 				TaskManager::Cancel(name);
 				return false;
 			}
+			auto tinyref = tinyhandle.get().get();
+			auto giantref = gianthandle.get().get();
 			std::string_view bonename = "NPC L Finger02 [LF02]";
 			if (IsBeingEaten(tinyref)) {
 				bonename = "AnimObjectA";
@@ -549,8 +555,6 @@ namespace Gts {
 			if (!bone) {
 				return false;
 			}
-			auto tinyref = tinyhandle.get().get();
-			auto giantref = gianthandle.get().get();
 			auto breastL = find_node(giantref, "L Breast01");
 			auto breastR = find_node(giantref, "R Breast01");
 			auto middlePoint = bone->world.translate;
