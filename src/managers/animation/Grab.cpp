@@ -647,8 +647,8 @@ namespace Gts {
 
 			TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyref);
 			if (tiny_is_object) {
-				if (find_node(giantref, "L Breast03")) {
-					if (IsBetweenBreasts(giantref) == true) {
+				if (IsBetweenBreasts(giantref) == true) {
+					if (find_node(giantref, "L Breast03")) {
 						tiny_is_object->SetPosition(breastForward);
 					}
 				} else {
