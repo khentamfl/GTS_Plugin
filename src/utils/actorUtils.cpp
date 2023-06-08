@@ -691,7 +691,20 @@ namespace Gts {
 			} else if (random >= 7) {
 				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
-			return;
+		} else if (cause == "Breasts") {
+			if (random == 1) {
+				Cprint("{} was weakened and got accidentally crushed by {} breasts", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 2) {
+				Cprint("{} got unintentionally crushed by the breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 3) {
+				Cprint("{} decided to leave this horrific world by being absorbed by the breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 4) {
+				Cprint("Breasts of {} squeezed all life out of {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 6) {
+				Cprint("{} took some damage and ended up crushing {} between her breasts", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 7) {
+				Cprint("{} got smothered by soft breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			}
 		}
 	}
 
