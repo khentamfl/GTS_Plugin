@@ -70,7 +70,7 @@ namespace {
 				if (!LessGore()) {
 					SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
 					SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
-				} if (LessGore) {
+				} else if (LessGore()) {
 					Runtime::PlaySound("BloodGushSound", grabbedActor, 1.0, 0.5);
 				}
 			} else {
@@ -559,7 +559,7 @@ namespace Gts {
 			auto breastR = find_node(giantref, "R Breast01");
 			auto middlePoint = bone->world.translate;
 			if (breastL) {
-				middlePoint = (breastL->world.position + breastR->world.position) / 2;
+				middlePoint = (breastL->world.translate + breastR->world.translate) / 2;
 			}
 			
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
@@ -574,9 +574,7 @@ namespace Gts {
 				TaskManager::Cancel(name);
 				return false;
 			}
-
-			NiPoint3 giantLocation = giantref->GetPosition();
-			NiPoint3 tinyLocation = tinyref->GetPosition();
+			
 			TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyref);
 			if (tiny_is_object) {
 				tiny_is_object->SetPosition(middlePoint);
