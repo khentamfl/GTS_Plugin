@@ -81,7 +81,7 @@ namespace {
 
 	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {
 		float WasteMult = 1.0;
-		if (Runtime::HasPerkTeam(giantref, "DestructionBasics")) {
+		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
 			WasteMult *= 0.65;
 		}
 		float WasteStamina = (1.00 * WasteMult)/sizedifference;
