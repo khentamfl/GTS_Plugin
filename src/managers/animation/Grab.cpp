@@ -555,8 +555,8 @@ namespace Gts {
 			if (!bone) {
 				return false;
 			}
-			auto breastL = find_node(giantref, "L Breast01");
-			auto breastR = find_node(giantref, "R Breast01");
+			auto breastL = find_node(giantref, "L Breast02");
+			auto breastR = find_node(giantref, "R Breast02");
 			auto middlePoint = bone->world.translate;
 			if (breastL) {
 				middlePoint = (breastL->world.translate + breastR->world.translate) / 2;
@@ -574,7 +574,7 @@ namespace Gts {
 				TaskManager::Cancel(name);
 				return false;
 			}
-			
+
 			TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyref);
 			if (tiny_is_object) {
 				tiny_is_object->SetPosition(middlePoint);
