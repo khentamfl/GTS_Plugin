@@ -18,27 +18,27 @@ namespace {
 			return;
 		}
 		BGSExplosion* base_explosion = nullptr;
-		scale *= 10.0;
 		auto LF = find_node(actor, "NPC L Foot [Lft ]");
 		auto RF = find_node(actor, "NPC R Foot [Rft ]");
+		Scale *= 10.0;
 		switch (kind) {
 			case FootEvent::Left:
 				if (LF) {
-					SpawnParticle(actor, 3.0, "GTS/Effects/FootExplosion.nif", NiMatrix3(), position, scale, 7, nullptr);
+					SpawnParticle(actor, 3.0, "GTS/Effects/Foot.nif", NiMatrix3(), position, scale, 7, LF);
 				}
 			case FootEvent::Right:
 				if (RF) {
-					SpawnParticle(actor, 3.0, "GTS/Effects/FootExplosion.nif", NiMatrix3(), position, scale, 7, nullptr);
+					SpawnParticle(actor, 3.0, "GTS/Effects/Foot.nif", NiMatrix3(), position, scale, 7, RF);
 				}
 			case FootEvent::Front:
 			case FootEvent::Back:
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 			case FootEvent::JumpLand:
 				if (RF) {
-					SpawnParticle(actor, 3.0, "GTS/Effects/FootExplosion.nif", NiMatrix3(), position, scale, 7, nullptr);
+					SpawnParticle(actor, 3.0, "GTS/Effects/Foot.nif", NiMatrix3(), position, scale, 7, RF);
 				}
 				if (LF) {
-					SpawnParticle(actor, 3.0, "GTS/Effects/FootExplosion.nif", NiMatrix3(), position, scale, 7, nullptr);
+					SpawnParticle(actor, 3.0, "GTS/Effects/Foot.nif", NiMatrix3(), position, scale, 7, LF);
 				}
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 		}

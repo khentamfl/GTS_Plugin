@@ -192,7 +192,7 @@ namespace Gts {
 		}
 		auto spine = find_node(prey, "NPC Spine2 [Spn2]");
 		if (spine) {
-			SpawnParticle(prey, 3.0, "GTS/Effects/gts_rune.nif", spine->world.rotate, spine->world.translate, get_visual_scale(prey) * 2.5, 7, nullptr);
+			SpawnParticle(prey, 3.0, "GTS/Effects/Rune.nif", spine->world.rotate, spine->world.translate, get_visual_scale(prey) * 2.5, 7, spine);
 		}
         if (HasSMT(pred)) {
 			float expected = 8.0f;
