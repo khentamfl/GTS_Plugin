@@ -210,9 +210,9 @@ namespace {
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (1.600 * sd) * power * additionaldamage * additionaldamage;
+			float damage = (1.400 * sd) * power * additionaldamage * additionaldamage;
 			if (HasSMT(giant)) {
-				damage *= 2.25;
+				damage *= 1.75;
 				bonus = 3.0;
 			}
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
@@ -464,7 +464,7 @@ namespace {
 	/////////////////////////////////////////////////////////////////
 
 	void GTSGrab_Breast_MoveStart(AnimationEventData& data) {
-
+		ManageCamera(&data.giant, true, 7.0);
 	}
 
 	void GTSGrab_Breast_PutActor(AnimationEventData& data) { // Places actor between breasts
@@ -483,7 +483,7 @@ namespace {
 	}
 
 	void GTSGrab_Breast_MoveEnd(AnimationEventData& data) {
-
+		ManageCamera(&data.giant, false, 7.0);
 	}
 
 	///////////////////////////////////////////////////////////////////

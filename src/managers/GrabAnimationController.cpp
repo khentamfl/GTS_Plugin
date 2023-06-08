@@ -190,6 +190,10 @@ namespace Gts {
 		if (!grabbing.CanGrab(pred, prey)) {
 			return;
 		}
+		auto spine = find_node(prey, "NPC Spine2 [Spn2]");
+		if (spine) {
+			SpawnParticle(prey, 3.0, "GTS/gts_rune.nif", spine->world.rotate, spine->world.translate, get_visual_scale(prey) * 2.5, 7, spine);
+		}
         if (HasSMT(pred)) {
 			float expected = 8.0f;
 			float predscale = get_target_scale(pred);
