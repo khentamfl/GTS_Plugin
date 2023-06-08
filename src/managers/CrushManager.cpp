@@ -222,7 +222,9 @@ namespace Gts {
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
 					} else if (tiny->formID == 0x14) {
-						TriggerSreenBlood(50);
+						if (IsLiving(tiny)) {
+							TriggerScreenBlood(50);
+						}
 						tiny->SetAlpha(0.0); // Fake crush effect, just make player invisible
 					}
 
