@@ -146,6 +146,10 @@ namespace {
 		Persistent::GetSingleton().allow_feetracking = enabled;
 	}
 
+	void SetLessGore(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().less_gore = enabled;
+	}
+
 	bool GetIsHighHeelEnabled(StaticFunctionTag*) {
 		return Persistent::GetSingleton().highheel_correction;
 	}
@@ -329,6 +333,7 @@ namespace Gts {
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
 		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
 		vm->RegisterFunction("SetFeetTracking", PapyrusClass, SetFeetTracking);
+		vm->RegisterFunction("SetLessGore", PapyrusClass, SetLessGore);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("SetProgressionMultiplier", PapyrusClass, SetProgressionMultiplier);

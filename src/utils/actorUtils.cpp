@@ -326,6 +326,9 @@ namespace Gts {
 	bool AllowFeetTracking() {
 		return Persistent::GetSingleton().allow_feetracking;
 	}
+	bool LessGore() {
+		return Persistent::GetSingleton().less_gore;
+	}
 
 	void SetBeingHeld(Actor* tiny, bool decide) {
 		auto transient = Transient::GetSingleton().GetData(tiny);

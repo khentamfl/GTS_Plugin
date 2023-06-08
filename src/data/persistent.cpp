@@ -14,6 +14,7 @@ namespace {
 	inline const auto AllowPlayerVoreRecord = _byteswap_ulong('APVR');
 	inline const auto DevourmentCompatRecord = _byteswap_ulong('DVCR');
 	inline const auto FeetTrackingRecord = _byteswap_ulong('FTRD');
+	inline const auto LessGoreRecord = _byteswap_ulong('LGRD');
 	inline const auto VoreCombatOnlyRecord = _byteswap_ulong('VRCO');
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
@@ -335,6 +336,10 @@ namespace Gts {
 				bool allow_feetracking;
 				serde->ReadRecordData(&allow_feetracking, sizeof(allow_feetracking));
 				GetSingleton().allow_feetracking = allow_feetracking;
+			} else if (type == LessGoreRecord) {
+				bool less_gore;
+				serde->ReadRecordData(&less_gore, sizeof(less_gore));
+				GetSingleton().less_gore = less_gore;
 			} else if (type == StompAiRecord) {
 				bool Stomp_Ai;
 				serde->ReadRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
@@ -523,7 +528,13 @@ namespace Gts {
 
 		bool devourment_compatibility = GetSingleton().devourment_compatibility;
 		serde->WriteRecordData(&devourment_compatibility, sizeof(devourment_compatibility));
-
+		if (!serde->OpenRecord(LessGoreRecord, 1)) {
+			log::error("Unable to open Less Gore record to write cosave data");
+			return;
+		}
+		bool less_gore = GetSingleton().less_gore;
+		serde->WriteRecordData(&less_gore, sizeof(less_gore));
+		
 		if (!serde->OpenRecord(FeetTrackingRecord, 1)) {
 			log::error("Unable to open Feet Tracking record to write cosave data.");
 			return;

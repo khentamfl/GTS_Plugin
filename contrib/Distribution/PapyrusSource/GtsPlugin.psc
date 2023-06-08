@@ -10,6 +10,7 @@ scriptName GtsPlugin hidden
 
 Float function GetDistanceToCamera(Actor target) global native
 Function SetFeetTracking(Bool enabled) global native
+Function SetLessGore(Bool enabled) global native 
 
 ;==================================================================================
 ;==================================================================================
@@ -219,4 +220,4 @@ Float Function GetExperimentFloat() global native
 Function SetExperimentFloat(Float value) global native
 ;======================================================================================
 ;======================================================================================
-;======================================================================================
+;========================================================================

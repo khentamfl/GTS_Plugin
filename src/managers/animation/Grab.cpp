@@ -205,7 +205,7 @@ namespace {
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
 			Rumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
-			AdjustGtsSkill(damage/1500, giant);
+			AdjustGtsSkill(damage/2500, giant);
 			if (damage < Health) {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);

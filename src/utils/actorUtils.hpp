@@ -46,6 +46,7 @@ namespace Gts {
 
 	bool AllowDevourment();
 	bool AllowFeetTracking();
+	bool LessGore();
 	bool IsBeingHeld(Actor* tiny);
 	void SetBeingHeld(Actor* tiny, bool decide);
 
