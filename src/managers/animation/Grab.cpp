@@ -555,8 +555,8 @@ namespace Gts {
 			if (!bone) {
 				return false;
 			}
-			auto breastL = find_node(giantref, "L Breast02");
-			auto breastR = find_node(giantref, "R Breast02");
+			auto breastL = find_node(giantref, "L Breast03");
+			auto breastR = find_node(giantref, "R Breast03");
 			auto middlePoint = bone->world.translate;
 			if (breastL) {
 				middlePoint = (breastL->world.translate + breastR->world.translate) / 2;
