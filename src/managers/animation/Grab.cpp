@@ -66,7 +66,7 @@ namespace {
 	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult, float dustmult) {
 		auto hand = find_node(giant, "NPC L Hand [LHnd]");
 		if (hand) {
-			if (IsLiving(grabbedActor)) {
+			if (IsLiving(grabbedActor) && !LessGore()) {
 				SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
 				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
 			} else {
@@ -207,16 +207,20 @@ namespace {
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 			AdjustGtsSkill(damage/2500, giant);
 			if (damage < Health) {
-				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
-				SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);
+				if (!LessGore()) {
+					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+					SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);
+				}
 			}
 			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
 				SetBeingHeld(grabbedActor, false);
 				Rumble::Once("GrabAttackKill", giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
-				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
-				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
-				Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+				if (!LessGore()) {
+					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+				}
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);

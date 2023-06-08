@@ -61,6 +61,7 @@ namespace Gts {
 					if (!IsLiving(tiny)) {
 						SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);
 					} else {
+						if (!LessGore()) {
 						std::random_device rd;
 						std::mt19937 gen(rd());
 						std::uniform_real_distribution<float> dis(-0.2, 0.2);
@@ -75,6 +76,7 @@ namespace Gts {
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+						}
 					}
 
 					ReportCrime(giant, tiny, 1000.0, true);

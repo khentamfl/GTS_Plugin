@@ -327,6 +327,7 @@ namespace Gts {
 		return Persistent::GetSingleton().allow_feetracking;
 	}
 	bool LessGore() {
+		log::info("Less gore is {}", Persistent::GetSingleton().less_gore);
 		return Persistent::GetSingleton().less_gore;
 	}
 
