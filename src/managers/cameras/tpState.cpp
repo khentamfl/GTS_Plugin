@@ -1,6 +1,7 @@
 #include "managers/cameras/tpState.hpp"
 #include "managers/cameras/camutil.hpp"
 #include "managers/cameras/camutil.hpp"
+#include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -69,6 +70,10 @@ namespace Gts {
 						for (auto bone: bones) {
 							auto localPos = transform * (bone->world * NiPoint3());
 							bonePos += localPos * (1.0/bone_count);
+						}
+						if (Grab::GetHeldActor(player)) {
+							auto grabbed = Grab::GetHeldActor(player);
+							grabbed->SetPosition(bonePos);
 						}
 						smoothedBonePos.target = bonePos;
 						pos += smoothedBonePos.value;
