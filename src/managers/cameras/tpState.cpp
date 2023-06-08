@@ -73,7 +73,10 @@ namespace Gts {
 						}
 						if (Grab::GetHeldActor(player)) {
 							auto grabbed = Grab::GetHeldActor(player);
-							grabbed->SetPosition(bonePos);
+							TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(grabbed);
+							if (tiny_is_object) {
+								tiny_is_object->SetPosition(bonePos);
+							}
 						}
 						smoothedBonePos.target = bonePos;
 						pos += smoothedBonePos.value;
