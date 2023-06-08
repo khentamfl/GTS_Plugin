@@ -215,16 +215,14 @@ namespace Gts {
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
 					TaskManager::RunOnce([=](auto& update){
 						if (tinyHandle) {
-									EventDispatcher::DoResetActor(tinyHandle.get().get());
+							EventDispatcher::DoResetActor(tinyHandle.get().get());
 						}
 					});
 
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
 					} else if (tiny->formID == 0x14) {
-						if (IsLiving(tiny)) {
-							reenBlood(50);
-						}
+						TriggerSreenBlood(50);
 						tiny->SetAlpha(0.0); // Fake crush effect, just make player invisible
 					}
 
