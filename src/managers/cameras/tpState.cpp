@@ -27,7 +27,7 @@ namespace {
 		} else if (sizemanager.GetActionBool(player, 7.0)) {
 			return 0.08;
 		} else {
-			return 0.5;
+			return 0.05;
 		}
 	}
 }

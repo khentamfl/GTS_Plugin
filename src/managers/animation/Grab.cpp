@@ -433,6 +433,7 @@ namespace {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
+		DrainStamina(giant, "GrabAttack", false, 1.0);
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
@@ -442,6 +443,7 @@ namespace {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
+		DrainStamina(giant, "GrabAttack", false, 1.0);
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
@@ -564,12 +566,16 @@ namespace Gts {
 			if (!bone) {
 				return false;
 			}
-			auto breastL = find_node(giantref, "L Breast03");
-			auto breastR = find_node(giantref, "R Breast03");
+
+			auto breastL = find_node(giantref, "L Breast03")->world.position;
+			auto breastR = find_node(giantref, "R Breast03")->world.position;
+			auto spine2 = find_node(giantref, "NPC Spine2 [Spn2]")->world.position;
+
+			float forwardAmount = 1.8;
+
+			auto breastForward = ((breastL + breastR)  * forwardAmount / 2 + spine2 ) / 2;
+
 			auto middlePoint = bone->world.translate;
-			/*if (breastL) {
-				middlePoint = (breastL->world.translate + breastR->world.translate) / 2;
-			}*/
 
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
@@ -580,6 +586,7 @@ namespace Gts {
 				Grab::Release(giantref);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
+				DrainStamina(giantref, "GrabAttack", false, 1.0);
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
 				AnimationManager::StartAnim("TinyDied", giant);
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits
@@ -589,7 +596,11 @@ namespace Gts {
 
 			TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyref);
 			if (tiny_is_object) {
-				tiny_is_object->SetPosition(middlePoint);
+				if (find_node(giantref, "L Breast03")) {
+					tiny_is_object->SetPosition(breastForward);
+				} else {
+					tiny_is_object->SetPosition(middlePoint);
+				}
 			}
 			
 			auto charcont = tinyref->GetCharController();
