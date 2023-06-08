@@ -65,7 +65,7 @@ namespace Gts {
 							}
 						}
 
-						NiPoint3 bonePos = NiPoint3();
+						NiPoint3 bonePos = NiPoint3(); 
 						auto bone_count = bones.size();
 						for (auto bone: bones) {
 							auto localPos = transform * (bone->world * NiPoint3());
