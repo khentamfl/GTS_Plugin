@@ -422,6 +422,8 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Release_FreeActor(AnimationEventData& data) {
 		auto giant = &data.giant;
+		SetBetweenBreasts(giant, false);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(&data.giant, false, 7.0);
@@ -435,6 +437,8 @@ namespace {
 	
 	void GTSBEH_GrabExit(AnimationEventData& data) {
 		auto giant = &data.giant;
+		SetBetweenBreasts(giant, false);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
 		DrainStamina(giant, "GrabAttack", false, 1.0);
@@ -445,7 +449,9 @@ namespace {
 
 	void GTSBEH_AbortGrab(AnimationEventData& data) {
 		auto giant = &data.giant;
+		SetBetweenBreasts(giant, false);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
 		DrainStamina(giant, "GrabAttack", false, 1.0);
 		ManageCamera(&data.giant, false, 7.0);
@@ -630,8 +636,6 @@ namespace Gts {
 
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
-			GrabStaminaDrain(giantref, tinyref, sizedifference); 
-			
 			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				Grab::Release(giantref);
@@ -652,6 +656,7 @@ namespace Gts {
 						tiny_is_object->SetPosition(breastForward);
 					}
 				} else {
+					GrabStaminaDrain(giantref, tinyref, sizedifference); 
 					tiny_is_object->SetPosition(middlePoint);
 				}
 			}
