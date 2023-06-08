@@ -541,8 +541,6 @@ namespace Gts {
 				TaskManager::Cancel(name);
 				return false;
 			}
-			auto tinyref = tinyhandle.get().get();
-			auto giantref = gianthandle.get().get();
 			std::string_view bonename = "NPC L Finger02 [LF02]";
 			if (IsBeingEaten(tinyref)) {
 				bonename = "AnimObjectA";
@@ -551,6 +549,15 @@ namespace Gts {
 			if (!bone) {
 				return false;
 			}
+			auto tinyref = tinyhandle.get().get();
+			auto giantref = gianthandle.get().get();
+			auto breastL = find_node(giantref, "L Breast01");
+			auto breastR = find_node(giantref, "R Breast01");
+			auto middlePoint = bone->world.translate;
+			if (breastL) {
+				middlePoint = (breastL->world.position + breastR->world.position) / 2;
+			}
+			
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 			if (tinyref->IsDead() || sizedifference < 6.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
@@ -568,7 +575,7 @@ namespace Gts {
 			NiPoint3 tinyLocation = tinyref->GetPosition();
 			TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyref);
 			if (tiny_is_object) {
-				tiny_is_object->SetPosition(bone->world.translate);
+				tiny_is_object->SetPosition(middlePoint);
 			}
 			
 			auto charcont = tinyref->GetCharController();
