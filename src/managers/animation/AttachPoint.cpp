@@ -4,9 +4,9 @@ namespace Gts {
   void Test() {
     auto testActor = PlayerCharacter::GetSingleton();
     auto testHandle = testActor->CreateRefHandle();
-    AttachToObjectA(testActor);
-    AttachToObjectA(*testActor);
-    AttachToObjectA(testHandle);
-    AttachToObjectA(0x14);
+    AttachToObjectA(testActor, testActor);
+    AttachToObjectA(*testActor, testActor);
+    AttachToObjectA(testHandle, testActor);
+    AttachToObjectA(0x14, testActor);
   }
 }
