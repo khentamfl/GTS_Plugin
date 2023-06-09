@@ -19,6 +19,12 @@ namespace Gts {
     }
     return actor.get().get();
   }
+  Actor* GetActorPtr(const ActorHandle& actor) {
+    if (!actor) {
+      return nullptr;
+    }
+    return actor.get().get();
+  }
   Actor* GetActorPtr(FormID formId) {
     Actor* actor = TESForm::LookupByID<Actor>(formId);
     if (!actor) {
