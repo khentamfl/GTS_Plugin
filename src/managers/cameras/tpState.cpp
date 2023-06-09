@@ -71,13 +71,14 @@ namespace Gts {
 							auto localPos = transform * (bone->world * NiPoint3());
 							bonePos += localPos * (1.0/bone_count);
 						}
-						/*if (Grab::GetHeldActor(player)) {
+						if (Grab::GetHeldActor(player)) {
 							auto grabbed = Grab::GetHeldActor(player);
 							TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(grabbed);
 							if (tiny_is_object) {
-								tiny_is_object->SetPosition(bonePos);
+								auto playerpos = player->GetPosition();
+								tiny_is_object->SetPosition(playerpos + bonePos);
 							}
-						}*/
+						}
 						smoothedBonePos.target = bonePos;
 						pos += smoothedBonePos.value;
 					}

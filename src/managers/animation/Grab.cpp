@@ -608,28 +608,8 @@ namespace Gts {
 		TaskManager::Run(name, [=](auto& progressData) {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-			if (IsBeingEaten(tinyref)) {
-				if (!AttachToObjectA(gianthandle, tinyhandle)) {
-				// Unable to attach
-				return false;
-			}
-		} else if (IsBetweenBreasts(giantref)) {
-			if (!AttachToClevage(gianthandle, tinyhandle)) {
-				// Unable to attach
-				return false;
-				}
-			} else if (AttachToHand(gianthandle, tinyhandle)) {
-				float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
-				GrabStaminaDrain(giantref, tinyref, sizedifference);
-				return true;
-			} else {
-			if (!AttachToHand(gianthandle, tinyhandle)) {
-				// Unable to attach
-				return false;
-			}
-      	}	
 
-      // Exit on death
+			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
 			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
@@ -643,6 +623,26 @@ namespace Gts {
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits
 				return false;
 			}
+
+			if (IsBeingEaten(tinyref)) {
+				if (!AttachToObjectA(gianthandle, tinyhandle)) {
+				// Unable to attach
+				return false;
+			}
+			} else if (IsBetweenBreasts(giantref)) {
+			/*if (!AttachToClevage(gianthandle, tinyhandle)) {
+				// Unable to attach
+				return false;
+				}
+			}*/ else if (AttachToHand(gianthandle, tinyhandle)) {
+				GrabStaminaDrain(giantref, tinyref, sizedifference);
+				return true;
+			} else {
+			if (!AttachToHand(gianthandle, tinyhandle)) {
+				// Unable to attach
+				return false;
+			}
+      	}	
 
       // All good try another frame
 			return true;
