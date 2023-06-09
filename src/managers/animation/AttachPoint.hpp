@@ -38,15 +38,14 @@ namespace Gts {
   			return false;
   		}
 
-      std::string_view bone_name = "AnimObjectA";
-      auto bone = find_node(giant, bonename);
+      auto bone = find_node(giant, bone_name);
       if (!bone) {
 				return false;
 			}
 
 			tiny->SetPosition(bone->world.translate);
 
-			auto charcont = tinyref->GetCharController();
+			auto charcont = tiny->GetCharController();
 			if (charcont) {
 				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
 			}
