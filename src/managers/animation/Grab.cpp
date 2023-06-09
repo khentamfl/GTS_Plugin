@@ -629,7 +629,7 @@ namespace Gts {
 				// Unable to attach
 				return false;
 			}
-			/*} else if (IsBetweenBreasts(giantref)) {
+			}/* else if (IsBetweenBreasts(giantref)) {
 			if (!AttachToClevage(gianthandle, tinyhandle)) {
 				// Unable to attach
 				return false;
