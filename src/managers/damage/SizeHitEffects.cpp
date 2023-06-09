@@ -64,12 +64,20 @@ namespace {
 				}
 			}
 			CrushManager::Crush(receiver, grabbedActor);
-			Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
-			Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
-			Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
+			if (!LessGore()) {
+				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
+				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
+				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
+			} else {
+				Runtime::PlaySoundAtNode("SoftHandAttack", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
+			}
 			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
 			AnimationManager::StartAnim("GrabAbort", receiver); // Abort Grab animation
-			PrintDeathSource(receiver, grabbedActor, "BlockDamage");
+			if (!IsBetweenBreasts(receiver)) {
+				PrintDeathSource(receiver, grabbedActor, "BlockDamage");
+			} else {
+				PrintDeathSource(receiver, grabbedActor, "Breasts");
+			}
 			Grab::Release(receiver);
 		}
 	}

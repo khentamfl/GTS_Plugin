@@ -199,7 +199,11 @@ namespace Gts {
 	bool IsLiving(Actor* actor) {
 		bool IsDraugr = Runtime::HasKeyword(actor, "UndeadKeyword");
 		bool IsDwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
-		if (IsDraugr || IsDwemer) {
+		bool IsVampire = Runtime::HasKeyword(actor, "VampireKeyword");
+		if (IsVampire) {
+			log::info("{} is Vampire", actor->GetDisplayFullName());
+			return true;
+		} if (IsDraugr || IsDwemer) {
 			log::info("{} is not living", actor->GetDisplayFullName());
 			return false;
 		} else {
@@ -344,6 +348,21 @@ namespace Gts {
 			return transient->being_held;
 		}
 		return false;
+	}
+
+	bool IsBetweenBreasts(Actor* actor) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			return transient->between_breasts;
+		}
+		return false;
+	}
+
+	void SetBetweenBreasts(Actor* actor, bool decide) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			transient->between_breasts = decide;
+		}
 	}
 
 	void SetBeingEaten(Actor* tiny, bool decide) {
@@ -676,7 +695,20 @@ namespace Gts {
 			} else if (random >= 7) {
 				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
-			return;
+		} else if (cause == "Breasts") {
+			if (random == 1) {
+				Cprint("{} was weakened and got accidentally crushed by {} breasts", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 2) {
+				Cprint("{} got unintentionally crushed by the breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 3) {
+				Cprint("{} decided to leave this horrific world by being absorbed by the breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 4) {
+				Cprint("Breasts of {} squeezed all life out of {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 6) {
+				Cprint("{} took some damage and ended up crushing {} between her breasts", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 7) {
+				Cprint("{} got smothered by soft breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			}
 		}
 	}
 

@@ -183,6 +183,18 @@ exclusive = false
 
 # Release actor from hand.
 
+[[InputEvent]]
+name = "BreastsPut"
+keys = ["LSHIFT", "B"]
+# Put actor between breasts. Requires someone to be in hands.
+
+[[InputEvent]]
+name = "BreastsRemove"
+keys = ["LSHIFT", "B"]
+duration = 0.45 
+# Put actor between breasts. Requires someone to be between breasts.
+
+
 #========================================================
 #========================= C A M E R A
 #========================================================

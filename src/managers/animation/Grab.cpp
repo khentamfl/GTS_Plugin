@@ -66,13 +66,26 @@ namespace {
 	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult, float dustmult) {
 		auto hand = find_node(giant, "NPC L Hand [LHnd]");
 		if (hand) {
-			if (IsLiving(grabbedActor) && !LessGore()) {
-				SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
-				SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
+			if (IsLiving(grabbedActor)) {
+				if (!LessGore()) {
+					SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
+					SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
+				} else if (LessGore()) {
+					Runtime::PlaySound("BloodGushSound", grabbedActor, 1.0, 0.5);
+				}
 			} else {
 				SpawnDustParticle(giant, grabbedActor, "NPC L Hand [LHnd]", dustmult);
 			}
 		}
+	}
+
+	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
+			WasteMult *= 0.65;
+		}
+		float WasteStamina = (1.00 * WasteMult)/sizedifference;
+		DamageAV(giant, ActorValue::kStamina, WasteStamina);
 	}
 
 	void DrainStamina(Actor* giant, std::string_view TaskName, bool decide, float power) {
@@ -197,9 +210,9 @@ namespace {
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (1.600 * sd) * power * additionaldamage * additionaldamage;
+			float damage = (1.400 * sd) * power * additionaldamage * additionaldamage;
 			if (HasSMT(giant)) {
-				damage *= 2.25;
+				damage *= 1.75;
 				bonus = 3.0;
 			}
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
@@ -210,6 +223,8 @@ namespace {
 				if (!LessGore()) {
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 					SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);
+				} else {
+					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				}
 			}
 			if (damage > Health) {
@@ -220,6 +235,8 @@ namespace {
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+				} else {
+					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				}
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
@@ -405,6 +422,8 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Release_FreeActor(AnimationEventData& data) {
 		auto giant = &data.giant;
+		SetBetweenBreasts(giant, false);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(&data.giant, false, 7.0);
@@ -418,8 +437,11 @@ namespace {
 
 	void GTSBEH_GrabExit(AnimationEventData& data) {
 		auto giant = &data.giant;
+		SetBetweenBreasts(giant, false);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
+		DrainStamina(giant, "GrabAttack", false, 1.0);
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
@@ -427,12 +449,46 @@ namespace {
 
 	void GTSBEH_AbortGrab(AnimationEventData& data) {
 		auto giant = &data.giant;
+		SetBetweenBreasts(giant, false);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
+		DrainStamina(giant, "GrabAttack", false, 1.0);
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 	}
+
+	/////////////////////////////////////////////////////////////////
+	////////////////////////////B R E A S T S
+	/////////////////////////////////////////////////////////////////
+
+	void GTSGrab_Breast_MoveStart(AnimationEventData& data) {
+		ManageCamera(&data.giant, true, 7.0);
+	}
+
+	void GTSGrab_Breast_PutActor(AnimationEventData& data) { // Places actor between breasts
+		auto giant = &data.giant;
+		SetBetweenBreasts(giant, true);
+		Runtime::PlaySoundAtNode("BreastImpact", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+		giant->SetGraphVariableInt("GTS_Storing_Tiny", 1);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+	}
+
+	void GTSGrab_Breast_TakeActor(AnimationEventData& data) { // Removes Actor
+		auto giant = &data.giant;
+		SetBetweenBreasts(giant, false);
+		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 1);
+	}
+
+	void GTSGrab_Breast_MoveEnd(AnimationEventData& data) {
+		ManageCamera(&data.giant, false, 7.0);
+	}
+
+	///////////////////////////////////////////////////////////////////
+	/////////////////////////////E V E N T S
+	///////////////////////////////////////////////////////////////////
 
 	void GrabOtherEvent(const InputEventData& data) { // Grab other actor
 		auto player = PlayerCharacter::GetSingleton();
@@ -502,6 +558,23 @@ namespace {
 		}
 		AnimationManager::StartAnim("GrabReleasePunies", player);
 	}
+
+	void BreastsPutEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player);
+		if (!grabbedActor) {
+			return;
+		}
+		AnimationManager::StartAnim("Breasts_Put", player);
+	}
+    void BreastsRemoveEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player);
+		if (!grabbedActor) {
+			return;
+		}
+		AnimationManager::StartAnim("Breasts_Pull", player);
+	}
 }
 
 namespace Gts {
@@ -521,7 +594,6 @@ namespace Gts {
 		TaskManager::Cancel(name);
 	}
 
-
 	void Grab::AttachActorTask(Actor* giant, Actor* tiny) {
 		if (!giant) {
 			return;
@@ -530,9 +602,8 @@ namespace Gts {
 			return;
 		}
 		std::string name = std::format("GrabAttach_{}", giant->formID);
-    ActorHandle gianthandle = giant->CreateRefHandle();
-    ActorHandle tinyhandle = tiny->CreateRefHandle();
-    
+		ActorHandle gianthandle = giant->CreateRefHandle();
+		ActorHandle tinyhandle = tiny->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				TaskManager::Cancel(name);
@@ -552,12 +623,25 @@ namespace Gts {
 			if (!bone) {
 				return false;
 			}
+
+			auto breastL = find_node(giantref, "L Breast03")->world.translate;
+			auto breastR = find_node(giantref, "R Breast03")->world.translate;
+			auto spine2 = find_node(giantref, "NPC Spine2 [Spn2]")->world.translate;
+
+			float forwardAmount = 1.2;
+
+			auto breastForward = ((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
+
+			auto middlePoint = bone->world.translate;
+
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
-			if (tinyref->IsDead() || sizedifference < 6.0) {
+
+			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				Grab::Release(giantref);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
+				DrainStamina(giantref, "GrabAttack", false, 1.0);
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
 				AnimationManager::StartAnim("TinyDied", giant);
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits
@@ -565,11 +649,16 @@ namespace Gts {
 				return false;
 			}
 
-			NiPoint3 giantLocation = giantref->GetPosition();
-			NiPoint3 tinyLocation = tinyref->GetPosition();
 			TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyref);
 			if (tiny_is_object) {
-				tiny_is_object->SetPosition(bone->world.translate);
+				if (IsBetweenBreasts(giantref) == true) {
+					if (find_node(giantref, "L Breast03")) {
+						tiny_is_object->SetPosition(breastForward);
+					}
+				} else {
+					GrabStaminaDrain(giantref, tinyref, sizedifference);
+					tiny_is_object->SetPosition(middlePoint);
+				}
 			}
 
 			auto charcont = tinyref->GetCharController();
@@ -622,12 +711,14 @@ namespace Gts {
 		}
 	}
 
-	void Grab::RegisterEvents()  {
+	void Grab::RegisterEvents() {
 		InputManager::RegisterInputEvent("GrabOther", GrabOtherEvent);
 		InputManager::RegisterInputEvent("GrabAttack", GrabAttackEvent);
 		InputManager::RegisterInputEvent("GrabVore", GrabVoreEvent);
 		InputManager::RegisterInputEvent("GrabThrow", GrabThrowEvent);
 		InputManager::RegisterInputEvent("GrabRelease", GrabReleaseEvent);
+		InputManager::RegisterInputEvent("BreastsPut", BreastsPutEvent);
+		InputManager::RegisterInputEvent("BreastsRemove", BreastsRemoveEvent);
 
 		AnimationManager::RegisterEvent("GTSGrab_Catch_Start", "Grabbing", GTSGrab_Catch_Start);
 		AnimationManager::RegisterEvent("GTSGrab_Catch_Actor", "Grabbing", GTSGrab_Catch_Actor);
@@ -651,6 +742,11 @@ namespace Gts {
 		AnimationManager::RegisterEvent("GTSGrab_Throw_Throw_Post", "Grabbing", GTSGrab_Throw_Throw_Post);
 		AnimationManager::RegisterEvent("GTSGrab_Throw_MoveStop", "Grabbing", GTSGrab_Throw_MoveStop);
 
+		AnimationManager::RegisterEvent("GTSGrab_Breast_MoveStart", "Grabbing", GTSGrab_Breast_MoveStart);
+		AnimationManager::RegisterEvent("GTSGrab_Breast_PutActor", "Grabbing", GTSGrab_Breast_PutActor);
+		AnimationManager::RegisterEvent("GTSGrab_Breast_TakeActor", "Grabbing", GTSGrab_Breast_TakeActor);
+		AnimationManager::RegisterEvent("GTSGrab_Breast_MoveEnd", "Grabbing", GTSGrab_Breast_MoveEnd);
+
 		AnimationManager::RegisterEvent("GTSGrab_Release_FreeActor", "Grabbing", GTSGrab_Release_FreeActor);
 
 		AnimationManager::RegisterEvent("GTSBEH_GrabExit", "Grabbing", GTSBEH_GrabExit);
@@ -666,6 +762,8 @@ namespace Gts {
 		AnimationManager::RegisterTrigger("GrabExit", "Grabbing", "GTSBEH_GrabExit");
 		AnimationManager::RegisterTrigger("GrabAbort", "Grabbing", "GTSBEH_AbortGrab");
 		AnimationManager::RegisterTrigger("TinyDied", "Grabbing", "GTSBEH_TinyDied");
+		AnimationManager::RegisterTrigger("Breasts_Put", "Grabbing", "GTSBEH_BreastsAdd");
+		AnimationManager::RegisterTrigger("Breasts_Pull", "Grabbing", "GTSBEH_BreastsRemove");
 	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {

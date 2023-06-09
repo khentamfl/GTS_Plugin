@@ -49,6 +49,9 @@ namespace Gts {
 				if (tiny->IsDead()) {
 					return;
 				}
+				if (IsBeingHeld(tiny)) {
+					return;
+				}
 				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 12.0f);

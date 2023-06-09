@@ -1,6 +1,7 @@
 #include "managers/cameras/tpState.hpp"
 #include "managers/cameras/camutil.hpp"
 #include "managers/cameras/camutil.hpp"
+#include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -27,7 +28,7 @@ namespace {
 		} else if (sizemanager.GetActionBool(player, 7.0)) {
 			return 0.08;
 		} else {
-			return 0.5;
+			return 0.4;
 		}
 	}
 }
@@ -64,12 +65,19 @@ namespace Gts {
 							}
 						}
 
-						NiPoint3 bonePos = NiPoint3();
+						NiPoint3 bonePos = NiPoint3(); 
 						auto bone_count = bones.size();
 						for (auto bone: bones) {
 							auto localPos = transform * (bone->world * NiPoint3());
 							bonePos += localPos * (1.0/bone_count);
 						}
+						/*if (Grab::GetHeldActor(player)) {
+							auto grabbed = Grab::GetHeldActor(player);
+							TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(grabbed);
+							if (tiny_is_object) {
+								tiny_is_object->SetPosition(bonePos);
+							}
+						}*/
 						smoothedBonePos.target = bonePos;
 						pos += smoothedBonePos.value;
 					}
