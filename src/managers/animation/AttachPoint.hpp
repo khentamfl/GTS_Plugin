@@ -22,7 +22,7 @@ namespace Gts {
   void GetActor(FormID formId) -> Actor& {
     Actor* actor = TESForm::LookupByID<Actor>(formId);
     if (!actor) {
-      throw std::runtime_error("ActorHandle is invalid");
+      throw std::runtime_error("FormID is not for an actor");
     }
     return GetActor(*actor.get().get());
   }
@@ -38,14 +38,5 @@ namespace Gts {
         return;
       }
       // Ready
-  }
-
-  void Test() {
-    auto testActor = PlayerCharacter::GetSingleton();
-    auto testHandle = testActor->CreateRefHandle();
-    AttachToObjectA(testActor);
-    AttachToObjectA(*testActor);
-    AttachToObjectA(testHandle);
-    AttachToObjectA(0x14);
   }
 }
