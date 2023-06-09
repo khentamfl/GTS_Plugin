@@ -22,7 +22,6 @@ namespace Gts {
     void ToggleEmotionEdit(Actor* giant, bool allow);
     void AdjustFacialExpression(Actor* giant, int ph, float power, std::string_view type);
 
-    void GetPerkBonus_Basics(Actor* Giant);
-    void GetPerkBonus_Thighs(Actor* Giant);
-
+    float GetPerkBonus_Basics(Actor* Giant);
+    float GetPerkBonus_Thighs(Actor* Giant);
 }
