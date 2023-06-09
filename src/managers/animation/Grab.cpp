@@ -602,9 +602,9 @@ namespace Gts {
 			return;
 		}
 		std::string name = std::format("GrabAttach_{}", giant->formID);
+		ActorHandle gianthandle = giant->CreateRefHandle();
+		ActorHandle tinyhandle = tiny->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
-			ActorHandle gianthandle = giant->CreateRefHandle();
-			ActorHandle tinyhandle = tiny->CreateRefHandle();
 			if (!gianthandle) {
 				TaskManager::Cancel(name);
 				return false;
