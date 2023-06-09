@@ -9,10 +9,10 @@ namespace {
 
     log::info("Testing Attaches");
 
-    AttachToObjectA(testActorPtr, testActorPtr);
-    AttachToObjectA(testActorRef, testActorPtr);
-    AttachToObjectA(testActorRef, testActorPtr);
-    AttachToObjectA(testFormID, testActorPtr);
+    // AttachToObjectA(testActorPtr, testActorPtr);
+    // AttachToObjectA(testActorRef, testActorPtr);
+    // AttachToObjectA(testHandle, testActorPtr);
+    // AttachToObjectA(testFormID, testActorPtr);
 
     log::info("Complete");
   }
