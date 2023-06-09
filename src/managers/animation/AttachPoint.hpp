@@ -27,7 +27,7 @@ namespace Gts {
     return GetActor(*actor);
   }
 
-  template<typename T,typename U>
+  template<type T,type U>
   void AttachToObjectA(T maybeGiant, U maybeTiny) {
       Actor& giant;
       Actor& tiny;
