@@ -1,4 +1,5 @@
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/AttachPoint.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
@@ -250,29 +251,9 @@ namespace Gts {
 			if (!giant) {
 				return;
 			}
-			auto bone = find_node(giant, "AnimObjectA");
-			if (!bone) {
-				return;
-			}
 
 			if (this->allGrabbed) {
-				NiPoint3 giantLocation = giant->GetPosition();
-				NiPoint3 tinyLocation = tiny->GetPosition();
-				NiPoint3 targetLocation = bone->world.translate;
-				NiPoint3 deltaLocation = targetLocation - tinyLocation;
-				float deltaLength = deltaLocation.Length();
-
-				tiny->SetPosition(targetLocation, true);
-				tiny->SetPosition(targetLocation, false);
-				//log::info("Setting Position");
-				Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
-				if (tiny_is_actor) {
-					auto charcont = tiny_is_actor->GetCharController();
-					//ManageRagdoll(tiny, deltaLength, deltaLocation, targetLocation);
-					if (charcont) {
-						charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
-					}
-				}
+        AttachToObjectA(giant, tiny);
 			}
 		}
 		// Hide Actor
