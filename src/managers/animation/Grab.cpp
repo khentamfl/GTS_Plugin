@@ -632,7 +632,7 @@ namespace Gts {
 			} else if (IsBetweenBreasts(giantref)) {
 			if (!AttachToClevage(gianthandle, tinyhandle)) {
 				// Unable to attach
-				return false;
+				return true; // return true
 				}
 			} else if (AttachToHand(gianthandle, tinyhandle)) {
 				GrabStaminaDrain(giantref, tinyref, sizedifference);
