@@ -71,6 +71,7 @@ namespace Gts {
 
   template<typename T, typename U>
   bool AttachToClevage(T& anyGiant, U& anyTiny) {
+    return false; //disabled for tests
     Actor* giant = GetActorPtr(anyGiant);
     if (!giant) {
       return false;
