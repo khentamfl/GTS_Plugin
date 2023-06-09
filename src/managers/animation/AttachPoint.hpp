@@ -1,5 +1,4 @@
 #pragma once
-#include "scale/scale.hpp"
 #include "node.hpp"
 
 using namespace RE;
@@ -16,26 +15,8 @@ namespace Gts {
 
   Actor* GetActorPtr(FormID formId);
 
-  NiPoint3 GetBreastPos(Actor* giant, std::string_view bone_name) {
-    NiPoint3 pos = NiPoint3();
-		if (giant) {
-			auto scale = get_visual_scale(giant);
-			auto rootModel = giant->Get3D(false);
-      if (rootModel) {
-        auto playerTrans = rootModel->world;
-        playerTrans.scale = rootModel->parent ? rootModel->parent->world.scale : 1.0;  // Only do translation/rotation
-        auto transform = playerTrans.Invert();
-        auto node = find_node(giant, bone_name);
-        NiPoint3 bonePos = NiPoint3(); 
-        if (node) {
-          auto localPos = transform * (node->world * NiPoint3());
-          bonePos += localPos;
-        }
-        log::info("Bone {} Pos: {}", bone_name, Vector2Str(bonePos));
-        return bonePos;
-      }
-    }
-	}
+  NiPoint3 GetBreastPos(Actor* giant, std::string_view bone_name);
+    
 
   template<typename T, typename U>
   bool AttachTo(T& anyGiant, U& anyTiny, NiPoint3 point) {
