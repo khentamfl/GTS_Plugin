@@ -606,24 +606,24 @@ namespace Gts {
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
-			if (IsBeingEaten(tinyhandle)) {
+			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
+			if (IsBeingEaten(tinyref)) {
 				if (!AttachToObjectA(gianthandle, tinyhandle)) {
-          // Unable to attach
-          return false;
-        }
-      } else if (IsBetweenBreasts(gianthandle)) {
-        if (!AttachToClevage(gianthandle, tinyhandle)) {
-          // Unable to attach
-          return false;
-        }
+				// Unable to attach
+				return false;
+			}
+		} else if (IsBetweenBreasts(giantref)) {
+			if (!AttachToClevage(gianthandle, tinyhandle)) {
+				// Unable to attach
+				return false;
+				}
 			} else {
-        if (!AttachToHand(gianthandle, tinyhandle)) {
-          // Unable to attach
-          return false;
-        }
-      }
-      auto giantref = gianthandle.get().get();
-      auto tinyref = tinyhandle.get().get();
+			if (!AttachToHand(gianthandle, tinyhandle)) {
+				// Unable to attach
+				return false;
+			}
+      	}	
 
       // Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
