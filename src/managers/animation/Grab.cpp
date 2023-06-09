@@ -615,6 +615,7 @@ namespace Gts {
 			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				Grab::Release(giantref);
+				PushActorAway(giantref, tinyref, 0.1);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
 				DrainStamina(giantref, "GrabAttack", false, 1.0);

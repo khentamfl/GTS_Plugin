@@ -60,6 +60,15 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	void ManageCamera(Actor* giant, bool enable, float type) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		if (giant->formID == 0x14) {
+			if (AllowFeetTracking()) {
+				sizemanager.SetActionBool(giant, enable, type);
+			}
+		}
+	}
+
 	void DrainStamina(Actor* giant, bool decide, float power) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
