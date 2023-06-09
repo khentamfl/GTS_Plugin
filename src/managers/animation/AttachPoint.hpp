@@ -4,22 +4,22 @@ using namespace RE;
 
 namespace Gts {
 
-  void GetActor(Actor& actor) -> Actor& {
+  Actor& GetActor(Actor& actor) {
     return actor;
   }
-  void GetActor(Actor* actor) -> Actor& {
+  Actor& GetActor(Actor* actor) {
     if (!actor) {
       throw std::runtime_error("Pointer to actor is invalid");
     }
     return GetActor(*actor);
   }
-  void GetActor(ActorHandle& actor) -> Actor& {
+  Actor& GetActor(ActorHandle& actor) {
     if (!actor) {
       throw std::runtime_error("ActorHandle is invalid");
     }
     return GetActor(*actor.get().get());
   }
-  void GetActor(FormID formId) -> Actor& {
+  Actor& GetActor(FormID formId) {
     Actor* actor = TESForm::LookupByID<Actor>(formId);
     if (!actor) {
       throw std::runtime_error("FormID is not for an actor");
