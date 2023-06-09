@@ -44,7 +44,7 @@ namespace Gts {
 				return false;
 			}
 
-			tiny->SetPosition(bone->world.translate);
+			tiny->SetPosition(bone->world.translate, true);
 
 			auto charcont = tiny->GetCharController();
 			if (charcont) {
