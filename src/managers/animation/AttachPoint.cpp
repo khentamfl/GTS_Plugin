@@ -1,5 +1,8 @@
 #include "managers/animation/AttachPoint.hpp"
 
+using namespace RE;
+using namespace Gts;
+
 namespace {
   void TestActorAttaches() {
     Actor* testActorPtr = PlayerCharacter::GetSingleton();
