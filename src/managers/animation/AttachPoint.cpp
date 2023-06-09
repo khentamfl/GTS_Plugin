@@ -1,7 +1,7 @@
 #include "managers/animation/AttachPoint.hpp"
 
 namespace {
-  void Test() {
+  void TestActorAttaches() {
     Actor* testActorPtr = PlayerCharacter::GetSingleton();
     Actor& testActorRef = *testActor;
     ActorHandle testHandle = testActor->CreateRefHandle();
