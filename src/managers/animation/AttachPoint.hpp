@@ -85,19 +85,19 @@ namespace Gts {
       return false;
     }
 
-    auto breastLNode = find_node(giantref, "L Breast03")->world.translate;
+    auto breastLNode = find_node(giant, "L Breast03")->world.translate;
     if (!breastLNode) {
       return false;
     }
     auto breastL = breastL->world.translate;
 
-    auto breastRNode = find_node(giantref, "R Breast03")->world.translate;
+    auto breastRNode = find_node(giant, "R Breast03")->world.translate;
     if (!breastRNode) {
       return false;
     }
     auto breastR = breastR->world.translate;
 
-    auto spine2Node = find_node(giantref, "NPC Spine2 [Spn2]")->world.translate;
+    auto spine2Node = find_node(giant, "NPC Spine2 [Spn2]")->world.translate;
     if (!spine2Node) {
       return false;
     }

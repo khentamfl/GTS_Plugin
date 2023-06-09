@@ -167,6 +167,7 @@ namespace Gts {
         AttachToObjectA(giant, tiny_is_actor);
       }
 
+      float tinyScale = get_visual_scale(tiny);
 			if (giantScale/tinyScale < 6.0) {
 				PushActorAway(giant, tiny, 0.5);
 				Cprint("{} slipped out of {} thighs", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
@@ -174,7 +175,7 @@ namespace Gts {
 			}
 
 			if (this->Suffocate) {
-				float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+				float sizedifference = giantScale/tinyScale;
 				float damage = 0.005 * sizedifference;
 				float hp = GetAV(tiny, ActorValue::kHealth);
 				DamageAV(tiny, ActorValue::kHealth, damage);
