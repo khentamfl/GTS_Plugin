@@ -12,7 +12,7 @@ namespace {
 
     log::info("Testing Attaches");
 
-    // AttachToObjectA(testActorPtr, testActorPtr);
+    AttachToObjectA(testActorPtr, testActorPtr);
     // AttachToObjectA(testActorRef, testActorPtr);
     // AttachToObjectA(testHandle, testActorPtr);
     // AttachToObjectA(testFormID, testActorPtr);
