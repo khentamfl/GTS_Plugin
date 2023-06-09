@@ -98,9 +98,9 @@ namespace Gts {
 
     float forwardAmount = 1.0;
 
-    auto breastForwardL = breastL; //+ (breastL_Local - breastL_Local/scale); //((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
-    auto breastForwardR = breastR; //+ (breastR_Local - breastL_Local/scale);
-    auto breastForward = (breastForwardL + breastForwardR) / 2;
+    auto breastForwardL = breastL; //+ (breastL_Local); //((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
+    auto breastForwardR = breastR; //+ (breastR_Local);
+    auto breastForward = ((breastL + breastL_Local - spine2) + (breastR + breastR_Local - spine2)) * forwardAmount / 2 + spine2 - breastL_Local - breastR_Local;
     return AttachTo(anyGiant, anyTiny, breastForward);
   }
 }
