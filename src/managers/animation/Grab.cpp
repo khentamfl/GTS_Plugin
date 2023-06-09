@@ -607,7 +607,7 @@ namespace Gts {
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (IsBeingEaten(tinyref)) {
-				if (!AttachToHand(gianthandle, tinyhandle)) {
+				if (!AttachToObjectA(gianthandle, tinyhandle)) {
           // Unable to attach
           return false;
         }
@@ -617,7 +617,7 @@ namespace Gts {
           return false;
         }
 			} else {
-        if (!AttachToObjectA(gianthandle, tinyhandle)) {
+        if (!AttachToHand(gianthandle, tinyhandle)) {
           // Unable to attach
           return false;
         }
