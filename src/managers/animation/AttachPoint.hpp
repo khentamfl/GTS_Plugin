@@ -24,7 +24,7 @@ namespace Gts {
     if (!actor) {
       throw std::runtime_error("FormID is not for an actor");
     }
-    return GetActor(*actor.get().get());
+    return GetActor(*actor);
   }
 
   template<typename T,typename U>
