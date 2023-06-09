@@ -25,8 +25,6 @@ namespace Gts {
         auto playerTrans = rootModel->world;
         playerTrans.scale = rootModel->parent ? rootModel->parent->world.scale : 1.0;  // Only do translation/rotation
         auto transform = playerTrans.Invert();
-        NiPoint3 localLookAt = transform;
-        pos += localLookAt * -1;
         auto node = find_node(giant, bone_name);
         NiPoint3 bonePos = NiPoint3(); 
         if (node) {
