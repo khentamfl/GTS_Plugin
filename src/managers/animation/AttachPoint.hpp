@@ -25,14 +25,15 @@ namespace Gts {
         auto playerTrans = rootModel->world;
         playerTrans.scale = rootModel->parent ? rootModel->parent->world.scale : 1.0;  // Only do translation/rotation
         auto transform = playerTrans.Invert();
-        NiPoint3 localLookAt = transform*1.0;
+        NiPoint3 localLookAt = transform;
         pos += localLookAt * -1;
         auto node = find_node(giant, bone_name);
+        NiPoint3 bonePos = NiPoint3(); 
         if (node) {
-          NiPoint3 bonePos = NiPoint3(); 
           auto localPos = transform * (node->world * NiPoint3());
           bonePos += localPos;
         }
+        log::info("Bone {} Pos: {}", bone_name, Vector2Str(bonePos));
         return bonePos;
       }
     }
