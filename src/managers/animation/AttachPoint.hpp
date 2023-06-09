@@ -52,7 +52,7 @@ namespace Gts {
   }
   template<typename T, typename U>
   bool AttachTo(T& anyGiant, U& anyTiny, std::string_view bone_name) {
-    Actor* giant =  GetActorPtr(anyGiant);
+    Actor* giant = GetActorPtr(anyGiant);
     if (!giant) {
       return false;
     }
@@ -80,24 +80,24 @@ namespace Gts {
 
   template<typename T, typename U>
   bool AttachToClevage(T& anyGiant, U& anyTiny) {
-    Actor* giant =  GetActorPtr(anyGiant);
+    Actor* giant = GetActorPtr(anyGiant);
     if (!giant) {
       return false;
     }
 
-    auto breastLNode = find_node(giant, "L Breast03")->world.translate;
+    auto breastLNode = find_node(giant, "L Breast03");
     if (!breastLNode) {
       return false;
     }
-    auto breastL = breastL->world.translate;
+    auto breastL = breastLNode->world.translate;
 
-    auto breastRNode = find_node(giant, "R Breast03")->world.translate;
+    auto breastRNode = find_node(giant, "R Breast03");
     if (!breastRNode) {
       return false;
     }
-    auto breastR = breastR->world.translate;
+    auto breastR = breastRNode->world.translate;
 
-    auto spine2Node = find_node(giant, "NPC Spine2 [Spn2]")->world.translate;
+    auto spine2Node = find_node(giant, "NPC Spine2 [Spn2]");
     if (!spine2Node) {
       return false;
     }
