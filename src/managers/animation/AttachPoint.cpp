@@ -3,8 +3,8 @@
 namespace {
   void TestActorAttaches() {
     Actor* testActorPtr = PlayerCharacter::GetSingleton();
-    Actor& testActorRef = *testActor;
-    ActorHandle testHandle = testActor->CreateRefHandle();
+    Actor& testActorRef = *testActorPtr;
+    ActorHandle testHandle = testActorPtr->CreateRefHandle();
     FormID testFormID = 0x14;
 
     log::info("Testing Attaches");
