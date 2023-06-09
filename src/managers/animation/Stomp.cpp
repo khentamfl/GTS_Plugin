@@ -11,10 +11,11 @@
 //    - "GTS_Next",                 // [8]
 //    - "GTSBEH_Exit",              // [9] Another disable
 
-#include "managers/animation/Stomp.hpp"
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/LaunchActor.hpp"
+#include "managers/animation/Stomp.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -36,44 +37,6 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
-	float GetPerkBonus(Actor* Giant) {
-		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
-			return 1.25;
-		} else {
-			return 1.0;
-		}
-	}
-
-	void DrainStamina(Actor* giant, bool decide, float power) {
-		float WasteMult = 1.0;
-		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
-			WasteMult *= 0.65;
-		}
-		std::string name = std::format("StaminaDrain_Stomp_{}", giant->formID);
-		if (decide) {
-			TaskManager::Run(name, [=](auto& progressData) {
-				ActorHandle casterhandle = giant->CreateRefHandle();
-				if (!casterhandle) {
-					return false;
-				}
-				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 1.00 * power * multiplier;
-				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
-				return true;
-			});
-		} else {
-			TaskManager::Cancel(name);
-		}
-	}
-
-	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
-		float bonus = 1.0;
-		if (HasSMT(giant)) {
-			bonus = 2.0; // Needed to boost only Launch
-		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
-	}
-
 	void GTSstompstartR(AnimationEventData& data) {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
@@ -81,7 +44,7 @@ namespace {
 		if (data.giant.formID != 0x14) {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
-		DrainStamina(&data.giant, true, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.0);
 		TrackFeet(&data.giant, 6, true);
 		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 		log::info("StompStartR true");
@@ -94,7 +57,7 @@ namespace {
 		if (data.giant.formID != 0x14) {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
-		DrainStamina(&data.giant, true, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.0);
 		TrackFeet(&data.giant, 5, true);
 		Rumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
 		log::info("StompStartL true");
@@ -104,7 +67,7 @@ namespace {
 		float shake = 1.0;
 		float launch = 1.0;
 		float dust = 1.0;
-		float perk = GetPerkBonus(&data.giant);
+		float perk = GetPerkBonus_Basics(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			shake = 4.0;
 			launch = 1.5;
@@ -113,15 +76,15 @@ namespace {
 		Rumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode, dust);
-		DoLaunch(&data.giant, 1.0 * launch, 2.25, RNode);
-		DrainStamina(&data.giant, false, 1.0);
+		DoLaunch(&data.giant, 1.0 * launch, 2.25, RNode, 2.0);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.0);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
 		float shake = 1.0;
 		float launch = 1.0;
 		float dust = 1.0;
-		float perk = GetPerkBonus(&data.giant);
+		float perk = GetPerkBonus_Basics(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			shake = 4.0;
 			launch = 1.5;
@@ -130,15 +93,15 @@ namespace {
 		Rumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode, dust);
-		DoLaunch(&data.giant, 1.0 * launch * perk, 2.25, LNode);
-		DrainStamina(&data.giant, false, 1.0);
+		DoLaunch(&data.giant, 1.0 * launch * perk, 2.25, LNode, 2.0);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.0);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
 		//data.stage = 2;
 		float bonus = 1.0;
 		float dust = 1.0;
-		float perk = GetPerkBonus(&data.giant);
+		float perk = GetPerkBonus_Basics(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			bonus = 2.0;
 			dust = 1.25;
@@ -146,14 +109,14 @@ namespace {
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode, dust);
-		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, RNode);
+		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, RNode, 2.0);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
 		//data.stage = 2;
 		float bonus = 1.0;
 		float dust = 1.0;
-		float perk = GetPerkBonus(&data.giant);
+		float perk = GetPerkBonus_Basics(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			bonus = 2.0;
 			dust = 1.25;
@@ -161,7 +124,7 @@ namespace {
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
 		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
 		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode, dust);
-		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, LNode);
+		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2, LNode, 2.0);
 
 	}
 

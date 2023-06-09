@@ -1,6 +1,7 @@
-#include "managers/animation/ActorVore.hpp"
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/emotions/EmotionManager.hpp"
+#include "managers/animation/ActorVore.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
@@ -86,24 +87,7 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void AllowToDoVore(Actor* actor, bool toggle) {
-		auto transient = Transient::GetSingleton().GetData(actor);
-		if (transient) {
-			transient->can_do_vore = toggle;
-		}
-	}
-
-	void AllowToBeCrushed(Actor* actor, bool toggle) {
-		auto transient = Transient::GetSingleton().GetData(actor);
-		if (transient) {
-			transient->can_be_crushed = toggle;
-		}
-	}
-
-	void ManageCamera(Actor* giant, bool enable, float type) {
-		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.SetActionBool(giant, enable, type);
-	}
+	
 
 	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife, bool once) {
 		for (auto& node_name: BODY_RUMBLE_NODES) {
@@ -142,31 +126,7 @@ namespace {
 			Rumble::Stop(rumbleName, &actor);
 		}
 	}
-	void ToggleEmotionEdit(Actor* giant, bool allow) {
-		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
-		Emotions.AllowEmotionEdit = allow;
-	}
-	void AdjustFacialExpression(Actor* giant, int ph, float power, std::string_view type) {
-		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
-		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
-
-		if (type == "phenome") {
-			Emotions.OverridePhenome(ph, 0.0, 0.08/AnimSpeed, power);
-		}
-		if (type == "expression") {
-			auto fgen = giant->GetFaceGenAnimationData();
-			if (fgen) {
-				fgen->exprOverride = false;
-				fgen->SetExpressionOverride(ph, power);
-				fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
-				fgen->exprOverride = true;
-			}
-		}
-		if (type == "modifier") {
-			Emotions.OverrideModifier(ph, 0.0, 0.25/AnimSpeed, power);
-		}
-	}
-
+	
 	void GTSvore_sit_start(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);

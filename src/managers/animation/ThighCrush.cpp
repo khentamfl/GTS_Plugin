@@ -14,8 +14,9 @@
 //    - "GTSstandRS",                   // [11] Silent impact of right feet
 //    - "GTStoexit",                    // [12] Leave animation, disable air rumble and such
 
-#include "managers/animation/ThighCrush.hpp"
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/ThighCrush.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -66,36 +67,6 @@ namespace {
 		"NPC R RearCalf [RrClf]",
 		"NPC L RearCalf [RrClf]",
 	};
-
-	void DrainStamina(Actor* giant, bool decide, float power) {
-		float WasteMult = 1.0;
-		if (Runtime::HasPerkTeam(giant, "KillerThighs")) {
-			WasteMult *= 0.65;
-		}
-		std::string name = std::format("StaminaDrain_{}", giant->formID);
-		if (decide) {
-			TaskManager::Run(name, [=](auto& progressData) {
-				ActorHandle casterhandle = giant->CreateRefHandle();
-				if (!casterhandle) {
-					return false;
-				}
-				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 0.25 * power * multiplier;
-				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
-				return true;
-			});
-		} else {
-			TaskManager::Cancel(name);
-		}
-	}
-
-	float GetPerkBonus(Actor* Giant) {
-		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
-			return 1.15;
-		} else {
-			return 1.0;
-		}
-	}
 
 	void LegRumbleOnce(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
@@ -155,7 +126,7 @@ namespace {
 
 	void GTSsitcrushlight_start(AnimationEventData& data) {
 		StartLegRumble("ThighCrush", data.giant, 0.18, 0.12);
-		DrainStamina(&data.giant, true, 1.0); // < Start Light Stamina Drain
+		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", true, 0.25, 1.0); // < Start Light Stamina Drain
 		data.stage = 5;
 	}
 
@@ -164,19 +135,19 @@ namespace {
 		data.canEditAnimSpeed = true;
 		LegRumbleOnce("ThighCrush_End", data.giant, 0.22, 0.20);
 		StopLegRumble("ThighCrush", data.giant);
-		DrainStamina(&data.giant, false, 1.0); // < Stop Light Stamina Drain
+		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", false, 0.25, 1.0); // < Stop Light Stamina Drain
 		data.stage = 6;
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
-		DrainStamina(&data.giant, true, 2.5); // < - Start HEAVY Stamina Drain
+		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", true, 0.25, 2.5); // < - Start HEAVY Stamina Drain
 		StartLegRumble("ThighCrushHeavy", data.giant, 0.35, 0.10);
 		data.stage = 5;
 	}
 
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
-		DrainStamina(&data.giant, false, 2.5); // < Stop Heavy Stamina Drain
+		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", false, 0.25, 2.5); // < Stop Heavy Stamina Drain
 		LegRumbleOnce("ThighCrushHeavy_End", data.giant, 0.50, 0.15);
 		StopLegRumble("ThighCrushHeavy", data.giant);
 		data.stage = 6;
@@ -198,7 +169,7 @@ namespace {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		float volume = scale * 0.10 * speed;
-		float perk = GetPerkBonus(&data.giant);
+		float perk = GetPerkBonus_Thighs(&data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Right, RNode, 1.0);
@@ -211,7 +182,7 @@ namespace {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		float volume = scale * 0.10 * speed;
-		float perk = GetPerkBonus(&data.giant);
+		float perk = GetPerkBonus_Thighs(&data.giant);
 
 		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
 		DoSizeEffect(&data.giant, 0.75, FootEvent::Left, LNode, 1.0);
@@ -224,7 +195,7 @@ namespace {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		float volume = scale * 0.05 * speed;
-		float perk = GetPerkBonus(&data.giant);
+		float perk = GetPerkBonus_Thighs(&data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoSizeEffect(&data.giant, 0.40, FootEvent::Right, RNode, 1.0);

@@ -1,3 +1,4 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/AttachPoint.hpp"
 #include "managers/GrabAnimationController.hpp"
@@ -64,106 +65,12 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
-	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult, float dustmult) {
-		auto hand = find_node(giant, "NPC L Hand [LHnd]");
-		if (hand) {
-			if (IsLiving(grabbedActor)) {
-				if (!LessGore()) {
-					SpawnParticle(giant, 25.0, "GTS/Damage/Explode.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3* mult, 4, hand);
-					SpawnParticle(giant, 25.0, "GTS/Damage/Crush.nif", hand->world.rotate, hand->world.translate, get_visual_scale(grabbedActor) * 3 *  mult, 4, hand);
-				} else if (LessGore()) {
-					Runtime::PlaySound("BloodGushSound", grabbedActor, 1.0, 0.5);
-				}
-			} else {
-				SpawnDustParticle(giant, grabbedActor, "NPC L Hand [LHnd]", dustmult);
-			}
-		}
-	}
+	
 
-	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {
-		float WasteMult = 1.0;
-		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
-			WasteMult *= 0.65;
-		}
-		float WasteStamina = (1.00 * WasteMult)/sizedifference;
-		DamageAV(giant, ActorValue::kStamina, WasteStamina);
-	}
-
-	void DrainStamina(Actor* giant, std::string_view TaskName, bool decide, float power) {
-		float WasteMult = 1.0;
-		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
-			WasteMult *= 0.65;
-		}
-		std::string name = std::format("StaminaDrain_{}_{}", TaskName, giant->formID);
-		if (decide) {
-			TaskManager::Run(name, [=](auto& progressData) {
-				ActorHandle casterhandle = giant->CreateRefHandle();
-				if (!casterhandle) {
-					return false;
-				}
-				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 0.50 * power * multiplier;
-				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
-				return true;
-			});
-		} else {
-			TaskManager::Cancel(name);
-		}
-	}
-
-	void ToggleEmotionEdit(Actor* giant, bool allow) {
-		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
-		Emotions.AllowEmotionEdit = allow;
-	}
-
-	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
-		float bonus = 1.0;
-		if (HasSMT(giant)) {
-			bonus = 2.0; // Needed to boost only Launch
-		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
-	}
-
-	float GetPerkBonus(Actor* Giant) {
-		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
-			return 1.25;
-		} else {
-			return 1.0;
-		}
-	}
-
-	void ManageCamera(Actor* giant, bool enable, float type) {
-		auto& sizemanager = SizeManager::GetSingleton();
-		if (giant->formID == 0x14) {
-			if (AllowFeetTracking()) {
-				sizemanager.SetActionBool(giant, enable, type);
-			}
-		}
-	}
-
-	void AdjustFacialExpression(Actor* giant, int ph, float power, std::string_view type) {
-		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
-		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
-
-		if (type == "phenome") {
-			Emotions.OverridePhenome(ph, 0.0, 0.08/AnimSpeed, power);
-		}
-		if (type == "expression") {
-			auto fgen = giant->GetFaceGenAnimationData();
-			if (fgen) {
-				fgen->exprOverride = false;
-				fgen->SetExpressionOverride(ph, power);
-				fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
-				fgen->exprOverride = true;
-			}
-		}
-		if (type == "modifier") {
-			Emotions.OverrideModifier(ph, 0.0, 0.25/AnimSpeed, power);
-		}
-	}
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////G R A B
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	void GTSGrab_Catch_Start(AnimationEventData& data) {
 		ManageCamera(&data.giant, true, 7.0);
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
@@ -185,16 +92,13 @@ namespace {
 		ManageCamera(&data.giant, false, 7.0);
 	}
 
-
-////////////////////////////////////////////////////////////////
-
-
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////A T T A C K
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	void GTSGrab_Attack_MoveStart(AnimationEventData& data) {
 		auto giant = &data.giant;
-		DrainStamina(giant, "GrabAttack", true, 1.0);
+		DrainStamina(giant, "GrabAttack", "DestructionBasics", true, 0.50, 1.0);
 		ManageCamera(giant, true, 7.0);
 	}
 
@@ -256,7 +160,7 @@ namespace {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(giant, false, 7.0);
-		DrainStamina(giant, "GrabAttack", false, 1.0);
+		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.50, 1.0);
 		if (!grabbedActor) {
 			log::info("GrabbedActor is null");
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
@@ -267,11 +171,10 @@ namespace {
 		}
 	}
 
-////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////V O R E
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	void GTSGrab_Eat_Start(AnimationEventData& data) {
 		ToggleEmotionEdit(&data.giant, true);
 		auto otherActor = Grab::GetHeldActor(&data.giant);
@@ -345,15 +248,13 @@ namespace {
 	}
 
 
-////////////////////////////////////////////////////////////////
-
-
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////T H R O W
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	void GTSGrab_Throw_MoveStart(AnimationEventData& data) {
 		auto giant = &data.giant;
-		DrainStamina(giant, "GrabThrow", true, 1.8);
+		DrainStamina(giant, "GrabThrow", "DestructionBasics", true, 0.50, 1.8);
 		ManageCamera(giant, true, 7.0);
 	}
 
@@ -370,7 +271,7 @@ namespace {
 		Rumble::Once("StompR", &data.giant, 1.50 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 0.9 * data.animSpeed, FootEvent::Right, RNode, dust);
-		DoLaunch(&data.giant, 0.8 * launch, 1.75, RNode);
+		DoLaunch(&data.giant, 0.8 * launch, 1.75, RNode, 2.0);
 	}
 
 	void GTSGrab_Throw_FS_L(AnimationEventData& data) {
@@ -386,7 +287,7 @@ namespace {
 		Rumble::Once("StompL", &data.giant, 1.50 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 0.9 * data.animSpeed, FootEvent::Left, LNode, dust);
-		DoLaunch(&data.giant, 0.8 * launch * perk, 1.75, LNode);
+		DoLaunch(&data.giant, 0.8 * launch * perk, 1.75, LNode, 2.0);
 	}
 
 	void GTSGrab_Throw_Throw_Pre(AnimationEventData& data) {// Throw frame 0
@@ -412,15 +313,14 @@ namespace {
 
 	void GTSGrab_Throw_MoveStop(AnimationEventData& data) {
 		auto giant = &data.giant;
-		DrainStamina(giant, "GrabThrow", false, 1.8);
+		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.50, 1.8);
 	}
 
 
-////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////R E L E A S E
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	void GTSGrab_Release_FreeActor(AnimationEventData& data) {
 		auto giant = &data.giant;
 		SetBetweenBreasts(giant, false);
@@ -442,7 +342,8 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
-		DrainStamina(giant, "GrabAttack", false, 1.0);
+		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.50, 1.0);
+		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.50, 1.8);
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
@@ -454,15 +355,16 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
-		DrainStamina(giant, "GrabAttack", false, 1.0);
+		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.50, 1.0);
+		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.50, 1.8);
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 	}
 
-	/////////////////////////////////////////////////////////////////
-	////////////////////////////B R E A S T S
-	/////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////B R E A S T S
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void GTSGrab_Breast_MoveStart(AnimationEventData& data) {
 		ManageCamera(&data.giant, true, 7.0);
@@ -487,9 +389,9 @@ namespace {
 		ManageCamera(&data.giant, false, 7.0);
 	}
 
-	///////////////////////////////////////////////////////////////////
-	/////////////////////////////E V E N T S
-	///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////E V E N T S
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void GrabOtherEvent(const InputEventData& data) { // Grab other actor
 		auto player = PlayerCharacter::GetSingleton();
@@ -578,6 +480,15 @@ namespace {
 	}
 }
 
+
+
+
+
+
+
+
+
+
 namespace Gts {
 	Grab& Grab::GetSingleton() noexcept {
 		static Grab instance;
@@ -618,7 +529,7 @@ namespace Gts {
 				PushActorAway(giantref, tinyref, 0.1);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
-				DrainStamina(giantref, "GrabAttack", false, 1.0);
+				DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.50, 1.0);
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
 				AnimationManager::StartAnim("TinyDied", giant);
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits
