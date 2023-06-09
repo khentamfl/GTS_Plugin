@@ -44,7 +44,7 @@ namespace {
 		if (data.giant.formID != 0x14) {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.8);
 		TrackFeet(&data.giant, 6, true);
 		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 		log::info("StompStartR true");
@@ -57,7 +57,7 @@ namespace {
 		if (data.giant.formID != 0x14) {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.8);
 		TrackFeet(&data.giant, 5, true);
 		Rumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
 		log::info("StompStartL true");
@@ -77,7 +77,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode, dust);
 		DoLaunch(&data.giant, 1.0 * launch, 2.25, RNode, 2.0);
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
@@ -94,7 +94,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.25);
 		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode, dust);
 		DoLaunch(&data.giant, 1.0 * launch * perk, 2.25, LNode, 2.0);
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
@@ -150,6 +150,8 @@ namespace {
 	void GTSBEH_Exit(AnimationEventData& data) {
 		Rumble::Stop("StompR", &data.giant);
 		Rumble::Stop("StompL", &data.giant);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.75, 4.0);
 		TrackFeet(&data.giant, 6, false);
 		TrackFeet(&data.giant, 5, false);
 	}
