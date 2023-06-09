@@ -168,7 +168,7 @@ namespace {
 		ManageCamera(&data.giant, true, 7.0);
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
-			auto object = Grab::GetHeldObj(&data.gaint);
+			auto object = Grab::GetHeldObj(&data.giant);
 			object.SetCollision(false);
 			SetBeingHeld(grabbedActor, true);
 		}
