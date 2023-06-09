@@ -169,7 +169,7 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
 			auto object = Grab::GetHeldObj(&data.giant);
-			object.SetCollision(false);
+			object->SetCollision(false);
 			SetBeingHeld(grabbedActor, true);
 		}
 	}
