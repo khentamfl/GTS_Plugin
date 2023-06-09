@@ -1,12 +1,19 @@
 #include "managers/animation/AttachPoint.hpp"
 
-namespace Gts {
+namespace {
   void Test() {
-    auto testActor = PlayerCharacter::GetSingleton();
-    auto testHandle = testActor->CreateRefHandle();
-    AttachToObjectA(testActor, testActor);
-    AttachToObjectA(*testActor, testActor);
-    AttachToObjectA(testHandle, testActor);
-    AttachToObjectA(0x14, testActor);
+    Actor* testActorPtr = PlayerCharacter::GetSingleton();
+    Actor& testActorRef = *testActor;
+    ActorHandle testHandle = testActor->CreateRefHandle();
+    FormID testFormID = 0x14;
+
+    log::info("Testing Attaches");
+
+    AttachToObjectA(testActorPtr, testActorPtr);
+    AttachToObjectA(testActorRef, testActorPtr);
+    AttachToObjectA(testActorRef, testActorPtr);
+    AttachToObjectA(testFormID, testActorPtr);
+
+    log::info("Complete");
   }
 }
