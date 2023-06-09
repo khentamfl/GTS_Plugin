@@ -1,5 +1,7 @@
 #pragma once
 
+using namespace RE;
+
 namespace Gts {
 
   void GetActor(Actor& actor) -> Actor& {
@@ -37,3 +39,13 @@ namespace Gts {
       }
       // Ready
   }
+
+  void Test() {
+    auto testActor = PlayerCharacter::GetSingleton();
+    auto testHandle = testActor->CreateRefHandle();
+    AttachToObjectA(testActor);
+    AttachToObjectA(*testActor);
+    AttachToObjectA(testHandle);
+    AttachToObjectA(0x14);
+  }
+}
