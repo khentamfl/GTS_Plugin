@@ -170,7 +170,7 @@ namespace {
 	void GTSGrab_Catch_End(AnimationEventData& data) {
 		ManageCamera(&data.giant, false, 7.0);
 	}
-	
+
 
 ////////////////////////////////////////////////////////////////
 
@@ -189,7 +189,7 @@ namespace {
 		float bonus = 1.0;
 		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
-		
+
 		static Timer laughtimer = Timer(6.0);
 		if (grabbedActor) {
 			StartCombat(giant, grabbedActor, true); // force combat
@@ -256,7 +256,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Eat_Start(AnimationEventData& data) {
 		ToggleEmotionEdit(&data.giant, true);
-		auto otherActor = Grab::GetHeldActor(&data.giant);	
+		auto otherActor = Grab::GetHeldActor(&data.giant);
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		ManageCamera(&data.giant, true, 7.0);
 		if (otherActor) {
@@ -281,8 +281,8 @@ namespace {
 	}
 
 	void GTSGrab_Eat_Eat(AnimationEventData& data) {
-		auto otherActor = Grab::GetHeldActor(&data.giant);		
-		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
+		auto otherActor = Grab::GetHeldActor(&data.giant);
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		if (otherActor) {
 			for (auto& tiny: VoreData.GetVories()) {
 				if (!AllowDevourment()) {
@@ -298,7 +298,7 @@ namespace {
 		auto giant = &data.giant;
 		AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Close mouth
 		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Close it
-		
+
 		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
 
@@ -307,14 +307,14 @@ namespace {
 
 	void GTSGrab_Eat_Swallow(AnimationEventData& data) {
 		auto giant = &data.giant;
-		auto otherActor = Grab::GetHeldActor(&data.giant);	
+		auto otherActor = Grab::GetHeldActor(&data.giant);
 		if (otherActor) {
 			SetBeingEaten(otherActor, false);
-			auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);	
+			auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 			for (auto& tiny: VoreData.GetVories()) {
 				VoreData.KillAll();
 			}
-			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);	
+			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 			Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			giant->SetGraphVariableInt("GTS_Grab_State", 0);
 			AnimationManager::StartAnim("TinyDied", giant);
@@ -325,7 +325,7 @@ namespace {
 		}
 		ToggleEmotionEdit(giant, false);
 	}
-	
+
 
 ////////////////////////////////////////////////////////////////
 
@@ -376,7 +376,7 @@ namespace {
 
 	void GTSGrab_Throw_ThrowActor(AnimationEventData& data) { // Throw frame 1
 		auto giant = &data.giant;
-		auto otherActor = Grab::GetHeldActor(&data.giant);	
+		auto otherActor = Grab::GetHeldActor(&data.giant);
 		if (otherActor) {
 			SetBeingHeld(otherActor, false);
 		}
@@ -386,7 +386,7 @@ namespace {
 		AnimationManager::StartAnim("TinyDied", giant);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
-		
+
 	}
 
 	void GTSGrab_Throw_Throw_Post(AnimationEventData& data) { // Throw frame 2
@@ -401,7 +401,7 @@ namespace {
 ////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////
-/////////////////////////R E L E A S E 
+/////////////////////////R E L E A S E
 ////////////////////////////////////////////////////////////////
 	void GTSGrab_Release_FreeActor(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -415,7 +415,7 @@ namespace {
 			PushActorAway(giant, grabbedActor, 0.1);
 		}
 	}
-	
+
 	void GTSBEH_GrabExit(AnimationEventData& data) {
 		auto giant = &data.giant;
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
@@ -453,7 +453,7 @@ namespace {
 	void GrabAttackEvent(const InputEventData& data) { // Attack everyone in your hand
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
-		if (!grabbedActor) { 
+		if (!grabbedActor) {
 			return;
 		}
 		float WasteStamina = 20.0;
@@ -469,7 +469,7 @@ namespace {
 	void GrabVoreEvent(const InputEventData& data) { // Eat everyone in hand
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
-		if (!grabbedActor) { 
+		if (!grabbedActor) {
 			return;
 		}
 		AnimationManager::StartAnim("GrabEatSomeone", player);
@@ -478,7 +478,7 @@ namespace {
 	void GrabThrowEvent(const InputEventData& data) { // Throw everyone away
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
-		if (!grabbedActor) { 
+		if (!grabbedActor) {
 			return;
 		}
 		float WasteStamina = 40.0;
@@ -494,7 +494,7 @@ namespace {
 	void GrabReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
-		if (!grabbedActor) { 
+		if (!grabbedActor) {
 			return;
 		}
 		if (IsGtsBusy(player)) {
@@ -520,7 +520,7 @@ namespace Gts {
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		TaskManager::Cancel(name);
 	}
-	
+
 
 	void Grab::AttachActorTask(Actor* giant, Actor* tiny) {
 		if (!giant) {
@@ -530,13 +530,14 @@ namespace Gts {
 			return;
 		}
 		std::string name = std::format("GrabAttach_{}", giant->formID);
+    ActorHandle gianthandle = giant->CreateRefHandle();
+    ActorHandle tinyhandle = tiny->CreateRefHandle();
+    
 		TaskManager::Run(name, [=](auto& progressData) {
-			ActorHandle gianthandle = giant->CreateRefHandle();
-			ActorHandle tinyhandle = tiny->CreateRefHandle();
 			if (!gianthandle) {
 				TaskManager::Cancel(name);
 				return false;
-			} 
+			}
 			if (!tinyhandle) {
 				TaskManager::Cancel(name);
 				return false;
@@ -570,16 +571,16 @@ namespace Gts {
 			if (tiny_is_object) {
 				tiny_is_object->SetPosition(bone->world.translate);
 			}
-			
+
 			auto charcont = tinyref->GetCharController();
 			if (charcont) {
 				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
 			}
-			
+
 			return true;
 		});
 	}
-	
+
 
 	void Grab::GrabActor(Actor* giant, TESObjectREFR* tiny, float strength) {
 		Grab::GetSingleton().data.try_emplace(giant, tiny, strength);

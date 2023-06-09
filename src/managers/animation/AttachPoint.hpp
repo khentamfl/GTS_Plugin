@@ -4,39 +4,68 @@ using namespace RE;
 
 namespace Gts {
 
-  Actor& GetActor(Actor& actor) {
+  Actor* GetActorPtr(Actor* actor) {
     return actor;
   }
-  Actor& GetActor(Actor* actor) {
-    if (!actor) {
-      throw std::runtime_error("Pointer to actor is invalid");
-    }
-    return GetActor(*actor);
+
+  Actor* GetActorPtr(Actor& actor) {
+    return &actor;
   }
-  Actor& GetActor(ActorHandle& actor) {
+
+  Actor* GetActorPtr(ActorHandle& actor) {
     if (!actor) {
-      throw std::runtime_error("ActorHandle is invalid");
+      return nullptr;
     }
-    return GetActor(actor.get().get());
+    return actor.get().get();
   }
-  Actor& GetActor(FormID formId) {
+  Actor* GetActorPtr(FormID formId) {
     Actor* actor = TESForm::LookupByID<Actor>(formId);
     if (!actor) {
-      throw std::runtime_error("FormID is not for an actor");
+      return nullptr;
     }
-    return GetActor(*actor);
+    return actor;
   }
 
   template<typename T, typename U>
-  void AttachToObjectA(T& maybeGiant, U& maybeTiny) {
-      Actor& giant;
-      Actor& tiny;
-      try {
-         giant = GetActor(maybeGiant);
-         tiny = GetActor(maybeTiny);
-      } catch (const std::runtime_error& e) {
-        return;
-      }
-      // Ready
+  bool AttachTo(T& anyGiant, U& anyTiny, std::string_view bone_name) {
+      Actor* giant =  GetActorPtr(anyGiant);
+      Actor* tiny =  GetActorPtr(anyTiny);
+
+      if (!giant) {
+  			return false;
+  		}
+  		if (!tiny) {
+  			return false;
+  		}
+
+      std::string_view bone_name = "AnimObjectA";
+      auto bone = find_node(giant, bonename);
+      if (!bone) {
+				return false;
+			}
+
+			tiny->SetPosition(bone->world.translate);
+
+			auto charcont = tinyref->GetCharController();
+			if (charcont) {
+				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+			}
+
+      return true;
+  }
+
+  template<typename T, typename U>
+  bool AttachToObjectA(T& anyGiant, U& anyTiny) {
+    return AttachTo(anyGiant, anyTiny, "AnimObjectA");
+  }
+
+  template<typename T, typename U>
+  bool AttachToObjectB(T& anyGiant, U& anyTiny) {
+    return AttachTo(anyGiant, anyTiny, "AnimObjectB");
+  }
+
+  template<typename T, typename U>
+  bool AttachToObjectHand(T& anyGiant, U& anyTiny) {
+    return AttachTo(anyGiant, anyTiny, "NPC L Finger02 [LF02]");
   }
 }
