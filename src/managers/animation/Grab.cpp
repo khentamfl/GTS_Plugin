@@ -618,6 +618,10 @@ namespace Gts {
 				// Unable to attach
 				return false;
 				}
+			} else if (AttachToHand(gianthandle, tinyhandle)) {
+				float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
+				GrabStaminaDrain(giantref, tinyref, sizedifference);
+				return true;
 			} else {
 			if (!AttachToHand(gianthandle, tinyhandle)) {
 				// Unable to attach

@@ -73,17 +73,19 @@ namespace Gts {
       return false;
     }
 
-    auto breastLNode = find_node(giant, "L Breast03");
+    auto breastLNode = find_node(giant, "L Breast02");
     if (!breastLNode) {
       return false;
     }
     auto breastL = breastLNode->world.translate;
+    auto breastL_Local = breastLNode->local.translate;
 
-    auto breastRNode = find_node(giant, "R Breast03");
+    auto breastRNode = find_node(giant, "R Breast02");
     if (!breastRNode) {
       return false;
     }
     auto breastR = breastRNode->world.translate;
+    auto breastR_Local = breastRNode->local.translate;
 
     auto spine2Node = find_node(giant, "NPC Spine2 [Spn2]");
     if (!spine2Node) {
@@ -91,9 +93,9 @@ namespace Gts {
     }
     auto spine2 = spine2Node->world.translate;
 
-    float forwardAmount = 1.2;
+    float forwardAmount = 1.0;
 
-    auto breastForward = ((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
+    auto breastForward = ((breastL + breastL_Local) + (breastR + breastR_Local))/2; //((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
     return AttachTo(anyGiant, anyTiny, breastForward);
   }
 }
