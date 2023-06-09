@@ -120,7 +120,7 @@ namespace Gts {
 					update_node(node);
 				}
 				return true;
-			}); 
+			});
 		} else if (shrink == false) {
 			std::string name = std::format("ScaleRune_{}", giant->formID);
 			TaskManager::Run(name, [=](auto& progressData) {
@@ -136,7 +136,7 @@ namespace Gts {
 					update_node(node);
 				}
 				return true;
-			}); 
+			});
 		}
 	}
 
@@ -160,15 +160,11 @@ namespace Gts {
 			if (!tiny) {
 				return;
 			}
-			auto bone = find_node(giant, "AnimObjectA");
-			if (!bone) {
-				return;
-			}
-			float tinyScale = get_visual_scale(tiny);
-			NiPoint3 tinyLocation = tiny->GetPosition();
-			NiPoint3 targetLocation = bone->world.translate;
-			NiPoint3 deltaLocation = targetLocation - tinyLocation;
-			float deltaLength = deltaLocation.Length();
+
+      Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
+			if (tiny_is_actor) {
+        AttachToObjectA(giant, tiny_is_actor);
+      }
 
 			if (giantScale/tinyScale < 6.0) {
 				PushActorAway(giant, tiny, 0.5);
@@ -176,8 +172,6 @@ namespace Gts {
 				this->tinies.erase(tiny->formID); // Disallow button abuses to keep tiny when on low scale
 			}
 
-			tiny->SetPosition(targetLocation, true);
-			tiny->SetPosition(targetLocation, false);
 			if (this->Suffocate) {
 				float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 				float damage = 0.005 * sizedifference;
@@ -186,14 +180,6 @@ namespace Gts {
 				if (damage > hp && !tiny->IsDead()) {
 					this->Remove(tiny);
 					PrintSuffocate(giant, tiny);
-				}
-			}
-			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
-			if (tiny_is_actor) {
-				//ManageRagdoll(tiny, deltaLength, deltaLocation, targetLocation);
-				auto charcont = tiny_is_actor->GetCharController();
-				if (charcont) {
-					charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
 				}
 			}
 		}
