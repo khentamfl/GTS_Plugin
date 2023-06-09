@@ -606,11 +606,9 @@ namespace Gts {
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
-				TaskManager::Cancel(name);
 				return false;
 			} 
 			if (!tinyhandle) {
-				TaskManager::Cancel(name);
 				return false;
 			}
 			auto tinyref = tinyhandle.get().get();
@@ -645,7 +643,6 @@ namespace Gts {
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
 				AnimationManager::StartAnim("TinyDied", giant);
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits
-				TaskManager::Cancel(name);
 				return false;
 			}
 
