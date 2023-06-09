@@ -1,4 +1,5 @@
 #pragma once
+#include "scale/scale.hpp"
 #include "node.hpp"
 
 using namespace RE;
@@ -24,16 +25,12 @@ namespace Gts {
         auto playerTrans = rootModel->world;
         playerTrans.scale = rootModel->parent ? rootModel->parent->world.scale : 1.0;  // Only do translation/rotation
         auto transform = playerTrans.Invert();
-        NiPoint3 lookAt = CompuleLookAt(boneTarget.zoomScale);
-        NiPoint3 localLookAt = transform*lookAt;
-        this->smoothScale.halflife = CheckForAction();
-        this->smoothedBonePos.halflife = CheckForAction();
-        this->smoothScale.target = scale;
-        pos += localLookAt * -1 * this->smoothScale.value;
-        auto node = find_node(player, bone_name);
+        NiPoint3 localLookAt = transform*1.0;
+        pos += localLookAt * -1;
+        auto node = find_node(giant, bone_name);
         if (node) {
           NiPoint3 bonePos = NiPoint3(); 
-          auto localPos = transform * (bone->world * NiPoint3());
+          auto localPos = transform * (node->world * NiPoint3());
           bonePos += localPos;
         }
         return bonePos;
