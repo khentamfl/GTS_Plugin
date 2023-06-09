@@ -42,6 +42,7 @@ namespace Gts {
           return bonePos;
       }
     }
+    return NiPoint3();
   }
 
   Actor* GetActorPtr(Actor* actor) {
