@@ -168,6 +168,8 @@ namespace {
 		ManageCamera(&data.giant, true, 7.0);
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
+			auto object = Grab::GetHeldObj(&data.gaint);
+			object.SetCollision(false);
 			SetBeingHeld(grabbedActor, true);
 		}
 	}
@@ -630,9 +632,9 @@ namespace Gts {
 				return false;
 			}
 			} else if (IsBetweenBreasts(giantref)) {
-			if (!AttachToClevage(gianthandle, tinyhandle)) {
+			if (!AttachToCleavage(gianthandle, tinyhandle)) {
 				// Unable to attach
-				return true; // return true
+				return false;
 				}
 			} else if (AttachToHand(gianthandle, tinyhandle)) {
 				GrabStaminaDrain(giantref, tinyref, sizedifference);

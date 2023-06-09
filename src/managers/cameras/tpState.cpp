@@ -71,23 +71,13 @@ namespace Gts {
 							auto localPos = transform * (bone->world * NiPoint3());
 							bonePos += localPos * (1.0/bone_count);
 						}
-						if (Grab::GetHeldActor(player)) {
-							
+						/*if (Grab::GetHeldActor(player)) {
 							auto grabbed = Grab::GetHeldActor(player);
 							TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(grabbed);
 							if (tiny_is_object) {
-								if (IsBetweenBreasts(grabbed)) {
-									auto breastRNode = find_node(player, "R Breast02");
-									auto breastLNode = find_node(player, "L Breast02");
-									if (breastLNode && breastRNode) {
-										auto breastR = breastRNode->world.translate;
-										auto breastL = breastLNode->world.translate;
-										auto playerpos = (breastR + breastL) / 2;
-										tiny_is_object->SetPosition(playerpos + bonePos);
-									}
-								}
+								tiny_is_object->SetPosition(bonePos);
 							}
-						}
+						}*/
 						smoothedBonePos.target = bonePos;
 						pos += smoothedBonePos.value;
 					}

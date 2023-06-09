@@ -70,8 +70,7 @@ namespace Gts {
   }
 
   template<typename T, typename U>
-  bool AttachToClevage(T& anyGiant, U& anyTiny) {
-    return false; //disabled for tests
+  bool AttachToCleavage(T& anyGiant, U& anyTiny) {
     Actor* giant = GetActorPtr(anyGiant);
     if (!giant) {
       return false;
@@ -99,9 +98,9 @@ namespace Gts {
 
     float forwardAmount = 1.0;
 
-    auto breastForwardL = breastL/2 + breastL_Local; //((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
-    auto breastForwardR = breastR/2 + breastR_Local;
-    auto breastForward = (breastForwardL + breastForwardR);
+    auto breastForwardL = breastL; //+ (breastL_Local - breastL_Local/scale); //((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
+    auto breastForwardR = breastR; //+ (breastR_Local - breastL_Local/scale);
+    auto breastForward = (breastForwardL + breastForwardR) / 2;
     return AttachTo(anyGiant, anyTiny, breastForward);
   }
 }
