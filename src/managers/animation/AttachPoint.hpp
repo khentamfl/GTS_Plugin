@@ -17,7 +17,7 @@ namespace Gts {
     if (!actor) {
       throw std::runtime_error("ActorHandle is invalid");
     }
-    return GetActor(*actor.get().get());
+    return GetActor(actor.get().get());
   }
   Actor& GetActor(FormID formId) {
     Actor* actor = TESForm::LookupByID<Actor>(formId);
@@ -27,7 +27,7 @@ namespace Gts {
     return GetActor(*actor.get().get());
   }
 
-  template<T, U>
+  template<typename T,typename U>
   void AttachToObjectA(T maybeGiant, U maybeTiny) {
       Actor& giant;
       Actor& tiny;
