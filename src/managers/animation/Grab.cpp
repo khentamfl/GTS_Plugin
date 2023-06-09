@@ -605,35 +605,24 @@ namespace Gts {
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
-			if (!gianthandle) {
-				TaskManager::Cancel(name);
-				return false;
-			}
-			if (!tinyhandle) {
-				TaskManager::Cancel(name);
-				return false;
-			}
-			auto tinyref = tinyhandle.get().get();
-			auto giantref = gianthandle.get().get();
-			std::string_view bonename = "NPC L Finger02 [LF02]";
 			if (IsBeingEaten(tinyref)) {
-				bonename = "AnimObjectA";
-			}
-			auto bone = find_node(giantref, bonename);
-			if (!bone) {
-				return false;
-			}
+				if (!AttachToHand(gianthandle, tinyhandle)) {
+          // Unable to attach
+          return false;
+        }
+      } else if (IsBetweenBreasts(giantref)) {
+        if (!AttachToClevage(gianthandle, tinyhandle)) {
+          // Unable to attach
+          return false;
+        }
+			} else {
+        if (!AttachToObjectA(gianthandle, tinyhandle)) {
+          // Unable to attach
+          return false;
+        }
+      }
 
-			auto breastL = find_node(giantref, "L Breast03")->world.translate;
-			auto breastR = find_node(giantref, "R Breast03")->world.translate;
-			auto spine2 = find_node(giantref, "NPC Spine2 [Spn2]")->world.translate;
-
-			float forwardAmount = 1.2;
-
-			auto breastForward = ((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
-
-			auto middlePoint = bone->world.translate;
-
+      // Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
 			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
@@ -645,27 +634,10 @@ namespace Gts {
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
 				AnimationManager::StartAnim("TinyDied", giant);
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits
-				TaskManager::Cancel(name);
 				return false;
 			}
 
-			TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyref);
-			if (tiny_is_object) {
-				if (IsBetweenBreasts(giantref) == true) {
-					if (find_node(giantref, "L Breast03")) {
-						tiny_is_object->SetPosition(breastForward);
-					}
-				} else {
-					GrabStaminaDrain(giantref, tinyref, sizedifference);
-					tiny_is_object->SetPosition(middlePoint);
-				}
-			}
-
-			auto charcont = tinyref->GetCharController();
-			if (charcont) {
-				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
-			}
-
+      // All good try another frame
 			return true;
 		});
 	}
