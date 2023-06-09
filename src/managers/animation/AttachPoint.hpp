@@ -15,6 +15,32 @@ namespace Gts {
 
   Actor* GetActorPtr(FormID formId);
 
+  NiPoint3 GetBreastPos(Actor* giant, std::string_view bone_name) {
+    NiPoint3 pos = NiPoint3();
+		if (giant) {
+			auto scale = get_visual_scale(giant);
+			auto rootModel = giant->Get3D(false);
+      if (rootModel) {
+        auto playerTrans = rootModel->world;
+        playerTrans.scale = rootModel->parent ? rootModel->parent->world.scale : 1.0;  // Only do translation/rotation
+        auto transform = playerTrans.Invert();
+        NiPoint3 lookAt = CompuleLookAt(boneTarget.zoomScale);
+        NiPoint3 localLookAt = transform*lookAt;
+        this->smoothScale.halflife = CheckForAction();
+        this->smoothedBonePos.halflife = CheckForAction();
+        this->smoothScale.target = scale;
+        pos += localLookAt * -1 * this->smoothScale.value;
+        auto node = find_node(player, bone_name);
+        if (node) {
+          NiPoint3 bonePos = NiPoint3(); 
+          auto localPos = transform * (bone->world * NiPoint3());
+          bonePos += localPos;
+        }
+        return bonePos;
+      }
+    }
+	}
+
   template<typename T, typename U>
   bool AttachTo(T& anyGiant, U& anyTiny, NiPoint3 point) {
     Actor* giant =  GetActorPtr(anyGiant);
@@ -78,14 +104,14 @@ namespace Gts {
       return false;
     }
     auto breastL = breastLNode->world.translate;
-    auto breastL_Local = breastLNode->local.translate;
+    auto breastL_Local = GetBreastPos(giant, "L Breast02");
 
     auto breastRNode = find_node(giant, "R Breast02");
     if (!breastRNode) {
       return false;
     }
     auto breastR = breastRNode->world.translate;
-    auto breastR_Local = breastRNode->local.translate;
+    auto breastR_Local = GetBreastPos(giant, "R Breast02");
 
     auto spine2Node = find_node(giant, "NPC Spine2 [Spn2]");
     if (!spine2Node) {
