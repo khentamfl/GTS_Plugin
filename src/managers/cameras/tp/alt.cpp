@@ -172,7 +172,7 @@ namespace Gts {
 					},
 				        .zoomScale = 1.00,
 				};
-			} 
+			}
 			case 14: {
 				return BoneTarget { // L Hand
 				        .boneNames = {

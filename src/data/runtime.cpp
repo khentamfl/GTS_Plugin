@@ -37,7 +37,7 @@ namespace {
 		std::unordered_map<std::string, std::string> factions;
 		std::unordered_map<std::string, std::string> impacts;
 		std::unordered_map<std::string, std::string> races;
-    std::unordered_map<std::string, std::string> keywords;
+		std::unordered_map<std::string, std::string> keywords;
 
 		articuno_serde(ar) {
 			ar <=> kv(sounds, "sounds");
@@ -50,7 +50,7 @@ namespace {
 			ar <=> kv(factions, "factions");
 			ar <=> kv(impacts, "impacts");
 			ar <=> kv(races, "races");
-      ar <=> kv(keywords, "keywords");
+			ar <=> kv(keywords, "keywords");
 		}
 	};
 }
@@ -485,9 +485,9 @@ namespace Gts {
 		}
 	}
 
-  // Keywords
-  BGSKeyword* Runtime::GetKeyword(const std::string_view& tag) {
-    BGSKeyword* data = nullptr;
+	// Keywords
+	BGSKeyword* Runtime::GetKeyword(const std::string_view& tag) {
+		BGSKeyword* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().keywords.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
@@ -497,15 +497,15 @@ namespace Gts {
 			}
 		}
 		return data;
-  }
-  bool Runtime::HasKeyword(Actor* actor, const std::string_view& tag) {
-    auto data = GetKeyword(tag);
+	}
+	bool Runtime::HasKeyword(Actor* actor, const std::string_view& tag) {
+		auto data = GetKeyword(tag);
 		if (data) {
 			return actor->HasKeyword(data);
 		} else {
 			return false;
 		}
-  }
+	}
 
 	// Team Functions
 	bool Runtime::HasMagicEffectTeam(Actor* actor, const std::string_view& tag) {
@@ -661,7 +661,7 @@ namespace Gts {
 			}
 		}
 
-    for (auto &[key, value]: config.keywords) {
+		for (auto &[key, value]: config.keywords) {
 			auto form = find_form<BGSKeyword>(value);
 			if (form) {
 				this->keywords.try_emplace(key, form);

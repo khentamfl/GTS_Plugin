@@ -26,6 +26,7 @@
    //AnimObjectA = Tiny
    //AnimObjectB = rune
  */
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/ThighSandwichController.hpp"
 #include "managers/animation/ThighSandwich.hpp"
@@ -79,35 +80,7 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void DrainStamina(Actor* giant, bool decide, float power) {
-		float WasteMult = 1.0;
-		if (Runtime::HasPerkTeam(giant, "KillerThighs")) {
-			WasteMult *= 0.65;
-		}
-		std::string name = std::format("StaminaDrain_Thighs_{}", giant->formID);
-		if (decide) {
-			TaskManager::Run(name, [=](auto& progressData) {
-				ActorHandle casterhandle = giant->CreateRefHandle();
-				if (!casterhandle) {
-					return false;
-				}
-				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 0.225 * power * multiplier;
-				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
-				return true;
-			});
-		} else {
-			TaskManager::Cancel(name);
-		}
-	}
 
-	float GetPerkBonus(Actor* Giant) {
-		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
-			return 1.15;
-		} else {
-			return 1.0;
-		}
-	}
 
 	void AllowToBeCrushed(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetData(actor);
@@ -116,9 +89,6 @@ namespace {
 		}
 	}
 
-	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius, damage, node);
-	}
 
 	void DoThighDamage(Actor* giant, Actor* tiny, float animSpeed, float mult, float sizemult) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
@@ -127,7 +97,7 @@ namespace {
 		float damagemult = Persistent::GetSingleton().size_related_damage_mult;
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999.0f);
-		float damage = 0.6 * damagemult * sizedifference * animSpeed * mult * normaldamage * GetPerkBonus(giant);
+		float damage = 0.6 * damagemult * sizedifference * animSpeed * mult * normaldamage * GetPerkBonus_Thighs(giant);
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp) {
@@ -203,7 +173,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
 		StartLeftLegRumble("LLSandwich", data.giant, 0.10, 0.12);
-		DrainStamina(&data.giant, true, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", true, 0.225, 1.0);
 	}
 
 	void GTSSandwich_MoveLL_start_H(AnimationEventData& data) {
@@ -217,7 +187,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
 		StartLeftLegRumble("LLSandwichHeavy", data.giant, 0.15, 0.15);
-		DrainStamina(&data.giant, true, 2.5);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", true, 0.225, 2.5);
 	}
 
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
@@ -230,7 +200,7 @@ namespace {
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
-		DrainStamina(&data.giant, false, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 1.0);
 	}
 
 	void GTSSandwich_ThighImpact_H(AnimationEventData& data) {
@@ -244,7 +214,7 @@ namespace {
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
-		DrainStamina(&data.giant, false, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", true, 0.225, 2.5);
 	}
 
 	void GTSSandwich_MoveLL_end(AnimationEventData& data) {
@@ -294,12 +264,12 @@ namespace {
 	}
 
 	void GTSSandwich_FootImpact(AnimationEventData& data) {
-		float perk = GetPerkBonus(&data.giant);
+		float perk = GetPerkBonus_Thighs(&data.giant);
 		DoSizeEffect(&data.giant, 1.35, FootEvent::Right, RNode, 2.0);
 		DoSizeEffect(&data.giant, 1.35, FootEvent::Left, LNode, 2.0);
 		DoDamageEffect(&data.giant, 4.0 * perk, 2.6, 10, 0.75);
-		DoLaunch(&data.giant, 1.25 * perk, 2.0, RNode);
-		DoLaunch(&data.giant, 1.25 * perk, 2.0, LNode);
+		DoLaunch(&data.giant, 1.25 * perk, 2.0, RNode, 1.0);
+		DoLaunch(&data.giant, 1.25 * perk, 2.0, LNode, 1.0);
 	}
 
 	void ThighSandwichEnterEvent(const InputEventData& data) {

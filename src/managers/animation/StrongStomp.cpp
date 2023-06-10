@@ -17,8 +17,9 @@
    GTS_StrongStomp_End
  */
 
-#include "managers/animation/StrongStomp.hpp"
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/StrongStomp.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -60,35 +61,6 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
-	void DrainStamina(Actor* giant, bool decide, float power) {
-		float WasteMult = 1.0;
-		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
-			WasteMult *= 0.65;
-		}
-		std::string name = std::format("StaminaDrain_StrongStomp_{}", giant->formID);
-		if (decide) {
-			TaskManager::Run(name, [=](auto& progressData) {
-				ActorHandle casterhandle = giant->CreateRefHandle();
-				if (!casterhandle) {
-					return false;
-				}
-				float multiplier = AnimationManager::GetAnimSpeed(giant);
-				float WasteStamina = 1.75 * power * multiplier;
-				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
-				return true;
-			});
-		} else {
-			TaskManager::Cancel(name);
-		}
-	}
-
-	float GetPerkBonus(Actor* Giant) {
-		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
-			return 1.25;
-		} else {
-			return 1.0;
-		}
-	}
 
 	void StartLegRumble(std::string_view tag, Actor& actor, float power, float halflife, std::string_view type) {
 		if (type == "Left") {
@@ -118,13 +90,7 @@ namespace {
 		}
 	}
 
-	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node) {
-		float bonus = 1.0;
-		if (HasSMT(giant)) {
-			bonus = 4.0;
-		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
-	}
+
 
 	void DoImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
 		if (HasSMT(giant)) {
@@ -159,7 +125,7 @@ namespace {
 		}
 		TrackFeet(giant, 6.0, true);
 		StartLegRumble("StrongStompR", data.giant, 0.3, 0.10, "Right");
-		DrainStamina(&data.giant, true, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.75, 4.0);
 	}
 
 	void GTS_StrongStomp_LL_Start(AnimationEventData& data) {
@@ -172,7 +138,7 @@ namespace {
 		}
 		TrackFeet(giant, 5.0, true);
 		StartLegRumble("StrongStompL", data.giant, 0.3, 0.10, "Left");
-		DrainStamina(&data.giant, true, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.75, 4.0);
 	}
 
 	void GTS_StrongStomp_LR_Middle(AnimationEventData& data) {
@@ -197,7 +163,7 @@ namespace {
 	}
 
 	void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
-		float perk = GetPerkBonus(&data.giant);
+		float perk = GetPerkBonus_Basics(&data.giant);
 		float SMT = 1.0;
 		float damage = 1.0;
 		if (HasSMT(&data.giant)) {
@@ -208,13 +174,13 @@ namespace {
 		DoSounds(&data.giant, data.animSpeed - 0.5, RNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode, SMT);
-		DoLaunch(&data.giant, 1.4 * perk, 5.0, RNode);
-		DrainStamina(&data.giant, false, 1.0);
+		DoLaunch(&data.giant, 1.4 * perk, 5.0, RNode, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.75, 4.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
-		float perk = GetPerkBonus(&data.giant);
+		float perk = GetPerkBonus_Basics(&data.giant);
 		float SMT = 1.0;
 		float damage = 1.0;
 		if (HasSMT(&data.giant)) {
@@ -225,8 +191,8 @@ namespace {
 		DoSounds(&data.giant, data.animSpeed - 0.5, LNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode, SMT);
-		DoLaunch(&data.giant, 1.4 * perk, 5.0, LNode);
-		DrainStamina(&data.giant, false, 1.0);
+		DoLaunch(&data.giant, 1.4 * perk, 5.0, LNode, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.75, 4.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
@@ -258,6 +224,14 @@ namespace {
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
+		ManageCamera(&data.giant, false, 0);
+		ManageCamera(&data.giant, false, 1);
+		ManageCamera(&data.giant, false, 2);
+		ManageCamera(&data.giant, false, 3);
+		ManageCamera(&data.giant, false, 4);
+		ManageCamera(&data.giant, false, 5);
+		ManageCamera(&data.giant, false, 6);
+
 		Rumble::Stop("StompR", &data.giant);
 	}
 

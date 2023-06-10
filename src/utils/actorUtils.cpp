@@ -68,12 +68,12 @@ namespace Gts {
 		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 		actor->Disable();
 		/*if (Persistent::GetSingleton().delete_actors) {
-			auto ActorRef = skyrim_cast<TESObjectREFR*>(actor);
-			if (ActorRef) {
-				ActorRef->SetDelete(true);
-			}
-			log::info("Calling Delete Actors");
-		}*/
+		        auto ActorRef = skyrim_cast<TESObjectREFR*>(actor);
+		        if (ActorRef) {
+		                ActorRef->SetDelete(true);
+		        }
+		        log::info("Calling Delete Actors");
+		   }*/
 	}
 
 	void UnDisintegrate(Actor* actor) {
@@ -203,7 +203,8 @@ namespace Gts {
 		if (IsVampire) {
 			log::info("{} is Vampire", actor->GetDisplayFullName());
 			return true;
-		} if (IsDraugr || IsDwemer) {
+		}
+		if (IsDraugr || IsDwemer) {
 			log::info("{} is not living", actor->GetDisplayFullName());
 			return false;
 		} else {
@@ -266,7 +267,7 @@ namespace Gts {
 		if (node) {
 			ApplyShakeAtPoint(caster, modifier, node->world.translate, radius);
 		}
-	}	
+	}
 
 	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords, float radius) {
 		if (!caster) {
@@ -311,7 +312,7 @@ namespace Gts {
 			float duration = 0.25 * intensity * (1 + (sizedifference * 0.25));
 			intensity = std::clamp(intensity, 0.0f, 1e8f);
 			duration = std::clamp(duration, 0.0f, 1.2f);
-			
+
 
 			shake_controller(intensity*modifier, intensity*modifier, duration);
 			shake_camera_at_node(coords, intensity*modifier, duration);
@@ -374,9 +375,9 @@ namespace Gts {
 
 	bool IsBeingEaten(Actor* tiny) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
-		if (transient){
+		if (transient) {
 			return transient->about_to_be_eaten;
-		}	
+		}
 		return false;
 	}
 
@@ -442,7 +443,7 @@ namespace Gts {
 
 	float GetRandomBoost() {
 		float rng = (rand()% 150 + 1);
-		float random = rng/100; 
+		float random = rng/100;
 		return random;
 	}
 
@@ -499,7 +500,7 @@ namespace Gts {
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (30.0 * damage * damagebonus), radius, random, bonedamage);
 	}
 
-    bool HasSMT(Actor* giant) {
+	bool HasSMT(Actor* giant) {
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
 			return true;
 		}

@@ -8,7 +8,7 @@
 #include "managers/Attributes.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
-#include "data/runtime.hpp" 
+#include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "Config.hpp"
 #include "timer.hpp"
@@ -237,7 +237,7 @@ namespace Gts {
 				auto root = find_node(tiny, "NPC Root [Root]");
 				if (root) {
 					SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, ts * 1, 7, root);
-				} 
+				}
 				//Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			}
 			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
