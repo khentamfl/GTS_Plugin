@@ -26,7 +26,7 @@
    //AnimObjectA = Tiny
    //AnimObjectB = rune
  */
- #include "managers/animation/Utils/AnimationUtils.hpp"
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/ThighSandwichController.hpp"
 #include "managers/animation/ThighSandwich.hpp"
@@ -80,7 +80,7 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	
+
 
 	void AllowToBeCrushed(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetData(actor);

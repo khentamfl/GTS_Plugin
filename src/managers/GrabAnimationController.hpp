@@ -10,7 +10,7 @@ using namespace RE;
 
 namespace Gts {
 
-class GrabAnimationController : public EventListener  {
+	class GrabAnimationController : public EventListener  {
 		public:
 			[[nodiscard]] static GrabAnimationController& GetSingleton() noexcept;
 

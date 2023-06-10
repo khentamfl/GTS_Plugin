@@ -90,7 +90,7 @@ namespace {
 		}
 	}
 
-	
+
 
 	void DoImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
 		if (HasSMT(giant)) {
@@ -231,7 +231,7 @@ namespace {
 		ManageCamera(&data.giant, false, 4);
 		ManageCamera(&data.giant, false, 5);
 		ManageCamera(&data.giant, false, 6);
-	
+
 		Rumble::Stop("StompR", &data.giant);
 	}
 

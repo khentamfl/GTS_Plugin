@@ -162,12 +162,12 @@ namespace Gts {
 				return;
 			}
 
-      Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
+			Actor* tiny_is_actor = skyrim_cast<Actor*>(tiny);
 			if (tiny_is_actor) {
-        AttachToObjectA(giant, tiny_is_actor);
-      }
+				AttachToObjectA(giant, tiny_is_actor);
+			}
 
-      float tinyScale = get_visual_scale(tiny);
+			float tinyScale = get_visual_scale(tiny);
 			if (giantScale/tinyScale < 6.0) {
 				PushActorAway(giant, tiny, 0.5);
 				Cprint("{} slipped out of {} thighs", tiny->GetDisplayFullName(), giant->GetDisplayFullName());

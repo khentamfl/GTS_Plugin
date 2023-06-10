@@ -51,7 +51,7 @@ namespace {
 }
 
 namespace Gts {
-    GrabAnimationController& GrabAnimationController::GetSingleton() noexcept {
+	GrabAnimationController& GrabAnimationController::GetSingleton() noexcept {
 		static GrabAnimationController instance;
 		return instance;
 	}
@@ -60,7 +60,7 @@ namespace Gts {
 		return "GrabAnimationController";
 	}
 
-    std::vector<Actor*> GrabAnimationController::GetGrabTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
+	std::vector<Actor*> GrabAnimationController::GetGrabTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (IsGtsBusy(pred)) {
@@ -162,10 +162,10 @@ namespace Gts {
 		float MINIMUM_GRAB_SCALE = MINIMUM_GRAB_SCALE_RATIO;
 		float MINIMUM_DISTANCE = MINIMUM_GRAB_DISTANCE;
 
-        if (HasSMT(pred)) {
-            MINIMUM_GRAB_SCALE = 0.8; 
+		if (HasSMT(pred)) {
+			MINIMUM_GRAB_SCALE = 0.8;
 			MINIMUM_DISTANCE *= 2.5;
-        }
+		}
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 
@@ -190,18 +190,18 @@ namespace Gts {
 		if (!grabbing.CanGrab(pred, prey)) {
 			return;
 		}
-        if (HasSMT(pred)) {
+		if (HasSMT(pred)) {
 			float expected = 8.0f;
 			float predscale = get_target_scale(pred);
 			float preyscale = get_target_scale(prey);
-            float sizedifference = predscale/preyscale;
+			float sizedifference = predscale/preyscale;
 			float difference = std::clamp(predscale/expected, preyscale/expected, 0.96f);
 			float shrink = preyscale - difference;
 			if (sizedifference < expected) {
-            	mod_target_scale(prey, -shrink);
+				mod_target_scale(prey, -shrink);
 				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);
 			}
-        }
+		}
 		Grab::GetSingleton().GrabActor(pred, prey);
 		AnimationManager::StartAnim("GrabSomeone", pred);
 	}

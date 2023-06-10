@@ -87,7 +87,7 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	
+
 
 	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife, bool once) {
 		for (auto& node_name: BODY_RUMBLE_NODES) {
@@ -126,7 +126,7 @@ namespace {
 			Rumble::Stop(rumbleName, &actor);
 		}
 	}
-	
+
 	void GTSvore_sit_start(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);

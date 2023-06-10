@@ -23,7 +23,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
-    void AllowToDoVore(Actor* actor, bool toggle) {
+	void AllowToDoVore(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			transient->can_do_vore = toggle;
@@ -42,7 +42,7 @@ namespace Gts {
 		sizemanager.SetActionBool(giant, enable, type);
 	}
 
-    void DoLaunch(Actor* giant, float radius, float damage, std::string_view node, float override) {
+	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node, float override) {
 		float bonus = 1.0;
 		if (HasSMT(giant)) {
 			bonus = override;
@@ -50,7 +50,7 @@ namespace Gts {
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}
 
-    void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {
+	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
 			WasteMult *= 0.65;
@@ -59,7 +59,7 @@ namespace Gts {
 		DamageAV(giant, ActorValue::kStamina, WasteStamina);
 	}
 
-    void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float waste, float power) {
+	void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float waste, float power) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, perk)) {
 			WasteMult *= 0.65;
@@ -81,7 +81,7 @@ namespace Gts {
 		}
 	}
 
-    void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult, float dustmult) {
+	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult, float dustmult) {
 		auto hand = find_node(giant, "NPC L Hand [LHnd]");
 		if (hand) {
 			if (IsLiving(grabbedActor)) {
@@ -97,7 +97,7 @@ namespace Gts {
 		}
 	}
 
-    void ToggleEmotionEdit(Actor* giant, bool allow) {
+	void ToggleEmotionEdit(Actor* giant, bool allow) {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 		Emotions.AllowEmotionEdit = allow;
 	}
@@ -122,15 +122,15 @@ namespace Gts {
 		}
 	}
 
-    float GetPerkBonus_Basics(Actor* Giant) {
+	float GetPerkBonus_Basics(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
 			return 1.25;
 		} else {
 			return 1.0;
-			}
 		}
+	}
 
-    float GetPerkBonus_Thighs(Actor* Giant) {
+	float GetPerkBonus_Thighs(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
 			return 1.15;
 		} else {

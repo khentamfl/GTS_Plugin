@@ -62,20 +62,20 @@ namespace Gts {
 						SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);
 					} else {
 						if (!LessGore()) {
-						std::random_device rd;
-						std::mt19937 gen(rd());
-						std::uniform_real_distribution<float> dis(-0.2, 0.2);
-						auto root = find_node(tiny, "NPC Root [Root]");
-						if (root) {
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
-							SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
-						}
-						Runtime::CreateExplosion(tiny, get_visual_scale(tiny), "BloodExplosion");
-						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-						Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+							std::random_device rd;
+							std::mt19937 gen(rd());
+							std::uniform_real_distribution<float> dis(-0.2, 0.2);
+							auto root = find_node(tiny, "NPC Root [Root]");
+							if (root) {
+								SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
+								SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
+								SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
+							}
+							Runtime::CreateExplosion(tiny, get_visual_scale(tiny), "BloodExplosion");
+							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
+							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 						} else {
 							Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 						}
@@ -92,10 +92,10 @@ namespace Gts {
 					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.0, 0.5);
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
 					TaskManager::RunOnce([=](auto& update){
-					if (tinyHandle) {
-						EventDispatcher::DoResetActor(tinyHandle.get().get());
-					}
-				});
+						if (tinyHandle) {
+							EventDispatcher::DoResetActor(tinyHandle.get().get());
+						}
+					});
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
 					} else if (tiny->formID == 0x14) {

@@ -22,7 +22,8 @@ namespace {
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		if (tiny->IsDead()) {
 			return;
-		} if (IsBeingHeld(tiny)) {
+		}
+		if (IsBeingHeld(tiny)) {
 			return;
 		}
 		float giantSize = get_visual_scale(giant);
@@ -58,7 +59,7 @@ namespace {
 
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
 
-		
+
 
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot

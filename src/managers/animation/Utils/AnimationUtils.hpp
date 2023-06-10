@@ -8,20 +8,20 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
-    void AllowToDoVore(Actor* actor, bool toggle);
-    void AllowToBeCrushed(Actor* actor, bool toggle);
-    void ManageCamera(Actor* giant, bool enable, float type);
+	void AllowToDoVore(Actor* actor, bool toggle);
+	void AllowToBeCrushed(Actor* actor, bool toggle);
+	void ManageCamera(Actor* giant, bool enable, float type);
 
-    void DoLaunch(Actor* giant, float radius, float damage, std::string_view node, float override);
+	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node, float override);
 
-    void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference);
-    void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float waste, float power);
+	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference);
+	void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float waste, float power);
 
-    void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult, float dustmult);
+	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult, float dustmult);
 
-    void ToggleEmotionEdit(Actor* giant, bool allow);
-    void AdjustFacialExpression(Actor* giant, int ph, float power, std::string_view type);
+	void ToggleEmotionEdit(Actor* giant, bool allow);
+	void AdjustFacialExpression(Actor* giant, int ph, float power, std::string_view type);
 
-    float GetPerkBonus_Basics(Actor* Giant);
-    float GetPerkBonus_Thighs(Actor* Giant);
+	float GetPerkBonus_Basics(Actor* Giant);
+	float GetPerkBonus_Thighs(Actor* Giant);
 }

@@ -253,7 +253,7 @@ namespace Gts {
 			}
 
 			if (this->allGrabbed) {
-        AttachToObjectA(giant, tiny);
+				AttachToObjectA(giant, tiny);
 			}
 		}
 		// Hide Actor

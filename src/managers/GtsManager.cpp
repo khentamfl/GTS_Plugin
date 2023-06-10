@@ -238,7 +238,7 @@ void GtsManager::Start() {
 		if (!actor) {
 			return;
 		}
-	FixActorState(actor);
+		FixActorState(actor);
 	}
 }
 
@@ -251,7 +251,7 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
-		
+
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();

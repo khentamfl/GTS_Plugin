@@ -534,7 +534,7 @@ namespace Gts {
 		}
 		bool less_gore = GetSingleton().less_gore;
 		serde->WriteRecordData(&less_gore, sizeof(less_gore));
-		
+
 		if (!serde->OpenRecord(FeetTrackingRecord, 1)) {
 			log::error("Unable to open Feet Tracking record to write cosave data.");
 			return;
