@@ -65,7 +65,7 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
-	
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////G R A B
@@ -517,6 +517,12 @@ namespace Gts {
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyhandle) {
+				return false;
+			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
@@ -554,7 +560,7 @@ namespace Gts {
 				// Unable to attach
 				return false;
 			}
-      	}	
+      	}
 
       // All good try another frame
 			return true;
