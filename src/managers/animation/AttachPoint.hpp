@@ -1,5 +1,6 @@
 #pragma once
 #include "node.hpp"
+#include "timer.hpp"
 
 using namespace RE;
 
@@ -75,6 +76,7 @@ namespace Gts {
 		if (!giant) {
 			return false;
 		}
+		static Timer print = Timer(0.1);
 
 		auto breastLNode = find_node(giant, "L Breast02");
 		if (!breastLNode) {
@@ -99,6 +101,9 @@ namespace Gts {
 		float forwardAmount = 1.0;
 
 		auto breastForward = ((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
+		if (print.ShouldRunFrame()) {
+			Cprint("R Breast02 position {}", bone_name, Vector2Str(breastR_Local));
+		}
 		return AttachTo(anyGiant, anyTiny, breastForward);
 	}
 }
