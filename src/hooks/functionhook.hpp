@@ -46,8 +46,8 @@ namespace Hooks {
 				FunctionHook<void>::Attach(&_target, _hook);
 			}
 
-      inline FunctionHook(REL::Relocation functionIDs, Return (*hook)(Args ...))
-				: _target(reinterpret_cast<void*>(functionIDs.address())), _hook(reinterpret_cast<void*>(hook)) {
+      inline FunctionHook(REL::RelocationID functionIDs, REL::Offset offset, Return (*hook)(Args ...))
+				: _target(reinterpret_cast<void*>(functionIDs.address() + offset.offset())), _hook(reinterpret_cast<void*>(hook)) {
 				FunctionHook<void>::Attach(&_target, _hook);
 			}
 
