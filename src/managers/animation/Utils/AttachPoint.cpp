@@ -1,4 +1,4 @@
-#include "managers/animation/AttachPoint.hpp"
+#include "managers/animation/Utils/AttachPoint.hpp"
 #include "scale/scale.hpp"
 
 using namespace RE;
