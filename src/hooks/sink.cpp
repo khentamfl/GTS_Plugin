@@ -1,4 +1,4 @@
-#include "hooks/headTracking.hpp"
+#include "hooks/sink.hpp"
 #include "scale/scale.hpp"
 
 using namespace RE;
@@ -9,7 +9,7 @@ namespace Hooks {
 	void Hook_Sinking::Hook(Trampoline& trampoline) {
 
     static FunctionHook<float(Actor* a_this, TESObjectCELL* a_cell, float z_pos)> GetSubmergeLevel(
-      REL::RELOCATION_ID(38850, 39887), Rel::Offset(0x30),
+      REL::RELOCATION_ID(38850, 39887), REL::Offset(0x30),
         [](auto* a_this, auto* cell, float z_pos){
           float result = return GetSubmergeLevel(a_this, cell, z_pos);
           log::info("GetSubmergeLevel");
