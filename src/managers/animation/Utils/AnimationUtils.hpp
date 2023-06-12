@@ -1,6 +1,7 @@
 #pragma once
 
 #include "events.hpp"
+#include "managers/animation/Utils/AttachPoint.hpp"
 
 using namespace std;
 using namespace SKSE;
