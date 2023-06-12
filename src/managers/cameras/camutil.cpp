@@ -1,4 +1,5 @@
 #include "managers/cameras/camutil.hpp"
+#include "UI/DebugAPI.hpp"
 #include "node.hpp"
 
 using namespace RE;
@@ -168,6 +169,7 @@ namespace Gts {
 				cameraRoot->local.translate = camLoc;
 				cameraRoot->world.translate = camLoc;
 				update_node(cameraRoot.get());
+        DebugAPI::DrawSphere(glm::vec3(camLoc.x, camLoc.y, camLoc.z), 20.0, 10, {0.0, 1.0, 0.0 , 1.0});
 			}
 		}
 	}
