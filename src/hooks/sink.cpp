@@ -2,6 +2,7 @@
 #include "scale/scale.hpp"
 
 using namespace RE;
+using namespace REL;
 using namespace SKSE;
 
 namespace Hooks {
