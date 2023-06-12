@@ -2,16 +2,15 @@
 #include "scale/scale.hpp"
 
 using namespace RE;
-using namespace REL;
 using namespace SKSE;
 
 namespace Hooks {
 
-	void Hook_Sinking::Hook(Trampoline& trampoline) {
+void Hook_Sinking::Hook(Trampoline& trampoline) {
 
     static FunctionHook<float(Actor* a_this, TESObjectCELL* a_cell, float z_pos)> GetSubmergeLevel(
-      RELOCATION_ID(38850, 39887),
-      Offset(0x30),
+      REL::RelocationID(38850, 39887),
+      Rel::Offset(0x30),
         [](auto* a_this, auto* cell, float z_pos){
           float result = GetSubmergeLevel(a_this, cell, z_pos);
           log::info("GetSubmergeLevel");
