@@ -15,8 +15,6 @@ namespace Gts {
 
 	Actor* GetActorPtr(FormID formId);
 
-	NiPoint3 GetBreastPos(Actor* giant, std::string_view bone_name);
-
 
 	template<typename T, typename U>
 	bool AttachTo(T& anyGiant, U& anyTiny, NiPoint3 point) {
@@ -81,14 +79,12 @@ namespace Gts {
 			return false;
 		}
 		auto breastL = breastLNode->world.translate;
-		auto breastL_Local = GetBreastPos(giant, "L Breast02");
 
 		auto breastRNode = find_node(giant, "R Breast02");
 		if (!breastRNode) {
 			return false;
 		}
 		auto breastR = breastRNode->world.translate;
-		auto breastR_Local = GetBreastPos(giant, "R Breast02");
 
 		auto spine2Node = find_node(giant, "NPC Spine2 [Spn2]");
 		if (!spine2Node) {
