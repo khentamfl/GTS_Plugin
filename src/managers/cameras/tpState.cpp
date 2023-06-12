@@ -6,6 +6,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
+#include "UI/DebugAPI.hpp"
 
 
 using namespace RE;
