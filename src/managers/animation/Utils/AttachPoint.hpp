@@ -98,6 +98,6 @@ namespace Gts {
 
     DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0 , 1.0});
 
-		return AttachTo(anyGiant, anyTiny, breastForward);
+		return AttachTo(anyGiant, anyTiny, clevagePos);
 	}
 }
