@@ -39,16 +39,24 @@ using namespace std;
 
 namespace {
 
+	void GTS_Hug_Grab(AnimationEventData& data) {
+		auto giant = &data.giant;
+		auto huggedActor = HugShrink::GetHuggiesActor(giant);
+		if (!huggedActor) {
+			return;
+		}
+		AttachActorTask(giant, huggedActor);
+		AnimationManager::StartAnim("Huggies_Try_Victim", huggedActor);
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////E V E N T S
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
 	void HugAttemptEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		auto huggedActor = HugShrink::GetHuggiesActor(player);
-		if (!huggedActor) {
-			return;
-		}
 		if (IsGtsBusy(player)) {
 			return;
 		}
@@ -179,11 +187,11 @@ namespace Gts {
 	}
 
 	void HugShrink::RegisterEvents() {
-        InputManager::RegisterInputEvent("HugAttemptEvent", HugAttemptEvent);
-		InputManager::RegisterInputEvent("HugReleaseEvent", HugReleaseEvent);
-		InputManager::RegisterInputEvent("HugShrinkEvent", HugShrinkEvent);
+        InputManager::RegisterInputEvent("HugAttempt", HugAttemptEvent);
+		InputManager::RegisterInputEvent("HugRelease", HugReleaseEvent);
+		InputManager::RegisterInputEvent("HugShrink", HugShrinkEvent);
 
-		//AnimationManager::RegisterEvent("GTSBEH_GrabExit", "Hugs", GTSBEH_GrabExit);
+		AnimationManager::RegisterEvent("GTS_Hug_Grab", "Hugs", GTS_Hug_Grab);
 		//AnimationManager::RegisterEvent("GTSBEH_AbortGrab", "Hugs", GTSBEH_AbortGrab);
 	}
 
