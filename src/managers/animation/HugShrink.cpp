@@ -139,7 +139,7 @@ namespace Gts {
 			}
 			auto Ref = HugShrink::GetHuggiesObj(giantref);
 			if (Ref) {
-				auto object = Ref->GetReferenceRuntimeData().data;
+				auto object = Ref->data;
 				log::info("Angle of Tiny is {}", Vector2Str(object.angle));
 				//data->angle.y -= 0.001;
 			
