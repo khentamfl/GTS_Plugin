@@ -45,7 +45,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		AttachActorTask(giant, huggedActor);
+		HugShrink::AttachActorTask(giant, huggedActor);
 		AnimationManager::StartAnim("Huggies_Try_Victim", huggedActor);
 	}
 
