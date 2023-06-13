@@ -9,7 +9,7 @@ namespace Hooks {
 void Hook_Sinking::Hook(Trampoline& trampoline) {
 
     static FunctionHook<float(Actor* a_this, long* unknown, TESObjectCELL* a_cell, float z_pos)> GetSubmergeLevel(
-      REL::RelocationID(38850, 39887),
+      REL::RelocationID(36451, 37447),
       REL::Offset(0x30),
         [](auto* a_this, auto* unknown, auto* cell, float z_pos){
           log::info("GetSubmergeLevel");
