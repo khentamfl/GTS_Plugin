@@ -81,7 +81,7 @@ namespace Gts {
     };
 
     NiPoint3 clevagePos = NiPoint3();
-    std::uint32_t bone_count = bone_names.len();
+    std::uint32_t bone_count = bone_names.size();
     for (auto bone_name: bone_names) {
       auto bone = find_node(giant, bone_name);
       if (!bone) {
