@@ -22,7 +22,6 @@ void Hook_Sinking::Hook(Trampoline& trampoline) {
           }
           if (unknown) {
             log::info("Getting unknown:{}: {}", log_id, *reinterpret_cast<std::uintptr_t *>(unknown));
-            log::info("Unknown: {}", GetRawName(reinterpret_cast<void*>(unknown)));
           }
           float result = GetSubmergeLevel(a_this, unknown, cell, z_pos);
           log::info("  - Submerged level:{}:: {}", log_id, result);
