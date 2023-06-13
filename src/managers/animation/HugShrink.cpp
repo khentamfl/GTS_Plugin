@@ -144,8 +144,8 @@ namespace Gts {
 			}
 			auto Ref1 = HugShrink::GetHuggiesObj(giantref);
 			TESObjectREFR* Ref2 = skyrim_cast<TESObjectREFR*>(giantref);
-			if (Ref && Ref2) {
-				auto object = Ref->data;
+			if (Ref1 && Ref2) {
+				auto object = Ref1->data;
 				auto giantobject = Ref2->data;
 				object.angle = giantobject.angle/2;
 				log::info("Angle of Tiny is {}", Vector2Str(object.angle));
