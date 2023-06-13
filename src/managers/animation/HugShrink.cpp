@@ -144,7 +144,7 @@ namespace Gts {
 	void HugShrink::HugActor(Actor* giant, TESObjectREFR* tiny) {
 		// Default strength 1.0: normal grab for actor of their size
 		//
-		HugShrink::HugActor(giant, tiny, 1.0);
+		HugShrink::HugActor_Actor(giant, tiny, 1.0);
 	}
 
 	void HugShrink::Reset() {
@@ -169,7 +169,7 @@ namespace Gts {
 
 	}
 	Actor* HugShrink::GetHuggiesActor(Actor* giant) {
-		auto obj = HugShrink::GetHeldObj(giant);
+		auto obj = HugShrink::GetHuggiesObj(giant);
 		Actor* actor = skyrim_cast<Actor*>(obj);
 		if (actor) {
 			return actor;
@@ -183,8 +183,8 @@ namespace Gts {
 		InputManager::RegisterInputEvent("HugReleaseEvent", HugReleaseEvent);
 		InputManager::RegisterInputEvent("HugShrinkEvent", HugShrinkEvent);
 
-		AnimationManager::RegisterEvent("GTSBEH_GrabExit", "Hugs", GTSBEH_GrabExit);
-		AnimationManager::RegisterEvent("GTSBEH_AbortGrab", "Hugs", GTSBEH_AbortGrab);
+		//AnimationManager::RegisterEvent("GTSBEH_GrabExit", "Hugs", GTSBEH_GrabExit);
+		//AnimationManager::RegisterEvent("GTSBEH_AbortGrab", "Hugs", GTSBEH_AbortGrab);
 	}
 
 	void HugShrink::RegisterTriggers() {
