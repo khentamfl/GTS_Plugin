@@ -78,6 +78,7 @@ namespace {
 			return;
 		}
 		AnimationManager::StartAnim("Huggies_Shrink", player);
+		PushActorAway(player, huggedActor, 0.1);
 	}
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
@@ -127,9 +128,9 @@ namespace Gts {
 			auto GiantCharController = giantref->GetCharController();
 			auto TinyCharController = tinyref->GetCharController();
 			if (GiantCharController) {
-				log::info("Tiny Rotation: {}", Vector2Str(GiantCharController->direction));
+				log::info("Tiny Rot Center: {}", Vector2Str(GiantCharController->rotCenter));
 			} if (TinyCharController) {
-				log::info("Giant ROtation: {}", Vector2Str(TinyCharController->direction));
+				log::info("Giant Ror Center: {}", Vector2Str(TinyCharController->rotCenter));
 			}
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
