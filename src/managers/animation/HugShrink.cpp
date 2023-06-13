@@ -128,7 +128,7 @@ namespace Gts {
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
-			if (tinyref->IsDead() || sizedifference > 6.0) {
+			if (tinyref->IsDead() || sizedifference > 6.0 || !HugShrink::GetHuggiesActor(giantref)) {
 				HugShrink::Release(giantref);
 				PushActorAway(giantref, tinyref, 0.1);
 				return false;
