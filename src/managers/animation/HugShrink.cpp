@@ -135,7 +135,7 @@ namespace Gts {
 
 			auto AI = giantref->GetActorRuntimeData().currentProcess->middleHigh;
 			if (AI) {
-				log::info("Rotation of giant: {}", AI->rotation);
+				log::info("Rotation of giant: {}", Vector2Str(AI->rotation));
 			}
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
