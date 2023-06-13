@@ -69,7 +69,6 @@ namespace {
 		for (auto prey: preys) {
 			Hugging.StartHug(player, prey);
 		}
-		AnimationManager::StartAnim("Huggies_Try", player);
 	}
 
 	void HugShrinkEvent(const InputEventData& data) {
