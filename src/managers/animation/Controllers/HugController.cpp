@@ -1,6 +1,6 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
-#include "managers/Controllers/HugController.hpp"
+#include "managers/animation/Controllers/HugController.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
