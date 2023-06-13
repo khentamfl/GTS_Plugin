@@ -86,6 +86,7 @@ namespace {
 			return;
 		}
 		AnimationManager::StartAnim("Huggies_Spare", player);
+		HugShrink::DetachActorTask(player);
 	}
 }
 
@@ -130,7 +131,6 @@ namespace Gts {
 			if (tinyref->IsDead() || sizedifference > 6.0) {
 				HugShrink::Release(giantref);
 				PushActorAway(giantref, tinyref, 0.1);
-				DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.30, 1.0);
 				return false;
 			}
 
