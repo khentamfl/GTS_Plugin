@@ -11,7 +11,7 @@ void Hook_Sinking::Hook(Trampoline& trampoline) {
     static FunctionHook<float(Actor* a_this, std::uintptr_t unknown, TESObjectCELL* a_cell, float z_pos)> GetSubmergeLevel(
       REL::RelocationID(36451, 37447),
       REL::Offset(0x30),
-        [](auto* a_this, auto* unknown, auto* cell, float z_pos){
+        [](auto* a_this, auto unknown, auto* cell, float z_pos){
           log::info("GetSubmergeLevel");
           std::uintptr_t log_id =  *reinterpret_cast<std::uintptr_t *>(a_this);
           if (a_this) {
