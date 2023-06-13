@@ -75,26 +75,21 @@ namespace Gts {
 			return false;
 		}
 
-		auto breastLNode = find_node(giant, "L Breast02");
-		if (!breastLNode) {
-			return false;
-		}
-		auto breastL = breastLNode->world.translate;
-    DebugAPI::DrawSphere(glm::vec3(breastL.x, breastL.y, breastL.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
-
-		auto breastRNode = find_node(giant, "R Breast02");
-		if (!breastRNode) {
-			return false;
-		}
-		auto breastR = breastRNode->world.translate;
-    DebugAPI::DrawSphere(glm::vec3(breastR.x, breastR.y, breastR.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
+    std::vector<std::string_view> bone_names = {
+      "L Breast02",
+      "R Breast02"
+    };
 
     NiPoint3 clevagePos = NiPoint3();
-    std::uint32_t bone_count = 2;
-
-    clevagePos += (breastLNode->world * NiPoint3()) * (1.0/bone_count);
-    clevagePos += (breastRNode->world * NiPoint3()) * (1.0/bone_count);
-
+    std::uint32_t bone_count = bone_names.len();
+    for (auto bone_name: bone_names) {
+      auto bone = find_node(giant, bone_name);
+      if (!bone) {
+        return false;
+      }
+      DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
+      clevagePos += (bone->world * NiPoint3()) * (1.0/bone_count);
+    }
 
     DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0 , 1.0});
 
