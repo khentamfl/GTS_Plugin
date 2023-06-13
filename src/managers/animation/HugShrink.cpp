@@ -139,11 +139,10 @@ namespace Gts {
 			}
 			auto Ref = HugShrink::GetHuggiesObj(giantref);
 			if (Ref) {
-				auto data = Ref->GetReferenceRuntimeData();
-				if (data) {
-					log::info("Angle of Tiny is {}", Vector2Str(data->angle));
-					//data->angle.y -= 0.001;
-				}
+				auto object = Ref->GetReferenceRuntimeData()->data;
+				log::info("Angle of Tiny is {}", Vector2Str(object->angle));
+				//data->angle.y -= 0.001;
+			
 			}
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
