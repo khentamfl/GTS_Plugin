@@ -60,7 +60,7 @@ namespace Gts {
 		return "HugAnimationController";
 	}
 
-	std::vector<Actor*> HugAnimationController::GetGrabTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
+	std::vector<Actor*> HugAnimationController::GetHugTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (IsGtsBusy(pred)) {
@@ -90,7 +90,7 @@ namespace Gts {
 		// Filter out invalid targets
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
-			return !this->CanGrab(pred, prey);
+			return !this->CanHug(pred, prey);
 		}), preys.end());
 
 		// Filter out actors not in front
@@ -180,7 +180,7 @@ namespace Gts {
 		}
 	}
 
-	void HugAnimationController::StartGrab(Actor* pred, Actor* prey) {
+	void HugAnimationController::StartHug(Actor* pred, Actor* prey) {
 		auto& hugging = HugAnimationController::GetSingleton();
 		if (!hugging.CanHug(pred, prey)) {
 			return;
