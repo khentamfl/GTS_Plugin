@@ -79,9 +79,9 @@ namespace Gts {
 						                tiny_is_object->SetPosition(bonePos);
 						        }
 						   }*/
-            DebugAPI::DrawSphere(glm::vec3(bonePos.x, bonePos.y, bonePos.z), 20.0, 10, {0.0, 1.0, 0.0 , 1.0});
+            DebugAPI::DrawSphere(glm::vec3(bonePos.x, bonePos.y, bonePos.z), 20., 10, {0.0, 1.0, 0.0 , 1.0});
             NiPoint3 worldBonePos = playerTrans * bonePos;
-            DebugAPI::DrawSphere(glm::vec3(worldBonePos.x, worldBonePos.y, worldBonePos.z), 20.0, 10, {0.0, 1.0, 0.0 , 1.0});
+            DebugAPI::DrawSphere(glm::vec3(worldBonePos.x, worldBonePos.y, worldBonePos.z), 2.0, 10, {0.0, 1.0, 0.0 , 1.0});
 						smoothedBonePos.target = bonePos;
 						pos += smoothedBonePos.value;
 					}

@@ -80,26 +80,23 @@ namespace Gts {
 			return false;
 		}
 		auto breastL = breastLNode->world.translate;
-    DebugAPI::DrawSphere(glm::vec3(breastL.x, breastL.y, breastL.z), 20.0, 10, {1.0, 1.0, 1.0 , 1.0});
+    DebugAPI::DrawSphere(glm::vec3(breastL.x, breastL.y, breastL.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
 
 		auto breastRNode = find_node(giant, "R Breast02");
 		if (!breastRNode) {
 			return false;
 		}
 		auto breastR = breastRNode->world.translate;
-    DebugAPI::DrawSphere(glm::vec3(breastR.x, breastR.y, breastR.z), 20.0, 10, {1.0, 1.0, 1.0 , 1.0});
+    DebugAPI::DrawSphere(glm::vec3(breastR.x, breastR.y, breastR.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
 
-		auto spine2Node = find_node(giant, "NPC Spine2 [Spn2]");
-		if (!spine2Node) {
-			return false;
-		}
-		auto spine2 = spine2Node->world.translate;
+    NiPoint3 clevagePos = NiPoint3();
+    std::uint32_t bone_count = 2;
+
+    clevagePos += (breastLNode->world * NiPoint3()) * (1.0/bone_count);
+    clevagePos += (breastRNode->world * NiPoint3()) * (1.0/bone_count);
 
 
-		float forwardAmount = 1.0;
-
-		auto breastForward = ((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
-    DebugAPI::DrawSphere(glm::vec3(breastForward.x, breastForward.y, breastForward.z), 20.0, 10, {1.0, 0.0, 0.0 , 1.0});
+    DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0 , 1.0});
 
 		return AttachTo(anyGiant, anyTiny, breastForward);
 	}
