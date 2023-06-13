@@ -137,18 +137,26 @@ namespace Gts {
 			auto AI = giantref->GetActorRuntimeData().currentProcess->middleHigh;
 			auto TAI = tinyref->GetActorRuntimeData().currentProcess->middleHigh;
 			if (AI) {
-				log::info("Rotation of giant: {}", Vector2Str(AI->rotation));
+				//log::info("Rotation of giant: {}", Vector2Str(AI->rotation));
 			}
 			if (TAI) {
-				TAI->rotation = AI->rotation/2;
+				//TAI->rotation = AI->rotation/2;
 			}
+			auto Ref1 = HugShrink::GetHuggiesObj(giantref);
+			TESObjectREFR* Ref2 = skyrim_cast<TESObjectREFR*>(giantref);
+			if (Ref1 && Ref2) {
+				log::info("Angle of Tiny BEfore is {}", Ref1->GetAngleX());
+				tinyref->SetRotationX(Ref2->GetAngleX()/2);
+				log::info("Angle of Tiny After is {}", Ref1->GetAngleX(), Ref2->GetAngleX()/2);
+				log::info("Angle of Giant is {}", Ref2->GetAngleX());
+			}
+			
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
 			if (tinyref->IsDead() || sizedifference > 6.0 || !HugShrink::GetHuggiesActor(giantref)) {
 				HugShrink::Release(giantref);
 				PushActorAway(giantref, tinyref, 0.1);
-				AnimationManager::StartAnim("Huggies_Cancel", giantref);
 				return false;
 			}
 
