@@ -13,17 +13,19 @@ void Hook_Sinking::Hook(Trampoline& trampoline) {
       REL::Offset(0x30),
         [](auto* a_this, auto* unknown, auto* cell, float z_pos){
           log::info("GetSubmergeLevel");
+          auto log_id =  *reinterpret_cast<std::uintptr_t *>>(unknown);
           if (a_this) {
-            log::info("  - Actor: {}", a_this->GetDisplayFullName());
+            log::info("  - Actor:{}: {}", log_id, a_this->GetDisplayFullName());
           }
           if (cell) {
-            log::info("  - In a cell");
+            log::info("  - In a cell:{}", log_id);
           }
           if (unknown) {
+            log::info("Getting unknown:{}: {}", log_id, *reinterpret_cast<std::uintptr_t *>>(unknown));
             log::info("Unknown: {}", GetRawName(reinterpret_cast<void*>(unknown)));
           }
           float result = GetSubmergeLevel(a_this, unknown, cell, z_pos);
-          log::info("  - Submerged level: {}", result);
+          log::info("  - Submerged level:{}:: {}", log_id, result);
           return result;
       }
     );
