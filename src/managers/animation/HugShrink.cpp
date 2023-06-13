@@ -224,9 +224,9 @@ namespace Gts {
 	void HugShrink::RegisterTriggers() {
 		AnimationManager::RegisterTrigger("Huggies_Try", "Hugs", "GTSBEH_HugAbsorbStart_A");
         AnimationManager::RegisterTrigger("Huggies_Try_Victim", "Hugs", "GTSBEH_HugAbsorbStart_V");
-        AnimationManager::RegisterTrigger("Huggies_Shrink", "Hugs", " GTSBEH_HugAbsorbAtk");
+        AnimationManager::RegisterTrigger("Huggies_Shrink", "Hugs", "GTSBEH_HugAbsorbAtk");
         AnimationManager::RegisterTrigger("Huggies_Spare", "Hugs", "GTSBEH_HugAbsorbExitLoop");
-        AnimationManager::RegisterTrigger("Huggies_Cancel", "Hugs", " GTSBEH_PairedAbort");
+        AnimationManager::RegisterTrigger("Huggies_Cancel", "Hugs", "GTSBEH_PairedAbort");
 	}
 
 	HugShrinkData::HugShrinkData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
