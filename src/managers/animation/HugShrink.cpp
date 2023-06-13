@@ -124,7 +124,13 @@ namespace Gts {
 			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-
+			auto GiantCharController = giantref->GetCharController();
+			auto TinyCharController = tinyref->GetCharController();
+			if (GiantCharController) {
+				log::info("Tiny Rotation: {}", Vector2Str(GiantCharController->direction));
+			} if (TinyCharController) {
+				log::info("Giant ROtation: {}", Vector2Str(TinyCharController->direction));
+			}
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
