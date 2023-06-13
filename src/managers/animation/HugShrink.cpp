@@ -78,7 +78,7 @@ namespace {
 			return;
 		}
 		AnimationManager::StartAnim("Huggies_Shrink", player);
-		PushActorAway(player, huggedActor, 0.1);
+		//PushActorAway(player, huggedActor, 0.1);
 	}
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
@@ -87,6 +87,7 @@ namespace {
 			return;
 		}
 		AnimationManager::StartAnim("Huggies_Spare", player);
+		HugShrink::Release(player);
 		HugShrink::DetachActorTask(player);
 	}
 }
@@ -128,22 +129,29 @@ namespace Gts {
 			auto GiantCharController = giantref->GetCharController();
 			auto TinyCharController = tinyref->GetCharController();
 			if (GiantCharController) {
-				log::info("Tiny Rot Center: {}", Vector2Str(GiantCharController->rotCenter));
+				//log::info("Tiny Rot Center: {}", Vector2Str(GiantCharController->rotCenter));
 			} if (TinyCharController) {
-				log::info("Giant Ror Center: {}", Vector2Str(TinyCharController->rotCenter));
+				//log::info("Giant Ror Center: {}", Vector2Str(TinyCharController->rotCenter));
 			}
 
 			auto AI = giantref->GetActorRuntimeData().currentProcess->middleHigh;
+			auto TAI = tinyref->GetActorRuntimeData().currentProcess->middleHigh;
 			if (AI) {
-				log::info("Rotation of giant: {}", Vector2Str(AI->rotation));
+				//log::info("Rotation of giant: {}", Vector2Str(AI->rotation));
 			}
-			auto Ref = HugShrink::GetHuggiesObj(giantref);
-			if (Ref) {
+			if (TAI) {
+				//TAI->rotation = AI->rotation/2;
+			}
+			auto Ref1 = HugShrink::GetHuggiesObj(giantref);
+			TESObjectREFR* Ref2 = skyrim_cast<TESObjectREFR*>(giantref);
+			if (Ref && Ref2) {
 				auto object = Ref->data;
+				auto giantobject = Ref2->data;
+				object.angle = giantobject.angle/2;
 				log::info("Angle of Tiny is {}", Vector2Str(object.angle));
-				//data->angle.y -= 0.001;
-			
+				log::info("Angle of Giant is {}", Vector2Str(giantobject.angle));
 			}
+			
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
