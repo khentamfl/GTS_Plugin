@@ -256,7 +256,7 @@ namespace Gts {
 			return;
 		}
 		auto profiler = Profilers::Profile("Headtracking: SpineUpdate");
-		auto ai = me->GetActorRuntimeData().currentProcess;
+		auto ai = me->GetActorRuntimeData().currentProcess; 
 		Actor* tiny = nullptr;
 		if (ai) {
 			auto targetObjHandle = ai->GetHeadtrackTarget();

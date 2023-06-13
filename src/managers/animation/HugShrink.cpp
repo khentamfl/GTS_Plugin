@@ -132,6 +132,11 @@ namespace Gts {
 			} if (TinyCharController) {
 				log::info("Giant Ror Center: {}", Vector2Str(TinyCharController->rotCenter));
 			}
+
+			auto AI = giantref->GetActorRuntimeData().currentProcess->middleHigh;
+			if (AI) {
+				log::info("Rotation of giant: {}", AI->rotation);
+			}
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
