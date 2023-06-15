@@ -1,6 +1,5 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/animation/AttachPoint.hpp"
 #include "managers/animation/Controllers/HugController.hpp"
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
@@ -126,33 +125,14 @@ namespace Gts {
 			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-			auto GiantCharController = giantref->GetCharController();
-			auto TinyCharController = tinyref->GetCharController();
-			if (GiantCharController) {
-				//log::info("Tiny Rot Center: {}", Vector2Str(GiantCharController->rotCenter));
-			} if (TinyCharController) {
-				//log::info("Giant Ror Center: {}", Vector2Str(TinyCharController->rotCenter));
-			}
 
-			auto AI = giantref->GetActorRuntimeData().currentProcess->middleHigh;
-			auto TAI = tinyref->GetActorRuntimeData().currentProcess->middleHigh;
-			if (AI) {
-				//log::info("Rotation of giant: {}", Vector2Str(AI->rotation));
-			}
-			if (TAI) {
-				//TAI->rotation = AI->rotation/2;
-			}
-			auto Ref1 = HugShrink::GetHuggiesObj(giantref);
-			TESObjectREFR* Ref2 = skyrim_cast<TESObjectREFR*>(giantref);
-			if (Ref1 && Ref2) {
-				log::info("Angle of Tiny BEfore is {}", Ref1->GetAngleX());
-				tinyref->SetRotationX(Ref2->GetAngleX()/2);
-				log::info("Angle of Tiny After is {}", Ref1->GetAngleX(), Ref2->GetAngleX()/2);
-				log::info("Angle of Giant is {}", Ref2->GetAngleX());
-			}
-			
+		
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
+
+			tiny->data.angle.x = giant->data.angle.x;
+			tiny->data.angle.y = giant->data.angle.y;
+			tiny->data.angle.z = giant->data.angle.z;
 
 			if (tinyref->IsDead() || sizedifference > 6.0 || !HugShrink::GetHuggiesActor(giantref)) {
 				HugShrink::Release(giantref);

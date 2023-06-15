@@ -1,6 +1,6 @@
 #pragma once
 #include "node.hpp"
-#include "timer.hpp"
+#include "UI/DebugAPI.hpp"
 
 using namespace RE;
 
@@ -15,8 +15,6 @@ namespace Gts {
 	Actor* GetActorPtr(const ActorHandle& actor);
 
 	Actor* GetActorPtr(FormID formId);
-
-	NiPoint3 GetBreastPos(Actor* giant, std::string_view bone_name);
 
 
 	template<typename T, typename U>
@@ -76,34 +74,33 @@ namespace Gts {
 		if (!giant) {
 			return false;
 		}
-		static Timer print = Timer(0.1);
-
-		auto breastLNode = find_node(giant, "L Breast02");
-		if (!breastLNode) {
+		Actor* tiny = GetActorPtr(anyTiny);
+		if (!tiny) {
 			return false;
 		}
-		auto breastL = breastLNode->world.translate;
-		auto breastL_Local = GetBreastPos(giant, "L Breast02");
 
-		auto breastRNode = find_node(giant, "R Breast02");
-		if (!breastRNode) {
+		std::vector<std::string_view> bone_names = {
+		"L Breast02",
+		"R Breast02"
+		};
+
+		NiPoint3 clevagePos = NiPoint3();
+		std::uint32_t bone_count = bone_names.size();
+		for (auto bone_name: bone_names) {
+		auto bone = find_node(giant, bone_name);
+		if (!bone) {
 			return false;
 		}
-		auto breastR = breastRNode->world.translate;
-		auto breastR_Local = GetBreastPos(giant, "R Breast02");
-
-		auto spine2Node = find_node(giant, "NPC Spine2 [Spn2]");
-		if (!spine2Node) {
-			return false;
+		DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
+		clevagePos += (bone->world * NiPoint3()) * (1.0/bone_count);
 		}
-		auto spine2 = spine2Node->world.translate;
 
-		float forwardAmount = 1.0;
+		tiny->data.angle.x = giant->data.angle.x;
+		tiny->data.angle.y = giant->data.angle.y;
+		tiny->data.angle.z = giant->data.angle.z;
 
-		auto breastForward = ((breastL - spine2) + (breastR - spine2))  * forwardAmount / 2 + spine2;
-		if (print.ShouldRunFrame()) {
-			Cprint("R Breast02 position {}", Vector2Str(breastR_Local));
-		}
-		return AttachTo(anyGiant, anyTiny, breastForward);
+		DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0 , 1.0});
+
+		return AttachTo(anyGiant, anyTiny, clevagePos);
 	}
 }
