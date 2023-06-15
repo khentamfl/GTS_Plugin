@@ -90,8 +90,14 @@ namespace Gts {
 	  } if (!bone) {
         return false;
       }
+	  NiMatrix3 RotateExperiment = spine->world->rotate;
+	  auto RotateTiny = find_node(tiny, "NPC Root [Root]");
+	  if (RotateTiny) {
+	  	RotateTiny->rotate = RotateExperiment;
+	  }
+
       DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
-      clevagePos += ((bone->world - spine->world) * NiPoint3()) * (1.0/bone_count) + spine->world;
+      clevagePos += (bone->world * NiPoint3()) * (1.0/bone_count);
     }
 
     DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0 , 1.0});
