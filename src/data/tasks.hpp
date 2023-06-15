@@ -18,7 +18,7 @@ namespace Gts {
       virtual UpdateKind UpdateOn() {
         return this->updateOnKind;
       }
-    friend:
+
       UpdateKind updateOnKind = UpdateKind::Main;
 	};
 
