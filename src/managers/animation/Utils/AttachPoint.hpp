@@ -84,11 +84,15 @@ namespace Gts {
     std::uint32_t bone_count = bone_names.size();
     for (auto bone_name: bone_names) {
       auto bone = find_node(giant, bone_name);
+	  auto spine = find_node(giant, "NPC Spine2 [Spn2]");
+	  if (!spine2Node) {
+			return false;
+	  }
       if (!bone) {
         return false;
       }
       DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
-      clevagePos += (bone->world * NiPoint3()) * (1.0/bone_count);
+      clevagePos += ((bone->world - spine->world) * NiPoint3()) * (1.0/bone_count) + spine->world;
     }
 
     DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0 , 1.0});
