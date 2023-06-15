@@ -566,6 +566,11 @@ namespace Gts {
 					return false;
 				}
 			} else if (IsBetweenBreasts(giantref)) {
+				if (!IsHostile(giantref, tinyref)) {
+					float restore = 0.01;
+					tinyref->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, restore);
+					tinyref->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, restore);
+				}
 				if (!AttachToCleavage(gianthandle, tinyhandle)) {
 					// Unable to attach
 					return false;
