@@ -88,6 +88,7 @@ namespace {
 		AnimationManager::StartAnim("Huggies_Spare", player);
 		HugShrink::Release(player);
 		HugShrink::DetachActorTask(player);
+		PushActorAway(player, huggedActor, 0.1);
 	}
 }
 

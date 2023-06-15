@@ -25,4 +25,6 @@ namespace Gts {
 
 	float GetPerkBonus_Basics(Actor* Giant);
 	float GetPerkBonus_Thighs(Actor* Giant);
+
+	bool IsHostile(Actor* giant, Actor* tiny);
 }

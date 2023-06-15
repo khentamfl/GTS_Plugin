@@ -137,4 +137,8 @@ namespace Gts {
 			return 1.0;
 		}
 	}
+
+	bool IsHostile(Actor* giant, Actor* tiny) {
+		return tiny->IsHostileToActor(giant);
+	}
 }

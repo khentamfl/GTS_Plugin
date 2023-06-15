@@ -376,6 +376,15 @@ namespace {
 		Runtime::PlaySoundAtNode("BreastImpact", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 1);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		auto otherActor = Grab::GetHeldActor(giant);
+		if (otherActor) {
+			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
+			if (IsHostile(giant, otherActor)) {
+				AnimationManager::StartAnim("Breasts_Idle_Unwilling", otherActor);
+			} else {
+				AnimationManager::StartAnim("Breasts_Idle_Willing", otherActor);
+			}
+		}
 	}
 
 	void GTSGrab_Breast_TakeActor(AnimationEventData& data) { // Removes Actor
@@ -383,6 +392,10 @@ namespace {
 		SetBetweenBreasts(giant, false);
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 1);
+		auto otherActor = Grab::GetHeldActor(giant);
+		if (otherActor) {
+			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
+		}
 	}
 
 	void GTSGrab_Breast_MoveEnd(AnimationEventData& data) {
@@ -535,6 +548,7 @@ namespace Gts {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				Grab::Release(giantref);
 				PushActorAway(giantref, tinyref, 0.1);
+				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", true);
 				SetBetweenBreasts(giantref, false);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
@@ -665,6 +679,9 @@ namespace Gts {
 		AnimationManager::RegisterTrigger("TinyDied", "Grabbing", "GTSBEH_TinyDied");
 		AnimationManager::RegisterTrigger("Breasts_Put", "Grabbing", "GTSBEH_BreastsAdd");
 		AnimationManager::RegisterTrigger("Breasts_Pull", "Grabbing", "GTSBEH_BreastsRemove");
+		AnimationManager::RegisterTrigger("Breasts_Idle_Unwilling", "Grabbing", "GTSBEH_T_Storage_Enemy");
+		AnimationManager::RegisterTrigger("Breasts_Idle_Willing", "Grabbing", "GTSBEH_T_Storage_Ally");
+		
 	}
 
 	GrabData::GrabData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
