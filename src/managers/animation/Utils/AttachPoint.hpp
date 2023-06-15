@@ -85,10 +85,9 @@ namespace Gts {
     for (auto bone_name: bone_names) {
       auto bone = find_node(giant, bone_name);
 	  auto spine = find_node(giant, "NPC Spine2 [Spn2]");
-	  if (!spine2Node) {
+	  if (!spine) {
 			return false;
-	  }
-      if (!bone) {
+	  } if (!bone) {
         return false;
       }
       DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
