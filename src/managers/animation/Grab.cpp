@@ -1,6 +1,5 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/animation/AttachPoint.hpp"
 #include "managers/GrabAnimationController.hpp"
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
@@ -519,7 +518,7 @@ namespace Gts {
 		std::string name = std::format("GrabAttach_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
-		TaskManager::Run(name, [=](auto& progressData) {
+		TaskManager::Run(name, [=](auto& progressData) {  
 			if (!gianthandle) {
 				return false;
 			}
@@ -569,6 +568,7 @@ namespace Gts {
 			// All good try another frame
 			return true;
 		});
+		TaskManager::ChangeUpdate(name, UpdateKind::Camera);
 	}
 
 

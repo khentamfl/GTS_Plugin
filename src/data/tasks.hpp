@@ -7,9 +7,24 @@
 
 namespace Gts {
 
+  enum class UpdateKind {
+    Main,
+    Camera,
+  };
+
 	class BaseTask {
 		public:
 			virtual bool Update() = 0;
+      UpdateKind UpdateOn() {
+        return this->updateOnKind;
+      }
+
+      void SetUpdateOn(UpdateKind updateOn) {
+        this->updateOnKind = updateOn;
+      }
+
+    protected:
+      UpdateKind updateOnKind = UpdateKind::Main;
 	};
 
 	// A `Task` runs once in the next frame
@@ -136,9 +151,11 @@ namespace Gts {
 			virtual void Update() override {
 				std::vector<std::string> toRemove = {};
 				for (auto& [name, task]: this->taskings) {
-					if (!task->Update()) {
-						toRemove.push_back(name);
-					}
+          if (task->UpdateOn() == UpdateKind::Main) {
+  					if (!task->Update()) {
+  						toRemove.push_back(name);
+  					}
+          }
 				}
 
 				for (auto task: toRemove) {
@@ -146,6 +163,32 @@ namespace Gts {
 				}
 
 			}
+
+      // Update in camera update locations too....
+      virtual void CameraUpdate() override {
+				std::vector<std::string> toRemove = {};
+				for (auto& [name, task]: this->taskings) {
+          if (task->UpdateOn() == UpdateKind::Camera) {
+  					if (!task->Update()) {
+  						toRemove.push_back(name);
+  					}
+          }
+				}
+
+				for (auto task: toRemove) {
+					this->taskings.erase(task);
+				}
+
+			}
+
+      static void ChangeUpdate(std::string_view name, UpdateKind updateOn) {
+        auto& me = TaskManager::GetSingleton();
+        try {
+          me.taskings.at(std::string(name))->SetUpdateOn(updateOn);
+        } catch (const std::out_of_range& oor) {
+          // nothing
+        }
+      }
 
 			static void Cancel(std::string_view name) {
 				auto& me = TaskManager::GetSingleton();

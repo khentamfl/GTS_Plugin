@@ -1,4 +1,5 @@
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
