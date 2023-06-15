@@ -74,31 +74,36 @@ namespace Gts {
 		if (!giant) {
 			return false;
 		}
-
-    std::vector<std::string_view> bone_names = {
-      "L Breast02",
-      "R Breast02"
-    };
-
-    NiPoint3 clevagePos = NiPoint3();
-    std::uint32_t bone_count = bone_names.size();
-    for (auto bone_name: bone_names) {
-      auto bone = find_node(giant, bone_name);
-	  auto spine = find_node(giant, "NPC Spine2 [Spn2]");
-	  if (!spine) {
+		Actor* tiny = GetActorPtr(anyTiny);
+		if (!tiny) {
 			return false;
-	  } if (!bone) {
-        return false;
-      }
-	  NiMatrix3 RotateExperiment = spine->world->rotate;
-	  auto RotateTiny = find_node(tiny, "NPC Root [Root]");
-	  if (RotateTiny) {
-	  	RotateTiny->rotate = RotateExperiment;
-	  }
+		}
 
-      DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
-      clevagePos += (bone->world * NiPoint3()) * (1.0/bone_count);
-    }
+		std::vector<std::string_view> bone_names = {
+		"L Breast02",
+		"R Breast02"
+		};
+
+		NiPoint3 clevagePos = NiPoint3();
+		std::uint32_t bone_count = bone_names.size();
+		for (auto bone_name: bone_names) {
+		auto bone = find_node(giant, bone_name);
+		auto spine = find_node(giant, "NPC Spine2 [Spn2]");
+		if (!spine) {
+				return false;
+		} if (!bone) {
+			return false;
+		}
+		NiMatrix3 RotateExperiment = spine->world->rotate;
+		auto RotateTiny = find_node(tiny, "NPC Root [Root]");
+		if (RotateTiny) {
+			RotateTiny->rotate = RotateExperiment;
+			update_node(RotateTiny);
+		}
+
+		DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
+		clevagePos += (bone->world * NiPoint3()) * (1.0/bone_count);
+		}
 
     DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0 , 1.0});
 
