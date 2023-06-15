@@ -142,6 +142,7 @@ namespace {
 				} else {
 					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				}
+				SetBetweenBreasts(giant, false);
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
@@ -534,6 +535,7 @@ namespace Gts {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				Grab::Release(giantref);
 				PushActorAway(giantref, tinyref, 0.1);
+				SetBetweenBreasts(giantref, false);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
 				DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.30, 1.0);

@@ -125,7 +125,7 @@ namespace {
 		}
 		TrackFeet(giant, 6.0, true);
 		StartLegRumble("StrongStompR", data.giant, 0.3, 0.10, "Right");
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.75, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.45, 4.0);
 	}
 
 	void GTS_StrongStomp_LL_Start(AnimationEventData& data) {
@@ -138,7 +138,7 @@ namespace {
 		}
 		TrackFeet(giant, 5.0, true);
 		StartLegRumble("StrongStompL", data.giant, 0.3, 0.10, "Left");
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.75, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.45, 4.0);
 	}
 
 	void GTS_StrongStomp_LR_Middle(AnimationEventData& data) {
@@ -175,7 +175,7 @@ namespace {
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode, SMT);
 		DoLaunch(&data.giant, 1.4 * perk, 5.0, RNode, 4.0);
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.75, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 4.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
@@ -192,7 +192,7 @@ namespace {
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode, SMT);
 		DoLaunch(&data.giant, 1.4 * perk, 5.0, LNode, 4.0);
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.75, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 4.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
