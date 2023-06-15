@@ -94,10 +94,10 @@ namespace Gts {
 		} if (!bone) {
 			return false;
 		}
-		NiMatrix3 RotateExperiment = spine->world->rotate;
+		NiMatrix3 RotateExperiment = spine->world.rotate;
 		auto RotateTiny = find_node(tiny, "NPC Root [Root]");
 		if (RotateTiny) {
-			RotateTiny->rotate = RotateExperiment;
+			RotateTiny.rotate = RotateExperiment;
 			update_node(RotateTiny);
 		}
 
