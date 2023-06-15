@@ -3,6 +3,7 @@
 #include "managers/animation/StrongStomp.hpp"
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/animation/ActorVore.hpp"
+#include "managers/animation/HugShrink.hpp"
 #include "managers/animation/Compat.hpp"
 #include "managers/animation/Stomp.hpp"
 #include "managers/animation/Grab.hpp"
@@ -70,6 +71,9 @@ namespace Gts {
 
 		Grab::RegisterEvents();
 		Grab::RegisterTriggers();
+
+		HugShrink::RegisterEvents();
+		HugShrink::RegisterTriggers();
 
 
 	}

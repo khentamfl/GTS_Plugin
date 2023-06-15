@@ -100,6 +100,31 @@ exclusive = true
 # ^ Ways to Exit Thigh Crush animation.
 
 #========================================================
+#============ H U G S
+#========================================================
+[[InputEvent]]
+name = "HugAttempt"
+keys = ["LSHIFT", "H"]
+exclusive = true
+
+# Attempt to hug someone
+
+[[InputEvent]]
+name = "HugShrink"
+keys = ["LMB"]
+exclusive = true
+
+# Shrink the one you hug.
+
+[[InputEvent]]
+name = "HugRelease"
+keys = ["RMB"]
+exclusive = true
+
+# Spare the one you're hugging.
+
+
+#========================================================
 #============ T H I G H  S A N D W I C H
 #========================================================
 
