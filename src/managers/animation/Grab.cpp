@@ -566,6 +566,7 @@ namespace Gts {
 			// All good try another frame
 			return true;
 		});
+		TaskManager::ChangeUpdate(name, UpdateKind::Camera);
 	}
 
 
