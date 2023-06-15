@@ -132,9 +132,10 @@ namespace Gts {
 
 			tiny->data.angle.x = giant->data.angle.x;
 			tiny->data.angle.y = giant->data.angle.y;
-			tiny->data.angle.z = giant->data.angle.z;
-            log::info("Tiny Angle: x: {} y: {} z:{}", tiny->data.angle.x, tiny->data.angle.y, tiny->data.angle.z);
-            log::info("Giant Angle: x: {} y: {} z:{}", giant->data.angle.x, giant->data.angle.y, giant->data.angle.z);
+			tiny->data.angle.z = -giant->data.angle.z;
+            
+            log::info("Tiny Angle: x: {} y: {} z: {}", tiny->data.angle.x, tiny->data.angle.y, tiny->data.angle.z);
+            log::info("Giant Angle: x: {} y: {} z: {}", giant->data.angle.x, giant->data.angle.y, giant->data.angle.z);
 
 			if (tinyref->IsDead() || sizedifference > 6.0 || !HugShrink::GetHuggiesActor(giantref)) {
 				HugShrink::Release(giantref);
