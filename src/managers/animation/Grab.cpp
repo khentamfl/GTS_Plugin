@@ -394,7 +394,8 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 1);
 		auto otherActor = Grab::GetHeldActor(giant);
 		if (otherActor) {
-			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
+			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", false);
+			AnimationManager::StartAnim("Breasts_FreeOther", otherActor);
 		}
 	}
 
@@ -548,7 +549,7 @@ namespace Gts {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				Grab::Release(giantref);
 				PushActorAway(giantref, tinyref, 0.1);
-				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", true);
+				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);
 				SetBetweenBreasts(giantref, false);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
@@ -681,6 +682,7 @@ namespace Gts {
 		AnimationManager::RegisterTrigger("Breasts_Pull", "Grabbing", "GTSBEH_BreastsRemove");
 		AnimationManager::RegisterTrigger("Breasts_Idle_Unwilling", "Grabbing", "GTSBEH_T_Storage_Enemy");
 		AnimationManager::RegisterTrigger("Breasts_Idle_Willing", "Grabbing", "GTSBEH_T_Storage_Ally");
+		AnimationManager::RegisterTrigger("Breasts_FreeOther", "Grabbing", "GTSBEH_T_Remove");
 		
 	}
 
