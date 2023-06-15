@@ -179,7 +179,7 @@ namespace Gts {
       static void ChangeUpdate(std::string_view name, UpdateKind updateOn) {
         auto& me = TaskManager::GetSingleton();
         try {
-          me.taskings.get(std::string(name)).updateOnKind = updateOn;
+          me.taskings.at(std::string(name)).updateOnKind = updateOn;
         } catch (const std::out_of_range& oor) {
           // nothing
         }
