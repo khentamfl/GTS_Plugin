@@ -24,9 +24,6 @@
 #include "timer.hpp"
 #include "node.hpp"
 
-#define _USE_MATH_DEFINES
-
-#include <math.h>
 #include <random>
 
 using namespace RE;
@@ -138,18 +135,10 @@ namespace Gts {
 			tiny->data.angle.y = giant->data.angle.y;
 			tiny->data.angle.z = giant->data.angle.z / 4;*/
 
-            //tiny->data.angle = giant->data.angle/4;
-			double angleTiny = (static_cast<double>(tiny->data.angle.z) + M_PI) % (2 * M_PI);
-			double angleGiant = (static_cast<double>(giant->data.angle.z) + M_PI) % (2 * M_PI);
-			tiny->data.angle = static_cast<float>(angleGiant);
-
-			//float TinyDegree = static_cast<float>(tiny->data.angle.z * 180/M_PI);
-			//float GiantDegree = static_cast<float>(giant->data.angle.z * 180/M_PI);
+            tiny->data.angle = giant->data.angle/4;
 			
-            //log::info("Tiny Angle: x: {} y: {} z: {}", tiny->data.angle.x, tiny->data.angle.y, tiny->data.angle.z);
-            //log::info("Giant Angle: x: {} y: {} z: {}", giant->data.angle.x, giant->data.angle.y, giant->data.angle.z);
-			log::info("Giant Degree: {}", angleGiant);
-			log::info("Tiny Degree: {}", angleTiny);
+            log::info("Tiny Angle: x: {} y: {} z: {}", tiny->data.angle.x, tiny->data.angle.y, tiny->data.angle.z);
+            log::info("Giant Angle: x: {} y: {} z: {}", giant->data.angle.x, giant->data.angle.y, giant->data.angle.z);
 
 			if (tinyref->IsDead() || sizedifference > 6.0 || !HugShrink::GetHuggiesActor(giantref)) {
 				HugShrink::Release(giantref);
