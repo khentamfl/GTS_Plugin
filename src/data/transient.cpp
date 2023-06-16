@@ -55,6 +55,7 @@ namespace Gts {
 			float last_set_fall_start = fall_start;
 			float carryweight_boost = 0.0;
 			float health_boost = 0.0;
+			float SMT_Bonus_Duration = 0.0;
 			float basehp = 0.0;
 
 			bool can_do_vore = true;
@@ -84,6 +85,7 @@ namespace Gts {
 			result.last_set_fall_start = last_set_fall_start;
 			result.carryweight_boost = carryweight_boost;
 			result.health_boost = health_boost;
+			result.SMT_Bonus_Duration = SMT_Bonus_Duration;
 			result.basehp = basehp;
 			result.can_do_vore = can_do_vore;
 			result.can_be_crushed = can_be_crushed;

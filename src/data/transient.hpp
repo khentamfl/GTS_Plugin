@@ -16,6 +16,7 @@ namespace Gts {
 		float fall_start;
 		float last_set_fall_start;
 		float health_boost;
+		float SMT_Bonus_Duration;
 		float carryweight_boost;
 		float basehp;
 

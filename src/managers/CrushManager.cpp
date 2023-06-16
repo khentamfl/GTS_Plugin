@@ -1,6 +1,8 @@
+#include "magic/effects/smallmassivethreat.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
+#include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
@@ -188,7 +190,8 @@ namespace Gts {
 						Actor* into = giant;
 						TransferInventory(tiny, into, false, true);
 					}
-
+					
+					AddSMTDuration(giant, 25.0);
 					ReportCrime(giant, tiny, 1000.0, true);
 					//StartCombat(giant, tiny, false);
 

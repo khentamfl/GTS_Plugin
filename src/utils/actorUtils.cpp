@@ -589,6 +589,14 @@ namespace Gts {
 		}
 	}
 
+	void AddSMTDuration(Actor* actor, float duration) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) { 
+			transient->SMT_Bonus_Duration += duration;
+			log::info("SMT Duration Added: {}", duration);
+		}
+	}
+
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
