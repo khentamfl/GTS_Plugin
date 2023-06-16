@@ -40,6 +40,9 @@ namespace Gts {
 		float bonus = GetSMTBonus(caster);
 		if (bonus > 0.5) {
 			GetActiveEffect()->duration += bonus;
+			if (GetActiveEffect()->duration + bonus >= 30.0) {
+				GetActiveEffect()->duration = 30.0;
+			}
 			NullifySMTDuration(caster);
 		}
 		if (CasterScale >= 1.50) {
