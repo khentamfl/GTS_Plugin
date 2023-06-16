@@ -139,7 +139,7 @@ namespace Gts {
 			tiny->data.angle.z = giant->data.angle.z / 4;*/
 
             //tiny->data.angle = giant->data.angle/4;
-			tiny->data.angle = ((giant->data.angle.z) + M_PI) % (2 * M_PI);
+			tiny->data.angle = static_cast<float>((giant->data.angle.z) + M_PI) % (2 * M_PI);
 
 			float TinyDegree = static_cast<float>(tiny->data.angle.z * 180/M_PI);
 			float GiantDegree = static_cast<float>(giant->data.angle.z * 180/M_PI);
