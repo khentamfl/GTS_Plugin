@@ -56,7 +56,6 @@ namespace Gts {
 		} else if (sizemanager.GetActionBool(player, 7)) {
 			altMode = 14; // Grab Attack
 		}
-		log::info("Alt Mode: {}", altMode);
 		switch (altMode) {
 			case 0: {
 				return BoneTarget();

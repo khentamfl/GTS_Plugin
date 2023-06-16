@@ -64,6 +64,7 @@ namespace Gts {
 	void CallGainWeight(Actor* giant, float value);
 	void CallVampire();
 	void CallHelpMessage();
+	void AddCalamityPerk();
 	void PerkPointCheck(float level);
 	float GetRandomBoost();
 

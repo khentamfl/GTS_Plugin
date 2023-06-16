@@ -1,5 +1,6 @@
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/ai/aifunctions.hpp"
+#include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -83,6 +84,8 @@ namespace Gts {
 
 					ReportCrime(giant, tiny, 1000.0, true);
 					//StartCombat(giant, tiny, false);
+
+					AddSMTDuration(giant, 5.0);
 
 					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 20.0);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {

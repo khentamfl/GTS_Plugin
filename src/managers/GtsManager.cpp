@@ -11,6 +11,7 @@
 #include "managers/Attributes.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/highheel.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
 #include "data/transient.hpp"
@@ -296,6 +297,9 @@ void GtsManager::OnAddPerk(const AddPerkEvent& evt) {
 		}
 		if (evt.perk == Runtime::GetPerk("LethalShrink") && !Runtime::HasSpell(evt.actor, "ShrinkStorm")) {
 			Runtime::AddSpell(evt.actor, "ShrinkStorm");
+		}
+		if (evt.perk == Runtime::GetPerk("CalamityPerk")) {
+			AddCalamityPerk();
 		}
 	}
 }

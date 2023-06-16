@@ -431,6 +431,13 @@ namespace Gts {
 		}
 	}
 
+	void AddCalamityPerk() {
+		auto progressionQuest = Runtime::GetQuest("MainQuest");
+		if (progressionQuest) {
+			CallFunctionOn(progressionQuest, "gtsProgressionQuest", "AddCalamityPerk");
+		}
+	}
+
 	void PerkPointCheck(float level) {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		int bonus = 1.0;
