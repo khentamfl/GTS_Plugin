@@ -137,10 +137,10 @@ namespace Gts {
 			tiny->data.angle.z = giant->data.angle.z / 4;*/
 
             //tiny->data.angle = giant->data.angle/4;
-			tiny->data.angle = (giant->data.angle.z + Math.PI) % (2 * Math.PI);
+			tiny->data.angle = (giant->data.angle.z + M_PI) % (2 * M_PI);
 
-			float TinyDegree = tiny->data.angle.z * 180/Pi;
-			float GiantDegree = giant->data.angle.z * 180/Pi;
+			float TinyDegree = tiny->data.angle.z * 180/M_PI;
+			float GiantDegree = giant->data.angle.z * 180/M_PI;
 			
             //log::info("Tiny Angle: x: {} y: {} z: {}", tiny->data.angle.x, tiny->data.angle.y, tiny->data.angle.z);
             //log::info("Giant Angle: x: {} y: {} z: {}", giant->data.angle.x, giant->data.angle.y, giant->data.angle.z);
