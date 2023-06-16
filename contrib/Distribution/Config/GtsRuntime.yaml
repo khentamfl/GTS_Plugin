@@ -117,7 +117,6 @@ spells:
   gtsSizeCloakSpellMassive: "GTS.esp|08BD90"
   gtsSizeCloakSpellGigantic: "GTS.esp|08BD92"
   gtsSizeCloakSpellImpossible: "GTS.esp|08BD94"
-  CalamityPerk: "GTS.esp|18E161"
   ShrinkToNothingSpell: "GTS.esp|00997A"
   FakeCrushSpell: "GTS.esp|271EF7"
   ShrinkBackNPCSpell: "GTS.esp|00536B"
@@ -130,6 +129,8 @@ spells:
 perks:
   SmallMassiveThreatSizeSteal: "GTS.esp|2496E8"
   VorePerk: "GTS.esp|355C68"
+  CalamityPerk: "GTS.esp|18E161"
+  EternalCalamity: "GTS.esp|5ED064"
   MassVorePerk: "GTS.esp|462228"
   GrowthOnHitPerk: "GTS.esp|30EE52"
   AdditionalGrowth: "GTS.esp|151518"

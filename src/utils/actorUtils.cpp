@@ -597,10 +597,12 @@ namespace Gts {
 	}
 
 	void AddSMTDuration(Actor* actor, float duration) {
-		auto transient = Transient::GetSingleton().GetData(actor);
-		if (transient) { 
-			transient->SMT_Bonus_Duration += duration;
-			log::info("SMT Duration Added: {}", duration);
+		if (Runtime::HasPerk(actor, "EternalCalamity")) {
+			auto transient = Transient::GetSingleton().GetData(actor);
+			if (transient) { 
+				transient->SMT_Bonus_Duration += duration;
+				log::info("SMT Duration Added: {}", duration);
+			}
 		}
 	}
 
