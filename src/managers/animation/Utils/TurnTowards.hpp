@@ -1,5 +1,6 @@
 #pragma once
 #include "node.hpp"
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 using namespace RE;
