@@ -185,9 +185,8 @@ namespace Gts {
 		if (!hugging.CanHug(pred, prey)) {
 			return;
 		}
-		if (HasSMT(pred)) {
-		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
 		AnimationManager::StartAnim("Huggies_Try", pred);
+		AnimationManager::StartAnim("Huggies_Try_Victim", prey);
 	}
 }
