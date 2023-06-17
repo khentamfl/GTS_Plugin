@@ -72,7 +72,7 @@ namespace Gts {
 			return false;
 		}
 		NiPoint3 Coordinates = bone->world.translate;
-		float offset = std::clamp((70 * sizedifference) - 70.0f, 0.0f, 9999999.0f);
+		float offset = std::clamp((30 * sizedifference) - 30.0f, 0.0f, 9999999.0f);
 		//Coordinates.x += offset;
 		//Coordinates.y += offset;
 		Coordinates.z += offset;
