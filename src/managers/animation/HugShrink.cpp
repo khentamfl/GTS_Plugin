@@ -47,6 +47,16 @@ namespace {
 		HugShrink::AttachActorTask(giant, huggedActor);
 	}
 
+	void GTSBEH_HugAbsorbAtk(AnimationEventData& data) {
+		auto giant = &data.giant;
+		auto huggedActor = HugShrink::GetHuggiesActor(giant);
+		if (!huggedActor) {
+			return;
+		}
+		HugShrink::AttachActorTask(giant, huggedActor);
+		AnimationManager::StartAnim("Huggies_Shrink", huggedActor);
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////E V E N T S
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -203,6 +213,7 @@ namespace Gts {
 		InputManager::RegisterInputEvent("HugShrink", HugShrinkEvent);
 
 		AnimationManager::RegisterEvent("GTS_Hug_Grab", "Hugs", GTS_Hug_Grab);
+		AnimationManager::RegisterEvent("GTSBEH_HugAbsorbAtk", "Hugs", GTSBEH_HugAbsorbAtk);
 		//AnimationManager::RegisterEvent("GTSBEH_AbortGrab", "Hugs", GTSBEH_AbortGrab);
 	}
 
