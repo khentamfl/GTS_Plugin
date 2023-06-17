@@ -49,6 +49,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
+		HugShrink::ShrinkOtherTask(giant, huggedActor);
 		AnimationManager::StartAnim("Huggies_Shrink", huggedActor);
 	}
 
@@ -188,7 +189,7 @@ namespace Gts {
        		return false;
       	}
 
-		GrabStaminaDrain(giantref, tinyref, sizedifference/3);
+		GrabStaminaDrain(giantref, tinyref, sizedifference);
 		float stamina = GetAV(giantref, ActorValue::kStamina);
 		if (tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
 			HugShrink::Release(giantref);
