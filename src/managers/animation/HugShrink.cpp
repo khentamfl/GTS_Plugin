@@ -151,12 +151,13 @@ namespace Gts {
 		if (sizedifference >= 4.0) {
 			HugShrink::Release(giantref);
 			AnimationManager::StartAnim("Huggies_Spare", giantref);
+			HugShrink::DetachActorTask(giantref);
 			PushActorAway(giantref, tinyref, 0.1);
 			return false;
 		}
-		Rumble::Once("HugShrink", giantref, 3.0 * sizedifference, 0.05);
-		mod_target_scale(tinyref, -0.001);
-		mod_target_scale(giantref, 0.0005);
+		Rumble::Once("HugShrink", giantref, 5.0 * sizedifference, 0.05);
+		mod_target_scale(tinyref, -0.0015);
+		mod_target_scale(giantref, 0.0003);
 		return true; 
 		});
 	}
@@ -189,11 +190,12 @@ namespace Gts {
        		return false;
       	}
 
-		GrabStaminaDrain(giantref, tinyref, sizedifference);
+		GrabStaminaDrain(giantref, tinyref, sizedifference * 2);
 		float stamina = GetAV(giantref, ActorValue::kStamina);
 		if (tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
 			HugShrink::Release(giantref);
 			AnimationManager::StartAnim("Huggies_Spare", giantref);
+			HugShrink::DetachActorTask(giantref);
 			PushActorAway(giantref, tinyref, 0.1);
 			return false;
 		}
