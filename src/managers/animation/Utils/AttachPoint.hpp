@@ -57,6 +57,27 @@ namespace Gts {
 		return AttachTo(anyGiant, anyTiny, "NPC L Finger02 [LF02]");
 	}
 
+	bool HugAttach(T& anyGiant, U& anyTiny) {
+		Actor* giant = GetActorPtr(anyGiant);
+		if (!giant) {
+			return false;
+		}
+		Actor* tiny = GetActorPtr(anyTiny);
+		if (!tiny) {
+			return false;
+		}
+		auto bone = find_node(giant, "AnimObjectA");
+		if (!bone) {
+			return false;
+		}
+		NiPoint3 Coordinates = bone->world.translate;
+		float offset = (70 + get_visual_scale(giant)/get_visual_scale(tiny)) - 70.0;
+		Coordinates.y += offset;
+		Coordinates.y += offset;
+		Coordinates.z += offset;
+		return AttachTo(anyGiant, anyTiny, offset);
+	}
+
 	template<typename T, typename U>
 	bool AttachToCleavage(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
