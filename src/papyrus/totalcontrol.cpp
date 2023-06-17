@@ -30,7 +30,7 @@ namespace {
 			}
 			log::info("  - Found: {}", targetRef->GetDisplayFullName());
 			float Volume = clamp(0.50, 1.0, get_visual_scale(targetRef));
-			Runtime::PlaySound("growthSound", targetRef, Volume, 0.0);
+			Runtime::PlaySound("growthSound", targetRef, Volume, 1.0);
 			Runtime::PlaySound("GreybeardRumble", targetRef, Volume, 0.0);
 			KnockAreaEffect(targetRef, 6, 60 * get_visual_scale(targetRef));
 

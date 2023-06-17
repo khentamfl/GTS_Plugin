@@ -124,7 +124,7 @@ namespace Gts {
 		}
 		if (this->timer.ShouldRun()) {
 			float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/4);
-			Runtime::PlaySound("growthSound", actor, Volume, 0.0);
+			Runtime::PlaySound("growthSound", actor, Volume, 1.0);
 		}
 	}
 

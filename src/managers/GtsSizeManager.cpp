@@ -40,7 +40,7 @@ namespace {
 			Rumble::Once("TotalControl", player, scale/10, 0.05);
 			static Timer timergrowth = Timer(2.00);
 			if (timergrowth.ShouldRun()) {
-				Runtime::PlaySound("growthSound", player, Volume, 0.0);
+				Runtime::PlaySound("growthSound", player, Volume, 1.0);
 			}
 		}
 	}
@@ -75,7 +75,7 @@ namespace {
 					Rumble::Once("TotalControlOther", actor, 0.25, 0.05);
 					static Timer timergrowth = Timer(2.00);
 					if (timergrowth.ShouldRun()) {
-						Runtime::PlaySound("growthSound", actor, Volume, 0.0);
+						Runtime::PlaySound("growthSound", actor, Volume, 1.0);
 					}
 				}
 			}

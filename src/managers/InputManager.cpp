@@ -64,7 +64,7 @@ namespace {
 				float Volume = clamp(0.10, 2.0, get_visual_scale(player) * Cache->SizeReserve/10);
 				static Timer timergrowth = Timer(2.00);
 				if (timergrowth.ShouldRunFrame()) {
-					Runtime::PlaySound("growthSound", player, Cache->SizeReserve/50 * duration, 0.0);
+					Runtime::PlaySound("growthSound", player, Cache->SizeReserve/50 * duration, 1.0);
 					Runtime::PlaySoundAtNode("MoanSound", player, Volume, 0.0, "NPC Head [Head]");
 				}
 

@@ -110,7 +110,7 @@ namespace Gts {
 					Rumble::Once("RandomGrowth", player, 6.0, 0.05);
 					float Volume = clamp(0.25, 2.0, get_visual_scale(player)/4);
 					Runtime::PlaySoundAtNode("MoanSound", player, 1.0, 0.0, "NPC Head [Head]");
-					Runtime::PlaySound("growthSound", player, Volume, 0.0);
+					Runtime::PlaySound("growthSound", player, Volume, 1.0);
 				}
 			}
 

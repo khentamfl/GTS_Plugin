@@ -32,10 +32,6 @@ using namespace Gts;
 using namespace std;
 
 
-/*Event used in the behaviours to transition between most behaviour states
- */
-
-
 namespace {
 
 	void GTS_Hug_Grab(AnimationEventData& data) {
@@ -47,6 +43,24 @@ namespace {
 		HugShrink::AttachActorTask(giant, huggedActor);
 	}
 
+	void GTS_Hug_Grow(AnimationEventData& data) {
+		auto giant = &data.giant;
+		auto huggedActor = HugShrink::GetHuggiesActor(giant);
+		if (!huggedActor) {
+			return;
+		}
+		AnimationManager::StartAnim("Huggies_Shrink", huggedActor);
+	}
+
+	void GTS_Hug_Moan(AnimationEventData& data) {
+		auto giant = &data.giant;
+		auto huggedActor = HugShrink::GetHuggiesActor(giant);
+		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
+		if (!huggedActor) {
+			return;
+		}
+	}
+
 	void GTSBEH_HugAbsorbAtk(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto huggedActor = HugShrink::GetHuggiesActor(giant);
@@ -55,10 +69,9 @@ namespace {
 		}
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////E V E N T S
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////// I N P U T
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	void HugAttemptEvent(const InputEventData& data) {
@@ -84,8 +97,6 @@ namespace {
 			return;
 		}
 		AnimationManager::StartAnim("Huggies_Shrink", player);
-		AnimationManager::StartAnim("Huggies_Shrink", huggedActor);
-		//PushActorAway(player, huggedActor, 0.1);
 	}
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
@@ -115,6 +126,40 @@ namespace Gts {
 		TaskManager::Cancel(name);
 	}
 
+	void HugShrink::ShrinkOtherTask(Actor* giant, Actor* tiny) {
+		if (!giant) {
+			return;
+		}
+		if (!tiny) {
+			return;
+		}
+		std::string name = std::format("Huggies_Shrink_{}", giant->formID);
+		ActorHandle gianthandle = giant->CreateRefHandle();
+		ActorHandle tinyhandle = tiny->CreateRefHandle();
+		const float duration = 2.0;
+		TaskManager::RunFor(name, duration, [=](auto& progressData) {
+		if (!gianthandle) {
+			return false;
+		}
+		if (!tinyhandle) {
+			return false;
+		}
+		auto giantref = gianthandle.get().get();
+		auto tinyref = tinyhandle.get().get();
+		float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
+		if (sizedifference >= 4.0) {
+			HugShrink::Release(giantref);
+			AnimationManager::StartAnim("Huggies_Spare", giantref);
+			PushActorAway(giantref, tinyref, 0.1);
+			return false;
+		}
+		Rumble::Once("HugShrink", giantref, 3.0 * sizedifference, 0.05);
+		mod_target_scale(tinyref, -0.001);
+		mod_target_scale(giantref, 0.0005);
+		return true; 
+		});
+	}
+
 	void HugShrink::AttachActorTask(Actor* giant, Actor* tiny) {
 		if (!giant) {
 			return;
@@ -126,42 +171,39 @@ namespace Gts {
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
-			if (!gianthandle) {
-				return false;
-			}
-			if (!tinyhandle) {
-				return false;
-			}
-			auto giantref = gianthandle.get().get();
-			auto tinyref = tinyhandle.get().get();
+		if (!gianthandle) {
+			return false;
+		}
+		if (!tinyhandle) {
+			return false;
+		}
+		auto giantref = gianthandle.get().get();
+		auto tinyref = tinyhandle.get().get();
 
 
-			// Exit on death
-			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
-
-			if (!FaceOpposite(giantref, tinyref)) {
+		// Exit on death
+		float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
+		if (!FaceOpposite(giantref, tinyref)) {
         // If face towards fails then actor is invalid
-        return false;
-      }
+       		return false;
+      	}
 
-      log::info("Tiny Angle: {}", Vector2Str(tinyref->data.angle));
-      log::info("Giant Angle: {}", Vector2Str(giantref->data.angle));
-			log::info("Tiny Degree: {}", tinyref->data.angle.z / 3.141 * 180.0);
-			log::info("Giant Degree: {}", giantref->data.angle.z / 3.141 * 180.0);
+		GrabStaminaDrain(giantref, tinyref, sizedifference/3);
+		float stamina = GetAV(giantref, ActorValue::kStamina);
+		if (tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
+			HugShrink::Release(giantref);
+			AnimationManager::StartAnim("Huggies_Spare", giantref);
+			PushActorAway(giantref, tinyref, 0.1);
+			return false;
+		}
 
-			if (tinyref->IsDead() || sizedifference > 6.0 || !HugShrink::GetHuggiesActor(giantref)) {
-				HugShrink::Release(giantref);
-				PushActorAway(giantref, tinyref, 0.1);
-				return false;
-			}
+		if (!AttachToObjectA(gianthandle, tinyhandle)) {
+			// Unable to attach
+			return false;
+		}
 
-            if (!AttachToObjectA(gianthandle, tinyhandle)) {
-                // Unable to attach
-                return false;
-            }
-
-			// All good try another frame
-			return true;
+		// All good try another frame
+		return true;
 		});
 	}
 
@@ -212,6 +254,8 @@ namespace Gts {
 		InputManager::RegisterInputEvent("HugShrink", HugShrinkEvent);
 
 		AnimationManager::RegisterEvent("GTS_Hug_Grab", "Hugs", GTS_Hug_Grab);
+		AnimationManager::RegisterEvent("GTS_Hug_Grow", "Hugs", GTS_Hug_Grow);
+		AnimationManager::RegisterEvent("GTS_Hug_Moan", "Hugs", GTS_Hug_Moan);
 		AnimationManager::RegisterEvent("GTSBEH_HugAbsorbAtk", "Hugs", GTSBEH_HugAbsorbAtk);
 		//AnimationManager::RegisterEvent("GTSBEH_AbortGrab", "Hugs", GTSBEH_AbortGrab);
 	}
@@ -228,15 +272,3 @@ namespace Gts {
 	}
 }
 
-
-//Beh's:
-/*
-        GTSBEH_GrabStart
-        GTSBEH_GrabVore
-        GTSBEH_GrabAttack
-        GTSBEH_GrabThrow
-        GTSBEH_GrabRelease
-
-        GTSBeh_GrabExit
-        GTSBEH_AbortGrab (Similar to GTSBEH_Exit but Grab only)
- */

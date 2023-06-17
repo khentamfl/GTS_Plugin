@@ -17,7 +17,7 @@ namespace Gts {
 			return;
 		}
 		float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
-		Runtime::PlaySound("growthSound", caster, Volume, 0.0);
+		Runtime::PlaySound("growthSound", caster, Volume, 1.0);
 
 		//log::info("Grow Button actor: {}", caster->GetDisplayFullName());
 
