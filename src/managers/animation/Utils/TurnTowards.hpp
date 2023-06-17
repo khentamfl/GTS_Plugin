@@ -7,7 +7,7 @@ using namespace RE;
 namespace Gts {
 
 	template<typename U>
-	bool FaceTowardsPoint(U& anyTiny, NiPoint3 point) {
+	bool FaceTowardsPoint(U& anyTiny, const NiPoint3& point) {
 		Actor* tiny =  GetActorPtr(anyTiny);
 
 		if (!tiny) {
@@ -26,6 +26,7 @@ namespace Gts {
 
 		return true;
 	}
+
 	template<typename T, typename U>
 	bool FaceTowards(T& anyGiant, U& anyTiny, std::string_view bone_name) {
 		Actor* giant = GetActorPtr(anyGiant);
@@ -43,5 +44,12 @@ namespace Gts {
 	bool FaceTowards(T& anyGiant, U& anyTiny) {
 		return FaceTowardsPoint(anyTiny, anyGiant->GetPosition());
 	}
+
+  // Specialise so we can just use FaceTowards instead of FaceTowardsPoint
+  // for all
+  template<typename T>
+	bool FaceTowards(T& anyTiny, const NiPoint3& point) {
+    return FaceTowardsPoint(anyTiny, point);
+  }
 
 }
