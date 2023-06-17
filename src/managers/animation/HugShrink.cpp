@@ -64,10 +64,6 @@ namespace {
 
 	void GTSBEH_HugAbsorbAtk(AnimationEventData& data) {
 		auto giant = &data.giant;
-		auto huggedActor = HugShrink::GetHuggiesActor(giant);
-		if (!huggedActor) {
-			return;
-		}
 	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,14 +99,14 @@ namespace {
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto huggedActor = HugShrink::GetHuggiesActor(player);
-		if (!huggedActor) {
-			return;
-		}
-		SetBeingHeld(huggedActor, false);
 		AnimationManager::StartAnim("Huggies_Spare", player);
 		HugShrink::Release(player);
 		HugShrink::DetachActorTask(player);
-		PushActorAway(player, huggedActor, 0.1);
+		if (huggedActor) {
+			SetBeingHeld(huggedActor, false);
+			PushActorAway(player, huggedActor, 0.1);
+		}
+		
 	}
 }
 
