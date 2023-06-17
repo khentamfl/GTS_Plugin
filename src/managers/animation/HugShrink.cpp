@@ -122,7 +122,9 @@ namespace Gts {
 
 	void HugShrink::DetachActorTask(Actor* giant) {
 		std::string name = std::format("Huggies_{}", giant->formID);
+		std::string name_2 = std::format("Huggies_Shrink_{}", giant->formID);
 		TaskManager::Cancel(name);
+		TaskManager::Cancel(name_2);
 	}
 
 	void HugShrink::ShrinkOtherTask(Actor* giant, Actor* tiny) {
@@ -153,7 +155,7 @@ namespace Gts {
 			HugShrink::Release(giantref);
 			return false;
 		}
-		Rumble::Once("HugShrink", giantref, 5.0 * sizedifference, 0.05);
+		shake_camera(giantref, 0.25 * sizedifference, 0.05);
 		ShrinkActor(tinyref, 0, 0.0015);
 		Grow(giantref, 0.0, 0.0003);
 		return true; 
@@ -188,7 +190,7 @@ namespace Gts {
        		return false;
       	}
 
-		GrabStaminaDrain(giantref, tinyref, sizedifference * 2);
+		GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
 		float stamina = GetAV(giantref, ActorValue::kStamina);
 		if (tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
 			SetBeingHeld(tinyref, false);

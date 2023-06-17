@@ -55,7 +55,7 @@ namespace Gts {
 		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
 			WasteMult *= 0.65;
 		}
-		float WasteStamina = (1.00 * WasteMult)/sizedifference;
+		float WasteStamina = (1.00 * WasteMult)/sizedifference/TimeScale();
 		DamageAV(giant, ActorValue::kStamina, WasteStamina);
 	}
 
@@ -73,7 +73,7 @@ namespace Gts {
 				}
 				float multiplier = AnimationManager::GetAnimSpeed(giant);
 				float WasteStamina = 0.50 * power * multiplier;
-				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult);
+				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult / TimeScale());
 				return true;
 			});
 		} else {
