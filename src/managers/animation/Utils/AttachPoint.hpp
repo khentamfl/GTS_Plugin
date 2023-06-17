@@ -72,8 +72,8 @@ namespace Gts {
 			return false;
 		}
 		NiPoint3 Coordinates = bone->world.translate;
-		float offset = (70 * sizedifference) - 70.0;
-		Coordinates.x += offset;
+		float offset = std::clamp((70f * sizedifference) - 70.0f, 0.0f, 9999999f);
+		//Coordinates.x += offset;
 		//Coordinates.y += offset;
 		Coordinates.z += offset;
 		return AttachTo(anyGiant, anyTiny, Coordinates);
@@ -105,6 +105,9 @@ namespace Gts {
 		DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0 , 1.0});
 		clevagePos += (bone->world * NiPoint3()) * (1.0/bone_count);
 		}
+
+		//clevagePos.x *= bonus;
+		//clevagePos.z *= bonus;
 
 		tiny->data.angle.x = giant->data.angle.x;
 		tiny->data.angle.y = giant->data.angle.y;
