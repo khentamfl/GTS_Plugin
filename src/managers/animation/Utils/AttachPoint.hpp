@@ -56,7 +56,8 @@ namespace Gts {
 	bool AttachToHand(T& anyGiant, U& anyTiny) {
 		return AttachTo(anyGiant, anyTiny, "NPC L Finger02 [LF02]");
 	}
-
+	
+	template<typename T, typename U>
 	bool HugAttach(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
