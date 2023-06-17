@@ -1,6 +1,6 @@
 #pragma once
-#include "node.hpp"
 #include "UI/DebugAPI.hpp"
+#include "node.hpp"
 
 using namespace RE;
 
@@ -56,9 +56,9 @@ namespace Gts {
 	bool AttachToHand(T& anyGiant, U& anyTiny) {
 		return AttachTo(anyGiant, anyTiny, "NPC L Finger02 [LF02]");
 	}
-	
+
 	template<typename T, typename U>
-	bool HugAttach(T& anyGiant, U& anyTiny) {
+	bool HugAttach(T& anyGiant, U& anyTiny, float sizedifference) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return false;
@@ -72,7 +72,7 @@ namespace Gts {
 			return false;
 		}
 		NiPoint3 Coordinates = bone->world.translate;
-		float offset = (70 + get_visual_scale(giant)/get_visual_scale(tiny)) - 70.0;
+		float offset = (70 * sizedifference) - 70.0;
 		Coordinates.y += offset;
 		Coordinates.y += offset;
 		Coordinates.z += offset;
