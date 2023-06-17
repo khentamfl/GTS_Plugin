@@ -44,14 +44,13 @@ namespace {
 		HugShrink::AttachActorTask(giant, huggedActor);
 	}
 
-	void GTS_Hug_Grow(AnimationEventData& data) {  /// Animation Event
+	void GTS_Hug_Grow(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto huggedActor = HugShrink::GetHuggiesActor(giant);
 		if (!huggedActor) {
 			return;
 		}
 		HugShrink::ShrinkOtherTask(giant, huggedActor);
-		AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor); /// Trigger GTS_Beh that starts something
 	}
 
 	void GTS_Hug_Moan(AnimationEventData& data) {
@@ -99,6 +98,7 @@ namespace {
 			return;
 		}
 		AnimationManager::StartAnim("Huggies_Shrink", player);
+		AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor); /// Trigger GTS_Beh that starts something
 	}
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
