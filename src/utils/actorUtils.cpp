@@ -18,34 +18,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-  Actor* GetActorPtr(Actor* actor) {
-		return actor;
-	}
-
-	Actor* GetActorPtr(Actor& actor) {
-		return &actor;
-	}
-
-	Actor* GetActorPtr(ActorHandle& actor) {
-		if (!actor) {
-			return nullptr;
-		}
-		return actor.get().get();
-	}
-	Actor* GetActorPtr(const ActorHandle& actor) {
-		if (!actor) {
-			return nullptr;
-		}
-		return actor.get().get();
-	}
-	Actor* GetActorPtr(FormID formId) {
-		Actor* actor = TESForm::LookupByID<Actor>(formId);
-		if (!actor) {
-			return nullptr;
-		}
-		return actor;
-	}
-  
 	float ShakeStrength(Actor* Source) {
 		float Size = get_visual_scale(Source);
 		float k = 0.065;
@@ -78,6 +50,34 @@ RE::ExtraDataList::~ExtraDataList() {
 }
 
 namespace Gts {
+  Actor* GetActorPtr(Actor* actor) {
+		return actor;
+	}
+
+	Actor* GetActorPtr(Actor& actor) {
+		return &actor;
+	}
+
+	Actor* GetActorPtr(ActorHandle& actor) {
+		if (!actor) {
+			return nullptr;
+		}
+		return actor.get().get();
+	}
+	Actor* GetActorPtr(const ActorHandle& actor) {
+		if (!actor) {
+			return nullptr;
+		}
+		return actor.get().get();
+	}
+	Actor* GetActorPtr(FormID formId) {
+		Actor* actor = TESForm::LookupByID<Actor>(formId);
+		if (!actor) {
+			return nullptr;
+		}
+		return actor;
+	}
+  
 	void PlayAnimation(Actor* actor, std::string_view animName) {
 		actor->NotifyAnimationGraph(animName);
 	}
