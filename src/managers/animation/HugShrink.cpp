@@ -127,23 +127,19 @@ namespace Gts {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
-		
+
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
-      
-			/*tiny->data.angle.x = giant->data.angle.x;
-			tiny->data.angle.y = giant->data.angle.y;
-			tiny->data.angle.z = giant->data.angle.z / 4;*/
-			float Pi = 3.141;
 
-            tiny->data.angle = giant->data.angle/4;
-			float tinydegree = tiny->data.angle.z * 180/ Pi;
-			float giantdegree = giant->data.angle.z * 180/ Pi;
-			
-            log::info("Tiny Angle: {}", Vector2Str(tiny->data.angle));
-            log::info("Giant Angle: {}", Vector2Str(giant->data.angle));
-			log::info("Tiny Degree: {}", tinydegree);
-			log::info("Giant Degree: {}", giantdegree);
+			if (!FaceTowards(giantref, tinyref)) {
+        // If face towards fails then actor is invalid
+        return false;
+      }
+
+      log::info("Tiny Angle: {}", Vector2Str(tinyref->data.angle));
+      log::info("Giant Angle: {}", Vector2Str(giantref->data.angle));
+			log::info("Tiny Degree: {}", tinyref->data.angle.z / 3.141 * 180.0);
+			log::info("Giant Degree: {}", giantref->data.angle.z / 3.141 * 180.0);
 
 			if (tinyref->IsDead() || sizedifference > 6.0 || !HugShrink::GetHuggiesActor(giantref)) {
 				HugShrink::Release(giantref);
@@ -155,7 +151,7 @@ namespace Gts {
                 // Unable to attach
                 return false;
             }
-			
+
 			// All good try another frame
 			return true;
 		});

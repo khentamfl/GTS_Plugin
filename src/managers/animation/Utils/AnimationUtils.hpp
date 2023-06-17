@@ -2,6 +2,7 @@
 
 #include "events.hpp"
 #include "managers/animation/Utils/AttachPoint.hpp"
+#include "managers/animation/Utils/TurnTowards.hpp"
 
 using namespace std;
 using namespace SKSE;

@@ -6,17 +6,6 @@ using namespace RE;
 
 namespace Gts {
 
-	Actor* GetActorPtr(Actor* actor);
-
-	Actor* GetActorPtr(Actor& actor);
-
-	Actor* GetActorPtr(ActorHandle& actor);
-
-	Actor* GetActorPtr(const ActorHandle& actor);
-
-	Actor* GetActorPtr(FormID formId);
-
-
 	template<typename T, typename U>
 	bool AttachTo(T& anyGiant, U& anyTiny, NiPoint3 point) {
 		Actor* giant =  GetActorPtr(anyGiant);

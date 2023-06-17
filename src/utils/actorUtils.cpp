@@ -18,6 +18,34 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+  Actor* GetActorPtr(Actor* actor) {
+		return actor;
+	}
+
+	Actor* GetActorPtr(Actor& actor) {
+		return &actor;
+	}
+
+	Actor* GetActorPtr(ActorHandle& actor) {
+		if (!actor) {
+			return nullptr;
+		}
+		return actor.get().get();
+	}
+	Actor* GetActorPtr(const ActorHandle& actor) {
+		if (!actor) {
+			return nullptr;
+		}
+		return actor.get().get();
+	}
+	Actor* GetActorPtr(FormID formId) {
+		Actor* actor = TESForm::LookupByID<Actor>(formId);
+		if (!actor) {
+			return nullptr;
+		}
+		return actor;
+	}
+  
 	float ShakeStrength(Actor* Source) {
 		float Size = get_visual_scale(Source);
 		float k = 0.065;
@@ -599,7 +627,7 @@ namespace Gts {
 	void AddSMTDuration(Actor* actor, float duration) {
 		if (Runtime::HasPerk(actor, "EternalCalamity")) {
 			auto transient = Transient::GetSingleton().GetData(actor);
-			if (transient) { 
+			if (transient) {
 				transient->SMT_Bonus_Duration += duration;
 				log::info("SMT Duration Added: {}", duration);
 			}
