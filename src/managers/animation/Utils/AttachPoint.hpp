@@ -73,7 +73,7 @@ namespace Gts {
 		}
 		NiPoint3 Coordinates = bone->world.translate;
 		float offset = (70 * sizedifference) - 70.0;
-		Coordinates.y += offset;
+		Coordinates.x += offset;
 		Coordinates.y += offset;
 		Coordinates.z += offset;
 		return AttachTo(anyGiant, anyTiny, Coordinates);
