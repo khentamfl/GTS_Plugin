@@ -148,10 +148,9 @@ namespace Gts {
 		float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 		if (sizedifference >= 4.0) {
 			SetBeingHeld(tinyref, false);
-			HugShrink::Release(giantref);
 			AnimationManager::StartAnim("Huggies_Spare", giantref);
-			HugShrink::DetachActorTask(giantref);
 			PushActorAway(giantref, tinyref, 0.1);
+			HugShrink::Release(giantref);
 			return false;
 		}
 		Rumble::Once("HugShrink", giantref, 5.0 * sizedifference, 0.05);
@@ -193,10 +192,9 @@ namespace Gts {
 		float stamina = GetAV(giantref, ActorValue::kStamina);
 		if (tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
 			SetBeingHeld(tinyref, false);
-			HugShrink::Release(giantref);
 			AnimationManager::StartAnim("Huggies_Spare", giantref);
-			HugShrink::DetachActorTask(giantref);
 			PushActorAway(giantref, tinyref, 0.1);
+			HugShrink::Release(giantref);
 			return false;
 		}
 		if (!HugAttach(gianthandle, tinyhandle, sizedifference)) {
