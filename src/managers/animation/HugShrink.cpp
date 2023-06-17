@@ -155,8 +155,8 @@ namespace Gts {
 			return false;
 		}
 		Rumble::Once("HugShrink", giantref, 5.0 * sizedifference, 0.05);
-		mod_target_scale(tinyref, -0.0015);
-		mod_target_scale(giantref, 0.0003);
+		ShrinkActor(tinyref, 0, 0.0015);
+		Grow(giantref, 0.0, 0.0003);
 		return true; 
 		});
 	}
