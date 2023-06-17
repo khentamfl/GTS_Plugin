@@ -131,7 +131,7 @@ namespace Gts {
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
-			if (!FaceTowards(giantref, tinyref)) {
+			if (!FaceOpposite(giantref, tinyref)) {
         // If face towards fails then actor is invalid
         return false;
       }

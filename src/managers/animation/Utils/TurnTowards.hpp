@@ -52,4 +52,23 @@ namespace Gts {
     return FaceTowardsPoint(anyTiny, point);
   }
 
+  template<typename T, typename U>
+	bool FaceOpposite(T& anyGiant, U& anyTiny) {
+		Actor* giant = GetActorPtr(anyGiant);
+		if (!giant) {
+			return false;
+		}
+    Actor* tiny = GetActorPtr(anyTiny);
+		if (!tiny) {
+			return false;
+		}
+    auto giantAngle = giant->data.angle.z;
+    float opposite = giantAngle - M_PI;
+    if opposite < 0.0 {
+      opposite += 2*M_PI;
+    }
+    tiny->data.angle.z = opposite;
+		return true;
+	}
+
 }
