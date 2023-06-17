@@ -79,7 +79,7 @@ namespace Gts {
 		}
     auto giantAngle = giant->data.angle.z;
     float opposite = giantAngle - M_PI;
-    if opposite < 0.0 {
+    if (opposite < 0.0) {
       opposite += 2*M_PI;
     }
     tiny->data.angle.z = opposite;
