@@ -53,8 +53,6 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		HugShrink::AttachActorTask(giant, huggedActor);
-		AnimationManager::StartAnim("Huggies_Shrink", huggedActor);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,6 +84,7 @@ namespace {
 			return;
 		}
 		AnimationManager::StartAnim("Huggies_Shrink", player);
+		AnimationManager::StartAnim("Huggies_Shrink", huggedActor);
 		//PushActorAway(player, huggedActor, 0.1);
 	}
 	void HugReleaseEvent(const InputEventData& data) {
