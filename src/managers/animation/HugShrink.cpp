@@ -199,7 +199,7 @@ namespace Gts {
 			PushActorAway(giantref, tinyref, 0.1);
 			return false;
 		}
-		if (!HugAttach(giantHandle, tinyhandle)) {
+		if (!HugAttach(gianthandle, tinyhandle)) {
 		//if (!AttachToObjectA(gianthandle, tinyhandle)) {
 			// Unable to attach
 			return false;
