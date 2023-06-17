@@ -40,17 +40,18 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
+		SetBeingHeld(huggedActor, true);
 		HugShrink::AttachActorTask(giant, huggedActor);
 	}
 
-	void GTS_Hug_Grow(AnimationEventData& data) {
+	void GTS_Hug_Grow(AnimationEventData& data) {  /// Animation Event
 		auto giant = &data.giant;
 		auto huggedActor = HugShrink::GetHuggiesActor(giant);
 		if (!huggedActor) {
 			return;
 		}
 		HugShrink::ShrinkOtherTask(giant, huggedActor);
-		AnimationManager::StartAnim("Huggies_Shrink", huggedActor);
+		AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor); /// Trigger GTS_Beh that starts something
 	}
 
 	void GTS_Hug_Moan(AnimationEventData& data) {
@@ -105,6 +106,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
+		SetBeingHeld(huggedActor, false);
 		AnimationManager::StartAnim("Huggies_Spare", player);
 		HugShrink::Release(player);
 		HugShrink::DetachActorTask(player);
@@ -149,6 +151,7 @@ namespace Gts {
 		auto tinyref = tinyhandle.get().get();
 		float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 		if (sizedifference >= 4.0) {
+			SetBeingHeld(tinyref, false);
 			HugShrink::Release(giantref);
 			AnimationManager::StartAnim("Huggies_Spare", giantref);
 			HugShrink::DetachActorTask(giantref);
@@ -193,6 +196,7 @@ namespace Gts {
 		GrabStaminaDrain(giantref, tinyref, sizedifference * 2);
 		float stamina = GetAV(giantref, ActorValue::kStamina);
 		if (tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
+			SetBeingHeld(tinyref, false);
 			HugShrink::Release(giantref);
 			AnimationManager::StartAnim("Huggies_Spare", giantref);
 			HugShrink::DetachActorTask(giantref);
@@ -260,13 +264,13 @@ namespace Gts {
 		AnimationManager::RegisterEvent("GTS_Hug_Grow", "Hugs", GTS_Hug_Grow);
 		AnimationManager::RegisterEvent("GTS_Hug_Moan", "Hugs", GTS_Hug_Moan);
 		AnimationManager::RegisterEvent("GTSBEH_HugAbsorbAtk", "Hugs", GTSBEH_HugAbsorbAtk);
-		//AnimationManager::RegisterEvent("GTSBEH_AbortGrab", "Hugs", GTSBEH_AbortGrab);
 	}
 
 	void HugShrink::RegisterTriggers() {
 		AnimationManager::RegisterTrigger("Huggies_Try", "Hugs", "GTSBEH_HugAbsorbStart_A");
         AnimationManager::RegisterTrigger("Huggies_Try_Victim", "Hugs", "GTSBEH_HugAbsorbStart_V");
         AnimationManager::RegisterTrigger("Huggies_Shrink", "Hugs", "GTSBEH_HugAbsorbAtk");
+		AnimationManager::RegisterTrigger("Huggies_Shrink_Victim", "Hugs", "GTSBEH_HugAbsorbAtk_V");
         AnimationManager::RegisterTrigger("Huggies_Spare", "Hugs", "GTSBEH_HugAbsorbExitLoop");
         AnimationManager::RegisterTrigger("Huggies_Cancel", "Hugs", "GTSBEH_PairedAbort");
 	}
