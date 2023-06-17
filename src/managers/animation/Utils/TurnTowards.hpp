@@ -16,7 +16,7 @@ namespace Gts {
 
 		auto tinyPos = tiny->GetPosition();
 
-    NiPoint forwards = NiPoint3(0, 1, 0);
+    NiPoint3 forwards = NiPoint3(0, 1, 0);
     NiPoint3 direction = point - tinyPos;
     direction.z = 0;
     direction = direction / direction.Length();
