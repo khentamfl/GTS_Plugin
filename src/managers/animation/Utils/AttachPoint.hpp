@@ -76,7 +76,7 @@ namespace Gts {
 		Coordinates.y += offset;
 		Coordinates.y += offset;
 		Coordinates.z += offset;
-		return AttachTo(anyGiant, anyTiny, offset);
+		return AttachTo(anyGiant, anyTiny, Coordinates);
 	}
 
 	template<typename T, typename U>
