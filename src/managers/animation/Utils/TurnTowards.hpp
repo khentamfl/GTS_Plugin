@@ -53,6 +53,21 @@ namespace Gts {
   }
 
   template<typename T, typename U>
+	bool FaceSame(T& anyGiant, U& anyTiny) {
+		Actor* giant = GetActorPtr(anyGiant);
+		if (!giant) {
+			return false;
+		}
+    Actor* tiny = GetActorPtr(anyTiny);
+		if (!tiny) {
+			return false;
+		}
+    auto giantAngle = giant->data.angle.z;
+    tiny->data.angle.z = giantAngle;
+		return true;
+	}
+
+  template<typename T, typename U>
 	bool FaceOpposite(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
