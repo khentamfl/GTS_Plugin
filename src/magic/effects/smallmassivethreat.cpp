@@ -14,7 +14,7 @@ namespace {
 		return 0.0;
 	}
 
-	float GetSMTBonus(Actor* actor) {
+	float GetSMTPenalty(Actor* actor) {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			return transient->SMT_Penalty_Duration;
