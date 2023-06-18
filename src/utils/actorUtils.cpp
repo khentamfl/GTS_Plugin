@@ -539,6 +539,31 @@ namespace Gts {
 		}
 	}
 
+	void StaggerOr(Actor* giant, Actor* tiny, float power) {
+		if (tiny->IsDead()) {
+			return;
+		}
+		float giantSize = get_visual_scale(giant);
+		float tinySize = get_visual_scale(tiny);
+		if (HasSMT(giant)) {
+			giantSize *= 4.0;
+		}
+		float sizedifference = giantSize/tinySize;
+		int ragdollchance = rand() % 30 + 1.0;
+		if (sizedifference >= 3.0) {
+			PushActorAway(giant, tiny, power/100); // Always push
+			return;
+		}
+		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.25 && sizedifference < 3.0) {
+			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
+			tiny->NotifyAnimationGraph("staggerStart");
+			return;
+		} else if (ragdollchance == 30.0) {
+			PushActorAway(giant, tiny, power/100); // Push instead
+			return;
+		}
+	}
+
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage) {
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
 		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (30.0 * damage * damagebonus), radius, random, bonedamage);

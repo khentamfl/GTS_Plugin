@@ -117,14 +117,7 @@ namespace Gts {
 
 			EventDispatcher::DoOnImpact(impact_data);
 
-			if (!impact_data.nodes.empty() && actor != nullptr) {
-				UnderFoot underfoot = UnderFoot {
-					.force = 1.0,
-				};
-				EventDispatcher::DoUnderFootEvent(underfoot);
-			}
-
-			/*const float BASE_DISTANCE = 75.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
+			const float BASE_DISTANCE = 75.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
 			const float BASE_FOOT_DISTANCE = 40.0; // Checks the distance of foot squishing
 			const float SCALE_RATIO = 3.0;
 			float bonusscale = 1.0;
@@ -143,8 +136,8 @@ namespace Gts {
 					giantScale *= 2.0;
 				}
 
-				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
-					giantScale *= 2.0;
+				if (HasSMT(giant)) {
+					giantScale *= 2.25;
 				}
 
 				NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
@@ -181,7 +174,7 @@ namespace Gts {
 										UnderFoot underfoot = UnderFoot {
 											.giant = impact_data.actor,
 											.tiny = otherActor,
-											.force = 1.0, //aveForce,
+											.force = aveForce,
 											.foot = foot,
 											.bodyParts = {otherActor->GetCurrent3D()},
 											.footEvent = kind,
@@ -194,7 +187,7 @@ namespace Gts {
 						}
 					}
 				}
-			}*/
+			}
 		}
 	}
 }

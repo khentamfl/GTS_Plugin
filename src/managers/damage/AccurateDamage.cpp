@@ -1,8 +1,6 @@
-#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
-#include "managers/damage/LaunchActor.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "scale/scalespellmanager.hpp"
@@ -35,9 +33,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	const std::string_view RNode = "NPC R Foot [Rft ]";
-	const std::string_view LNode = "NPC L Foot [Lft ]";
-
 	const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 	const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 	const std::string_view leftCalfLookup = "NPC L Calf [LClf]";
@@ -86,41 +81,6 @@ namespace {
 			tiny->NotifyAnimationGraph("staggerStart");
 		}
 	}
-
-	void StaggerOr(Actor* giant, Actor* tiny, float power) {
-		auto profiler = Profilers::Profile("AccurateDamage: StaggerOr");
-		if (tiny->IsDead()) {
-			return;
-		}
-		if (tiny->IsInRagdollState()) {
-			return;
-		}
-		if (IsBeingHeld(tiny)) {
-			return;
-		} if (!CanBeStaggered(giant, tiny)) {
-			return;
-		}
-		float giantSize = get_visual_scale(giant);
-		float tinySize = get_visual_scale(tiny);
-		if (HasSMT(giant)) {
-			giantSize *= 4.0;
-		}
-		float sizedifference = giantSize/tinySize;
-		int ragdollchance = rand() % 30 + 1.0;
-		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.25 && sizedifference < 3.0) {
-			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-			tiny->NotifyAnimationGraph("staggerStart");
-			return;
-		}
-		if (sizedifference >= 1.49) {
-			PushActorAway(giant, tiny, power/12); // Always push
-			return;
-		} else if (ragdollchance == 30.0) {
-			PushActorAway(giant, tiny, power/12); // Push instead
-			return;
-		}
-	}
-
 
 	void SMTCrushCheck(Actor* Caster, Actor* Target) {
 		auto profiler = Profilers::Profile("AccurateDamage: SMTCrushCheck");
@@ -417,13 +377,52 @@ namespace Gts {
 		if (!CanDoDamage(giant, tiny)) {
 			return;
 		}
+		float threshold = 6.0;
+		float giantSize = get_visual_scale(giant);
+		if (HasSMT(giant)) {
+			giantSize += 2.5;
+			threshold = 0.8;
+		}
+		auto& sizemanager = SizeManager::GetSingleton();
+		auto& crushmanager = CrushManager::GetSingleton();
+		float tinySize = get_visual_scale(tiny);
+		if (IsDragon(tiny)) {
+			tinySize *= 2.6;
+		}
+
+		float movementFactor = 1.0;
+		if (giant->AsActorState()->IsSprinting()) {
+			movementFactor *= 1.75;
+		}
+		if (giant->IsSneaking()) {
+			movementFactor *= 0.6;
+		}
 		if (evt.footEvent == FootEvent::JumpLand) {
-			DoLaunch(giant, 1.2, 2.0 * damage, RNode, 2.5);
-			DoLaunch(giant, 1.2, 2.0 * damage, LNode, 2.5);
-		} else if (evt.footEvent == FootEvent::Right) {
-			DoLaunch(giant, 0.9, 1.50 * damage, RNode, 2.0);
-		} else if (evt.footEvent == FootEvent::Left) {
-			DoLaunch(giant, 0.9, 1.50 * damage, LNode, 2.0);
+			damage = 0.0;
+		}
+
+		float sizeRatio = giantSize/tinySize * movementFactor;
+		float knockBack = LAUNCH_KNOCKBACK * giantSize * movementFactor * force;
+
+		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
+			DoSizeDamage(giant, tiny, movementFactor, force * 22 * damage, 50, 0.50, true);
+
+			if (!sizemanager.IsLaunching(tiny)) {
+				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+				StaggerOr(giant, tiny, knockBack);
+			}
+		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER && sizeRatio >= 1.49) {
+			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+				if (sizeRatio >= threshold) { // Launch
+					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
+						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
+						DamageAV(tiny, ActorValue::kHealth, damage);
+					}
+					StaggerOr(giant, tiny, knockBack);
+					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 35 * movementFactor * giantSize * force);
+				}
+			}
 		}
 	}
 

@@ -20,30 +20,6 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.50;
 
-	void StaggerOr(Actor* giant, Actor* tiny, float power) {
-		if (tiny->IsDead()) {
-			return;
-		}
-		float giantSize = get_visual_scale(giant);
-		float tinySize = get_visual_scale(tiny);
-		if (HasSMT(giant)) {
-			giantSize *= 4.0;
-		}
-		float sizedifference = giantSize/tinySize;
-		int ragdollchance = rand() % 30 + 1.0;
-		if (sizedifference >= 3.0) {
-			PushActorAway(giant, tiny, power/100); // Always push
-			return;
-		}
-		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.25 && sizedifference < 3.0) {
-			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-			tiny->NotifyAnimationGraph("staggerStart");
-			return;
-		} else if (ragdollchance == 30.0) {
-			PushActorAway(giant, tiny, power/100); // Push instead
-			return;
-		}
-	}
 
 	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
 		if (IsBeingHeld(tiny)) {
@@ -52,8 +28,10 @@ namespace {
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		float giantSize = get_visual_scale(giant);
 		float SMT = 1.0;
+		float threshold = 6.0;
 		if (HasSMT(giant)) {
 			giantSize += 1.0;
+			threshold = 0.8;
 			force += 0.20;
 		}
 		float tinySize = get_visual_scale(tiny);
@@ -78,7 +56,7 @@ namespace {
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER && sizeRatio >= 1.49) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-				if (sizeRatio >= 6.0) { // Launch
+				if (sizeRatio >= threshold) { // Launch
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
