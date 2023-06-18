@@ -4,6 +4,7 @@
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "magic/effects/common.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
