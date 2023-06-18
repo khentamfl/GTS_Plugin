@@ -292,16 +292,22 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
-		float MINIMUM_VORE_SCALE = MINIMUM_SANDWICH_SCALE_RATIO;
+		float MINIMUM_SANDWICH_SCALE = MINIMUM_SANDWICH_SCALE_RATIO;
+		float MINIMUM_DISTANCE = MINIMUM_SANDWICH_DISTANCE;
+
+		if (HasSMT(pred)) {
+			MINIMUM_SANDWICH_SCALE = 0.8;
+			MINIMUM_DISTANCE *= 1.75;
+		}
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_SANDWICH_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
+		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 			Notify("{} is too big to be smothered between thighs.", prey->GetDisplayFullName());
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_SANDWICH_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 				return false;
 			} else {
@@ -316,6 +322,19 @@ namespace Gts {
 		auto& sandwiching = ThighSandwichController::GetSingleton();
 		if (!sandwiching.CanSandwich(pred, prey)) {
 			return;
+		}
+		if (HasSMT(pred)) {
+			float expected = 8.0f;
+			float predscale = get_target_scale(pred);
+			float preyscale = get_target_scale(prey);
+			float sizedifference = predscale/preyscale;
+			float difference = std::clamp(predscale/expected, preyscale/expected, 0.96f);
+			float shrink = preyscale - difference;
+			if (sizedifference < expected) {
+				DamageAV(pred, ActorValue::kStamina, 60.0);
+				mod_target_scale(prey, -shrink);
+				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);
+			}
 		}
 		auto& data = sandwiching.GetSandwichingData(pred);
 		data.AddTiny(prey);

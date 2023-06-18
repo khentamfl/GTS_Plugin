@@ -708,9 +708,15 @@ namespace Gts {
 			}
 		}
 		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
+		float MINIMUM_DISTANCE = MINIMUM_VORE_DISTANCE;
 		if (Runtime::HasPerkTeam(pred, "VorePerk")) {
 			MINIMUM_VORE_SCALE = 6.0;
 		}
+
+		if (if (HasSMT(pred)) {
+			MINIMUM_VORE_SCALE = 0.7;
+			MINIMUM_DISTANCE *= 1.75;
+		})
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
@@ -726,13 +732,13 @@ namespace Gts {
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
-			MINIMUM_VORE_SCALE = 8.0;
+			MINIMUM_SCALE *= 1.14;
 		}
-		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
+		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_VORE_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 				Notify("{} is important and shouldn't be eaten.", prey->GetDisplayFullName());
 				return false;
@@ -767,8 +773,6 @@ namespace Gts {
 			wastestamina = 40/sizedifference; // Less tamina drain for non Player
 		}
 
-
-
 		if (!CanVore(pred, prey)) {
 			return;
 		}
@@ -778,6 +782,19 @@ namespace Gts {
 			Runtime::PlaySound("VoreSound_Fail", pred, 1.8, 0.0);
 			StaggerActor(prey);
 			return;
+		}
+
+		if (HasSMT(pred)) {
+			float expected = 8.0f;
+			float predscale = get_target_scale(pred);
+			float preyscale = get_target_scale(prey);
+			float sizedifference = predscale/preyscale;
+			float difference = std::clamp(predscale/expected, preyscale/expected, 0.96f);
+			float shrink = preyscale - difference;
+			wastestamina *= 3.0;
+			if (sizedifference < expected) {
+				mod_target_scale(prey, -shrink);
+			}
 		}
 
 		DamageAV(pred, ActorValue::kStamina, wastestamina);

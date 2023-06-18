@@ -164,7 +164,7 @@ namespace Gts {
 
 		if (HasSMT(pred)) {
 			MINIMUM_GRAB_SCALE = 0.8;
-			MINIMUM_DISTANCE *= 2.5;
+			MINIMUM_DISTANCE *= 1.75;
 		}
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
@@ -199,6 +199,7 @@ namespace Gts {
 			float shrink = preyscale - difference;
 			if (sizedifference < expected) {
 				mod_target_scale(prey, -shrink);
+				DamageAV(pred, ActorValue::kStamina, 60.0);
 				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);
 			}
 		}
