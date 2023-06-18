@@ -300,7 +300,9 @@ namespace {
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack", player);
 		} else {
-			TiredSound(player, "You're too tired to perform thigh sandwich");
+			if (IsGtsBusy(player)) {
+			 TiredSound(player, "You're too tired to perform thigh sandwich");
+			}
 		}
 	}
 
@@ -313,7 +315,9 @@ namespace {
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack_Heavy", player);
 		} else {
-			TiredSound(player, "You're too tired to perform strong thigh sandwich");
+			if (IsGtsBusy(player)) {
+				TiredSound(player, "You're too tired to perform strong thigh sandwich");
+			}
 		}
 	}
 
