@@ -344,7 +344,7 @@ namespace Gts {
 			} else if (type == AllowStaggerRecord) {
 				bool allow_stagger;
 				serde->ReadRecordData(&allow_stagger, sizeof(allow_stagger));
-				GetSingleton().allow_stagger = allow_stagger
+				GetSingleton().allow_stagger = allow_stagger;
 			} else if (type == StompAiRecord) {
 				bool Stomp_Ai;
 				serde->ReadRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
@@ -539,7 +539,7 @@ namespace Gts {
 			return;
 		}
 		bool allow_stagger = GetSingleton().allow_stagger;
-		serde->WriteRecordData(&allow_stagger, sizeof(allow_stagger);)
+		serde->WriteRecordData(&allow_stagger, sizeof(allow_stagger));
 
 		if (!serde->OpenRecord(LessGoreRecord, 1)) {
 			log::error("Unable to open Less Gore record to write cosave data");
