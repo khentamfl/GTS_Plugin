@@ -142,6 +142,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		for (auto tiny: sandwichdata.GetActors()) {
 			AllowToBeCrushed(tiny, false);
+			SetBeingHeld(tiny, true);
 		}
 		sandwichdata.EnableSuffocate(false);
 	}
@@ -217,7 +218,7 @@ namespace {
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
-		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", true, 0.225, 2.5);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
 	}
 
 	void GTSSandwich_MoveLL_end(AnimationEventData& data) {
@@ -243,6 +244,9 @@ namespace {
 		sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growing
 		sandwichdata.EnableRuneTask(&data.giant, true); // Launch Rune Shrinking
 		sandwichdata.OverideShrinkRune(0.0);
+		for (auto tiny: sandwichdata.GetActors()) {
+			SetBeingHeld(tiny, false);
+		}
 	}
 
 	void GTSSandwich_ThighAttack_start(AnimationEventData& data) {
@@ -254,6 +258,9 @@ namespace {
 
 	void GTSSandwich_DropDown(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		for (auto tiny: sandwichdata.GetActors()) {
+			SetBeingHeld(tiny, false);
+		}
 		sandwichdata.MoveActors(false);
 		sandwichdata.ReleaseAll();
 	}
@@ -261,6 +268,9 @@ namespace {
 	void GTSSandwich_ExitAnim(AnimationEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
+		for (auto tiny: sandwichdata.GetActors()) {
+			SetBeingHeld(tiny, false);
+		}
 		sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growth
 		sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrink
 		sizemanager.SetActionBool(&data.giant, false, 1.0); // Allow sandwich repeat

@@ -791,7 +791,6 @@ namespace Gts {
 			float sizedifference = predscale/preyscale;
 			float difference = std::clamp(predscale/expected, preyscale/expected, 0.96f);
 			float shrink = preyscale - difference;
-			wastestamina *= 3.0;
 			AddSMTPenalty(pred, 5.0);
 			if (sizedifference < expected) {
 				mod_target_scale(prey, -shrink);

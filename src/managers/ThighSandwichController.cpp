@@ -168,7 +168,12 @@ namespace Gts {
 			}
 
 			float tinyScale = get_visual_scale(tiny);
-			if (giantScale/tinyScale < 6.0) {
+			float sizediffernce = giantScale/tinyScale;
+			float threshold = 6.0;
+			if (HasSMT(giant)) {
+				threshold = 0.8;
+			}
+			if (sizedifference < threshold) {
 				PushActorAway(giant, tiny, 0.5);
 				Cprint("{} slipped out of {} thighs", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 				this->tinies.erase(tiny->formID); // Disallow button abuses to keep tiny when on low scale
@@ -331,7 +336,6 @@ namespace Gts {
 			float difference = std::clamp(predscale/expected, preyscale/expected, 0.96f);
 			float shrink = preyscale - difference;
 			if (sizedifference < expected) {
-				DamageAV(pred, ActorValue::kStamina, 60.0);
 				mod_target_scale(prey, -shrink);
 				AddSMTPenalty(pred, 5.0);
 				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);

@@ -200,7 +200,6 @@ namespace Gts {
 			float shrink = preyscale - difference;
 			if (sizedifference < expected) {
 				mod_target_scale(prey, -shrink);
-				DamageAV(pred, ActorValue::kStamina, 60.0);
 				AddSMTPenalty(pred, 5.0);
 				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);
 			}
