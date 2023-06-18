@@ -58,7 +58,7 @@ namespace Gts {
 	}
 
 	template<typename T, typename U>
-	bool AttachToObjectAScaled(T& anyGiant, U& anyTiny, float additionalScale) {
+	bool HugAttach(T& anyGiant, U& anyTiny, float additionalScale) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return false;
@@ -73,7 +73,35 @@ namespace Gts {
 		}
 		auto giantPos = giant->GetPosition();
 		NiPoint3 target = bone->world.translate;
-		target = (target - giantPos) * additionalScale + giantPos;
+    NiPoint3 giantLocal = (target - giantPos);
+
+    // TWEAK THESE
+    const float M_FORWARD = 1.25;
+    const float M_UP = 2.0;
+
+    // y = m*x + c
+    // @1x scale no change
+    // 1 = m*1+c
+    //  Therefore c=?
+    // c = 1-m
+
+    info::log("Scale ratio: {}", additionalScale);
+    float scale_forward = M_FORWARD * additionalScale + (1.0 - M_FORWARD);
+    float scale_up = M_UP * additionalScale + (1.0 - M_UP);
+    info::log("  - scale_forward: {}", scale_forward);
+    info::log("  - scale_up: {}", scale_up);
+    // scale_forward = std::clamp(scale_forward, 0.5f, 2.0f);
+    // scale_up = std::clamp(scale_up, 0.5f, 2.0f);
+    log::info("  - local delta: {}", Vector2Str(giantLocal));
+    log::info("  - local forwards: {}", NiPoint3(giantLocal.x, giantLocal.y, 0.0).Length());
+    log::info("  - local up: {}", giantLocal.z);
+    giantLocal.x *= scale_forward;
+    giantLocal.y *= scale_forward;
+    giantLocal.z *= scale_up;
+    log::info("  - local delta scaled: {}", Vector2Str(giantLocal));
+    log::info("  - local forwards scaled: {}", NiPoint3(giantLocal.x, giantLocal.y, 0.0).Length());
+    log::info("  - local up scaled: {}", giantLocal.z);
+		target = giantLocal + giantPos;
 		return AttachTo(anyGiant, anyTiny, target);
 	}
 

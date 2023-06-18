@@ -199,7 +199,7 @@ namespace Gts {
 				HugShrink::Release(giantref);
 				return false;
 			}
-			if (!AttachToObjectAScaled(gianthandle, tinyhandle, sizedifference)) {
+			if (!HugAttach(gianthandle, tinyhandle, sizedifference)) {
 				return false;
 			}
 
