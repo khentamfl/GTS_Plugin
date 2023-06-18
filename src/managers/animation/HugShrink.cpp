@@ -155,7 +155,7 @@ namespace Gts {
 			HugShrink::Release(giantref);
 			return false;
 		}
-		shake_camera(giantref, 0.25 * sizedifference, 0.05);
+		shake_camera(giantref, 0.50 * sizedifference, 0.05);
 		ShrinkActor(tinyref, 0, 0.0015);
 		Grow(giantref, 0.0, 0.0003);
 		return true; 
