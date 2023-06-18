@@ -131,6 +131,9 @@ namespace Gts {
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
 					if (otherActor) {
+						if (!CanBeStaggered(giant, otherActor)) {
+							return;
+						}
 						float tinyScale = get_visual_scale(otherActor);
 						if (giantScale / tinyScale > SCALE_RATIO) {
 							NiPoint3 actorLocation = otherActor->GetPosition();

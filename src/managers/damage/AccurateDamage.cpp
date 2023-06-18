@@ -58,16 +58,6 @@ namespace {
 		return true;
 	}
 
-	bool CanBeStaggered(Actor* giant, Actor* tiny) {
-		if (Persistent::GetSingleton().allow_stagger == true && (IsTeammate(giant)) && (tiny->formID == 0x14 || IsTeammate(tiny))) {
-			log::info("Stagger true, allow_Stagger: {}", Persistent::GetSingleton().allow_stagger);
-			return true; // Protect Player/followers from stagger
-		}
-		log::info("Stagger false");
-		return false;
-	}
-
-
 	void ModVulnerability(Actor* giant, Actor* tiny) {
 		if (!Runtime::HasPerkTeam(giant, "GrowingPressure")) {
 			return;

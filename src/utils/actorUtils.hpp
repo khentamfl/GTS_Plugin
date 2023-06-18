@@ -37,6 +37,8 @@ namespace Gts {
 	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude);
 
 	void CompleteDragonQuest();
+
+	bool CanBeStaggered(Actor* giant, Actor* tiny);
 	bool IsDragon(Actor* actor);
 	bool IsLiving(Actor* actor);
 
