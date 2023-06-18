@@ -1,4 +1,5 @@
 #pragma once
+#include "data/runtime.hpp"
 #include "UI/DebugAPI.hpp"
 #include "node.hpp"
 
@@ -128,7 +129,9 @@ namespace Gts {
 			if (!bone) {
 				return false;
 			}
-			DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0, 1.0});
+			if (Runtime::GetBool("EnableDebugOverlay")) {
+				DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0, 1.0});
+			}
 			clevagePos += (bone->world * NiPoint3()) * (1.0/bone_count);
 		}
 
@@ -138,8 +141,9 @@ namespace Gts {
 		tiny->data.angle.x = giant->data.angle.x;
 		tiny->data.angle.y = giant->data.angle.y;
 		tiny->data.angle.z = giant->data.angle.z;
-
-		DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0, 1.0});
+		if (Runtime::GetBool("EnableDebugOverlay")) {
+			DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0, 1.0});
+		}
 
 		return AttachTo(anyGiant, anyTiny, clevagePos);
 	}

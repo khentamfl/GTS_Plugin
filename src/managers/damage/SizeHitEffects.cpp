@@ -160,6 +160,10 @@ namespace Gts {
 
 
 	void SizeHitEffects::DoHitGrowth(Actor* receiver, Actor* attacker, float damage) {
+		auto grabbedActor = Grab::GetHeldActor(receiver);
+		if (grabbedActor == attacker) {
+			return;
+		}
 		int LaughChance = rand() % 12;
 		int ShrinkChance = rand() % 5;
 		auto& sizemanager = SizeManager::GetSingleton();

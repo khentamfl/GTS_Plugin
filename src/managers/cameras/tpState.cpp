@@ -70,7 +70,9 @@ namespace Gts {
 						auto bone_count = bones.size();
 						for (auto bone: bones) {
 							auto worldPos = bone->world * NiPoint3();
-							DebugAPI::DrawSphere(glm::vec3(worldPos.x, worldPos.y, worldPos.z), 1.0, 10, {1.0, 1.0, 0.0, 1.0});
+							if (Runtime::GetBool("EnableDebugOverlay")) {
+								DebugAPI::DrawSphere(glm::vec3(worldPos.x, worldPos.y, worldPos.z), 1.0, 10, {1.0, 1.0, 0.0, 1.0});
+							}
 							auto localPos = transform * worldPos;
 							bonePos += localPos * (1.0/bone_count);
 						}
@@ -82,7 +84,9 @@ namespace Gts {
 						        }
 						   }*/
 						NiPoint3 worldBonePos = playerTrans * bonePos;
-						DebugAPI::DrawSphere(glm::vec3(worldBonePos.x, worldBonePos.y, worldBonePos.z), 1.0, 10, {0.0, 1.0, 0.0, 1.0});
+						if (Runtime::GetBool("EnableDebugOverlay")) {
+							DebugAPI::DrawSphere(glm::vec3(worldBonePos.x, worldBonePos.y, worldBonePos.z), 1.0, 10, {0.0, 1.0, 0.0, 1.0});
+						}
 						smoothedBonePos.target = bonePos;
 						pos += smoothedBonePos.value;
 					}
