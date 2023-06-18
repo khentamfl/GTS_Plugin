@@ -1,3 +1,4 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
@@ -416,33 +417,13 @@ namespace Gts {
 		if (!CanDoDamage(giant, tiny)) {
 			return;
 		}
-
-		float giantSize = get_visual_scale(giant);
-		if (HasSMT(giant)) {
-			giantSize += 2.5;
-		}
-		auto& sizemanager = SizeManager::GetSingleton();
-		auto& crushmanager = CrushManager::GetSingleton();
-		float tinySize = get_visual_scale(tiny);
-		if (IsDragon(tiny)) {
-			tinySize *= 2.6;
-		}
-
-		float movementFactor = 1.0;
-		if (giant->AsActorState()->IsSprinting()) {
-			movementFactor *= 1.75;
-		}
-		if (giant->IsSneaking()) {
-			movementFactor *= 0.6;
-		}
 		if (evt.footEvent == FootEvent::JumpLand) {
-			DoLaunch(&data.giant, 1.2, 2.0, RNode, 2.0);
-			DoLaunch(&data.giant, 1.2, 2.0, LNode, 2.0);
-		}
-		else if (evt.footEvent == FootEvent::Right) {
-			DoLaunch(&data.giant, 0.9, 1.50, RNode, 2.0);
+			DoLaunch(giant, 1.2, 2.0 * damage RNode, 2.5);
+			DoLaunch(giant, 1.2, 2.0 * damage, LNode, 2.5);
+		} else if (evt.footEvent == FootEvent::Right) {
+			DoLaunch(giant, 0.9, 1.50 * damage, RNode, 2.0);
 		} else if (evt.footEvent == FootEvent::Left) {
-			DoLaunch(&data.giant, 0.9, 1.50, LNode, 2.0);
+			DoLaunch(giant, 0.9, 1.50 * damage, LNode, 2.0);
 		}
 	}
 
