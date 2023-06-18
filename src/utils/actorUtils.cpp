@@ -634,6 +634,14 @@ namespace Gts {
 		}
 	}
 
+	void AddSMTPenalty(Actor* actor, float penalty) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			transient->SMT_Penalty_Duration += penalty;
+			log::info("SMT Penalty Added: {}", penalty);
+		}
+	}
+
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause) {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);

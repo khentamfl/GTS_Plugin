@@ -14,10 +14,19 @@ namespace {
 		return 0.0;
 	}
 
+	float GetSMTBonus(Actor* actor) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			return transient->SMT_Penalty_Duration;
+		}
+		return 0.0;
+	}
+
 	void NullifySMTDuration(Actor* actor) {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			transient->SMT_Bonus_Duration = 0.0;
+			transient->SMT_Penalty_Duration = 0.0;
 		}
 	}
 }
@@ -38,9 +47,14 @@ namespace Gts {
 		static Timer warningtimer = Timer(3.0);
 		float CasterScale = get_target_scale(caster);
 		float bonus = GetSMTBonus(caster);
+		float penalty = GetSMTPenalty(caster);
 		if (bonus > 0.5) {
 			GetActiveEffect()->duration += bonus;
 
+			NullifySMTDuration(caster);
+		}
+		if (penalty > 0.5) {
+			GetActiveEffect()->duration -= penalty;
 			NullifySMTDuration(caster);
 		}
 		if (CasterScale >= 1.50) {

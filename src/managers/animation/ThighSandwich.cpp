@@ -98,7 +98,7 @@ namespace {
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999.0f);
 		float damage = 0.6 * damagemult * sizedifference * animSpeed * mult * normaldamage * GetPerkBonus_Thighs(giant);
-		if HasSMT(giant) {
+		if (HasSMT(giant)) {
 			damage *= 3.0;
 		}
 		DamageAV(tiny, ActorValue::kHealth, damage);

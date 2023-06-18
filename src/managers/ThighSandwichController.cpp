@@ -333,6 +333,7 @@ namespace Gts {
 			if (sizedifference < expected) {
 				DamageAV(pred, ActorValue::kStamina, 60.0);
 				mod_target_scale(prey, -shrink);
+				AddSMTPenalty(pred, 5.0);
 				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);
 			}
 		}

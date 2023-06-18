@@ -56,6 +56,7 @@ namespace Gts {
 			float carryweight_boost = 0.0;
 			float health_boost = 0.0;
 			float SMT_Bonus_Duration = 0.0;
+			float SMT_Penalty_Duration = 0.0;
 			float basehp = 0.0;
 
 			bool can_do_vore = true;
@@ -86,6 +87,7 @@ namespace Gts {
 			result.carryweight_boost = carryweight_boost;
 			result.health_boost = health_boost;
 			result.SMT_Bonus_Duration = SMT_Bonus_Duration;
+			result.SMT_Penalty_Duration = SMT_Penalty_Duration;
 			result.basehp = basehp;
 			result.can_do_vore = can_do_vore;
 			result.can_be_crushed = can_be_crushed;
