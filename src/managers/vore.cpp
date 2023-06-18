@@ -713,10 +713,10 @@ namespace Gts {
 			MINIMUM_VORE_SCALE = 6.0;
 		}
 
-		if (if (HasSMT(pred)) {
+		if (HasSMT(pred)) {
 			MINIMUM_VORE_SCALE = 0.7;
 			MINIMUM_DISTANCE *= 1.75;
-		})
+		}
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
@@ -732,7 +732,7 @@ namespace Gts {
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
-			MINIMUM_SCALE *= 1.14;
+			MINIMUM_VORE_SCALE *= 1.15;
 		}
 		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
 			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
