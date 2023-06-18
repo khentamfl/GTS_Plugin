@@ -46,14 +46,21 @@ namespace {
 	const float UNDERFOOT_POWER = 0.60;
 
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (tiny->IsPlayerTeammate() || Runtime::InFaction(tiny, "FollowerFaction"))) {
-			return false;
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (IsTeammate(tiny))) {
+			return false; // Protect NPC's against player size-related effects
 		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && (giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction")) && (tiny->IsPlayerTeammate() || Runtime::InFaction(tiny, "FollowerFaction"))) {
-			return false;
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && (IsTeammate(giant)) && (IsTeammate(tiny))) {
+			return false; // Disallow NPC's to damage each-other if they're following Player
 		}
-		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && (giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction")) && tiny->formID == 0x14) {
-			return false;
+		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && (IsTeammate(giant)) && tiny->formID == 0x14) {
+			return false; // Protect Player against friendly NPC's damage
+		}
+		return true;
+	}
+
+	bool CanBeStaggered(Actor* giant, Actor* tiny) {
+		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && (IsTeammate(giant)) && (tiny->formID == 0x14 || IsTeammate(tiny))) {
+			return false; // Protect Player/followers from stagger
 		}
 		return true;
 	}
@@ -69,6 +76,9 @@ namespace {
 
 	void MiniStagger(Actor* giant, Actor* tiny) {
 		if (IsBeingHeld(tiny)) {
+			return;
+		}
+		if (!CanBeStaggered(giant, tiny)) {
 			return;
 		}
 		float giantSize = get_visual_scale(giant);
@@ -89,6 +99,8 @@ namespace {
 			return;
 		}
 		if (IsBeingHeld(tiny)) {
+			return;
+		} if (!CanBeStaggered(giant, tiny)) {
 			return;
 		}
 		float giantSize = get_visual_scale(giant);
