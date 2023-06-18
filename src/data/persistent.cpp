@@ -15,6 +15,7 @@ namespace {
 	inline const auto DevourmentCompatRecord = _byteswap_ulong('DVCR');
 	inline const auto FeetTrackingRecord = _byteswap_ulong('FTRD');
 	inline const auto LessGoreRecord = _byteswap_ulong('LGRD');
+	inline const auto AllowStaggerRecord = _byteswap_ulong('ASRD');
 	inline const auto VoreCombatOnlyRecord = _byteswap_ulong('VRCO');
 	inline const auto IsSpeedAdjustedRecord = _byteswap_ulong('ANAJ');
 	inline const auto TremorScales = _byteswap_ulong('TREM');
@@ -340,6 +341,10 @@ namespace Gts {
 				bool less_gore;
 				serde->ReadRecordData(&less_gore, sizeof(less_gore));
 				GetSingleton().less_gore = less_gore;
+			} else if (type == AllowStaggerRecord) {
+				bool allow_stagger;
+				serde->ReadRecordData(&allow_stagger, sizeof(allow_stagger));
+				GetSingleton().allow_stagger = allow_stagger
 			} else if (type == StompAiRecord) {
 				bool Stomp_Ai;
 				serde->ReadRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
@@ -528,6 +533,14 @@ namespace Gts {
 
 		bool devourment_compatibility = GetSingleton().devourment_compatibility;
 		serde->WriteRecordData(&devourment_compatibility, sizeof(devourment_compatibility));
+
+		if (!serde->OpenRecord(AllowStaggerRecord, 1)) {
+			log::error("Unable to open Allow Stagger record to write cosave data");
+			return;
+		}
+		bool allow_stagger = GetSingleton().allow_stagger;
+		serde->WriteRecordData(&allow_stagger, sizeof(allow_stagger);)
+
 		if (!serde->OpenRecord(LessGoreRecord, 1)) {
 			log::error("Unable to open Less Gore record to write cosave data");
 			return;
