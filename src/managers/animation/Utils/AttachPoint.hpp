@@ -85,11 +85,11 @@ namespace Gts {
     //  Therefore c=?
     // c = 1-m
 
-    info::log("Scale ratio: {}", additionalScale);
+    log::info("Scale ratio: {}", additionalScale);
     float scale_forward = M_FORWARD * additionalScale + (1.0 - M_FORWARD);
     float scale_up = M_UP * additionalScale + (1.0 - M_UP);
-    info::log("  - scale_forward: {}", scale_forward);
-    info::log("  - scale_up: {}", scale_up);
+    log::info("  - scale_forward: {}", scale_forward);
+    log::info("  - scale_up: {}", scale_up);
     // scale_forward = std::clamp(scale_forward, 0.5f, 2.0f);
     // scale_up = std::clamp(scale_up, 0.5f, 2.0f);
     log::info("  - local delta: {}", Vector2Str(giantLocal));
