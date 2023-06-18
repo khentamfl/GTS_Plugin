@@ -85,7 +85,7 @@ namespace Gts {
     //  Therefore c=?
     // c = 1-m
 
-    log::info("Scale ratio: {}", additionalScale);
+    log::info("Scale ratio: {}", additionalScale); 
     float scale_forward = M_FORWARD * additionalScale + (1.0 - M_FORWARD);
     float scale_up = M_UP * additionalScale + (1.0 - M_UP);
     log::info("  - scale_forward: {}", scale_forward);
