@@ -210,13 +210,13 @@ namespace Gts {
 		}
 	}
 
-	bool CanBeStaggered(Actor* giant, Actor* tiny) {
-		if (Persistent::GetSingleton().allow_stagger == true && (IsTeammate(giant)) && (tiny->formID == 0x14 || IsTeammate(tiny))) {
-			log::info("Stagger true, allow_Stagger: {}", Persistent::GetSingleton().allow_stagger);
-			return true; // Protect Player/followers from stagger
+	bool StaggerResistance(Actor* giant, Actor* tiny) {
+		if (Persistent::GetSingleton().allow_stagger == true && (giant->formID == 0x14 || IsTeammate(giant)) && (tiny->formID == 0x14 || IsTeammate(tiny))) {
+			log::info("Stagger false, allow_Stagger: {}", Persistent::GetSingleton().allow_stagger);
+			return false; // Protect Player/followers from stagger
 		}
-		log::info("Stagger false");
-		return false;
+		log::info("Stagger true");
+		return true;
 	}
 
 	bool IsDragon(Actor* actor) {
@@ -541,6 +541,9 @@ namespace Gts {
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power) {
 		if (tiny->IsDead()) {
+			return;
+		}
+		if (IsBeingHeld(tiny)) {
 			return;
 		}
 		float giantSize = get_visual_scale(giant);

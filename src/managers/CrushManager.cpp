@@ -83,6 +83,14 @@ namespace {
 		}
 	}
 
+	void RandomLaugh(Actor* giant) {
+		auto rng = rand() % 13;
+		static Timer laughtimer = Timer(2.4);
+		if (laughtimer.ShouldRun() && rng < 1) {
+			Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 1.0, "NPC Head [Head]");
+		}
+	}
+
 	void AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill on Crush
 		if (Caster->formID != 0x14) {
 			return; //Bye
@@ -168,7 +176,7 @@ namespace Gts {
 					}
 					Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 					float currentSize = get_visual_scale(tiny);
-
+					RandomLaugh(giant);
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest();

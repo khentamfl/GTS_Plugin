@@ -70,7 +70,7 @@ namespace {
 		if (IsBeingHeld(tiny)) {
 			return;
 		}
-		if (!CanBeStaggered(giant, tiny)) {
+		if (!StaggerResistance(giant, tiny)) {
 			return;
 		}
 		float giantSize = get_visual_scale(giant);

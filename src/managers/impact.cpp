@@ -119,7 +119,7 @@ namespace Gts {
 			EventDispatcher::DoOnImpact(impact_data);
 
 			const float BASE_DISTANCE = 75.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
-			const float BASE_FOOT_DISTANCE = 40.0; // Checks the distance of foot squishing
+			const float BASE_FOOT_DISTANCE = 28.0; // Checks the distance of foot squishing
 			const float SCALE_RATIO = 3.0;
 			float bonusscale = 1.0;
 			if (!impact_data.nodes.empty() && actor != nullptr) {

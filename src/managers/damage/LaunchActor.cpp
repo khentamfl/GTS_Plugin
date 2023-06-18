@@ -82,7 +82,6 @@ namespace Gts {
 	}
 
 	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, std::string_view node) {
-		const float BASE_DISTANCE = 70.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
 		const float BASE_FOOT_DISTANCE = 40.0; // Checks the distance of foot squishing
 		float SCALE_RATIO = 2.0;
 		float giantScale = get_visual_scale(giant);
@@ -113,7 +112,7 @@ namespace Gts {
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
 					if (otherActor) {
-						if (!CanBeStaggered(giant, otherActor)) {
+						if (!StaggerResistance(giant, otherActor)) {
 							return;
 						}
 						float tinyScale = get_visual_scale(otherActor);
@@ -124,6 +123,7 @@ namespace Gts {
 								float distance = (point - actorLocation).Length();
 								if (distance < maxFootDistance) {
 									float aveForce = 1.0 - distance / maxFootDistance;
+									log::info("Ave Force of {} is {}", giant->GetDisplayFullName(), aveforce);
 									LaunchDecide(giant, otherActor, aveForce, damagebonus);
 									break;
 								}
