@@ -157,7 +157,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		auto& sizemanager = SizeManager::GetSingleton();
 		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat
-		ManageCamera(&data.giant, true, 3.0) // Focus camera on AnimObjectA
+		ManageCamera(&data.giant, true, 3.0); // Focus camera on AnimObjectA
 		sandwichdata.EnableRuneTask(&data.giant, false); // Start Growing the Rune
 		sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrinking
 	}
@@ -239,7 +239,7 @@ namespace {
 	void GTSSandwich_ThighLoop_Exit(AnimationEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		ManageCamera(&data.giant, false, 3.0)
+		ManageCamera(&data.giant, false, 3.0);
 		sandwichdata.EnableSuffocate(false);
 		sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growing
 		sandwichdata.EnableRuneTask(&data.giant, true); // Launch Rune Shrinking
