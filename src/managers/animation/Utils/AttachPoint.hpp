@@ -58,7 +58,7 @@ namespace Gts {
 	}
 
 	template<typename T, typename U>
-	bool HugAttach(T& anyGiant, U& anyTiny, float sizedifference) {
+	bool AttachToObjectAScaled(T& anyGiant, U& anyTiny, float additionalScale) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return false;
@@ -71,12 +71,10 @@ namespace Gts {
 		if (!bone) {
 			return false;
 		}
-		NiPoint3 Coordinates = bone->world.translate;
-		float offset = std::clamp((45 * sizedifference) - 45.0f, 0.0f, 9999999.0f);
-		//Coordinates.x += offset;
-		//Coordinates.y += offset;
-		Coordinates.z += offset;
-		return AttachTo(anyGiant, anyTiny, Coordinates);
+    auto giantPos = giant->GetPosition();
+		NiPoint3 target = bone->world.translate;
+    target = (target - giantPos) * additionalScale + giantPos;
+		return AttachTo(anyGiant, anyTiny, target);
 	}
 
 	template<typename T, typename U>

@@ -106,7 +106,7 @@ namespace {
 			SetBeingHeld(huggedActor, false);
 			PushActorAway(player, huggedActor, 0.1);
 		}
-		
+
 	}
 }
 
@@ -158,7 +158,7 @@ namespace Gts {
 		shake_camera(giantref, 0.50 * sizedifference, 0.05);
 		ShrinkActor(tinyref, 0, 0.0015);
 		Grow(giantref, 0.0, 0.0003);
-		return true; 
+		return true;
 		});
 	}
 
@@ -199,9 +199,7 @@ namespace Gts {
 			HugShrink::Release(giantref);
 			return false;
 		}
-		if (!HugAttach(gianthandle, tinyhandle, sizedifference)) {
-		//if (!AttachToObjectA(gianthandle, tinyhandle)) {
-			// Unable to attach
+		if (!AttachToObjectAScaled(gianthandle, tinyhandle, sizedifference)) {
 			return false;
 		}
 
@@ -274,4 +272,3 @@ namespace Gts {
 	HugShrinkData::HugShrinkData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
 	}
 }
-
