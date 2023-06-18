@@ -1,12 +1,13 @@
-#include "managers/impact.hpp"
+#include "managers/explosion.hpp"
+#include "managers/modevent.hpp"
 #include "managers/footstep.hpp"
 #include "managers/highheel.hpp"
-#include "managers/explosion.hpp"
+#include "utils/actorUtils.hpp"
+#include "managers/impact.hpp"
 #include "managers/tremor.hpp"
-#include "managers/modevent.hpp"
 #include "data/runtime.hpp"
-#include "events.hpp"
 #include "UI/DebugAPI.hpp"
+#include "events.hpp"
 
 
 #include "scale/scale.hpp"
@@ -136,8 +137,8 @@ namespace Gts {
 					giantScale *= 2.0;
 				}
 
-				if (HasSMT(giant)) {
-					giantScale *= 2.25;
+				if (HasSMT(actor)) {
+					giantScale *= 2.0;
 				}
 
 				NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);

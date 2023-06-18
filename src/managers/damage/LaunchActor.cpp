@@ -44,7 +44,7 @@ namespace {
 
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
-			accuratedamage.DoSizeDamage(giant, tiny, GetMovementModifier(giant), force * 22 * damagebonus, 50, 0.50, true);
+			//accuratedamage.DoSizeDamage(giant, tiny, GetMovementModifier(giant), force * 22 * damagebonus, 50, 0.50, true); // < may be too strong.
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
