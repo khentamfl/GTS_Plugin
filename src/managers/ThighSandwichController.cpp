@@ -303,11 +303,11 @@ namespace Gts {
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
+		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_SANDWICH_SCALE) {
 			Notify("{} is too big to be smothered between thighs.", prey->GetDisplayFullName());
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_SANDWICH_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 				return false;
 			} else {
