@@ -99,7 +99,7 @@ namespace {
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999.0f);
 		float damage = 0.6 * damagemult * sizedifference * animSpeed * mult * normaldamage * GetPerkBonus_Thighs(giant);
 		if (HasSMT(giant)) {
-			damage *= 3.0;
+			damage *= 1.5;
 		}
 		DamageAV(tiny, ActorValue::kHealth, damage);
 		float hp = GetAV(tiny, ActorValue::kHealth);
@@ -157,7 +157,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		auto& sizemanager = SizeManager::GetSingleton();
 		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat
-		sizemanager.SetActionBool(&data.giant, true, 3.0); // Focus camera on AnimObjectA
+		ManageCamera(&data.giant, true, 3.0) // Focus camera on AnimObjectA
 		sandwichdata.EnableRuneTask(&data.giant, false); // Start Growing the Rune
 		sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrinking
 	}
@@ -239,7 +239,7 @@ namespace {
 	void GTSSandwich_ThighLoop_Exit(AnimationEventData& data) {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		sizemanager.SetActionBool(&data.giant, false, 3.0);
+		ManageCamera(&data.giant, false, 3.0)
 		sandwichdata.EnableSuffocate(false);
 		sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growing
 		sandwichdata.EnableRuneTask(&data.giant, true); // Launch Rune Shrinking
@@ -247,6 +247,7 @@ namespace {
 		for (auto tiny: sandwichdata.GetActors()) {
 			SetBeingHeld(tiny, false);
 		}
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
 	}
 
 	void GTSSandwich_ThighAttack_start(AnimationEventData& data) {
@@ -261,6 +262,7 @@ namespace {
 		for (auto tiny: sandwichdata.GetActors()) {
 			SetBeingHeld(tiny, false);
 		}
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
 		sandwichdata.MoveActors(false);
 		sandwichdata.ReleaseAll();
 	}
@@ -271,6 +273,7 @@ namespace {
 		for (auto tiny: sandwichdata.GetActors()) {
 			SetBeingHeld(tiny, false);
 		}
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
 		sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growth
 		sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrink
 		sizemanager.SetActionBool(&data.giant, false, 1.0); // Allow sandwich repeat
@@ -285,6 +288,16 @@ namespace {
 		DoLaunch(&data.giant, 1.25 * perk, 2.0, LNode, 1.0);
 	}
 
+	void GTSBEH_Exit(AnimationEventData& data) {
+		auto giant = &data.giant;
+		ManageCamera(giant, false, 3.0); // Un-Focus camera on AnimObjectA. Just to be Sure.
+	}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////E V E N T S
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void ThighSandwichEnterEvent(const InputEventData& data) {
 		auto& Sandwiching = ThighSandwichController::GetSingleton();
 		auto pred = PlayerCharacter::GetSingleton();
@@ -364,6 +377,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSSandwich_DisableRune", "ThighSandwich", GTSSandwich_DisableRune);
 		AnimationManager::RegisterEvent("GTSSandwich_ThighLoop_Exit", "ThighSandwich", GTSSandwich_ThighLoop_Exit);
 		AnimationManager::RegisterEvent("GTSSandwich_ExitAnim", "ThighSandwich", GTSSandwich_ExitAnim);
+		AnimationManager::RegisterEvent("GTSBEH_Exit", "ThighSandwich", GTSBEH_Exit);
 	}
 
 	void AnimationThighSandwich::RegisterTriggers() {

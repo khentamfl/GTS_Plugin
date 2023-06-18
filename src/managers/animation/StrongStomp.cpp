@@ -224,13 +224,14 @@ namespace {
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
-		ManageCamera(&data.giant, false, 0);
-		ManageCamera(&data.giant, false, 1);
-		ManageCamera(&data.giant, false, 2);
-		ManageCamera(&data.giant, false, 3);
-		ManageCamera(&data.giant, false, 4);
-		ManageCamera(&data.giant, false, 5);
-		ManageCamera(&data.giant, false, 6);
+		ManageCamera(&data.giant, false, 0.0);
+		ManageCamera(&data.giant, false, 1.0);
+		ManageCamera(&data.giant, false, 2.0);
+		ManageCamera(&data.giant, false, 3.0);
+		ManageCamera(&data.giant, false, 4.0);
+		ManageCamera(&data.giant, false, 5.0);
+		ManageCamera(&data.giant, false, 6.0);
+		ManageCamera(&data.giant, false, 7.0);
 
 		Rumble::Stop("StompR", &data.giant);
 	}
