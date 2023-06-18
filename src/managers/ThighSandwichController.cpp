@@ -168,7 +168,7 @@ namespace Gts {
 			}
 
 			float tinyScale = get_visual_scale(tiny);
-			float sizediffernce = giantScale/tinyScale;
+			float sizedifference = giantScale/tinyScale;
 			float threshold = 6.0;
 			if (HasSMT(giant)) {
 				threshold = 0.8;
