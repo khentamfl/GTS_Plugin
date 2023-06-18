@@ -1,6 +1,7 @@
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
+#include "managers/damage/LaunchActor.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "scale/scalespellmanager.hpp"
@@ -33,6 +34,9 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+	const std::string_view RNode = "NPC R Foot [Rft ]";
+	const std::string_view LNode = "NPC L Foot [Lft ]";
+
 	const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
 	const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 	const std::string_view leftCalfLookup = "NPC L Calf [LClf]";
@@ -432,31 +436,13 @@ namespace Gts {
 			movementFactor *= 0.6;
 		}
 		if (evt.footEvent == FootEvent::JumpLand) {
-			damage = 0.0;
+			DoLaunch(&data.giant, 1.2, 2.0, RNode, 2.0);
+			DoLaunch(&data.giant, 1.2, 2.0, LNode, 2.0);
 		}
-
-		float sizeRatio = giantSize/tinySize * movementFactor;
-		float knockBack = LAUNCH_KNOCKBACK * giantSize * movementFactor * force;
-
-		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 22 * damage, 50, 0.50, true);
-
-			if (!sizemanager.IsLaunching(tiny)) {
-				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
-				StaggerOr(giant, tiny, knockBack);
-			}
-		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER && sizeRatio >= 1.49) {
-			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-				if (sizeRatio >= 6.0) { // Launch
-					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
-					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
-						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
-						DamageAV(tiny, ActorValue::kHealth, damage);
-					}
-					StaggerOr(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 35 * movementFactor * giantSize * force);
-				}
-			}
+		else if (evt.footEvent == FootEvent::Right) {
+			DoLaunch(&data.giant, 0.9, 1.50, RNode, 2.0);
+		} else if (evt.footEvent == FootEvent::Left) {
+			DoLaunch(&data.giant, 0.9, 1.50, LNode, 2.0);
 		}
 	}
 

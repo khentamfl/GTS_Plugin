@@ -23,9 +23,6 @@ namespace {
 		if (tiny->IsDead()) {
 			return;
 		}
-		if (IsBeingHeld(tiny)) {
-			return;
-		}
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny);
 		if (HasSMT(giant)) {
@@ -48,6 +45,9 @@ namespace {
 	}
 
 	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
+		if (IsBeingHeld(tiny)) {
+			return;
+		}
 		float giantSize = get_visual_scale(giant);
 		float SMT = 1.0;
 		if (HasSMT(giant)) {
