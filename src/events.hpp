@@ -24,14 +24,14 @@ namespace Gts {
 		std::vector<NiAVObject*> nodes;
 	};
 	struct UnderFoot {
-		Actor* giant;
-		Actor* tiny;
+		//Actor* giant;
+		//Actor* tiny;
 		float force;
 		/// Giant foot that is doing the squishing
-		NiAVObject* foot;
+		//NiAVObject* foot;
 		/// Tiny's body parts that are underfoot
-		std::vector<NiAVObject*> bodyParts;
-		FootEvent footEvent;
+		//std::vector<NiAVObject*> bodyParts;
+		//FootEvent footEvent;
 	};
 
 	struct HighheelEquip {

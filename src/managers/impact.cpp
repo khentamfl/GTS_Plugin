@@ -117,7 +117,14 @@ namespace Gts {
 
 			EventDispatcher::DoOnImpact(impact_data);
 
-			const float BASE_DISTANCE = 75.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
+			if (!impact_data.nodes.empty() && actor != nullptr) {
+				UnderFoot underfoot = UnderFoot {
+					.force = 1.0,
+				};
+				EventDispatcher::DoUnderFootEvent(underfoot);
+			}
+
+			/*const float BASE_DISTANCE = 75.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
 			const float BASE_FOOT_DISTANCE = 40.0; // Checks the distance of foot squishing
 			const float SCALE_RATIO = 3.0;
 			float bonusscale = 1.0;
@@ -174,7 +181,7 @@ namespace Gts {
 										UnderFoot underfoot = UnderFoot {
 											.giant = impact_data.actor,
 											.tiny = otherActor,
-											.force = aveForce,
+											.force = 1.0, //aveForce,
 											.foot = foot,
 											.bodyParts = {otherActor->GetCurrent3D()},
 											.footEvent = kind,
@@ -187,7 +194,7 @@ namespace Gts {
 						}
 					}
 				}
-			}
+			}*/
 		}
 	}
 }
