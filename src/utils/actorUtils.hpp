@@ -93,6 +93,7 @@ namespace Gts {
 	float GetMovementModifier(Actor* giant);
 
 	void AddSMTDuration(Actor* actor, float duration);
+	void AddSMTPenalty(Actor* actor, float penalty);
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause);
 	void PrintSuffocate(Actor* pred, Actor* prey);
