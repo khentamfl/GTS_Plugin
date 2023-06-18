@@ -93,7 +93,7 @@ namespace {
 					attacker->NotifyAnimationGraph("staggerStart");
 
 					mod_target_scale(receiver, -0.35 * scale);
-					shake_camera(actor, 1.6, 0.85);
+					shake_camera(receiver, 1.6, 0.85);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 					receiver->NotifyAnimationGraph("staggerStart");
