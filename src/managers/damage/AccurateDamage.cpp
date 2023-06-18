@@ -71,7 +71,7 @@ namespace {
 			return;
 		}
 		if (!AllowStagger(giant, tiny)) {
-			//return;
+			return;
 		}
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny);
@@ -421,7 +421,7 @@ namespace Gts {
 					}
 					StaggerOr(giant, tiny, knockBack);
 					if (!AllowStagger(giant, tiny)) {
-						//return;
+						return;
 					}
 					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 35 * movementFactor * giantSize * force);
 				}

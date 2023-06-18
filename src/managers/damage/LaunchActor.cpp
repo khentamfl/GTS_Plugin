@@ -113,7 +113,7 @@ namespace Gts {
 				if (otherActor != giant) {
 					if (otherActor) {
 						if (!AllowStagger(giant, otherActor)) {
-							//return;
+							return;
 						}
 						float tinyScale = get_visual_scale(otherActor);
 						if (giantScale / tinyScale > SCALE_RATIO) {
