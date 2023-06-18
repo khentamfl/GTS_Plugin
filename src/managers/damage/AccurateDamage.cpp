@@ -70,7 +70,7 @@ namespace {
 		if (IsBeingHeld(tiny)) {
 			return;
 		}
-		if (StaggerResistance(giant, tiny)) {
+		if (!AllowStagger(giant, tiny)) {
 			return;
 		}
 		float giantSize = get_visual_scale(giant);
@@ -420,7 +420,7 @@ namespace Gts {
 						DamageAV(tiny, ActorValue::kHealth, damage);
 					}
 					StaggerOr(giant, tiny, knockBack);
-					if (StaggerResistance(giant, tiny)) {
+					if (!AllowStagger(giant, tiny)) {
 						return;
 					}
 					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 35 * movementFactor * giantSize * force);
