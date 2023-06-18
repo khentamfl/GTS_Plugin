@@ -174,7 +174,7 @@ namespace {
 		DoSounds(&data.giant, data.animSpeed - 0.5, RNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Right, RNode, SMT);
-		DoLaunch(&data.giant, 1.4 * perk, 4.0 * data.animSpeed, RNode, 4.0);
+		DoLaunch(&data.giant, 1.4 * perk, 2.6 * data.animSpeed, RNode, 4.0);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 4.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
@@ -191,7 +191,7 @@ namespace {
 		DoSounds(&data.giant, data.animSpeed - 0.5, LNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.5), 1.75 * damage * (data.animSpeed - 0.5), 5, 0.60);
 		DoSizeEffect(&data.giant, 3.10 * data.animSpeed, FootEvent::Left, LNode, SMT);
-		DoLaunch(&data.giant, 1.4 * perk, 4.0 * data.animSpeed, LNode, 4.0);
+		DoLaunch(&data.giant, 1.4 * perk, 2.6 * data.animSpeed, LNode, 4.0);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 4.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;

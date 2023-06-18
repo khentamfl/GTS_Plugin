@@ -86,7 +86,7 @@ namespace {
 	void RandomLaugh(Actor* giant) {
 		auto rng = rand() % 13;
 		static Timer laughtimer = Timer(2.4);
-		if (laughtimer.ShouldRun() && rng < 1) {
+		if (laughtimer.ShouldRun() && rng <= 2) {
 			Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 1.0, "NPC Head [Head]");
 		}
 	}

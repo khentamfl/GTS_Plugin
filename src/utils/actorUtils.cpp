@@ -212,11 +212,11 @@ namespace Gts {
 
 	bool StaggerResistance(Actor* giant, Actor* tiny) {
 		if (Persistent::GetSingleton().allow_stagger == true && (giant->formID == 0x14 || IsTeammate(giant)) && (tiny->formID == 0x14 || IsTeammate(tiny))) {
-			log::info("Stagger false, allow_Stagger: {}", Persistent::GetSingleton().allow_stagger);
-			return false; // Protect Player/followers from stagger
+			log::info("Stagger Immunity True, allow_Stagger: {}", Persistent::GetSingleton().allow_stagger);
+			return true; // Protect Player/followers from stagger
 		}
 		log::info("Stagger true");
-		return true;
+		return false;
 	}
 
 	bool IsDragon(Actor* actor) {
@@ -544,6 +544,9 @@ namespace Gts {
 			return;
 		}
 		if (IsBeingHeld(tiny)) {
+			return;
+		} 
+		if (StaggerResistance(giant, tiny)) {
 			return;
 		}
 		float giantSize = get_visual_scale(giant);

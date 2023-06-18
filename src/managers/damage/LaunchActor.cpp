@@ -112,7 +112,7 @@ namespace Gts {
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
 					if (otherActor) {
-						if (!StaggerResistance(giant, otherActor)) {
+						if (StaggerResistance(giant, otherActor)) {
 							return;
 						}
 						float tinyScale = get_visual_scale(otherActor);
@@ -123,7 +123,6 @@ namespace Gts {
 								float distance = (point - actorLocation).Length();
 								if (distance < maxFootDistance) {
 									float aveForce = 1.0 - distance / maxFootDistance;
-									log::info("Ave Force of {} is {}", giant->GetDisplayFullName(), aveforce);
 									LaunchDecide(giant, otherActor, aveForce, damagebonus);
 									break;
 								}
