@@ -418,7 +418,7 @@ namespace Gts {
 			return;
 		}
 		if (evt.footEvent == FootEvent::JumpLand) {
-			DoLaunch(giant, 1.2, 2.0 * damage RNode, 2.5);
+			DoLaunch(giant, 1.2, 2.0 * damage, RNode, 2.5);
 			DoLaunch(giant, 1.2, 2.0 * damage, LNode, 2.5);
 		} else if (evt.footEvent == FootEvent::Right) {
 			DoLaunch(giant, 0.9, 1.50 * damage, RNode, 2.0);

@@ -57,6 +57,9 @@ namespace {
 			force += 0.20;
 		}
 		float tinySize = get_visual_scale(tiny);
+		if (IsDragon(tiny)) {
+			tinySize *= 2.6;
+		}
 		float sizeRatio = giantSize/tinySize;
 
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
