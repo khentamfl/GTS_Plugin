@@ -59,10 +59,12 @@ namespace {
 	}
 
 	bool CanBeStaggered(Actor* giant, Actor* tiny) {
-		if (Persistent::GetSingleton().allow_stagger && (IsTeammate(giant)) && (tiny->formID == 0x14 || IsTeammate(tiny))) {
-			return false; // Protect Player/followers from stagger
+		if (Persistent::GetSingleton().allow_stagger == true && (IsTeammate(giant)) && (tiny->formID == 0x14 || IsTeammate(tiny))) {
+			log::info("Stagger true, allow_Stagger: {}", Persistent::GetSingleton().allow_stagger);
+			return true; // Protect Player/followers from stagger
 		}
-		return true;
+		log::info("Stagger false");
+		return false;
 	}
 
 
