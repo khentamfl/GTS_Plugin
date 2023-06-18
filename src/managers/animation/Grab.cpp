@@ -129,7 +129,7 @@ namespace {
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 					SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);
 				} else {
-					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
 				}
 			}
 			if (damage > Health) {
@@ -141,7 +141,7 @@ namespace {
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 				} else {
-					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
 				}
 				SetBetweenBreasts(giant, false);
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone

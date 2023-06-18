@@ -49,6 +49,9 @@ namespace {
 		if (!grabbedActor) {
 			return;
 		}
+		if (grabbedActor == attacker) {
+			return; // Don't damage actor in hands
+		}
 		log::info("a_damage: {}", a_damage);
 		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.5);
 		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.25);
@@ -69,7 +72,7 @@ namespace {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
 			} else {
-				Runtime::PlaySoundAtNode("SoftHandAttack", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
+				Runtime::PlaySoundAtNode("SoftHandAttack", receiver, 1.0, 1.0, "NPC L Hand [LHnd]");
 			}
 			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
 			AnimationManager::StartAnim("GrabAbort", receiver); // Abort Grab animation
