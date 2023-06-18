@@ -12,7 +12,7 @@ namespace {
 			return transient->SMT_Bonus_Duration;
 		}
 		return 0.0;
-	} 
+	}
 
 	void NullifySMTDuration(Actor* actor) {
 		auto transient = Transient::GetSingleton().GetData(actor);
@@ -40,7 +40,7 @@ namespace Gts {
 		float bonus = GetSMTBonus(caster);
 		if (bonus > 0.5) {
 			GetActiveEffect()->duration += bonus;
-			
+
 			NullifySMTDuration(caster);
 		}
 		if (CasterScale >= 1.50) {

@@ -50,7 +50,7 @@ RE::ExtraDataList::~ExtraDataList() {
 }
 
 namespace Gts {
-  Actor* GetActorPtr(Actor* actor) {
+	Actor* GetActorPtr(Actor* actor) {
 		return actor;
 	}
 
@@ -77,7 +77,7 @@ namespace Gts {
 		}
 		return actor;
 	}
-  
+
 	void PlayAnimation(Actor* actor, std::string_view animName) {
 		actor->NotifyAnimationGraph(animName);
 	}

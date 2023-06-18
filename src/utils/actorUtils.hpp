@@ -8,7 +8,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
-  Actor* GetActorPtr(Actor* actor);
+	Actor* GetActorPtr(Actor* actor);
 
 	Actor* GetActorPtr(Actor& actor);
 
@@ -17,7 +17,7 @@ namespace Gts {
 	Actor* GetActorPtr(const ActorHandle& actor);
 
 	Actor* GetActorPtr(FormID formId);
-  
+
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems);

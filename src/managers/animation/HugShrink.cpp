@@ -66,9 +66,9 @@ namespace {
 		auto giant = &data.giant;
 	}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////// I N P U T
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////// I N P U T
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	void HugAttemptEvent(const InputEventData& data) {
@@ -76,7 +76,7 @@ namespace {
 		if (IsGtsBusy(player)) {
 			return;
 		}
-        auto& Hugging = HugAnimationController::GetSingleton();
+		auto& Hugging = HugAnimationController::GetSingleton();
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerkTeam(player, "MassVorePerk")) {
 			numberOfPrey = 1 + (get_visual_scale(player)/3);
@@ -139,26 +139,26 @@ namespace Gts {
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
 		const float duration = 2.0;
 		TaskManager::RunFor(name, duration, [=](auto& progressData) {
-		if (!gianthandle) {
-			return false;
-		}
-		if (!tinyhandle) {
-			return false;
-		}
-		auto giantref = gianthandle.get().get();
-		auto tinyref = tinyhandle.get().get();
-		float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
-		if (sizedifference >= 4.0) {
-			SetBeingHeld(tinyref, false);
-			AnimationManager::StartAnim("Huggies_Spare", giantref);
-			PushActorAway(giantref, tinyref, 0.1);
-			HugShrink::Release(giantref);
-			return false;
-		}
-		shake_camera(giantref, 0.50 * sizedifference, 0.05);
-		ShrinkActor(tinyref, 0, 0.0015);
-		Grow(giantref, 0.0, 0.0003);
-		return true;
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyhandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
+			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
+			if (sizedifference >= 4.0) {
+				SetBeingHeld(tinyref, false);
+				AnimationManager::StartAnim("Huggies_Spare", giantref);
+				PushActorAway(giantref, tinyref, 0.1);
+				HugShrink::Release(giantref);
+				return false;
+			}
+			shake_camera(giantref, 0.50 * sizedifference, 0.05);
+			ShrinkActor(tinyref, 0, 0.0015);
+			Grow(giantref, 0.0, 0.0003);
+			return true;
 		});
 	}
 
@@ -173,38 +173,38 @@ namespace Gts {
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
-		if (!gianthandle) {
-			return false;
-		}
-		if (!tinyhandle) {
-			return false;
-		}
-		auto giantref = gianthandle.get().get();
-		auto tinyref = tinyhandle.get().get();
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyhandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
 
 
-		// Exit on death
-		float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
-		if (!FaceOpposite(giantref, tinyref)) {
-        // If face towards fails then actor is invalid
-       		return false;
-      	}
+			// Exit on death
+			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
+			if (!FaceOpposite(giantref, tinyref)) {
+				// If face towards fails then actor is invalid
+				return false;
+			}
 
-		GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
-		float stamina = GetAV(giantref, ActorValue::kStamina);
-		if (tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
-			SetBeingHeld(tinyref, false);
-			AnimationManager::StartAnim("Huggies_Spare", giantref);
-			PushActorAway(giantref, tinyref, 0.1);
-			HugShrink::Release(giantref);
-			return false;
-		}
-		if (!AttachToObjectAScaled(gianthandle, tinyhandle, sizedifference)) {
-			return false;
-		}
+			GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
+			float stamina = GetAV(giantref, ActorValue::kStamina);
+			if (tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
+				SetBeingHeld(tinyref, false);
+				AnimationManager::StartAnim("Huggies_Spare", giantref);
+				PushActorAway(giantref, tinyref, 0.1);
+				HugShrink::Release(giantref);
+				return false;
+			}
+			if (!AttachToObjectAScaled(gianthandle, tinyhandle, sizedifference)) {
+				return false;
+			}
 
-		// All good try another frame
-		return true;
+			// All good try another frame
+			return true;
 		});
 	}
 
@@ -250,7 +250,7 @@ namespace Gts {
 	}
 
 	void HugShrink::RegisterEvents() {
-        InputManager::RegisterInputEvent("HugAttempt", HugAttemptEvent);
+		InputManager::RegisterInputEvent("HugAttempt", HugAttemptEvent);
 		InputManager::RegisterInputEvent("HugRelease", HugReleaseEvent);
 		InputManager::RegisterInputEvent("HugShrink", HugShrinkEvent);
 
@@ -262,11 +262,11 @@ namespace Gts {
 
 	void HugShrink::RegisterTriggers() {
 		AnimationManager::RegisterTrigger("Huggies_Try", "Hugs", "GTSBEH_HugAbsorbStart_A");
-        AnimationManager::RegisterTrigger("Huggies_Try_Victim", "Hugs", "GTSBEH_HugAbsorbStart_V");
-        AnimationManager::RegisterTrigger("Huggies_Shrink", "Hugs", "GTSBEH_HugAbsorbAtk");
+		AnimationManager::RegisterTrigger("Huggies_Try_Victim", "Hugs", "GTSBEH_HugAbsorbStart_V");
+		AnimationManager::RegisterTrigger("Huggies_Shrink", "Hugs", "GTSBEH_HugAbsorbAtk");
 		AnimationManager::RegisterTrigger("Huggies_Shrink_Victim", "Hugs", "GTSBEH_HugAbsorbAtk_V");
-        AnimationManager::RegisterTrigger("Huggies_Spare", "Hugs", "GTSBEH_HugAbsorbExitLoop");
-        AnimationManager::RegisterTrigger("Huggies_Cancel", "Hugs", "GTSBEH_PairedAbort");
+		AnimationManager::RegisterTrigger("Huggies_Spare", "Hugs", "GTSBEH_HugAbsorbExitLoop");
+		AnimationManager::RegisterTrigger("Huggies_Cancel", "Hugs", "GTSBEH_PairedAbort");
 	}
 
 	HugShrinkData::HugShrinkData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {

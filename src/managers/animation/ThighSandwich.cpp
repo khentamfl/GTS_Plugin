@@ -301,7 +301,7 @@ namespace {
 			AnimationManager::StartAnim("ThighAttack", player);
 		} else {
 			if (IsGtsBusy(player)) {
-			 TiredSound(player, "You're too tired to perform thigh sandwich");
+				TiredSound(player, "You're too tired to perform thigh sandwich");
 			}
 		}
 	}

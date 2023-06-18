@@ -3,16 +3,16 @@
  *  Hooks for sinking
  */
 
- #include "hooks/hooks.hpp"
+#include "hooks/hooks.hpp"
 
- using namespace RE;
- using namespace SKSE;
+using namespace RE;
+using namespace SKSE;
 
- namespace Hooks
- {
- 	class Hook_Sinking
- 	{
- 		public:
- 			static void Hook(Trampoline& trampoline);
- 	};
- }
+namespace Hooks
+{
+	class Hook_Sinking
+	{
+		public:
+			static void Hook(Trampoline& trampoline);
+	};
+}
