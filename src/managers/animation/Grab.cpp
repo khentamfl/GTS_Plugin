@@ -326,7 +326,8 @@ namespace {
 		auto giant = &data.giant;
 		SetBetweenBreasts(giant, false);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(&data.giant, false, 7.0);
 		AnimationManager::StartAnim("TinyDied", giant);
@@ -341,7 +342,8 @@ namespace {
 		auto giant = &data.giant;
 		SetBetweenBreasts(giant, false);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.40, 1.0);
 		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.60, 1.8);
@@ -355,6 +357,7 @@ namespace {
 		SetBetweenBreasts(giant, false);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.40, 1.0);
 		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.60, 1.8);
@@ -410,6 +413,10 @@ namespace {
 
 	void GrabOtherEvent(const InputEventData& data) { // Grab other actor
 		auto player = PlayerCharacter::GetSingleton();
+		auto grabbedActor = Grab::GetHeldActor(player);
+		if (grabbedActor) { //If we have actor, don't pick anyone up.
+			return;
+		}
 		if (IsEquipBusy(player)) {
 			return; // Disallow Grabbing if Behavior is busy doing other stuff.
 		}
@@ -548,16 +555,17 @@ namespace Gts {
 
 			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
-				Grab::Release(giantref);
 				PushActorAway(giantref, tinyref, 0.1);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);
 				SetBetweenBreasts(giantref, false);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
+				giantref->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 				DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.30, 1.0);
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
 				AnimationManager::StartAnim("TinyDied", giant);
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits
+				Grab::Release(giantref);
 				return false;
 			}
 
