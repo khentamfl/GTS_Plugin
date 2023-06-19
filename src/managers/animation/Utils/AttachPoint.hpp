@@ -77,7 +77,7 @@ namespace Gts {
 			return false;
 		}
 
-    auto targetPoint = (additionalScale)*targetRootA->world.translate + (1.0 - additionalScale)* targetRootB->world.translate;
+    auto targetPoint = targetRootA->world.translate*(additionalScale) + targetRootB->world.translate*(1.0 - additionalScale);
 
 		return AttachTo(anyGiant, anyTiny, targetPoint);
 	}
