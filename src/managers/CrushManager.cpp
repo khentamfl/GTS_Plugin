@@ -77,12 +77,12 @@ namespace {
 	void MoanOrLaugh(Actor* giant, Actor* target) {
 		static Timer voicetimer = Timer(2.4);
 		auto randomInt = rand() % 16;
-		auto select = rand() %3;
+		auto select = rand() % 3;
 		if (randomInt <= 3.0) {
 			if (voicetimer.ShouldRun()) {
 				if (select >= 2.0) {
-					Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
-					GrowAfterTheKill(caster, target);
+					Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
+					GrowAfterTheKill(giant, target);
 				} else {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 1.0, "NPC Head [Head]");
 				}
