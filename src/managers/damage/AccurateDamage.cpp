@@ -374,7 +374,8 @@ namespace Gts {
 		auto tiny = evt.tiny;
 		float force = evt.force;
 		float damage = Persistent::GetSingleton().size_related_damage_mult;
-		if (!CanDoDamage(giant, tiny)) {
+
+		if (!AllowStagger(giant, tiny)) {
 			return;
 		}
 		float threshold = 6.0;
@@ -405,7 +406,9 @@ namespace Gts {
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * movementFactor * force;
 
 		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
-			DoSizeDamage(giant, tiny, movementFactor, force * 22 * damage, 50, 0.50, true);
+			if (CanDoDamage(giant, tiny)) {
+				DoSizeDamage(giant, tiny, movementFactor, force * 22 * damage, 50, 0.50, true);
+			}
 
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
@@ -417,12 +420,11 @@ namespace Gts {
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 						float damage = LAUNCH_DAMAGE * giantSize * movementFactor * force/UNDERFOOT_POWER;
-						DamageAV(tiny, ActorValue::kHealth, damage);
+						if (CanDoDamage(giant, tiny)) {
+							DamageAV(tiny, ActorValue::kHealth, damage);
+						}
 					}
 					StaggerOr(giant, tiny, knockBack);
-					if (!AllowStagger(giant, tiny)) {
-						return;
-					}
 					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 35 * movementFactor * giantSize * force);
 				}
 			}
