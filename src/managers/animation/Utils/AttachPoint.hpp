@@ -68,42 +68,18 @@ namespace Gts {
 		if (!tiny) {
 			return false;
 		}
-		auto bone = find_node(giant, "AnimObjectA");
-		if (!bone) {
+		auto targetRootA = find_node(giant, "AnimObjectA");
+		if (!targetRootA) {
 			return false;
 		}
-		auto giantPos = giant->GetPosition();
-		NiPoint3 target = bone->world.translate;
-    NiPoint3 giantLocal = (target - giantPos);
+    auto targetRootB = find_node(giant, "NPC L Finger02 [LF02]");
+		if (!targetRootB) {
+			return false;
+		}
 
-    // TWEAK THESE
-    const float M_FORWARD = 1.25;
-    const float M_UP = 2.0;
+    auto targetPoint = (additionalScale)*targetRoot + (1.0 - additionalScale)* targetRootB;
 
-    // y = m*x + c
-    // @1x scale no change
-    // 1 = m*1+c
-    //  Therefore c=?
-    // c = 1-m
-
-    log::info("Scale ratio: {}", additionalScale); 
-    float scale_forward = M_FORWARD * additionalScale + (1.0 - M_FORWARD);
-    float scale_up = M_UP * additionalScale + (1.0 - M_UP);
-    log::info("  - scale_forward: {}", scale_forward);
-    log::info("  - scale_up: {}", scale_up);
-    // scale_forward = std::clamp(scale_forward, 0.5f, 2.0f);
-    // scale_up = std::clamp(scale_up, 0.5f, 2.0f);
-    log::info("  - local delta: {}", Vector2Str(giantLocal));
-    log::info("  - local forwards: {}", NiPoint3(giantLocal.x, giantLocal.y, 0.0).Length());
-    log::info("  - local up: {}", giantLocal.z);
-    giantLocal.x *= scale_forward;
-    giantLocal.y *= scale_forward;
-    giantLocal.z *= scale_up;
-    log::info("  - local delta scaled: {}", Vector2Str(giantLocal));
-    log::info("  - local forwards scaled: {}", NiPoint3(giantLocal.x, giantLocal.y, 0.0).Length());
-    log::info("  - local up scaled: {}", giantLocal.z);
-		target = giantLocal + giantPos;
-		return AttachTo(anyGiant, anyTiny, target);
+		return AttachTo(anyGiant, anyTiny, targetPoint);
 	}
 
 	template<typename T, typename U>
