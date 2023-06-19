@@ -28,6 +28,7 @@ namespace {
 			if (!targetRef) {
 				continue;
 			}
+			
 			log::info("  - Found: {}", targetRef->GetDisplayFullName());
 			float Volume = clamp(0.50, 1.0, get_visual_scale(targetRef));
 			Runtime::PlaySound("growthSound", targetRef, Volume, 1.0);
@@ -39,8 +40,9 @@ namespace {
 			ActorHandle targetHandle = targetRef->CreateRefHandle();
 
 			const float DURATION = 2.0;
+			std::string name = std::format("GrowFollower_{}", targetRef->formID);
 
-			TaskManager::RunFor(DURATION, [=](auto& progressData){
+			TaskManager::RunFor(name, DURATION, [=](auto& progressData){
 				log::info("Task GrowTeammate");
 				if (!casterHandle) {
 					return false;
@@ -91,8 +93,9 @@ namespace {
 			ActorHandle targetHandle = targetRef->CreateRefHandle();
 
 			const float DURATION = 2.0;
+			std::string name = std::format("ShrinkFollower_{}", targetRef->formID);
 
-			TaskManager::RunFor(DURATION, [=](auto& progressData){
+			TaskManager::RunFor(name, DURATION, [=](auto& progressData){
 				if (!casterHandle) {
 					return false;
 				}

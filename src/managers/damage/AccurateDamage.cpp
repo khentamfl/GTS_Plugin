@@ -374,7 +374,6 @@ namespace Gts {
 		auto tiny = evt.tiny;
 		float force = evt.force;
 		float damage = Persistent::GetSingleton().size_related_damage_mult;
-
 		if (!AllowStagger(giant, tiny)) {
 			return;
 		}
