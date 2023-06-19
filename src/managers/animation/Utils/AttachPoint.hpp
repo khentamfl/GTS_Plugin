@@ -77,7 +77,7 @@ namespace Gts {
 			return false;
 		}
 
-    auto targetPoint = (additionalScale)*targetRoot + (1.0 - additionalScale)* targetRootB;
+    auto targetPoint = (additionalScale)*targetRootA + (1.0 - additionalScale)* targetRootB;
 
 		return AttachTo(anyGiant, anyTiny, targetPoint);
 	}
