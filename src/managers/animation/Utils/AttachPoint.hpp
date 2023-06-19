@@ -72,12 +72,24 @@ namespace Gts {
 		if (!targetRootA) {
 			return false;
 		}
-    auto targetRootB = find_node(giant, "NPC L Finger02 [LF02]");
-		if (!targetRootB) {
-			return false;
+    auto targetA = targetRootA->world.translate;
+
+    NiPoint3 targetB = NiPoint3();
+    std::vector<std::string_view> bone_names = {
+      "NPC L Finger02 [LF02]",
+      "NPC R Finger02 [RF02]",
+      "L Breast02",
+      "R Breast02"
+    };
+    for (auto bone_name: bone_names) {
+			auto bone = find_node(giant, bone_name);
+			if (!bone) {
+				return false;
+			}
+			targetB += (bone->world * NiPoint3()) * (1.0/bone_count);
 		}
 
-    auto targetPoint = targetRootA->world.translate*(additionalScale) + targetRootB->world.translate*(1.0 - additionalScale);
+    auto targetPoint = targetA*(additionalScale) + targetB*(1.0 - additionalScale);
 
 		return AttachTo(anyGiant, anyTiny, targetPoint);
 	}
