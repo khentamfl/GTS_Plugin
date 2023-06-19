@@ -81,6 +81,7 @@ namespace Gts {
       "L Breast02",
       "R Breast02"
     };
+    std::uint32_t bone_count = bone_names.size();
     for (auto bone_name: bone_names) {
 			auto bone = find_node(giant, bone_name);
 			if (!bone) {
