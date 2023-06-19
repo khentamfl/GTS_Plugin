@@ -74,20 +74,19 @@ namespace {
 		}
 		PleasureText(caster);
 	}
-
-	void RandomMoan(Actor* caster, Actor* target) {
-		auto randomInt = rand() % 12;
-		if (randomInt < 1 ) {
-			Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
-			GrowAfterTheKill(caster, target);
-		}
-	}
-
-	void RandomLaugh(Actor* giant) {
-		auto rng = rand() % 13;
-		static Timer laughtimer = Timer(2.4);
-		if (laughtimer.ShouldRun() && rng <= 2) {
-			Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 1.0, "NPC Head [Head]");
+	void MoanOrLaugh(Actor* giant, Actor* target) {
+		static Timer voicetimer = Timer(2.4);
+		auto randomInt = rand() % 16;
+		auto select = rand() %3;
+		if (randomInt <= 3.0) {
+			if (voicetimer.ShouldRun()) {
+				if (select >= 2.0) {
+					Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
+					GrowAfterTheKill(caster, target);
+				} else {
+					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 1.0, "NPC Head [Head]");
+				}
+			}
 		}
 	}
 
@@ -160,7 +159,6 @@ namespace Gts {
 			}
 
 			if (data.state == CrushState::Healthy) {
-				RandomMoan(giant, tiny);
 				data.state = CrushState::Crushing;
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {
@@ -176,7 +174,7 @@ namespace Gts {
 					}
 					Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 					float currentSize = get_visual_scale(tiny);
-					RandomLaugh(giant);
+					MoanOrLaugh(giant, tiny);
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest();
