@@ -71,10 +71,10 @@ namespace Gts {
 
   void CharContData::ClearCollisions() {
     std::vector<hkpWorldObject*> entities = {};
-    for (auto rb: this->rbs) {
+    for (auto& [key, rb]: this->rbs) {
       entities.push_back(rb.get().get());
     }
-    for (auto ph: this->phantoms) {
+    for (auto& [key, ph]: this->phantoms) {
       entities.push_back(ph.get().get());
     }
 
