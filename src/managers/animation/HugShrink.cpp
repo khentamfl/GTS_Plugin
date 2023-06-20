@@ -73,7 +73,6 @@ namespace {
   void AbortAnimation(Actor* giant, Actor* tiny) {
     AnimationManager::StartAnim("Huggies_Spare", giant);
 		HugShrink::Release(giant);
-		HugShrink::DetachActorTask(giant);
 		if (tiny) {
       EnableCollisions(tiny);
 			SetBeingHeld(tiny, false);
@@ -115,6 +114,7 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		auto huggedActor = HugShrink::GetHuggiesActor(player);
 		AbortAnimation(player, huggedActor);
+    HugShrink::DetachActorTask(giant);
 	}
 }
 
