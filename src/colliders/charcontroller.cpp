@@ -77,6 +77,7 @@ namespace Gts {
       // Disable gravity
       log::info("Disable gravity (was {})", rb->motion.gravityFactor);
       rb->motion.gravityFactor = 0.0;
+      rb->motion.SetMass(1e8);
     }
     for (auto& [key, ph]: this->phantoms) {
       entities.push_back(ph.get());
@@ -105,6 +106,7 @@ namespace Gts {
 
       // Enable gravity
       rb->motion.gravityFactor = 1.0;
+      rb->motion.SetMass(1.0);
     }
     for (auto& [key, ph]: this->phantoms) {
       entities.push_back(ph.get());
