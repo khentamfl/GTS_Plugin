@@ -89,7 +89,7 @@ namespace Gts {
         if (static_cast<COL_LAYER>(collidable->broadPhaseHandle.collisionFilterInfo & 0x7F) == COL_LAYER::kCharController) {
           auto oldCollision = collidable->broadPhaseHandle.collisionFilterInfo;
           auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & 0xFFFFFFF8; // Clear old one
-          newCollision = newCollision | static_cast<std::uint32_t>(COL_LAYER::kTerrain); // Set terrain
+          newCollision = newCollision | static_cast<std::uint32_t>(COL_LAYER::kNonCollidable); // Set terrain
           if (oldCollision != newCollision) {
             log::info("Disable collision from {:0X} to {:0X}", oldCollision, newCollision);
             collidable->broadPhaseHandle.collisionFilterInfo = newCollision;
@@ -116,7 +116,7 @@ namespace Gts {
     for (auto ent: entities) {
       auto collidable = ent->GetCollidableRW();
       if (collidable) {
-        if (static_cast<COL_LAYER>(collidable->broadPhaseHandle.collisionFilterInfo & 0x7F) == COL_LAYER::kTerrain) {
+        if (static_cast<COL_LAYER>(collidable->broadPhaseHandle.collisionFilterInfo & 0x7F) == COL_LAYER::kNonCollidable) {
           auto oldCollision = collidable->broadPhaseHandle.collisionFilterInfo;
           auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & 0xFFFFFFF8; // Clear old one
           newCollision = newCollision | static_cast<std::uint32_t>(COL_LAYER::kCharController); // Set kCharController
