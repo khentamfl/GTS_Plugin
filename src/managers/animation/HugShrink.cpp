@@ -114,7 +114,7 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		auto huggedActor = HugShrink::GetHuggiesActor(player);
 		AbortAnimation(player, huggedActor);
-    HugShrink::DetachActorTask(giant);
+    HugShrink::DetachActorTask(player);
 	}
 }
 
