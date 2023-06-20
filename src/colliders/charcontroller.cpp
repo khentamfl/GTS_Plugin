@@ -88,8 +88,6 @@ namespace Gts {
           if (oldCollision != newCollision) {
             log::info("Updaing collision from {:0X} to {:0X}", oldCollision, newCollision);
             collidable->broadPhaseHandle.collisionFilterInfo = newCollision;
-
-            log::info("  - Test: {}", collidable->GetCollisionLayer() & static_cast<std::uint32_t>(COL_LAYER::kTerrain) == static_cast<std::uint32_t>(COL_LAYER::kTerrain));
           }
         }
       }
