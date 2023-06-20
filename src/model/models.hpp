@@ -1,4 +1,4 @@
 #pragma once
 // All models
 
-#include "models/giant.hpp"
+#include "model/giant.hpp"
