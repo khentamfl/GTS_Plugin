@@ -10,6 +10,7 @@
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "colliders/RE.hpp"
 #include "timer.hpp"
 #include "node.hpp"
 
