@@ -37,7 +37,7 @@ namespace Gts {
 
 					// This is the actual shape
 					if (hkpObject->shapePhantom) {
-						this->AddPhantom(phantom);
+						this->AddPhantom(hkpObject->shapePhantom);
 					}
 				}
 			}
@@ -49,7 +49,7 @@ namespace Gts {
 				hkpCharacterRigidBody* hkpObject = skyrim_cast<hkpCharacterRigidBody*>(refObject);
 				if (hkpObject) {
 					if (hkpObject->m_character) {
-						this->AddRB(shape);
+						this->AddRB(hkpObject->m_character);
 					}
 				}
 			}

@@ -20,7 +20,5 @@ namespace Gts {
 
 			std::unordered_map<hkpRigidBody*, hkRefPtr<hkpRigidBody>> rbs;
 			std::unordered_map<hkpPhantom*, hkRefPtr<hkpPhantom>> phantoms;
-
-			mutable std::mutex _lock;
 	};
 }
