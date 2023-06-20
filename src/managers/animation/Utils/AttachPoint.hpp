@@ -90,9 +90,9 @@ namespace Gts {
 
     auto targetPoint = targetA*(additionalScale) + targetB*(1.0 - additionalScale);
     if (Runtime::GetBool("EnableDebugOverlay")) {
-      log::info("targetPoint: {}", Vector2String(targetPoint));
-      log::info("targetA: {}", Vector2String(targetA));
-      log::info("targetB: {}", Vector2String(targetB));
+      log::info("targetPoint: {}", Vector2Str(targetPoint));
+      log::info("targetA: {}", Vector2Str(targetA));
+      log::info("targetB: {}", Vector2Str(targetB));
       DebugAPI::DrawSphere(glm::vec3(targetA.x, targetA.y, targetA.z), 2.0, 10, {1.0, 0.0, 0.0, 1.0});
       DebugAPI::DrawSphere(glm::vec3(targetB.x, targetB.y, targetB.z), 2.0, 10, {0.0, 1.0, 0.0, 1.0});
 			DebugAPI::DrawSphere(glm::vec3(targetPoint.x, targetPoint.y, targetPoint.z), 2.0, 10, {0.0, 0.0, 1.0, 1.0});
