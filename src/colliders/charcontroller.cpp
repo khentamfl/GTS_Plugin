@@ -68,4 +68,26 @@ namespace Gts {
 		}
     this->phantoms.try_emplace(phantom, hkRefPtr(phantom));
 	}
+
+  void CharContData::ClearCollisions() {
+    std::vector<hkpWorldObject*> entities = {};
+    for (auto rb: this->rbs) {
+      entities->push_back(rb.get().get());
+    }
+    for (auto ph: this->phantoms) {
+      entities->push_back(ph.get().get());
+    }
+
+    for (auto ent: entities) {
+      auto collidable = ent->GetCollidableRW();
+      if (collidable) {
+        auto oldCollision = collidable->broadPhaseHandle.collisionFilterInfo;
+        auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & hkpCollidable::CollisionFilterInfo::kBelongsTo;
+        if (oldCollision != newCollision) {
+          log::info("Updaing collision from {} to {}", oldCollision, newCollision);
+          collidable->broadPhaseHandle.collisionFilterInfo = newCollision;
+        }
+      }
+    }
+  }
 }

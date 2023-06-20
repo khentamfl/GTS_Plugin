@@ -14,6 +14,9 @@ namespace Gts {
 			void ReInit(bhkCharacterController* charCont);
 
 			bhkCharacterController* charCont = nullptr;
+
+      void ClearCollisions();
+
 		private:
       void AddRB(hkpRigidBody* rb);
 			void AddPhantom(hkpPhantom* phantom);

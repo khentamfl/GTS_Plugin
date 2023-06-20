@@ -23,6 +23,7 @@
 #include "events.hpp"
 #include "timer.hpp"
 #include "node.hpp"
+#include "colliders/charcontroller.hpp"
 
 #include <random>
 
@@ -42,6 +43,12 @@ namespace {
 		}
 		SetBeingHeld(huggedActor, true);
 		HugShrink::AttachActorTask(giant, huggedActor);
+
+    auto controller = huggedActor->GetCharController();
+    if (controller) {
+      auto colliders = CharContData(controller);
+      colliders.ClearCollisions();
+    }
 	}
 
 	void GTS_Hug_Grow(AnimationEventData& data) {
