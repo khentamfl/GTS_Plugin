@@ -81,11 +81,15 @@ namespace Gts {
     for (auto ent: entities) {
       auto collidable = ent->GetCollidableRW();
       if (collidable) {
-        auto oldCollision = collidable->broadPhaseHandle.collisionFilterInfo;
-        auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & !(0x7F | (0x7F << 16) );
-        if (oldCollision != newCollision) {
-          log::info("Updaing collision from {:0X} to {:0X}", oldCollision, newCollision);
-          collidable->broadPhaseHandle.collisionFilterInfo = newCollision;
+        if (collidable->GetCollisionLayer() == COL_LAYER::kCharController) {
+          auto oldCollision = collidable->broadPhaseHandle.collisionFilterInfo;
+          auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo | COL_LAYER::kTerrain ;
+          if (oldCollision != newCollision) {
+            log::info("Updaing collision from {:0X} to {:0X}", oldCollision, newCollision);
+            collidable->broadPhaseHandle.collisionFilterInfo = newCollision;
+
+            log::info("  - Test: {}", collidable->GetCollisionLayer() & COL_LAYER::kTerrain == COL_LAYER::kTerrain);
+          }
         }
       }
     }
