@@ -1,6 +1,6 @@
+#pragma once
 // A task runs every frame
 //  until it returns false
-
 
 #include "events.hpp"
 #include "data/time.hpp"
