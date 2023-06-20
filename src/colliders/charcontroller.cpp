@@ -116,6 +116,8 @@ namespace Gts {
     for (auto ent: entities) {
       auto collidable = ent->GetCollidableRW();
       if (collidable) {
+        log::info("Current info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
+        log::info("            : {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
         if (static_cast<COL_LAYER>(collidable->broadPhaseHandle.collisionFilterInfo & 0x7F) == COL_LAYER::kNonCollidable) {
           auto oldCollision = collidable->broadPhaseHandle.collisionFilterInfo;
           auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & 0xFFFFFFF8; // Clear old one
