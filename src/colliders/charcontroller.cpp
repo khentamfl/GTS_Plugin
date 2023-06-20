@@ -73,6 +73,10 @@ namespace Gts {
     std::vector<hkpWorldObject*> entities = {};
     for (auto& [key, rb]: this->rbs) {
       entities.push_back(rb.get());
+
+      // Disable gravity
+      log::info("Disable gravity (was {})", rb->motion.gravityFactor);
+      rb->motion.gravityFactor = 0.0;
     }
     for (auto& [key, ph]: this->phantoms) {
       entities.push_back(ph.get());
@@ -98,6 +102,9 @@ namespace Gts {
     std::vector<hkpWorldObject*> entities = {};
     for (auto& [key, rb]: this->rbs) {
       entities.push_back(rb.get());
+
+      // Enable gravity
+      rb->motion.gravityFactor = 1.0;
     }
     for (auto& [key, ph]: this->phantoms) {
       entities.push_back(ph.get());

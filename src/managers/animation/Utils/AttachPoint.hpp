@@ -19,8 +19,6 @@ namespace Gts {
 			return false;
 		}
 
-
-
 		tiny->SetPosition(point, true);
 
 		auto charcont = tiny->GetCharController();
