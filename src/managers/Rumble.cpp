@@ -91,9 +91,11 @@ namespace Gts {
 
 
 	void Rumble::Update() {
+
 		for (auto& [actor, data]: this->data) {
 			//if (data.delay.ShouldRun()) {
 			// Update values based on time passed
+			std::vector<std::string> tagsToErase = {};
 			for (auto& [tag, rumbleData]: data.tags) {
 				switch (rumbleData.state) {
 					case RumpleState::RampingUp: {
@@ -124,10 +126,15 @@ namespace Gts {
 					}
 					case RumpleState::Still: {
 						// All finished cleanup
-						data.tags.erase(tag);
+						tagsToErase.push_back(tag);
 					}
 				}
 			}
+
+      for (auto tag: tagsToErase) {
+        data.tags.erase(tag);
+      }
+      
 			// Now collect the data
 			//    - Multiple effects can add rumble to the same node
 			//    - We sum those effects up into cummulativeIntensity
