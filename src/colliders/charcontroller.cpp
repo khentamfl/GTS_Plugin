@@ -82,9 +82,9 @@ namespace Gts {
       auto collidable = ent->GetCollidableRW();
       if (collidable) {
         auto oldCollision = collidable->broadPhaseHandle.collisionFilterInfo;
-        auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & hkpCollidable::CollisionFilterInfo::kBelongsTo;
+        auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & !(0x7F | (0x7F << 16) );
         if (oldCollision != newCollision) {
-          log::info("Updaing collision from {} to {}", oldCollision, newCollision);
+          log::info("Updaing collision from {:0X} to {:0X}", oldCollision, newCollision);
           collidable->broadPhaseHandle.collisionFilterInfo = newCollision;
         }
       }
