@@ -100,6 +100,7 @@ namespace Gts {
   }
 
   void CharContData::EnableCollisions() {
+    log::info("Trying to enable collision");
     std::vector<hkpWorldObject*> entities = {};
     for (auto& [key, rb]: this->rbs) {
       entities.push_back(rb.get());
