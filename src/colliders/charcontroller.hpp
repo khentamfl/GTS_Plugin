@@ -15,7 +15,8 @@ namespace Gts {
 
 			bhkCharacterController* charCont = nullptr;
 
-      void ClearCollisions();
+      void DisableCollisions();
+      void EnableCollisions();
 
 		private:
       void AddRB(hkpRigidBody* rb);

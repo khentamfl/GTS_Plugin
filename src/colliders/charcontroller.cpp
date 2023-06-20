@@ -69,7 +69,7 @@ namespace Gts {
     this->phantoms.try_emplace(phantom, hkRefPtr(phantom));
 	}
 
-  void CharContData::ClearCollisions() {
+  void CharContData::DisableCollisions() {
     std::vector<hkpWorldObject*> entities = {};
     for (auto& [key, rb]: this->rbs) {
       entities.push_back(rb.get());
@@ -85,6 +85,31 @@ namespace Gts {
           auto oldCollision = collidable->broadPhaseHandle.collisionFilterInfo;
           auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & 0xFFFFFFF8; // Clear old one
           newCollision = newCollision | static_cast<std::uint32_t>(COL_LAYER::kTerrain); // Set terrain
+          if (oldCollision != newCollision) {
+            log::info("Updaing collision from {:0X} to {:0X}", oldCollision, newCollision);
+            collidable->broadPhaseHandle.collisionFilterInfo = newCollision;
+          }
+        }
+      }
+    }
+  }
+
+  void CharContData::EnableCollisions() {
+    std::vector<hkpWorldObject*> entities = {};
+    for (auto& [key, rb]: this->rbs) {
+      entities.push_back(rb.get());
+    }
+    for (auto& [key, ph]: this->phantoms) {
+      entities.push_back(ph.get());
+    }
+
+    for (auto ent: entities) {
+      auto collidable = ent->GetCollidableRW();
+      if (collidable) {
+        if (static_cast<COL_LAYER>(collidable->broadPhaseHandle.collisionFilterInfo & 0x7F) == COL_LAYER::kTerrain) {
+          auto oldCollision = collidable->broadPhaseHandle.collisionFilterInfo;
+          auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & 0xFFFFFFF8; // Clear old one
+          newCollision = newCollision | static_cast<std::uint32_t>(COL_LAYER::kCharController); // Set terrain
           if (oldCollision != newCollision) {
             log::info("Updaing collision from {:0X} to {:0X}", oldCollision, newCollision);
             collidable->broadPhaseHandle.collisionFilterInfo = newCollision;

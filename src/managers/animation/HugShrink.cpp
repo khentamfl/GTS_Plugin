@@ -44,11 +44,7 @@ namespace {
 		SetBeingHeld(huggedActor, true);
 		HugShrink::AttachActorTask(giant, huggedActor);
 
-    auto controller = huggedActor->GetCharController();
-    if (controller) {
-      auto colliders = CharContData(controller);
-      colliders.ClearCollisions();
-    }
+    DisableCollisions(huggedActor);
 	}
 
 	void GTS_Hug_Grow(AnimationEventData& data) {
@@ -72,6 +68,18 @@ namespace {
 	void GTSBEH_HugAbsorbAtk(AnimationEventData& data) {
 		auto giant = &data.giant;
 	}
+
+  // Cancel all the things
+  void AbortAnimation(Actor* giant, Actor* tiny) {
+    AnimationManager::StartAnim("Huggies_Spare", giant);
+		HugShrink::Release(giant);
+		HugShrink::DetachActorTask(giant);
+		if (tiny) {
+      EnableCollisions(tiny);
+			SetBeingHeld(tiny, false);
+			PushActorAway(giant, tiny, 0.1);
+		}
+  }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////// I N P U T
@@ -106,14 +114,7 @@ namespace {
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto huggedActor = HugShrink::GetHuggiesActor(player);
-		AnimationManager::StartAnim("Huggies_Spare", player);
-		HugShrink::Release(player);
-		HugShrink::DetachActorTask(player);
-		if (huggedActor) {
-			SetBeingHeld(huggedActor, false);
-			PushActorAway(player, huggedActor, 0.1);
-		}
-
+		AbortAnimation(player, huggedActor);
 	}
 }
 
@@ -157,9 +158,7 @@ namespace Gts {
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 			if (sizedifference >= 4.0) {
 				SetBeingHeld(tinyref, false);
-				AnimationManager::StartAnim("Huggies_Spare", giantref);
-				PushActorAway(giantref, tinyref, 0.1);
-				HugShrink::Release(giantref);
+				AbortAnimation(giantref, tinyref);
 				return false;
 			}
 			shake_camera(giantref, 0.50 * sizedifference, 0.05);
@@ -200,10 +199,7 @@ namespace Gts {
 			GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 			if (tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
-				SetBeingHeld(tinyref, false);
-				AnimationManager::StartAnim("Huggies_Spare", giantref);
-				PushActorAway(giantref, tinyref, 0.1);
-				HugShrink::Release(giantref);
+				AbortAnimation(giantref, tinyref);
 				return false;
 			}
 			if (!HugAttach(gianthandle, tinyhandle, sizedifference)) {
