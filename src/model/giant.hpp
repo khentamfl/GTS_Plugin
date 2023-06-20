@@ -11,29 +11,26 @@ namespace Gts {
 			Giant(Giant const&) = delete;
 			Giant& operator=(Giant const&) = delete;
 
-      std::string Name() {
-        return Get()->GetDisplayFullName();
-      }
+      // Basic Info
+      std::string Name();
 
-      Actor* Get() {
-        return actor.get().get();
-      }
+      float Scale();
 
 
-      Giant* FromActor(Actor* actor) {
-        if (!actor) {
-          return nullptr;
-        }
-        auto key = actor->formID;
-        static std::unordered_map<FormID, Giant> giants;
-        giants.try_emplace(key, actor);
+      // Represetation as other types
+      Actor* Get();
 
-        return &giants.at(key);
-      }
+
+      // Creation
+      Giant* FromActorPtr(Actor* actor);
+
+
+      Giant& FromActor(Actor& actor);
+
     protected:
-      Giant(Actor* giant): actor(giant->CreateRefHandle()) {
-        // Create new
-      }
+      Giant(Actor* giant);
+
+      // Data
       ActorHandle actor;
   };
 
