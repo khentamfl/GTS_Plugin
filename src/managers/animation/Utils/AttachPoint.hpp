@@ -1,5 +1,6 @@
 #pragma once
 #include "data/runtime.hpp"
+#include "scale/scale.hpp"
 #include "UI/DebugAPI.hpp"
 #include "node.hpp"
 
@@ -18,8 +19,6 @@ namespace Gts {
 		if (!tiny) {
 			return false;
 		}
-
-
 
 		tiny->SetPosition(point, true);
 
@@ -59,7 +58,7 @@ namespace Gts {
 	}
 
 	template<typename T, typename U>
-	bool HugAttach(T& anyGiant, U& anyTiny, float additionalScale) {
+	bool HugAttach(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return false;
@@ -73,6 +72,8 @@ namespace Gts {
 			return false;
 		}
     auto targetA = targetRootA->world.translate;
+
+    float scaleFactor = get_visual_scale(tiny) / get_visual_scale(giant);
 
     NiPoint3 targetB = NiPoint3();
     std::vector<std::string_view> bone_names = {
@@ -90,7 +91,13 @@ namespace Gts {
 			targetB += (bone->world * NiPoint3()) * (1.0/bone_count);
 		}
 
-    auto targetPoint = targetA*(additionalScale) + targetB*(1.0 - additionalScale);
+    // scaleFactor = std::clamp(scaleFactor, 0.0f, 1.0f);
+    auto targetPoint = targetA*(scaleFactor) + targetB*(1.0 - scaleFactor);
+    if (Runtime::GetBool("EnableDebugOverlay")) {
+      DebugAPI::DrawSphere(glm::vec3(targetA.x, targetA.y, targetA.z), 2.0, 40, {1.0, 0.0, 0.0, 1.0});
+      DebugAPI::DrawSphere(glm::vec3(targetB.x, targetB.y, targetB.z), 2.0, 40, {0.0, 1.0, 0.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(targetPoint.x, targetPoint.y, targetPoint.z), 2.0, 40, {0.0, 0.0, 1.0, 1.0});
+		}
 
 		return AttachTo(anyGiant, anyTiny, targetPoint);
 	}
@@ -136,4 +143,33 @@ namespace Gts {
 
 		return AttachTo(anyGiant, anyTiny, clevagePos);
 	}
+
+  // Force ragdoll ON of OFF
+  template<typename T>
+  void ForceRagdoll(T& anyActor, bool forceOn) {
+    Actor* actor = GetActorPtr(anyActor);
+    if (!actor) {
+      return;
+    }
+    auto charCont = actor->GetCharController();
+    if (!charCont) {
+      return;
+    }
+    BSAnimationGraphManagerPtr animGraphManager;
+		if (actor->GetAnimationGraphManager(animGraphManager)) {
+			for (auto& graph : animGraphManager->graphs) {
+				if (graph) {
+					if (graph->HasRagdoll()) {
+            if (forceOn) {
+              graph->AddRagdollToWorld();
+              charCont->flags.set(CHARACTER_FLAGS::kFollowRagdoll);
+            } else {
+              graph->RemoveRagdollFromWorld();
+              charCont->flags.reset(CHARACTER_FLAGS::kFollowRagdoll);
+            }
+          }
+				}
+			}
+		}
+  }
 }

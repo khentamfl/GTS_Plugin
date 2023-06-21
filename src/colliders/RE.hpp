@@ -1,4 +1,11 @@
 #pragma once
+// This adds the missing shapes and other data
+// that is not yet REd by common lib
+//
+// TODO: Add these to common lib some day
+//
+
+
 
 #include "RE/H/hkVector4.h"
 #include "RE/H/hkpConvexShape.h"

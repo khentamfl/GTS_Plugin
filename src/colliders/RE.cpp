@@ -1,10 +1,20 @@
 // Holds RE and dummy classes
-#include <data/re.hpp>
+#include "colliders/RE.hpp"
 
 namespace RE {
 
 	// DRAGON SLAYING
+	//
+	// HERE LIES SUPER CTD INDUCING CODE
+	//
+	// Touch only if you want to wake the dragon that lies
+	// dorment in your machine
+	//
 
+  // Hack in the vtables in a super hacky way
+  //
+  // Seriously don't use this, just replace the vtable
+  // with the real one via some other hacky code
 	hkpShape::~hkpShape()  // 00
 	{
 		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpShape[0]};

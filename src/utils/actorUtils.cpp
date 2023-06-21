@@ -10,7 +10,8 @@
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
-#include "data/re.hpp"
+#include "colliders/RE.hpp"
+#include "colliders/actor.hpp"
 #include "timer.hpp"
 #include "node.hpp"
 
@@ -227,8 +228,6 @@ namespace Gts {
 			return true;
 		}
 		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
-		     || std::string(actor->GetDisplayFullName()).find("Dragon") != std::string::npos
-		     || std::string(actor->GetDisplayFullName()).find("dragon") != std::string::npos
 		     || Runtime::IsRace(actor, "dragonRace")) {
 			return true;
 		} else {
@@ -548,7 +547,7 @@ namespace Gts {
 		}
 		if (IsBeingHeld(tiny)) {
 			return;
-		} 
+		}
 		if (!AllowStagger(giant, tiny)) {
 			return;
 		}
@@ -823,4 +822,17 @@ namespace Gts {
 			Cprint("{} lost life to the thighs of {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 	}
+
+  void DisableCollisions(Actor* actor) {
+    if (actor) {
+      auto colliders = ActorCollisionData(actor);
+      colliders.DisableCollisions();
+    }
+  }
+  void EnableCollisions(Actor* actor) {
+    if (actor) {
+      auto colliders = ActorCollisionData(actor);
+      colliders.EnableCollisions();
+    }
+  }
 }
