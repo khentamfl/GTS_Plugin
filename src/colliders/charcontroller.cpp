@@ -6,6 +6,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace {
+  const std::uint32_t BELONGS_BITS = 5;
   COL_LAYER GetCollidesWith(const std::uint32_t& collisionFilterInfo) {
     return static_cast<COL_LAYER>(collisionFilterInfo & 0x7F);
   }
@@ -26,7 +27,7 @@ namespace {
   }
 
   COL_LAYER GetBelongsTo(const std::uint32_t& collisionFilterInfo) {
-    return static_cast<COL_LAYER>((collisionFilterInfo >> 16) & 0x7F);
+    return static_cast<COL_LAYER>((collisionFilterInfo >> BELONGS_BITS) & 0x7F);
   }
   COL_LAYER GetBelongsTo(const hkpCollidable* collidable) {
     if (collidable) {
@@ -62,8 +63,8 @@ namespace {
   }
 
   void SetBelongsTo(std::uint32_t& collisionFilterInfo, const COL_LAYER& newLayer) {
-    auto newCollision = collisionFilterInfo & 0xFF80FFFF; // Clear old one
-    newCollision = newCollision | (static_cast<std::uint32_t>(newLayer) << 16);
+    auto newCollision = collisionFilterInfo & (0xFFFFFFFF & (0x80 << BELONGS_BITS)); // Clear old one
+    newCollision = newCollision | (static_cast<std::uint32_t>(newLayer) << BELONGS_BITS);
     collisionFilterInfo = newCollision;
   }
   void SetBelongsTo(hkpCollidable* collidable, const COL_LAYER& newLayer) {
@@ -163,7 +164,7 @@ namespace Gts {
         log::info("- Disable collision");
         log::info("Current info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
         log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-        log::info("     belongs: {:0X}", (collidable->broadPhaseHandle.collisionFilterInfo >> 16) & 0x7F);
+        log::info("     belongs: {:0X}", (collidable->broadPhaseHandle.collisionFilterInfo >> BELONGS_BITS) & 0x7F);
 
         // Change collides with
         if (GetCollidesWith(ent) == COL_LAYER::kCharController) {
@@ -171,13 +172,13 @@ namespace Gts {
         }
 
         // Change belongs to
-        if (GetBelongsTo(ent) == COL_LAYER::kCamera) {
+        if (GetBelongsTo(ent) == COL_LAYER::kUnidentified) {
           SetBelongsTo(ent, COL_LAYER::kNonCollidable);
         }
 
         log::info("    New info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
         log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-        log::info("     belongs: {:0X}", (collidable->broadPhaseHandle.collisionFilterInfo >> 16) & 0x7F);
+        log::info("     belongs: {:0X}", (collidable->broadPhaseHandle.collisionFilterInfo >> BELONGS_BITS) & 0x7F);
       }
     }
   }
@@ -202,7 +203,7 @@ namespace Gts {
         log::info("- Enabling collision");
         log::info("Current info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
         log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-        log::info("     belongs: {:0X}", (collidable->broadPhaseHandle.collisionFilterInfo >> 16) & 0x7F);
+        log::info("     belongs: {:0X}", (collidable->broadPhaseHandle.collisionFilterInfo >> 5) & 0x7F);
 
         // Change collides with
         if (GetCollidesWith(ent) == COL_LAYER::kNonCollidable) {
@@ -211,12 +212,12 @@ namespace Gts {
 
         // Change belongs to
         if (GetBelongsTo(ent) == COL_LAYER::kNonCollidable) {
-          SetBelongsTo(ent, COL_LAYER::kCamera);
+          SetBelongsTo(ent, COL_LAYER::kUnidentified);
         }
 
         log::info("    New info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
         log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-        log::info("     belongs: {:0X}", (collidable->broadPhaseHandle.collisionFilterInfo >> 16) & 0x7F);
+        log::info("     belongs: {:0X}", (collidable->broadPhaseHandle.collisionFilterInfo >> 5) & 0x7F);
       }
     }
   }
