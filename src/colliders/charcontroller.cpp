@@ -1,9 +1,49 @@
-#include "colliders/charcontroller.hpp"
+ #include "colliders/charcontroller.hpp"
 #include "colliders/RE.hpp"
 
 using namespace std;
 using namespace SKSE;
 using namespace RE;
+
+namespace {
+  COL_LAYER GetCollidesWith(const std::uint32_t& collisionFilterInfo) {
+    return static_cast<COL_LAYER>(collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
+  }
+  COL_LAYER GetCollidesWith(const hkpCollidable* collidable) {
+    if (collidable) {
+      return GetCollidesWith(collidable->broadPhaseHandle.collisionFilterInfo);
+    } else {
+      return COL_LAYER::kUnidentified;
+    }
+  }
+  COL_LAYER GetCollidesWith(const hkpWorldObject* entity) {
+    if (entity) {
+      auto collidable = ent->GetCollidable();
+      return GetCollidesWith(collidable);
+    } else {
+      return COL_LAYER::kUnidentified;
+    }
+  }
+
+  void SetCollidesWith(std::uint32_t& collisionFilterInfo, const COL_LAYER& newLayer) {
+    auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & 0xFFFFFF80; // Clear old one
+    newCollision = newCollision | static_cast<std::uint32_t>(newLayer);
+    collisionFilterInfo = newCollision;
+  }
+  void SetCollidesWith(hkpCollidable* collidable, const COL_LAYER& newLayer) {
+    if (collidable) {
+      return SetCollidesWith(collidable->broadPhaseHandle.collisionFilterInfo, newLayer);
+    }
+  }
+  void SetCollidesWith(hkpWorldObject* entity, const COL_LAYER& newLayer) {
+    if (entity) {
+      auto collidable = ent->GetCollidableRW();
+      return SetCollidesWith(collidable, newLayer);
+    }
+  }
+
+
+}
 
 namespace Gts {
 	CharContData::CharContData(bhkCharacterController* charCont) {
@@ -117,16 +157,18 @@ namespace Gts {
       auto collidable = ent->GetCollidableRW();
       if (collidable) {
         log::info("Current info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
-        log::info("            : {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-        if (static_cast<COL_LAYER>(collidable->broadPhaseHandle.collisionFilterInfo & 0x7F) == COL_LAYER::kNonCollidable) {
-          auto oldCollision = collidable->broadPhaseHandle.collisionFilterInfo;
-          auto newCollision = collidable->broadPhaseHandle.collisionFilterInfo & 0xFFFFFF80; // Clear old one
-          newCollision = newCollision | static_cast<std::uint32_t>(COL_LAYER::kCharController); // Set kCharController
-          if (oldCollision != newCollision) {
-            log::info("Restoring collision from {:0X} to {:0X}", oldCollision, newCollision);
-            collidable->broadPhaseHandle.collisionFilterInfo = newCollision;
-          }
+        log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
+        log::info("     belongs: {:0X}", (collidable->broadPhaseHandle.collisionFilterInfo >> 16) & 0x7F);
+
+        // Change collides with
+        if (GetCollidesWith(ent) == COL_LAYER::kNonCollidable) {
+          SetCollidesWith(ent, COL_LAYER::kCharController);
         }
+
+        // Change belongs to
+        
+
+
       }
     }
   }
