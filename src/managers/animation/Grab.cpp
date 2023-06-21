@@ -576,13 +576,13 @@ namespace Gts {
 			ForceRagdoll(tinyref, false);
 			/*auto ref = giant->Get3D(false);
 			if (ref) {
-				NiUpdateData data();
+				NiUpdateData data = NiUpdateData();
 				ref->Update(data);
 			}*/
 
 			auto root = find_node(giant, "NPC Root [Root]");
 			if (root) {
-				NiUpdateData data();
+				NiUpdateData data = NiUpdateData();
 				root->Update(NiUpdateData(data));
 			}
 
