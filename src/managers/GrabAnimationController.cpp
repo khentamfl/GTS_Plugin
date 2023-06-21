@@ -196,7 +196,7 @@ namespace Gts {
 			float predscale = get_target_scale(pred);
 			float preyscale = get_target_scale(prey);
 			float sizedifference = predscale/preyscale;
-			float difference = std::clamp(predscale/expected, preyscale/expected, 0.96f);
+			float difference = std::clamp(predscale/expected, preyscale/expected, 0.88f);
 			float shrink = preyscale - difference;
 			if (sizedifference < expected) {
 				mod_target_scale(prey, -shrink);

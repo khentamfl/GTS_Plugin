@@ -353,14 +353,14 @@ namespace Gts {
 				movementFactor *= 1.5;
 			}
 			if (!isdamaging && force >= 0.33 && !giant->AsActorState()->IsSprinting() && !giant->AsActorState()->IsWalking() && !giant->IsRunning()) {
-				StaggerOr(giant, tiny, 1 * force);
+				StaggerOr(giant, tiny, 1 * force, 0, 0, 0, 0);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
 			} else if (!isdamaging && (force >= 0.55 || giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
-				StaggerOr(giant, tiny, 1 * force);
+				StaggerOr(giant, tiny, 1 * force, 0, 0, 0, 0);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			} else if (!isdamaging && (force >= 0.65)) {
-				StaggerOr(giant, tiny, 1 * force);
+				StaggerOr(giant, tiny, 1 * force, 0, 0, 0, 0);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
 			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
@@ -411,7 +411,7 @@ namespace Gts {
 
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
-				StaggerOr(giant, tiny, knockBack);
+				StaggerOr(giant, tiny, knockBack, 0, 0, 0, 0);
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER && sizeRatio >= 1.49) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
@@ -423,8 +423,8 @@ namespace Gts {
 							DamageAV(tiny, ActorValue::kHealth, damage);
 						}
 					}
-					StaggerOr(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 35 * movementFactor * giantSize * force);
+					StaggerOr(giant, tiny, knockBack, 0, 0, 0, 0);
+					//ApplyHavokImpulse(tiny, 0, 0, 50 * movementFactor * giantSize * force, 35 * movementFactor * giantSize * force);
 				}
 			}
 		}

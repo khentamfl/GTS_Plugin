@@ -51,8 +51,8 @@ namespace {
 					float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage * 0.25);
 				}
-				StaggerOr(giant, tiny, knockBack);
-				ApplyHavokImpulse(tiny, 0, 0, 50 * giantSize * force, 50 * giantSize * force);
+				//ForceRagdoll(tiny, true);
+				StaggerOr(giant, tiny, knockBack, 0 ,0 , 50 * giantSize * force, 50 * giantSize * force);
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER && sizeRatio >= 1.49) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
@@ -62,8 +62,8 @@ namespace {
 						float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
 						DamageAV(tiny, ActorValue::kHealth, damage);
 					}
-					StaggerOr(giant, tiny, knockBack);
-					ApplyHavokImpulse(tiny, 0, 0, 50 * giantSize * force, 50 * giantSize * force);
+					//ForceRagdoll(tiny, true);
+					StaggerOr(giant, tiny, knockBack, 0, 0, 50 * giantSize * force, 50 * giantSize * force);
 				}
 			}
 		}

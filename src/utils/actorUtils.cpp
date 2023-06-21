@@ -185,15 +185,17 @@ namespace Gts {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
 	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude) {
-		/*NiPoint3 direction = NiPoint3(afX, afY, afZ);
-		   NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
-		   hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);//hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
-		   auto rbs = GetActorRB(target);
-		   for (auto rb: rbs) {
-		        auto& motion = rb->motion;
-		        motion.ApplyLinearImpulse(impulse);
-		   }*/
-		CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
+		NiPoint3 direction = NiPoint3(afX, afY, afZ);
+		NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
+		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
+		auto rbs = GetActorRB(target);
+		for (auto rb: rbs) {
+			if (rb) {
+				auto& motion = rb->motion;
+				motion.ApplyLinearImpulse(impulse);
+			}
+		}
+		//CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
 	}
 
 	void CompleteDragonQuest() {
@@ -541,7 +543,7 @@ namespace Gts {
 		}
 	}
 
-	void StaggerOr(Actor* giant, Actor* tiny, float power) {
+	void StaggerOr(Actor* giant, Actor* tiny, float power, float afX, float afY, float afZ, float afMagnitude) {
 		if (tiny->IsDead()) {
 			return;
 		}
@@ -559,7 +561,9 @@ namespace Gts {
 		float sizedifference = giantSize/tinySize;
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
-			PushActorAway(giant, tiny, power/100); // Always push
+			ForceRagdoll(tiny, true);
+			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
+			//PushActorAway(giant, tiny, power/100); // Always push
 			return;
 		}
 		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.25 && sizedifference < 3.0) {
@@ -567,7 +571,9 @@ namespace Gts {
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
 		} else if (ragdollchance == 30.0) {
-			PushActorAway(giant, tiny, power/100); // Push instead
+			ForceRagdoll(tiny, true);
+			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
+			//PushActorAway(giant, tiny, power/100); // Push instead
 			return;
 		}
 	}
