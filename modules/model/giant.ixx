@@ -1,6 +1,6 @@
 module;
 
-export module Gts.Giant;
+export module Giant;
 
 namespace Gts {
   export class Giant {
