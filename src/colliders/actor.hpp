@@ -11,9 +11,9 @@ using namespace RE;
 
 namespace Gts {
 
-	class ActorData: public ColliderData {
+	class ActorCollisionData: public ColliderData {
 		public:
-			ActorData(Actor* actor);
+			ActorCollisionData(Actor* actor);
     protected:
       virtual std::vector<ColliderData*> GetChildren() override;
     private:

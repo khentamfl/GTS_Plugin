@@ -825,13 +825,13 @@ namespace Gts {
 
   void DisableCollisions(Actor* actor) {
     if (actor) {
-      auto colliders = ActorData(actor);
+      auto colliders = ActorCollisionData(actor);
       colliders.DisableCollisions();
     }
   }
   void EnableCollisions(Actor* actor) {
     if (actor) {
-      auto colliders = ActorData(actor);
+      auto colliders = ActorCollisionData(actor);
       colliders.EnableCollisions();
     }
   }
