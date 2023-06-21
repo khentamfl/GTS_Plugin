@@ -11,7 +11,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "colliders/RE.hpp"
-#include "colliders/charcontroller.hpp"
+#include "colliders/actor.hpp"
 #include "timer.hpp"
 #include "node.hpp"
 
