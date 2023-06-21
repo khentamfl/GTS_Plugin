@@ -582,7 +582,7 @@ namespace Gts {
 
 			auto root = find_node(giant, "NPC Root [Root]");
 			if (root) {
-				NiUpdateData data = NiUpdateData();
+				&NiUpdateData data = NiUpdateData();
 				root->Update(NiUpdateData(data));
 			}
 
