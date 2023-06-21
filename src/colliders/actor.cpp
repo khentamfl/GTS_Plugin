@@ -5,7 +5,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	ActorData::ActorData(Actor* actor): CharContData(actor ? actor->GetCharController() : nullptr) RagdollData(actor ? GetRagdoll(actor) : nullptr) {
+	ActorData::ActorData(Actor* actor): charCont(actor ? actor->GetCharController() : nullptr), ragdoll(actor ? GetRagdoll(actor) : nullptr) {
 	}
 
   std::vector<ColliderData*> ActorData::GetChildren() {

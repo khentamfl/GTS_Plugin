@@ -11,7 +11,7 @@ using namespace RE;
 
 namespace Gts {
 
-	class ActorData {
+	class ActorData: public ColliderData {
 		public:
 			ActorData(Actor* actor);
     protected:
