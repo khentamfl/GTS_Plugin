@@ -76,6 +76,7 @@ namespace {
 		if (grabbedActor) {
 			SetBeingHeld(grabbedActor, true);
 			AllowDialogue(grabbedActor, false);
+			DisableCollisions(grabbedActor);
 		}
 	}
 
@@ -85,7 +86,6 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
 			Grab::AttachActorTask(giant, grabbedActor);
-			DisableCollisions(grabbedActor);
 		}
 	}
 
@@ -619,7 +619,7 @@ namespace Gts {
 			// All good try another frame
 			return true;
 		});
-		TaskManager::ChangeUpdate(name, UpdateKind::Havok);
+		TaskManager::ChangeUpdate(name, UpdateKind::Main);
 	}
 
 
