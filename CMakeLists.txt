@@ -12,8 +12,13 @@ project(
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+set(PREBUILT_MODULE_PATH ${CMAKE_BINARY_DIR}/modules)
 
 add_compile_definitions(_DISABLE_EXTENDED_ALIGNED_STORAGE)
+add_compile_options(-fmodules)
+add_compile_options(-stdlib=libc++)
+add_compile_options(-fbuiltin-module-map)
+add_compile_options(-fimplicit-module-maps)
 
 include(GNUInstallDirs)
 
@@ -30,6 +35,7 @@ file(GLOB sources
         src/*/*.cpp
         src/*/*/*.cpp
         src/*/*/*/*.cpp
+        modules/*/*.ixx
 
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 
