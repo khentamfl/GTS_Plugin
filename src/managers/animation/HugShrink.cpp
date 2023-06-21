@@ -202,6 +202,8 @@ namespace Gts {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
+      // Ensure they are NOT in ragdoll
+      ForceRagdoll(tinyhandle, false);
 			if (!HugAttach(gianthandle, tinyhandle)) {
 				return false;
 			}
