@@ -8,7 +8,7 @@ using namespace RE;
 
 namespace Gts {
 
-	class RagdollData {
+	class RagdollData: public ColliderData {
 		public:
 			RagdollData(hkaRagdollInstance* ragdoll);
 	};
