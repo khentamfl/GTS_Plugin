@@ -575,6 +575,11 @@ namespace Gts {
 
 			ForceRagdoll(tinyref, false);
 
+			auto root = find_node(giant, "NPC Root [Root]");
+			if (root) {
+				root->Update(NiUpdateData());
+			}
+
 			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				PushActorAway(giantref, tinyref, 0.1);
@@ -619,7 +624,7 @@ namespace Gts {
 			// All good try another frame
 			return true;
 		});
-		TaskManager::ChangeUpdate(name, UpdateKind::Main);
+		TaskManager::ChangeUpdate(name, UpdateKind::Camera);
 	}
 
 
