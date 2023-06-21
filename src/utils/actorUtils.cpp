@@ -570,6 +570,10 @@ namespace Gts {
 		}
 	}
 
+	void AllowDialogue(Actor* actor, bool enable) {
+		actor->AllowPCDialogue(enable);
+	}
+
 	void StaggerOr(Actor* giant, Actor* tiny, float power, float afX, float afY, float afZ, float afMagnitude) {
 		if (tiny->IsDead()) {
 			return;

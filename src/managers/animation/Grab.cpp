@@ -75,6 +75,7 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
 			SetBeingHeld(grabbedActor, true);
+			AllowDialogue(grabbedActor, false);
 		}
 	}
 
@@ -84,6 +85,7 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
 			Grab::AttachActorTask(giant, grabbedActor);
+			DisableCollisions(grabbedActor);
 		}
 	}
 
@@ -135,6 +137,7 @@ namespace {
 			if (damage > Health) {
 				CrushManager::Crush(giant, grabbedActor);
 				SetBeingHeld(grabbedActor, false);
+				AllowDialogue(grabbedActor, true);
 				Rumble::Once("GrabAttackKill", giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (!LessGore()) {
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
@@ -242,6 +245,7 @@ namespace {
 			AnimationManager::StartAnim("TinyDied", giant);
 			ManageCamera(&data.giant, false, 7.0);
 			SetBeingHeld(otherActor, false);
+			AllowDialogue(otherActor, true);
 			Grab::DetachActorTask(giant);
 			Grab::Release(giant);
 		}
@@ -299,6 +303,8 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(&data.giant);
 		if (otherActor) {
 			SetBeingHeld(otherActor, false);
+			EnableCollisions(otherActor);
+			AllowDialogue(otherActor, true);
 		}
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
@@ -335,12 +341,20 @@ namespace {
 		Grab::Release(giant);
 		if (grabbedActor) {
 			PushActorAway(giant, grabbedActor, 0.1);
+			AllowDialogue(grabbedActor, true);
+			EnableCollisions(grabbedActor);
 		}
 	}
 
 	void GTSBEH_GrabExit(AnimationEventData& data) {
 		auto giant = &data.giant;
+		auto grabbedActor = Grab::GetHeldActor(giant);
 		SetBetweenBreasts(giant, false);
+		auto grabbedActor = Grab::GetHeldActor(giant);
+		if (grabbedActor) {
+			EnableCollisions(grabbedActor);
+			AllowDialogue(grabbedActor, true);
+		}
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
@@ -354,10 +368,16 @@ namespace {
 
 	void GTSBEH_AbortGrab(AnimationEventData& data) {
 		auto giant = &data.giant;
+		auto grabbedActor = Grab::GetHeldActor(giant);
+		if (grabbedActor) {
+			EnableCollisions(grabbedActor);
+			AllowDialogue(grabbedActor, true);
+		}
 		SetBetweenBreasts(giant, false);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
+		
 		AnimationManager::StartAnim("TinyDied", giant);
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.40, 1.0);
 		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.60, 1.8);

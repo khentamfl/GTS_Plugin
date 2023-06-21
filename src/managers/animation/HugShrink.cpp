@@ -42,9 +42,10 @@ namespace {
 			return;
 		}
 		SetBeingHeld(huggedActor, true);
+		AllowDialogue(huggedActor, false);
 		HugShrink::AttachActorTask(giant, huggedActor);
 
-    DisableCollisions(huggedActor);
+   		DisableCollisions(huggedActor);
 	}
 
 	void GTS_Hug_Grow(AnimationEventData& data) {
@@ -76,6 +77,7 @@ namespace {
 		if (tiny) {
       		EnableCollisions(tiny);
 			SetBeingHeld(tiny, false);
+			AllowDialogue(tiny, true);
 			PushActorAway(giant, tiny, 0.1);
 		}
   }
