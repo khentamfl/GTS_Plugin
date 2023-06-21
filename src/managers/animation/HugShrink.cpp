@@ -73,7 +73,6 @@ namespace {
   void AbortAnimation(Actor* giant, Actor* tiny) {
     AnimationManager::StartAnim("Huggies_Spare", giant);
 		HugShrink::Release(giant);
-		HugShrink::DetachActorTask(giant);
 		if (tiny) {
       EnableCollisions(tiny);
 			SetBeingHeld(tiny, false);
@@ -115,6 +114,7 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		auto huggedActor = HugShrink::GetHuggiesActor(player);
 		AbortAnimation(player, huggedActor);
+    HugShrink::DetachActorTask(player);
 	}
 }
 
@@ -190,7 +190,7 @@ namespace Gts {
 
 
 			// Exit on death
-			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
+			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
 			if (!FaceOpposite(giantref, tinyref)) {
 				// If face towards fails then actor is invalid
 				return false;
@@ -202,7 +202,9 @@ namespace Gts {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
-			if (!HugAttach(gianthandle, tinyhandle, sizedifference)) {
+      // Ensure they are NOT in ragdoll
+      ForceRagdoll(tinyhandle, false);
+			if (!HugAttach(gianthandle, tinyhandle)) {
 				return false;
 			}
 

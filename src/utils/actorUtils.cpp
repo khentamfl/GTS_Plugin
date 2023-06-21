@@ -11,7 +11,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "colliders/RE.hpp"
-#include "colliders/charcontroller.hpp"
+#include "colliders/actor.hpp"
 #include "timer.hpp"
 #include "node.hpp"
 
@@ -824,16 +824,14 @@ namespace Gts {
 	}
 
   void DisableCollisions(Actor* actor) {
-    auto controller = actor->GetCharController();
-    if (controller) {
-      auto colliders = CharContData(controller);
+    if (actor) {
+      auto colliders = ActorCollisionData(actor);
       colliders.DisableCollisions();
     }
   }
   void EnableCollisions(Actor* actor) {
-    auto controller = actor->GetCharController();
-    if (controller) {
-      auto colliders = CharContData(controller);
+    if (actor) {
+      auto colliders = ActorCollisionData(actor);
       colliders.EnableCollisions();
     }
   }

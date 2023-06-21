@@ -367,8 +367,11 @@ namespace Gts {
 	}
 
 	float AttributeManager::AlterMovementSpeed(Actor* actor, const NiPoint3& direction) {
+    if (IsBeingHeld(actor)) {
+      return 0.0;
+    }
+
 		float bonus = 1.0;
-		static Timer soundtimer = Timer(0.80);
 		if (actor) {
 			auto& attributes = AttributeManager::GetSingleton();
 			bonus = attributes.GetAttributeBonus(actor, ActorValue::kSpeedMult);
@@ -380,9 +383,6 @@ namespace Gts {
 			} else {
 				volume = bonus * origSpeed / 250;
 			}
-			/*if (soundtimer.ShouldRunFrame()) {
-			        Runtime::PlaySound("RumbleWalkSound", actor, volume, 1.0);
-			   }*/
 		}
 		return bonus;
 	}
