@@ -89,14 +89,14 @@ namespace Gts {
         }
         auto& giant = FromActor(*actor);
 
-        return &giants;
+        return &giant;
       }
       Giant& FromActor(Actor& actor) {
-        auto key = actor->formID;
+        auto key = actor.formID;
         static std::unordered_map<FormID, Giant> all_giants;
         all_giants.try_emplace(key, actor);
 
-        return &all_giants.at(key);
+        return *all_giants.at(key);
       }
 
       // ===========
@@ -109,8 +109,12 @@ namespace Gts {
       }
 
       // Automatic get the Actor*
-      Actor* operator->() const;
-      Actor& operator* const;
+      Actor* operator->() const {
+        return Get();
+      }
+      Actor& operator*() const {
+        return *Get();
+      }
 
     protected:
       Giant(Actor* giant): actor(giant->CreateRefHandle()) {
