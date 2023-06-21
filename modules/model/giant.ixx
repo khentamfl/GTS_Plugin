@@ -3,6 +3,9 @@ module;
 export module Giant;
 
 namespace Gts {
+  class Giant;
+  export using Tiny = Giant; // All giants are also tiny to someone all tinys can be giant to another
+
   export class Giant {
     public:
       // == No copy ==
@@ -117,6 +120,4 @@ namespace Gts {
       // Data
       ActorHandle actor;
   };
-
-  export using Tiny = Giant; // All giants are also tiny to someone all tinys can be giant to another
 }
