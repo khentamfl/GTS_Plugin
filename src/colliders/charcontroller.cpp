@@ -73,7 +73,7 @@ namespace {
   }
   void SetBelongsTo(hkpWorldObject* entity, const COL_LAYER& newLayer) {
     if (entity) {
-      auto collidable = ent->GetCollidableRW();
+      auto collidable = entity->GetCollidableRW();
       return SetCollidesWith(collidable, newLayer);
     }
   }
