@@ -565,7 +565,7 @@ namespace Gts {
 				return false;
 			}
 			if (!tinyhandle) {
-				return false;
+				return false; 
 			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
