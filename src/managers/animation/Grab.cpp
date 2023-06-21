@@ -574,10 +574,16 @@ namespace Gts {
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
 			ForceRagdoll(tinyref, false);
+			/*auto ref = giant->Get3D(false);
+			if (ref) {
+				NiUpdateData data();
+				ref->Update(data);
+			}*/
 
 			auto root = find_node(giant, "NPC Root [Root]");
 			if (root) {
-				root->Update(NiUpdateData());
+				NiUpdateData data();
+				root->Update(NiUpdateData(data));
 			}
 
 			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
