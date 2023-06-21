@@ -74,7 +74,7 @@ namespace {
     AnimationManager::StartAnim("Huggies_Spare", giant);
 		HugShrink::Release(giant);
 		if (tiny) {
-      EnableCollisions(tiny);
+      		EnableCollisions(tiny);
 			SetBeingHeld(tiny, false);
 			PushActorAway(giant, tiny, 0.1);
 		}

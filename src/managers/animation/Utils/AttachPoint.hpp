@@ -143,33 +143,4 @@ namespace Gts {
 
 		return AttachTo(anyGiant, anyTiny, clevagePos);
 	}
-
-  // Force ragdoll ON of OFF
-  template<typename T>
-  void ForceRagdoll(T& anyActor, bool forceOn) {
-    Actor* actor = GetActorPtr(anyActor);
-    if (!actor) {
-      return;
-    }
-    auto charCont = actor->GetCharController();
-    if (!charCont) {
-      return;
-    }
-    BSAnimationGraphManagerPtr animGraphManager;
-		if (actor->GetAnimationGraphManager(animGraphManager)) {
-			for (auto& graph : animGraphManager->graphs) {
-				if (graph) {
-					if (graph->HasRagdoll()) {
-            if (forceOn) {
-              graph->AddRagdollToWorld();
-              charCont->flags.set(CHARACTER_FLAGS::kFollowRagdoll);
-            } else {
-              graph->RemoveRagdollFromWorld();
-              charCont->flags.reset(CHARACTER_FLAGS::kFollowRagdoll);
-            }
-          }
-				}
-			}
-		}
-  }
 }

@@ -125,6 +125,34 @@ namespace Gts {
 		CallFunctionOn(actor, "Actor", "SetDontMove", true);
 	}
 
+	void ForceRagdoll(ActorHandle TinyHandle, bool forceOn) {
+		auto actor = TinyHandle.get().get();
+		if (!actor) {
+			return;
+		}
+		auto charCont = actor->GetCharController();
+		if (!charCont) {
+			return;
+		}
+		BSAnimationGraphManagerPtr animGraphManager;
+		if (actor->GetAnimationGraphManager(animGraphManager)) {
+			for (auto& graph : animGraphManager->graphs) {
+				if (graph) {
+					if (graph->HasRagdoll()) {
+						if (forceOn) {
+							graph->AddRagdollToWorld();
+							charCont->flags.set(CHARACTER_FLAGS::kFollowRagdoll);
+						} else {
+							graph->RemoveRagdollFromWorld();
+							charCont->flags.reset(CHARACTER_FLAGS::kFollowRagdoll);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
 	std::vector<hkpRigidBody*> GetActorRB(Actor* actor) {
 		std::vector<hkpRigidBody*> results = {};
 		auto charCont = actor->GetCharController();
@@ -561,7 +589,7 @@ namespace Gts {
 		float sizedifference = giantSize/tinySize;
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
-			ForceRagdoll(tiny, true);
+			ForceRagdoll(tiny->CreateRefHandle(), true);
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			//PushActorAway(giant, tiny, power/100); // Always push
 			return;
@@ -571,7 +599,7 @@ namespace Gts {
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
 		} else if (ragdollchance == 30.0) {
-			ForceRagdoll(tiny, true);
+			ForceRagdoll(tiny->CreateRefHandle(), true);
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			//PushActorAway(giant, tiny, power/100); // Push instead
 			return;
