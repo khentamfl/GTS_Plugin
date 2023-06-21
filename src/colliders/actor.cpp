@@ -9,9 +9,9 @@ namespace Gts {
 	}
 
   std::vector<ColliderData*> ActorData::GetChildren() {
-    return {
-      &charCont,
-      &ragdoll
-    };
+    std::vector<ColliderData*> result = {};
+    result.push_back(&this->charCont);
+    result.push_back(&this->ragdoll);
+    return result;
   }
 }
