@@ -125,8 +125,7 @@ namespace Gts {
 		CallFunctionOn(actor, "Actor", "SetDontMove", true);
 	}
 
-	void ForceRagdoll(ActorHandle TinyHandle, bool forceOn) {
-		auto actor = TinyHandle.get().get();
+	void ForceRagdoll(Actor* actor, bool forceOn) {
 		if (!actor) {
 			return;
 		}
@@ -589,17 +588,17 @@ namespace Gts {
 		float sizedifference = giantSize/tinySize;
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
-			ForceRagdoll(tiny->CreateRefHandle(), true);
+			ForceRagdoll(tiny, true);
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			//PushActorAway(giant, tiny, power/100); // Always push
 			return;
 		}
-		if (ragdollchance < 30.0/sizedifference && sizedifference >= 1.25 && sizedifference < 3.0) {
+		if (ragdollchance > 7.0 * sizedifference && (sizedifference >= 1.25 && sizedifference < 3.0)) {
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
-		} else if (ragdollchance == 30.0) {
-			ForceRagdoll(tiny->CreateRefHandle(), true);
+		} else if (ragdollchance <= 7.0 * sizedifference) {
+			ForceRagdoll(tiny, true);
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			//PushActorAway(giant, tiny, power/100); // Push instead
 			return;

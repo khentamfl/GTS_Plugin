@@ -203,7 +203,7 @@ namespace Gts {
 				return false;
 			}
       // Ensure they are NOT in ragdoll
-      		ForceRagdoll(tinyhandle, false);
+      		ForceRagdoll(tinyref, false);
 			if (!HugAttach(gianthandle, tinyhandle)) {
 				return false;
 			}
