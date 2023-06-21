@@ -10,6 +10,7 @@ namespace Gts {
 	enum class UpdateKind {
 		Main,
 		Camera,
+		Havok,
 	};
 
 	class BaseTask {
@@ -169,6 +170,22 @@ namespace Gts {
 				std::vector<std::string> toRemove = {};
 				for (auto& [name, task]: this->taskings) {
 					if (task->UpdateOn() == UpdateKind::Camera) {
+						if (!task->Update()) {
+							toRemove.push_back(name);
+						}
+					}
+				}
+
+				for (auto task: toRemove) {
+					this->taskings.erase(task);
+				}
+
+			}
+
+			virtual void HavokUpdate() override {
+				std::vector<std::string> toRemove = {};
+				for (auto& [name, task]: this->taskings) {
+					if (task->UpdateOn() == UpdateKind::Havok) {
 						if (!task->Update()) {
 							toRemove.push_back(name);
 						}

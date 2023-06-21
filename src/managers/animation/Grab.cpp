@@ -574,7 +574,7 @@ namespace Gts {
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
 			ForceRagdoll(tinyref, false);
-			
+
 			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				PushActorAway(giantref, tinyref, 0.1);
@@ -619,7 +619,7 @@ namespace Gts {
 			// All good try another frame
 			return true;
 		});
-		TaskManager::ChangeUpdate(name, UpdateKind::Camera);
+		TaskManager::ChangeUpdate(name, UpdateKind::Havok);
 	}
 
 
