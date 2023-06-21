@@ -57,7 +57,7 @@ namespace Gts {
 	}
 
 	template<typename T, typename U>
-	bool HugAttach(T& anyGiant, U& anyTiny, float additionalScale) {
+	bool HugAttach(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return false;
@@ -71,6 +71,8 @@ namespace Gts {
 			return false;
 		}
     auto targetA = targetRootA->world.translate;
+
+    float scaleFactor = get_visual_scale(tinyref) / get_visual_scale(giantref);
 
     NiPoint3 targetB = NiPoint3();
     std::vector<std::string_view> bone_names = {
@@ -88,9 +90,8 @@ namespace Gts {
 			targetB += (bone->world * NiPoint3()) * (1.0/bone_count);
 		}
 
-    log::info("additionalScale: {}", additionalScale);
-    additionalScale = std::clamp(additionalScale, 0.0f, 1.0f);
-    auto targetPoint = targetA*(additionalScale) + targetB*(1.0 - additionalScale);
+    // scaleFactor = std::clamp(scaleFactor, 0.0f, 1.0f);
+    auto targetPoint = targetA*(scaleFactor) + targetB*(1.0 - scaleFactor);
     if (Runtime::GetBool("EnableDebugOverlay")) {
       DebugAPI::DrawSphere(glm::vec3(targetA.x, targetA.y, targetA.z), 2.0, 40, {1.0, 0.0, 0.0, 1.0});
       DebugAPI::DrawSphere(glm::vec3(targetB.x, targetB.y, targetB.z), 2.0, 40, {0.0, 1.0, 0.0, 1.0});

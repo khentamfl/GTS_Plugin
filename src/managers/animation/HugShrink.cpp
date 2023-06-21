@@ -202,7 +202,7 @@ namespace Gts {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
-			if (!HugAttach(gianthandle, tinyhandle, sizedifference)) {
+			if (!HugAttach(gianthandle, tinyhandle)) {
 				return false;
 			}
 
