@@ -46,6 +46,9 @@ namespace {
 	const float UNDERFOOT_POWER = 0.60;
 
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
+		if (IsBeingHeld(tiny)) {
+			return false;
+		}
 		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (IsTeammate(tiny))) {
 			return false; // Protect NPC's against player size-related effects
 		}

@@ -41,6 +41,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
+		ToggleEmotionEdit(giant, true);
 		SetBeingHeld(huggedActor, true);
 		AllowDialogue(huggedActor, false);
 		HugShrink::AttachActorTask(giant, huggedActor);
@@ -60,6 +61,7 @@ namespace {
 	void GTS_Hug_Moan(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto huggedActor = HugShrink::GetHuggiesActor(giant);
+		AdjustFacialExpression(giant, 0, 0.75, "phenome");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 		if (!huggedActor) {
 			return;
@@ -73,13 +75,14 @@ namespace {
   // Cancel all the things
   void AbortAnimation(Actor* giant, Actor* tiny) {
     AnimationManager::StartAnim("Huggies_Spare", giant);
-		HugShrink::Release(giant);
-		if (tiny) {
-      		EnableCollisions(tiny);
-			SetBeingHeld(tiny, false);
-			AllowDialogue(tiny, true);
-			PushActorAway(giant, tiny, 0.1);
-		}
+	AdjustFacialExpression(giant, 0, 0.0, "phenome");
+	HugShrink::Release(giant);
+	if (tiny) {
+		EnableCollisions(tiny);
+		SetBeingHeld(tiny, false);
+		AllowDialogue(tiny, true);
+		PushActorAway(giant, tiny, 0.1);
+	}
   }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
