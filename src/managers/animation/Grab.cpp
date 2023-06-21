@@ -582,8 +582,8 @@ namespace Gts {
 
 			auto root = find_node(giant, "NPC Root [Root]");
 			if (root) {
-				&NiUpdateData data = NiUpdateData();
-				root->Update(NiUpdateData(data));
+				NiUpdateData data = NiUpdateData();
+				root->Update(data);
 			}
 
 			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
