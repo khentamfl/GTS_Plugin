@@ -349,12 +349,12 @@ namespace {
 	void GTSBEH_GrabExit(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
-		SetBetweenBreasts(giant, false);
-		auto grabbedActor = Grab::GetHeldActor(giant);
 		if (grabbedActor) {
 			EnableCollisions(grabbedActor);
 			AllowDialogue(grabbedActor, true);
 		}
+		SetBetweenBreasts(giant, false);
+
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
