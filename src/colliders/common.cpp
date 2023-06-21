@@ -121,7 +121,7 @@ namespace Gts {
   }
 
   void ColliderData::EnableCollisions() {
-    for (auto& [key, rb]: GetRigidBodies()) {
+    for (auto& rb: GetRigidBodies()) {
       // Enable gravity
       rb->motion.gravityFactor = 1.0;
       rb->motion.SetMassInv(1.0);
