@@ -824,16 +824,14 @@ namespace Gts {
 	}
 
   void DisableCollisions(Actor* actor) {
-    auto controller = actor->GetCharController();
-    if (controller) {
-      auto colliders = CharContData(controller);
+    if (actor) {
+      auto colliders = ActorData(actor);
       colliders.DisableCollisions();
     }
   }
   void EnableCollisions(Actor* actor) {
-    auto controller = actor->GetCharController();
-    if (controller) {
-      auto colliders = CharContData(controller);
+    if (actor) {
+      auto colliders = ActorData(actor);
       colliders.EnableCollisions();
     }
   }
