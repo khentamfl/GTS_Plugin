@@ -97,7 +97,7 @@ namespace Gts {
     std::vector<hkpWorldObject*> entities = GetWorldObjects();
     for (auto& rb: GetRigidBodies()) {
       // Disable gravity
-      log::info("Disable gravity (was {})", rb->motion.gravityFactor);
+      // log::info("Disable gravity (was {})", rb->motion.gravityFactor);
       rb->motion.gravityFactor = 0.0;
       rb->motion.SetMassInv(0.0);
     }
@@ -105,17 +105,17 @@ namespace Gts {
     for (auto& ent: GetWorldObjects()) {
       auto collidable = ent->GetCollidable();
       if (collidable) {
-        log::info("- Disable collision");
-        log::info("Current info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
-        log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
+        // log::info("- Disable collision");
+        // log::info("Current info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
+        // log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
 
         // Change collides with
         if (GetCollidesWith(ent) == COL_LAYER::kCharController) {
           SetCollidesWith(ent, COL_LAYER::kNonCollidable);
         }
 
-        log::info("    New info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
-        log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
+        // log::info("    New info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
+        // log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
       }
     }
   }
@@ -130,17 +130,17 @@ namespace Gts {
     for (auto& ent: GetWorldObjects()) {
       auto collidable = ent->GetCollidable();
       if (collidable) {
-        log::info("- Enabling collision");
-        log::info("Current info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
-        log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
+        // log::info("- Enabling collision");
+        // log::info("Current info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
+        // log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
 
         // Change collides with
         if (GetCollidesWith(ent) == COL_LAYER::kNonCollidable) {
           SetCollidesWith(ent, COL_LAYER::kCharController);
         }
 
-        log::info("    New info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
-        log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
+        // log::info("    New info: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo);
+        // log::info("        with: {:0X}", collidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
       }
     }
   }
