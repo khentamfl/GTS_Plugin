@@ -12,6 +12,7 @@ namespace Gts {
   void SetCollidesWith(hkpWorldObject* entity, const COL_LAYER& newLayer);
 
   class ColliderData {
+  public:
     void DisableCollisions();
     void EnableCollisions();
 
