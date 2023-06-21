@@ -1,5 +1,6 @@
 #pragma once
 #include "data/runtime.hpp"
+#include "scale/scale.hpp"
 #include "UI/DebugAPI.hpp"
 #include "node.hpp"
 
@@ -72,7 +73,7 @@ namespace Gts {
 		}
     auto targetA = targetRootA->world.translate;
 
-    float scaleFactor = get_visual_scale(tinyref) / get_visual_scale(giantref);
+    float scaleFactor = get_visual_scale(tiny) / get_visual_scale(giant);
 
     NiPoint3 targetB = NiPoint3();
     std::vector<std::string_view> bone_names = {
