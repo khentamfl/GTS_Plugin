@@ -574,11 +574,6 @@ namespace Gts {
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 
 			ForceRagdoll(tinyref, false);
-			auto ref = giant->Get3D(false);
-			if (ref) {
-				NiUpdateData data = NiUpdateData();
-				ref->Update(data);
-			}
 
 
 			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
