@@ -22,9 +22,8 @@ namespace Gts {
 
 
       // Creation
+      Giant* FromActorFormID(FormID formID);
       Giant* FromActorPtr(Actor* actor);
-
-
       Giant& FromActor(Actor& actor);
 
     protected:

@@ -4,20 +4,24 @@
 
 using namespace RE;
 
-namespace Gts::Giant {
-  std::string Name() {
+namespace Gts {
+  std::string Giant::Name() {
     return Get()->GetDisplayFullName();
   }
 
-  float Scale() {
+  float Giant::Scale() {
     return get_visual_scale(Get());
   }
 
-  Actor* Get() {
+  Actor* Giant::Get() {
     return actor.get().get();
   }
 
-  Giant* FromActorPtr(Actor* actor) {
+  Giant* Giant::FromActorFormID(FormID formID) {
+    auto* actor = TESForm::LookupByID<Actor>(formID);
+    return FromActorPtr(actor);
+  }
+  Giant* Giant::FromActorPtr(Actor* actor) {
     if (!actor) {
       return nullptr;
     }
@@ -27,7 +31,7 @@ namespace Gts::Giant {
   }
 
 
-  Giant& FromActor(Actor& actor) {
+  Giant& Giant::FromActor(Actor& actor) {
     auto key = actor->formID;
     static std::unordered_map<FormID, Giant> all_giants;
     all_giants.try_emplace(key, actor);
@@ -35,7 +39,7 @@ namespace Gts::Giant {
     return &all_giants.at(key);
   }
 
-  Giant(Actor* giant): actor(giant->CreateRefHandle()) {
+  Giant::Giant(Actor* giant): actor(giant->CreateRefHandle()) {
     // Create new
   }
 }
