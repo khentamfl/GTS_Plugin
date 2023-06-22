@@ -9,7 +9,7 @@ using namespace SKSE;
 using namespace Gts;
 
 namespace {
-  bool DisabledCollision(hkpCollidable& collidable) {
+  bool DisabledCollision(const hkpCollidable& collidable) {
     void* owner = collidable.GetOwner();
     if (owner) {
       auto name = GetRawName(owner);
