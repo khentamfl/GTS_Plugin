@@ -2,11 +2,11 @@ module;
 
 export module Giant;
 
-namespace Gts {
+export namespace Gts {
   class Giant;
-  export using Tiny = Giant; // All giants are also tiny to someone all tinys can be giant to another
+  using Tiny = Giant; // All giants are also tiny to someone all tinys can be giant to another
 
-  export class Giant {
+  class Giant {
     public:
       // == Allow move
       Giant(Giant&&) = default;
