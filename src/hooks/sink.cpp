@@ -23,13 +23,11 @@ namespace Hooks {
 			Actor* is_actor = skyrim_cast<Actor*>(a_this);
 			float scale = 1.0;
 			if (is_actor) {
-			 	scale = std::clamp(get_visual_scale(a_this), 0.10f, 9999999.0f);
-			}
-			
-  			
-			if (is_actor->formID == 0x14) {
-				return 0.0;
-  				log::info("  - Submerged level:{}:: {}, + scale: {}", log_id, result, result/scale);
+			 	scale = std::clamp(get_visual_scale(is_actor), 0.10f, 9999999.0f);
+				if (is_actor->formID == 0x14) {
+					log::info("  - Submerged level:{}:: {}, + scale: {}", log_id, result, result/scale);
+					return 0.0;
+				}
 			}
   			return result;
 			});
