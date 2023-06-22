@@ -1,5 +1,6 @@
 #include "hooks/havok.hpp"
 #include "events.hpp"
+#include "data/transient.hpp"
 
 #include "managers/contact.hpp"
 
