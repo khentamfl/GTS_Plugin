@@ -16,10 +16,10 @@ namespace Hooks {
   			if (a_this) {
   				log::info("  - Actor:{}: {}", log_id, a_this->GetDisplayFullName());
   			}
-  			if (cell) {
+  			if (a_cell) {
   				log::info("  - In a cell:{}", log_id);
   			}
-  			float result = GetSubmergeLevel(a_this, z_pos, cell);
+  			float result = GetSubmergeLevel(a_this, z_pos, a_cell);
   			log::info("  - Submerged level:{}:: {}", log_id, result);
   			return result;
 			});
