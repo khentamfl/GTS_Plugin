@@ -117,6 +117,7 @@ namespace Gts {
       }
 
     protected:
+      friend class std::unordered_map<FormID, Giant>;
       Giant(Actor* giant): actor(giant->CreateRefHandle()) {
         // Create new
       }
