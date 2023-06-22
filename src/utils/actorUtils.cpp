@@ -842,7 +842,19 @@ namespace Gts {
 			} else if (random >= 7) {
 				Cprint("{} got smothered by soft breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
-		}
+		} else if (cause == "Grinded") { // Grinded by the foot, unused, has no anim and doesn't exist.
+			if (random < 2) {
+				Cprint("{} became a bloody stain under {} foot.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 2) {
+				Cprint("{} was crushed by the feet of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 3 || random == 4) {
+				Cprint("Feet of {} crushed {} into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random == 5 || random == 6) {
+				Cprint("{} got crushed by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random >= 7) {
+				Cprint("{} relentlessly crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			}
+			return;
 	}
 
 	void PrintSuffocate(Actor* pred, Actor* prey) {
@@ -862,13 +874,13 @@ namespace Gts {
 
   void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
 	if (HasSMT(giant)) {
-		float predscale = get_target_scale(pred);
-		float preyscale = get_target_scale(prey);
+		float predscale = get_target_scale(giant);
+		float preyscale = get_target_scale(tiny);
 		float sizedifference = predscale/preyscale;
 		float difference = preyscale/expected;
 		float shrink = preyscale - difference;
-		mod_target_scale(prey, -shrink);
-		AddSMTPenalty(pred, 5.0);
+		mod_target_scale(tiny, -shrink);
+		AddSMTPenalty(giant, 5.0);
 		float total = predscale/preyscale;
 		log::info("Shrink: {}, sizediference: {}, sizedifference after: {}", shrink, sizedifference, total);
 	}
