@@ -7,7 +7,7 @@ using namespace SKSE;
 namespace Hooks {
 
 	void Hook_Sinking::Hook(Trampoline& trampoline) {
-
+ 
 		static FunctionHook<float(TESObjectREFR* a_this, float z_pos, TESObjectCELL* a_cell)> GetSubmergeLevel(
 			RELOCATION_ID(36452, 37448),
 			[](auto* a_this, auto* cell, float z_pos){
