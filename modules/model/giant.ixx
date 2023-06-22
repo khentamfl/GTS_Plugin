@@ -94,7 +94,7 @@ namespace Gts {
       Giant& FromActor(Actor& actor) {
         auto key = actor.formID;
         static std::unordered_map<FormID, Giant> all_giants;
-        all_giants.try_emplace(key, actor);
+        all_giants.try_emplace(key, &actor);
 
         return all_giants.at(key);
       }

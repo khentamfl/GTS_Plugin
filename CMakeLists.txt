@@ -15,10 +15,6 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 set(PREBUILT_MODULE_PATH ${CMAKE_BINARY_DIR}/modules)
 
 add_compile_definitions(_DISABLE_EXTENDED_ALIGNED_STORAGE)
-add_compile_options(-fmodules)
-add_compile_options(-stdlib=libc++)
-add_compile_options(-fbuiltin-module-map)
-add_compile_options(-fimplicit-module-maps)
 
 include(GNUInstallDirs)
 
