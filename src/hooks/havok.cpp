@@ -8,6 +8,30 @@ using namespace RE;
 using namespace SKSE;
 using namespace Gts;
 
+namespace {
+  bool DisabledCollision(hkpCollidable& collidable) {
+    void* owner = collidable.GetOwner();
+    if (owner) {
+      auto name = GetRawName(owner);
+      log::info("IsCollisionEnabled: {}", name);
+      hkpWorldObject* obj = collidable.GetOwner<hkpWorldObject>();
+      if (obj) {
+        auto tesObj = obj->GetUserData();
+        if (tesObj) {
+          log::info("tesObj: {}", tesObj->GetDisplayFullName());
+          auto tranData = Transient::GetSingleton().GetData(tesObj);
+          if (tranData) {
+            if (tranData->disable_collision) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
+}
+
 namespace Hooks
 {
 	void Hook_Havok::Hook(Trampoline& trampoline)
@@ -30,23 +54,8 @@ namespace Hooks
   // Credit: FlyingParticle for code on getting the NiAvObject
   //         maxsu. for IsCollisionEnabled idea
   bool Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB) {
-    void* owner = a_collidableA.GetOwner();
-    if (owner) {
-      auto name = GetRawName(owner);
-      log::info("IsCollisionEnabled: {}", name);
-      hkpWorldObject* obj = a_collidableA.GetOwner<hkpWorldObject>();
-      if (obj) {
-        auto tesObj = obj->GetUserData();
-        if (tesObj) {
-          log::info("tesObj: {}", tesObj->GetDisplayFullName());
-          auto tranData = Transient::GetSingleton().GetData(tesObj);
-          if (tranData) {
-            if (tranData->disable_collision) {
-              return false;
-            }
-          }
-        }
-      }
+    if (DisabledCollision(a_collidableA) || DisabledCollision(a_collidableB)) {
+      return false;
     }
     return _IsCollisionEnabled(a_this, a_collidableA, a_collidableB);
   }
