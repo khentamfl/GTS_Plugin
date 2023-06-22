@@ -25,8 +25,9 @@ namespace Hooks {
 			if (is_actor) {
 			 	//scale = std::clamp(get_visual_scale(is_actor), 0.10f, 9999999.0f);
 				if (is_actor->formID == 0x14) {
+					double zero = 0.0;
 					log::info("  - Submerged level:{}:: {}", log_id, result);
-					return 0.0;
+					return zero;
 				}
 			}
   			return result;
