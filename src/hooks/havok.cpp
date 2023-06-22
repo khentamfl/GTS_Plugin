@@ -41,7 +41,7 @@ namespace Hooks
 		_ProcessHavokHitJobs = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x104, 0xFC), ProcessHavokHitJobs);
 
     REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_hkpCollidableCollidableFilter[0] };
-		_IsCollisionEnabled = Vtbl.write_vfunc(0x0, IsCollisionEnabled);
+		_IsCollisionEnabled = Vtbl.write_vfunc(0x1, IsCollisionEnabled);
 	}
 
 	void Hook_Havok::ProcessHavokHitJobs(void* a1)
