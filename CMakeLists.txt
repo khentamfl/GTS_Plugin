@@ -9,8 +9,6 @@ project(
         VERSION 1.0.0
         DESCRIPTION "Size Matters Plugin."
         LANGUAGES CXX)
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "2182bf5c-ef0d-489a-91da-49dbc3090d2a")
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
@@ -55,15 +53,8 @@ find_path(ARTICUNO_INCLUDE_DIRS "articuno/access.h")
 find_package(glm CONFIG REQUIRED)
 find_package(toml11 CONFIG REQUIRED)
 
-add_commonlibsse_plugin(${PROJECT_NAME} DECLARATIVE SOURCES ${headers} ${sources})
+add_commonlibsse_plugin(${PROJECT_NAME} DECLARATIVE SOURCES ${headers} ${modules} ${sources})
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
-
-target_sources(${PROJECT_NAME}
-  PUBLIC
-    FILE_SET cxx_modules TYPE CXX_MODULES FILES
-    ${modules}
-)
-
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE
