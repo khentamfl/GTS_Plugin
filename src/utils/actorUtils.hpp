@@ -103,7 +103,7 @@ namespace Gts {
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause);
 	void PrintSuffocate(Actor* pred, Actor* prey);
-
+  void ShrinkUntil(Actor* giant, Actor* tiny, float expected);
   void DisableCollisions(Actor* actor);
   void EnableCollisions(Actor* actor);
 }

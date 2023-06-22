@@ -784,18 +784,7 @@ namespace Gts {
 			return;
 		}
 
-		if (HasSMT(pred)) {
-			float expected = 8.0f;
-			float predscale = get_target_scale(pred);
-			float preyscale = get_target_scale(prey);
-			float sizedifference = predscale/preyscale;
-			float difference = std::clamp(predscale/expected, preyscale/expected, 0.96f);
-			float shrink = preyscale - difference;
-			AddSMTPenalty(pred, 5.0);
-			if (sizedifference < expected) {
-				mod_target_scale(prey, -shrink);
-			}
-		}
+		ShrinkUntil(pred, prey, 8.0);
 
 		DamageAV(pred, ActorValue::kStamina, wastestamina);
 		Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);

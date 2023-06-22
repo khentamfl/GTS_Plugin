@@ -191,19 +191,7 @@ namespace Gts {
 		if (!grabbing.CanGrab(pred, prey)) {
 			return;
 		}
-		if (HasSMT(pred)) {
-			float expected = 8.0f;
-			float predscale = get_target_scale(pred);
-			float preyscale = get_target_scale(prey);
-			float sizedifference = predscale/preyscale;
-			float difference = std::clamp(predscale/expected, preyscale/expected, 0.88f);
-			float shrink = preyscale - difference;
-			if (sizedifference < expected) {
-				mod_target_scale(prey, -shrink);
-				AddSMTPenalty(pred, 5.0);
-				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);
-			}
-		}
+		ShrinkUntil(pred, prey, 8.0);
 		Grab::GetSingleton().GrabActor(pred, prey);
 		AnimationManager::StartAnim("GrabSomeone", pred);
 	}

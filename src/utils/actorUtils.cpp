@@ -860,6 +860,20 @@ namespace Gts {
 		}
 	}
 
+  void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
+	if (HasSMT(giant)) {
+		float predscale = get_target_scale(pred);
+		float preyscale = get_target_scale(prey);
+		float sizedifference = predscale/preyscale;
+		float difference = preyscale/expected;
+		float shrink = preyscale - difference;
+		mod_target_scale(prey, -shrink);
+		AddSMTPenalty(pred, 5.0);
+		float total = predscale/preyscale;
+		log::info("Shrink: {}, sizediference: {}, sizedifference after: {}", shrink, sizedifference, total);
+	}
+}	
+
   void DisableCollisions(Actor* actor) {
     if (actor) {
       auto colliders = ActorCollisionData(actor);

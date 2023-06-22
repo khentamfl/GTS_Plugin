@@ -329,19 +329,7 @@ namespace Gts {
 		if (!sandwiching.CanSandwich(pred, prey)) {
 			return;
 		}
-		if (HasSMT(pred)) {
-			float expected = 6.0f;
-			float predscale = get_target_scale(pred);
-			float preyscale = get_target_scale(prey);
-			float sizedifference = predscale/preyscale;
-			float difference = std::clamp(predscale/expected, preyscale/expected, 0.96f);
-			float shrink = preyscale - difference;
-			if (sizedifference < expected) {
-				mod_target_scale(prey, -shrink);
-				AddSMTPenalty(pred, 5.0);
-				log::info("Shrink: {}, sizediference: {}", shrink, sizedifference);
-			}
-		}
+		ShrinkUntil(pred, prey, 6.0);
 		auto& data = sandwiching.GetSandwichingData(pred);
 		data.AddTiny(prey);
 		AnimationManager::StartAnim("ThighEnter", pred);
