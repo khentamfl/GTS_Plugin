@@ -895,7 +895,7 @@ namespace Gts {
 
   void DisableCollisions(Actor* actor) {
     if (actor) {
-      auto trans = Transient::GetData(actor);
+      auto trans = Transient::GetSingleton().GetData(actor);
       if (trans) {
         trans->disable_collision = true;
       }
@@ -903,7 +903,7 @@ namespace Gts {
   }
   void EnableCollisions(Actor* actor) {
     if (actor) {
-      auto trans = Transient::GetData(actor);
+      auto trans = Transient::GetSingleton().GetData(actor);
       if (trans) {
         trans->disable_collision = true;
       }
