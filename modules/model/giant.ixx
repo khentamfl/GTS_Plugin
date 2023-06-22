@@ -8,9 +8,12 @@ namespace Gts {
 
   export class Giant {
     public:
+      // == Allow move
+      Giant(Giant&&) = default;
       // == No copy ==
 			Giant(Giant const&) = delete;
 			Giant& operator=(Giant const&) = delete;
+
 
       // ================
       // == Basic Info ==
