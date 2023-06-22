@@ -96,7 +96,7 @@ namespace Gts {
         static std::unordered_map<FormID, Giant> all_giants;
         all_giants.try_emplace(key, actor);
 
-        return *all_giants.at(key);
+        return all_giants.at(key);
       }
 
       // ===========
@@ -109,10 +109,10 @@ namespace Gts {
       }
 
       // Automatic get the Actor*
-      Actor* operator->() const {
+      Actor* operator->() {
         return Get();
       }
-      Actor& operator*() const {
+      Actor& operator*() {
         return *Get();
       }
 
