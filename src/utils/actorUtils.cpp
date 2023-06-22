@@ -798,7 +798,7 @@ namespace Gts {
 				Cprint("{} body exploded because of massive size difference with {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else {
 				Cprint("{} hit {} with so much force that {} exploded into bloody mist", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), tiny->GetDisplayFullName());
-			} 
+			}
 			return;
 		} else if (cause == "HitSteal") {
 			if (random <= 2) {
@@ -831,7 +831,7 @@ namespace Gts {
 				Cprint("{} took a little more damage than intended, so her fingers ended up squeezing {} into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 7) {
 				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} 
+			}
 			return;
 		} else if (cause == "Breasts") {
 			if (random == 1) {
@@ -891,18 +891,22 @@ namespace Gts {
 		float total = predscale/preyscale;
 		log::info("Shrink: {}, sizediference: {}, sizedifference after: {}", shrink, sizedifference, total);
 	}
-}	
+}
 
   void DisableCollisions(Actor* actor) {
     if (actor) {
-      auto colliders = ActorCollisionData(actor);
-      colliders.DisableCollisions();
+      auto trans = Transient::GetData(actor);
+      if (trans) {
+        trans->disable_collision = true;
+      }
     }
   }
   void EnableCollisions(Actor* actor) {
     if (actor) {
-      auto colliders = ActorCollisionData(actor);
-      colliders.EnableCollisions();
+      auto trans = Transient::GetData(actor);
+      if (trans) {
+        trans->disable_collision = true;
+      }
     }
   }
 }

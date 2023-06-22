@@ -29,6 +29,7 @@ namespace Gts {
 		bool about_to_be_eaten;
 		bool dragon_was_eaten;
 		bool can_be_vored;
+    bool disable_collision;
 	};
 
 	class Transient : public EventListener {

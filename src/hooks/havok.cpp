@@ -38,6 +38,12 @@ namespace Hooks
         auto tesObj = obj->GetUserData();
         if (tesObj) {
           log::info("tesObj: {}", tesObj->GetDisplayFullName());
+          auto tranData = Transient::GetData(tesObj);
+          if (tranData) {
+            if (tranData->disable_collision) {
+              return false;
+            }
+          }
         }
       }
     }
