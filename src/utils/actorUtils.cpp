@@ -764,6 +764,7 @@ namespace Gts {
 			}
 			return;
 		} else if (cause == "Vored") {
+			///nothing for now
 			return;
 		} else if (cause == "ThighCrushed") {
 			if (random == 1) {
@@ -797,7 +798,8 @@ namespace Gts {
 				Cprint("{} body exploded because of massive size difference with {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else {
 				Cprint("{} hit {} with so much force that {} exploded into bloody mist", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), tiny->GetDisplayFullName());
-			}
+			} 
+			return;
 		} else if (cause == "HitSteal") {
 			if (random <= 2) {
 				Cprint("{} body exploded after trying to hit {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
@@ -806,6 +808,7 @@ namespace Gts {
 			} else if (random > 3) {
 				Cprint("{} Tried to kill {}, but ended up being absorbed by the size magic of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
+			return;
 		} else if (cause == "Explode") {
 			if (random <= 2) {
 				Cprint("{} exploded into bloody dust", tiny->GetDisplayFullName());
@@ -814,6 +817,7 @@ namespace Gts {
 			} else if (random > 3) {
 				Cprint("{} was turned into nothing", tiny->GetDisplayFullName());
 			}
+			return;
 		} else if (cause == "BlockDamage") {
 			if (random == 1) {
 				Cprint("{} received too much damage and was automatically crushed in the hands of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
@@ -827,7 +831,8 @@ namespace Gts {
 				Cprint("{} took a little more damage than intended, so her fingers ended up squeezing {} into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 7) {
 				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			}
+			} 
+			return;
 		} else if (cause == "Breasts") {
 			if (random == 1) {
 				Cprint("{} was weakened and got accidentally crushed by {} breasts", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
@@ -842,6 +847,7 @@ namespace Gts {
 			} else if (random >= 7) {
 				Cprint("{} got smothered by soft breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
+			return;
 		} else if (cause == "Grinded") { // Grinded by the foot, unused, has no anim and doesn't exist.
 			if (random < 2) {
 				Cprint("{} became a bloody stain under {} foot.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
@@ -855,6 +861,7 @@ namespace Gts {
 				Cprint("{} relentlessly crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
+		}
 	}
 
 	void PrintSuffocate(Actor* pred, Actor* prey) {
