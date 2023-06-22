@@ -35,7 +35,7 @@ file(GLOB sources
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 
 file(GLOB modules
-        src/*/*.ixx
+        modules/*/*.ixx
 )
 
 source_group(
