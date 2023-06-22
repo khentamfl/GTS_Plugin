@@ -576,7 +576,7 @@ namespace Gts {
 			ForceRagdoll(tinyref, false);
 
 
-			if (tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
+			if (giantref->isDead() || tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				PushActorAway(giantref, tinyref, 0.1);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);

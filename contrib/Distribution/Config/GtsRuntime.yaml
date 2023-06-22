@@ -127,6 +127,7 @@ spells:
   ShrinkBolt: "GTS.esp|3C5276"
 
 perks:
+  TalkDuringSneak: "GTS.esp|5F7265"
   SmallMassiveThreatSizeSteal: "GTS.esp|2496E8"
   VorePerk: "GTS.esp|355C68"
   CalamityPerk: "GTS.esp|18E161"

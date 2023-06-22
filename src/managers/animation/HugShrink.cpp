@@ -203,7 +203,7 @@ namespace Gts {
 
 			GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
 			float stamina = GetAV(giantref, ActorValue::kStamina);
-			if (tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
+			if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}

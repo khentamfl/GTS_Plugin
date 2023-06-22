@@ -253,7 +253,7 @@ namespace Gts {
 				return;
 			}
 
-			if (this->allGrabbed) {
+			if (this->allGrabbed && !giant->IsDead()) {
 				AttachToObjectA(giant, tiny);
 			}
 		}
