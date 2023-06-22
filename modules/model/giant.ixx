@@ -95,7 +95,7 @@ namespace Gts {
         auto key = actor.formID;
         static std::unordered_map<FormID, Giant> all_giants;
         try {
-          all_giants.at(key)
+          all_giants.at(key);
         } catch (std::out_of_range e) {
           Giant giant = Giant(&actor);
           all_giants.try_emplace(key, std::move(giant));
