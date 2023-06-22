@@ -19,8 +19,18 @@ namespace Hooks {
   			if (a_cell) {
   				log::info("  - In a cell:{}", log_id);
   			}
-  			float result = GetSubmergeLevel(a_this, z_pos, a_cell);
-  			log::info("  - Submerged level:{}:: {}", log_id, result);
+			float result = GetSubmergeLevel(a_this, z_pos, a_cell);
+			Actor* is_actor = skyrim_cast<Actor*>(a_this);
+			float scale = 1.0;
+			if (is_actor) {
+			 	scale = std::clamp(get_visual_scale(a_this), 0.10f, 9999999.0f);
+			}
+			
+  			
+			if (is_actor->formID == 0x14) {
+				return 0.0;
+  				log::info("  - Submerged level:{}:: {}, + scale: {}", log_id, result, result/scale);
+			}
   			return result;
 			});
 	}
