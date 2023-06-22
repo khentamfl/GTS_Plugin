@@ -10,7 +10,7 @@ namespace Hooks {
 
 		static FunctionHook<float(TESObjectREFR* a_this, float z_pos, TESObjectCELL* a_cell)> GetSubmergeLevel(
 			RELOCATION_ID(36452, 37448),
-			[](auto* a_this, auto* cell, float z_pos){
+			[](auto* a_this, float z_pos auto* a_cell){
   			log::info("GetSubmergeLevel");
   			std::uintptr_t log_id =  *reinterpret_cast<std::uintptr_t *>(a_this);
   			if (a_this) {
