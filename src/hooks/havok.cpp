@@ -40,7 +40,7 @@ namespace Hooks
 		logger::info("Gts applying Havok Hook at {}", hook.address());
 		_ProcessHavokHitJobs = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x104, 0xFC), ProcessHavokHitJobs);
 
-    REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_hkpCollisionFilter[1] };
+    REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_bhkCollisionFilter[1] };
 		_IsCollisionEnabled = Vtbl.write_vfunc(0x1, IsCollisionEnabled);
 	}
 
