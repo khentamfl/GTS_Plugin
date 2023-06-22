@@ -35,7 +35,7 @@ namespace Hooks
       log::info("IsCollisionEnabled: {}", name);
       hkpWorldObject* obj = a_collidableA.GetOwner<hkpWorldObject>();
       if (obj) {
-        auto tesObj = obj.GetUserData();
+        auto tesObj = obj->GetUserData();
         if (tesObj) {
           log::info("tesObj: {}", tesObj->GetDisplayFullName());
         }
