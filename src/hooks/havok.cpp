@@ -64,6 +64,7 @@ namespace Hooks
   //         maxsu. for IsCollisionEnabled idea
   bool Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB) {
     log::info("- IsCollisionEnabled");
+    log::info("  - Name: {}", GetRawName(a_this));
     bool result = _IsCollisionEnabled(a_this, a_collidableA, a_collidableB);
     if (result) {
       if (DisabledCollision(a_collidableA) || DisabledCollision(a_collidableB)) {
