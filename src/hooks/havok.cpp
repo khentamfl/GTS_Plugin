@@ -15,26 +15,22 @@ namespace {
     if (static_cast<RE::hkpWorldObject::BroadPhaseType>(type) == hkpWorldObject::BroadPhaseType::kEntity) {
       log::info("  - obj: {}", collidable.ownerOffset);
       if (collidable.ownerOffset < 0) {
-          void* obj = collidable.GetOwner();
-          if (obj) {        
-          log::info("RAW NAME: {}", GetRawName(obj));
+        hkpWorldObject* obj = collidable.GetOwner<hkpWorldObject>();
+        if (obj) {
+          auto tesObj = obj->GetUserData();
+          if (tesObj) {
+            log::info("  - tesObj");
+            log::info("  - tesObj: {}", tesObj->GetDisplayFullName());
+            auto tranData = Transient::GetSingleton().GetData(tesObj);
+            if (tranData) {
+              log::info("  - tranData");
+              if (tranData->disable_collision) {
+                log::info("  - Disabled");
+                return true;
+              }
+            }
+          }
         }
-        // hkpWorldObject* worldObject = skyrim_cast<hkpWorldObject*>(obj);
-        // if (worldObject) {
-        //   auto tesObj = obj->GetUserData();
-        //   if (tesObj) {
-        //     log::info("  - tesObj");
-        //     log::info("  - tesObj: {}", tesObj->GetDisplayFullName());
-        //     auto tranData = Transient::GetSingleton().GetData(tesObj);
-        //     if (tranData) {
-        //       log::info("  - tranData");
-        //       if (tranData->disable_collision) {
-        //         log::info("  - Disabled");
-        //         return true;
-        //       }
-        //     }
-        //   }
-        // }
       }
     }
     return false;
