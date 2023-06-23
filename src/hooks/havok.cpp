@@ -16,7 +16,7 @@ namespace {
       log::info("  - obj: {}", collidable.ownerOffset);
       if (collidable.ownerOffset < 0) {
         log::info("  - obj: ownerOffset < 0");
-        hkpWorldObject* obj = collidable.GetOwner<hkpWorldObject>();
+        hkpRigidBody* obj = collidable.GetOwner<hkpRigidBody>();
         log::info("  - collidable.GetOwner<hkpWorldObject>()");
         if (obj) {
           log::info("  - non null");
