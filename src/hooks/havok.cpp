@@ -10,29 +10,33 @@ using namespace Gts;
 
 namespace {
   bool DisabledCollision(const hkpCollidable& collidable) {
-    log::info("IsCollisionEnabled");
-    void* obj = collidable.GetOwner();
-    if (obj) {
-      log::info("  - obj: {}", collidable.ownerOffset);
-      if (collidable.ownerOffset != 0) {
-        log::info("RAW NAME: {}", GetRawName(obj));
+    auto type = collidable.broadPhaseHandle.type;
+    log::info("IsCollisionEnabled: {}", type);
+    if (type == hkpWorldObject::BroadPhaseType::kEntity) {
+      void* obj = collidable.GetOwner();
+      if (obj) {
+
+        log::info("  - obj: {}", collidable.ownerOffset);
+        if (collidable.ownerOffset != 0) {
+          log::info("RAW NAME: {}", GetRawName(obj));
+        }
+        // hkpWorldObject* worldObject = skyrim_cast<hkpWorldObject*>(obj);
+        // if (worldObject) {
+        //   auto tesObj = obj->GetUserData();
+        //   if (tesObj) {
+        //     log::info("  - tesObj");
+        //     log::info("  - tesObj: {}", tesObj->GetDisplayFullName());
+        //     auto tranData = Transient::GetSingleton().GetData(tesObj);
+        //     if (tranData) {
+        //       log::info("  - tranData");
+        //       if (tranData->disable_collision) {
+        //         log::info("  - Disabled");
+        //         return true;
+        //       }
+        //     }
+        //   }
+        // }
       }
-      // hkpWorldObject* worldObject = skyrim_cast<hkpWorldObject*>(obj);
-      // if (worldObject) {
-      //   auto tesObj = obj->GetUserData();
-      //   if (tesObj) {
-      //     log::info("  - tesObj");
-      //     log::info("  - tesObj: {}", tesObj->GetDisplayFullName());
-      //     auto tranData = Transient::GetSingleton().GetData(tesObj);
-      //     if (tranData) {
-      //       log::info("  - tranData");
-      //       if (tranData->disable_collision) {
-      //         log::info("  - Disabled");
-      //         return true;
-      //       }
-      //     }
-      //   }
-      // }
     }
     return false;
   }
