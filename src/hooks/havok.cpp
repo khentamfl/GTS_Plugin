@@ -79,8 +79,8 @@ namespace Hooks
 		logger::info("Gts applying Havok Hook at {}", hook.address());
 		_ProcessHavokHitJobs = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x104, 0xFC), ProcessHavokHitJobs);
 
-    // REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_bhkCollisionFilter[1] };
-		// _IsCollisionEnabled = Vtbl.write_vfunc(0x1, IsCollisionEnabled);
+    REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_bhkCollisionFilter[1] };
+		_IsCollisionEnabled = Vtbl.write_vfunc(0x1, IsCollisionEnabled);
 	}
 
 	void Hook_Havok::ProcessHavokHitJobs(void* a1)
@@ -94,19 +94,19 @@ namespace Hooks
   //         maxsu. for IsCollisionEnabled idea
   bool* Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB) {
     *a_result = _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
-    if (*a_result) {
-      if (GetCollisionLayer(a_collidableA) == COL_LAYER::kCharController && GetCollisionLayer(a_collidableB) == COL_LAYER::kCharController) {
-        if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
-          auto objA = GetTESObjectREFR(a_collidableA);
-          auto objB = GetTESObjectREFR(a_collidableB);
-          if (objA != objB)  {
-            if (DisabledCollision(objA) || DisabledCollision(objB)) {
-              *a_result = false;
-            }
-          }
-        }
-      }
-    }
+    // if (*a_result) {
+    //   if (GetCollisionLayer(a_collidableA) == COL_LAYER::kCharController && GetCollisionLayer(a_collidableB) == COL_LAYER::kCharController) {
+    //     if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
+    //       auto objA = GetTESObjectREFR(a_collidableA);
+    //       auto objB = GetTESObjectREFR(a_collidableB);
+    //       if (objA != objB)  {
+    //         if (DisabledCollision(objA) || DisabledCollision(objB)) {
+    //           *a_result = false;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
     return a_result;
   }
 }
