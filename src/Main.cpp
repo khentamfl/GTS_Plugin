@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include <thread>
 
-import Giant;
+// import Giant;
 
 using namespace RE::BSScript;
 using namespace Gts;
