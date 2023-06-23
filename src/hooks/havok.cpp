@@ -10,21 +10,20 @@ using namespace Gts;
 
 namespace {
   bool DisabledCollision(const hkpCollidable& collidable) {
-    void* owner = collidable.GetOwner();
-    if (owner) {
-      auto name = GetRawName(owner);
-      log::info("IsCollisionEnabled: {}", name);
-      hkpWorldObject* obj = collidable.GetOwner<hkpWorldObject>();
-      if (obj) {
-        auto tesObj = obj->GetUserData();
-        if (tesObj) {
-          log::info("tesObj: {}", tesObj->GetDisplayFullName());
-          auto tranData = Transient::GetSingleton().GetData(tesObj);
-          if (tranData) {
-            if (tranData->disable_collision) {
-              return true;
-            }
-          }
+  log::info("IsCollisionEnabled: {}", name);
+  hkpWorldObject* obj = collidable.GetOwner<hkpWorldObject>();
+  if (obj) {
+    log::info("  - obj");
+    auto tesObj = obj->GetUserData();
+    if (tesObj) {
+      log::info("  - tesObj");
+      log::info("  - tesObj: {}", tesObj->GetDisplayFullName());
+      auto tranData = Transient::GetSingleton().GetData(tesObj);
+      if (tranData) {
+        log::info("  - tranData");
+        if (tranData->disable_collision) {
+          log::info("  - Disabled");
+          return true;
         }
       }
     }
