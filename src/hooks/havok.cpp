@@ -17,7 +17,7 @@ namespace {
       if (obj) {
 
         log::info("  - obj: {}", collidable.ownerOffset);
-        if (collidable.ownerOffset != 0) {
+        if (collidable.ownerOffset < 0) {
           log::info("RAW NAME: {}", GetRawName(obj));
         }
         // hkpWorldObject* worldObject = skyrim_cast<hkpWorldObject*>(obj);
