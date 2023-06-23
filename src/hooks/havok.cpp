@@ -9,6 +9,20 @@ using namespace SKSE;
 using namespace Gts;
 
 namespace {
+  COL_LAYER GetCollidesWith(const std::uint32_t& collisionFilterInfo) {
+    return static_cast<COL_LAYER>(collisionFilterInfo & 0x7F);
+  }
+  COL_LAYER GetCollidesWith(const hkpCollidable* collidable) {
+    if (collidable) {
+      return GetCollidesWith(collidable->broadPhaseHandle.collisionFilterInfo);
+    } else {
+      return COL_LAYER::kUnidentified;
+    }
+  }
+  COL_LAYER GetCollidesWith(const hkpCollidable& collidable) {
+    return GetCollidesWith(&collidable);
+  }
+
   bool DisabledCollision(const hkpCollidable& collidable) {
     auto type = collidable.broadPhaseHandle.type;
     log::info("IsCollisionEnabled: {}", type);
@@ -66,8 +80,10 @@ namespace Hooks
     log::info("- IsCollisionEnabled");
     *a_result = _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
     if (*a_result) {
-      if (DisabledCollision(a_collidableA) || DisabledCollision(a_collidableB)) {
-        *a_result = false;
+      if (GetCollidesWith(a_collidableA) == COL_LAYER::kCharController && GetCollidesWith(a_collidableB) == COL_LAYER::kCharController) {
+        if (DisabledCollision(a_collidableA) || DisabledCollision(a_collidableB)) {
+          *a_result = false;
+        }
       }
     }
     return a_result;
