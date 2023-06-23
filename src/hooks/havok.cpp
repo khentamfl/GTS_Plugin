@@ -27,8 +27,8 @@ namespace {
           }
         }
       }
-      return false;
     }
+    return false;
   }
 }
 
