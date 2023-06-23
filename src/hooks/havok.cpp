@@ -11,19 +11,22 @@ using namespace Gts;
 namespace {
   bool DisabledCollision(const hkpCollidable& collidable) {
     log::info("IsCollisionEnabled");
-    hkpWorldObject* obj = collidable.GetOwner<hkpWorldObject>();
+    void* obj = collidable.GetOwner();
     if (obj) {
       log::info("  - obj");
-      auto tesObj = obj->GetUserData();
-      if (tesObj) {
-        log::info("  - tesObj");
-        log::info("  - tesObj: {}", tesObj->GetDisplayFullName());
-        auto tranData = Transient::GetSingleton().GetData(tesObj);
-        if (tranData) {
-          log::info("  - tranData");
-          if (tranData->disable_collision) {
-            log::info("  - Disabled");
-            return true;
+      hkpWorldObject* worldObject = skyrim_cast<hkpWorldObject*>(obj);
+      if (worldObject) {
+        auto tesObj = obj->GetUserData();
+        if (tesObj) {
+          log::info("  - tesObj");
+          log::info("  - tesObj: {}", tesObj->GetDisplayFullName());
+          auto tranData = Transient::GetSingleton().GetData(tesObj);
+          if (tranData) {
+            log::info("  - tranData");
+            if (tranData->disable_collision) {
+              log::info("  - Disabled");
+              return true;
+            }
           }
         }
       }
