@@ -92,21 +92,22 @@ namespace Hooks
 
   // Credit: FlyingParticle for code on getting the TESObjectREFR
   //         maxsu. for IsCollisionEnabled idea
-  void Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB) {
-    _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
-    if (*a_result) {
-      if (GetCollisionLayer(a_collidableA) == COL_LAYER::kCharController && GetCollisionLayer(a_collidableB) == COL_LAYER::kCharController) {
-        if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
-          auto objA = GetTESObjectREFR(a_collidableA);
-          auto objB = GetTESObjectREFR(a_collidableB);
-          if (objA != objB)  {
-            if (DisabledCollision(objA) || DisabledCollision(objB)) {
-              *a_result = false;
-            }
-          }
-        }
-      }
-    }
-    return;
+  bool* Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable* a_collidableA, const hkpCollidable* a_collidableB) {
+    return _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
+    // if (*a_result) {
+    //   if (GetCollisionLayer(a_collidableA) == COL_LAYER::kCharController && GetCollisionLayer(a_collidableB) == COL_LAYER::kCharController) {
+    //     if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
+    //       auto objA = GetTESObjectREFR(a_collidableA);
+    //       auto objB = GetTESObjectREFR(a_collidableB);
+    //       if (objA != objB)  {
+    //         if (DisabledCollision(objA) || DisabledCollision(objB)) {
+    //           *a_result = false;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+    // *a_result = new_result;
+    // return a_result;
   }
 }

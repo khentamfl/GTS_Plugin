@@ -25,7 +25,7 @@ namespace Hooks
 			static void ProcessHavokHitJobs(void* a1);
 			static inline REL::Relocation<decltype(ProcessHavokHitJobs)> _ProcessHavokHitJobs;
 
-      static void IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB);
+      static bool* IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable* a_collidableA, const hkpCollidable* a_collidableB);
       static inline REL::Relocation<decltype(IsCollisionEnabled)> _IsCollisionEnabled;
 
 	};
