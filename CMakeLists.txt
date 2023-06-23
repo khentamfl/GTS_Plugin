@@ -11,16 +11,16 @@ project(
         LANGUAGES CXX)
 
 # Modules
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API aa1f7df0-828a-4fcd-9afc-2dc80491aca7)
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
-string(CONCAT CMAKE_EXPERIMENTAL_CXX_SCANDEP_SOURCE
-  "<CMAKE_CXX_COMPILER> <DEFINES> <INCLUDES> <FLAGS> <SOURCE> -nologo -TP"
-  " -showIncludes"
-  " -scanDependencies <DYNDEP_FILE>"
-  " -Fo<OBJECT>")
-set(CMAKE_EXPERIMENTAL_CXX_SCANDEP_DEPFILE_FORMAT "msvc")
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_MAP_FORMAT "msvc")
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_MAP_FLAG "@<MODULE_MAP_FILE>")
+#set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API aa1f7df0-828a-4fcd-9afc-2dc80491aca7)
+#set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
+#string(CONCAT CMAKE_EXPERIMENTAL_CXX_SCANDEP_SOURCE
+#  "<CMAKE_CXX_COMPILER> <DEFINES> <INCLUDES> <FLAGS> <SOURCE> -nologo -TP"
+#  " -showIncludes"
+#  " -scanDependencies <DYNDEP_FILE>"
+#  " -Fo<OBJECT>")
+#set(CMAKE_EXPERIMENTAL_CXX_SCANDEP_DEPFILE_FORMAT "msvc")
+#set(CMAKE_EXPERIMENTAL_CXX_MODULE_MAP_FORMAT "msvc")
+#set(CMAKE_EXPERIMENTAL_CXX_MODULE_MAP_FLAG "@<MODULE_MAP_FILE>")
 
 
 set(CMAKE_CXX_STANDARD 23)
@@ -67,7 +67,7 @@ find_path(ARTICUNO_INCLUDE_DIRS "articuno/access.h")
 find_package(glm CONFIG REQUIRED)
 find_package(toml11 CONFIG REQUIRED)
 
-add_commonlibsse_plugin(${PROJECT_NAME} DECLARATIVE SOURCES ${headers} ${sources})
+add_commonlibsse_plugin(${PROJECT_NAME} DECLARATIVE)
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
 
 target_include_directories(${PROJECT_NAME}
@@ -86,6 +86,8 @@ target_include_directories(${PROJECT_NAME}
 #  FILES
 #    ${modules}
 #)
+
+target_sources(${PROJECT_NAME} PRIVATE ${sources})
 
 target_include_directories(${PROJECT_NAME}
         PUBLIC
