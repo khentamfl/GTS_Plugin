@@ -10,7 +10,7 @@ using namespace Gts;
 
 namespace {
   bool DisabledCollision(const  & collidable) {
-    log::info("IsCollisionEnabled");
+    log::info("IsCollisionEnabled"); 
     void* obj = collidable.GetOwner();
     if (obj) {
       log::info("  - obj: {}", collidable.ownerOffset);
