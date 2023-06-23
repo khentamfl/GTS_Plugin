@@ -13,11 +13,10 @@ namespace {
     auto type = collidable.broadPhaseHandle.type;
     log::info("IsCollisionEnabled: {}", type);
     if (static_cast<RE::hkpWorldObject::BroadPhaseType>(type) == hkpWorldObject::BroadPhaseType::kEntity) {
-      void* obj = collidable.GetOwner();
-      if (obj) {
-
-        log::info("  - obj: {}", collidable.ownerOffset);
-        if (collidable.ownerOffset < 0) {
+      log::info("  - obj: {}", collidable.ownerOffset);
+      if (collidable.ownerOffset < 0) {
+          void* obj = collidable.GetOwner();
+          if (obj) {        
           log::info("RAW NAME: {}", GetRawName(obj));
         }
         // hkpWorldObject* worldObject = skyrim_cast<hkpWorldObject*>(obj);
