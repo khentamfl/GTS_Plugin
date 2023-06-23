@@ -79,13 +79,13 @@ target_include_directories(${PROJECT_NAME}
   ${GLM_INCLUDE_DIRS}
 )
 
-target_sources(${PROJECT_NAME} PRIVATE
-  FILE_SET all_my_modules TYPE CXX_MODULES
-  BASE_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}
-  FILES
-    ${modules}
-)
+#target_sources(${PROJECT_NAME} PRIVATE
+#  FILE_SET all_my_modules TYPE CXX_MODULES
+#  BASE_DIRS
+#    ${CMAKE_CURRENT_SOURCE_DIR}
+#  FILES
+#    ${modules}
+#)
 
 target_include_directories(${PROJECT_NAME}
         PUBLIC

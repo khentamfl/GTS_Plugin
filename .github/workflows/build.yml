@@ -25,14 +25,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Add msbuild to PATH
+        # This works with 2017+
+        uses: microsoft/setup-msbuild@v1.1
       - name: Get cmake
         uses: lukka/get-cmake@latest
         with:
           cmakeVersion: latestrc
           ninjaVersion: latest
-      - name: Add msbuild to PATH
-        # This works with 2017+
-        uses: microsoft/setup-msbuild@v1.1
       - name: Restore artifacts, or setup vcpkg (do not install any package)
         uses: lukka/run-vcpkg@v10
         with:
