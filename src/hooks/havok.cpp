@@ -65,7 +65,7 @@ namespace Hooks
   bool* Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB) {
     log::info("- IsCollisionEnabled");
     *a_result = _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
-    if (result) {
+    if (*a_result) {
       if (DisabledCollision(a_collidableA) || DisabledCollision(a_collidableB)) {
         *a_result = false;
       }
