@@ -9,27 +9,30 @@ using namespace SKSE;
 using namespace Gts;
 
 namespace {
-  bool DisabledCollision(const hkpCollidable& collidable) {
+  bool DisabledCollision(const  & collidable) {
     log::info("IsCollisionEnabled");
     void* obj = collidable.GetOwner();
     if (obj) {
-      log::info("  - obj");
-      hkpWorldObject* worldObject = skyrim_cast<hkpWorldObject*>(obj);
-      if (worldObject) {
-        auto tesObj = obj->GetUserData();
-        if (tesObj) {
-          log::info("  - tesObj");
-          log::info("  - tesObj: {}", tesObj->GetDisplayFullName());
-          auto tranData = Transient::GetSingleton().GetData(tesObj);
-          if (tranData) {
-            log::info("  - tranData");
-            if (tranData->disable_collision) {
-              log::info("  - Disabled");
-              return true;
-            }
-          }
-        }
+      log::info("  - obj: {}", collidable.ownerOffset);
+      if (collidable.ownerOffset != 0) {
+        log::info("RAW NAME: {}", GetRawName(obj));
       }
+      // hkpWorldObject* worldObject = skyrim_cast<hkpWorldObject*>(obj);
+      // if (worldObject) {
+      //   auto tesObj = obj->GetUserData();
+      //   if (tesObj) {
+      //     log::info("  - tesObj");
+      //     log::info("  - tesObj: {}", tesObj->GetDisplayFullName());
+      //     auto tranData = Transient::GetSingleton().GetData(tesObj);
+      //     if (tranData) {
+      //       log::info("  - tranData");
+      //       if (tranData->disable_collision) {
+      //         log::info("  - Disabled");
+      //         return true;
+      //       }
+      //     }
+      //   }
+      // }
     }
     return false;
   }
