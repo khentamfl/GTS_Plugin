@@ -9,42 +9,48 @@ using namespace SKSE;
 using namespace Gts;
 
 namespace {
-  COL_LAYER GetCollidesWith(const std::uint32_t& collisionFilterInfo) {
+  COL_LAYER GetCollisionLayer(const std::uint32_t& collisionFilterInfo) {
     return static_cast<COL_LAYER>(collisionFilterInfo & 0x7F);
   }
-  COL_LAYER GetCollidesWith(const hkpCollidable* collidable) {
+  COL_LAYER GetCollisionLayer(const hkpCollidable* collidable) {
     if (collidable) {
-      return GetCollidesWith(collidable->broadPhaseHandle.collisionFilterInfo);
+      return GetCollisionLayer(collidable->broadPhaseHandle.collisionFilterInfo);
     } else {
       return COL_LAYER::kUnidentified;
     }
   }
-  COL_LAYER GetCollidesWith(const hkpCollidable& collidable) {
-    return GetCollidesWith(&collidable);
+  COL_LAYER GetCollisionLayer(const hkpCollidable& collidable) {
+    return GetCollisionLayer(&collidable);
+  }
+
+  std::uint32_t GetCollisionSystem(const std::uint32_t& collisionFilterInfo) {
+    return collisionFilterInfo >> 16;
+  }
+  std::uint32_t GetCollisionSystem(const hkpCollidable* collidable) {
+    if (collidable) {
+      return GetCollisionSystem(collidable->broadPhaseHandle.collisionFilterInfo);
+    } else {
+      return 0;
+    }
+  }
+  std::uint32_t GetCollisionSystem(const hkpCollidable& collidable) {
+    return GetCollisionSystem(&collidable);
   }
 
   bool DisabledCollision(const hkpCollidable& collidable) {
     auto type = collidable.broadPhaseHandle.type;
-    log::info("IsCollisionEnabled: {}", type);
     if (static_cast<RE::hkpWorldObject::BroadPhaseType>(type) == hkpWorldObject::BroadPhaseType::kEntity) {
-      log::info("  - obj: {}", collidable.ownerOffset);
       if (collidable.ownerOffset < 0) {
-        log::info("  - obj: ownerOffset < 0");
         hkpRigidBody* obj = collidable.GetOwner<hkpRigidBody>();
-        log::info("  - collidable.GetOwner<hkpWorldObject>()");
         if (obj) {
-          log::info("  - non null");
           auto tesObj = obj->GetUserData();
-          log::info("  - obj->GetUserData()");
           if (tesObj) {
-            log::info("  - tesObj");
-            log::info("  - tesObj: {}", tesObj->GetDisplayFullName());
-            auto tranData = Transient::GetSingleton().GetData(tesObj);
-            if (tranData) {
-              log::info("  - tranData");
-              if (tranData->disable_collision) {
-                log::info("  - Disabled");
-                return true;
+            if (!tesObj->IsDead()) {
+              auto tranData = Transient::GetSingleton().GetData(tesObj);
+              if (tranData) {
+                if (tranData->disable_collision) {
+                  return true;
+                }
               }
             }
           }
@@ -74,15 +80,16 @@ namespace Hooks
 		EventDispatcher::DoHavokUpdate();
 	}
 
-  // Credit: FlyingParticle for code on getting the NiAvObject
+  // Credit: FlyingParticle for code on getting the TESObjectREFR
   //         maxsu. for IsCollisionEnabled idea
   bool* Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB) {
-    log::info("- IsCollisionEnabled");
     *a_result = _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
     if (*a_result) {
-      if (GetCollidesWith(a_collidableA) == COL_LAYER::kCharController && GetCollidesWith(a_collidableB) == COL_LAYER::kCharController) {
-        if (DisabledCollision(a_collidableA) || DisabledCollision(a_collidableB)) {
-          *a_result = false;
+      if (GetCollisionLayer(a_collidableA) == COL_LAYER::kCharController && GetCollisionLayer(a_collidableB) == COL_LAYER::kCharController) {
+        if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
+          if (DisabledCollision(a_collidableA) || DisabledCollision(a_collidableB)) {
+            *a_result = false;
+          }
         }
       }
     }
