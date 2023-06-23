@@ -92,8 +92,8 @@ namespace Hooks
 
   // Credit: FlyingParticle for code on getting the TESObjectREFR
   //         maxsu. for IsCollisionEnabled idea
-  bool Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB) {
-    bool a_result = _IsCollisionEnabled(a_this, a_collidableA, a_collidableB);
+  void Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB) {
+    _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
     // if (*a_result) {
     //   if (GetCollisionLayer(a_collidableA) == COL_LAYER::kCharController && GetCollisionLayer(a_collidableB) == COL_LAYER::kCharController) {
     //     if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
@@ -107,6 +107,6 @@ namespace Hooks
     //     }
     //   }
     // }
-    return a_result;
+    return;
   }
 }
