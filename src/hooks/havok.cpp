@@ -39,10 +39,10 @@ namespace {
 
   TESObjectREFR* GetTESObjectREFR(const hkpCollidable* collidable) {
     if (collidable) {
-      auto type = collidable.broadPhaseHandle.type;
+      auto type = collidable->broadPhaseHandle.type;
       if (static_cast<RE::hkpWorldObject::BroadPhaseType>(type) == hkpWorldObject::BroadPhaseType::kEntity) {
-        if (collidable.ownerOffset < 0) {
-          hkpRigidBody* obj = collidable.GetOwner<hkpRigidBody>();
+        if (collidable->ownerOffset < 0) {
+          hkpRigidBody* obj = collidable->GetOwner<hkpRigidBody>();
           if (obj) {
             return obj->GetUserData();
           }
@@ -56,9 +56,9 @@ namespace {
   }
 
   bool DisabledCollision(TESObjectREFR* actor) {
-    if (tesObj) {
-      if (!tesObj->IsDead()) {
-        auto tranData = Transient::GetSingleton().GetData(tesObj);
+    if (actor) {
+      if (!actor->IsDead()) {
+        auto tranData = Transient::GetSingleton().GetData(actor);
         if (tranData) {
           if (tranData->disable_collision) {
             return true;
