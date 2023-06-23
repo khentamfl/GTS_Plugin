@@ -62,17 +62,17 @@ namespace Hooks
 
   // Credit: FlyingParticle for code on getting the NiAvObject
   //         maxsu. for IsCollisionEnabled idea
-  bool Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB) {
+  bool* Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable& a_collidableA, const hkpCollidable& a_collidableB) {
     log::info("- IsCollisionEnabled");
     log::info("  - Name: {}", GetRawName(a_this));
     log::info("  - NameA: {}", GetRawName(&a_collidableA));
     log::info("  - NameB: {}", GetRawName(&a_collidableB));
-    bool result = _IsCollisionEnabled(a_this, a_collidableA, a_collidableB);
+    *a_result = _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
     if (result) {
       if (DisabledCollision(a_collidableA) || DisabledCollision(a_collidableB)) {
-        result = false;
+        *a_result = false;
       }
     }
-    return result;
+    return a_result;
   }
 }
