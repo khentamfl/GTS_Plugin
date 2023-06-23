@@ -9,8 +9,8 @@ using namespace SKSE;
 using namespace Gts;
 
 namespace {
-  bool DisabledCollision(const  & collidable) {
-    log::info("IsCollisionEnabled"); 
+  bool DisabledCollision(const hkpCollidable& collidable) {
+    log::info("IsCollisionEnabled");
     void* obj = collidable.GetOwner();
     if (obj) {
       log::info("  - obj: {}", collidable.ownerOffset);
