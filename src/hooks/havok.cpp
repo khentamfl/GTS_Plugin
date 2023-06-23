@@ -12,7 +12,7 @@ namespace {
   bool DisabledCollision(const hkpCollidable& collidable) {
     auto type = collidable.broadPhaseHandle.type;
     log::info("IsCollisionEnabled: {}", type);
-    if (type == hkpWorldObject::BroadPhaseType::kEntity) {
+    if (static_cast<RE::hkpWorldObject::BroadPhaseType>(type) == hkpWorldObject::BroadPhaseType::kEntity) {
       void* obj = collidable.GetOwner();
       if (obj) {
 
