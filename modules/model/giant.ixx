@@ -1,5 +1,3 @@
-module;
-
 export module Giant;
 
 export namespace Gts {
