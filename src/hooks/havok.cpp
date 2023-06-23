@@ -37,26 +37,36 @@ namespace {
     return GetCollisionSystem(&collidable);
   }
 
-  bool DisabledCollision(const hkpCollidable& collidable) {
-    auto type = collidable.broadPhaseHandle.type;
-    if (static_cast<RE::hkpWorldObject::BroadPhaseType>(type) == hkpWorldObject::BroadPhaseType::kEntity) {
-      if (collidable.ownerOffset < 0) {
-        hkpRigidBody* obj = collidable.GetOwner<hkpRigidBody>();
-        if (obj) {
-          auto tesObj = obj->GetUserData();
-          if (tesObj) {
-            if (!tesObj->IsDead()) {
-              auto tranData = Transient::GetSingleton().GetData(tesObj);
-              if (tranData) {
-                if (tranData->disable_collision) {
-                  return true;
-                }
-              }
-            }
+  TESObjectREFR* GetTESObjectREFR(const hkpCollidable* collidable) {
+    if (collidable) {
+      auto type = collidable.broadPhaseHandle.type;
+      if (static_cast<RE::hkpWorldObject::BroadPhaseType>(type) == hkpWorldObject::BroadPhaseType::kEntity) {
+        if (collidable.ownerOffset < 0) {
+          hkpRigidBody* obj = collidable.GetOwner<hkpRigidBody>();
+          if (obj) {
+            return obj->GetUserData();
           }
         }
       }
     }
+    return nullptr;
+  }
+  TESObjectREFR* GetTESObjectREFR(const hkpCollidable& collidable) {
+    return GetTESObjectREFR(&collidable);
+  }
+
+  bool DisabledCollision(TESObjectREFR* actor) {
+    if (tesObj) {
+      if (!tesObj->IsDead()) {
+        auto tranData = Transient::GetSingleton().GetData(tesObj);
+        if (tranData) {
+          if (tranData->disable_collision) {
+            return true;
+          }
+        }
+      }
+    }
+
     return false;
   }
 }
@@ -87,8 +97,12 @@ namespace Hooks
     if (*a_result) {
       if (GetCollisionLayer(a_collidableA) == COL_LAYER::kCharController && GetCollisionLayer(a_collidableB) == COL_LAYER::kCharController) {
         if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
-          if (DisabledCollision(a_collidableA) || DisabledCollision(a_collidableB)) {
-            *a_result = false;
+          auto objA = GetTESObjectREFR(a_collidableA);
+          auto objB = GetTESObjectREFR(a_collidableB);
+          if (objA != objB)  {
+            if (DisabledCollision(objA) || DisabledCollision(objB)) {
+              *a_result = false;
+            }
           }
         }
       }
