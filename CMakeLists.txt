@@ -70,6 +70,11 @@ find_package(toml11 CONFIG REQUIRED)
 add_commonlibsse_plugin(${PROJECT_NAME} DECLARATIVE)
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
 
+target_precompile_headers(${PROJECT_NAME}
+      PRIVATE
+      src/PCH.hpp
+)
+
 target_include_directories(${PROJECT_NAME}
   PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
@@ -99,10 +104,6 @@ target_link_libraries(${PROJECT_NAME}
     ryml::ryml
     toml11::toml11
 )
-
-target_precompile_headers(${PROJECT_NAME}
-        PRIVATE
-        src/PCH.hpp)
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/Gts"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
