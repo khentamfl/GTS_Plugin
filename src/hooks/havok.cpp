@@ -109,7 +109,7 @@ namespace Hooks
           auto objA = GetTESObjectREFR(a_collidableA);
           auto objB = GetTESObjectREFR(a_collidableB);
           if (objA != objB)  {
-            if (DisabledCollision(objA) || DisabledCollision(objB)) {
+            if (IsCollisionDisabledBetween(objA, objB)) {
               *a_result = false;
             }
           }
