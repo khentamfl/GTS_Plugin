@@ -893,11 +893,12 @@ namespace Gts {
 	}
 }
 
-  void DisableCollisions(Actor* actor) {
+  void DisableCollisions(Actor* actor, TESObjectREFR* otherActor) {
     if (actor) {
       auto trans = Transient::GetSingleton().GetData(actor);
       if (trans) {
-        trans->disable_collision = true;
+        trans->disable_collision_with = otherActor;
+        log::info("Disable collision for: {}", actor->GetDisplayFullName());
       }
     }
   }
@@ -905,7 +906,8 @@ namespace Gts {
     if (actor) {
       auto trans = Transient::GetSingleton().GetData(actor);
       if (trans) {
-        trans->disable_collision = true;
+        trans->disable_collision_with = nullptr;
+        log::info("Enable collision for: {}", actor->GetDisplayFullName());
       }
     }
   }

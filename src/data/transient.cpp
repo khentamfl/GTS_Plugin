@@ -66,7 +66,7 @@ namespace Gts {
 			bool being_held = false;
 			bool between_breasts = false;
 			bool about_to_be_eaten = false;
-      bool disable_collision = false;
+      bool disable_collision_with = nullptr;
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
@@ -97,7 +97,7 @@ namespace Gts {
 			result.about_to_be_eaten = about_to_be_eaten;
 			result.dragon_was_eaten = dragon_was_eaten;
 			result.can_be_vored = can_be_vored;
-      result.disable_collision = disable_collision;
+      result.disable_collision_with = disable_collision_with;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

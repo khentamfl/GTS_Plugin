@@ -55,15 +55,24 @@ namespace {
     return GetTESObjectREFR(&collidable);
   }
 
-  bool DisabledCollision(TESObjectREFR* actor) {
-    if (actor) {
-      if (!actor->IsDead()) {
-        auto tranData = Transient::GetSingleton().GetData(actor);
-        if (tranData) {
-          if (tranData->disable_collision) {
-            return true;
-          }
-        }
+  bool IsCollisionDisabledBetween(TESObjectREFR* actor, TESObjectREFR* otherActor) {
+    if (!actor) {
+      return false;
+    }
+    if (!otherActor) {
+      return false;
+    }
+    auto tranData = Transient::GetSingleton().GetData(actor);
+    if (tranData) {
+      if (tranData->disable_collision_with == otherActor) {
+        return true;
+      }
+    }
+
+    auto tranDataB = Transient::GetSingleton().GetData(otherActor);
+    if (tranDataB) {
+      if (tranDataB->disable_collision_with == actor) {
+        return true;
       }
     }
 
