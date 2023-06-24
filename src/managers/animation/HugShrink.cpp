@@ -46,7 +46,7 @@ namespace {
 		AllowDialogue(huggedActor, false);
 		HugShrink::AttachActorTask(giant, huggedActor);
 
-   		DisableCollisions(huggedActor);
+   		DisableCollisions(giant, huggedActor);
 	}
 
 	void GTS_Hug_Grow(AnimationEventData& data) {

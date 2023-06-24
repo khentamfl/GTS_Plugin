@@ -143,7 +143,7 @@ namespace {
 		for (auto tiny: sandwichdata.GetActors()) {
 			AllowToBeCrushed(tiny, false);
 			SetBeingHeld(tiny, true);
-			DisableCollisions(tiny);
+			DisableCollisions(&data.giant, tiny);
 			AllowDialogue(tiny, false);
 		}
 		sandwichdata.EnableSuffocate(false);
