@@ -66,7 +66,7 @@ namespace Gts {
 			bool being_held = false;
 			bool between_breasts = false;
 			bool about_to_be_eaten = false;
-      bool disable_collision_with = nullptr;
+      		TESObjectREFR* disable_collision_with = nullptr;
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
