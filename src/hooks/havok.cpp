@@ -65,6 +65,7 @@ namespace {
     auto tranData = Transient::GetSingleton().GetData(actor);
     if (tranData) {
       if (tranData->disable_collision_with == otherActor) {
+        log::info("Collision with A {} is false", actor->GetDisplayFullName());
         return true;
       }
     }
@@ -72,6 +73,7 @@ namespace {
     auto tranDataB = Transient::GetSingleton().GetData(otherActor);
     if (tranDataB) {
       if (tranDataB->disable_collision_with == actor) {
+        log::info("Collision with B {} is false", otherActor->GetDisplayFullName());
         return true;
       }
     }
