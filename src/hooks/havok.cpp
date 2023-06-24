@@ -62,7 +62,7 @@ namespace {
     if (!otherActor) {
       return false;
     }
-    log::info("Checking {} and {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName())
+    log::info("Checking {} and {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName());
     auto tranData = Transient::GetSingleton().GetData(actor);
     if (tranData) {
       if (tranData->disable_collision_with == otherActor) {
