@@ -76,7 +76,7 @@ namespace {
 		if (grabbedActor) {
 			SetBeingHeld(grabbedActor, true);
 			AllowDialogue(grabbedActor, false);
-			DisableCollisions(&data.giant, grabbedActor);
+			DisableCollisions(grabbedActor, &data.giant);
 		}
 	}
 
