@@ -62,6 +62,7 @@ namespace {
     if (!otherActor) {
       return false;
     }
+    log::info("Checking {} and {}", actor->GetDisplayFullName(), otherActor->GetDisplayFullName())
     auto tranData = Transient::GetSingleton().GetData(actor);
     if (tranData) {
       if (tranData->disable_collision_with == otherActor) {
@@ -112,6 +113,7 @@ namespace Hooks
           auto objB = GetTESObjectREFR(a_collidableB);
           if (objA != objB)  {
             if (IsCollisionDisabledBetween(objA, objB)) {
+              log::info("Collision is disabled");
               *a_result = false;
             }
           }
