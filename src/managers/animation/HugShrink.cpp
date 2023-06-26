@@ -172,8 +172,8 @@ namespace Gts {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
-			DamageAV(tinyref, ActorValue::kStamina, 1.25 * TimeScale()); // Drain Stamina
-			DamageAV(giantref, ActorValue::kStamina, -0.33 * TimeScale()); // Restore GTS Stamina
+			DamageAV(tinyref, ActorValue::kStamina, 0.60 * TimeScale()); // Drain Stamina
+			DamageAV(giantref, ActorValue::kStamina, 0.10 * TimeScale()); // Damage GTS Stamina
 			shake_camera(giantref, 0.50 * sizedifference, 0.05);
 			ShrinkActor(tinyref, 0, 0.0015);
 			Grow(giantref, 0.0, 0.0003);
@@ -211,7 +211,7 @@ namespace Gts {
 
 			GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
 
-			DamageAV(tinyref, ActorValue::kStamina, 0.65 * TimeScale()); // Drain Tiny Stamina
+			DamageAV(tinyref, ActorValue::kStamina, 0.15 * TimeScale()); // Drain Tiny Stamina
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 			if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {

@@ -952,7 +952,7 @@ namespace Gts {
 	if (HasSMT(giant)) {
 		float predscale = get_target_scale(giant);
 		float preyscale = get_target_scale(tiny);
-		float sizedifference = predscale/preyscale;
+		float sizedifference = predscale/preyscale; // To-do: fix endless scaling down upon chained grabbing and stuff
 		float difference = preyscale/expected;
 		float shrink = preyscale - difference;
 		mod_target_scale(tiny, -shrink);

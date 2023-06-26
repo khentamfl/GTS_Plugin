@@ -19,7 +19,7 @@
 namespace {
 
 	const float MINIMUM_GRAB_DISTANCE = 95.0;
-	const float MINIMUM_GRAB_SCALE_RATIO = 0.7;
+	const float MINIMUM_GRAB_SCALE_RATIO = 0.9;
 	const float GRAB_ANGLE = 70;
 	const float PI = 3.14159;
 
@@ -144,13 +144,6 @@ namespace Gts {
 		if (pred == prey) {
 			return false;
 		}
-		if (!IsHumanoid(prey)) { // Allow hugs with humanoids only
-		if (pred->formID == 0x14) {
-			std::string_view message = std::format("You have no desire to hug {}", prey->GetDisplayFullName());
-			TiredSound(pred, message); // Just no. We don't have Creature Anims.
-			}
-			return false;
-		}
 		if (prey->IsDead()) {
 			return false;
 		}
@@ -170,10 +163,17 @@ namespace Gts {
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_GRAB_SCALE) {
+			if (!IsHumanoid(prey)) { // Allow hugs with humanoids only
+				if (pred->formID == 0x14) {
+					std::string_view message = std::format("You have no desire to hug {}", prey->GetDisplayFullName());
+					TiredSound(pred, message); // Just no. We don't have Creature Anims.
+				}
+				return false;
+			}
 			Notify("{} is too big to be grabbed.", prey->GetDisplayFullName());
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_GRAB_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_GRAB_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 				return false;
 			} else {
