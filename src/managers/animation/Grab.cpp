@@ -373,7 +373,7 @@ namespace {
 		if (grabbedActor) {
 			EnableCollisions(grabbedActor);
 			AllowDialogue(grabbedActor, true);
-			SetBeingHeld(grabbedActorActor, false);
+			SetBeingHeld(grabbedActor, false);
 		}
 		SetBetweenBreasts(giant, false);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
