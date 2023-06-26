@@ -355,5 +355,5 @@ namespace RE
   void SetMotionType(hkpRigidBody* a_this, hkpMotion::MotionType a_newState, hkpEntityActivation a_preferredActivationState, hkpUpdateCollisionFilterOnEntityMode a_collisionFilterUpdateMode);
 
   // SSE: 60509,
-  void UpdateCollisionFilterOnEntity(hkpWorldObject *world, hkpEntity* entity, hkpUpdateCollisionFilterOnEntityMode updateMode, hkpUpdateCollectionFilterMode updateShapeCollectionFilter);
+  void UpdateCollisionFilterOnEntity(hkpWorld *world, hkpEntity* entity, hkpUpdateCollisionFilterOnEntityMode updateMode, hkpUpdateCollectionFilterMode updateShapeCollectionFilter);
 }
