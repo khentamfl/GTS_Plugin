@@ -146,7 +146,7 @@ namespace {
 					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
 				}
 				SetBetweenBreasts(giant, false);
-				AdjustSizeReserve(giant, grabbedActor, get_visual_scale(grabbedActor)/10);
+				AdjustSizeReserve(giant, get_visual_scale(grabbedActor)/10);
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
@@ -306,7 +306,7 @@ namespace {
 			EnableCollisions(otherActor);
 			AllowDialogue(otherActor, true);
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(otherActor);
-			PushActorAway(otherActor, 8.0 * sizedifference);
+			PushActorAway(giant, otherActor, 8.0 * sizedifference);
 		}
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
