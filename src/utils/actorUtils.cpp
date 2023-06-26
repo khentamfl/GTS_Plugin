@@ -233,7 +233,7 @@ namespace Gts {
 	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
 		NiPoint3 direction = NiPoint3(afX, afY, afZ);
 		NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
-		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
+		hkVector4 impulse = hkVector4(afX, afY, afZ, afMagnitude);
 		auto rbs = GetActorRB(target);
 		for (auto rb: rbs) {
 			if (rb) {
