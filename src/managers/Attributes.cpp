@@ -367,9 +367,9 @@ namespace Gts {
 	}
 
 	float AttributeManager::AlterMovementSpeed(Actor* actor, const NiPoint3& direction) {
-    if (IsBeingHeld(actor)) {
-      return 0.0;
-    }
+    // if (IsBeingHeld(actor)) {
+    //   return 0.0;
+    // }
 
 		float bonus = 1.0;
 		if (actor) {
