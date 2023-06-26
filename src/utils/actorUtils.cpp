@@ -231,9 +231,12 @@ namespace Gts {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
 	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
+		if (afZ < = 0) {
+			return;
+		}
 		NiPoint3 direction = NiPoint3(afX, afY, afZ);
 		NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
-		hkVector4 impulse = hkVector4(afX, afY, afZ, afMagnitude);
+		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
 		auto rbs = GetActorRB(target);
 		for (auto rb: rbs) {
 			if (rb) {
