@@ -144,12 +144,12 @@ namespace Hooks
   NiPoint3 Hook_PlayerCharacter::GetBoundMax(PlayerCharacter* a_this) {
     auto bound = _GetBoundMax(a_this);
     if (a_this) {
-      log::info("BoundMax: {}", Vector2Str(bound));
+      // log::info("BoundMax: {}", Vector2Str(bound));
       float scale = get_visual_scale(a_this);
       if (scale > 1e-4) {
         bound = bound * scale;
       }
-      log::info("  - New BoundMax: {}", Vector2Str(bound));
+      // log::info("  - New BoundMax: {}", Vector2Str(bound));
     }
     return bound;
   }
