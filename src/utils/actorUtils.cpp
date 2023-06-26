@@ -207,25 +207,25 @@ namespace Gts {
 		if (receiver->IsDead()) {
 			return;
 		}
-		CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
+		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 
-    // if (source) {
-    //   auto ai = receiver->GetActorRuntimeData().currentProcess;
-    //   if (ai) {
-    //     if (ai->InHighProcess()) {
-    //       if (receiver->Is3DLoaded()) {
-    //         if (source->Is3DLoaded()) {
-    //           NiPoint3 direction = receiver->GetPosition() - source->GetPosition();
-    //           direction = direction / direction.Length();
-    //
-    //           typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
-    //           REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
-    //           RealPushActorAway(ai, receiver, direction, afKnockBackForce);
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+    if (source) {
+      auto ai = receiver->GetActorRuntimeData().currentProcess;
+      if (ai) {
+        if (ai->InHighProcess()) {
+          if (receiver->Is3DLoaded()) {
+            if (source->Is3DLoaded()) {
+              NiPoint3 direction = receiver->GetPosition() - source->GetPosition();
+              direction = direction / direction.Length();
+
+              typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
+              REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
+              RealPushActorAway(ai, receiver, direction, afKnockBackForce);
+            }
+          }
+        }
+      }
+    }
 	}
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
@@ -621,9 +621,9 @@ namespace Gts {
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
 		} else if (ragdollchance <= 7.0 * sizedifference) {
-			ForceRagdoll(tiny, true);
+			// ForceRagdoll(tiny, true);
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
-			//PushActorAway(giant, tiny, power/100); // Push instead
+			PushActorAway(giant, tiny, power/100); // Push instead
 			return;
 		}
 	}
