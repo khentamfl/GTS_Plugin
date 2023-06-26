@@ -167,7 +167,7 @@ namespace Gts {
 				return false;
 			}
 			DamageAV(tinyref, ActorValue::kStamina, 1.00 * TimeScale()); // Drain Stamina
-			DamageAV(giantrefref, ActorValue::kStamina, -0.33 * TimeScale()); // Restore GTS Stamina
+			DamageAV(giantref, ActorValue::kStamina, -0.33 * TimeScale()); // Restore GTS Stamina
 			shake_camera(giantref, 0.50 * sizedifference, 0.05);
 			ShrinkActor(tinyref, 0, 0.0015);
 			Grow(giantref, 0.0, 0.0003);
