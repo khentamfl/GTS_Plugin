@@ -935,7 +935,7 @@ namespace Gts {
         trans->disable_collision_with = otherActor;
         log::info("Disable collision for: {}", actor->GetDisplayFullName());
         auto colliders = ActorCollisionData(actor);
-        colliders.Activate();
+        colliders.UpdateCollisionFilter();
       }
     }
   }
@@ -946,7 +946,7 @@ namespace Gts {
         trans->disable_collision_with = nullptr;
         log::info("Enable collision for: {}", actor->GetDisplayFullName());
         auto colliders = ActorCollisionData(actor);
-        colliders.Activate();
+        colliders.UpdateCollisionFilter();
       }
     }
   }

@@ -47,6 +47,15 @@ namespace Gts {
       SetMotionType(rb, hkpMotion::MotionType::kCharacter, hkpEntityActivation::kDoActivate, hkpUpdateCollisionFilterOnEntityMode::kFullCheck);
     }
   }
+  void ColliderData::UpdateCollisionFilter() {
+    for (auto ent: GetWorldObjects()) {
+      if (ent) {
+        if (ent->world) {
+          UpdateCollisionFilterOnEntity(ent, ent->world, hkpUpdateCollisionFilterOnEntityMode::kFullCheck, hkpUpdateCollectionFilterMode::kIncludeCollections);
+        }
+      }
+    }
+  }
 
 	void ColliderData::AddRB(hkpRigidBody* rb) {
 		if (!rb) {

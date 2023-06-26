@@ -17,6 +17,7 @@ namespace Gts {
     void EnableCollisions();
 
     void Activate();
+    void UpdateCollisionFilter();
 
   protected:
     virtual std::vector<ColliderData*> GetChildren();
