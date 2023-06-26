@@ -72,7 +72,6 @@ namespace {
     auto tranData = Transient::GetSingleton().GetData(actor);
     if (tranData) {
       if (tranData->disable_collision_with == otherActor) {
-        log::info("Collision with A {} is false", actor->GetDisplayFullName());
         return true;
       }
     }
@@ -80,7 +79,6 @@ namespace {
     auto tranDataB = Transient::GetSingleton().GetData(otherActor);
     if (tranDataB) {
       if (tranDataB->disable_collision_with == actor) {
-        log::info("Collision with B {} is false", otherActor->GetDisplayFullName());
         return true;
       }
     }
@@ -114,17 +112,19 @@ namespace Hooks
     a_result = _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
     if (*a_result) {
       auto colLayerA = GetCollisionLayer(a_collidableA);
-      auto colLayerB = GetCollisionLayer(a_collidableB);
       if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip) {
+        auto colLayerB = GetCollisionLayer(a_collidableB);
         if (colLayerB == COL_LAYER::kBiped || colLayerB == COL_LAYER::kCharController || colLayerB == COL_LAYER::kDeadBip) {
           auto objA = GetTESObjectREFR(a_collidableA);
-          auto objB = GetTESObjectREFR(a_collidableB);
-          if (objA != objB && objA != nullptr && objB != nullptr)  {
-            if (std::string(objA->GetDisplayFullName()).length() > 0 && std::string(objB->GetDisplayFullName()).length() > 0) {
-              log::info("Collsion between: {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
-              if (IsCollisionDisabledBetween(objA, objB)) {
-                log::info("Collision is disabled");
-                *a_result = false;
+          if (objA) {
+            auto objB = GetTESObjectREFR(a_collidableB);
+            if (objB) {
+              if (objA != objB)  {
+                log::info("Collsion between: {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
+                if (IsCollisionDisabledBetween(objA, objB)) {
+                  log::info("Collision is disabled");
+                  *a_result = false;
+                }
               }
             }
           }
