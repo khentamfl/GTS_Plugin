@@ -120,7 +120,7 @@ namespace Hooks
       auto objA = GetTESObjectREFR(a_collidableA);
       auto objB = GetTESObjectREFR(a_collidableB);
       if (objA != objB && objA != nullptr && objB != nullptr)  {
-        if (std::string(objA->GetDisplayFullName()).lenth() > 0 && std::string(objB->GetDisplayFullName()).lenth() > 0) {
+        if (std::string(objA->GetDisplayFullName()).length() > 0 && std::string(objB->GetDisplayFullName()).length() > 0) {
           log::info("Collsion between: {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
           if (IsCollisionDisabledBetween(objA, objB)) {
             log::info("Collision is disabled");
