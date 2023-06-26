@@ -40,5 +40,11 @@ namespace Hooks
 
 			static void NPCAnimEvents(BSTEventSink<BSAnimationGraphEvent>* a_this, BSAnimationGraphEvent& a_event, BSTEventSource<BSAnimationGraphEvent>* a_src);
 			static inline REL::Relocation<decltype(NPCAnimEvents)> _NPCAnimEvents;
+
+      static NiPoint3 GetBoundMin(Character* a_this);
+			static inline REL::Relocation<decltype(GetBoundMin)> _GetBoundMin;
+
+      static NiPoint3 GetBoundMax(Character* a_this);
+			static inline REL::Relocation<decltype(GetBoundMax)> _GetBoundMax;
 	};
 }
