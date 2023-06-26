@@ -26,8 +26,8 @@ namespace Hooks
 	void Hook_Actor::Hook(Trampoline& trampoline) {
 		logger::info("Hooking Actor");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_Actor[0] };
-    _GetBoundMin = Vtbl.write_vfunc(0x73, GetBoundMin);
-    _GetBoundMax = Vtbl.write_vfunc(0x74, GetBoundMax);
+    // _GetBoundMin = Vtbl.write_vfunc(0x73, GetBoundMin);
+    // _GetBoundMax = Vtbl.write_vfunc(0x74, GetBoundMax);
 		_HandleHealthDamage = Vtbl.write_vfunc(REL::Relocate(0x104, 0x104, 0x106), HandleHealthDamage);
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
