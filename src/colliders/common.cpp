@@ -1,4 +1,5 @@
 #include "colliders/common.hpp"
+#include "colliders/RE.hpp"
 
 using namespace RE;
 
@@ -39,6 +40,13 @@ namespace Gts {
     }
   }
 
+  void ColliderData::Activate() {
+    log::info("Activate RBs");
+    for (auto rb: GetRigidBodies()) {
+      log::info("  - Activating");
+      SetMotionType(rb, hkpMotion::MotionType::kCharacter, hkpEntityActivation::kDoActivate, hkpUpdateCollisionFilterOnEntityMode::kFullCheck);
+    }
+  }
 
 	void ColliderData::AddRB(hkpRigidBody* rb) {
 		if (!rb) {

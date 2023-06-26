@@ -238,4 +238,10 @@ namespace RE {
 		// REL::Relocation<decltype(&hkpCapsuleShape::Unk_11)> func(result);
 		// func(this);
 	}
+
+  void SetMotionType(hkpRigidBody* a_this, hkpMotion::MotionType a_newState, hkpEntityActivation a_preferredActivationState, hkpUpdateCollisionFilterOnEntityMode a_collisionFilterUpdateMode) {
+    typedef void (*DefRealSetMotionType)(RE::bhkRigidBody* a_this, hkpMotion::MotionType a_newState, hkpEntityActivation a_preferredActivationState, hkpUpdateCollisionFilterOnEntityMode a_collisionFilterUpdateMode);
+    REL::Relocation<DefRealSetMotionType> RealSetMotionType{ RELOCATION_ID(76247, 78077) }
+    RealSetMotionType(a_this, a_newState, a_preferredActivationState, a_collisionFilterUpdateMode);
+  }
 }

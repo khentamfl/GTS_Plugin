@@ -14,6 +14,7 @@
 #include "colliders/actor.hpp"
 #include "timer.hpp"
 #include "node.hpp"
+#include "colliders/RE.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -808,7 +809,7 @@ namespace Gts {
 				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == "HitSteal") { // Hit Growth perk 
+		} else if (cause == "HitSteal") { // Hit Growth perk
 			if (random <= 2) {
 				Cprint("{} body exploded after trying to hit {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 3) {
@@ -933,6 +934,8 @@ namespace Gts {
       if (trans) {
         trans->disable_collision_with = otherActor;
         log::info("Disable collision for: {}", actor->GetDisplayFullName());
+        auto colliders = ActorCollisionData(actor);
+        colliders.Activate();
       }
     }
   }
@@ -942,6 +945,8 @@ namespace Gts {
       if (trans) {
         trans->disable_collision_with = nullptr;
         log::info("Enable collision for: {}", actor->GetDisplayFullName());
+        auto colliders = ActorCollisionData(actor);
+        colliders.Activate();
       }
     }
   }

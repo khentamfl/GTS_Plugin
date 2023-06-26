@@ -334,4 +334,18 @@ namespace RE
 			bool m_isGroundPositionValid;
 
 	};
+
+  enum class hkpEntityActivation
+	{
+		kDoNotActivate,
+		kDoActivate
+	};
+
+  enum class hkpUpdateCollisionFilterOnEntityMode
+	{
+		kFullCheck,
+		kDisableEntityEntityCollisionsOnly
+	};
+
+  void SetMotionType(hkpRigidBody* a_this, hkpMotion::MotionType a_newState, hkpEntityActivation a_preferredActivationState, hkpUpdateCollisionFilterOnEntityMode a_collisionFilterUpdateMode);
 }

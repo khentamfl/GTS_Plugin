@@ -16,6 +16,8 @@ namespace Gts {
     void DisableCollisions();
     void EnableCollisions();
 
+    void Activate();
+
   protected:
     virtual std::vector<ColliderData*> GetChildren();
     std::vector<hkpWorldObject*> GetWorldObjects();
