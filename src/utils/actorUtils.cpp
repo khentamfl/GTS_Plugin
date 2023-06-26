@@ -210,7 +210,7 @@ namespace Gts {
 		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 
     if (source) {
-      auto ai = receiver->currentProcess;
+      auto ai = receiver->GetActorRuntimeData().currentProcess;
       if (ai) {
         if (ai->InHighProcess()) {
           if (receiver->Is3DLoaded()) {
