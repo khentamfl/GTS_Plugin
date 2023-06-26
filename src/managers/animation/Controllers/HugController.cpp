@@ -146,7 +146,8 @@ namespace Gts {
 		}
 		if (!IsHumanoid(prey)) { // Allow hugs with humanoids only
 		if (pred->formID == 0x14) {
-			TiredSound(pred, "You have no desire to hug {}", prey->GetDisplayFullName()); // Just no. We don't have Creature Anims.
+			std::string_view message = std::format("You have no desire to hug {}", prey->GetDisplayFullName());
+			TiredSound(pred, message); // Just no. We don't have Creature Anims.
 			}
 			return false;
 		}
