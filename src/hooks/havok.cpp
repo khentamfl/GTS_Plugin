@@ -109,16 +109,17 @@ namespace Hooks
     if (*a_result) {
       // if ((GetCollisionLayer(a_collidableA) == COL_LAYER::kCharController && GetCollisionLayer(a_collidableB) == COL_LAYER::kCharController) ||
       //    (GetCollisionLayer(a_collidableA) == COL_LAYER::kCollisionBox && GetCollisionLayer(a_collidableB) == COL_LAYER::kCollisionBox)) {
-        // if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
+      // if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
       auto objA = GetTESObjectREFR(a_collidableA);
       auto objB = GetTESObjectREFR(a_collidableB);
       if (objA != objB)  {
+        log::info("Collsion between: {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
         if (IsCollisionDisabledBetween(objA, objB)) {
           log::info("Collision is disabled");
           *a_result = false;
         }
       }
-        // }
+      // }
       // }
     }
     return a_result;
