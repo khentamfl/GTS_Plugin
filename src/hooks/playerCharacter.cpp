@@ -141,7 +141,7 @@ namespace Hooks
 		return _PCAnimEvents(a_this, a_event, a_src);
 	}
 
-  NiPoint3 Hook_Actor::GetBoundMax(PlayerCharacter* a_this) {
+  NiPoint3 Hook_PlayerCharacter::GetBoundMax(PlayerCharacter* a_this) {
     auto bound = _GetBoundMax(a_this);
     if (a_this) {
       log::info("BoundMax: {}", Vec2String(bound));
@@ -153,7 +153,7 @@ namespace Hooks
     }
     return bound;
   }
-  NiPoint3 Hook_Actor::GetBoundMin(PlayerCharacter* a_this) {
+  NiPoint3 Hook_PlayerCharacter::GetBoundMin(PlayerCharacter* a_this) {
     auto bound = _GetBoundMin(a_this);
     if (a_this) {
       float scale = get_visual_scale(a_this);
