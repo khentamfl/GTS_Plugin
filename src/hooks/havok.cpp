@@ -107,19 +107,19 @@ namespace Hooks
   bool* Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable* a_collidableA, const hkpCollidable* a_collidableB) {
     a_result = _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
     if (*a_result) {
-      if ((GetCollisionLayer(a_collidableA) == COL_LAYER::kCharController && GetCollisionLayer(a_collidableB) == COL_LAYER::kCharController) || 
-         (GetCollisionLayer(a_collidableA) == COL_LAYER::kCollisionBox && GetCollisionLayer(a_collidableB) == COL_LAYER::kCollisionBox)) {
-        if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
-          auto objA = GetTESObjectREFR(a_collidableA);
-          auto objB = GetTESObjectREFR(a_collidableB);
-          if (objA != objB)  {
-            if (IsCollisionDisabledBetween(objA, objB)) {
-              log::info("Collision is disabled");
-              *a_result = false;
-            }
-          }
+      // if ((GetCollisionLayer(a_collidableA) == COL_LAYER::kCharController && GetCollisionLayer(a_collidableB) == COL_LAYER::kCharController) ||
+      //    (GetCollisionLayer(a_collidableA) == COL_LAYER::kCollisionBox && GetCollisionLayer(a_collidableB) == COL_LAYER::kCollisionBox)) {
+        // if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
+      auto objA = GetTESObjectREFR(a_collidableA);
+      auto objB = GetTESObjectREFR(a_collidableB);
+      if (objA != objB)  {
+        if (IsCollisionDisabledBetween(objA, objB)) {
+          log::info("Collision is disabled");
+          *a_result = false;
         }
       }
+        // }
+      // }
     }
     return a_result;
   }
