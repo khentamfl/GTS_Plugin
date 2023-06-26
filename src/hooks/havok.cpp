@@ -113,14 +113,20 @@ namespace Hooks
   bool* Hook_Havok::IsCollisionEnabled(hkpCollidableCollidableFilter* a_this, bool* a_result, const hkpCollidable* a_collidableA, const hkpCollidable* a_collidableB) {
     a_result = _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
     if (*a_result) {
-      auto objA = GetTESObjectREFR(a_collidableA);
-      auto objB = GetTESObjectREFR(a_collidableB);
-      if (objA != objB && objA != nullptr && objB != nullptr)  {
-        if (std::string(objA->GetDisplayFullName()).length() > 0 && std::string(objB->GetDisplayFullName()).length() > 0) {
-          log::info("Collsion between: {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
-          if (IsCollisionDisabledBetween(objA, objB)) {
-            log::info("Collision is disabled");
-            *a_result = false;
+      auto colLayerA = GetCollisionLayer(a_collidableA);
+      auto colLayerB = GetCollisionLayer(a_collidableB);
+      if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip) {
+        if (colLayerB == COL_LAYER::kBiped || colLayerB == COL_LAYER::kCharController || colLayerB == COL_LAYER::kDeadBip) {
+          auto objA = GetTESObjectREFR(a_collidableA);
+          auto objB = GetTESObjectREFR(a_collidableB);
+          if (objA != objB && objA != nullptr && objB != nullptr)  {
+            if (std::string(objA->GetDisplayFullName()).length() > 0 && std::string(objB->GetDisplayFullName()).length() > 0) {
+              log::info("Collsion between: {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
+              if (IsCollisionDisabledBetween(objA, objB)) {
+                log::info("Collision is disabled");
+                *a_result = false;
+              }
+            }
           }
         }
       }
