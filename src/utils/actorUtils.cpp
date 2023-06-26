@@ -231,7 +231,7 @@ namespace Gts {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
 	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
-		if (afZ < = 0) {
+		if (afZ <= 0) {
 			return;
 		}
 		NiPoint3 direction = NiPoint3(afX, afY, afZ);
