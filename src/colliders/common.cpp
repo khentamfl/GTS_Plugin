@@ -51,7 +51,7 @@ namespace Gts {
     for (auto ent: GetWorldObjects()) {
       if (ent) {
         if (ent->world) {
-          UpdateCollisionFilterOnEntity(ent, ent->world, hkpUpdateCollisionFilterOnEntityMode::kFullCheck, hkpUpdateCollectionFilterMode::kIncludeCollections);
+          UpdateCollisionFilterOnEntity(ent->world, ent, hkpUpdateCollisionFilterOnEntityMode::kFullCheck, hkpUpdateCollectionFilterMode::kIncludeCollections);
         }
       }
     }

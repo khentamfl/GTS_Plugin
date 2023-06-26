@@ -245,7 +245,7 @@ namespace RE {
     RealSetMotionType(a_this, a_newState, a_preferredActivationState, a_collisionFilterUpdateMode);
   }
 
-  void UpdateCollisionFilterOnEntity(hkpWorldObject *world, hkpEntity* entity, hkpUpdateCollisionFilterOnEntityMode updateMode, hkpUpdateCollectionFilterMode updateShapeCollectionFilter) {
+  void UpdateCollisionFilterOnEntity(hkpWorld *world, hkpEntity* entity, hkpUpdateCollisionFilterOnEntityMode updateMode, hkpUpdateCollectionFilterMode updateShapeCollectionFilter) {
     typedef void(*DefUpdateCollisionFilterOnEntity)(hkpWorld *world, hkpEntity* entity, hkpUpdateCollisionFilterOnEntityMode updateMode, hkpUpdateCollectionFilterMode updateShapeCollectionFilter);
     REL::Relocation<DefUpdateCollisionFilterOnEntity> RealUpdateCollisionFilterOnEntity{ RELOCATION_ID(60509, 61321) };
     RealUpdateCollisionFilterOnEntity(world, entity, updateMode, updateShapeCollectionFilter);
