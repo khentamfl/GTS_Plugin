@@ -936,6 +936,10 @@ namespace Gts {
         log::info("Disable collision for: {}", actor->GetDisplayFullName());
         auto colliders = ActorCollisionData(actor);
         colliders.UpdateCollisionFilter();
+        if (otherActor) {
+          auto otherColliders = ActorCollisionData(otherActor);
+          otherActor.UpdateCollisionFilter();
+        }
       }
     }
   }
@@ -943,10 +947,15 @@ namespace Gts {
     if (actor) {
       auto trans = Transient::GetSingleton().GetData(actor);
       if (trans) {
+        auto otherActor = trans->disable_collision_with;
         trans->disable_collision_with = nullptr;
         log::info("Enable collision for: {}", actor->GetDisplayFullName());
         auto colliders = ActorCollisionData(actor);
         colliders.UpdateCollisionFilter();
+        if (otherActor) {
+          auto otherColliders = ActorCollisionData(otherActor);
+          otherActor.UpdateCollisionFilter();
+        }
       }
     }
   }
