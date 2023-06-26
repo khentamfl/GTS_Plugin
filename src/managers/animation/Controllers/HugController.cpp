@@ -144,6 +144,12 @@ namespace Gts {
 		if (pred == prey) {
 			return false;
 		}
+		if (!IsHumanoid(prey)) { // Allow hugs with humanoids only
+		if (pred->formID == 0x14) {
+			TiredSound(pred, "You have no desire to hug {}", prey->GetDisplayFullName()); // Just no. We don't have Creature Anims.
+			}
+			return false;
+		}
 		if (prey->IsDead()) {
 			return false;
 		}
@@ -153,9 +159,6 @@ namespace Gts {
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
-		if (IsDragon(prey)) {
-			prey_scale *= 3.0;
-		}
 
 		float sizedifference = pred_scale/prey_scale;
 

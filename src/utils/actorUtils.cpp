@@ -274,6 +274,19 @@ namespace Gts {
 		return true;
 	}
 
+	bool IsHumanoid(Actor* actor) { // Check if Actor is humanoid or not. Currently used for some Animations
+		if (!Runtime::HasKeyword(actor, "DragonKeyword") && 
+			!Runtime::HasKeyword(actor, "DwemerKeyword") && 
+			!Runtime::HasKeyword(actor, "AnimalKeyword") &&
+			!Runtime::HasKeyword(actor, "CreatureKeyword")
+		) {
+			return true;
+		} else {
+			return false;
+		}
+		return false;
+	}
+
 	bool IsDragon(Actor* actor) {
 		if (Runtime::HasKeyword(actor, "DragonKeyword")) {
 			return true;

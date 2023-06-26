@@ -600,10 +600,14 @@ namespace Gts {
 					return false;
 				}
 			} else if (IsBetweenBreasts(giantref)) {
-				if (!IsHostile(giantref, tinyref)) {
-					float restore = 0.01;
+				bool hostile = IsHostile(giantref, tinyref);
+				if (!hostile) {
+					float restore = 0.04 * TimeScale();
 					tinyref->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, restore);
 					tinyref->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, restore);
+				} 
+				if (hostile) {
+					DamageAV(grabbedActor, ActorValue::kStamina, restore * 2);
 				}
 				if (!AttachToCleavage(gianthandle, tinyhandle)) {
 					// Unable to attach
