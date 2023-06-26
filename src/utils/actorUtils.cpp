@@ -611,9 +611,9 @@ namespace Gts {
 		float sizedifference = giantSize/tinySize;
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
-			ForceRagdoll(tiny, true);
+			//ForceRagdoll(tiny, true);
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
-			//PushActorAway(giant, tiny, power/100); // Always push
+			PushActorAway(giant, tiny, power/100); // Always push
 			return;
 		}
 		if (ragdollchance > 7.0 * sizedifference && (sizedifference >= 1.25 && sizedifference < 3.0)) {

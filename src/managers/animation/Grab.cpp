@@ -152,9 +152,9 @@ namespace {
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				giant->SetGraphVariableInt("GTS_Grab_State", 0);
 				PrintDeathSource(giant, grabbedActor, "HandCrushed");
-				AnimationManager::StartAnim("TinyDied", giant);
 				Grab::DetachActorTask(giant);
 				Grab::Release(giant);
+				AnimationManager::StartAnim("TinyDied", giant);
 			}
 		}
 	}
