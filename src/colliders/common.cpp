@@ -48,10 +48,17 @@ namespace Gts {
     }
   }
   void ColliderData::UpdateCollisionFilter() {
-    for (auto ent: GetWorldObjects()) {
+    for (auto ent: GetRigidBodies()) {
       if (ent) {
         if (ent->world) {
           UpdateCollisionFilterOnEntity(ent->world, ent, hkpUpdateCollisionFilterOnEntityMode::kFullCheck, hkpUpdateCollectionFilterMode::kIncludeCollections);
+        }
+      }
+    }
+    for (auto ent: GetPhantoms()) {
+      if (ent) {
+        if (ent->world) {
+          UpdateCollisionFilterOnPhantom(ent->world, ent, hkpUpdateCollectionFilterMode::kIncludeCollections);
         }
       }
     }
