@@ -937,8 +937,9 @@ namespace Gts {
         auto colliders = ActorCollisionData(actor);
         colliders.UpdateCollisionFilter();
         if (otherActor) {
-          auto otherColliders = ActorCollisionData(otherActor);
-          otherActor.UpdateCollisionFilter();
+          Actor* asOtherActor = skyrim_cast<Actor*>(otherActor);
+          auto otherColliders = ActorCollisionData(asOtherActor);
+          otherColliders.UpdateCollisionFilter();
         }
       }
     }
@@ -953,8 +954,9 @@ namespace Gts {
         auto colliders = ActorCollisionData(actor);
         colliders.UpdateCollisionFilter();
         if (otherActor) {
-          auto otherColliders = ActorCollisionData(otherActor);
-          otherActor.UpdateCollisionFilter();
+          Actor* asOtherActor = skyrim_cast<Actor*>(otherActor);
+          auto otherColliders = ActorCollisionData(asOtherActor);
+          otherColliders.UpdateCollisionFilter();
         }
       }
     }
