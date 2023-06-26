@@ -146,6 +146,7 @@ namespace {
 					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
 				}
 				SetBetweenBreasts(giant, false);
+				AdjustSizeReserve(giant, grabbedActor, get_visual_scale(grabbedActor)/10);
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
@@ -304,6 +305,8 @@ namespace {
 			SetBeingHeld(otherActor, false);
 			EnableCollisions(otherActor);
 			AllowDialogue(otherActor, true);
+			float sizedifference = get_visual_scale(giant)/get_visual_scale(otherActor);
+			PushActorAway(otherActor, 8.0 * sizedifference);
 		}
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
@@ -577,9 +580,9 @@ namespace Gts {
 			ForceRagdoll(tinyref, false);
 
 
-			if (giantref->IsDead() || tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
+			if (giantref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
-				PushActorAway(giantref, tinyref, 8.0 * sizedifference);
+				PushActorAway(giantref, tinyref, 1.0);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);
 				SetBetweenBreasts(giantref, false);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
