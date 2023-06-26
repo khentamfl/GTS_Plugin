@@ -60,12 +60,18 @@ namespace {
 
 	void GTS_Hug_Moan(AnimationEventData& data) {
 		auto giant = &data.giant;
-		auto huggedActor = HugShrink::GetHuggiesActor(giant);
+		AdjustFacialExpression(giant, 0, 1.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 1.0, "modifier"); // blink R
 		AdjustFacialExpression(giant, 0, 0.75, "phenome");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
-		if (!huggedActor) {
-			return;
-		}
+	}
+
+	void GTS_Hug_Moan_End(AnimationEventData& data) {
+		auto giant = &data.giant;
+		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 0.75, "phenome");
+		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 	}
 
 	void GTSBEH_HugAbsorbAtk(AnimationEventData& data) {
@@ -166,7 +172,7 @@ namespace Gts {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
-			DamageAV(tinyref, ActorValue::kStamina, 1.00 * TimeScale()); // Drain Stamina
+			DamageAV(tinyref, ActorValue::kStamina, 1.25 * TimeScale()); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, -0.33 * TimeScale()); // Restore GTS Stamina
 			shake_camera(giantref, 0.50 * sizedifference, 0.05);
 			ShrinkActor(tinyref, 0, 0.0015);
@@ -205,7 +211,7 @@ namespace Gts {
 
 			GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
 
-			DamageAV(giantref, ActorValue::kStamina, 0.50 * TimeScale()); // Drain Stamina
+			DamageAV(tinyref, ActorValue::kStamina, 0.65 * TimeScale()); // Drain Tiny Stamina
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 			if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
@@ -271,6 +277,7 @@ namespace Gts {
 
 		AnimationManager::RegisterEvent("GTS_Hug_Grab", "Hugs", GTS_Hug_Grab);
 		AnimationManager::RegisterEvent("GTS_Hug_Grow", "Hugs", GTS_Hug_Grow);
+		AnimationManager::RegisterEvent("GTS_Hug_Moan", "Hugs", GTS_Hug_Moan);
 		AnimationManager::RegisterEvent("GTS_Hug_Moan", "Hugs", GTS_Hug_Moan);
 		AnimationManager::RegisterEvent("GTSBEH_HugAbsorbAtk", "Hugs", GTSBEH_HugAbsorbAtk);
 	}
