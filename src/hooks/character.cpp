@@ -152,7 +152,7 @@ namespace Hooks
     auto bound = _GetBoundMin(a_this);
     if (a_this) {
       float scale = get_visual_scale(a_this);
-      if (scale) > 1e-4) {
+      if (scale > 1e-4) {
         bound = bound * scale;
       }
     }
