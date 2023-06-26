@@ -80,7 +80,7 @@ namespace Gts {
 		auto selectedFormula = Runtime::GetInt("SelectedSizeFormula");
 		float progressionMultiplier = Persistent::GetSingleton().progression_multiplier;
 		if (selectedFormula) {
-			if (selectedFormula >= 2.0) {
+			if (selectedFormula >= 1.0) {
 				SoftPotential mod {
 					.k = 0.070,
 					.n = 3,
