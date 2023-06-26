@@ -47,6 +47,13 @@ namespace {
             return obj->GetUserData();
           }
         }
+      } else if (static_cast<RE::hkpWorldObject::BroadPhaseType>(type) == hkpWorldObject::BroadPhaseType::kPhantom) {
+        if (collidable->ownerOffset < 0) {
+          hkpPhantom* obj = collidable->GetOwner<hkpPhantom>();
+          if (obj) {
+            return obj->GetUserData();
+          }
+        }
       }
     }
     return nullptr;
@@ -112,8 +119,8 @@ namespace Hooks
       // if (GetCollisionSystem(a_collidableA) != GetCollisionSystem(a_collidableB)) {
       auto objA = GetTESObjectREFR(a_collidableA);
       auto objB = GetTESObjectREFR(a_collidableB);
-      if (objA != objB)  {
-        if (objA != nullptr && objB != nullptr) {
+      if (objA != objB && objA != nullptr && objB != nullptr)  {
+        if (objA->GetDisplayFullName().lenth() > 0 && objB->GetDisplayFullName().lenth() > 0) {
           log::info("Collsion between: {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
           if (IsCollisionDisabledBetween(objA, objB)) {
             log::info("Collision is disabled");
