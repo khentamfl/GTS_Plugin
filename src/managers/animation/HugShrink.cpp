@@ -166,6 +166,8 @@ namespace Gts {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
+			DamageAV(tinyref, ActorValue::kStamina, 1.00 * TimeScale()); // Drain Stamina
+			DamageAV(giantrefref, ActorValue::kStamina, -0.33 * TimeScale()); // Restore GTS Stamina
 			shake_camera(giantref, 0.50 * sizedifference, 0.05);
 			ShrinkActor(tinyref, 0, 0.0015);
 			Grow(giantref, 0.0, 0.0003);
@@ -202,12 +204,15 @@ namespace Gts {
 			}
 
 			GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
+
+			DamageAV(giantref, ActorValue::kStamina, 0.50 * TimeScale()); // Drain Stamina
+
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 			if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
-      // Ensure they are NOT in ragdoll
+      		// Ensure they are NOT in ragdoll
       		ForceRagdoll(tinyref, false);
 			if (!HugAttach(gianthandle, tinyhandle)) {
 				return false;
