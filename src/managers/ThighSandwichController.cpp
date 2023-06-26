@@ -175,7 +175,7 @@ namespace Gts {
 				threshold = 0.8;
 			}
 			if (giant->IsDead() || sizedifference < threshold) {
-				PushActorAway(giant, tiny, 0.5);
+				PushActorAway(giant, tiny, 1.0);
 				Cprint("{} slipped out of {} thighs", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 				this->tinies.erase(tiny->formID); // Disallow button abuses to keep tiny when on low scale
 			}

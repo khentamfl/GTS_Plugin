@@ -340,7 +340,7 @@ namespace {
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 		if (grabbedActor) {
-			PushActorAway(giant, grabbedActor, 0.1);
+			PushActorAway(giant, grabbedActor, 1.0);
 			AllowDialogue(grabbedActor, true);
 			EnableCollisions(grabbedActor);
 			SetBeingHeld(grabbedActor, false);
@@ -580,7 +580,7 @@ namespace Gts {
 
 			if (giantref->IsDead() || tinyref->IsDead() || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
-				PushActorAway(giantref, tinyref, 0.1);
+				PushActorAway(giantref, tinyref, 1.0);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);
 				SetBetweenBreasts(giantref, false);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
