@@ -189,7 +189,7 @@ namespace Gts {
 			}
 			DamageAV(tinyref, ActorValue::kStamina, 0.60 * TimeScale()); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.10 * TimeScale()); // Damage GTS Stamina
-			TransferSize(giantref, tinyref, false, 5.00, 0.20, false); // Shrink foe, enlarge gts
+			TransferSize(giantref, tinyref, false, 5.60, 0.20, false); // Shrink foe, enlarge gts
 			shake_camera(giantref, 0.70 * sizedifference, 0.05);
 			return true;
 		});

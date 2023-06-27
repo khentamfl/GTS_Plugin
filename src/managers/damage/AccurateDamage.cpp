@@ -501,8 +501,10 @@ namespace Gts {
 			return; // Do not do damage is Size Difference is < than x1.4
 		}
 
-		float experience = std::clamp(result/100, 0.0f, 0.20f);
-		AdjustGtsSkill(experience, giant);
+		float experience = std::clamp(result/300, 0.0f, 0.20f);
+		if (!tiny->IsDead()) {
+			AdjustGtsSkill(experience, giant);
+		}
 
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.50);

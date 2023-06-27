@@ -164,7 +164,7 @@ namespace Gts {
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
 
 
-		int random = (100 + (rand()% 85 + 1)) / 100;
+		int random = (100 + (rand()% 64 + 1)) / 100;
 
 		if (GtsSkillLevel->value >= 100.0) {
 			GtsSkillLevel->value = 100.0;
@@ -178,7 +178,7 @@ namespace Gts {
 
 		float absorbedSize = (get_visual_scale(Target));
 		if (Target->IsDead()) {
-			absorbedSize *= 0.2; // Less effective on dead actors
+			absorbedSize *= 0.1; // Less effective on dead actors
 			log::info("Is Dead {}", Target->GetDisplayFullName());
 		}
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level

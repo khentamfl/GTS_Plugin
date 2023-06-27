@@ -202,7 +202,7 @@ namespace Gts {
 		float amount = CalcPower(from, scale_factor, bonus);
 		float amountnomult = CalcPower_NoMult(from, scale_factor, bonus);
 		float target_scale = get_visual_scale(from);
-		AdjustGtsSkill(0.76 * scale_factor * target_scale, to);
+		AdjustGtsSkill(0.32 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amountnomult * 0.55 * effeciency_noscale);
 		mod_target_scale(to, amount*effeciency);
 	}
@@ -269,7 +269,7 @@ namespace Gts {
 		
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
 
-		float alteration_level_bonus = 0.0332 + (GtsSkillLevel->value * 0.00166 / 120); // 0.0332 is a equivallent to lvl 20 skill
+		float alteration_level_bonus = 0.0280 + (GtsSkillLevel->value * 0.00166 / 120); 
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
 
