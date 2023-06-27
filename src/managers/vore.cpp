@@ -92,9 +92,10 @@ namespace {
 
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
-		float absorbedSize = (tinysize);
+		float absorbedSize = tinysize/50;
+
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.36 * random) + absorbedSize/50) * ValueEffectiveness);
+		float Total = (((0.36 * random) + absorbedSize) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;
 
 		if (GtsSkillRatio->value >= 1.0) {

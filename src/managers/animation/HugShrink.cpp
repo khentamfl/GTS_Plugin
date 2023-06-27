@@ -140,7 +140,7 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		auto huggedActor = HugShrink::GetHuggiesActor(player);
 		AbortAnimation(player, huggedActor);
-    HugShrink::DetachActorTask(player);
+    	HugShrink::DetachActorTask(player);
 	}
 }
 
@@ -189,9 +189,8 @@ namespace Gts {
 			}
 			DamageAV(tinyref, ActorValue::kStamina, 0.60 * TimeScale()); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.10 * TimeScale()); // Damage GTS Stamina
-			shake_camera(giantref, 0.50 * sizedifference, 0.05);
-			ShrinkActor(tinyref, 0, 0.0015);
-			Grow(giantref, 0.0, 0.0003);
+			TransferSize(giantref, tinyref, false, 0.0015, 0.20, false); // Shrink foe, enlarge gts
+			shake_camera(giantref, 0.80 * sizedifference, 0.05);
 			return true;
 		});
 	}

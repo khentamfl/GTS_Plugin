@@ -124,7 +124,11 @@ namespace {
 			DamageAV(grabbedActor, ActorValue::kHealth, damage);
 			Rumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
-			AdjustGtsSkill(damage/2500, giant);
+
+			float experience = std::clamp(damage/100, 0.0f, 0.20f);
+
+			AdjustGtsSkill(experience, giant);
+			
 			AddSMTDuration(giant, 1.6);
 			if (damage < Health) {
 				if (!LessGore()) {

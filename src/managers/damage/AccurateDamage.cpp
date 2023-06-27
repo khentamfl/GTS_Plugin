@@ -492,7 +492,9 @@ namespace Gts {
 			//StartCombat(giant, tiny, false);
 			if (multiplier >= 8.0) {
 				if (CrushManager::CanCrush(giant, tiny)) {
+					float experience = std::clamp(result/100, 0.0f, 0.20f);
 					crushmanager.Crush(giant, tiny);
+					AdjustGtsSkill(giant, experience);
 					CrushBonuses(giant, tiny, 0);
 				}
 			}

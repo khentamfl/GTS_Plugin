@@ -73,7 +73,7 @@ namespace Gts {
 		}
 	}
 
-	inline void AdjustMassLimit(float value, Actor* caster) {
+	inline void AdjustMassLimit(float value, Actor* caster) { // Adjust Size Limit for Mass Based Size Mode
 		if (caster->formID != 0x14) {
 			return;
 		}
@@ -266,7 +266,7 @@ namespace Gts {
 		}
 		AdjustSizeLimit(0.0300 * target_scale * power, caster);
 		AdjustMassLimit(0.0160 * target_scale * power, caster);
-		float alteration_level_bonus = 0.0332 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
+		float alteration_level_bonus = 0.0332 + GtsSkillLevel->value * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
 

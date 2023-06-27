@@ -17,7 +17,9 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float SkillMult = 1.0 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) / 100;
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		
+		float SkillMult = 1.0 + GtsSkillLevel->value / 100;
 
 		float power = BASE_POWER * SkillMult;
 

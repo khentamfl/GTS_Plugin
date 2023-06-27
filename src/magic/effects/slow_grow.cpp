@@ -19,7 +19,9 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float AlterBonus = 1.0 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration)/100; // Calculate bonus power. At the Alteration of 100 it becomes 200%.
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+
+		float AlterBonus = 1.0 + GtsSkillLevel->value/100; // Calculate bonus power. At the Alteration of 100 it becomes 200%.
 		float power = BASE_POWER * AlterBonus;
 
 		if (this->timer.ShouldRun()) {

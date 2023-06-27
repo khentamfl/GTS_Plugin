@@ -19,8 +19,9 @@ namespace Gts {
 			return;
 		}
 
-
-		float SkillMult = 1.0 + caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration) / 200;
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		
+		float SkillMult = 1.0 + GtsSkillLevel->value / 200;
 		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00005;
 
 		float bonus = 1.0;
