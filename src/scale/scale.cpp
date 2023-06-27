@@ -26,10 +26,10 @@ namespace Gts {
 		if (actor_data) {
 			if (scale < (actor_data->max_scale + EPS)) {
 				// If new value is below max: allow it
-				scale = scale;
+				actor_data->target_scale = scale;
 			} else if (actor_data->target_scale < (actor_data->max_scale - EPS)) {
 				// If we are below max currently and we are trying to scale over max: make it max
-				actor_data->target_scale = scale;
+				actor_data->target_scale = actor_data->max_scale;
 			} else {
 				// If we are over max: forbid it
 			}
