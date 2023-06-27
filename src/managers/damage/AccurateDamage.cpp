@@ -492,9 +492,7 @@ namespace Gts {
 			//StartCombat(giant, tiny, false);
 			if (multiplier >= 8.0) {
 				if (CrushManager::CanCrush(giant, tiny)) {
-					float experience = std::clamp(result/100, 0.0f, 0.20f);
 					crushmanager.Crush(giant, tiny);
-					AdjustGtsSkill(experience, giant);
 					CrushBonuses(giant, tiny, 0);
 				}
 			}
@@ -502,6 +500,9 @@ namespace Gts {
 		if (multiplier < 1.4) {
 			return; // Do not do damage is Size Difference is < than x1.4
 		}
+
+		float experience = std::clamp(result/100, 0.0f, 0.20f);
+		AdjustGtsSkill(experience, giant);
 
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
