@@ -1,4 +1,5 @@
 #include "hooks/jump.hpp"
+#include "hooks/callhook.hpp"
 #include "scale/scale.hpp"
 
 using namespace RE;
