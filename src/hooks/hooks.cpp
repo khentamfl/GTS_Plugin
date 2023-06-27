@@ -13,6 +13,7 @@
 #include "hooks/character.hpp"
 #include "hooks/sink.hpp"
 #include "hooks/jump.hpp"
+#include "hooks/scale.hpp"
 
 using namespace RE;
 
@@ -37,6 +38,7 @@ namespace Hooks
 		Hook_Character::Hook();
 		Hook_Sinking::Hook(trampoline);
     Hook_Jumping::Hook(trampoline);
+    Hook_Scale::Hook(trampoline);
 		HookCameraStates();
 
 		logger::info("Gts finished applying hooks...");
