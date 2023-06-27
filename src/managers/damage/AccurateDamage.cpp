@@ -494,7 +494,7 @@ namespace Gts {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					float experience = std::clamp(result/100, 0.0f, 0.20f);
 					crushmanager.Crush(giant, tiny);
-					AdjustGtsSkill(giant, experience);
+					AdjustGtsSkill(experience, giant);
 					CrushBonuses(giant, tiny, 0);
 				}
 			}
