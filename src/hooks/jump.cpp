@@ -38,5 +38,24 @@ namespace Hooks {
   			}
 			);
 
+      // AE 1402bc7c3
+      // SE 1402aa40c
+      //
+      // Is used in the jump anim event handller
+      //
+      static CallHook<float(TESObjectREFR*)> GetScaleHookJumpAnimEvent(RELOCATION_ID(41811, 42892),  0x4d,
+      [](auto* self) {
+          float result = GetScaleHookJumpAnimEvent(self);
+          Actor* actor = skyrim_cast<Actor*>(self);
+          if (actor) {
+            float scale = get_visual_scale(actor);
+            if (scale > 1e-4) {
+              log::info("Jump Hook: {} for {}", scale, actor->GetDisplayFullName());
+              result *= scale;
+            }
+          }
+          return result;
+      });
+
 	}
 }
