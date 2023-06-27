@@ -275,8 +275,8 @@ namespace Gts {
 	}
 
 	bool IsHumanoid(Actor* actor) { // Check if Actor is humanoid or not. Currently used for some Animations
-		if (!Runtime::HasKeyword(actor, "DragonKeyword") && 
-			!Runtime::HasKeyword(actor, "DwemerKeyword") && 
+		if (!Runtime::HasKeyword(actor, "DragonKeyword") &&
+			!Runtime::HasKeyword(actor, "DwemerKeyword") &&
 			!Runtime::HasKeyword(actor, "AnimalKeyword") &&
 			!Runtime::HasKeyword(actor, "CreatureKeyword")
 		) {
@@ -952,13 +952,10 @@ namespace Gts {
 	if (HasSMT(giant)) {
 		float predscale = get_target_scale(giant);
 		float preyscale = get_target_scale(tiny);
-		float sizedifference = predscale/preyscale; // To-do: fix endless scaling down upon chained grabbing and stuff
-		float difference = preyscale/expected;
-		float shrink = preyscale - difference;
-		mod_target_scale(tiny, -shrink);
+		float targetScale = predscale/expected;
+		mod_target_scale(tiny, -(preyScale + targetScale));
 		AddSMTPenalty(giant, 5.0);
-		float total = predscale/preyscale;
-		log::info("Shrink: {}, sizediference: {}, sizedifference after: {}", shrink, sizedifference, total);
+		log::info("Shrink: {}, Old Scale: {}, New Scale: {}", tiny->GetDisplayFullName(), preyscale, get_target_scale(tiny));
 	}
 }
 
