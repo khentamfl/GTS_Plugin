@@ -953,7 +953,7 @@ namespace Gts {
 		float predscale = get_target_scale(giant);
 		float preyscale = get_target_scale(tiny);
 		float targetScale = predscale/expected;
-		mod_target_scale(tiny, -(preyScale + targetScale));
+		mod_target_scale(tiny, -(preyscale + targetScale));
 		AddSMTPenalty(giant, 5.0);
 		log::info("Shrink: {}, Old Scale: {}, New Scale: {}", tiny->GetDisplayFullName(), preyscale, get_target_scale(tiny));
 	}
