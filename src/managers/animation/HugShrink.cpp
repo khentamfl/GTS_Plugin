@@ -74,6 +74,14 @@ namespace {
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 	}
 
+	void GTS_Hug_FacialOn(AnimationEventData& data) { // Smug or something
+
+	}
+
+	void GTS_Hug_FacialOff(AnimationEventData& data) { // Disable smug
+
+	}
+
 	void GTS_Hug_PullBack(AnimationEventData& data) { // When we pull actor back to chest, used to play moans
 
 	}
