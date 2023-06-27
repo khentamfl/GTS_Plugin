@@ -148,6 +148,8 @@ namespace Gts {
 			case SizeMethod::RefScale:
 				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
 				if (actor->formID == 0x14) {
+          log::info("get_ref_scale(actor): {}", get_ref_scale(actor));
+          log::info("get_model_scale(actor): {}", get_model_scale(actor));
 					return set_npcnode_scale(actor, scale/(get_ref_scale(actor)*get_model_scale(actor)));
 				} else {
 					return set_model_scale(actor, scale/(get_ref_scale(actor)*get_npcnode_scale(actor)));
