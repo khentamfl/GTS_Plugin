@@ -951,6 +951,7 @@ namespace Gts {
   void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
 	if (HasSMT(giant)) {
 		float predscale = get_target_scale(giant);
+    float preyscale = get_target_scale(tiny);
 		float targetScale = predscale/expected;
 		set_target_scale(tiny, targetScale);
 		AddSMTPenalty(giant, 5.0);
