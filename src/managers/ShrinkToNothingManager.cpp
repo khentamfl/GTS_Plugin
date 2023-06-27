@@ -177,9 +177,9 @@ namespace Gts {
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
 		float absorbedSize = (get_visual_scale(Target));
-		if (target->IsDead()) {
+		if (Target->IsDead()) {
 			absorbedSize *= 0.2; // Less effective on dead actors
-			log::info("Is Dead {}", target->GetDisplayFullName());
+			log::info("Is Dead {}", Target->GetDisplayFullName());
 		}
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
 		float Total = (((0.28 * random) + absorbedSize/50) * ValueEffectiveness);
