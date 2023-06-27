@@ -75,15 +75,18 @@ namespace {
 	}
 
 	void GTS_Hug_FacialOn(AnimationEventData& data) { // Smug or something
-
+		AdjustFacialExpression(&data.giant, 2, 1.0, "expression");
 	}
 
 	void GTS_Hug_FacialOff(AnimationEventData& data) { // Disable smug
-
+		AdjustFacialExpression(&data.giant, 2, 0.0, "expression");
 	}
 
-	void GTS_Hug_PullBack(AnimationEventData& data) { // When we pull actor back to chest, used to play moans
-
+	void GTS_Hug_PullBack(AnimationEventData& data) { // When we pull actor back to chest, used to play moans/laugh
+		int Random = rand() % 5 + 1;
+		if (Random >= 5) {
+			Runtime::PlaySoundAtNode("LaughSound", giant, 1.0, 1.0, "NPC Head [Head]");
+		}
 	}
 
 	void GTSBEH_HugAbsorbAtk(AnimationEventData& data) {
