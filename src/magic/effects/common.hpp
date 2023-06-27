@@ -266,6 +266,9 @@ namespace Gts {
 		}
 		AdjustSizeLimit(0.0300 * target_scale * power, caster);
 		AdjustMassLimit(0.0160 * target_scale * power, caster);
+		
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+
 		float alteration_level_bonus = 0.0332 + GtsSkillLevel->value * 0.00166 / 160; // 0.0332 is a equivallent to lvl 20 skill
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
