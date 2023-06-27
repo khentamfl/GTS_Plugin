@@ -16,7 +16,7 @@ namespace Hooks {
         if (a_this) {
       		Actor* actor = skyrim_cast<Actor*>(a_this);
           if (actor) {
-            float scale = get_visual_scale(a_this)
+            float scale = get_visual_scale(a_this);
             result *= scale;
           }
         }
