@@ -64,8 +64,8 @@ namespace Hooks {
 	}
 
   float Hook_Jumping::GetScaleJumpHook(TESObjectREFR* a_this) {
-        float result = GetScaleHookJumpAnimEvent(self);
-        Actor* actor = skyrim_cast<Actor*>(self);
+        float result = _GetScaleJumpHook(a_this);
+        Actor* actor = skyrim_cast<Actor*>(a_this);
         if (actor) {
           float scale = get_visual_scale(actor);
           if (scale > 1e-4) {
