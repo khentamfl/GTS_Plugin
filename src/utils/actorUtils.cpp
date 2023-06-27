@@ -951,11 +951,13 @@ namespace Gts {
   void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
 	if (HasSMT(giant)) {
 		float predscale = get_target_scale(giant);
-    float preyscale = get_target_scale(tiny);
+    	float preyscale = get_target_scale(tiny);
 		float targetScale = predscale/expected;
-		set_target_scale(tiny, targetScale);
-		AddSMTPenalty(giant, 5.0);
-		log::info("Shrink: {}, Old Scale: {}, New Scale: {}", tiny->GetDisplayFullName(), preyscale, get_target_scale(tiny));
+		if (preyscale > expected) { // Apply ONLY if target is bigger than requirement
+			set_target_scale(tiny, targetScale);
+			AddSMTPenalty(giant, 5.0);
+			log::info("Shrink: {}, Old Scale: {}, New Scale: {}", tiny->GetDisplayFullName(), preyscale, get_target_scale(tiny));
+		}
 	}
 }
 
