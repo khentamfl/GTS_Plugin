@@ -17,6 +17,7 @@ namespace Hooks {
         if (actor) {
           float scale = get_visual_scale(actor);
           if (scale > 1e-4) {
+            log::info("Scale Hook: {} for {}", scale, actor->GetDisplayFullName());
             result *= scale;
           }
         }
