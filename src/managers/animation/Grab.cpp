@@ -74,6 +74,7 @@ namespace {
 		ManageCamera(&data.giant, true, 7.0);
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
+			DisableCollisions(grabbedActor, &data.giant);
 			SetBeingHeld(grabbedActor, true);
 			AllowDialogue(grabbedActor, false);
 		}
