@@ -13,11 +13,15 @@ namespace Hooks {
       RELOCATION_ID(36448, 37444),
       [](auto* a_this) {
         float result = GetScaledBoundSize(a_this);
+        log::info("GetScaledBoundSize: {} for {}", result, a_this->GetDisplayFullName());
         if (a_this) {
       		Actor* actor = skyrim_cast<Actor*>(a_this);
           if (actor) {
             float scale = get_visual_scale(actor);
-            result *= scale;
+            if (scale > 1e-4) {
+              result *= scale;
+              log::info("  - Changed to: {}", result);
+            }
           }
         }
         return result;
