@@ -158,6 +158,7 @@ namespace Gts {
 		if (Caster->formID != 0x14) {
 			return; //Bye
 		}
+		
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
 		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
@@ -176,6 +177,10 @@ namespace Gts {
 		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
 
 		float absorbedSize = (get_visual_scale(Target));
+		if (target->IsDead()) {
+			absorbedSize *= 0.2; // Less effective on dead actors
+			log::info("Is Dead {}", target->GetDisplayFullName());
+		}
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
 		float Total = (((0.28 * random) + absorbedSize/50) * ValueEffectiveness);
 		GtsSkillRatio->value += Total;

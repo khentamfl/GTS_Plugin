@@ -269,7 +269,7 @@ namespace Gts {
 		
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
 
-		float alteration_level_bonus = 0.0332 + (GtsSkillLevel->value * 0.00166 / 160); // 0.0332 is a equivallent to lvl 20 skill
+		float alteration_level_bonus = 0.0332 + (GtsSkillLevel->value * 0.00166 / 120); // 0.0332 is a equivallent to lvl 20 skill
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
 
@@ -305,7 +305,7 @@ namespace Gts {
 		return false;
 	}
 
-	inline void CrushBonuses(Actor* caster, Actor* target, float type) {
+	inline void CrushBonuses(Actor* caster, Actor* target) {
 		float target_scale = get_target_scale(target);
 		float caster_scale = get_target_scale(caster);
 		if (IsDragon(target)) {
