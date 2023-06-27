@@ -16,7 +16,7 @@ namespace Hooks {
     //     (param_3->LocalTransform_48).Scale_30 = (float)((uint)(fVar1 * fVar2) & 0x7fffffff);
     //
     //     It sets the NiNode scale to match that of an GetScale Call
-    //     
+    //
     // static CallHook<float(TESObjectREFR*)> GetScaleHook1(RELOCATION_ID(19889, 20296),  REL::Relocate(0xbc, 0xbc, 0x493),
     // [](auto* self) {
     //     float result = GetScaleHook1(self);
@@ -30,5 +30,10 @@ namespace Hooks {
     //     }
     //     return result;
     // });
+
+    // SE: 140290bf8
+    // Used during Set3D
+
+
 	}
 }
