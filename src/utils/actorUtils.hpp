@@ -107,4 +107,6 @@ namespace Gts {
   void ShrinkUntil(Actor* giant, Actor* tiny, float expected);
   void DisableCollisions(Actor* actor, TESObjectREFR* otherActor);
   void EnableCollisions(Actor* actor);
+
+  void SpringGrow(Actor* actor, float amt, float halfLife);
 }

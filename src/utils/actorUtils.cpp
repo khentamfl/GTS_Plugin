@@ -993,4 +993,43 @@ namespace Gts {
       }
     }
   }
+
+  struct SpringGrow {
+    Spring amount = Spring(0.0, 1.0);
+    float addedSoFar = 0.0;
+    ActorHandle actor;
+
+    SpringGrow(Actor* actor, float amountToAdd, float halfLife): actor(actor->CreateRefHandle()) {
+      amount.value = 0.0;
+      amount.target = amountToAdd;
+      amount.halflife = halfLife;
+    }
+  };
+
+  void SpringGrow(Actor* actor, float amt, float halfLife) {
+    if (!actor) {
+      return;
+    }
+
+    auto growData = make_unique<SpringGrow>(actor, amt, halfLife);
+
+    TaskManager::Run(
+      [ growData = std::move(growData) ](auto& progressData){
+        float totalScaleToAdd = growData->amount.value;
+        float prevScaleAdded = growData->addedSoFar;
+        float deltaScale = totalScaleToAdd - prevScaleAdded;
+        Actor* actor = growData->actor.get().get();
+
+        if (actor) {
+          auto actorData = Persistent::GetData(actor);
+          if (actorData) {
+            actorData->target_scale += deltaScale;
+            actorData->visual_scale += deltaScale;
+            slowGrowData->addedSoFar = totalScaleToAdd;
+        }
+
+        return fabs(growData->amount.value - growData->amount.target) > 1e-4;
+      }
+    );
+  }
 }
