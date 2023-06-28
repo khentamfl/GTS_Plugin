@@ -19,9 +19,6 @@ namespace {
 			return;
 		}
 
-		SpawnParticle(actor, 2.60, "GTS/Damage/Footstep.nif", NiMatrix3(), position, scale * 10.0, 7, nullptr);
-		return;
-
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
 			case FootEvent::Left:
