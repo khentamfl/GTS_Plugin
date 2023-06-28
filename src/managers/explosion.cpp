@@ -1,9 +1,10 @@
-#include "managers/explosion.hpp"
-#include "managers/impact.hpp"
 #include "managers/GtsManager.hpp"
-#include "scale/scale.hpp"
-#include "data/runtime.hpp"
+#include "managers/explosion.hpp"
 #include "managers/highheel.hpp"
+#include "utils/actorUtils.hpp"
+#include "managers/impact.hpp"
+#include "data/runtime.hpp"
+#include "scale/scale.hpp"
 #include "raycast.hpp"
 
 
@@ -17,6 +18,10 @@ namespace {
 		if (!actor) {
 			return;
 		}
+
+		SpawnParticle(actor, 2.60, "GTS/Damage/Footstep.nif", NiMatrix3(), position, scale * 10.0, 7, nullptr);
+		return;
+
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
 			case FootEvent::Left:
