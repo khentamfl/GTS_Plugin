@@ -80,17 +80,17 @@ namespace Gts {
 				scale *= 1.2; // Sprinting makes you seem bigger
 			}
 			if (actor->AsActorState()->IsWalking()) {
-				scale *= 0.65; // Walking makes you seem quieter
+				scale *= 0.75; // Walking makes you seem smaller
 			}
 			if (actor->IsSneaking()) {
-				scale *= 0.55; // Sneaking makes you seem quieter
+				scale *= 0.60; // Sneaking makes you seem smaller
 			}
 			FootEvent foot_kind = impact.kind;
 			if (foot_kind == FootEvent::JumpLand) {
 				scale *= 2.0; // Jumping makes you sound bigger
 			}
 			if (HighHeelManager::IsWearingHH(actor)) {
-				scale *= 1.25;
+				scale *= 1.25; // Wearing High Heels makes you bigger
 			}
 
 			for (NiAVObject* node: impact.nodes) {

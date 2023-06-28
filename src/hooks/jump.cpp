@@ -28,10 +28,12 @@ namespace Hooks {
           log::info("GetFallDistance: {}", result);
           auto actor = FindActor(a_this);
           if (actor) {
-            float scale = get_visual_scale(actor);
-            if (scale > 1e-4) {
-              result /= scale;
-              log::info("  - Changed to {} for {}", result, actor->GetDisplayFullName());
+            if (actor->formID == 0x14) {
+              float scale = get_visual_scale(actor);
+              if (scale > 1e-4) {
+                result /= scale; // Apply to Player only
+                log::info("  - Changed to {} for {}", result, actor->GetDisplayFullName());
+              }
             }
           }
 
