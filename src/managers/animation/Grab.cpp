@@ -272,7 +272,7 @@ namespace {
 	void GTSGrab_Throw_FS_R(AnimationEventData& data) {
 		float shake = 1.0;
 		float launch = 1.0;
-		float dust = 1.0;
+		float dust = 0.9;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			shake = 4.0;
@@ -281,14 +281,14 @@ namespace {
 		}
 		Rumble::Once("StompR", &data.giant, 1.50 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.25);
-		DoSizeEffect(&data.giant, 0.9 * data.animSpeed, FootEvent::Right, RNode, dust);
+		DoSizeEffect(&data.giant, dust * data.animSpeed, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.8 * launch, 1.75, RNode, 2.0);
 	}
 
 	void GTSGrab_Throw_FS_L(AnimationEventData& data) {
 		float shake = 1.0;
 		float launch = 1.0;
-		float dust = 1.0;
+		float dust = 0.9;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			shake = 4.0;
@@ -297,7 +297,7 @@ namespace {
 		}
 		Rumble::Once("StompL", &data.giant, 1.50 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.25);
-		DoSizeEffect(&data.giant, 0.9 * data.animSpeed, FootEvent::Left, LNode, dust);
+		DoSizeEffect(&data.giant, dust * data.animSpeed, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.8 * launch * perk, 1.75, LNode, 2.0);
 	}
 

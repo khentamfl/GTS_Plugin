@@ -45,12 +45,16 @@ namespace {
 	}
 
 	void TinyAsShield(Actor* attacker, Actor* receiver, float a_damage) {
+		
 		auto grabbedActor = Grab::GetHeldActor(receiver);
 		if (!grabbedActor) {
 			return;
 		}
+		if (IsTeammate(grabbedActor)) {
+			return; // Don't kill teammates
+		}
 		if (grabbedActor == attacker) {
-			return; // Don't damage actor in hands
+			return; // Don't allow actor to do self-damage
 		}
 		log::info("a_damage: {}", a_damage);
 		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.5);

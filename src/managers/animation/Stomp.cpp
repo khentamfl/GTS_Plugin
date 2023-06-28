@@ -66,7 +66,7 @@ namespace {
 	void GTSstompimpactR(AnimationEventData& data) {
 		float shake = 1.0;
 		float launch = 1.0;
-		float dust = 1.0;
+		float dust = 1.1;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			shake = 4.0;
@@ -75,7 +75,7 @@ namespace {
 		}
 		Rumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.25);
-		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Right, RNode, dust);
+		DoSizeEffect(&data.giant, dust * data.animSpeed, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.0 * launch, 2.25 * data.animSpeed, RNode, 2.0);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
 	}
@@ -83,7 +83,7 @@ namespace {
 	void GTSstompimpactL(AnimationEventData& data) {
 		float shake = 1.0;
 		float launch = 1.0;
-		float dust = 1.0;
+		float dust = 1.1;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			shake = 4.0;
@@ -92,7 +92,7 @@ namespace {
 		}
 		Rumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.25);
-		DoSizeEffect(&data.giant, 1.10 * data.animSpeed, FootEvent::Left, LNode, dust);
+		DoSizeEffect(&data.giant, dust * data.animSpeed, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.0 * launch * perk, 2.25 * data.animSpeed, LNode, 2.0);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
 	}
@@ -100,7 +100,7 @@ namespace {
 	void GTSstomplandR(AnimationEventData& data) {
 		//data.stage = 2;
 		float bonus = 1.0;
-		float dust = 1.0;
+		float dust = 0.85;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			bonus = 2.0;
@@ -108,14 +108,14 @@ namespace {
 		}
 		Rumble::Start("StompRL", &data.giant, 0.45, 0.10, RNode);
 		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
-		DoSizeEffect(&data.giant, 0.85, FootEvent::Right, RNode, dust);
+		DoSizeEffect(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2 * data.animSpeed, RNode, 2.0);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
 		//data.stage = 2;
 		float bonus = 1.0;
-		float dust = 1.0;
+		float dust = 0.85;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
 			bonus = 2.0;
@@ -123,7 +123,7 @@ namespace {
 		}
 		Rumble::Start("StompLL", &data.giant, 0.45, 0.10, LNode);
 		DoDamageEffect(&data.giant, 0.7 * perk, 1.10, 25, 0.25);
-		DoSizeEffect(&data.giant, 0.85, FootEvent::Left, LNode, dust);
+		DoSizeEffect(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.7 * bonus * perk, 1.2 * data.animSpeed, LNode, 2.0);
 
 	}

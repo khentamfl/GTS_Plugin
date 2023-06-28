@@ -152,7 +152,7 @@ namespace {
 		}
 		VoreData.AllowToBeVored(false);
 		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
-		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode, 1.0);
+		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.35);
 	}
 
@@ -288,7 +288,7 @@ namespace {
 
 	void GTSvore_impactRS(AnimationEventData& data) {
 		Rumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
-		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode, 1.0);
+		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.35);
 	}
 

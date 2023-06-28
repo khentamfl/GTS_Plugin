@@ -557,7 +557,7 @@ namespace Gts {
 		return random;
 	}
 
-	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node, float scale_override) {
+	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
 		auto& footstep = FootStepManager::GetSingleton();
 		auto& explosion = ExplosionManager::GetSingleton();
 		Impact impact_data = Impact {
