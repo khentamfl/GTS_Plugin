@@ -38,14 +38,14 @@ namespace Hooks {
     static FunctionHook<float(TESObjectREFR*)> GetScale(RELOCATION_ID(19238, 19664),
       [](auto* self) {
         float result = GetScale(self);
-        if (self) {
-          log::info("Scale Hook for {} from {}", self->GetDisplayFullName(), result);
-        }
         Actor* actor = skyrim_cast<Actor*>(self);
         if (actor) {
-          float scale = get_giantess_scale(actor);
-          result *= scale;
+          // float scale = get_giantess_scale(actor);
+          // result *= scale;
           log::info(" - To {}", result);
+          if (actor->formID == 0x14) {
+            result = 2.5;
+          }
         }
         return result;
       }
