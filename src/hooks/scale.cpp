@@ -1,6 +1,7 @@
 #include "hooks/scale.hpp"
 #include "scale/scale.hpp"
 #include "hooks/callhook.hpp"
+#include "hooks/functionhook.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -33,6 +34,18 @@ namespace Hooks {
 
     // SE: 140290bf8
     // Used during Set3D
+
+    static FunctionHook<float(TESObjectREFR*)> GetScale(RELOCATION_ID(19238, 19664),
+      [](auto* self) {
+        float result = GetScale(self);
+        Actor* actor = skyrim_cast<Actor*>(self);
+        if (actor) {
+          float scale = get_giantess_scale(actor);
+          result *= scale;
+        }
+        return result;
+      }
+    );
 
 
 	}

@@ -216,7 +216,7 @@ namespace {
 		//log::info("Apply_Actor name is {}", actor->GetDisplayFullName());
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
-		apply_height(actor, saved_data, temp_data, force);
+		// apply_height(actor, saved_data, temp_data, force);
 		apply_speed(actor, saved_data, temp_data, force);
 	}
 }
