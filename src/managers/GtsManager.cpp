@@ -241,7 +241,7 @@ std::string GtsManager::DebugName() {
 void GtsManager::Start() {
 	for (auto actor: find_actors()) {
 		if (!actor) {
-			return;
+			continue;
 		}
 		FixActorState(actor);
 	}

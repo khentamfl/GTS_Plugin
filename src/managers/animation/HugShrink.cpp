@@ -224,6 +224,7 @@ namespace Gts {
 			}
 
 			GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
+			AdjustGtsSkill(giantref, 0.0001);
 
 			DamageAV(tinyref, ActorValue::kStamina, 0.15 * TimeScale()); // Drain Tiny Stamina
 

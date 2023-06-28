@@ -179,6 +179,9 @@ namespace Gts {
 				float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)));
 				scale = sizedifference;
 			}
+			if (actor->formID == 0x14 && HasSMT(actor)) {
+				scale *= 2.25;
+			}
 
 			float minimal_size = 1.2;
 			if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
