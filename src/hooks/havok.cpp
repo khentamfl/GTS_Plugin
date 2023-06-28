@@ -112,6 +112,12 @@ namespace Hooks
     a_result = _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
     if (*a_result) {
       auto colLayerA = GetCollisionLayer(a_collidableA);
+      auto getcollider = GetTESObjectREFR(a_collidableA);
+      if (getcollider) {
+        if (getcollider->formID == 0x14) {
+          log::info("Collision Layer of {} : {}", getcollider->GetDisplayFullName(), colLayerA);
+        }
+      }
       if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC) {
         auto colLayerB = GetCollisionLayer(a_collidableB);
         if (colLayerB == COL_LAYER::kBiped || colLayerB == COL_LAYER::kCharController || colLayerB == COL_LAYER::kDeadBip || colLayerB == COL_LAYER::kBipedNoCC) {
