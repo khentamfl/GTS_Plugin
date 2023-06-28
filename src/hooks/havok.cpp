@@ -119,7 +119,7 @@ namespace Hooks
             *a_result = false;
             log::info("Spell Explosion");
           }
-          log::info("Collision Layer of {} : {}", getcollider->GetDisplayFullName(), GetCollisionLayer(a_collidableA));
+          //log::info("Collision Layer of {} : {}", getcollider->GetDisplayFullName(), GetCollisionLayer(a_collidableA));
         }
       }
       if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC) {
