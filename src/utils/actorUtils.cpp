@@ -47,6 +47,18 @@ namespace {
 		}
 		return static_cast<ExtraDataList*>(memory);
 	}
+
+  struct SpringGrow {
+    Spring amount = Spring(0.0, 1.0);
+    float addedSoFar = 0.0;
+    ActorHandle actor;
+
+    SpringGrow(Actor* actor, float amountToAdd, float halfLife): actor(actor->CreateRefHandle()) {
+      amount.value = 0.0;
+      amount.target = amountToAdd;
+      amount.halflife = halfLife;
+    }
+  };
 }
 
 RE::ExtraDataList::~ExtraDataList() {
@@ -995,24 +1007,12 @@ namespace Gts {
     }
   }
 
-  struct SpringGrow {
-    Spring amount = Spring(0.0, 1.0);
-    float addedSoFar = 0.0;
-    ActorHandle actor;
-
-    SpringGrow(Actor* actor, float amountToAdd, float halfLife): actor(actor->CreateRefHandle()) {
-      amount.value = 0.0;
-      amount.target = amountToAdd;
-      amount.halflife = halfLife;
-    }
-  };
-
   void SpringGrow(Actor* actor, float amt, float halfLife) {
     if (!actor) {
       return;
     }
 
-    auto growData = make_unique<SpringGrow>(actor, amt, halfLife);
+    auto growData = std::make_unique<SpringGrow>(actor, amt, halfLife);
 
     TaskManager::Run(
       [ growData = std::move(growData) ](auto& progressData){
