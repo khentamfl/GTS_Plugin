@@ -1,3 +1,4 @@
+#include "scale/scale.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "data/persistent.hpp"
