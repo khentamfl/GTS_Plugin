@@ -1,6 +1,7 @@
 #include "managers/GtsManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "scale/height.hpp"
 
