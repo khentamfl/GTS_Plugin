@@ -115,7 +115,11 @@ namespace Hooks
       auto getcollider = GetTESObjectREFR(a_collidableA);
       if (getcollider) {
         if (getcollider->formID == 0x14) {
-          log::info("Collision Layer of {} : {}", getcollider->GetDisplayFullName(), GetCollisionSystem(a_collidableA));
+          if (colLayerA == COL_LAYER::kSpellExplosion) {
+            *a_result = false;
+            log::info("Spell Explosion", getcollider->GetDisplayFullName(), GetCollisionLayer(colLayerA));
+          }
+          log::info("Collision Layer of {} : {}", getcollider->GetDisplayFullName(), GetCollisionLayer(colLayerA));
         }
       }
       if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC) {
