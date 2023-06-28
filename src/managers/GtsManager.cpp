@@ -244,6 +244,8 @@ void GtsManager::Start() {
 			return;
 		}
 		FixActorState(actor);
+
+    set_model_scale(PlayerCharacter::GetSingleton(), 0.5);
 	}
 }
 

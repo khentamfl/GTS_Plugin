@@ -42,7 +42,6 @@ namespace Hooks {
         if (actor) {
           // float scale = get_giantess_scale(actor);
           // result *= scale;
-          log::info(" - To {}", result);
           if (actor->formID == 0x14) {
             result = 2.5;
           }
