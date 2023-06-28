@@ -41,10 +41,9 @@ namespace {
 			if (!explosion) {
 				return;
 			}
-			explosion->SetPosition(position);
+			explosion->SetPosition(position);unkB8
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
-			explosion->GetExplosionRuntimeData().unkB8 = nullptr;
 			explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
 			explosion->GetExplosionRuntimeData().unk11C *= 0.0;
 		}
@@ -109,14 +108,16 @@ namespace Gts {
 					explosion_pos.z = actor->GetPosition().z;
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
-					if (HighHeelManager::IsWearingHH(actor)) {
-						NiPoint3 FootPos = explosion_pos + NiPoint3(meter_to_unit(0.15*scale), meter_to_unit(0.15*scale), 0.0);
-						NiPoint3 HeelPos = explosion_pos + NiPoint3(meter_to_unit(-0.15*scale), meter_to_unit(-0.15*scale), 0.0);
+					/*if (HighHeelManager::IsWearingHH(actor)) {
+						NiPoint3 FootPos = explosion_pos + NiPoint3(meter_to_unit(0.05*scale), meter_to_unit(0.05*scale), 0.0);
+						NiPoint3 HeelPos = explosion_pos + NiPoint3(meter_to_unit(-0.05*scale), meter_to_unit(-0.05*scale), 0.0);
 						make_explosion_at(impact.kind, actor, FootPos, scale);
 						make_explosion_at(impact.kind, actor, HeelPos, scale);
 					} else {
 						make_explosion_at(impact.kind, actor, explosion_pos, scale);
-					}
+					}*/
+					/// Sermit To-do: spawn 2 dust effects: at the tip of feet and under the heel, when we have HH off. Currently misses rotation math.
+					make_explosion_at(impact.kind, actor, explosion_pos, scale);
 				}
 				if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
 					make_explosion_at(impact.kind, actor, explosion_pos, scale);
