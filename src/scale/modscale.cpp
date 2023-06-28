@@ -189,7 +189,8 @@ namespace Gts {
 				return set_npcnode_scale(actor, scale);
 				break;
         case SizeMethod::RefScale:
-  				return set_ref_scale(actor, scale);
+  				set_ref_scale(actor, scale);
+          return true;
   				break;
 			case SizeMethod::Hybrid:
 				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
