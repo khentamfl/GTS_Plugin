@@ -241,12 +241,12 @@ std::string GtsManager::DebugName() {
 void GtsManager::Start() {
 	for (auto actor: find_actors()) {
 		if (!actor) {
-			return;
+			continue;
 		}
 		FixActorState(actor);
-
-    set_model_scale(PlayerCharacter::GetSingleton(), 0.5);
 	}
+  set_model_scale(PlayerCharacter::GetSingleton(), 0.5);
+  log::info("Set player scale to 0.5");
 }
 
 // Poll for updates
