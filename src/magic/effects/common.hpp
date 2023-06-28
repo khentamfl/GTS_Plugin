@@ -266,10 +266,10 @@ namespace Gts {
 		}
 		AdjustSizeLimit(0.0300 * target_scale * power, caster);
 		AdjustMassLimit(0.0160 * target_scale * power, caster);
-		
+
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
 
-		float alteration_level_bonus = 0.0280 + (GtsSkillLevel->value * 0.00166 / 120); 
+		float alteration_level_bonus = 0.0280 + (GtsSkillLevel->value * 0.00166 / 120);
 		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
 	}
 

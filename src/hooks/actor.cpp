@@ -68,7 +68,7 @@ namespace Hooks
 		if (a_attacker) {
 			auto charCont = a_this->GetCharController();
 			if (charCont) {
-				float sizedifference = get_visual_scale(a_this)/get_visual_scale(a_attacker);
+				float sizedifference = get_giantess_scale(a_this)/get_giantess_scale(a_attacker);
 				a_this->SetGraphVariableFloat("GiantessScale", sizedifference); // Manages Stagger Resistance inside Behaviors.
 			}
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
@@ -237,7 +237,7 @@ namespace Hooks
   NiPoint3 Hook_Actor::GetBoundMax(Actor* a_this) {
     auto bound = _GetBoundMax(a_this);
     if (a_this) {
-      float scale = get_visual_scale(a_this);
+      float scale = get_giantess_scale(a_this);
       if (scale > 1e-4) {
         bound = bound * scale;
       }
@@ -247,7 +247,7 @@ namespace Hooks
   NiPoint3 Hook_Actor::GetBoundMin(Actor* a_this) {
     auto bound = _GetBoundMin(a_this);
     if (a_this) {
-      float scale = get_visual_scale(a_this);
+      float scale = get_giantess_scale(a_this);
       if (scale > 1e-4) {
         bound = bound * scale;
       }

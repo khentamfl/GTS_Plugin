@@ -141,7 +141,7 @@ namespace Hooks
   NiPoint3 Hook_Character::GetBoundMax(Character* a_this) {
     auto bound = _GetBoundMax(a_this);
     if (a_this) {
-      float scale = get_visual_scale(a_this);
+      float scale = get_giantess_scale(a_this);
       if (scale > 1e-4) {
         bound = bound * scale;
       }
@@ -151,7 +151,7 @@ namespace Hooks
   NiPoint3 Hook_Character::GetBoundMin(Character* a_this) {
     auto bound = _GetBoundMin(a_this);
     if (a_this) {
-      float scale = get_visual_scale(a_this);
+      float scale = get_giantess_scale(a_this);
       if (scale > 1e-4) {
         bound = bound * scale;
       }

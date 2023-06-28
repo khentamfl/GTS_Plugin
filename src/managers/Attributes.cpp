@@ -97,7 +97,7 @@ namespace {
 			return;
 		}
 		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) -1.0;
-		float scale = get_visual_scale(actor);
+		float scale = get_giantess_scale(actor);
 		if (scale <= 0) {
 			scale = 1.0;
 		}
@@ -150,7 +150,7 @@ namespace {
 		}
 		static Timer timer = Timer(0.05);
 		static Timer jumptimer = Timer (0.20);
-		float size = get_visual_scale(actor);
+		float size = get_giantess_scale(actor);
 
 		if (jumptimer.ShouldRunFrame()) {
 			BoostJump(actor);
@@ -198,7 +198,7 @@ namespace Gts {
 		}
 
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
-		float scale = get_visual_scale(actor);
+		float scale = get_giantess_scale(actor);
 		if (scale <= 0) {
 			scale = 1.0;
 		}
@@ -287,7 +287,7 @@ namespace Gts {
 				break;
 			}
 			case ActorValue::kMovementNoiseMult: {
-				float scale = get_visual_scale(actor);
+				float scale = get_giantess_scale(actor);
 				if (scale <= 0) {
 					scale = 1.0;
 				}
@@ -306,7 +306,7 @@ namespace Gts {
 			case ActorValue::kHealth: {
 				float bonus = 1.0;
 				auto& attributes = AttributeManager::GetSingleton();
-				float scale = get_visual_scale(actor);
+				float scale = get_giantess_scale(actor);
 				if (scale <= 0) {
 					scale = 1.0;
 				}
@@ -378,7 +378,7 @@ namespace Gts {
 			float volume = 0.0;
 			float origSpeed = direction.Length();
 			if (actor->formID != 0x14) {
-				float sizedifference = get_visual_scale(actor)/get_visual_scale(PlayerCharacter::GetSingleton());
+				float sizedifference = get_giantess_scale(actor)/get_giantess_scale(PlayerCharacter::GetSingleton());
 				volume = bonus * origSpeed * sizedifference / 250;
 			} else {
 				volume = bonus * origSpeed / 250;

@@ -145,7 +145,7 @@ namespace Hooks
     auto bound = _GetBoundMax(a_this);
     if (a_this) {
       log::info("BoundMax: {}", Vector2Str(bound));
-      float scale = get_visual_scale(a_this);
+      float scale = get_giantess_scale(a_this);
       if (scale > 1e-4) {
         bound = bound * scale;
       }
@@ -157,7 +157,7 @@ namespace Hooks
     auto bound = _GetBoundMin(a_this);
     if (a_this) {
       log::info("BoundMin: {}", Vector2Str(bound));
-      float scale = get_visual_scale(a_this);
+      float scale = get_giantess_scale(a_this);
       if (scale > 1e-4) {
         bound = bound * scale;
       }

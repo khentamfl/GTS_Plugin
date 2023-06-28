@@ -156,4 +156,18 @@ namespace Gts {
 		return 1.0;
 	}
 
+  float get_giantess_scale(Actor& actor) {
+		auto actor_data = Persistent::GetSingleton().GetData(&actor);
+		if (actor_data) {
+			return actor_data->visual_scale;
+		}
+		return 1.0;
+	}
+	float get_giantess_scale(Actor* actor) {
+		if (actor) {
+			return get_giantess_scale(*actor);
+		}
+		return 1.0;
+	}
+
 }
