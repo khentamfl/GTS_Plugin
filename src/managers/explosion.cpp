@@ -109,7 +109,14 @@ namespace Gts {
 					explosion_pos.z = actor->GetPosition().z;
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
-					make_explosion_at(impact.kind, actor, explosion_pos, scale);
+					if (HighHeelManager::IsWearingHH(actor)) {
+						NiPoint3 FootPos = explosion_pos + NiPoint3(meter_to_unit(0.05*scale), meter_to_unit(0.05*scale));
+						NiPoint3 HeelPos = explosion_pos + NiPoint3(meter_to_unit(-0.05*scale), meter_to_unit(-0.05*scale));
+						make_explosion_at(impact.kind, actor, FootPos scale);
+						make_explosion_at(impact.kind, actor, FootPos, scale);
+					} else {
+						make_explosion_at(impact.kind, actor, explosion_pos, scale);
+					}
 				}
 				if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
 					make_explosion_at(impact.kind, actor, explosion_pos, scale);
