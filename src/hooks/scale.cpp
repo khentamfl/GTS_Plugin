@@ -50,6 +50,17 @@ namespace Hooks {
       }
     );
 
+    static FunctionHook<void(TESObjectREFR*, float)> SetScale(RELOCATION_ID(19239, 19665),
+      [](auto* self, auto amt) {
+        Actor* actor = skyrim_cast<Actor*>(self);
+        if (actor) {
+          if (actor->formID == 0x14) {
+            log::info("Scale was set to {} for {}", amt, actor->GetDisplayFullName());
+          }
+        }
+      }
+    );
+
 
 	}
 }
