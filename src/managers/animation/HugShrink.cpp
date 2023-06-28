@@ -70,7 +70,7 @@ namespace {
 		auto giant = &data.giant;
 		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
-		AdjustFacialExpression(giant, 0, 0.75, "phenome");
+		AdjustFacialExpression(giant, 0, 0.0, "phenome");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 	}
 
