@@ -17,7 +17,7 @@
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "utils/debug.hpp"
-#include "scale/mod_scale.hpp"
+#include "scale/modscale.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
 #include "profiler.hpp"
