@@ -18,14 +18,15 @@ Float function GetNodeScale(Actor target) global native
 
 Bool function ModNodeScale(Actor target, Float amount) global native
 
-; Ref scale
+; Hybrid scale
 ;
 ; These directly and immediatly set the scale of the form
-Bool function SetRefScale(Actor target, Float scale) global native
+; They work differentlt on the player than anyone else
+Bool function SetHybridScale(Actor target, Float scale) global native
 
-Float function GetRefScale(Actor target) global native
+Float function GetHybridScale(Actor target) global native
 
-Bool function ModRefScale(Actor target, Float amount) global native
+Bool function ModHybridScale(Actor target, Float amount) global native
 
 ; All scale
 ;

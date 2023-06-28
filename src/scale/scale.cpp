@@ -12,15 +12,6 @@ namespace {
 
 namespace Gts {
 
-	float get_real_scale(Actor& actor) {
-		TESObjectREFR* object = skyrim_cast<TESObjectREFR*>(&actor);
-		if (object) {
-			float GetScale = object->GetScale();
-			return GetScale;
-		}
-		return 1.0;
-	}
-
 	void set_target_scale(Actor& actor, float scale) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		if (actor_data) {
@@ -138,7 +129,7 @@ namespace Gts {
 	float get_visual_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		if (actor_data) {
-			return actor_data->visual_scale;
+		     return actor_data->visual_scale * get_natural_scale(actor);
 		}
 		return -1.0;
 	}
@@ -150,11 +141,9 @@ namespace Gts {
 	}
 
 	float get_natural_scale(Actor& actor) {
-		auto actor_data = Persistent::GetSingleton().GetData(&actor);
-		float racemenuscale = get_npcparentnode_scale(&actor);
-		float objectscale = get_real_scale(actor);
+		auto actor_data = Transient::GetSingleton().GetData(&actor);
 		if (actor_data) {
-			return racemenuscale * objectscale;//actor_data->native_scale * racemenuscale * objectscale;
+			return actor_data->otherScales;
 		}
 		return 1.0;
 	}
@@ -165,6 +154,8 @@ namespace Gts {
 		return 1.0;
 	}
 
+  // TODO: remove this since Sermit never used it, prefereing instead to
+  // manually repeat the calculations etc
 	float get_effective_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		if (actor_data) {

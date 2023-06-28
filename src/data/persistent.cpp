@@ -310,6 +310,9 @@ namespace Gts {
 						GetSingleton().size_method = SizeMethod::RootScale;
 						break;
 					case 2:
+						GetSingleton().size_method = SizeMethod::Hybrid;
+						break;
+          case 3:
 						GetSingleton().size_method = SizeMethod::RefScale;
 						break;
 				}

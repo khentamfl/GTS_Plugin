@@ -17,6 +17,7 @@
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "utils/debug.hpp"
+#include "scale/mod_scale.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
 #include "profiler.hpp"
@@ -75,6 +76,9 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
+    float currentOtherScale = GetOtherScale(actor);
+    trans_actor_data->otherScales = currentOtherScale;
+
 		float target_scale = persi_actor_data->target_scale;
 
 		// Smooth target_scale towards max_scale if target_scale > max_scale
@@ -127,7 +131,7 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		float scale = get_natural_scale(actor);//get_scale(actor);
+		float scale = get_scale(actor);
 		if (scale < 0.0) {
 			return;
 		}

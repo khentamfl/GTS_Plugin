@@ -20,6 +20,7 @@ namespace Gts {
 		float SMT_Penalty_Duration;
 		float carryweight_boost;
 		float basehp;
+    float otherScales;
 
 		bool is_teammate;
 		bool can_do_vore;

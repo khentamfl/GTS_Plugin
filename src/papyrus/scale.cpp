@@ -78,7 +78,7 @@ namespace {
 	}
 
 	// Ref scale
-	bool SetRefScale(StaticFunctionTag*, Actor* actor, float scale) {
+	bool SetHybridScale(StaticFunctionTag*, Actor* actor, float scale) {
 		bool result = false;
 		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
@@ -95,7 +95,7 @@ namespace {
 		}
 		return result;
 	}
-	float GetRefScale(StaticFunctionTag*, Actor* actor) {
+	float GetHybridScale(StaticFunctionTag*, Actor* actor) {
 		if (!actor) {
 			return 0.0;
 		}
@@ -106,7 +106,7 @@ namespace {
 		//auto result = get_ref_scale(actor);
 		return result;
 	}
-	bool ModRefScale(StaticFunctionTag*, Actor* actor, float amt) {
+	bool ModHybridScale(StaticFunctionTag*, Actor* actor, float amt) {
 		bool result = false;
 		auto actor_data = Persistent::GetSingleton().GetData(actor);
 		if (actor_data) {
@@ -138,6 +138,9 @@ namespace {
 				Persistent::GetSingleton().size_method = SizeMethod::RootScale;
 				break;
 			case 2:
+				Persistent::GetSingleton().size_method = SizeMethod::Hybrid;
+				break;
+      case 3:
 				Persistent::GetSingleton().size_method = SizeMethod::RefScale;
 				break;
 		}
@@ -150,9 +153,12 @@ namespace {
 			case SizeMethod::RootScale:
 				return 1;
 				break;
-			case SizeMethod::RefScale:
+			case SizeMethod::Hybrid:
 				return 2;
 				break;
+      case SizeMethod::RefScale:
+        return 3;
+        break;
 		}
 		log::error("Scale method is invalid");
 		return Persistent::GetSingleton().size_method;
@@ -242,9 +248,9 @@ namespace Gts {
 		vm->RegisterFunction("GetNodeScale", PapyrusClass, GetNodeScale);
 		vm->RegisterFunction("ModNodeScale", PapyrusClass, ModNodeScale);
 
-		vm->RegisterFunction("SetRefScale", PapyrusClass, SetRefScale);
-		vm->RegisterFunction("GetRefScale", PapyrusClass, GetRefScale);
-		vm->RegisterFunction("ModRefScale", PapyrusClass, ModRefScale);
+		vm->RegisterFunction("SetHybridScale", PapyrusClass, SetHybridScale);
+		vm->RegisterFunction("GetHybridScale", PapyrusClass, GetHybridScale);
+		vm->RegisterFunction("ModHybridScale", PapyrusClass, ModHybridScale);
 
 		vm->RegisterFunction("SetScaleMethod", PapyrusClass, SetScaleMethod);
 		vm->RegisterFunction("GetScaleMethod", PapyrusClass, GetScaleMethod);

@@ -10,8 +10,11 @@ namespace Gts {
 	enum SizeMethod {
 		ModelScale = 0,
 		RootScale = 1,
-		RefScale = 2,
+    Hybrid = 2,
+    RefScale = 3,
 	};
+
+  float GetOtherScale(Actor* actor);
 
 	void set_ref_scale(Actor* actor, float target_scale);
 	bool set_model_scale(Actor* actor, float target_scale);
