@@ -156,19 +156,4 @@ namespace Gts {
 		return 1.0;
 	}
 
-  // TODO: remove this since Sermit never used it, prefereing instead to
-  // manually repeat the calculations etc
-	float get_effective_scale(Actor& actor) {
-		auto actor_data = Persistent::GetSingleton().GetData(&actor);
-		if (actor_data) {
-			return actor_data->visual_scale * actor_data->effective_multi; // Effective Multi = SmallMassiveThreat
-		}
-		return -1.0;
-	}
-	float get_effective_scale(Actor* actor) {
-		if (actor) {
-			return get_effective_scale(*actor);
-		}
-		return -1.0;
-	}
 }

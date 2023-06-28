@@ -112,7 +112,6 @@ namespace Gts {
 				.actor = actor,
 				.kind = kind,
 				.scale = get_visual_scale(actor),
-				.effective_scale = get_effective_scale(actor),
 				.nodes = get_landing_nodes(actor, kind),
 			};
 

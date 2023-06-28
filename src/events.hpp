@@ -20,7 +20,6 @@ namespace Gts {
 		Actor* actor;
 		FootEvent kind;
 		float scale;
-		float effective_scale;
 		std::vector<NiAVObject*> nodes;
 	};
 	struct UnderFoot {

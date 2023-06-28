@@ -67,7 +67,7 @@ namespace Gts {
 		}
 		auto actor = impact.actor;
 
-		float scale = impact.effective_scale;
+		float scale = impact.scale;
 		float minimal_size = 3.0;
 		if (actor->formID == 0x14) {
 			if (HasSMT(actor)) {
