@@ -117,9 +117,9 @@ namespace Hooks
         if (getcollider->formID == 0x14) {
           if (colLayerA == COL_LAYER::kSpellExplosion) {
             *a_result = false;
-            log::info("Spell Explosion", getcollider->GetDisplayFullName(), GetCollisionLayer(colLayerA));
+            log::info("Spell Explosion");
           }
-          log::info("Collision Layer of {} : {}", getcollider->GetDisplayFullName(), GetCollisionLayer(colLayerA));
+          log::info("Collision Layer of {} : {}", getcollider->GetDisplayFullName(), GetCollisionLayer(a_collidableA));
         }
       }
       if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC) {
