@@ -173,7 +173,7 @@ namespace {
 		DoImpactRumble(&data.giant, data.animSpeed * 2, RNode, "HeavyStompR");
 		DoSounds(&data.giant, data.animSpeed - 0.5, RNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.55), 1.75 * damage * (data.animSpeed - 0.55), 5, 0.60);
-		DoSizeEffect(&data.giant, SMT * (data.animSpeed - 1.0), FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, SMT * (data.animSpeed - 0.55), FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.4 * perk, 3.8 * data.animSpeed, RNode, 2.0);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 4.0);
 		data.canEditAnimSpeed = false;
@@ -190,7 +190,7 @@ namespace {
 		DoImpactRumble(&data.giant, data.animSpeed * 2, LNode, "HeavyStompL");
 		DoSounds(&data.giant, data.animSpeed - 0.5, LNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.55), 1.75 * damage * (data.animSpeed - 0.55), 5, 0.60);
-		DoSizeEffect(&data.giant, SMT * (data.animSpeed - 1.0), FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, SMT * (data.animSpeed - 0.55), FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.4 * perk, 3.8 * data.animSpeed, LNode, 2.0);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 4.0);
 		data.canEditAnimSpeed = false;

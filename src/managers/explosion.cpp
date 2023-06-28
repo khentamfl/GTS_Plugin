@@ -110,8 +110,8 @@ namespace Gts {
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
 					if (HighHeelManager::IsWearingHH(actor)) {
-						NiPoint3 FootPos = explosion_pos + NiPoint3(meter_to_unit(0.05*scale), meter_to_unit(0.05*scale), 0.0);
-						NiPoint3 HeelPos = explosion_pos + NiPoint3(meter_to_unit(-0.05*scale), meter_to_unit(-0.05*scale), 0.0);
+						NiPoint3 FootPos = explosion_pos + NiPoint3(meter_to_unit(0.15*scale), meter_to_unit(0.15*scale), 0.0);
+						NiPoint3 HeelPos = explosion_pos + NiPoint3(meter_to_unit(-0.15*scale), meter_to_unit(-0.15*scale), 0.0);
 						make_explosion_at(impact.kind, actor, FootPos, scale);
 						make_explosion_at(impact.kind, actor, FootPos, scale);
 					} else {
