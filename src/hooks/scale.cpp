@@ -39,12 +39,13 @@ namespace Hooks {
       [](auto* self) {
         float result = GetScale(self);
         if (self) {
-          log::info("Scale Hook for {}", self->GetDisplayFullName());
+          log::info("Scale Hook for {} from {}", self->GetDisplayFullName(), result);
         }
         Actor* actor = skyrim_cast<Actor*>(self);
         if (actor) {
           float scale = get_giantess_scale(actor);
           result *= scale;
+          log::info(" - To {}", result);
         }
         return result;
       }
