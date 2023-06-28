@@ -9,6 +9,7 @@
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
+#include "spring.hpp"
 #include "scale/scale.hpp"
 #include "colliders/RE.hpp"
 #include "colliders/actor.hpp"
