@@ -38,6 +38,9 @@ namespace Hooks {
     static FunctionHook<float(TESObjectREFR*)> GetScale(RELOCATION_ID(19238, 19664),
       [](auto* self) {
         float result = GetScale(self);
+        if (self) {
+          print("Scale Hook for {}", self->GetDisplayFullName());
+        }|
         Actor* actor = skyrim_cast<Actor*>(self);
         if (actor) {
           float scale = get_giantess_scale(actor);
