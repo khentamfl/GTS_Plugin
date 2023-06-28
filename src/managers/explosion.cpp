@@ -41,7 +41,7 @@ namespace {
 			if (!explosion) {
 				return;
 			}
-			explosion->SetPosition(position);unkB8
+			explosion->SetPosition(position);
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
 			explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
