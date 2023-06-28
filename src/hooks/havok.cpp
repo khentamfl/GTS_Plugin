@@ -120,9 +120,9 @@ namespace Hooks
             auto objB = GetTESObjectREFR(a_collidableB);
             if (objB) {
               if (objA != objB)  {
-                log::info("Collsion between: {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
+                // log::info("Collsion between: {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
                 if (IsCollisionDisabledBetween(objA, objB)) {
-                  log::info("Collision is disabled");
+                  // log::info("Collision is disabled");
                   *a_result = false;
                 }
               }
