@@ -113,7 +113,7 @@ namespace Gts {
 						NiPoint3 FootPos = explosion_pos + NiPoint3(meter_to_unit(0.15*scale), meter_to_unit(0.15*scale), 0.0);
 						NiPoint3 HeelPos = explosion_pos + NiPoint3(meter_to_unit(-0.15*scale), meter_to_unit(-0.15*scale), 0.0);
 						make_explosion_at(impact.kind, actor, FootPos, scale);
-						make_explosion_at(impact.kind, actor, FootPos, scale);
+						make_explosion_at(impact.kind, actor, HeelPos, scale);
 					} else {
 						make_explosion_at(impact.kind, actor, explosion_pos, scale);
 					}
