@@ -167,7 +167,7 @@ namespace Gts {
       case SizeMethod::RefScale:
 				return get_ref_scale(actor);
 				break;
-			case SizeMethod::HybridScale:
+			case SizeMethod::Hybrid:
 				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
 				if (actor->formID == 0x14) {
 					return get_npcnode_scale(actor);
@@ -194,9 +194,9 @@ namespace Gts {
 			case SizeMethod::Hybrid:
 				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
 				if (actor->formID == 0x14) {
-					return set_npcnode_scale(actor);
+					return set_npcnode_scale(actor, scale);
 				} else {
-					return set_model_scale(actor);
+					return set_model_scale(actor, scale);
 				}
 				break;
 		}
