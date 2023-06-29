@@ -104,8 +104,8 @@ namespace {
 		DamageAV(tiny, ActorValue::kHealth, damage);
 
 		float experience = std::clamp(damage/200, 0.0f, 0.20f);
-		AdjustGtsSkill(experience, &data.giant);
-		
+		AdjustGtsSkill(experience, giant);
+
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
