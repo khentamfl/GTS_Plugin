@@ -1027,7 +1027,7 @@ namespace Gts {
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
 	std::string name = std::format("SpringGrow: {}", actor->formID);
 
-    TaskManager::Run(name,
+    TaskManager::Run(
       [ growData ](const auto& progressData) {
         float totalScaleToAdd = growData->amount.value;
         float prevScaleAdded = growData->addedSoFar;
