@@ -113,12 +113,12 @@ namespace {
 		}
 		if (Runtime::HasPerk(giant, "SoulVorePerk")) { // Permamently increases random AV after eating someone
 			float TotalMod = (0.75 * tinyscale);
-			int Boost = rand() % 2;
+			int Boost = rand() % 3;
 			if (Boost == 0) {
 				giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, TotalMod);
 			} else if (Boost == 1) {
 				giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, TotalMod);
-			} else if (Boost == 2) {
+			} else if (Boost => 2) {
 				giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, TotalMod);
 			}
 			//log::info("Buffing Attributes {}, Target: {}, Caster: {}", Boost, Target->GetDisplayFullName(), Caster->GetDisplayFullName());

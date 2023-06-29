@@ -9,3 +9,9 @@ function GrowTeammate(Float power) global native
 ;
 ; This is fired with the hotkey
 function ShrinkTeammate(Float power) global native
+    
+;Rapid player growth
+function CallRapidGrowth(Float power) global native 
+ 
+;Rapid player shrink
+function CallRapidShrink(Float power) global native    

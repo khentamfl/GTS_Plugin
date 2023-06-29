@@ -7,6 +7,7 @@
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "magic/effects/common.hpp"
+#include "utils/actorUtils.hpp"
 
 
 using namespace SKSE;
@@ -122,8 +123,17 @@ namespace {
 				}
 				return true;
 			});
-
 		}
+	}
+
+	void CallRapidGrowth(float amt, float halflife) {
+		auto PC = PlayerCharacter::GetSingleton();
+		SpringGrow(PC, amt, halfLife);
+	}
+
+	void CallRapidShrink() {
+		auto PC = PlayerCharacter::GetSingleton();
+		SpringShrink(PC, amt, halfLife);
 	}
 }
 
@@ -131,6 +141,8 @@ namespace Gts {
 	bool register_total_control(IVirtualMachine* vm) {
 		vm->RegisterFunction("GrowTeammate", PapyrusClass, GrowTeammate);
 		vm->RegisterFunction("ShrinkTeammate", PapyrusClass, ShrinkTeammate);
+		vm->RegisterFunction("CallRapidGrowth", PapyrusClass, CallRapidGrowth);
+		vm->RegisterFunction("CallRapidShrink", PapyrusClass, CallRapidShrink);
 
 		return true;
 	}
