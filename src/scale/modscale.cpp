@@ -14,7 +14,7 @@ namespace Gts {
   // once per frame and cached
   //
   // This cache is stored in transient as `otherScales`
-  float GetOtherScale(Actor* actor) {
+  float Get_Other_Scale(Actor* actor) {
     float ourScale = get_scale(actor);
 
     // Work with world scale to grab accumuated scales rather

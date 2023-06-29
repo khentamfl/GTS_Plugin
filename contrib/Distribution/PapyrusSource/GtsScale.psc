@@ -103,3 +103,7 @@ Float function GetVisualScale(Actor target) global native
 ;
 ; This will mod the target scale of all teammates nearby
 function ModTeammateScale(Float amount) global native
+
+; Report real default scale after all size calculations (RaceMenu, Race Scale)
+;
+function GetOtherScale(Actor* target) global native
