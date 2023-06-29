@@ -2,7 +2,7 @@
 #include "scale/scale.hpp"
 #include "hooks/callhook.hpp"
 #include "hooks/functionhook.hpp"
-#include <stacktrace>
+#include <windows>
 
 using namespace RE;
 using namespace SKSE;
@@ -57,7 +57,10 @@ namespace Hooks {
         if (actor) {
           if (actor->formID == 0x14) {
             log::info("Scale was set to {} for {}", amt, actor->GetDisplayFullName());
-            log::info(" StackTrace: {}", std::stacktrace::current());
+            void *stack[48];
+            USHORT count = CaptureStackBackTrace(0, 48, stack, NULL);
+            for(USHORT c = 0; c < count; c++)
+              printf("addr %02d: %p\n", c, stack[c]);
           }
         }
       }
