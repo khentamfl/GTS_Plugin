@@ -112,19 +112,14 @@ namespace Hooks
     a_result = _IsCollisionEnabled(a_this, a_result, a_collidableA, a_collidableB);
     if (*a_result) {
       auto colLayerA = GetCollisionLayer(a_collidableA);
+      auto colLayerB = GetCollisionLayer(a_collidableB);
       auto getcolliderA = GetTESObjectREFR(a_collidableA);
-      auto getcolliderB = GetTESObjectREFR(a_collidableA);
-      if (getcolliderA) {
-        if (getcolliderA->formID == 0x14) {
+      auto getcolliderB = GetTESObjectREFR(a_collidableB);
+      if (getcolliderA != nullptr && getcolliderB != nullptr) {
+        if (getcolliderA->formID == 0x14 || getcolliderB->formID == 0x14) {
           log::info("Collision Layer of {} and {} : {} {}", getcolliderA->GetDisplayFullName(), getcolliderB->GetDisplayFullName()
-            , static_cast<int>(GetCollisionLayer(a_collidableA)), static_cast<int>(GetCollisionLayer(a_collidableB)));
+            , static_cast<int>(colLayerA), static_cast<int>(colLayerB));
         }
-      }
-      if (getcolliderB) {
-        if (getcolliderB->formID == 0x14) {
-            log::info("Collision Layer of {} and {} : {} {}", getcolliderA->GetDisplayFullName(), getcolliderB->GetDisplayFullName()
-            , static_cast<int>(GetCollisionLayer(a_collidableA)), static_cast<int>(GetCollisionLayer(a_collidableB)));
-          }
       }
       if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC) {
         auto colLayerB = GetCollisionLayer(a_collidableB);
