@@ -292,6 +292,17 @@ trigger = "continuous"
 #========================= P E R K S
 #========================================================
 
+#=========================Test
+[[InputEvent]]
+name = "RapidGrowth"
+keys = ["C"]
+duration = 0.0
+
+[[InputEvent]]
+name = "RapidShrink"
+keys = ["N"]
+duration = 0.0
+
 #=========================Size Reserve
 
 [[InputEvent]]

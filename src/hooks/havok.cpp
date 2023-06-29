@@ -124,7 +124,7 @@ namespace Hooks
       }
 
       if (getcolliderA->formID == 0x14 || getcolliderB->formID == 0x14) {
-        if (getcolliderA == Runtime::GetExplosion("footstepExplosion") || getcolliderB == Runtime::GetExplosion("footstepExplosion")) {
+        if (colLayerA == COL_LAYER::kSpellExplosion || colLayerB == COL_LAYER::kSpellExplosion) {
           log::info("Object is explosion");
           *a_result = false;
         }

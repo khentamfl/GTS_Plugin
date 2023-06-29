@@ -1,18 +1,18 @@
-#include "managers/InputManager.hpp"
-#include "managers/damage/AccurateDamage.hpp"
-
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/damage/AccurateDamage.hpp"
+#include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
-#include "managers/highheel.hpp"
 #include "magic/effects/common.hpp"
-#include "scale/scale.hpp"
+#include "managers/highheel.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
+#include "managers/Rumble.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "data/plugin.hpp"
+#include "scale/scale.hpp"
 #include "data/time.hpp"
 #include "timer.hpp"
-#include "managers/Rumble.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -46,6 +46,15 @@ namespace {
 			}
 		}
 		return results;
+	}
+
+	void RapidGrowthEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		SpringGrow(player, 0.6, 0.7);
+	}
+	void RapidShrinkEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		SpringGrow(player, -0.6, 0.7);
 	}
 
 	void SizeReserveEvent(const InputEventData& data) {
@@ -271,6 +280,8 @@ namespace Gts {
 		InputManager::RegisterInputEvent("AnimSpeedUp", AnimSpeedUpEvent);
 		InputManager::RegisterInputEvent("AnimSpeedDown", AnimSpeedDownEvent);
 		InputManager::RegisterInputEvent("AnimMaxSpeed", AnimMaxSpeedEvent);
+		InputManager::RegisterInputEvent("RapidGrowth", RapidGrowthEvent);
+		InputManager::RegisterInputEvent("RapidShrink", RapidShrinkEvent);
 	}
 
 	BSEventNotifyControl InputManager::ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) {
