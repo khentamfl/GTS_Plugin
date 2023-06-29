@@ -131,7 +131,7 @@ namespace {
 		SpringGrow(PC, amt, halfLife);
 	}
 
-	void CallRapidShrink() {
+	void CallRapidShrink(float amt, float halflife) {
 		auto PC = PlayerCharacter::GetSingleton();
 		SpringShrink(PC, amt, halfLife);
 	}
