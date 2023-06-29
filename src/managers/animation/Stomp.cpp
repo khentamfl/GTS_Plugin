@@ -74,7 +74,7 @@ namespace {
 			dust = 1.25;
 		}
 		Rumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
-		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.03);
+		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.25 * launch * data.animSpeed, 10, 0.03);
 		DoSizeEffect(&data.giant, dust * data.animSpeed, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.0 * launch, 2.25 * data.animSpeed, RNode, 2.0);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
@@ -91,7 +91,7 @@ namespace {
 			dust = 1.25;
 		}
 		Rumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.2 * launch * data.animSpeed, 10, 0.03);
+		DoDamageEffect(&data.giant, 1.5 * launch * data.animSpeed * perk, 1.25 * launch * data.animSpeed, 10, 0.03);
 		DoSizeEffect(&data.giant, dust * data.animSpeed, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.0 * launch * perk, 2.25 * data.animSpeed, LNode, 2.0);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);

@@ -15,6 +15,7 @@
 #include "colliders/actor.hpp"
 #include "timer.hpp"
 #include "node.hpp"
+#include "utils/av.hpp"
 #include "colliders/RE.hpp"
 
 using namespace RE;
@@ -670,7 +671,7 @@ namespace Gts {
 
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage) {
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (30.0 * damage * damagebonus), radius, random, bonedamage);
+		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (35.0 * damage * damagebonus), radius, random, bonedamage);
 	}
 
 	bool HasSMT(Actor* giant) {
@@ -1041,6 +1042,8 @@ namespace Gts {
         Actor* actor = growData->actor.get().get();
 
         if (actor) {
+		  float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
+		  DamageAV(caster, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
           auto actorData = Persistent::GetSingleton().GetData(actor);
           if (actorData) {
             actorData->target_scale += deltaScale;
@@ -1070,6 +1073,8 @@ namespace Gts {
         Actor* actor = growData->actor.get().get();
 
         if (actor) {
+		  float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
+		  DamageAV(caster, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
           auto actorData = Persistent::GetSingleton().GetData(actor);
           if (actorData) {
             actorData->target_scale += deltaScale;

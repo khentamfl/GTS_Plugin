@@ -292,17 +292,6 @@ trigger = "continuous"
 #========================= P E R K S
 #========================================================
 
-#=========================Test
-[[InputEvent]]
-name = "RapidGrowth"
-keys = ["C"]
-duration = 0.0
-
-[[InputEvent]]
-name = "RapidShrink"
-keys = ["N"]
-duration = 0.0
-
 #=========================Size Reserve
 
 [[InputEvent]]
@@ -320,7 +309,18 @@ duration = 1.2
 
 # Hold to print size reserve value. Requires Perk.
 
-#=========================Total Control
+#=========================Total Control: Rapid Growth/Shrink
+[[InputEvent]]
+name = "RapidGrowth"
+keys = ["LSHIFT", "1"]
+duration = 0.0
+
+[[InputEvent]]
+name = [RapidShrink]
+keys = ["LSHIFT", "2"]
+duration = 0.0
+
+#=========================Total Control: Growth/Shrink
 
 [[InputEvent]]
 name = "TotalControlGrow"

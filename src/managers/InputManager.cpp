@@ -12,6 +12,7 @@
 #include "data/plugin.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
+#include "utils/av.hpp"
 #include "timer.hpp"
 
 using namespace RE;
@@ -46,6 +47,27 @@ namespace {
 			}
 		}
 		return results;
+	}
+
+	void RapidGrowthEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!Runtime::HasPerk(player, "TotalControl")) {
+			return;
+		}
+		float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
+		float scale = get_visual_scale(player);
+		Rumble::For("RapidGrowth", player, 8.0, 0.10, "NPC COM [COM ]", 0.60);
+		SpringGrow(player, 0.6 * scale * stamina, 0.30);
+	}
+	void RapidShrinkEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!Runtime::HasPerk(player, "TotalControl")) {
+			return;
+		}
+		float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
+		float scale = get_visual_scale(player);
+		Rumble::For("RapidShrink", player, 8.0, 0.10, "NPC COM [COM ]", 0.60);
+		SpringShrink(player, -0.6 * scale * stamina, 0.30);
 	}
 
 	void SizeReserveEvent(const InputEventData& data) {
@@ -271,6 +293,8 @@ namespace Gts {
 		InputManager::RegisterInputEvent("AnimSpeedUp", AnimSpeedUpEvent);
 		InputManager::RegisterInputEvent("AnimSpeedDown", AnimSpeedDownEvent);
 		InputManager::RegisterInputEvent("AnimMaxSpeed", AnimMaxSpeedEvent);
+		InputManager::RegisterInputEvent("RapidGrowth", RapidGrowthEvent);
+		InputManager::RegisterInputEvent("RapidShrink", RapidShrinkEvent);
 	}
 
 	BSEventNotifyControl InputManager::ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) {
