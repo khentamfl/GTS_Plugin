@@ -1015,7 +1015,7 @@ namespace Gts {
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
 
     TaskManager::Run(
-      [ growData ](const auto& progressData) mutable {
+      [ growData ](const auto& progressData) {
         float totalScaleToAdd = growData->amount.value;
         float prevScaleAdded = growData->addedSoFar;
         float deltaScale = totalScaleToAdd - prevScaleAdded;
