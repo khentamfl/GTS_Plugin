@@ -128,12 +128,12 @@ namespace {
 
 	void CallRapidGrowth(float amt, float halflife) {
 		auto PC = PlayerCharacter::GetSingleton();
-		SpringGrow(PC, amt, halfLife);
+		SpringGrow(PC, amt, halflife);
 	}
 
 	void CallRapidShrink(float amt, float halflife) {
 		auto PC = PlayerCharacter::GetSingleton();
-		SpringShrink(PC, amt, halfLife);
+		SpringShrink(PC, amt, halflife);
 	}
 }
 
