@@ -131,7 +131,7 @@ namespace Gts {
 	float get_visual_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		if (actor_data) {
-		     return actor_data->visual_scale * get_natural_scale(actor);
+		     return actor_data->visual_scale;// * get_natural_scale(actor);
 		}
 		return -1.0;
 	}

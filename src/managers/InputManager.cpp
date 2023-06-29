@@ -52,13 +52,13 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		float scale = get_visual_scale(player);
 		Rumble::For("RapidGrowth", player, 8.0, 0.10, "NPC COM [COM ]", 0.60);
-		SpringGrow(player, 0.6 * scale, 0.25);
+		SpringGrow(player, 0.6 * scale, 0.30);
 	}
 	void RapidShrinkEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		float scale = get_visual_scale(player);
 		Rumble::For("RapidShrink", player, 8.0, 0.10, "NPC COM [COM ]", 0.60);
-		SpringShrink(player, -0.6 * scale, 0.25);
+		SpringShrink(player, -0.6 * scale, 0.30);
 	}
 
 	void SizeReserveEvent(const InputEventData& data) {
