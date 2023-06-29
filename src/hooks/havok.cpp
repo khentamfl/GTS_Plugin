@@ -3,6 +3,7 @@
 #include "data/transient.hpp"
 
 #include "managers/contact.hpp"
+#include "data/runtime.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -121,9 +122,17 @@ namespace Hooks
             , static_cast<int>(colLayerA), static_cast<int>(colLayerB));
         }
       }
+
+      if (objA->formID == 0x14 || objB->formID == 0x14) {
+        if (objA == Runtime::GetExplosion("footstepExplosion") || objB == Runtime::GetExplosion("footstepExplosion")) {
+          log::info("Object is explosion");
+          *a_result = false;
+        }
+      }
+
       if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC) {
         auto colLayerB = GetCollisionLayer(a_collidableB);
-        if (colLayerB == COL_LAYER::kBiped || colLayerB == COL_LAYER::kCharController || colLayerB == COL_LAYER::kDeadBip || colLayerB == COL_LAYER::kBipedNoCC) {
+        if (colLayerB == COL_LAYER::kBiped || colLayerB == COL_LAYER::kCharController || colLayerB == COL_LAYER::kDeadBip || colLayerB == COL_LAYER::kBipedNoCC || colLayerB == COL_LAYER::kSpellExplosion) {
           auto objA = GetTESObjectREFR(a_collidableA);
           if (objA) {
             auto objB = GetTESObjectREFR(a_collidableB);
