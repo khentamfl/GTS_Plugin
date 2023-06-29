@@ -1,6 +1,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "magic/effects/common.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
@@ -1043,7 +1044,7 @@ namespace Gts {
 
         if (actor) {
 		  float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-		  DamageAV(caster, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
+		  DamageAV(actor, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
           auto actorData = Persistent::GetSingleton().GetData(actor);
           if (actorData) {
             actorData->target_scale += deltaScale;
@@ -1074,7 +1075,7 @@ namespace Gts {
 
         if (actor) {
 		  float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-		  DamageAV(caster, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
+		  DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
           auto actorData = Persistent::GetSingleton().GetData(actor);
           if (actorData) {
             actorData->target_scale += deltaScale;
