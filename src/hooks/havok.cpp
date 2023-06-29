@@ -120,13 +120,10 @@ namespace Hooks
         if (getcolliderA->formID == 0x14 || getcolliderB->formID == 0x14) {
           log::info("Collision Layer of {} and {} : {} {}", getcolliderA->GetDisplayFullName(), getcolliderB->GetDisplayFullName()
             , static_cast<int>(colLayerA), static_cast<int>(colLayerB));
-        }
-      }
-
-      if (getcolliderA->formID == 0x14 || getcolliderB->formID == 0x14) {
-        if (colLayerA == COL_LAYER::kSpellExplosion || colLayerB == COL_LAYER::kSpellExplosion) {
-          log::info("Object is explosion");
-          *a_result = false;
+          if (colLayerA == COL_LAYER::kSpellExplosion || colLayerB == COL_LAYER::kSpellExplosion) {
+            log::info("Object is explosion");
+            *a_result = false;
+          }
         }
       }
 
