@@ -1026,7 +1026,7 @@ namespace Gts {
           if (actorData) {
             actorData->target_scale += deltaScale;
             actorData->visual_scale += deltaScale;
-            slowGrowData->addedSoFar = totalScaleToAdd;
+            growData->addedSoFar = totalScaleToAdd;
         	}
 	      }
 
