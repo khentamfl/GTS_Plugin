@@ -63,6 +63,7 @@ namespace Gts {
 		}
 		if (Runtime::HasPerkTeam(&actor, "OnTheEdge")) {
 			float GetHP = clamp(0.5, 1.0, GetHealthPercentage(&actor) + 0.4); // Bonus Size Gain if Actor has perk
+			// How it should work: when health is < 60%, empower growth by up to 50%. Max value at 10% health.
 			if (amt > 0) {
 				amt /= GetHP;
 			} else if (amt < 0) {
@@ -93,7 +94,7 @@ namespace Gts {
 	void set_max_scale(Actor& actor, float scale) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		if (actor_data) {
-			actor_data->max_scale = scale;
+			actor_data->max_scale = scale * get_natural_scale(&actor);
 		}
 	}
 	void set_max_scale(Actor* actor, float scale) {
@@ -131,7 +132,7 @@ namespace Gts {
 	float get_visual_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		if (actor_data) {
-		     return actor_data->visual_scale;// * get_natural_scale(actor);
+		     return actor_data->visual_scale * get_natural_scale(actor);
 		}
 		return -1.0;
 	}
