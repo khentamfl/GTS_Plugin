@@ -117,11 +117,12 @@ namespace Gts {
 					break;
 				}
 				case ChosenGameMode::CurseOfGrowth: {
-					float CalcAv = actor->AsActorValueOwner()->GetActorValue(ActorValue::kAlteration);
+					auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+					float CalcAv = GtsSkillLevel->value;                                                             // Based on GTS skill level
 					float MaxSize = Runtime::GetFloat("CurseOfGrowthMaxSize");                                       // Slider that determines max size cap.
-					float sizelimit = clamp(1.0, MaxSize, 1.00 * (CalcAv/100 * MaxSize));                          // Size limit between 1 and [Slider]], based on Alteration. Cap is Slider value.
+					float sizelimit = clamp(1.0, MaxSize, 1.00 * (CalcAv/100 * MaxSize));                            // Size limit between 1 and [Slider]], based on GTS Skill. Cap is Slider value.
 					int Random = rand() % 20;                                                                        // Randomize power
-					int GrowthTimer = rand() % 6 + 1;                                                                    // Randomize 're-trigger' delay, kinda
+					int GrowthTimer = rand() % 6 + 1;                                                                // Randomize 're-trigger' delay, kinda
 					int StrongGrowthChance = rand() % 20;                                                            // Self-explanatory
 					int MegaGrowth = rand() % 20;                                                                    // A chance to multiply growth again
 					float GrowthPower = CalcAv*0.00240 / Random;                                                     // Randomized strength of growth
