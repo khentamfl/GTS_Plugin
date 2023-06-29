@@ -2,6 +2,7 @@
 #include "scale/scale.hpp"
 #include "hooks/callhook.hpp"
 #include "hooks/functionhook.hpp"
+#include <stacktrace>
 
 using namespace RE;
 using namespace SKSE;
