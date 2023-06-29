@@ -217,7 +217,7 @@ namespace {
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
     static Timer testDelay = Timer(5.0);
-    if (testDelay.ShouldRun()) {
+    if (testDelay.ShouldRunFrame()) {
 		    apply_height(actor, saved_data, temp_data, force);
     }
 		apply_speed(actor, saved_data, temp_data, force);
