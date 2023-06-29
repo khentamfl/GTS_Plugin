@@ -109,4 +109,5 @@ namespace Gts {
   void EnableCollisions(Actor* actor);
 
   void SpringGrow(Actor* actor, float amt, float halfLife);
+  void SpringShrink(Actor* actor, float amt, float halfLife);
 }

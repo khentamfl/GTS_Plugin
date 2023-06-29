@@ -76,8 +76,8 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-    float currentOtherScale = GetOtherScale(actor);
-    trans_actor_data->otherScales = currentOtherScale;
+		float currentOtherScale = GetOtherScale(actor);
+		trans_actor_data->otherScales = currentOtherScale;
 
 		float target_scale = persi_actor_data->target_scale;
 

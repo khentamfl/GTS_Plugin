@@ -59,6 +59,18 @@ namespace {
       amount.halflife = halfLife;
     }
   };
+
+  struct SpringShrinkData {
+    Spring amount = Spring(0.0, 1.0);
+    float addedSoFar = 0.0;
+    ActorHandle actor;
+
+    SpringShrinkData(Actor* actor, float amountToAdd, float halfLife): actor(actor->CreateRefHandle()) {
+      amount.value = 0.0;
+      amount.target = amountToAdd;
+      amount.halflife = halfLife;
+    }
+  };
 }
 
 RE::ExtraDataList::~ExtraDataList() {
@@ -1013,8 +1025,38 @@ namespace Gts {
     }
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
+	std::string name = std::format("SpringGrow: {}", actor->formID);
 
-    TaskManager::Run(
+    TaskManager::Run(name,
+      [ growData ](const auto& progressData) {
+        float totalScaleToAdd = growData->amount.value;
+        float prevScaleAdded = growData->addedSoFar;
+        float deltaScale = totalScaleToAdd - prevScaleAdded;
+        Actor* actor = growData->actor.get().get();
+
+        if (actor) {
+          auto actorData = Persistent::GetSingleton().GetData(actor);
+          if (actorData) {
+            actorData->target_scale += deltaScale;
+            actorData->visual_scale += deltaScale;
+            growData->addedSoFar = totalScaleToAdd;
+        	}
+	      }
+
+        return fabs(growData->amount.value - growData->amount.target) > 1e-4;
+      }
+    );
+  }
+
+  void SpringShrink(Actor* actor, float amt, float halfLife) {
+    if (!actor) {
+      return;
+    }
+
+    auto growData = std::make_shared<SpringShrinkData>(actor, amt, halfLife);
+	std::string name = std::format("SpringShrink: {}", actor->formID);
+
+    TaskManager::Run(name,
       [ growData ](const auto& progressData) {
         float totalScaleToAdd = growData->amount.value;
         float prevScaleAdded = growData->addedSoFar;

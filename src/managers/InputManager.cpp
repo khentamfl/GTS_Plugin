@@ -50,11 +50,15 @@ namespace {
 
 	void RapidGrowthEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		SpringGrow(player, 0.6, 0.7);
+		float scale = get_visual_scale(player);
+		Rumble::For("RapidGrowth", player, 8.0, 0.10, "NPC COM [COM ]", 0.60);
+		SpringGrow(player, 0.6 * scale, 0.25);
 	}
 	void RapidShrinkEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		SpringGrow(player, -0.6, 0.7);
+		float scale = get_visual_scale(player);
+		Rumble::For("RapidShrink", player, 8.0, 0.10, "NPC COM [COM ]", 0.60);
+		SpringShrink(player, 0.6 * scale, 0.25);
 	}
 
 	void SizeReserveEvent(const InputEventData& data) {
