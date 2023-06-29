@@ -150,10 +150,10 @@ namespace Gts {
 			
 			float TotalLimit = ((GetLimit + Persistent_Size) * (1.0 + Gigantism));
 			
-			if (actor->formID == 0x14) {
+			/*if (actor->formID == 0x14) {
 				log::info("Scale Limit of {} is {}", actor->GetDisplayFullName(), TotalLimit);
 				log::info("Scale of {} is {}", actor->GetDisplayFullName(), get_visual_scale(actor));
-			}
+			}*/
 
 			if (TotalLimit < get_natural_scale(actor)) {
 				TotalLimit = get_natural_scale(actor);
