@@ -1012,7 +1012,7 @@ namespace Gts {
       return;
     }
 
-    /*auto growData = std::unique_ptr(new SpringGrow(actor, amt, halfLife));
+    auto growData = std::unique_ptr(new SpringGrow(actor, amt, halfLife));
 
     TaskManager::Run(
       [ growData = std::move(growData) ](auto& progressData){
@@ -1032,6 +1032,6 @@ namespace Gts {
 
         return fabs(growData->amount.value - growData->amount.target) > 1e-4;
       }
-    );*/
+    );
   }
 }
