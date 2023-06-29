@@ -48,12 +48,12 @@ namespace {
 		return static_cast<ExtraDataList*>(memory);
 	}
 
-  struct SpringGrow {
+  struct SpringGrowData {
     Spring amount = Spring(0.0, 1.0);
     float addedSoFar = 0.0;
     ActorHandle actor;
 
-    SpringGrow(Actor* actor, float amountToAdd, float halfLife): actor(actor->CreateRefHandle()) {
+    SpringGrowData(Actor* actor, float amountToAdd, float halfLife): actor(actor->CreateRefHandle()) {
       amount.value = 0.0;
       amount.target = amountToAdd;
       amount.halflife = halfLife;
@@ -1012,7 +1012,7 @@ namespace Gts {
       return;
     }
 
-    auto growData = std::unique_ptr(new SpringGrow(actor, amt, halfLife));
+    auto growData = std::make_unique<SpringGrowData>(actor, amt, halfLife);
 
     TaskManager::Run(
       [ growData = std::move(growData) ](auto& progressData){
