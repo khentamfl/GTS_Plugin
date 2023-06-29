@@ -123,8 +123,8 @@ namespace Hooks
         }
       }
 
-      if (objA->formID == 0x14 || objB->formID == 0x14) {
-        if (objA == Runtime::GetExplosion("footstepExplosion") || objB == Runtime::GetExplosion("footstepExplosion")) {
+      if (getcolliderA->formID == 0x14 || getcolliderB->formID == 0x14) {
+        if (getcolliderA == Runtime::GetExplosion("footstepExplosion") || getcolliderB == Runtime::GetExplosion("footstepExplosion")) {
           log::info("Object is explosion");
           *a_result = false;
         }
