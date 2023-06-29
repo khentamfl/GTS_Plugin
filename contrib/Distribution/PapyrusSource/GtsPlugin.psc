@@ -14,12 +14,15 @@ Function SetFeetTracking(Bool enabled) global native
 ;==================================================================================
 ;==================================================================================
 
-;==========================================
-;===================D A M A G E           |
-;==========================================
+;====================================================
+;===================D A M A G E  AND OTHERS          |
+;====================================================
 
 ; Sets global damage mult for Stomps
 function SetSizeDamageMultiplier(Float bonus) global native
+
+; Sets experience multiplier    
+function SetExperienceMultiplier(Float bonus) global native    
 
 ; Get size related damage modifier.
 ; This functions reports damage modifiers for: Normal, Fall, Sprint and High Heel damage bonuses.
