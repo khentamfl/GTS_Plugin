@@ -216,7 +216,7 @@ namespace {
 		//log::info("Apply_Actor name is {}", actor->GetDisplayFullName());
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
-    static Timer testDelay = Time(5.0);
+    static Timer testDelay = Timer(5.0);
     if (testDelay.ShouldRun()) {
 		    apply_height(actor, saved_data, temp_data, force);
     }
