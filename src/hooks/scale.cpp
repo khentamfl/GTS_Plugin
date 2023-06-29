@@ -56,6 +56,7 @@ namespace Hooks {
         if (actor) {
           if (actor->formID == 0x14) {
             log::info("Scale was set to {} for {}", amt, actor->GetDisplayFullName());
+            log::info(" StackTrace: {}", std::stacktrace::current());
           }
         }
       }
