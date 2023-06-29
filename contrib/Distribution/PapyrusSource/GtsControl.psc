@@ -11,7 +11,7 @@ function GrowTeammate(Float power) global native
 function ShrinkTeammate(Float power) global native
     
 ;Rapid player growth
-function CallRapidGrowth(Float power) global native 
+function CallRapidGrowth(float amt, float halflife) global native 
  
 ;Rapid player shrink
-function CallRapidShrink(Float power) global native    
+function CallRapidShrink(float amt, float halflife) global native   
