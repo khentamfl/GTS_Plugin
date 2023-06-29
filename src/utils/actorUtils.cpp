@@ -1022,13 +1022,13 @@ namespace Gts {
         Actor* actor = growData->actor.get().get();
 
         if (actor) {
-          auto actorData = Persistent::GetData(actor);
+          auto actorData = Persistent::GetSingleton().GetData(actor);
           if (actorData) {
             actorData->target_scale += deltaScale;
             actorData->visual_scale += deltaScale;
             slowGrowData->addedSoFar = totalScaleToAdd;
         	}
-		}
+	      }
 
         return fabs(growData->amount.value - growData->amount.target) > 1e-4;
       }
