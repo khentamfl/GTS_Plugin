@@ -238,7 +238,7 @@ namespace {
 	}
 
 	float GetOtherScale(StaticFunctionTag*, Actor* actor) {
-		return GetOtherScale(actor);
+		return Get_Other_Scale(actor);
 	}
 }
 
@@ -274,7 +274,7 @@ namespace Gts {
 
 		vm->RegisterFunction("ModTeammateScale", PapyrusClass, ModTeammateScale);
 
-		vm->RegisterFunction("GetOtherScale", PapyrusClass, ModTeammateScale);
+		vm->RegisterFunction("GetOtherScale", PapyrusClass, GetOtherScale);
 
 		return true;
 	}
