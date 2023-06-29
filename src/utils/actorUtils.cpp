@@ -762,6 +762,12 @@ namespace Gts {
 		}
 	}
 
+	float GetXpBonus() {
+		float xp = Persistent::GetSingleton().experience_mult;
+		log::info("XP is: {}", xp);
+		return xp;
+	}
+
 	void AddSMTDuration(Actor* actor, float duration) {
 		if (Runtime::HasPerk(actor, "EternalCalamity")) {
 			auto transient = Transient::GetSingleton().GetData(actor);

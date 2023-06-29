@@ -21,6 +21,7 @@ namespace {
 	inline const auto TremorScales = _byteswap_ulong('TREM');
 	inline const auto CamCollisions = _byteswap_ulong('CAMC');
 	inline const auto SizeDamageMult = _byteswap_ulong('SZDM');
+	inline const auto XpMult = _byteswap_ulong('XPMT');
 	inline const auto StompAiRecord = _byteswap_ulong('STAI');
 	inline const auto SandwichAiRecord = _byteswap_ulong('SWAI');
 	inline const auto VoreAiRecord = _byteswap_ulong('VRAI');
@@ -393,6 +394,10 @@ namespace Gts {
 				float size_related_damage_mult;
 				serde->ReadRecordData(&size_related_damage_mult, sizeof(size_related_damage_mult));
 				GetSingleton().size_related_damage_mult = size_related_damage_mult;
+			} else if (type == XpMult) {
+				float experience_mult;
+				serde->ReadRecordData(&experience_mult, sizeof(experience_mult));
+				GetSingleton().experience_mult = experience_mult;
 			} else if (type == TremorScales) {
 				float tremor_scale;
 				serde->ReadRecordData(&tremor_scale, sizeof(tremor_scale));
@@ -615,10 +620,20 @@ namespace Gts {
 		float progression_multiplier = GetSingleton().progression_multiplier;
 		serde->WriteRecordData(&progression_multiplier, sizeof(progression_multiplier));
 
+
+		if (!serde->OpenRecord(XpMult, 0)) {
+			log::error("Unable to open Experience Mult record to write cosave data");
+			return;
+		}
+
+		float experience_mult = GetSingleton().experience_mult;
+		serde->WriteRecordData(&experience_mult, sizeof(experience_mult));
+
 		if (!serde->OpenRecord(SizeDamageMult, 0)) {
 			log::error("Unable to open Damage mult record to write cosave data");
 			return;
 		}
+
 		float size_related_damage_mult = GetSingleton().size_related_damage_mult;
 		serde->WriteRecordData(&size_related_damage_mult, sizeof(size_related_damage_mult));
 

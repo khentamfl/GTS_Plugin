@@ -96,7 +96,7 @@ namespace {
 
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
 		float Total = (((0.36 * random) + absorbedSize) * ValueEffectiveness);
-		GtsSkillRatio->value += Total;
+		GtsSkillRatio->value += Total * GetXpBonus();
 
 		if (GtsSkillRatio->value >= 1.0) {
 			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);

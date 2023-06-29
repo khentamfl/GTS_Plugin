@@ -24,6 +24,10 @@ namespace {
 	void SetSizeDamageMultiplier(StaticFunctionTag*, float bonus) {
 		Persistent::GetSingleton().size_related_damage_mult = bonus;
 	}
+	void SetExperienceMultiplier(StaticFunctionTag*, float bonus) {
+		Persistent::GetSingleton().experience_mult = bonus;
+	}
+
 	float GetSizeRelatedDamage(StaticFunctionTag*, Actor* actor, float attribute) {
 		return SizeManager::GetSingleton().GetSizeAttribute(actor, attribute);
 	}
@@ -323,6 +327,7 @@ namespace Gts {
 	bool register_papyrus_plugin(IVirtualMachine* vm) {
 		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
 		vm->RegisterFunction("SetSizeDamageMultiplier", PapyrusClass, SetSizeDamageMultiplier);
+		vm->RegisterFunction("SetExperienceMultiplier", PapyrusClass, SetExperienceMultiplier);
 		vm->RegisterFunction("GetSizeRelatedDamage", PapyrusClass, GetSizeRelatedDamage);
 		vm->RegisterFunction("ModSizeVulnerability", PapyrusClass, ModSizeVulnerability);
 		vm->RegisterFunction("GetSizeVulnerability", PapyrusClass, GetSizeVulnerability);

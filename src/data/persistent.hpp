@@ -85,6 +85,7 @@ namespace Gts {
 			float tremor_scale = 1.0;
 			float npc_tremor_scale = 1.0;
 			float size_related_damage_mult = 1.0;
+			float experience_mult = 1.0;
 			float progression_multiplier = 0.55;
 			SoftPotential speed_adjustment {
 				.k = 0.125, // 0.125
