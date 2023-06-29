@@ -764,7 +764,7 @@ namespace Gts {
 
 	float GetXpBonus() {
 		float xp = Persistent::GetSingleton().experience_mult;
-		log::info("XP is: {}", xp);
+		//log::info("XP is: {}", xp);
 		return xp;
 	}
 
