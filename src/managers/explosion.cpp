@@ -14,21 +14,117 @@ using namespace Gts;
 using namespace std;
 
 namespace {
+
+
 	void make_explosion_at(FootEvent kind, Actor* actor, NiPoint3 position, float scale) {
 		if (!actor) {
 			return;
 		}
-
+		auto left = find_node(actor "NPC R Foot [Rft ]");
+		if (!left) {
+			return;
+		}
+		auto right = find_node(actor "NPC R Foot [Rft ]");
+		if (!right) {
+			return;
+		}
+		
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
 			case FootEvent::Left:
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 10, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 9, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 8, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 7, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 6, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 5, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 4, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 3, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 2, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 1, left);
+
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 10, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 9, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 8, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 7, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 6, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 5, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 4, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 3, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 2, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 1, nullptr);
 			case FootEvent::Right:
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 10, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 9, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 8, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 7, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 6, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 5, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 4, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 3, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 2, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 1, right);
+
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 10, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 9, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 8, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 7, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 6, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 5, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 4, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 3, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 2, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 1, nullptr);
 			case FootEvent::Front:
 			case FootEvent::Back:
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 			case FootEvent::JumpLand:
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 10, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 9, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 8, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 7, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 6, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 5, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 4, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 3, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 2, left);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 1, left);
+
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 10, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 9, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 8, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 7, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 6, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 5, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 4, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 3, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 2, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", left->world.rotate, left->world.translate, scale * 10, 1, nullptr);
+
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 10, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 9, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 8, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 7, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 6, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 5, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 4, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 3, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 2, right);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 1, right);
+
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 10, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 9, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 8, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 7, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 6, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 5, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 4, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 3, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 2, nullptr);
+				SpawnParticle(actor, 1.60, "FootExplosion.nif", right->world.rotate, right->world.translate, scale * 10, 1, nullptr);
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 		}
+		return;
 
 		if (base_explosion) {
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
