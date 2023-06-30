@@ -43,9 +43,11 @@ namespace {
 			if (!explosion) {
 				return;
 			}
+			explosion->SetActorCause(nullptr);
 			explosion->SetPosition(position);
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
+			
 		}
 	}
 }
