@@ -43,6 +43,8 @@ namespace {
 			if (!explosion) {
 				return;
 			}
+			explosion->GetExplosionRuntimeData().ActorHandle = nullptr;
+			explosion->GetExplosionRuntimeData().unkF4 = nullptr;
 			explosion->SetActorCause(nullptr);
 			explosion->SetPosition(position);
 			explosion->GetExplosionRuntimeData().radius *= scale;
