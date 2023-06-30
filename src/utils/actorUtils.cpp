@@ -300,14 +300,16 @@ namespace Gts {
 		log::info("Stagger false");
 		return true;
 	}
-
-	bool IsHumanoid(Actor* actor) { // Check if Actor is humanoid or not. Currently used for some Animations
-		if (!Runtime::HasKeyword(actor, "DragonKeyword") &&
-			!Runtime::HasKeyword(actor, "DwemerKeyword") &&
-			!Runtime::HasKeyword(actor, "AnimalKeyword") &&
-			!Runtime::HasKeyword(actor, "CreatureKeyword")
+    
+	bool IsHuman(Actor* actor) { // Check if Actor is humanoid or not. Currently used for Hugs Animation
+		if (!Runtime::HasKeyword(actor, "DragonKeyword") && !Runtime::HasKeyword(actor, "DwemerKeyword") && !Runtime::HasKeyword(actor, "AnimalKeyword") &&
+			!Runtime::HasKeyword(actor, "CreatureKeyword") && !Runtime::HasKeyword(actor, "UndeadKeyword")
 		) {
-			return true;
+			return true; // Detect non-vampire
+		} else if (!Runtime::HasKeyword(actor, "DragonKeyword") && !Runtime::HasKeyword(actor, "DwemerKeyword") &&!Runtime::HasKeyword(actor, "AnimalKeyword") &&
+			!Runtime::HasKeyword(actor, "CreatureKeyword") && Runtime::HasKeyword(actor, "UndeadKeyword") && Runtime::HasKeyword(actor, "VampireKeyword")
+		) {
+			return true; // Detect Vampire
 		} else {
 			return false;
 		}

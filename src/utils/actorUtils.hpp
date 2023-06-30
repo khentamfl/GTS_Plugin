@@ -41,7 +41,7 @@ namespace Gts {
 	void CompleteDragonQuest();
 
 	bool AllowStagger(Actor* giant, Actor* tiny);
-	bool IsHumanoid(Actor* actor);
+	bool IsHuman(Actor* actor);
 	bool IsDragon(Actor* actor);
 	bool IsLiving(Actor* actor);
 

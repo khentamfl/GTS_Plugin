@@ -163,7 +163,7 @@ namespace Gts {
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_GRAB_SCALE) {
-			if (!IsHumanoid(prey)) { // Allow hugs with humanoids only
+			if (!IsHuman(prey)) { // Allow hugs with humanoids only
 				if (pred->formID == 0x14) {
 					std::string_view message = std::format("You have no desire to hug {}", prey->GetDisplayFullName());
 					TiredSound(pred, message); // Just no. We don't have Creature Anims.
