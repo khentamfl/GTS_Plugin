@@ -114,18 +114,19 @@ namespace Hooks
     if (*a_result) {
       auto colLayerA = GetCollisionLayer(a_collidableA);
       auto colLayerB = GetCollisionLayer(a_collidableB);
-     /* auto getcolliderA = GetTESObjectREFR(a_collidableA);
+      auto getcolliderA = GetTESObjectREFR(a_collidableA);
       auto getcolliderB = GetTESObjectREFR(a_collidableB);
       if (getcolliderA != nullptr && getcolliderB != nullptr) {
         if (getcolliderA->formID == 0x14 || getcolliderB->formID == 0x14) {
           log::info("Collision Layer of {} and {} : {} {}", getcolliderA->GetDisplayFullName(), getcolliderB->GetDisplayFullName()
             , static_cast<int>(colLayerA), static_cast<int>(colLayerB));
+            *a_result = false;
           if (colLayerA == COL_LAYER::kSpellExplosion || colLayerB == COL_LAYER::kSpellExplosion) {
             log::info("Object is explosion");
             *a_result = false;
           }
         }
-      }*/
+      }
 
       if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC) {
         auto colLayerB = GetCollisionLayer(a_collidableB);

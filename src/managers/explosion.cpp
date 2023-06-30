@@ -31,7 +31,6 @@ namespace {
 		}
 
 		if (base_explosion) {
-			base_explosion->data.radius = 0.0;
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
 			if (!instance_ptr) {
 				return;
@@ -45,7 +44,7 @@ namespace {
 				return;
 			}
 			explosion->SetPosition(position);
-			explosion->GetExplosionRuntimeData().radius = 14 * scale;
+			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
 			
 		}
