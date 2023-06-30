@@ -18,8 +18,8 @@
 
 namespace {
 
-	const float MINIMUM_GRAB_DISTANCE = 95.0;
-	const float MINIMUM_GRAB_SCALE_RATIO = 0.9;
+	const float MINIMUM_HUG_DISTANCE = 95.0;
+	const float MINIMUM_HUG_SCALE_RATIO = 0.9;
 	const float GRAB_ANGLE = 70;
 	const float PI = 3.14159;
 
@@ -156,19 +156,18 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
-		float MINIMUM_GRAB_SCALE = MINIMUM_GRAB_SCALE_RATIO;
-		float MINIMUM_DISTANCE = MINIMUM_GRAB_DISTANCE;
+		float MINIMUM_HUG_SCALE = MINIMUM_HUG_SCALE_RATIO;
+		float MINIMUM_DISTANCE = MINIMUM_HUG_DISTANCE;
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_GRAB_SCALE) {
+		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_HUG_SCALE) {
+				Notify("{} is too big to be hugged.", prey->GetDisplayFullName());
 				return false;
 			}
-			Notify("{} is too big to be grabbed.", prey->GetDisplayFullName());
-			return false;
 		}
-		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_GRAB_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_HUG_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 				return false;
 			} if (!IsHuman(prey)) { // Allow hugs with humanoids only
