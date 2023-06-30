@@ -44,10 +44,8 @@ namespace {
 				return;
 			}
 			explosion->SetPosition(position);
-			explosion->GetExplosionRuntimeData().radius *= scale;
+			explosion->GetExplosionRuntimeData().radius = 14 * scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
-			explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
-			explosion->GetExplosionRuntimeData().unk11C *= 0.0;
 		}
 	}
 }
