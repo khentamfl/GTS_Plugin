@@ -44,7 +44,7 @@ namespace {
 				return;
 			}
 			explosion->SetPosition(position);
-			explosion->GetExplosionRuntimeData().radius *= scale;
+			explosion->GetExplosionRuntimeData().radius = 14 * scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
 		}
 	}
