@@ -43,9 +43,6 @@ namespace {
 			if (!explosion) {
 				return;
 			}
-			//explosion->GetExplosionRuntimeData().bhkSimpleShapePhantom = nullptr;
-			explosion->GetExplosionRuntimeData().hitKeyTime = 0;
-			explosion->GetExplosionRuntimeData().endKeyTime = 0;
 			explosion->SetPosition(position);
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
