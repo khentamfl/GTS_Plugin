@@ -43,9 +43,8 @@ namespace {
 			if (!explosion) {
 				return;
 			}
-			ActorHandle handle = nullptr;
-			explosion->GetExplosionRuntimeData().actorOwner = handle;
-			explosion->GetExplosionRuntimeData().unkF4 = handle;
+			explosion->GetExplosionRuntimeData().actorOwner.reset();
+			explosion->GetExplosionRuntimeData().unkF4.reset();
 			explosion->SetPosition(position);
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
