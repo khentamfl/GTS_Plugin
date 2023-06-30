@@ -151,8 +151,8 @@ namespace Gts {
 			return false;
 		}
 
-		float pred_scale = get_visual_scale(pred);
-		float prey_scale = get_visual_scale(prey);
+		float pred_scale = get_giantess_scale(pred);
+		float prey_scale = get_giantess_scale(prey);
 
 		float sizedifference = pred_scale/prey_scale;
 
@@ -170,12 +170,15 @@ namespace Gts {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 				return false;
 			} 
+			if (sizedifference >= 3.9) { // Disallow Hugs with smol people
+				std::string_view message = std::format("You're worried about killing {} with hugs", prey->GetDisplayFullName());
+				TiredSound(pred, message); // Just no. We don't have Creature Anims.
+				return false;
+			} 
 			if (!IsHuman(prey)) { // Allow hugs with humanoids only
 				if (pred->formID == 0x14) {
 					std::string_view message = std::format("You have no desire to hug {}", prey->GetDisplayFullName());
 					TiredSound(pred, message); // Just no. We don't have Creature Anims.
-					return false;
-				} if (sizedifference >= 3.9) { // Disallow Hugs with smol people
 					return false;
 				} 
 				return false;

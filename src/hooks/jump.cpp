@@ -25,7 +25,7 @@ namespace Hooks {
 			REL::RelocationID(76430, 78269),
 			[](auto* a_this){
           float result = GetFallDistance(a_this);
-          log::info("GetFallDistance: {}", result);
+         // log::info("GetFallDistance: {}", result);
           auto actor = FindActor(a_this);
           if (actor) {
             if (actor->formID == 0x14) {
