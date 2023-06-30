@@ -43,9 +43,9 @@ namespace {
 			if (!explosion) {
 				return;
 			}
-			explosion->GetExplosionRuntimeData().actorOwner.reset();
-			explosion->GetExplosionRuntimeData().unkF4.reset();
 			explosion->SetPosition(position);
+			explosion->GetExplosionRuntimeData().negativeVelocity = NiPoint3(0.0, 0.0, 0.0);
+			explosion->GetExplosionRuntimeData().unk11C = NiPoint3(0.0, 0.0, 0.0);
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
 			
