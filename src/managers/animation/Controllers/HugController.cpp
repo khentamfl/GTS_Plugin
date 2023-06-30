@@ -176,11 +176,10 @@ namespace Gts {
 				} 
 				if (sizedifference >= 3.9) { // Disallow Hugs with smol people
 					return false;
+				} else {
+					return true;
 				}
-			}
-			else {
-				return true;
-			}
+			} 
 		} else {
 			return false;
 		}
