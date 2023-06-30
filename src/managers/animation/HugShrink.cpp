@@ -97,6 +97,8 @@ namespace {
   void AbortAnimation(Actor* giant, Actor* tiny) {
     AnimationManager::StartAnim("Huggies_Spare", giant);
 	AdjustFacialExpression(giant, 0, 0.0, "phenome");
+	AdjustFacialExpression(giant, 0, 0.0, "modifier");
+	AdjustFacialExpression(giant, 1, 0.0, "modifier");
 	HugShrink::Release(giant);
 	if (tiny) {
 		EnableCollisions(tiny);

@@ -19,31 +19,16 @@ namespace {
 			return;
 		}
 
-		auto left = find_node(actor, "NPC L Foot [Lft ]");
-		auto right = find_node(actor, "NPC R Foot [Rft ]");
-		if (!left) {
-			return;
-		}
-		if (!right) {
-			return;
-		}
-
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
 			case FootEvent::Left:
-				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", left->world.rotate, left->world.translate, scale * 22.5, 7, 0);
 			case FootEvent::Right:
-				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", right->world.rotate, right->world.translate, scale * 22.5, 7, 0);
 			case FootEvent::Front:
 			case FootEvent::Back:
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 			case FootEvent::JumpLand:
-				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", left->world.rotate, left->world.translate, scale * 22.5, 7, 0);
-				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", right->world.rotate, right->world.translate, scale * 22.5, 7, 0);
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
-			}
-
-		return;
+		}
 
 		if (base_explosion) {
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
