@@ -31,15 +31,15 @@ namespace {
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
 			case FootEvent::Left:
-				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", left->world.rotate, left->world.translate, scale * 22.5, 7, left);
+				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", left->world.rotate, left->world.translate, scale * 22.5, 7, 0);
 			case FootEvent::Right:
-				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", right->world.rotate, right->world.translate, scale * 22.5, 7, right);
+				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", right->world.rotate, right->world.translate, scale * 22.5, 7, 0);
 			case FootEvent::Front:
 			case FootEvent::Back:
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 			case FootEvent::JumpLand:
-				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", left->world.rotate, left->world.translate, scale * 22.5, 7, left);
-				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", right->world.rotate, right->world.translate, scale * 22.5, 7, right);
+				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", left->world.rotate, left->world.translate, scale * 22.5, 7, 0);
+				SpawnParticle(actor, 1.80, "GTS/FootExplosion.nif", right->world.rotate, right->world.translate, scale * 22.5, 7, 0);
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 			}
 
