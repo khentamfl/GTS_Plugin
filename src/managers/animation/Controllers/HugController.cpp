@@ -163,9 +163,8 @@ namespace Gts {
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_HUG_SCALE) {
-				Notify("{} is too big to be hugged.", prey->GetDisplayFullName());
-				return false;
-			}
+			Notify("{} is too big to be hugged.", prey->GetDisplayFullName());
+			return false;
 		}
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_HUG_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
