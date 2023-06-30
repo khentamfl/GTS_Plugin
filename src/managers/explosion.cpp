@@ -20,11 +20,11 @@ namespace {
 		if (!actor) {
 			return;
 		}
-		auto left = find_node(actor "NPC R Foot [Rft ]");
+		auto left = find_node(actor, "NPC R Foot [Rft ]");
 		if (!left) {
 			return;
 		}
-		auto right = find_node(actor "NPC R Foot [Rft ]");
+		auto right = find_node(actor, "NPC R Foot [Rft ]");
 		if (!right) {
 			return;
 		}
