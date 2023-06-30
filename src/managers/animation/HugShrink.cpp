@@ -46,10 +46,10 @@ namespace {
 		AllowDialogue(huggedActor, false);
 		HugShrink::AttachActorTask(giant, huggedActor);
 
+		float sizedifference = get_visual_scale(giant)/get_visual_scale(huggedActor);
 		if (giant->formID == 0x14) {
 			shake_camera(giant, 0.70 * sizedifference, 0.35);
 		} else {
-			float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 			Rumble::Once("HugGrab", giant, sizedifference * 12, 0.15);
 		}
 
