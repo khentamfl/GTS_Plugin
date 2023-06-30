@@ -1053,7 +1053,7 @@ namespace Gts {
         	}
 	      }
 
-        return growData->amount.value > 0;//fabs(growData->amount.value - growData->amount.target) > 1e-4;
+        return fabs(growData->amount.value - growData->amount.target) > 1e-4;
       }
     );
   }
@@ -1084,7 +1084,7 @@ namespace Gts {
         	}
 	      }
 
-        return growData->amount.value > 0; //fabs(growData->amount.value - growData->amount.target) > 1e-4;
+        return fabs(growData->amount.value - growData->amount.target) > 1e-4;
       }
     );
   }
