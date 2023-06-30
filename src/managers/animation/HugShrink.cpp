@@ -47,8 +47,9 @@ namespace {
 		HugShrink::AttachActorTask(giant, huggedActor);
 
 		if (giant->formID == 0x14) {
-			shake_camera(giantref, 0.70 * sizedifference, 0.35);
+			shake_camera(giant, 0.70 * sizedifference, 0.35);
 		} else {
+			float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 			Rumble::Once("HugGrab", giant, sizedifference * 12, 0.15);
 		}
 
@@ -193,17 +194,17 @@ namespace Gts {
 			float steal = 0.20;
 			if (sizedifference >= 4.0) {
 				SetBeingHeld(tinyref, false);
-				std::string_view message = std::format("You're worried about crushing {} with hugs", prey->GetDisplayFullName());
+				std::string_view message = std::format("You're worried about crushing {} with hugs", tinyref->GetDisplayFullName());
 				Notify(message);
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
 			DamageAV(tinyref, ActorValue::kStamina, 0.60 * TimeScale()); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.10 * TimeScale()); // Damage GTS Stamina
-			if (Runtime::HasPerkTeam(caster, "FastShrink")) {
+			if (Runtime::HasPerkTeam(giantref, "FastShrink")) {
 				steal *= 1.33;
 			}
-			if (Runtime::HasPerkTeam(caster, "LethalShrink")) {
+			if (Runtime::HasPerkTeam(giantref, "LethalShrink")) {
 				steal *= 1.66;
 			}
 			TransferSize(giantref, tinyref, false, 5.60, steal, false); // Shrink foe, enlarge gts
