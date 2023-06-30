@@ -176,7 +176,10 @@ namespace Gts {
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_GRAB_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 				return false;
-			} else {
+			} if (sizedifference >= 3.9) { // Disallow Hugs with smol people
+				return false;
+			}
+			else {
 				return true;
 			}
 		} else {
