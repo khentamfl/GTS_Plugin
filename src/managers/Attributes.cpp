@@ -233,14 +233,17 @@ namespace Gts {
 				float PerkSpeed = 1.0;
 				auto actorData = Persistent::GetSingleton().GetData(actor);
 				float Bonus = 1.0;
+				float animSpeed = 1.0;
 				if (actorData) {
 					Bonus = actorData->smt_run_speed;
+					animSpeed = actorData->anim_speed;
 				}
+
 				if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
 					PerkSpeed = clamp(0.80, 1.0, speed_mult_walk);
 				}
 
-				float power = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/PerkSpeed;///MS_mult_limit/Multy/bonusspeed/PerkSpeed;
+				float power = 1.0 * (Bonus/2.2 + 1.0)/animSpeed;///MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
 				if (scale > 1.0) {
 					return power;
 				} else {
