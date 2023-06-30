@@ -163,11 +163,6 @@ namespace Gts {
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_GRAB_SCALE) {
-			if (!IsHuman(prey)) { // Allow hugs with humanoids only
-				if (pred->formID == 0x14) {
-					std::string_view message = std::format("You have no desire to hug {}", prey->GetDisplayFullName());
-					TiredSound(pred, message); // Just no. We don't have Creature Anims.
-				}
 				return false;
 			}
 			Notify("{} is too big to be grabbed.", prey->GetDisplayFullName());
@@ -176,8 +171,14 @@ namespace Gts {
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_GRAB_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 				return false;
-			} if (sizedifference >= 3.9) { // Disallow Hugs with smol people
-				return false;
+			} if (!IsHuman(prey)) { // Allow hugs with humanoids only
+				if (pred->formID == 0x14) {
+					std::string_view message = std::format("You have no desire to hug {}", prey->GetDisplayFullName());
+					TiredSound(pred, message); // Just no. We don't have Creature Anims.
+				} 
+				if (sizedifference >= 3.9) { // Disallow Hugs with smol people
+					return false;
+				}
 			}
 			else {
 				return true;

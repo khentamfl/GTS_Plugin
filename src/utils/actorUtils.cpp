@@ -302,13 +302,16 @@ namespace Gts {
 	}
     
 	bool IsHuman(Actor* actor) { // Check if Actor is humanoid or not. Currently used for Hugs Animation
-		if (!Runtime::HasKeyword(actor, "DragonKeyword") && !Runtime::HasKeyword(actor, "DwemerKeyword") && !Runtime::HasKeyword(actor, "AnimalKeyword") &&
-			!Runtime::HasKeyword(actor, "CreatureKeyword") && !Runtime::HasKeyword(actor, "UndeadKeyword")
-		) {
+		bool vampire = Runtime::HasKeyword(actor, "VampireKeyword");
+		bool dragon = Runtime::HasKeyword(actor, "DragonKeyword");
+		bool animal = Runtime::HasKeyword(actor, "AnimalKeyword");
+		bool dwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
+		bool undead = Runtime::HasKeyword(actor, "UndeadKeyword");
+		bool creature = Runtime::HasKeyword(actor, "CreatureKeyword");
+		log::info("{} is vamp: {}, drag: {}, anim: {}, dwem: {}, undead: {}, creat: {}", actor->GetDisplayFullName(), vampire, dragon, animal, dwemer, undead, creature);
+		if (!dragon && !animal && !dwemer && !undead && !creature) {
 			return true; // Detect non-vampire
-		} else if (!Runtime::HasKeyword(actor, "DragonKeyword") && !Runtime::HasKeyword(actor, "DwemerKeyword") &&!Runtime::HasKeyword(actor, "AnimalKeyword") &&
-			!Runtime::HasKeyword(actor, "CreatureKeyword") && Runtime::HasKeyword(actor, "UndeadKeyword") && Runtime::HasKeyword(actor, "VampireKeyword")
-		) {
+		} if (!dragon && !animal && !dwemer && !creature && undead && vampire) {
 			return true; // Detect Vampire
 		} else {
 			return false;
