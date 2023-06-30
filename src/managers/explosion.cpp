@@ -31,7 +31,7 @@ namespace {
 		}
 
 		if (base_explosion) {
-			base_explosion->radius = 0.0;
+			base_explosion->data.radius = 0.0;
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
 			if (!instance_ptr) {
 				return;
