@@ -37,6 +37,13 @@ namespace Gts {
 		return "SmallMassiveThreat";
 	}
 
+	void SmallMassiveThreat::OnStart() {
+		/*MessageBox("While Tiny Calamity is active, your size-related actions 
+		are massively empowered, but your max scale is limited. 
+		Size difference threshold for size-related actions is greatly decreased, 
+		but performing size-related actions (Vore, Grab, etc) wastes some of Tiny Calamity's duration.", "Calamity");*/
+	}
+
 	void SmallMassiveThreat::OnUpdate() {
 		const float BASE_POWER = 0.00035;
 		const float DUAL_CAST_BONUS = 2.0;

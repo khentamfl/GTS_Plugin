@@ -37,10 +37,10 @@ namespace {
 	float GetStealRate(Actor* actor) {
 		float steal = 0.20;
 		if (Runtime::HasPerkTeam(actor, "FastShrink")) {
-			steal += 0.05;
+			steal += 0.02;
 		}
 		if (Runtime::HasPerkTeam(actor, "LethalShrink")) {
-			steal += 0.10;
+			steal += 0.03;
 		} if (Runtime::HasPerkTeam(actor, "HugCrush")) {
 			steal *= 1.35;
 		}
@@ -279,7 +279,7 @@ namespace Gts {
 			DamageAV(tinyref, ActorValue::kStamina, 0.15 * TimeScale()); // Drain Tiny Stamina
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
-			if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || sizedifference >= GetShrinkThreshold(giantref) || !HugShrink::GetHuggiesActor(giantref)) {
+			if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || !HugShrink::GetHuggiesActor(giantref)) {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
