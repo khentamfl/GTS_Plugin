@@ -28,7 +28,7 @@ namespace {
 		float k = 0.065;
 		float n = 1.0;
 		float s = 1.12;
-		float Result = 1.0/(pow(1.0+pow(k*(Size),n*s),1.0/s));
+		float Result = 1.0;//1.0/(pow(1.0+pow(k*(Size),n*s),1.0/s));
 		return Result;
 	}
 
