@@ -128,9 +128,9 @@ namespace {
 		}
 	}
 
-	void DropTinyChance(Actor* receiver, float damage) {
+	void DropTinyChance(Actor* receiver, float damage, float scale) {
 		static Timer DropTimer = Timer(0.33); // Check once per .33 sec
-		if (damage < 2.0) {
+		if (damage < 4.0 * scale) {
 			return;
 		}
 		if (DropTimer.ShouldRunFrame()) {
@@ -149,11 +149,11 @@ namespace {
 		float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
 		float damage = (a_damage * damagemult) - a_damage;
 		//log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
-
+		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		HealthGate(attacker, receiver, -(a_damage + damage));
 		TinyAsShield(attacker, receiver, -(a_damage + damage));
 		HugResistance(receiver, -(a_damage + damage));
-		DropTinyChance(receiver, -(a_damage + damage));
+		DropTinyChance(receiver, -(a_damage + damage), sizedifference);
 
 		if (damage < 0) {
 			Overkill(attacker, receiver, -(a_damage + damage));

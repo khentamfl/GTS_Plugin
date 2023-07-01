@@ -108,16 +108,41 @@ namespace Gts {
 					explosion_pos.z = actor->GetPosition().z;
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
-					/*if (HighHeelManager::IsWearingHH(actor)) {
-						NiPoint3 FootPos = explosion_pos + NiPoint3(meter_to_unit(0.05*scale), meter_to_unit(0.05*scale), 0.0);
-						NiPoint3 HeelPos = explosion_pos + NiPoint3(meter_to_unit(-0.05*scale), meter_to_unit(-0.05*scale), 0.0);
-						make_explosion_at(impact.kind, actor, FootPos, scale);
-						make_explosion_at(impact.kind, actor, HeelPos, scale);
+					if (HighHeelManager::IsWearingHH(actor)) {
+						auto FootFrontL = find_node(actor, "NPC L Foot [Lft ]");
+						auto FootHeelL = find_node(actor, "NPC L Toe0 [LToe]");
+
+						auto FootFrontR = find_node(actor, "NPC R Foot [Lft ]");
+						auto FootHeelR = find_node(actor, "NPC R Toe0 [LToe]");
+						if (!FootFrontL) {
+							return;
+						} if (!FootHeelL) {
+							return;
+						} if (!FootFrontR) {
+							return;
+						} if (!FootHeelR) {
+							return;
+						}
+						NiPoint3 FootPosL = NiPoint3(FootFrontL->world.translate.x, FootFrontL->world.translate.y - meter_to_unit(0.025*scale), explosion_pos.z);
+						NiPoint3 HeelPosL = NiPoint3(FootHeelL->world.translate.x, FootHeelL->world.translate.y - meter_to_unit(0.025*scale), explosion_pos.z);
+						NiPoint3 FootPosR = NiPoint3(FootFrontR->world.translate.x, FootFrontLR->world.translate.y - meter_to_unit(0.025*scale), explosion_pos.z);
+						NiPoint3 HeelPosR = NiPoint3(FootHeelR->world.translate.x, FootHeelR->world.translate.y - meter_to_unit(0.025*scale), explosion_pos.z);
+						if (impact.kind == FootEvent::Left) {
+							make_explosion_at(impact.kind, actor, FootPosL, scale);
+							make_explosion_at(impact.kind, actor, HeelPosL, scale);
+						} else if (impact.kind == FootEvent::Right) {
+							make_explosion_at(impact.kind, actor, FootPosR, scale);
+							make_explosion_at(impact.kind, actor, HeelPosR, scale);
+						} else if (impact.kind == FootEvent::JumpLand) {
+							make_explosion_at(impact.kind, actor, FootPosL, scale);
+							make_explosion_at(impact.kind, actor, HeelPosL, scale);
+							make_explosion_at(impact.kind, actor, FootPosR, scale);
+							make_explosion_at(impact.kind, actor, HeelPosR, scale);
+						}
 					} else {
-						make_explosion_at(impact.kind, actor, explosion_pos, scale);
-					}*/
 					/// Sermit To-do: spawn 2 dust effects: at the tip of feet and under the heel, when we have HH off. Currently misses rotation math.
-					make_explosion_at(impact.kind, actor, explosion_pos, scale);
+						make_explosion_at(impact.kind, actor, explosion_pos, scale);
+					}
 				}
 				if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
 					make_explosion_at(impact.kind, actor, explosion_pos, scale);
