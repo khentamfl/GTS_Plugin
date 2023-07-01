@@ -22,7 +22,7 @@ namespace Gts {
 			virtual void ActorEquip(Actor* actor) override;
 			virtual void ActorLoaded(Actor* actor) override;
 			virtual void OnAddPerk(const AddPerkEvent& evt) override;
-			virtual void OnRemovePerk(const AddPerkEvent& evt) override;
+			virtual void OnRemovePerk(const RemovePerkEvent& evt) override;
 
 			static bool IsWearingHH(Actor* actor); // Checks if GetBaseHHOffset().Length() > 1e-4
 			static void UpdateHHOffset(Actor* actor);

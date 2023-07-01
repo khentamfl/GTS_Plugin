@@ -57,7 +57,7 @@ namespace Gts {
 		}
 	}
 
-	void HighHeelManager::OnRemovePerk(const AddPerkEvent& evt) {
+	void HighHeelManager::OnRemovePerk(const RemovePerkEvent& evt) {
 		log::info("Remove Perk fired");
 		if (evt.perk == Runtime::GetPerk("hhBonus")) {
 			for (auto actor: find_actors()) {
