@@ -34,6 +34,8 @@ namespace Gts {
 			static void HugActor(Actor* giant, TESObjectREFR* tiny);
 			static void Release(Actor* giant);
 
+
+			static void CallRelease(Actor* giant);
 			// Get object being held
 			static TESObjectREFR* GetHuggiesObj(Actor* giant);
 			// Same as `GetHeldObj` but with a conversion to actor if possible

@@ -169,6 +169,11 @@ perks:
   DestructionBasics: "GTS.esp|587C4A"
   KillerThighs: "GTS.esp|587C4B"
 
+  HugCrush: "GTS.esp|60656E"
+  HugCrush_Greed: "GTS.esp|606571"
+  HugCrush_ToughGrip: "GTS.esp|606570"
+  HugCrush_HugsOfDeath: "GTS.esp|60656F"
+
 
 
 explosions:

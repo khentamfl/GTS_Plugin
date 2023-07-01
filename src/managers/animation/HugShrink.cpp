@@ -34,6 +34,28 @@ using namespace std;
 
 
 namespace {
+	float GetStealRate(Actor* actor) {
+		float steal = 0.20;
+		if (Runtime::HasPerkTeam(giantref, "FastShrink")) {
+			steal += 0.05;
+		}
+		if (Runtime::HasPerkTeam(giantref, "LethalShrink")) {
+			steal += 0.10;
+		} if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
+			steal *= 1.25;
+		}
+		return steal;
+	}
+	float GetShrinkThreshold(Actor* actor) {
+		float threshold = 4.0;
+		float bonus = 1.0;
+		if (Runtime::HasPerk(actor, "HugCrush")) {
+			bonus += 1.20;
+		} if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
+			bonus += 1.30;
+		}
+		return threshold * bonus;
+	}
 
 	void GTS_Hug_Grab(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -191,22 +213,18 @@ namespace Gts {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
-			float steal = 0.20;
-			if (sizedifference >= 4.0) {
+			float threshold = GetShrinkThreshold(giantref);
+			float steal = GetStealRate(giantref);
+			if (sizedifference >= threshold) {
 				SetBeingHeld(tinyref, false);
-				std::string_view message = std::format("You're worried about crushing {} with hugs", tinyref->GetDisplayFullName());
+				std::string_view message = std::format("You can't shrink {} any further", tinyref->GetDisplayFullName());
 				Notify(message);
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
 			DamageAV(tinyref, ActorValue::kStamina, 0.60 * TimeScale()); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.10 * TimeScale()); // Damage GTS Stamina
-			if (Runtime::HasPerkTeam(giantref, "FastShrink")) {
-				steal *= 1.33;
-			}
-			if (Runtime::HasPerkTeam(giantref, "LethalShrink")) {
-				steal *= 1.66;
-			}
+			
 			TransferSize(giantref, tinyref, false, 5.60, steal, false); // Shrink foe, enlarge gts
 			if (giantref->formID == 0x14) {
 				shake_camera(giantref, 0.70 * sizedifference, 0.05);
@@ -251,7 +269,7 @@ namespace Gts {
 			DamageAV(tinyref, ActorValue::kStamina, 0.15 * TimeScale()); // Drain Tiny Stamina
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
-			if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || sizedifference >= 4.0 || !HugShrink::GetHuggiesActor(giantref)) {
+			if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || sizedifference >= GetShrinkThreshold(giantref) || !HugShrink::GetHuggiesActor(giantref)) {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
@@ -286,6 +304,16 @@ namespace Gts {
 
 	void HugShrink::Release(Actor* giant) {
 		HugShrink::GetSingleton().data.erase(giant);
+	}
+
+	void HugShrink::CallRelease(Actor* giant) {
+		auto huggedActor = HugShrink::GetHuggiesActor(giant);
+		if (!huggedActor) {
+			return;
+		}
+		std::string_view message = std::format("{} was saved from your hugs", huggedActor->GetDisplayFullName());
+		Notify(message);
+		AbortAnimation(giant, huggedActor);
 	}
 
 	TESObjectREFR* HugShrink::GetHuggiesObj(Actor* giant) {

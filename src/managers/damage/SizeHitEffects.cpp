@@ -1,6 +1,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
+#include "managers/animation/HugShrink.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/CrushManager.hpp"
@@ -119,6 +120,31 @@ namespace {
 		}
 	}
 
+	void HugResistance(Actor* receiver, float damage) {
+		if (!Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
+			return;
+		} if (HugShrink::GetHuggiesActor(receiver)) {
+			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.5);
+		}
+	}
+
+	void DropTinyChance(Actor* receiver, float damage) {
+		static timer DropTimer = Timer(0.33);
+		if (damage < 2.0) {
+			return;
+		}
+		if (DropTimer.ShouldRunFrame()) {
+			if (Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
+				float GetHP = GetHealthPercentage(receiver);
+				if (GetHP <= 0.65) {
+					HugShrink::CallRelease(receiver); // Drop only if hp is < 60%
+				}
+			} else {
+				HugShrink::CallRelease(receiver); // Else drop on hit always
+			}
+		}
+	}
+
 	void InflictDamage(Actor* attacker, Actor* receiver, float a_damage) {
 		float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
 		float damage = (a_damage * damagemult) - a_damage;
@@ -126,6 +152,8 @@ namespace {
 
 		HealthGate(attacker, receiver, -(a_damage + damage));
 		TinyAsShield(attacker, receiver, -(a_damage + damage));
+		HugResistance(receiver, -(a_damage + damage));
+		DropTinyChance(receiver, -(a_damage + damage));
 
 		if (damage < 0) {
 			Overkill(attacker, receiver, -(a_damage + damage));
