@@ -125,7 +125,7 @@ namespace Gts {
 						}
 						NiPoint3 FootPosL = NiPoint3(FootFrontL->world.translate.x, FootFrontL->world.translate.y - meter_to_unit(0.025*scale), explosion_pos.z);
 						NiPoint3 HeelPosL = NiPoint3(FootHeelL->world.translate.x, FootHeelL->world.translate.y - meter_to_unit(0.025*scale), explosion_pos.z);
-						NiPoint3 FootPosR = NiPoint3(FootFrontR->world.translate.x, FootFrontLR->world.translate.y - meter_to_unit(0.025*scale), explosion_pos.z);
+						NiPoint3 FootPosR = NiPoint3(FootFrontR->world.translate.x, FootFrontR->world.translate.y - meter_to_unit(0.025*scale), explosion_pos.z);
 						NiPoint3 HeelPosR = NiPoint3(FootHeelR->world.translate.x, FootHeelR->world.translate.y - meter_to_unit(0.025*scale), explosion_pos.z);
 						if (impact.kind == FootEvent::Left) {
 							make_explosion_at(impact.kind, actor, FootPosL, scale);
