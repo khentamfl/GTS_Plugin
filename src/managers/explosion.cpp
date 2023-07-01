@@ -129,10 +129,10 @@ namespace Gts {
 						}
 						log::info("Trying to spawn explosion");
 						float offset = meter_to_unit(hh_offset*scale);
-						NiPoint3 FootPosL = NiPoint3(FootFrontL->world.translate.x, FootFrontL->world.translate.y, explosion_pos.z);
-						NiPoint3 HeelPosL = NiPoint3(FootHeelL->world.translate.x, FootHeelL->world.translate.y - offset, explosion_pos.z);
-						NiPoint3 FootPosR = NiPoint3(FootFrontR->world.translate.x, FootFrontR->world.translate.y, explosion_pos.z);
-						NiPoint3 HeelPosR = NiPoint3(FootHeelR->world.translate.x, FootHeelR->world.translate.y - offset, explosion_pos.z);
+						NiPoint3 FootPosL = NiPoint3(FootFrontL->world.translate.x, FootFrontL->world.translate.y + offset/4, explosion_pos.z);
+						NiPoint3 HeelPosL = NiPoint3(FootHeelL->world.translate.x, FootHeelL->world.translate.y + offset/3, explosion_pos.z);
+						NiPoint3 FootPosR = NiPoint3(FootFrontR->world.translate.x, FootFrontR->world.translate.y + offset/4, explosion_pos.z);
+						NiPoint3 HeelPosR = NiPoint3(FootHeelR->world.translate.x, FootHeelR->world.translate.y + offset/3, explosion_pos.z);
 						if (impact.kind == FootEvent::Left) {
 							log::info("Foot Left");
 							make_explosion_at(impact.kind, actor, FootPosL, scale);
