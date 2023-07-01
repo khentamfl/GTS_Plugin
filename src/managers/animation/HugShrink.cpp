@@ -50,9 +50,9 @@ namespace {
 		float threshold = 2.5;
 		float bonus = 1.0;
 		if (Runtime::HasPerk(actor, "HugCrush")) {
-			bonus += 1.25;
+			bonus += 0.25;
 		} if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
-			bonus += 1.35;
+			bonus += 0.35;
 		}
 		return threshold * bonus;
 	}
@@ -218,7 +218,7 @@ namespace Gts {
 			auto tinyref = tinyhandle.get().get();
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 			float threshold = GetShrinkThreshold(giantref);
-			float stamina = 0.25;
+			float stamina = 0.35;
 			float steal = GetStealRate(giantref);
 			float shrink = 5.60;
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {

@@ -164,6 +164,14 @@ namespace Gts {
 		}
 	}
 
+	void HighHeelManager::OnRemovePerk(const RemovePerkEvent& evt) {
+		if (evt.perk == Runtime::GetPerk("hhBonus")) {
+			Actor* actor = evt.actor;
+			if (actor) {
+				this->SetSizeAttribute(actor, 1.0, 3); // Reset HH to 1.0
+			}
+		}
+	}
 
 
 	void SizeManager::OnHighheelEquip(const HighheelEquip& evt) {
