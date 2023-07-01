@@ -55,8 +55,53 @@ using namespace std;
 
 namespace {
 
+	const std::vector<std::string_view> RHAND_RUMBLE_NODES = { // used for hand rumble
+		"NPC R UpperarmTwist1 [RUt1]",
+		"NPC R UpperarmTwist2 [RUt2]",
+		"NPC R Forearm [RLar]",
+		"NPC R ForearmTwist2 [RLt2]",
+		"NPC R ForearmTwist1 [RLt1]",
+		"NPC R Hand [RHnd]",
+	};
+
+	const std::vector<std::string_view> LHAND_RUMBLE_NODES = { // used for hand rumble
+		"NPC L UpperarmTwist1 [LUt1]",
+		"NPC L UpperarmTwist2 [LUt2]",
+		"NPC L Forearm [LLar]",
+		"NPC L ForearmTwist2 [LLt2]",
+		"NPC L ForearmTwist1 [LLt1]",
+		"NPC L Hand [LHnd]",
+	};
+
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
+
+	void StartRHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
+		for (auto& node_name: RHAND_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+		}
+	}
+
+	void StartLHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
+		for (auto& node_name: LHAND_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+		}
+	}
+
+	void StopRHandRumble(std::string_view tag, Actor& actor) {
+		for (auto& node_name: RHAND_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Stop(rumbleName, &actor);
+		}
+	}
+	void StopLHandRumble(std::string_view tag, Actor& actor) {
+		for (auto& node_name: RHAND_RUMBLE_NODES) {
+			std::string rumbleName = std::format("{}{}", tag, node_name);
+			Rumble::Stop(rumbleName, &actor);
+		}
+	}
 
 	bool Escaped(Actor* giant, Actor* tiny, float strength) {
 		float tiny_chance = ((rand() % 100000) / 100000.0f) * get_visual_scale(tiny);
@@ -78,6 +123,7 @@ namespace {
 			SetBeingHeld(grabbedActor, true);
 			AllowDialogue(grabbedActor, false);
 		}
+		StartLHandRumble("GrabL", data.giant, 0.5, 0.10);
 	}
 
 	void GTSGrab_Catch_Actor(AnimationEventData& data) {
@@ -87,10 +133,12 @@ namespace {
 		if (grabbedActor) {
 			Grab::AttachActorTask(giant, grabbedActor);
 		}
+		Rumble::Once("GrabCatch", giant, 2.0, 0.15);
 	}
 
 	void GTSGrab_Catch_End(AnimationEventData& data) {
 		ManageCamera(&data.giant, false, 7.0);
+		StopLHandRumble("GrabL", data.giant);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,6 +149,7 @@ namespace {
 		auto giant = &data.giant;
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", true, 0.40, 1.0);
 		ManageCamera(giant, true, 7.0);
+		StartLHandRumble("GrabMoveL", data.giant, 0.5, 0.10);
 	}
 
 	void GTSGrab_Attack_Damage(AnimationEventData& data) {
@@ -171,6 +220,7 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(giant, false, 7.0);
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.40, 1.0);
+		StopLHandRumble("GrabMoveL", data.giant);
 		if (!grabbedActor) {
 			log::info("GrabbedActor is null");
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
@@ -193,6 +243,7 @@ namespace {
 		if (otherActor) {
 			VoreData.AddTiny(otherActor);
 		}
+		StartLHandRumble("GrabVoreL", data.giant, 0.5, 0.10);
 	}
 
 	void GTSGrab_Eat_OpenMouth(AnimationEventData& data) {
@@ -209,6 +260,7 @@ namespace {
 		AdjustFacialExpression(giant, 1, 0.80, "modifier"); // blink R
 
 		AdjustFacialExpression(&data.giant, 3, 0.8, "phenome"); // Smile a bit (Mouth)
+		StopLHandRumble("GrabVoreL", data.giant);
 	}
 
 	void GTSGrab_Eat_Eat(AnimationEventData& data) {
@@ -267,6 +319,7 @@ namespace {
 		auto giant = &data.giant;
 		DrainStamina(giant, "GrabThrow", "DestructionBasics", true, 0.60, 1.8);
 		ManageCamera(giant, true, 7.0);
+		StartLHandRumble("GrabThrowL", data.giant, 0.5, 0.10);
 	}
 
 	void GTSGrab_Throw_FS_R(AnimationEventData& data) {
@@ -317,6 +370,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		ManageCamera(giant, false, 7.0);
+		Rumble::Once("ThrowFoe", &data.giant, 2.50, 0.10, "NPC L Hand [LHnd]");
 		AnimationManager::StartAnim("TinyDied", giant);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
@@ -326,9 +380,10 @@ namespace {
 	void GTSGrab_Throw_Throw_Post(AnimationEventData& data) { // Throw frame 2
 	}
 
-	void GTSGrab_Throw_MoveStop(AnimationEventData& data) {
+	void GTSGrab_Throw_MoveStop(AnimationEventData& data) { // Throw Frame 3
 		auto giant = &data.giant;
 		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.60, 1.8);
+		StopLHandRumble("GrabThrowL", data.giant);
 	}
 
 

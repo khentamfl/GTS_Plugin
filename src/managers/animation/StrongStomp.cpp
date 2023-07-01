@@ -124,7 +124,7 @@ namespace {
 			log::info("Anim Speed: {}", data.animSpeed);
 		}
 		TrackFeet(giant, 6.0, true);
-		StartLegRumble("StrongStompR", data.giant, 0.3, 0.10, "Right");
+		StartLegRumble("StrongStompR", data.giant, 0.35 *data.animSpeed - 0.35, 0.10, "Right");
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.45, 4.0);
 	}
 
@@ -137,7 +137,7 @@ namespace {
 			log::info("Anim Speed: {}", data.animSpeed);
 		}
 		TrackFeet(giant, 5.0, true);
-		StartLegRumble("StrongStompL", data.giant, 0.3, 0.10, "Left");
+		StartLegRumble("StrongStompL", data.giant, 0.35 *data.animSpeed - 0.35, 0.10, "Left");
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.45, 4.0);
 	}
 
@@ -170,7 +170,7 @@ namespace {
 			SMT = 1.5; // Larger Dust
 			damage = 2.0;
 		}
-		DoImpactRumble(&data.giant, data.animSpeed * 2, RNode, "HeavyStompR");
+		DoImpactRumble(&data.giant, SMT * data.animSpeed - 0.55 * 2, RNode, "HeavyStompR");
 		DoSounds(&data.giant, data.animSpeed - 0.5, RNode); 
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.55), 1.85 * damage * (data.animSpeed - 0.55), 5, 0.035);
 		DoSizeEffect(&data.giant, SMT * (data.animSpeed - 0.55), FootEvent::Right, RNode);
@@ -187,7 +187,7 @@ namespace {
 			SMT = 1.5; // Larger Dust
 			damage = 2.0;
 		}
-		DoImpactRumble(&data.giant, data.animSpeed * 2, LNode, "HeavyStompL");
+		DoImpactRumble(&data.giant, SMT * data.animSpeed - 0.55 * 2, LNode, "HeavyStompL");
 		DoSounds(&data.giant, data.animSpeed - 0.5, LNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.55), 1.85 * damage * (data.animSpeed - 0.55), 5, 0.035);
 		DoSizeEffect(&data.giant, SMT * (data.animSpeed - 0.55), FootEvent::Left, LNode);
