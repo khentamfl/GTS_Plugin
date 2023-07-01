@@ -136,8 +136,8 @@ namespace {
 		if (DropTimer.ShouldRunFrame()) {
 			if (Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
 				float GetHP = GetHealthPercentage(receiver);
-				if (GetHP <= 0.65) {
-					HugShrink::CallRelease(receiver); // Drop only if hp is < 60%
+				if (GetHP <= 0.75) {
+					HugShrink::CallRelease(receiver); // Drop only if hp is < 75%
 				}
 			} else {
 				HugShrink::CallRelease(receiver); // Else drop on hit always
