@@ -136,10 +136,9 @@ namespace Gts {
 					}
 				}
 				if (impact_data.kind == FootEvent::JumpLand) {
-					giantScale *= 2.0;
+					giantScale *= 2.25;
 				}
 				
-
 				if (HasSMT(actor)) {
 					giantScale *= 2.0;
 				}
@@ -174,7 +173,7 @@ namespace Gts {
 									if (distance < maxFootDistance) {
 										// Under Foot
 										float aveForce = 1.0 - distance / maxFootDistance;
-										aveForce = std::clamp(aveForce, 0.0f, 0.80f);
+										aveForce = std::clamp(aveForce, 0.0f, 0.65f);
 										UnderFoot underfoot = UnderFoot {
 											.giant = impact_data.actor,
 											.tiny = otherActor,

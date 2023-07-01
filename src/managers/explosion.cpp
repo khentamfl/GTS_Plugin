@@ -89,7 +89,7 @@ namespace Gts {
 			}
 			FootEvent foot_kind = impact.kind;
 			if (foot_kind == FootEvent::JumpLand) {
-				scale *= 2.0; // Jumping makes you sound bigger
+				scale *= 2.25; // Jumping makes you sound bigger
 			}
 			if (HighHeelManager::IsWearingHH(actor)) {
 				scale *= 1.25; // Wearing High Heels makes you bigger

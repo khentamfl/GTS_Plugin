@@ -313,7 +313,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.00f, 0.80f);///nodeCollisions;
+								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								//log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}
@@ -460,9 +460,6 @@ namespace Gts {
 
 		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
-			if (Runtime::HasPerk(giant, "LethalSprint")) {
-				sprintdamage *= 2.0;
-			}
 		}
 
 		float result = ((0.125 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;
