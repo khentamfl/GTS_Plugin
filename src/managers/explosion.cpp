@@ -109,11 +109,11 @@ namespace Gts {
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
 					if (HighHeelManager::IsWearingHH(actor)) {
-						auto FootFrontL = find_node(actor, "NPC L Foot [Lft ]");
-						auto FootHeelL = find_node(actor, "NPC L Toe0 [LToe]");
+						auto FootHeelL = find_node(actor, "NPC L Foot [Lft ]");
+						auto FootFrontL = find_node(actor, "NPC L Toe0 [LToe]");
 
-						auto FootFrontR = find_node(actor, "NPC R Foot [Rft ]");
-						auto FootHeelR = find_node(actor, "NPC R Toe0 [RToe]");
+						auto FootHeelR = find_node(actor, "NPC R Foot [Rft ]");
+						auto FootFrontR = find_node(actor, "NPC R Toe0 [RToe]");
 						if (!FootFrontL) {
 							log::info("Foot Front L false");
 							return;
