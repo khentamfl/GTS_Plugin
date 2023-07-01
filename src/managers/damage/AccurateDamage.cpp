@@ -409,7 +409,7 @@ namespace Gts {
 
 		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
 			if (CanDoDamage(giant, tiny)) {
-				DoSizeDamage(giant, tiny, movementFactor, force * 22 * damage, 50, 0.50, true);
+				DoSizeDamage(giant, tiny, movementFactor, force * 22 * damage * 1.5, 50, 0.50, true);
 			}
 
 			if (!sizemanager.IsLaunching(tiny)) {

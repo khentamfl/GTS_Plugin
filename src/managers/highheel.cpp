@@ -57,6 +57,18 @@ namespace Gts {
 		}
 	}
 
+	void HighHeelManager::OnRemovePerk(const AddPerkEvent& evt) {
+		log::info("Remove Perk fired");
+		if (evt.perk == Runtime::GetPerk("hhBonus")) {
+			for (auto actor: find_actors()) {
+				if (actor) {
+					log::info("HH perk was removed");
+					HighHeelManager::GetSingleton().ApplyHH(actor, false);
+				}
+			}
+		}
+	}
+
 	void HighHeelManager::ApplyHH(Actor* actor, bool force) {
 		auto profiler = Profilers::Profile("HH: ApplyHH");
 		if (!actor) {
