@@ -313,7 +313,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
+								float aveForce = std::clamp(force, 0.00f, 0.80f);///nodeCollisions;
 								//log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}

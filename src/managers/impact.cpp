@@ -174,7 +174,7 @@ namespace Gts {
 									if (distance < maxFootDistance) {
 										// Under Foot
 										float aveForce = 1.0 - distance / maxFootDistance;
-										aveForce = std::clamp(aveForce, 0.0f, 0.62f);
+										aveForce = std::clamp(aveForce, 0.0f, 0.80f);
 										UnderFoot underfoot = UnderFoot {
 											.giant = impact_data.actor,
 											.tiny = otherActor,
