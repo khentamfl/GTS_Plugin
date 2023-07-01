@@ -659,17 +659,17 @@ namespace Gts {
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
 			//ForceRagdoll(tiny, true);
-			PushActorAway(giant, tiny, power/50); // Always push
+			PushActorAway(giant, tiny, power/10); // Always push
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			return;
 		}
-		if (ragdollchance >= 7.0 * sizedifference && (sizedifference >= 1.25 && sizedifference < 3.0)) {
+		if (power >= 0.50 || ragdollchance >= 7.0 * sizedifference && (sizedifference >= 1.25 && sizedifference < 3.0)) {
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
 		} else if (ragdollchance < 7.0 * sizedifference) {
 			// ForceRagdoll(tiny, true);
-			PushActorAway(giant, tiny, power/50); // Push instead
+			PushActorAway(giant, tiny, power/10); // Push instead
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			return;
 		}

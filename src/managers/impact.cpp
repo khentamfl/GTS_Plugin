@@ -131,10 +131,14 @@ namespace Gts {
 				}
 				if (actor->AsActorState()->IsSprinting()) {
 					giantScale *= 1.75;
+					if (Runtime::HasPerk(actor, "LethalSprint")) {
+						giantScale *= 2.0;
+					}
 				}
 				if (impact_data.kind == FootEvent::JumpLand) {
 					giantScale *= 2.0;
 				}
+				
 
 				if (HasSMT(actor)) {
 					giantScale *= 2.0;

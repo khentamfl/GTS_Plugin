@@ -134,7 +134,6 @@ namespace {
 		if (tiny == giant) {
 			return;
 		}
-		float InstaCrushRequirement = 24.0;
 		float giantscale = get_visual_scale(giant);
 		float tinyscale = get_visual_scale(tiny);
 		if (IsDragon(tiny)) {
@@ -143,10 +142,6 @@ namespace {
 		float size_difference = giantscale/tinyscale;
 		float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200);
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
-
-		if (Runtime::HasPerk(giant, "LethalSprint") && giant->AsActorState()->IsSprinting()) {
-			InstaCrushRequirement = (18.0 / HighHeels) * Gigantism;
-		}
 
 		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != tiny && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
 			ShrinkActor(tiny, 0.0014 * BonusShrink, 0.0);
@@ -163,12 +158,6 @@ namespace {
 				ShrinkActor(tiny, 0.0015 * BonusShrink, 0.0);
 				Grow(giant, 0.00045 * tinyscale * BonusShrink, 0.0);
 			}
-		}
-
-		if (size_difference >= InstaCrushRequirement && !tiny->IsPlayerTeammate()) {
-			CrushManager::Crush(giant, tiny);
-			CrushBonuses(giant, tiny);
-			KnockAreaEffect(giant, 2, 16 * giantscale);
 		}
 	}
 }
@@ -397,6 +386,7 @@ namespace Gts {
 		if (giant->AsActorState()->IsSprinting()) {
 			movementFactor *= 1.75;
 		}
+
 		if (giant->IsSneaking()) {
 			movementFactor *= 0.6;
 		}
