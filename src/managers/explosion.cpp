@@ -112,22 +112,27 @@ namespace Gts {
 						auto FootFrontL = find_node(actor, "NPC L Foot [Lft ]");
 						auto FootHeelL = find_node(actor, "NPC L Toe0 [LToe]");
 
-						auto FootFrontR = find_node(actor, "NPC R Foot [Lft ]");
-						auto FootHeelR = find_node(actor, "NPC R Toe0 [LToe]");
+						auto FootFrontR = find_node(actor, "NPC R Foot [Rft ]");
+						auto FootHeelR = find_node(actor, "NPC R Toe0 [RToe]");
 						if (!FootFrontL) {
+							log::info("Foot Front L false");
 							return;
 						} if (!FootHeelL) {
+							log::info("Foot Heel L false");
 							return;
 						} if (!FootFrontR) {
+							log::info("Foot Front R false");
 							return;
 						} if (!FootHeelR) {
+							log::info("Foot Heel R false");
 							return;
 						}
 						log::info("Trying to spawn explosion");
-						NiPoint3 FootPosL = NiPoint3(FootFrontL->world.translate.x, FootFrontL->world.translate.y, explosion_pos.z);
-						NiPoint3 HeelPosL = NiPoint3(FootHeelL->world.translate.x, FootHeelL->world.translate.y, explosion_pos.z);
-						NiPoint3 FootPosR = NiPoint3(FootFrontR->world.translate.x, FootFrontR->world.translate.y, explosion_pos.z);
-						NiPoint3 HeelPosR = NiPoint3(FootHeelR->world.translate.x, FootHeelR->world.translate.y, explosion_pos.z);
+						float offset = meter_to_unit(0.025*scale);
+						NiPoint3 FootPosL = NiPoint3(FootFrontL->world.translate.x, FootFrontL->world.translate.y - offset, explosion_pos.z);
+						NiPoint3 HeelPosL = NiPoint3(FootHeelL->world.translate.x, FootHeelL->world.translate.y - offset, explosion_pos.z);
+						NiPoint3 FootPosR = NiPoint3(FootFrontR->world.translate.x, FootFrontR->world.translate.y - offset, explosion_pos.z);
+						NiPoint3 HeelPosR = NiPoint3(FootHeelR->world.translate.x, FootHeelR->world.translate.y - offset, explosion_pos.z);
 						if (impact.kind == FootEvent::Left) {
 							log::info("Foot Left");
 							make_explosion_at(impact.kind, actor, FootPosL, scale);
