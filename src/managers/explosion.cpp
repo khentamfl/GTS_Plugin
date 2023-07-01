@@ -108,7 +108,7 @@ namespace Gts {
 					explosion_pos.z = actor->GetPosition().z;
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
-					if (HighHeelManager::IsWearingHH(actor)) {
+					/*if (HighHeelManager::IsWearingHH(actor)) {
 						float basehh = HighHeelManager::GetBaseHHOffset(actor)[2];
 						auto FootHeelL = find_node(actor, "NPC L Foot [Lft ]");
 						auto FootFrontL = find_node(actor, "NPC L Toe0 [LToe]");
@@ -153,7 +153,8 @@ namespace Gts {
 					} else {
 					/// Sermit To-do: spawn 2 dust effects: at the tip of feet and under the heel, when we have HH off. Currently misses rotation math.
 						make_explosion_at(impact.kind, actor, explosion_pos, scale);
-					}
+					}*/
+					make_explosion_at(impact.kind, actor, explosion_pos, scale);
 				}
 				if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
 					make_explosion_at(impact.kind, actor, explosion_pos, scale);
