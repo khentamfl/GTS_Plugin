@@ -41,18 +41,18 @@ namespace {
 		}
 		if (Runtime::HasPerkTeam(actor, "LethalShrink")) {
 			steal += 0.10;
-		} if (Runtime::HasPerkTeam(actor, "HugCrush_Greed")) {
-			steal *= 1.25;
+		} if (Runtime::HasPerkTeam(actor, "HugCrush")) {
+			steal *= 1.35;
 		}
 		return steal;
 	}
 	float GetShrinkThreshold(Actor* actor) {
-		float threshold = 4.0;
+		float threshold = 2.5;
 		float bonus = 1.0;
 		if (Runtime::HasPerk(actor, "HugCrush")) {
-			bonus += 1.20;
+			bonus += 1.25;
 		} if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
-			bonus += 1.30;
+			bonus += 1.35;
 		}
 		return threshold * bonus;
 	}
@@ -164,6 +164,10 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
+		if (get_target_scale(player)/get_target_scale(huggedActor) >= GetShrinkThreshold(player)) {
+			AbortAnimation(player, huggedActor);
+			return;
+		}
 		AnimationManager::StartAnim("Huggies_Shrink", player);
 		AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor); /// Trigger GTS_Beh that starts something
 	}
@@ -214,10 +218,12 @@ namespace Gts {
 			auto tinyref = tinyhandle.get().get();
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 			float threshold = GetShrinkThreshold(giantref);
+			float stamina = 0.25;
 			float steal = GetStealRate(giantref);
 			float shrink = 5.60;
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				shrink *= 1.25;
+				stamina *= 0.65;
 			}
 			if (sizedifference >= threshold) {
 				SetBeingHeld(tinyref, false);
@@ -227,7 +233,7 @@ namespace Gts {
 				return false;
 			}
 			DamageAV(tinyref, ActorValue::kStamina, 0.60 * TimeScale()); // Drain Stamina
-			DamageAV(giantref, ActorValue::kStamina, 0.10 * TimeScale()); // Damage GTS Stamina
+			DamageAV(giantref, ActorValue::kStamina, 0.25 * TimeScale()); // Damage GTS Stamina
 			
 			TransferSize(giantref, tinyref, false, shrink, steal, false); // Shrink foe, enlarge gts
 			if (giantref->formID == 0x14) {
