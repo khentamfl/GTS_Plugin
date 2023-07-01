@@ -173,13 +173,13 @@ namespace Gts {
 		if (hh_length > 0 && Runtime::HasPerkTeam(actor, "hhBonus")) { // HH damage bonus start
 			auto shoe = evt.shoe;
 			float shoe_weight = 1.0; // TODO: Just absorb it into the base
-			auto char_weight = actor->GetWeight()/280;
+			//auto char_weight = actor->GetWeight()/500;
 			if (shoe) {
 				shoe_weight = shoe->weight/20;
 			}
-			float expectedhhdamage = 1.5 + shoe_weight + char_weight;
+			float expectedhhdamage = 1.5 + shoe_weight;
 			if (this->GetSizeAttribute(actor, 3) != expectedhhdamage) {
-				this->SetSizeAttribute(actor, 1.5 + shoe_weight + char_weight, 3);
+				this->SetSizeAttribute(actor, 1.5 + shoe_weight, 3);
 				log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), this->GetSizeAttribute(actor, 3));
 			}
 		} else if (hh_length <= 1e-4) {

@@ -322,6 +322,12 @@ namespace Gts {
 			return;
 		}
 		std::string_view message = std::format("{} was saved from your hugs", huggedActor->GetDisplayFullName());
+		float sizedifference = get_visual_scale(giant)/get_visual_scale(huggedActor);
+		if (giant->formID == 0x14) {
+			shake_camera(giant, 0.25 * sizedifference, 0.35);
+		} else {
+			Rumble::Once("HugGrab", giant, sizedifference * 12, 0.15);
+		}
 		Notify(message);
 		AbortAnimation(giant, huggedActor);
 	}
