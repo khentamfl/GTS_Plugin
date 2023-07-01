@@ -109,6 +109,7 @@ namespace Gts {
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
 					if (HighHeelManager::IsWearingHH(actor)) {
+						float basehh = HighHeelManager::GetBaseHHOffset(actor);
 						auto FootHeelL = find_node(actor, "NPC L Foot [Lft ]");
 						auto FootFrontL = find_node(actor, "NPC L Toe0 [LToe]");
 
@@ -128,12 +129,12 @@ namespace Gts {
 							return;
 						}
 						log::info("Trying to spawn explosion");
-						float offset = meter_to_unit(hh_offset*scale);
+						float offset = meter_to_unit(hh_offset);
 						log::info("HH Offset: m/u {}, original: {}", offset, hh_offset);
-						NiPoint3 FootPosL = NiPoint3(FootFrontL->world.translate.x, FootFrontL->world.translate.y, explosion_pos.z);
-						NiPoint3 HeelPosL = NiPoint3(FootHeelL->world.translate.x, FootHeelL->world.translate.y, explosion_pos.z);
-						NiPoint3 FootPosR = NiPoint3(FootFrontR->world.translate.x, FootFrontR->world.translate.y, explosion_pos.z);
-						NiPoint3 HeelPosR = NiPoint3(FootHeelR->world.translate.x, FootHeelR->world.translate.y, explosion_pos.z);
+						NiPoint3 FootPosL = NiPoint3(FootFrontL->world.translate.x, FootFrontL->world.translate.y + offset, explosion_pos.z);
+						NiPoint3 HeelPosL = NiPoint3(FootHeelL->world.translate.x, FootHeelL->world.translate.y + (0.05 * scale), explosion_pos.z);
+						NiPoint3 FootPosR = NiPoint3(FootFrontR->world.translate.x, FootFrontR->world.translate.y + (0.05 * scale), explosion_pos.z);
+						NiPoint3 HeelPosR = NiPoint3(FootHeelR->world.translate.x, FootHeelR->world.translate.y + offset, explosion_pos.z);
 						if (impact.kind == FootEvent::Left) {
 							log::info("Foot Left");
 							make_explosion_at(impact.kind, actor, FootPosL, scale);
