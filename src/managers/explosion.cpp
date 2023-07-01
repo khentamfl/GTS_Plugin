@@ -109,7 +109,7 @@ namespace Gts {
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
 					if (HighHeelManager::IsWearingHH(actor)) {
-						float basehh = HighHeelManager::GetBaseHHOffset(actor);
+						float basehh = HighHeelManager::GetBaseHHOffset(actor)[2];
 						auto FootHeelL = find_node(actor, "NPC L Foot [Lft ]");
 						auto FootFrontL = find_node(actor, "NPC L Toe0 [LToe]");
 
