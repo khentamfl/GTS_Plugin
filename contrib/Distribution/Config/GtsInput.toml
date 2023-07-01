@@ -113,13 +113,21 @@ exclusive = true
 name = "HugShrink"
 keys = ["LMB"]
 exclusive = true
+duration = 0.5
 
-# Shrink the one you hug.
+# Shrink the one you're currently hugging.
 
 [[InputEvent]]
 name = "HugRelease"
 keys = ["RMB"]
 exclusive = true
+duration = 0.5
+
+[[InputEvent]]
+name = "HugRelease"
+keys = ["W"]
+exclusive = true
+duration = 0.5
 
 # Spare the one you're hugging.
 

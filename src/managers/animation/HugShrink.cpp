@@ -36,12 +36,7 @@ using namespace std;
 namespace {
 	float GetStealRate(Actor* actor) {
 		float steal = 0.20;
-		if (Runtime::HasPerkTeam(actor, "FastShrink")) {
-			steal += 0.02;
-		}
-		if (Runtime::HasPerkTeam(actor, "LethalShrink")) {
-			steal += 0.03;
-		} if (Runtime::HasPerkTeam(actor, "HugCrush")) {
+		if (Runtime::HasPerkTeam(actor, "HugCrush")) {
 			steal *= 1.35;
 		}
 		return steal;
