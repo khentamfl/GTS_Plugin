@@ -215,6 +215,10 @@ namespace Gts {
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 			float threshold = GetShrinkThreshold(giantref);
 			float steal = GetStealRate(giantref);
+			float shrink = 5.60;
+			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
+				shrink *= 1.25;
+			}
 			if (sizedifference >= threshold) {
 				SetBeingHeld(tinyref, false);
 				std::string_view message = std::format("You can't shrink {} any further", tinyref->GetDisplayFullName());
@@ -225,7 +229,7 @@ namespace Gts {
 			DamageAV(tinyref, ActorValue::kStamina, 0.60 * TimeScale()); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.10 * TimeScale()); // Damage GTS Stamina
 			
-			TransferSize(giantref, tinyref, false, 5.60, steal, false); // Shrink foe, enlarge gts
+			TransferSize(giantref, tinyref, false, shrink, steal, false); // Shrink foe, enlarge gts
 			if (giantref->formID == 0x14) {
 				shake_camera(giantref, 0.70 * sizedifference, 0.05);
 			} else {

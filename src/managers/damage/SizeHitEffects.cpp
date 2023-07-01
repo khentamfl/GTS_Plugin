@@ -124,12 +124,12 @@ namespace {
 		if (!Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
 			return;
 		} if (HugShrink::GetHuggiesActor(receiver)) {
-			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.5);
+			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * 0.5);
 		}
 	}
 
 	void DropTinyChance(Actor* receiver, float damage) {
-		static timer DropTimer = Timer(0.33);
+		static Timer DropTimer = Timer(0.33); // Check once per .33 sec
 		if (damage < 2.0) {
 			return;
 		}
