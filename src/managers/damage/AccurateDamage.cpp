@@ -460,7 +460,7 @@ namespace Gts {
 
 		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
-			if (Runtime::HasPerk(actor, "LethalSprint")) {
+			if (Runtime::HasPerk(giant, "LethalSprint")) {
 				sprintdamage *= 2.0;
 			}
 		}
