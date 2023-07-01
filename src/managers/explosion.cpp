@@ -125,7 +125,7 @@ namespace Gts {
 							log::info("Foot Front R false");
 							return;
 						} if (!FootHeelR) {
-							log::info("Foot Heel R false");
+							log::info("Foot Heel R false"); 
 							return;
 						}
 						log::info("Trying to spawn explosion");
