@@ -63,7 +63,7 @@ namespace Gts {
 			for (auto actor: find_actors()) {
 				if (actor) {
 					log::info("HH perk was removed");
-					HighHeelManager::GetSingleton().ApplyHH(actor, false);
+					HighHeelManager::GetSingleton().ApplyHH(actor, true);
 				}
 			}
 		}
