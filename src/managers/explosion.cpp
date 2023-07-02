@@ -19,22 +19,16 @@ namespace {
 			return;
 		}
 
-		
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
 			case FootEvent::Left:
-				Runtime::PlayImpactEffect(actor, "GtsFeetImpact", "NPC L Foot [Lft ]", NiPoint3(0,0, 20 * scale), 0, true, true);
 			case FootEvent::Right:
-				Runtime::PlayImpactEffect(actor, "GtsFeetImpact", "NPC R Foot [Rft ]", NiPoint3(0,0, 20 * scale), 0, true, true);
 			case FootEvent::Front:
 			case FootEvent::Back:
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 			case FootEvent::JumpLand:
-				Runtime::PlayImpactEffect(actor, "GtsFeetImpact", "NPC L Foot [Lft ]", NiPoint3(0,0, 20 * scale), 0, true, true);
-				Runtime::PlayImpactEffect(actor, "GtsFeetImpact", "NPC R Foot [Rft ]", NiPoint3(0,0, 20 * scale), 0, true, true);
 				base_explosion = Runtime::GetExplosion("footstepExplosion");
 		}
-		return;
 
 		if (base_explosion) {
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
