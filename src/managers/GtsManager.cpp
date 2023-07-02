@@ -135,6 +135,7 @@ namespace {
 		if (scale < 0.0) {
 			return;
 		}
+		float vs = get_visual_scale(actor);
 		float visual_scale = persi_actor_data->visual_scale;
 
 		float scaleOverride = persi_actor_data->scaleOverride;
@@ -142,6 +143,7 @@ namespace {
 			visual_scale = scaleOverride;
 		}
 
+		
 		// Is scale correct already?
 		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
 			return;
@@ -150,6 +152,7 @@ namespace {
 		if (visual_scale <= 1e-5) {
 			return;
 		}
+		log::info("Setting {} scale to {}, visual scale: {}", actor->GetDisplayFullName(), visual_scale, vs);
 		set_scale(actor, visual_scale);
 	}
 
