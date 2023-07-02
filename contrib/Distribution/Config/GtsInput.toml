@@ -115,7 +115,7 @@ keys = ["LMB"]
 exclusive = true
 
 [[InputEvent]]
-name = "HugCrushEvent"
+name = "HugCrush"
 keys = ["S"]
 exclusive = false
 #Crush the victim

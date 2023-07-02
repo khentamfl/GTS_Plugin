@@ -125,7 +125,7 @@ namespace {
 		}
 		auto scale = get_visual_scale(huggedActor);
 		float sizedifference = get_visual_scale(giant)/scale;
-		set_target_scale(huggedActor, scale*0.75);
+		set_target_scale(huggedActor, scale*0.60);
 		shake_camera(giant, 0.70 * sizedifference, 0.25);
 	}
 
@@ -135,7 +135,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		CrushManager::GetSingleton().Crush(giant, huggedActor);
+		ShrinkToNothingManager::Shrink(giant, huggedActor);
 		PrintDeathSource(giant, huggedActor, "Shrinked");
 		shake_camera(giant, 3.00, 0.20);
 	}
