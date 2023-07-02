@@ -153,6 +153,9 @@ namespace Gts {
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
+		if (HasSMT(pred)) {
+			pred_scale += 0.25;
+		}
 
 		float sizedifference = pred_scale/prey_scale;
 

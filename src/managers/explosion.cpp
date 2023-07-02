@@ -19,6 +19,8 @@ namespace {
 			return;
 		}
 
+		SpawnParticle(tiny, 2.40, "GTS/FootTest.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
+		return;
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
 			case FootEvent::Left:
