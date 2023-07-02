@@ -81,7 +81,7 @@ namespace {
 		
 		float target_scale = persi_actor_data->target_scale;
 
-		log::info("Setting {} Other scale to {}, target scale: {}", actor->GetDisplayFullName(), currentOtherScale, target_scale);
+		//log::info("Setting {} Other scale to {}, target scale: {}", actor->GetDisplayFullName(), currentOtherScale, target_scale);
 		// Smooth target_scale towards max_scale if target_scale > max_scale
 		float max_scale = persi_actor_data->max_scale;
 		if (target_scale > max_scale) {
@@ -154,7 +154,7 @@ namespace {
 		if (visual_scale <= 1e-5) {
 			return;
 		}
-		log::info("Setting {} scale to {}, visual scale: {}", actor->GetDisplayFullName(), visual_scale, vs);
+		//log::info("Setting {} scale to {}, visual scale: {}", actor->GetDisplayFullName(), visual_scale, vs);
 		set_scale(actor, visual_scale);
 	}
 
