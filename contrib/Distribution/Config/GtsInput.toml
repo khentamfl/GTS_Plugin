@@ -105,7 +105,7 @@ exclusive = true
 [[InputEvent]]
 name = "HugAttempt"
 keys = ["LSHIFT", "H"]
-exclusive = true
+exclusive = false
 
 # Attempt to hug someone
 
@@ -113,7 +113,6 @@ exclusive = true
 name = "HugShrink"
 keys = ["LMB"]
 exclusive = true
-duration = 0.5
 
 # Shrink the one you're currently hugging.
 
@@ -121,13 +120,12 @@ duration = 0.5
 name = "HugRelease"
 keys = ["RMB"]
 exclusive = true
-duration = 0.5
 
 [[InputEvent]]
 name = "HugRelease"
 keys = ["W"]
 exclusive = true
-duration = 0.5
+duration = 0.33
 
 # Spare the one you're hugging.
 
