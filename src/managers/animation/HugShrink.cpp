@@ -124,7 +124,7 @@ namespace {
 			return;
 		}
 		auto scale = get_visual_scale(huggedActor);
-		float sizedifference = scale/get_visual_scale(giant);
+		float sizedifference = get_visual_scale(giant)/scale;
 		set_target_scale(huggedActor, scale*0.75);
 		shake_camera(giant, 0.70 * sizedifference, 0.25);
 	}
