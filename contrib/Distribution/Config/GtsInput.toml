@@ -114,6 +114,13 @@ name = "HugShrink"
 keys = ["LMB"]
 exclusive = true
 
+[[InputEvent]]
+name = "HugCrushEvent"
+keys = ["S"]
+exclusive = false
+#Crush the victim
+
+
 # Shrink the one you're currently hugging.
 
 [[InputEvent]]

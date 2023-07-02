@@ -117,6 +117,29 @@ namespace {
 		auto giant = &data.giant;
 	}
 
+	void GTS_Hug_ShrinkPulse(AnimationEventData& data) {
+		auto giant = &data.giant;
+		auto huggedActor = HugShrink::GetHuggiesActor(giant);
+		if (!huggedActor) {
+			return;
+		}
+		auto scale = get_visual_scale(huggedActor);
+		float sizedifference = scale/get_visual_scale(giant);
+		set_target_scale(scale/0.75);
+		shake_camera(giant, 0.70 * sizedifference, 0.25);
+	}
+
+	void GTS_Hug_CrushTiny(AnimationEventData& data) {
+		auto giant = &data.giant;
+		auto huggedActor = HugShrink::GetHuggiesActor(giant);
+		if (!huggedActor) {
+			return;
+		}
+		CrushManager::GetSingleton().Crush(giant, huggedActor);
+		PrintDeathSource(giant, huggedActor, "Shrinked");
+		shake_camera(giant, 3.00, 0.20);
+	}
+
   // Cancel all the things
   void AbortAnimation(Actor* giant, Actor* tiny) {
     AnimationManager::StartAnim("Huggies_Spare", giant);
@@ -153,6 +176,16 @@ namespace {
 		}
 	}
 
+	void HugCrushEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto huggedActor = HugShrink::GetHuggiesActor(player);
+		if (!huggedActor) {
+			return;
+		}
+		AnimationManager::StartAnim("Huggies_HugCrush", player);
+		AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
+	}
+
 	void HugShrinkEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto huggedActor = HugShrink::GetHuggiesActor(player);
@@ -164,7 +197,7 @@ namespace {
 			return;
 		}
 		AnimationManager::StartAnim("Huggies_Shrink", player);
-		AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor); /// Trigger GTS_Beh that starts something
+		AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor);
 	}
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
@@ -350,6 +383,7 @@ namespace Gts {
 		InputManager::RegisterInputEvent("HugAttempt", HugAttemptEvent);
 		InputManager::RegisterInputEvent("HugRelease", HugReleaseEvent);
 		InputManager::RegisterInputEvent("HugShrink", HugShrinkEvent);
+		InputManager::RegisterInputEvent("HugCrush", HugCrushEvent);
 
 		AnimationManager::RegisterEvent("GTS_Hug_Grab", "Hugs", GTS_Hug_Grab);
 		AnimationManager::RegisterEvent("GTS_Hug_Grow", "Hugs", GTS_Hug_Grow);
@@ -358,7 +392,8 @@ namespace Gts {
 		AnimationManager::RegisterEvent("GTS_Hug_PullBack", "Hugs", GTS_Hug_PullBack);
 		AnimationManager::RegisterEvent("GTS_Hug_FacialOn", "Hugs", GTS_Hug_FacialOn);
 		AnimationManager::RegisterEvent("GTS_Hug_FacialOff", "Hugs", GTS_Hug_FacialOff);
-		
+		AnimationManager::RegisterEvent("GTS_Hug_CrushTiny", "Hugs", GTS_Hug_CrushTiny);
+		AnimationManager::RegisterEvent("GTS_Hug_ShrinkPulse", "Hugs", GTS_Hug_ShrinkPulse);
 
 		AnimationManager::RegisterEvent("GTSBEH_HugAbsorbAtk", "Hugs", GTSBEH_HugAbsorbAtk);
 	}
@@ -370,6 +405,8 @@ namespace Gts {
 		AnimationManager::RegisterTrigger("Huggies_Shrink_Victim", "Hugs", "GTSBEH_HugAbsorbAtk_V");
 		AnimationManager::RegisterTrigger("Huggies_Spare", "Hugs", "GTSBEH_HugAbsorbExitLoop");
 		AnimationManager::RegisterTrigger("Huggies_Cancel", "Hugs", "GTSBEH_PairedAbort");
+		AnimationManager::RegisterTrigger("Huggies_HugCrush", "Hugs", "GTSBEH_HugCrushStart_A");
+		AnimationManager::RegisterTrigger("Huggies_HugCrush_Victim", "Hugs", "GTSBEH_HugCrushStart_V");
 	}
 
 	HugShrinkData::HugShrinkData(TESObjectREFR* tiny, float strength) : tiny(tiny), strength(strength) {
