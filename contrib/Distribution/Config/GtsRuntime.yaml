@@ -287,6 +287,7 @@ factions:
   DraugrFaction: "Skyrim.esm|02430D"
 
 impacts:
+  GtsFeetImpact: "GTS.esp|60B672"
   GtsBloodSprayImpactSet: "GTS.esp|01CEA7"
   GtsBloodSprayImpactSetVore: "GTS.esp|024578"
   GtsBloodSprayImpactSetVoreMedium: "GTS.esp|024579"
