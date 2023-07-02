@@ -672,7 +672,7 @@ namespace Gts {
 	}
 	ActorData::ActorData(Actor* actor) {
 		// DEFAULT VALUES FOR NEW ACTORS
-		auto scale = get_scale(actor);
+		auto scale = 1.0;//get_scale(actor);
 		this->native_scale = scale;
 		this->visual_scale = scale;
 		this->visual_scale_v = 0.0;
