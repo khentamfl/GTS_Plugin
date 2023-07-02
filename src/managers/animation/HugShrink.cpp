@@ -125,7 +125,7 @@ namespace {
 		}
 		auto scale = get_visual_scale(huggedActor);
 		float sizedifference = scale/get_visual_scale(giant);
-		set_target_scale(scale/0.75);
+		set_target_scale(scale*0.75);
 		shake_camera(giant, 0.70 * sizedifference, 0.25);
 	}
 
