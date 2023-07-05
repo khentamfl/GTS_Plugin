@@ -34,6 +34,12 @@ using namespace std;
 
 
 namespace {
+	void GreetingStuff(Actor* actor) {
+		auto ai = me->GetActorRuntimeData().currentProcess->high;
+		float Greeting = ai->greetingTimer;
+		log::info("Greeting timer of {} is {}", actor->GetDisplayFullName(), Greeting);
+	}
+
 	float GetStealRate(Actor* actor) {
 		float steal = 0.20;
 		if (Runtime::HasPerkTeam(actor, "HugCrush")) {
@@ -300,7 +306,8 @@ namespace Gts {
 			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-
+			
+			GreetingStuff(tinyref);
 
 			// Exit on death
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
