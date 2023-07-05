@@ -35,9 +35,11 @@ using namespace std;
 
 namespace {
 	void GreetingStuff(Actor* actor) {
-		auto ai = me->GetActorRuntimeData().currentProcess->high;
-		float Greeting = ai->greetingTimer;
-		log::info("Greeting timer of {} is {}", actor->GetDisplayFullName(), Greeting);
+		auto ai = actor->GetActorRuntimeData().currentProcess->high;
+		if (ai) {
+			float Greeting = ai->greetingTimer;
+			log::info("Greeting timer of {} is {}", actor->GetDisplayFullName(), Greeting);
+		}
 	}
 
 	float GetStealRate(Actor* actor) {
