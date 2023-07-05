@@ -34,15 +34,7 @@ using namespace std;
 
 
 namespace {
-	void GreetingStuff(Actor* actor) {
-		auto ai = actor->GetActorRuntimeData().currentProcess->high;
-		if (ai) {
-			float Greeting = ai->greetingTimer;
-			ai->greetingTimer = 40;
-			log::info("Greeting timer of {} is {}", actor->GetDisplayFullName(), Greeting);
-		}
-	}
-
+	
 	float GetStealRate(Actor* actor) {
 		float steal = 0.20;
 		if (Runtime::HasPerkTeam(actor, "HugCrush")) {
@@ -69,7 +61,6 @@ namespace {
 		}
 		ToggleEmotionEdit(giant, true);
 		SetBeingHeld(huggedActor, true);
-		AllowDialogue(huggedActor, false);
 		HugShrink::AttachActorTask(giant, huggedActor);
 
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(huggedActor);
@@ -167,7 +158,6 @@ namespace {
 	if (tiny) {
 		EnableCollisions(tiny);
 		SetBeingHeld(tiny, false);
-		AllowDialogue(tiny, true);
 		PushActorAway(giant, tiny, 1.0);
 	}
   }
@@ -270,6 +260,7 @@ namespace Gts {
 				shrink *= 1.25;
 				stamina *= 0.65;
 			}
+			ShutUp(tinyref);
 			if (sizedifference >= threshold) {
 				SetBeingHeld(tinyref, false);
 				std::string_view message = std::format("You can't shrink {} any further", tinyref->GetDisplayFullName());

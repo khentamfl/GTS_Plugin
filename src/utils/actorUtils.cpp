@@ -636,8 +636,13 @@ namespace Gts {
 		}
 	}
 
-	void AllowDialogue(Actor* actor, bool enable) {
-		actor->AllowPCDialogue(enable);
+	void ShutUp(Actor* actor) { // Disallow them to "So anyway i've been fishing today and my dog died" while we do something to them
+		auto ai = actor->GetActorRuntimeData().currentProcess->high;
+		if (ai) {
+			float Greeting = ai->greetingTimer;
+			ai->greetingTimer = 5;
+			//log::info("Greeting timer of {} is {}", actor->GetDisplayFullName(), Greeting);
+		}
 	}
 
 	void StaggerOr(Actor* giant, Actor* tiny, float power, float afX, float afY, float afZ, float afMagnitude) {

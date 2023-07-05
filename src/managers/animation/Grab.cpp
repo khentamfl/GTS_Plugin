@@ -121,7 +121,6 @@ namespace {
 		if (grabbedActor) {
 			DisableCollisions(grabbedActor, &data.giant);
 			SetBeingHeld(grabbedActor, true);
-			AllowDialogue(grabbedActor, false);
 		}
 		StartLHandRumble("GrabL", data.giant, 0.5, 0.10);
 	}
@@ -191,7 +190,6 @@ namespace {
 				CrushManager::Crush(giant, grabbedActor);
 				AdjustGtsSkill(0.50, giant);
 				SetBeingHeld(grabbedActor, false);
-				AllowDialogue(grabbedActor, true);
 				Rumble::Once("GrabAttackKill", giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (!LessGore()) {
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
@@ -303,7 +301,6 @@ namespace {
 			AnimationManager::StartAnim("TinyDied", giant);
 			ManageCamera(&data.giant, false, 7.0);
 			SetBeingHeld(otherActor, false);
-			AllowDialogue(otherActor, true);
 			Grab::DetachActorTask(giant);
 			Grab::Release(giant);
 		}
@@ -363,7 +360,6 @@ namespace {
 		if (otherActor) {
 			SetBeingHeld(otherActor, false);
 			EnableCollisions(otherActor);
-			AllowDialogue(otherActor, true);
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(otherActor);
 			PushActorAway(giant, otherActor, 8.0 * sizedifference);
 		}
@@ -404,7 +400,6 @@ namespace {
 		Grab::Release(giant);
 		if (grabbedActor) {
 			PushActorAway(giant, grabbedActor, 1.0);
-			AllowDialogue(grabbedActor, true);
 			EnableCollisions(grabbedActor);
 			SetBeingHeld(grabbedActor, false);
 		}
@@ -415,7 +410,6 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		if (grabbedActor) {
 			EnableCollisions(grabbedActor);
-			AllowDialogue(grabbedActor, true);
 		}
 		SetBetweenBreasts(giant, false);
 
@@ -435,7 +429,6 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		if (grabbedActor) {
 			EnableCollisions(grabbedActor);
-			AllowDialogue(grabbedActor, true);
 			SetBeingHeld(grabbedActor, false);
 		}
 		SetBetweenBreasts(giant, false);
@@ -640,7 +633,8 @@ namespace Gts {
 
 			ForceRagdoll(tinyref, false);
 
-
+			ShutUp(tinyref);
+			
 			if (giantref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				PushActorAway(giantref, tinyref, 1.0);

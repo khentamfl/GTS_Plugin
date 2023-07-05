@@ -149,7 +149,6 @@ namespace {
 			AllowToBeCrushed(tiny, false);
 			SetBeingHeld(tiny, true);
 			DisableCollisions(tiny, &data.giant);
-			AllowDialogue(tiny, false);
 		}
 		sandwichdata.EnableSuffocate(false);
 	}
@@ -254,7 +253,6 @@ namespace {
 		for (auto tiny: sandwichdata.GetActors()) {
 			SetBeingHeld(tiny, false);
 			EnableCollisions(tiny);
-			AllowDialogue(tiny, true);
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
 	}
@@ -282,7 +280,6 @@ namespace {
 		for (auto tiny: sandwichdata.GetActors()) {
 			SetBeingHeld(tiny, false);
 			EnableCollisions(tiny);
-			AllowDialogue(tiny, true);
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
 		sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growth
