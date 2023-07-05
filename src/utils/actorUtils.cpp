@@ -644,7 +644,7 @@ namespace Gts {
 		if (ai) {
 			if (ai->high) {
 				float Greeting = ai->high->greetingTimer;
-				ai->greetingTimer = 5;
+				ai->high->greetingTimer = 5;
 			}
 			//log::info("Greeting timer of {} is {}", actor->GetDisplayFullName(), Greeting);
 		}
