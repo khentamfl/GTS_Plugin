@@ -182,7 +182,6 @@ namespace Gts {
 			if (actor->formID == 0x14 && HasSMT(actor)) {
 				scale *= 2.25;
 			}
-
 			float minimal_size = 1.2;
 			if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
 				float start_l = 1.2;
@@ -201,11 +200,9 @@ namespace Gts {
 				if (actor->IsSneaking()) {
 					scale *= 0.55; // Sneaking makes you sound quieter
 				}
-
 				if (actor->formID == 0x14 && IsFirstPerson()) { // Footsteps are quieter when in first person
 					scale *= 0.70;
 				}
-
 
 				FootEvent foot_kind = impact.kind;
 				if (foot_kind == FootEvent::JumpLand) {
@@ -214,39 +211,73 @@ namespace Gts {
 					start_xl = 6.99 * jump_factor;
 					start_xxl = 14.99 * jump_factor;
 				}
-				for (NiAVObject* foot: impact.nodes) {
-					BSSoundHandle lFootstep    = get_sound(foot, scale, get_lFootstep_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.6,  .n = 0.7, .s = 1.0}, "L Footstep");
-					BSSoundHandle lJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.6,  .n = 0.7, .s = 1.0}, "L Jump");
-
-					BSSoundHandle xlFootstep   = get_sound(foot, scale, get_xlFootstep_sounddesc(foot_kind),  VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL: Footstep");
-					BSSoundHandle xlRumble     = get_sound(foot, scale, get_xlRumble_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL Rumble");
-					BSSoundHandle xlSprint     = get_sound(foot, scale, get_xlSprint_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL Sprint");
-
-					BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
-
-					if (Runtime::GetBool("EnableGiantSounds")) { // Global check
-						if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
-							lFootstep.Play();
-						}
-						if (lJumpLand.soundID != BSSoundHandle::kInvalidID) {
-							lJumpLand.Play();
-						}
-						if (xlFootstep.soundID != BSSoundHandle::kInvalidID) {
-							xlFootstep.Play();
-						}
-						if (xlRumble.soundID != BSSoundHandle::kInvalidID) {
-							xlRumble.Play();
-						}
-						if (xlSprint.soundID != BSSoundHandle::kInvalidID) {
-							xlSprint.Play();
-						}
-						if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
-							xxlFootstepL.Play();
-						}
-						///To-do: make them play at matching node?
+				if (Runtime::GetBool("EnableGiantSounds")) {
+					for (NiAVObject* foot: impact.nodes) {
+						FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
 					}
 				}
 			}
 		}
+	}
+
+	void FootStepManager::PlayLegacySounds(NiAVObject* foot, FootEvent foot_kind, float scale, float start_l, float start_xl, float start_xxl) {
+		BSSoundHandle lFootstep    = get_sound(foot, scale, get_lFootstep_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.6,  .n = 0.7, .s = 1.0}, "L Footstep");
+		BSSoundHandle lJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.6,  .n = 0.7, .s = 1.0}, "L Jump");
+
+		BSSoundHandle xlFootstep   = get_sound(foot, scale, get_xlFootstep_sounddesc(foot_kind),  VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL: Footstep");
+		BSSoundHandle xlRumble     = get_sound(foot, scale, get_xlRumble_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL Rumble");
+		BSSoundHandle xlSprint     = get_sound(foot, scale, get_xlSprint_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL Sprint");
+
+		BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
+		if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
+			lFootstep.Play();
+		}
+		if (lJumpLand.soundID != BSSoundHandle::kInvalidID) {
+			lJumpLand.Play();
+		}
+		if (xlFootstep.soundID != BSSoundHandle::kInvalidID) {
+			xlFootstep.Play();
+		}
+		if (xlRumble.soundID != BSSoundHandle::kInvalidID) {
+			xlRumble.Play();
+		}
+		if (xlSprint.soundID != BSSoundHandle::kInvalidID) {
+			xlSprint.Play();
+		}
+		if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
+			xxlFootstepL.Play();
+		}
+	}
+
+	void FootStepManager::PlayHighHeelSounds(NiAVObject* foot, FootEvent foot_kind, float scale) {
+		/*BSSoundHandle lFootstep    = get_sound(foot, scale, get_lFootstep_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.6,  .n = 0.7, .s = 1.0}, "L Footstep");
+		BSSoundHandle lJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.6,  .n = 0.7, .s = 1.0}, "L Jump");
+
+		BSSoundHandle xlFootstep   = get_sound(foot, scale, get_xlFootstep_sounddesc(foot_kind),  VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL: Footstep");
+		BSSoundHandle xlRumble     = get_sound(foot, scale, get_xlRumble_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL Rumble");
+		BSSoundHandle xlSprint     = get_sound(foot, scale, get_xlSprint_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL Sprint");
+
+		BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
+		if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
+			lFootstep.Play();
+		}
+		if (lJumpLand.soundID != BSSoundHandle::kInvalidID) {
+			lJumpLand.Play();
+		}
+		if (xlFootstep.soundID != BSSoundHandle::kInvalidID) {
+			xlFootstep.Play();
+		}
+		if (xlRumble.soundID != BSSoundHandle::kInvalidID) {
+			xlRumble.Play();
+		}
+		if (xlSprint.soundID != BSSoundHandle::kInvalidID) {
+			xlSprint.Play();
+		}
+		if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
+			xxlFootstepL.Play();
+		}*/  
+	}
+
+	void FootStepManager::PlayNormalSounds(NiAVObject* foot, FootEvent foot_kind, float scale) {
 	}
 }

@@ -15,5 +15,8 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 			virtual void OnImpact(const Impact& impact) override;
+			static void PlayLegacySounds(NiAVObject* foot, FootEvent foot_kind, float scale, float start_l, float start_xl, float start_xxl);
+			static void PlayHighHeelSounds(NiAVObject* foot, FootEvent foot_kind, float scale);
+			static void PlayNormalSounds(NiAVObject* foot, FootEvent foot_kind, float scale)
 	};
 }

@@ -72,6 +72,10 @@ namespace Gts {
 				if (!casterhandle) {
 					return false;
 				}
+				float stamina = GetAV(giant, ActorValue::kStamina);
+				if (stamina <= 1.0) {
+					return false; // Abort if we don't have stamina so it won't drain it forever. Just to make sure.
+				}
 				float multiplier = AnimationManager::GetAnimSpeed(giant);
 				float WasteStamina = 0.50 * power * multiplier;
 				DamageAV(giant, ActorValue::kStamina, WasteStamina * WasteMult * TimeScale());
