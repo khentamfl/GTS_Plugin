@@ -125,7 +125,7 @@ namespace {
 		}
 		TrackFeet(giant, 6.0, true);
 		StartLegRumble("StrongStompR", data.giant, 0.35 *data.animSpeed - 0.35, 0.10, "Right");
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.45, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.45, 3.0);
 	}
 
 	void GTS_StrongStomp_LL_Start(AnimationEventData& data) {
@@ -138,7 +138,7 @@ namespace {
 		}
 		TrackFeet(giant, 5.0, true);
 		StartLegRumble("StrongStompL", data.giant, 0.35 *data.animSpeed - 0.35, 0.10, "Left");
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.45, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.45, 3.0);
 	}
 
 	void GTS_StrongStomp_LR_Middle(AnimationEventData& data) {
@@ -175,7 +175,7 @@ namespace {
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.55), 1.85 * damage * (data.animSpeed - 0.55), 5, 0.035);
 		DoSizeEffect(&data.giant, SMT * (data.animSpeed - 0.55), FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.4 * perk, 3.8 * data.animSpeed, RNode, 2.0);
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 3.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
@@ -192,7 +192,7 @@ namespace {
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.55), 1.85 * damage * (data.animSpeed - 0.55), 5, 0.035);
 		DoSizeEffect(&data.giant, SMT * (data.animSpeed - 0.55), FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.4 * perk, 3.8 * data.animSpeed, LNode, 2.0);
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 3.0);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 	}
@@ -238,7 +238,7 @@ namespace {
 
 	void RightStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 90.0;
+		float WasteStamina = 70.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteStamina *= 0.65;
 		}
@@ -251,7 +251,7 @@ namespace {
 
 	void LeftStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 90.0;
+		float WasteStamina = 70.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteStamina *= 0.65;
 		}
