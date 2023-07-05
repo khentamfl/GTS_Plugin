@@ -126,7 +126,7 @@ namespace {
 		auto scale = get_visual_scale(huggedActor);
 		float sizedifference = get_visual_scale(giant)/scale;
 		set_target_scale(huggedActor, scale*0.60);
-		shake_camera(giant, 0.70 * sizedifference, 0.25);
+		Rumble::For("ShrinkPulse", player, 6.0 * sizedifference, 0.10, "NPC COM [COM ]", 0.25);
 	}
 
 	void GTS_Hug_RunShrinkTask(AnimationEventData& data) {
@@ -145,7 +145,7 @@ namespace {
 		}
 		ShrinkToNothingManager::Shrink(giant, huggedActor);
 		PrintDeathSource(giant, huggedActor, "Shrinked");
-		shake_camera(giant, 3.00, 0.20);
+		Rumble::For("HugCrush", player, 36.0, 0.10, "NPC COM [COM ]", 0.15);
 	}
 
   // Cancel all the things
