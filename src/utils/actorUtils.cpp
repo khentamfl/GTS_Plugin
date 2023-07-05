@@ -640,10 +640,12 @@ namespace Gts {
 		if (!actor) {
 			return;
 		}
-		auto ai = actor->GetActorRuntimeData().currentProcess->high;
+		auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
-			float Greeting = ai->greetingTimer;
-			ai->greetingTimer = 5;
+			if (ai->high) {
+				float Greeting = ai->high->greetingTimer;
+				ai->greetingTimer = 5;
+			}
 			//log::info("Greeting timer of {} is {}", actor->GetDisplayFullName(), Greeting);
 		}
 	}
