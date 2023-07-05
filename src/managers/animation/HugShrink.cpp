@@ -38,6 +38,7 @@ namespace {
 		auto ai = actor->GetActorRuntimeData().currentProcess->high;
 		if (ai) {
 			float Greeting = ai->greetingTimer;
+			ai->greetingTimer = 40;
 			log::info("Greeting timer of {} is {}", actor->GetDisplayFullName(), Greeting);
 		}
 	}
