@@ -637,6 +637,9 @@ namespace Gts {
 	}
 
 	void ShutUp(Actor* actor) { // Disallow them to "So anyway i've been fishing today and my dog died" while we do something to them
+		if (!actor) {
+			return;
+		}
 		auto ai = actor->GetActorRuntimeData().currentProcess->high;
 		if (ai) {
 			float Greeting = ai->greetingTimer;
