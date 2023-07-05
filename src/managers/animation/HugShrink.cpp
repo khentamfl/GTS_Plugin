@@ -129,6 +129,14 @@ namespace {
 		shake_camera(giant, 0.70 * sizedifference, 0.25);
 	}
 
+	void GTS_Hug_RunShrinkTask(AnimationEventData& data) {
+		
+	}
+
+	void GTS_Hug_StopShrinkTask(AnimationEventData& data) {
+
+	}
+
 	void GTS_Hug_CrushTiny(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto huggedActor = HugShrink::GetHuggiesActor(giant);
