@@ -453,6 +453,7 @@ namespace Gts {
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
 		float falldamage = 1.0; // default Fall damage of 1.0
 		float weightdamage = giant->GetWeight()/100 + 1.0;
+		log::info("Size Difference of {} with {} is {}, tiny scale: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), multiplier, tinysize);
 
 		SizeModifications(giant, tiny, highheels);
 		SMTCrushCheck(giant, tiny);

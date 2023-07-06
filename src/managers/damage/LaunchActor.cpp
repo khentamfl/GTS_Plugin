@@ -52,7 +52,7 @@ namespace {
 					DamageAV(tiny, ActorValue::kHealth, damage * 0.25);
 				}
 				//ForceRagdoll(tiny, true);
-				StaggerOr(giant, tiny, knockBack, 1 ,1 , 5000 * giantSize * force, 500 * giantSize * force);
+				StaggerOr(giant, tiny, knockBack, 1 ,1 , 50 * giantSize * force, 50 * giantSize * force);
 			}
 		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER && sizeRatio >= 1.49) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
@@ -63,7 +63,7 @@ namespace {
 						DamageAV(tiny, ActorValue::kHealth, damage);
 					}
 					//ForceRagdoll(tiny, true);
-					StaggerOr(giant, tiny, knockBack, 1, 1, 5000 * giantSize * force, 500 * giantSize * force);
+					StaggerOr(giant, tiny, knockBack, 1, 1, 50 * giantSize * force, 50 * giantSize * force);
 				}
 			}
 		}
