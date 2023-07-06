@@ -327,6 +327,11 @@ namespace {
 
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		auto& sandwiching = ThighSandwichController::GetSingleton();
+		auto actor = sandwichdata.GetActors();
+		if (!actor) {
+			return;
+		}
 		float WasteStamina = 20.0;
 		if (Runtime::HasPerk(player, "KillerThighs")) {
 			WasteStamina *= 0.65;
@@ -342,6 +347,11 @@ namespace {
 
 	void ThighSandwichHeavyAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		auto& sandwiching = ThighSandwichController::GetSingleton();
+		auto actor = sandwichdata.GetActors();
+		if (!actor) {
+			return;
+		}
 		float WasteStamina = 35.0;
 		if (Runtime::HasPerk(player, "KillerThighs")) {
 			WasteStamina *= 0.65;
