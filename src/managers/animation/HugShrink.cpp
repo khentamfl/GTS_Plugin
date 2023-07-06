@@ -210,6 +210,11 @@ namespace {
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto huggedActor = HugShrink::GetHuggiesActor(player);
+		bool IsHugCrushing;
+		player->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
+		if (IsHugCrushing) {
+			return; // disallow manual release when it's true
+		}
 		AbortAnimation(player, huggedActor);
     	HugShrink::DetachActorTask(player);
 	}
@@ -316,10 +321,15 @@ namespace Gts {
 
 			DamageAV(tinyref, ActorValue::kStamina, 0.15 * TimeScale()); // Drain Tiny Stamina
 
+			bool IsHugCrushing;
+			giantref->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
+
 			float stamina = GetAV(giantref, ActorValue::kStamina);
-			if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || !HugShrink::GetHuggiesActor(giantref)) {
-				AbortAnimation(giantref, tinyref);
-				return false;
+			if (!IsHugCrushing) {
+				if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || !HugShrink::GetHuggiesActor(giantref)) {
+					AbortAnimation(giantref, tinyref);
+					return false;
+				}
 			}
       		// Ensure they are NOT in ragdoll
       		ForceRagdoll(tinyref, false);
