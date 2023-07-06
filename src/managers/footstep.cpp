@@ -1,9 +1,9 @@
 #include "managers/footstep.hpp"
+#include "managers/highheel.hpp"
+#include "managers/modevent.hpp"
 #include "managers/impact.hpp"
 #include "managers/tremor.hpp"
-
 #include "scale/scale.hpp"
-#include "managers/modevent.hpp"
 #include "node.hpp"
 #include "data/runtime.hpp"
 
