@@ -328,7 +328,7 @@ namespace {
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sandwiching = ThighSandwichController::GetSingleton().GetSandwichingData(player);
-		auto actor = sandwiching.GetActors();
+		auto actor = sandwiching.GetActors()[0];
 		if (!actor) {
 			return;
 		}
@@ -348,7 +348,7 @@ namespace {
 	void ThighSandwichHeavyAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sandwiching = ThighSandwichController::GetSingleton().GetSandwichingData(player);
-		auto actor = sandwiching.GetActors();
+		auto actor = sandwiching.GetActors()[0];
 		if (!actor) {
 			return;
 		}
