@@ -327,38 +327,30 @@ namespace {
 
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		auto& sandwiching = ThighSandwichController::GetSingleton().GetSandwichingData(player);
-		auto actor = sandwiching.GetActors();
-		if (actor.size() > 0) {
-			float WasteStamina = 20.0;
-			if (Runtime::HasPerk(player, "KillerThighs")) {
-				WasteStamina *= 0.65;
-			}
-			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-				AnimationManager::StartAnim("ThighAttack", player);
-			} else {
-				if (IsGtsBusy(player)) {
-					TiredSound(player, "You're too tired to perform thigh sandwich");
-				}
+		float WasteStamina = 20.0;
+		if (Runtime::HasPerk(player, "KillerThighs")) {
+			WasteStamina *= 0.65;
+		}
+		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+			AnimationManager::StartAnim("ThighAttack", player);
+		} else {
+			if (IsGtsBusy(player)) {
+				TiredSound(player, "You're too tired to perform thigh sandwich");
 			}
 		}
 	}
 
 	void ThighSandwichHeavyAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		auto& sandwiching = ThighSandwichController::GetSingleton().GetSandwichingData(player);
-		auto actor = sandwiching.GetActors();
-		if (actor.size() > 0) {
-			float WasteStamina = 35.0;
-			if (Runtime::HasPerk(player, "KillerThighs")) {
-				WasteStamina *= 0.65;
-			}
-			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-				AnimationManager::StartAnim("ThighAttack_Heavy", player);
-			} else {
-				if (IsGtsBusy(player)) {
-					TiredSound(player, "You're too tired to perform strong thigh sandwich");
-				}
+		float WasteStamina = 35.0;
+		if (Runtime::HasPerk(player, "KillerThighs")) {
+			WasteStamina *= 0.65;
+		}
+		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+			AnimationManager::StartAnim("ThighAttack_Heavy", player);
+		} else {
+			if (IsGtsBusy(player)) {
+				TiredSound(player, "You're too tired to perform strong thigh sandwich");
 			}
 		}
 	}

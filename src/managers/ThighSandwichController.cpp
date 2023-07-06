@@ -330,7 +330,9 @@ namespace Gts {
 		if (!sandwiching.CanSandwich(pred, prey)) {
 			return;
 		}
-		ShrinkUntil(pred, prey, 6.0);
+		if (HasSMT(pred)) {
+			ShrinkUntil(pred, prey, 6.0);
+		}
 		auto& data = sandwiching.GetSandwichingData(pred);
 		data.AddTiny(prey);
 		AnimationManager::StartAnim("ThighEnter", pred);
