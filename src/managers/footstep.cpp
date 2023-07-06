@@ -350,7 +350,4 @@ namespace Gts {
 			Footstep_96.Play();
 		}
 	}
-
-	void FootStepManager::PlayNormalSounds(NiAVObject* foot, FootEvent foot_kind, float scale) {
-	}
 }
