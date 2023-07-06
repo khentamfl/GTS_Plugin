@@ -328,19 +328,18 @@ namespace {
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sandwiching = ThighSandwichController::GetSingleton().GetSandwichingData(player);
-		auto actor = sandwiching.GetActors()[0];
-		if (!actor) {
-			return;
-		}
-		float WasteStamina = 20.0;
-		if (Runtime::HasPerk(player, "KillerThighs")) {
-			WasteStamina *= 0.65;
-		}
-		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			AnimationManager::StartAnim("ThighAttack", player);
-		} else {
-			if (IsGtsBusy(player)) {
-				TiredSound(player, "You're too tired to perform thigh sandwich");
+		auto actor = sandwiching.GetActors();
+		if (actor.size() > 0) {
+			float WasteStamina = 20.0;
+			if (Runtime::HasPerk(player, "KillerThighs")) {
+				WasteStamina *= 0.65;
+			}
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("ThighAttack", player);
+			} else {
+				if (IsGtsBusy(player)) {
+					TiredSound(player, "You're too tired to perform thigh sandwich");
+				}
 			}
 		}
 	}
@@ -348,19 +347,18 @@ namespace {
 	void ThighSandwichHeavyAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sandwiching = ThighSandwichController::GetSingleton().GetSandwichingData(player);
-		auto actor = sandwiching.GetActors()[0];
-		if (!actor) {
-			return;
-		}
-		float WasteStamina = 35.0;
-		if (Runtime::HasPerk(player, "KillerThighs")) {
-			WasteStamina *= 0.65;
-		}
-		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			AnimationManager::StartAnim("ThighAttack_Heavy", player);
-		} else {
-			if (IsGtsBusy(player)) {
-				TiredSound(player, "You're too tired to perform strong thigh sandwich");
+		auto actor = sandwiching.GetActors();
+		if (actor.size() > 0) {
+			float WasteStamina = 35.0;
+			if (Runtime::HasPerk(player, "KillerThighs")) {
+				WasteStamina *= 0.65;
+			}
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("ThighAttack_Heavy", player);
+			} else {
+				if (IsGtsBusy(player)) {
+					TiredSound(player, "You're too tired to perform strong thigh sandwich");
+				}
 			}
 		}
 	}
