@@ -147,6 +147,11 @@ namespace {
 		PrintDeathSource(giant, huggedActor, "Shrinked");
 		Rumble::For("HugCrush", giant, 76.0, 0.10, "NPC COM [COM ]", 0.15);
 		HugShrink::DetachActorTask(giant);
+		
+		AdjustFacialExpression(giant, 0, 0.0, "phenome");
+		AdjustFacialExpression(giant, 0, 0.0, "modifier");
+		AdjustFacialExpression(giant, 1, 0.0, "modifier");
+		HugShrink::Release(giant);
 	}
 
   // Cancel all the things
