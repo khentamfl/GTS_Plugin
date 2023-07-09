@@ -24,6 +24,9 @@ function SetSizeDamageMultiplier(Float bonus) global native
 ; Sets experience multiplier    
 function SetExperienceMultiplier(Float bonus) global native    
 
+; Determines if the .dll should play old or new size-related sounds    
+function SetLegacySounds(Bool enabled) global native  
+
 ; Get size related damage modifier.
 ; This functions reports damage modifiers for: Normal, Fall, Sprint and High Heel damage bonuses.
 ; The damage is calculated through the .dll.
@@ -232,4 +235,4 @@ Float Function GetExperimentFloat() global native
 Function SetExperimentFloat(Float value) global native
 ;======================================================================================
 ;======================================================================================
-;======================================================================================
+;==============================================================

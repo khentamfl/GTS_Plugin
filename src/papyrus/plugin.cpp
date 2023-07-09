@@ -28,6 +28,11 @@ namespace {
 		Persistent::GetSingleton().experience_mult = bonus;
 	}
 
+	void SetLegacySounds(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().legacy_sounds = enabled;
+		log::info("Legacy Sounds: {}", Persistent::GetSingleton().legacy_sounds);
+	}
+
 	float GetSizeRelatedDamage(StaticFunctionTag*, Actor* actor, float attribute) {
 		return SizeManager::GetSingleton().GetSizeAttribute(actor, attribute);
 	}
@@ -328,6 +333,7 @@ namespace Gts {
 		vm->RegisterFunction("GetDistanceToCamera", PapyrusClass, GetDistanceToCamera);
 		vm->RegisterFunction("SetSizeDamageMultiplier", PapyrusClass, SetSizeDamageMultiplier);
 		vm->RegisterFunction("SetExperienceMultiplier", PapyrusClass, SetExperienceMultiplier);
+		vm->RegisterFunction("SetLegacySounds", PapyrusClass, SetLegacySounds);
 		vm->RegisterFunction("GetSizeRelatedDamage", PapyrusClass, GetSizeRelatedDamage);
 		vm->RegisterFunction("ModSizeVulnerability", PapyrusClass, ModSizeVulnerability);
 		vm->RegisterFunction("GetSizeVulnerability", PapyrusClass, GetSizeVulnerability);

@@ -28,6 +28,7 @@ namespace {
 	inline const auto ProgressionMult = _byteswap_ulong('PRMT');
 	inline const auto DeleteActors = _byteswap_ulong('DTAS');
 	inline const auto HostileToggle = _byteswap_ulong('HTTL');
+	inline const auto LegacySounds = _byteswap_ulong('LGSD');
 
 	const float DEFAULT_MAX_SCALE = 65535.0;
 	const float DEFAULT_HALF_LIFE = 1.0;
@@ -357,6 +358,10 @@ namespace Gts {
 				bool delete_actors;
 				serde->ReadRecordData(&delete_actors, sizeof(delete_actors));
 				GetSingleton().delete_actors = delete_actors;
+			} else if (type == LegacySounds) {
+				bool legacy_sounds;
+				serde->ReadRecordData(&legacy_sounds, sizeof(legacy_sounds));
+				GetSingleton().legacy_sounds = legacy_sounds;
 			} else if (type == HostileToggle) {
 				bool hostile_toggle;
 				serde->ReadRecordData(&hostile_toggle, sizeof(hostile_toggle));
@@ -569,6 +574,13 @@ namespace Gts {
 		}
 		bool Stomp_Ai = GetSingleton().Stomp_Ai;
 		serde->WriteRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
+		
+		if (!serde->OpenRecord(LegacySounds, 1)) {
+			log::error("Unable to open Legacy Sounds record to write cosave data");
+			return;
+		}
+		bool legacy_sounds = GetSingleton().legacy_sounds;
+		serde->WriteRecordData(&legacy_sounds, sizeof(legacy_sounds));
 
 		if (!serde->OpenRecord(HostileToggle, 1)) {
 			log::error("Unable to open Hostile Toggle Actors record to write cosave data");

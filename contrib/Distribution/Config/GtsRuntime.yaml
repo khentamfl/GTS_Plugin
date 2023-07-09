@@ -34,6 +34,49 @@ sounds:
   BreastImpact: "GTS.esp|5E2E5F"
   SoftHandAttack: "GTS.esp|5E2E60"
 
+  # Beta 2.0.0 Sounds ============================================================================
+  # High Heels:
+  HighHeel_x2: "GTS.esp|319060"
+  HighHeel_x4: "GTS.esp|319060"
+  HighHeel_x8: "GTS.esp|319060"
+  HighHeel_x12: "GTS.esp|319060"
+  HighHeel_x24: "GTS.esp|319060"
+  HighHeel_x48: "GTS.esp|319060"
+  HighHeel_x96: "GTS.esp|319060"
+  HighHeel_Mega: "GTS.esp|319060"
+  # High Heels: land
+  HighHeelLand_x2: "GTS.esp|319060"
+  HighHeelLand_x4: "GTS.esp|319060"
+  HighHeelLand_x8: "GTS.esp|319060"
+  HighHeelLand_x12: "GTS.esp|319060"
+  HighHeelLand_x24: "GTS.esp|319060"
+  HighHeelLand_x48: "GTS.esp|319060"
+  HighHeelLand_x96: "GTS.esp|319060"
+  HighHeelLand_Mega: "GTS.esp|319060"
+
+  # Normal Sounds:
+  Normal_x2: "GTS.esp|319060"
+  Normal_x4: "GTS.esp|319060"
+  Normal_x8: "GTS.esp|319060"
+  Normal_x12: "GTS.esp|319060"
+  Normal_x24: "GTS.esp|319060"
+  Normal_x48: "GTS.esp|319060"
+  Normal_x96: "GTS.esp|319060"
+  Normal_Mega: "GTS.esp|319060"
+
+  # Normal Sounds: Land
+
+  NormalLand_x2: "GTS.esp|319060"
+  NormalLand_x4: "GTS.esp|319060"
+  NormalLand_x8: "GTS.esp|319060"
+  NormalLand_x12: "GTS.esp|319060"
+  NormalLand_x24: "GTS.esp|319060"
+  NormalLand_x48: "GTS.esp|319060"
+  NormalLand_x96: "GTS.esp|319060"
+  NormalLand_Mega: "GTS.esp|319060"
+
+  # Beta 2.0.0 Sounds End ============================================================================
+
 
 spellEffects:
   SmallMassiveThreat: "GTS.esp|1A2568"
