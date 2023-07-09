@@ -19,8 +19,8 @@ namespace {
 			return;
 		}
 
-		SpawnParticle(actor, 4.60, "GTS/Test/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
-		return;
+		//SpawnParticle(actor, 4.60, "GTS/Test/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
+		//return;
 
 		BGSExplosion* base_explosion = nullptr;
 		switch (kind) {

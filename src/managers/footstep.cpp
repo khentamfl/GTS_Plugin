@@ -86,7 +86,7 @@ namespace {
 		switch (foot_kind) {
 			case FootEvent::JumpLand:
 				return Runtime::GetSound("lJumpLand");
-				break;
+			break;
 		}
 		return nullptr;
 	}
@@ -279,7 +279,7 @@ namespace Gts {
 				scale = sizedifference;
 			}
 			if (actor->formID == 0x14 && HasSMT(actor)) {
-				scale *= 2.25;
+				scale *= 1.75;
 			}
 			float sprint_factor = 1.0;
 			bool LegacySounds = Persistent::GetSingleton().legacy_sounds; // Determine if we should play old pre 2.00 update sounds
@@ -318,12 +318,15 @@ namespace Gts {
 				if (Runtime::GetBool("EnableGiantSounds")) {
 					for (NiAVObject* foot: impact.nodes) {
 						if (!LegacySounds && WearingHighHeels) { // Play high heel sounds
+							log::info("Playing HH Sounds");
 							FootStepManager::PlayHighHeelSounds(foot, foot_kind, scale * 1.15, sprint_factor, sprinting);
 							return;
 						} else if (!LegacySounds && !WearingHighHeels) { // Play non HH sounds
+							log::info("Playing Non-HH sounds");
 							FootStepManager::PlayNormalSounds(foot, foot_kind, scale, sprint_factor, sprinting);
 							return;
-						} else { // Play old sounds
+						} else if (LegacySounds) { // Play old sounds
+							log::info("Playing Legacy Sounds");
 							FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
 							return;
 						}
