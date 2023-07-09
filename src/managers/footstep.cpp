@@ -3,10 +3,10 @@
 #include "managers/modevent.hpp"
 #include "managers/impact.hpp"
 #include "managers/tremor.hpp"
+#include "data/persistent.hpp"
+#include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
-#include "data/runtime.hpp"
-
 using namespace SKSE;
 using namespace RE;
 using namespace Gts;
@@ -402,8 +402,8 @@ namespace Gts {
 		BSSoundHandle Footstep_12 = get_sound(foot, scale, get_footstep_normal(foot_kind, 12),  VolumeParams { .a = 12.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x16 FootstepNormal");
 		BSSoundHandle Footstep_24 = get_sound(foot, scale, get_footstep_normal(foot_kind, 24),  VolumeParams { .a = 24.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x32 FootstepNormal");
 		BSSoundHandle Footstep_48 = get_sound(foot, scale, get_footstep_normal(foot_kind, 48),  VolumeParams { .a = 48.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x64 FootstepNormal");
-		BSSoundHandle Footstep_96 = get_sound(foot, scale, gget_footstep_normal(foot_kind, 96),  VolumeParams { .a = 96.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x96 FootstepNormal");
-		BSSoundHandle Footstep_96 = get_sound(foot, scale, gget_footstep_normal(foot_kind, 98),  VolumeParams { .a = 120.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "Mega FootstepNormal");
+		BSSoundHandle Footstep_96 = get_sound(foot, scale, get_footstep_normal(foot_kind, 96),  VolumeParams { .a = 96.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x96 FootstepNormal");
+		BSSoundHandle Footstep_Mega = get_sound(foot, scale, get_footstep_normal(foot_kind, 98),  VolumeParams { .a = 120.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "Mega FootstepNormal");
 
 		if (Footstep_1.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_1.Play();
