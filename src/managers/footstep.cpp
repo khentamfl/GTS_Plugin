@@ -334,6 +334,7 @@ namespace Gts {
 	}
 
 	void FootStepManager::PlayLegacySounds(NiAVObject* foot, FootEvent foot_kind, float scale, float start_l, float start_xl, float start_xxl) {
+		//https://www.desmos.com/calculator/wh0vwgljfl
 		BSSoundHandle lFootstep    = get_sound(foot, scale, get_lFootstep_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.6,  .n = 0.7, .s = 1.0}, "L Footstep");
 		BSSoundHandle lJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.6,  .n = 0.7, .s = 1.0}, "L Jump");
 
@@ -363,6 +364,7 @@ namespace Gts {
 	}
 
 	void FootStepManager::PlayHighHeelSounds(NiAVObject* foot, FootEvent foot_kind, float scale, float sprint, bool sprinting) {
+		//https://www.desmos.com/calculator/wh0vwgljfl
 		BSSoundHandle Footstep_1  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 2),  VolumeParams { .a = 1.2,           .k = 0.6,  .n = 0.7, .s = 1.0}, "x1 Footstep");
 		BSSoundHandle Footstep_2  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 2),  VolumeParams { .a = 2.0,           .k = 0.6,  .n = 0.7, .s = 1.0}, "x2 Footstep");
 		BSSoundHandle Footstep_4  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 4),  VolumeParams { .a = 4.0,           .k = 0.65, .n = 0.5, .s = 1.0}, "x4 Footstep");
