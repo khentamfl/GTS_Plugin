@@ -236,8 +236,7 @@ namespace Gts {
 		const float BASE_POWER = 0.0005;
 		const float DUAL_CAST_BONUS = 2.0;
 		const float SMT_BONUS = 2.0;
-		const float PERK1_BONUS = 1.33;
-		const float PERK2_BONUS = 2.0;
+		float PERK_BONUS = 1.0;
 
 		if (Runtime::GetBool("ProtectEssentials") && target->IsEssential()) {
 			return;
@@ -259,18 +258,21 @@ namespace Gts {
 		}
 
 		if (Runtime::HasPerkTeam(caster, "FastShrink")) {
-			power *= PERK1_BONUS;
+			PERK_BONUS += 0.25;
 		}
 		if (Runtime::HasPerkTeam(caster, "LethalShrink")) {
-			power *= PERK2_BONUS;
+			PERK_BONUS += 0.45;
 		}
+
+		power *= PERK_BONUS; // multiply power by perk bonuses
+
 		AdjustSizeLimit(0.0300 * target_scale * power, caster);
 		AdjustMassLimit(0.0160 * target_scale * power, caster);
 
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
 
-		float alteration_level_bonus = 0.0280 + (GtsSkillLevel->value * 0.00166 / 120);
-		Steal(target, caster, power, power*alteration_level_bonus, transfer_effeciency);
+		float alteration_level_bonus = 0.0260 + (GtsSkillLevel->value * 0.000260); // + 100% bonus at level 100
+		Steal(target, caster, power, power * alteration_level_bonus, transfer_effeciency);
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {

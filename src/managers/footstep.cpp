@@ -317,9 +317,10 @@ namespace Gts {
 				}
 				if (Runtime::GetBool("EnableGiantSounds")) {
 					for (NiAVObject* foot: impact.nodes) {
-						if (!LegacySounds && WearingHighHeels) { // Play high heel sounds
+						FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
+						/*if (!LegacySounds && WearingHighHeels) { // Play high heel sounds
 							log::info("Playing HH Sounds");
-							FootStepManager::PlayHighHeelSounds(foot, foot_kind, scale * 1.15, sprint_factor, sprinting);
+							FootStepManager::PlayHighHeelSounds(foot, foot_kind, scale, sprint_factor, sprinting);
 							return;
 						} else if (!LegacySounds && !WearingHighHeels) { // Play non HH sounds
 							log::info("Playing Non-HH sounds");
@@ -329,7 +330,7 @@ namespace Gts {
 							log::info("Playing Legacy Sounds");
 							FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
 							return;
-						}
+						}*/
 					}
 				}
 			}
@@ -338,14 +339,14 @@ namespace Gts {
 
 	void FootStepManager::PlayLegacySounds(NiAVObject* foot, FootEvent foot_kind, float scale, float start_l, float start_xl, float start_xxl) {
 		//https://www.desmos.com/calculator/wh0vwgljfl
-		BSSoundHandle lFootstep    = get_sound(foot, scale, get_lFootstep_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.6,  .n = 0.7, .s = 1.0}, "L Footstep");
-		BSSoundHandle lJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.6,  .n = 0.7, .s = 1.0}, "L Jump");
+		BSSoundHandle lFootstep    = get_sound(foot, scale, get_lFootstep_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.45,  .n = 0.7, .s = 1.0}, "L Footstep");
+		BSSoundHandle lJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.45,  .n = 0.7, .s = 1.0}, "L Jump");
 
-		BSSoundHandle xlFootstep   = get_sound(foot, scale, get_xlFootstep_sounddesc(foot_kind),  VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL: Footstep");
-		BSSoundHandle xlRumble     = get_sound(foot, scale, get_xlRumble_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL Rumble");
-		BSSoundHandle xlSprint     = get_sound(foot, scale, get_xlSprint_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.65, .n = 0.5, .s = 1.0}, "XL Sprint");
+		BSSoundHandle xlFootstep   = get_sound(foot, scale, get_xlFootstep_sounddesc(foot_kind),  VolumeParams { .a = start_xl,            .k = 0.50, .n = 0.5, .s = 1.0}, "XL: Footstep");
+		BSSoundHandle xlRumble     = get_sound(foot, scale, get_xlRumble_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.50, .n = 0.5, .s = 1.0}, "XL Rumble");
+		BSSoundHandle xlSprint     = get_sound(foot, scale, get_xlSprint_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.50, .n = 0.5, .s = 1.0}, "XL Sprint");
 
-		BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.6,  .n = 0.5, .s = 1.0}, "XXL Footstep");
+		BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.5,  .n = 0.5, .s = 1.0}, "XXL Footstep");
 		if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
 			lFootstep.Play();
 		}
@@ -368,15 +369,15 @@ namespace Gts {
 
 	void FootStepManager::PlayHighHeelSounds(NiAVObject* foot, FootEvent foot_kind, float scale, float sprint, bool sprinting) {
 		//https://www.desmos.com/calculator/wh0vwgljfl
-		BSSoundHandle Footstep_1  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 2),  VolumeParams { .a = 1.2,           .k = 0.6,  .n = 0.7, .s = 1.0}, "x1 Footstep");
-		BSSoundHandle Footstep_2  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 2),  VolumeParams { .a = 2.0,           .k = 0.6,  .n = 0.7, .s = 1.0}, "x2 Footstep");
-		BSSoundHandle Footstep_4  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 4),  VolumeParams { .a = 4.0,           .k = 0.65, .n = 0.5, .s = 1.0}, "x4 Footstep");
-		BSSoundHandle Footstep_8  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 8),  VolumeParams { .a = 8.0,           .k = 0.65, .n = 0.5, .s = 1.0}, "x8 Footstep");
-		BSSoundHandle Footstep_12 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 12),  VolumeParams { .a = 12.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x12 Footstep");
-		BSSoundHandle Footstep_24 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 24),  VolumeParams { .a = 24.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x24 Footstep");
-		BSSoundHandle Footstep_48 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 48),  VolumeParams { .a = 48.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x48 Footstep");
-		BSSoundHandle Footstep_96 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 96),  VolumeParams { .a = 96.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x96 Footstep");
-		BSSoundHandle Footstep_Mega = get_sound(foot, scale, get_footstep_highheel(foot_kind, 98),  VolumeParams { .a = 120.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "Mega Footstep");
+		BSSoundHandle Footstep_1  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 2),  VolumeParams { .a = 1.2,           .k = 0.45,  .n = 0.7, .s = 1.0}, "x1 Footstep");
+		BSSoundHandle Footstep_2  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 2),  VolumeParams { .a = 2.0,           .k = 0.45,  .n = 0.7, .s = 1.0}, "x2 Footstep");
+		BSSoundHandle Footstep_4  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 4),  VolumeParams { .a = 4.0,           .k = 0.45, .n = 0.55, .s = 1.0}, "x4 Footstep");
+		BSSoundHandle Footstep_8  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 8),  VolumeParams { .a = 8.0,           .k = 0.45, .n = 0.55, .s = 1.0}, "x8 Footstep");
+		BSSoundHandle Footstep_12 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 12),  VolumeParams { .a = 12.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x12 Footstep");
+		BSSoundHandle Footstep_24 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 24),  VolumeParams { .a = 24.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x24 Footstep");
+		BSSoundHandle Footstep_48 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 48),  VolumeParams { .a = 48.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x48 Footstep");
+		BSSoundHandle Footstep_96 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 96),  VolumeParams { .a = 96.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x96 Footstep");
+		BSSoundHandle Footstep_Mega = get_sound(foot, scale, get_footstep_highheel(foot_kind, 98),  VolumeParams { .a = 120.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "Mega Footstep");
 
 		if (Footstep_1.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_1.Play();
@@ -400,15 +401,15 @@ namespace Gts {
 	}
 
 	void FootStepManager::PlayNormalSounds(NiAVObject* foot, FootEvent foot_kind, float scale, float sprint, bool sprinting) {
-		BSSoundHandle Footstep_1  = get_sound(foot, scale, get_footstep_normal(foot_kind, 2),  VolumeParams { .a = 1.2,           .k = 0.6,  .n = 0.7, .s = 1.0}, "x1 FootstepNormal");
-		BSSoundHandle Footstep_2  = get_sound(foot, scale, get_footstep_normal(foot_kind, 2),  VolumeParams { .a = 2.0,           .k = 0.6,  .n = 0.7, .s = 1.0}, "x2 FootstepNormal");
-		BSSoundHandle Footstep_4  = get_sound(foot, scale, get_footstep_normal(foot_kind, 4),  VolumeParams { .a = 4.0,           .k = 0.65, .n = 0.5, .s = 1.0}, "x4 FootstepNormal");
-		BSSoundHandle Footstep_8  = get_sound(foot, scale, get_footstep_normal(foot_kind, 8),  VolumeParams { .a = 8.0,           .k = 0.65, .n = 0.5, .s = 1.0}, "x8 FootstepNormal");
-		BSSoundHandle Footstep_12 = get_sound(foot, scale, get_footstep_normal(foot_kind, 12),  VolumeParams { .a = 12.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x16 FootstepNormal");
-		BSSoundHandle Footstep_24 = get_sound(foot, scale, get_footstep_normal(foot_kind, 24),  VolumeParams { .a = 24.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x32 FootstepNormal");
-		BSSoundHandle Footstep_48 = get_sound(foot, scale, get_footstep_normal(foot_kind, 48),  VolumeParams { .a = 48.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x64 FootstepNormal");
-		BSSoundHandle Footstep_96 = get_sound(foot, scale, get_footstep_normal(foot_kind, 96),  VolumeParams { .a = 96.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "x96 FootstepNormal");
-		BSSoundHandle Footstep_Mega = get_sound(foot, scale, get_footstep_normal(foot_kind, 98),  VolumeParams { .a = 120.0,          .k = 0.65, .n = 0.5, .s = 1.0}, "Mega FootstepNormal");
+		BSSoundHandle Footstep_1  = get_sound(foot, scale, get_footstep_normal(foot_kind, 2),  VolumeParams { .a = 1.2,           .k = 0.45,  .n = 0.7, .s = 1.0}, "x1 FootstepNormal");
+		BSSoundHandle Footstep_2  = get_sound(foot, scale, get_footstep_normal(foot_kind, 2),  VolumeParams { .a = 2.0,           .k = 0.45,  .n = 0.7, .s = 1.0}, "x2 FootstepNormal");
+		BSSoundHandle Footstep_4  = get_sound(foot, scale, get_footstep_normal(foot_kind, 4),  VolumeParams { .a = 4.0,           .k = 0.45, .n = 0.55, .s = 1.0}, "x4 FootstepNormal");
+		BSSoundHandle Footstep_8  = get_sound(foot, scale, get_footstep_normal(foot_kind, 8),  VolumeParams { .a = 8.0,           .k = 0.45, .n = 0.55, .s = 1.0}, "x8 FootstepNormal");
+		BSSoundHandle Footstep_12 = get_sound(foot, scale, get_footstep_normal(foot_kind, 12),  VolumeParams { .a = 12.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x16 FootstepNormal");
+		BSSoundHandle Footstep_24 = get_sound(foot, scale, get_footstep_normal(foot_kind, 24),  VolumeParams { .a = 24.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x32 FootstepNormal");
+		BSSoundHandle Footstep_48 = get_sound(foot, scale, get_footstep_normal(foot_kind, 48),  VolumeParams { .a = 48.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x64 FootstepNormal");
+		BSSoundHandle Footstep_96 = get_sound(foot, scale, get_footstep_normal(foot_kind, 96),  VolumeParams { .a = 96.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x96 FootstepNormal");
+		BSSoundHandle Footstep_Mega = get_sound(foot, scale, get_footstep_normal(foot_kind, 98),  VolumeParams { .a = 120.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "Mega FootstepNormal");
 
 		if (Footstep_1.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_1.Play();

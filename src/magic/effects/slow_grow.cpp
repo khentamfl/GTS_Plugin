@@ -21,7 +21,7 @@ namespace Gts {
 		}
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
 
-		float AlterBonus = 1.0 + GtsSkillLevel->value/100; // Calculate bonus power. At the Alteration of 100 it becomes 200%.
+		float AlterBonus = 1.0 + (GtsSkillLevel->value * 0.01); // Calculate bonus power. At the Alteration of 100 it becomes 200%.
 		float power = BASE_POWER * AlterBonus;
 
 		if (this->timer.ShouldRun()) {

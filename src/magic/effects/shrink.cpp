@@ -19,7 +19,7 @@ namespace Gts {
 		}
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
 		
-		float SkillMult = 1.0 + GtsSkillLevel->value / 100;
+		float SkillMult = 1.0 + (GtsSkillLevel->value * 0.01);
 
 		float power = BASE_POWER * SkillMult;
 

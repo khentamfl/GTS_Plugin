@@ -130,7 +130,7 @@ namespace {
 
 	void DropTinyChance(Actor* receiver, float damage, float scale) {
 		static Timer DropTimer = Timer(0.33); // Check once per .33 sec
-		if (damage < 4.0 * scale) {
+		if (damage < 6.0 * scale) {
 			return;
 		}
 		if (DropTimer.ShouldRunFrame()) {
