@@ -14,12 +14,12 @@ using namespace Gts;
 using namespace std;
 
 namespace {
-	void make_explosion_at(FootEvent kind, Actor* actor, NiPoint3 position, NiMatrix3 rotation, float scale) {
+	void make_explosion_at(FootEvent kind, Actor* actor, NiPoint3 position, float scale) {
 		if (!actor) {
 			return;
 		}
 
-		SpawnParticle(actor, 4.60, "GTS/Test/Footstep.nif", rotation, position, scale * 2.5, 7, nullptr);
+		SpawnParticle(actor, 4.60, "GTS/Test/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
 		return;
 
 		BGSExplosion* base_explosion = nullptr;
@@ -101,7 +101,6 @@ namespace Gts {
 			for (NiAVObject* node: impact.nodes) {
 				// First try casting a ray
 				NiPoint3 foot_location = node->world.translate;
-				NiMatrix3 rotation = node->world.rotate;
 
 				float hh_offset = HighHeelManager::GetHHOffset(actor).Length();
 				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05*scale - hh_offset)); // Shift up a little then subtract the hh offset
@@ -161,10 +160,10 @@ namespace Gts {
 					/// Sermit To-do: spawn 2 dust effects: at the tip of feet and under the heel, when we have HH off. Currently misses rotation math.
 						make_explosion_at(impact.kind, actor, explosion_pos, scale);
 					}*/
-					make_explosion_at(impact.kind, actor, explosion_pos, rotation, scale);
+					make_explosion_at(impact.kind, actor, explosion_pos, scale);
 				}
 				if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
-					make_explosion_at(impact.kind, actor, explosion_pos, rotation, scale);
+					make_explosion_at(impact.kind, actor, explosion_pos, scale);
 				}
 			}
 		}
