@@ -25,12 +25,12 @@ namespace {
 		Adjust.entry[1][1] = rotation.entry[1][1];
 		Adjust.entry[1][2] = rotation.entry[1][2];
 		if (HighHeelManager::IsWearingHH(actor)) {
-			log::info("{} is wearing HH", actor);
+			log::info("{} is wearing HH", actor->GetDisplayFullName());
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", Adjust, position, scale * 2.5, 7, nullptr);
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", Adjust, position, scale * 2.5, 7, nullptr); // Spawn both
 			return;
 		} else {
-			log::info("{} is NOT wearing HH", actor);
+			log::info("{} is NOT wearing HH", actor->GetDisplayFullName());
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", Adjust, position, scale * 2.5, 7, nullptr); // Spawn foot only
 			return;
 		}
