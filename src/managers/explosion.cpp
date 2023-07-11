@@ -19,9 +19,9 @@ namespace {
 			return;
 		}
 		log::info("Kind: {}", kind);
-		log::info("NiMatrix3: 0:0 {}, 0:1 {}, 0:2{}", rotation[0][0], rotation[0][1], rotation[0][2]);
-		log::info("NiMatrix3: 1:0 {}, 1:1 {}, 1:2{}", rotation[1][0], rotation[1][1], rotation[1][2]);
-		log::info("NiMatrix3: 2:0 {}, 2:1 {}, 2:2{}", rotation[2][0], rotation[2][1], rotation[2][2]);
+		log::info("NiMatrix3: 0:0 {}, 0:1 {}, 0:2{}", rotation.entry[0][0], rotation.entry[0][1], rotation.entry[0][2]);
+		log::info("NiMatrix3: 1:0 {}, 1:1 {}, 1:2{}", rotation.entry[1][0], rotation.entry[1][1], rotation.entry[1][2]);
+		log::info("NiMatrix3: 2:0 {}, 2:1 {}, 2:2{}", rotation.entry[2][0], rotation.entry[2][1], rotation.entry[2][2]);
 		if (HighHeelManager::IsWearingHH(actor)) {
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
 			return;
