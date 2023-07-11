@@ -14,6 +14,23 @@ using namespace Gts;
 using namespace std;
 
 namespace {
+	void CreateParticle(Actor* actor, NiMatrix3 rotation, NiPoint3 position, float scale) {
+		NiMatrix3 adjustedrot = NiMatrix3();
+
+		// Copy all rotations side from .Z one
+		/*adjustedrot.entry[1][0] = position.entry[1][0]; 
+		adjustedrot.entry[1][1] = position.entry[1][2];
+		adjustedrot.entry[1][2] = position.entry[1][2];
+*/
+		if (HighHeelManager::IsWearingHH(actor)) {
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
+			return;
+		} else {
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
+			return;
+		}
+	}
+
 	void make_explosion_at(FootEvent kind, Actor* actor, NiMatrix3 rotation, NiPoint3 position, float scale) {
 		if (!actor) {
 			return;
@@ -22,42 +39,16 @@ namespace {
 		log::info("NiMatrix3: 0:0 {}, 0:1 {}, 0:2{}", rotation.entry[0][0], rotation.entry[0][1], rotation.entry[0][2]);
 		log::info("NiMatrix3: 1:0 {}, 1:1 {}, 1:2{}", rotation.entry[1][0], rotation.entry[1][1], rotation.entry[1][2]);
 		log::info("NiMatrix3: 2:0 {}, 2:1 {}, 2:2{}", rotation.entry[2][0], rotation.entry[2][1], rotation.entry[2][2]);
-		if (HighHeelManager::IsWearingHH(actor)) {
-			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
-			return;
-		} else {
-			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
-			return;
-		}
 
-		/*BGSExplosion* base_explosion = nullptr;
 		switch (kind) {
 			case FootEvent::Left:
 			case FootEvent::Right:
 			case FootEvent::Front:
 			case FootEvent::Back:
-				base_explosion = Runtime::GetExplosion("footstepExplosion");
+				CreateParticle(actor, rotation, position, scale);
 			case FootEvent::JumpLand:
-				base_explosion = Runtime::GetExplosion("footstepExplosion");
+				CreateParticle(actor, rotation, position, scale);
 		}
-
-		if (base_explosion) {
-			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(base_explosion, false);
-			if (!instance_ptr) {
-				return;
-			}
-			TESObjectREFR* instance = instance_ptr.get();
-			if (!instance) {
-				return;
-			}
-			Explosion* explosion = instance->AsExplosion();
-			if (!explosion) {
-				return;
-			}
-			explosion->SetPosition(position);
-			explosion->GetExplosionRuntimeData().radius *= scale;
-			explosion->GetExplosionRuntimeData().imodRadius *= scale;
-		}*/
 	}
 }
 
