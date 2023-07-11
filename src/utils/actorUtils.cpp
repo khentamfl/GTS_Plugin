@@ -1073,7 +1073,7 @@ namespace Gts {
     );
   }
 
-  void SpringGrow_Free(Actor* actor, float amt, float halfLife, std::string_view naming) {
+  void SpringGrow_Free(Actor* actor, float amt, float halfLife) {
     if (!actor) {
       return;
     }
@@ -1102,7 +1102,7 @@ namespace Gts {
     );
   }
 
-  void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming) {
+  void SpringShrink(Actor* actor, float amt, float halfLife) {
     if (!actor) {
       return;
     }
@@ -1133,7 +1133,7 @@ namespace Gts {
     );
   }
 
-  void SpringShrink_Free(Actor* actor, float amt, float halfLife, std::string_view naming) {
+  void SpringShrink_Free(Actor* actor, float amt, float halfLife) {
     if (!actor) {
       return;
     }
