@@ -1042,7 +1042,7 @@ namespace Gts {
     }
   }
 
-	void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming) {
+  void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming) {
     if (!actor) {
       return;
     }
@@ -1059,9 +1059,36 @@ namespace Gts {
 
         if (actor) {
 		  float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-		  //if (consume) {
-		  	DamageAV(actor, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
-		  //}
+		  DamageAV(actor, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
+          auto actorData = Persistent::GetSingleton().GetData(actor);
+          if (actorData) {
+            actorData->target_scale += deltaScale;
+            actorData->visual_scale += deltaScale;
+            growData->addedSoFar = totalScaleToAdd;
+        	}
+	      }
+
+        return fabs(growData->amount.value - growData->amount.target) > 1e-4;
+      }
+    );
+  }
+
+  void SpringGrow_Free(Actor* actor, float amt, float halfLife, std::string_view naming) {
+    if (!actor) {
+      return;
+    }
+
+    auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
+	std::string name = std::format("SpringGrow {}: {}", naming, actor->formID);
+
+    TaskManager::Run(
+      [ growData ](const auto& progressData) {
+        float totalScaleToAdd = growData->amount.value;
+        float prevScaleAdded = growData->addedSoFar;
+        float deltaScale = totalScaleToAdd - prevScaleAdded;
+        Actor* actor = growData->actor.get().get();
+
+        if (actor) {
           auto actorData = Persistent::GetSingleton().GetData(actor);
           if (actorData) {
             actorData->target_scale += deltaScale;
@@ -1092,9 +1119,36 @@ namespace Gts {
 
         if (actor) {
 		  float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-		  //if (consume) {
-		  	DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
-		  //}
+		DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
+          auto actorData = Persistent::GetSingleton().GetData(actor);
+          if (actorData) {
+            actorData->target_scale += deltaScale;
+            actorData->visual_scale += deltaScale;
+            growData->addedSoFar = totalScaleToAdd;
+        	}
+	      }
+
+        return fabs(growData->amount.value - growData->amount.target) > 1e-4;
+      }
+    );
+  }
+
+  void SpringShrink_Free(Actor* actor, float amt, float halfLife, std::string_view naming) {
+    if (!actor) {
+      return;
+    }
+
+    auto growData = std::make_shared<SpringShrinkData>(actor, amt, halfLife);
+	std::string name = std::format("SpringShrink {}: {}", naming, actor->formID);
+
+    TaskManager::Run(name,
+      [ growData ](const auto& progressData) {
+        float totalScaleToAdd = growData->amount.value;
+        float prevScaleAdded = growData->addedSoFar;
+        float deltaScale = totalScaleToAdd - prevScaleAdded;
+        Actor* actor = growData->actor.get().get();
+
+        if (actor) {
           auto actorData = Persistent::GetSingleton().GetData(actor);
           if (actorData) {
             actorData->target_scale += deltaScale;

@@ -76,7 +76,6 @@ namespace Gts {
 				if (!ShouldGrow(actor)) {
 					return;
 				} else {
-					static Timer timer = Timer(2.0); // Sounds once per 2 sec
 					// Calculations
 					float scale = get_visual_scale(actor);
 					float ProgressionMultiplier = Persistent::GetSingleton().progression_multiplier;
@@ -85,7 +84,7 @@ namespace Gts {
 					float base_power = ((0.00185 * TotalPower * 60.0 * scale) * ProgressionMultiplier);  // The power of it
 					ActorHandle gianthandle = actor->CreateRefHandle();
 					// Grow
-					SpringGrow(actor, base_power, 0.25 * TotalPower, "Random");
+					SpringGrow_Free(actor, base_power, 0.25 * TotalPower, "Random");
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
 
 					float Volume = clamp(0.15, 2.0, scale/4);

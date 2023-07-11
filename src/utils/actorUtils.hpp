@@ -105,10 +105,13 @@ namespace Gts {
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause);
 	void PrintSuffocate(Actor* pred, Actor* prey);
-  void ShrinkUntil(Actor* giant, Actor* tiny, float expected);
-  void DisableCollisions(Actor* actor, TESObjectREFR* otherActor);
-  void EnableCollisions(Actor* actor);
+	void ShrinkUntil(Actor* giant, Actor* tiny, float expected);
+	void DisableCollisions(Actor* actor, TESObjectREFR* otherActor);
+	void EnableCollisions(Actor* actor);
 
-  void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming);
-  void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming);
+ 
+	void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming);
+	void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming);
+	void SpringGrow_Free(Actor* actor, float amt, float halfLife, std::string_view naming);
+  	void SpringShrink_Free(Actor* actor, float amt, float halfLife, std::string_view naming);
 }
