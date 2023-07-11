@@ -1042,7 +1042,7 @@ namespace Gts {
     }
   }
 
-  void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming, bool consume) {
+  void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming) {
     if (!actor) {
       return;
     }
@@ -1058,10 +1058,8 @@ namespace Gts {
 		Actor* actor = growData->actor.get().get();
 
 		if (actor) {
-			if (consume) {
-				float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-				DamageAV(actor, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
-			}
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
+			DamageAV(actor, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
 			auto actorData = Persistent::GetSingleton().GetData(actor);
 			if (actorData) {
 				actorData->target_scale += deltaScale;
@@ -1074,7 +1072,7 @@ namespace Gts {
     );
   }
 
-  void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming, bool consume) {
+  void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming) {
     if (!actor) {
       return;
     }
@@ -1090,10 +1088,8 @@ namespace Gts {
 		Actor* actor = growData->actor.get().get();
 
 		if (actor) {
-			if (consume) {
-				float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-				DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
-			}
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
+			DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
           	auto actorData = Persistent::GetSingleton().GetData(actor);
 			if (actorData) {
 				actorData->target_scale += deltaScale;

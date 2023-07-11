@@ -128,12 +128,12 @@ namespace {
 
 	void CallRapidGrowth(StaticFunctionTag*, float amt, float halflife) {
 		auto PC = PlayerCharacter::GetSingleton();
-		SpringGrow(PC, amt, halflife, "Input", true);
+		SpringGrow(PC, amt, halflife, "Input");
 	}
 
 	void CallRapidShrink(StaticFunctionTag*, float amt, float halflife) {
 		auto PC = PlayerCharacter::GetSingleton();
-		SpringShrink(PC, amt, halflife, "Input", true);
+		SpringShrink(PC, amt, halflife, "Input");
 	}
 }
 
