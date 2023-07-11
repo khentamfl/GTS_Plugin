@@ -339,7 +339,7 @@ namespace Gts {
 	void FootStepManager::PlayLegacySounds(NiAVObject* foot, FootEvent foot_kind, float scale, float start_l, float start_xl, float start_xxl) {
 		//https://www.desmos.com/calculator/wh0vwgljfl
 		BSSoundHandle lFootstep    = get_sound(foot, scale, get_lFootstep_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.45,  .n = 0.7, .s = 1.0}, "L Footstep");
-		BSSoundHandle lJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.45,  .n = 0.7, .s = 1.0}, "L Jump");
+		BSSoundHandle lJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.65,  .n = 0.7, .s = 1.0}, "L Jump");
 
 		BSSoundHandle xlFootstep   = get_sound(foot, scale, get_xlFootstep_sounddesc(foot_kind),  VolumeParams { .a = start_xl,            .k = 0.50, .n = 0.5, .s = 1.0}, "XL: Footstep");
 		BSSoundHandle xlRumble     = get_sound(foot, scale, get_xlRumble_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.50, .n = 0.5, .s = 1.0}, "XL Rumble");

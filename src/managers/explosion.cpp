@@ -21,9 +21,9 @@ namespace {
 		log::info("NiMatrix3: 2:0 {}, 2:1 {}, 2:2{}", rotation.entry[2][0], rotation.entry[2][1], rotation.entry[2][2]);
 
 		NiMatrix3 Adjust = NiMatrix3();
-		Adjust.entry[1][0] = rotation.entry[1][0];
+		//Adjust.entry[1][0] = rotation.entry[1][0];
 		Adjust.entry[1][1] = rotation.entry[1][1];
-		Adjust.entry[1][2] = rotation.entry[1][2];
+		//Adjust.entry[1][2] = rotation.entry[1][2];
 		if (HighHeelManager::IsWearingHH(actor)) {
 			log::info("{} is wearing HH", actor->GetDisplayFullName());
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", Adjust, position, scale * 2.5, 7, nullptr);
