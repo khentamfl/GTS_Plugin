@@ -40,10 +40,6 @@ namespace {
 		if (!actor) {
 			return;
 		}
-		
-		
-		
-
 		switch (kind) {
 			case FootEvent::Left:
 			case FootEvent::Right:
@@ -75,7 +71,7 @@ namespace Gts {
 		auto actor = impact.actor;
 
 		float scale = impact.scale;
-		float minimal_size = 3.0;
+		float minimal_size = 2.0;
 		if (actor->formID == 0x14) {
 			if (HasSMT(actor)) {
 				minimal_size = 1.0;
