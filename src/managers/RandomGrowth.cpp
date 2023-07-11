@@ -85,15 +85,16 @@ namespace Gts {
 						if (!gianthandle) {
 							return false;
 						}
-						mod_target_scale(actor, base_power * TimeScale());
+						auto giantref = gianthandle.get().get();
+						mod_target_scale(giantref, base_power * TimeScale());
 						// Play sound
-						Rumble::Once("RandomGrowth", actor, 6.0, 0.05);
-						RestoreStats(actor); // Regens Attributes if PC has perk
+						Rumble::Once("RandomGrowth", giantref, 6.0, 0.05);
+						RestoreStats(giantref); // Regens Attributes if PC has perk
 						if (timer.ShouldRun()) {
 							float Volume = clamp(0.15, 2.0, scale/4);
-							Runtime::PlaySoundAtNode("MoanSound", actor, 1.0, 0.0, "NPC Head [Head]");
-							Runtime::PlaySoundAtNode("xlRumbleL", actor, base_power, 0.0, "NPC COM [COM ]");
-							Runtime::PlaySound("growthSound", actor, Volume, 1.0);
+							Runtime::PlaySoundAtNode("MoanSound", giantref, 1.0, 0.0, "NPC Head [Head]");
+							Runtime::PlaySoundAtNode("xlRumbleL", giantref, base_power, 0.0, "NPC COM [COM ]");
+							Runtime::PlaySound("growthSound", giantref, Volume, 1.0);
 						}
 						return true;
 					});
