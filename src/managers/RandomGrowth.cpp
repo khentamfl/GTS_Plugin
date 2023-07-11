@@ -64,7 +64,7 @@ namespace Gts {
 	}
 
 	void RandomGrowth::Update() {
-		static Timer GrowthTimer = Timer(0.8)
+		static Timer GrowthTimer = Timer(0.8);
 		if (!GrowthTimer.ShouldRunFrame()) {
 			return; //Scan once per 1.2 sec
 		}
@@ -89,9 +89,9 @@ namespace Gts {
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
 
 					float Volume = clamp(0.15, 2.0, scale/4);
-					Runtime::PlaySoundAtNode("MoanSound", giantref, 1.0, 0.0, "NPC Head [Head]");
-					Runtime::PlaySoundAtNode("xlRumbleL", giantref, base_power, 0.0, "NPC COM [COM ]");
-					Runtime::PlaySound("growthSound", giantref, Volume, 1.0);
+					Runtime::PlaySoundAtNode("MoanSound", actor, 1.0, 0.0, "NPC Head [Head]");
+					Runtime::PlaySoundAtNode("xlRumbleL", actor, base_power, 0.0, "NPC COM [COM ]");
+					Runtime::PlaySound("growthSound", actor, Volume, 1.0);
 
 					TaskManager::RunFor(name, 1.0, [=](auto& progressData) {
 						if (!gianthandle) {
