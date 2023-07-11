@@ -16,12 +16,12 @@ using namespace std;
 namespace {
 	void CreateParticle(Actor* actor, NiMatrix3 rotation, NiPoint3 position, float scale) {
 		NiMatrix3 adjustedrot = NiMatrix3();
-
-		// Copy all rotations side from .Z one
-		/*adjustedrot.entry[1][0] = position.entry[1][0]; 
-		adjustedrot.entry[1][1] = position.entry[1][2];
+		/*
+		// Copy all rotations aside from the .Z one
+		adjustedrot.entry[1][0] = position.entry[1][0]; 
+		adjustedrot.entry[1][1] = position.entry[1][1];
 		adjustedrot.entry[1][2] = position.entry[1][2];
-*/
+		*/
 		if (HighHeelManager::IsWearingHH(actor)) {
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
 			return;

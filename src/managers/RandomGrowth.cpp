@@ -78,9 +78,13 @@ namespace Gts {
 					int random = rand()% 79 + 1;
 					float TotalPower = (100 + random)/100;
 					float base_power = ((0.00185 * TotalPower * 60.0 * scale) * ProgressionMultiplier);  // The power of it
+					ActorHandle gianthandle = actor->CreateRefHandle();
 					// Grow
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
 					TaskManager::RunFor(name, 1.0, [=](auto& progressData) {
+						if (!gianthandle) {
+							return false;
+						}
 						mod_target_scale(actor, base_power * TimeScale());
 						// Play sound
 						Rumble::Once("RandomGrowth", actor, 6.0, 0.05);
@@ -91,6 +95,7 @@ namespace Gts {
 							Runtime::PlaySoundAtNode("xlRumbleL", actor, base_power, 0.0, "NPC COM [COM ]");
 							Runtime::PlaySound("growthSound", actor, Volume, 1.0);
 						}
+						return true;
 					});
 				}
 			}
