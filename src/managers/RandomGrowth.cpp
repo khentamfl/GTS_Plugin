@@ -73,22 +73,22 @@ namespace Gts {
 				} else {
 					static Timer timer = Timer(2.0); // Sounds once per 2 sec
 					// Calculations
-					float Scale = get_visual_scale(actor);
+					float scale = get_visual_scale(actor);
 					float ProgressionMultiplier = Persistent::GetSingleton().progression_multiplier;
 					int random = rand()% 79 + 1;
 					float TotalPower = (100 + random)/100;
-					float base_power = ((0.00185 * TotalPower * 60.0 * Scale) * ProgressionMultiplier);  // The power of it
+					float base_power = ((0.00185 * TotalPower * 60.0 * scale) * ProgressionMultiplier);  // The power of it
 					// Grow
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
 					TaskManager::RunFor(name, 1.0, [=](auto& progressData) {
 						mod_target_scale(actor, base_power * TimeScale());
 						// Play sound
 						Rumble::Once("RandomGrowth", actor, 6.0, 0.05);
-						RestoreStats(); // Regens Attributes if PC has perk
+						RestoreStats(actor); // Regens Attributes if PC has perk
 						if (timer.ShouldRun()) {
 							float Volume = clamp(0.15, 2.0, scale/4);
 							Runtime::PlaySoundAtNode("MoanSound", actor, 1.0, 0.0, "NPC Head [Head]");
-							Runtime::PlaySoundAtNode("xlRumbleL", actor, base_power, 0.0);
+							Runtime::PlaySoundAtNode("xlRumbleL", actor, base_power, 0.0, "NPC COM [COM ]");
 							Runtime::PlaySound("growthSound", actor, Volume, 1.0);
 						}
 					});
