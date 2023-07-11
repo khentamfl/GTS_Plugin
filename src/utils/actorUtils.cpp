@@ -1048,7 +1048,7 @@ namespace Gts {
     }
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
-	std::string name = std::format("SpringGrow {}: {}", actor->formID);
+	std::string name = std::format("SpringGrow {}: {}", naming, actor->formID);
 
     TaskManager::Run(
 		[ growData ](const auto& progressData) {
