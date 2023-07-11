@@ -15,18 +15,14 @@ using namespace std;
 
 namespace {
 	void CreateParticle(Actor* actor, NiMatrix3 rotation, NiPoint3 position, float scale) {
-		NiMatrix3 adjustedrot = NiMatrix3();
-		/*
-		// Copy all rotations aside from the .Z one
-		adjustedrot.entry[1][0] = position.entry[1][0]; 
-		adjustedrot.entry[1][1] = position.entry[1][1];
-		adjustedrot.entry[1][2] = position.entry[1][2];
-		*/
 		if (HighHeelManager::IsWearingHH(actor)) {
+			log::info("{} is wearing HH", actor);
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr); // Spawn both
 			return;
 		} else {
-			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
+			log::info("{} is NOT wearing HH", actor);
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr); // Spawn foot only
 			return;
 		}
 	}
@@ -35,18 +31,21 @@ namespace {
 		if (!actor) {
 			return;
 		}
-		log::info("Kind: {}", kind);
+		/*
 		log::info("NiMatrix3: 0:0 {}, 0:1 {}, 0:2{}", rotation.entry[0][0], rotation.entry[0][1], rotation.entry[0][2]);
 		log::info("NiMatrix3: 1:0 {}, 1:1 {}, 1:2{}", rotation.entry[1][0], rotation.entry[1][1], rotation.entry[1][2]);
 		log::info("NiMatrix3: 2:0 {}, 2:1 {}, 2:2{}", rotation.entry[2][0], rotation.entry[2][1], rotation.entry[2][2]);
+		*/
 
 		switch (kind) {
 			case FootEvent::Left:
 			case FootEvent::Right:
 			case FootEvent::Front:
 			case FootEvent::Back:
+				log::info("Kind: {}, Back", kind);
 				CreateParticle(actor, rotation, position, scale);
 			case FootEvent::JumpLand:
+				log::info("Kind: {}, JumpLand", kind);
 				CreateParticle(actor, rotation, position, scale);
 		}
 	}
@@ -80,7 +79,7 @@ namespace Gts {
 			if (actor->AsActorState()->IsSprinting()) {
 				scale *= 1.2; // Sprinting makes you seem bigger
 				if (Runtime::HasPerk(actor, "LethalSprint")) {
-					scale *= 2.0; // A lot bigger
+					scale *= 2.25; // A lot bigger
 				}
 			}
 			if (actor->AsActorState()->IsWalking()) {

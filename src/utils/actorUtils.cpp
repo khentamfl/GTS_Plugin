@@ -1042,13 +1042,13 @@ namespace Gts {
     }
   }
 
-  void SpringGrow(Actor* actor, float amt, float halfLife) {
+  void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming, bool consume) {
     if (!actor) {
       return;
     }
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
-	std::string name = std::format("SpringGrow: {}", actor->formID);
+	std::string name = std::format("SpringGrow {}: {}", naming, actor->formID);
 
     TaskManager::Run(
       [ growData ](const auto& progressData) {
@@ -1059,7 +1059,9 @@ namespace Gts {
 
         if (actor) {
 		  float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-		  DamageAV(actor, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
+		  if (consume) {
+		  	DamageAV(actor, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
+		  }
           auto actorData = Persistent::GetSingleton().GetData(actor);
           if (actorData) {
             actorData->target_scale += deltaScale;
@@ -1073,13 +1075,13 @@ namespace Gts {
     );
   }
 
-  void SpringShrink(Actor* actor, float amt, float halfLife) {
+  void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming, bool consume) {
     if (!actor) {
       return;
     }
 
     auto growData = std::make_shared<SpringShrinkData>(actor, amt, halfLife);
-	std::string name = std::format("SpringShrink: {}", actor->formID);
+	std::string name = std::format("SpringShrink {}: {}", naming, actor->formID);
 
     TaskManager::Run(name,
       [ growData ](const auto& progressData) {
@@ -1090,7 +1092,9 @@ namespace Gts {
 
         if (actor) {
 		  float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-		  DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
+		  if (consume) {
+		  	DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
+		  }
           auto actorData = Persistent::GetSingleton().GetData(actor);
           if (actorData) {
             actorData->target_scale += deltaScale;

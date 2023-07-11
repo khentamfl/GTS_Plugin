@@ -2,6 +2,7 @@
 #include "managers/RandomGrowth.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
+#include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
@@ -30,7 +31,7 @@ namespace {
 			MultiplySlider = 1.0; // Disable effect in Balance Mode, so slider is always 1.0
 		}
 		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
-		int Requirement = ((250 * MultiplySlider * SizeManager::GetSingleton().BalancedMode()) / Gigantism); // Doubles random in Balance Mode
+		int Requirement = ((500 * MultiplySlider * SizeManager::GetSingleton().BalancedMode()) / Gigantism); // Doubles random in Balance Mode
 		int random = rand() % Requirement;
 		int decide_chance = 1;
 		if (random <= decide_chance) {
@@ -63,6 +64,10 @@ namespace Gts {
 	}
 
 	void RandomGrowth::Update() {
+		static Timer GrowthTimer = Timer(0.8)
+		if (!GrowthTimer.ShouldRunFrame()) {
+			return; //Scan once per 1.2 sec
+		}
 		for (auto actor: FindSomeActors("FindRandomGrowth", 2)) {
 			if (!actor) {
 				return;
@@ -80,22 +85,22 @@ namespace Gts {
 					float base_power = ((0.00185 * TotalPower * 60.0 * scale) * ProgressionMultiplier);  // The power of it
 					ActorHandle gianthandle = actor->CreateRefHandle();
 					// Grow
+					SpringGrow(actor, base_power, 0.25 * TotalPower, "Random", false);
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
+
+					float Volume = clamp(0.15, 2.0, scale/4);
+					Runtime::PlaySoundAtNode("MoanSound", giantref, 1.0, 0.0, "NPC Head [Head]");
+					Runtime::PlaySoundAtNode("xlRumbleL", giantref, base_power, 0.0, "NPC COM [COM ]");
+					Runtime::PlaySound("growthSound", giantref, Volume, 1.0);
+
 					TaskManager::RunFor(name, 1.0, [=](auto& progressData) {
 						if (!gianthandle) {
 							return false;
 						}
 						auto giantref = gianthandle.get().get();
-						mod_target_scale(giantref, base_power * TimeScale());
 						// Play sound
 						Rumble::Once("RandomGrowth", giantref, 6.0, 0.05);
 						RestoreStats(giantref); // Regens Attributes if PC has perk
-						if (timer.ShouldRun()) {
-							float Volume = clamp(0.15, 2.0, scale/4);
-							Runtime::PlaySoundAtNode("MoanSound", giantref, 1.0, 0.0, "NPC Head [Head]");
-							Runtime::PlaySoundAtNode("xlRumbleL", giantref, base_power, 0.0, "NPC COM [COM ]");
-							Runtime::PlaySound("growthSound", giantref, Volume, 1.0);
-						}
 						return true;
 					});
 				}
