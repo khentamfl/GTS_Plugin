@@ -110,8 +110,6 @@ namespace Gts {
 	void EnableCollisions(Actor* actor);
 
  
-	void SpringGrow(Actor* actor, float amt, float halfLife);
-	void SpringGrow_Free(Actor* actor, float amt, float halfLife);
-	void SpringShrink(Actor* actor, float amt, float halfLife);
-  	void SpringShrink_Free(Actor* actor, float amt, float halfLife);
+	void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming, bool consume);
+	void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming, bool consume);
 }
