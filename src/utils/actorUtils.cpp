@@ -1042,13 +1042,13 @@ namespace Gts {
     }
   }
 
-  void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming) {
+  void SpringGrow(Actor* actor, float amt, float halfLife) {
     if (!actor) {
       return;
     }
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
-	std::string name = std::format("SpringGrow {}: {}", naming, actor->formID);
+	std::string name = std::format("SpringGrow: {}", naming, actor->formID);
 
     TaskManager::Run(
       [ growData ](const auto& progressData) {
@@ -1079,7 +1079,7 @@ namespace Gts {
     }
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
-	std::string name = std::format("SpringGrow {}: {}", naming, actor->formID);
+	std::string name = std::format("SpringGrow_Free: {}", actor->formID);
 
     TaskManager::Run(
       [ growData ](const auto& progressData) {
@@ -1108,7 +1108,7 @@ namespace Gts {
     }
 
     auto growData = std::make_shared<SpringShrinkData>(actor, amt, halfLife);
-	std::string name = std::format("SpringShrink {}: {}", naming, actor->formID);
+	std::string name = std::format("SpringShrink: {}", actor->formID);
 
     TaskManager::Run(name,
       [ growData ](const auto& progressData) {
@@ -1139,7 +1139,7 @@ namespace Gts {
     }
 
     auto growData = std::make_shared<SpringShrinkData>(actor, amt, halfLife);
-	std::string name = std::format("SpringShrink {}: {}", naming, actor->formID);
+	std::string name = std::format("SpringShrink: {}", actor->formID);
 
     TaskManager::Run(name,
       [ growData ](const auto& progressData) {

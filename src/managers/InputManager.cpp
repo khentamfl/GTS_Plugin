@@ -57,7 +57,7 @@ namespace {
 		float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
 		float scale = get_visual_scale(player);
 		Rumble::For("RapidGrowth", player, 8.0, 0.10, "NPC COM [COM ]", 0.40);
-		SpringGrow(player, 0.6 * scale * stamina, 0.35, "Input");
+		SpringGrow(player, 0.6 * scale * stamina, 0.35);
 	}
 	void RapidShrinkEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
@@ -67,7 +67,7 @@ namespace {
 		float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
 		float scale = get_visual_scale(player);
 		Rumble::For("RapidShrink", player, 8.0, 0.10, "NPC COM [COM ]", 0.40);
-		SpringShrink(player, -0.6 * scale * stamina, 0.35, "Input");
+		SpringShrink(player, -0.6 * scale * stamina, 0.35);
 	}
 
 	void SizeReserveEvent(const InputEventData& data) {
