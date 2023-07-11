@@ -80,7 +80,7 @@ namespace Gts {
 					float base_power = ((0.00185 * TotalPower * 60.0 * Scale) * ProgressionMultiplier);  // The power of it
 					// Grow
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
-					TaskManager::RunFor(name, duration, [=](auto& progressData) {
+					TaskManager::RunFor(name, 1.0, [=](auto& progressData) {
 						mod_target_scale(actor, base_power * TimeScale());
 						// Play sound
 						Rumble::Once("RandomGrowth", actor, 6.0, 0.05);
