@@ -22,16 +22,17 @@ namespace {
 
 		NiMatrix3 Adjust = NiMatrix3();
 		//Adjust.entry[1][0] = rotation.entry[1][0];
-		Adjust.entry[2][0] = rotation.entry[2][0];
+		Adjust.entry[1][0] = rotation.entry[1][0];
 		//Adjust.entry[1][2] = rotation.entry[1][2];
 		if (HighHeelManager::IsWearingHH(actor)) {
 			log::info("{} is wearing HH", actor->GetDisplayFullName());
-			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", Adjust, position, scale * 2.5, 7, nullptr);
-			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", Adjust, position, scale * 2.5, 7, nullptr); // Spawn both
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", rotation, position, scale * 2.5, 7, nullptr);
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr); // Spawn both
 			return;
 		} else {
 			log::info("{} is NOT wearing HH", actor->GetDisplayFullName());
-			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", Adjust, position, scale * 2.5, 7, nullptr); // Spawn foot only
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", Adjust, position, scale * 2.5, 7, nullptr);
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr); // Spawn foot only
 			return;
 		}
 	}
