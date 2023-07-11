@@ -22,7 +22,7 @@ namespace {
 
 		NiMatrix3 Adjust = NiMatrix3();
 		//Adjust.entry[1][0] = rotation.entry[1][0];
-		Adjust.entry[1][1] = rotation.entry[1][1];
+		Adjust.entry[2][0] = rotation.entry[2][0];
 		//Adjust.entry[1][2] = rotation.entry[1][2];
 		if (HighHeelManager::IsWearingHH(actor)) {
 			log::info("{} is wearing HH", actor->GetDisplayFullName());
