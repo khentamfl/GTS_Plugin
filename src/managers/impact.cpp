@@ -115,81 +115,37 @@ namespace Gts {
 				.nodes = get_landing_nodes(actor, kind),
 			};
 
-			EventDispatcher::DoOnImpact(impact_data);
+			EventDispatcher::DoOnImpact(impact_data); // Calls Explosions and sounds. A Must.
 
-			const float BASE_DISTANCE = 75.0; // Checks the distance of the tiny against giant. Should be large to encompass giant's general area
-			const float BASE_FOOT_DISTANCE = 28.0; // Checks the distance of foot squishing
-			const float SCALE_RATIO = 3.0;
-			float bonusscale = 1.0;
-			if (!impact_data.nodes.empty() && actor != nullptr) {
+			float bonus = 1.0;
 
-				float actualGiantScale = get_visual_scale(actor);
-				float giantScale = actualGiantScale;
+			if (actor->IsSneaking()) {
+				bonus *= 0.5;
+			} if (actor->AsActorState()->IsSprinting()) {
+				bonus *= 1.35;
+				if (Runtime::HasPerkTeam(actor, "LethalSprint")) {
+					bonus *= 2.0;
+				}
+			} if (HasSMT(actor)) {
+				bonus += 1.0;
+			}
+			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp
+				DoDamageEffect(&data.giant, 1.60, 1.65 * bonus, 25, 0.035, kind);
+			}
 
-				if (actor->IsSneaking()) {
-					giantScale *= 0.5;
-				}
-				if (actor->AsActorState()->IsSprinting()) {
-					giantScale *= 1.75;
-					if (Runtime::HasPerk(actor, "LethalSprint")) {
-						giantScale *= 2.0;
-					}
-				}
-				if (impact_data.kind == FootEvent::JumpLand) {
-					giantScale *= 2.25;
-				}
-				
-				if (HasSMT(actor)) {
-					giantScale *= 2.0;
-				}
+			const std::string_view RNode = "NPC R Foot [Rft ]";
+			const std::string_view LNode = "NPC L Foot [Lft ]";
 
-				NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
-				NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
-				float hh = hhOffsetbase[2];
-				std::vector<NiPoint3> points = {
-					NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
-					NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
-					NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
-				};
-				float maxFootDistance = BASE_FOOT_DISTANCE * giantScale;
-
-				for (auto foot: impact_data.nodes) {
-					// Make a list of points to check
-					std::vector<NiPoint3> footPoints = {};
-					for (NiPoint3 point:  points) {
-						footPoints.push_back(foot->world*point);
-						if (hhOffset.Length() > 1e-4) {
-							footPoints.push_back(foot->world*(point-hhOffset)); // Add HH offsetted version
-						}
-					}
-					for (auto otherActor: find_actors()) {
-						if (otherActor != actor) {
-							float tinyScale = get_visual_scale(otherActor);
-							if (giantScale / tinyScale > SCALE_RATIO) {
-								NiPoint3 actorLocation = otherActor->GetPosition();
-								// Check the tiny's nodes against the giant's foot points
-								for (auto point: footPoints) {
-									float distance = (point - actorLocation).Length();
-									if (distance < maxFootDistance) {
-										// Under Foot
-										float aveForce = 1.0 - distance / maxFootDistance;
-										aveForce = std::clamp(aveForce, 0.0f, 0.65f);
-										UnderFoot underfoot = UnderFoot {
-											.giant = impact_data.actor,
-											.tiny = otherActor,
-											.force = aveForce,
-											.foot = foot,
-											.bodyParts = {otherActor->GetCurrent3D()},
-											.footEvent = kind,
-										};
-										EventDispatcher::DoUnderFootEvent(underfoot);
-										break;
-									}
-								}
-							}
-						}
-					}
-				}
+			if (kind == FootEvent::JumpLand) { // Launch Actors
+				DoLaunch(&data.giant, 0.9 * bonus, 4.25 * bonus, LNode, 2.0);
+				DoLaunch(&data.giant, 0.9 * bonus, 4.25 * bonus, RNode, 2.0);
+				return;
+			}
+			if (kind == FootEvent::Right) {
+				DoLaunch(actor, 0.6 * bonus, 2.25 * bonus, RNode, 2.0);
+			}
+			if (kind == FootEvent::Left) {
+				DoLaunch(actor, 0.6 * bonus, 2.25 * bonus, LNode, 2.0);
 			}
 		}
 	}

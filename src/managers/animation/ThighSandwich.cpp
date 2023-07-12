@@ -293,8 +293,8 @@ namespace {
 		DoSizeEffect(&data.giant, 2.0, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 4.0 * perk, 2.6, 10, 0.10, FootEvent::Right);
 		DoDamageEffect(&data.giant, 4.0 * perk, 2.6, 10, 0.10, FootEvent::Left);
-		DoLaunch(&data.giant, 1.25 * perk, 2.0, RNode, 1.0);
-		DoLaunch(&data.giant, 1.25 * perk, 2.0, LNode, 1.0);
+		DoLaunch(&data.giant, 0.85 * perk, 2.0, RNode, 1.0);
+		DoLaunch(&data.giant, 0.85 * perk, 2.0, LNode, 1.0);
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {

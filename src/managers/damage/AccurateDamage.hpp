@@ -20,8 +20,6 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 
-			virtual void UnderFootEvent(const UnderFoot& evt) override;
-
 			void DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult);
 			void DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult);
 			void ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult);

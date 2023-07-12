@@ -332,7 +332,7 @@ namespace {
 		Rumble::Once("StompR", &data.giant, 1.50 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.04, FootEvent::Right);
 		DoSizeEffect(&data.giant, dust * data.animSpeed, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.8 * launch, 1.75, RNode, 2.0);
+		DoLaunch(&data.giant, 0.4 * launch, 1.75, RNode, 2.0);
 	}
 
 	void GTSGrab_Throw_FS_L(AnimationEventData& data) {
@@ -348,7 +348,7 @@ namespace {
 		Rumble::Once("StompL", &data.giant, 1.50 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.04, FootEvent::Left);
 		DoSizeEffect(&data.giant, dust * data.animSpeed, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.8 * launch * perk, 1.75, LNode, 2.0);
+		DoLaunch(&data.giant, 0.4 * launch * perk, 1.75, LNode, 2.0);
 	}
 
 	void GTSGrab_Throw_Throw_Pre(AnimationEventData& data) {// Throw frame 0

@@ -77,6 +77,8 @@ namespace {
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Left);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 0.4, 1.75, LNode, 2.0);
+		DoLaunch(&data.giant, 0.4, 1.75, RNode, 2.0);
 	}
 	void MCO_DodgeSound(AnimationEventData& data) {
 		data.stage = 0;
@@ -86,14 +88,16 @@ namespace {
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Left);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 0.4, 1.75, LNode, 2.0);
+		DoLaunch(&data.giant, 0.4, 1.75, RNode, 2.0);
 	}
 
 	void JumpDown(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& sizemanager = SizeManager::GetSingleton();
 		float damage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
-		DoDamageEffect(&data.giant, 2.2 * damage, 8.0, 20, 0.04, FootEvent::Left);
-		DoDamageEffect(&data.giant, 2.2 * damage, 8.0, 20, 0.04, FootEvent::Right);
+		DoDamageEffect(&data.giant, 1.2 * damage, 8.0, 20, 0.04, FootEvent::Left);
+		DoDamageEffect(&data.giant, 1.2 * damage, 8.0, 20, 0.04, FootEvent::Right);
 	}
 }
 
