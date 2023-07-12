@@ -35,9 +35,9 @@ using namespace std;
 
 namespace {
 	float GetHPThreshold(Actor* actor) {
-		float hp = 25.0;
+		float hp = 0.25;
 		if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
-			hp = 40.0;
+			hp = 0.40;
 		}
 		return hp;
 	}
@@ -206,7 +206,7 @@ namespace {
 		float staminapercent = GetStaminaPercentage(player);
 		float stamina = GetAV(player, ActorValue::kStamina);
 		float HpThreshold = GetHPThreshold(player);
-		log::info("Staminapercent: {}, Staminapercent/100: {}, hpthreshold: {}", staminapercent, staminapercent/100, health);
+		log::info("Staminapercent: {}, Staminapercent/100: {}, hpthreshold: {}, hp perc: {}", staminapercent, staminapercent/100, HpThreshold, health);
 		if (ForceCrush && staminapercent >= 0.98) {
 			AnimationManager::StartAnim("Huggies_HugCrush", player);
 			AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
