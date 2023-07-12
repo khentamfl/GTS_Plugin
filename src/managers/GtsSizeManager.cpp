@@ -186,9 +186,9 @@ namespace Gts {
 			if (shoe) {
 				shoe_weight = shoe->weight/20;
 			}
-			float expectedhhdamage = 1.5 + shoe_weight;
+			float expectedhhdamage = 1.5;
 			if (this->GetSizeAttribute(actor, 3) != expectedhhdamage) {
-				this->SetSizeAttribute(actor, 1.5 + shoe_weight, 3);
+				this->SetSizeAttribute(actor, 1.5, 3);
 				log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), this->GetSizeAttribute(actor, 3));
 			}
 		} else if (hh_length <= 1e-4) {
