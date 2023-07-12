@@ -96,9 +96,9 @@ namespace {
 	void JumpDown(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& sizemanager = SizeManager::GetSingleton();
-		float damage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
-		DoDamageEffect(&data.giant, 1.2 * damage, 8.0, 20, 0.04, FootEvent::Left);
-		DoDamageEffect(&data.giant, 1.2 * damage, 8.0, 20, 0.04, FootEvent::Right);
+		float damage = sizemanager.GetSizeAttribute(giant, 2);
+		DoDamageEffect(&data.giant, 1.2 * damage, 6.0, 20, 0.04, FootEvent::Left);
+		DoDamageEffect(&data.giant, 1.2 * damage, 6.0, 20, 0.04, FootEvent::Right);
 	}
 }
 
