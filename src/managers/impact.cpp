@@ -131,15 +131,15 @@ namespace Gts {
 				bonus += 1.0;
 			}
 			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp
-				DoDamageEffect(&data.giant, 1.60, 1.65 * bonus, 25, 0.035, kind);
+				DoDamageEffect(actor, 1.60, 1.65 * bonus, 25, 0.035, kind);
 			}
 
 			const std::string_view RNode = "NPC R Foot [Rft ]";
 			const std::string_view LNode = "NPC L Foot [Lft ]";
 
 			if (kind == FootEvent::JumpLand) { // Launch Actors
-				DoLaunch(&data.giant, 0.9 * bonus, 4.25 * bonus, LNode, 2.0);
-				DoLaunch(&data.giant, 0.9 * bonus, 4.25 * bonus, RNode, 2.0);
+				DoLaunch(actor, 0.9 * bonus, 4.25 * bonus, LNode, 2.0);
+				DoLaunch(actor, 0.9 * bonus, 4.25 * bonus, RNode, 2.0);
 				return;
 			}
 			if (kind == FootEvent::Right) {
