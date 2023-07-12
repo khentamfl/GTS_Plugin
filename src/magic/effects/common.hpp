@@ -271,7 +271,7 @@ namespace Gts {
 
 		auto GtsSkillLevel = GetGtsSkillLevel();
 
-		float alteration_level_bonus = 0.0260 + (GtsSkillLevel->value * 0.000260); // + 100% bonus at level 100
+		float alteration_level_bonus = 0.0260 + (GtsSkillLevel * 0.000260); // + 100% bonus at level 100
 		Steal(target, caster, power, power * alteration_level_bonus, transfer_effeciency);
 	}
 
