@@ -289,7 +289,7 @@ namespace {
 	void GTSvore_impactRS(AnimationEventData& data) {
 		Rumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
 		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
-		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.04), FootEvent::Right;
+		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.04, FootEvent::Right);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {
