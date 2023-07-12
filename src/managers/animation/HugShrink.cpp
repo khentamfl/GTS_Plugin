@@ -34,7 +34,13 @@ using namespace std;
 
 
 namespace {
-	
+	float GetHPThreshold(Actor* actor) {
+		float hp = 25.0;
+		if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
+			hp = 40.0;
+		}
+		return hp;
+	}
 	float GetStealRate(Actor* actor) {
 		float steal = 0.20;
 		if (Runtime::HasPerkTeam(actor, "HugCrush")) {
@@ -195,8 +201,31 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		AnimationManager::StartAnim("Huggies_HugCrush", player);
-		AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
+		bool ForceCrush = Runtime::HasPerkTeam(player, "HugCrush_HugsOfDeath");
+		float health = GetHealthPercentage(huggedActor);	
+		float staminapercent = GetStaminaPercentage(player);
+		float stamina = GetAV(player, ActorValue::kStamina);
+		float HpThreshold = GetHPThreshold();
+		log::info("Staminapercent: {}, Staminapercent/100: {}, hpthreshold: {}", staminapercent, staminapercent/100, health);
+		if (ForceCrush && staminapercent >= 0.98) {
+			AnimationManager::StartAnim("Huggies_HugCrush", player);
+			AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
+			DamageAV(player, ActorValue::kStamina, stamina * 1.10);
+			return;
+		} else if (HasSMT(player)) {
+			AnimationManager::StartAnim("Huggies_HugCrush", player);
+			AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
+			AddSMTPenalty(player, 5.0);
+			DamageAV(player, ActorValue::kStamina, 60);
+			return;
+		} else if (health <= HpThreshold) {
+			AnimationManager::StartAnim("Huggies_HugCrush", player);
+			AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
+			return;
+		} else {
+			Notify("{} is too healthy to be hug crushed", huggedActor->GetDisplayFullName());
+		}
+		
 	}
 
 	void HugShrinkEvent(const InputEventData& data) {
