@@ -34,10 +34,8 @@ namespace {
 			case FootEvent::Right:
 			case FootEvent::Front:
 			case FootEvent::Back:
-				log::info("Kind: {}, Back", kind);
 				CreateParticle(actor, rotation, position, scale);
 			case FootEvent::JumpLand:
-				log::info("Kind: {}, JumpLand", kind);
 				CreateParticle(actor, rotation, position, scale);
 		}
 	}

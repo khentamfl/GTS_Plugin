@@ -123,7 +123,7 @@ namespace Gts {
 			if (actor->IsSneaking()) {
 				bonus *= 0.5;
 			} if (actor->AsActorState()->IsSprinting()) {
-				bonus *= 1.35;
+				bonus *= 1.75;
 				if (Runtime::HasPerkTeam(actor, "LethalSprint")) {
 					bonus *= 2.0;
 				}
@@ -131,22 +131,22 @@ namespace Gts {
 				bonus += 1.0;
 			}
 			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp
-				DoDamageEffect(actor, 1.60, 1.65 * bonus, 25, 0.035, kind);
+				DoDamageEffect(actor, 1.75, 1.85 * bonus, 25, 0.035, kind);
 			}
 
 			const std::string_view RNode = "NPC R Foot [Rft ]";
 			const std::string_view LNode = "NPC L Foot [Lft ]";
 
 			if (kind == FootEvent::JumpLand) { // Launch Actors
-				DoLaunch(actor, 0.9 * bonus, 4.25 * bonus, LNode, 2.0);
-				DoLaunch(actor, 0.9 * bonus, 4.25 * bonus, RNode, 2.0);
+				DoLaunch(actor, 1.1 * bonus, 4.25 * bonus, LNode, 2.0);
+				DoLaunch(actor, 1.1 * bonus, 4.25 * bonus, RNode, 2.0);
 				return;
 			}
 			if (kind == FootEvent::Right) {
-				DoLaunch(actor, 0.6 * bonus, 2.25 * bonus, RNode, 2.0);
+				DoLaunch(actor, 0.8 * bonus, 2.25 * bonus, RNode, 2.0);
 			}
 			if (kind == FootEvent::Left) {
-				DoLaunch(actor, 0.6 * bonus, 2.25 * bonus, LNode, 2.0);
+				DoLaunch(actor, 0.8 * bonus, 2.25 * bonus, LNode, 2.0);
 			}
 		}
 	}

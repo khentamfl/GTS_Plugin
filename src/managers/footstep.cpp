@@ -318,15 +318,15 @@ namespace Gts {
 				if (Runtime::GetBool("EnableGiantSounds")) {
 					for (NiAVObject* foot: impact.nodes) {
 						if (!LegacySounds && WearingHighHeels) { // Play high heel sounds
-							log::info("Playing HH Sounds");
+							//log::info("Playing HH Sounds");
 							FootStepManager::PlayHighHeelSounds(foot, foot_kind, scale, sprint_factor, sprinting);
 							return;
 						} else if (!LegacySounds && !WearingHighHeels) { // Play non HH sounds
-							log::info("Playing Non-HH sounds");
+							//log::info("Playing Non-HH sounds");
 							FootStepManager::PlayNormalSounds(foot, foot_kind, scale, sprint_factor, sprinting);
 							return;
 						} else if (LegacySounds) { // Play old sounds
-							log::info("Playing Legacy Sounds");
+							//log::info("Playing Legacy Sounds");
 							FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
 							return;
 						}
