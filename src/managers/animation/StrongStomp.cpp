@@ -241,7 +241,7 @@ namespace {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteMult -= 0.35;
-		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
+		} if (Runtime::HasPerkTeam(player, "SkilledGTS")) {
 			WasteMult -= GetGtsSkillLevel() * 0.0035;
 		}
 		float WasteStamina = 70.0 * WasteMult;
@@ -257,7 +257,7 @@ namespace {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteMult -= 0.35;
-		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
+		} if (Runtime::HasPerkTeam(player, "SkilledGTS")) {
 			WasteMult -= GetGtsSkillLevel() * 0.0035;
 		}
 		float WasteStamina = 70.0 * WasteMult;

@@ -84,7 +84,7 @@ namespace Gts {
 					float base_power = ((0.00185 * TotalPower * 60.0 * scale) * ProgressionMultiplier);  // The power of it
 					ActorHandle gianthandle = actor->CreateRefHandle();
 					// Grow
-					SpringGrow_Free(actor, base_power * 2.5, 0.40 * TotalPower, "RandomGrowth");
+					SpringGrow_Free(actor, base_power * 2.5, 0.40 * TotalPower, "RandomGrowthFree");
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
 					// Sounds
 					float Volume = clamp(0.15, 2.0, scale/4);
