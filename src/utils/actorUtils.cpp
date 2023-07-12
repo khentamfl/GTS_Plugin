@@ -685,9 +685,13 @@ namespace Gts {
 		}
 	}
 
-	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage) {
+	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind) {
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
-		AccurateDamage::GetSingleton().DoAccurateCollision(giant, (45.0 * damage * damagebonus), radius, random, bonedamage);
+		if (kind == FootEvent::Left) {
+			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage * damagebonus), radius, random, bonedamage);
+		} if (type == FootEvent::Right) {
+			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage * damagebonus), radius, random, bonedamage);
+		}
 	}
 
 	bool HasSMT(Actor* giant) {

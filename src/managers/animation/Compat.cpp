@@ -73,7 +73,8 @@ namespace {
 		data.stage = 0;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20;
-		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04);
+		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Right);
+		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Left);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
 	}
@@ -81,7 +82,8 @@ namespace {
 		data.stage = 0;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20;
-		DoDamageEffect(&data.giant, 1.25, 1.4, 10, 0.04);
+		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Right);
+		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Left);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
 	}
@@ -90,7 +92,8 @@ namespace {
 		auto giant = &data.giant;
 		auto& sizemanager = SizeManager::GetSingleton();
 		float damage = sizemanager.GetSizeAttribute(giant, 2) * 2.0;
-		DoDamageEffect(&data.giant, 2.2 * damage, 8.0, 20, 0.04);
+		DoDamageEffect(&data.giant, 2.2 * damage, 8.0, 20, 0.04, FootEVent::Left);
+		DoDamageEffect(&data.giant, 2.2 * damage, 8.0, 20, 0.04, FootEVent::Right);
 	}
 }
 

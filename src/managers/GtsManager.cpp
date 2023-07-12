@@ -262,21 +262,21 @@ void GtsManager::Update() {
 
 		FixActorFade(actor);
 
-
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
-
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
 			if (sizemanager.GetPreciseDamage()) {
-				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 1000, 0.25);
+				accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25);
+				accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25);
 				ClothManager::GetSingleton().CheckRip();
 			}
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
 			if (actor->formID != 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
-				accuratedamage.DoAccurateCollision(actor, 1.0, 1.0, 1000, 0.20);
+				accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25);
+				accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25);
 			}
 		}
 

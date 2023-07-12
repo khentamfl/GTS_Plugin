@@ -174,8 +174,8 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-	void AccurateDamage::DoAccurateCollision(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
-		auto profiler = Profilers::Profile("AccurateDamage: DoAccurateCollision");
+	void AccurateDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+		auto profiler = Profilers::Profile("AccurateDamageLeft: DoAccurateCollision");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
 			return;
@@ -194,34 +194,18 @@ namespace Gts {
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
 
 		auto leftFoot = find_node(actor, leftFootLookup);
-		auto rightFoot = find_node(actor, rightFootLookup);
-
 		auto leftCalf = find_node(actor, leftCalfLookup);
-		auto rightCalf = find_node(actor, rightCalfLookup);
-
-
 		auto leftToe = find_node(actor, leftToeLookup);
-		auto rightToe = find_node(actor, rightToeLookup);
-
 		auto BodyBone = find_node(actor, bodyLookup);
 
 
 		if (!leftFoot) {
 			return;
 		}
-		if (!rightFoot) {
-			return;
-		}
 		if (!leftCalf) {
 			return;
 		}
-		if (!rightCalf) {
-			return;
-		}
 		if (!leftToe) {
-			return;
-		}
-		if (!rightToe) {
 			return;
 		}
 		if (!BodyBone) {
@@ -245,6 +229,102 @@ namespace Gts {
 			leftRotMat = NiMatrix3(right, forward, up);
 		}
 
+		float maxFootDistance = BASE_DISTANCE * radius * giantScale;
+		float hh = hhOffsetbase[2];
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
+			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
+			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
+		};
+		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
+
+		for (const auto& [foot, rotMat]: {left}) {
+			std::vector<NiPoint3> footPoints = {};
+			for (NiPoint3 point: points) {
+				footPoints.push_back(foot->world*(rotMat*point));
+			}
+			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+				for (auto point: footPoints) {
+					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
+				}
+			}
+
+			NiPoint3 giantLocation = actor->GetPosition();
+			for (auto otherActor: find_actors()) {
+				if (otherActor != actor) {
+					float tinyScale = get_visual_scale(otherActor);
+					if (giantScale / tinyScale > SCALE_RATIO) {
+						NiPoint3 actorLocation = otherActor->GetPosition();
+
+						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+							// Check the tiny's nodes against the giant's foot points
+							int nodeCollisions = 0;
+							float force = 0.0;
+
+							auto model = otherActor->GetCurrent3D();
+
+							if (model) {
+								for (auto point: footPoints) {
+									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
+										float distance = (point - a_obj.world.translate).Length();
+										if (distance < maxFootDistance) {
+											nodeCollisions += 1;
+											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
+										}
+										return true;
+									});
+								}
+							}
+							if (nodeCollisions > 0) {
+								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
+								//log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
+								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	void AccurateDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+		auto profiler = Profilers::Profile("AccurateDamageRight: DoAccurateCollision");
+		auto& accuratedamage = AccurateDamage::GetSingleton();
+		if (!actor) {
+			return;
+		}
+		float actualGiantScale = get_visual_scale(actor);
+		float giantScale = get_visual_scale(actor);
+		const float BASE_CHECK_DISTANCE = 90.0;
+		const float BASE_DISTANCE = 6.0;
+		const float SCALE_RATIO = 1.15;
+		if (HasSMT(actor)) {
+			giantScale *= 1.85;
+		}
+
+		// Get world HH offset
+		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
+
+		auto rightFoot = find_node(actor, rightFootLookup);
+		auto rightCalf = find_node(actor, rightCalfLookup);
+		auto rightToe = find_node(actor, rightToeLookup);
+		auto BodyBone = find_node(actor, bodyLookup);
+
+
+		if (!rightFoot) {
+			return;
+		}
+		if (!rightCalf) {
+			return;
+		}
+		if (!rightToe) {
+			return;
+		}
+		if (!BodyBone) {
+			return; // CTD protection attempts
+		}
 		NiMatrix3 rightRotMat;
 		{
 			NiAVObject* foot = rightFoot;
@@ -272,10 +352,9 @@ namespace Gts {
 			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
 			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
 		};
-		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
 		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
 
-		for (const auto& [foot, rotMat]: {left, right}) {
+		for (const auto& [foot, rotMat]: {right}) {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
