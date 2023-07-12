@@ -1,3 +1,4 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/explosion.hpp"
 #include "managers/modevent.hpp"
 #include "managers/footstep.hpp"

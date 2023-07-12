@@ -8,9 +8,10 @@
 //   - "MCO_SecondDodge",           // enables GTS sounds and footstep effects
 //   - "SoundPlay.MCO_DodgeSound",
 
-#include "managers/animation/Compat.hpp"
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/animation/Compat.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/CrushManager.hpp"
