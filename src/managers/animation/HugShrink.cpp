@@ -205,7 +205,7 @@ namespace {
 		float health = GetHealthPercentage(huggedActor);	
 		float staminapercent = GetStaminaPercentage(player);
 		float stamina = GetAV(player, ActorValue::kStamina);
-		float HpThreshold = GetHPThreshold();
+		float HpThreshold = GetHPThreshold(player);
 		log::info("Staminapercent: {}, Staminapercent/100: {}, hpthreshold: {}", staminapercent, staminapercent/100, health);
 		if (ForceCrush && staminapercent >= 0.98) {
 			AnimationManager::StartAnim("Huggies_HugCrush", player);
