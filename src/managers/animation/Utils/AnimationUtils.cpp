@@ -43,10 +43,10 @@ namespace Gts {
 		sizemanager.SetActionBool(giant, enable, type);
 	}
 
-	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node, float override) {
+	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node, float overr) {
 		float bonus = 1.0;
 		if (HasSMT(giant)) {
-			bonus = override;
+			bonus = overr;
 		}
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
 	}

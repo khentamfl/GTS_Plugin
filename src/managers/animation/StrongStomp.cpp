@@ -164,7 +164,7 @@ namespace {
 
 	void GTS_StrongStomp_ImpactR(AnimationEventData& data) {
 		float perk = GetPerkBonus_Basics(&data.giant);
-		float SMT = 1.30;
+		float SMT = 1.25;
 		float damage = 1.0;
 		if (HasSMT(&data.giant)) {
 			SMT = 1.5; // Larger Dust
@@ -173,7 +173,7 @@ namespace {
 		DoImpactRumble(&data.giant, SMT * data.animSpeed - 0.55 * 2, RNode, "HeavyStompR");
 		DoSounds(&data.giant, data.animSpeed - 0.5, RNode); 
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.55), 1.85 * damage * (data.animSpeed - 0.55), 5, 0.035);
-		DoSizeEffect(&data.giant, SMT * (data.animSpeed - 0.55), FootEvent::Right, RNode);
+		DoSizeEffect(&data.giant, SMT + (data.animSpeed * 0.05), FootEvent::Right, RNode); 
 		DoLaunch(&data.giant, 1.4 * perk, 3.8 * data.animSpeed, RNode, 2.0);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.canEditAnimSpeed = false;
@@ -181,7 +181,7 @@ namespace {
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
 		float perk = GetPerkBonus_Basics(&data.giant);
-		float SMT = 1.30;
+		float SMT = 1.25;
 		float damage = 1.0;
 		if (HasSMT(&data.giant)) {
 			SMT = 1.5; // Larger Dust
@@ -190,7 +190,7 @@ namespace {
 		DoImpactRumble(&data.giant, SMT * data.animSpeed - 0.55 * 2, LNode, "HeavyStompL");
 		DoSounds(&data.giant, data.animSpeed - 0.5, LNode);
 		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.55), 1.85 * damage * (data.animSpeed - 0.55), 5, 0.035);
-		DoSizeEffect(&data.giant, SMT * (data.animSpeed - 0.55), FootEvent::Left, LNode);
+		DoSizeEffect(&data.giant, SMT + (data.animSpeed * 0.05), FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.4 * perk, 3.8 * data.animSpeed, LNode, 2.0);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.canEditAnimSpeed = false;
