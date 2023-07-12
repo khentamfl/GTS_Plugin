@@ -171,10 +171,10 @@ namespace {
 			damage = 2.0;
 		}
 		DoImpactRumble(&data.giant, SMT * data.animSpeed - 0.55 * 2, RNode, "HeavyStompR");
-		DoSounds(&data.giant, data.animSpeed - 0.5, RNode); 
-		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.55), 1.85 * damage * (data.animSpeed - 0.55), 5, 0.035);
+		DoSounds(&data.giant, 1.35 + data.animSpeed/6, RNode); 
+		DoDamageEffect(&data.giant, damage * (4.8 + data.animSpeed/2) * perk, (2.40 + data.animSpeed/3) * damage, 5, 0.035);
 		DoSizeEffect(&data.giant, SMT + (data.animSpeed * 0.05), FootEvent::Right, RNode); 
-		DoLaunch(&data.giant, 1.4 * perk, 3.8 * data.animSpeed, RNode, 2.0);
+		DoLaunch(&data.giant, 1.4 * perk, 7.0 + data.animSpeed/2, RNode, 2.0);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
@@ -188,10 +188,10 @@ namespace {
 			damage = 2.0;
 		}
 		DoImpactRumble(&data.giant, SMT * data.animSpeed - 0.55 * 2, LNode, "HeavyStompL");
-		DoSounds(&data.giant, data.animSpeed - 0.5, LNode);
-		DoDamageEffect(&data.giant, damage * 2.5 * perk * (data.animSpeed - 0.55), 1.85 * damage * (data.animSpeed - 0.55), 5, 0.035);
-		DoSizeEffect(&data.giant, SMT + (data.animSpeed * 0.05), FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 1.4 * perk, 3.8 * data.animSpeed, LNode, 2.0);
+		DoSounds(&data.giant, 1.35 + data.animSpeed/6, LNode); 
+		DoDamageEffect(&data.giant, damage * (4.8 + data.animSpeed/2) * perk, (2.40 + data.animSpeed/3) * damage, 5, 0.035);
+		DoSizeEffect(&data.giant, SMT + (data.animSpeed * 0.05), FootEvent::Left, LNode); 
+		DoLaunch(&data.giant, 1.4 * perk, 7.0 + data.animSpeed/2, LNode, 2.0);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
@@ -238,10 +238,13 @@ namespace {
 
 	void RightStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 70.0;
+		float WasteMult = 1.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			WasteStamina *= 0.65;
+			WasteMult -= 0.35;
+		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
+			WasteMult -= GetGtsSkillLevel() * 0.0035;
 		}
+		float WasteStamina = 70.0 * WasteMult;
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StrongStompRight", player);
 		} else {
@@ -251,10 +254,13 @@ namespace {
 
 	void LeftStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 70.0;
+		float WasteMult = 1.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			WasteStamina *= 0.65;
+			WasteMult -= 0.35;
+		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
+			WasteMult -= GetGtsSkillLevel() * 0.0035;
 		}
+		float WasteStamina = 70.0 * WasteMult;
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("StrongStompLeft", player);
 		} else {

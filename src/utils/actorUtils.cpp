@@ -1077,6 +1077,34 @@ namespace Gts {
     );
   }
 
+  void SpringGrow_Free(Actor* actor, float amt, float halfLife, std::string_view naming) {
+    if (!actor) {
+      return;
+    }
+
+    auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
+	std::string name = std::format("SpringGrow_Free {}: {}", naming, actor->formID);
+
+    TaskManager::Run(
+		[ growData ](const auto& progressData) {
+		float totalScaleToAdd = growData->amount.value;
+		float prevScaleAdded = growData->addedSoFar;
+		float deltaScale = totalScaleToAdd - prevScaleAdded;
+		Actor* actor = growData->actor.get().get();
+
+		if (actor) {
+			auto actorData = Persistent::GetSingleton().GetData(actor);
+			if (actorData) {
+				actorData->target_scale += deltaScale;
+				actorData->visual_scale += deltaScale;
+				growData->addedSoFar = totalScaleToAdd;
+				}
+			}
+        return fabs(growData->amount.value - growData->amount.target) > 1e-4;
+      }
+    );
+  }
+
   void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming) {
     if (!actor) {
       return;
