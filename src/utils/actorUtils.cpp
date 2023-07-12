@@ -689,7 +689,7 @@ namespace Gts {
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
 		if (kind == FootEvent::Left) {
 			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage * damagebonus), radius, random, bonedamage);
-		} if (type == FootEvent::Right) {
+		} if (kind == FootEvent::Right) {
 			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage * damagebonus), radius, random, bonedamage);
 		}
 	}
