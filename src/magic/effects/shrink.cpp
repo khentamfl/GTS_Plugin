@@ -1,5 +1,6 @@
 #include "magic/effects/shrink.hpp"
 #include "magic/effects/common.hpp"
+#include "utils/actorUtils.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
@@ -17,9 +18,9 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		auto GtsSkillLevel = GetGtsSkillLevel();
 		
-		float SkillMult = 1.0 + (GtsSkillLevel->value * 0.01);
+		float SkillMult = 1.0 + (GtsSkillLevel * 0.01);
 
 		float power = BASE_POWER * SkillMult;
 

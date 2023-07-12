@@ -63,7 +63,9 @@ namespace Gts {
 	void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float waste, float power) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, perk)) {
-			WasteMult *= 0.65;
+			WasteMult -= 0.35;
+		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
+			WasteMult -= GetGtsSkillLevel() * 0.35;
 		}
 		std::string name = std::format("StaminaDrain_{}_{}", TaskName, giant->formID);
 		if (decide) {

@@ -211,6 +211,8 @@ perks:
   HugCrush_ToughGrip: "GTS.esp|606570"
   HugCrush_HugsOfDeath: "GTS.esp|60656F"
 
+  SkilledGTS: "GTS.esp|61A996"
+
 
 
 explosions:

@@ -779,6 +779,11 @@ namespace Gts {
 		}
 	}
 
+	float GetGtsSkillLevel() {
+		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		return GtsSkillLevel->value;
+	}
+
 	float GetXpBonus() {
 		float xp = Persistent::GetSingleton().experience_mult;
 		//log::info("XP is: {}", xp);

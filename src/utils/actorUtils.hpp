@@ -98,6 +98,7 @@ namespace Gts {
 	void StaggerActor(Actor* receiver);
 
 	float GetMovementModifier(Actor* giant);
+	float GetGtsSkillLevel();
 	float GetXpBonus();
 
 	void AddSMTDuration(Actor* actor, float duration);

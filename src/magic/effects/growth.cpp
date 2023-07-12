@@ -1,5 +1,6 @@
 #include "magic/effects/growth.hpp"
 #include "magic/effects/common.hpp"
+#include "utils/actorUtils.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
@@ -19,9 +20,9 @@ namespace Gts {
 			return;
 		}
 
-		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		float GtsSkillLevel = GetGtsSkillLevel();
 		
-		float SkillMult = 1.0 + (GtsSkillLevel->value * 0.01);
+		float SkillMult = 1.0 + (GtsSkillLevel * 0.01);
 		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00005;
 
 		float bonus = 1.0;

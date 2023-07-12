@@ -1,6 +1,6 @@
 #include "magic/effects/slow_grow.hpp"
-
 #include "magic/effects/common.hpp"
+#include "utils/actorUtils.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
@@ -19,9 +19,9 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
+		auto GtsSkillLevel = GetGtsSkillLevel();
 
-		float AlterBonus = 1.0 + (GtsSkillLevel->value * 0.01); // Calculate bonus power. At the Alteration of 100 it becomes 200%.
+		float AlterBonus = 1.0 + (GtsSkillLevel * 0.01); // Calculate bonus power. At the Alteration of 100 it becomes 200%.
 		float power = BASE_POWER * AlterBonus;
 
 		if (this->timer.ShouldRun()) {
