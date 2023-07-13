@@ -201,18 +201,9 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		bool ForceCrush = Runtime::HasPerkTeam(player, "HugCrush_HugsOfDeath");
 		float health = GetHealthPercentage(huggedActor);	
-		float staminapercent = GetStaminaPercentage(player);
-		float stamina = GetAV(player, ActorValue::kStamina);
 		float HpThreshold = GetHPThreshold(player);
-		log::info("Staminapercent: {}, Staminapercent/100: {}, hpthreshold: {}, hp perc: {}", staminapercent, staminapercent/100, HpThreshold, health);
-		if (ForceCrush && staminapercent >= 0.50) {
-			AnimationManager::StartAnim("Huggies_HugCrush", player);
-			AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
-			DamageAV(player, ActorValue::kStamina, stamina * 1.10);
-			return;
-		} else if (HasSMT(player)) {
+		if (HasSMT(player)) {
 			AnimationManager::StartAnim("Huggies_HugCrush", player);
 			AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
 			AddSMTPenalty(player, 5.0);
@@ -225,7 +216,23 @@ namespace {
 		} else {
 			Notify("{} is too healthy to be hug crushed", huggedActor->GetDisplayFullName());
 		}
-		
+	}
+
+	void ForceHugCrushEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto huggedActor = HugShrink::GetHuggiesActor(player);
+		if (!huggedActor) {
+			return;
+		}
+		bool ForceCrush = Runtime::HasPerkTeam(player, "HugCrush_HugsOfDeath");
+		float staminapercent = GetStaminaPercentage(player);
+		float stamina = GetAV(player, ActorValue::kStamina);
+		if (ForceCrush && staminapercent >= 0.50) {
+			AnimationManager::StartAnim("Huggies_HugCrush", player);
+			AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
+			DamageAV(player, ActorValue::kStamina, stamina * 1.10);
+			return;
+		} 
 	}
 
 	void HugShrinkEvent(const InputEventData& data) {
@@ -438,6 +445,7 @@ namespace Gts {
 		InputManager::RegisterInputEvent("HugRelease", HugReleaseEvent);
 		InputManager::RegisterInputEvent("HugShrink", HugShrinkEvent);
 		InputManager::RegisterInputEvent("HugCrush", HugCrushEvent);
+		InputManager::RegisterInputEvent("ForceHugCrush", ForceHugCrushEvent);
 
 		AnimationManager::RegisterEvent("GTS_Hug_Grab", "Hugs", GTS_Hug_Grab);
 		AnimationManager::RegisterEvent("GTS_Hug_Grow", "Hugs", GTS_Hug_Grow);

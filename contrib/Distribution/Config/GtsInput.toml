@@ -100,44 +100,6 @@ exclusive = true
 # ^ Ways to Exit Thigh Crush animation.
 
 #========================================================
-#============ H U G S
-#========================================================
-[[InputEvent]]
-name = "HugAttempt"
-keys = ["LSHIFT", "H"]
-exclusive = false
-
-# Attempt to hug someone
-
-[[InputEvent]]
-name = "HugShrink"
-keys = ["LMB"]
-exclusive = true
-
-[[InputEvent]]
-name = "HugCrush"
-keys = ["S"]
-exclusive = false
-#Crush the victim
-
-
-# Shrink the one you're currently hugging.
-
-[[InputEvent]]
-name = "HugRelease"
-keys = ["RMB"]
-exclusive = true
-
-[[InputEvent]]
-name = "HugRelease"
-keys = ["W"]
-exclusive = true
-duration = 0.33
-
-# Spare the one you're hugging.
-
-
-#========================================================
 #============ T H I G H  S A N D W I C H
 #========================================================
 
@@ -177,6 +139,49 @@ keys = ["LSHIFT", "W"]
 exclusive = true
 
 # ^ Ways to exit Thigh Sandwich. 
+
+#========================================================
+#============ H U G S
+#========================================================
+[[InputEvent]]
+name = "HugAttempt"
+keys = ["LSHIFT", "H"]
+exclusive = false
+
+# Attempt to hug someone
+
+[[InputEvent]]
+name = "HugShrink"
+keys = ["LMB"]
+exclusive = true
+# Shrink the one you're currently hugging.
+
+[[InputEvent]]
+name = "HugCrush"
+keys = ["S"]
+exclusive = false
+#Crush the victim
+
+[[InputEvent]]
+name = "ForceHugCrush"
+keys = ["S"]
+exclusive = false
+duration = 0.50
+#Force Hug Crush when you have the perk that allows it. Hold for 0.5 sec
+
+[[InputEvent]]
+name = "HugRelease"
+keys = ["RMB"]
+exclusive = true
+
+[[InputEvent]]
+name = "HugRelease"
+keys = ["W"]
+exclusive = true
+duration = 0.50
+
+# Spare the one you're hugging.
+
 
 #========================================================
 #========================= G R A B
