@@ -13,7 +13,7 @@
 #include "spring.hpp"
 #include "node.hpp"
 
-namespace Gts {
+namespace Gts { // To-do: rework it into Task manager. Not sure how to do it.
 	EmotionData::EmotionData(Actor* giant) : giant(giant) {
 	}
 
@@ -27,20 +27,27 @@ namespace Gts {
 	}
 
 	void EmotionData::UpdateEmotions(Actor* giant) {
-		if (this->AllowEmotionEdit) {
-			auto fgen = giant->GetFaceGenAnimationData();
-			std::uint32_t Zero = 0;
-			std::uint32_t One = 1;
-			std::uint32_t Two = 2;
-			std::uint32_t Five = 5;
-			if (fgen) {
-				log::info("Fgen Value: {}", Vector2Str(fgen->unk1A0));
+		auto fgen = giant->GetFaceGenAnimationData();
+		std::uint32_t Zero = 0;
+		std::uint32_t One = 1;
+		std::uint32_t Two = 2;
+		std::uint32_t Five = 5;
+		if (fgen) {
+			if (this->Phenome0.value != this->Phenome0.target) {
 				fgen->phenomeKeyFrame.SetValue(Zero, this->Phenome0.value);
+			}
+			if (this->Phenome1.value != this->Phenome1.target) {
 				fgen->phenomeKeyFrame.SetValue(One, this->Phenome1.value);
-				//fgen->phenomeKeyFrame.SetValue(Two, this->Phenomes[2].value);
+			}
+			//fgen->phenomeKeyFrame.SetValue(Two, this->Phenomes[2].value);
+			if (this->Phenome5.value != this->Phenome5.target) {
 				fgen->phenomeKeyFrame.SetValue(Five, this->Phenome5.value);
+			}
 
+			if (this->Modifier0.value != this->Modifier0.target) {
 				fgen->modifierKeyFrame.SetValue(Zero, this->Modifier0.value);
+			}
+			if (this->Modifier1.value != this->Modifier1.target) {
 				fgen->modifierKeyFrame.SetValue(One, this->Modifier1.value);
 			}
 		}
