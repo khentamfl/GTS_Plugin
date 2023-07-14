@@ -69,7 +69,7 @@ namespace {
 		if (!hugger->formID == 0x14) {
 			return;
 		}
-		std::string message = std::format("You're able to hug crush your current target. Press S to perform hug crush. Hug Crush is possible if target health drops below 25% (40% with the perk) or if you're under Tiny Calamity effect.");
+		std::string message = std::format("You're able to hug crush your current target. Press S to perform hug crush. Hug Crush is possible if target health is below 25% (40% with the perk) or if you're under Tiny Calamity effect.");
 	
 		float health = GetHealthPercentage(huggedActor);	
 		float HpThreshold = GetHPThreshold(hugger);

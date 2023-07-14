@@ -77,7 +77,7 @@ namespace Gts {
         if (Runtime::HasPerk(actor, "VorePerk")) {
             VoreRatio = 6.0;
         }
-        BASE_CHECK_DISTANCE = 256.0;
+        float BASE_CHECK_DISTANCE = 256.0;
         for (auto otherActor: find_actors()) {
             if (otherActor != actor) {
                 float tinyScale = get_visual_scale(otherActor);
