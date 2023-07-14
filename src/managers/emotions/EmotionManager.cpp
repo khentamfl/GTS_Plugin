@@ -34,6 +34,7 @@ namespace Gts {
 			std::uint32_t Two = 2;
 			std::uint32_t Five = 5;
 			if (fgen) {
+				log::info("Fgen Value: {}", Vector2Str(fgen->unk1A0));
 				fgen->phenomeKeyFrame.SetValue(Zero, this->Phenome0.value);
 				fgen->phenomeKeyFrame.SetValue(One, this->Phenome1.value);
 				//fgen->phenomeKeyFrame.SetValue(Two, this->Phenomes[2].value);
