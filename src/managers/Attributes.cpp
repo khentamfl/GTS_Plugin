@@ -104,8 +104,14 @@ namespace {
 		if (power <= 0) {
 			power = 0;
 		}
-		SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
-		SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
+		auto charCont = actor->GetCharController();
+		if (charCont) {
+			log::info("JumpHeight is {}", charCont->jumpHeight);
+			charCont->jumpHeight = 76.0 + (76.0 * power);
+		}
+
+		//SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
+		//SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
 	}
 
 	void Augmentation(Actor* Player, bool& BlockMessage) { // Manages SMT bonus speed
