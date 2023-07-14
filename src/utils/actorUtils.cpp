@@ -295,8 +295,7 @@ namespace Gts {
 		bool Growth3 = Runtime::HasMagicEffect(actor, "explosiveGrowth3");
 		if (Growth1 || Growth2 || Growth3) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
