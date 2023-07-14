@@ -1,3 +1,4 @@
+#include "managers/animation/tutorials/tutorialhandler.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/gamemode/GameModeManager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
@@ -259,7 +260,12 @@ void GtsManager::Update() {
 		if (!actor) {
 			return;
 		}
+		static Timer tutorialtimer = Timer(1.00);
 
+		if (tutorialtimer.ShouldRunFrame()) {
+			CheckTutorialTargets(actor);
+		}
+		
 		FixActorFade(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();

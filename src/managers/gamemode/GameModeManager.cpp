@@ -201,7 +201,7 @@ namespace Gts {
 				} else if (Runtime::HasMagicEffect(actor, "ResistShrinkPotion")) {
 					shrinkRate *= 0.25;
 				}
-				if (Runtime::HasMagicEffect(actor, "explosiveGrowth1") || Runtime::HasMagicEffect(actor, "explosiveGrowth2") || Runtime::HasMagicEffect(actor, "explosiveGrowth3")) {
+				if (HasGrowthSpurt(actor)) {
 					shrinkRate *= 0.15;
 				}
 				if (actor->IsInCombat() && BalanceMode == 1.0) {

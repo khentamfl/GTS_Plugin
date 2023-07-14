@@ -8,5 +8,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
-    //TutorialMessage(std::string_view message, std::string_view type);
+    void TutorialMessage(std::string_view message, std::string_view type);
+    void CheckTutorialTargets(Actor* actor);
 }

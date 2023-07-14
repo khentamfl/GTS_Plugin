@@ -1,3 +1,4 @@
+#include "managers/animation/tutorials/tutorialhandler.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "magic/effects/common.hpp"
 #include "data/transient.hpp"
@@ -38,10 +39,12 @@ namespace Gts {
 	}
 
 	void SmallMassiveThreat::OnStart() {
-		/*MessageBox("While Tiny Calamity is active, your size-related actions 
-		are massively empowered, but your max scale is limited. 
-		Size difference threshold for size-related actions is greatly decreased, 
-		but performing size-related actions (Vore, Grab, etc) wastes some of Tiny Calamity's duration.", "Calamity");*/
+		std::string message = std::format("While Tiny Calamity is active, your size-related actions are massively empowered, 
+		but your max scale is limited. 
+		You can perform all size-related actions (Vore, Grab, Hug Crush, etc) while being same size, 
+		but performing them wastes some of Tiny Calamity's duration.
+		");
+		TutorialMessage(message, "Calamity");
 	}
 
 	void SmallMassiveThreat::OnUpdate() {

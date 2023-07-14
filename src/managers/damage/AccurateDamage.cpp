@@ -143,7 +143,7 @@ namespace {
 		float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200);
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
 
-		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != tiny && (Runtime::HasMagicEffect(giant, "explosiveGrowth1") || Runtime::HasMagicEffect(giant, "explosiveGrowth2") || Runtime::HasMagicEffect(giant, "explosiveGrowth3"))) {
+		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != tiny && HasGrowthSpurt(giant)) {
 			ShrinkActor(tiny, 0.0014 * BonusShrink, 0.0);
 			Grow(giant, 0.0, 0.0004 * BonusShrink);
 			// ^ Augmentation for Growth Spurt: Steal size of enemies.

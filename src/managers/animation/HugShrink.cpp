@@ -1,5 +1,6 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/tutorials/tutorialhandler.hpp"
 #include "managers/animation/Controllers/HugController.hpp"
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
@@ -34,6 +35,30 @@ using namespace std;
 
 
 namespace {
+	void HugTutorial(Actor* huggedActor, Actor* hugger) {
+		if (!hugger->formID == 0x14) {
+			return;
+		}
+		std::string message = std::format("You're able to hug crush your current target. Press S to perform hug crush.
+		Hug Crush is possible if target health drops below 25% (40% with the perk) or if you're under Tiny Calamity effect.
+		");
+	
+		float health = GetHealthPercentage(huggedActor);	
+		float HpThreshold = GetHPThreshold(hugger);
+		if (HasSMT(hugger)) {
+			TutorialMessage(message, "HugCrush");
+		} else if (health <= HpThreshold) {
+			TutorialMessage(message, "HugCrush");
+		} else {
+			message = std::format("While huggings other, your stamina is constantly drained over time, stamina of your target is also drained over time.
+			You can steal size by pressing LMB or you can release other by pressing RMB.
+			Target is automatically released when your stamina reaches zero or if you've received too much damage from others during hugs.
+			");
+			TutorialMessage(message, "Hugs");
+		} 
+
+	}
+
 	float GetHPThreshold(Actor* actor) {
 		float hp = 0.25;
 		if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
@@ -42,8 +67,10 @@ namespace {
 		return hp;
 	}
 	float GetStealRate(Actor* actor) {
-		float steal = 0.20;
-		if (Runtime::HasPerkTeam(actor, "HugCrush")) {
+		float steal = 0.30;
+		if (Runtime::HasPerkTeam(actor, "HugCrush_ToughGrip")) {
+			steal += 0.42;
+		} if (Runtime::HasPerkTeam(actor, "HugCrush")) {
 			steal *= 1.35;
 		}
 		return steal;
@@ -67,6 +94,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
+		HugTutorial(huggedActor, giant);
 		ToggleEmotionEdit(giant, true);
 		SetBeingHeld(huggedActor, true);
 		HugShrink::AttachActorTask(giant, huggedActor);
@@ -221,7 +249,7 @@ namespace {
 		if (HasSMT(player)) {
 			AnimationManager::StartAnim("Huggies_HugCrush", player);
 			AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
-			AddSMTPenalty(player, 5.0);
+			AddSMTPenalty(player, 10.0);
 			DamageAV(player, ActorValue::kStamina, 60);
 			return;
 		} else if (health <= HpThreshold) {

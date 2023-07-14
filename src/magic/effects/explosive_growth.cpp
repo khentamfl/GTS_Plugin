@@ -1,3 +1,4 @@
+#include "managers/animation/tutorials/tutorialhandler.hpp"
 #include "magic/effects/explosive_growth.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
@@ -24,6 +25,11 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
+		std::string message = std::format("Growth Spurt slowly increases your size until you reach maximum scale of growth spurt. 
+		Growth Spurt doubles amount of size that you can steal during hugs and Growth Spurt also provides huge resistance against natural shrink sources.
+		If you have 'Strong Spurt' perk, maximal scale of growth spurt can be further increased by crushing your foes under this effect
+		");
+		TutorialMessage(message, "GrowthSpurt");
 		this->AllowStacking = true;
 	}
 
