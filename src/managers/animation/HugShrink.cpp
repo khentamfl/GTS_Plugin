@@ -56,7 +56,7 @@ namespace {
 		} if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
 			bonus += 0.35;
 		} if (HasGrowthSpurt(actor)) {
-			bonus * = 2.0;
+			bonus *= 2.0;
 		}
 		return threshold * bonus;
 	}
@@ -160,8 +160,8 @@ namespace {
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");
 
-		if (&data.giant->formID == 0x14) {
-			auto cater = &data.giant;
+		if (giant->formID == 0x14) {
+			auto caster = giant;
 			float target_scale = get_visual_scale(huggedActor);
 			AdjustSizeReserve(caster, target_scale/10);
 			AdjustSizeLimit(0.0060, caster);
