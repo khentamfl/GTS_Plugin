@@ -104,13 +104,13 @@ namespace {
 		if (power <= 0) {
 			power = 0;
 		}
-		auto charCont = actor->GetCharController();
+		/*auto charCont = actor->GetCharController();
 		if (charCont) {
-			log::info("JumpHeight is {}", charCont->jumpHeight);
+			log::info("JumpHeight is {}, acrobatics: {}", charCont->jumpHeight, charCont->acrobatics);
 			charCont->jumpHeight = 76.0 + (76.0 * power);
-		}
+		}*/
 
-		//SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
+		SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
 		//SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
 	}
 
@@ -155,7 +155,7 @@ namespace {
 			return;
 		}
 		static Timer timer = Timer(0.05);
-		static Timer jumptimer = Timer (0.20);
+		static Timer jumptimer = Timer (0.50);
 		float size = get_giantess_scale(actor);
 
 		if (jumptimer.ShouldRunFrame()) {
