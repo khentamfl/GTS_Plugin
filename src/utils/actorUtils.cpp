@@ -289,7 +289,7 @@ namespace Gts {
 		}
 	}
 
-	bool HasExplosiveGrowth(Actor* actor) {
+	bool HasGrowthSpurt(Actor* actor) {
 		bool Growth1 = Runtime::HasMagicEffect(actor, "explosiveGrowth1");
 		bool Growth2 = Runtime::HasMagicEffect(actor, "explosiveGrowth2");
 		bool Growth3 = Runtime::HasMagicEffect(actor, "explosiveGrowth3");
