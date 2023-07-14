@@ -100,7 +100,7 @@ namespace Gts {
                 } else if (giantScale / tinyScale > VoreRatio) {
                     NiPoint3 actorLocation = otherActor->GetPosition();
                     if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
-                        std::string message = std::format("You can eat {} by pressing L.Shift + V. You can eat other actors When the size difference is bigger than 7.2 times (or 6.0 times with Vore perk)", otherActor->GetDisplayFullName());
+                        std::string message = std::format("You can eat {} by pressing L.Shift + V. You can eat other actors When the size difference is greater than 7.2 times (or 6.0 times with 'Vore' perk)", otherActor->GetDisplayFullName());
                         TutorialMessage(message, "Vore");
                         return;
                     }
