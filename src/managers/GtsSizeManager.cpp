@@ -134,7 +134,11 @@ namespace Gts {
 			float QuestStage = Runtime::GetStage("MainQuest");
 			float Gigantism = this->GetEnchantmentBonus(actor)/100;
 			float GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + ((Runtime::GetFloat("sizeLimit") - 1.0) * NaturalScale)); // Default size limit
-			float Persistent_Size = Persistent::GetSingleton().GetData(actor)->bonus_max_size;
+			auto Persistent = Persistent::GetSingleton().GetData(actor);
+			float Persistent_Size = 0.0;
+			if (Persistent) {
+				Persistent_Size = Persistent->bonus_max_size;
+			}
 			float SelectedFormula = Runtime::GetInt("SelectedSizeFormula");
 
 			float FollowerLimit = Runtime::GetFloat("FollowersSizeLimit");
