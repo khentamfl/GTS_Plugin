@@ -55,6 +55,8 @@ namespace {
 			bonus += 0.25;
 		} if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
 			bonus += 0.35;
+		} if (HasGrowthSpurt(actor)) {
+			bonus * = 2.0;
 		}
 		return threshold * bonus;
 	}
@@ -157,6 +159,19 @@ namespace {
 		AdjustFacialExpression(giant, 0, 0.0, "phenome");
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");
+
+		if (&data.giant->formID == 0x14) {
+			auto cater = &data.giant;
+			float target_scale = get_visual_scale(huggedActor);
+			AdjustSizeReserve(caster, target_scale/10);
+			AdjustSizeLimit(0.0060, caster);
+			AdjustMassLimit(0.0060, caster);
+			if (Runtime::HasPerk(caster, "ExtraGrowth") && HasGrowthSpurt(caster)) {
+				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
+				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());
+			}
+			// Slowly increase Crush Growth Limit after crushing someone while Growth Spurt is active.
+		}
 		HugShrink::Release(giant);
 	}
 

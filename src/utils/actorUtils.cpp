@@ -289,6 +289,13 @@ namespace Gts {
 		}
 	}
 
+	bool HasExplosiveGrowth(Actor* actor) {
+		bool EG1 = Runtime::HasMagicEffect(actor, "explosiveGrowth1");
+		bool EG2 = Runtime::HasMagicEffect(actor, "explosiveGrowth2");
+		bool EG3 = Runtime::HasMagicEffect(actor, "explosiveGrowth3");
+		return EG1 || EG2 || EG3;
+	}
+
 	bool AllowStagger(Actor* giant, Actor* tiny) {
 		if (Persistent::GetSingleton().allow_stagger == true) {
 			//log::info("Allow_Stagger TRUE: {}, IsTeammate: {} {}", Persistent::GetSingleton().allow_stagger, tiny->GetDisplayFullName(), IsTeammate(tiny));

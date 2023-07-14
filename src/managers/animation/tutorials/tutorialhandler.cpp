@@ -29,19 +29,26 @@ namespace Gts {
         if (!AllowMessages) {
             return;
         }
-        bool HugsSeen = Persistent::GetSingleton().HugsTutorialSeen;
+        bool HugSeen = Persistent::GetSingleton().HugTutorialSeen;
+        bool HugCrushSeen = Persistent::GetSingleton().HugCrushTutorialSeen;
         bool CrushSeen = Persistent::GetSingleton().CrushTutorialSeen;
         bool GrabSeen = Persistent::GetSingleton().GrabTutorialSeen;
         bool CalamitySeen = Persistent::GetSingleton().CalamityTutorialSeen;
-        if (type == "Hugs" && !HugsSeen) { 
+        if (type == "Hugs") { 
             MessageBox(message);
-            Hugs = true;
+            HugSeen = true;
+        } else if (type == "HugCrush") {
+            MessageBox(message);
+            HugCrushSeen = true;
         } else if (type == "Crush" && !CrushSeen) {
-
+            MessageBox(message);
+            CrushSeen = true;
         } else if (type == "Grab" && !GrabSeen) {
-
+            MessageBox(message);
+            GrabSeen = true;
         } else if (type == "Calamity" && !CalamitySeen) {
-
+            MessageBox(message);
+            CalamitySeen = true;
         }
 		
 	}*/

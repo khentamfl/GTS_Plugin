@@ -330,21 +330,15 @@ namespace Gts {
 		bool GTSBusy;
 		caster->GetGraphVariableBool("GTS_Busy", GTSBusy);
 
-		if (!GTSBusy && get_visual_scale(caster) <= 12.0 && !caster->AsActorState()->IsSprinting() && !caster->AsActorState()->IsWalking() && !caster->IsRunning() && !hasSMT || !GTSBusy && hasSMT && get_visual_scale(caster) <= 12.0) {
-			//PlayAnimation(caster, "JumpLand"); // Simulate Crush anim
-		}
 		auto Cache = Persistent::GetSingleton().GetData(caster); // TODO: Fix this properly
 		if (!Cache) {
 			return;
 		}
 		if (caster == player) {
-			bool hasExplosiveGrowth1 = Runtime::HasMagicEffect(caster, "explosiveGrowth1");
-			bool hasExplosiveGrowth2 = Runtime::HasMagicEffect(caster, "explosiveGrowth2");
-			bool hasExplosiveGrowth3 = Runtime::HasMagicEffect(caster, "explosiveGrowth3");
 			AdjustSizeReserve(caster, target_scale/25);
 			AdjustSizeLimit(0.0066 * target_scale, caster);
 			AdjustMassLimit(0.0066 * target_scale, caster);
-			if (Runtime::HasPerk(caster, "ExtraGrowth") && (hasExplosiveGrowth1 || hasExplosiveGrowth2 || hasExplosiveGrowth3)) {
+			if (Runtime::HasPerk(caster, "ExtraGrowth") && HasGrowthSpurt(caster)) {
 				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
 				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());
 			}
