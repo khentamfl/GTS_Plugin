@@ -1,4 +1,4 @@
-#include "managers/animation/tutorials/tutorialhandler.hpp"
+/*#include "managers/animation/tutorials/tutorialhandler.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -35,7 +35,10 @@ namespace Gts {
         bool GrabSeen = true; //Persistent::GetSingleton().GrabTutorialSeen;
         bool CalamitySeen = true; //Persistent::GetSingleton().CalamityTutorialSeen;
         bool GrowthSpurtSeen = true; //Persistent::GetSingleton().GrowthTutorialSeen;
-        bool BreastsSeen = true;
+        bool BreastsSeen = true; //Persistent::GetSingleton().BreastTutorialSeen;
+        bool SandwichStartSeen = true; //Persistent::GetSingleton().SandwichStartTutorialSeen;
+        bool SandwichControlSeen = true; //Persistent::GetSingleton().SandwichControlTutorialSeen;
+        bool VoreSeen = true; //Persistent::GetSingleton().VoreTutorialSeen;
         if (type == "Hugs") { 
             MessageBox(message);
             HugSeen = true;
@@ -59,8 +62,10 @@ namespace Gts {
             BreastsSeen = true;
         } else if (type == "SandwichStart") {
             MessageBox(message);
+            SandwichControlSeen = true;
         } else if (type == "SandwichControls") {
             MessageBox(message);
+            SandwichControlSeen = true;
         } else if (type == "Vore") {
             MessageBox(message);
         }
@@ -93,7 +98,7 @@ namespace Gts {
                 } else if (giantScale / tinyScale > SandwichRatio) {
                     NiPoint3 actorLocation = otherActor->GetPosition();
                     if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
-                        std::string message = std::format("You can perform thigh sandwich attack on {} by pressing L.Shift + C", otherActor->GetDisplayFullName());
+                        std::string message = std::format("When the size difference is greater than six times, you're able to perform Grab and Thigh Sandwich attacks. You're able to perform Thigh Sandwich/Grab attacks on {}. Press L.Shift + C for Sandwich, or hold F to grab {}. ", otherActor->GetDisplayFullName(), otherActor->GetDisplayFullName());
                         TutorialMessage(message, "SandwichStart");
                         return;
                     }
@@ -108,4 +113,4 @@ namespace Gts {
             }
         }
     }
-}
+}*/

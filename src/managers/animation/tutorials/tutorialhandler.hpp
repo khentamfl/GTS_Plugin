@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include "events.hpp"
 
@@ -10,4 +10,4 @@ using namespace Gts;
 namespace Gts {
     void TutorialMessage(std::string_view message, std::string_view type);
     void CheckTutorialTargets(Actor* actor);
-}
+}*/

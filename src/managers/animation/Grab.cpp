@@ -1,4 +1,3 @@
-#include "managers/animation/tutorials/tutorialhandler.hpp"
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/GrabAnimationController.hpp"
@@ -132,8 +131,8 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
 			Grab::AttachActorTask(giant, grabbedActor);
-			std::string message = std::format("While you have actor grabbed, you constantly lose stamina over time. You transfer 50% received damage to the actor in your hand. Press E to damage the actor, RMB to release, V to eat, X to throw, B to put between breasts. You can have only one actor in hand and can't pick up other actor if you have actor between your breasts.");
-			TutorialMessage(message, "Grab");
+			//std::string message = std::format("While you have actor grabbed, you constantly lose stamina over time. You transfer 50% received damage to the actor in your hand. Press E to damage the actor, RMB to release, V to eat, X to throw, B to put between breasts. You can have only one actor in hand and can't pick up other actor if you have actor between your breasts.");
+			//TutorialMessage(message, "Grab");
 		}
 		Rumble::Once("GrabCatch", giant, 2.0, 0.15);
 	}
@@ -463,8 +462,8 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		auto otherActor = Grab::GetHeldActor(giant);
 		if (otherActor) {
-			std::string message = std::format("If target between your breasts is hostile - target will struggle and lose stamina over time.Friendly Target, conversely, relaxes and restores health and stamina.Having someone between breasts costs no stamina and has no penalties. You can pull actor out by pressing L.Shift + B");
-			TutorialMessage(message, "Breasts");
+			//std::string message = std::format("If target between your breasts is hostile - target will struggle and lose stamina over time.Friendly Target, conversely, relaxes and restores health and stamina.Having someone between breasts costs no stamina and has no penalties. You can pull actor out by pressing L.Shift + B");
+			//TutorialMessage(message, "Breasts");
 			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
 			if (IsHostile(giant, otherActor)) {
 				AnimationManager::StartAnim("Breasts_Idle_Unwilling", otherActor);

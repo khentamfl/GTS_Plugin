@@ -210,6 +210,8 @@ namespace {
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
+		//std::string message = std::format("You're able to attack targets with her thighs during thigh sandwich. Press LMB for Normal attack, press both RMB + LMB for strong attack. Additionally, you can hold LMB or LMB + RMB to increase attack speed, or RMB to decrease it. Attack speed directly affects attack damage.");
+		//TutorialMessage(message, "SandwichControls");
 		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 1.0);
 	}
 
