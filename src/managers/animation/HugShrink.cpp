@@ -39,9 +39,7 @@ namespace {
 		if (!hugger->formID == 0x14) {
 			return;
 		}
-		std::string message = std::format("You're able to hug crush your current target. Press S to perform hug crush.
-		Hug Crush is possible if target health drops below 25% (40% with the perk) or if you're under Tiny Calamity effect.
-		");
+		std::string message = std::format("You're able to hug crush your current target. Press S to perform hug crush. Hug Crush is possible if target health drops below 25% (40% with the perk) or if you're under Tiny Calamity effect.");
 	
 		float health = GetHealthPercentage(huggedActor);	
 		float HpThreshold = GetHPThreshold(hugger);
@@ -50,10 +48,7 @@ namespace {
 		} else if (health <= HpThreshold) {
 			TutorialMessage(message, "HugCrush");
 		} else {
-			message = std::format("While huggings other, your stamina is constantly drained over time, stamina of your target is also drained over time.
-			You can steal size by pressing LMB or you can release other by pressing RMB.
-			Target is automatically released when your stamina reaches zero or if you've received too much damage from others during hugs.
-			");
+			message = std::format("While huggings other, your stamina is constantly drained over time, stamina of your target is also drained over time. You can steal size by pressing LMB or you can release other by pressing RMB. Target is automatically released when your stamina reaches zero or if you've received too much damage from others during hugs.");
 			TutorialMessage(message, "Hugs");
 		} 
 

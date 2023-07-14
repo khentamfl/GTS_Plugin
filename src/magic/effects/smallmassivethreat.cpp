@@ -39,11 +39,7 @@ namespace Gts {
 	}
 
 	void SmallMassiveThreat::OnStart() {
-		std::string message = std::format("While Tiny Calamity is active, your size-related actions are massively empowered, 
-		but your max scale is limited. 
-		You can perform all size-related actions (Vore, Grab, Hug Crush, etc) while being same size, 
-		but performing them wastes some of Tiny Calamity's duration.
-		");
+		std::string message = std::format("While Tiny Calamity is active, your size-related actions are massively empowered, but your max scale is limited. You can perform all size-related actions (Vore, Grab, Hug Crush, etc) while being same size, but performing them wastes some of Tiny Calamity's duration.");
 		TutorialMessage(message, "Calamity");
 	}
 

@@ -82,12 +82,11 @@ namespace Gts {
             if (otherActor != actor) {
                 float tinyScale = get_visual_scale(otherActor);
                 float giantScale = get_visual_scale(actor);
-                
+
                 if (giantScale / tinyScale > CrushRatio) {
                     NiPoint3 actorLocation = otherActor->GetPosition();
                     if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
-                        std::string message = std::format("When the size difference between you and your target is greater than eight times, 
-                        you're able to crush your target into nothing and receive extra size-related experience");
+                        std::string message = std::format("When the size difference between you and your target is greater than eight times, you're able to crush your target into nothing and receive extra size-related experience");
                         TutorialMessage(message, "Crush");
                         return;
                     }
