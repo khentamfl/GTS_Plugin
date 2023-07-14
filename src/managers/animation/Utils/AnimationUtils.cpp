@@ -57,7 +57,8 @@ namespace Gts {
 		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
 			WasteMult *= 0.65;
 		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
-			WasteMult -= GetGtsSkillLevel() * 0.0035f;
+			float level = std::clamp(, 0.0f, 0.35f);
+			WasteMult -= level;
 		}
 
 		float WasteStamina = (1.00 * WasteMult)/sizedifference * TimeScale();
@@ -69,7 +70,8 @@ namespace Gts {
 		if (Runtime::HasPerkTeam(giant, perk)) {
 			WasteMult -= 0.35;
 		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
-			WasteMult -= GetGtsSkillLevel() * 0.0035f;
+			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
+			WasteMult -= level;
 		}
 		std::string name = std::format("StaminaDrain_{}_{}", TaskName, giant->formID);
 		if (decide) {

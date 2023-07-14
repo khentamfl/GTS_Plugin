@@ -290,10 +290,15 @@ namespace Gts {
 	}
 
 	bool HasExplosiveGrowth(Actor* actor) {
-		bool EG1 = Runtime::HasMagicEffect(actor, "explosiveGrowth1");
-		bool EG2 = Runtime::HasMagicEffect(actor, "explosiveGrowth2");
-		bool EG3 = Runtime::HasMagicEffect(actor, "explosiveGrowth3");
-		return EG1 || EG2 || EG3;
+		bool Growth1 = Runtime::HasMagicEffect(actor, "explosiveGrowth1");
+		bool Growth2 = Runtime::HasMagicEffect(actor, "explosiveGrowth2");
+		bool Growth3 = Runtime::HasMagicEffect(actor, "explosiveGrowth3");
+		if (Growth1 || Growth2 || Growth3) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	bool AllowStagger(Actor* giant, Actor* tiny) {
