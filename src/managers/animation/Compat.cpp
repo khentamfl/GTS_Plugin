@@ -78,6 +78,8 @@ namespace {
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Left);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left);
 	}
 	void MCO_DodgeSound(AnimationEventData& data) {
 		data.stage = 0;
@@ -87,6 +89,8 @@ namespace {
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Left);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left);
 	}
 
 	void JumpDown(AnimationEventData& data) {

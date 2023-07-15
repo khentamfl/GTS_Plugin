@@ -230,7 +230,7 @@ namespace Gts {
 		return results;
 	}
 
-	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce, float up) {
+	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce) {
 		if (receiver->IsDead()) {
 			return;
 		}
@@ -244,7 +244,6 @@ namespace Gts {
             if (source->Is3DLoaded()) {
               NiPoint3 direction = receiver->GetPosition() - source->GetPosition();
               direction = direction / direction.Length();
-			  direction.z += up;
 
               typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
               REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
@@ -681,7 +680,7 @@ namespace Gts {
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
 			//ForceRagdoll(tiny, true);
-			PushActorAway(giant, tiny, power/50, 0.0); // Always push
+			PushActorAway(giant, tiny, power/50); // Always push
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			return;
 		}
@@ -691,7 +690,7 @@ namespace Gts {
 			return;
 		} else if (ragdollchance < 7.0 * sizedifference) {
 			// ForceRagdoll(tiny, true);
-			PushActorAway(giant, tiny, power/50, 0.0); // Push instead
+			PushActorAway(giant, tiny, power/50); // Push instead
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			return;
 		}
@@ -700,9 +699,9 @@ namespace Gts {
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind) {
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
 		if (kind == FootEvent::Left) {
-			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage * damagebonus), radius, random, bonedamage, true);
+			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage * damagebonus), radius, random, bonedamage);
 		} if (kind == FootEvent::Right) {
-			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage * damagebonus), radius, random, bonedamage, true);
+			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage * damagebonus), radius, random, bonedamage);
 		}
 	}
 

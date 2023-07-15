@@ -34,9 +34,9 @@ namespace {
 			case FootEvent::Right:
 			case FootEvent::Front:
 			case FootEvent::Back:
-				CreateParticle(actor, position, scale);
+				CreateParticle(actor, rotation, position, scale);
 			case FootEvent::JumpLand:
-				CreateParticle(actor, position, scale);
+				CreateParticle(actor, rotation, position, scale);
 		}
 	}
 }

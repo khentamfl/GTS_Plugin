@@ -332,8 +332,9 @@ namespace {
 			dust = 1.25;
 		}
 		Rumble::Once("StompR", &data.giant, 1.50 * shake, 0.0, RNode);
-		DoDamageEffect(&data.giant, 1.25 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.04, FootEvent::Right);
+		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.04, FootEvent::Right);
 		DoSizeEffect(&data.giant, dust * data.animSpeed, FootEvent::Right, RNode);
+		DoLaunch(&data.giant, 0.75 * launch, 1.75, 2.0, FootEvent::Right);
 	}
 
 	void GTSGrab_Throw_FS_L(AnimationEventData& data) {
@@ -347,8 +348,9 @@ namespace {
 			dust = 1.25;
 		}
 		Rumble::Once("StompL", &data.giant, 1.50 * shake, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.25 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.04, FootEvent::Left);
+		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.04, FootEvent::Left);
 		DoSizeEffect(&data.giant, dust * data.animSpeed, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 0.75 * launch * perk, 1.75, 2.0, FootEvent::Left);
 	}
 
 	void GTSGrab_Throw_Throw_Pre(AnimationEventData& data) {// Throw frame 0
@@ -361,7 +363,7 @@ namespace {
 			SetBeingHeld(otherActor, false);
 			EnableCollisions(otherActor);
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(otherActor);
-			PushActorAway(giant, otherActor, 8.0 * sizedifference, 0.0);
+			PushActorAway(giant, otherActor, 8.0 * sizedifference);
 		}
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
@@ -399,7 +401,7 @@ namespace {
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 		if (grabbedActor) {
-			PushActorAway(giant, grabbedActor, 1.0, 0.0);
+			PushActorAway(giant, grabbedActor, 1.0);
 			EnableCollisions(grabbedActor);
 			SetBeingHeld(grabbedActor, false);
 		}
@@ -639,7 +641,7 @@ namespace Gts {
 			
 			if (giantref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
-				PushActorAway(giantref, tinyref, 1.0, 0.0);
+				PushActorAway(giantref, tinyref, 1.0);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);
 				SetBetweenBreasts(giantref, false);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
