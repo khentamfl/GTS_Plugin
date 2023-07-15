@@ -261,7 +261,7 @@ namespace Gts {
 			return;
 		}
 		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
-		
+
 		if (source) {
 			auto ai = receiver->GetActorRuntimeData().currentProcess;
 			if (ai) {
@@ -397,7 +397,8 @@ namespace Gts {
 	}
 
 	bool IsProne(Actor* actor) {
-		return actor!= nullptr && actor->formID == 0x14 && Runtime::GetBool("ProneEnabled") && actor->AsActorState()->IsSneaking();
+		bool prone;
+		return actor!= nullptr && actor->formID == 0x14 && actor->AsActorState()->IsSneaking() && actor->GetGraphVariableBool("GTS_CrawlEnabled", prone);
 	}
 
 	bool IsJumping(Actor* actor) {
@@ -1105,7 +1106,7 @@ namespace Gts {
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
 	std::string name = std::format("SpringGrow {}: {}", naming, actor->formID);
-	const float DURATION = halfLife * 2.6;
+	const float DURATION = halfLife * 3.2;
 
     TaskManager::RunFor(DURATION,
 		[ growData ](const auto& progressData) {
@@ -1136,7 +1137,7 @@ namespace Gts {
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
 	std::string name = std::format("SpringGrow_Free {}: {}", naming, actor->formID);
-	const float DURATION = halfLife * 2.6;
+	const float DURATION = halfLife * 3.2;
 
     TaskManager::RunFor(DURATION,
 		[ growData ](const auto& progressData) {
@@ -1165,7 +1166,7 @@ namespace Gts {
 
     auto growData = std::make_shared<SpringShrinkData>(actor, amt, halfLife);
 	std::string name = std::format("SpringShrink {}: {}", naming, actor->formID);
-	const float DURATION = halfLife * 2.6;
+	const float DURATION = halfLife * 3.2;
     TaskManager::RunFor(DURATION,
 	[ growData ](const auto& progressData) {
 		float totalScaleToAdd = growData->amount.value;

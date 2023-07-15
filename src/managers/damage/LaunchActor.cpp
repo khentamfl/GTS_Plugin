@@ -51,6 +51,7 @@ namespace {
 		if (IsBeingHeld(tiny)) {
 			return;
 		}
+		log::info("Force is :{}", force);
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		float giantSize = get_visual_scale(giant);
 		float SMT = 1.0;
@@ -300,7 +301,7 @@ namespace Gts {
 					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
-						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+						if ((actorLocation-giantLocation).Length() <= maxFootDistance) {
 							// Check the tiny's nodes against the giant's foot points
 							int nodeCollisions = 0;
 							float force = 0.0;
@@ -311,7 +312,7 @@ namespace Gts {
 								for (auto point: footPoints) {
 									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
 										float distance = (point - a_obj.world.translate).Length();
-										if (distance < maxFootDistance) {
+										if (distance <= maxFootDistance) {
 											nodeCollisions += 1;
 											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
 										}

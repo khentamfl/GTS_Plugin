@@ -19,9 +19,7 @@ namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		if (!Persistent::GetSingleton().hostile_toggle) {
 			tiny->KillImmediate();
-			log::info("KillImmediate called");
 		} else {
-			log::info("KillImp called");
 			tiny->KillImpl(giant, 0, true, true);
 		}
 	}
