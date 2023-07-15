@@ -81,19 +81,20 @@ namespace {
 				log::info("Pushing actor away");
 				PushActorAway(giant, tiny, 2);
 
-				const float DURATION = 1.2;
+				
 
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
 				std::string name = std::format("PushOther_{}", tiny->formID);
+
+				/*TaskManager::RunOnce(name, [=](auto& update){
+					if (tinyHandle) {
+						ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
+					}
+				});	*/
+
 				TaskManager::RunFor(name, DURATION, [=](auto& progressData){
 					if (tinyHandle) {
-						//ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
-						auto tinyref = skyrim_cast<TESObjectREFR*>(tiny);
-						if (tinyref) {
-							hkVector4 coords = hkVector4(0, 0, 50 * sizeRatio, 50 * sizeRatio);
-							tinyref->ApplyCurrent(1.0, coords);
-							log::info("Applying Impulse");
-						}
+						ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
 					}
 					return true;
 				});
