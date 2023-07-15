@@ -261,7 +261,7 @@ namespace Gts {
 			return;
 		}
 		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
-
+		
 		if (source) {
 			auto ai = receiver->GetActorRuntimeData().currentProcess;
 			if (ai) {
@@ -1105,7 +1105,7 @@ namespace Gts {
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
 	std::string name = std::format("SpringGrow {}: {}", naming, actor->formID);
-	const float DURATION = halfLife * 2;
+	const float DURATION = halfLife * 2.6;
 
     TaskManager::RunFor(DURATION,
 		[ growData ](const auto& progressData) {
@@ -1136,7 +1136,7 @@ namespace Gts {
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
 	std::string name = std::format("SpringGrow_Free {}: {}", naming, actor->formID);
-	const float DURATION = halfLife * 2;
+	const float DURATION = halfLife * 2.6;
 
     TaskManager::RunFor(DURATION,
 		[ growData ](const auto& progressData) {
@@ -1165,7 +1165,7 @@ namespace Gts {
 
     auto growData = std::make_shared<SpringShrinkData>(actor, amt, halfLife);
 	std::string name = std::format("SpringShrink {}: {}", naming, actor->formID);
-	const float DURATION = halfLife * 2;
+	const float DURATION = halfLife * 2.6;
     TaskManager::RunFor(DURATION,
 	[ growData ](const auto& progressData) {
 		float totalScaleToAdd = growData->amount.value;

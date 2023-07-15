@@ -69,6 +69,7 @@ namespace {
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
 
 		auto& sizemanager = SizeManager::GetSingleton();
+		log::info("Trying to push actor");
 		if (force < UNDERFOOT_POWER && force >= 0.10 && sizeRatio >= 6.0 / GetMovementModifier(giant)) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
@@ -76,6 +77,7 @@ namespace {
 					float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage);
 				}
+				log::info("Pushing actor away");
 				NiPoint3 direction = NiPoint3(0,0, 70 * sizeRatio);
 				PushActorAway(giant, tiny, direction, sizeRatio);
 			}
