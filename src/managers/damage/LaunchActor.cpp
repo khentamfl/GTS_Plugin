@@ -85,6 +85,7 @@ namespace {
 
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
 				std::string name = std::format("PushOther_{}", tiny->formID);
+				const float DURATION = 1.2;
 
 				/*TaskManager::RunOnce(name, [=](auto& update){
 					if (tinyHandle) {
