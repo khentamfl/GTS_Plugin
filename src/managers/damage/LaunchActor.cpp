@@ -71,7 +71,7 @@ namespace {
 
 		auto& sizemanager = SizeManager::GetSingleton();
 		log::info("Trying to push actor");
-		if (force >= 0.10 && force < UNDERFOOT_POWER && sizeRatio >= 6.0 / GetMovementModifier(giant)) {
+		if (force >= 0.10 && force < UNDERFOOT_POWER && sizeRatio >= 2.0 / GetMovementModifier(giant)) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
@@ -87,18 +87,22 @@ namespace {
 				std::string name = std::format("PushOther_{}", tiny->formID);
 				const float DURATION = 1.2;
 
-				/*TaskManager::RunOnce(name, [=](auto& update){
+				TaskManager::RunOnce(name, [=](auto& update){
 					if (tinyHandle) {
 						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 						if (tiny_is_object) {
-							ApplyHavokImpulse(tiny_is_object, 0, 0, 150 * sizeRatio, 150 * sizeRatio);
+							//ApplyHavokImpulse(tiny_is_object, 0, 0, 150 * sizeRatio, 150 * sizeRatio);
+							hkVector4 coords = hkVector4(0, 0, 150 * sizeRatio, 150 * sizeRatio);
+							tiny_is_object->InitHavok();
+							tiny_is_object->ApplyCurrent(0.5, coords);
+							//log::info("Applying Current for {}", tinyHandle.get().get()->GetDisplayFullName());
 						}
 					}
-				});	*/
+				});	
 
 				
 
-				TaskManager::RunFor(name, DURATION, [=](auto& progressData){
+				/*TaskManager::RunFor(name, DURATION, [=](auto& progressData){
 					if (tinyHandle) {
 						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 						if (tiny_is_object) {
@@ -110,7 +114,7 @@ namespace {
 						//ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
 					}
 					return true;
-				});
+				});*/
 			}
 		}
 	}
