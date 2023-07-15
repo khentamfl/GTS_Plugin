@@ -80,7 +80,13 @@ namespace {
 				}
 				NiPoint3 direction = NiPoint3(0,0, 250 * sizeRatio);
 				//ForceRagdoll(tiny, true);
-				PushActorAway(giant, tiny, direction, sizeRatio * 4);
+				PushActorAway(giant, tiny, 1.0);
+				ActorHandle tinyHandle = tiny->CreateRefHandle();
+				TaskManager::RunOnce([=](auto& update){
+					if (tinyHandle) {
+						ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 50 ( sizeRatio), 50 * sizeRatio);
+					}
+				});
 			}
 		}
 	}

@@ -181,8 +181,6 @@ namespace Gts {
 			return;
 		}
 
-		radius *= 1.0 + (GetHighHeelsBonusDamage(actor) * 2.5);
-
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
@@ -291,8 +289,6 @@ namespace Gts {
 		if (!actor) {
 			return;
 		}
-		
-		radius *= 1.0 + (GetHighHeelsBonusDamage(actor) * 2.5);
 
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;

@@ -731,6 +731,7 @@ namespace Gts {
 
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind) {
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
+		radius *= 1.0 + (GetHighHeelsBonusDamage(giant) * 2.5);
 		if (kind == FootEvent::Left) {
 			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage * damagebonus), radius, random, bonedamage);
 		} if (kind == FootEvent::Right) {
