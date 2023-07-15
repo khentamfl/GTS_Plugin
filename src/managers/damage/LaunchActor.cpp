@@ -79,7 +79,7 @@ namespace {
 					DamageAV(tiny, ActorValue::kHealth, damage);
 				}
 				log::info("Pushing actor away");
-				PushActorAway(giant, tiny, NiPoint3(0,0, 250 * sizeRatio, 1.0));
+				PushActorAway(giant, tiny, NiPoint3(0, 0, 250 * sizeRatio), 1.0);
 
 				
 
@@ -88,7 +88,7 @@ namespace {
 				const float DURATION = 1.2;
 
 				return;
-				
+
 				TaskManager::RunOnce(name, [=](auto& update){
 					if (tinyHandle) {
 						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
