@@ -88,6 +88,7 @@ namespace {
 					if (tinyHandle) {
 						ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
 					}
+					return true;
 				});
 			}
 		}
