@@ -69,18 +69,17 @@ namespace {
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
 
 		auto& sizemanager = SizeManager::GetSingleton();
-		if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER && force >= 0.10 && sizeRatio >= 6.0 / GetMovementModifier(giant)) {
+		log::info("Attempting Launch: Pre-Launch check");
+		if (force < UNDERFOOT_POWER && force >= 0.10 && sizeRatio >= 6.0 / GetMovementModifier(giant)) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				log::info("Attempting Launch");
-				if (sizeRatio >= threshold) { // Launch
-					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
-					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
-						float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
-						DamageAV(tiny, ActorValue::kHealth, damage);
-					}
-					//ForceRagdoll(tiny, true);
-					PushActorAway(giant, tiny, force, 10000);
+				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
+					float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
+					DamageAV(tiny, ActorValue::kHealth, damage);
 				}
+				//ForceRagdoll(tiny, true);
+				PushActorAway(giant, tiny, force, 10000);
 			}
 		}
 	}

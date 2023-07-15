@@ -131,7 +131,7 @@ namespace Gts {
 				bonus += 1.0;
 			}
 			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp
-				DoDamageEffect(actor, 1.75, 1.85 * bonus, 25, 0.035, kind);
+				DoDamageEffect(actor, 1.75, 1.65 * bonus, 25, 0.035, kind);
 			}
 		}
 	}
