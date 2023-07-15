@@ -206,12 +206,13 @@ namespace Gts {
 										if (distance < maxFootDistance) {
 											nodeCollisions += 1;
 											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-											LaunchDecide(giant, otherActor, force, damagebonus);
-											break;
 										}
 										return true;
 									});
 								}
+							}
+							if (nodeCollisions > 0) {
+								LaunchDecide(giant, otherActor, force, damagebonus);
 							}
 						}
 					}
@@ -318,12 +319,13 @@ namespace Gts {
 										if (distance < maxFootDistance) {
 											nodeCollisions += 1;
 											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-											LaunchDecide(giant, otherActor, force, damagebonus);
-											break;
 										}
 										return true;
 									});
 								}
+							}
+							if (nodeCollisions > 0) {
+								LaunchDecide(giant, otherActor, force, damagebonus);
 							}
 						}
 					}
