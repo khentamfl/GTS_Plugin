@@ -80,7 +80,7 @@ namespace {
 				}
 				NiPoint3 direction = NiPoint3(0,0, 250 * sizeRatio);
 				//ForceRagdoll(tiny, true);
-				PushActorAway(giant, tiny, direction);
+				PushActorAway(giant, tiny, direction, sizeRatio * 4);
 			}
 		}
 	}

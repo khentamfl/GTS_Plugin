@@ -256,7 +256,7 @@ namespace Gts {
 		}
 	}
 
-	void PushActorAway(TESObjectREFR* source, Actor* receiver, NiPoint3 direction) {
+	void PushActorAway(TESObjectREFR* source, Actor* receiver, NiPoint3 direction, float force) {
 		if (receiver->IsDead()) {
 			return;
 		}
@@ -268,11 +268,11 @@ namespace Gts {
 				if (ai->InHighProcess()) {
 				if (receiver->Is3DLoaded()) {
 					if (source->Is3DLoaded()) {
-					log::info("Direction: {}", Vector2Str(direction));
+					log::info("Direction: {}, force {}", Vector2Str(direction), force);
 
 					typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
 					REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
-					RealPushActorAway(ai, receiver, direction, 1.0);
+					RealPushActorAway(ai, receiver, direction, force);
 						}
 					}
 				}
