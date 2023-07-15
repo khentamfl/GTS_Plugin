@@ -681,7 +681,7 @@ namespace Gts {
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
 			//ForceRagdoll(tiny, true);
-			PushActorAway(giant, tiny, power/50); // Always push
+			PushActorAway(giant, tiny, power/50, 0.0); // Always push
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			return;
 		}
@@ -691,7 +691,7 @@ namespace Gts {
 			return;
 		} else if (ragdollchance < 7.0 * sizedifference) {
 			// ForceRagdoll(tiny, true);
-			PushActorAway(giant, tiny, power/50); // Push instead
+			PushActorAway(giant, tiny, power/50, 0.0); // Push instead
 			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			return;
 		}
