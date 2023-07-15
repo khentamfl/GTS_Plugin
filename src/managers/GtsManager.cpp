@@ -276,8 +276,8 @@ void GtsManager::Update() {
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
 			if (actor->formID != 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
-				accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25);
-				accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25);
+				accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25, false);
+				accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25, false);
 			}
 		}
 
