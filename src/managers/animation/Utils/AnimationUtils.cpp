@@ -47,9 +47,7 @@ namespace Gts {
 		if (HasSMT(giant)) {
 			force *= 3.0;
 			damage *= 3.0;
-		} if (!find_node(giant, node)) {
-			return;
-		} 
+		}  
 		LaunchActor::GetSingleton().ApplyLaunch(giant, tiny, force, damage);
 	}
 
