@@ -137,6 +137,10 @@ Function SetIsHighHeelEnabled(Bool enabled) global native
 Bool Function GetIsHighHeelEnabled() global native
 ; Self-explanatory
 Function SetIsHHFurnitureEnabled(Bool enabled) global native
+    
+;Enable / Disable Crawling
+; If player = true = enable it for player. Else enable it for teammates.
+Function SetCrawlAnimation(bool enabled, bool player) global native
 
 ;======================================================================================
 ;======================================================================================
@@ -235,4 +239,4 @@ Float Function GetExperimentFloat() global native
 Function SetExperimentFloat(Float value) global native
 ;======================================================================================
 ;======================================================================================
-;==============================================================
+;======================================================================================

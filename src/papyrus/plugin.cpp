@@ -206,7 +206,7 @@ namespace {
 		}
 	}
 
-	bool SetCrawlAnimation(StaticFunctionTag*, bool enabled, bool player) {
+	void SetCrawlAnimation(StaticFunctionTag*, bool enabled, bool player) {
 		if (player) {
 			PlayerCharacter::GetSingleton()->SetGraphVariableBool("GTS_CrawlEnabled", enabled);
 		} else if (!player) {
