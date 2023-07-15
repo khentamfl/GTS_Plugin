@@ -21,8 +21,8 @@ namespace Gts {
 			virtual std::string DebugName() override;
 
 			void ApplyLaunch(Actor* giant, float radius, float damagebonus, FootEvent kind);
-			static void LaunchLeft(Actor* giant, float radius, float damagebonus);
-			static void LaunchRight(Actor* giant, float radius, float damagebonus);
+			static void LaunchLeft(Actor* actor, float radius, float damagebonus);
+			static void LaunchRight(Actor* actor, float radius, float damagebonus);
 
 	};
 }

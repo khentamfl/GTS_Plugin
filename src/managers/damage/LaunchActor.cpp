@@ -97,7 +97,7 @@ namespace Gts {
 		}
 	}
 
-	void LaunchActor::LaunchLeft(Actor* giant, float radius, float damagebonus) {
+	void LaunchActor::LaunchLeft(Actor* actor, float radius, float damagebonus) {
 		if (!actor) {
 			return;
 		}
@@ -202,7 +202,7 @@ namespace Gts {
 	}
 
 
-	void LaunchActor::LaunchRight(Actor* giant, float radius, float damagebonus) {
+	void LaunchActor::LaunchRight(Actor* actor, float radius, float damagebonus) {
 		if (!actor) {
 			return;
 		}
