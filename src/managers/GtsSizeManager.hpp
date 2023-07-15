@@ -50,8 +50,6 @@ namespace Gts {
 			virtual std::string DebugName() override;
 			virtual void DataReady() override;
 			virtual void Update() override;
-			virtual void OnHighheelEquip(const HighheelEquip& evt) override;
-			virtual void OnRemovePerk(const RemovePerkEvent& evt) override;
 
 			void Reset();
 

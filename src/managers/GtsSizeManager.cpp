@@ -168,41 +168,6 @@ namespace Gts {
 		}
 	}
 
-	void SizeManager::OnRemovePerk(const RemovePerkEvent& evt) {
-		if (evt.perk == Runtime::GetPerk("hhBonus")) {
-			Actor* actor = evt.actor;
-			if (actor) {
-				this->SetSizeAttribute(actor, 1.0, 3); // Reset HH to 1.0
-				log::info("Perk Removed: actor: {}", actor->GetDisplayFullName());
-			}
-		}
-	}
-
-
-	void SizeManager::OnHighheelEquip(const HighheelEquip& evt) {
-		float hh_length = evt.hhLength;
-		Actor* actor = evt.actor;
-		// TODO move away from polling
-		if (hh_length > 0 && Runtime::HasPerkTeam(actor, "hhBonus")) { // HH damage bonus start
-			auto shoe = evt.shoe;
-			float shoe_weight = 1.0; // TODO: Just absorb it into the base
-			//auto char_weight = actor->GetWeight()/500;
-			if (shoe) {
-				shoe_weight = shoe->weight/20;
-			}
-			float expectedhhdamage = 1.5;
-			if (this->GetSizeAttribute(actor, 3) != expectedhhdamage) {
-				this->SetSizeAttribute(actor, 1.5, 3);
-				log::info("SizeManager HH Actor {} value: {}", actor->GetDisplayFullName(), this->GetSizeAttribute(actor, 3));
-			}
-		} else if (hh_length <= 1e-4) {
-			if (this->GetSizeAttribute(actor, 3) != 1.0) {
-				this->SetSizeAttribute(actor, 1.0, 3);
-				log::info("SizeManager HH Actor {} RESET value: {}", actor->GetDisplayFullName(), this->GetSizeAttribute(actor, 3));
-			}
-		}
-	}
-
 	void SizeManager::SetEnchantmentBonus(Actor* actor, float amt) {
 		if (!actor) {
 			return;
@@ -312,7 +277,7 @@ namespace Gts {
 		} else if (attribute == 2) {
 			return Fall;
 		} else if (attribute == 3) {
-			return HH;
+			return GetHighHeelsBonusDamage(actor);
 		}
 		return 1.0;
 	}

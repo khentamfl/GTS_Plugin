@@ -236,24 +236,51 @@ namespace Gts {
 		}
 		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 
-    if (source) {
-      auto ai = receiver->GetActorRuntimeData().currentProcess;
-      if (ai) {
-        if (ai->InHighProcess()) {
-          if (receiver->Is3DLoaded()) {
-            if (source->Is3DLoaded()) {
-              NiPoint3 direction = receiver->GetPosition() - source->GetPosition();
-              direction = direction / direction.Length();
+		if (source) {
+			auto ai = receiver->GetActorRuntimeData().currentProcess;
+			if (ai) {
+				if (ai->InHighProcess()) {
+				if (receiver->Is3DLoaded()) {
+					if (source->Is3DLoaded()) {
+					NiPoint3 direction = receiver->GetPosition() - source->GetPosition();
+					direction = direction / direction.Length();
 
-              typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
-              REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
-              RealPushActorAway(ai, receiver, direction, afKnockBackForce);
-            }
-          }
-        }
-      }
-    }
+					typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
+					REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
+					RealPushActorAway(ai, receiver, direction, afKnockBackForce);
+						}
+					}
+				}
+			}
+		}
 	}
+
+	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce, float up) {
+		if (receiver->IsDead()) {
+			return;
+		}
+		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
+
+		if (source) {
+			auto ai = receiver->GetActorRuntimeData().currentProcess;
+			if (ai) {
+				if (ai->InHighProcess()) {
+				if (receiver->Is3DLoaded()) {
+					if (source->Is3DLoaded()) {
+					NiPoint3 direction = receiver->GetPosition() - source->GetPosition();
+					direction = direction / direction.Length();
+					direction.z *= up;
+
+					typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
+					REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
+					RealPushActorAway(ai, receiver, direction, afKnockBackForce);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
@@ -382,6 +409,13 @@ namespace Gts {
 		bool result = false;
 		actor->GetGraphVariableBool("bInJumpState", result);
 		return result;
+	}
+
+	float GetHighHeelsBonusDamage(Actor* actor) {
+		if (Runtime::HasPerkTeam("hhBonus")) {
+			return HighHeelManager::GetBaseHHOffset(actor).Length()/100;
+		}
+		return 1.0;
 	}
 
 	float get_distance_to_actor(Actor* receiver, Actor* target) {
@@ -1015,18 +1049,18 @@ namespace Gts {
 		}
 	}
 
-  void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
-	if (HasSMT(giant)) {
-		float predscale = get_target_scale(giant);
-    	float preyscale = get_target_scale(tiny);
-		float targetScale = predscale/expected;
-		if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
-			set_target_scale(tiny, targetScale);
-			AddSMTPenalty(giant, 5.0);
-			log::info("Shrink: {}, Old Scale: {}, New Scale: {}", tiny->GetDisplayFullName(), preyscale, get_target_scale(tiny));
+  	void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
+		if (HasSMT(giant)) {
+			float predscale = get_target_scale(giant);
+			float preyscale = get_target_scale(tiny);
+			float targetScale = predscale/expected;
+			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
+				set_target_scale(tiny, targetScale);
+				AddSMTPenalty(giant, 5.0);
+				log::info("Shrink: {}, Old Scale: {}, New Scale: {}", tiny->GetDisplayFullName(), preyscale, get_target_scale(tiny));
+			}
 		}
 	}
-}
 
   void DisableCollisions(Actor* actor, TESObjectREFR* otherActor) {
     if (actor) {

@@ -48,7 +48,6 @@ namespace {
 		float ExpectedGlobalDamage = 1.0;
 		float ExpectedSprintDamage = 1.0;
 		float ExpectedFallDamage = 1.0;
-		float HighHeels = 1.0 + (HighHeelManager::GetSingleton().GetBaseHHOffset(actor).Length()/100);
 
 		//log::info("High Heels Length: {}", HighHeels);
 		///Normal Damage
@@ -61,8 +60,6 @@ namespace {
 		if (HasGrowthPerk(actor)) {
 			ExpectedGlobalDamage *= (1.0 + (0.35/BalancedMode));
 		}
-
-		ExpectedGlobalDamage *= HighHeels; // Apply Base HH damage.
 
 		///Sprint Damage
 		if (Runtime::HasPerkTeam(actor, "SprintDamageMult1")) {

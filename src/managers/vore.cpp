@@ -21,7 +21,7 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 94.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 7.2;
+	const float MINIMUM_VORE_SCALE_RATIO = 6.0;
 	const float VORE_ANGLE = 76;
 	const float PI = 3.14159;
 
@@ -767,29 +767,33 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
-		float wastestamina = 120/sizedifference; // Drain stamina, should be 300 once tests are over
+		float wastestamina = 45; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->AsActorValueOwner()->GetActorValue(ActorValue::kStamina);
 
 		if (pred->formID != 0x14) {
-			wastestamina = 40/sizedifference; // Less tamina drain for non Player
+			wastestamina = 30; // Less tamina drain for non Player
 		}
 
 		if (!CanVore(pred, prey)) {
 			return;
 		}
-		if (staminacheck < wastestamina) {
-			Notify("{} is too tired for vore.", pred->GetDisplayFullName());
-			DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
-			Runtime::PlaySound("VoreSound_Fail", pred, 1.8, 0.0);
-			StaggerActor(prey);
-			return;
+		if (!Runtime::HasPerkTeam(pred, "VorePerk")) { // Damage stamina if we don't have perk
+			if (staminacheck < wastestamina) {
+				Notify("{} is too tired for vore.", pred->GetDisplayFullName());
+				DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
+				Runtime::PlaySound("VoreSound_Fail", pred, 1.8, 0.0);
+				StaggerActor(prey);
+				return;
+			}
+			DamageAV(pred, ActorValue::kStamina, wastestamina);
 		}
 
-		ShrinkUntil(pred, prey, 8.0);
+		if (HasSMT(pred)) {
+			ShrinkUntil(pred, prey, 8.0);
+		}
 
-		DamageAV(pred, ActorValue::kStamina, wastestamina);
+		
 		Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
-		//Runtime::CastSpell(pred, prey, "StartVore");
 		auto& voreData = this->GetVoreData(pred);
 		voreData.AddTiny(prey);
 

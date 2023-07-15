@@ -44,7 +44,7 @@ namespace {
 
 	const float LAUNCH_DAMAGE = 2.4f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float UNDERFOOT_POWER = 0.50;
+	const float UNDERFOOT_POWER = 0.35;
 
 
 	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
@@ -89,7 +89,7 @@ namespace {
 						DamageAV(tiny, ActorValue::kHealth, damage);
 					}
 					//ForceRagdoll(tiny, true);
-					StaggerOr(giant, tiny, knockBack, 1, 1, 50 * giantSize * force, 50 * giantSize * force);
+					PushActorAway(giant, tiny, force, 100);
 				}
 			}
 		}
@@ -108,6 +108,9 @@ namespace Gts {
 	}
 
 	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, FootEvent kind) {
+		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+			return;
+		}
 		if (kind == FootEvent::Left) {
 			LaunchActor::GetSingleton().LaunchLeft(giant, radius, damagebonus);
 		} if (kind == FootEvent::Right) {
@@ -120,11 +123,13 @@ namespace Gts {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
-		const float BASE_CHECK_DISTANCE = 40.0;
+		const float BASE_CHECK_DISTANCE = 34.0;
 		const float SCALE_RATIO = 6.0;
 		if (HasSMT(giant)) {
 			giantScale *= 1.85;
 		}
+
+		radius *= 1.0 + GetHighHeelsBonusDamage(giant)/2;
 
 		// Get world HH offset
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(giant);
@@ -212,7 +217,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								LaunchDecide(giant, otherActor, force, damagebonus);
+								LaunchDecide(giant, otherActor, force, damagebonus/10);
 							}
 						}
 					}
@@ -227,11 +232,12 @@ namespace Gts {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
-		const float BASE_CHECK_DISTANCE = 40.0;
+		const float BASE_CHECK_DISTANCE = 34.0;
 		const float SCALE_RATIO = 6.0;
 		if (HasSMT(giant)) {
 			giantScale *= 1.85;
 		}
+		radius *= 1.0 + GetHighHeelsBonusDamage(giant)/2;
 
 		// Get world HH offset
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(giant);

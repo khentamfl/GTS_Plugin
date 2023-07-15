@@ -35,6 +35,7 @@ namespace Gts {
 
 	std::vector<hkpRigidBody*> GetActorRBs(Actor* actor);
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockbackForce);
+	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce, float up);
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius);
 	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude);
 
@@ -51,6 +52,7 @@ namespace Gts {
 	bool IsProne(Actor* actor);
 
 	float get_distance_to_actor(Actor* receiver, Actor* target);
+	float GetHighHeelsBonusDamage(Actor* actor);
 
 	bool IsJumping(Actor* actor);
 

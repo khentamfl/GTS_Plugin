@@ -140,6 +140,7 @@ namespace {
 			ManageCamera(giant, true, 4.0);
 		}
 		StartBodyRumble("BodyRumble", data.giant, 0.35, 0.10, false);
+		DisableCollisions(tiny, giant);
 	}
 
 	void GTSvore_impactLS(AnimationEventData& data) {

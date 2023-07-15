@@ -90,7 +90,6 @@ namespace {
 		}
 	}
 
-
 	void DoThighDamage(Actor* giant, Actor* tiny, float animSpeed, float mult, float sizemult) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(giant);
 		auto& sizemanager = SizeManager::GetSingleton();
@@ -145,17 +144,15 @@ namespace {
 
 	void GTSSandwich_EnterAnim(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
-		for (auto tiny: sandwichdata.GetActors()) {
-			AllowToBeCrushed(tiny, false);
-			SetBeingHeld(tiny, true);
-			DisableCollisions(tiny, &data.giant);
-		}
 		sandwichdata.EnableSuffocate(false);
 	}
 	void GTSSandwich_MoveBody_start(AnimationEventData& data) {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		for (auto tiny: sandwichdata.GetActors()) {
+			AllowToBeCrushed(tiny, false);
+			SetBeingHeld(tiny, true);
 			sandwichdata.MoveActors(true);
+			DisableCollisions(tiny, &data.giant);
 		}
 		StartBodyRumble("BodyRumble", data.giant, 0.5, 0.25);
 	}
