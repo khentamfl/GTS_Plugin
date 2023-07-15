@@ -4,6 +4,7 @@
 #include "magic/effects/common.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "managers/explosion.hpp"
+#include "managers/highheel.hpp"
 #include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
 #include "utils/findActor.hpp"
@@ -412,7 +413,7 @@ namespace Gts {
 	}
 
 	float GetHighHeelsBonusDamage(Actor* actor) {
-		if (Runtime::HasPerkTeam("hhBonus")) {
+		if (Runtime::HasPerkTeam(actor, "hhBonus")) {
 			return HighHeelManager::GetBaseHHOffset(actor).Length()/100;
 		}
 		return 1.0;
