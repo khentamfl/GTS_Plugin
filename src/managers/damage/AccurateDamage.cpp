@@ -1,3 +1,4 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
@@ -279,7 +280,7 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								if (launch) {
-									DoLaunch(actor, otheractor, aveForce, aveForce * 6);
+									DoLaunch(actor, otherActor, aveForce, aveForce * 6);
 								}
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}
@@ -397,7 +398,7 @@ namespace Gts {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								//log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
 								if (launch) {
-									DoLaunch(actor, otheractor, aveForce, aveForce * 6);
+									DoLaunch(actor, otherActor, aveForce, aveForce * 6);
 								}
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}
