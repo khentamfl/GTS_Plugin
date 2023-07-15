@@ -71,7 +71,13 @@ namespace {
 
 		auto& sizemanager = SizeManager::GetSingleton();
 		log::info("Trying to push actor");
-		if (force >= 0.10 && force < UNDERFOOT_POWER && sizeRatio >= 2.0 / GetMovementModifier(giant)) {
+		bool IsLaunching = sizemanager.IsLaunching(tiny);
+		if (IsLaunching) {
+			log::info("Is Launching true for {}, returning", tiny->GetDisplayFullName());
+			return;
+		}	
+
+		if (force >= 0.10 && force < UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
@@ -81,8 +87,6 @@ namespace {
 				log::info("Pushing actor away");
 				PushActorAway(giant, tiny, 1.0);
 
-				
-
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
 				std::string name = std::format("PushOther_{}", tiny->formID);
 				const float DURATION = 1.2;
@@ -91,29 +95,10 @@ namespace {
 					if (tinyHandle) {
 						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 						if (tiny_is_object) {
-							ApplyHavokImpulse(tiny_is_object, 0, 0, 40 * sizeRatio, 40 * sizeRatio);
-							//hkVector4 coords = hkVector4(0, 0, 150 * sizeRatio, 150 * sizeRatio);
-							//tiny_is_object->InitHavok();
-							//tiny_is_object->ApplyCurrent(0.5, coords);
+							ApplyHavokImpulse(tiny_is_object, 0, 0, 30 * sizeRatio, 40 * sizeRatio * force);
 						}
 					}
 				});	
-
-				
-
-				/*TaskManager::RunFor(name, DURATION, [=](auto& progressData){
-					if (tinyHandle) {
-						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
-						if (tiny_is_object) {
-							hkVector4 coords = hkVector4(0, 0, 150 * sizeRatio, 150 * sizeRatio);
-							tiny_is_object->InitHavok();
-							tiny_is_object->ApplyCurrent(0.5, coords);
-							log::info("Applying Current for {}", tinyHandle.get().get()->GetDisplayFullName());
-						}
-						//ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
-					}
-					return true;
-				});*/
 			}
 		}
 	}
@@ -147,8 +132,9 @@ namespace Gts {
 		}
 		float giantScale = get_visual_scale(giant);
 		const float BASE_CHECK_DISTANCE = 34.0;
-		const float SCALE_RATIO = 6.0;
+		float SCALE_RATIO = 6.0 / GetMovementModifier(giant);
 		if (HasSMT(giant)) {
+			SCALE_RATIO = 1.4 / GetMovementModifier(giant);
 			giantScale *= 1.85;
 		}
 
@@ -223,7 +209,7 @@ namespace Gts {
 							float distance = (point - actorLocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-								LaunchDecide(giant, otherActor, force, damagebonus/10);
+								LaunchDecide(giant, otherActor, force, damagebonus/6);
 							}
 						}
 					}
@@ -240,9 +226,10 @@ namespace Gts {
 		}
 		float giantScale = get_visual_scale(giant);
 		const float BASE_CHECK_DISTANCE = 34.0;
-		const float SCALE_RATIO = 6.0;
+		float SCALE_RATIO = 6.0 / GetMovementModifier(giant);
 		if (HasSMT(giant)) {
 			giantScale *= 1.85;
+			SCALE_RATIO = 1.4 / GetMovementModifier(giant);
 		}
 		radius *= 1.0 + GetHighHeelsBonusDamage(giant) * 2.5;
 
@@ -321,7 +308,7 @@ namespace Gts {
 							float distance = (point - actorLocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-								LaunchDecide(giant, otherActor, force, damagebonus/10);
+								LaunchDecide(giant, otherActor, force, damagebonus/6);
 							}
 						}
 					}

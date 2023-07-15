@@ -716,7 +716,7 @@ namespace Gts {
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
 			//ForceRagdoll(tiny, true);
-			//PushActorAway(giant, tiny, power/50); // Always push
+			PushActorAway(giant, tiny, power/50); // Always push
 			//ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			return;
 		}
