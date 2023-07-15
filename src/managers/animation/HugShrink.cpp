@@ -208,7 +208,7 @@ namespace {
 	if (tiny) {
 		EnableCollisions(tiny);
 		SetBeingHeld(tiny, false);
-		PushActorAway(giant, tiny, 1.0);
+		PushActorAway(giant, tiny, 1.0, 0.0);
 	}
   }
 

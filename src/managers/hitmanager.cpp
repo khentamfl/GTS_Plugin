@@ -92,7 +92,7 @@ namespace Gts {
 			if (hitName.find("Bow") == std::string::npos) {
 				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
-			PushActorAway(attacker, receiver, size_difference);
+			PushActorAway(attacker, receiver, size_difference, 0.0);
 		}
 	}
 

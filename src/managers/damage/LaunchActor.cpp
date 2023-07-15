@@ -18,7 +18,7 @@ namespace {
 
 	const float LAUNCH_DAMAGE = 2.4f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float UNDERFOOT_POWER = 0.20;
+	const float UNDERFOOT_POWER = 0.05;
 }
 
 namespace Gts {
@@ -59,13 +59,14 @@ namespace Gts {
 
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (force >= UNDERFOOT_POWER && sizeRatio >= 6.0 / GetMovementModifier(giant)) { // If close enough
+		log::info("Launchig Actor: {}", tiny->GetDisplayFullName());
 			if (!sizemanager.IsLaunching(tiny)) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 					float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage * 0.25);
 				}
-				PushActorAway(giant, tiny, force/50);
+				PushActorAway(giant, tiny, force, 2600);
 			}
 		} 
 	}

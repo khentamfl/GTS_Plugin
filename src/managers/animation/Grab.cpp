@@ -361,7 +361,7 @@ namespace {
 			SetBeingHeld(otherActor, false);
 			EnableCollisions(otherActor);
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(otherActor);
-			PushActorAway(giant, otherActor, 8.0 * sizedifference);
+			PushActorAway(giant, otherActor, 8.0 * sizedifference, 0.0);
 		}
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
@@ -399,7 +399,7 @@ namespace {
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 		if (grabbedActor) {
-			PushActorAway(giant, grabbedActor, 1.0);
+			PushActorAway(giant, grabbedActor, 1.0, 0.0);
 			EnableCollisions(grabbedActor);
 			SetBeingHeld(grabbedActor, false);
 		}
@@ -639,7 +639,7 @@ namespace Gts {
 			
 			if (giantref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
-				PushActorAway(giantref, tinyref, 1.0);
+				PushActorAway(giantref, tinyref, 1.0, 0.0);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);
 				SetBetweenBreasts(giantref, false);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.

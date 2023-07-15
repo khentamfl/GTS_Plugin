@@ -230,7 +230,7 @@ namespace Gts {
 		return results;
 	}
 
-	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce) {
+	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce, float up) {
 		if (receiver->IsDead()) {
 			return;
 		}
@@ -244,7 +244,7 @@ namespace Gts {
             if (source->Is3DLoaded()) {
               NiPoint3 direction = receiver->GetPosition() - source->GetPosition();
               direction = direction / direction.Length();
-			  direction.z += 85.0;
+			  direction.z += up;
 
               typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
               REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
