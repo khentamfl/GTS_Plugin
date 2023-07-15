@@ -86,7 +86,13 @@ namespace {
 				const float DURATION = 1.2;
 				TaskManager::RunFor(name, DURATION, [=](auto& progressData){
 					if (tinyHandle) {
-						ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
+						//ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
+						auto tinyref = skyrim_cast<TESObjectREFR*>(tiny);
+						if (tinyref) {
+							hkVector4 coords = hkVector4(0, 0, 150 * sizeRatio, 150 * sizeRatio);
+							tinyref->ApplyCurrent(1.0, coords);
+							log::info("Applying Impulse");
+						}
 					}
 					return true;
 				});

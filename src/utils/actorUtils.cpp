@@ -287,6 +287,8 @@ namespace Gts {
 		if (afZ <= 0) {
 			return;
 		}
+		CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
+		return;
 		NiPoint3 direction = NiPoint3(afX, afY, afZ);
 		NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
 		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
