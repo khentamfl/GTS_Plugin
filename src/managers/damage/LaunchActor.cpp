@@ -1,18 +1,36 @@
+#include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/SizeHitEffects.hpp"
 #include "managers/damage/LaunchActor.hpp"
+#include "managers/RipClothManager.hpp"
+#include "managers/ai/aifunctions.hpp"
+#include "scale/scalespellmanager.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/CrushManager.hpp"
+#include "managers/InputManager.hpp"
+#include "magic/effects/common.hpp"
+#include "managers/GtsManager.hpp"
+#include "managers/Attributes.hpp"
+#include "managers/hitmanager.hpp"
 #include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
+#include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "data/runtime.hpp"
-#include "UI/DebugAPI.hpp"
 #include "scale/scale.hpp"
+#include "UI/DebugAPI.hpp"
 #include "data/time.hpp"
-#include "events.hpp"
+#include "profiler.hpp"
+#include "Config.hpp"
+#include "timer.hpp"
 #include "node.hpp"
+#include <vector>
+#include <string>
 
-using namespace SKSE;
-using namespace RE;
 using namespace Gts;
+using namespace RE;
+using namespace SKSE;
+using namespace std;
 
 namespace {
 
@@ -189,6 +207,7 @@ namespace Gts {
 											nodeCollisions += 1;
 											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
 											LaunchDecide(giant, otherActor, force, damagebonus);
+											break;
 										}
 										return true;
 									});
@@ -300,6 +319,7 @@ namespace Gts {
 											nodeCollisions += 1;
 											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
 											LaunchDecide(giant, otherActor, force, damagebonus);
+											break;
 										}
 										return true;
 									});
