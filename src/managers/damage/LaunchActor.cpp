@@ -282,7 +282,7 @@ namespace Gts {
 			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
 			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
 		};
-		std::tuple<NiAVObject*, NiMatrix3> right(rightFootFoot, rightRotMat);
+		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
 
 		for (const auto& [foot, rotMat]: {right}) {
 			std::vector<NiPoint3> footPoints = {};
