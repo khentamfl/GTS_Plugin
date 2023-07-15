@@ -182,7 +182,6 @@ namespace Gts {
 		}
 
 		radius *= 1.0 + (GetHighHeelsBonusDamage(actor) * 2.5);
-		log::info("Radius: {}", radius);
 
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
@@ -292,9 +291,8 @@ namespace Gts {
 		if (!actor) {
 			return;
 		}
-
+		
 		radius *= 1.0 + (GetHighHeelsBonusDamage(actor) * 2.5);
-		log::info("Radius: {}", radius);
 
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
@@ -466,7 +464,9 @@ namespace Gts {
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
 		float highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
-		log::info("HighheelsDamage: {}", highheelsdamage);
+		if (giant->formID == 0x14) {
+			log::info("HighheelsDamage: {}", highheelsdamage);
+		}
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
 		float falldamage = 1.0; // default Fall damage of 1.0
 		float weightdamage = giant->GetWeight()/100 + 1.0;
