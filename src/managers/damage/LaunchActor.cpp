@@ -71,7 +71,7 @@ namespace {
 
 		auto& sizemanager = SizeManager::GetSingleton();
 		log::info("Trying to push actor");
-		if (force < UNDERFOOT_POWER && force >= 0.10 && sizeRatio >= 6.0 / GetMovementModifier(giant)) {
+		if (force >= 0.10 && force < UNDERFOOT_POWER && sizeRatio >= 6.0 / GetMovementModifier(giant)) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
@@ -79,8 +79,23 @@ namespace {
 					DamageAV(tiny, ActorValue::kHealth, damage);
 				}
 				log::info("Pushing actor away");
-				NiPoint3 direction = NiPoint3(0,0, 70 * sizeRatio);
-				PushActorAway(giant, tiny, direction, sizeRatio);
+				PushActorAway(giant, tiny, 2);
+
+				const float DURATION = 1.2;
+
+				ActorHandle tinyHandle = tiny->CreateRefHandle();
+				TaskManager::RunFor(name, DURATION, [=](auto& progressData){
+					if (tinyHandle) {
+						//ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
+						auto tinyref = skyrim_cast<TESObjectREFR*>(tiny);
+						if (tinyref) {
+							hkVector4 coords = hkVector4(0, 0, 50 * sizeRatio, 50 * sizeRatio);
+							tinyref->ApplyCurrent(1.0, coords);
+							log::info("Applying Impulse");
+						}
+					}
+					return true;
+				});
 			}
 		}
 	}
@@ -187,27 +202,18 @@ namespace Gts {
 					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
-						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
-							// Check the tiny's nodes against the giant's foot points
-							int nodeCollisions = 0;
+						if ((actorLocation-giantLocation).Length() <= maxFootDistance) {
 							float force = 0.0;
 
 							auto model = otherActor->GetCurrent3D();
-
 							if (model) {
 								for (auto point: footPoints) {
-									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
-										float distance = (point - a_obj.world.translate).Length();
-										if (distance < maxFootDistance) {
-											nodeCollisions += 1;
-											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-										}
-										return true;
-									});
+									float distance = (point - a_obj.world.translate).Length();
+									if (distance <= maxFootDistance) {
+										force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
+										LaunchDecide(giant, otherActor, force, damagebonus/10);
+									}
 								}
-							}
-							if (nodeCollisions > 0) {
-								LaunchDecide(giant, otherActor, force, damagebonus/10);
 							}
 						}
 					}
@@ -303,25 +309,18 @@ namespace Gts {
 
 						if ((actorLocation-giantLocation).Length() <= maxFootDistance) {
 							// Check the tiny's nodes against the giant's foot points
-							int nodeCollisions = 0;
 							float force = 0.0;
 
 							auto model = otherActor->GetCurrent3D();
 
 							if (model) {
 								for (auto point: footPoints) {
-									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
-										float distance = (point - a_obj.world.translate).Length();
-										if (distance <= maxFootDistance) {
-											nodeCollisions += 1;
-											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-										}
-										return true;
-									});
+									float distance = (point - a_obj.world.translate).Length();
+									if (distance <= maxFootDistance) {
+										force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
+										LaunchDecide(giant, otherActor, force, damagebonus/10);
+									}
 								}
-							}
-							if (nodeCollisions > 0) {
-								LaunchDecide(giant, otherActor, force, damagebonus);
 							}
 						}
 					}
