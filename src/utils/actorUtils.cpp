@@ -272,7 +272,7 @@ namespace Gts {
 
 					typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
 					REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
-					RealPushActorAway(ai, receiver, direction, afKnockBackForce);
+					RealPushActorAway(ai, receiver, direction, 1.0);
 						}
 					}
 				}
