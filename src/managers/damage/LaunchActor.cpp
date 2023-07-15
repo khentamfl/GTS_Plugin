@@ -167,11 +167,11 @@ namespace Gts {
 			NiPoint3 giantLocation = actor->GetPosition();
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
-					if (!AllowStagger(giant, otherActor)) {
+					if (!AllowStagger(actor, otherActor)) {
 						return;
 					}
 					float tinyScale = get_visual_scale(otherActor);
-					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
+					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(actor)) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
@@ -188,7 +188,7 @@ namespace Gts {
 										if (distance < maxFootDistance) {
 											nodeCollisions += 1;
 											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-											LaunchDecide(giant, otherActor, force, damagebonus);
+											LaunchDecide(actor, otherActor, force, damagebonus);
 										}
 										return true;
 									});
@@ -278,11 +278,11 @@ namespace Gts {
 			NiPoint3 giantLocation = actor->GetPosition();
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
-					if (!AllowStagger(giant, otherActor)) {
+					if (!AllowStagger(actor, otherActor)) {
 						return;
 					}
 					float tinyScale = get_visual_scale(otherActor);
-					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
+					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(actor)) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
@@ -299,7 +299,7 @@ namespace Gts {
 										if (distance < maxFootDistance) {
 											nodeCollisions += 1;
 											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-											LaunchDecide(giant, otherActor, force, damagebonus);
+											LaunchDecide(actor, otherActor, force, damagebonus);
 										}
 										return true;
 									});
