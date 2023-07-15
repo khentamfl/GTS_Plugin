@@ -89,7 +89,10 @@ namespace {
 
 				/*TaskManager::RunOnce(name, [=](auto& update){
 					if (tinyHandle) {
-						ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
+						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
+						if (tiny_is_object) {
+							ApplyHavokImpulse(tiny_is_object, 0, 0, 150 * sizeRatio, 150 * sizeRatio);
+						}
 					}
 				});	*/
 
@@ -102,7 +105,7 @@ namespace {
 							hkVector4 coords = hkVector4(0, 0, 150 * sizeRatio, 150 * sizeRatio);
 							tiny_is_object->InitHavok();
 							tiny_is_object->ApplyCurrent(0.5, coords);
-							log::Info("Applying Current for {}", tinyHandle.get().get()->GetDisplayFullName());
+							log::info("Applying Current for {}", tinyHandle.get().get()->GetDisplayFullName());
 						}
 						//ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
 					}
