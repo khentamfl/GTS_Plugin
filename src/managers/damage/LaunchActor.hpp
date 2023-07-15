@@ -23,6 +23,5 @@ namespace Gts {
 			void ApplyLaunch(Actor* giant, float radius, float damagebonus, FootEvent kind);
 			void LaunchLeft(Actor* giant, float radius, float damagebonus);
 			void LaunchRight(Actor* giant, float radius, float damagebonus);
-
 	};
 }

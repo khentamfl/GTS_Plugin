@@ -222,7 +222,7 @@ namespace Gts {
 	}
 
 
-	void LaunchActor::LaunchRight(giant* giant, float radius, float damagebonus) {
+	void LaunchActor::LaunchRight(Actor* giant, float radius, float damagebonus) {
 		if (!giant) {
 			return;
 		}
