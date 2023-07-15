@@ -69,28 +69,15 @@ namespace {
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
 
 		auto& sizemanager = SizeManager::GetSingleton();
-		log::info("Attempting Launch: Pre-Launch check");
 		if (force < UNDERFOOT_POWER && force >= 0.10 && sizeRatio >= 6.0 / GetMovementModifier(giant)) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-				log::info("Attempting Launch");
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 					float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage);
 				}
-				NiPoint3 direction = NiPoint3(0,0, 250 * sizeRatio);
-				//ForceRagdoll(tiny, true);
-				PushActorAway(giant, tiny, 1.0);
-				ActorHandle tinyHandle = tiny->CreateRefHandle();
-				std::string name = std::format("PushOther_{}", tiny->formID);
-				const float DURATION = 0.1;
-				TaskManager::RunFor(name, DURATION, [=](auto& progressData){
-					if (tinyHandle) {
-						ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
-						log::info("Applying Impulse");
-					}
-					return true;
-				});
+				NiPoint3 direction = NiPoint3(0,0, 70 * sizeRatio);
+				PushActorAway(giant, tiny, direction, sizeRatio);
 			}
 		}
 	}

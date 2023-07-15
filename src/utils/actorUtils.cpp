@@ -715,8 +715,8 @@ namespace Gts {
 		int ragdollchance = rand() % 30 + 1.0;
 		if (sizedifference >= 3.0) {
 			//ForceRagdoll(tiny, true);
-			PushActorAway(giant, tiny, power/50); // Always push
-			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
+			//PushActorAway(giant, tiny, power/50); // Always push
+			//ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			return;
 		}
 		if (power >= 0.50 || ragdollchance >= 7.0 * sizedifference && (sizedifference >= 1.25 && sizedifference < 3.0)) {
@@ -1105,8 +1105,9 @@ namespace Gts {
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
 	std::string name = std::format("SpringGrow {}: {}", naming, actor->formID);
+	const DURATION = halflife * 2;
 
-    TaskManager::Run(
+    TaskManager::RunFor(DURATION,
 		[ growData ](const auto& progressData) {
 		float totalScaleToAdd = growData->amount.value;
 		float prevScaleAdded = growData->addedSoFar;
@@ -1135,8 +1136,9 @@ namespace Gts {
 
     auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
 	std::string name = std::format("SpringGrow_Free {}: {}", naming, actor->formID);
+	const DURATION = halflife * 2;
 
-    TaskManager::Run(
+    TaskManager::RunFor(DURATION,
 		[ growData ](const auto& progressData) {
 		float totalScaleToAdd = growData->amount.value;
 		float prevScaleAdded = growData->addedSoFar;
@@ -1163,8 +1165,8 @@ namespace Gts {
 
     auto growData = std::make_shared<SpringShrinkData>(actor, amt, halfLife);
 	std::string name = std::format("SpringShrink {}: {}", naming, actor->formID);
-
-    TaskManager::Run(name,
+	const DURATION = halflife * 2;
+    TaskManager::RunFor(DURATION,
 	[ growData ](const auto& progressData) {
 		float totalScaleToAdd = growData->amount.value;
 		float prevScaleAdded = growData->addedSoFar;
