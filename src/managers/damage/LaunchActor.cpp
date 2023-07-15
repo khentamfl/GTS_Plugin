@@ -84,6 +84,7 @@ namespace {
 				const float DURATION = 1.2;
 
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
+				std::string name = std::format("PushOther_{}", tiny->formID);
 				TaskManager::RunFor(name, DURATION, [=](auto& progressData){
 					if (tinyHandle) {
 						//ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
@@ -201,19 +202,11 @@ namespace Gts {
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
-
-						if ((actorLocation-giantLocation).Length() <= maxFootDistance) {
-							float force = 0.0;
-
-							auto model = otherActor->GetCurrent3D();
-							if (model) {
-								for (auto point: footPoints) {
-									float distance = (point - a_obj.world.translate).Length();
-									if (distance <= maxFootDistance) {
-										force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-										LaunchDecide(giant, otherActor, force, damagebonus/10);
-									}
-								}
+						for (auto point: footPoints) {
+							float distance = (point - actorLocation).Length();
+							if (distance <= maxFootDistance) {
+								float force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
+								LaunchDecide(giant, otherActor, force, damagebonus/10);
 							}
 						}
 					}
@@ -221,6 +214,7 @@ namespace Gts {
 			}
 		}
 	}
+	
 
 
 	void LaunchActor::LaunchRight(Actor* giant, float radius, float damagebonus) {
@@ -306,21 +300,11 @@ namespace Gts {
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
-
-						if ((actorLocation-giantLocation).Length() <= maxFootDistance) {
-							// Check the tiny's nodes against the giant's foot points
-							float force = 0.0;
-
-							auto model = otherActor->GetCurrent3D();
-
-							if (model) {
-								for (auto point: footPoints) {
-									float distance = (point - a_obj.world.translate).Length();
-									if (distance <= maxFootDistance) {
-										force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-										LaunchDecide(giant, otherActor, force, damagebonus/10);
-									}
-								}
+						for (auto point: footPoints) {
+							float distance = (point - actorLocation).Length();
+							if (distance <= maxFootDistance) {
+								float force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
+								LaunchDecide(giant, otherActor, force, damagebonus/10);
 							}
 						}
 					}
