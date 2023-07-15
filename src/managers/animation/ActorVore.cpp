@@ -132,6 +132,7 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		for (auto& tiny: VoreData.GetVories()) {
 			AllowToBeCrushed(tiny, false);
+			DisableCollisions(tiny, giant);
 		}
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
@@ -140,7 +141,7 @@ namespace {
 			ManageCamera(giant, true, 4.0);
 		}
 		StartBodyRumble("BodyRumble", data.giant, 0.35, 0.10, false);
-		DisableCollisions(tiny, giant);
+		
 	}
 
 	void GTSvore_impactLS(AnimationEventData& data) {
