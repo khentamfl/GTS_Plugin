@@ -43,13 +43,14 @@ namespace Gts {
 		sizemanager.SetActionBool(giant, enable, type);
 	}
 
-	void DoLaunch(Actor* giant, float radius, float damage, std::string_view node, float overr) {
-		float bonus = 1.0;
+	void DoLaunch(Actor* giant, Actor* tiny, float force, float damage) {
 		if (HasSMT(giant)) {
-			bonus = overr;
-		} if (find_node(giant, node)) {
-			LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node);
-		}
+			force *= 3.0;
+			damage *= 3.0;
+		} if (!find_node(giant, node)) {
+			return;
+		} 
+		LaunchActor::GetSingleton().ApplyLaunch(giant, tiny, force, damage);
 	}
 
 	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {

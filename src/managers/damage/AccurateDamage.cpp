@@ -174,7 +174,7 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-	void AccurateDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void AccurateDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult, bool launch) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("AccurateDamageLeft: DoAccurateCollision");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
@@ -278,7 +278,9 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-								//log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
+								if (launch) {
+									DoLaunch(actor, otheractor, aveForce, aveForce * 6);
+								}
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}
 						}
@@ -288,7 +290,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void AccurateDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult, bool launch) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("AccurateDamageRight: DoAccurateCollision");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
@@ -394,6 +396,9 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								//log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
+								if (launch) {
+									DoLaunch(actor, otheractor, aveForce, aveForce * 6);
+								}
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
 							}
 						}

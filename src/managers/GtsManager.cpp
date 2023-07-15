@@ -268,8 +268,8 @@ void GtsManager::Update() {
 
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
 			if (sizemanager.GetPreciseDamage()) {
-				accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25);
-				accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25);
+				accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25, false);
+				accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25, false);
 				ClothManager::GetSingleton().CheckRip();
 			}
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes

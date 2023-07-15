@@ -14,7 +14,7 @@ using namespace Gts;
 using namespace std;
 
 namespace {
-	void CreateParticle(Actor* actor, NiMatrix3 rotation, NiPoint3 position, float scale) {
+	void CreateParticle(Actor* actor, NiPoint3 position, float scale) {
 		if (HighHeelManager::IsWearingHH(actor)) {
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr); // Spawn both
@@ -25,7 +25,7 @@ namespace {
 		}
 	}
 
-	void make_explosion_at(FootEvent kind, Actor* actor, NiMatrix3 rotation, NiPoint3 position, float scale) {
+	void make_explosion_at(FootEvent kind, Actor* actor, NiPoint3 position, float scale) {
 		if (!actor) {
 			return;
 		}
@@ -34,9 +34,9 @@ namespace {
 			case FootEvent::Right:
 			case FootEvent::Front:
 			case FootEvent::Back:
-				CreateParticle(actor, rotation, position, scale);
+				CreateParticle(actor, position, scale);
 			case FootEvent::JumpLand:
-				CreateParticle(actor, rotation, position, scale);
+				CreateParticle(actor, position, scale);
 		}
 	}
 }
@@ -89,7 +89,6 @@ namespace Gts {
 			for (NiAVObject* node: impact.nodes) {
 				// First try casting a ray
 				NiPoint3 foot_location = node->world.translate;
-				NiMatrix3 rotation = node->world.rotate;
 
 				float hh_offset = HighHeelManager::GetHHOffset(actor).Length();
 				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05*scale - hh_offset)); // Shift up a little then subtract the hh offset
@@ -103,10 +102,10 @@ namespace Gts {
 					explosion_pos.z = actor->GetPosition().z;
 				}
 				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
-					make_explosion_at(impact.kind, actor, rotation, explosion_pos, scale);
+					make_explosion_at(impact.kind, actor, explosion_pos, scale);
 				}
 				if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
-					make_explosion_at(impact.kind, actor, rotation, explosion_pos, scale);
+					make_explosion_at(impact.kind, actor, explosion_pos, scale);
 				}
 			}
 		}

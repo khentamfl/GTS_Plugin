@@ -244,6 +244,7 @@ namespace Gts {
             if (source->Is3DLoaded()) {
               NiPoint3 direction = receiver->GetPosition() - source->GetPosition();
               direction = direction / direction.Length();
+			  direction.z += 85.0;
 
               typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
               REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
@@ -699,9 +700,9 @@ namespace Gts {
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind) {
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
 		if (kind == FootEvent::Left) {
-			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage * damagebonus), radius, random, bonedamage);
+			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage * damagebonus), radius, random, bonedamage, true);
 		} if (kind == FootEvent::Right) {
-			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage * damagebonus), radius, random, bonedamage);
+			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage * damagebonus), radius, random, bonedamage, true);
 		}
 	}
 
@@ -786,7 +787,7 @@ namespace Gts {
 
 	float GetMovementModifier(Actor* giant) {
 		if (giant->AsActorState()->IsSprinting()) {
-			return 2.0;
+			return 1.5;
 		} else if (giant->AsActorState()->IsSneaking()) {
 			return 0.6;
 		} else {
