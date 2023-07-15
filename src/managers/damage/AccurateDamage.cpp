@@ -464,9 +464,6 @@ namespace Gts {
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
 		float highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
-		if (giant->formID == 0x14) {
-			log::info("HighheelsDamage: {}", highheelsdamage);
-		}
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
 		float falldamage = 1.0; // default Fall damage of 1.0
 		float weightdamage = giant->GetWeight()/100 + 1.0;

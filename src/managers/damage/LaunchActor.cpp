@@ -44,7 +44,7 @@ namespace {
 
 	const float LAUNCH_DAMAGE = 2.4f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float UNDERFOOT_POWER = 0.15;
+	const float UNDERFOOT_POWER = 0.70;
 
 
 	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
@@ -69,19 +69,9 @@ namespace {
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
 
 		auto& sizemanager = SizeManager::GetSingleton();
-		if (force >= UNDERFOOT_POWER && sizeRatio >= 1.49) { // If under the foot
-			//accuratedamage.DoSizeDamage(giant, tiny, GetMovementModifier(giant), force * 22 * damagebonus, 50, 0.50, true); // < may be too strong.
-			if (!sizemanager.IsLaunching(tiny)) {
-				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
-				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
-					float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
-					DamageAV(tiny, ActorValue::kHealth, damage * 0.25);
-				}
-				//ForceRagdoll(tiny, true);
-				StaggerOr(giant, tiny, knockBack, 1, 1 , 50 * giantSize * force, 50 * giantSize * force);
-			}
-		} else if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER && sizeRatio >= 6.0 / GetMovementModifier(giant)) {
+		if (!sizemanager.IsLaunching(tiny) && force < UNDERFOOT_POWER && force >= 0.10 && sizeRatio >= 6.0 / GetMovementModifier(giant)) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+				log::info("Attempting Launch");
 				if (sizeRatio >= threshold) { // Launch
 					sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 					if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
