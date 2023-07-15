@@ -97,12 +97,12 @@ namespace {
 
 				TaskManager::RunFor(name, DURATION, [=](auto& progressData){
 					if (tinyHandle) {
-						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyhandle.get().get());
+						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 						if (tiny_is_object) {
 							hkVector4 coords = hkVector4(0, 0, 150 * sizeRatio, 150 * sizeRatio);
 							tiny_is_object->InitHavok();
 							tiny_is_object->ApplyCurrent(0.5, coords);
-							log::Info("Applying Current for {}", tinyhandle.get().get()->GetDisplayFullName());
+							log::Info("Applying Current for {}", tinyHandle.get().get()->GetDisplayFullName());
 						}
 						//ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
 					}
