@@ -287,21 +287,19 @@ namespace Gts {
 		if (afZ <= 0) {
 			return;
 		}
-		//CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
-		log::info("Apply Impulse on {}", target->GetDisplayFullName());
-		//return;
 		NiPoint3 direction = NiPoint3(afX, afY, afZ);
 		NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
 		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
 		auto rbs = GetActorRB(target);
-		log::info("Apply Impulse on {}", target->GetDisplayFullName());
 		for (auto rb: rbs) {
 			if (rb) {
 				auto& motion = rb->motion;
 				motion.ApplyLinearImpulse(impulse);
 			}
 		}
-		//CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
+	}
+	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude) {
+		CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
 	}
 
 	void CompleteDragonQuest() {
