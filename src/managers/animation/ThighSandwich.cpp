@@ -294,7 +294,7 @@ namespace {
 		DoSizeEffect(&data.giant, 2.0, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 2.0, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 4.0 * perk, 2.6, 10, 0.10, FootEvent::Right);
-		DoDamageEffect(&data.giant, 4.0 * perk, 2.6, 10, 0.10, FootEvent::Left);
+		DoDamageEffect(&data.giant, 4.0 * perk, 2.6, 10, 0.10, FootEvent::Left); 
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
