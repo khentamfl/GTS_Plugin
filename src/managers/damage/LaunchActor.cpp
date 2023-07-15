@@ -91,31 +91,31 @@ namespace Gts {
 
 	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, FootEvent kind) {
 		if (kind == FootEvent::Left) {
-			LaunchActor::LaunchLeft(giant, radius, damagebonus);
+			LaunchActor::GetSingleton().LaunchLeft(giant, radius, damagebonus);
 		} if (kind == FootEvent::Right) {
-			LaunchActor::LaunchRight(giant, radius, damagebonus);
+			LaunchActor::GetSingleton().LaunchRight(giant, radius, damagebonus);
 		}
 	}
 
 	void LaunchActor::LaunchLeft(Actor* actor, float radius, float damagebonus) {
-		if (!actor) {
+		if (!giant) {
 			return;
 		}
-		float giantScale = get_visual_scale(actor);
+		float giantScale = get_visual_scale(giant);
 		const float BASE_CHECK_DISTANCE = 40.0;
 		const float SCALE_RATIO = 6.0;
-		if (HasSMT(actor)) {
+		if (HasSMT(giant)) {
 			giantScale *= 1.85;
 		}
 
 		// Get world HH offset
-		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
-		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
+		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(giant);
+		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);
 
-		auto leftFoot = find_node(actor, leftFootLookup);
-		auto leftCalf = find_node(actor, leftCalfLookup);
-		auto leftToe = find_node(actor, leftToeLookup);
-		auto BodyBone = find_node(actor, bodyLookup);
+		auto leftFoot = find_node(giant, leftFootLookup);
+		auto leftCalf = find_node(giant, leftCalfLookup);
+		auto leftToe = find_node(giant, leftToeLookup);
+		auto BodyBone = find_node(giant, bodyLookup);
 		if (!leftFoot) {
 			return;
 		}if (!leftCalf) {
@@ -158,20 +158,20 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
 				}
 			}
 
-			NiPoint3 giantLocation = actor->GetPosition();
+			NiPoint3 giantLocation = giant->GetPosition();
 			for (auto otherActor: find_actors()) {
-				if (otherActor != actor) {
-					if (!AllowStagger(actor, otherActor)) {
+				if (otherActor != giant) {
+					if (!AllowStagger(giant, otherActor)) {
 						return;
 					}
 					float tinyScale = get_visual_scale(otherActor);
-					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(actor)) {
+					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
@@ -188,7 +188,7 @@ namespace Gts {
 										if (distance < maxFootDistance) {
 											nodeCollisions += 1;
 											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-											LaunchDecide(actor, otherActor, force, damagebonus);
+											LaunchDecide(giant, otherActor, force, damagebonus);
 										}
 										return true;
 									});
@@ -202,25 +202,25 @@ namespace Gts {
 	}
 
 
-	void LaunchActor::LaunchRight(Actor* actor, float radius, float damagebonus) {
-		if (!actor) {
+	void LaunchActor::LaunchRight(giant* giant, float radius, float damagebonus) {
+		if (!giant) {
 			return;
 		}
-		float giantScale = get_visual_scale(actor);
+		float giantScale = get_visual_scale(giant);
 		const float BASE_CHECK_DISTANCE = 40.0;
 		const float SCALE_RATIO = 6.0;
-		if (HasSMT(actor)) {
+		if (HasSMT(giant)) {
 			giantScale *= 1.85;
 		}
 
 		// Get world HH offset
-		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
-		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
+		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(giant);
+		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);
 
-		auto rightFoot = find_node(actor, rightFootLookup);
-		auto rightCalf = find_node(actor, rightCalfLookup);
-		auto rightToe = find_node(actor, rightToeLookup);
-		auto BodyBone = find_node(actor, bodyLookup);
+		auto rightFoot = find_node(giant, rightFootLookup);
+		auto rightCalf = find_node(giant, rightCalfLookup);
+		auto rightToe = find_node(giant, rightToeLookup);
+		auto BodyBone = find_node(giant, bodyLookup);
 
 
 		if (!rightFoot) {
@@ -269,20 +269,20 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
 				}
 			}
 
-			NiPoint3 giantLocation = actor->GetPosition();
+			NiPoint3 giantLocation = giant->GetPosition();
 			for (auto otherActor: find_actors()) {
-				if (otherActor != actor) {
-					if (!AllowStagger(actor, otherActor)) {
+				if (otherActor != giant) {
+					if (!AllowStagger(giant, otherActor)) {
 						return;
 					}
 					float tinyScale = get_visual_scale(otherActor);
-					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(actor)) {
+					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
@@ -299,7 +299,7 @@ namespace Gts {
 										if (distance < maxFootDistance) {
 											nodeCollisions += 1;
 											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-											LaunchDecide(actor, otherActor, force, damagebonus);
+											LaunchDecide(giant, otherActor, force, damagebonus);
 										}
 										return true;
 									});
