@@ -84,7 +84,7 @@ namespace {
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
 				TaskManager::RunOnce([=](auto& update){
 					if (tinyHandle) {
-						ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 50 ( sizeRatio), 50 * sizeRatio);
+						ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 50 *sizeRatio, 50 * sizeRatio);
 					}
 				});
 			}
