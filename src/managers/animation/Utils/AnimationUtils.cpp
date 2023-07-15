@@ -48,7 +48,7 @@ namespace Gts {
 			force *= 3.0;
 			damage *= 3.0;
 		}  
-		LaunchActor::GetSingleton().ApplyLaunch(giant, tiny, force, damage);
+		LaunchActor::GetSingleton().LaunchDecide(giant, tiny, force, damage);
 	}
 
 	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {
