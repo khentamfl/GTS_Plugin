@@ -83,7 +83,7 @@ namespace {
 				PushActorAway(giant, tiny, 1.0);
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
 				std::string name = std::format("PushOther_{}", tiny->formID);
-				TaskManager::RunFor(name, 2.0, [=](auto& update){
+				TaskManager::RunFor(name, 2.0, [=](auto& progressData){
 					if (tinyHandle) {
 						ApplyHavokImpulse(tinyHandle.get().get(), 0, 0, 150 * sizeRatio, 150 * sizeRatio);
 					}
