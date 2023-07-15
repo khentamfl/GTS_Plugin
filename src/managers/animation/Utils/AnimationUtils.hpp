@@ -14,7 +14,7 @@ namespace Gts {
 	void AllowToBeCrushed(Actor* actor, bool toggle);
 	void ManageCamera(Actor* giant, bool enable, float type);
 
-	void DoLaunch(Actor* giant, Actor* tiny, float force, float damage);
+	void DoLaunch(Actor* giant, Actor* tiny, float force, float damage, FootEvent kind);
 
 	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference);
 	void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float waste, float power);
