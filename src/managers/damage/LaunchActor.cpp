@@ -85,9 +85,10 @@ namespace {
 				}
 
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
+				ActorHandle giantHandle = giant->CreateRefHandle();
 
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
-				
+
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
@@ -98,7 +99,14 @@ namespace {
 						const float DURATION = 1.5;
 						TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){
 							log::info("Task GrowTeammate");
-							if (ShrinkToNothing(giant, tiny)) { //Shrink to nothing if size difference is too big
+							auto GTS = giantHandle->get().get();
+							auto TINY = tinyHandle->get().get();
+							if (!GTS) {
+								return false;
+							} if (!TINY) {
+								return false;
+							}
+							if (ShrinkToNothing(GTS, TINY)) { //Shrink to nothing if size difference is too big
 								return false;
 							}
 
