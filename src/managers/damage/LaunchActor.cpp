@@ -84,20 +84,30 @@ namespace {
 					damagebonus *= 2.0;
 				}
 
+				ActorHandle tinyHandle = tiny->CreateRefHandle();
+
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+				
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
 					if (power >= 1.5) {
-						mod_target_scale(tiny, -(damage * DamageSetting) / 200);
-						if (ShrinkToNothing(giant, tiny)) {
-							//Shrink to nothing if size difference is too big
-						}
+						mod_target_scale(tiny, -(damage * DamageSetting) / 300);
+
+						std::string taskname = std::format("ShrinkOther_{}", tiny->formID);
+						const float DURATION = 1.5;
+						TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){
+							log::info("Task GrowTeammate");
+							if (ShrinkToNothing(giant, tiny)) { //Shrink to nothing if size difference is too big
+								return false;
+							}
+
+							return true; // Scale is not 
+						});
 					}
 				}
 				PushActorAway(giant, tiny, 1.0);
 				
-				ActorHandle tinyHandle = tiny->CreateRefHandle();
 				std::string name = std::format("PushOther_{}", tiny->formID);
 
 				TaskManager::RunOnce(name, [=](auto& update){ // Possible to-do: Reverse Engineer ApplyHavokImpulse?
