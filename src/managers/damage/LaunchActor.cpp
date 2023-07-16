@@ -46,6 +46,31 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.70;
 
+	
+
+	void RunSTNCheckTask(Actor* giant, Actor* tiny) {
+		std::string taskname = std::format("ShrinkOther_{}", tiny->formID);
+		const float DURATION = 1.5;
+
+		ActorHandle tinyHandle = tiny->CreateRefHandle();
+		ActorHandle giantHandle = giant->CreateRefHandle();
+		
+		TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){
+			log::info("Shrink To Nothing check task running");
+			auto GTS = giantHandle.get().get();
+			auto TINY = tinyHandle.get().get();
+			if (!GTS) {
+				return false;
+			} if (!TINY) {
+				return false;
+			}
+			if (ShrinkToNothing(GTS, TINY)) { //Shrink to nothing if size difference is too big
+				return false; // Shrink to nothing casted, cancel Task
+			}
+
+			return true; // Everything is fine, continue checking
+		});
+	}
 
 	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
 		if (IsBeingHeld(tiny)) {
@@ -84,8 +109,7 @@ namespace {
 					damagebonus *= 2.0;
 				}
 
-				ActorHandle tinyHandle = tiny->CreateRefHandle();
-				ActorHandle giantHandle = giant->CreateRefHandle();
+				
 
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 
@@ -95,28 +119,14 @@ namespace {
 					if (power >= 1.5) {
 						mod_target_scale(tiny, -(damage * DamageSetting) / 300);
 
-						std::string taskname = std::format("ShrinkOther_{}", tiny->formID);
-						const float DURATION = 1.5;
-						TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){
-							log::info("Task GrowTeammate");
-							auto GTS = giantHandle->get().get();
-							auto TINY = tinyHandle->get().get();
-							if (!GTS) {
-								return false;
-							} if (!TINY) {
-								return false;
-							}
-							if (ShrinkToNothing(GTS, TINY)) { //Shrink to nothing if size difference is too big
-								return false;
-							}
-
-							return true; // Scale is not 
-						});
+						RunSTNCheckTask(giant, tiny);
 					}
 				}
 				PushActorAway(giant, tiny, 1.0);
 				
 				std::string name = std::format("PushOther_{}", tiny->formID);
+
+				ActorHandle tinyHandle = tiny->CreateRefHandle();
 
 				TaskManager::RunOnce(name, [=](auto& update){ // Possible to-do: Reverse Engineer ApplyHavokImpulse?
 					if (tinyHandle) {
