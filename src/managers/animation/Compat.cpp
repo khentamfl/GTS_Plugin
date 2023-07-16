@@ -95,12 +95,13 @@ namespace {
 
 	void JumpDown(AnimationEventData& data) {
 		auto giant = &data.giant;
+		float perk = GetPerkBonus_Basics(giant);
 		auto& sizemanager = SizeManager::GetSingleton();
 		float damage = sizemanager.GetSizeAttribute(giant, 2);
 		DoDamageEffect(&data.giant, 1.2 * damage, 6.0, 20, 0.04, FootEvent::Left);
 		DoDamageEffect(&data.giant, 1.2 * damage, 6.0, 20, 0.04, FootEvent::Right);
-		DoLaunch(&data.giant, 0.95, 1.75, 2.0, FootEvent::Left);
-		DoLaunch(&data.giant, 0.95, 1.75, 2.0, FootEvent::Right);
+		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Left);
+		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Right);
 	}
 }
 

@@ -47,7 +47,7 @@ namespace Gts {
 		float bonus = 1.0;
 		if (HasSMT(giant)) {
 			bonus = overr;
-		} 
+		}
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, kind);
 	}
 

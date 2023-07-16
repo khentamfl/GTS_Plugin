@@ -52,6 +52,7 @@ namespace {
 			return;
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
+		float DamageSetting = Persistent::GetSingleton().size_related_damage_mult;
 		float giantSize = get_visual_scale(giant);
 		float SMT = 1.0;
 		float threshold = 6.0;
@@ -76,13 +77,21 @@ namespace {
 
 		if (force >= 0.10 && force < UNDERFOOT_POWER) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+
+				float power = 1.0;
+				if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
+					power = 1.5;
+					damagebonus *= 2.0;
+				}
+
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
+					
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
-					DamageAV(tiny, ActorValue::kHealth, damage);
+					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
 				}
 				PushActorAway(giant, tiny, 1.0);
-
+				
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
 				std::string name = std::format("PushOther_{}", tiny->formID);
 
@@ -90,7 +99,7 @@ namespace {
 					if (tinyHandle) {
 						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 						if (tiny_is_object) {
-							ApplyHavokImpulse(tiny_is_object, 0, 0, 40 * sizeRatio * force, 40 * sizeRatio * force);
+							ApplyHavokImpulse(tiny_is_object, 0, 0, 40 * sizeRatio * force * power, 40 * sizeRatio * force * power);
 						}
 					}
 				});	

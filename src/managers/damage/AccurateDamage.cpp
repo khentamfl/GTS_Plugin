@@ -61,12 +61,12 @@ namespace {
 		return true;
 	}
 
-	void ModVulnerability(Actor* giant, Actor* tiny) {
+	void ModVulnerability(Actor* giant, Actor* tiny, float damage) {
 		if (!Runtime::HasPerkTeam(giant, "GrowingPressure")) {
 			return;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.ModSizeVulnerability(tiny, 0.0015);
+		sizemanager.ModSizeVulnerability(tiny, damage * 0.001);
 	}
 
 	void MiniStagger(Actor* giant, Actor* tiny) {
@@ -455,6 +455,8 @@ namespace Gts {
 			tinysize *= 2.0;
 		}
 
+		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
+
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float multiplier = giantsize/tinysize * highheels;
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
@@ -467,7 +469,6 @@ namespace Gts {
 
 		SizeModifications(giant, tiny, highheels);
 		SMTCrushCheck(giant, tiny);
-		ModVulnerability(giant, tiny);
 
 		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
@@ -506,7 +507,7 @@ namespace Gts {
 		if (!tiny->IsDead()) {
 			AdjustGtsSkill(experience, giant);
 		}
-
+		result *= damagebonus;
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
 			return; // Stamina protection, emulates Size Damage resistance
@@ -514,6 +515,7 @@ namespace Gts {
 		if (!DoDamage) {
 			return;
 		}
+		ModVulnerability(giant, tiny, result); 
 		DamageAV(tiny, ActorValue::kHealth, result);
 	}
 }
