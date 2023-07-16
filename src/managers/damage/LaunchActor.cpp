@@ -51,7 +51,6 @@ namespace {
 		if (IsBeingHeld(tiny)) {
 			return;
 		}
-		log::info("Force is :{}", force);
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		float giantSize = get_visual_scale(giant);
 		float SMT = 1.0;
@@ -70,10 +69,8 @@ namespace {
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
 
 		auto& sizemanager = SizeManager::GetSingleton();
-		log::info("Trying to push actor");
 		bool IsLaunching = sizemanager.IsLaunching(tiny);
 		if (IsLaunching) {
-			log::info("Is Launching true for {}, returning", tiny->GetDisplayFullName());
 			return;
 		}	
 
@@ -81,21 +78,19 @@ namespace {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
-					float damage = LAUNCH_DAMAGE * giantSize * force * damagebonus;
+					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage);
 				}
-				log::info("Pushing actor away");
 				PushActorAway(giant, tiny, 1.0);
 
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
 				std::string name = std::format("PushOther_{}", tiny->formID);
-				const float DURATION = 1.2;
 
-				TaskManager::RunOnce(name, [=](auto& update){
+				TaskManager::RunOnce(name, [=](auto& update){ // Possible to-do: Reverse Engineer ApplyHavokImpulse?
 					if (tinyHandle) {
 						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 						if (tiny_is_object) {
-							ApplyHavokImpulse(tiny_is_object, 0, 0, 30 * sizeRatio, 40 * sizeRatio * force);
+							ApplyHavokImpulse(tiny_is_object, 0, 0, 40 * sizeRatio * force, 40 * sizeRatio * force);
 						}
 					}
 				});	
