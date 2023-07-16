@@ -56,7 +56,7 @@ namespace {
 			};
 		float power = soft_power(sizeRatio, launch);
 		log::info("Launch Power: {}", power);
-		return 1.0 / power;
+		return power;
 	}
 
 	void RunSTNCheckTask(Actor* giant, Actor* tiny) {
