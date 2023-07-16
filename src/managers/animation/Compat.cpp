@@ -93,6 +93,19 @@ namespace {
 		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left);
 	}
 
+	void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
+
+	}
+	void GTSCrawl_KneeImpact_R(AnimationEventData& data) {
+
+	}
+	void GTSCrawl_HandImpact_L(AnimationEventData& data) {
+
+	}
+	void GTSCrawl_HandImpact_R(AnimationEventData& data) {
+
+	}
+
 	void JumpDown(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float perk = GetPerkBonus_Basics(giant);
@@ -112,6 +125,10 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTScrush_victim", "Compat2", GTScrush_victim);
 		AnimationManager::RegisterEvent("MCO_SecondDodge", "MCOCompat1", MCO_SecondDodge);
 		AnimationManager::RegisterEvent("SoundPlay.MCO_DodgeSound", "MCOCompat2", MCO_DodgeSound);
+		AnimationManager::RegisterEvent("GTSCrawl_KneeImpact_L", "Crawl", GTSCrawl_KneeImpact_L);
+		AnimationManager::RegisterEvent("GTSCrawl_KneeImpact_R", "Crawl", GTSCrawl_KneeImpact_R);
+		AnimationManager::RegisterEvent("GTSCrawl_HandImpact_L", "Crawl", GTSCrawl_HandImpact_L);
+		AnimationManager::RegisterEvent("GTSCrawl_HandImpact_R", "Crawl", GTSCrawl_HandImpact_R);
 		AnimationManager::RegisterEvent("JumpDown", "JumpCompat1", JumpDown);
 	}
 

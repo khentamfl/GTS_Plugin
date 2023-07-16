@@ -57,7 +57,7 @@ namespace {
 		float SMT = 1.0;
 		float threshold = 6.0;
 		if (HasSMT(giant)) {
-			giantSize += 1.0;
+			giantSize += 4.0;
 			threshold = 0.8;
 			force += 0.20;
 		}
@@ -86,9 +86,11 @@ namespace {
 
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
-					
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
+					if (power >= 1.5) {
+						TransferSize(giant, tiny, false, damage * DamageSetting, 0.0, false);
+					}
 				}
 				PushActorAway(giant, tiny, 1.0);
 				
@@ -138,8 +140,8 @@ namespace Gts {
 		const float BASE_CHECK_DISTANCE = 34.0;
 		float SCALE_RATIO = 6.0 / GetMovementModifier(giant);
 		if (HasSMT(giant)) {
-			SCALE_RATIO = 1.4 / GetMovementModifier(giant);
-			giantScale *= 1.85;
+			SCALE_RATIO = 1.2 / GetMovementModifier(giant);
+			giantScale *= 2.0;
 		}
 
 		radius *= 1.0 + GetHighHeelsBonusDamage(giant) * 2.5;
@@ -232,8 +234,8 @@ namespace Gts {
 		const float BASE_CHECK_DISTANCE = 34.0;
 		float SCALE_RATIO = 6.0 / GetMovementModifier(giant);
 		if (HasSMT(giant)) {
-			giantScale *= 1.85;
-			SCALE_RATIO = 1.4 / GetMovementModifier(giant);
+			SCALE_RATIO = 1.2 / GetMovementModifier(giant);
+			giantScale *= 2.0;
 		}
 		radius *= 1.0 + GetHighHeelsBonusDamage(giant) * 2.5;
 
