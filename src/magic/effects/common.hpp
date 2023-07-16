@@ -258,10 +258,10 @@ namespace Gts {
 		}
 
 		if (Runtime::HasPerkTeam(caster, "FastShrink")) {
-			PERK_BONUS += 0.25;
+			PERK_BONUS += 0.35;
 		}
 		if (Runtime::HasPerkTeam(caster, "LethalShrink")) {
-			PERK_BONUS += 0.45;
+			PERK_BONUS += 0.65;
 		}
 
 		power *= PERK_BONUS; // multiply power by perk bonuses
@@ -271,7 +271,7 @@ namespace Gts {
 
 		auto GtsSkillLevel = GetGtsSkillLevel();
 
-		float alteration_level_bonus = 0.0260 + (GtsSkillLevel * 0.000260); // + 100% bonus at level 100
+		float alteration_level_bonus = 0.0290 + (GtsSkillLevel * 0.000290); // + 100% bonus at level 100
 		Steal(target, caster, power, power * alteration_level_bonus, transfer_effeciency);
 	}
 

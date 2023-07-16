@@ -46,7 +46,18 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.70;
 
-	
+	float GetLaunchPower(float sizeRatio) {
+		// https://www.desmos.com/calculator/wh0vwgljfl
+		SoftPotential launch {
+				.k = 1.42, 
+				.n = 0.65, 
+				.s = 0.6, 
+				.a = 0.8, 
+			};
+		float power = soft_core(sizeRatio, launch);
+		log::info("Launch Power: {}", power);
+		return power;
+	}
 
 	void RunSTNCheckTask(Actor* giant, Actor* tiny) {
 		std::string taskname = std::format("ShrinkOther_{}", tiny->formID);
@@ -132,7 +143,7 @@ namespace {
 					if (tinyHandle) {
 						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 						if (tiny_is_object) {
-							ApplyHavokImpulse(tiny_is_object, 0, 0, 40 * sizeRatio * force * power, 40 * sizeRatio * force * power);
+							ApplyHavokImpulse(tiny_is_object, 0, 0, 40 * GetLaunchPower(sizeRatio) * force * power, 40 * GetLaunchPower(sizeRatio) * force * power);
 						}
 					}
 				});	

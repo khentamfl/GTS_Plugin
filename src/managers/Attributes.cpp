@@ -251,7 +251,7 @@ namespace Gts {
 				}
 			}
 			case ActorValue::kAttackDamageMult: {
-				if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
+				if (HasSMT(actor)) {
 					scale += 3.0;
 				}
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
@@ -380,13 +380,13 @@ namespace Gts {
 			auto& attributes = AttributeManager::GetSingleton();
 			bonus = attributes.GetAttributeBonus(actor, ActorValue::kSpeedMult);
 			float volume = 0.0;
-			float origSpeed = direction.Length();
+			/*float origSpeed = direction.Length();
 			if (actor->formID != 0x14) {
 				float sizedifference = get_giantess_scale(actor)/get_giantess_scale(PlayerCharacter::GetSingleton());
 				volume = bonus * origSpeed * sizedifference / 250;
 			} else {
 				volume = bonus * origSpeed / 250;
-			}
+			}*/
 		}
 		return bonus;
 	}

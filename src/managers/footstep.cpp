@@ -274,10 +274,10 @@ namespace Gts {
 			auto player = PlayerCharacter::GetSingleton();
 			auto actor = impact.actor;
 			float scale = impact.scale;
-			if (actor->formID != 0x14) {
+			/*if (actor->formID != 0x14) {
 				float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)));
 				scale = sizedifference;
-			}
+			}*/
 			if (actor->formID == 0x14 && HasSMT(actor)) {
 				scale *= 1.75;
 			}

@@ -24,15 +24,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	float ShakeStrength(Actor* Source) {
-		float Size = get_visual_scale(Source);
-		float k = 0.065;
-		float n = 1.0;
-		float s = 1.12;
-		float Result = 1.0;//1.0/(pow(1.0+pow(k*(Size),n*s),1.0/s));
-		return Result;
-	}
-
 	ExtraDataList* CreateExDataList() {
 		size_t a_size;
 		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
