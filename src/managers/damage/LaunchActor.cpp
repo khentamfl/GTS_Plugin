@@ -89,7 +89,7 @@ namespace {
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
 					if (power >= 1.5) {
-						TransferSize(giant, tiny, false, damage * DamageSetting, 0.0, false);
+						TransferSize(giant, tiny, false, (damage * DamageSetting) * 60, 0.0, false);
 					}
 				}
 				PushActorAway(giant, tiny, 1.0);
