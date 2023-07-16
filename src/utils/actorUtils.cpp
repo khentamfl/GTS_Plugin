@@ -833,6 +833,9 @@ namespace Gts {
 	}
 
 	void AddSMTDuration(Actor* actor, float duration) {
+		if (!HasSMT(actor)) {
+			return;
+		}
 		if (Runtime::HasPerk(actor, "EternalCalamity")) {
 			auto transient = Transient::GetSingleton().GetData(actor);
 			if (transient) {

@@ -54,9 +54,9 @@ namespace {
 				.s = 0.6, 
 				.a = 0.8, 
 			};
-		float power = soft_core(sizeRatio, launch);
+		float power = soft_power(sizeRatio, launch);
 		log::info("Launch Power: {}", power);
-		return power;
+		return 1.0 / power;
 	}
 
 	void RunSTNCheckTask(Actor* giant, Actor* tiny) {
@@ -119,8 +119,6 @@ namespace {
 					power = 1.5;
 					damagebonus *= 2.0;
 				}
-
-				
 
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 

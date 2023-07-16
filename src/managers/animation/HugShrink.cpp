@@ -244,7 +244,7 @@ namespace {
 		if (HasSMT(player)) {
 			AnimationManager::StartAnim("Huggies_HugCrush", player);
 			AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
-			AddSMTPenalty(player, 10.0);
+			AddSMTPenalty(player, 10.0); // Mostly called inside ShrinkUntil
 			DamageAV(player, ActorValue::kStamina, 60);
 			return;
 		} else if (health <= HpThreshold) {
