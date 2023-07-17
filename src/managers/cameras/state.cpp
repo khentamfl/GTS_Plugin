@@ -36,7 +36,7 @@ namespace Gts {
 	NiPoint3 CameraState::GetOffset(const NiPoint3& cameraPosLocal, bool IsCrawling) {
 		if (IsCrawling) {
 			return this->GetOffsetProne(cameraPosLocal);
-		} else {
+		} else { 
 			return this->GetOffset(cameraPosLocal);
 		}
 	}
