@@ -7,14 +7,14 @@
 using namespace RE;
 
 namespace Gts {
-	float FirstPerson::GetScaleOverride(bool isProne) {
+	float FirstPerson::GetScaleOverride(bool IsCrawling) {
 		float proneFactor = 1.0;
-		if (isProne) {
+		if (IsCrawling) {
 			auto player = GetCameraActor();
 			float scale = get_visual_scale(player);
 			return scale * this->ProneAdjustment();
 		} else {
-			return -1.0;;
+			return -1.0;
 		}
 	}
 }

@@ -74,7 +74,7 @@ namespace Gts {
 		// Should disable HH?
 		bool disableHH = (
 			AnimationManager::HHDisabled(actor) ||
-			IsProne(actor) ||
+			IsCrawling(actor) ||
 			!Persistent::GetSingleton().highheel_correction
 			);
 		//log::info("HH Disable: {}", disableHH);

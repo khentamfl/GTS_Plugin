@@ -23,7 +23,7 @@ namespace Gts {
 		return result;
 	}
 
-	float CameraState::GetScaleOverride(bool isProne) {
+	float CameraState::GetScaleOverride(bool IsCrawling) {
 		return -1.0;
 	}
 
@@ -33,8 +33,8 @@ namespace Gts {
 	NiPoint3 CameraState::GetOffsetProne(const NiPoint3& cameraPosLocal) {
 		return this->GetOffset(cameraPosLocal);
 	}
-	NiPoint3 CameraState::GetOffset(const NiPoint3& cameraPosLocal, bool isProne) {
-		if (isProne) {
+	NiPoint3 CameraState::GetOffset(const NiPoint3& cameraPosLocal, bool IsCrawling) {
+		if (IsCrawling) {
 			return this->GetOffsetProne(cameraPosLocal);
 		} else {
 			return this->GetOffset(cameraPosLocal);
@@ -47,8 +47,8 @@ namespace Gts {
 	NiPoint3 CameraState::GetCombatOffsetProne(const NiPoint3& cameraPosLocal) {
 		return this->GetCombatOffset(cameraPosLocal);
 	}
-	NiPoint3 CameraState::GetCombatOffset(const NiPoint3& cameraPosLocal, bool isProne) {
-		if (isProne) {
+	NiPoint3 CameraState::GetCombatOffset(const NiPoint3& cameraPosLocal, bool IsCrawling) {
+		if (IsCrawling) {
 			return this->GetCombatOffsetProne(cameraPosLocal);
 		} else {
 			return this->GetCombatOffset(cameraPosLocal);
@@ -61,8 +61,8 @@ namespace Gts {
 	NiPoint3 CameraState::GetPlayerLocalOffsetProne(const NiPoint3& cameraPosLocal) {
 		return this->GetPlayerLocalOffset(cameraPosLocal);
 	}
-	NiPoint3 CameraState::GetPlayerLocalOffset(const NiPoint3& cameraPosLocal, bool isProne) {
-		if (isProne) {
+	NiPoint3 CameraState::GetPlayerLocalOffset(const NiPoint3& cameraPosLocal, bool IsCrawling) {
+		if (IsCrawling) {
 			return this->GetPlayerLocalOffsetProne(cameraPosLocal);
 		} else {
 			return this->GetPlayerLocalOffset(cameraPosLocal);

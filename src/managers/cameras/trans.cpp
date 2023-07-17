@@ -16,8 +16,8 @@ namespace Gts {
 	NiPoint3 TransState::GetOffset(const NiPoint3& cameraPosLocal) {
 		return this->stateB->GetOffset(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetOffset(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
-	NiPoint3 TransState::GetOffset(const NiPoint3& cameraPosLocal, bool isProne) {
-		return this->stateB->GetOffset(cameraPosLocal, isProne) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetOffset(cameraPosLocal, isProne) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
+	NiPoint3 TransState::GetOffset(const NiPoint3& cameraPosLocal, bool IsCrawling) {
+		return this->stateB->GetOffset(cameraPosLocal, IsCrawling) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetOffset(cameraPosLocal, IsCrawling) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 	NiPoint3 TransState::GetOffsetProne(const NiPoint3& cameraPosLocal) {
 		return this->stateB->GetOffsetProne(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetOffsetProne(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
@@ -26,8 +26,8 @@ namespace Gts {
 	NiPoint3 TransState::GetCombatOffset(const NiPoint3& cameraPosLocal) {
 		return this->stateB->GetCombatOffset(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetCombatOffset(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
-	NiPoint3 TransState::GetCombatOffset(const NiPoint3& cameraPosLocal, bool isProne) {
-		return this->stateB->GetCombatOffset(cameraPosLocal, isProne) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetCombatOffset(cameraPosLocal, isProne) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
+	NiPoint3 TransState::GetCombatOffset(const NiPoint3& cameraPosLocal, bool IsCrawling) {
+		return this->stateB->GetCombatOffset(cameraPosLocal, IsCrawling) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetCombatOffset(cameraPosLocal, IsCrawling) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 	NiPoint3 TransState::GetCombatOffsetProne(const NiPoint3& cameraPosLocal) {
 		return this->stateB->GetCombatOffsetProne(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetCombatOffsetProne(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
@@ -36,8 +36,8 @@ namespace Gts {
 	NiPoint3 TransState::GetPlayerLocalOffset(const NiPoint3& cameraPosLocal) {
 		return this->stateB->GetPlayerLocalOffset(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetPlayerLocalOffset(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
-	NiPoint3 TransState::GetPlayerLocalOffset(const NiPoint3& cameraPosLocal, bool isProne) {
-		return this->stateB->GetPlayerLocalOffset(cameraPosLocal, isProne) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetPlayerLocalOffset(cameraPosLocal, isProne) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
+	NiPoint3 TransState::GetPlayerLocalOffset(const NiPoint3& cameraPosLocal, bool IsCrawling) {
+		return this->stateB->GetPlayerLocalOffset(cameraPosLocal, IsCrawling) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetPlayerLocalOffset(cameraPosLocal, IsCrawling) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));
 	}
 	NiPoint3 TransState::GetPlayerLocalOffsetProne(const NiPoint3& cameraPosLocal) {
 		return this->stateB->GetPlayerLocalOffsetProne(cameraPosLocal) * std::clamp(this->smoothIn.value, 0.0f, 1.0f) + this->stateA->GetPlayerLocalOffsetProne(cameraPosLocal) * (1.0 - std::clamp(this->smoothIn.value, 0.0f, 1.0f));

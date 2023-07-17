@@ -112,7 +112,7 @@ namespace Gts {
 		if (currentState) {
 
 			auto player = PlayerCharacter::GetSingleton();
-			bool isProne = IsProne(player);
+			bool IsCrawling = IsCrawling(player);
 
 			// Get scale based on camera state
 			float scale = currentState->GetScale();
@@ -120,7 +120,7 @@ namespace Gts {
 			// Do any scale overrides
 			auto playerData = Persistent::GetSingleton().GetData(player);
 			if (playerData) {
-				playerData->scaleOverride = currentState->GetScaleOverride(isProne);
+				playerData->scaleOverride = currentState->GetScaleOverride(IsCrawling);
 			}
 
 			// Get current camera position in player space
@@ -129,12 +129,12 @@ namespace Gts {
 			// Get either normal or combat offset
 			NiPoint3 offset;
 			if (player != nullptr && player->AsActorState()->IsWeaponDrawn()) {
-				offset = currentState->GetCombatOffset(cameraPosLocal, isProne);
+				offset = currentState->GetCombatOffset(cameraPosLocal, IsCrawling);
 			} else {
-				offset = currentState->GetOffset(cameraPosLocal, isProne);
+				offset = currentState->GetOffset(cameraPosLocal, IsCrawling);
 			}
 
-			NiPoint3 playerLocalOffset = currentState->GetPlayerLocalOffset(cameraPosLocal, isProne);
+			NiPoint3 playerLocalOffset = currentState->GetPlayerLocalOffset(cameraPosLocal, IsCrawling);
 
 			if (currentState->PermitManualEdit()) {
 				this->smoothOffset.target = this->manualEdit;

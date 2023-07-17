@@ -27,7 +27,7 @@ namespace Gts {
 					float playerScale = get_visual_scale(player);
 					auto leftPosLocal = transform * (leftFoot->world * NiPoint3());
 					this->smoothFootPos.target = leftPosLocal;
-					if (!IsProne(player)) {
+					if (!IsCrawling(player)) {
 						NiPoint3 highheelOffset = HighHeelManager::GetHHOffset(player);
 						if (highheelOffset.Length() > 1e-4) {
 							this->smoothFootPos.target.z += OFFSET*playerScale;

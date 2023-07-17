@@ -6,6 +6,6 @@ using namespace RE;
 namespace Gts {
 	class FirstPersonLoot : public FirstPersonCameraState {
 		public:
-			virtual float GetScaleOverride(bool isProne) override;
+			virtual float GetScaleOverride(bool IsCrawling) override;
 	};
 }

@@ -387,7 +387,7 @@ namespace Gts {
 		return false;
 	}
 
-	bool IsProne(Actor* actor) {
+	bool IsCrawling(Actor* actor) {
 		bool prone;
 		return actor!= nullptr && actor->formID == 0x14 && actor->AsActorState()->IsSneaking() && actor->GetGraphVariableBool("GTS_CrawlEnabled", prone);
 	}

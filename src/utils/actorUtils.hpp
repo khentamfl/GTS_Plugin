@@ -50,7 +50,7 @@ namespace Gts {
 
 	bool IsEquipBusy(Actor* actor);
 
-	bool IsProne(Actor* actor);
+	bool IsCrawling(Actor* actor);
 
 	float get_distance_to_actor(Actor* receiver, Actor* target);
 	float GetHighHeelsBonusDamage(Actor* actor);
