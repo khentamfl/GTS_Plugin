@@ -112,6 +112,9 @@ namespace Gts {
 
 	NiPoint3 ThirdPersonCameraState::ProneAdjustment(const NiPoint3& cameraPos) {
 		float proneFactor = 1.0 - Runtime::GetFloat("CalcProne");
+		if (!IsCrawling(PlayerCharacter::GetSingleton())) {
+			proneFactor = 1.0;
+		}
 		NiPoint3 result = NiPoint3();
 
 		result.z = -cameraPos.z * proneFactor;
