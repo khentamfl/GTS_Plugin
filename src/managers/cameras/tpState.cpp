@@ -111,14 +111,14 @@ namespace Gts {
 	}
 
 	NiPoint3 ThirdPersonCameraState::ProneAdjustment(const NiPoint3& cameraPos) {
-		float proneFactor = 1.0 - Runtime::GetFloat("CalcProne");
+		float proneFactor = 0.55;// - Runtime::GetFloat("CalcProne");
 		auto player = PlayerCharacter::GetSingleton();
 		if (!IsCrawling(player) || IsGtsBusy(player)) {
 			proneFactor = 1.0;
 		}
 		NiPoint3 result = NiPoint3();
 		//log::info("ProneFactor = {}, IsCrawling: {}, IsGtsBusy: {}", proneFactor, IsCrawling(player), IsGtsBusy(player));
-		result.z = -cameraPos.z * 0.60; //proneFactor;
+		result.z = -cameraPos.z * proneFactor;
 		return result;
 	}
 }
