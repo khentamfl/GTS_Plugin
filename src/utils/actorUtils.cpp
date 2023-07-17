@@ -389,7 +389,8 @@ namespace Gts {
 
 	bool IsCrawling(Actor* actor) {
 		bool prone;
-		return actor!= nullptr && actor->formID == 0x14 && actor->AsActorState()->IsSneaking() && actor->GetGraphVariableBool("GTS_CrawlEnabled", prone);
+		actor->GetGraphVariableBool("GTS_CrawlEnabled", prone);
+		return actor!= nullptr && actor->formID == 0x14 && actor->AsActorState()->IsSneaking() && prone;
 	}
 
 	bool IsJumping(Actor* actor) {
