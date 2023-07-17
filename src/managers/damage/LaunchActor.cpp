@@ -61,13 +61,12 @@ namespace {
 
 	void RunSTNCheckTask(Actor* giant, Actor* tiny) {
 		std::string taskname = std::format("ShrinkOther_{}", tiny->formID);
-		const float DURATION = 1.5;
+		const float DURATION = 2.0;
 
 		ActorHandle tinyHandle = tiny->CreateRefHandle();
 		ActorHandle giantHandle = giant->CreateRefHandle();
 		
 		TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){
-			log::info("Shrink To Nothing check task running");
 			auto GTS = giantHandle.get().get();
 			auto TINY = tinyHandle.get().get();
 			if (!GTS) {
