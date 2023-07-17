@@ -111,7 +111,7 @@ namespace Gts {
 	}
 
 	NiPoint3 ThirdPersonCameraState::ProneAdjustment(const NiPoint3& cameraPos) {
-		float proneFactor = 0.55;// - Runtime::GetFloat("CalcProne");
+		float proneFactor = 0.60;// - Runtime::GetFloat("CalcProne");
 		auto player = PlayerCharacter::GetSingleton();
 		if (!IsCrawling(player) || IsGtsBusy(player)) {
 			proneFactor = 1.0;

@@ -24,13 +24,13 @@ namespace  Gts {
 
 	float FirstPersonCameraState::ProneAdjustment() {
 		auto player = PlayerCharacter::GetSingleton();
-		float value = std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
-		if (!IsCrawling(player)) {
-			log::info("Isn't Crawling, Value is 1.0");
-			value = 1.0;
+		float value = 1.0;//std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
+		if (IsCrawling(player)) {
+			log::info("IsCrawling, Value is 1.0");
+			value = std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
 		}
-		log::info("ProneADjustment");
-		return 0.55;
+		log::info("ProneAdjustment, value: {}", value);
+		return value;
 	}
 
 	bool FirstPersonCameraState::PermitManualEdit() {
