@@ -41,6 +41,9 @@ namespace Gts {
 
 	void ScareActors(Actor* giant) {
 		auto profiler = Profilers::Profile("ActorUtils: ScareActors");
+		if (!Persistent::GetSingleton().actors_panic) { 
+			return; // Disallow Panic if bool is false.
+		}
 		for (auto tiny: FindSomeActors("AiActors", 2)) {
 			if (tiny != giant && tiny->formID != 0x14 && !IsTeammate(tiny)) {
 				if (tiny->IsDead()) {

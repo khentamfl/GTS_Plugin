@@ -235,6 +235,11 @@ namespace {
 		Persistent::GetSingleton().Vore_Ai = enabled;
 	}
 
+	void SetActorPanic(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().actors_panic = enabled;
+		log::info("Actor panic is set to {}", enabled);
+	}
+
 	void ToggleHostileDamage(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().hostile_toggle = enabled;
 	}
@@ -369,6 +374,7 @@ namespace Gts {
 		vm->RegisterFunction("SetStompAi", PapyrusClass, SetStompAi);
 		vm->RegisterFunction("SetSandwichAi", PapyrusClass, SetSandwichAi);
 		vm->RegisterFunction("SetVoreAi", PapyrusClass, SetVoreAi);
+		vm->RegisterFunction("SetActorPanic", PapyrusClass, SetActorPanic);
 		vm->RegisterFunction("ToggleHostileDamage", PapyrusClass, ToggleHostileDamage);
 		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
 		vm->RegisterFunction("SetOnlyCombatVore", PapyrusClass, SetOnlyCombatVore);

@@ -152,7 +152,10 @@ Function SetCrawlAnimation(bool enabled, bool player) global native
 
 Function SetVoreAi(bool enabled) global native
 Function SetStompAi(bool enabled) global native
-Function SetSandwichAi(bool enabled) global native    
+Function SetSandwichAi(bool enabled) global native   
+   
+; allow/disallow panic of non-hostile actors when GTS walks nearby and when bigger than x2.5 times    
+Function SetActorPanic(bool enabled) global native    
 
 
 ;======================================================================================

@@ -50,7 +50,7 @@ namespace {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential launch {
 				.k = 1.42, 
-				.n = 0.65, 
+				.n = 0.78, 
 				.s = 0.6, 
 				.a = 0.8, 
 			};
@@ -61,7 +61,7 @@ namespace {
 
 	void RunSTNCheckTask(Actor* giant, Actor* tiny) {
 		std::string taskname = std::format("ShrinkOther_{}", tiny->formID);
-		const float DURATION = 2.0;
+		const float DURATION = 2.5;
 
 		ActorHandle tinyHandle = tiny->CreateRefHandle();
 		ActorHandle giantHandle = giant->CreateRefHandle();
@@ -110,7 +110,7 @@ namespace {
 			return;
 		}	
 
-		if (force >= 0.10 && force < UNDERFOOT_POWER) {
+		if (force >= 0.10) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 
 				float power = 1.0;
@@ -124,10 +124,10 @@ namespace {
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
-					if (power >= 1.5) {
+					if (power >= 1.5) { // Apply only when we have DisastrousTremor perk
 						mod_target_scale(tiny, -(damage * DamageSetting) / 300);
 
-						RunSTNCheckTask(giant, tiny);
+						RunSTNCheckTask(giant, tiny); // Enable Shrink To Nothing check so Actor won't go into negative scale: absorb actor instead.
 					}
 				}
 				PushActorAway(giant, tiny, 1.0);

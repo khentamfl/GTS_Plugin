@@ -29,6 +29,7 @@ namespace {
 	inline const auto DeleteActors = _byteswap_ulong('DTAS');
 	inline const auto HostileToggle = _byteswap_ulong('HTTL');
 	inline const auto LegacySounds = _byteswap_ulong('LGSD');
+	inline const auto ActorsPanic = _byteswap_ulong('ACTP');
 
 	const float DEFAULT_MAX_SCALE = 65535.0;
 	const float DEFAULT_HALF_LIFE = 1.0;
@@ -362,6 +363,10 @@ namespace Gts {
 				bool legacy_sounds;
 				serde->ReadRecordData(&legacy_sounds, sizeof(legacy_sounds));
 				GetSingleton().legacy_sounds = legacy_sounds;
+			} else if (type == ActorsPanic) {
+				bool actors_panic;
+				serde->ReadRecordData(&actors_panic, sizeof(actors_panic));
+				GetSingleton().actors_panic = actors_panic;
 			} else if (type == HostileToggle) {
 				bool hostile_toggle;
 				serde->ReadRecordData(&hostile_toggle, sizeof(hostile_toggle));
@@ -575,6 +580,13 @@ namespace Gts {
 		bool Stomp_Ai = GetSingleton().Stomp_Ai;
 		serde->WriteRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
 		
+		if (!serde->OpenRecord(ActorsPanic), 1) {
+			log::error("Unable to open Actors Panic record to write cosave data");
+			return;
+		}
+		bool actors_panic = GetSingleton().actors_panic;
+		serde->WriteRecordData(&actors_panic, sizeof(actors_panic));
+
 		if (!serde->OpenRecord(LegacySounds, 1)) {
 			log::error("Unable to open Legacy Sounds record to write cosave data");
 			return;
