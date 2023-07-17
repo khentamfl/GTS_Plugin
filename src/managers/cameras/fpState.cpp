@@ -24,10 +24,12 @@ namespace  Gts {
 
 	float FirstPersonCameraState::ProneAdjustment() {
 		auto player = PlayerCharacter::GetSingleton();
-		/*if (!IsCrawling(player) || IsGtsBusy(player)) {
-			return 1.0;
-		}*/
-		return clamp(0.25, 20.0, 3.0 * Runtime::GetFloat("ProneOffsetFP"));
+		float value = std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f)
+		if (!IsCrawling(player)) {
+			log::info("IsCrawling, Value is 1.0");
+			value = 1.0;
+		}
+		return value;
 	}
 
 	bool FirstPersonCameraState::PermitManualEdit() {

@@ -117,8 +117,8 @@ namespace Gts {
 			proneFactor = 1.0;
 		}
 		NiPoint3 result = NiPoint3();
-		log::info("ProneFactor = {}, IsCrawling: {}, IsGtsBusy: {}", proneFactor, IsCrawling(player), IsGtsBusy(player));
-		result.z = -cameraPos.z * proneFactor;
+		//log::info("ProneFactor = {}, IsCrawling: {}, IsGtsBusy: {}", proneFactor, IsCrawling(player), IsGtsBusy(player));
+		result.z = -cameraPos.z * 0.60; //proneFactor;
 		return result;
 	}
 }
