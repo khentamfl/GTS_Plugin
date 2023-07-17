@@ -580,7 +580,7 @@ namespace Gts {
 		bool Stomp_Ai = GetSingleton().Stomp_Ai;
 		serde->WriteRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
 		
-		if (!serde->OpenRecord(ActorsPanic), 1) {
+		if (!serde->OpenRecord(ActorsPanic, 1)) {
 			log::error("Unable to open Actors Panic record to write cosave data");
 			return;
 		}
