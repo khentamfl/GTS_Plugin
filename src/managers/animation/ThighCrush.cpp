@@ -225,7 +225,7 @@ namespace {
 	void ThighCrushKillEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		float WasteStamina = 40.0;
-		if (Runtime::HasPerk(player, "KillerThighs")) {
+		if (Runtime::HasPerk(player, "KillerThighs")) { 
 			WasteStamina *= 0.65;
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
