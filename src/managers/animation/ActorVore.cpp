@@ -290,8 +290,14 @@ namespace {
 
 	void GTSvore_impactRS(AnimationEventData& data) {
 		Rumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
-		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Right, RNode);
-		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.04, FootEvent::Right);
+		float launch = 1.0;
+		float perk = GetPerkBonus_Basics(&data.giant);
+		if (HasSMT(&data.giant)) {
+			launch = 1.5;
+		}
+		DoSizeEffect(&data.giant, 0.90, FootEvent::Right, RNode);
+		DoDamageEffect(&data.giant, 1.6, 1.3, 30, 0.04, FootEvent::Right);
+		DoLaunch(&data.giant, 0.50 * launch * perk, 2.25 * data.animSpeed, 2.0, FootEvent::Right);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {

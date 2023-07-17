@@ -68,7 +68,7 @@ namespace {
 		float launch = 1.0;
 		float dust = 1.25;
 		float perk = GetPerkBonus_Basics(&data.giant);
-		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
+		if (HasSMT(&data.giant)) {
 			shake = 4.0;
 			launch = 1.5;
 			dust = 1.45;
@@ -85,7 +85,7 @@ namespace {
 		float launch = 1.0;
 		float dust = 1.25;
 		float perk = GetPerkBonus_Basics(&data.giant);
-		if (Runtime::HasMagicEffect(&data.giant, "SmallMassiveThreat")) {
+		if (HasSMT(&data.giant)) {
 			shake = 4.0;
 			launch = 1.5;
 			dust = 1.45;
