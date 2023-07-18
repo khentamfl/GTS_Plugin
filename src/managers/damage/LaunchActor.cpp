@@ -47,33 +47,13 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.70;
 
-	void bhkRigidBody::SetAngularImpulse(const hkVector4& a_impulse)
-	{
-		using func_t = decltype(&bhkRigidBody::SetAngularImpulse);
-		REL::Relocation<func_t> func{ RELOCATION_ID(76262, 78092) };
-		return func(this, a_impulse);
-	}
-
-	void bhkRigidBody::SetAngularVelocity(const hkVector4& a_newVel)
-	{
-		using func_t = decltype(&bhkRigidBody::SetAngularVelocity);
-		REL::Relocation<func_t> func{ RELOCATION_ID(76260, 78090) };
-		return func(this, a_newVel);
-	}
-
-	void bhkRigidBody::SetLinearImpulse(const hkVector4& a_impulse)
+	void SetLinearImpulse(bhkRigidBody body, const hkVector4& a_impulse)
 	{
 		using func_t = decltype(&bhkRigidBody::SetLinearImpulse);
 		REL::Relocation<func_t> func{ RELOCATION_ID(76261, 78091) };
-		return func(this, a_impulse);
+		return func(body, a_impulse);
 	}
 
-	void bhkRigidBody::SetLinearVelocity(const hkVector4& a_newVel)
-	{
-		using func_t = decltype(&bhkRigidBody::SetLinearVelocity);
-		REL::Relocation<func_t> func{ RELOCATION_ID(76259, 78089) };
-		return func(this, a_newVel);
-	}
 
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
 		if (IsBeingHeld(tiny)) {
@@ -230,7 +210,7 @@ namespace {
 											log::info("RigidBody found for {}", objectref->GetDisplayFullName());
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body)
-												body->this->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
+												SetLinearImpulse(body, hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
 												log::info("Rigid body 1 for {}", objectref->GetDisplayFullName());
 										}
 									}
