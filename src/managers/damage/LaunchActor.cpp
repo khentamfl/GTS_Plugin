@@ -181,7 +181,7 @@ namespace {
 				auto objectref = object.get();
 				if (objectref) {
 					log::info("Checking objects");
-					Actor* NonRef = skyrim_cast<Actor*>(objectref);
+					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
 					if (!NonRef) {
 						log::info("Non ref found: {}", objectref->GetDisplayFullName()); 
 						NiPoint3 objectlocation = objectref->GetPosition();
