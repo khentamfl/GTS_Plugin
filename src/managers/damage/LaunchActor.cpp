@@ -173,16 +173,16 @@ namespace {
 		}
 	}
 
-	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float power) {
+	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float bonus) {
 		bool AllowLaunch = true; // Will add Persistent value later
 		if (!AllowLaunch) {
 			return;
 		}
 		auto cell = giant->GetParentCell();
 		float giantScale = get_visual_scale(giant);
-		float power = 1.0;
+		float power = 1.0 * bonus;
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
-			power = 1.5;
+			power *= 1.5;
 		}
 		if (cell) { 
 			auto data = cell->GetRuntimeData();
