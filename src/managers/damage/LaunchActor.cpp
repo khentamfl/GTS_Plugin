@@ -200,7 +200,7 @@ namespace {
 										auto rigidbody = collision->GetRigidBody();
 										if (rigidbody) {
 											log::info("RigidBody found for {}", objectref->GetDisplayFullName());
-											auto body = rigidBody->AsBhkRigidBody();
+											auto body = rigidbody->AsBhkRigidBody();
 											if (body)
 												body->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
 												log::info("Rigid body 1 for {}", objectref->GetDisplayFullName());
@@ -215,7 +215,7 @@ namespace {
 										auto rigidbody = collision->GetRigidBody();
 										if (rigidbody) {
 											log::info("RigidBody 2 found for {}", objectref->GetDisplayFullName());
-											auto body = rigidBody->AsBhkRigidBody();
+											auto body = rigidbody->AsBhkRigidBody();
 											if (body) {
 												body->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
 												log::info("Rigid body 2 for {}", objectref->GetDisplayFullName());
