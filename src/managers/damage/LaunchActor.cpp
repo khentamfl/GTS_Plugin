@@ -2,6 +2,7 @@
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/damage/LaunchActor.hpp"
+#include "managers/damage/bhkTests.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "scale/scalespellmanager.hpp"
@@ -201,7 +202,7 @@ namespace {
 											log::info("RigidBody found for {}", objectref->GetDisplayFullName());
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body)
-												body->SetLinearVelocity(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
+												body->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
 												log::info("Rigid body 1 for {}", objectref->GetDisplayFullName());
 										}
 									}
