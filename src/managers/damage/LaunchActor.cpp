@@ -202,12 +202,12 @@ namespace {
 											log::info("RigidBody found for {}", objectref->GetDisplayFullName());
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body)
-												body->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
+												body.SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
 												log::info("Rigid body 1 for {}", objectref->GetDisplayFullName());
 											}
 										}
 									}
-								} if (Object2) {
+								if (Object2) {
 									log::info("Object2 for {}", objectref->GetDisplayFullName());
 									auto collision = Object2->GetCollisionObject();
 									if (collision) {
@@ -217,15 +217,12 @@ namespace {
 											log::info("RigidBody 2 found for {}", objectref->GetDisplayFullName());
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body) {
-												body->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
+												body.SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
 												log::info("Rigid body 2 for {}", objectref->GetDisplayFullName());
 											}
 										}
 									}
 								}
-								//objectref->InitHavok();
-								//objectref->ApplyCurrent(1.0, hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale)); 
-								//log::info("Applying Current for {}", objectref->GetDisplayFullName());
 							}
 						}
 					}
