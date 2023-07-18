@@ -164,7 +164,11 @@ namespace {
 		}
 	}
 
-	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints) {
+	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance) {
+		bool AllowLaunch = true; // Will add Persistent value later
+		if (!AllowLaunch) {
+			return;
+		}
 		auto cell = giant->GetParentCell();
 		float giantScale = get_visual_scale(giant);
 		float power = 1.0;
@@ -289,7 +293,7 @@ namespace Gts {
 			}
 
 			NiPoint3 giantLocation = giant->GetPosition();
-			LaunchObjects(giant, footPoints);
+			LaunchObjects(giant, footPoints, maxFootDistance);
 
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
@@ -391,7 +395,7 @@ namespace Gts {
 
 			NiPoint3 giantLocation = giant->GetPosition();
 
-			LaunchObjects(giant, footPoints);
+			LaunchObjects(giant, footPoints, maxFootDistance);
 
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
