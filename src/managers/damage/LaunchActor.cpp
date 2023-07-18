@@ -183,7 +183,7 @@ namespace {
 					log::info("Checking objects");
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
 					if (!NonRef) {
-						log::info("Non ref found: {}", objectref->GetDisplayFullName());
+						log::info("Non ref found: {}", objectref->GetDisplayFullName()); 
 						NiPoint3 objectlocation = objectref->GetPosition();
 						for (auto point: footPoints) {
 							float distance = (point - objectlocation).Length();
