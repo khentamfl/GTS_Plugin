@@ -175,7 +175,7 @@ namespace {
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power = 1.5;
 		}
-		if (cell) {
+		if (cell) { 
 			auto data = cell->GetRuntimeData();
 			for (auto object: data.references) {
 				auto objectref = object.get();
