@@ -247,7 +247,7 @@ namespace Gts {
 			if (cell) {
 				auto data = cell->GetRuntimeData();
 				for (auto object: data.references) {
-					auto objectref = object.get().get();
+					auto objectref = object.get();
 					if (objectref) {
 						log::info("Checking objects");
 						Actor* NonRef = skyrim_cast<Actor*>(objectref);
@@ -372,7 +372,7 @@ namespace Gts {
 			if (cell) {
 				auto data = cell->GetRuntimeData();
 				for (auto object: data.references) {
-					auto objectref = object.get().get();
+					auto objectref = object.get();
 					if (objectref) {
 						log::info("Checking objects");
 						Actor* NonRef = skyrim_cast<Actor*>(objectref);
