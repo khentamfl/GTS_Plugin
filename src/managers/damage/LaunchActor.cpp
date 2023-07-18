@@ -235,9 +235,9 @@ namespace Gts {
 			return;
 		}
 		if (kind == FootEvent::Left) {
-			LaunchActor::GetSingleton().LaunchLeft(giant, radius, damagebonus);
+			LaunchActor::GetSingleton().LaunchLeft(giant, radius, damagebonus, power);
 		} if (kind == FootEvent::Right) {
-			LaunchActor::GetSingleton().LaunchRight(giant, radius, damagebonus);
+			LaunchActor::GetSingleton().LaunchRight(giant, radius, damagebonus, power);
 		}
 	}
 
