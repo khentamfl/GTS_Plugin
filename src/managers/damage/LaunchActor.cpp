@@ -194,7 +194,7 @@ namespace {
 								auto Object2 = objectref->Get3D2();
 								if (Object1) {
 									log::info("Object1 for {}", objectref->GetDisplayFullName());
-									auto collision = Object1->NiCollisionObject.get();
+									auto collision = Object1->collisionObject.get();
 									if (collision) {
 										log::info("Collision1 for {}", objectref->GetDisplayFullName());
 										auto rigidbody = collision->GetRigidBody();
@@ -205,7 +205,7 @@ namespace {
 									}
 								} if (Object2) {
 									log::info("Object2 for {}", objectref->GetDisplayFullName());
-									auto collision = Object2->NiCollisionObject.get();
+									auto collision = Object2->collisionObject.get();
 									if (collision) {
 										log::info("Collision2 for {}", objectref->GetDisplayFullName());
 										auto rigidbody = collision->GetRigidBody();
