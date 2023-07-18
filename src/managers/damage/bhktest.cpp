@@ -2,7 +2,7 @@
 
 namespace Gts
 {
-	void bhkRigidBody::SetAngularImpulse(const hkVector4& a_impulse)
+	/*void bhkRigidBody::SetAngularImpulse(const hkVector4& a_impulse)
 	{
 		using func_t = decltype(&bhkRigidBody::SetAngularImpulse);
 		REL::Relocation<func_t> func{ RELOCATION_ID(76262, 78092) };
@@ -28,5 +28,5 @@ namespace Gts
 		using func_t = decltype(&bhkRigidBody::SetLinearVelocity);
 		REL::Relocation<func_t> func{ RELOCATION_ID(76259, 78089) };
 		return func(this, a_newVel);
-	}
+	}*/
 }
