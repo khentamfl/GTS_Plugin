@@ -163,6 +163,37 @@ namespace {
 			}
 		}
 	}
+
+	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints) {
+		auto cell = giant->GetParentCell();
+		float giantScale = get_visual_scale(giant);
+		float power = 1.0;
+		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
+			power = 1.5;
+		}
+		if (cell) {
+			auto data = cell->GetRuntimeData();
+			for (auto object: data.references) {
+				auto objectref = object.get();
+				if (objectref) {
+					log::info("Checking objects");
+					Actor* NonRef = skyrim_cast<Actor*>(objectref);
+					if (!NonRef) {
+						log::info("Non ref found: {}", objectref->GetDisplayFullName());
+						NiPoint3 objectlocation = objectref->GetPosition();
+						for (auto point: footPoints) {
+							float distance = (point - objectlocation).Length();
+							if (distance <= maxFootDistance) {
+								float force = 1.0 - distance / maxFootDistance;
+								ApplyHavokImpulse(objectref, 0, 0, 5 * GetLaunchPower(giantScale) * force * power, 5 * GetLaunchPower(giantScale) * force * power);
+								log::info("Applying Current for {}", objectref->GetDisplayFullName());
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 namespace Gts {
@@ -258,31 +289,7 @@ namespace Gts {
 			}
 
 			NiPoint3 giantLocation = giant->GetPosition();
-
-			auto cell = giant->GetParentCell();
-			if (cell) {
-				auto data = cell->GetRuntimeData();
-				for (auto object: data.references) {
-					auto objectref = object.get();
-					if (objectref) {
-						log::info("Checking objects");
-						Actor* NonRef = skyrim_cast<Actor*>(objectref);
-						if (!NonRef) {
-							log::info("Non ref found: {}", objectref->GetDisplayFullName());
-							NiPoint3 objectlocation = objectref->GetPosition();
-							for (auto point: footPoints) {
-								float distance = (point - objectlocation).Length();
-								if (distance <= maxFootDistance) {
-									float force = 1.0 - distance / maxFootDistance;
-									ApplyHavokImpulse(objectref, 0, 0, 40 * GetLaunchPower(giantScale) * force, 40 * GetLaunchPower(giantScale) * force);
-									log::info("Applying Current for {}", objectref->GetDisplayFullName());
-								}
-							}
-						}
-					}
-				}
-			}
-			
+			LaunchObjects(giant, footPoints);
 
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
@@ -384,29 +391,7 @@ namespace Gts {
 
 			NiPoint3 giantLocation = giant->GetPosition();
 
-			auto cell = giant->GetParentCell();
-			if (cell) {
-				auto data = cell->GetRuntimeData();
-				for (auto object: data.references) {
-					auto objectref = object.get();
-					if (objectref) {
-						log::info("Checking objects");
-						Actor* NonRef = skyrim_cast<Actor*>(objectref);
-						if (!NonRef) {
-							log::info("Non ref found: {}", objectref->GetDisplayFullName());
-							NiPoint3 objectlocation = objectref->GetPosition();
-							for (auto point: footPoints) {
-								float distance = (point - objectlocation).Length();
-								if (distance <= maxFootDistance) {
-									float force = 1.0 - distance / maxFootDistance;
-									ApplyHavokImpulse(objectref, 0, 0, 40 * GetLaunchPower(giantScale) * force, 40 * GetLaunchPower(giantScale) * force);
-									log::info("Applying Current for {}", objectref->GetDisplayFullName());
-								}
-							}
-						}
-					}
-				}
-			}
+			LaunchObjects(giant, footPoints);
 
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
