@@ -191,7 +191,6 @@ namespace {
 								float force = 1.0 - distance / maxFootDistance;
 								//ApplyHavokImpulse(objectref, 0, 0, 1 * GetLaunchPower(giantScale) * force * power, 1 * GetLaunchPower(giantScale) * force * power);
 								auto Object1 = objectref->Get3D1(false);
-								auto Object2 = objectref->Get3D2();
 								if (Object1) {
 									log::info("Object1 for {}", objectref->GetDisplayFullName());
 									auto collision = Object1->GetCollisionObject();
@@ -202,26 +201,8 @@ namespace {
 											log::info("RigidBody found for {}", objectref->GetDisplayFullName());
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body)
-												hkVector4 impulse = hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale);
-												body->SetLinearImpulse(impulse);
+												body->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
 												log::info("Rigid body 1 for {}", objectref->GetDisplayFullName());
-											}
-										}
-									}
-								if (Object2) {
-									log::info("Object2 for {}", objectref->GetDisplayFullName());
-									auto collision = Object2->GetCollisionObject();
-									if (collision) {
-										log::info("Collision2 for {}", objectref->GetDisplayFullName());
-										auto rigidbody = collision->GetRigidBody();
-										if (rigidbody) {
-											log::info("RigidBody 2 found for {}", objectref->GetDisplayFullName());
-											auto body = rigidbody->AsBhkRigidBody();
-											if (body) {
-												hkVector4 impulse = hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale);
-												body->SetLinearImpulse(impulse);
-												log::info("Rigid body 2 for {}", objectref->GetDisplayFullName());
-											}
 										}
 									}
 								}
