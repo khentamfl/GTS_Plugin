@@ -4,8 +4,9 @@
 using namespace std;
 using namespace SKSE;
 using namespace RE;
+using namespace Gts;
 
-namespace RE {
+namespace Gts {
 	class bhkRigidBody : public bhkEntity {
 		public:
 			void SetAngularImpulse(const hkVector4& a_impulse);

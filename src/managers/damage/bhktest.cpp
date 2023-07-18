@@ -1,6 +1,6 @@
 #include "managers/damage/bhktest.hpp"
 
-namespace RE
+namespace Gts
 {
 	void bhkRigidBody::SetAngularImpulse(const hkVector4& a_impulse)
 	{
