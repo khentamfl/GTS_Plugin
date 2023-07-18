@@ -245,13 +245,22 @@ namespace Gts {
 
 			auto cell = giant->GetParentCell();
 			if (cell) {
-			auto data = cell->GetRuntimeData();
+				auto data = cell->GetRuntimeData();
 				for (auto object: data.objectList) {
 					if (object) {
+						log::info("Checking objects")
 						Actor* NonRef = skyrim_cast<Actor*>(object);
 						if (!NonRef) {
-							object->ApplyCurrent(0.5, hkVector4(0,0, 65 * get_visual_scale(giant), 1.0));
-							log::info("Applying Current for {}", object->GetDisplayFullName());
+							log::info("Non ref found: {}", object->GetDisplayFullName());
+							NiPoint3 objectlocation = object->GetPosition();
+							for (auto point: footPoints) {
+								float distance = (point - objectLocation).Length();
+								if (distance <= maxFootDistance) {
+									float force = 1.0 - distance / maxFootDistance;
+									object->ApplyCurrent(0.5, hkVector4(0,0, 65 * get_visual_scale(giant), 1.0));
+									log::info("Applying Current for {}", object->GetDisplayFullName());
+								}
+							}
 						}
 					}
 				}
@@ -363,10 +372,19 @@ namespace Gts {
 				auto data = cell->GetRuntimeData();
 				for (auto object: data.objectList) {
 					if (object) {
+						log::info("Checking objects")
 						Actor* NonRef = skyrim_cast<Actor*>(object);
 						if (!NonRef) {
-							object->ApplyCurrent(0.5, hkVector4(0,0, 65 * get_visual_scale(giant), 1.0));
-							log::info("Applying Current for {}", object->GetDisplayFullName());
+							log::info("Non ref found: {}", object->GetDisplayFullName());
+							NiPoint3 objectlocation = object->GetPosition();
+							for (auto point: footPoints) {
+								float distance = (point - objectLocation).Length();
+								if (distance <= maxFootDistance) {
+									float force = 1.0 - distance / maxFootDistance;
+									object->ApplyCurrent(0.5, hkVector4(0,0, 65 * get_visual_scale(giant), 1.0));
+									log::info("Applying Current for {}", object->GetDisplayFullName());
+								}
+							}
 						}
 					}
 				}
