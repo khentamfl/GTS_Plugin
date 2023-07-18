@@ -242,6 +242,23 @@ namespace Gts {
 			}
 
 			NiPoint3 giantLocation = giant->GetPosition();
+
+			auto cell = giant->GetParentCell();
+			if (cell) {
+				auto data = cell->GetRuntimeData();
+				if (data) {
+					for (auto object: data->objectList) {
+						if (object) {
+						Actor* NonRef = skyrim_cast<Actor*>(object);
+						if (!NonRef) {
+							object->ApplyCurrent(0.5, hkVector(0,0, 65 * get_visual_scale(giant), 1.0));
+							log::info("Applying Current for {}", object->GetDisplayFullName());
+							}
+						}
+					}
+				}
+			}
+
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
 					if (!AllowStagger(giant, otherActor)) {
@@ -341,6 +358,23 @@ namespace Gts {
 			}
 
 			NiPoint3 giantLocation = giant->GetPosition();
+
+			auto cell = giant->GetParentCell();
+			if (cell) {
+				auto data = cell->GetRuntimeData();
+				if (data) {
+					for (auto object: data->objectList) {
+						if (object) {
+						Actor* NonRef = skyrim_cast<Actor*>(object);
+						if (!NonRef) {
+							object->ApplyCurrent(0.5, hkVector(0,0, 65 * get_visual_scale(giant), 1.0));
+							log::info("Applying Current for {}", object->GetDisplayFullName());
+							}
+						}
+					}
+				}
+			}
+
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
 					if (!AllowStagger(giant, otherActor)) {
