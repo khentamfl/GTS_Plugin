@@ -398,13 +398,13 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(&data.giant, false, 7.0);
 		AnimationManager::StartAnim("TinyDied", giant);
-		Grab::DetachActorTask(giant);
-		Grab::Release(giant);
 		if (grabbedActor) {
 			PushActorAway(giant, grabbedActor, 1.0);
 			EnableCollisions(grabbedActor);
 			SetBeingHeld(grabbedActor, false);
 		}
+		Grab::DetachActorTask(giant);
+		Grab::Release(giant);
 	}
 
 	void GTSBEH_GrabExit(AnimationEventData& data) {
@@ -644,6 +644,7 @@ namespace Gts {
 				PushActorAway(giantref, tinyref, 1.0);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);
 				SetBetweenBreasts(giantref, false);
+				SetBeingHeld(tinyref, false);
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
 				giantref->SetGraphVariableInt("GTS_Storing_Tiny", 0);

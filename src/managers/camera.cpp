@@ -113,6 +113,9 @@ namespace Gts {
 
 			auto player = PlayerCharacter::GetSingleton();
 			bool IsCurrentlyCrawling = IsCrawling(player);
+			if (IsGtsBusy(player)) {
+				IsCurrentlyCrawling = false;
+			}
 
 			// Get scale based on camera state
 			float scale = currentState->GetScale();
