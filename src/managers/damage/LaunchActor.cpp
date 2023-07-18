@@ -189,7 +189,9 @@ namespace {
 							float distance = (point - objectlocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;
-								ApplyHavokImpulse(objectref, 0, 0, 5 * GetLaunchPower(giantScale) * force * power, 5 * GetLaunchPower(giantScale) * force * power);
+								//ApplyHavokImpulse(objectref, 0, 0, 2 * GetLaunchPower(giantScale) * force * power, 2 * GetLaunchPower(giantScale) * force * power);
+								objectRef->InitHavok();
+								objectRef->ApplyCurrent(1.0, hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale)); 
 								log::info("Applying Current for {}", objectref->GetDisplayFullName());
 							}
 						}
