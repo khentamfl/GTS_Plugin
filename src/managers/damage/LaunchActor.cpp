@@ -107,7 +107,7 @@ namespace {
 		});
 	}
 
-	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus) {
+	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus, float bonus) {
 		if (IsBeingHeld(tiny)) {
 			return;
 		}
@@ -165,7 +165,7 @@ namespace {
 					if (tinyHandle) {
 						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 						if (tiny_is_object) {
-							ApplyHavokImpulse(tiny_is_object, 0, 0, 40 * GetLaunchPower(sizeRatio) * force * power, 40 * GetLaunchPower(sizeRatio) * force * power);
+							ApplyHavokImpulse(tiny_is_object, 0, 0, 40 * GetLaunchPower(sizeRatio) * force * power * bonus, 40 * GetLaunchPower(sizeRatio) * force * power * bonus);
 						}
 					}
 				});	
@@ -173,7 +173,7 @@ namespace {
 		}
 	}
 
-	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance) {
+	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float power) {
 		bool AllowLaunch = true; // Will add Persistent value later
 		if (!AllowLaunch) {
 			return;
@@ -205,8 +205,7 @@ namespace {
 											log::info("RigidBody found for {}", objectref->GetDisplayFullName());
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body)
-												float strength = 1 * GetLaunchPower(giantScale) * force * power;
-												SetLinearImpulse(body, hkVector4(0, 0, strength, strength));
+												SetLinearImpulse(body, hkVector4(0, 0, 1 * GetLaunchPower(giantScale) * force * power, 1 * GetLaunchPower(giantScale) * force * power));
 												log::info("Rigid body 1 for {}", objectref->GetDisplayFullName());
 										}
 									}
@@ -231,7 +230,7 @@ namespace Gts {
 		return "LaunchActor";
 	}
 
-	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, FootEvent kind) {
+	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, FootEvent kind, float power) {
 		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 			return;
 		}
@@ -242,7 +241,7 @@ namespace Gts {
 		}
 	}
 
-	void LaunchActor::LaunchLeft(Actor* giant, float radius, float damagebonus) {
+	void LaunchActor::LaunchLeft(Actor* giant, float radius, float damagebonus, float power) {
 		if (!giant) {
 			return;
 		}
@@ -313,7 +312,7 @@ namespace Gts {
 			}
 
 			NiPoint3 giantLocation = giant->GetPosition();
-			LaunchObjects(giant, footPoints, maxFootDistance);
+			LaunchObjects(giant, footPoints, maxFootDistance, power);
 
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
@@ -327,7 +326,7 @@ namespace Gts {
 							float distance = (point - actorLocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-								LaunchDecide(giant, otherActor, force, damagebonus/6);
+								LaunchDecide(giant, otherActor, force, damagebonus/6, power);
 							}
 						}
 					}
@@ -338,7 +337,7 @@ namespace Gts {
 	
 
 
-	void LaunchActor::LaunchRight(Actor* giant, float radius, float damagebonus) {
+	void LaunchActor::LaunchRight(Actor* giant, float radius, float damagebonus, float power) {
 		if (!giant) {
 			return;
 		}
@@ -415,7 +414,7 @@ namespace Gts {
 
 			NiPoint3 giantLocation = giant->GetPosition();
 
-			LaunchObjects(giant, footPoints, maxFootDistance);
+			LaunchObjects(giant, footPoints, maxFootDistance, power);
 
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
@@ -429,7 +428,7 @@ namespace Gts {
 							float distance = (point - actorLocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-								LaunchDecide(giant, otherActor, force, damagebonus/6);
+								LaunchDecide(giant, otherActor, force, damagebonus/6, power);
 							}
 						}
 					}

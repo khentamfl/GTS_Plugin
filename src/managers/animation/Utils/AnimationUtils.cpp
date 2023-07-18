@@ -43,12 +43,12 @@ namespace Gts {
 		sizemanager.SetActionBool(giant, enable, type);
 	}
 
-	void DoLaunch(Actor* giant, float radius, float damage, float overr, FootEvent kind) {
+	void DoLaunch(Actor* giant, float radius, float damage, float overr, FootEvent kind, float power) {
 		float bonus = 1.0;
 		if (HasSMT(giant)) {
 			bonus = overr;
 		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, kind);
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, kind, power);
 	}
 
 	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {

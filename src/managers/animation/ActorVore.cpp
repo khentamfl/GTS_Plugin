@@ -297,7 +297,7 @@ namespace {
 		}
 		DoSizeEffect(&data.giant, 0.90, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.6, 1.3, 30, 0.04, FootEvent::Right);
-		DoLaunch(&data.giant, 0.50 * launch * perk, 2.25 * data.animSpeed, 2.0, FootEvent::Right);
+		DoLaunch(&data.giant, 0.50 * launch * perk, 2.25 * data.animSpeed, 2.0, FootEvent::Right, 0.7);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {

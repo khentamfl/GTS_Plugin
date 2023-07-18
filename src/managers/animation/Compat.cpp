@@ -78,8 +78,8 @@ namespace {
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Left);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right);
-		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right, 0.85);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left, 0.85);
 	}
 	void MCO_DodgeSound(AnimationEventData& data) {
 		data.stage = 0;
@@ -89,8 +89,8 @@ namespace {
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Left);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right);
-		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right, 0.85);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left, 0.85);
 	}
 
 	void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
@@ -113,8 +113,8 @@ namespace {
 		float damage = sizemanager.GetSizeAttribute(giant, 2);
 		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.04, FootEvent::Left);
 		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.04, FootEvent::Right);
-		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Left);
-		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Right);
+		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Left, 1.0);
+		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Right, 1.0);
 	}
 }
 
