@@ -246,19 +246,20 @@ namespace Gts {
 			auto cell = giant->GetParentCell();
 			if (cell) {
 				auto data = cell->GetRuntimeData();
-				for (auto object: data.objectList) {
-					if (object) {
+				for (auto object: data.references) {
+					auto objectref = object.get().get();
+					if (objectref) {
 						log::info("Checking objects");
-						Actor* NonRef = skyrim_cast<Actor*>(object);
+						Actor* NonRef = skyrim_cast<Actor*>(objectref);
 						if (!NonRef) {
-							log::info("Non ref found: {}", object->GetDisplayFullName());
-							NiPoint3 objectlocation = object->GetPosition();
+							log::info("Non ref found: {}", objectref->GetDisplayFullName());
+							NiPoint3 objectlocation = objectref->GetPosition();
 							for (auto point: footPoints) {
 								float distance = (point - objectlocation).Length();
 								if (distance <= maxFootDistance) {
 									float force = 1.0 - distance / maxFootDistance;
-									object->ApplyCurrent(0.5, hkVector4(0,0, 65 * get_visual_scale(giant), 1.0));
-									log::info("Applying Current for {}", object->GetDisplayFullName());
+									objectref->ApplyCurrent(0.5, hkVector4(0, 0, 65 * get_visual_scale(giant), 1.0));
+									log::info("Applying Current for {}", objectref->GetDisplayFullName());
 								}
 							}
 						}
@@ -370,19 +371,20 @@ namespace Gts {
 			auto cell = giant->GetParentCell();
 			if (cell) {
 				auto data = cell->GetRuntimeData();
-				for (auto object: data.objectList) {
-					if (object) {
+				for (auto object: data.references) {
+					auto objectref = object.get().get();
+					if (objectref) {
 						log::info("Checking objects");
-						Actor* NonRef = skyrim_cast<Actor*>(object);
+						Actor* NonRef = skyrim_cast<Actor*>(objectref);
 						if (!NonRef) {
-							log::info("Non ref found: {}", object->GetDisplayFullName());
-							NiPoint3 objectlocation = object->GetPosition();
+							log::info("Non ref found: {}", objectref->GetDisplayFullName());
+							NiPoint3 objectlocation = objectref->GetPosition();
 							for (auto point: footPoints) {
 								float distance = (point - objectlocation).Length();
 								if (distance <= maxFootDistance) {
 									float force = 1.0 - distance / maxFootDistance;
-									object->ApplyCurrent(0.5, hkVector4(0,0, 65 * get_visual_scale(giant), 1.0));
-									log::info("Applying Current for {}", object->GetDisplayFullName());
+									objectref->ApplyCurrent(0.5, hkVector4(0, 0, 65 * get_visual_scale(giant), 1.0));
+									log::info("Applying Current for {}", objectref->GetDisplayFullName());
 								}
 							}
 						}
