@@ -2,6 +2,7 @@
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/damage/LaunchActor.hpp"
+#include "managers/damage/bhktest.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "scale/scalespellmanager.hpp"
