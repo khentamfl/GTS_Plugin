@@ -47,7 +47,7 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.70;
 
-	void SetLinearImpulse(bhkRigidBody& body, const hkVector4& a_impulse)
+	void SetLinearImpulse(bhkRigidBody* body, const hkVector4& a_impulse)
 	{
 		using func_t = decltype(&SetLinearImpulse);
 		REL::Relocation<func_t> func{ RELOCATION_ID(76261, 78091) };
