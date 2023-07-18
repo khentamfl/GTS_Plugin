@@ -246,7 +246,7 @@ namespace Gts {
 			auto cell = giant->GetParentCell();
 			if (cell) {
 			auto data = cell->GetRuntimeData();
-				for (auto object: data->objectList) {
+				for (auto object: data.objectList) {
 					if (object) {
 						Actor* NonRef = skyrim_cast<Actor*>(object);
 						if (!NonRef) {
@@ -360,8 +360,8 @@ namespace Gts {
 
 			auto cell = giant->GetParentCell();
 			if (cell) {
-			auto data = cell->GetRuntimeData();
-				for (auto object: data->objectList) {
+				auto data = cell->GetRuntimeData();
+				for (auto object: data.objectList) {
 					if (object) {
 						Actor* NonRef = skyrim_cast<Actor*>(object);
 						if (!NonRef) {
