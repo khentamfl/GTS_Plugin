@@ -189,28 +189,24 @@ namespace {
 			for (auto object: data.references) {
 				auto objectref = object.get();
 				if (objectref) {
-					//log::info("Checking objects");
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
 					if (!NonRef) {
-						//log::info("Non ref found: {}", objectref->GetDisplayFullName()); 
 						NiPoint3 objectlocation = objectref->GetPosition();
 						for (auto point: footPoints) {
 							float distance = (point - objectlocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;
-								//ApplyHavokImpulse(objectref, 0, 0, 1 * GetLaunchPower(giantScale) * force * power, 1 * GetLaunchPower(giantScale) * force * power);
 								auto Object1 = objectref->Get3D1(false);
 								if (Object1) {
-									//log::info("Object1 for {}", objectref->GetDisplayFullName());
 									auto collision = Object1->GetCollisionObject();
 									if (collision) {
-										//log::info("Collision1 for {}", objectref->GetDisplayFullName());
 										auto rigidbody = collision->GetRigidBody();
 										if (rigidbody) {
 											log::info("RigidBody found for {}", objectref->GetDisplayFullName());
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body)
-												SetLinearImpulse(body, hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
+												float strength = 1 * GetLaunchPower(giantScale) * force * power;
+												SetLinearImpulse(body, hkVector4(0, 0, strength, strength));
 												log::info("Rigid body 1 for {}", objectref->GetDisplayFullName());
 										}
 									}
