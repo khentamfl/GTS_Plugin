@@ -46,6 +46,22 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.70;
 
+	bool CanDoDamage(Actor* giant, Actor* tiny) {
+		if (IsBeingHeld(tiny)) {
+			return false;
+		}
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (IsTeammate(tiny))) {
+			return false; // Protect NPC's against player size-related effects
+		}
+		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && (IsTeammate(giant)) && (IsTeammate(tiny))) {
+			return false; // Disallow NPC's to damage each-other if they're following Player
+		}
+		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && (IsTeammate(giant)) && tiny->formID == 0x14) {
+			return false; // Protect Player against friendly NPC's damage
+		}
+		return true;
+	}
+
 	float GetLaunchPower(float sizeRatio) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential launch {
@@ -121,7 +137,7 @@ namespace {
 
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 
-				if (Runtime::HasPerkTeam(giant, "LaunchDamage")) {
+				if (Runtime::HasPerkTeam(giant, "LaunchDamage") && CanDoDamage(giant, tiny)) {
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
 					if (power >= 1.5) { // Apply only when we have DisastrousTremor perk
@@ -258,7 +274,7 @@ namespace Gts {
 								float distance = (point - objectlocation).Length();
 								if (distance <= maxFootDistance) {
 									float force = 1.0 - distance / maxFootDistance;
-									objectref->ApplyCurrent(0.5, hkVector4(0, 0, 65 * get_visual_scale(giant), 1.0));
+									ApplyHavokImpulse(objectref, 0, 0, 40 * GetLaunchPower(giantScale) * force, 40 * GetLaunchPower(giantScale) * force);
 									log::info("Applying Current for {}", objectref->GetDisplayFullName());
 								}
 							}
@@ -272,7 +288,7 @@ namespace Gts {
 				if (otherActor != giant) {
 					if (!AllowStagger(giant, otherActor)) {
 						return;
-					}
+					} 
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
@@ -383,7 +399,7 @@ namespace Gts {
 								float distance = (point - objectlocation).Length();
 								if (distance <= maxFootDistance) {
 									float force = 1.0 - distance / maxFootDistance;
-									objectref->ApplyCurrent(0.5, hkVector4(0, 0, 65 * get_visual_scale(giant), 1.0));
+									ApplyHavokImpulse(objectref, 0, 0, 40 * GetLaunchPower(giantScale) * force, 40 * GetLaunchPower(giantScale) * force);
 									log::info("Applying Current for {}", objectref->GetDisplayFullName());
 								}
 							}
