@@ -26,10 +26,9 @@ namespace  Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		float value = 1.0;//std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
 		if (IsCrawling(player)) {
-			log::info("IsCrawling, Value is 1.0");
 			value = std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
+			log::info("IsCrawling, Value is {}", value);
 		}
-		log::info("ProneAdjustment, value: {}", value);
 		return value;
 	}
 

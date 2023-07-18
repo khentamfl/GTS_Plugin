@@ -125,7 +125,7 @@ namespace {
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
 					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
 					if (power >= 1.5) { // Apply only when we have DisastrousTremor perk
-						mod_target_scale(tiny, -(damage * DamageSetting) / 300);
+						mod_target_scale(tiny, -(damage * DamageSetting) / 500);
 
 						RunSTNCheckTask(giant, tiny); // Enable Shrink To Nothing check so Actor won't go into negative scale: absorb actor instead.
 					}

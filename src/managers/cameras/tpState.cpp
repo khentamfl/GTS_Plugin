@@ -76,13 +76,6 @@ namespace Gts {
 							auto localPos = transform * worldPos;
 							bonePos += localPos * (1.0/bone_count);
 						}
-						/*if (Grab::GetHeldActor(player)) {
-						        auto grabbed = Grab::GetHeldActor(player);
-						        TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(grabbed);
-						        if (tiny_is_object) {
-						                tiny_is_object->SetPosition(bonePos);
-						        }
-						   }*/
 						NiPoint3 worldBonePos = playerTrans * bonePos;
 						if (Runtime::GetBool("EnableDebugOverlay")) {
 							DebugAPI::DrawSphere(glm::vec3(worldBonePos.x, worldBonePos.y, worldBonePos.z), 1.0, 10, {0.0, 1.0, 0.0, 1.0});
@@ -117,7 +110,7 @@ namespace Gts {
 			proneFactor = 1.0;
 		}
 		NiPoint3 result = NiPoint3();
-		//log::info("ProneFactor = {}, IsCrawling: {}, IsGtsBusy: {}", proneFactor, IsCrawling(player), IsGtsBusy(player));
+		log::info("ProneFactor = {}, IsCrawling: {}, IsGtsBusy: {}", proneFactor, IsCrawling(player), IsGtsBusy(player));
 		result.z = -cameraPos.z * proneFactor;
 		return result;
 	}
