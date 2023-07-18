@@ -190,9 +190,34 @@ namespace {
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;
 								//ApplyHavokImpulse(objectref, 0, 0, 1 * GetLaunchPower(giantScale) * force * power, 1 * GetLaunchPower(giantScale) * force * power);
-								objectref->InitHavok();
-								objectref->ApplyCurrent(1.0, hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale)); 
-								log::info("Applying Current for {}", objectref->GetDisplayFullName());
+								auto Object1 = objectref->Get3D1(false);
+								auto Object2 = objectref->Get3D2();
+								if (Object1) {
+									log::info("Object1 for {}", objectref->GetDisplayFullName());
+									auto collision = Object1->NiCollisionObject.get();
+									if (collision) {
+										log::info("Collision1 for {}", objectref->GetDisplayFullName());
+										auto rigidbody = collision->GetRigidBody();
+										if (rigidbody) {
+											rigidbody->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
+											log::info("Rigid body 1 for {}", objectref->GetDisplayFullName());
+										}
+									}
+								} if (Object2) {
+									log::info("Object2 for {}", objectref->GetDisplayFullName());
+									auto collision = Object2->NiCollisionObject.get();
+									if (collision) {
+										log::info("Collision2 for {}", objectref->GetDisplayFullName());
+										auto rigidbody = collision->GetRigidBody();
+										if (rigidbody) {
+											rigidbody->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
+											log::info("Rigid body 2 for {}", objectref->GetDisplayFullName());
+										}
+									}
+								}
+								//objectref->InitHavok();
+								//objectref->ApplyCurrent(1.0, hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale)); 
+								//log::info("Applying Current for {}", objectref->GetDisplayFullName());
 							}
 						}
 					}
