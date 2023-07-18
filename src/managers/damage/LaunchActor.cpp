@@ -199,8 +199,12 @@ namespace {
 										log::info("Collision1 for {}", objectref->GetDisplayFullName());
 										auto rigidbody = collision->GetRigidBody();
 										if (rigidbody) {
-											rigidbody->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
-											log::info("Rigid body 1 for {}", objectref->GetDisplayFullName());
+											log::info("RigidBody found for {}", objectref->GetDisplayFullName());
+											auto body = rigidBody->AsBhkRigidBody();
+											if (body)
+												body->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
+												log::info("Rigid body 1 for {}", objectref->GetDisplayFullName());
+											}
 										}
 									}
 								} if (Object2) {
@@ -210,8 +214,12 @@ namespace {
 										log::info("Collision2 for {}", objectref->GetDisplayFullName());
 										auto rigidbody = collision->GetRigidBody();
 										if (rigidbody) {
-											rigidbody->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
-											log::info("Rigid body 2 for {}", objectref->GetDisplayFullName());
+											log::info("RigidBody 2 found for {}", objectref->GetDisplayFullName());
+											auto body = rigidBody->AsBhkRigidBody();
+											if (body) {
+												body->SetLinearImpulse(hkVector4(0, 0, 25 * giantScale, 10.0 * giantScale));
+												log::info("Rigid body 2 for {}", objectref->GetDisplayFullName());
+											}
 										}
 									}
 								}
