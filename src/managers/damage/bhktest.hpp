@@ -11,6 +11,6 @@ namespace RE {
 			void SetAngularImpulse(const hkVector4& a_impulse);
 		    void SetAngularVelocity(const hkVector4& a_newVel);
 		    void SetLinearImpulse(const hkVector4& a_impulse);
-		    void SetLinearVelocity(const hkVector4& a_newVel);
+		    void SetLinearVelocity(const hkVector4& a_newVel); 
 	};
 }
