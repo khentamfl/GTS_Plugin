@@ -197,8 +197,11 @@ namespace {
 		if (cell) { 
 			auto data = cell->GetRuntimeData();
 			auto child = data.loadedData;
-			for (auto getthem: child->unk070.at(1)) {
-				log::info("Child True");
+			for (auto getthem: child->unk070) {
+				auto result = getthem.at(1);
+				if (result) {
+					log::info("Child True");
+				}
 			}
 			for (auto object: {data.references, refs}) {
 				auto objectref = object.get();  
