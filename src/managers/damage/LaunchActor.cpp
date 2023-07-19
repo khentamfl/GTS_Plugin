@@ -198,7 +198,7 @@ namespace {
 			auto data = cell->GetRuntimeData();
 			auto WorldSpace = data.worldSpace;
 			
-			for (auto object: WorldSpace.mobilePersistentRefs) {
+			for (auto object: WorldSpace->mobilePersistentRefs) {
 				auto objectref = object.get();  
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
