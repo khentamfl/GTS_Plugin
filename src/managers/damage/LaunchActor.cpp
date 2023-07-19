@@ -196,8 +196,15 @@ namespace {
 		}
 		if (cell) { 
 			auto data = cell->GetRuntimeData();
+			auto child = data.loadedData;
+			for (auto secondary: child->unk070) {
+				auto object = secondary.get();
+				if (object) {
+					log::info("Child True");
+				}
+			}
 			for (auto object: data.references) {
-				auto objectref = object.get();
+				auto objectref = object.get();  
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
 					if (!NonRef) {
