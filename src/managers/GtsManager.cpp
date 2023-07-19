@@ -53,6 +53,13 @@ namespace {
 		}
 		if ((actor->formID == 0x14 ||actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 			auto node = find_node(actor, "skeleton_female.nif");
+			auto ai = actor->GetActorRuntimeData().currentProcess;
+			if (ai) {
+				if (ai->high) {
+					ai->high->fadeState.set(FADE_STATE::kNormal);
+					log::info("Setting FadeState to normal for {}", actor->GetDisplayFullName());
+				}
+			}
 			NiAVObject* skeleton = node;
 			if (node) {
 				BSFadeNode* fadenode = node->AsFadeNode();
