@@ -197,9 +197,7 @@ namespace {
 		if (cell) { 
 			auto data = cell->GetRuntimeData();
 			auto child = data.loadedData;
-			std::vector<ObjectRefHandle> refs {};
-			for (auto getthem: child->unk070) {
-				refs.push_back(getthem.secondary);
+			for (auto getthem: child->unk070.at(1)) {
 				log::info("Child True");
 			}
 			for (auto object: {data.references, refs}) {
