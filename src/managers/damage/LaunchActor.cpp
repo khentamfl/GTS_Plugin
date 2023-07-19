@@ -197,7 +197,7 @@ namespace {
 		auto& refs = handler->GetFormArray(RE::FormType::Cell);
 		log::info("Trying Launch Objects");
 		for (auto& objects: refs) {
-			auto data = objects->as<RE::TESObjectCELL>->GetRuntimeData();
+			auto data = objects->As<RE::TESObjectCELL>->GetRuntimeData();
 				for (auto refs: data.references) {
 					auto objectref = refs.get();
 					log::info("ObjectRef lookup");
