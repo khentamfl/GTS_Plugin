@@ -201,26 +201,27 @@ namespace {
 				auto result = getthem.second;
 				if (result) {
 					log::info("Child True");
-					auto ref = result.get();
-					if (ref) {
-					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
-					log::info("ref true");
-					if (!NonRef) {
-						NiPoint3 objectlocation = objectref->GetPosition();
-						for (auto point: footPoints) {
-							float distance = (point - objectlocation).Length();
-							if (distance <= maxFootDistance) {
-								float force = 1.0 - distance / maxFootDistance;
-								auto Object1 = objectref->Get3D1(false);
-								if (Object1) {
-									auto collision = Object1->GetCollisionObject();
-									if (collision) {
-										auto rigidbody = collision->GetRigidBody();
-										if (rigidbody) {
-											auto body = rigidbody->AsBhkRigidBody();
-											if (body)
-												log::info("Launching Body");
-												SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
+					auto objectref = result.get();
+					if (objectref) {
+						Actor* NonRef = skyrim_cast<Actor*>(objectref); 
+						log::info("ref true");
+						if (!NonRef) {
+							NiPoint3 objectlocation = objectref->GetPosition();
+							for (auto point: footPoints) {
+								float distance = (point - objectlocation).Length();
+								if (distance <= maxFootDistance) {
+									float force = 1.0 - distance / maxFootDistance;
+									auto Object1 = objectref->Get3D1(false);
+									if (Object1) {
+										auto collision = Object1->GetCollisionObject();
+										if (collision) {
+											auto rigidbody = collision->GetRigidBody();
+											if (rigidbody) {
+												auto body = rigidbody->AsBhkRigidBody();
+												if (body)
+													log::info("Launching Body");
+													SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
+												}
 											}
 										}
 									}
@@ -229,7 +230,6 @@ namespace {
 						}
 					}
 				}
-			}
 			
 			for (auto object: data.references) {
 				auto objectref = object.get();  
