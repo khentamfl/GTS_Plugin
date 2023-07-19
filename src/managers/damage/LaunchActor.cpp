@@ -188,25 +188,20 @@ namespace {
 		if (!AllowLaunch) {
 			return;
 		}
+		auto cell = giant->GetParentCell();
 		float giantScale = get_visual_scale(giant);
 		float power = 1.0 * bonus;
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power *= 1.5;
 		}
-		RE::TESDataHandler* const handler = RE::TESDataHandler::GetSingleton();
-		auto& refs = handler->GetFormArray(RE::FormType::Cell);
-		log::info("Trying Launch Objects");
-		for (auto& objects: refs) {
-			auto data = objects->As<RE::TESObjectCELL>()->GetRuntimeData();
-				for (auto ref: data.references) {
-					auto objectref = ref.get();
-					log::info("ObjectRef lookup");
-					if (objectref) {
-						Actor* NonRef = skyrim_cast<Actor*>(objectref); 
-						log::info("ObjectRef true");
-						if (!NonRef) {
+		if (cell) { 
+			auto data = cell->GetRuntimeData();
+			for (auto object: data.references) {
+				auto objectref = object.get();
+				if (objectref) {
+					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
+					if (!NonRef) {
 						NiPoint3 objectlocation = objectref->GetPosition();
-						log::info("Non-Ref true");
 						for (auto point: footPoints) {
 							float distance = (point - objectlocation).Length();
 							if (distance <= maxFootDistance) {
