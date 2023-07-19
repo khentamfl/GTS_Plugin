@@ -132,7 +132,7 @@ namespace {
 		static Timer DropTimer = Timer(0.33); // Check once per .33 sec
 		float bonus = 1.0;
 		if (Runtime::HasPerkTeam(receiver, "HugCrush_Greed")) {
-			bonus = 6.0; // 8 times bigger damage threshold to cancel 
+			bonus = 6.0; // 6 times bigger damage threshold to cancel hugs
 		}
 		if (Runtime::HasPerkTeam(receiver, "HugCrush_ToughGrip")) {
 			float GetHP = GetHealthPercentage(receiver);
@@ -143,9 +143,7 @@ namespace {
 		if (damage < 6.0 * bonus * scale) {
 			return;
 		}
-		if (DropTimer.ShouldRunFrame()) {
-			HugShrink::CallRelease(receiver); // Else drop on hit always
-		}
+		HugShrink::CallRelease(receiver); // Else release
 	}
 
 	void InflictDamage(Actor* attacker, Actor* receiver, float a_damage) {

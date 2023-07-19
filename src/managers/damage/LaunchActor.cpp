@@ -194,30 +194,33 @@ namespace {
 			power *= 1.5;
 		}
 		RE::TESDataHandler* const handler = RE::TESDataHandler::GetSingleton();
-		auto& references = handler->GetFormArray(RE::FormType::Reference);
+		auto& refs = handler->GetFormArray(RE::FormType::Cell);
 		log::info("Trying Launch Objects");
-		for (auto& objects: references) {
-			auto objectref = objects->AsReference();
-			log::info("ObjectRef lookup");
-			if (objectref) {
-				Actor* NonRef = skyrim_cast<Actor*>(objectref); 
-				log::info("ObjectRef true");
-				if (!NonRef) {
-					NiPoint3 objectlocation = objectref->GetPosition();
-					log::info("Non-Ref true");
-					for (auto point: footPoints) {
-						float distance = (point - objectlocation).Length();
-						if (distance <= maxFootDistance) {
-							float force = 1.0 - distance / maxFootDistance;
-							auto Object1 = objectref->Get3D1(false);
-							if (Object1) {
-								auto collision = Object1->GetCollisionObject();
-								if (collision) {
-									auto rigidbody = collision->GetRigidBody();
-									if (rigidbody) {
-										auto body = rigidbody->AsBhkRigidBody();
-										if (body)
-											SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
+		for (auto& objects: refs) {
+			auto data = refs->as<RE::TESObjectCELL>->GetRuntimeData();
+				for (auto refs: data.references) {
+					auto objectref = refs.get();
+					log::info("ObjectRef lookup");
+					if (objectref) {
+						Actor* NonRef = skyrim_cast<Actor*>(objectref); 
+						log::info("ObjectRef true");
+						if (!NonRef) {
+						NiPoint3 objectlocation = objectref->GetPosition();
+						log::info("Non-Ref true");
+						for (auto point: footPoints) {
+							float distance = (point - objectlocation).Length();
+							if (distance <= maxFootDistance) {
+								float force = 1.0 - distance / maxFootDistance;
+								auto Object1 = objectref->Get3D1(false);
+								if (Object1) {
+									auto collision = Object1->GetCollisionObject();
+									if (collision) {
+										auto rigidbody = collision->GetRigidBody();
+										if (rigidbody) {
+											auto body = rigidbody->AsBhkRigidBody();
+											if (body)
+												SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
+										}
 									}
 								}
 							}
