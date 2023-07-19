@@ -124,24 +124,24 @@ namespace {
 		if (!Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
 			return;
 		} if (HugShrink::GetHuggiesActor(receiver)) {
-			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * 0.5);
+			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * 0.5); // Restore 50% hp, fake damage resistance
 		}
 	}
 
 	void DropTinyChance(Actor* receiver, float damage, float scale) {
 		static Timer DropTimer = Timer(0.33); // Check once per .33 sec
-		if (damage < 6.0 * scale) {
+		if (Runtime::HasPerkTeam(receiver, "HugCrush_ToughGrip")) {
+			float bonus = 6.0; // 8 times bigger damage threshold to cancel 
+			float GetHP = GetHealthPercentage(receiver);
+			if (GetHP >= 0.75) {
+				return; // Drop only if hp is < 75%
+			}
+		}
+		if (damage < 6.0 * bonus * scale) {
 			return;
 		}
 		if (DropTimer.ShouldRunFrame()) {
-			if (Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
-				float GetHP = GetHealthPercentage(receiver);
-				if (GetHP <= 0.75) {
-					HugShrink::CallRelease(receiver); // Drop only if hp is < 75%
-				}
-			} else {
-				HugShrink::CallRelease(receiver); // Else drop on hit always
-			}
+			HugShrink::CallRelease(receiver); // Else drop on hit always
 		}
 	}
 

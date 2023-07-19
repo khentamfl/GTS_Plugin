@@ -194,7 +194,8 @@ namespace {
 			power *= 1.5;
 		}
 		RE::TESDataHandler* const handler = RE::TESDataHandler::GetSingleton();
-		auto& references = handler->GetFormArray(FormType::Reference);
+		auto& references = handler->GetFormArray(RE::FormType::Reference);
+		log::info("Trying Launch Objects");
 		for (auto& objects: references) {
 			auto objectref = objects->AsReference();
 			log::info("ObjectRef lookup");
