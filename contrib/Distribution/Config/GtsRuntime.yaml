@@ -137,6 +137,8 @@ spellEffects:
   HealthBoost: "GTS.esp|518645"
 
 
+
+
 spells:
   GtsVoreFearSpell: "GTS.esp|026D15"
   SmallMassiveThreatSpell: "GTS.esp|1A2566"
@@ -162,6 +164,15 @@ spells:
   HealthBoost: "GTS.esp|518643"
   ShrinkStorm: "GTS.esp|3C527A"
   ShrinkBolt: "GTS.esp|3C5276"
+
+  # Survival
+
+  Survival_HungerStage0: "ccQDRSSE001-SurvivalMode.esl|000876"
+  Survival_HungerStage1: "ccQDRSSE001-SurvivalMode.esl|00087E"
+  Survival_HungerStage2: "ccQDRSSE001-SurvivalMode.esl|000880"
+  Survival_HungerStage3: "ccQDRSSE001-SurvivalMode.esl|000881"
+  Survival_HungerStage4: "ccQDRSSE001-SurvivalMode.esl|000886"
+  Survival_HungerStage5: "ccQDRSSE001-SurvivalMode.esl|000885"
 
 perks:
   TalkDuringSneak: "GTS.esp|5F7265"
@@ -316,6 +327,24 @@ globals:
   PreciseDamageOthers: "GTS.esp|513540"
 
   HostileDamage: "GTS.esp|271EF2"
+
+  # Survival Values
+
+  Survival_HungerNeedMaxValue: "ccQDRSSE001-SurvivalMode.esl|00080C"
+  Survival_HungerNeedValue: "ccQDRSSE001-SurvivalMode.esl|00081A"
+  # Survival Restore settings
+  Survival_HungerRestoreLargeAmount: "ccQDRSSE001-SurvivalMode.esl|00082C"
+  Survival_HungerRestoreMediumAmount: "ccQDRSSE001-SurvivalMode.esl|00082B"
+  Survival_HungerRestoreSmallAmount: "ccQDRSSE001-SurvivalMode.esl|00082D"
+  Survival_HungerRestoreVerySmallAmount: "ccQDRSSE001-SurvivalMode.esl|00082E"
+  # Survival stages
+  Survival_HungerStage1Value: "ccQDRSSE001-SurvivalMode.esl|000806"
+  Survival_HungerStage2Value: "ccQDRSSE001-SurvivalMode.esl|000802"
+  Survival_HungerStage3Value: "ccQDRSSE001-SurvivalMode.esl|000803"
+  Survival_HungerStage4Value: "ccQDRSSE001-SurvivalMode.esl|000804"
+  Survival_HungerStage5Value: "ccQDRSSE001-SurvivalMode.esl|000805"
+  # Toggle
+  Survival_ModeEnabled: "ccQDRSSE001-SurvivalMode.esl|000826"
 
 quests:
   MainQuest: "GTS.esp|005E3A"

@@ -46,12 +46,12 @@ namespace {
 	const float LAUNCH_KNOCKBACK = 0.02f;
 	const float UNDERFOOT_POWER = 0.70;
 
-	/*void SetLinearImpulse(bhkRigidBody* body, const hkVector4& a_impulse)
+	void SetLinearImpulse(bhkRigidBody* body, const hkVector4& a_impulse)
 	{
 		using func_t = decltype(&SetLinearImpulse);
 		REL::Relocation<func_t> func{ RELOCATION_ID(76261, 78091) };
 		return func(body, a_impulse);
-	}*/
+	}
 
 
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
@@ -88,7 +88,7 @@ namespace {
 				.k = 1.42, 
 				.n = 0.62, 
 				.s = 0.6, 
-				.a = 0.8, 
+				.a = 0.0, 
 			};
 		float power = soft_power(sizeRatio, launch);
 		return power;
@@ -184,7 +184,7 @@ namespace {
 	}
 
 	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float bonus) {
-		/*bool AllowLaunch = true; // Will add Persistent value later
+		bool AllowLaunch = true; // Will add Persistent value later
 		if (!AllowLaunch) {
 			return;
 		}
@@ -214,7 +214,7 @@ namespace {
 										if (rigidbody) {
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body)
-												SetLinearImpulse(body, hkVector4(0, 0, 0.8 * GetLaunchPower_Object(giantScale) * force * power, 0.8 * GetLaunchPower_Object(giantScale) * force * power));
+												SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
 										}
 									}
 								}
@@ -223,7 +223,7 @@ namespace {
 					}
 				}
 			}
-		}*/
+		}
 	}
 }
 
@@ -320,7 +320,7 @@ namespace Gts {
 			}
 
 			NiPoint3 giantLocation = giant->GetPosition();
-			//LaunchObjects(giant, footPoints, maxFootDistance, power);
+			LaunchObjects(giant, footPoints, maxFootDistance, power);
 
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
@@ -422,7 +422,7 @@ namespace Gts {
 
 			NiPoint3 giantLocation = giant->GetPosition();
 
-			//LaunchObjects(giant, footPoints, maxFootDistance, power);
+			LaunchObjects(giant, footPoints, maxFootDistance, power);
 
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {

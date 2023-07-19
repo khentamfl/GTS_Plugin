@@ -4,6 +4,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"
+#include "utils/SurvivalMode.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/persistent.hpp"
@@ -198,7 +199,13 @@ namespace Gts {
 				if (tiny->formID != 0x14) {
 					KillActor(this->giant.get().get(), tiny);
 					Disintegrate(tiny);
-					///this->tinies.erase(tiny);
+
+					bool Living = IsLiving(tiny);
+					bool IsDragon = IsDragon(tiny);
+					float DefaultScale = Get_Other_Scale(tiny);
+
+					SurvivalMode_AdjustHunger(this->giant.get().get(), DefaultScale, IsDragon, Living, 0);
+
 				} else if (tiny->formID == 0x14) {
 					DamageAV(tiny, ActorValue::kHealth, 900000.0);
 					KillActor(this->giant.get().get(), tiny);
@@ -339,8 +346,10 @@ namespace Gts {
 				this->restorePower = 0.0;
 			}
 			this->WasDragon = IsDragon(tiny);
+			this->WasLiving = IsLiving(tiny);
 			this->sizePower = tiny_scale * mealEffiency * perkbonus;
 			this->tinySize = tiny_scale;
+			this->naturalsize = Get_Other_Scale(tiny);
 			this->tiny_name = tiny->GetDisplayFullName();
 		}
 	}
@@ -383,6 +392,7 @@ namespace Gts {
 						if (giant->formID == 0x14) {
 							AdjustSizeLimit(0.0260, giant);
 							AdjustMassLimit(0.0106, giant);
+							SurvivalMode_AdjustHunger(giant, this->naturalsize ,this->WasDragon, this->WasLiving, 1);
 						}
 						Rumble::Once("GrowthRumble", giant, 2.45, 0.30);
 						Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);

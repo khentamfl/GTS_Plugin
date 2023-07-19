@@ -73,7 +73,9 @@ namespace Gts
 		float restorePower = 0.0; // Amount of health to restore TOTAL
 		float sizePower = 0.0; // Amount of size to gain TOTAL
 		float tinySize = 0.0;
+		float naturalsize = 0.0;
 		bool WasDragon = false;
+		bool WasLiving = false;
 		std::string tiny_name;
 
 
