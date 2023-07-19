@@ -197,8 +197,8 @@ namespace {
 		if (cell) { 
 			//auto data = cell->GetRuntimeData();
 			auto data = TESDataHandler::GetSingleton()->GetFormArray(RE::FormType::Reference);
-			for (auto object: data) {
-				auto objectref = object.get();
+			for (auto objectref: data) {
+				//auto objectref = object.get();
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
 					if (!NonRef) {
