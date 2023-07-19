@@ -30,6 +30,7 @@ namespace {
 	inline const auto HostileToggle = _byteswap_ulong('HTTL');
 	inline const auto LegacySounds = _byteswap_ulong('LGSD');
 	inline const auto ActorsPanic = _byteswap_ulong('ACTP');
+	inline const auto LaunchObjects = _byteswap_ulong('LOBj');
 
 	const float DEFAULT_MAX_SCALE = 65535.0;
 	const float DEFAULT_HALF_LIFE = 1.0;
@@ -367,6 +368,10 @@ namespace Gts {
 				bool actors_panic;
 				serde->ReadRecordData(&actors_panic, sizeof(actors_panic));
 				GetSingleton().actors_panic = actors_panic;
+			} else if (type == LaunchObjects) {
+				bool launch_objects;
+				serde->ReadRecordData(&launch_objects, sizeof(launch_objects));
+				GetSingleton().launch_objects = launch_objects;
 			} else if (type == HostileToggle) {
 				bool hostile_toggle;
 				serde->ReadRecordData(&hostile_toggle, sizeof(hostile_toggle));
@@ -580,6 +585,14 @@ namespace Gts {
 		bool Stomp_Ai = GetSingleton().Stomp_Ai;
 		serde->WriteRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
 		
+
+		if (!serde->OpenRecord(LaunchObjects, 1)) {
+			log::error("Unable to open Launch Objects record to write cosave data");
+			return;
+		}
+		bool launch_objects = GetSingleton().launch_objects;
+		serde->WriteRecordData(&launch_objects, sizeof(launch_objects);)
+
 		if (!serde->OpenRecord(ActorsPanic, 1)) {
 			log::error("Unable to open Actors Panic record to write cosave data");
 			return;

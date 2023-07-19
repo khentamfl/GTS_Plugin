@@ -179,6 +179,10 @@ namespace {
 		Persistent::GetSingleton().vore_combatonly = enabled;
 	}
 
+	void SetLaunchObjects(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().launch_objects = enabled;
+	}
+
 	void IncreaseSizeLimit(StaticFunctionTag*, float value, Actor* caster) {
 		AdjustSizeLimit(value, caster);
 	}
@@ -378,6 +382,7 @@ namespace Gts {
 		vm->RegisterFunction("ToggleHostileDamage", PapyrusClass, ToggleHostileDamage);
 		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
 		vm->RegisterFunction("SetOnlyCombatVore", PapyrusClass, SetOnlyCombatVore);
+		vm->RegisterFunction("SetLaunchObjects", PapyrusClass, SetLaunchObjects);
 		vm->RegisterFunction("IncreaseSizeLimit", PapyrusClass, IncreaseSizeLimit);
 		vm->RegisterFunction("IncreaseMassLimit", PapyrusClass, IncreaseMassLimit);
 		vm->RegisterFunction("DisintegrateTarget", PapyrusClass, DisintegrateTarget);

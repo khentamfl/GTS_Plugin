@@ -184,7 +184,7 @@ namespace {
 	}
 
 	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float bonus) {
-		bool AllowLaunch = true; // Will add Persistent value later
+		bool AllowLaunch = Persistent::GetSingleton().launch_objects; // Launch objects toggle
 		if (!AllowLaunch) {
 			return;
 		}
@@ -195,9 +195,9 @@ namespace {
 			power *= 1.5;
 		}
 		if (cell) { 
-			//auto data = cell->GetRuntimeData();
-			cell->ForEachReference((TESObjectREFR& result) {
-				auto objectref = result;
+			auto data = cell->GetRuntimeData();
+			for (auto object: data.references) {
+				auto objectref = object.get();
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
 					if (!NonRef) {
@@ -223,11 +223,9 @@ namespace {
 					}
 				}
 			}
-			);
 		}
 	}
 }
-
 
 
 namespace Gts {
