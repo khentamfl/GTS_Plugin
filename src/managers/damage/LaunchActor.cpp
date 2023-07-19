@@ -197,9 +197,9 @@ namespace {
 		auto& refs = handler->GetFormArray(RE::FormType::Cell);
 		log::info("Trying Launch Objects");
 		for (auto& objects: refs) {
-			auto data = objects->As<RE::TESObjectCELL>.GetRuntimeData();
-				for (auto refs: data.references) {
-					auto objectref = refs.get();
+			auto data = objects->As<RE::TESObjectCELL>()->GetRuntimeData();
+				for (auto ref: data.references) {
+					auto objectref = ref.get();
 					log::info("ObjectRef lookup");
 					if (objectref) {
 						Actor* NonRef = skyrim_cast<Actor*>(objectref); 
