@@ -65,7 +65,7 @@ namespace {
 	void GrowAfterTheKill(Actor* caster, Actor* target) {
 		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
 			return;
-		} else if (Runtime::HasPerkTeam(caster, "GrowthPerk") && Runtime::GetInt("GtsDecideGrowth") >= 1) {
+		} else if (Runtime::HasPerkTeam(caster, "GrowthDesirePerk") && Runtime::GetInt("GtsDecideGrowth") >= 1) {
 			float Rate = (0.00016 * get_visual_scale(target)) * 120;
 			if (Runtime::HasPerkTeam(caster, "AdditionalGrowth")) {
 				Rate *= 2.0;

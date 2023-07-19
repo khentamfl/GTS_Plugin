@@ -195,8 +195,9 @@ namespace {
 			power *= 1.5;
 		}
 		if (cell) { 
-			auto data = cell->GetRuntimeData();
-			for (auto object: data.references) {
+			//auto data = cell->GetRuntimeData();
+			auto data = TESDataHandler::GetSingleton()->GetFormArray(RE::FormType::Reference);
+			for (auto object: data) {
 				auto objectref = object.get();
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 

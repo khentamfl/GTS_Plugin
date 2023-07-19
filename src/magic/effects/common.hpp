@@ -321,7 +321,7 @@ namespace Gts {
 			return;
 		}
 		int Random = rand() % 8;
-		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthPerk")) {
+		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthDesirePerk")) {
 			Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
 		}
 		PrintDeathSource(caster, target, "Crushed");

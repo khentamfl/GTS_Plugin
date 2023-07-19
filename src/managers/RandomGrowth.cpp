@@ -19,7 +19,7 @@ namespace {
 		if (IsTeammate(actor)) {
 			MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyNPC");
 		}
-		if (!Runtime::HasPerkTeam(actor, "GrowthPerk") || MultiplySlider == 0) {
+		if (!Runtime::HasPerkTeam(actor, "RandomGrowth") || MultiplySlider == 0) {
 			return false;
 		}
 
@@ -42,14 +42,12 @@ namespace {
 	}
 
 	void RestoreStats(Actor* actor) { // Regenerate attributes
-		if (Runtime::HasPerkTeam(actor, "GrowthAugmentation")) {
-			float HP = GetMaxAV(actor, ActorValue::kHealth) * 0.00185;
-			float MP = GetMaxAV(actor, ActorValue::kMagicka) * 0.00095;
-			float SP = GetMaxAV(actor, ActorValue::kStamina) * 0.00125;
-			actor->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
-			actor->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
-			actor->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, MP * TimeScale());
-		}
+		float HP = GetMaxAV(actor, ActorValue::kHealth) * 0.00185;
+		float MP = GetMaxAV(actor, ActorValue::kMagicka) * 0.00095;
+		float SP = GetMaxAV(actor, ActorValue::kStamina) * 0.00125;
+		actor->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HP * TimeScale());
+		actor->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kMagicka, SP * TimeScale());
+		actor->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, MP * TimeScale());
 	}
 }
 
