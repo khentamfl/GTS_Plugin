@@ -198,7 +198,7 @@ namespace {
 			auto data = cell->GetRuntimeData();
 			auto WorldSpace = data.worldSpace;
 			
-			for (auto object: WorldSpace->BGSLargeRefData.cellFormIDMapFiltered.second) {
+			for (auto object: WorldSpace->largeRefData.cellFormIDMapFiltered.second) {
 				auto objectref = object->As<TESObjectREFR>();  
 				log::info("Getting ObjectRef");
 				if (objectref) {
