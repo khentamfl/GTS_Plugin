@@ -196,16 +196,15 @@ namespace {
 		}
 		if (cell) { 
 			//auto data = cell->GetRuntimeData();
-			auto datas = {
-				TESDataHandler::GetSingleton()->GetFormArray(FormType::Ingredient),
-				TESDataHandler::GetSingleton()->GetFormArray(FormType::Book),
-				TESDataHandler::GetSingleton()->GetFormArray(FormType::Armor),
-				TESDataHandler::GetSingleton()->GetFormArray(FormType::Scroll),
-				TESDataHandler::GetSingleton()->GetFormArray(FormType::Weapon),
-				TESDataHandler::GetSingleton()->GetFormArray(FormType::Ammo),
-				TESDataHandler::GetSingleton()->GetFormArray(FormType::Ingredient)
-			};
-			for (auto object: datas) {
+			
+			auto ingredient = TESDataHandler::GetSingleton()->GetFormArray(FormType::Ingredient);
+			auto book = TESDataHandler::GetSingleton()->GetFormArray(FormType::Book);
+			auto armor = TESDataHandler::GetSingleton()->GetFormArray(FormType::Armor);
+			auto scroll = TESDataHandler::GetSingleton()->GetFormArray(FormType::Scroll);
+			auto weapon = TESDataHandler::GetSingleton()->GetFormArray(FormType::Weapon);
+			auto ammo = TESDataHandler::GetSingleton()->GetFormArray(FormType::Ammo);
+
+			for (auto object: {ingredient, book, armor, scroll, weapon, ammo}) {
 				auto objectref = object->AsReference();
 				if (objectref) {
 					log::info("ObjectRef found");

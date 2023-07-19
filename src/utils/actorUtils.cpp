@@ -1133,7 +1133,7 @@ namespace Gts {
 	std::string name = std::format("SpringGrow_Free {}: {}", naming, actor->formID);
 	const float DURATION = halfLife * 3.2;
 
-    TaskManager::RunFor(DURATION,
+    TaskManager::RunFor(name, DURATION,
 		[ growData ](const auto& progressData) {
 		float totalScaleToAdd = growData->amount.value;
 		float prevScaleAdded = growData->addedSoFar;

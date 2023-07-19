@@ -79,7 +79,7 @@ namespace Gts {
 					float ProgressionMultiplier = Persistent::GetSingleton().progression_multiplier;
 					int random = rand()% 79 + 1;
 					float TotalPower = (100 + random)/100;
-					float base_power = ((0.00185 * TotalPower * 60.0 * scale) * ProgressionMultiplier);  // The power of it
+					float base_power = ((0.00185 * TotalPower * 60.0) * ProgressionMultiplier);  // The power of it
 					ActorHandle gianthandle = actor->CreateRefHandle();
 					// Grow
 					SpringGrow_Free(actor, base_power * 2.5, 0.40 * TotalPower, "RandomGrowthFree");
