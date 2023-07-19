@@ -196,21 +196,16 @@ namespace {
 		}
 		if (cell) { 
 			//auto data = cell->GetRuntimeData();
-
-			auto ingredient = TESDataHandler::GetSingleton()->GetFormArray(FormType::Ingredient);
-			auto book = TESDataHandler::GetSingleton()->GetFormArray(FormType::Book);
-			auto armor = TESDataHandler::GetSingleton()->GetFormArray(FormType::Armor);
-			auto scroll = TESDataHandler::GetSingleton()->GetFormArray(FormType::Scroll);
-			auto weapon = TESDataHandler::GetSingleton()->GetFormArray(FormType::Weapon);
-			auto ammo = TESDataHandler::GetSingleton()->GetFormArray(FormType::Ammo);
-
-			for (auto object: {ingredient, book, armor, scroll, weapon, ammo}) {
-				auto objectref = object.AsReference();
+			auto data = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference);
+			for (auto object: data) {
+				auto objectref = object->AsReference();
+				log::info("ObjectRef lookup");
 				if (objectref) {
-					log::info("ObjectRef found");
-					//Actor* NonRef = skyrim_cast<Actor*>(objectref); 
-					//if (!NonRef) {
+					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
+					log::info("ObjectRef true");
+					if (!NonRef) {
 						NiPoint3 objectlocation = objectref->GetPosition();
+						log::info("Non-Ref true");
 						for (auto point: footPoints) {
 							float distance = (point - objectlocation).Length();
 							if (distance <= maxFootDistance) {
@@ -228,7 +223,7 @@ namespace {
 									}
 								}
 							}
-						//}
+						}
 					}
 				}
 			}
