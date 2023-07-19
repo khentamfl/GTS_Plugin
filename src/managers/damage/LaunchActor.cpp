@@ -197,8 +197,8 @@ namespace {
 		if (cell) { 
 			auto data = cell->GetRuntimeData();
 			auto child = data.loadedData;
-			for (auto secondary: child->unk070) {
-				if (secondary) {
+			for (auto secondary: child->unk070[1]) {
+				if (secondary.get()) {
 					log::info("Child True");
 				}
 			}
