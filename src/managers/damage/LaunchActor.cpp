@@ -197,11 +197,45 @@ namespace {
 		if (cell) { 
 			auto data = cell->GetRuntimeData();
 			auto child = data.loadedData;
+
+			for (auto result: {child->unk100, child->activatingRefs}) {
+				if (result) {
+					log::info("Child 2 True");
+					auto objectref = result->As<TESObjectREFR>();
+					if (objectref) {
+						Actor* NonRef = skyrim_cast<Actor*>(objectref); 
+						log::info("ref 2 true");
+						if (!NonRef) {
+							NiPoint3 objectlocation = objectref->GetPosition();
+							for (auto point: footPoints) {
+								float distance = (point - objectlocation).Length();
+								if (distance <= maxFootDistance) {
+									float force = 1.0 - distance / maxFootDistance;
+									auto Object1 = objectref->Get3D1(false);
+									if (Object1) {
+										auto collision = Object1->GetCollisionObject();
+										if (collision) {
+											auto rigidbody = collision->GetRigidBody();
+											if (rigidbody) {
+												auto body = rigidbody->AsBhkRigidBody();
+												if (body)
+													log::info("Launching Body 2");
+													SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
 			for (auto getthem: child->unk070) {
-				auto result = getthem.second;
+				auto result = getthem.first;
 				if (result) {
 					log::info("Child True");
-					auto objectref = result.get().get();
+					auto objectref = result->As<TESObjectREFR>();
 					if (objectref) {
 						Actor* NonRef = skyrim_cast<Actor*>(objectref); 
 						log::info("ref true");
