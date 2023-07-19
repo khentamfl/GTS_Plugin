@@ -51,6 +51,7 @@ namespace Gts {
 		auto stage5threshold = Runtime::GetFloat("Survival_HungerStage5Value");
 
 		SurvivalMode_RemoveAllSpells(actor, stage0, stage1, stage2, stage3, stage4, stage5);
+
         log::info("Adjust current value, value: {}", currentvalue);
 		if (currentvalue <= stage1threshold) {
 			Runtime::AddSpell(actor, "Survival_HungerStage1");
@@ -65,36 +66,34 @@ namespace Gts {
 		}
 	}
 
-	void SurvivalMode_AdjustHunger(Actor* giant, float naturalsize, bool IsDragon, bool IsLiving, float type) {
+	void SurvivalMode_AdjustHunger(Actor* giant, float tinyscale, float naturalsize, bool IsDragon, bool IsLiving, float type) {
 		if (giant->formID != 0x14) {
 			return; //Only for Player
 		} 
         auto Survival = Runtime::GetGlobal("Survival_ModeEnabled");
         if (!Survival) {
-            return; // Abort if it doesn't exist
+            return; // Abort if it doesn't exist (Should fix issues if we don't have AE CC mods)
         }
-        float SurvivalEnabled = Runtime::GetFloat("Survival_ModeEnabled");
+        float SurvivalEnabled = Runtime::GetBool("Survival_ModeEnabled");
         if (!SurvivalEnabled) {
-            return;
+            log::info("Survival OFF, returning");
+            return; // Survival OFF, do nothing.
         }
-		float HungerNeed = Runtime::GetGlobal("Survival_HungerNeedValue");
-        float restore = 0;
-
-        float modifier = naturalsize;
-
+		auto HungerNeed = Runtime::GetGlobal("Survival_HungerNeedValue"); // Obtain 
+        float restore = Runtime::GetFloat("Survival_HungerRestoreSmallAmount") * 6.0; // * 6.0 to compensate default size difference threshold for Vore
+        
         if (IsDragon) {
-            modifier *= 8.0; // Dragons are huge, makes sense to give a lot of value
+            naturalsize *= 8.0; // Dragons are huge, makes sense to give a lot of value
         } if (!IsLiving) {
-            modifier *= 0.20; // Less effective on non living targets
+            naturalsize *= 0.20; // Less effective on non living targets
+        } if (type >= 1.0) {
+            restore *= 6.0; // Stronger gain on Vore Finish
         }
 
-        if (type == 0) {
-            restore = Runtime::GetFloat("Survival_HungerRestoreSmallAmount");
-        } else if (type == 1) {
-            restore = Runtime::GetFloat("Survival_HungerRestoreSmallAmount") * 6;
-        }
-        log::info("Adjusting HungerNeed, restore: {}, type: {}", restore, type);
-		HungerNeed->value -= restore * modifier;
+        float power = get_visual_scale(giant)/tinyscale * naturalsize; // Get size differenceand * it by natural size
+
+        log::info("Adjusting HungerNeed, restore: {}, power: {}, type: {}", restore, power, type);
+		HungerNeed->value -= restore * power;
 		if (HungerNeed->value <= 0.0) {
 			HungerNeed->value = 0.0; // Cap it at 0.0
 		}

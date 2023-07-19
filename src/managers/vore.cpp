@@ -205,7 +205,7 @@ namespace Gts {
 					bool Dragon = IsDragon(tiny);
 					float DefaultScale = Get_Other_Scale(tiny);
 
-					SurvivalMode_AdjustHunger(this->giant.get().get(), DefaultScale, Dragon, Living, 0);
+					SurvivalMode_AdjustHunger(this->giant.get().get(), get_visual_scale(tiny), DefaultScale, Dragon, Living, 0);
 
 				} else if (tiny->formID == 0x14) {
 					DamageAV(tiny, ActorValue::kHealth, 900000.0);
@@ -393,7 +393,7 @@ namespace Gts {
 						if (giant->formID == 0x14) {
 							AdjustSizeLimit(0.0260, giant);
 							AdjustMassLimit(0.0106, giant);
-							SurvivalMode_AdjustHunger(giant, this->naturalsize ,this->WasDragon, this->WasLiving, 1);
+							SurvivalMode_AdjustHunger(giant, this->tinySize, this->naturalsize ,this->WasDragon, this->WasLiving, 1);
 						}
 						Rumble::Once("GrowthRumble", giant, 2.45, 0.30);
 						Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
