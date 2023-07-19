@@ -188,42 +188,35 @@ namespace {
 		if (!AllowLaunch) {
 			return;
 		}
-		auto cell = giant->GetParentCell();
 		float giantScale = get_visual_scale(giant);
 		float power = 1.0 * bonus;
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power *= 1.5;
 		}
-		if (cell) { 
-			//auto data = cell->GetRuntimeData();
-			//auto data = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference);
-			for (auto objects = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference).begin();
-			 objects != TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference).end();
-			 ++objects) 
-			 {
-				//(*objects)->As<RE::TESObjectREFR>();
-				auto objectref = (*objects)->As<RE::TESObjectREFR>();//objects->get().AsReference();
-				log::info("ObjectRef lookup");
-				if (objectref) {
-					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
-					log::info("ObjectRef true");
-					if (!NonRef) {
-						NiPoint3 objectlocation = objectref->GetPosition();
-						log::info("Non-Ref true");
-						for (auto point: footPoints) {
-							float distance = (point - objectlocation).Length();
-							if (distance <= maxFootDistance) {
-								float force = 1.0 - distance / maxFootDistance;
-								auto Object1 = objectref->Get3D1(false);
-								if (Object1) {
-									auto collision = Object1->GetCollisionObject();
-									if (collision) {
-										auto rigidbody = collision->GetRigidBody();
-										if (rigidbody) {
-											auto body = rigidbody->AsBhkRigidBody();
-											if (body)
-												SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
-										}
+		RE::TESDataHandler* const handler = RE::TESDataHandler::GetSingleton();
+		auto& references = handler->GetFormArray(FormType::Reference);
+		for (auto& objects: references) {
+			auto objectref = objects->AsReference();
+			log::info("ObjectRef lookup");
+			if (objectref) {
+				Actor* NonRef = skyrim_cast<Actor*>(objectref); 
+				log::info("ObjectRef true");
+				if (!NonRef) {
+					NiPoint3 objectlocation = objectref->GetPosition();
+					log::info("Non-Ref true");
+					for (auto point: footPoints) {
+						float distance = (point - objectlocation).Length();
+						if (distance <= maxFootDistance) {
+							float force = 1.0 - distance / maxFootDistance;
+							auto Object1 = objectref->Get3D1(false);
+							if (Object1) {
+								auto collision = Object1->GetCollisionObject();
+								if (collision) {
+									auto rigidbody = collision->GetRigidBody();
+									if (rigidbody) {
+										auto body = rigidbody->AsBhkRigidBody();
+										if (body)
+											SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
 									}
 								}
 							}
@@ -234,6 +227,7 @@ namespace {
 		}
 	}
 }
+
 
 namespace Gts {
 
