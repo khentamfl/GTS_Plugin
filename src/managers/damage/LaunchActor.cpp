@@ -199,7 +199,7 @@ namespace {
 			//auto data = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference);
 			for (auto objects = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference).begin();
 			 objects != TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference).end();
-			 ++objects;
+			 ++objects
 			 ) {
 				auto objectref = objects->AsReference();
 				log::info("ObjectRef lookup");
