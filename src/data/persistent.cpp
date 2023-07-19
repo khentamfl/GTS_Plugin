@@ -591,7 +591,7 @@ namespace Gts {
 			return;
 		}
 		bool launch_objects = GetSingleton().launch_objects;
-		serde->WriteRecordData(&launch_objects, sizeof(launch_objects);)
+		serde->WriteRecordData(&launch_objects, sizeof(launch_objects));
 
 		if (!serde->OpenRecord(ActorsPanic, 1)) {
 			log::error("Unable to open Actors Panic record to write cosave data");
