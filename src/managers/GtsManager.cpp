@@ -56,7 +56,7 @@ namespace {
 			auto ai = actor->GetActorRuntimeData().currentProcess;
 			if (ai) {
 				if (ai->high) {
-					ai->high->fadeState.set(FADE_STATE::kNormal);
+					ai->high->fadeState.set(0);
 					log::info("Setting FadeState to normal for {}", actor->GetDisplayFullName());
 				}
 			}
