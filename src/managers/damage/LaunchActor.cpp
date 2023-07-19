@@ -198,7 +198,7 @@ namespace {
 			auto data = cell->GetRuntimeData();
 			auto child = data.loadedData;
 			
-			for (auto object: {data.references, child->unk070.second}) {
+			for (auto object: {data.references, child->unk070->second}) {
 				auto objectref = object.get();  
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
