@@ -198,11 +198,14 @@ namespace {
 			auto data = cell->GetRuntimeData();
 			auto WorldSpace = data.worldSpace;
 			
-			for (auto object: WorldSpace->mobilePersistentRefs) {
-				auto objectref = object.get();  
+			for (auto object: WorldSpace->cellFormIDMapFiltered.second) {
+				auto objectref = object->As<TESObjectREFR>();  
+				log::info("Getting ObjectRef");
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
+					log::info("ObjectRef True");
 					if (!NonRef) {
+						log::info("NonRef True");
 						NiPoint3 objectlocation = objectref->GetPosition();
 						for (auto point: footPoints) {
 							float distance = (point - objectlocation).Length();
@@ -210,13 +213,18 @@ namespace {
 								float force = 1.0 - distance / maxFootDistance;
 								auto Object1 = objectref->Get3D1(false);
 								if (Object1) {
+									log::info("Object1 True");
 									auto collision = Object1->GetCollisionObject();
 									if (collision) {
+										log::info("Collision True");
 										auto rigidbody = collision->GetRigidBody();
 										if (rigidbody) {
+											log::info("RigidBody true");
 											auto body = rigidbody->AsBhkRigidBody();
-											if (body)
+											if (body) {
+												log::info("Body True, launching body");
 												SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
+											}
 										}
 									}
 								}
