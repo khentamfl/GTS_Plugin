@@ -72,6 +72,7 @@ namespace Gts {
 		} 
         auto Survival = Runtime::GetGlobal("Survival_ModeEnabled");
         if (!Survival) {
+            log::info("Survival not found, returning");
             return; // Abort if it doesn't exist (Should fix issues if we don't have AE CC mods)
         }
         float SurvivalEnabled = Runtime::GetBool("Survival_ModeEnabled");
@@ -80,7 +81,7 @@ namespace Gts {
             return; // Survival OFF, do nothing.
         }
 		auto HungerNeed = Runtime::GetGlobal("Survival_HungerNeedValue"); // Obtain 
-        float restore = Runtime::GetFloat("Survival_HungerRestoreSmallAmount") * 6.0; // * 6.0 to compensate default size difference threshold for Vore
+        float restore = 16.0 * 6.0; // * 6.0 to compensate default size difference threshold for Vore
         
         if (IsDragon) {
             naturalsize *= 8.0; // Dragons are huge, makes sense to give a lot of value
@@ -90,10 +91,10 @@ namespace Gts {
             restore *= 6.0; // Stronger gain on Vore Finish
         }
 
-        float power = get_visual_scale(giant)/tinyscale * naturalsize; // Get size differenceand * it by natural size
+        float power = (get_visual_scale(giant)/tinyscale); // Get size differenceand * it by natural size
 
         log::info("Adjusting HungerNeed, restore: {}, power: {}, type: {}", restore, power, type);
-		HungerNeed->value -= restore * power;
+		HungerNeed->value -= (restore / power) * naturalsize;
 		if (HungerNeed->value <= 0.0) {
 			HungerNeed->value = 0.0; // Cap it at 0.0
 		}
