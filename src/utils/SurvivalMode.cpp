@@ -53,20 +53,20 @@ namespace Gts {
 		SurvivalMode_RemoveAllSpells(actor, stage0, stage1, stage2, stage3, stage4, stage5);
         log::info("Adjust current value, value: {}", currentvalue);
 		if (currentvalue <= stage1threshold) {
-			Runtime::AddSpell(actor, stage1);
+			Runtime::AddSpell(actor, "Survival_HungerStage1");
 		} else if (currentvalue <= stage2threshold) {
-			Runtime::AddSpell(actor, stage2);
+			Runtime::AddSpell(actor, "Survival_HungerStage2");
 		} else if (currentvalue <= stage3threshold) {
-			Runtime::AddSpell(actor, stage3);
+			Runtime::AddSpell(actor, "Survival_HungerStage3");
 		} else if (currentvalue <= stage4threshold) {
-			Runtime::AddSpell(actor, stage4);
+			Runtime::AddSpell(actor, "Survival_HungerStage4");
 		} else if (currentvalue <= stage5threshold) {
-			Runtime::AddSpell(actor, stage5);
+			Runtime::AddSpell(actor, "Survival_HungerStage5");
 		}
 	}
 
-	void SurvivalMode_AdjustHunger(Actor* giant, float naturalsize, bool IsDragon, bool IsLiving, float Type) {
-		if (actor->formID != 0x14) {
+	void SurvivalMode_AdjustHunger(Actor* giant, float naturalsize, bool IsDragon, bool IsLiving, float type) {
+		if (giant->formID != 0x14) {
 			return; //Only for Player
 		} 
         auto Survival = Runtime::GetGlobal("Survival_ModeEnabled");
@@ -99,6 +99,6 @@ namespace Gts {
 			HungerNeed->value = 0.0; // Cap it at 0.0
 		}
 		float value = HungerNeed->value;
-		SurvivalMode_RefreshSpells(actor, value);
+		SurvivalMode_RefreshSpells(giant, value);
 	}
 }
