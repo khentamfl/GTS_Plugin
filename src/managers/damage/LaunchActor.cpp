@@ -198,7 +198,7 @@ namespace {
 			auto data = cell->GetRuntimeData();
 			auto child = data.loadedData;
 			for (auto getthem: child->unk070) {
-				auto result = getthem.at(1);
+				auto result = getthem.second;
 				if (result) {
 					log::info("Child True");
 				}
