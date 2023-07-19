@@ -37,12 +37,12 @@ namespace Gts {
 	}
 
 	void SurvivalMode_RefreshSpells(Actor* actor, float currentvalue) {
-		auto stage0 = Runtime::GetSpell(actor, "Survival_HungerStage0");
-		auto stage1 = Runtime::GetSpell(actor, "Survival_HungerStage1");
-		auto stage2 = Runtime::GetSpell(actor, "Survival_HungerStage2");
-		auto stage3 = Runtime::GetSpell(actor, "Survival_HungerStage3");
-		auto stage4 = Runtime::GetSpell(actor, "Survival_HungerStage4");
-		auto stage5 = Runtime::GetSpell(actor, "Survival_HungerStage5");
+		auto stage0 = Runtime::GetSpell("Survival_HungerStage0");
+		auto stage1 = Runtime::GetSpell("Survival_HungerStage1");
+		auto stage2 = Runtime::GetSpell("Survival_HungerStage2");
+		auto stage3 = Runtime::GetSpell("Survival_HungerStage3");
+		auto stage4 = Runtime::GetSpell("Survival_HungerStage4");
+		auto stage5 = Runtime::GetSpell("Survival_HungerStage5");
 
 		auto stage1threshold = Runtime::GetFloat("Survival_HungerStage1Value");
 		auto stage2threshold = Runtime::GetFloat("Survival_HungerStage2Value");
@@ -53,15 +53,15 @@ namespace Gts {
 		SurvivalMode_RemoveAllSpells(actor, stage0, stage1, stage2, stage3, stage4, stage5);
         log::info("Adjust current value, value: {}", currentvalue);
 		if (currentvalue <= stage1threshold) {
-			Runtime::AddSpell(actor, "Survival_HungerStage1");
+			Runtime::AddSpell(actor, stage1);
 		} else if (currentvalue <= stage2threshold) {
-			Runtime::AddSpell(actor, "Survival_HungerStage2");
+			Runtime::AddSpell(actor, stage2);
 		} else if (currentvalue <= stage3threshold) {
-			Runtime::AddSpell(actor, "Survival_HungerStage3");
+			Runtime::AddSpell(actor, stage3);
 		} else if (currentvalue <= stage4threshold) {
-			Runtime::AddSpell(actor, "Survival_HungerStage4");
+			Runtime::AddSpell(actor, stage4);
 		} else if (currentvalue <= stage5threshold) {
-			Runtime::AddSpell(actor, "Survival_HungerStage5");
+			Runtime::AddSpell(actor, stage5);
 		}
 	}
 
