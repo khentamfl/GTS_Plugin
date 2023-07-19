@@ -130,8 +130,11 @@ namespace {
 
 	void DropTinyChance(Actor* receiver, float damage, float scale) {
 		static Timer DropTimer = Timer(0.33); // Check once per .33 sec
+		float bonus = 1.0;
+		if (Runtime::HasPerkTeam(receiver, "HugCrush_Greed")) {
+			bonus = 6.0; // 8 times bigger damage threshold to cancel 
+		}
 		if (Runtime::HasPerkTeam(receiver, "HugCrush_ToughGrip")) {
-			float bonus = 6.0; // 8 times bigger damage threshold to cancel 
 			float GetHP = GetHealthPercentage(receiver);
 			if (GetHP >= 0.75) {
 				return; // Drop only if hp is < 75%
