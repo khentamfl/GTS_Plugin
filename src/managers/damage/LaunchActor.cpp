@@ -197,12 +197,12 @@ namespace {
 		if (cell) { 
 			auto data = cell->GetRuntimeData();
 			auto child = data.loadedData;
-			for (auto secondary: child->unk070[1]) {
-				if (secondary.get()) {
-					log::info("Child True");
-				}
+			std::vector<ObjectRefHandle> refs {};
+			for (auto getthem: child->unk070) {
+				refs.push_back(getthem.secondary);
+				log::info("Child True");
 			}
-			for (auto object: data.references) {
+			for (auto object: {data.references, refs}) {
 				auto objectref = object.get();  
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
