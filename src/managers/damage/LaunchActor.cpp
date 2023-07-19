@@ -201,7 +201,7 @@ namespace {
 			 objects != TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference).end();
 			 ++objects
 			 ) {
-				auto objectref = objects.AsReference();
+				auto objectref = objects->get().AsReference();
 				log::info("ObjectRef lookup");
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
