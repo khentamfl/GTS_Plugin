@@ -69,6 +69,10 @@ namespace Gts {
 		if (actor->formID != 0x14) {
 			return; //Only for Player
 		} 
+        auto Survival = Runtime::GetGlobal("Survival_ModeEnabled");
+        if (!Survival) {
+            return; // Abort if it doesn't exist
+        }
         float SurvivalEnabled = Runtime::GetFloat("Survival_ModeEnabled");
         if (!SurvivalEnabled) {
             return;
