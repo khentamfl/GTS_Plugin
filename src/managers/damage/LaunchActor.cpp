@@ -201,7 +201,7 @@ namespace {
 				auto result = getthem.second;
 				if (result) {
 					log::info("Child True");
-					auto objectref = result.get();
+					auto objectref = result.get().get();
 					if (objectref) {
 						Actor* NonRef = skyrim_cast<Actor*>(objectref); 
 						log::info("ref true");
