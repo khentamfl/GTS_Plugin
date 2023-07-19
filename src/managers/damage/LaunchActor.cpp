@@ -203,7 +203,7 @@ namespace {
 					log::info("Child True");
 				}
 			}
-			for (auto object: {data.references, refs}) {
+			for (auto object: data.references) {
 				auto objectref = object.get();  
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
