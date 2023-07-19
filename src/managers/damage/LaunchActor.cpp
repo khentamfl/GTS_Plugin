@@ -197,7 +197,7 @@ namespace {
 		if (cell) { 
 			//auto data = cell->GetRuntimeData();
 			auto data = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference);
-			for (auto object: data) {
+			for (auto object: data.begin()) {
 				auto objectref = object->AsReference();
 				log::info("ObjectRef lookup");
 				if (objectref) {
