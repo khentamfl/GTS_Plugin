@@ -196,9 +196,12 @@ namespace {
 		}
 		if (cell) { 
 			//auto data = cell->GetRuntimeData();
-			auto data = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference);
-			for (auto object: data.begin()) {
-				auto objectref = object->AsReference();
+			//auto data = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference);
+			for (auto objects = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference).begin();
+			 objects != TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference).end();
+			 ++objects;
+			 ) {
+				auto objectref = objects->AsReference();
 				log::info("ObjectRef lookup");
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
