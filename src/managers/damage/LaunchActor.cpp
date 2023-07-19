@@ -196,10 +196,19 @@ namespace {
 		}
 		if (cell) { 
 			//auto data = cell->GetRuntimeData();
-			auto data = TESDataHandler::GetSingleton()->GetFormArray(RE::FormType::Reference);
-			for (auto object: data) {
+			auto datas = {
+				TESDataHandler::GetSingleton()->GetFormArray(FormType::Ingredient),
+				TESDataHandler::GetSingleton()->GetFormArray(FormType::Book),
+				TESDataHandler::GetSingleton()->GetFormArray(FormType::Armor),
+				TESDataHandler::GetSingleton()->GetFormArray(FormType::Scroll),
+				TESDataHandler::GetSingleton()->GetFormArray(FormType::Weapon),
+				TESDataHandler::GetSingleton()->GetFormArray(FormType::Ammo),
+				TESDataHandler::GetSingleton()->GetFormArray(FormType::Ingredient)
+			};
+			for (auto object: datas) {
 				auto objectref = object->AsReference();
 				if (objectref) {
+					log::info("ObjectRef found");
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
 					if (!NonRef) {
 						NiPoint3 objectlocation = objectref->GetPosition();
