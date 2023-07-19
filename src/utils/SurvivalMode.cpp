@@ -77,7 +77,7 @@ namespace Gts {
         if (!SurvivalEnabled) {
             return;
         }
-		float HungerNeed = Runtime::GetFloat("Survival_HungerNeedValue");
+		float HungerNeed = Runtime::GetGlobal("Survival_HungerNeedValue");
         float restore = 0;
 
         float modifier = naturalsize;

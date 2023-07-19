@@ -9,6 +9,7 @@
 #include "managers/Rumble.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
+#include "scale/modscale.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -201,10 +202,10 @@ namespace Gts {
 					Disintegrate(tiny);
 
 					bool Living = IsLiving(tiny);
-					bool IsDragon = IsDragon(tiny);
+					bool Dragon = IsDragon(tiny);
 					float DefaultScale = Get_Other_Scale(tiny);
 
-					SurvivalMode_AdjustHunger(this->giant.get().get(), DefaultScale, IsDragon, Living, 0);
+					SurvivalMode_AdjustHunger(this->giant.get().get(), DefaultScale, Dragon, Living, 0);
 
 				} else if (tiny->formID == 0x14) {
 					DamageAV(tiny, ActorValue::kHealth, 900000.0);
