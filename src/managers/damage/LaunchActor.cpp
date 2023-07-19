@@ -195,9 +195,9 @@ namespace {
 			power *= 1.5;
 		}
 		if (cell) { 
-			auto data = cell->GetRuntimeData();
-			for (auto object: data.references) {
-				auto objectref = object.get();
+			//auto data = cell->GetRuntimeData();
+			cell->ForEachReference((TESObjectREFR& result) {
+				auto objectref = result;
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
 					if (!NonRef) {
@@ -223,9 +223,11 @@ namespace {
 					}
 				}
 			}
+			);
 		}
 	}
 }
+
 
 
 namespace Gts {
