@@ -200,7 +200,7 @@ namespace {
 
 			for (auto result: {child->unk100, child->activatingRefs}) {
 				log::info("Child 2 True");
-				auto objectref = result.get().get();
+				auto objectref = result.get();
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
 					log::info("ref 2 true");
