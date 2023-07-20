@@ -157,7 +157,7 @@ namespace {
 		auto scale = get_visual_scale(huggedActor);
 		float sizedifference = get_visual_scale(giant)/scale;
 		set_target_scale(huggedActor, scale*0.60);
-		AdjustGtsSkill(scale/6, giantref);
+		AdjustGtsSkill(scale/6, giant);
 		Rumble::For("ShrinkPulse", giant, 18.0 * sizedifference, 0.10, "NPC COM [COM ]", 0.35);
 	}
 
