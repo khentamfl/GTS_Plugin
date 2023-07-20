@@ -16,7 +16,19 @@
 
 using namespace RE;
 using namespace Gts;
-
+namespace {
+	float GetPushPower(float sizeRatio) {
+		// https://www.desmos.com/calculator/wh0vwgljfl
+		SoftPotential push {
+				.k = 1.42, 
+				.n = 0.78, 
+				.s = 0.50, 
+				.a = 0.0, 
+			};
+		float power = soft_power(sizeRatio, push);
+		return power;
+	}
+}
 
 namespace Gts {
 	HitManager& HitManager::GetSingleton() noexcept {
@@ -81,6 +93,7 @@ namespace Gts {
 		}
 
 		// Apply it
+		float pushpower = GetPushPower(size_difference);
 		if (attacker->formID == 0x14 && size_difference >= 4.0) {
 			FormType formType = HitId->GetFormType();
 			if (formType != FormType::Weapon) {
@@ -92,7 +105,7 @@ namespace Gts {
 			if (hitName.find("Bow") == std::string::npos) {
 				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
-			PushActorAway(attacker, receiver, size_difference);
+			PushActorAway(attacker, receiver, pushpower); 
 		}
 	}
 

@@ -951,9 +951,9 @@ namespace Gts {
 			} else if (random == 4) {
 				Cprint("All that's left from {} after being hit bit {} is a bloody mist", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 6) {
-				Cprint("{} took a little more damage than intended, so her fingers ended up squeezing {} into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} couldn't handle enormous hit from {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 7) {
-				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} put so much force into attack that {} turned into red mist", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
 		} else if (cause == "HitSteal") { // Hit Growth perk
