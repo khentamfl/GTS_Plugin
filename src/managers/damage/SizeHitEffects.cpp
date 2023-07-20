@@ -126,7 +126,7 @@ namespace {
 		} if (HugShrink::GetHuggiesActor(receiver)) {
 			float reduction = 0.25; // 25% resistance
 			if (Runtime::HasPerk(receiver, "HugCrush_HugsOfDeath")) {
-				reduction += 0.35; // 35% additional resistance
+				reduction += 0.35; // 35% additional resistance 
 			}
 			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * reduction); 
 			// ^ Restore % hp, fake damage resistance
