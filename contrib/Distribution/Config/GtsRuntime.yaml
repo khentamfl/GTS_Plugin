@@ -220,8 +220,8 @@ perks:
   HugCrush: "GTS.esp|60656E"
   HugCrush_Greed: "GTS.esp|606571"
   HugCrush_ToughGrip: "GTS.esp|606570"
-  HugCrush_HugsOfDeath: "GTS.esp|60656F"
-  HugCrush_DevastatingHugs: "GTS.esp|629C98"
+  HugCrush_MightyCuddles: "GTS.esp|60656F"
+  HugCrush_HugsOfDeath: "GTS.esp|629C98"
 
   SkilledGTS: "GTS.esp|61A996"
   DisastrousTremor: "GTS.esp|61FA97"

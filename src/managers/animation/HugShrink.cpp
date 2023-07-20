@@ -37,7 +37,7 @@ namespace {
 
 	float GetHPThreshold(Actor* actor) {
 		float hp = 0.25;
-		if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
+		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
 			hp = 0.40;
 		}
 		return hp;
@@ -158,7 +158,7 @@ namespace {
 		float sizedifference = get_visual_scale(giant)/scale;
 		set_target_scale(huggedActor, scale*0.60);
 		AdjustGtsSkill(scale/6, giant);
-		if (Runtime::HasPerkTeam(giant, "HugCrush_DevastatingHugs")) {
+		if (Runtime::HasPerkTeam(giant, "HugCrush_HugsOfDeath")) {
 			mod_target_scale(giant, scale/10);
 		}
 		Rumble::For("ShrinkPulse", giant, 18.0 * sizedifference, 0.10, "NPC COM [COM ]", 0.35);
@@ -266,7 +266,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		bool ForceCrush = Runtime::HasPerkTeam(player, "HugCrush_HugsOfDeath");
+		bool ForceCrush = Runtime::HasPerkTeam(player, "HugCrush_MightyCuddles");
 		float staminapercent = GetStaminaPercentage(player);
 		float stamina = GetAV(player, ActorValue::kStamina);
 		if (ForceCrush && staminapercent >= 0.50) {

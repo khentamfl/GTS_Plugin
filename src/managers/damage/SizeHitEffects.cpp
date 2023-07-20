@@ -125,7 +125,7 @@ namespace {
 			return;
 		} if (HugShrink::GetHuggiesActor(receiver)) {
 			float reduction = 0.75; // 25% resistance
-			if (Runtime::HasPerk(receiver, "HugCrush_DevastatingHugs")) {
+			if (Runtime::HasPerk(receiver, "HugCrush_HugsOfDeath")) {
 				reduction -= 0.35; // 35% additional resistance
 			}
 			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * reduction); 
@@ -136,7 +136,7 @@ namespace {
 	void DropTinyChance(Actor* receiver, float damage, float scale) {
 		static Timer DropTimer = Timer(0.33); // Check once per .33 sec
 		float bonus = 1.0;
-		if (Runtime::HasPerkTeam(receiver, "HugCrush_DevastatingHugs")) {
+		if (Runtime::HasPerkTeam(receiver, "HugCrush_HugsOfDeath")) {
 			return; // Full immunity
 		}
 		if (Runtime::HasPerkTeam(receiver, "HugCrush_Greed")) {
