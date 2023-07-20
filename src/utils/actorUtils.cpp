@@ -881,26 +881,30 @@ namespace Gts {
 			if (random == 1) {
 				Cprint("{} life was squeezed out in {} grip", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
-				Cprint("{} was crushed inside  of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} Squeezed her palm, unexpectedly crushing {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 3) {
 				Cprint("{} was transformed into bloody mist by the tight grip of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
-				Cprint("{} has been crushed in the hand of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} has been crushed inside the hand of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 6) {
 				Cprint("{} applied too much pressure to her hand, crushing {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 7) {
-				Cprint("{} was turned into nothing inside the hand of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} was turned into pulp by the palm of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
 		} else if (cause == "Shrinked") { // Shrink to nothing
 			if (random <= 2) {
 				Cprint("{} greedily absorbed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-			} else if (random >= 4) {
+			} else if (random == 3) {
 				Cprint("{} completely absorbed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-			} else if (random >= 6) {
+			} else if (random == 4) {
 				Cprint("{} was absorbed by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} else if (random >= 7) {
+			} else if (random == 5) {
 				Cprint("{} was shrinkned to nothing by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 6) {
+				Cprint("{} size was completely drained by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random >= 7) {
+				Cprint("{} stole all the size from {}, exploding {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
 		} else if (cause == "Vored") {
@@ -1030,9 +1034,26 @@ namespace Gts {
 			} else if (random == 3 || random == 4) {
 				Cprint("Bootie of {} completely pulverized {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 5 || random == 6) {
-				Cprint("{} has been squashed by the  ", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} has been squashed by the {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 7) {
 				Cprint("{} relentlessly crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			}
+			return;
+		} else if (cause == "Hugs") { // For Hug Crush
+			if (random < 2) {
+				Cprint("{} was hugged to death by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 2) {
+				Cprint("{} got too carried away hugging {}, crushing {} as a result", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random == 3) {
+				Cprint("{} applied too much force to the hugs, killing {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random == 4) {
+				Cprint("{} couldn't resist hug crushing {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random == 5) {
+				Cprint("{} failed to escape hugs of death with {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 6) {
+				Cprint("{} got greedy and stole all size from {} through hugs", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random >= 7) {
+				Cprint("{} gently hug crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
 		}

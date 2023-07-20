@@ -157,7 +157,8 @@ namespace {
 		auto scale = get_visual_scale(huggedActor);
 		float sizedifference = get_visual_scale(giant)/scale;
 		set_target_scale(huggedActor, scale*0.60);
-		Rumble::For("ShrinkPulse", giant, 16.0 * sizedifference, 0.10, "NPC COM [COM ]", 0.25);
+		AdjustGtsSkill(scale/6, giantref);
+		Rumble::For("ShrinkPulse", giant, 18.0 * sizedifference, 0.10, "NPC COM [COM ]", 0.35);
 	}
 
 	void GTS_Hug_RunShrinkTask(AnimationEventData& data) {
@@ -175,7 +176,7 @@ namespace {
 			return;
 		}
 		ShrinkToNothingManager::Shrink(giant, huggedActor);
-		PrintDeathSource(giant, huggedActor, "Shrinked");
+		PrintDeathSource(giant, huggedActor, "Hugs");
 		Rumble::For("HugCrush", giant, 76.0, 0.10, "NPC COM [COM ]", 0.15);
 		HugShrink::DetachActorTask(giant);
 		
@@ -357,6 +358,7 @@ namespace Gts {
 			DamageAV(giantref, ActorValue::kStamina, 0.25 * TimeScale()); // Damage GTS Stamina
 			
 			TransferSize(giantref, tinyref, false, shrink, steal, false); // Shrink foe, enlarge gts
+			AdjustGtsSkill(0.00020, giantref);
 			if (giantref->formID == 0x14) {
 				shake_camera(giantref, 0.70 * sizedifference, 0.05);
 			} else {
@@ -396,7 +398,7 @@ namespace Gts {
 			}
 
 			GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
-			AdjustGtsSkill(0.0001, giantref);
+			AdjustGtsSkill(0.00005, giantref);
 
 			DamageAV(tinyref, ActorValue::kStamina, 0.15 * TimeScale()); // Drain Tiny Stamina
 
