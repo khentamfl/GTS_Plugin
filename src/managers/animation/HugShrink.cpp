@@ -347,6 +347,9 @@ namespace Gts {
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				shrink *= 1.25;
 				stamina *= 0.65;
+			} if (Runtime::HasPerkTeam(giantref, "SkilledGTS")) {
+				float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
+				stamina -= level;
 			}
 			ShutUp(tinyref);
 			if (sizedifference >= threshold) {
@@ -356,8 +359,8 @@ namespace Gts {
 				AbortAnimation(giantref, tinyref);
 				return false;
 			}
-			DamageAV(tinyref, ActorValue::kStamina, (0.80 * TimeScale()) * stamina); // Drain Stamina
-			DamageAV(giantref, ActorValue::kStamina, 0.25 * TimeScale()); // Damage GTS Stamina
+			DamageAV(tinyref, ActorValue::kStamina, (0.60 * TimeScale())); // Drain Stamina
+			DamageAV(giantref, ActorValue::kStamina, 0.34 * TimeScale() * stamina); // Damage GTS Stamina
 			
 			TransferSize(giantref, tinyref, false, shrink, steal, false); // Shrink foe, enlarge gts
 			AdjustGtsSkill(0.00020, giantref);
@@ -409,7 +412,7 @@ namespace Gts {
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 			if (!IsHugCrushing) {
-				if (giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || !HugShrink::GetHuggiesActor(giantref)) {
+				if (sizedifference < 0.9 || giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || !HugShrink::GetHuggiesActor(giantref)) {
 					AbortAnimation(giantref, tinyref);
 					return false;
 				}
