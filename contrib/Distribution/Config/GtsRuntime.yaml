@@ -225,6 +225,8 @@ perks:
   SkilledGTS: "GTS.esp|61A996"
   DisastrousTremor: "GTS.esp|61FA97"
 
+  GtsSkillPerkPoints: "GTS.esp|2352E1"
+
 
 
 explosions:

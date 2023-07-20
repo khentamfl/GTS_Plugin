@@ -105,7 +105,7 @@ namespace {
 			GtsSkillRatio->value = transfer;
 			GtsSkillLevel->value = skill_level + 1.0;
 			GtsSkillProgress->value = GtsSkillLevel->value;
-			PerkPointCheck(GtsSkillLevel->value);
+			AddPerkPoints(GtsSkillLevel->value);
 		}
 	}
 
@@ -189,6 +189,12 @@ namespace Gts {
 			CallGainWeight(giant, 3.0 * get_visual_scale(tiny));
 			if (giant->formID == 0x14) {
 				CallVampire();
+
+				bool Living = IsLiving(tiny);
+				bool Dragon = IsDragon(tiny);
+				float DefaultScale = Get_Other_Scale(tiny);
+
+				SurvivalMode_AdjustHunger(this->giant.get().get(), get_visual_scale(tiny), DefaultScale, Dragon, Living, 0);
 			}
 		}
 	}
@@ -201,11 +207,7 @@ namespace Gts {
 					KillActor(this->giant.get().get(), tiny);
 					Disintegrate(tiny);
 
-					bool Living = IsLiving(tiny);
-					bool Dragon = IsDragon(tiny);
-					float DefaultScale = Get_Other_Scale(tiny);
-
-					SurvivalMode_AdjustHunger(this->giant.get().get(), get_visual_scale(tiny), DefaultScale, Dragon, Living, 0);
+					
 
 				} else if (tiny->formID == 0x14) {
 					DamageAV(tiny, ActorValue::kHealth, 900000.0);

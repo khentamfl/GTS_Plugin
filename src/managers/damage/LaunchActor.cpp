@@ -184,7 +184,7 @@ namespace {
 	}
 
 	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float bonus) {
-		bool AllowLaunch = Persistent::GetSingleton().launch_objects; // Launch objects toggle
+		bool AllowLaunch = true; // Will add Persistent value later
 		if (!AllowLaunch) {
 			return;
 		}
@@ -196,16 +196,11 @@ namespace {
 		}
 		if (cell) { 
 			auto data = cell->GetRuntimeData();
-			auto WorldSpace = data.worldSpace;
-			
-			for (auto object: WorldSpace->largeRefData.cellFormIDMapFiltered._last) {
-				auto objectref = object->As<TESObjectREFR>();  
-				log::info("Getting ObjectRef");
+			for (auto object: data.references) {
+				auto objectref = object.get();
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
-					log::info("ObjectRef True");
 					if (!NonRef) {
-						log::info("NonRef True");
 						NiPoint3 objectlocation = objectref->GetPosition();
 						for (auto point: footPoints) {
 							float distance = (point - objectlocation).Length();
@@ -213,16 +208,12 @@ namespace {
 								float force = 1.0 - distance / maxFootDistance;
 								auto Object1 = objectref->Get3D1(false);
 								if (Object1) {
-									log::info("Object1 True");
 									auto collision = Object1->GetCollisionObject();
 									if (collision) {
-										log::info("Collision True");
 										auto rigidbody = collision->GetRigidBody();
 										if (rigidbody) {
-											log::info("RigidBody true");
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body) {
-												log::info("Body True, launching body");
 												SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
 											}
 										}

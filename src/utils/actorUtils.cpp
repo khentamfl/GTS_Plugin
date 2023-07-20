@@ -612,13 +612,20 @@ namespace Gts {
 		}
 	}
 
-	void PerkPointCheck(float level) {
-		auto progressionQuest = Runtime::GetQuest("MainQuest");
-		int bonus = 1.0;
+	void AddPerkPoints(float level) {
+		auto GtsSkillPerkPoints = Runtime::GetGlobal("GtsSkillPerkPoints");
+		if (!GtsSkillPerkPoints) {
+			return;
+		}
 		if (int(level) % 5 == 0) {
-			if (progressionQuest) {
-				CallFunctionOn(progressionQuest, "gtsProgressionQuest", "GainPerkPoint", bonus);
-			}
+			Notify("You've learned a bonus perk point");
+			GtsSkillPerkPoints->value += 1.0;
+		} if (level == 20 || level == 40) {
+			GtsSkillPerkPoints->value += 1.0;
+		} else if (level == 60 || level == 80) {
+			GtsSkillPerkPoints->value += 2.0;
+		} else if (level == 100) {
+			GtsSkillPerkPoints->value += 3.0;
 		}
 	}
 
