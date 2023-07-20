@@ -39,7 +39,7 @@ namespace {
 		float hp = 0.20;
 		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
 			hp += 0.10; // 0.30
-		} if (Runtime::HasPerkTeam(giant, "HugCrush_HugsOfDeath")) {
+		} if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
 			hp += 0.20; // 0.50
 		}
 		return hp;
