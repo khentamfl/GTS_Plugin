@@ -621,11 +621,11 @@ namespace Gts {
 			Notify("You've learned a bonus perk point");
 			GtsSkillPerkPoints->value += 1.0;
 		} if (level == 20 || level == 40) {
-			GtsSkillPerkPoints->value += 1.0;
-		} else if (level == 60 || level == 80) {
 			GtsSkillPerkPoints->value += 2.0;
-		} else if (level == 100) {
+		} else if (level == 60 || level == 80) {
 			GtsSkillPerkPoints->value += 3.0;
+		} else if (level == 100) {
+			GtsSkillPerkPoints->value += 4.0;
 		}
 	}
 

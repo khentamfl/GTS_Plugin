@@ -124,9 +124,9 @@ namespace {
 		if (!Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
 			return;
 		} if (HugShrink::GetHuggiesActor(receiver)) {
-			float reduction = 0.75; // 25% resistance
+			float reduction = 0.25; // 25% resistance
 			if (Runtime::HasPerk(receiver, "HugCrush_HugsOfDeath")) {
-				reduction -= 0.35; // 35% additional resistance
+				reduction += 0.35; // 35% additional resistance
 			}
 			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * reduction); 
 			// ^ Restore % hp, fake damage resistance
@@ -140,12 +140,12 @@ namespace {
 			return; // Full immunity
 		}
 		if (Runtime::HasPerkTeam(receiver, "HugCrush_Greed")) {
-			bonus = 6.0; // 6 times bigger damage threshold to cancel hugs
+			bonus = 4.0; // 4 times bigger damage threshold to cancel hugs
 		}
 		if (Runtime::HasPerkTeam(receiver, "HugCrush_ToughGrip")) {
 			float GetHP = GetHealthPercentage(receiver);
-			if (GetHP >= 0.75) {
-				return; // Drop only if hp is < 75%
+			if (GetHP >= 0.85) {
+				return; // Drop only if hp is < 85%
 			}
 		}
 		if (damage < 6.0 * bonus * scale) {

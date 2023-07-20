@@ -159,7 +159,7 @@ namespace {
 		set_target_scale(huggedActor, scale*0.60);
 		AdjustGtsSkill(scale/6, giant);
 		if (Runtime::HasPerkTeam(giant, "HugCrush_HugsOfDeath")) {
-			mod_target_scale(giant, scale/10);
+			mod_target_scale(giant, scale/6);
 		}
 		Rumble::For("ShrinkPulse", giant, 18.0 * sizedifference, 0.10, "NPC COM [COM ]", 0.35);
 	}
