@@ -99,7 +99,7 @@ namespace {
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
 
 
-		int random = (100 + (rand()% 65 + 1)) / 100;
+		int random = (100 + (rand()% 25 + 1)) / 100;
 
 		if (GtsSkillLevel->value >= 100.0) {
 			GtsSkillLevel->value = 100.0;
@@ -113,7 +113,7 @@ namespace {
 
 		float absorbedSize = std::clamp(get_visual_scale(Target), 1.0f, 4.0f);
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.36 * random) + absorbedSize/40) * ValueEffectiveness);
+		float Total = (((0.22 * random) + absorbedSize/40) * ValueEffectiveness);
 		GtsSkillRatio->value += Total * GetXpBonus();
 
 		if (GtsSkillRatio->value >= 1.0) {

@@ -36,7 +36,7 @@ namespace Gts {
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
 
 
-		int random = (100 + (rand()% 65 + 1)) / 100;
+		int random = (100 + (rand()% 25 + 1)) / 100;
 
 		if (GtsSkillLevel->value >= 100.0) {
 			GtsSkillLevel->value = 100.0;

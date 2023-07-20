@@ -503,7 +503,7 @@ namespace Gts {
 			return; // Do not do damage is Size Difference is < than x1.4
 		}
 
-		float experience = std::clamp(result/500, 0.0f, 0.20f);
+		float experience = std::clamp(result/500, 0.0f, 0.05f);
 		if (!tiny->IsDead()) {
 			AdjustGtsSkill(experience, giant);
 		}

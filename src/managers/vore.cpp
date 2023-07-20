@@ -82,7 +82,7 @@ namespace {
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
 
 
-		int random = (100 + (rand()% 85 + 1)) / 100;
+		int random = (100 + (rand()% 25 + 1)) / 100;
 
 		if (GtsSkillLevel->value >= 100.0) {
 			GtsSkillLevel->value = 100.0;
@@ -97,7 +97,7 @@ namespace {
 		float absorbedSize = tinysize/50;
 
 		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.36 * random) + absorbedSize) * ValueEffectiveness);
+		float Total = (((0.28 * random) + absorbedSize) * ValueEffectiveness);
 		GtsSkillRatio->value += Total * GetXpBonus();
 
 		if (GtsSkillRatio->value >= 1.0) {

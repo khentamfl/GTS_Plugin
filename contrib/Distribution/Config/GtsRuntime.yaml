@@ -225,7 +225,7 @@ perks:
   SkilledGTS: "GTS.esp|61A996"
   DisastrousTremor: "GTS.esp|61FA97"
 
-  GtsSkillPerkPoints: "GTS.esp|2352E1"
+ 
 
 
 
@@ -329,6 +329,8 @@ globals:
   PreciseDamageOthers: "GTS.esp|513540"
 
   HostileDamage: "GTS.esp|271EF2"
+
+  GtsSkillPerkPoints: "GTS.esp|2352E1"
 
   # Survival Values
 
