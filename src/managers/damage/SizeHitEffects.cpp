@@ -120,7 +120,7 @@ namespace {
 		}
 	}
 
-	void HugResistance(Actor* receiver, float damage) {
+	void HugDamageResistance(Actor* receiver, float damage) {
 		if (!Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
 			return;
 		} if (HugShrink::GetHuggiesActor(receiver)) {
@@ -161,7 +161,7 @@ namespace {
 		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		HealthGate(attacker, receiver, -(a_damage + damage));
 		TinyAsShield(attacker, receiver, -(a_damage + damage));
-		HugResistance(receiver, -(a_damage + damage));
+		HugDamageResistance(receiver, -(a_damage + damage));
 		DropTinyChance(receiver, -(a_damage + damage), sizedifference);
 
 		if (damage < 0) {
