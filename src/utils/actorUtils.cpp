@@ -869,10 +869,14 @@ namespace Gts {
 				Cprint("{} became a bloody stain under {} foot.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
 				Cprint("{} was crushed by the feet of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} else if (random == 3 || random == 4) {
+			} else if (random == 3) {
 				Cprint("Feet of {} crushed {} into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-			} else if (random == 5 || random == 6) {
+			} else if (random == 4) {
+				Cprint("{} stepped on {} too hard", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random == 5) {
 				Cprint("{} got crushed by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 6) {
+				Cprint("{} stepped on {} too hard", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 7) {
 				Cprint("{} relentlessly crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
@@ -985,13 +989,13 @@ namespace Gts {
 				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == "Breasts") { // Planned for Hug Crush animation
+		} else if (cause == "Breasts") { // Someone died between breasts
 			if (random == 1) {
 				Cprint("{} was weakened and got accidentally crushed by {} breasts", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
 				Cprint("{} got unintentionally crushed by the breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 3) {
-				Cprint("{} decided to leave this horrific world by being absorbed by the breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+				Cprint("{} left this world by being crushed between the cleavage of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
 				Cprint("Breasts of {} squeezed all life out of {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random >= 6) {
@@ -1030,13 +1034,17 @@ namespace Gts {
 			if (random < 2) {
 				Cprint("{} got crushed by the butt of {}.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
-				Cprint("{} was annihilated by the booty of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} else if (random == 3 || random == 4) {
+				Cprint("{} was overwhelmed by the booty of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 3) {
 				Cprint("Bootie of {} completely pulverized {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
-			} else if (random == 5 || random == 6) {
-				Cprint("{} has been squashed by the {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-			} else if (random >= 7) {
-				Cprint("{} relentlessly crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random == 4) {
+				Cprint("Booty of {} completely pulverized {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random == 5) {
+				Cprint("{} has been squashed by butt attack of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 6) {
+				Cprint("{} cheeks dropped on {}, turning {} into red paste", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			}else if (random >= 7) {
+				Cprint("{} relentlessly crushed {} with butt attack", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
 		} else if (cause == "Hugs") { // For Hug Crush
