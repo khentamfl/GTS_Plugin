@@ -346,12 +346,14 @@ namespace Gts {
 			float shrink = 5.60;
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				shrink *= 1.25;
-				stamina *= 0.65;
+				stamina *= 0.75;
 			} if (Runtime::HasPerkTeam(giantref, "SkilledGTS")) {
 				float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
 				stamina -= level;
 			}
-			ShutUp(tinyref);
+
+			ShutUp(tinyref); // Disallow idle dialogues
+
 			if (sizedifference >= threshold) {
 				SetBeingHeld(tinyref, false);
 				std::string_view message = std::format("You can't shrink {} any further", tinyref->GetDisplayFullName());
@@ -360,7 +362,7 @@ namespace Gts {
 				return false;
 			}
 			DamageAV(tinyref, ActorValue::kStamina, (0.60 * TimeScale())); // Drain Stamina
-			DamageAV(giantref, ActorValue::kStamina, 0.34 * TimeScale() * stamina); // Damage GTS Stamina
+			DamageAV(giantref, ActorValue::kStamina, 0.50 * stamina * TimeScale()); // Damage GTS Stamina
 			
 			TransferSize(giantref, tinyref, false, shrink, steal, false); // Shrink foe, enlarge gts
 			AdjustGtsSkill(0.00020, giantref);
@@ -405,7 +407,7 @@ namespace Gts {
 			GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
 			AdjustGtsSkill(0.00005, giantref);
 
-			DamageAV(tinyref, ActorValue::kStamina, 0.15 * TimeScale()); // Drain Tiny Stamina
+			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
 
 			bool IsHugCrushing;
 			giantref->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);

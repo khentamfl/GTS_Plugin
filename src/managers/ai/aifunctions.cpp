@@ -4,6 +4,7 @@
 #include "utils/papyrusUtils.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
+#include "utils/actorUtils.hpp"
 #include "utils/findActor.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -17,6 +18,7 @@ using namespace Gts;
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
+		ForceRagdoll(tiny, true);
 		if (!Persistent::GetSingleton().hostile_toggle) {
 			tiny->KillImmediate();
 		} else {
