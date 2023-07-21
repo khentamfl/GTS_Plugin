@@ -4,7 +4,6 @@
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/ai/aifunctions.hpp"
-#include "scale/scalespellmanager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/InputManager.hpp"

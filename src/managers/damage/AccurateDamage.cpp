@@ -3,7 +3,6 @@
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/ai/aifunctions.hpp"
-#include "scale/scalespellmanager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/InputManager.hpp"
@@ -196,15 +195,12 @@ namespace Gts {
 		auto leftFoot = find_node(actor, leftFootLookup);
 		auto leftCalf = find_node(actor, leftCalfLookup);
 		auto leftToe = find_node(actor, leftToeLookup);
-		auto BodyBone = find_node(actor, bodyLookup);
 		if (!leftFoot) {
 			return;
 		}if (!leftCalf) {
 			return;
 		}if (!leftToe) {
 			return;
-		}if (!BodyBone) {
-			return; // CTD protection attempts
 		}
 		NiMatrix3 leftRotMat;
 		{
@@ -305,7 +301,6 @@ namespace Gts {
 		auto rightFoot = find_node(actor, rightFootLookup);
 		auto rightCalf = find_node(actor, rightCalfLookup);
 		auto rightToe = find_node(actor, rightToeLookup);
-		auto BodyBone = find_node(actor, bodyLookup);
 
 
 		if (!rightFoot) {
@@ -316,9 +311,6 @@ namespace Gts {
 		}
 		if (!rightToe) {
 			return;
-		}
-		if (!BodyBone) {
-			return; // CTD protection attempts
 		}
 		NiMatrix3 rightRotMat;
 		{

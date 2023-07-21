@@ -5,7 +5,6 @@
 #include "managers/ai/headtracking.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
-#include "scale/scalespellmanager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
@@ -260,7 +259,6 @@ void GtsManager::Update() {
 		if (!actor) {
 			return;
 		}
-		static Timer tutorialtimer = Timer(1.00);
 
 		FixActorFade(actor);
 
@@ -268,11 +266,11 @@ void GtsManager::Update() {
 		auto& sizemanager = SizeManager::GetSingleton();
 
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
-			if (sizemanager.GetPreciseDamage()) {
-				accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25);
-				accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25);
-				ClothManager::GetSingleton().CheckRip();
-			}
+
+			accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25);
+			accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25);
+			ClothManager::GetSingleton().CheckRip();
+			
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
@@ -289,12 +287,6 @@ void GtsManager::Update() {
 
 		SetHealthPercentage(actor, current_health_percentage);
 
-		static Timer timer = Timer(3.00); // Add Size-related spell once per 3 sec
-		if (!SizeManager::GetSingleton().GetPreciseDamage()) {
-			if (timer.ShouldRunFrame()) {
-				ScaleSpellManager::GetSingleton().CheckSize(actor);
-			}
-		}
 	}
 }
 
