@@ -252,6 +252,74 @@ namespace Gts {
 		}
 	}
 
+	void LaunchActor::ApplyLaunch_Crawling(Actor* giant, float radius, float damagebonus, NiAVObject& node, float power) {
+		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+			return;
+		} if (!node) {
+			return;
+		}
+		LaunchActor::GetSingleton().Launch_Crawling(giant, radius, damagebonus, node, power);
+		
+	}
+
+
+	void LaunchActor::Launch_Crawling(Actor* giant, float radius, float damagebonus, NiAVObject& node, float power) {
+		auto profiler = Profilers::Profile("Other: Launch Actor Left");
+		if (!giant) {
+			return;
+		}
+		float giantScale = get_visual_scale(giant);
+		float BASE_CHECK_DISTANCE = 24.0;
+		if (kind == CrawlEvent::LeftKnee || kind == CrawlEvent::RightKnee) {
+			BASE_CHECK_DISTANCE = 28.0;
+		}
+		float SCALE_RATIO = 6.0;
+		if (HasSMT(giant)) {
+			SCALE_RATIO = 1.2 ;
+			giantScale *= 2.0;
+		}
+
+		NiPoint3 NodePosition = node->world.translate;
+
+		float maxDistance = BASE_CHECK_DISTANCE * radius * giantScale;
+		float hh = hhOffsetbase[2];
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, 0.0, 0.0), // The standard position
+		};
+		std::vector<NiPoint3> CrawlPoints = {};
+
+		for (NiPoint3 point: points) {
+			CrawlPoints.push_back(NodePosition);
+			if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance);
+			}
+		}
+
+		NiPoint3 giantLocation = giant->GetPosition();
+		LaunchObjects(giant, CrawlPoints, maxDistance, power);
+
+		for (auto otherActor: find_actors()) {
+			if (otherActor != giant) {
+				if (!AllowStagger(giant, otherActor)) {
+					return;
+				} 
+				float tinyScale = get_visual_scale(otherActor);
+				if (giantScale / tinyScale > SCALE_RATIO) {
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					for (auto point: CrawlPointsPoints) {
+						float distance = (point - actorLocation).Length();
+						if (distance <= maxDistance) {
+							float force = 1.0 - distance / maxDistance;
+							LaunchDecide(giant, otherActor, force, damagebonus/6, power);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+
 	void LaunchActor::LaunchLeft(Actor* giant, float radius, float damagebonus, float power) {
 		auto profiler = Profilers::Profile("Other: Launch Actor Left");
 		if (!giant) {

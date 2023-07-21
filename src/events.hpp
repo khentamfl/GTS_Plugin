@@ -16,6 +16,13 @@ namespace Gts {
 		Unknown,
 	};
 
+	enum CrawlEvent {
+		LeftKnee,
+		RightKnee,
+		LeftHand,
+		RightHand,
+	};
+
 	struct Impact {
 		Actor* actor;
 		FootEvent kind;
