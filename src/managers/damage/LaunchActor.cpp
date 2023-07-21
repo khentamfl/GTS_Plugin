@@ -195,7 +195,50 @@ namespace {
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power *= 1.5;
 		}
+
+			//auto data = cell->GetRuntimeData();
+		auto data = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference);
+		vector<Actor*> result;
+		result.insert(result.end(), data.begin(), data.end());
+
+		std::sort(result.begin(), result.end());
+
+		for (auto object: result) {
+			auto objectref = object->AsReference();
+			log::info("ObjectRef lookup");
+			if (objectref) {
+				Actor* NonRef = skyrim_cast<Actor*>(objectref); 
+				log::info("ObjectRef true");
+				if (!NonRef) {
+					NiPoint3 objectlocation = objectref->GetPosition();
+					log::info("Non-Ref true");
+					for (auto point: footPoints) {
+						float distance = (point - objectlocation).Length();
+						if (distance <= maxFootDistance) {
+							float force = 1.0 - distance / maxFootDistance;
+							auto Object1 = objectref->Get3D1(false);
+							if (Object1) {
+								auto collision = Object1->GetCollisionObject();
+								log::info("Collision1 found");
+								if (collision) {
+									auto rigidbody = collision->GetRigidBody();
+									log::info("Rigid Body Found");
+									if (rigidbody) {
+										auto body = rigidbody->AsBhkRigidBody();
+										log::info("Rigid Body Applying Physics");
+										if (body)
+											SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		if (cell) { 
+			return;
 			auto data = cell->GetRuntimeData();
 			for (auto object: data.references) {
 				auto objectref = object.get();
