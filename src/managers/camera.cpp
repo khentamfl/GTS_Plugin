@@ -1,14 +1,14 @@
-#include "managers/camera.hpp"
 #include "managers/cameras/camutil.hpp"
-#include "managers/highheel.hpp"
 #include "managers/InputManager.hpp"
-#include "data/runtime.hpp"
-#include "data/time.hpp"
+#include "managers/highheel.hpp"
 #include "data/persistent.hpp"
+#include "managers/camera.hpp"
+#include "data/runtime.hpp"
+#include "scale/scale.hpp"
+#include "data/time.hpp"
+#include "profiler.hpp"
 #include "Config.hpp"
 #include "node.hpp"
-#include "data/time.hpp"
-#include "scale/scale.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -72,6 +72,7 @@ namespace Gts {
 	}
 
 	void CameraManager::CameraUpdate() {
+		auto profiler = Profilers::Profile("Camera: Update");
 		CameraState* currentState = this->GetCameraState();
 
 		// Handles Transitioning

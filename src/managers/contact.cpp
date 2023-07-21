@@ -5,7 +5,7 @@
 #include "managers/highheel.hpp"
 #include "scale/scale.hpp"
 #include "scale/modscale.hpp"
-
+#include "profiler.hpp"
 
 using namespace SKSE;
 using namespace RE;
@@ -406,6 +406,7 @@ namespace Gts {
 	}
 
 	void ContactManager::HavokUpdate() {
+		auto profiler = Profilers::Profile("Other: Contact Update");
 		auto playerCharacter = PlayerCharacter::GetSingleton();
 
 		auto cell = playerCharacter->GetParentCell();

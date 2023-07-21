@@ -6,7 +6,9 @@
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
 #include "magic/effects/common.hpp"
+#include "profiler.hpp"
 #include "timer.hpp"
+
 
 using namespace SKSE;
 using namespace RE;
@@ -196,6 +198,7 @@ namespace Gts {
 	}
 
 	float AttributeManager::GetAttributeBonus(Actor* actor, ActorValue av) {
+		auto profiler = Profilers::Profile("Attributes: GetAttributeBonus");
 		if (!actor) {
 			return 1.0;
 		}

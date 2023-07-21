@@ -175,7 +175,7 @@ namespace Gts {
 	}
 
 	void AccurateDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
-		auto profiler = Profilers::Profile("AccurateDamageLeft: DoAccurateCollision");
+		auto profiler = Profilers::Profile("AccurateDamageLeft: DoAccurateCollisionLeft");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
 			return;
@@ -284,7 +284,7 @@ namespace Gts {
 	}
 
 	void AccurateDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
-		auto profiler = Profilers::Profile("AccurateDamageRight: DoAccurateCollision");
+		auto profiler = Profilers::Profile("AccurateDamageRight: DoAccurateCollisionRight");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
 			return;

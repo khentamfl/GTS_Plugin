@@ -29,7 +29,7 @@ namespace Gts {
 		if (Runtime::GetFloat("AllowClothTearing") == 0.0) {
 			return; // Abort doing anything if not set to 1
 		}
-		static Timer timer = Timer(0.1);
+		static Timer timer = Timer(0.5);
 		if (timer.ShouldRunFrame()) {
 
 			auto player = PlayerCharacter::GetSingleton();

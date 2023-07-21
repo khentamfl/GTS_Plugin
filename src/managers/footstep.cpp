@@ -6,6 +6,7 @@
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "profiler.hpp"
 #include "node.hpp"
 using namespace SKSE;
 using namespace RE;
@@ -271,6 +272,7 @@ namespace Gts {
 
 	void FootStepManager::OnImpact(const Impact& impact) {
 		if (impact.actor) {
+			auto profiler = Profilers::Profile("FootStepSound: OnImpact");
 			auto player = PlayerCharacter::GetSingleton();
 			auto actor = impact.actor;
 			float scale = impact.scale;
@@ -338,6 +340,7 @@ namespace Gts {
 
 	void FootStepManager::PlayLegacySounds(NiAVObject* foot, FootEvent foot_kind, float scale, float start_l, float start_xl, float start_xxl) {
 		//https://www.desmos.com/calculator/wh0vwgljfl
+		auto profiler = Profilers::Profile("Impact: PlayLegacySounds");
 		BSSoundHandle lFootstep    = get_sound(foot, scale, get_lFootstep_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.45,  .n = 0.7, .s = 1.0}, "L Footstep");
 		BSSoundHandle lJumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = start_l,             .k = 0.65,  .n = 0.7, .s = 1.0}, "L Jump");
 

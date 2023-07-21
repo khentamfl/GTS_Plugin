@@ -34,6 +34,7 @@ using namespace std;
 
 namespace {
 	void FixActorState(Actor* giant) { // Fixes Animations for GTS Grab Actions
+		auto profiler = Profilers::Profile("Manager: Actor State Fix");
 		int StateID;
 		int GTSStateID;
 

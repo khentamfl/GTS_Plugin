@@ -10,6 +10,7 @@
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "profiler.hpp"
 #include "spring.hpp"
 #include "node.hpp"
 
@@ -27,6 +28,7 @@ namespace Gts { // To-do: rework it into Task manager. Not sure how to do it.
 	}
 
 	void EmotionData::UpdateEmotions(Actor* giant) {
+		auto profiler = Profilers::Profile("Emotions: UpdateEmotions");
 		auto fgen = giant->GetFaceGenAnimationData();
 		std::uint32_t Zero = 0;
 		std::uint32_t One = 1;

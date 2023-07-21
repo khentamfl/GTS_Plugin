@@ -15,6 +15,7 @@
 #include "scale/scale.hpp"
 #include "colliders/RE.hpp"
 #include "colliders/actor.hpp"
+#include "profiler.hpp"
 #include "timer.hpp"
 #include "node.hpp"
 #include "utils/av.hpp"
@@ -116,13 +117,6 @@ namespace Gts {
 	void Disintegrate(Actor* actor) {
 		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 		actor->Disable();
-		/*if (Persistent::GetSingleton().delete_actors) {
-		        auto ActorRef = skyrim_cast<TESObjectREFR*>(actor);
-		        if (ActorRef) {
-		                ActorRef->SetDelete(true);
-		        }
-		        log::info("Calling Delete Actors");
-		   }*/
 	}
 
 	void UnDisintegrate(Actor* actor) {
@@ -379,6 +373,7 @@ namespace Gts {
 	}
 
 	bool IsEquipBusy(Actor* actor) {
+		auto profiler = Profilers::Profile("ActorUtils: IsEquipBusy");
 		int State;
 		actor->GetGraphVariableInt("currentDefaultState", State);
 		if (State >= 10 && State <= 20) {
@@ -388,12 +383,14 @@ namespace Gts {
 	}
 
 	bool IsCrawling(Actor* actor) {
+		auto profiler = Profilers::Profile("ActorUtils: IsCrawling");
 		bool prone;
 		actor->GetGraphVariableBool("GTS_IsCrawling", prone);
 		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && prone;
 	}
 
 	bool IsJumping(Actor* actor) {
+		auto profiler = Profilers::Profile("ActorUtils: IsJumping");
 		if (!actor) {
 			return false;
 		}
@@ -406,6 +403,7 @@ namespace Gts {
 	}
 
 	float GetHighHeelsBonusDamage(Actor* actor) {
+		auto profiler = Profilers::Profile("ActorUtils: GetHHBonusDamage");
 		if (Runtime::HasPerkTeam(actor, "hhBonus")) {
 			return HighHeelManager::GetBaseHHOffset(actor).Length()/100;
 		}
@@ -413,6 +411,7 @@ namespace Gts {
 	}
 
 	float get_distance_to_actor(Actor* receiver, Actor* target) {
+		auto profiler = Profilers::Profile("ActorUtils: GetDistanceToActor");
 		if (target) {
 			auto point_a = receiver->GetPosition();
 			auto point_b = target->GetPosition();
@@ -556,6 +555,7 @@ namespace Gts {
 	}
 
 	bool IsGtsBusy(Actor* actor) {
+		auto profiler = Profilers::Profile("ActorUtils: IsGtsBusy");
 		bool GTSBusy;
 		actor->GetGraphVariableBool("GTS_Busy", GTSBusy);
 		return GTSBusy;

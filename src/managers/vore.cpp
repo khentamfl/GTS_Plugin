@@ -13,6 +13,7 @@
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "profiler.hpp"
 #include "timer.hpp"
 #include "node.hpp"
 #include <cmath>
@@ -252,6 +253,7 @@ namespace Gts {
 	}
 
 	void VoreData::Update() {
+		auto profiler = Profilers::Profile("Vore: Update");
 		auto giant = this->giant.get().get();
 		float giantScale = get_visual_scale(giant);
 		// Stick them to the AnimObjectA

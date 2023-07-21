@@ -1,5 +1,6 @@
 #include "utils/findActor.hpp"
 #include "utils/actorUtils.hpp"
+#include "profiler.hpp"
 
 using namespace std;
 using namespace RE;
@@ -18,6 +19,7 @@ namespace Gts {
 	 * Find actors in ai manager that are loaded
 	 */
 	vector<Actor*> find_actors() {
+		auto profiler = Profilers::Profile("Other: Find Actors");
 		vector<Actor*> result;
 
 		auto high_actors = find_actors_high();

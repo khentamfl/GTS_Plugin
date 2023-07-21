@@ -8,6 +8,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
+#include "profiler.hpp"
 #include "node.hpp"
 
 #include <random>
@@ -137,6 +138,7 @@ namespace Gts {
 	}
 
 	void CrushManager::Update() {
+		auto profiler = Profilers::Profile("CrushManager: Update");
 		for (auto &[tinyId, data]: this->data) {
 			auto tiny = TESForm::LookupByID<Actor>(tinyId);
 			auto giantHandle = data.giant;

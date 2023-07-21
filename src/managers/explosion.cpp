@@ -15,6 +15,7 @@ using namespace std;
 
 namespace {
 	void CreateParticle(Actor* actor, NiPoint3 position, float scale) {
+		auto profiler = Profilers::Profile("Explosions: CreateParticle");
 		if (HighHeelManager::IsWearingHH(actor)) {
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
 			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr); // Spawn both
@@ -55,6 +56,7 @@ namespace Gts {
 		if (!impact.actor) {
 			return;
 		}
+		auto profiler = Profilers::Profile("Explosions: OnImpact");
 		auto actor = impact.actor;
 
 		float scale = impact.scale;

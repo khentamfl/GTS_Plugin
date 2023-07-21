@@ -118,6 +118,7 @@ namespace {
 	}
 
 	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus, float bonus) {
+		auto profiler = Profilers::Profile("Other: Launch Actors Decide");
 		if (IsBeingHeld(tiny)) {
 			return;
 		}
@@ -184,7 +185,8 @@ namespace {
 	}
 
 	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float bonus) {
-		bool AllowLaunch = true; // Will add Persistent value later
+		auto profiler = Profilers::Profile("Other: Launch Objects");
+		bool AllowLaunch = Persistent::GetSingleton().launch_objects; // Will add Persistent value later
 		if (!AllowLaunch) {
 			return;
 		}
@@ -252,6 +254,7 @@ namespace Gts {
 	}
 
 	void LaunchActor::LaunchLeft(Actor* giant, float radius, float damagebonus, float power) {
+		auto profiler = Profilers::Profile("Other: Launch Actor Left");
 		if (!giant) {
 			return;
 		}
@@ -348,6 +351,7 @@ namespace Gts {
 
 
 	void LaunchActor::LaunchRight(Actor* giant, float radius, float damagebonus, float power) {
+		auto profiler = Profilers::Profile("Other: Launch Actor Right");
 		if (!giant) {
 			return;
 		}

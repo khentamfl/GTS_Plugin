@@ -1,13 +1,14 @@
 // Module that handles rumbling
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/Rumble.hpp"
+#include "data/runtime.hpp"
+#include "scale/scale.hpp"
+#include "data/time.hpp"
+#include "profiler.hpp"
+#include "spring.hpp"
 #include "events.hpp"
 #include "timer.hpp"
-#include "spring.hpp"
-#include "data/time.hpp"
-#include "data/runtime.hpp"
 #include "node.hpp"
-#include "scale/scale.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -91,7 +92,7 @@ namespace Gts {
 
 
 	void Rumble::Update() {
-
+		auto profiler = Profilers::Profile("Rumble: Update");
 		for (auto& [actor, data]: this->data) {
 			//if (data.delay.ShouldRun()) {
 			// Update values based on time passed

@@ -8,10 +8,11 @@
 #include "managers/tremor.hpp"
 #include "data/runtime.hpp"
 #include "UI/DebugAPI.hpp"
+#include "scale/scale.hpp"
+#include "profiler.hpp"
 #include "events.hpp"
 
 
-#include "scale/scale.hpp"
 #include "node.hpp"
 
 using namespace SKSE;
@@ -20,6 +21,7 @@ using namespace Gts;
 
 namespace {
 	FootEvent get_foot_kind(Actor* actor, std::string_view tag) {
+		auto profiler = Profilers::Profile("Impact: Get Foot Kind");
 		FootEvent foot_kind = FootEvent::Unknown;
 		bool is_jumping = actor ? IsJumping(actor) : false;
 		bool in_air = actor ? actor->IsInMidair() : false;
@@ -38,6 +40,7 @@ namespace {
 	}
 
 	std::vector<NiAVObject*> get_landing_nodes(Actor* actor, const FootEvent& foot_kind) {
+		auto profiler = Profilers::Profile("Impact: Get Landing Nodes");
 		std::vector<NiAVObject*> results;
 		const std::string_view left_foot = ".*(L.*Foot|L.*Leg.*Tip).*";
 		const std::string_view right_foot = ".*(R.*Foot|R.*Leg.*Tip).*";
@@ -100,6 +103,7 @@ namespace Gts {
 
 	void ImpactManager::HookProcessEvent(BGSImpactManager* impact, const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
 		if (a_event) {
+			auto profiler = Profilers::Profile("Impact: HookProcess");
 			auto actor = a_event->actor.get().get();
 			if (actor) {
 				auto base_actor = actor->GetActorBase();
