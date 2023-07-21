@@ -196,13 +196,13 @@ namespace {
 			power *= 1.5;
 		}
 
-			//auto data = cell->GetRuntimeData();
+		//auto data = cell->GetRuntimeData();
 		auto data = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference);
 
 		vector<TESObjectREFR*> result;
 		result.insert(result.end(), data.begin(), data.end());
 
-		std::sort(result.begin(), result.end());
+		//std::sort(result.begin(), result.end());
 
 		for (auto object: result) {
 			auto objectref = object->AsReference();
