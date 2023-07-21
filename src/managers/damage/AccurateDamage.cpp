@@ -214,8 +214,9 @@ namespace Gts {
 					for (auto point: CrawlPoints) {
 						float distance = (point - actorLocation).Length();
 						if (distance <= maxDistance) {
-                            float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-							accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
+							float force = 1.0 - distance / maxDistance;
+                            float aveForce = std::clamp(force, 0.00f, 0.70f);
+							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult);
                         }
 					}
 				}
