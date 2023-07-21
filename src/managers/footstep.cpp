@@ -270,7 +270,7 @@ namespace Gts {
 		return "FootStepManager";
 	}
 
-	void FootStepManager::DirectImpact(Actor* actor, float scale, NiAVObject& node, FootEvent foot_kind) { // Used for Crawling only
+	void FootStepManager::DirectImpact(Actor* actor, float scale, NiAVObject* node, FootEvent foot_kind) { // Used for Crawling only
 		if (actor) {
 			auto findnode = find_node(actor, node);
 			if (!findnode) {
