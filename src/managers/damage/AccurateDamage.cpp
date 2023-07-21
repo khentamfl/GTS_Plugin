@@ -516,6 +516,11 @@ namespace Gts {
 			return;
 		}
 		ModVulnerability(giant, tiny, result); 
+		if (result >= GetAV(tiny, ActorValue::kHealth)) {
+			if (!tiny->IsDead()) {
+				KillActor(giant, tiny); // Mostly apply Ragdoll, hopefully that will fix actors standing up
+			}
+		}
 		DamageAV(tiny, ActorValue::kHealth, result);
 	}
 }
