@@ -173,7 +173,7 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-	void AccurateDamage::DoCrawlingDamage(Actor* giant, float radius, float damage, NiAVObject node, float random, float bbmult) {
+	void AccurateDamage::DoCrawlingDamage(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult) {
         auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;

@@ -9,6 +9,7 @@
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "raycast.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -44,7 +45,7 @@ namespace {
         std::string rumbleName = std::format("{}{}", tag, actor->formID);
         Rumble::Once(rumbleName, actor, 2.20 * multiplier, 0.10, name); // Do Rumble
 
-        LaunchActor::GetSingleton().Launch_Crawling(actor, launch_dist, 1.75 * multiplier, node, 0.75 * multiplier); // Launch actors
+        LaunchActor::GetSingleton().LaunchCrawling(actor, launch_dist, 1.75 * multiplier, node, 0.75 * multiplier); // Launch actors
         AccurateDamage::GetSingleton().DoCrawlingDamage(actor, damage_dist, 45 * multiplier, node, 25, 0.05); // Do size-related damage
         FootStepManager::DirectImpact(actor, scale, &node, FootEvent::Left); // Do impact sounds
 
