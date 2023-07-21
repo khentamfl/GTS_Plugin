@@ -21,7 +21,7 @@ namespace {
     }
 
     std::string_view GetImpactNode(CrawlEvent kind) {
-        if (kind == CrawlEvent::RightKneeKnee) {
+        if (kind == CrawlEvent::RightKnee) {
             return "NPC R Calf [RClf]";
         } else if (kind == CrawlEvent::LeftKnee) {
             return "NPC L Calf [LClf]";
@@ -31,21 +31,20 @@ namespace {
             return "NPC L Hand [LHnd]";
         }
     }
-    
 
-    void DoEverything(Actor* actor, float scale, float multiplier, CrawlEvent kind, std::string_view tag) {
+    void DoEverything(Actor* actor, float scale, float multiplier, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist) {
         std::string_view name = GetImpactNode(kind);
         
         auto node = find_node(actor, name);
         if (!node) {
             return;
         }
-        float scale = get_visual_scale(actor);
 
         std::string rumbleName = std::format("{}{}", tag, actor->formID);
         Rumble::Once(rumbleName, actor, 2.20 * multiplier, 0.10, node); // Do Rumble
 
-        LaunchActor::GetSingleton().ApplyLaunch_Crawling(actor, 0.75 * multiplier, 1.75 * multiplier, &node, 1.0); // Launch actors
+        LaunchActor::GetSingleton().Launch_Crawling(actor, launch_dist, 1.75 * multiplier, node, 0.75 * multiplier); // Launch actors
+        AccurateDamage::GetSingleton().DoCrawlingDamage(actor, damage_dist, 45 * multiplier, node); // Do size-related damage
         FootStepManager::DirectImpact(actor, scale, &node, FootEvent::Left); // Do impact sounds
 
         NiPoint3 node_location = node->world.translate;
@@ -61,33 +60,40 @@ namespace {
             explosion_pos.z = actor->GetPosition().z;
         }
         if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
-            SpawnCrawlParticle(actor, scale, explosion_pos);
+            SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
         }
         if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
-            SpawnCrawlParticle(actor, scale, explosion_pos);
+            SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
         }
     }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////                        E V E N T S
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee");
+        DoEverything(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 32);
 	}
 	void GTSCrawl_KneeImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee");
+        DoEverything(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 32);
 	}
 	void GTSCrawl_HandImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand");
+        DoEverything(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 26);
 	}
 	void GTSCrawl_HandImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand");
+        DoEverything(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 26);
 	}
+     /////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////                        E V E N T S  E N D
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 namespace Gts

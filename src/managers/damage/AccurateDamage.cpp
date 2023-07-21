@@ -173,6 +173,56 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
+	void AccurateDamage::DoCrawlingDamage(Actor* giant, float radius, float damage, NiAVObject node) {
+        auto profiler = Profilers::Profile("Other: CrawlDamage");
+		if (!node) {
+			return;
+		} if (!giant) {
+			return;
+		}
+		float giantScale = get_visual_scale(giant);
+
+		float SCALE_RATIO = 1.15;
+		if (HasSMT(giant)) {
+			SCALE_RATIO = 1.2;
+			giantScale *= 2.0;
+		}
+
+		NiPoint3 NodePosition = node->world.translate;
+
+		float maxDistance = radius * giantScale;
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, 0.0, 0.0), // The standard position
+		};
+		std::vector<NiPoint3> CrawlPoints = {};
+
+		for (NiPoint3 point: points) {
+			CrawlPoints.push_back(NodePosition);
+			if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance);
+			}
+		}
+
+		NiPoint3 giantLocation = giant->GetPosition();
+
+		for (auto otherActor: find_actors()) {
+			if (otherActor != giant) { 
+				float tinyScale = get_visual_scale(otherActor);
+				if (giantScale / tinyScale > SCALE_RATIO) {
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					for (auto point: CrawlPoints) {
+						float distance = (point - actorLocation).Length();
+						if (distance <= maxDistance) {
+                            float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
+							accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
+                        }
+					}
+				}
+			}
+		}
+	}
+
 	void AccurateDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("AccurateDamageLeft: DoAccurateCollisionLeft");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
