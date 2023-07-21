@@ -20,7 +20,6 @@
 #include "magic/effects/slow_grow.hpp"
 #include "magic/effects/sword_of_size.hpp"
 #include "magic/effects/vore_growth.hpp"
-#include "magic/effects/SizeRelatedDamage.hpp"
 #include "magic/effects/SmallMassiveThreat.hpp"
 #include "magic/effects/Potions/GrowthPotion.hpp"
 #include "magic/effects/Potions/SizePotion.hpp"
@@ -260,9 +259,6 @@ namespace Gts {
 		RegisterMagic<ShrinkBack>("ShrinkBack");
 		RegisterMagic<ShrinkBackOther>("ShrinkBackNPC");
 		RegisterMagic<VoreGrowth>("GlobalVoreGrowth");
-		RegisterMagic<SizeDamage>("SizeRelatedDamage0");
-		RegisterMagic<SizeDamage>("SizeRelatedDamage1");
-		RegisterMagic<SizeDamage>("SizeRelatedDamage2");
 		RegisterMagic<Absorb>("AbsorbMGEF");
 		RegisterMagic<Absorb>("TrueAbsorb");
 		RegisterMagic<ExplosiveGrowth>("explosiveGrowth1");
