@@ -740,6 +740,28 @@ namespace Gts {
 		}
 	}
 
+	void DoCrawlDamage(Actor* giant, float damage, int random, float bonedamage) {
+        auto LC = find_node(giant, "NPC L Calf [LClf]");
+        auto RC = find_node(giant, "NPC R Calf [RClf]");
+        auto LH = find_node(giant, "NPC L Hand [LHnd]");
+        auto RH = find_node(giant, "NPC R Hand [RHnd]");
+		if (!LC) {
+			return;
+		} if (RC) {
+			return;
+		} if (!LH) {
+			return;
+		} if (!RH) {
+			return;
+		}
+
+		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage, 18, LC, random, bonedamage);
+		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage, 18, RC, random, bonedamage);
+		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage * 0.8, 14, LH, random, bonedamage);
+		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage * 0.8, 14, RH, random, bonedamage);
+        
+	}
+
 	bool HasSMT(Actor* giant) {
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
 			return true;

@@ -1,6 +1,7 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/LaunchActor.hpp"
 #include "managers/animation/Crawling.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -41,15 +42,15 @@ namespace {
         }
 
         std::string rumbleName = std::format("{}{}", tag, actor->formID);
-        Rumble::Once(rumbleName, actor, 2.20 * multiplier, 0.10, node); // Do Rumble
+        Rumble::Once(rumbleName, actor, 2.20 * multiplier, 0.10, name); // Do Rumble
 
         LaunchActor::GetSingleton().Launch_Crawling(actor, launch_dist, 1.75 * multiplier, node, 0.75 * multiplier); // Launch actors
-        AccurateDamage::GetSingleton().DoCrawlingDamage(actor, damage_dist, 45 * multiplier, node); // Do size-related damage
+        AccurateDamage::GetSingleton().DoCrawlingDamage(actor, damage_dist, 45 * multiplier, node, 25, 0.05); // Do size-related damage
         FootStepManager::DirectImpact(actor, scale, &node, FootEvent::Left); // Do impact sounds
 
         NiPoint3 node_location = node->world.translate;
 
-        NiPoint3 ray_start = node_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05*scale)); // Shift up a little then subtract the hh offset
+        NiPoint3 ray_start = node_location + NiPoint3(0.0, 0.0, meter_to_unit(-0.05*scale)); // Shift up a little
         NiPoint3 ray_direction(0.0, 0.0, -1.0);
         bool success = false;
         float ray_length = meter_to_unit(std::max(1.05*scale, 1.05));
@@ -74,22 +75,22 @@ namespace {
     void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 32);
+        DoEverything(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 32, 18);
 	}
 	void GTSCrawl_KneeImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 32);
+        DoEverything(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 32, 18);
 	}
 	void GTSCrawl_HandImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 26);
+        DoEverything(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 26, 14);
 	}
 	void GTSCrawl_HandImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 26);
+        DoEverything(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 26, 14);
 	}
      /////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////                        E V E N T S  E N D

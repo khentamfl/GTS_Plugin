@@ -93,6 +93,7 @@ namespace Gts {
 	void ShutUp(Actor* actor);
 	void StaggerOr(Actor* giant, Actor* tiny, float power, float afX, float afY, float afZ, float afMagnitude);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind);
+	void DoCrawlDamage(Actor* giant, float damage, int random, float bonedamage);
 	bool HasSMT(Actor* giant);
 	void TiredSound(Actor* player, std::string_view message);
 
