@@ -36,57 +36,57 @@ namespace {
 		} else if (matches(tag, ".*Jump.*(Down|Land).*")) {
 			foot_kind = FootEvent::JumpLand;
 		}
-		return foot_kind;
+		return foot_kind; 
 	}
 
 	std::vector<NiAVObject*> get_landing_nodes(Actor* actor, const FootEvent& foot_kind) {
 		auto profiler = Profilers::Profile("Impact: Get Landing Nodes");
 		std::vector<NiAVObject*> results;
-		const std::string_view left_foot = ".*(L.*Foot|L.*Leg.*Tip).*";
-		const std::string_view right_foot = ".*(R.*Foot|R.*Leg.*Tip).*";
-		const std::string_view left_arm = ".*(L.*Foot|L.*Leg.*Tip).*";
-		const std::string_view right_arm = ".*(R.*Hand|R.*Arm.*Tip).*";
+		const std::string_view left_foot = "NPC L Foot [Lft ]";
+		const std::string_view right_foot = "NPC R Foot [Rft ]";
+		const std::string_view left_arm = "NPC L Hand [LHnd]";
+		const std::string_view right_arm = "NPC R Hand [LHnd]";
 
 		NiAVObject* result;
 		switch (foot_kind) {
 			case FootEvent::Left:
-				result = find_node_regex_any(actor, left_foot);
+				result = find_node(actor, left_foot);
 				if (result) {
 					results.push_back(result);
 				}
 				break;
 			case FootEvent::Right:
-				result = find_node_regex_any(actor, right_foot);
+				result = find_node(actor, right_foot);
 				if (result) {
 					results.push_back(result);
 				}
 				break;
 			case FootEvent::Front:
-				result = find_node_regex_any(actor, left_arm);
+				result = find_node(actor, left_arm);
 				if (result) {
 					results.push_back(result);
 				}
-				result = find_node_regex_any(actor, right_arm);
+				result = find_node(actor, right_arm);
 				if (result) {
 					results.push_back(result);
 				}
 				break;
 			case FootEvent::Back:
-				result = find_node_regex_any(actor, left_foot);
+				result = find_node(actor, left_foot);
 				if (result) {
 					results.push_back(result);
 				}
-				result = find_node_regex_any(actor, right_foot);
+				result = find_node(actor, right_foot);
 				if (result) {
 					results.push_back(result);
 				}
 				break;
 			case FootEvent::JumpLand:
-				result = find_node_regex_any(actor, left_foot);
+				result = find_node(actor, left_foot);
 				if (result) {
 					results.push_back(result);
 				}
-				result = find_node_regex_any(actor, right_foot);
+				result = find_node(actor, right_foot);
 				if (result) {
 					results.push_back(result);
 				}
