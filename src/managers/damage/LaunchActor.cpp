@@ -198,7 +198,8 @@ namespace {
 
 			//auto data = cell->GetRuntimeData();
 		auto data = TESDataHandler::GetSingleton()->GetFormArray(FormType::Reference);
-		vector<Actor*> result;
+
+		vector<TESObjectREFR*> result;
 		result.insert(result.end(), data.begin(), data.end());
 
 		std::sort(result.begin(), result.end());
