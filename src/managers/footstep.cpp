@@ -272,11 +272,6 @@ namespace Gts {
 
 	void FootStepManager::DirectImpact(Actor* actor, float scale, NiAVObject* node, FootEvent foot_kind) { // Used for Crawling only
 		if (actor) {
-			auto findnode = find_node(actor, node);
-			if (!findnode) {
-				return;
-			}
-
 			auto profiler = Profilers::Profile("FootStepSound: DirectImpact");
 			auto player = PlayerCharacter::GetSingleton();
 			if (actor->formID == 0x14 && HasSMT(actor)) {
@@ -302,10 +297,10 @@ namespace Gts {
 
 				if (Runtime::GetBool("EnableGiantSounds")) {
 					if (!LegacySounds) { // Play normal sounds
-						FootStepManager::PlayNormalSounds(findnode, foot_kind, scale, sprint_factor, sprinting);
+						FootStepManager::PlayNormalSounds(node, foot_kind, scale, sprint_factor, sprinting);
 						return;
 					} else if (LegacySounds) { // Play old sounds
-						FootStepManager::PlayLegacySounds(findnode, foot_kind, scale, start_l, start_xl, start_xxl);
+						FootStepManager::PlayLegacySounds(node, foot_kind, scale, start_l, start_xl, start_xxl);
 						return;
 					}
 				}
