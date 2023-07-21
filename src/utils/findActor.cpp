@@ -44,8 +44,8 @@ namespace Gts {
 
 	vector<Actor*> find_actors() {
 		auto profiler = Profilers::Profile("Other: Find Actors");
-		vector<Actor*> result;
-		result = find_actors_high();
+		//vector<Actor*> result;
+		//result = find_actors_high();
 		/*auto high_actors = find_actors_high();
 		result.insert(result.end(), high_actors.begin(), high_actors.end());
 
@@ -61,7 +61,7 @@ namespace Gts {
 		//result.erase( std::unique( result.begin(), result.end() ), result.end() );
 		//std::sort( result.begin(), result.end() );
 		
-		return result;
+		return find_actors_high();
 	}
 
 	vector<Actor*> find_actors_high() {
