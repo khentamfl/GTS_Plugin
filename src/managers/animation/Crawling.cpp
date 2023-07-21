@@ -5,6 +5,7 @@
 #include "managers/animation/Crawling.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
@@ -47,7 +48,7 @@ namespace {
 
         LaunchActor::GetSingleton().LaunchCrawling(actor, launch_dist, 1.75 * multiplier, node, 0.75 * multiplier); // Launch actors
         AccurateDamage::GetSingleton().DoCrawlingDamage(actor, damage_dist, 45 * multiplier, node, 25, 0.05); // Do size-related damage
-        FootStepManager::GetSingleton().DirectImpact(actor, scale, &node, FootEvent::Left); // Do impact sounds
+        FootStepManager::DirectImpact(actor, scale, &node, FootEvent::Left); // Do impact sounds
 
         NiPoint3 node_location = node->world.translate;
 
