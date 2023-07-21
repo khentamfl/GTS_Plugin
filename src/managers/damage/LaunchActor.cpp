@@ -252,7 +252,7 @@ namespace Gts {
 		}
 	}
 	
-	void LaunchActor::LaunchCrawling(Actor* giant, float radius, float power, NiAVObject node, float damagebonus) {
+	void LaunchActor::LaunchCrawling(Actor* giant, float radius, float power, NiAVObject* node, float damagebonus) {
         auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
         if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 			return;
