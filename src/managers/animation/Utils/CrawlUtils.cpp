@@ -178,9 +178,9 @@ void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float boneda
 			return;
 		}
 
-		DoCrawlingDamage(giant, damage, 14, LC, random, bonedamage);
-		DoCrawlingDamage(giant, damage, 14, RC, random, bonedamage);
-		DoCrawlingDamage(giant, damage * 0.8, 10, LH, random, bonedamage);
-		DoCrawlingDamage(giant, damage * 0.8, 10, RH, random, bonedamage);
+		DoCrawlingDamage(giant, 14, damage,, LC, random, bonedamage);
+		DoCrawlingDamage(giant, 14, damage, RC, random, bonedamage);
+		DoCrawlingDamage(giant, 10, damage * 0.8, LH, random, bonedamage);
+		DoCrawlingDamage(giant, 10, damage * 0.8, RH, random, bonedamage);
 	}
 }
