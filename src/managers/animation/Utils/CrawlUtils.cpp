@@ -16,7 +16,7 @@
 
 namespace {
     void SpawnCrawlParticle(Actor* actor, float scale, NiPoint3 position) {
-        SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.0, 7, nullptr);
+        SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 1.8, 7, nullptr);
     }
 
     std::string_view GetImpactNode(CrawlEvent kind) {
@@ -86,26 +86,37 @@ namespace Gts {
 
         LaunchActor::GetSingleton().LaunchCrawling(actor, launch_dist, 0.45 * multiplier, node, 0.75 * multiplier); // Launch actors
 
-        DoCrawlingDamage(actor, damage_dist, 45 * multiplier, node, 25, 0.05); // Do size-related damage
+        DoCrawlingDamage(actor, damage_dist, 60 * multiplier, node, 25, 0.05); // Do size-related damage
         DoCrawlingSounds(actor, scale, node, FootEvent::Left); // Do impact sounds
 
-        NiPoint3 node_location = node->world.translate;
+        float minimal_scale = 2.0;
 
-        NiPoint3 ray_start = node_location + NiPoint3(0.0, 0.0, meter_to_unit(-0.05*scale)); // Shift up a little
-        NiPoint3 ray_direction(0.0, 0.0, -1.0);
-        bool success = false;
-        float ray_length = meter_to_unit(std::max(1.05*scale, 1.05));
-        NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, ray_length, success);
+        if (actor->formID == 0x14) {
+			if (HasSMT(actor)) {
+				minimal_scale = 1.0;
+				scale += 0.33;
+			}
+		}
 
-        if (!success) {
-            explosion_pos = node_location;
-            explosion_pos.z = actor->GetPosition().z;
-        }
-        if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
-            SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
-        }
-        if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
-            SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
+        if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {
+            NiPoint3 node_location = node->world.translate;
+
+            NiPoint3 ray_start = node_location + NiPoint3(0.0, 0.0, meter_to_unit(-0.05*scale)); // Shift up a little
+            NiPoint3 ray_direction(0.0, 0.0, -1.0);
+            bool success = false;
+            float ray_length = meter_to_unit(std::max(1.05*scale, 1.05));
+            NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, ray_length, success);
+
+            if (!success) {
+                explosion_pos = node_location;
+                explosion_pos.z = actor->GetPosition().z;
+            }
+            if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
+                SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
+            }
+            if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
+                SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
+            }
         }
     }
 
@@ -178,9 +189,9 @@ void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float boneda
 			return;
 		}
 
-		DoCrawlingDamage(giant, 14, damage, LC, random, bonedamage);
-		DoCrawlingDamage(giant, 14, damage, RC, random, bonedamage);
-		DoCrawlingDamage(giant, 10, damage * 0.8, LH, random, bonedamage);
-		DoCrawlingDamage(giant, 10, damage * 0.8, RH, random, bonedamage);
+		DoCrawlingDamage(giant, 10, damage, LC, random, bonedamage);
+		DoCrawlingDamage(giant, 10, damage, RC, random, bonedamage);
+		DoCrawlingDamage(giant, 7, damage * 0.8, LH, random, bonedamage);
+		DoCrawlingDamage(giant, 7, damage * 0.8, RH, random, bonedamage);
 	}
 }
