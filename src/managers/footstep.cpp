@@ -270,44 +270,6 @@ namespace Gts {
 		return "FootStepManager";
 	}
 
-	void FootStepManager::DirectImpact(Actor* actor, float scale, NiAVObject* node, FootEvent foot_kind) { // Used for Crawling only
-		if (actor) {
-			auto profiler = Profilers::Profile("FootStepSound: DirectImpact");
-			auto player = PlayerCharacter::GetSingleton();
-			if (actor->formID == 0x14 && HasSMT(actor)) {
-				scale *= 1.75;
-			}
-			float sprint_factor = 1.0;
-			bool LegacySounds = Persistent::GetSingleton().legacy_sounds; // Determine if we should play old pre 2.00 update sounds
-			bool sprinting = false;
-			bool WearingHighHeels = HighHeelManager::IsWearingHH(actor);
-			if (scale > 1.2 && !actor->AsActorState()->IsSwimming()) {
-				float start_l = 1.2;
-				float start_xl = 11.99;
-				float start_xlJumpLand= 1.99;
-				float start_xxl = 20.0;
-				scale *= 0.33;
-				if (actor->formID == 0x14 && IsFirstPerson()) { // Footsteps are quieter when in first person
-					scale *= 0.70;
-				}
-
-				if (actor->AsActorState()->IsWalking()) {
-					scale *= 0.65; // Walking makes you sound quieter
-				}
-
-				if (Runtime::GetBool("EnableGiantSounds")) {
-					if (!LegacySounds) { // Play normal sounds
-						FootStepManager::PlayNormalSounds(node, foot_kind, scale, sprint_factor, sprinting);
-						return;
-					} else if (LegacySounds) { // Play old sounds
-						FootStepManager::PlayLegacySounds(node, foot_kind, scale, start_l, start_xl, start_xxl);
-						return;
-					}
-				}
-			}
-		}
-	}
-
 	void FootStepManager::OnImpact(const Impact& impact) {
 		if (impact.actor) {
 			auto profiler = Profilers::Profile("FootStepSound: OnImpact");
