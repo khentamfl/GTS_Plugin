@@ -743,11 +743,11 @@ namespace Gts {
 	void DoCrawlDamage(Actor* giant, float damage, int random, float bonedamage) {
         auto LC = find_node(giant, "NPC L Calf [LClf]");
         auto RC = find_node(giant, "NPC R Calf [RClf]");
-        auto LH = find_node(giant, "NPC L Hand [LHnd]");
-        auto RH = find_node(giant, "NPC R Hand [RHnd]");
+        auto LH = find_node(giant, "NPC L Finger20 [LF20]");
+        auto RH = find_node(giant, "NPC R Finger20 [RF20]");
 		if (!LC) {
 			return;
-		} if (RC) {
+		} if (!RC) {
 			return;
 		} if (!LH) {
 			return;
@@ -755,10 +755,10 @@ namespace Gts {
 			return;
 		}
 
-		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage, 18, LC, random, bonedamage);
-		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage, 18, RC, random, bonedamage);
-		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage * 0.8, 14, LH, random, bonedamage);
-		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage * 0.8, 14, RH, random, bonedamage);
+		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage, 14, LC, random, bonedamage);
+		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage, 14, RC, random, bonedamage);
+		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage * 0.8, 10, LH, random, bonedamage);
+		AccurateDamage::GetSingleton().DoCrawlingDamage(giant, damage * 0.8, 10, RH, random, bonedamage);
         
 	}
 

@@ -206,8 +206,6 @@ namespace Gts {
 			}
 		}
 
-		
-
 		NiPoint3 giantLocation = giant->GetPosition();
 
 		for (auto otherActor: find_actors()) {
