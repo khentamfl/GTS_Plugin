@@ -15,9 +15,9 @@ namespace Gts {
 
 			void CheckRip();
 
-		private:
-			float clothtearthreshold = 2.5;
-			float clothtearcount = 0.0;
-
+            float LastPlayerScale = 0.0;
+            float AddedThreshold = -1.0;			//If This Value is -1 We Know We just started
+            const float TearThreshold = 1.5;
+			const float TooBig = 2.5;
 	};
 }
