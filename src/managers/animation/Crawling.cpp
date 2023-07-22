@@ -32,6 +32,8 @@ namespace {
             return "NPC R Hand [RHnd]";
         } else if (kind == CrawlEvent::LeftHand) {
             return "NPC L Hand [LHnd]";
+        } else {
+            return "NPC L Hand [LHnd]";
         }
     }
 
