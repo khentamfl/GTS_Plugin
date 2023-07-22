@@ -29,11 +29,11 @@ namespace {
         } else if (kind == CrawlEvent::LeftKnee) {
             return "NPC L Calf [LClf]";
         } else if (kind == CrawlEvent::RightHand) {
-            return "NPC R Hand [RHnd]";
+            return "NPC R Finger20 [RF20]";
         } else if (kind == CrawlEvent::LeftHand) {
-            return "NPC L Hand [LHnd]";
+            return "NPC L Finger20 [LF20]";
         } else {
-            return "NPC L Hand [LHnd]";
+            return "NPC L Finger20 [LF20]";
         }
     }
 
@@ -46,7 +46,7 @@ namespace {
         }
 
         std::string rumbleName = std::format("{}{}", tag, actor->formID);
-        Rumble::Once(rumbleName, actor, 2.20 * multiplier, 0.10, name); // Do Rumble
+        Rumble::Once(rumbleName, actor, 0.80 * multiplier, 0.10, name); // Do Rumble
 
         LaunchActor::GetSingleton().LaunchCrawling(actor, launch_dist, 1.75 * multiplier, node, 0.75 * multiplier); // Launch actors
         AccurateDamage::GetSingleton().DoCrawlingDamage(actor, damage_dist, 45 * multiplier, node, 25, 0.05); // Do size-related damage
