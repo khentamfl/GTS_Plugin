@@ -8,6 +8,7 @@
 #include "managers/CrushManager.hpp"
 #include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
+#include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -35,9 +36,9 @@ namespace {
 
 namespace Gts {
 
-    void DoCrawlingSounds(Actor* actor, float scale, NiAVObject* node, FootEvent foot_kind) { // Used for Crawling only
+    void DoCrawlingSounds(Actor* actor, float scale, NiAVObject* node, FootEvent foot_kind) { // Call crawling sounds
 		if (actor) {
-			auto profiler = Profilers::Profile("FootStepSound: DirectImpact");
+			auto profiler = Profilers::Profile("CrawlSounds");
 			auto player = PlayerCharacter::GetSingleton();
 			if (actor->formID == 0x14 && HasSMT(actor)) {
 				scale *= 1.75;
@@ -45,7 +46,6 @@ namespace Gts {
 			float sprint_factor = 1.0;
 			bool LegacySounds = Persistent::GetSingleton().legacy_sounds; // Determine if we should play old pre 2.00 update sounds
 			bool sprinting = false;
-			bool WearingHighHeels = HighHeelManager::IsWearingHH(actor);
 			if (scale > 1.2 && !actor->AsActorState()->IsSwimming()) {
 				float start_l = 1.2;
 				float start_xl = 11.99;
@@ -73,7 +73,7 @@ namespace Gts {
 		}
 	}
 
-    void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist) {
+    void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist) { // Call everything
         std::string_view name = GetImpactNode(kind);
         
         auto node = find_node(actor, name);
@@ -110,7 +110,7 @@ namespace Gts {
     }
 
 
-void DoCrawlingDamage(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult) {
+    void DoCrawlingDamage(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult) { // Apply crawl damage to each bone individually
         auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
@@ -163,7 +163,7 @@ void DoCrawlingDamage(Actor* giant, float radius, float damage, NiAVObject* node
 		}
 	}
 
-void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float bonedamage) {
+void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float bonedamage) { // Applies damage to all 4 crawl bones at once
         auto LC = find_node(giant, "NPC L Calf [LClf]");
         auto RC = find_node(giant, "NPC R Calf [RClf]");
         auto LH = find_node(giant, "NPC L Finger20 [LF20]");
