@@ -1,4 +1,5 @@
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/gamemode/GameModeManager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
@@ -272,7 +273,7 @@ void GtsManager::Update() {
 			ClothManager::GetSingleton().CheckRip();
 
 			if (IsCrawling(actor)) {
-				DoCrawlDamage(actor, 0.7, 1000, 0.25);
+				ApplyAllCrawlingDamage(actor, 0.7, 1000, 0.25);
 			}
 			
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes
