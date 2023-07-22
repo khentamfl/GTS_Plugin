@@ -24,22 +24,22 @@ namespace {
     void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 20, 15);
+        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 20, 16);
 	}
 	void GTSCrawl_KneeImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 20, 15);
+        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 20, 16);
 	}
 	void GTSCrawl_HandImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 15, 12.5);
+        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 15, 14);
 	}
 	void GTSCrawl_HandImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 15, 12.5);
+        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 15, 14);
 
 		// First Number = Launch Radius, second = Damage Zone Radius
 	}

@@ -99,7 +99,7 @@ namespace Gts {
 			}
 		}
 
-		DoCrawlingDamage(actor, damage_dist, 60 * multiplier, node, 25, 0.05); // Do size-related damage
+		DoCrawlingDamage(actor, damage_dist, 70 * multiplier, node, 20, 0.05); // Do size-related damage
         DoCrawlingSounds(actor, scale, node, FootEvent::Left);                 // Do impact sounds
 
         if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {
