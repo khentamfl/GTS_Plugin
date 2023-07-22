@@ -41,7 +41,7 @@ namespace Gts {
 			auto profiler = Profilers::Profile("CrawlSounds");
 			auto player = PlayerCharacter::GetSingleton();
 			if (actor->formID == 0x14 && HasSMT(actor)) {
-				scale *= 1.75;
+				scale *= 1.85;
 			}
 			float sprint_factor = 1.0;
 			bool LegacySounds = Persistent::GetSingleton().legacy_sounds; // Determine if we should play old pre 2.00 update sounds
@@ -51,17 +51,17 @@ namespace Gts {
 				float start_xl = 11.99;
 				float start_xlJumpLand= 1.99;
 				float start_xxl = 20.0;
-				scale *= 0.33;
+				scale *= 0.60;
 				if (actor->formID == 0x14 && IsFirstPerson()) { // Footsteps are quieter when in first person
 					scale *= 0.70;
 				}
 
 				if (actor->AsActorState()->IsWalking()) {
-					scale *= 0.65; // Walking makes you sound quieter
+					scale *= 0.75; // Walking makes you sound quieter
 				}
 
 				if (Runtime::GetBool("EnableGiantSounds")) {
-					if (!LegacySounds) { // Play normal sounds
+					if (!LegacySounds) {       // Play normal sounds
 						FootStepManager::PlayNormalSounds(node, foot_kind, scale, sprint_factor, sprinting);
 						return;
 					} else if (LegacySounds) { // Play old sounds
@@ -78,25 +78,29 @@ namespace Gts {
         
         auto node = find_node(actor, name);
         if (!node) {
-            return;
+            return; // Make sure to return if node doesn't exist, no CTD in that case
         }
 
         std::string rumbleName = std::format("{}{}", tag, actor->formID);
-        Rumble::Once(rumbleName, actor, 0.80 * multiplier, 0.10, name); // Do Rumble
+        Rumble::Once(rumbleName, actor, 0.90 * multiplier, 0.10, name); // Do Rumble
 
-        LaunchActor::GetSingleton().LaunchCrawling(actor, launch_dist, 0.45 * multiplier, node, 0.75 * multiplier); // Launch actors
+        LaunchActor::GetSingleton().LaunchCrawling(actor, launch_dist, 0.25 * multiplier, node, 0.75 * multiplier); // Launch actors
+		//                                                   radius           power       object       damage
 
-        DoCrawlingDamage(actor, damage_dist, 60 * multiplier, node, 25, 0.05); // Do size-related damage
-        DoCrawlingSounds(actor, scale, node, FootEvent::Left); // Do impact sounds
+        
 
         float minimal_scale = 2.0;
 
         if (actor->formID == 0x14) {
 			if (HasSMT(actor)) {
+				multiplier *= 1.8;
 				minimal_scale = 1.0;
-				scale += 0.33;
+				scale += 0.75;
 			}
 		}
+
+		DoCrawlingDamage(actor, damage_dist, 60 * multiplier, node, 25, 0.05); // Do size-related damage
+        DoCrawlingSounds(actor, scale, node, FootEvent::Left);                 // Do impact sounds
 
         if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {
             NiPoint3 node_location = node->world.translate;
@@ -130,9 +134,9 @@ namespace Gts {
 		}
 		float giantScale = get_visual_scale(giant);
 
-		float SCALE_RATIO = 1.15;
+		float SCALE_RATIO = 1.25;
 		if (HasSMT(giant)) {
-			SCALE_RATIO = 1.2;
+			SCALE_RATIO = 1.10;
 			giantScale *= 2.0;
 		}
 
@@ -187,11 +191,11 @@ void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float boneda
 			return;
 		} if (!RH) {
 			return;
-		}
+		} // CTD protection
 
-		DoCrawlingDamage(giant, 10, damage, LC, random, bonedamage);
-		DoCrawlingDamage(giant, 10, damage, RC, random, bonedamage);
-		DoCrawlingDamage(giant, 7, damage * 0.8, LH, random, bonedamage);
-		DoCrawlingDamage(giant, 7, damage * 0.8, RH, random, bonedamage);
+		DoCrawlingDamage(giant, 10, damage, LC, random, bonedamage); 		// Call Left Calf
+		DoCrawlingDamage(giant, 10, damage, RC, random, bonedamage);        // Call Right Calf
+		DoCrawlingDamage(giant, 7, damage * 0.8, LH, random, bonedamage);   // Call Left Hand
+		DoCrawlingDamage(giant, 7, damage * 0.8, RH, random, bonedamage);   // Call Right Calf
 	}
 }
