@@ -286,7 +286,7 @@ namespace Gts {
 				float start_xl = 11.99;
 				float start_xlJumpLand= 1.99;
 				float start_xxl = 20.0;
-				scale *= 0.7;
+				scale *= 0.33;
 				if (actor->formID == 0x14 && IsFirstPerson()) { // Footsteps are quieter when in first person
 					scale *= 0.70;
 				}

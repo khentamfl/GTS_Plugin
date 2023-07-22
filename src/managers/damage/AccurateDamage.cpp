@@ -199,7 +199,10 @@ namespace Gts {
 
 		for (NiPoint3 point: points) {
 			CrawlPoints.push_back(NodePosition);
-			if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+		}
+
+		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+			for (auto PT: CrawlPoints) {
 				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance);
 			}
 		}

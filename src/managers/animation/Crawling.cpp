@@ -79,22 +79,22 @@ namespace {
     void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 32, 18);
+        DoEverything(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 32, 26);
 	}
 	void GTSCrawl_KneeImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 32, 18);
+        DoEverything(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 32, 26);
 	}
 	void GTSCrawl_HandImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 26, 14);
+        DoEverything(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 26, 20);
 	}
 	void GTSCrawl_HandImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoEverything(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 26, 14);
+        DoEverything(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 26, 20);
 	}
      /////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////                        E V E N T S  E N D
