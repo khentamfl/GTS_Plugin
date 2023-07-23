@@ -147,6 +147,11 @@ namespace Gts {
 			offset += this->smoothOffset.value;
 			this->smoothScale.target = scale;
 
+			if (!IsGtsBusy(player) && IsCrawling(player)) {
+				offset.z *= 0.65;
+				playerLocalOffset.z *= 0.65;
+			}
+
 			// Apply camera scale and offset
 			if (currentState->PermitCameraTransforms()) {
 				UpdateCamera(this->smoothScale.value, offset, playerLocalOffset);
