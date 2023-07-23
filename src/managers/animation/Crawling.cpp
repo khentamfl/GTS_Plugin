@@ -24,12 +24,12 @@ namespace {
     void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 20, 18);
+        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 20, 10);
 	}
 	void GTSCrawl_KneeImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 20, 18);
+        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 20, 10);
 	}
 	void GTSCrawl_HandImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
@@ -37,14 +37,14 @@ namespace {
 		if (IsTransferingTiny(giant)) {
 			return; // Prevent effects from left hand
 		}
-        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 16, 16);
+        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 18, 8);
 	}
 	void GTSCrawl_HandImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 16, 16);
-		//                                                                          ^    ^ --- Damage Radius
-        //                                                                      Launch Radius
+        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 18, 8);
+		//                                                                         ^    ^ --- Damage Radius
+        //                                                                     Launch Radius
 	}
 }
 

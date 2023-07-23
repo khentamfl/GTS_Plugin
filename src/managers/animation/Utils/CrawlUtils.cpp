@@ -199,9 +199,9 @@ void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float boneda
 		DoCrawlingDamage(giant, 10, damage, RC, random, bonedamage);        // Call Right Calf
 
 		if (!IsTransferingTiny(giant)) { // Only do if we don't have someone in our left hand
-			DoCrawlingDamage(giant, 7, damage, LH, random, bonedamage);   // Call Left Hand
+			DoCrawlingDamage(giant, 8, damage, LH, random, bonedamage);   // Call Left Hand
 		}
 		
-		DoCrawlingDamage(giant, 7, damage, RH, random, bonedamage);   // Call Right Calf
+		DoCrawlingDamage(giant, 8, damage, RH, random, bonedamage);   // Call Right Calf
 	}
 }
