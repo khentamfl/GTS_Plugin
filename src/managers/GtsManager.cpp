@@ -273,7 +273,7 @@ void GtsManager::Update() {
 			ClothManager::GetSingleton().CheckRip();
 
 			if (IsCrawling(actor)) {
-				ApplyAllCrawlingDamage(actor, 0.7, 1000, 0.25);
+				ApplyAllCrawlingDamage(actor, 1.0, 1000, 0.25);
 			}
 			
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes

@@ -539,6 +539,12 @@ namespace Gts {
 		}
 	}
 
+	bool IsTransferingTiny(Actor* actor) { // Reports 'Do we have someone grabed?'
+		int grabbed;
+		giant->GetGraphVariableInt("GTS_GrabbedTiny", grabbed);
+		return grabbed;
+	}
+
 	void SetBeingEaten(Actor* tiny, bool decide) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {

@@ -326,9 +326,9 @@ namespace Gts {
 		}
 
 		if (!IsCrawling(caster)) {
-			PrintDeathSource(caster, target, "Crushed");
+			PrintDeathSource(caster, target, "Crushed"); // Report crush death
 		} else if (IsCrawling(caster)) {
-			PrintDeathSource(caster, target, "Crawl");
+			PrintDeathSource(caster, target, "Crawl"); // Report crawling death
 		}
 		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 

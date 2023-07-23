@@ -81,23 +81,24 @@ namespace Gts {
             return; // Make sure to return if node doesn't exist, no CTD in that case
         }
 
-        std::string rumbleName = std::format("{}{}", tag, actor->formID);
-        Rumble::Once(rumbleName, actor, 0.90 * multiplier, 0.10, name); // Do Rumble
+		float SMT = 1.0;
+		float minimal_scale = 2.0;
 
-        LaunchActor::GetSingleton().LaunchCrawling(actor, launch_dist, 0.25 * multiplier, node, 0.75 * multiplier); // Launch actors
+		LaunchActor::GetSingleton().LaunchCrawling(actor, launch_dist, 0.20 * multiplier, node, 0.75 * multiplier); // Launch actors
 		//                                                   radius           power       object       damage
-
-        
-
-        float minimal_scale = 2.0;
+		// Order matters here since we don't want to make it even stronger during SMT, so that's why SMT check is after this function
 
         if (actor->formID == 0x14) {
 			if (HasSMT(actor)) {
+				SMT = 2.5; // Stronger Camera Shake
 				multiplier *= 1.8;
 				minimal_scale = 1.0;
 				scale += 0.75;
 			}
 		}
+
+        std::string rumbleName = std::format("{}{}", tag, actor->formID);
+        Rumble::Once(rumbleName, actor, 0.90 * multiplier * SMT, 0.10, name); // Do Rumble
 
 		DoCrawlingDamage(actor, damage_dist, 70 * multiplier, node, 20, 0.05); // Do size-related damage
         DoCrawlingSounds(actor, scale, node, FootEvent::Left);                 // Do impact sounds
@@ -193,17 +194,14 @@ void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float boneda
 			return;
 		} // CTD protection
 
-		int grabbed;
-		giant->GetGraphVariableInt("GTS_GrabbedTiny", grabbed);
-		
 
 		DoCrawlingDamage(giant, 10, damage, LC, random, bonedamage); 		// Call Left Calf
 		DoCrawlingDamage(giant, 10, damage, RC, random, bonedamage);        // Call Right Calf
 
-		if (grabbed <= 0) { // Only do if we don't have someone in our left hand
-			DoCrawlingDamage(giant, 7, damage * 0.8, LH, random, bonedamage);   // Call Left Hand
+		if (!IsTransferingTiny(giant)) { // Only do if we don't have someone in our left hand
+			DoCrawlingDamage(giant, 7, damage, LH, random, bonedamage);   // Call Left Hand
 		}
 		
-		DoCrawlingDamage(giant, 7, damage * 0.8, RH, random, bonedamage);   // Call Right Calf
+		DoCrawlingDamage(giant, 7, damage, RH, random, bonedamage);   // Call Right Calf
 	}
 }

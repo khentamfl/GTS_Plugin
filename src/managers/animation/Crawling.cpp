@@ -24,29 +24,27 @@ namespace {
     void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 20, 16);
+        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 20, 18);
 	}
 	void GTSCrawl_KneeImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 20, 16);
+        DoCrawlingFunctions(giant, scale, 1.25, CrawlEvent::RightKnee, "RightKnee", 20, 18);
 	}
 	void GTSCrawl_HandImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-		int grabbed;
-		giant->GetGraphVariableInt("GTS_GrabbedTiny", grabbed);
-		if (grabbed >= 1) {
+		if (IsTransferingTiny(giant)) {
 			return; // Prevent effects from left hand
 		}
-        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 15, 14);
+        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::LeftHand, "LeftHand", 16, 16);
 	}
 	void GTSCrawl_HandImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 15, 14);
-
-		// First Number = Launch Radius, second = Damage Zone Radius
+        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 16, 16);
+		//                                                                          ^    ^ --- Damage Radius
+        //                                                                      Launch Radius
 	}
 }
 
