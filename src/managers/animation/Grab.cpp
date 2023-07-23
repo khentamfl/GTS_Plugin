@@ -643,7 +643,7 @@ namespace Gts {
 
 			ShutUp(tinyref);
 			
-			if (giantref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
+			if (giantref->IsDead() || tinyref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				PushActorAway(giantref, tinyref, 1.0);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);
