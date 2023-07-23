@@ -541,8 +541,8 @@ namespace Gts {
 
 	bool IsTransferingTiny(Actor* actor) { // Reports 'Do we have someone grabed?'
 		int grabbed;
-		giant->GetGraphVariableInt("GTS_GrabbedTiny", grabbed);
-		return grabbed;
+		actor->GetGraphVariableInt("GTS_GrabbedTiny", grabbed);
+		return grabbed > 0;
 	}
 
 	void SetBeingEaten(Actor* tiny, bool decide) {
