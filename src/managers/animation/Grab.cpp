@@ -270,8 +270,12 @@ namespace {
 			for (auto& tiny: VoreData.GetVories()) {
 				if (!AllowDevourment()) {
 					VoreData.Swallow();
+					if (IsCrawling(&data.giant)) {
+						VoreData.KillAll(); // Insta-kill during swallow.
+					}
 				} else {
 					CallDevourment(&data.giant, otherActor);
+					
 				}
 			}
 		}
