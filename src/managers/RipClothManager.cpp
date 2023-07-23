@@ -111,7 +111,7 @@ namespace Gts {
 	void ClothManager::CheckRip() {
 		if (Runtime::GetFloat("AllowClothTearing") == 0.0) return; // Abort doing anything if not set to 1
 		
-		static Timer timer = Timer(0.66);
+		static Timer timer = Timer(1.2);
 
 		if (!timer.ShouldRunFrame()) return;
 
