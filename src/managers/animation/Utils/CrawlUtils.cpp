@@ -193,9 +193,17 @@ void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float boneda
 			return;
 		} // CTD protection
 
+		int grabbed;
+		giant->GetGraphVariableInt("GTS_GrabbedTiny", grabbed);
+		
+
 		DoCrawlingDamage(giant, 10, damage, LC, random, bonedamage); 		// Call Left Calf
 		DoCrawlingDamage(giant, 10, damage, RC, random, bonedamage);        // Call Right Calf
-		DoCrawlingDamage(giant, 7, damage * 0.8, LH, random, bonedamage);   // Call Left Hand
+
+		if (grabbed <= 0) { // Only do if we don't have someone in our left hand
+			DoCrawlingDamage(giant, 7, damage * 0.8, LH, random, bonedamage);   // Call Left Hand
+		}
+		
 		DoCrawlingDamage(giant, 7, damage * 0.8, RH, random, bonedamage);   // Call Right Calf
 	}
 }

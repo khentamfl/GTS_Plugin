@@ -324,7 +324,12 @@ namespace Gts {
 		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthDesirePerk")) {
 			Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
 		}
-		PrintDeathSource(caster, target, "Crushed");
+
+		if (!IsCrawling(caster)) {
+			PrintDeathSource(caster, target, "Crushed");
+		} else if (IsCrawling(caster)) {
+			PrintDeathSource(caster, target, "Crawl");
+		}
 		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 
 		bool GTSBusy;

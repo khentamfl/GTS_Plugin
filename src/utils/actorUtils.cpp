@@ -1064,11 +1064,28 @@ namespace Gts {
 				Cprint("{} gently hug crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
+		} else if (cause == "Crawl") { // For being crushed while GTS crawls
+			if (random < 2) {
+				Cprint("{} was accidentally crushed by {} that was crawling around", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 2) {
+				Cprint("{} was crawling around and ended up killing {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			} else if (random == 3) {
+				Cprint("{} ended up being in a wrong place and in the wrong time", tiny->GetDisplayFullName());
+			} else if (random == 4) {
+				Cprint("{} couldn't survive being under crawling {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random == 5) {
+				Cprint("For some reason something has crunched under {}", giant->GetDisplayFullName());
+			} else if (random == 6) {
+				Cprint("{} couldn't survive under {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			} else if (random >= 7) {
+				Cprint("{} didn't realize that it's extremely dangerous to be under {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
+			}
+			return;
 		}
 	}
 
 	void PrintSuffocate(Actor* pred, Actor* prey) {
-		int random = rand() % 5;
+		int random = rand() % 6;
 		if (random <= 1) {
 			Cprint("{} was slowly smothered between {} thighs", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		} else if (random == 2) {
@@ -1077,7 +1094,7 @@ namespace Gts {
 			Cprint("Thighs of {} suffocated {} to death", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 		} else if (random == 4) {
 			Cprint("{} got smothered between the thighs of {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
-		} else if (random == 5) {
+		} else if (random >= 5) {
 			Cprint("{} lost life to the thighs of {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
 		}
 	}
