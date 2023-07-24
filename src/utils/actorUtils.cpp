@@ -815,7 +815,7 @@ namespace Gts {
 				float tinyScale = get_visual_scale(otherActor);
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
-					for (auto point: CrawlPoints) {
+					for (auto point: Points) {
 						float distance = (point - actorLocation).Length();
 						if (distance <= maxDistance) {
 							float shrinkpower = -(0.25 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
