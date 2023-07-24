@@ -93,7 +93,7 @@ namespace {
 	void HealthGate(Actor* attacker, Actor* receiver, float a_damage) {
 		if (a_damage > GetAV(receiver, ActorValue::kHealth)) {
 			if (Runtime::HasPerk(receiver, "HealthGate")) {
-				static Timer protect = Timer(30.00);
+				static Timer protect = Timer(60.00);
 				if (protect.ShouldRunFrame()) {
 					float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
 					float scale = get_visual_scale(receiver);
@@ -115,6 +115,15 @@ namespace {
 					Cprint("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
 					Notify("Health Gate triggered, death avoided");
 					Notify("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
+				}
+			}
+		}
+		if (Runtime::HasPerk(giant, "GrowthAugmentation_Max") && GetHealthPercentage(receiver) <= 0.40) {
+			static Timer Shrink = Timer(120.00);
+			if (Shrink.ShouldRunFrame()) {
+				auto node = find_node(player, "NPC Pelvis [Pelv]");
+				if (node) {
+					SizeStealExplosion(player, 128.0, node);
 				}
 			}
 		}

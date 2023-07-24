@@ -781,7 +781,8 @@ namespace Gts {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
-		
+		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)*0.01;
+
 		bool GrowthMax = Runtime::HasPerk(giant, "GrowthAugmentation_Max");
 
 		float SCALE_RATIO = 0.75;
@@ -790,7 +791,7 @@ namespace Gts {
 
 		NiPoint3 NodePosition = node->world.translate;
 
-		float maxDistance = radius * giantScale;
+		float maxDistance = radius * giantScale * gigantism;
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard position
@@ -843,7 +844,7 @@ namespace Gts {
 								PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
 							}
 								
-							mod_target_scale(otherActor, shrinkpower);
+							mod_target_scale(otherActor, shrinkpower * gigantism);
 
 							std::string taskname = std::format("ShrinkOtherCheck_{}", otherActor->formID);
 							const float DURATION = 2.5;

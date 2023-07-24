@@ -129,6 +129,7 @@ namespace {
 		static Timer ExplosionTimer = Timer(15.0);
 		auto player = PlayerCharacter::GetSingleton();
 		bool GrowthMax = Runtime::HasPerk(player, "GrowthAugmentation_Max");
+		float multi = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
 		float healthMax = GetMaxAV(player, ActorValue::kHealth);
 		float healthCur = GetAV(player, ActorValue::kHealth);
 		float damagehp = 120.0;
@@ -136,6 +137,8 @@ namespace {
 		if (GrowthMax) {
 			damagehp = 80;
 		}
+
+		damagehp *= multi;
 
 		if (healthCur - damagehp < healthMax * 0.10) {
 			Notify("Your health is too low");
@@ -148,7 +151,7 @@ namespace {
 			} 
 			auto node = find_node(player, "NPC Pelvis [Pelv]");
 			if (node) {
-				DamageAV(player, actorValue::kHealth, damagehp);
+				DamageAV(player, ActorValue::kHealth, damagehp);
 				SizeStealExplosion(player, 96.0, node);
 			}
 		}
