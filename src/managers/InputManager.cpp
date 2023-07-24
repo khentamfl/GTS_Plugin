@@ -58,7 +58,7 @@ namespace {
 		float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
 		float scale = get_visual_scale(player);
 		Rumble::For("RapidGrowth", player, 8.0, 0.10, "NPC COM [COM ]", 0.40);
-		SpringGrow(player, 0.6 * scale * stamina, 0.35, "Input");
+		SpringGrow(player, 0.6 * scale * stamina, 0.35, "InputGrowth");
 	}
 	void RapidShrinkEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
@@ -68,7 +68,7 @@ namespace {
 		float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
 		float scale = get_visual_scale(player);
 		Rumble::For("RapidShrink", player, 8.0, 0.10, "NPC COM [COM ]", 0.40);
-		SpringShrink(player, -0.6 * scale * stamina, 0.35, "Input");
+		SpringShrink(player, -0.2 * scale * stamina, 0.35, "InputShrink");
 	}
 
 	void SizeReserveEvent(const InputEventData& data) {
@@ -129,7 +129,7 @@ namespace {
 		static Timer ExplosionTimer = Timer(15.0);
 		auto player = PlayerCharacter::GetSingleton();
 		bool GrowthMax = Runtime::HasPerk(player, "GrowthAugmentation_Max");
-		float multi = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
+		float multi = std::clamp(Runtime::GetFloatOr("bonusHPMultiplier", 1.0), 0.5, 10000.0);
 		float healthMax = GetMaxAV(player, ActorValue::kHealth);
 		float healthCur = GetAV(player, ActorValue::kHealth);
 		float damagehp = 120.0;
