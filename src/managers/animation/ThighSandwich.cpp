@@ -290,8 +290,8 @@ namespace {
 		float perk = GetPerkBonus_Thighs(&data.giant);
 		DoSizeEffect(&data.giant, 2.0, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 2.0, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.10, FootEvent::Right);
-		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.10, FootEvent::Left);
+		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.10, FootEvent::Right, 1.0);
+		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.10, FootEvent::Left, 1.0);
 		DoLaunch(&data.giant, 0.85 * perk, 2.0, 1.0, FootEvent::Right, 1.0);
 		DoLaunch(&data.giant, 0.85 * perk, 2.0, 1.0, FootEvent::Left, 1.0);
 	}

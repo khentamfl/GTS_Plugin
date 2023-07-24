@@ -279,7 +279,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void AccurateDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("AccurateDamageRight: DoAccurateCollisionRight");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
@@ -381,7 +381,7 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								//log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
-								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult);
+								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crushmult);
 							}
 						}
 					}
@@ -390,7 +390,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult) {
+	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crushmult) {
 		auto profiler = Profilers::Profile("AccurateDamage: ApplySizeEffect");
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
@@ -413,7 +413,7 @@ namespace Gts {
 			if (!isdamaging && force >= 0.33 && !giant->AsActorState()->IsSprinting() && !giant->AsActorState()->IsWalking() && !giant->IsRunning()) {
 				StaggerOr(giant, tiny, 1 * force, 0, 0, 0, 0);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
+				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult);
 			} else if (!isdamaging && (force >= 0.55 || giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
 				StaggerOr(giant, tiny, 1 * force, 0, 0, 0, 0);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
@@ -421,11 +421,11 @@ namespace Gts {
 				StaggerOr(giant, tiny, 1 * force, 0, 0, 0, 0);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
-			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true);
+			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult);
 		}
 	}
 
-	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage) { // Applies damage and crushing
+	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage, float crushmult) { // Applies damage and crushing
 		auto profiler = Profilers::Profile("AccurateDamage: DoSizeDamage");
 		if (!giant) {
 			return;
@@ -451,6 +451,9 @@ namespace Gts {
 
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float multiplier = giantsize/tinysize * highheels;
+		if (multiplier < 1.4) {
+			return; // Do not do damage is Size Difference is < than x1.4
+		}
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
 		float highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
@@ -484,15 +487,12 @@ namespace Gts {
 			KillActor(giant, tiny);
 			ReportCrime(giant, tiny, 1000, true);
 			//StartCombat(giant, tiny, false);
-			if (multiplier >= 8.0) {
+			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					crushmanager.Crush(giant, tiny);
 					CrushBonuses(giant, tiny);
 				}
 			}
-		}
-		if (multiplier < 1.4) {
-			return; // Do not do damage is Size Difference is < than x1.4
 		}
 
 		float experience = std::clamp(result/500, 0.0f, 0.05f);
@@ -508,11 +508,6 @@ namespace Gts {
 			return;
 		}
 		ModVulnerability(giant, tiny, result); 
-		if (result >= GetAV(tiny, ActorValue::kHealth)) {
-			if (!tiny->IsDead()) {
-				KillActor(giant, tiny); // Mostly apply Ragdoll, hopefully that will fix actors standing up
-			}
-		}
 		DamageAV(tiny, ActorValue::kHealth, result);
 	}
 }

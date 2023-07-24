@@ -737,12 +737,14 @@ namespace Gts {
 		}
 	}
 
-	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind) {
+	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult) {
 		radius *= 1.0 + (GetHighHeelsBonusDamage(giant) * 2.5);
 		if (kind == FootEvent::Left) {
-			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage), radius, random, bonedamage);
+			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage), radius, random, bonedamage, crushmult);
 		} if (kind == FootEvent::Right) {
-			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage), radius, random, bonedamage);
+			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage), radius, random, bonedamage, crushmult);
+			//                                                                                         ^        ^           ^ - - - - Crush Threshold multiplication
+			//                                                               Chance to trigger bone crush   Damage of it
 		}
 	}
 
