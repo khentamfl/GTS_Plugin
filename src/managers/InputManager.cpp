@@ -134,7 +134,7 @@ namespace {
 		if (IsGrowthSpurtActive(player) || HasSMT(player)) {
 			auto node = find_node(player, "NPC Pelvis [Pelv]");
 			if (node) {
-				SizeStealExplosion(player, 96.0, NiAVObject* node);
+				SizeStealExplosion(player, 96.0, node);
 			}
 		}
 	}
