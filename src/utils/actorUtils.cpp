@@ -314,6 +314,16 @@ namespace Gts {
 		}
 	}
 
+	bool IsGrowthSpurtActive(Actor* actor) {
+		if (!Runtime::HasPerkTeam(actor, "GrowthOfStrength")) {
+			return false;
+		}
+		if (HasGrowthSpurt(actor)) {
+			return true;
+		}
+		return false;
+	}
+
 	bool HasGrowthSpurt(Actor* actor) {
 		bool Growth1 = Runtime::HasMagicEffect(actor, "explosiveGrowth1");
 		bool Growth2 = Runtime::HasMagicEffect(actor, "explosiveGrowth2");

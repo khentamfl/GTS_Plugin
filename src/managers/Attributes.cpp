@@ -28,15 +28,6 @@ namespace {
 		}
 	}
 
-	bool HasGrowthPerk(Actor* actor) {
-		if (!Runtime::HasPerkTeam(actor, "GrowthOfStrength")) {
-			return false;
-		}
-		if (HasGrowthSpurt(actor)) {
-			return true;
-		}
-		return false;
-	}
 
 	void ManagePerkBonuses(Actor* actor) {
 		auto& SizeManager = SizeManager::GetSingleton();
@@ -59,7 +50,7 @@ namespace {
 		if (Runtime::HasPerkTeam(actor, "RealCruelty")) {
 			ExpectedGlobalDamage += 0.65/BalancedMode;
 		}
-		if (HasGrowthPerk(actor)) {
+		if (IsGrowthSpurtActive(actor)) {
 			ExpectedGlobalDamage *= (1.0 + (0.35/BalancedMode));
 		}
 

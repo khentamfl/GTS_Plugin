@@ -131,7 +131,7 @@ namespace {
 		if (!ExplosionTimer.ShouldRun()) {
 			return;
 		} 
-		if (HasGrowthPerk(player) || HasSMT(player)) {
+		if (IsGrowthSpurtActive(player) || HasSMT(player)) {
 			auto node = find_node(player, "NPC Pelvis [Pelv]");
 			if (node) {
 				SizeStealExplosion(player, 96.0, NiAVObject* node);
