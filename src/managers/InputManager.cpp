@@ -129,7 +129,7 @@ namespace {
 		static Timer ExplosionTimer = Timer(15.0);
 		auto player = PlayerCharacter::GetSingleton();
 		bool GrowthMax = Runtime::HasPerk(player, "GrowthAugmentation_Max");
-		float multi = std::clamp(Runtime::GetFloatOr("bonusHPMultiplier", 1.0), 0.5, 10000.0);
+		float multi = std::clamp(Runtime::GetFloat("bonusHPMultiplier"), 0.5f, 10000.0f);
 		float healthMax = GetMaxAV(player, ActorValue::kHealth);
 		float healthCur = GetAV(player, ActorValue::kHealth);
 		float damagehp = 120.0;
