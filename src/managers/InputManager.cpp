@@ -126,15 +126,29 @@ namespace {
 	}
 
 	void StealingGrowthEvent(const InputEventData& data) {
-		static Timer ExplosionTimer = Timer(4.0);
+		static Timer ExplosionTimer = Timer(15.0);
 		auto player = PlayerCharacter::GetSingleton();
+		bool GrowthMax = Runtime::HasPerk(player, "GrowthAugmentation_Max");
+		float healthMax = GetMaxAV(player, ActorValue::kHealth);
+		float healthCur = GetAV(player, ActorValue::kHealth);
+		float damagehp = 120.0;
 		
-		if (IsGrowthSpurtActive(player) || HasSMT(player)) {
+		if (GrowthMax) {
+			damagehp = 80;
+		}
+
+		if (healthCur - damagehp < healthMax * 0.10) {
+			Notify("Your health is too low");
+			return; // don't allow us to die from own shrinking
+		}
+		
+		if (IsGrowthSpurtActive(player) || HasSMT(player) || GrowthMax) {
 			if (!ExplosionTimer.ShouldRun()) {
 				return;
 			} 
 			auto node = find_node(player, "NPC Pelvis [Pelv]");
 			if (node) {
+				DamageAV(player, actorValue::kHealth, damagehp);
 				SizeStealExplosion(player, 96.0, node);
 			}
 		}

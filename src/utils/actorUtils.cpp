@@ -782,6 +782,7 @@ namespace Gts {
 		}
 		float giantScale = get_visual_scale(giant);
 		
+		bool GrowthMax = Runtime::HasPerk(giant, "GrowthAugmentation_Max");
 
 		float SCALE_RATIO = 0.75;
 
@@ -833,6 +834,9 @@ namespace Gts {
 						if (nodeCollisions > 1) {
 							float sizedifference = giantScale/get_visual_scale(otherActor);
 							float shrinkpower = -(0.30 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
+							if (!IsGrowthSpurtActive(giant) && !HasSMT(giant) && GrowthMax) {
+								shrinkpower *= 0.5;
+							}
 							if (sizedifference <= 4.0) {
 								StaggerActor(otherActor);
 							} else {

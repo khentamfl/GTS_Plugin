@@ -126,7 +126,7 @@ namespace Gts {
 	}
 
 	inline float CalcEffeciency_NoProgression(Actor* caster, Actor* target) {
-		const float DRAGON_PEANLTY = 0.14;
+		const float DRAGON_PEANLTY = 0.20;
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;

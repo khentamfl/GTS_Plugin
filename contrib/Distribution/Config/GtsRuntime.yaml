@@ -189,6 +189,7 @@ perks:
   ExtraGrowth: "GTS.esp|332563"
   ExtraGrowthMax: "GTS.esp|397972"
   HealthRegenPerk: "GTS.esp|18E160"
+  GrowthAugmentation_Max: "GTS.esp|63E09A"
   RandomGrowth: "GTS.esp|35AD69"
   Gluttony: "GTS.esp|33C764"
   SoulVorePerk: "GTS.esp|33C765"
