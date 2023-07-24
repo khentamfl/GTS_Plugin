@@ -784,9 +784,6 @@ namespace Gts {
 		
 
 		float SCALE_RATIO = 0.75;
-		if (HasSMT(giant)) {
-			giantScale *= 2.0;
-		}
 
 		shake_camera(giant, 0.70, 0.35);
 
@@ -817,12 +814,31 @@ namespace Gts {
 				float tinyScale = get_visual_scale(otherActor);
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
-					for (auto point: Points) {
-						float distance = (point - actorLocation).Length();
-						if (distance <= maxDistance) {
+					if ((actorLocation-giantLocation).Length() <= maxDistance * 2.0) {
+						int nodeCollisions = 0;
+						float force = 0.0;
+						auto model = otherActor->GetCurrent3D();
+						if (model) {
+							for (auto point: Points) {
+								VisitNodes(model, [&nodeCollisions, &force, point, maxDistance](NiAVObject& a_obj) {
+									float distance = (point - a_obj.world.translate).Length();
+									if (distance < maxDistance) {
+										nodeCollisions += 1;
+										force = 1.0 - distance / maxDistance;
+									}
+									return true;
+								});
+							}
+						}
+						if (nodeCollisions > 1) {
 							float sizedifference = giantScale/get_visual_scale(otherActor);
 							float shrinkpower = -(0.30 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
-							PushActorAway(giant, otherActor, 2.0 * GetLaunchPower(sizedifference));
+							if (sizedifference > 0.33) {
+								StaggerActor(otherActor);
+							} else {
+								PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
+							}
+								
 							mod_target_scale(otherActor, shrinkpower);
 
 							std::string taskname = std::format("ShrinkOtherCheck_{}", otherActor->formID);
@@ -844,12 +860,13 @@ namespace Gts {
 								}
 								return true; // Everything is fine, continue checking
 							});
-                        }
+						}
 					}
 				}
 			}
 		}
 	}
+	
 
 	bool HasSMT(Actor* giant) {
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
