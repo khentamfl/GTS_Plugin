@@ -70,7 +70,7 @@ namespace {
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (HasSMT(&data.giant)) {
 			shake = 4.0;
-			launch = 1.5;
+			launch = 1.6;
 			dust = 1.45;
 		}
 		Rumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
@@ -87,7 +87,7 @@ namespace {
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (HasSMT(&data.giant)) {
 			shake = 4.0;
-			launch = 1.5;
+			launch = 1.6;
 			dust = 1.45;
 		}
 		Rumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
@@ -105,7 +105,7 @@ namespace {
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (HasSMT(&data.giant)) {
 			bonus = 2.0;
-			dust = 1.25;
+			dust = 1.35;
 			shake = 4.0;
 		}
 		Rumble::Once("StompRL", &data.giant, 1.25 * shake, 0.05, RNode);
@@ -122,7 +122,7 @@ namespace {
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (HasSMT(&data.giant)) {
 			bonus = 2.0;
-			dust = 1.25;
+			dust = 1.35;
 			shake = 4.0;
 		}
 		Rumble::Once("StompLL", &data.giant, 1.25 * shake, 0.05, LNode);
