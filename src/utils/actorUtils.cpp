@@ -20,6 +20,9 @@
 #include "node.hpp"
 #include "utils/av.hpp"
 #include "colliders/RE.hpp"
+#include "UI/DebugAPI.hpp"
+#include <vector>
+#include <string>
 
 using namespace RE;
 using namespace Gts;
