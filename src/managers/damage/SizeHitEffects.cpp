@@ -118,12 +118,12 @@ namespace {
 				}
 			}
 		}
-		if (Runtime::HasPerk(giant, "GrowthAugmentation_Max") && GetHealthPercentage(receiver) <= 0.40) {
+		if (Runtime::HasPerk(receiver, "GrowthAugmentation_Max") && GetHealthPercentage(receiver) <= 0.40) {
 			static Timer Shrink = Timer(120.00);
 			if (Shrink.ShouldRunFrame()) {
-				auto node = find_node(player, "NPC Pelvis [Pelv]");
+				auto node = find_node(receiver, "NPC Pelvis [Pelv]");
 				if (node) {
-					SizeStealExplosion(player, 128.0, node);
+					SizeStealExplosion(receiver, 128.0, node);
 				}
 			}
 		}
