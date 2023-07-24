@@ -65,7 +65,7 @@ namespace {
 			return;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.ModSizeVulnerability(tiny, damage * 0.001);
+		sizemanager.ModSizeVulnerability(tiny, damage * 0.0015);
 	}
 
 	void MiniStagger(Actor* giant, Actor* tiny) {
@@ -450,7 +450,10 @@ namespace Gts {
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
 
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
-		float multiplier = giantsize/tinysize * highheels;
+		float multiplier = (giantsize/tinysize) * highheels;
+		if (HasSMT(giant)) {
+			multiplier += 7.2;
+		}
 		if (multiplier < 1.4) {
 			return; // Do not do damage is Size Difference is < than x1.4
 		}
@@ -474,9 +477,7 @@ namespace Gts {
 			result *= 0.33;
 		}
 
-		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
-			multiplier += 7.2;
-		}
+		
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
 

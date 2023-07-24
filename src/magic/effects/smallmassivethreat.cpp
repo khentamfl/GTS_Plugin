@@ -62,11 +62,14 @@ namespace Gts {
 			GetActiveEffect()->duration -= penalty;
 			NullifySMTDuration(caster);
 		}
+		if (CasterScale <= get_natural_scale(caster))  {// Disallow to be smaller than natural scale to avoid weird interactions with others
+			mod_target_scale(caster, 0.0010);
+		}
 		if (CasterScale >= 1.50) {
-			mod_target_scale(caster, -0.035);
+			mod_target_scale(caster, -0.015);
 			if (warningtimer.ShouldRun()) {
 				Notify("Im getting too big, it becomes hard to handle such power.");
 			}
-		} // <- Disallow having it when scale is > 2.0
+		} // <- Disallow having it when scale is > 1.50
 	}
 }
