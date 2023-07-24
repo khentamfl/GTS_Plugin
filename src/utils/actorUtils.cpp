@@ -785,7 +785,7 @@ namespace Gts {
 
 		float SCALE_RATIO = 0.75;
 
-		shake_camera(giant, 0.70, 0.35);
+		shake_camera(giant, 0.70, 0.55);
 
 		NiPoint3 NodePosition = node->world.translate;
 
@@ -833,7 +833,7 @@ namespace Gts {
 						if (nodeCollisions > 1) {
 							float sizedifference = giantScale/get_visual_scale(otherActor);
 							float shrinkpower = -(0.30 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
-							if (sizedifference > 0.33) {
+							if (sizedifference <= 4.0) {
 								StaggerActor(otherActor);
 							} else {
 								PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
@@ -855,8 +855,9 @@ namespace Gts {
 								} if (!TINY) {
 									return false;
 								}
-								if (ShrinkToNothing(GTS, TINY)) { //Shrink to nothing if size difference is too big
-									return false; // Shrink to nothing casted, cancel Task
+								if (get_visual_scale(TINY) <= 0.14) {
+									set_target_scale(TINY, 0.14);
+									return false;
 								}
 								return true; // Everything is fine, continue checking
 							});
