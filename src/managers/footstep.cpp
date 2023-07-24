@@ -284,7 +284,8 @@ namespace Gts {
 				scale *= 1.75;
 			}
 			float sprint_factor = 1.0;
-			bool LegacySounds = Persistent::GetSingleton().legacy_sounds; // Determine if we should play old pre 2.00 update sounds
+			bool LegacySounds = true; //Persistent::GetSingleton().legacy_sounds; // Determine if we should play old pre 2.00 update sounds 
+			// ^ Currently forced to true: there's no sounds yet.
 			bool sprinting = false;
 			bool WearingHighHeels = HighHeelManager::IsWearingHH(actor);
 			if (scale > 1.2 && !actor->AsActorState()->IsSwimming()) {

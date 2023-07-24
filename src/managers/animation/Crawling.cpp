@@ -43,7 +43,8 @@ namespace {
         float scale = get_visual_scale(giant);
         DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 18, 14);
 		//                                                                         ^    ^ --- Size Damage Radius
-        //                                                                     Launch Radius
+        //                                                                     Launch 
+		//                                                                     Radius
 	}
 }
 
