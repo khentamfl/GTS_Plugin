@@ -100,6 +100,18 @@ namespace Gts {
 		return actor;
 	}
 
+	float GetLaunchPower(float sizeRatio) {
+		// https://www.desmos.com/calculator/wh0vwgljfl
+		SoftPotential launch {
+				.k = 1.42, 
+				.n = 0.78, 
+				.s = 0.6, 
+				.a = 0.8, 
+			};
+		float power = soft_power(sizeRatio, launch);
+		return power;
+	}
+
 	void PlayAnimation(Actor* actor, std::string_view animName) {
 		actor->NotifyAnimationGraph(animName);
 	}
@@ -746,6 +758,80 @@ namespace Gts {
 			//                                                                                         ^        ^           ^ - - - - Normal Crush 
 			//                                                               Chance to trigger bone crush   Damage of            Threshold multiplication
 			//                                                                                             Bone Crush
+		}
+	}
+
+	void SizeStealExplosion(Actor* giant, float radius, NiAVObject* node) {
+		if (!node) {
+			return;
+		} if (!giant) {
+			return;
+		}
+		float giantScale = get_visual_scale(giant);
+
+		float SCALE_RATIO = 0.75;
+		if (HasSMT(giant)) {
+			SCALE_RATIO = 1.10;
+			giantScale *= 2.0;
+		}
+
+		NiPoint3 NodePosition = node->world.translate;
+
+		float maxDistance = radius * giantScale;
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, 0.0, 0.0), // The standard position
+		};
+		std::vector<NiPoint3> Points = {};
+
+		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale, "SizeStealExplosion");
+
+		for (NiPoint3 point: points) {
+			Points.push_back(NodePosition);
+		}
+		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+			for (auto point: Points) {
+				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 600, {0.0, 1.0, 0.0, 1.0});
+			}
+		}
+
+		NiPoint3 giantLocation = giant->GetPosition();
+
+		for (auto otherActor: find_actors()) {
+			if (otherActor != giant) { 
+				float tinyScale = get_visual_scale(otherActor);
+				if (giantScale / tinyScale > SCALE_RATIO) {
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					for (auto point: CrawlPoints) {
+						float distance = (point - actorLocation).Length();
+						if (distance <= maxDistance) {
+							float shrinkpower = -(0.25 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
+							PushActorAway(otherActor, giant, 1.0 * GetLaunchPower());
+							ModTargetScale(otherActor, shrinkpower);
+
+							std::string taskname = std::format("ShrinkOtherCheck_{}", tiny->formID);
+							const float DURATION = 2.5;
+
+							ActorHandle tinyHandle = otherActor->CreateRefHandle();
+							ActorHandle giantHandle = giant->CreateRefHandle();
+							
+							TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){
+								auto GTS = giantHandle.get().get();
+								auto TINY = tinyHandle.get().get();
+								if (!GTS) {
+									return false;
+								} if (!TINY) {
+									return false;
+								}
+								if (ShrinkToNothing(GTS, TINY)) { //Shrink to nothing if size difference is too big
+									return false; // Shrink to nothing casted, cancel Task
+								}
+								return true; // Everything is fine, continue checking
+							});
+                        }
+					}
+				}
+			}
 		}
 	}
 

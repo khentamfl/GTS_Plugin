@@ -124,6 +124,20 @@ namespace {
 		}
 	}
 
+	void StealingGrowthEvent(const InputEventData& data) {
+		static timer ExplosionTimer = 25.0;
+		auto player = PlayerCharacter::GetSingleton();
+		if (!ExplosionTimer.ShouldRun()) {
+			return;
+		} 
+		if (HasGrowthPerk(player) || HasSMT(player)) {
+			auto node = find_node(player, "NPC Pelvis [Pelv]");
+			if (node) {
+				SizeStealExplosion(player, 96.0, NiAVObject* node);
+			}
+		}
+	}
+
 	void AnimSpeedUpEvent(const InputEventData& data) {
 		AnimationManager::AdjustAnimSpeed(0.025); // Increase speed and power
 	}
@@ -295,6 +309,7 @@ namespace Gts {
 		InputManager::RegisterInputEvent("AnimMaxSpeed", AnimMaxSpeedEvent);
 		InputManager::RegisterInputEvent("RapidGrowth", RapidGrowthEvent);
 		InputManager::RegisterInputEvent("RapidShrink", RapidShrinkEvent);
+		InputManager::RegisterInputEvent("StealingGrowth", StealingGrowthEvent);
 	}
 
 	BSEventNotifyControl InputManager::ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) {

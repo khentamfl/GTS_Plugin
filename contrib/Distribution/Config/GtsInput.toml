@@ -310,6 +310,15 @@ trigger = "continuous"
 #========================= P E R K S
 #========================================================
 
+#=========================Stealing Growth
+[[InputEvent]]
+name = "StealingGrowth"
+keys = ["F"]
+duration = 0
+exclusive = false
+trigger = "once"
+
+
 #=========================Size Reserve
 
 [[InputEvent]]

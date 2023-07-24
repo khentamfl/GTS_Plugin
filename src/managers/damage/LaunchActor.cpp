@@ -69,18 +69,6 @@ namespace {
 		return true;
 	}
 
-	float GetLaunchPower(float sizeRatio) {
-		// https://www.desmos.com/calculator/wh0vwgljfl
-		SoftPotential launch {
-				.k = 1.42, 
-				.n = 0.78, 
-				.s = 0.6, 
-				.a = 0.8, 
-			};
-		float power = soft_power(sizeRatio, launch);
-		return power;
-	}
-
 	float GetLaunchPower_Object(float sizeRatio) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential launch {

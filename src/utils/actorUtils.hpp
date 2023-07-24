@@ -18,6 +18,8 @@ namespace Gts {
 
 	Actor* GetActorPtr(FormID formId);
 
+	float GetLaunchPower(float sizeRatio);
+
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems);
@@ -95,6 +97,7 @@ namespace Gts {
 	void ShutUp(Actor* actor);
 	void StaggerOr(Actor* giant, Actor* tiny, float power, float afX, float afY, float afZ, float afMagnitude);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult);
+	void SizeStealExplosion(Actor* giant, float radius, NiAVObject* node);
 	bool HasSMT(Actor* giant);
 	void TiredSound(Actor* player, std::string_view message);
 

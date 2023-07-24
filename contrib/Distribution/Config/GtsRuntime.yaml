@@ -235,6 +235,7 @@ explosions:
   BloodFX: "Dawnguard.esm|00E7B4"
   footstepExplosion: "GTS.esp|035C81"
   draugrexplosion: "GTS.esp|035C80"
+  SizeStealExplosion: "GTS.esp|638F99"
 
 globals:
   FreeLookOnVore: "GTS.esp|281206"
