@@ -781,8 +781,7 @@ namespace Gts {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
-		float tinyScale = get_visual_scale(tiny);
-		float sizedifference = giantScale/tinyScale;
+		
 
 		float SCALE_RATIO = 0.75;
 		if (HasSMT(giant)) {
@@ -820,6 +819,7 @@ namespace Gts {
 					for (auto point: Points) {
 						float distance = (point - actorLocation).Length();
 						if (distance <= maxDistance) {
+							float sizedifference = giantScale/get_visual_scale(otherActor);
 							float shrinkpower = -(0.25 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
 							PushActorAway(otherActor, giant, 1.0 * GetLaunchPower(sizedifference));
 							mod_target_scale(otherActor, shrinkpower);
