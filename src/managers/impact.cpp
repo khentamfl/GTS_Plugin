@@ -127,15 +127,15 @@ namespace Gts {
 			if (actor->IsSneaking()) {
 				bonus *= 0.5;
 			} if (actor->AsActorState()->IsSprinting()) {
-				bonus *= 1.75;
+				bonus *= 1.50;
 				if (Runtime::HasPerkTeam(actor, "LethalSprint")) {
 					bonus *= 2.0;
 				}
-			} if (HasSMT(actor)) {
-				bonus += 1.0;
-			}
+			} 
 			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp. We do NOT want to apply it for Jump Land because of it!
-				DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.035, kind, 1.0);
+				DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.035, kind, 1.0); 
+				//                     ^          ^
+				//                 Damage         Radius
 				DoLaunch(actor, 0.45 * bonus, 2.0, 1.0, kind, 0.45 * bonus);
 			}
 		}

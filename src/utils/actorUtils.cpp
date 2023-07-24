@@ -743,8 +743,9 @@ namespace Gts {
 			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage), radius, random, bonedamage, crushmult);
 		} if (kind == FootEvent::Right) {
 			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage), radius, random, bonedamage, crushmult);
-			//                                                                                         ^        ^           ^ - - - - Crush Threshold multiplication
-			//                                                               Chance to trigger bone crush   Damage of it
+			//                                                                                         ^        ^           ^ - - - - Normal Crush 
+			//                                                               Chance to trigger bone crush   Damage of            Threshold multiplication
+			//                                                                                             Bone Crush
 		}
 	}
 

@@ -453,6 +453,7 @@ namespace Gts {
 		float multiplier = (giantsize/tinysize) * highheels;
 		if (HasSMT(giant)) {
 			multiplier += 7.2;
+			damagebonus *= 0.5; // A bit less damage to balance it out
 		}
 		if (multiplier < 1.4) {
 			return; // Do not do damage is Size Difference is < than x1.4
@@ -477,9 +478,8 @@ namespace Gts {
 			result *= 0.33;
 		}
 
-		
-
-		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
+		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);  
+		// ^ Chance to break bonues and inflict additional damage, as well as making target more vulerable to size damage
 
 
 		StartCombat(giant, tiny, false);
