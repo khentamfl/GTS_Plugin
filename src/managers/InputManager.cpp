@@ -5,6 +5,7 @@
 #include "magic/effects/common.hpp"
 #include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
 #include "data/transient.hpp"
@@ -125,7 +126,7 @@ namespace {
 	}
 
 	void StealingGrowthEvent(const InputEventData& data) {
-		static timer ExplosionTimer = 25.0;
+		static Timer ExplosionTimer = Timer(25.0);
 		auto player = PlayerCharacter::GetSingleton();
 		if (!ExplosionTimer.ShouldRun()) {
 			return;
