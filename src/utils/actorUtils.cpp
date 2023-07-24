@@ -785,7 +785,6 @@ namespace Gts {
 
 		float SCALE_RATIO = 0.75;
 		if (HasSMT(giant)) {
-			SCALE_RATIO = 1.10;
 			giantScale *= 2.0;
 		}
 
@@ -822,8 +821,8 @@ namespace Gts {
 						float distance = (point - actorLocation).Length();
 						if (distance <= maxDistance) {
 							float sizedifference = giantScale/get_visual_scale(otherActor);
-							float shrinkpower = -(0.25 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
-							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
+							float shrinkpower = -(0.30 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
+							PushActorAway(giant, otherActor, 2.0 * GetLaunchPower(sizedifference));
 							mod_target_scale(otherActor, shrinkpower);
 
 							std::string taskname = std::format("ShrinkOtherCheck_{}", otherActor->formID);

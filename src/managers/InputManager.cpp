@@ -126,16 +126,16 @@ namespace {
 	}
 
 	void StealingGrowthEvent(const InputEventData& data) {
-		static Timer ExplosionTimer = Timer(30.0);
+		static Timer ExplosionTimer = Timer(4.0);
 		auto player = PlayerCharacter::GetSingleton();
 		
 		if (IsGrowthSpurtActive(player) || HasSMT(player)) {
 			if (!ExplosionTimer.ShouldRun()) {
-				//return;
+				return;
 			} 
 			auto node = find_node(player, "NPC Pelvis [Pelv]");
 			if (node) {
-				SizeStealExplosion(player, 96.0, node);
+				SizeStealExplosion(player, 192.0, node);
 			}
 		}
 	}
