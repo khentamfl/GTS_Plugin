@@ -173,7 +173,7 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-	void AccurateDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void AccurateDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("AccurateDamageLeft: DoAccurateCollisionLeft");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
