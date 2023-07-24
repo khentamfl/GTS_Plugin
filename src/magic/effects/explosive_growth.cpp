@@ -92,7 +92,7 @@ namespace Gts {
 				bonus = get_visual_scale(caster) * 0.25 + 0.75;
 			}
 			DoGrowth(caster, this->power * bonus);
-			log::info("Limit: {}, MaxSize: {}, Scale: {}", limit, MaxSize, scale);
+			//log::info("Limit: {}, MaxSize: {}, Scale: {}", limit, MaxSize, scale);
 		}
 	}
 
@@ -133,7 +133,10 @@ namespace Gts {
 	void ExplosiveGrowth::DoShrink(Actor* actor) {
 		float value = SizeManager::GetSingleton().GetGrowthSpurt(actor);
 		mod_target_scale(actor, -value); // Do Shrink
-		log::info("Doing Shrink: {}", value);
+		if (get_target_scale <= get_natural_scale(actor)) {
+			set_target_scale(actor, get_natural_scale(actor));
+		}
+		//log::info("Doing Shrink: {}", value);
 		SizeManager::GetSingleton().SetGrowthSpurt(actor, 0.0);
 
 		this->AllowStacking = true;

@@ -789,6 +789,8 @@ namespace Gts {
 			giantScale *= 2.0;
 		}
 
+		shake_camera(giant, 0.70, 0.35);
+
 		NiPoint3 NodePosition = node->world.translate;
 
 		float maxDistance = radius * giantScale;
@@ -821,7 +823,7 @@ namespace Gts {
 						if (distance <= maxDistance) {
 							float sizedifference = giantScale/get_visual_scale(otherActor);
 							float shrinkpower = -(0.25 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
-							PushActorAway(otherActor, giant, 1.0 * GetLaunchPower(sizedifference));
+							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
 							mod_target_scale(otherActor, shrinkpower);
 
 							std::string taskname = std::format("ShrinkOtherCheck_{}", otherActor->formID);
