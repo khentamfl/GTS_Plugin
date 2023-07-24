@@ -118,12 +118,12 @@ namespace {
 				}
 			}
 		}
-		if (Runtime::HasPerk(receiver, "GrowthAugmentation_Max") && GetHealthPercentage(receiver) <= 0.40) {
-			static Timer Shrink = Timer(120.00);
+		if (Runtime::HasPerk(receiver, "DarkArts_Max") && GetHealthPercentage(receiver) <= 0.40) {
+			static Timer Shrink = Timer(180.00);
 			if (Shrink.ShouldRunFrame()) {
 				auto node = find_node(receiver, "NPC Pelvis [Pelv]");
 				if (node) {
-					SizeStealExplosion(receiver, 128.0, node);
+					SizeStealExplosion(receiver, 134.4, node, 0.80);
 				}
 			}
 		}

@@ -774,7 +774,7 @@ namespace Gts {
 		}
 	}
 
-	void SizeStealExplosion(Actor* giant, float radius, NiAVObject* node) {
+	void SizeStealExplosion(Actor* giant, float radius, NiAVObject* node, float shrink) {
 		if (!node) {
 			return;
 		} if (!giant) {
@@ -782,8 +782,18 @@ namespace Gts {
 		}
 		float giantScale = get_visual_scale(giant);
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)*0.01;
+		bool DarkArts1 =  Runtime::HasPerk(giant, "DarkArts_Aug");
+		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2");
+		bool DarkArts_Max = Runtime::HasPerk(giant, "DarkArts_Max");
+		float explosion = 0.7;
 
-		bool GrowthMax = Runtime::HasPerk(giant, "GrowthAugmentation_Max");
+		if (DarkArts1) {
+			radius *= 1.33;
+			shrink *= 1.33;
+			explosion = 1.0;
+		} if (DarkArts_Max) {
+			explosion = 2.0;
+		}
 
 		float SCALE_RATIO = 0.75;
 
@@ -798,7 +808,7 @@ namespace Gts {
 		};
 		std::vector<NiPoint3> Points = {};
 
-		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale, "SizeStealExplosion");
+		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "SizeStealExplosion");
 
 		for (NiPoint3 point: points) {
 			Points.push_back(NodePosition);
@@ -834,9 +844,9 @@ namespace Gts {
 						}
 						if (nodeCollisions > 1) {
 							float sizedifference = giantScale/get_visual_scale(otherActor);
-							float shrinkpower = -(0.30 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
-							if (!IsGrowthSpurtActive(giant) && !HasSMT(giant) && GrowthMax) {
-								shrinkpower *= 0.5;
+							float shrinkpower = -(shrink * 0.5 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
+							if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
+								shrinkpower *= 2.0;
 							}
 							if (sizedifference <= 4.0) {
 								StaggerActor(otherActor);

@@ -189,7 +189,6 @@ perks:
   ExtraGrowth: "GTS.esp|332563"
   ExtraGrowthMax: "GTS.esp|397972"
   HealthRegenPerk: "GTS.esp|18E160"
-  GrowthAugmentation_Max: "GTS.esp|63E09A"
   RandomGrowth: "GTS.esp|35AD69"
   Gluttony: "GTS.esp|33C764"
   SoulVorePerk: "GTS.esp|33C765"
@@ -226,6 +225,12 @@ perks:
 
   SkilledGTS: "GTS.esp|61A996"
   DisastrousTremor: "GTS.esp|61FA97"
+
+  DarkArts: "GTS.esp|64319B"
+  DarkArts_Aug: "GTS.esp|64319C"
+  DarkArts_Aug2: "GTS.esp|64319D"
+  DarkArts_Aug3: "GTS.esp|19D462"
+  DarkArts_Max: "GTS.esp|63E09A"
 
  
 

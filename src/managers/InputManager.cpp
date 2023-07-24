@@ -126,16 +126,26 @@ namespace {
 	}
 
 	void StealingGrowthEvent(const InputEventData& data) {
-		static Timer ExplosionTimer = Timer(15.0);
+		
 		auto player = PlayerCharacter::GetSingleton();
-		bool GrowthMax = Runtime::HasPerk(player, "GrowthAugmentation_Max");
+		float cooldown = 20.0;
+		bool DarkArts = Runtime::HasPerk(player, "DarkArts");
+		bool DarkArts2 = Runtime::HasPerk(player, "DarkArts_Aug2");
+		bool DarkArts3 = Runtime::HasPerk(player, "DarkArts_Aug3");
+		
+		
+		
 		float multi = std::clamp(Runtime::GetFloat("bonusHPMultiplier"), 0.5f, 10000.0f);
+		
 		float healthMax = GetMaxAV(player, ActorValue::kHealth);
 		float healthCur = GetAV(player, ActorValue::kHealth);
-		float damagehp = 120.0;
+		float damagehp = 140.0;
 		
-		if (GrowthMax) {
-			damagehp = 80;
+		if (DarkArts2) {
+			damagehp -= 20;
+		} if (DarkArts3) {
+			cooldown = 1.0; // Faster CD
+			damagehp -= 40; // even less hp drain
 		}
 
 		damagehp *= multi;
@@ -145,16 +155,17 @@ namespace {
 			return; // don't allow us to die from own shrinking
 		}
 		
-		if (IsGrowthSpurtActive(player) || HasSMT(player) || GrowthMax) {
-			if (!ExplosionTimer.ShouldRun()) {
-				return;
-			} 
-			auto node = find_node(player, "NPC Pelvis [Pelv]");
-			if (node) {
-				DamageAV(player, ActorValue::kHealth, damagehp);
-				SizeStealExplosion(player, 96.0, node);
-			}
+		static Timer ExplosionTimer = Timer(cooldown);
+
+		if (!ExplosionTimer.ShouldRun()) {
+			return;
+		} 
+		auto node = find_node(player, "NPC Pelvis [Pelv]");
+		if (node) {
+			DamageAV(player, ActorValue::kHealth, damagehp);
+			SizeStealExplosion(player, 67.2, node, 0.40);
 		}
+		
 	}
 
 	void AnimSpeedUpEvent(const InputEventData& data) {
