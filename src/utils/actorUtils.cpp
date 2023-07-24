@@ -20,6 +20,7 @@
 #include "node.hpp"
 #include "utils/av.hpp"
 #include "colliders/RE.hpp"
+#include "hooks/hitprocess.hpp"
 
 using namespace RE;
 using namespace Gts;
@@ -324,7 +325,7 @@ namespace Gts {
 		log::info("Stagger false");
 		return true;
 	}
-    
+
 	bool IsHuman(Actor* actor) { // Check if Actor is humanoid or not. Currently used for Hugs Animation
 		bool vampire = Runtime::HasKeyword(actor, "VampireKeyword");
 		bool dragon = Runtime::HasKeyword(actor, "DragonKeyword");
@@ -1231,7 +1232,7 @@ namespace Gts {
 
 		if (actor) {
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-			DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
+			DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
           	auto actorData = Persistent::GetSingleton().GetData(actor);
 			if (actorData) {
 				actorData->target_scale += deltaScale;
@@ -1243,5 +1244,13 @@ namespace Gts {
         return fabs(growData->amount.value - growData->amount.target) > 1e-4;
       }
     );
+  }
+
+  void HitActor(Actor* aggressor, Actor* target) {
+    auto hitData = RE::CreateHitData(aggressor, target, aggressor->GetEquippedEntryData(false));
+    if (hitData) {
+      ProcessHitEvent(targetRef, hitData);
+      RE::free(hitData);
+    }
   }
 }
