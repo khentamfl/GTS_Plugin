@@ -133,7 +133,7 @@ namespace Gts {
 	void ExplosiveGrowth::DoShrink(Actor* actor) {
 		float value = SizeManager::GetSingleton().GetGrowthSpurt(actor);
 		mod_target_scale(actor, -value); // Do Shrink
-		if (get_target_scale <= get_natural_scale(actor)) {
+		if (get_target_scale(actor) <= get_natural_scale(actor)) {
 			set_target_scale(actor, get_natural_scale(actor));
 		}
 		//log::info("Doing Shrink: {}", value);
