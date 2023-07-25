@@ -69,10 +69,10 @@ find_package(toml11 CONFIG REQUIRED)
 add_commonlibsse_plugin(${PROJECT_NAME} DECLARATIVE)
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
 
-//target_precompile_headers(${PROJECT_NAME}
-//      PRIVATE
-//      src/PCH.hpp
-//)
+#target_precompile_headers(${PROJECT_NAME}
+#      PRIVATE
+#      src/PCH.hpp
+#)
 
 target_include_directories(${PROJECT_NAME}
   PRIVATE
