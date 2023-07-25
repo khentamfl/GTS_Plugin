@@ -130,10 +130,11 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		float cooldown = 20.0;
 		bool DarkArts = Runtime::HasPerk(player, "DarkArts");
+		if (!DarkArts) {
+			return; // no perk, do nothing
+		}
 		bool DarkArts2 = Runtime::HasPerk(player, "DarkArts_Aug2");
 		bool DarkArts3 = Runtime::HasPerk(player, "DarkArts_Aug3");
-		
-		
 		
 		float multi = std::clamp(Runtime::GetFloat("bonusHPMultiplier"), 0.5f, 10000.0f);
 		
@@ -142,7 +143,7 @@ namespace {
 		float damagehp = 140.0;
 		
 		if (DarkArts2) {
-			damagehp -= 20;
+			damagehp -= 20; // less hp drain
 		} if (DarkArts3) {
 			cooldown = 1.0; // Faster CD
 			damagehp -= 40; // even less hp drain

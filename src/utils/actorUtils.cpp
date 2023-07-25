@@ -844,7 +844,7 @@ namespace Gts {
 						}
 						if (nodeCollisions > 1) {
 							float sizedifference = giantScale/get_visual_scale(otherActor);
-							float shrinkpower = -(shrink * 0.5 * GetGtsSkillLevel() * 0.01) * CalcEffeciency(giant, otherActor);
+							float shrinkpower = -(shrink * 0.5) * CalcEffeciency(giant, otherActor);
 							if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
 								shrinkpower *= 2.0;
 							}
