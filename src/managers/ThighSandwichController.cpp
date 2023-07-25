@@ -120,6 +120,9 @@ namespace Gts {
 					//log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
 					update_node(node);
 				}
+				if (this->ShrinkRune.value >= this->ShrinkRune.target) {
+					return false; // end it
+				}
 				return true;
 			});
 		} else if (shrink == false) {
@@ -135,6 +138,9 @@ namespace Gts {
 					node->local.scale = this->ScaleRune.value;
 					//log::info("Scale Rune Value: {}", this->ScaleRune.value);
 					update_node(node);
+				}
+				if (this->ScaleRune.value >= this->ScaleRune.target) {
+					return false; // end it
 				}
 				return true;
 			});
