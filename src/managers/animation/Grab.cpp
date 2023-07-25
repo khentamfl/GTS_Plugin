@@ -326,6 +326,9 @@ namespace {
 	}
 
 	void GTSGrab_Throw_FS_R(AnimationEventData& data) {
+		if (IsUsingThighAnimations(&data.giant) || IsCrawling(&data.giant)) {
+			return; // Needed to not apply it during animation blending for thigh/crawling animations
+		}
 		float shake = 1.0;
 		float launch = 1.0;
 		float dust = 0.9;
@@ -342,6 +345,9 @@ namespace {
 	}
 
 	void GTSGrab_Throw_FS_L(AnimationEventData& data) {
+		if (IsUsingThighAnimations(&data.giant) || IsCrawling(&data.giant)) {
+			return; // Needed to not apply it during animation blending for thigh/crawling animations
+		}
 		float shake = 1.0;
 		float launch = 1.0;
 		float dust = 0.9;

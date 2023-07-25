@@ -570,6 +570,12 @@ namespace Gts {
 		return grabbed > 0;
 	}
 
+	bool IsUsingThighAnimations(Actor* actor) { // Do we currently use Thigh Crush / Thigh Sandwich?
+		int sitting;
+		actor->GetGraphVariableInt("GTS_Sitting", sitting);
+		return sitting > 0;
+	}
+
 	void SetBeingEaten(Actor* tiny, bool decide) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {

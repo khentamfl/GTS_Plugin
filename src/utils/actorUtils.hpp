@@ -76,6 +76,7 @@ namespace Gts {
 	void SetBetweenBreasts(Actor* actor, bool decide);
 
 	bool IsTransferingTiny(Actor* actor);
+	bool IsUsingThighAnimations(Actor* actor)
 
 	void SetBeingEaten(Actor* tiny, bool decide);
 	bool IsBeingEaten(Actor* tiny);
