@@ -506,7 +506,7 @@ namespace Gts {
 		float sourcesize = get_visual_scale(caster);
 		float receiversize = get_visual_scale(receiver);
 		float sizedifference = (sourcesize/receiversize) * ShakeStrength(caster);
-		if (actor->formID != 0x14) {
+		if (caster->formID != 0x14) {
 			log::info("Shake Strength of :{}", caster->GetDisplayFullName(), ShakeStrength(caster));
 		}
 		if (caster->formID == 0x14) {

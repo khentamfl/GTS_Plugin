@@ -206,6 +206,7 @@ namespace {
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				giant->SetGraphVariableInt("GTS_Grab_State", 0);
+				giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 				PrintDeathSource(giant, grabbedActor, "HandCrushed");
 				Grab::DetachActorTask(giant);
 				Grab::Release(giant);
@@ -301,8 +302,8 @@ namespace {
 				VoreData.KillAll();
 			}
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-			Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			giant->SetGraphVariableInt("GTS_Grab_State", 0);
+			Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			AnimationManager::StartAnim("TinyDied", giant);
 			ManageCamera(&data.giant, false, 7.0);
 			SetBeingHeld(otherActor, false);
