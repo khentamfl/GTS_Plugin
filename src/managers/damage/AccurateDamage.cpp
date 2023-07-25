@@ -484,7 +484,9 @@ namespace Gts {
 
 		StartCombat(giant, tiny, false);
 
-		if (GetAV(tiny, ActorValue::kHealth) <= (result)) {
+		result *= damagebonus;
+
+		if (GetAV(tiny, ActorValue::kHealth) <= 0) {
 			KillActor(giant, tiny);
 			ReportCrime(giant, tiny, 1000, true);
 			//StartCombat(giant, tiny, false);
@@ -500,7 +502,7 @@ namespace Gts {
 		if (!tiny->IsDead()) {
 			AdjustGtsSkill(experience, giant);
 		}
-		result *= damagebonus;
+		
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
 			return; // Stamina protection, emulates Size Damage resistance

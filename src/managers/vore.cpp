@@ -207,7 +207,6 @@ namespace Gts {
 				if (tiny->formID != 0x14) {
 					KillActor(this->giant.get().get(), tiny);
 					Disintegrate(tiny);
-
 				} else if (tiny->formID == 0x14) {
 					DamageAV(tiny, ActorValue::kHealth, 900000.0);
 					KillActor(this->giant.get().get(), tiny);

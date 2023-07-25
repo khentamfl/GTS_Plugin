@@ -271,11 +271,10 @@ namespace {
 				if (!AllowDevourment()) {
 					VoreData.Swallow();
 					if (IsCrawling(&data.giant)) {
-						VoreData.KillAll(); // Insta-kill during swallow.
+						otherActor->SetAlpha(0.0); // Hide Actor
 					}
 				} else {
 					CallDevourment(&data.giant, otherActor);
-					
 				}
 			}
 		}
