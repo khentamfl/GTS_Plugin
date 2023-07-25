@@ -74,6 +74,8 @@ add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
 #      src/PCH.hpp
 #)
 
+add_compile_options("/FI" "src/PCH.hpp")
+
 target_include_directories(${PROJECT_NAME}
   PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
