@@ -164,6 +164,8 @@ namespace {
 			return Runtime::GetSound("Normal_x4");
 		} else if (scale == 8.0) {
 			return Runtime::GetSound("Normal_x8");
+		}  else if (scale == 12.0) {
+			return Runtime::GetSound("Normal_x12");
 		} else if (scale == 24.0) {
 			return Runtime::GetSound("Normal_x24");
 		} else if (scale == 48.0) {
@@ -181,6 +183,8 @@ namespace {
 			return Runtime::GetSound("NormalLand_x4");
 		} else if (scale == 8.0) {
 			return Runtime::GetSound("NormalLand_x8");
+		} else if (scale == 12.0) {
+			return Runtime::GetSound("NormalLand_x12");
 		} else if (scale == 24.0) {
 			return Runtime::GetSound("NormalLand_x24");
 		} else if (scale == 48.0) {
@@ -199,6 +203,9 @@ namespace {
 			return Runtime::GetSound("HighHeel_x4");
 		} else if (scale == 8.0) {
 			return Runtime::GetSound("HighHeel_x8");
+		} else if (scale == 12.0) {
+			log::info("Case: Scale 12");
+			return Runtime::GetSound("HighHeel_x12");
 		} else if (scale == 24.0) {
 			return Runtime::GetSound("HighHeel_x24");
 		} else if (scale == 48.0) {
@@ -216,6 +223,8 @@ namespace {
 			return Runtime::GetSound("HighHeelLand_x4");
 		} else if (scale == 8.0) {
 			return Runtime::GetSound("HighHeelLand_x8");
+		} else if (scale == 12.0) {
+			return Runtime::GetSound("HighHeelLand_x12");
 		} else if (scale == 24.0) {
 			return Runtime::GetSound("HighHeelLand_x24");
 		} else if (scale == 48.0) {
@@ -321,7 +330,7 @@ namespace Gts {
 				if (Runtime::GetBool("EnableGiantSounds")) {
 					for (NiAVObject* foot: impact.nodes) {
 						if (!LegacySounds && WearingHighHeels) { // Play high heel sounds
-							//log::info("Playing HH Sounds");
+							log::info("Playing HH Sounds");
 							FootStepManager::PlayHighHeelSounds(foot, foot_kind, scale, sprint_factor, sprinting);
 							return;
 						} else if (!LegacySounds && !WearingHighHeels) { // Play non HH sounds
@@ -391,6 +400,7 @@ namespace Gts {
 		} if (Footstep_8.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_8.Play();
 		} if (Footstep_12.soundID != BSSoundHandle::kInvalidID) {
+			log::info("Playing x12 footstep");
 			Footstep_12.Play();
 		} if (Footstep_24.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_24.Play();
