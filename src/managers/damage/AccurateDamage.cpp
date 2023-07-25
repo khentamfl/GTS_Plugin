@@ -486,6 +486,20 @@ namespace Gts {
 
 		result *= damagebonus;
 
+		float experience = std::clamp(result/500, 0.0f, 0.05f);
+		if (!tiny->IsDead()) {
+			AdjustGtsSkill(experience, giant);
+		}
+		
+		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
+			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
+			return; // Stamina protection, emulates Size Damage resistance
+		}
+		if (DoDamage) {
+			ModVulnerability(giant, tiny, result); 
+			DamageAV(tiny, ActorValue::kHealth, result);
+		}
+
 		if (GetAV(tiny, ActorValue::kHealth) <= 0) {
 			KillActor(giant, tiny);
 			ReportCrime(giant, tiny, 1000, true);
@@ -497,20 +511,5 @@ namespace Gts {
 				}
 			}
 		}
-
-		float experience = std::clamp(result/500, 0.0f, 0.05f);
-		if (!tiny->IsDead()) {
-			AdjustGtsSkill(experience, giant);
-		}
-		
-		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
-			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
-			return; // Stamina protection, emulates Size Damage resistance
-		}
-		if (!DoDamage) {
-			return;
-		}
-		ModVulnerability(giant, tiny, result); 
-		DamageAV(tiny, ActorValue::kHealth, result);
 	}
 }
