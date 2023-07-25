@@ -157,14 +157,18 @@ namespace {
 		}
 		
 		static Timer ExplosionTimer = Timer(cooldown);
+		static Timer NotifyTimer = Timer(2.0);
 
 		if (!ExplosionTimer.ShouldRun()) {
+			if (NotifyTimer.ShouldRunFrame()) {
+				Notify("Shrink Outburst is on a cooldown");
+			}
 			return;
 		} 
 		auto node = find_node(player, "NPC Pelvis [Pelv]");
 		if (node) {
 			DamageAV(player, ActorValue::kHealth, damagehp);
-			SizeStealExplosion(player, 67.2, node, 0.40);
+			SizeStealExplosion(player, 67.2, node, 0.24, false);
 		}
 		
 	}

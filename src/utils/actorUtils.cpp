@@ -774,7 +774,7 @@ namespace Gts {
 		}
 	}
 
-	void SizeStealExplosion(Actor* giant, float radius, NiAVObject* node, float shrink) {
+	void SizeStealExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit) {
 		if (!node) {
 			return;
 		} if (!giant) {
@@ -791,7 +791,7 @@ namespace Gts {
 			radius *= 1.33;
 			shrink *= 1.33;
 			explosion = 1.0;
-		} if (DarkArts_Max) {
+		} if (WasHit) {
 			explosion = 2.0;
 		}
 
@@ -844,7 +844,7 @@ namespace Gts {
 						}
 						if (nodeCollisions > 1) {
 							float sizedifference = giantScale/get_visual_scale(otherActor);
-							float shrinkpower = -(shrink * 0.5) * CalcEffeciency(giant, otherActor);
+							float shrinkpower = -(shrink * 0.5) * (1.0 + GetGtsSkillLevel() * 0.005) * CalcEffeciency(giant, otherActor);
 							if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
 								shrinkpower *= 2.0;
 							}

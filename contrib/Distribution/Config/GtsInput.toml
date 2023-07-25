@@ -313,7 +313,7 @@ trigger = "continuous"
 #=========================Stealing Growth
 [[InputEvent]]
 name = "StealingGrowth"
-keys = ["F"]
+keys = ["LSHIFT", "F"]
 duration = 0
 exclusive = false
 trigger = "once"
