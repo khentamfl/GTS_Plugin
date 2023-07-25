@@ -890,13 +890,16 @@ namespace Gts {
 								
 							mod_target_scale(otherActor, shrinkpower * gigantism);
 
-							std::string taskname = std::format("ShrinkOtherCheck_{}", otherActor->formID);
+							AdjustGtsSkill((shrinkpower * gigantism) * 0.2, giant);
+
+							
 							const float DURATION = 2.5;
+							std::string taskname = std::format("ShrinkOtherCheck_{}", otherActor->formID);
 
 							ActorHandle tinyHandle = otherActor->CreateRefHandle();
 							ActorHandle giantHandle = giant->CreateRefHandle();
 							
-							TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){
+							TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){ // Make sure to disallow shrinking below threshold
 								auto GTS = giantHandle.get().get();
 								auto TINY = tinyHandle.get().get();
 								if (!GTS) {

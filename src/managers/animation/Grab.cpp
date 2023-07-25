@@ -109,7 +109,21 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
+	/*void CancelAnimationCheckTask(Actor* giant, float AnimSpeed) {
+		ActorHandle gianthandle = giant->CreateRefHandle();
+		const float duration = 2.0;
+		TaskManager::RunFor(name, duration, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
 
+			AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
+			AnimationManager::StartAnim("TinyDied", giantref);
+			// All good try another frame
+			return true;
+		});
+	}*/
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////G R A B
@@ -228,14 +242,7 @@ namespace {
 			Grab::DetachActorTask(giant);
 			Grab::Release(giant);
 			return;
-		} if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) <= 0) {
-			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
-			giant->SetGraphVariableInt("GTS_Grab_State", 0);
-			AnimationManager::StartAnim("GrabAbort", giant);
-			AnimationManager::StartAnim("TinyDied", giant);
-			Grab::DetachActorTask(giant);
-			Grab::Release(giant);
-		}
+		} 
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
