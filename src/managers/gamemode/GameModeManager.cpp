@@ -45,6 +45,10 @@ namespace Gts {
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
 
+			if (!IsFemale(actor)) {
+				return;
+			}
+
 			if (Runtime::GetFloat("MultiplyGameModePC") == 0 && actor == player) {
 				Scale = 1.0;
 			}

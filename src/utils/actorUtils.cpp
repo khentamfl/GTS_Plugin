@@ -368,6 +368,16 @@ namespace Gts {
 		return false;
 	}
 
+	bool IsFemale(Actor* actor) {
+		auto base = actor->GetActorBase();
+		int sex = 0;
+		if (base) {
+			sex = actor->GetActorBase()->GetSex();
+		}
+		log::info("Sex of {}: {}", actor->GetDisplayFullName(), sex);
+		return sex > 0;
+	}
+
 	bool IsDragon(Actor* actor) {
 		if (Runtime::HasKeyword(actor, "DragonKeyword")) {
 			return true;

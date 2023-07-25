@@ -19,7 +19,7 @@ namespace {
 		if (IsTeammate(actor)) {
 			MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyNPC");
 		}
-		if (!Runtime::HasPerkTeam(actor, "RandomGrowth") || MultiplySlider == 0) {
+		if (!Runtime::HasPerkTeam(actor, "RandomGrowth") || MultiplySlider == 0 || !IsFemale(actor)) {
 			return false;
 		}
 

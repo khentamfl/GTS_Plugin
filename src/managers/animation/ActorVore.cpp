@@ -155,7 +155,7 @@ namespace {
 		VoreData.AllowToBeVored(false);
 		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
 		DoSizeEffect(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.04, FootEvent::Left, 1.0);
+		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.25, FootEvent::Left, 1.0);
 	}
 
 	void GTSvore_sit_end(AnimationEventData& data) {
@@ -296,7 +296,7 @@ namespace {
 			launch = 1.5;
 		}
 		DoSizeEffect(&data.giant, 0.90, FootEvent::Right, RNode);
-		DoDamageEffect(&data.giant, 1.6, 1.3, 30, 0.04, FootEvent::Right, 1.0);
+		DoDamageEffect(&data.giant, 1.6, 1.3, 30, 0.25, FootEvent::Right, 1.0);
 		DoLaunch(&data.giant, 0.50 * launch * perk, 2.25 * data.animSpeed, 2.0, FootEvent::Right, 0.7);
 	}
 

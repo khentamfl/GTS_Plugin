@@ -74,8 +74,8 @@ namespace {
 		data.stage = 0;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20;
-		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Right, 1.0);
-		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Left, 1.0);
+		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Right, 1.0);
+		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Left, 1.0);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right, 0.85);
@@ -85,8 +85,8 @@ namespace {
 		data.stage = 0;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20;
-		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Right, 1.0);
-		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.04, FootEvent::Left, 1.0);
+		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Right, 1.0);
+		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Left, 1.0);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.10, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right, 0.85);
@@ -98,8 +98,8 @@ namespace {
 		float perk = GetPerkBonus_Basics(giant);
 		auto& sizemanager = SizeManager::GetSingleton();
 		float damage = sizemanager.GetSizeAttribute(giant, 2);
-		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.04, FootEvent::Left, 1.0);
-		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.04, FootEvent::Right, 1.0);
+		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.25, FootEvent::Left, 1.0);
+		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.25, FootEvent::Right, 1.0);
 		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Left, 1.0);
 		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Right, 1.0);
 	}
