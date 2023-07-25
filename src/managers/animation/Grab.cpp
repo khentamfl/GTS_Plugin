@@ -188,7 +188,7 @@ namespace {
 					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
 				}
 			}
-			if (damage > Health) {
+			if (damage >= Health) {
 				CrushManager::Crush(giant, grabbedActor);
 				AdjustGtsSkill(0.50, giant);
 				SetBeingHeld(grabbedActor, false);
@@ -205,12 +205,9 @@ namespace {
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
-				giant->SetGraphVariableInt("GTS_Grab_State", 0);
-				giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 				PrintDeathSource(giant, grabbedActor, "HandCrushed");
 				Grab::DetachActorTask(giant);
 				Grab::Release(giant);
-				AnimationManager::StartAnim("TinyDied", giant);
 			}
 		}
 	}
@@ -225,6 +222,15 @@ namespace {
 		if (!grabbedActor) {
 			log::info("GrabbedActor is null");
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+			giant->SetGraphVariableInt("GTS_Grab_State", 0);
+			AnimationManager::StartAnim("GrabAbort", giant);
+			AnimationManager::StartAnim("TinyDied", giant);
+			Grab::DetachActorTask(giant);
+			Grab::Release(giant);
+			return;
+		} if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) <= 0) {
+			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+			giant->SetGraphVariableInt("GTS_Grab_State", 0);
 			AnimationManager::StartAnim("GrabAbort", giant);
 			AnimationManager::StartAnim("TinyDied", giant);
 			Grab::DetachActorTask(giant);
@@ -660,7 +666,7 @@ namespace Gts {
 				giantref->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 				DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.30, 1.0);
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
-				AnimationManager::StartAnim("TinyDied", giant);
+				AnimationManager::StartAnim("TinyDied", giantref);
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits
 				Grab::Release(giantref);
 				return false;
