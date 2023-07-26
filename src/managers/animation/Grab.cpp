@@ -409,9 +409,10 @@ namespace {
         NiPoint3 vector = endThrow - startThrow;
         float distance_travelled = vector.Length();
         float time_taken = endTime - startTime
+        float speed = distance_travelled / time_taken;
         NiPoint3 direction = vector / vector.Length();
 
-        PushActorAway(giant, tiny, direction, strength);
+        PushActorAway(giant, tiny, direction, speed);
         return false;
       } else {
         return true;
