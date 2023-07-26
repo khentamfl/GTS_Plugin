@@ -408,7 +408,7 @@ namespace {
 
         NiPoint3 vector = endThrow - startThrow;
         float distanceTravelled = vector.Length();
-        float timeTaken = endTime - startTime
+        float timeTaken = endTime - startTime;
         float speed = distanceTravelled / timeTaken;
         NiPoint3 direction = vector / vector.Length();
 
