@@ -398,14 +398,14 @@ namespace {
         return;
       }
 
-      SetBeingHeld(tiny, false);
-			EnableCollisions(tiny);
-
       NiPoint3 endThrow = tiny->GetPosition();
       double endTime = Time::WorldTimeElapsed();
 
       if ((endTime - startTime) > 1e-4) {
         // Time has elapsed
+        SetBeingHeld(tiny, false);
+        EnableCollisions(tiny);
+
         NiPoint3 vector = endThrow - startThrow;
         float distance_travelled = vector.Length();
         float time_taken = endTime - startTime
