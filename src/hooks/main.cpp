@@ -85,7 +85,6 @@ namespace Hooks
 	void Hook_MainUpdate::Update(RE::Main* a_this, float a2)
 	{
 		_Update(a_this, a2);
-		Time::GetSingleton().Update();
 		//log::info("Plugin Ready:{}, Plugin Live: {}", Plugin::Ready(), Plugin::Live());
 		static std::atomic_bool started = std::atomic_bool(false);
 		Plugin::SetOnMainThread(true);
@@ -94,6 +93,7 @@ namespace Hooks
 			// Player loaded and not paused
 			if (started.exchange(true)) {
 				// Not first updated
+				Time::GetSingleton().Update();
 				EventDispatcher::DoUpdate();
 			} else {
 				// First update this load
