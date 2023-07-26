@@ -165,6 +165,7 @@ namespace Gts {
 			tiny->SetRotationX(((RPosX + LPosX) * 70) / 2);
 			tiny->data.angle.x = ((RPosX + LPosX) * 70) / 2;
 		}
+		log::info("Tiny Angle X: {}", tiny->data.angle.x);
 		tiny->data.angle.y = giant->data.angle.y;
 		tiny->data.angle.z = giant->data.angle.z;
 		
