@@ -161,7 +161,7 @@ namespace Gts {
 
 		tiny->data.angle.x = giant->data.angle.x;
 		tiny->data.angle.y = (RPosY + LPosY) / 2;
-		tiny->data.angle.z = giant->data.angle.z;
+		tiny->data.angle.z = (RPosZ + LPosZ) / 2;
 		if (Runtime::GetBool("EnableDebugOverlay")) {
 			DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0, 1.0});
 		}
