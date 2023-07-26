@@ -160,7 +160,11 @@ namespace Gts {
 		//clevagePos.z *= bonus;
 
 		//tiny->data.angle.x = giant->data.angle.x;//((RPosX + LPosX) * 70) / 2;//
-		tiny->SetRotationX(((RPosX + LPosX) * 70) / 2);
+		static Timer rottimer = Timer(1.0);
+		if (rottimer.ShouldRunFrame()) {
+			tiny->SetRotationX(((RPosX + LPosX) * 70) / 2);
+			tiny->data.angle.x = ((RPosX + LPosX) * 70) / 2;
+		}
 		tiny->data.angle.y = giant->data.angle.y;
 		tiny->data.angle.z = giant->data.angle.z;
 		
