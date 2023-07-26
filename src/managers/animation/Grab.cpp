@@ -392,10 +392,10 @@ namespace {
       Actor* giant = gianthandle.get().get();
       Actor* tiny = tinyHandle.get().get();
       if (!giant) {
-        return;
+        return false;
       }
       if (!tiny) {
-        return;
+        return false;
       }
 
       NiPoint3 endThrow = tiny->GetPosition();
