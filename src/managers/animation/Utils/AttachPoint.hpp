@@ -119,6 +119,31 @@ namespace Gts {
 		};
 
 		NiPoint3 clevagePos = NiPoint3();
+		float LPosX = 0.0f;
+		float LPosY = 0.0f;
+		float LPosZ = 0.0f;
+
+		float RPosX = 0.0f;
+		float RPosY = 0.0f;
+		float RPosZ = 0.0f;
+
+		NiAVObject BreastL = find_node(giant, "L Breast02");
+		NiAVObject BreastR = find_node(giant, "R Breast02");
+		if (!BreastL) {
+			return;
+		} if (!BreastR) {
+			return;
+		}
+
+		NiMatrix3 LeftBreastRotation = BreastL->World.rotate;
+		NiMatrix3 RightBreastRotation = BreastR->World.rotate;
+
+		LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ);
+		RightBreastRotation.ToEulerAnglesXYZ(RPosX, RPosY, RPosZ);
+
+		log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
+		log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
+
 		std::uint32_t bone_count = bone_names.size();
 		for (auto bone_name: bone_names) {
 			auto bone = find_node(giant, bone_name);
