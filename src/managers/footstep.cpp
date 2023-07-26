@@ -38,7 +38,7 @@ namespace {
 		if (source) {
 			float distance_to_camera = unit_to_meter(get_distance_to_camera(source));
 			// Camera distance based volume falloff
-			return soft_core(distance_to_camera, 0.024 * mult, 2.0, 0.8, 0.0, 0.0);
+			return soft_core(distance_to_camera, 0.024 / mult, 2.0, 0.8, 0.0, 0.0);
 		}
 		return 1.0;
 	}
