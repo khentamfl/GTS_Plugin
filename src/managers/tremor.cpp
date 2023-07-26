@@ -188,7 +188,7 @@ namespace Gts {
 				if (actor->formID == 0x14 && pcEffects) {
 
 					if (intensity > 0.01 && duration > 0.01) {
-						intensity *= 1.65; // stronger PC shake
+						intensity *= 1.85; // stronger PC shake
 						if (IsFirstPerson()) {
 							intensity *= 0.075; // Shake effects are weaker when in first person
 						}
@@ -216,7 +216,7 @@ namespace Gts {
 				bool npcEffects = Runtime::GetBoolOr("NPCSizeEffects", true);
 				if (actor->formID != 0x14 && npcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
-						intensity *= 1.2;
+						intensity *= 1.4;
 						shake_camera(actor, intensity, duration);
 
 						float left_shake = intensity;
