@@ -216,7 +216,7 @@ namespace Gts {
 				bool npcEffects = Runtime::GetBoolOr("NPCSizeEffects", true);
 				if (actor->formID != 0x14 && npcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
-						intensity * = 1.2;
+						intensity *= 1.2;
 						shake_camera(actor, intensity, duration);
 
 						float left_shake = intensity;

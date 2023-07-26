@@ -17,11 +17,11 @@ namespace {
 	void CreateParticle(Actor* actor, NiPoint3 position, float scale) {
 		auto profiler = Profilers::Profile("Explosions: CreateParticle");
 		if (HighHeelManager::IsWearingHH(actor)) {
-			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr);
-			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr); // Spawn both
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep_High_Heel.nif", NiMatrix3(), position, scale * 2.9, 7, nullptr);
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.9, 7, nullptr); // Spawn both
 			return;
 		} else {
-			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.5, 7, nullptr); // Spawn foot only
+			SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 2.9, 7, nullptr); // Spawn foot only
 			return;
 		}
 	}
@@ -85,7 +85,7 @@ namespace Gts {
 				scale *= 2.25; // Jumping makes you sound bigger
 			}
 			if (HighHeelManager::IsWearingHH(actor)) {
-				scale *= 1.25; // Wearing High Heels makes you bigger
+				scale *= 1.0 + GetHighHeelsBonusDamage(actor) * 2.5; // Wearing High Heels makes you bigger based on HH height
 			}
 
 			for (NiAVObject* node: impact.nodes) {
