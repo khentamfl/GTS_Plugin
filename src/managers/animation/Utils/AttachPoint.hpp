@@ -120,6 +120,7 @@ namespace Gts {
 		};
 
 		NiPoint3 clevagePos = NiPoint3();
+		/*
 		float LPosX = 0.0f;
 		float LPosY = 0.0f;
 		float LPosZ = 0.0f;
@@ -142,8 +143,10 @@ namespace Gts {
 		LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ);
 		RightBreastRotation.ToEulerAnglesXYZ(RPosX, RPosY, RPosZ);
 
+
 		log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
 		log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
+		*/
 
 		std::uint32_t bone_count = bone_names.size();
 		for (auto bone_name: bone_names) {
@@ -161,13 +164,9 @@ namespace Gts {
 		//clevagePos.z *= bonus;
 
 		//tiny->data.angle.x = giant->data.angle.x;//((RPosX + LPosX) * 70) / 2;//
-		static Timer rottimer = Timer(1.0);
-		if (rottimer.ShouldRunFrame()) {
-			tiny->SetRotationX(((RPosX + LPosX) * 70) / 2);
-			tiny->data.angle.x = ((RPosX + LPosX) * 70) / 2;
-		}
-		log::info("Tiny Angle X: {}", tiny->data.angle.x);
-		tiny->data.angle.y = giant->data.angle.y;
+		//tiny->data.angle.x = ((RPosX + LPosX) * 70) / 2;
+		//log::info("Tiny Angle X: {}", tiny->data.angle.x);
+		//tiny->data.angle.y = giant->data.angle.y;
 		tiny->data.angle.z = giant->data.angle.z;
 		
 		if (Runtime::GetBool("EnableDebugOverlay")) {
