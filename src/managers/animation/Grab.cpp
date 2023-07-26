@@ -192,7 +192,7 @@ namespace {
 			float experience = std::clamp(damage/100, 0.0f, 0.20f);
 
 			AdjustGtsSkill(experience, giant);
-			
+
 			AddSMTDuration(giant, 1.6);
 			if (damage < Health) {
 				if (!LessGore()) {
@@ -242,7 +242,7 @@ namespace {
 			Grab::DetachActorTask(giant);
 			Grab::Release(giant);
 			return;
-		} 
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -377,17 +377,52 @@ namespace {
 	}
 
 	void GTSGrab_Throw_Throw_Pre(AnimationEventData& data) {// Throw frame 0
+    auto giant = &data.giant;
+		auto otherActor = Grab::GetHeldActor(&data.giant);
+
+
+
+    NiPoint3 startThrow = otherActor->GetPosition();
+    double startTime = Time::WorldTimeElapsed();
+    ActorHandle tinyHandle = otherActor->CreateRefHandle();
+    ActorHandle gianthandle = giant.CreateRefHandle();
+
+    // Do this next frame (or rather until some world time has elapsed)
+    TaskManager::Run([=](auto& update){
+      Actor* giant = gianthandle.get().get();
+      Actor* tiny = tinyHandle.get().get();
+      if (!giant) {
+        return;
+      }
+      if (!tiny) {
+        return;
+      }
+
+      SetBeingHeld(tiny, false);
+			EnableCollisions(tiny);
+
+      NiPoint3 endThrow = tiny->GetPosition();
+      double endTime = Time::WorldTimeElapsed();
+
+      if ((endTime - startTime) > 1e-4) {
+        // Time has elapsed
+        NiPoint3 vector = endThrow - startThrow;
+        float distance_travelled = vector.Length();
+        float time_taken = endTime - startTime
+        NiPoint3 direction = vector / vector.Length();
+
+        PushActorAway(giant, tiny, direction, strength);
+        return false;
+      } else {
+        return true;
+      }
+    });
 	}
 
 	void GTSGrab_Throw_ThrowActor(AnimationEventData& data) { // Throw frame 1
 		auto giant = &data.giant;
 		auto otherActor = Grab::GetHeldActor(&data.giant);
-		if (otherActor) {
-			SetBeingHeld(otherActor, false);
-			EnableCollisions(otherActor);
-			float sizedifference = get_visual_scale(giant)/get_visual_scale(otherActor);
-			PushActorAway(giant, otherActor, 8.0 * sizedifference);
-		}
+
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		ManageCamera(giant, false, 7.0);
@@ -395,7 +430,6 @@ namespace {
 		AnimationManager::StartAnim("TinyDied", giant);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
-
 	}
 
 	void GTSGrab_Throw_Throw_Post(AnimationEventData& data) { // Throw frame 2
@@ -460,7 +494,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
-		
+
 		AnimationManager::StartAnim("TinyDied", giant);
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.40, 1.0);
 		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.60, 1.8);
@@ -650,10 +684,10 @@ namespace Gts {
 				return false;
 			}
 			if (!tinyhandle) {
-				return false; 
+				return false;
 			}
 			auto giantref = gianthandle.get().get();
-			auto tinyref = tinyhandle.get().get(); 
+			auto tinyref = tinyhandle.get().get();
 
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
@@ -661,7 +695,7 @@ namespace Gts {
 			ForceRagdoll(tinyref, false);
 
 			ShutUp(tinyref);
-			
+
 			if (giantref->IsDead() || tinyref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				PushActorAway(giantref, tinyref, 1.0);
@@ -690,7 +724,7 @@ namespace Gts {
 				if (!hostile) {
 					tinyref->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, restore);
 					tinyref->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, restore);
-				} 
+				}
 				if (hostile) {
 					DamageAV(tinyref, ActorValue::kStamina, restore * 2);
 				}
