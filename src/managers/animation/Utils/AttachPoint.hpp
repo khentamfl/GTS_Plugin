@@ -135,8 +135,8 @@ namespace Gts {
 			return;
 		}
 
-		NiMatrix3 LeftBreastRotation = BreastL->World.rotate;
-		NiMatrix3 RightBreastRotation = BreastR->World.rotate;
+		NiMatrix3 LeftBreastRotation = BreastL->world.rotate;
+		NiMatrix3 RightBreastRotation = BreastR->world.rotate;
 
 		LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ);
 		RightBreastRotation.ToEulerAnglesXYZ(RPosX, RPosY, RPosZ);
