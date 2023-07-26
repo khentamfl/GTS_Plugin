@@ -420,7 +420,7 @@ namespace {
 
 			//PushActorAway(giant, tiny, direction, speed * 100);
 			PushActorAway(giant, tiny, 1.0);
-			ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, speed * 100);
+			ApplyHavokImpulse(tiny, direction.x, direction.y, 0, speed * 1000);
 			return false;
 		} else {
 			return true;
