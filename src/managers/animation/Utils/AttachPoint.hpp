@@ -127,8 +127,8 @@ namespace Gts {
 		float RPosY = 0.0f;
 		float RPosZ = 0.0f;
 
-		NiAVObject BreastL = find_node(giant, "L Breast02");
-		NiAVObject BreastR = find_node(giant, "R Breast02");
+		auto BreastL = find_node(giant, "L Breast02");
+		auto BreastR = find_node(giant, "R Breast02");
 		if (!BreastL) {
 			return;
 		} if (!BreastR) {
