@@ -377,49 +377,55 @@ namespace {
 	}
 
 	void GTSGrab_Throw_Throw_Pre(AnimationEventData& data) {// Throw frame 0
-    auto giant = &data.giant;
+		auto giant = &data.giant;
 		auto otherActor = Grab::GetHeldActor(&data.giant);
 
 
 
-    NiPoint3 startThrow = otherActor->GetPosition();
-    double startTime = Time::WorldTimeElapsed();
-    ActorHandle tinyHandle = otherActor->CreateRefHandle();
-    ActorHandle gianthandle = giant->CreateRefHandle();
+		NiPoint3 startThrow = otherActor->GetPosition();
+		double startTime = Time::WorldTimeElapsed();
+		ActorHandle tinyHandle = otherActor->CreateRefHandle();
+		ActorHandle gianthandle = giant->CreateRefHandle();
 
-    // Do this next frame (or rather until some world time has elapsed)
-    TaskManager::Run([=](auto& update){
-      Actor* giant = gianthandle.get().get();
-      Actor* tiny = tinyHandle.get().get();
-      if (!giant) {
-        return false;
-      }
-      if (!tiny) {
-        return false;
-      }
+		Grab::DetachActorTask(giant);
+		Grab::Release(giant);
 
-      NiPoint3 endThrow = tiny->GetPosition();
-      double endTime = Time::WorldTimeElapsed();
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
+		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 
-      if ((endTime - startTime) > 1e-4) {
-        // Time has elapsed
-        SetBeingHeld(tiny, false);
-        EnableCollisions(tiny);
+		// Do this next frame (or rather until some world time has elapsed)
+		TaskManager::Run([=](auto& update){
+		Actor* giant = gianthandle.get().get();
+		Actor* tiny = tinyHandle.get().get();
+		if (!giant) {
+			return false;
+		}
+		if (!tiny) {
+			return false;
+		}
 
-        NiPoint3 vector = endThrow - startThrow;
-        float distanceTravelled = vector.Length();
-        float timeTaken = endTime - startTime;
-        float speed = distanceTravelled / timeTaken;
-        NiPoint3 direction = vector / vector.Length();
+		NiPoint3 endThrow = tiny->GetPosition();
+		double endTime = Time::WorldTimeElapsed();
 
-        //PushActorAway(giant, tiny, direction, speed * 100);
-		PushActorAway(giant, tiny, 1.0);
-		ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, speed * 100);
-        return false;
-      } else {
-        return true;
-      }
-    });
+		if ((endTime - startTime) > 1e-4) {
+			// Time has elapsed
+			SetBeingHeld(tiny, false);
+			EnableCollisions(tiny);
+
+			NiPoint3 vector = endThrow - startThrow;
+			float distanceTravelled = vector.Length();
+			float timeTaken = endTime - startTime;
+			float speed = distanceTravelled / timeTaken;
+			NiPoint3 direction = vector / vector.Length();
+
+			//PushActorAway(giant, tiny, direction, speed * 100);
+			PushActorAway(giant, tiny, 1.0);
+			ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, speed * 100);
+			return false;
+		} else {
+			return true;
+		}
+		});
 	}
 
 	void GTSGrab_Throw_ThrowActor(AnimationEventData& data) { // Throw frame 1
