@@ -385,7 +385,7 @@ namespace {
     NiPoint3 startThrow = otherActor->GetPosition();
     double startTime = Time::WorldTimeElapsed();
     ActorHandle tinyHandle = otherActor->CreateRefHandle();
-    ActorHandle gianthandle = giant.CreateRefHandle();
+    ActorHandle gianthandle = giant->CreateRefHandle();
 
     // Do this next frame (or rather until some world time has elapsed)
     TaskManager::Run([=](auto& update){
@@ -407,9 +407,9 @@ namespace {
         EnableCollisions(tiny);
 
         NiPoint3 vector = endThrow - startThrow;
-        float distance_travelled = vector.Length();
-        float time_taken = endTime - startTime
-        float speed = distance_travelled / time_taken;
+        float distanceTravelled = vector.Length();
+        float timeTaken = endTime - startTime
+        float speed = distanceTravelled / timeTaken;
         NiPoint3 direction = vector / vector.Length();
 
         PushActorAway(giant, tiny, direction, speed);
