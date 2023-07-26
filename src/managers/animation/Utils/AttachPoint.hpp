@@ -130,9 +130,9 @@ namespace Gts {
 		auto BreastL = find_node(giant, "L Breast02");
 		auto BreastR = find_node(giant, "R Breast02");
 		if (!BreastL) {
-			return;
+			return false;
 		} if (!BreastR) {
-			return;
+			return false;
 		}
 
 		NiMatrix3 LeftBreastRotation = BreastL->world.rotate;
