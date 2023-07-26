@@ -412,7 +412,9 @@ namespace {
         float speed = distanceTravelled / timeTaken;
         NiPoint3 direction = vector / vector.Length();
 
-        PushActorAway(giant, tiny, direction, speed);
+        //PushActorAway(giant, tiny, direction, speed * 100);
+		PushActorAway(giant, tiny, 1.0);
+		ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, speed * 100);
         return false;
       } else {
         return true;
