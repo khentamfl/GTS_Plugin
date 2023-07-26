@@ -159,10 +159,11 @@ namespace Gts {
 		//clevagePos.x *= bonus;
 		//clevagePos.z *= bonus;
 
-		tiny->data.angle.x = ((RPosX + LPosX) * 70) / 2;//giant->data.angle.x;
-		log::info("Tiny Angle X: {}", tiny->data.angle.x);
-		//tiny->data.angle.y = giant->data.angle.y;
+		//tiny->data.angle.x = giant->data.angle.x;//((RPosX + LPosX) * 70) / 2;//
+		tiny->SetRotationX(((RPosX + LPosX) * 70) / 2);
+		tiny->data.angle.y = giant->data.angle.y;
 		tiny->data.angle.z = giant->data.angle.z;
+		
 		if (Runtime::GetBool("EnableDebugOverlay")) {
 			DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0, 1.0});
 		}
