@@ -161,7 +161,7 @@ namespace {
 
 		if (!ExplosionTimer.ShouldRun()) {
 			if (NotifyTimer.ShouldRunFrame()) {
-				Runtime::PlaySound("VoreSound_Fail", player, 1.8, 0.0);
+				Runtime::PlaySound("VoreSound_Fail", player, 1.2, 0.0);
 				Notify("Shrink Outburst is on a cooldown");
 			}
 			return;

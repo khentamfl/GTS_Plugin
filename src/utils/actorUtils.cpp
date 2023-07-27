@@ -855,8 +855,8 @@ namespace Gts {
 
 		float SCALE_RATIO = 0.75;
 
-		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, 1.0, 1.0, "NPC Head [Head]"); 
-		shake_camera(giant, 1.20, 1.25);
+		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, 2.0, 1.0, "NPC Head [Head]"); 
+		Rumble::For("ShrinkOutburst", giant, 12.0, 0.15, "NPC COM [COM ]", 0.80);
 
 		NiPoint3 NodePosition = node->world.translate;
 
