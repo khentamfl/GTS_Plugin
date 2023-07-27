@@ -125,6 +125,17 @@ namespace {
 		}
 	}
 
+	bool ShouldTimerRun(Actor* actor) {
+		static Timer ExplosionTimer_Normal = Timer(14);
+		static Timer ExplosionTimer_Perk = Timer(10);
+		bool DarkArts3 = Runtime::HasPerk(actor, "DarkArts_Aug3");
+		if (DarkArts3) {
+			return ExplosionTimer_Perk.ShouldRunFrame();
+		} else {
+			return ExplosionTimer_Normal.ShouldRunFrame();
+		}
+	}
+
 	void ShrinkOutburstEvent(const InputEventData& data) {
 		
 		auto player = PlayerCharacter::GetSingleton();
@@ -145,7 +156,6 @@ namespace {
 		if (DarkArts2) {
 			damagehp -= 20; // less hp drain
 		} if (DarkArts3) {
-			cooldown = 1.0; // Faster CD
 			damagehp -= 40; // even less hp drain
 		}
 
@@ -156,10 +166,10 @@ namespace {
 			return; // don't allow us to die from own shrinking
 		}
 		
-		Timer ExplosionTimer = Timer(cooldown);
+		
 		static Timer NotifyTimer = Timer(2.0);
 
-		if (!ExplosionTimer.ShouldRun()) {
+		if (!ShouldTimerRun(player)) {
 			if (NotifyTimer.ShouldRunFrame()) {
 				Runtime::PlaySound("VoreSound_Fail", player, 1.2, 0.0);
 				Notify("Shrink Outburst is on a cooldown");

@@ -240,7 +240,7 @@ namespace {
 			Rumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 
-			float experience = std::clamp(damage/100, 0.0f, 0.20f);
+			float experience = std::clamp(damage/250, 0.0f, 0.10f);
 
 			AdjustGtsSkill(experience, giant);
 

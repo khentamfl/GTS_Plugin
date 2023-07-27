@@ -904,7 +904,7 @@ namespace Gts {
 						}
 						if (nodeCollisions > 1) {
 							float sizedifference = giantScale/get_visual_scale(otherActor);
-							float shrinkpower = -(shrink * 0.5) * (1.0 + GetGtsSkillLevel() * 0.005) * CalcEffeciency(giant, otherActor);
+							float shrinkpower = -(shrink * 0.5) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
 							if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
 								shrinkpower *= 2.0;
 							}
@@ -916,7 +916,7 @@ namespace Gts {
 								
 							mod_target_scale(otherActor, shrinkpower * gigantism);
 
-							AdjustGtsSkill((-shrinkpower * gigantism) * 0.44, giant);
+							AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
 
 							
 							const float DURATION = 2.5;
