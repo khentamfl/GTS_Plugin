@@ -185,6 +185,18 @@ namespace Gts {
 		return sitting > 0;
 	}
 
+	bool IsThighCrushing(Actor* actor) { // Are we currently doing Thigh Crush?
+		int crushing;
+		actor->GetGraphVariableInt("GTS_IsThighCrushing", crushing);
+		return crushing > 0;
+	}
+
+	bool IsThighSandwiching(Actor* actor) { // Are we currently Thigh Sandwiching?
+		int sandwiching;
+		actor->GetGraphVariableInt("GTS_IsThighSandwiching", sandwiching);
+		return sandwiching > 0;
+	}
+
 	bool IsBeingEaten(Actor* tiny) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {

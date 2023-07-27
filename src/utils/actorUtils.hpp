@@ -21,7 +21,7 @@ namespace Gts {
 	float GetLaunchPower(float sizeRatio);
 
 
-	// GTS States
+	// GTS State Bools
 	bool IsEquipBusy(Actor* actor);
 	bool IsCrawling(Actor* actor);
 	bool IsJumping(Actor* actor);
@@ -29,9 +29,11 @@ namespace Gts {
 	bool IsBetweenBreasts(Actor* actor);
 	bool IsTransferingTiny(Actor* actor);
 	bool IsUsingThighAnimations(Actor* actor);
+	bool IsThighCrushing(Actor* actor);
+	bool IsThighSandwiching(Actor* actor);
 	bool IsBeingEaten(Actor* tiny);
 	bool IsGtsBusy(Actor* actor);
-    // GTS States End
+    // GTS State Bools End
 
     // Gts Bools
 	bool IsGrowthSpurtActive(Actor* actor);
@@ -43,13 +45,13 @@ namespace Gts {
 	bool IsLiving(Actor* actor);
 	// Gts Bools end
 
-	// GTS States Set
+	// GTS State Controllers
 	void SetBeingHeld(Actor* tiny, bool decide);
 	void SetBetweenBreasts(Actor* actor, bool decide);
 	void SetBeingEaten(Actor* tiny, bool decide);
 	void ShutUp(Actor* actor);
 
-	// GTS States set end
+	// GTS State Controllers end
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems);
