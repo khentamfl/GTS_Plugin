@@ -109,21 +109,62 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
-	/*void CancelAnimationCheckTask(Actor* giant, float AnimSpeed) {
+	void RotateActorTask(Actor* giant, Actor* tiny) {
+		std::string name = std::format("RotateActor_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
-		const float duration = 2.0;
-		TaskManager::RunFor(name, duration, [=](auto& progressData) {
+		ActorHandle tinyhandle = tiny->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
 			}
+			if (!tinyhandle) {
+				return false;
+			}
 			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
 
-			AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
-			AnimationManager::StartAnim("TinyDied", giantref);
+			float LPosX = 0.0f;
+			float LPosY = 0.0f;
+			float LPosZ = 0.0f;
+
+			float RPosX = 0.0f;
+			float RPosY = 0.0f;
+			float RPosZ = 0.0f;
+
+			auto NPC = find_node(tiny, "NPC");
+			auto BreastL = find_node(giant, "L Breast02");
+			auto BreastR = find_node(giant, "R Breast02");
+			if (!NPC) {
+				return false;
+			} if (!BreastL) {
+				return false;
+			} if (!BreastR) {
+				return false;
+			}
+
+			NiMatrix3 LeftBreastRotation = BreastL->world.rotate;
+			NiMatrix3 RightBreastRotation = BreastR->world.rotate;
+
+			LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ);
+			RightBreastRotation.ToEulerAnglesXYZ(RPosX, RPosY, RPosZ);
+
+			NiMatrix3 NPCROT = NPC->world.rotate;
+
+
+			auto NewRot = NiPoint3(((LPosX + RPosX) * 70) / 2, 0, 0);
+			NPCROT.SetEulerAnglesXYZ(NewRot);
+
+			log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
+			log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
+
 			// All good try another frame
+			if (!IsBetweenBreasts(giantref)) {
+				return false; // Abort it
+			}
 			return true;
 		});
-	}*/
+		TaskManager::ChangeUpdate(name, UpdateKind::Camera);
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////G R A B
@@ -641,6 +682,7 @@ namespace {
 		if (!grabbedActor) {
 			return;
 		}
+		RotateActorTask(player, grabbedActor);
 		AnimationManager::StartAnim("Breasts_Put", player);
 	}
 	void BreastsRemoveEvent(const InputEventData& data) {

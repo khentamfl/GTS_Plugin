@@ -121,42 +121,6 @@ namespace Gts {
 
 		NiPoint3 clevagePos = NiPoint3();
 		
-		float LPosX = 0.0f;
-		float LPosY = 0.0f;
-		float LPosZ = 0.0f;
-
-		float RPosX = 0.0f;
-		float RPosY = 0.0f;
-		float RPosZ = 0.0f;
-
-		auto NPC = find_node(tiny, "NPC Root [Root]");
-		if (!NPC) {
-			return false;
-		}
-		auto BreastL = find_node(giant, "L Breast02");
-		auto BreastR = find_node(giant, "R Breast02");
-		if (!BreastL) {
-			return false;
-		} if (!BreastR) {
-			return false;
-		}
-
-		NiMatrix3 LeftBreastRotation = BreastL->world.rotate;
-		NiMatrix3 RightBreastRotation = BreastR->world.rotate;
-
-		LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ);
-		RightBreastRotation.ToEulerAnglesXYZ(RPosX, RPosY, RPosZ);
-
-		NiMatrix3 NPCROT = NPC->world.rotate;
-
-
-		auto NewRot = NiPoint3(((LPosX + RPosX) * 70) / 2, 0, 0);
-		NPCROT.SetEulerAnglesXYZ(NewRot);
-
-		log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
-		log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
-		
-
 		std::uint32_t bone_count = bone_names.size();
 		for (auto bone_name: bone_names) {
 			auto bone = find_node(giant, bone_name);
@@ -174,7 +138,6 @@ namespace Gts {
 
 		//tiny->data.angle.x = giant->data.angle.x;//((RPosX + LPosX) * 70) / 2;//
 		//tiny->data.angle.x = ((RPosX + LPosX) * 70) / 2;
-		//log::info("Tiny Angle X: {}", tiny->data.angle.x);
 		//tiny->data.angle.y = giant->data.angle.y;
 		tiny->data.angle.z = giant->data.angle.z;
 		
