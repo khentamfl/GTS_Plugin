@@ -129,7 +129,7 @@ namespace Gts {
 		float RPosY = 0.0f;
 		float RPosZ = 0.0f;
 
-		auto NPC = find_node(tiny, "NPC");
+		auto NPC = find_node(tiny, "NPC Root [Root]");
 		if (!NPC) {
 			return false;
 		}
