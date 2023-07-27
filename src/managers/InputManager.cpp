@@ -128,7 +128,7 @@ namespace {
 	void ShrinkOutburstEvent(const InputEventData& data) {
 		
 		auto player = PlayerCharacter::GetSingleton();
-		float cooldown = 20.0;
+		float cooldown = 14.0;
 		bool DarkArts = Runtime::HasPerk(player, "DarkArts");
 		if (!DarkArts) {
 			return; // no perk, do nothing
@@ -156,7 +156,7 @@ namespace {
 			return; // don't allow us to die from own shrinking
 		}
 		
-		static Timer ExplosionTimer = Timer(cooldown);
+		Timer ExplosionTimer = Timer(cooldown);
 		static Timer NotifyTimer = Timer(2.0);
 
 		if (!ExplosionTimer.ShouldRun()) {
@@ -169,7 +169,7 @@ namespace {
 		auto node = find_node(player, "NPC Pelvis [Pelv]");
 		if (node) {
 			DamageAV(player, ActorValue::kHealth, damagehp);
-			SizeStealExplosion(player, 76.2, node, 0.32, false);
+			ShrinkOutburstExplosion(player, 76.2, node, 0.32, false);
 		}
 		
 	}

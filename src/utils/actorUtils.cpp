@@ -833,7 +833,7 @@ namespace Gts {
 		}
 	}
 
-	void SizeStealExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit) {
+	void ShrinkOutburstExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit) {
 		if (!node) {
 			return;
 		} if (!giant) {
@@ -857,7 +857,7 @@ namespace Gts {
 		float SCALE_RATIO = 0.75;
 
 		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, 2.0, 1.0, "NPC Head [Head]"); 
-		Rumble::For("ShrinkOutburst", giant, 12.0, 0.15, "NPC COM [COM ]", 0.80);
+		Rumble::For("ShrinkOutburst", giant, 24.0, 0.15, "NPC COM [COM ]", 0.80);
 
 		NiPoint3 NodePosition = node->world.translate;
 
@@ -868,7 +868,7 @@ namespace Gts {
 		};
 		std::vector<NiPoint3> Points = {};
 
-		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "SizeStealExplosion");
+		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
 
 		for (NiPoint3 point: points) {
 			Points.push_back(NodePosition);

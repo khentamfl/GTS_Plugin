@@ -105,7 +105,7 @@ namespace Gts {
 	void SpawnDustParticle(Actor* giant, Actor* tiny, std::string_view node, float size);
 	void StaggerOr(Actor* giant, Actor* tiny, float power, float afX, float afY, float afZ, float afMagnitude);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult);
-	void SizeStealExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit);
+	void ShrinkOutburstExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit);
 	bool HasSMT(Actor* giant);
 	void TiredSound(Actor* player, std::string_view message);
 
