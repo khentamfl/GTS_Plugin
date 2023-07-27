@@ -155,7 +155,7 @@ namespace {
 
 			NiMatrix3 NPCROT = NPC->world.rotate;
 
-			TinyRef->GetReferenceRuntimeData().data.angle = NiPoint3(((LPosX + LPosY) * 70) / 2, 0, 0);
+			TinyRef->data.angle = NiPoint3(((LPosX + LPosY) * 70) / 2, 0, 0);
 
 
 			auto NewRot = NiPoint3(((LPosX + RPosX) * 70) / 2, 0, 0);
