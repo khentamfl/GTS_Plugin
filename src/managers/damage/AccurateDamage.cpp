@@ -211,7 +211,7 @@ namespace Gts {
 			NiPoint3 forward = inverseFoot*toe->world.translate;
 			forward = forward / forward.Length();
 
-			NiPoint3 up = inverseFoot*calf->world.translate;
+			NiPoint3 up = inverseFoot*calf->world.translate; 
 			up = up / up.Length();
 
 			NiPoint3 right = forward.UnitCross(up);
