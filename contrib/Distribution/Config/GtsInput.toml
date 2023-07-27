@@ -74,9 +74,9 @@ keys = ["LSHIFT", "Q"]
 
 [[InputEvent]]
 name = "ThighCrush"
-keys = ["LALT"]
+keys = ["LALT", "S"]
 exclusive = true
-duration = 2.0
+duration = 0.0
 
 # Enter Thigh Crush Animation.
 
@@ -310,9 +310,9 @@ trigger = "continuous"
 #========================= P E R K S
 #========================================================
 
-#=========================Stealing Growth
+#=========================Shrink Outburst
 [[InputEvent]]
-name = "StealingGrowth"
+name = "ShrinkOutburst"
 keys = ["LSHIFT", "F"]
 duration = 0
 exclusive = false

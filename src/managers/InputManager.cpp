@@ -68,7 +68,7 @@ namespace {
 		float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
 		float scale = get_visual_scale(player);
 		Rumble::For("RapidShrink", player, 8.0, 0.10, "NPC COM [COM ]", 0.40);
-		SpringShrink(player, -0.2 * scale * stamina, 0.35, "InputShrink");
+		SpringShrink(player, -0.3 * scale * stamina, 0.35, "InputShrink");
 	}
 
 	void SizeReserveEvent(const InputEventData& data) {
@@ -125,7 +125,7 @@ namespace {
 		}
 	}
 
-	void StealingGrowthEvent(const InputEventData& data) {
+	void ShrinkOutburstEvent(const InputEventData& data) {
 		
 		auto player = PlayerCharacter::GetSingleton();
 		float cooldown = 20.0;
@@ -344,7 +344,7 @@ namespace Gts {
 		InputManager::RegisterInputEvent("AnimMaxSpeed", AnimMaxSpeedEvent);
 		InputManager::RegisterInputEvent("RapidGrowth", RapidGrowthEvent);
 		InputManager::RegisterInputEvent("RapidShrink", RapidShrinkEvent);
-		InputManager::RegisterInputEvent("StealingGrowth", StealingGrowthEvent);
+		InputManager::RegisterInputEvent("ShrinkOutburst", ShrinkOutburstEvent);
 	}
 
 	BSEventNotifyControl InputManager::ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) {

@@ -306,17 +306,17 @@ namespace Gts {
 				FootEvent foot_kind = impact.kind;
 				
 				if (actor->AsActorState()->IsSprinting()) { // Sprinting makes you sound bigger
-					sprint_factor = 1.25;
+					sprint_factor = 1.10;
 					scale *= sprint_factor; 
 					start_xl = 9.8;
 					start_xxl = 16.0;
 					sprinting = true;
 				}
 				if (actor->AsActorState()->IsWalking()) {
-					scale *= 0.65; // Walking makes you sound quieter
+					scale *= 0.75; // Walking makes you sound quieter
 				}
 				if (actor->IsSneaking()) {
-					scale *= 0.55; // Sneaking makes you sound quieter
+					scale *= 0.60; // Sneaking makes you sound quieter
 				}
 				if (actor->formID == 0x14 && IsFirstPerson()) { // Footsteps are quieter when in first person
 					scale *= 0.70;
@@ -381,14 +381,14 @@ namespace Gts {
 
 	void FootStepManager::PlayHighHeelSounds(NiAVObject* foot, FootEvent foot_kind, float scale, float sprint, bool sprinting) {
 		//https://www.desmos.com/calculator/wh0vwgljfl
-		BSSoundHandle Footstep_1  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 2),  VolumeParams { .a = 1.2,           .k = 0.45,  .n = 0.7, .s = 1.0}, "x1 Footstep", 1.0);
-		BSSoundHandle Footstep_2  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 2),  VolumeParams { .a = 1.6,           .k = 0.45,  .n = 0.7, .s = 1.0}, "x2 Footstep", 1.0);
-		BSSoundHandle Footstep_4  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 4),  VolumeParams { .a = 3.0,           .k = 0.45, .n = 0.55, .s = 1.0}, "x4 Footstep", 1.5);
-		BSSoundHandle Footstep_8  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 8),  VolumeParams { .a = 6.0,           .k = 0.45, .n = 0.55, .s = 1.0}, "x8 Footstep", 1.8);
-		BSSoundHandle Footstep_12 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 12),  VolumeParams { .a = 10.6,          .k = 0.40, .n = 0.55, .s = 1.0}, "x12 Footstep", 2.0);
-		BSSoundHandle Footstep_24 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 24),  VolumeParams { .a = 20.6,          .k = 0.40, .n = 0.55, .s = 1.0}, "x24 Footstep", 2.8);
-		BSSoundHandle Footstep_48 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 48),  VolumeParams { .a = 44.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x48 Footstep", 4.0);
-		BSSoundHandle Footstep_96 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 96),  VolumeParams { .a = 90.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x96 Footstep", 6.0);
+		BSSoundHandle Footstep_1  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 2),  VolumeParams { .a = 1.15,           .k = 0.45,  .n = 0.7, .s = 1.0}, "x1 Footstep", 1.0);
+		BSSoundHandle Footstep_2  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 2),  VolumeParams { .a = 2.0,           .k = 0.45,  .n = 0.7, .s = 1.0}, "x2 Footstep", 1.0);
+		BSSoundHandle Footstep_4  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 4),  VolumeParams { .a = 4.0,           .k = 0.45, .n = 0.55, .s = 1.0}, "x4 Footstep", 1.2);
+		BSSoundHandle Footstep_8  = get_sound(foot, scale, get_footstep_highheel(foot_kind, 8),  VolumeParams { .a = 8.0,           .k = 0.45, .n = 0.55, .s = 1.0}, "x8 Footstep", 1.4);
+		BSSoundHandle Footstep_12 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 12),  VolumeParams { .a = 12.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x12 Footstep", 1.8);
+		BSSoundHandle Footstep_24 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 24),  VolumeParams { .a = 24.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x24 Footstep", 2.4);
+		BSSoundHandle Footstep_48 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 48),  VolumeParams { .a = 48.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x48 Footstep", 3.0);
+		BSSoundHandle Footstep_96 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 96),  VolumeParams { .a = 96.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x96 Footstep", 6.0);
 		BSSoundHandle Footstep_Mega = get_sound(foot, scale, get_footstep_highheel(foot_kind, 98),  VolumeParams { .a = 110.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "Mega Footstep", 10.0);
 
 		if (Footstep_1.soundID != BSSoundHandle::kInvalidID) {

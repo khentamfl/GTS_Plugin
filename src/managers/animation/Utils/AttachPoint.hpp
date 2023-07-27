@@ -120,7 +120,7 @@ namespace Gts {
 		};
 
 		NiPoint3 clevagePos = NiPoint3();
-		/*
+		
 		float LPosX = 0.0f;
 		float LPosY = 0.0f;
 		float LPosZ = 0.0f;
@@ -129,6 +129,10 @@ namespace Gts {
 		float RPosY = 0.0f;
 		float RPosZ = 0.0f;
 
+		auto NPC = find_node(tiny, "NPC");
+		if (!NPC) {
+			return false;
+		}
 		auto BreastL = find_node(giant, "L Breast02");
 		auto BreastR = find_node(giant, "R Breast02");
 		if (!BreastL) {
@@ -143,10 +147,11 @@ namespace Gts {
 		LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ);
 		RightBreastRotation.ToEulerAnglesXYZ(RPosX, RPosY, RPosZ);
 
+		tiny->world.rotate = (LeftBreastRotation + RightBreastRotation) / 2;
 
 		log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
 		log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
-		*/
+		
 
 		std::uint32_t bone_count = bone_names.size();
 		for (auto bone_name: bone_names) {
