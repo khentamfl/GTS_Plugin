@@ -144,10 +144,10 @@ namespace Gts {
 		NiMatrix3 LeftBreastRotation = BreastL->world.rotate;
 		NiMatrix3 RightBreastRotation = BreastR->world.rotate;
 
-		LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ);
-		RightBreastRotation.ToEulerAnglesXYZ(RPosX, RPosY, RPosZ);
+		//LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ);
+		//RightBreastRotation.ToEulerAnglesXYZ(RPosX, RPosY, RPosZ);
 
-		NPC->world.rotate = (LeftBreastRotation + RightBreastRotation) / 2;
+		NPC->world.rotate = LeftBreastRotation;
 
 		log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
 		log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
