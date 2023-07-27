@@ -155,7 +155,7 @@ namespace {
 
 			NiMatrix3 NPCROT = NPC->world.rotate;
 
-			TinyRef->data.angle = NiPoint3(-90, 0, giantref->data.angle.z);
+			TinyRef->data.angle = NiPoint3((LPosX + RPosX) / 2, 0, giantref->data.angle.z);
 			log::info("TinyRef Angle: {}", Vector2Str(TinyRef->data.angle));
 
 
