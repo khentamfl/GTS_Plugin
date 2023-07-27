@@ -136,7 +136,7 @@ namespace Gts {
 				DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.0); 
 				//                     ^          ^
 				//                 Damage         Radius
-				DoLaunch(actor, 0.45 * bonus, 2.0, 1.0, kind, 0.45 * bonus);
+				DoLaunch(actor, 0.45 * bonus, 2.0, 1.0, kind, 0.55 * bonus);
 			}
 		}
 	}

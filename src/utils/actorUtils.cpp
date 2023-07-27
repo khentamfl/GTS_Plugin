@@ -855,7 +855,8 @@ namespace Gts {
 
 		float SCALE_RATIO = 0.75;
 
-		shake_camera(giant, 0.70, 0.55);
+		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, 1.0, 1.0, "NPC Head [Head]"); 
+		shake_camera(giant, 1.20, 1.25);
 
 		NiPoint3 NodePosition = node->world.translate;
 
@@ -914,7 +915,7 @@ namespace Gts {
 								
 							mod_target_scale(otherActor, shrinkpower * gigantism);
 
-							AdjustGtsSkill((-shrinkpower * gigantism) * 0.2, giant);
+							AdjustGtsSkill((-shrinkpower * gigantism) * 0.44, giant);
 
 							
 							const float DURATION = 2.5;

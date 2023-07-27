@@ -76,7 +76,7 @@ namespace {
 		Rumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, (2.45 + data.animSpeed/4) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Right, 1.0);
 		DoSizeEffect(&data.giant, dust + data.animSpeed/4, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 2.0, FootEvent::Right, 0.75);
+		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 2.0, FootEvent::Right, 0.95);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
 	}
 
@@ -93,7 +93,7 @@ namespace {
 		Rumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, (2.45 + data.animSpeed/4) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Left, 1.0);
 		DoSizeEffect(&data.giant, dust + data.animSpeed/4, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 2.0, FootEvent::Left, 0.75);
+		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 2.0, FootEvent::Left, 0.95);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
 	}
 
@@ -111,7 +111,7 @@ namespace {
 		Rumble::Once("StompRL", &data.giant, 1.25 * shake, 0.05, RNode);
 		DoDamageEffect(&data.giant, 1.65 * perk, 1.45, 25, 0.25, FootEvent::Right, 1.0);
 		DoSizeEffect(&data.giant, dust + data.animSpeed/4, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.75 * bonus * perk, 1.8 + data.animSpeed/4, 2.0, FootEvent::Right, 0.7);
+		DoLaunch(&data.giant, 0.75 * bonus * perk, 1.8 + data.animSpeed/4, 2.0, FootEvent::Right, 0.80);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
@@ -128,7 +128,7 @@ namespace {
 		Rumble::Once("StompLL", &data.giant, 1.25 * shake, 0.05, LNode);
 		DoDamageEffect(&data.giant, 1.65 * perk, 1.45, 25, 0.25, FootEvent::Left, 1.0);
 		DoSizeEffect(&data.giant, dust + data.animSpeed/4, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75 * bonus * perk, 1.8 + data.animSpeed/4, 2.0, FootEvent::Left, 0.7);
+		DoLaunch(&data.giant, 0.75 * bonus * perk, 1.8 + data.animSpeed/4, 2.0, FootEvent::Left, 0.80);
 
 	}
 

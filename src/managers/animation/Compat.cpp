@@ -78,8 +78,8 @@ namespace {
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Left, 1.0);
 		DoSizeEffect(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right, 0.85);
-		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left, 0.85);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right, 0.95);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left, 0.95);
 	}
 	void MCO_DodgeSound(AnimationEventData& data) {
 		data.stage = 0;
@@ -89,8 +89,8 @@ namespace {
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Left, 1.0);
 		DoSizeEffect(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoSizeEffect(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right, 0.85);
-		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left, 0.85);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Right, 0.95);
+		DoLaunch(&data.giant, 0.75, 1.75, 2.0, FootEvent::Left, 0.95);
 	}
 
 	void JumpDown(AnimationEventData& data) {
@@ -100,8 +100,8 @@ namespace {
 		float damage = sizemanager.GetSizeAttribute(giant, 2);
 		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.25, FootEvent::Left, 1.0);
 		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.25, FootEvent::Right, 1.0);
-		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Left, 1.0);
-		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Right, 1.0);
+		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Left, 1.3);
+		DoLaunch(&data.giant, 1.05 * perk, 1.75, 2.0, FootEvent::Right, 1.3);
 	}
 }
 

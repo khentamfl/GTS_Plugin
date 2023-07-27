@@ -34,6 +34,8 @@ sounds:
   BreastImpact: "GTS.esp|5E2E5F"
   SoftHandAttack: "GTS.esp|5E2E60"
 
+  ShrinkOutburstSound: "GTS.esp|6524A3"
+
   HighHeel_x2: "GTS.esp|615875"
   HighHeel_x4: "GTS.esp|615877"
   HighHeel_x8: "GTS.esp|615878"
