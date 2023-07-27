@@ -7,6 +7,7 @@
 #include "managers/highheel.hpp"
 #include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
+#include "managers/Rumble.hpp"
 #include "utils/findActor.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
