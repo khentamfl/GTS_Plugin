@@ -123,6 +123,11 @@ namespace {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
+			auto TinyRef = skyrim_cast<TESObjectREFR*>(tinyref);
+			if (!TinyRef) {
+				return;
+			}
+
 			float LPosX = 0.0f;
 			float LPosY = 0.0f;
 			float LPosZ = 0.0f;
@@ -150,10 +155,12 @@ namespace {
 
 			NiMatrix3 NPCROT = NPC->world.rotate;
 
+			TinyRef->GetReferenceRuntimeData().data.angle = NiPoint3(((LPosX + LPosY) * 70) / 2, 0, 0);
+
 
 			auto NewRot = NiPoint3(((LPosX + RPosX) * 70) / 2, 0, 0);
-			NPCROT.SetEulerAnglesXYZ(NewRot);
-			update_node(NPC);
+			//NPCROT.SetEulerAnglesXYZ(NewRot);
+			//update_node(NPC);
 
 			log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
 			log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
