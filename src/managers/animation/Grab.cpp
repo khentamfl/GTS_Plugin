@@ -570,9 +570,8 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		auto otherActor = Grab::GetHeldActor(giant);
 		if (otherActor) {
-			//std::string message = std::format("If target between your breasts is hostile - target will struggle and lose stamina over time.Friendly Target, conversely, relaxes and restores health and stamina.Having someone between breasts costs no stamina and has no penalties. You can pull actor out by pressing L.Shift + B");
-			//TutorialMessage(message, "Breasts");
 			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
+			RotateActorTask(giant, otherActor);
 			if (IsHostile(giant, otherActor)) {
 				AnimationManager::StartAnim("Breasts_Idle_Unwilling", otherActor);
 			} else {
@@ -682,7 +681,6 @@ namespace {
 		if (!grabbedActor) {
 			return;
 		}
-		RotateActorTask(player, grabbedActor);
 		AnimationManager::StartAnim("Breasts_Put", player);
 	}
 	void BreastsRemoveEvent(const InputEventData& data) {
