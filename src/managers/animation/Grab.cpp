@@ -125,7 +125,7 @@ namespace {
 
 			auto TinyRef = skyrim_cast<TESObjectREFR*>(tinyref);
 			if (!TinyRef) {
-				return;
+				return false;
 			}
 
 			float LPosX = 0.0f;
