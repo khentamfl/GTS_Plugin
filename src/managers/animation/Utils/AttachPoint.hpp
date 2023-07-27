@@ -147,7 +147,7 @@ namespace Gts {
 		LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ);
 		RightBreastRotation.ToEulerAnglesXYZ(RPosX, RPosY, RPosZ);
 
-		tiny->world.rotate = (LeftBreastRotation + RightBreastRotation) / 2;
+		NPC->world.rotate = (LeftBreastRotation + RightBreastRotation) / 2;
 
 		log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
 		log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
