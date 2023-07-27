@@ -153,7 +153,7 @@ namespace {
 
 			auto NewRot = NiPoint3(((LPosX + RPosX) * 70) / 2, 0, 0);
 			NPCROT.SetEulerAnglesXYZ(NewRot);
-			UpdateNode(NPC);
+			update_node(NPC);
 
 			log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
 			log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
