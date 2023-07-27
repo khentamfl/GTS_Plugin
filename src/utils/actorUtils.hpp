@@ -20,6 +20,36 @@ namespace Gts {
 
 	float GetLaunchPower(float sizeRatio);
 
+
+	// GTS States
+	bool IsEquipBusy(Actor* actor);
+	bool IsCrawling(Actor* actor);
+	bool IsJumping(Actor* actor);
+	bool IsBeingHeld(Actor* tiny);
+	bool IsBetweenBreasts(Actor* actor);
+	bool IsTransferingTiny(Actor* actor);
+	bool IsUsingThighAnimations(Actor* actor);
+	bool IsBeingEaten(Actor* tiny);
+	bool IsGtsBusy(Actor* actor);
+    // GTS States End
+
+    // Gts Bools
+	bool IsGrowthSpurtActive(Actor* actor);
+	bool HasGrowthSpurt(Actor* actor);
+	bool AllowStagger(Actor* giant, Actor* tiny);
+	bool IsHuman(Actor* actor);
+	bool IsFemale(Actor* actor);
+	bool IsDragon(Actor* actor);
+	bool IsLiving(Actor* actor);
+	// Gts Bools end
+
+	// GTS States Set
+	void SetBeingHeld(Actor* tiny, bool decide);
+	void SetBetweenBreasts(Actor* actor, bool decide);
+	void SetBeingEaten(Actor* tiny, bool decide);
+	void ShutUp(Actor* actor);
+
+	// GTS States set end
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems);
@@ -44,22 +74,8 @@ namespace Gts {
 
 	void CompleteDragonQuest();
 
-	bool IsGrowthSpurtActive(Actor* actor);
-	bool HasGrowthSpurt(Actor* actor);
-	bool AllowStagger(Actor* giant, Actor* tiny);
-	bool IsHuman(Actor* actor);
-	bool IsFemale(Actor* actor);
-	bool IsDragon(Actor* actor);
-	bool IsLiving(Actor* actor);
-
-	bool IsEquipBusy(Actor* actor);
-
-	bool IsCrawling(Actor* actor);
-
 	float get_distance_to_actor(Actor* receiver, Actor* target);
 	float GetHighHeelsBonusDamage(Actor* actor);
-
-	bool IsJumping(Actor* actor);
 
 	void ApplyShake(Actor* caster, float modifier);
 	void ApplyShakeAtNode(Actor* caster, float modifier, std::string_view node);
@@ -70,19 +86,7 @@ namespace Gts {
 	bool AllowDevourment();
 	bool AllowFeetTracking();
 	bool LessGore();
-	bool IsBeingHeld(Actor* tiny);
-	void SetBeingHeld(Actor* tiny, bool decide);
 
-	bool IsBetweenBreasts(Actor* actor);
-	void SetBetweenBreasts(Actor* actor, bool decide);
-
-	bool IsTransferingTiny(Actor* actor);
-	bool IsUsingThighAnimations(Actor* actor);
-
-	void SetBeingEaten(Actor* tiny, bool decide);
-	bool IsBeingEaten(Actor* tiny);
-
-	bool IsGtsBusy(Actor* actor);
 	bool IsTeammate(Actor* actor);
 
 	void TrackFeet(Actor* giant, float number, bool enable);
@@ -97,7 +101,6 @@ namespace Gts {
 	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node);
 	void SpawnParticle(Actor* actor, float lifetime, const char* modelName, const NiMatrix3& rotation, const NiPoint3& position, float scale, std::uint32_t flags, NiAVObject* target);
 	void SpawnDustParticle(Actor* giant, Actor* tiny, std::string_view node, float size);
-	void ShutUp(Actor* actor);
 	void StaggerOr(Actor* giant, Actor* tiny, float power, float afX, float afY, float afZ, float afMagnitude);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult);
 	void SizeStealExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit);

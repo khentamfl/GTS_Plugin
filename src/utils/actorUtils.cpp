@@ -124,6 +124,220 @@ namespace Gts {
 		return power;
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                 G T S   ST A T E S  B O O L S                                                                      //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	bool IsEquipBusy(Actor* actor) {
+		auto profiler = Profilers::Profile("ActorUtils: IsEquipBusy");
+		int State;
+		actor->GetGraphVariableInt("currentDefaultState", State);
+		if (State >= 10 && State <= 20) {
+			return true;
+		}
+		return false;
+	}
+
+	bool IsCrawling(Actor* actor) {
+		auto profiler = Profilers::Profile("ActorUtils: IsCrawling");
+		bool prone;
+		actor->GetGraphVariableBool("GTS_IsCrawling", prone);
+		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && prone;
+	}
+
+	bool IsJumping(Actor* actor) {
+		auto profiler = Profilers::Profile("ActorUtils: IsJumping");
+		if (!actor) {
+			return false;
+		}
+		if (!actor->Is3DLoaded()) {
+			return false;
+		}
+		bool result = false;
+		actor->GetGraphVariableBool("bInJumpState", result);
+		return result;
+	}
+
+	bool IsBeingHeld(Actor* tiny) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			return transient->being_held;
+		}
+		return false;
+	}
+
+	bool IsBetweenBreasts(Actor* actor) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			return transient->between_breasts;
+		}
+		return false;
+	}
+
+	bool IsTransferingTiny(Actor* actor) { // Reports 'Do we have someone grabed?'
+		int grabbed;
+		actor->GetGraphVariableInt("GTS_GrabbedTiny", grabbed);
+		return grabbed > 0;
+	}
+
+	bool IsUsingThighAnimations(Actor* actor) { // Do we currently use Thigh Crush / Thigh Sandwich?
+		int sitting;
+		actor->GetGraphVariableInt("GTS_Sitting", sitting);
+		return sitting > 0;
+	}
+
+	bool IsBeingEaten(Actor* tiny) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			return transient->about_to_be_eaten;
+		}
+		return false;
+	}
+
+	bool IsGtsBusy(Actor* actor) {
+		auto profiler = Profilers::Profile("ActorUtils: IsGtsBusy");
+		bool GTSBusy;
+		actor->GetGraphVariableBool("GTS_Busy", GTSBusy);
+		return GTSBusy;
+	}
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                 G T S   ST A T E S  O T H E R                                                                      //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	bool IsGrowthSpurtActive(Actor* actor) {
+		if (!Runtime::HasPerkTeam(actor, "GrowthOfStrength")) {
+			return false;
+		}
+		if (HasGrowthSpurt(actor)) {
+			return true;
+		}
+		return false;
+	}
+
+	bool HasGrowthSpurt(Actor* actor) {
+		bool Growth1 = Runtime::HasMagicEffect(actor, "explosiveGrowth1");
+		bool Growth2 = Runtime::HasMagicEffect(actor, "explosiveGrowth2");
+		bool Growth3 = Runtime::HasMagicEffect(actor, "explosiveGrowth3");
+		if (Growth1 || Growth2 || Growth3) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	bool AllowStagger(Actor* giant, Actor* tiny) {
+		if (Persistent::GetSingleton().allow_stagger == true) {
+			//log::info("Allow_Stagger TRUE: {}, IsTeammate: {} {}", Persistent::GetSingleton().allow_stagger, tiny->GetDisplayFullName(), IsTeammate(tiny));
+			return true; // Allow it
+		} else if (Persistent::GetSingleton().allow_stagger == false && (giant->formID == 0x14 || IsTeammate(giant)) && (tiny->formID == 0x14 || IsTeammate(tiny))) {
+			//log::info("Allow_Stagger FALSE: {}, IsTeammate: {} {}", Persistent::GetSingleton().allow_stagger, tiny->GetDisplayFullName(), IsTeammate(tiny));
+			return false; // Protect
+		}
+		log::info("Stagger false");
+		return true;
+	}
+    
+	bool IsHuman(Actor* actor) { // Check if Actor is humanoid or not. Currently used for Hugs Animation
+		bool vampire = Runtime::HasKeyword(actor, "VampireKeyword");
+		bool dragon = Runtime::HasKeyword(actor, "DragonKeyword");
+		bool animal = Runtime::HasKeyword(actor, "AnimalKeyword");
+		bool dwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
+		bool undead = Runtime::HasKeyword(actor, "UndeadKeyword");
+		bool creature = Runtime::HasKeyword(actor, "CreatureKeyword");
+		log::info("{} is vamp: {}, drag: {}, anim: {}, dwem: {}, undead: {}, creat: {}", actor->GetDisplayFullName(), vampire, dragon, animal, dwemer, undead, creature);
+		if (!dragon && !animal && !dwemer && !undead && !creature) {
+			return true; // Detect non-vampire
+		} if (!dragon && !animal && !dwemer && !creature && undead && vampire) {
+			return true; // Detect Vampire
+		} else {
+			return false;
+		}
+		return false;
+	}
+
+	bool IsFemale(Actor* actor) {
+		bool FemaleCheck = false;
+		if (!FemaleCheck) {
+			return true; // Always return true if we don't check for male/female
+		}
+		auto base = actor->GetActorBase();
+		int sex = 0;
+		if (base) {
+			if (base->GetSex()) {
+				sex = base->GetSex();
+			}
+		}
+		log::info("Sex of {}: {}", actor->GetDisplayFullName(), sex);
+		return sex > 0; // Else return sex value
+	}
+
+	bool IsDragon(Actor* actor) {
+		if (Runtime::HasKeyword(actor, "DragonKeyword")) {
+			return true;
+		}
+		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
+		     || Runtime::IsRace(actor, "dragonRace")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	bool IsLiving(Actor* actor) {
+		bool IsDraugr = Runtime::HasKeyword(actor, "UndeadKeyword");
+		bool IsDwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
+		bool IsVampire = Runtime::HasKeyword(actor, "VampireKeyword");
+		if (IsVampire) {
+			log::info("{} is Vampire", actor->GetDisplayFullName());
+			return true;
+		}
+		if (IsDraugr || IsDwemer) {
+			log::info("{} is not living", actor->GetDisplayFullName());
+			return false;
+		} else {
+			return true;
+		}
+		return true;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                 G T S   ST A T E S  S E T S                                                                        //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	void SetBeingHeld(Actor* tiny, bool decide) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			transient->being_held = decide;
+		}
+	}
+	void SetBetweenBreasts(Actor* actor, bool decide) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			transient->between_breasts = decide;
+		}
+	}
+	void SetBeingEaten(Actor* tiny, bool decide) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			transient->about_to_be_eaten = decide;
+		}
+	}
+	void ShutUp(Actor* actor) { // Disallow them to "So anyway i've been fishing today and my dog died" while we do something to them
+		if (!actor) {
+			return;
+		}
+		auto ai = actor->GetActorRuntimeData().currentProcess;
+		if (ai) {
+			if (ai->high) {
+				float Greeting = ai->high->greetingTimer;
+				ai->high->greetingTimer = 5;
+			}
+		}
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	void PlayAnimation(Actor* actor, std::string_view animName) {
 		actor->NotifyAnimationGraph(animName);
 	}
@@ -326,132 +540,6 @@ namespace Gts {
 		}
 	}
 
-	bool IsGrowthSpurtActive(Actor* actor) {
-		if (!Runtime::HasPerkTeam(actor, "GrowthOfStrength")) {
-			return false;
-		}
-		if (HasGrowthSpurt(actor)) {
-			return true;
-		}
-		return false;
-	}
-
-	bool HasGrowthSpurt(Actor* actor) {
-		bool Growth1 = Runtime::HasMagicEffect(actor, "explosiveGrowth1");
-		bool Growth2 = Runtime::HasMagicEffect(actor, "explosiveGrowth2");
-		bool Growth3 = Runtime::HasMagicEffect(actor, "explosiveGrowth3");
-		if (Growth1 || Growth2 || Growth3) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	bool AllowStagger(Actor* giant, Actor* tiny) {
-		if (Persistent::GetSingleton().allow_stagger == true) {
-			//log::info("Allow_Stagger TRUE: {}, IsTeammate: {} {}", Persistent::GetSingleton().allow_stagger, tiny->GetDisplayFullName(), IsTeammate(tiny));
-			return true; // Allow it
-		} else if (Persistent::GetSingleton().allow_stagger == false && (giant->formID == 0x14 || IsTeammate(giant)) && (tiny->formID == 0x14 || IsTeammate(tiny))) {
-			//log::info("Allow_Stagger FALSE: {}, IsTeammate: {} {}", Persistent::GetSingleton().allow_stagger, tiny->GetDisplayFullName(), IsTeammate(tiny));
-			return false; // Protect
-		}
-		log::info("Stagger false");
-		return true;
-	}
-    
-	bool IsHuman(Actor* actor) { // Check if Actor is humanoid or not. Currently used for Hugs Animation
-		bool vampire = Runtime::HasKeyword(actor, "VampireKeyword");
-		bool dragon = Runtime::HasKeyword(actor, "DragonKeyword");
-		bool animal = Runtime::HasKeyword(actor, "AnimalKeyword");
-		bool dwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
-		bool undead = Runtime::HasKeyword(actor, "UndeadKeyword");
-		bool creature = Runtime::HasKeyword(actor, "CreatureKeyword");
-		log::info("{} is vamp: {}, drag: {}, anim: {}, dwem: {}, undead: {}, creat: {}", actor->GetDisplayFullName(), vampire, dragon, animal, dwemer, undead, creature);
-		if (!dragon && !animal && !dwemer && !undead && !creature) {
-			return true; // Detect non-vampire
-		} if (!dragon && !animal && !dwemer && !creature && undead && vampire) {
-			return true; // Detect Vampire
-		} else {
-			return false;
-		}
-		return false;
-	}
-
-	bool IsFemale(Actor* actor) {
-		bool FemaleCheck = false;
-		if (!FemaleCheck) {
-			return true; // Always return true if we don't check for male/female
-		}
-		auto base = actor->GetActorBase();
-		int sex = 0;
-		if (base) {
-			if (base->GetSex()) {
-				sex = base->GetSex();
-			}
-		}
-		log::info("Sex of {}: {}", actor->GetDisplayFullName(), sex);
-		return sex > 0; // Else return sex value
-	}
-
-	bool IsDragon(Actor* actor) {
-		if (Runtime::HasKeyword(actor, "DragonKeyword")) {
-			return true;
-		}
-		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
-		     || Runtime::IsRace(actor, "dragonRace")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	bool IsLiving(Actor* actor) {
-		bool IsDraugr = Runtime::HasKeyword(actor, "UndeadKeyword");
-		bool IsDwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
-		bool IsVampire = Runtime::HasKeyword(actor, "VampireKeyword");
-		if (IsVampire) {
-			log::info("{} is Vampire", actor->GetDisplayFullName());
-			return true;
-		}
-		if (IsDraugr || IsDwemer) {
-			log::info("{} is not living", actor->GetDisplayFullName());
-			return false;
-		} else {
-			return true;
-		}
-		return true;
-	}
-
-	bool IsEquipBusy(Actor* actor) {
-		auto profiler = Profilers::Profile("ActorUtils: IsEquipBusy");
-		int State;
-		actor->GetGraphVariableInt("currentDefaultState", State);
-		if (State >= 10 && State <= 20) {
-			return true;
-		}
-		return false;
-	}
-
-	bool IsCrawling(Actor* actor) {
-		auto profiler = Profilers::Profile("ActorUtils: IsCrawling");
-		bool prone;
-		actor->GetGraphVariableBool("GTS_IsCrawling", prone);
-		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && prone;
-	}
-
-	bool IsJumping(Actor* actor) {
-		auto profiler = Profilers::Profile("ActorUtils: IsJumping");
-		if (!actor) {
-			return false;
-		}
-		if (!actor->Is3DLoaded()) {
-			return false;
-		}
-		bool result = false;
-		actor->GetGraphVariableBool("bInJumpState", result);
-		return result;
-	}
-
 	float GetHighHeelsBonusDamage(Actor* actor) {
 		auto profiler = Profilers::Profile("ActorUtils: GetHHBonusDamage");
 		if (Runtime::HasPerkTeam(actor, "hhBonus")) {
@@ -562,69 +650,7 @@ namespace Gts {
 		return Persistent::GetSingleton().less_gore;
 	}
 
-	void SetBeingHeld(Actor* tiny, bool decide) {
-		auto transient = Transient::GetSingleton().GetData(tiny);
-		if (transient) {
-			transient->being_held = decide;
-		}
-	}
-
-	bool IsBeingHeld(Actor* tiny) {
-		auto transient = Transient::GetSingleton().GetData(tiny);
-		if (transient) {
-			return transient->being_held;
-		}
-		return false;
-	}
-
-	bool IsBetweenBreasts(Actor* actor) {
-		auto transient = Transient::GetSingleton().GetData(actor);
-		if (transient) {
-			return transient->between_breasts;
-		}
-		return false;
-	}
-
-	void SetBetweenBreasts(Actor* actor, bool decide) {
-		auto transient = Transient::GetSingleton().GetData(actor);
-		if (transient) {
-			transient->between_breasts = decide;
-		}
-	}
-
-	bool IsTransferingTiny(Actor* actor) { // Reports 'Do we have someone grabed?'
-		int grabbed;
-		actor->GetGraphVariableInt("GTS_GrabbedTiny", grabbed);
-		return grabbed > 0;
-	}
-
-	bool IsUsingThighAnimations(Actor* actor) { // Do we currently use Thigh Crush / Thigh Sandwich?
-		int sitting;
-		actor->GetGraphVariableInt("GTS_Sitting", sitting);
-		return sitting > 0;
-	}
-
-	void SetBeingEaten(Actor* tiny, bool decide) {
-		auto transient = Transient::GetSingleton().GetData(tiny);
-		if (transient) {
-			transient->about_to_be_eaten = decide;
-		}
-	}
-
-	bool IsBeingEaten(Actor* tiny) {
-		auto transient = Transient::GetSingleton().GetData(tiny);
-		if (transient) {
-			return transient->about_to_be_eaten;
-		}
-		return false;
-	}
-
-	bool IsGtsBusy(Actor* actor) {
-		auto profiler = Profilers::Profile("ActorUtils: IsGtsBusy");
-		bool GTSBusy;
-		actor->GetGraphVariableBool("GTS_Busy", GTSBusy);
-		return GTSBusy;
-	}
+	
 
 	bool IsTeammate(Actor* actor) {
 		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
@@ -744,20 +770,6 @@ namespace Gts {
 				explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
 				explosion->GetExplosionRuntimeData().unk11C *= 0.0;
 			}
-		}
-	}
-
-	void ShutUp(Actor* actor) { // Disallow them to "So anyway i've been fishing today and my dog died" while we do something to them
-		if (!actor) {
-			return;
-		}
-		auto ai = actor->GetActorRuntimeData().currentProcess;
-		if (ai) {
-			if (ai->high) {
-				float Greeting = ai->high->greetingTimer;
-				ai->high->greetingTimer = 5;
-			}
-			//log::info("Greeting timer of {} is {}", actor->GetDisplayFullName(), Greeting);
 		}
 	}
 
@@ -890,7 +902,7 @@ namespace Gts {
 								
 							mod_target_scale(otherActor, shrinkpower * gigantism);
 
-							AdjustGtsSkill((shrinkpower * gigantism) * 0.2, giant);
+							AdjustGtsSkill((-shrinkpower * gigantism) * 0.2, giant);
 
 							
 							const float DURATION = 2.5;

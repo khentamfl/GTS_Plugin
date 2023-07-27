@@ -140,7 +140,7 @@ namespace {
 		
 		float healthMax = GetMaxAV(player, ActorValue::kHealth);
 		float healthCur = GetAV(player, ActorValue::kHealth);
-		float damagehp = 140.0;
+		float damagehp = 120.0;
 		
 		if (DarkArts2) {
 			damagehp -= 20; // less hp drain
@@ -168,7 +168,7 @@ namespace {
 		auto node = find_node(player, "NPC Pelvis [Pelv]");
 		if (node) {
 			DamageAV(player, ActorValue::kHealth, damagehp);
-			SizeStealExplosion(player, 67.2, node, 0.28, false);
+			SizeStealExplosion(player, 76.2, node, 0.32, false);
 		}
 		
 	}

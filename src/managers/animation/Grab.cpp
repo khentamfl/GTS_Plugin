@@ -131,7 +131,7 @@ namespace {
 			float RPosY = 0.0f;
 			float RPosZ = 0.0f;
 
-			auto NPC = find_node(tiny, "NPC");
+			auto NPC = tiny->GetCurrent3D();
 			auto BreastL = find_node(giant, "L Breast02");
 			auto BreastR = find_node(giant, "R Breast02");
 			if (!NPC) {
@@ -163,7 +163,7 @@ namespace {
 			}
 			return true;
 		});
-		TaskManager::ChangeUpdate(name, UpdateKind::Camera);
+		TaskManager::ChangeUpdate(name, UpdateKind::Havok);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
