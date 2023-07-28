@@ -100,8 +100,8 @@ namespace {
 		float damage = sizemanager.GetSizeAttribute(giant, 2);
 		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.25, FootEvent::Left, 1.0);
 		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.25, FootEvent::Right, 1.0);
-		DoLaunch(&data.giant, 1.05 * perk, 1.75, 1.4, FootEvent::Left, 1.15);
-		DoLaunch(&data.giant, 1.05 * perk, 1.75, 1.4, FootEvent::Right, 1.15);
+		DoLaunch(&data.giant, 1.05 * perk, 1.60, 1.2, FootEvent::Left, 1.15);
+		DoLaunch(&data.giant, 1.05 * perk, 1.60, 1.2, FootEvent::Right, 1.15);
 	}
 }
 

@@ -613,10 +613,7 @@ namespace Gts {
 		float distance = get_distance_to_camera(coords);
 		float sourcesize = get_visual_scale(caster);
 		float receiversize = get_visual_scale(receiver);
-		float sizedifference = (sourcesize/receiversize) * ShakeStrength(caster);
-		if (caster->formID != 0x14) {
-			log::info("Shake Strength of :{}", caster->GetDisplayFullName(), ShakeStrength(caster));
-		}
+		float sizedifference = (sourcesize/receiversize);
 		if (caster->formID == 0x14) {
 			sizedifference = sourcesize;
 		}

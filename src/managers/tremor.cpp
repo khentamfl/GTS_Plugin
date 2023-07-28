@@ -67,7 +67,7 @@ namespace Gts {
 
 		float Calamity = 1.0;
 		if (HasSMT(actor)) {
-			Calamity = 1.6;
+			Calamity = 2.0;
 		}
 
 		float scale = impact.scale * Calamity;
