@@ -108,13 +108,13 @@ namespace {
 				if (TP && DefaultTP > 0) {
 					std::string name = std::format("RandomGrowth_TP_{}", actor->formID);
 					ActorHandle gianthandle = actor->CreateRefHandle();
-					camera->worldFOV *= 0.60;
+					camera->worldFOV *= 0.35;
 					TaskManager::Run(name, [=](auto& progressData) {
 						if (!gianthandle) {
 							return false;
 						}
 						auto giantref = gianthandle.get().get();
-						camera->worldFOV += DefaultTP * 0.005;
+						camera->worldFOV += DefaultTP * 0.0025;
 						if (camera->worldFOV >= DefaultTP) {
 							camera->worldFOV = DefaultTP;
 							return false; // stop it
@@ -124,13 +124,13 @@ namespace {
 				} else if (FP && DefaultFP > 0) {
 					std::string name = std::format("RandomGrowth_FP_{}", actor->formID);
 					ActorHandle gianthandle = actor->CreateRefHandle();
-					camera->firstPersonFOV *= 0.60;
+					camera->firstPersonFOV *= 0.35;
 					TaskManager::Run(name,[=](auto& progressData) {
 						if (!gianthandle) {
 							return false;
 						}
 						auto giantref = gianthandle.get().get();
-						camera->firstPersonFOV += DefaultFP * 0.005;
+						camera->firstPersonFOV += DefaultFP * 0.0025;
 						if (camera->firstPersonFOV >= DefaultFP) {
 							camera->firstPersonFOV = DefaultFP;
 							return false; // stop it
