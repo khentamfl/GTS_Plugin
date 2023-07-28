@@ -6,6 +6,7 @@
 #include "data/runtime.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
+#include "node.hpp"
 
 namespace {
 	float GetSMTBonus(Actor* actor) {
@@ -51,7 +52,7 @@ namespace Gts {
 		if (node) {
 			float scale = get_visual_scale(caster);
 			NiPoint3 position = node->world.translate;
-			SpawnParticle(actor, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr); // Spawn
+			SpawnParticle(caster, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr); // Spawn
 			Rumble::For("TinyCalamity", caster, 32.0, 0.80, "NPC COM [COM ]", 0.20);
 		}
 	}
