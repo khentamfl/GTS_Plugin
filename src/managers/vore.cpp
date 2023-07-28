@@ -205,28 +205,27 @@ namespace Gts {
 		if (!AllowDevourment()) {
 			for (auto& [key, tinyref]: this->tinies) {
 				auto tiny = tinyref.get().get();
-				AddSMTDuration(this->giant.get().get(), 6.0);
+				auto giant = this->giant.get().get();
+				AddSMTDuration(giant, 6.0);
 				if (tiny->formID != 0x14) {
-					KillActor(this->giant.get().get(), tiny);
+					KillActor(giant, tiny);
 					Disintegrate(tiny);
 				} else if (tiny->formID == 0x14) {
 					DamageAV(tiny, ActorValue::kHealth, 900000.0);
-					KillActor(this->giant.get().get(), tiny);
+					KillActor(giant, tiny);
 					TriggerScreenBlood(50);
 					tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
 				}
-				auto Tiny = tinyref;
-				auto Giant = this->giant;
 				TaskManager::RunOnce([=](auto& update) {
-					if (!Tiny) {
+					if (!tinyref) {
 						return;
 					} 
-					if (!Giant) {
+					if (!this->giant) {
 						return;
 					}
-					auto giant = Giant.get().get();
+					auto gts = this->giant.get().get();
 					auto small = tinyref.get().get();
-					Vore_TransferItems(giant, small);
+					Vore_TransferItems(gts, small);
 				});
 			}
 		}
