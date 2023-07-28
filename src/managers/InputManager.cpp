@@ -160,7 +160,7 @@ namespace {
 
 		damagehp *= multi;
 
-		if (healthCur - damagehp < damagehp * 1.25) {
+		if (healthCur - damagehp < damagehp * 1.05) {
 			Notify("Your health is too low");
 			return; // don't allow us to die from own shrinking
 		}

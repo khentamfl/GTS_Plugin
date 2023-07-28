@@ -1,5 +1,7 @@
 #include "magic/effects/smallmassivethreat.hpp"
 #include "magic/effects/common.hpp"
+#include "utils/actorUtils.hpp"
+#include "managers/Rumble.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "magic/magic.hpp"
@@ -40,6 +42,18 @@ namespace Gts {
 	void SmallMassiveThreat::OnStart() {
 		//std::string message = std::format("While Tiny Calamity is active, your size-related actions are massively empowered, but your max scale is limited. You can perform all size-related actions (Vore, Grab, Hug Crush, etc) while being same size, but performing them wastes some of Tiny Calamity's duration.");
 		//TutorialMessage(message, "Calamity");
+		auto caster = GetCaster();
+		if (!caster) {
+			return;
+		}
+		Runtime::PlaySoundAtNode("TinyCalamitySound", caster, 1.0, 1.0, "NPC COM [COM ]");
+		auto node = find_node(caster, "NPC Root [Root]");
+		if (node) {
+			float scale = get_visual_scale(caster);
+			NiPoint3 position = node->world.translate;
+			SpawnParticle(actor, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr); // Spawn
+			Rumble::For("TinyCalamity", caster, 32.0, 0.80, "NPC COM [COM ]", 0.20);
+		}
 	}
 
 	void SmallMassiveThreat::OnUpdate() {
@@ -67,7 +81,7 @@ namespace Gts {
 		}
 		else if (CasterScale >= 1.50) {
 			mod_target_scale(caster, -0.0300);
-			if (warningtimer.ShouldRun()) {
+			if (warningtimer.ShouldRun() && caster->formID == 0x14) {
 				Notify("Im getting too big, it becomes hard to handle such power.");
 			}
 		} // <- Disallow having it when scale is > 1.50

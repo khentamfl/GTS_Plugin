@@ -296,9 +296,9 @@ namespace Gts {
 				Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue * 2, 1.0, "NPC COM [COM ]");
 			}
 			if (ShrinkChance >= 2) {
-				mod_target_scale(attacker, -GrowthValue/(2.0 * Dragon* BalanceMode)); // Shrink Attacker
+				mod_target_scale(attacker, -GrowthValue/(4.0 * Dragon* BalanceMode)); // Shrink Attacker
 				mod_target_scale(receiver, GrowthValue/(2.0 * Dragon * BalanceMode)); // Grow Attacker
-				if (get_visual_scale(attacker) <= 0.15/Dragon) {
+				if (get_visual_scale(attacker) <= 0.12/Dragon) {
 					if (ShrinkToNothingManager::CanShrink(receiver, attacker)) {
 						ShrinkToNothingManager::Shrink(receiver, attacker);
 						PrintDeathSource(receiver, attacker, "HitSteal");

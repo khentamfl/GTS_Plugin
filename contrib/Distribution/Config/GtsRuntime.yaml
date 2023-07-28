@@ -35,6 +35,7 @@ sounds:
   SoftHandAttack: "GTS.esp|5E2E60"
 
   ShrinkOutburstSound: "GTS.esp|6524A3"
+  TinyCalamitySound: "GTS.esp|65C6AA"
 
   HighHeel_x2: "GTS.esp|615875"
   HighHeel_x4: "GTS.esp|615877"

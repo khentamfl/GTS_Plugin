@@ -918,6 +918,7 @@ namespace Gts {
 						}
 							
 						mod_target_scale(otherActor, shrinkpower * gigantism);
+						StartCombat(giant, otherActor, true);
 
 						AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
 
@@ -936,8 +937,8 @@ namespace Gts {
 							} if (!TINY) {
 								return false;
 							}
-							if (get_visual_scale(TINY) <= 0.14) {
-								set_target_scale(TINY, 0.14);
+							if (get_visual_scale(TINY) <= 0.11) {
+								set_target_scale(TINY, 0.11);
 								return false;
 							}
 							return true; // Everything is fine, continue checking
