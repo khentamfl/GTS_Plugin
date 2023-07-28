@@ -198,18 +198,18 @@ namespace Gts {
 		return sandwiching > 0;
 	}
 
+	bool IsStomping(Actor* actor) {
+		int Stomping;
+		actor->GetGraphVariableInt("GTS_IsStomping", Stomping);
+		return Stomping > 0;
+	}
+
 	bool IsBeingEaten(Actor* tiny) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {
 			return transient->about_to_be_eaten;
 		}
 		return false;
-	}
-
-	bool IsStomping(Actor* actor) {
-		bool Stomping;
-		actor->GetGraphVariableBool("GTS_IsStomping", Stomping);
-		return Stomping > 0;
 	}
 
 	bool IsGtsBusy(Actor* actor) {
