@@ -53,7 +53,7 @@ namespace Gts {
 			float scale = get_visual_scale(caster);
 			NiPoint3 position = node->world.translate;
 			SpawnParticle(caster, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr); // Spawn
-			Rumble::For("TinyCalamity", caster, 32.0, 0.80, "NPC COM [COM ]", 0.20);
+			Rumble::For("TinyCalamity", caster, 32.0, 0.25, "NPC COM [COM ]", 0.10);
 		}
 	}
 
