@@ -114,7 +114,7 @@ namespace {
 							return false;
 						}
 						auto giantref = gianthandle.get().get();
-						camera->worldFOV += DefaultTP * 0.0025;
+						camera->worldFOV += DefaultTP * 0.003;
 						if (camera->worldFOV >= DefaultTP) {
 							camera->worldFOV = DefaultTP;
 							return false; // stop it
@@ -130,7 +130,7 @@ namespace {
 							return false;
 						}
 						auto giantref = gianthandle.get().get();
-						camera->firstPersonFOV += DefaultFP * 0.0025;
+						camera->firstPersonFOV += DefaultFP * 0.003;
 						if (camera->firstPersonFOV >= DefaultFP) {
 							camera->firstPersonFOV = DefaultFP;
 							return false; // stop it
