@@ -363,8 +363,9 @@ namespace Gts {
 	}
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
-		for (auto &[a_object, invData]: {from->GetInventory(), from->GetDroppedInventory()}) {
-			log::info("Transfering item {} fro {}", a_object->GetDisplayFullName(), from->GetDisplayFullName());
+		log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
+		for (auto &[a_object, invData]: from->GetInventory()) {
+			log::info("Transfering item {} from {}", a_object->GetDisplayFullName(), from->GetDisplayFullName());
 			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
 			/*if (a_object->GetPlayable()) {
 				if (!invData.second->IsQuestObject() || removeQuestItems ) {
