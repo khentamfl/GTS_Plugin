@@ -1,5 +1,6 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include "utils/papyrusUtils.hpp"
