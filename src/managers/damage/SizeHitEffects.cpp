@@ -270,6 +270,8 @@ namespace Gts {
 		}
 		int LaughChance = rand() % 12;
 		int ShrinkChance = rand() % 5;
+		float scale = get_visual_scale(receiver);
+		float naturalscale = get_visual_scale(receiver);
 		auto& sizemanager = SizeManager::GetSingleton();
 		float BalanceMode = sizemanager.BalancedMode();
 		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
@@ -311,14 +313,16 @@ namespace Gts {
 			}
 			return;
 		} else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) { // Shrink us
-			if (get_visual_scale(receiver) > get_natural_scale(receiver)) {
+			if (scale > naturalscale) {
 				float sizebonus = std::clamp(get_visual_scale(attacker), 0.10f, 1.0f);
 				float ShrinkValue = std::clamp(((-damage/850)/SizeHunger/Gigantism * sizebonus) * resistance, 0.0f, 0.25f / Gigantism); // affect limit by decreasing it
 				log::info("ShrinkValue of : {} is {} {}", receiver->GetDisplayFullName(), ShrinkValue, ShrinkValue);
-				if (get_visual_scale(receiver) < get_natural_scale(receiver)) {
-					set_target_scale(get_natural_scale(receiver)); // reset to normal scale
+
+				if (scale < naturalscale) {
+					set_target_scale(receiver, naturalscale); // reset to normal scale
 					return;
 				}
+				
 				mod_target_scale(receiver, -ShrinkValue);
 			}
 		}
