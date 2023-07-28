@@ -202,7 +202,7 @@ namespace {
 		if (!persi_actor_data) {
 			return;
 		}
-		if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
+		if (HasSMT(actor)) {
 			persi_actor_data->effective_multi = 2.0;
 		} else {
 			persi_actor_data->effective_multi = 1.0;

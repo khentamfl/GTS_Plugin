@@ -69,9 +69,9 @@ namespace Gts {
 		}
 		if (scale > minimal_size && !actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
-				scale *= 1.2; // Sprinting makes you seem bigger
+				scale *= 1.25; // Sprinting makes you seem bigger
 				if (Runtime::HasPerk(actor, "LethalSprint")) {
-					scale *= 2.25; // A lot bigger
+					scale *= 1.75; // A lot bigger
 				}
 			}
 			if (actor->AsActorState()->IsWalking()) {

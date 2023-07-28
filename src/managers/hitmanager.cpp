@@ -88,7 +88,7 @@ namespace Gts {
 
 		float size_difference = attackerscale/receiverscale;
 
-		if (Runtime::HasMagicEffect(player, "SmallMassiveThreat")) {
+		if (HasSMT(player)) {
 			size_difference += 3.0;
 		}
 

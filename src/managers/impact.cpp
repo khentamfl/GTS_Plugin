@@ -129,7 +129,7 @@ namespace Gts {
 			} if (actor->AsActorState()->IsSprinting()) {
 				bonus *= 1.50;
 				if (Runtime::HasPerkTeam(actor, "LethalSprint")) {
-					bonus *= 2.0;
+					bonus *= 1.5;
 				}
 			} 
 			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp. We do NOT want to apply it for Jump Land because of it!

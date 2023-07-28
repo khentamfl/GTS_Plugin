@@ -21,7 +21,7 @@ using namespace Gts;
 namespace {
 	void ScareChance(Actor* actor) {
 		int voreFearRoll = rand() % 5;
-		if (Runtime::HasMagicEffect(actor, "SmallMassiveThreat")) {
+		if (HasSMT(actor)) {
 			voreFearRoll = rand() % 2;
 			shake_camera(actor, 0.4, 0.25);
 		}
@@ -64,7 +64,7 @@ namespace {
 	}
 
 	void GrowAfterTheKill(Actor* caster, Actor* target) {
-		if (!Runtime::GetBool("GtsDecideGrowth") || Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
+		if (!Runtime::GetBool("GtsDecideGrowth") || HasSMT(caster)) {
 			return;
 		} else if (Runtime::HasPerkTeam(caster, "GrowthDesirePerk") && Runtime::GetInt("GtsDecideGrowth") >= 1) {
 			float Rate = (0.00016 * get_visual_scale(target)) * 120;

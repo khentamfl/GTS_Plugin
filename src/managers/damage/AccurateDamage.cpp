@@ -148,7 +148,7 @@ namespace {
 			// ^ Augmentation for Growth Spurt: Steal size of enemies.
 		}
 
-		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat") && giant != tiny) {
+		if (HasSMT(giant) && giant != tiny) {
 			size_difference += 4.0;
 
 			if (Runtime::HasPerk(giant, "SmallMassiveThreatSizeSteal")) {
@@ -185,7 +185,7 @@ namespace Gts {
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 1.15;
 		if (HasSMT(actor)) {
-			giantScale *= 1.85;
+			giantScale += 0.85;
 		}
 
 		// Get world HH offset
@@ -291,7 +291,7 @@ namespace Gts {
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 1.15;
 		if (HasSMT(actor)) {
-			giantScale *= 1.85;
+			giantScale += 0.85;
 		}
 
 		// Get world HH offset
