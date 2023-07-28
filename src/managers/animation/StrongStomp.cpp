@@ -168,7 +168,7 @@ namespace {
 		float damage = 1.0;
 		if (HasSMT(&data.giant)) {
 			SMT = 1.85; // Larger Dust
-			damage = 2.0;
+			damage = 1.5;
 		}
 		DoImpactRumble(&data.giant, SMT * data.animSpeed - 0.55 * 2, RNode, "HeavyStompR");
 		DoSounds(&data.giant, 1.35 + data.animSpeed/6, RNode); 
@@ -185,7 +185,7 @@ namespace {
 		float damage = 1.0;
 		if (HasSMT(&data.giant)) {
 			SMT = 1.85; // Larger Dust
-			damage = 2.0;
+			damage = 1.5;
 		}
 		DoImpactRumble(&data.giant, SMT * data.animSpeed - 0.55 * 2, LNode, "HeavyStompL");
 		DoSounds(&data.giant, 1.35 + data.animSpeed/6, LNode); 

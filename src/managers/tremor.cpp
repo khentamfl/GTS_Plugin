@@ -66,6 +66,9 @@ namespace Gts {
 		}
 
 		float scale = impact.scale;
+		if (HasSMT(actor)) {
+			scale *= 2.5;
+		}
 		if (!actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
 				scale *= 1.25; // Sprinting makes you seem bigger
