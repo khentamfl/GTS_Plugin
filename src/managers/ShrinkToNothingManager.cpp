@@ -52,13 +52,6 @@ namespace Gts {
 						KillActor(giant, tiny);
 					}
 					// Fully shrunk
-					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-						Actor* into = giant;
-						TransferInventory(tiny, into, false, true);
-					} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-						Actor* into = giant;
-						TransferInventory(tiny, into, false, true);
-					}
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 
 					if (!IsLiving(tiny)) {
@@ -97,11 +90,22 @@ namespace Gts {
 					}
 
 					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.0, 0.5);
+					ActorHandle giantHandle = giant->CreateRefHandle();
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
 					TaskManager::RunOnce([=](auto& update){
-						if (tinyHandle) {
-							EventDispatcher::DoResetActor(tinyHandle.get().get());
+						if (!tinyHandle) {
+							return;
+						} if (!giantHandle) {
+							return;
 						}
+						auto giant = giantHandle.get().get();
+						auto tiny = tinyHandle.get().get();
+						if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
+							TransferInventory(tiny, giant, false, true);
+						} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
+							TransferInventory(tiny, giant, false, true);
+						}
+						EventDispatcher::DoResetActor(tiny);
 					});
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.

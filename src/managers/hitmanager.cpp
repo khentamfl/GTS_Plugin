@@ -116,11 +116,25 @@ namespace Gts {
 		if (!receiver->IsDead()) {
 			KillActor(attacker, receiver);
 		}
-		if (attacker->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-			TransferInventory(receiver, attacker, false, true);
-		} else if (attacker->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-			TransferInventory(receiver, attacker, false, true);
-		}
+
+		ActorHandle giantHandle = attacker->CreateRefHandle();
+		ActorHandle tinyHandle = receiver->CreateRefHandle();
+
+		TaskManager::RunOnce([=](auto& update){
+			if (!tinyHandle) {
+				return;
+			} if (!giantHandle) {
+				return;
+			}
+			auto giant = giantHandle.get().get();
+			auto tiny = tinyHandle.get().get();
+			if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
+				TransferInventory(tiny, giant, false, true);
+			} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
+				TransferInventory(tiny, giant, false, true);
+			}
+		});
+
 		Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");
 		std::random_device rd;
 		std::mt19937 gen(rd());

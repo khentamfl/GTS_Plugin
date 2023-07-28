@@ -366,12 +366,11 @@ namespace Gts {
 		log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
 		for (auto &[a_object, invData]: from->GetInventory()) {
 			log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
-			from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
-			/*if (a_object->GetPlayable()) {
+			if (a_object->GetPlayable()) {
 				if (!invData.second->IsQuestObject() || removeQuestItems ) {
 					from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
 				}
-			}*/
+			}
 		}
 	}
 

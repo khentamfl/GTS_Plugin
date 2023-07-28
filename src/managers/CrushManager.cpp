@@ -190,13 +190,7 @@ namespace Gts {
 					std::mt19937 gen(rd());
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-					if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-						Actor* into = giant;
-						TransferInventory(tiny, into, false, true);
-					} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-						Actor* into = giant;
-						TransferInventory(tiny, into, false, true);
-					}
+					
 
 					AddSMTDuration(giant, 5.0);
 					ReportCrime(giant, tiny, 1000.0, true);
@@ -222,12 +216,22 @@ namespace Gts {
 							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 						}
 					}
-
+					ActorHandle giantHandle = giant->CreateRefHandle();
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
 					TaskManager::RunOnce([=](auto& update){
-						if (tinyHandle) {
-							EventDispatcher::DoResetActor(tinyHandle.get().get());
+						if (!tinyHandle) {
+							return;
+						} if (!giantHandle) {
+							return;
 						}
+						auto giant = giantHandle.get().get();
+						auto tiny = tinyHandle.get().get();
+						if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
+							TransferInventory(tiny, giant, false, true);
+						} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
+							TransferInventory(tiny, giant, false, true);
+						}
+						EventDispatcher::DoResetActor(tiny);
 					});
 
 					if (tiny->formID != 0x14) {
