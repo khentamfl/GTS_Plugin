@@ -66,7 +66,7 @@ namespace Gts {
 		}
 
 		float Calamity = 1.0;
-		if (HasSMT(giant)) {
+		if (HasSMT(actor)) {
 			Calamity = 1.6;
 		}
 
