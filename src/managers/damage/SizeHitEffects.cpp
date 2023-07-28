@@ -90,6 +90,57 @@ namespace {
 		}
 	}
 
+	void CameraFOVTask(Actor* actor) {
+		auto camera = PlayerCamera::GetSingleton();
+		if (!camera) {
+			return;
+		} 
+		if (actor->formID == 0x14) {
+			auto tranData = Transient::GetSingleton().GetData(actor);
+			bool TP = camera->IsInThirdPerson();
+			bool FP = camera->IsInFirstPerson();
+			if (tranData) {
+				tranData->WorldFov_Default = camera->worldFOV;
+				tranData->FpFov_Default = camera->firstPersonFOV;
+				float DefaultTP = tranData->WorldFov_Default;
+				float DefaultFP = tranData->FpFov_Default;
+				if (TP && DefaultTP > 0) {
+					std::string name = std::format("RandomGrowth_TP_{}", actor->formID);
+					ActorHandle gianthandle = actor->CreateRefHandle();
+					camera->worldFOV *= 0.60;
+					TaskManager::Run(name, [=](auto& progressData) {
+						if (!gianthandle) {
+							return false;
+						}
+						auto giantref = gianthandle.get().get();
+						camera->worldFOV += DefaultTP * 0.005;
+						if (camera->worldFOV >= DefaultTP) {
+							camera->worldFOV = DefaultTP;
+							return false; // stop it
+						}
+						return true;
+					});
+				} else if (FP && DefaultFP > 0) {
+					std::string name = std::format("RandomGrowth_FP_{}", actor->formID);
+					ActorHandle gianthandle = actor->CreateRefHandle();
+					camera->firstPersonFOV *= 0.60;
+					TaskManager::Run(name,[=](auto& progressData) {
+						if (!gianthandle) {
+							return false;
+						}
+						auto giantref = gianthandle.get().get();
+						camera->firstPersonFOV += DefaultFP * 0.005;
+						if (camera->firstPersonFOV >= DefaultFP) {
+							camera->firstPersonFOV = DefaultFP;
+							return false; // stop it
+						}
+						return true;
+					});
+				}
+			}
+		}
+	}
+
 	void HealthGate(Actor* attacker, Actor* receiver, float a_damage) {
 		if (a_damage > GetAV(receiver, ActorValue::kHealth)) {
 			if (Runtime::HasPerk(receiver, "HealthGate")) {
@@ -110,6 +161,8 @@ namespace {
 
 					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, overkill); // Restore to full
 					log::info("Applying Health Gate, overkill: {}, damage: {}", overkill, a_damage);
+
+					CameraFOVTask(receiver);
 
 					Cprint("Health Gate triggered, death avoided");
 					Cprint("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);

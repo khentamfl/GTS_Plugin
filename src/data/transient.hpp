@@ -20,7 +20,9 @@ namespace Gts {
 		float SMT_Penalty_Duration;
 		float carryweight_boost;
 		float basehp;
-    float otherScales;
+    	float otherScales;
+		float WorldFov_Default:
+		float FpFov_Default;
 
 		bool is_teammate;
 		bool can_do_vore;
@@ -30,7 +32,7 @@ namespace Gts {
 		bool about_to_be_eaten;
 		bool dragon_was_eaten;
 		bool can_be_vored;
-    TESObjectREFR* disable_collision_with;
+    	TESObjectREFR* disable_collision_with;
 	};
 
 	class Transient : public EventListener {

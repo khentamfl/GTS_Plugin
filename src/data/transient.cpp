@@ -67,8 +67,10 @@ namespace Gts {
 			bool between_breasts = false;
 			bool about_to_be_eaten = false;
 
-      TESObjectREFR* disable_collision_with = nullptr;
-      float otherScales = 1.0;
+			TESObjectREFR* disable_collision_with = nullptr;
+			float otherScales = 1.0;
+			float WorldFov_Default = 0;
+			float FpFov_Default = 0;
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
@@ -99,8 +101,10 @@ namespace Gts {
 			result.about_to_be_eaten = about_to_be_eaten;
 			result.dragon_was_eaten = dragon_was_eaten;
 			result.can_be_vored = can_be_vored;
-      result.disable_collision_with = disable_collision_with;
-      result.otherScales = otherScales;
+			result.disable_collision_with = disable_collision_with;
+			result.otherScales = otherScales;
+			result.WorldFov_Default = WorldFov_Default;
+			result.FpFov_Default = FpFov_Default;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 
