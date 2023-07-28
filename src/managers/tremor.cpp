@@ -65,11 +65,16 @@ namespace Gts {
 			return;
 		}
 
-		float scale = impact.scale;
+		float Calamity = 1.0;
+		if (HasSMT(giant)) {
+			Calamity = 1.6;
+		}
+
+		float scale = impact.scale * Calamity;
 
 		if (!actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
-				scale *= 1.25; // Sprinting makes you seem bigger
+				scale *= 1.35; // Sprinting makes you seem bigger
 			}
 			if (actor->AsActorState()->IsWalking()) {
 				scale *= 0.75; // Walking makes you seem quieter
@@ -187,7 +192,7 @@ namespace Gts {
 				if (actor->formID == 0x14 && pcEffects) {
 
 					if (intensity > 0.01 && duration > 0.01) {
-						intensity *= 1.85; // stronger PC shake
+						intensity *= 1.65; // stronger PC shake
 						if (IsFirstPerson()) {
 							intensity *= 0.075; // Shake effects are weaker when in first person
 						}

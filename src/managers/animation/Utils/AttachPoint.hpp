@@ -1,4 +1,5 @@
 #pragma once
+#include "utils/actorUtils.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "UI/DebugAPI.hpp"
@@ -22,6 +23,8 @@ namespace Gts {
 		}
 
 		tiny->SetPosition(point, true);
+
+		ForceRagdoll(tiny, false);
 
 		auto charcont = tiny->GetCharController();
 		if (charcont) {

@@ -565,7 +565,7 @@ namespace Gts {
 		if (Runtime::HasPerkTeam(actor, "hhBonus")) {
 			return HighHeelManager::GetBaseHHOffset(actor).Length()/100;
 		}
-		return 1.0;
+		return 0.0;
 	}
 
 	float get_distance_to_actor(Actor* receiver, Actor* target) {

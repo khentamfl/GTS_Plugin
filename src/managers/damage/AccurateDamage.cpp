@@ -185,7 +185,7 @@ namespace Gts {
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 1.15;
 		if (HasSMT(actor)) {
-			giantScale += 0.85;
+			giantScale += 0.20;
 		}
 
 		// Get world HH offset
@@ -291,7 +291,7 @@ namespace Gts {
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 1.15;
 		if (HasSMT(actor)) {
-			giantScale += 0.85;
+			giantScale += 0.20;
 		}
 
 		// Get world HH offset
