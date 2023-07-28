@@ -860,8 +860,6 @@ namespace Gts {
 			explosion = 2.0;
 		}
 
-		float SCALE_RATIO = 0.75;
-
 		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, 2.0, 1.0, "NPC Head [Head]"); 
 		Rumble::For("ShrinkOutburst", giant, 24.0, 0.15, "NPC COM [COM ]", 0.80);
 
@@ -890,66 +888,65 @@ namespace Gts {
 		for (auto otherActor: find_actors()) {
 			if (otherActor != giant) { 
 				float tinyScale = get_visual_scale(otherActor);
-				if (giantScale / tinyScale > SCALE_RATIO) {
-					NiPoint3 actorLocation = otherActor->GetPosition();
-					if ((actorLocation-giantLocation).Length() <= maxDistance * 4.0) {
-						int nodeCollisions = 0;
-						float force = 0.0;
-						auto model = otherActor->GetCurrent3D();
-						if (model) {
-							for (auto point: Points) {
-								VisitNodes(model, [&nodeCollisions, &force, point, maxDistance](NiAVObject& a_obj) {
-									float distance = (point - a_obj.world.translate).Length();
-									if (distance < maxDistance) {
-										nodeCollisions += 1;
-										force = 1.0 - distance / maxDistance;
-									}
-									return true;
-								});
-							}
-						}
-						if (nodeCollisions > 1) {
-							float sizedifference = giantScale/get_visual_scale(otherActor);
-							float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
-							if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
-								shrinkpower *= 1.40;
-							}
-							if (sizedifference <= 4.0) {
-								StaggerActor(otherActor);
-							} else {
-								PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
-							}
-								
-							mod_target_scale(otherActor, shrinkpower * gigantism);
-
-							AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
-
-							
-							const float DURATION = 2.5;
-							std::string taskname = std::format("ShrinkOtherCheck_{}", otherActor->formID);
-
-							ActorHandle tinyHandle = otherActor->CreateRefHandle();
-							ActorHandle giantHandle = giant->CreateRefHandle();
-							
-							TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){ // Make sure to disallow shrinking below threshold
-								auto GTS = giantHandle.get().get();
-								auto TINY = tinyHandle.get().get();
-								if (!GTS) {
-									return false;
-								} if (!TINY) {
-									return false;
+				NiPoint3 actorLocation = otherActor->GetPosition();
+				if ((actorLocation-giantLocation).Length() <= maxDistance * 4.0) {
+					int nodeCollisions = 0;
+					float force = 0.0;
+					auto model = otherActor->GetCurrent3D();
+					if (model) {
+						for (auto point: Points) {
+							VisitNodes(model, [&nodeCollisions, &force, point, maxDistance](NiAVObject& a_obj) {
+								float distance = (point - a_obj.world.translate).Length();
+								if (distance < maxDistance) {
+									nodeCollisions += 1;
+									force = 1.0 - distance / maxDistance;
 								}
-								if (get_visual_scale(TINY) <= 0.14) {
-									set_target_scale(TINY, 0.14);
-									return false;
-								}
-								return true; // Everything is fine, continue checking
+								return true;
 							});
 						}
+					}
+					if (nodeCollisions > 1) {
+						float sizedifference = giantScale/get_visual_scale(otherActor);
+						float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
+						if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
+							shrinkpower *= 1.40;
+						}
+						if (sizedifference <= 4.0) {
+							StaggerActor(otherActor);
+						} else {
+							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
+						}
+							
+						mod_target_scale(otherActor, shrinkpower * gigantism);
+
+						AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
+
+						
+						const float DURATION = 2.5;
+						std::string taskname = std::format("ShrinkOtherCheck_{}", otherActor->formID);
+
+						ActorHandle tinyHandle = otherActor->CreateRefHandle();
+						ActorHandle giantHandle = giant->CreateRefHandle();
+						
+						TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){ // Make sure to disallow shrinking below threshold
+							auto GTS = giantHandle.get().get();
+							auto TINY = tinyHandle.get().get();
+							if (!GTS) {
+								return false;
+							} if (!TINY) {
+								return false;
+							}
+							if (get_visual_scale(TINY) <= 0.14) {
+								set_target_scale(TINY, 0.14);
+								return false;
+							}
+							return true; // Everything is fine, continue checking
+						});
 					}
 				}
 			}
 		}
+	
 	}
 	
 
