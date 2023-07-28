@@ -215,6 +215,19 @@ namespace Gts {
 					TriggerScreenBlood(50);
 					tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
 				}
+				auto Tiny = tinyref;
+				auto Giant = this->giant;
+				TaskManager::RunOnce([=](auto& update) {
+					if (!Tiny) {
+						return;
+					} 
+					if (!Giant) {
+						return;
+					}
+					auto giant = Giant.get().get();
+					auto small = Tiny.get().get();
+					Vore_TransferItems(giant, small);
+				});
 			}
 		}
 		this->tinies.clear();
