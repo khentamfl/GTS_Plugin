@@ -206,7 +206,7 @@ namespace Gts {
 			for (auto& [key, tinyref]: this->tinies) {
 				auto tiny = tinyref.get().get();
 				auto giantref = this->giant;
-				AddSMTDuration(giant, 6.0);
+				AddSMTDuration(giantref.get().get(), 6.0);
 				if (tiny->formID != 0x14) {
 					KillActor(giantref.get().get(), tiny);
 					Disintegrate(tiny);
