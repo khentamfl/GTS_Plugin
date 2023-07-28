@@ -261,12 +261,19 @@ void GtsManager::Update() {
 			return;
 		}
 
+		
+
 		FixActorFade(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
+
+			auto charCont = actor->GetCharController();
+			if (charCont) {
+				charCont->fallTime = 0;
+			}
 
 			accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25, 2.5);
 			accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25, 2.5);
