@@ -225,7 +225,7 @@ namespace Gts {
 						return;
 					}
 					auto giant = Giant.get().get();
-					auto small = Tiny.get().get();
+					auto small = tinyref.get().get();
 					Vore_TransferItems(giant, small);
 				});
 			}
