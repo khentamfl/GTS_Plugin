@@ -105,7 +105,7 @@ namespace {
 				tranData->FpFov_Default = camera->firstPersonFOV;
 				float DefaultTP = tranData->WorldFov_Default;
 				float DefaultFP = tranData->FpFov_Default;
-				if (TP && DefaultTP > 0) {
+				if (DefaultTP > 0) {
 					std::string name = std::format("RandomGrowth_TP_{}", actor->formID);
 					ActorHandle gianthandle = actor->CreateRefHandle();
 					camera->worldFOV *= 0.35;
@@ -121,7 +121,7 @@ namespace {
 						}
 						return true;
 					});
-				} else if (FP && DefaultFP > 0) {
+				} else if (FP && DefaultFP > 99999) {
 					std::string name = std::format("RandomGrowth_FP_{}", actor->formID);
 					ActorHandle gianthandle = actor->CreateRefHandle();
 					camera->firstPersonFOV *= 0.35;
