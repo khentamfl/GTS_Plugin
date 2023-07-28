@@ -126,8 +126,8 @@ namespace {
 	}
 
 	bool ShouldTimerRun(Actor* actor) {
-		static Timer ExplosionTimer_Normal = Timer(14);
-		static Timer ExplosionTimer_Perk = Timer(10);
+		static Timer ExplosionTimer_Normal = Timer(12);
+		static Timer ExplosionTimer_Perk = Timer(8);
 		bool DarkArts3 = Runtime::HasPerk(actor, "DarkArts_Aug3");
 		if (DarkArts3) {
 			return ExplosionTimer_Perk.ShouldRunFrame();
@@ -139,7 +139,6 @@ namespace {
 	void ShrinkOutburstEvent(const InputEventData& data) {
 		
 		auto player = PlayerCharacter::GetSingleton();
-		float cooldown = 14.0;
 		bool DarkArts = Runtime::HasPerk(player, "DarkArts");
 		if (!DarkArts) {
 			return; // no perk, do nothing

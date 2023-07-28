@@ -66,7 +66,7 @@ namespace Gts {
 			mod_target_scale(caster, 0.0030);
 		}
 		else if (CasterScale >= 1.50) {
-			mod_target_scale(caster, -0.0030);
+			mod_target_scale(caster, -0.0300);
 			if (warningtimer.ShouldRun()) {
 				Notify("Im getting too big, it becomes hard to handle such power.");
 			}

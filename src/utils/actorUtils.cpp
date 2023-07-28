@@ -206,6 +206,12 @@ namespace Gts {
 		return false;
 	}
 
+	bool IsStomping(Actor* actor) {
+		bool Stomping;
+		actor->GetGraphVariableBool("GTS_IsStomping", Stomping);
+		return Stomping > 0;
+	}
+
 	bool IsGtsBusy(Actor* actor) {
 		auto profiler = Profilers::Profile("ActorUtils: IsGtsBusy");
 		bool GTSBusy;
@@ -904,9 +910,9 @@ namespace Gts {
 						}
 						if (nodeCollisions > 1) {
 							float sizedifference = giantScale/get_visual_scale(otherActor);
-							float shrinkpower = -(shrink * 0.5) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
+							float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
 							if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
-								shrinkpower *= 2.0;
+								shrinkpower *= 1.40;
 							}
 							if (sizedifference <= 4.0) {
 								StaggerActor(otherActor);

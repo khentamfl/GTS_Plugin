@@ -240,7 +240,7 @@ namespace {
 			Rumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 
-			float experience = std::clamp(damage/250, 0.0f, 0.10f);
+			float experience = std::clamp(damage/800, 0.0f, 0.06f);
 
 			AdjustGtsSkill(experience, giant);
 
@@ -255,7 +255,7 @@ namespace {
 			}
 			if (damage >= Health) {
 				CrushManager::Crush(giant, grabbedActor);
-				AdjustGtsSkill(0.18, giant);
+				AdjustGtsSkill(0.14, giant);
 				SetBeingHeld(grabbedActor, false);
 				Rumble::Once("GrabAttackKill", giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (!LessGore()) {
@@ -630,44 +630,50 @@ namespace {
 
 	void GrabAttackEvent(const InputEventData& data) { // Attack everyone in your hand
 		auto player = PlayerCharacter::GetSingleton();
-		auto grabbedActor = Grab::GetHeldActor(player);
-		if (!grabbedActor) {
-			return;
-		}
-		float WasteStamina = 20.0;
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			WasteStamina *= 0.65;
-		}
-		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			AnimationManager::StartAnim("GrabDamageAttack", player);
-		} else {
-			TiredSound(player, "You're too tired to perform hand attack");
+		if (!IsStomping(player)) {
+			auto grabbedActor = Grab::GetHeldActor(player);
+			if (!grabbedActor) {
+				return;
+			}
+			float WasteStamina = 20.0;
+			if (Runtime::HasPerk(player, "DestructionBasics")) {
+				WasteStamina *= 0.65;
+			}
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("GrabDamageAttack", player);
+			} else {
+				TiredSound(player, "You're too tired to perform hand attack");
+			}
 		}
 	}
 
 	void GrabVoreEvent(const InputEventData& data) { // Eat everyone in hand
 		auto player = PlayerCharacter::GetSingleton();
-		auto grabbedActor = Grab::GetHeldActor(player);
-		if (!grabbedActor) {
-			return;
+		if (!IsStomping(player)) {
+			auto grabbedActor = Grab::GetHeldActor(player);
+			if (!grabbedActor) {
+				return;
+			}
+			AnimationManager::StartAnim("GrabEatSomeone", player);
 		}
-		AnimationManager::StartAnim("GrabEatSomeone", player);
 	}
 
 	void GrabThrowEvent(const InputEventData& data) { // Throw everyone away
 		auto player = PlayerCharacter::GetSingleton();
-		auto grabbedActor = Grab::GetHeldActor(player);
-		if (!grabbedActor) {
-			return;
-		}
-		float WasteStamina = 40.0;
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			WasteStamina *= 0.65;
-		}
-		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			AnimationManager::StartAnim("GrabThrowSomeone", player);
-		} else {
-			TiredSound(player, "You're too tired to throw that actor");
+		if (!IsStomping(player)) { // Only allow outside of stomps
+			auto grabbedActor = Grab::GetHeldActor(player);
+			if (!grabbedActor) {
+				return;
+			}
+			float WasteStamina = 40.0;
+			if (Runtime::HasPerk(player, "DestructionBasics")) {
+				WasteStamina *= 0.65;
+			}
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("GrabThrowSomeone", player);
+			} else {
+				TiredSound(player, "You're too tired to throw that actor");
+			}
 		}
 	}
 
