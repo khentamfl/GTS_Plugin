@@ -452,7 +452,7 @@ namespace Gts {
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float multiplier = (giantsize/tinysize) * highheels;
 		if (HasSMT(giant)) {
-			multiplier += 7.2;
+			multiplier += 7.8;
 			damagebonus *= 0.25; // A lot less damage to compensate it
 		}
 		if (multiplier < 1.4) {
