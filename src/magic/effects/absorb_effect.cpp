@@ -45,7 +45,7 @@ namespace Gts {
 		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
 			return; // Disallow shrinking Essentials
 		}
-		if (Runtime::HasMagicEffect(caster, "SmallMassiveThreat")) {
+		if (HasSMT(caster)) {
 			size_difference += SMT_BONUS;
 		} // Insta-absorb if SMT is active
 

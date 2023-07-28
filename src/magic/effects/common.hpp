@@ -330,7 +330,6 @@ namespace Gts {
 		} else if (IsCrawling(caster)) {
 			PrintDeathSource(caster, target, "Crawl"); // Report crawling death
 		}
-		bool hasSMT = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
 
 		bool GTSBusy;
 		caster->GetGraphVariableBool("GTS_Busy", GTSBusy);

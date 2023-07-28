@@ -66,9 +66,7 @@ namespace Gts {
 		}
 
 		float scale = impact.scale;
-		if (HasSMT(actor)) {
-			scale *= 2.5;
-		}
+
 		if (!actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
 				scale *= 1.25; // Sprinting makes you seem bigger
@@ -83,8 +81,6 @@ namespace Gts {
 			if (foot_kind == FootEvent::JumpLand) {
 				scale *= 2.0; // Jumping makes you seem bigger
 			}
-
-			
 
 			if (HighHeelManager::IsWearingHH(actor) && Runtime::HasPerkTeam(actor, "hhBonus")) {
 				scale *= 1.1;

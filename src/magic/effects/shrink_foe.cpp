@@ -89,7 +89,7 @@ namespace Gts {
 			balancemodebonus = 2.0;
 		}
 
-		bool has_smt = Runtime::HasMagicEffect(caster, "SmallMassiveThreat");
+		bool has_smt = HasSMT(caster);
 		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
 			return; // Disallow shrinking Essentials
 		}

@@ -40,7 +40,7 @@ namespace {
 		// If you have small massive threat then the max value is ALWAYS 4
 
 		// S.Answer: It's supposed to proc more often with SMT active, so having it always 4 is fine ^
-		if (MaxValue <= 4 || Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
+		if (MaxValue <= 4 || HasSMT(giant)) {
 			MaxValue = 4;
 		}
 		int FearChance = rand() % MaxValue;
