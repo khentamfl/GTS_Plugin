@@ -150,7 +150,7 @@ namespace Gts {
 						if (targetScale < maxScale) {
 							mod_target_scale(actor, GrowthPower);
 							Rumble::Once("CurseOfGrowth", actor, GrowthPower * 20, 0.10);
-							Runtime::PlaySound("growthSound", actor, GrowthPower * 6, 1.0);
+							Runtime::PlaySoundAtNode("growthSound", actor, GrowthPower * 6, 1.0, "NPC Pelvis [Pelv]");
 						}
 					}
 					break;

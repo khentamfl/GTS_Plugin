@@ -88,7 +88,7 @@ namespace Gts {
 					float Volume = clamp(0.15, 2.0, scale/4);
 					Runtime::PlaySoundAtNode("MoanSound", actor, 1.0, 0.0, "NPC Head [Head]");
 					Runtime::PlaySoundAtNode("xlRumbleL", actor, base_power, 0.0, "NPC COM [COM ]");
-					Runtime::PlaySound("growthSound", actor, Volume, 1.0);
+					Runtime::PlaySoundAtNode("growthSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
 
 					TaskManager::RunFor(name, 0.40 * TotalPower, [=](auto& progressData) {
 						if (!gianthandle) {

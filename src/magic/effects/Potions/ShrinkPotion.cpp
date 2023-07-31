@@ -23,7 +23,7 @@ namespace Gts {
 		Rumble::Once("ShrinkPotion", caster, 2.0, 0.05);
 
 		float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/8);
-		Runtime::PlaySound("growthSound", caster, Volume, 1.0);
+		Runtime::PlaySoundAtNode("growthSound", caster, Volume, 1.0, "NPC Pelvis [Pelv]");
 		log::info("Growth Potion start actor: {}", caster->GetDisplayFullName());
 	}
 

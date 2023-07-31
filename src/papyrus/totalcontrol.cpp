@@ -32,8 +32,7 @@ namespace {
 			
 			log::info("  - Found: {}", targetRef->GetDisplayFullName());
 			float Volume = clamp(0.50, 1.0, get_visual_scale(targetRef));
-			Runtime::PlaySound("growthSound", targetRef, Volume, 1.0);
-			Runtime::PlaySound("GreybeardRumble", targetRef, Volume, 0.0);
+			Runtime::PlaySoundAtNode("growthSound", targetRef, Volume, 1.0, "NPC Pelvis [Pelv]");
 			KnockAreaEffect(targetRef, 6, 60 * get_visual_scale(targetRef));
 
 			// Thread safe handles
@@ -86,7 +85,6 @@ namespace {
 			}
 			float Volume = clamp(0.50, 1.0, get_visual_scale(targetRef));
 			Runtime::PlaySound("shrinkSound", targetRef, Volume, 0.0);
-			Runtime::PlaySound("GreybeardRumble", targetRef, Volume, 0.0);
 			KnockAreaEffect(targetRef, 3, 30 * get_visual_scale(targetRef));
 
 			// Thread safe handles
