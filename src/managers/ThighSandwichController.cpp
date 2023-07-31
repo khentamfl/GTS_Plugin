@@ -107,8 +107,11 @@ namespace Gts {
 		string node_name = "GiantessRune";
 		if (shrink == true) {
 			std::string name = std::format("ShrinkRune_{}", giant->formID);
+			ActorHandle gianthandle = giant->CreateRefHandle();
 			TaskManager::Run(name, [=](auto& progressData) {
-				ActorHandle gianthandle = giant->CreateRefHandle();
+				if (!gianthandle) {
+					return false;
+				}
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
 				if (node) {

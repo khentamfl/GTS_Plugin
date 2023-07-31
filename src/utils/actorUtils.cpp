@@ -363,15 +363,36 @@ namespace Gts {
 	}
 
 	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
-		log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
-		for (auto &[a_object, invData]: from->GetInventory()) {
-			log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
-			if (a_object->GetPlayable()) {
-				if (!invData.second->IsQuestObject() || removeQuestItems ) {
-					from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
-				}
+		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
+		ActorHandle gianthandle = to->CreateRefHandle();
+		ActorHandle tinyhandle = from->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!tinyhandle) {
+				return false;
+			} if (!gianthandle) {
+				return false;
 			}
-		}
+
+			auto tiny = tinyhandle.get().get();
+			auto giant = gianthandle.get().get();
+			if (!tiny->IsDead()) {
+				tiny->KillActor(giant, tiny); // just to make sure
+			}
+			if (tiny->IsDead()) {
+				log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
+				for (auto &[a_object, invData]: from->GetInventory()) {
+					log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
+					if (a_object->GetPlayable()) {
+						if (!invData.second->IsQuestObject() || removeQuestItems ) {
+							from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
+						}
+					}
+				}
+				return false; // stop it, we looted the target.
+			}
+			return true;
+		});
+		
 	}
 
 	void Disintegrate(Actor* actor) {
