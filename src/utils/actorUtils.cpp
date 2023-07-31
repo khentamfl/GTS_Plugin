@@ -376,7 +376,7 @@ namespace Gts {
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
 			if (!tiny->IsDead()) {
-				tiny->KillActor(giant, tiny); // just to make sure
+				KillActor(giant, tiny); // just to make sure
 			}
 			if (tiny->IsDead()) {
 				log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
