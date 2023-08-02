@@ -15,7 +15,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float Volume = clamp(0.50, 2.0, get_visual_scale(caster));
+		float Volume = clamp(0.10, 2.0, get_visual_scale(caster)/8);
 		Runtime::PlaySoundAtNode("growthSound", caster, Volume, 1.0, "NPC Pelvis [Pelv]");
 
 		//log::info("Grow Button actor: {}", caster->GetDisplayFullName());
