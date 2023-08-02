@@ -99,26 +99,24 @@ namespace {
 
 	void RunButtCollisionTask(Actor* giant) {
 		std::string name = std::format("ButtCrush_{}", giant->formID);
-		if (enable) {
-			auto gianthandle = giant->CreateRefHandle();
-			TaskManager::Run(name, [=](auto& progressData) {
-			if (!gianthandle) {
-				return false;
-			}
-			auto giantref = gianthandle.get().get();
-			auto ThighL = find_node(giantref, "NPC L Thigh [LThg]");
-			auto ThighR = find_node(giantref, "NPC R Thigh [RThg]");
-			if (ThighL && ThighR) {
-				DoCrawlingDamage(giantref, 26, 60, ThighL, 100, 0.20, 2.5);
-				DoCrawlingDamage(giantref, 26, 60, ThighR, 100, 0.20, 2.5);
-				return true;
-			}
-			if (!IsThighCrushing(giantref)) {
-				return false; //Disable it once we're ot thigh crushing
-			}
-			return false; // Cancel it if we don't have these bones
-			});
+		auto gianthandle = giant->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+		if (!gianthandle) {
+			return false;
 		}
+		auto giantref = gianthandle.get().get();
+		auto ThighL = find_node(giantref, "NPC L Thigh [LThg]");
+		auto ThighR = find_node(giantref, "NPC R Thigh [RThg]");
+		if (ThighL && ThighR) {
+			DoCrawlingDamage(giantref, 26, 60, ThighL, 100, 0.20, 2.5);
+			DoCrawlingDamage(giantref, 26, 60, ThighR, 100, 0.20, 2.5);
+			return true;
+		}
+		if (!IsThighCrushing(giantref)) {
+			return false; //Disable it once we're ot thigh crushing
+		}
+		return false; // Cancel it if we don't have these bones
+		});
 	}
 
 	void GTStosit(AnimationEventData& data) {
