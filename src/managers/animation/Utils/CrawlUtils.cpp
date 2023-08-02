@@ -100,7 +100,7 @@ namespace Gts {
         std::string rumbleName = std::format("{}{}", tag, actor->formID);
         Rumble::Once(rumbleName, actor, 0.90 * multiplier * SMT, 0.10, name); // Do Rumble
 
-		DoCrawlingDamage(actor, damage_dist, 70 * multiplier, node, 20, 0.05, 1.0); // Do size-related damage
+		DoDamageAtPoint(actor, damage_dist, 70 * multiplier, node, 20, 0.05, 1.0); // Do size-related damage
         DoCrawlingSounds(actor, scale, node, FootEvent::Left);                      // Do impact sounds
 
         if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {
@@ -126,7 +126,7 @@ namespace Gts {
     }
 
 
-    void DoCrawlingDamage(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult) { // Apply crawl damage to each bone individually
+    void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult) { // Apply crawl damage to each bone individually
         auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
@@ -195,13 +195,13 @@ void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float boneda
 		} // CTD protection
 
 
-		DoCrawlingDamage(giant, 10, damage, LC, random, bonedamage, 2.5); 		// Call Left Calf
-		DoCrawlingDamage(giant, 10, damage, RC, random, bonedamage, 2.5);        // Call Right Calf
+		DoDamageAtPoint(giant, 10, damage, LC, random, bonedamage, 2.5); 		// Call Left Calf
+		DoDamageAtPoint(giant, 10, damage, RC, random, bonedamage, 2.5);        // Call Right Calf
 
 		if (!IsTransferingTiny(giant)) { // Only do if we don't have someone in our left hand
-			DoCrawlingDamage(giant, 8, damage, LH, random, bonedamage, 2.5);   // Call Left Hand
+			DoDamageAtPoint(giant, 8, damage, LH, random, bonedamage, 2.5);   // Call Left Hand
 		}
 		
-		DoCrawlingDamage(giant, 8, damage, RH, random, bonedamage, 2.5);   // Call Right Calf
+		DoDamageAtPoint(giant, 8, damage, RH, random, bonedamage, 2.5);   // Call Right Calf
 	}
 }

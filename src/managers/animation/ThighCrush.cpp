@@ -108,8 +108,8 @@ namespace {
 		auto ThighL = find_node(giantref, "NPC L Thigh [LThg]");
 		auto ThighR = find_node(giantref, "NPC R Thigh [RThg]");
 		if (ThighL && ThighR) {
-			DoCrawlingDamage(giantref, 17, 0.5, ThighL, 100, 0.20, 2.5);
-			DoCrawlingDamage(giantref, 17, 0.5, ThighR, 100, 0.20, 2.5);
+			DoDamageAtPoint(giantref, 16, 0.5, ThighL, 100, 0.20, 2.5);
+			DoDamageAtPoint(giantref, 16, 0.5, ThighR, 100, 0.20, 2.5);
 			return true;
 		}
 		if (!IsThighCrushing(giantref)) {

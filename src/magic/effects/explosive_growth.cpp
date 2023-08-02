@@ -125,7 +125,7 @@ namespace Gts {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
 		}
 		if (this->timer.ShouldRun()) {
-			float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/4);
+			float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/8);
 			Runtime::PlaySoundAtNode("growthSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
 		}
 	}
