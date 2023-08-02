@@ -102,7 +102,7 @@ namespace {
 		auto gianthandle = giant->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
 		if (!gianthandle) {
-			return false;
+			return false; 
 		}
 		auto giantref = gianthandle.get().get();
 		auto ThighL = find_node(giantref, "NPC L Thigh [LThg]");
