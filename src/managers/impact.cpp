@@ -123,7 +123,10 @@ namespace Gts {
 			EventDispatcher::DoOnImpact(impact_data); // Calls Explosions and sounds. A Must.
 
 			float bonus = 1.0;
-
+			float launch = 1.0;
+			if (actor->AsActorState()->IsWalking()) {
+				launch = 0.75;
+			}
 			if (actor->IsSneaking()) {
 				bonus *= 0.5;
 			} if (actor->AsActorState()->IsSprinting()) {
@@ -136,7 +139,7 @@ namespace Gts {
 				DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.0); 
 				//                     ^          ^
 				//                 Damage         Radius
-				DoLaunch(actor, 0.45 * bonus, 2.0, 1.0, kind, 0.45 * bonus);
+				DoLaunch(actor, 0.45 * launch * bonus, 2.0, 1.0, kind, 0.45 * bonus);
 			}
 		}
 	}

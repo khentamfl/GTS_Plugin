@@ -76,8 +76,10 @@ namespace {
 		float volume = scale * 0.20;
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Right, 1.0);
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Left, 1.0);
-		DoSizeEffect(&data.giant, 1.0, FootEvent::Right, RNode);
-		DoSizeEffect(&data.giant, 1.0, FootEvent::Left, LNode);
+		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
+		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
+		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75, 1.75, 1.4, FootEvent::Right, 0.85);
 		DoLaunch(&data.giant, 0.75, 1.75, 1.4, FootEvent::Left, 0.85);
 	}
@@ -87,8 +89,10 @@ namespace {
 		float volume = scale * 0.20;
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Right, 1.0);
 		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Left, 1.0);
-		DoSizeEffect(&data.giant, 1.0, FootEvent::Right, RNode);
-		DoSizeEffect(&data.giant, 1.0, FootEvent::Left, LNode);
+		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
+		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
+		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.75, 1.75, 1.4, FootEvent::Right, 0.85);
 		DoLaunch(&data.giant, 0.75, 1.75, 1.4, FootEvent::Left, 0.85);
 	}

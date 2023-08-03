@@ -196,7 +196,8 @@ namespace {
 		float perk = GetPerkBonus_Thighs(&data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
-		DoSizeEffect(&data.giant, 1.1, FootEvent::Right, RNode);
+		DoFootstepSound(&data.giant, 1.05, FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.4, 25, 0.20, FootEvent::Right, 1.0);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandR");
@@ -209,7 +210,8 @@ namespace {
 		float perk = GetPerkBonus_Thighs(&data.giant);
 
 		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
-		DoSizeEffect(&data.giant, 1.1, FootEvent::Left, LNode);
+		DoFootstepSound(&data.giant, 1.05, FootEvent::Left, LNode);
+		DoDustExplosion(&data.giant, 1.1, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.4, 25, 0.20, FootEvent::Left, 1.0);
 		DoLaunch(&data.giant, 0.75 * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Left, 0.85);
 		data.stage = 9;
@@ -223,7 +225,8 @@ namespace {
 		float perk = GetPerkBonus_Thighs(&data.giant);
 
 		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
-		DoSizeEffect(&data.giant, 1.1, FootEvent::Right, RNode);
+		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.4 * perk, 1.3, 25, 0.20, FootEvent::Right, 1.0);
 		DoLaunch(&data.giant, 0.6 * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Right, 0.85);
 		data.stage = 9;

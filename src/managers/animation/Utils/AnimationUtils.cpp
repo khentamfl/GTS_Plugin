@@ -286,7 +286,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-								if (aveForce >= 0.5) {
+								if (aveForce >= 0.33) {
 									DoFootGrind(actor, otherActor);
                                 }
 							}
@@ -395,7 +395,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-								if (aveForce >= 0.5) {
+								if (aveForce >= 0.33) {
 									DoFootGrind(actor, otherActor);
                                 }
 							}

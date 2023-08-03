@@ -772,8 +772,18 @@ namespace Gts {
 		return random;
 	}
 
-	void DoSizeEffect(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
+	void DoFootstepSound(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
 		auto& footstep = FootStepManager::GetSingleton();
+		Impact impact_data = Impact {
+			.actor = giant,
+			.kind = kind,
+			.scale = get_visual_scale(giant) * modifier,
+			.nodes = find_node(giant, node),
+		};
+		footstep.OnImpact(impact_data); // Play sound
+	}
+
+	void DoDustExplosion(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
 		auto& explosion = ExplosionManager::GetSingleton();
 		Impact impact_data = Impact {
 			.actor = giant,
@@ -782,7 +792,6 @@ namespace Gts {
 			.nodes = find_node(giant, node),
 		};
 		explosion.OnImpact(impact_data); // Play explosion
-		footstep.OnImpact(impact_data); // Play sound
 	}
 
 	void SpawnParticle(Actor* actor, float lifetime, const char* modelName, const NiMatrix3& rotation, const NiPoint3& position, float scale, std::uint32_t flags, NiAVObject* target) {

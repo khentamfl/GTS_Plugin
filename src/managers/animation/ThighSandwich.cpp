@@ -288,8 +288,10 @@ namespace {
 
 	void GTSSandwich_FootImpact(AnimationEventData& data) {
 		float perk = GetPerkBonus_Thighs(&data.giant);
-		DoSizeEffect(&data.giant, 2.0, FootEvent::Right, RNode);
-		DoSizeEffect(&data.giant, 2.0, FootEvent::Left, LNode);
+		DoFootstepSound(&data.giant, 1.05, FootEvent::Right, RNode);
+		DoFootstepSound(&data.giant, 1.05, FootEvent::Left, LNode);
+		DoDustExplosion(&data.giant, 2.0, FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, 2.0, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Right, 1.0);
 		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Left, 1.0);
 		DoLaunch(&data.giant, 0.85 * perk, 2.0, 1.0, FootEvent::Right, 1.15);
