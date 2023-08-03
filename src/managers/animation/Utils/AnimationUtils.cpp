@@ -145,6 +145,26 @@ namespace Gts {
 		}
 	}
 
+	float GetPerkBonus_Basics(Actor* Giant) {
+		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
+			return 1.25;
+		} else {
+			return 1.0;
+		}
+	}
+
+	float GetPerkBonus_Thighs(Actor* Giant) {
+		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
+			return 1.15;
+		} else {
+			return 1.0;
+		}
+	}
+
+	bool IsHostile(Actor* giant, Actor* tiny) {
+		return tiny->IsHostileToActor(giant);
+	}
+
 	void DoFootGrind(Actor* giant, Actor* tiny) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
@@ -171,27 +191,6 @@ namespace Gts {
 			return true;
 		});
 	}
-
-	float GetPerkBonus_Basics(Actor* Giant) {
-		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
-			return 1.25;
-		} else {
-			return 1.0;
-		}
-	}
-
-	float GetPerkBonus_Thighs(Actor* Giant) {
-		if (Runtime::HasPerkTeam(Giant, "KillerThighs")) {
-			return 1.15;
-		} else {
-			return 1.0;
-		}
-	}
-
-	bool IsHostile(Actor* giant, Actor* tiny) {
-		return tiny->IsHostileToActor(giant);
-	}
-
 
 	void FootGrindCheck_Left(Actor* actor, float radius) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		if (!actor) {
@@ -255,7 +254,7 @@ namespace Gts {
 			}
 			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 				for (auto point: footPoints) {
-					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
+					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, {0.0, 1.0, 0.0, 1.0});
 				}
 			}
 
@@ -364,7 +363,7 @@ namespace Gts {
 			}
 			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 				for (auto point: footPoints) {
-					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
+					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, {0.0, 1.0, 0.0, 1.0});
 				}
 			}
 
