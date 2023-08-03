@@ -146,6 +146,12 @@ namespace Gts {
 		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && prone;
 	}
 
+	bool IsFootGrinding(Actor* actor) {
+		int grind;
+		actor->GetGraphVariableInt("GTS_IsFootGrinding", grind); 
+		return grind > 0;
+	}
+
 	bool IsJumping(Actor* actor) {
 		auto profiler = Profilers::Profile("ActorUtils: IsJumping");
 		if (!actor) {

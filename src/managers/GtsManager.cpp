@@ -269,8 +269,8 @@ void GtsManager::Update() {
 		auto& sizemanager = SizeManager::GetSingleton();
 
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
-			accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25, 2.5);
-			accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25, 2.5);
+			accuratedamage.DoAccurateCollisionLeft(actor, 0.6, 1.0, 1000, 0.25, 2.5);
+			accuratedamage.DoAccurateCollisionRight(actor, 0.6, 1.0, 1000, 0.25, 2.5);
 			ClothManager::GetSingleton().CheckRip();
 
 			if (IsCrawling(actor)) {
@@ -281,8 +281,8 @@ void GtsManager::Update() {
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
 			if (actor->formID != 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
-				accuratedamage.DoAccurateCollisionLeft(actor, 1.0, 1.0, 1000, 0.25, 2.5);
-				accuratedamage.DoAccurateCollisionRight(actor, 1.0, 1.0, 1000, 0.25, 2.5);
+				accuratedamage.DoAccurateCollisionLeft(actor, 0.6, 1.0, 1000, 0.25, 2.5);
+				accuratedamage.DoAccurateCollisionRight(actor, 0.6, 1.0, 1000, 0.25, 2.5);
 			}
 		}
 

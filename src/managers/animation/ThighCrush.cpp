@@ -113,7 +113,7 @@ namespace {
 			return true;
 		}
 		if (!IsThighCrushing(giantref)) {
-			return false; //Disable it once we're ot thigh crushing
+			return false; //Disable it once we leave Thigh Crush state
 		}
 		return false; // Cancel it if we don't have these bones
 		});

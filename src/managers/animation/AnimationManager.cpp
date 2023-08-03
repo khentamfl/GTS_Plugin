@@ -2,6 +2,7 @@
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/animation/StrongStomp.hpp"
 #include "managers/animation/ThighCrush.hpp"
+#include "managers/animation/FootGrind.hpp"
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/animation/Crawling.hpp"
@@ -58,14 +59,11 @@ namespace Gts {
 		AnimationStrongStomp::RegisterEvents();
 		AnimationStrongStomp::RegisterTriggers();
 
-		AnimationThighCrush::RegisterEvents();
-		AnimationThighCrush::RegisterTriggers();
-
 		AnimationThighSandwich::RegisterEvents();
 		AnimationThighSandwich::RegisterTriggers();
 
-		AnimationCompat::RegisterEvents();
-		AnimationCompat::RegisterTriggers();
+		AnimationThighCrush::RegisterEvents();
+		AnimationThighCrush::RegisterTriggers();
 
 		AnimationCrawling::RegisterEvents();
 		AnimationCrawling::RegisterTriggers();
@@ -73,11 +71,16 @@ namespace Gts {
 		AnimationActorVore::RegisterEvents();
 		AnimationActorVore::RegisterTriggers();
 
-		Grab::RegisterEvents();
-		Grab::RegisterTriggers();
+		AnimationFootGrind::RegisterEvents();
+
+		AnimationCompat::RegisterEvents();
+		AnimationCompat::RegisterTriggers();
 
 		HugShrink::RegisterEvents();
 		HugShrink::RegisterTriggers();
+
+		Grab::RegisterEvents();
+		Grab::RegisterTriggers();
 
 
 	}

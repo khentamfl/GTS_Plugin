@@ -8,6 +8,7 @@
 #include "utils/papyrusUtils.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
+#include "managers/highheel.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
 #include "managers/Rumble.hpp"
@@ -134,6 +135,33 @@ namespace Gts {
 		}
 	}
 
+	void DoFootGrind(Actor* giant, Actor* tiny) {
+		auto gianthandle = giant->CreateRefHandle();
+		auto tinyhandle = tiny->CreateRefHandle();
+		std::string name = std::format("FootGrind_{}", tiny->formID);
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyhandle) {
+				return false;
+			}
+			
+			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
+
+			DoDamageEffect(giantref, 0.015, 1.4, 100, 0.20, FootEvent::Right, 1.2);
+			DoDamageEffect(giantref, 0.015, 1.4, 100, 0.20, FootEvent::Left, 1.2);
+
+			if (!AttachToObjectB(giantref, tinyref)) {
+				return false;
+			} if (!IsFootGrinding(giantref)) {
+				return false;
+			}
+			return true;
+		});
+	}
+
 	float GetPerkBonus_Basics(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
 			return 1.25;
@@ -152,5 +180,220 @@ namespace Gts {
 
 	bool IsHostile(Actor* giant, Actor* tiny) {
 		return tiny->IsHostileToActor(giant);
+	}
+
+
+	void FootGrindCheck_Left(Actor* actor, float radius) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+		if (!actor) {
+			return;
+		}
+
+		float giantScale = get_visual_scale(actor);
+		const float BASE_CHECK_DISTANCE = 90.0;
+		const float BASE_DISTANCE = 6.0;
+		const float SCALE_RATIO = 1.15;
+		if (HasSMT(actor)) {
+			giantScale += 0.20;
+		}
+
+		// Get world HH offset
+		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
+
+		auto leftFoot = find_node(actor, leftFootLookup);
+		auto leftCalf = find_node(actor, leftCalfLookup);
+		auto leftToe = find_node(actor, leftToeLookup);
+		if (!leftFoot) {
+			return;
+		}if (!leftCalf) {
+			return;
+		}if (!leftToe) {
+			return;
+		}
+		NiMatrix3 leftRotMat;
+		{
+			NiAVObject* foot = leftFoot;
+			NiAVObject* calf = leftCalf;
+			NiAVObject* toe = leftToe;
+			NiTransform inverseFoot = foot->world.Invert();
+			NiPoint3 forward = inverseFoot*toe->world.translate;
+			forward = forward / forward.Length();
+
+			NiPoint3 up = inverseFoot*calf->world.translate; 
+			up = up / up.Length();
+
+			NiPoint3 right = forward.UnitCross(up);
+			forward = up.UnitCross(right); // Reorthonalize
+
+			leftRotMat = NiMatrix3(right, forward, up);
+		}
+
+		float maxFootDistance = BASE_DISTANCE * radius * giantScale;
+		float hh = hhOffsetbase[2];
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
+			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
+			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
+		};
+		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
+
+		for (const auto& [foot, rotMat]: {left}) {
+			std::vector<NiPoint3> footPoints = {};
+			for (NiPoint3 point: points) {
+				footPoints.push_back(foot->world*(rotMat*point));
+			}
+			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+				for (auto point: footPoints) {
+					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
+				}
+			}
+
+			NiPoint3 giantLocation = actor->GetPosition();
+			for (auto otherActor: find_actors()) {
+				if (otherActor != actor) {
+					float tinyScale = get_visual_scale(otherActor);
+					if (giantScale / tinyScale > SCALE_RATIO) {
+						NiPoint3 actorLocation = otherActor->GetPosition();
+
+						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+							// Check the tiny's nodes against the giant's foot points
+							int nodeCollisions = 0;
+							float force = 0.0;
+
+							auto model = otherActor->GetCurrent3D();
+
+							if (model) {
+								for (auto point: footPoints) {
+									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
+										float distance = (point - a_obj.world.translate).Length();
+										if (distance < maxFootDistance) {
+											nodeCollisions += 1;
+											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
+										}
+										return true;
+									});
+								}
+							}
+							if (nodeCollisions > 0) {
+								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
+								if (aveForce >= 0.5) {
+									DoFootGrind(actor, otherActor);
+                                }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	void FootGrindCheck_Right(Actor* actor, float radius) { 
+		if (!actor) {
+			return;
+		}
+
+		float giantScale = get_visual_scale(actor);
+		const float BASE_CHECK_DISTANCE = 90.0;
+		const float BASE_DISTANCE = 6.0;
+		const float SCALE_RATIO = 1.15;
+		if (HasSMT(actor)) {
+			giantScale += 0.20;
+		}
+
+		// Get world HH offset
+		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
+
+		auto rightFoot = find_node(actor, rightFootLookup);
+		auto rightCalf = find_node(actor, rightCalfLookup);
+		auto rightToe = find_node(actor, rightToeLookup);
+
+		if (!rightFoot) {
+			return;
+		}
+		if (!rightCalf) {
+			return;
+		}
+		if (!rightToe) {
+			return;
+		}
+		NiMatrix3 rightRotMat;
+		{
+			NiAVObject* foot = rightFoot;
+			NiAVObject* calf = rightCalf;
+			NiAVObject* toe = rightToe;
+
+			NiTransform inverseFoot = foot->world.Invert();
+			NiPoint3 forward = inverseFoot*toe->world.translate;
+			forward = forward / forward.Length();
+
+			NiPoint3 up = inverseFoot*calf->world.translate;
+			up = up / up.Length();
+
+			NiPoint3 right = up.UnitCross(forward);
+			forward = right.UnitCross(up); // Reorthonalize
+
+			rightRotMat = NiMatrix3(right, forward, up);
+		}
+
+		float maxFootDistance = BASE_DISTANCE * radius * giantScale;
+		float hh = hhOffsetbase[2];
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
+			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
+			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
+		};
+		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
+
+		for (const auto& [foot, rotMat]: {right}) {
+			std::vector<NiPoint3> footPoints = {};
+			for (NiPoint3 point: points) {
+				footPoints.push_back(foot->world*(rotMat*point));
+			}
+			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+				for (auto point: footPoints) {
+					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
+				}
+			}
+
+			NiPoint3 giantLocation = actor->GetPosition();
+			for (auto otherActor: find_actors()) {
+				if (otherActor != actor) {
+					float tinyScale = get_visual_scale(otherActor);
+					if (giantScale / tinyScale > SCALE_RATIO) {
+						NiPoint3 actorLocation = otherActor->GetPosition();
+
+						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+							// Check the tiny's nodes against the giant's foot points
+							int nodeCollisions = 0;
+							float force = 0.0;
+
+							auto model = otherActor->GetCurrent3D();
+
+							if (model) {
+								for (auto point: footPoints) {
+									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
+										float distance = (point - a_obj.world.translate).Length();
+										if (distance < maxFootDistance) {
+											nodeCollisions += 1;
+											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
+										}
+										return true;
+									});
+								}
+							}
+							if (nodeCollisions > 0) {
+								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
+								if (aveForce >= 0.5) {
+									DoFootGrind(actor, otherActor);
+                                }
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
