@@ -25,6 +25,16 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
+
+	const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
+	const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
+	const std::string_view leftCalfLookup = "NPC L Calf [LClf]";
+	const std::string_view rightCalfLookup = "NPC R Calf [RClf]";
+	const std::string_view leftToeLookup = "NPC L Toe0 [LToe]";
+	const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
+	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
+
+
 	void AllowToDoVore(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
