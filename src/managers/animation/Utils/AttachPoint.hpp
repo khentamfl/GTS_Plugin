@@ -63,7 +63,7 @@ namespace Gts {
 		if (!giant) {
 			return false;
 		}
-		auto bone = find_node(actor,"AnimObjectB");
+		auto bone = find_node(giant, "AnimObjectB");
 		if (bone) {
 			auto coords = bone->world.translate;
 			coords.z -= HighHeelManager::GetHHOffset(giant).Length();

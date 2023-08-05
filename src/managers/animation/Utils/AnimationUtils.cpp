@@ -187,6 +187,8 @@ namespace Gts {
 				return false;
 			} if (!IsFootGrinding(giantref)) {
 				return false;
+			} if (tinyref->IsDead()) {
+				return false;
 			}
 			return true;
 		});
