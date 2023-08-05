@@ -186,7 +186,7 @@ namespace Gts {
 			if (!AttachToObjectB(giantref, tinyref)) {
 				return false;
 			} if (!IsFootGrinding(giantref)) {
-				return false;
+				//return false;
 			}
 			return true;
 		});
@@ -286,8 +286,9 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-								if (aveForce >= 0.33) {
+								if (aveForce >= 0.00) {
 									DoFootGrind(actor, otherActor);
+									AnimationManager::StartAnim("GrindLeft", actor);
                                 }
 							}
 						}
@@ -395,8 +396,9 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-								if (aveForce >= 0.33) {
+								if (aveForce >= 0.00) {
 									DoFootGrind(actor, otherActor);
+									AnimationManager::StartAnim("GrindRight", actor);
                                 }
 							}
 						}

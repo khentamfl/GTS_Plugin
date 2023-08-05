@@ -72,6 +72,7 @@ namespace Gts {
 		AnimationActorVore::RegisterTriggers();
 
 		AnimationFootGrind::RegisterEvents();
+		AnimationFootGrind::RegisterTriggers();
 
 		AnimationCompat::RegisterEvents();
 		AnimationCompat::RegisterTriggers();

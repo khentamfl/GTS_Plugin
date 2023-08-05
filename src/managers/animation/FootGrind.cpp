@@ -101,4 +101,9 @@ namespace Gts
         AnimationManager::RegisterEvent("GTSstomp_FootGrindL_MV_E", "FootGrind", GTSstomp_FootGrindL_MV_E);
         AnimationManager::RegisterEvent("GTSstomp_FootGrindR_MV_E", "FootGrind", GTSstomp_FootGrindR_MV_E);
 	}
+
+    void AnimationFootGrind::RegisterTriggers() {
+		AnimationManager::RegisterTrigger("GrindRight", "FootGrind", "GTSBEH_StartFootGrindR");
+        AnimationManager::RegisterTrigger("GrindLeft", "FootGrind", "GTSBEH_StartFootGrindL");
+	}
 }
