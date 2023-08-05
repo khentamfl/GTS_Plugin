@@ -66,8 +66,8 @@ namespace Gts {
 		auto bone = find_node(giant, "AnimObjectB");
 		if (bone) {
 			auto coords = bone->world.translate;
-			coords.z -= unit_to_meter(HighHeelManager::GetHHOffset(giant).Length());
-			return AttachTo(anyGiant, anyTiny, "AnimObjectB");
+			coords.z -= meter_to_unit(HighHeelManager::GetHHOffset(giant).Length());
+			return AttachTo(anyGiant, anyTiny, coords);
 		} else {
 			return false;
 		}
