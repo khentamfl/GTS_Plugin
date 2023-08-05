@@ -183,7 +183,7 @@ namespace Gts {
 			DoDamageEffect(giantref, 0.015, 1.4, 100, 0.20, FootEvent::Right, 1.2);
 			DoDamageEffect(giantref, 0.015, 1.4, 100, 0.20, FootEvent::Left, 1.2);
 
-			if (!AttachToObjectB(giantref, tinyref)) {
+			if (!AttachToUnderFoot(giantref, tinyref)) {
 				return false;
 			} if (!IsFootGrinding(giantref)) {
 				return false;
