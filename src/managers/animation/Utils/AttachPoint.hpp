@@ -1,4 +1,5 @@
 #pragma once
+#include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -54,6 +55,22 @@ namespace Gts {
 	template<typename T, typename U>
 	bool AttachToObjectB(T& anyGiant, U& anyTiny) {
 		return AttachTo(anyGiant, anyTiny, "AnimObjectB");
+	}
+
+	template<typename T, typename U>
+	bool AttachToUnderFoot(T& anyGiant, U& anyTiny) {
+		Actor* giant = GetActorPtr(anyGiant);
+		if (!giant) {
+			return false;
+		}
+		auto bone = find_node(actor,"AnimObjectB");
+		if (bone) {
+			auto coords = bone->world.translate;
+			coords.z -= HighHeelManager::GetHHOffset(giant).Length();
+			return AttachTo(anyGiant, anyTiny, "AnimObjectB");
+		} else {
+			return false;
+		}
 	}
 
 	template<typename T, typename U>

@@ -186,7 +186,7 @@ namespace Gts {
 			if (!AttachToObjectB(giantref, tinyref)) {
 				return false;
 			} if (!IsFootGrinding(giantref)) {
-				//return false;
+				return false;
 			}
 			return true;
 		});

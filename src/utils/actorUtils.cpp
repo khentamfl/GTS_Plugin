@@ -147,9 +147,9 @@ namespace Gts {
 	}
 
 	bool IsFootGrinding(Actor* actor) {
-		int grind;
-		actor->GetGraphVariableInt("GTS_IsFootGrinding", grind); 
-		return grind > 0;
+		bool grind;
+		actor->GetGraphVariableBool("GTS_IsFootGrinding", grind); 
+		return grind;
 	}
 
 	bool IsJumping(Actor* actor) {
