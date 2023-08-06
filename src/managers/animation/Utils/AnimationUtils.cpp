@@ -184,10 +184,13 @@ namespace Gts {
 			DoDamageEffect(giantref, 0.015, 1.4, 100, 0.20, FootEvent::Left, 1.2);
 
 			if (!AttachToUnderFoot(giantref, tinyref)) {
+				log::info("Attach is false");
 				return false;
 			} if (!IsFootGrinding(giantref)) {
+				log::info("IsGrinding = false");
 				return false;
 			} if (tinyref->IsDead()) {
+				log::info("Tiny is dead");
 				return false;
 			}
 			return true;
