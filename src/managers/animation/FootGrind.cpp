@@ -97,16 +97,20 @@ namespace {
     }
 
     void GTSstomp_FootGrindR_Impact(AnimationEventData& data) { // When foot hits the ground after lifting the leg up. R Foot
+        float perk = GetPerkBonus_Basics(&data.giant);
         ApplyDustRing(&data.giant, FootEvent::Right, RNode, 1.05);
+        DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
+        DoLaunch(&data.giant, 0.75 * perk, 1.8, 1.4, FootEvent::Right, 0.80);  // To-do: disallow Launching when actor is being grinded through Transient
         DoDamageEffect(&data.giant, 2.45, 1.60, 20, 0.15, FootEvent::Right, 1.0);
-		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
         Rumble::Once("GrindStompR", &data.giant, 1.25, 0.05, RNode);
     }
 
     void GTSstomp_FootGrindL_Impact(AnimationEventData& data) { // When foot hits the ground after lifting the leg up. L Foot
+        float perk = GetPerkBonus_Basics(&data.giant);
         ApplyDustRing(&data.giant, FootEvent::Left, LNode, 1.05);
+        DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
+        DoLaunch(&data.giant, 0.75 * perk, 1.8, 1.4, FootEvent::Left, 0.80);  // To-do: disallow Launching when actor is being grinded through Transient
         DoDamageEffect(&data.giant, 2.45, 1.60, 20, 0.15, FootEvent::Left, 1.0);
-		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
         Rumble::Once("GrindStompL", &data.giant, 1.25, 0.05, LNode);
     }
 
