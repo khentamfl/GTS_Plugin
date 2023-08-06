@@ -180,8 +180,8 @@ namespace Gts {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
-			DoDamageEffect(giantref, 0.015, 1.4, 100, 0.20, FootEvent::Right, 1.2);
-			DoDamageEffect(giantref, 0.015, 1.4, 100, 0.20, FootEvent::Left, 1.2);
+			DoDamageEffect(giantref, 0.010, 1.4, 2000, 0.05, FootEvent::Right, 1.2);
+			DoDamageEffect(giantref, 0.010, 1.4, 2000, 0.05, FootEvent::Left, 1.2);
 
 			if (!AttachToUnderFoot(giantref, tinyref)) {
 				log::info("Attach is false");

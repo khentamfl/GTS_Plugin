@@ -46,7 +46,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
             Rumble::Once("FootGrindL", giantref, 1.0, 0.025, LNode);
-			DoDamageEffect(giantref, 0.026, 1.4, 100, 0.20, FootEvent::Left, 1.0);
+			DoDamageEffect(giantref, 0.010, 1.4, 2000, 0.05, FootEvent::Left, 1.0);
 			return true;
 		});
 	}
@@ -60,7 +60,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
             Rumble::Once("FootGrindR", giantref, 1.0, 0.025, RNode);
-			DoDamageEffect(giantref, 0.026, 1.5, 100, 0.20, FootEvent::Right, 1.0);
+			DoDamageEffect(giantref, 0.010, 1.5, 2000, 0.05, FootEvent::Right, 1.0);
 			return true;
 		});
 	}
@@ -100,12 +100,14 @@ namespace {
         ApplyDustRing(&data.giant, FootEvent::Right, RNode, 1.05);
         DoDamageEffect(&data.giant, 2.45, 1.60, 20, 0.15, FootEvent::Right, 1.0);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
+        Rumble::Once("GrindStompR", &data.giant, 1.25, 0.05, RNode);
     }
 
     void GTSstomp_FootGrindL_Impact(AnimationEventData& data) { // When foot hits the ground after lifting the leg up. L Foot
         ApplyDustRing(&data.giant, FootEvent::Left, LNode, 1.05);
         DoDamageEffect(&data.giant, 2.45, 1.60, 20, 0.15, FootEvent::Left, 1.0);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
+        Rumble::Once("GrindStompL", &data.giant, 1.25, 0.05, LNode);
     }
 
     void GTSstomp_FootGrindR_Exit(AnimationEventData& data) { // Remove foot from enemy: Right
