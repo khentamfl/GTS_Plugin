@@ -72,7 +72,17 @@ namespace {
         TaskManager::Cancel(Left);
     }
 
-    
+    void GTSstomp_FootGrindL_Enter(AnimationEventData& data) {
+        data.stage = 1;
+        data.canEditAnimSpeed = true;
+        data.animSpeed = 1.0;
+    }
+
+    void GTSstomp_FootGrindR_Enter(AnimationEventData& data) {
+        data.stage = 1;
+        data.canEditAnimSpeed = true;
+        data.animSpeed = 1.0;
+    }
        
     void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
         ApplyDamageOverTime_Left(&data.giant);
@@ -112,22 +122,40 @@ namespace {
         Rumble::Once("GrindStompL", &data.giant, 1.25, 0.05, LNode);
     }
 
-   
+    void GTSstomp_FootGrindR_Exit(AnimationEventData& data) { // Remove foot from enemy: Right
+        data.stage = 1;
+        data.canEditAnimSpeed = false;
+        data.animSpeed = 1.0;
+        CancelDamageOverTime(&data.giant); 
+        Cprint("FootGrindL Exit Fired.");
+    }
+
+    void GTSstomp_FootGrindL_Exit(AnimationEventData& data) { // Remove foot from enemy: Left
+        data.stage = 1;
+        data.canEditAnimSpeed = false;
+        data.animSpeed = 1.0;
+        CancelDamageOverTime(&data.giant);
+        Cprint("FootGrindL Exit Fired.");
+    }
 }
 
 namespace Gts
 {
 	void AnimationFootGrind::RegisterEvents() {
-        AnimationManager::RegisterEvent("GTSstomp_FootGrindL_MV_S", "FootGrind", GTSstomp_FootGrindL_MV_S);
-        AnimationManager::RegisterEvent("GTSstomp_FootGrindR_MV_S", "FootGrind", GTSstomp_FootGrindR_MV_S);
-        AnimationManager::RegisterEvent("GTSstomp_FootGrindL_MV_E", "FootGrind", GTSstomp_FootGrindL_MV_E);
-        AnimationManager::RegisterEvent("GTSstomp_FootGrindR_MV_E", "FootGrind", GTSstomp_FootGrindR_MV_E);
-        AnimationManager::RegisterEvent("GTSstomp_FootGrindR_Impact", "FootGrind", GTSstomp_FootGrindR_Impact);
-        AnimationManager::RegisterEvent("GTSstomp_FootGrindL_Impact", "FootGrind", GTSstomp_FootGrindL_Impact);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindL_Enter", "Stomp", GTSstomp_FootGrindL_Enter);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindR_Enter", "Stomp", GTSstomp_FootGrindR_Enter);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindL_MV_S", "Stomp", GTSstomp_FootGrindL_MV_S);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindR_MV_S", "Stomp", GTSstomp_FootGrindR_MV_S);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindL_MV_E", "Stomp", GTSstomp_FootGrindL_MV_E);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindR_MV_E", "Stomp", GTSstomp_FootGrindR_MV_E);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindR_Impact", "Stomp", GTSstomp_FootGrindR_Impact);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindL_Impact", "Stomp", GTSstomp_FootGrindL_Impact);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindR_Exit", "Stomp", GTSstomp_FootGrindR_Exit);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindL_Exit", "Stomp", GTSstomp_FootGrindL_Exit);
 	}
 
     void AnimationFootGrind::RegisterTriggers() {
-		AnimationManager::RegisterTrigger("GrindRight", "FootGrind", "GTSBEH_StartFootGrindR");
-        AnimationManager::RegisterTrigger("GrindLeft", "FootGrind", "GTSBEH_StartFootGrindL");
+		AnimationManager::RegisterTrigger("GrindRight", "Stomp", "GTSBEH_StartFootGrindR");
+        AnimationManager::RegisterTrigger("GrindLeft", "Stomp", "GTSBEH_StartFootGrindL");
 	}
 }
