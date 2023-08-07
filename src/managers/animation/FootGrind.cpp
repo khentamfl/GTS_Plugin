@@ -73,36 +73,34 @@ namespace {
     }
 
     void GTSstomp_FootGrindL_Enter(AnimationEventData& data) {
-        data.canEditAnimSpeed = true;
         data.stage = 1;
+        data.canEditAnimSpeed = true;
+        data.animSpeed = 1.0;
     }
 
     void GTSstomp_FootGrindR_Enter(AnimationEventData& data) {
-        data.canEditAnimSpeed = true;
         data.stage = 1;
+        data.canEditAnimSpeed = true;
+        data.animSpeed = 1.0;
     }
        
     void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
         ApplyDamageOverTime_Left(&data.giant);
-        data.animSpeed = 1.0;
         ApplyDustRing(&data.giant, FootEvent::Left, LNode, 0.8);
     }
 
     void GTSstomp_FootGrindR_MV_S(AnimationEventData& data) { // Feet start to move: Right
         ApplyDamageOverTime_Right(&data.giant);
-        data.animSpeed = 1.0;
         ApplyDustRing(&data.giant, FootEvent::Right, RNode, 0.8);
     }
 
     void GTSstomp_FootGrindL_MV_E(AnimationEventData& data) { // When movement ends: Left
         CancelDamageOverTime(&data.giant);
-        data.animSpeed = 1.0;
         ApplyDustRing(&data.giant, FootEvent::Left, LNode, 0.8);
     }
 
     void GTSstomp_FootGrindR_MV_E(AnimationEventData& data) { // When movement ends: Right
         CancelDamageOverTime(&data.giant);
-        data.animSpeed = 1.0;
         ApplyDustRing(&data.giant, FootEvent::Right, RNode, 0.8);
     }
 
@@ -125,17 +123,19 @@ namespace {
     }
 
     void GTSstomp_FootGrindR_Exit(AnimationEventData& data) { // Remove foot from enemy: Right
-        data.canEditAnimSpeed = false;
-        CancelDamageOverTime(&data.giant);
-        data.animSpeed = 1.0;
         data.stage = 0;
+        data.canEditAnimSpeed = false;
+        data.animSpeed = 1.0;
+        CancelDamageOverTime(&data.giant);
+        
+        
     }
 
     void GTSstomp_FootGrindL_Exit(AnimationEventData& data) { // Remove foot from enemy: Left
-        data.canEditAnimSpeed = false;
-        CancelDamageOverTime(&data.giant);
-        data.animSpeed = 1.0;
         data.stage = 0;
+        data.canEditAnimSpeed = false;
+        data.animSpeed = 1.0;
+        CancelDamageOverTime(&data.giant);
     }
 }
 
