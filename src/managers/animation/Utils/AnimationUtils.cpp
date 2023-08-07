@@ -295,8 +295,30 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								if (aveForce >= 0.00) {
-									DoFootGrind(actor, otherActor);
-									SetBeingGrinded(otherActor, true);
+									ActorHandle tinyHandle = otherActor->CreateRefHandle();
+									ActorHandle gianthandle = actor->CreateRefHandle();
+									TaskManager::Run([=](auto& update){
+										Actor* giant = gianthandle.get().get();
+										Actor* tiny = tinyHandle.get().get();
+										if (!giant) {
+											return false;
+										}
+										if (!tiny) {
+											return false;
+										}
+
+										double startTime = Time::WorldTimeElapsed();
+										double endTime = Time::WorldTimeElapsed();
+
+										if ((endTime - startTime) > 1e-4) {
+											DoFootGrind(giant, tiny);
+											SetBeingGrinded(giant, true);
+											return false;
+										}
+										log::info("FootGridn task is running");
+										return true;
+									});
+									
 									AnimationManager::StartAnim("GrindLeft", actor);
                                 }
 							}
@@ -406,8 +428,29 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								if (aveForce >= 0.00) {
-									DoFootGrind(actor, otherActor);
-									SetBeingGrinded(otherActor, true);
+									ActorHandle tinyHandle = otherActor->CreateRefHandle();
+									ActorHandle gianthandle = actor->CreateRefHandle();
+									TaskManager::Run([=](auto& update){
+										Actor* giant = gianthandle.get().get();
+										Actor* tiny = tinyHandle.get().get();
+										if (!giant) {
+											return false;
+										}
+										if (!tiny) {
+											return false;
+										}
+
+										double startTime = Time::WorldTimeElapsed();
+										double endTime = Time::WorldTimeElapsed();
+
+										if ((endTime - startTime) > 1e-4) {
+											DoFootGrind(giant, tiny);
+											SetBeingGrinded(giant, true);
+											return false;
+										}
+										log::info("FootGridn task is running");
+										return true;
+									});
 									AnimationManager::StartAnim("GrindRight", actor);
                                 }
 							}
