@@ -37,6 +37,18 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	void GTSstomp_FootGrindL_Enter(AnimationEventData& data) {
+        data.stage = 1;
+        data.canEditAnimSpeed = true;
+        data.animSpeed = 1.0;
+    }
+
+    void GTSstomp_FootGrindR_Enter(AnimationEventData& data) {
+        data.stage = 1;
+        data.canEditAnimSpeed = true;
+        data.animSpeed = 1.0;
+    }
+
 	void GTSstompstartR(AnimationEventData& data) {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
@@ -150,6 +162,22 @@ namespace {
 		data.animSpeed = 1.0;
 	}
 
+	void GTSstomp_FootGrindR_Exit(AnimationEventData& data) { // Remove foot from enemy: Right
+        data.stage = 0;
+        data.canEditAnimSpeed = false;
+        data.animSpeed = 1.0;
+        CancelDamageOverTime(&data.giant); 
+        Cprint("FootGrindR Exit Fired.");
+    }
+
+    void GTSstomp_FootGrindL_Exit(AnimationEventData& data) { // Remove foot from enemy: Left
+        data.stage = 0;
+        data.canEditAnimSpeed = false;
+        data.animSpeed = 1.0;
+        CancelDamageOverTime(&data.giant);
+        Cprint("FootGrindL Exit Fired.");
+    }
+
 	void GTS_Next(AnimationEventData& data) {
 		Rumble::Stop("StompR", &data.giant);
 		Rumble::Stop("StompL", &data.giant);
@@ -196,6 +224,8 @@ namespace {
 namespace Gts
 {
 	void AnimationStomp::RegisterEvents() {
+		AnimationManager::RegisterEvent("GTSstomp_FootGrindL_Enter", "Stomp", GTSstomp_FootGrindL_Enter);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindR_Enter", "Stomp", GTSstomp_FootGrindR_Enter);
 		AnimationManager::RegisterEvent("GTSstompimpactR", "Stomp", GTSstompimpactR);
 		AnimationManager::RegisterEvent("GTSstompimpactL", "Stomp", GTSstompimpactL);
 		AnimationManager::RegisterEvent("GTSstomplandR", "Stomp", GTSstomplandR);
@@ -206,6 +236,8 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSStompendL", "Stomp", GTSStompendL);
 		AnimationManager::RegisterEvent("GTS_Next", "Stomp", GTS_Next);
 		AnimationManager::RegisterEvent("GTSBEH_Exit", "Stomp", GTSBEH_Exit);
+		AnimationManager::RegisterEvent("GTSstomp_FootGrindR_Exit", "Stomp", GTSstomp_FootGrindR_Exit);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindL_Exit", "Stomp", GTSstomp_FootGrindL_Exit);
 
 		InputManager::RegisterInputEvent("RightStomp", RightStompEvent);
 		InputManager::RegisterInputEvent("LeftStomp", LeftStompEvent);
