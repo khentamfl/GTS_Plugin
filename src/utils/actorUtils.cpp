@@ -233,13 +233,6 @@ namespace Gts {
 		}
 		return false;
 	}
-	bool CanBeAttachedToFoot(Actor* giant) {
-		auto transient = Transient::GetSingleton().GetData(giant);
-		if (transient) {
-			return transient->attach_to_foot;
-		}
-		return false;
-	}
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -368,12 +361,6 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {
 			transient->being_foot_grinded = decide;
-		}
-	}
-	void SetAttachToFoot(Actor* giant, bool decide) {
-		auto transient = Transient::GetSingleton().GetData(giant);
-		if (transient) {
-			transient->attach_to_foot = decide;
 		}
 	}
 	void ShutUp(Actor* actor) { // Disallow them to "So anyway i've been fishing today and my dog died" while we do something to them
@@ -617,6 +604,9 @@ namespace Gts {
 	}
 
 	float GetHighHeelsBonusDamage(Actor* actor) {
+		if (!actor) {
+			return false;
+		}
 		auto profiler = Profilers::Profile("ActorUtils: GetHHBonusDamage");
 		if (Runtime::HasPerkTeam(actor, "hhBonus")) {
 			return HighHeelManager::GetBaseHHOffset(actor).Length()/100;

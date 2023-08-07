@@ -179,16 +179,12 @@ namespace Gts {
 			
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-
-			DoDamageEffect(giantref, 0.010, 1.4, 2000, 0.05, FootEvent::Right, 1.2);
-			DoDamageEffect(giantref, 0.010, 1.4, 2000, 0.05, FootEvent::Left, 1.2);
-			if (CanBeAttachedToFoot(giant)) {
-				if (!AttachToUnderFoot(giantref, tinyref)) {
-					log::info("Attach is false");
-					SetBeingGrinded(tinyref, false);
-					SetAttachToFoot(giantref, false);
-					return false;
-				}
+			
+			if (!AttachToUnderFoot(giantref, tinyref)) {
+				log::info("Attach is false");
+				SetBeingGrinded(tinyref, false);
+				SetAttachToFoot(giantref, false);
+				return false;
 			} if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				SetAttachToFoot(giantref, false);
@@ -298,7 +294,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-								if (aveForce >= 0.00) {
+								if (aveForce >= 0.00 && !otherActor->IsDead()) {
 									DoFootGrind(actor, otherActor);
 									SetBeingGrinded(otherActor, true);
 									AnimationManager::StartAnim("GrindLeft", actor);
@@ -409,7 +405,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-								if (aveForce >= 0.00) {
+								if (aveForce >= 0.00 && !otherActor->IsDead()) {
 									DoFootGrind(actor, otherActor);
 									SetBeingGrinded(otherActor, true);
 									AnimationManager::StartAnim("GrindRight", actor);

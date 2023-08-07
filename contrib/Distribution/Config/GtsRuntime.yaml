@@ -347,11 +347,7 @@ globals:
 
   Survival_HungerNeedMaxValue: "ccQDRSSE001-SurvivalMode.esl|00080C"
   Survival_HungerNeedValue: "ccQDRSSE001-SurvivalMode.esl|00081A"
-  # Survival Restore settings
-  Survival_HungerRestoreLargeAmount: "ccQDRSSE001-SurvivalMode.esl|00082C"
-  Survival_HungerRestoreMediumAmount: "ccQDRSSE001-SurvivalMode.esl|00082B"
-  Survival_HungerRestoreSmallAmount: "ccQDRSSE001-SurvivalMode.esl|00082D"
-  Survival_HungerRestoreVerySmallAmount: "ccQDRSSE001-SurvivalMode.esl|00082E"
+
   # Survival stages
   Survival_HungerStage1Value: "ccQDRSSE001-SurvivalMode.esl|000806"
   Survival_HungerStage2Value: "ccQDRSSE001-SurvivalMode.esl|000802"

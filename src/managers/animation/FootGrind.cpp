@@ -46,7 +46,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
             Rumble::Once("FootGrindL", giantref, 1.0, 0.025, LNode);
-			DoDamageEffect(giantref, 0.010, 1.4, 2000, 0.05, FootEvent::Left, 1.0);
+			DoDamageEffect(giantref, 0.010, 1.4, 10000, 0.05, FootEvent::Left, 1.0);
 			return true;
 		});
 	}
@@ -60,7 +60,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
             Rumble::Once("FootGrindR", giantref, 1.0, 0.025, RNode);
-			DoDamageEffect(giantref, 0.010, 1.5, 2000, 0.05, FootEvent::Right, 1.0);
+			DoDamageEffect(giantref, 0.010, 1.5, 10000, 0.05, FootEvent::Right, 1.0);
 			return true;
 		});
 	}
@@ -124,10 +124,16 @@ namespace {
 
     void GTSstomp_FootGrindR_Exit(AnimationEventData& data) { // Remove foot from enemy: Right
         SetAttachToFoot(&data.giant, false);
+        CancelDamageOverTime(&data.giant);
+        data.animSpeed = 1.0;
+        data.canEditAnimSpeed = false;
     }
 
     void GTSstomp_FootGrindL_Exit(AnimationEventData& data) { // Remove foot from enemy: Left
         SetAttachToFoot(&data.giant, false);
+        CancelDamageOverTime(&data.giant);
+        data.animSpeed = 1.0;
+        data.canEditAnimSpeed = false;
     }
 }
 
