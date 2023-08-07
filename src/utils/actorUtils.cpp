@@ -234,7 +234,7 @@ namespace Gts {
 		return false;
 	}
 	bool CanBeAttachedToFoot(Actor* giant) {
-		auto transient = Transient::GetSingleton().GetData(actor);
+		auto transient = Transient::GetSingleton().GetData(giant);
 		if (transient) {
 			return transient->attach_to_foot;
 		}
@@ -371,7 +371,7 @@ namespace Gts {
 		}
 	}
 	void SetAttachToFoot(Actor* giant, bool decide) {
-		auto transient = Transient::GetSingleton().GetData(tiny);
+		auto transient = Transient::GetSingleton().GetData(giant);
 		if (transient) {
 			transient->attach_to_foot = decide;
 		}
