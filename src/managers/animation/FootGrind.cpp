@@ -127,6 +127,7 @@ namespace {
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
         CancelDamageOverTime(&data.giant); 
+        Cprint("FootGrindR Exit Fired.");
     }
 
     void GTSstomp_FootGrindL_Exit(AnimationEventData& data) { // Remove foot from enemy: Left
@@ -134,6 +135,7 @@ namespace {
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
         CancelDamageOverTime(&data.giant);
+        Cprint("FootGrindL Exit Fired.");
     }
 }
 

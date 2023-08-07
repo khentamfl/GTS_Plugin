@@ -178,8 +178,8 @@ namespace {
 		DoLaunch(&data.giant, 0.95 * perk, 7.0 + data.animSpeed/2, 1.4, FootEvent::Right, 1.15);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.stage = 1;
-		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0; 
+		data.canEditAnimSpeed = false;
 		
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
@@ -198,8 +198,8 @@ namespace {
 		DoLaunch(&data.giant, 0.95 * perk, 7.0 + data.animSpeed/2, 1.4, FootEvent::Left, 1.15);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.stage = 1;
-		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		data.canEditAnimSpeed = false;
 	}
 	void GTS_StrongStomp_ReturnRL_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
