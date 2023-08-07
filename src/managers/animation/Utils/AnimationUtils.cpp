@@ -17,6 +17,7 @@
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "data/time.hpp"
 #include "node.hpp"
 
 using namespace std;
@@ -169,6 +170,7 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 		std::string name = std::format("FootGrind_{}", tiny->formID);
+		auto FrameA = Time::FramesElapsed();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -179,7 +181,10 @@ namespace Gts {
 			
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-
+			auto FrameB = Time::FramesElapsed() - FrameA;
+			if (FrameB <= 2.0) {
+				return true;
+			}
 			if (!AttachToUnderFoot(giantref, tinyref)) {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
