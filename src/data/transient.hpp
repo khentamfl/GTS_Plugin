@@ -32,6 +32,7 @@ namespace Gts {
 		bool about_to_be_eaten;
 		bool dragon_was_eaten;
 		bool can_be_vored;
+		bool being_foot_grinded;
     	TESObjectREFR* disable_collision_with;
 	};
 

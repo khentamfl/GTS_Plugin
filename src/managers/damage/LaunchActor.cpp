@@ -108,6 +108,8 @@ namespace {
 		auto profiler = Profilers::Profile("Other: Launch Actors Decide");
 		if (IsBeingHeld(tiny)) {
 			return;
+		} if (IsBeingGrinded(tiny)) {
+			return; // Disallow to launch if we're grinding an actor
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		float DamageSetting = Persistent::GetSingleton().size_related_damage_mult;

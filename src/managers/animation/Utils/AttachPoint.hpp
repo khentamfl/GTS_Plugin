@@ -67,7 +67,7 @@ namespace Gts {
 		if (bone) {
 			auto coords = bone->world.translate;
 			log::info("Coords Z Before: {}", coords.z);
-			float HH = HighHeelManager::GetHHOffset(giant).Length() * 0.75;
+			float HH = HighHeelManager::GetHHOffset(giant).Length() * 0.50;
 			coords.z -= HH;
 			log::info("Coords Z After: {}, HH {}", coords.z, HH);
 			return AttachTo(anyGiant, anyTiny, coords);

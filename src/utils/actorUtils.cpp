@@ -226,6 +226,14 @@ namespace Gts {
 		return GTSBusy;
 	}
 
+	bool IsBeingGrinded(Actor* actor) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			return transient->being_foot_grinded;
+		}
+		return false;
+	}
+
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                 G T S   ST A T E S  O T H E R                                                                      //
@@ -347,6 +355,12 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {
 			transient->about_to_be_eaten = decide;
+		}
+	}
+	void SetBeingGrinded(Actor* tiny, bool decide) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			transient->being_foot_grinded = decide;
 		}
 	}
 	void ShutUp(Actor* actor) { // Disallow them to "So anyway i've been fishing today and my dog died" while we do something to them

@@ -35,6 +35,7 @@ namespace Gts {
 	bool IsStomping(Actor* actor);
 	bool IsBeingEaten(Actor* tiny);
 	bool IsGtsBusy(Actor* actor);
+	bool IsBeingGrinded(Actor* actor);
     // GTS State Bools End
 
     // Gts Bools
@@ -51,6 +52,7 @@ namespace Gts {
 	void SetBeingHeld(Actor* tiny, bool decide);
 	void SetBetweenBreasts(Actor* actor, bool decide);
 	void SetBeingEaten(Actor* tiny, bool decide);
+	void SetBeingGrinded(Actor* tiny, bool decide);
 	void ShutUp(Actor* actor);
 
 	// GTS State Controllers end

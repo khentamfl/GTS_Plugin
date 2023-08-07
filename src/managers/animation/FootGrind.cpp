@@ -71,6 +71,14 @@ namespace {
         TaskManager::Cancel(Right);
         TaskManager::Cancel(Left);
     }
+
+    void GTSstomp_FootGrindL_Enter(AnimationEventData& data) {
+
+    }
+
+    void GTSstomp_FootGrindR_Enter(AnimationEventData& data) {
+        
+    }
        
     void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
         ApplyDamageOverTime_Left(&data.giant);
@@ -126,6 +134,8 @@ namespace {
 namespace Gts
 {
 	void AnimationFootGrind::RegisterEvents() {
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindL_Enter", "FootGrind", GTSstomp_FootGrindL_Enter);
+        AnimationManager::RegisterEvent("GTSstomp_FootGrindR_Enter", "FootGrind", GTSstomp_FootGrindR_Enter);
         AnimationManager::RegisterEvent("GTSstomp_FootGrindL_MV_S", "FootGrind", GTSstomp_FootGrindL_MV_S);
         AnimationManager::RegisterEvent("GTSstomp_FootGrindR_MV_S", "FootGrind", GTSstomp_FootGrindR_MV_S);
         AnimationManager::RegisterEvent("GTSstomp_FootGrindL_MV_E", "FootGrind", GTSstomp_FootGrindL_MV_E);
