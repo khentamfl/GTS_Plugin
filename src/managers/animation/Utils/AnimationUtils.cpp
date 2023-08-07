@@ -297,6 +297,7 @@ namespace Gts {
 								if (aveForce >= 0.00) {
 									ActorHandle tinyHandle = otherActor->CreateRefHandle();
 									ActorHandle gianthandle = actor->CreateRefHandle();
+									double startTime = Time::WorldTimeElapsed();
 									TaskManager::Run([=](auto& update){
 										Actor* giant = gianthandle.get().get();
 										Actor* tiny = tinyHandle.get().get();
@@ -307,7 +308,6 @@ namespace Gts {
 											return false;
 										}
 
-										double startTime = Time::WorldTimeElapsed();
 										double endTime = Time::WorldTimeElapsed();
 
 										if ((endTime - startTime) > 1e-4) {
@@ -430,6 +430,7 @@ namespace Gts {
 								if (aveForce >= 0.00) {
 									ActorHandle tinyHandle = otherActor->CreateRefHandle();
 									ActorHandle gianthandle = actor->CreateRefHandle();
+									double startTime = Time::WorldTimeElapsed();
 									TaskManager::Run([=](auto& update){
 										Actor* giant = gianthandle.get().get();
 										Actor* tiny = tinyHandle.get().get();
@@ -440,7 +441,6 @@ namespace Gts {
 											return false;
 										}
 
-										double startTime = Time::WorldTimeElapsed();
 										double endTime = Time::WorldTimeElapsed();
 
 										if ((endTime - startTime) > 1e-4) {
