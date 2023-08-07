@@ -179,6 +179,7 @@ namespace {
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		data.stage = 0;
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
 		float perk = GetPerkBonus_Basics(&data.giant);
@@ -197,6 +198,7 @@ namespace {
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		data.stage = 0;
 	}
 	void GTS_StrongStomp_ReturnRL_Start(AnimationEventData& data) {
 		auto giant = &data.giant;

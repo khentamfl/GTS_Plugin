@@ -74,10 +74,12 @@ namespace {
 
     void GTSstomp_FootGrindL_Enter(AnimationEventData& data) {
         data.canEditAnimSpeed = true;
+        data.stage = 1;
     }
 
     void GTSstomp_FootGrindR_Enter(AnimationEventData& data) {
         data.canEditAnimSpeed = true;
+        data.stage = 1;
     }
        
     void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
@@ -123,15 +125,17 @@ namespace {
     }
 
     void GTSstomp_FootGrindR_Exit(AnimationEventData& data) { // Remove foot from enemy: Right
+        data.canEditAnimSpeed = false;
         CancelDamageOverTime(&data.giant);
         data.animSpeed = 1.0;
-        data.canEditAnimSpeed = false;
+        data.stage = 0;
     }
 
     void GTSstomp_FootGrindL_Exit(AnimationEventData& data) { // Remove foot from enemy: Left
+        data.canEditAnimSpeed = false;
         CancelDamageOverTime(&data.giant);
         data.animSpeed = 1.0;
-        data.canEditAnimSpeed = false;
+        data.stage = 0;
     }
 }
 
