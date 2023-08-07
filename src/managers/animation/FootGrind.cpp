@@ -123,16 +123,14 @@ namespace {
     }
 
     void GTSstomp_FootGrindR_Exit(AnimationEventData& data) { // Remove foot from enemy: Right
-        data.stage = 0;
+        data.stage = 1;
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
-        CancelDamageOverTime(&data.giant);
-        
-        
+        CancelDamageOverTime(&data.giant); 
     }
 
     void GTSstomp_FootGrindL_Exit(AnimationEventData& data) { // Remove foot from enemy: Left
-        data.stage = 0;
+        data.stage = 1;
         data.canEditAnimSpeed = false;
         data.animSpeed = 1.0;
         CancelDamageOverTime(&data.giant);
