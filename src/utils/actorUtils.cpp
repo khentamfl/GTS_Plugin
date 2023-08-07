@@ -227,7 +227,7 @@ namespace Gts {
 	}
 
 	bool IsBeingGrinded(Actor* actor) {
-		auto transient = Transient::GetSingleton().GetData(tiny);
+		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			return transient->being_foot_grinded;
 		}
