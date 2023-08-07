@@ -179,7 +179,7 @@ namespace {
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.stage = 1;
 		data.canEditAnimSpeed = false;
-		data.animSpeed = 1.0;
+		data.animSpeed = 1.0; 
 		
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
