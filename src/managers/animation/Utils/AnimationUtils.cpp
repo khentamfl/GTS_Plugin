@@ -182,17 +182,21 @@ namespace Gts {
 
 			DoDamageEffect(giantref, 0.010, 1.4, 2000, 0.05, FootEvent::Right, 1.2);
 			DoDamageEffect(giantref, 0.010, 1.4, 2000, 0.05, FootEvent::Left, 1.2);
-
-			if (!AttachToUnderFoot(giantref, tinyref)) {
-				log::info("Attach is false");
-				SetBeingGrinded(tinyref, false);
-				return false;
+			if (CanBeAttachedToFoot(giant)) {
+				if (!AttachToUnderFoot(giantref, tinyref)) {
+					log::info("Attach is false");
+					SetBeingGrinded(tinyref, false);
+					SetAttachToFoot(giantref, false);
+					return false;
+				}
 			} if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
+				SetAttachToFoot(giantref, false);
 				log::info("IsGrinding = false");
 				return false;
 			} if (tinyref->IsDead()) {
 				SetBeingGrinded(tinyref, false);
+				SetAttachToFoot(giantref, false);
 				log::info("Tiny is dead");
 				return false;
 			}
@@ -295,30 +299,8 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								if (aveForce >= 0.00) {
-									ActorHandle tinyHandle = otherActor->CreateRefHandle();
-									ActorHandle gianthandle = actor->CreateRefHandle();
-									double startTime = Time::WorldTimeElapsed();
-									TaskManager::Run([=](auto& update){
-										Actor* giant = gianthandle.get().get();
-										Actor* tiny = tinyHandle.get().get();
-										if (!giant) {
-											return false;
-										}
-										if (!tiny) {
-											return false;
-										}
-
-										double endTime = Time::WorldTimeElapsed();
-
-										if ((endTime - startTime) > 1e-4) {
-											DoFootGrind(giant, tiny);
-											SetBeingGrinded(giant, true);
-											return false;
-										}
-										log::info("FootGridn task is running");
-										return true;
-									});
-									
+									DoFootGrind(actor, otherActor);
+									SetBeingGrinded(otherActor, true);
 									AnimationManager::StartAnim("GrindLeft", actor);
                                 }
 							}
@@ -428,29 +410,8 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								if (aveForce >= 0.00) {
-									ActorHandle tinyHandle = otherActor->CreateRefHandle();
-									ActorHandle gianthandle = actor->CreateRefHandle();
-									double startTime = Time::WorldTimeElapsed();
-									TaskManager::Run([=](auto& update){
-										Actor* giant = gianthandle.get().get();
-										Actor* tiny = tinyHandle.get().get();
-										if (!giant) {
-											return false;
-										}
-										if (!tiny) {
-											return false;
-										}
-
-										double endTime = Time::WorldTimeElapsed();
-
-										if ((endTime - startTime) > 1e-4) {
-											DoFootGrind(giant, tiny);
-											SetBeingGrinded(giant, true);
-											return false;
-										}
-										log::info("FootGridn task is running");
-										return true;
-									});
+									DoFootGrind(actor, otherActor);
+									SetBeingGrinded(otherActor, true);
 									AnimationManager::StartAnim("GrindRight", actor);
                                 }
 							}

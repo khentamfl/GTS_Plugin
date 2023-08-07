@@ -73,11 +73,11 @@ namespace {
     }
 
     void GTSstomp_FootGrindL_Enter(AnimationEventData& data) {
-
+        SetAttachToFoot(&data.giant, true);
     }
 
     void GTSstomp_FootGrindR_Enter(AnimationEventData& data) {
-        
+        SetAttachToFoot(&data.giant, true);
     }
        
     void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
@@ -123,11 +123,11 @@ namespace {
     }
 
     void GTSstomp_FootGrindR_Exit(AnimationEventData& data) { // Remove foot from enemy: Right
-
+        SetAttachToFoot(&data.giant, false);
     }
 
     void GTSstomp_FootGrindL_Exit(AnimationEventData& data) { // Remove foot from enemy: Left
-
+        SetAttachToFoot(&data.giant, false);
     }
 }
 

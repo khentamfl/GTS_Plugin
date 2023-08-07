@@ -67,6 +67,7 @@ namespace Gts {
 			bool between_breasts = false;
 			bool about_to_be_eaten = false;
 			bool being_foot_grinded = false;
+			bool attach_to_foot = false;
 
 			TESObjectREFR* disable_collision_with = nullptr;
 			float otherScales = 1.0;
@@ -101,6 +102,7 @@ namespace Gts {
 			result.between_breasts = between_breasts;
 			result.about_to_be_eaten = about_to_be_eaten;
 			result.being_foot_grinded = being_foot_grinded;
+			result.attach_to_foot = attach_to_foot;
 			result.dragon_was_eaten = dragon_was_eaten;
 			result.can_be_vored = can_be_vored;
 			result.disable_collision_with = disable_collision_with;
