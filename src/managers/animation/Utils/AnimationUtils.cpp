@@ -182,7 +182,7 @@ namespace Gts {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 			auto FrameB = Time::FramesElapsed() - FrameA;
-			if (FrameB <= 2.0) {
+			if (FrameB <= 4.0) {
 				return true;
 			}
 			if (!AttachToUnderFoot(giantref, tinyref)) {

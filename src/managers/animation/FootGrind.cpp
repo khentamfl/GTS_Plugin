@@ -73,9 +73,11 @@ namespace {
     }
 
     void GTSstomp_FootGrindL_Enter(AnimationEventData& data) {
+        data.canEditAnimSpeed = true;
     }
 
     void GTSstomp_FootGrindR_Enter(AnimationEventData& data) {
+        data.canEditAnimSpeed = true;
     }
        
     void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
@@ -107,7 +109,7 @@ namespace {
         ApplyDustRing(&data.giant, FootEvent::Right, RNode, 1.05);
         DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
         DoLaunch(&data.giant, 0.75 * perk, 1.8, 1.4, FootEvent::Right, 0.80);  // To-do: disallow Launching when actor is being grinded through Transient
-        DoDamageEffect(&data.giant, 2.45, 1.60, 20, 0.15, FootEvent::Right, 1.0);
+        DoDamageEffect(&data.giant, 2.85, 1.90, 20, 0.15, FootEvent::Right, 1.0);
         Rumble::Once("GrindStompR", &data.giant, 1.25, 0.05, RNode);
     }
 
@@ -116,7 +118,7 @@ namespace {
         ApplyDustRing(&data.giant, FootEvent::Left, LNode, 1.05);
         DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
         DoLaunch(&data.giant, 0.75 * perk, 1.8, 1.4, FootEvent::Left, 0.80);  // To-do: disallow Launching when actor is being grinded through Transient
-        DoDamageEffect(&data.giant, 2.45, 1.60, 20, 0.15, FootEvent::Left, 1.0);
+        DoDamageEffect(&data.giant, 2.85, 1.90, 20, 0.15, FootEvent::Left, 1.0);
         Rumble::Once("GrindStompL", &data.giant, 1.25, 0.05, LNode);
     }
 
