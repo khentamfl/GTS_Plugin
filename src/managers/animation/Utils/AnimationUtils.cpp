@@ -179,20 +179,17 @@ namespace Gts {
 			
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-			
+
 			if (!AttachToUnderFoot(giantref, tinyref)) {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
-				SetAttachToFoot(giantref, false);
 				return false;
 			} if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
-				SetAttachToFoot(giantref, false);
 				log::info("IsGrinding = false");
 				return false;
 			} if (tinyref->IsDead()) {
 				SetBeingGrinded(tinyref, false);
-				SetAttachToFoot(giantref, false);
 				log::info("Tiny is dead");
 				return false;
 			}
