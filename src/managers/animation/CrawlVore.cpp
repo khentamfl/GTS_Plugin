@@ -148,6 +148,8 @@ namespace {
 			}
             if (AllowDevourment()) {
                 CallDevourment(&data.giant, tiny);
+                SetBeingHeld(tiny, false);
+                VoreData.AllowToBeVored(true);
             } else {
                 VoreData.Swallow();
                 tiny->SetAlpha(0.0);
