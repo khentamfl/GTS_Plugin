@@ -48,10 +48,10 @@ namespace Gts {
 			return;
 		}
 		Runtime::PlaySoundAtNode("TinyCalamitySound", caster, 1.0, 1.0, "NPC COM [COM ]");
-		auto pelv = find_node(player, "NPC Pelvis [Pelv]");
+		auto pelv = find_node(caster, "NPC Pelvis [Pelv]");
 		auto node = find_node(caster, "NPC Root [Root]");
 		if (pelv) {
-			TinyCalamityExplosion(caster, 72, node, 0);
+			TinyCalamityExplosion(caster, 72, node);
 		}
 		if (node) {
 			float scale = get_visual_scale(caster);
