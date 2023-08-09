@@ -84,7 +84,7 @@ namespace Gts {
 		float SMT = 1.0;
 		float minimal_scale = 2.0;
 
-		LaunchActor::GetSingleton().LaunchCrawling(actor, launch_dist, 0.20 * multiplier, node, 0.75 * multiplier); // Launch actors
+		LaunchActor::GetSingleton().LaunchAtNode(actor, launch_dist, 0.20 * multiplier, node, 0.75 * multiplier); // Launch actors
 		//                                                   radius           power       object       damage
 		// Order matters here since we don't want to make it even stronger during SMT, so that's why SMT check is after this function
 
